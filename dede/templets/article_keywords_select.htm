@@ -1,4 +1,3 @@
-{dede:page pagesize="300"/}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
@@ -11,9 +10,9 @@ function SelKw(kw)
 }
 function ReturnValue()
 {
-	window.opener.document.{dede:global name='f' /}.value += document.form2.keywords.value;
+	window.opener.document.<?=$f?>.value += document.form2.keywords.value;
 	window.opener=true;
-    window.close();
+  window.close();
 }
 function showHide(objname)
 {
@@ -35,14 +34,16 @@ function AddNewKw()
     <tr id="addnew" style="display:none"> 
         <td width="100%" height="24" colspan="2" align="center" bgcolor="#009900"> 
           <table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-              <td width="80" align="center"><font color="#FFFFFF">关键字：</font></td>
-            <td width="140"><input name="keyword" type="text" id="keyword" style="width:130"></td>
-			  <td width="40"><font color="#FFFFFF">频率：</font></td>
-			<td width="50"><input name="rank" type="text" id="rank" style="width:30" value="30"></td>
-            <td width="80"><input type="submit" name="Submit" value="保存" class="np"></td>
-          </tr>
-        </table>
+            <tr> 
+              <td width="60" align="center">关键字：</td>
+              <td width="140"><input name="keyword" type="text" id="keyword" style="width:130"></td>
+              <td width="40">链接：</td>
+              <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130"></td>
+              <td width="40">频率：</td>
+              <td width="50"><input name="rank" type="text" id="rank" style="width:30" value="30"></td>
+              <td width="80"><input type="submit" name="Submit" value="保存" class="np"></td>
+            </tr>
+          </table>
 		</td>
      </tr>
 	 </form>
@@ -60,20 +61,33 @@ function AddNewKw()
           </table></td>
       </tr>
       <tr> 
-        <td bgcolor="#FFFFFF" style="line-height:180%"> {dede:datalist}<a href='javascript:SelKw("[field:keyword/]")'><u>[field:keyword/]</u></a> 
-          {/dede:datalist} </td>
+        <td bgcolor="#FFFFFF" style="line-height:180%">
+        	<?
+          $mylist = $dlist->GetDataList();
+          while($row = $mylist->GetArray('dm'))
+           {
+          ?>
+        	 <a href='javascript:SelKw("<?=$row['keyword']?>")'><u><?=$row['keyword']?></u></a> 
+          <?
+            }
+          ?>
+          </td>
       </tr>
       <tr> 
-        <td height="24" bgcolor="#E4FAC7" style="line-height:180%"> <table border="0" cellspacing="0" cellpadding="0">
+        <td height="24" bgcolor="#E4FAC7" style="line-height:180%">
+        <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
               <td width="120">已选的关键字：</td>
-              <td width="320"><input name="keywords" type="text" id="keywords" style="width:300" value="{dede:global name='keywords'/}"></td>
+              <td width="320"><input name="keywords" type="text" id="keywords" style="width:300" value="<?=$keywords?>"></td>
               <td width="93"><input type="button" name="Submit" value="选用" onClick="ReturnValue()"></td>
             </tr>
-          </table></td>
+          </table>
+        </td>
       </tr>
       <tr align="center"> 
-        <td height="24" bgcolor="#F8FBF0">{dede:pagelist size='5' /}</td>
+        <td height="24" bgcolor="#F8FBF0">
+         <?=$dlist->GetPageList(5);?>
+         </td>
       </tr>
     </form>
   </table>

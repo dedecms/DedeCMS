@@ -1,10 +1,7 @@
 <?
 //该页仅用于检测用户登录的情况，如要手工更改系统配置，请更改config_base.php
-require_once(dirname(__FILE__)."/../inc_userlogin.php");
 require_once(dirname(__FILE__)."/../config_base.php");
-
-//非超级管理员禁止访问的脚本
-$s_exptag = "del_|_del|file_|admin_|sys_";
+require_once(dirname(__FILE__)."/../inc_userlogin.php");
 
 //获得当前脚本名称，如果你的系统被禁用了$_SERVER变量，请自行更改这个选项
 $dedeNowurl = "";
@@ -19,26 +16,9 @@ $s_scriptName = $dedeNowurls[0];
 $cuserLogin = new userLogin();
 if($cuserLogin->getUserID()==-1)
 {
-	$gurl = $cfg_cmspath."/include/dialog/"."login.php?gotopage=".urlencode($s_scriptName);
+	$gurl = $cfg_cmspath."/include/dialog/"."login.php?gotopage=".urlencode($dedeNowurl);
 	echo "<script language='javascript'>location='$gurl';</script>";
 	exit();
 }
 
-//检验用户是否访问被禁止的脚本
-if(eregi($s_exptag,$s_scriptName) && $cuserLogin->getUserType()<5)
-{
-	ShowMsg(" 对不起，你没有权限访问本页。","-1");
-	exit();
-}
-
-//限制用户访问某页面
-function SetPageRank($pagerank)
-{
-	global $cuserLogin;
-	if($cuserLogin->getUserRank()<$pagerank)
-	{
-		ShowMsg("对不起，你没有权限访问本页。","-1");
-		exit();
-	}
-}
 ?>

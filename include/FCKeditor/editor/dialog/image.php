@@ -19,18 +19,31 @@ if($dopost=="upload")
 		ShowMsg("不允许文本类型附件!","-1");
 		exit();
 	}
-	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png");
-  $imgfile_type = strtolower(trim($imgfile_type));
-  if(!in_array($imgfile_type,$sparr)){
-		ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG格式的其中一种！","-1");
+	if(!eregi("\.(jpg|gif|png|bmp)$",$imgfile_name)){
+		ShowMsg("你所上传的文件类型被禁止！","-1");
 		exit();
 	}
-	$y = substr(strftime("%Y",time()),2,2).strftime("%m",time());
-	$filename = $cuserLogin->getUserID()."_".strftime("%d%H%M%S",time());
-	if(!is_dir($cfg_basedir.$cfg_image_dir."/$y")) mkdir($cfg_basedir.$cfg_image_dir."/$y",0777);
+	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
+  $imgfile_type = strtolower(trim($imgfile_type));
+  if(!in_array($imgfile_type,$sparr)){
+		ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG、WBMP格式的其中一种！","-1");
+		exit();
+	}
+	$nowtme = mytime();
+	$y = strftime("%y%m%d",$nowtme);
+	$filename = $cuserLogin->getUserID()."_".strftime("%H%M%S",$nowtme);
+	if(!is_dir($cfg_basedir.$cfg_medias_dir."/$y")){
+		 MkdirAll($cfg_basedir.$cfg_medias_dir."/$y",777);
+		 CloseFtp();
+	}
 	$fs = explode(".",$imgfile_name);
-	$bfilename = $cfg_image_dir."/$y/".$filename.".".$fs[count($fs)-1];
-	$litfilename = $cfg_image_dir."/$y/".$filename."_lit.".$fs[count($fs)-1];
+	if(eregi("php|asp|pl|shtml|jsp|cgi",$fs[count($fs)-1])){
+		exit();
+	}
+	$bfilename = $cfg_medias_dir."/$y/".$filename.".".$fs[count($fs)-1];
+	$litfilename = $cfg_medias_dir."/$y/".$filename."_lit.".$fs[count($fs)-1];
+	$dbbigfile = $filename.".".$fs[count($fs)-1];
+	$dblitfile = $filename."_lit.".$fs[count($fs)-1];
   $fullfilename = $cfg_basedir.$bfilename;
   $full_litfilename = $cfg_basedir.$litfilename;
   if(file_exists($fullfilename)){
@@ -38,24 +51,44 @@ if($dopost=="upload")
 		exit();
   }
   @move_uploaded_file($imgfile,$fullfilename);
+	$dsql = new DedeSql(false);
 	if($dd=="yes")
 	{
 			copy($fullfilename,$full_litfilename);
-			ImageResize($full_litfilename,$w,$h);
+			if(in_array($imgfile_type,$cfg_photo_typenames)) ImageResize($full_litfilename,$w,$h);
 			$urlValue = $bfilename;
 			$imgsrcValue = $litfilename;
-			$sizes = getimagesize($full_litfilename,&$info);
-	}
-	else
-	{	
+			$info = "";
+			$sizes = getimagesize($full_litfilename,$info);
+			$imgwidthValue = $sizes[0];
+	    $imgheightValue = $sizes[1];
+	    $imgsize = filesize($full_litfilename);
+	    $inquery = "
+       INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
+       VALUES ('小图{$dblitfile}','$imgsrcValue','1','$imgwidthValue','$imgheightValue','0','{$imgsize}','{$nowtme}','".$cuserLogin->getUserID()."','0');
+     ";
+     $dsql->ExecuteNoneQuery($inquery);
+	}else{	
 		$imgsrcValue = $bfilename;
 		$urlValue = $bfilename;
-		$sizes = getimagesize($fullfilename,&$info);
+		$info = "";
+		$sizes = getimagesize($fullfilename,$info);
+		$imgwidthValue = $sizes[0];
+	  $imgheightValue = $sizes[1];
+	  $imgsize = filesize($fullfilename);
 	}
-	$imgwidthValue = $sizes[0];
-	$imgheightValue = $sizes[1];
+	$bsizes = getimagesize($fullfilename,$info);
+  $bimgwidthValue = $bsizes[0];
+	$bimgheightValue = $bsizes[1];
+	$bimgsize = filesize($fullfilename);
+	$inquery = "
+    INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
+    VALUES ('{$dbbigfile}','$bfilename','1','$bimgwidthValue','$bimgheightValue','0','{$bimgsize}','{$nowtme}','".$cuserLogin->getUserID()."','0');
+   ";
+  $dsql->ExecuteNoneQuery($inquery);
+  $dsql->Close();
+	if(in_array($imgfile_type,$cfg_photo_typenames)) WaterImg($fullfilename,'up');
 	$kkkimg = $urlValue;
-	
 }
 if(empty($kkkimg)) $kkkimg="picview.gif";
 ?>
@@ -84,7 +117,6 @@ function ImageOK()
 	inImg  = "<img src='"+ isrc +"' width='"+ imgwidth;
 	inImg += "' height='"+ imgheight +"' border='"+ iborder +"' alt='"+ ialt +"'"+ialign+"/>";
 	if(iurl!="") inImg = "<a href='"+ iurl +"' target='_blank'>"+ inImg +"</a>\r\n";
-	//window.returnValue = inImg;
 	if(document.all) oDOM.selection.createRange().pasteHTML(inImg);
 	else FCK.InsertHtml(inImg);
   window.close();
@@ -221,9 +253,9 @@ function UpImgSizeW()
 			<input type="checkbox" name="dd" value="yes">生成缩略图
 				&nbsp;
 			缩略图宽度
-              <input name="w" type="text" value="160" size="3">
+              <input name="w" type="text" value="<?=$cfg_ddimg_width?>" size="3">
 		   缩略图高度
-              <input name="h" type="text" value="120" size="3">
+              <input name="h" type="text" value="<?=$cfg_ddimg_height?>" size="3">
 			</td>
           </tr>
         </table>

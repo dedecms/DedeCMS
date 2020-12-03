@@ -1,30 +1,72 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
+require_once(dirname(__FILE__)."/config_base.php");
 session_start();
-//本类用于检测管理员登录状况
-//由于本类开启session和cookie支持，所以请引入时把这个类置在文件未有任何输出之前。
-//使用cookie管理会话存在一定的风险，如果你知道这意味着什么，请在keepUser()中关闭cookie登录的选项。
-//-----------本类使用说明-------------------------------
-//检验用户登录：
-//checkUser(username,userpwd);
-//返回 1 表示成功，返回 -1 表示用户名不正确，-2 表示密码错误
 
-//保持用户会话状态，
-//keepUser(keeptype,keeptime);
-//keeptype为 session或cookie，keeptime单位为分钟，仅对cookie有效
-//正确返回 1，失败返回 -1
+//检验用户是否有权使用某功能
+function TestPurview($n)
+{
+	$rs = false;
+	$purview = $GLOBALS['cuserLogin']->getPurview();
+  
+  if(eregi('admin_AllowAll',$purview)) return true;
+  if($n=="") return true;
+  
+  if(!isset($GLOBALS['groupRanks'])) $GLOBALS['groupRanks'] = explode(' ',$purview);
+	$ns = explode(',',$n);
+	foreach($ns as $n){ //只要找到一个匹配的权限，即可认为用户有权访问此页面
+	  if($n=="") continue;
+	  if(in_array($n,$GLOBALS['groupRanks'])){ $rs = true; break; }
+  }
+  return $rs;
+}
 
-//其它方法：
+function CheckPurview($n)
+{
+  if(!TestPurview($n)){
+  	ShowMsg("对不起，你没有权限执行此操作！<br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>",'javascript:;');
+  	exit();
+  }
+}
 
-//getUserType(); 获取用户级别
-//本系统只支持超级管理员 10，频道总编 5 ，信息采编 2 三种权限
-//失败返回 -1
+//是否没权限限制(超级管理员)
+function TestAdmin(){
+	$purview = $GLOBALS['cuserLogin']->getPurview();
+  if(eregi('admin_AllowAll',$purview)) return true;
+  else return false;
+}
 
-//getUserID(); 获取用户ID
-//正确则返回用户ID，失败返回 -1
+$DedeUserCatalogs = Array();
+//获得用户授权的所有栏目ID
+function GetMyCatalogs($dsql,$cid)
+{
+	$GLOBALS['DedeUserCatalogs'][] = $cid;
+	$dsql->SetQuery("Select ID From #@__arctype where reID='$cid'");
+	$dsql->Execute($cid);
+	while($row = $dsql->GetObject($cid)){
+		GetMyCatalogs($dsql,$row->ID);
+	}
+}
+function MyCatalogs(){
+	if(count($GLOBALS['DedeUserCatalogs'])==0){
+		$dsql = new DedeSql(false);
+		GetMyCatalogs($dsql,$GLOBALS['cuserLogin']->getUserChannel());
+		$dsql->Close();
+	}
+	return $GLOBALS['DedeUserCatalogs'];
+}
 
-//exitUser(); 注销会话
-//------------------------------------------------------
+//检测用户是否有权限操作某栏目
+function CheckCatalog($cid,$msg){
+	if($GLOBALS['cuserLogin']->getUserChannel()=="0"||TestAdmin()) return true;
+	if(!in_array($cid,MyCatalogs())){
+		ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>",'javascript:;');
+  	exit();
+	}
+  return true;
+}
+
+
+//登录类
 class userLogin
 {
 	var $userName = "";
@@ -32,32 +74,24 @@ class userLogin
 	var $userID = "";
 	var $userType = "";
 	var $userChannel = "";
-	var $keepUserIDTag = "";
-	var $keepUserTypeTag = "";
-	var $keepUserChannelTag = "";
-	var $keepUserNameTag = "";
+	var $userPurview = "";
+	var $keepUserIDTag = "dede_admin_id";
+	var $keepUserTypeTag = "dede_admin_type";
+	var $keepUserChannelTag = "dede_admin_channel";
+	var $keepUserNameTag = "dede_admin_name";
+	var $keepUserPurviewTag = "dede_admin_purview";
 	//php5构造函数
 	function __construct()
  	{
- 		$this->keepUserIDTag="dede_admin_id";
-	  $this->keepUserTypeTag="dede_admin_type";
-	  $this->keepUserChannelTag="dede_admin_channel";
-	  $this->keepUserNameTag="dede_admin_name";
-	  
- 		if(isset($_SESSION[$this->keepUserIDTag])&&
- 		isset($_SESSION[$this->keepUserTypeTag])&&
- 		isset($_SESSION[$this->keepUserChannelTag])&&
- 		isset($_SESSION[$this->keepUserNameTag]))
-		{
+ 		if(isset($_SESSION[$this->keepUserIDTag])){
 			$this->userID=$_SESSION[$this->keepUserIDTag];
 			$this->userType=$_SESSION[$this->keepUserTypeTag];
 			$this->userChannel=$_SESSION[$this->keepUserChannelTag];
 			$this->userName=$_SESSION[$this->keepUserNameTag];
+			$this->userPurview=$_SESSION[$this->keepUserPurviewTag];
 	  }
-	  
   }
-	function userLogin()
-	{
+	function userLogin(){
 		$this->__construct();
 	}
 	//检验用户是否正确
@@ -66,7 +100,7 @@ class userLogin
 		//只允许用户名和密码用0-9,a-z,A-Z,'@','_','.','-'这些字符
 		$this->userName = ereg_replace("[^0-9a-zA-Z_@\!\.-]","",$username);
 		$this->userPwd = ereg_replace("[^0-9a-zA-Z_@\!\.-]","",$userpwd);
-		$pwd = md5($this->userPwd);
+		$pwd = substr(md5($this->userPwd),0,24);
 		$dsql = new DedeSql(false);
 		$dsql->SetQuery("Select * From #@__admin where userid like '".$this->userName."' limit 0,1");
 		$dsql->Execute();
@@ -85,7 +119,9 @@ class userLogin
 			$this->userType = $row->usertype;
 			$this->userChannel = $row->typeid;
 			$this->userName = $row->uname;
-			$dsql->SetQuery("update #@__admin set loginip='$loginip',logintime='".strftime("%Y-%m-%d %H:%M:%S",time())."' where ID=".$row->ID);
+			$groupSet = $dsql->GetOne("Select * From #@__admintype where rank='".$row->usertype."'");
+			$this->userPurview = $groupSet['purviews'];
+			$dsql->SetQuery("update #@__admin set loginip='$loginip',logintime='".strftime("%Y-%m-%d %H:%M:%S",mytime())."' where ID='".$row->ID."'");
 			$dsql->ExecuteNoneQuery();
 			$dsql->Close();
 			return 1;
@@ -109,6 +145,9 @@ class userLogin
 			session_register($this->keepUserNameTag);
 			$_SESSION[$this->keepUserNameTag] = $this->userName;
 			
+			session_register($this->keepUserPurviewTag);
+			$_SESSION[$this->keepUserPurviewTag] = $this->userPurview;
+			
 			return 1;
 		}
 		else
@@ -120,39 +159,38 @@ class userLogin
 		@session_unregister($this->keepUserIDTag);
 		@session_unregister($this->keepUserTypeTag);
 		@session_unregister($this->keepUserChannelTag);
-		$this->userType = "";
-		$this->userID = "";
-		$this->userChannel = "";
+		@session_unregister($this->keepUserNameTag);
+		@session_unregister($this->keepUserPurviewTag);
+		session_destroy();
 	}
 	//-----------------------------
 	//获得用户管理频道的值
 	//-----------------------------
-	function getUserChannel()
-	{
+	function getUserChannel(){
 		if($this->userChannel!="") return $this->userChannel;
 		else return -1;
 	}
 	//获得用户的权限值
-	function getUserType()
-	{
+	function getUserType(){
 		if($this->userType!="") return $this->userType;
 		else return -1;
 	}
-	function getUserRank()
-	{
+	function getUserRank(){
 		return $this->getUserType();
 	}
 	//获得用户的ID
-	function getUserID()
-	{
+	function getUserID(){
 		if($this->userID!="") return $this->userID;
 		else return -1;
 	}
 	//获得用户的笔名
-	function getUserName()
-	{
+	function getUserName(){
 		if($this->userName!="") return $this->userName;
 		else return -1;
+	}
+	//用户权限表
+	function getPurview(){
+		return $this->userPurview;
 	}
 }
 ?>

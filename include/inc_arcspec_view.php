@@ -1,10 +1,5 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/pub_db_mysql.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit.php");
-require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/inc_arcpart_view.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
 //本类的用途是用于浏览所有专题列表或对专题列表生成HTML
@@ -24,7 +19,7 @@ class SpecView
 	var $ChannelUnit;
 	var $ListType;
 	var $TempInfos;
-	var $TypeFields;
+	var $Fields;
 	var $PartView;
 	var $StartTime;
 	//-------------------------------
@@ -40,15 +35,8 @@ class SpecView
  		$this->dtp2->SetNameSpace("field","[","]");
  		$this->TypeLink = new TypeLink(0);
  		$this->ChannelUnit = new ChannelUnit(-1);
- 		$this->TypeFields['phpurl'] = $GLOBALS['cfg_plus_dir'];
- 		$this->TypeFields['templeturl'] = $GLOBALS['cfg_templets_dir'];
- 		$this->TypeFields['memberurl'] = $GLOBALS['cfg_member_dir'];
- 		$this->TypeFields['powerby'] = $GLOBALS['cfg_powerby'];
- 		$this->TypeFields['indexurl'] = $GLOBALS['cfg_indexurl']."/";
- 		$this->TypeFields['indexurl'] = ereg_replace("/{1,}","/",$this->TypeFields['indexurl']);
- 		$this->TypeFields['indexname'] = $GLOBALS['cfg_indexname'];
- 		$this->TypeFields['specurl'] = $GLOBALS['cfg_special'];
- 		$this->TypeFields['webname'] = $GLOBALS["cfg_webname"];
+ 		//设置一些全局参数的值
+ 		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
  		
  		if($starttime==0) $this->StartTime = 0;
  		else{
@@ -58,7 +46,7 @@ class SpecView
  		$this->PartView = new PartView();
 
  		$this->CountRecord();
- 		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/default/list_spec.htm";
+ 		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_spec.htm";
  		if(!file_exists($tempfile)||!is_file($tempfile)){
  			 echo "模板文件：'".$tempfile."' 不存在，无法解析文档！";
  			 exit();
@@ -67,7 +55,7 @@ class SpecView
  		 $this->TempInfos['tags'] = $this->dtp->CTags;
  		 $this->TempInfos['source'] = $this->dtp->SourceString;
  		 $ctag = $this->dtp->GetTag("page");
- 		 if($ctag=="") $this->PageSize = 20;
+ 		 if(!is_object($ctag)) $this->PageSize = 20;
  		 else{
  		    if($ctag->GetAtt("pagesize")!="") $this->PageSize = $ctag->GetAtt("pagesize");
         else $this->PageSize = 20;
@@ -84,9 +72,9 @@ class SpecView
  	//---------------------------
  	function Close()
  	{
- 		@$this->dsql->Close();
- 		@$this->TypeLink->Close();
- 		@$this->ChannelUnit->Close();
+ 		$this->dsql->Close();
+ 		$this->TypeLink->Close();
+ 		$this->ChannelUnit->Close();
  	}
  	//------------------
  	//统计列表里的记录
@@ -100,11 +88,10 @@ class SpecView
  		if(isset($GLOBALS['PageNo'])) $this->PageNo = $GLOBALS['PageNo'];
  		else $this->PageNo = 1;
  		
- 		if($this->StartTime>0) $timesql = " And #@__archives.senddate>'".$this->StartTime."'";
- 		else $timesql = "";
- 		
  		if($this->TotalResult==-1)
  		{
+ 		  if($this->StartTime>0) $timesql = " And #@__archives.senddate>'".$this->StartTime."'";
+ 		  else $timesql = "";
  			$row = $this->dsql->GetOne("Select count(*) as dd From #@__archives where #@__archives.arcrank > -1 And channel=-1 $timesql");
  			if(is_array($row)) $this->TotalResult = $row['dd'];
  			else $this->TotalResult = 0;
@@ -209,34 +196,65 @@ class SpecView
  			 $tagname = $ctag->GetName();
  			 if($tagname=="field") //类别的指定字段
  			 {
- 					if(isset($this->TypeFields[$ctag->GetAtt('name')]))
- 					  $this->dtp->Assign($tagid,$this->TypeFields[$ctag->GetAtt('name')]);
+ 					if(isset($this->Fields[$ctag->GetAtt('name')]))
+ 					  $this->dtp->Assign($tagid,$this->Fields[$ctag->GetAtt('name')]);
  					else
  					  $this->dtp->Assign($tagid,"");
  			 }
+ 			 //自定义标记
+ 			 //-----------------------
+ 			 else if($tagname=="mytag")
+ 			 {
+ 				  $this->dtp->Assign($tagid,$this->PartView->GetMyTag(
+ 				        $ctag->GetAtt("typeid"),
+ 				        $ctag->GetAtt("name"),
+ 				        $ctag->GetAtt("ismake")
+ 				     )
+ 				  );
+ 			 }
+ 			 else if($tagname=="onetype"||$tagname=="type")
+ 			 {
+ 				 $this->dtp->Assign($tagid,
+ 				   $this->GetOneType($ctag->GetAtt("typeid"),$ctag->GetInnerText())
+ 				 );
+ 			 }
+ 			 //广告标记
+ 			 //-----------------------
+ 			 else if($tagname=="myad")
+ 			 {
+ 				  $this->dtp->Assign($tagid,$this->PartView->GetMyAd(
+ 				        $ctag->GetAtt("typeid"),
+ 				        $ctag->GetAtt("name")
+ 				     )
+ 				  );
+ 			 }
+ 			 //热门关键字
+ 			 else if($tagname=="hotwords"){
+ 				 $this->dtp->Assign($tagid,
+ 				 GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
+ 			 }
  			 else if($tagname=="channel")//下级频道列表
  			 {
- 				  if($this->TypeID > 0){
- 				  	$typeid = $this->TypeID; $reid = $this->TypeLink->TypeInfos['reID'];
- 				  }else{ $typeid = 0; $reid=0; }
- 				  
  				  $this->dtp->Assign($tagid,
- 				      $this->TypeLink->GetChannelList($typeid,
- 				          $reid,
+ 				      $this->TypeLink->GetChannelList(
+ 				          $ctag->GetAtt("typeid"),
+ 				          0,
  				          $ctag->GetAtt("row"),
  				          $ctag->GetAtt("type"),
- 				          $ctag->GetInnerText()
+ 				          $ctag->GetInnerText(),
+ 				          $ctag->GetAtt("col"),
+ 				          $ctag->GetAtt("tablewidth"),
+ 				          $ctag->GetAtt("currentstyle")
  				      )
  				  );
  			 }
  			 else if($tagname=="arclist"||$tagname=="artlist"||$tagname=="likeart"||$tagname=="hotart"
  			 ||$tagname=="imglist"||$tagname=="imginfolist"||$tagname=="coolart"||$tagname=="specart")
  			 {
- 			 	  $listtype = $ctag->GetAtt('type');
  			 	  //特定的文章列表
  				  $channelid = $ctag->GetAtt("channelid");
  				  if($tagname=="imglist"||$tagname=="imginfolist"){ $listtype = "image"; }
- 				  else if($tagname=="specart"){ $channelid = -1; }
+ 				  else if($tagname=="specart"){ $channelid = -1; $listtype=""; }
  				  else if($tagname=="coolart"){ $listtype = "commend"; }
  				  else{ $listtype = $ctag->GetAtt('type'); }
  				  
@@ -247,14 +265,8 @@ class SpecView
  				  
  				  //对相应的标记使用不同的默认innertext
  				  if(trim($ctag->GetInnerText())!="") $innertext = $ctag->GetInnerText();
- 				  else if($tagname=="imglist"){
- 				  	$innertext = GetSysTemplets("part_imglist.htm");
- 				  	$listtype = 'image';
- 				  }
- 				  else if($tagname=="imginfolist"){
- 				  	$innertext = GetSysTemplets("part_imginfolist.htm");
- 				  	$listtype = 'image';
- 				  }
+ 				  else if($tagname=="imglist") $innertext = GetSysTemplets("part_imglist.htm");
+ 				  else if($tagname=="imginfolist") $innertext = GetSysTemplets("part_imginfolist.htm");
  				  else $innertext = GetSysTemplets("part_arclist.htm");
  				  
  				  //兼容titlelength
@@ -282,7 +294,8 @@ class SpecView
  				         0,
  				         "",
  				         $channelid,
- 				         $ctag->GetAtt("limit")
+ 				         $ctag->GetAtt("limit"),
+ 				         $ctag->GetAtt("att")
  				      )
  				  );
  			  }//End if tagname
@@ -326,9 +339,11 @@ class SpecView
 		//
 		//----------------------------
 		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.typeid,#@__archives.ismake,
-		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,#@__archives.click,
+		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,
+		#@__archives.click,#@__archives.postnum,#@__archives.lastpost,
 		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
-		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart 
+		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
+		#@__arctype.moresite,#@__arctype.siteurl
 		from #@__archives 
 		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
 		where $orwhere $ordersql limit $limitstart,$row";
@@ -337,8 +352,6 @@ class SpecView
     $artlist = "";
     if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
     $this->dtp2->LoadSource($innertext);
-    $oldSource = $this->dtp2->SourceString;
-    $oldCtags = $this->dtp2->CTags;
     for($i=0;$i<$row;$i++)
 		{
        if($col>1) $artlist .= "<tr>\r\n";
@@ -347,17 +360,15 @@ class SpecView
          if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
          if($row = $this->dsql->GetArray("al"))
          {
-           $this->dtp2->SourceString = $oldSource;
-           $this->dtp2->CTags = $oldCtags;
            //处理一些特殊字段
            $row["description"] = cnw_left($row["description"],$infolen);
            $row["title"] = cnw_left($row["title"],$titlelen);
            $row["id"] =  $row["ID"];
            if($row["litpic"]=="") $row["litpic"] = $GLOBALS["cfg_plus_dir"]."/img/dfpic.gif";
            $row["picname"] = $row["litpic"];
-           $row["arcurl"] = $this->GetArcUrl($row["id"],$row["typeid"],$row["senddate"],$row["title"],
-                        $row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"]);
-           $row["typeurl"] = $this->GetListUrl($row["typeid"],$row["typedir"],$row["isdefault"],$row["defaultname"],$row["ispart"],$row["namerule2"]);
+           $row["arcurl"] = GetFileUrl($row["ID"],$row["typeid"],$row["senddate"],$row["title"],
+                        $row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"],$row["money"],true,$row["siteurl"]);
+           $row["typeurl"] = $this->GetListUrl($row["typeid"],$row["typedir"],$row["isdefault"],$row["defaultname"],$row["ispart"],$row["namerule2"],$row["siteurl"]);
            $row["info"] = $row["description"];
            $row["filename"] = $row["arcurl"];
            $row["stime"] = GetDateMK($row["pubdate"]);
@@ -411,16 +422,16 @@ class SpecView
 		
 		//获得上一页和下一页的链接
 		if($this->PageNo != 1){
-			$prepage.="<a href='".$tnamerule."$prepagenum".$GLOBALS['art_shortname']."'>上一页</a>\r\n";
-			$indexpage="<a href='".$tnamerule."1".$GLOBALS['art_shortname']."'>首页</a>\r\n";
+			$prepage.="<a href='".$tnamerule."_$prepagenum".$GLOBALS['art_shortname']."'>上一页</a>\r\n";
+			$indexpage="<a href='".$tnamerule."_1".$GLOBALS['art_shortname']."'>首页</a>\r\n";
 		}
 		else{
 			$indexpage="首页\r\n";
 		}	
 		//
 		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<a href='".$tnamerule."$nextpagenum".$GLOBALS['art_shortname']."'>下一页</a>\r\n";
-			$endpage="<a href='".$tnamerule."$totalpage".$GLOBALS['art_shortname']."'>末页</a>\r\n";
+			$nextpage.="<a href='".$tnamerule."_$nextpagenum".$GLOBALS['art_shortname']."'>下一页</a>\r\n";
+			$endpage="<a href='".$tnamerule."_$totalpage".$GLOBALS['art_shortname']."'>末页</a>\r\n";
 		}
 		else{
 			$endpage="末页\r\n";
@@ -440,7 +451,7 @@ class SpecView
 		for($j;$j<=$total_list;$j++)
 		{
    		if($j==$this->PageNo) $listdd.= "$j\r\n";
-   		else $listdd.="<".$tnamerule."_$j".$GLOBALS['art_shortname']."'>[".$j."]</a>\r\n";
+   		else $listdd.="".$tnamerule."_$j".$GLOBALS['art_shortname']."'>[".$j."]</a>\r\n";
 		}
 		$plist = $indexpage.$prepage.$listdd.$nextpage.$endpage;
 		return $plist;
@@ -519,14 +530,7 @@ class SpecView
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
-  	return GetTypeUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2);
-  }
- 	//--------------------------
- 	//获得一个指定档案的链接
- 	//--------------------------
- 	function GetArcUrl($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0)
-  {
-  	return GetFileUrl($aid,$typeid,$timetag,$title,$ismake,$rank,$namerule,$artdir,$money);
+  	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
   //---------------
   //获得当前的页面文件的url

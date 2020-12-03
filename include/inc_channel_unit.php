@@ -1,9 +1,7 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
-require_once(dirname(__FILE__)."/../include/pub_db_mysql.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/config_base.php");
+require_once(dirname(__FILE__)."/pub_dedetag.php");
+require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 /*----------------------------------
 表示特定频道的附加数据结构信息
 function C____ChannelUnit();
@@ -17,7 +15,6 @@ class ChannelUnit
 	var $ArcID;
 	var $dsql;
 	var $SplitPageField;
-	var $PartView;
 	//-------------
 	//php5构造函数
 	//-------------
@@ -35,7 +32,6 @@ class ChannelUnit
  			echo "读取频道信息失败，无法进行后续操作！";
  			exit();
  		}
- 		$this->PartView = new PartView();
  		$dtp = new DedeTagParse();
  		$dtp->SetNameSpace("field","<",">");
     $dtp->LoadSource($this->ChannelInfos["fieldset"]);
@@ -80,13 +76,12 @@ class ChannelUnit
 	
 	//处理某个字段的值
 	//----------------------
-	function MakeField($fname,$fvalue)
+	function MakeField($fname,$fvalue,$addvalue="")
 	{
 		if($fvalue==""){ $fvalue = $this->ChannelFields[$fname]["default"]; }
 		if($this->ChannelFields[$fname]["function"]!=""){
 			$fvalue = $this->EvalFunc($fvalue,$this->ChannelFields[$fname]["function"]);
 		}
-		//echo $this->ChannelFields[$fname]["function"]." -<br/>";
 		//处理各种数据类型
 		$ftype = $this->ChannelFields[$fname]["type"];
 		if($ftype=="text"){
@@ -94,6 +89,13 @@ class ChannelUnit
 		}
 		else if($ftype=="img"){
 			$fvalue = $this->GetImgLinks($fvalue);
+		}
+		else if($ftype=="textdata"){
+			if(!is_file($GLOBALS['cfg_basedir'].$fvalue)) return "";
+			$fp = fopen($GLOBALS['cfg_basedir'].$fvalue,'r');
+			$fvalue = "";
+			while(!feof($fp)){ $fvalue .= fgets($fp,1024); }
+			fclose($fp);
 		}
 		else if($ftype=="addon"){
 			$foldvalue = $fvalue;
@@ -103,7 +105,7 @@ class ChannelUnit
 			$fvalue .= "</td></tr></table>\r\n";
 		}
 		else if($ftype=="softlinks"){
-			$fvalue = $this->GetAddLinkPage();
+			$fvalue = $this->GetAddLinkPage($fvalue);
 		}
 		else if($ftype=="specialtopic"){
 			$fvalue = $this->GetSpecList($fname,$fvalue);
@@ -112,40 +114,44 @@ class ChannelUnit
 	}
 	//获得专题文章的列表
 	//--------------------------------
-	function GetSpecList($fname,$noteinfo)
+	function GetSpecList($fname,$noteinfo,$noteid="")
 	{
+		if(!isset($GLOBALS['__SpGetArcList'])) require_once(dirname(__FILE__)."/inc/inc_fun_SpGetArcList.php");
 		if($noteinfo=="") return "";
 		$rvalue = "";
 		$tempStr = GetSysTemplets("channel/channel_spec_note.htm");
-		$artlistTemp = GetSysTemplets("spec_arclist.htm");
 		$dtp = new DedeTagParse();
 		$dtp->LoadSource($noteinfo);
 		if(is_array($dtp->CTags))
 		{
 			foreach($dtp->CTags as $k=>$ctag){
 				$notename = $ctag->GetAtt("name");
+				if($noteid!="" && $ctag->GetAtt("noteid")!=$noteid){ continue; } //指定名称的专题节点
+				$isauto = $ctag->GetAtt("isauto");
 				$idlist = trim($ctag->GetAtt("idlist"));
-				if($idlist!=""){
-					//如果想更改专题列表里的一些相关设定，可以更改订下面语句
-					//参数为 GetArcList($typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
-					//$imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",
-					//$keyword="",$innertext="",$tablewidth="100",$arcid=0,$idlist="")
-					if(trim($ctag->GetInnerText())!="") $listtmp = $ctag->GetInnerText();
-					else $listtmp = $artlistTemp;
-					$idvalue = $this->PartView->GetArcList(0,50,
-					$ctag->GetAtt("col"),
-					$ctag->GetAtt("titlelen"),
-					$ctag->GetAtt("infolen"),
-					$ctag->GetAtt("imgwidth"),
-					$ctag->GetAtt("imgheight"),
-					"all","default","",$listtmp,100,0,$idlist);
-				}
-				else{
-					$idvalue = "";
-				}
+				$rownum = trim($ctag->GetAtt("rownum"));
+				if(empty($rownum)) $rownum = 40;
+				$keywords = "";
+				$stypeid = 0;
+				
+				if($isauto==1){
+				  $idlist = "";
+				  $keywords = trim($ctag->GetAtt("keywords"));
+				  $stypeid = $ctag->GetAtt("typeid");
+			  }
+				
+				if(trim($ctag->GetInnerText())!="") $listTemplet = $ctag->GetInnerText();
+				else $listTemplet = GetSysTemplets("spec_arclist.htm");
+				$idvalue = SpGetArcList($this->dsql,
+				$stypeid,$rownum,$ctag->GetAtt("col"),
+				$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
+				$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
+				"all","default",$keywords,$listTemplet,100,0,$idlist);
+				
 				$notestr = str_replace("~notename~",$notename,$tempStr);
 				$notestr = str_replace("~spec_arclist~",$idvalue,$notestr);
 				$rvalue .= $notestr;
+				if($noteid!="" && $ctag->GetAtt("noteid")==$noteid){ break; }
 			}
 		}
 		$dtp->Clear();
@@ -154,21 +160,27 @@ class ChannelUnit
 	
 	//获得进入附件下载页面的链接
 	//---------------------------------
-	function GetAddLinkPage()
+	function GetAddLinkPage($fvalue)
 	{
+		$row = $this->dsql->GetOne("Select downtype From #@__softconfig");
 		$phppath = $GLOBALS["cfg_plus_dir"];
 		$downlinkpage = "";
-		$tempStr = GetSysTemplets("channel/channel_downlinkpage.htm");
-		$links = $phppath."/download.php?open=0&aid=".$this->ArcID."&cid=".$this->ChannelID;
-		$downlinkpage = str_replace("~link~",$links,$tempStr);
-		return $downlinkpage;
+		if($row['downtype']=='0'){
+		   return $this->GetAddLinks($fvalue);
+	  }else{
+	  	 $tempStr = GetSysTemplets("channel/channel_downlinkpage.htm");
+		   $links = $phppath."/download.php?open=0&aid=".$this->ArcID."&cid=".$this->ChannelID;
+		   $downlinkpage = str_replace("~link~",$links,$tempStr);
+		   return $downlinkpage;
+	  }
 	}
 	
 	//获得附件的下载所有链接地址
 	//-----------------------------------
 	function GetAddLinks($fvalue)
 	{
-		$phppath = $GLOBALS["cfg_plus_dir"];
+		$row = $this->dsql->GetOne("Select ismoresite,sites,gotojump From #@__softconfig");
+		$phppath = $GLOBALS['cfg_phpurl'];
 		$downlinks = "";
 		$dtp = new DedeTagParse();
     $dtp->LoadSource($fvalue);
@@ -180,15 +192,30 @@ class ChannelUnit
     foreach($dtp->CTags as $ctag){
     	if($ctag->GetName()=="link"){
     	  $links = trim($ctag->GetInnerText());
-    	  //如果想保留跳转，请把此句还原
-    	  //$links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
-    	  $serverName = $ctag->GetAtt("text");
+    	  $serverName = trim($ctag->GetAtt("text"));
+    	  if(!isset($firstLink)){ $firstLink = $links; }
+    	  if($row['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
     	  $temp = str_replace("~link~",$links,$tempStr);
     	  $temp = str_replace("~server~",$serverName,$temp);
     	  $downlinks .= $temp;
       }
     }
     $dtp->Clear();
+    //启用镜像功能的情况
+    if($row['ismoresite']==1 && !empty($row['sites']) && isset($firstLink)){
+    	$firstLink = eregi_replace($GLOBALS['cfg_basehost'],"",$firstLink);
+    	$row['sites'] = ereg_replace("\n{1,}","\n",str_replace("\r","\n",$row['sites']));
+    	$sites = explode("\n",trim($row['sites']));
+    	foreach($sites as $site){
+    		if(trim($site)=='') continue;
+    		list($link,$serverName) = explode('|',$site);
+    		$link = trim($link).$firstLink;
+    		if($row['gotojump']==1) $link = $phppath."/download.php?open=1&link=".urlencode(base64_encode($link));
+    	  $temp = str_replace("~link~",$link,$tempStr);
+    	  $temp = str_replace("~server~",$serverName,$temp);
+    	  $downlinks .= $temp;
+    	}
+    }
     return $downlinks;
 	}
 	
@@ -204,32 +231,87 @@ class ChannelUnit
     	return "无图片信息！";
     }
     $ptag = $dtp->GetTag("pagestyle");
-    if($ptag!=""){
+    if(is_object($ptag)){
     	$pagestyle = $ptag->GetAtt('value');
     	$maxwidth = $ptag->GetAtt('maxwidth');
-    }
-    else{
+    	$ddmaxwidth = $ptag->GetAtt('ddmaxwidth');
+    	$irow = $ptag->GetAtt('row');
+    	$icol = $ptag->GetAtt('col');
+    	if(empty($maxwidth)) $maxwidth = $GLOBALS['cfg_album_width'];
+    }else{
     	$pagestyle = 2;
     	$maxwidth = $GLOBALS['cfg_album_width'];
+    	$ddmaxwidth = 200;
     }
-    if($maxwidth=="") $maxwidth = $GLOBALS['cfg_album_width'];
+    if($pagestyle == 3){
+      if(empty($irow)) $irow = 4;
+      if(empty($icol)) $icol = 4;
+    }
+    //遍历图片信息
+    $mrow = 0;
+    $mcol = 0;
+    $photoid = 0;
+    $images = array();
     foreach($dtp->CTags as $ctag){
     	if($ctag->GetName()=="img"){
     		$iw = $ctag->GetAtt('width');
     		$ih = $ctag->GetAtt('heigth');
     		$alt = str_replace("'","",$ctag->GetAtt('text'));
     		$src = trim($ctag->GetInnerText());
-    		if($iw=="") $iw = $GLOBALS['cfg_album_width'];;
     		if($iw > $maxwidth) $iw = $maxwidth;
-    		if($revalue==""){
-    			$revalue = "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' width='$iw' border='0'/></a><br/>$alt<br/></center>\r\n";
-    		}
-    		else{
-    			if($pagestyle==2) $revalue .= "#p#<center><a href='$src' target='_blank'><img src='$src' alt='$alt' width='$iw' border='0'/><br/>$alt<br/></center>\r\n";
-    			else $revalue .= "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' width='$iw' border='0'/><br/>$alt<br/></center>\r\n";
+    		$iw = (empty($iw) ? "" : "width='$iw'");
+    		//全部列出式或分页式图集
+    		if($pagestyle<3){
+    		   if($revalue==""){
+    			   $revalue = "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
+    		   }else{
+    			   if($pagestyle==2) $revalue .= "#p#分页标题#e#<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
+    			   else $revalue .= "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
+    		   }
+    		//多列式图集
+    		}else if($pagestyle==3){
+    			$images[$photoid][0] = $src;
+    			$images[$photoid][1] = $alt;
+    			$photoid++;
     		}
       }
     }
+    //重新运算多列式图集
+    if($pagestyle==3){
+    	if(empty($ddmaxwidth)) $ddmaxwidth = 200;
+    	$picnum = count($images);
+    	$sPos = 0;
+    	if($icol==0) $icol = 1;
+    	$tdwidth = ceil(100 / $icol);
+    	while($sPos < $picnum){
+    		$revalue .= "<table width='90%' border='0' cellpadding='5' cellspacing='1'>\r\n";
+    		$revalue .= "<tr height='0'>\r\n";
+    		for($j=0;$j < $icol;$j++){ $revalue .= "<td width='{$tdwidth}%'></td>\r\n"; }
+    		$revalue .= "</tr>";
+    		for($i=0;$i < $irow;$i++){
+    			$revalue .= "<tr align='center'>\r\n";
+    			for($j=0;$j < $icol;$j++){
+    				if(!isset($images[$sPos])){ $revalue .= "<td></td>\r\n"; }
+    				else{
+    					$src = $images[$sPos][0];
+    					$alt = $images[$sPos][1];
+    					$revalue .= "<td valign='top'><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'><img src='$src' alt='$alt' width='$ddmaxwidth' border='0'/></a><br/>$alt\r\n</td>\r\n";
+    					$sPos++;
+    				}
+    			}
+    			$revalue .= "</tr>\r\n";
+    			if(!isset($images[$sPos])) break;
+    		}
+    		if(!isset($images[$sPos])){
+    		  $revalue .= "</table>";
+    			break;
+    		}else{
+    			$revalue .= "</table>#p#分页标题#e#";
+    		}
+    	}
+    }
+    unset($dtp);
+    unset($images);
     return $revalue;
 	}
 	
@@ -237,22 +319,17 @@ class ChannelUnit
 	//-----------------------------
 	function EvalFunc($fvalue,$functionname)
 	{
-		$functionname = str_replace("{\"","[\"",$functionname);
-		$functionname = str_replace("\"}","\"]",$functionname);
-		$functionname = "\$fieldvalue = ".str_replace("@me",$fvalue,$functionname).";";
-		eval($functionname);
-		if(empty($fieldvalue)) return "";
-		else return $fieldvalue;
+		$DedeMeValue = $fvalue;
+		$phpcode = preg_replace("/'@me'|\"@me\"|@me/isU",'$DedeMeValue',$functionname);
+		eval($phpcode.";");
+		return $DedeMeValue;
 	}
 	
 	//关闭所占用的资源
  	//------------------
- 	function Close()
- 	{
- 		@$this->dsql->Close();
+ 	function Close(){
+ 		$this->dsql->Close();
  	}
 	
-	
 }//End  class ChannelUnit
-
 ?>

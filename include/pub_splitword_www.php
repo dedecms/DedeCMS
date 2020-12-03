@@ -33,31 +33,34 @@ class SplitWord
   //------------------------------
   //php4构造函数
   //------------------------------
-  function SplitWord(){
-  	$this->__construct();
+  function SplitWord($loaddic=true){
+  	$this->__construct($loaddic);
   }
   //------------------------------
   //php5构造函数
   //------------------------------
-  function __construct(){  	  	
-  	//载入姓氏词典
-  	for($i=0;$i<strlen($this->CnOneName);$i++){
-  		$this->OneNameDic[$this->CnOneName[$i].$this->CnOneName[$i+1]] = 1;
-  		$i++;
-  	}
-  	$twoname = explode(" ",$this->CnTwoName);
-  	foreach($twoname as $n){ $this->TwoNameDic[$n] = 1; }
-  	unset($twoname);
-  	unset($this->CnTwoName);
-  	unset($this->CnOneName);
-  	//高级分词，预先载入词典以提分词高速度
-  	$dicfile = dirname(__FILE__)."/data/dede_wwwdic.csv"; 
-  	$fp = fopen($dicfile,'r');
-  	while($line = fgets($fp,64)){
+  function __construct($loaddic=true){  	  	
+  	if($loaddic)
+  	{
+  	  //载入姓氏词典
+  	  for($i=0;$i<strlen($this->CnOneName);$i++){
+  		  $this->OneNameDic[$this->CnOneName[$i].$this->CnOneName[$i+1]] = 1;
+  		  $i++;
+  	  }
+  	  $twoname = explode(" ",$this->CnTwoName);
+  	  foreach($twoname as $n){ $this->TwoNameDic[$n] = 1; }
+  	  unset($twoname);
+  	  unset($this->CnTwoName);
+  	  unset($this->CnOneName);
+  	  //高级分词，预先载入词典以提分词高速度
+  	  $dicfile = dirname(__FILE__)."/data/dede_wwwdic.csv"; 
+  	  $fp = fopen($dicfile,'r');
+  	  while($line = fgets($fp,64)){
   		  $ws = explode(' ',$line);
   		  $this->RankDic[strlen($ws[0])][$ws[0]] = $ws[1];
-  	}
-  	fclose($fp);
+  	  }
+  	  fclose($fp);
+    }//是否载入词典，如果不需要用分词功能，可以不载入。
   }
   
   //--------------------------
@@ -105,7 +108,11 @@ class SplitWord
   		}
   		else
   		{
-  		  $c = $spwords[$i][0].$spwords[$i][1];
+  		  if(isset($spwords[$i][1])) $c = $spwords[$i][0].$spwords[$i][1];
+  		  else{
+  		  	$this->ResultString = $spwords[$i].$spc.$this->ResultString;
+  		  	continue;
+  		  }
   		  $n = hexdec(bin2hex($c));
   		  if($c=="《") //书名
   		  { $this->ResultString = $spwords[$i].$spc.$this->ResultString; }
@@ -268,6 +275,33 @@ class SplitWord
   	
   	return $rsStr;
   }
+  
+  //----------------------------
+  //自动摘要功能
+  //$keyword是指定的关键字或GetIndexText返回的内容
+  //建议不要用太多的关键字
+  //----------------------------
+  function AutoDescription($str,$keyword,$strlen)
+  {
+  	$this->SourceString = $this->ReviseString($this->SourceString);
+  	//对特定文本进行分离
+  	$spwords = explode(" ",$this->SourceString);
+  	$keywords = explode(" ",$this->keywords);
+  	$regstr = "";
+  	foreach($keywords as $k=>$v)
+  	{
+  		if($v=="") continue;
+  		if(ord($v[0])>0x80 && strlen($v)<3) continue;
+  		if($regstr=="") $regstr .= "($v)";
+  		else $regstr .= "|($v)";
+  	}
+  	
+  	foreach($spwords as $v)
+  	{
+  		
+  	}
+  }
+  
   //----------------------------------
   //对分词结果进行消岐处理
   //----------------------------------

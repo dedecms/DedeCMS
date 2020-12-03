@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('plus_站内新闻发布');
 if(empty($dopost)) $dopost = "";
 if($dopost=="save")
 {
@@ -84,7 +85,7 @@ function checkSubmit()
             <td height="30">发言人：</td>
             <td><input name="writer" type="text" id="writer" value="<?=$cuserLogin->getUserName()?>" size="16">
               　 日期： 
-              <input name="sdate" type="text" id="sdate" size="25" value="<?=GetDateTimeMk(time())?>"></td>
+              <input name="sdate" type="text" id="sdate" size="25" value="<?=GetDateTimeMk(mytime())?>"></td>
           </tr>
           <tr> 
             <td height="172" valign="top">信息内容：</td>

@@ -14,8 +14,6 @@
     		<td width='30%'><b>频道模型管理</b></td>
         <td align='right'>
     	  [<a href="mychannel_add.php"><u>增加新模型</u></a>]
-    	  [<a href="catalog_main.php"><u>网站栏目管理</u></a>]
-        [<a href="catalog_add.php?listtype=all"><u>增加新栏目</u></a>]
         </td>
       </tr>
      </table>
@@ -39,9 +37,9 @@
         <td>[field:isshow function='GetSta(@me,$GLOBALS{"row"}{"ID"})'/]</td>
         <td>[field:issystem function='IsSystem(@me)'/]</td>
         <td>
-         <a href='mychannel_edit.php?ID=[field:ID /]&dopost=edit'>[更改]</a>
-		     &nbsp;
-		     <a href='mychannel_edit.php?ID=[field:ID /]&dopost=delete'>[删除]</a>
+         <a href='mychannel_edit.php?ID=[field:ID /]&dopost=edit'>更改</a>|
+		     <a href='mychannel_edit.php?ID=[field:ID /]&dopost=delete'>删除</a>|
+		     <a href='mychannel_edit.php?ID=[field:ID /]&dopost=gettemplets'>模板</a>
 		    </td>
      </tr>
 		{/dede:datalist}

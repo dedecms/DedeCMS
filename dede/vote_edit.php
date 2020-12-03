@@ -1,6 +1,7 @@
 <?
 require(dirname(__FILE__)."/config.php");
-require(dirname(__FILE__)."/../include/pub_dedetag.php");
+CheckPurview('plus_投票模块');
+require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 if(empty($dopost)) $dopost="";
 if(empty($aid)) $aid="";
 $aid = trim(ereg_replace("[^0-9]","",$aid));
@@ -11,9 +12,9 @@ if($aid==""){
 if(!empty($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = $_COOKIE['ENV_GOBACK_URL'];
 else $ENV_GOBACK_URL = "vote_main.php";
 ///////////////////////////////////////
-$dsql = new DedeSql(false);
 if($dopost=="delete")
 {
+	$dsql = new DedeSql(false);
 	$dsql->SetQuery("Delete From #@__vote where aid='$aid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
@@ -22,6 +23,7 @@ if($dopost=="delete")
 }
 else if($dopost=="saveedit")
 {
+	$dsql = new DedeSql(false);
 	$starttime = GetMkTime($starttime);
 	$endtime = GetMkTime($endtime);
 	$query = "Update #@__vote set votename='$votename',
@@ -36,6 +38,7 @@ else if($dopost=="saveedit")
 	ShowMsg('成功更改一组投票!',$ENV_GOBACK_URL);
 	exit();
 }
+$dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
 ?>
 <html>

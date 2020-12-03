@@ -1,5 +1,6 @@
 <?
 require(dirname(__FILE__)."/config.php");
+CheckPurview('plus_投票模块');
 if(empty($dopost)) $dopost = "";
 //////////////////////////////////////////
 if($dopost=="save")
@@ -32,7 +33,7 @@ if($dopost=="save")
 	ShowMsg("成功增加一组投票！","vote_main.php");
 	exit();
 }
-$startDay = time();
+$startDay = mytime();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);

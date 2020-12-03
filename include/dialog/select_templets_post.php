@@ -9,7 +9,8 @@ if($job=="newdir")
 		ShowMsg("目录名非法！","-1");
 		exit();
 	}
-	@mkdir($cfg_basedir.$activepath."/".$dirname,$cfg_dir_purview);
+	MkdirAll($cfg_basedir.$activepath."/".$dirname,777);
+	CloseFtp();
 	ShowMsg("成功创建一个目录！","select_templets.php?f=$f&activepath=".urlencode($activepath."/".$dirname));
 	exit();
 }
@@ -31,8 +32,8 @@ if($job=="upload")
 	}
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
 	if($filename==""){
-		$y = substr(strftime("%Y",time()),2,2);
-		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",time());
+		$y = substr(strftime("%Y",mytime()),2,2);
+		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",mytime());
 		$fs = explode(".",$uploadfile_name);
 		$filename = $filename.".".$fs[count($fs)-1];
 	}
@@ -44,7 +45,7 @@ if($job=="upload")
   }
   @move_uploaded_file($uploadfile,$fullfilename);
 	@unlink($uploadfile);
-	ShowMsg("成功上传文件！","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".time());
+	ShowMsg("成功上传文件！","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
 	exit();
 }
 ?>

@@ -1,7 +1,8 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('spec_List');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist.php");
+require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 require_once(dirname(__FILE__)."/inc/inc_list_functions.php");
 
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
@@ -48,13 +49,13 @@ order by ID desc
 ";
 
 $dlist = new DataList();
+$dlist->pageSize = 20;
 $dlist->SetParameter("dopost","listArchives");
 $dlist->SetParameter("keyword",$keyword);
 $dlist->SetParameter("cid",$cid);
 $dlist->SetParameter("arcrank",$arcrank);
 $dlist->SetParameter("channelid",$channelid);
-$dlist->SetTemplet(dirname(__FILE__)."/templets/content_s_list.htm");
 $dlist->SetSource($query);
-$dlist->Display();
+include(dirname(__FILE__)."/templets/content_s_list.htm");
 $dlist->Close();
 ?>

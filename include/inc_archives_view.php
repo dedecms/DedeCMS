@@ -1,24 +1,10 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/pub_db_mysql.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/inc_downclass.php");
+require_once(dirname(__FILE__)."/inc_channel_unit.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
 //本类的用途是用于浏览文档或对文档生成HTML
-//类对内容的处理顺序是：
-//构造函数[初始化(获得文档相关的field值)]->
-//private  ParseFixedValues()[获得channel、likeart、hotart等固定值的标记的值] ->
-//private  ParseFields($pageNo,$ismake=1)[对模板里的field标记进行处理，并处理分页的内容]->
-//private  ParseNotFields($tid,$ismake)[对模板里的其它标记进行处理]->
-//public MakeHtml()[生成HTML] 或 public Display()[显示文章]->
-//public Close()[析放资源]
-//使用示例：
-//$ac = new Archives(5);
-//$ac->Display();
-//$ac->Close();
 ******************************************************/
 @set_time_limit(0);
 class Archives
@@ -26,7 +12,7 @@ class Archives
 	var $TypeLink;
 	var $ChannelUnit;
 	var $dsql;
-	var $ArcInfos;
+	var $Fields;
 	var $dtp;
 	var $ArcID;
 	var $SplitPageField;
@@ -39,32 +25,38 @@ class Archives
 	var $PartView;
 	var $TempSource;
 	var $IsError;
+	var $SplitTitles;
 	//-------------------------------
 	//php5构造函数
 	//-------------------------------
 	function __construct($aid)
  	{
+ 		$t1 = ExecTime();
  		$this->IsError = false;
  		$this->dsql = new DedeSql(false);
  		$this->ArcID = $aid;
- 		$query = "
- 		Select #@__archives.*,#@__arctype.reID,#@__arctype.typedir from #@__archives 
- 		left join #@__arctype on #@__arctype.ID=#@__archives.typeid 
- 		where #@__archives.ID='$aid'
- 		";
+ 		$query = "Select arc.*,tp.reID,tp.typedir from #@__archives arc 
+ 		left join #@__arctype tp on tp.ID=arc.typeid where arc.ID='$aid'";
  		$row = $this->dsql->GetOne($query);
  		
- 		if(!is_array($row)){ $this->IsError = true; return ""; }
+ 		if(!is_array($row)){
+ 			$this->dsql->Close();
+ 			$this->IsError = true;
+ 			return;
+ 	  }
  		
  		foreach($row as $k=>$v){
  			if(!ereg("[^0-9]",$k)) continue;
- 			else $this->ArcInfos[$k] = $v;
+ 			else $this->Fields[$k] = $v;
  		}
  		
- 		if($this->ArcInfos['channel']==0) $this->ArcInfos['channel']=1;
+ 		if($this->Fields['channel']==0) $this->Fields['channel']=1;
+ 		$this->ChannelUnit = new ChannelUnit($this->Fields['channel'],$aid);
  		
- 		$this->ChannelUnit = new ChannelUnit($this->ArcInfos['channel'],$aid);
- 		$this->TypeLink = new TypeLink($this->ArcInfos['typeid']);
+ 		$this->TypeLink = new TypeLink($this->Fields['typeid']);
+ 		
+ 		if($row['redirecturl']!="") return;
+ 		
  		$this->dtp = new DedeTagParse();
  		$this->SplitPageField = $this->ChannelUnit->SplitPageField;
  		$this->SplitFields = "";
@@ -73,53 +65,62 @@ class Archives
  		$this->ShortName = "html";
  		$this->FixedValues = "";
  		$this->TempSource = "";
- 		$this->PartView = new PartView($this->ArcInfos['typeid']);
+ 		$this->PartView = new PartView($this->Fields['typeid']);
  		if(empty($GLOBALS["pageno"])) $this->NowPage = 1;
  		else $this->NowPage = $GLOBALS["pageno"];
  		//特殊的字段数据处理
  		//-------------------------------------
- 		$this->ArcInfos['aid'] = $aid;
- 		$this->ArcInfos['id'] = $aid;
- 		$this->ArcInfos['phpurl'] = $GLOBALS['cfg_plus_dir'];
- 		$this->ArcInfos['indexurl'] = $GLOBALS['cfg_indexurl']."/";
- 		$this->ArcInfos['indexurl'] = ereg_replace("/{1,}","/",$this->ArcInfos['indexurl']);
- 		$this->ArcInfos['indexname'] = $GLOBALS['cfg_indexname'];
- 		$this->ArcInfos['templeturl'] = $GLOBALS['cfg_templets_dir'];
- 		$this->ArcInfos['memberurl'] = $GLOBALS['cfg_member_dir'];
- 		$this->ArcInfos['position'] = $this->TypeLink->GetPositionLink(true);
- 		$this->ArcInfos['powerby'] = $GLOBALS['cfg_powerby'];
- 		$this->ArcInfos['specurl'] = $GLOBALS['cfg_special'];
- 		$this->ArcInfos['webname'] = $GLOBALS["cfg_webname"];
+ 		$this->Fields['aid'] = $aid;
+ 		$this->Fields['id'] = $aid;
+ 		$this->Fields['position'] = $this->TypeLink->GetPositionLink(true);
+ 		//设置一些全局参数的值
+ 		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
+ 		if($this->Fields['litpic']=="") $this->Fields['litpic'] = $this->Fields["phpurl"]."/img/dfpic.gif";
  		
- 		if($this->ArcInfos['litpic']=="") $this->ArcInfos['litpic'] = $this->ArcInfos["phpurl"]."/img/dfpic.gif";
- 		
- 		//读取附加表信息，并把附加表的资料经过编译处理后导入到$this->ArcInfos中，以方便在
+ 		//读取附加表信息，并把附加表的资料经过编译处理后导入到$this->Fields中，以方便在
  		//模板中用 {dede:field name='fieldname' /} 标记统一调用
- 		
  		if($this->ChannelUnit->ChannelInfos["addtable"]!=""){
  		  $row = $this->dsql->GetOne("select * from ".trim($this->ChannelUnit->ChannelInfos["addtable"])." where aid=$aid ");
- 		  foreach($row as $k=>$v){
- 		  	if(ereg("[A-Z]",$k)) $row[strtolower($k)] = $v;
- 		  }
+ 		  if(is_array($row)) foreach($row as $k=>$v){ if(ereg("[A-Z]",$k)) $row[strtolower($k)] = $v; }
  		  foreach($this->ChannelUnit->ChannelFields as $k=>$arr)
  		  {
  		  	if(isset($row[$k])){
  		  		if($arr["rename"]!="") $nk = $arr["rename"];
  		  		else $nk = $k;
- 		  		$this->ArcInfos[$nk] = $this->ChannelUnit->MakeField($k,$row[$k]);
+ 		  		$this->Fields[$nk] = $this->ChannelUnit->MakeField($k,$row[$k]);
+ 		  		if($arr['type']=='htmltext' && $GLOBALS['cfg_keyword_replace']=='是'){
+ 		  			$this->Fields[$nk] = $this->ReplaceKeyword($this->Fields['keywords'],$this->Fields[$nk]);
+ 		  		}
  		  	} 
  		  }//End foreach
  		}
  		//完成附加表信息读取
  		unset($row);
- 		
  		//处理要分页显示的字段
  		//---------------------------
- 		if($this->SplitPageField!="" && isset($this->ArcInfos[$this->SplitPageField])){
- 			$this->SplitFields = explode("#p#",$this->ArcInfos[$this->SplitPageField]);
+ 		$this->SplitTitles = Array();
+ 		if($this->SplitPageField!="" && $GLOBALS['cfg_arcsptitle']='是' &&
+ 		 isset($this->Fields[$this->SplitPageField])){
+ 			$this->SplitFields = explode("#p#",$this->Fields[$this->SplitPageField]);
+ 			$i = 1;
+ 			foreach($this->SplitFields as $k=>$v){
+ 				$tmpv = cn_substr($v,50);
+ 				$pos = strpos($tmpv,'#e#');
+ 				if($pos>0){
+ 					$st = trim(cn_substr($tmpv,$pos));
+ 					if($st==""||$st=="副标题"||$st=="分页标题"){
+ 						$this->SplitFields[$k] = cn_substr($v,strlen($v),$pos+3);
+ 						continue;
+ 					}else{
+ 						$this->SplitFields[$k] = cn_substr($v,strlen($v),$pos+3);
+ 						$this->SplitTitles[$k] = $st;
+ 				  }
+ 				}else{ continue; }
+ 				$i++;
+ 			}
  			$this->TotalPage = count($this->SplitFields);
  		}
- 		//$this->ParseFixedValues();
+ 		
  		$this->LoadTemplet();
  		$this->ParseTempletsFirst();
  	}
@@ -133,14 +134,15 @@ class Archives
   //----------------------------
   function MakeHtml()
   {
-  	global $cfg_basedir;
   	if($this->IsError) return "";
   	//分析要创建的文件名称
   	//------------------------------------------------------
   	$filename = $this->TypeLink->GetFileNewName(
-  	  $this->ArcID,$this->ArcInfos["typeid"],$this->ArcInfos["senddate"],
-  	  $this->ArcInfos["title"],$this->ArcInfos["ismake"],
-  	  $this->ArcInfos["arcrank"],"","",$this->ArcInfos["money"]
+  	  $this->ArcID,$this->Fields["typeid"],$this->Fields["senddate"],
+  	  $this->Fields["title"],$this->Fields["ismake"],
+  	  $this->Fields["arcrank"],"","",$this->Fields["money"],
+  	  $this->TypeLink->TypeInfos['siterefer'],
+  	  $this->TypeLink->TypeInfos['sitepath']
   	);
   	$filenames  = explode(".",$filename);
   	$this->ShortName = $filenames[count($filenames)-1];
@@ -150,35 +152,80 @@ class Archives
   	$this->NameFirst = eregi_replace("\.".$this->ShortName."$","",$filenames[count($filenames)-1]);
   	if($this->NameFirst=="") $this->NameFirst = $this->arcID;
   	
+  	//获得当前文档的全名
+  	$filenameFull = GetFileUrl(
+  	  $this->ArcID,$this->Fields["typeid"],$this->Fields["senddate"],
+  	  $this->Fields["title"],$this->Fields["ismake"],
+  	  $this->Fields["arcrank"],"","",$this->Fields["money"],
+  	  true,
+  	  $this->TypeLink->TypeInfos['siteurl']
+  	);
+  	if(!eregi('http://',$filenameFull)) $filenameFull = $GLOBALS['cfg_basehost'].$filenameFull;
+  	$this->Fields['arcurl'] = $filenameFull;
+  	$this->Fields['fullname'] = $this->Fields['arcurl'];
   	//对于已设置不生成HTML的文章直接返回网址
   	//------------------------------------------------
-  	if($this->ArcInfos['ismake']==-1||$this->ArcInfos['arcrank']!=0||
-  	   $this->ArcInfos['typeid']==0||$this->ArcInfos['money']>0)
+  	if($this->Fields['ismake']==-1||$this->Fields['arcrank']!=0||
+  	   $this->Fields['typeid']==0||$this->Fields['money']>0)
   	{
   		$this->Close();
-  		return $filename;
+  		return $this->GetTrueUrl($filename);
   	}
-  	
-  	//循环生成HTML文件
-  	//-------------------------------------------------
-  	for($i=1;$i<=$this->TotalPage;$i++)
+  	//跳转网址
+  	if($this->Fields['redirecturl']!="")
   	{
-  	  if($i>1){ $truefilename = $cfg_basedir.$fileFirst."_".$i.".".$this->ShortName; }
-  	  else{ $truefilename = $cfg_basedir.$filename; }
-  	  $this->ParseDMFields($i,1);
-  	  $this->dtp->SaveTo($truefilename);
+  		$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
+  		$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\">\n<title>转向：".$this->Fields['title']."</title>\n";
+  		$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
+      $pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:".$this->Fields['description']."\n</body>\n</html>\n";
+  		$fp = @fopen($truefilename,"w") or die("Create File False：$filename");
+		  fwrite($fp,$pageHtml);
+		  fclose($fp);
+  	}else{ //循环生成HTML文件
+  	  for($i=1;$i<=$this->TotalPage;$i++){
+  	     if($i>1){ $truefilename = $this->GetTruePath().$fileFirst."_".$i.".".$this->ShortName; }
+  	     else{ $truefilename = $this->GetTruePath().$filename; }
+  	     $this->ParseDMFields($i,1);
+  	     $this->dtp->SaveTo($truefilename);
+      }
     }
     $this->dsql->SetQuery("Update #@__archives set ismake=1 where ID='".$this->ArcID."'");
     $this->dsql->ExecuteNoneQuery();
     $this->Close();
-  	return $filename;
+  	return $this->GetTrueUrl($filename);
   }
+  //----------------------------
+ 	//获得真实连接路径
+ 	//----------------------------
+ 	function GetTrueUrl($nurl)
+ 	{
+ 		if($GLOBALS['cfg_multi_site']=='是' && !eregi('php\?',$nurl)){
+ 			if($this->TypeLink->TypeInfos['siteurl']=="") $nsite = $GLOBALS["cfg_mainsite"];
+ 			else $nsite = $this->TypeLink->TypeInfos['siteurl'];
+ 			$nurl = ereg_replace("/$","",$nsite).$nurl;
+ 		}
+ 		return $nurl;
+ 	}
+ 	//----------------------------
+ 	//获得站点的真实根路径
+ 	//----------------------------
+ 	function GetTruePath()
+ 	{
+ 		if($GLOBALS['cfg_multi_site']=='是'){
+ 		   if($this->TypeLink->TypeInfos['siterefer']==1) $truepath = ereg_replace("/{1,}","/",$GLOBALS["cfg_basedir"]."/".$this->TypeLink->TypeInfos['sitepath']);
+	     else if($this->TypeLink->TypeInfos['siterefer']==2) $truepath = $this->TypeLink->TypeInfos['sitepath'];
+	     else $truepath = $GLOBALS["cfg_basedir"];
+	  }else{
+	  	$truepath = $GLOBALS["cfg_basedir"];
+	  }
+	  return $truepath;
+ 	}
   //----------------------------
   //获得指定键值的字段
   //----------------------------
   function GetField($fname)
   {
-  	if(isset($this->ArcInfos[$fname])) return $this->ArcInfos[$fname];
+  	if(isset($this->Fields[$fname])) return $this->Fields[$fname];
   	else return "";
   }
   //-----------------------------
@@ -186,16 +233,19 @@ class Archives
   //-----------------------------
   function GetTempletFile()
   {
- 	  global $cfg_basedir,$cfg_templets_dir;
- 	  $filetag = $this->TypeLink->TypeInfos["temparticle"];
+ 	  global $cfg_basedir,$cfg_templets_dir,$cfg_df_style;
  	  $cid = $this->ChannelUnit->ChannelInfos["nid"];
- 	  $tid = $this->ArcInfos["typeid"];
+ 	  if($this->Fields['templet']!=''){ $filetag = MfTemplet($this->Fields['templet']); }
+ 	  else{ $filetag = MfTemplet($this->TypeLink->TypeInfos["temparticle"]); }
+ 	  $tid = $this->Fields["typeid"];
  	  $filetag = str_replace("{cid}",$cid,$filetag);
  	  $filetag = str_replace("{tid}",$tid,$filetag);
  	  $tmpfile = $cfg_basedir.$cfg_templets_dir."/".$filetag;
- 	  if(!file_exists($tmpfile)){
- 	  	$tmpfile = $cfg_basedir.$cfg_templets_dir."/default/article_default.htm";
+ 	  if($cid=='spec'){
+ 	  	if($this->Fields['templet']!=''){ $tmpfile = $cfg_basedir.$cfg_templets_dir."/".MfTemplet($this->Fields['templet']); }
+ 	  	else $tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/article_spec.htm";
  	  }
+ 	  if(!file_exists($tmpfile)) $tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/article_default.htm";
  	  return $tmpfile;
   }
   //----------------------------
@@ -203,11 +253,26 @@ class Archives
  	//----------------------------
  	function display()
  	{
- 		if($this->IsError) return "";
+ 		if($this->IsError){
+ 			$this->Close();
+ 			return "";
+ 		}
+ 		//跳转网址
+  	if($this->Fields['redirecturl']!="")
+  	{
+  		$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
+  		$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\">\n<title>转向：".$this->Fields['title']."</title>\n";
+  		$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
+      $pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:\n".$this->Fields['description']."\n</body>\n</html>\n";
+  		echo $pageHtml;
+		  $this->Close();
+		  exit();
+  	}
  		$pageCount = $this->NowPage;
  		$this->ParseDMFields($pageCount,0);
  		$this->Close();
   	$this->dtp->display();
+  	
  	}
  	//--------------
  	//载入模板
@@ -234,73 +299,81 @@ class Archives
  	{
  		if(is_array($this->dtp->CTags))
  		{
- 			foreach($this->dtp->CTags as $i=>$ctag){
+ 			foreach($this->dtp->CTags as $tagid=>$ctag)
+ 			{
  				$tagname = $ctag->GetName();
+ 				
+ 				$typeid = $ctag->GetAtt('typeid');
+ 				if($typeid=="") $typeid = 0;
+ 				if($typeid==0) $typeid = $this->Fields['typeid'];
+ 				
  				if($tagname=="arclist"||$tagname=="artlist"||$tagname=="likeart"||$tagname=="hotart"
  			  ||$tagname=="imglist"||$tagname=="imginfolist"||$tagname=="coolart"||$tagname=="specart")
  			  { 
- 			  	$listtype = $ctag->GetAtt('type');
  			  	//特定的文章列表
  				  $channelid = $ctag->GetAtt("channelid");
  				  if($tagname=="imglist"||$tagname=="imginfolist"){ $listtype = "image"; }
- 				  else if($tagname=="specart"){ $channelid = -1; }
+ 				  else if($tagname=="specart"){ $channelid = -1; $listtype=""; }
  				  else if($tagname=="coolart"){ $listtype = "commend"; }
  				  else{ $listtype = $ctag->GetAtt('type'); }
  				   
- 				  if($tagname=="likeart") $keywords = str_replace(" ",",",trim($this->ArcInfos['keywords']));
+ 				  if($tagname=="likeart") $keywords = ""; //str_replace(" ",",",trim($this->Fields['keywords']));
  				  else $keywords = $ctag->GetAtt('keyword');
  				  
  				  //排序
  				  if($tagname=="hotart") $orderby = "click";
+ 				  else if($tagname=="likeart") $orderby = "near";
  				  else $orderby = $ctag->GetAtt('orderby');
  				  
  				  //对相应的标记使用不同的默认innertext
- 				  if(trim($ctag->GetInnerText())!="") $innertext = $ctag->GetInnerText();
- 				  else if($tagname=="imglist"){
- 				  	$innertext = GetSysTemplets("part_imglist.htm");
- 				  	$listtype = 'image';
- 				  }
- 				  else if($tagname=="imginfolist"){
- 				  	$innertext = GetSysTemplets("part_imginfolist.htm");
- 				  	$listtype = 'image';
- 				  }
- 				  else $innertext = GetSysTemplets("part_arclist.htm");
+ 				  if(trim($ctag->GetInnerText())!="") $tagidnnertext = $ctag->GetInnerText();
+ 				  else if($tagname=="imglist") $tagidnnertext = GetSysTemplets("part_imglist.htm");
+ 				  else if($tagname=="imginfolist") $tagidnnertext = GetSysTemplets("part_imginfolist.htm");
+ 				  else $tagidnnertext = GetSysTemplets("part_arclist.htm");
  				  
  				  //兼容titlelength
  				  if($ctag->GetAtt('titlelength')!="") $titlelen = $ctag->GetAtt('titlelength');
  				  else $titlelen = $ctag->GetAtt('titlelen');
  				
  				  //兼容infolength
- 				  if($ctag->GetAtt('infolength')!="") $infolen = $ctag->GetAtt('infolength');
- 				  else $infolen = $ctag->GetAtt('infolen');
+ 				  if($ctag->GetAtt('infolength')!="") $tagidnfolen = $ctag->GetAtt('infolength');
+ 				  else $tagidnfolen = $ctag->GetAtt('infolen');
  				    
  				  //环境变量
- 				  if(trim($ctag->GetAtt('typeid'))==""){
- 				    if($this->ArcInfos['reID']!=0 && $tagname=="likeart") $gid = $this->ArcInfos['reID'];
- 					  else{
- 					    $gid = $this->ArcInfos['typeid'];
- 					    if($this->ArcInfos['typeid2']!=0) $gid = $gid.",".$this->ArcInfos['typeid2'];
- 					  }
- 					}else{ $gid = trim( $ctag->GetAtt('typeid') ); }
- 						
- 				  $this->dtp->Assign($i,
+ 					if($tagname!="likeart"){
+ 						$gid = $this->Fields['typeid'];
+ 					  if($this->Fields['typeid2']!=0) $gid = $gid.",".$this->Fields['typeid2'];
+ 					}else{
+ 						$gid = 0;
+ 					}
+ 					/*if($this->Fields['reID']!=0 && $tagname=="likeart") $gid = $this->Fields['reID'];
+ 					else{
+ 					  $gid = $this->Fields['typeid'];
+ 					  if($this->Fields['typeid2']!=0) $gid = $gid.",".$this->Fields['typeid2'];
+ 					}*/
+
+ 					$typeid = trim($ctag->GetAtt("typeid"));
+ 				  if(empty($typeid)) $typeid = $gid;
+ 					
+ 				  $this->dtp->Assign($tagid,
  				       $this->PartView->GetArcList(
- 				         $gid,
+ 				         $typeid,
  				         $ctag->GetAtt("row"),
  				         $ctag->GetAtt("col"),
  				         $titlelen,
- 				         $infolen,
+ 				         $tagidnfolen,
  				         $ctag->GetAtt("imgwidth"),
  				         $ctag->GetAtt("imgheight"),
  				         $listtype,
  				         $orderby,
  				         $keywords,
- 				         $innertext,
+ 				         $tagidnnertext,
  				         $ctag->GetAtt("tablewidth"),
  				         $this->ArcID,
  				         "",
  				         $channelid,
- 				         $ctag->GetAtt("limit")
+ 				         $ctag->GetAtt("limit"),
+ 				         $ctag->GetAtt("att")
  				        )
  				  );
  			  }
@@ -308,12 +381,43 @@ class Archives
  			  //-----------------------
  			  else if($ctag->GetName()=="mytag")
  			  {
- 				  $this->dtp->Assign($i,$this->PartView->GetMyTag(
- 				        $this->ArcInfos['typeid'],
+ 				  $this->dtp->Assign($tagid,$this->PartView->GetMyTag(
+ 				        $typeid,
  				        $ctag->GetAtt("name"),
  				        $ctag->GetAtt("ismake")
  				     )
  				  );
+ 			  }
+ 			  //热门关键字
+ 			  else if($tagname=="hotwords"){
+ 				  $this->dtp->Assign($tagid,
+ 				  GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
+ 			  }
+ 			  //上下篇链接
+ 			  else if($tagname=="prenext"){
+ 			  	$this->dtp->Assign($tagid,$this->GetPreNext());
+ 			  }
+ 			  //获得单个栏目目的属性
+ 			  //-----------------------------
+ 			  else if($tagname=="onetype"||$tagname=="typeinfo"){
+ 				  $this->dtp->Assign($tagid,$this->PartView->GetOneType($typeid,$ctag->GetInnerText()));
+ 			  }
+ 			  //广告标记
+ 			  //-----------------------
+ 			  else if($ctag->GetName()=="myad"){
+ 				  $this->dtp->Assign($tagid,$this->PartView->GetMyAd($typeid,$ctag->GetAtt("name")));
+ 			  }
+ 			  else if($tagname=="loop")
+ 			  {
+ 				  $this->dtp->Assign($tagid,
+				    $this->PartView->GetTable(
+					    $ctag->GetAtt("table"),
+					    $ctag->GetAtt("row"),
+					    $ctag->GetAtt("sort"),
+					    $ctag->GetAtt("if"),
+					    $ctag->GetInnerText()
+					  )
+			    );
  			  }
  				else if($ctag->GetName()=="channel")
  				{
@@ -322,12 +426,15 @@ class Archives
  				  
  				  if($nrow=="") $nrow = 8;
  			
- 					$this->dtp->Assign($i,$this->TypeLink->GetChannelList(
- 					  $this->ArcInfos['typeid'],
- 					  $this->ArcInfos['reID'],
+ 					$this->dtp->Assign($tagid,$this->TypeLink->GetChannelList(
+ 					  $this->Fields['typeid'],
+ 					  $this->Fields['reID'],
  					  $nrow,
  					  $ctag->GetAtt("type"),
- 					  $ctag->GetInnerText()
+ 					  $ctag->GetInnerText(),
+ 				    $ctag->GetAtt("col"),
+ 				    $ctag->GetAtt("tablewidth"),
+ 				    $ctag->GetAtt("currentstyle")
  					));
  				}//End 判断标记
  		  }//End foreach
@@ -340,9 +447,9 @@ class Archives
  	{
  		$this->NowPage = $pageNo;
  		if($this->SplitPageField!="" &&
- 		  isset($this->ArcInfos[$this->SplitPageField]))
+ 		  isset($this->Fields[$this->SplitPageField]))
  		{
- 			$this->ArcInfos[$this->SplitPageField] = $this->SplitFields[$pageNo - 1];
+ 			$this->Fields[$this->SplitPageField] = $this->SplitFields[$pageNo - 1];
  		}
  		//-------------------------
  	  //解析模板
@@ -358,6 +465,12 @@ class Archives
  			      { $this->dtp->Assign($i,$this->GetPagebreakDM($this->TotalPage,$this->NowPage,$this->ArcID)); }
  			      else
  			      { $this->dtp->Assign($i,$this->GetPagebreak($this->TotalPage,$this->NowPage,$this->ArcID)); }
+ 		     }
+ 		     else if($ctag->GetName()=="pagetitle"){
+ 			      if($ismake==0)
+ 			      { $this->dtp->Assign($i,$this->GetPageTitlesDM($ctag->GetAtt("style"),$pageNo)); }
+ 			      else
+ 			      { $this->dtp->Assign($i,$this->GetPageTitlesST($ctag->GetAtt("style"),$pageNo)); }
  		     }
  		     else if($ctag->GetName()=="fieldlist")
  		     {
@@ -377,12 +490,12 @@ class Archives
                $dtp2->CTags = $oldCtags;
                $fname = $v['itemname'];
                if($v['type']=="datetime"){
-               	 @$this->ArcInfos[$k] = GetDateTimeMk($this->ArcInfos[$k]);
+               	 @$this->Fields[$k] = GetDateTimeMk($this->Fields[$k]);
                }
                foreach($dtp2->CTags as $tid=>$ctag)
                {
                	 if($ctag->GetName()=='name') $dtp2->Assign($tid,$fname);
-               	 else if($ctag->GetName()=='value') @$dtp2->Assign($tid,$this->ArcInfos[$k]);
+               	 else if($ctag->GetName()=='value') @$dtp2->Assign($tid,$this->Fields[$k]);
                }
                $res .= $dtp2->GetResult();
  		     	   }
@@ -399,13 +512,46 @@ class Archives
  	//---------------------------
  	function Close()
  	{
- 		@$this->FixedValues = "";
- 		@$this->ArcInfos = "";
- 		@$this->dsql->Close();
- 		@$this->ChannelUnit->Close();
- 		@$this->TypeLink->Close();
- 		@$this->PartView->Close();
+ 		$this->FixedValues = "";
+ 		$this->Fields = "";
+ 		if(is_object($this->dsql)) $this->dsql->Close();
+ 		if(is_object($this->ChannelUnit)) $this->ChannelUnit->Close();
+ 		if(is_object($this->TypeLink)) $this->TypeLink->Close();
+ 		if(is_object($this->PartView)) $this->PartView->Close();
  	}
+ 	//--------------------------
+ 	//获取上一篇，下一篇链接
+ 	//--------------------------
+ 	function GetPreNext()
+ 	{
+ 		$rs = "";
+ 		$aid = $this->ArcID;
+ 		$next = " #@__archives.ID>'$aid' order by #@__archives.ID asc ";
+ 		$pre = " #@__archives.ID<'$aid' order by #@__archives.ID desc ";
+ 		$query = "Select #@__archives.ID,#@__archives.title,
+ 		#@__archives.typeid,#@__archives.ismake,#@__archives.senddate,#@__archives.arcrank,#@__archives.money,
+		#@__arctype.typedir,#@__arctype.typename,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
+		#@__arctype.moresite,#@__arctype.siteurl 
+		from #@__archives left join #@__arctype on #@__archives.typeid=#@__arctype.ID
+		where ";
+		$nextRow = $this->dsql->GetOne($query.$next);
+		$preRow = $this->dsql->GetOne($query.$pre);
+		if(is_array($preRow)){
+			 $mlink = GetFileUrl($preRow['ID'],$preRow['typeid'],$preRow['senddate'],$preRow['title'],$preRow['ismake'],$preRow['arcrank'],$preRow['namerule'],$preRow['typedir'],$preRow['money'],true,$preRow['siteurl']);
+       $rs .= "上一篇：<a href='$mlink'>{$preRow['title']}</a> ";
+		}
+		else{
+			$rs .= "上一篇：没有了 ";
+		}
+		if(is_array($nextRow)){
+			 $mlink = GetFileUrl($nextRow['ID'],$nextRow['typeid'],$nextRow['senddate'],$nextRow['title'],$nextRow['ismake'],$nextRow['arcrank'],$nextRow['namerule'],$nextRow['typedir'],$nextRow['money'],true,$nextRow['siteurl']);
+       $rs .= " &nbsp; 下一篇：<a href='$mlink'>{$nextRow['title']}</a> ";
+		}
+		else{
+			$rs .= " &nbsp; 下一篇：没有了 ";
+	  }
+		return $rs;
+  }
  	//------------------------
  	//获得动态页面分页列表
  	//------------------------
@@ -464,5 +610,97 @@ class Archives
 		else $PageList.= "下一页 ";
 		return $PageList;
 	}
+	//-------------------------
+	//获得动态页面小标题
+	//-------------------------
+	function GetPageTitlesDM($styleName,$pageNo)
+	{
+		if($this->TotalPage==1){ return ""; }
+		if(count($this->SplitTitles)==0){ return ""; }
+		$i=1;
+		$aid = $this->ArcID;
+		if($styleName=='link')
+		{
+			$revalue = "";
+		  foreach($this->SplitTitles as $k=>$v){
+			   if($i==1) $revalue .= "<a href='view.php?aid=$aid&pageno=$i'>$v</a> \r\n";
+		     else{
+		     	 if($pageNo==$i) $revalue .= " $v \r\n";
+		     	 else $revalue .= "<a href='view.php?aid=$aid&pageno=$i'>$v</a> \r\n";
+		     }
+		     $i++;
+		  }
+	  }else
+	  {
+		  $revalue = "<select id='dedepagetitles' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
+			foreach($this->SplitTitles as $k=>$v){
+			   if($i==1) $revalue .= "<option value='".$this->Fields['phpurl']."/view.php?aid=$aid&pageno=$i'>{$i}、{$v}</option>\r\n";
+		     else{
+		     	 if($pageNo==$i) $revalue .= "<option value='".$this->Fields['phpurl']."/view.php?aid=$aid&pageno=$i' selected>{$i}、{$v}</option>\r\n";
+		     	 else $revalue .= "<option value='".$this->Fields['phpurl']."/view.php?aid=$aid&pageno=$i'>{$i}、{$v}</option>\r\n";
+		     }
+		     $i++;
+		  }
+		  $revalue .= "</select>\r\n";
+	  }
+		return $revalue;
+	}
+	//-------------------------
+	//获得静态页面小标题
+	//-------------------------
+	function GetPageTitlesST($styleName,$pageNo)
+	{
+		if($this->TotalPage==1){ return ""; }
+		if(count($this->SplitTitles)==0){ return ""; }
+		$i=1;
+		if($styleName=='link')
+		{
+			$revalue = "";
+		  foreach($this->SplitTitles as $k=>$v){
+			   if($i==1) $revalue .= "<a href='".$this->NameFirst.".".$this->ShortName."'>$v</a> \r\n";
+		     else{
+		     	  if($pageNo==$i) $revalue .= " $v \r\n";
+		        else  $revalue .= "<a href='".$this->NameFirst."_".$i.".".$this->ShortName."'>$v</a> \r\n";
+		     }
+		     $i++;
+		  }
+	  }else
+	  {
+		  $revalue = "<select id='dedepagetitles' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
+			foreach($this->SplitTitles as $k=>$v){
+			   if($i==1) $revalue .= "<option value='".$this->NameFirst.".".$this->ShortName."'>{$i}、{$v}</option>\r\n";
+		     else{
+		     	  if($pageNo==$i) $revalue .= "<option value='".$this->NameFirst."_".$i.".".$this->ShortName."' selected>{$i}、{$v}</option>\r\n";
+		     	  else $revalue .= "<option value='".$this->NameFirst."_".$i.".".$this->ShortName."'>{$i}、{$v}</option>\r\n";
+		     }
+		     $i++;
+		  }
+		  $revalue .= "</select>\r\n";
+	  }
+		return $revalue;
+	}
+	//----------------------------
+  //把指定关键字替换成链接
+  //----------------------------
+  function ReplaceKeyword($kw,&$body)
+  {
+  	global $cfg_cmspath;
+  	$maxkey = 5;
+  	$kws = explode(" ",trim($kw));
+  	$i=0;
+  	foreach($kws as $k){
+  		$k = trim($k);
+  		if($k!=""){
+  			if($i > $maxkey) break;
+  			$myrow = $this->dsql->GetOne("select * from #@__keywords where keyword='$k' And rpurl<>'' ");
+  			if(is_array($myrow)){
+  				 $ka = "<a href='{$myrow['rpurl']}'><u>$k</u></a>";
+  			   $body = str_replace($k,$ka,$body);
+  		  }
+  			$i++;
+  		}
+  	}
+  	return $body;
+  }
 }//End Archives
 ?>

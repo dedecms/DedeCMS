@@ -1,12 +1,13 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typeunit2.php");
-SetPageRank(10);
+require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
 $ID = trim(ereg_replace("[^0-9]","",$ID));
-if($ID==""||$ID<0){
-	ShowMsg("栏目的ID有误！","catalog_main.php");
-	exit();
-}
+
+//检查权限许可
+CheckPurview('t_Del,t_AccDel');
+//检查栏目操作许可
+CheckCatalog($ID,"你无权删除本栏目！");
+
 if(empty($dopost)) $dopost="";
 if($dopost=="ok"){
 	 $ut = new TypeUnit();

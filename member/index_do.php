@@ -7,6 +7,7 @@ if(empty($_POST) && empty($_GET))
 	ShowMsg("本页面禁止返回!","index.php");
 	exit();
 }
+
 switch($fmdo){
  /*********************
  function A_User()
@@ -20,11 +21,9 @@ switch($fmdo){
  {
  	 $msg = "";
  	 $userid = trim($userid);
- 	 if($userid==""||ereg("[ '\"\*\?\%]","",$userid)){
- 	 	 $msg = "你的用户名为空，或者含有 ['],[\"],[*],[?],[%],[空格] 这类非法字符！";
- 	 }
- 	 else
- 	 {
+ 	 if($userid==""||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)){
+ 	 	 $msg = "你的用户名为空，或者含有非法字符！";
+ 	 }else{
  	   $dsql = new DedeSql(false);
  	   $dsql->SetQuery("Select ID From #@__member where userid='$userid'");
  	   $dsql->Execute();
@@ -51,18 +50,22 @@ switch($fmdo){
  }
  else if($dopost=="regok")
  {
- 	 session_start();
- 	 if( empty($_SESSION["s_validate"]) ) $svali = "";
-   else $svali = $_SESSION["s_validate"];
-   if(strtolower($vdcode)!=$svali && $svali!=""){
+ 	 $svali = GetCkVdValue();
+   if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
  	 $userid = trim($userid);
  	 $pwd = trim($userpwd);
  	 $pwdc = trim($userpwdok);
- 	 if(ereg("[ '\"\*\?\%]","",$userid)||ereg("[ '\"\*\?\%]","",$pwd)){
- 	 	  ShowMsg("你的用户名为空，或者含有 ['],[\"],[*],[?],[%],[空格] 这类非法字符！","-1");
+ 	 if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)
+ 	 ||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd))
+ 	 {
+ 	 	  ShowMsg("你的用户名或密码不合法！","-1");
+ 	 	  exit();
+ 	 }
+ 	 if(strlen($userid)<3||strlen($pwd)<3){
+ 	 	  ShowMsg("你的用户名或密码小于三位，不允许注册！","-1");
  	 	  exit();
  	 }
  	 if($pwdc!=$pwd){
@@ -70,6 +73,12 @@ switch($fmdo){
  	 	 exit();
  	 }
  	 $dsql = new DedeSql(false);
+ 	 
+ 	 //会员的默认金币
+ 	 $dfrank = $dsql->GetOne("Select money From #@__arcrank where rank='10' ");
+ 	 if(is_array($dfrank)) $dfmoney = $dfrank['money'];
+ 	 else $dfmoney = 0;
+ 	 
  	 $dsql->SetQuery("Select ID From #@__member where userid='$userid'");
  	 $dsql->Execute();
  	 $rowcount = $dsql->GetTotalRow();
@@ -78,23 +87,23 @@ switch($fmdo){
  	 	 ShowMsg("你指定的用户名已存在，请使用别的用户名！","-1");
  	 	 exit();
    }
-   $uname = ereg_replace("[ '\"\*\?\%]","",$uname);
+   $uname = ereg_replace("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",$uname);
    if($uname==""){
+   	 $dsql->Close();
    	 ShowMsg("用户昵称有非法字符！","-1");
  	 	 exit();
    }
- 	 $jointime = time();
- 	 $logintime = time();
+ 	 $jointime = mytime();
+ 	 $logintime = mytime();
  	 $joinip = GetIP();
  	 $loginip = GetIP();
  	 $birthday = GetAlabNum($birthday_y)."-".GetAlabNum($birthday_m)."-".GetAlabNum($birthday_d);
  	 $height = GetAlabNum($height);
  	 $inQuery = "
- 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,uptype,money,weight,height,job,province,city,myinfo,mybb,tel,oicq,email,homepage,jointime,joinip,logintime,loginip) 
-   VALUES ('$userid','$pwd','$uname','$sex','$birthday','0','0','0','$weight','$height','$job','$province','$city','$myinfo','$mybb','$tel','$oicq','$email','$homepage','$jointime','$joinip','$logintime','$loginip');
+ 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,uptype,money,weight,height,job,province,city,myinfo,tel,oicq,email,homepage,jointime,joinip,logintime,loginip,showaddr,address) 
+   VALUES ('$userid','$pwd','$uname','$sex','$birthday','10','0','$dfmoney','$weight','$height','$job','$province','$city','$myinfo','$tel','$oicq','$email','$homepage','$jointime','$joinip','$logintime','$loginip','0','$address');
  	 ";
- 	 $dsql->SetQuery($inQuery);
- 	 if($dsql->ExecuteNoneQuery())
+ 	 if($dsql->ExecuteNoneQuery($inQuery))
  	 {
  	 	  $dsql->Close();
  	 	  $ml = new MemberLogin();
@@ -110,9 +119,10 @@ switch($fmdo){
  	 }
  	 else
  	 {
+ 	 	 echo $inQuery;
  	 	 $dsql->Close();
- 	 	 ShowMsg("注册失败，请检查资料是否有误或与管理员联系！","-1");
- 	 	 exit();
+ 	 	 //ShowMsg("注册失败，请检查资料是否有误或与管理员联系！","-1");
+ 	 	 //exit();
  	 }
  }
  /*
@@ -122,14 +132,12 @@ switch($fmdo){
  else if($dopost=="uprank")
  {
  	 CheckRank(0,0);
- 	 if(empty($uptype))
- 	 {
+ 	 if(empty($uptype)){
  	 	 ShowMsg("数据无效！","-1");
  	 	 exit();
  	 }
  	 $uptype = GetAlabNum($uptype);
- 	 if($uptype < $cfg_ml->M_Type)
- 	 {
+ 	 if($uptype < $cfg_ml->M_Type){
  	 	 ShowMsg("类型不对，你的级别比你目前申请的级别还要高！","-1");
  	 	 exit();
  	 }
@@ -147,15 +155,12 @@ switch($fmdo){
  else if($dopost=="addmoney")
  {
  	 CheckRank(0,0);
- 	 session_start();
- 	 if( empty($_SESSION["s_validate"]) ) $svali = "";
-   else $svali = $_SESSION["s_validate"];
-   if(strtolower($vdcode)!=$svali && $svali!=""){
+ 	 $svali = GetCkVdValue();
+   if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
- 	 if(empty($money))
- 	 {
+ 	 if(empty($money)){
  	 	 ShowMsg("你没指定要申请多少金币！","-1");
  	 	 exit();
  	 }
@@ -172,41 +177,38 @@ switch($fmdo){
  */
  else if($dopost=="editUser")
  {
- 	  session_start();
  	  CheckRank(0,0);
- 	  if( empty($_SESSION["s_validate"]) ) $svali = "";
-    else $svali = $_SESSION["s_validate"];
-    if(strtolower($vdcode)!=$svali && $svali!=""){
+ 	  $svali = GetCkVdValue();
+    if(strtolower($vdcode)!=$svali || $svali==""){
   	  ShowMsg("验证码错误！","-1");
   	  exit();
     }
- 	  if($province==0) $province = $oldprovince;
- 	  if($city==0) $city = $oldcity;
- 	  $oldpwd = ereg_replace("[ '\"\*\?\%]","",$oldpwd);
+ 	  
  	  if($oldpwd==""){
  	  	ShowMsg("你没有填写你的旧密码！","-1");
  	  	exit();
  	  }
+ 	  
  	  $pwd = trim($userpwd);
  	  $pwdc = trim($userpwdok);
+ 	 
  	  if($pwd!="")
  	  {
- 	    if(ereg("[ '\"\*\?\%]","",$pwd)){
- 	 	    ShowMsg("你的密码含有 ['],[\"],[*],[?],[%],[空格] 这类非法字符！","-1");
- 	 	    exit();
- 	    }
- 	    if($pwdc!=$pwd){
- 	 	    ShowMsg("你两次输入的密码不一致！","-1");
- 	 	    exit();
- 	    }
+ 	      if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd)){
+ 	 	      ShowMsg("你的新密码含有非法字符！","-1");
+ 	 	      exit();
+ 	      }
+ 	      if($pwdc!=$pwd){
+ 	 	      ShowMsg("你两次输入的密码不一致！","-1");
+ 	 	      exit();
+ 	      }
  	  }
  	  else{
  	  	$pwd = $oldpwd;
  	  }
  	  $dsql = new DedeSql(false);
  	  $row = $dsql->GetOne("Select pwd From #@__member where ID='".$cfg_ml->M_ID."'");
- 	  if(!is_array($row)||$row['pwd']!=$oldpwd)
- 	  {
+ 	  if(!is_array($row)||$row['pwd']!=$oldpwd){
  	     $dsql->Close();
  	     ShowMsg("你输入的旧密码错误！","-1");
  	 	   exit();
@@ -224,7 +226,9 @@ switch($fmdo){
     province = '$province',
     city = '$city',
     myinfo = '$myinfo',
-    mybb = '$mybb',
+    fullinfo = '$fullinfo',
+    showaddr = '$showaddr',
+    address = '$address',
     oicq = '$oicq',
     tel = '$tel',
     homepage = '$homepage'
@@ -239,7 +243,47 @@ switch($fmdo){
  	  }
  	  else{
  	    $dsql->Close();
- 	    ShowMsg("成功更新你的个人资料！","index.php");
+ 	    ShowMsg("成功更新你的个人资料！","edit_info.php");
+ 	 	  exit();
+ 	  }
+ }
+  /*
+ 更改个人空间资料
+ function EditSpace()
+ */
+ else if($dopost=="editSpace")
+ {
+ 	  CheckRank(0,0);
+ 	  $svali = GetCkVdValue();
+    if(strtolower($vdcode)!=$svali || $svali==""){
+  	  ShowMsg("验证码错误！","-1");
+  	  exit();
+    }
+    require_once("./inc/inc_archives_functions.php");
+    $title = "空间形象";
+    $spaceimage = GetUpImage('spaceimage',true,true,150,112,'myface');
+    if($spaceimage=="" && $oldimg!="" && $oldimg!="img/pview.gif"){
+    	 if(file_exists($cfg_basedir.$oldimg)){
+    	 	  $spaceimage = $oldimg;
+    	 }
+    }
+ 	  $dsql = new DedeSql(false);
+ 	  $news = addslashes(cn_substr(stripslashes($news),1024));
+ 	  $news = eregi_replace("<(iframe|script|javascript)","",$news);
+ 	  $spacename = ereg_replace("[><]","",$spacename);
+ 	  $mybb = addslashes(html2text(stripslashes($mybb)));
+ 	  $upquery = "Update #@__member set 
+ 	      spacename='$spacename',spaceimage='$spaceimage',news='$news',mybb='$mybb' 
+ 	      where ID='".$cfg_ml->M_ID."';
+ 	  ";
+ 	  $ok = $dsql->ExecuteNoneQuery($upquery);
+ 	  if($ok){
+ 	  	$dsql->Close();
+ 	  	ShowMsg("成功更新你的个人空间介绍！","space_info.php?".time().mt_rand(100,900));
+ 	  	exit();
+ 	  }else{
+ 	  	$dsql->Close();
+ 	    ShowMsg("更新资料失败！","space_info.php?".time().mt_rand(100,900));
  	 	  exit();
  	  }
  }
@@ -256,14 +300,12 @@ switch($fmdo){
  */
  if($dopost=="login")
  {
- 	 session_start();
- 	 if( empty($_SESSION["s_validate"]) ) $svali = "";
-   else $svali = $_SESSION["s_validate"];
-   if(strtolower($vdcode)!=$svali && $svali!=""){
+ 	 $svali = GetCkVdValue();
+   if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
-   if(ereg("[ '\"\*\?\%]","",$userid)||ereg("[ '\"\*\?\%]","",$pwd))
+   if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd))
    {
    	 ShowMsg("用户名或密码不合法！","-1",0,2000);
   	 exit();
@@ -284,11 +326,14 @@ switch($fmdo){
    }
    else{
    	 $dsql = new DedeSql(false);
-   	 $dsql->SetQuery("update #@__member set logintime='".time()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
+   	 $dsql->SetQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
    	 $dsql->ExecuteNoneQuery();
    	 $dsql->Close();
-   	 if(empty($gourl)) ShowMsg("成功登录，5秒钟后转向系统主页...","index.php",0,2000);
-   	 else ShowMsg("成功登录，转到进入页面...",$gourl,0,2000);
+   	 if(empty($gourl)||eregi("action|_do",$gourl)){
+   	 	  ShowMsg("成功登录，5秒钟后转向系统主页...","index.php",0,2000);
+   	 }else{
+   	 	  ShowMsg("成功登录，转到进入页面...",$gourl,0,2000);
+   	 }
   	 exit();
    }
  }
@@ -302,27 +347,24 @@ switch($fmdo){
  	 ShowMsg("成功退出登录！","login.php",0,2000);
    exit();
  }
- /*
+/*
  获取密码
  function BUserGetPwd()
- */
+*/
  else if($dopost=="getpwd")
  {
- 	 session_start();
- 	 if( empty($_SESSION["s_validate"]) ) $svali = "";
-   else $svali = $_SESSION["s_validate"];
-   if(strtolower($vdcode)!=$svali && $svali!=""){
+ 	 $svali = GetCkVdValue();
+   if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
-   if(!ereg("(.*)@(.*)\.(.*)",$email)){
+   if(!ereg("(.*)@(.*)\.(.*)",$email)||ereg("[\\\|\"\r\n\t%\*\?\(\)\$ ;,'%]",$email)){
    	 ShowMsg("邮箱地址格式不正确！","-1");
   	 exit();
    }
    $dsql = new DedeSql(false);
    $row = $dsql->GetOne("Select userid,pwd,uname,email From #@__member where email='$email'");
-   if(!is_array($row))
-   {
+   if(!is_array($row)){
      $dsql->Close();
      ShowMsg("系统找不到此邮箱地址！","-1");
   	 exit();
@@ -340,4 +382,5 @@ switch($fmdo){
  //
  break;
 }
+
 ?>

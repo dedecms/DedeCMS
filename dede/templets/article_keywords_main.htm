@@ -1,0 +1,107 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>关键字管理</title>
+<link href="base.css" rel="stylesheet" type="text/css">
+<link href="div.css" rel="stylesheet" type="text/css">
+<style>
+	.nnpp{
+	border-bottom:1px solid #666666;
+	border-top:1px solid #FFFFFF;
+	border-left:1px solid #FFFFFF;
+	border-right:1px solid #FFFFFF;
+	filter:alpha(opacity=50);
+ }
+</style>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<div class="main"> 
+  <table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#333333">
+    <tr> 
+      <td height="26" colspan="6" background="img/tbg.gif"><table width="96%" border="0">
+          <tr> 
+            <td width="25%"><strong>关键词维护</strong></td>
+            <form name='form2' action="article_keywords_main.php">
+            <td width="75%" align="right">
+   	        搜索：<input type='text' name='keyword' size='10'> 
+   	        <input type='submit' name='sb' value='确定' class='np'>
+   	        &nbsp;
+            <input class="coolbt" name="n1" type="button" id="n1" value="分析系统内的关键字" onClick="location='article_keywords_make.php';" style="width:130"> 
+            &nbsp;
+            <input class="coolbt" name="n11" type="button" id="n11" value="管理搜索的关键字" onClick="location='search_keywords_main.php';" style="width:125">
+            </td></form>
+          </tr>
+        </table></td>
+    </tr>
+    <form name='forma' action="article_keywords_add.php">
+      <tr align="center" bgcolor="#F0FDDB"> 
+        <td width="100%" height="24" colspan="6">
+        	<table border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td width="100" align="center">新增关键字：</td>
+              <td width="140"><input name="keyword" type="text" id="keyword" style="width:130"></td>
+              <td width="60">链接网址：</td>
+              <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130"></td>
+              <td width="40">频率：</td>
+              <td width="50"><input name="rank" type="text" id="rank" style="width:30" value="30"></td>
+              <td width="80"><input type="submit" name="Submit" value="保存" class="np"></td>
+            </tr>
+          </table>
+          </td>
+      </tr>
+    </form>
+    <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td width="8%">选择</td>
+      <td width="25%">关键字</td>
+      <td width="35%">链接网址</td>
+      <td width="10%">频率</td>
+      <td width="22%">管理</td>
+    </tr>
+	<form name='form1' action="article_keywords_saveall.php" method="post">
+<?
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+    <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EEFAAB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+      <td height="24">
+      	<input name="aids[]" type="checkbox" value="<?=$row['aid']?>" class="np" checked> 
+      </td>
+      <td>
+      	<input type='hidden' value='<?=$row['keyword']?>' name='keyword_<?=$row['aid']?>'>
+      	<?=$row['keyword']?>
+      </td>
+      <td>
+      	<input type='hidden' value='<?=$row['rpurl']?>' name='rpurlold_<?=$row['aid']?>'>
+      	<input type='text' style='width:90%' class='nnpp' value='<?=$row['rpurl']?>' name='rpurl_<?=$row['aid']?>'>
+      </td>
+      <td>
+      	<input type='text' size='5' class='nnpp' value='<?=$row['rank']?>' name='rank_<?=$row['aid']?>'>
+      </td>
+      <td>
+      	<input type='hidden' name='staold_<?=$row['aid']?>' value='<?=$row['sta']?>'>
+      	<input type='checkbox' name='isnouse_<?=$row['aid']?>' class='np' value='1'<?=GetSta($row['sta'])?>>
+      	禁用
+      	&nbsp;
+      	<input type='checkbox' name='isdel_<?=$row['aid']?>' class='np' value='1'>
+      	删除
+      </td>
+    </tr>
+<?
+}
+?>
+     <tr bgcolor="#F0FBBD"> 
+      <td height="26" colspan="6">
+	    &nbsp; <input type="button" name="dl" value="保存更改" onclick="this.form.submit();">
+	  </td>
+    </tr>
+	</form>
+    <tr align="center" bgcolor="#FAFDF0">
+      <td height="24" colspan="6">
+      	<?=$dlist->GetPageList(5);?>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

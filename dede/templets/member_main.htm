@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>网站会员管理</title>
+<link href='../base.css' rel='stylesheet' type='text/css'>
 <link href='base.css' rel='stylesheet' type='text/css'>
 <style type="text/css">
 .rb{ border-right:1px solid #666666 }
@@ -10,83 +11,125 @@
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666" style="margin-bottom:6px">
+  <tr>
+    <td height="30" align="center" bgcolor="#FAFCEF"> 
+      <form action="member_main.php" name="form1" method="get">
+	  <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>&nbsp;关键字：</td>
+          <td width="110" align="center"> 
+            <input name="keyword" type="text" id="keyword" size="12" style="width:100" value="{dede:global name='keyword'/}">
+          </td>
+          <td width="50">&nbsp;排序：</td>
+          <td width="110">
+		  <select name="sortkey" id="sortkey" style="width:100">
+                {dede:global name='sortform'/}
+				<option value="ID">ID/注册时间</option>
+                <option value="logintime">登录时间</option>
+                <option value="spaceshow">空间访问量</option>
+                <option value="pageshow">文档总点击量</option>
+              </select></td>
+          <td width="70">
+		    <select name="sex" id="sex" style="width:60">
+               {dede:global name='sexform'/}
+              <option value="男">男</option>
+              <option value="女">女</option>
+              <option value="0">不限</option>
+            </select></td>
+          <td width="50">特殊：</td>
+          <td width="90">
+		  <select name="att" id="att" style="width:90">
+                {dede:global name='attform'/}
+				<option value="0">--无--</option>
+                <option value="uptype">待升级会员</option>
+                <option value="upmoney">待充值会员</option>
+                <option value="ad">被推荐会员</option>
+				<option value="mb">非普通会员</option>
+             </select>
+		</td>
+          <td width="100" align="center">
+<input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0">
+          </td>
+        </tr>
+      </table>
+	  </form>
+    </td>
+  </tr>
+</table>
 <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
-<tr> 
-<td height="24" colspan="8" background="img/tbg.gif"> <table width="620" border="0" cellspacing="0" cellpadding="0">
-<form action="member_main.php" name="form1" method="get">
-<tr> 
-<td width="160"><strong>&nbsp;网站会员管理</strong></td>
-<td width="60" align="center">关键字：</td>
-<td width="120" align="center"><input name="keyword" type="text" id="keyword" size="12" style="width:100"></td>
-<td width="60">
-<select name="sex" id="sex">
-{dede:global name='sexform'/}
-<option value="男">男</option>
-<option value="女">女</option>
-<option value="0">不限</option>
-</select>
-</td>
-<td width="40">排序：</td>
-<td width="100">
-<select name="sortkey" id="sortkey">
-{dede:global name='sortform'/}
-<option value="ID">ID/注册时间</option>
-<option value="logintime">登录时间</option>
-</select>
-</td>
-<td align="center"> <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0"> 
-</td>
+  <tr> 
+<td height="24" colspan="8" background="img/tbg.gif"><table width="99%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="29%"><strong>网站会员管理</strong></td>
+          <td width="71%" align="right"> <a href="member_main.php?att=uptype">待升级会员</a> 
+            | <a href="member_main.php?att=upmoney">待充值会员</a> | <a href="member_main.php?att=ad">被推荐会员</a> 
+            | <a href="member_main.php?att=mb">非普通会员</a> </td>
+        </tr>
+      </table></td>
 </tr>
-</form>
-</table></td>
-</tr>
-<tr bgcolor="#EDF7D0"> 
-<td width="8%" height="26" align="center">ID</td>
-<td width="11%" align="center">登录名</td>
-<td width="11%" align="center">密码</td>
-<td width="11%" align="center">昵称</td>
-<td width="19%" align="center">Email</td>
-<td width="13%" align="center">地区</td>
-<td width="12%" align="center">最后登录</td>
-<td align="center">操作</td>
+  <tr bgcolor="#D8EEBD" height="26"> 
+    <td width="12%" align="center">登录名/密码</td>
+    <td width="16%" align="center">email/附加信息</td>
+    <td width="5%" align="center">性别</td>
+    <td width="8%" align="center">主页/点击</td>
+    <td width="19%" align="center">会员类型</td>
+    <td width="13%" align="center">地区</td>
+    <td width="12%" align="center">最后登录</td>
+    <td align="center">操作</td>
 </tr>
 {dede:datalist} 
-<tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#F3F7EA';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-<td>[field:ID/]</td>
-<td height="26">[field:userid/]</td>
-<td height="26">[field:pwd/]</td>
-<td height="26">[field:uname/]</td>
-<td height="26" colspan="3" align="center"> 
+  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    <td>
+	<a href="member_view.php?ID=[field:ID/]"><u>[field:userid/]</u></a>
+	[field:matt function="GetMAtt(@me)"/] 
+	<br>([field:pwd/])
+	</td>
+	<td>
+	[field:email/]<br>
+	昵称：[field:uname/]
+	</td>
+    <td>[field:sex /]</td>
+    <td> [field:spaceshow/]/ [field:pageshow/] </td>
+<td height="26" colspan="3"> 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr align="center"> 
-<td width="43%" height="20" class="rb">
-		[field:email/]
-		</td>
+          <td width="43%" height="20" class="rb">[field:membertype function="GetMemberName('@me','普通会员')"/] 
+          </td>
 <td width="30%" class="rb">
-		[field:province function="GetAreaName('@me','空')"/]&nbsp;[field:city function="GetAreaName('@me','')"/]
-		</td>
+		[field:province function="GetAreaName('@me','空')"/]
+		[field:city function="GetAreaName('@me','')"/]
+</td>
 <td>
 	[field:logintime function="GetDateMk('@me')"/]
 </td>
 </tr>
-<tr bgcolor="#F3F7EA"> 
-<td height="20" colspan="3" class="tb">
-	性别：[field:sex /]
-	<img src="img/adminuserico.gif" width="16" height="15">
-	[field:membertype function="GetMemberName('@me','普通会员')"/]
-	[field:uptype function="GetMemberName('@me','ut')"/]
-	金币：
-	[field:money/]
-	[field:upmoney function="GetUpMoney(@me)"/]
-</td>
+        <tr bgcolor="#FBFEEF"> 
+          <td height="20" colspan="3" class="tb"> 
+          	<img src="img/adminuserico.gif" width="16" height="15">
+          	业务信息：[field:uptype function="GetMemberName('@me','ut')"/]
+          	[field:upmoney function="GetUpMoney(@me)"/] 
+            <br>
+            <img src="img/menuarrow.gif" width="16" height="15">文档信息：文章([field:c1/]) 
+            图集([field:c2/]) 其它([field:c3/]) </td>
  </tr>
 </table></td>
 <td height="26" align="center">
-<a href="member_view.php?ID=[field:ID/]">[查看]</a>
-<a href="member_do.php?ID=[field:ID/]&dopost=delmember">[删除]</a>
-<br>
-<a href="member_do.php?ID=[field:ID/]&dopost=uprank&mtype=[field:membertype/]&uptype=[field:uptype/]">[升级]</a>
-<a href="member_do.php?ID=[field:ID/]&dopost=addmoney&upmoney=[field:upmoney/]">[充值]</a>
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" height="25">
+	<a href="member_view.php?ID=[field:ID/]">资料</a> | 
+<a href="member_do.php?ID=[field:ID/]&dopost=delmember">删除</a> |
+<a href="content_list.php?memberid=[field:ID/]" target="_blank">文档</a></td>
+  </tr>
+  <tr>
+    <td align="center" height="25" style="border-top:1px solid #cccccc">
+	<a href="member_do.php?ID=[field:ID/]&dopost=uprank&mtype=[field:membertype/]&uptype=[field:uptype/]">升级</a> | 
+<a href="member_do.php?ID=[field:ID/]&dopost=addmoney&upmoney=[field:upmoney/]">充值</a> | 
+<a href="member_do.php?ID=[field:ID/]&dopost=recommend&matt=[field:matt/]">推荐</a>
+</td>
+  </tr>
+</table>
 </td>
 </tr>
 {/dede:datalist} 

@@ -1,23 +1,46 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('plus_友情链接模块');
 if(!empty($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = $_COOKIE['ENV_GOBACK_URL'];
 else $ENV_GOBACK_URL = friendlink_main.php;
 
-$dsql = new DedeSql();
-
 if(empty($dopost)) $dopost = "";
+
+if(isset($allid)){
+	$aids = explode(',',$allid);
+	if(count($aids)==1){
+		$ID = $aids[0];
+		$dopost = "delete";
+	}
+}
 
 if($dopost=="delete")
 {
+	$dsql = new DedeSql(false);
 	$ID = ereg_replace("[^0-9]","",$ID);
-	$dsql->SetQuery("Delete From #@__flink where ID='$ID'");
-	$dsql->ExecuteNoneQuery();
+	$dsql->ExecuteNoneQuery("Delete From #@__flink where ID='$ID'");
 	$dsql->Close();
 	ShowMsg("成功删除一个链接！",$ENV_GOBACK_URL);
 	exit();
 }
+else if($dopost=="delall"){
+	if(isset($aids) && is_array($aids)){
+	   $dsql = new DedeSql(false);
+	   foreach($aids as $aid){
+	   	 $aid = ereg_replace("[^0-9]","",$aid);
+	   	 $dsql->ExecuteNoneQuery("Delete From #@__flink where ID='$aid'");
+	   }
+	   $dsql->Close();
+	   ShowMsg("成功删除指定链接！",$ENV_GOBACK_URL);
+	   exit();
+  }else{
+  	 ShowMsg("你没选定任何链接！",$ENV_GOBACK_URL);
+  	 exit();
+	}
+}
 else if($dopost=="saveedit")
 {
+	$dsql = new DedeSql(false);
 	$ID = ereg_replace("[^0-9]","",$ID);
 	$query = "Update #@__flink set 
 	sortrank='$sortrank',url='$url',webname='$webname',
@@ -30,6 +53,7 @@ else if($dopost=="saveedit")
 	ShowMsg("成功更改一个链接！",$ENV_GOBACK_URL);
 	exit();
 }
+$dsql = new DedeSql(false);
 $myLink = $dsql->GetOne("Select #@__flink.*,#@__flinktype.typename From #@__flink left join #@__flinktype on #@__flink.typeid=#@__flinktype.ID where #@__flink.ID=$ID");
 ?>
 <html>
@@ -85,11 +109,12 @@ $myLink = $dsql->GetOne("Select #@__flink.*,#@__flinktype.typename From #@__flin
         <td><input name="email" type="text" id="email" size="30" value="<?=$myLink['email']?>"></td>
       </tr>
       <tr>
-        <td height="25">状态：</td>
+        <td height="25">链接位置：</td>
         <td>
         <select name="ischeck">
         <option value="0"<?if($myLink['ischeck']==0) echo " selected"?>>未审核</option>
-        <option value="1"<?if($myLink['ischeck']==1) echo " selected"?>>已审核</option>
+        <option value="1"<?if($myLink['ischeck']==1) echo " selected"?>>内页</option>
+        <option value="2"<?if($myLink['ischeck']==2) echo " selected"?>>首页</option>
         </select>
         </td>
       </tr>

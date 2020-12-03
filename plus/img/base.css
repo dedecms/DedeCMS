@@ -12,3 +12,4 @@ a:hover {font-size: 9pt;color: red}
 .nb{border: 1px solid #000000;height:18px}
 .coolbg {border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #E6E6E6}
 .ctfield{ padding: 3px; line-height: 150%}
+.nndiv{ width: 175px; height:20px; margin: 0px;padding: 0px;word-break: break-all;overflow: hidden; }

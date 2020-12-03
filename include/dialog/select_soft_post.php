@@ -8,7 +8,8 @@ if($job=="newdir")
 		ShowMsg("目录名非法！","-1");
 		exit();
 	}
-	@mkdir($cfg_basedir.$activepath."/".$dirname,$cfg_dir_purview);
+	MkdirAll($cfg_basedir.$activepath."/".$dirname,777);
+	CloseFtp();
 	ShowMsg("成功创建一个目录！","select_soft.php?f=$f&activepath=".urlencode($activepath."/".$dirname));
 	exit();
 }
@@ -23,27 +24,36 @@ if($job=="upload")
 		ShowMsg("不允许文本类型附件!","-1");
 		exit();
 	}
-	if(!eregi($cfg_softtype,$uploadfile_name))
+	if(!eregi("\.".$cfg_softtype,$uploadfile_name))
 	{
-		ShowMsg("你所上传的文件类型不能被识别，请更改config_base.php里的配置！","-1");
+		ShowMsg("你所上传的文件类型不能被识别，请更改系统对扩展名限定的配置！","-1");
 		exit();
 	}
+	$nowtme = mytime();
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
 	if($filename==""){
-		$y = substr(strftime("%Y",time()),2,2);
-		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",time());
+		$y = substr(strftime("%Y",$nowtme),2,2);
+		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",$nowtme);
 		$fs = explode(".",$uploadfile_name);
 		$filename = $filename.".".$fs[count($fs)-1];
 	}
   $fullfilename = $cfg_basedir.$activepath."/".$filename;
-  if(file_exists($fullfilename))
-  {
+  if(file_exists($fullfilename)){
   	ShowMsg("本目录已经存在同名的文件，请更改！","-1");
 		exit();
   }
   @move_uploaded_file($uploadfile,$fullfilename);
-	@unlink($uploadfile);
-	ShowMsg("成功上传文件！","select_soft.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".time());
+	if($uploadfile_type == 'application/x-shockwave-flash') $mediatype=2;
+	else if(eregi('audio|media|video',$uploadfile_type)) $mediatype=3;
+	else $mediatype=4;
+	$inquery = "
+   INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
+   VALUES ('$filename','".$activepath."/".$filename."','$mediatype','0','0','0','{$uploadfile_size}','{$nowtme}','".$cuserLogin->getUserID()."','0');
+  ";
+  $dsql = new DedeSql(false);
+  $dsql->ExecuteNoneQuery($inquery);
+  $dsql->Close();
+	ShowMsg("成功上传文件！","select_soft.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
 	exit();
 }
 ?>

@@ -1,8 +1,8 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
+require_once(dirname(__FILE__)."/config_base.php");
+require_once(dirname(__FILE__)."/pub_dedetag.php");
+require_once(dirname(__FILE__)."/inc_typelink.php");
+require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
 //本类的用途是用于浏览频道RSS或对RSS生成静态文件
@@ -49,8 +49,8 @@ class RssView
  	//---------------------------
  	function Close()
  	{
- 		@$this->dsql->Close();
- 		@$this->TypeLink->Close();
+ 		$this->dsql->Close();
+ 		$this->TypeLink->Close();
  	}
  	//------------------
  	//显示列表
@@ -64,7 +64,7 @@ class RssView
  	//------------------
  	function MakeRss()
  	{
- 		$murl = $GLOBALS['cfg_extend_dir']."/rss/".$this->TypeID.".xml";
+ 		$murl = $GLOBALS['cfg_plus_dir']."/rss/".$this->TypeID.".xml";
  		$mfile = $GLOBALS['cfg_basedir'].$murl;
  		$this->dtp->SaveTo($mfile);
  		return $murl;
@@ -110,12 +110,8 @@ class RssView
     $dtp2 = new DedeTagParse();
  		$dtp2->SetNameSpace("field","[","]");
     $dtp2->LoadSource($innertext);
-    $oldSource = $dtp2->SourceString;
-    $oldCtags = $dtp2->CTags;
     while($row = $this->dsql->GetArray("al"))
     {
-      $dtp2->SourceString = $oldSource;
-      $dtp2->CTags = $oldCtags;
       //处理一些特殊字段
       if($row["litpic"]=="") $row["litpic"] = $GLOBALS["cfg_plus_dir"]."/img/dfpic.gif";
       $row["picname"] = $row["litpic"];
@@ -152,7 +148,7 @@ class RssView
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
-  	return GetTypeUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2);
+  	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
  	//--------------------------
  	//获得一个指定档案的链接

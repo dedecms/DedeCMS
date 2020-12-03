@@ -1,7 +1,7 @@
 <?
 require_once("config.php");
+CheckPurview('t_Move');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-SetPageRank(5);
 if(empty($typeid)) $typeid="";
 if(empty($job)) $job="movelist";
 $typeid = ereg_replace("[^0-9]","",$typeid);
@@ -46,6 +46,7 @@ $tl = new TypeLink($typeid);
 $typeOptions = $tl->GetOptionArray(0,0,$channelid);
 $tl->Close();
 $dsql->Close();
+
 ?>
 <html>
 <head>

@@ -1,14 +1,20 @@
-td {font-size: 9pt;line-height: 1.5;}
+td {
+	font-size: 9pt;
+	line-height: 1.5;
+	font-family: "宋体";
+}
 body {
   font-size: 9pt;
   line-height: 1.5;
+  font-family: "宋体";
   scrollbar-base-color:#C0D586;
   scrollbar-arrow-color:#FFFFFF;
   scrollbar-shadow-color:DEEFC6
 }
-a:link { font-size: 9pt; color: #000000; text-decoration: none }
-a:visited{ font-size: 9pt; color: #000000; text-decoration: none }
-a:hover {color: red}
+form,h1,h2,h3,h4,h5,h6,ul,ol{	margin: 0; padding:0;}
+a:link { font-size: 9pt; color: #000000; text-decoration: none; font-family: "宋体"; }
+a:visited{ font-size: 9pt; color: #000000; text-decoration: none; font-family: "宋体"; }
+a:hover {color: red; font-family: "宋体";}
 input{border: 1px solid #000000;}
 .np{border:none}
 .linerow{border-bottom: 1px solid #ACACAC;}
@@ -29,3 +35,55 @@ input{border: 1px solid #000000;}
 }
 .bline {border-bottom: 1px solid #BCBCBC;background-color: #FFFFFF}
 .bline2 {border-bottom: 1px solid #BCBCBC;}
+
+.coolbt {
+  border-left: 2px solid #EFEFEF;
+  border-top: 2px solid #EFEFEF;
+  border-right: 2px solid #ACACAC;
+  border-bottom: 2px solid #ACACAC;
+  background-color: #E4F7D7
+}
+
+.coolbg3 {
+  border: 1px solid #BDC5B4;
+  background-color: #DFDDD2;
+  height:20px;
+  width:140px;
+  text-align:right;
+}
+
+.coolbg4 {
+  border-bottom: 1px solid #C9CFC1;
+  background-color: #EDEBE5;
+  height:20px;
+  width:190px;
+  text-align:right;
+}
+
+.coolbg5 {
+  border-top: 1px solid #BDC5B4;
+  background-color: #EDEBE5;
+  font-size:1pt;
+  height:6px;
+  width:190px;
+}
+
+.dlg {
+  border: 2px solid #B6C0B7;
+  background-color: #F0FAEB;
+  width:200px;
+  padding-top:2px;
+  padding-left:4px;
+}
+#_mysource{ z-index:5000; }
+#_mywriter{ z-index:6000; }
+
+.option1{ background-color: #DCECA6; }
+.option2{ background-color: #F7FBD2; }
+.option3{ background-color: #FFFFFF; }
+
+.ininput{
+width:96%;
+height:20px;
+border:1px solid #ffffff;
+}

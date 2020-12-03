@@ -49,8 +49,12 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td height="46" colspan="3">&lt;script src=&quot;{dede:field name='phpurl'/}/count.php?aid={dede:field 
-            name='ID'/}&quot; language=&quot;javascript&quot;&gt;&lt;/script&gt; 
-          </td>
+            name='ID'/}&amp;mid={dede:field name='memberid'/}&quot; language=&quot;javascript&quot;&gt;&lt;/script&gt; 
+            &nbsp;<br>
+            显示数字： <br>
+            &lt;script src=&quot;{dede:field name='phpurl'/}/count.php?aid={dede:field 
+            name='ID'/}&amp;mid={dede:field name='memberid'/}&amp;view=yes&quot; 
+            language=&quot;javascript&quot;&gt;&lt;/script&gt; </td>
         </tr>
         <tr> 
           <td colspan="3" bgcolor="#F9FBF0">４、引入最新评论<a name="4"></a></td>

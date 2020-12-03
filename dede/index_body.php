@@ -1,23 +1,6 @@
 <?
 require(dirname(__FILE__)."/config.php");
-//GD的版本
-function gdversion() { 
-	static $gd_version_number = null; 
-	if ($gd_version_number === null)
-	{ 
-		ob_start(); 
-		phpinfo(8); 
-		$module_info = ob_get_contents(); 
-		ob_end_clean(); 
-		if (preg_match("/\bgd\s+version\b[^\d\n\r]+?([\d\.]+)/i", 
-		$module_info,$matches)) { 
-			$gdversion_h = $matches[1]; 
-		} else { 
-			$gdversion_h = 0; 
-		} 
-	} 
-	return $gdversion_h; 
-}
+require(dirname(__FILE__)."/../include/inc_photograph.php");
 ?>
 <html>
 <head>
@@ -28,17 +11,18 @@ function gdversion() {
 </head>
 <body leftmargin="8" topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
-  <!--tr> 
-    <td width="100%" height="64" background="img/indextitlebg.gif"><img src="img/indextitle.gif" width="250" height="64"> 
-    </td>
-  </tr-->
   <tr> 
-    <td width="100%" height="20" valign="top">	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td width="100%" height="20" valign="top">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;欢迎使用中国最强大的开源网站内容管理项目 
-            -- DedeCms 织梦内容管理系统 ！ </td>
+          <td height="30">
+          	<IMG height=14 src="img/book1.gif" width=20>
+          	 &nbsp;欢迎使用中国最强大的开源网站内容管理项目 
+            -- <?=$cfg_softname?>！ 
+           </td>
         </tr>
-      </table></td>
+      </table>
+      </td>
   </tr>
   <tr> 
     <td width="100%" height="1" background="img/sp_bg.gif"></td>
@@ -50,7 +34,7 @@ function gdversion() {
     <td width="100%" height="20">
 	<table width="100%"  border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC">
         <tr>
-          <td colspan="2" background="img/wbg.gif" bgcolor="#EEF4EA"><font color="#666600"><b>DedeCms最新消息</b></font></td>
+          <td colspan="2" background="img/wbg.gif" bgcolor="#EEF4EA"><font color="#666600"><b><?=$cfg_soft_enname?> 最新消息</b></font></td>
         </tr>
         <tr bgcolor="#FFFFFF">
           <td height="63" colspan="2">
@@ -73,8 +57,28 @@ function gdversion() {
         <tr bgcolor="#FFFFFF"> 
           <td height="30" colspan="2" align="center" valign="bottom"><table width="100%" border="0" cellspacing="1" cellpadding="1">
               <tr>
-                <td width="15%" height="31" align="center"><img src="img/qc.gif" width="90" height="30"></td>
-                <td width="85%" valign="bottom"><img src="img/part-index.gif" width="16" height="16"><a href="makehtml_homepage.php"><u>更新主页HTML</u></a>　<img src="img/part-list.gif" width="16" height="16"><a href="makehtml_list.php"><u>更新指定栏目的HTML</u></a>　<img src="img/addnews.gif" width="16" height="16"><a href="content_list.php"><u>文档列表</u></a>　<img src="img/menuarrow.gif" width="16" height="15"><a href="feedback_main.php"><u>评论管理</u></a>　<img src="img/manage1.gif" width="17" height="14"><a href="catalog_main.php"><u>内容发布</u></a></td>
+                <td width="15%" height="31" align="center">
+                	<img src="img/qc.gif" width="90" height="30">
+                </td>
+                <td width="85%" valign="bottom">
+                	<img src="img/manage1.gif" width="17" height="14">
+                	<a href="sys_info.php"><u>更改系统参数</u></a>
+                	
+                	<img src="img/part-index.gif" width="16" height="16">
+                	<a href="makehtml_homepage.php"><u>更新主页HTML</u></a>
+                	
+                	<img src="img/part-list.gif" width="16" height="16">
+                	<a href="makehtml_list.php"><u>更新指定栏目的HTML</u></a>
+                	
+                	<img src="img/addnews.gif" width="16" height="16">
+                	<a href="content_list.php"><u>文档列表</u></a>
+                	
+                	<img src="img/menuarrow.gif" width="16" height="15">
+                	<a href="feedback_main.php"><u>评论管理</u></a>
+                	
+                	<img src="img/manage1.gif" width="17" height="14">
+                	<a href="catalog_main.php"><u>内容发布</u></a>
+                </td>
               </tr>
             </table></td>
         </tr>
@@ -90,7 +94,7 @@ function gdversion() {
             <?
         if($cuserLogin->getUserType()==10) echo "总管理员";
         else if($cuserLogin->getUserType()==5) echo "频道总编";
-        else echo "信息采集员";
+        else echo "信息采集员或其它管理员";
         ?>
           </td>
         </tr>
@@ -98,11 +102,18 @@ function gdversion() {
           <td rowspan="5">PHP环境摘要：</td>
           <td> PHP版本： 
             <?=@phpversion();?>
-            &nbsp; </td>
+            &nbsp;
+            GD版本： 
+           <?=@gdversion()?>
+           </td>
         </tr>
         <tr bgcolor="#FFFFFF">
-          <td>GD版本： 
-            <?=@gdversion()?>
+          <td>
+          	是否安全模式：<font color='red'><?=($isSafeMode ? 'On' : 'Off')?></font>
+          	<?
+          	if($isSafeMode) echo "<br>　　<font color='blue'>由于你的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href='sys_info.php'><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href='testenv.php' style='color:red'><u>点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>";
+          	else echo "　<a href='testenv.php' style='color:blue'><u>如果你第一次进入本系统，建议点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>";
+          	?>
           </td>
         </tr>
         <tr bgcolor="#FFFFFF">
@@ -135,13 +146,15 @@ function gdversion() {
         </tr>
         <tr bgcolor="#FFFFFF"> 
           <td>软件版本信息：</td>
-          <td> 版本名称：DedeCms OX &nbsp; 版本号：
-            <?=$cfg_version?>
+          <td>
+          	版本名称：<?=$cfg_soft_enname?>
+          	&nbsp;
+          	版本号：<?=$cfg_version?>
           </td>
         </tr>
         <tr bgcolor="#FFFFFF"> 
           <td width="25%">开发团队：</td>
-          <td width="75%"> IT柏拉图 网络泡泡 </td>
+          <td width="75%"><?=$cfg_soft_devteam?></td>
         </tr>
       </table>
 	<br/>

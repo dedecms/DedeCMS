@@ -5,13 +5,15 @@
 <style>
 .td{font-size:10pt;}
 </style>
+
 <script language=javascript>
 var oEditor	= window.parent.InnerDialogLoaded() ;
 var oDOM		= oEditor.FCK.EditorDocument ;
 var FCK = oEditor.FCK;
+
 function TableOK(){
-  var rurl,widthdd,heightdd,doflash,playtype;
-  rurl = form1.murl.value;
+  var rurl,rurlname,widthdd,heightdd,doflash,playtype;
+  rurl = encodeURI(form1.murl.value);
   widthdd = form1.width.value;
   heightdd = form1.height.value;
   for(i=0;i<document.form1.mplayer.length;i++)
@@ -41,6 +43,7 @@ function TableOK(){
   else FCK.InsertHtml(revalue);
   window.close();
 }
+
 function SelectMedia(fname)
 {
    if(document.all){

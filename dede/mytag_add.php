@@ -1,11 +1,11 @@
 <?
 require(dirname(__FILE__)."/config.php");
+CheckPurview('temp_Other');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 if(empty($dopost)) $dopost = "";
 //////////////////////////////////////////
 if($dopost=="save")
 {
-	//timeset tagname typeid normbody expbody
 	$tagname = trim($tagname);
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select typeid From #@__mytag where typeid='$typeid' And tagname like '$tagname'");
@@ -26,7 +26,7 @@ if($dopost=="save")
 	ShowMsg("成功增加一个自定义标记！","mytag_main.php");
 	exit();
 }
-$startDay = time();
+$startDay = mytime();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);
@@ -101,19 +101,13 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="80" align="center">正常显示内容：</td>
-            <td width="76%"> 
-              <?
-	GetEditor("normbody","",120,"Small");
-	?>
+            <td width="76%"> <textarea name="normbody" id="normbody" style="width:80%;height:100"></textarea>
             </td>
             <td width="9%">&nbsp;</td>
           </tr>
           <tr> 
             <td height="80" align="center">过期显示内容：</td>
-            <td> 
-              <?
-	GetEditor("expbody","",120,"Small");
-	?>
+            <td> <textarea name="expbody" id="expbody" style="width:80%;height:100"></textarea>
             </td>
             <td>&nbsp;</td>
           </tr>

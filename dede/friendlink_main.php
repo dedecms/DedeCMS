@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+
 require_once(dirname(__FILE__)."/../include/pub_datalist.php");
 require_once(dirname(__FILE__)."/../include/inc_functions.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
@@ -12,7 +13,8 @@ function GetPic($pic)
 
 function GetSta($sta)
 {
-	if($sta==1) return "ÒÑÉóºË";
+	if($sta==1) return "ÄÚÒ³";
+	if($sta==2) return "Ê×Ò³";
 	else return "Î´ÉóºË";
 }
 

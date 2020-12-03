@@ -4,6 +4,7 @@
 *******************************/
 function utf82gb($utfstr)
 {
+	if(function_exists('iconv')){ return iconv('utf-8','gbk',$utfstr); }
 	global $UC2GBTABLE;
 	$okstr = "";
 	if(trim($utfstr)=="") return $utfstr;
@@ -38,33 +39,11 @@ function utf82gb($utfstr)
 	$okstr = trim($okstr);
 	return $okstr;
 }
-//utf8转Unicode
-function utf82u($c)
-{
-  switch(strlen($c)) {
-    case 1:
-      return ord($c);
-    case 2:
-      $n = (ord($c[0]) & 0x3f) << 6;
-      $n += ord($c[1]) & 0x3f;
-      return $n;
-    case 3:
-      $n = (ord($c[0]) & 0x1f) << 12;
-      $n += (ord($c[1]) & 0x3f) << 6;
-      $n += ord($c[2]) & 0x3f;
-      return $n;
-    case 4:
-      $n = (ord($c[0]) & 0x0f) << 18;
-      $n += (ord($c[1]) & 0x3f) << 12;
-      $n += (ord($c[2]) & 0x3f) << 6;
-      $n += ord($c[3]) & 0x3f;
-      return $n;
-  }
-}
 /*******************************
 //GB转UTF-8编码
 *******************************/
 function gb2utf8($gbstr) {
+	if(function_exists('iconv')){ return iconv('gbk','utf-8',$gbstr); }
 	global $CODETABLE;
 	if(trim($gbstr)=="") return $gbstr;
 	if(empty($CODETABLE)){
@@ -116,10 +95,34 @@ function u2utf8($c) {
 	}
 	return $str;
 }
+//utf8转Unicode
+function utf82u($c)
+{
+  switch(strlen($c)) {
+    case 1:
+      return ord($c);
+    case 2:
+      $n = (ord($c[0]) & 0x3f) << 6;
+      $n += ord($c[1]) & 0x3f;
+      return $n;
+    case 3:
+      $n = (ord($c[0]) & 0x1f) << 12;
+      $n += (ord($c[1]) & 0x3f) << 6;
+      $n += ord($c[2]) & 0x3f;
+      return $n;
+    case 4:
+      $n = (ord($c[0]) & 0x0f) << 18;
+      $n += (ord($c[1]) & 0x3f) << 12;
+      $n += (ord($c[2]) & 0x3f) << 6;
+      $n += ord($c[3]) & 0x3f;
+      return $n;
+  }
+}
 /**********************************
 //Big5码转换成GB码
 **********************************/
 function big52gb($Text) {
+	if(function_exists('iconv')){ return iconv('big5','gbk',$Text); }
 	global $BIG5_DATA;
 	if(empty($BIG5_DATA)){
 		$filename = dirname(__FILE__)."/data/big5-gb.table";
@@ -149,6 +152,7 @@ function big52gb($Text) {
 //GB码转换成Big5码
 *********************************/
 function gb2big5($Text) {
+	if(function_exists('iconv')){ return iconv('gbk','big5',$Text); }
 	global $GB_DATA;
 	if(empty($GB_DATA)){
 		$filename = dirname(__FILE__)."/data/gb-big5.table";

@@ -1,6 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist.php");
+require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function GetSta($sta)
@@ -15,12 +15,14 @@ function GetMan($sta)
 	else return "<u>∆Ù”√</u>";
 }
 
+if(empty($keywords)) $keywords = "";
 
 $sql = "Select * from #@__keywords order by rank desc";
 $dlist = new DataList();
 $dlist->Init();
+$dlist->pageSize = 300;
+$dlist->SetParameter("f",$f);
 $dlist->SetSource($sql);
-$dlist->SetTemplet(dirname(__FILE__)."/templets/article_keywords_select.htm");
-$dlist->display();
+include(dirname(__FILE__)."/templets/article_keywords_select.htm");
 $dlist->Close();
 ?>

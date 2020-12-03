@@ -1,10 +1,8 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist.php");
-require_once(dirname(__FILE__)."/../include/inc_functions.php");
+require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
-$pagesize = 10;
 $bgcolor = "";
 if(!isset($keyword)) $keyword="";
 if(!isset($typeid)) $typeid="0";
@@ -27,12 +25,12 @@ else $arttypesql = "";
 $querystring = "select * from #@__feedback where #@__feedback.msg like '%$keyword%' $arttypesql $typeCallLimit order by dtime desc";
 
 $dlist = new DataList();
+$dlist->pageSize = 10;
 $dlist->Init();
 $dlist->SetParameter("typeid",$typeid);
 $dlist->SetParameter("keyword",$keyword);
 $dlist->SetSource($querystring);
-$dlist->SetTemplet(dirname(__FILE__)."/templets/feedback_main.htm");
-$dlist->display();
+include(dirname(__FILE__)."/templets/feedback_main.htm");
 $dlist->Close();
 $tl->Close();
 ?>

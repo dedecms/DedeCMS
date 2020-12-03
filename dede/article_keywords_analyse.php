@@ -2,7 +2,7 @@
 @ob_start();
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
-SetPageRank(10);
+CheckPurview('sys_Keyword');
 
 echo "正在读取关键字数据库...<br/>\r\n";
 flush();
@@ -71,7 +71,7 @@ if(is_array($wsnew))
   foreach($wsnew as $k=>$v)
   {
 	  if(strlen($k)>20) continue;
-	  $dsql->SetQuery("Insert Into #@__keywords(keyword,rank,sta) Values('".addslashes($k)."','$v','1')");
+	  $dsql->SetQuery("Insert Into #@__keywords(keyword,rank,sta,rpurl) Values('".addslashes($k)."','$v','1','')");
 	  $dsql->Execute();
   }
   echo "完成关键字的导入！<br/>\r\n";

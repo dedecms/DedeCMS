@@ -1,8 +1,7 @@
-{dede:page pagesize="20"/}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>选择文章::{dede:global name='typename' /}</title>
+<title>选择文章</title>
 <link rel="stylesheet" type="text/css" href="base.css">
 <script language="javascript">
 //获得选中文件的文件名
@@ -44,18 +43,18 @@ function noSelAll()
 }
 function ReturnValue()
 {
-	if(window.opener.document.{dede:global name='f' /}.value==""){
-		window.opener.document.{dede:global name='f' /}.value = getCheckboxItem();
+	if(window.opener.document.<?=$f?>.value==""){
+		window.opener.document.<?=$f?>.value = getCheckboxItem();
 	}
 	else{
-		window.opener.document.{dede:global name='f' /}.value += ","+getCheckboxItem();
+		window.opener.document.<?=$f?>.value += ","+getCheckboxItem();
 	}
 	window.opener=true;
   window.close();
 }
 </script>
 </head>
-<body leftmargin="0" topmargin="0" background='img/allbg.gif' onload="ContextMenu.intializeContextMenu()">
+<body leftmargin="0" topmargin="0" background='img/allbg.gif'>
 <table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
 <tr> 
 <td align='center' valign='top'>
@@ -81,24 +80,30 @@ function ReturnValue()
 <td width="10%">权限</td>
 <td width="8%">推荐</td>
 </tr>
-{dede:datalist}
-<tr bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
-<td align='center'>[field:ID /]</td>
-<td align='center'><input name="arcID" type="checkbox" id="arcID" value="[field:ID/]" class="np"></td>
-<td>
-<a href='archives_do.php?aid=[field:ID /]&dopost=editArchives' oncontextmenu="ShowMenu(this,[field:ID /],'[field:title function=urlencode('@me')/]')">
-	<u>[field:title /]</u>
+<?
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
+<td><?=$row['ID']?></td>
+<td><input name="arcID" type="checkbox" id="arcID" value="<?=$row['ID']?>" class="np"></td>
+<td align='left'>
+<a href='archives_do.php?aid=<?=$row['ID']?>&dopost=editArchives'>
+	<u><?=$row['title']?></u>
 </a>
 </td>
-<td align='center'>[field:senddate function="GetDateMk('@me')" /]</td>
-<td align='center'>[field:typename /]</td>
-<td align='center'>[field:click /]</td>
-<td align='center'>[field:litpic function="IsPicArchives('@me')" /]</td>
-<td align='center'>[field:ismake function="IsHtmlArchives('@me')" /]</td>
-<td align='center'>[field:arcrank function="GetRankName('@me')" /]</td>
-<td align='center'>[field:iscommend function="IsCommendArchives('@me')" /]</td>
+<td><?=GetDateMk($row['senddate'])?></td>
+<td><?=$row['typename']?></td>
+<td><?=$row['click']?></td>
+<td><?=IsPicArchives($row['litpic'])?></td>
+<td><?=IsHtmlArchives($row['ismake'])?></td>
+<td><?=GetRankName($row['arcrank'])?></td>
+<td><?=IsCommendArchives($row['iscommend'])?></td>
 </tr>
-{/dede:datalist}
+<?
+}
+?>
 <tr bgcolor="#FAFAF1"> 
 <td height="24" colspan="10">
 &nbsp;
@@ -112,7 +117,7 @@ function ReturnValue()
 </form>
 <tr align="right" bgcolor="#EEF4EA"> 
 <td height="20" colspan="10" align="center">
-	{dede:pagelist listsize='7' /}
+	<?=$dlist->GetPageList(7);?>
 </td>
 </tr>
 </table>
@@ -125,7 +130,7 @@ function ReturnValue()
 <table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC'>
    <tr bgcolor='#EEF4EA'> 
      <form name='form3' action='content_select_list.php' method='get'>
-        <input type='hidden' name='f' value='{dede:global name='f' /}'> 
+        <input type='hidden' name='f' value='<?=$f?>'> 
           <td background='img/wbg.gif'>
           	<table width='600' border='0' cellpadding='0' cellspacing='0'>
           	<tr>
@@ -133,14 +138,14 @@ function ReturnValue()
           	<td width='160'>
           <select name='cid' style='width:150'>
           <option value='0'>选择分类...</option>
-          	{dede:global name='optionarr' /}
+          	<?=$optionarr?>
           </select>
         </td>
         <td width='70'>
           关键字：
         </td>
           <td width='160'>
-          	<input type='text' name='keyword' value='{dede:global name='keyword' ''/}' style='width:150'>
+          	<input type='text' name='keyword' value='<?=$keyword?>' style='width:150'>
           </td>
           <td>
           <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">

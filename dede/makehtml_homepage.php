@@ -23,7 +23,7 @@ function SelectTemplets(fname)
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="action_makehtml_homepage.php" target="stafrm" method="post">
+  <form name="form1" action="makehtml_homepage_action.php" target="stafrm" method="post">
   <input type="hidden" name="dopost" value="make">
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'>
@@ -63,7 +63,7 @@ function SelectTemplets(fname)
     </tr>
     <tr> 
       <td height="31" colspan="2" bgcolor="#FAFAF1" align="center">
-	    <input name="view" type="button" id="view" value="预览主页" onclick="window.open('action_makehtml_homepage.php?dopost=view&templet='+form1.templet.value);">
+	    <input name="view" type="button" id="view" value="预览主页" onclick="window.open('makehtml_homepage_action.php?dopost=view&templet='+form1.templet.value);">
         　
 <input type="submit" name="Submit" value="更新主页HTML"> 
       </td>
@@ -88,7 +88,7 @@ function SelectTemplets(fname)
   </tr>
   <tr bgcolor="#FFFFFF"> 
     <td colspan="2" id="mtd">
-	<div id='mdv' style='width:100%;height:100;'> 
+	<div id='mdv' style='width:100%;height:250;'> 
         <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%">
         <script language="JavaScript">
 	  document.all.mdv.style.pixelHeight = screen.height - 360;

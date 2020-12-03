@@ -48,11 +48,13 @@ require_once(dirname(__FILE__)."/config.php");
           <td bgcolor="#F9FBF0">２、<strong>友情链接</strong><a name="2"></a></td>
         </tr>
         <tr> 
-          <td bgcolor="#FFFFFF">　　使用标记：friendlink 或 flink [<a href="help_templet.php#36"><u>参考</u></a>]</td>
+          <td bgcolor="#FFFFFF">　　使用标记：friendlink 或 flink [<a href="help_templet.php#36"><u>参考</u></a>]<br />
+          	　　正常的情况下显示所有审核过或属性为“首页”的链接，如果你想只显示属性为“首页”的链接，请加上 linktype=2 属性
+          	</td>
         </tr>
         <tr> 
           <td> <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">用文字形式显示所有审核后的链接：</td>
@@ -65,7 +67,7 @@ require_once(dirname(__FILE__)."/config.php");
                 </tr>
               </form>
             </table> <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">用图文混排形式显示所有审核后的链接：</td>
@@ -79,7 +81,7 @@ require_once(dirname(__FILE__)."/config.php");
               </form>
             </table>
             <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">仅显示不带Logo的审核后的链接：</td>
@@ -92,7 +94,7 @@ require_once(dirname(__FILE__)."/config.php");
                 </tr>
               </form>
             </table> <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">仅显示带Logo的审核后的链接：</td>
@@ -111,7 +113,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td> <table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记： {dede:mynews row='条数' titlelen='标题长度'}Innertext{/dede:mynews}，Innertext支持的字段为：[field:title 

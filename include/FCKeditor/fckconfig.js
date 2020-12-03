@@ -46,8 +46,8 @@ FCKConfig.AutoDetectLanguage	= true ;
 FCKConfig.DefaultLanguage		= 'zh-cn' ;
 FCKConfig.ContentLangDirection	= 'ltr' ;
 
-FCKConfig.EnableXHTML		= true ;	// Unsupported: Do not change.
-FCKConfig.EnableSourceXHTML	= true ;	// Unsupported: Do not change.
+FCKConfig.EnableXHTML		= false ;	// Unsupported: Do not change.
+FCKConfig.EnableSourceXHTML	= false ;	// Unsupported: Do not change.
 
 FCKConfig.ProcessHTMLEntities	= true ;
 FCKConfig.IncludeLatinEntities	= true ;
@@ -113,12 +113,20 @@ FCKConfig.ToolbarSets["Small"] = [
 
 FCKConfig.ToolbarSets["Member"] = [
 	['Source','Preview'],['Cut','Copy','Paste','PasteText','PasteWord'],
-	['Undo','Redo'],
 	['Bold','Italic','Underline','StrikeThrough'],
-	['Link','Unlink','Anchor'],
-	['Table','Rule'],
-	['TextColor','BGColor'],
-	['Style','FontFormat']
+	['ImageUser','FlashUser'],
+	['Link','Unlink'],
+	['Table','Rule','Quote','LineBr'],
+	['TextColor','FontSize']
+] ;
+
+FCKConfig.ToolbarSets["MemberLit"] = [
+	['Source','Preview'],['Cut','Copy','Paste','PasteText','PasteWord'],
+	['Bold','Italic','Underline','StrikeThrough'],
+	['ImageUser','FlashUser'],
+	['Link','Unlink'],
+	['Table','Rule','Quote','LineBr'],
+	['TextColor','FontSize']
 ] ;
 
 FCKConfig.ContextMenu = ['Generic','Link','Anchor','Image','Flash','BulletedList','NumberedList','TableCell','Table'] ;

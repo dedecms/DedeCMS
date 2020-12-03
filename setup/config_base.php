@@ -1,128 +1,108 @@
 <?
-/*-----------------------------------------
-// DedeCms 主配置文件
-// 如果你需要改动某些选项，请先备份本文件
------------------------------------------*/
+/*************************************************
+本文件的信息不建议用户自行更改，否则发生意外自行负责
+**************************************************/
 
-require_once(dirname(__FILE__)."/config_start.php");
+//禁止用户提交某些特殊变量
+$ckvs = Array('_GET','_POST','_COOKIE','_FILES');
+foreach($ckvs as $ckv){
+    if(is_array($$ckv)){ 
+    	foreach($$ckv AS $key => $value) 
+    	   if(eregi("^cfg_|globals",$key)) unset(${$ckv}[$key]);
+    }
+}
 
-//站点根网址
-$cfg_basehost = "~baseurl~";
 
-//DedeCms安装目录
-$cfg_cmspath = "~basepath~";
+require_once(dirname(__FILE__)."/config_hand.php");
+if(!isset($needFilter)) $needFilter = false;
+$registerGlobals = @ini_get("register_globals");
+$isUrlOpen = @ini_get("allow_url_fopen");
+$isMagic = @ini_get("magic_quotes_gpc");
+$isSafeMode = @ini_get("safe_mode");
+
+//检测系统是否注册外部变量
+if(!$isMagic) require_once(dirname(__FILE__)."/config_rglobals_magic.php");
+else if(!$registerGlobals || $needFilter) require_once(dirname(__FILE__)."/config_rglobals.php");
+
+unset($_ENV,$HTTP_ENV_VARS,$_REQUEST,$HTTP_POST_VARS,$HTTP_GET_VARS,$HTTP_POST_FILES,$HTTP_COOKIE_VARS);
+
+//Session保存路径
+$sessSavePath = dirname(__FILE__)."/sessions/";
+if(is_writeable($sessSavePath) && is_readable($sessSavePath)){ session_save_path($sessSavePath); }
+
+//对于仅需要简单ＳＱＬ操作的页面，引入本文件前把此$__ONLYDB设为true，可避免引入不必要的文件
+if(!isset($__ONLYDB)) $__ONLYDB = false;
 
 //站点根目录
 $ndir = str_replace("\\","/",dirname(__FILE__));
 $cfg_basedir = eregi_replace($cfg_cmspath."/include[/]{0,1}$","",$ndir);
+if($cfg_multi_site == '是') $cfg_mainsite = $cfg_basehost;
+else  $cfg_mainsite = "";
 
 //数据库连接信息
-$cfg_dbname = "~dbname~";
-$cfg_dbhost = "~dbhost~";
-$cfg_dbuser = "~dbuser~";
-$cfg_dbpwd = "~dbpwd~";
-$cfg_dbprefix = "~dbprefix~";
-
-//cookie加密码
-$cfg_cookie_encode = "feWQRETREWteyt4rWETR";
-
-//网页首页链接和名称
-$cfg_indexurl = "~indexurl~";
-$cfg_indexname = "首页";
-
-//网站名称，RSS列表中,将以这个名称作为网站的描述
-$cfg_webname = "~cfg_webname~"; 
-
-//统管理员的Email,网站与发信有关的程序会用这个Email
-$cfg_adminemail = "~email~";
-
-//DedeCms 版本信息
-
-$cfg_powerby = "<a href='http://www.dedecms.com' target='_blank'>Power by DedeCms 织梦内容管理系统</a>";
-
-$cfg_version = "3_0_1"; //请不要删除本项，否则系统无法正确接收最新漏洞或升级信息
-
-//可视化编辑器选项
-//目前支持的编辑器 fck
-//考虑在线完整网页编辑原因，暂不开放对其它编辑器的支持
-
-$cfg_html_editor = "fck";
-
-//文档默认保存路径
-//对于没有归类的文章也会保存在这个目录
-//---------------------------------------------------
-$cfg_arcdir = $cfg_cmspath."/html";
+$cfg_dbhost = '~dbhost~';
+$cfg_dbname = '~dbname~';
+$cfg_dbuser = '~dbuser~';
+$cfg_dbpwd = '~dbpwd~';
+$cfg_dbprefix = '~dbprefix~';
+$cfg_db_language = '~dblang~';
 
 //模板的存放目录
-$cfg_templets_dir = $cfg_cmspath."/templets";
-
-//图片浏览器的默认路径
-$cfg_medias_dir = $cfg_cmspath."/upimg";
+$cfg_templets_dir = $cfg_cmspath.'/templets';
+$cfg_templeturl = $cfg_mainsite.$cfg_templets_dir;
 
 //插件目录，这个目录是用于存放计数器、投票、评论等程序的必要动态程序
-$cfg_plus_dir = $cfg_cmspath."/plus";
-
-//扩展目录，保存RSS、网站地图、RSS地图、JS文件等扩展内容
-//为了不弄太多系统目录,把这些东东都放到 $cfg_plus_dir 中
-$cfg_extend_dir = $cfg_plus_dir;
+$cfg_plus_dir = $cfg_cmspath.'/plus';
+$cfg_phpurl = $cfg_mainsite.$cfg_plus_dir;
 
 //会员目录
-$cfg_member_dir = $cfg_cmspath."/member";
+$cfg_member_dir = $cfg_cmspath.'/member';
+$cfg_memberurl = $cfg_mainsite.$cfg_member_dir;
 
-//数据备份目录
-$cfg_backup_dir = $cfg_plus_dir."/~bakdir~";
+//会员个人空间目录#new
+$cfg_space_dir = $cfg_cmspath.'/space';
+$cfg_spaceurl = $cfg_basehost.$cfg_space_dir;
 
+$cfg_medias_dir = $cfg_cmspath.$cfg_medias_dir;
 //上传的普通图片的路径,建议按默认
-$cfg_image_dir = $cfg_medias_dir."/allimg";
-
+$cfg_image_dir = $cfg_medias_dir.'/allimg';
 //上传的缩略图
-$ddcfg_image_dir = $cfg_medias_dir."/litimg";
-//缩略图的大小限制
-$cfg_ddimg_width = 200;
-$cfg_ddimg_height = 150;
-//图集默认显示图片的大小
-$cfg_album_width = 600;
-
+$ddcfg_image_dir = $cfg_medias_dir.'/litimg';
 //专题列表的存放路径
-$cfg_special = $cfg_cmspath."/special";
-
+$cfg_special = $cfg_cmspath.'/special';
 //用户投稿图片存放目录
-$cfg_user_dir = $cfg_medias_dir."/userup";
-
+$cfg_user_dir = $cfg_medias_dir.'/userup';
 //上传的软件目录
-$cfg_soft_dir = $cfg_medias_dir."/soft";
-
+$cfg_soft_dir = $cfg_medias_dir.'/soft';
 //上传的多媒体文件目录
-$cfg_other_medias = $cfg_medias_dir."/media";
+$cfg_other_medias = $cfg_medias_dir.'/media';
 
-//文件选择器可浏览的文件类型
-$cfg_imgtype = "jpg|gif|png";
+//软件摘要信息，****请不要删除本项**** 否则系统无法正确接收系统漏洞或升级信息
+//-----------------------------
+$cfg_softname = "织梦内容管理系统";
+$cfg_soft_enname = "DedeCms OX";
+$cfg_soft_devteam = "IT柏拉图";
+$cfg_version = '3_1';
 
-$cfg_softtype = "exe|zip|gz|rar|iso|doc|xsl|ppt|wps";
-
-$cfg_mediatype = "swf|mpg|dat|avi|mp3|rm|rmvb|wmv|asf|vob|wma|wav|mid|mov";
-
-//检测目录，如果你确保所有目录都已经创建，可以屏蔽这个语句
-require_once(dirname(__FILE__)."/config_makenewdir.php");
-
-//附加选项：
-//-------------------------------
-
-$cfg_specnote = 6; //专题的最大节点数
-
-$art_shortname = ".html"; //默认扩展名，仅在命名规则不含扩展名的时候调用
-
+//默认扩展名，仅在命名规则不含扩展名的时候调用
+$art_shortname = '.html';
 //文档的默认命名规则
-$cfg_df_namerule = "{Y}/{M}{D}/{aid}.html";
+$cfg_df_namerule = '{typedir}/{Y}/{M}{D}/{aid}.html';
+//新建目录的权限，如果你使用别的属性，本程不保证程序能顺利在Linux或Unix系统运行
+$cfg_dir_purview = '0777';
 
-//类目位置的间隔符号,类目>>类目二>>类目三
-$cfg_list_symbol = " &gt; ";
+//引入数据库类和常用函数
+require_once(dirname(__FILE__).'/pub_db_mysql.php');
+require_once(dirname(__FILE__).'/config_passport.php');
 
-//新建目录的权限
-//如果你使用别的属性，本程不保证程序能顺利在Linux或Unix系统运行
-$cfg_dir_purview = 0777;
+if($cfg_pp_need=='否'){
+	$cfg_pp_login = $cfg_cmspath.'/member/login.php';
+  $cfg_pp_exit = $cfg_cmspath.'/member/index_do.php?fmdo=login&dopost=exit';
+  $cfg_pp_reg = $cfg_cmspath.'/member/index_do.php?fmdo=user&dopost=regnew';
+}
 
-require_once(dirname(__FILE__)."/pub_db_mysql.php");
-require_once(dirname(__FILE__)."/inc_functions.php");
+if(!$__ONLYDB){
+	require_once(dirname(__FILE__).'/inc_functions.php');
+}
 
 ?>

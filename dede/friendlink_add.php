@@ -1,19 +1,24 @@
 <?
 require(dirname(__FILE__)."/config.php");
+CheckPurview('plus_友情链接模块');
+
 $dsql = new DedeSql();
 $dsql->Init(false);
 
 if(empty($dopost)) $dopost="";
 if($dopost=="add")
 {
-   $dtime = strftime("%Y-%m-%d %H:%M:%S",time());
+   $dtime = strftime("%Y-%m-%d %H:%M:%S",mytime());
    if(is_uploaded_file($logoimg))
    {
 	   $names = split("\.",$logoimg_name);
 	   $shortname = ".".$names[count($names)-1];
-	   $filename = strftime("%Y%m%d%H%M%S",time()).mt_rand(1000,9999).$shortname;
+	   $filename = strftime("%Y%m%d%H%M%S",mytime()).mt_rand(1000,9999).$shortname;
 	   $imgurl = $cfg_medias_dir."/flink";
-	   if(!is_dir($cfg_basedir.$imgurl)) mkdir($cfg_basedir.$imgurl,0777);
+	   if(!is_dir($cfg_basedir.$imgurl)){
+	   	  MkdirAll($cfg_basedir.$imgurl,777);
+	   	  CloseFtp();
+	   }
 	   $imgurl = $imgurl."/".$filename;
 	   move_uploaded_file($logoimg,$cfg_basedir.$imgurl) or die("复制文件到:".$cfg_basedir.$imgurl."失败");
 	   @unlink($logoimg);
@@ -21,7 +26,7 @@ if($dopost=="add")
    else 
 	 { $imgurl = $logo; }
    $query = "Insert Into #@__flink(sortrank,url,webname,logo,msg,email,typeid,dtime,ischeck) 
-   Values('$sortrank','$url','$webname','$imgurl','$msg','$email',$typeid,'$dtime',1)";
+   Values('$sortrank','$url','$webname','$imgurl','$msg','$email',$typeid,'$dtime','$ischeck')";
    $dsql->SetQuery($query);
    $dsql->ExecuteNoneQuery();
    if(!empty($_COOKIE['ENV_GOBACK_URL'])) $burl = $_COOKIE['ENV_GOBACK_URL'];
@@ -110,6 +115,15 @@ function CheckSubmit()
         	echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
         }
         ?>
+        </select>
+        </td>
+      </tr>
+      <tr>
+        <td height="25">链接位置：</td>
+        <td>
+        <select name="ischeck">
+        <option value="1">内页</option>
+        <option value="2">首页</option>
         </select>
         </td>
       </tr>

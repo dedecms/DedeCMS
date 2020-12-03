@@ -89,8 +89,10 @@ Find				: "查找",
 Replace				: "替换",
 SpellCheck			: "拼写检查",
 UniversalKeyboard	: "软键盘",
-PageBreakLbl		: "Page Break",	//MISSING
+PageBreakLbl		: "文章分页符",	//MISSING
 PageBreak			: "文章分页符",	//MISSING
+DedeQuote    : "引用",
+DedeBr       : "BR换行符",
 
 // Context Menu
 EditLink			: "编辑超链接",

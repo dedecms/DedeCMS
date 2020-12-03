@@ -1,8 +1,7 @@
-{dede:page pagesize="10"/}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>栏目管理::{dede:global name='typename' /}</title>
+<title>文档管理</title>
 <link rel="stylesheet" type="text/css" href="base.css">
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
@@ -12,19 +11,52 @@ if(moz) {
 	extendElementModel();
 	emulateAttachEvent();
 }
+function viewArc(aid){
+	if(aid==0) aid = getOneItem();
+	window.open("archives_do.php?aid="+aid+"&dopost=viewArchives");
+}
+function editArc(aid){
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=editArchives";
+}
+function updateArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=makeArchives&qstr="+qstr;
+}
+function checkArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=checkArchives&qstr="+qstr;
+}
+function moveArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=moveArchives&qstr="+qstr;
+}
+function adArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?aid="+aid+"&dopost=commendArchives&qstr="+qstr;
+}
+function delArc(aid){
+	var qstr=getCheckboxItem();
+	if(aid==0) aid = getOneItem();
+	location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=delArchives";
+}
 //上下文菜单
 function ShowMenu(obj,aid,atitle)
 {
   var eobj,popupoptions
   popupoptions = [
-    new ContextItem("浏览文档",function(){ window.open("archives_do.php?aid="+aid+"&dopost=viewArchives"); }),
-    new ContextItem("编辑文档",function(){ location="archives_do.php?aid="+aid+"&dopost=editArchives"; }),
+    new ContextItem("浏览文档",function(){ viewArc(aid); }),
+    new ContextItem("编辑文档",function(){ editArc(aid); }),
     new ContextSeperator(),
-    new ContextItem("更新HTML",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=makeArchives&qstr="+qstr; }),
-    new ContextItem("审核文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=checkArchives&qstr="+qstr; }),
-    new ContextItem("推荐文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=commendArchives&qstr="+qstr; }),
+    new ContextItem("更新HTML",function(){ updateArc(aid); }),
+    new ContextItem("审核文档",function(){ checkArc(aid); }),
+    new ContextItem("推荐文档",function(){ adArc(aid); }),
     new ContextSeperator(),
-    new ContextItem("删除文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=delArchives"; }),
+    new ContextItem("删除文档",function(){ delArc(aid); }),
     new ContextSeperator(),
     new ContextItem("全部选择",function(){ selAll(); }),
     new ContextItem("取消选择",function(){ noSelAll(); }),
@@ -33,7 +65,7 @@ function ShowMenu(obj,aid,atitle)
   ]
   ContextMenu.display(popupoptions)
 }
-	
+
 //获得选中文件的文件名
 function getCheckboxItem()
 {
@@ -51,6 +83,23 @@ function getCheckboxItem()
 	}
 	return allSel;	
 }
+
+//获得选中其中一个的id
+function getOneItem()
+{
+	var allSel="";
+	if(document.form2.arcID.value) return document.form2.arcID.value;
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+				allSel = document.form2.arcID[i].value;
+				break;
+		}
+	}
+	return allSel;	
+}
+
 function selAll()
 {
 	for(i=0;i<document.form2.arcID.length;i++)
@@ -83,11 +132,17 @@ function noSelAll()
 <table width="98%" border="0" cellspacing="0" cellpadding="0">
  <tr> 
  <td align="center">
-	<input type='button' onClick="location='catalog_do.php?cid={dede:global name='cid' /}&dopost=addArchives';" value='添加文档'>
-	{dede:global name='CheckUserSend'/}
+	<input type='button' onClick="location='catalog_do.php?channelid=<?=$channelid?>&cid=<?=$cid?>&dopost=addArchives';" value='添加文档'>
+	<? if($adminid>0){ ?>
+	<input type='button' onClick="location='content_i_list.php?cid=<?=$cid?>&adminid=0';" value='全部文档'>	
+	<? }else{ ?>
+	<input type='button' onClick="location='content_i_list.php?cid=<?=$cid?>&adminid=<?=$cuserLogin->getUserID()?>';" value='我的文档'>
+	<? } 
+	echo $CheckUserSend
+  ?>
  <input type='button' onClick="location='catalog_main.php';" value='栏目管理'>
- <input type='button' style='width:100' name='bb1' onClick="location='makehtml_list.php?cid={dede:global name='cid' /}';" value='更新栏目HTML'>
-	<input type='button' style='width:100' name='bb2' onClick="location='makehtml_archives.php?cid={dede:global name='cid' /}';" value='更新文档HTML'>
+ <input type='button' name='bb1' onClick="location='makehtml_list.php?cid=<?=$cid?>';" value='更新列表'>
+	<input type='button' name='bb2' onClick="location='makehtml_archives.php?cid=<?=$cid?>';" value='更新文档'>
  </td>
  </tr>
 </table>
@@ -105,7 +160,7 @@ function noSelAll()
 	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
 <tr bgcolor='#EEF4EA' height='26'> 
 <td background='img/wbg.gif' colspan='7'>
-§{dede:global name='positionname'/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
+§<?=$positionname?>文档列表 &nbsp;(使用鼠标右键进行常用操作)
 </td>
 </tr>
 <tr bgcolor="#F3F7EA" align="center"> 
@@ -113,7 +168,7 @@ function noSelAll()
 <td width="35%">文档标题</td>
 <td width="12%">类目</td>
 <td width="11%">权限</td>
-<td width="10%">推荐</td>
+<td width="10%">管理员</td>
 <td width="10%">HTML</td>
 <td  width="9%">点击</td>
  </tr>
@@ -125,47 +180,66 @@ function noSelAll()
 	<tr>
 <td>
 <div style="font-size:2pt">&nbsp</div>
-{dede:datalist} 
-<table width="100%" border="0" cellpadding="1" cellspacing="1" style="border-bottom:1px solid #BCBCBC" bgcolor="[field:ID function="GetColor('#FAFAF1','#FFFFFF');"/]">
+<?
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" 
+	style="border-bottom:1px solid #BCBCBC" bgcolor="<? echo GetColor('#FAFAF1','#FFFFFF'); ?>">
 <tr> 
 <td width="13%">
-	<img src="[field:litpic function="CheckPic('@me');"/]" width="80" height="60" alt="文档图片" border="0"> 
+	<img src="<? echo CheckPic($row['litpic']); ?>" width="80" height="60" alt="文档图片" border="0"> 
 </td>
 <td width="35%">
-<input name="arcID" type="checkbox" id="arcID" value="[field:ID/]" class="np"> 
-<b><a href="archives_do.php?aid=[field:ID/]&dopost=editArchives" oncontextmenu="ShowMenu(this,[field:ID/],'[field:title function=urlencode('@me')/]')"><u>[field:title/]</u></a>
+<input name="arcID" type="checkbox" id="arcID" value="<?=$row['ID']?>" class="np"> 
+<b>
+<a href="archives_do.php?aid=<?=$row['ID']?>&dopost=editArchives" oncontextmenu="ShowMenu(this,<?=$row['ID']?>,'<?=urlencode($row['title'])?>')">
+	<u><?/**/echo $row['title'];?></u>
+</a>
 <br>
-　　发布时间：[field:senddate function="GetDateTimeMk('@me')"/]
+　　发布时间：<?=GetDateTimeMk($row['senddate']);?>
 </b>
 </td>
 <td width="12%" height="26" align="center">
-[field:typename/]
+<?=$row['typename']?>
 <br>
-ID: [field:ID/]
+ID: <?=$row['ID']?>
 </td>
-<td width="11%" align="center">[field:arcrank function="GetRankName('@me')"/]</td>
-<td width="10%" align="center">[field:iscommend function="IsCommendArchives('@me')"/]</td>
-<td width="10%" align="center">[field:ismake function="IsHtmlArchives('@me')"/]</td>
-<td  width="9%" align="center">[field:click/]</td>
+<td width="11%" align="center"><?=GetRankName($row['arcrank'])?></td>
+<td width="10%" align="center"><?=$row['adminname']?></td>
+<td width="10%" align="center"><?=IsHtmlArchives($row['ismake'])?></td>
+<td  width="9%" align="center"><?=$row['click']?></td>
 </tr>
 </table>
 <div style="font-size:2pt">&nbsp</div>
-	{/dede:datalist}
+<?
+}
+?>
 	 </td></tr>
 	 </form>
 	 </table>
 	 
 	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
 <tr bgcolor='#FAFAF1'> 
-<td height="25"> <table width="98%" border="0" cellspacing="1" cellpadding="1">
-<tr> 
-<td width="14%"> &nbsp; <a href="javascript:selAll()" class="coolbg">全选</a> 
-&nbsp; <a href="javascript:noSelAll()" class="coolbg">取消</a> 
-</td>
-<td width="86%" align="center">
+<td height="25">
+<table width="98%" border="0" cellspacing="1" cellpadding="1">
+<tr bgcolor="#FAFAF1"> 
+<td height="24" colspan="10">
+&nbsp;
+<a href="javascript:selAll()" class="coolbg">全选</a> 
+<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+<a href="javascript:viewArc(0)" class="coolbg">&nbsp;查看&nbsp;</a> 
+<a href="javascript:editArc(0)" class="coolbg">&nbsp;更改&nbsp;</a> 
+<a href="javascript:updateArc(0)" class="coolbg">&nbsp;更新&nbsp;</a> 
+<a href="javascript:checkArc(0)" class="coolbg">&nbsp;审核&nbsp;</a> 
+<a href="javascript:adArc(0)" class="coolbg">&nbsp;推荐&nbsp;</a>
+<a href="javascript:moveArc(0)" class="coolbg">&nbsp;移动&nbsp;</a> 
+<a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a> 
 </td>
 </tr>
-</table> </td>
+</table>
+</td>
 </tr>
 </table>
 	
@@ -173,7 +247,7 @@ ID: [field:ID/]
 <table width='100%'border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC'>
 <tr> 
 <td height="25" align="center" bgcolor='#EEF4EA'>
-	{dede:pagelist listsize='7' /} 
+	<?=$dlist->GetPageList(7);?>
 </td>
 </tr>
 </table>
@@ -189,14 +263,14 @@ ID: [field:ID/]
 	<td width='160'>
 <select name='cid' style='width:150'>
  <option value='0'>选择分类...</option>
-	{dede:global name='optionarr' /}
+	<?=$optionarr?>
 </select>
 </td>
 <td width='70'>
 关键字：
 </td>
 <td width='160'>
-	<input type='text' name='keyword' value='{dede:global name='keyword' ''''''''''/}' style='width:150'>
+	<input type='text' name='keyword' value='<?=$keyword?>' style='width:150'>
 </td>
 <td>
 <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">

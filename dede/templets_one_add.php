@@ -1,12 +1,12 @@
 <?
 require(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
-SetPageRank(5);
+CheckPurview('temp_One');
 //////////////////////////////////////////
 if($dopost=="save")
 {
 	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-	$uptime = time();
+	$uptime = mytime();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
 	

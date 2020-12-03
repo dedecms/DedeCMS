@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>更改会员空间资料</title>
+<link href="base.css" rel="stylesheet" type="text/css">
+<script language='javascript'src='main.js'></script>
+<script>
+function checkSubmit()
+{
+  if(document.form1.vdcode.value=="")
+  {
+    document.form1.vdcode.focus();
+    alert("验证码不能为空！");
+    return false;
+  }
+}
+</script>	
+</head>
+<body leftmargin="0" topmargin="0">
+<? include(dirname(__FILE__)."/head.htm"); ?>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td width="600" valign="top"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+          <tr> 
+            
+          <td height="25" colspan="2" background="img/tbg.gif" class="gdt2">
+		  <strong>　&nbsp;更改个人空间资料：</strong> 
+          </td>
+          </tr>
+	 </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody">
+        <form action="index_do.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();">
+          <input type="hidden" name="fmdo" value="user" />
+          <input type="hidden" name="dopost" value="editSpace" />
+          <tr> 
+            <td height="35" colspan="2" > <table width="220" border="0" cellspacing="0" cellpadding="0" >
+                <tr> 
+                  <td width="80" >　验证码：</td>
+                  <td width="70" ><input name="vdcode" type="text" id="vdcode" size="10" ></td>
+                  <td width="70" align="center" ><img src='../include/vdimgck.php' width='50' height='20'></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >　空间名称：</td>
+          </tr>
+          <tr> 
+            <td height="35" colspan="2" > 　 
+              <input name="spacename" type="text" id="spacename" size="35" value="<?=$spacename?>"> 
+            </td>
+          </tr>
+          <tr> 
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >　个人签名：[少于125中文字]</td>
+          </tr>
+          <tr> 
+            <td height="84" colspan="2" align="left" > 　 
+              <textarea name="mybb" cols="50" rows="4" id="mybb"><?=$mybb?></textarea></td>
+          </tr>
+          <tr> 
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >　空间公告：</td>
+          </tr>
+          <tr> 
+            <td height="150" colspan="2" style="padding-left:6px;padding-right:6px"> 
+              <?
+	          GetEditor("news",$news,200,"MemberLit");
+              ?>
+            </td>
+          </tr>
+          <tr> 
+            <td height="45" colspan="2" >　空间形象： 
+              <input name="spaceimage" type="file" id="spaceimage" onChange="SeePic($Obj('picview'),$Obj('spaceimage'));">
+              (大小为150*110像素最佳4/3比例)
+            </td>
+          </tr>
+          <tr> 
+            <td width="22%" height="108" align="right" >&nbsp;</td>
+            <td width="78%" height="108" >
+            	<img src="<?=$spaceimage."?".time().mt_rand(100,900)?>" width="150" height="110" id="picview" name="picview"> 
+              <input type="hidden" name="oldimg" value="<?=$spaceimage?>">
+            </td>
+          </tr>
+          <tr> 
+            <td height="28" align="right" >&nbsp;</td>
+            <td height="25" >&nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="67" align="right" >&nbsp;</td>
+            <td height="67" >
+            	<input type="submit" name="Submit2" value="确定修改" > 
+              &nbsp;&nbsp;
+              <input type="reset" name="Submit222" value="重置" >
+             </td>
+          </tr>
+        </form>
+      </table>
+    </td>
+  </tr>
+</table>
+<?
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</body>
+</html>

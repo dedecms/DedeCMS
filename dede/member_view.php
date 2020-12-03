@@ -1,11 +1,11 @@
 <?
 require(dirname(__FILE__)."/config.php");
+CheckPurview('member_Edit');
 if(!isset($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = "";
 else $ENV_GOBACK_URL="member_main.php";
 $ID = ereg_replace("[^0-9]","",$ID);
 $dsql = new DedeSql(false);
 $row=$dsql->GetOne("select  * from #@__member where ID='$ID'");
-$dsql->Close();
 ?>
 <html>
 <head>
@@ -44,8 +44,6 @@ function checkSubmit()
         <form name="form2" action="member_do.php" method="post" onSubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="edituser" />
           <input type="hidden" name="ID" value="<?=$ID?>" />
-          <input type="hidden" name="oldprovince" value="<?=$row['province']?>" />
-          <input type="hidden" name="oldcity" value="<?=$row['city']?>" />
           <tr> 
             <td width="17%" height="25" align="right" >用户名：</td>
             <td width="83%" height="25" > 
@@ -54,7 +52,7 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="25" align="right" >密　码：</td>
-            <td height="25" >
+            <td height="25" > 
               <?=$row['pwd']?>
             </td>
           </tr>
@@ -85,12 +83,13 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="25" align="right" >性　别：</td>
-            <td height="25" > <input type="radio" name="sex" value="男"<?if($row['sex']=="男" ) echo" checked" ;?>>
-              男&nbsp; <input type="radio" name="sex" value="女"<?if($row['sex']=="女" ) echo" checked" ;?>>
-              女</td>
+            <td height="25" > <input type="radio" name="sex" class="np" value="男"<?if($row['sex']=="男" ) echo" checked" ;?>>
+              男 &nbsp; <input type="radio" name="sex" class="np" value="女"<?if($row['sex']=="女" ) echo" checked" ;?>>
+              女 </td>
           </tr>
           <tr> 
-            <td height="25" colspan="2" ><hr width="80%" size="1" noshade> </td>
+            <td height="25" align="right" >推荐级别：</td>
+            <td height="25" ><input name="matt" type="text" id="matt" value="<?=$row['matt']?>" size="10"></td>
           </tr>
           <tr> 
             <td height="25" align="right" >生日：</td>
@@ -114,48 +113,49 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="25" align="right" >职业：</td>
-            <td height="25" ><input type="radio" name="job" value="学生" <?if($row['job']=="学生" ) echo" checked" ;?>>
+            <td height="25" > <input type="radio" class="np" name="job" value="学生" <?if($row['job']=="学生" ) echo" checked" ;?>>
               学生 
-              <input type="radio" name="job" value="职员" <?if($row['job']=="职员" ) echo" checked" ;?>>
+              <input type="radio" class="np" name="job" value="职员" <?if($row['job']=="职员" ) echo" checked" ;?>>
               职员 
-              <input type="radio" name="job" value="白领" <?if($row['job']=="白领" ) echo" checked" ;?>>
+              <input type="radio" class="np" name="job" value="白领" <?if($row['job']=="白领" ) echo" checked" ;?>>
               白领 
-              <input type="radio" name="job" value="失业中" <?if($row['job']=="失业中" ) echo" checked" ;?>>
-              失业中</td>
-          </tr>
-          <tr>
-            <td height="25" align="right" >所在地区：</td>
-            <td height="25" >&nbsp;</td>
+              <input type="radio" class="np" name="job" value="失业中" <?if($row['job']=="失业中" ) echo" checked" ;?>>
+              失业中 </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >更改：</td>
-            <td height="25" ><select name="province" size="1" id="province" width="4" onchange="javascript:selNext(this.document.form2.city,this.value)" style="width:85">
-                <option value="0" selected>--不限--</option>
-              </select> <script language='javascript'>
-selTop(this.document.form2.province);
-</script> &nbsp;城市： 
+            <td height="25" align="right" >所在在区：</td>
+            <td height="25" > <select name="province" size="1" id="province" width="4" onchange="javascript:selNext(this.document.form2.city,this.value)" style="width:85">
+                <option value="0">--不限--</option>
+                <?
+				 $dsql->SetQuery("Select * From #@__area where rid=0");
+				 $dsql->Execute();
+				 while($rowa = $dsql->GetArray()){
+				    if($row['province']==$rowa['eid'])
+					{ echo "<option value='".$rowa['eid']."' selected>".$rowa['name']."</option>\r\n"; }
+					else
+					{ echo "<option value='".$rowa['eid']."'>".$rowa['name']."</option>\r\n"; }
+				 }
+				 ?>
+              </select> &nbsp;城市： 
               <select id="city" name="city" width="4" style="width:85" >
-                <option value="0" selected>--不限--</option>
+                <option value="0">--不限--</option>
+                <?
+				 if(!empty($row['province'])){
+				 $dsql->SetQuery("Select * From #@__area where rid=".$row['province']);
+				 $dsql->Execute();
+				 while($rowa = $dsql->GetArray()){
+				    if($row['city']==$rowa['eid'])
+					{ echo "<option value='".$rowa['eid']."' selected>".$rowa['name']."</option>\r\n"; }
+					else
+					{ echo "<option value='".$rowa['eid']."'>".$rowa['name']."</option>\r\n"; }
+				 }}
+				 ?>
               </select> </td>
           </tr>
-          <tr> 
-            <td height="25" align="right" >自我介绍：</td>
-            <td height="25" >[少于是125中文字]&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="25" align="right" >&nbsp;</td>
-            <td height="25" ><textarea name="myinfo" cols="40" rows="3" id="myinfo" ><?=$row['myinfo']?></textarea></td>
-          </tr>
-          <tr> 
-            <td height="25" align="right" >个人签名：</td>
-            <td height="25" >[在论坛中使用，少于是125中文字]</td>
-          </tr>
-          <tr> 
-            <td height="25" align="right" >&nbsp;</td>
-            <td height="25" ><textarea name="mybb" cols="40" rows="3" id="mybb" ><?=$row['mybb']?></textarea></td>
-          </tr>
-          <tr> 
-            <td height="25" colspan="2" ><hr width="80%" size="1" noshade></td>
+          <tr align="center"> 
+            <td height="25" colspan="2" > 
+              <hr width="80%" size="1" noshade>
+            </td>
           </tr>
           <tr> 
             <td height="25" align="right" >OICQ号码：</td>
@@ -169,7 +169,37 @@ selTop(this.document.form2.province);
           </tr>
           <tr> 
             <td height="25" align="right" >个人主页：</td>
-            <td height="25" ><input name="homepage" value="<?=$row['homepage']?>" type="text" id="homepage" size="25" > 
+            <td height="25" ><input name="homepage" value="<?=$row['homepage']?>" type="text" id="homepage" size="25" ></td>
+          </tr>
+          <tr> 
+            <td height="25" align="right" >联系地址：</td>
+            <td height="25" > <input name="address" value="<?=$row['address']?>" type="text" id="address" size="25" > 
+            </td>
+          </tr>
+          <tr> 
+            <td height="70" align="right" >自我介绍：</td>
+            <td height="70" > <textarea name="myinfo" cols="40" rows="3" id="textarea3" ><?=$row['myinfo']?></textarea></td>
+          </tr>
+          <tr> 
+            <td height="71" align="right" >个人签名：</td>
+            <td height="71" > <textarea name="mybb" cols="40" rows="3" id="textarea4" ><?=$row['mybb']?></textarea></td>
+          </tr>
+          <tr align="center"> 
+            <td height="25" colspan="2" > 
+              <hr width="80%" size="1" noshade>
+            </td>
+          </tr>
+          <tr> 
+            <td height="25" align="right" >空间名称： </td>
+            <td height="25" ><input name="spacename" type="text" id="spacename" size="35" value="<?=$row['spacename']?>"></td>
+          </tr>
+          <tr> 
+            <td height="130" align="right" >空间公告：</td>
+            <td height="130" ><textarea name="news" cols="50" rows="8" id="textarea7" ><?=$row['news']?></textarea></td>
+          </tr>
+          <tr> 
+            <td height="130" align="right" >详细资料：</td>
+            <td height="130" ><textarea name="fullinfo" cols="50" rows="8" id="textarea8" ><?=$row['fullinfo']?></textarea> 
             </td>
           </tr>
           <tr> 

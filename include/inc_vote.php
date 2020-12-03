@@ -21,6 +21,7 @@ class DedeVote
 		$this->VoteNotes = Array();
 		$this->VoteCount = 0;
 		$this->VoteID = $aid;
+		if(!is_array($this->VoteInfos)) return;
 		$dtp = new DedeTagParse();
 		$dtp->SetNameSpace("v","<",">");
 		$dtp->LoadSource($this->VoteInfos['votenote']);
@@ -97,33 +98,30 @@ class DedeVote
 	//-------------------------------------
 	function SaveVote($voteitem)
 	{
+		if(empty($voteitem)) return "你没选中任何项目！";
 		$items="";
 		//检查投票是否已过期
 		$nowtime = time();
-		if($nowtime > $this->VoteInfos['endtime']){
-			return "投票已经过期！";
-		}
-		if($nowtime < $this->VoteInfos['starttime']){
-			return "投票还没有开始！";
-		}
+		if($nowtime > $this->VoteInfos['endtime']) return "投票已经过期！";
+		if($nowtime < $this->VoteInfos['starttime']) return "投票还没有开始！";
 		//检查用户是否已投过票，cookie大约保存约十天
 		if(isset($_COOKIE["DEDE_VOTENAME_AAA"])){
 			if($_COOKIE["DEDE_VOTENAME_AAA"]==$this->VoteInfos['aid']) return "你已经投过票！";
-			else
-				setcookie("DEDE_VOTENAME_AAA",$this->VoteInfos['aid'],time()+360000,"/");
+			else setcookie("DEDE_VOTENAME_AAA",$this->VoteInfos['aid'],time()+360000,"/");
 		}
 		else{
 			setcookie("DEDE_VOTENAME_AAA",$this->VoteInfos['aid'],time()+360000,"/");
 		}
+		//必须存在投票项目
 		if($this->VoteCount > 0)
 		{
 			foreach($this->VoteNotes as $k=>$v)
 			{
-				if($this->VoteInfos['ismore']==0){
+				if($this->VoteInfos['ismore']==0){ //单选项
 					if($voteitem == $k){ $this->VoteNotes[$k]['count']++; break; }
 				}
-				else{
-				  if(in_array($k,$voteitem)){ $this->VoteNotes[$k]['count']++; }
+				else{ //多选项
+				  if(is_array($voteitem) && in_array($k,$voteitem)){ $this->VoteNotes[$k]['count']++; }
 				}
 			}
 			foreach($this->VoteNotes as $k=>$arr){

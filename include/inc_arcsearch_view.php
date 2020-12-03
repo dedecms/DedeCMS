@@ -1,14 +1,15 @@
 <?
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/pub_db_mysql.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
+require_once(dirname(__FILE__)."/inc_typelink.php");
+require_once(dirname(__FILE__)."/pub_dedetag.php");
+require_once(dirname(__FILE__)."/pub_splitword_www.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
-//本类的用途是用于浏览频道列表或对内容列表生成HTML
+//本类的用途是用于文档搜索
 ******************************************************/
 @set_time_limit(0);
+//-----------------------
+//搜索类
+//-----------------------
 class SearchView
 {
 	var $dsql;
@@ -22,21 +23,23 @@ class SearchView
 	var $PageSize;
 	var $ChannelType;
 	var $TempInfos;
-	var $TypeFields;
+	var $Fields;
 	var $PartView;
 	var $StartTime;
 	var $Keywords;
 	var $OrderBy;
 	var $SearchType;
 	var $KType;
+	var $Keyword;
 	//-------------------------------
 	//php5构造函数
 	//-------------------------------
-	function __construct($typeid,$keywords,$orderby,$achanneltype="all",
+	function __construct($typeid,$keyword,$orderby,$achanneltype="all",
 	                        $searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
  	{
+ 		if(empty($upagesize)) $upagesize = 10;
  		$this->TypeID = $typeid;
- 		$this->Keywords = $keywords;
+ 		$this->Keyword = $keyword;
 	  $this->OrderBy = $orderby;
 	  $this->KType = $kwtype;
 	  $this->PageSize = $upagesize;
@@ -52,23 +55,17 @@ class SearchView
  		$this->dtp2 = new DedeTagParse();
  		$this->dtp2->SetNameSpace("field","[","]");
  		$this->TypeLink = new TypeLink($typeid);
+ 		$this->Keywords = $this->GetKeywords($keyword);
  
- 		$this->TypeFields['phpurl'] = $GLOBALS['cfg_plus_dir'];
- 		$this->TypeFields['templeturl'] = $GLOBALS['cfg_templets_dir'];
- 		$this->TypeFields['memberurl'] = $GLOBALS['cfg_member_dir'];
- 		$this->TypeFields['powerby'] = $GLOBALS['cfg_powerby'];
- 		$this->TypeFields['indexurl'] = $GLOBALS['cfg_indexurl']."/";
- 		$this->TypeFields['indexurl'] = ereg_replace("/{1,}","/",$this->TypeFields['indexurl']);
- 		$this->TypeFields['indexname'] = $GLOBALS['cfg_indexname'];
- 		$this->TypeFields['specurl'] = $GLOBALS['cfg_special'];
- 		$this->TypeFields['webname'] = $GLOBALS["cfg_webname"];
+ 		//设置一些全局参数的值
+ 		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
  		
  		$this->CountRecord();
  		
- 		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/default/search.htm";
+ 		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/search.htm";
  		if(!file_exists($tempfile)||!is_file($tempfile)){
  			$this->Close();
- 			echo "模板文件：'".$tempfile."' 不存在，无法解析文档！";
+ 			echo "模板文件：'".$tempfile."' 不存在，无法解析！";
  			exit();
  		}
  		$this->dtp->LoadTemplate($tempfile);
@@ -76,48 +73,105 @@ class SearchView
  		$this->TempInfos['source'] = $this->dtp->SourceString;
  		if($this->PageSize=="") $this->PageSize = 20;
     $this->TotalPage = ceil($this->TotalResult/$this->PageSize);
+    
+    if($this->PageNo==1){
+    	$this->dsql->ExecuteNoneQuery("Update #@__search_keywords set result='".$this->TotalResult."' where keyword='".addslashes($keyword)."'; ");
+    }
+    
   }
   //php4构造函数
  	//---------------------------
- 	function SearchView($typeid,$keywords,$orderby,$achanneltype="all",
+ 	function SearchView($typeid,$keyword,$orderby,$achanneltype="all",
  	                     $searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
   {
- 		$this->__construct($typeid,$keywords,$orderby,$achanneltype,$searchtype,$starttime,$upagesize,$kwtype);
+ 		$this->__construct($typeid,$keyword,$orderby,$achanneltype,$searchtype,$starttime,$upagesize,$kwtype);
  	}
  	//---------------------------
  	//关闭相关资源
  	//---------------------------
  	function Close()
  	{
- 		@$this->dsql->Close();
- 		@$this->TypeLink->Close();
+ 		$this->dsql->Close();
+ 		$this->TypeLink->Close();
  	}
+ 	//获得关键字的分词结果，并保存到数据库
+  //--------------------------------
+  function GetKeywords($keyword){
+	   $keyword = cn_substr($keyword,50);
+	   $row = $this->dsql->GetOne("Select spwords From #@__search_keywords where keyword='".addslashes($keyword)."'; ");
+	   if(!is_array($row)){
+		   if(strlen($keyword)>7){
+		      $sp = new SplitWord();
+	        $keywords = $sp->SplitRMM($keyword);
+	        $sp->Clear();
+	        $keywords = ereg_replace("[ ]{1,}"," ",trim($keywords));
+	     }else{
+	        $keywords = $keyword;
+	     }
+	     $inquery = "INSERT INTO `#@__search_keywords`(`keyword`,`spwords`,`count`,`result`,`lasttime`) 
+          VALUES ('".addslashes($keyword)."', '".addslashes($keywords)."', '1', '0', '".mytime()."');
+       ";
+	     $this->dsql->ExecuteNoneQuery($inquery);
+	  }else{
+		   $this->dsql->ExecuteNoneQuery("Update #@__search_keywords set count=count+1,lasttime='".mytime()."' where keyword='".addslashes($keyword)."'; ");
+		   $keywords = $row['spwords'];
+	  }
+	  return $keywords;
+  }
  	//----------------
  	//获得关键字SQL
  	//----------------
- 	function GetKeywordSql()
+  function GetKeywordSql()
  	{
  		$ks = explode(" ",$this->Keywords);
  		$kwsql = "";
  		foreach($ks as $k){
  			$k = trim($k);
- 			if($k=="") continue;
+ 			if(strlen($k)<2) continue;
  			if(ord($k[0])>0x80 && strlen($k)<3) continue;
- 			if($this->SearchType=="title")
- 			{
- 				if($this->KType==1) $kwsql .= " Or #@__archives.title like '%$k%' ";
- 				else $kwsql .= " And #@__archives.title like '%$k%' ";
- 			}
- 			else
- 			{
- 				if($this->KType==1) $kwsql .= " Or #@__archives.title like '%$k%' Or #@__archives.keywords like '% $k%' ";
- 			  else $kwsql .= " And (#@__archives.title like '%$k%' Or #@__archives.keywords like '% $k%') ";
+ 			$k = addslashes($k);
+ 			if($this->SearchType=="title"){
+ 				 if($this->KType==1) $kwsql .= " Or #@__archives.title like '%$k%' ";
+ 				 else $kwsql .= " And #@__archives.title like '%$k%' ";
+ 			}else{
+ 				 if($this->KType==1) $kwsql .= " Or CONCAT(#@__archives.title,' ',#@__archives.description,' ',#@__archives.writer,' ',#@__archives.source) like '%$k%' Or CONCAT(' ',#@__archives.keywords,' ') like '%$k %' ";
+ 			   else $kwsql .= " And (CONCAT(#@__archives.title,' ',#@__archives.description,' ',#@__archives.writer,' ',#@__archives.source) like '%$k%' Or CONCAT(' ',#@__archives.keywords,' ') like '%$k %') ";
  			}
  		}
  		if($this->KType==1) $kwsql = " ( ".ereg_replace("^ Or","",$kwsql)." ) ";
  		else $kwsql = " ( ".ereg_replace("^ And","",$kwsql)." ) ";
+ 		
  		if($kwsql==" (  ) ") return "";
  		else return $kwsql;
+ 	}
+ 	//-------------------
+ 	//获得相关的关键字
+ 	//-------------------
+ 	function GetLikeWords($num=8){
+ 		$ks = explode(" ",$this->Keywords);
+ 		$lsql = "";
+ 		foreach($ks as $k){
+ 			$k = trim($k);
+ 	    if(strlen($k)<2) continue;
+ 			if(ord($k[0])>0x80 && strlen($k)<3) continue;
+ 			$k = addslashes($k);
+ 			if($lsql=="") $lsql = $lsql." CONCAT(spwords,' ') like '%$k %' ";
+ 			else $lsql = $lsql." Or CONCAT(spwords,' ') like '%$k %' ";
+ 		}
+ 		if($lsql=="") return "";
+ 		else{
+ 			$likeword = "";
+ 			$lsql = "(".$lsql.") And Not(keyword like '".addslashes($this->Keyword)."') ";
+ 			$this->dsql->SetQuery("Select keyword,count From #@__search_keywords where $lsql order by lasttime desc limit 0,$num; ");
+ 			$this->dsql->Execute('l');
+ 			while($row=$this->dsql->GetArray('l')){
+ 				 if($row['count']>1000) $fstyle=" style='font-size:11pt;color:red'";
+ 				 else if($row['count']>300) $fstyle=" style='font-size:10pt;color:green'";
+ 				 else $style = "";
+ 				 $likeword .= "　<a href='search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword'".$style."><u>".$row['keyword']."</u></a> ";
+ 			}
+ 			return $likeword;
+ 		}
  	}
  	//----------------
  	//加粗关键字
@@ -144,26 +198,21 @@ class SearchView
  		if(isset($GLOBALS['PageNo'])) $this->PageNo = $GLOBALS['PageNo'];
  		else $this->PageNo = 1;
  		
- 		$ksql = $this->GetKeywordSql();
- 		
- 		if($ksql!="") $ksql = " And ".$ksql;
- 		
- 		$addSql  = " arcrank > -1 $ksql";
- 		
- 		if($this->TypeID > 0) $addSql .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
- 		
- 		if($this->StartTime > 0) $addSql .= " And senddate>'".$this->StartTime."' ";
- 		
- 		if($this->ChannelType > 0) $addSql .= " And channel='".$this->ChannelType."'";
- 		
  		if($this->TotalResult==-1)
  		{
- 			$cquery = "Select count(*) as dd From #@__archives where $addSql";
- 			//echo $cquery;
- 			$row = $this->dsql->GetOne($cquery);
- 			if(is_array($row)) $this->TotalResult = $row['dd'];
- 			else $this->TotalResult = 0;
- 		}
+ 		  $ksql = $this->GetKeywordSql();
+ 		  if($ksql!="") $ksql = " And ".$ksql;
+ 		  $addSql  = " arcrank > -1 $ksql";
+ 		  if($this->TypeID > 0) $addSql .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
+ 		  if($this->StartTime > 0) $addSql .= " And senddate>'".$this->StartTime."' ";
+ 		  if($this->ChannelType > 0) $addSql .= " And channel='".$this->ChannelType."'";
+ 		
+ 	    $cquery = "Select count(*) as dd From #@__archives where $addSql";
+      $row = $this->dsql->GetOne($cquery);
+ 		  if(is_array($row)) $this->TotalResult = $row['dd'];
+ 		  else $this->TotalResult = 0;
+ 	 }
+ 		
  	}
  	//------------------
  	//显示列表
@@ -196,10 +245,17 @@ class SearchView
  				if($list_len=="") $list_len = 3;
  				$this->dtp->Assign($tagid,$this->GetPageListDM($list_len));
  			}
+ 			else if($tagname=="likewords"){
+ 				$this->dtp->Assign($tagid,$this->GetLikeWords($ctag->GetAtt('num')));
+ 			}
+ 			else if($tagname=="hotwords"){
+ 				$this->dtp->Assign($tagid,
+ 				GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
+ 			}
  			else if($tagname=="field") //类别的指定字段
  			{
- 					if(isset($this->TypeFields[$ctag->GetAtt('name')]))
- 					  $this->dtp->Assign($tagid,$this->TypeFields[$ctag->GetAtt('name')]);
+ 					if(isset($this->Fields[$ctag->GetAtt('name')]))
+ 					  $this->dtp->Assign($tagid,$this->Fields[$ctag->GetAtt('name')]);
  					else
  					  $this->dtp->Assign($tagid,"");
  			}
@@ -270,7 +326,8 @@ class SearchView
 		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.typeid,#@__archives.ismake,#@__archives.money,
 		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,#@__archives.click,
 		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
-		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart 
+		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart, 
+		#@__arctype.moresite,#@__arctype.siteurl
 		from #@__archives 
 		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
 		where $orwhere $ordersql limit $limitstart,$row";
@@ -280,8 +337,6 @@ class SearchView
     $artlist = "";
     if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
     $this->dtp2->LoadSource($innertext);
-    //$oldSource = $this->dtp2->SourceString;
-    //$oldCtags = $this->dtp2->CTags;
     for($i=0;$i<$row;$i++)
 		{
        if($col>1) $artlist .= "<tr>\r\n";
@@ -290,17 +345,15 @@ class SearchView
          if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
          if($row = $this->dsql->GetArray("al"))
          {
-           //$this->dtp2->SourceString = $oldSource;
-           //$this->dtp2->CTags = $oldCtags;
            //处理一些特殊字段
-           $row["description"] = $this->GetRedKeyWord(cnw_left($row["description"],$infolen));
-           $row["title"] = $this->GetRedKeyWord(cnw_left($row["title"],$titlelen));
+           $row["arcurl"] = GetFileUrl($row["ID"],$row["typeid"],$row["senddate"],$row["title"],
+                        $row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"],$row["money"],true,$row["siteurl"]);
+           $row["description"] = $this->GetRedKeyWord(cn_substr($row["description"],$infolen));
+           $row["title"] = $this->GetRedKeyWord(cn_substr($row["title"],$titlelen));
            $row["id"] =  $row["ID"];
            if($row["litpic"]=="") $row["litpic"] = $GLOBALS["cfg_plus_dir"]."/img/dfpic.gif";
            $row["picname"] = $row["litpic"];
-           $row["arcurl"] = $this->GetArcUrl($row["id"],$row["typeid"],$row["senddate"],$row["title"],
-                        $row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"],$row["money"]);
-           $row["typeurl"] = $this->GetListUrl($row["typeid"],$row["typedir"],$row["isdefault"],$row["defaultname"],$row["ispart"],$row["namerule2"]);
+           $row["typeurl"] = $this->GetListUrl($row["typeid"],$row["typedir"],$row["isdefault"],$row["defaultname"],$row["ispart"],$row["namerule2"],$row["siteurl"]);
            $row["info"] = $row["description"];
            $row["filename"] = $row["arcurl"];
            $row["stime"] = GetDateMK($row["pubdate"]);
@@ -347,7 +400,7 @@ class SearchView
 		
 		$purl = $this->GetCurUrl();
 		
-		$geturl = "keywords=".urlencode($this->Keywords)."&searchtype=".$this->SearchType;
+		$geturl = "keyword=".urlencode($this->Keyword)."&searchtype=".$this->SearchType;
 		$geturl .= "&channeltype=".$this->ChannelType."&orderby=".$this->OrderBy;
 		$geturl .= "&kwtype=".$this->KType."&pagesize=".$this->PageSize;
 		$geturl .= "&typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
@@ -410,14 +463,7 @@ class SearchView
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
-  	return GetTypeUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2);
-  }
- 	//--------------------------
- 	//获得一个指定档案的链接
- 	//--------------------------
- 	function GetArcUrl($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0)
-  {
-  	return GetFileUrl($aid,$typeid,$timetag,$title,$ismake,$rank,$namerule,$artdir,$money);
+  	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
   //---------------
   //获得当前的页面文件的url

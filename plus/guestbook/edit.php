@@ -2,6 +2,7 @@
 /** 检查权限 ************************/
 $gotopagerank = "admin";
 require_once(dirname(__FILE__)."/config.php");
+
 if($cuserLogin->getUserRank()==-1)
 {
 	showMsg("对不起,你没有权限！",-1);

@@ -6,7 +6,6 @@
 //$cfg_dbpwd="";
 //前缀名称
 //$cfg_dbprefix="";
-$cfg_db_language = "gbk";
 class DedeSql
 {
 	var $linkID;
@@ -63,8 +62,7 @@ class DedeSql
 	//
 	//设置SQL里的参数
 	//
-	function SetParameter($key,$value)
-	{
+	function SetParameter($key,$value){
 		$this->parameters[$key]=$value;
 	}
 	//
@@ -81,7 +79,7 @@ class DedeSql
 			return false;
 		}
 		else{ @mysql_select_db($this->dbName); }
-		mysql_query("SET NAMES '".$GLOBALS['cfg_db_language']."';",$this->linkID);
+		@mysql_query("SET NAMES '".$GLOBALS['cfg_db_language']."';",$this->linkID);
 		return true;
 	}
 	//
@@ -110,8 +108,9 @@ class DedeSql
 	//
 	//执行一个不返回结果的SQL语句，如update,delete,insert等
 	//
-	function ExecuteNoneQuery()
+	function ExecuteNoneQuery($sql="")
 	{
+		if($sql!="") $this->SetQuery($sql);
 		if(is_array($this->parameters)){
 			foreach($this->parameters as $key=>$value){
 				$this->queryString = str_replace("@".$key,"'$value'",$this->queryString);
@@ -119,24 +118,24 @@ class DedeSql
 		}
 		return mysql_query($this->queryString,$this->linkID);
 	}
-	function ExecNoneQuery()
+	function ExecNoneQuery($sql="")
 	{
-		return $this->ExecuteNoneQuery();
+		return $this->ExecuteNoneQuery($sql);
 	}
 	//
 	//执行一个带返回结果的SQL语句，如SELECT，SHOW等
 	//
-	function Execute($id="me")
+	function Execute($id="me",$sql="")
 	{
+		if($sql!="") $this->SetQuery($sql);
 		$this->result[$id] = @mysql_query($this->queryString,$this->linkID);
-		
 		if(!$this->result[$id]){
 			$this->DisplayError(mysql_error()." - Execute Query False! <font color='red'>".$this->queryString."</font>");
 		}
 	}
-	function Query($id="me")
+	function Query($id="me",$sql="")
 	{
-		$this->Execute($id);
+		$this->Execute($id,$sql);
 	}
 	//
 	//执行一个SQL语句,返回前一条记录或仅返回一条记录
@@ -194,7 +193,7 @@ class DedeSql
 	//
 	function GetVersion()
 	{
-		$rs = mysql_query("SELECT VERSION();",$conn);
+		$rs = mysql_query("SELECT VERSION();",$this->linkID);
     $row = mysql_fetch_array($rs);
     $mysql_version = $row[0];
     mysql_free_result($rs);

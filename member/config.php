@@ -1,20 +1,26 @@
 <?
+$needFilter = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
 
+//获得当前脚本名称，如果你的系统被禁用了$_SERVER变量，请自行更改这个选项
+$dedeNowurl = "";
+$s_scriptName="";
+$dedeNowurl = GetCurUrl();
+$dedeNowurls = explode("?",$dedeNowurl);
+$s_scriptName = $dedeNowurls[0];
+
+//检查是否开放会员功能
+//-------------------------------
+
+if($cfg_mb_open=='否'){
+	ShowMsg("系统关闭了会员功能，因此你无法访问此页面！","javascript:;");
+	exit();
+}
+
 $cfg_ml = new MemberLogin(); 
+$cfg_ml->PutLoginInfo($cfg_ml->M_ID);
 
-$cfg_member_menu = "
-<a href=\"index.php\"><u>会员主页</u></a>&nbsp;
-<a href=\"mystow.php\"><u>我的收藏夹</u></a>&nbsp;
-<a href=\"mypay.php\"><u>消费记录</u></a>&nbsp;
-<a href=\"artsend.php\"><u>投稿</u></a>&nbsp;
-<a href=\"artlist.php\"><u>管理稿件</u></a>&nbsp;
-<a href=\"edit_info.php\"><u>更改个人资料</u></a>&nbsp;
-<a href=\"index_do.php?fmdo=login&dopost=exit\"><u>退出登录</u></a>
-";
-
-//------------------------------
 //检查用户是否有权限进行某个操作
 //------------------------------
 function CheckRank($rank=0,$money=0)
@@ -53,4 +59,5 @@ function CheckRank($rank=0,$money=0)
 		}
 	}
 }
+
 ?>

@@ -53,7 +53,7 @@ require_once(dirname(__FILE__)."/config.php");
         <tr> 
           <td colspan="3"> 
             <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：arclist<a href="help_templet.php#31" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -80,7 +80,7 @@ require_once(dirname(__FILE__)."/config.php");
         <tr> 
           <td colspan="3">
 		  <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：arclist<a href="help_templet.php#31" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -110,7 +110,7 @@ require_once(dirname(__FILE__)."/config.php");
         <tr> 
           <td colspan="3">
 		  <table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：arclist<a href="help_templet.php#31" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -129,7 +129,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td colspan="3"><table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：arclist<a href="help_templet.php#31" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -148,7 +148,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td colspan="3"><table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：arclist<a href="help_templet.php#31" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -167,7 +167,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td colspan="3"><table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：channel[参考]，代码：</td>
@@ -186,7 +186,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td colspan="3"><table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：mytag[参考]，代码：</td>
@@ -203,7 +203,7 @@ require_once(dirname(__FILE__)."/config.php");
         </tr>
         <tr> 
           <td colspan="3"><table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：global，代码：</td>
@@ -213,7 +213,7 @@ require_once(dirname(__FILE__)."/config.php");
                   <td colspan="2"><textarea name="partcode" style='width:100%' rows="4" id="partcode">{dede:global name='变量名'/}</textarea></td>
                 </tr>
                 <tr> 
-                  <td colspan="2">常用变量：cfg_webname(网站名称)、cfg_cmspath(CMS安装目录)、cfg_templets_dir(模板路径)、cfg_plus_dir(插件目录)</td>
+                  <td colspan="2">常用变量：cfg_webname(网站名称)、cfg_cmspath(CMS安装目录)、cfg_templeturl(模板网址)、cfg_phpurl(插件网址)</td>
                 </tr>
               </form>
             </table></td>
@@ -224,14 +224,15 @@ require_once(dirname(__FILE__)."/config.php");
         <tr> 
           <td colspan="3">
 		  <table width='96%' border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
-                  <td width="430">使用标记：include，代码：</td>
+                  <td width="430">使用标记：include，代码：(file 文件名 ismake 是否包含模板标记，如果包含用 
+                    ismake='yes')</td>
                   <td width="156" align="center"><input type="submit" name="Submit" value="预览" class="np" style="width:60px"></td>
                 </tr>
                 <tr> 
-                  <td colspan="2"> <textarea name="partcode" style='width:100%' rows="4" id="partcode">{dede:include fiel='文件名'/}</textarea></td>
+                  <td colspan="2"> <textarea name="partcode" style='width:100%' rows="4" id="partcode">{dede:include file='文件名' ismake=''/}</textarea></td>
                 </tr>
               </form>
             </table></td>

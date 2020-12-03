@@ -24,14 +24,11 @@ if($dopost=="login")
 	      if($res==1){
 		       $cuserLogin->keepUser();
 		       if(!empty($gotopage)){
-		       	//header("location:$gotopage");
-		       	ShowMsg("成功登录，正在转向管理管理主页！",$gotopage);
-		       	exit();
-		       }
-		       else{
-		       	ShowMsg("成功登录，正在转向管理管理主页！","index.php");
-		       	//header("location:index.php");
-		       	exit();
+		       	 ShowMsg("成功登录，正在转向...",$gotopage);
+		       	 exit();
+		       }else{
+		       	 ShowMsg("成功登录，请关闭本窗口后开启一个新窗口！","javascript:;");
+		       	 exit();
 		       }
 	      }
 	      else if($res==-1){

@@ -1,15 +1,14 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-SetPageRank(10);
+CheckPurview('sys_plus');
 if(empty($dopost)) $dopost = "";
-if($dopost=="save")
-{
+if($dopost=="save"){
 	$plusname = str_replace("\\'","",$plusname);
 	$link = str_replace("\\'","",$link);
 	$target = str_replace("\\'","",$target);
-	$menustring = "<m:item name=\\'$plusname\\' link=\\'$link\\' rank=\\'$rank\\' target=\\'$target\\' />";
+	$menustring = "<m:item name=\\'$plusname\\' link=\\'$link\\' rank=\\'plus_$plusname\\' target=\\'$target\\' />";
   $dsql = new DedeSql(false);
-  $dsql->SetQuery("Insert Into #@__plus(plusname,menustring,writer,isshow) Values('$plusname','$menustring','$writer','1');");
+  $dsql->SetQuery("Insert Into #@__plus(plusname,menustring,writer,isshow,filelist) Values('$plusname','$menustring','$writer','1','$filelist');");
   $dsql->Execute();
   $dsql->Close();
   ShowMsg("成功安装一个插件,请刷新导航菜单!","plus_main.php");
@@ -47,29 +46,17 @@ body {
       <td bgcolor="#FFFFFF"> <input name="writer" type="text" id="writer"> </td>
     </tr>
     <tr> 
-      <td align="center" bgcolor="#FFFFFF">使用权限</td>
-      <td bgcolor="#FFFFFF">
-	  <select name='rank' style='width:150'>
-		<?
-			$dsql = new DedeSql(false);
-			$dsql->SetQuery("Select * from #@__admintype order by rank desc");
-			$dsql->Execute("ut");
-			while($myrow = $dsql->GetObject("ut"))
-			{
-			  echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
-			}
-			$dsql->Close();
-		?>
-      </select>
-	</td>
-    </tr>
-    <tr> 
       <td align="center" bgcolor="#FFFFFF">主程序文件</td>
       <td bgcolor="#FFFFFF"><input name="link" type="text" id="link" size="30"> </td>
     </tr>
     <tr> 
       <td align="center" bgcolor="#FFFFFF">目标框架</td>
       <td bgcolor="#FFFFFF"><input name="target" type="text" id="target" value="main"></td>
+    </tr>
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF">文件列表</td>
+      <td bgcolor="#FFFFFF">文件用&quot;,&quot;分开，路径相对于管理目录（当前目录）<br>
+        <textarea name="filelist" rows="8" id="filelist" style="width:60%"></textarea></td>
     </tr>
     <tr bgcolor="#F9FDF0"> 
       <td height="28" colspan="2"> <table width="100%" border="0" cellspacing="0" cellpadding="0">

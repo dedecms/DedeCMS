@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<title>插入Word格式</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style>
+.td{font-size:10pt;}
+</style>
+<script language=javascript>
+function TableOK(){
+  var reHtml;
+  reHtml = document.getElementById("wordtext").innerHTML;
+  window.returnValue = reHtml;
+  window.close();
+}
+</script>
+<link href="base.css" rel="stylesheet" type="text/css">
+</HEAD>
+<body bgcolor="#EBF6CD" topmargin="6">
+<table border="0" width="500" align="center">
+  <form name="theform">
+    <tr> 
+      <td>输入从WORD复制的内容（Ctrl + V）： </td>
+    </tr>
+    <tr> 
+      <td height="150"> <span id='wordtext' style='border:solid 1px #CCCCCC;width:500;height:150;background-color:#FFFFFF' contentEditable="true"></span> 
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"> 
+        <input onclick="TableOK();" type="button" name="Submit2" value=" 确定 " class="binput"> 
+      <input type="button" name="Submit" onclick="window.close();" value=" 取消 " class="binput"> 
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</HTML>
+

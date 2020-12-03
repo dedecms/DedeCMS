@@ -12,13 +12,13 @@ function SelectTemplets(fname)
 {
    var posLeft = window.event.clientY-200;
    var posTop = window.event.clientX-300;
-   window.open("../include/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("../include/dialog/select_templets.php?&activepath=<?=urlencode($cfg_templets_dir.'/plus')?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="action_makehtml_js.php" method="get" target='stafrm'>
+  <form name="form1" action="makehtml_js_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 

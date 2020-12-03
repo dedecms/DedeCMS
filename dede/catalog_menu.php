@@ -1,6 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typeunit3.php");
+require_once(dirname(__FILE__)."/../include/inc_typeunit_menu.php");
 $userChannel = $cuserLogin->getUserChannel();
 ?>
 <html>

@@ -12,12 +12,13 @@ function addArchives();
 ---------------------------*/
 if($dopost=="addArchives")
 {
-	if($cid==0){
+	if(empty($cid) && empty($channelid)){
 		require_once(dirname(__FILE__)."/article_add.php");
 		exit();
 	}
 	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select #@__channeltype.addcon from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
+	if(!empty($channelid)) $row = $dsql->GetOne("Select addcon from #@__channeltype where ID='$channelid'");
+	else $row = $dsql->GetOne("Select #@__channeltype.addcon from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
 	$gurl = $row["addcon"];
 	$dsql->Close();
 	if($gurl==""){
@@ -103,7 +104,10 @@ function upRank()
 ------------------------*/
 else if($dopost=="upRank")
 {
-	SetPageRank(5);
+	//检查权限许可
+  CheckPurview('t_Edit,t_AccEdit');
+  //检查栏目操作许可
+  CheckCatalog($cid,"你无权更改本栏目！");
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select reID,sortrank From #@__arctype where ID='$cid'");
 	$reID = $row['reID'];
@@ -116,6 +120,25 @@ else if($dopost=="upRank")
 	}
 	$dsql->Close();
 	ShowMsg("操作成功，返回目录...","catalog_main.php");
+	exit();
+}
+else if($dopost=="upRankAll")
+{
+	//检查权限许可
+  CheckPurview('t_Edit');
+	$dsql = new DedeSql(false);
+	$row = $dsql->GetOne("Select ID From #@__arctype order by ID desc");
+	if(is_array($row))
+	{
+		$maxID = $row['ID'];
+		for($i=1;$i<=$maxID;$i++){
+			if(isset(${'sortrank'.$i})){
+				$dsql->ExecuteNoneQuery("Update #@__arctype set sortrank='".(${'sortrank'.$i})."' where ID='{$i}';");
+			}
+		}
+	}
+	$dsql->Close();
+	ShowMsg("操作成功，正在返回...","catalog_main.php");
 	exit();
 }
 /*---------------------
@@ -133,7 +156,8 @@ function editSgPage();
 -----------*/
 else if($dopost=="editSgPage")
 {
-	SetPageRank(5);
+	//检查权限许可
+  CheckPurview('plus_文件管理器');
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select defaultname,typedir From #@__arctype where ID='$cid'");
 	$dsql->Close();
@@ -141,6 +165,7 @@ else if($dopost=="editSgPage")
 	$lv = new ListView($cid);
 	$lv->MakeHtml();
 	$lv->Close();
+ 	$row['typedir'] = eregi_replace("\{cmspath\}",$cfg_cmspath,$row['typedir']);
  	$editurl = "file_manage_view.php?backurl=catalog_main.php&fmdo=editview&ishead=yes&filename=".$row['defaultname']."&activepath=".urlencode($row['typedir'])."&job=edit";
  	header("location:$editurl");
  	exit();
@@ -151,21 +176,21 @@ function editSgTemplet();
 -----------*/
 else if($dopost=="editSgTemplet")
 {
-	SetPageRank(5);
+  //检查权限许可
+  CheckPurview('plus_文件管理器');
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select tempone From #@__arctype where ID='$cid'");
 	$dsql->Close();
 	$tempone = $row['tempone'];
-	if(!is_file($cfg_basedir.$cfg_templets_dir."/".$tempone))
-	{
+	$tempone = eregi_replace("\{style\}",$cfg_df_style,$tempone);
+	if(!is_file($cfg_basedir.$cfg_templets_dir."/".$tempone)){
 		ShowMsg("这个单独页面没有使用模板，现在转向直接编辑这个页面。","catalog_do.php?cid=$cid&dopost=editSgPage");
 		exit();
 	}
 	$tempones = explode('/',$tempone);
 	$filename = $tempones[count($tempones)-1];
 	$tmpdir = $cfg_templets_dir;
-	if(count($tempones)>1)
-	{
+	if(count($tempones)>1){
 	  foreach($tempones as $v){
 		  if($v!="") $tmpdir .= "/".$v;
 	  }
@@ -173,5 +198,21 @@ else if($dopost=="editSgTemplet")
 	$editurl = "file_manage_view.php?backurl=catalog_main.php&fmdo=editview&ishead=yes&filename=".$filename."&activepath=".urlencode($tmpdir)."&job=edit";
  	header("location:$editurl");
  	exit();
+}
+/*-----------
+获得子类的内容
+function GetSunLists();
+-----------*/
+else if($dopost=="GetSunLists")
+{
+	require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
+	header("Content-Type: text/html; charset=gb2312");
+	PutCookie('lastCid',$cid,3600*24,"/");
+	$tu = new TypeUnit();
+	$tu->dsql = new DedeSql(false);
+  echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";	
+	$tu->LogicListAllSunType($cid,"　");
+	echo "    </table>\r\n";
+  $tu->Close();
 }
 ?>

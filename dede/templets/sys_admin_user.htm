@@ -3,27 +3,34 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>管理员帐号</title>
-<link href='../base.css' rel='stylesheet' type='text/css'>
+<link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
   <tr> 
-    <td height="27" colspan="5" background="img/tbg.gif" bgcolor="#E7E7E7"> <table width="96%" border="0" cellspacing="1" cellpadding="1">
+    <td height="27" colspan="5" background="img/tbg.gif" bgcolor="#E7E7E7">
+    	<table width="96%" border="0" cellspacing="1" cellpadding="1">
         <tr> 
           <td width="24%"><b>管理员帐号</b> </td>
-          <td width="76%" align="right"><b><a href="sys_admin_user_add.php"><u>增加管理员</u></a></b></td>
+          <td width="76%" align="right"><b>
+          	<a href="sys_admin_user_add.php"><u>增加管理员</u></a>
+          	|
+          	<a href="sys_group.php"><u>用户组管理</u></a>
+          	</b>
+          </td>
         </tr>
-      </table></td>
+      </table>
+     </td>
   </tr>
   <tr bgcolor="#FFFFFF"> 
     <td height="24" colspan="5">　§为了防止错误操作，系统不允许在管理界面删除超级管理员，如果确实要删除，请自行在数据表dede_admin中删除。</td>
   </tr>
   <tr bgcolor="#F3FAE4"> 
     <td width="18%" height="24" align="center" bgcolor="#F3FAE4">登录ID</td>
-    <td width="16%" align="center" bgcolor="#F3FAE4">笔名</td>
+    <td width="13%" align="center" bgcolor="#F3FAE4">笔名</td>
     <td width="22%" align="center" bgcolor="#F3FAE4">级别</td>
     <td width="22%" align="center" bgcolor="#F3FAE4">频道</td>
-    <td width="20%" align="center" bgcolor="#F3FAE4">管理项</td>
+    <td width="23%" align="center" bgcolor="#F3FAE4">管理项</td>
   </tr>
   {dede:datalist} 
   <tr bgcolor="#FFFFFF" align="center"> 
@@ -32,8 +39,9 @@
     <td>[field:usertype function="GetUserType('@me')"/]</td>
     <td>[field:typename function="GetChannel('@me')"/]</td>
     <td rowspan="2">
-	   <a href='sys_admin_user_edit.php?ID=[field:ID/]&dopost=edit'>[<u>更改</u>]</a>　 
-     <a href='sys_admin_user_edit.php?ID=[field:ID/]&userid=[field:userid/]&dopost=delete'>[<u>删除</u>]</a> 
+	   <a href='sys_admin_user_edit.php?ID=[field:ID/]&dopost=edit'><u>更改</u></a> | 
+     <a href='sys_admin_user_edit.php?ID=[field:ID/]&userid=[field:userid/]&dopost=delete'><u>删除</u></a> |
+     <a href='content_list.php?adminid=[field:ID/]'><u>文档</u></a>　
     </td>
   </tr>
   <tr> 

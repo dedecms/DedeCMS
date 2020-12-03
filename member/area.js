@@ -546,6 +546,38 @@ function selNext(oj,v)
 		oj.options.add(aOption);
 	}
 }
+function selNextDf(oj,v,fk,fv)
+{
+	newonj = oj.options;
+	while(newonj.length>0)
+	{ newonj.remove(0); }
+	clear(oj);
+	if(v==0)
+	{
+		aOption = document.createElement("OPTION");
+ 		aOption.text="请选择";
+		aOption.value="0";
+		oj.options.add(aOption);
+		return;
+	}
+	else
+	{
+		if(fk==0) fv = '不限';
+		aOption = document.createElement("OPTION");
+ 		aOption.text = fv;
+		aOption.value = fk;
+		oj.options.add(aOption);
+	}
+	cityarr = barr=eval("B"+v);
+	for(i=0;i<cityarr.length;i++)
+	{
+		tlines = cityarr[i].split("~");
+		aOption = document.createElement("OPTION");
+ 		aOption.text=tlines[1];
+		aOption.value=tlines[0];
+		oj.options.add(aOption);
+	}
+}
 //设置省份选项
 function selTop(oj)
 {

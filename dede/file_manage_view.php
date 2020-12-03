@@ -1,6 +1,8 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
+CheckPurview('plus_文件管理器');
+
 $activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 if($activepath == "/") $activepath = "";
@@ -10,7 +12,6 @@ else $inpath = $cfg_basedir.$activepath;
 //更改文件名
 if($fmdo=="rename")
 {
-	SetPageRank(10);
 	if($activepath=="") $ndirstring = "根目录";
 	$ndirstring = $activepath;
 	$wintitle = "文件管理";
@@ -46,7 +47,6 @@ else if($fmdo=="newdir")
 //移动文件
 else if($fmdo=="move")
 {
-	SetPageRank(10);
 	$wintitle = "文件管理";
 	$wecome_info = "文件管理::移动文件 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
 	$win = new OxWindow();
@@ -64,7 +64,6 @@ else if($fmdo=="move")
 //删除文件
 else if($fmdo=="del")
 {
-	SetPageRank(10);
 	$wintitle = "文件管理";
 	$wecome_info = "文件管理::删除文件 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
 	$win = new OxWindow();
@@ -84,18 +83,20 @@ else if($fmdo=="del")
 //编辑文件
 else if($fmdo=="edit")
 {
-	SetPageRank(10);
 	if(!isset($backurl)) $backurl = "";
 	$activepath = str_replace("..","",$activepath);
 	$filename = str_replace("..","",$filename);
 	$file = "$cfg_basedir$activepath/$filename";
-	$fp = fopen($file,"r");
-	$content = fread($fp,filesize($file));
-	fclose($fp);
-	$content = eregi_replace("<textarea","< textarea",$content);
-	$content = eregi_replace("</textarea","< /textarea",$content);
-	$content = eregi_replace("<form","< form",$content);
-	$content = eregi_replace("</form","< /form",$content);
+	$content = "";
+	if(is_file($file)){
+	  $fp = fopen($file,"r");
+	  $content = fread($fp,filesize($file));
+	  fclose($fp);
+	  $content = eregi_replace("<textarea","< textarea",$content);
+	  $content = eregi_replace("</textarea","< /textarea",$content);
+	  $content = eregi_replace("<form","< form",$content);
+	  $content = eregi_replace("</form","< /form",$content);
+	}
 	$contentView = "<textarea name='str' style='width:100%;height:400'>$content</textarea>\r\n";
 	$GLOBALS['filename'] = $filename;
 	$ctp = new DedeTagParse();
@@ -105,14 +106,13 @@ else if($fmdo=="edit")
 //编辑文件，可视化模式
 else if($fmdo=="editview")
 {
-	SetPageRank(10);
 	if(!isset($backurl)) $backurl = "";
 	if(!isset($ishead)) $ishead = "";
 	$activepath = str_replace("..","",$activepath);
 	$filename = str_replace("..","",$filename);
 	$file = "$cfg_basedir$activepath/$filename";
 	$fp = fopen($file,"r");
-	$content = fread($fp,filesize($file));
+	@$content = fread($fp,filesize($file));
 	fclose($fp);
 	if((eregi("<html",$content) && eregi("<body",$content)) || $ishead == "yes")
 	{ $contentView = GetEditor("str",$content,"500","Default","string","true"); }
@@ -126,7 +126,6 @@ else if($fmdo=="editview")
 //新建文件
 else if($fmdo=="newfile")
 {
-	SetPageRank(10);
 	$content = "";
 	$GLOBALS['filename'] = "newfile.txt";
 	$contentView = "<textarea name='str' style='width:100%;height:400'></textarea>\r\n";
@@ -137,7 +136,6 @@ else if($fmdo=="newfile")
 //上传文件
 else if($fmdo=="upload")
 {
-	SetPageRank(10);
 	$ctp = new DedeTagParse();
 	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_upload.htm");
 	$ctp->display();

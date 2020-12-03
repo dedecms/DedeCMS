@@ -9,12 +9,9 @@ if($dopost=="login")
 {
   if(empty($validate)) $validate=="";
   else $validate = strtolower($validate);
-  
-  if( empty($_SESSION["s_validate"]) ) $svali = "";
-  else $svali = $_SESSION["s_validate"];
-  
+  $svali = GetCkVdValue();
   if($validate=="" || $validate!=$svali){
-	  ShowMsg("验证码不正确!","");
+	  ShowMsg("验证码不正确!".$validate.'---'.$svali,"");
   }else{
      $cuserLogin = new userLogin();
      if(!empty($userid)&&!empty($pwd))
@@ -49,13 +46,13 @@ if($dopost=="login")
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>织梦内容管理系统 DedeCms V3</title>
+<title><?=$cfg_softname." ".$cfg_version?></title>
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body style='MARGIN: 0px' bgColor='#ffffff' leftMargin='0' topMargin='0' scroll='no'>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
   <tr> 
-    <td width="100%" height="64" background="img/indextitlebg.gif"><img src="img/indextitle.gif" width="250" height="64"> 
+    <td width="100%" height="64" background="img/indextitlebg.gif"><img src="img/df_dedetitle.gif" width="178" height="53"> 
     </td>
   </tr>
   <tr> 
@@ -102,14 +99,17 @@ if($dopost=="login")
             <td> <table width="90%"  border="0" cellspacing="0" cellpadding="0">
                 <tr> 
                   <td width="25%"><input type="text" name="validate" style="width:80;height:20"></td>
-                  <td width="75%"><img src='../include/validateimg.php' width='50' height='20'></td>
+                  <td width="75%"><img src='../include/vdimgck.php' width='50' height='20'></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td height="50" colspan="2" align="center"> <input type="button" name="sm1" value="登录" style="background-color:#BAE171;border:1px solid #666666" onClick="this.form.submit();"> 
-              &nbsp; <input type="button" name="sm2" value="Power by DedeCms" onClick="window.open('http://www.dedecms.com');" style="background-color:#FFFFFF;border:1px solid #DDDDDD;color:#DDDDDD"> 
-              &nbsp; </td>
+            <td height="50" colspan="2" align="center">
+            	<input type="submit" name="sm1" value="登录" style="background-color:#BAE171;border:1px solid #666666" onClick="this.form.submit();"> 
+              &nbsp;
+              <input type="button" name="sm2" value="Official site" onClick="window.open('http://www.dedecms.com');" style="background-color:#FFFFFF;border:1px solid #DDDDDD;color:#DDDDDD"> 
+              &nbsp;
+              </td>
           </tr>
         </table>
       </form></td>

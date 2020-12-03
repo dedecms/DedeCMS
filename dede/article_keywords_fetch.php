@@ -2,8 +2,9 @@
 @ob_start();
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_Keyword');
 require_once(dirname(__FILE__)."/../include/pub_splitword_www.php");
-SetPageRank(10);
+
 if(empty($startdd)) $startdd = 0;//结果集起始记录值
 if(empty($pagesize)) $pagesize = 20;
 if(empty($totalnum)) $totalnum = 0;
@@ -18,12 +19,14 @@ if($totalnum==0)
 }
 //获取记录，并分析关键字
 if($totalnum > $startdd+$pagesize) $limitSql = " limit $startdd,$pagesize";
-else $limitSql = " limit $startdd,".($totalnum - $startdd);
+else if(($totalnum-$startdd)>0) $limitSql = " limit $startdd,".($totalnum - $startdd);
+else $limitSql = "";
 $tjnum = $startdd;
+if($limitSql!=""){
 $fquery = "
 Select #@__archives.ID,#@__archives.title,#@__addonarticle.body 
 From #@__archives left join #@__addonarticle on #@__addonarticle.aid=#@__archives.ID
-where #@__archives.keywords='' And #@__archives.channel='1' $limitSql 
+where trim(#@__archives.keywords)='' And #@__archives.channel='1' $limitSql 
 ";
 $dsql->SetQuery($fquery);
 $dsql->Execute();
@@ -46,11 +49,12 @@ while($row=$dsql->GetObject())
 	  }
 	}
 	$keywords = addslashes($keywords);
-	$dsql->SetQuery("update #@__archives set keywords='$keywords' where ID='$ID'");
+	$dsql->SetQuery("update #@__archives set keywords=' $keywords ' where ID='$ID'");
 	$dsql->ExecuteNoneQuery();
 }
 $sp->Clear();
 unset($sp);
+}//end if limit
 //返回提示信息
 if($totalnum>0) $tjlen = ceil( ($tjnum/$totalnum) * 100 );
 else $tjlen=100;

@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('temp_Other');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 $dsql = new DedeSql(false);
 $row  = $dsql->GetOne("Select * From #@__homepageset");
@@ -24,7 +25,7 @@ function SelectTemplets(fname)
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="action_tag_test.php" target="stafrm" method="post">
+  <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
     <input type="hidden" name="dopost" value="make">
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">

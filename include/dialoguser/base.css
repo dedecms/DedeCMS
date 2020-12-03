@@ -1,0 +1,31 @@
+td {font-size: 9pt;line-height: 1.5;}
+body {
+  font-size: 9pt;
+  line-height: 1.5;
+  scrollbar-base-color:#C0D586;
+  scrollbar-arrow-color:#FFFFFF;
+  scrollbar-shadow-color:DEEFC6
+}
+a:link { font-size: 9pt; color: #000000; text-decoration: none }
+a:visited{ font-size: 9pt; color: #000000; text-decoration: none }
+a:hover {color: red}
+input{border: 1px solid #000000;}
+.np{border:none}
+.linerow{border-bottom: 1px solid #ACACAC;}
+.coolbg {
+  border-right: 2px solid #ACACAC;
+  border-bottom: 2px solid #ACACAC;
+  background-color: #E6E6E6
+}
+.coolbg2 {
+  border: 1px solid #000000;
+  background-color: #DFDDD2;
+  height:18px
+}
+.ll {
+  border-right: 2px solid #ACACAC;
+  border-bottom: 2px solid #ACACAC;
+  background-color: #E6E6E6
+}
+.bline {border-bottom: 1px solid #BCBCBC;background-color: #FFFFFF}
+.bline2 {border-bottom: 1px solid #BCBCBC;}

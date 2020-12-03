@@ -1,0 +1,160 @@
+#main1{
+   width:778px;
+   padding:0px;
+   margin-top:3px;
+}
+
+#main1Left{
+   width:580px;
+   float: left;
+}
+
+#main1Rigth{
+	width:190px;
+	margin-left:6px;
+	float: left;
+}
+
+#guideTitle{
+  height:28px;
+  background-image:url(guidebg.gif);
+  border-right:1px solid #cccccc;
+}
+
+#guideBody{
+  height:280px;
+  border-left:1px solid #aaaaaa;
+  border-right:1px solid #aaaaaa;
+  border-bottom:1px solid #aaaaaa;
+}
+
+#guideleft{
+  width:365px;
+  float:left;
+}
+
+#guideright{
+  width:195px;
+  padding-left:8px;
+  float:left;
+}
+
+#gltop{
+  border:1px solid #cccccc;
+  background-color:#f8f8f8;
+  padding:4px;
+  margin-bottom:6px;
+}
+
+#gltop h1{
+  color:#ef0000;
+}
+
+#grtop{
+  margin-bottom:6px;
+}
+
+#grbttitle{
+  padding-top:4px;
+  padding-left:6px;
+  width:184px;
+  height:20px;
+  background-image:url(itembg1.gif);
+  margin-bottom:6px;
+  font-weight:bold;;
+}
+
+#grbottom ul{
+  margin-bottom:3px;
+}
+
+#grbottom li{
+  margin-bottom:3px;
+  width:190px;
+  overflow:hidden;
+}
+
+div.rheadTop{
+  background-image:url(rrd.gif);
+	height:20px;
+	border:1px solid #cccccc;
+	text-align:center;
+	padding-top:4px;
+	font-weight:bold;
+	color:#BD4A5B;
+}
+
+div.rheadTop img{
+  margin-right:5px;
+}
+
+div.rhead{
+  background-image:url(rrd.gif);
+	height:20px;
+	border:1px solid #cccccc;
+	padding-top:4px;
+	padding-left:4px;
+}
+
+div.rhead img{
+  margin-right:5px;
+}
+
+div.spline{ height:3px;margin:0px;padding:0xp;font-size:0px;width:90% }
+
+div.rbody{
+  border:1px solid #cccccc;
+  background-color:#fafafa;
+  padding:3px;
+}
+
+div.leftLine{
+  
+}
+
+div.leftNoteL{
+  float:left;
+  width:49%;
+}
+
+div.leftNoteM{
+  float:left;
+  width:2%;
+}
+
+div.leftNoteR{
+  float:left;
+  width:49%;
+}
+
+div.lhead{
+  background-image:url(rrd.gif);
+	height:20px;
+	border:1px solid #cccccc;
+	padding-top:4px;
+	padding-left:4px;
+}
+
+div.lbody{
+  border:1px solid #cccccc;
+  background-color:#fafafa;
+  padding:3px;
+}
+
+#main2{
+   width:776px;
+   padding:0px;
+   margin:0px;
+   font-size:0px;
+   height:6px;
+}
+
+
+#foot{
+   width:776px;
+   padding-top:5px;
+   margin-top:6px;
+   background-image:url(bottombg1.jpg);
+   height:25px;
+   text-align:center;
+}

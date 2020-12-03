@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+
 require_once(dirname(__FILE__)."/../include/pub_datalist.php");
 require_once(dirname(__FILE__)."/../include/inc_functions.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");

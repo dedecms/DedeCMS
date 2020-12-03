@@ -1,7 +1,10 @@
 <?
 @set_time_limit(0);
 /*=======================================
-//织梦Http下载类V1.0版
+//织梦Http下载类V1.1版，本版增加了POST发送数据的方式
+//把要POST的数据像GET一样跟在网址后，程序会自动处理，并用POST方式发送
+//POST仅支持application/x-www-form-urlencoded方式
+//最后修改日期：2006-6-10
 =======================================*/
 class DedeHttpDown
 {
@@ -61,10 +64,7 @@ class DedeHttpDown
 		  	$this->BaseUrlPath = preg_replace("/\/$/","",$this->BaseUrlPath);
 		 }
 	}
-	//
-	//打开指定网址
-	//
-	function OpenUrl($url)
+	function ResetAny()
 	{
 		//重设各参数
 		$this->m_url = "";
@@ -77,38 +77,34 @@ class DedeHttpDown
 		$this->m_path = "/";
 		$this->m_query = "";
 		$this->m_error = "";
+	}
+	//
+	//打开指定网址
+	//
+	function OpenUrl($url,$requestType="GET")
+	{
+		$this->ResetAny();
 		$this->JumpCount = 0;
 		$this->m_httphead = Array() ;
-		//$this->m_puthead = "";
 		$this->m_html = "";
 		$this->Close();
 		//初始化系统
 		$this->PrivateInit($url);
-		$this->PrivateStartSession();
+		$this->PrivateStartSession($requestType);
 	}
 	//
-	//打开303重定向网址
+	//转到303重定向网址
 	//
 	function JumpOpenUrl($url)
 	{
-		//重设各参数
-		$this->m_url = "";
-		$this->m_urlpath = "";
-		$this->m_scheme = "http";
-		$this->m_host = "";
-		$this->m_port = "80";
-		$this->m_user = "";
-		$this->m_pass = "";
-		$this->m_path = "/";
-		$this->m_query = "";
-		$this->m_error = "";
+		$this->ResetAny();
 		$this->JumpCount++;
 		$this->m_httphead = Array() ;
 		$this->m_html = "";
 		$this->Close();
 		//初始化系统
 		$this->PrivateInit($url);
-		$this->PrivateStartSession();
+		$this->PrivateStartSession('GET');
 	}
 	//
 	//获得某操作错误的原因
@@ -116,19 +112,16 @@ class DedeHttpDown
 	function printError()
 	{
 		echo "错误信息：".$this->m_error;
-		echo "具体返回头：<br/>";
-		foreach($this->m_httphead as $k=>$v)
-		{ echo "$k => $v <br/>\r\n"; }
+		echo "<br/>具体返回头：<br/>";
+		foreach($this->m_httphead as $k=>$v){ echo "$k => $v <br/>\r\n"; }
 	}
 	//
 	//判别用Get方法发送的头的应答结果是否正确
 	//
 	function IsGetOK()
 	{
-		if( ereg("^2",$this->GetHead("http-state")) )
-		{	return true; }
-		else
-		{
+		if( ereg("^2",$this->GetHead("http-state")) ){	return true; }
+		else{
 			$this->m_error .= $this->GetHead("http-state")." - ".$this->GetHead("http-describe")."<br/>";
 			return false;
 		}
@@ -203,7 +196,7 @@ class DedeHttpDown
 	//
 	//开始HTTP会话
 	//
-	function PrivateStartSession()
+	function PrivateStartSession($requestType="GET")
 	{
 		
 		if(!$this->PrivateOpenHost()){
@@ -214,8 +207,10 @@ class DedeHttpDown
 		if($this->GetHead("http-edition")=="HTTP/1.1") $httpv = "HTTP/1.1";
 		else $httpv = "HTTP/1.0";
 		
+		$ps = explode('?',$this->m_urlpath);
 		//发送固定的起始请求头GET、Host信息
-		fputs($this->m_fp,"GET ".$this->m_urlpath." $httpv\r\n");
+		if($requestType=="GET") fputs($this->m_fp,"GET ".$this->m_urlpath." $httpv\r\n");
+		else fputs($this->m_fp,"POST ".$ps[0]." $httpv\r\n");
 		$this->m_puthead["Host"] = $this->m_host;
 		
 		//发送用户自定义的请求头
@@ -230,10 +225,25 @@ class DedeHttpDown
 			}
 		}
 		
+		if($requestType=="POST"){
+		   $postdata = "";
+		   if(count($ps)>1){
+			   for($i=1;$i<count($ps);$i++) $postdata .= $ps[$i];
+		   }
+		   else{ $postdata = "OK"; }
+		   $plen = strlen($postdata);
+		   fputs($this->m_fp,"Content-Type: application/x-www-form-urlencoded\r\n");
+		   fputs($this->m_fp,"Content-Length: $plen\r\n");
+	  }
+		
 		//发送固定的结束请求头
 		//HTTP1.1协议必须指定文档结束后关闭链接,否则读取文档时无法使用feof判断结束
 		if($httpv=="HTTP/1.1") fputs($this->m_fp,"Connection: Close\r\n\r\n");
 		else fputs($this->m_fp,"\r\n");
+		
+		if($requestType=="POST"){
+		   fputs($this->m_fp,$postdata);
+	  }
 		
 		//获取应答头状态信息
 		$httpstas = explode(" ",fgets($this->m_fp,256));
@@ -258,6 +268,7 @@ class DedeHttpDown
 			$hkey = trim($hkey);
 			if($hkey!="") $this->m_httphead[strtolower($hkey)] = trim($hvalue);
 		}
+		
 		//判断是否是3xx开头的应答
 		if(ereg("^3",$this->m_httphead["http-state"]))
 		{
@@ -273,7 +284,7 @@ class DedeHttpDown
 				}
 			}
 			else
-			{	$this->m_error = "无法识别的转移应答！"; }
+			{	$this->m_error = "无法识别的答复！"; }
 		}//
 	}
 	//
@@ -307,9 +318,7 @@ class DedeHttpDown
 			$this->m_error = $errstr;
 			return false;
 		}
-		else{
-			return true;
-		}
+		else{ return true; }
 	}
 	//
 	//关闭连接

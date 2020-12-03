@@ -1,0 +1,179 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>更改文章</title>
+<link href="base.css" rel="stylesheet" type="text/css">	
+<script language='javascript' src='main.js'></script>	
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+
+if(document.form1.title.value==""){
+	 alert("文章标题不能为空！");
+	 document.form1.title.focus();
+	 return false;
+}
+
+if(document.form1.typeid.value==0){
+	 alert("文章隶属栏目必须选择！");
+	 return false;
+}
+
+if(document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
+{
+	alert("文章隶属栏目必须选择白色背景的项目！");
+	return false;
+}
+
+if(document.form1.vdcode.value==""){
+ document.form1.vdcode.focus();
+ alert("验证码不能为空！");
+ return false;
+}
+
+}
+-->
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<? include(dirname(__FILE__)."/head.htm"); ?>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td width="600" valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td valign="bottom" background="img/tbg.gif" height="25" class="gdt2">
+		  <font color="#333333"> 
+            <strong>　&nbsp;更改文章：</strong>
+		  </font>
+		  </td>
+        </tr>
+        <tr>
+		<form name="form1" action="article_edit_action.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
+      <input type="hidden" name="ID" value="<?=$row['ID']?>">
+      <input type="hidden" name="channelid" value="1">
+      <td height="183" valign="top" style="padding-top:3px">
+		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693" style="margin-bottom:6px">
+                <tr> 
+                  <td height="24" colspan="4" bgcolor="#F0FBE3">　<strong>◆常规参数：</strong></td>
+                </tr>
+                <tr> 
+                  <td width="19%" height="28" align="center" bgcolor="#FFFFFF">文章标题：</td>
+                  <td width="81%" colspan="3" bgcolor="#FFFFFF"> 
+                    <input name="title" type="text" id="title" size="30" class="nb" value="<?=$row['title']?>">
+                    <font color="#FF0000">*</font></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#F7FDF0">文章出处：</td>
+                  <td colspan="3" bgcolor="#F7FDF0"> <input name="source" type="text" id="source" size="30" class="nb" value="<?=$row['source']?>"></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#FFFFFF">文章作者：</td>
+                  <td colspan="3" bgcolor="#FFFFFF"> <input name="writer" type="text" id="writer" size="30" class="nb" value="<?=$row['writer']?>"></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#F7FDF0">隶属栏目：</td>
+                  <td colspan="3" bgcolor="#F7FDF0"> 
+                    <?
+           	 $typeOptions = GetOptionList(0,0,1);
+		         echo "<select name='typeid' style='width:300' size='6'>\r\n";
+             echo "<option value='".$row['typeid']."' class='option3' selected>".$arow['typename']."</option>\r\n";
+             echo $typeOptions;
+             echo "</select>";
+			       ?>
+                    <br />
+                    (只允许并且必须选择白色背景的项目) <font color="#FF0000">*</font></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#FFFFFF">我的分类：</td>
+                  <td height="28" colspan="3" bgcolor="#F7FDF0">
+                  	<select name="mtype" id="mtype" style="width:200">
+                      <?
+$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' And channelid='1';");
+$dsql->Execute();
+if($row['mtype']==0) echo "<option value='0'>--请选择分类--</option>"; 
+while($arow = $dsql->GetObject()){
+  if($row['mtype']==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
+  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
+}
+?>
+                    </select></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
+                  <td colspan="3" bgcolor="#F7FDF0">
+                  	<table width="200" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="84"><input name="vdcode" type="text" id="vdcode2" size="10"></td>
+                        <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                      </tr>
+                    </table></td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#FFFFFF">摘要：</td>
+                  <td bgcolor="#FFFFFF">
+<textarea name="description" id="description" style="width:180;height:60"><?=$row['description']?></textarea> 
+                    <br>
+                    (内容的简要说明) </td>
+                  <td width="15%" align="center" bgcolor="#FFFFFF">关键词：</td>
+                  <td width="33%" bgcolor="#FFFFFF">
+<textarea name="keywords" id="keywords" style="width:180;height:60"><?=$row['keywords']?></textarea> 
+                    <br>
+                    (多个关键字时用空格分开)</td>
+                </tr>
+                <tr> 
+                  <td height="28" align="center" bgcolor="#F7FDF0">缩略图片：</td>
+                  <td colspan="3" bgcolor="#F7FDF0">
+<input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'));"></td>
+                </tr>
+                <tr> 
+                  <td colspan="4" align="center" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="18%" height="110">&nbsp;</td>
+                        <td width="82%"><img src="<? if($row['litpic']){ echo $row['litpic']; }else{ echo "img/pview.gif"; } ?>" id="picview" width="150" height="120"></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+				
+				
+              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693">
+                <tr bgcolor="#F0FBE3"> 
+                  <td width="100%" height="24" colspan="4">
+                  	　<strong>◆文章内容：<font color="#FF0000">*</font></strong>
+                  </td>
+                </tr>
+                <tr> 
+                  <td height="250" colspan="4" align="center" bgcolor="#FFFFFF"> 
+                    <?
+	GetEditor("body",$row['body'],350,"Member");
+?>
+                  </td>
+                </tr>
+                <tr bgcolor="#F7FDF0"> 
+                  <td height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
+                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();"> 
+                  </td>
+                </tr>
+              </table></td>
+			</form>
+        </tr>
+        <tr> 
+          <td height="10"></td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</body>
+</html>

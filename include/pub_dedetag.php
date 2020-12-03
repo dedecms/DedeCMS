@@ -1,15 +1,9 @@
 <?
 /*----------------------------------------------
 Copyright 2004-2006 by DedeCms.com itprato
-Dede Tag模板解析引挚 V4.0.1 版
-最后修改日期：2006-4-19 PHP版本要求：大于或等于php 4.1
-本文件包含四个类:
-class DedeTag 标记的数据描述
-class DedeAttribute Dede模板标记属性集合的数据描述
-class DedeTagParse Dede模板分析器
-class DedeAttributeParse Dede模板标记属性分析器
+Dede Tag模板解析引挚 V4.1 版
+最后修改日期：2006-7-4 PHP版本要求：大于或等于php 4.1
 ---------------------------------------------*/
-/////////////////////////////////////////////////////////////
 /****************************************
 class DedeTag 标记的数据结构描述
 function c____DedeTag(); 
@@ -50,8 +44,7 @@ class DedeTag
 	function GetAtt($str){
 		return $this->CAttribute->GetAtt($str);
 	}
-	function GetInnerText()
-	{
+	function GetInnerText(){
 		return $this->InnerText;
 	}
 }
@@ -63,62 +56,141 @@ function c____DedeTagParse();
 
 class DedeTagParse
 {
-	var $NameSpace = "dede"; //标记的名字空间
-	var $TagStartWord = "{"; //标记起始
-	var $TagEndWord = "}"; //标记结束
+	var $NameSpace = 'dede'; //标记的名字空间
+	var $TagStartWord = '{'; //标记起始
+	var $TagEndWord = '}'; //标记结束
 	var $TagMaxLen = 64; //标记名称的最大值
 	var $CharToLow = TRUE; // TRUE表示对属性和标记名称不区分大小写
-	                       //在本版中,更改该值无效
+	//////////////////////////////////////////////////////
+	var $IsCache = FALSE; //是否使用缓冲
+	var $TempMkTime = 0;
+	var $CacheFile = '';
 	/////////////////////////////                       
-	var $SourceString = "";//模板字符串
-	var $CTags="";		 //标记集合
-	var $Count=-1;		 //$Tags标记个数
+	var $SourceString = '';//模板字符串
+	var $CTags = '';		 //标记集合
+	var $Count = -1;		 //$Tags标记个数
 	
 	function __construct()
  	{
- 		$this->NameSpace = "dede";
-	  $this->TagStartWord = "{";
-	  $this->TagEndWord = "}";
+ 		if(!isset($GLOBALS['cfg_dede_cache'])) $GLOBALS['cfg_dede_cache'] = '否';
+ 		if($GLOBALS['cfg_dede_cache']=='是') $this->IsCache = TRUE;
+ 		else $this->IsCache = FALSE;
+ 		$this->NameSpace = 'dede';
+	  $this->TagStartWord = '{';
+	  $this->TagEndWord = '}';
 	  $this->TagMaxLen = 64;
 	  $this->CharToLow = TRUE;
- 		$this->SourceString = "";
+ 		$this->SourceString = '';
  		$this->CTags = Array();
  		$this->Count = -1;
+	  $this->TempMkTime = 0;
+	  $this->CacheFile = '';
   }
-  function DedeTagParse()
-  {
+  
+  function DedeTagParse(){
   	$this->__construct();
   }
-	
-	//
 	//设置标记的命名空间，默认为dede
-	//
 	function SetNameSpace($str,$s="{",$e="}"){
 		$this->NameSpace = strtolower($str);
 		$this->TagStartWord = $s;
 		$this->TagEndWord = $e;
 	}
-	//
 	//重置成员变量或Clear
-	//
 	function SetDefault(){
-		$this->SourceString="";
-		$this->CTags = "";
+		$this->SourceString = '';
+		$this->CTags = '';
 		$this->Count=-1;
 	}
+	function GetCount(){
+		return $this->Count+1;
+  }
 	function Clear(){
 		$this->SetDefault();
 	}
-	//
+	//检测模板缓冲
+	function LoadCache($filename)
+	{
+		if(!$this->IsCache) return false;
+		$cdir = dirname($filename);
+		$ckfile = str_replace($cdir,'',$filename).'.cache';
+		$ckfullfile = $cdir.''.$ckfile;
+		$ckfullfile_t = $cdir.''.$ckfile.'.t';
+		$this->CacheFile = $ckfullfile;
+		$this->TempMkTime = filemtime($filename);
+		if(!file_exists($ckfullfile)||!file_exists($ckfullfile_t)) return false;
+		//检测模板最后更新时间
+		$fp = fopen($ckfullfile_t,'r');
+		$time_info = trim(fgets($fp,64));
+		fclose($fp);
+		if($time_info != $this->TempMkTime){ return false; }
+		//引入缓冲数组
+		include($this->CacheFile);
+		//把缓冲数组内容读入类
+		if(isset($z) && is_array($z)){
+			foreach($z as $k=>$v){
+				$this->Count++;
+				$ctag = new DedeTAg();
+				$ctag->CAttribute = new DedeAttribute();
+				$ctag->IsReplace = FALSE;
+				$ctag->TagName = $v[0];
+				$ctag->InnerText = $v[1];
+				$ctag->StartPos = $v[2];
+				$ctag->EndPos = $v[3];
+				$ctag->TagValue = '';
+				$ctag->TagID = $k;
+				if(isset($v[4]) && is_array($v[4])){
+					$i = 0;
+					foreach($v[4] as $k=>$v){
+						$ctag->CAttribute->Count++;
+						$ctag->CAttribute->Items[$k]=$v;
+					}
+				}
+				$this->CTags[$this->Count] = $ctag;
+			}
+		}
+		else{//模板没有缓冲数组
+			$this->CTags = '';
+	    $this->Count = -1;
+		}
+		return true;
+	}
+	//写入缓冲
+	function SaveCache()
+	{
+		$fp = fopen($this->CacheFile.'.t',"w");
+		fwrite($fp,$this->TempMkTime."\n");
+		fclose($fp);
+		$fp = fopen($this->CacheFile,"w");
+		flock($fp,3);
+		fwrite($fp,'<'.'?'."\n");
+		if(is_array($this->CTags)){
+			foreach($this->CTags as $tid=>$ctag){
+				$arrayValue = 'Array("'.$ctag->TagName.'",';
+				$arrayValue .= '"'.str_replace('$','\$',str_replace("\r","\\r",str_replace("\n","\\n",str_replace('"','\"',$ctag->InnerText)))).'"';
+				$arrayValue .= ",{$ctag->StartPos},{$ctag->EndPos});";
+				fwrite($fp,"\$z[$tid]={$arrayValue}\n");
+				if(is_array($ctag->CAttribute->Items)){
+					foreach($ctag->CAttribute->Items as $k=>$v){
+						$k = trim(str_replace("'","",$k));
+						if($k=="") continue;
+						if($k!='tagname') fwrite($fp,"\$z[$tid][4]['$k']=\"".str_replace('$','\$',str_replace("\"","\\\"",$v))."\";\n");
+					}
+				}
+			}
+		}
+		fwrite($fp,"\n".'?'.'>');
+		fclose($fp);
+	}
 	//载入模板文件
-	//
 	function LoadTemplate($filename){
 		$this->SetDefault();
 		$fp = @fopen($filename,"r") or die("DedeTag Engine Load Template \"$filename\" False！");
 		while($line = fgets($fp,1024))
 			$this->SourceString .= $line;
 		fclose($fp);
-		$this->ParseTemplet();
+		if($this->LoadCache($filename)) return;
+		else $this->ParseTemplet();
 	}
 	function LoadTemplet($filename){
 		$this->LoadTemplate($filename);
@@ -126,20 +198,17 @@ class DedeTagParse
 	function LoadFile($filename){
 		$this->LoadTemplate($filename);
 	}
-	//
 	//载入模板字符串
-	//
 	function LoadSource($str){
 		$this->SetDefault();
 		$this->SourceString = $str;
+		$this->IsCache = FALSE;
 		$this->ParseTemplet();
 	}
 	function LoadString($str){
 		$this->LoadSource($str);
 	}
-	//
 	//获得指定名称的Tag的ID(如果有多个同名的Tag,则取没有被取代为内容的第一个Tag)
-	//	
 	function GetTagID($str){
 		if($this->Count==-1) return -1;
 		if($this->CharToLow) $str=strtolower($str);
@@ -151,9 +220,7 @@ class DedeTagParse
 		}
 		return -1;
 	}
-	//
 	//获得指定名称的CTag数据类(如果有多个同名的Tag,则取没有被分配内容的第一个Tag)
-	//
 	function GetTag($str){
 		if($this->Count==-1) return "";
 		if($this->CharToLow) $str=strtolower($str);
@@ -173,12 +240,6 @@ class DedeTagParse
 	  else return "";
 	}
 	//
-	//获得Tag的总数
-	//
-	function GetCount(){
-		return $this->Count+1;
-	}
-	//
 	//分配指定ID的标记的值
 	//
 	function Assign($tagid,$str)
@@ -196,26 +257,14 @@ class DedeTagParse
 		  { $this->CTags[$tagid]->TagValue = $str; }
 		}
 	}
-	//
-	//
-	function ReplaceTag($tagid,$str)
-	{
-		$this->Assign($tagid,$str);
-	}
-	//
-	//分配指定名称的标记的值
-	//本函数会给所有同名的标记值，如果标记包含属性，请不要用此函数
-	//
+	//分配指定名称的标记的值，如果标记包含属性，请不要用此函数
 	function AssignName($tagname,$str)
 	{
-		foreach($this->CTags as $ID=>$CTag)
-		{
+		foreach($this->CTags as $ID=>$CTag){
 			if($CTag->TagName==$tagname) $this->Assign($ID,$str);
 		}
 	}
-	//
 	//处理特殊标记
-	//
 	function AssignSysTag()
 	{
 		for($i=0;$i<=$this->Count;$i++)
@@ -234,7 +283,7 @@ class DedeTagParse
 		  //引入静态文件
 			else if( $CTag->TagName == "include" ){
 				$this->CTags[$i]->IsReplace = TRUE;
-				$this->CTags[$i]->TagValue = $this->IncludeFile($CTag->GetAtt("file"));
+				$this->CTags[$i]->TagValue = $this->IncludeFile($CTag->GetAtt("file"),$CTag->GetAtt("ismake"));
 			}
 			//循环一个普通数组
 			else if( $CTag->TagName == "foreach" )
@@ -269,74 +318,40 @@ class DedeTagParse
 	    }
     }
 	}
-	//
 	//把分析模板输出到一个字符串中,并返回
-	//
 	function GetResult()
 	{
 		$ResultString = "";
+		if($this->Count==-1){
+			return $this->SourceString;
+		}
 		$this->AssignSysTag();
-		$slen = strlen($this->SourceString);
+		$nextTagEnd = 0;
+		$strok = "";
 		for($i=0;$i<=$this->Count;$i++){
-			if($i==0){
-				for($j=0;$j<$this->CTags[$i]->StartPos;$j++){
-					$ResultString .= $this->SourceString[$j];
-				}
-				$ResultString .= $this->CTags[$i]->GetValue();
-			}
-			else{
-				for($j=$this->CTags[$i-1]->EndPos;
-					$j<$this->CTags[$i]->StartPos;$j++){
-					$ResultString .= $this->SourceString[$j];
-				}
-				$ResultString .= $this->CTags[$i]->GetValue();
-			}
+			$ResultString .= substr($this->SourceString,$nextTagEnd,$this->CTags[$i]->StartPos-$nextTagEnd);
+			$ResultString .= $this->CTags[$i]->GetValue();
+			$nextTagEnd = $this->CTags[$i]->EndPos;
 		}
-		for($j=$this->CTags[$this->Count]->EndPos;$j<$slen;$j++){
-			$ResultString .= $this->SourceString[$j];
-		}
+		$slen = strlen($this->SourceString);
+		if($slen>$nextTagEnd){
+		   $ResultString .= substr($this->SourceString,$nextTagEnd,$slen-$nextTagEnd);
+	  }
 		return $ResultString;
 	}
-	//
 	//直接输出分析模板
-	//
 	function Display()
 	{
-		$this->AssignSysTag();
-		$slen = strlen($this->SourceString);
-		for($i=0;$i<=$this->Count;$i++){
-			if($i==0){
-				for($j=0;$j<$this->CTags[$i]->StartPos;$j++){
-					echo $this->SourceString[$j];
-				}
-				echo $this->CTags[$i]->GetValue();
-			}
-			else{
-				for($j=$this->CTags[$i-1]->EndPos;$j<$this->CTags[$i]->StartPos;$j++)
-				{
-					echo $this->SourceString[$j];
-				}
-				echo $this->CTags[$i]->GetValue();
-			}
-		}
-		if($this->Count!=-1){
-		  for($j=$this->CTags[$this->Count]->EndPos;$j<$slen;$j++){
-			  echo $this->SourceString[$j];
-		  }
-	  }
+		echo $this->GetResult();
 	}
-	//
 	//把分析模板输出为文件
-	//
 	function SaveTo($filename)
 	{
 		$fp = @fopen($filename,"w") or die("DedeTag Engine Create File False：$filename");
 		fwrite($fp,$this->GetResult());
 		fclose($fp);
 	}
-	//---------------------------
-	//核心解析器
-	//---------------------------
+	//解析模板
 	function ParseTemplet()
 	{
 		$TagStartWord = $this->TagStartWord;
@@ -393,8 +408,7 @@ class DedeTagParse
 				$ePos = $endTagPos1;
 				$i = $ePos + 2;
 			}
-			else if($endTagPos2>0)
-			{
+			else if($endTagPos2>0){
 				$ePos = $endTagPos2;
 				$i = $ePos + strlen($fullTagEndWord)+1;
 			}
@@ -431,10 +445,9 @@ class DedeTagParse
 			  }
 			}	
 		}//结束遍历模板字符串
+		if($this->IsCache) $this->SaveCache();
 	}
-	//
 	//处理某字段的函数
-	//
 	function EvalFunc($fieldvalue,$functionname)
 	{
 		$DedeFieldValue = $fieldvalue;
@@ -446,9 +459,7 @@ class DedeTagParse
 		if(empty($DedeFieldValue)) return "";
 		else return $DedeFieldValue;
 	}
-	//------------------------------
 	//获得一个外部变量
-	//------------------------------
 	function GetGlobals($varname)
 	{
 		$varname = trim($varname);
@@ -458,26 +469,28 @@ class DedeTagParse
 		if(isset($GLOBALS[$varname])) return $GLOBALS[$varname];
 		else return "";
 	}
-	//------------------------
 	//引入文件
-	//------------------------
-	function IncludeFile($filename)
+	function IncludeFile($filename,$ismake='no')
 	{
+		global $cfg_df_style;
 		$restr = "";
-		if(file_exists($filename))
-		{ $okfile = $filename; }
-		else if( file_exists(dirname(__FILE__)."/".$filename) )
-		{ $okfile = dirname(__FILE__)."/".$filename; }
-		else if( file_exists(dirname(__FILE__)."/../".$filename) )
-		{ $okfile = dirname(__FILE__)."/../".$filename; }
-		else if( file_exists(dirname(__FILE__)."/../templets/".$filename) )
-		{ $okfile = dirname(__FILE__)."/../templets/".$filename; }
-		else{
-			return "无法在这个位置找到： $filename";
+		if(file_exists($filename)){ $okfile = $filename; }
+		else if( file_exists(dirname(__FILE__)."/".$filename) ){ $okfile = dirname(__FILE__)."/".$filename; }
+		else if( file_exists(dirname(__FILE__)."/../".$filename) ){ $okfile = dirname(__FILE__)."/../".$filename; }
+		else if( file_exists(dirname(__FILE__)."/../templets/".$filename) ){ $okfile = dirname(__FILE__)."/../templets/".$filename; }
+		else if( file_exists(dirname(__FILE__)."/../templets/".$cfg_df_style."/".$filename) ){ $okfile = dirname(__FILE__)."/../templets/".$cfg_df_style."/".$filename; }
+		else{ return "无法在这个位置找到： $filename"; }
+		//编译
+  	if($ismake=="yes"){
+  		require_once(dirname(__FILE__)."/inc_arcpart_view.php");
+  		$pvCopy = new PartView();
+  		$pvCopy->SetTemplet($okfile,"file");
+  		$restr = $pvCopy->GetResult();
+    }else{
+  	  $fp = @fopen($okfile,"r");
+		  while($line=fgets($fp,1024)) $restr.=$line;
+		  fclose($fp);
 	  }
-		$fp = @fopen($okfile,"r");
-		while($line=fgets($fp)) $restr.=$line;
-		fclose($fp);
 		return $restr;
 	}
 }

@@ -1,6 +1,8 @@
 <?
 require(dirname(__FILE__)."/config.php");
-if(!isset($activepath)) $activepath="";
+CheckPurview('plus_文件管理器');
+
+if(!isset($activepath)) $activepath=$cfg_cmspath;
 $inpath = "";
 
 $activepath = str_replace("..","",$activepath);
@@ -9,8 +11,6 @@ if($activepath == "/") $activepath = "";
 
 if($activepath == "") $inpath = $cfg_basedir;
 else $inpath = $cfg_basedir.$activepath;
-
-if(eregi($cfg_plus_dir,$activepath)){ SetPageRank(10); }
 
 $activeurl = $activepath;
 
@@ -52,7 +52,7 @@ $dh = dir($inpath);
 $ty1="";
 $ty2="";
 while($file = $dh->read()) {
-     if(is_file("$inpath/$file"))
+     if($file!="." && $file!=".." && !is_dir("$inpath/$file"))
      {
        @$filesize = filesize("$inpath/$file");
        @$filesize=$filesize/1024;
@@ -76,11 +76,11 @@ while($file = $dh->read()) {
             $tmp = eregi_replace("[/][^/]*$","",$activepath);
             $line = "\n<tr>
             <td class='linerow'>
-            <a href=file_manage_main.php?activepath=".urlencode($tmp).">上级目录<img src=img/dir2.gif border=0 width=16 height=13></a>
+            <a href=file_manage_main.php?activepath=".urlencode($tmp)."><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a>
             </td>
             <td colspan='3' class='linerow'>
              当前目录:$activepath &nbsp;
-             <a href='pic_view.php?activepath=".urlencode($activepath)."' style='color:red'>[图片浏览器]</a>
+             <a href='file_pic_view.php?activepath=".urlencode($activepath)."' style='color:red'>[图片浏览器]</a>
              </td>
             </tr>";
             echo $line;
@@ -88,11 +88,11 @@ while($file = $dh->read()) {
       else if(is_dir("$inpath/$file")){
              if(eregi("^_(.*)$",$file)) continue; #屏蔽FrontPage扩展目录和linux隐蔽目录
              if(eregi("^\.(.*)$",$file)) continue;
-             $line = "\n<tr>
-             <td bgcolor='#F9FBF0' class='linerow'>
-              <a href=file_manage_main.php?activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=13>$file</a></td>
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+              <a href=file_manage_main.php?activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>　</td>
-             <td bgcolor='#F9FBF0' class='linerow'>　</td>
+             <td class='linerow'>　</td>
              <td class='linerow'>
              <a href=file_manage_view.php?filename=".urlencode($file)."&activepath=".urlencode($activepath)."&fmdo=rename>[改名]</a>
              &nbsp;
@@ -102,12 +102,12 @@ while($file = $dh->read()) {
              </tr>";
              echo "$line";
       }
-      else if(eregi("\.(jpg|gif|png)",$file)){
-             $line = "\n<tr>
-             <td bgcolor='#F9FBF0' class='linerow'>
-             <a href=$activeurl/$file target=_blank><img src=img/img.gif border=0 width=16 height=13>$file</a></td>
+      else if(eregi("\.(gif|png)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/gif.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
-             <td align='center' bgcolor='#F9FBF0' class='linerow'>$filetime</td>
+             <td align='center' class='linerow'>$filetime</td>
              <td class='linerow'>
              <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
              &nbsp;
@@ -118,15 +118,210 @@ while($file = $dh->read()) {
              </tr>";
              echo "$line";
      }
-     else if(eregi("\.(htm|txt|inc|php|pl|cgi|css|asp|jsp|xml|js|xsl|aspx|cfm)",$file))
-     {
-             if($istemplets) $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             else $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             $line = "\n<tr>
-             <td bgcolor='#F9FBF0' class='linerow'>
-             <a href=$activeurl/$file target=_blank><img src=img/txt.gif border=0 width=16 height=13>$file</a></td>
+     else if(eregi("\.(jpg)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/jpg.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
-             <td align='center' bgcolor='#F9FBF0' class='linerow'>$filetime</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(swf|fla|fly)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/flash.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(zip|rar|tar.gz)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/zip.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(exe)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/exe.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(mp3|wma)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/mp3.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(wmv|api)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/wmv.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(rm|rmvb)",$file)){
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/rm.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+     else if(eregi("\.(txt|inc|pl|cgi|asp|xml|xsl|aspx|cfm)",$file))
+     {
+             /*if($istemplets) $edurl = "file_manage_view.php?fmdo=editview&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             else */
+             $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/txt.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='$edurl'>[编辑]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+     else if(eregi("\.(htm|html)",$file))
+     {
+             /*if($istemplets) $edurl = "file_manage_view.php?fmdo=editview&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             else */
+             $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/htm.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='$edurl'>[编辑]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(php)",$file))
+     {
+             $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/php.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='$edurl'>[编辑]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(js)",$file))
+     {
+             $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/js.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
+             <td class='linerow'>
+             <a href='$edurl'>[编辑]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[删除]</a>
+             &nbsp;
+             <a href='file_manage_view.php?fmdo=move&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[移动]</a>
+             </td>
+             </tr>";
+             echo "$line";
+     }
+	 else if(eregi("\.(css)",$file))
+     {
+             $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             <td class='linerow'>
+             <a href=$activeurl/$file target=_blank><img src=img/css.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+             <td class='linerow'>$filesize KB</td>
+             <td align='center' class='linerow'>$filetime</td>
              <td class='linerow'>
              <a href='$edurl'>[编辑]</a>
              &nbsp;
@@ -141,10 +336,10 @@ while($file = $dh->read()) {
      }
      else
      {
-             $line = "\n<tr>
-              <td bgcolor='#F9FBF0' class='linerow'><a href=$activeurl/$file target=_blank>$file</td>
+             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+              <td class='linerow'><a href=$activeurl/$file target=_blank>$file</td>
               <td class='linerow'>$filesize KB</td>
-              <td align='center' bgcolor='#F9FBF0' class='linerow'>$filetime</td>
+              <td align='center' class='linerow'>$filetime</td>
               <td class='linerow'>
               <a href='file_manage_view.php?fmdo=rename&filename=".urlencode($file)."&activepath=".urlencode($activepath)."'>[改名]</a>
               &nbsp;

@@ -31,7 +31,7 @@ var FCKSourceCommand=function(){this.Name='Source';};FCKSourceCommand.prototype.
 
 //DedeCms Pagebreak use #p#
 var FCKPageBreakCommand=function(){this.Name='PageBreak';};
-FCKPageBreakCommand.prototype.Execute=function(){FCK.EditorDocument.selection.createRange().text="#p#";};
+FCKPageBreakCommand.prototype.Execute=function(){FCK.EditorDocument.selection.createRange().text="#p#副标题#e#"; };
 FCKPageBreakCommand.prototype.GetState=function(){return 0;}
 
 var FCKLineBrCommand=function(){this.Name='LineBr';};
@@ -73,10 +73,12 @@ case 'About':B=new FCKDialogCommand('About',FCKLang.About,'dialog/fck_about.html
 case 'Find':B=new FCKDialogCommand('Find',FCKLang.DlgFindTitle,'dialog/fck_find.html',340,170);break;
 case 'Replace':B=new FCKDialogCommand('Replace',FCKLang.DlgReplaceTitle,'dialog/fck_replace.html',340,200);break;
 case 'Image':B=new FCKDialogCommand('Image',FCKLang.DlgImgTitle,'dialog/image.php',460,500);break;
+case 'ImageUser':B=new FCKDialogCommand('ImageUser',FCKLang.DlgImgTitle,'dialog/imageuser.php',460,500);break;
 case 'Media':B=new FCKDialogCommand('Media',FCKLang.DlgMediaTitle,'dialog/media.htm',450,250);break;
 case 'Addon':B=new FCKDialogCommand('Addon',FCKLang.DlgAddonTitle,'dialog/addon.php',520,200);break;
 case 'DedeTag':B=new FCKDialogCommand('DedeTag',FCKLang.DlgDedeTagTitle,'dialog/dedetag.php',550,420);break;
 case 'Flash':B=new FCKDialogCommand('Flash',FCKLang.DlgFlashTitle,'dialog/flash.htm',450,220);break;
+case 'FlashUser':B=new FCKDialogCommand('FlashUser',FCKLang.DlgFlashTitle,'dialog/flashuser.htm',450,220);break;
 case 'SpecialChar':B=new FCKDialogCommand('SpecialChar',FCKLang.DlgSpecialCharTitle,'dialog/fck_specialchar.html',400,320);break;
 case 'Smiley':B=new FCKDialogCommand('Smiley',FCKLang.DlgSmileyTitle,'dialog/fck_smiley.html',FCKConfig.SmileyWindowWidth,FCKConfig.SmileyWindowHeight);break;
 case 'Table':B=new FCKDialogCommand('Table',FCKLang.DlgTableTitle,'dialog/fck_table.html',400,250);break;
@@ -196,10 +198,12 @@ case 'Link':B=new FCKToolbarButton('Link',FCKLang.InsertLinkLbl,FCKLang.InsertLi
 case 'Unlink':B=new FCKToolbarButton('Unlink',FCKLang.RemoveLink,null,null,false,true);break;
 case 'Anchor':B=new FCKToolbarButton('Anchor',FCKLang.Anchor);break;
 case 'Image':B=new FCKToolbarButton('Image',FCKLang.InsertImageLbl,FCKLang.InsertImage);break;
+case 'ImageUser':B=new FCKToolbarButton('ImageUser',FCKLang.InsertImageLbl,FCKLang.InsertImage);break;
 case 'Media':B=new FCKToolbarButton('Media',FCKLang.InsertMediaLb1,FCKLang.InsertMedia);break;
 case 'Addon':B=new FCKToolbarButton('Addon',FCKLang.InsertAddonLb1,FCKLang.InsertAddon);break;
 case 'DedeTag':B=new FCKToolbarButton('DedeTag','DedeTag','DedeTag');break;
 case 'Flash':B=new FCKToolbarButton('Flash',FCKLang.InsertFlashLbl,FCKLang.InsertFlash);break;
+case 'FlashUser':B=new FCKToolbarButton('FlashUser',FCKLang.InsertFlashLbl,FCKLang.InsertFlash);break;
 case 'Table':B=new FCKToolbarButton('Table',FCKLang.InsertTableLbl,FCKLang.InsertTable);break;
 case 'SpecialChar':B=new FCKToolbarButton('SpecialChar',FCKLang.InsertSpecialCharLbl,FCKLang.InsertSpecialChar);break;
 case 'Smiley':B=new FCKToolbarButton('Smiley',FCKLang.InsertSmileyLbl,FCKLang.InsertSmiley);break;
@@ -233,8 +237,10 @@ case 'Link':B=new FCKContextMenuGroup();B.Add(new FCKContextMenuSeparator());B.A
 case 'TableCell':B=new FCKContextMenuGroup();B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableInsertRow',FCKLang.InsertRow,true));B.Add(new FCKContextMenuItem(this,'TableDeleteRows',FCKLang.DeleteRows,true));B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableInsertColumn',FCKLang.InsertColumn,true));B.Add(new FCKContextMenuItem(this,'TableDeleteColumns',FCKLang.DeleteColumns,true));B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableInsertCell',FCKLang.InsertCell,true));B.Add(new FCKContextMenuItem(this,'TableDeleteCells',FCKLang.DeleteCells,true));B.Add(new FCKContextMenuItem(this,'TableMergeCells',FCKLang.MergeCells,true));B.Add(new FCKContextMenuItem(this,'TableSplitCell',FCKLang.SplitCell,true));B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableDelete',FCKLang.TableDelete,false));B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableCellProp',FCKLang.CellProperties,true));B.Add(new FCKContextMenuItem(this,'TableProp',FCKLang.TableProperties,true));break;
 case 'Table':B=new FCKContextMenuGroup();B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'TableDelete',FCKLang.TableDelete,false));B.Add(new FCKContextMenuSeparator());B.Add(new FCKContextMenuItem(this,'Table',FCKLang.TableProperties,true));break;
 case 'Image':return new FCKContextMenuGroup(true,this,'Image',FCKLang.ImageProperties,true);
+case 'ImageUser':return new FCKContextMenuGroup(true,this,'ImageUser',FCKLang.ImageProperties,true);
 case 'Flash':return new FCKContextMenuGroup(true,this,'Flash',FCKLang.FlashProperties,true);
-case 'BulletedList':return new FCKContextMenuGroup(true,this,'BulletedList',FCKLang.BulletedListProp,true);case 'NumberedList':return new FCKContextMenuGroup(true,this,'NumberedList',FCKLang.NumberedListProp,true);case 'Anchor':return new FCKContextMenuGroup(true,this,'Anchor',FCKLang.AnchorProp,true);};return B;};FCKContextMenu.RefreshState=function(){var A=FCKSelection.GetSelectedElement();var B;if (A) B=A.tagName;if (this.Groups['Link'])			this.Groups['Link'].SetVisible(FCK.GetNamedCommandState('Unlink')!=FCK_TRISTATE_DISABLED);if (this.Groups['TableCell'])		this.Groups['TableCell'].SetVisible(B!='TABLE'&&FCKSelection.HasAncestorNode('TABLE'));if (this.Groups['Table'])			this.Groups['Table'].SetVisible(B=='TABLE');if (this.Groups['Image'])			this.Groups['Image'].SetVisible(B=='IMG'&&!A.getAttribute('_fckfakelement'));if (this.Groups['Flash'])			this.Groups['Flash'].SetVisible(B=='IMG'&&A.getAttribute('_fckflash'));if (this.Groups['Anchor'])		this.Groups['Anchor'].SetVisible(B=='IMG'&&A.getAttribute('_fckanchor'));if (this.Groups['BulletedList'])	this.Groups['BulletedList'].SetVisible(FCKSelection.HasAncestorNode('UL'));
+case 'FlashUser':return new FCKContextMenuGroup(true,this,'FlashUser',FCKLang.FlashProperties,true);
+case 'BulletedList':return new FCKContextMenuGroup(true,this,'BulletedList',FCKLang.BulletedListProp,true);case 'NumberedList':return new FCKContextMenuGroup(true,this,'NumberedList',FCKLang.NumberedListProp,true);case 'Anchor':return new FCKContextMenuGroup(true,this,'Anchor',FCKLang.AnchorProp,true);};return B;};FCKContextMenu.RefreshState=function(){var A=FCKSelection.GetSelectedElement();var B;if (A) B=A.tagName;if (this.Groups['Link'])			this.Groups['Link'].SetVisible(FCK.GetNamedCommandState('Unlink')!=FCK_TRISTATE_DISABLED);if (this.Groups['TableCell'])		this.Groups['TableCell'].SetVisible(B!='TABLE'&&FCKSelection.HasAncestorNode('TABLE'));if (this.Groups['Table'])			this.Groups['Table'].SetVisible(B=='TABLE');if (this.Groups['Image'])			this.Groups['Image'].SetVisible(B=='IMG'&&!A.getAttribute('_fckfakelement'));if (this.Groups['ImageUser'])			this.Groups['ImageUser'].SetVisible(B=='IMG'&&!A.getAttribute('_fckfakelement'));if (this.Groups['Flash'])			this.Groups['Flash'].SetVisible(B=='IMG'&&A.getAttribute('_fckflash'));if (this.Groups['FlashUser'])			this.Groups['FlashUser'].SetVisible(B=='IMG'&&A.getAttribute('_fckflash'));if (this.Groups['Anchor'])		this.Groups['Anchor'].SetVisible(B=='IMG'&&A.getAttribute('_fckanchor'));if (this.Groups['BulletedList'])	this.Groups['BulletedList'].SetVisible(FCKSelection.HasAncestorNode('UL'));
 if (this.Groups['NumberedList'])	this.Groups['NumberedList'].SetVisible(FCKSelection.HasAncestorNode('OL'));
 for (var o in this.Groups){this.Groups[o].RefreshState();};};
 if (!FCKConfig.PluginsPath.endsWith('/')) FCKConfig.PluginsPath+='/';var FCKPlugin=function(A,B,C){this.Name=A;this.BasePath=C?C:FCKConfig.PluginsPath;this.Path=this.BasePath+A+'/';if (!B||B.length==0) this.AvailableLangs=new Array();else this.AvailableLangs=B.split(',');};FCKPlugin.prototype.Load=function(){if (this.AvailableLangs.length>0){var A;if (this.AvailableLangs.indexOf(FCKLanguageManager.ActiveLanguage.Code)>=0) A=FCKLanguageManager.ActiveLanguage.Code;else A=this.AvailableLangs[0];FCKScriptLoader.AddScript(this.Path+'lang/'+A+'.js');};FCKScriptLoader.AddScript(this.Path+'fckplugin.js');}

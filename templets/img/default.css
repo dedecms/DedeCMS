@@ -1,0 +1,78 @@
+img {	border: 0;}
+form,h1,h2,h3,h4,h5,h6,ul,ol{	margin: 0; padding:0;}
+td {font-size: 9pt;line-height: 1.5;}
+body {margin:0px; font-size: 9pt;line-height: 1.5;}
+div {font-size: 9pt;line-height: 1.5;}
+
+.h1 {margin:0px; font-size:11pt}
+.h2 {margin:0px; font-size:10pt}
+
+a:link { font-size: 9pt; color: #000000; text-decoration: none }
+a:visited{ font-size: 9pt; color: #000000; text-decoration: none }
+a:hover {font-size: 9pt;color: red}
+
+a.h1:link { font-size: 11pt; color: #000000; text-decoration: underline }
+a.h1:visited{ font-size: 11pt; color: #000000; text-decoration: underline }
+a.h1:hover {font-size: 11pt;color: red}
+
+a.ulink:link { font-size: 10pt; color: #AA2716; text-decoration: underline }
+a.ulink:visited{ font-size: 10pt; color: #C57F41; text-decoration: underline }
+a.ulink:hover {font-size: 10pt;color: red}
+
+.tbspan{ margin-bottom: 3px }
+
+.kw1 { width:170px; height:22px; border: 1px solid #cccccc}
+.op1 { margin:0px; padding:0px; margin-top:1px; width:105px; height:22px;}
+
+.guidet { border-top:1px solid #A9CCED;
+          border-left:1px solid #A9CCED;
+          border-right:1px solid #A9CCED;
+          padding-left:1px; padding-right:1px;
+}
+.guideb { border-bottom:1px solid #A9CCED;
+          border-left:1px solid #A9CCED;
+          border-right:1px solid #A9CCED;
+          padding:3px;
+}
+
+.hotworddiv {
+margin:0px; 
+padding:0px; 
+width:500px;
+height:18px;
+overflow:hidden
+}
+
+.inddline {
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #D7DED1;
+}
+
+.mbline{
+  border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: #ABABAB;
+}
+
+.indl1{
+  border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #EFEFEF;
+}
+
+.indt1{
+  font-size:10pt;
+  border-top:1px solid #cdcdcd;
+  border-left:1px solid #cdcdcd;
+  border-right:1px solid #cdcdcd;
+  color:#333333
+}
+
+.indt2{
+  font-size:10pt;
+  border-top:1px solid #cdcdcd;
+  border-left:1px solid #cdcdcd;
+  border-right:1px solid #cdcdcd;
+  color:#333333
+}

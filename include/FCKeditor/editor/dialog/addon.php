@@ -12,19 +12,22 @@ require_once(dirname(__FILE__)."/../../../config_base.php");
 var oEditor	= window.parent.InnerDialogLoaded() ;
 var oDOM		= oEditor.FCK.EditorDocument ;
 var FCK = oEditor.FCK;
+
 function TableOK(){
-    var rurl,widthdd,heightdd,rvalue;
-    rurl = form1.rurl.value;
+    var rurl,widthdd,heightdd,rvalue,rurlname;
+    rurlname = form1.rurl.value;
+    rurl = encodeURI(form1.rurl.value);
     rvalue = "<table width='300'>";
     rvalue += "<tr><td height='30' width='20'>";
     rvalue += "<a href='"+rurl+"' target='_blank'><img src='<?=$cfg_plus_dir?>/img/addon.gif' border='0' align='center'></a>";
     rvalue += "</td><td>";
-    rvalue += "<a href='"+ rurl +"' target='_blank'><u>"+ rurl +"</u></a>";
+    rvalue += "<a href='"+ rurl +"' target='_blank'><u>"+ rurlname +"</u></a>";
     rvalue += "</td></tr></table>";
     if(document.all) oDOM.selection.createRange().pasteHTML(rvalue);
     else FCK.InsertHtml(rvalue);
     window.close();
 }
+ 
 function SelectAddon(fname)
 {
    if(document.all){

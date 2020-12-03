@@ -2,247 +2,416 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>{dede:global name='cfg_webname'/}</title>
-<link href="{dede:global name='cfg_basehost'/}/templet/img/base.css" rel="stylesheet" type="text/css">
-<link href="{dede:field name='phpurl' /}/img/base.css" rel="stylesheet" type="text/css">
+<meta content="" name="description">
+<meta content="" name="keywords">
+<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+<link href="../img/default.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" src="{dede:global name='cfg_cmspath'/}/include/dedeajax2.js"></script>
+<script language="JavaScript">
+function CheckLogin(){
+var taget_obj = document.getElementById('_loginform');
+myajax = new DedeAjax(taget_obj,false,false,"","","");
+myajax.SendGet("{dede:global name="cfg_memberurl"/}/loginsta.php");
+}
+</script>
 </head>
 <body leftmargin="0" topmargin="0">
 <center>
-<table width="770" border="0" cellpadding="0" cellspacing="0">
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
 <tr> 
-      <td height="60"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="81%"><img src="{dede:field name='phpurl'/}/img/df_dedetitle.gif" width="250" height="53"></td>
-            <td colspan="2" align="center" valign="bottom"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr  align="center" height="20"> 
-                  <td height="24"><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a></td>
-                  <td><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></td>
-                </tr>
-                <tr align="center" height="20"> 
-                  <td><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></td>
-                  <td><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></td>
-                </tr>
-              </table></td>
-          </tr>
-        </table></td>
+<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecms织梦内容管理系统"></a></td>
+<td width="20" align="center">&nbsp;</td>
+<td width="486">&nbsp;</td>
+<td width="190" align="center">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="center" height="20"> 
+<td height="24"><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a></td>
+<td><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></td>
 </tr>
-<tr> 
-      <td height="28" valign="bottom" background="{dede:field name='phpurl'/}/img/l_mbg.gif" bgcolor="#AFB95B"> 
-        &nbsp;<a href='/'>首页</a> {dede:channel typeid=0 row=6} | <a href='[field:typelink/]'>[field:typename/]</a> 
-        {/dede:channel}| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
-        | <a href="{dede:field name='memberurl' /}/login.php">会员投稿</a> | <a href='{dede:field name='phpurl'/}/guestbook/index.php'>留言簿</a> 
-      </td>
+<tr align="center" height="20"> 
+<td><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></td>
+<td><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></td>
 </tr>
 </table>
-<table width="770" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td colspan="2" height="4"></td>
+</td>
 </tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
+<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif"> 
+<a href='/'>首页</a> {dede:channel type='top' row='8'} | <a href='[field:typelink/]'>[field:typename/]</a> 
+{/dede:channel} 
+| <a href="/special/index.php">专题</a>
+| <a href="http://bbs.dedecms.com" style="color:red">支持论坛</a>
+| <a href="{dede:field name='memberurl'/}">会员中心</a> </td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td width="10" height="32" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c3.gif" width="4" height="32"></td>
+<td width="508" background="{dede:field name='templeturl'/}/img/31bg2.gif">
+<div class="hotworddiv">热门关键字：{dede:hotwords num='5' subday='30'/}</div>
+</td>
+<td width="372" align="center" background="{dede:field name='templeturl'/}/img/31bg2.gif"> 
+<form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+<input type="hidden" name="kwtype" value="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td width="47%"><input name="keyword" type="text" id="keyword" class="kw1"></td>
+<td width="30%" align="center"> <select name="select" id="searchtype" class="op1">
+<option value="titlekeyword" selected>智能模糊搜索</option>
+<option value="title">仅搜索标题</option>
+</select> </td>
+<td width="23%" align="center"> <input name="imageField2" type="image" src="{dede:field name='templeturl'/}/img/v31s.gif" width="73" height="19" border="0"></td>
+</tr>
+</table>
+</form></td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c4.gif" width="4" height="32"></td>
+</tr>
+</table>
+<table width="900" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td width="222" valign='top' bgcolor='#EAF2E5' background='{dede:field name='templeturl'/}/img/ibg.gif'> 
+<!--Split-->
+<table width="100%" align="center" cellpadding="0" cellspacing="0">
 <tr>
-      <td width="190" valign="top" bgcolor="#EAF2E5">
-        <!--Split-->
-        <table width="100%" align="center" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td height="24"><img src="{dede:field name='templeturl'/}/img//1-se.gif" width="190" height="23"></td>
-          </tr>
-		  <tr> 
-            <td height="4"></td>
-          </tr>
-        </table>
-        <!--Split-->
-        <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
-          <tr> 
-            <td valign="top" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <form name="searchform" action="{dede:field name='phpurl'/}/search.php">
-                  <tr> 
-                    <td height="28">&nbsp;</td>
-                    <td width="30%">关键字：</td>
-                    <td width="63%"><input name="keyword" type="text" id="keyword" size="12"></td>
-                  </tr>
-                  <tr> 
-                    <td height="32">&nbsp;</td>
-                    <td>范 &nbsp;围：</td>
-                    <td><select name="searchtype" id="tag">
-                        <option value="titlekeyword" selected>默认搜索</option>
-                        <option value="title">仅搜索标题</option>
-                      </select></td>
-                  </tr>
-                  <tr> 
-                    <td width="4%" height="30">&nbsp; </td>
-                    <td height="30" colspan="2" align="center"><input name="imageField" type="image" src="{dede:field name='phpurl'/}/img/button_search.gif" width="60" height="22" border="0"></td>
-                  </tr>
-                </form>
-              </table>
-            </td>
-          </tr>
-        </table>
-        <!--Split-->
-        <table width="96%" align="center" cellpadding="0" cellspacing="0">
-          <tr>
-            <td height="4"></td>
-          </tr>
-		  <tr>
-            <td height="24" align="center" background="{dede:field name='phpurl'/}/img/hitembg.gif">§推荐文档§</td>
-          </tr>
-		  <tr>
-            <td height="2"></td>
-          </tr>
-        </table>
-        <!--Split-->
-        <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
-          <tr> 
-            <td valign="top" bgcolor="#FFFFFF">
-            	<p>{dede:artlist typeid=0 row=6 type=commend titlelength=24/}</p>
-              </td>
+<td height="7" background="{dede:field name='templeturl'/}/img/ic1.gif" style="font-size:1px">&nbsp;</td>
 </tr>
 </table>
-        <!--Split-->
-        <table width="96%" align="center" cellpadding="2" cellspacing="1">
-          <tr> 
-            <td height="4"></td>
-          </tr>
-          <tr> 
-            <td height="24" align="center" background="{dede:field name='phpurl'/}/img/hitembg.gif">↑热点文档↓</td>
-          </tr>
-          <tr> 
-            <td height="2"></td>
-          </tr>
-        </table>
-        <!--Split-->
+<table width="96%" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="24"><img src="{dede:field name='templeturl'/}/img/login.gif" width="105" height="25"></td>
+</tr>
+<tr> 
+<td height="4"></td>
+</tr>
+</table>
+<!--Split-->
 <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
-                <tr> 
-                  <td valign="top" bgcolor="#FFFFFF"><p>{dede:artlist typeid=0 
-                      row=6 sort=hot titlelength=24/}</p></td>
-                </tr>
-              </table>
-        <!--Split-->
-        <table width="100%">
-          <tr>
-            <td height="4"></td>
-          </tr>
-        </table>
-        <!--Split-->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td valign="top" bgcolor="#FFFFFF"> 
+			<!-- 
+			本模板使用Ajax技术判断用户是否登录，如果你改动了模板，
+			必须指定id=loginform 的区域作为返回内容
+			-->
+			<span id="_loginform">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<form name='form1' method='POST' action='{dede:field name='memberurl'/}/index_do.php'>
+<input type="hidden" name="fmdo" value="login">
+<input type="hidden" name="dopost" value="login">
+<input type="hidden" name="gourl" value="">
+<tr> 
+<td height="28"> </td>
+<td width="30%">用户名：</td>
+<td width="63%"><input name="userid" type="text" id="userid" style="width:120px;height:20px;border:1px solid #cccccc"></td>
+</tr>
+<tr> 
+<td height="28"></td>
+<td>密　码：</td>
+<td><input type="pwd" name="pwd" style="width:120px;height:20px;border:1px solid #cccccc"></td>
+</tr>
+<tr> 
+<td height="28"> </td>
+<td>验证码：</td>
+<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-            <td align="center"> {dede:vote id='4' lineheight='24' tablewidth='96%' 
-              titlebgcolor='#EDEDE2' titlebackground='' tablebgcolor='#9A8F70'} 
-              {/dede:vote} </td>
+<td width="50%"><input name="vdcode" type="text" id="vdcode" style="width:60px;height:20px;border:1px solid #cccccc"></td>
+<td><img name="vdcode" src="{dede:global name='cfg_cmspath'/}/include/validateimg.php" width="50" height="20" alt=""></td>
+</tr>
+</table></td>
+</tr>
+<tr> 
+<td width="4%" height="57"> </td>
+<td height="57" colspan="2" align="center"> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="50%" align="center"> 
+<input name="imageField" type="image" src="{dede:field name='templeturl'/}/img/loginbt.gif" width="75" height="28" border="0">
+</td>
+<td> <a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew"><img src="{dede:field name='templeturl'/}/img/regbt.gif" width="75" height="28" border="0"></a> 
+</td>
+</tr>
+</table></td>
+</tr>
+</form>
+</table>
+</span>
+<script language="JavaScript">CheckLogin();</script>
+</td>
 </tr>
 </table>
-      </td> 
-<td width="4">&nbsp;</td>
-<td valign="top" width="576">
+<!--Split-->
+<table width="96%" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="4" colspan="2"></td>
+</tr>
+<tr> 
+<td width="15%" height="24" align="right"><img src="{dede:field name='templeturl'/}/img/sdd.gif" width="13" height="13"></td>
+<td width="85%" style="padding-left:6px;letter-spacing:3px;color:#7BAF5F"><strong>推荐文档</strong></td>
+</tr>
+<tr> 
+<td height="2" colspan="2"></td>
+</tr>
+</table>
+<!--Split-->
+<table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
+<tr> 
+<td valign="top" bgcolor="#FFFFFF">
+	{dede:artlist typeid=0 row=6 type=commend titlelength=30/}
+</td>
+</tr>
+</table>
+<!--Split-->
+<table width="96%" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="4" colspan="2"></td>
+</tr>
+<tr> 
+<td width="15%" height="24" align="right"><img src="{dede:field name='templeturl'/}/img/sdd.gif" width="13" height="13"></td>
+<td width="85%" style="padding-left:6px;letter-spacing:3px;color:#7BAF5F"><strong>热点文档</strong></td>
+</tr>
+<tr> 
+<td height="2" colspan="2"></td>
+</tr>
+</table>
+<!--Split-->
+<table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
+<tr> 
+<td valign="top" bgcolor="#FFFFFF">
+	{dede:artlist typeid=0 row=6 sort=hot titlelength=30/}
+</td>
+</tr>
+</table>
+<!--Split-->
+<table width="100%">
+<tr> 
+<td height="4"></td>
+</tr>
+</table>
+<!--Split-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td align="center">
+	{dede:vote id='1' lineheight='24' tablewidth='96%' 
+titlebgcolor='#EDEDE2' titlebackground='' tablebgcolor='#9A8F70'} 
+{/dede:vote}
+</td>
+</tr>
+</table>
+
+</td>
+<td width="8"> </td>
+<td valign="top" width="670">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
-<td height="24" bgcolor="#E8E8BD" background="{dede:field name='templeturl'/}/img/1-nlinebg.gif">
-<table width="300" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="6" height="24" align="center" background="{dede:field name='templeturl'/}/img/1-cor.gif">&nbsp;</td>
-                  <td width="26" align="center"><img src="{dede:field name='templeturl'/}/img/note1.gif" width="13" height="14"></td>
-                  <td width="259" valign="bottom"><b>最新文档</b></td>
-                </tr>
-              </table>
+<td height="28"> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #CDCDCD">
+<tr> 
+<td height="6"></td>
+<td width="119" rowspan="2" align="center" bgcolor="#FFFFFF" class="indt1"><strong>【编辑导读】</strong></td>
+<td width="524"></td>
+</tr>
+<tr> 
+<td width="27" height="24" align="center" bgcolor="#EDEDCD"> 
+</td>
+<td valign="bottom" bgcolor="#EDEDCD">&nbsp;</td>
+</tr>
+</table>
 </td>
 </tr>
 <tr> 
 <td width="98%" height="365" valign="top">
-<table width="100%" border="0" cellspacing="1" cellpadding="0">
+	<table width="100%" border="0" cellspacing="1" cellpadding="0">
 <tr> 
 <td colspan="3" height="2"></td>
 </tr>
 <tr> 
-<td width="26%" height="108" align="center" valign="top">
-{dede:arclist row='1'  typeid='0'  imgwidth='120'  imgheight='100' 
- tablewidth='98%'  type='commend'  titlelen='20'}
-<table width='98%' border='0' cellspacing='2' cellpadding='0'>
-        <tr>
-          <td align='center'>[field:imglink/]</td>
-        </tr>
-        <tr>
-          <td align='center'><a href='[field:arcurl/]'>[field:title/]</a></td>
-        </tr>
-</table>
+<td width="25%" height="108" valign="top" align="center">
+<script language='javascript'>
+linkarr = new Array();
+picarr = new Array();
+textarr = new Array();
+var focus_width=165;
+var focus_height=120;
+var text_height=24;
+var pics = "";
+var links = "";
+var texts = "";
+var swf_height = focus_height+text_height;
+var defJpeg = "{dede:global name='cfg_phpurl'/}/img/jpeg.jpg";
+
+{dede:arclist type='image,commend' row='5' function='FormatScript(@me)'}
+linkarr[[field:global name=autoindex/]] = "[field:arcurl/]";
+picarr[[field:global name=autoindex/]] = "[field:picname/]";
+textarr[[field:global name=autoindex/]] = "[field:title/]";
 {/dede:arclist}
-</td>
-<td width="1%"></td>
-<td width="73%" valign="top">
-{dede:artlist typeid=0 row=7 titlelen=50 }
-[[field:typelink /]]<a href="[field:filename /]">[field:title/]</a>([field:pubdate function='strftime("%m-%d",@me)'/])<br>
-{/dede:artlist}
-</td>
+
+for(i=1;i<picarr.length;i++)
+{
+if(pics=="") pics = picarr[i];
+else{
+	if(picarr[i].indexOf("jpg")==-1 && picarr[i].indexOf("JPG")==-1) picarr[i] = defJpeg;
+	pics += "|"+picarr[i];
+}
+}
+for(i=1;i<linkarr.length;i++)
+{
+if(links=="") links = linkarr[i];
+else links += "|"+linkarr[i];
+}
+for(i=1;i<textarr.length;i++)
+{
+if(texts=="") texts = textarr[i];
+else texts += "|"+textarr[i];
+}
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="{dede:global name='cfg_templeturl'/}/img/slide.swf">');
+document.write('<param name="quality" value="high"><param name="bgcolor" value="#ffffff">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'">');
+document.write('<embed src="{dede:global name='cfg_templeturl'/}/img/slide.swf" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'" menu="false" bgcolor="#ffffff" quality="high" width="'+ focus_width +'" height="'+ focus_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+document.write('</object>');
+</script>
+					 </td>
+<td width="49%" valign="top" style="padding-left:6px"> 
+				<table width="100%" border="0" cellspacing="1" cellpadding="1">
+					{dede:artlist typeid=0 row=6 titlelen=50}
+<tr height="22">
+<td width="85%" class="indl1">[[field:typelink /]] <a href="[field:filename /]">[field:title/]</a></td>
+<td width="15%" align="right" class="indl1">[field:pubdate function='strftime("%m-%d",@me)'/]</td>
 </tr>
-<tr> 
-<td colspan="3" height="2" bgcolor="#EFF2F5"></td>
-</tr>
-<tr valign="top"> 
-<td colspan="3">
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
-<tr> 
-                        <td height="24" background="{dede:field name='templeturl'/}/img/1-nlinebg2.gif"><strong>&nbsp;§图片文档§</strong></td>
-</tr>
-<tr> 
-<td height="100" valign="top" bgcolor="#F9F9F7">
-<!--img infolist-->
-{dede:imginfolist 
-typeid=0 row='6' col='3' infolength='30' imgwidth='60' imgheight='45' 
-titlelength='20' tablewidth='100%' /}
-<!--img infolist-->
-</td>
-</tr>
-<tr> 
-<td height="100" valign="top" bgcolor="#F9F9F7">
-{dede:channelArtlist typeid=0 col=2 tablewidth='100%'}
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#BFCFA9">
-  <tr>
-    <td bgcolor="#E6F2CC">
-    	{dede:type}
-		<table border="0" cellpadding="0" cellspacing="0" width="98%">
-    		<tr>
-    		<td width='10%' align="center"><img src='[field:global name='cfg_plus_dir'/]/img/channellist.gif' width='14' height='16'></td>
-    	 <td width='60%'>
-    	<a href="[field:typelink /]">[field:typename /]</a>
-        </td>
-      <td width='30%' align='right'>
-      <a href="[field:typelink /]">更多...</a>
-      </td>
-    </tr>
-   </table>
-   {/dede:type}
-   </td>
-  </tr>
-  <tr>
-    <td height="150" valign="top" bgcolor="#FFFFFF">
-	{dede:arclist row="8"}
-	·<a href="[field:arcurl /]">[field:title /]</a><br>
-  {/dede:arclist}
-	</td>
-  </tr>
+					{/dede:artlist}
 </table>
-<div style='font-size:2px'>&nbsp;</div>
-{/dede:channelArtlist}
-</td>
+					 </td>
+<td width="26%" align="center"><img src="{dede:field name='templeturl'/}/img/ddd.jpg" width="158" height="124"></td>
 </tr>
-</table></td>
+</table>
+<table width="100%" border="0" cellspacing="1" cellpadding="0">
+<tr> 
+<td colspan="2">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
+<tr> 
+<td height="24" valign="top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #CDCDCD">
+<tr> 
+<td height="4"></td>
+<td width="119" rowspan="2" align="center" bgcolor="#FFFFFF" class='indt2'><strong>【图片文档】</strong></td>
+<td width="524"></td>
+</tr>
+<tr> 
+<td width="27" height="22" align="center" bgcolor="#F2F4D2"> 
+</td>
+<td valign="bottom" bgcolor="#F2F4D2">&nbsp;</td>
 </tr>
 </table></td>
 </tr>
 <tr> 
-<td height="6" bgcolor="#E8E8BD"></td>
+<td height="80" valign="top"> 
+<!--img infolist-->
+{dede:arclist type='image' typeid=0 row='3' col='3' infolength='50' 
+imgwidth='90' imgheight='70' titlelength='30' tablewidth='100%'}
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+<tr> 
+<td width="30%" rowspan="2" align="center">[field:imglink /]</td>
+<td width="70%"><a href='[field:filename/]'>[field:title/]</a></td>
+</tr>
+<tr> 
+<td>[field:info/]</td>
+</tr>
+</table>
+{/dede:arclist} 
+<!--img infolist-->
+</td>
+</tr>
+<tr> 
+<td height="100" valign="top">
+	{dede:channelArtlist col=2 tablewidth='100%'} 
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#E1EBD3" style="margin-bottom:3px">
+<tr> 
+<td height="26" bgcolor="#E6F2CC" background="{dede:global name='cfg_templeturl'/}/img/indbg1i.gif"> 
+{dede:type} 
+<table border="0" cellpadding="0" cellspacing="0" width="98%">
+<tr> 
+<td width='10%' align="center"><img src='[field:global name='cfg_templeturl'/]/img/channellist.gif' width='14' height='16'></td>
+<td width='60%'> <a href="[field:typelink /]">[field:typename 
+/]</a> </td>
+<td width='30%' align='right'><a href="[field:typelink /]"><img src="[field:global name='cfg_templeturl'/]/img/more.gif" width="43" height="14" border="0"></a></td>
+</tr>
+</table>
+{/dede:type} </td>
+</tr>
+<tr> 
+<td height="50" valign="top" bgcolor="#FFFFFF"> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								{dede:arclist row='5' titlelen='36'}
+<tr>
+<td width="75%" height="22" class="inddline">
+									·<a href="[field:arcurl /]">[field:title /]</a>
+									</td>
+<td width="25%" class="inddline">[field:stime/]</td>
+</tr>
+{/dede:arclist}
+								</table></td>
+</tr>
+</table>
+{/dede:channelArtlist} </td>
+</tr>
+</table></td>
+</tr>
+</table></td>
 </tr>
 <tr> 
 <td height="2"></td>
 </tr>
-</table></td> 
+</table></td>
+</tr>
+	<tr>
+<td valign='top' height="7" bgcolor='#EAF2E5' background='{dede:field name='templeturl'/}/img/ibg.gif'><table width="100%" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="7" background="{dede:field name='templeturl'/}/img/ic2.gif" style="font-size:1px">&nbsp;</td>
+</tr>
+</table></td>
+<td></td>
+<td bgcolor="#E8E8BD" style="font-size:1px">&nbsp;</td>
 </tr>
 </table>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:3px;margin-bottom:6px;">
+<tr align="center"> 
+<td height="20" bgcolor="#F5F5F5" align='right'> 本站只接受PR>4的网站作首链接，其它放在内页 
+<a href='/plus/flink.php'>[所有链接]</a> <a href='/plus/flink-add.php'>[申请链接]</a> 
+</td>
+</tr>
+<tr> 
+<td height="3"></td>
+</tr>
+<tr> 
+<td>
+{dede:flink linktype='2' type='textall' row='4' col='7' titlelen='20' 
+tablestyle='width=100% border=0 bgcolor=#cccccc cellspacing=1 cellpadding=1'/}
+</td>
+</tr>
 <tr> 
 <td height="3"></td>
 </tr>
 <tr align="center"> 
 <td height="8" bgcolor="#F5F5F5"></td>
 </tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
 <tr> 
-<td height="20" align="center">{dede:field name='powerby'/}</td>
+<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
+	{dede:global name='cfg_powerby'/}
+</td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
 </tr>
 </table>
+
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr><td height="6"></td></tr>
+</table> 
 </center></body></html>

@@ -31,7 +31,7 @@ if($action=="")
 	  ShowMsg("无法收藏未知文档!","-1");
 	  exit();
   }
-  $addtime = time();
+  $addtime = mytime();
   $dsql->SetQuery("INSERT INTO #@__memberstow(uid,arcid,title,addtime) VALUES ('".$ml->M_ID."','$arcID','$arctitle','$addtime');");
   $dsql->ExecuteNoneQuery();
   $dsql->Close();

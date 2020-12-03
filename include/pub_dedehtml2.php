@@ -48,8 +48,9 @@ class DedeHtml2
 	//设置HTML的内容和来源网址
 	//gethead 是指是否要分析html头
 	//如果是局部HTML,此项必须设为false,否则无法分析网页
-	function SetSource($html,$url="",$gethead=true)
+	function SetSource(&$html,$url="",$gethead=false)
 	{
+		$this->__construct();
 		if($gethead) $this->IsHead = false;
 		else $this->IsHead = true;
 		$this->CAtt = new DedeAttribute2();
@@ -103,10 +104,9 @@ class DedeHtml2
 				for($i=$i+1; $i < $slen; $i++){
 					if($j>10) break;
 					$j++;
-					if(!ereg("[ <>\r\n\t]",$this->SourceHtml[$i])){
-						$tagName .= $this->SourceHtml[$i];
-					}
-					else break;
+					if(!ereg("[ <>\r\n\t]",$this->SourceHtml[$i]))
+					{ $tagName .= $this->SourceHtml[$i]; }
+					else{ break; }
 				}
 				$tagName = strtolower($tagName);
 				if($tagName=="!--"){

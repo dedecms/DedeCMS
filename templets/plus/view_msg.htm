@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:global name='arctitle'/}</title>
+<title><?=$arctitle?></title>
 <link href="img/base.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -17,7 +17,7 @@
       <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="4%" align="center"><img src="img/menuarrow.gif" width="18" height="16"></td>
-          <td width="96%">提示信息：{dede:global name='msgtitle'/}</td>
+          <td width="96%">提示信息：<?=$msgtitle?></td>
         </tr>
       </table>
 	  </td>
@@ -25,26 +25,29 @@
   <tr> 
     <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td height="29">{dede:global name='moremsg'/}</td>
+          <td height="29"><?=$moremsg?></td>
         </tr>
         <tr> 
           <td height="99" valign="top"><table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#DDEAC8">
               <tr bgcolor="#EFF4EA"> 
                 <td width="17%" align="center">文档标题：</td>
-                <td width="83%">{dede:global name='arctitle'/}</td>
+                <td width="83%"><?=$arctitle?></td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
                 <td align="center" bgcolor="#FFFFFF">发布时间：</td>
-                <td>{dede:global name='pubdate'/}</td>
+                <td><?=$pubdate?></td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
                 <td height="70" align="center" bgcolor="#FFFFFF">文档简介：</td>
-                <td>{dede:global name='description'/}</td>
+                <td><?=$description?></td>
               </tr>
             </table></td>
         </tr>
         <tr> 
-          <td height="30" bgcolor="#F9F9EE">&nbsp;返回页面：　<a href="{dede:global name='cfg_member_dir'/}/"><u>会员主页</u></a>　<a href='javascript:history.go(-1)'><u>上一页</u></a></td>
+          <td height="30" bgcolor="#F9F9EE">&nbsp;返回页面：
+          	<a href="<?=$cfg_member_dir?>/"><u>会员主页</u></a>
+          	<a href='javascript:history.go(-1)'><u>上一页</u></a>
+          </td>
         </tr>
       </table> 
     </td>
@@ -55,7 +58,7 @@
     <td height="1" bgcolor="#CCCCCC"></td>
   </tr>
   <tr> 
-    <td height="40" align="center">{dede:global name='cfg_powerby'/}</td>
+    <td height="40" align="center"><?=$cfg_powerby?></td>
   </tr>
 </table>
 </body>

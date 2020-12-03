@@ -1,7 +1,8 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_User');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-SetPageRank(10);
+
 if(empty($dopost)) $dopost = "";
 $ID = ereg_replace("[^0-9]","",$ID);
 /////////////////////////////////////////////
@@ -13,8 +14,8 @@ if($dopost=="saveedit")
 		exit();
 	}
 	$dsql = new DedeSql();
-	if($pwd!="") $pwd = ",pwd='".md5($pwd)."'";
-	$dsql->SetQuery("Update #@__admin set uname='$uname',usertype='$usertype',typeid='$typeid' $pwd where ID='$ID'");
+	if($pwd!="") $pwd = ",pwd='".substr(md5($pwd),0,24)."'";
+	$dsql->SetQuery("Update #@__admin set uname='$uname',usertype='$usertype',tname='$tname',email='$email',typeid='$typeid' $pwd where ID='$ID'");
 	$dsql->Execute();
 	$dsql->Close();
 	ShowMsg("成功更改一个帐户！","sys_admin_user.php");
@@ -40,7 +41,7 @@ else if($dopost=="delete")
 	   exit();
   }
 	$dsql = new DedeSql();
-	$dsql->SetQuery("Delete From #@__admin where ID='$ID'");
+	$dsql->SetQuery("Delete From #@__admin where ID='$ID' And usertype<>'10' ");
 	$dsql->Execute();
 	$dsql->Close();
 	ShowMsg("成功删除一个帐户！","sys_admin_user.php");
@@ -49,8 +50,13 @@ else if($dopost=="delete")
 //////////////////////////////////////////
 $dsql = new DedeSql();
 $row = $dsql->GetOne("Select * From #@__admin where ID='$ID'");
-$tl = new TypeLink($row['typeid']);
-$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
+$typeOptions = "";
+$dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 And (ispart=0 Or ispart=1)");
+$dsql->Execute('op');
+while($nrow = $dsql->GetObject('op')){
+	if($row['typeid']==$nrow->ID) $typeOptions .= "<option value='{$nrow->ID}' selected>{$nrow->typename}</option>\r\n";
+  else $typeOptions .= "<option value='{$nrow->ID}'>{$nrow->typename}</option>\r\n"; 
+}
 ?>
 <html>
 <head>
@@ -106,11 +112,19 @@ $typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
           <tr> 
             <td height="30">负责频道：</td>
             <td>
-			<select name="typeid" style="width:300" id="typeid">
-        <option value="0" selected>--所有频道--</option>
+			<select name="typeid" style="width:160" id="typeid">
+        <option value="0">--所有频道--</option>
 				<?=$typeOptions?>
        </select>
 			 </td>
+          </tr>
+          <tr> 
+            <td height="30">真实姓名：</td>
+            <td><input name="tname" type="text" id="tname" size="16" style="width:150" value="<?=$row['tname']?>"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="30">电子邮箱：</td>
+            <td><input name="email" type="text" id="email" size="16" style="width:150" value="<?=$row['email']?>"> &nbsp;</td>
           </tr>
           <tr> 
             <td height="30">&nbsp;</td>
@@ -118,7 +132,7 @@ $typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
           </tr>
           <tr> 
             <td height="30">&nbsp;</td>
-            <td><input type="submit" name="Submit" value=" 增加用户 "></td>
+            <td><input type="submit" name="Submit" value=" 保存用户 "></td>
           </tr>
         </table>
       </form>
@@ -126,7 +140,6 @@ $typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
 </tr>
 </table>
 <?
-$tl->Close();
 $dsql->Close();
 ?>
 </body>

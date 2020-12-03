@@ -1,7 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-SetPageRank(5);
 ?>
 <html>
 <head>
@@ -14,7 +13,7 @@ SetPageRank(5);
   <form name='form2' action='content_list.php' method="get" target='stafrm'>
    <input type='hidden' name='nullfield' value='ok'>
   </form>
-  <form name="form1" action="action_makehtml_archives.php" method="get" target='stafrm'>
+  <form name="form1" action="makehtml_archives_action.php" method="get" target='stafrm'>
   <tr> 
     <td height="20" colspan="2" background='img/tbg.gif'>
     	<table width="98%" border="0" cellpadding="0" cellspacing="0">

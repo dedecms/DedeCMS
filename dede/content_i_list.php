@@ -1,16 +1,26 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist.php");
-require_once(dirname(__FILE__)."/inc/inc_list_functions.php");
-setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
-
 if(!isset($cid)) $cid = 0;
 if(!isset($keyword)) $keyword = "";
 if(!isset($channelid)) $channelid = 0;
 if(!isset($arcrank)) $arcrank = "";
-$typeid = $cid;
-if($cuserLogin->getUserRank()<5) $arcrank = -1;
+if(!isset($adminid)) $adminid = 0;
+//检查权限许可，总权限
+CheckPurview('a_List,a_AccList,a_MyList');
+//栏目浏览许可
+if(TestPurview('a_List')){ ; }
+else if(TestPurview('a_AccList')){
+	 if($cid==0) $cid = $cuserLogin->getUserChannel();
+	 else CheckCatalog($cid,"你无权浏览非指定栏目的内容！");
+}else{
+	 $adminid = $cuserLogin->getUserID();
+}
+//----------------------------------------------------------
+require_once(dirname(__FILE__)."/../include/inc_typelink.php");
+require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
+require_once(dirname(__FILE__)."/inc/inc_list_functions.php");
+setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
+
 
 $tl = new TypeLink($cid);
 
@@ -33,39 +43,41 @@ if($keyword!=""){
 	$whereSql .= " And (title like '%$keyword%' Or writer like '%$keyword%' Or source like '%$keyword%') ";
 }
 
-if($typeid!=0){
-	$tlinkSql = $tl->GetSunID($typeid,"#@__archives",0);
+if($cid!=0){
+	$tlinkSql = $tl->GetSunID($cid,"#@__archives",0);
 	$whereSql .= " And $tlinkSql ";
 }
 
+if($adminid>0){ $whereSql .= " And #@__archives.adminID = '$adminid' "; }
+
 if($arcrank!=""){
 	$whereSql .= " And arcrank=$arcrank ";
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_i_list.php';\" value='所有文档'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档'>";
 }
-else
-{
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_i_list.php';\" value='稿件审核'>";
+else{
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核'>";
 }
 
 $tl->Close();
 
 $query = "
-select #@__archives.ID,#@__archives.typeid,#@__archives.senddate,#@__archives.iscommend,#@__archives.ismake,#@__archives.channel,#@__archives.arcrank,#@__archives.click,#@__archives.title,#@__archives.color,#@__archives.litpic,#@__archives.pubdate,#@__archives.adminID,#@__archives.memberID,#@__arctype.typename,#@__channeltype.typename as channelname 
+select #@__archives.ID,#@__archives.adminID,#@__archives.typeid,#@__archives.senddate,#@__archives.iscommend,#@__archives.ismake,#@__archives.channel,#@__archives.arcrank,#@__archives.click,#@__archives.title,#@__archives.color,#@__archives.litpic,#@__archives.pubdate,#@__archives.adminID,#@__archives.memberID,#@__arctype.typename,#@__channeltype.typename as channelname,#@__admin.uname as adminname 
 from #@__archives 
 left join #@__arctype on #@__arctype.ID=#@__archives.typeid
 left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
+left join #@__admin on #@__admin.ID=#@__archives.adminID
 $whereSql
-order by ID desc
+order by #@__archives.ID desc
 ";
 
 $dlist = new DataList();
+$dlist->pageSize = 10;
 $dlist->SetParameter("dopost","listArchives");
 $dlist->SetParameter("keyword",$keyword);
 $dlist->SetParameter("cid",$cid);
 $dlist->SetParameter("channelid",$channelid);
 $dlist->SetParameter("arcrank",$arcrank);
-$dlist->SetTemplet(dirname(__FILE__)."/templets/content_i_list.htm");
 $dlist->SetSource($query);
-$dlist->Display();
+include(dirname(__FILE__)."/templets/content_i_list.htm");
 $dlist->Close();
 ?>

@@ -36,7 +36,8 @@ scrollbar-shadow-color:DEEFC6
 function showHide(objname)
 {
     var obj = document.getElementById(objname);
-    obj.style.display == "none" ? obj.style.display = "block" : obj.style.display = "none";
+    if(obj.style.display == "none") obj.style.display = "block";
+    else{ if(document.all) obj.style.display = "none"; }
 }
 </script>
 <base target="main">

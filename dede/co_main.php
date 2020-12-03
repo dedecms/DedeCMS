@@ -31,8 +31,8 @@ if(!isset($typeid)) $typeid="";
 if(!empty($typeid)) $where = " where #@__conote.typeid='$typeid' "; 
 
 $sql  = "Select #@__conote.nid,#@__conote.typeid,#@__conote.gathername,#@__conote.language,";
-$sql .= "#@__conote.savetime,#@__conote.lasttime,#@__arctype.typename From #@__conote ";
-$sql .= "left join #@__arctype on #@__arctype.ID=#@__conote.typeid ";
+$sql .= "#@__conote.savetime,#@__conote.lasttime,#@__co_exrule.rulename as typename From #@__conote ";
+$sql .= "left join #@__co_exrule on #@__co_exrule.aid=#@__conote.typeid ";
 $sql .= " $where order by nid desc";
 
 $dlist = new DataList();

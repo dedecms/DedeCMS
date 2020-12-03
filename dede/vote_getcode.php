@@ -23,7 +23,7 @@ $aid = ereg_replace("[^0-9]","",$aid);
         <tr> 
           <td valign="top"> 
             <table width="600" border="0" cellspacing="0" cellpadding="0">
-         <form name="form1" action="action_tag_test.php" target="stafrm" method="post">
+         <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
          <input type="hidden" name="showsource" value="no">
 			  <tr> 
                   <td width="370" height="153" align="center"> 

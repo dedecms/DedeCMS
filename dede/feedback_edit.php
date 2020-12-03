@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_Feedback');
 $ID = ereg_replace("[^0-9]","",$ID);
 
 if(empty($dopost)) $dopost = "";
@@ -21,7 +22,7 @@ if($dopost=="edit")
 	  $adminmsg = str_replace("\r\n","<br/>\n",$adminmsg);
 	  $msg = $msg."<br/>\n"."<font color=red>管理员回复： $adminmsg</font>\n";
    }
-   $query = "update dede_feedback set username='$username',email='$email',msg='$msg',ischeck=1 where ID=$ID";
+   $query = "update #@__feedback set username='$username',msg='$msg',ischeck=1 where ID=$ID";
    $dsql->SetQuery($query);
    $dsql->ExecuteNoneQuery();
    $dsql->Close();
@@ -71,12 +72,6 @@ body {
             <td height="24">评论人：</td>
             <td> 
               <input name="username" type="text" id="username" size="20" value="<?=$row->username?>"> 
-            </td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">Email：</td>
-            <td> 
-              <input name="email" type="text" id="email" size="20" value="<?=$row->email?>"> 
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 

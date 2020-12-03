@@ -3,133 +3,129 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>{dede:field name='title'/}</title>
-<link href="{dede:field name='phpurl'/}/img/base.css" rel="stylesheet" type="text/css">
+<meta name="keywords" content="{dede:field name='keywords'/}">
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
+<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+<link href="../img/default.css" rel="stylesheet" type="text/css">
 </head>
-
-<body bgcolor="#AEE84F" leftmargin="0" topmargin="0">
-<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<body leftmargin="0" topmargin="0">
+<center>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
 <tr> 
-<td height="56" valign="bottom"> <a href='http://www.dedecms.com'><img src="{dede:field name='phpurl'/}/img/df_dedetitle.gif" width="250" height="53" border="0"></a> 
-</td>
-</tr>
-<tr> 
-<td height="28" valign="bottom" background="{dede:field name='phpurl'/}/img/l_mbg.gif"> 
-&nbsp; <a href='{dede:field name='indexurl'/}'>{dede:field name='indexname'/}</a> 
-{dede:channel row='8' type='top'} | <a href='[field:typelink/]'>[field:typename /]</a>{/dede:channel} | <a href='{dede:field name='memberurl'/}/index.php'>会员中心</a> 
-</td>
+<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecms织梦内容管理系统"></a></td>
+<td width="20" align="center">&nbsp;</td>
+<td width="486">&nbsp;</td>
+<td width="190">&nbsp;</td>
 </tr>
 </table>
-<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
 <tr> 
-<td width="630" valign="top">
+<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
+<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif"> 
+<a href='/'>首页</a> {dede:channel type='top' row='8'} | <a href='[field:typelink/]'>[field:typename/]</a> 
+{/dede:channel} | <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
+| <a href="{dede:field name='memberurl'/}">会员中心</a> | <a href="http://bbs.dedecms.com">支持论坛</a> 
+</td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr> 
+<td valign="top">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="99%" height="26" background="{dede:field name='phpurl'/}/img/df_gbg.gif"> 
-            &nbsp;当前位置：{dede:field name='position'/} 内容</td>
-          <td width="1%" rowspan="6"></td>
-        </tr>
-        <tr> 
-          <td height="30" align="center"> <span style="font-size:11pt"><b> 图集：{dede:field 
-            name="title"/} </b></span> </td>
-        </tr>
-        <tr> 
-          <td>
-		  <table width="100%" border="0" cellspacing="3" cellpadding="3">
-              <tr>
-                <td align="center">{dede:field name='imgurls'/}</td>
-              </tr>
-              <tr> 
-                <td align="center">{dede:pagebreak /} </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr> 
-          <td height="26" align="center" style="border-top:1px solid #cccccc"> 
-            [<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/file_move.gif" width="17" height="18" border="0">收藏</a>] 
-            &nbsp; [<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menuarrow.gif" width="16" height="15" border="0">推荐</a>] 
-            &nbsp; [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menumember.gif" width="16" height="15" border="0">评论</a>] 
-          </td>
-        </tr>
-        <tr> 
-          <td height="26" align="center" style="border-top:1px solid #cccccc"> 
-            <table width="100%" border="0" cellpadding="1" cellspacing="1">
-              <form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
-                <input type="hidden" name="arcID" value="{dede:field name="id"/}">
-                <tr> 
-                  <td>用户名： 
-                    <input name="username" type="text" id="username" size="10" class="nb">
-                    （<a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>） 
-                    密码： 
-                    <input name="pwd" type="text" id="pwd" size="10"class="nb"> 
-                    <input name="notuser" type="checkbox" id="notuser" value="1">
-                    匿名评论 [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name="id"/}">所有评论</a>] 
-                    <!--a href='' class="coolbg" style="width:60"-->
-                    <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'></td>
-                </tr>
-                <tr> 
-                  <td>评论内容：(不能超过250字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
-                </tr>
-                <tr> 
-                  <td><textarea name="msg" cols="75" rows="4" id="msg" style="98%"></textarea></td>
-                </tr>
-              </form>
-            </table></td>
-        </tr>
-        <tr> 
-          <td height="86" valign="top" bgcolor="#FAFEF1"> <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#C5CDBE">
-              <tr> 
-                <td height="23" bgcolor="#F0F8D8">&nbsp;§相关评论：</td>
-              </tr>
-              <tr> 
-                <td height="60" bgcolor="#FFFFFF"> <script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script> 
-                </td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-<td width="130" valign="top" bgcolor="#E7FBD2"> 
-<div style="font-size:2pt">&nbsp;</div>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr> 
-<td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl'/}/img/l_dd1.gif" width="29" height="24"></td>
-<td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">热点图集</font></strong></td>
-</tr>
-<tr valign="top" bgcolor="#F4FEE3"> 
-          <td height="120" colspan="2" style="border-top:1px solid #bcbcbc"class="ctfield" align="center"> 
-            {dede:arclist orderby='click' imgwidth='100' imgheight='75' 
-            row='3'} [field:imglink/] <br>
-		[field:textlink/]
-		{/dede:arclist}
-		</td>
-</tr>
-</table>
-<div style="font-size:2pt">&nbsp;</div>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<td width="100%" height="26"><table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
 <tr> 
-<td width="18%" height="24" align="center" bgcolor="#D3E4B6"><img src="{dede:field name='phpurl'/}/img/l_dd2.gif" width="29" height="24"></td>
-          <td width="82%" bgcolor="#F0F8D8"><strong>&nbsp;<font color="#7D845E">相关图集</font></strong></td>
+<td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
+<td width="3%" align="center"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
+<td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">当前位置：{dede:field 
+name='position'/}图集</td>
 </tr>
-<tr valign="top" bgcolor="#F4FEE3"> 
-          <td height="120" colspan="2" style="border-top:1px solid #bcbcbc" class="ctfield" align="center"> 
-            {dede:likeart type='image' orderby='hot' imgwidth='100' imgheight='75' 
-            row='3'} [field:imglink/] <br>
-		[field:textlink/]
-		{/dede:likeart}
-		</td>
+<tr> 
+<td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
 </tr>
-</table>
+</table> </td>
+</tr>
+<tr> 
+<td height="30" align="center"> <span style="font-size:11pt"><b> 图集：{dede:field 
+name='title'/} </b></span> </td>
+</tr>
+<tr> 
+<td> <table width="100%" border="0" cellspacing="3" cellpadding="3">
+<tr> 
+<td align="center">{dede:field name='imgurls'/}</td>
+</tr>
+<tr> 
+<td align="center">{dede:pagebreak/} </td>
+</tr>
+</table></td>
+</tr>
+<tr> 
+<td height="30" align="center" style="border-top:1px solid #cccccc"> 
+[<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/file_move.gif" width="17" height="18" border="0">收藏</a>] 
+&nbsp; [<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menuarrow.gif" width="16" height="15" border="0">推荐</a>] 
+&nbsp; [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menumember.gif" width="16" height="15" border="0">评论</a>] 
 </td>
 </tr>
-</table>
-<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}" language="javascript"></script>
-<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
 <tr> 
-<td height="20" bgcolor="#EFF1EC">&nbsp;</td>
+<td height="25" align="center" style="border-top:1px solid #cccccc"><table width="96%" border="0" cellpadding="1" cellspacing="1">
+<form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
+<input type="hidden" name="arcID" value="{dede:field name='id'/}">
+<tr> 
+<td>用户名： 
+<input name="username" type="text" id="username" size="10" class="nb">
+（<a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>） 
+密码： 
+<input name="pwd" type="text" id="pwd" size="10"class="nb"> 
+<input name="notuser" type="checkbox" id="notuser" value="1">
+匿名评论 [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name='id'/}">所有评论</a>] 
+<!--a href='' class="coolbg" style="width:60"-->
+<input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'></td>
 </tr>
 <tr> 
-<td height="50" align="center">{dede:field name='powerby'/}</td>
+<td>评论内容：(不能超过250字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
+</tr>
+<tr> 
+<td><textarea name="msg" cols="75" rows="4" id="msg" style="width:100%"></textarea></td>
+</tr>
+</form>
+</table></td>
+</tr>
+<tr> 
+<td height="26" align="center" style="border-top:1px solid #cccccc"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="6%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl'/}/img/l_dd1.gif" width="29" height="24"></td>
+<td width="94%" bgcolor="#D8EEA8"><strong>热点图集</strong></td>
+</tr>
+<tr valign="top" bgcolor="#FFFFFF"> 
+<td colspan="2" align="center"class="ctfield" style="border-top:1px solid #bcbcbc;padding:3px"> 
+{dede:arclist channel='2' orderby='click' imgwidth='120' imgheight='90' 
+row='7' col='7'} [field:imglink/] <br>
+[field:textlink/]
+				{/dede:arclist}
+				</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
 </tr>
 </table>
+<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberID'/}" language="javascript"></script>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
+<tr> 
+<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
+	{dede:global name='cfg_powerby'/}
+</td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
+</tr>
+</table>
+
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr><td height="6"></td></tr>
+</table> 
+</center>
 </body>
 </html>

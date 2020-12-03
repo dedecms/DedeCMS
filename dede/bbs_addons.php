@@ -28,7 +28,7 @@ body {
         以下的代码提供在封面模板中调用论坛的主题贴子数据.
         </td>
       </tr>
-	  <form name="mycode1" action="action_tag_test.php" target="_blank" method="post">
+	  <form name="mycode1" action="tag_test_action.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">Discuz论坛：          </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b1" type="submit" id="b1" value=" 预览 "></td>
@@ -45,7 +45,7 @@ body {
     </td>
       </tr>
 	  </form>
-	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="tag_test_action.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">PHPWIND论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b2" type="submit" id="b2" value=" 预览 "></td>
@@ -62,7 +62,7 @@ body {
 </td>
       </tr>
 	   </form>
-	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="tag_test_action.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">VBB论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b3" type="submit" id="b3" value=" 预览 "></td>
@@ -77,7 +77,7 @@ body {
 {/dede:loop}</textarea></td>
       </tr>
 	   </form>
-	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="tag_test_action.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">PHPBB论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b4" type="submit" id="b4" value=" 预览 "></td>

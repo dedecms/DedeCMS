@@ -4,7 +4,7 @@ require_once(dirname(__FILE__)."/config.php");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>织梦内容管理系统 <?=$cfg_version?></title>
+<title><?=$cfg_softname." ".$cfg_version?></title>
 <style>
 body {
 scrollbar-base-color:#C0D586;

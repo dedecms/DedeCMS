@@ -44,11 +44,11 @@ $co->LoadFromDB($nid);
         </tr>
         <tr> 
           <td height="24" align="center">网页规则测试：</td>
-          <td>&nbsp;</td>
+          <td>(Dedecms里时间日期字段一般是整数类型，如果你看到sortrank、pubdate、senddate是整数，那情况是属正常的)</td>
         </tr>
         <tr> 
           <td height="24" colspan="2" align="center">
-         <textarea name="r2" id="r2" style="width:100%;height:250"><? $co->TestArt($turl); ?></textarea>
+         <textarea name="r2" id="r2" style="width:100%;height:250">测试网址: <? echo "$turl \r\n"; $co->TestArt($turl); ?></textarea>
 		  </td>
         </tr>
       </table></td>

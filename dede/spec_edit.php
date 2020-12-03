@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('spec_Edit');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 $aid = ereg_replace("[^0-9]","",$aid);
@@ -41,30 +42,51 @@ body { background-image: url(img/allbg.gif); }
 -->
 </style>
 <link href="base.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
-<script type="text/javascript" src="../include/calendar/calendar.js"></script>
-<script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<script language='javascript' src='main.js'></script>
 <script language="javascript">
 <!--
-function showHide(objname)
+function SelectTemplets(fname)
 {
-   var obj = document.getElementById(objname);
-   if(obj.style.display=="none") obj.style.display = "block";
-	 else obj.style.display="none";
+     var posLeft = window.event.clientY-200;
+     var posTop = window.event.clientX-300;
+     window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+function SelectArcList(fname)
+{
+   var posLeft = 10;
+   var posTop = 10;
+   window.open("content_select_list.php?f="+fname, "selArcList", "scrollbars=yes,resizable=yes,statebar=no,width=700,height=500,left="+posLeft+", top="+posTop);
 }
 function checkSubmit()
 {
    if(document.form1.title.value==""){
 	   alert("专题名称不能为空！");
-	   document.form1.title.focus();
 	   return false;
   }
-  if(document.form1.typeid.value==0){
-	  alert("请给专题选定一个分类，以方便管理！");
-	  document.form1.typeid.focus();
-	  return false;
-  }
 }
+/*
+function ShowHide(objname)
+{
+   var obj = document.getElementById(objname);
+   if(obj.style.display=="none") obj.style.display = "block";
+	 else obj.style.display="none";
+}
+function ShowItem1()
+{
+    ShowObj('head1');
+	ShowObj('needset');
+	HideObj('head2');
+	HideObj('adset');
+}
+function ShowItem2()
+{
+    ShowObj('head2');
+	ShowObj('adset');
+	HideObj('head1');
+	HideObj('needset');
+}
+
+
 function ShowColor(){
 	var fcolor=showModalDialog("img/color.htm?ok",false,"dialogWidth:106px;dialogHeight:110px;status:0;dialogTop:"+(window.event.clientY+120)+";dialogLeft:"+(window.event.clientX));
 	if(fcolor!=null && fcolor!="undefined") document.form1.color.value = fcolor;
@@ -75,12 +97,6 @@ function SeePic(img,f)
    if ( f != "" ) { img.src = f; }
 }
 
-function SelectArcList(fname)
-{
-   var posLeft = 10;
-   var posTop = 10;
-   window.open("content_select_list.php?f="+fname, "selArcList", "scrollbars=yes,resizable=yes,statebar=no,width=700,height=500,left="+posLeft+", top="+posTop);
-}
 
 function SelectImage(fname,vlist)
 {
@@ -88,92 +104,128 @@ function SelectImage(fname,vlist)
    var posTop = window.event.clientX-400;
    window.open("../include/dialog/select_images.php?f="+fname+"&imgstick="+vlist, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
-
+*/
 -->
 </script>
 </head>
 <body topmargin="8">
-<form name="form1" action="action_spec_edit_save.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<form name="form1" action="spec_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
 <input type="hidden" name="ID" value="<?=$arcRow['ID']?>">
 <input type="hidden" name="channelid" value="<?=$channelid?>">
 <input type="hidden" name="arcrank" value="<?=$arcRow['arcrank']?>">
 <input type="hidden" name="source" value="本站">
 <input type="hidden" name="typeid2" value="0">
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1">
-  <tr> 
-    <td width="100%" height="26" colspan="2" background="img/tbg.gif" style="border:solid 1px #666666">
-	  <table width="500" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="25" align="center">
-          	<img src="img/dedeexplode.gif" width="11" height="11" border="0" onClick="showHide('infotable')" style="cursor: hand;">
-          	</td>
-          <td width="85"><strong>通用参数：</strong></td>
-          <td width="390">
-          <a href="content_s_list.php">[<u>专题列表</u>]</a>
-          &nbsp;
-          <a href="catalog_main.php">[<u>栏目管理</u>]</a>
-          </td>
-        </tr>
-      </table>
-      </td>
-  </tr>
-</table>
-<table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
+        &nbsp;</td>
+      <td width="85%"><a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"></a>&gt;&gt;修改专题</td>
+      <td width="10%">&nbsp; <a href="makehtml_spec.php">[<u>更新HTML</u>]</a></td>
+      <td width="1%">&nbsp;</td>
+    </tr>
+  </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+    <tr> 
+      <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;常规参数&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>专题文档</u></a>&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
+    <tr> 
+      <td colspan="2"> <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote1.gif">专题文档</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr><td height="2"></td></tr>
 </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="infotable">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
     <tr> 
       <td width="400%" height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">专题名称：</td>
             <td width="224"><input name="title" type="text" id="title" style="width:200" value="<?=$arcRow['title']?>"></td>
             <td width="73">附加参数：</td>
-            <td width="223">
-            	<input name="iscommend" type="checkbox" id="iscommend" value="11" class="np"<? if($arcRow["iscommend"]>10) echo " checked";?>>
+            <td width="223"> <input name="iscommend" type="checkbox" id="iscommend" value="11" class="np"<? if($arcRow["iscommend"]>10) echo " checked";?>>
               推荐 
               <input name="isbold" type="checkbox" id="isbold" value="5" class="np"<? if($arcRow["iscommend"]>10) echo " checked";?>>
-              加粗
-            </td>
+              加粗 </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr> 
+      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="80">小标题：</td>
+            <td width="224"><input name="shorttitle" type="text" value="<?=$arcRow["shorttitle"]?>" id="shorttitle" style="width:200"></td>
+            <td width="73">自定属性：</td>
+            <td width="223"> <select name='arcatt' style='width:150'>
+                <option value='0'>普通文档</option>
+                <?
+            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
+            	$dsql->Execute();
+            	while($trow = $dsql->GetObject())
+            	{
+            		if($arcRow["arcatt"]==$trow->att) echo "<option value='{$trow->att}' selected>{$trow->attname}</option>";
+            		else echo "<option value='{$trow->att}'>{$trow->attname}</option>";
+            	}
+            	?>
+              </select> </td>
           </tr>
         </table></td>
     </tr>
     <tr id="pictable"> 
-      <td height="24" colspan="4" class="bline">
-            	<table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="78" height="81">缩略图：</td>
-            <td width="337">
-              <input name="picname" type="text" id="picname" style="width:230" value="<?=$arcRow["litpic"]?>">
+            <td width="78" height="81">
+            	&nbsp;缩 略 图：<br/>
+            	&nbsp;<input type='checkbox' class='np' name='ddisremote' value='1'>远程
+            </td>
+            <td width="337"> <input name="picname" type="text" id="picname" style="width:230" value="<?=$arcRow["litpic"]?>"> 
               <input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');"> 
             </td>
-            <td width="185" align="center"><img src="<?if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "img/pview.gif";?>" width="150" height="100" id="picview" name="picview">
+            <td width="185" align="center"><img src="<?if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "img/pview.gif";?>" width="150" height="100" id="picview" name="picview"> 
             </td>
           </tr>
-        </table>
-         </td>
+        </table></td>
+    </tr>
+    <tr> 
+      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="80">专题模板：</td>
+            <td> <input name="templet" type="text" id="templet" size="30" value="<?=$arcRow["templet"]?>"> 
+              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');"> 
+            </td>
+          </tr>
+        </table></td>
     </tr>
     <tr> 
       <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">责任编辑：</td>
-            <td width="224"><input name="writer" type="text" id="writer" value="<?=$arcRow["writer"]?>"> </td>
+            <td width="224"><input name="writer" type="text" id="writer" value="<?=$arcRow["writer"]?>"> 
+            </td>
             <td width="63">发布选项：</td>
-            <td>
-            	<input name="ishtml" type="radio" class="np" value="1"<?if($arcRow["ismake"]!=-1) echo " checked";?>>
+            <td> <input name="ishtml" type="radio" class="np" value="1"<?if($arcRow["ismake"]!=-1) echo " checked";?>>
               生成HTML 
               <input type="radio" name="ishtml" class="np" value="0"<?if($arcRow["ismake"]==-1) echo " checked";?>>
-              仅动态浏览
-            </td>
+              仅动态浏览 </td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">内容排序：</td>
-            <td width="224">
-            	<select name="sortup" id="sortup" style="width:150">
+            <td width="224"> <select name="sortup" id="sortup" style="width:150">
                 <?
                 $subday = SubDay($arcRow["sortrank"],$arcRow["senddate"]);
                 echo "<option value='0'>正常排序</option>\r\n";
@@ -207,8 +259,7 @@ function SelectImage(fname,vlist)
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">创建时间：</td>
             <td> 
@@ -221,8 +272,7 @@ function SelectImage(fname,vlist)
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">发布时间：</td>
             <td> 
@@ -241,7 +291,7 @@ function SelectImage(fname,vlist)
           <tr> 
             <td width="80">主分类：</td>
             <td width="446"> 
-     <?
+              <?
            	$tl = new TypeLink($arcRow["typeid"]);
            	$typeOptions = $tl->GetOptionArray($arcRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
            	echo "<select name='typeid' style='width:300'>\r\n";
@@ -256,30 +306,9 @@ function SelectImage(fname,vlist)
     </tr>
   </table>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-	<tr><td height="6"></td></tr>
-</table>
-<table width="98%" border="0" align="center" cellpadding="1" cellspacing="0">
-  <tr>
-    <td><table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td width="100%" height="26" colspan="2" background="img/tbg.gif" style="border:solid 1px #666666"> 
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr> 
-                <td width="5%" align="center">
-                	<img src="img/dedeexplode.gif" width="11" height="11" border="0" onClick="showHide('addtable')" style="cursor: hand;">
-                </td>
-                  <td width="61%"><strong>附加参数：</strong></td>
-                <td width="34%">&nbsp;</td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr><td height="2"></td></tr>
 </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="addtable">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" style="display:none" id="adset">
     <tr> 
       <td height="24" bgcolor="#F1F5F2" class="bline2"> <strong>专题节点列表：</strong> 
         (文章列表用ID1,ID2,ID3这样形式分开，系统会自动排除不同节点的相同文章) <br/>
@@ -287,7 +316,7 @@ function SelectImage(fname,vlist)
     </tr>
     <tr> 
       <td height="24" valign="top" class="bline">
-        <table width="600" border="0" cellspacing="2" cellpadding="2">
+        <table width="800" border="0" cellspacing="2" cellpadding="2">
           <?
 		  $speclisttmp = GetSysTemplets("spec_arclist.htm");
 		  $i = 1;
@@ -305,20 +334,47 @@ function SelectImage(fname,vlist)
       	$titlelen = $ctag->GetAtt('titlelen');
       	$infolen = $ctag->GetAtt('infolen');
       	$temp = trim($ctag->GetInnerText());
+      	$noteid = $ctag->GetAtt('noteid');
+      	if(empty($noteid)) $noteid = $i;
+      	$isauto = $ctag->GetAtt('isauto');
+      	if(empty($isauto)) $isauto = 0;
+      	$keywords = $ctag->GetAtt('keywords');
+      	$typeid = $ctag->GetAtt('typeid');
+      	if(empty($typeid)) $typeid = 0;
+      	$rownum = $ctag->GetAtt('rownum');
+      	if(empty($rownum)) $rownum = 40;
       ?>
-      <tr bgcolor="#EEF8E0"> 
-            <td width="107">节点 
+          <tr bgcolor="#EEF8E0"> 
+            <td width="113">节点 
               <?=$i?>
               名称：</td>
-            <td width="353">
-            	<input name="notename<?=$i?>" type="text" id="notename<?=$i?>" size="30" style="width:350" value="<?=$notename?>">
-            </td>
-            <td width="120" align="center">&nbsp; </td>
+            <td colspan="2"> <table width="600" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="310"><input name="notename<?=$i?>" type="text" id="notename<?=$i?>" style="width:300" value="<?=$notename?>"> 
+                  </td>
+                  <td width="90" align="center">节点标识：</td>
+                  <td width="200"><input name="noteid<?=$i?>" type="text" id="noteid<?=$i?>" style="width:100" value="<?=$noteid?>"></td>
+                </tr>
+              </table></td>
           </tr>
           <tr> 
             <td>节点文章列表：</td>
-            <td><textarea name="arcid<?=$i?>" rows="5" id="arcid<?=$i?>" style="width:350"><?=$idlist?></textarea></td>
+            <td><textarea name="arcid<?=$i?>" rows="3" id="arcid<?=$i?>" style="width:90%"><?=$idlist?></textarea></td>
             <td align="center"><input name="selarc<?=$i?>" type="button" id="selarc<?=$i?>2" value="选择节点文章" style="width:100" onClick="SelectArcList('form1.arcid<?=$i?>');"></td>
+          </tr>
+          <tr> 
+            <td>文档来源：</td>
+            <td colspan="2">
+            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="0" class="np"<?if($isauto==0) echo " checked";?>>
+            	按文章列表
+            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="1" class="np"<?if($isauto==1) echo " checked";?>>
+            	自动获取文档
+            	&nbsp;
+            	关键字：
+            	<input name="keywords<?=$i?>" type="text" value="<?=$keywords?>" id="keywords<?=$i?>" value="" size="16">(逗号分开)
+            	栏目ID：
+            	<input name="typeid<?=$i?>" type="text" value="<?=$typeid?>" id="typeid<?=$i?>" value="0" size="4">
+            </td>
           </tr>
           <tr> 
             <td height="51" rowspan="2" valign="top">节点布局：<br/> </td>
@@ -329,11 +385,13 @@ function SelectImage(fname,vlist)
               <input name="titlelen<?=$i?>" type="text" id="titlelen<?=$i?>" value="<?=$titlelen?>" size="3">
               简介长： 
               <input name="infolen<?=$i?>" type="text" id="infolen<?=$i?>" value="<?=$infolen?>" size="3"> 
+              文档数： 
+              <input name="rownum<?=$i?>" type="text" id="rownum<?=$i?>" value="<?=$rownum?>" size="3">
             </td>
           </tr>
           <tr> 
             <td colspan="2">单条记录的模板：<br/>
-            <textarea name="listtmp<?=$i?>" rows="3" id="listtmp<?=$i?>" style="width:350"><?=$temp?></textarea></td>
+            <textarea name="listtmp<?=$i?>" rows="3" id="listtmp<?=$i?>" style="width:60%"><?=$temp?></textarea></td>
           </tr>
       <?
       	$i++;
@@ -343,16 +401,36 @@ function SelectImage(fname,vlist)
 		  {
 		  ?>
           <tr bgcolor="#EEF8E0"> 
-            <td width="107">节点 
+            <td width="113">节点 
               <?=$i?>
               名称：</td>
-            <td width="353"> <input name="notename<?=$i?>" type="text" id="notename<?=$i?>" size="30" style="width:350"></td>
-            <td width="120" align="center">&nbsp; </td>
+            <td colspan="2"> <table width="600" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="310"><input name="notename<?=$i?>" type="text" id="notename<?=$i?>" style="width:300"> 
+                  </td>
+                  <td width="90" align="center">节点标识：</td>
+                  <td width="200"><input name="noteid<?=$i?>" type="text" id="noteid<?=$i?>" style="width:100"></td>
+                </tr>
+              </table></td>
           </tr>
           <tr> 
             <td>节点文章列表：</td>
-            <td><textarea name="arcid<?=$i?>" rows="5" id="arcid<?=$i?>" style="width:350"></textarea></td>
+            <td><textarea name="arcid<?=$i?>" rows="3" id="arcid<?=$i?>" style="width:90%"></textarea></td>
             <td align="center"><input name="selarc<?=$i?>" type="button" id="selarc<?=$i?>2" value="选择节点文章" style="width:100" onClick="SelectArcList('form1.arcid<?=$i?>');"></td>
+          </tr>
+          <tr> 
+            <td>文档来源：</td>
+            <td colspan="2">
+            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="0" class="np" checked>
+            	按文章列表
+            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="1" class="np">
+            	自动获取文档
+            	&nbsp;
+            	关键字：
+            	<input name="keywords<?=$i?>" type="text" id="keywords<?=$i?>" value="" size="16">(空格分开)
+            	栏目ID：
+            	<input name="typeid<?=$i?>" type="text" id="typeid<?=$i?>" value="0" size="4">
+            </td>
           </tr>
           <tr> 
             <td height="51" rowspan="2" valign="top">节点布局：<br/> </td>
@@ -363,10 +441,12 @@ function SelectImage(fname,vlist)
               <input name="titlelen<?=$i?>" type="text" id="titlelen<?=$i?>" value="60" size="3">
               简介长： 
               <input name="infolen<?=$i?>" type="text" id="infolen<?=$i?>" value="160" size="3"> 
+              文档数： 
+              <input name="rownum<?=$i?>" type="text" id="rownum<?=$i?>" value="40" size="3">
             </td>
           </tr>
           <tr> 
-            <td colspan="2">单条记录的模板：<br/> <textarea name="listtmp<?=$i?>" rows="3" id="listtmp<?=$i?>" style="width:350"><?=$speclisttmp?></textarea></td>
+            <td colspan="2">单条记录的模板：<br/> <textarea name="listtmp<?=$i?>" rows="3" id="listtmp<?=$i?>" style="width:60%"><?=$speclisttmp?></textarea></td>
           </tr>
           <?
 		  }

@@ -1,0 +1,163 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title>友情链接管理</title>
+<link href="base.css" rel="stylesheet" type="text/css">
+<script language='javascript'src='main.js'></script>
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript">
+<!--
+//增加链接
+function AddnewLink(){
+  var taget_obj = $Obj('linkList');
+  var linktype,getquery;
+  if($Obj('linktype1').checked) linktype = 1;
+  else linktype = 2;
+  getquery = "&linktype="+linktype;
+  
+  if($Obj('title').value==''){
+  	alert('链接标题不能为空！');
+  	return false;
+  }
+  getquery += "&title="+$Obj('title').value;
+  
+  if($Obj('url').value==''){
+  	alert('链接网址不能为空！');
+  	return false;
+  }
+  getquery += "&url="+$Obj('url').value;
+  
+  if(linktype==2){
+  	if($Obj('imgurl').value==''){
+  	  alert('你选择的是图片链接，因此图片网址不能为空！');
+  	  return false;
+    }
+  }
+  getquery += "&imgurl="+$Obj('imgurl').value+"&imgwidth="+$Obj('imgwidth').value+"&imgheight="+$Obj('imgheight').value;
+  
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("flink_main.php?dopost=addnew"+getquery);
+}
+
+//更新类目
+function UpdateType(tid){
+  var taget_obj = $Obj('linkList');
+  var linktype,getquery;
+  if($Obj('linktype'+tid+'1').checked) linktype = 1;
+  else linktype = 2;
+  getquery = "&linktype="+linktype;
+  if($Obj('title'+tid).value==''){
+  	alert('链接标题不能为空！');
+  	return false;
+  }
+  getquery += "&title="+$Obj('title'+tid).value;
+  
+  if($Obj('url'+tid).value==''){
+  	alert('链接网址不能为空！');
+  	return false;
+  }
+  getquery += "&url="+$Obj('url'+tid).value;
+  
+  if(linktype==2){
+  	if($Obj('imgurl'+tid).value==''){
+  	  alert('你选择的是图片链接，因此图片网址不能为空！');
+  	  return false;
+    }
+  }
+  getquery += "&imgurl="+$Obj('imgurl'+tid).value+"&imgwidth="+$Obj('imgwidth'+tid).value+"&imgheight="+$Obj('imgheight'+tid).value;
+  
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("flink_main.php?dopost=update&aid="+tid+getquery);
+}
+
+//删除链接
+function DelType(tid){
+  var taget_obj = $Obj('linkList');
+  var titlename = $Obj('title'+tid).value;
+  if(!window.confirm('你确定要删除链接：'+titlename+' 吗？')){ return false; }
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("flink_main.php?dopost=del&aid="+tid);
+}
+
+//重载类目
+function ReLoadList(oby){
+  var taget_obj = $Obj('typeList');
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在加载中...");
+  myajax.SendGet("flink_main.php?dopost=reload");
+}
+-->
+</script>
+<style type="text/css">
+.cinput {height:18px;border:1px solid #888888}
+</style>	
+</head>
+<body leftmargin="0" topmargin="0">
+<? include(dirname(__FILE__)."/head.htm"); ?>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="299" valign="top"> 
+      <?include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td width="600" valign="top"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+          <tr> 
+          <td background="img/tbg.gif" height="25" class="gdt2"> <strong>　&nbsp;友情链接管理：</strong> 
+          </td>
+          </tr>
+	 </table>
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+        <tr bgcolor="#F2F9E6"> 
+          <td height="22" colspan="2" style="padding-left:6px;">增加新的链接：</td>
+        </tr>
+        <tr> 
+          <td width="20%" height="22" bgcolor="#FFFFFF" style="padding-left:6px;">链接名称：</td>
+          <td width="80%" height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
+		  <input name="title" type="text" id="title" style="width:150px" class="cinput">
+            网址：
+            <input name="url" type="text" id="url" style="width:150px" class="cinput"> 
+          </td>
+        </tr>
+        <tr> 
+          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">链接类型：</td>
+          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
+		   <input name="linktype" id="linktype1" type="radio" value="1" checked>
+            文字 
+            <input type="radio" id="linktype2" name="linktype" value="2">
+            图片</td>
+        </tr>
+        <tr> 
+          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">图片选项：</td>
+          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
+		    地址： <input name="imgurl" type="text" id="imgurl" style="width:120px" class="cinput">
+            宽：
+            <input name="imgwidth" type="text" id="imgwidth" style="width:30px" value="88" class="cinput">
+            高：
+            <input name="imgheight" type="text" id="imgheight" style="width:30px" value="31" class="cinput">
+             
+            <input type="button" name="bt" value="增加" style="width:50px" onClick="AddnewLink()">
+		  </td>
+        </tr>
+        <tr bgcolor="#F2F9E6"> 
+          <td height="22" colspan="2" style="padding-left:6px;">已有链接管理： </td>
+        </tr>
+        <tr> 
+        <td height="380" colspan="2" valign="top" bgcolor="#FFFFFF" style="padding-left:6px;padding-top:6px">
+		  
+		  <span id="linkList"><? GetLinkList($dsql); ?></span>
+			
+			</td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</body>
+</html>

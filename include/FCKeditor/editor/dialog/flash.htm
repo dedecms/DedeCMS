@@ -9,13 +9,13 @@
 var oEditor	= window.parent.InnerDialogLoaded() ;
 var oDOM		= oEditor.FCK.EditorDocument ;
 var FCK = oEditor.FCK;
+
 function TableOK(){
     var furl,widthdd,heightdd,doflash;
-    furl = document.form1.furl.value;
+    furl = encodeURI(document.form1.furl.value);
     widthdd = document.form1.fwidth.value;
     heightdd = document.form1.fheight.value;
     doflash = "<embed src='"+ furl +"' document.document.form1.='hight' wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='"+ widthdd +"' height='"+ heightdd +"'></embed>\r\n";
-    //window.returnValue = doflash;
     if(document.all) oDOM.selection.createRange().pasteHTML(doflash);
     else FCK.InsertHtml(doflash);
     window.close();

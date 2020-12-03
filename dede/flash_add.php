@@ -1,8 +1,9 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 $channelid="4";
 if(empty($cid)) $cid = 0;
+$dsql = new DedeSql(false);
 ?>
 <html>
 <head>
@@ -14,144 +15,155 @@ body { background-image: url(img/allbg.gif); }
 -->
 </style>
 <link href="base.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
-<script type="text/javascript" src="../include/calendar/calendar.js"></script>
-<script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<script language="javascript" src="../include/dedeajax.js"></script>
+<script language='javascript' src='main.js'></script>
 <script language="javascript">
 <!--
-function showHide(objname)
-{
-   var obj = document.getElementById(objname);
-   if(obj.style.display=="none") obj.style.display = "block";
-	 else obj.style.display="none";
-}
 function checkSubmit()
 {
    if(document.form1.title.value==""){
 	   alert("文章标题不能为空！");
-	   document.form1.title.focus();
 	   return false;
    }
-   if(document.form1.seltypeid.value==0&&document.form1.typeid.value==0){
+   if(document.form1.typeid.value==0){
 	   alert("请选择档案的主类别！");
 	   return false;
   }
   mflash = document.getElementById("myflash");
   document.form1.remoteflash.value = mflash.innerHTML;
 }
-function ShowColor(){
-	var fcolor=showModalDialog("img/color.htm?ok",false,"dialogWidth:106px;dialogHeight:110px;status:0;dialogTop:"+(window.event.clientY+120)+";dialogLeft:"+(window.event.clientX));
-	if(fcolor!=null && fcolor!="undefined") document.form1.color.value = fcolor;
-}
-
-function SeePic(img,f)
-{
-   if ( f.value != "" ) { img.src = f.value; }
-}
-
-function SelectFlash()
-{
-   var posLeft = window.event.clientY-100;
-   var posTop = window.event.clientX-400;
-   window.open("../include/dialog/select_media.php?f=form1.flashurl", "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
-}
-
-function SelectImage()
-{
-   var posLeft = window.event.clientY-100;
-   var posTop = window.event.clientX-400;
-   window.open("../include/dialog/select_images.php?f=form1.picname", "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
-}
-
-function SelectKeywords(f)
-{
-	var posLeft = window.event.clientY-100;
-  var posTop = window.event.clientX-500;
-  window.open("article_keywords_select.php?f="+f, "popUpkwWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
-}
-
 -->
 </script>
 </head>
 <body topmargin="8">
-<form name="form1" action="action_flash_save.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<form name="form1" action="flash_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
 <input type="hidden" name="channelid" value="<?=$channelid?>">
 <input type="hidden" name="remoteflash" value="">
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1">
-  <tr> 
-    <td width="100%" height="26" colspan="2" background="img/tbg.gif" style="border:solid 1px #666666">
-	  <table width="500" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="25" align="center">
-          	<img src="img/dedeexplode.gif" width="11" height="11" border="0" onClick="showHide('infotable')" style="cursor: hand;">
-          	</td>
-          <td width="85"><strong>通用参数：</strong></td>
-          <td width="390">
-          <a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives">[<u>FLASH列表</u>]</a>
-          &nbsp;
-          <a href="catalog_main.php">[<u>栏目管理</u>]</a>
-          </td>
-        </tr>
-      </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
+        &nbsp;</td>
+      <td width="64%"><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"><u>Flash列表</u></a>&gt;&gt;发布新作品</td>
+      <td width="31%" align="right">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> 
       </td>
-  </tr>
-</table>
-<table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <td width="1%">&nbsp;</td>
+    </tr>
+  </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+    <tr> 
+      <td colspan="2"> <table border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;常规参数&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>Flash内容</u></a>&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
+    <tr> 
+      <td colspan="2"> <table height="24" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote1.gif">Flash内容&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr><td height="2"></td></tr>
 </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="infotable">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
     <tr> 
-      <td width="400%" height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td width="400%" height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">作品名称：</td>
-            <td width="224"><input name="title" type="text" id="title" style="width:200"></td>
-            <td width="73">参数：</td>
-            <td width="223"> <input name="iscommend" type="checkbox" id="iscommend" value="11" class="np">
+            <td width="90">&nbsp;作品名称：</td>
+            <td width="250"> <input name="title" type="text" id="title" style="width:230"> 
+            </td>
+            <td width="90">附加参数：</td>
+            <td>
+            	<input name="iscommend" type="checkbox" id="iscommend" value="11" class="np">
               推荐 
               <input name="isbold" type="checkbox" id="isbold" value="5" class="np">
-              加粗</td>
+              加粗
+              <input name="isjump" type="checkbox" id="isjump" value="1" onClick="ShowUrlTr()" class="np">
+              跳转网址
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:none">
+	   <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;跳转网址：</td>
+            <td> <input name="redirecturl" type="text" id="redirecturl" style="width:300" value=""> 
+            </td>
+          </tr>
+       </table>
+	 </td>
+    </tr>
+    <tr> 
+      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;简略标题：</td>
+            <td width="250"> <input name="shorttitle" type="text" id="shorttitle" style="width:150"> 
+            </td>
+            <td width="90">自定义属性：</td>
+            <td> <select name='arcatt' style='width:150'>
+                <option value='0'>普通文档</option>
+                <?
+            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
+            	$dsql->Execute();
+            	while($trow = $dsql->GetObject())
+            	{
+            		echo "<option value='{$trow->att}'>{$trow->attname}(att={$trow->att})</option>";
+            	}
+            	?>
+              </select> </td>
           </tr>
         </table></td>
     </tr>
     <tr id="pictable"> 
-      <td height="24" colspan="4" class="bline"> <table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="78" height="81">缩略图：</td>
-            <td width="337"> <table width="100%" border="0" cellspacing="1" cellpadding="1">
+            <td width="135" height="81"> &nbsp;缩 略 图：<br/> &nbsp; <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote' onClick="CkRemote('ddisremote','litpic')">
+              远程图片 <br>
+            </td>
+            <td width="464"><table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr> 
-                  <td height="30">
-				  <input name="litpic" type="file" id="litpic" style="width:280" onChange="SeePic(document.picview,document.form1.litpic);"> 
+                  <td height="30"> 本地上传请点击“浏览”按钮 
+                    <input name="litpic" type="file" id="litpic" class="np" style="width:200" onChange="SeePic(document.picview,document.form1.litpic);"> 
                   </td>
                 </tr>
                 <tr> 
-                  <td height="30">
-				  <input name="picname" type="text" id="picname" style="width:154">
-                   <input type="button" name="Submit" value="在网站内选择" style="width:120" onClick="SelectImage();">
-				   </td>
+                  <td height="30"> <input name="picname" type="text" id="picname" style="width:250"> 
+                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');"> 
+                  </td>
                 </tr>
               </table></td>
-            <td width="185" align="center"><img src="img/pview.gif" width="150" id="picview" name="picview"></td>
+            <td width="201" align="center"><img src="img/pview.gif" width="150" id="picview" name="picview"></td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">FLASH来源：</td>
-            <td width="224"> <input name="source" type="text" id="source" style="width:200"> 
+            <td width="90">&nbsp;影片来源：</td>
+            <td width="240"><input name="source" type="text" id="source" style="width:160" size="16"> 
+              <input name="selsource" type="button" id="selsource" value="选择"></td>
+            <td width="90">作　者：</td>
+            <td> <input name="writer" type="text" id="writer" style="width:120"> 
+              <input name="selwriter" type="button" id="selwriter" value="选择"> 
             </td>
-            <td width="63">作者：</td>
-            <td width="159"><input name="writer" type="text" id="writer" style="width:120"> 
-            </td>
-            <td width="74" align="center">&nbsp; </td>
           </tr>
-        </table></td>
+        </table>
+        <script language='javascript'>InitPage();</script> </td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">内容排序：</td>
-            <td width="224"> <select name="sortup" id="sortup" style="width:150">
+            <td width="90" height="22">&nbsp;内容排序：</td>
+            <td width="240"> <select name="sortup" id="sortup" style="width:150">
                 <option value="0" selected>默认排序</option>
                 <option value="7">置顶一周</option>
                 <option value="30">置顶一个月</option>
@@ -159,33 +171,29 @@ function SelectKeywords(f)
                 <option value="180">置顶半年</option>
                 <option value="360">置顶一年</option>
               </select> </td>
-            <td width="63">标题颜色：</td>
-            <td width="159"> <input name="color" type="text" id="color" style="width:120"> 
+            <td width="90">标题颜色：</td>
+            <td> <input name="color" type="text" id="color" style="width:120"> 
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"> 
             </td>
-            <td width="74" align="center"><input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"></td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">阅读权限：</td>
-            <td width="224">
-            	<select name="arcrank" id="arcrank" style="width:150">
+            <td width="90">&nbsp;阅读权限：</td>
+            <td width="240"> <select name="arcrank" id="arcrank" style="width:150">
                 <?
               $urank = $cuserLogin->getUserRank();
-              $dsql = new DedeSql(false);
               $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
               $dsql->Execute();
-              while($row = $dsql->GetObject())
-              {
+              while($row = $dsql->GetObject()){
               	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
               }
-              $dsql->Close();
               ?>
               </select> </td>
-            <td width="63">发布选项：</td>
-            <td><input name="ishtml" type="radio" class="np" value="1" checked>
+            <td width="90">发布选项：</td>
+            <td> <input name="ishtml" type="radio" class="np" value="1" checked>
               生成HTML 
               <input type="radio" name="ishtml" class="np" value="0">
               仅动态浏览</td>
@@ -193,124 +201,76 @@ function SelectKeywords(f)
         </table></td>
     </tr>
     <tr> 
-      <td height="75" colspan="4" class="bline">
-<table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="76" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80" height="51">文章摘要：</td>
-            <td width="224"> <textarea name="description" rows="3" id="description" style="width:200"></textarea> 
+            <td width="90" height="51">&nbsp;简要说明：</td>
+            <td width="240"> <textarea name="description" rows="3" id="description" style="width:200"></textarea> 
             </td>
-            <td width="63">关键字：</td>
-            <td width="159"> <textarea name="keywords" rows="3" id="keywords" style="width:150"></textarea> 
+            <td width="90">关键字：</td>
+            <td width="234"> <textarea name="keywords" rows="3" id="keywords" style="width:200"></textarea> 
             </td>
-            <td width="74" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"> 
+            <td width="146" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"> 
             </td>
           </tr>
-        </table>
-      </td>
+        </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">发布时间：</td>
-            <td width="286"> 
+            <td width="90">&nbsp;发布时间：</td>
+            <td width="240"> 
               <?
-			$nowtime = GetDateTimeMk(time());
+			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
-			echo "<input name=\"selPubtime\" type=\"button\" id=\"selkeyword\" value=\"选择\" onClick=\"showCalendar('pubdate', '%Y-%m-%d %H:%M:00', '24');\">";
 			?>
             </td>
-            <td width="82" align="center">消费点数：</td>
-            <td width="152"><input name="money" type="text" id="money" value="0" size="10"></td>
+            <td width="90" align="center">消费点数：</td>
+            <td> <input name="money" type="text" id="money" value="0" size="10"> 
+            </td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">主分类：</td>
-            <td width="446"> 
+            <td width="90">&nbsp;主栏目：</td>
+            <td width="400"> 
               <?
-           	$tl = new TypeLink($cid);
-           	$typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),$channelid);
-           	if($cid>0)
-           	{
-           	   echo "<input type='hidden' name='seltypeid' value='$cid'>"; 
-			         echo "<span id='type1info'>".$tl->GetPositionLink(false)."</span>"; 
-            }else
-            { 
-			         echo "<input type='hidden' name='seltypeid' value='0'>"; 
-			         echo "<select name='typeid' style='width:300'>\r\n";
-               echo "<option value='0' selected>请选择主分类...</option>\r\n";
-            	 echo $typeOptions;
-            	 echo "</select>";
-			      } 
-			    ?>
+           	$typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		        echo "<select name='typeid' style='width:300'>\r\n";
+            echo "<option value='0'>请选择主分类...</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+			     ?>
             </td>
-            <td width="74" align="center"> <input name='modtype' type='button' onClick="showHide('typeidSelectFrom');"; id='modtype3' value='更改'> 
-            </td>
+            <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
           </tr>
         </table></td>
     </tr>
-    <tr id='typeidSelectFrom' style='display:none'> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td height="24" colspan="4" bgcolor="#FFFFFF" class="bline2"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">&nbsp;</td>
+            <td width="90">&nbsp;副栏目：</td>
             <td> 
-              <?
-            if($cid>0){
-              echo "<select name='typeid' style='width:300'>\r\n";
-              echo "<option value='0' selected>请选择主分类...</option>\r\n";
-              echo $typeOptions;
-              echo "</select>";
-            }
-            ?>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="80">副分类：</td>
-            <td width="446"> 
               <?
             echo "<select name='typeid2' style='width:300'>\r\n";
             echo "<option value='0' selected>请选择副分类...</option>\r\n";
             echo $typeOptions;
             echo "</select>";
-            $tl->Close();
             ?>
             </td>
-            <td width="74" align="center">&nbsp; </td>
           </tr>
         </table></td>
     </tr>
+    <tr> 
+      <td height="24" colspan="4" bgcolor="#FFFFFF" class="bline2">&nbsp; </td>
+    </tr>
   </table>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-	<tr><td height="6"></td></tr>
-</table>
-<table width="98%" border="0" align="center" cellpadding="1" cellspacing="0">
-  <tr>
-    <td><table width="100%"  border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td width="100%" height="26" colspan="2" background="img/tbg.gif" style="border:solid 1px #666666"> 
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr> 
-                <td width="5%" align="center">
-                	<img src="img/dedeexplode.gif" width="11" height="11" border="0" onClick="showHide('addtable')" style="cursor: hand;">
-                </td>
-                  <td width="61%"><strong>附加参数：</strong></td>
-                <td width="34%">&nbsp;</td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr><td height="2"></td></tr>
 </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="addtable">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" style="display:none" id="adset">
     <tr> 
       <td width="100%" height="24" colspan="4" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -412,5 +372,9 @@ function SelectKeywords(f)
   </tr>
 </table>
 </form>
+<script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
+<?
+$dsql->Close();
+?>
 </body>
 </html>

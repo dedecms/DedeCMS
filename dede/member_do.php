@@ -13,7 +13,7 @@ function __DelMember()
 ----------------*/
 if($dopost=="delmember")
 {
-	SetPageRank(5);
+	CheckPurview('member_Del');
 	
 	if($fmdo=="yes")
 	{
@@ -47,7 +47,7 @@ function __UpRank()
 ----------------*/
 else if($dopost=="uprank")
 {
-	SetPageRank(5);
+	CheckPurview('member_Edit');
 	
 	if($fmdo=="yes")
 	{
@@ -94,12 +94,33 @@ else if($dopost=="uprank")
 	$win->Display();
 }
 /*----------------
+function __Recommend()
+推荐会员
+----------------*/
+else if($dopost=="recommend")
+{
+	CheckPurview('member_Edit');
+	$ID = ereg_replace("[^0-9]","",$ID);
+	$dsql = new DedeSql(false);
+	if($matt==0){
+		$dsql->ExecuteNoneQuery("update #@__member set matt=1 where ID='$ID'");
+		$dsql->Close();
+		ShowMsg("成功设置一个会员推荐！",$ENV_GOBACK_URL);
+	  exit();
+	}else{
+		$dsql->ExecuteNoneQuery("update #@__member set matt=0 where ID='$ID'");
+	  $dsql->Close();
+	  ShowMsg("成功取消一个会员推荐！",$ENV_GOBACK_URL);
+	  exit();
+  }
+}
+/*----------------
 function __AddMoney()
 会员充值
 ----------------*/
 else if($dopost=="addmoney")
 {
-	SetPageRank(5);
+	CheckPurview('member_Edit');
 	
 	if($fmdo=="yes")
 	{
@@ -131,10 +152,8 @@ function __EditUser()
 ----------------*/
 else if($dopost=="edituser")
 {
-	SetPageRank(5);
+	CheckPurview('member_Edit');
 	$dsql = new DedeSql(false);
-	if($province==0) $province = $oldprovince;
- 	if($city==0) $city = $oldcity;
 	$query = "update #@__member set 
  	  email = '$email',
     uname = '$uname',
@@ -149,7 +168,11 @@ else if($dopost=="edituser")
     mybb = '$mybb',
     oicq = '$oicq',
     tel = '$tel',
-    homepage = '$homepage'
+    homepage = '$homepage',
+    spacename = '$spacename',
+    news = '$news',
+    fullinfo = '$fullinfo',
+    address = '$address'
  	  where ID='$ID'";
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();

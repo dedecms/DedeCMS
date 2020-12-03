@@ -58,22 +58,24 @@ $dh = dir($inpath);
 $ty1="";
 $ty2="";
 while($file = $dh->read()) {
+
 //-----计算文件大小和创建时间
- $filesize = filesize("$inpath/$file");
- $filesize=$filesize/1024;
- if($filesize!="")
- if($filesize<0.1)
- {
-   @list($ty1,$ty2)=split("\.",$filesize);
-   $filesize=$ty1.".".substr($ty2,0,2);
- }
- else
- {
-   @list($ty1,$ty2)=split("\.",$filesize);
-   $filesize=$ty1.".".substr($ty2,0,1);
- }
- $filetime = filemtime("$inpath/$file");
- $filetime = strftime("%y-%m-%d %H:%M:%S",$filetime);
+if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
+   $filesize = filesize("$inpath/$file");
+   $filesize=$filesize/1024;
+   if($filesize!="")
+   if($filesize<0.1){
+    @list($ty1,$ty2)=split("\.",$filesize);
+    $filesize=$ty1.".".substr($ty2,0,2);
+   }
+   else{
+    @list($ty1,$ty2)=split("\.",$filesize);
+    $filesize=$ty1.".".substr($ty2,0,1);
+  }
+  $filetime = filemtime("$inpath/$file");
+  $filetime = strftime("%y-%m-%d %H:%M:%S",$filetime);
+}
+ 
  //------判断文件类型并作处理
  if($file == ".") continue;
  else if($file == "..")
@@ -81,7 +83,7 @@ while($file = $dh->read()) {
     if($activepath == "") continue;
     $tmp = eregi_replace("[/][^/]*$","",$activepath);
     $line = "\n<tr>
-    <td class='linerow'> <a href='select_templets.php?f=$f&activepath=".urlencode($tmp)."'>上级目录<img src=img/dir2.gif border=0 width=16 height=13></a></td>
+    <td class='linerow'> <a href='select_templets.php?f=$f&activepath=".urlencode($tmp)."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
     <td colspan='2' class='linerow'> 当前目录:$activepath</td>
     </tr>\r\n";
     echo $line;
@@ -92,15 +94,14 @@ else if(is_dir("$inpath/$file"))
    if(eregi("^\.(.*)$",$file)) continue;
      $line = "\n<tr>
    <td bgcolor='#F9FBF0' class='linerow'>
-    <a href=select_templets.php?f=$f&activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=13>$file</a>
+    <a href=select_templets.php?f=$f&activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a>
    </td>
    <td class='linerow'>-</td>
    <td bgcolor='#F9FBF0' class='linerow'>-</td>
    </tr>";
    echo "$line";
 }
-else if(eregi($cfg_txttype,$file))
-{
+else if(eregi("\.(htm|html)",$file)){
    
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
@@ -112,7 +113,102 @@ else if(eregi($cfg_txttype,$file))
    
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
-     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/img.gif border=0 width=16 height=13>$file</a>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/htm.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+   </td>
+   <td class='linerow'>$filesize KB</td>
+   <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
+   </tr>";
+    echo "$line";
+}
+else if(eregi("\.(css)",$file)){
+   
+   if($file==$comeback) $lstyle = " style='color:red' ";
+   else  $lstyle = "";
+   
+   $reurl = "$activeurl/$file";
+   
+   $reurl = ereg_replace("\.\.","",$reurl);
+   $reurl = ereg_replace($templetdir."/","",$reurl);
+   
+   $line = "\n<tr>
+   <td class='linerow' bgcolor='#F9FBF0'>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/css.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+   </td>
+   <td class='linerow'>$filesize KB</td>
+   <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
+   </tr>";
+    echo "$line";
+}
+else if(eregi("\.(js)",$file)){
+   
+   if($file==$comeback) $lstyle = " style='color:red' ";
+   else  $lstyle = "";
+   
+   $reurl = "$activeurl/$file";
+   
+   $reurl = ereg_replace("\.\.","",$reurl);
+   $reurl = ereg_replace($templetdir."/","",$reurl);
+   
+   $line = "\n<tr>
+   <td class='linerow' bgcolor='#F9FBF0'>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/js.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+   </td>
+   <td class='linerow'>$filesize KB</td>
+   <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
+   </tr>";
+    echo "$line";
+}
+else if(eregi("\.(jpg)",$file)){
+   
+   if($file==$comeback) $lstyle = " style='color:red' ";
+   else  $lstyle = "";
+   
+   $reurl = "$activeurl/$file";
+   
+   $reurl = ereg_replace("\.\.","",$reurl);
+   $reurl = ereg_replace($templetdir."/","",$reurl);
+   
+   $line = "\n<tr>
+   <td class='linerow' bgcolor='#F9FBF0'>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/jpg.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+   </td>
+   <td class='linerow'>$filesize KB</td>
+   <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
+   </tr>";
+    echo "$line";
+}
+else if(eregi("\.(gif|png)",$file)){
+   
+   if($file==$comeback) $lstyle = " style='color:red' ";
+   else  $lstyle = "";
+   
+   $reurl = "$activeurl/$file";
+   
+   $reurl = ereg_replace("\.\.","",$reurl);
+   $reurl = ereg_replace($templetdir."/","",$reurl);
+   
+   $line = "\n<tr>
+   <td class='linerow' bgcolor='#F9FBF0'>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/gif.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+   </td>
+   <td class='linerow'>$filesize KB</td>
+   <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
+   </tr>";
+    echo "$line";
+}
+else if(eregi("\.(txt)",$file)){
+   
+   if($file==$comeback) $lstyle = " style='color:red' ";
+   else  $lstyle = "";
+   
+   $reurl = "$activeurl/$file";
+   
+   $reurl = ereg_replace("\.\.","",$reurl);
+   $reurl = ereg_replace($templetdir."/","",$reurl);
+   
+   $line = "\n<tr>
+   <td class='linerow' bgcolor='#F9FBF0'>
+     <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/txt.gif border=0 width=16 height=16 align=absmiddle>$file</a>
    </td>
    <td class='linerow'>$filesize KB</td>
    <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>

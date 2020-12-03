@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('plus_站内新闻发布');
 if(empty($dopost)) $dopost = "";
 $aid = ereg_replace("[^0-9]","",$aid);
 $dsql = new DedeSql(false);

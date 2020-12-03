@@ -1,7 +1,7 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('member_Type');
 if(empty($dopost)) $dopost = "";
-SetPageRank(10);
 $dsql = new DedeSql(false);
 //保存更改
 //--------------------
@@ -20,7 +20,7 @@ if($dopost=="save")
    	  	if($rank>0) $query = "update #@__arcrank set membername='$name',money='$money',rank='$rank' where ID='$ID'";
    	  }
    	  else{
-   	  	$query = "Delete From #@__arcrank where ID='$ID'";
+   	  	$query = "Delete From #@__arcrank where ID='$ID' And rank<>10";
    	  }
    	  
    	  if($query!=""){
@@ -53,7 +53,7 @@ if($dopost=="save")
         &gt; 会员权限管理：</strong></td>
     </tr>
     <tr bgcolor="#F8FCF1"> 
-      <td height="24" colspan="4"><strong>会员名称和级别值：</strong></td>
+      <td height="24" colspan="4"><strong>会员名称和级别值：（注册会员这个级别不能删除，否则会员系统将会无法正常使用某些功能）</strong></td>
     </tr>
     <tr bgcolor="#FDFEE9"> 
       <td width="25%" height="24" align="center" valign="top">名称</td>
@@ -109,7 +109,9 @@ if($dopost=="save")
       <td height="24" colspan="4" bgcolor="#F8FCF1">&nbsp;</td>
     </tr>
     <tr> 
-      <td height="34" colspan="4" align="center" bgcolor="#FFFFFF"> <input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
+      <td height="34" colspan="4" align="center" bgcolor="#FFFFFF">
+      	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np">
+      </td>
     </tr>
   </form>
 </table>

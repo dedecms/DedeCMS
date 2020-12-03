@@ -12,12 +12,12 @@ $maplist = $sm->GetSiteMap($dopost);
 $sm->Close();
 if($dopost=="site")
 {
-	$murl = $cfg_extend_dir."/sitemap.html";
+	$murl = $cfg_plus_dir."/sitemap.html";
 	$tmpfile = $cfg_basedir.$cfg_templets_dir."/plus/sitemap.htm";
 }
 else
 {
-	$murl = $cfg_extend_dir."/rssmap.html";
+	$murl = $cfg_plus_dir."/rssmap.html";
 	$tmpfile = $cfg_basedir.$cfg_templets_dir."/plus/rssmap.htm";
 }
 $dtp = new DedeTagParse();

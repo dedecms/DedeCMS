@@ -13,7 +13,7 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="action_makehtml_list.php" method="get" target='stafrm'>
+  <form name="form1" action="makehtml_list_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
@@ -50,7 +50,7 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
       <td height="20" valign="top" bgcolor="#FFFFFF"> 
         <?
 		$dayst = GetMkTime("2006-1-2 0:0:0") - GetMkTime("2006-1-1 0:0:0");
-		$nowtime = GetDateTimeMk(time() - ($dayst * 365));
+		$nowtime = GetDateTimeMk(mytime() - ($dayst * 365));
 		echo "<input name=\"starttime\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 		echo "<input name=\"selPubtime\" type=\"button\" id=\"selkeyword\" value=\"Ñ¡Ôñ\" onClick=\"showCalendar('pubdate', '%Y-%m-%d %H:%M:00', '24');\">";
 	 ?>

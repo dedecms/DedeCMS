@@ -1,4 +1,3 @@
-{dede:page pagesize="20"/}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
@@ -38,19 +37,19 @@ function DelSel()
 		alert("请选择节点!\r\n");
 		return ;
 	}
-	location.href = "action_co_do.php?dopost=clear&ids="+nid;
+	location.href = "co_do.php?dopost=clear&ids="+nid;
 }
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
   <tr> 
-    <td height="20" colspan="6" background='img/tbg.gif'>
+    <td height="20" colspan="7" background='img/tbg.gif'>
     	<table width="96%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
           <td width="20%" height="18"><strong>采集内容管理：</strong></td>
           <td width="80%" align="right">
-          	{dede:global name='exportbt'/}
+          	<?=$exportbt?>
           	<input type="button" name="b1" value="采集节点管理" class="np2" style="width:100" onClick="location.href='co_main.php';">
           	</td>
         </tr>
@@ -58,33 +57,39 @@ function DelSel()
   </tr>
   <tr align="center" bgcolor="#FAFAF1"> 
     <td width="8%">选择</td>
-    <td width="35%">内容标题</td>
-    <td width="18%">所属节点</td>
-    <td width="18%">获取日期</td>
-    <td width="10%">是否下载</td>
+    <td width="30%">内容标题</td>
+    <td width="15%">所属节点</td>
+    <td width="15%">获取日期</td>
+    <td width="10%">下载</td>
+    <td width="10%">导出</td>
     <td width="8%">来源网页</td>
   </tr>
   <form name="form1">
-  {dede:datalist}
+  <?
+  $mylist = $dlist->GetDataList();
+  while($row = $mylist->GetArray('dm'))
+  {
+ ?>
   <tr align="center" bgcolor="#FFFFFF"> 
-    <td><input type='checkbox' name='aids' value='[field:aid /]' class='np'></td>
-    <td><a href='co_view.php?aid=[field:aid /]' target='_blank'>[field:title /]</a></td>
-    <td>[field:gathername /]</td>
-    <td>[field:dtime function='GetDateMk("@me")' /]</td>
-    <td>[field:isdown function='IsDownLoad("@me")' /]</td>
-    <td><a href='[field:url /]' target='_blank'>[查看]</a></td>
+    <td><input type='checkbox' name='aids' value='<?=$row['aid']?>' class='np'></td>
+    <td><a href='co_view.php?aid=<?=$row['aid']?>'><?=$row['title']?></a></td>
+    <td><?=$row['gathername']?></td>
+    <td><?=GetDateMk($row['dtime'])?></td>
+    <td><?=IsDownLoad($row['isdown'])?></td>
+    <td><?=IsExData($row['isex'])?></td>
+    <td><a href='<?=$row['url']?>' target='_blank'>[源网址]</a></td>
   </tr>
-  {/dede:datalist}
+ <? } ?>
 </form>
   <tr> 
-    <td height="24" colspan="6" bgcolor="#FCFDF7">&nbsp;
+    <td height="24" colspan="7" bgcolor="#FCFDF7">&nbsp;
 <input type="button" name="b7" value="反选" class="np2" style="width:40" onClick="ReSel();">　　　　
 <input type="button" name="b5" value="删除所选网址" class="np2" style="width:100" onClick="DelSel();">
     </td>
   </tr>
   <tr> 
-    <td height="24" colspan="6" bgcolor="#FCFDF7" align="center">
-    {dede:pagelist listsize='7' /}
+    <td height="24" colspan="7" bgcolor="#FCFDF7" align="center">
+    <?=$dlist->GetPageList(7);?>
     </td>
   </tr>
 </table>

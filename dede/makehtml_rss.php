@@ -9,7 +9,7 @@ require_once(dirname(__FILE__)."/config.php");
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="action_makehtml_rss.php" method="get" target='stafrm'>
+  <form name="form1" action="makehtml_rss_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 

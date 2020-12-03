@@ -1,5 +1,6 @@
 <?
 require(dirname(__FILE__)."/config.php");
+CheckPurview('temp_Other');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 if(empty($dopost)) $dopost = "";
 $aid = ereg_replace("[^0-9]","",$aid);
@@ -35,6 +36,26 @@ else if($dopost=="saveedit")
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
 	ShowMsg("成功更改一个自定义标记！",$ENV_GOBACK_URL);
+	exit();
+}
+else if($dopost=="getjs")
+{
+	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
+	$jscode = "<script src='{$cfg_plus_dir}/mytag_js.php?aid=$aid' language='javascript'></script>";
+	$showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
+  $showhtml .= "预览：<iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";
+  $wintitle = "宏标记定义-获取JS";
+	$wecome_info = "<a href='ad_main.php'><u>宏标记定义</u></a>::获取JS";
+  $win = new OxWindow();
+  $win->Init();
+  $win->AddTitle("以下为选定宏标记的JS调用代码：");
+  $winform = $win->GetWindow("hand",$showhtml);
+  $win->Display();
+	exit();
+}
+else if($dopost=="testjs")
+{
+	echo "<script src='{$cfg_plus_dir}/mytag_js.php?aid=$aid' language='javascript'></script>";
 	exit();
 }
 $dsql = new DedeSql(false);
@@ -94,18 +115,14 @@ $dsql->Close();
           <tr> 
             <td height="80" align="center">正常显示内容：</td>
             <td width="76%">
-              <?
-	GetEditor("normbody",$row['normbody'],120,"Small");
-	?>
+			<textarea name="normbody" id="normbody" style="width:80%;height:100"><?=$row['normbody']?></textarea> 
             </td>
             <td width="9%">&nbsp;</td>
           </tr>
           <tr> 
             <td height="80" align="center">过期显示内容：</td>
-            <td> 
-              <?
-	GetEditor("expbody",$row['expbody'],120,"Small");
-	?>
+            <td>
+			<textarea name="expbody" id="expbody" style="width:80%;height:100"><?=$row['expbody']?></textarea> 
             </td>
             <td>&nbsp;</td>
           </tr>

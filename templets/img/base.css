@@ -11,3 +11,4 @@ a:hover {font-size: 9pt;color: red}
 .contents{font-size:1pt;color:#F7F6F8}
 .nb{border: 1px solid #000000;height:18px}
 .coolbg {border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #E6E6E6}
+.ctfield{ padding: 3px; line-height: 150%}

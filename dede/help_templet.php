@@ -76,11 +76,20 @@ V3中需要严格用“{/dede:标记名称}”，否则会报错。</p>
 <p>(3) include 引入一个文件，形式为：<br/>
 {dede:include file='文件名称' /}<br/>
 对文件的搜索路径为顺序为：绝对路径、include文件夹，CMS安装目录，CMS主模板目录</p>
-<p>3、织梦标记允许在任何标记中使用函数对得到的值进行处理，形式为：<br/>
-{dede:标记名称 属性='值' function='youfunction(&quot;参数一&quot;,&quot;参数二&quot;,&quot;@me&quot;)'/}<br/>
-其中 @me 用于表示当前标记的值，其它参数由你的函数决定是否存在，例如：<br/>
-{dede:field name='pubdate' function='strftime(&quot;%Y-%m-%d %H:%M:%S&quot;,&quot;@me&quot;)' 
-/}</p>
+            <p>3、织梦标记允许在任何标记中使用函数对得到的值进行处理，形式为：<br/>
+              {dede:标记名称 属性='值' function='youfunction(&quot;参数一&quot;,&quot;参数二&quot;,&quot;@me&quot;)'/}<br/>
+              其中 @me 用于表示当前标记的值，其它参数由你的函数决定是否存在，例如：<br/>
+              {dede:field name='pubdate' function='strftime(&quot;%Y-%m-%d %H:%M:%S&quot;,&quot;@me&quot;)' 
+              /}<br>
+              <br>
+              4、织梦标记允许有限的编程扩展。<br>
+              格式为：<br>
+              {dede:tagname runphp='yes'}<br>
+              $aaa = @me;<br>
+              @me = &quot;123456&quot;;<br>
+              {/dede:tagname} <br>
+              @me 表示这个标记本身的值，因此标记内编程是不能使用<strong><font color="#990000">echo</font></strong>之类的语句的，只能把所有返回值传递给@me。<br>
+              此外由于程序代码占用了底层模板InnerText的内容，因此需编程的标记只能使用默认的InnerText。 </p>
 <p><font color="#990000"><strong>二、DedeCms 模板制作规范<a name="2"></a></strong></font></p>
             <p>　　DedeCms系统的模板是非固定的，用户可以在新建栏目时可以自行选择栏目模板，官方仅提供最基本的默认模板，即是内置系统模型的各个模板，DedeCms支持自定义频道模型，用户自定义新频道模型后，需要按该模型设计一套新的模板。<br>
               <strong>一、概念，设计和使用模板，必须要理解下面几个概念：</strong><br>
@@ -96,7 +105,7 @@ V3中需要严格用“{/dede:标记名称}”，否则会报错。</p>
               <font color="#330000">1、模板保存位置：</font><br>
               　　模板目录：｛cmspath/templets/样式名称（英文，默认为default，其中system为系统底层模板，plus为插件使用的模板）/具体功能模板文件｝<br>
               　　<font color="#CC0000">你的模板位置：“ 
-              <?=$cfg_templets_dir."/default/功能模板文件"?>
+              <?=$cfg_templets_dir."/{风格名称}/功能模板文件"?>
               ”，</font><a href="catalog_do.php?dopost=viewTemplet"><u><font color="#6600FF">点击此浏览模板目录</font></u></a><br>
               <font color="#330000">2、 模板文件命名规范：</font><br>
               （１）index_<font color="#990000">识别ID</font>.htm：　表示板块（栏目封面）模板；<br>

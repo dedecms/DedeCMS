@@ -1,6 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
-SetPageRank(5);
+CheckPurview('sys_MakeHtml');
 if(empty($dopost)) $dopost = "";
 ////////////////////////////////////////
 if($dopost=="ok")

@@ -1,5 +1,6 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_Feedback');
 if($fid=="")
 {
 	ShowMsg("你没选中任何选项！",$_COOKIE['ENV_GOBACK_URL'],0,500);

@@ -1,11 +1,13 @@
 <?
 require(dirname(__FILE__)."/config.php");
 require(dirname(__FILE__)."/../include/pub_oxwindow.php");
+CheckPurview('plus_文件管理器');
 $activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 if($activepath == "/") $activepath = "";
 if($activepath == "") $inpath = $cfg_basedir;
 else $inpath = $cfg_basedir.$activepath;
+
 //文件管理器交互与逻辑控制文件
 $fmm = new FileManagement();
 $fmm->Init();
@@ -14,7 +16,6 @@ function __rename();
 ----------------*/
 if($fmdo=="rename")
 {
-	SetPageRank(10);
 	$fmm->RenameFile($oldfilename,$newfilename);
 }
 //新建目录
@@ -31,7 +32,6 @@ function __move();
 ----------------*/
 else if($fmdo=="move")
 {
-	SetPageRank(10);
 	$fmm->MoveFile($filename,$newpath);
 }
 //删除文件
@@ -40,7 +40,6 @@ function __delfile();
 ----------------*/
 else if($fmdo=="del")
 {
-	SetPageRank(10);
 	$fmm->DeleteFile($filename);
 }
 //文件编辑
@@ -49,7 +48,6 @@ function __saveEdit();
 ----------------*/
 else if($fmdo=="edit")
 {
-		SetPageRank(10);
 		$filename = str_replace("..","",$filename);
 		$file = "$cfg_basedir$activepath/$filename";
     $str = eregi_replace("< textarea","<textarea",$str);
@@ -70,7 +68,6 @@ function __saveEditView();
 ----------------*/
 else if($fmdo=="editview")
 {
-		SetPageRank(10);
 		$filename = str_replace("..","",$filename);
 		$file = "$cfg_basedir$activepath/$filename";
 	  $str = eregi_replace('&quot;','\\"',$str);
@@ -88,7 +85,6 @@ function __upload();
 ----------------*/
 else if($fmdo=="upload")
 {
-	SetPageRank(10);
 	$j=0;
 	for($i=1;$i<=50;$i++)
 	{
@@ -165,7 +161,8 @@ class FileManagement
 		$newdir = $dirname;
 		$dirname = $this->baseDir.$this->activeDir."/".$dirname;
 		if(is_writable($this->baseDir.$this->activeDir)){
-			mkdir($dirname,0755);
+			MkdirAll($dirname,777);
+			CloseFtp();
 			ShowMsg("成功创建一个新目录！","file_manage_main.php?activepath=".$this->activeDir."/".$newdir);
 		  return 1;
 		}
@@ -188,7 +185,11 @@ class FileManagement
 		  && is_readable($truepath) && is_writable($truepath))
 		  {
 				if(is_dir($truepath)) copy($oldfile,$truepath."/$mfile");
-			  else{ mkdir($truepath,0777); copy($oldfile,$truepath."/$mfile"); }
+			  else{
+			  	MkdirAll($truepath,777);
+			  	CloseFtp();
+			  	copy($oldfile,$truepath."/$mfile");
+			  }
 				unlink($oldfile);
 				ShowMsg("成功移动文件！","file_manage_main.php?activepath=$mpath",0,1000);
 				return 1;

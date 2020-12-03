@@ -1,7 +1,8 @@
 <?
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_User');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-SetPageRank(10);
+
 if(empty($dopost)) $dopost="";
 if($dopost=="add")
 {
@@ -19,7 +20,7 @@ if($dopost=="add")
 		exit();
 	}
 	$inquery = "
-	Insert Into #@__admin(usertype,userid,pwd,uname,typeid) values('$usertype','$userid','".md5($pwd)."','$uname',$typeid)
+	Insert Into #@__admin(usertype,userid,pwd,uname,typeid,tname,email) values('$usertype','$userid','".substr(md5($pwd),0,24)."','$uname',$typeid,'$tname','$email')
 	";
 	$dsql->SetQuery($inquery);
 	$dsql->ExecuteNoneQuery();
@@ -27,9 +28,14 @@ if($dopost=="add")
 	ShowMsg("成功增加一个用户！","sys_admin_user.php");
 	exit();
 }
-$tl = new TypeLink(0);
-$typeOptions = $tl->GetOptionArray(0,0,0);
-$tl->Close();
+$typeOptions = "";
+$dsql = new DedeSql(false);
+$dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 And (ispart=0 Or ispart=1)");
+$dsql->Execute('op');
+while($row = $dsql->GetObject('op')){
+	$typeOptions .= "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
+}
+$dsql->Close();
 ?>
 <html>
 <head>
@@ -88,7 +94,7 @@ $tl->Close();
             <td><input name="pwd" type="text" id="pwd" size="16" style="width:150"> &nbsp;（只能用'0-9'、'a-z'、'A-Z'、'.'、'@'、'_'、'-'、'!'以内范围的字符）</td>
           </tr>
           <tr> 
-            <td height="30">用户类型：</td>
+            <td height="30">用户组：</td>
             <td>
 			    <select name='usertype' style='width:150'>
 			  	<?
@@ -105,13 +111,21 @@ $tl->Close();
             </td>
           </tr>
           <tr> 
-            <td height="30">负责频道：</td>
+            <td height="30">授权栏目：</td>
             <td>
-			<select name="typeid" style="width:300" id="typeid">
+			<select name="typeid" style="width:160" id="typeid">
                 <option value="0" selected>--所有频道--</option>
 				<?=$typeOptions?>
              </select>
 			 </td>
+          </tr>
+          <tr> 
+            <td height="30">真实姓名：</td>
+            <td><input name="tname" type="text" id="tname" size="16" style="width:150"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="30">电子邮箱：</td>
+            <td><input name="email" type="text" id="email" size="16" style="width:150"> &nbsp;</td>
           </tr>
           <tr> 
             <td height="30">&nbsp;</td>

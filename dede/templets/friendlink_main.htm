@@ -4,44 +4,83 @@
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>友情链接管理</title>
 <link href='base.css' rel='stylesheet' type='text/css'>
+<script language='javascript'>
+function Sel(stype)
+{
+	  for(var i=0;i < document.form1.aids.length;i++){
+		  if(stype=='all') document.form1.aids[i].checked=true;
+		  else document.form1.aids[i].checked=false;
+	  }
+}
+function checkSubmit(){
+	var str = "";
+	for(var i=0;i < document.form1.aids.length;i++){
+		  if(document.form1.aids[i].checked){
+		  	if(str=="") str += document.form1.aids[i].value;
+		  	else str += "," + document.form1.aids[i].value;
+		  }
+	}
+	if(str==""){
+		alert("你没选择任何内容！");
+		return false;
+	}else{
+		document.form1.allid.value = str;
+		return true;
+	}
+}
+</script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+  <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
+  	<input type='hidden' name='dopost' value='delall'/>
+  	<input type='hidden' name='allid' value=''/>
   <tr>
-    <td height="19" background="img/tbg.gif" colspan="7">
+    <td height="19" background="img/tbg.gif" colspan="8">
   <b>友情链接管理</b>&nbsp;
 	[<a href="friendlink_add.php"><u>增加链接</u></a>] 
   [<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>外部申请表单</u></a>]</td>
 </tr>
   <tr align="center" bgcolor="#F9FCEF" height="24"> 
-          <td width="26%">网站名称</td>
+          <td width="6%">选择</td>
+          <td width="23%">网站名称</td>
           <td width="12%">网站Logo</td>
           <td width="15%">站长Email</td>
-          <td width="18%">时间</td>
+          <td width="15%">时间</td>
           <td width="8%">状态</td>
           <td width="8%">顺序</td>
           <td width="15%">管理</td>
         </tr>
         {dede:datalist}
         <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-          <td><a href="[field:url /]" target='_blank'>[field:webname /]</a></td>
+          <td><input type='checkbox' name='aids' value='[field:ID/]' class='np'></td>
+          <td><a href="[field:url/]" target='_blank'>[field:webname/]</a></td>
+          <td><a href="[field:url/]" target='_blank'>[field:logo function="GetPic('@me')"/]</a></td>
+          <td>[field:email/]</td>
+          <td>[field:dtime/]</td>
+          <td>[field:ischeck function="GetSta('@me')"/]</td>
+          <td>[field:sortrank/]</td>
           <td>
-		  <a href="[field:url /]" target='_blank'>
-		  [field:logo function="GetPic('@me')" /]
-		  </a></td>
-          <td>[field:email /]</td>
-          <td>[field:dtime /]</td>
-          <td>[field:ischeck function="GetSta('@me')" /]</td>
-          <td>[field:sortrank /]</td>
-          <td>
-          	<a href='friendlink_edit.php?ID=[field:ID /]&dopost=getedit'>[更改]</a>
-		        <a href='friendlink_edit.php?ID=[field:ID /]&dopost=delete'>[删除]</a>
+          	<a href='friendlink_edit.php?ID=[field:ID/]&dopost=getedit'>[更改]</a>
+		        <a href='friendlink_edit.php?ID=[field:ID/]&dopost=delete'>[删除]</a>
 		      </td>
         </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="24"> 
-      <td colspan="7">{dede:pagelist listsize=6/}</td>
+     <tr bgcolor="#FDFEEF" height="24"> 
+      <td colspan="8">
+      	　
+        <a href='#' onclick='Sel("all");'>[全选]</a>
+      	
+      	<a href='#' onclick='Sel("none");'>[取消]</a>
+      	
+      	<input type='submit' name='bt' value='批量删除' class='np'>
+      	
+      </td>
      </tr>
+     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td colspan="8">{dede:pagelist listsize=6/}</td>
+     </tr>
+    </form>
    </table>
    </td>
 </tr>

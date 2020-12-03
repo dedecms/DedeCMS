@@ -34,14 +34,15 @@ require_once(dirname(__FILE__)."/config.php");
           <td colspan="3" bgcolor="#F9FBF0"><strong>1、定义列表大小<a name="1"></a></strong></td>
         </tr>
         <tr> 
-          <td height="29" colspan="3" bgcolor="#FFFFFF">{dede:page pagesize='每页结果条数'/}</td>
+          <td height="29" colspan="3" bgcolor="#FFFFFF">{dede:page pagesize='每页结果条数'/}<br>
+            DedeCms 3.1 Lit 以上版本,可以直接在<strong> list</strong> 标记中定义此属性</td>
         </tr>
         <tr> 
           <td colspan="3" bgcolor="#F9FBF0"><strong>2、分页文档列表<a name="2"></a></strong></td>
         </tr>
         <tr> 
           <td colspan="3"> <table width="96%" border="0" cellspacing="2" cellpadding="2">
-              <form name="form1" action="action_tag_test.php" target="_blank" method="post">
+              <form name="form1" action="tag_test_action.php" target="_blank" method="post">
                 <input type="hidden" name="dopost" value="make">
                 <tr> 
                   <td width="430">使用标记：list<a href="help_templet.php#311" target="_blank"><u>[参考]</u></a>，代码：</td>
@@ -49,7 +50,7 @@ require_once(dirname(__FILE__)."/config.php");
                 </tr>
                 <tr> 
                   <td colspan="2">{dede:list col='' titlelen='' <br/>
-                    infolen='' imgwidth='' imgheight='' orderby=''}{/dede:list}</td>
+                    infolen='' imgwidth='' imgheight='' orderby='' pagesize=''}{/dede:list}</td>
                 </tr>
                 <tr> 
                   <td colspan="2"><strong>list固定底层模板变量(即是[field:name/])：</strong><br>
@@ -67,10 +68,13 @@ require_once(dirname(__FILE__)."/config.php");
           <td colspan="3" bgcolor="#F9FBF0"><strong>3、定义分页导航标记<a name="3"></a></strong></td>
         </tr>
         <tr> 
-          <td height="110" colspan="3">表示[1][2][3]这样的分页导航链接。<br>
-            {dede:pagelist listsize='3'/} <br>
-            listsize 表示导航数字的长度/2，如listsize=3表示<font color="#660000"> '上一页 [1][2][3][4][5][6][7] 
-            下一页' </font>这样的样式。</td>
+          <td height="110" colspan="3"><p>表示[1][2][3]这样的分页导航链接。<br>
+              {dede:pagelist listsize='3' listitem='index,pre,pageno,next,end'/} 
+              <br>
+              listsize 表示导航数字的长度/2，如listsize=3表示<font color="#660000"> '上一页 [1][2][3][4][5][6][7] 
+              下一页' </font>这样的样式。<br>
+              listitem 表示导航列表的可选项index(首页)、pre(下一页)、pageno(页数列表)、next(下一页)、end(末页)、option(选择框)</p>
+            </td>
         </tr>
       </table> </td>
 </tr>

@@ -17,27 +17,24 @@ $dd = $row->dd;
 $dsql->Close();
 if($dd==0)
 {
-	$unum = "没有记录或从来没有采集过这个节点！<a href='action_co_getsource_url.php?nid=$nid' target='stafrm'>[<u>点击这里采集种子网址</u>]</a>";
+	$unum = "没有记录或从来没有采集过这个节点！";
 }
 else
 {
-	$unum = "共有 $dd 个历史种子网址！<a href='action_co_getsource_url.php?nid=$nid' target='stafrm'>[<u>更新种子网址</u>]</a>";
+	$unum = "共有 $dd 个历史种子网址！<a href='javascript:SubmitNew();'>[<u>更新种子网址，并采集</u>]</a>";
 }
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<script language="javascript">
-function StartDown()
-{
-	var snum = <?=$dd?>;
-	if(snum==0)
-	{  alert("你还未有开始采集种子网址或种子网址数为零！"); return ""; }
-	else 
-	{	document.form1.submit(); }
-}
-</script>
 <title>采集节点</title>
+<script language='javascript'>
+	function SubmitNew()
+	{
+		document.form1.totalnum.value = "0";
+		document.form1.submit();
+	}
+</script>
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
@@ -52,9 +49,10 @@ function StartDown()
           <tr> 
             <td width="30%" height="18"><strong>采集指定节点：</strong></td>
             <td width="70%" align="right">
-            	<input type="button" name="b118" value="查看种子网址" class="np2" onClick="document.form2.submit();" style="width:100"> 
-              &nbsp;
-              <input type="button" name="b11" value="采集节点管理页" class="np2" style="width:100" onClick="location.href='co_main.php';"></td>
+            	<input type="button" name="b11" value="查看已下载" class="np2" onClick="document.form2.submit();" style="width:90"> 
+              <input type="button" name="b12" value="采集节点管理" class="np3" style="width:90" onClick="location.href='co_main.php';">
+              <input type="button" name="b13" value="导出数据" class="np4" style="width:90" onClick="location.href='co_export.php?nid=<?=$nid?>';">
+              </td>
           </tr>
         </table></td>
     </tr>
@@ -70,7 +68,7 @@ function StartDown()
         <?=$unum?>
       </td>
     </tr>
-    <form name="form1" action="action_co_gather_start.php" method="get" target='stafrm'>
+    <form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
     <input type='hidden' name='nid' value='<?=$nid?>'>
     <input type='hidden' name='totalnum' value='<?=$dd?>'>
     <input type='hidden' name='startdd' value='0'>
@@ -79,14 +77,25 @@ function StartDown()
       <td height="20" bgcolor="#FFFFFF">
       	<input name="pagesize" type="text" id="pagesize" value="5" size="3">
         条，线程数： 
-        <input name="threadnum" type="text" id="threadnum" value="2" size="3">
+        <input name="threadnum" type="text" id="threadnum" value="1" size="3">
         间隔时间： 
         <input name="sptime" type="text" id="sptime" value="0" size="3">
         秒（防刷新的站点需设置）</td>
     </tr>
     <tr> 
+      <td height="20" bgcolor="#FFFFFF">附加选项：</td>
+      <td height="20" bgcolor="#FFFFFF">
+      	<input name="islisten" type="radio" class="np" value="0" checked>
+        不下载曾下载的网址
+        <input name="islisten" type="radio" class="np" value="-1">
+        仅下载未下载内容
+      	<input name="islisten" type="radio" class="np" value="1">
+      	重新下载所有内容
+      	</td>
+    </tr>
+    <tr> 
       <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
-      	<input name="b112" type="button" class="np2" value="开始采集网页" onClick="StartDown();" style="width:100">　
+      	<input name="b112" type="button" class="np2" value="开始采集网页" onClick="document.form1.submit();" style="width:100">　
       	<input type="button" name="b113" value="查看种子网址" class="np2" onClick="document.form2.submit();" style="width:100">
       </td>
     </tr>
