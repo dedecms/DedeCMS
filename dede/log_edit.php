@@ -3,16 +3,16 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Log');
 
 if(empty($dopost)){
-	ShowMsg("ÄãÃ»Ö¸¶¨ÈÎºÎ²ÎÊý£¡","javascript:;");
+	ShowMsg("ä½ æ²¡æŒ‡å®šä»»ä½•å‚æ•°ï¼","javascript:;");
 	exit();
 }
 
-//Çå¿ÕËùÓÐÈÕÖ¾
+//æ¸…ç©ºæ‰€æœ‰æ—¥å¿—
 if($dopost=="clear"){
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery("Delete From #@__log");
 	$dsql->Close();
-	ShowMsg("³É¹¦Çå¿ÕËùÓÐÈÕÖ¾£¡","log_list.php");
+	ShowMsg("æˆåŠŸæ¸…ç©ºæ‰€æœ‰æ—¥å¿—ï¼","log_list.php");
 	exit();
 }
 else if($dopost=="del")
@@ -28,12 +28,13 @@ else if($dopost=="del")
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery("Delete From #@__log $dquery");
 	$dsql->Close();
-	ShowMsg("³É¹¦É¾³ýÖ¸¶¨µÄÈÕÖ¾£¡",$bkurl);
+	ShowMsg("æˆåŠŸåˆ é™¤æŒ‡å®šçš„æ—¥å¿—ï¼",$bkurl);
 	exit();
 }
 else{
-	ShowMsg("ÎÞ·¨Ê¶±ðÄãµÄÇëÇó£¡","javascript:;");
+	ShowMsg("æ— æ³•è¯†åˆ«ä½ çš„è¯·æ±‚ï¼","javascript:;");
 	exit();
 }
 
+ClearAllLink();
 ?>

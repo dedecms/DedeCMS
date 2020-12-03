@@ -1,8 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title>¸ü¸Ä»áÔ±×ÊÁÏ</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>æ›´æ”¹ä¼šå‘˜èµ„æ–™</title>
 <link href="newskin.css" rel="stylesheet" type="text/css">
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='area.js'></script>
 <script>
 function checkSubmit()
@@ -10,153 +12,148 @@ function checkSubmit()
 if(document.form2.email.value=="")
 {
   document.form2.email.focus();
-  alert("Email²»ÄÜÎª¿Õ£¡");
+  alert("Emailä¸èƒ½ä¸ºç©ºï¼");
   return false;
 }
 if(document.form2.uname.value=="")
 {
   document.form2.uname.focus();
-  alert("ÓÃ»§êÇ³Æ²»ÄÜÎª¿Õ£¡");
+  alert("ç”¨æˆ·æ˜µç§°ä¸èƒ½ä¸ºç©ºï¼");
   return false;
 }
+/*
 if(document.form2.vdcode.value=="")
 {
   document.form2.vdcode.focus();
-  alert("ÑéÖ¤Âë²»ÄÜÎª¿Õ£¡");
+  alert("éªŒè¯ç ä¸èƒ½ä¸ºç©ºï¼");
   return false;
 }
+*/
 }
 </script>	
 </head>
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
          <tr> 
-            <td background="img/nnnbg.gif" height="25" class="gdt2">
-			<strong>¡¡&nbsp;¸ü¸Ä¸öÈË×ÊÁÏ£º</strong>
-			</td>
+            <div class="manage_company_right_title" style="margin-top:10px;">
+                	<ul><li>æ›´æ”¹ä¸ªäººèµ„æ–™ï¼š</li></ul>
+                </div>
           </tr>
 	  </table> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody" style="text-align:left;">
         <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
           <input type="hidden" name="fmdo" value="user" />
           <input type="hidden" name="dopost" value="editUser" />
           <tr> 
-            <td width="17%" height="25" align="right" >µÇÂ½ÓÃ»§Ãû£º</td>
+            <td width="17%" height="25" align="right" >ç™»é™†ç”¨æˆ·åï¼š</td>
             <td width="83%" height="25" > 
               <?php echo $row['userid']?>            </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >Ô­µÇÂ¼ÃÜÂë£º</td>
-            <td height="25" ><input type="password" name="oldpwd" style="width:120;height:20" >
-              *£¨²»ÕıÈ·²»ÔÊĞí¸ü¸ÄÈÎºÎ×ÊÁÏ£©</td>
-          </tr>
-          
-          <tr> 
-            <td height="25" align="right" >ÄãµÄEmail£º</td>
-            <td height="25" ><input name="email" type="text" id="email" value="<?php echo $row['email']?>" style="width:150;height:20" > 
+            <td height="25" align="right" >ä½ çš„Emailï¼š</td>
+            <td height="25" ><input name="email" type="text" id="email" value="<?php echo $row['email']?>"  class="company_manage_form_label" /> 
               &nbsp;*</td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÍøÉÏêÇ³Æ£º</td>
-            <td height="25" ><input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" size="20" style="width:150;height:20" > 
-              &nbsp;*ĞÔ±ğ£º 
-              <input type="radio" name="sex" value="ÄĞ"<?php if($row['sex']=="ÄĞ" ) echo" checked" ;?>>
-              ÄĞ&nbsp; <input type="radio" name="sex" value="Å®"<?php if($row['sex']=="Å®" ) echo" checked" ;?>>
-              Å®</td>
+            <td height="25" align="right" >ç½‘ä¸Šæ˜µç§°ï¼š</td>
+            <td height="25" ><input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" size="20"  class="company_manage_form_label" /> 
+              &nbsp;*æ€§åˆ«ï¼š 
+              <input type="radio" name="sex" value="ç”·"<?php if($rowper['sex']=="ç”·" ) echo" checked" ;?>>
+              ç”·&nbsp; <input type="radio" name="sex" value="å¥³"<?php if($rowper['sex']=="å¥³" ) echo" checked" ;?>>
+              å¥³</td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÑéÖ¤Âë£º</td>
+            <td height="25" align="right" >éªŒè¯ç ï¼š</td>
             <td height="25" ><table width="200" border="0" cellspacing="0" cellpadding="0" >
                 <tr> 
-                  <td width="84" ><input name="vdcode" type="text" id="vdcode" size="10" ></td>
+                  <td width="84" ><input name="vdcode" type="text" id="vdcode" size="10" class="yanzhengma" ></td>
                   <td width="116" ><img src='../include/vdimgck.php' width='50' height='20'></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td height="25" colspan="2" ><hr width="80%" size="1" noshade> </td>
+            <td height="25" align="right" >ä½ çš„ç”Ÿæ—¥ï¼š</td>
+            <td height="25" ><input name="birthday" type="text" id="birthday" size="20" value="<?php echo $rowper['birthday']?>" class="company_manage_form_label" />            </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÄãµÄÉúÈÕ£º</td>
-            <td height="25" ><input name="birthday" type="text" id="birthday" size="20" value="<?php echo $row['birthday']?>" >            </td>
-          </tr>
-          <tr> 
-            <td height="25" align="right" >ÄãµÄÌåĞÍ£º</td>
-            <td height="25" > <select name="weight" >
-                <option value='<?php echo $row['weight']?>'> 
-                <?php echo $row['weight']?>
+            <td height="25" align="right" >ä½ çš„ä½“å‹ï¼š</td>
+            <td height="25" > <select name="weight" class="company_manage_form_option" >
+                <option value='<?php echo $rowper['weight']?>'> 
+                <?php echo $rowper['weight']?>
                 </option>
-                <option value='Æ½¾ù'>Æ½¾ù</option>
-                <option value='ÃçÌõ/ÏËÏ¸'>ÃçÌõ/ÏËÏ¸</option>
-                <option value='½¡×³'>½¡×³</option>
-                <option value='ÂÔÅÖ'>ÂÔÅÖ</option>
-                <option value='´óĞÍ'>´óĞÍ</option>
-              </select> &nbsp;Éí¸ß£º 
-              <input name="height" value="<?php echo $row['height']?>" type="text" id="height" size="5" >
-              ÀåÃ×</td>
+                <option value='å¹³å‡'>å¹³å‡</option>
+                <option value='è‹—æ¡/çº¤ç»†'>è‹—æ¡/çº¤ç»†</option>
+                <option value='å¥å£®'>å¥å£®</option>
+                <option value='ç•¥èƒ–'>ç•¥èƒ–</option>
+                <option value='å¤§å‹'>å¤§å‹</option>
+              </select> &nbsp;èº«é«˜ï¼š 
+              <input name="height" value="<?php echo $rowper['height']?>" type="text" id="height" size="5" class="yanzhengma" >
+              å˜ç±³</td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÄãµÄÖ°Òµ£º</td>
-            <td height="25" ><input type="radio" name="job" value="Ñ§Éú" <?php if($row['job']=="Ñ§Éú" ) echo" checked" ;?>>
-              Ñ§Éú 
-              <input type="radio" name="job" value="Ö°Ô±" <?php if($row['job']=="Ö°Ô±" ) echo" checked" ;?>>
-              Ö°Ô± 
-              <input type="radio" name="job" value="°×Áì" <?php if($row['job']=="°×Áì" ) echo" checked" ;?>>
-              °×Áì 
-              <input type="radio" name="job" value="Ê§ÒµÖĞ" <?php if($row['job']=="Ê§ÒµÖĞ" ) echo" checked" ;?>>
-              Ê§ÒµÖĞ</td>
+            <td height="25" align="right" >ä½ çš„èŒä¸šï¼š</td>
+            <td height="25" ><input type="radio" name="job" value="å­¦ç”Ÿ" <?php if($rowper['job']=="å­¦ç”Ÿ" ) echo" checked" ;?>>
+              å­¦ç”Ÿ 
+              <input type="radio" name="job" value="èŒå‘˜" <?php if($rowper['job']=="èŒå‘˜" ) echo" checked" ;?>>
+              èŒå‘˜ 
+              <input type="radio" name="job" value="ç™½é¢†" <?php if($rowper['job']=="ç™½é¢†" ) echo" checked" ;?>>
+              ç™½é¢† 
+              <input type="radio" name="job" value="å¤±ä¸šä¸­" <?php if($rowper['job']=="å¤±ä¸šä¸­" ) echo" checked" ;?>>
+              å¤±ä¸šä¸­</td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ËùÔÚµØÇø£º</td>
+            <td height="25" align="right" >æ‰€åœ¨åœ°åŒºï¼š</td>
             <td height="25" > 
-			<select name="province" size="1" id="province" width="4" onChange="javascript:selNext(this.document.form2.city,this.value)" style="width:85">
-                <option value="0">--²»ÏŞ--</option>
+			<select name="province" size="1" id="province" width="4" onChange="javascript:selNext(this.document.form2.city,this.value)" style="width:85" class="company_manage_form_option" >
+                <option value="0">--ä¸é™--</option>
 				 <?php 
-				 $dsql->SetQuery("Select * From #@__area where rid=0");
+				 $dsql->SetQuery("Select * From #@__area where reid=0");
 				 $dsql->Execute();
 				 while($rowa = $dsql->GetArray()){
-				    if($row['province']==$rowa['eid'])
-					{ echo "<option value='".$rowa['eid']."' selected>".$rowa['name']."</option>\r\n"; }
+				    if($rowper['province']==$rowa['id'])
+					{ echo "<option value='".$rowa['id']."' selected>".$rowa['name']."</option>\r\n"; }
 					else
-					{ echo "<option value='".$rowa['eid']."'>".$rowa['name']."</option>\r\n"; }
+					{ echo "<option value='".$rowa['id']."'>".$rowa['name']."</option>\r\n"; }
 				 }
 				 ?>
               </select>
-			   &nbsp;³ÇÊĞ£º 
-              <select id="city" name="city" width="4" style="width:85" >
-                <option value="0">--²»ÏŞ--</option>
+			   &nbsp;åŸå¸‚ï¼š 
+              <select id="city" name="city" width="4" style="width:85" class="company_manage_form_option" >
+                <option value="0">--ä¸é™--</option>
 				<?php 
+				
 				 if(!empty($row['province'])){
 				 $dsql->SetQuery("Select * From #@__area where rid=".$row['province']);
 				 $dsql->Execute();
 				 while($rowa = $dsql->GetArray()){
-				    if($row['city']==$rowa['eid'])
+				    if($rowper['city']==$rowa['eid'])
 					{ echo "<option value='".$rowa['eid']."' selected>".$rowa['name']."</option>\r\n"; }
 					else
 					{ echo "<option value='".$rowa['eid']."'>".$rowa['name']."</option>\r\n"; }
 				 }}
+				 
 				 ?>
               </select>			  </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >¸öÈËËµÃ÷£º</td>
-            <td height="25" >[ÉÙÓÚÊÇ125ÖĞÎÄ×Ö]&nbsp;</td>
+            <td height="25" align="right" >ä¸ªäººè¯´æ˜ï¼š</td>
+            <td height="25" >[å°‘äºæ˜¯125ä¸­æ–‡å­—]&nbsp;</td>
           </tr>
           <tr> 
             <td height="25" align="right" >&nbsp;</td>
-            <td height="25" ><textarea name="myinfo" cols="40" rows="3" id="myinfo" ><?php echo $row['myinfo']?></textarea></td>
+            <td height="25" ><textarea name="myinfo" cols="40" rows="3" id="myinfo" class="company_manage_form_label1" style="width:400px;"><?php echo $rowper['myinfo']?></textarea></td>
           </tr>
           <tr> 
-            <td height="25" align="right" ><strong>ÏêÏ¸½éÉÜ£º</strong></td>
+            <td height="25" align="right" ><strong>è¯¦ç»†ä»‹ç»ï¼š</strong></td>
             <td height="25" >&nbsp;</td>
           </tr>
           <tr align="center"> 
@@ -164,38 +161,38 @@ if(document.form2.vdcode.value=="")
                 <tr> 
                   <td> 
                     <?php 
-	          GetEditor("fullinfo",$row['fullinfo'],250,"MemberLit");
+	          GetEditor("fullinfo",$rowper['fullinfo'],250,"MemberLit");
               ?>                  </td>
                 </tr>
               </table> </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÁªÏµ·½Ê½£º </td>
-            <td height="25" > <input type="radio" name="showaddr" value="0"<?php if($row['showaddr']==0) echo " checked";?>>
-              ²»ÏÔÊ¾ 
-              <input type="radio" name="showaddr" value="1"<?php if($row['showaddr']==1) echo " checked";?>>
-              ÏÔÊ¾</td>
+            <td height="25" align="right" >è”ç³»æ–¹å¼ï¼š </td>
+            <td height="25" > <input type="radio" name="showaddr" value="0"<?php if($rowper['showaddr']==0) echo " checked";?>>
+              ä¸æ˜¾ç¤º 
+              <input type="radio" name="showaddr" value="1"<?php if($rowper['showaddr']==1) echo " checked";?>>
+              æ˜¾ç¤º</td>
           </tr>
           <tr> 
-            <td height="25" align="right" >¸öÈËÖ÷Ò³£º</td>
-            <td height="25" ><input name="homepage" value="<?php echo $row['homepage']?>" type="text" id="homepage2" size="25" ></td>
+            <td height="25" align="right" >ä¸ªäººä¸»é¡µï¼š</td>
+            <td height="25" ><input name="homepage" value="<?php echo $rowper['homepage']?>" type="text" id="homepage2" size="25" class="company_manage_form_label" ></td>
           </tr>
           <tr> 
-            <td height="25" align="right" >OICQºÅÂë£º</td>
-            <td height="25" ><input name="oicq" type="text" value="<?php echo $row['oicq']?>" id="oicq" size="20" style="width:150;height:20" >            </td>
+            <td height="25" align="right" >OICQå·ç ï¼š</td>
+            <td height="25" ><input name="oicq" type="text" value="<?php echo $rowper['oicq']?>" id="oicq" size="20" style="width:150;height:20" class="company_manage_form_label" >            </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÁªÏµµç»°£º</td>
-            <td height="25" ><input name="tel" type="text" value="<?php echo $row['tel']?>" id="tel" size="20" style="width:150;height:20" >            </td>
+            <td height="25" align="right" >è”ç³»ç”µè¯ï¼š</td>
+            <td height="25" ><input name="tel" type="text" value="<?php echo $rowper['tel']?>" id="tel" size="20" style="width:150;height:20" class="company_manage_form_label" >            </td>
           </tr>
           <tr> 
-            <td height="25" align="right" >ÏêÏ¸µØÖ·£º</td>
-            <td height="25" ><input name="address" value="<?php echo $row['address']?>" type="text" id="address" size="25" >            </td>
+            <td height="25" align="right" >è¯¦ç»†åœ°å€ï¼š</td>
+            <td height="25" ><input name="address" value="<?php echo $rowper['address']?>" type="text" id="address" size="25" class="company_manage_form_label"  >            </td>
           </tr>
           <tr> 
             <td height="67" align="right" >&nbsp;</td>
-            <td height="67" > <input type="submit" name="Submit2" value="È·¶¨ĞŞ¸Ä" > 
-              &nbsp;&nbsp; <input type="reset" name="Submit222" value="ÖØÖÃ" > </td>
+            <td height="67" > <input type="submit" name="Submit2" value="ç¡®å®šä¿®æ”¹" class="button"> 
+              &nbsp;&nbsp; <input type="reset" name="Submit222" value="é‡ç½®" class="button01"> </td>
           </tr>
         </form>
       </table>

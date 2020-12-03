@@ -4,9 +4,9 @@ require_once(dirname(__FILE__)."/creatminiature.php");
 CheckPurview('sys_ArcBatch');
 $t1 = ExecTime();
 require_once(dirname(__FILE__)."/../../include/inc_archives_view.php");
-if(empty($startid)) $startid = 1;//ÆğÊ¼IDºÅ
-if(empty($endid)) $endid = 0;//½áÊøIDºÅ
-if(empty($startdd)) $startdd = 0;//½á¹û¼¯ÆğÊ¼¼ÇÂ¼Öµ
+if(empty($startid)) $startid = 1;//èµ·å§‹IDå·
+if(empty($endid)) $endid = 0;//ç»“æŸIDå·
+if(empty($startdd)) $startdd = 0;//ç»“æœé›†èµ·å§‹è®°å½•å€¼
 if(empty($pagesize)) $pagesize = 20;
 if(empty($totalnum)) $totalnum = 0;
 if(empty($typeid)) $typeid = 0;
@@ -20,20 +20,21 @@ $fieldear = array();
 
 $dsql = new DedeSql(false);
 $mkimg=new CreatMiniature();
-//»ñÈ¡Ìõ¼ş
+//è·å–æ¡ä»¶
 //------------------------
 $gwhere = " where ID>=$startid And arcrank=0 ";
 if($endid > $startid) $gwhere .= " And ID<= $endid ";
 $idsql = "";
 if($typeid!=0){
+	$tpids = '';
 	$idArrary = TypeGetSunTypes($typeid,$dsql,0);
 	if(is_array($idArrary))
 	{
+	  
 	  foreach($idArrary as $tid){
-		  if($idsql=="") $idsql .= " typeid=$tid ";
-		  else $idsql .= " or typeid=$tid ";
+	  	$tpids = ($tpids=='' ? $tid : ','.$tid);
 	  }
-	  $idsql = " And (".$idsql.")";
+	  $idsql = " And typeid in ($tpids)";
   }
   $idsql = $gwhere.$idsql;
 }
@@ -43,7 +44,7 @@ if($seltime==1){
 	 $t2 = GetMkTime($etime);
 	 $idsql .= " And (senddate >= $t1 And senddate <= $t2) ";
 }
-//Í³¼Æ¼ÇÂ¼×ÜÊı
+//ç»Ÿè®¡è®°å½•æ€»æ•°
 //------------------------
 if($totalnum==0)
 {
@@ -51,16 +52,26 @@ if($totalnum==0)
 	$totalnum = $row['dd'];
 }
 
-//»ñÈ¡¼ÇÂ¼£¬²¢Éú³ÉËõÂÔÍ¼---
-if($totalnum > $startdd+$pagesize) $limitSql = " limit $startdd,$pagesize";
-else $limitSql = " limit $startdd,".($totalnum - $startdd);
+//è·å–è®°å½•ï¼Œå¹¶ç”Ÿæˆç¼©ç•¥å›¾---
+if($totalnum > $startdd+$pagesize)
+{
+	$limitSql = " limit $startdd,$pagesize";
+}else
+{
+	$limitrow = $totalnum - $startdd;
+	$limitSql = " limit $startdd,$limitrow";
+	if($limitrow<0)
+	{
+		$dsql->Close();
+	  echo "å®Œæˆæ‰€æœ‰ä»»åŠ¡ï¼";
+	  exit();
+	}
+}
 $tjnum = $startdd;
 $dsql->SetQuery("Select ID,litpic,channel From #@__archives $idsql $limitSql");
 $dsql->Execute();
-
 while($row=$dsql->GetObject())
 {
-	$dsql1= new DedeSql(false);
 	$tjnum++;
 	$ID = $row->ID;
 	$imgfile=$row->litpic;
@@ -71,15 +82,15 @@ while($row=$dsql->GetObject())
 		switch($channel)
 		{
 			case 1:
-				$dsql1->SetQuery("Select body From #@__addonarticle where aid=$ID");
-				$dsql1->Execute();
-				$row1=$dsql1->GetObject();
+				$dsql->SetQuery("Select body From #@__addonarticle where aid=$ID");
+				$dsql->Execute('c1');
+				$row1=$dsql->GetObject('c1');
 				$body=$row1->body;
 				break;
 			case 2:
-				$dsql1->SetQuery("Select imgurls From #@__addonimages where aid=$ID");
-				$dsql1->Execute();
-				$row1=$dsql1->GetObject();
+				$dsql->SetQuery("Select imgurls From #@__addonimages where aid=$ID");
+				$dsql->Execute('c2');
+				$row1=$dsql->GetObject('c2');
 				$body=$row1->imgurls;
 				break;
 		}
@@ -107,8 +118,8 @@ while($row=$dsql->GetObject())
 					$mkimg->BackFill($cfg_basedir.$litpic,$imgwidth,$imgheight,$backcolor1,$backcolor2,$backcolor3);
 					break;
 			}
-			$dsql1->SetQuery("update #@__archives set litpic='$litpic' where ID='$ID'");
-			$dsql1->ExecuteNoneQuery();
+			$dsql->ExecuteNoneQuery("update #@__archives set litpic='$litpic' where ID='$ID'");
+			$dsql->ExecuteNoneQuery("update #@__full_search set litpic='$litpic' where aid='$ID'");
 		}
 		//echo "update #@__archives set litpic=$litpic where ID=$ID";
 		echo $litpic."---ID:".$ID."<BR>";
@@ -120,15 +131,15 @@ while($row=$dsql->GetObject())
 			switch($channel)
 			{
 				case 1:
-					$dsql1->SetQuery("Select body From #@__addonarticle where aid=$ID");
-					$dsql1->Execute();
-					$row1=$dsql1->GetObject();
+					$dsql->SetQuery("Select body From #@__addonarticle where aid=$ID");
+					$dsql->Execute('c1');
+					$row1=$dsql->GetObject('c1');
 					$body=$row1->body;
 					break;
 				case 2:
-					$dsql1->SetQuery("Select imgurls From #@__addonimages where aid=$ID");
-					$dsql1->Execute();
-					$row1=$dsql1->GetObject();
+					$dsql->SetQuery("Select imgurls From #@__addonimages where aid=$ID");
+					$dsql->Execute('c2');
+					$row1=$dsql->GetObject('c2');
 					$body=$row1->imgurls;
 					break;
 			}
@@ -156,26 +167,24 @@ while($row=$dsql->GetObject())
 						$mkimg->BackFill($cfg_basedir.$litpic,$imgwidth,$imgheight,$backcolor1,$backcolor2,$backcolor3);
 						break;
 				}
-				$dsql1->SetQuery("update #@__archives set litpic='$litpic' where ID='$ID'");
-				$dsql1->ExecuteNoneQuery();
+				$dsql->ExecuteNoneQuery("update #@__archives set litpic='$litpic' where ID='$ID'");
+				$dsql->ExecuteNoneQuery("update #@__full_search set litpic='$litpic' where aid='$ID'");
 			}
 		}
 				//echo "update #@__archives set litpic=$litpic where ID=$ID";
 		echo $litpic."---ID:".$ID."<BR>";
 	}
-	
-	$dsql1->Close();
 }
 
 $t2 = ExecTime();
 $t2 = ($t2 - $t1);
 
-//·µ»ØÌáÊ¾ĞÅÏ¢
+//è¿”å›æç¤ºä¿¡æ¯
 if($totalnum>0) $tjlen = ceil( ($tjnum/$totalnum) * 100 );
 else $tjlen=100;
 $dvlen = $tjlen * 2;
 $tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
-$tjsta .= "<br/>±¾´ÎÓÃÊ±£º".number_format($t2,2)." µ½´ïÎ»ÖÃ£º".($startdd+$pagesize)."<br/>Íê³É´´½¨ÎÄ¼ş×ÜÊıµÄ£º$tjlen %£¬¼ÌĞøÖ´ĞĞÈÎÎñ...";
+$tjsta .= "<br/>æœ¬æ¬¡ç”¨æ—¶ï¼š".number_format($t2,2)." åˆ°è¾¾ä½ç½®ï¼š".($startdd+$pagesize)."<br/>å®Œæˆåˆ›å»ºæ–‡ä»¶æ€»æ•°çš„ï¼š$tjlen %ï¼Œç»§ç»­æ‰§è¡Œä»»åŠ¡...";
 
 if($tjnum < $totalnum)
 {
@@ -190,7 +199,7 @@ if($tjnum < $totalnum)
 else
 {
 	$dsql->Close();
-	echo "Íê³ÉËùÓĞ´´½¨ÈÎÎñ£¡";
+	echo "å®Œæˆæ‰€æœ‰ä»»åŠ¡ï¼";
 	exit();
 }
 

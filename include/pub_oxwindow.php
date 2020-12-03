@@ -2,14 +2,15 @@
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 class OxWindow
 {
-	var $myWin = "";
-	var $myWinItem = "";
-	var $checkCode = "";
-	var $formName = "";
-	var $tmpCode = "//checkcode";
+	var $myWin = '';
+	var $myWinItem = '';
+	var $checkCode = '';
+	var $formName = '';
+	var $tmpCode = '//checkcode';
 	var $hasStart = false;
+	var $mainTitle = '';
 	//---------------------------------
-	//³õÊ¼»¯Îªº¬±íµ¥µÄÒ³Ãæ
+	//åˆå§‹åŒ–ä¸ºå«è¡¨å•çš„é¡µé¢
 	//---------------------------------
 	function Init($formaction="",$checkScript="js/blank.js",$formmethod="POST",$formname="myform")
 	{
@@ -24,30 +25,36 @@ class OxWindow
 		}
 		$this->myWin .= "</script>\r\n";
 		$this->formName = $formname;
-		$this->myWin .= "<form name='$formname' method='$formmethod' onSubmit='return CheckSubmit();' action='$formaction'>\r\n";
+		$isupload = '';
+		if($formmethod=='data')
+		{
+			$formmethod = 'post';
+			$isupload = " enctype='multipart/form-data' ";
+		}
+		$this->myWin .= "<form name='$formname' method='$formmethod'{$isupload} onSubmit='return CheckSubmit();' action='$formaction'>\r\n";
 	}
 	//-------------------------------
-	//Ôö¼ÓÒþ²ØÓò
+	//å¢žåŠ éšè—åŸŸ
 	//-------------------------------
 	function AddHidden($iname,$ivalue){
 		$this->myWin .= "<input type='hidden' name='$iname' value='$ivalue'>\r\n";
 	}
 	function StartWin()
 	{
-		$this->myWin .= "<table width='100%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#A5D0F1'>\r\n";
+		$this->myWin .= "<table width='100%' border='0' cellpadding='1' cellspacing='1' align='center' class='tbtitle' style='background:#E2F5BC;'>\r\n";
 	}
 	//-----------------------------
-	//Ôö¼ÓÒ»¸öÁ½ÁÐµÄÐÐ
+	//å¢žåŠ ä¸€ä¸ªä¸¤åˆ—çš„è¡Œ
 	//-----------------------------
 	function AddItem($iname,$ivalue)
 	{
-		$this->myWinItem .= "<tr bgcolor='#FFFFFF'>\r\n";
+		$this->myWinItem .= "<tr>\r\n";
     $this->myWinItem .= "<td width='25%'>$iname</td>\r\n";
     $this->myWinItem .= "<td width='75%'>$ivalue</td>\r\n";
     $this->myWinItem .= "</tr>\r\n";
 	}
 	//---------------------------
-	//Ôö¼ÓÒ»¸öµ¥ÁÐµÄÏûÏ¢ÐÐ
+	//å¢žåŠ ä¸€ä¸ªå•åˆ—çš„æ¶ˆæ¯è¡Œ
 	//---------------------------
 	function AddMsgItem($ivalue,$height="100",$col="2")
 	{
@@ -55,23 +62,23 @@ class OxWindow
 		else $height="";
 		if($col!=""&&$col!=0) $colspan="colspan='$col'";
 		else $colspan="";
-		$this->myWinItem .= "<tr bgcolor='#FFFFFF'>\r\n";
+		$this->myWinItem .= "<tr>\r\n";
     $this->myWinItem .= "<td $colspan $height> $ivalue </td>\r\n";
     $this->myWinItem .= "</tr>\r\n";
 	}
 	//-------------------------------
-	//Ôö¼Óµ¥ÁÐµÄ±êÌâÐÐ
+	//å¢žåŠ å•åˆ—çš„æ ‡é¢˜è¡Œ
 	//-------------------------------
 	function AddTitle($title,$col="2")
 	{
 		if($col!=""&&$col!="0") $colspan="colspan='$col'";
 		else $colspan="";
-		$this->myWinItem .= "<tr bgcolor='#D2EFFD'>\r\n";
-    $this->myWinItem .= "<td $colspan background='img/wbg.gif'><font color='#666600'><b>$title</b></font></td>\r\n";
+		$this->myWinItem .= "<tr>\r\n";
+    $this->myWinItem .= "<td $colspan ><font color='#666600'><b>$title</b></font></td>\r\n";
     $this->myWinItem .= "</tr>\r\n";
 	}
 	//----------------------
-	//½áÊøWindow
+	//ç»“æŸWindow
 	//-----------------------
 	function CloseWin($isform=true)
 	{
@@ -80,7 +87,7 @@ class OxWindow
 	}
 	
 	//-------------------------
-	//Ôö¼Ó×Ô¶¨ÒåJS½Å±¾
+	//å¢žåŠ è‡ªå®šä¹‰JSè„šæœ¬
 	//-------------------------
 	function SetCheckScript($scripts)
 	{
@@ -89,7 +96,7 @@ class OxWindow
 	}
 	
 	//----------------------
-	//»ñÈ¡´°¿Ú
+	//èŽ·å–çª—å£
 	//-----------------------
 	function GetWindow($wintype="save",$msg="",$isform=true)
 	{
@@ -97,16 +104,30 @@ class OxWindow
 		$this->myWin .= $this->myWinItem;
 		if($wintype!="")
 		{
-			if($wintype!="hand")
+			if($wintype=="okonly")
 			{
 			$this->myWin .= "
 <tr>
-<td colspan='2' bgcolor='#D2EFFD'>
+<td colspan='2' >
 <table width='270' border='0' cellpadding='0' cellspacing='0'>
 <tr align='center'>
-<td width='90'><input name='imageField1' type='image' class='np' src='img/button_".$wintype.".gif' width='60' height='22' border='0'></td>
-<td width='90'><a href='#'><img class='np' src='img/button_reset.gif' width='60' height='22' border='0' onClick='this.form.reset();return false;'></a></td>
-<td><a href='#'><img src='img/button_back.gif' width='60' height='22' border='0' onClick='history.go(-1);'></a></td>
+<td width='90'><input name='imageField1' type='image' class='np' src='img/button_ok.gif' width='60' height='22' border='0' style='border:0px'></td>
+<td><a href='#'><img src='img/button_back.gif' width='60' height='22' border='0' onClick='history.go(-1);' style='border:0px'></a></td>
+</tr>
+</table>
+</td>
+</tr>";
+			}
+			else if($wintype!="hand")
+			{
+			$this->myWin .= "
+<tr>
+<td colspan='2' >
+<table width='270' border='0' cellpadding='0' cellspacing='0'>
+<tr align='center'>
+<td width='90'><input name='imageField1' type='image' class='np' src='img/button_".$wintype.".gif' width='60' height='22' border='0' style='border:0px'></td>
+<td width='90'><a href='#'><img class='np' src='img/button_reset.gif' width='60' height='22' border='0' onClick='this.form.reset();return false;' style='border:0px'></a></td>
+<td><a href='#'><img src='img/button_back.gif' width='60' height='22' border='0' onClick='history.go(-1);' style='border:0px'></a></td>
 </tr>
 </table>
 </td>
@@ -116,7 +137,7 @@ class OxWindow
 			{
 			$this->myWin .= "
 <tr>
-<td bgcolor='#CBE4FE'>
+<td>
 $msg
 </td>
 </tr>";
@@ -126,12 +147,18 @@ $msg
 		return $this->myWin;
 	}
 	//----------------------
-	//ÏÔÊ¾Ò³Ãæ
+	//æ˜¾ç¤ºé¡µé¢
 	//----------------------
 	function Display($modfile="")
 	{
+		global $cfg_templets_dir,$cfg_basedir,$maintitle,$winform;
+		if(empty($this->mainTitle)) $maintitle = 'é€šç”¨å¯¹è¯æ¡†';
+		else $maintitle = $this->mainTitle;
+		if(empty($winform)) $winform = $this->myWin;
+		if(empty($cfg_templets_dir)) $cfg_templets_dir = dirname(__FILE__)."/../templets";
+		else $cfg_templets_dir = $cfg_basedir.$cfg_templets_dir;
 		$ctp = new DedeTagParse();
-		if($modfile=="") $ctp->LoadTemplate(dirname(__FILE__)."/win_templet.htm");
+		if($modfile=="") $ctp->LoadTemplate($cfg_templets_dir."/win_templet.htm");
 		else $ctp->LoadTemplate($modfile);
 		$emnum = $ctp->Count;
 		for($i=0;$i<=$emnum;$i++)
@@ -144,5 +171,19 @@ $msg
 		$ctp->Display();
 		$ctp->Clear();
 	}
+}
+
+/*------
+æ˜¾ç¤ºä¸€ä¸ªä¸å¸¦è¡¨å•çš„æ™®é€šæç¤º
+-------*/
+function ShowMsgWin($msg,$title)
+{
+  $win = new OxWindow();
+  $win->Init();
+  $win->mainTitle = "DeDeCmsç³»ç»Ÿæç¤ºï¼š";
+	$win->AddTitle($title);
+	$win->AddMsgItem("<div style='padding-left:20px;line-height:150%'>$msg</div>");
+	$winform = $win->GetWindow("hand");
+	$win->Display();
 }
 ?>

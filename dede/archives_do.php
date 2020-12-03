@@ -1,50 +1,52 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 require_once(dirname(__FILE__)."/inc/inc_batchup.php");
 require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
 empty($_COOKIE['ENV_GOBACK_URL']) ? $ENV_GOBACK_URL = "content_list.php" : $ENV_GOBACK_URL=$_COOKIE['ENV_GOBACK_URL'];
 if(empty($dopost)||empty($aid)){
-	ShowMsg("¶Ô²»Æğ£¬ÄãÃ»Ö¸¶¨ÔËĞĞ²ÎÊı£¡","-1");
+	ShowMsg("å¯¹ä¸èµ·ï¼Œä½ æ²¡æŒ‡å®šè¿è¡Œå‚æ•°ï¼","-1");
 	exit();
 }
 $aid = ereg_replace("[^0-9]","",$aid);
+
 /*--------------------------
-//±à¼­ÎÄµµ 
+//ç¼–è¾‘æ–‡æ¡£
 function editArchives();
 ---------------------------*/
 if($dopost=="editArchives")
 {
-	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select #@__channeltype.editcon from #@__archives left join #@__channeltype on #@__channeltype.ID=#@__archives.channel where #@__archives.ID='$aid'");
+	$dsql = new DedeSql(-100);
+	$row = $dsql->GetOne("Select c.editcon from `#@__full_search` i left join #@__channeltype c on c.ID=i.channelid where i.aid='$aid'");
 	$gurl = $row["editcon"];
 	$dsql->Close();
-	if($gurl==""){ $gurl=="article_edit.php"; }
+	if($gurl==""){ $gurl="article_edit.php"; }
 	require_once(dirname(__FILE__)."/$gurl");
 }
 /*--------------------------
-//ä¯ÀÀÎÄµµ
+//æµè§ˆæ–‡æ¡£
 function viewArchives();
 ---------------------------*/
 else if($dopost=="viewArchives")
 {
-	$aid = ereg_replace("[^0-9]","",$aid);
-	$dsql = new DedeSql(false);
+	$aid = intval($aid);
+	$dsql = new DedeSql(-100);
+	$tables = GetChannelTable($dsql,$aid,'arc');
 	$arcQuery = "
-    Select #@__archives.ID,#@__archives.title,#@__archives.typeid,
-    #@__archives.ismake,#@__archives.senddate,#@__archives.arcrank,#@__channeltype.addtable,
- 		#@__archives.money,#@__arctype.typedir,#@__arctype.typename,
- 		#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
- 		#@__arctype.moresite,#@__arctype.siteurl,#@__arctype.siterefer,#@__arctype.sitepath 
-		from #@__archives
-		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
-		left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
-		where #@__archives.ID='$aid'
-    ";
+    Select arc.ID,arc.title,arc.typeid,arc.channel,
+    arc.ismake,arc.senddate,arc.arcrank,c.addtable,
+ 		arc.money,t.typedir,t.typename,t.namerule,t.namerule2,t.ispart,
+ 		t.moresite,t.siteurl,t.siterefer,t.sitepath
+		from `{$tables['maintable']}` arc
+		left join #@__arctype t on t.ID = arc.typeid
+		left join #@__channeltype c on c.ID = arc.channel
+		where arc.ID='$aid'
+  ";
   $arcRow = $dsql->GetOne($arcQuery);
-  $dsql->Close();
 	if($arcRow['ismake']==-1||$arcRow['arcrank']!=0
-    ||$arcRow['typeid']==0||$arcRow['money']>0){
+    ||$arcRow['typeid']==0||$arcRow['money']>0||$arcRow['channel']<-1)
+  {
+    	$dsql->Close();
     	echo "<script language='javascript'>location.href='{$cfg_plus_dir}/view.php?aid={$aid}';</script>";
     	exit();
   }
@@ -53,38 +55,39 @@ else if($dopost=="viewArchives")
   $arcfile = GetFileUrl($arcRow['ID'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
            $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],false,'');
 	$truefile = GetTruePath($arcRow['siterefer'],$arcRow['sitepath']).$arcfile;
-  if(!file_exists($truefile)) {
-  	MakeArt($aid,true);
-  }
+  MakeArt($aid,true);
+  $dsql->Close();
   echo "<script language='javascript'>location.href='$arcurl"."?".mytime()."';</script>";
 	exit();
 }
 /*--------------------------
-//ÍÆ¼öÎÄµµ
+//æ¨èæ–‡æ¡£
 function commendArchives();
 ---------------------------*/
 else if($dopost=="commendArchives")
 {
 	CheckPurview('a_Commend,sys_ArcBatch');
+	$dsql = new DedeSql(false);
 	if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
 	if($qstr==""){
-	  ShowMsg("²ÎÊıÎŞĞ§£¡",$ENV_GOBACK_URL);
+	  ShowMsg("å‚æ•°æ— æ•ˆï¼",$ENV_GOBACK_URL);
 	  exit();
 	}
 	$qstrs = explode("`",$qstr);
 	$dsql = new DedeSql(false);
-	foreach($qstrs as $aid){
+	foreach($qstrs as $aid)
+	{
 	  $aid = ereg_replace("[^0-9]","",$aid);
-	  if($aid=="") continue;
-	  $dsql->SetQuery("Update #@__archives set iscommend='11' where ID='$aid'");
-	  $dsql->ExecuteNoneQuery();
+	  if($aid=='') continue;
+	  $tables = GetChannelTable($dsql,$aid,'arc');
+	  $dsql->ExecuteNoneQuery(" Update `{$tables['maintable']}` set iscommend=iscommend+11 where ID='$aid' and iscommend<11 ");
 	}
 	$dsql->Close();
-	ShowMsg("³É¹¦°ÑËùÑ¡µÄÎÄµµÉèÎªÍÆ¼ö£¡",$ENV_GOBACK_URL);
+	ShowMsg("æˆåŠŸæŠŠæ‰€é€‰çš„æ–‡æ¡£è®¾ä¸ºæ¨èï¼",$ENV_GOBACK_URL);
 	exit();
 }
 /*--------------------------
-//Éú³ÉHTML
+//ç”ŸæˆHTML
 function makeArchives();
 ---------------------------*/
 else if($dopost=="makeArchives")
@@ -94,7 +97,8 @@ else if($dopost=="makeArchives")
 	require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
 	if(empty($qstr)){
 	  $pageurl = MakeArt($aid,true);
-	  ShowMsg("³É¹¦¸üĞÂ{$pageurl}...",$ENV_GOBACK_URL);
+	  ClearAllLink();
+	  ShowMsg("æˆåŠŸæ›´æ–°{$pageurl}...",$ENV_GOBACK_URL);
 	  exit();
   }
   else{
@@ -104,21 +108,23 @@ else if($dopost=="makeArchives")
   		$i++;
   		$pageurl = MakeArt($aid,true);
   	}
-  	ShowMsg("³É¹¦¸üĞÂÖ¸¶¨ $i ¸öÎÄ¼ş...",$ENV_GOBACK_URL);
+  	ClearAllLink();
+  	ShowMsg("æˆåŠŸæ›´æ–°æŒ‡å®š $i ä¸ªæ–‡ä»¶...",$ENV_GOBACK_URL);
   	exit();
   }
 }
 /*--------------------------
-//ÉóºËÎÄµµ
+//å®¡æ ¸æ–‡æ¡£
 function checkArchives();
 ---------------------------*/
 else if($dopost=="checkArchives")
 {
 	CheckPurview('a_Check,a_AccCheck,sys_ArcBatch');
-	require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
+	require_once(DEDEADMIN."/inc/inc_archives_functions.php");
+	$dsql = new DedeSql(false);
 	if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
 	if($qstr==""){
-	  ShowMsg("²ÎÊıÎŞĞ§£¡",$ENV_GOBACK_URL);
+	  ShowMsg("å‚æ•°æ— æ•ˆï¼",$ENV_GOBACK_URL);
 	  exit();
 	}
 	$qstrs = explode("`",$qstr);
@@ -126,17 +132,20 @@ else if($dopost=="checkArchives")
 	{
 	  $aid = ereg_replace("[^0-9]","",$aid);
 	  if($aid=="") continue;
-	  $dsql = new DedeSql(false);
-	  $dsql->SetQuery("Update #@__archives set arcrank='0',adminID='".$cuserLogin->getUserID()."' where ID='$aid' And arcrank<'0'");
-	  $dsql->ExecuteNoneQuery();
+	  $tables = GetChannelTable($dsql,$aid,'arc');
+	  $dsql->ExecuteNoneQuery(" Update `{$tables['maintable']}` set arcrank='0' where ID='$aid' And arcrank<'0' ");
+	  $dsql->ExecuteNoneQuery(" Update `#@__full_search` set arcrank='0' where aid='$aid' And arcrank<'0' ");
+	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `{$tables['maintable']}`; ");
+	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `#@__full_search`; ");
 	  $pageurl = MakeArt($aid,true);
-	  $dsql->Close();
+	  $dsql->ExecuteNoneQuery(" Update `#@__full_search` set url='$pageurl' where aid='$aid'");
 	}
-	ShowMsg("³É¹¦ÉóºËÖ¸¶¨µÄÎÄµµ£¡",$ENV_GOBACK_URL);
+	ClearAllLink();
+	ShowMsg("æˆåŠŸå®¡æ ¸æŒ‡å®šçš„æ–‡æ¡£ï¼",$ENV_GOBACK_URL);
 	exit();
 }
 /*--------------------------
-//É¾³ıÎÄµµ
+//åˆ é™¤æ–‡æ¡£
 function delArchives();
 ---------------------------*/
 else if($dopost=="delArchives")
@@ -148,32 +157,33 @@ else if($dopost=="delArchives")
 	{
 	  if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
 	  if($qstr==""){
-	  	ShowMsg("²ÎÊıÎŞĞ§£¡",$ENV_GOBACK_URL);
+	  	ShowMsg("å‚æ•°æ— æ•ˆï¼",$ENV_GOBACK_URL);
 	  	exit();
 	  }
 	  $qstrs = explode("`",$qstr);
 	  $okaids = Array();
 	  $dsql = new DedeSql(false);
 	  foreach($qstrs as $aid){
-	    if(!isset($okaids[$aid])) DelArc($aid);
+	    if(!isset($okaids[$aid])) DelArc($aid,false,$channelid);
 	    else $okaids[$aid] = 1;
     }
     $dsql->Close();
-    ShowMsg("³É¹¦É¾³ıÖ¸¶¨µÄÎÄµµ£¡",$ENV_GOBACK_URL);
+    ShowMsg("æˆåŠŸåˆ é™¤æŒ‡å®šçš„æ–‡æ¡£ï¼",$ENV_GOBACK_URL);
 	  exit();
-  }//È·¶¨„h³ı²Ù×÷Íê³É
-  
-  //É¾³ıÈ·ÈÏÏûÏ¢
+  }//ç¡®å®šåˆªé™¤æ“ä½œå®Œæˆ
+
+  //åˆ é™¤ç¡®è®¤æ¶ˆæ¯
   //-----------------------
-	$wintitle = "ÎÄµµ¹ÜÀí-É¾³ıÎÄµµ";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>ÎÄµµ¹ÜÀí</a>::É¾³ıÎÄµµ";
+	$wintitle = "æ–‡æ¡£ç®¡ç†-åˆ é™¤æ–‡æ¡£";
+	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>æ–‡æ¡£ç®¡ç†</a>::åˆ é™¤æ–‡æ¡£";
 	$win = new OxWindow();
 	$win->Init("archives_do.php","js/blank.js","POST");
 	$win->AddHidden("fmdo","yes");
 	$win->AddHidden("dopost",$dopost);
+	$win->AddHidden("channelid",$channelid);
 	$win->AddHidden("qstr",$qstr);
 	$win->AddHidden("aid",$aid);
-	$win->AddTitle("ÄãÈ·ÊµÒªÉ¾³ı¡° $qstr ºÍ $aid ¡±ÕâĞ©ÎÄµµ£¿");
+	$win->AddTitle("ä½ ç¡®å®è¦åˆ é™¤â€œ $qstr å’Œ $aid â€è¿™äº›æ–‡æ¡£ï¼Ÿ");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
@@ -185,39 +195,39 @@ else if($dopost=='moveArchives'){
 	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 	require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 	if(empty($targetTypeid)){
-		$tl = new TypeLink($cid);
-		$typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0);
+		$tl = new TypeLink(0);
+		$typeOptions = $tl->GetOptionArray(0,$tl->TypeInfos['channeltype'],0);
 		$tl->Close();
 		$typeOptions = "
 		<select name='targetTypeid' style='width:350'>
-		<option value='0'>ÇëÑ¡ÔñÒÆ¶¯µ½µÄÎ»ÖÃ...</option>\r\n
+		<option value='0'>è¯·é€‰æ‹©ç§»åŠ¨åˆ°çš„ä½ç½®...</option>\r\n
      $typeOptions
     </select>
     ";
-		$wintitle = "ÎÄµµ¹ÜÀí-ÒÆ¶¯ÎÄµµ";
-	  $wecome_info = "<a href='".$ENV_GOBACK_URL."'>ÎÄµµ¹ÜÀí</a>::ÒÆ¶¯ÎÄµµ";
+		$wintitle = "æ–‡æ¡£ç®¡ç†-ç§»åŠ¨æ–‡æ¡£";
+	  $wecome_info = "<a href='".$ENV_GOBACK_URL."'>æ–‡æ¡£ç®¡ç†</a>::ç§»åŠ¨æ–‡æ¡£";
 	  $win = new OxWindow();
 	  $win->Init("archives_do.php","js/blank.js","POST");
 	  $win->AddHidden("fmdo","yes");
 	  $win->AddHidden("dopost",$dopost);
 	  $win->AddHidden("qstr",$qstr);
 	  $win->AddHidden("aid",$aid);
-	  $win->AddTitle("ÄãÄ¿Ç°µÄ²Ù×÷ÊÇÒÆ¶¯ÎÄµµ£¬ÇëÑ¡ÔñÄ¿±êÀ¸Ä¿£º");
+	  $win->AddTitle("ä½ ç›®å‰çš„æ“ä½œæ˜¯ç§»åŠ¨æ–‡æ¡£ï¼Œè¯·é€‰æ‹©ç›®æ ‡æ ç›®ï¼š");
 	  $win->AddMsgItem($typeOptions,"30","1");
-	  $win->AddMsgItem("ÄãÑ¡ÖĞµÄÎÄµµIDÊÇ£º $qstr <br>ÒÆ¶¯µÄÀ¸Ä¿±ØĞëºÍÑ¡¶¨µÄÎÄµµÆµµÀÀàĞÍÒ»ÖÂ£¬·ñÔò³ÌĞò»á×Ô¶¯ÎğÂÔ²»·ûºÏµÄÎÄµµ¡£","30","1");
+	  $win->AddMsgItem("ä½ é€‰ä¸­çš„æ–‡æ¡£IDæ˜¯ï¼š $qstr <br>ç§»åŠ¨çš„æ ç›®å¿…é¡»å’Œé€‰å®šçš„æ–‡æ¡£é¢‘é“ç±»å‹ä¸€è‡´ï¼Œå¦åˆ™ç¨‹åºä¼šè‡ªåŠ¨å‹¿ç•¥ä¸ç¬¦åˆçš„æ–‡æ¡£ã€‚","30","1");
 	  $winform = $win->GetWindow("ok");
 	  $win->Display();
 	}else{
 		$targetTypeid = ereg_replace('[^0-9]','',$targetTypeid);
 		$dsql = new DedeSql(false);
-		$typeInfos = $dsql->GetOne("Select * From #@__arctype where ID='$targetTypeid' ");
+		$typeInfos = $dsql->GetOne(" Select * From #@__arctype where ID='$targetTypeid' ");
 		if(!is_array($typeInfos)){
-			ShowMsg("²ÎÊı´íÎó£¡","-1");
+			ShowMsg("å‚æ•°é”™è¯¯ï¼","-1");
 			$dsql->Close();
 			exit();
 		}
 		if($typeInfos['ispart']!=0){
-			ShowMsg("ÎÄµµ±£´æµÄÀ¸Ä¿±ØĞëÎª×îÖÕÁĞ±íÀ¸Ä¿£¡","-1");
+			ShowMsg("æ–‡æ¡£ä¿å­˜çš„æ ç›®å¿…é¡»ä¸ºæœ€ç»ˆåˆ—è¡¨æ ç›®ï¼","-1");
 			$dsql->Close();
 			exit();
 		}
@@ -227,22 +237,27 @@ else if($dopost=='moveArchives'){
 		$okids = Array();
 		foreach($arcids as $arcid){
 			$arcid = ereg_replace('[^0-9]','',$arcid);
-			$arcrow = $dsql->GetOne("Select channel,typeid From #@__archives where ID='$arcid' ");
-			if($arcrow['channel']==$typeInfos['channeltype'] && $arcrow['typeid']!=$targetTypeid){
-				$dsql->ExecuteNoneQuery("Update #@__archives Set typeid='$targetTypeid' where ID='$arcid' ");
+			$tables = GetChannelTable($dsql,$arcid,'arc');
+			if($tables['channelid']==$typeInfos['channeltype'])
+			{
+				$dsql->ExecuteNoneQuery("Update `{$tables['maintable']}` Set typeid='$targetTypeid' where ID='$arcid' ");
+				$dsql->ExecuteNoneQuery("Update `{$tables['addtable']}` Set typeid='$targetTypeid' where aid='$arcid' ");
+				$dsql->ExecuteNoneQuery("Update `#@__full_search` Set typeid='$targetTypeid' where aid='$arcid' ");
         $okids[] = $arcid;
         $j++;
 		  }
 		}
-		//¸üĞÂHTML
+		//æ›´æ–°HTML
+		require_once(DEDEADMIN."/../include/inc_archives_view.php");
 		foreach($okids as $aid){
 			$arc = new Archives($aid);
       $arc->MakeHtml();
 		}
+		$dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `{$tables['maintable']}`; ");
+	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `#@__full_search`; ");
 		$dsql->Close();
 		if(is_object($arc)) $arc->Close();
-		ShowMsg("³É¹¦ÒÆ¶¯ $j ¸öÎÄµµ£¡",$ENV_GOBACK_URL);
-		//"content_list.php?cid=$targetTypeid"
+		ShowMsg("æˆåŠŸç§»åŠ¨ $j ä¸ªæ–‡æ¡£ï¼",$ENV_GOBACK_URL);
 		exit();
 	}
 }

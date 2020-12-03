@@ -6,19 +6,101 @@ if(empty($action)) $action = "";
 if(empty($exrule)) $exrule = "";
 
 if($action=="select"){
-	require_once(dirname(__FILE__)."/co_sel_exrule.php");
+	require_once(dirname(__FILE__)."/templets/co_sel_exrule.htm");
+	ClearAllLink();
 	exit();
 }
 
 if($exrule==""){
-	ShowMsg("ÇëÏÈÑ¡ÔñÒ»¸öµ¼Èë¹æÔò£¡","co_sel_exrule.php");
+	ShowMsg("è¯·å…ˆé€‰æ‹©ä¸€ä¸ªå¯¼å…¥è§„åˆ™ï¼","co_sel_exrule.php");
 	exit();
 }
 
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 $dsql = new DedeSql(false);
-$row = $dsql->GetOne("Select * From #@__co_exrule where aid='$exrule'");
-$dsql->Close();
+if(empty($extype))
+{
+  $row = $dsql->GetOne("Select * From #@__co_exrule where aid='$exrule'");
+}else
+{
+	$row = $dsql->GetOne("Select * From #@__co_exrule where channelid='$channelid'");
+	//å¦‚æžœä¸å­˜åœ¨æŸé¢‘é“çš„è§„åˆ™ï¼Œç³»ç»Ÿè‡ªåŠ¨ç”Ÿæˆä¸€ä¸ªè§„åˆ™
+	if(!is_array($row))
+	{
+		$cinfos = $dsql->GetOne("Select * From #@__channeltype where ID='$channelid'",MYSQL_ASSOC);
+		$maintable = ($cinfos['maintable']=='' ? '#@__archives' : $cinfos['maintable'] );
+		$addtable = $cinfos['addtable'];
+		$tablesinfo = ($addtable=='' ? $maintable : $maintable.','.$addtable);
+    $dtp = new DedeTagParse();
+    $dtp->SetNameSpace("field","<",">");
+    $dtp->LoadString($cinfos['fieldset']);
+    $exRule = "
+{dede:note 
+  rulename='{$cinfos['typename']}æ¨¡åž‹'
+  etype='å½“å‰ç³»ç»Ÿ'
+  tablename='{$tablesinfo}'
+  autofield='ID'
+  synfield='aid'
+  channelid='{$cinfos['ID']}'
+/}
+{dede:field name='typeid' comment='æ ç›®ID' intable='{$maintable}' source='value'}{tid}{/dede:field}
+{dede:field name='arcrank' comment='æ–‡æ¡£æƒé™' intable='{$maintable}' source='value'}{rank}{/dede:field}
+{dede:field name='channel' comment='é¢‘é“ç±»åž‹' intable='{$maintable}' source='value'}{cid}{/dede:field}
+{dede:field name='typeid' comment='æ ç›®ID' intable='{$addtable}' source='value'}{tid}{/dede:field}
+{dede:field name='adminID' comment='ç®¡ç†å‘˜ID' intable='{$maintable}' source='value'}{admin}{/dede:field}
+{dede:field name='sortrank' comment='æŽ’åºçº§åˆ«' intable='{$maintable}' source='value'}{senddate}{/dede:field}
+{dede:field name='senddate' comment='å½•å…¥æ—¶é—´' intable='{$maintable}' source='value'}{senddate}{/dede:field}
+{dede:field name='source' comment='æ¥æº' intable='{$maintable}' source='value'}{source}{/dede:field}
+{dede:field name='pubdate' comment='å‘å¸ƒæ—¶é—´' intable='{$maintable}' source='function'} @me = (@me=='' ? time() : GetMkTime(@me));{/dede:field}
+{dede:field name='litpic' comment='ç¼©ç•¥å›¾' intable='{$maintable}' source='function'}@me = @litpic;{/dede:field}
+{dede:field name='title' comment='æ ‡é¢˜' intable='{$maintable}' source='export'}{/dede:field}
+{dede:field name='writer' comment='ä½œè€…' intable='{$maintable}' source='export'}{/dede:field}
+";
+
+    if(is_array($dtp->CTags))
+    {
+    	foreach($dtp->CTags as $tagid=>$ctag)
+    	{
+    		 $action = '';
+    		 if($ctag->GetAtt('notsend')==1) continue;
+    		 $ctype = $ctag->GetAtt('type');
+    		 if($ctype=='int'||$ctype=='float'){
+    		 	 $action = "@me = ((\$str = preg_replace(\"/[^0-9\.\-]/is\",\"\",@me))=='' ? '0' : \$str);";
+    		 }else if($ctype=='softlinks'){
+    		 	 $action = "@me = TurnLinkTag(@me);";
+    		 }else if($ctype=='img'){
+    		 	 $action = "@me = TurnImageTag(@me);";
+    		 }
+    		 $exRule .= "{dede:field name='".$ctag->GetName()."' comment='".$ctag->GetAtt('itemname')."' intable='".$addtable."' source='export'}{$action}{/dede:field}\r\n";
+    	}
+    }
+    $row['ruleset'] = $exRule;
+	 $exRule = addslashes($exRule);
+	 $ntime = mytime();
+	 $query = "
+	Insert Into `#@__co_exrule`(channelid,rulename,etype,dtime,ruleset)
+	Values('$channelid','{$cinfos['typename']}æ¨¡åž‹','å½“å‰ç³»ç»Ÿ','".mytime()."','$exRule')
+	";
+	 $dsql->ExecuteNoneQuery($query);
+	 $gerr = $dsql->GetError();
+	 $row['aid'] = $exrule = $dsql->GetLastID();
+	 if($row['aid']<1){
+		 ClearAllLink();
+		 ShowMsg("ç”Ÿæˆè§„åˆ™é”™è¯¯ï¼Œæ— æ³•è¿›è¡Œæ“ä½œï¼".$gerr,"javascript:;");
+		 exit();
+	 }
+	 $row['channelid'] = $channelid;
+	 $row['rulename'] = "{$cinfos['typename']}æ¨¡åž‹";
+	 $row['etype'] = "å½“å‰ç³»ç»Ÿ";
+	 $row['dtime'] = $ntime;
+	}
+}
+if(empty($exrule)) $exrule = $row['aid'];
+if(empty($exrule)){
+	ClearAllLink();
+  ShowMsg("è¯»å–è§„åˆ™é”™è¯¯ï¼Œæ— æ³•ç»§ç»­æ“ä½œï¼","javascript:;");
+	exit();
+}
 $ruleset = $row['ruleset'];
 $dtp = new DedeTagParse();
 $dtp->LoadString($ruleset);
@@ -32,358 +114,10 @@ if(is_array($dtp->CTags))
 }
 else
 {
-	ShowMsg("¸Ã¹æÔò²»ºÏ·¨£¬ÎÞ·¨½øÐÐÉú³É²É¼¯ÅäÖÃ!","-1");
+	ShowMsg("è¯¥è§„åˆ™ä¸åˆæ³•ï¼Œæ— æ³•è¿›è¡Œç”Ÿæˆé‡‡é›†é…ç½®!","-1");
 	$dsql->Close();
 	exit();
 }
-
+require_once(dirname(__FILE__)."/templets/co_add.htm");
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<script language='javascript' src='main.js'></script>
-<script language='javascript'>
-function ShowHide(objname)
-{
-   var obj = document.getElementById(objname);
-   if(obj.style.display=="none") obj.style.display = "block";
-	 else obj.style.display="none";
-}
-
-function ShowItem(objname)
-{
- 	var obj = document.getElementById(objname);
- 	obj.style.display = "block";
-}
-
-</script>
-<title>ÐÂÔö²É¼¯½Úµã</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<form name="form1" method="post" action="co_add_action.php">
-<input type='hidden' name='exrule' value='<?php echo $exrule?>'>
-  <table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center" style="margin-bottom:6px">
-    <tr> 
-      <td height="20" background='img/tbg.gif'><table width="100%" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="47%" height="18"><b>£¾ÐÂÔö²É¼¯½Úµã£º</b></td>
-            <td width="53%" align="right">
-			<input type="button" name="b11" value="½Úµã¹ÜÀí"  class='nbt' style="width:80" onClick="location.href='co_main.php';"> 
-			&nbsp;
-			<input type="button" name="b12" value="½Úµã¹ÜÀí"  class='nbt' style="width:80" onClick="location.href='co_url.php';">
-            &nbsp;
-			</td>
-          </tr>
-        </table> </td>
-    </tr>
-</table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
-    <tr> 
-      <td colspan="2"> <table border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;ÍøÖ·»ñÈ¡</td>
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>ÄÚÈÝ¹æÔò</u></a>&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
-    <tr> 
-      <td colspan="2"> <table height="24" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>ÍøÖ·»ñÈ¡</u></a>&nbsp;</td>
-            <td width="84" align="center" background="img/itemnote1.gif">ÄÚÈÝ¹æÔò</td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
-  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center" style="margin-bottom:6px" id="needset"">
-    <tr> 
-      <td bgcolor="#F2F6E5"> <table width="400" border="0" cellspacing="0" cellpadding="0">
-          <tr class="top" onClick="ShowHide('sitem');" style="cursor:hand"> 
-            <td width="26" align="center"><img src="img/file_tt.gif" width="7" height="8"></td>
-            <td width="374">½Úµã»ù±¾ÐÅÏ¢<a name="d1"></a></td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr id="sitem" style="display:block"> 
-      <td bgcolor="#FFFFFF">
-<table width="98%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="18%" height="24">½ÚµãÃû³Æ£º</td>
-            <td width="32%"><input name="notename" type="text" id="notename" style="width:200"></td>
-            <td width="18%">Ò³Ãæ±àÂë£º</td>
-            <td width="32%"> <input type="radio" name="language" class="np" value="gb2312" checked>
-              GB2312 
-              <input type="radio" name="language" class="np" value="utf-8">
-              UTF8 
-              <input type="radio" name="language" class="np" value="big5">
-              BIG5 </td>
-          </tr>
-          <tr> 
-            <td height="24">Í¼Æ¬Ïà¶ÔÍøÖ·£º </td>
-            <td> 
-              <?php 
-		$aburl = "";
-		$curl = GetCurUrl();
-		$curls = explode("/",$curl);
-		for($i=0;$i<count($curls)-2;$i++){
-			if($i!=0) $aburl .= "/".$curls[$i];
-		}
-		$aburl .= "/upimg";
-          ?>
-              <input name="imgurl" type="text" id="imgurl" style="width:200" value="<?php echo $aburl?>"></td>
-            <td>ÎïÀíÂ·¾¶£º</td>
-            <td><input name="imgdir" type="text" id="imgdir2" style="width:150" value="../upimg"></td>
-          </tr>
-          <tr> 
-            <td height="24">ÄÚÈÝÆ¥ÅäÄ£Ê½£º</td>
-            <td colspan="3"> <input type="radio" class="np" name="matchtype" value="regex">
-              ÕýÔò±í´ïÊ½ 
-              <input name="matchtype" class="np" type="radio" value="string" checked>
-              ×Ö·û´® </td>
-          </tr>
-          <tr bgcolor="#F0F2EE"> 
-            <td height="24" colspan="4">ÒÔÏÂÑ¡Ïî½öÔÚ¿ªÆô·ÀµÁÁ´Ä£Ê½²ÅÐèÉè¶¨£¬Èç¹ûÄ¿±êÍøÕ¾Ã»ÓÐ·ÀµÁÁ´¹¦ÄÜ£¬Çë²»Òª¿ªÆô£¬·ñÔò»á½µµÍ²É¼¯ËÙ¶È¡£</td>
-          </tr>
-          <tr> 
-            <td height="24">·ÀµÁÁ´Ä£Ê½£º</td>
-            <td><input name="isref" type="radio" class="np" value="no" checked>
-              ²»¿ªÆô 
-              <input name="isref" type="radio" class="np" value="yes">
-              ¿ªÆô</td>
-            <td>×ÊÔ´ÏÂÔØ³¬Ê±Ê±¼ä£º</td>
-            <td><input name="exptime" type="text" id="exptime" value="10" size="8">
-              Ãë</td>
-          </tr>
-          <tr> 
-            <td height="24">ÒýÓÃÍøÖ·£º</td>
-            <td colspan="3"><input name="refurl" type="text" id="refurl" size="30">
-              £¨Ò»°ãÎªÄ¿±êÍøÕ¾ÆäÖÐÒ»¸öÎÄÕÂÒ³µÄÍøÖ·£¬Ðè¼Óhttp://£©</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#F2F6E5"> <table width="400" border="0" cellspacing="0" cellpadding="0">
-          <tr class="top" onClick="ShowHide('slist');" style="cursor:hand"> 
-            <td width="26" align="center"><img src="img/file_tt.gif" width="7" height="8"></td>
-            <td width="374">²É¼¯ÁÐ±í»ñÈ¡¹æÔò</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr id="slist" style="display:block"> 
-      <td height="76" bgcolor="#FFFFFF"><table width="98%" border="0" cellspacing="0" cellpadding="0">
-          
-          <tr>
-            <td height="24">À´Ô´ÍøÖ·»ñÈ¡·½Ê½£º</td>
-            <td colspan="2"><input name="source" type="radio" id="radio" value="var" class="np" checked>
-·ûºÏÌØ¶¨ÐòÁÐµÄÍøÖ·
-  <input name="source" type="radio" id="source" value="app" class="np"> 
-  ÎÒ×Ô¼ºÊÖ¹¤Ö¸¶¨ÕâÐ©ÍøÖ·</td>
-          </tr>
-          
-          <tr>
-            <td height="24">À´Ô´ÍøÖ·ÊôÐÔ£º</td>
-            <td colspan="2"><input name="sourcetype" type="radio" class="np" value="list" checked>
-°üº¬ÎÄÕÂÍøÖ·µÄÁÐ±íÍøÖ·
-  <input type="radio" name="sourcetype" class="np" value="archives">
-ÎÄÕÂÍøÖ·</td>
-          </tr>
-          <tr> 
-            <td width="18%" height="24">À´Ô´ÍøÖ·£º</td>
-            <td colspan="2"><input name="sourceurl" type="text" id="sourceurl" style="width:70%" value="http://">            </td>
-          </tr>
-          <tr> 
-            <td height="24">&nbsp;</td>
-            <td colspan="2">¶ÔÓÚ±È½Ï¹æÔò·Ö¶àÒ³µÄÁÐ±íÍøÖ·£¬ÓÃ http://abc.com/list.php?page=[var:·ÖÒ³] 
-              µÄÐÎÊ½£¬È»ºóÖ¸¶¨&quot;·ÖÒ³±äÁ¿ÆðÊ¼Öµ&quot;¡£</td>
-          </tr>
-          <tr>
-            <td height="24" colspan="3" bgcolor="#FBFDF2"><strong>Èç¹ûÀ´Ô´ÍøÖ·ÊÇÁÐ±íÍøÖ·£¬ÇëÖ¸¶¨ÏÂÃæÎÄÕÂÄÚÈÝÍøÖ·»ñÈ¡¹æÔòµÄÊôÐÔ£º</strong></td>
-          </tr>
-          <tr>
-            <td height="24">·ÖÒ³±äÁ¿ÆðÊ¼Öµ£º</td>
-            <td colspan="2"><input name="varstart" type="text" id="varstart2" size="15">
-¡¡¡¡±äÁ¿½áÊøÖµ£º
-  <input name="varend" type="text" id="varend2" size="15">
-¡¡±íÊ¾ [var:·ÖÒ³] µÄ·¶Î§£© </td>
-          </tr>
-          <tr> 
-            <td height="24">ÎÄÕÂÍøÖ·Ðè°üº¬£º</td>
-            <td colspan="2"><input name="need" type="text" id="cannot" size="15">
-              ¡¡ÍøÖ·²»ÄÜ°üº¬£º 
-              <input name="cannot" type="text" id="cannot" size="15">
-              ¡¡(ÕýÔò)</td>
-          </tr>
-          <tr> 
-            <td height="100">Á´½ÓÇøÓò¹æÔò£º<br>
-              £¨Èç¹ûÓÃÕýÔòµÄÐÎÊ½ÎÞ·¨ÕýÈ·»ñµÃÐèÒªµÄÍøÖ·£¬ÇëÉèÖÃ´ËÑ¡Ïî£©<br>            </td>
-            <td width="42%">
-			ÆðÊ¼HTML£º<br>
-			<textarea name="linkareas" style="width:90%" rows="5" id="linkareas"></textarea>            </td>
-            <td width="40%">
-			½áÊøHTML£º<br>
-			<textarea name="linkareae" style="width:90%" rows="5" id="linkareae"></textarea>			</td>
-          </tr>
-          
-          <tr>
-            <td height="24" colspan="3" bgcolor="#FBFDF2"><strong>Èç¹ûÄãÏëÊÖ¹¤Ö¸¶¨Òª²É¼¯µÄÍøÖ·»ò³ýÁË¹æÔòÍøÖ·Íâ£¬»¹ÓÐÆäËüÍøÖ·£¬ÇëÔÚÏÂÃæÖ¸¶¨£º</strong></td>
-          </tr>
-          <tr>
-            <td height="110" valign="top"><strong>ÊÖ¹¤Ö¸¶¨ÍøÖ·£º</strong><a href="javascript:ShowHide('handurlhelp');"><img src="img/help.gif " width="16" height="16" border="0"></a><br>
-              (Ã¿ÐÐÒ»ÌõÍøÖ·£¬<br>
-              ²»Ö§³ÖÊ¹ÓÃ±äÁ¿)</td>
-            <td colspan="2">
-			<span id='handurlhelp' style='display:none;background-color:#efefef'>
-			¶ÔÓÚ²¿·Ý·ûºÏ¹æÔò£¬²¿·Ý²»·ûºÏ¹æÔòµÄÍøÖ·£¬¿ÉÒÔ°Ñ²»·ûºÏ¹æÔòµÄ·ÅÔÚÕâÀï£¬Àý£ºÏñ<br>
-http://xx.com/aaa/index.html<br>
-http://xx.com/aaa/list_2.html<br>
-http://xx.com/aaa/list_3.html...<br>
-ÕâÑùµÄÍøÖ·£¬Äã¿ÉÒÔÓÃ±äÁ¿Ö¸¶¨ list_[var:·ÖÒ³].html£¬<br>
-È»ºó°Ñ 
-            http://xx.com/aaa/index.html(¸ÃÍøÖ·²»·û·ÖÒ³¹æÔò) ÌîÐ´ÔÚÏÂÃæ¡£			</span>
-<textarea name="sourceurls" id="sourceurls" style="width:95%;height:100"></textarea></td>
-          </tr>
-          
-          <!--
-		  //ÔÝÊ±ÎÞÊ±¼äÍê³É´ËÏî
-		  tr align="center"> 
-            <td height="49" colspan="3"><input name="test1" type="button" class="nbt" id="test1" value="²âÊÔÁÐ±í»ñÈ¡¹æÔò">            </td>
-          </tr-->
-        </table></td>
-    </tr>
-</table>
-
-  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center" id="adset" style="display:none">
-    <tr> 
-      <td bgcolor="#F2F6E5"><table width="400" border="0" cellspacing="0" cellpadding="0">
-          <tr class="top" onClick="ShowHide('sart');" style="cursor:hand"> 
-            <td width="26" align="center"><img src="img/file_tt.gif" width="7" height="8"></td>
-            <td width="374">ÎÄµµÄÚÈÝ»ñÈ¡¹æÔò<a name="d2"></a></td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr>
-      <td bgcolor="#FFFFFF">
-	  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:6px">
-          <tr> 
-            <td height="24" colspan="3">¡¡²âÊÔµ¥Ò³ÍøÖ·£º 
-              <input name="testurl" type="text" id="testurl" value="http://" size="50">
-              £¨½öÓÃÓÚ±à¼­¹æÔòÍê³Éºó²âÊÔ£¬²âÊÔÊ±²»»á±¾µØ»¯Ô¶³ÌÃ½Ìå£©</td>
-          </tr>
-          <tr> 
-            <td height="60" colspan="3"><strong>¡¡×Ö¶ÎÉèÖÃËµÃ÷£º</strong><br/>
-              ¡¡£±¡¢¹æÔò£ºÈç¹û²É¼¯µÄÄÚÈÝÎª·ÖÒ³ÎÄµµ£¬ÇëÔÚÎÄÕÂbody×Ö¶Î&quot;·ÖÒ³ÄÚÈÝ×Ö¶Î&quot;Õâ¸öÑ¡Ïî´ò¹´¡£<br/>
-              ¡¡£²¡¢±äÁ¿£ºÈç¹ûÄãµÄ×Ö¶ÎÖµÊ¹ÓÃµÄ²»ÊÇ[var:ÄÚÈÝ]£¬¶øÊÇÖ¸¶¨µÄÆäËüÖµ£¬Ôòµ¼³öÊ±Ö±½ÓÊ¹ÓÃ¸ÃÖµ£¬²¢ÇÒ²É¼¯Ê±²»»á·ÖÎö¸ÃÏîÄ¿¡£<br>
-              ¡¡£³¡¢¹ýÂË¹æÔò£ºÈç¹ûÓÐ¶à¸ö¹æÔò£¬ÇëÓÃ{dede:teim}¹æÔòÒ»{/dede:trim}»»ÐÐ{dede:teim}¹æÔò¶þ{/dede:trim}...±íÊ¾</td>
-          </tr>
-          <tr bgcolor="#EBEFD1"> 
-            <td height="24"><strong>¡¡ÎÄµµÊÇ·ñ·ÖÒ³£º</strong></td>
-            <td colspan="2"> <input name="sptype" type="radio" class="np" value="none" checked>
-              ²»·ÖÒ³ 
-              <input name="sptype" type="radio" value="full" class="np">
-              È«²¿ÁÐ³öµÄ·ÖÒ³ÁÐ±í 
-              <input type="radio" name="sptype" class="np" value="next">
-              ÉÏÏÂÒ³ÐÎÊ½»ò²»ÍêÕûµÄ·ÖÒ³ÁÐ±í</td>
-          </tr>
-          <tr> 
-            <td width="18%" height="60">·ÖÒ³Á´½ÓÇøÓòÆ¥Åä¹æÔò£º<br/>
-              ÎÄµµ·Ö¶àÒ³Ê±²ÅÐèÑ¡´ËÏî</td>
-            <td> ·ÖÒ³Á´½ÓÇøÓò¿ªÊ¼HTML£º <br> <textarea name="sppages" rows="3" id="sppages" style="width:90%"></textarea> 
-            </td>
-            <td width="40%"> ·ÖÒ³Á´½ÓÇøÓò½áÊøHTML£º <br> <textarea name="sppagee" rows="3" id="textarea10" style="width:90%"></textarea> 
-            </td>
-          </tr>
-        </table>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:6px">
-          <tr> 
-            <td width="98%" height="26" colspan="3" background="img/menubg.gif" bgcolor="#66CCFF">¡¡<strong>£¾ÄÚÈÝ×Ö¶ÎÁÐ±í£º</strong>(Ò»°ã¡°×Ô¶¨Òå´¦Àí½Ó¿Ú¡±´øÓÐ´¦Àí³ÌÐòµÄ×Ö¶Î[ºÚÉ«×Ö]²»ÐèÒªÀí»á)</td>
-          </tr>
-        </table>
-        <?php 
-          if(is_array($dtp->CTags))
-          {
-	          $s = 0;
-	          foreach($dtp->CTags as $ctag)
-	          {
-		           if($ctag->GetName()=='field')
-		           {
-		             if($ctag->GetAtt('source')=='value') continue;
-		             
-		             $tagv = "[var:ÄÚÈÝ]";
-		             //if($ctag->GetAtt('source')=='function') 
-		             //else $fnv = "";
-		             $fnv = $ctag->GetInnerText();
-		             
-		             $cname = $ctag->GetAtt('name');
-		             
-		             if($ctag->GetAtt('intable')!="" 
-		                  && $ctag->GetAtt('intable')!=$noteinfos->GetAtt('tablename') )
-		             {
-		             	  $cname = $ctag->GetAtt('intable').'.'.$cname;
-		             }
-		             $comment = $ctag->GetAtt('comment');
-		             $s++;
-          ?>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:6px">
-          <tr bgcolor="#EBEFD1"> 
-            <td width="18%" height="24" bgcolor="#EBEFD1"> &nbsp; 
-			<?php 
-			if($ctag->GetAtt('source')!='function'){ $fcolor=" style='color:red' "; $tstyle=""; }
-			else{ $fcolor=""; $tstyle=" style='display:none' "; }
-			?>
-			<a href="javascript:ShowHide('fieldlist<?php echo $s; ?>');"<?php echo $fcolor?>><b>£¾<u><?php echo $comment?></u></b></a>
-			<input type="hidden" name="comment<?php echo $s; ?>" id="comment<?php echo $s; ?>4" value="<?php echo $comment?>"> 
-            </td>
-            <td width="22%"> <input name="field<?php echo $s; ?>" type="text" id="field<?php echo $s; ?>4" value="<?php echo $cname?>" size="22"></td>
-            <td width="20%" align="right">×Ö¶ÎÖµ£º</td>
-            <td width="40%"> <input name="value<?php echo $s; ?>" type="text" id="value<?php echo $s; ?>4" value="<?php echo $tagv?>" size="25"> 
-            </td>
-          </tr>
-          <tr> 
-            <td colspan="4">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0" id="fieldlist<?php echo $s; ?>"<?php echo $tstyle?>>
-                <tr> 
-                  <td height="80">Æ¥ÅäÄÚÈÝ£º</td>
-                  <td height="20">¿ªÊ¼ÎÞÖØ¸´HTML£º<br> <textarea name="matchs<?php echo $s; ?>" rows="4" id="textarea11" style="width:90%"></textarea> 
-                  </td>
-                  <td height="20">½áÎ²ÎÞÖØ¸´HTML£º<br> <textarea name="matche<?php echo $s; ?>" rows="4" id="textarea12" style="width:90%"></textarea> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="63">¹ýÂË¹æÔò£º</td>
-                  <td height="63"> <textarea name="trim<?php echo $s; ?>" cols="20" rows="3" id="textarea13" style="width:90%"></textarea> 
-                  </td>
-                  <td height="63"> <input name="isunit<?php echo $s; ?>" type="checkbox" id="isunit<?php echo $s; ?>4" value="1" class="np">
-                    ·ÖÒ³ÄÚÈÝ×Ö¶Î£¨¹æÔòÖÐÖ»ÔÊÐíµ¥Ò»µÄ¸ÃÀàÐÍ×Ö¶Î£©<br/> <input name="isdown<?php echo $s; ?>" type="checkbox" id="isdown<?php echo $s; ?>4" value="1" class="np">
-                    ÏÂÔØ×Ö¶ÎÀïµÄ¶àÃ½Ìå×ÊÔ´ </td>
-                </tr>
-                <tr> 
-                  <td width="18%" height="60">×Ô¶¨Òå´¦Àí½Ó¿Ú£º</td>
-                  <td width="42%" height="20"><textarea name="function<?php echo $s; ?>" cols="20" rows="3" id="textarea14" style="width:90%"><?php echo $fnv?></textarea> 
-                  </td>
-                  <td width="40%" height="20">º¯Êý»ò³ÌÐòµÄ±äÁ¿<br>
-                    @body ±íÊ¾Ô­Ê¼ÍøÒ³ @litpic ËõÂÔÍ¼<br>
-                    @me ±íÊ¾µ±Ç°±ê¼ÇÖµºÍ×îÖÕ½á¹û</td>
-                </tr>
-              </table></td>
-          </tr>
-        </table>
-        <?php  } } } ?>
-      </td>
-    </tr>
-    <tr> 
-      <td height="50" align="center" bgcolor="#FFFFFF">
-<!--input name="test122" type="button" class="nbt" id="test124" value="²âÊÔÄÚÈÝ»ñÈ¡¹æÔò"-->
-        ¡¡
-<input type="submit" name="b1222" value="±£´æ½Úµã" class="nbt" style="width:80"></td>
-    </tr>
-    <tr id="sart" style="display:block"> 
-      <td valign="top" bgcolor="#FFFFFF"> </td>
-    </tr>
-  </table>
-	</form>
-</body>
-</html>

@@ -19,7 +19,8 @@ if(!isset($pageno)) $pageno=0;
 $totalpage=count($idArray);
 if(isset($idArray[$pageno])) $lid = $idArray[$pageno];
 else{
-	echo "Íê³ÉËùÓĞÎÄ¼ş´´½¨£¡";
+	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	echo "å®Œæˆæ‰€æœ‰æ–‡ä»¶åˆ›å»ºï¼";
 	exit();
 }
 
@@ -30,7 +31,7 @@ $ntotalpage = $lv->TotalPage;
 if(empty($mkpage)) $mkpage = 1;
 if(empty($maxpagesize)) $maxpagesize = 50;
 
-//Èç¹ûÀ¸Ä¿µÄÎÄµµÌ«¶à£¬·Ö¶àÅú´Î¸üĞÂ
+//å¦‚æœæ ç›®çš„æ–‡æ¡£å¤ªå¤šï¼Œåˆ†å¤šæ‰¹æ¬¡æ›´æ–°
 if($ntotalpage<=$maxpagesize){
 	$lv->MakeHtml();
 	$finishType = true;
@@ -47,17 +48,20 @@ $lv->Close();
 
 $nextpage = $pageno+1;
 if($nextpage==$totalpage){
-	echo "Íê³ÉËùÓĞÎÄ¼ş´´½¨£¡";
+	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	echo "å®Œæˆæ‰€æœ‰æ–‡ä»¶åˆ›å»ºï¼";
 }
 else{
 	if($finishType){
 	  $gourl = "makehtml_freelist_action.php?maxpagesize=$maxpagesize&startid=$startid&endid=$endid&pageno=$nextpage";
-	  ShowMsg("³É¹¦´´½¨ÁĞ±í£º".$tid."£¬¼ÌĞø½øĞĞ²Ù×÷£¡",$gourl,0,100);
+	  ShowMsg("æˆåŠŸåˆ›å»ºåˆ—è¡¨ï¼š".$tid."ï¼Œç»§ç»­è¿›è¡Œæ“ä½œï¼",$gourl,0,100);
   }
   else
   {
   	$gourl = "makehtml_freelist_action.php?mkpage=$mkpage&maxpagesize=$maxpagesize&startid=$startid&endid=$endid&pageno=$pageno";
-	  ShowMsg("ÁĞ±í£º".$tid."£¬¼ÌĞø½øĞĞ²Ù×÷...",$gourl,0,100);
+	  ShowMsg("åˆ—è¡¨ï¼š".$tid."ï¼Œç»§ç»­è¿›è¡Œæ“ä½œ...",$gourl,0,100);
   }
 }
+
+ClearAllLink();
 ?>

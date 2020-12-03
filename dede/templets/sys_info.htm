@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>系统配置参数</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language='javascript'>
+	function ShowConfig(em,allgr){
+		for(var i=1;i<=allgr;i++){
+			if(i==em) document.getElementById('td'+i).style.display = 'block';
+			else document.getElementById('td'+i).style.display = 'none';
+		}
+	}
+	function $Obj(objname){
+	    return document.getElementById(objname);
+    }
+	function ShowHide(objname){
+        var obj = $Obj(objname);
+        if(obj.style.display == "block" || obj.style.display == ""){  obj.style.display = "none"; }
+        else{  obj.style.display = "block"; }
+    }
+</script>
+</head>
+<style>
+.npvar { width:90% }
+</style>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">系统设置</div>
+</div>
+<center>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+      <tr> 
+        <td height="24" align="left" bgcolor="#EDF9D5"> &nbsp;<b>DedeCms系统配置参数：</b>        </td>
+    </tr>
+      <tr>
+        <td height="24" bgcolor="#ffffff" align="center"> 
+          <?php 
+$ds = file(dirname(__FILE__)."/../inc/configgroup.txt");
+$totalGroup = count($ds);
+$i = 0;
+foreach($ds as $dl)
+{
+	$dl = trim($dl);
+	if(empty($dl)) continue;
+	$dls = explode(',',$dl);
+	$i++;
+	if($i>1) echo " | <a href='javascript:ShowConfig($i,$totalGroup)'>{$dls[1]}</a> ";
+	else{
+		echo " <a href='javascript:ShowConfig($i,$totalGroup)'>{$dls[1]}</a> ";
+	}
+}
+?>
+          | <a href="#" onClick="ShowHide('addvar')">添加新变量</a></td>
+      </tr>
+      <tr id="addvar" style="display:none"> 
+        <td height="24" bgcolor="#ffffff" align="center">
+		<form name="fadd" action="sys_info_add.php" method="post">
+		<table width="98%" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <td width="10%" height="26">变量名称：</td>
+              <td width="23%"> <input name="varname" type="text" id="varname" class="npvar"> 
+              </td>
+              <td width="10%" align="center">变量值：</td>
+              <td width="23%"> <input name="varvalue" type="text" id="varvalue" class="npvar"> 
+              </td>
+              <td width="10%" align="center">变量类型：</td>
+              <td><input name="vartype" type="radio"  value="string" checked>
+                字串/数字 
+                <input type="radio" name="vartype" value="bool" >
+                布尔(Y/N)</td>
+            </tr>
+            <tr> 
+              <td height="26">参数说明：</td>
+              <td><input type="text" name="varmsg"  id="varmsg" class="npvar"></td>
+              <td width="10%" align="center">所属组：</td>
+              <td width="23%"> 
+                <?php 
+			  echo "<select name='vargroup' class='npvar'>\r\n";
+			  foreach($ds as $dl){
+	              $dl = trim($dl);
+	              if(empty($dl)) continue;
+	              $dls = explode(',',$dl);
+				  echo "<option value='{$dls[0]}'>{$dls[1]}</option>\r\n";
+		      }
+			  echo "</select>\r\n";
+			  ?>
+              </td>
+              <td colspan="2"><input type="submit" name="Submit" value="保存变量" class="inputbut" /></td>
+            </tr>
+          </table>
+		  </form>
+		  </td>
+      </tr>
+    </table>
+<form action="sys_info.php" method="post" name="form1">
+<input type="hidden" name="dopost" value="save">
+<?php 
+$dsql = new DedeSql(false);
+$n = 0;
+foreach($ds as $dl)
+{
+	$dl = trim($dl);
+	if(empty($dl)) continue;
+	$dls = explode(',',$dl);
+	$n++;
+?>
+<a name='#<?php echo $dls[1]?>'></a>
+<table width="96%" border="0" cellpadding="2" cellspacing="1" 
+	align="center" style="background:#E2F5BC; margin-bottom:8px;<?php  if($n==$gp) echo "display:block"; else echo "display:none"; ?>" id="td<?php echo $n?>" class="tbtitle">
+<tr>
+<td height="24" align="left" bgcolor="#EDF9D5">
+&nbsp;<b><?php echo $dls[1]?></b>
+<?php  if($dls[0]==-1) echo "（本组参数不支持在此更改）"; ?></td>
+</tr>
+<tr> 
+<td>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="tblist">
+<tr align="center" height="24"> 
+<td width="35%">参数说明</td>
+<td>参数值</td>
+<td width="20%">变量名</td>
+</tr>
+<?php 
+$dsql->SetQuery("Select * From #@__sysconfig where `group`='".$dls[0]."' order by aid asc");
+$dsql->Execute();
+$i = 1;
+while($row = $dsql->GetArray())
+{
+	if($i%2==0) $bgcolor = "#FFFFFF";
+	else $bgcolor = "#ECF8FF";
+	$i++;
+?>
+<tr align="center" height="24" bgcolor="<?php echo $bgcolor?>" 
+	onMouseMove="javascript:this.bgColor='#D0EEFD';" 
+	onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';"> 
+<td> 
+<?php echo $row['info']?>：</td>
+<td align="left">
+<?php 
+if($row['type']=='bool'){
+	$c1=""; $c2 = "";
+	$row['value']=='Y' ? $c1=" checked" : $c2=" checked";
+	echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='Y'$c1>是 ";
+	echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='N'$c2>否 ";
+}else if(strlen($row['value'])>30){
+  echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' style='width:98%;height:50px'>{$row['value']}</textarea>";
+}else{
+  echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value='{$row['value']}' style='width:80%'>";
+}
+?></td>
+<td><?php echo $row['varname']?></td>
+</tr>
+<?php 
+}
+?>
+</table>
+</td>
+</tr>
+</table>
+<?php 
+}
+$dsql->Close();
+?>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+      <tr> 
+        <td height="26" colspan="3" align="left" bgcolor="#EDF9D5"> <strong>&nbsp;修改配置后系统会更新 
+          ../include/config_hand.php 文件缓冲，如果发生意外，请用 config_hand_bak.php 还原。<strong> 
+          </strong></strong></td>
+      </tr>
+      <tr bgcolor="#F3FFDD"> 
+        <td height="50" colspan="3" bgcolor="#FFFFFF"> <table width="98%" border="0" cellspacing="1" cellpadding="1">
+            <tr> 
+              <td align="center"><input name="imageField" type="submit" class="inputbut" value="确认" />
+              &nbsp;
+              <input type="reset" name="button" id="button" value="重置" class="inputbut" /></td>
+            </tr>
+          </table></td>
+      </tr>
+    </table>
+  </form>
+</center>
+</body>
+</html>

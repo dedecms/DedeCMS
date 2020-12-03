@@ -1,5 +1,5 @@
 <?php 
-header("Content-Type: text/html; charset=gb2312");
+header("Content-Type: text/html; charset=utf-8");
 header("Pragma:no-cache"); 
 header("Cache-Control:no-cache"); 
 header("Expires:0"); 
@@ -7,10 +7,10 @@ require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 if(empty($dopost)) $dopost = "";
 $dsql = new DedeSql(false);
-echo "[<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'><u>¹Ø±Õ</u></a>]\r\n<xmp>";
-if($dopost=="viewinfo") //²é¿´±í½á¹¹
+echo "<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'>[<u>å…³é—­</u>]</a>\r\n<xmp>";
+if($dopost=="viewinfo") //æŸ¥çœ‹è¡¨ç»“æž„
 {
-	if(empty($tablename)) echo "Ã»ÓÐÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
 		$dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
     $dsql->Execute();
@@ -21,26 +21,26 @@ if($dopost=="viewinfo") //²é¿´±í½á¹¹
 	$dsql->Close();
 	exit();
 }
-else if($dopost=="opimize") //ÓÅ»¯±í
+else if($dopost=="opimize") //ä¼˜åŒ–è¡¨
 {
-	if(empty($tablename)) echo "Ã»ÓÐÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
 	  $dsql->ExecuteNoneQuery("OPTIMIZE TABLE '$tablename'");
 	  $dsql->Close();
-	  echo "Ö´ÐÐÓÅ»¯±í£º $tablename  OK£¡";
+	  echo "æ‰§è¡Œä¼˜åŒ–è¡¨ï¼š $tablename  OKï¼";
   }
 	exit();
 }
-else if($dopost=="repair") //ÐÞ¸´±í
+else if($dopost=="repair") //ä¿®å¤è¡¨
 {
-	if(empty($tablename)) echo "Ã»ÓÐÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
 	  $rs = $dsql->ExecuteNoneQuery("REPAIR TABLE '$tablename'");
 	  $dsql->Close();
-	  echo "ÐÞ¸´±í£º $tablename  OK£¡";
+	  echo "ä¿®å¤è¡¨ï¼š $tablename  OKï¼";
 	}
 	exit();
 }
-$dsql->Close();
+ClearAllLink();
 echo "</xmp>";
 ?>

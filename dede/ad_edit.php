@@ -1,6 +1,6 @@
 <?php 
 require(dirname(__FILE__)."/config.php");
-CheckPurview('plus_¹ã¸æ¹ÜÀí');
+CheckPurview('plus_å¹¿å‘Šç®¡ç†');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 if(empty($dopost)) $dopost = "";
 $aid = ereg_replace("[^0-9]","",$aid);
@@ -13,7 +13,7 @@ if($dopost=="delete")
 	$dsql->SetQuery("Delete From #@__myad where aid='$aid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦É¾³ýÒ»Ôò¹ã¸æ´úÂë£¡",$ENV_GOBACK_URL);
+	ShowMsg("æˆåŠŸåˆ é™¤ä¸€åˆ™å¹¿å‘Šä»£ç ï¼",$ENV_GOBACK_URL);
 	exit();
 }
 else if($dopost=="getjs")
@@ -21,12 +21,12 @@ else if($dopost=="getjs")
 	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 	$jscode = "<script src='{$cfg_plus_dir}/ad_js.php?aid=$aid' language='javascript'></script>";
 	$showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
-  $showhtml .= "Ô¤ÀÀ£º<iframe name='testfrm' frameborder='0' src='ad_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";
-  $wintitle = "¹ã¸æ¹ÜÀí-»ñÈ¡JS";
-	$wecome_info = "<a href='ad_main.php'><u>¹ã¸æ¹ÜÀí</u></a>::»ñÈ¡JS";
+  $showhtml .= "é¢„è§ˆï¼š<iframe name='testfrm' frameborder='0' src='ad_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";
+  $wintitle = "å¹¿å‘Šç®¡ç†-èŽ·å–JS";
+	$wecome_info = "<a href='ad_main.php'><u>å¹¿å‘Šç®¡ç†</u></a>::èŽ·å–JS";
   $win = new OxWindow();
   $win->Init();
-  $win->AddTitle("ÒÔÏÂÎªÑ¡¶¨¹ã¸æµÄJSµ÷ÓÃ´úÂë£º");
+  $win->AddTitle("ä»¥ä¸‹ä¸ºé€‰å®šå¹¿å‘Šçš„JSè°ƒç”¨ä»£ç ï¼š");
   $winform = $win->GetWindow("hand",$showhtml);
   $win->Display();
 	exit();
@@ -56,91 +56,11 @@ else if($dopost=="saveedit")
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÒ»Ôò¹ã¸æ´úÂë£¡",$ENV_GOBACK_URL);
+	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€åˆ™å¹¿å‘Šä»£ç ï¼",$ENV_GOBACK_URL);
 	exit();
 }
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__myad where aid='$aid'");
-$dsql->Close();
+ClearAllLink();
+require_once(dirname(__FILE__)."/templets/ad_edit.htm");
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¸ü¸Ä¹ã¸æ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr>
-  <td height="19" background="img/tbg.gif"><b><a href="ad_main.php"><u>¹ã¸æ¹ÜÀí</u></a></b>&gt;&gt;¸ü¸Ä¹ã¸æ</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="4">
-        <form action="ad_edit.php" method="post" enctype="multipart/form-data" name="form1">
-          <input type='hidden' name='aid' value='<?php echo $aid?>'>
-          <input type='hidden' name='dopost' value='saveedit'>
-           <tr> 
-            <td height="25" align="center">¹ã¸æÎ»±êÊ¶£º</td>
-            <td colspan="2"><?php echo $row['tagname']?></td>
-          </tr>
-          <tr> 
-            <td width="15%" height="25" align="center">¹ã¸æÍ¶·Å·¶Î§£º</td>
-            <td colspan="2">
-			<?php 
-           	$tl = new TypeLink(0);
-           	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
-            echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0' selected>Í¶·ÅÔÚÃ»ÓÐÍ¬Ãû±êÊ¶µÄËùÓÐÀ¸Ä¿</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			$tl->Close();
-			?>
-			<br>
-      £¨Èç¹ûÔÚËùÑ¡À¸Ä¿ÕÒ²»µ½Ö¸¶¨±êÊ¶µÄ¹ã¸æÄÚÈÝ£¬ÏµÍ³»á×Ô¶¯ËÑË÷¸¸À¸Ä¿£©
-			</td>
-          </tr>
-         <tr> 
-            <td height="25" align="center">¹ã¸æÎ»Ãû³Æ£º</td>
-            <td colspan="2"><input name="adname" type="text" id="adname" size="30" value="<?php echo $row['adname']?>"></td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">Ê±¼äÏÞÖÆ£º</td>
-            <td colspan="2"><input class="np" name="timeset" type="radio" value="0"<?php if($row['timeset']==0) echo " checked"; ?>>
-              ÓÀ²»¹ýÆÚ 
-              <input class="np" type="radio" name="timeset" value="1" <?php if($row['timeset']==1) echo " checked"; ?>>
-              ÔÚÉèÄÚÊ±¼äÄÚÓÐÐ§</td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">¿ªÊ¼Ê±¼ä£º</td>
-            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>"></td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">½áÊøÊ±¼ä£º</td>
-            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>"></td>
-          </tr>
-          <tr> 
-            <td height="80" align="center">Õý³£ÏÔÊ¾ÄÚÈÝ£º</td>
-            <td width="76%">
-              <textarea name="normbody" id="normbody" style="width:80%;height:100"><?php echo $row['normbody']?></textarea>
-            </td>
-            <td width="9%">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="80" align="center">¹ýÆÚÏÔÊ¾ÄÚÈÝ£º</td>
-            <td> 
-            	<textarea name="expbody" id="expbody" style="width:80%;height:100"><?php echo $row['expbody']?></textarea>
-            </td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td colspan="2"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-          </tr>
-        </form>
-      </table>
-	 </td>
-</tr>
-</table>
-</body>
-</html>

@@ -6,139 +6,45 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 if(empty($dopost)) $dopost="";
 if($dopost=="add")
 {
-	if(ereg("[^0-9a-zA-Z_@\!\.-]",$pwd)||ereg("[^0-9a-zA-Z_@\!\.-]",$userid)){
-		ShowMsg("ÃÜÂë»ò»òÓÃ»§Ãû²»ºÏ·¨£¡","-1",0,300);
-		exit();
+	if(ereg("[^0-9a-zA-Z_@!\.-]",$pwd)){
+		 ShowMsg("ç”¨æˆ·å¯†ç ä¸åˆæ³•ï¼","-1",0,300);
+		 exit();
+	}
+	if(ereg("[^0-9a-zA-Z_@!\.-]",$userid)){
+		 ShowMsg("ç”¨æˆ·åä¸åˆæ³•ï¼","-1",0,300);
+		 exit();
 	}
 	$dsql = new DedeSql(false);
-	$dsql->SetQuery("Select * from #@__admin where userid='$userid' Or uname='$uname'");
+	$dsql->SetQuery("Select * from `#@__admin` where userid='$userid' Or uname='$uname'");
 	$dsql->Execute();
 	$ns = $dsql->GetTotalRow();
 	if($ns>0){
 		$dsql->Close();
-		ShowMsg("ÓÃ»§ÃûÒÑ´æÔÚ»ò±ÊÃûÒÑ´æÔÚ£¡","-1");
+		ShowMsg("ç”¨æˆ·åæˆ–ç¬”åå·²å­˜åœ¨ï¼Œä¸å…è®¸é‡å¤ä½¿ç”¨ï¼","-1");
 		exit();
 	}
+	$ks = Array();
+	foreach($typeid as $v){
+		$vs = explode('-',$v);
+		if(isset($vs[1])) $t = $vs[1];
+		else $t = $vs[0];
+		if(!isset($ks[$vs[0]])) $ks[$t] = 1;
+	}
+	$typeid = '';
+	foreach($ks as $k=>$v){
+		if($k>0) $typeid .=($typeid=='' ? $k : ','.$k);
+	}
 	$inquery = "
-	Insert Into #@__admin(usertype,userid,pwd,uname,typeid,tname,email) values('$usertype','$userid','".substr(md5($pwd),0,24)."','$uname',$typeid,'$tname','$email')
+	   Insert Into #@__admin(usertype,userid,pwd,uname,typeid,tname,email)
+	   values('$usertype','$userid','".substr(md5($pwd),0,24)."','$uname','$typeid','$tname','$email')
 	";
-	$dsql->SetQuery($inquery);
-	$dsql->ExecuteNoneQuery();
+	$dsql->ExecuteNoneQuery($inquery);
 	$dsql->Close();
-	ShowMsg("³É¹¦Ôö¼ÓÒ»¸öÓÃ»§£¡","sys_admin_user.php");
+	ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªç”¨æˆ·ï¼","sys_admin_user.php");
 	exit();
 }
 $typeOptions = "";
 $dsql = new DedeSql(false);
-$dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 And (ispart=0 Or ispart=1)");
-$dsql->Execute('op');
-while($row = $dsql->GetObject('op')){
-	$typeOptions .= "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
-}
-$dsql->Close();
+require_once(dirname(__FILE__)."/templets/sys_admin_user_add.htm");
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¹ÜÀíÔ±ÕÊºÅ--ĞÂÔöÕÊºÅ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script language='javascript'>
-	function checkSubmit()
-  {
-     if(document.form1.userid.value==""){
-	     alert("ÓÃ»§ID²»ÄÜÎª¿Õ£¡");
-	     document.form1.userid.focus();
-	     return false;
-     }
-     if(document.form1.uname.value==""){
-	     alert("ÓÃ»§Ãû²»ÄÜÎª¿Õ£¡");
-	     document.form1.uname.focus();
-	     return false;
-     }
-     if(document.form1.pwd.value==""){
-	     alert("ÓÃ»§ÃÜÂë²»ÄÜÎª¿Õ£¡");
-	     document.form1.pwd.focus();
-	     return false;
-     }
-     return true;
- }
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td height="19" background="img/tbg.gif" bgcolor="#E7E7E7"> 
-      <table width="96%" border="0" cellspacing="1" cellpadding="1">
-        <tr> 
-          <td width="24%"><b><strong>ĞÂÔöÕÊºÅ</strong></b> </td>
-          <td width="76%" align="right"><strong><a href="sys_admin_user.php"><u>¹ÜÀíÕÊºÅ</u></a></strong></td>
-        </tr>
-      </table></td>
-</tr>
-<tr>
-    <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
-	<form name="form1" action="sys_admin_user_add.php" onSubmit="return checkSubmit();" method="post">
-	<input type="hidden" name="dopost" value="add">
-  <table width="98%" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td width="16%" height="30">ÓÃ»§µÇÂ¼ID£º</td>
-            <td width="84%"><input name="userid" type="text" id="userid" size="16" style="width:150">
-              £¨Ö»ÄÜÓÃ'0-9'¡¢'a-z'¡¢'A-Z'¡¢'.'¡¢'@'¡¢'_'¡¢'-'¡¢'!'ÒÔÄÚ·¶Î§µÄ×Ö·û£©</td>
-          </tr>
-          <tr> 
-            <td height="30">ÓÃ»§±ÊÃû£º</td>
-            <td><input name="uname" type="text" id="uname" size="16" style="width:150"> &nbsp;£¨·¢²¼ÎÄÕÂºóÏÔÊ¾ÔğÈÎ±à¼­µÄÃû×Ö£©</td>
-          </tr>
-          <tr> 
-            <td height="30">ÓÃ»§ÃÜÂë£º</td>
-            <td><input name="pwd" type="text" id="pwd" size="16" style="width:150"> &nbsp;£¨Ö»ÄÜÓÃ'0-9'¡¢'a-z'¡¢'A-Z'¡¢'.'¡¢'@'¡¢'_'¡¢'-'¡¢'!'ÒÔÄÚ·¶Î§µÄ×Ö·û£©</td>
-          </tr>
-          <tr> 
-            <td height="30">ÓÃ»§×é£º</td>
-            <td>
-			    <select name='usertype' style='width:150'>
-			  	<?php 
-			  	$dsql = new DedeSql(false);
-			  	$dsql->SetQuery("Select * from #@__admintype order by rank asc");
-			  	$dsql->Execute("ut");
-			  	while($myrow = $dsql->GetObject("ut"))
-			  	{
-			  		echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
-			  	}
-			  	$dsql->Close();
-			  	?>
-			  </select>
-            </td>
-          </tr>
-          <tr> 
-            <td height="30">ÊÚÈ¨À¸Ä¿£º</td>
-            <td>
-			<select name="typeid" style="width:160" id="typeid">
-                <option value="0" selected>--ËùÓĞÆµµÀ--</option>
-				<?php echo $typeOptions?>
-             </select>
-			 </td>
-          </tr>
-          <tr> 
-            <td height="30">ÕæÊµĞÕÃû£º</td>
-            <td><input name="tname" type="text" id="tname" size="16" style="width:150"> &nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="30">µç×ÓÓÊÏä£º</td>
-            <td><input name="email" type="text" id="email" size="16" style="width:150"> &nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="30">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="30">&nbsp;</td>
-            <td><input type="submit" name="Submit" value=" Ôö¼ÓÓÃ»§ "></td>
-          </tr>
-        </table>
-      </form>
-	  </td>
-</tr>
-</table>
-</body>
-</html>

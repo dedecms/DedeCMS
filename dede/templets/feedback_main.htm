@@ -1,10 +1,11 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÆÀÂÛ¹ÜÀí</title>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>è¯„è®ºç®¡ç†</title>
 <script type="text/javascript" src="main.js"></script>
 <script language='javascript'>
-//»ñµÃÑ¡ÖĞÎÄ¼şµÄÎÄ¼şÃû
+//è·å¾—é€‰ä¸­æ–‡ä»¶çš„æ–‡ä»¶å
 function getCheckboxItem()
 {
 	var allSel="";
@@ -49,35 +50,38 @@ function selNor()
 function delFeedback()
 {
 	var qstr=getCheckboxItem();
-	if(qstr=="") alert("ÄãÃ»Ñ¡ÖĞÈÎºÎÄÚÈİ£¡");
-	else if(window.confirm('ÄãÈ·¶¨ÒªÉ¾³ıÕâĞ©ÆÀÂÛÂğ?')) location.href="feedback_d.php?job=del&fid="+qstr;
+	if(qstr=="") alert("ä½ æ²¡é€‰ä¸­ä»»ä½•å†…å®¹ï¼");
+	else if(window.confirm('ä½ ç¡®å®šè¦åˆ é™¤è¿™äº›è¯„è®ºå—?')) location.href="feedback_d.php?job=del&fid="+qstr;
 }
 function checkFeedback()
 {
 	var qstr=getCheckboxItem();
-	if(qstr=="") alert("ÄãÃ»Ñ¡ÖĞÈÎºÎÄÚÈİ£¡");
+	if(qstr=="") alert("ä½ æ²¡é€‰ä¸­ä»»ä½•å†…å®¹ï¼");
 	else location.href="feedback_d.php?job=check&fid="+qstr;
 }
 function editFeedback()
 {
 	var qstr=getCheckboxItem();
-	if(qstr=="") alert("ÄãÃ»Ñ¡ÖĞÈÎºÎÄÚÈİ£¡");
+	if(qstr=="") alert("ä½ æ²¡é€‰ä¸­ä»»ä½•å†…å®¹ï¼");
 	else location.href="feedback_edit.php?job=edit&fid="+qstr;
 }
 </script>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">æ–‡æ¡£ç»´æŠ¤</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
 <form name='form1'>
 <tr>
-<td height="19" background='img/tbg.gif'>
-<b>ÆÀÂÛ¹ÜÀí</b>
-¹Ø¼ü×Ö£º
-<input type='text' size='15' name='keyword' style='width:150'> 
- <?php echo $optionarr?>
- <input type='submit' name='sb' value=' È·¶¨ ' style="background-color: #00CCFF">
- </td>
+<td height="18" bgcolor="#EDF9D5" style="padding-top:6px">
+&nbsp;
+<b>è¯„è®ºç®¡ç†</b>
+å…³é”®å­—ï¼š
+<input type='text' size='15' name='keyword' style='width:150px'>
+<input type='submit' name='sb' value=' ç¡®å®š 'class="inputbut"> </td>
 </tr>
 </form>
 <form name='feedback'>
@@ -88,57 +92,66 @@ function editFeedback()
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
+	if(!empty($row['aid'])) $arcurl = $cfg_plus_dir.'/view.php?aid='.$row['aid'];
+	else $arcurl = $row['url'];
+	if(empty($row['arctitle'])) $row['arctitle'] = "æ— æ³•å–å¾—æ–‡æ¡£æ ‡é¢˜";
 ?>
 <tr height='25'> 
-<td>
-<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
+<td style="padding:3px">
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
 <tr bgcolor="#F7F7F7"> 
-<td width="9%"> &nbsp;Ñ¡Ôñ 
-<input name="fid" type="checkbox" class="np" id="fid" value="<?php echo $row['ID']?>"></td>
+<td width="9%"> &nbsp;é€‰æ‹© 
+<input name="fid" type="checkbox"  id="fid" value="<?php echo $row['ID']?>" class="np" />
+</td>
 <td width="37%">
-	&nbsp;ÓÃ»§£º <?php echo $row['username']?>
-&nbsp;ÎÄµµ£º<a href="<?php echo $cfg_plus_dir?>/view.php?aid=<?php echo $row['aid']?>" target="_blank"><?php echo $row['arctitle']?></a></td>
-<td width="18%" align="center">IPµØÖ·£º <?php echo $row['ip']?> </td>
+&nbsp;
+ç”¨æˆ·ï¼š <?php echo $row['username'];?>&nbsp;
+æ–‡æ¡£ï¼š<a href='<?php echo $arcurl; ?>' target="_blank"><?php echo $row['arctitle'];?></a>
+</td>
+<td width="18%" align="center">
+	IPåœ°å€ï¼š <?php echo $row['ip']; ?>
+</td>
 <td width="26%">
-	&nbsp;Ê±¼ä£º <?php echo GetDateTimeMK($row['dtime'])?></td>
+	&nbsp;æ—¶é—´ï¼š <?php echo GetDateTimeMK($row['dtime'])?>
+</td>
 <td width="10%" align="center">
-	<a href='feedback_edit.php?ID=<?php echo $row['ID']?>'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a></td>
+	<a href='feedback_edit.php?ID=<?php echo $row['ID']?>'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a>
+</td>
 </tr>
 <tr align="center" bgcolor="#FFFFFF"> 
 <td height="28" colspan="5">
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
-<td>
-<?php echo IsCheck($row['ischeck'])?>
-<?php echo $row['msg']?></td>
+<td align="left">
+<?php echo IsCheck($row['ischeck']); ?>
+<?php echo $row['msg'];?>
+</td>
 </tr>
 </table></td>
 </tr>
 </table>
-<table width="98%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="3"></td>
-</tr>
-</table></td>
+</td>
 </tr>
 <?php 
 }
 ?>
 <tr>
-<td height='20' align='center' bgcolor='#EAEEE1'>
+<td height='36' align='center' bgcolor='#EAEEE1'>
   <?php echo $dlist->GetPageList(7);?></td>
 </tr>
 <tr> 
 <td height='30'>
 <table width="98%">
 <tr>
-<td width="30%">
-<input type='button' name='kk1' value='È«Ñ¡' onClick="selAll()" class="nbt"> 
-<input type='button' name='kk2' value='È¡Ïû' onClick="selNone()" class="nbt">
-<input type='button' name='kk3' value='·´Ñ¡' onClick="selNor()" class="nbt"></td>
-<td align="right">
-<input type='button' name='db' value=' É¾³ıÆÀÂÛ ' onClick="delFeedback()" class='nbt'>
-<input type='button' name='db2' value=' ÉóºËÆÀÂÛ ' onClick="checkFeedback()" class='nbt'></td>
+<td width="30%" height="30" style="padding-top:6px;padding-left:6px">
+<input type='button' name='kk1' value='å…¨é€‰' onClick="selAll()" class="inputbut"> 
+<input type='button' name='kk2' value='å–æ¶ˆ' onClick="selNone()" class="inputbut">
+<input type='button' name='kk3' value='åé€‰' onClick="selNor()" class="inputbut"></td>
+<td align="right" style="padding-top:6px;padding-right:6px">
+<input type='button' name='db' value=' åˆ é™¤è¯„è®º ' onClick="delFeedback()" class='inputbut'>
+&nbsp;
+<input type='button' name='db2' value=' å®¡æ ¸è¯„è®º ' onClick="checkFeedback()" class='inputbut'>
+</td>
 </tr>
 </table> </td>
 </tr>

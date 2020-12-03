@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>修改信息</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">	
+<script language="javascript">
+<!--
+<?php
+echo $areacache;
+echo $sectorcache;
+?>
+function checkSubmit()
+{
+
+if(document.form1.title.value==""){
+	 alert("信息标题不能为空！");
+	 document.form1.title.focus();
+	 return false;
+}
+
+if(document.form1.typeid.value==0){
+	 alert("信息隶属栏目必须选择！");
+	 return false;
+}
+
+if(document.form1.vdcode.value==""){
+ document.form1.vdcode.focus();
+ alert("验证码不能为空！");
+ return false;
+}
+
+}
+-->
+</script>
+<script language='javascript' src='../include/common.js'></script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="turnleft" style="margin-top:10px">
+        <tr> 
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
+		  <font color="#333333"> 
+                   <div class="manage_company_right_title">
+                	<ul>
+                	  <li>&nbsp;修改信息：</li>
+                	</ul>
+                </div>
+		</td>
+        </tr>
+        <tr>
+<form name="form1" action="infoedit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="channelid" value="<?php echo $channelid;?>">
+<input type="hidden" name="typeid" value="<?php echo $info['typeid'];?>">
+<input type="hidden" name="step" value="2">
+<input type="hidden" name="ID" value="<?php echo $aid?>">
+          <td height="183" valign="top" style="padding-top:3px">
+                <table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
+                  <tr>
+                    <td height="24" bgcolor="#F0FBE3"><strong>◆常规参数：</strong></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">信息标题：</td>
+                          <td>
+                          	<input name="title" type="text" value="<?php echo $info['title']; ?>" id="title" size="30" style="width:60%" class="company_manage_form_label" />
+                            <font color="#FF0000">*</font>
+                           </td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">有效时间：</td>
+                          <td><table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="100">
+                              	<input class="company_manage_form_option"  value="<?php echo $info['endtime']; ?>" name="endtime" type="text" id="endtime" value="15" style="width:50px" />
+天 </td>
+							  <td width="61">小分类：</td>
+							  <td width="110"><select name="smalltypeid" class="company_manage_form_option" style="width:100px">
+                            <option value="0">-不限-</option>
+                            <?php echo $smalltypes;?>
+                          </select></td>
+                            </tr>
+                          </table></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">所属地区：</td>
+                          <td>
+                            <select name="areaid" style="width:120px" id="areaid" class="company_manage_form_option"
+                            	onchange="javascript:selNext(this.document.form1.areaid2,this.value,'subareas')" >
+   <?php
+echo "<option value='{$topselarea['id']}'>{$topselarea['name']}</option>\r\n";
+$dsql->SetQuery("Select * From #@__area where reid=0");
+$dsql->Execute();
+while($area = $dsql->GetArray())
+{
+	echo "<option value='".$area['id']."'>".$area['name']."</option>\r\n";
+}
+?>
+                            </select>
+                            <select name="areaid2"  style="width:120px" id="areaid2" class="company_manage_form_option">
+                              <?php echo "<option value='{$subselarea['id']}'>{$subselarea['name']}</option>\r\n"; ?>
+                            </select></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  
+				  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">所属行业：</td>
+                          <td>
+<select name="sectorid" id="sectorid"  style="width:120px" class="company_manage_form_option" 
+	onchange="javascript:selNext(this.document.form1.sectorid2,this.value,'subsectors')">
+<?php
+echo "<option value='{$topselsector['id']}'>{$topselsector['name']}</option>\r\n";
+$dsql->SetQuery("Select * From #@__sectors where reid=0");
+$dsql->Execute();
+while($sector = $dsql->GetArray())
+{
+	echo "<option value='".$sector['id']."'>".$sector['name']."</option>\r\n";
+}
+?>
+                </select>
+                  <select name="sectorid2"  style="width:120px" class="company_manage_form_option" id="sectorid2">
+                    <?php echo "<option value='{$subselsector['id']}'>{$subselsector['name']}</option>\r\n"; ?>
+                  </select>
+						  </td>
+                        </tr>
+                    </table></td>
+                  </tr>
+				  
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">标签（TAG）：</td>
+                          <td><input name="keywords" value="<?php echo $info['keywords'];?>" type="text" id="keywords" style="width:50%;" value="" class="company_manage_form_label" />
+(多个标签（TAG）用空格分开)</td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">缩略图：</td>
+                          <td align="left"><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
+                        </tr>
+                        <tr id="picarea" style='<?php echo ($info['litpic']!='' ? '' : 'display:none'); ?>'>
+                          <td height="28">预　览：</td>
+                          <td align="left"><img src="<?php echo ($info['litpic']!='' ? $info['litpic'] : "img/pview.gif"); ?>" id="picview" width="150" height="120" /></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+				  <?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?>
+                </table>
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
+                  <tr>
+                    <td height="24" bgcolor="#F0FBE3"><strong>◆具体内容：</strong></td>
+                  </tr>
+                  <tr>
+                    <td height="150"><?php GetEditor("body",$addRow['message'],250,"MemberLit");?></td>
+                  </tr>
+				  <tr>
+                    <td>
+					<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border-top:1px dotted #dedede;">
+  <tr>
+    <td height="24" colspan="4" align="left" bgcolor="#F0FBE3" > <strong>◆联系方式:</strong></td>
+    </tr>
+  <tr>
+    <td width="65" height="36" align="center" >联系人：</td>
+    <td width="250" height="25" align="left"><input type="text" name="contact" value="<?php echo $addRow['contact']; ?>" class="company_manage_form_label" /></td>
+    <td width="66" height="25" align="center">电话：</td>
+    <td width="261" height="25"><input type="text" name="phone" value="<?php echo $addRow['phone']; ?>" class="company_manage_form_label" /></td>
+  </tr>
+  <tr>
+    <td width="65" height="36" align="center">传真：</td>
+    <td height="25"><input type="text" name="fax" value="<?php echo $addRow['fax']; ?>" class="company_manage_form_label" /></td>
+    <td width="66" height="25" align="center">email：</td>
+    <td height="25"><input type="text" name="email" value="<?php echo $addRow['email']; ?>" class="company_manage_form_label" /></td>
+  </tr>
+  <tr>
+    <td width="65" height="36" align="center">qq：</td>
+    <td height="25"><input type="text" name="qq" value="<?php echo $addRow['qq']; ?>" class="company_manage_form_label" /></td>
+    <td width="66" height="25" align="center">msn：</td>
+    <td height="25"><input type="text" name="msn" value="<?php echo $addRow['msn'];?>" class="company_manage_form_label" /></td>
+  </tr>
+  <tr>
+    <td width="65" height="36" align="center">地址：</td>
+    <td height="25" colspan="3">
+	<input type="text" style="width:450px" name="address" value="<?php echo $addRow['address'];?>" class="company_manage_form_label" />
+	</td>
+    </tr>
+</table>
+					</td>
+                  </tr>
+                </table>
+				<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+                <tr bgcolor="#F7FDF0"> 
+                  <td width="400%" height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
+                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();">                  </td>
+                </tr>
+              </table></td>
+			  </form>
+        </tr>
+        <tr> 
+          <td height="10"></td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

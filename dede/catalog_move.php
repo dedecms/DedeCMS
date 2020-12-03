@@ -10,28 +10,28 @@ $row  = $dsql->GetOne("Select reID,typename,channeltype From #@__arctype where I
 $typename = $row['typename'];
 $reID = $row['reID'];
 $channelid = $row['channeltype'];
-//ÒÆ¶¯À¸Ä¿
+//ç§»åŠ¨æ ç›®
 //------------------
 if($job=="moveok")
 {
 	if($typeid==$movetype)
 	{
 		$dsql->Close();
-		ShowMsg("ÒÆ¶Ô¶ÔÏóºÍÄ¿±êÎ»ÖÃÏàÍ¬£¡","catalog_main.php");
+		ShowMsg("ç§»å¯¹å¯¹è±¡å’Œç›®æ ‡ä½ç½®ç›¸åŒï¼","catalog_main.php");
 	  exit();
 	}
 	if(IsParent($movetype,$typeid,$dsql))
 	{
 		$dsql->Close();
-		ShowMsg("²»ÄÜ´Ó¸¸ÀàÒÆ¶¯µ½×ÓÀà£¡","catalog_main.php");
+		ShowMsg("ä¸èƒ½ä»çˆ¶ç±»ç§»åŠ¨åˆ°å­ç±»ï¼","catalog_main.php");
 	  exit();
 	}
 	$dsql->SetQuery("Update #@__arctype set reID='$movetype' where ID='$typeid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	//¸üĞÂÊ÷ĞÎ²Ëµ¥
+	//æ›´æ–°æ ‘å½¢èœå•
    $rndtime = time();
-   $rflwft = "<script language='javascript'>
+   $uptreejs = "<script language='javascript'>
    if(window.navigator.userAgent.indexOf('MSIE')>=1){
      if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
      { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
@@ -40,9 +40,9 @@ if($job=="moveok")
      { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
    }
    </script>";
-   echo $rflwft;
-	ShowMsg("³É¹¦ÒÆ¶¯Ä¿Â¼£¡","catalog_main.php");
-	exit();
+   echo $uptreejs;
+	 ShowMsg("æˆåŠŸç§»åŠ¨ç›®å½•ï¼","catalog_main.php");
+	 exit();
 }
 function IsParent($myid,$topid,$dsql)
 {
@@ -57,72 +57,8 @@ function IsParent($myid,$topid,$dsql)
 $tl = new TypeLink($typeid);
 $typeOptions = $tl->GetOptionArray(0,0,$channelid);
 $tl->Close();
-$dsql->Close();
 
+require_once(dirname(__FILE__)."/templets/catalog_move.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÒÆ¶¯ÁĞ±í</title>
-<style type="text/css">
-body {background-image: url(img/allbg.gif);}
-</style>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td width="100%" height="24" colspan="2" background="img/tbg.gif">
-    &nbsp;<a href="catalog_main.php"><u>À¸Ä¿¹ÜÀí</u></a>&gt;&gt;ÒÆ¶¯ÁĞ±í
-    </td>
-  </tr>
-  <tr>
-    <td height="200" colspan="2" valign="top" bgcolor="#FFFFFF"> 
-      <form name="form1" method="get" action="catalog_move.php">
-      <input name="typeid" type="hidden" id="typeid" value="<?php echo $typeid?>">
-      <input name="job" type="hidden" id="job" value="moveok">
-	    <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td colspan="2" height="12"></td>
-          </tr>
-          <tr> 
-            <td height="25" colspan="2" bgcolor="#F2F8FB">
-            &nbsp;ÒÆ¶¯Ä¿Â¼Ê±²»»áÉ¾³ıÔ­À´ÒÑ´´½¨µÄÁĞ±í£¬ÒÆ¶¯ºóĞèÖØĞÂ¶ÔÀ¸Ä¿´´½¨HTML¡£ 
-            </td>
-          </tr>
-          <tr> 
-            <td width="30%" height="25">ÄãÑ¡ÔñµÄÀ¸Ä¿ÊÇ£º</td>
-            <td width="70%">
-            <?php 
-			echo "$typename($typeid)";
-            ?>
-            </td>
-          </tr>
-          <tr> 
-            <td height="30">ÄãÏ£ÍûÒÆ¶¯µ½ÄÇ¸öÀ¸Ä¿£¿</td>
-            <td>
-            <select name="movetype">
-              <option value='0'>ÒÆ¶¯Îª¶¥¼¶À¸Ä¿</option>
-              <?php echo $typeOptions?>
-             </select>
-            </td>
-          </tr>
-          <tr> 
-            <td height="25" colspan="2" bgcolor="#F2F8FB">
-            &nbsp;²»ÔÊĞí´Ó¸¸¼¶ÒÆ¶¯µ½×Ó¼¶Ä¿Â¼£¬Ö»ÔÊĞí×Ó¼¶µ½¸ü¸ß¼¶»òÍ¬¼¶»ò²»Í¬¸¸¼¶µÄÇé¿ö¡£
-             </td>
-          </tr>
-          <tr> 
-            <td height="74">&nbsp;</td>
-            <td>
-            <input type="submit" name="Submit" value="È·¶¨²Ù×÷" class='nbt'> ¡¡ 
-            <input name="Submit11" type="button" id="Submit11" value="-²»Àí·µ»Ø-" onClick="history.go(-1);" class='nbt'>
-            </td>
-          </tr>
-        </table>
-	  </form>
-	  </td>
-  </tr>
-</table>
-</body>
-</html>

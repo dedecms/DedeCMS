@@ -1,0 +1,7 @@
+    <div class="space_footer">
+    	<div class="space_footer_bg"><?php echo str_replace("<br>","",$cfg_powerby)?>
+        </div>
+    </div>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+?>

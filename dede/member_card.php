@@ -10,9 +10,9 @@ function GetMemberID($dsql,$mid){
 }
 
 function GetSta($sta){
-	if($sta==1) return 'ÒÑÊÛ³ö';
-	else if($sta==-1) return 'ÒÑÊ¹ÓÃ';
-	else return 'Î´Ê¹ÓÃ';
+	if($sta==1) return 'å·²å”®å‡º';
+	else if($sta==-1) return 'å·²ä½¿ç”¨';
+	else return 'æœªä½¿ç”¨';
 }
 
 $addsql = '';
@@ -38,7 +38,7 @@ $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/member_card.htm");
 $dlist->Close();
 
-
+ClearAllLink();
 ?>
 
 

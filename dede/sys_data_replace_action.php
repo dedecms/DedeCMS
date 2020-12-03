@@ -1,26 +1,26 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 if(empty($action)) $action = '';
 
 /*-------------------------------
-//ÁĞ³öÊı¾İ¿â±íÀïµÄ×Ö¶Î
+//åˆ—å‡ºæ•°æ®åº“è¡¨é‡Œçš„å­—æ®µ
 function __getfields()
 --------------------------------*/
 if($action=='getfields'){
 	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Cache-Control:no-cache\r\n");
+	header("Expires:0\r\n");
+	header("Content-Type: text/html; charset=utf-8");
 	$dsql = new DedeSql(false);
 	if(!$dsql->linkID){
-		echo "<font color='red'>Á¬½ÓÊı¾İÔ´µÄÊı¾İ¿âÊ§°Ü£¡</font><br>";
+		echo "<font color='red'>è¿æ¥æ•°æ®æºçš„æ•°æ®åº“å¤±è´¥ï¼</font><br>";
 		echo $qbutton;
 		exit();
 	}
 	$dsql->GetTableFields($exptable);
 	echo "<div style='border:1px solid #ababab;background-color:#FEFFF0;margin-top:6px;padding:3px;line-height:160%'>";
-	echo "±í(".$exptable.")º¬ÓĞµÄ×Ö¶Î£º<br>";
+	echo "è¡¨(".$exptable.")å«æœ‰çš„å­—æ®µï¼š<br>";
 	while($row = $dsql->GetFieldObject()){
 		echo "<a href=\"javascript:pf('{$row->name}')\"><u>".$row->name."</u></a>\r\n";
 	}
@@ -29,76 +29,62 @@ if($action=='getfields'){
 	exit();
 }
 /*-------------------------------
-//±£´æÓÃ»§ÉèÖÃ£¬Çå¿Õ»áÔ±Êı¾İ
+//ä¿å­˜ç”¨æˆ·è®¾ç½®ï¼Œæ¸…ç©ºä¼šå‘˜æ•°æ®
 function __Apply()
 --------------------------------*/
 else if($action=='apply'){
 	if(empty($validate)) $validate=="";
-  else $validate = strtolower($validate);
-  $svali = GetCkVdValue();
-  if($validate=="" || $validate!=$svali){
-	  ShowMsg("°²È«È·ÈÏÂë²»ÕıÈ·!","javascript:;");
-	  exit();
-  }
-  /*
-  action = apply 
-quickfield = title 
-exptable = dede_addonspec 
-rpfield = 
-rptype = replace 
-rpstring = r 
-tostring = s 
-  */
-  if($quickfield=='title'){
-  	$exptable = '#@__archives';
-  	$rpfield = 'title';
-  }
-  else if($quickfield=='body'){
-  	$exptable = '#@__addonarticle';
-  	$rpfield = 'body';
-  }
-  if($exptable==''||$rpfield==''){
-  	ShowMsg("ÇëÖ¸¶¨Êı¾İ±íºÍ×Ö¶Î£¡","javascript:;");
-    exit();
-  }
-  if($rpstring==''){
-  	ShowMsg("ÇëÖ¸¶¨±»Ìæ»»ÄÚÈİ£¡","javascript:;");
-    exit();
-  }
-  $dsql = new DedeSql(false);
-  
-  if($rptype=='replace'){
-  	if(!empty($condition)) $condition = " where $condition ";
-    else $condition = "";
-  	$rs = $dsql->ExecuteNoneQuery("Update $exptable set $rpfield=Replace($rpfield,'$rpstring','$tostring') $condition ");
-    $dsql->Close();
-    if($rs) ShowMsg("³É¹¦Íê³ÉÊı¾İÌæ»»£¡","javascript:;");
-    else ShowMsg("Êı¾İÌæ»»Ê§°Ü£¡","javascript:;");
-    exit();
-  }else{
-  	if(!empty($condition)) $condition = " And $condition ";
-    else $condition = "";
-  	$rpstring = stripslashes($rpstring);
-  	$rpstring2 = str_replace("\\","\\\\",$rpstring);
-  	$rpstring2 = str_replace("'","\\'",$rpstring2);
-  	$dsql->SetQuery("Select $keyfield,$rpfield From $exptable where $rpfield REGEXP '$rpstring2'  $condition ");
-  	$dsql->Execute();
-  	$tt = $dsql->GetTotalRow();
-  	if($tt==0){
-  		 $dsql->Close();
-       ShowMsg("¸ù¾İÄãÖ¸¶¨µÄÕıÔò£¬ÕÒ²»µ½ÈÎºÎ¶«Î÷£¡","javascript:;");
-       exit();
-  	}
-  	$oo = 0;
-  	while($row = $dsql->GetArray()){
-  		$kid = $row[$keyfield];
-  		$rpf = eregi_replace($rpstring,$tostring,$row[$rpfield]);
-  		$rs = $dsql->ExecuteNoneQuery("Update $exptable set $rpfield='$rpf' where $keyfield='$kid' ");
-  		if($rs) $oo++;
-  	}
-  	ShowMsg("¹²ÕÒµ½ $tt Ìõ¼ÇÂ¼£¬³É¹¦Ìæ»»ÁË $oo Ìõ£¡","javascript:;");
-    exit();
-  }
-}
+	else $validate = strtolower($validate);
+	$svali = GetCkVdValue();
+	if($validate=="" || $validate!=$svali){
+	ShowMsg("å®‰å…¨ç¡®è®¤ç ä¸æ­£ç¡®!","javascript:;");
+	exit();
+	}
+	if($exptable==''||$rpfield==''){
+		ShowMsg("è¯·æŒ‡å®šæ•°æ®è¡¨å’Œå­—æ®µï¼","javascript:;");
+		exit();
+	}
+	if($rpstring==''){
 
+		ShowMsg("è¯·æŒ‡å®šè¢«æ›¿æ¢å†…å®¹ï¼","javascript:;");
+		exit();
+	}
+	$dsql = new DedeSql(false);
+	if($rptype=='replace'){
+		if(!empty($condition)) $condition = " where $condition ";
+		else $condition = "";
+		$rs = $dsql->ExecuteNoneQuery("Update $exptable set $rpfield=Replace($rpfield,'$rpstring','$tostring') $condition ");
+		$dsql->executenonequery("OPTIMIZE TABLE `$exptable`");
+		$dsql->Close();
+		if($rs) ShowMsg("æˆåŠŸå®Œæˆæ•°æ®æ›¿æ¢ï¼","javascript:;");
+		else ShowMsg("æ•°æ®æ›¿æ¢å¤±è´¥ï¼","javascript:;");
+	}else
+	{
+		if(!empty($condition)) $condition = " And $condition ";
+		else $condition = "";
+		$rpstring = stripslashes($rpstring);
+		$rpstring2 = str_replace("\\","\\\\",$rpstring);
+		$rpstring2 = str_replace("'","\\'",$rpstring2);
+		$dsql->SetQuery("Select $keyfield,$rpfield From $exptable where $rpfield REGEXP '$rpstring2'  $condition ");
+		$dsql->Execute();
+		$tt = $dsql->GetTotalRow();
+		if($tt==0){
+			$dsql->Close();
+			ShowMsg("æ ¹æ®ä½ æŒ‡å®šçš„æ­£åˆ™ï¼Œæ‰¾ä¸åˆ°ä»»ä½•ä¸œè¥¿ï¼","javascript:;");
+			exit();
+		}
+		$oo = 0;
+		while($row = $dsql->GetArray()){
+			$kid = $row[$keyfield];
+			$rpf = eregi_replace($rpstring,$tostring,$row[$rpfield]);
+			$rs = $dsql->ExecuteNoneQuery("Update $exptable set $rpfield='$rpf' where $keyfield='$kid' ");
+			if($rs) $oo++;
+		}
+		$dsql->executenonequery("OPTIMIZE TABLE `$exptable`");
+		$dsql->close;
+		ShowMsg("å…±æ‰¾åˆ° $tt æ¡è®°å½•ï¼ŒæˆåŠŸæ›¿æ¢äº† $oo æ¡ï¼","javascript:;");
+		exit();
+	}
+}
+ClearAllLink();
 ?>

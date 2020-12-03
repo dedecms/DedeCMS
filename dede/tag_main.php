@@ -16,14 +16,14 @@ if(empty($keyword)){
 	$addsql = " where tagname like '%$keyword%' ";
 }
 
-//ÖØÔØÁĞ±í
+//é‡è½½åˆ—è¡¨
 if($dopost=='getlist'){
 	PrintAjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
 }
-//¸üĞÂ×Ö¶Î
+//æ›´æ–°å­—æ®µ
 else if($dopost=='update')
 {
 	$tid = ereg_replace("[^0-9]","",$tid);
@@ -36,12 +36,12 @@ else if($dopost=='update')
 	$dsql->Close();
 	exit();
 }
-//É¾³ı×Ö¶Î
+//åˆ é™¤å­—æ®µ
 else if($dopost=='del')
 {
 	$tid = ereg_replace("[^0-9]","",$tid);
 	$dsql->ExecuteNoneQuery("Delete From #@__tags_archives where tid='$tid'; ");
-	$dsql->ExecuteNoneQuery("Delete From #@__tags_user where tid='$tid'; ");
+	//$dsql->ExecuteNoneQuery("Delete From #@__tags_user where tid='$tid'; ");
 	$dsql->ExecuteNoneQuery("Delete From #@__tags where tid='$tid'; ");
 	PrintAjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
@@ -49,7 +49,7 @@ else if($dopost=='del')
 	exit();
 }
 
-//µÚÒ»´Î½øÈëÕâ¸öÒ³Ãæ
+//ç¬¬ä¸€æ¬¡è¿›å…¥è¿™ä¸ªé¡µé¢
 if($dopost==''){
 	$row = $dsql->GetOne("Select count(*) as dd From #@__tags $addsql ");
 	$totalRow = $row['dd'];
@@ -57,7 +57,7 @@ if($dopost==''){
   $dsql->Close();
 }
 
-//»ñµÃÌØ¶¨µÄTagÁĞ±í
+//è·å¾—ç‰¹å®šçš„Tagåˆ—è¡¨
 //---------------------------------
 function GetTagList($dsql,$pageno,$pagesize,$orderby='aid'){
 	global $cfg_phpurl,$addsql;
@@ -65,12 +65,12 @@ function GetTagList($dsql,$pageno,$pagesize,$orderby='aid'){
 	$printhead ="<table width='99%' border='0' cellpadding='1' cellspacing='1' bgcolor='#333333' style='margin-bottom:3px'>
     <tr align='center' bgcolor='#E5F9FF' height='24'> 
       <td width='8%'><a href='#' onclick=\"ReloadPage('tid')\"><u>ID</u></a></td>
-      <td width='32%'>TAGÃû³Æ</td>
-      <td width='10%'><a href='#' onclick=\"ReloadPage('tagcc')\"><u>Ê¹ÓÃÂÊ</u></a></td>
-      <td width='10%'><a href='#' onclick=\"ReloadPage('cc')\"><u>ä¯ÀÀÁ¿</u></a></td>
-      <td width='10%'><a href='#' onclick=\"ReloadPage('arcnum')\"><u>ÎÄµµÊı</u></a></td>
-      <td width='10%'>´´½¨Ê±¼ä</td>
-      <td>¹ÜÀí</td>
+      <td width='32%'>TAGåç§°</td>
+      <td width='10%'><a href='#' onclick=\"ReloadPage('tagcc')\"><u>ä½¿ç”¨ç‡</u></a></td>
+      <td width='10%'><a href='#' onclick=\"ReloadPage('cc')\"><u>æµè§ˆé‡</u></a></td>
+      <td width='10%'><a href='#' onclick=\"ReloadPage('arcnum')\"><u>æ–‡æ¡£æ•°</u></a></td>
+      <td width='10%'>åˆ›å»ºæ—¶é—´</td>
+      <td>ç®¡ç†</td>
     </tr>\r\n";
     echo $printhead;
     $dsql->SetQuery("Select * From #@__tags $addsql order by $orderby desc limit $start,$pagesize ");
@@ -85,8 +85,8 @@ function GetTagList($dsql,$pageno,$pagesize,$orderby='aid'){
       <td> {$row['arcnum']} </td>
       <td>".strftime("%y-%m-%d",$row['stime'])."</td>
       <td>
-      <a href='#' onclick='UpdateNote({$row['tid']})'>¸üĞÂ</a> | 
-      <a href='#' onclick='DelNote({$row['tid']})'>É¾³ı</a>
+      <a href='#' onclick='UpdateNote({$row['tid']})'>æ›´æ–°</a> | 
+      <a href='#' onclick='DelNote({$row['tid']})'>åˆ é™¤</a>
       </td>
     </tr>";
     echo $line;
@@ -98,7 +98,7 @@ function PrintAjaxHead(){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 }
 ?>
 

@@ -1,186 +1,168 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{dede:field name='title'/}</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
-<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/special.css" rel="stylesheet" type="text/css" />
 </head>
-<body leftmargin="0" topmargin="0">
-<center>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecmsÖ¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³"></a></td>
-<td width="20" align="center">&nbsp;</td>
-<td width="486">&nbsp;</td>
-<td width="190">&nbsp;</td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
-<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif">
-	<a href='/'>Ê×Ò³</a>
-	{dede:channel type='top' row='8'}
-| <a href='[field:typelink/]'>[field:typename/]</a>
-{/dede:channel}
-	| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>×¨Ìâ</a> 
-| <a href="{dede:field name='memberurl'/}">»áÔ±ÖĞĞÄ</a>
-| <a href="http://bbs.dedecms.com">Ö§³ÖÂÛÌ³</a>
-</td>
-<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td height="476" valign="top">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
-<tr> 
-<td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
-<td width="3%" align="center"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
-<td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">
-			&nbsp;µ±Ç°Î»ÖÃ£º{dede:field name='position'/}<a href='{dede:field name='specurl'/}/index.php'>×¨Ìâ</a>
-			</td>
-</tr>
-<tr> 
-<td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
-</tr>
-</table>
-<table width="100%" height="412" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td height="220" valign="top"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="29%" rowspan="3" align="center" style="border-bottom:1px solid #cccccc">
-				<img name="i1" src="{dede:field name='litpic'/}" width="160" height="120"> 
-</td>
-<td width="71%" height="40" align="center" style="font-size:12pt;"> 
-<b>{dede:field name="title"/}</b> </td>
-</tr>
-<tr> 
-<td height="60">¡¡¡¡{dede:field name='description'/} </td>
-</tr>
-<tr>
-<td height="30" align="center" style="border-bottom:1px solid #cccccc"> 
-ÔğÈÎ±à¼­£º{dede:field name='writer'/} &nbsp; ·¢²¼Ê±¼ä£º{dede:field name='pubdate' 
-function="GetDateMk('@me')"/} </td>
-</tr>
-<tr> 
-<td height="300" colspan="2" valign="top"> <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top:8px">
-<tr> 
-<td height="131">{dede:field name='note'/} </td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="26" colspan="2" align="right" style="border-top:1px solid #cccccc"> 
-[<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/file_move.gif" width="17" height="18" border="0">ÊÕ²Ø</a>] 
-[<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menuarrow.gif" width="16" height="15" border="0">ÍÆ¼ö</a>] 
-[<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menumember.gif" width="16" height="15" border="0">ÆÀÂÛ({dede:field 
-name='postnum'/}Ìõ)</a>] <a href="#top">[·µ»Ø¶¥²¿]</a> <a href="#" onClick="window.print();">[´òÓ¡±¾Ò³]</a> 
-<a href="#" onClick="window.close();">[¹Ø±Õ´°¿Ú]</a> &nbsp; </td>
-</tr>
-<tr> 
-<td height="26" colspan="2" align="center" style="border-top:1px solid #cccccc"> 
-<table width="100%" border="0" cellpadding="1" cellspacing="1">
-<form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
-<input type="hidden" name="arcID" value="{dede:field name="id"/}">
-<tr> 
-<td>ÓÃ»§Ãû£º 
-<input name="username" type="text" id="username" size="10" class="nb">
-£¨<a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>ĞÂ×¢²á</u></a>£© 
-ÃÜÂë£º 
-<input name="pwd" type="text" id="pwd" size="10"class="nb"> 
-<input name="notuser" type="checkbox" id="notuser" value="1">
-ÄäÃûÆÀÂÛ 
-<input type='button' value='·¢±íÆÀÂÛ' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("ÆÀÂÛÄÚÈİ²»ÄÜÎª¿Õ£¡");' style='width:60;height:20' border="0"> 
-</td>
-</tr>
-<tr> 
-<td>ÆÀÂÛÄÚÈİ£º(²»ÄÜ³¬¹ı250×Ö£¬ĞèÉóºËºó²Å»á¹«²¼£¬Çë×Ô¾õ×ñÊØ»¥ÁªÍøÏà¹ØÕş²ß·¨¹æ¡£</td>
-</tr>
-<tr> 
-<td><textarea name="msg" cols="75" rows="4" id="msg" style="width:98%"></textarea></td>
-</tr>
-</form>
-</table></td>
-</tr>
-<tr> 
-<td colspan="2" valign="top"> <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#C5CDBE">
-<tr> 
-<td height="23" bgcolor="#F0F8D8">&nbsp;¡ì×îĞÂÆÀÂÛ£º</td>
-</tr>
-<tr> 
-<td height="20" bgcolor="#FFFFFF"><script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-</table> 
+<body>
 
-</td>
-<td width="224" align="right" valign="top"> 
-<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>×î½ü×¨Ìâ</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:specart row='4' titlelen='30'} 
-<a href="[field:arcurl /]"> <img src="[field:picname /]" width="120" height="90" border="0"> 
-<br>
-[field:title /] </a> <br>
-{/dede:specart} </td>
-</tr>
-</table>
-<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle">Ïà¹ØÎÄµµ</td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:likeart titlelen='30' 
-row='12'/} &nbsp; </td>
-</tr>
-</table></td>
-</tr>
-</table>
-<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberID'/}" language="javascript"></script>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
-<tr> 
-<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+<!--å¤´éƒ¨å¼€å§‹-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">é«˜çº§æœç´¢</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">æ”¶è—æœ¬ç«™</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">ç½‘ç«™åœ°å›¾</a> </li>
+		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSSè®¢é˜…</a></li>
+		</ul>
+	</div>
+</div>
+<!--å¯¼èˆªæ -->
+<div class="topmenu cbody">	<ul>
+		<li><a href="/">é¦–é¡µ</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>ä¸“é¢˜</a></li>
+		<li><a href="http://bbs.dedecms.com">æ”¯æŒè®ºå›</a></li>
+	</ul>
+	<div class="rssbut">
+		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
+	</div>
+</div>
+<!--æœç´¢æ¡-->
+<div class="topsearch cbody">
+	<div class="title"></div>
+	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<input type="hidden" name="kwtype" value="0">
+		<input name="keyword" id="keyword" type="text" class="searchtxt" />
+		<select name="searchtype" id="searchtype">
+			<option value="titlekeyword" selected>æ™ºèƒ½æ¨¡ç³Šæœç´¢</option>
+			<option value="title">ä»…æœç´¢æ ‡é¢˜</option>
+		</select>
+		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+	</div>
+	<div class="hots">		<strong>çƒ­é—¨å…³é”®å­—ï¼š</strong>
+		{dede:hotwords num='5' subday='30'/}</div>
+</div>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
-	{dede:global name='cfg_powerby'/}
-</td>
+<!--å†…å®¹-->
+<div class="main cbody margintop">
+	<!--å·¦ä¾§-->
+	<div class="pleft">
+		<!--ä½ç½®å¯¼èˆª-->
+		<div class="thisplace">
+			<div class="title">{dede:field name='typename'/}</div>
+			<div class="placenav">
+				<span>å½“å‰ä½ç½® :</span>
+				{dede:field name='position'/}
+				ä¸“é¢˜
+			</div>
+		</div>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
-</tr>
-</table>
+		<div class="spelist">
+			<dl>
+				<dd class="speimg"><a href="#"><img src="{dede:field name='litpic'/}" /></a></dd>
+				<dd class="spetitle"><a href="#">{dede:field name="title"/}</a></dd>
+				<dd class="speinfo"><strong>æ—¥æœŸï¼š</strong>{dede:field name='pubdate' function="GetDateMk('@me')"/} <strong>ç‚¹å‡»ï¼š</strong><script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberid'/}&view=yes" language="javascript"></script>
+   <strong>è¯„è®ºï¼š</strong>{dede:field
+name='postnum'/}  </dd>
+				<dt>{dede:field name='description'/}</dt>
+			</dl>
+		</div>
 
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr><td height="6"></td></tr>
-</table>
-</center>
+
+		<!--æ–°é—»åˆ—è¡¨-->
+		<div class="listbox">
+			{dede:field name='note'/}
+		</div>
+
+
+		<!--è¯„è®º-->
+		<div class="comment">
+			<!--è¯„è®º:æ ‡é¢˜-->
+			<div class="commenttitle">
+				<div class="title"><strong>æœ€æ–°è¯„è®º</strong>å…±æœ‰ {dede:field name='postnum'/} ä½ç½‘å‹å‘è¡¨äº†è¯„è®º </div>
+				<div class="gotopost"><a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}">æŸ¥çœ‹æ‰€æœ‰è¯„è®º</a></div>
+			</div>
+			<!--è¯„è®ºå†…å®¹-->
+			<div class="commentbox">
+				<script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script>
+			</div>
+			<!--å‘è¡¨è¯„è®º:æ ‡é¢˜-->
+			<div class="posttitle"><strong>å‘è¡¨è¯„è®º</strong></div>
+			<!--å‘è¡¨è¯„è®º-->
+            <form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
+			<input type="hidden" name="arcID" value="{dede:field name="id"/}">
+			<div class="postbox">
+				<div class="txtbox">
+					<strong>è¯„è®ºå†…å®¹ï¼š</strong>ä¸èƒ½è¶…è¿‡250å­—ï¼Œéœ€å®¡æ ¸ï¼Œè¯·è‡ªè§‰éµå®ˆäº’è”ç½‘ç›¸å…³æ”¿ç­–æ³•è§„ã€‚
+					<textarea name="msg" cols="60" rows="6"></textarea>
+				</div>
+				<div class="userbox">
+					<dl>
+						<dd>
+							<strong>ç”¨æˆ·åï¼š</strong><input name="username" class="username" type="text" maxlength="20" />
+							<strong>å¯†ç ï¼š</strong><input name="pwd" class="password" type="password" maxlength="20" />
+						</dd>
+						<dd></dd>
+						<dd class="mtop"><input name="notuser" type="checkbox" value="1" /> <strong>åŒ¿å?</strong></dd>
+						<dd><input name="sb" type="button" class="submit" value="å‘è¡¨è¯„è®º" onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("è¯„è®ºå†…å®¹ä¸èƒ½ä¸ºç©ºï¼");'/>
+					  </dd>
+						<dd class="mtop"><a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank">æ³¨å†Œ</a></dd>
+					</dl>
+			</div>
+			</div></form>
+		</div>
+
+	</div>
+
+	<!--å³ä¾§-->
+	<div class="pright">
+		<!--ä¾§è¾¹ä¿¡æ¯åˆ—è¡¨-->
+		<div class="rlist">
+			<div class="title">çƒ­é—¨ä¸“é¢˜</div>
+			<div class="rbox">
+				<ul>
+					{dede:arclist row=10 titlelen=24 orderby=click type='spec.'}
+					<li>[field:textlink/]</li>
+					{/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+		<!--ä¾§è¾¹ä¿¡æ¯åˆ—è¡¨-->
+		<div class="rlist margintop">
+			<div class="title">éšæœºæ¨è</div>
+			<div class="rbox">
+				<ul>
+					{dede:arclist row=10 titlelen=24 orderby=rand}
+					<li>[field:textlink/]</li>
+					{/dede:arclist}
+                </ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="floatclear"><!--æ¸…é™¤æµ®åŠ¨--></div>
+</div>
+
+
+<div class="footer cbody margintop">
+	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+	</div>
+	<div class="slogo">
+		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+	</div>
+	<div class="floatclear"></div>
+</div>
+
+
 </body>
 </html>

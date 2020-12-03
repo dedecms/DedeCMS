@@ -1,0 +1,62 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>金币/积分兑换记录</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../include/dedeajax.js"></script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">金币/积分兑换记录</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr align="center">
+    <td bgcolor="#EDF9D5">
+id    </td>
+    <td bgcolor="#EDF9D5">
+会员    </td>
+    <td bgcolor="#EDF9D5">
+兑换时间    </td>
+    <td bgcolor="#EDF9D5">
+类型    </td>
+    <td bgcolor="#EDF9D5">
+积分    </td>
+    <td bgcolor="#EDF9D5">
+金币    </td>
+</tr>
+<?php
+if($logs){
+	foreach($logs as $log){
+
+?>
+   <tr bgcolor="#ffffff" align="center">
+    <td>
+<?php echo $log['id'];?>
+    </td>
+     <td>
+<a href="../member/index.php?id=<?php echo $log['uid'];?>"><?php echo $log['username'];?></a>
+    </td>
+     <td>
+<?php echo $log['dbdateline'];?>
+    </td>
+     <td>
+<?php echo $log['dbtype'];?>
+    </td>
+     <td>
+<?php echo $log['score'];?>
+    </td>
+     <td>
+<?php echo $log['money'];?>
+    </td>
+</tr>
+<?php
+}}
+?>
+   <tr bgcolor="#ffffff" align="center"><td colspan="6"><?php echo $page; ?> </td></tr>
+</table>
+
+</body>
+</html>

@@ -1,17 +1,20 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('temp_One');
 if(empty($dopost)) $dopost = "";
 if(empty($aid)) $aid = "";
 $dsql = new DedeSql(false);
 //////////////////////////////////////////
+/*----------------------
+function __saveedit();
+-------------------*/
 if($dopost=="saveedit")
 {
   require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
 	$uptime = mytime();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
-	//Èç¹û¸ü¸ÄÁËÎÄ¼şÃû£¬É¾³ı¾ÉÎÄ¼ş
+	//å¦‚æœæ›´æ”¹äº†æ–‡ä»¶åï¼Œåˆ é™¤æ—§æ–‡ä»¶
 	if($oldfilename!=$filename)
 	{
 		$oldfilename = $cfg_basedir.$cfg_cmspath."/".$oldfilename;
@@ -30,7 +33,7 @@ if($dopost=="saveedit")
 	if(!$dsql->ExecuteNoneQuery())
 	{
 		$dsql->Close();
-		ShowMsg("¸üĞÂÒ³ÃæÊı¾İÊ±Ê§°Ü£¬Çë¼ì²é³¤ÏàÊÇ·ñÓĞÎÊÌâ£¡","-1");
+		ShowMsg("æ›´æ–°é¡µé¢æ•°æ®æ—¶å¤±è´¥ï¼Œè¯·æ£€æŸ¥é•¿ç›¸æ˜¯å¦æœ‰é—®é¢˜ï¼","-1");
 	  exit();
 	}
 	$dsql->Close();
@@ -42,13 +45,16 @@ if($dopost=="saveedit")
     $pv->Close();
   }
   else{
-  	$fp = fopen($filename,"w") or die("´´½¨£º{$filename} Ê§°Ü£¬¿ÉÄÜÊÇÃ»ÓĞÈ¨ÏŞ£¡");
+  	$fp = fopen($filename,"w") or die("åˆ›å»ºï¼š{$filename} å¤±è´¥ï¼Œå¯èƒ½æ˜¯æ²¡æœ‰æƒé™ï¼");
   	fwrite($fp,stripslashes($body));
   	fclose($fp);
   }
-	ShowMsg("³É¹¦¸üĞÂÒ»¸öÒ³Ãæ£¡","templets_one.php");
+	ShowMsg("æˆåŠŸæ›´æ–°ä¸€ä¸ªé¡µé¢ï¼","templets_one.php");
 	exit();
 }
+/*----------------------
+function __delete();
+-------------------*/
 else if($dopost=="delete")
 {
    $row = $dsql->GetOne("Select filename From #@__sgpage where aid='$aid'");
@@ -57,9 +63,12 @@ else if($dopost=="delete")
    $dsql->ExecuteNoneQuery();
    $dsql->Close();
    if(is_file($filename)) unlink($filename);
-   ShowMsg("³É¹¦É¾³ıÒ»¸öÒ³Ãæ£¡","templets_one.php");
+   ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªé¡µé¢ï¼","templets_one.php");
    exit();
 }
+/*----------------------
+function __make();
+-------------------*/
 else if($dopost=="make")
 {
 	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
@@ -70,98 +79,53 @@ else if($dopost=="make")
 	$filename = $cfg_basedir.$cfg_cmspath."/".$row['filename'];
 	if($row['ismake']==1)
 	{
-	  $pv = new PartView();
+	    $pv = new PartView();
       $pv->SetTemplet($row['body'],"string");
       $pv->SaveToHtml($filename);
       $pv->Close();
    }
    else
    {  
-    	$fp = fopen($filename,"w") or die("´´½¨£º{$filename} Ê§°Ü£¬¿ÉÄÜÊÇÃ»ÓĞÈ¨ÏŞ£¡");
+    	$fp = fopen($filename,"w") or die("åˆ›å»ºï¼š{$filename} å¤±è´¥ï¼Œå¯èƒ½æ˜¯æ²¡æœ‰æƒé™ï¼");
   	  fwrite($fp,$row['body']);
       fclose($fp);
    }
 	$dsql->Close();
-	ShowMsg("³É¹¦¸üĞÂÒ»¸öÒ³Ãæ£¡",$fileurl);
+	ShowMsg("æˆåŠŸæ›´æ–°ä¸€ä¸ªé¡µé¢ï¼",$fileurl);
+	exit();
+}
+/*----------------------
+function __makeAll();
+-------------------*/
+else if($dopost=="makeall")
+{
+	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+  $dsql->ExecuteNoneQuery("update #@__sgpage set uptime='".mytime()."'");
+	$row = $dsql->Execute('meoutside',"Select * From #@__sgpage ");
+	while($row = $dsql->GetArray('meoutside'))
+	{
+	  $fileurl = $cfg_cmspath."/".$row['filename'];
+	  $filename = $cfg_basedir.$cfg_cmspath."/".$row['filename'];
+	  if($row['ismake']==1)
+	  {
+	    $pv = new PartView();
+      $pv->SetTemplet($row['body'],"string");
+      $pv->SaveToHtml($filename);
+     }
+     else
+     {  
+    	  $fp = fopen($filename,"w") or die("åˆ›å»ºï¼š{$filename} å¤±è´¥ï¼Œå¯èƒ½æ˜¯æ²¡æœ‰æƒé™ï¼");
+  	    fwrite($fp,$row['body']);
+        fclose($fp);
+     }
+  }
+	$dsql->Close();
+	ShowMsg("æˆåŠŸæ›´æ–°æ‰€æœ‰é¡µé¢ï¼","templets_one.php");
 	exit();
 }
 $row = $dsql->GetOne("Select  * From #@__sgpage where aid='$aid'");
-$dsql->Close();
+
+require_once(dirname(__FILE__)."/templets/templets_one_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¸ü¸Ä×Ô¶¨ÒåÒ³Ãæ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script language="javascript">
-function checkSubmit()
-{
-	if(document.form1.title.value=="")
-	{
-		alert("Ò³ÃæÃû³Æ²»ÄÜÎª¿Õ£¡");
-		document.form1.title.focus();
-		return false;
-	}
-	if(document.form1.nfilename.value=="")
-	{
-		alert("ÎÄ¼şÃû²»ÄÜÎª¿Õ£¡");
-		document.form1.nfilename.focus();
-		return false;
-	}
-}
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr>
-    <td height="19" background="img/tbg.gif"> <b><a href="templets_one.php"><u>µ¥¶ÀÒ³Ãæ¹ÜÀí</u></a></b>&gt;&gt;¸üĞÂÒ³Ãæ 
-    </td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="2">
-        <form action="templets_one_edit.php" method="post" name="form1" onSubmit="return checkSubmit()">
-          <input type='hidden' name='dopost' value='saveedit'>
-		  <input type='hidden' name='aid' value='<?php echo $aid?>'>
-          <tr> 
-            <td width="15%" height="24" align="center">Ò³ÃæÃû³Æ£º</td>
-            <td> 
-              <input name="title" type="text" id="title" size="30" value="<?php echo $row['title']?>"></td>
-          </tr>
-          <tr> 
-            <td height="24" align="center" bgcolor="#F3FBEC">Éú³ÉÎÄ¼şÃû£º</td>
-            <td bgcolor="#F3FBEC">
-			       <input name="oldfilename" type="hidden" id="oldfilename" value="<?php echo $row['filename']?>">
-			       <input name="nfilename" type="text" id="nfilename" size="30" value="<?php echo $row['filename']?>">
-             £¨Ïà¶ÔÓÚCMS°²×°Ä¿Â¼£©
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">ÊÇ·ñ±àÒë£º</td>
-            <td>
-            	<input name="ismake" type="radio" value="1"<?php if($row['ismake']==1) echo " checked";?>>
-              º¬Ä£°å±ê¼Ç£¬Òª±àÒë 
-              <input type="radio" name="ismake" value="0"<?php if($row['ismake']==0) echo " checked";?>>
-              ²»º¬Ä£°å±ê¼Ç£¬²»ĞèÒª±àÒë</td>
-          </tr>
-          <tr> 
-            <td height="24" colspan="2" bgcolor="#F3FBEC">ÎÄ¼şÄÚÈİ£º</td>
-          </tr>
-          <tr> 
-            <td height="80" colspan="2" align="center"> 
-              <?php 
-	GetEditor("body",$row['body'],"500","Default","print","true");
-	?>
-            </td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-          </tr>
-        </form>
-      </table>
-	 </td>
-</tr>
-</table>
-</body>
-</html>

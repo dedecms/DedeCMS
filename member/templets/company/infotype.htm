@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>栏目选择</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+
+<script language="javascript" src="main.js"></script>
+<script language="javascript" src="<?php echo $cfg_mainsite.$cfg_cmspath?>/include/dedeajax2.js"></script>
+<script language="javascript">
+function LoadSuns(ctid,tid,channelid)
+{
+   if($DE(ctid).innerHTML.length < 10){
+      var myajax = new DedeAjax($DE(ctid),true,true,'','没子栏目','...');
+      myajax.SendGet('do.php?action=add&opall=<?php echo $opall?>&dopost=GetSunListsTree&channelid='+channelid+'&cid='+tid);
+   }else{
+   	 if(document.all) showHide(ctid);
+   }
+}
+function showHide(objname)
+{
+   if($DE(objname).style.display=="none") $DE(objname).style.display = "block";
+   else $DE(objname).style.display="none";
+   return false;
+}
+function ReSel(ctid,cname){
+if($DE('selid'+ctid).checked){
+	window.location='infoadd.php?channelid=<?php echo $channelid; ?>&typeid='+ctid;
+}
+}
+</script>
+<script language='javascript' src='../include/common.js'></script>
+</head>
+<body>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/../comhead.htm"); ?>
+<!-- 中部开始 -->
+<center>
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+        <?php include(dirname(__FILE__)."/../commenu.php");?>
+<div  style="width:610px; margin-top:10px;padding-left:10px;float:left;">
+<div id="manage_company_info" class="turnleft">
+<div class="manage_company_right_title">
+<ul><li>√请在要选择的栏目打勾</li></ul>
+</div>
+<div style=" text-indent:10px;margin:10px 0px 10px 0px; line-height:30px;">
+<?php
+$tu = new TypeTreeMember();
+$tu->ListAllType($c,$issend,$opall,$channelid);
+$tu->Close();
+?>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clear">
+</div>
+<?php include(dirname(__FILE__)."/../foot.htm"); ?>
+</center>
+</div>
+</body>
+</html>
+

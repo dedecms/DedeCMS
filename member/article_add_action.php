@@ -2,51 +2,15 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
-$svali = GetCkVdValue();
-if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
-  exit();
-}
+$cfg_main_dftable = '#@__archives';
+$cfg_add_dftable = '#@__addonarticle';
+require_once(dirname(__FILE__)."/archives_addcheck.php");
 
-require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-
-if(!isset($iscommend)) $iscommend = 0;
-if(!isset($isjump)) $isjump = 0;
-if(!isset($isbold)) $isbold = 0;
-if(!isset($isrm)) $isrm = 0;
-if(!isset($ddisfirst)) $ddisfirst = 0;
-if(!isset($ddisremote)) $ddisremote = 0;
-$channelid = 1;
-$typeid = ereg_replace("[^0-9]","",$typeid);
-
-if($typeid==0){
-	ShowMsg("ÇëÖ¸¶¨ÎÄµµÁ¥ÊôµÄÀ¸Ä¿£¡","-1");
-	exit();
-}
-
-if(!CheckChannel($typeid,$channelid)){
-	ShowMsg("ÄãËùÑ¡ÔñµÄÀ¸Ä¿Óëµ±Ç°Ä£ÐÍ²»Ïà·û£¬»ò²»Ö§³ÖÍ¶¸å£¬ÇëÑ¡Ôñ°×É«µÄÑ¡Ïî£¡","-1");
-	exit();
-}
-
-$dsql = new DedeSql(false);
-
-$cInfos = $dsql->GetOne("Select sendrank,arcsta From #@__channeltype  where ID='1'; ");	
-if($cInfos['sendrank'] > $cfg_ml->M_Type){
-	$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$cInfos['sendrank']."' ");
-	$dsql->Close();
-	ShowMsg("¶Ô²»Æð£¬ÐèÒª[".$row['membername']."]²ÅÄÜÔÚÕâ¸öÆµµÀ·¢²¼ÎÄµµ£¡","-1","0",5000);
-	exit();
-}
-//¶Ô±£´æµÄÄÚÈÝ½øÐÐ´¦Àí
+//å¯¹ä¿å­˜çš„å†…å®¹è¿›è¡Œå¤„ç†
 //--------------------------------
-$typeid2 = 0;
-$pubdate = mytime();
-$senddate = $pubdate;
-$sortrank = $pubdate;
+$sortrank = $senddate = $pubdate = mytime();
 
+$upscore = $cfg_send_score;
 if($cInfos['arcsta']==0){
 	$ismake = 0;
 	$arcrank = 0;
@@ -60,23 +24,18 @@ else{
 	$arcrank = -1;
 }
 
-$shorttitle = '';
-$color =  '';
-$money = 0;
-$arcatt = 0;
-$pagestyle = 2;
+$color =  $shorttitle = '';
+$arcatt = $money = $typeid2 = 0;
+
 
 $title = ClearHtml($title);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
-if($keywords!=""){
-	$keywords = ereg_replace("[,;]"," ",trim(ClearHtml($keywords)));
-	$keywords = trim(cn_substr($keywords,60))." ";
-}
+$keywords = trim(cn_substr($keywords,60));
 
 $userip = GetIP();
-//´¦ÀíÉÏ´«µÄËõÂÔÍ¼
+//å¤„ç†ä¸Šä¼ çš„ç¼©ç•¥å›¾
 if(!empty($litpic)) $litpic = GetUpImage('litpic',true,true);
 else $litpic = "";
 $adminID = 0;
@@ -84,61 +43,74 @@ $memberID = $cfg_ml->M_ID;
 
 $body = eregi_replace("<(iframe|script)","",$body);
 
-//¼ÓÈëÖ÷µµ°¸±í
+//åŠ å…¥ä¸»æ¡£æ¡ˆè¡¨
 //----------------------------------
-$inQuery = "INSERT INTO #@__archives(
-typeid,typeid2,sortrank,iscommend,ismake,channel,
+$inQuery = "INSERT INTO `$maintable`(
+ID,typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
 pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip) 
-VALUES ('$typeid','$typeid2','$sortrank','$iscommend','$ismake','$channelid',
+VALUES ('$arcID','$typeid','$typeid2','$sortrank','0','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
 '$pubdate','$senddate','$arcatt','$adminID','$memberID','$description','$keywords','$mtype','$userip');";
-$dsql->SetQuery($inQuery);
-if(!$dsql->ExecuteNoneQuery()){
+
+if(!$dsql->ExecuteNoneQuery($inQuery)){
+	$gerr = $dsql->GetError();
+	$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID'");
 	$dsql->Close();
-	ShowMsg("°ÑÊý¾Ý±£´æµ½Êý¾Ý¿âarchives±íÊ±³ö´í£¬Çë¼ì²é£¡","-1");
+	ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“ `$maintable` æ—¶å‡ºé”™ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼".$gerr,"-1");
 	exit();
 }
-$arcID = $dsql->GetLastID();
 
-//¼ÓÈë¸½¼Ó±í
+//åŠ å…¥é™„åŠ è¡¨
 //----------------------------------
-$dsql->SetQuery("INSERT INTO #@__addonarticle(aid,typeid,body) Values('$arcID','$typeid','$body')");
-if(!$dsql->ExecuteNoneQuery()){
-	    $dsql->SetQuery("Delete From #@__archives where ID='$arcID'");
-	    $dsql->ExecuteNoneQuery();
-	    $dsql->Close();
-	    ShowMsg("°ÑÊý¾Ý±£´æµ½Êý¾Ý¿â¸½Ê±³ö´í£¬ÇëÁªÏµ¹ÜÀíÔ±£¡","-1");
-	    exit();
+$addQuery = "INSERT INTO `$addtable`(aid,typeid,body{$inadd_f}) Values('$arcID','$typeid','$body'{$inadd_v})";
+if(!$dsql->ExecuteNoneQuery($addQuery))
+{
+	 $gerr = $dsql->GetError();
+	 $dsql->ExecuteNoneQuery("Delete From `$maintable` where ID='$arcID'");
+	 $dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID'");
+	 $dsql->Close();
+	 ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°é™„åŠ è¡¨æ—¶å‡ºé”™ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼".$gerr,"-1");
+	 exit();
 }
 
-$dsql->ExecuteNoneQuery("Update #@__member set c1=c1+1 where ID='".$cfg_ml->M_ID."';");
-
-$dsql->Close();
+$dsql->ExecuteNoneQuery("Update `#@__member` set c1=c1+1,scores=scores+{$upscore} where ID='".$cfg_ml->M_ID."';");
+$cfg_ml->FushCache();
 
 $artUrl = MakeArt($arcID);
 
+//æ›´æ–°å…¨ç«™æœç´¢ç´¢å¼•
+$datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>0,'mid'=>$memberID,'att'=>0,
+               'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,
+               'addinfos'=>$description,'uptime'=>$senddate,'arcrank'=>$arcrank,'mtype'=>$mtype);
+WriteSearchIndex($dsql,$datas);
+//å†™å…¥Tagç´¢å¼•
+InsertTags($dsql,$keywords,$arcID,$memberID,$typeid,$arcrank);
+unset($datas);
+$dsql->Close();
+
 //---------------------------------
-//·µ»Ø³É¹¦ÐÅÏ¢
+//è¿”å›žæˆåŠŸä¿¡æ¯
 //----------------------------------
 
 $msg = "
-ÇëÑ¡ÔñÄãµÄºóÐø²Ù×÷£º
-<a href='article_add.php?cid=$typeid'><u>¼ÌÐø·¢±íÎÄÕÂ</u></a>
+è¯·é€‰æ‹©ä½ çš„åŽç»­æ“ä½œï¼š
+<a href='article_add.php?channelid=$channelid'><u>ç»§ç»­å‘è¡¨æ–‡ç« </u></a>
 &nbsp;&nbsp;
-<a href='article_edit.php?aid=".$arcID."'><u>¸ü¸ÄÎÄÕÂ</u></a>
+<a href='article_edit.php?aid=".$arcID."'><u>æ›´æ”¹æ–‡ç« </u></a>
 &nbsp;&nbsp;
-<a href='$artUrl' target='_blank'><u>Ô¤ÀÀÎÄÕÂ</u></a>
+<a href='$artUrl' target='_blank'><u>é¢„è§ˆæ–‡ç« </u></a>
 &nbsp;&nbsp;
-<a href='content_list.php?channelid=1'><u>ÒÑ·¢²¼ÎÄÕÂ¹ÜÀí</u></a>
+<a href='content_list.php?channelid=$channelid'><u>å·²å‘å¸ƒæ–‡ç« ç®¡ç†</u></a>
 &nbsp;&nbsp;
-<a href='index.php'><u>»áÔ±Ö÷Ò³</u></a>
+<a href='index.php'><u>ä¼šå‘˜ä¸»é¡µ</u></a>
 ";
 
-$wintitle = "³É¹¦·¢²¼Ò»¸öÎÄÕÂ£¡";
-$wecome_info = "ÎÄµµ¹ÜÀí::·¢²¼ÎÄÕÂ";
+$wintitle = "æˆåŠŸå‘å¸ƒä¸€ä¸ªæ–‡ç« ï¼";
+$wecome_info = "æ–‡æ¡£ç®¡ç†::å‘å¸ƒæ–‡ç« ";
 $win = new OxWindow();
-$win->AddTitle("³É¹¦·¢²¼Ò»¸öÎÄÕÂ£º");
+$win->mainTitle = "DedeCmså‘å¸ƒæ–‡æ¡£æˆåŠŸæç¤º";
+$win->AddTitle("æˆåŠŸå‘å¸ƒä¸€ä¸ªæ–‡ç« ï¼š");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();

@@ -1,0 +1,163 @@
+/*Powered by http://www.dedecms.com
+Design & CSS By Pig.Z (QQ:7859301)*/
+*{
+	padding:0px;
+	margin:0px;
+	font-family:瀹嬩綋, Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+html{
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-right:5px;
+}
+body{
+	font-family:瀹嬩綋, Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	overflow-y:auto;
+	height:100%;
+}
+input{
+	border-width:1px;
+	border:1px solid #CCC;
+	padding:3px 0 3px 5px;
+}
+
+input[type=image]{ border:none }
+input[type=checkbox]{ border:none }
+input[type=radio]{ border:none }
+.ncbox{}
+
+img{
+	border:0px;
+}
+a{
+	color:#000;
+}
+a:hover{
+	color:#F00;
+	text-decoration:none;
+}
+
+.bodytitle{
+	width:96%;
+	height:33px;
+	background:url(images/body_title_bg.gif) top left repeat-x;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:8px;
+	clear:both;
+}
+.bodytitleleft{
+	width:30px;
+	height:33px;
+	float:left;
+	background:url(images/body_title_left.gif) right bottom no-repeat;
+}
+.bodytitletxt{
+	height:27px;
+	float:left;
+	margin-top:6px;
+	line-height:27px;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:2px;
+	padding-left:8px;
+	padding-right:8px;
+	background:#FFF url(images/body_title_right.gif) right bottom no-repeat;
+}
+.tbtitle{
+	height:27px;
+	margin:8px auto 0px auto;
+	line-height:27px;
+	letter-spacing:1px;
+}
+.tbtitle .tbtitletxt{
+	text-indent:20px;
+}
+.tblist{
+	background:#E2F5BC;
+	margin-left:auto;
+	margin-right:auto;
+}
+.tblist2{
+	margin-left:auto;
+	margin-right:auto;
+	border-left:1px solid #E2F5BC;
+	border-right:1px solid #E2F5BC;
+	border-bottom:1px solid #E2F5BC;
+}
+
+.tblist td{
+	background:#FFFFFF;
+	padding:6px;
+}
+.tblist td.tbsname{
+	background:#F9FFE6;
+	padding:6px;
+}
+.inputbut{
+	padding-left:3px;
+	padding-right:2px;
+	border:1px solid #999;
+	background:#FFF url(images/inputbut_bg.gif) left center repeat-x;
+	font-size:12px;
+	height:24px;
+	padding-top:2px;
+	letter-spacing:2px;
+	vertical-align:middle;
+	margin-bottom:6px;
+}
+.inputbutx{
+	padding-left:3px;
+	padding-right:2px;
+	border:1px solid #999;
+	background:#FFF url(images/inputbut_bg.gif) left center repeat-x;
+	font-size:12px;
+	height:20px;
+	letter-spacing:2px;
+	vertical-align:middle;
+	text-decoration: none;
+	line-height: 20px;
+	padding-top: 2px;
+}
+.trlbg td{
+	background:#FFFFCC;
+}
+.hg {
+line-height: 20px;
+}
+.dlg {
+	border: 2px solid #007400;
+	background-color: #F0FAEB;
+	padding: 2px;
+	width: 200px;
+}
+
+.data {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #E2F5BC;
+	border-bottom-color: #E2F5BC;
+	border-left-color: #E2F5BC;
+}
+
+.dedePagelist a
+{
+   border:1px;
+   border:1px solid #CCC;
+   margin-right:3px;
+   text-decoration:none;
+   color:#4E5344;
+   padding:1px 2px 1px 2px;
+   letter-spacing:0px
+}
+
+.bline {
+  border-bottom: 1px dotted #BCD0B5;
+  background-color: #FFFFFF;
+}

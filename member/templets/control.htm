@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>个人空间管理中心</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php  include(dirname(__FILE__)."/menu.php"); ?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td valign="top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;text-align:left;" >
+          <tr> 
+            <td height="140" colspan="2"> <table width="100%" border="0" cellpadding="2" cellspacing="1" style="margin-top:3px; line-height:25px; background-color:#e9f9c3;text-indent:10px;">
+                <tr bgcolor="#F2FCE0"> 
+                  <div class="manage_company_right_title">
+                	<ul><li>会员中心信息统计：</li></ul>
+                </div>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td width="18%" style="height:30px;">空间使用：</td>
+                  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="76%"><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#999999" class="turnleft">
+                            <tr> 
+                              <td bgcolor="#FFFFFF"> <table border="0" cellpadding="0" cellspacing="0" bgcolor="#CCCC33" width="<?php echo $ddsize?>%" >
+                                  <tr> 
+                                    <td>&nbsp;</td>
+                                  </tr>
+                                </table></td>
+                            </tr>
+                          </table></td>
+                        <td width="24%">&nbsp;<?php  echo $minfos['totaluse']."/".$cfg_mb_max; ?> 
+                          MB</td>
+                      </tr>
+                    </table></td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30" >我的主页地址：</td>
+                  <td height="30" colspan="3" class="turnleft">&nbsp; 
+                    <?php echo $myurl?>                  </td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">我发表的文章：</td>
+                  <td width="32%" height="30">&nbsp; 
+                    <?php echo $minfos['c1']?>                  </td>
+                  <td width="17%" height="30">发表的图集：</td>
+                  <td width="33%" height="30">&nbsp; 
+                    <?php echo $minfos['c2']?>                  </td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">发表的其它信息：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $minfos['c3']?>                  </td>
+                  <td height="30">收到的留言：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $minfos['guestbook']?>                  </td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">空间主页访问量：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $minfos['spaceshow']?>                  </td>
+                  <td height="30">文档总点击率：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $minfos['pageshow']?>                  </td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">我的积分：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $cfg_ml->M_Scores; ?>                  </td>
+                  <td height="30">会员称号：</td>
+                  <td height="30">&nbsp; 
+                    <?php echo $cfg_ml->M_Honor; ?>                  </td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">许可附件类型：</td>
+                  <td height="30" colspan="3">&nbsp; 
+                    <?php echo str_replace("|",",",$cfg_mb_mediatype)?>
+                    (包含图片)</td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30">是否开启图集：</td>
+                  <td height="30"> &nbsp; 
+                    <?php echo $cfg_mb_album?>                  </td>
+                  <td height="30">附件大小限制：</td>
+                  <td height="30"> &nbsp; 
+                    <?php echo $cfg_mb_upload_size?>
+                    KB</td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="120" colspan="2">
+            <div class="member_img">
+            <ul>
+            <li><a href="../group/"><img src="images/img_group.gif" /></a></li>
+            <li><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>"><img src="images/img_center.gif" /></a></li>
+            <li><a href="../company/"><img src="images/img_com.gif" /></a></li>
+            <li><a href="../ask/"><img src="images/img_ask.gif" /></a></li>
+            </ul>
+            </div>
+            </td>
+          </tr>
+          <tr> 
+            <td height="30" colspan="2"> 
+            <div class="manage_company_right_title">
+                	<ul><li><?php echo $cfg_ml->GetSta($dsql)?></li></ul>
+                </div>            </td>
+          </tr>
+          <tr> 
+            <td width="15%" height="40" align="center" bgcolor="#F8F8F5">我要充值：</td>
+            <td width="85%" height="40" bgcolor="#F8F8F5"><table width="500" border="0" cellspacing="0" cellpadding="0">
+                <form name="formrank" action="check_card.php" method="post">
+                  <tr> 
+                    <td width="62">充值密码：</td>
+                    <td width="120" align="center"> <input name="cardid" type="text" id="cardid" size="18" class="comloginlaber" />                    </td>
+                    <td width="56">验证码：</td>
+                    <td width="60" align="center"> <input name="vdcode" type="text" id="vdcode" size="8" class="comloginlaber1" />                    </td>
+                    <td width="61"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                    <td width="60"> <input type="submit" name="Submit2" value="提交" class="button01" />                    </td>
+                  </tr>
+                </form>
+              </table></td>
+          </tr>
+          <tr bgcolor="#FFFFFF"> 
+            <td height="82" align="center"><img src="img/ut.gif" width="50" height="50"></td>
+            <td height="82" class="checkbox turnleft"><a href="buy.php">购买充值卡或会员升级请从这里进&gt;&gt;</a></td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,80 +1,229 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
+require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 CheckPurview('c_Edit');
 if(empty($dopost)) $dopost="";
-$ID = ereg_replace("[^0-9\-]","",$ID);
+$isdefault = (empty($isdefault) ? '0' : $isdefault);
+$ID = (empty($ID) ? '' : intval($ID));
 /*----------------
 function __Show()
 -----------------*/
 if($dopost=="show")
 {
-	$dsql = new DedeSql(false);
+	$dsql = new DedeSql(-100);
 	$dsql->ExecuteNoneQuery("update #@__channeltype set isshow=1 where ID='$ID'");
 	$dsql->Close();
-	ShowMsg("²Ù×÷³É¹¦£¡","mychannel_main.php");
+	ShowMsg("æ“ä½œæˆåŠŸï¼","mychannel_main.php");
 	exit();
 }
 /*----------------
 function __Hide()
 -----------------*/
-else if($dopost=="hide"){
-	$dsql = new DedeSql(false);
+else if($dopost=="hide")
+{
+	$dsql = new DedeSql(-100);
 	$dsql->ExecuteNoneQuery("update #@__channeltype set isshow=0 where ID='$ID'");
 	$dsql->Close();
-	ShowMsg("²Ù×÷³É¹¦£¡","mychannel_main.php");
+	ShowMsg("æ“ä½œæˆåŠŸï¼","mychannel_main.php");
 	exit();
 }
 /*----------------
 function __SaveEdit()
 -----------------*/
-else if($dopost=="save"){
+else if($dopost=="save")
+{
 	$query = "
-	update #@__channeltype set 
+	update `#@__channeltype` set 
 	typename = '$typename',
 	addtable = '$addtable',
 	addcon = '$addcon',
 	mancon = '$mancon',
 	editcon = '$editcon',
-	listadd = '$listadd',
+	useraddcon = '$useraddcon',
+	usermancon = '$usermancon',
+	usereditcon = '$usereditcon',
 	issend = '$issend',
 	arcsta = '$arcsta',
-	sendrank = '$sendrank'
+	sendrank = '$sendrank',
+	sendmember = '$sendmember',
+	issystem = '$issystem',
+	isdefault = '$isdefault'
 	where ID='$ID'
 	";
-  $dsql = new DedeSql(false);
+  $dsql = new DedeSql(-100);
   $trueTable = str_replace("#@__",$cfg_dbprefix,$addtable);
 	if(!$dsql->IsTable($trueTable)){
 		$dsql->Close();
-  	ShowMsg("ÏµÍ³ÕÒ²»µ½ÄãËùÖ¸¶¨µÄ±í $trueTable £¡","-1");
+  	ShowMsg("ç³»ç»Ÿæ‰¾ä¸åˆ°ä½ æ‰€æŒ‡å®šçš„è¡¨ $trueTable ï¼","-1");
   	exit();
   }
 	$dsql->ExecuteNoneQuery($query);
+	if($isdefault>0){
+		$dsql->ExecuteNoneQuery("update `#@__channeltype` set isdefault=0 where ID<>'$ID' ");
+	}
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÒ»¸öÄ£ĞÍ£¡","mychannel_main.php");
+	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªæ¨¡å‹ï¼","mychannel_main.php");
 	exit();
+}
+/*----------------
+function __Copy()
+-----------------*/
+else if($dopost=="copy")
+{
+	if($ID==-1){
+		ShowMsg("ä¸“é¢˜æ¨¡å‹ä¸æ”¯æŒå¤åˆ¶ï¼","-1");
+		exit();
+	}
+	$dsql = new DedeSql(-100);
+	$row = $dsql->GetOne("Select * From #@__channeltype where ID='$ID'");
+	if($row['ID']>-1){
+	  $nrow = $dsql->GetOne("Select ID From #@__channeltype order by ID desc limit 0,1 ");
+    $newid = $nrow['ID']+1;
+    if($newid<10) $newid = $newid+10;
+    $idname = $newid;
+  }else
+  {
+  	$nrow = $dsql->GetOne("Select ID From #@__channeltype order by ID asc limit 0,1 ");
+    $newid = $nrow['ID']-1;
+    if($newid<-10) $newid = $newid-10;
+    $idname = 'w'.($newid * -1);
+  }
+  $row = $dsql->GetOne("Select * From #@__channeltype where ID='$ID'");
+  $dsql->Close();
+  if($row['maintable']=='') $row['maintable'] = '#@__archives';
+  $wintitle = "é¢‘é“ç®¡ç†-æ¨¡å‹å¤åˆ¶";
+	$wecome_info = "<a href='mychannel_main.php'>é¢‘é“ç®¡ç†</a> - æ¨¡å‹å¤åˆ¶";
+	  $win = new OxWindow();
+	  $win->Init("mychannel_edit.php","js/blank.js","post");
+	  $win->AddTitle("è¢«å¤åˆ¶é¢‘é“ï¼š [<font color='red'>".$row['typename']."</font>]");
+	  $win->AddHidden("cid",$ID);
+	  $win->AddHidden("dopost",'savecopy');
+	  $msg = "
+<table width='460' border='0' cellspacing='0' cellpadding='0'>
+  <tr>
+    <td width='170' height='24' align='center'>æ–°é¢‘é“IDï¼š</td>
+    <td width='230'><input name='newid' type='text' id='newid' size='6' value='{$newid}' /></td>
+  </tr>
+  <tr>
+    <td height='24' align='center'>æ–°é¢‘é“åç§°ï¼š</td>
+    <td><input name='newtypename' type='text' id='newtypename' value='{$row['typename']}{$idname}' style='width:250px' /></td>
+  </tr>
+  <tr>
+    <td height='24' align='center'>æ–°é¢‘é“æ ‡è¯†ï¼š</td>
+    <td><input name='newnid' type='text' id='newnid' value='{$row['nid']}{$idname}' style='width:250px' /></td>
+  </tr>
+  <tr>
+    <td height='24' align='center'>æ–°ç´¢å¼•è¡¨ï¼š</td>
+    <td><input name='newmaintable' type='text' id='newmaintable' value='{$row['maintable']}{$idname}' style='width:250px' /></td>
+  </tr>
+  <tr>
+    <td height='24' align='center'>æ–°é™„åŠ è¡¨ï¼š</td>
+    <td><input name='newaddtable' type='text' id='newaddtable' value='{$row['addtable']}{$idname}' style='width:250px' /></td>
+  </tr>
+  <tr>
+    <td height='24' align='center'>å¤åˆ¶æ¨¡æ¿ï¼š</td>
+    <td>
+    <input name='copytemplet' type='radio' id='copytemplet' value='1' class='np' checked='checked' /> å¤åˆ¶
+    &nbsp;
+    <input name='copytemplet' type='radio' id='copytemplet' class='np' value='0' /> ä¸å¤åˆ¶
+    </td>
+  </tr>
+</table>  
+	  ";
+	  $win->AddMsgItem("<div style='padding:20px;line-height:300%'>$msg</div>");
+	  $winform = $win->GetWindow("ok","");
+	  $win->Display();
+	  exit();
+}
+/*----------------
+function __SaveCopy()
+-----------------*/
+else if($dopost=="savecopy")
+{
+	$dsql = new DedeSql(-100);
+  $row = $dsql->GetOne("Select * From #@__channeltype where ID='$cid' ", MYSQL_ASSOC);
+  foreach($row as $k=>$v) ${strtolower($k)} = addslashes($v);
+  $inquery = " INSERT INTO `#@__channeltype`(`ID` , `nid` , `typename` , `maintable` , `addtable` , `addcon` ,
+                `mancon` , `editcon` , `useraddcon` , `usermancon` , `usereditcon` , `fieldset` , `listadd` ,
+                 `issystem` , `isshow` , `issend` , `arcsta` , `sendrank` , `sendmember`) 
+              VALUES('$newid' , '$newnid' , '$newtypename' , '$newmaintable' , '$newaddtable' , '$addcon' ,
+               '$mancon' , '$editcon' , '$useraddcon' , '$usermancon' , '$usereditcon' , '$fieldset' , '$listadd' ,
+               '0' , '$isshow' , '$issend' , '$arcsta' , '$sendrank' , '$sendmember');
+  ";
+  $mysql_version = $dsql->GetVersion();
+  $mysql_versions = explode(".",trim($mysql_version));
+  $mysql_version = $mysql_versions[0].".".$mysql_versions[1];
+  $narrs1 = array('maintalbe'=>$newmaintable,'addtalbe'=>$newaddtable);
+  $narrs2 = array('maintalbe'=>$maintable,'addtalbe'=>$addtable);
+  foreach($narrs1 as $f=>$fn)
+  {
+    if(!$dsql->IsTable($fn))
+    {
+        $tb = $narrs2[$f];
+        $dsql->SetQuery("SHOW CREATE TABLE {$dsql->dbName}.{$tb}");
+	      $dsql->Execute();
+		 	  $row = $dsql->GetArray();
+		 	  /*
+		 	  //æ ¹æ®æ•°æ®åº“ç‰ˆæœ¬å¤‡ä»½è¡¨ç»“æ„ï¼Œç”±äºä¸»è¡¨å–æ¶ˆäº†è‡ªåŠ¨é€’å¢å­—æ®µï¼Œå› æ­¤å¯ä»¥çœç•¥æ­¤é€‰é¡¹
+		 	  $eng1 = "ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language;
+		 	  $eng2 = "ENGINE=MyISAM AUTO_INCREMENT=([0-9]{1,}) DEFAULT CHARSET=".$cfg_db_language;
+		 	  if($datatype==4.0 && $mysql_version > 4.0){
+		 	      $tableStruct = eregi_replace($eng1,"TYPE=MyISAM",$row[1]);
+		 	      $tableStruct = eregi_replace($eng2,"TYPE=MyISAM",$row[1]);
+		 	  }
+		 	  else if($datatype==4.1 && $mysql_version < 4.1){
+		 	      $tableStruct = eregi_replace("TYPE=MyISAM",$eng1,$row[1]);
+		 	  }else{
+		 	  */
+		 	  $tableStruct = $row[1];
+		 	  $tb = str_replace('#@__',$cfg_dbprefix,$tb);
+		 	  $tableStruct = preg_replace("/CREATE TABLE `$tb`/iU","CREATE TABLE `$fn`",$tableStruct);
+		 	  $dsql->ExecuteNoneQuery($tableStruct);
+		}
+  }
+  if($copytemplet==1){
+    $tmpletdir = $cfg_basedir.$cfg_templets_dir.'/'.$cfg_df_style;
+    @copy("{$tmpletdir}/article_{$nid}.htm","{$tmpletdir}/article_{$newnid}.htm");
+    @copy("{$tmpletdir}/list_{$nid}.htm","{$tmpletdir}/list_{$newnid}.htm");
+    @copy("{$tmpletdir}/index_{$nid}.htm","{$tmpletdir}/index_{$newnid}.htm");
+  }
+  $rs = $dsql->ExecuteNoneQuery($inquery);
+  if($rs)
+  {
+  	 ShowMsg("æˆåŠŸå¤åˆ¶æ¨¡å‹ï¼Œç°è½¬åˆ°è¯¦ç»†å‚æ•°é¡µ... ","mychannel_edit.php?ID={$cid}&dopost=edit");
+  	 $dsql->Close();
+     exit();
+  }
+  else
+  {
+  	 $errv = $dsql->GetError();
+  	 ShowMsg("ç³»ç»Ÿå‡ºé”™ï¼Œè¯·æŠŠé”™è¯¯ä»£ç å‘é€åˆ°å®˜æ–¹è®ºå›ï¼Œä»¥æ£€æŸ¥åŸå› ï¼<br /> é”™è¯¯ä»£ç ï¼šmychannel_edit.php?dopost=savecopy $errv","javascript:;");
+  	 $dsql->Close();
+     exit();
+  }
 }
 /*----------------
 function __GetTemplets()
 -----------------*/
-else if($dopost=="gettemplets"){
-	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-  $dsql = new DedeSql(false);
+else if($dopost=="gettemplets")
+{
+  $dsql = new DedeSql(-100);
   $row = $dsql->GetOne("Select * From #@__channeltype where ID='$ID'");
   $dsql->Close();
-  $wintitle = "ÆµµÀ¹ÜÀí-²é¿´Ä£°å";
-	$wecome_info = "<a href='mychannel_main.php'>ÆµµÀ¹ÜÀí</a>::²é¿´Ä£°å";
+  $wintitle = "é¢‘é“ç®¡ç†-æŸ¥çœ‹æ¨¡æ¿";
+	$wecome_info = "<a href='mychannel_main.php'>é¢‘é“ç®¡ç†</a>:æŸ¥çœ‹æ¨¡æ¿";
 	  $win = new OxWindow();
 	  $win->Init("","js/blank.js","");
-	  $win->AddTitle("ÆµµÀ£º£¨".$row['typename']."£©Ä¬ÈÏÄ£°åÎÄ¼şËµÃ÷£º");
+	  $win->AddTitle("é¢‘é“ï¼šï¼ˆ".$row['typename']."ï¼‰é»˜è®¤æ¨¡æ¿æ–‡ä»¶è¯´æ˜ï¼š");
 	  $msg = "
-	    ÎÄµµÄ£°å£º{$cfg_templets_dir}/{$cfg_df_style}/article_{$row['nid']}.htm
-	     <a href='file_manage_view.php?fmdo=edit&filename=article_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ĞŞ¸Ä]</a><br/>
-	    ÁĞ±íÄ£°å£º{$cfg_templets_dir}/{$cfg_df_style}/list_{$row['nid']}.htm 
-	    <a href='file_manage_view.php?fmdo=edit&filename=list_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ĞŞ¸Ä]</a>
+	    æ–‡æ¡£æ¨¡æ¿ï¼š{$cfg_templets_dir}/{$cfg_df_style}/article_{$row['nid']}.htm
+	     <a href='file_manage_view.php?fmdo=edit&filename=article_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ä¿®æ”¹]</a><br/>
+	    åˆ—è¡¨æ¨¡æ¿ï¼š{$cfg_templets_dir}/{$cfg_df_style}/list_{$row['nid']}.htm 
+	    <a href='file_manage_view.php?fmdo=edit&filename=list_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ä¿®æ”¹]</a>
 	    <br/>
-	    ÆµµÀ·âÃæÄ£°å£º{$cfg_templets_dir}/{$cfg_df_style}/index_{$row['nid']}.htm
-	    <a href='file_manage_view.php?fmdo=edit&filename=index_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ĞŞ¸Ä]</a>
+	    é¢‘é“å°é¢æ¨¡æ¿ï¼š{$cfg_templets_dir}/{$cfg_df_style}/index_{$row['nid']}.htm
+	    <a href='file_manage_view.php?fmdo=edit&filename=index_{$row['nid']}.htm&activepath=".urlencode("{$cfg_templets_dir}/{$cfg_df_style}")."'>[ä¿®æ”¹]</a>
 	  ";
 	  $win->AddMsgItem("<div style='padding:20px;line-height:300%'>$msg</div>");
 	  $winform = $win->GetWindow("hand","");
@@ -86,191 +235,103 @@ function __Delete()
 -----------------*/
 else if($dopost=="delete")
 {
+	@set_time_limit(0);
 	CheckPurview('c_Del');
-	$dsql = new DedeSql(false);
+	$dsql = new DedeSql(-100);
   $row = $dsql->GetOne("Select * From #@__channeltype where ID='$ID'");
   if($row['issystem'] == 1)
   {
   	$dsql->Close();
-  	ShowMsg("ÏµÍ³Ä£ĞÍ²»ÔÊĞíÉ¾³ı£¡","mychannel_main.php");
+  	ShowMsg("ç³»ç»Ÿæ¨¡å‹ä¸å…è®¸åˆ é™¤ï¼","mychannel_main.php");
 	  exit();
   }
   
   if(empty($job)) $job="";
   
-  if($job=="") //È·ÈÏÌáÊ¾
+  if($job=="") //ç¡®è®¤æç¤º
   {
-  	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
   	$dsql->Close();
-  	$wintitle = "ÆµµÀ¹ÜÀí-É¾³ıÄ£ĞÍ";
-	  $wecome_info = "<a href='mychannel_main.php'>ÆµµÀ¹ÜÀí</a>::É¾³ıÄ£ĞÍ";
+  	$wintitle = "é¢‘é“ç®¡ç†-åˆ é™¤æ¨¡å‹";
+	  $wecome_info = "<a href='mychannel_main.php'>é¢‘é“ç®¡ç†</a>::åˆ é™¤æ¨¡å‹";
 	  $win = new OxWindow();
 	  $win->Init("mychannel_edit.php","js/blank.js","POST");
 	  $win->AddHidden("job","yes");
 	  $win->AddHidden("dopost",$dopost);
 	  $win->AddHidden("ID",$ID);
-	  $win->AddTitle("ÄãÈ·ÊµÒªÉ¾³ı (".$row['typename'].") Õâ¸öÆµµÀ£¿");
+	  $win->AddTitle("ä½ ç¡®å®è¦åˆ é™¤ (".$row['typename'].") è¿™ä¸ªé¢‘é“ï¼Ÿ");
 	  $winform = $win->GetWindow("ok");
 	  $win->Display();
 	  exit();
   }
-  else if($job=="yes") //²Ù×÷
+  else if($job=="yes") //æ“ä½œ
   {
     require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
-    $ut = new TypeUnit();
-    $dsql->SetQuery("Select ID From #@__arctype where reID='0' And channeltype='$ID'");
-    $dsql->Execute();
-    $ids = "";
-    while($row = $dsql->GetObject()){
-  	  $ut->DelType($row->ID,"yes");
+    $dsql = new DedeSql(false);
+    $myrow = $dsql->GetOne("Select maintable,addtable From `#@__channeltype` where ID='$ID'",MYSQL_ASSOC);
+    if(!is_array($myrow)){
+    	$dsql->Close();
+    	ShowMsg("ä½ æ‰€æŒ‡å®šçš„é¢‘é“ä¿¡æ¯ä¸å­˜åœ¨!","-1");
+    	exit();
     }
-    $dsql->SetQuery("Delete From #@__channeltype where ID='$ID'");
-    $dsql->ExecuteNoneQuery();
-    $dsql->Close();
-	  $ut->Close();
-	  ShowMsg("³É¹¦É¾³ıÒ»¸öÄ£ĞÍ£¡","mychannel_main.php");
+		if($myrow['maintable']=='') $myrow['maintable'] = '#@__archives';
+		
+		//æ£€æŸ¥é¢‘é“çš„è¡¨æ˜¯å¦ç‹¬å æ•°æ®è¡¨
+		$maintable = str_replace($cfg_dbprefix,'',str_replace('#@__',$cfg_dbprefix,$myrow['maintable']));
+		$addtable = str_replace($cfg_dbprefix,'',str_replace('#@__',$cfg_dbprefix,$myrow['addtable']));
+		
+		$row = $dsql->GetOne("Select count(ID) as dd From `#@__channeltype` where  maintable like '{$cfg_dbprefix}{$maintable}' Or maintable like CONCAT('#','@','__','$maintable') ; ");
+		$isExclusive1 = ($row['dd']>1 ? 0 : 1 );
+		$row = $dsql->GetOne("Select count(ID) as dd From `#@__channeltype` where  addtable like '{$cfg_dbprefix}{$addtable}' Or addtable like CONCAT('#','@','__','$addtable') ; ");
+		$isExclusive2 = ($row['dd']>1 ? 0 : 1 );
+		
+		//è·å–ä¸é¢‘é“å…³è¿çš„æ‰€æœ‰æ ç›®ID
+		$tids = '';
+		$dsql->Execute('qm',"Select ID From `#@__arctype` where channeltype='$ID'");
+		while($row = $dsql->GetArray('qm')){
+			$tids .= ($tids=='' ? $row['ID'] : ','.$row['ID']);
+		}
+		
+		//åˆ é™¤ä¸»è¡¨
+		if($isExclusive1==1) $dsql->ExecuteNoneQuery("DROP TABLE IF EXISTS `{$cfg_dbprefix}{$maintable}`;");
+		else
+		{
+			if($tids!=''){
+      	$dsql->ExecuteNoneQuery("Delete From `{$myrow['maintable']}` where typeid in($tids); ");
+        $dsql->ExecuteNoneQuery("update `{$myrow['maintable']}` set typeid2=0 where typeid2 in ($tids); ");
+      }
+		} 
+		
+		//åˆ é™¤é™„åŠ è¡¨
+		if($isExclusive2==1) $dsql->ExecuteNoneQuery("DROP TABLE IF EXISTS `{$cfg_dbprefix}{$addtable}`;");
+		else
+		{
+		   if($tids!='' && $myrow['addtable']!=''){
+		   	  $dsql->ExecuteNoneQuery("Delete From `{$myrow['addtable']}` where typeid in ($tids); ");
+		   }
+		}
+		   
+	  //åˆ é™¤å…¶å®ƒæ•°æ®
+	  if($tids!='')
+    {
+			 $dsql->ExecuteNoneQuery("Delete From `#@__spec` where typeid in ($tids); ");
+			 $dsql->ExecuteNoneQuery("Delete From `#@__feedback` where typeid in ($tids); ");
+		   $dsql->ExecuteNoneQuery("Delete From `#@__arctype` where ID in ($tids); ");
+		   $dsql->ExecuteNoneQuery("Delete From `#@__full_search` where typeid in ($tids); ");
+		}
+		//åˆ é™¤é¢‘é“é…ç½®ä¿¡æ¯
+    $dsql->ExecuteNoneQuery("Delete From `#@__channeltype` where ID='$ID'");
+	  //æ›´æ–°æ ç›®ç¼“å­˜
+	  UpDateCatCache($dsql);
+	  
+	  $dsql->Close();
+	  ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªæ¨¡å‹ï¼","mychannel_main.php");
 	  exit();
- }
+  }
 }
-$dsql = new DedeSql(false);
+$dsql = new DedeSql(-100);
 $row = $dsql->GetOne("Select * From #@__channeltype where ID='$ID'");
+
+require_once(dirname(__FILE__)."/templets/mychannel_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>¸ü¸ÄÆµµÀÄ£ĞÍ</title>
-<style type="text/css">
-<!--
-body {
-	background-image: url(img/allbg.gif);
-}
--->
-</style>
-<script language="javascript">
-<!--
-function SelectGuide(fname,chid)
-{
-   var posLeft = window.event.clientY-200;
-   var posTop = window.event.clientX-200;
-   window.open("mychannel_field_make.php?chid="+chid+"&f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=no,statebar=no,width=600,height=420,left="+posLeft+", top="+posTop);
-}
-//É¾³ı
-function DelNote(gourl){
-	if(!window.confirm("ÄãÈ·ÈÏÒªÉ¾³ıÕâÌõ¼ÇÂ¼Ã´£¡")){ return false; }
-	location.href=gourl;
-}
--->
-</script>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <form name="form1" action="mychannel_edit.php" method="post">
-    <input type='hidden' name='ID' value='<?php echo $ID?>'>
-    <input type='hidden' name='dopost' value='save'>
-    <input type='hidden' name='issystem' value='<?php echo $row['issystem']?>'>
-    <tr> 
-      <td height="20" colspan="2" background="img/tbg.gif"> <b>&nbsp;<a href="mychannel_main.php"><u>ÆµµÀÄ£ĞÍ¹ÜÀí</u></a> 
-        &gt; ¸ü¸ÄÆµµÀÄ£ĞÍ£º</b> </td>
-    </tr>
-    <?php 
-	if($row['issystem'] == 1)
-	{
-	?>
-    <tr> 
-      <td colspan="2" bgcolor="#FFFFFF" style="color:red"> ÄãÄ¿Ç°ËùÕ¹¿ªµÄÊÇÏµÍ³Ä£ĞÍ£¬ÏµÍ³Ä£ĞÍÒ»°ã¶Ô·¢²¼³ÌĞòºÍ¹ÜÀí³ÌĞòÒÑ¾­¹Ì»¯£¬¸ü¸Ä²»µ±½«»áµ¼ÖÂÊ¹ÓÃÕâÖÖÄÚÈİÀàĞÍµÄÆµµÀ¿ÉÄÜ±ÀÀ£¡£      </td>
-    </tr>
-    <?php 
-	}
-	?>
-    <tr> 
-      <td width="19%" align="center" bgcolor="#FFFFFF">ÆµµÀID</td>
-      <td width="81%" bgcolor="#FFFFFF"> 
-        <?php echo $row['ID']?>      </td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">Ãû×Ö±êÊ¶</td>
-      <td bgcolor="#FFFFFF"> 
-        <?php echo $row['nid']?>      </td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">ÆµµÀÃû³Æ</td>
-      <td bgcolor="#FFFFFF"><input name="typename" type="text" id="typename" value="<?php echo $row['typename']?>"></td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">¸½¼Ó±í</td>
-      <td bgcolor="#FFFFFF"><input name="addtable" type="text" id="addtable" value="<?php echo $row['addtable']?>">
-        ( #@__ ÊÇ±íÊ¾Êı¾İ±íÇ°×º)</td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">ÊÇ·ñÖ§³Ö»áÔ±Í¶¸å£º</td>
-      <td bgcolor="#FFFFFF"> <input name="issend" type="radio" class="np" value="0"<?php  if($row['issend']==0) echo " checked"; ?>>
-        ²»Ö§³Ö 
-        <input type="radio" name="issend" class="np" value="1"<?php  if($row['issend']==1) echo " checked"; ?>>
-        Ö§³Ö </td>
-    </tr>
-    <tr>
-      <td align="center" bgcolor="#FFFFFF">»áÔ±Ğí¿ÉÍ¶¸å¼¶±ğ£º</td>
-      <td bgcolor="#FFFFFF"><select name="sendrank" id="sendrank" style="width:120">
-          <?php 
-              $urank = $cuserLogin->getUserRank();
-              $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank' And rank>=10");
-              $dsql->Execute();
-              while($row2 = $dsql->GetObject())
-              {
-              	if($row2->rank==$row['sendrank']) echo "     <option value='".$row2->rank."' selected>".$row2->membername."</option>\r\n";
-				else echo "     <option value='".$row2->rank."'>".$row2->membername."</option>\r\n";
-              }
-          ?>
-        </select></td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">»áÔ±¸å¼şÄ¬ÈÏ×´Ì¬£º</td>
-      <td bgcolor="#FFFFFF">
-	   <input name="arcsta" class="np" type="radio" value="-1"<?php  if($row['arcsta']==-1) echo " checked";?>>
-        Î´ÉóºË 
-        <input name="arcsta" class="np" type="radio" value="0"<?php  if($row['arcsta']==0) echo " checked";?>>
-        ÒÑÉóºË£¨×Ô¶¯Éú³ÉHTML£© 
-        <input name="arcsta" class="np" type="radio" value="1"<?php  if($row['arcsta']==1) echo " checked";?>>
-        ÒÑÉóºË£¨½öÊ¹ÓÃ¶¯Ì¬ÎÄµµ£©</td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">µµ°¸·¢²¼³ÌĞò</td>
-      <td bgcolor="#FFFFFF"><input name="addcon" type="text" id="addcon" value="<?php echo $row['addcon']?>"></td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">µµ°¸ĞŞ¸Ä³ÌĞò</td>
-      <td bgcolor="#FFFFFF"><input name="editcon" type="text" id="editcon" value="<?php echo $row['editcon']?>"></td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">µµ°¸¹ÜÀí³ÌĞò</td>
-      <td bgcolor="#FFFFFF"><input name="mancon" type="text" id="mancon" value="<?php echo $row['mancon']?>"></td>
-    </tr>
-    <tr>
-      <td align="center" bgcolor="#FFFFFF">ÁĞ±í¸½¼Ó×Ö¶Î£º</td>
-      <td bgcolor="#FFFFFF"><input name="listadd" type="text" id="listadd" size="50" value="<?php echo $row['listadd']?>">
-        <br>
-(ÓÃ&quot;,&quot;·Ö¿ª£¬¿ÉÒÔÔÚÁĞ±íÄ£°å{dede:list}{/dede:list}ÖĞÓÃ[field:name/]µ÷ÓÃ)</td>
-    </tr>
-    <tr>
-      <td align="center" bgcolor="#FFFFFF">¸½¼Ó×Ö¶ÎÅäÖÃ£º</td>
-      <td bgcolor="#FFFFFF"><input name="fset" type="button" id="fset" value="ä¯ÀÀ×Ö¶ÎĞÅÏ¢" onClick="location.href='mychannel_field.php?ID=<?php echo $ID?>'" class='nbt'></td>
-    </tr>
-    
-    
-    <tr bgcolor="#E8F8FF"> 
-      <td height="28" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="26%">&nbsp;</td>
-            <td width="15%"><input name="imageField" class="np" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-            <td width="59%" height="50"><img src="img/button_back.gif" width="60" height="22" onClick="location='mychannel_main.php';" style="cursor:hand"></td>
-          </tr>
-        </table></td>
-    </tr>
-  </form>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

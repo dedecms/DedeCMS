@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>自定义属性管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">频道设置</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+		<tr>
+				<td bgcolor="#EDF9D5" class="tbtitletxt"><strong>文档自定义属性管理</strong></td>
+  </tr>
+</table>			
+<table width="96%" border="0" cellpadding="1" cellspacing="0" align="center" style="margin:0px auto" class="tblist2">
+  <tr align="center">
+    <td align="left" class="hg">　　<b>自定义属性的意义和使用说明：</b><br />
+　　在以往的版本中，网站主页、频道封面的设计，都只能单调的用 arclist 标记把某栏目最新或按特定排序方式的文档无选择的读出来，这样做法存在很大的不足，例如，我希望在最顶部的地方显示我想要的文档，在以往的版本中是无法做到的，但使用自定义属性之后，只要给arclist 标记加上 att='ID' 的属性，然后在发布的时候对适合的文档选择专门的属性，那么使用arclist的地方就会按你的意愿显示指定的文档。<br />
+　　<b>注意事项：</b>当 att='' 时，系统会调用所有文档（考虑与旧版兼容的原因），因此如果你在网页中使用了att属性，那么普通文档的arclist也应该加上att='0'的属性，防止在网页中重复出现某些文章的链接。 </td>
+  </tr>
+</table><form name="form1" action="content_att.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+		  
+        <tr align="center">
+		  <td width="20%" class="tbsname">ID</td>
+				<td class="tbsname">属性名称</td>
+		  <td width="30%" class="tbsname">处理</td>
+		</tr>
+</table>
+<?php 
+	$dsql->SetQuery("Select * From #@__arcatt");
+	$dsql->Execute();
+	$k=0;
+	while($row = $dsql->GetObject())
+	{
+	  $k++;
+	?>
+	<input type="hidden" name="att_<?php echo $k?>" value="<?php echo $row->att?>">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist2">
+  <tr align="center">
+    <td width="20%" class="tbsname">	<?php echo $row->att?></td>
+    <td class="tbsname"> <input name="attname_<?php echo $k?>" value="<?php echo $row->attname?>"  type="text" id="attname_<?php echo $k?>" size="30"></td>
+    <td width="30%" class="tbsname"><input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>"  value="1" checked>
+       继续使用</td>
+  </tr></table>
+  	<?php 
+	}
+	?>
+	<input type="hidden" name="idend" value="<?php echo $k?>">
+  <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+  <tr>
+    <td colspan="3" align="left" valign="top"><strong>新增一个属性类型：</strong></td></tr>
+  </table>
+    <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+      <tr align="center">
+        <td width="20%" class="tbsname">ID</td>
+        <td class="tbsname">属性名称</td>
+        <td width="30%" class="tbsname">处理</td>
+      </tr>
+    </table>
+  <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist2">
+  <tr> 
+      <td width="20%" align="center" valign="top">
+	  <input name="att_new" type="text" id="att_new" size="10">    </td>
+      <td align="center" valign="top">
+	    <input name="attname_new" type="text" id="attname_new" size="30">    </td>
+      <td width="30%" align="center">
+      	<input name="check_new" type="checkbox" id="check_new"  value="1" checked>
+        增加新属性    </td></tr>
+</table>
+
+<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+		  <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" ><input type="submit" name="button" id="button" value="确定" class="inputbut"/></td>
+		</tr>  
+</table></form>
+
+</body>
+</html>

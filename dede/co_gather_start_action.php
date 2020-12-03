@@ -4,11 +4,11 @@ CheckPurview('co_PlayNote');
 require_once(dirname(__FILE__)."/../include/pub_collection.php");
 if($totalnum==0)
 {
-	ShowMsg("ÖÖ×ÓÍøÖ·ÎªÁã£¡","",1);
+	ShowMsg("ç§å­ç½‘å€ä¸ºé›¶ï¼","",1);
 	exit();
 }
 $dsql = new DedeSql(false);
-//¶àÏß³ÌÄ£Ê½³õ´ÎÉèÖÃ
+//å¤šçº¿ç¨‹æ¨¡å¼åˆæ¬¡è®¾ç½®
 if(!isset($threadnum)) $threadnum = 0;
 if(!isset($oldstart)) $oldstart = $startdd;
 if(!isset($thethr)) $thethr = 0;
@@ -41,7 +41,7 @@ if($totalnum > $startdd+$pagesize) $limitSql = " limit $startdd,$pagesize";
 else $limitSql = " limit $startdd,".($totalnum - $startdd);
 
 if($totalnum - $startdd < 1){
-	ShowMsg("Íê³Éµ±Ç°ÏÂÔØÈÎÎñ£¡","javascript:;");
+	ShowMsg("å®Œæˆå½“å‰ä¸‹è½½ä»»åŠ¡ï¼","javascript:;");
 	$dsql->Close();
 	exit();
 }
@@ -73,13 +73,15 @@ if($totalnum-$oldstart!=0){
   $tjlen = ceil( (($tjnum-$oldstart)/($totalnum-$oldstart)) * 100 );
   $dvlen = $tjlen * 2;
   $tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
-  $tjsta .= "<br/>Íê³ÉÏß³Ì $thethr µÄ£º$tjlen %£¬¼ÌĞøÖ´ĞĞÈÎÎñ...";
+  $tjsta .= "<br/>å®Œæˆçº¿ç¨‹ $thethr çš„ï¼š$tjlen %ï¼Œç»§ç»­æ‰§è¡Œä»»åŠ¡...";
 }
 if($tjnum < $totalnum){
 	ShowMsg($tjsta,"co_gather_start_action.php?islisten=$islisten&thethr=$thethr&sptime=$sptime&nid=$nid&oldstart=$oldstart&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize","",500);
 	exit();
 }else{
-	ShowMsg("Íê³Éµ±Ç°ÏÂÔØÈÎÎñ£¡","javascript:;");
+	ShowMsg("å®Œæˆå½“å‰ä¸‹è½½ä»»åŠ¡ï¼","javascript:;");
 	exit();
 }
+
+ClearAllLink();
 ?>

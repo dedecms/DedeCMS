@@ -1,29 +1,29 @@
 <?php 
 /*-------------------------------------------
-Í¨ÐÐÕ¾·´ÏòÕûºÏ½Ó¿ÚÔ¶³Ìµ÷ÓÃÎÄ¼þ£¬»áÔ±×¨ÓÃ°æ
+é€šè¡Œç«™åå‘æ•´åˆæŽ¥å£è¿œç¨‹è°ƒç”¨æ–‡ä»¶ï¼Œä¼šå‘˜ä¸“ç”¨ç‰ˆ
 
-±¾½Ó¿Ú²»ÐèÒªµ¼ÈëµÚÈý·½³ÌÐòµÄÓÃ»§ºÍÃÜÂëÐÅÏ¢£¬ÏµÍ³»á×Ô¶¯ÅÐ¶ÏºÍÉú³É
+æœ¬æŽ¥å£ä¸éœ€è¦å¯¼å…¥ç¬¬ä¸‰æ–¹ç¨‹åºçš„ç”¨æˆ·å’Œå¯†ç ä¿¡æ¯ï¼Œç³»ç»Ÿä¼šè‡ªåŠ¨åˆ¤æ–­å’Œç”Ÿæˆ
 
-×÷Õß£º IT°ØÀ­Í¼  ×îºóÐÞ¸ÄÈÕÆÚ 2007-3-29
+ä½œè€…ï¼š ITæŸæ‹‰å›¾  æœ€åŽä¿®æ”¹æ—¥æœŸ 2007-12-07
 //**********************************************************************
-±¾ÎÄ¼þ½ö×÷ÎªÍø¹Ø¹©Ô¶³Ìµ÷ÓÃ
-ÇëÊ¹ÓÃ»ò²Î¿¼ pp_dederemote_interface_new.php Ìá¹©µÄ½Ó¿Úº¯Êý½øÐÐÕûºÏ±à³Ì
+æœ¬æ–‡ä»¶ä»…ä½œä¸ºç½‘å…³ä¾›è¿œç¨‹è°ƒç”¨
+è¯·ä½¿ç”¨æˆ–å‚è€ƒ pp_dederemote_interface_new.php æä¾›çš„æŽ¥å£å‡½æ•°è¿›è¡Œæ•´åˆç¼–ç¨‹
 -----------------------------------------*/
 require_once(dirname(__FILE__)."/../../include/config_base.php");
-header("Content-Type: text/html; charset=gb2312");
+header("Content-Type: text/html; charset=utf-8");
 
-//Ê¹ÓÃÍ¨ÐÐÖ¤µÄÓÃ»§IDµÄÇø±ð·ûºÅ£¬Èç¹ûÔ­DEDEÏµÍ³ÎÞÓÃ»§Êý¾ÝµÄ²»ÐèÒªÀí»á£¬·ñÔò¿ÉÒÔ¼Ó @pp Ö®ÀàµÄÊ¶±ð
+//ä½¿ç”¨é€šè¡Œè¯çš„ç”¨æˆ·IDçš„åŒºåˆ«ç¬¦å·ï¼Œå¦‚æžœåŽŸDEDEç³»ç»Ÿæ— ç”¨æˆ·æ•°æ®çš„ä¸éœ€è¦ç†ä¼šï¼Œå¦åˆ™å¯ä»¥åŠ  @pp ä¹‹ç±»çš„è¯†åˆ«
 $ppName = "";
 
 if($cfg_pp_isopen = 0){
-	echo "ÏµÍ³Ã»¿ªÆôÍ¨ÐÐÖ¤¹¦ÄÜ£¬½ûÖ¹Ô¶³Ìµ÷ÓÃ£¡";
+	echo "ç³»ç»Ÿæ²¡å¼€å¯é€šè¡Œè¯åŠŸèƒ½ï¼Œç¦æ­¢è¿œç¨‹è°ƒç”¨ï¼";
 	exit();
 }
 
 $cfg_ndsql = 0;
 
 if(empty($rmdata)){
-	echo "Ã»½ÓÊÕµ½ÈÎºÎÔ¶³ÌÊý¾Ý£¡";
+	echo "æ²¡æŽ¥æ”¶åˆ°ä»»ä½•è¿œç¨‹æ•°æ®ï¼";
 	exit();
 }
 
@@ -31,7 +31,7 @@ $keys = Array('userid','signstr','action');
 
 foreach($keys as $v) $$v = '';
 
-//½âÂëGET×Ö·û´®
+//è§£ç GETå­—ç¬¦ä¸²
 $rmdata = base64_decode($rmdata);
 $datas = explode('&',$rmdata);
 foreach($datas as $ky){
@@ -42,25 +42,25 @@ foreach($datas as $ky){
 $ntime = time();
 
 if($action!='exit'){
-  //ÑéÖ¤Ö¤Êé
+  //éªŒè¯è¯ä¹¦
   if($userid==''||!TestStringSafe($userid)){
-	  echo "ÓÃ»§IDÎª¿Õ»ò´æÔÚ·Ç·¨×Ö·û´®£¡".$oldrmdata;
+	  echo "ç”¨æˆ·IDä¸ºç©ºæˆ–å­˜åœ¨éžæ³•å­—ç¬¦ä¸²ï¼".$oldrmdata;
 	  exit();
   }
   if(strlen($userid)>24){
-	  echo "ÓÃ»§ID³¤¶È²»ÄÜ³¬¹ý24Î»£¡";
+	  echo "ç”¨æˆ·IDé•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼";
 	  exit();
   }
   $testSign = substr(md5($userid.$cfg_cookie_encode),0,24);
   if($testSign!=$signstr){
-	  echo "Ö¤ÊéÑéÖ¤Ê§°Ü£¡";
+	  echo "è¯ä¹¦éªŒè¯å¤±è´¥ï¼";
 	  exit();
   }
 }
 
-//×¢½âÀïµÄfunction½ö·½±ãUltraEditË÷Òý£¬²¢ÎÞÆäËüÒâÒå
+//æ³¨è§£é‡Œçš„functionä»…æ–¹ä¾¿UltraEditç´¢å¼•ï¼Œå¹¶æ— å…¶å®ƒæ„ä¹‰
 /*--------------------------------
-»áÔ±×¢²á
+ä¼šå‘˜æ³¨å†Œ
 function __UserReg()
 ---------------------------------*/
 if($action=='reg'){
@@ -69,13 +69,32 @@ if($action=='reg'){
 	$userpwd = GetEncodePwd($userpwd);
 	$loginip = Z_GetIP();
 	$ppuserid = $userid.$ppName;
-	$inQuery = "
- 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,money,
- 	 weight,height,job,province,city,myinfo,tel,oicq,email,homepage,
- 	 jointime,joinip,logintime,loginip,showaddr,address) 
-   VALUES ('$ppuserid','$userpwd','$userid','','0000-00-00','10','0',
-   '0','0','','0','0','','','','','','$ntime','$loginip','$ntime','$loginip','0','');";
+   
+   $uname = $ppuserid;
+   $inQuery1 = "
+ 	 INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` , `membertype` , `uptime` , `exptime` ,
+ 	   `money` , `email` , `jointime` , `joinip` , `logintime` , `loginip` ,
+ 	    `c1` , `c2` , `c3` , `matt` , `guestbook` , `spaceshow` , `pageshow` , `spacestyle` ,
+ 	     `spacename` , `spaceimage` , `news` , `mybb` , `listnum` , `scores` ) 
+    VALUES ('$ppuserid', '$userpwd', '0', '$uname', '10', '0', '0',
+     '0', '', '$ntime', '$loginip', '$ntime', '$loginip',
+      '0', '0', '0', '0', '0', '0', '0', '',
+       '', '', '', '', '20', '1000');
+	 ";
+   
    $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   
+   $id = $cfg_ndsql->GetLastID();
+   if($id>0){
+      $inQuery2 = "
+	      INSERT INTO `#@__member_perinfo` (`id`, `uname` , `sex` , `birthday` , `weight` ,`height` , `job` , `province` , `city` , `myinfo` , 
+	     `tel` , `oicq` , `homepage` , `showaddr` ,`address` , `fullinfo`) 
+       VALUES ('$id','$uname', '', '0000-00-00', '0','0', '0', '0', '0', '0' ,
+        '0' , '0' , '0' ,'0','0','');
+     ";	
+     $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   }
+   
    $row = $cfg_ndsql->GetOne("Select ID From #@__member where userid like '{$userid}$ppName' ");
 	 $ID = $row['ID'];
 	 Z_CloseSql();
@@ -83,7 +102,7 @@ if($action=='reg'){
 	 exit();
 }
 /*--------------------------------
-»áÔ±µÇÂ¼
+ä¼šå‘˜ç™»å½•
 function __UserLogin()
 ---------------------------------*/
 else if($action=='login'){
@@ -94,13 +113,34 @@ else if($action=='login'){
 		 $userpwd = chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).mt_rand(1000,9999).chr(mt_rand(ord('A'),ord('Z')));
 	   $userpwd = GetEncodePwd($userpwd);
 	   $ppuserid = $userid.$ppName;
-		 $inQuery = "
- 	   INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,money,
- 	   weight,height,job,province,city,myinfo,tel,oicq,email,homepage,
- 	   jointime,joinip,logintime,loginip,showaddr,address) 
-     VALUES ('$ppuserid','$userpwd','$userid','','0000-00-00','10','0',
-     '0','0','','0','0','','','','','','$ntime','$loginip','$ntime','$loginip','0','');";
+		 
+		 
+		 $uname = $ppuserid;
+   $inQuery1 = "
+ 	 INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` , `membertype` , `uptime` , `exptime` ,
+ 	   `money` , `email` , `jointime` , `joinip` , `logintime` , `loginip` ,
+ 	    `c1` , `c2` , `c3` , `matt` , `guestbook` , `spaceshow` , `pageshow` , `spacestyle` ,
+ 	     `spacename` , `spaceimage` , `news` , `mybb` , `listnum` , `scores` ) 
+    VALUES ('$ppuserid', '$userpwd', '0', '$uname', '10', '0', '0',
+     '0', '', '$ntime', '$loginip', '$ntime', '$loginip',
+      '0', '0', '0', '0', '0', '0', '0', '',
+       '', '', '', '', '20', '1000');
+	 ";
+   
+   $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   
+   $id = $cfg_ndsql->GetLastID();
+   if($id>0){
+      $inQuery2 = "
+	      INSERT INTO `#@__member_perinfo` (`id`, `uname` , `sex` , `birthday` , `weight` ,`height` , `job` , `province` , `city` , `myinfo` , 
+	     `tel` , `oicq` , `homepage` , `showaddr` ,`address` , `fullinfo`) 
+       VALUES ('$id','$uname', '', '0000-00-00', '0','0', '0', '0', '0', '0' ,
+        '0' , '0' , '0' ,'0','0','');
+     ";	
      $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   }
+     
+     
      $row = $cfg_ndsql->GetOne("Select ID,pwd From #@__member where userid like '$userid' ");
 	}
 	$ID = $row['ID'];
@@ -110,7 +150,7 @@ else if($action=='login'){
 	exit();
 }
 /*--------------------------------
-ÍË³öÏµÍ³
+é€€å‡ºç³»ç»Ÿ
 function __UserExit()
 ---------------------------------*/
 else if($action=='exit'){
@@ -118,15 +158,15 @@ else if($action=='exit'){
 	exit();
 }
 /*--------------------------------
-ÎÞ·¨Ê¶±ðÔ¶³Ì¶¯×÷
+æ— æ³•è¯†åˆ«è¿œç¨‹åŠ¨ä½œ
 function __ActionError()
 ---------------------------------*/
 else{
-	echo "ÎÞ·¨Ê¶±ðÄãµÄ¶¯×÷£¡";
+	echo "æ— æ³•è¯†åˆ«ä½ çš„åŠ¨ä½œï¼";
 	exit();
 }
 
-//ÆäËü¹¦ÄÜÈçº¯Êý
+//å…¶å®ƒåŠŸèƒ½å¦‚å‡½æ•°
 function Z_OpenSql(){
 	global $cfg_ndsql;
 	if(!$cfg_ndsql) $cfg_ndsql = new DedeSql(false);
@@ -139,7 +179,7 @@ function Z_GetIP(){
 	if(!empty($_SERVER["HTTP_CLIENT_IP"])) $cip = $_SERVER["HTTP_CLIENT_IP"];
 	else if(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 	else if(!empty($_SERVER["REMOTE_ADDR"])) $cip = $_SERVER["REMOTE_ADDR"];
-	else $cip = "ÎÞ·¨»ñÈ¡£¡";
+	else $cip = "æ— æ³•èŽ·å–ï¼";
 	return $cip;
 }
 ?>

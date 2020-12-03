@@ -1,31 +1,31 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title><?php echo $spacename?> - </title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
-<link href="../base.css" rel="stylesheet" type="text/css">		
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/space.css" rel="stylesheet" type="text/css" />
+<title><?php echo $spacename?></title>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/member_head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="170" height="216" valign="top"> 
-     <?php include(dirname(__FILE__)."/member_menu.php");?>
-	 </td>
-    <td width="10">&nbsp;</td>
-    <td width="590" valign="top">
-	  <table width="100%"  border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:6px">
-        <tr> 
-          <td colspan="2" background="img/tbg2.gif" bgcolor="#EEF4EA">
-          	<font color="#666600">
-          		<b><?php echo $listName?></b>
-          	</font>
-          </td>
-        </tr>
-        <tr bgcolor="#FFFFFF"> 
-          <td height="63" colspan="2">
-          	<table width="100%"  border="0" cellspacing="1" cellpadding="1">
+
+<body>
+<div id="container">
+	<!--头部开始-->
+	<?php include(dirname(__FILE__)."/member_head.htm");?>
+    <!--头部结束-->
+    <!--中间开始-->
+    <div id="spacemain">
+    	<div id="space_main">
+        	<?php include(dirname(__FILE__)."/member_left.htm");?>
+        	<!--左边结束-->
+            
+            <div id="space_right"><!--右边开始-->            	
+                <div class="space_notice"><!--空间公告-->
+                	<div class="space_title02">
+                    	<ul>
+                        <li><?php echo $listName?></li>
+                        </ul>
+                    </div>
+                    <div class="space_notice_text">
+         	<table width="100%"  border="0" cellspacing="1" cellpadding="1">
               <tr>
                 <td height="219" valign="top">
 
@@ -34,16 +34,14 @@
           while($row = $mylist->GetArray('dm'))
           {
 
-					   $row['arcurl'] = GetFileUrl($row['ID'],$row['typeid'],$row['senddate'],
-                            $row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
-                            $row['typedir'],$row['money'],true,$row['siteurl']);
-           
+					   $row['arcurl'] = $row['url'];
              if($row['litpic']=="") $row['litpic'] = "img/dfpic.gif";
-             if($cfg_multi_site=='��'){
+             if($cfg_multi_site=='是'){
            	     if(!eregi("^http://",$row['litpic'])){
            	 	      $row['litpic'] = $cfg_mainsite.$row['litpic'];
            	     }
              }
+             $row['description'] = $row['addinfos'];
 				?>
 				<table border='0' width='100%'>
           <tr height='24'> 
@@ -58,10 +56,10 @@
                       </td>
                       <td width='3%' align="center"><img src="img/file.gif" width="18" height="17"></td>
                       <td width='54%'><b><a href='<?php echo $row['arcurl']?>' target='_blank'><?php echo $row['title']?></a></b></td>
-                      <td width="24%">���:<?php echo $row['click']?></td>
+                      <td width="24%">点击:<?php echo $row['click']?></td>
                     </tr>
                     <tr> 
-                      <td height="56" colspan='3'> ����<?php echo $row['description']?><font color='#8F8C89'>(<?php echo strftime('%y-%m-%d %H:%M',$row['senddate'])?>)</font> 
+                      <td height="56" colspan='3'> 　　<?php echo $row['description']; ?><font color='#8F8C89'>(<?php echo strftime('%y-%m-%d %H:%M',$row['uptime'])?>)</font> 
                       </td>
                     </tr>
                     <tr> 
@@ -73,21 +71,20 @@
 				  ?>
 				  </td>
               </tr>
-              <tr> 
-                <td height="20" align="center">
-                <?php echo $dlist->GetPageList(7);?>
-                </td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<?php 
-$dlist->Close();
-$dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+            </table>
+                        <div class="space_news_text"><?php echo $dlist->GetPageList(7);?></div>
+                    </div>
+                </div>
+            </div><!--右边结束-->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--中间结束-->
+    <!--底部开始-->
+	<?php include(dirname(__FILE__)."/member_footer.htm");?>
+    <!--底部结束-->
+    
 </div>
 </body>
 </html>

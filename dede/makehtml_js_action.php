@@ -11,16 +11,16 @@ if($uptype == "all")
   $row = $dsql->GetOne("Select ID From #@__arctype where ID>'$typeid' And ispart<>2 order by ID asc limit 0,1;");
   $dsql->Close();
   if(!is_array($row)){
-	  echo "Íê³ÉËùÓĞÎÄ¼ş¸üĞÂ£¡";
+	  ShowMsg("å®Œæˆæ‰€æœ‰æ–‡ä»¶æ›´æ–°ï¼","javascript:;");
 	  exit();
   }
   else{
 	  $pv = new PartView($row['ID']);
     $pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
-    $pv->SaveToHtml($cfg_basedir.$cfg_plus_dir."/js/".$row['ID'].".js");
+    $pv->SaveToHtml($cfg_basedir."/data/js/".$row['ID'].".js");
     $pv->Close();
 	  $typeid = $row['ID'];
-	  ShowMsg("³É¹¦¸üĞÂ".$cfg_plus_dir."/js/".$row['ID'].".js£¬¼ÌĞø½øĞĞ²Ù×÷£¡","makehtml_js_action.php?typeid=$typeid",0,100);
+	  ShowMsg("æˆåŠŸæ›´æ–°"."/data/js/".$row['ID'].".jsï¼Œç»§ç»­è¿›è¡Œæ“ä½œï¼","makehtml_js_action.php?typeid=$typeid",0,100);
     exit();
   }
 }
@@ -28,12 +28,15 @@ else
 {
 	$pv = new PartView($typeid);
   $pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
-  $pv->SaveToHtml($cfg_basedir.$cfg_plus_dir."/js/".$typeid.".js");
+  $pv->SaveToHtml($cfg_basedir."/data/js/".$typeid.".js");
   $pv->Close();
-	echo "³É¹¦¸üĞÂ".$cfg_plus_dir."/js/".$typeid.".js£¡";
-	echo "Ô¤ÀÀ£º";
-	echo "<hr>";
-	echo "<script src='".$cfg_plus_dir."/js/".$typeid.".js'></script>";
+  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+  echo "æˆåŠŸæ›´æ–°"."/data/js/".$typeid.".jsï¼";
+  echo "é¢„è§ˆï¼š";
+  echo "<hr>";
+  echo "<script src='../data/js/".$typeid.".js'></script>";
   exit();
 }
+
+ClearAllLink();
 ?>

@@ -20,4 +20,6 @@ $dlist->SetParameter("keyword",$keyword);
 $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/article_keywords_main.htm");
 $dlist->Close();
+
+ClearAllLink();
 ?>

@@ -1,0 +1,193 @@
+@charset "utf-8";
+/*---------------资讯*/
+/*---------------左侧*/
+.pleft{
+	width:670px;
+	float:left;
+	overflow:hidden;
+}
+/*---------------左侧:当前位置*/
+.thisplace{
+	width:670px;
+	height:31px;
+	background:url(../images/place_bg.jpg) repeat-x;
+
+}
+.thisplace .title{
+	display:block;
+	width:156px;
+	height:31px;
+	line-height:29px;
+	text-indent:22px;
+	letter-spacing:4px;
+	font-weight:bold;
+	background:url(../images/place_left.gif) right top no-repeat;
+	float:left;
+}
+.thisplace .placenav{
+	float:right;
+	margin-right:10px;
+	line-height:31px;
+}
+.thisplace .placenav a{
+	color:#666666;
+}
+
+
+/*---------------右侧*/
+.pright{
+	float:right;
+}
+/*-------------------------右侧:常规列表定义*/
+.rlist{
+	width:222px;
+}
+.rlist .title{
+	width:222px;
+	height:19px;
+	padding-top:9px;
+	background:url(../images/rlist_title_bg.gif) no-repeat;
+	text-indent:10px;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#555;
+}
+.rbox{
+	border:1px solid #DDD;
+	width:220px;
+	padding:5px 0px 7px 0px;
+}
+.rbox ul li{
+	height:27px;
+	line-height:27px;
+	background:url(../images/ico_4.gif) 12px 13px no-repeat;
+	text-indent:23px;
+}
+.rbox ul li a{
+	color:#039;
+}
+
+
+/*---------------资讯:首页:列表区域*/
+
+/*---------------左侧:新闻列表*/
+.listbox{
+	width:680px;
+	overflow:hidden;
+}
+.listbox dl{
+	width:668px;
+	float:left;
+	display:inline;
+	margin:8px 10px 0px 0px;
+	border:1px solid #DDD;
+}
+.listbox dl dt{
+	width:668px;
+	height:26px;
+	margin:1px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-bottom:1px solid #DDD;
+}
+.listbox dl dt .title{
+	width:200px;
+	height:26px;
+	line-height:26px;
+	float:left;
+	background:url(../images/article_ico_1.gif) 10px 6px no-repeat;
+}
+.listbox  dl  dt  .title  .titlea{
+	margin-left:28px;
+	text-decoration:none;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+.listbox dl dt .more{
+	width:48px;
+	height:19px;
+	float:right;
+	line-height:19px;
+	background:url(../images/article_ico_2.gif) no-repeat;
+	text-align:center;
+	margin:3px 5px 0px 0px;
+}
+.listbox dl dt .more a{
+	text-decoration:none;
+}
+.listbox dl dd{
+	padding:3px 0px 5px 14px;
+}
+.listbox dl dd a{
+	height:31px;
+	display:block;
+	color:#666;
+	line-height:31px;
+	background:url(../images/ico_2.gif) 2px 12px no-repeat;
+	font-size:14px;
+	float: left;
+	width: 304px;
+	text-indent: 20px;
+}
+
+
+
+.spelist{
+	width:670px;
+}
+.spelist dl{
+	width:670px;
+	margin:10px auto 0px;
+	border-bottom:1px dotted #DDD;
+	padding-bottom:10px;
+}
+.spelist dl dd.speimg{
+	width:100px;
+	margin-left:10px;
+	float:left;
+}
+.spelist dl dd.speimg a{
+	width:96px;
+	height:56px;
+	border:1px solid #DDD;
+	padding:1px;
+	display:block;
+	overflow:hidden;
+}
+.spelist dl dd.speimg a:hover{
+	border:1px solid #F90;
+}
+.spelist dl dd.spetitle{
+	width:520px;
+	height:31px;
+	line-height:31px;
+	font-size:16px;
+	font-weight:bold;
+	float:left;
+	margin-left:16px;
+}
+.spelist dl dd.spetitle a{
+	color:#039;
+	letter-spacing:2px;
+}
+.spelist dl dd.speinfo{
+	width:520px;
+	height:25px;
+	line-height:25px;
+	float:left;
+	font-size:11px;
+	color:#669933;
+}
+.spelist dl dd.speinfo strong{
+	color:#666666;
+	margin-left:16px;
+	font-size:12px;
+}
+.spelist dl dt{
+	width:650px;
+	clear:both;
+	margin:7px auto 0px;
+	text-indent:25px;
+	font-size:14px;
+	color:#666666;
+	line-height:21px;
+}

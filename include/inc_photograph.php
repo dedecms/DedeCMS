@@ -1,5 +1,5 @@
 <?php 
-//¼ì²âÓÃ»§ÏµÍ³Ö§³ÖµÄÍ¼Æ¬¸ñÊ½
+//æ£€æµ‹ç”¨æˆ·ç³»ç»Ÿæ”¯æŒçš„å›¾ç‰‡æ ¼å¼
 $cfg_photo_type['gif'] = false;
 $cfg_photo_type['jpeg'] = false;
 $cfg_photo_type['png'] = false;
@@ -29,8 +29,8 @@ if(function_exists("imagecreatefromwbmp") && function_exists("imagewbmp")){
 	$cfg_photo_support .= "WBMP ";
 }
 //--------------------------------
-//ËõÍ¼Æ¬×Ô¶¯Éú³Éº¯Êý£¬À´Ô´Ö§³Öbmp¡¢gif¡¢jpg¡¢png
-//µ«Éú³ÉµÄÐ¡Í¼Ö»ÓÃjpg»òpng¸ñÊ½
+//ç¼©å›¾ç‰‡è‡ªåŠ¨ç”Ÿæˆå‡½æ•°ï¼Œæ¥æºæ”¯æŒbmpã€gifã€jpgã€png
+//ä½†ç”Ÿæˆçš„å°å›¾åªç”¨jpgæˆ–pngæ ¼å¼
 //--------------------------------
 function ImageResize($srcFile,$toW,$toH,$toFile="") 
 {
@@ -106,7 +106,7 @@ function ImageResize($srcFile,$toW,$toH,$toFile="")
   return true;
 }
 //--------------------------------
-//»ñµÃGDµÄ°æ±¾
+//èŽ·å¾—GDçš„ç‰ˆæœ¬
 //--------------------------------
 function gdversion()
 { 
@@ -125,7 +125,7 @@ function gdversion()
   return $gdversion_h; 
 }
 //-------------------------------------
-//Í¼Æ¬×Ô¶¯¼ÓË®Ó¡º¯Êý
+//å›¾ç‰‡è‡ªåŠ¨åŠ æ°´å°å‡½æ•°
 //-------------------------------------
 function WaterImg($srcFile,$fromGo='up')
 {
@@ -142,14 +142,14 @@ function WaterImg($srcFile,$fromGo='up')
    if(!file_exists($trueMarkimg) || empty($photo_markimg)) $trueMarkimg = "";
    ImgWaterMark($srcFile,$photo_waterpos,$trueMarkimg,$photo_watertext,$photo_fontsize,$photo_fontcolor,$photo_diaphaneity); 
 }
-//Í¼Æ¬×Ô¶¯¼ÓË®Ó¡º¯ÊýÔ­Ê¼º¯Êý
+//å›¾ç‰‡è‡ªåŠ¨åŠ æ°´å°å‡½æ•°åŽŸå§‹å‡½æ•°
 //------------------------------------------------
 function ImgWaterMark($srcFile,$w_pos=0,$w_img="",$w_text="",$w_font=5,$w_color="#FF0000",$w_pct)
 {
     $font_type = dirname(__FILE__).'/data/ant1.ttf';
     if(empty($srcFile) || !file_exists($srcFile)) return ;
-     
-    $srcInfo = getimagesize($srcFile);
+    $info = '';
+    $srcInfo = getimagesize($srcFile,$info);
     $srcFile_w    = $srcInfo[0];
     $srcFile_h    = $srcInfo[1];
     switch($srcInfo[2]){
@@ -172,10 +172,11 @@ function ImgWaterMark($srcFile,$w_pos=0,$w_img="",$w_text="",$w_font=5,$w_color=
       default :
           return;
     }
-    //¶ÁÈ¡Ë®Ó¡Í¼Æ¬
+    //è¯»å–æ°´å°å›¾ç‰‡
     if(!empty($w_img) && file_exists($w_img)){
      $ifWaterImage = 1;
-     $water_info = getimagesize($w_img);
+     $info = '';
+     $water_info = getimagesize($w_img,$info);
      $width      = $water_info[0];
      $height     = $water_info[1];
      switch($water_info[2]){
@@ -211,45 +212,45 @@ function ImgWaterMark($srcFile,$w_pos=0,$w_img="",$w_text="",$w_font=5,$w_color=
         $ifttf = 0;
       }
     }
-    //Ë®Ó¡Î»ÖÃ
-    if($w_pos==0){ //Ëæ»úÎ»ÖÃ
+    //æ°´å°ä½ç½®
+    if($w_pos==0){ //éšæœºä½ç½®
       $wX = rand(0,($srcFile_w - $width));
       $wY = rand(0,($srcFile_h - $height));
-    }else if($w_pos==1){ //×óÉÏ½Ç
+    }else if($w_pos==1){ //å·¦ä¸Šè§’
       $wX = 5;
       if($ifttf==1) $wY = $height + 5;
       else $wY = 5;
-    }else if($w_pos==2){ //×óÖÐ
+    }else if($w_pos==2){ //å·¦ä¸­
       $wX = 5;
       $wY = ($srcFile_h - $height) / 2;
-    }else if($w_pos==3){ //×óÏÂ
+    }else if($w_pos==3){ //å·¦ä¸‹
       $wX = 5;
       $wY = $srcFile_h - $height - 5;
-    }else if($w_pos==4){ //ÉÏÖÐ
+    }else if($w_pos==4){ //ä¸Šä¸­
       $wX = ($srcFile_w - $width) / 2;
       if($ifttf==1) $wY = $height + 5;
       else $wY = 5;
-    }else if($w_pos==5){ //ÕýÖÐ
+    }else if($w_pos==5){ //æ­£ä¸­
       $wX = ($srcFile_w - $width) / 2;
       $wY = ($srcFile_h - $height) / 2;
-    }else if($w_pos==6){ //ÏÂÖÐ
+    }else if($w_pos==6){ //ä¸‹ä¸­
       $wX = ($srcFile_w - $width) / 2;
       $wY = $srcFile_h - $height - 5;
-    }else if($w_pos==7){ //ÓÒÉÏ
+    }else if($w_pos==7){ //å³ä¸Š
       $wX = $srcFile_w - $width - 5;
       if($ifttf==1) $wY = $height + 5;
       else $wY = 5;
-    }else if($w_pos==8){ //ÓÒÖÐ
+    }else if($w_pos==8){ //å³ä¸­
       $wX = $srcFile_w - $width - 5;
       $wY = ($srcFile_h - $height) / 2;
-    }else if($w_pos==9){ //ÓÒÏÂ
+    }else if($w_pos==9){ //å³ä¸‹
       $wX = $srcFile_w - $width - 5;
       $wY = $srcFile_h - $height - 5;
-    }else{ //ÖÐ
+    }else{ //ä¸­
       $wX = ($srcFile_w - $width) / 2;
       $wY = ($srcFile_h - $height) / 2;
     }
-    //Ð´ÈëË®Ó¡
+    //å†™å…¥æ°´å°
     imagealphablending($srcFile_img, true);
     if($ifWaterImage){
       imagecopymerge($srcFile_img, $water_img, $wX, $wY, 0, 0, $width,$height,$w_pct);
@@ -264,7 +265,7 @@ function ImgWaterMark($srcFile,$w_pos=0,$w_img="",$w_text="",$w_font=5,$w_color=
       if($ifttf==1) imagettftext($srcFile_img, $w_font, 0, $wX, $wY, imagecolorallocate($srcFile_img,$R,$G,$B), $font_type, $w_text); 
       else imagestring($srcFile_img,$w_font,$wX,$wY,$w_text,imagecolorallocate($srcFile_img,$R,$G,$B));
     }
-    //±£´æ½á¹û
+    //ä¿å­˜ç»“æžœ
     switch($srcInfo[2]){
        case 1 :
     if(function_exists("imagegif")) imagegif($srcFile_img,$srcFile);

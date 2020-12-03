@@ -6,28 +6,28 @@ if($job=="newdir")
 {
 	$dirname = trim(ereg_replace("[ \r\n\t\.\*\%\\/\?><\|\":]{1,}","",$dirname));
 	if($dirname==""){
-		ShowMsg("Ä¿Â¼Ãû·Ç·¨£¡","-1");
+		ShowMsg("ç›®å½•åéžæ³•ï¼","-1");
 		exit();
 	}
-	MkdirAll($cfg_basedir.$activepath."/".$dirname,777);
+	MkdirAll($cfg_basedir.$activepath."/".$dirname,$GLOBALS['cfg_dir_purview']);
 	CloseFtp();
-	ShowMsg("³É¹¦´´½¨Ò»¸öÄ¿Â¼£¡","select_templets.php?f=$f&activepath=".urlencode($activepath."/".$dirname));
+	ShowMsg("æˆåŠŸåˆ›å»ºä¸€ä¸ªç›®å½•ï¼","select_templets.php?f=$f&activepath=".urlencode($activepath."/".$dirname));
 	exit();
 }
 if($job=="upload")
 {
 	if(empty($uploadfile)) $uploadfile = "";
 	if(!is_uploaded_file($uploadfile)){
-		 ShowMsg("ÄãÃ»ÓÐÑ¡ÔñÉÏ´«µÄÎÄ¼þ!","-1");
+		 ShowMsg("ä½ æ²¡æœ‰é€‰æ‹©ä¸Šä¼ çš„æ–‡ä»¶!","-1");
 	   exit();
 	}
 	if(!ereg("^text",$uploadfile_type)){
-		ShowMsg("ÄãÉÏ´«µÄ²»ÊÇÎÄ±¾ÀàÐÍ¸½¼þ!","-1");
+		ShowMsg("ä½ ä¸Šä¼ çš„ä¸æ˜¯æ–‡æœ¬ç±»åž‹é™„ä»¶!","-1");
 		exit();
 	}
 	if(!eregi($cfg_txttype,$uploadfile_name))
 	{
-		ShowMsg("ÄãËùÉÏ´«µÄÄ£°åÎÄ¼þÀàÐÍ²»ÄÜ±»Ê¶±ð£¬ÇëÊ¹ÓÃhtm¡¢html¡¢tpl¡¢txt¡¢dtpÀ©Õ¹Ãû£¡","-1");
+		ShowMsg("ä½ æ‰€ä¸Šä¼ çš„æ¨¡æ¿æ–‡ä»¶ç±»åž‹ä¸èƒ½è¢«è¯†åˆ«ï¼Œè¯·ä½¿ç”¨htmã€htmlã€tplã€txtã€dtpæ‰©å±•åï¼","-1");
 		exit();
 	}
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
@@ -40,12 +40,12 @@ if($job=="upload")
   $fullfilename = $cfg_basedir.$activepath."/".$filename;
   if(file_exists($fullfilename))
   {
-  	ShowMsg("±¾Ä¿Â¼ÒÑ¾­´æÔÚÍ¬ÃûµÄÎÄ¼þ£¬Çë¸ü¸Ä£¡","-1");
+  	ShowMsg("æœ¬ç›®å½•å·²ç»å­˜åœ¨åŒåçš„æ–‡ä»¶ï¼Œè¯·æ›´æ”¹ï¼","-1");
 		exit();
   }
   @move_uploaded_file($uploadfile,$fullfilename);
 	@unlink($uploadfile);
-	ShowMsg("³É¹¦ÉÏ´«ÎÄ¼þ£¡","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
+	ShowMsg("æˆåŠŸä¸Šä¼ æ–‡ä»¶ï¼","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
 	exit();
 }
 ?>

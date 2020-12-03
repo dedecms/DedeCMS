@@ -1,45 +1,47 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-$aid = ereg_replace("[^0-9]","",$aid);
-$channelid="3";
-$dsql = new DedeSql(false);
-//¶ÁÈ¡¹éµµĞÅÏ¢
-//------------------------------
-$arcQuery = "Select 
-#@__channeltype.typename as channelname,
-#@__arcrank.membername as rankname,
-#@__archives.* 
-From #@__archives
-left join #@__channeltype on #@__channeltype.ID=#@__archives.channel 
-left join #@__arcrank on #@__arcrank.rank=#@__archives.arcrank
-where #@__archives.ID='$aid'";
-$addQuery = "Select * From #@__addonsoft where aid='$aid'";
+CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
+require_once(DEDEADMIN."/inc/inc_catalog_options.php");
+require_once(DEDEADMIN."/../include/pub_dedetag.php");
+require_once(DEDEADMIN."/inc/inc_archives_functions.php");
+$aid = intval($aid);
 
-$dsql->SetQuery($arcQuery);
+$dsql = new DedeSql(false);
+
+$tables = GetChannelTable($dsql,$aid,'arc');
+
+//è¯»å–å½’æ¡£ä¿¡æ¯
+//------------------------------
+$arcQuery = "Select c.typename as channelname,ar.membername as rankname,a.* 
+From `{$tables['maintable']}` a 
+left join #@__channeltype c on c.ID=a.channel 
+left join #@__arcrank ar on ar.rank=a.arcrank 
+where a.ID='$aid'";
+
+$addQuery = "Select * From `{$tables['addtable']}` where aid='$aid'";
+
 $arcRow = $dsql->GetOne($arcQuery);
 if(!is_array($arcRow)){
 	$dsql->Close();
-	ShowMsg("¶ÁÈ¡µµ°¸»ù±¾ĞÅÏ¢³ö´í!","-1");
+	ShowMsg("è¯»å–æ¡£æ¡ˆåŸºæœ¬ä¿¡æ¯å‡ºé”™!","javascript:;");
 	exit();
 }
 
+$query = "Select * From #@__channeltype where ID='".$arcRow['channel']."'";
+$cInfos = $dsql->GetOne($query);
+if(!is_array($cInfos)){
+	$dsql->Close();
+	ShowMsg("è¯»å–é¢‘é“é…ç½®ä¿¡æ¯å‡ºé”™!","javascript:;");
+	exit();
+}
+
+$channelid = $arcRow['channel'];
+$addtable = $cInfos['addtable'];
+
+$addQuery = "Select * From ".$cInfos['addtable']." where aid='$aid'";
 $addRow = $dsql->GetOne($addQuery);
 
-if(!is_array($addRow))
-{
-	$addRow["filetype"] = "";
-  $addRow["language"] = "";
-  $addRow["softtype"] = "";
-  $addRow["accredit"] = "";
-  $addRow["softrank"] = 3;
-  $addRow["officialUrl"] = 400;
-  $addRow["officialDemo"] = "";
-  $addRow["softsize"] = 400;
-  $addRow["softlinks"] = "";
-  $addRow["introduce"] = "";
-}
+$tags = GetTagFormLists($dsql,$aid);
 
 $newRowStart = 1;
 $nForm = "";
@@ -52,8 +54,8 @@ if($addRow["softlinks"]!="")
     foreach($dtp->CTags as $ctag){
       if($ctag->GetName()=="link"){
       	$nForm .= "
-      	Èí¼şµØÖ·".$newRowStart."£º<input type='text' name='softurl".$newRowStart."' style='width:280' value='".trim($ctag->GetInnerText())."'>
-        ·şÎñÆ÷Ãû³Æ£º<input type='text' name='servermsg".$newRowStart."' value='".$ctag->GetAtt("text")."' style='width:150'>
+      	è½¯ä»¶åœ°å€".$newRowStart."ï¼š<input type='text' name='softurl".$newRowStart."' style='width:280px' value='".trim($ctag->GetInnerText())."'>
+        æœåŠ¡å™¨åç§°ï¼š<input type='text' name='servermsg".$newRowStart."' value='".$ctag->GetAtt("text")."' style='width:150px'>
         <br/>";
         $newRowStart++;
       }
@@ -61,478 +63,10 @@ if($addRow["softlinks"]!="")
   }
   $dtp->Clear();
 }
-?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>±à¼­Èí¼ş</title>
-<style type="text/css">
-<!--
-body { background-image: url(img/allbg.gif); }
--->
-</style>
-<link href="base.css" rel="stylesheet" type="text/css">
-<script language='javascript' src='main.js'></script>
-<script language="javascript">
-<!--
-function checkSubmit()
-{
-   if(document.form1.title.value==""){
-	   alert("Èí¼şÃû³Æ²»ÄÜÎª¿Õ£¡");
-	   document.form1.title.focus();
-	   return false;
-  }
-}
 
-function MakeUpload()
-{
-   var startNum = <?php echo $newRowStart?>;
-   var upfield = document.getElementById("uploadfield");
-   var endNum =  document.form1.picnum.value;
-   if(endNum>9) endNum = 9;
-   upfield.innerHTML = "";
-   for(startNum;startNum<=endNum;startNum++){
-	   upfield.innerHTML += "Èí¼şµØÖ·"+startNum+"£º<input type='text' name='softurl"+startNum+"' style='width:280' value='http://'> ";
-	   upfield.innerHTML += " ";
-	   upfield.innerHTML += "·şÎñÆ÷Ãû³Æ£º<input type='text' name='servermsg"+startNum+"' style='width:150'><br/>\r\n";
-	 }
-}
+require_once(dirname(__FILE__)."/templets/soft_edit.htm");
 
--->
-</script>
-</head>
-<body topmargin="8">
-<form name="form1" action="soft_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
-<input type="hidden" name="channelid" value="<?php echo $channelid?>">
-<input type="hidden" name="ID" value="<?php echo $aid?>">
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-    <tr> 
-      <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
-        &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"></a><a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>Èí¼şÁĞ±í</u></a>&gt;&gt;¸ü¸ÄÈí¼ş</td>
-      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>À¸Ä¿¹ÜÀí</u>]</a> </td>
-      <td width="1%">&nbsp;</td>
-    </tr>
-  </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
-    <tr> 
-      <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;³£¹æ²ÎÊı&nbsp;</td>
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>Èí¼şÄÚÈİ</u></a>&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
-    <tr> 
-      <td colspan="2"> <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>³£¹æ²ÎÊı</u></a>&nbsp;</td>
-            <td width="84" align="center" background="img/itemnote1.gif">Èí¼şÄÚÈİ&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-  </table>
-  <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr><td height="2"></td></tr>
-</table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
-    <tr> 
-      <td width="400%" height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Èí¼şÃû³Æ£º</td>
-            <td width="240"><input name="title" type="text" id="title" style="width:200" value="<?php echo $arcRow["title"]?>"></td>
-            <td width="90">¸½¼Ó²ÎÊı£º</td>
-            <td> 
-              <input name="iscommend" type="checkbox" id="iscommend" value="11" class="np"<?php  if($arcRow["iscommend"]>10) echo " checked";?>>
-              ÍÆ¼ö 
-              <input name="isbold" type="checkbox" id="isbold" value="5" class="np"<?php  if($arcRow["iscommend"]==5||$arcRow["iscommend"]==16) echo " checked";?>>
-              ¼Ó´Ö
-              <input name="isjump" onClick="ShowUrlTrEdit()" type="checkbox" id="isjump" value="1" class="np"<?php  echo $arcRow["redirecturl"]=="" ? "" : " checked";?>>
-              Ìø×ªÍøÖ·
-            </td>
-          </tr>
-        </table>
-       </td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:<?php  echo $arcRow["redirecturl"]=="" ? "none" : "block";?>">
-	   <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;Ìø×ªÍøÖ·£º</td>
-            <td> <input name="redirecturl" type="text" id="redirecturl" style="width:300" value="<?php echo $arcRow["redirecturl"]?>"> 
-            </td>
-          </tr>
-       </table>
-	 </td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">¼òÂÔ±êÌâ£º</td>
-            <td width="240"><input name="shorttitle" type="text" value="<?php echo $arcRow["shorttitle"]?>" id="shorttitle" style="width:200"></td>
-            <td width="90">×Ô¶¨ÊôĞÔ£º</td>
-            <td> 
-              <select name='arcatt' style='width:150'>
-            	<option value='0'>ÆÕÍ¨ÎÄµµ</option>
-            	<?php 
-            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
-            	$dsql->Execute();
-            	while($trow = $dsql->GetObject())
-            	{
-            		if($arcRow["arcatt"]==$trow->att) echo "<option value='{$trow->att}' selected>{$trow->attname}</option>";
-            		else echo "<option value='{$trow->att}'>{$trow->attname}</option>";
-            	}
-            	?>
-              </select>
-            </td>
-          </tr>
-        </table>
-        </td>
-    </tr>
-    <tr id="pictable"> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90" height="81">
-            	&nbsp;Ëõ ÂÔ Í¼£º<br/>
-            	&nbsp;<input type='checkbox' class='np' name='ddisremote' value='1'>Ô¶³Ì
-            </td>
-            <td width="340"> 
-              <input name="picname" type="text" id="picname" style="width:230" value="<?php echo $arcRow["litpic"]?>">
-              <input type="button" name="Submit" value="ä¯ÀÀ..." style="width:60" onClick="SelectImage('form1.picname','');" class='nbt'>
-            </td>
-            <td align="center"><img src="<?php if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "img/pview.gif";?>" width="150" height="100" id="picview" name="picview"> 
-            </td>
-          </tr>
-        </table>
-       </td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Èí¼şÀ´Ô´£º</td>
-            <td width="240"> <input name="source" type="text" id="source" style="width:200" value="<?php echo $arcRow["source"]?>">  
-            </td>
-            <td width="90">Èí¼ş×÷Õß£º</td>
-            <td width="159"><input name="writer" type="text" id="writer"  style="width:120"value="<?php echo $arcRow["writer"]?>"> 
-            </td>
-            <td>&nbsp; </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">ÄÚÈİÅÅĞò£º</td>
-            <td width="240">
-            	<select name="sortup" id="sortup" style="width:150">
-                <?php 
-                $subday = SubDay($arcRow["sortrank"],$arcRow["senddate"]);
-                echo "<option value='0'>Õı³£ÅÅĞò</option>\r\n";
-                if($subday>0) echo "<option value='$subday' selected>ÖÃ¶¥ $subday Ìì</option>\r\n";
-                ?>
-                <option value="7">ÖÃ¶¥Ò»ÖÜ</option>
-                <option value="30">ÖÃ¶¥Ò»¸öÔÂ</option>
-                <option value="90">ÖÃ¶¥Èı¸öÔÂ</option>
-                <option value="180">ÖÃ¶¥°ëÄê</option>
-                <option value="360">ÖÃ¶¥Ò»Äê</option>
-              </select>
-              </td>
-            <td width="90">±êÌâÑÕÉ«£º</td>
-            <td width="159">
-            	<input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["color"]?>"> 
-            </td>
-            <td> 
-              <input name="modcolor" type="button" id="modcolor" value="Ñ¡È¡" onClick="ShowColor()" class='nbt'>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">ÔÄ¶ÁÈ¨ÏŞ£º</td>
-            <td width="240">
-             <select name="arcrank" id="arcrank" style="width:150">
-              <option value='<?php echo $arcRow["arcrank"]?>'><?php echo $arcRow["rankname"]?></option>
-                <?php 
-              $urank = $cuserLogin->getUserRank();
-              $dsql = new DedeSql(false);
-              $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
-              $dsql->Execute();
-              while($row = $dsql->GetObject()){
-              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
-              }
-              ?>
-              </select>
-             </td>
-            <td width="63">·¢²¼Ñ¡Ïî£º</td>
-            <td>
-            	<input name="ishtml" type="radio" class="np" value="1"<?php if($arcRow["ismake"]!=-1) echo " checked";?>>
-              Éú³ÉHTML 
-              <input type="radio" name="ishtml" class="np" value="0"<?php if($arcRow["ismake"]==-1) echo " checked";?>>
-              ½ö¶¯Ì¬ä¯ÀÀ
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="75" colspan="4" class="bline">
-<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90" height="51">¼òÒªËµÃ÷£º</td>
-            <td width="240"> <textarea name="description" rows="3" id="description" style="width:200"><?php echo $arcRow["description"]?></textarea> 
-            </td>
-            <td width="90">¹Ø¼ü×Ö£º</td>
-            <td> <textarea name="keywords" rows="3" id="keywords" style="width:200"><?php echo $arcRow["keywords"]?></textarea> 
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Â¼ÈëÊ±¼ä£º</td>
-            <td> 
-              <?php 
-			         $addtime = GetDateTimeMk($arcRow["senddate"]);
-			         echo "$addtime (±ê×¼ÅÅĞòºÍÉú³ÉHTMLÃû³ÆµÄÒÀ¾İÊ±¼ä) <input type='hidden' name='senddate' value='".$arcRow["senddate"]."'>";
-			        ?>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">·¢²¼Ê±¼ä£º</td>
-            <td width="427"> 
-              <?php 
-			$nowtime = GetDateTimeMk($arcRow["pubdate"]);
-			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
-			?>
-            </td>
-            <td width="96" align="center">Ïû·ÑµãÊı£º</td>
-            <td width="187">
-<input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10">
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Ö÷·ÖÀà£º</td>
-            <td width="400"> 
-          <?php 
-           	$dsql = new DedeSql(false);
-           	$seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid"]."' ");
-			    if(is_array($seltypeids)){
-			         echo GetTypeidSel('form1','typeid','selbt1',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
-			    }
-			    ?>
-            </td>
-            <td> £¨Ö»ÔÊĞíÔÚ°×É«Ñ¡ÏîµÄÀ¸Ä¿ÖĞ·¢²¼µ±Ç°ÀàĞÍÄÚÈİ£©</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" bgcolor="#FFFFFF" class="bline2">
-<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">¸±·ÖÀà£º</td>
-            <td width="400"><?php 
-			$seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid2"]."' ");
-			if(is_array($seltypeids)){
-			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
-			}else{
-			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],0,'ÇëÑ¡Ôñ...');
-			}
-            ?></td>
-            <td>&nbsp; </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr><td height="2"></td></tr>
-</table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" style="display:none" id="adset">
-    <tr> 
-      <td width="100%" height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">ÎÄ¼şÀàĞÍ£º</td>
-            <td width="240"> 
-              <select name="filetype" id="filetype" style="width:100">
-                <?php 
-                if($addRow["filetype"]!="") echo "<option value=\"".$addRow["filetype"]."\">".$addRow["filetype"]."</option>\r\n";
-                ?>
-                <option value=".exe">.exe</option>
-                <option value=".zip">.zip</option>
-                <option value=".rar">.rar</option>
-                <option value=".iso">.iso</option>
-                <option value=".gz">.gz</option>
-                <option value="ÆäËü">ÆäËü</option>
-              </select>
-            </td>
-            <td width="90">½çÃæÓïÑÔ£º</td>
-            <td> 
-              <select name="language" id="language" style="width:100">
-                <?php 
-                if($addRow["language"]!="") echo "<option value=\"".$addRow["language"]."\">".$addRow["language"]."</option>\r\n";
-                ?>
-                <option value="¼òÌåÖĞÎÄ">¼òÌåÖĞÎÄ</option>
-                <option value="Ó¢ÎÄÈí¼ş">Ó¢ÎÄÈí¼ş</option>
-                <option value="·±ÌåÖĞÎÄ">·±ÌåÖĞÎÄ</option>
-                <option value="ÆäËüÀàĞÍ">ÆäËüÀàĞÍ</option>
-              </select>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Èí¼şÀàĞÍ£º</td>
-            <td width="240"> 
-              <select name="softtype" id="softtype" style="width:100">
-                <?php 
-                if($addRow["softtype"]!="") echo "<option value=\"".$addRow["softtype"]."\">".$addRow["softtype"]."</option>\r\n";
-                ?>
-                <option value="¹ú²úÈí¼ş">¹ú²úÈí¼ş</option>
-                <option value="¹úÍâÈí¼ş">¹úÍâÈí¼ş</option>
-                <option value="ºº»¯²¹¶¡">ºº»¯²¹¶¡</option>
-              </select>
-            </td>
-            <td width="90">ÊÚÈ¨·½Ê½£º</td>
-            <td> 
-              <select name="accredit" id="accredit" style="width:100">
-                <?php 
-                if($addRow["accredit"]!="") echo "<option value=\"".$addRow["accredit"]."\">".$addRow["accredit"]."</option>\r\n";
-                ?>
-                <option value="¹²ÏíÈí¼ş">¹²ÏíÈí¼ş</option>
-                <option value="Ãâ·ÑÈí¼ş">Ãâ·ÑÈí¼ş</option>
-                <option value="¿ªÔ´Èí¼ş">¿ªÔ´Èí¼ş</option>
-                <option value="ÉÌÒµÈí¼ş">ÉÌÒµÈí¼ş</option>
-                <option value="ÆÆ½âÈí¼ş">ÆÆ½âÈí¼ş</option>
-                <option value="ÓÎÏ·Íâ¹Ò">ÓÎÏ·Íâ¹Ò</option>
-              </select>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">ÔËĞĞ»·¾³£º</td>
-            <td width="240"> 
-              <input type='text' name='os' value='<?php echo $addRow["os"]?>' style='width:200'>
-            </td>
-            <td width="90">Èí¼şµÈ¼¶£º</td>
-            <td> 
-              <select name="softrank" id="softrank" style="width:100">
-                 <?php 
-                if($addRow["softrank"]!="") echo "<option value=\"".$addRow["softrank"]."\">".$addRow["softrank"]."ĞÇ</option>\r\n";
-                ?>
-                <option value="1">Ò»ĞÇ</option>
-                <option value="2">¶şĞÇ</option>
-                <option value="3">ÈıĞÇ </option>
-                <option value="4">ËÄĞÇ</option>
-                <option value="5">ÎåĞÇ</option>
-              </select>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">¹Ù·½ÍøÖ·£º</td>
-            <td width="240"> 
-              <input name="officialUrl" type="text" id="officialUrl" value="<?php echo $addRow["officialUrl"]?>">
-            </td>
-            <td width="90">³ÌĞòÑİÊ¾£º</td>
-            <td> 
-              <input name="officialDemo" type="text" id="officialDemo" value="<?php echo $addRow["officialDemo"]?>">
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">Èí¼ş´óĞ¡£º</td>
-            <td width="240"> 
-              <input name="softsize" type="text" id="softsize" style="width:100"  value="<?php echo $addRow["softsize"]?>">
-            </td>
-            <td width="90">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" bgcolor="#F1F5F2" class="bline2"><strong>Èí¼şÁ´½ÓÁĞ±í£º</strong></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="72">ÆäËüµØÖ·£º</td>
-            <td>
-            	<input name="picnum" type="text" id="picnum" size="8" value="5"> 
-              <input name='kkkup' type='button' id='kkkup2' value='Ôö¼ÓÊıÁ¿' onClick="MakeUpload();" class='nbt'>
-              (×î¶àÎª9¸öÁ´½Ó)
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline">
-        <?php 
-        echo $nForm;
-	      echo "<span id='uploadfield'></span>";
-	      ?>
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" bgcolor="#F1F5F2" class="bline2"><strong>Èí¼şÏêÏ¸½éÉÜ£º</strong></td>
-    </tr>
-    <tr> 
-      <td height="100" colspan="4" class="bline"> 
-        <?php 
-	GetEditor("body",$addRow["introduce"],250,"Small");
-	?>
-      </td>
-    </tr>
-  </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td height="56">
-	<table width="100%" border="0" cellspacing="1" cellpadding="1">
-        <tr> 
-          <td width="17%">&nbsp;</td>
-          <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td width="115"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-                <td width="99"><img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:hand"></td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-</form>
-<script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
-<?php 
-$dsql->Close();
+
+ClearAllLink();
+
 ?>
-</body>
-</html>

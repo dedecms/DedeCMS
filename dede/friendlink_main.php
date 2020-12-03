@@ -7,23 +7,23 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 if(!isset($ischeck)) $ischeck = -1;
 if(!isset($keyword)) $keyword = "";
-if($ischeck==0) $seloption =  "<option value='0' selected>Î´ÉóºË</option>\r\n<option value='-1'>È«²¿</option>\r\n";
-else if($ischeck==1) $seloption = "<option value='1' selected>ÄÚÒ³</option>\r\n<option value='-1'>È«²¿</option>\r\n";
-else if($ischeck==2) $seloption = "<option value='2' selected>Ê×Ò³</option>\r\n<option value='-1'>È«²¿</option>\r\n";
-else if($ischeck==3) $seloption = "<option value='3' selected>ÒÑÉóºË</option>\r\n<option value='-1'>È«²¿</option>\r\n";
-else $seloption = "<option value='-1' selected>È«²¿</option>\r\n";
+if($ischeck==0) $seloption =  "<option value='0' selected>æœªå®¡æ ¸</option>\r\n<option value='-1'>å…¨éƒ¨</option>\r\n";
+else if($ischeck==1) $seloption = "<option value='1' selected>å†…é¡µ</option>\r\n<option value='-1'>å…¨éƒ¨</option>\r\n";
+else if($ischeck==2) $seloption = "<option value='2' selected>é¦–é¡µ</option>\r\n<option value='-1'>å…¨éƒ¨</option>\r\n";
+else if($ischeck==3) $seloption = "<option value='3' selected>å·²å®¡æ ¸</option>\r\n<option value='-1'>å…¨éƒ¨</option>\r\n";
+else $seloption = "<option value='-1' selected>å…¨éƒ¨</option>\r\n";
 
 function GetPic($pic)
 {
-	if($pic=="") return "ÎÞÍ¼±ê";
+	if($pic=="") return "æ— å›¾æ ‡";
 	else return "<img src='$pic' width='88' height='31' border='0'>";
 }
 
 function GetSta($sta)
 {
-	if($sta==1) return "ÄÚÒ³";
-	if($sta==2) return "Ê×Ò³";
-	else return "Î´ÉóºË";
+	if($sta==1) return "å†…é¡µ";
+	if($sta==2) return "é¦–é¡µ";
+	else return "æœªå®¡æ ¸";
 }
 
 $addquery = " where 1=1 ";
@@ -47,4 +47,6 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/friendlink_main.htm");
 $dlist->display();
 $dlist->Close();
+
+ClearAllLink();
 ?>

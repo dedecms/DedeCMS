@@ -10,14 +10,14 @@ if(empty($orderby)) $orderby = 'aid';
 if(empty($aid)) $aid = '0';
 
 $aid = ereg_replace("[^0-9]","",$aid);
-//ÖØÔØÁĞ±í
+//é‡è½½åˆ—è¡¨
 if($dopost=='getlist'){
 	PrintAjaxHead();
 	GetUserList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
 }
-//¸üĞÂ×Ö¶Î
+//æ›´æ–°å­—æ®µ
 else if($dopost=='update')
 {
 	$dsql->ExecuteNoneQuery("Update dedecms_users set url='$url',version='$version',rank='$rank',isok='$isok',ismember='$ismember' where aid='$aid';");
@@ -26,7 +26,7 @@ else if($dopost=='update')
 	$dsql->Close();
 	exit();
 }
-//É¾³ı×Ö¶Î
+//åˆ é™¤å­—æ®µ
 else if($dopost=='del')
 {
 	$dsql->ExecuteNoneQuery("Delete From dedecms_users where aid='$aid';");
@@ -36,7 +36,7 @@ else if($dopost=='del')
 	exit();
 }
 
-//µÚÒ»´Î½øÈëÕâ¸öÒ³Ãæ
+//ç¬¬ä¸€æ¬¡è¿›å…¥è¿™ä¸ªé¡µé¢
 if($dopost==''){
 	$row = $dsql->GetOne("Select count(*) as dd From dedecms_users");
 	$totalRow = $row['dd'];
@@ -44,7 +44,7 @@ if($dopost==''){
   $dsql->Close();
 }
 
-//»ñµÃÁĞ±í
+//è·å¾—åˆ—è¡¨
 //---------------------------------
 function GetUserList($dsql,$pageno,$pagesize,$orderby='aid'){
 	global $cfg_phpurl;
@@ -52,13 +52,13 @@ function GetUserList($dsql,$pageno,$pagesize,$orderby='aid'){
 	$printhead ="<table width='99%' border='0' cellpadding='1' cellspacing='1' bgcolor='#333333' style='margin-bottom:3px'>
     <tr align='center' bgcolor='#E5F9FF' height='24'> 
       <td width='8%' height='23'><a href='#' onclick=\"ReloadPage('aid')\"><u>ID</u></a></td>
-      <td width='30%'>ÍøÖ·</td>
-      <td width='6%'><a href='#' onclick=\"ReloadPage('version')\"><u>°æ±¾</u></a></td>
-      <td width='6%'><a href='#' onclick=\"ReloadPage('rank')\"><u>µÈ¼¶</u></a></td>
-      <td width='6%'><a href='#' onclick=\"ReloadPage('isok')\"><u>¼ìÑé</u></a></td>
-      <td width='6%'><a href='#' onclick=\"ReloadPage('ismember')\"><u>»áÔ±</u></a></td>
-      <td width='16%'><a href='#' onclick=\"ReloadPage('logintime')\"><u>ÊÕÂ¼Ê±¼ä</u></a></td>
-      <td>¹ÜÀí</td>
+      <td width='30%'>ç½‘å€</td>
+      <td width='6%'><a href='#' onclick=\"ReloadPage('version')\"><u>ç‰ˆæœ¬</u></a></td>
+      <td width='6%'><a href='#' onclick=\"ReloadPage('rank')\"><u>ç­‰çº§</u></a></td>
+      <td width='6%'><a href='#' onclick=\"ReloadPage('isok')\"><u>æ£€éªŒ</u></a></td>
+      <td width='6%'><a href='#' onclick=\"ReloadPage('ismember')\"><u>ä¼šå‘˜</u></a></td>
+      <td width='16%'><a href='#' onclick=\"ReloadPage('logintime')\"><u>æ”¶å½•æ—¶é—´</u></a></td>
+      <td>ç®¡ç†</td>
     </tr>\r\n";
     echo $printhead;
     $dsql->SetQuery("Select * From dedecms_users order by $orderby desc limit $start,$pagesize ");
@@ -74,9 +74,9 @@ function GetUserList($dsql,$pageno,$pagesize,$orderby='aid'){
       <td><input name='rank' type='text' id='rank{$row['aid']}' value='{$row['rank']}' class='ininput'></td>
       <td>".strftime("%y-%m-%d %H:%M:%S",$row['logintime'])."</td>
       <td>
-      <a href='/newinfo.php?feedback=".urlencode($row['url'])."' target='_blank'>ä¯ÀÀ</a> | 
-      <a href='#' onclick='UpdateNote({$row['aid']})'>¸üĞÂ</a> | 
-      <a href='#' onclick='DelNote({$row['aid']})'>É¾³ı</a>
+      <a href='/newinfo.php?feedback=".urlencode($row['url'])."' target='_blank'>æµè§ˆ</a> | 
+      <a href='#' onclick='UpdateNote({$row['aid']})'>æ›´æ–°</a> | 
+      <a href='#' onclick='DelNote({$row['aid']})'>åˆ é™¤</a>
       </td>
     </tr>";
     echo $line;
@@ -88,7 +88,9 @@ function PrintAjaxHead(){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 }
+
+ClearAllLink();
 ?>
 

@@ -1,33 +1,29 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>����ͼ��</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>发布图集</title>
 <link href="newskin.css" rel="stylesheet" type="text/css">
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript' src='main.js'></script>	
 <script language="javascript">
 <!--
 function checkSubmit()
 {
 if(document.form1.title.value==""){
-	 alert("ͼ�����ⲻ��Ϊ�գ�");
+	 alert("图集标题不能为空！");
 	 document.form1.title.focus();
 	 return false;
 }
 
 if(document.form1.typeid.value==0){
-	 alert("ͼ��������Ŀ����ѡ��");
+	 alert("图集隶属栏目必须选择！");
 	 return false;
-}
-
-if(document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
-{
-	alert("ͼ��������Ŀ����ѡ���ɫ��������Ŀ��");
-	return false;
 }
 
 if(document.form1.vdcode.value==""){
  document.form1.vdcode.focus();
- alert("��֤�벻��Ϊ�գ�");
+ alert("验证码不能为空！");
  return false;
 }
 }
@@ -46,22 +42,22 @@ function MakeUpload(mnum)
    
    for(startNum;startNum < endNum;startNum++){
 	   fhtml = "";
-	   fhtml += "<table width='580' align=\"center\"><tr><td><input type='checkbox' name='isokcheck"+startNum+"' id='isokcheck"+startNum+"' value='1' class='np' onClick='CheckSelTable("+startNum+")'>��ʾ/����ͼƬ["+startNum+"]��ѡ��</td></tr></table>";
+	   fhtml += "<table width='580' align=\"center\"><tr><td><input type='checkbox' name='isokcheck"+startNum+"' id='isokcheck"+startNum+"' value='1' class='np' onClick='CheckSelTable("+startNum+")'>显示/隐藏图片["+startNum+"]的选框</td></tr></table>";
 	   fhtml += "<table width=\"580\" border=\"0\" id=\"seltb"+startNum+"\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;\" align=\"center\"><tobdy>";
 	   fhtml += "<tr bgcolor=\"#F4F9DD\">\r\n";
-	   fhtml += "<td height=\"25\" colspan=\"2\">��<strong>ͼƬ"+startNum+"��</strong></td>";
+	   fhtml += "<td height=\"25\" colspan=\"2\">　<strong>图片"+startNum+"：</strong></td>";
 	   fhtml += "</tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td width=\"410\" height=\"25\"> �������ϴ��� ";
-	   fhtml += "<?php if($cfg_mb_upload=='��'){?><input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"><?php }else{ echo "ϵͳ��ֹ���ļ��ϴ����ܣ�";}?></td>";
+	   fhtml += "<td width=\"410\" height=\"25\"> 　本地上传： ";
+	   fhtml += "<?php if($cfg_mb_upload=='Y'){?><input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"><?php }else{ echo "系统禁止了文件上传功能！";}?></td>";
 	   fhtml += "<td width=\"164\" rowspan=\"3\" align=\"center\"><img src=\"img/pview.gif\" width=\"150\" id=\"picview"+startNum+"\" name=\"picview"+startNum+"\"></td>";
 	   fhtml += "</tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td height=\"25\"> ��ָ����ַ�� ";
+	   fhtml += "<td height=\"25\"> 　指定网址： ";
 	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' value='http://' style=\"width:260px\"> ";
 	   fhtml += "</td></tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td height=\"56\">��ͼƬ��飺 ";
+	   fhtml += "<td height=\"56\">　图片简介： ";
 	   fhtml += "<textarea name='imgmsg"+startNum+"' style=\"height:46px;width:330px\"></textarea> </td>";
 	   fhtml += "</tr></tobdy></table>\r\n";
 	   upfield.innerHTML += fhtml;
@@ -87,118 +83,141 @@ function CheckSelTable(nnum){
     </td>
     <td width="10">&nbsp;</td>
     <td valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:10px;">
         <tr> 
-          <td background="img/nnnbg.gif" height="25" class="gdt2">
-		  <font color="#333333"> 
-            <strong>��&nbsp;������ͼ����</strong>		  </font>		</td>
+            <td>
+			<div class="manage_company_right_title">
+                	<ul><li>发布新图集：</li></ul>
+              </div>
+			</td>
         </tr>
         <tr>
 		  <form action="album_add_action.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();">
             <input type="hidden" name="dopost" value="addArc"> 
-            <input type="hidden" name="channelid" value="2">
+            <input type="hidden" name="channelid" value="<?php echo $channelid; ?>">
           <td height="183" valign="top" style="padding-top:3px">
-		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
-                <tr bgcolor="#F0FBE3"> 
-                  <td height="24" colspan="4" bgcolor="#F0FBE3">��<strong>�����������</strong></td>
-                </tr>
-                <tr> 
-                  <td width="19%" height="28" align="center" bgcolor="#FFFFFF">ͼ�����ƣ�</td>
-                  <td width="81%" colspan="3" bgcolor="#FFFFFF"> <input name="title" type="text" id="title" size="30" class="nb">
-                    <font color="#FF0000">*</font></td>
-                </tr>
-                <tr bgcolor="#F7FDF0">
-                  <td height="28" align="center" bgcolor="#F7FDF0">ͼƬ��Դ��</td>
-                  <td colspan="3" bgcolor="#F7FDF0"><input name="source" type="text" id="source" size="30" class="nb">
-�����ߣ�
-  <input name="writer" type="text" id="writer" size="15" class="nb" value="<?php echo $cfg_ml->M_UserName?>"></td>
-                </tr>
-                <tr bgcolor="#F7FDF0">
-                  <td height="28" align="center" bgcolor="#FFFFFF">������Ŀ��</td>
-                  <td colspan="3" bgcolor="#FFFFFF"><?php 
-           	 $selname = '��ѡ��...';
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
+                  <tr>
+                    <td height="24" align="left" bgcolor="#F0FBE3"><strong>◆常规参数：</strong></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">图集名称：</td>
+                          <td align="left"><input name="title" type="text" id="title" size="30" style="width:240px" class="company_manage_form_label" />
+                            <font color="#FF0000">*</font></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">图片来源：</td>
+                          <td align="left"><input name="source" type="text" id="source" style="width:160px"  size="30" class="company_manage_form_label" />
+　作者：
+  <input name="writer" type="text" id="writer" size="15" style="width:120px"  class="company_manage_form_label" value="<?php echo $cfg_ml->M_UserName?>" /></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">隶属栏目：</td>
+                          <td align="left"><?php 
+           	 $selname = '请选择...';
            	 $delv = '0';
            	 if(!empty($cid)){
            	 	 $crow = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
            	 	 $selname = $crow['typename'];
            	 	 $selv = $crow['ID'];
            	 }
-           	 echo GetTypeidSelMember('form1','typeid','selbt1',2,$selv,$selname,false);
+           	 echo GetTypeidSelMember('form1','typeid','selbt1',$channelid,$selv,$selname,false);
 			       ?></td>
-                </tr>
-                <tr bgcolor="#F7FDF0">
-                  <td height="28" align="center" bgcolor="#F7FDF0">��֤�룺</td>
-                  <td colspan="3"><table width="200" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="84"><input name="vdcode" type="text" id="vdcode2" size="10"></td>
-                      <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
-                    </tr>
-                  </table></td>
-                </tr>
-                
-                <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center" bgcolor="#FFFFFF">�ҵķ��ࣺ</td>
-                  <td height="28" colspan="3"> <select name="mtype" id="mtype" style="width:200">
-                      <option value='0'>--��ѡ�����--</option>
-                      <?php 
-$dsql->SetQuery("Select * From #@__member_arctype where  memberid='".$cfg_ml->M_ID."' And channelid='1';");
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">验证码：</td>
+                          <td align="left"><table width="200" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="84"><input name="vdcode" type="text" id="vdcode" size="10" style="width:80px"  class="yanzhengma" /></td>
+                              <td width="116"><img src='../include/vdimgck.php' width='50' height='20' /></td>
+                            </tr>
+                          </table></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">我的分类：</td>
+                          <td align="left"><select name="mtype" id="mtype" style="width:200px">
+                            <option value='0'>--请选择分类--</option>
+                            <?php 
+$dsql->SetQuery("Select * From #@__member_arctype where  memberid='".$cfg_ml->M_ID."' ;");
 $dsql->Execute();
 while($row = $dsql->GetObject()){
   echo "<option value='".$row->aid."'>".$row->typename."</option>\r\n";
 }
 ?>
-                    </select></td>
-                </tr>
-                <tr bgcolor="#FFFFFF">
-                  <td height="60" align="center" bgcolor="#F7FDF0">ͼ����飺</td>
-                  <td  bgcolor="#F7FDF0">
-				  <textarea name="description" id="description" style="width:80%;height:50"></textarea>				  </td>
+                          </select></td>
+                        </tr>
+                    </table></td>
                   </tr>
-                <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center" bgcolor="#FFFFFF">�ؼ��֣�</td>
-                  <td bgcolor="#FFFFFF">
-				  <input name="keywords" type="text" id="keywords" style="width:50%;" value="">
-				  (����ؼ����ÿո�ֿ�)				  </td>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">内容简介：</td>
+                          <td align="left"><textarea name="description" id="description" style="width:80%;height:50px"></textarea></td>
+                        </tr>
+                    </table></td>
                   </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">����ͼ��</td>
-                  <td colspan="3" bgcolor="#F7FDF0">
-<input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));"></td>
-                </tr>
-                <tr id="picarea" style="display:none"> 
-                  <td colspan="4" align="center" bgcolor="#FFFFFF">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td width="18%" height="110">&nbsp;</td>
-                        <td width="82%"><img src="img/pview.gif" id="picview" width="150" height="120"></td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-				
-				
-              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">标签（TAG）：</td>
+                          <td align="left"><input name="keywords" type="text" id="keywords" style="width:50%;" value="" class="company_manage_form_label" />
+(多个标签（TAG）用空格分开) </td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">缩略图：</td>
+                          <td align="left"><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
+                        </tr>
+                        <tr id="picarea" style='display:none'>
+                          <td height="28">预　览：</td>
+                          <td align="left"><img src="img/pview.gif" id="picview" width="150" height="120" /></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?>
+                </table>
+				<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
                 <tr bgcolor="#F0FBE3">
-                  <td height="24" colspan="4">��<strong>��ͼ�����ݣ�</strong></td>
+                  <td height="24" colspan="4" align="left" bgcolor="#F0FBE3">　<strong>◆图集内容：</strong></td>
                 </tr>
                 <tr bgcolor="#F0FBE3"> 
-                  <td width="100%" height="24" colspan="4" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <td width="100%" height="24" colspan="4" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0" style=" text-align:left; text-indent:10px; line-height:30px;">
                       <tr>
-                        <td height="24">�������ƣ�</td>
-                        <td><input name="maxwidth" type="text" id="maxwidth" value="<?php echo $cfg_album_width?>" size="8">
-                          ���أ�ͼƬ̫���Ż��������ۣ������ڴ��趨���ƣ�</td>
+                        <td height="24">宽度限制：</td>
+                        <td><input name="maxwidth" type="text" id="maxwidth" value="<?php echo $cfg_album_width?>" size="8" class="yanzhengma" />
+                          像素（图片太大会撑坏版面美观，可以在此设定限制）</td>
                       </tr>
                       <tr> 
-                        <td width="19%" height="24">&nbsp;ͼƬ��</td>
-                        <td width="81%"> <input name="picnum" type="text" id="picnum" size="8" value="5"> 
-                          <input name='kkkup' type='button' id='kkkup2' value='�����ϴ���' onClick="MakeUpload(0);">
-                          ��ע�����60���� </td>
+                        <td width="19%" height="24">&nbsp;图片：</td>
+                        <td width="81%"> <input name="picnum" type="text" id="picnum" size="8" value="5" class="yanzhengma" /> 
+                          <input name='kkkup' type='button' id='kkkup2' value='增加上传框' onClick="MakeUpload(0);">
+                          （注：最大60幅） </td>
                       </tr>
                     </table></td>
                 </tr>
                 <tr> 
-                  <td height="250" colspan="4" align="center" valign="top" bgcolor="#FFFFFF"> 
+                  <td height="250" colspan="4" align="center" valign="top" bgcolor="#FFFFFF" style="text-align:left;"> 
                     <span id='uploadfield'></span> 
                     <script language="JavaScript">
 	         MakeUpload(4);

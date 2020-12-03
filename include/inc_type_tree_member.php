@@ -1,8 +1,10 @@
 <?php 
 //class TypeTree
-//Ä¿Â¼Ê÷(ÓÃÓÚÑ¡ÔñÀ¸Ä¿)
+//ç›®å½•æ ‘(ç”¨äºé€‰æ‹©æ ç›®)
 //--------------------------------
 require_once(dirname(__FILE__)."/config_base.php");
+require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php");
+
 class TypeTreeMember
 {
 	var $dsql;
@@ -11,9 +13,8 @@ class TypeTreeMember
 	var $idCounter;
 	var $idArrary;
 	var $shortName;
-	
 	//-------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------
 	function __construct()
  	{
@@ -24,71 +25,73 @@ class TypeTreeMember
 		$this->idArrary = "";
 		$this->dsql = 0;
   }
-	function TypeTree()
+	function TypeTreeMember()
 	{
 		$this->__construct();
 	}
 	//------------------
-	//ÇåÀíÀà
+	//æ¸…ç†ç±»
 	//------------------
 	function Close()
 	{
-		if(is_object($this->dsql)){ $this->dsql->Close(); @$this->dsql=0; }
+		if($this->dsql){
+			@$this->dsql->Close();
+		}
 		$this->idArrary = "";
 		$this->idCounter = 0;
 	}
 	//
-	//----¶Á³öËùÓĞ·ÖÀà,ÔÚÀàÄ¿¹ÜÀíÒ³(list_type)ÖĞÊ¹ÓÃ----------
+	//----è¯»å‡ºæ‰€æœ‰åˆ†ç±»,åœ¨ç±»ç›®ç®¡ç†é¡µ(list_type)ä¸­ä½¿ç”¨----------
 	//
-	function ListAllType($nowdir=0,$issend=true,$opall=false,$channelid=0)
+	function ListAllType($nowdir=0,$issend=-1,$opall=false,$channelid=0)
 	{
-		if($this->dsql==0){ $this->dsql = new DedeSql(); }
-		
-		if($issend) $addct = " And issend=1 ";
-		else $addct = '';
-		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,channeltype From #@__arctype where reID=0 $addct order by sortrank");
+		if(!is_object($this->dsql)){ $this->dsql = new DedeSql(false); }
+
+		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,channeltype,issend From #@__arctype where reID=0 order by sortrank");
 		$this->dsql->Execute(0);
-		
 		$lastID = GetCookie('lastCidTree');
-		
 		while($row=$this->dsql->GetObject(0))
-		{	 
+		{
 			$typeDir = $row->typedir;
 			$typeName = $row->typename;
 			$ispart = $row->ispart;
 			$ID = $row->ID;
 			$dcid = $row->channeltype;
-			
-			if($ispart==2) continue;
-			
-			//ÆÕÍ¨ÁĞ±í
-			if($ispart==0 || ($ispart==1 && $opall)){
-				if($channelid==0 || $channelid==$dcid) $smenu = " <input type='checkbox' name='selid' id='selid$ID' class='np' onClick=\"ReSel($ID,'$typeName')\"> ";
-			  else $smenu = "[¡Á]";
+			$dissend = $row->issend;
+			if($ispart==2||TestHasChannel($ID,$channelid,$issend)==0) continue;
+			if($ispart==0 || ($ispart==1 && $opall))
+			{//æ™®é€šåˆ—è¡¨
+				if(($channelid==0 || $channelid==$dcid) 
+				&& ($issend!=1 || $dissend==1))
+				{
+					$smenu = " <input type='checkbox' name='selid' id='selid$ID' class='np' onClick=\"ReSel($ID,'$typeName')\"> ";
+				}else{
+					$smenu = "[Ã—]";
+				}
+			}else if($ispart==1)
+			{//å¸¦å°é¢çš„é¢‘é“
+				$smenu = "[å°é¢]";
 			}
-			//´ø·âÃæµÄÆµµÀ
-			else if($ispart==1) $smenu = "[·âÃæ]";
-			
-			echo "<dl class='topcc'>\r\n";
-			echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
-			echo "  <dd class='dlr'>$typeName{$smenu}</dd>\r\n";
-			echo "</dl>\r\n";
+			echo "<dl class='topcc'>\n";
+			echo "<dd><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID},{$channelid});\" src='img/tree_explode.gif' width='11' height='11'> $typeName{$smenu}</dd>\n";
+			echo "</dl>\n";
 			echo "<div id='suns".$ID."' class='sunct'>";
 			if($lastID==$ID){
-				 $this->LogicListAllSunType($ID,"¡¡",$opall,$issend,$channelid);
+			   $this->LogicListAllSunType($ID,"ã€€ã€€",$opall,$issend,$channelid);
 			}
 			echo "</div>\r\n";
 		}
 	}
-	//»ñµÃ×ÓÀàÄ¿µÄµİ¹éµ÷ÓÃ
-	function LogicListAllSunType($ID,$step,$opall,$issend,$channelid)
+	//è·å¾—å­ç±»ç›®çš„é€’å½’è°ƒç”¨
+	function LogicListAllSunType($ID,$step,$opall,$issend,$channelid,$nums=0)
 	{
 		$fid = $ID;
-		
-		if($issend) $addct = " And issend=1 ";
-		else $addct = '';
-		
-		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,channeltype From #@__arctype where reID='".$ID."' $addct order by sortrank");
+
+		if($nums){
+			$step = 'ã€€ã€€'.$step;
+		}
+		$nums = 1;
+		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,channeltype,issend From #@__arctype where reID='".$ID."' order by sortrank");
 		$this->dsql->Execute($fid);
 		if($this->dsql->GetTotalRow($fid)>0)
 		{
@@ -99,31 +102,28 @@ class TypeTreeMember
 			  $reID = $row->reID;
 			  $ID = $row->ID;
 			  $ispart = $row->ispart;
-			  if($step=="¡¡") $stepdd = 2;
-			  else $stepdd = 3;
 			  $dcid = $row->channeltype;
-			  
-			  if($ispart==2) continue;
-			  
-			  //ÆÕÍ¨ÁĞ±í
-			  if($ispart==0||($ispart==1 && $opall)){
+        $dissend = $row->issend;
+
+			  if($ispart==2||TestHasChannel($ID,$channelid,$issend)==0) continue;
+
+			  //æ™®é€šåˆ—è¡¨
+			  if(($ispart==0 || ($ispart==1 && $opall)) 
+			  && ($issend!=1 || $dissend==1))
+			  {
 			  	if($channelid==0 || $channelid==$dcid) $smenu = " <input type='checkbox' name='selid' id='selid$ID' class='np' onClick=\"ReSel($ID,'$typeName')\"> ";
-			  	else $smenu = "[¡Á]";
+			  	else $smenu = "[Ã—]";
 			  	$timg = " <img src='img/tree_list.gif'> ";
 			  }
-			  //´ø·âÃæµÄÆµµÀ
+			  //å¸¦å°é¢çš„é¢‘é“
 			  else if($ispart==1){
 			  	$timg = " <img src='img/tree_part.gif'> ";
-			  	$smenu = "[·âÃæ]";
+			  	$smenu = "[å°é¢]";
 			  }
-			  
-			  echo "  <table class='sunlist'>\r\n";
-			  echo "   <tr>\r\n";
-			  echo "     <td>".$step.$timg.$typeName."{$smenu}</td>\r\n";
-			  echo "   </tr>\r\n";
-			  echo "  </table>\r\n";
-			  
-			  $this->LogicListAllSunType($ID,$step."¡¡",$opall,$issend,$channelid);
+			  echo '<dl class="topcc">'."\n";
+			  echo '<dd>'.$step.$typeName."{$smenu}</dd>\n";
+			  echo "</dl>\n";
+			  $this->LogicListAllSunType($ID,$step,$opall,$issend,$channelid, $nums);
 		  }
 		}
 	}

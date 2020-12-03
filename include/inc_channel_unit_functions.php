@@ -1,8 +1,10 @@
-<?php 
+<?php
 //------------------------------------------------
-//¸ÃÎÄ¼þÊÇËùÓÐÉæ¼°ÎÄµµ»òÁÐ±í¶ÁÈ¡±ØÐëÒýÈëµÄÎÄ¼þ
+//è¯¥æ–‡ä»¶æ˜¯æ‰€æœ‰æ¶‰åŠæ–‡æ¡£æˆ–åˆ—è¡¨è¯»å–å¿…é¡»å¼•å…¥çš„æ–‡ä»¶
 //------------------------------------------------
-//ÉèÖÃÒ»Ð©¹«ÓÃ±äÁ¿
+global $PubFields,$cfg_mainsite,$cfg_plus_dir,$cfg_powerby,$cfg_indexname,$cfg_indexurl;
+global $cfg_webname,$cfg_templets_dir,$cfg_df_style,$cfg_special,$cfg_member_dir;
+//è®¾ç½®ä¸€äº›å…¬ç”¨å˜é‡
 $PubFields['phpurl'] = $cfg_mainsite.$cfg_plus_dir;
 $PubFields['indexurl'] = $cfg_mainsite.$cfg_indexurl;
 $PubFields['templeturl'] = $cfg_mainsite.$cfg_templets_dir;
@@ -11,28 +13,39 @@ $PubFields['specurl'] = $cfg_mainsite.$cfg_special;
 $PubFields['indexname'] = $cfg_indexname;
 $PubFields['powerby'] = $cfg_powerby;
 $PubFields['webname'] = $cfg_webname;
+$PubFields['templetdef'] = $cfg_templets_dir.'/'.$cfg_df_style;
+$GLOBALS['pTypeArrays'] = Array();
+$GLOBALS['idArrary'] = '';
 //----------------------------------
-//ÓÃÐÇ±íÊ¾Èí¼þ»òFlashµÄµÈ¼¶
+//ç”¨æ˜Ÿè¡¨ç¤ºè½¯ä»¶æˆ–Flashçš„ç­‰çº§
 //----------------------------------
 function GetRankStar($rank)
 {
 	$nstar = "";
-	for($i=1;$i<=$rank;$i++){
-		$nstar .= "¡ï";
-	}
-	for($i;$i<=5;$i++){
-		$nstar .= "¡î";
-	}
+	for($i=1;$i<=$rank;$i++) $nstar .= "â˜…";
+	for($i;$i<=5;$i++) $nstar .= "â˜†";
 	return $nstar;
 }
+//-------------------------
+//äº§å“æ¨¡å—ä¸­ä¾›åº”æ–¹å¼çš„å¤„ç†
+//-----------------------
+function SelSpType($stype){
+	$tps = array('åŽ‚å®¶ç›´é”€','åŽ‚å®¶æ‰¹å‘','å•†å®¶æ‰¹å‘','å•†å®¶é›¶å”®','å…¶å®ƒæ¸ é“');
+	$rstr = "<select name='ssstype' style='width:80px'>\r\n";
+	foreach($tps as $tp){
+		$rstr .= ($stype==$tp ? "<option selected>$tp</option>\r\n" : "<option>$tp</option>\r\n");
+	}
+	$rstr .= "</select>\r\n";
+	return $rstr;
+}
 //-----------------------------
-//»ñµÃÎÄÕÂÍøÖ·
+//èŽ·å¾—æ–‡ç« ç½‘å€
 //----------------------------
 function GetFileUrl(
           $aid,$typeid,$timetag,$title,$ismake=0,$rank=0,
           $namerule="",$artdir="",$money=0,$aburl=false,$siteurl="")
 {
-	if($rank!=0||$ismake==-1||$typeid==0||$money>0) //¶¯Ì¬ÎÄÕÂ
+	if($rank!=0||$ismake==-1||$typeid==0||$money>0) //åŠ¨æ€æ–‡ç« 
 	{ return $GLOBALS['cfg_plus_dir']."/view.php?aid=$aid";}
 	else
 	{
@@ -43,7 +56,7 @@ function GetFileUrl(
 		$dtime = GetDateMk($timetag);
 		$articleRule = strtolower($articleRule);
 		list($y,$m,$d) = explode("-",$dtime);
-		
+
 		$articleRule = str_replace("{typedir}",$articleDir,$articleRule);
 		$articleRule = str_replace("{y}",$y,$articleRule);
 		$articleRule = str_replace("{m}",$m,$articleRule);
@@ -55,26 +68,26 @@ function GetFileUrl(
 		  $articleRule = str_replace("{pinyin}",GetPinyin($title)."_".$aid,$articleRule);
 		  $articleRule = str_replace("{py}",GetPinyin($title,1)."_".$aid,$articleRule);
 		}
-		
+
 		$articleUrl = "/".ereg_replace("^/","",$articleRule);
-		
-		//ÊÇ·ñÇ¿ÖÆÊ¹ÓÃ¾ø¶ÔÍøÖ·
-		if($aburl && $GLOBALS['cfg_multi_site']=='ÊÇ'){
+
+		//æ˜¯å¦å¼ºåˆ¶ä½¿ç”¨ç»å¯¹ç½‘å€
+		if($aburl && $GLOBALS['cfg_multi_site']=='Y'){
 			if($siteurl=="") $siteurl = $GLOBALS["cfg_basehost"];
 			$articleUrl = $siteurl.$articleUrl;
 		}
-		
+
 		return $articleUrl;
 	}
 }
-//»ñµÃÐÂÎÄ¼þÍøÖ·
-//±¾º¯Êý»á×Ô¶¯´´½¨Ä¿Â¼
+//èŽ·å¾—æ–°æ–‡ä»¶ç½‘å€
+//æœ¬å‡½æ•°ä¼šè‡ªåŠ¨åˆ›å»ºç›®å½•
 function GetFileNewName(
          $aid,$typeid,$timetag,$title,$ismake=0,$rank=0,
          $namerule="",$artdir="",$money=0,$siterefer="",
          $sitepath="",$moresite="",$siteurl="")
 {
-	if($rank!=0||$ismake==-1||$typeid==0||$money>0){ //¶¯Ì¬ÎÄÕÂ
+	if($rank!=0||$ismake==-1||$typeid==0||$money>0){ //åŠ¨æ€æ–‡ç« 
 		return $GLOBALS['cfg_plus_dir']."/view.php?aid=$aid";
 	}
 	else
@@ -84,7 +97,7 @@ function GetFileNewName(
 		               $namerule,$artdir,$money);
 		 $slen = strlen($articleUrl)-1;
 		 for($i=$slen;$i>=0;$i--){
-		  if($articleUrl[$i]=="/"){ $subpos = $i; break; }
+		    if($articleUrl[$i]=="/"){ $subpos = $i; break; }
 		 }
 		 $okdir = substr($articleUrl,0,$subpos);
 		 CreateDir($okdir,$siterefer,$sitepath);
@@ -92,35 +105,35 @@ function GetFileNewName(
 	return $articleUrl;
 }
 //--------------------------
-//»ñµÃÖ¸¶¨ÀàÄ¿µÄURLÁ´½Ó
-//¶ÔÓÚÊ¹ÓÃ·âÃæÎÄ¼þºÍµ¥¶ÀÒ³ÃæµÄÇé¿ö£¬Ç¿ÖÆÊ¹ÓÃÄ¬ÈÏÒ³Ãû³Æ
+//èŽ·å¾—æŒ‡å®šç±»ç›®çš„URLé“¾æŽ¥
+//å¯¹äºŽä½¿ç”¨å°é¢æ–‡ä»¶å’Œå•ç‹¬é¡µé¢çš„æƒ…å†µï¼Œå¼ºåˆ¶ä½¿ç”¨é»˜è®¤é¡µåç§°
 //-------------------------
 function GetTypeUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2,$siteurl="")
 {
-	$typedir = eregi_replace("\{cmspath\}",$GLOBALS['cfg_cmspath'],$typedir);
 	if($isdefault==-1)
 	{ $reurl = $GLOBALS["cfg_plus_dir"]."/list.php?tid=".$typeid; }
 	else if($ispart>0)
 	{ $reurl = "$typedir/".$defaultname; }
-	else{
-		if($isdefault==0){
-			$reurl = $typedir."/".str_replace("{page}","1",$namerule2);
-			$reurl = str_replace("{tid}",$typeid,$reurl); 
-			$reurl = str_replace("{typedir}",$typedir,$reurl); 
+	else
+	{
+		if($isdefault==0)
+		{
+			$reurl = str_replace("{page}","1",$namerule2);
+			$reurl = str_replace("{tid}",$typeid,$reurl);
+			$reurl = str_replace("{typedir}",$typedir,$reurl);
 		}
 		else $reurl = "$typedir/".$defaultname;
 	}
 	$reurl = ereg_replace("/{1,}","/",$reurl);
-	
-	if($GLOBALS['cfg_multi_site']=='ÊÇ'){
+	if($GLOBALS['cfg_multi_site']=='Y'){
 		if($siteurl=="") $siteurl = $GLOBALS["cfg_basehost"];
 		if($siteurl!="abc") $reurl = $siteurl.$reurl;
 	}
-	
+  $reurl = eregi_replace("{cmspath}",$GLOBALS['cfg_cmspath'],$reurl);
 	return $reurl;
 }
 
-//Ä§·¨±äÁ¿£¬ÓÃÓÚ»ñÈ¡Á½¸ö¿É±äµÄÖµ
+//é­”æ³•å˜é‡ï¼Œç”¨äºŽèŽ·å–ä¸¤ä¸ªå¯å˜çš„å€¼
 //------------------------
 function MagicVar($v1,$v2)
 {
@@ -128,95 +141,136 @@ function MagicVar($v1,$v2)
   else return $v2;
 }
 
-//»ñÈ¡ÉÏ¼¶IDÁÐ±í
-$pTypeArrays = Array();
-function GetParentIDS($tid,$dsql)
+//èŽ·å–ä¸Šçº§IDåˆ—è¡¨
+function GetParentIDS($tid,&$dsql)
 {
+	global $_Cs;
 	$GLOBALS['pTypeArrays'][] = $tid;
-	$dbrow = $dsql->GetOne("Select ID,reID From #@__arctype where ID='$tid' ");
-	if(!is_array($dbrow) || $dbrow['reID']==0){
+
+	if(!is_array($_Cs)){ require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php"); }
+
+	if(!isset($_Cs[$tid]) || $_Cs[$tid][0]==0){
 		return $GLOBALS['pTypeArrays'];
-	}else{
-		return GetParentIDS($dbrow['reID'],$dsql);
-  }
+	}
+	else{
+		return GetParentIDS($_Cs[$tid][0],$dsql);
+	}
 }
-$idArrary = "";
-// ·µ»ØÓëÄ³¸öÄ¿Ïà¹ØµÄÏÂ¼¶Ä¿Â¼µÄÀàÄ¿IDÁÐ±í(É¾³ýÀàÄ¿»òÎÄÕÂÊ±µ÷ÓÃ)
-function TypeGetSunTypes($ID,$dsql,$channel=0)
+
+//----------------------
+//èŽ·å–ä¸€ä¸ªç±»ç›®çš„é¡¶çº§ç±»ç›®ID
+//----------------------
+function SpGetTopID($tid){
+  global $_Cs;
+  if(!is_array($_Cs)){ require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php"); }
+  if($v[$tid][0]==0) return $tid;
+  else return SpGetTopID($tid);
+}
+
+//----------------------
+//èŽ·å–ä¸€ä¸ªç±»ç›®çš„æ‰€æœ‰é¡¶çº§æ ç›®ID
+//----------------------
+global $TopIDS;
+function SpGetTopIDS($tid){
+  global $_Cs,$TopIDS;
+  if(!is_array($_Cs)){ require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php"); }
+  $TopIDS[] = $tid;
+  if($_Cs[$tid][0]==0) return $TopIDS;
+  else return SpGetTopIDS($tid);
+}
+
+//-----------------------------
+// è¿”å›žä¸ŽæŸä¸ªç›®ç›¸å…³çš„ä¸‹çº§ç›®å½•çš„ç±»ç›®IDåˆ—è¡¨(åˆ é™¤ç±»ç›®æˆ–æ–‡ç« æ—¶è°ƒç”¨)
+//ç”±äºŽPHPæœ‰äº›ç‰ˆæœ¬å­˜åœ¨Bug,ä¸èƒ½ç›´æŽ¥ä½¿ç”¨åŒä¸€æ•°ç»„åœ¨é€’å½’é€»è¾‘,åªèƒ½å¤åˆ¶å‰¯æœ¬ä¼ é€’ç»™å‡½æ•°
+//-----------------------------
+function TypeGetSunTypes($ID,&$dsql,$channel=0)
 {
-		if($ID!=0) $GLOBALS['idArray'][$ID] = $ID;
-		$fid = $ID;
-	  if($channel!=0) $csql = " And channeltype=$channel ";
-	  else $csql = "";
-		$dsql->SetQuery("Select ID From #@__arctype where reID=$ID $csql");
-		$dsql->Execute("gs".$fid);
-		while($row=$dsql->GetObject("gs".$fid)){
-			TypeGetSunTypes($row->ID,$dsql,$channel);
-		}
+		global $_Cs;
+		$GLOBALS['idArray'] = array();
+		if( !is_array($_Cs) ){ require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php"); }
+		TypeGetSunTypesLogic($ID,$_Cs,$channel);
 		return $GLOBALS['idArray'];
 }
-//»ñµÃÄ³IDµÄÏÂ¼¶ID(°üÀ¨±¾Éí)µÄSQLÓï¾ä¡°($tb.typeid=id1 or $tb.typeid=id2...)¡±
-function TypeGetSunID($ID,$dsql,$tb="#@__archives",$channel=0)
+
+function TypeGetSunTypesLogic($ID,$sArr,$channel=0)
 {
-		$GLOBALS['idArray'] = "";
+		if($ID!=0) $GLOBALS['idArray'][$ID] = $ID;
+		foreach($sArr as $k=>$v)
+		{
+			if( $v[0]==$ID && ($channel==0 || $v[1]==$channel ))
+			{
+				 TypeGetSunTypesLogic($k,$sArr,$channel);
+			}
+		}
+}
+
+//--------------------------------
+//èŽ·å¾—æŸIDçš„ä¸‹çº§ID(åŒ…æ‹¬æœ¬èº«)çš„SQLè¯­å¥â€œ($tb.typeid=id1 or $tb.typeid=id2...)â€
+//-----------------------------
+function TypeGetSunID($ID,&$dsql,$tb="#@__archives",$channel=0,$onlydd=false)
+{
+		$GLOBALS['idArray'] = array();
 		TypeGetSunTypes($ID,$dsql,$channel);
 		$rquery = "";
-		foreach($GLOBALS['idArray'] as $k=>$v){
-			if($tb!="")
-			{
-			  if($rquery!="") $rquery .= " Or ".$tb.".typeid='$k' ";
-			  else      $rquery .= "    ".$tb.".typeid='$k' ";
-		  }
-		  else
-		  {
-		  	if($rquery!="") $rquery .= " Or typeid='$k' ";
-			  else      $rquery .= "    typeid='$k' ";
+		foreach($GLOBALS['idArray'] as $k=>$v)
+		{
+			if($onlydd){
+				$rquery .= ($rquery=='' ? $k : ",{$k}");
+			}else{
+			  if($tb!="")
+			     $rquery .= ($rquery!='' ? " Or {$tb}.typeid='$k' " : " {$tb}.typeid='$k' ");
+		    else
+		  	   $rquery .= ($rquery!='' ? " Or typeid='$k' " : " typeid='$k' ");
 		  }
 		}
-		return " (".$rquery.") ";
+		if($onlydd) return $rquery;
+		else return " (".$rquery.") ";
 }
-//À¸Ä¿Ä¿Â¼¹æÔò
+//æ ç›®ç›®å½•è§„åˆ™
 function MfTypedir($typedir)
 {
-  $typedir = eregi_replace("{cmspath}",$GLOBALS['cfg_cmspath'],$typedir);
+  global $cfg_cmspath;
+  $typedir = eregi_replace("{cmspath}",$cfg_cmspath,$typedir);
   $typedir = ereg_replace("/{1,}","/",$typedir);
   return $typedir;
 }
-//Ä£°åÄ¿Â¼¹æÔò
+//æ¨¡æ¿ç›®å½•è§„åˆ™
 function MfTemplet($tmpdir)
 {
-  $tmpdir = eregi_replace("{style}",$GLOBALS['cfg_df_style'],$tmpdir);
+  global $cfg_df_style;
+  $tmpdir = eregi_replace("{style}",$cfg_df_style,$tmpdir);
   $tmpdir = ereg_replace("/{1,}","/",$tmpdir);
   return $tmpdir;
 }
-//»ñÈ¡ÍøÕ¾ËÑË÷µÄÈÈÃÅ¹Ø¼ü×Ö
-function GetHotKeywords($dsql,$num=8,$nday=365,$klen=16,$orderby='count'){
-	global $cfg_phpurl;
+//èŽ·å–ç½‘ç«™æœç´¢çš„çƒ­é—¨å…³é”®å­—
+function GetHotKeywords(&$dsql,$num=8,$nday=365,$klen=16,$orderby='count'){
+	global $cfg_phpurl,$cfg_cmspath;
 	$nowtime = mytime();
-	$num = ereg_replace("[^0-9]","",$num);
-	$nday = ereg_replace("[^0-9]","",$nday);
-	$klen = ereg_replace("[^0-9]","",$klen);
+	$num = @intval($num);
+	$nday = @intval($nday);
+	$klen = @intval($klen);
 	if(empty($nday)) $nday = 365;
 	if(empty($num)) $num = 6;
 	if(empty($klen)) $klen = 16;
 	$klen = $klen+1;
 	$mintime = $nowtime - ($nday * 24 * 3600);
 	if(empty($orderby)) $orderby = 'count';
-	$dsql->SetQuery("Select keyword From #@__search_keywords where lasttime>$mintime And length(keyword)<$klen order by $orderby desc limit 0,$num");
+	$dsql->SetQuery("Select keyword,istag From #@__search_keywords where lasttime>$mintime And length(keyword)<$klen order by $orderby desc limit 0,$num");
   $dsql->Execute('hw');
   $hotword = "";
   while($row=$dsql->GetArray('hw')){
- 		 $hotword .= "¡¡<a href='".$cfg_phpurl."/search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword' target='_self'><u>".$row['keyword']."</u></a> ";
+ 		 if($row['istag']==1) $hotword .= "ã€€<a href='".$cfg_cmspath."/tag.php?/{$row['keyword']}/'>".$row['keyword']."</a> ";
+ 		 else $hotword .= "ã€€<a href='".$cfg_phpurl."/search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword'>".$row['keyword']."</a> ";
  	}
  	return $hotword;
 }
 //
 function FormatScript($atme){
 	if($atme=="&nbsp;") return "";
-	else return $atme;
+	else return trim(html2text($atme));
 }
 //------------------------------
-//»ñµÃ×ÔÓÉÁÐ±íµÄÍøÖ·
+//èŽ·å¾—è‡ªç”±åˆ—è¡¨çš„ç½‘å€
 //------------------------------
 function GetFreeListUrl($lid,$namerule,$listdir,$defaultpage,$nodefault){
 	$listdir = str_replace('{cmspath}',$GLOBALS['cfg_cmspath'],$listdir);
@@ -228,14 +282,14 @@ function GetFreeListUrl($lid,$namerule,$listdir,$defaultpage,$nodefault){
   	$okfile = $listdir.'/'.$defaultpage;
   }
 	$okfile = str_replace("\\","/",$okfile);
-	$trueFile = $GLOBALS['cfg_basedir'].$okfile; 
+	$trueFile = $GLOBALS['cfg_basedir'].$okfile;
 	if(!file_exists($trueFile)){
 		 $okfile = $GLOBALS['cfg_phpurl']."/freelist.php?lid=$lid";
 	}
 	return $okfile;
 }
 //----------
-//ÅÐ¶ÏÍ¼Æ¬¿ÉÓÃÐÔ
+//åˆ¤æ–­å›¾ç‰‡å¯ç”¨æ€§
 function CkLitImageView($imgsrc,$imgwidth){
 	$imgsrc = trim($imgsrc);
 	if(!empty($imgsrc) && eregi('^http',$imgsrc)){
@@ -247,9 +301,30 @@ function CkLitImageView($imgsrc,$imgwidth){
 	return "";
 }
 //----------
-//Ê¹ÓÃ¾ø¶ÔÍøÖ·
+//ä½¿ç”¨ç»å¯¹ç½‘å€
 function Gmapurl($gurl){
 	if(!eregi("http://",$gurl)) return $GLOBALS['cfg_basehost'].$gurl;
 	else return $gurl;
 }
+
+//----------------
+//èŽ·å¾—å›¾ä¹¦çš„URL
+//----------------
+function GetBookUrl($bid,$title,$gdir=0)
+{
+	global $cfg_cmspath;
+	if($gdir==1) $bookurl = "{$cfg_cmspath}/book/".DedeID2Dir($bid);
+	else $bookurl = "{$cfg_cmspath}/book/".DedeID2Dir($bid).'/'.GetPinyin($title).'-'.$bid.'.html';
+	return $bookurl;
+}
+
+//-----------------
+//æ ¹æ®IDç”Ÿæˆç›®å½•
+//-----------------
+function DedeID2Dir($aid)
+{
+	$n = ceil($aid / 1000);
+	return $n;
+}
+
 ?>

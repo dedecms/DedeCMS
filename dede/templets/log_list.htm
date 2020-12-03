@@ -1,11 +1,12 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>²É¼¯ÄÚÈİ¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>ç³»ç»Ÿæ—¥å¿—ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 
-//»ñµÃÑ¡ÖĞÎÄ¼şµÄÎÄ¼şÃû
+//è·å¾—é€‰ä¸­æ–‡ä»¶çš„æ–‡ä»¶å
 function getCheckboxItem(){
 	 var allSel="";
 	 if(document.form1.logs.value) return document.form1.logs.value;
@@ -31,7 +32,7 @@ function ReSel(){
 function DelSel(){
 	 var nid = getCheckboxItem();
 	 if(nid==""){
-		  alert("ÇëÑ¡ÔñÏîÄ¿!\r\n");
+		  alert("è¯·é€‰æ‹©é¡¹ç›®!\r\n");
 		  return ;
 	 }
 	 location.href = "log_edit.php?dopost=del&ids="+nid;
@@ -43,51 +44,53 @@ function ClearLog(){
 
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
-  <tr> 
-    <td height="20" colspan="7" background='img/tbg.gif'> <table width="96%" border="0" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td width="20%" height="18"><strong>¹ÜÀíÏµÍ³ÈÕÖ¾£º</strong></td>
-          <td width="80%" align="right">&nbsp; </td>
-        </tr>
-      </table></td>
+<body >
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">ç³»ç»Ÿè®¾ç½®</div>
+</div>
+<table width="96%" border="0" cellpadding="0" cellspacing="0" class="tbtitle" style="background:#F0F0F0; border:1px solid #DDD;line-height:31px;height:31px;">
+  <tr>
+    <td width="20%" height="18"><strong>ç®¡ç†ç³»ç»Ÿæ—¥å¿—ï¼š</strong></td>
+    <td width="80%" align="right">&nbsp;</td>
   </tr>
-  <tr align="center" bgcolor="#CCEDFD"> 
-    <td colspan="7">
-	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr align="center"> 
+    <td colspan="7" bgcolor="#EDF9D5">
+	  <table width="98%" border="0" cellspacing="0" cellpadding="0">
         <form name='formsearch'>
 		<tr>
-          <td>
-		  ¹ÜÀíÔ±£º
+          <td height="35" align="left">
+		  ç®¡ç†å‘˜ï¼š
 		  <select name="adminid" id="adminid" style="width:80">
-		  <option value="0" selected>--È«²¿--</option>
+		  <option value="0" selected>--å…¨éƒ¨--</option>
 		  <?php echo $adminlist?>
 		  </select>
-		  IPµØÖ·£º
+		  IPåœ°å€ï¼š
             <input name="cip" type="text" id="cip" size="15" style="width:100">
-            Ê±¼ä£º 
+            æ—¶é—´ï¼š 
             <select name="dtime" id="dtime">
-              <option value="0" selected>--È«²¿--</option>
-              <option value="7">Ò»ÖÜÄÚ</option>
-              <option value="15">15ÌìÄÚ</option>
-              <option value="30">30ÌìÒÔÄÚ</option>
-              <option value="60">60ÌìÒÔÄÚ</option>
+              <option value="0" selected>--å…¨éƒ¨--</option>
+              <option value="7">ä¸€å‘¨å†…</option>
+              <option value="15">15å¤©å†…</option>
+              <option value="30">30å¤©ä»¥å†…</option>
+              <option value="60">60å¤©ä»¥å†…</option>
             </select> 
 			&nbsp;
-            <input type="submit" name="Submit" value="ËÑË÷"></td>
+            <input type="submit" name="Submit" value="æœç´¢" class="inputbut" /></td>
         </tr>
 		</form>
       </table></td>
   </tr>
   <tr align="center" bgcolor="#FCFDF7"> 
-    <td width="8%">Ñ¡Ôñ</td>
-    <td width="11%">¹ÜÀíÔ±</td>
-    <td width="15%">·ÃÎÊÎÄ¼ş</td>
-    <td width="8%">·½Ê½</td>
-    <td width="14%">·ÃÎÊIP</td>
-    <td width="16%">Ê±¼ä</td>
-    <td width="28%">Query²ÎÊı</td>
+    <td width="8%">é€‰æ‹©</td>
+    <td width="11%">ç®¡ç†å‘˜</td>
+    <td width="15%">è®¿é—®æ–‡ä»¶</td>
+    <td width="8%">æ–¹å¼</td>
+    <td width="14%">è®¿é—®IP</td>
+    <td width="16%">æ—¶é—´</td>
+    <td width="28%">Queryå‚æ•°</td>
   </tr>
   <form name="form1">
     <?php 
@@ -100,7 +103,7 @@ function ClearLog(){
       <td> 
         <?php echo $row['userid']?>
       </td>
-      <td><input class="np" type="text" value="<?php echo $row['filename']?>" name="t0" style="width:100"></td>
+      <td><input type="text" value="<?php echo $row['filename']?>" name="t0" style="width:100"></td>
       <td> 
         <?php echo $row['method']?>
       </td>
@@ -110,21 +113,20 @@ function ClearLog(){
       <td> 
         <?php echo strftime("%y/%m/%d %H:%M:%S",$row['dtime'])?>
       </td>
-      <td><input class="np" type="text" value="<?php echo $row['query']?>" name="t1" style="width:280"></td>
+      <td><input type="text" value="<?php echo $row['query']?>" name="t1" style="width:280"></td>
     </tr>
     <?php  } ?>
   </form>
   <tr> 
     <td height="30" colspan="7" bgcolor="#FCFDF7">
-    	&nbsp; <input type="button" name="b5" value="·´Ñ¡" class="nbt" style="width:40" onClick="ReSel();"> 
-      &nbsp; <input type="button" name="b6" value="É¾³ıËùÑ¡" class="nbt" style="width:80" onClick="DelSel();"> 
-      &nbsp; <input type="button" name="b7" value="Çå¿ÕËùÓĞÈÕÖ¾" class="nbt" style="width:100" onClick="ClearLog();"> 
+    	&nbsp; <input type="button" name="b5" value="åé€‰" onClick="ReSel();" class="inputbut" /> 
+      &nbsp; <input type="button" name="b6" value="åˆ é™¤æ‰€é€‰" onClick="DelSel();" class="inputbut" /> 
+      &nbsp; <input type="button" name="b7" value="æ¸…ç©ºæ‰€æœ‰æ—¥å¿—" onClick="ClearLog();" class="inputbut" /> 
     </td>
   </tr>
-  <tr bgcolor="#CCEDFD"> 
-    <td height="24" colspan="7" align="center"> 
-      <?php echo $dlist->GetPageList(7);?>
-    </td>
+  <tr> 
+    <td height="24" colspan="7" align="center" bgcolor="#EDF9D5"> 
+      <?php echo $dlist->GetPageList(7);?>    </td>
   </tr>
 </table>
 </body>

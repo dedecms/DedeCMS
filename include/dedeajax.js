@@ -1,38 +1,43 @@
 <!--
-//xmlhttpºÍxmldom¶ÔÏó
+//xmlhttpå’Œxmldomå¯¹è±¡
 DedeXHTTP = null;
 DedeXDOM = null;
 DedeContainer = null;
 
-//»ñÈ¡Ö¸¶¨IDµÄÔªËØ
+//èŽ·å–æŒ‡å®šIDçš„å…ƒç´ 
 function $(eid){
 	return document.getElementById(eid);
 }
 
-//²ÎÊý gcontainer ÊÇ±£´æÏÂÔØÍê³ÉµÄÄÚÈÝµÄÈÝÆ÷
+function $DE(id) {
+	return document.getElementById(id);
+}
+
+//å‚æ•° gcontainer æ˜¯ä¿å­˜ä¸‹è½½å®Œæˆçš„å†…å®¹çš„å®¹å™¨
 
 function DedeAjax(gcontainer){
 
 DedeContainer = gcontainer;
 
-//post»òget·¢ËÍÊý¾ÝµÄ¼üÖµ¶Ô
+//postæˆ–getå‘é€æ•°æ®çš„é”®å€¼å¯¹
 this.keys = Array();
 this.values = Array();
 this.keyCount = -1;
 
-//httpÇëÇóÍ·
+//httpè¯·æ±‚å¤´
 this.rkeys = Array();
 this.rvalues = Array();
 this.rkeyCount = -1;
-//ÇëÇóÍ·ÀàÐÍ
+//è¯·æ±‚å¤´ç±»åž‹
 this.rtype = 'text';
 
-//³õÊ¼»¯xmlhttp
-if(window.XMLHttpRequest){//IE7, Mozilla ,Firefox µÈä¯ÀÀÆ÷ÄÚÖÃ¸Ã¶ÔÏó
-     DedeXHTTP = new XMLHttpRequest();
-}else if(window.ActiveXObject){//IE6¡¢IE5
-     try { DedeXHTTP = new ActiveXObject("Msxml2.XMLHTTP");} catch (e) { }
-     if (DedeXHTTP == null) try { DedeXHTTP = new ActiveXObject("Microsoft.XMLHTTP");} catch (e) { }
+//åˆå§‹åŒ–xmlhttp
+if(window.ActiveXObject){//IE6ã€IE5
+   try { DedeXHTTP = new ActiveXObject("Msxml2.XMLHTTP");} catch (e) { }
+   if (DedeXHTTP == null) try { DedeXHTTP = new ActiveXObject("Microsoft.XMLHTTP");} catch (e) { }
+}
+else{
+	 DedeXHTTP = new XMLHttpRequest();
 }
 
 DedeXHTTP.onreadystatechange = function(){
@@ -41,26 +46,26 @@ DedeXHTTP.onreadystatechange = function(){
        DedeContainer.innerHTML = DedeXHTTP.responseText;
        DedeXHTTP = null;
     }
-    else DedeContainer.innerHTML = "ÏÂÔØÊý¾ÝÊ§°Ü";
+    else DedeContainer.innerHTML = "ä¸‹è½½æ•°æ®å¤±è´¥";
   }
-  else DedeContainer.innerHTML = "ÕýÔÚÏÂÔØÊý¾Ý...";
+  else DedeContainer.innerHTML = "æ­£åœ¨ä¸‹è½½æ•°æ®...";
 };
 
-//Ôö¼ÓÒ»¸öPOST»òGET¼üÖµ¶Ô
+//å¢žåŠ ä¸€ä¸ªPOSTæˆ–GETé”®å€¼å¯¹
 this.AddKey = function(skey,svalue){
 	this.keyCount++;
 	this.keys[this.keyCount] = skey;
 	this.values[this.keyCount] = escape(svalue);
 };
 
-//Ôö¼ÓÒ»¸öHttpÇëÇóÍ·¼üÖµ¶Ô
+//å¢žåŠ ä¸€ä¸ªHttpè¯·æ±‚å¤´é”®å€¼å¯¹
 this.AddHead = function(skey,svalue){
 	this.rkeyCount++;
 	this.rkeys[this.rkeyCount] = skey;
 	this.rvalues[this.rkeyCount] = svalue;
 };
 
-//Çå³ýµ±Ç°¶ÔÏóµÄ¹þÏ£±í²ÎÊý
+//æ¸…é™¤å½“å‰å¯¹è±¡çš„å“ˆå¸Œè¡¨å‚æ•°
 this.ClearSet = function(){
 	this.keyCount = -1;
 	this.keys = Array();
@@ -70,28 +75,28 @@ this.ClearSet = function(){
 	this.rvalues = Array();
 };
 
-//·¢ËÍhttpÇëÇóÍ·
+//å‘é€httpè¯·æ±‚å¤´
 this.SendHead = function(){
-	if(this.rkeyCount!=-1){ //·¢ËÍÓÃ»§×ÔÐÐÉè¶¨µÄÇëÇóÍ·
+	if(this.rkeyCount!=-1){ //å‘é€ç”¨æˆ·è‡ªè¡Œè®¾å®šçš„è¯·æ±‚å¤´
   	for(;i<=this.rkeyCount;i++){
   		DedeXHTTP.setRequestHeader(this.rkeys[i],this.rvalues[i]); 
   	}
   }
-¡¡if(this.rtype=='binary'){
+ã€€if(this.rtype=='binary'){
   	DedeXHTTP.setRequestHeader("Content-Type","multipart/form-data");
   }else{
   	DedeXHTTP.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   }
 };
 
-//ÓÃPost·½Ê½·¢ËÍÊý¾Ý
+//ç”¨Postæ–¹å¼å‘é€æ•°æ®
 this.SendPost = function(purl){
 	var pdata = "";
 	var i=0;
 	this.state = 0;
 	DedeXHTTP.open("POST", purl, true); 
 	this.SendHead();
-  if(this.keyCount!=-1){ //postÊý¾Ý
+  if(this.keyCount!=-1){ //postæ•°æ®
   	for(;i<=this.keyCount;i++){
   		if(pdata=="") pdata = this.keys[i]+'='+this.values[i];
   		else pdata += "&"+this.keys[i]+'='+this.values[i];
@@ -100,12 +105,12 @@ this.SendPost = function(purl){
   DedeXHTTP.send(pdata);
 };
 
-//ÓÃGET·½Ê½·¢ËÍÊý¾Ý
+//ç”¨GETæ–¹å¼å‘é€æ•°æ®
 this.SendGet = function(purl){
 	var gkey = "";
 	var i=0;
 	this.state = 0;
-	if(this.keyCount!=-1){ //get²ÎÊý
+	if(this.keyCount!=-1){ //getå‚æ•°
   	for(;i<=this.keyCount;i++){
   		if(gkey=="") gkey = this.keys[i]+'='+this.values[i];
   		else gkey += "&"+this.keys[i]+'='+this.values[i];
@@ -120,11 +125,11 @@ this.SendGet = function(purl){
 
 } // End Class DedeAjax
 
-//³õÊ¼»¯xmldom
+//åˆå§‹åŒ–xmldom
 function InitXDom(){
   if(DedeXDOM!=null) return;
   var obj = null;
-  if (typeof(DOMParser) != "undefined") { // Gecko¡¢Mozilla¡¢Firefox
+  if (typeof(DOMParser) != "undefined") { // Geckoã€Mozillaã€Firefox
     var parser = new DOMParser();
     obj = parser.parseFromString(xmlText, "text/xml");
   } else { // IE

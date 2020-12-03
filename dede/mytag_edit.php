@@ -13,7 +13,7 @@ if($dopost=="delete")
 	$dsql->SetQuery("Delete From #@__mytag where aid='$aid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦É¾³ýÒ»¸ö×Ô¶¨Òå±ê¼Ç£¡",$ENV_GOBACK_URL);
+	ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªè‡ªå®šä¹‰æ ‡è®°ï¼",$ENV_GOBACK_URL);
 	exit();
 }
 else if($dopost=="saveedit")
@@ -35,7 +35,7 @@ else if($dopost=="saveedit")
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÒ»¸ö×Ô¶¨Òå±ê¼Ç£¡",$ENV_GOBACK_URL);
+	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªè‡ªå®šä¹‰æ ‡è®°ï¼",$ENV_GOBACK_URL);
 	exit();
 }
 else if($dopost=="getjs")
@@ -43,12 +43,12 @@ else if($dopost=="getjs")
 	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 	$jscode = "<script src='{$cfg_plus_dir}/mytag_js.php?aid=$aid' language='javascript'></script>";
 	$showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
-  $showhtml .= "Ô¤ÀÀ£º<iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";
-  $wintitle = "ºê±ê¼Ç¶¨Òå-»ñÈ¡JS";
-	$wecome_info = "<a href='ad_main.php'><u>ºê±ê¼Ç¶¨Òå</u></a>::»ñÈ¡JS";
+  $showhtml .= "é¢„è§ˆï¼š<iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";
+  $wintitle = "å®æ ‡è®°å®šä¹‰-èŽ·å–JS";
+	$wecome_info = "<a href='ad_main.php'><u>å®æ ‡è®°å®šä¹‰</u></a>::èŽ·å–JS";
   $win = new OxWindow();
   $win->Init();
-  $win->AddTitle("ÒÔÏÂÎªÑ¡¶¨ºê±ê¼ÇµÄJSµ÷ÓÃ´úÂë£º");
+  $win->AddTitle("ä»¥ä¸‹ä¸ºé€‰å®šå®æ ‡è®°çš„JSè°ƒç”¨ä»£ç ï¼š");
   $winform = $win->GetWindow("hand",$showhtml);
   $win->Display();
 	exit();
@@ -60,80 +60,8 @@ else if($dopost=="testjs")
 }
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__mytag where aid='$aid'");
-$dsql->Close();
+
+require_once(dirname(__FILE__)."/templets/mytag_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¸ü¸Ä±ê¼Ç</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr>
-  <td height="19" background="img/tbg.gif"><b><a href="mytag_main.php"><u>×Ô¶¨Òå±ê¼Ç¹ÜÀí</u></a></b>&gt;&gt;¸ü¸Ä±ê¼Ç</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="4">
-        <form action="mytag_edit.php" method="post" enctype="multipart/form-data" name="form1">
-          <input type='hidden' name='aid' value='<?php echo $aid?>'>
-          <input type='hidden' name='dopost' value='saveedit'>
-          <tr> 
-            <td width="15%" height="25" align="center">ËùÊôÀ¸Ä¿£º</td>
-            <td colspan="2">
-			<?php 
-           	$tl = new TypeLink(0);
-           	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
-            echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0' selected>ÏÔÊ¾ÔÚÃ»ÓÐ¼Ì³Ð±¾±ê¼ÇµÄËùÓÐÀ¸Ä¿</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			$tl->Close();
-			?>
-			</td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">±ê¼ÇÃû³Æ£º</td>
-            <td colspan="2"><?php echo $row['tagname']?></td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">Ê±¼äÏÞÖÆ£º</td>
-            <td colspan="2"><input name="timeset" type="radio" value="0"<?php if($row['timeset']==0) echo " checked"; ?>>
-              ÓÀ²»¹ýÆÚ 
-              <input type="radio" name="timeset" value="1" <?php if($row['timeset']==1) echo " checked"; ?>>
-              ÔÚÉèÄÚÊ±¼äÄÚÓÐÐ§</td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">¿ªÊ¼Ê±¼ä£º</td>
-            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>"></td>
-          </tr>
-          <tr> 
-            <td height="25" align="center">½áÊøÊ±¼ä£º</td>
-            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>"></td>
-          </tr>
-          <tr> 
-            <td height="80" align="center">Õý³£ÏÔÊ¾ÄÚÈÝ£º</td>
-            <td width="76%">
-			<textarea name="normbody" id="normbody" style="width:80%;height:100"><?php echo $row['normbody']?></textarea> 
-            </td>
-            <td width="9%">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="80" align="center">¹ýÆÚÏÔÊ¾ÄÚÈÝ£º</td>
-            <td>
-			<textarea name="expbody" id="expbody" style="width:80%;height:100"><?php echo $row['expbody']?></textarea> 
-            </td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td colspan="2"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-          </tr>
-        </form>
-      </table>
-	 </td>
-</tr>
-</table>
-</body>
-</html>

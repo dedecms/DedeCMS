@@ -4,7 +4,7 @@ if(empty($dopost)) $dopost = "";
 isset($_COOKIE['ENV_GOBACK_URL']) ? $backurl=$_COOKIE['ENV_GOBACK_URL'] : $backurl="javascript:history.go(-1);";
 
 /*---------------------------
-function __del_file() //É¾³ý¸½¼þ
+function __del_file() //åˆ é™¤é™„ä»¶
 -----------------------------*/
 if($dopost=='del'){
 	CheckPurview('sys_DelUpload');
@@ -17,7 +17,7 @@ if($dopost=='del'){
 		if(!file_exists($truefile)||$myrow['url']=="") $rs = 1;
 		else $rs = @unlink($truefile);
     if($rs==1){
-       $msg = "³É¹¦É¾³ýÒ»¸ö¸½¼þ£¡";
+       $msg = "æˆåŠŸåˆ é™¤ä¸€ä¸ªé™„ä»¶ï¼";
        $dsql->ExecuteNoneQuery("Delete From #@__uploads where aid='".$aid."'");
     }
     $dsql->Close();
@@ -42,59 +42,59 @@ if($dopost=='del'){
 			}
 		}
 		$dsql->Close();
-		ShowMsg('³É¹¦É¾³ýÑ¡¶¨µÄÎÄ¼þ£¡',$backurl);
+		ShowMsg('æˆåŠŸåˆ é™¤é€‰å®šçš„æ–‡ä»¶ï¼',$backurl);
 		exit();
 	}
 }
 /*--------------------------------
-function __save_edit() //±£´æ¸ü¸Ä
+function __save_edit() //ä¿å­˜æ›´æ”¹
 -----------------------------------*/
 else if($dopost=='save'){
 	if($aid=="") exit();
-	//¼ì²éÊÇ·ñÓÐÐÞ¸ÄÈ¨ÏÞ
+	//æ£€æŸ¥æ˜¯å¦æœ‰ä¿®æ”¹æƒé™
 	$dsql = new DedeSql(false);
   $myrow = $dsql->GetOne("Select * From #@__uploads where aid='".$aid."'");
   $dsql->Close();
 	if($myrow['adminid']!=$cuserLogin->getUserID()){ CheckPurview('sys_Upload'); }
-	//¼ì²âÎÄ¼þÀàÐÍ
+	//æ£€æµ‹æ–‡ä»¶ç±»åž‹
 	$addquery = "";
 	if(is_uploaded_file($upfile)){
 		 if($mediatype==1){
 		 	  $sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
 		 	  if(!in_array($upfile_type,$sparr)){
-		 	  	ShowMsg("ÄãÉÏ´«µÄ²»ÊÇÍ¼Æ¬ÀàÐÍµÄÎÄ¼þ£¡","javascript:history.go(-1);");
+		 	  	ShowMsg("ä½ ä¸Šä¼ çš„ä¸æ˜¯å›¾ç‰‡ç±»åž‹çš„æ–‡ä»¶ï¼","javascript:history.go(-1);");
 		 	  	exit();
 		 	  }
 		 }
      else if($mediatype==2){
      	  $sparr = Array("application/x-shockwave-flash");
      	  if(!in_array($upfile_type,$sparr)){
-		 	  	ShowMsg("ÄãÉÏ´«µÄ²»ÊÇFlashÀàÐÍµÄÎÄ¼þ£¡","javascript:history.go(-1);");
+		 	  	ShowMsg("ä½ ä¸Šä¼ çš„ä¸æ˜¯Flashç±»åž‹çš„æ–‡ä»¶ï¼","javascript:history.go(-1);");
 		 	  	exit();
 		 	  }
      }else if($mediatype==3){
      	  if(!eregi('audio|media|video',$upfile_type)){
-     	  	ShowMsg("ÄãÉÏ´«µÄÎª²»ÕýÈ·ÀàÐÍµÄÓ°ÒôÎÄ¼þ£¡","javascript:history.go(-1);");
+     	  	ShowMsg("ä½ ä¸Šä¼ çš„ä¸ºä¸æ­£ç¡®ç±»åž‹çš„å½±éŸ³æ–‡ä»¶ï¼","javascript:history.go(-1);");
 		 	  	exit();
      	  }
      	  if(!eregi("\.".$cfg_mediatype,$upfile_name)){
-     	  	ShowMsg("ÄãÉÏ´«µÄÓ°ÒôÎÄ¼þÀ©Õ¹ÃûÎÞ·¨±»Ê¶±ð£¬Çë¸ü¸ÄÏµÍ³ÅäÖÃµÄ²ÎÊý£¡","javascript:history.go(-1);");
+     	  	ShowMsg("ä½ ä¸Šä¼ çš„å½±éŸ³æ–‡ä»¶æ‰©å±•åæ— æ³•è¢«è¯†åˆ«ï¼Œè¯·æ›´æ”¹ç³»ç»Ÿé…ç½®çš„å‚æ•°ï¼","javascript:history.go(-1);");
 		 	  	exit();
      	  }
      }else{
      	  if(!eregi("\.".$cfg_softtype,$upfile_name)){
-     	  	ShowMsg("ÄãÉÏ´«µÄ¸½¼þÀ©Õ¹ÃûÎÞ·¨±»Ê¶±ð£¬Çë¸ü¸ÄÏµÍ³ÅäÖÃµÄ²ÎÊý£¡","javascript:history.go(-1);");
+     	  	ShowMsg("ä½ ä¸Šä¼ çš„é™„ä»¶æ‰©å±•åæ— æ³•è¢«è¯†åˆ«ï¼Œè¯·æ›´æ”¹ç³»ç»Ÿé…ç½®çš„å‚æ•°ï¼","javascript:history.go(-1);");
 		 	  	exit();
      	  } 
      }
-     //±£´æÎÄ¼þ
+     //ä¿å­˜æ–‡ä»¶
      $nowtime = mytime();
      $oldfile = $myrow['url'];
      $oldfiles = explode('/',$oldfile);
      $fullfilename = $cfg_basedir.$oldfile;
      $oldfile_path = ereg_replace($oldfiles[count($oldfiles)-1]."$","",$oldfile);
 		 if(!is_dir($cfg_basedir.$oldfile_path)){
-		 	  MkdirAll($cfg_basedir.$oldfile_path,777);
+		 	  MkdirAll($cfg_basedir.$oldfile_path,$GLOBALS['cfg_dir_purview']);
 		 	  CloseFtp();
 		 }
 		 @move_uploaded_file($upfile,$fullfilename);
@@ -116,159 +116,30 @@ else if($dopost=='save'){
 		 else $addquery = ",filesize='$filesize' ";
 	}
 	else{ $fileurl = $filename; }
-  //Ð´ÈëÊý¾Ý¿â
+  //å†™å…¥æ•°æ®åº“
   $query = " update #@__uploads set title='$title',mediatype='$mediatype',playtime='$playtime'";
   $query .= "$addquery where aid='$aid' ";
   $dsql = new DedeSql(false);
   $dsql->ExecuteNoneQuery($query);
   $dsql->Close();
-  ShowMsg('³É¹¦¸ü¸ÄÒ»Ôò¸½¼þÊý¾Ý£¡','media_edit.php?aid='.$aid);
+  ShowMsg('æˆåŠŸæ›´æ”¹ä¸€åˆ™é™„ä»¶æ•°æ®ï¼','media_edit.php?aid='.$aid);
   exit();
 }
 else
 {
-  //¶ÁÈ¡µµ°¸ÐÅÏ¢
+  //è¯»å–æ¡£æ¡ˆä¿¡æ¯
   //--------------------------------
   CheckPurview('sys_Upload,sys_MyUpload');
   $dsql = new DedeSql(false);
   $myrow = $dsql->GetOne("Select * From #@__uploads where aid='".$aid."'");
   $dsql->Close();
   if(!is_array($myrow)){
-	  ShowMsg('´íÎó£¬ÕÒ²»µ½´Ë±àºÅµÄµµ°¸£¡','javascript:;');
+	  ShowMsg('é”™è¯¯ï¼Œæ‰¾ä¸åˆ°æ­¤ç¼–å·çš„æ¡£æ¡ˆï¼','javascript:;');
 	  exit();
   }
 }
+
+require_once(dirname(__FILE__)."/templets/media_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¸ü¸ÄÎÄ¼þ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<style>
-.coolbg2 {
-border: 1px solid #000000;
-background-color: #F2F5E9;
-height:18px
-}
-</style>
-<script language='javascript'>
-function CheckSubmit()
-{
-	if(document.form1.title.value==""){
-		alert("ÇëÉè¶¨Ã½Ìå±êÌâ£¡");
-		document.form1.title.focus();
-		return false;
-	}
-}
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr> 
-<td height="19" background='img/tbg.gif'>
-<table width="98%" border="0" cellpadding="0" cellspacing="0">
-<tr> 
-<td width="2%" align="center" valign="middle"><img src="img/item_tt2.gif" width="7" height="15"></td>
-<td width="44%"><strong>¸ü¸ÄÃ½Ìå£º</strong></td>
-<td width="54%" align="right">[<a href='media_main.php'><u>¸½¼þ/Ã½ÌåÊý¾Ý¹ÜÀí</u></a>]</td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="19" bgcolor="#ffffff">
-<img src="img/help.gif" border="0">
-ÌáÊ¾£ºÍ¼Æ¬ÀàÐÍ½öÖ§³Öjpg¡¢png¡¢gif¡¢wbmp¸ñÊ½£¬flashÎª.swf¸ñÊ½£¬ÊÓÒôÆµºÍ¸½¼þÎªÏÞ¶¨À©Õ¹ÃûµÄÀàÐÍ(¿ÉÔÚÏµÍ³²ÎÊýÖÐÐÞ¸Ä)¡£
-</td>
-</tr>
-<tr> 
-<td height="69" align="center" valign="top" bgcolor="#FFFFFF">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<form enctype="multipart/form-data" name='form1' action="media_edit.php" method="POST" onSubmit="return CheckSubmit();">
-<input type="hidden" name="dopost" value="save">
-<input type="hidden" name="aid" value="<?php echo $aid?>"> 
-<tr> 
-<td width="15%" height="30" align="center" bgcolor="#FFFFFF"class='bline'>Ã½ÌåÀàÐÍ£º</td>
-<td width="85%" height="25" bgcolor="#FFFFFF"class='bline'>
-	<input type="radio" name="mediatype" class="np" value="1"<?php  if($myrow['mediatype']==1) echo " checked"; ?>>
-Í¼Æ¬ 
-<input type="radio" name="mediatype" class="np" value="2"<?php  if($myrow['mediatype']==2) echo " checked"; ?>>
-FLASH 
-<input type="radio" name="mediatype" class="np" value="3"<?php  if($myrow['mediatype']==3) echo " checked"; ?>>
-ÊÓÆµ/ÒôÆµ 
-<input type="radio" name="mediatype" class="np" value="4"<?php  if($myrow['mediatype']==4) echo " checked"; ?>>
-¸½¼þ/ÆäËü
-</td>
-</tr>
-<tr> 
-<td height="30" align="center" bgcolor="#FFFFFF"class='bline'>ËµÃ÷±êÌâ£º</td>
-<td height="25" bgcolor="#FFFFFF"class='bline'>
-	<input name="title" type="text" id="title" size="30" value="<?php echo $myrow['title']?>">
-</td>
-</tr>
-<tr> 
-<td height="30" align="center" bgcolor="#FFFFFF"class='bline'>²ÎÊýËµÃ÷£º</td>
-<td height="30" bgcolor="#FFFFFF"class='bline' colspan='2'>Í¼Æ¬²»ÐèÒªÖ¸¶¨¡°¿í¡±¡¢¡°¸ß¡±£¬ÆäËü¸½¼Ó²ÎÊý½ö·½±ã¶àÃ½ÌåÎÄ¼þ¹ÜÀí£¬Ã»ÆäËüº¬Òå</td>
-</tr>
-<tr> 
-<td height="30" align="center" bgcolor="#FFFFFF" class='bline'>¸½¼Ó²ÎÊý£º</td>
-<td height="25" bgcolor="#FFFFFF" class='bline'>
-	¿í£º 
-<input name="mediawidth" type="text" id="mediawidth" size="5" value="<?php echo $myrow['width']?>">
-(ÏñËØ)¡¡¸ß£º 
-<input name="mediaheight" type="text" id="mediaheight" size="5" value="<?php echo $myrow['height']?>">
-(ÏñËØ)¡¡²¥·ÅÊ±¼ä£º 
-<input name="playtime" type="text" id="playtime" size="5" value="<?php echo $myrow['playtime']?>">
-(·ÖÖÓ)
-</td>
-</tr>
-<tr>
-<td height="30" align="center" bgcolor="#FFFFFF"class='bline'>Ô­ÎÄ¼þ£º</td>
-<td bgcolor="#FFFFFF"class='bline'>
-<input name="filename" type="text" id="filename" style='width:450' value="<?php echo $myrow['url']?>">
-<a href='<?php echo $myrow['url']?>' target='_blank'>[²é¿´]</a>
-</td>
-</tr>
-<?php 
-if($myrow['mediatype']==1)
-{
- 	$fullfilename = $cfg_basedir.$myrow['url'];
- 	if(file_exists($fullfilename)){
- 		$info = "";
- 		$sizes = getimagesize($fullfilename,$info);
- 		if(is_array($sizes)){
- 			if($sizes[0]>200) $w=200;
- 			else $w = $sizes[0];
-?>
-<tr>
-<td height="30" align="center" bgcolor="#FFFFFF"class='bline'>Ô¤ÀÀ£º</td>
-<td bgcolor="#FFFFFF"class='bline'>
-<a href='<?php echo $myrow['url']?>' target='_blank'><img src='<?php echo $myrow['url']."?q=".mytime()?>' width='<?php echo $w?>' border='0' id='picview'></a>
-</td>
-</tr>
-<?php  } } } ?>
-<tr> 
-<td height="25" align="center" bgcolor="#FFFFFF"class='bline'>
-	¸ü¸ÄÎÄ¼þ£º
-</td>
-<td bgcolor="#FFFFFF"class='bline'>
-<input name="upfile" type="file" id="upfile" style='width:300'>
-</td>
-</tr>
-<tr> 
-<td height="62" colspan="2" bgcolor="#FFFFFF"class='bline'>
-<table width="60%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td align="center">
-<input class="np" name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</form>
-</table>
-</td>
-</tr>
-</table>
-</body>
-</html>

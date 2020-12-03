@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>SQL命令行工具</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+
+function getObject(objectId) {
+   return document.getElementById(objectId);
+}
+
+</script>
+
+
+</head>
+<body>
+<center>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">数据库管理</div>
+</div>
+</center>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<tr>
+    <td height="19" bgcolor="#EDF9D5" > 
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%"><strong>SQL命令运行器：</strong></td>
+          <td width="76%" align="right"> <b><a href="sys_data.php"><u>数据备份</u></a></b> 
+            | <b><a href="sys_data_revert.php"><strong><u>数据还原</u></strong></a></b> 
+          </td>
+        </tr>
+      </table></td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="4" cellpadding="2">
+        <form action="sys_sql_query.php" method="post" name="infoform" id="infoform" target="stafrm">
+          <input type='hidden' name='dopost' value='viewinfo'>
+          <tr bgcolor="#F3FBEC"> 
+            <td width="15%" height="24" align="center">系统的表信息：</td>
+            <td> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="45%">
+                  	<select name="tablename" id="tablename" style="width:100%" size="6">
+                      <?php 
+$dsql->SetQuery("Show Tables");
+$dsql->Execute('t');
+while($row = $dsql->GetArray('t'))
+{
+	$dsql->SetQuery("Select count(*) From ".$row[0]);
+	$dsql->Execute('n');
+	$row2 = $dsql->GetArray('n');
+	$dd = $row2[0];
+	echo "			<option value='".$row[0]."'>".$row[0]."(".$dd.")</option>\r\n";
+}
+?>
+                    </select></td>
+                  <td width="2%">&nbsp;</td>
+                  <td width="53%" valign="bottom">
+                  	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td height="30">
+<input type="Submit" name="Submit1" value="优化表" onClick="getObject('dopost').value='opimize';" class="inputbut"/></td>
+                      </tr>
+                      <tr> 
+                        <td height="30">
+<input type="Submit" name="Submit2" value="修复表" onClick="getObject('dopost').value='repair';" class="inputbut"/></td>
+                      </tr>
+                      <tr> 
+                        <td height="30">
+<input type="Submit" name="Submit3" value="查看表结构" onClick="getObject('dopost').value='viewinfo';" class="inputbut"/></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="200" align="center">返回信息：</td>
+            <td>
+			<iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+			</td>
+          </tr>
+		  </form>
+		  <form action="sys_sql_query.php" method="post" name="form1" target="stafrm">
+          <input type='hidden' name='dopost' id='dopost' value='query'>
+          <tr> 
+            <td height="24" colspan="2" bgcolor="#F3FBEC"><strong>运行SQL命令行： 
+              <input name="querytype" type="radio"  value="0">
+              单行命令（支持简单查询） 
+              <input name="querytype" type="radio"  value="2" checked>
+              多行命令</strong></td>
+          </tr>
+		      <tr> 
+            <td height="118" colspan="2">
+			<textarea name="sqlquery" cols="60" rows="10" id="sqlquery" style="width:90%"></textarea> 
+            </td>
+          </tr>
+          <tr> 
+            <td height="53" align="center">&nbsp;</td>
+            <td><input name="imageField" type="Submit"  class="inputbut" value="确定"/></td>
+          </tr>
+        </form>
+      </table>
+	 </td>
+</tr>
+</table>
+</body>
+</html>

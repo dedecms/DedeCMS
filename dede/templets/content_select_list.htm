@@ -1,11 +1,13 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>я║тЯндуб</title>
-<link rel="stylesheet" type="text/css" href="base.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>И─┴Ф▀╘Ф√┤Г╚═</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="main.js"></script>
 <script language="javascript">
-//╩Я╣ця║жпнд╪Ч╣днд╪ЧцШ
+//Х▌╥Е╬≈И─┴Д╦╜Ф√┤Д╩╤Г └Ф√┤Д╩╤Е░█
 function getCheckboxItem()
 {
 	var allSel="";
@@ -50,37 +52,32 @@ function ReturnValue()
 	else{
 		window.opener.document.<?php echo $f?>.value += ","+getCheckboxItem();
 	}
-	window.opener=true;
-  window.close();
+	alert("Ф┬░Е┼÷Е╒·Е┼═Д╫═И─┴Д╦╜Г └IDО╪▄Д╫═Е▐╞Д╩╔Г╩╖Г╩╜Е╒·Е┼═");
+	//window.opener=true;
+  //window.close();
 }
 </script>
 </head>
-<body leftmargin="0" topmargin="0" background='img/allbg.gif'>
-<table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">Ф√┤Ф║ёГ╩╢Ф┼╓</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
 <tr> 
-<td align='center' valign='top'>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"><td height="4"></td></tr>
-</table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
-<tr bgcolor="#E7E7E7"> 
-<td height="24" colspan="10" background="img/tbg.gif">
-<strong> ║Лндубап╠М</strong>
-</td>
+<td height="24" colspan="9" bgcolor="#EDF9D5">
+<strong> б╖Ф√┤Г╚═Е┬≈Х║╗</strong></td>
 </tr>
-<form name="form2">
 <tr align="center" bgcolor="#F8FBFB" height="22"> 
 <td width="6%">ID</td>
-<td width="4%">я║тЯ</td>
-<td width="30%">ндуб╠ЙлБ</td>
-<td width="10%">б╪хКй╠╪Д</td>
-<td width="11%">юЮд©</td>
-<td width="8%">╣Ц╩В</td>
-<td width="5%">м╪ф╛</td>
-<td width="7%">HTML</td>
-<td width="10%">х╗оч</td>
-<td width="8%">мф╪Ж</td>
+<td width="4%">И─┴Ф▀╘</td>
+<td width="40%">Ф√┤Г╚═Ф═┤И╒≤</td>
+<td width="20%">Е╫∙Е┘╔Ф≈╤И≈╢</td>
+<td width="20%">Г╠╩Г⌡╝</td>
+<td>Е⌡╬Г┴┤</td>
 </tr>
+<form name="form2">
 <?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
@@ -88,80 +85,58 @@ while($row = $mylist->GetArray('dm'))
 ?>
 <tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
 <td><?php echo $row['ID']?></td>
-<td><input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" class="np"></td>
+<td><input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" class="np" /></td>
 <td align='left'>
 <a href='archives_do.php?aid=<?php echo $row['ID']?>&dopost=editArchives'>
-	<u><?php echo $row['title']?></u>
-</a>
-</td>
-<td><?php echo GetDateMk($row['senddate'])?></td>
+	<u><?php echo $row['title']?></u></a></td>
+<td><?php echo GetDateMk($row['uptime'])?></td>
 <td><?php echo $row['typename']?></td>
-<td><?php echo $row['click']?></td>
 <td><?php echo IsPicArchives($row['litpic'])?></td>
-<td><?php echo IsHtmlArchives($row['ismake'])?></td>
-<td><?php echo GetRankName($row['arcrank'])?></td>
-<td><?php echo IsCommendArchives($row['iscommend'])?></td>
 </tr>
 <?php 
 }
 ?>
 <tr bgcolor="#F8FBFB"> 
-<td height="24" colspan="10">
+<td height="24" colspan="6" style="padding-top:6px">
 &nbsp;
-<a href="javascript:selAll()" class="coolbg">х╚я║</a> 
+<a href="javascript:selAll()" class="inputbutx">Е┘╗И─┴</a> 
 &nbsp;
-<a href="javascript:noSelAll()" class="coolbg">х║оШ</a> 
+<a href="javascript:noSelAll()" class="inputbutx">Е▐√Ф╤┬</a> 
 &nbsp;
-<a href="javascript:ReturnValue()" class="coolbg">╟яя║╤╗ж╣╪с╣╫ап╠М</a> 
-</td>
+<a href="javascript:ReturnValue()" class="inputbutx">Ф┼┼И─┴Е╝ Е─╪Е┼═Е┬╟Е┬≈Х║╗</a></td>
 </tr>
 </form>
-<tr align="right" bgcolor="#E5F9FF"> 
-<td height="20" colspan="10" align="center">
-	<?php echo $dlist->GetPageList(7);?>
-</td>
+<tr align="right" bgcolor="#eaf8ce"> 
+<td height="20" colspan="6" align="center" bgcolor="#EDF9D5">
+	<?php echo $dlist->GetPageList(7);?></td>
 </tr>
 </table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table bgcolor="#FFFFFF" width="96%" border="0" align="center" cellpadding="1" cellspacing="1">
 <tr> 
 <td height="4"></td>
 </tr>
-<tr bgcolor="#FFFFFF"> 
-<td style="border: 1px solid #525252;" height="26">
-<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC'>
-   <tr bgcolor='#E5F9FF'> 
-     <form name='form3' action='content_select_list.php' method='get'>
-        <input type='hidden' name='f' value='<?php echo $f?>'> 
-          <td background='img/wbg.gif'>
-          	<table width='600' border='0' cellpadding='0' cellspacing='0'>
-          	<tr>
-          	<td width='90' align='center'>гКя║тЯюЮд©ё╨</td>
-          	<td width='160'>
-          	<?php echo $optionarr?>
-        </td>
-        <td width='70'>
-          ╧ь╪Эвжё╨
-        </td>
-          <td width='160'>
-          	<input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150'>
-          </td>
-          <td>
-          <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">
-         </td>
-        </tr>
-        </table>
-          </td>
-        </form>
-        </tr>
-      </table>
-      
+<tr> 
+<td height="26" bgcolor="#FFFFFF" style="border: 1px solid #525252;">
+<form name='form3'>
+<input type='hidden' name='f' value='<?php echo $f; ?>' />
+<input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
+<table width='600' border='0' cellpadding='0' cellspacing='0'>
+  <tr>
+    <td width='90' align='center'>Х╞╥И─┴Ф▀╘Г╠╩Г⌡╝О╪ </td>
+    <td width='160'><?php echo $optionarr?> </td>
+    <td width='70'> Е┘ЁИ■╝Е╜≈О╪  </td>
+    <td width='160'><input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150' />
+    </td>
+    <td style="padding-top:6px">
+    	<input name="imageField" type="submit" class="inputbut" value="Ф░°Г╢╒" />
+    </td>
+  </tr>
+</table>
+</form>
 </td>
 </tr>
 <tr> 
 <td colspan="2" height="4"></td>
-</tr>
-</table>
-</td>
 </tr>
 </table>
 </body>

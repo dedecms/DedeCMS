@@ -1,10 +1,11 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÒµÎñ¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>ä¸šåŠ¡ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
-//»ñµÃÑ¡ÖĞÏî
+//è·å¾—é€‰ä¸­é¡¹
 function getCheckboxItem()
 {
 	var allSel="";
@@ -33,7 +34,7 @@ function UpSel()
 {
 	var nid = getCheckboxItem();
 	if(nid==""){
-		alert("ÇëÑ¡ÔñÒª¸ü¸ÄËßÒµÎñ¼ÇÂ¼!\r\n");
+		alert("è¯·é€‰æ‹©è¦æ›´æ”¹è¯‰ä¸šåŠ¡è®°å½•!\r\n");
 		return ;
 	}
 	location.href = "member_do.php?dopost=upoperations&nid="+nid;
@@ -42,57 +43,62 @@ function OkSel()
 {
 	var nid = getCheckboxItem();
 	if(nid==""){
-		alert("ÇëÑ¡ÔñÒª¸ü¸ÄËßÒµÎñ¼ÇÂ¼!\r\n");
+		alert("è¯·é€‰æ‹©è¦æ›´æ”¹è¯‰ä¸šåŠ¡è®°å½•!\r\n");
 		return ;
 	}
 	location.href = "member_do.php?dopost=okoperations&nid="+nid;
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" style="margin-bottom:6px">
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">ä¼šå‘˜ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
     <td height="30" align="center" bgcolor="#FAFCEF">
 	<form name="form2" method="get" action="member_operations.php">
         <table border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td>ÊäÈë¶©µ¥ºÅ£º</td>
+            <td>è¾“å…¥è®¢å•å·ï¼š</td>
             <td> 
               <input name="buyid" type="text" id="buyid"></td>
-            <td width="100" align="center"> <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0"> 
+            <td width="100" align="center"> <input name="imageField" type="submit" class="inputbut" value="æœç´¢"> 
             </td>
           </tr>
         </table>
       </form></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#98CAEF" align="center">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
-    <td height="20" colspan="8" background='img/tbg.gif'> <table width="98%" border="0" cellspacing="0" cellpadding="0">
+    <td height="20" colspan="8" bgcolor="#EDF9D5"> <table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td width="30%"> <strong><a href="co_main.php"><u>»áÔ±¹ÜÀí</u></a> &gt; 
-            »áÔ±ÒµÎñ¹ÜÀí£º</strong> </td>
+          <td width="30%"> <strong><a href="co_main.php"><u>ä¼šå‘˜ç®¡ç†</u></a> &gt; 
+            ä¼šå‘˜ä¸šåŠ¡ç®¡ç†ï¼š</strong> </td>
           <td width="45%" align="right" >
-          	<input type="button" name="ss13" value="Î´¸¶¿î" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='nbt'> 
-            <input type="button" name="ss14" value="ÒÑ¸¶¿î" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='nbt'>
-            <input type="button" name="ss142" value="ÒÑÍê³É" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=2';" class='nbt'> 
-            <input type="button" name="ss16" value="È«²¿" style="width:40px;margin-right:6px" onClick="location='member_operations.php';" class='nbt'> 
+          	<input type="button" name="ss13" value="æœªä»˜æ¬¾" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='inputbut'> 
+            <input type="button" name="ss14" value="å·²ä»˜æ¬¾" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='inputbut'>
+            <input type="button" name="ss142" value="å·²å®Œæˆ" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=2';" class='inputbut'> 
+            <input type="button" name="ss16" value="å…¨éƒ¨" style="width:40px;margin-right:6px" onClick="location='member_operations.php';" class='inputbut'> 
           </td>
           <td width="25%" align="right">
-          	<input type="button" name="ss12" value="»áÔ±¹ÜÀí" style="width:90px;margin-right:6px" onClick="location='member_main.php';" class='nbt'> 
+          	<input type="button" name="ss12" value="ä¼šå‘˜ç®¡ç†" style="width:90px;margin-right:6px" onClick="location='member_main.php';" class='inputbut'> 
           </td>
         </tr>
       </table></td>
   </tr>
   <tr bgcolor="#F8FBFB"> 
-    <td width="8%" align="center">Ñ¡Ôñ</td>
-    <td width="30%" align="center">¶©µ¥ºÅ</td>
-    <td width="13%" align="center">²úÆ·Ãû³Æ</td>
-    <td width="10%" align="center">²úÆ·ÀàĞÍ</td>
-    <td width="10%" align="center">Éú³ÉÈÕÆÚ</td>
-    <td width="8%" align="center">½ğ¶î</td>
-    <td width="8%" align="center">×´Ì¬</td>
-    <td width="13%" align="center">»áÔ±</td>
+    <td width="8%" align="center">é€‰æ‹©</td>
+    <td width="30%" align="center">è®¢å•å·</td>
+    <td width="13%" align="center">äº§å“åç§°</td>
+    <td width="10%" align="center">äº§å“ç±»å‹</td>
+    <td width="10%" align="center">ç”Ÿæˆæ—¥æœŸ</td>
+    <td width="8%" align="center">é‡‘é¢</td>
+    <td width="8%" align="center">çŠ¶æ€</td>
+    <td width="13%" align="center">ä¼šå‘˜</td>
   </tr>
   <form name="form1">
     <?php 
@@ -129,9 +135,9 @@ function OkSel()
   </form>
   <tr> 
     <td height="28" colspan="8" bgcolor="#FCFDF7">&nbsp; 
-      <input type="button" name="b7" value="·´Ñ¡" class="nbt" style="width:40" onClick="ReSel();">
-      <input type="button" name="b5" value="ÉèÎªÒÑ¸¶¿î×´Ì¬" class="nbt" style="width:100" onClick="UpSel();">
-      <input type="button" name="b9" value="ÉèÎªÒÑÍê³É×´Ì¬" class="nbt" style="width:100" onClick="OkSel();">
+      <input type="button" name="b7" value="åé€‰" class="inputbut" style="width:40" onClick="ReSel();">
+      <input type="button" name="b5" value="è®¾ä¸ºå·²ä»˜æ¬¾çŠ¶æ€" class="inputbut" style="width:100" onClick="UpSel();">
+      <input type="button" name="b9" value="è®¾ä¸ºå·²å®ŒæˆçŠ¶æ€" class="inputbut" style="width:100" onClick="OkSel();">
     </td>
   </tr>
   <tr> 

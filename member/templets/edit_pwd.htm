@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title>¸ü¸ÄµÇÂ¼ÃÜÂë</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>æ›´æ”¹ç™»å½•å¯†ç </title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='area.js'></script>
 <script>
 function checkSubmit()
@@ -10,13 +11,13 @@ function checkSubmit()
   if(document.form2.userpwdok.value!=document.form2.userpwd.value)
   {
     document.form2.userpwdok.focus();
-    alert("Á½´ÎÃÜÂë²»Ò»ÖÂ£¡");
+    alert("ä¸¤æ¬¡å¯†ç ä¸ä¸€è‡´ï¼");
     return false;
   }
   if(document.form2.vdcode.value=="")
   {
      document.form2.vdcode.focus();
-     alert("ÑéÖ¤Âë²»ÄÜÎª¿Õ£¡");
+     alert("éªŒè¯ç ä¸èƒ½ä¸ºç©ºï¼");
      return false;
   }
 }
@@ -25,49 +26,49 @@ function checkSubmit()
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
          <tr> 
-            <td background="img/nnnbg.gif" height="25" class="gdt2">
-			<strong>¡¡&nbsp;¸ü¸ÄµÇÂ¼ÃÜÂë£º</strong>
-			</td>
+            <div class="manage_company_right_title" style="margin-top:10px;">
+                	<ul><li>ä¿®æ”¹å¯†ç ï¼š</li></ul>
+                </div>
           </tr>
 	  </table> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="text-align:left; border:1px solid #b1c384;">
         <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
           <input type="hidden" name="fmdo" value="user" />
           <input type="hidden" name="dopost" value="editUserSafe" />
           <tr> 
-            <td height="36" align="right" >ÑéÖ¤Âë£º</td>
+            <td height="36" align="right" >éªŒè¯ç ï¼š</td>
             <td height="25" ><table width="200" border="0" cellspacing="0" cellpadding="0" >
                 <tr> 
-                  <td width="84" ><input name="vdcode" type="text" id="vdcode" size="10" ></td>
+                  <td width="84" ><input name="vdcode" type="text" id="vdcode" size="10" class="yanzhengma" /></td>
                   <td width="116" ><img src='../include/vdimgck.php' width='50' height='20'></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td width="17%" height="36" align="right" >Ô­µÇÂ¼ÃÜÂë£º</td>
-            <td width="83%" height="25" ><input type="password" name="oldpwd" style="width:120;height:20" ></td>
+            <td width="17%" height="36" align="right" >åŸç™»å½•å¯†ç ï¼š</td>
+            <td width="83%" height="25" ><input type="password" name="oldpwd" style="width:120;height:20" class="company_manage_form_label" /></td>
           </tr>
           <tr>
-            <td height="36" align="right" >ĞÂ ÃÜ Âë£º</td>
-            <td height="25" ><input name="userpwd" type="password" id="userpwd" size="18" style="width:120;height:20" >
-              &nbsp;È·ÈÏÃÜÂë£º
-              <input name="userpwdok" type="password" id="userpwdok" value="" size="18" style="width:120;height:20" >
+            <td height="36" align="right" >æ–° å¯† ç ï¼š</td>
+            <td height="25" ><input name="userpwd" type="password" id="userpwd" size="18" style="width:120;height:20" class="company_manage_form_label" />
+              &nbsp;ç¡®è®¤å¯†ç ï¼š
+              <input name="userpwdok" type="password" id="userpwdok" value="" size="18" style="width:120;height:20" class="company_manage_form_label" />
 &nbsp;</td>
           </tr>
           
           <tr> 
             <td height="67" align="right" >&nbsp;</td>
-            <td height="67" > <input type="submit" name="Submit2" value="È·¶¨ĞŞ¸Ä" > 
-              &nbsp;&nbsp; <input type="reset" name="Submit222" value="ÖØÖÃ" > </td>
+            <td height="67" > <input type="submit" name="Submit2" value="ç¡®å®šä¿®æ”¹" > 
+              &nbsp;&nbsp; <input type="reset" name="Submit222" value="é‡ç½®" > </td>
           </tr>
         </form>
       </table>

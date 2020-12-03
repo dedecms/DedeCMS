@@ -6,15 +6,19 @@ $bkdir = dirname(__FILE__)."/".$cfg_backup_dir;
 @ob_start();
 @set_time_limit(0);
 
+$gotojs="function GotoNextPage(){
+	document.gonext."."submit();
+}"."\r\nset"."Timeout('GotoNextPage()',500);";
+
 function PutInfo($msg1,$msg2)
 {
 	$msginfo = "
 <html>\n<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312' />
-<title>DEDECMS ÌáÊ¾ĞÅÏ¢</title>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<title>DEDECMS æç¤ºä¿¡æ¯</title>
 <base target='_self'/>\n</head>\n<body leftmargin='0' topmargin='0'>\n<center>
 <br/>
-<div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #cccccc;border-top:1px solid #cccccc;border-right:1px solid #cccccc;background-color:#DBEEBD;'>DEDECMS ÌáÊ¾ĞÅÏ¢£¡</div>
+<div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #cccccc;border-top:1px solid #cccccc;border-right:1px solid #cccccc;background-color:#DBEEBD;'>DEDECMS æç¤ºä¿¡æ¯ï¼</div>
 <div style='width:400px;height:100;font-size:10pt;border:1px solid #cccccc;background-color:#F4FAEB'>
 <span style='line-height:160%'><br/>{$msg1}</span>
 <br/><br/></div>\r\n{$msg2}";
@@ -27,20 +31,20 @@ function RpLine($str){
 	return $str;
 }
 
-/*±¸·İÊı¾İ
+/*å¤‡ä»½æ•°æ®
 function __bak_data();
 */
 if($dopost=="bak")
 {
 	if(empty($tablearr)){
-		ShowMsg('ÄãÃ»Ñ¡ÖĞÈÎºÎ±í£¡','javascript:;');
+		ShowMsg('ä½ æ²¡é€‰ä¸­ä»»ä½•è¡¨ï¼','javascript:;');
 		exit();
 	}
   if(!is_dir($bkdir)){
-  	MkdirAll($bkdir,777);
+  	MkdirAll($bkdir,$GLOBALS['cfg_dir_purview']);
   	CloseFtp();
   }
-	//³õÊ¼»¯Ê¹ÓÃµ½µÄ±äÁ¿
+	//åˆå§‹åŒ–ä½¿ç”¨åˆ°çš„å˜é‡
 	$tables = explode(',',$tablearr);
 	if(empty($isstruct)) $isstruct = 0;
 	if(empty($nowtable)) $nowtable = "";
@@ -49,7 +53,7 @@ if($dopost=="bak")
 	$fsizeb = $fsize * 1024;
 	
 	
-	//µÚÒ»Ò³µÄ²Ù×÷
+	//ç¬¬ä¸€é¡µçš„æ“ä½œ
 	if($nowtable=="")
 	{
 	  $tmsg = "";
@@ -60,7 +64,7 @@ if($dopost=="bak")
 		   if(!is_dir($filename)) unlink($filename);
 	  }
 	  $dh->close();
-	  $tmsg .= "Çå³ı±¸·İÄ¿Â¼¾ÉÊı¾İÍê³É...<br>";
+	  $tmsg .= "æ¸…é™¤å¤‡ä»½ç›®å½•æ—§æ•°æ®å®Œæˆ...<br>";
 	  if($isstruct==1){
 		    $bkfile = $bkdir."/tables_struct_".substr(md5(mytime().mt_rand(1000,5000)),0,16).".txt";
 		    $dsql = new DedeSql(false);
@@ -74,7 +78,7 @@ if($dopost=="bak")
 		 	     $dsql->Execute();
 		 	     $row = $dsql->GetArray();
 		 	     
-		 	     //¸ù¾İÊı¾İ¿â°æ±¾±¸·İ±í½á¹¹
+		 	     //æ ¹æ®æ•°æ®åº“ç‰ˆæœ¬å¤‡ä»½è¡¨ç»“æ„
 		 	     $eng1 = "ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language;
 		 	     $eng2 = "ENGINE=MyISAM AUTO_INCREMENT=([0-9]{1,}) DEFAULT CHARSET=".$cfg_db_language;
 		 	     if($datatype==4.0 && $mysql_version > 4.0){
@@ -91,25 +95,26 @@ if($dopost=="bak")
 		    }
 		    fclose($fp);
 		    $dsql->Close();
-		    $tmsg .= "±¸·İÊı¾İ±í½á¹¹ĞÅÏ¢Íê³É...<br>";
+		    $tmsg .= "å¤‡ä»½æ•°æ®è¡¨ç»“æ„ä¿¡æ¯å®Œæˆ...<br>";
 	   }
-	   $tmsg .= "<font color='red'>ÕıÔÚ½øĞĞÊı¾İ±¸·İµÄ³õÊ¼»¯¹¤×÷£¬ÇëÉÔºó...</font>";
-	   $doneForm = "<form name='formgo' method='post' action='sys_data_done.php?dopost=bak'>
+	   $tmsg .= "<font color='red'>æ­£åœ¨è¿›è¡Œæ•°æ®å¤‡ä»½çš„åˆå§‹åŒ–å·¥ä½œï¼Œè¯·ç¨å...</font>";
+	   $doneForm = "<form name='gonext' method='post'>
+<input type='hidden' name='dopost' value='bak'>
 <input type='hidden' name='isstruct' value='$isstruct'>
 <input type='hidden' name='fsize' value='$fsize'>
 <input type='hidden' name='tablearr' value='$tablearr'>
 <input type='hidden' name='nowtable' value='".$tables[0]."'>
 <input type='hidden' name='startpos' value='0'>
 </form>
-<script language='javascript'>function doSubmit(){ document.formgo.submit(); } setTimeout('doSubmit()',500);</script>\n";
+<script language='javascript'>$gotojs</script>\n";
 	   PutInfo($tmsg,$doneForm);
 	   exit();
-  }else{ //Ö´ĞĞ·ÖÒ³±¸·İ
+  }else{ //æ‰§è¡Œåˆ†é¡µå¤‡ä»½
 	   $dsql = new DedeSql(false); 
 	   $j = 0;
 	   $fs = "";
 	   $bakStr = "";
-	   //·ÖÎö±íÀïµÄ×Ö¶ÎĞÅÏ¢
+	   //åˆ†æè¡¨é‡Œçš„å­—æ®µä¿¡æ¯
 	   $dsql->GetTableFields($nowtable);
 	   $intable = "INSERT INTO `$nowtable` VALUES(";
 	   while($r = $dsql->GetFieldObject()){
@@ -126,7 +131,7 @@ if($dopost=="bak")
 	   $fsd = $j-1;
 	   $intable = ereg_replace(",$","",$intable).") Values(";
 	   */
-	   //¶ÁÈ¡±íµÄÄÚÈİ
+	   //è¯»å–è¡¨çš„å†…å®¹
 	   $dsql->SetQuery("Select * From $nowtable");
 	   $dsql->Execute();
 	   $m = 0;
@@ -134,24 +139,25 @@ if($dopost=="bak")
 	   while($row2 = $dsql->GetArray())
 	   {
 		    if($m < $startpos){ $m++; continue; }
-		    //¼ì²âÊı¾İÊÇ·ñ´ïµ½¹æ¶¨´óĞ¡
+		    //æ£€æµ‹æ•°æ®æ˜¯å¦è¾¾åˆ°è§„å®šå¤§å°
 		    if(strlen($bakStr) > $fsizeb)
 		    {
 		      $fp = fopen($bakfilename,"w");
 		      fwrite($fp,$bakStr);
 		      fclose($fp);
-		      $tmsg = "<font color='red'>Íê³Éµ½{$m}Ìõ¼ÇÂ¼µÄ±¸·İ£¬¼ÌĞø±¸·İ{$nowtable}...</font>";
-	        $doneForm = "<form name='formgo' method='post' action='sys_data_done.php?dopost=bak'>
+		      $tmsg = "<font color='red'>å®Œæˆåˆ°{$m}æ¡è®°å½•çš„å¤‡ä»½ï¼Œç»§ç»­å¤‡ä»½{$nowtable}...</font>";
+	        $doneForm = "<form name='gonext' method='post'>
+        <input type='hidden' name='dopost' value='bak'>
         <input type='hidden' name='isstruct' value='$isstruct'>
         <input type='hidden' name='fsize' value='$fsize'>
         <input type='hidden' name='tablearr' value='$tablearr'>
         <input type='hidden' name='nowtable' value='$nowtable'>
         <input type='hidden' name='startpos' value='$m'>
-      </form><script language='javascript'>function doSubmit(){ document.formgo.submit(); } setTimeout('doSubmit()',500);</script>\n";
+      </form><script language='javascript'>$gotojs</script>\n";
 	        PutInfo($tmsg,$doneForm);
 	        exit();
 		    }
-		    //Õı³£Çé¿ö
+		    //æ­£å¸¸æƒ…å†µ
 		    $line = $intable;
 		    for($j=0;$j<=$fsd;$j++){
 			    if($j < $fsd) $line .= "'".RpLine(addslashes($row2[$fs[$j]]))."',";
@@ -160,7 +166,7 @@ if($dopost=="bak")
 		    $m++;
 		    $bakStr .= $line;
 	   }
-	   //Èç¹ûÊı¾İ±È¾íÉèÖÃÖµĞ¡
+	   //å¦‚æœæ•°æ®æ¯”å·è®¾ç½®å€¼å°
 	   if($bakStr!=""){
 	     $fp = fopen($bakfilename,"w");
 	     fwrite($fp,$bakStr);
@@ -174,31 +180,32 @@ if($dopost=="bak")
 	   	  		 break;
 	   	  	}else{
 	   	  		 $dsql->Close();
-	   	  		 PutInfo("Íê³ÉËùÓĞÊı¾İ±¸·İ£¡","");
+	   	  		 PutInfo("å®Œæˆæ‰€æœ‰æ•°æ®å¤‡ä»½ï¼","");
 	           exit();
 	   	  	}
 	   	  }
 	   }
-	   $tmsg = "<font color='red'>Íê³Éµ½{$m}Ìõ¼ÇÂ¼µÄ±¸·İ£¬¼ÌĞø±¸·İ{$nowtable}...</font>";
-	   $doneForm = "<form name='formgo' method='post' action='sys_data_done.php?dopost=bak'>
+	   $tmsg = "<font color='red'>å®Œæˆåˆ°{$m}æ¡è®°å½•çš„å¤‡ä»½ï¼Œç»§ç»­å¤‡ä»½{$nowtable}...</font>";
+	   $doneForm = "<form name='gonext' method='post'>
+        <input type='hidden' name='dopost' value='bak'>
         <input type='hidden' name='isstruct' value='$isstruct'>
         <input type='hidden' name='fsize' value='$fsize'>
         <input type='hidden' name='tablearr' value='$tablearr'>
         <input type='hidden' name='nowtable' value='$nowtable'>
         <input type='hidden' name='startpos' value='$startpos'>
-      </form><script language='javascript'>function doSubmit(){ document.formgo.submit(); } setTimeout('doSubmit()',500);</script>\n";
+      </form><script language='javascript'>$gotojs</script>\n";
 	    PutInfo($tmsg,$doneForm);
 	    exit();
 	 }
-	 //·ÖÒ³±¸·İ´úÂë½áÊø
+	 //åˆ†é¡µå¤‡ä»½ä»£ç ç»“æŸ
 }
-/* »¹Ô­Êı¾İ
+/* è¿˜åŸæ•°æ®
 function __re_data();
 */
 else if($dopost=="redat")
 {
 	if($bakfiles==""){
-		ShowMsg('Ã»Ö¸¶¨ÈÎºÎÒª»¹Ô­µÄÎÄ¼ş!','javascript:;');
+		ShowMsg('æ²¡æŒ‡å®šä»»ä½•è¦è¿˜åŸçš„æ–‡ä»¶!','javascript:;');
 		exit();
 	}
 	$bakfilesTmp = $bakfiles;
@@ -218,12 +225,12 @@ else if($dopost=="redat")
   		foreach($querys as $q) $dsql->ExecuteNoneQuery(trim($q).';');
   		$dsql->Close();
   		if($delfile==1) @unlink("$bkdir/$structfile");
-  		$tmsg = "<font color='red'>Íê³ÉÊı¾İ±íĞÅÏ¢»¹Ô­£¬×¼±¸»¹Ô­Êı¾İ...</font>";
-	    $doneForm = "<form name='formgo' method='post' action='sys_data_done.php?dopost=redat'>
+  		$tmsg = "<font color='red'>å®Œæˆæ•°æ®è¡¨ä¿¡æ¯è¿˜åŸï¼Œå‡†å¤‡è¿˜åŸæ•°æ®...</font>";
+	    $doneForm = "<form name='gonext' method='post' action='sys_data_done.php?dopost=redat'>
         <input type='hidden' name='startgo' value='1'>
         <input type='hidden' name='delfile' value='$delfile'>
         <input type='hidden' name='bakfiles' value='$bakfilesTmp'>
-      </form><script language='javascript'>function doSubmit(){ document.formgo.submit(); } setTimeout('doSubmit()',500);</script>\n";
+      </form><script language='javascript'>$gotojs</script>\n";
 	    PutInfo($tmsg,$doneForm);
 	    exit();
   }
@@ -246,17 +253,19 @@ else if($dopost=="redat")
     }
   	if($delfile==1) @unlink("$bkdir/$nowfile");
   	if($bakfilesTmp==""){
-  		ShowMsg('³É¹¦»¹Ô­ËùµÄÎÄ¼şµÄÊı¾İ!','javascript:;');
+  		ShowMsg('æˆåŠŸè¿˜åŸæ‰€çš„æ–‡ä»¶çš„æ•°æ®!','javascript:;');
 		  exit();
   	}
-  	$tmsg = "³É¹¦»¹Ô­{$nowfile}µÄ{$oknum}Ìõ¼ÇÂ¼<br/><br/>ÕıÔÚ×¼±¸»¹Ô­ÆäËüÊı¾İ...";
-	    $doneForm = "<form name='formgo' method='post' action='sys_data_done.php?dopost=redat'>
+  	$tmsg = "æˆåŠŸè¿˜åŸ{$nowfile}çš„{$oknum}æ¡è®°å½•<br/><br/>æ­£åœ¨å‡†å¤‡è¿˜åŸå…¶å®ƒæ•°æ®...";
+	    $doneForm = "<form name='gonext' method='post' action='sys_data_done.php?dopost=redat'>
         <input type='hidden' name='startgo' value='1'>
         <input type='hidden' name='delfile' value='$delfile'>
         <input type='hidden' name='bakfiles' value='$bakfilesTmp'>
-      </form><script language='javascript'>function doSubmit(){ document.formgo.submit(); } setTimeout('doSubmit()',500);</script>\n";
+      </form><script language='javascript'>$gotojs</script>\n";
 	    PutInfo($tmsg,$doneForm);
 	    exit();
   }
 }
+
+ClearAllLink();
 ?>

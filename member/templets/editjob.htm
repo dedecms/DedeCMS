@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>招聘信息编辑</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<center>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<!-- 中部开始 -->
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+           <?php include(dirname(__FILE__)."/commenu.php");?>
+		<!-- 中部右边开始 -->
+    <div id="manage_company_right">
+        	<div id="manage_company_info">
+            	<div class="manage_company_info_title_bg">
+                	<ul>
+                	  <li>招聘信息修改</li>
+                	</ul>
+                </div>
+                <div class="addjob_form">
+<form name="form1" action="editjob.php" method="post">
+	<input type=hidden name=id value="<?=$job['id']?>" />
+	<input type=hidden name=step value="2" />
+	公司名称：<input type=text name=name value="<?=$job['name']?>" class="company_manage_form_label" />
+	<br />
+	职位名称：<input type=text name=job value="<?=$job['job']?>" class="company_manage_form_label" /><br />
+	招聘人数：<input type=text name=nums value="<?=$job['nums']?>" class="company_manage_form_label" /><br />
+	招聘部门：<input type=text name=department value="<?=$job['department']?>" class="company_manage_form_label" /><br />
+	工作地址：<input type=text name=address value="<?=$job['address']?>" class="company_manage_form_label" /><br />
+	发布日期：<?php echo strftime("%Y-%m-%d",$job['pubdate']);?><br />
+	有 效 期：<input type=text name=endtime value="<?=$job['endtime']?>" class="company_manage_form_label" />天<br />
+	薪酬范围：<input type=text name=salaries value="<?=$job['salaries']?>" class="company_manage_form_label" />只能填写数字，0为薪酬面议<br />
+
+职位描述：
+<?php
+	GetEditor("message","$job[message]",350,"Member");
+?>
+<input type=submit name=submit value="提交" class="button"  />
+</form>
+<div style="height:20px;">
+</div>
+</div>
+                <div class="clear">
+                </div>
+          </div>
+        </div>
+</div>
+<div style="width:100%; float:left;">
+<?php include(dirname(__FILE__)."/foot.htm");?>
+</div>
+</div>
+</center>
+</body>
+</html>
+
+
+
+
+
+
+

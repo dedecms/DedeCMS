@@ -1,7 +1,7 @@
 <?php 
-require_once(dirname(__FILE__)."/../include/inc_arcspec_view.php");
+if(!isset($art_shortname)) $art_shortname = '';
 $specfile = dirname(__FILE__)."spec_1".$art_shortname;
-//Èç¹ûÒÑ¾­±àÒë¾²Ì¬ÁÐ±í£¬ÔòÖ±½ÓÒýÈëµÚÒ»¸öÎÄ¼þ
+//å¦‚æžœå·²ç»ç¼–è¯‘é™æ€åˆ—è¡¨ï¼Œåˆ™ç›´æŽ¥å¼•å…¥ç¬¬ä¸€ä¸ªæ–‡ä»¶
 if(file_exists($specfile))
 {
 	include($specfile);
@@ -9,6 +9,8 @@ if(file_exists($specfile))
 }
 else
 {
+  require_once(dirname(__FILE__).'/../include/config_base.php');
+  require_once(DEDEINC.'/inc_arcspec_view.php');
   $sp = new SpecView();
   $sp->Display();
   $sp->Close();

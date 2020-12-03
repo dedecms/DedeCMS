@@ -1,89 +1,73 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÍÆ¼öºÃÓÑ</title>
-<link href="../base.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-.style2 {
-	color: #CC0000;
-	font-size: 11pt;
-}
--->
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>æŽ¨è</title>
+<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
+</head>
 </head>
 <body>
-<table width="650" border="0" align="center" cellspacing="2">
-<tr> 
-<td><img src="img/recommend.gif" width="320" height="46"></td>
-</tr>
-<tr> 
-<td bgcolor="#CCCC99" height="6"></td>
-</tr>
-<tr> 
-<td height="28">
-<span class="style2">&nbsp;ÎÄÕÂÃû³Æ£º<a href="<?php  echo $arcurl ?>"><?php  echo $arctitle ?></a></span>
-</td>
-</tr>
-<tr> 
-<td bgcolor="#DFEAE4">&nbsp;ÎÒÒª°ÑËü·¢ËÍ¸øÎÒµÄºÃÓÑ£º</td>
-</tr>
-<tr> 
-<td> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
+
+<div class="stop">
+	<span class="toptitle">æŽ¨è</span>
+	<span class="toplink"><a href="/">è¿”å›žä¸»é¡µ</a> <a href="flink.php">æ‰€æœ‰é“¾æŽ¥</a></span></div>
+
+<div class="smain">
+	<div class="mtitle">
+		<div class="mtname">æ–‡ç« åç§°ï¼š<strong><a href="<?php  echo $arcurl ?>"><?php  echo $arctitle ?></a></strong></div>
+		</div>
+	<div class="mbox">
+		<div class="flbox">
+			<ul>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
 <td height="3"></td>
 </tr>
-<tr> 
+<tr>
 <td height="100" align="center" valign="top">
 <form name="form1" method="post" action="recommend.php">
 <input type="hidden" name="arcurl" value="<?php  echo $arcurl ?>">
 <input type="hidden" name="action" value="send">
 <input type="hidden" name="arcID" value="<?php echo $arcID?>">
 <table width="98%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="19%" height="30">ÄãºÃÓÑµÄEmail£º</td>
-<td width="81%">
-	<input name="email" type="text" id="email"> 
-</td>
-</tr>
-<tr> 
-<td height="30">ÄãµÄÁôÑÔ£º</td>
+<tr>
+<td width="15%" height="30">ä½ å¥½å‹çš„Emailï¼š</td>
+<td width="85%" align="left"><input name="email" type="text" id="email"></td></tr>
+<tr>
+<td width="15%" height="30">ä½ çš„å¤§åï¼š</td>
+<td width="85%" align="left"><input name="name" type="text" id="name"></td></tr>
+<tr>
+<td height="30">ä½ çš„ç•™è¨€ï¼š</td>
 <td>&nbsp;</td>
 </tr>
-<tr align="center"> 
+<tr align="center">
 <td height="61" colspan="2">
 <textarea name="msg" cols="72" rows="6" id="msg" style="width:98%">
-ÄãºÃ£¬ÎÒÔÚ [<?php echo $cfg_webname?>] ·¢ÏÖÁËÒ»¸öºÜºÃµÄ¶«¶«£º
-Äã²»·ÁÈ¥¿´¿´°É£¡
-ÎÄµµµÄÃû³ÆÊÇ£º<?php echo $arctitle?>
-ÍøÖ·ÊÇ£º<?php echo $cfg_basehost.$arcurl?>
+ä½ å¥½ï¼Œæˆ‘åœ¨ [<?php echo $cfg_webname?>] å‘çŽ°äº†ä¸€ä¸ªå¾ˆå¥½çš„ä¸œä¸œï¼š
+ä½ ä¸å¦¨åŽ»çœ‹çœ‹å§ï¼
+æ–‡æ¡£çš„åç§°æ˜¯ï¼š<?php echo $arctitle?>
+ç½‘å€æ˜¯ï¼š<?php echo $cfg_basehost.$arcurl?>
 </textarea>
 </td>
 </tr>
-<tr> 
+<tr>
 <td height="50">&nbsp;</td>
-<td><input type="submit" name="Submit" value=" ·¢ ËÍ "></td>
+<td align="left"><input type="submit" name="Submit" value=" å‘ é€ "></td>
 </tr>
 </table>
 </form>
 </td>
 </tr>
-<tr> 
+<tr>
 <td height="3"></td>
 </tr>
-</table></td>
-</tr>
-<tr> 
-<td bgcolor="#CCCC99" height="6"></td>
-</tr>
-<tr> 
-<td align="center">
-<?php echo $cfg_powerby?>
-</td>
-</tr>
 </table>
-</td>
-</tr>
-</table>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
 </body>
 </html>

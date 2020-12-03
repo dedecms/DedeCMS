@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:maintitle/}</title>
+<link href="{dede:global name='cfg_templeturl'/}/style/css_body.css" rel="stylesheet" type="text/css" />
+<style>
+	.bodytitle{
+	width:96%;
+	height:33px;
+	background:url({dede:global name='cfg_phpurl'/}/img/body_title_bg.gif) top left repeat-x;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:8px;
+	clear:both;
+}
+.bodytitleleft{
+	width:30px;
+	height:33px;
+	float:left;
+	background:url({dede:global name='cfg_phpurl'/}/img/body_title_left.gif) right bottom no-repeat;
+}
+.bodytitletxt{
+	height:27px;
+	float:left;
+	margin-top:6px;
+	line-height:27px;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:2px;
+	padding-left:8px;
+	padding-right:8px;
+	background:#FFF url({dede:global name='cfg_phpurl'/}/img/body_title_right.gif) right bottom no-repeat;
+}
+.np { border:0px }
+</style>
+</head>
+<body>
+<div class='bodytitle'>
+	<div class='bodytitleleft'></div>
+	<div class='bodytitletxt'>{dede:maintitle/}</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td class="tbtitletxt"><strong>{dede:wecome_info/}</strong></td>
+  </tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+  <tr align="center">
+    <td align="left" class="tbsname">{dede:winform/}</td>
+  </tr>
+</table>
+<div align="center">{dede:lang_cms_powerby/}
+</div>
+</body>
+
+</html>

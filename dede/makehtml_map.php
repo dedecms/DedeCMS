@@ -4,7 +4,7 @@ require_once(dirname(__FILE__)."/../include/inc_sitemap.php");
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 if(empty($dopost))
 {
-	ShowMsg("参数错误!","-1");
+	ShowMsg("鍙傛暟閿欒!","-1");
 	exit();
 }
 $sm = new SiteMap();
@@ -24,6 +24,7 @@ $dtp = new DedeTagParse();
 $dtp->LoadTemplet($tmpfile);
 $dtp->SaveTo($cfg_basedir.$murl);
 $dtp->Clear();
-echo "<a href='$murl' target='_blank'>成功更新文件: $murl 浏览...</a>";
-exit();
+echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+echo "<a href='$murl' target='_blank'>鎴愬姛鏇存柊鏂囦欢: $murl 娴忚...</a>";
+ClearAllLink();
 ?>

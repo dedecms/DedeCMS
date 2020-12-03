@@ -1,15 +1,18 @@
-<?php 
-if(!isset($registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
+<?php
 require_once(dirname(__FILE__)."/../../include/pub_httpdown.php");
-require_once(dirname(__FILE__)."/../../include/inc_archives_view.php");
 require_once(dirname(__FILE__)."/../../include/inc_photograph.php");
+require_once(dirname(__FILE__)."/../../include/pub_dedetag.php");
+require_once(dirname(__FILE__)."/../../include/pub_oxwindow.php");
+require_once(dirname(__FILE__)."/../../include/inc_tag_functions.php");
+require_once(dirname(__FILE__)."/../../include/inc_custom_fields.php");
+
 //------------------------------
-//»ñÈ¡Ò»¸öÔ¶³ÌÍ¼Æ¬
+//èŽ·å–ä¸€ä¸ªè¿œç¨‹å›¾ç‰‡
 //------------------------------
 function GetRemoteImage($url,$uid=0)
 {
-	global $title,$cfg_mb_rmdown;
-	if($cfg_mb_rmdown=='·ñ') return '';
+	global $title,$cfg_mb_rmdown,$cfg_photo_typenames,$cfg_ml;
+	if($cfg_mb_rmdown=='N') return '';
 	$cfg_uploaddir = $GLOBALS['cfg_user_dir'];
 	$cfg_basedir = $GLOBALS['cfg_basedir'];
 	$revalues = Array();
@@ -19,11 +22,11 @@ function GetRemoteImage($url,$uid=0)
 	$ok = false;
 	$htd = new DedeHttpDown();
 	$htd->OpenUrl($url);
-	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
+	$sparr = $cfg_photo_typenames;
 	if(!in_array($htd->GetHead("content-type"),$sparr)){
 		return "";
-	}else{  	
-  	$imgUrl = $cfg_uploaddir."/".strftime("%y%m",mytime());
+	}else{
+  	$imgUrl = $cfg_uploaddir."/".$cfg_ml->M_ID;
 	  $imgPath = $cfg_basedir.$imgUrl;
 	  CreateDir($imgUrl);
   	$itype = $htd->GetHead("content-type");
@@ -31,7 +34,7 @@ function GetRemoteImage($url,$uid=0)
 		else if($itype=="image/png") $itype = ".png";
 		else if($itype=="image/wbmp") $itype = ".bmp";
 		else $itype = ".jpg";
-		$rndname = dd2char($uid."_".strftime("%d%H%M%S",mytime()).mt_rand(1000,9999));
+		$rndname = dd2char($cfg_ml->M_ID."0".strftime("%y%m%d%H%M%S",$nowtme)."0".mt_rand(1000,9999)).'-rm';
 		$rndtrueName = $imgPath."/".$rndname.$itype;
 		$fileurl = $imgUrl."/".$rndname.$itype;
   	$ok = $htd->SaveToBin($rndtrueName);
@@ -43,70 +46,71 @@ function GetRemoteImage($url,$uid=0)
 	    $revalues[2] = $data[1];
 	  }
 	  @WaterImg($rndtrueName,'down');
-	  //±£´æÓÃ»§ÉÏ´«µÄ¼ÇÂ¼µ½Êý¾Ý¿â
-	  if($title=='') $title = 'ÓÃ»§±£´æµÄÔ¶³ÌÍ¼Æ¬';
+	  //ä¿å­˜ç”¨æˆ·ä¸Šä¼ çš„è®°å½•åˆ°æ•°æ®åº“
+	  if($title=='') $title = 'ç”¨æˆ·ä¿å­˜çš„è¿œç¨‹å›¾ç‰‡';
 	  $addinfos[0] = $data[0];
 	  $addinfos[1] = $data[1];
 	  $addinfos[2] = filesize($rndtrueName);
-	  SaveUploadInfo($title."(Ô¶³ÌÍ¼Æ¬)",$fileurl,1,$addinfos);
+	  SaveUploadInfo($title."(è¿œç¨‹å›¾ç‰‡)",$fileurl,1,$addinfos);
   }
 	$htd->Close();
 	if($ok) return $revalues;
 	else return '';
 }
 //------------------
-//»ñµÃÉÏ´«µÄÍ¼Æ¬
+//èŽ·å¾—ä¸Šä¼ çš„å›¾ç‰‡
 //------------------
 function GetUpImage($litpic,$isdd=false,$exitErr=false,$iw=0,$ih=0,$iname='')
 {
 	global $cfg_ml,$cfg_ddimg_width,$cfg_ddimg_height;
-	global $cfg_basedir,$cfg_user_dir,$title,$cfg_mb_upload_size;
+	global $cfg_basedir,$cfg_user_dir,$title,$cfg_mb_upload_size,$cfg_photo_typenames;
 	if($iw==0) $iw = $cfg_ddimg_width;
 	if($ih==0) $ih = $cfg_ddimg_height;
-	$ntime = mytime();
+	$ntime = $nowtme = mytime();
 	if(!isset($_FILES[$litpic])) return "";
 	if(is_uploaded_file($_FILES[$litpic]['tmp_name']))
 	{
-      //³¬¹ýÏÞ¶¨´óÐ¡µÄÎÄ¼þ²»¸øÉÏ´«
+      //è¶…è¿‡é™å®šå¤§å°çš„æ–‡ä»¶ä¸ç»™ä¸Šä¼ 
       if($_FILES[$litpic]['size'] > $cfg_mb_upload_size*1024){
       	@unlink($_FILES[$litpic]['tmp_name']);
       	return "";
       }
-      $sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png");
+      $sparr = $cfg_photo_typenames;
       $_FILES[$litpic]['type'] = strtolower(trim($_FILES[$litpic]['type']));
       if(!in_array($_FILES[$litpic]['type'],$sparr)){
 		    if($exitErr){
-		    	ShowMsg("ÉÏ´«µÄËõÂÔÍ¼Æ¬¸ñÊ½´íÎó£¬ÇëÊ¹ÓÃJPEG¡¢GIF¡¢PNG¸ñÊ½µÄÆäÖÐÒ»ÖÖ£¡","-1");
+		    	ShowMsg("ä¸Šä¼ çš„ç¼©ç•¥å›¾ç‰‡æ ¼å¼é”™è¯¯ï¼Œè¯·ä½¿ç”¨JPEGã€GIFã€PNGæ ¼å¼çš„å…¶ä¸­ä¸€ç§ï¼","-1");
 		      exit();
 		    }else{ return ""; }
 	    }
-      if($iname=='') $savepath = $cfg_user_dir."/".$cfg_ml->M_ID."/".strftime("%y%m",$ntime);
-      else $savepath = $cfg_user_dir."/".$cfg_ml->M_ID;
+
+      $savepath = $cfg_user_dir."/".$cfg_ml->M_ID;
       CreateDir($savepath);
-      
-      if($iname=='') $itname = dd2char(strftime("%d%H%M%S",$ntime).$cfg_ml->M_ID.mt_rand(1000,9999));
+
+      if($iname=='') $itname = dd2char($cfg_ml->M_ID."0".strftime("%y%m%d%H%M%S",$nowtme)."0".mt_rand(1000,9999)).'-lit';
       else $itname = $iname;
-      
+
       $fullUrl = $savepath."/".$itname;
-     
+
+      //å¼ºåˆ¶æ£€æµ‹æ–‡ä»¶ç±»åž‹
       if($iname==''){
-        if(strtolower($_FILES[$litpic]['type'])=="image/gif") $fullUrl = $fullUrl.".gif";
-        else if(strtolower($_FILES[$litpic]['type'])=="image/png") $fullUrl = $fullUrl.".png";
-        else $fullUrl = $fullUrl.".jpg";
+          if(strtolower($_FILES[$litpic]['type'])=="image/gif") $fullUrl = $fullUrl.".gif";
+          else if(strtolower($_FILES[$litpic]['type'])=="image/png") $fullUrl = $fullUrl.".png";
+          else $fullUrl = $fullUrl.".jpg";
       }else{
-      	$fullUrl = $fullUrl.'.jpg';
+      	  $fullUrl = $fullUrl.'.jpg';
       }
-      
+
       @move_uploaded_file($_FILES[$litpic]['tmp_name'],$cfg_basedir.$fullUrl);
 	    $litpic = $fullUrl;
-	    
+
 	    if($isdd) @ImageResize($cfg_basedir.$fullUrl,$iw,$ih);
 	    else @WaterImg($cfg_basedir.$fullUrl,'up');
-	    
-	    //±£´æÓÃ»§ÉÏ´«µÄ¼ÇÂ¼µ½Êý¾Ý¿â
+
+	    //ä¿å­˜ç”¨æˆ·ä¸Šä¼ çš„è®°å½•åˆ°æ•°æ®åº“
 	    if($title==''){
-	    	if($isdd) $title = 'ÓÃ»§ÉÏ´«µÄÍ¼Æ¬';
-	    	else $title = 'ÓÃ»§ÉÏ´«µÄÂÔÂÔÍ¼';
+	    	if($isdd) $title = 'ç”¨æˆ·ä¸Šä¼ çš„å›¾ç‰‡';
+	    	else $title = 'ç”¨æˆ·ä¸Šä¼ çš„ç•¥ç•¥å›¾';
 	    }
 	    $info = "";
 	    $datas[0] = 0;
@@ -116,78 +120,59 @@ function GetUpImage($litpic,$isdd=false,$exitErr=false,$iw=0,$ih=0,$iname='')
 	    $addinfos[1] = $datas[1];
 	    $addinfos[2] = filesize($cfg_basedir.$fullUrl);
 	    SaveUploadInfo($title,$fullUrl,1,$addinfos);
-	    
+
 	    return $litpic;
   }else{
   	 return "";
   }
 }
 //-----------------------
-//°ÑÉÏ´«µÄÐÅÏ¢±£´æµ½Êý¾Ý¿â
+//æŠŠä¸Šä¼ çš„ä¿¡æ¯ä¿å­˜åˆ°æ•°æ®åº“
 //------------------------
 function SaveUploadInfo($title,$filename,$medaitype=1,$addinfos='')
 {
 		global $dsql,$cfg_ml;
 		if($filename=="") return "";
-		$isopenSql = false;
-		if(!is_object($dsql)){
-			$dsql = new DedeSql(false);
-			$isopenSql = true;
-		}
+		if(!is_object($dsql)){ $dsql = new DedeSql(false); }
 		if(!is_array($addinfos)){
 			$addinfos[0] = 0; $addinfos[1] = 0; $addinfos[2] = 0;
 		}
 		$row = $dsql->GetOne("Select title,url From #@__uploads where url='$filename'; ");
-		if(is_array($row) && count($row)>0){
-			if($isopenSql) $dsql->Close();
-			return "";
-		}
+		if(is_array($row) && count($row)>0){ return '';}
 		$inquery = "
-       INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
+       INSERT INTO `#@__uploads`(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid)
        VALUES ('$title','$filename','1','".$addinfos[0]."','".$addinfos[1]."','0','".$addinfos[2]."','".mytime()."','0','".$cfg_ml->M_ID."');
     ";
     $dsql->SetQuery($inquery);
     $dsql->ExecuteNoneQuery();
-    if($isopenSql) $dsql->Close();
 }
+
 //---------------
-//¼ì²âÆµµÀID
+//æ£€æµ‹é¢‘é“ID
 //---------------
 function CheckChannel($typeid,$channelid)
 {
+	 global $dsql;
 	 if($typeid==0) return false;
-	 $dsql = new DedeSql(false);
-	 $rowc = $dsql->GetOne("Select issend From #@__channeltype  where ID='$channelid'; ");	  
-	 $row = $dsql->GetOne("Select ispart,channeltype,issend From #@__arctype where ID='$typeid' ");
-	 $dsql->Close();
-	 if($rowc['issend']!=1 || $row['ispart']!=0 
-	 || $row['channeltype']!=$channelid || $row['issend']!=1){
-	 	 return false;
-	 }else {
-	 	 return true;
-	 }
+	 $query = "Select t.ispart,t.channeltype,t.issend,c.issend as cissend From `#@__arctype` t 
+	            left join `#@__channeltype` c on c.ID=t.channeltype where t.ID='$typeid'
+	          ";
+	 $row = $dsql->GetOne($query,MYSQL_ASSOC);
+	 if($row['cissend']!=1) $msg="æ¨¡åž‹ä¸å…è®¸æŠ•ç¨¿";
+	 else if($row['issend']!=1) $msg="æ ç›®ä¸å…è®¸æŠ•ç¨¿";
+	 else if($row['ispart']!=0) $msg="éžæœ€ç»ˆåˆ—è¡¨æ ç›®";
+	 else if($row['channeltype']!=$channelid) $msg="æ ç›®ä¸å±žäºŽæ‰€é€‰æ¨¡åž‹";
+	 else $msg = '';
+	 return $msg;
 }
 //-----------------------
-//´´½¨Ö¸¶¨IDµÄÎÄµµ
+//åˆ›å»ºæŒ‡å®šIDçš„æ–‡æ¡£
 //-----------------------
 function MakeArt($aid,$checkLike=false)
 {
+	include_once(dirname(__FILE__)."/../../include/inc_archives_view.php");
 	$arc = new Archives($aid);
   $reurl = $arc->MakeHtml();
-  $arc->dsql = new DedeSql(false);
-  $preRow = $arc->dsql->GetOne("Select ID From #@__archives where ID<$aid order by ID desc");
-  $nextRow = $arc->dsql->GetOne("Select ID From #@__archives where ID>$aid order by ID asc");
-  $arc->Close();
-  if(is_array($preRow)){
-  	$arc = new Archives($preRow['ID']);
-    $arc->MakeHtml();
-    $arc->Close();
-  }
-  if(is_array($nextRow)){
-  	$arc = new Archives($nextRow['ID']);
-    $arc->MakeHtml();
-    $arc->Close();
-  }
   return $reurl;
 }
 ?>

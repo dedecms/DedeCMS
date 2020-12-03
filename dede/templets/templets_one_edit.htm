@@ -1,0 +1,79 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>更改自定义页面</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+function checkSubmit()
+{
+	if(document.form1.title.value=="")
+	{
+		alert("页面名称不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+	if(document.form1.nfilename.value=="")
+	{
+		alert("文件名不能为空！");
+		document.form1.nfilename.focus();
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">频道管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<tr>
+    <td height="19" bgcolor="#EDF9D5"> <b><a href="templets_one.php"><u>单独页面管理</u></a></b>&gt;&gt;更新页面    </td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" class="tblist">
+        <form action="templets_one_edit.php" method="post" name="form1" onSubmit="return checkSubmit()">
+          <input type='hidden' name='dopost' value='saveedit'>
+		  <input type='hidden' name='aid' value='<?php echo $aid?>'>
+          <tr> 
+            <td width="15%" height="24" align="center">页面名称：</td>
+            <td> 
+              <input name="title" type="text" id="title" size="30" value="<?php echo $row['title']?>"></td>
+          </tr>
+          <tr> 
+            <td height="24" align="center">生成文件名：</td>
+       <td>
+         <input name="oldfilename" type="hidden" id="oldfilename" value="<?php echo $row['filename']?>">
+			       <input name="nfilename" type="text" id="nfilename" size="30" value="<?php echo $row['filename']?>">
+             （相对于CMS安装目录）            </td>
+          </tr>
+          <tr> 
+            <td height="24" align="center">是否编译：</td>
+            <td>
+            	<input name="ismake" type="radio" value="1"<?php if($row['ismake']==1) echo " checked";?>>
+              含模板标记，要编译 
+              <input type="radio" name="ismake" value="0"<?php if($row['ismake']==0) echo " checked";?>>
+              不含模板标记，不需要编译</td>
+          </tr>
+          <tr> 
+            <td height="24" colspan="2">文件内容：</td>
+          </tr>
+          <tr> 
+            <td height="80" colspan="2" align="center"> 
+              <?php 
+	GetEditor("body",$row['body'],"500","Default","print","true");
+	?>            </td>
+          </tr>
+          <tr> 
+            <td height="53" colspan="2" align="center"><input type="submit" name="button" id="button" value="确定"  class="inputbut"/></td>
+          </tr>
+        </form>
+      </table>
+    </td>
+</tr>
+</table>
+</body>
+</html>

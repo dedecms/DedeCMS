@@ -1,14 +1,17 @@
 <?php 
 require(dirname(__FILE__)."/config.php");
-require(dirname(__FILE__)."/../include/pub_oxwindow.php");
-CheckPurview('plus_ÎÄ¼ş¹ÜÀíÆ÷');
+require(DEDEADMIN."/../include/pub_oxwindow.php");
+require(DEDEADMIN."/file_class.php");
+
+CheckPurview('plus_æ–‡ä»¶ç®¡ç†å™¨');
+
 $activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 if($activepath == "/") $activepath = "";
 if($activepath == "") $inpath = $cfg_basedir;
 else $inpath = $cfg_basedir.$activepath;
 
-//ÎÄ¼ş¹ÜÀíÆ÷½»»¥ÓëÂß¼­¿ØÖÆÎÄ¼ş
+//æ–‡ä»¶ç®¡ç†å™¨äº¤äº’ä¸é€»è¾‘æ§åˆ¶æ–‡ä»¶
 $fmm = new FileManagement();
 $fmm->Init();
 /*---------------
@@ -18,7 +21,7 @@ if($fmdo=="rename")
 {
 	$fmm->RenameFile($oldfilename,$newfilename);
 }
-//ĞÂ½¨Ä¿Â¼
+//æ–°å»ºç›®å½•
 /*---------------
 function __newdir();
 ----------------*/
@@ -26,7 +29,7 @@ else if($fmdo=="newdir")
 {
 	$fmm->NewDir($newpath);
 }
-//ÒÆ¶¯ÎÄ¼ş
+//ç§»åŠ¨æ–‡ä»¶
 /*---------------
 function __move();
 ----------------*/
@@ -34,7 +37,7 @@ else if($fmdo=="move")
 {
 	$fmm->MoveFile($filename,$newpath);
 }
-//É¾³ıÎÄ¼ş
+//åˆ é™¤æ–‡ä»¶
 /*---------------
 function __delfile();
 ----------------*/
@@ -42,7 +45,7 @@ else if($fmdo=="del")
 {
 	$fmm->DeleteFile($filename);
 }
-//ÎÄ¼ş±à¼­
+//æ–‡ä»¶ç¼–è¾‘
 /*---------------
 function __saveEdit();
 ----------------*/
@@ -58,11 +61,11 @@ else if($fmdo=="edit")
     $fp = fopen($file,"w");
     fputs($fp,$str);
     fclose($fp);
-    if(empty($backurl)) ShowMsg("³É¹¦±£´æÒ»¸öÎÄ¼ş£¡","file_manage_main.php?activepath=$activepath");
-    else ShowMsg("³É¹¦±£´æÎÄ¼ş£¡",$backurl);
+    if(empty($backurl)) ShowMsg("æˆåŠŸä¿å­˜ä¸€ä¸ªæ–‡ä»¶ï¼","file_manage_main.php?activepath=$activepath");
+    else ShowMsg("æˆåŠŸä¿å­˜æ–‡ä»¶ï¼",$backurl);
     exit();
 }
-//ÎÄ¼ş±à¼­£¬¿ÉÊÓ»¯Ä£Ê½
+//æ–‡ä»¶ç¼–è¾‘ï¼Œå¯è§†åŒ–æ¨¡å¼
 /*---------------
 function __saveEditView();
 ----------------*/
@@ -76,10 +79,10 @@ else if($fmdo=="editview")
     fputs($fp,$str);
     fclose($fp);
     if(empty($backurl)) $backurl = "file_manage_main.php?activepath=$activepath";
-    ShowMsg("³É¹¦±£´æÎÄ¼ş£¡",$backurl);
+    ShowMsg("æˆåŠŸä¿å­˜æ–‡ä»¶ï¼",$backurl);
     exit();
 }
-//ÎÄ¼şÉÏ´«
+//æ–‡ä»¶ä¸Šä¼ 
 /*---------------
 function __upload();
 ----------------*/
@@ -102,17 +105,17 @@ else if($fmdo=="upload")
 			$j++;
 		}
 	}
-	ShowMsg("³É¹¦ÉÏ´« $j ¸öÎÄ¼şµ½: $activepath","file_manage_main.php?activepath=$activepath");
+	ShowMsg("æˆåŠŸä¸Šä¼  $j ä¸ªæ–‡ä»¶åˆ°: $activepath","file_manage_main.php?activepath=$activepath");
 	exit();
 }
-//¿Õ¼ä¼ì²é
+//ç©ºé—´æ£€æŸ¥
 else if($fmdo=="space")
 {
-	if($activepath=="") $ecpath = "ËùÓĞÄ¿Â¼";
+	if($activepath=="") $ecpath = "æ‰€æœ‰ç›®å½•";
 	else $ecpath = $activepath;	
-	$titleinfo = "Ä¿Â¼ <a href='file_manage_main.php?activepath=$activepath'><b><u>$ecpath</u></b></a> ¿Õ¼äÊ¹ÓÃ×´¿ö£º<br/>";
-	$wintitle = "ÎÄ¼ş¹ÜÀí";
-	$wecome_info = "ÎÄ¼ş¹ÜÀí::¿Õ¼ä´óĞ¡¼ì²é [<a href='file_manage_main.php?activepath=$activepath'>ÎÄ¼şä¯ÀÀÆ÷</a>]</a>";
+	$titleinfo = "ç›®å½• <a href='file_manage_main.php?activepath=$activepath'><b><u>$ecpath</u></b></a> ç©ºé—´ä½¿ç”¨çŠ¶å†µï¼š<br/>";
+	$wintitle = "æ–‡ä»¶ç®¡ç†";
+	$wecome_info = "æ–‡ä»¶ç®¡ç†::ç©ºé—´å¤§å°æ£€æŸ¥ [<a href='file_manage_main.php?activepath=$activepath'>æ–‡ä»¶æµè§ˆå™¨</a>]</a>";
 	$activepath=$cfg_basedir.$activepath;
 	$space=new SpaceUse;
 	$space->checksize($activepath);
@@ -122,155 +125,10 @@ else if($fmdo=="space")
 	$win = new OxWindow();
 	$win->Init("","js/blank.js","POST");
 	$win->AddTitle($titleinfo);
-	$win->AddMsgItem("¡¡¡¡$totalmb M<br/>¡¡¡¡$totalkb KB<br/>¡¡¡¡$total ×Ö½Ú");
+	$win->AddMsgItem("ã€€ã€€$totalmb M<br/>ã€€ã€€$totalkb KB<br/>ã€€ã€€$total å­—èŠ‚");
 	$winform = $win->GetWindow("");
 	$win->Display();
 }
-//---------------------
-//ÎÄ¼ş¹ÜÀíÂß¼­Àà
-//---------------------
-class FileManagement
-{	
-	var $baseDir="";
-	var $activeDir="";
-	//ÊÇ·ñÔÊĞíÎÄ¼ş¹ÜÀíÆ÷É¾³ıÄ¿Â¼£»
-	//Ä¬ÈÏÎª²»ÔÊĞí 0 ,Èç¹ûÏ£Íû¿ÉÄÜ¹ÜÀíÕû¸öÄ¿Â¼,Çë°ÑÖµÉèÎª 1 £»
-	var $allowDeleteDir=0;
-	//³õÊ¼»¯ÏµÍ³
-	function Init()
-	{
-		global $cfg_basedir;
-		global $activepath;
-		$this->baseDir = $cfg_basedir;
-		$this->activeDir = $activepath;
-	}
-	//¸ü¸ÄÎÄ¼şÃû
-	function RenameFile($oldname,$newname)
-	{
-		$oldname = $this->baseDir.$this->activeDir."/".$oldname;
-		$newname = $this->baseDir.$this->activeDir."/".$newname;
-		if(($newname!=$oldname) && is_writable($oldname)){
-			rename($oldname,$newname);
-		}
-		ShowMsg("³É¹¦¸ü¸ÄÒ»¸öÎÄ¼şÃû£¡","file_manage_main.php?activepath=".$this->activeDir);
-		return 0;
-	}
-	//´´½¨ĞÂÄ¿Â¼
-	function NewDir($dirname)
-	{
-		$newdir = $dirname;
-		$dirname = $this->baseDir.$this->activeDir."/".$dirname;
-		if(is_writable($this->baseDir.$this->activeDir)){
-			MkdirAll($dirname,777);
-			CloseFtp();
-			ShowMsg("³É¹¦´´½¨Ò»¸öĞÂÄ¿Â¼£¡","file_manage_main.php?activepath=".$this->activeDir."/".$newdir);
-		  return 1;
-		}
-		else{
-			ShowMsg("´´½¨ĞÂÄ¿Â¼Ê§°Ü£¬ÒòÎªÕâ¸öÎ»ÖÃ²»ÔÊĞíĞ´Èë£¡","file_manage_main.php?activepath=".$this->activeDir);
-			return 0;
-		}
-	}
-	//ÒÆ¶¯ÎÄ¼ş
-	function MoveFile($mfile,$mpath)
-	{
-		if($mpath!="" && !ereg("\.\.",$mpath))
-		{
-			$oldfile = $this->baseDir.$this->activeDir."/$mfile";
-			$mpath = str_replace("\\","/",$mpath);
-			$mpath = ereg_replace("/{1,}","/",$mpath);
-			if(!ereg("^/",$mpath)){ $mpath = $this->activeDir."/".$mpath;  }
-			$truepath = $this->baseDir.$mpath;
-		  if(is_readable($oldfile) 
-		  && is_readable($truepath) && is_writable($truepath))
-		  {
-				if(is_dir($truepath)) copy($oldfile,$truepath."/$mfile");
-			  else{
-			  	MkdirAll($truepath,777);
-			  	CloseFtp();
-			  	copy($oldfile,$truepath."/$mfile");
-			  }
-				unlink($oldfile);
-				ShowMsg("³É¹¦ÒÆ¶¯ÎÄ¼ş£¡","file_manage_main.php?activepath=$mpath",0,1000);
-				return 1;
-			}
-			else
-			{
-				ShowMsg("ÒÆ¶¯ÎÄ¼ş $oldfile -&gt; $truepath/$mfile Ê§°Ü£¬¿ÉÄÜÊÇÄ³¸öÎ»ÖÃÈ¨ÏŞ²»×ã£¡","file_manage_main.php?activepath=$mpath",0,1000);
-				return 0;
-			}
-		}
-		else{
-		  ShowMsg("¶Ô²»Æğ£¬ÄãÒÆ¶¯µÄÂ·¾¶²»ºÏ·¨£¡","-1",0,5000);
-		  return 0;
-	  }
-	}
-	//É¾³ıÄ¿Â¼
-	function RmDirFiles($indir)
-	{
-    $dh = dir($indir);
-    while($filename = $dh->read()) {
-      if($filename == "." || $filename == "..")
-      	continue;
-      else if(is_file("$indir/$filename"))
-      	@unlink("$indir/$filename");
-      else
-        $this->RmDirFiles("$indir/$filename");
-    }
-    $dh->close();
-    @rmdir($indir);
-	}
-	//É¾³ıÎÄ¼ş
-	function DeleteFile($filename)
-	{
-		$filename = $this->baseDir.$this->activeDir."/$filename";
-		if(is_file($filename)){ @unlink($filename); $t="ÎÄ¼ş"; }
-		else{
-			$t = "Ä¿Â¼";
-			if($this->allowDeleteDir==1) $this->RmDirFiles($filename);
-		}
-		ShowMsg("³É¹¦É¾³ıÒ»¸ö".$t."£¡","file_manage_main.php?activepath=".$this->activeDir);
-		return 0;
-	}
-}
-//
-//Ä¿Â¼ÎÄ¼ş´óĞ¡¼ì²âÀà
-//
-class SpaceUse
-{
-	var $totalsize=0;	
-	function checksize($indir)
-	{
-		$dh=dir($indir);
-		while($filename=$dh->read())
-		{
-			if(!ereg("^\.",$filename))
-			{
-				if(is_dir("$indir/$filename")) $this->checksize("$indir/$filename");
-				else $this->totalsize=$this->totalsize + filesize("$indir/$filename");
-			}
-		}
-	}
-	function setkb($size)
-	{
-		$size=$size/1024;
-		//$size=ceil($size);
-		if($size>0)
-		{
-			list($t1,$t2)=explode(".",$size);
-			$size=$t1.".".substr($t2,0,1);
-		}
-		return $size;
-	}
-	function setmb($size)
-	{
-		$size=$size/1024/1024;
-		if($size>0)
-		{
-			list($t1,$t2)=explode(".",$size);
-			$size=$t1.".".substr($t2,0,2);
-		}
-		return $size;
-	}	
-}
+
+ClearAllLink();
 ?>

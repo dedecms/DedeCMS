@@ -1,13 +1,16 @@
 <?php 
-if(is_file(dirname(__FILE__)."/setup/notinsall.txt")){
-  echo "¡¤Èç¹ûÄã»¹Ã»°²×°±¾³ÌĞò£¬ÇëÔËĞĞ<a href='setup/index.php'> setup/index.php </a> ½øÈë°²×°&gt;&gt;<br/><br/>";
-  echo "¡¤Èç¹ûÄãÒÑ¾­°²×°ºÃ³ÌĞò£¬ÇëÉ¾³ı setup/notinsall.txt Õâ¸öÎÄ¼ş!  <br/><br/>";
-  echo "&nbsp;&nbsp;<a href='http://www.dedecms.com' style='font-size:12px' target='_blank'>Power by DedeCms OX V4.0 &nbsp;Ö¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³</a>";
+
+if(!is_file(dirname(__FILE__)."/include/config_base.php")){
+  echo "<meta http-equiv=content-type content='text/html; charset=utf-8'>\r\n";
+  echo "Â·å¦‚æœä½ è¿˜æ²¡å®‰è£…æœ¬ç¨‹åºï¼Œè¯·è¿è¡Œ<a href='install/index.php'> install/index.php è¿›å…¥å®‰è£…&gt;&gt; </a><br/><br/>";
+  echo "&nbsp;&nbsp;<a href='http://www.dedecms.com' style='font-size:12px' target='_blank'>Power by DedeCms OX V5.0 2008ç‰ˆ &nbsp;ç»‡æ¢¦å†…å®¹ç®¡ç†ç³»ç»Ÿ</a>";
   exit();
 }
+
 require_once(dirname(__FILE__)."/include/config_base.php");
 require_once(dirname(__FILE__)."/include/inc_arcpart_view.php");
-$dsql = new DedeSql(false);
+
+$dsql = new DedeSql(-100);
 $row  = $dsql->GetOne("Select * From #@__homepageset");
 $dsql->Close();
 $row['templet'] = str_replace("{style}",$cfg_df_style,$row['templet']);
@@ -15,4 +18,5 @@ $pv = new PartView();
 $pv->SetTemplet($cfg_basedir."/".$cfg_templets_dir."/".$row['templet']);
 $pv->Display();
 $pv->Close();
+//ookk
 ?>

@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÎÒµÄÁôÑÔ±¾</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æˆ‘çš„ç•™è¨€æœ¬</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
 </style>
@@ -14,35 +15,35 @@ var totalrow = <?php echo $totalRow?>;
 var pagesize = <?php echo $pagesize?>;
 var orderby = '<?php echo $orderby?>';
 var selitem = 0;
-//¼ÓÔØÁĞ±í
+//åŠ è½½åˆ—è¡¨
 function ReloadPage(ordertype){
 	orderby = ordertype;
 	var listArea = $Obj('rslist');
-	var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>µã»÷´ËÖØĞÂ¼ÓÔØÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ¼ÓÔØ...");
+	var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>ç‚¹å‡»æ­¤é‡æ–°åŠ è½½åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨åŠ è½½...");
   myajax.SendGet("guestbook_admin.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype);
 }
-//ÔØÈëÖ¸¶¨Ò³µÄÁĞ±í
+//è½½å…¥æŒ‡å®šé¡µçš„åˆ—è¡¨
 function LoadPage(npage){
 	pageno = npage;
 	ReloadPage(orderby);
 	ReloadPageNum(pageno);
 }
-//É¾³ıÁôÑÔ
+//åˆ é™¤ç•™è¨€
 function DelNote(nid){
-	if(!window.confirm('ÄãÈ·¶¨ÒªÉ¾³ıÕâÔòÁôÑÔÂğ?')){
+	if(!window.confirm('ä½ ç¡®å®šè¦åˆ é™¤è¿™åˆ™ç•™è¨€å—?')){
 		return false;
 	}
 	var listArea = $Obj('rslist');
 	totalrow = totalrow - 1;
   var pagenum = Math.ceil(totalrow/pagesize);
   if(pagenum<=pageno) pageno = pagenum;
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>µã»÷´ËÖØĞÂ¼ÓÔØÁĞ±í</u></a>]";
-	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ´¦Àí...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>ç‚¹å‡»æ­¤é‡æ–°åŠ è½½åˆ—è¡¨</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("guestbook_admin.php?dopost=del&aid="+nid+"&pageno="+pageno);
   ReloadPageNum(pageno);
 }
-//»ñµÃÑ¡ÖĞÎÄÏîµÄID
+//è·å¾—é€‰ä¸­æ–‡é¡¹çš„ID
 function getCheckboxItem()
 {
 	var allSel="";
@@ -60,26 +61,26 @@ function getCheckboxItem()
 	}
 	return allSel;	
 }
-//ÅúÁ¿É¾³ıÁôÑÔ
+//æ‰¹é‡åˆ é™¤ç•™è¨€
 function DelNotes(){
 	var listArea = $Obj('rslist');
 	var aids = getCheckboxItem();
 	if(selitem==0){
-		alert("ÄãÃ»Ñ¡ÖĞÈÎºÎÄÚÈİ£¡");
+		alert("ä½ æ²¡é€‰ä¸­ä»»ä½•å†…å®¹ï¼");
 		return false;
 	}
-	if(!window.confirm('ÄãÈ·¶¨ÒªÉ¾³ıÕâĞ©ÁôÑÔÂğ?')){
+	if(!window.confirm('ä½ ç¡®å®šè¦åˆ é™¤è¿™äº›ç•™è¨€å—?')){
 		return false;
 	}
 	totalrow = totalrow - selitem;
   var pagenum = Math.ceil(totalrow/pagesize);
   if(pagenum<=pageno) pageno = pagenum;
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>µã»÷´ËÖØĞÂ¼ÓÔØÁĞ±í</u></a>]";
-	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ´¦Àí...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>ç‚¹å‡»æ­¤é‡æ–°åŠ è½½åˆ—è¡¨</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("guestbook_admin.php?dopost=del&ids="+aids+"&pageno="+pageno);
   ReloadPageNum(pageno);
 }
-//ÖØĞÂ¼ÓÔØ·ÖÒ³ÁĞ±í
+//é‡æ–°åŠ è½½åˆ†é¡µåˆ—è¡¨
 function ReloadPageNum(startnum){
   var ListArea = $Obj('pagelist');
   var pagenum = Math.ceil(totalrow/pagesize);
@@ -87,8 +88,8 @@ function ReloadPageNum(startnum){
   var ahtml = "";
   var startloop = 1;
   var endnum = 0;
-  ahtml += "¹²£º"+totalrow+" Ìõ¼ÇÂ¼/"+pagenum+"Ò³ ";
-  if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>¡üÉÏÒ³</a> ";
+  ahtml += "å…±ï¼š"+totalrow+" æ¡è®°å½•/"+pagenum+"é¡µ ";
+  if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>â†‘ä¸Šé¡µ</a> ";
   if(startnum >= pagenum-listsize){
   	startloop = pagenum-(listsize*2);
   	if(startloop<1) startloop = 1;
@@ -113,7 +114,7 @@ function ReloadPageNum(startnum){
   		else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
   	}
   }
-  if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>ÏÂÒ³¡ı</a> ";
+  if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>ä¸‹é¡µâ†“</a> ";
   ListArea.innerHTML = ahtml;
 }
 </script>
@@ -121,30 +122,30 @@ function ReloadPageNum(startnum){
 <body leftmargin='0' topmargin='0'>
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="1" style="margin-bottom:3px">
+	  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="1" style="margin-bottom:3px;margin-top:10px;">
         <tr align="right" bgcolor="#ffffff"> 
           <td height="25" colspan="6" background="img/nnnbg.gif" class="gdt"> 
-            <table width='96%' align="center" cellpadding='0' cellspacing='0'>
+            <table width='100%' align="center" cellpadding='0' cellspacing='0'  style="text-align:left;background:url(images/right_titlebg.gif) repeat-x;">
               <tr> 
-                <td width='30%'><b>¡¡ÎÒµÄÁôÑÔ±¾£º</b></td>
-                <td align='right'>
-				<input type="button" name="Submit" value="É¾³ıÑ¡ÖĞÏî" class="coolbg" onClick="DelNotes()"> 
+                <td width='30%' height="30" style="font-weight:700; color:#355b00; text-indent:20px;">æˆ‘çš„ç•™è¨€æœ¬:</td>
+                <td align='right' style="padding-right:20px;">
+				<input type="button" name="Submit" value="åˆ é™¤é€‰ä¸­é¡¹" class="coolbg" onClick="DelNotes()"> 
                 </td>
               </tr>
             </table></td>
         </tr>
 		</table>
     <form name="form1">
-    <span id='rslist'><?php  GetList($dsql,$pageno,$pagesize,'aid'); ?></span>
+    <span id='rslist'"><?php  GetList($dsql,$pageno,$pagesize,'aid'); ?></span>
     </form>
-      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D9EDC0">
+      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D9EDC0" >
         <tr height="24"> 
           <td height="32" bgcolor="#F9FCEF" align="center">
           	<span id='pagelist'></span>

@@ -11,7 +11,7 @@
 
 // full day names
 Calendar._DN = new Array
-("ĞÇÆÚÈÕ","ĞÇÆÚÒ»","ĞÇÆÚ¶ş","ĞÇÆÚÈı","ĞÇÆÚËÄ","ĞÇÆÚÎå","ĞÇÆÚÁù","ĞÇÆÚÈÕ");
+("æ˜ŸæœŸæ—¥","æ˜ŸæœŸä¸€","æ˜ŸæœŸäºŒ","æ˜ŸæœŸä¸‰","æ˜ŸæœŸå››","æ˜ŸæœŸäº”","æ˜ŸæœŸå…­","æ˜ŸæœŸæ—¥");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -27,19 +27,19 @@ Calendar._SMN_len = 9; // short month name length
 
 // short day names
 Calendar._SDN = new Array
-("ÖÜÈÕ","ÖÜÒ»","ÖÜ¶ş","ÖÜÈı","ÖÜËÄ","ÖÜÎå","ÖÜÁù","ÖÜÈÕ");
+("å‘¨æ—¥","å‘¨ä¸€","å‘¨äºŒ","å‘¨ä¸‰","å‘¨å››","å‘¨äº”","å‘¨å…­","å‘¨æ—¥");
 
 // full month names
 Calendar._MN = new Array
-("Ò»ÔÂ","¶şÔÂ","ÈıÔÂ","ËÄÔÂ","ÎåÔÂ","ÁùÔÂ","ÆßÔÂ","°ËÔÂ","¾ÅÔÂ","Ê®ÔÂ","Ê®Ò»ÔÂ","Ê®¶şÔÂ");
+("ä¸€æœˆ","äºŒæœˆ","ä¸‰æœˆ","å››æœˆ","äº”æœˆ","å…­æœˆ","ä¸ƒæœˆ","å…«æœˆ","ä¹æœˆ","åæœˆ","åä¸€æœˆ","åäºŒæœˆ");
 
 // short month names
 Calendar._SMN = new Array
-("Ò»ÔÂ","¶şÔÂ","ÈıÔÂ","ËÄÔÂ","ÎåÔÂ","ÁùÔÂ","ÆßÔÂ","°ËÔÂ","¾ÅÔÂ","Ê®ÔÂ","Ê®Ò»ÔÂ","Ê®¶şÔÂ");
+("ä¸€æœˆ","äºŒæœˆ","ä¸‰æœˆ","å››æœˆ","äº”æœˆ","å…­æœˆ","ä¸ƒæœˆ","å…«æœˆ","ä¹æœˆ","åæœˆ","åä¸€æœˆ","åäºŒæœˆ");
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "¹ØÓÚ";
+Calendar._TT["INFO"] = "å…³äº";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
@@ -57,18 +57,18 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-Calendar._TT["PREV_YEAR"] = "ÉÏÒ»Äê";
-Calendar._TT["PREV_MONTH"] = "ÉÏÒ»ÔÂ";
-Calendar._TT["GO_TODAY"] = "½ñÌì";
-Calendar._TT["NEXT_MONTH"] = "ÏÂÒ»ÔÂ";
-Calendar._TT["NEXT_YEAR"] = "ÏÂÒ»Äê";
-Calendar._TT["SEL_DATE"] = "ÇëÑ¡ÔñÈÕÆÚ";
-Calendar._TT["DRAG_TO_MOVE"] = "ÍÏ¶¯";
-Calendar._TT["PART_TODAY"] = "(½ñÌì)";
-Calendar._TT["MON_FIRST"] = "ÖÜÒ»ÔÚÇ°";
-Calendar._TT["SUN_FIRST"] = "ÖÜÈÕÔÚÇ°";
-Calendar._TT["CLOSE"] = "¹Ø±Õ";
-Calendar._TT["TODAY"] = "½ñÌì";
+Calendar._TT["PREV_YEAR"] = "ä¸Šä¸€å¹´";
+Calendar._TT["PREV_MONTH"] = "ä¸Šä¸€æœˆ";
+Calendar._TT["GO_TODAY"] = "ä»Šå¤©";
+Calendar._TT["NEXT_MONTH"] = "ä¸‹ä¸€æœˆ";
+Calendar._TT["NEXT_YEAR"] = "ä¸‹ä¸€å¹´";
+Calendar._TT["SEL_DATE"] = "è¯·é€‰æ‹©æ—¥æœŸ";
+Calendar._TT["DRAG_TO_MOVE"] = "æ‹–åŠ¨";
+Calendar._TT["PART_TODAY"] = "(ä»Šå¤©)";
+Calendar._TT["MON_FIRST"] = "å‘¨ä¸€åœ¨å‰";
+Calendar._TT["SUN_FIRST"] = "å‘¨æ—¥åœ¨å‰";
+Calendar._TT["CLOSE"] = "å…³é—­";
+Calendar._TT["TODAY"] = "ä»Šå¤©";
 Calendar._TT["TIME_PART"] = "(Shift-)Click or drag to change value";
 
 // date formats

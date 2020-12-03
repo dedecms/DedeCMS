@@ -1,0 +1,39 @@
+<table width='100%'border='0' cellpadding='3' cellspacing='1' bgcolor="#BEC99C" style="margin-top:6px">
+        <tr bgcolor="#FFFFFF">
+          <td width='20%' rowspan='4' align='center'> [field:imglink/]</td>
+          <td width='40%' height='20' align="center" bgcolor="#F4F9E8">图书名称</td>
+          <td width='14%' align="center" bgcolor="#F4F9E8">上架日期</td>
+          <td width='14%' align="center" bgcolor="#F4F9E8">图书类型</td>
+          <td width='12%' align="center" bgcolor="#F4F9E8">人气</td>
+        </tr>
+        <tr align="center" bgcolor="#FFFFFF">
+          <td height='20'><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width='10%' align='center'><img src="[field:global name='cfg_plus_dir'/]/img/sdd.gif" width="13" height="13"></td>
+                <td>
+                  <b>[[field:cataloglink/]]</b>
+                	<a href='[field:bookurl/]' style="color:blue"><b>[field:bookname/]</b></a>
+                </td>
+              </tr>
+          </table></td>
+          <td>[field:pubdate function='GetDateMk(@me)'/]</td>
+          <td>[field:booktypename/]</td>
+          <td>[field:click/]</td>
+        </tr>
+        <tr>
+          <td colspan="4" valign="top" bgcolor="#FFFFFF">图书简介：[field:description/]</td>
+        </tr>
+        <tr>
+          <td colspan="4" valign="top" bgcolor="#FFFFFF">
+          	<table width="100%" border="0" cellspacing="1" cellpadding="1">
+              <tr>
+                <td>
+                	<font color="#006600">作者：</font>[field:author/]
+                	&nbsp;&nbsp;
+                	<font color="#006600">【是否完成连载：[field:ischeck/]】</font>
+                	</td>
+              </tr>
+          </table>
+          </td>
+        </tr>
+      </table>

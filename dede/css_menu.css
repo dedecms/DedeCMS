@@ -1,0 +1,78 @@
+/*Powered by DEDECMS http://www.dedecms.com
+Design & Css By Pig.Z (QQ:7859301)*/
+*{
+	padding:0px;
+	margin:0px;
+}
+body{
+	color:#333333;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	height:100%;
+	overflow-y:auto;
+	background:#007400 url(images/left_bg_top.gif) center top repeat-x;
+	/*
+	SCROLLBAR-FACE-COLOR:#FF9900; 
+	SCROLLBAR-HIGHLIGHT-COLOR: #FF9900; 
+	SCROLLBAR-SHADOW-COLOR: #FFFF99;
+	SCROLLBAR-3DLIGHT-COLOR: #FFCC00; 
+	SCROLLBAR-ARROW-COLOR: #FFFFCC; 
+	SCROLLBAR-TRACK-COLOR: #FFFF99; 
+	SCROLLBAR-DARKSHADOW-COLOR: #FFFF99; 
+	*/
+}
+/*---- link --------------*/
+a{
+	color:#000;
+}
+a:hover{
+	color:#F00;
+	text-decoration:none;
+}
+/*---- menu style --------------*/
+.menu{
+	width:152px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.menu dl{
+	margin-top:2px;
+}
+.menu dl dt{
+	background:url(images/menu_title_bg.jpg) top left repeat-x;
+}
+.menu dl dt a{
+	height:22px;
+	padding-top:6px;
+	line-height:19px;
+	width:152px;
+	display:block;
+	color:#FFF;
+	font-weight:bold;
+	text-decoration:none;
+	background:url(images/ico_1.gif) 10px 7px no-repeat;
+	text-indent:30px;
+	letter-spacing:2px;
+}
+.menu dl dt a:hover{
+	color:#FFFFCC;
+}
+.menu dl dd ul{
+	list-style:none;
+}
+.menu dl dd ul li a{
+	height:27px;
+	widows:152px;
+	display:block;
+	line-height:27px;
+	text-indent:28px;
+	background:#F0F0F0 url(images/ico_2.gif) no-repeat 13px 11px;
+	border-color:#FFF #545454 #545454 #FFF;
+	border-style:solid;
+	border-width:1px;
+}
+.menu dl dd ul li a:hover{
+	background:#FFF url(images/ico_3.gif) no-repeat 13px 11px;
+	color:#FF6600;
+	font-weight:bold;
+}

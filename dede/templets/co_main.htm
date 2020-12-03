@@ -1,9 +1,9 @@
 {dede:page pagesize="10"/}
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>²É¼¯½Úµã¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>é‡‡é›†èŠ‚ç‚¹ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript">
@@ -12,105 +12,105 @@ if(moz) {
 	extendElementModel();
 	emulateAttachEvent();
 }
-//±à¼­½Úµã
+//ç¼–è¾‘èŠ‚ç‚¹
 function EditNote(nid)
 {
 	if(nid=="") nid = getOneItem();
-  if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+  if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_edit.php?nid="+nid;
 }
-//±à¼­½ÚµãÅäÖÃ
+//ç¼–è¾‘èŠ‚ç‚¹é…ç½®
 function EditNoteText(nid)
 {
 	if(nid=="") nid = getOneItem();
-  if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+  if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_edit_text.php?nid="+nid;
 }
-//Çå¿Õ½Úµã
+//æ¸…ç©ºèŠ‚ç‚¹
 function ClearNote(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_do.php?dopost=clear&nid="+nid;
 }
-//É¾³ı½Úµã
+//åˆ é™¤èŠ‚ç‚¹
 function DelNote(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
-	if(window.confirm('ÄãÈ·¶¨ÒªÉ¾³ıÕâ¸ö½ÚµãÂğ?'))
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
+	if(window.confirm('ä½ ç¡®å®šè¦åˆ é™¤è¿™ä¸ªèŠ‚ç‚¹å—?'))
 	{ location.href = "co_do.php?dopost=delete&nid="+nid; }
 }
-//²é¿´ÒÑÏÂÔØµÄÄÚÈİ
+//æŸ¥çœ‹å·²ä¸‹è½½çš„å†…å®¹
 function ViewDown(nid)
 {
 	if(nid=="") nid = getOneItem();
 	location.href = "co_url.php?nid="+nid;
 }
-//²âÊÔ¹æÔò
+//æµ‹è¯•è§„åˆ™
 function TestRule(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_test_rule.php?nid="+nid;
 }
-//µ¼³ö²É¼¯
+//å¯¼å‡ºé‡‡é›†
 function ExportDown(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_export.php?nid="+nid;;
 }
-//µ¼Èë¹æÔò
+//å¯¼å…¥è§„åˆ™
 function GetRule()
 {
 	location.href = "co_get_corule.php";
 }
-//µ¼³ö¹æÔò
+//å¯¼å‡ºè§„åˆ™
 function ExportRule(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_export_corule.php?nid="+nid;
 }
-//²É¼¯ËùÑ¡½Úµã
+//é‡‡é›†æ‰€é€‰èŠ‚ç‚¹
 function GatherSel(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_gather_start.php?nid="+nid;
 }
-//¸´ÖÆËùÑ¡½Úµã
+//å¤åˆ¶æ‰€é€‰èŠ‚ç‚¹
 function CopyNote(nid)
 {
 	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("ÇëÑ¡ÔñÒ»¸ö½Úµã£¡"); return;}
+	if(nid==""){ alert("è¯·é€‰æ‹©ä¸€ä¸ªèŠ‚ç‚¹ï¼"); return;}
 	location.href = "co_do.php?dopost=copy&nid="+nid;
 }
-//ÉÏÏÂÎÄ²Ëµ¥
+//ä¸Šä¸‹æ–‡èœå•
 function ShowMenu(obj,nid)
 {
   var eobj,popupoptions
   popupoptions = [
-    new ContextItem("²âÊÔµ±Ç°½Úµã",function(){ TestRule(nid); }),
-    new ContextItem("²É¼¯µ±Ç°½Úµã",function(){ GatherSel(nid); }),
+    new ContextItem("æµ‹è¯•å½“å‰èŠ‚ç‚¹",function(){ TestRule(nid); }),
+    new ContextItem("é‡‡é›†å½“å‰èŠ‚ç‚¹",function(){ GatherSel(nid); }),
     new ContextSeperator(),
-    new ContextItem("¸ü¸Äµ±Ç°½Úµã",function(){ EditNote(nid); }),
-    new ContextItem("¸ü¸Ä½ÚµãÅäÖÃ",function(){ EditNoteText(nid); }),
+    new ContextItem("æ›´æ”¹å½“å‰èŠ‚ç‚¹",function(){ EditNote(nid); }),
+    new ContextItem("æ›´æ”¹èŠ‚ç‚¹é…ç½®",function(){ EditNoteText(nid); }),
     new ContextSeperator(),
-    new ContextItem("²é¿´²É¼¯ÄÚÈİ",function(){ ViewDown(nid); }),
-    new ContextItem("µ¼³ö²É¼¯",function(){ ExportDown(nid); }),
+    new ContextItem("æŸ¥çœ‹é‡‡é›†å†…å®¹",function(){ ViewDown(nid); }),
+    new ContextItem("å¯¼å‡ºé‡‡é›†",function(){ ExportDown(nid); }),
     new ContextSeperator(),
-    new ContextItem("Çå¿ÕÒÑÏÂÔØĞÅÏ¢",function(){ ClearNote(nid); }),
-    new ContextItem("É¾³ıµ±Ç°½Úµã",function(){ DelNote(nid); }),
+    new ContextItem("æ¸…ç©ºå·²ä¸‹è½½ä¿¡æ¯",function(){ ClearNote(nid); }),
+    new ContextItem("åˆ é™¤å½“å‰èŠ‚ç‚¹",function(){ DelNote(nid); }),
     new ContextSeperator(),
-    new ContextItem("¸´ÖÆµ±Ç°½Úµã",function(){ CopyNote(nid); }),
+    new ContextItem("å¤åˆ¶å½“å‰èŠ‚ç‚¹",function(){ CopyNote(nid); }),
     new ContextSeperator(),
-    new ContextItem("µ¼³öÅäÖÃ¹æÔò",function(){ ExportRule(nid); })
+    new ContextItem("å¯¼å‡ºé…ç½®è§„åˆ™",function(){ ExportRule(nid); })
   ]
   ContextMenu.display(popupoptions)
 }
-//»ñµÃÑ¡ÖĞÆäÖĞÒ»¸öµÄid
+//è·å¾—é€‰ä¸­å…¶ä¸­ä¸€ä¸ªçš„id
 function getOneItem()
 {
 	var allSel="";
@@ -126,26 +126,39 @@ function getOneItem()
 	return allSel;	
 }
 </script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+td{ padding-left:6px; }
+-->
+</style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8' onload="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body onLoad="ContextMenu.intializeContextMenu()">
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">é‡‡é›†ç®¡ç†</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
-    <td height="20" colspan="7" background='img/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <td height="20" colspan="7" bgcolor="#EDF9D5"> <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18"><strong>²É¼¯½Úµã¹ÜÀí£º</strong></td>
-          <td width="80%" align="right"> <input type="button" name="ba" value="Ìí¼ÓĞÂ½Úµã" onClick="location='co_add.php?action=select';" class="nbt" style="width:100"> 
+          <td width="20%" height="18"><strong>é‡‡é›†èŠ‚ç‚¹ç®¡ç†ï¼š</strong></td>
+          <td width="80%" align="right" style='padding-top:6px'>
+          	<input type="button" name="ba" value="æ·»åŠ æ–°èŠ‚ç‚¹" onClick="location='co_add.php?action=select';" class="inputbut"> 
+            &nbsp;
           </td>
         </tr>
       </table></td>
   </tr>
   <tr align="center" bgcolor="#F8FBFB"> 
-    <td width="8%">Ñ¡Ôñ</td>
-    <td width="32%">½ÚµãÃû³Æ</td>
-    <td width="18%">Õë¶Ô¹æÔò</td>
-    <td width="10%" bgcolor="#F8FBFB">×îºó²É¼¯ÈÕÆÚ</td>
-    <td width="10%">¼ÓÈëÈÕÆÚ</td>
-    <td width="10%">±àÂë</td>
-    <td width="10%">ÍøÖ·Êı</td>
+    <td width="8%">é€‰æ‹©</td>
+    <td width="32%">èŠ‚ç‚¹åç§°</td>
+    <td width="18%">é’ˆå¯¹è§„åˆ™</td>
+    <td width="10%" bgcolor="#F8FBFB">æœ€åé‡‡é›†æ—¥æœŸ</td>
+    <td width="10%">åŠ å…¥æ—¥æœŸ</td>
+    <td width="10%">ç¼–ç </td>
+    <td width="10%">ç½‘å€æ•°</td>
   </tr>
   <form name="form1">
     {dede:datalist} 
@@ -161,28 +174,28 @@ function getOneItem()
     {/dede:datalist} 
   </form>
   <tr bgcolor="#ffffff"> 
-    <td height="24" colspan="7"> 
-      <table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <td colspan="7"> 
+      <table width="90%" border="0" cellspacing="2" cellpadding="0">
         <tr>
-          <td>
+          <td valign="middle" style='padding-top:6px'>
           	&nbsp;
-          	<a href="#" onClick="location='co_add.php?action=select';" class="coolbg">Ôö¼ÓĞÂ½Úµã</a>
-            <a href="javascript:GetRule();" class="coolbg">µ¼ÈëÅäÖÃ</a>
-            <a href="javascript:ExportRule('');" class="coolbg">µ¼³öÅäÖÃ</a> 
+          	<a href="#" onClick="location='co_add.php?action=select';" class="inputbutx">å¢åŠ æ–°èŠ‚ç‚¹</a>
+            <a href="javascript:GetRule();" class="inputbutx">å¯¼å…¥é…ç½®</a>
+            <a href="javascript:ExportRule('');" class="inputbutx">å¯¼å‡ºé…ç½®</a> 
              | 
-            <a href="javascript:GatherSel('');" class="coolbg" style='color:red'>²É¼¯</a>
-            <a href="javascript:ExportDown('');" class="coolbg">µ¼³öÊı¾İ</a>
+            <a href="javascript:GatherSel('');" class="inputbutx" style='color:red'>é‡‡é›†</a>
+            <a href="javascript:ExportDown('');" class="inputbutx">å¯¼å‡ºæ•°æ®</a>
              |
-          	<a href="javascript:EditNote('');" class="coolbg">¸ü¸Ä</a>
-          	<a href="javascript:EditNoteText('');" class="coolbg">¸ü¸ÄÅäÖÃ</a>
-          	<a href="javascript:TestRule('');" class="coolbg">²âÊÔ</a>
+          	<a href="javascript:EditNote('');" class="inputbutx">æ›´æ”¹</a>
+          	<a href="javascript:EditNoteText('');" class="inputbutx">æ›´æ”¹é…ç½®</a>
+          	<a href="javascript:TestRule('');" class="inputbutx">æµ‹è¯•</a>
           	 | 
-          	<a href="javascript:ViewDown('');" class="coolbg">²é¿´ÒÑÏÂÔØ</a> 
+          	<a href="javascript:ViewDown('');" class="inputbutx">æŸ¥çœ‹å·²ä¸‹è½½</a> 
              | 
-            <a href="javascript:CopyNote('');" class="coolbg">¸´ÖÆ</a>
-            <a href="javascript:ClearNote('');" class="coolbg">Çå¿Õ</a> 
+            <a href="javascript:CopyNote('');" class="inputbutx">å¤åˆ¶</a>
+            <a href="javascript:ClearNote('');" class="inputbutx">æ¸…ç©º</a> 
              | 
-            <a href="javascript:DelNote('');" class="coolbg">É¾³ı</a>
+            <a href="javascript:DelNote('');" class="inputbutx">åˆ é™¤</a>
            </td>
         </tr>
       </table>

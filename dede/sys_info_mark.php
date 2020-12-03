@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Edit');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-if($cfg_photo_support==""){ echo "ÄãµÄÏµÍ³Ã»°²×°GD¿â£¬²»ÔÊĞíÊ¹ÓÃ±¾¹¦ÄÜ£¡"; }
+if($cfg_photo_support==""){ echo "ä½ çš„ç³»ç»Ÿæ²¡å®‰è£…GDåº“ï¼Œä¸å…è®¸ä½¿ç”¨æœ¬åŠŸèƒ½ï¼"; }
 $ImageWaterConfigFile = dirname(__FILE__)."/../include/inc_photowatermark_config.php";
 if(empty($action)) $action = "";
 if($action=="save")
@@ -17,7 +17,7 @@ if($action=="save")
    if(is_uploaded_file($newimg)){
    	  $imgfile_type = strtolower(trim($newimg_type));
       if(!in_array($imgfile_type,$cfg_photo_typenames)){
-		  ShowMsg("ÉÏ´«µÄÍ¼Æ¬¸ñÊ½´íÎó£¬ÇëÊ¹ÓÃ {$cfg_photo_support}¸ñÊ½µÄÆäÖĞÒ»ÖÖ£¡","-1");
+		  ShowMsg("ä¸Šä¼ çš„å›¾ç‰‡æ ¼å¼é”™è¯¯ï¼Œè¯·ä½¿ç”¨ {$cfg_photo_support}æ ¼å¼çš„å…¶ä¸­ä¸€ç§ï¼","-1");
 		  exit();
 	   }
 	   if($imgfile_type=='image/bmp') $shortname = ".bmp";
@@ -29,124 +29,15 @@ if($action=="save")
    }
    $configstr .= "\$photo_markimg = '{$photo_markimg}';\r\n";
    $configstr = "<"."?php\r\n".$configstr."?".">\r\n";
-   $fp = fopen($ImageWaterConfigFile,"w") or die("Ğ´ÈëÎÄ¼ş $ImageWaterConfigFile Ê§°Ü£¬Çë¼ì²éÈ¨ÏŞ£¡");
+   $fp = fopen($ImageWaterConfigFile,"w") or die("å†™å…¥æ–‡ä»¶ $ImageWaterConfigFile å¤±è´¥ï¼Œè¯·æ£€æŸ¥æƒé™ï¼");
    fwrite($fp,$configstr);
    fclose($fp);
-   echo "<script>alert('ĞŞ¸ÄÅäÖÃ³É¹¦£¡');</script>\r\n";
+   echo "<script>alert('ä¿®æ”¹é…ç½®æˆåŠŸï¼');</script>\r\n";
 }
 require_once($ImageWaterConfigFile);
+
+
+require_once(dirname(__FILE__)."/templets/sys_info_mark.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÏµÍ³ÅäÖÃ²ÎÊı - Í¼Æ¬Ë®Ó¡ÉèÖÃ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <form action="sys_info_mark.php" method="post" enctype="multipart/form-data">
-  <input type="hidden" name="action" value="save">
-  <input type="hidden" name="photo_markimg" value="<?php echo $photo_markimg?>">
-  <tr> 
-    <td height="26" colspan="2" bgcolor="#FFFFFF" background="img/tbg.gif">
-	<b>DedeCmsÏµÍ³ÅäÖÃ²ÎÊı</b> - <strong>Í¼Æ¬Ë®Ó¡ÉèÖÃ</strong>    </td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td width="41%" height="24">ÉÏ´«µÄÍ¼Æ¬ÊÇ·ñÊ¹ÓÃÍ¼Æ¬Ë®Ó¡¹¦ÄÜ£º<br> </td>
-    <td width="59%"> <input class="np" type="radio" value="1" name="photo_markup"<?php if($photo_markup==1) echo ' checked';?>>
-      ¿ªÆô 
-      <input class="np" type="radio" value="0" name="photo_markup"<?php if($photo_markup==0) echo ' checked';?>>
-      ¹Ø±Õ </td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">²É¼¯µÄÍ¼Æ¬ÊÇ·ñÊ¹ÓÃÍ¼Æ¬Ë®Ó¡¹¦ÄÜ£º</td>
-    <td> <input class="np" type="radio" value="1" name="photo_markdown"<?php if($photo_markdown==1) echo ' checked';?>>
-      ¿ªÆô 
-        <input class="np" type="radio" value="0" name="photo_markdown"<?php if($photo_markdown==0) echo ' checked';?>>
-      ¹Ø±Õ </td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">Ìí¼ÓË®Ó¡µÄÍ¼Æ¬´óĞ¡¿ØÖÆ£¨ÉèÖÃÎª0Îª²»ÏŞ£©£º</td>
-    <td> ¿í£º 
-      <input name="photo_wwidth" type=text id="photo_wwidth"   value="<?php echo $photo_wwidth?>" size="5">
-      ¸ß£º 
-      <input name="photo_wheight" type=text id="photo_wheight"  value="<?php echo $photo_wheight?>" size="5"> </td>
-  </tr>
-  
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">Ë®Ó¡Í¼Æ¬ÎÄ¼şÃû£¨Èç¹û²»´æÔÚ£¬ÔòÊ¹ÓÃÎÄ×ÖË®Ó¡£©£º</td>
-    <td><img src="../include/data/<?php echo $photo_markimg?>" alt="dede"></td>
-  </tr>
-  <tr bgcolor="#FFFFFF">
-    <td height="24">ÉÏ´«ĞÂÍ¼Æ¬£º</td>
-    <td>
-	<input name="newimg" type="file" id="newimg" style="width:300">
-    <br>
-	<?php  echo "ÄãµÄÏµÍ³Ö§³ÖµÄÍ¼Æ¬¸ñÊ½£º".$cfg_photo_support; ?>
-	</td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">Ë®Ó¡Í¼Æ¬ÎÄ×Ö£¨²»Ö§³ÖÖĞÎÄ£©£º</td>
-    <td> <input type="text" name="photo_watertext"  value="<?php echo $photo_watertext?>"></td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">Ë®Ó¡Í¼Æ¬ÎÄ×Ö×ÖÌå´óĞ¡£º</td>
-    <td> <input name="photo_fontsize" type=text id="photo_fontsize"  value="<?php echo $photo_fontsize?>"></td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td height="24">Ë®Ó¡Í¼Æ¬ÎÄ×ÖÑÕÉ«£¨Ä¬ÈÏ#FF0000ÎªºìÉ«£©£º</td>
-    <td> <input name="photo_fontcolor" type=text id="photo_fontcolor"  value="<?php echo $photo_fontcolor?>"></td>
-  </tr>
-  <tr bgcolor="#FFFFFF">
-    <td height="24">Ë®Ó¡Í¸Ã÷¶È£¨0¡ª100£¬ÖµÔ½Ğ¡Ô½Í¸Ã÷£©£º</td>
-    <td><input name="photo_diaphaneity" type=text id="photo_diaphaneity"  value="<?php echo $photo_diaphaneity?>"></td>
-  </tr>
-  <tr bgcolor="#FFFFFF">
-    <td height="24">Ë®Ó¡Î»ÖÃ£º</td>
-    <td>
-	<input class="np" type="radio" name="photo_waterpos"  value="0"<?php if($photo_waterpos==0) echo ' checked';?>>
-          Ëæ»úÎ»ÖÃ
-	<table width="300" border="1" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="33%"><input class="np" type="radio" name="photo_waterpos"  value="1"<?php if($photo_waterpos==1) echo ' checked';?>>
-          ¶¥²¿¾Ó×ó</td>
-        <td width="33%"><input class="np" type="radio" name="photo_waterpos"  value="4"<?php if($photo_waterpos==4) echo ' checked';?>>
-          ¶¥²¿¾ÓÖĞ</td>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="7"<?php if($photo_waterpos==7) echo ' checked';?>>
-          ¶¥²¿¾ÓÓÒ</td>
-      </tr>
-      <tr>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="2"<?php if($photo_waterpos==2) echo ' checked';?>>
-          ×ó±ß¾ÓÖĞ</td>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="5"<?php if($photo_waterpos==5) echo ' checked';?>>
-          Í¼Æ¬ÖĞĞÄ</td>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="8"<?php if($photo_waterpos==8) echo ' checked';?>>
-          ÓÒ±ß¾ÓÖĞ</td>
-      </tr>
-      <tr>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="3"<?php if($photo_waterpos==3) echo ' checked';?>>
-          µ×²¿¾Ó×ó</td>
-        <td><input class="np" type="radio" name="photo_waterpos"  value="6"<?php if($photo_waterpos==6) echo ' checked';?>>
-          µ×²¿¾ÓÖĞ</td>
-        <td><input name="photo_waterpos" type="radio" class="np"  value="9"<?php if($photo_waterpos==9) echo ' checked';?>>
-          µ×²¿¾ÓÓÒ</td>
-      </tr>
-    </table></td>
-  </tr>
-  
-  <tr bgcolor="#CCEDFD"> 
-    <td height="37" colspan="2">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="7%">&nbsp;</td>
-          <td width="93%">
-		  <input name="imageField" class="np" type="image" src="img/button_ok.gif" width="60" height="22" border="0">
-            ¡¡&nbsp;
-		 <img src="img/button_reset.gif" width="60" height="22">		  </td>
-        </tr>
-      </table>	  </td>
-  </tr>
-  </form>
-</table>
-</body>
-</html>

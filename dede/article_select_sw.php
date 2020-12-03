@@ -1,22 +1,22 @@
 <?php 
-header("Content-Type: text/html; charset=gb2312");
+header("Content-Type: text/html; charset=utf-8");
 header("Pragma:no-cache"); 
 header("Cache-Control:no-cache"); 
 header("Expires:0"); 
 $t = $_GET['t'];
-if($t=='source') //À´Ô´ÁÐ±í
+if($t=='source') //æ¥æºåˆ—è¡¨
 {
   $m_file = dirname(__FILE__)."/inc/source.txt";
   $allsources = file($m_file);
-  echo "<span class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_source_edit.php')\">ÉèÖÃ</a>]&nbsp;[<a href='#' onclick='javascript:HideObj(\"_mysource\")'>¹Ø±Õ</a>]</span>\r\n";
+  echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_source_edit.php')\">è®¾ç½®</a>]&nbsp;[<a href='#' onclick='javascript:HideObj(\"_mysource\")'>å…³é—­</a>]</div>\r\n";
   foreach($allsources as $v){
 	  $v = trim($v);
 	  if($v!="") echo "<a href='#' onclick='javascript:PutSource(\"$v\")'>$v</a> | \r\n";
   }
   echo "<span class='coolbg5'>&nbsp;</span>\r\n";
-}else{ //×÷ÕßÁÐ±í
+}else{ //ä½œè€…åˆ—è¡¨
 	$m_file = dirname(__FILE__)."/inc/writer.txt";
-	echo "<span class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_writer_edit.php')\">ÉèÖÃ</a>]&nbsp;[<a href='#' onclick='javascript:HideObj(\"_mywriter\")'>¹Ø±Õ</a>]</span>\r\n";
+	echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_writer_edit.php')\">è®¾ç½®</a>]&nbsp;[<a href='#' onclick='javascript:HideObj(\"_mywriter\")'>å…³é—­</a>]</div>\r\n";
 	if(filesize($m_file)>0){
 	   $fp = fopen($m_file,'r');
 	   $str = fread($fp,filesize($m_file));
@@ -29,5 +29,4 @@ if($t=='source') //À´Ô´ÁÐ±í
   }
   echo "<br><span class='coolbg5'>&nbsp;</span>\r\n";
 }
-exit();
 ?>

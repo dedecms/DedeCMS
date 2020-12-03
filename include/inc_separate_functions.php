@@ -1,11 +1,11 @@
 <?php 
-//¸ø±äÁ¿¸³Ä¬ÈÏÖµ
+//ç»™å˜é‡èµ‹é»˜è®¤å€¼
 //--------------------------------
 function AttDef($oldvar,$nv){
  	if(empty($oldvar)) return $nv;
  	else return $oldvar;
 }
-//»ñÈ¡Ò»¸öÎÄµµÁĞ±í
+//è·å–ä¸€ä¸ªæ–‡æ¡£åˆ—è¡¨
 //--------------------------------
 function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
   $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$keyword="",$innertext="",
@@ -34,27 +34,27 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		$keyword = trim($keyword);
 		$innertext = trim($innertext);
 		if($innertext=="") $innertext = GetSysTemplets("part_arclist.htm");
-		//°´²»Í¬Çé¿öÉè¶¨SQLÌõ¼ş ÅÅĞò·½Ê½
+		//æŒ‰ä¸åŒæƒ…å†µè®¾å®šSQLæ¡ä»¶ æ’åºæ–¹å¼
 		$orwhere = " arc.arcrank > -1 ";
-		//Ê±¼äÏŞÖÆ(ÓÃÓÚµ÷ÓÃ×î½üÈÈÃÅÎÄÕÂ¡¢ÈÈÃÅÆÀÂÛÖ®Àà)
+		//æ—¶é—´é™åˆ¶(ç”¨äºè°ƒç”¨æœ€è¿‘çƒ­é—¨æ–‡ç« ã€çƒ­é—¨è¯„è®ºä¹‹ç±»)
 		if($subday>0){
 			 $limitday = mytime() - ($oneday * 24 * 3600);
 			 $orwhere .= " And arc.senddate > $limitday ";
 		}
-		//ÎÄµµµÄ×Ô¶¨ÒåÊôĞÔ
+		//æ–‡æ¡£çš„è‡ªå®šä¹‰å±æ€§
 		if($att!="") $orwhere .= "And arcatt='$att' ";
-		//ÎÄµµµÄÆµµÀÄ£ĞÍ
+		//æ–‡æ¡£çš„é¢‘é“æ¨¡å‹
 		if($channelid>0 && !eregi("spec",$listtype)) $orwhere .= " And arc.channel = '$channelid' ";
-		//ÊÇ·ñÎªÍÆ¼öÎÄµµ
+		//æ˜¯å¦ä¸ºæ¨èæ–‡æ¡£
 		if(eregi("commend",$listtype)) $orwhere .= " And arc.iscommend > 10  ";
-		//ÊÇ·ñÎª´øËõÂÔÍ¼Í¼Æ¬ÎÄµµ
+		//æ˜¯å¦ä¸ºå¸¦ç¼©ç•¥å›¾å›¾ç‰‡æ–‡æ¡£
 		if(eregi("image",$listtype)) $orwhere .= " And arc.litpic <> ''  ";
-		//ÊÇ·ñÎª×¨ÌâÎÄµµ
+		//æ˜¯å¦ä¸ºä¸“é¢˜æ–‡æ¡£
 		if(eregi("spec",$listtype) || $channelid==-1) $orwhere .= " And arc.channel = -1  ";
-    //ÊÇ·ñÖ¸¶¨Ïà½üID
+    //æ˜¯å¦æŒ‡å®šç›¸è¿‘ID
 		if($arcid!=0) $orwhere .= " And arc.ID<>'$arcid' ";
 		
-		//ÎÄµµÅÅĞòµÄ·½Ê½
+		//æ–‡æ¡£æ’åºçš„æ–¹å¼
 		$ordersql = "";
 		if($orderby=="hot"||$orderby=="click") $ordersql = " order by arc.click $orderWay";
 		else if($orderby=="pubdate") $ordersq = " order by arc.pubdate $orderWay";
@@ -65,7 +65,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
     else if($orderby=="postnum") $ordersql = "  order by arc.postnum $orderWay";
 		else $ordersql=" order by arc.senddate $orderWay";
 		
-		//Àà±ğIDµÄÌõ¼ş£¬Èç¹ûÓÃ "," ·Ö¿ª,¿ÉÒÔÖ¸¶¨ÌØ¶¨ÀàÄ¿
+		//ç±»åˆ«IDçš„æ¡ä»¶ï¼Œå¦‚æœç”¨ "," åˆ†å¼€,å¯ä»¥æŒ‡å®šç‰¹å®šç±»ç›®
 		//------------------------------
 		if($typeid!=0)
 		{
@@ -86,7 +86,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		  }
 		  unset($reids);
 	  }
-		//Ö¸¶¨µÄÎÄµµIDÁĞ±í
+		//æŒ‡å®šçš„æ–‡æ¡£IDåˆ—è¡¨
 		//----------------------------------
 		if($idlist!="")
 		{
@@ -103,7 +103,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		  unset($reids);
 		  $row = $ridnum;
 		}
-		//¹Ø¼ü×ÖÌõ¼ş
+		//å…³é”®å­—æ¡ä»¶
 		if($keyword!="")
 		{
 		  $keywords = explode(",",$keyword);
@@ -142,7 +142,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
          if($col>1) $artlist .= "	<td width='$colWidth'>\r\n";
          if($row = $dsql->GetArray("al"))
          {
-           //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î
+           //å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
            $row['description'] = cn_substr($row['description'],$infolen);
            $row['id'] =  $row['ID'];
            

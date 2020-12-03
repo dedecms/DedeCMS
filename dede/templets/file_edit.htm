@@ -1,12 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÎÄ¼ş±à¼­</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>æ–‡ä»¶ç¼–è¾‘</title>
 <link rel="stylesheet" type="text/css" href="base.css">
 <script>
 function Post() {
 	if (document.form1.filename.value==""){
-		alert("ÎÄ¼şÃû²»ÄÜÎª¿Õ¡£");
+		alert("æ–‡ä»¶åä¸èƒ½ä¸ºç©ºã€‚");
 		document.form1.filename.focus();
 		return false;
         }
@@ -14,43 +14,41 @@ function Post() {
 </script>
 </head>
 <body bgcolor="#F2F4F3" leftmargin="15" topmargin="10">
-<table width=98% height="100%" border=0 cellpadding=0 cellspacing=0 bordercolor=#111111 style="border-collapse: collapse">
+<table width=98%" border=0 cellpadding=0 cellspacing=0 bordercolor=#111111 style="border-collapse: collapse">
   <form method="POST" action="file_manage_control.php" name=form1 onSubmit="return Post()">
     <input type="hidden" name="fmdo" value="edit">
     <input type="hidden" name="backurl" value="{dede:global name='backurl' function='urlencode("@me")'/}">
     <tr> 
-      <td width=78% height="10%" valign="top">
+      <td width=78% valign="top">
 	  <table border=0 cellpadding=0 cellspacing=0 style="border-collapse: collapse" width=100%>
           <tr> 
-            <td width=16% height="25">¹¤×÷Ä¿Â¼£º</td>
+            <td width=16% height="25">å·¥ä½œç›®å½•ï¼š</td>
             <td width="84%"> &nbsp;&nbsp;&nbsp; <input name=activepath size=40 value="{dede:global name='activepath'/}">
-              £¨¿Õ°×±íÊ¾¸ùÄ¿Â¼ £¬²»ÔÊĞíÓÃ ¡°..¡± ĞÎÊ½µÄÂ·¾¶£©</td>
+              ï¼ˆç©ºç™½è¡¨ç¤ºæ ¹ç›®å½• ï¼Œä¸å…è®¸ç”¨ â€œ..â€ å½¢å¼çš„è·¯å¾„ï¼‰</td>
           </tr>
           <tr> 
-            <td width=16% height="25">ÎÄ¼şÃû³Æ£º</td>
+            <td width=16% height="25">æ–‡ä»¶åç§°ï¼š</td>
             <td>
             	&nbsp;&nbsp;&nbsp; <input name=filename size=40 value="{dede:global name='filename'/}">
-              £¨²»ÔÊĞíÓÃ ¡°..¡± ĞÎÊ½µÄÂ·¾¶£©
-              <input type="button" name="Submit" value="Ê¹ÓÃ¿ÉÊÓ»¯Ä£Ê½" onClick="location='file_manage_view.php?fmdo=editview&activepath={dede:global name='activepath'/}&filename={dede:global name='filename'/}';" class='nbt'>
+              ï¼ˆä¸å…è®¸ç”¨ â€œ..â€ å½¢å¼çš„è·¯å¾„ï¼‰
+              <input type="button" name="Submit" value="ä½¿ç”¨å¯è§†åŒ–æ¨¡å¼" onClick="location='file_manage_view.php?fmdo=editview&activepath={dede:global name='activepath'/}&filename={dede:global name='filename'/}';" class='nbt'>
             </td>
           </tr>
         </table> </td>
     </tr>
     <tr> 
-      <td width=78% height="80%" valign="top">
-	  {dede:global name='contentView'/}
-	  </td>
+      <td width=78% height="31" valign="top">
+	  {dede:global name='contentView'/}	  </td>
     </tr>
     <tr> 
-      <td width=78% height="10%"> 
-        <p align=center><br>
-          <input type=submit value="  ±£ ´æ  " name=B1  class='nbt'>
+      <td width=78% valign="top"> 
+        <p align=center>
+          <input type=submit value="  ä¿ å­˜  " name=B1  class='nbt'>
           &nbsp; 
-          <input type=reset value="È¡ÏûĞŞ¸Ä" name=B2  class='nbt'>
+          <input type=reset value="å–æ¶ˆä¿®æ”¹" name=B2  class='nbt'>
           &nbsp; 
-          <input type=button value="²»Àí·µ»Ø" name=B4 onclick="javascript:history.go(-1);"  class='nbt'>
-          <br>
-          ¡¡</td>
+          <input type=button value="ä¸ç†è¿”å›" name=B4 onClick="javascript:history.go(-1);"  class='nbt'>
+          <br></td>
     </tr>
   </form>
 </table>

@@ -7,21 +7,17 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function GetSta($sta,$ID)
 {
-	if($sta==1)
-	{
-		if($ID>0) return "启用  &gt; <a href='mychannel_edit.php?dopost=hide&ID=$ID'><u>禁用</u></a>";
-		else return "固定项目";
-	}
-	else return "禁用 &gt; <a href='mychannel_edit.php?dopost=show&ID=$ID'><u>启用</u></a>";
+	if($sta==1) return "鍚敤  &gt; <a href='mychannel_edit.php?dopost=hide&ID=$ID'><u>绂佺敤</u></a>";
+	else return "<font color='red'>绂佺敤</font> &gt; <a href='mychannel_edit.php?dopost=show&ID=$ID'><u>鍚敤</u></a>";
 }
 
 function IsSystem($s)
 {
-	if($s==1) return "系统模型";
-	else return "自动模型";
+	if($s==1) return "绯荤粺妯″瀷";
+	else return "鑷姩妯″瀷";
 }
 
-$sql = "Select ID,nid,typename,addtable,isshow,issystem From #@__channeltype order by ID desc";
+$sql = "Select ID,nid,typename,addtable,mancon,isshow,issystem From #@__channeltype order by ID";
 
 $dlist = new DataList();
 $dlist->Init();
@@ -29,4 +25,6 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/mychannel_main.htm");
 $dlist->display();
 $dlist->Close();
+
+ClearAllLink();
 ?>

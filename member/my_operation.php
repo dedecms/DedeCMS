@@ -5,9 +5,9 @@ CheckRank(0,0);
 setcookie("ENV_GOBACK_URL",GetCurUrl(),time()+3600,"/");
 
 function GetSta($sta){
-	if($sta==0) return 'Î´¸¶¿î';
-	else if($sta==1) return 'ÒÑ¸¶¿î';
-	else return 'ÒÑÍê³É';
+	if($sta==0) return 'æœªä»˜æ¬¾';
+	else if($sta==1) return 'å·²ä»˜æ¬¾';
+	else return 'å·²å®Œæˆ';
 }
 
 $sql = "Select * From #@__member_operation where mid='".$cfg_ml->M_ID."' order by aid desc";

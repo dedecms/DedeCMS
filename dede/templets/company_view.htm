@@ -1,0 +1,291 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>查看会员</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language='javascript'src='area.js'></script>
+<script>
+function checkSubmit()
+{
+  if(document.form2.email.value=="")
+  {
+    document.form2.email.focus();
+    alert("Email不能为空！");
+    return false;
+  }
+  if(document.form2.uname.value=="")
+  {
+    document.form2.uname.focus();
+    alert("用户昵称不能为空！");
+    return false;
+  }
+}
+function ShowObj(objname){
+   var obj = document.getElementById(objname);
+	 obj.style.display = "block";
+}
+
+function HideObj(objname){
+  var obj = document.getElementById(objname);
+	obj.style.display = "none";
+}
+
+function ShowItem1(){
+  ShowObj('person');   HideObj('company');
+}
+
+function ShowItem2(){
+  ShowObj('company');   HideObj('person');
+}
+</script>
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td height="19" bgcolor="#EDF9D5"><a href='<?php echo $ENV_GOBACK_URL?>'><b>会员管理</b></a>&gt;&gt;查看会员</td>
+</tr>
+  <tr>
+    <td bgcolor="#ffffff"><a title="点击修改会员资料" href='###' onClick="ShowItem1()">【会员资料】</a> - <a title="点击修改企业资料" href='###' onClick="ShowItem2()">【企业资料】</a></td>
+</tr>
+<form name="form2" action="company_do.php" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="dopost" value="edituser" />
+<input type="hidden" name="ID" value="<?php echo $ID?>" />
+<input type="hidden" name="oldemail" value="<?php echo $row['email']; ?>" />
+<tbody id="person" style="display:none;">
+<tr>
+<td height="200" bgcolor="#FFFFFF" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0" >
+        <tr>
+          <td colspan="2" height="10" ></td>
+        </tr>
+
+          <tr>
+            <td width="17%" height="25" align="right" >用户名：</td>
+            <td width="83%" height="25" >
+              <?php echo $row['userid']?>            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >密　码：</td>
+            <td height="25" >
+              <?php echo $row['pwd']?><br />
+              新密码：<input name="newpwd" type="text" id="newpwd" value="" style="width:150px" />
+            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >用户昵称：</td>
+            <td height="25" >
+              <input name="uname" type="text" id="uname" value="<?php echo $row['uname']; ?>" style="width:150px" />
+            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >会员等级：</td>
+            <td height="25" >
+			<?php
+			$MemberTypes = "";
+  $dsql->SetQuery("Select rank,membername From #@__arcrank where rank>0");
+  $dsql->Execute();
+  $MemberTypes[0] = "未审核会员";
+  while($nrow = $dsql->GetObject()){
+	  $MemberTypes[$nrow->rank] = $nrow->membername;
+  }
+  $options = "<select name='membertype' style='width:100px'>\r\n";
+  foreach($MemberTypes as $k=>$v)
+  {
+  	if($k!=$row['membertype']) $options .= "<option value='$k'>$v</option>\r\n";
+  	else $options .= "<option value='$k' selected>$v</option>\r\n";
+  }
+  $options .= "</select>\r\n";
+			echo $options;
+			?>			</td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >升级时间：</td>
+            <td height="25">
+			<input name="uptime" type="text" id="uptime" value="<?php echo GetDateTimeMk($row['uptime'])?>" style="width:200px">
+			（如果你要升级会员，必须设置此时间为当前时间）			</td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >会员天数：</td>
+            <td height="25">
+			<input name="exptime" type="text" id="exptime" value="<?php echo $row['exptime']?>" style="width:100px">
+			（如果你要升级会员，会员天数必须大于0）			</td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >会员金币：</td>
+            <td height="25">
+			<input name="money" type="text" id="money" value="<?php echo $row['money']?>" style="width:100px">			</td>
+          </tr>
+          <tr bgcolor="#F9FDEA">
+            <td height="25" align="right" >空间信息：</td>
+            <td height="25" >
+              <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td height="22" style="border-bottom:1px solid #999999">　文章：
+                    (
+                    <?php echo $row['c1']?>
+                    ) 图集： (
+                    <?php echo $row['c2']?>
+                    ) 其它： (
+                    <?php echo $row['c3']?>
+                    ) </td>
+                </tr>
+                <tr>
+                  <td height="22" style="border-bottom:1px solid #999999">　空间展示次数：
+                    (
+                    <?php echo $row['spaceshow']?>
+                    ) 文档总点击： (
+                    <?php echo $row['pageshow']?>
+                    ) </td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >注册时间：</td>
+            <td height="25" >
+              <?php echo GetDateTimeMk($row['jointime'])?>
+              　ＩＰ：
+              <?php echo $row['joinip']?>            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >最近登录时间：</td>
+            <td height="25" >
+              <?php echo GetDateTimeMk($row['logintime'])?>
+              　ＩＰ：
+              <?php echo $row['loginip']?>            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >电子邮箱：</td>
+            <td height="25" ><input name="email" type="text" id="email" value="<?php echo $row['email']?>" style="width:150;height:20" >            </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >昵　称：</td>
+            <td height="25" ><input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" size="20" style="width:150;height:20" ></td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >性　别：</td>
+            <td height="25" > <input type="radio" name="sex"  value="男"<?php if($row['sex']=="男" ) echo" checked" ;?>>
+              男 &nbsp; <input type="radio" name="sex"  value="女"<?php if($row['sex']=="女" ) echo" checked" ;?>>
+              女 </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >推荐级别：</td>
+            <td height="25" ><input name="matt" type="text" id="matt" value="<?php echo $row['matt']?>" size="10"></td>
+          </tr>
+          <tr align="center">
+            <td height="25" colspan="2" > <hr width="80%" size="1" noshade> </td>
+          </tr>
+          <tr>
+            <td height="25" align="right" >空间名称： </td>
+            <td height="25" ><input name="spacename" type="text" id="spacename" size="35" value="<?php echo $row['spacename']?>"></td>
+          </tr>
+          <tr>
+            <td height="130" align="right" >空间公告：</td>
+            <td height="130" ><textarea name="news" cols="50" rows="8" id="news" ><?php echo $row['news']?></textarea></td>
+          </tr>
+          <tr>
+            <td height="71" align="right" >个人签名：</td>
+            <td height="71" > <textarea name="mybb" cols="40" rows="3" id="mybb" ><?php echo $row['mybb']?></textarea></td>
+          </tr>
+      </table>
+     </td>
+</tr>
+</tbody>
+<tbody id="company">
+<tr><td bgcolor="#FFFFFF">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" class="tblist">
+  <tr>
+    <td colspan="2"><strong>公司基本资料</strong></td>
+    </tr>
+  <tr>
+    <td width="18%">公司名称：</td>
+    <td width="82%"><input type="text" name="comname" value="<?php echo $row['comname']; ?>" />
+      *</td>
+  </tr>
+  <tr>
+    <td>公司成立时间：</td>
+    <td><input type="text" size=4 maxlength=4 name="regyear" value="<?php echo $row['regyear']; ?>" />
+      (年份，如：2007) *</td>
+  </tr>
+  <tr>
+    <td>公司注册地：</td>
+    <td><input type="text" name="regaddr" value="<?php if(!empty($row['regaddr'])) echo $row['regaddr']; ?>" size="30" maxlength=64 />
+(省份/城市) *</td>
+  </tr>
+  <tr>
+    <td>主要产品或服务：</td>
+    <td><input type="text" name="service" value="<?php echo $row['service']; ?>" />
+      多个产品或服务以“|”分割*</td>
+  </tr>
+  <tr>
+    <td>主要经营行业：</td>
+    <td><?php echo $typeid1name; ?> - <?php echo $typeid2name; ?> *</td>
+  </tr>
+  <tr>
+    <td>公司简介：</td>
+    <td><?php
+GetEditor("cominfo",$row['cominfo'],250,"MemberLit");
+?></td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>联系方式</strong></td>
+    </tr>
+  <tr>
+    <td>姓名：</td>
+    <td><input maxlength="30" size=30 name="truename" value="<?php echo $row['truename']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>部门和职务：</td>
+    <td><input maxlength="32" size=30 name="business" value="<?php echo $row['business']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>公司电话：</td>
+    <td><input maxlength="32" size=30 name="phone" value="<?php echo $row['phone']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>传真： </td>
+    <td><input maxlength="32" size=30 name="fax" value="<?php echo $row['fax']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>手机：</td>
+    <td><input maxlength="32" size=30 name="mobi" value="<?php echo $row['mobi']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>公司地址：</td>
+    <td><input maxlength="32" size=30 name="comaddr" value="<?php echo $row['comaddr']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>邮政编码：</td>
+    <td><input maxlength="32" size=30 name="postid" value="<?php echo $row['postid']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>Email：</td>
+    <td><input maxlength="32" size=30 name="email2" value="<?php echo $row['email']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>公司网址：</td>
+    <td><input maxlength="32" size=30 name="website" value="<?php echo $row['website']; ?>" /></td>
+  </tr>
+  <tr>
+    <td>企业文化修改：</td>
+    <td><?php
+GetEditor("culture",$row['culture'],250,"MemberLit");
+?></td>
+  </tr>
+</table>
+</td></tr>
+</tbody>
+<tr>
+<td height="67" bgcolor="#ffffff"> <input type="submit" name="Submit" value="确定修改" class="inputbut">
+&nbsp;&nbsp;
+<input type="reset" name="Submit22" value="重置" class="inputbut"/></td>
+</tr>
+</form>
+</table>
+</body>
+</html>

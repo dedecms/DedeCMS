@@ -7,7 +7,7 @@ $aid = ereg_replace("[^0-9]","",$aid);
 $arow = $dsql->GetOne("Select * From #@__uploads where aid='$aid ';");
 if($arow['memberid']!=$cfg_ml->M_ID){
 	$dsql->Close();
-	ShowMsg("ÄãÃ»ÓĞĞŞ¸ÄÕâ¸ö¸½¼şµÄÈ¨ÏŞ£¡","-1");
+	ShowMsg("ä½ æ²¡æœ‰ä¿®æ”¹è¿™ä¸ªé™„ä»¶çš„æƒé™ï¼","-1");
 	exit();
 }
 require_once(dirname(__FILE__)."/templets/space_upload_edit.htm");

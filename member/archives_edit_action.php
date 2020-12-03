@@ -2,147 +2,123 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
-if($cfg_mb_sendall=='·ñ'){
-	ShowMsg("¶Ô²»Æð£¬ÏµÍ³½ûÓÃÁË×Ô¶¨ÒåÄ£ÐÍÍ¶¸å£¬Òò´ËÎÞ·¨Ê¹ÓÃ´Ë¹¦ÄÜ£¡","-1");
+if($cfg_mb_sendall=='N'){
+	ShowMsg("å¯¹ä¸èµ·ï¼Œç³»ç»Ÿç¦ç”¨äº†è‡ªå®šä¹‰æ¨¡åž‹æŠ•ç¨¿ï¼Œå› æ­¤æ— æ³•ä½¿ç”¨æ­¤åŠŸèƒ½ï¼","-1");
 	exit();
 }
 
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_all.php");
-require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-$ID = ereg_replace("[^0-9]","",$ID);
-$typeid = ereg_replace("[^0-9]","",$typeid);
-$channelid = ereg_replace("[^0-9]","",$channelid);
-
-if($typeid==0){
-	ShowMsg("ÇëÖ¸¶¨ÎÄµµÁ¥ÊôµÄÀ¸Ä¿£¡","-1");
-	exit();
-}
-
-if(!CheckChannel($typeid,$channelid)){
-	ShowMsg("ÄãËùÑ¡ÔñµÄÀ¸Ä¿Óëµ±Ç°Ä£ÐÍ²»Ïà·û£¬»ò²»Ö§³ÖÍ¶¸å£¬ÇëÑ¡Ôñ°×É«µÄÑ¡Ïî£¡","-1");
-	exit();
-}
-
-$dsql = new DedeSql(false);
-//¼ì²âÓÃ»§ÊÇ·ñÓÐÈ¨ÏÞ²Ù×÷ÕâÆªÎÄµµ
-//-------------------------------
-$row = $dsql->GetOne("Select arcrank From #@__archives where memberID='".$cfg_ml->M_ID."' And ID='$ID'");
-if(!is_array($row)){
-   $dsql->Close();
-   ShowMsg("ÄãÃ»È¨ÏÞ¸ü¸ÄÕâÔòÐÅÏ¢£¡","-1");
-   exit();
-}
-
-$cInfos = $dsql->GetOne("Select * From #@__channeltype where ID='$channelid'; ");	
-if($cInfos['arcsta']==0){
-	$ismake = 0;
-	$arcrank = 0;
-}
-else if($cInfos['arcsta']==1){
-	$ismake = -1;
-	$arcrank = 0;
-}
-else{
-	$ismake = 0;
-	$arcrank = -1;
-}
+$cfg_add_dftable = '';
+require_once(dirname(__FILE__)."/archives_editcheck.php");
 
 $title = ClearHtml($title);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = '';
 $description = cn_substr(trim(ClearHtml($description)),250);
-if($keywords!=""){
-	$keywords = ereg_replace("[,;]"," ",trim(ClearHtml($keywords)));
-	$keywords = trim(cn_substr($keywords,60))." ";
-}
+$keywords = trim(cn_substr($keywords,60));
 $userip = GetIP();
 
-//´¦ÀíÉÏ´«µÄËõÂÔÍ¼
+//å¤„ç†ä¸Šä¼ çš„ç¼©ç•¥å›¾
 if(!empty($litpic)){
 	$litpic = GetUpImage('litpic',true,true);
-	$litpic = " litpic='$litpic', ";
+	$litpicsql = " litpic='$litpic', ";
 }else{
 	$litpic = "";
+	$litpicsql = '';
 }
 
 $memberID = $cfg_ml->M_ID;
 
-//¸üÐÂÊý¾Ý¿âµÄSQLÓï¾ä
 //----------------------------------
+//åˆ†æžå¤„ç†é™„åŠ è¡¨æ•°æ®
+//----------------------------------
+$inadd_f = '';
+if(!empty($dede_addonfields))
+{
+  $addonfields = explode(";",$dede_addonfields);
+  $inadd_f = "";
+  if(is_array($addonfields))
+  {
+    foreach($addonfields as $v)
+    {
+	     if($v=="") continue;
+	     $vs = explode(",",$v);
+	     //HTMLæ–‡æœ¬ç‰¹æ®Šå¤„ç†
+	     if($vs[1]=="htmltext"||$vs[1]=="textdata")
+	     {
+		     ${$vs[0]} = filterscript(stripslashes(${$vs[0]}));
+         //è‡ªåŠ¨æ‘˜è¦
+         if($description==''){
+    	      $description = cn_substr(html2text(${$vs[0]}),$cfg_auot_description);
+	          $description = trim(preg_replace("/#p#|#e#/","",$description));
+	          $description = addslashes($description);
+         }
+         ${$vs[0]} = addslashes(${$vs[0]});
+         ${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'add','','member');
+	     }else{
+		     ${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$ID);
+	     }
+	     $inadd_f .= ",`{$vs[0]}` = '".${$vs[0]}."'";
+    }
+  }
+}
 
 $inQuery = "
-update #@__archives set
+update `$maintable` set
 ismake='$ismake',arcrank='$arcrank',typeid='$typeid',title='$title',
 $litpic
 description='$description',keywords='$keywords',userip='$userip'
 where ID='$ID' And memberID='$memberID';
 ";
-$dsql->SetQuery($inQuery);
-if(!$dsql->ExecuteNoneQuery()){
+if(!$dsql->ExecuteNoneQuery($inQuery)){
+	$gerr = $dsql->GetError();
 	$dsql->Close();
-	ShowMsg("°ÑÊý¾Ý±£´æµ½Êý¾Ý¿âarchives±íÊ±³ö´í£¬Çë¼ì²é£¡","-1");
+	ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“ä¸»è¡¨æ—¶å‡ºé”™ï¼Œé”™è¯¯åŽŸå› ä¸ºï¼š".$gerr,"javascript:;");
 	exit();
 }
 
-//----------------------------------
-//¸üÐÂ¸½¼Ó±íÊý¾Ý
-//----------------------------------
-$dtp = new DedeTagParse();
-$dtp->SetNameSpace("field","<",">");
-$dtp->LoadSource($cInfos['fieldset']);
-$dede_addonfields = "";
-if(is_array($dtp->CTags)){
-    foreach($dtp->CTags as $tid=>$ctag){
-        if($dede_addonfields=="") $dede_addonfields = $ctag->GetName().",".$ctag->GetAtt('type');
-        else $dede_addonfields .= ";".$ctag->GetName().",".$ctag->GetAtt('type');
-    }
+
+$addQuery = "Update `{$addtable}` set typeid='$typeid'{$inadd_f} where aid='$ID'";
+if(!$dsql->ExecuteNoneQuery($addQuery)){
+     $gerr = $dsql->GetError();
+     $dsql->Close();
+     ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“é™„åŠ æ—¶å‡ºé”™ï¼Œé”™è¯¯åŽŸå› ä¸ºï¼š".$gerr,"javascript:;");
+     exit();
 }
-$dede_addtablename = $cInfos['addtable'];
-$addonfields = explode(";",$dede_addonfields);
-$upfield = "";
-foreach($addonfields as $v)
-{
-	if($v=="") continue;
-	$vs = explode(",",$v);
-	if($vs[1]=="textdata"){
-		${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'edit',${$vs[0].'_file'});
-	}else{
-		${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1]);
-	}
-	if($upfield=="") $upfield .= $vs[0]." = '".${$vs[0]}."'";
-	else $upfield .= ", ".$vs[0]." = '".${$vs[0]}."'";
-}
-$addQuery = "Update ".$dede_addtablename." set $upfield where aid='$ID'";
-$dsql->SetQuery($addQuery);
-$dsql->ExecuteNoneQuery();
-$dsql->Close();
 
 $artUrl = MakeArt($ID);
 
+//æ›´æ–°å…¨ç«™æœç´¢ç´¢å¼•
+$datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'att'=>0,
+               'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,
+               'addinfos'=>$description,'arcrank'=>$arcrank,'mtype'=>$mtype);
+if($litpic != '') $datas['litpic'] = $litpic;
+UpSearchIndex($dsql,$datas);
+//æ›´æ–°Tagç´¢å¼•
+UpTags($dsql,$keywords,$ID,$memberID,$typeid,$arcrank);
+unset($datas);
+$dsql->Close();
+
 //---------------------------------
-//·µ»Ø³É¹¦ÐÅÏ¢
+//è¿”å›žæˆåŠŸä¿¡æ¯
 //----------------------------------
 
 $msg = "
-ÇëÑ¡ÔñÄãµÄºóÐø²Ù×÷£º
-<a href='archives_add.php?channelid=$channelid&cid=$typeid'><u>·¢²¼ÐÂÐÅÏ¢</u></a>
+è¯·é€‰æ‹©ä½ çš„åŽç»­æ“ä½œï¼š
+<a href='archives_add.php?channelid=$channelid&cid=$typeid'><u>å‘å¸ƒæ–°ä¿¡æ¯</u></a>
 &nbsp;&nbsp;
-<a href='archives_edit.php?aid=".$ID."'><u>¼ÌÐø¸ü¸ÄÐÅÏ¢</u></a>
+<a href='archives_edit.php?aid=".$ID."'><u>ç»§ç»­æ›´æ”¹ä¿¡æ¯</u></a>
 &nbsp;&nbsp;
-<a href='$artUrl' target='_blank'><u>Ô¤ÀÀÐÅÏ¢</u></a>
+<a href='$artUrl' target='_blank'><u>é¢„è§ˆä¿¡æ¯</u></a>
 &nbsp;&nbsp;
-<a href='content_list.php?channelid=$channelid'><u>ÒÑ·¢²¼ÐÅÏ¢¹ÜÀí</u></a>
+<a href='content_list.php?channelid=$channelid'><u>å·²å‘å¸ƒä¿¡æ¯ç®¡ç†</u></a>
 &nbsp;&nbsp;
-<a href='index.php'><u>»áÔ±Ö÷Ò³</u></a>
+<a href='index.php'><u>ä¼šå‘˜ä¸»é¡µ</u></a>
 ";
 
-$wintitle = "³É¹¦¸ü¸ÄÒ»ÔòÐÅÏ¢£¡";
-$wecome_info = "ÎÄµµ¹ÜÀí::¸ü¸ÄÎÄµµ";
+$wintitle = "æˆåŠŸæ›´æ”¹ä¸€åˆ™ä¿¡æ¯ï¼";
+$wecome_info = "æ–‡æ¡£ç®¡ç†::æ›´æ”¹æ–‡æ¡£";
 $win = new OxWindow();
-$win->AddTitle("³É¹¦¸ü¸ÄÒ»ÔòÐÅÏ¢£º");
+$win->AddTitle("æˆåŠŸæ›´æ”¹ä¸€åˆ™ä¿¡æ¯ï¼š");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();

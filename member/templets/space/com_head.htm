@@ -1,0 +1,26 @@
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0" class="toplinespace">
+  <tr>
+    <td width="270" height="24">
+    	 <a href="index.php"><u>管理中心</u></a>
+    </td>
+    <td width="500" align="center" background="img/ttbg.gif">
+    	 &nbsp;
+    	<a href="index.php?uid=<?php echo $uid?>">我的空间</a>
+      | <a href="member_archives.php?uid=<?php echo $uid?>&channelid=1">我的文章</a>
+      <?php  if($cfg_mb_album=='是'){ ?>
+      | <a href="member_archives.php?uid=<?php echo $uid?>&channelid=2">我的图集</a>
+      <?php   } ?>
+      | <a href="index.php?uid=<?php echo $uid?>&action=memberinfo">我的档案</a>
+      | <a href="index.php?uid=<?php echo $uid?>&action=feedback">给我留言</a>
+      | <a href="search_member.php">搜索会员</a>
+    </td>
+  </tr>
+</table>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="161" height="59" align="center">
+    <a href="index.php?uid=<?php echo $uid?>"><img src="img/memberspace.gif" width="134" height="37" border="0"></a>
+    </td>
+    <td width="609"><h1 class='spacetitle'><?php echo $spacename?></h1></td>
+  </tr>
+</table>

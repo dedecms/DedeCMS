@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>测试节点</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">采集管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr> 
+    <td height="20" bgcolor="#EDF9D5"> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="30%" height="24">&nbsp;<strong>测试节点：</strong></td>
+          <td width="70%" align="right" style="padding-top:6px;padding-right:6px">&nbsp;<input type="button" name="b11" value="返回采集节点管理页"  class='inputbut' style="width:160" onClick="location.href='co_main.php';"></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="94" bgcolor="#FFFFFF" align="center">
+    	<table width="100%" border="0">
+        <tr bgcolor="#F9FCF3"> 
+          <td width="13%" height="24" align="center"><b>节点名称：</b></td>
+          <td width="87%" align="left">&nbsp;<?php  echo($co->Item["name"]); ?></td>
+        </tr>
+        <tr> 
+          <td height="24" align="center">列表测试信息：</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr> 
+          <td height="24" colspan="2" align="center">
+ <textarea name="r1" rows="15" id="r1" style="width:98%;height:250px"><?php  $turl = $co->TestList();?></textarea> 
+          </td>
+        </tr>
+        <tr> 
+          <td height="24" align="center">网页规则测试：</td>
+          <td align="left">(Dedecms里时间日期字段一般是整数类型，如果你看到sortrank、pubdate、senddate是整数，那情况是属正常的)</td>
+        </tr>
+        <tr> 
+          <td height="24" colspan="2" align="center">
+         <textarea name="r2" rows="15" id="r2" style="width:98%;height:250px">测试网址: <?php  echo "$turl \r\n"; $co->TestArt($turl); ?></textarea>
+		  </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td height="28" bgcolor="#F8FBFB">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

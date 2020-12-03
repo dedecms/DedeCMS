@@ -1,0 +1,250 @@
+/*Powered by http://www.dedecms.com
+Design & CSS By Pig.Z (QQ:7859301)*/
+*{
+	padding:0px;
+	margin:0px;
+	font-family:瀹嬩綋, Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+html{
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-right:5px;
+}
+body{
+	font-family:瀹嬩綋, Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	overflow-y:auto;
+	height:100%;
+}
+input{
+	border-width:1px;
+	border:1px solid #CCC;
+	padding:3px 0 3px 5px;
+}
+
+input[type=image]{ border:none }
+input[type=checkbox]{ border:none }
+input[type=radio]{ border:none }
+.ncbox{}
+
+.np{ border:0px; } 
+
+img{
+	border:0px;
+}
+a{
+	color:#000;
+}
+a:hover{
+	color:#F00;
+	text-decoration:none;
+}
+
+.bodytitle{
+	width:96%;
+	height:33px;
+	background:url(images/body_title_bg.gif) top left repeat-x;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:8px;
+	clear:both;
+}
+.bodytitleleft{
+	width:30px;
+	height:33px;
+	float:left;
+	background:url(images/body_title_left.gif) right bottom no-repeat;
+}
+.bodytitletxt{
+	height:27px;
+	float:left;
+	margin-top:6px;
+	line-height:27px;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:2px;
+	padding-left:8px;
+	padding-right:8px;
+	background:#FFF url(images/body_title_right.gif) right bottom no-repeat;
+}
+.tbtitle{
+	height:27px;
+	margin:8px auto 0px auto;
+	line-height:27px;
+	letter-spacing:1px;
+}
+.tbtitle .tbtitletxt{
+	text-indent:20px;
+}
+.tblist{
+	background:#E2F5BC;
+	margin-left:auto;
+	margin-right:auto;
+}
+.tblist2{
+	margin-left:auto;
+	margin-right:auto;
+	border-left:1px solid #E2F5BC;
+	border-right:1px solid #E2F5BC;
+	border-bottom:1px solid #E2F5BC;
+}
+
+.tblist td{
+	background:#FFFFFF;
+	padding:6px;
+}
+.tblist td.tbsname{
+	background:#F9FFE6;
+	padding:6px;
+}
+.inputbut{
+	padding-left:3px;
+	padding-right:2px;
+	border:1px solid #999;
+	background:#FFF url(images/inputbut_bg.gif) left center repeat-x;
+	font-size:12px;
+	height:24px;
+	padding-top:2px;
+	letter-spacing:2px;
+	vertical-align:middle;
+	margin-bottom:6px;
+}
+.inputbutx{
+	padding-left:3px;
+	padding-right:2px;
+	border:1px solid #999;
+	background:#FFF url(images/inputbut_bg.gif) left center repeat-x;
+	font-size:12px;
+	height:20px;
+	letter-spacing:2px;
+	vertical-align:middle;
+	text-decoration: none;
+	line-height: 20px;
+	padding-top: 2px;
+}
+.trlbg td{
+	background:#FFFFCC;
+}
+.hg {
+line-height: 20px;
+}
+
+.dlg {
+	border: 2px solid #749F4D;
+	background-color: #F0FAEB;
+	padding: 2px;
+	width: 200px;
+	line-height:160%;
+}
+
+.dlgTesttitle {
+	border: 2px solid #749F4D;
+	background-color: #F0FAEB;
+	padding: 2px;
+	width: 200px;
+	line-height:150%;
+}
+
+.dlg2 {
+	border: 2px solid #749F4D;
+	background-color: #F0FAEB;
+	padding: 2px;
+	width: 380px;
+	line-height:160%;
+}
+
+.data {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #E2F5BC;
+	border-bottom-color: #E2F5BC;
+	border-left-color: #E2F5BC;
+}
+
+.dedePagelist a
+{
+   border:1px;
+   border:1px solid #CCC;
+   margin-right:3px;
+   text-decoration:none;
+   color:#4E5344;
+   padding:1px 2px 1px 2px;
+   letter-spacing:0px
+}
+
+.bline {
+  border-bottom: 1px dotted #BCD0B5;
+  background-color: #FFFFFF;
+}
+.main_dnews{
+	padding:10px 0px 5px 100px;
+	background:url(images/mico_1.gif) 10px 20px no-repeat;
+	line-height:31px;
+}
+.main_dnews a{
+	color:#FF3300;
+}
+
+.main_qbut div{
+	width:100px;
+	background:url(images/mico_l.gif) no-repeat;
+	margin:0px auto;
+}
+.main_qbut div a{
+	display:block;
+	width:100px;
+	height:24px;
+	padding-top:84px;
+}
+.main_qbut div a:hover{
+	background:url(images/mb_bg.gif) no-repeat;
+}
+
+.main_bleft{
+	line-height:29px;
+	padding-right:10px;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#006633;
+}
+.main_bright{
+	line-height:29px;
+	padding-left:12px;
+}
+
+.coolbg4 {
+  height:20px;
+  width:200px;
+  border-bottom: 1px solid #C9CFC1;
+  background-color: #EDEBE5;
+  text-align:right;
+  margin-bottom:3px;
+}
+
+#_mysource{
+  line-height:150%;
+  padding-left:5px;
+  padding-right:2px;
+}
+
+.option1{ background-color: #DCECA6; }
+.option2{ background-color: #F7FBD2; }
+.option3{ background-color: #FFFFFF; }
+
+#head1{
+border-bottom:1px solid #c2df9d;
+}
+
+#head2{
+border-bottom:1px solid #c2df9d;
+}
+
+.ct_td{
+  padding:3px;
+  padding-left:6px;
+}

@@ -1,78 +1,123 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_MakeHtml');
-
 require_once(dirname(__FILE__)."/../include/inc_arclist_view.php");
 
-if(!isset($upnext)) $upnext = 1;
+/*
+makehtml_list_action.php?
+typeid=118
+uptype=all
+starttime=2007-01-16+15%3A24%3A05
+maxpagesize=100
+upnext=1
+*/
 
-if($upnext==1)
+if(!isset($upnext)) $upnext = 1;
+if(empty($gotype)) $gotype = '';
+if(empty($uptype)) $uptype = '';
+if(empty($pageno)) $pageno=0;
+if(empty($mkpage)) $mkpage = 1;
+if(empty($typeid)) $typeid = 0;
+if(empty($starttime)) $starttime = '';
+if(empty($maxpagesize)) $maxpagesize = 50;
+$adminID = $cuserLogin->getUserID();
+
+$dsql = new DedeSql(false);
+//æ™®é€šç”Ÿæˆ
+if($gotype=='')
 {
-	$dsql = new DedeSql(false);
-	$idArrays = TypeGetSunTypes($typeid,$dsql,0);
-	$dsql->Close();
-	$i = 0;
-  $idArray = "";
-  foreach($idArrays as $k=>$v){
-	  $idArray[$i] = $v; $i++;
+  if($upnext==1 || $typeid==0){
+    $tidss = TypeGetSunID($typeid,$dsql,"",0,true);
+    $idArray = explode(',',$tidss);
+  }else{
+  	$idArray = array();
+  	$idArray[] = $typeid;
   }
 }
-else
+//ä¸€é”®æ›´æ–°
+else if($gotype=='mkall')
 {
-	$idArray[0] = $typeid;
+	$mkcachefile = DEDEADMIN."/../data/mkall_cache_{$adminID}.php";
+	$idArray = array();
+	if(file_exists($mkcachefile)) include_once($mkcachefile);
 }
 
-if(!isset($pageno)) $pageno=0;
 $totalpage=count($idArray);
-if(isset($idArray[$pageno])) $tid = $idArray[$pageno];
-else{
-	echo "Íê³ÉËùÓĞÎÄ¼ş´´½¨£¡";
-	exit();
+if(isset($idArray[$pageno])){
+	$tid = $idArray[$pageno];
+}else{
+	if($gotype==''){
+	  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	  echo "å®Œæˆæ‰€æœ‰æ–‡ä»¶åˆ›å»ºï¼";
+	  ClearAllLink();
+	  exit();
+	}else if($gotype=='mkall')
+	{
+		ShowMsg("å®Œæˆæ‰€æœ‰æ ç›®åˆ—è¡¨æ›´æ–°ï¼Œç°åœ¨ä½œæœ€åæ•°æ®ä¼˜åŒ–ï¼","makehtml_all.php?action=make&step=10");
+		ClearAllLink();
+	  exit();
+	}
 }
 
-if($uptype=="all"||$uptype=="") $lv = new ListView($tid);
-else $lv = new ListView($tid,$starttime);
+//æ›´æ–°æ•°ç»„æ‰€è®°å½•çš„æ ç›®
+if(!empty($tid))
+{	
+  if($uptype=='all'||$uptype=='') $lv = new ListView($tid);
+  else $lv = new ListView($tid,$starttime);
 
-if($lv->TypeLink->TypeInfos['ispart']==0
- && $lv->TypeLink->TypeInfos['isdefault']!=-1)
-{ $ntotalpage = $lv->TotalPage; }
-else{ $ntotalpage = 1; }
+  if($lv->TypeLink->TypeInfos['ispart']==0 
+  && $lv->TypeLink->TypeInfos['isdefault']!=-1)
+  {
+  	$ntotalpage = $lv->TotalPage;
+  }else{
+  	$ntotalpage = 1;
+  }
 
-if(empty($mkpage)) $mkpage = 1;
-if(empty($maxpagesize)) $maxpagesize = 50;
-
-//Èç¹ûÀ¸Ä¿µÄÎÄµµÌ«¶à£¬·Ö¶àÅú´Î¸üĞÂ
-if($ntotalpage<=$maxpagesize 
-|| $lv->TypeLink->TypeInfos['ispart']!=0 
-|| $lv->TypeLink->TypeInfos['isdefault']==-1)
-{
-	$lv->MakeHtml();
-	$finishType = true;
-}
-else
-{
-	$lv->MakeHtml($mkpage,$maxpagesize);
-	$finishType = false;
-	$mkpage = $mkpage + $maxpagesize;
-	if( $mkpage >= ($ntotalpage+1) ) $finishType = true;
-}
-
-
-$lv->Close();
-
-$nextpage = $pageno+1;
-if($nextpage==$totalpage){
-	echo "Íê³ÉËùÓĞÎÄ¼ş´´½¨£¡";
-}
-else{
-	if($finishType){
-	  $gourl = "makehtml_list_action.php?maxpagesize=$maxpagesize&typeid=$typeid&pageno=$nextpage&uptype=$uptype&starttime=".urlencode($starttime);
-	  ShowMsg("³É¹¦´´½¨À¸Ä¿£º".$tid."£¬¼ÌĞø½øĞĞ²Ù×÷£¡",$gourl,0,100);
+  //å¦‚æœæ ç›®çš„æ–‡æ¡£å¤ªå¤šï¼Œåˆ†å¤šæ‰¹æ¬¡æ›´æ–°
+  if($ntotalpage<=$maxpagesize || $lv->TypeLink->TypeInfos['ispart']!=0 
+  || $lv->TypeLink->TypeInfos['isdefault']==-1)
+  {
+	  $lv->MakeHtml();
+	  $finishType = true;
   }
   else
   {
-  	$gourl = "makehtml_list_action.php?mkpage=$mkpage&maxpagesize=$maxpagesize&typeid=$typeid&pageno=$pageno&uptype=$uptype&starttime=".urlencode($starttime);
-	  ShowMsg("À¸Ä¿£º".$tid."£¬¼ÌĞø½øĞĞ²Ù×÷...",$gourl,0,100);
+	   $lv->MakeHtml($mkpage,$maxpagesize);
+	   $finishType = false;
+	   $mkpage = $mkpage + $maxpagesize;
+	   if( $mkpage >= ($ntotalpage+1) ) $finishType = true;
+  }
+
+}//!empty
+
+$nextpage = $pageno+1;
+
+if($nextpage >= $totalpage)
+{
+	if($gotype=='')
+	{
+	   echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	   echo "å®Œæˆæ‰€æœ‰æ–‡ä»¶åˆ›å»ºï¼";
+	   ClearAllLink();
+	   exit();
+	}else if($gotype=='mkall')
+	{
+		 ShowMsg("å®Œæˆæ‰€æœ‰æ ç›®åˆ—è¡¨æ›´æ–°ï¼Œç°åœ¨ä½œæœ€åæ•°æ®ä¼˜åŒ–ï¼","makehtml_all.php?action=make&step=10");
+		 ClearAllLink();
+	   exit();
+	}
+}else
+{
+	if($finishType){
+	   $gourl = "makehtml_list_action.php?gotype={$gotype}&maxpagesize=$maxpagesize&typeid=$typeid&pageno=$nextpage&uptype=$uptype&starttime=".urlencode($starttime);
+	   ClearAllLink();
+	   ShowMsg("æˆåŠŸåˆ›å»ºæ ç›®ï¼š".$tid."ï¼Œç»§ç»­è¿›è¡Œæ“ä½œï¼",$gourl,0,100);
+	   exit();
+  }else{
+  	 $gourl = "makehtml_list_action.php?gotype={$gotype}&mkpage=$mkpage&maxpagesize=$maxpagesize&typeid=$typeid&pageno=$pageno&uptype=$uptype&starttime=".urlencode($starttime);
+	   ClearAllLink();
+	   ShowMsg("æ ç›®ï¼š".$tid."ï¼Œç»§ç»­è¿›è¡Œæ“ä½œ...",$gourl,0,100);
+	   exit();
   }
 }
 ?>

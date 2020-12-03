@@ -9,7 +9,7 @@ class SiteMap
 	var $artDir;
 	var $baseDir;
 	//-------------
-	//php5ππ‘Ï∫Ø ˝
+	//php5ÊûÑÈÄ†ÂáΩÊï∞
 	//-------------
 	function __construct()
  	{
@@ -24,51 +24,56 @@ class SiteMap
 		$this->__construct();
 	}
 	//------------------
-	//«Â¿Ì¿‡
+	//Ê∏ÖÁêÜÁ±ª
 	//------------------
 	function Close()
 	{
 		$this->dsql->Close();
 	}
 	//---------------------------
-	//ªÒ»°Õ¯’æµÿÕº
-	//$maptype = "site" ªÚ "rss"
+	//Ëé∑ÂèñÁΩëÁ´ôÂú∞Âõæ
+	//$maptype = "site" Êàñ "rss"
 	//---------------------------
 	function GetSiteMap($maptype="site")
 	{
-		$mapString = "";
+		$mapString = "<style>.mdiv{ margin:0px;margin-bottom:10px;padding:3px; }</style><div>";
 		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where ishidden<>1 And reID=0 And ispart<>2 order by sortrank");
 		else $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID=0 And ishidden<>1 order by sortrank");
 		$this->dsql->Execute(0);
-		$mapString .= "<table width='100%' border='0' cellpadding='2' cellspacing='1' bgcolor='#CEDD9B'>\r\n";
 		while($row=$this->dsql->GetObject(0))
 		{	 
 			if($maptype=="site") $typelink = GetTypeUrl($row->ID,MfTypedir($row->typedir),$row->isdefault,$row->defaultname,$row->ispart,$row->namerule2);
 			else $typelink = $GLOBALS['cfg_plus_dir']."/rss/".$row->ID.".xml";
-			$mapString .= "<tr><td width='17%' align='center' bgcolor='#FAFEF1'>";
-      $mapString .= "<a href='$typelink'><b>".$row->typename."</b></a>";
-      $mapString .= "</td><td width='83%' bgcolor='#FFFFFF'>";
-			$mapString .= $this->LogicListAllSunType($row->ID,$maptype);
-			$mapString .= "</td></tr>";
+      $mapString .= "<div><a href='$typelink'><b>".$row->typename."</b></a></div>\r\n";
+			$mapString .= $this->LogicListAllSunType($row->ID,$maptype,0);
 		}
-		$mapString .= "</table>\r\n";
+		$mapString .= "</div>";
 		return $mapString;
 	}
-	//ªÒµ√◊”¿‡ƒøµƒµ›πÈµ˜”√
-	function LogicListAllSunType($ID,$maptype)
+	//Ëé∑ÂæóÂ≠êÁ±ªÁõÆÁöÑÈÄíÂΩíË∞ÉÁî®
+	function LogicListAllSunType($ID,$maptype,$pd)
 	{
 		$fid = $ID;
 		$mapString = "";
+		$pd = $pd + 15;
 		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID='".$ID."' And ishidden<>1 And ispart<>2 order by sortrank");
 		else $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID='".$ID."' And ishidden<>1 order by sortrank");
 		$this->dsql->Execute($fid);
+		$mapString .= "<div style='margin-left:{$pd}px'>";
 		while($row=$this->dsql->GetObject($fid))
 		{
 			 if($maptype=="site") $typelink = GetTypeUrl($row->ID,MfTypedir($row->typedir),$row->isdefault,$row->defaultname,$row->ispart,$row->namerule2);
 			 else $typelink = $GLOBALS['cfg_plus_dir']."/rss/".$row->ID.".xml";
-			 $mapString .= "<a href='$typelink'>".$row->typename."</a> &nbsp;";
-			 $mapString .= $this->LogicListAllSunType($row->ID,$maptype);
+			 
+			 $lastLink = " <a href='$typelink'>".$row->typename."</a> ";
+			 $mapString .= $lastLink;
+			 $mok = $this->LogicListAllSunType($row->ID,$maptype,$pd);
+			 if(ereg("<a",$mok)){
+			 	  //$mapString = str_replace($lastLink,"<div style='margin-left:{$pd}px'>$lastLink",$mapString);
+			 	  $mapString .= $mok;
+			 }
 		}
+		$mapString .= "</div>\r\n";
 		return $mapString;
 	}
 }

@@ -4,12 +4,12 @@ CheckPurview('sys_Edit');
 
 $varname = $_POST['varname'];
 if(!eregi('cfg_',$varname)){
-	ShowMsg("±äÁ¿Ãû³Æ±ØÐëÒÔ cfg_ ¿ªÍ·","-1");
+	ShowMsg("å˜é‡åç§°å¿…é¡»ä»¥ cfg_ å¼€å¤´","-1");
 	exit();
 }
 
-if($vartype=='bool' && ($varvalue!='ÊÇ' && $varvalue!='·ñ')){
-	ShowMsg("²¼¶û±äÁ¿Öµ±ØÐëÎªÖÐÎÄ'ÊÇ'»ò'·ñ'!","-1");
+if($vartype=='bool' && ($varvalue!='Y' && $varvalue!='N')){
+	ShowMsg("å¸ƒå°”å˜é‡å€¼å¿…é¡»ä¸º'Y'æˆ–'N'!","-1");
 	exit();
 }
 
@@ -17,7 +17,7 @@ $dsql = new DedeSql(false);
 
 $row = $dsql->GetOne("Select * From #@__sysconfig where varname like '$varname' ");
 if(is_array($row)){
-	 ShowMsg("¸Ã±äÁ¿Ãû³ÆÒÑ¾­´æÔÚ!","-1");
+	 ShowMsg("è¯¥å˜é‡åç§°å·²ç»å­˜åœ¨!","-1");
 	 $dsql->Close();
 	 exit();
 }
@@ -32,7 +32,7 @@ $rs = $dsql->ExecuteNoneQuery($inquery);
 
 if(!$rs){
 	 $dsql->Close();
-	 ShowMsg("ÐÂÔö±äÁ¿Ê§°Ü£¬¿ÉÄÜÓÐ·Ç·¨×Ö·û£¡","sys_info.php?gp=$vargroup");
+	 ShowMsg("æ–°å¢žå˜é‡å¤±è´¥ï¼Œå¯èƒ½æœ‰éžæ³•å­—ç¬¦ï¼","sys_info.php?gp=$vargroup");
 	 exit();
 }
 
@@ -41,14 +41,14 @@ $configfile_bak = dirname(__FILE__)."/../include/config_hand_bak.php";
 
 if(!is_writeable($configfile)){
 	$dsql->Close();
-	ShowMsg("³É¹¦±£´æ±äÁ¿£¬µ«ÓÉÓÚ $configfile ÎÞ·¨Ð´Èë£¬Òò´Ë²»ÄÜ¸üÐÂÅäÖÃÎÄ¼þ£¡","sys_info.php?gp=$vargroup");
+	ShowMsg("æˆåŠŸä¿å­˜å˜é‡ï¼Œä½†ç”±äºŽ $configfile æ— æ³•å†™å…¥ï¼Œå› æ­¤ä¸èƒ½æ›´æ–°é…ç½®æ–‡ä»¶ï¼","sys_info.php?gp=$vargroup");
 	exit();
 }else{
 	$dsql->SetQuery("Select varname,value From #@__sysconfig order by aid asc");
 	$dsql->Execute();
 	if($dsql->GetTotalRow()<=0){
 		$dsql->Close();
-		ShowMsg("³É¹¦±£´æ±äÁ¿µ«´ÓÊý¾Ý¿â¶ÁÈ¡ËùÓÐÊý¾ÝÊ±Ê§°Ü£¬ÎÞ·¨¸üÐÂÅäÖÃÎÄ¼þ£¡","sys_info.php?gp=$vargroup");
+		ShowMsg("æˆåŠŸä¿å­˜å˜é‡ä½†ä»Žæ•°æ®åº“è¯»å–æ‰€æœ‰æ•°æ®æ—¶å¤±è´¥ï¼Œæ— æ³•æ›´æ–°é…ç½®æ–‡ä»¶ï¼","sys_info.php?gp=$vargroup");
 	  exit();
 	}
 	copy($configfile,$configfile_bak);
@@ -60,8 +60,9 @@ if(!is_writeable($configfile)){
   fwrite($fp,"?".">");
 	fclose($fp);
 	$dsql->Close();
-	ShowMsg("³É¹¦±£´æ±äÁ¿²¢¸üÐÂÅäÖÃÎÄ¼þ£¡","sys_info.php?gp=$vargroup");
+	ShowMsg("æˆåŠŸä¿å­˜å˜é‡å¹¶æ›´æ–°é…ç½®æ–‡ä»¶ï¼","sys_info.php?gp=$vargroup");
 	exit();
 }
 
+ClearAllLink();
 ?>

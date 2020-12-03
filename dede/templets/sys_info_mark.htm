@@ -1,0 +1,122 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>系统配置参数 - 图片水印设置</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style>
+td{ padding-left:6px; }
+</style>
+</head>
+<body >
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">系统设置</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;"> 
+  <form action="sys_info_mark.php" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="action" value="save">
+  <input type="hidden" name="photo_markimg" value="<?php echo $photo_markimg?>">
+  <tr> 
+    <td height="26" colspan="2" bgcolor="#EDF9D5">
+	<b>&nbsp;&nbsp;DedeCms系统配置参数</b> - <strong>图片水印设置</strong>    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td width="41%" height="28"><b>&nbsp;&nbsp;</b>上传的图片是否使用图片水印功能：<br> </td>
+    <td width="59%"> <input  type="radio" value="1" name="photo_markup"<?php if($photo_markup==1) echo ' checked';?>>
+      开启 
+      <input  type="radio" value="0" name="photo_markup"<?php if($photo_markup==0) echo ' checked';?>>
+      关闭 </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>采集的图片是否使用图片水印功能：</td>
+    <td> <input  type="radio" value="1" name="photo_markdown"<?php if($photo_markdown==1) echo ' checked';?>>
+      开启 
+        <input  type="radio" value="0" name="photo_markdown"<?php if($photo_markdown==0) echo ' checked';?>>
+      关闭 </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>添加水印的图片大小控制（设置为0为不限）：</td>
+    <td> 宽： 
+      <input name="photo_wwidth" type=text id="photo_wwidth"   value="<?php echo $photo_wwidth?>" size="5">
+      高： 
+      <input name="photo_wheight" type=text id="photo_wheight"  value="<?php echo $photo_wheight?>" size="5"> </td>
+  </tr>
+  
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>水印图片文件名（如果不存在，则使用文字水印）：</td>
+    <td><img src="../include/data/<?php echo $photo_markimg?>" alt="dede"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="35" bgcolor="#FFFFFF"><b>&nbsp;&nbsp;</b>上传新图片：</td>
+    <td>
+	<input name="newimg" type="file" id="newimg"  style="width:280px" />
+    <br>
+	<?php  echo "你的系统支持的图片格式：".$cfg_photo_support; ?>
+	</td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>水印图片文字（不支持中文）：</td>
+    <td> <input type="text" name="photo_watertext"  value="<?php echo $photo_watertext?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>水印图片文字字体大小：</td>
+    <td> <input name="photo_fontsize" type=text id="photo_fontsize"  value="<?php echo $photo_fontsize?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td height="28"><b>&nbsp;&nbsp;</b>水印图片文字颜色（默认#FF0000为红色）：</td>
+    <td> <input name="photo_fontcolor" type=text id="photo_fontcolor"  value="<?php echo $photo_fontcolor?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="28"><b>&nbsp;&nbsp;</b>水印透明度（0—100，值越小越透明）：</td>
+    <td><input name="photo_diaphaneity" type=text id="photo_diaphaneity"  value="<?php echo $photo_diaphaneity?>"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="28"><b>&nbsp;&nbsp;</b>水印位置：</td>
+    <td>
+	<input  type="radio" name="photo_waterpos"  value="0"<?php if($photo_waterpos==0) echo ' checked';?>>
+          随机位置
+	<table width="300" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="33%"><input  type="radio" name="photo_waterpos"  value="1"<?php if($photo_waterpos==1) echo ' checked';?>>
+          顶部居左</td>
+        <td width="33%"><input  type="radio" name="photo_waterpos"  value="4"<?php if($photo_waterpos==4) echo ' checked';?>>
+          顶部居中</td>
+        <td><input  type="radio" name="photo_waterpos"  value="7"<?php if($photo_waterpos==7) echo ' checked';?>>
+          顶部居右</td>
+      </tr>
+      <tr>
+        <td><input  type="radio" name="photo_waterpos"  value="2"<?php if($photo_waterpos==2) echo ' checked';?>>
+          左边居中</td>
+        <td><input  type="radio" name="photo_waterpos"  value="5"<?php if($photo_waterpos==5) echo ' checked';?>>
+          图片中心</td>
+        <td><input  type="radio" name="photo_waterpos"  value="8"<?php if($photo_waterpos==8) echo ' checked';?>>
+          右边居中</td>
+      </tr>
+      <tr>
+        <td><input  type="radio" name="photo_waterpos"  value="3"<?php if($photo_waterpos==3) echo ' checked';?>>
+          底部居左</td>
+        <td><input  type="radio" name="photo_waterpos"  value="6"<?php if($photo_waterpos==6) echo ' checked';?>>
+          底部居中</td>
+        <td><input name="photo_waterpos" type="radio"   value="9"<?php if($photo_waterpos==9) echo ' checked';?>>
+          底部居右</td>
+      </tr>
+    </table></td>
+  </tr>
+  
+  <tr bgcolor="#CCEDFD"> 
+    <td height="37" colspan="2" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+          <td height="35">
+		  <input name="提交" type="submit" class="inputbut" value="提交"  width="60" height="22" border="0"/>
+		  　&nbsp;
+		  <input name="重置" type="reset"  class="inputbut" value="重置" />  </td>
+          </tr>
+      </table>	  </td>
+  </tr>
+  </form>
+</table>
+</body>
+</html>

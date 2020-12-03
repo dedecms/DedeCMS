@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 @set_time_limit(3600);
 if(empty($dopost)) $dopost = '';
 
-//Âß¼­º¯Êı
+//é€»è¾‘å‡½æ•°
 //-------------------------------------
 function GoSearchVir($fdir){
 	global $tcc,$scc,$ddfiles,$shortname,$minsize,$maxsize,$crday,$cfg_basedir;
@@ -29,7 +29,7 @@ function GoSearchVir($fdir){
 				if(!eregi("eval|fopen|unlink|rename",$tstr)) continue;
 			}
 			$furl = str_replace($cfg_basedir,"",$truefile);
-			echo "<li><input type='checkbox' name='vfiles[]' value='$furl' class='np'> <a href='$furl' target='_blank'><u>$furl</u></a> ´´½¨ÈÕÆÚ£º".GetDateTimeMk($ftime)." ´óĞ¡£º{$nfsize} </li>\r\n";
+			echo "<li><input type='checkbox' name='vfiles[]' value='$furl' class='np'> <a href='$furl' target='_blank'><u>$furl</u></a> åˆ›å»ºæ—¥æœŸï¼š".GetDateTimeMk($ftime)." å¤§å°ï¼š{$nfsize} </li>\r\n";
 			$tcc++;
 		}
 	}
@@ -45,7 +45,7 @@ function GoReplaceFile($fdir){
 		if(!is_file($truefile)) continue;
 		$scc++;
 		$fsize = filesize($truefile);
-		if(eregi("\.(".$shortname.")",$filename))
+		if($fsize>0 && eregi("\.(".$shortname.")",$filename))
 		{
 			$fp = fopen($truefile,'r');
 			$tstr = fread($fp,$fsize);
@@ -58,7 +58,7 @@ function GoReplaceFile($fdir){
 			  $tcc++;
 			}else{
 				$furl = str_replace($cfg_basedir,"",$truefile);
-				echo "<li>ÎÄ¼ş£º {$rurl} ²»ÄÜĞ´Èë£¡</li>";
+				echo "<li>æ–‡ä»¶ï¼š {$rurl} ä¸èƒ½å†™å…¥ï¼</li>";
 			}
 		}
 	}
@@ -76,9 +76,9 @@ if($dopost=='search'){
 	 $maxsize = $maxsize * 1024;
 	 $phead = "<html>
   <head>
-  <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-  <title>Ä¾ÂíÉ¨Ãè¼ì²â½á¹û</title>
-  <link href='base.css' rel='stylesheet' type='text/css'>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <title>æœ¨é©¬æ‰«ææ£€æµ‹ç»“æœ</title>
+  <link href='css_body.css' rel='stylesheet' type='text/css'>
   <style>
   li{width:100%;height:26px;border:1px solid #C9E3FA; margin:3px; list-style-type:none }
   .lii{ padding:3px; }
@@ -90,8 +90,8 @@ if($dopost=='search'){
 	 echo $phead;
 	 GoSearchVir($searchpath);
    echo "<li class='lii'> ";
-   if($tcc>0) echo "<input type='submit' name='sb1' value='É¾³ıÑ¡ÖĞµÄÎÄ¼ş£¡' class='nbt'><br><br>\r\n";
-   echo "&nbsp;&nbsp;¹²ËÑË÷ {$scc} ¸öÎÄ¼ş£¬ÕÒµ½ {$tcc} ¸ö¿ÉÒÉÎÄ¼ş£¬É¾³ıÎÄ¼şºó»áÔÚºóÌ¨¹ÜÀíÄ¿Â¼Éú³ÉÒ»¸övirlog.txtÎÄ¼ş£¬ÈçÎóÉ¾Ö¯ÃÎÏµÍ³ÎÄ¼ş£¬´Ó´ËÎÄ¼şÖĞÕÒ»ØÕâĞ©ÎÄ¼şÂ·¾¶£¬ÓÃdedeÏàÍ¬°æ±¾Ã»ĞŞ¸Ä¹ıµÄÎÄ¼şÌæ»»¼´¿É£¡ </li>\r\n";
+   if($tcc>0) echo "<input type='submit' name='sb1' value='åˆ é™¤é€‰ä¸­çš„æ–‡ä»¶ï¼' class='inputbut'><br><br>\r\n";
+   echo "&nbsp;&nbsp;å…±æœç´¢ {$scc} ä¸ªæ–‡ä»¶ï¼Œæ‰¾åˆ° {$tcc} ä¸ªå¯ç–‘æ–‡ä»¶ï¼Œåˆ é™¤æ–‡ä»¶åä¼šåœ¨åå°ç®¡ç†ç›®å½•ç”Ÿæˆä¸€ä¸ªvirlog.txtæ–‡ä»¶ï¼Œå¦‚è¯¯åˆ ç»‡æ¢¦ç³»ç»Ÿæ–‡ä»¶ï¼Œä»æ­¤æ–‡ä»¶ä¸­æ‰¾å›è¿™äº›æ–‡ä»¶è·¯å¾„ï¼Œç”¨dedeç›¸åŒç‰ˆæœ¬æ²¡ä¿®æ”¹è¿‡çš„æ–‡ä»¶æ›¿æ¢å³å¯ï¼ </li>\r\n";
    echo "</form><body></html>";
    exit();
 }else if($dopost=='replace'){
@@ -99,8 +99,8 @@ if($dopost=='search'){
    $scc = 0;
 	 $phead = "<html>
   <head>
-  <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-  <title>ÄÚÈİÌæ»»½á¹û</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+  <title>å†…å®¹æ›¿æ¢ç»“æœ</title>
   <link href='base.css' rel='stylesheet' type='text/css'>
   <style>
   li{width:100%;height:26px;border:1px solid #C9E3FA; margin:3px; list-style-type:none }
@@ -111,9 +111,14 @@ if($dopost=='search'){
 	 echo $phead;
 	 $sstr = stripslashes($sstr);
 	 $rpstr = stripslashes($rpstr);
-	 GoReplaceFile($searchpath);
+	 if(strlen($sstr)>8){
+	    GoReplaceFile($searchpath);
+	 }else{
+	 	  echo "æ›¿æ¢å†…å®¹ä¸èƒ½å°äº8ä¸ªå­—èŠ‚ï¼";
+	 	  exit();
+	 }
 	 echo "<li class='lii'> ";
-   echo "&nbsp;&nbsp;¹²ËÑË÷ {$scc} ¸öÎÄ¼ş£¬³É¹¦Ìæ»» {$tcc} ¸öÎÄ¼ş£¡ </li>\r\n";
+   echo "&nbsp;&nbsp;å…±æœç´¢ {$scc} ä¸ªæ–‡ä»¶ï¼ŒæˆåŠŸæ›¿æ¢ {$tcc} ä¸ªæ–‡ä»¶ï¼ </li>\r\n";
    echo "<body></html>";
 	 exit();
 }else if($dopost=='delete')
@@ -123,133 +128,15 @@ if($dopost=='search'){
       foreach($vfiles as $f){
       	unlink($cfg_basedir.$f);
       	fwrite($fp,$f."\r\n");
-      	echo "É¾³ıÎÄ¼ş£º ".$cfg_basedir.$f." <br>\r\n";
+      	echo "åˆ é™¤æ–‡ä»¶ï¼š ".$cfg_basedir.$f." <br>\r\n";
       }
       fclose($fp);
 	 }
-	 echo "³É¹¦É¾³ıËùÓĞÖ¸¶¨ÎÄ¼ş£¡";
+	 echo "æˆåŠŸåˆ é™¤æ‰€æœ‰æŒ‡å®šæ–‡ä»¶ï¼";
 	 exit();
 }
 
+require_once(dirname(__FILE__)."/templets/virus_search.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>Ä¾ÂíÉ¨Ãè¼ì²â²å¼ş</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-<script language="javascript">
-function CheckRp(){
-  var dp1 = document.getElementById("dp1");
-  var dp2 = document.getElementById("dp2");
-  var rpct = document.getElementById("rpct");
-  if(dp1.checked){
-  	document.form1.shortname.value = "php|asp|aspx";
-  	rpct.style.display = "none";
-  }else{
-    document.form1.shortname.value = "php|asp|aspx|htm|html|shtml";
-    rpct.style.display = "block";
-  }
-}
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
-  <form action="virus_search.php" name="form1" target="stafrm" method="post">
-  <tr> 
-    <td height="20" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
-        <tr> 
-            <td width="30%" height="18"><strong>Ä¾ÂíÉ¨Ãè¼ì²â²å¼ş£º</strong></td>
-          <td width="70%" align="right">&nbsp;</td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr>
-      <td height="33" bgcolor="#FFFFFF">¡¡¡¡±¾ÎÄ¼şµÄÔ­ÀíÊÇÉ¨ÃèÓĞ¿ÉÒÉ²Ù×÷µÄPHPÎÄ¼ş£¬»òÌØ¶¨¹æÔòµÄÎÄ¼ş£¬¶ÔÓÚÒÑ¾­¸ĞÈ¾²¡¶¾µÄÎÄ¼ş£¬ÇëÖ¸¶¨Ìæ»»ÄÚÈİ¹æÔò£¬Ìæ»»±»¸ĞÈ¾µÄÎÄ¼şÄÚÈİ£¬ÔÚÎÄ¼şÊıÁ¿·Ç³£¶àµÄÇé¿öÏÂ£¬±¾²Ù×÷±È½ÏÕ¼ÓÃ·şÎñÆ÷×ÊÔ´£¬ÇëÈ·½Å±¾³¬Ê±ÏŞÖÆÊ±¼äÔÊĞí¸ü¸Ä£¬·ñÔò¿ÉÄÜÎŞ·¨Íê³É²Ù×÷¡£</td>
-  </tr>
-  <tr> 
-    <td height="48" bgcolor="#FFFFFF"><table width="100%" border="0" cellpadding="2" cellspacing="2">
-          <tr bgcolor="#EBFBE6"> 
-            <td><strong>&nbsp;²Ù×÷ÀàĞÍ£º</strong></td>
-            <td> <input name="dopost" type="radio" id="dp1" class="np" onclick="CheckRp()" value="search" checked>
-              É¨ÃèÎÄ¼ş 
-              <input name="dopost" type="radio" id="dp2" value="replace" onclick="CheckRp()" class="np">
-              Ìæ»»ÄÚÈİ </td>
-          </tr>
-          <tr> 
-            <td width="14%"><strong>&nbsp;ÆğÊ¼¸ùÂ·¾¶£º</strong></td>
-            <td width="86%"> <input name="searchpath" type="text" id="searchpath" style="width:60%" value="<?=$cfg_basedir?>">	
-            </td>
-          </tr>
-          <tr> 
-            <td bgcolor="#EBFBE6"><strong>&nbsp;ÎÄ¼ş¹æÔò¶¨Òå£º</strong></td>
-            <td bgcolor="#EBFBE6">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td colspan="2"><table width="100%" border="0" cellspacing="1" cellpadding="1">
-                <tr> 
-                  <td height="30">&nbsp;À© Õ¹ Ãû£º 
-                    <input name="shortname" type="text" id="shortname" size="20" value="php|asp|aspx">
-                    ÎÄ¼ş´óĞ¡£º£¨Ğ¡ÓÚ£º 
-                    <input name="minsize" type="text" id="minsize" value="1" size="6">
-                    K »ò ´óÓÚ£º 
-                    <input name="maxsize" type="text" id="maxsize" value="20" size="6">
-                    K£© ÎÄ¼ş´´½¨ÈÕÆÚ£º 
-                    <input name="crday" type="text" id="crday" value="7" size="6">
-                    ÌìÒÔÄÚ¡£
-                    <hr size="1">
-                    £¨ËµÃ÷£ºÍ¨³£Çé¿öÏÂPHPÄ¾Âí¿ÉÄÜÖ»ÊÇ¼¸Ê®¸ö×Ö½Ú£¬ÒªÃ´ÊÇ20KÒÔÉÏ£¬³ÌĞò»á×Ô¶¯ºöÂÔÖ¯ÃÎÏµÍ³´óÓÚ20KµÄÎÄ¼ş£© </td>
-                </tr>
-              </table></td>
-          </tr>
-          <tr id="rpct" style="display:none"> 
-            <td height="64" colspan="2">
-			<table width="100%" border="0" cellspacing="1" cellpadding="1">
-                <tr bgcolor="#EDFCE2"> 
-                  <td colspan="4"><strong>ÄÚÈİÌæ»»Ñ¡Ïî£º</strong>£¨Ìæ»»ÄÚÈİÇëÊ¹ÓÃÕıÔò±í´ïÊ½£¬Ìæ»»ÄÚÈİÊ±½öÅĞ¶ÏÀ©Õ¹Ãû£¬ÎÄ¼ş´óĞ¡¡¢ÎÄ¼ş´´½¨ÈÕÆÚÑ¡Ïî»áºöÂÔ£©</td>
-                </tr>
-                <tr> 
-                  <td width="15%">&nbsp;Ìæ»»ÄÚÈİ£º</td>
-                  <td width="35%"><textarea name="sstr" id="sstr" style="width:90%;height:45px"></textarea></td>
-                  <td width="15%">Ìæ »» Îª£º</td>
-                  <td><textarea name="rpstr" id="rpstr" style="width:90%;height:45px"></textarea></td>
-                </tr>
-              </table>
-			  </td>
-          </tr>
-        </table></td>
-  </tr>
-  <tr> 
-    <td height="31" bgcolor="#F8FBFB" align="center">
-	<input type="submit" name="Submit" value="¿ªÊ¼Ö´ĞĞ²Ù×÷" class="nbt">
-	</td>
-  </tr>
-  </form>
-  <tr bgcolor="#E5F9FF"> 
-    <td height="20"> <table width="100%">
-        <tr> 
-          <td width="74%"><strong>¼ì²â½á¹û£º</strong></td>
-          <td width="26%" align="right"> <script language='javascript'>
-            	function ResizeDiv(obj,ty)
-            	{
-            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
-            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-            	}
-            	</script>
-            [<a href='#' onClick="ResizeDiv('mdv','+');">Ôö´ó</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">ËõĞ¡</a>] 
-          </td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td id="mtd">
-    	<div id='mdv' style='width:100%;height:100;'> 
-        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
-      </div>
-      <script language="JavaScript">
-	    document.all.mdv.style.pixelHeight = screen.height - 420;
-	    </script>
-	   </td>
-  </tr>
-</table>
-</body>
-</html>

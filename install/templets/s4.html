@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DedeCms V5 2008版安装程序 -- 正在安装</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.onetd{
+	text-align:right;
+	line-height:25px;
+}
+-->
+</style>
+<script src="jquery.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+<!--
+	
+	$(document).ready(function(){
+		//列表第一格CSS
+		$(".twbox tbody tr").each(function(){ $(this).children("td").eq(0).addClass("onetd");});
+		
+		//文本输入框定义CSS+鼠标悬停
+		$("input[type='text']").addClass("textipt").mouseover(function(){ $(this).addClass("textipt_on");}).mouseout(function(){$(this).removeClass("textipt_on");});
+	});
+	
+	var gostep = 0;
+	var ter = null;
+	var gotourl = "<?php echo $gotourl; ?>";
+	function SetupNext(){
+		if(gostep==0){
+			gostep = 1;
+			ter = setTimeout('SetupNext()',<?php echo $gototime; ?>);
+		}else{
+			if(gotourl!='') location = gotourl;
+			clearTimeout(ter);
+		}
+	}
+	
+-->
+</script>
+</head>
+
+<body>
+<div class="top boxcenter">正在安装: <em>V5.0.1 UTF-8版</em></div>
+
+<div class="topstep boxcenter">
+	<div class="stepbox">
+		<ul>
+			<li>许可协议</li>
+			<li>检测环境</li>
+			<li>安装参数</li>
+			<li class="this">安装</li>
+		</ul>
+	</div>
+</div>
+<div class="main boxcenter">
+	<div class="boxtitle">
+		<span>正在安装</span>
+	</div>
+	<div class="setupinfo">
+		<?php echo $setupinfo; ?>
+	</div>
+	<script language='javascript'>SetupNext();</script>
+</div>
+</body>
+</html>

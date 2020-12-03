@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<link href="templets/company/css/style.css" rel="stylesheet" type="text/css" />
+<title>企业空间--人才招聘</title>
+</head>
+
+<body>
+<div id="container">
+<!-- 头部开始 -->
+	<div id="header">
+    	<div id="topbg">
+    		<div id="top">
+        		<div class="topmanage"></div>
+            	<div class="topmenu">
+                	<ul>
+                        <li><a href="index.php">中心主页</a></li>
+                        <li><a href="index.php?uid=<?=$uid?>">企业空间</a></li>
+                        <li><a href="../company/">搜索企业</a></li>
+                        <li><a href="../">网站主页</a></li>
+                    </ul>
+                </div>
+       	 	</div>
+        </div>
+        <div id="topmain">
+        	<div id="toplogo">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+ <!-- 中间开始 -->
+	<div id="main">
+    	<div id="left">
+        	<div class="lefttitle">
+            </div>
+            <div class="leftmenu">
+            	<ul>
+                	<li><a href="index.php?uid=<?=$uid?>">公司首页</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=cominfo">公司简介</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=culture">企业文化</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=news">公司新闻</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=info">供求信息</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=product">产品展示</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=job">人才招聘</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=guestbook">在线留言</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=contact">联系我们</a></li>
+                </ul>
+          </div>
+      <div class="leftlink">
+            	<div class="leftlink_title">联系我们
+                </div>
+                <div class="leftlink_text">
+                	联系人：<?=$cominfo['truename']?><br>
+                	电话：<?=$cominfo['phone']?><br>
+                	传真：<?=$cominfo['fax']?><br>
+                	地址：<?=$cominfo['comaddr']?><br>
+                	邮编：<?=$cominfo['postid']?><br>
+                </div>
+            </div>
+            <div class="clear">
+        	</div>
+        </div>
+        <!-- 公司简介 -->
+        <div id="about_now">
+         	<div class="about_titleicon">当前位置 -- 人才招聘 -- 详细内容
+            </div>
+       	   <div class="news_view_title">
+            <ul><li></li></ul>
+       	   </div>
+            <div class="news_view_text">
+            	<h1><?=$jobinfo['name']?>招聘信息</h1>
+                <h2>招聘职位：<?=$jobinfo['job']?></h2>
+                <h2>招聘部门：<?=$jobinfo['department']?></h2>
+                <h2>发布日期：<?php echo $jobinfo['pubdate'];?></h2>
+                <h2>截至日期：<?=$jobinfo['endtime']?></h2>
+                <h2>薪酬范围：<?=$jobinfo['salaries']?></h2>
+                <h2>招聘人数：<?=$jobinfo['nums']?></h2>
+                <h2>工作地址：<?=$jobinfo['address']?></h2>
+                <h2>职位描述：<?=$jobinfo['message']?></h2>
+            </div>
+        </div>
+         <div class="clear">
+        </div>
+    </div>
+    <div id="about_footer">
+    	<div class="about_footer_text">织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <!-- 尾部开始 -->
+</div>
+</body>
+</html>

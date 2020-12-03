@@ -1,14 +1,14 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('temp_Other');
-//根据条件生成标记
+//鏍规嵁鏉′欢鐢熸垚鏍囪
 $attlist = "";
 $attlist .= ' row='.$row;
 $attlist .= ' titlelen='.$titlelen;
 if($orderby!='senddate')  $attlist .= ' orderby='.$orderby;
 if($order!='desc') $attlist .= ' order='.$order;
 if($typeid>0) $attlist .= ' typeid='.$typeid;
-if($channel>0) $attlist .= ' channel='.$channel;
+if($channel>0) $attlist .= ' channelid='.$channel;
 if($att>0) $attlist .= ' att='.$att;
 if($col>1) $attlist .= ' col='.$col;
 if($subday>0) $attlist .= ' subday='.$subday;
@@ -38,23 +38,9 @@ if($dopost=='savetag')
 	$dsql->Close();
 	$fulltag = "{dede:mytag name='{$tagname}_{$id}' ismake='yes'/}";
 }
+
+require_once(dirname(__FILE__)."/templets/mytag_tag_guide_ok.htm");
+
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>智能标记向导</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body leftmargin='0' topmargin='10'>
-<table width="99%" border="0" cellspacing="0" cellpadding="0">
-  <form action="tag_test_action.php" method="post" name="f1" target="_blank">
-  <tr> 
-    <td align="center"> 
-      <textarea name="partcode" cols="60" rows="6" id="partcode" style="width:90%;height:120"><?php echo $fulltag?></textarea> 
-      <input type="submit" name="Submit" value="预览" class="np">
-    </td>
-  </tr>
-  </form>
-</table>
-</body>
-</html>

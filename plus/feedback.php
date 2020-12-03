@@ -1,47 +1,45 @@
-<?
-$needFilter = true;
+<?php
+$cfg_needFilter = true;
 require(dirname(__FILE__)."/../include/config_base.php");
 require(dirname(__FILE__)."/../include/inc_memberlogin.php");
 require(dirname(__FILE__)."/../include/inc_channel_unit.php");
 if(!isset($action)) $action = "";
 if(!empty($artID)) $arcID = $artID;
-if(!isset($arcID)) $arcID = "";
+if(!isset($arcID)) $arcID = 0;
+if(!isset($feedid)) $feedid = 0;
+if(!isset($arctitle)) $arctitle = '';
+if(!isset($arcurl)) $arcurl = '';
+if(!isset($urlindex)) $urlindex = 0;
 
-//Ã¿Ò³ÏÔÊ¾ÆÀÂÛ¼ÇÂ¼Êı
+//æ¯é¡µæ˜¾ç¤ºè¯„è®ºè®°å½•æ•°
 $feedbackPageSize = 15;
 
-if($cfg_feedbackcheck=='ÊÇ') $ischeck = 0;
+if($cfg_feedbackcheck=='Y') $ischeck = 0;
 else $ischeck = 1;
 
 function trimMsg($msg)
 {
 	global $cfg_notallowstr;
 	$notallowstr = $cfg_notallowstr;
-	$msg = htmlspecialchars(trim($msg));
-	$msg = nl2br($msg);
+	$msg = htmlEncode($msg);
 	$msg = str_replace("  ","&nbsp;&nbsp;",$msg);
 	$msg = eregi_replace($notallowstr,"***",$msg);
 	return $msg;
 }
 
-$arcID = ereg_replace("[^0-9]","",$arcID);
-if(empty($arcID)){
-	  ShowMsg("ÎÄµµID²»ÄÜÎª¿Õ!","-1");
-	  exit();
-}
 
 $ml = new MemberLogin();
 
 $dsql = new DedeSql(false);
 
-//ÈÓ¼¦µ°ÏÊ»¨
+//æ‰”é¸¡è›‹é²œèŠ±
 //-----------------------------------
 if($action=="good")
 {
 	$fid = ereg_replace("[^0-9]","",$fid);
 	$dsql->ExecuteNoneQuery("Update #@__feedback set good = good+1 where ID='$fid' ");
 	$dsql->Close();
-	ShowMsg("³É¹¦·¢³öÒ»ÊøÏÊ»¨£¡","feedback.php?arcID=$arcID");
+	ShowMsg("è¯„è®ºæˆåŠŸï¼","-1");
 	exit();
 }
 else if($action=="bad")
@@ -49,139 +47,201 @@ else if($action=="bad")
 	$fid = ereg_replace("[^0-9]","",$fid);
 	$dsql->ExecuteNoneQuery("Update #@__feedback set bad = bad+1 where ID='$fid' ");
 	$dsql->Close();
-	ShowMsg("³É¹¦ÈÓ³öÒ»Ö»¼¦µ°£¡","feedback.php?arcID=$arcID");
+	ShowMsg("è¯„è®ºæˆåŠŸï¼","-1");
 	exit();
 }
 
-//¶ÁÈ¡ÎÄµµĞÅÏ¢
-$arctitle = "";
-$arcurl = "";
-$topID = 0;
-$arcRow = $dsql->GetOne("Select #@__archives.title,#@__archives.senddate,#@__archives.arcrank,#@__archives.ismake,#@__archives.money,#@__archives.typeid,#@__arctype.topID,#@__arctype.typedir,#@__arctype.namerule From #@__archives  left join #@__arctype on #@__arctype.ID=#@__archives.typeid where #@__archives.ID='$arcID'");
-if(is_array($arcRow)){
-	$arctitle = $arcRow['title'];
-	$topID = $arcRow['topID'];
-	$arcurl = GetFileUrl($arcID,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
-}
-else{
-	 $dsql->Close();
-	 ShowMsg("ÎŞ·¨¶ÔÎ´ÖªÎÄµµ·¢±íÆÀÂÛ!","-1");
-	 exit();
+//å¦‚æœå‘é€çš„ç½‘å€å’Œæ–‡æ¡£IDåŒæ—¶ä¸ºç©ºï¼Œç¦æ­¢è¯„è®º
+if(empty($arcurl) && empty($arcID) && empty($urlindex))
+{
+	ShowMsg("æ— æ³•å¯¹æœªçŸ¥æ–‡æ¡£è¯„è®ºï¼","-1");
+	$dsql->Close();
+	exit();
 }
 
-//²é¿´ÆÀÂÛ
-/*
+$cts = array();
+$cts['maintable'] = '#@__archives';
+if(!empty($arcID)){
+	$cts = GetChannelTable($dsql,$arcID,'arc');
+}
+
+//å¦‚æœæ²¡æœ‰è¯„è®ºæ–‡æ¡£çš„ç´¢å¼•IDï¼Œå…ˆæ£€æµ‹
+if(empty($urlindex))
+{
+  //è¯»å–æ–‡æ¡£ä¿¡æ¯
+  if(empty($arcurl))
+  {
+     $arcRow = $dsql->GetOne(" Select arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,t.topID,t.typedir,t.namerule From `{$cts['maintable']}` arc  left join `#@__arctype` t on t.ID=arc.typeid where arc.ID='$arcID'; ");
+     if(is_array($arcRow))
+     {
+	      $arctitle = addslashes($arcRow['title']);
+	      $arcurl = GetFileUrl($arcID,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
+        $arcurl = addslashes($arcurl);
+        $feedid = $arcRow['typeid'];
+     }
+  }
+  //è·å–ç½‘å€ç´¢å¼•ä¿¡æ¯
+  $row = $dsql->GetOne("Select id,title From `#@__cache_feedbackurl` where url='$arcurl' ");
+  if(is_array($row))
+  {
+	  $urlindex = $row['id'];
+	  $arctitle = $row['title'];
+  }
+  else
+  {
+	   $iquery = " INSERT INTO `#@__cache_feedbackurl`(`url`,`title`,`postnum`,`posttime`,`feedid`) VALUES ('$arcurl', '$arctitle', '0', '0', '$feedid');";
+	   $rs = $dsql->ExecuteNoneQuery($iquery);
+     if($rs) $urlindex = $dsql->GetLastID();
+     else
+     {
+  	    ShowMsg("ä¿å­˜ç´¢å¼•æ•°æ®å¤±è´¥ï¼Œæ— æ³•è¯„è®ºï¼","javascript:;");
+	      $dsql->Close();
+	      exit();
+     }
+  }
+}
+//ç›´æ¥ä»ç´¢å¼•ä¸­è·å–ä¿¡æ¯
+else
+{
+	$row = $dsql->GetOne("Select id,url,title From `#@__cache_feedbackurl` where id='{$urlindex}' ");
+  if(is_array($row)){
+	  $urlindex = $row['id'];
+	  $arctitle = $row['title'];
+	  $arcurl = $row['url'];
+  }else{
+  	ShowMsg("è·å–ç´¢å¼•æ•°æ®å¤±è´¥æ— æ³•è¯„è®ºï¼","javascript:;");
+	  $dsql->Close();
+	  exit();
+  }
+}
+
+//æŸ¥çœ‹è¯„è®º
+/*--------------------------
 function _ShowFeedback()
-*/
-//-----------------------------------
+----------------------------*/
 if($action==""||$action=="show")
 {
-	
+
 	require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
-	
-	$row = $dsql->GetOne("Select AVG(rank) as dd From #@__feedback where aid='$arcID' ");
+
+	$row = $dsql->GetOne("Select AVG(rank) as dd From #@__feedback where urlindex = '$urlindex' Or aid='$arcID' ");
 	$agvrank = $row['dd'];
-	
+
   $dlist = new DataList();
   $dlist->Init();
   $dlist->pageSize = $feedbackPageSize;
-  
-  //×î½üÈÈÃÅÆÀÂÛ
+
+  //æœ€è¿‘çƒ­é—¨è¯„è®º
   $feedback_hot = "";
-	$nearTime = 60;  //×î½üÆÀÂÛµÄÎÄÕÂµÄ·¢²¼ÈÕÆÚ(±íÊ¾¶àÉÙÌìÇ°)
+	$nearTime = 30;  //æœ€è¿‘è¯„è®ºçš„æ–‡ç« çš„å‘å¸ƒæ—¥æœŸ(è¡¨ç¤ºå¤šå°‘å¤©å‰)
 	$minTime = mytime() - (3600 * 24 * $nearTime);
-	
-	if($topID==0) $hotquery = "Select ID,title From #@__archives where ID<>'$arcID' And senddate>$minTime order by postnum desc limit 0,10";
-	else $hotquery = "Select ID,title From #@__archives where ID<>'$arcID' And senddate>$minTime And typeid=$topID order by postnum desc limit 0,10";
-  
+
+	if($feedid==0) $hotquery = "Select id,title From `#@__cache_feedbackurl` where  posttime>$minTime order by postnum desc limit 0,10";
+	else $hotquery = "Select id,title From `#@__cache_feedbackurl` where posttime>$minTime And feedid='$feedid' order by postnum desc limit 0,10";
+
   $dlist->dsql->Execute("hotq",$hotquery);
   while($myrow = $dlist->dsql->GetArray("hotq")){
-  	$feedback_hot .= "<div class='nndiv'>¡¤<a href='feedback.php?arcID={$myrow['ID']}'>{$myrow['title']}</a></div>\r\n"; 
+  	$feedback_hot .= "<div class='nndiv'>Â·<a href='feedback.php?urlindex={$myrow['id']}'>{$myrow['title']}</a></div>\r\n";
   }
   $dlist->dsql->FreeResult("hotq");
-  
-  //ÆÀÂÛÄÚÈİÁĞ±í
-  $querystring = "select * from #@__feedback where aid='$arcID' and ischeck='1' order by dtime desc";
+
+  //è¯„è®ºå†…å®¹åˆ—è¡¨
+  if(empty($arcID)) $wq = " urlindex = '$urlindex' ";
+  else $wq = " aid='$arcID' ";
+  $querystring = "select * from `#@__feedback` where $wq and ischeck='1' order by dtime desc";
   $dlist->SetParameter("arcID",$arcID);
+  $dlist->SetParameter("urlindex",$urlindex);
+  $dlist->SetParameter("feedid",$feedid);
   $dlist->SetParameter("action","show");
   $dlist->SetSource($querystring);
   require_once($cfg_basedir.$cfg_templets_dir."/plus/feedback_templet.htm");
   $dlist->Close();
   $dsql->Close();
 }
-//·¢±íÆÀÂÛ
-//------------------------------------
-/*
+//å‘è¡¨è¯„è®º
+/*-----------------------------
 function __send()
-*/
+------------------------------*/
 else if($action=="send")
 {
-  //ÊÇ·ñ¼ÓÑéÖ¤ÂëÖØÈ·ÈÏ
-  if(empty($isconfirm)) $isconfirm = "";
-  if($isconfirm!="yes" && $cfg_feedback_ck=="ÊÇ"){
+  //æ˜¯å¦åŠ éªŒè¯ç é‡ç¡®è®¤
+  if(!isset($isconfirm)) $isconfirm = '';
+  if($cfg_feedback_ck=='Y' && empty($isconfirm)){
   	require_once($cfg_basedir.$cfg_templets_dir."/plus/feedback_confirm.htm");
+  	$dsql->Close();
   	exit();
   }
-  //¼ì²éÑéÖ¤Âë
-  if($cfg_feedback_ck=="ÊÇ"){
+  //æ£€æŸ¥éªŒè¯ç 
+  if($cfg_feedback_ck=='Y'){
   	if(empty($validate)) $validate=="";
     else $validate = strtolower($validate);
     $svali = GetCkVdValue();
-    if(strtolower($validate)!=$svali || $svali==""){
-       ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+    if(strtolower($validate)!=$svali || $svali=="")
+    {
+       $dsql->Close();
+       ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
        exit();
     }
   }
-  //ÆäËü¼ì²é
+  //å…¶å®ƒæ£€æŸ¥
   if(empty($notuser)) $notuser=0;
-  if($notuser==1){ //ÄäÃû·¢±íÆÀÂÛ
+  if($notuser==1){ //åŒ¿åå‘è¡¨è¯„è®º
 	  if(empty($username)) $username = "guest";
   }
-  else if($ml->M_ID > 0){ //ÒÑµÇÂ¼µÄÓÃ»§
+  else if($ml->M_ID > 0){ //å·²ç™»å½•çš„ç”¨æˆ·
 	  $username = $ml->M_UserName;
   }
   else{
-  	//ÓÃ»§Éí·İÑéÖ¤£¬¿¼ÂÇµ½ÕûºÏµÄÔ­Òò£¬ÑéÖ¤ºó²»Ö§³Ö±£´æÓÃ»§µÄµÇÂ¼ĞÅÏ¢
+  	//ç”¨æˆ·èº«ä»½éªŒè¯ï¼Œè€ƒè™‘åˆ°æ•´åˆçš„åŸå› ï¼ŒéªŒè¯åä¸æ”¯æŒä¿å­˜ç”¨æˆ·çš„ç™»å½•ä¿¡æ¯
 	  if(!TestStringSafe($username)||!TestStringSafe($pwd)){
-   	  ShowMsg("ÓÃ»§Ãû»òÃÜÂë²»ºÏ·¨£¡","-1",0,2000);
+   	  $dsql->Close();
+   	  ShowMsg("ç”¨æˆ·åæˆ–å¯†ç ä¸åˆæ³•ï¼","-1",0,2000);
   	  exit();
     }
- 	  $row = $dsql->GetOne("Select ID,pwd From #@__member where userid='$username' ");
+ 	  $row = $dsql->GetOne("Select ID,pwd From `#@__member` where userid='$username' ");
  	  $isok = false;
  		if(is_array($row)){
  			$pwd = GetEncodePwd($pwd);
  			if($pwd == $row['pwd']) $isok = true;
  	  }
     if(!$isok) {
-  	  ShowMsg("ÑéÖ¤ÓÃ»§Ê§°Ü£¬ÇëÖØĞÂÊäÈëÄãµÄÓÃ»§ÃûºÍÃÜÂë£¡","-1");
+  	  $dsql->Close();
+  	  ShowMsg("éªŒè¯ç”¨æˆ·å¤±è´¥ï¼Œè¯·é‡æ–°è¾“å…¥ä½ çš„ç”¨æˆ·åå’Œå¯†ç ï¼","-1");
   	  exit();
     }
   }
   $msg = cn_substr(trimMsg($msg),1000);
   $ip = GetIP();
   $dtime = mytime();
-  //±£´æÆÀÂÛÄÚÈİ
+  if(empty($face)) $face = '0';
+  //ä¿å­˜è¯„è®ºå†…å®¹
   if($msg!="")
   {
 	  if(empty($rank)) $rank = '0';
 	  $inquery = "
-	  Insert Into #@__feedback(aid,username,arctitle,ip,msg,ischeck,dtime,rank) 
-	  values('$arcID','$username','$arctitle','$ip','$msg','$ischeck','$dtime','$rank')
+	    Insert Into `#@__feedback`(aid,username,arctitle,urlindex,url,ip,msg,ischeck,dtime,rank,face)
+	    values('$arcID','$username','$arctitle','$urlindex','$arcurl','$ip','$msg','$ischeck','$dtime','$rank','$face')
 	  ";
+	  
 	  $dsql->ExecuteNoneQuery($inquery);
-	  $row = $dsql->GetOne("Select count(*) as dd From #@__feedback where aid='$arcID' ");
-	  $dsql->ExecuteNoneQuery("Update #@__archives set postnum='".$row['dd']."',lastpost='".mytime()."' where ID='$arcID'");
-    //¸üĞÂÎÄµµ
-    if($cfg_feedback_make=='ÊÇ'){
-    	require(dirname(__FILE__)."/../include/inc_archives_view.php");
-  	  $arc = new Archives($arcID);
-      $arc->MakeHtml();
-      $arc->Close();
+	  
+	  $row = $dsql->GetOne("Select count(*) as dd From `#@__feedback` where urlindex='$urlindex' Or aid='$arcID' ");
+	  if(!empty($arcID))
+	  {
+	    $dsql->ExecuteNoneQuery("Update `{$cts['maintable']}` set postnum='".$row['dd']."',lastpost='".mytime()."' where ID='$arcID'");
+      //æ›´æ–°æ–‡æ¡£
+      if($cfg_feedback_make=='Y')
+      {
+    	  require(dirname(__FILE__)."/../include/inc_archives_view.php");
+  	    $arc = new Archives($arcID);
+        $arc->MakeHtml();
+      }
     }
+    $dsql->ExecuteNoneQuery("Update `#@__cache_feedbackurl` set postnum='".$row['dd']."',posttime='".mytime()."' where id='$urlindex' ");
   }
   $dsql->Close();
-  if($ischeck==0) ShowMsg("³É¹¦·¢±íÆÀÂÛ£¬µ«ĞèÉóºËºó²Å»áÏÔÊ¾ÄãµÄÆÀÂÛ!","feedback.php?arcID=$arcID");
-  if($ischeck==1) ShowMsg("³É¹¦·¢±íÆÀÂÛ£¬ÏÖÔÚ×ªµ½ÆÀÂÛÒ³Ãæ!","feedback.php?arcID=$arcID");
+  if($ischeck==0) ShowMsg("æˆåŠŸå‘è¡¨è¯„è®ºï¼Œä½†éœ€å®¡æ ¸åæ‰ä¼šæ˜¾ç¤ºä½ çš„è¯„è®º!","feedback.php?arcID=$arcID&urlindex=$urlindex");
+  if($ischeck==1) ShowMsg("æˆåŠŸå‘è¡¨è¯„è®ºï¼Œç°åœ¨è½¬åˆ°è¯„è®ºé¡µé¢!","feedback.php?arcID=$arcID&urlindex=$urlindex");
   exit();
 }
 ?>

@@ -6,10 +6,10 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function MediaType($tid,$nurl)
 {
-	if($tid==1) return "Í¼Æ¬<a href=\"javascript:;\" onClick=\"ChangeImage('$nurl');\"><img src='../include/dialog/img/picviewnone.gif' name='picview' border='0' alt='Ô¤ÀÀ'></a>";
+	if($tid==1) return "å›¾ç‰‡";
 	else if($tid==2) return "FLASH";
-	else if($tid==3) return "ÊÓÆµ/ÒôÆµ";
-	else return "¸½¼þ/ÆäËü";
+	else if($tid==3) return "è§†é¢‘/éŸ³é¢‘";
+	else return "é™„ä»¶/å…¶å®ƒ";
 }
 
 function GetFileSize($fs){
@@ -47,8 +47,7 @@ Left join #@__member m on m.ID = u.memberID
 $addsql order by u.aid desc";
 
 $dlist = new DataList();
-$dlist->pageSize = 20;
-$dlist->Init();
+$dlist->pageSize = 10;
 $dlist->SetParameter("mediatype",$mediatype);
 $dlist->SetParameter("keyword",$keyword);
 $dlist->SetParameter("membertype",$membertype);
@@ -56,4 +55,6 @@ $dlist->SetParameter("memberid",$memberid);
 $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/media_main.htm");
 $dlist->Close();
+
+ClearAllLink();
 ?>

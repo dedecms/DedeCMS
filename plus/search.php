@@ -1,50 +1,57 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/../include/inc_arcsearch_view.php");
+
+$timestamp = time();
+$timelock = '../data/time.lock';
+if(file_exists($timelock)){
+	if($timestamp - filemtime($timelock) < $cfg_allsearch_limit){
+		showmsg('æœåŠ¡å™¨å¿™ï¼Œè¯·ç¨åæœç´¢','-1');
+		exit();
+	}
+}
+@touch($timelock,$timestamp);
+
+if(!isset($channelid)) $channelid = 0;
+$channelid = intval($channelid);
 
 if(empty($typeid)) $typeid = 0;
 else $typeid = ereg_replace("[^0-9]","",$typeid);
 
-if(empty($orderby)) $orderby="";
-else $orderby = eregi_replace("[^a-z]","",$orderby);
+if($typeid){
+	$dsql = new DedeSql(false);
+	$row = $dsql->GetOne("Select channeltype From #@__arctype where ID='{$typeid}' ");
+	if(is_array($row)){
+		if(!empty($channelid) && $row['channeltype'] != $channelid) {
+			$dsql->Close();
+			showmsg('é€‰å®šæ ç›®å’Œé¢‘é“ç±»å‹ä¸ç¬¦ï¼Œè¯·é‡æ–°é€‰æ‹©æœç´¢æ¡ä»¶','-1');
+			exit();
+		}
+	}else{
+		showmsg('æ ç›®ä¸æ­£ç¡®ï¼Œè¯·é‡æ–°é€‰æ‹©æœç´¢æ¡ä»¶','-1');
+		exit();
+	}
+}
 
-if(empty($channeltype)) $channeltype="0";
-else $channeltype = eregi_replace("[^0-9]","",$channeltype);
-
-if(empty($searchtype)) $searchtype = "titlekeyword";
-else $searchtype = eregi_replace("[^a-z]","",$searchtype);
-
-//Ã¿Ò³ÏÔÊ¾µÄ½á¹ûÊı£¬ÔÚÓÃ»§Ã»Ö¸¶¨µÄÇé¿öÏÂÓÃ10
-if(empty($pagesize)) $pagesize = 10;
-else $pagesize = eregi_replace("[^0-9]","",$pagesize);
-
+if($searchtype != 'titlekeyword') $searchtype = "title";
+if(!isset($cacheid)) $cacheid = 0;
+$cacheid = intval($cacheid);
 if(!isset($kwtype)) $kwtype = 0;
-
-if(empty($keyword)) $keyword = "";
+if($kwtype != 1) $kwtype = 0;
 
 $keyword = stripslashes($keyword);
 $keyword = ereg_replace("[\|\"\r\n\t%\*\?\(\)\$;,'%-]"," ",trim($keyword));
 
-
 if( ($cfg_notallowstr!='' && eregi($cfg_notallowstr,$keyword)) || ($cfg_replacestr!='' && eregi($cfg_replacestr,$keyword)) ){
-	echo "ÄãµÄĞÅÏ¢ÖĞ´æÔÚ·Ç·¨ÄÚÈİ£¬±»ÏµÍ³½ûÖ¹£¡<a href='javascript:history.go(-1)'>[·µ»Ø]</a>"; exit();
+	echo "ä½ çš„ä¿¡æ¯ä¸­å­˜åœ¨éæ³•å†…å®¹ï¼Œè¢«ç³»ç»Ÿç¦æ­¢ï¼<a href='javascript:history.go(-1)'>[è¿”å›]</a>"; exit();
 }
 
 if($keyword==""||strlen($keyword)<3){
-	ShowMsg("¹Ø¼ü×Ö²»ÄÜĞ¡ÓÚ3¸ö×Ö½Ú£¡","-1");
+	ShowMsg("å…³é”®å­—ä¸èƒ½å°äº3ä¸ªå­—èŠ‚ï¼","-1");
 	exit();
 }
 
-if(empty($starttime)||$starttime==-1) $starttime = -1;
-else //¿ªÊ¼Ê±¼ä
-{
-	$starttime = ereg_replace("[^0-9]","",$starttime);
-	if($starttime>0){
-	  $dayst = GetMkTime("2006-1-2 0:0:0") - GetMkTime("2006-1-1 0:0:0");
-	  $starttime = mytime() - ($starttime * $dayst);
-  }
-}
 
-$sp = new SearchView($typeid,$keyword,$orderby,$channeltype,$searchtype,$starttime,$pagesize,$kwtype);
+$sp = new SearchView($typeid,$keyword,$channelid,$searchtype,$kwtype,$cacheid);
 $sp->Display();
 $sp->Close();
 

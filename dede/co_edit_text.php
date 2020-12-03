@@ -5,17 +5,17 @@ if(empty($job)) $job="";
 if($job=="")
 {
      require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-     $wintitle = "¸ü¸Ä²É¼¯¹æÔò";
-	   $wecome_info = "<a href='co_main.php'><u>²É¼¯µã¹ÜÀí</u></a>::¸ü¸Ä²É¼¯¹æÔò";
+     $wintitle = "æ›´æ”¹é‡‡é›†è§„åˆ™";
+	   $wecome_info = "<a href='co_main.php'><u>é‡‡é›†ç‚¹ç®¡ç†</u></a>::æ›´æ”¹é‡‡é›†è§„åˆ™";
 	   $win = new OxWindow();
 	   $win->Init("co_edit_text.php","js/blank.js","POST");
 	   $win->AddHidden("job","yes");
 	   $win->AddHidden("nid",$nid);
-	   $win->AddTitle("ÎÄ±¾ÅäÖÃ×¨¼Ò¸ü¸ÄÄ£Ê½£º");
+	   $win->AddTitle("æ–‡æœ¬é…ç½®ä¸“å®¶æ›´æ”¹æ¨¡å¼ï¼š[<a href='co_edit.php?nid={$nid}'>ä½¿ç”¨å¯è§†åŒ–ä¿®æ”¹æ¨¡å¼</a>]");
 	   $dsql = new DedeSql(false);
 	   $row = $dsql->GetOne("Select * From #@__conote where nid='$nid' ");
 	   $dsql->Close();
-	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:500'>{$row['noteinfo']}</textarea>");
+	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:500px' rows='20'>{$row['noteinfo']}</textarea>");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
      exit();
@@ -29,7 +29,7 @@ else
    	  $notes = stripslashes($notes);
       $dtp->LoadString($notes);
    	  if(!is_array($dtp->CTags)){
-	      ShowMsg("¸Ã¹æÔò²»ºÏ·¨£¬ÎŞ·¨±£´æ!","-1");
+	      ShowMsg("è¯¥è§„åˆ™ä¸åˆæ³•ï¼Œæ— æ³•ä¿å­˜!","-1");
 	      $dsql->Close();
 	      exit();
       }
@@ -47,7 +47,9 @@ else
 	    $dsql = new DedeSql(false);
 	    $rs = $dsql->ExecuteNoneQuery($query);
 	    $dsql->Close();
-	    ShowMsg("³É¹¦±£´æ¹æÔò!","co_main.php");
+	    ShowMsg("æˆåŠŸä¿å­˜è§„åˆ™!","co_main.php");
 	    exit();
 }
+
+ClearAllLink();
 ?>

@@ -7,7 +7,7 @@ if(empty($validate)) $validate=="";
 else $validate = strtolower($validate);
 $svali = GetCkVdValue();
 if($validate=="" || $validate!=$svali){
-	 ShowMsg("ÑéÖ¤Âë²»ÕýÈ·!","");
+	 ShowMsg("éªŒè¯ç ä¸æ­£ç¡®!","index.php");
 	 exit();
 }
 
@@ -23,7 +23,7 @@ $msg = trimMsg($msg,1);
 $msg = cn_substr($msg,2000);
 
 if($msg==""||$uname==""){
-	showMsg("ÄãµÄÐÕÃûºÍÁôÑÔÄÚÈÝ²»ÄÜÎª¿Õ!",-1);
+	showMsg("ä½ çš„å§“åå’Œç•™è¨€å†…å®¹ä¸èƒ½ä¸ºç©º!",-1);
 	exit();
 }
 
@@ -34,8 +34,8 @@ $dsql->SetQuery($query);
 $dsql->ExecuteNoneQuery();
 $dsql->Close();
 
-if($needCheck==1) ShowMsg("³É¹¦·¢ËÍÒ»ÔòÁôÑÔ!",$GUEST_BOOK_MOVE);
-else ShowMsg("³É¹¦·¢ËÍÒ»ÔòÁôÑÔ£¬µ«ÐèÉóºËºó²ÅÄÜÏÔÊ¾£¡",$GUEST_BOOK_MOVE,0,3000);
+if($needCheck==1) ShowMsg("æˆåŠŸå‘é€ä¸€åˆ™ç•™è¨€!",$GUEST_BOOK_MOVE);
+else ShowMsg("æˆåŠŸå‘é€ä¸€åˆ™ç•™è¨€ï¼Œä½†éœ€å®¡æ ¸åŽæ‰èƒ½æ˜¾ç¤ºï¼",$GUEST_BOOK_MOVE,0,3000);
 
 exit();
 

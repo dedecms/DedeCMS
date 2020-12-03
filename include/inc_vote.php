@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 //////////////////////////////////
-//Õâ¸öÀàÓÃÓÚ¹ÜÀíÍ¶Æ±
+//è¿™ä¸ªç±»ç”¨äºç®¡ç†æŠ•ç¥¨
 ///////////////////////////////////
 class DedeVote
 {
@@ -12,7 +12,7 @@ class DedeVote
 	var $VoteID;
 	var $dsql;
 	//-------------------------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------------------------
 	function __construct($aid)
  	{
@@ -43,7 +43,7 @@ class DedeVote
 		$this->dsql->Close();	
 	}
 	//---------------------------
-	//»ñµÃÍ¶Æ±ÏîÄ¿×ÜÍ¶Æ±´ÎÊı
+	//è·å¾—æŠ•ç¥¨é¡¹ç›®æ€»æŠ•ç¥¨æ¬¡æ•°
 	//---------------------------
 	function GetTotalCount()
 	{
@@ -51,18 +51,18 @@ class DedeVote
 		else return 0;
 	}
 	//---------------------------
-	//Ôö¼ÓÖ¸¶¨µÄÍ¶Æ±½ÚµãµÄÆ±Êı
+	//å¢åŠ æŒ‡å®šçš„æŠ•ç¥¨èŠ‚ç‚¹çš„ç¥¨æ•°
 	//---------------------------
 	function AddVoteCount($aid)
 	{
 		if(isset($this->VoteNotes[$aid])){ $this->VoteNotes[$aid]['count']++; }
 	}
 	//----------------------------
-	//»ñµÃÏîÄ¿µÄÍ¶Æ±±íµ¥
+	//è·å¾—é¡¹ç›®çš„æŠ•ç¥¨è¡¨å•
 	//----------------------------
 	function GetVoteForm($lineheight=24,$tablewidth="100%",$titlebgcolor="#EDEDE2",$titlebackgroup="",$tablebg="#FFFFFF",$itembgcolor="#FFFFFF")
 	{
-		//Ê¡ÂÔ²ÎÊı
+		//çœç•¥å‚æ•°
 		if($lineheight=="") $lineheight=24;
 		if($tablewidth=="") $tablewidth="100%";
 		if($titlebgcolor=="") $titlebgcolor="#EDEDE2";
@@ -84,43 +84,43 @@ class DedeVote
 				 else $items.="<tr><td height=$lineheight bgcolor=$itembgcolor><input type=checkbox name='voteitem[]' value='$k'>".$arr['name']."</td></tr>\r\n";
 			}
 			$items .= "<tr><td height='$lineheight' bgcolor='#FFFFFF'>\r\n";
-			$items .= "<input type='submit' style='width:40;background-color:$titlebgcolor;border:1px soild #818279' name='vbt1' value='Í¶Æ±'>\r\n";
+			$items .= "<input type='submit' style='width:40;background-color:$titlebgcolor;border:1px soild #818279' name='vbt1' value='æŠ•ç¥¨'>\r\n";
 			$items .= "<input type='button' style='width:80;background-color:$titlebgcolor;border:1px soild #818279' name='vbt2' ";
-			$items .= "value='²é¿´½á¹û' onClick=\"window.open('".$GLOBALS['cfg_plus_dir']."/vote.php?dopost=view&aid=".$this->VoteID."');\"></td></tr>\r\n";
+			$items .= "value='æŸ¥çœ‹ç»“æœ' onClick=\"window.open('".$GLOBALS['cfg_plus_dir']."/vote.php?dopost=view&aid=".$this->VoteID."');\"></td></tr>\r\n";
 		}
 		
 		$items.="</form>\r\n</table>\r\n";
 		return $items;
 	}
 	//------------------------------------
-	//±£´æÍ¶Æ±Êı¾İ
-	//Çë²»ÒªÔÚÊä³öÈÎºÎÄÚÈİÖ®Ç°Ê¹ÓÃSaveVote()·½·¨!
+	//ä¿å­˜æŠ•ç¥¨æ•°æ®
+	//è¯·ä¸è¦åœ¨è¾“å‡ºä»»ä½•å†…å®¹ä¹‹å‰ä½¿ç”¨SaveVote()æ–¹æ³•!
 	//-------------------------------------
 	function SaveVote($voteitem)
 	{
-		if(empty($voteitem)) return "ÄãÃ»Ñ¡ÖĞÈÎºÎÏîÄ¿£¡";
+		if(empty($voteitem)) return "ä½ æ²¡é€‰ä¸­ä»»ä½•é¡¹ç›®ï¼";
 		$items="";
-		//¼ì²éÍ¶Æ±ÊÇ·ñÒÑ¹ıÆÚ
+		//æ£€æŸ¥æŠ•ç¥¨æ˜¯å¦å·²è¿‡æœŸ
 		$nowtime = time();
-		if($nowtime > $this->VoteInfos['endtime']) return "Í¶Æ±ÒÑ¾­¹ıÆÚ£¡";
-		if($nowtime < $this->VoteInfos['starttime']) return "Í¶Æ±»¹Ã»ÓĞ¿ªÊ¼£¡";
-		//¼ì²éÓÃ»§ÊÇ·ñÒÑÍ¶¹ıÆ±£¬cookie´óÔ¼±£´æÔ¼Ê®Ìì
+		if($nowtime > $this->VoteInfos['endtime']) return "æŠ•ç¥¨å·²ç»è¿‡æœŸï¼";
+		if($nowtime < $this->VoteInfos['starttime']) return "æŠ•ç¥¨è¿˜æ²¡æœ‰å¼€å§‹ï¼";
+		//æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å·²æŠ•è¿‡ç¥¨ï¼Œcookieå¤§çº¦ä¿å­˜çº¦åå¤©
 		if(isset($_COOKIE["DEDE_VOTENAME_AAA"])){
-			if($_COOKIE["DEDE_VOTENAME_AAA"]==$this->VoteInfos['aid']) return "ÄãÒÑ¾­Í¶¹ıÆ±£¡";
+			if($_COOKIE["DEDE_VOTENAME_AAA"]==$this->VoteInfos['aid']) return "ä½ å·²ç»æŠ•è¿‡ç¥¨ï¼";
 			else setcookie("DEDE_VOTENAME_AAA",$this->VoteInfos['aid'],time()+360000,"/");
 		}
 		else{
 			setcookie("DEDE_VOTENAME_AAA",$this->VoteInfos['aid'],time()+360000,"/");
 		}
-		//±ØĞë´æÔÚÍ¶Æ±ÏîÄ¿
+		//å¿…é¡»å­˜åœ¨æŠ•ç¥¨é¡¹ç›®
 		if($this->VoteCount > 0)
 		{
 			foreach($this->VoteNotes as $k=>$v)
 			{
-				if($this->VoteInfos['ismore']==0){ //µ¥Ñ¡Ïî
+				if($this->VoteInfos['ismore']==0){ //å•é€‰é¡¹
 					if($voteitem == $k){ $this->VoteNotes[$k]['count']++; break; }
 				}
-				else{ //¶àÑ¡Ïî
+				else{ //å¤šé€‰é¡¹
 				  if(is_array($voteitem) && in_array($k,$voteitem)){ $this->VoteNotes[$k]['count']++; }
 				}
 			}
@@ -130,27 +130,27 @@ class DedeVote
 		}
 		$this->dsql->SetQuery("Update #@__vote set totalcount='".($this->VoteInfos['totalcount']+1)."',votenote='".addslashes($items)."' where aid='".$this->VoteID."'");
 		$this->dsql->ExecuteNoneQuery();
-		return "Í¶Æ±³É¹¦£¡";
+		return "æŠ•ç¥¨æˆåŠŸï¼";
 	}
 	//
-	//»ñµÃÏîÄ¿µÄÍ¶Æ±½á¹û
+	//è·å¾—é¡¹ç›®çš„æŠ•ç¥¨ç»“æœ
 	//
-	function GetVoteResult($tablewidth="600",$lineheight="24",$tablesplit="40%")
+	function GetVoteResult()
 	{
 		$totalcount = $this->VoteInfos['totalcount'];
 		if($totalcount==0) $totalcount=1;
-		$res = "<table width='$tablewidth' border='0' cellspacing='1' cellpadding='1'>\r\n";
-		$res .= "<tr height='8'><td width='$tablesplit'></td><td></td></tr>\r\n";
 		$i=1;
+		$res = "";
 		foreach($this->VoteNotes as $k=>$arr){
-			$res .= "<tr height='$lineheight'><td style='border-bottom:1px solid'>".$i."¡¢".$arr['name']."</td>";
 			$c = $arr['count'];
-			$res .= "<td style='border-bottom:1px solid'>
-			<table border='0' cellspacing='0' cellpadding='2' width='".(($c/$totalcount)*100)."%'><tr><td height='16' background='img/votebg.gif' style='border:1px solid #666666;font-size:9pt;line-height:110%'>".$arr['count']."</td></tr></table>
-			</td></tr>\r\n";
+			$vtwidth =round(($c/$totalcount)*100)."%";
+			if($c/$totalcount>0.2){
+				$res .="<dl><dt>".$i."ã€".$arr['name']."</dt><dd><span style=\"width:".$vtwidth.";\"><strong>".round(($c/$totalcount)*100)."%</strong>($c)</span></dd></dl>\n\r";
+			}else{
+				$res .="<dl><dt>".$i."ã€".$arr['name']."</dt><dd><span style=\"width:".$vtwidth.";\"></span><strong>".round(($c/$totalcount)*100)."%</strong>($c)</dd></dl>\n\r";
+			}
+			$i++;
 		}
-		$res .= "<tr><td></td><td></td></tr>\r\n";
-		$res .= "</table>\r\n";
 		return $res;
 	}
 }

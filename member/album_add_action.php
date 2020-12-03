@@ -2,51 +2,18 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
-if($cfg_mb_album=='·ñ'){
-	ShowMsg("¶Ô²»Æğ£¬ÏµÍ³½ûÓÃÁËÍ¼¼¯µÄ¹¦ÄÜ£¬Òò´ËÎŞ·¨Ê¹ÓÃ£¡","-1");
+if($cfg_mb_album=='N'){
+	ShowMsg("å¯¹ä¸èµ·ï¼Œç³»ç»Ÿç¦ç”¨äº†å›¾é›†çš„åŠŸèƒ½ï¼Œå› æ­¤æ— æ³•ä½¿ç”¨ï¼","-1");
 	exit();
 }
 
+$cfg_main_dftable = '#@__archives';
+$cfg_add_dftable = '#@__addonimages';
+$cfg_isalbum = true;
+require_once(dirname(__FILE__)."/archives_addcheck.php");
 
-$svali = GetCkVdValue();
-if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
-  exit();
-}
-require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
+$upscore = $cfg_send_score;
 
-if(!isset($iscommend)) $iscommend = 0;
-if(!isset($isjump)) $isjump = 0;
-if(!isset($isbold)) $isbold = 0;
-if(!isset($isrm)) $isrm = 0;
-if(!isset($ddisfirst)) $ddisfirst = 0;
-if(!isset($ddisremote)) $ddisremote = 0;
-$channelid = 2;
-$typeid = ereg_replace("[^0-9]","",$typeid);
-
-if($typeid==0){
-	ShowMsg("ÇëÖ¸¶¨ÎÄµµÁ¥ÊôµÄÀ¸Ä¿£¡","-1");
-	exit();
-}
-
-if(!CheckChannel($typeid,$channelid)){
-	ShowMsg("ÄãËùÑ¡ÔñµÄÀ¸Ä¿Óëµ±Ç°Ä£ĞÍ²»Ïà·û£¬»ò²»Ö§³ÖÍ¶¸å£¬ÇëÑ¡Ôñ°×É«µÄÑ¡Ïî£¡","-1");
-	exit();
-}
-
-CheckUserSpace($cfg_ml->M_ID);
-
-$dsql = new DedeSql(false);
-
-$cInfos = $dsql->GetOne("Select sendrank,arcsta From #@__channeltype  where ID='2'; ");	
-if($cInfos['sendrank'] > $cfg_ml->M_Type){
-	$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$cInfos['sendrank']."' ");
-	$dsql->Close();
-	ShowMsg("¶Ô²»Æğ£¬ĞèÒª[".$row['membername']."]²ÅÄÜÔÚÕâ¸öÆµµÀ·¢²¼ÎÄµµ£¡","-1","0",5000);
-	exit();
-}
 if($cInfos['arcsta']==0){
 	$ismake = 0;
 	$arcrank = 0;
@@ -60,77 +27,71 @@ else{
 	$arcrank = -1;
 }
 
-//¶Ô±£´æµÄÄÚÈİ½øĞĞ´¦Àí
+//å¯¹ä¿å­˜çš„å†…å®¹è¿›è¡Œå¤„ç†
 //--------------------------------
-$typeid2 = 0;
-$pubdate = mytime();
-$senddate = $pubdate;
-$sortrank = $pubdate;
-$shorttitle = '';
-$color =  '';
-$money = 0;
-$arcatt = 0;
+$sortrank = $senddate = $pubdate = mytime();
+$shorttitle = $color= '';
+$money = $arcatt = $typeid2 = 0;
 $pagestyle = 2;
 
 $title = ClearHtml($title);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
-if($keywords!=""){
-	$keywords = ereg_replace("[,;]"," ",trim(ClearHtml($keywords)));
-	$keywords = trim(cn_substr($keywords,60))." ";
-}
+$keywords = trim(cn_substr($keywords,60));
 $userip = GetIP();
-//´¦ÀíÉÏ´«µÄËõÂÔÍ¼
+//å¤„ç†ä¸Šä¼ çš„ç¼©ç•¥å›¾
 if(!empty($litpic)) $litpic = GetUpImage('litpic',true,true);
 else $litpic = "";
 $adminID = 0;
 $memberID = $cfg_ml->M_ID;
 
-//¼ÓÈëÖ÷µµ°¸±í
+//åŠ å…¥ä¸»æ¡£æ¡ˆè¡¨
 //----------------------------------
-$inQuery = "INSERT INTO #@__archives(
-typeid,typeid2,sortrank,iscommend,ismake,channel,
+$inQuery = "INSERT INTO `$maintable`(
+ID,typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
 pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip) 
-VALUES ('$typeid','$typeid2','$sortrank','$iscommend','$ismake','$channelid',
+VALUES ('$arcID','$typeid','$typeid2','$sortrank','0','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
 '$pubdate','$senddate','$arcatt','$adminID','$memberID','$description','$keywords','$mtype','$userip');";
-$dsql->SetQuery($inQuery);
-if(!$dsql->ExecuteNoneQuery()){
+
+if(!$dsql->ExecuteNoneQuery($inQuery)){
+	$gerr = $dsql->GetError();
+	$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID'");
 	$dsql->Close();
-	ShowMsg("°ÑÊı¾İ±£´æµ½Êı¾İ¿âarchives±íÊ±³ö´í£¬Çë¼ì²é£¡","-1");
+	ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“ `$maintable` æ—¶å‡ºé”™ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼".$gerr,"-1");
 	exit();
 }
-$arcID = $dsql->GetLastID();
-//´¦Àí²¢±£´æËùÖ¸¶¨µÄÍ¼Æ¬
+
+//å¤„ç†å¹¶ä¿å­˜æ‰€æŒ‡å®šçš„å›¾ç‰‡
 //------------------------------
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='' row='0' col='0' value='$pagestyle'/}\r\n";
 for($i=1;$i<=120;$i++){
 	if(isset(${'imgurl'.$i})|| 
 	(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name']))){
 		$iinfo = str_replace("'","`",stripslashes(${'imgmsg'.$i}));
-		//·ÇÉÏ´«Í¼Æ¬
+		//éä¸Šä¼ å›¾ç‰‡
 		if(!is_uploaded_file($_FILES['imgfile'.$i]['tmp_name'])){
 		    $iurl = stripslashes(${'imgurl'.$i});
 		    if(trim($iurl)=="") continue;
 		    $iurl = trim(str_replace($cfg_basehost,"",$iurl));
-		    if((eregi("^http://",$iurl) && !eregi($cfg_basehost,$iurl)) && $isUrlOpen && $iurl!="http://")
-		    //Ô¶³ÌÍ¼Æ¬
+		    if((eregi("^http://",$iurl) && !eregi($cfg_basehost,$iurl)) && $cfg_isUrlOpen && $iurl!="http://")
+		    //è¿œç¨‹å›¾ç‰‡
 		    {
 			    $reimgs = "";
-			    if($isUrlOpen)
+			    if($cfg_isUrlOpen)
 			    {
 				     $reimgs = GetRemoteImage($iurl,$cfg_ml->M_ID);
 			       if(is_array($reimgs)){
 				        $imgurls .= "{dede:img text='$iinfo' width='".$reimgs[1]."' height='".$reimgs[2]."'} ".$reimgs[0]." {/dede:img}\r\n";
 			       }else{
-			       	  echo "ÏÂÔØ£º".$iurl." Ê§°Ü£¬¿ÉÄÜÍ¼Æ¬ÓĞ·´²É¼¯¹¦ÄÜ»òhttpÍ·²»ÕıÈ·£¡<br />\r\n";
+			       	  echo "ä¸‹è½½ï¼š".$iurl." å¤±è´¥ï¼Œå¯èƒ½å›¾ç‰‡æœ‰åé‡‡é›†åŠŸèƒ½æˆ–httpå¤´ä¸æ­£ç¡®ï¼<br />\r\n";
 			       }
 		      }else{
 		  	     $imgurls .= "{dede:img text='$iinfo' width='' height=''} ".$iurl." {/dede:img}\r\n";
 		      }
-		    //Õ¾ÄÚÍ¼Æ¬
+		    //ç«™å†…å›¾ç‰‡
 		    }else if($iurl!=""){
 			    $imgfile = $cfg_basedir.$iurl;
 			    if(is_file($imgfile)){
@@ -139,7 +100,7 @@ for($i=1;$i<=120;$i++){
 				      $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			    }
 		   }
-	  //Ö±½ÓÉÏ´«µÄÍ¼Æ¬
+	  //ç›´æ¥ä¸Šä¼ çš„å›¾ç‰‡
 	  }else{
 			 $iurl = GetUpImage('imgfile'.$i,false,false);
 			 if($iurl!=''){
@@ -149,52 +110,64 @@ for($i=1;$i<=120;$i++){
 				    $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			 }
 	  }
-	}//º¬ÓĞÍ¼Æ¬µÄÌõ¼ş
-}//Ñ­»·½áÊø
+	}//å«æœ‰å›¾ç‰‡çš„æ¡ä»¶
+}//å¾ªç¯ç»“æŸ
 $imgurls = addslashes($imgurls);
 CloseFtp();
 
-//¼ÓÈë¸½¼Ó±í
+//åŠ å…¥é™„åŠ è¡¨
 //----------------------------------
-$query = "
-INSERT INTO #@__addonimages(aid,typeid,pagestyle,maxwidth,imgurls,row,col,isrm,ddmaxwidth) Values('$arcID','$typeid','$pagestyle','$maxwidth','$imgurls','0','0','0','0');
+$addQuery = "
+INSERT INTO `$addtable`(aid,typeid,pagestyle,maxwidth,imgurls,row,col,isrm,ddmaxwidth{$inadd_f}) Values('$arcID','$typeid','$pagestyle','$maxwidth','$imgurls','0','0','0','0'{$inadd_v});
 ";
-$dsql->SetQuery($query);
-if(!$dsql->ExecuteNoneQuery()){
-	$dsql->SetQuery("Delete From #@__archives where ID='$arcID'");
-	$dsql->ExecuteNoneQuery();
-	$dsql->Close();
-	ShowMsg("°ÑÊı¾İ±£´æµ½Êı¾İ¿â¸½¼Ó±í addonimages Ê±³ö´í£¬Çë¼ì²éÔ­Òò£¡","-1");
-	exit();
+
+if(!$dsql->ExecuteNoneQuery($addQuery))
+{
+	 $gerr = $dsql->GetError();
+	 $dsql->ExecuteNoneQuery("Delete From `$maintable` where ID='$arcID'");
+	 $dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID'");
+	 $dsql->Close();
+	 ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°é™„åŠ è¡¨æ—¶å‡ºé”™ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼".$gerr,"-1");
+	 exit();
 }
 
-$dsql->ExecuteNoneQuery("Update #@__member set c2=c2+1 where ID='".$cfg_ml->M_ID."';");
-
-$dsql->Close();
+$dsql->ExecuteNoneQuery("Update `#@__member` set c2=c2+1,scores=scores+{$upscore} where ID='".$cfg_ml->M_ID."';");
+$cfg_ml->FushCache();
 
 $artUrl = MakeArt($arcID);
 
+//æ›´æ–°å…¨ç«™æœç´¢ç´¢å¼•
+$datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>0,'mid'=>$memberID,'att'=>0,
+               'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,
+               'addinfos'=>$description,'uptime'=>$senddate,'arcrank'=>$arcrank,'mtype'=>$mtype);
+WriteSearchIndex($dsql,$datas);
+//å†™å…¥Tagç´¢å¼•
+InsertTags($dsql,$keywords,$arcID,$memberID,$typeid,$arcrank);
+unset($datas);
+$dsql->Close();
+
 //---------------------------------
-//·µ»Ø³É¹¦ĞÅÏ¢
+//è¿”å›æˆåŠŸä¿¡æ¯
 //----------------------------------
 
 $msg = "
-ÇëÑ¡ÔñÄãµÄºóĞø²Ù×÷£º
-<a href='album_add.php?cid=$typeid'><u>¼ÌĞø·¢²¼ĞÂÍ¼¼¯</u></a>
+è¯·é€‰æ‹©ä½ çš„åç»­æ“ä½œï¼š
+<a href='album_add.php?channelid=$channelid'><u>ç»§ç»­å‘å¸ƒæ–°å›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='album_edit.php?aid=".$arcID."'><u>¸ü¸ÄÍ¼¼¯</u></a>
+<a href='album_edit.php?aid=".$arcID."'><u>æ›´æ”¹å›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='$artUrl' target='_blank'><u>Ô¤ÀÀÍ¼¼¯</u></a>
+<a href='$artUrl' target='_blank'><u>é¢„è§ˆå›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='content_list.php?channelid=2'><u>ÒÑ·¢²¼Í¼¼¯¹ÜÀí</u></a>
+<a href='content_list.php?channelid=$channelid'><u>å·²å‘å¸ƒå›¾é›†ç®¡ç†</u></a>
 &nbsp;&nbsp;
-<a href='index.php'><u>»áÔ±Ö÷Ò³</u></a>
+<a href='index.php'><u>ä¼šå‘˜ä¸»é¡µ</u></a>
 ";
 
-$wintitle = "³É¹¦·¢²¼Ò»¸öÍ¼¼¯£¡";
-$wecome_info = "ÎÄµµ¹ÜÀí::·¢²¼Í¼¼¯";
+$wintitle = "æˆåŠŸå‘å¸ƒä¸€ä¸ªå›¾é›†ï¼";
+$wecome_info = "æ–‡æ¡£ç®¡ç†::å‘å¸ƒå›¾é›†";
 $win = new OxWindow();
-$win->AddTitle("³É¹¦·¢²¼Ò»¸öÍ¼¼¯£º");
+$win->mainTitle = "DedeCmså‘å¸ƒæ–‡æ¡£æˆåŠŸæç¤º";
+$win->AddTitle("æˆåŠŸå‘å¸ƒä¸€ä¸ªå›¾é›†ï¼š");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();

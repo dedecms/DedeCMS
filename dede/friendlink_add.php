@@ -1,9 +1,8 @@
 <?php 
 require(dirname(__FILE__)."/config.php");
-CheckPurview('plus_ÓÑÇéÁ´½ÓÄ£¿é');
+CheckPurview('plus_å‹æƒ…é“¾æ¥æ¨¡å—');
 
-$dsql = new DedeSql();
-$dsql->Init(false);
+$dsql = new DedeSql(false);
 
 if(empty($dopost)) $dopost="";
 if($dopost=="add")
@@ -16,11 +15,11 @@ if($dopost=="add")
 	   $filename = strftime("%Y%m%d%H%M%S",mytime()).mt_rand(1000,9999).$shortname;
 	   $imgurl = $cfg_medias_dir."/flink";
 	   if(!is_dir($cfg_basedir.$imgurl)){
-	   	  MkdirAll($cfg_basedir.$imgurl,777);
+	   	  MkdirAll($cfg_basedir.$imgurl,$GLOBALS['cfg_dir_purview']);
 	   	  CloseFtp();
 	   }
 	   $imgurl = $imgurl."/".$filename;
-	   move_uploaded_file($logoimg,$cfg_basedir.$imgurl) or die("¸´ÖÆÎÄ¼şµ½:".$cfg_basedir.$imgurl."Ê§°Ü");
+	   move_uploaded_file($logoimg,$cfg_basedir.$imgurl) or die("å¤åˆ¶æ–‡ä»¶åˆ°:".$cfg_basedir.$imgurl."å¤±è´¥");
 	   @unlink($logoimg);
    }
    else 
@@ -32,113 +31,12 @@ if($dopost=="add")
    if(!empty($_COOKIE['ENV_GOBACK_URL'])) $burl = $_COOKIE['ENV_GOBACK_URL'];
    else $burl = "friendlink_main.php";
    $dsql->Close();
-   ShowMsg("³É¹¦Ôö¼ÓÒ»¸öÁ´½Ó!",$burl,0,500);
+   ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªé“¾æ¥!",$burl,0,500);
    exit();
 }
 
+require_once(dirname(__FILE__)."/templets/friendlink_add.htm");
+
+ClearAllLink();
+
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÓÑÇéÁ´½Ó¹ÜÀí</title>
-<script language='javascript'>
-function CheckSubmit()
-{
-	if(document.form1.url.value=="http://"||document.form1.url.value=="")
-	{
-   		document.form1.url.focus();
-   		alert("ÍøÖ·²»ÄÜÎª¿Õ£¡");
-   		return false;
-	}
-	if(document.form1.webname.value=="")
-	{
-   		document.form1.webname.focus();
-   		alert("ÍøÕ¾Ãû³Æ²»ÄÜÎª¿Õ£¡");
-   		return false;
-	}
-	return true;
-}
-</script>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td height="19" background="img/tbg.gif"><b><a href="friendlink_main.php"><u>ÓÑÇéÁ´½Ó¹ÜÀí</u></a></b>&gt;&gt;Ôö¼ÓÁ´½Ó</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<form action="friendlink_add.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return CheckSubmit();";>
-	<input type="hidden" name="dopost" value="add">
-	<table width="80%"  border="0" cellspacing="1" cellpadding="3">
-	  <tr>
-        <td width="19%" height="25">ÍøÖ·£º</td>
-        <td width="81%"><input name="url" type="text" id="url" value="http://" size="30"></td>
-      </tr>
-      <tr>
-        <td height="25">ÍøÕ¾Ãû³Æ£º</td>
-        <td><input name="webname" type="text" id="webname" size="30"></td>
-      </tr>
-      <tr>
-        <td width="19%" height="25">ÅÅÁĞÎ»ÖÃ£º</td>
-        <td width="81%">
-        <input name="sortrank" type="text" id="sortrank" value="1" size="10">
-        (ÓÉĞ¡µ½´óÅÅÁĞ)
-        </td>
-      </tr>
-      <tr>
-        <td height="25">ÍøÕ¾Logo£º</td>
-        <td><input name="logo" type="text" id="logo" size="30">
-          (88*31 gif»òjpg)</td>
-      </tr>
-      <tr>
-        <td height="25">ÉÏ´«Logo£º</td>
-        <td><input name="logoimg" type="file" id="logoimg" size="30"></td>
-      </tr>
-      <tr>
-        <td height="25">ÍøÕ¾¼ò¿ö£º</td>
-        <td><textarea name="msg" cols="50" rows="4" id="msg"></textarea></td>
-      </tr>
-      <tr>
-        <td height="25">Õ¾³¤Email£º</td>
-        <td><input name="email" type="text" id="email" size="30"></td>
-      </tr>
-      <tr>
-        <td height="25">ÍøÕ¾ÀàĞÍ£º</td>
-        <td>
-        <select name="typeid" id="typeid">
-        <?php 
-        $dsql->SetQuery("select * from #@__flinktype");
-        $dsql->Execute();
-        while($row=$dsql->GetObject())
-        {
-        	echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
-        }
-        ?>
-        </select>
-        </td>
-      </tr>
-      <tr>
-        <td height="25">Á´½ÓÎ»ÖÃ£º</td>
-        <td>
-        <select name="ischeck">
-        <option value="1">ÄÚÒ³</option>
-        <option value="2">Ê×Ò³</option>
-        </select>
-        </td>
-      </tr>
-      <tr>
-        <td height="51">&nbsp;</td>
-        <td><input type="submit" name="Submit" value=" Ìá ½» ">¡¡ ¡¡
-          <input type="reset" name="Submit" value=" ÖØ ÖÃ "></td>
-      </tr>
-    </table>
-	</form>
-    </td>
-</tr>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

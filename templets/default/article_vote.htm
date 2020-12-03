@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{dede:field name='title'/}</title>
+<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr>
+<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecms织梦内容管理系统"></a></td>
+<td width="20" align="center">&nbsp;</td>
+<td width="486">&nbsp;</td>
+<td width="190">&nbsp;</td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr>
+<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
+<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif">
+<a href='/'>首页</a> {dede:channel type='top' row='8'} | <a href='[field:typelink/]'>[field:typename/]</a>
+{/dede:channel} | <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a>
+| <a href="{dede:field name='memberurl'/}">会员中心</a> | <a href="http://bbs.dedecms.com">支持论坛</a>
+</td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr>
+<td valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="100%" height="26"><table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
+                <tr>
+                  <td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
+                  <td width="3%" align="center"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
+                  <td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">当前位置：主页
+                    &gt; <a href="/plus/freelist.php?lid=2">模板大赛</a> &gt; 查看作品</td>
+                </tr>
+                <tr>
+                  <td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td height="30" align="center">
+            	<span style="font-size:11pt;padding-top:8px"><b>作品名称：{dede:field name='title'/}</b></span>
+              <div style='width:90%;background-color:#F2FCDC;border:1px solid #dedede'>作品简介：{dede:field name='description' function='html2text(@me)'/}</div>
+            </td>
+          </tr>
+          <tr>
+            <td> <table width="100%" border="0" cellspacing="3" cellpadding="3">
+                <tr>
+                  <td height="158" align="center"><img width="800" alt="Dedecms 模板大赛" src="{dede:field name='bigpic'/}"></td>
+                </tr>
+                <tr>
+                  <td height="21" align="center" bgcolor="#E1FCBE" style="border:1px solid #dedede"> <b>作者：{dede:field
+                    name='writer'/}　浏览次数：
+                    <script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberID'/}&view=yes" language="javascript"></script>
+                    　获得票数：<script src="{dede:field name='phpurl'/}/votecc.php?aid={dede:field name='ID'/}"></script> <a href="/plus/votechannel.php?aid={dede:field name='ID'/}" target="_blank">[投它一票]</a>
+                    </b> </td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" style="border-top:1px solid #cccccc">
+              [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menumember.gif" width="16" height="15" border="0">评论({dede:field
+              name='postnum'/}条)</a>] &nbsp; [<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/file_move.gif" width="17" height="18" border="0">收藏</a>]
+              &nbsp; [<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menuarrow.gif" width="16" height="15" border="0">推荐</a>]</td>
+          </tr>
+          <tr>
+            <td height="25" align="center" style="border-top:1px solid #cccccc"><table width="96%" border="0" cellpadding="1" cellspacing="1">
+                <form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
+                  <input type="hidden" name="arcID" value="{dede:field name='id'/}">
+                  <tr>
+                    <td>用户名：
+                      <input name="username" type="text" id="username" size="10" class="nb">
+                      （<a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>）
+                      密码：
+                      <input name="pwd" type="text" id="pwd" size="10"class="nb">
+                      <input name="notuser" type="checkbox" id="notuser" value="1">
+                      匿名评论 [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name='id'/}">所有评论</a>]
+                      <!--a href='' class="coolbg" style="width:60"-->
+                      <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'></td>
+                  </tr>
+                  <tr>
+                    <td>评论内容：(不能超过250字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
+                  </tr>
+                  <tr>
+                    <td><textarea name="msg" cols="75" rows="4" id="msg" style="width:100%"></textarea></td>
+                  </tr>
+                </form>
+              </table></td>
+          </tr>
+        </table></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
+<tr>
+<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
+	{dede:global name='cfg_powerby'/}
+</td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
+</tr>
+</table>
+
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr><td height="6"></td></tr>
+</table>
+</center>
+</body>
+</html>

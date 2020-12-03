@@ -1,12 +1,15 @@
-text,µ¥ĞĞÎÄ±¾
-multitext,¶àĞĞÎÄ±¾
-htmltext,HTMLÎÄ±¾
-int,ÕûÊıÀàĞÍ
-float,Ğ¡ÊıÀàĞÍ
-datetime,Ê±¼äÀàĞÍ
-img,Í¼Æ¬
-media,¶àÃ½ÌåÎÄ¼ş
-addon,¸½¼şÀàĞÍ
-textdata,ÎÄ±¾´æ·ÅÊı¾İ
-select,Ê¹ÓÃoptionÏÂÀ­¿ò
-radio,Ê¹ÓÃradioÑ¡Ïî¿¨
+text,å•è¡Œæ–‡æœ¬(varchar)
+textchar,å•è¡Œæ–‡æœ¬(char)
+multitext,å¤šè¡Œæ–‡æœ¬
+htmltext,HTMLæ–‡æœ¬
+textdata,æ–‡æœ¬ä¿å­˜HTMLæ•°æ®
+int,æ•´æ•°ç±»å‹
+float,å°æ•°ç±»å‹
+datetime,æ—¶é—´ç±»å‹
+img,å›¾ç‰‡
+imgfile,å›¾ç‰‡(æ— æ ¼å¼)
+media,å¤šåª’ä½“æ–‡ä»¶
+addon,é™„ä»¶ç±»å‹
+select,ä½¿ç”¨optionä¸‹æ‹‰æ¡†
+radio,ä½¿ç”¨radioé€‰é¡¹å¡
+checkbox,checkboxå¤šé€‰æ¡†

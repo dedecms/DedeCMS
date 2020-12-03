@@ -1,76 +1,78 @@
 <?php 
+header("Content-Type: text/html; charset=utf-8");
+header("Pragma:no-cache"); 
+header("Cache-Control:no-cache"); 
+header("Expires:0"); 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
-
 if(empty($dopost)) $dopost = "";
 $dsql = new DedeSql(false);
-if($dopost=="viewinfo") //²é¿´±í½á¹¹
+if($dopost=="viewinfo") //æŸ¥çœ‹è¡¨ç»“æ„
 {
-	if(empty($tablename)) echo "Ã»ÓĞÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
-		$dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
-    $dsql->Execute();
-    $row2 = $dsql->GetArray();
-    $ctinfo = $row2[1];
-    echo "<xmp>".trim($ctinfo)."</xmp>";
+			$dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
+		$dsql->Execute();
+		$row2 = $dsql->GetArray();
+		$ctinfo = $row2[1];
+		echo "<xmp>".trim($ctinfo)."</xmp>";
 	}
 	$dsql->Close();
 	exit();
 }
-else if($dopost=="opimize") //ÓÅ»¯±í
+else if($dopost=="opimize") //ä¼˜åŒ–è¡¨
 {
-	if(empty($tablename)) echo "Ã»ÓĞÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
 	  $dsql->ExecuteNoneQuery("OPTIMIZE TABLE '$tablename'");
 	  $dsql->Close();
-	  echo "Ö´ĞĞÓÅ»¯±í£º $tablename  OK£¡";
-  }
+	  echo "æ‰§è¡Œä¼˜åŒ–è¡¨ï¼š $tablename  OKï¼";
+	}
 	exit();
-}
-else if($dopost=="repair") //ĞŞ¸´±í
+}else if($dopost=="repair") //ä¿®å¤è¡¨
 {
-	if(empty($tablename)) echo "Ã»ÓĞÖ¸¶¨±íÃû£¡";
+	if(empty($tablename)) echo "æ²¡æœ‰æŒ‡å®šè¡¨åï¼";
 	else{
 	  $rs = $dsql->ExecuteNoneQuery("REPAIR TABLE '$tablename'");
 	  $dsql->Close();
-	  echo "ĞŞ¸´±í£º $tablename  OK£¡";
+	  echo "ä¿®å¤è¡¨ï¼š $tablename  OKï¼";
 	}
 	exit();
-}else if($dopost=="query") //Ö´ĞĞSQLÓï¾ä
+}else if($dopost=="query") //æ‰§è¡ŒSQLè¯­å¥
 {
 	$t1 = ExecTime();
 	$sqlquery = trim(stripslashes($sqlquery));
 	if(eregi("drop(.*)table",$sqlquery) 
 	|| eregi("drop(.*)database",$sqlquery)){
-		echo "<span style='font-size:10pt'>É¾³ı'Êı¾İ±í'»ò'Êı¾İ¿â'µÄÓï¾ä²»ÔÊĞíÔÚÕâÀïÖ´ĞĞ¡£</span>";
+		echo "<span style='font-size:10pt'>åˆ é™¤'æ•°æ®è¡¨'æˆ–'æ•°æ®åº“'çš„è¯­å¥ä¸å…è®¸åœ¨è¿™é‡Œæ‰§è¡Œã€‚</span>";
 		$dsql->Close();
 	  exit();
 	}
-	//ÔËĞĞ²éÑ¯Óï¾ä
+	//è¿è¡ŒæŸ¥è¯¢è¯­å¥
 	if(eregi("^select ",$sqlquery))
 	{
 		$dsql->SetQuery($sqlquery);
 	  $dsql->Execute();
-	  if($dsql->GetTotalRow()<=0) echo "ÔËĞĞSQL£º{$sqlquery}£¬ÎŞ·µ»Ø¼ÇÂ¼£¡";
-	  else echo "ÔËĞĞSQL£º{$sqlquery}£¬¹²ÓĞ".$dsql->GetTotalRow()."Ìõ¼ÇÂ¼£¬×î´ó·µ»Ø100Ìõ£¡";
+	  if($dsql->GetTotalRow()<=0) echo "è¿è¡ŒSQLï¼š{$sqlquery}ï¼Œæ— è¿”å›è®°å½•ï¼";
+	  else echo "è¿è¡ŒSQLï¼š{$sqlquery}ï¼Œå…±æœ‰".$dsql->GetTotalRow()."æ¡è®°å½•ï¼Œæœ€å¤§è¿”å›100æ¡ï¼";
 	  $j = 0;
 	  while($row = $dsql->GetArray())
 	  {
 	  	 $j++;
 	  	 if($j>100) break;
 	  	 echo "<hr size=1 width='100%'/>";
-	  	 echo "¼ÇÂ¼£º$j";
+	  	 echo "è®°å½•ï¼š$j";
 	  	 echo "<hr size=1 width='100%'/>";
 	  	 foreach($row as $k=>$v){
-	  		  if(ereg("[^0-9]",$k)){ echo "<font color='red'>{$k}£º</font>{$v}<br/>\r\n"; }
+	  		  if(ereg("[^0-9]",$k)){ echo "<font color='red'>{$k}ï¼š</font>{$v}<br/>\r\n"; }
 	  	 }
 	  }
 	  $t2 = ExecTime();
-	  echo "<hr>Ö´ĞĞÊ±¼ä£º".($t2-$t1);
+	  echo "<hr>æ‰§è¡Œæ—¶é—´ï¼š".($t2-$t1);
 	  exit();
 	}
 	if($querytype==2){
-	   //ÆÕÍ¨µÄSQLÓï¾ä
+	   //æ™®é€šçš„SQLè¯­å¥
 	   $sqlquery = str_replace("\r","",$sqlquery);
 	   $sqls = split(";[ \t]{0,}\n",$sqlquery);
 	   $nerrCode = ""; $i=0;
@@ -79,117 +81,23 @@ else if($dopost=="repair") //ĞŞ¸´±í
 	     $dsql->ExecuteNoneQuery($q);
 	     $errCode = trim($dsql->GetError());
 	     if($errCode=="") $i++;
-	     else $nerrCode .= "Ö´ĞĞ£º <font color='blue'>$q</font> ³ö´í£¬´íÎóÌáÊ¾£º<font color='red'>".$errCode."</font><br>";
+	     else $nerrCode .= "æ‰§è¡Œï¼š <font color='blue'>$q</font> å‡ºé”™ï¼Œé”™è¯¯æç¤ºï¼š<font color='red'>".$errCode."</font><br>";
      }
-	   echo "³É¹¦Ö´ĞĞ{$i}¸öSQLÓï¾ä£¡<br><br>";
+	   echo "æˆåŠŸæ‰§è¡Œ{$i}ä¸ªSQLè¯­å¥ï¼<br><br>";
 	   echo $nerrCode;
   }else{
   	$dsql->ExecuteNoneQuery($sqlquery);
   	$nerrCode = trim($dsql->GetError());
-  	echo "³É¹¦Ö´ĞĞ1¸öSQLÓï¾ä£¡<br><br>";
+  	echo "æˆåŠŸæ‰§è¡Œ1ä¸ªSQLè¯­å¥ï¼<br><br>";
 	  echo $nerrCode;
 	}
 	$dsql->Close();
 	$t2 = ExecTime();
-	echo "<hr>Ö´ĞĞÊ±¼ä£º".($t2-$t1);
+	echo "<hr>æ‰§è¡Œæ—¶é—´ï¼š".($t2-$t1);
 	exit();
 }
+
+require_once(dirname(__FILE__)."/templets/sys_sql_query.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>SQLÃüÁîĞĞ¹¤¾ß</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr>
-    <td height="19" background="img/tbg.gif"> 
-      <table width="96%" border="0" cellspacing="1" cellpadding="1">
-        <tr> 
-          <td width="24%"><strong>SQLÃüÁîÔËĞĞÆ÷£º</strong></td>
-          <td width="76%" align="right"> <b><a href="sys_data.php"><u>Êı¾İ±¸·İ</u></a></b> 
-            | <b><a href="sys_data_revert.php"><strong><u>Êı¾İ»¹Ô­</u></strong></a></b> 
-          </td>
-        </tr>
-      </table></td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="2">
-        <form action="sys_sql_query.php" method="post" name="infoform" target="stafrm">
-          <input type='hidden' name='dopost' value='viewinfo'>
-          <tr bgcolor="#F3FBEC"> 
-            <td width="15%" height="24" align="center">ÏµÍ³µÄ±íĞÅÏ¢£º</td>
-            <td> 
-              <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="45%">
-                  	<select name="tablename" id="tablename" style="width:100%" size="6">
-                      <?php 
-$dsql->SetQuery("Show Tables");
-$dsql->Execute('t');
-while($row = $dsql->GetArray('t'))
-{
-	$dsql->SetQuery("Select count(*) From ".$row[0]);
-	$dsql->Execute('n');
-	$row2 = $dsql->GetArray('n');
-	$dd = $row2[0];
-	echo "			<option value='".$row[0]."'>".$row[0]."(".$dd.")</option>\r\n";
-}
-?>
-                    </select></td>
-                  <td width="2%">&nbsp;</td>
-                  <td width="53%" valign="bottom">
-                  	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr> 
-                        <td height="30">
-<input type="Submit" name="Submit1" value="ÓÅ»¯±í" class="np" onClick="this.form.dopost.value='opimize';"></td>
-                      </tr>
-                      <tr> 
-                        <td height="30">
-<input type="Submit" name="Submit2" value="ĞŞ¸´±í" class="np" onClick="this.form.dopost.value='repair';"></td>
-                      </tr>
-                      <tr> 
-                        <td height="30">
-<input type="Submit" name="Submit3" value="²é¿´±í½á¹¹" class="np"></td>
-                      </tr>
-                    </table></td>
-                </tr>
-              </table></td>
-          </tr>
-          <tr> 
-            <td height="200" align="center">·µ»ØĞÅÏ¢£º</td>
-            <td>
-			<iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
-			</td>
-          </tr>
-		  </form>
-		  <form action="sys_sql_query.php" method="post" name="form1" target="stafrm">
-          <input type='hidden' name='dopost' value='query'>
-          <tr> 
-            <td height="24" colspan="2" bgcolor="#F3FBEC"><strong>ÔËĞĞSQLÃüÁîĞĞ£º 
-              <input name="querytype" type="radio" class="np" value="0">
-              µ¥ĞĞÃüÁî£¨Ö§³Ö¼òµ¥²éÑ¯£© 
-              <input name="querytype" type="radio" class="np" value="2" checked>
-              ¶àĞĞÃüÁî</strong></td>
-          </tr>
-		      <tr> 
-            <td height="118" colspan="2">
-			<textarea name="sqlquery" cols="60" rows="10" id="sqlquery" style="width:90%"></textarea> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-          </tr>
-        </form>
-      </table>
-	 </td>
-</tr>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

@@ -5,7 +5,7 @@ if(!isset($aid)){ exit(); }
 $aid = ereg_replace("[^0-9]","",$aid);
 if(empty($aid)){ exit(); } 
 $dsql = new DedeSql(false);
-//¶ÁÈ¡ÎÄµµÐÅÏ¢
+//è¯»å–æ–‡æ¡£ä¿¡æ¯
 $arctitle = "";
 $arcurl = "";
 $topID = 0;
@@ -17,12 +17,12 @@ if(is_array($arcRow)){
 }
 else{
 	$dsql->Close();
-	ShowMsg("ÎÞ·¨ä¯ÀÀÎ´ÖªÎÄµµ!","-1");
+	ShowMsg("æ— æ³•æµè§ˆæœªçŸ¥æ–‡æ¡£!","-1");
 	exit();
 }
 if(empty($mx)){ $mx=$cfg_album_width; }
 $pageGuide = "";
-//»ñÈ¡ÉÏÏÂ·ùÍ¼Æ¬Á´½Ó
+//èŽ·å–ä¸Šä¸‹å¹…å›¾ç‰‡é“¾æŽ¥
 $row = $dsql->GetOne("Select imgurls From #@__addonimages where aid='{$aid}'");
 $i = 0;
 $nextSrc = "";
@@ -37,16 +37,16 @@ foreach($dtp->CTags as $ctag){
   }
 }
 unset($dtp);
-if($cfg_multi_site=="ÊÇ"){
+if($cfg_multi_site=='Y'){
 	if(!preg_match("/^http:/i",$preSrc) && !empty( $preSrc)) $preSrc = $cfg_basehost.$preSrc;
 	if(!preg_match("/^http:/i",$nextSrc) && !empty($nextSrc)) $nextSrc = $cfg_basehost.$nextSrc;
 }
 if($preSrc!=""){
-	$pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($preSrc)."&npos=".($npos-1)."'>&lt;&lt;ÉÏÒ»·ùÍ¼Æ¬</a> ";
+	$pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($preSrc)."&npos=".($npos-1)."'>&lt;&lt;ä¸Šä¸€å¹…å›¾ç‰‡</a> ";
 }
 if($nextSrc!=""){
   if($pageGuide!="") $pageGuide .= " | ";
-  $pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($nextSrc)."&npos=".($npos+1)."'>ÏÂÒ»·ùÍ¼Æ¬&gt;&gt;</a>";
+  $pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($nextSrc)."&npos=".($npos+1)."'>ä¸‹ä¸€å¹…å›¾ç‰‡&gt;&gt;</a>";
 }
 $dsql->Close();
 require_once($cfg_basedir.$cfg_templets_dir."/plus/showphoto.htm");

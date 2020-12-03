@@ -1,65 +1,84 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_imgbt.php");
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 CheckRank(0,0);
 
-if($cfg_mb_sendall=='·ñ'){
-	ShowMsg("¶Ô²»Æð£¬ÏµÍ³½ûÓÃÁË×Ô¶¨ÒåÄ£ÐÍÍ¶¸å£¬Òò´ËÎÞ·¨Ê¹ÓÃ´Ë¹¦ÄÜ£¡","-1");
+if($cfg_mb_sendall=='N'){
+	ShowMsg("å¯¹ä¸èµ·ï¼Œç³»ç»Ÿç¦ç”¨äº†è‡ªå®šä¹‰æ¨¡åž‹æŠ•ç¨¿ï¼Œå› æ­¤æ— æ³•ä½¿ç”¨æ­¤åŠŸèƒ½ï¼","-1");
 	exit();
 }
-require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_all.php");
-$aid = ereg_replace("[^0-9]","",$aid);
-if($aid=="")
+
+$aid = (empty($aid) ? 0 : intval($aid));
+if($aid==0)
 {
-	ShowMsg("ÄãÃ»Ö¸¶¨ÎÄµµID£¬²»ÔÊÐí·ÃÎÊ±¾Ò³Ãæ£¡","-1");
+	ShowMsg("ä½ æ²¡æŒ‡å®šæ–‡æ¡£IDï¼Œä¸å…è®¸è®¿é—®æœ¬é¡µé¢ï¼","-1");
 	exit();
 }
+
+require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
+
 $dsql = new DedeSql(false);
-//¶ÁÈ¡¹éµµÐÅÏ¢
-//------------------------------
-$arcQuery = "Select 
-#@__channeltype.typename as channelname,
-#@__arcrank.membername as rankname,
-#@__archives.* 
-From #@__archives
-left join #@__channeltype on #@__channeltype.ID=#@__archives.channel 
-left join #@__arcrank on #@__arcrank.rank=#@__archives.arcrank
-where #@__archives.ID='$aid'";
 
-$dsql->SetQuery($arcQuery);
-$arcRow = $dsql->GetOne($arcQuery);
-if(!is_array($arcRow)){
-	$dsql->Close();
-	ShowMsg("¶ÁÈ¡µµ°¸»ù±¾ÐÅÏ¢³ö´í!","-1");
-	exit();
-}
-if($arcRow['arcrank']>=0){
-	$dsql->Close();
-	ShowMsg("¶Ô²»Æð£¬ÕâÔòÐÅÏ¢ÒÑ¾­±»¹ÜÀíÔ±Ëø¶¨£¬Äã²»ÄÜÔÙ¸ü¸Ä!","-1");
-	exit();
-}
+$cInfos = $dsql->GetOne("Select c.* From `#@__full_search` a left join #@__channeltype c on c.ID=a.channelid where a.aid='$aid' And a.mid='{$cfg_ml->M_ID}' ");
 
-
-$query = "Select * From #@__channeltype where ID='".$arcRow['channel']."'";
-$cInfos = $dsql->GetOne($query);
 if(!is_array($cInfos)){
 	$dsql->Close();
-	ShowMsg("¶ÁÈ¡ÆµµÀÅäÖÃÐÅÏ¢³ö´í!","-1");
+	ShowMsg("è¯»å–é¢‘é“ä¿¡æ¯å‡ºé”™ï¼Œå¯èƒ½æŒ‡å®šçš„IDæœ‰é—®é¢˜ï¼","-1");
 	exit();
 }
-if($cInfos['issystem']!=0 || $cInfos['issend']!=1){
+
+if($cInfos['issend']!=1){
 	$dsql->Close();
-	ShowMsg("ÄãÖ¸¶¨µÄÆµµÀ²ÎÊýµÄ´íÎó£¡","-1");
+	ShowMsg("ä½ æŒ‡å®šçš„é¢‘é“ä¸å…è®¸æŠ•ç¨¿ï¼","-1");
+	exit();
+}
+
+if(!empty($cInfos['usereditcon']) && strtolower($cInfos['usereditcon'])!='archives_edit.php')
+{
+	$dsql->Close();
+	header("location:{$cInfos['usereditcon']}?aid=$aid");
+	exit();
+}
+
+$maintable = ($cInfos['maintable']=='' ? '#@__archives' : $cInfos['maintable']);
+$addtable = ($cInfos['addtable']=='' ? '' : $cInfos['addtable']);
+
+//è¯»å–å½’æ¡£ä¿¡æ¯
+//------------------------------
+$arcQuery = "Select c.typename as channelname,t.typename,ar.membername as rankname,a.* 
+From `$maintable` a
+left join `#@__channeltype` c on c.ID=a.channel 
+left join `#@__arcrank` ar on ar.rank=a.arcrank
+left join `#@__arctype` t on t.ID=a.typeid
+where a.ID='$aid'";
+
+$arcRow = $dsql->GetOne($arcQuery,MYSQL_ASSOC);
+if(!is_array($arcRow)){
+	$dsql->Close();
+	ShowMsg("è¯»å–æ¡£æ¡ˆåŸºæœ¬ä¿¡æ¯å‡ºé”™!","-1");
+	exit();
+}
+
+$exday = 3600 * 24 * $cfg_locked_day;
+$ntime = mytime();
+
+if($arcRow['arcrank']>=0 && $ntime - $arcRow['senddate'] > $exday){
+	$dsql->Close();
+	ShowMsg("å¯¹ä¸èµ·ï¼Œè¿™åˆ™ä¿¡æ¯å·²ç»è¢«ç®¡ç†å‘˜é”å®šï¼Œä½ ä¸èƒ½å†æ›´æ”¹!","-1");
 	exit();
 }
 
 $channelid = $arcRow['channel'];
-//-----------------------
-$addQuery = "Select * From ".$cInfos['addtable']." where aid='$aid'";
-$addRow = $dsql->GetOne($addQuery);
-$arow = $dsql->GetOne(" Select typename From #@__arctype where ID='".$arcRow['typeid']."'; ");
+
+if($addtable!=''){
+  $addQuery = "Select * From `{$addtable}` where aid='$aid'";
+  $addRow = $dsql->GetOne($addQuery,MYSQL_ASSOC);
+}
+
+$arow['typename'] = $arcRow['typename'];
+
 require_once(dirname(__FILE__)."/templets/archives_edit.htm");
 
+$dsql->Close();
 ?>

@@ -1,31 +1,55 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�ɼ�����Ԥ��</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>采集内容预览</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<form name='form1' action='co_view.php?action=save&aid=<?php echo $aid?>' method='post'>
   <tr> 
-    <td height="28" colspan="2" background='img/tbg.gif'><strong>�ɼ�����Ԥ����</strong>(ϵͳ���Զ����ز�����δ���ع�������)</td>
+    <td height="28" colspan="2" bgcolor="#EDF9D5">
+    	<b><a href='co_url.php'>采集内容管理</a> &gt; 采集内容预览：</b>(系统会自动下载并处理未下载过的内容)   </td>
   </tr>
   <tr bgcolor="#F8FCF1"> 
-    <td width="17%" height="24" align="center" bgcolor="#F8FCF1"><strong>�ֶ�����</strong></td>
-    <td width="83%" align="center" bgcolor="#F8FCF1"><strong>�ڡ���</strong></td>
+    <td width="17%" height="24" align="center" bgcolor="#F8FCF1"><strong>字段名称</strong></td>
+    <td width="83%" align="center" bgcolor="#F8FCF1"><strong>内　容</strong></td>
   </tr>
- {dede:foreach array='fields'}
+ <?php 
+for($i=0;$i<=$dtp->Count;$i++)
+{
+	$ctag = $dtp->CTags[$i];
+	if($ctag->GetName()=="field")
+	{
+		$fname = $ctag->GetAtt("name");
+		$fvalue = $ctag->GetInnerText();
+ ?>
   <tr> 
-    <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
-	[field:key/]
+  <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
+	<?php echo $fname?>
+	<input type='hidden' name='noteid_<?php echo $i?>' value='<?php echo $fname?>'>
 	</td>
     <td bgcolor="#FFFFFF">
-	[field:value/]
+	<?php 
+	if(strlen($fvalue)<200) echo "<textarea name=\"value_$i\" rows=\"1\" style=\"width:90%;height:25px\">$fvalue</textarea>";
+	else echo "<textarea name=\"value_$i\" rows=\"12\" style=\"width:90%;height:280px\">$fvalue</textarea>";
+	?>
 	</td>
   </tr>
- {/dede:foreach}
+<?php 
+  }
+}
+$dtp->Clear();
+?>
+<input type='hidden' name='endid' value='<?php echo $i?>'>
   <tr bgcolor="#F8FCF1"> 
-    <td height="24" colspan="2">&nbsp;</td>
-  </tr>
+    <td height="24" colspan="2" align="center"><input name="imageField" type="submit" class="inputbut" value="确定" />      &nbsp;
+     <a href="<?php echo $backurl?>">
+     <input name="button" type="button" class="inputbut" id="button" value="返回"/>
+     </a>    </td>
+  </tr></form>
 </table>
+
 </body>
 </html>

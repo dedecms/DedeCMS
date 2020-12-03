@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>点卡产品分类</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form name="form1" action="member_card_type.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+    <tr> 
+      <td height="24" colspan="4" bgcolor="#EDF9D5"> &nbsp;<strong><a href="member_main.php"><u>会员管理</u></a> 
+        > 点卡产品分类： </strong></td>
+    </tr>
+    <tr bgcolor="#FDFEE9"> 
+      <td width="26%" height="24" align="center" valign="top">产品名称</td>
+      <td width="27%" align="center" valign="top">点数</td>
+      <td width="30%" align="center">价格</td>
+      <td width="17%" align="center">状态</td>
+    </tr>
+    <?php 
+	$dsql->SetQuery("Select * From #@__moneycard_type");
+	$dsql->Execute();
+	$k=0;
+	while($row = $dsql->GetObject())
+	{
+	  $k++;
+	?>
+    <input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->tid?>">
+    <tr align="center" bgcolor="#FFFFFF"> 
+      <td height="24" valign="top"> <input name="pname_<?php echo $k?>" value="<?php echo $row->pname?>" type="text" id="pname_<?php echo $k?>" style="width:90%"> 
+      </td>
+      <td height="24" valign="top"> <input name="num_<?php echo $k?>" value="<?php echo $row->num?>" type="text" id="num_<?php echo $k?>" style="width:80%"></td>
+      <td><input name="money_<?php echo $k?>" value="<?php echo $row->money?>" type="text" id="money_<?php echo $k?>" style="width:80%">
+       (元)
+	   </td>
+      <td>
+	  <input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>"  value="1" checked>
+        保留
+	   </td>
+    </tr>
+    <?php 
+	}
+	?>
+    <input type="hidden" name="idend" value="<?php echo $k?>">
+    <tr bgcolor="#F8FCF1"> 
+      <td height="24" colspan="4" valign="top" bgcolor="#EDF9D5"><strong>新增一个会员产品类型：</strong></td>
+    </tr>
+    <tr height="24" align="center" bgcolor="#FFFFFF"> 
+      <td valign="top"> <input name="pname_new" type="text" id="pname_new" style="width:90%"> 
+      </td>
+      <td valign="top"> <input name="num_new" value="100" type="text" id="num_new" style="width:80%"></td>
+      <td valign="top"> <input name="money_new" type="text" id="money_new" style='width:80%' value="30">
+        (元) </td>
+      <td align="center" bgcolor="#FFFFFF">
+	  <input name="check_new" type="checkbox"  id="check_new" value="1" checked>
+        新增 </td>
+    </tr>
+    <tr></tr>
+    <tr> 
+      <td height="34" colspan="4" align="center" bgcolor="#FFFFFF"> <input name="imageField"  type="submit" class="inputbut" value="确定"> 
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

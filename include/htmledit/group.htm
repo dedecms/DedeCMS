@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>²åÈë·ÖÀ¸¿ò</title>
+<title>æ’å…¥åˆ†æ æ¡†</title>
 <script language=javascript>
 function TableOK(){
    var revalue,title,titlealign,objalign,bordercolor,nbgcolor,stylestr
@@ -12,7 +12,7 @@ function TableOK(){
    stylestr = "";
    if(bordercolor!="") stylestr += "border-left-color: "+bordercolor+"; border-bottom-color: "+bordercolor+"; border-top-color: "+bordercolor+"; border-right-color: "+bordercolor+";";
    if(nbgcolor!="") stylestr += "background-color: "+nbgcolor+";";
-   revalue = "<fieldset style='"+stylestr+"' align='"+objalign+"'><legend>"+title+"</legend>×éÄÚÈİ</fieldset>\r\n";
+   revalue = "<fieldset style='"+stylestr+"' align='"+objalign+"'><legend>"+title+"</legend>ç»„å†…å®¹</fieldset>\r\n";
    window.returnValue = revalue;
    window.close();
 }
@@ -24,42 +24,42 @@ function TableOK(){
 <table width="310" height="94" border="0" cellpadding="0" cellspacing="0">
  <form name="theform">
   <tr> 
-    <td width="75" height="30" align="center">±êÌâÃû³Æ£º</td>
+    <td width="75" height="30" align="center">æ ‡é¢˜åç§°ï¼š</td>
     <td colspan="3"><input name="title" type="text" id="title" style="width:155px"></td>
   </tr>
   <tr> 
-    <td width="75" height="30" align="center">¶ÔÏó¶ÔÆë£º</td>
+    <td width="75" height="30" align="center">å¯¹è±¡å¯¹é½ï¼š</td>
     <td width="80"> 
       <select style="width:80px" name="objalign">
-        <option value='' selected>Ä¬ÈÏ¶ÔÆë</option>
-        <option value='left'>×ó¶ÔÆë</option>
-        <option value='center'>¾ÓÖĞ¶ÔÆë</option>
-        <option value='right'>ÓÒ¶ÔÆë</option>
+        <option value='' selected>é»˜è®¤å¯¹é½</option>
+        <option value='left'>å·¦å¯¹é½</option>
+        <option value='center'>å±…ä¸­å¯¹é½</option>
+        <option value='right'>å³å¯¹é½</option>
       </select>
     </td>
-    <td width="75" align="center">±êÌâ¶ÔÆë£º</td>
+    <td width="75" align="center">æ ‡é¢˜å¯¹é½ï¼š</td>
     <td width="80">
 <select style="width:80px" name="titlealign">
-        <option value='' selected>Ä¬ÈÏ¶ÔÆë</option>
-        <option value='left'>×ó¶ÔÆë</option>
-        <option value='center'>¾ÓÖĞ¶ÔÆë</option>
-        <option value='right'>ÓÒ¶ÔÆë</option>
+        <option value='' selected>é»˜è®¤å¯¹é½</option>
+        <option value='left'>å·¦å¯¹é½</option>
+        <option value='center'>å±…ä¸­å¯¹é½</option>
+        <option value='right'>å³å¯¹é½</option>
       </select>
     </td>
   </tr>
   <tr> 
-    <td height="30" align="center">±ß¿òÑÕÉ«£º</td>
+    <td height="30" align="center">è¾¹æ¡†é¢œè‰²ï¼š</td>
     <td><input name="bordercolor" type="text" id="bordercolor" style="width:80"></td>
-    <td align="center">±³¾°ÑÕÉ«£º</td>
+    <td align="center">èƒŒæ™¯é¢œè‰²ï¼š</td>
     <td><input name="nbgcolor" type="text" id="nbgcolor" style="width:80"></td>
   </tr>
   <tr> 
     <td height="30" align="center">&nbsp;</td>
     <td>&nbsp;</td>
     <td align="right">
-<input name="zz" type="button" id="zz" class="binput" value="È·¶¨" onClick="TableOK()">  
+<input name="zz" type="button" id="zz" class="binput" value="ç¡®å®š" onClick="TableOK()">  
     </td>
-    <td align="center"><input name="nn" type="button" onclick="window.close();" class="binput" id="nn" value="È¡Ïû"></td>
+    <td align="center"><input name="nn" type="button" onclick="window.close();" class="binput" id="nn" value="å–æ¶ˆ"></td>
   </tr>
 </form>
 </table>

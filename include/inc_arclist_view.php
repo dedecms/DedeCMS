@@ -1,8 +1,9 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/inc_pubtag_make.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
-//±¾ÀàµÄÓÃÍ¾ÊÇÓÃÓÚä¯ÀÀÆµµÀÁĞ±í»ò¶ÔÄÚÈİÁĞ±íÉú³ÉHTML
+//æœ¬ç±»çš„ç”¨é€”æ˜¯ç”¨äºæµè§ˆé¢‘é“åˆ—è¡¨æˆ–å¯¹å†…å®¹åˆ—è¡¨ç”ŸæˆHTML
 ******************************************************/
 @set_time_limit(0);
 class ListView
@@ -12,20 +13,41 @@ class ListView
 	var $dtp2;
 	var $TypeID;
 	var $TypeLink;
-	var $PageNo;
+	var $pageno;
 	var $TotalPage;
-	var $TotalResult;
+	var $totalresult;
 	var $PageSize;
 	var $ChannelUnit;
 	var $ListType;
 	var $Fields;
 	var $PartView;
 	var $StartTime;
+	var $maintable;
+	var $addtable;
+	var $areas;
+	var $areaid;
+	var $areaid2;
+	var $sectors;
+	var $sectorid;
+	var $sectorid2;
+	var $smalltypes;
+	var $smalltypeid;
+	var $topareas;
+	var $subareas;
+	var $mysmalltypes;
+	var $TempletsFile;
+	var $addSql;
+	var $hasDmCache;
 	//-------------------------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------------------------
-	function __construct($typeid,$starttime=0)
+	function __construct($typeid,$starttime=0,$areaid=0,$areaid2=0,$sectorid=0,$sectorid2=0,$smalltypeid=0)
  	{
+ 		$this->areaid = $areaid;
+ 		$this->areaid2 = $areaid2;
+ 		$this->sectorid = $sectorid;
+ 		$this->sectorid2 = $sectorid2;
+ 		$this->smalltypeid = $smalltypeid;
  		$this->TypeID = $typeid;
  		$this->dsql = new DedeSql(false);
  		$this->dtp = new DedeTagParse();
@@ -34,27 +56,74 @@ class ListView
  		$this->dtp2->SetNameSpace("field","[","]");
  		$this->TypeLink = new TypeLink($typeid);
  		$this->ChannelUnit = new ChannelUnit($this->TypeLink->TypeInfos['channeltype']);
+
+ 		$this->maintable = $this->ChannelUnit->ChannelInfos['maintable'];
+ 		$this->topareas = $this->subareas = $this->areas = $this->sectors = $this->smalltypes = array();
+ 		$this->areas[0] = $this->sectors[0] = $this->smalltypes[0] = 'ä¸é™';
+		$this->topareas[0] = array("id"=>0 , "name"=>'ä¸é™');
+ 		$this->addtable = $this->ChannelUnit->ChannelInfos['addtable'];
  		$this->Fields = $this->TypeLink->TypeInfos;
+ 		
+ 		$this->hasDmCache = false;
+ 		
  		$this->Fields['id'] = $typeid;
  		$this->Fields['position'] = $this->TypeLink->GetPositionLink(true);
  		$this->Fields['title'] = ereg_replace("[<>]"," / ",$this->TypeLink->GetPositionLink(false));
- 		//ÉèÖÃÒ»Ğ©È«¾Ö²ÎÊıµÄÖµ
+ 		
+ 		//è®¾ç½®ä¸€äº›å…¨å±€å‚æ•°çš„å€¼
  		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
  		$this->Fields['rsslink'] = $GLOBALS['cfg_mainsite'].$GLOBALS['cfg_plus_dir']."/rss/".$this->TypeID.".xml";
  		
  		if($starttime==0) $this->StartTime = 0;
  		else $this->StartTime = GetMkTime($starttime);
- 		
- 		$this->PartView = new PartView($typeid);
 
+ 		$this->PartView = new PartView($typeid);
   }
-  //php4¹¹Ôìº¯Êı
+  //php4æ„é€ å‡½æ•°
  	//---------------------------
- 	function ListView($typeid,$starttime=0){
- 		$this->__construct($typeid,$starttime);
+ 	function ListView($typeid,$starttime=0,$areaid=0,$areaid2=0,$sectorid=0,$sectorid2=0,$smalltypeid=0){
+ 		$this->__construct($typeid,$starttime,$areaid,$areaid2,$sectorid,$sectorid2,$smalltypeid);
  	}
+ 	
+ 	//
+ 	function LoadDmCatCache()
+ 	{
+ 		//è½½å…¥åœ°åŒºã€è¡Œä¸šã€å°åˆ†ç±»æ•°æ®è¡¨
+ 		$this->dsql->Execute('ar',"select * from #@__area ");
+ 		while($row=$this->dsql->GetArray('ar'))
+ 		{
+ 				if(!empty($this->areaid2) && $row['id'] == $this->areaid2){
+ 					 $this->areaid = $row['reid'];
+ 				}
+ 				if($row['reid'] == 0){
+ 					 $this->topareas[] = $row;
+ 				}else{
+ 					 $this->subareas[$row['reid']][] = $row;
+ 				}
+ 				$this->areas[$row['id']] = $row['name'];
+ 		}
+ 		
+ 	  $this->dsql->Execute('ar',"select * from #@__sectors");
+ 	  while($row=$this->dsql->GetArray('ar')){
+ 			$this->sectors[$row['id']] = $row['name'];
+ 		}
+
+ 		$this->dsql->Execute('ar',"select * from #@__smalltypes");
+ 		$this->mysmalltypes = array();
+ 		$mysmalltypesarray = explode(',',$this->Fields['smalltypes']);
+ 		$this->mysmalltypes[0] = array("id"=>0, "name"=>'ä¸é™');
+ 		while($row=$this->dsql->GetArray('ar'))
+ 		{
+ 				if(@in_array($row['id'], $mysmalltypesarray)){
+ 					$this->mysmalltypes[] = $row;
+ 				}
+ 				$this->smalltypes[$row['id']] = $row['name'];
+ 		}
+ 		$this->hasDmCache = true;
+ 	}
+ 
  	//---------------------------
- 	//¹Ø±ÕÏà¹Ø×ÊÔ´
+ 	//å…³é—­ç›¸å…³èµ„æº
  	//---------------------------
  	function Close()
  	{
@@ -64,103 +133,133 @@ class ListView
  		@$this->PartView->Close();
  	}
  	//------------------
- 	//Í³¼ÆÁĞ±íÀïµÄ¼ÇÂ¼
+ 	//ç»Ÿè®¡åˆ—è¡¨é‡Œçš„è®°å½•
  	//------------------
  	function CountRecord()
  	{
  		global $cfg_list_son;
- 		//Í³¼ÆÊı¾İ¿â¼ÇÂ¼
- 		$this->TotalResult = -1;
- 		if(isset($GLOBALS['TotalResult'])) $this->TotalResult = $GLOBALS['TotalResult'];
- 		if(isset($GLOBALS['PageNo'])) $this->PageNo = $GLOBALS['PageNo'];
- 		else $this->PageNo = 1;
+ 		//ç»Ÿè®¡æ•°æ®åº“è®°å½•
+ 		$this->totalresult = -1;
+ 		if(isset($GLOBALS['totalresult'])) $this->totalresult = intval($GLOBALS['totalresult']);
+ 		if(isset($GLOBALS['pageno'])) $this->pageno = intval($GLOBALS['pageno']);
+ 		else $this->pageno = 1;
  		
- 		if($this->TotalResult==-1)
+ 		//åˆ†ææ¡ä»¶
+	  $this->addSql  = " arc.arcrank > -1 ";
+		
+		if($cfg_list_son=='N'){
+				$this->addSql .= " And (arc.typeid='".$this->TypeID."' or arc.typeid2='".$this->TypeID."') ";
+		}else{
+				$idlist = $this->TypeLink->GetSunID($this->TypeID,'',$this->Fields['channeltype'],true);
+				if(ereg(',',$idlist)){	 
+					$this->addSql .= " And (arc.typeid in ($idlist) Or arc.typeid2='{$this->TypeID}') ";
+				}else{  
+					$this->addSql .= " And (arc.typeid='{$this->TypeID}' Or arc.typeid2='{$this->TypeID}') ";
+				}
+		}
+		
+		if($this->areaid2 != 0){
+				$this->addSql .= "and arc.areaid2=$this->areaid2 ";
+		}else if($this->areaid != 0){
+				$this->addSql .= "and arc.areaid=$this->areaid ";
+    }
+    
+		if($this->sectorid2 != 0){
+				$this->addSql .= "and arc.sectorid2=$this->sectorid2 ";
+		}else if($this->sectorid != 0){
+				$this->addSql .= "and arc.sectorid=$this->sectorid ";
+		}
+		
+		if($this->smalltypeid != 0){
+				$this->addSql .= "and arc.smalltypeid=$this->smalltypeid ";
+		}
+		
+		if($this->StartTime>0){
+				$this->addSql .= " And arc.senddate>'".$this->StartTime."'";
+		}
+		
+		if($this->totalresult==-1)
  		{
- 		  $addSql  = " arcrank > -1 ";
- 		  
- 		  if($cfg_list_son=='·ñ') $addSql .= " And (typeid='".$this->TypeID."' or typeid2='".$this->TypeID."') ";
- 		  else $addSql .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",$this->Fields['channeltype'])." Or #@__archives.typeid2='".$this->TypeID."') ";
- 		  
- 		  if($this->StartTime>0) $addSql .= " And senddate>'".$this->StartTime."'";
- 		  $cquery = "Select count(*) as dd From #@__archives where $addSql";
- 			$row = $this->dsql->GetOne($cquery);
- 			if(is_array($row)) $this->TotalResult = $row['dd'];
- 			else $this->TotalResult = 0;
- 		}
- 		
- 		//³õÊ¼»¯ÁĞ±íÄ£°å£¬²¢Í³¼ÆÒ³Ãæ×ÜÊı
+		   $cquery = "Select count(*) as dd From `{$this->maintable}` arc where ".$this->addSql;
+		   $row = $this->dsql->GetOne($cquery);
+		   $this->totalresult = $row['dd'];
+		}
+ 		//åˆå§‹åŒ–åˆ—è¡¨æ¨¡æ¿ï¼Œå¹¶ç»Ÿè®¡é¡µé¢æ€»æ•°
  		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$this->TypeLink->TypeInfos['templist'];
  		$tempfile = str_replace("{tid}",$this->TypeID,$tempfile);
  		$tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
- 		if(!file_exists($tempfile)){
- 	  	  $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_default.htm";
- 	  }
+		if(!file_exists($tempfile)){
+			$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_article.htm";
+		}
  		if(!file_exists($tempfile)||!is_file($tempfile)){
- 			echo "Ä£°åÎÄ¼ş£º'".$tempfile."' ²»´æÔÚ£¬ÎŞ·¨½âÎöÎÄµµ£¡";
+ 			echo "æ¨¡æ¿æ–‡ä»¶ï¼š'".$tempfile."' ä¸å­˜åœ¨ï¼Œæ— æ³•è§£ææ–‡æ¡£ï¼";
  			exit();
  		}
  		$this->dtp->LoadTemplate($tempfile);
- 		$ctag = $this->dtp->GetTag("page");
- 		if(!is_object($ctag)){ $ctag = $this->dtp->GetTag("list"); }
+ 		$this->TempletsFile = ereg_replace("^".$GLOBALS['cfg_basedir'],'',$tempfile);
+ 		$ctag = $this->dtp->GetTag('page');
+ 		if(!is_object($ctag)){ $ctag = $this->dtp->GetTag('list'); }
  		if(!is_object($ctag)) $this->PageSize = 20;
  		else{
- 		  if($ctag->GetAtt("pagesize")!="") $this->PageSize = $ctag->GetAtt("pagesize");
+ 		  if($ctag->GetAtt("pagesize")!='') $this->PageSize = $ctag->GetAtt('pagesize');
       else $this->PageSize = 20;
     }
-    $this->TotalPage = ceil($this->TotalResult/$this->PageSize);
+    $this->TotalPage = ceil($this->totalresult/$this->PageSize);
  	}
  	//------------------
- 	//ÁĞ±í´´½¨HTML
+ 	//åˆ—è¡¨åˆ›å»ºHTML
  	//------------------
  	function MakeHtml($startpage=1,$makepagesize=0)
  	{
  		if(empty($startpage)) $startpage = 1;
- 		//´´½¨·âÃæÄ£°åÎÄ¼ş
+ 		//åˆ›å»ºå°é¢æ¨¡æ¿æ–‡ä»¶
  		if($this->TypeLink->TypeInfos['isdefault']==-1){
- 			echo "Õâ¸öÀàÄ¿ÊÇ¶¯Ì¬ÀàÄ¿£¡";
+ 			echo "è¿™ä¸ªç±»ç›®æ˜¯åŠ¨æ€ç±»ç›®ï¼";
  			return "";
  	  }
- 	  //µ¥¶ÀÒ³Ãæ
+ 	  //å•ç‹¬é¡µé¢
  		else if($this->TypeLink->TypeInfos['ispart']>0){
  			$reurl = $this->MakePartTemplets();
  			$this->Close();
  			return $reurl;
  		}
-    
+
  		$this->CountRecord();
- 		//³õ²½¸ø¹Ì¶¨ÖµµÄ±ê¼Ç¸³Öµ
+ 		//åˆæ­¥ç»™å›ºå®šå€¼çš„æ ‡è®°èµ‹å€¼
  		$this->ParseTempletsFirst();
- 		$totalpage = ceil($this->TotalResult/$this->PageSize);
+ 		$totalpage = ceil($this->totalresult/$this->PageSize);
 
  		if($totalpage==0) $totalpage = 1;
- 		
+
  		CreateDir($this->Fields['typedir'],$this->Fields['siterefer'],$this->Fields['sitepath']);
- 		
+
  		$murl = "";
- 		
+
  		if($makepagesize>0) $endpage = $startpage+$makepagesize;
  		else $endpage = ($totalpage+1);
- 		
+
  		if($endpage>($totalpage+1)) $endpage = $totalpage;
- 		
- 		for($this->PageNo=$startpage;$this->PageNo<$endpage;$this->PageNo++)
+
+ 		$ttmk = 0;
+ 		for($this->pageno=$startpage;$this->pageno<$endpage;$this->pageno++)
  		{
- 		  $this->ParseDMFields($this->PageNo,1);
+ 		  $ttmk++;
+ 		  $this->ParseDMFields($this->pageno,1);
  	    $makeFile = $this->GetMakeFileRule($this->Fields['ID'],"list",$this->Fields['typedir'],"",$this->Fields['namerule2']);
- 	    $makeFile = str_replace("{page}",$this->PageNo,$makeFile);
+ 	    $makeFile = str_replace("{page}",$this->pageno,$makeFile);
  	    $murl = $makeFile;
  	    if(!ereg("^/",$makeFile)) $makeFile = "/".$makeFile;
  	    $makeFile = $this->GetTruePath().$makeFile;
  	    $makeFile = ereg_replace("/{1,}","/",$makeFile);
  	    $murl = $this->GetTrueUrl($murl);
  	    $this->dtp->SaveTo($makeFile);
- 	    echo "³É¹¦´´½¨£º<a href='$murl' target='_blank'>$murl</a><br/>";
+ 	    //echo "æˆåŠŸåˆ›å»ºï¼š<a href='$murl' target='_blank'>$murl</a><br/>";
  	  }
+ 	  echo "å…±åˆ›å»ºï¼š($ttmk) æ–‡ä»¶ <a href='$murl' target='_blank'>$murl</a><br/>";
  	  if($startpage==1)
  	  {
- 	    //Èç¹ûÁĞ±íÆôÓÃ·âÃæÎÄ¼ş£¬¸´ÖÆÕâ¸öÎÄ¼şµÚÒ»Ò³
- 	    if($this->TypeLink->TypeInfos['isdefault']==1 
+ 	    //å¦‚æœåˆ—è¡¨å¯ç”¨å°é¢æ–‡ä»¶ï¼Œå¤åˆ¶è¿™ä¸ªæ–‡ä»¶ç¬¬ä¸€é¡µ
+ 	    if($this->TypeLink->TypeInfos['isdefault']==1
  	      && $this->TypeLink->TypeInfos['ispart']==0)
  	    {
  	  	  $onlyrule = $this->GetMakeFileRule($this->Fields['ID'],"list",$this->Fields['typedir'],"",$this->Fields['namerule2']);
@@ -168,7 +267,7 @@ class ListView
  	  	  $list_1 = $this->GetTruePath().$onlyrule;
  	  	  $murl = $this->Fields['typedir']."/".$this->Fields['defaultname'];
  	  	  $indexname = $this->GetTruePath().$murl;
- 	  	  echo "¸´ÖÆ£º$onlyrule Îª ".$this->Fields['defaultname']." <br />";
+ 	  	  echo "å¤åˆ¶ï¼š$onlyrule ä¸º ".$this->Fields['defaultname']." <br />";
  	  	  copy($list_1,$indexname);
  	    }
  	  }
@@ -176,7 +275,7 @@ class ListView
  		return $murl;
  	}
  	//------------------
- 	//ÏÔÊ¾ÁĞ±í
+ 	//æ˜¾ç¤ºåˆ—è¡¨
  	//------------------
  	function Display()
  	{
@@ -185,7 +284,7 @@ class ListView
  			return ;
  		}
  		$this->CountRecord();
- 		if((empty($this->PageNo) || $this->PageNo==1)
+ 		if((empty($this->pageno) || $this->pageno==1)
  		 && $this->TypeLink->TypeInfos['ispart']==1)
  		{
  			$tmpdir = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir'];
@@ -193,17 +292,19 @@ class ListView
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			$tempfile = $tmpdir."/".$tempfile;
  			if(!file_exists($tempfile)){
- 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+ 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_article.htm";
  	    }
  			$this->dtp->LoadTemplate($tempfile);
+ 			$this->TempletsFile = ereg_replace("^".$GLOBALS['cfg_basedir'],'',$tempfile);
  		}
+ 		$this->LoadDmCatCache();
  		$this->ParseTempletsFirst();
- 		$this->ParseDMFields($this->PageNo,0);
+ 		$this->ParseDMFields($this->pageno,0);
  	  $this->Close();
  		$this->dtp->Display();
  	}
  	//------------------
- 	//´´½¨µ¥¶ÀÄ£°åÒ³Ãæ
+ 	//åˆ›å»ºå•ç‹¬æ¨¡æ¿é¡µé¢
  	//------------------
  	function MakePartTemplets()
  	{
@@ -214,14 +315,14 @@ class ListView
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			$tempfile = $tmpdir."/".$tempfile;
  			if(!file_exists($tempfile)){
- 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+ 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_article.htm";
  	    }
  			$this->PartView->SetTemplet($tempfile);
  		}else if($this->Fields['ispart']==2){
  			$tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempone']);
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			if(is_file($tmpdir."/".$tempfile)) $this->PartView->SetTemplet($tmpdir."/".$tempfile);
- 			else{ $this->PartView->SetTemplet("ÕâÊÇÃ»ÓĞÊ¹ÓÃÄ£°åµÄµ¥¶ÀÒ³£¡","string"); $nmfa = "1";}
+ 			else{ $this->PartView->SetTemplet("è¿™æ˜¯æ²¡æœ‰ä½¿ç”¨æ¨¡æ¿çš„å•ç‹¬é¡µï¼","string"); $nmfa = "1";}
  		}
  		CreateDir($this->Fields['typedir']);
  		$makeUrl = $this->GetMakeFileRule($this->Fields['ID'],"index",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
@@ -235,7 +336,7 @@ class ListView
  		return $this->GetTrueUrl($makeUrl);
  	}
  	//------------------
- 	//ÏÔÊ¾µ¥¶ÀÄ£°åÒ³Ãæ
+ 	//æ˜¾ç¤ºå•ç‹¬æ¨¡æ¿é¡µé¢
  	//------------------
  	function DisplayPartTemplets()
  	{
@@ -246,14 +347,14 @@ class ListView
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			$tempfile = $tmpdir."/".$tempfile;
  			if(!file_exists($tempfile)){
- 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+ 	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_article.htm";
  	    }
  			$this->PartView->SetTemplet($tempfile);
  		}else if($this->Fields['ispart']==2){
  			$tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempone']);
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			if(is_file($tmpdir."/".$tempfile)) $this->PartView->SetTemplet($tmpdir."/".$tempfile);
- 			else{ $this->PartView->SetTemplet("ÕâÊÇÃ»ÓĞÊ¹ÓÃÄ£°åµÄµ¥¶ÀÒ³£¡","string"); $nmfa = 1; }
+ 			else{ $this->PartView->SetTemplet("è¿™æ˜¯æ²¡æœ‰ä½¿ç”¨æ¨¡æ¿çš„å•ç‹¬é¡µï¼","string"); $nmfa = 1; }
  		}
 	  CreateDir($this->Fields['typedir']);
  		$makeUrl = $this->GetMakeFileRule($this->Fields['ID'],"index",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
@@ -266,7 +367,7 @@ class ListView
 	  $this->Close();
  	}
  	//----------------------------
- 	//»ñµÃÕ¾µãµÄÕæÊµ¸ùÂ·¾¶
+ 	//è·å¾—ç«™ç‚¹çš„çœŸå®æ ¹è·¯å¾„
  	//----------------------------
  	function GetTruePath(){
  		if($this->Fields['siterefer']==1) $truepath = ereg_replace("/{1,}","/",$GLOBALS["cfg_basedir"]."/".$this->Fields['sitepath']);
@@ -275,174 +376,28 @@ class ListView
 	  return $truepath;
  	}
  	//----------------------------
- 	//»ñµÃÕæÊµÁ¬½ÓÂ·¾¶
+ 	//è·å¾—çœŸå®è¿æ¥è·¯å¾„
  	//----------------------------
  	function GetTrueUrl($nurl){
  		if($this->Fields['moresite']==1){ $nurl = ereg_replace("/$","",$this->Fields['siteurl']).$nurl; }
  		return $nurl;
  	}
  	//--------------------------------
- 	//½âÎöÄ£°å£¬¶Ô¹Ì¶¨µÄ±ê¼Ç½øĞĞ³õÊ¼¸øÖµ
+ 	//è§£ææ¨¡æ¿ï¼Œå¯¹å›ºå®šçš„æ ‡è®°è¿›è¡Œåˆå§‹ç»™å€¼
  	//--------------------------------
  	function ParseTempletsFirst()
  	{
- 	  //½âÎöÄ£°å
- 		//-------------------------
- 		if(is_array($this->dtp->CTags))
- 		{
- 		 foreach($this->dtp->CTags as $tagid=>$ctag){
- 			 $tagname = $ctag->GetName();
- 			 if($tagname=="field"){ //Àà±ğµÄÖ¸¶¨×Ö¶Î
- 					if(isset($this->Fields[$ctag->GetAtt('name')]))
- 					  $this->dtp->Assign($tagid,$this->Fields[$ctag->GetAtt('name')]);
- 					else
- 					  $this->dtp->Assign($tagid,"");
- 			 }
- 			 else if($tagname=="onetype"||$tagname=="type"){
- 				 $typeid = $ctag->GetAtt('typeid');
- 				 if($typeid=="") $typeid = 0;
- 				 if($typeid=="") $typeid = $this->TypeID;
- 				 $this->dtp->Assign($tagid,
- 				   $this->PartView->GetOneType($typeid,$ctag->GetInnerText())
- 				 );
- 			 }else if($tagname=="channel"){ //ÏÂ¼¶ÆµµÀÁĞ±í
- 				  $typeid = -1;
- 				  if($ctag->GetAtt("typeid")=="") $typeid=0;
- 				  if($this->TypeID > 0 && $typeid!=0){
- 				  	$typeid = $this->TypeID; $reid = $this->TypeLink->TypeInfos['reID'];
- 				  }
- 				  else{ $typeid = $ctag->GetAtt("typeid"); $reid=0; }
- 				  
- 				  $this->dtp->Assign($tagid,
- 				      $this->TypeLink->GetChannelList(
- 				          $typeid,$reid,$ctag->GetAtt("row"),
- 				          $ctag->GetAtt("type"),$ctag->GetInnerText(),
- 				          $ctag->GetAtt("col"),$ctag->GetAtt("tablewidth"),
- 				          $ctag->GetAtt("currentstyle")
- 				      )
- 				  );
- 			 }
- 			 //ÈÈÃÅ¹Ø¼ü×Ö
- 			 else if($tagname=="hotwords"){
- 				 $this->dtp->Assign($tagid,
- 				 GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
- 			 }
- 			 //×Ô¶¨Òå±ê¼Ç
- 			 else if($tagname=="mytag"){
- 				 $this->dtp->Assign($tagid,
- 				   $this->PartView->GetMyTag($this->TypeID,$ctag->GetAtt("name"),$ctag->GetAtt("ismake"))
- 				 );
- 			 }
- 			 //¹ã¸æ´úÂë
- 			 else if($tagname=="myad"){
- 				 $this->dtp->Assign($tagid,
- 				   $this->PartView->GetMyAd($this->TypeID,$ctag->GetAtt("name"))
- 				 );
- 			 }
- 			 //ÆµµÀÏÂ¼¶À¸Ä¿ÎÄµµÁĞ±í
- 			 else if($tagname=="channelartlist"){
- 				 //Àà±ğID
- 				 if(trim($ctag->GetAtt('typeid'))=="" && $this->TypeID!=0){  $typeid = $this->TypeID;  }
- 				 else{ $typeid = trim( $ctag->GetAtt('typeid') ); }
- 				 $this->dtp->Assign($tagid,
- 				     $this->PartView->GetChannelList($typeid,$ctag->GetAtt('col'),$ctag->GetAtt('tablewidth'),$ctag->GetInnerText())
- 				 );
- 			 }
- 			 //Í¶Æ±
- 			 else if($tagname=="vote"){
- 				 $this->dtp->Assign($tagid,
-				    $this->PartView->GetVote(
-				      $ctag->GetAtt("id"),$ctag->GetAtt("lineheight"),
-              $ctag->GetAtt("tablewidth"),$ctag->GetAtt("titlebgcolor"),
-              $ctag->GetAtt("titlebackground"),$ctag->GetAtt("tablebgcolor")
-            )
-			   );
- 			 }
- 			 //ÓÑÇéÁ´½Ó
- 			 //------------------
- 			 else if($tagname=="friendlink"||$tagname=="flink")
- 			 {
- 				 $this->dtp->Assign($tagid,
- 				    $this->PartView->GetFriendLink(
- 				     $ctag->GetAtt("type"),$ctag->GetAtt("row"),$ctag->GetAtt("col"),
- 				     $ctag->GetAtt("titlelen"),$ctag->GetAtt("tablestyle")
- 				   )
- 				 );
- 			 }
- 			 //Õ¾µãĞÂÎÅ
- 			 //---------------------
- 			 else if($tagname=="mynews")
- 			 {
- 				 $this->dtp->Assign($tagid,
- 				   $this->PartView->GetMyNews(
- 				    $ctag->GetAtt("row"),$ctag->GetAtt("titlelen"),$ctag->GetInnerText()
- 				   )
- 				 );
- 			 }
- 			 //µ÷ÓÃÂÛÌ³Ö÷Ìâ
- 			 //----------------
- 			 else if($tagname=="loop")
- 			 {
- 				 $this->dtp->Assign($tagid,
-				   $this->PartView->GetTable(
-					   $ctag->GetAtt("table"),$ctag->GetAtt("row"),
-					   $ctag->GetAtt("sort"),$ctag->GetAtt("if"),$ctag->GetInnerText()
-					 )
-			   );
- 			 }
- 			 else if($tagname=="arclist"||$tagname=="artlist"||$tagname=="likeart"||$tagname=="hotart"
- 			 ||$tagname=="imglist"||$tagname=="imginfolist"||$tagname=="coolart"||$tagname=="specart")
- 			 { 
- 			 	  //ÌØ¶¨µÄÎÄÕÂÁĞ±í
- 				  $channelid = $ctag->GetAtt("channelid");
- 				  if($tagname=="imglist"||$tagname=="imginfolist"){ $listtype = "image"; }
- 				  else if($tagname=="specart"){ $channelid = -1; $listtype=""; }
- 				  else if($tagname=="coolart"){ $listtype = "commend"; }
- 				  else{ $listtype = $ctag->GetAtt('type'); }
- 				  
- 				  //¶ÔÏàÓ¦µÄ±ê¼ÇÊ¹ÓÃ²»Í¬µÄÄ¬ÈÏinnertext
- 				  if(trim($ctag->GetInnerText())!="") $innertext = $ctag->GetInnerText();
- 				  else if($tagname=="imglist") $innertext = GetSysTemplets("part_imglist.htm");
- 				  else if($tagname=="imginfolist") $innertext = GetSysTemplets("part_imginfolist.htm");
- 				  else $innertext = GetSysTemplets("part_arclist.htm");
- 				  
- 				  if($tagname=="hotart") $orderby = "click";
- 				  else $orderby = $ctag->GetAtt('orderby');
- 				  
- 				  //¼æÈİtitlelength
- 				  if($ctag->GetAtt('titlelength')!="") $titlelen = $ctag->GetAtt('titlelength');
- 				  else $titlelen = $ctag->GetAtt('titlelen');
- 				
- 				  //¼æÈİinfolength
- 				  if($ctag->GetAtt('infolength')!="") $infolen = $ctag->GetAtt('infolength');
- 				  else $infolen = $ctag->GetAtt('infolen');
- 				  
- 				  $typeid = trim($ctag->GetAtt("typeid"));
- 				  if(empty($typeid)) $typeid = $this->TypeID;
- 				  
- 				  $this->dtp->Assign($tagid,
- 				      $this->PartView->GetArcList(
- 				         $typeid,$ctag->GetAtt("row"),
- 				         $ctag->GetAtt("col"),$titlelen,$infolen,
- 				         $ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
- 				         $listtype,$orderby,$ctag->GetAtt("keyword"),
- 				         $innertext,$ctag->GetAtt("tablewidth"),
- 				         0,"",$channelid,$ctag->GetAtt("limit"),
- 				         $ctag->GetAtt("att"),$ctag->GetAtt("orderway"),$ctag->GetAtt("subday"),-1,$ctag->GetAtt("ismember")
- 				      )
- 				  );
- 			  }
- 			}//½áÊøÄ£°åÑ­»·
- 		}
+ 	   //å¯¹å…¬ç”¨æ ‡è®°çš„è§£æï¼Œè¿™é‡Œå¯¹å¯¹è±¡çš„è°ƒç”¨å‡æ˜¯ç”¨å¼•ç”¨è°ƒç”¨çš„ï¼Œå› æ­¤è¿ç®—åä¼šè‡ªåŠ¨æ”¹å˜ä¼ é€’çš„å¯¹è±¡çš„å€¼
+ 	   MakePublicTag($this,$this->dtp,$this->PartView,$this->TypeLink,$this->TypeID,0,0);
  	}
  	//--------------------------------
- 	//½âÎöÄ£°å£¬¶ÔÄÚÈİÀïµÄ±ä¶¯½øĞĞ¸³Öµ
+ 	//è§£ææ¨¡æ¿ï¼Œå¯¹å†…å®¹é‡Œçš„å˜åŠ¨è¿›è¡Œèµ‹å€¼
  	//--------------------------------
- 	function ParseDMFields($PageNo,$ismake=1)
+ 	function ParseDMFields($pageno,$ismake=1)
  	{
  		foreach($this->dtp->CTags as $tagid=>$ctag){
  			if($ctag->GetName()=="list"){
- 				$limitstart = ($this->PageNo-1) * $this->PageSize;
+ 				$limitstart = ($this->pageno-1) * $this->PageSize;
  				$row = $this->PageSize;
  				if(trim($ctag->GetInnerText())==""){ $InnerText = GetSysTemplets("list_fulllist.htm"); }
  				else{ $InnerText = trim($ctag->GetInnerText()); }
@@ -471,10 +426,32 @@ class ListView
  				if($ismake==0) $this->dtp->Assign($tagid,$this->GetPageListDM($list_len,$listitem));
  				else $this->dtp->Assign($tagid,$this->GetPageListST($list_len,$listitem));
  			}
+ 			else if($ctag->GetName()=="area"){
+ 				$areaid = trim($ctag->GetAtt('areaid'));
+
+ 				if(empty($areaid)){
+ 					$areaid = $this->areaid;
+ 				}
+ 				$areaid2 = trim($ctag->GetAtt('areaid2'));
+ 				if(empty($areaid2)){
+ 					$areaid2 = $this->areaid2;
+ 				}
+ 				$sub = trim($ctag->GetAtt('sub'));
+ 				if(empty($sub)){
+ 					$sub = 0;
+ 				}else{
+ 					$sub = 1;
+ 				}
+ 				$this->dtp->Assign($tagid, $this->getarea($areaid, $areaid2,$sub));
+ 			}
+ 			else if($ctag->GetName()=="smalltype"){
+
+ 				$this->dtp->Assign($tagid, $this->getsmalltype());
+ 			}
  	  }
   }
  	//----------------
- 	//»ñµÃÒª´´½¨µÄÎÄ¼şÃû³Æ¹æÔò
+ 	//è·å¾—è¦åˆ›å»ºçš„æ–‡ä»¶åç§°è§„åˆ™
  	//----------------
  	function GetMakeFileRule($typeid,$wname,$typedir,$defaultname,$namerule2)
   {
@@ -484,220 +461,303 @@ class ListView
 	  {  return $typedir."/".$defaultname; }
 	  else
 	  {
-	    $namerule2 = str_replace("{tid}",$typeid,$namerule2); 
-			$namerule2 = str_replace("{typedir}",$typedir,$namerule2); 
+	    $namerule2 = str_replace("{tid}",$typeid,$namerule2);
+			$namerule2 = str_replace("{typedir}",$typedir,$namerule2);
 	    return $namerule2;
 	  }
   }
- 	//----------------------------------
-  //»ñµÃÒ»¸öµ¥ÁĞµÄÎÄµµÁĞ±í
-  //---------------------------------
-  function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
-  $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$innertext="",$tablewidth="100",$ismake=1,$orderWay='desc')
-  {
-    global $cfg_list_son;
-    $typeid=$this->TypeID;
-		if($row=="") $row = 10;
-		if($limitstart=="") $limitstart = 0;
-		if($titlelen=="") $titlelen = 100;
-		if($infolen=="") $infolen = 250;
-    if($imgwidth=="") $imgwidth = 120;
-    if($imgheight=="") $imgheight = 120;
-    if($listtype=="") $listtype = "all";
-		if($orderby=="") $orderby="default";
-		else $orderby=strtolower($orderby);
-		if($orderWay=='') $orderWay = 'desc';
-		$tablewidth = str_replace("%","",$tablewidth);
-		if($tablewidth=="") $tablewidth=100;
-		if($col=="") $col=1;
-		$colWidth = ceil(100/$col); 
-		$tablewidth = $tablewidth."%";
-		$colWidth = $colWidth."%";
-		$innertext = trim($innertext);
-		if($innertext=="") $innertext = GetSysTemplets("list_fulllist.htm");
-		//°´²»Í¬Çé¿öÉè¶¨SQLÌõ¼ş
-		$orwhere = " arc.arcrank > -1 ";
-		if($this->StartTime>0) $orwhere .= " And arc.senddate>'".$this->StartTime."'";
-		//Àà±ğIDµÄÌõ¼ş
-		
-		if($cfg_list_son=='·ñ') $orwhere .= " And (arc.typeid='".$this->TypeID."' or arc.typeid2='".$this->TypeID."') ";
-		else $orwhere .= " And (".$this->TypeLink->GetSunID($this->TypeID,"arc",$this->Fields['channeltype'])." Or arc.typeid2='".$this->TypeID."') ";
-		
-		//ÅÅĞò·½Ê½
-		$ordersql = "";
-		if($orderby=="senddate") $ordersql=" order by arc.senddate $orderWay";
-		else if($orderby=="pubdate") $ordersql=" order by arc.pubdate $orderWay";
-    else if($orderby=="id") $ordersql="  order by arc.ID $orderWay";
-    else if($orderby=="hot"||$orderby=="click") $ordersql = " order by arc.click $orderWay";
-		else if($orderby=="lastpost") $ordersql = "  order by arc.lastpost $orderWay";
-    else if($orderby=="postnum") $ordersql = "  order by arc.postnum $orderWay";
-    else if($orderby=="rand") $ordersql = "  order by rand()";
-		else $ordersql=" order by arc.sortrank $orderWay";
-		
-		//»ñµÃ¸½¼Ó±íµÄÏà¹ØĞÅÏ¢
-		//-----------------------------
-		$addtable  = $this->ChannelUnit->ChannelInfos['addtable'];
-		if($addtable!=""){
-			$addJoin = " left join $addtable on arc.ID = ".$addtable.".aid ";
-			$addField = "";
-			$fields = explode(",",$this->ChannelUnit->ChannelInfos['listadd']);
-			foreach($fields as $k=>$v){ $nfields[$v] = $k; }
-			foreach($this->ChannelUnit->ChannelFields as $k=>$arr){
-				if(isset($nfields[$k])){
-				  if($arr['rename']!="")
-				  	$addField .= ",".$addtable.".".$k." as ".$arr['rename'];
-				  else
-				  	$addField .= ",".$addtable.".".$k;
-				}
+//è·å–å°åˆ†ç±»æ•°æ®
+function getsmalltype()
+{
+	$str = '';
+	if($this->mysmalltypes){
+		//print_r($this->mysmalltypes);
+		$str = '<div class="c1"><strong>åˆ†ç±»ï¼š</strong>';
+		foreach($this->mysmalltypes as $mysmalltype){
+			if($mysmalltype['id'] == $this->smalltypeid){
+				$str .= '<strong style="color:green">'.$mysmalltype['name'].'</strong> ';
+				continue;
 			}
+			$str .= '<a href="list.php?tid='.$this->TypeID;
+
+			if($this->areaid2){
+				$str .= '&amp;areaid2='.$this->areaid2;
+			}elseif($this->areaid){
+				$str .= '&amp;areaid='.$this->areaid;
+			}
+			$str .= '&amp;smalltypeid='.$mysmalltype['id'].'">'.$mysmalltype['name']."</a>\n";
+
 		}
-		else{
-			$addField = "";
-			$addJoin = "";
+		$str .= '</div>';
+	}
+	return $str;
+}
+
+
+
+
+//è·å¾—åœ°åŒºæ•°æ®
+function getarea($areaid, $areaid2,$sub=0)
+{
+	$str = '';
+	$topareadata = '';
+	foreach($this->topareas as $toparea){
+		if($sub){
+			$topareadata .= '<option value="'.$toparea['id'].'">'.$toparea['name']."</option>\n";
+			continue;
 		}
-		//
-		//----------------------------
-		$query = "Select arc.ID,arc.title,arc.iscommend,arc.color,
-		arc.typeid,arc.ismake,arc.money,arc.description,arc.shorttitle,
-		arc.memberid,arc.writer,arc.postnum,arc.lastpost,
-		arc.pubdate,arc.senddate,arc.arcrank,arc.click,arc.litpic,
-		tp.typedir,tp.typename,tp.isdefault,tp.defaultname,
-		tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl 
-		$addField
-		from #@__archives arc 
-		left join #@__arctype tp on arc.typeid=tp.ID
-		$addJoin
-		where $orwhere $ordersql limit $limitstart,$row";
-		$this->dsql->SetQuery($query);
-		$this->dsql->Execute("al");
-    $artlist = "";
-    if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
-    $this->dtp2->LoadSource($innertext);
-    $GLOBALS['autoindex'] = 0;
-    for($i=0;$i<$row;$i++)
-		{
-       if($col>1) $artlist .= "<tr>\r\n";
-       for($j=0;$j<$col;$j++)
-			 {
-         if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
-         if($row = $this->dsql->GetArray("al"))
-         {
-           $GLOBALS['autoindex']++;
-           //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î                        
-           $row['id'] =  $row['ID'];
-           $row['arcurl'] = $this->GetArcUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],$row['typedir'],$row['money']);                             
-           $row['typeurl'] = $this->GetListUrl($row['typeid'],$row['typedir'],$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],"abc");
-          
-           if($ismake==0 && $GLOBALS['cfg_multi_site']=='ÊÇ'){
-           	 if($row["siteurl"]=="") $row["siteurl"] = $GLOBALS['cfg_mainsite'];
-           	 if(!eregi("^http://",$row['picname'])){
-           	 	  $row['litpic'] = $row['siteurl'].$row['litpic'];
-           	 	  $row['picname'] = $row['litpic'];
-           	 }
-           }
-           
-           $row['description'] = cnw_left($row['description'],$infolen);
-           if($row['litpic']=="") $row['litpic'] = $GLOBALS['cfg_plus_dir']."/img/dfpic.gif";
-           $row['picname'] = $row['litpic']; 
-           $row['info'] = $row['description'];
-           $row['filename'] = $row['arcurl'];
-           $row['stime'] = GetDateMK($row['pubdate']);
-           $row['textlink'] = "<a href='".$row['filename']."' title='".str_replace("'","",$row['title'])."'>".$row['title']."</a>";
-           
-           if($row['typeid']!=$this->Fields['ID']){ $row['typelink'] = "<a href='".$row['typeurl']."'>[".$row['typename']."]</a>"; }
-           else{ $row['typelink']=""; }
-           
-           $row['imglink'] = "<a href='".$row['filename']."'><img src='".$row['picname']."' border='0' width='$imgwidth' height='$imgheight' alt='".str_replace("'","",$row['title'])."'></a>";
-           $row['image'] = "<img src='".$row['picname']."' border='0' width='$imgwidth' height='$imgheight' alt='".str_replace("'","",$row['title'])."'>";
-           $row['phpurl'] = $GLOBALS['cfg_plus_dir'];
-           $row['plusurl'] = $GLOBALS['cfg_plus_dir'];
- 		       $row['templeturl'] = $GLOBALS['cfg_templets_dir'];
- 		       $row['memberurl'] = $GLOBALS['cfg_member_dir'];
- 		       $row['title'] = cn_substr($row['title'],$titlelen);
-           if($row['color']!="") $row['title'] = "<font color='".$row['color']."'>".$row['title']."</font>";
-           if($row['iscommend']==5||$row['iscommend']==16) $row['title'] = "<b>".$row['title']."</b>";
-           //±àÒë¸½¼Ó±íÀïµÄÊı¾İ
-           foreach($row as $k=>$v){
- 		  	      if(ereg("[A-Z]",$k)) $row[strtolower($k)] = $v;
- 		       }
-           foreach($this->ChannelUnit->ChannelFields as $k=>$arr){
- 		  	      if(isset($row[$k])) $row[$k] = $this->ChannelUnit->MakeField($k,$row[$k]);
- 		  	   }
-           //---------------------------
-           if(is_array($this->dtp2->CTags)){
-       	     foreach($this->dtp2->CTags as $k=>$ctag){
-       		 	   if(isset($row[$ctag->GetName()])) $this->dtp2->Assign($k,$row[$ctag->GetName()]);
-       		 	   else $this->dtp2->Assign($k,"");
-       	    }
-           }
-           $artlist .= $this->dtp2->GetResult();
-         }//if hasRow
-         else{
-         	 $artlist .= "";
-         }
-         if($col>1) $artlist .= "	</td>\r\n";
-       }//Loop Col
-       if($col>1) $i += $col - 1;
-       if($col>1) $artlist .= "	</tr>\r\n";
-     }//Loop Line
-     if($col>1) $artlist .= "</table>\r\n";
-     $this->dsql->FreeResult("al");
-     return $artlist;
-  }
+		if($toparea['id'] == $this->areaid){
+			$str .= '<strong style="color:green">'.$toparea['name'].'</strong> ';
+			continue;
+		}
+		$str .= '<a href="list.php?tid='.$this->TypeID;
+		if($this->smalltypeid){
+			$str .= '&amp;smalltypeid='.$this->smalltypeid;
+		}
+		$str .= '&amp;areaid='.$toparea['id'].'">'.$toparea['name'].'</a> ';
+
+	}
+	$str1 = '';
+	if($areaid && is_array($this->subareas[$areaid])){
+		
+		foreach($this->subareas[$areaid] as $subarea){
+		if($subarea['id'] == $this->areaid2){
+			$str1 .= '<strong style="color:green">'.$subarea['name'].'</strong> ';
+			continue;
+		}
+			$str1 .= '<a href="list.php?tid='.$this->TypeID;
+			if($this->smalltypeid){
+				$str1 .= '&amp;smalltypeid='.$this->smalltypeid;
+			}
+			$str1 .= '&amp;areaid2='.$subarea['id'].'">'.$subarea['name'].'</a> ';
+		}
+	}
+	if($sub)
+	{
+		return $topareadata;
+	}else{
+
+		return '<div class="c1"><strong>åœ°åŒºï¼š</strong>'.$str.'</div><div class="c2">'.$str1.'</div>';
+	}
+}
+
+
+	//----------------------------------
+	//è·å¾—ä¸€ä¸ªå•åˆ—çš„æ–‡æ¡£åˆ—è¡¨
+	//---------------------------------
+	function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
+	$imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$innertext="",$tablewidth="100",$ismake=1,$orderWay='desc')
+	{
+		global $cfg_list_son;
+		$t1 = ExecTime();
+		$typeid=$this->TypeID;
+		
+		if($row=="") $row = 10;
+			if($limitstart=="") $limitstart = 0;
+			if($titlelen=="") $titlelen = 100;
+			if($infolen=="") $infolen = 250;
+			if($imgwidth=="") $imgwidth = 120;
+			if($imgheight=="") $imgheight = 120;
+			if($listtype=="") $listtype = "all";
+			if($orderby=="") $orderby="default";
+			else $orderby=strtolower($orderby);
+			if($orderWay=='') $orderWay = 'desc';
+			$tablewidth = str_replace("%","",$tablewidth);
+			if($tablewidth=="") $tablewidth=100;
+			if($col=="") $col=1;
+			$colWidth = ceil(100/$col);
+			$tablewidth = $tablewidth."%";
+			$colWidth = $colWidth."%";
+			$innertext = trim($innertext);
+			if($innertext=="") $innertext = GetSysTemplets("list_fulllist.htm");
+			//æŒ‰ä¸åŒæƒ…å†µè®¾å®šSQLæ¡ä»¶
+
+			$orwhere = $this->addSql;
+
+			//æ’åºæ–¹å¼
+			//ä¸ºäº†ç¡®ä¿ç³»ç»Ÿç¨³å®šæ€§ï¼Œæœ¬ç‰ˆåœ¨ list æ ‡è®°ä¸­ç¦ç”¨ orderby å±æ€§
+			/*-----------------------------------------
+			if($orderby=="senddate") $ordersql=" order by arc.senddate $orderWay";
+			elseif($orderby=="pubdate") $ordersql=" order by arc.pubdate $orderWay";
+			elseif($orderby=="id") $ordersql="  order by arc.ID $orderWay";
+			elseif($orderby=="hot"||$orderby=="click") $ordersql = " order by arc.click $orderWay";
+			elseif($orderby=="lastpost") $ordersql = "  order by arc.lastpost $orderWay";
+			elseif($orderby=="postnum") $ordersql = "  order by arc.postnum $orderWay";
+			elseif($orderby=="digg") $ordersql = "  order by arc.digg $orderWay";
+		  elseif($orderby=="diggtime") $ordersql = "  order by arc.diggtime $orderWay";
+			else
+			-----------------------------------------*/
+			$ordersql=" order by arc.sortrank $orderWay";
+
+			//è·å¾—é™„åŠ è¡¨çš„ç›¸å…³ä¿¡æ¯
+			//-----------------------------
+			$addtable  = $this->ChannelUnit->ChannelInfos['addtable'];
+			$addfields = trim($this->ChannelUnit->ChannelInfos['listadd']);
+			if($addtable!="" && $addfields!="")
+			{
+				$addJoin = " left join `$addtable` addt on addt.aid = arc.ID ";
+				$addField = "";
+				$fields = explode(",",$addfields);
+				foreach($fields as $k=>$v){
+					$addField .= ",addt.{$v}";
+				}
+			}else
+			{
+				$addField = "";
+				$addJoin = "";
+			}
+
+			$query = "Select arc.*,
+			tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
+			$addField
+			from `{$this->maintable}` arc
+			left join #@__arctype tp on arc.typeid=tp.ID
+			$addJoin
+			where $orwhere $ordersql limit $limitstart,$row";
+
+			$this->dtp2->LoadSource($innertext);
+			if(!is_array($this->dtp2->CTags)) return '';
+			
+			$this->dsql->Execute("al",$query);
+			
+			$t2 = ExecTime();
+			
+			$artlist = "";
+			if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
+			
+			$GLOBALS['autoindex'] = 0;
+			for($i=0;$i<$row;$i++)
+			{
+				if($col>1) $artlist .= "<tr>\r\n";
+				for($j=0;$j<$col;$j++)
+				{
+					if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
+					if($row = $this->dsql->GetArray("al",MYSQL_ASSOC))
+					{
+						$GLOBALS['autoindex']++;
+						//å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
+						$row['id'] =  $row['ID'];
+						$row['arcurl'] = $this->GetArcUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],$row['typedir'],$row['money']);
+						$row['typeurl'] = $this->GetListUrl($row['typeid'],$row['typedir'],$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],"abc");
+
+						if($ismake==0 && $GLOBALS['cfg_multi_site']=='Y')
+						{
+							if($row["siteurl"]=="") $row["siteurl"] = $GLOBALS['cfg_mainsite'];
+							if(!eregi("^http://",$row['picname'])){
+								$row['litpic'] = $row['siteurl'].$row['litpic'];
+								$row['picname'] = $row['litpic'];
+							}
+						}
+
+						$row['description'] = cnw_left($row['description'],$infolen);
+						if($row['litpic']=="") $row['litpic'] = $GLOBALS['cfg_plus_dir']."/img/dfpic.gif";
+						$row['picname'] = $row['litpic'];
+						$row['info'] = $row['description'];
+						$row['filename'] = $row['arcurl'];
+						$row['stime'] = GetDateMK($row['pubdate']);
+						
+						if($this->hasDmCache){
+						  $row['areaidname'] = $row['areaid2name'] = $row['sectoridname'] = $row['sectorid2name'] =$row['smalltypeidname'] = '';
+						  $row['areaidname'] = $this->areas[$row['areaid']];
+						  $row['areaid2name'] = $this->areas[$row['areaid2']];
+						  $row['sectoridname'] = $this->sectors[$row['sectorid']];
+						  $row['sectorid2name'] = $this->sectors[$row['sectorid2']];
+						  $row['smalltypeidname'] = $this->smalltypes[$row['smalltypeid']];
+						}
+
+						$row['textlink'] = "<a href='".$row['filename']."' title='".str_replace("'","",$row['title'])."'>".$row['title']."</a>";
+
+						if($row['typeid'] != $this->Fields['ID']){
+							$row['typelink'] = "<a href='".$row['typeurl']."'>[".$row['typename']."]</a>";
+						}else{
+							$row['typelink']= '';
+						}
+						$row['imglink'] = "<a href='".$row['filename']."'><img src='".$row['picname']."' border='0' width='$imgwidth' height='$imgheight' alt='".str_replace("'","",$row['title'])."'></a>";
+						$row['image'] = "<img src='".$row['picname']."' border='0' width='$imgwidth' height='$imgheight' alt='".str_replace("'","",$row['title'])."'>";
+						$row['phpurl'] = $GLOBALS['cfg_plus_dir'];
+						$row['plusurl'] = $GLOBALS['cfg_plus_dir'];
+						$row['templeturl'] = $GLOBALS['cfg_templets_dir'];
+						$row['memberurl'] = $GLOBALS['cfg_member_dir'];
+						$row['title'] = cn_substr($row['title'],$titlelen);
+						if($row['color']!="") $row['title'] = "<font color='".$row['color']."'>".$row['title']."</font>";
+						if($row['iscommend']==5||$row['iscommend']==16) $row['title'] = "<b>".$row['title']."</b>";
+						//ç¼–è¯‘é™„åŠ è¡¨é‡Œçš„æ•°æ®
+						foreach($row as $k=>$v){ $row[strtolower($k)] = $v; }
+						foreach($this->ChannelUnit->ChannelFields as $k=>$arr){
+							if(isset($row[$k])) $row[$k] = $this->ChannelUnit->MakeField($k,$row[$k]);
+						}
+						foreach($this->dtp2->CTags as $k=>$ctag){
+								@$this->dtp2->Assign($k,$row[$ctag->GetName()]);
+						}
+						$artlist .= $this->dtp2->GetResult();
+					}//if hasRow
+					if($col>1) $artlist .= "	</td>\r\n";
+				}//Loop Col
+				if($col>1) $i += $col - 1;
+				if($col>1) $artlist .= "	</tr>\r\n";
+		}//Loop Line
+		if($col>1) $artlist .= "</table>\r\n";
+		$this->dsql->FreeResult("al");
+		//$t3 = ExecTime();
+		//echo ($t3-$t2)."<br>";
+		return $artlist;
+	}
   //---------------------------------
-  //»ñÈ¡¾²Ì¬µÄ·ÖÒ³ÁĞ±í
+  //è·å–é™æ€çš„åˆ†é¡µåˆ—è¡¨
   //---------------------------------
 	function GetPageListST($list_len,$listitem="info,index,end,pre,next,pageno")
 	{
 		$prepage="";
 		$nextpage="";
-		$prepagenum = $this->PageNo-1;
-		$nextpagenum = $this->PageNo+1;
+		$prepagenum = $this->pageno-1;
+		$nextpagenum = $this->pageno+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
-		$totalpage = ceil($this->TotalResult/$this->PageSize);
-		if($totalpage<=1 && $this->TotalResult>0) return "¹²1Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		if($this->TotalResult == 0) return "¹²0Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		$maininfo = " ¹²{$totalpage}Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼ ";
+		$totalpage = ceil($this->totalresult/$this->PageSize);
+		if($totalpage<=1 && $this->totalresult>0) return "å…±1é¡µ/".$this->totalresult."æ¡";
+		if($this->totalresult == 0) return "å…±0é¡µ/".$this->totalresult."æ¡";
+		$maininfo = " å…±{$totalpage}é¡µ/".$this->totalresult."æ¡ ";
 		$purl = $this->GetCurUrl();
-		
+
 		$tnamerule = $this->GetMakeFileRule($this->Fields['ID'],"list",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
 		$tnamerule = ereg_replace('^(.*)/','',$tnamerule);
-		//»ñµÃÉÏÒ»Ò³ºÍÖ÷Ò³µÄÁ´½Ó
-		if($this->PageNo != 1){
-			$prepage.="<a href='".str_replace("{page}",$prepagenum,$tnamerule)."'>ÉÏÒ»Ò³</a>\r\n";
-			$indexpage="<a href='".str_replace("{page}",1,$tnamerule)."'>Ê×Ò³</a>\r\n";
-		}else{ $indexpage="Ê×Ò³\r\n"; }	
-		//ÏÂÒ»Ò³,Î´Ò³µÄÁ´½Ó
-		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<a href='".str_replace("{page}",$nextpagenum,$tnamerule)."'>ÏÂÒ»Ò³</a>\r\n";
-			$endpage="<a href='".str_replace("{page}",$totalpage,$tnamerule)."'>Ä©Ò³</a>\r\n";
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸»é¡µçš„é“¾æ¥
+		if($this->pageno != 1){
+			$prepage.="<a href='".str_replace("{page}",$prepagenum,$tnamerule)."'>ä¸Šä¸€é¡µ</a>\r\n";
+			$indexpage="<a href='".str_replace("{page}",1,$tnamerule)."'>é¦–é¡µ</a>\r\n";
+		}else{ $indexpage="<a href='#'>é¦–é¡µ</a>\r\n"; }
+		//ä¸‹ä¸€é¡µ,æœªé¡µçš„é“¾æ¥
+		if($this->pageno!=$totalpage && $totalpage>1){
+			$nextpage.="<a href='".str_replace("{page}",$nextpagenum,$tnamerule)."'>ä¸‹ä¸€é¡µ</a>\r\n";
+			$endpage="<a href='".str_replace("{page}",$totalpage,$tnamerule)."'>æœ«é¡µ</a>\r\n";
 		}else{
-			$endpage="Ä©Ò³\r\n";
+			$endpage="<a href='#'>æœ«é¡µ</a>\r\n";
 		}
-		//optionÁ´½Ó
+
+		//optioné“¾æ¥
 		$optionlen = strlen($totalpage);
 		$optionlen = $optionlen*20+18;
-		$optionlist = "<select name='sldd' style='width:$optionlen' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
+		$optionlist = "<select name='sldd' style='width:{$optionlen}px' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
 		for($mjj=1;$mjj<=$totalpage;$mjj++){
-			if($mjj==$this->PageNo) $optionlist .= "<option value='".str_replace("{page}",$mjj,$tnamerule)."' selected>$mjj</option>\r\n";
+			if($mjj==$this->pageno) $optionlist .= "<option value='".str_replace("{page}",$mjj,$tnamerule)."' selected>$mjj</option>\r\n";
 		  else $optionlist .= "<option value='".str_replace("{page}",$mjj,$tnamerule)."'>$mjj</option>\r\n";
 		}
 		$optionlist .= "</select>";
-		//»ñµÃÊı×ÖÁ´½Ó
+
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
-		if($this->PageNo >= $total_list) {
-      $j = $this->PageNo-$list_len;
-      $total_list = $this->PageNo+$list_len;
+		if($this->pageno >= $total_list) {
+      $j = $this->pageno-$list_len;
+      $total_list = $this->pageno+$list_len;
       if($total_list>$totalpage) $total_list=$totalpage;
-		}	
-		else{ 
+		}
+		else{
    		$j=1;
    		if($total_list>$totalpage) $total_list=$totalpage;
 		}
 		for($j;$j<=$total_list;$j++){
-   		if($j==$this->PageNo) $listdd.= "$j\r\n";
-   		else $listdd.="<a href='".str_replace("{page}",$j,$tnamerule)."'>[".$j."]</a>\r\n";
+   		if($j==$this->pageno) $listdd.= "<strong>$j</strong>";
+   		else $listdd.="<a href='".str_replace("{page}",$j,$tnamerule)."'>".$j."</a>\r\n";
 		}
 		$plist = "";
 		if(eregi('info',$listitem)) $plist .= $maininfo.' ';
@@ -710,83 +770,82 @@ class ListView
 		return $plist;
 	}
   //---------------------------------
-  //»ñÈ¡¶¯Ì¬µÄ·ÖÒ³ÁĞ±í
+  //è·å–åŠ¨æ€çš„åˆ†é¡µåˆ—è¡¨
   //---------------------------------
 	function GetPageListDM($list_len,$listitem="index,end,pre,next,pageno")
 	{
 		$prepage="";
 		$nextpage="";
-		$prepagenum = $this->PageNo-1;
-		$nextpagenum = $this->PageNo+1;
+		$prepagenum = $this->pageno-1;
+		$nextpagenum = $this->pageno+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
-		$totalpage = ceil($this->TotalResult/$this->PageSize);
-		if($totalpage<=1 && $this->TotalResult>0) return "¹²1Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		if($this->TotalResult == 0) return "¹²0Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		$maininfo = "<td style='padding-right:6px'>¹²{$totalpage}Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼</td>";
-		
+		$totalpage = ceil($this->totalresult/$this->PageSize);
+		if($totalpage<=1 && $this->totalresult>0) return "<span>å…±1é¡µ/".$this->totalresult."æ¡</span>";
+		if($this->totalresult == 0) return "<span>å…±0é¡µ/".$this->totalresult."æ¡</span>";
+		$maininfo = "<span>å…±{$totalpage}é¡µ/".$this->totalresult."æ¡</span>";
+
 		$purl = $this->GetCurUrl();
-		$geturl = "typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
+		$geturl = "typeid=".$this->TypeID."&totalresult=".$this->totalresult."&";
 		$hidenform = "<input type='hidden' name='typeid' value='".$this->TypeID."'>\r\n";
-		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
-		
+		$hidenform .= "<input type='hidden' name='totalresult' value='".$this->totalresult."'>\r\n";
+
 		$purl .= "?".$geturl;
-		
-		//»ñµÃÉÏÒ»Ò³ºÍÏÂÒ»Ò³µÄÁ´½Ó
-		if($this->PageNo != 1){
-			$prepage.="<td width='50'><a href='".$purl."PageNo=$prepagenum'>ÉÏÒ»Ò³</a></td>\r\n";
-			$indexpage="<td width='30'><a href='".$purl."PageNo=1'>Ê×Ò³</a></td>\r\n";
+
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸‹ä¸€é¡µçš„é“¾æ¥
+		if($this->pageno != 1){
+			$prepage.="<a href='".$purl."pageno=$prepagenum'>ä¸Šä¸€é¡µ</a>\r\n";
+			$indexpage="<a href='".$purl."pageno=1'>é¦–é¡µ</a>\r\n";
 		}
 		else{
-			$indexpage="<td width='30'>Ê×Ò³</td>\r\n";
-		}	
-		
-		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<td width='50'><a href='".$purl."PageNo=$nextpagenum'>ÏÂÒ»Ò³</a></td>\r\n";
-			$endpage="<td width='30'><a href='".$purl."PageNo=$totalpage'>Ä©Ò³</a></td>\r\n";
+			$indexpage="<a href='#'>é¦–é¡µ</a>\r\n";
+		}
+
+		if($this->pageno!=$totalpage && $totalpage>1){
+			$nextpage.="<a href='".$purl."pageno=$nextpagenum'>ä¸‹ä¸€é¡µ</a>\r\n";
+			$endpage="<a href='".$purl."pageno=$totalpage'>æœ«é¡µ</a>\r\n";
 		}
 		else{
-			$endpage="<td width='30'>Ä©Ò³</td>\r\n";
+			$endpage="æœ«é¡µ\r\n";
 		}
-		//»ñµÃÊı×ÖÁ´½Ó
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
-		if($this->PageNo >= $total_list) {
-    		$j = $this->PageNo-$list_len;
-    		$total_list = $this->PageNo+$list_len;
+		if($this->pageno >= $total_list) {
+    		$j = $this->pageno-$list_len;
+    		$total_list = $this->pageno+$list_len;
     		if($total_list>$totalpage) $total_list=$totalpage;
-		}else{ 
+		}else{
    			$j=1;
    			if($total_list>$totalpage) $total_list=$totalpage;
 		}
 		for($j;$j<=$total_list;$j++){
-   		if($j==$this->PageNo) $listdd.= "<td>$j&nbsp;</td>\r\n";
-   		else $listdd.="<td><a href='".$purl."PageNo=$j'>[".$j."]</a>&nbsp;</td>\r\n";
+   		if($j==$this->pageno) $listdd.= "<strong>$j</strong>\r\n";
+   		else $listdd.="<a href='".$purl."pageno=$j'>".$j."</a>\n";
 		}
-		$plist  =  "<table border='0' cellpadding='0' cellspacing='0'>\r\n";
-		$plist .= "<tr align='center' style='font-size:10pt'>\r\n";
+		$plist  =  " ";
 		$plist .= "<form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
 		$plist .= $maininfo.$indexpage.$prepage.$listdd.$nextpage.$endpage;
 		if($totalpage>$total_list){
-			$plist.="<td width='36'><input type='text' name='PageNo' style='width:30;height:18' value='".$this->PageNo."'></td>\r\n";
-			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:24;height:18;font-size:9pt'></td>\r\n";
+			$plist.="<input type='text' name='pageno' ' value='".$this->pageno."'>\r\n";
+			$plist.="<input type='submit' id='button' name='plistgo' value='GO' >\r\n";
 		}
-		$plist .= "</form>\r\n</tr>\r\n</table>\r\n";
+		$plist .= "</form>\r\n";
 		return $plist;
 	}
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µÄÆµµÀµÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šçš„é¢‘é“çš„é“¾æ¥
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2,$siteurl=""){
   	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2,$siteurl);
   }
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µµ°¸µÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šæ¡£æ¡ˆçš„é“¾æ¥
  	//--------------------------
  	function GetArcUrl($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0){
   	return GetFileUrl($aid,$typeid,$timetag,$title,$ismake,$rank,$namerule,$artdir,$money);
   }
   //---------------
-  //»ñµÃµ±Ç°µÄÒ³ÃæÎÄ¼şµÄurl
+  //è·å¾—å½“å‰çš„é¡µé¢æ–‡ä»¶çš„url
   //----------------
   function GetCurUrl()
 	{

@@ -1,0 +1,18 @@
+人才招聘：
+<?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+	$row['arcurl'] = "job.php?id=$row[id]";
+?>
+<a href='<?php echo $row['arcurl']?>' target='_blank'><?php echo $row['job']?></a><br>
+<?php
+}
+?>
+
+<?php echo $dlist->GetPageList(7);?>
+
+<?php
+$dlist->Close();
+$dsql->Close();
+?>

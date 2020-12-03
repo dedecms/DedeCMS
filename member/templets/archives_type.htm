@@ -1,61 +1,62 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title>¹ÜÀíÎÒµÄ·ÖÀà</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>ç®¡ç†æˆ‘çš„åˆ†ç±»</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='main.js'></script>
 <script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript">
 <!--
-//Ôö¼ÓÀàÄ¿
+//å¢åŠ ç±»ç›®
 function AddnewType(){
   var taget_obj = $Obj('typeList');
   var typename = $Obj('typename').value;
   var rank = $Obj('rank').value;
   var channelid = 1;
   if(typename==''){
-    alert("ÀàÄ¿Ãû³Æ²»ÄÜÎª¿Õ£¡");
+    alert("ç±»ç›®åç§°ä¸èƒ½ä¸ºç©ºï¼");
     return false;
   }
   if($Obj('channelid02')){
   	if($Obj('channelid02').checked) channelid = 2;
   }
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href='javascript:ReLoadList(0)'><u>ÖØĞÂ¼ÓÔØÀàÄ¿ÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"ÕıÔÚ´¦Àí...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href='javascript:ReLoadList(0)'><u>é‡æ–°åŠ è½½ç±»ç›®åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("archives_type_action.php?dopost=addnew&typename="+typename+"&channelid="+channelid+"&rank="+rank);
   $Obj('rank').value++;
   $Obj('typename').value = "";
 }
 
-//¸üĞÂÀàÄ¿
+//æ›´æ–°ç±»ç›®
 function UpdateType(tid){
   var taget_obj = $Obj('typeList');
   var typename = $Obj('typename'+tid).value;
   var rank = $Obj('rank'+tid).value;
   if(typename==''){
-    alert("ÀàÄ¿Ãû³Æ²»ÄÜÎª¿Õ£¡");
+    alert("ç±»ç›®åç§°ä¸èƒ½ä¸ºç©ºï¼");
     return false;
   }
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href='javascript:ReLoadList(0)'><u>ÖØĞÂ¼ÓÔØÀàÄ¿ÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(taget_obj,true,true,"-",errMsg,"ÕıÔÚ´¦Àí...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href='javascript:ReLoadList(0)'><u>é‡æ–°åŠ è½½ç±»ç›®åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"-",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("archives_type_action.php?dopost=update&aid="+tid+"&typename="+typename+"&rank="+rank);
 }
 
-//É¾³ıÀàÄ¿
+//åˆ é™¤ç±»ç›®
 function DelType(tid){
   var taget_obj = $Obj('typeList');
   var typename = $Obj('typename'+tid).value;
-  if(!window.confirm('ÄãÈ·¶¨ÒªÉ¾³ı·ÖÀà£º'+typename+' Âğ£¿')){ return false; }
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href='javascript:ReLoadList(0)'><u>ÖØĞÂ¼ÓÔØÀàÄ¿ÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"ÕıÔÚ´¦Àí...");
+  if(!window.confirm('ä½ ç¡®å®šè¦åˆ é™¤åˆ†ç±»ï¼š'+typename+' å—ï¼Ÿ')){ return false; }
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href='javascript:ReLoadList(0)'><u>é‡æ–°åŠ è½½ç±»ç›®åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("archives_type_action.php?dopost=del&aid="+tid);
 }
 
-//ÖØÔØÀàÄ¿
+//é‡è½½ç±»ç›®
 function ReLoadList(orderby){
   var taget_obj = $Obj('typeList');
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href='javascript:ReLoadList(0)'><u>ÖØĞÂ¼ÓÔØÀàÄ¿ÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"ÕıÔÚ¼ÓÔØÖĞ...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href='javascript:ReLoadList(0)'><u>é‡æ–°åŠ è½½ç±»ç›®åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"æ­£åœ¨åŠ è½½ä¸­...");
   myajax.SendGet("archives_type_action.php?dopost=reload&orderby="+orderby);
 }
 -->
@@ -64,73 +65,62 @@ function ReLoadList(orderby){
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="299" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top"> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px;margin-top:10px;">
           <tr> 
-          <td background="img/nnnbg.gif" height="26" class="gdt2">
-		  <strong>¡¡&nbsp;¹ÜÀíÎÒµÄ·ÖÀà£º</strong>		  </td>
+          <div class="manage_company_right_title">
+                	<ul><li>ç®¡ç†æˆ‘çš„åˆ†ç±»ï¼š</li></ul>
+                </div>
           </tr>
 	 </table>
-      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0"  style="text-align:left;">
         <tr bgcolor="#F2F9E6"> 
-          <td height="22" colspan="2" style="padding-left:6px;">Ôö¼ÓĞÂµÄ·ÖÀà£º</td>
+          <td height="30" colspan="2" style="padding-left:6px;">å¢åŠ æ–°çš„åˆ†ç±»ï¼š</td>
         </tr>
         <tr> 
-          <td width="20%" height="22" bgcolor="#FFFFFF" style="padding-left:6px;">·ÖÀàÃû³Æ£º</td>
-          <td width="80%" height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
-		  <input name="typename" type="text" id="typename" style="width:150px">
+          <td width="20%" height="30" bgcolor="#FFFFFF" style="padding-left:6px;">åˆ†ç±»åç§°ï¼š</td>
+          <td width="80%" height="30" bgcolor="#FFFFFF" style="padding-left:6px;">
+		  <input name="typename" type="text" id="typename" style="width:150px" class="company_manage_form_label">
 		  </td>
         </tr>
         <tr> 
-          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">ÄÚÈİÀàĞÍ£º</td>
-          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
-		        <input name="channelid" id="channelid01" type="radio" value="1" checked>
-            ÎÄÕÂ 
-            <?php  if($cfg_mb_album=='ÊÇ'){ ?>
-            <input type="radio" id="channelid02" name="channelid" value="2">
-            Í¼¼¯
-            <?php  } ?>
-		</td>
-        </tr>
-        <tr> 
-          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">ÅÅĞò¼¶±ğ£º</td>
-          <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
-		  <input name="rank" type="text" id="rank" style="width:80px" value="<?php echo $nrank?>">
-          <input type="button" name="bt" value="Ôö¼Ó" style="width:50px" onClick="AddnewType()">
+          <td height="30" bgcolor="#FFFFFF" style="padding-left:6px;">æ’åºçº§åˆ«ï¼š</td>
+          <td height="30" bgcolor="#FFFFFF" style="padding-left:6px;">
+		  <input name="rank" type="text" id="rank" style="width:80px" value="<?php echo $nrank?>" class="company_manage_form_label">
+          <input type="button" name="bt" value="å¢åŠ " style="width:50px" onClick="AddnewType()">
 		  </td>
         </tr>
         <tr bgcolor="#F2F9E6"> 
-          <td height="22" colspan="2" style="padding-left:6px;">ÒÑÓĞ·ÖÀà¹ÜÀí£º </td>
+          <td height="30" colspan="2" style="padding-left:6px;">å·²æœ‰åˆ†ç±»ç®¡ç†ï¼š </td>
         </tr>
         <tr> 
           <td height="380" colspan="2" valign="top" bgcolor="#FFFFFF" style="padding-left:6px;padding-top:6px">
 		  <span id="typeList">
-		  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style='margin-bottom:10px'>
+		  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style='margin-bottom:10px' class="checkbox">
        <tr align="center" bgcolor="#FBFCD1"> 
-            <td width="11%">ID</td>
-            <td width="32%">·ÖÀàÃû³Æ</td>
-            <td width="15%"><a href='javascript:ReLoadList(1)'><u>ÄÚÈİÀàĞÍ</u></a></td>
-             <td width="18%"><a href='javascript:ReLoadList(0)'><u>ÅÅĞò¼¶±ğ</u></a></td>
-             <td>²Ù×÷</td>
+            <td width="11%" style="height:30px;">ID</td>
+            <td width="32%">åˆ†ç±»åç§°</td>
+            <td width="15%"><a href='javascript:ReLoadList(1)'><u>å†…å®¹ç±»å‹</u></a></td>
+             <td width="18%"><a href='javascript:ReLoadList(0)'><u>æ’åºçº§åˆ«</u></a></td>
+             <td>æ“ä½œ</td>
             </tr>
 		<?php 
 	$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' order by rank desc");
   $dsql->Execute();
   while($row = $dsql->GetObject()){
-  	if($row->channelid==1){ $cktype = " ÎÄÕÂ "; }
-  	else{ $cktype = " <font color='#3C9636'>Í¼¼¯<font> "; }
+  	$cktype = " ä¸é™ ";
   	echo "<tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#EFEFEF';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">\r\n";
-  	echo "<td>{$row->aid}</td>\r\n";
-    echo "<td><input name='typename{$row->aid}' type='text' id='typename{$row->aid}' style='width:150px' value='{$row->typename}'></td>\r\n";
+  	echo "<td style=\"height:30px;\">{$row->aid}</td>\r\n";
+    echo "<td><input name='typename{$row->aid}' type='text' id='typename{$row->aid}' style='width:150px;margin-top:5px;' value='{$row->typename}' class=\"member_booklabel1\" /></td>\r\n";
     echo "<td>{$cktype}</td>\r\n";
-    echo "<td><input name='rank{$row->aid}' type='text' id='rank{$row->aid}' style='width:60px' value='{$row->rank}'></td>\r\n";
-    echo "<td>£Û<a href='#' onclick='UpdateType({$row->aid})'>¸üĞÂ</a>£İ£Û<a href='#' OnClick='DelType({$row->aid})'>É¾³ı</a>£İ</td>\r\n</tr>\r\n";
+    echo "<td><input name='rank{$row->aid}' type='text' id='rank{$row->aid}' style='width:60px;margin-top:5px;' value='{$row->rank}' class=\"member_booklabel1\" /></td>\r\n";
+    echo "<td>ï¼»<a href='#' onclick='UpdateType({$row->aid})'>æ›´æ–°</a>ï¼½ï¼»<a href='#' OnClick='DelType({$row->aid})'>åˆ é™¤</a>ï¼½</td>\r\n</tr>\r\n";
   }
 		?>
     </table>

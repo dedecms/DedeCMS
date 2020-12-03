@@ -1,9 +1,9 @@
 <?php 
-//allbuy ÍøÉÏÖ§¸¶½Ó¿Ú
+//allbuy ç½‘ä¸Šæ”¯ä»˜æŽ¥å£
 
-//ÉÌ»§ºÅ
+//å•†æˆ·å·
 $cfg_merchant = "";
-//ÉÌ»§ÃÜÔ¿
+//å•†æˆ·å¯†é’¥
 $cfg_merpassword = "";
 
 $cfg_backurl		=	$cfg_basehost."/member/pay_back_allbuy.php";

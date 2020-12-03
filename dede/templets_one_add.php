@@ -19,7 +19,7 @@ if($dopost=="save")
 	if(!$dsql->ExecuteNoneQuery())
 	{
 		$dsql->Close();
-		ShowMsg("Ôö¼ÓÒ³ÃæÊ§°Ü£¬Çë¼ì²é³¤ÏàÊÇ·ñÓĞÎÊÌâ£¡","-1");
+		ShowMsg("å¢åŠ é¡µé¢å¤±è´¥ï¼Œè¯·æ£€æŸ¥é•¿ç›¸æ˜¯å¦æœ‰é—®é¢˜ï¼","-1");
 	  exit();
 	}
 	$dsql->Close();
@@ -35,84 +35,15 @@ if($dopost=="save")
   }
   else
   {
-  	$fp = fopen($filename,"w") or die("´´½¨£º{$filename} Ê§°Ü£¬¿ÉÄÜÊÇÃ»ÓĞÈ¨ÏŞ£¡");
+  	$fp = fopen($filename,"w") or die("åˆ›å»ºï¼š{$filename} å¤±è´¥ï¼Œå¯èƒ½æ˜¯æ²¡æœ‰æƒé™ï¼");
   	fwrite($fp,stripslashes($body));
   	fclose($fp);
   }
-	ShowMsg("³É¹¦Ôö¼ÓÒ»¸öÒ³Ãæ£¡","templets_one.php");
+	ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªé¡µé¢ï¼","templets_one.php");
 	exit();
 }
+
+require_once(dirname(__FILE__)."/templets/templets_one_add.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Ôö¼Ó×Ô¶¨ÒåÒ³Ãæ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script language="javascript">
-function checkSubmit()
-{
-	if(document.form1.title.value=="")
-	{
-		alert("Ò³ÃæÃû³Æ²»ÄÜÎª¿Õ£¡");
-		document.form1.title.focus();
-		return false;
-	}
-	if(document.form1.nfilename.value=="")
-	{
-		alert("ÎÄ¼şÃû²»ÄÜÎª¿Õ£¡");
-		document.form1.nfilename.focus();
-		return false;
-	}
-}
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-<tr>
-    <td height="19" background="img/tbg.gif">
-    	<b><a href="templets_one.php"><u>µ¥¶ÀÒ³Ãæ¹ÜÀí</u></a></b>&gt;&gt;Ôö¼ÓĞÂÒ³Ãæ
-    </td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="2">
-        <form action="templets_one_add.php" method="post" name="form1" onSubmit="return checkSubmit()">
-          <input type='hidden' name='dopost' value='save'>
-          <tr> 
-            <td width="15%" height="24" align="center">Ò³ÃæÃû³Æ£º</td>
-            <td> 
-              <input name="title" type="text" id="title" size="30"></td>
-          </tr>
-          <tr> 
-            <td height="24" align="center" bgcolor="#F3FBEC">Éú³ÉÎÄ¼şÃû£º</td>
-            <td bgcolor="#F3FBEC"><input name="nfilename" type="text" id="nfilename" value="newfile.html" size="30">
-              £¨Ïà¶ÔÓÚCMS°²×°Ä¿Â¼£©</td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">ÊÇ·ñ±àÒë£º</td>
-            <td><input name="ismake" type="radio" value="1" checked>
-              º¬Ä£°å±ê¼Ç£¬Òª±àÒë 
-              <input type="radio" name="ismake" value="0">
-              ²»º¬Ä£°å±ê¼Ç£¬²»ĞèÒª±àÒë</td>
-          </tr>
-          <tr> 
-            <td height="24" colspan="2" bgcolor="#F3FBEC">ÎÄ¼şÄÚÈİ£º</td>
-          </tr>
-          <tr> 
-            <td height="80" colspan="2" align="center"> 
-              <?php 
-	GetEditor("body","","500","Default","print","true");
-	?>
-            </td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-          </tr>
-        </form>
-      </table>
-	 </td>
-</tr>
-</table>
-</body>
-</html>

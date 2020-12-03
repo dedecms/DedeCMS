@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>组权限设置</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">系统帐号管理</div>
+</div>
+<center>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+
+  <tr>
+    <td height="23" align="left" bgcolor="#EDF9D5">&nbsp;&nbsp;<b><a href='sys_group.php'>系统用户组管理</a>&gt;&gt;更改用户组：</b></td>
+</tr>
+  <tr>
+  <td align="left"> 
+
+      
+    </td>
+</tr>
+
+</table>
+</center><form name='form1' action='sys_group_edit.php' method='post'> 
+<input type='hidden' name='dopost' value='save'>
+<table width="96%" border="0" align="center" cellpadding="0" cellspacing="1" class="tblist">
+	<tr> 
+          <td height="30">组名称：</td>
+          <td width="91%"> <input name="typename" type="text" id="typename" value="<?php echo $groupSet['typename']?>"></td>
+    </tr>
+    <tr> 
+          <td height="30">级别值：</td>
+          <td width="91%">
+          	<input name="rank" type="hidden" id="rank" value="<?php echo $groupSet['rank']?>">
+          	<?php echo $groupSet['rank']?>          </td>
+    </tr>
+       <tr><?php 
+        $start = 0;
+        $k = 0;
+        $gouplists = file(dirname(__FILE__).'/../inc/grouplist.txt');
+        foreach($gouplists as $line)
+        {
+        	$line = trim($line);
+        	if($line=="") continue;
+        	if(ereg("^>>",$line))
+        	{
+        		if($start>0) echo "        	 </td></tr>\r\n";
+        		$start++;
+        		$lhead = "
+        	 <tr> 
+           <td height='25' colspan='2' bgcolor='#E2F5BC'>{$start}、".str_replace('>>','',$line)."</td></tr>
+           <tr height='60'><td height='60' colspan='2'>
+        		"; 
+        		echo $lhead;
+        	}
+        	else if(ereg("^>",$line))
+        	{
+        		$ls = explode('>',$line);
+        		$tag = $ls[1];
+        		$tagname = str_replace('[br]','<br>',$ls[2]);
+        		echo "          	<input name='purviews[]' type='checkbox' id='purviews$k' value='$tag'".CRank($tag).">&nbsp;&nbsp;<span class='hg'>$tagname</span>\r\n";
+        	  $k++;
+        	}
+        }
+        $start++;
+        ?>
+    </tr>
+              
+        <tr> 
+           <td height='25' colspan="2" bgcolor='#FFFFFF'><?php echo $start?>、插件权限</td>
+        </tr>
+        <tr>
+        <td height='25' colspan="2">
+         <?php 
+         $l = 0;
+         $dsql->SetQuery('Select plusname From #@__plus');
+         $dsql->Execute();
+         while($row=$dsql->GetObject()){
+         	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'".CRank("plus_{$row->plusname}").">{$row->plusname}\r\n";
+        	 $k++;
+        	 $l++;
+        	 if($l%4==0) echo "<br>";
+         }
+         ?> </td>
+        </tr>
+        <tr> 
+          <td height="50" align="center">&nbsp;</td>
+          <td height="50"><input type="submit" name="Submit" value=" 保存" class="inputbut"/></td>
+        </tr>
+      </table>
+</form>
+
+</body>
+</html>

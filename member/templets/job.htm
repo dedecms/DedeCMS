@@ -1,0 +1,16 @@
+<div id="joblist">
+<ul>
+<li>招聘职位：<a href="editjob.php?id=<?=$job['id']?>"><?=$job['job']?></a></li>
+<li>招聘人数：<?=$job['nums']?></li>
+<li>招聘部门：<?=$job['department']?></li>
+<li>工作地区：<?=$job['address']?></li>
+<li>发布时间：<?php echo strftime("%Y-%m-%d",$job['pubdate']);?></li>
+<li>有效期：<?=$job['endtime']?>天</li>
+<li>薪酬范围：<?=$job['salaries']?></li>
+<li><input name="ids" type="checkbox" id="ids" value="<?=$job['id']?>">
+[<a href="#" onclick="DelNote('<?=$job['id']?>')">删除信息</a>]</li>
+</ul>
+<div class="clear">
+</div>
+<br />
+</div>

@@ -4,8 +4,8 @@ require_once(dirname(__FILE__)."/../../../config_base.php");
 <HTML>
 	
 <HEAD>
-<title>²åÈë¸½¼þ</title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>æ’å…¥é™„ä»¶</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style>
 .td{font-size:10pt;}
 </style>
@@ -48,17 +48,17 @@ function SelectAddon(fname)
   <form name="form1" id="form1">
   	<table border="0" width="98%" align="center">
     <tr> 
-      <td align="right">Íø¡¡Ö·:</td>
+      <td align="right">ç½‘ã€€å€:</td>
       <td colspan="3">
       	<input name="rurl" type="text" id="rurl" style="width:300px" value="http://">
-      	<input type="button" name="selmedia" class="binput" style="width:60px" value="ä¯ÀÀ..." onClick="SelectAddon('form1.rurl')">
+      	<input type="button" name="selmedia" class="binput" style="width:60px" value="æµè§ˆ..." onClick="SelectAddon('form1.rurl')">
       </td>
     </tr>
     <tr height="50"> 
       <td align="right">&nbsp;</td>
       <td nowrap>&nbsp; </td>
       <td colspan="2" align="right" nowrap>
-      	<input onclick="TableOK();" type="button" name="Submit2" value=" È·¶¨ " class="binput"> 
+      	<input onclick="TableOK();" type="button" name="Submit2" value=" ç¡®å®š " class="binput"> 
       </td>
     </tr>
   </table>

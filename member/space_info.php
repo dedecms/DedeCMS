@@ -4,14 +4,13 @@ CheckRank(0,0);
 
 $dsql=new DedeSql();
 
-$row = $dsql->GetOne("select spacename,spaceimage,news,showaddr,mybb from #@__member where ID='".$cfg_ml->M_ID."'");
+$row = $dsql->GetOne("select spacename,spaceimage,news,mybb from #@__member where ID='".$cfg_ml->M_ID."'");
 
 if(!is_array($row)){
 	$row['spacename'] = '';
 	$row['spaceimage'] = '';
 	$row['mybb'] = '';
 	$row['news'] = '';
-	$row['showaddr'] = '0';
 }
 
 if($row['spaceimage']==''){

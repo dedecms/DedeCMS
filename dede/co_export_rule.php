@@ -18,4 +18,6 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/co_export_rule.htm");
 $dlist->display();
 $dlist->Close();
+
+ClearAllLink();
 ?>

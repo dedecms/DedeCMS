@@ -1,0 +1,448 @@
+@charset "utf-8";
+/*---------------下载*/
+/*---------------盒子左侧*/
+.bleft{
+	width:222px;
+	float:left;
+	overflow:auto;
+}
+/*---------------图片分类*/
+.pclass{
+	width:222px;
+	background:#F7F7F7 url(../images/pic_ltitle_bg.gif) top center no-repeat;
+	padding-top:9px;
+}
+.pclass dl{
+	width:220px;
+	border-color:#DDD;
+	border-style:solid;
+	border-width:0px 1px 1px 1px ;
+	background:#F7F7F7 ;
+	padding-bottom:4px;
+}
+.pclass dl dt{
+	width:220px;
+	height:21px;
+	line-height:17px;
+	background:#F7F7F7 url(../images/ico_15.gif) 10px 0px no-repeat;
+	text-indent:34px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+.pclass dl dd{
+	width:220px;
+	background:#F7F7F7 url(../images/pic_lbox_bg.gif) center top no-repeat;
+	padding-top:3px;
+	overflow:hidden;
+}
+.pclass dl dd ul{
+	width:210px;
+	margin:4px auto 0px;
+	border-color:#DDD;
+	border-style:solid;
+	border-width:0px 1px 1px 1px;
+	background:#FFF;
+	overflow:hidden;
+}
+.pclass dl dd ul li{
+	width:105px;
+	float:left;
+}
+.pclass dl dd ul li a{
+	width:105px;
+	height:31px;
+	line-height:31px;
+	text-indent:10px;
+	display:block;
+	font-size:14px;
+	color:#060;
+}
+/*---------------侧边列表*/
+.hotlist{
+	width:222px;
+	background:#FFF url(../images/pic_ltitle_bg.gif) top center no-repeat;
+	padding-top:5px;
+}
+.hotlist .htitle{
+	width:220px;
+	height:27px;
+	line-height:27px;
+	text-indent:34px;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#666666;
+	background:#FFF url(../images/pic_hot_bg.gif) center top no-repeat;
+	border-color:#DDD;
+	border-style:solid;
+	border-width:0px 1px 0px 1px;
+}
+.hotlist .hbox{
+	width:220px;
+	border-color:#DDD;
+	border-style:solid;
+	border-width:0px 1px 1px 1px;
+	padding-bottom:6px;
+}
+.hotlist .hbox ul{
+	width:220px;
+	overflow:hidden;
+}
+.hotlist .hbox ul li{
+	width:200px;
+	float:left;
+	display:inline;
+	margin-top: 5px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 7px;
+}
+.hotlist .hbox ul li a{
+	display:block;
+	width:200px;
+	height:25px;
+	border:1px solid #F7F7F7;
+	cursor:pointer;
+	text-indent: 10px;
+}
+.hotlist .hbox ul li .link{
+	display:block;
+	width:200px;
+	height:25px;
+	line-height:25px;
+	text-align:left;
+}
+.hotlist .hbox ul li a:hover{
+	border:1px solid #FF9900;
+}
+
+.hotlist dl{
+	width:200px;
+	margin:9px auto 0px;
+}
+.hotlist dl dt {
+	text-indent:5px;
+}
+.hotlist dl dt img{
+	vertical-align:middle;
+	margin-right:10px;
+}
+.hotlist dl dt a{
+	font-weight:bold;
+}
+.hotlist dl dd{
+	line-height:25px;
+	text-indent:10px;
+}
+.hotlist dl dd span{
+	color:#999999;
+}
+/*---------------盒子右侧*/
+.bright{
+	width:670px;
+	float:right;
+}
+/*---------------当前位置*/
+.bright .thisplace{
+	width:670px;
+	height:31px;
+	background:url(../images/place_bg.jpg) repeat-x;
+	overflow:auto;
+}
+.bright .thisplace .title{
+	display:block;
+	width:156px;
+	height:31px;
+	line-height:29px;
+	text-align:center;
+	letter-spacing:4px;
+	font-weight:bold;
+	background:url(../images/place_left.gif) left top no-repeat;
+	float:right;
+}
+.bright .thisplace .placenav{
+	float:left;
+	margin-right:10px;
+	line-height:31px;
+	text-indent:10px;
+}
+.bright .thisplace .placenav a{
+	color:#666666;
+}
+
+
+/*---------------列表内容左侧*/
+.pleft{
+	width:670px;
+	float:left;
+	overflow:auto;
+}
+/*---------------列表内容右侧*/
+.pright{
+	width:222px;
+	float:right;
+	overflow:auto;
+}
+
+/*---------------当前位置*/
+.pleft .thisplace{
+	width:670px;
+	height:31px;
+	background:url(../images/place_bg.jpg) repeat-x;
+	overflow:auto;
+}
+.pleft .thisplace .title{
+	display:block;
+	width:156px;
+	height:31px;
+	line-height:29px;
+	text-align:left;
+	text-indent:20px;
+	letter-spacing:4px;
+	font-weight:bold;
+	background:url(../images/place_left.gif) right top no-repeat;
+	float:left;
+}
+.pleft .thisplace .placenav{
+	float:right;
+	margin-right:10px;
+	line-height:31px;
+	text-indent:10px;
+}
+.pleft .thisplace .placenav a{
+	color:#666666;
+}
+
+.ctitle{
+	width:670px;
+	height:36px;
+	background:url(../images/soft_rlist_bg.gif) no-repeat;
+	line-height:36px;
+	text-indent:20px;
+	font-weight:bold;
+	font-size:16px;
+	letter-spacing:2px;
+}
+
+
+/*---------------列表*/
+.pbox{
+	width:670px;
+	background:url(../images/pright_hr.gif) top no-repeat;
+	overflow:hidden;
+}
+.pbox dl{
+	width:188px;
+	float:left;
+	display:inline;
+	margin:20px 0px 0px 26px;
+}
+.pbox dl dt{
+	width:188px;
+	height:132px;
+	display:block;
+	overflow:hidden;
+}
+.pbox dl dt a img{
+	display:block;
+	width:expression(this.width > this.height && this.width >176 ? 176 : true);
+	height:expression(this.height > this.width && this.height > 132? 132 : true);
+	max-width:176px;
+	max-height:132px;
+	margin:0px auto 0px;
+}
+.pbox dl dd{
+	width:186px;
+	text-align:center;
+	margin-top:5px;	
+	line-height:17px;
+	height:19px;
+	overflow:hidden;
+}
+.pbox dl dd.title{
+	font-weight:bold;
+}
+.pbox dl dd.title img{
+	vertical-align:middle;
+	margin-right:4px;
+}
+
+/*---------------浏览页按钮*/
+/*---------------按钮*/
+.butbox{
+	width:620px;
+	margin:15px auto 0px;
+	overflow:hidden;
+	clear:both;
+}
+.butbox a{
+	height:23px;
+	line-height:23px;
+	text-decoration:none;
+	display:block;
+	padding-left:10px;
+	padding-right:10px;
+	float:left;
+	letter-spacing:2px;
+	margin-right:10px;
+	font-weight:bold;
+}
+.butbox a.c1{
+	border:1px solid #F1B923;
+	background:url(../images/but_bg_sr.gif) 0px -22px repeat-x;
+	color:#CC3300;
+}
+.butbox a.c2{
+	color:#063;
+	border:1px solid #9C0;
+	background:url(../images/but_bg_sr.gif) 0px 0px repeat-x;
+}
+.butbox a:hover{
+	color:#369;
+	border:1px solid #8CADCE;
+	background:url(../images/but_bg_sr.gif) 0px -44px repeat-x;
+}
+
+.imgview{
+	width:620px;
+	margin-top:10px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.imgview a{
+}
+.imgview img{
+	margin:0px auto;
+	width:expression( this.width > 620? 620 : true);
+	max-width:620px;
+}
+
+
+/*---------------内容页:评论*/
+.comment{
+	width:668px;
+	border:1px solid #DDD;
+	margin-top:7px;
+	overflow:auto;
+}
+.comment .commenttitle{
+	width:666px;
+	height:26px;
+	margin:1px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-bottom:1px solid #DDD;
+}
+.comment .commenttitle .title{
+	float:left;
+	margin:5px 0px 0px 12px;
+	color:#999;
+	display:inline;
+}
+.comment .commenttitle .title strong{
+	letter-spacing:4px;
+	color:#444;
+	margin-right:10px;
+}
+.comment .commenttitle .gotopost{
+	float:right;
+	display:block;
+	width:100px;
+	height:23px;
+}
+.comment .commenttitle .gotopost a{
+	width:95px;
+	height:22px;
+	display:inline;
+	float:right;
+	text-align:center;
+	line-height:22px;
+	text-decoration:none;
+	background:url(../images/ico_gotopost.gif) no-repeat;
+	margin:1px 3px 0px 0px;
+}
+.comment .commentbox{
+	width:668px;
+}
+.comment .commentbox dl{
+	width:636px;
+	margin:10px auto 0px;
+	border:1px solid #D1DDCE;
+}
+.comment .commentbox dl dt{
+	width:636px;
+	background:#F4F9F2;
+	line-height:25px;
+	text-indent:10px;
+	color:#333;
+	border-bottom:1px solid #E6ECE3;
+}
+.comment .commentbox dl dt span{
+	color:#669933;
+	font-size:11px;
+}
+.comment .commentbox dl dd{
+	padding:10px;
+	font-size:14px;
+	line-height:25px;
+	color:#666;
+}
+/*---------------内容页:发表评论:标题*/
+.comment .posttitle{
+	width:666px;
+	height:26px;
+	margin:10px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-top:1px solid #DDD;
+	border-bottom:1px solid #DDD;
+}
+.comment .posttitle strong{
+	letter-spacing:4px;
+	color:#444;
+	display:block;
+	margin:7px 0px 0px 13px;
+}
+.comment .postbox{
+	width:636px;
+	margin:5px auto;
+	overflow:hidden;
+}
+
+.comment .postbox .userbox{
+	width:636px;
+	overflow:hidden;
+	margin-top:10px;
+}
+.comment .postbox .userbox dl{
+	width:636px;
+}
+.comment .postbox .userbox dl dd{
+	float:left;
+	display:block;
+	padding-bottom:2px;
+}
+.comment .postbox .userbox dl dd input.username,.comment .postbox .userbox dl dd input.password{
+	width:100px;
+	border:1px solid #CCC;
+	padding:3px 0px 2px 5px;
+	margin-right:10px;
+}
+.comment .postbox .userbox dl dd.mtop{
+	margin:7px 7px 0px 0px;
+}
+.comment .postbox .txtbox{
+	width:636px;
+	line-height:25px;
+}
+.comment .postbox .txtbox textarea{
+	border:1px solid #CCC;
+	width:600px;
+	height:80px;
+	padding:5px;
+}
+.comment .postbox  .sbut{
+	margin:10px;
+}
+.comment .postbox .userbox .submit{
+	width:100px;
+	height:25px;
+	padding-top:2px;
+}

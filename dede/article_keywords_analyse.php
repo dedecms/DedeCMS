@@ -1,10 +1,10 @@
-<?php 
+<?php
 @ob_start();
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Keyword');
-
-echo "���ڶ�ȡ�ؼ������ݿ�...<br/>\r\n";
+echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+echo "正在读取关键字数据库...<br/>\r\n";
 flush();
 
 $ws = "";
@@ -22,13 +22,13 @@ while($row = $dsql->GetObject())
 		$wserr[$row->keyword] = 1;
 }
 
-echo "��ɹؼ������ݿ�����룡<br/>\r\n";
+echo "完成关键字数据库的载入！<br/>\r\n";
 flush();
 
-echo "��ȡ�������ݿ⣬���Խ��õĹؼ��ֺ����ֽ��д���...<br/>\r\n";
+echo "读取档案数据库，并对禁用的关键字和生字进行处理...<br/>\r\n";
 flush();
 
-$dsql->SetQuery("Select ID,keywords from #@__archives");
+$dsql->SetQuery("Select aid,keywords from #@__full_search");
 $dsql->Execute();
 while($row = $dsql->GetObject())
 {
@@ -51,22 +51,22 @@ while($row = $dsql->GetObject())
 				$wsnew[$v] = 1;
 			}
 		}
-		//����ؼ������н��õĹؼ��֣���������µĹؼ���
+		//如果关键字中有禁用的关键字，则更新文章的关键字
 		if($nerr)
 		{
-			$dsql->SetQuery("update #@__archives set keywords='".addslashes($mykey)."' where ID='".$row->ID."' ");
+			$dsql->SetQuery("update #@__full_search set keywords='".addslashes($mykey)."' where aid='".$row->aid."' ");
 			$dsql->ExecuteNoneQuery();
 		}
 	}
 }
-echo "��ɵ������ݿ�Ĵ�����<br/>\r\n";
+echo "完成档案数据库的处理！<br/>\r\n";
 flush();
 if(is_array($wsnew))
 {
-  echo "�Թؼ��ֽ�������...<br/>\r\n";
+  echo "对关键字进行排序...<br/>\r\n";
   flush();
   arsort($wsnew);
-  echo "�ѹؼ��ֱ��浽���ݿ�...<br/>\r\n";
+  echo "把关键字保存到数据库...<br/>\r\n";
   flush();
   foreach($wsnew as $k=>$v)
   {
@@ -74,16 +74,16 @@ if(is_array($wsnew))
 	  $dsql->SetQuery("Insert Into #@__keywords(keyword,rank,sta,rpurl) Values('".addslashes($k)."','$v','1','')");
 	  $dsql->Execute();
   }
-  echo "��ɹؼ��ֵĵ��룡<br/>\r\n";
+  echo "完成关键字的导入！<br/>\r\n";
   flush();
   sleep(1);
 }
 else
 {
-	echo "û�����κ��µĹؼ��֣�<br/>\r\n";
+	echo "没发现任何新的关键字！<br/>\r\n";
   flush();
   sleep(1);
 }
-$dsql->Close();
-ShowMsg("������в���������ת���ؼ����б�ҳ��","article_keywords_main.php");
+ClearAllLink();
+ShowMsg("完成所有操作，现在转到关键字列表页！","article_keywords_main.php");
 ?>

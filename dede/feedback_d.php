@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Feedback');
 if($fid=="")
 {
-	ShowMsg("ÄãÃ»Ñ¡ÖÐÈÎºÎÑ¡Ïî£¡",$_COOKIE['ENV_GOBACK_URL'],0,500);
+	ShowMsg("ä½ æ²¡é€‰ä¸­ä»»ä½•é€‰é¡¹ï¼",$_COOKIE['ENV_GOBACK_URL'],0,500);
 	exit;
 }
 $dsql = new DedeSql(false);
@@ -23,7 +23,7 @@ if($job=="del")
 	$query = "Delete From #@__feedback where $wherestr";
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();
-	$msg = "³É¹¦É¾³ýÖ¸¶¨µÄÆÀÂÛ!";
+	$msg = "æˆåŠŸåˆ é™¤æŒ‡å®šçš„è¯„è®º!";
 }
 else
 {
@@ -38,9 +38,9 @@ else
 	$query = "update #@__feedback set ischeck=1 where $wherestr";
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();
-	$msg = "³É¹¦ÉóºËÖ¸¶¨ÆÀÂÛ!";
+	$msg = "æˆåŠŸå®¡æ ¸æŒ‡å®šè¯„è®º!";
 }
-$dsql->Close();
 ShowMsg($msg,$_COOKIE['ENV_GOBACK_URL'],0,500);
+ClearAllLink();
 exit;
 ?>

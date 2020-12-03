@@ -1,59 +1,65 @@
 <?php 
 
-//±¾ÑéÖ¤²ÉÓÃ¼ÓÃÜµÄcookieÑéÖ¤
-//ĞÂÎÄ¼şµÄÑéÖ¤Êı¾İÎª GetCookie("dd_ckstr")
+//æœ¬éªŒè¯é‡‡ç”¨åŠ å¯†çš„cookieéªŒè¯
+//æ–°æ–‡ä»¶çš„éªŒè¯æ•°æ®ä¸º GetCookie("dd_ckstr")
 
 require_once(dirname(__FILE__)."/config_hand.php");
 
-//Session±£´æÂ·¾¶
-$sessSavePath = dirname(__FILE__)."/sessions/";
+//Sessionä¿å­˜è·¯å¾„
+$sessSavePath = dirname(__FILE__)."/../data/sessions/";
 if(is_writeable($sessSavePath) && is_readable($sessSavePath)){ session_save_path($sessSavePath); }
 
-//°´Ä¬ÈÏ²ÎÊıÉèÖÃÒ»¸öCookie
+//æŒ‰é»˜è®¤å‚æ•°è®¾ç½®ä¸€ä¸ªCookie
 function PutCookie($key,$value,$kptime,$pa="/"){
 	 global $cfg_cookie_encode;
 	 setcookie($key,$value,time()+$kptime,$pa);
 	 setcookie($key.'__ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa);
 }
 
-//»ñÈ¡Ëæ»ú×Ö·û
+//è·å–éšæœºå­—ç¬¦
 $rndstring = "";
 for($i=0;$i<4;$i++){
 	$rndstring .= chr(mt_rand(65,90));
 }
 
-//Èç¹ûÖ§³ÖGD£¬Ôò»æÍ¼
+//å¦‚æœæ”¯æŒGDï¼Œåˆ™ç»˜å›¾
 if(function_exists("imagecreate"))
 {
 	//PutCookie("dd_ckstr",strtolower($rndstring),1800,"/");
 	session_register('dd_ckstr');
 	$_SESSION['dd_ckstr'] = strtolower($rndstring);
 	$rndcodelen = strlen($rndstring);
-  //Í¼Æ¬´óĞ¡
+  //å›¾ç‰‡å¤§å°
   $im = imagecreate(50,20);
-  //×ÖÌå
-  $font_type = dirname(__FILE__)."/data/ant".mt_rand(1,2).".ttf";
-  //±³¾°ÑÕÉ«
-  $bgcolor = ImageColorAllocate($im, 225,245,255);
-  //±ß¿òÉ«
-  $iborder = ImageColorAllocate($im, 56,172,228);
-  //×ÖÌåÉ«
-  $fontColor = ImageColorAllocate($im, 6,110,240);
-  $fontColor1 = ImageColorAllocate($im, 166,213,248);
-  $fontColor2 = ImageColorAllocate($im, 8,160,246);
-  //ÔÓµã±³¾°Ïß
-  $lineColor1 = ImageColorAllocate($im, 130,220,245);
-  $lineColor2 = ImageColorAllocate($im, 225,245,255);
+  //å­—ä½“
+  $font_type = dirname(__FILE__)."/data/ant2.ttf";
+  //èƒŒæ™¯é¢œè‰²
+  $bgcolor = ImageColorAllocate($im, 245,245,245);
+  //è¾¹æ¡†è‰²
+  $iborder = ImageColorAllocate($im, 0x71,0x76,0x67); 
   
-  //±³¾°Ïß
-  for($j=3;$j<=16;$j=$j+3) imageline($im,2,$j,48,$j,$lineColor1);
-  for($j=2;$j<52;$j=$j+(mt_rand(3,6))) imageline($im,$j,2,$j-6,18,$lineColor2);
+  //å­—ä½“è‰²
+  //ä¸æ”¯æŒ imagettftext
+  $fontColor = ImageColorAllocate($im, 0x50,0x4d,0x47); 
   
-  //±ß¿ò
+  //æ”¯æŒ imagettftext
+  $fontColor2 = ImageColorAllocate($im, 0x36,0x38,0x32);
+  //é˜´å½±
+  $fontColor1 = ImageColorAllocate($im, 0xbd,0xc0,0xb8); 
+  
+  //æ‚ç‚¹èƒŒæ™¯çº¿
+  //$lineColor1 = ImageColorAllocate($im, 130,220,245);
+  //$lineColor2 = ImageColorAllocate($im, 225,245,255);
+  
+  //èƒŒæ™¯çº¿
+  //for($j=3;$j<=16;$j=$j+3) imageline($im,2,$j,48,$j,$lineColor1);
+  //for($j=2;$j<52;$j=$j+(mt_rand(3,6))) imageline($im,$j,2,$j-6,18,$lineColor2);
+  
+  //è¾¹æ¡†
   imagerectangle($im, 0, 0, 49, 19, $iborder);
   
   $strposs = array();
-  //ÎÄ×Ö
+  //æ–‡å­—
   for($i=0;$i<$rndcodelen;$i++){
 	  if(function_exists("imagettftext")){
 	  	$strposs[$i][0] = $i*10+6;
@@ -65,17 +71,19 @@ if(function_exists("imagecreate"))
 	  }
   }
   
-  //ÎÄ×Ö
+  
+  //æ–‡å­—
   for($i=0;$i<$rndcodelen;$i++){
 	  if(function_exists("imagettftext")){
 	  	imagettftext($im, 11,5, $strposs[$i][0]-1, $strposs[$i][1]-1, $fontColor2, $font_type, $rndstring[$i]);
 	  }
   }
   
+  
   header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-  //Êä³öÌØ¶¨ÀàĞÍµÄÍ¼Æ¬¸ñÊ½£¬ÓÅÏÈ¼¶Îª gif -> jpg ->png
+  //è¾“å‡ºç‰¹å®šç±»å‹çš„å›¾ç‰‡æ ¼å¼ï¼Œä¼˜å…ˆçº§ä¸º gif -> jpg ->png
   if(function_exists("imagejpeg")){
   	header("content-type:image/jpeg\r\n");
   	imagejpeg($im);
@@ -85,7 +93,7 @@ if(function_exists("imagecreate"))
   }
   ImageDestroy($im);
 
-}else{ //²»Ö§³ÖGD£¬Ö»Êä³ö×ÖÄ¸ ABCD	
+}else{ //ä¸æ”¯æŒGDï¼Œåªè¾“å‡ºå­—æ¯ ABCD	
 	//PutCookie("dd_ckstr","abcd",1800,"/");
 	session_register('dd_ckstr');
 	$_SESSION['dd_ckstr'] = "abcd";

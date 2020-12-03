@@ -1,59 +1,63 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>µ¥¶ÀÒ³Ãæ¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>å•ç‹¬é¡µé¢ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
-  <tr>
-    <td background="img/tbg.gif" colspan="5"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td width="49%"><b>µ¥¶ÀÒ³Ãæ¹ÜÀí</b></td>
-          <td width="51%" align="right"> <input type="button" name="bt" value="Ôö¼ÓÒ»¸öÒ³Ãæ" class="nbt" style="width:100px" onclick="location='templets_one_add.php';"> 
-            <input type="button" name="bt2" value="¸üĞÂËùÓĞµ¥¶ÀÒ³HTML" class="nbt" style="width:150px" onclick="location='templets_one_edit.php?dopost=makeall';"> 
-          </td>
-        </tr>
-      </table> </td>
+<body leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">é¢‘é“ç®¡ç†</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+		<tr>
+				<td bgcolor="#EDF9D5" class="tbtitletxt">  <table width='100%' border="0" cellpadding='0' cellspacing='0'>
+                  <tr>
+                    <td width='30%' class="tbtitletxt"><strong>å•ç‹¬é¡µé¢ç®¡ç†</strong></td>
+                    <td>&nbsp;</td>
+                    <td align='right'>&nbsp;</td>
+                  </tr>
+                </table></td>
   </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
-      
-    <td width="10%" height="24">±àºÅ</td>
-      
-    <td width="30%" height="24">Ò³ÃæÃû³Æ</td>
-      
-    <td width="20%" height="24">ÊÇ·ñ±àÒë</td>
-      
-    <td width="20%" height="24">¸ü¸ÄÊ±¼ä</td>
-      
-    <td width="20%" height="24">¹ÜÀí</td>
-   </tr>
-   {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-        
-    <td height="24">[field:aid /]</td>
-        
-    <td height="24"><a href="[field:global name='cfg_cmspath'/]/[field:filename/]" target='_blank'>[field:title 
-      /]</a></td>
-        
-    <td height="24">[field:ismake function='GetIsMake("@me")'/]</td>
-        
-    <td height="24">[field:uptime function='GetDateTimeMk(@me)'/]</td>
-        
-    <td height="24"> <a href='templets_one_edit.php?aid=[field:aid /]&dopost=edit'>[¸ü¸Ä]</a> 
-      <a href='templets_one_edit.php?aid=[field:aid /]&dopost=make' target='_blank'>[´´½¨]</a> 
-      <a href='templets_one_edit.php?aid=[field:aid /]&dopost=delete'>[É¾³ı]</a> 
-    </td>
+</table>	
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+		<tr align="center">
+          <td width="10%" class="tbsname">ç¼–å·</td>
+		  <td class="tbsname">é¡µé¢åç§°</td>
+		  <td width="20%" class="tbsname">æ˜¯å¦ç¼–è¯‘</td>
+		  <td width="20%" class="tbsname">æ›´æ”¹æ—¶é—´</td>
+		  <td width="20%" class="tbsname">ç®¡ç†</td>
+  </tr>
+
+{dede:datalist}<tr align="center"> 
+        <td>[field:aid /]</td>
+        <td><a href="[field:global name='cfg_cmspath'/]/[field:filename/]" target='_blank'>[field:title 
+    /]</a></td>
+        <td>[field:ismake function='GetIsMake("@me")'/]</td>
+        <td>[field:uptime function='GetDateTimeMk(@me)'/]</td>
+        <td><a href='templets_one_edit.php?aid=[field:aid /]&dopost=edit'>[æ›´æ”¹]</a> 
+      <a href='templets_one_edit.php?aid=[field:aid /]&dopost=make' target='_blank'>[æ›´æ–°]</a> 
+    <a href='templets_one_edit.php?aid=[field:aid /]&dopost=delete'>[åˆ é™¤]</a> </td>
      </tr>
-		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="24"> 
-      
-    <td height="24" colspan="5">{dede:pagelist listsize=6/}</td>
-     </tr>
-   </table>
-   </td>
-</tr>
+     {/dede:datalist}
+</table>
+
+		
+<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+		  <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+     
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="left"><input type="button" name="bt" value="å¢åŠ ä¸€ä¸ªé¡µé¢" class="inputbut" style="width:100px" onclick="location='templets_one_add.php';" />
+              <input type="button" name="bt2" value="æ›´æ–°æ‰€æœ‰å•ç‹¬é¡µHTML" class="inputbut" style="width:150px" onclick="location='templets_one_edit.php?dopost=makeall';" /></td>
+            <td width="200">{dede:pagelist listsize=6/}</td>
+          </tr>
+      </table></td>
+  </tr>
 </table>
 </body>
 </html>

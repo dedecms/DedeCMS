@@ -1,12 +1,15 @@
-<?php 
+<?php
 $GLOBALS['__SpGetArcList'] = 1;
-//»ñÈ¡Ò»¸öÎÄµµÁĞ±í
+
+//è·å–ä¸€ä¸ªæ–‡æ¡£åˆ—è¡¨
 //--------------------------------
-function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
+function SpGetArcList(&$dsql,$templets,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
   $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$keyword="",$innertext="",
-  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limit="",$att=0,$order="desc",$subday=0,$ismember=0)
+  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limitv="",$att=0,$order="desc",
+  $subday=0,$ismember=0,$maintable='#@__archives',$notUpcache=true)
   {
-		global $PubFields,$cfg_keyword_like;
+		global $PubFields,$cfg_keyword_like,$cfg_al_cachetime,$cfg_arc_all;
+
 		$row = AttDef($row,10);
 		$titlelen = AttDef($titlelen,30);
 		$infolen = AttDef($infolen,160);
@@ -14,97 +17,111 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		$imgheight = AttDef($imgheight,120);
 		$listtype = AttDef($listtype,"all");
     $arcid = AttDef($arcid,0);
+    $att = AttDef($att,0);
     $channelid = AttDef($channelid,0);
     $ismember = AttDef($ismember,0);
     $orderby = AttDef($orderby,"default");
     $orderWay = AttDef($order,"desc");
+    $maintable = AttDef($maintable,"#@__archives");
     $subday = AttDef($subday,0);
     $line = $row;
 		$orderby=strtolower($orderby);
 		$tablewidth = str_replace("%","",$tablewidth);
 		if($tablewidth=="") $tablewidth=100;
 		if($col=="") $col = 1;
-		$colWidth = ceil(100/$col); 
+		$colWidth = ceil(100/$col);
 		$tablewidth = $tablewidth."%";
 		$colWidth = $colWidth."%";
 		$keyword = trim($keyword);
 		$innertext = trim($innertext);
 		if($innertext=="") $innertext = GetSysTemplets("part_arclist.htm");
-		//°´²»Í¬Çé¿öÉè¶¨SQLÌõ¼ş ÅÅĞò·½Ê½
-		$orwhere = " arc.arcrank > -1 ";
-		//Ê±¼äÏŞÖÆ(ÓÃÓÚµ÷ÓÃ×î½üÈÈÃÅÎÄÕÂ¡¢ÈÈÃÅÆÀÂÛÖ®Àà)
-		if($subday>0){
-			 $limitday = mytime() - ($subday * 24 * 3600);
-			 $orwhere .= " And arc.senddate > $limitday ";
+		if(!empty($idlist) && ereg("[^0-9,]",$idlist)) $idlist = '';
+
+		//æ£€æŸ¥å–ç¼“å­˜
+		if($idlist=="" && !eregi("spec",$listtype) && $notUpcache && $cfg_al_cachetime>0) return SpGetArclistCache($dsql,$templets,$typeid,$row,$col,$titlelen,$infolen,
+  $imgwidth,$imgheight,$listtype,$orderby,$keyword,$innertext,
+  $tablewidth,$arcid,$idlist,$channelid,$limitv,$att,$order,$subday,$ismember,$maintable);
+
+	//æŒ‰ä¸åŒæƒ…å†µè®¾å®šSQLæ¡ä»¶ æ’åºæ–¹å¼
+	$orwhere = " arc.arcrank > -1 ";
+
+  $addField = "";
+  $addJoin = "";
+  $channelinfos = '';
+
+  //è·å–ä¸»è¡¨
+  if(eregi('spec',$listtype)) $channelid = -1;
+  if(!empty($typeid)) $reids = explode(',',$typeid);
+  if(!empty($channelid))
+  {
+  	$channelinfos = $dsql->GetOne("Select ID,maintable,addtable,listadd From `#@__channeltype` where ID='$channelid' ");
+  	$maintable = $channelinfos['maintable'];
+  }else if(!empty($typeid))
+  {
+		$channelinfos = $dsql->GetOne("select c.ID,c.maintable,c.addtable,c.listadd from `#@__arctype` a left join #@__channeltype c on c.ID=a.channeltype where a.ID='".$reids[0]."' ");
+		if(is_array($channelinfos)) {			
+			$maintable = $channelinfos['maintable'];
+			$channelid = $channelinfos['ID'];
 		}
-		//ÎÄµµµÄ×Ô¶¨ÒåÊôĞÔ
-		if($att!="") $orwhere .= "And arcatt='$att' ";
-		//ÎÄµµµÄÆµµÀÄ£ĞÍ
-		if($channelid>0 && !eregi("spec",$listtype)) $orwhere .= " And arc.channel = '$channelid' ";
-		//ÊÇ·ñÎªÍÆ¼öÎÄµµ
+  }
+
+  if(trim($maintable)=='') $maintable = "#@__archives";
+
+//æŒ‡å®šçš„æ–‡æ¡£IDåˆ—è¡¨ï¼Œé€šå¸¸æ˜¯ä¸“é¢˜å’Œç›¸å…³æ–‡ç« ï¼Œå°†ä¸ä½¿ç”¨å…¶å®ƒé™„åŠ æ¡ä»¶
+//----------------------------------
+if($idlist!="")
+{
+	$idlist = ereg_replace("[^,0-9]","",$idlist);
+	if($idlist!="") $orwhere .= "And arc.ID in ($idlist) ";
+}
+//æ™®é€šæ ‡è®°ï¼ˆå¯ç¼“å­˜ï¼‰
+else
+{
+		//æ—¶é—´é™åˆ¶(ç”¨äºè°ƒç”¨æœ€è¿‘çƒ­é—¨æ–‡ç« ã€çƒ­é—¨è¯„è®ºä¹‹ç±»)
+		if($subday>0){
+			 $limitvday = mytime() - ($subday * 24 * 3600);
+			 $orwhere .= " And arc.senddate > $limitvday ";
+		}
+		//æ–‡æ¡£çš„è‡ªå®šä¹‰å±æ€§
+		if($att!="") $orwhere .= "And arc.arcatt='$att' ";
+		//æ–‡æ¡£çš„é¢‘é“æ¨¡å‹
+		if(!empty($channelid) && !eregi("spec",$listtype)) $orwhere .= " And arc.channel = '$channelid' ";
+		//echo $orwhere.$channelid ;
+		//æ˜¯å¦ä¸ºæ¨èæ–‡æ¡£
 		if(eregi("commend",$listtype)) $orwhere .= " And arc.iscommend > 10  ";
-		//ÊÇ·ñÎª´øËõÂÔÍ¼Í¼Æ¬ÎÄµµ
+		//æ˜¯å¦ä¸ºå¸¦ç¼©ç•¥å›¾å›¾ç‰‡æ–‡æ¡£
 		if(eregi("image",$listtype)) $orwhere .= " And arc.litpic <> ''  ";
-		//ÊÇ·ñÎª×¨ÌâÎÄµµ
+		//æ˜¯å¦ä¸ºä¸“é¢˜æ–‡æ¡£
 		if(eregi("spec",$listtype) || $channelid==-1) $orwhere .= " And arc.channel = -1  ";
-    //ÊÇ·ñÖ¸¶¨Ïà½üID
+    //æ˜¯å¦æŒ‡å®šç›¸è¿‘ID
 		if($arcid!=0) $orwhere .= " And arc.ID<>'$arcid' ";
-		
-		//ÊÇ·ñÎª»áÔ±ÎÄµµ
+
+		//æ˜¯å¦ä¸ºä¼šå‘˜æ–‡æ¡£
 		if($ismember==1) $orwhere .= " And arc.memberid>0  ";
-		
-		//ÎÄµµÅÅĞòµÄ·½Ê½
-		$ordersql = "";
-		if($orderby=='hot'||$orderby=='click') $ordersql = " order by arc.click $orderWay";
-		else if($orderby=='pubdate') $ordersql = " order by arc.pubdate $orderWay";
-		else if($orderby=='sortrank') $ordersql = " order by arc.sortrank $orderWay";
-    else if($orderby=='id') $ordersql = "  order by arc.ID $orderWay";
-    else if($orderby=='near') $ordersql = " order by ABS(arc.ID - ".$arcid.")";
-    else if($orderby=='lastpost') $ordersql = "  order by arc.lastpost $orderWay";
-    else if($orderby=='postnum') $ordersql = "  order by arc.postnum $orderWay";
-    else if($orderby=='rand') $ordersql = "  order by rand()";
-		else $ordersql=" order by arc.senddate $orderWay";
-		
-		if($orderby=='near' && $cfg_keyword_like=='·ñ'){ $keyword=""; }
-		
-		//Àà±ğIDµÄÌõ¼ş£¬Èç¹ûÓÃ "," ·Ö¿ª,¿ÉÒÔÖ¸¶¨ÌØ¶¨ÀàÄ¿
+
+		if($cfg_keyword_like=='N'){ $keyword=""; }
+
+		//ç±»åˆ«IDçš„æ¡ä»¶ï¼Œå¦‚æœç”¨ "," åˆ†å¼€,å¯ä»¥æŒ‡å®šç‰¹å®šç±»ç›®
 		//------------------------------
 		if(!empty($typeid))
 		{
-		  $reids = explode(",",$typeid);
 		  $ridnum = count($reids);
-		  if($ridnum>1){
-			  $tpsql = "";
+		  if($ridnum>1)
+		  {
+			  $sonids = '';
 		    for($i=0;$i<$ridnum;$i++){
-				  if($tpsql=="") $tpsql .= " And ( (".TypeGetSunID($reids[$i],$dsql,'arc')." Or arc.typeid2='".$reids[$i]."') ";
-				  else $tpsql .= " Or (".TypeGetSunID($reids[$i],$dsql,'arc')." Or arc.typeid2='".$reids[$i]."') ";
+				  $sonids .= ($sonids=='' ? TypeGetSunID($reids[$i],$dsql,'arc',0,true) : ','.TypeGetSunID($reids[$i],$dsql,'arc',0,true));
 		    }
-		    $tpsql .= ") ";
-		    $orwhere .= $tpsql;
-		    unset($tpsql);
+		    $orwhere .= " And ( arc.typeid in ($sonids) Or arc.typeid2 in ($sonids) ) ";
 		  }else{
-			  $orwhere .= " And (".TypeGetSunID($typeid,$dsql,'arc')." Or arc.typeid2='$typeid' ) ";
+			  $sonids = TypeGetSunID($typeid,$dsql,'arc',0,true);
+			  $orwhere .= " And ( arc.typeid in ($sonids) Or arc.typeid2 in ($sonids) ) ";
 		  }
 		  unset($reids);
 	  }
-		//Ö¸¶¨µÄÎÄµµIDÁĞ±í
-		//----------------------------------
-		if($idlist!="")
-		{
-			$reids = explode(",",$idlist);
-		  $ridnum = count($reids);
-		  $idlistSql = "";
-		  for($i=0;$i<$ridnum;$i++){
-				if($idlistSql=="") $idlistSql .= " And ( arc.ID='".$reids[$i]."' ";
-				else $idlistSql .= " Or arc.ID='".$reids[$i]."' ";
-		  }
-		  $idlistSql .= ") ";
-		  $orwhere .= $idlistSql;
-		  unset($idlistSql);
-		  unset($reids);
-		  $row = $ridnum;
-		}
-		//¹Ø¼ü×ÖÌõ¼ş
+
+
+		//å…³é”®å­—æ¡ä»¶
 		if($keyword!="")
 		{
 		  $keywords = explode(",",$keyword);
@@ -118,55 +135,63 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		  if($rstr!="") $orwhere .= " And CONCAT(arc.title,arc.keywords) REGEXP '$rstr' ";
 		  unset($keywords);
 	  }
-	  $addField = "";
-		$addJoin = "";
-	  //»ñµÃ¸½¼Ó±íµÄÏà¹ØĞÅÏ¢
+
+	  //è·å¾—é™„åŠ è¡¨çš„ç›¸å…³ä¿¡æ¯
 		//-----------------------------
-		if($channelid>0){
-		  $mChannelUnit = new ChannelUnit($channelid);
-		  $addtable  = $mChannelUnit->ChannelInfos['addtable'];
-		  if($addtable!=""){
-			  $addJoin = " left join $addtable on arc.ID = ".$addtable.".aid ";
-			  $addField = "";
-			  $fields = explode(",",$mChannelUnit->ChannelInfos['listadd']);
-			  foreach($fields as $k=>$v){ $nfields[$v] = $k; }
-			  foreach($mChannelUnit->ChannelFields as $k=>$arr){
-				  if(isset($nfields[$k])){
-				    if($arr['rename']!="")
-				  	  $addField .= ",".$addtable.".".$k." as ".$arr['rename'];
-				    else
-				  	  $addField .= ",".$addtable.".".$k;
-				  }
-			  }
-		  }
+		if(is_array($channelinfos))
+		{
+			$channelinfos['listadd'] = trim($channelinfos['listadd']);
+			if($cfg_arc_all=='Y' && is_array($channelinfos) && $channelinfos['listadd']!='')
+			{
+				  $addField = '';
+				  $fields = explode(',',$channelinfos['listadd']);
+				  foreach($fields as $v) $addField .= ",addt.{$v}";
+				  if($addField!='') $addJoin = " left join `{$channelinfos['addtable']}` addt on addt.aid = arc.ID ";
+			}
 		}
-	  
-	  $limit = trim(eregi_replace("limit","",$limit));
-	  if($limit!="") $limitsql = " limit $limit ";
-	  else $limitsql = " limit 0,$line ";
+}//æ™®é€šæ ‡è®°ï¼ˆå¯ç¼“å­˜ï¼‰
+
+	//æ–‡æ¡£æ’åºçš„æ–¹å¼
+		$ordersql = "";
+		if($orderby=='hot'||$orderby=='click') $ordersql = " order by arc.click $orderWay";
+		else if($orderby=='pubdate') $ordersql = " order by arc.pubdate $orderWay";
+		else if($orderby=='sortrank') $ordersql = " order by arc.sortrank $orderWay";
+    else if($orderby=='id') $ordersql = "  order by arc.ID $orderWay";
+    else if($orderby=='near') $ordersql = " order by ABS(arc.ID - ".$arcid.")";
+    else if($orderby=='lastpost') $ordersql = "  order by arc.lastpost $orderWay";
+    else if($orderby=='postnum') $ordersql = "  order by arc.postnum $orderWay";
+    else if($orderby=='digg') $ordersql = "  order by arc.digg $orderWay";
+    else if($orderby=='diggtime') $ordersql = "  order by arc.diggtime $orderWay";
+    else if($orderby=='rand') $ordersql = "  order by rand()";
+		else $ordersql=" order by arc.senddate $orderWay";
+
+	  if(!empty($limitv)) $limitvsql = " limit $limitv ";
+	  else $limitvsql = " limit 0,$line ";
 		//////////////
 		$query = "Select arc.ID,arc.title,arc.iscommend,arc.color,arc.typeid,
-		arc.ismake,arc.description,arc.pubdate,arc.senddate,arc.arcrank,arc.click,
-		arc.money,arc.litpic,arc.writer,arc.shorttitle,arc.memberid,arc.postnum,arc.lastpost,
-		tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
-		tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
-		$addField
-		from #@__archives arc 
-		left join #@__arctype tp on arc.typeid=tp.ID
-		$addJoin
-		where $orwhere $ordersql $limitsql";
+		    arc.ismake,arc.description,arc.pubdate,arc.senddate,arc.arcrank,arc.click,arc.digg,arc.diggtime,
+		    arc.money,arc.litpic,arc.writer,arc.shorttitle,arc.memberid,arc.postnum,arc.lastpost,
+		    tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
+		    tp.namerule2,tp.ispart,tp.moresite,tp.siteurl{$addField}
+		    from `$maintable` arc left join `#@__arctype` tp on arc.typeid=tp.ID $addJoin
+		    where $orwhere $ordersql $limitvsql
+		";
 		
-		$t1 = ExecTime();
-		//echo $query;
-		
-		
+    $dtp2 = new DedeTagParse();
+    $dtp2->SetNameSpace("field","[","]");
+    $dtp2->LoadString($innertext);
+    if(!is_array($dtp2->CTags)) return '';
+
+    $t1 = ExecTime();
+		//if($listtype == "spec"){
+		  //echo $idlist."--".$query;
+		  //exit();
+	  //}
+
 		$dsql->SetQuery($query);
 		$dsql->Execute("al");
     $artlist = "";
     if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
-    $dtp2 = new DedeTagParse();
-    $dtp2->SetNameSpace("field","[","]");
-    $dtp2->LoadString($innertext);
     $GLOBALS['autoindex'] = 0;
     for($i=0;$i<$line;$i++)
 		{
@@ -174,27 +199,26 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
        for($j=0;$j<$col;$j++)
 			 {
          if($col>1) $artlist .= "	<td width='$colWidth'>\r\n";
-         if($row = $dsql->GetArray("al"))
+         if($row = $dsql->GetArray("al",MYSQL_ASSOC))
          {
-           //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î
+           //å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
            $row['description'] = cn_substr($row['description'],$infolen);
            $row['id'] =  $row['ID'];
-           
+
            $row['arcurl'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],
                             $row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
                             $row['typedir'],$row['money'],true,$row['siteurl']);
            $row['typeurl'] = GetTypeUrl($row['typeid'],MfTypedir($row['typedir']),$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],$row['siteurl']);
-           
+
            if($row['litpic']=="") $row['litpic'] = $PubFields['templeturl']."/img/default.gif";
            $row['picname'] = $row['litpic'];
-           if($GLOBALS['cfg_multi_site']=='ÊÇ'){
+           if($GLOBALS['cfg_multi_site']=='Y'){
            	 if($row['siteurl']=="") $row['siteurl'] = $GLOBALS['cfg_mainsite'];
            	 if(!eregi("^http://",$row['picname'])){
            	 	  $row['litpic'] = $row['siteurl'].$row['litpic'];
            	 	  $row['picname'] = $row['litpic'];
            	 }
            }
-           
            $row['info'] = $row['description'];
            $row['filename'] = $row['arcurl'];
            $row['stime'] = GetDateMK($row['pubdate']);
@@ -203,34 +227,18 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
            $row['imglink'] = "<a href='".$row['filename']."'>".$row['image']."</a>";
            $row['title'] = cn_substr($row['title'],$titlelen);
            $row['textlink'] = "<a href='".$row['filename']."'>".$row['title']."</a>";
-           
            if($row['color']!="") $row['title'] = "<font color='".$row['color']."'>".$row['title']."</font>";
            if($row['iscommend']==5||$row['iscommend']==16) $row['title'] = "<b>".$row['title']."</b>";
-           
            $row['phpurl'] = $PubFields['phpurl'];
  		       $row['templeturl'] = $PubFields['templeturl'];
- 		       
- 		       //±àÒë¸½¼Ó±íÀïµÄÊı¾İ
- 		       if($channelid>0){
-             foreach($row as $k=>$v){
- 		  	        if(ereg("[A-Z]",$k)) $row[strtolower($k)] = $v;
- 		         }
-             foreach($mChannelUnit->ChannelFields as $k=>$arr){
- 		  	        if(isset($row[$k])) $row[$k] = $mChannelUnit->MakeField($k,$row[$k]);
- 		  	     }
- 		  	   }
- 		       
-           if(is_array($dtp2->CTags)){
-       	      foreach($dtp2->CTags as $k=>$ctag){
-       		 	    if(isset($row[$ctag->GetName()])) $dtp2->Assign($k,$row[$ctag->GetName()]);
-       		 	    else $dtp2->Assign($k,"");
-       	      }
-       	      $GLOBALS['autoindex']++;
-           }
-           $artlist .= $dtp2->GetResult()."\r\n";
+
+       	   foreach($dtp2->CTags as $k=>$ctag){ @$dtp2->Assign($k,$row[$ctag->GetName()]); }
+       	   $GLOBALS['autoindex']++;
+
+           $artlist .= $dtp2->GetResult();
          }//if hasRow
          else{
-         	 $artlist .= "";
+         	 $artlist .= '';
          }
          if($col>1) $artlist .= "	</td>\r\n";
        }//Loop Col
@@ -239,11 +247,62 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
      }//Loop Line
      if($col>1) $artlist .= "	</table>\r\n";
      $dsql->FreeResult("al");
-     
+
      $t2 = ExecTime();
      //echo "<hr>".($t2-$t1)." $query<hr>";
      
-     if($artlist=="") $artlist="&nbsp;";
-     return $artlist;
+     return trim($artlist);
 }
+
+//ç¼“å­˜æ£€æŸ¥
+//-----------------------
+function SpGetArclistCache($dsql,$templets,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
+  $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$keyword="",$innertext="",
+  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limitv="",$att=0,$order="desc",$subday=0,$ismember=0,$maintable='#@__archives')
+{
+	 global $cfg_al_cachetime;
+	 $ntime = time();
+	 
+	 $hash = md5($typeid.$row.$channelid.$titlelen.$att.$templets.$listtype.$orderby.$order.$limitv.$subday.$ismember.$col.$keyword.$infolen.$imgwidth.$imgheight);
+	 
+	 //æ£€æŸ¥ç¼“å­˜æ˜¯å¦å­˜åœ¨æŒ‡å®šå†…å®¹
+	 $getCacheQuery = " Select id,uptime From `#@__cache_tagindex` where hash = '$hash' ";
+
+	 $drow = $dsql->GetOne($getCacheQuery);
+
+	 //æ²¡æœ‰ç¼“å­˜æˆ–ç¼“å­˜å·²è¿‡æœŸ
+	 if(!is_array($drow) || ($ntime - $drow['uptime']) > ($cfg_al_cachetime * 3600) )
+	 {
+	 	    $listValue = SpGetArcList($dsql,$templets,$typeid,$row,$col,$titlelen,$infolen,
+                   $imgwidth,$imgheight,$listtype,$orderby,$keyword,$innertext,
+                   $tablewidth,$arcid,$idlist,$channelid,$limitv,
+                   $att,$order,$subday,$ismember,$maintable,false);
+
+       //æ²¡ç¼“å­˜
+       if(!is_array($drow))
+       {
+     	    $inQuery = "INSERT INTO `#@__cache_tagindex`(`typeid` , `channelid` , `uptime` ,`hash`) VALUES ( '$typeid', '$channelid', '$ntime', '$hash'); ";
+          $rs = $dsql->ExecuteNoneQuery($inQuery);
+	 	      $cacheid = $dsql->GetLastID();
+	 	      if($cacheid>0){
+	 	    	   $rs = $dsql->ExecuteNoneQuery("Insert Into `#@__cache_value`(`cid`,`value`) Values('$cacheid','".addslashes($listValue)."'); ");
+	 	    	   if(!$rs) $dsql->ExecuteNoneQuery("Delete From `#@__cache_tagindex` where `id`='$cacheid'; ");
+	 	      }
+       }
+       //æ›´æ–°ç¼“å­˜
+       else
+       {
+     	    $rs = $dsql->ExecuteNoneQuery("Update `#@__cache_value` set `value`='".addslashes($listValue)."' where cid='{$drow['id']}' ");
+     	    if($rs) $dsql->ExecuteNoneQuery("Update `#@__cache_tagindex` set uptime='$ntime' where id='{$drow['id']}' ");
+       }
+       return $listValue;
+	 }
+	 //ä»ç¼“å­˜è·å–æ•°æ®
+	 else
+	 {
+	 	 $drow = $dsql->GetOne("Select * From `#@__cache_value` where cid='{$drow['id']}' ");
+	 	 return $drow['value'];
+	 }
+}
+
 ?>

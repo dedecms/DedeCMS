@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_Export');
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
+require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
 if(!isset($channelid)) $channelid = 0;
 if(!isset($typeid)) $typeid = 0;
 if(!isset($pageno)) $pageno = 1;
@@ -9,18 +10,26 @@ if(!isset($startid)) $startid = 0;
 if(!isset($endid)) $endid = 0;
 if(!isset($makehtml)) $makehtml = 0;
 if(!isset($onlytitle)) $onlytitle = 0;
+if(!isset($smakeid)) $smakeid = 0;
+$nid = intval($nid);
 if($channelid>0 && $typeid==0){
-	ShowMsg('ÇëÖ¸¶¨À¸Ä¿ID£¡','javascript:;');
+	ShowMsg('è¯·æŒ‡å®šæ ç›®IDï¼','javascript:;');
 	exit();
 }
 $dsql = new DedeSql(false);
-$row = $dsql->GetOne("Select * From #@__co_exrule where aid='$ruleid'");
+$row = $dsql->GetOne("Select ex.*,n.arcsource From `#@__conote` n left join `#@__co_exrule` ex on ex.aid=n.typeid where nid='$nid'");
 if(!is_array($row)){
-	echo "ÕÒ²»µ½µ¼Èë¹æÔò£¬ÎŞ·¨Íê³É²Ù×÷£¡";
+	ShowMsg('æ‰¾ä¸åˆ°å¯¼å…¥è§„åˆ™ï¼Œæ— æ³•å®Œæˆæ“ä½œï¼','javascript:;');
 	$dsql->Close();
 	exit();
 }
-//·ÖÎö¹æÔò£¬²¢Éú³ÉÁÙÊ±µÄSQLÓï¾ä
+$channelid = $row['channelid'];
+$etype = $row['etype'];
+$arcsource = $row['arcsource'];
+$senddate = mytime();
+
+$typeinfos = $dsql->GetOne("Select * From `#@__arctype` where ID='$typeid'",MYSQL_ASSOC);
+//åˆ†æè§„åˆ™ï¼Œå¹¶ç”Ÿæˆä¸´æ—¶çš„SQLè¯­å¥
 //-------------------------------------
 $dtp = new DedeTagParse();
 $dtp->LoadString($row['ruleset']);
@@ -28,12 +37,12 @@ $noteinfo = $dtp->GetTagByName('note');
 $tablenames = explode(",",$noteinfo->GetAtt('tablename'));
 $autofield = $noteinfo->GetAtt('autofield');
 $synfield = $noteinfo->GetAtt('synfield');
-$tablename1 = $tablenames[0];
-$tb1SqlKey = "Insert Into $tablename1(";
-$tb1SqlValue = " Values(";
+$tablename1 = str_replace('#@__',$cfg_dbprefix,$tablenames[0]);
+$tb1SqlKey = "Insert Into `$tablename1`($autofield";
+$tb1SqlValue = " Values('@$autofield@'";
 if(count($tablenames)>=2){
-	$tablename2 = $tablenames[1];
-	$tb2SqlKey = "Insert Into $tablename2(";
+	$tablename2 = str_replace('#@__',$cfg_dbprefix,$tablenames[1]);
+	$tb2SqlKey = "Insert Into `$tablename2`(";
   $tb2SqlValue = " Values(";
   if($synfield!=''){
 		$tb2SqlKey .= $synfield;
@@ -41,9 +50,9 @@ if(count($tablenames)>=2){
   }
 }
 else{
-	$tablename2 = "";
-	$tb2SqlKey = "";
-	$tb2SqlValue = "";
+	$tablename2 = '';
+	$tb2SqlKey = '';
+	$tb2SqlValue = '';
 }
 
 $exKeys = Array();
@@ -53,7 +62,7 @@ foreach($dtp->CTags as $tagid => $ctag)
 	if($ctag->GetName()=='field')
 	{
 	  $fieldname = $ctag->GetAtt('name');
-	  $tbname = $ctag->GetAtt('intable');
+	  $tbname = str_replace('#@__',$cfg_dbprefix,$ctag->GetAtt('intable'));
 	  if($tbname==$tablename1){
 	  	$tb1SqlKey .= ",$fieldname";
 	  	if($ctag->GetAtt('source')!='value'){
@@ -63,6 +72,8 @@ foreach($dtp->CTags as $tagid => $ctag)
 	  		$nvalue = str_replace('{cid}',$channelid,$nvalue);
 	  		$nvalue = str_replace('{rank}',$arcrank,$nvalue);
 	  		$nvalue = str_replace('{admin}',$cuserLogin->getUserID(),$nvalue);
+	  		$nvalue = str_replace('{senddate}',$senddate,$nvalue);
+	  		$nvalue = str_replace('{source}',$arcsource,$nvalue);
 	  		$tb1SqlValue .= ",'$nvalue'";
 	  	}
 	  }
@@ -73,7 +84,6 @@ foreach($dtp->CTags as $tagid => $ctag)
 	  	}else{
 	  		$nvalue = str_replace('{tid}',$typeid,$ctag->GetInnerText());
 	  		$nvalue = str_replace('{cid}',$channelid,$nvalue);
-	  		$nvalue = str_replace('{rank}',$arcrank,$nvalue);
 	  		$tb2SqlValue .= ",'$nvalue'";
 	  	} 
 	  }
@@ -88,7 +98,8 @@ if($tablename2!="")
   $tb2SqlValue = str_replace("(,","(",$tb2SqlValue).");";
   $tb2Sql = $tb2SqlKey.$tb2SqlValue;
 }
-//µ¼³öÊı¾İµÄSQL²Ù×÷
+echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+//å¯¼å‡ºæ•°æ®çš„SQLæ“ä½œ
 //---------------------------------
 $totalpage = $totalcc/$pagesize;
 $startdd = ($pageno-1) * $pagesize;
@@ -101,69 +112,110 @@ while($row = $dsql->GetObject())
 	$dtp->LoadString($row->result);
 	$aid = $row->aid;
 	if(!is_array($dtp->CTags)){ continue; }
-	if($onlytitle){
-		$titletag = '';
-		foreach ($dtp->CTags as $ctag){
-			 $tvalue = $ctag->GetAtt("name");
-			 if($tvalue == '#@__archives.title' || $tvalue == $cfg_dbprefix.'archives.title'){
-			   	$titletag = $ctag;
-			   	break;
-			 }
-	  }
-		if(is_object($titletag)){
-			$title = trim(addslashes($titletag->GetInnerText()));
-			$testrow = $dsql->GetOne("Select count(ID) as dd From #@__archives where title like '$title'");
-			if($testrow['dd']>0){
-				echo "Êı¾İ¿âÒÑ´æÔÚ±êÌâÎª: {$title} µÄÎÄµµ£¬³ÌĞò×èÖ¹ÁË´ËÄÚÈİµ¼Èë<br/>";
-				continue;
-			}
-		}
-	}
+	$isbreak = false;
+	$title = '';
+	$pubdate = 0;
 	foreach($dtp->CTags as $ctag)
 	{
 		if($ctag->GetName()!="field") continue;
-		$tvalue = $ctag->GetAtt("name");
-		$tmpSql1 = str_replace('@#'.$tvalue.'#@',addslashes($ctag->GetInnerText()),$tmpSql1);
-		if($tablename2!=""){
-    	$tmpSql2 = str_replace('@#'.$tvalue.'#@',addslashes($ctag->GetInnerText()),$tmpSql2);
+		$tvalue = str_replace('#@__',$cfg_dbprefix,$ctag->GetAtt("name"));
+		if($pubdate==0 && eregi("\.pubdate$",$tvalue)){
+			$pubdate = $ctag->GetInnerText();
+			$pubdate = @intval($pubdate);
+	  }
+		if($title=='' && eregi("\.title$",$tvalue))
+		{
+				$title = $ctag->GetInnerText();
+				$title = trim($title);
+				if($title==''){
+				   echo "ç¨‹åºé˜»æ­¢æ ‡é¢˜ä¸ºç©ºçš„å†…å®¹å¯¼å…¥<br/>";
+				   $isbreak = true;
+				   break;
+				}
+				//æ’é™¤é‡å¤æ ‡é¢˜
+				if($onlytitle==1)
+				{
+				    $title = addslashes($title);
+				    $testrow = $dsql->GetOne("Select count(aid) as dd From `#@__full_search` where channelid='$channelid' And title like '$title'");
+			      if($testrow['dd']>0){
+				       echo "æ•°æ®åº“å·²å­˜åœ¨æ ‡é¢˜ä¸º: {$title} çš„æ–‡æ¡£ï¼Œç¨‹åºé˜»æ­¢äº†æ­¤å†…å®¹å¯¼å…¥<br/>";
+				       $isbreak = true;
+				       break;
+			      }
+				}////æ’é™¤é‡å¤æ ‡é¢˜
+		}
+		$truevalue = $ctag->GetInnerText();
+		$tmpSql1 = str_replace('@#'.$tvalue.'#@',addslashes(trim($truevalue)),$tmpSql1);
+		if($tablename2!=''){
+    	$tmpSql2 = str_replace('@#'.$tvalue.'#@',addslashes(trim($truevalue)),$tmpSql2);
     }
 	}
+	if($isbreak) continue;
+	if($pubdate==0) $pubdate = $senddate;
 	$tmpSql1 = ereg_replace('@#(.*)#@','',$tmpSql1);
+	$tmpSql2 = ereg_replace('@#(.*)#@','',$tmpSql2);
+	
+	//è¿™é‡Œçš„è§„åˆ™ä»…é’ˆå¯¹å½“å‰ç³»ç»Ÿï¼Œå¦‚æœå…¶å®ƒç³»ç»Ÿï¼Œéœ€ä¿®æ”¹è¿™é‡Œçš„é€»è¾‘
+	$arcid = GetIndexKey($dsql,$typeid,$channelid);
+	if($smakeid==0) $smakeid = $arcid;
+	$fileurl = GetFileUrl($arcid,$typeid,$senddate,$title,1,0,$typeinfos['namerule'],$typeinfos['typedir'],0,true,$typeinfos['siteurl']);
+	$dsql->ExecuteNoneQuery("Update `#@__full_search` set url='".addslashes($fileurl)."',uptime='$senddate',pubdate='$pubdate' where aid='$arcid' ");
+	
+	$tmpSql1 = str_replace("@$autofield@",$arcid,$tmpSql1);
 	$rs = $dsql->ExecuteNoneQuery($tmpSql1);
-	//echo "$tmpSql1";
-	//echo $dsql->GetError();
-	//exit();
-	if($rs && $tablename2!=""){
-		if($synfield!=""){
-			$lid = $dsql->GetLastID();
-			$tmpSql2 = str_replace("@$synfield@",$lid,$tmpSql2);
-			$rs = $dsql->ExecuteNoneQuery($tmpSql2);
-			if(!$rs) $dsql->ExecuteNoneQuery("Delete From $tablename1 where $autofield='$lid'");
-		}
-		else $dsql->ExecuteNoneQuery($tmpSql2);
+	
+	if($rs){
+		if($tablename2!=""){
+			  $tmpSql2 = str_replace("@$synfield@",$arcid,$tmpSql2);
+			  $rs = $dsql->ExecuteNoneQuery($tmpSql2);
+			  if(!$rs){
+				  $dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcid' ");
+				  $dsql->ExecuteNoneQuery("Delete From `$tablename1` where $autofield='$arcid'");
+			  }else{
+			  	$dsql->ExecuteNoneQuery("update `#@__courl` set isex=1 where aid='$aid'");
+			  }
+		  }
+	}else
+	{
+		$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcid' ");
+		echo "é”™è¯¯è®°å½•ï¼š";
+		echo "$tmpSql1 ";
+	  echo $dsql->GetError()."<hr />";
 	}
-	$dsql->ExecuteNoneQuery("update #@__courl set isex=1 where aid='$aid'");
 }
 $dsql->Close();
-//¼ì²âÊÇ·ñÍê³É»òºóĞø²Ù×÷
+//æ£€æµ‹æ˜¯å¦å®Œæˆæˆ–åç»­æ“ä½œ
 //---------------------------------
-if($totalpage <= $pageno){
+if($totalpage <= $pageno)
+{
 	if($channelid>0 && $makehtml==1){
-		 $mhtml = "makehtml_archives_action.php?typeid=$typeid&startid=$startid&endid=$endid&pagesize=20";
-		 ShowMsg("Íê³ÉÊı¾İµ¼Èë£¬×¼±¸Éú³ÉÎÄµµHTML...",$mhtml);
-		 exit();
+		if($arcrank==0){
+		   $mhtml = "makehtml_archives_action.php?typeid={$typeid}&startid={$smakeid}&endid=0&pagesize=20";
+		   ShowMsg("å®Œæˆæ•°æ®å¯¼å…¥ï¼Œå‡†å¤‡ç”Ÿæˆæ–‡æ¡£HTML...",$mhtml);
+		   ClearAllLink();
+		   exit();
+		}else
+		{
+			ShowMsg("å®Œæˆæ•°æ®å¯¼å…¥ï¼Œå› ä¸ºä½ é€‰æ‹©äº†æŠŠæ–‡æ¡£ä¿å­˜ä¸ºè‰ç¨¿ï¼Œå› æ­¤æ— æ³•ç”ŸæˆHTMLï¼","javascript:;");
+		  ClearAllLink();
+		  exit();
+		}
 	}else{
-	   echo "Íê³ÉËùÓĞÊı¾İµ¼Èë£¡";
+	   ShowMsg("å®Œæˆæ‰€æœ‰æ•°æ®å¯¼å…¥ï¼","javascript:;");
+	   ClearAllLink();
+	   exit();
   }
 }
-else{
+else
+{
 	if($totalpage>0) $rs = substr(($pageno/$totalpage * 100),0,2);
 	else $rs = "100";
 	$pageno++;
-	$gourl = "co_export_action.php?nid=$nid&totalcc=$totalcc&channelid=$channelid&pageno=$pageno";
+	$gourl = "co_export_action.php?nid=$nid&smakeid={$smakeid}&totalcc=$totalcc&channelid=$channelid&pageno=$pageno";
 	$gourl .= "&ruleid=$ruleid&typeid=$typeid&arcrank=$arcrank&pagesize=$pagesize";
 	$gourl .= "&startid=$startid&endid=$endid&onlytitle=$onlytitle&makehtml=$makehtml";
-	ShowMsg("Íê³É {$rs}% µ¼Èë£¬¼ÌĞøÖ´ĞĞ²Ù×÷...",$gourl,"",500);
+	ShowMsg("å®Œæˆ {$rs}% å¯¼å…¥ï¼Œç»§ç»­æ‰§è¡Œæ“ä½œ...",$gourl,"",100);
+	ClearAllLink();
 	exit();
 }
 ?>

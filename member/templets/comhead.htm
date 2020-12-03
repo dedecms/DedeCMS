@@ -1,0 +1,51 @@
+<!-- 头部开始 -->
+	<div id="manage_company_header">
+    	<div id="manage_company_top">
+        	<div class="manage_company_logo">
+            </div>
+            <div class="manage_company_welcome"><span class="manage_company_welcome_green">
+            	<?php echo $cfg_ml->M_UserName?></span> 你好，欢迎登录会员中心。<?php if($cfg_ml->M_Newpm > 0){ ?> <b>新消息</b>(<a href="pm.php?folder=inbox"><font color="red"><?php echo $cfg_ml->M_Newpm;?></a></font>) <?php }?>  
+            </div>
+            
+            <div class="clear"></div>
+        </div>
+        <div id="manage_company_menubg">
+        	<div id="manage_company_menu">
+            	<div class="manage_company_topimg">
+            	</div>
+            	<div class="manage_company_text">
+                	<ul>
+                        <li><a href="index.php">中心主页</a></li>
+                        <?php if($cfg_ml->M_utype==1){  ?>
+                        <li><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>">企业空间</a></li>
+                        <?php }else{ ?>
+                      	<li><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>">个人空间</a></li>
+                        <?php } ?>
+                        <li><a href="../company/">搜索企业</a></li>
+                        <li><a href="index_do.php?fmdo=login&dopost=exit">退出登录</a></li>
+                        <li><a href="<?php echo $cfg_indexurl?>">网站主页</a></li>
+                        <?php 
+  if($cfg_pp_isopen==1 && $cfg_pp_indexurl!=''){
+	  echo "  <li><a href='{$cfg_pp_indexurl}' target='_blank'>{$cfg_pp_name}</a></li>\n";
+  }
+?>
+                    </ul>
+            	</div>
+            </div>
+        </div>        
+    </div>
+    <div class="clear">
+    </div>
+    <?php
+    if($cfg_ml->M_Newpm > 0){
+    ?>
+    <div style="display:none;">
+        <script type="text/javascript">
+            document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="0" height="0">');
+            document.write('<param name="movie" value="newpm.swf"><param name="quality" value="high">');
+            document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+            document.write('<embed src="newpm.swf" wmode="opaque" menu="false" quality="high" width="0" height="0" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); 
+            document.write('</object>'); 
+        </script>
+    </div>
+    <?php } ?>

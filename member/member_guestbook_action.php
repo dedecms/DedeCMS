@@ -5,18 +5,18 @@ $cfg_ml = new MemberLogin();
 
 $svali = GetCkVdValue();
 if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   exit();
 }
 
 $uidnum = trim(ereg_replace("[^0-9]","",$uidnum));
 if(empty($uidnum)){
-	ShowMsg("²ÎÊı´íÎó£¡","-1");
+	ShowMsg("å‚æ•°é”™è¯¯ï¼","-1");
   exit();
 }
 
 if(strlen($title)<2||strlen($msg)<10){
-	ShowMsg("ÄãµÄ±êÌâ²»ºÏ·¨»òÁôÑÔÄÚÈİÌ«¶Ì£¡","-1");
+	ShowMsg("ä½ çš„æ ‡é¢˜ä¸åˆæ³•æˆ–ç•™è¨€å†…å®¹å¤ªçŸ­ï¼","-1");
   exit();
 }
 
@@ -33,7 +33,7 @@ $dsql = new DedeSql(false);
 $dsql->ExecuteNoneQuery($inquery);
 $dsql->Close();
 
-ShowMsg("³É¹¦Ìá½»ÄãµÄÁôÑÔ£¡","-1");
+ShowMsg("æˆåŠŸæäº¤ä½ çš„ç•™è¨€ï¼","-1");
 exit();
 
 ?>

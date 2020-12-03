@@ -1,25 +1,29 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>广告管理</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>骞垮憡绠＄悊</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">杈呭姪鎻掍欢</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr>
-   <td height="19" background="img/tbg.gif" colspan="7">
-     <b>广告管理</b>&nbsp;[<a href="ad_add.php"><u>增加一个新广告</u></a>]
-	</td>
+   <td height="19" colspan="7" bgcolor="#EDF9D5">
+     <b>&nbsp;骞垮憡绠＄悊</b>&nbsp;[<a href="ad_add.php"><u>澧炲姞涓�涓柊骞垮憡</u></a>]	</td>
 </tr>
   <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="8%">编号</td>
-      <td width="20%">广告名称</td>
-      <td width="12%">投放范围</td>
-      <td width="11%">是否限时</td>
-      <td width="11%">结束时间</td>
-      <td width="20%">广告代码</td>
-      <td width="18%">管理</td>
+      <td width="8%">缂栧彿</td>
+      <td width="20%">骞垮憡鍚嶇О</td>
+      <td width="12%">鎶曟斁鑼冨洿</td>
+      <td width="11%">鏄惁闄愭椂</td>
+      <td width="11%">缁撴潫鏃堕棿</td>
+      <td width="20%">骞垮憡浠ｇ爜</td>
+      <td width="18%">绠＄悊</td>
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -31,8 +35,8 @@
         <td>{[field:a/]dede:myad name='[field:tagname /]'/[field:b/]}</td>
         <td>
          <a href='ad_edit.php?aid=[field:aid /]&dopost=getjs'>[JS]</a>
-         <a href='ad_edit.php?aid=[field:aid /]&dopost=edit'>[更改]</a>
-		     <a href='ad_edit.php?aid=[field:aid /]&dopost=delete'>[删除]</a>
+         <a href='ad_edit.php?aid=[field:aid /]&dopost=edit'>[鏇存敼]</a>
+		     <a href='ad_edit.php?aid=[field:aid /]&dopost=delete'>[鍒犻櫎]</a>
 		    </td>
      </tr>
 		{/dede:datalist}

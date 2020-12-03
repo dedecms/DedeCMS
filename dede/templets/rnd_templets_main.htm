@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>随机模板防采集插件</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+var channelArray = new Array();
+<?php     
+$i = 0;
+foreach($channelArray as $k=>$arr){
+   echo "channelArray[$k] = \"{$arr['nid']}\";\r\n";
+}
+?>
+
+function SelectTemplets(fname){
+   var posLeft = window.event.clientY-200;
+   var posTop = window.event.clientX-300;
+   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+    
+function ParTemplet(obj)
+{
+  var sevvalue = channelArray[obj.value];
+  var temparticle = document.getElementsByName('temparticle');
+  temparticle[0].value = "{style}/article_"+sevvalue+"_{rand}.htm";
+}
+
+function CheckPathSet()
+{
+	var surl = document.getElementById("siteurl");
+	var sreid = document.getElementById("reID");
+	var mysel = document.getElementById("truepath3");
+	if(surl.value!=""){
+		if(sreid.value=="0" || sreid.value==""){
+			mysel.checked = true;
+		}
+	}
+}
+
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">辅助插件</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form action="rnd_templets_main.php" name="form2" target="stafrm">
+  <input type="hidden" name="dopost" value="yes">
+  <input type="hidden" name="reset" value="yes">
+  </form>
+  <form action="rnd_templets_main.php" name="form1" target="stafrm">
+  <input type="hidden" name="dopost" value="yes">
+  <tr> 
+    <td height="20" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+            <td width="30%" height="18"><strong>&nbsp;随机模板防采集插件：</strong></td>
+          <td width="70%" align="right">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+      <td height="33" bgcolor="#FFFFFF">　　使用了随机模板防采集插件后，原来栏目规则定义的模板规则将无效，本插件仅适用于处理已发布的文档的模板。</td>
+  </tr>
+  <tr> 
+    <td height="48" bgcolor="#FFFFFF"><table width="90%" border="0" cellpadding="2" cellspacing="2">
+          <tr> 
+            <td width="17%">频道模型： </td>
+            <td width="83%"><select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
+                <?php     
+            foreach($channelArray as $k=>$arr)
+            {
+            	if($k==1) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+               else  echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+            }
+            ?>
+              </select> </td>
+          </tr>
+          <tr> 
+            <td height="35" valign="middle">模板名称：</td>
+      <td valign="middle">
+           	  <input name="temparticle" type="text" style="width:300px" value="{style}/article_article_{rand}.htm" size="30"> 
+              <input type="button" name="set4" value="浏览..." style="width:60px" onClick="SelectTemplets('form1.temparticle');" class="inputbut">
+             </td>
+          </tr>
+          <tr> 
+            <td>&nbsp;</td>
+            <td>如果你手工指定模板，那么你要在上面用{rand}变量代替随机序号</td>
+          </tr>
+          <tr> 
+            <td>随机序号：</td>
+            <td><input name="rndstart" type="text" id="rndstart" value="1" size="8">
+              到 
+              <input name="rndend" type="text" id="rndend" value="5" size="8"></td>
+          </tr>
+          <tr>
+            <td>自动更新：</td>
+            <td>
+<input name="autotype" type="radio"  value="empty" checked>
+              只更新没指定模板的文档
+              <input type="radio"  name="autotype" value="all">
+              更新全部 
+              <input type="radio"  name="autotype" value="hand">
+              手工指定ID</td>
+          </tr>
+          <tr> 
+            <td>起始ID：</td>
+            <td> 
+              <input name="startid" type="text" id="startid" size="8">
+              结束ID：
+              <input name="endid" type="text" id="endid" size="8"></td>
+          </tr>
+        </table></td>
+  </tr>
+  <tr> 
+    <td height="31" bgcolor="#F8FBFB" align="center">
+	<input type="submit" name="Submit" value="开始随机更换模板" class="inputbut"/>
+	&nbsp;
+    <input type="button" name="Submit2" value="恢复默认模板" class="inputbut" onClick="document.form2.submit()"/>
+	</td>
+  </tr>
+  </form>
+  <tr > 
+    <td height="20" bgcolor="#EDF9D5"> <table width="100%">
+        <tr> 
+          <td width="74%"><strong>&nbsp;结果：</strong></td>
+          <td width="26%" align="right"> <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td id="mtd">
+    	<div id='mdv' style='width:100%;height:100;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+      <script language="JavaScript">
+	    document.all.mdv.style.pixelHeight = screen.height - 420;
+	    </script>
+	   </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,128 +1,121 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
-require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-
-$typeid = ereg_replace("[^0-9]","",$typeid);
-$channelid = 1;
-$ID = ereg_replace("[^0-9]","",$ID);
-
-if($typeid==0){
-	ShowMsg("гКж╦╤╗нд╣╣а╔йТ╣дю╦д©ё║","-1");
-	exit();
-}
-
-if(!CheckChannel($typeid,$channelid)){
-	ShowMsg("дЦкЫя║тЯ╣дю╦д©сК╣╠г╟дёпм╡╩оЮ╥Шё╛╩Р╡╩ж╖Ёжм╤╦Её╛гКя║тЯ╟ви╚╣дя║оНё║","-1");
-	exit();
-}
-
-$dsql = new DedeSql(false);
-
-//╪Л╡Бсц╩╖йг╥Яспх╗оч╡ывВуБф╙ндуб
-//--------------------------------
-$cInfos = $dsql->GetOne("Select arcsta From #@__channeltype  where ID='1'; ");
-
-$row = $dsql->GetOne("Select arcrank From #@__archives where memberID='".$cfg_ml->M_ID."' And ID='$ID'");
-
-if(!is_array($row)){
-   $dsql->Close();
-   ShowMsg("дЦц╩х╗оч╦Э╦дуБф╙ндубё║","-1");
-   exit();
-}else if($row['arcrank']>=0 && $cInfos['arcsta']==-1){
-   $dsql->Close();
-   ShowMsg("уБф╙ндубря╠╩иС╨кё╛дЦц╩х╗оч╦Э╦дё║","-1");
-   exit();
-}
-
-if($cInfos['arcsta']==0){
-	$ismake = 0;
-	$arcrank = 0;
-}
-else if($cInfos['arcsta']==1){
-	$ismake = -1;
-	$arcrank = 0;
-}
-else{
-	$ismake = 0;
-	$arcrank = -1;
-}
+$cfg_add_dftable = '#@__addonarticle';
+require_once(dirname(__FILE__)."/archives_editcheck.php");
 
 $title = ClearHtml($title);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
-if($keywords!=""){
-	$keywords = ereg_replace("[,;]"," ",trim(ClearHtml($keywords)));
-	$keywords = trim(cn_substr($keywords,60))." ";
-}
+$keywords = trim(cn_substr($keywords,60));
 $userip = GetIP();
 
-//╢╕юМио╢╚╣дкУбтм╪
+//Е╓└Г░├Д╦┼Д╪═Г └Г╪╘Г∙╔Е⌡╬
 if(!empty($litpic)){
 	$litpic = GetUpImage('litpic',true,true);
-	$litpic = " litpic='$litpic', ";
+	$litpicsql = " litpic='$litpic', ";
 }else{
-	$litpic = "";
+	$litpic = '';
+	$litpicsql = '';
 }
 
 $memberID = $cfg_ml->M_ID;
 
-//╦ЭпбйЩ╬щ©Б╣дSQLсО╬Д
 //----------------------------------
+//Е┬├Ф·░Е╓└Г░├И≥└Е┼═Х║╗Ф∙╟Ф█╝
+//----------------------------------
+$inadd_f = '';
+if(!empty($dede_addonfields))
+{
+  $addonfields = explode(";",$dede_addonfields);
+  $inadd_f = "";
+  if(is_array($addonfields))
+  {
+    foreach($addonfields as $v)
+    {
+	     if($v=="") continue;
+	     $vs = explode(",",$v);
+	     //HTMLФ√┤Ф°╛Г┴╧Ф╝┼Е╓└Г░├
+	     if($vs[1]=="htmltext"||$vs[1]=="textdata")
+	     {
+		     ${$vs[0]} = filterscript(stripslashes(${$vs[0]}));
+         //Х┤╙Е┼╗Ф▒≤Х╕│
+         if($description==''){
+    	      $description = cn_substr(html2text(${$vs[0]}),$cfg_auot_description);
+	          $description = trim(preg_replace("/#p#|#e#/","",$description));
+	          $description = addslashes($description);
+         }
+         ${$vs[0]} = addslashes(${$vs[0]});
+         ${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'add','','member');
+	     }else{
+		     ${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$ID);
+	     }
+	     $inadd_f .= ",`{$vs[0]}` = '".${$vs[0]}."'";
+    }
+  }
+}
 
 $inQuery = "
-update #@__archives set 
+update `$maintable` set
 ismake='$ismake',arcrank='$arcrank',typeid='$typeid',title='$title',source='$source',
 $litpic
 description='$description',keywords='$keywords',mtype='$mtype',userip='$userip'
 where ID='$ID' And memberID='$memberID';
 ";
 
-$dsql->SetQuery($inQuery);
-if(!$dsql->ExecuteNoneQuery()){
+if(!$dsql->ExecuteNoneQuery($inQuery)){
+	$gerr = $dsql->GetError();
 	$dsql->Close();
-	ShowMsg("╟яйЩ╬щ╠ё╢Ф╣╫йЩ╬щ©Бarchives╠Мй╠ЁЖ╢Мё╛гК╪Л╡Иё║","-1");
+	ShowMsg("Ф┼┼Ф∙╟Ф█╝Д©²Е╜≤Е┬╟Ф∙╟Ф█╝Е╨⌠Д╦╩Х║╗Ф≈╤Е┤╨И■≥О╪▄И■≥Х╞╞Е▌÷Е⌡═Д╦╨О╪ ".$gerr,"javascript:;");
 	exit();
 }
 
 $body = eregi_replace("<(iframe|script)","",$body);
-//╦Эпб╦╫╪с╠М
+//Ф⌡╢Ф√╟И≥└Е┼═Х║╗
 //----------------------------------
-
-$dsql->SetQuery("Update #@__addonarticle set typeid='$typeid',body='$body' where aid='$ID'; ");
-if(!$dsql->ExecuteNoneQuery()){
-   $dsql->Close();
-   ShowMsg("╟яйЩ╬щ╠ё╢Ф╣╫йЩ╬щ©Б╦╫й╠ЁЖ╢Мё╛гКа╙о╣╧эюМт╠ё║","-1");
-   exit();
+$addQuery = "Update `{$addtable}` set typeid='$typeid',body='$body'{$inadd_f} where aid='$ID'; ";
+if(!$dsql->ExecuteNoneQuery($addQuery)){
+     $gerr = $dsql->GetError();
+     $dsql->Close();
+     ShowMsg("Ф┼┼Ф∙╟Ф█╝Д©²Е╜≤Е┬╟Ф∙╟Ф█╝Е╨⌠И≥└Е┼═Ф≈╤Е┤╨И■≥О╪▄И■≥Х╞╞Е▌÷Е⌡═Д╦╨О╪ ".$gerr,"javascript:;");
+     exit();
 }
-$dsql->Close();
 
 $artUrl = MakeArt($ID);
 
-//╥╣╩ьЁи╧╕пео╒
+//Ф⌡╢Ф√╟Е┘╗Г╚≥Ф░°Г╢╒Г╢╒Е╪∙
+$datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'att'=>0,
+               'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,
+               'addinfos'=>$description,'arcrank'=>$arcrank,'mtype'=>$mtype);
+if($litpic != '') $datas['litpic'] = $litpic;
+UpSearchIndex($dsql,$datas);
+//Ф⌡╢Ф√╟TagГ╢╒Е╪∙
+UpTags($dsql,$keywords,$ID,$memberID,$typeid,$arcrank);
+unset($datas);
+$dsql->Close();
+
+//Х©■Е⌡·Ф┬░Е┼÷Д©║Ф│╞
 //----------------------------------
 
 $msg = "
-гКя║тЯдЦ╣д╨СпЬ╡ывВё╨
-<a href='article_add.php?cid=$typeid'><u>╥╒╠Мпбндуб</u></a>
+Х╞╥И─┴Ф▀╘Д╫═Г └Е░▌Г╩╜Ф⌠█Д╫°О╪ 
+<a href='article_add.php?cid=$typeid'><u>Е▐▒Х║╗Ф√╟Ф√┤Г╚═</u></a>
 &nbsp;&nbsp;
-<a href='article_edit.php?aid=".$ID."'><u>╦Э╦дндуб</u></a>
+<a href='article_edit.php?aid=".$ID."'><u>Ф⌡╢Ф■╧Ф√┤Г╚═</u></a>
 &nbsp;&nbsp;
-<a href='$artUrl' target='_blank'><u>т╓ююндуб</u></a>
+<a href='$artUrl' target='_blank'><u>И╒└Х╖┬Ф√┤Г╚═</u></a>
 &nbsp;&nbsp;
-<a href='content_list.php?channelid=1'><u>ря╥╒╡╪ндуб╧эюМ</u></a>
+<a href='content_list.php?channelid=1'><u>Е╥╡Е▐▒Е╦┐Ф√┤Г╚═Г╝║Г░├</u></a>
 &nbsp;&nbsp;
-<a href='index.php'><u>╩Ат╠жВрЁ</u></a>
+<a href='index.php'><u>Д╪ Е▒≤Д╦╩И║╣</u></a>
 ";
 
-$wintitle = "Ёи╧╕пч╦др╩╦Жндубё║";
-$wecome_info = "нд╣╣╧эюМ::пч╦дндуб";
+$wintitle = "Ф┬░Е┼÷Д©╝Ф■╧Д╦─Д╦╙Ф√┤Г╚═О╪│";
+$wecome_info = "Ф√┤Ф║ёГ╝║Г░├::Д©╝Ф■╧Ф√┤Г╚═";
 $win = new OxWindow();
-$win->AddTitle("Ёи╧╕пч╦др╩╦Жндубё╨");
+$win->AddTitle("Ф┬░Е┼÷Д©╝Ф■╧Д╦─Д╦╙Ф√┤Г╚═О╪ ");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();

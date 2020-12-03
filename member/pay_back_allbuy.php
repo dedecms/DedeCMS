@@ -10,7 +10,7 @@ if($cfg_ml->M_ID>0) $burl = "control.php";
 else $burl = "javascript:;";
 
 if(empty($billno)){
-	echo "·Ç·¨·ÃÎÊ£¡";
+	echo "éæ³•è®¿é—®ï¼";
 	exit();
 }
 
@@ -18,24 +18,24 @@ $mySign = md5($cfg_merchant.$billno.$amount.$success.$cfg_merpassword);
 $buyid = $billno;
 
 
-//Ç©ÃûÕıÈ·
+//ç­¾åæ­£ç¡®
 if($sign == $mySign && $success=="Y"){
      $dsql = new DedeSql(false);
-     //»ñÈ¡¶©µ¥ĞÅÏ¢£¬¼ì²é¶©µ¥µÄÓĞĞ§ĞÔ
+     //è·å–è®¢å•ä¿¡æ¯ï¼Œæ£€æŸ¥è®¢å•çš„æœ‰æ•ˆæ€§
      $row = $dsql->GetOne("Select * From #@__member_operation where buyid='$buyid' ");
      if(!is_array($row)||$row['sta']==2){
 		   $oldinfo = $row['oldinfo'];
-		   $msg = "±¾½»Ò×ÒÑ¾­Íê³É£¡£¬ÏµÍ³·µ»ØĞÅÏ¢( $oldinfo ) <br><br> <a href='control.php'>·µ»ØÖ÷Ò³</a> ";
+		   $msg = "æœ¬äº¤æ˜“å·²ç»å®Œæˆï¼ï¼Œç³»ç»Ÿè¿”å›ä¿¡æ¯( $oldinfo ) <br><br> <a href='control.php'>è¿”å›ä¸»é¡µ</a> ";
 		   ShowMsg($msg,"javascript:;");
 		   $dsql->Close();
 		   exit();
 	   }
 	   $mid = $row['mid'];
 	   $pid = $row['pid'];
-     //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¸¶¿î
+     //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²ä»˜æ¬¾
 	   $dsql->ExecuteNoneQuery("Update #@__member_operation set sta=1 where buyid='$buyid' ");
 	   //-------------------------------------------
-	   //»áÔ±²úÆ·
+	   //ä¼šå‘˜äº§å“
 	   //-------------------------------------------
 	   if($row['product']=='member')
 	   {
@@ -45,60 +45,60 @@ if($sign == $mySign && $success=="Y"){
 		    $equery =  " Update #@__member set 
 		                membertype='$rank',exptime='$exptime',uptime='".time()."' where ID='$mid' ";
 		    $dsql->ExecuteNoneQuery($equery);
-			  //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			  $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='»áÔ±Éı¼¶³É¹¦£¡' where buyid='$buyid' ");
+			  //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			  $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='ä¼šå‘˜å‡çº§æˆåŠŸï¼' where buyid='$buyid' ");
 		    $dsql->Close();
 		    
-		    //ÏòÖ§¸¶½Ó¿Ú·µ»ØĞÅÏ¢
+		    //å‘æ”¯ä»˜æ¥å£è¿”å›ä¿¡æ¯
 		    $dhd = new DedeHttpDown();
    	    @$dhd->OpenUrl("http://www.allbuy.cn/merchant/checkfeedback.asp?".$_SERVER["QUERY_STRING"]);
    	    @$staCode = $dhd->GetHtml();
    	    $dhd->Close();
    	    
-        ShowMsg("³É¹¦Íê³É½»Ò×£¡",$burl);
+        ShowMsg("æˆåŠŸå®Œæˆäº¤æ˜“ï¼",$burl);
 	      exit();
 	   }
-	   //µã¿¨²úÆ·
+	   //ç‚¹å¡äº§å“
 	   else if($row['product']=='card')
 	   {
 		    $row = $dsql->GetOne("Select cardid From #@__moneycard_record where ctid='$pid' And isexp='0' ");
-		    //Èç¹ûÕÒ²»µ½Ä³ÖÖÀàĞÍµÄ¿¨£¬Ö±½ÓÎªÓÃ»§Ôö¼Ó½ğ±Ò
+		    //å¦‚æœæ‰¾ä¸åˆ°æŸç§ç±»å‹çš„å¡ï¼Œç›´æ¥ä¸ºç”¨æˆ·å¢åŠ é‡‘å¸
 		    if(!is_array($row)){
 		    	  $nrow = $dsql->GetOne("Select num From  #@__moneycard_type where tid='$pid' ");
 		    	  $dnum = $nrow['num'];
 		    	  $equery =  " Update #@__member set money=money+".$dnum." where ID='$mid' ";
 		        $dsql->ExecuteNoneQuery($equery);
-		        //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			      $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='Ö±½Ó³äÖµÁË {$dnum} ½ğ±Òµ½ÕÊºÅ£¡' where buyid='$buyid' ");
+		        //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			      $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='ç›´æ¥å……å€¼äº† {$dnum} é‡‘å¸åˆ°å¸å·ï¼' where buyid='$buyid' ");
 		        
-		        //ÏòÖ§¸¶½Ó¿Ú·µ»ØĞÅÏ¢
+		        //å‘æ”¯ä»˜æ¥å£è¿”å›ä¿¡æ¯
 		        $dhd = new DedeHttpDown();
    	        @$dhd->OpenUrl("http://www.allbuy.cn/merchant/checkfeedback.asp?".$_SERVER["QUERY_STRING"]);
    	        @$staCode = $dhd->GetHtml();
    	        $dhd->Close();
 		        
-		        ShowMsg("ÓÉÓÚ´Ëµã¿¨ÒÑ¾­ÂôÍê£¬ÏµÍ³Ö±½ÓÎªÄãµÄÕÊºÅÔö¼ÓÁË£º{$dnum} ¸ö½ğ±Ò£¡",$burl);
+		        ShowMsg("ç”±äºæ­¤ç‚¹å¡å·²ç»å–å®Œï¼Œç³»ç»Ÿç›´æ¥ä¸ºä½ çš„å¸å·å¢åŠ äº†ï¼š{$dnum} ä¸ªé‡‘å¸ï¼",$burl);
 		        $dsql->Close();
 		        exit();
 		    }else{
 		    	 $cardid = $row['cardid'];
 		    	 $dsql->ExecuteNoneQuery(" Update #@__moneycard_record set uid='$mid',isexp='1',utime='".time()."' where cardid='$cardid' ");
-		    	 //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			     $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='³äÖµÃÜÂë£º{$cardid}' where buyid='$buyid' ");
+		    	 //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			     $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='å……å€¼å¯†ç ï¼š{$cardid}' where buyid='$buyid' ");
 		    	 
-		    	 //ÏòÖ§¸¶½Ó¿Ú·µ»ØĞÅÏ¢
+		    	 //å‘æ”¯ä»˜æ¥å£è¿”å›ä¿¡æ¯
 		        $dhd = new DedeHttpDown();
    	        @$dhd->OpenUrl("http://www.allbuy.cn/merchant/checkfeedback.asp?".$_SERVER["QUERY_STRING"]);
    	        @$staCode = $dhd->GetHtml();
    	        $dhd->Close();
 		    	 
-		    	 ShowMsg("½»Ò×³É¹¦£¡<a href='control.php'><u>[·µ»Ø]</u></a><br> ³äÖµÃÜÂëÎª£º{$cardid}","javascript:;");
+		    	 ShowMsg("äº¤æ˜“æˆåŠŸï¼<a href='control.php'><u>[è¿”å›]</u></a><br> å……å€¼å¯†ç ä¸ºï¼š{$cardid}","javascript:;");
 		    	 $dsql->Close();
 		       exit();
 		    }
 	  }
 }else{
-	ShowMsg("½»Ò×´íÎó£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡",$burl);
+	ShowMsg("äº¤æ˜“é”™è¯¯ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼",$burl);
 	exit();
 }
 ?>

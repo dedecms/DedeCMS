@@ -5,7 +5,7 @@ if(empty($notcdata)) $notcdata = 0;
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select count(*) as dd From #@__member ");
 $dd = $row['dd'];
-//±£´æÅäÖÃ
+//ä¿å­˜é…ç½®
 $configfile = dirname(__FILE__)."/../include/config_hand.php";
 $configfile_bak = dirname(__FILE__)."/../include/config_hand_bak.php";
 $dsql->ExecuteNoneQuery("Update #@__sysconfig set value='$newtype' where varname='cfg_pwdtype' ");
@@ -13,8 +13,8 @@ $dsql->ExecuteNoneQuery("Update #@__sysconfig set value='$newmd5len' where varna
 $dsql->ExecuteNoneQuery("Update #@__sysconfig set value='$newsign' where varname='cfg_ddsign' ");
 $dsql->SetQuery("Select varname,value From #@__sysconfig order by aid asc");
 $dsql->Execute();
-copy($configfile,$configfile_bak) or die("±£´æÅäÖÃ{$configfile}Ê±Ê§°Ü£¡Çë¼ì²âÈ¨ÏŞ");
-$fp = fopen($configfile,'w') or die("±£´æÅäÖÃ{$configfile}Ê±Ê§°Ü£¡Çë¼ì²âÈ¨ÏŞ");
+copy($configfile,$configfile_bak) or die("ä¿å­˜é…ç½®{$configfile}æ—¶å¤±è´¥ï¼è¯·æ£€æµ‹æƒé™");
+$fp = fopen($configfile,'w') or die("ä¿å­˜é…ç½®{$configfile}æ—¶å¤±è´¥ï¼è¯·æ£€æµ‹æƒé™");
 flock($fp,3);
 fwrite($fp,"<"."?php\r\n");
 while($row = $dsql->GetArray()){
@@ -24,20 +24,20 @@ fwrite($fp,"?".">");
 fclose($fp);
 if($dd==0){
 	$dsql->Close();
-	ShowMsg("³É¹¦±£´æÅäÖÃ£¬ÓÉÓÚ»áÔ±ÏµÍ³ÎŞÊı¾İ£¬Òò´Ë²»Ğè×ª»»£¡","javascript:;");
+	ShowMsg("æˆåŠŸä¿å­˜é…ç½®ï¼Œç”±äºä¼šå‘˜ç³»ç»Ÿæ— æ•°æ®ï¼Œå› æ­¤ä¸éœ€è½¬æ¢ï¼","javascript:;");
 	exit();
 }
 if($notcdata==1){
 	$dsql->Close();
-	ShowMsg("³É¹¦±£´æÅäÖÃ£¡","javascript:;");
+	ShowMsg("æˆåŠŸä¿å­˜é…ç½®ï¼","javascript:;");
 	exit();
 }
 //-------------------------------
-//¾ÉÃÜÂëÎªÎÄÃ÷ÃÜÂë
+//æ—§å¯†ç ä¸ºæ–‡æ˜å¯†ç 
 if($cfg_pwdtype=='none'){
 	if($newtype=='none'){
 		$dsql->Close();
-	  ShowMsg("ÄãÖ¸¶¨µÄÀàĞÍºÍÏµÍ³Ä¿Ç°µÄÀàĞÍÒ»ÖÂ£¬²»ĞèÒª×ª»»£¡","javascript:;");
+	  ShowMsg("ä½ æŒ‡å®šçš„ç±»å‹å’Œç³»ç»Ÿç›®å‰çš„ç±»å‹ä¸€è‡´ï¼Œä¸éœ€è¦è½¬æ¢ï¼","javascript:;");
 	  exit();
 	}
   $cfg_pwdtype = $newtype;
@@ -51,14 +51,14 @@ if($cfg_pwdtype=='none'){
 		$dsql->ExecuteNoneQuery("Update #@__member set pwd='$pwd' where ID='$ID' ");
 	}
 	$dsql->Close();
-	ShowMsg("³É¹¦Íê³É {$dd} ÌõÊı¾İµÄ×ª»»£¡","javascript:;");
+	ShowMsg("æˆåŠŸå®Œæˆ {$dd} æ¡æ•°æ®çš„è½¬æ¢ï¼","javascript:;");
 	exit();
 }
-//¾ÉÃÜÂëÎªdede¼ÓÃÜËã·¨ÃÜÂë
+//æ—§å¯†ç ä¸ºdedeåŠ å¯†ç®—æ³•å¯†ç 
 else if($cfg_pwdtype=='dd'){
 	if($newtype=='dd' && $newsign==$cfg_ddsign){
 		$dsql->Close();
-	  ShowMsg("ÄãÖ¸¶¨µÄÀàĞÍºÍÏµÍ³Ä¿Ç°µÄÀàĞÍÒ»ÖÂ£¬²»ĞèÒª×ª»»£¡","javascript:;");
+	  ShowMsg("ä½ æŒ‡å®šçš„ç±»å‹å’Œç³»ç»Ÿç›®å‰çš„ç±»å‹ä¸€è‡´ï¼Œä¸éœ€è¦è½¬æ¢ï¼","javascript:;");
 	  exit();
 	}
   $oosign = $cfg_ddsign;
@@ -74,24 +74,24 @@ else if($cfg_pwdtype=='dd'){
 		$dsql->ExecuteNoneQuery("Update #@__member set pwd='$pwd' where ID='$ID' ");
 	}
 	$dsql->Close();
-	ShowMsg("³É¹¦Íê³É {$dd} ÌõÊı¾İµÄ×ª»»£¡","javascript:;");
+	ShowMsg("æˆåŠŸå®Œæˆ {$dd} æ¡æ•°æ®çš„è½¬æ¢ï¼","javascript:;");
 	exit();
 }
-//¾ÉÃÜÂëÎªmd5ÃÜÂë
+//æ—§å¯†ç ä¸ºmd5å¯†ç 
 else if($cfg_pwdtype=='md5'){
 	if($newtype!='md5'){
 		$dsql->Close();
-		ShowMsg("ÄãÔ­À´µÄÊı¾İÀàĞÍÎªMD5ÀàĞÍ£¬ÏµÍ³ÎŞ·¨×ª»»ÄãµÄÊı¾İÎª·ÇMD5ÀàĞÍ£¡","javascript:;");
+		ShowMsg("ä½ åŸæ¥çš„æ•°æ®ç±»å‹ä¸ºMD5ç±»å‹ï¼Œç³»ç»Ÿæ— æ³•è½¬æ¢ä½ çš„æ•°æ®ä¸ºéMD5ç±»å‹ï¼","javascript:;");
 		exit();
 	}
 	if($newmd5len > $cfg_md5len){
 		$dsql->Close();
-		ShowMsg("ÄãÔ­À´µÄMD5ÃÜÂë±ÈÄãÄ¿Ç°Ö¸¶¨µÄ¶Ì£¬ÏµÍ³ÎŞ·¨×ª»»Îª¸ü³¤µÄÃÜÂë£¡","javascript:;");
+		ShowMsg("ä½ åŸæ¥çš„MD5å¯†ç æ¯”ä½ ç›®å‰æŒ‡å®šçš„çŸ­ï¼Œç³»ç»Ÿæ— æ³•è½¬æ¢ä¸ºæ›´é•¿çš„å¯†ç ï¼","javascript:;");
 		exit();
 	}
 	if($newmd5len == $cfg_md5len){
 		$dsql->Close();
-		ShowMsg("ÄãÔ­À´µÄÃÜÂëºÍÄãËùÑ¡µÄÒ»Ñù£¬ÎŞĞè×ª»»£¡","javascript:;");
+		ShowMsg("ä½ åŸæ¥çš„å¯†ç å’Œä½ æ‰€é€‰çš„ä¸€æ ·ï¼Œæ— éœ€è½¬æ¢ï¼","javascript:;");
 		exit();
 	}
 	$dsql->SetQuery("Select ID,pwd From #@__member ");
@@ -103,14 +103,15 @@ else if($cfg_pwdtype=='md5'){
 		$dsql->ExecuteNoneQuery("Update #@__member set pwd='$pwd' where ID='$ID' ");
 	}
 	$dsql->Close();
-	ShowMsg("³É¹¦Íê³É {$dd} ÌõÊı¾İµÄ×ª»»£¡","javascript:;");
+	ShowMsg("æˆåŠŸå®Œæˆ {$dd} æ¡æ•°æ®çš„è½¬æ¢ï¼","javascript:;");
 	exit();
 }
-//¾ÉÃÜÂëÎªmd5ÖĞ¼ä16Î»
+//æ—§å¯†ç ä¸ºmd5ä¸­é—´16ä½
 else if($cfg_pwdtype=='md5m16'){
 	$dsql->Close();
-	ShowMsg("ÄãÔ­À´µÄÊı¾İÀàĞÍÎªMD5ÖĞ¼äÈ¡16Î»µÄÀàĞÍ£¬ÎŞ·¨×ª»»ÎªÆäËüÊı¾İ£¡","javascript:;");
+	ShowMsg("ä½ åŸæ¥çš„æ•°æ®ç±»å‹ä¸ºMD5ä¸­é—´å–16ä½çš„ç±»å‹ï¼Œæ— æ³•è½¬æ¢ä¸ºå…¶å®ƒæ•°æ®ï¼","javascript:;");
 	exit();
 }
 
+ClearAllLink();
 ?>

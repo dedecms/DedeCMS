@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>企业收藏夹</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="216" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px; margin-top:10px;">
+        <tr>
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
+		  <div class="manage_company_right_title">
+                	<ul><li>我的收藏夹：</li></ul>
+                </div>
+		  </td>
+        </tr>
+    </table>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+              <tr bgcolor="E9FBC9">
+                <td width="47%" align="center" bgcolor="#F0F8D6" height="30">档案标题</td>
+                <td width="31%" align="center" bgcolor="#F0F8D6">收藏时间</td>
+                <td width="22%" align="center" bgcolor="#F0F8D6">管理</td>
+              </tr>
+              <?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+	if($row['url'] == ''){
+		$row['url'] = $cfg_cmspath.'/plus/view.php?aid='.$row['aid'];
+	}
+?>
+              <tr bgcolor="#FFFFFF" align="center">
+                <td> <a href='<?php echo $row["url"]?>' target='_blank'>
+                  <?php echo $row["title"]?>
+                  </a> </td>
+                <td>
+                  <?php echo GetDateTimeMk($row['addtime'])?>
+                </td>
+                <td><a href='archives_do.php?dopost=delStow&aid=<?php echo $row["aid"]?>' target='_blank'>[删除该项]</a></td>
+              </tr>
+              <?php
+}
+?>
+              <tr bgcolor="E9FBC9">
+                <td colspan="3" align="center" bgcolor="#F9FCEF" style="line-height:25px;">
+                  <?php echo $dlist->GetPageList(7);?>                </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="24" valign="top">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

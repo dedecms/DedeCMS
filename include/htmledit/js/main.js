@@ -50,48 +50,48 @@ function ShowCode_MyEditor(){
 }
 
 
-//Ö´ĞĞÈÎÒâÃüÁî
+//æ‰§è¡Œä»»æ„å‘½ä»¤
 function doExecute(command,OptionSet)
 {
 	_MyEditor.focus();
 	_MyEDoc.execCommand(command, true, OptionSet);
 	_MyEditor.focus();
 }
-//Ñ¡Ôñ×ÖÌåÑùÊ½
+//é€‰æ‹©å­—ä½“æ ·å¼
 function doFontName(fn){
 	_MyEditor.focus();
 	_MyEDoc.execCommand('FontName', false, fn);
 	_MyEditor.focus();
 }
-//Ñ¡Ôñ×ÖÌå´óĞ¡
+//é€‰æ‹©å­—ä½“å¤§å°
 function doFontSize(fs){
 	_MyEditor.focus();
 	_MyEDoc.execCommand('FontSize', false, fs);
 	_MyEditor.focus();
 }
-//²åÈëÌØ¶¨µÄÎÄ±¾
+//æ’å…¥ç‰¹å®šçš„æ–‡æœ¬
 function doInsertText(ntxt)
 {
 	_MyEditor.focus();
 	_MyEDoc.selection.createRange().pasteHTML(ntxt);
 	_MyEditor.focus();
 }
-//²åÈë<br>
+//æ’å…¥<br>
 function doInsertBr()
 {
 	doInsertText("<br>");
 }
-//²åÈë nbsp
+//æ’å…¥ nbsp
 function doInsertBn()
 {
 	doInsertText("&nbsp;");
 }
-//²åÈë·ÖÒ³·û
+//æ’å…¥åˆ†é¡µç¬¦
 function doInsertSplitPage()
 {
-	doInsertText("#p#·ÖÒ³±êÌâ#e#");
+	doInsertText("#p#åˆ†é¡µæ ‡é¢˜#e#");
 }
-//µ÷ÓÃ¶Ô»°¿ò²åÈëÄÚÈİ
+//è°ƒç”¨å¯¹è¯æ¡†æ’å…¥å†…å®¹
 function ShowMsgboxDo(wurl,dw,dh)
 {
 	_MyEditor.focus();
@@ -105,55 +105,55 @@ function ShowMsgboxDo(wurl,dw,dh)
 		return false;
 	}
 }
-//²åÈëÍ¼Ïó
+//æ’å…¥å›¾è±¡
 function doInsertImage(){
 	ShowMsgboxDo("image.php?"+Date(),460,420);
 }
-//²åÈëFlash
+//æ’å…¥Flash
 function doInsertFlash(){
 	ShowMsgboxDo("flash.htm?"+Date(),365,150);
 }
-//²åÈëÍ¼Ïó
+//æ’å…¥å›¾è±¡
 function doInsertImageUser(){
 	ShowMsgboxDo("imageuser.php?"+Date(),460,420);
 }
-//²åÈëFlash
+//æ’å…¥Flash
 function doInsertFlashUser(){
 	ShowMsgboxDo("flashuser.htm?"+Date(),365,150);
 }
-//²åÈë¶àÃ½ÌåÎÄ¼ş
+//æ’å…¥å¤šåª’ä½“æ–‡ä»¶
 function doInsertMedia(){
 	ShowMsgboxDo("media.htm?"+Date(),365,180);
 }
-//Ñ¡ÔñÑÕÉ«
+//é€‰æ‹©é¢œè‰²
 function doFontColor(){
 	_MyEditor.focus();
 	var fcolor=showModalDialog("color.htm?"+Date(),false,"scroll:no;dialogWidth:300px;dialogHeight:280px;status:0;");
 	_MyEDoc.execCommand('ForeColor',false,fcolor);
 	_MyEditor.focus();
 }
-//²åÈë±í¸ñ
+//æ’å…¥è¡¨æ ¼
 function doInsertTable(){
 	ShowMsgboxDo("table.htm?"+Date(),330,200);
 }
-//²åÈë¸½¼ş
+//æ’å…¥é™„ä»¶
 function doInsertAddon(){
 	ShowMsgboxDo("addon.php?"+Date(),450,120);
 }
-//²åÈëÒıÓÃ
+//æ’å…¥å¼•ç”¨
 function doInsertQuote()
 {
 	var quoteString = "<table style='border-right: #cccccc 1px dotted; table-layout: fixed; border-top: #cccccc 1px dotted; border-left: #cccccc 1px dotted; border-bottom: #cccccc 1px dotted' cellspacing=0 cellpadding=6 width='95%' align=center border=0>\r\n";
-  quoteString += "<tr><td style='word-wrap: break-word' bgcolor='#fdfddf'>\r\n<font color='#FF0000'>ÒÔÏÂÎªÒıÓÃµÄÄÚÈİ£º</font><br>\r\n";
+  quoteString += "<tr><td style='word-wrap: break-word' bgcolor='#fdfddf'>\r\n<font color='#FF0000'>ä»¥ä¸‹ä¸ºå¼•ç”¨çš„å†…å®¹ï¼š</font><br>\r\n";
   quoteString += "</td></tr></table>\r\n";
   doInsertText(quoteString);
 }
-//²åÈë×é·ÖÀ¸¿ò
+//æ’å…¥ç»„åˆ†æ æ¡†
 function doInsertGroup()
 {
   ShowMsgboxDo("group.htm?"+Date(),350,160);
 }
-//Õ³Ìù´ÓwordÀï¸´ÖÆµÄÎÄ±¾
+//ç²˜è´´ä»wordé‡Œå¤åˆ¶çš„æ–‡æœ¬
 function PasteWord()
 {
   _MyEditor.focus();
@@ -171,11 +171,11 @@ function PasteWord()
 	doInsertText(whtml);
 	_MyEditor.focus();
 }
-//Éú³ÉÃªµã±êÇ©
+//ç”Ÿæˆé”šç‚¹æ ‡ç­¾
 function doInsertAnchor()
 {
 	_MyEditor.focus();
-	var sAnchorName = window.prompt("ÇëÊäÈëÃªµãÃû³Æ£¡","AnchorName");
+	var sAnchorName = window.prompt("è¯·è¾“å…¥é”šç‚¹åç§°ï¼","AnchorName");
 	sAnchorName = "<a name='"+sAnchorName+"'></a>";
 	_MyEDoc.selection.createRange().pasteHTML(sAnchorName);
 	_MyEditor.focus();

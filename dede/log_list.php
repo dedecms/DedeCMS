@@ -42,4 +42,6 @@ $dlist->SetParameter("dtime",$dtime);
 $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/log_list.htm");
 $dlist->Close();
+
+ClearAllLink();
 ?>

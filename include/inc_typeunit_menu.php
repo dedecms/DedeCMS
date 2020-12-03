@@ -1,8 +1,9 @@
 <?php 
 //class TypeUnit
-//Õâ¸öÀàÖ÷ÒªÊÇ·â×°ÆµµÀ¹ÜÀíÊ±µÄÒ»Ğ©¸´ÔÓ²Ù×÷ 
+//è¿™ä¸ªç±»ä¸»è¦æ˜¯å°è£…é¢‘é“ç®¡ç†æ—¶çš„ä¸€äº›å¤æ‚æ“ä½œ 
 //--------------------------------
 require_once(dirname(__FILE__)."/config_base.php");
+require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php");
 class TypeUnit
 {
 	var $dsql;
@@ -11,43 +12,63 @@ class TypeUnit
 	var $idCounter;
 	var $idArrary;
 	var $shortName;
-	
+	var $aChannels;
+	var $isAdminAll;
 	//-------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------
-	function __construct()
+	function __construct($catlogs='')
  	{
+		global $_Cs;
 		$this->idCounter = 0;
 		$this->artDir = $GLOBALS['cfg_cmspath'].$GLOBALS['cfg_arcdir'];
 		$this->baseDir = $GLOBALS['cfg_basedir'];
 		$this->shortName = $GLOBALS['art_shortname'];
 		$this->idArrary = "";
-		$this->dsql = 0;
+		$this->dsql = new DedeSql(false);
+		$this->aChannels = Array();
+		$this->isAdminAll = false;
+		if(!empty($catlogs) && $catlogs!='-1')
+		{
+			$this->aChannels = explode(',',$catlogs);
+			foreach($this->aChannels as $cid)
+			{
+				if($_Cs[$cid][0]==0)
+				{
+					 $this->dsql->SetQuery("Select ID,ispart From `#@__arctype` where reID=$cid");
+					 $this->dsql->Execute();
+					 while($row = $this->dsql->GetObject()){
+						 if($row->ispart!=2) $this->aChannels[] = $row->ID;
+					 }
+				}
+			}
+		}else{
+			$this->isAdminAll = true;
+		}
   }
-	function TypeUnit()
+	function TypeUnit($catlogs='')
 	{
-		$this->__construct();
+		$this->__construct($catlogs);
 	}
 	//------------------
-	//ÇåÀíÀà
+	//æ¸…ç†ç±»
 	//------------------
 	function Close()
 	{
-		if(is_object($this->dsql)){ $this->dsql->Close(); @$this->dsql=0; }
+		if($this->dsql){
+			@$this->dsql->Close();
+			@$this->dsql=0;
+		}
 		$this->idArrary = "";
 		$this->idCounter = 0;
 	}
 	//
-	//----¶Á³öËùÓĞ·ÖÀà,ÔÚÀàÄ¿¹ÜÀíÒ³(list_type)ÖĞÊ¹ÓÃ----------
+	//----è¯»å‡ºæ‰€æœ‰åˆ†ç±»,åœ¨ç±»ç›®ç®¡ç†é¡µ(list_type)ä¸­ä½¿ç”¨----------
 	//
 	function ListAllType($channel=0,$nowdir=0)
 	{
-		if($this->dsql==0){ $this->dsql = new DedeSql(); }
 		
-		if($channel>0)
-		{	$this->dsql->SetQuery("Select ID,typedir,typename,ispart From #@__arctype where ID='$channel'");}
-		else
-		{	$this->dsql->SetQuery("Select ID,typedir,typename,ispart From #@__arctype where reID=0 order by sortrank"); }
+		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,channeltype From #@__arctype where reID=0 order by sortrank");
 		$this->dsql->Execute(0);
 		
 		$lastID = GetCookie('lastCidMenu');
@@ -58,37 +79,63 @@ class TypeUnit
 			$typeName = $row->typename;
 			$ispart = $row->ispart;
 			$ID = $row->ID;
+			$channeltype = $row->channeltype;
 			
 			if($ispart==2){
 				continue;
 			}
 			
-			//ÆÕÍ¨ÁĞ±í
-			if($ispart==0) $smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
-			//´ø·âÃæµÄÆµµÀ
-			else if($ispart==1) $smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
-			//¶ÀÁ¢Ò³Ãæ
-			else if($ispart==2) $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
+			//æœ‰æƒé™æ ç›®
+			if($this->isAdminAll===true || in_array($ID,$this->aChannels))
+			{
+			   //äº’åŠ¨æ ç›®
+			   if($channeltype<-1) $smenu = " oncontextmenu=\"CommonMenuWd(this,$ID,'".urlencode($typeName)."')\"";
+			   //æ™®é€šåˆ—è¡¨
+			   else if($ispart==0) $smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
+			   //å¸¦å°é¢çš„é¢‘é“
+			   else if($ispart==1) $smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
+			   //ç‹¬ç«‹é¡µé¢
+			   else if($ispart==2) $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
 			
-			echo "<dl class='topcc'>\r\n";
-			echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
-			echo "  <dd class='dlr'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></dd>\r\n";
-			echo "</dl>\r\n";
-			echo "<div id='suns".$ID."' class='sunct'>";
-			if($channel==$ID || $lastID==$ID || ($nowdir==-1 && $channel>0) ){
-				 $this->LogicListAllSunType($ID,"¡¡");
+			   echo "<dl class='topcc'>\r\n";
+			   echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
+			   echo "  <dd class='dlr'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></dd>\r\n";
+			   echo "</dl>\r\n";
+			   echo "<div id='suns".$ID."' class='sunct'>";
+			  if($lastID==$ID){
+				    $this->LogicListAllSunType($ID,"ã€€");
+			  }
+			  echo "</div>\r\n";
+			}//æ²¡æƒé™æ ç›®
+			else{
+				 $sonNeedShow = false;
+		  	 $this->dsql->SetQuery("Select ID From #@__arctype where reID={$ID}");
+		     $this->dsql->Execute('ss');
+		     while($srow=$this->dsql->GetArray('ss')){
+		        	if( in_array($srow['ID'],$this->aChannels) ){ $sonNeedShow = true;  break; }
+		     }
+		  	 //å¦‚æœäºŒçº§æ ç›®ä¸­æœ‰çš„æ‰€å±å½’ç±»æ–‡æ¡£
+		  	 if($sonNeedShow===true){
+			      echo "<dl class='topcc'>\r\n";
+			      echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
+			      echo "  <dd class='dlr'>{$typeName}</dd>\r\n";
+			      echo "</dl>\r\n";
+			      echo "<div id='suns".$ID."' class='sunct'>";
+			      $this->LogicListAllSunType($ID,"ã€€",true);
+			      echo "</div>\r\n";
+		  	 }
 			}
-			echo "</div>\r\n";
 		}
 	}
-	//»ñµÃ×ÓÀàÄ¿µÄµİ¹éµ÷ÓÃ
-	function LogicListAllSunType($ID,$step)
+	//è·å¾—å­ç±»ç›®çš„é€’å½’è°ƒç”¨
+	function LogicListAllSunType($ID,$step,$needcheck=true)
 	{
 		$fid = $ID;
-		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart From #@__arctype where reID='".$ID."' order by sortrank");
+		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,channeltype From #@__arctype where reID='".$ID."' order by sortrank");
 		$this->dsql->Execute($fid);
 		if($this->dsql->GetTotalRow($fid)>0)
 		{
+		  
 		  while($row=$this->dsql->GetObject($fid))
 		  {
 			  $typeDir = $row->typedir;
@@ -96,43 +143,52 @@ class TypeUnit
 			  $reID = $row->reID;
 			  $ID = $row->ID;
 			  $ispart = $row->ispart;
-			  if($step=="¡¡") $stepdd = 2;
+			  $channeltype = $row->channeltype;
+			  if($step=="ã€€") $stepdd = 2;
 			  else $stepdd = 3;
 			  
-			  //if($ispart==2) continue;
+			  //æœ‰æƒé™æ ç›®
+			  if(in_array($ID,$this->aChannels) || $needcheck===false || $this->isAdminAll===true)
+			  {
 			  
-			  //ÆÕÍ¨ÁĞ±í
-			  if($ispart==0){
-			  	$smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
-			  	$timg = " <img src='img/tree_list.gif'> ";
-			  }
-			  //´ø·âÃæµÄÆµµÀ
-			  else if($ispart==1){
-			  	$timg = " <img src='img/tree_part.gif'> ";
-			  	$smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
-			  }
-			  //¶ÀÁ¢Ò³Ãæ
-			  else if($ispart==2){
-			  	$timg = " <img src='img/tree_page.gif'> ";
-			  	$smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
-			  }
+			     //äº’åŠ¨æ ç›®
+			     if($channeltype<-1){
+			     	 $smenu = " oncontextmenu=\"CommonMenuWd(this,$ID,'".urlencode($typeName)."')\"";
+			     	 $timg = " <img src='img/tree_list.gif'> ";
+			     }
+			     //æ™®é€šåˆ—è¡¨
+			     else if($ispart==0){
+			  	   $smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
+			  	   $timg = " <img src='img/tree_list.gif'> ";
+			     }
+			     //å¸¦å°é¢çš„é¢‘é“
+			     else if($ispart==1)
+			     {
+			  	   $timg = " <img src='img/tree_part.gif'> ";
+			  	   $smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
+			     }
+			     //ç‹¬ç«‹é¡µé¢
+			     else if($ispart==2){
+			  	   $timg = " <img src='img/tree_page.gif'> ";
+			  	   $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
+			     }
 			  
-			  echo "  <table class='sunlist'>\r\n";
-			  echo "   <tr>\r\n";
-			  echo "     <td>".$step.$timg."<a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
-			  echo "   </tr>\r\n";
-			  echo "  </table>\r\n";
+			     echo "  <table class='sunlist'>\r\n";
+			     echo "   <tr>\r\n";
+			     echo "     <td>".$step.$timg."<a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
+			     echo "   </tr>\r\n";
+			     echo "  </table>\r\n";
 			  
-			  $this->LogicListAllSunType($ID,$step."¡¡");
+			     $this->LogicListAllSunType($ID,$step."ã€€",false);
+			  }
 		  }
 		}
 	}
 	//------------------------------------------------------
-	//-----·µ»ØÓëÄ³¸öÄ¿Ïà¹ØµÄÏÂ¼¶Ä¿Â¼µÄÀàÄ¿IDÁĞ±í(É¾³ıÀàÄ¿»òÎÄÕÂÊ±µ÷ÓÃ)
+	//-----è¿”å›ä¸æŸä¸ªç›®ç›¸å…³çš„ä¸‹çº§ç›®å½•çš„ç±»ç›®IDåˆ—è¡¨(åˆ é™¤ç±»ç›®æˆ–æ–‡ç« æ—¶è°ƒç”¨)
 	//------------------------------------------------------
 	function GetSunTypes($ID,$channel=0)
 	{
-		if($this->dsql==0) $this->dsql = new DedeSql(false);
 		$this->idArray[$this->idCounter]=$ID;
 		$this->idCounter++;
 		$fid = $ID;
@@ -150,12 +206,11 @@ class TypeUnit
 		return $this->idArray;
 	}
 	//----------------------------------------------------------------------------
-	//»ñµÃÄ³IDµÄÏÂ¼¶ID(°üÀ¨±¾Éí)µÄSQLÓï¾ä¡°($tb.typeid=id1 or $tb.typeid=id2...)¡±
+	//è·å¾—æŸIDçš„ä¸‹çº§ID(åŒ…æ‹¬æœ¬èº«)çš„SQLè¯­å¥â€œ($tb.typeid=id1 or $tb.typeid=id2...)â€
 	//----------------------------------------------------------------------------
 	function GetSunID($ID,$tb="#@__archives",$channel=0)
 	{
 		$this->sunID = "";
-		if($this->dsql==0) $this->dsql = new DedeSql(false);
 		$this->idCounter = 0;
 		$this->idArray = "";
 		$this->GetSunTypes($ID,$channel);

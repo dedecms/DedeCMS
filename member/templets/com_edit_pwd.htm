@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>更改企业用户登录密码</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+<script>
+function checkSubmit()
+{
+  if(document.form2.userpwdok.value!=document.form2.userpwd.value)
+  {
+    document.form2.userpwdok.focus();
+    alert("两次密码不一致！");
+    return false;
+  }
+  if(document.form2.vdcode.value=="")
+  {
+     document.form2.vdcode.focus();
+     alert("验证码不能为空！");
+     return false;
+  }
+}
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="216" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<div id="manage_company_right">
+        	<div id="manage_company_info">
+            	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+         <tr>
+            <td height="25" align="left" background="images/right_titlebg.gif" class="gdt2">
+			<strong>　&nbsp;更改登录密码：</strong>			</td>
+          </tr>
+	  </table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody">
+        <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
+          <input type="hidden" name="fmdo" value="user" />
+          <input type="hidden" name="dopost" value="editUserSafe" />
+          <tr>
+            <td height="36" align="center" >验证码：</td>
+            <td height="25" align="left" ><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+                <tr>
+                  <td width="164" ><input name="vdcode" type="text" id="vdcode" size="10" class="company_manage_form_label" ></td>
+                  <td width="442" ><img src='../include/vdimgck.php' width='50' height='20'></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr>
+            <td width="17%" height="36" align="center" >原登录密码：</td>
+            <td width="83%" height="25" align="left" ><input type="password" name="oldpwd" class="company_manage_form_label"  ></td>
+          </tr>
+          <tr>
+            <td height="36" align="center" >新 密 码：</td>
+            <td height="25" align="left" ><input name="userpwd" type="password" id="userpwd" size="18"  class="company_manage_form_label"  >
+              &nbsp;确认密码：
+              <input name="userpwdok" type="password" id="userpwdok" value="" size="18"  class="company_manage_form_label" >
+&nbsp;</td>
+          </tr>
+
+          <tr>
+            <td height="67" align="right" >&nbsp;</td>
+            <td  align="left" > <input type="submit" name="Submit2" value="确定修改" class="button" >
+              &nbsp;&nbsp; <input type="reset" name="Submit222" value="重置" class="button01" ></td>
+          </tr>
+        </form>
+      </table>
+    </td>
+  </tr>
+</table>
+        <table cellpadding="0" cellspacing="0" height="40" ><tr><td></td></tr></table>
+                <div class="clear">
+                </div>
+</div>
+<?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</body>
+</html>

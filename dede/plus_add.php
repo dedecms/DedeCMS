@@ -11,63 +11,11 @@ if($dopost=="save"){
   $dsql->SetQuery("Insert Into #@__plus(plusname,menustring,writer,isshow,filelist) Values('$plusname','$menustring','$writer','1','$filelist');");
   $dsql->Execute();
   $dsql->Close();
-  ShowMsg("³É¹¦°²×°Ò»¸ö²å¼þ,ÇëË¢ÐÂµ¼º½²Ëµ¥!","plus_main.php");
+  ShowMsg("æˆåŠŸå®‰è£…ä¸€ä¸ªæ’ä»¶,è¯·åˆ·æ–°å¯¼èˆªèœå•!","plus_main.php");
 	exit();
 }
+
+require_once(dirname(__FILE__)."/templets/plus_add.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>°²×°ÐÂ²å¼þ</title>
-<style type="text/css">
-<!--
-body {
-	background-image: url(img/allbg.gif);
-}
--->
-</style>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <form name="form1" action="plus_add.php" method="post">
-   <input type='hidden' name='dopost' value='save'>
-    <tr> 
-      <td height="20" colspan="2" background="img/tbg.gif"> <b>&nbsp;<a href="plus_main.php"><u>²å¼þ¹ÜÀí</u></a> 
-        &gt; °²×°ÐÂ²å¼þ£º</b> </td>
-    </tr>
-    <tr> 
-      <td width="19%" align="center" bgcolor="#FFFFFF">²å¼þÃû³Æ</td>
-      <td width="81%" bgcolor="#FFFFFF"><input name="plusname" type="text" id="plusname"> 
-      </td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">×÷Õß</td>
-      <td bgcolor="#FFFFFF"> <input name="writer" type="text" id="writer"> </td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">Ö÷³ÌÐòÎÄ¼þ</td>
-      <td bgcolor="#FFFFFF"><input name="link" type="text" id="link" size="30"> </td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">Ä¿±ê¿ò¼Ü</td>
-      <td bgcolor="#FFFFFF"><input name="target" type="text" id="target" value="main"></td>
-    </tr>
-    <tr> 
-      <td align="center" bgcolor="#FFFFFF">ÎÄ¼þÁÐ±í</td>
-      <td bgcolor="#FFFFFF">ÎÄ¼þÓÃ&quot;,&quot;·Ö¿ª£¬Â·¾¶Ïà¶ÔÓÚ¹ÜÀíÄ¿Â¼£¨µ±Ç°Ä¿Â¼£©<br>
-        <textarea name="filelist" rows="8" id="filelist" style="width:60%"></textarea></td>
-    </tr>
-    <tr bgcolor="#F9FDF0"> 
-      <td height="28" colspan="2"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="26%">&nbsp;</td>
-            <td width="15%"><input name="imageField" class="np" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-            <td width="59%"><img src="img/button_back.gif" width="60" height="22" onClick="location='plus_main.php';" style="cursor:hand"></td>
-          </tr>
-        </table></td>
-    </tr>
-  </form>
-</table>
-</body>
-</html>

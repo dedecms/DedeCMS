@@ -5,13 +5,13 @@ if(empty($job)) $job="";
 if($job=="")
 {
      require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-     $wintitle = "µ¼Èë²É¼¯¹æÔò";
-	   $wecome_info = "<a href='co_main.php'><u>²É¼¯µã¹ÜÀí</u></a>::µ¼Èë²É¼¯¹æÔò";
+     $wintitle = "å¯¼å…¥é‡‡é›†è§„åˆ™";
+	   $wecome_info = "<a href='co_main.php'><u>é‡‡é›†ç‚¹ç®¡ç†</u></a>::å¯¼å…¥é‡‡é›†è§„åˆ™";
 	   $win = new OxWindow();
 	   $win->Init("co_get_corule.php","js/blank.js","POST");
 	   $win->AddHidden("job","yes");
-	   $win->AddTitle("ÇëÔÚÏÂÃæÊäÈëÄãÒªµ¼ÈëµÄÎÄ±¾ÅäÖÃ£º");
-	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300'></textarea>");
+	   $win->AddTitle("è¯·åœ¨ä¸‹é¢è¾“å…¥ä½ è¦å¯¼å…¥çš„æ–‡æœ¬é…ç½®ï¼š");
+	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px'></textarea>");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
      exit();
@@ -26,7 +26,7 @@ else
       $dtp->LoadString($notes);
    	  if(!is_array($dtp->CTags))
       {
-	      ShowMsg("¸Ã¹æÔò²»ºÏ·¨£¬ÎŞ·¨±£´æ!","-1");
+	      ShowMsg("è¯¥è§„åˆ™ä¸åˆæ³•ï¼Œæ— æ³•ä¿å­˜!","-1");
 	      $dsql->Close();
 	      exit();
       }
@@ -39,7 +39,9 @@ else
 	    $dsql = new DedeSql(false);
 	    $rs = $dsql->ExecuteNoneQuery($query);
 	    $dsql->Close();
-	    ShowMsg("³É¹¦µ¼ÈëÒ»¸ö¹æÔò!","co_main.php");
+	    ShowMsg("æˆåŠŸå¯¼å…¥ä¸€ä¸ªè§„åˆ™!","co_main.php");
 	    exit();
 }
+
+ClearAllLink();
 ?>

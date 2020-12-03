@@ -9,14 +9,14 @@ if(empty($pageno)) $pageno = 1;
 if(empty($dopost)) $dopost = '';
 if(empty($orderby)) $orderby = 'aid';
 
-//ÖØÔØÁĞ±í
+//é‡è½½åˆ—è¡¨
 if($dopost=='getlist'){
 	PrintAjaxHead();
 	GetList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
 }
-//É¾³ıÁôÑÔ
+//åˆ é™¤ç•™è¨€
 if($dopost=='del')
 {
 	if(!empty($aid)){
@@ -41,7 +41,7 @@ if($dopost=='del')
 	exit();
 }
 
-//µÚÒ»´Î½øÈëÕâ¸öÒ³Ãæ
+//ç¬¬ä¸€æ¬¡è¿›å…¥è¿™ä¸ªé¡µé¢
 if($dopost==''){
 	$row = $dsql->GetOne("Select count(*) as dd From #@__member_guestbook where mid='".$cfg_ml->M_ID."'; ");
 	$totalRow = $row['dd'];
@@ -49,7 +49,7 @@ if($dopost==''){
   $dsql->Close();
 }
 
-//»ñµÃÌØ¶¨µÄ¹Ø¼ü×ÖÁĞ±í
+//è·å¾—ç‰¹å®šçš„å…³é”®å­—åˆ—è¡¨
 //---------------------------------
 function GetList($dsql,$pageno,$pagesize,$orderby='aid'){
 	global $cfg_phpurl,$cfg_ml;
@@ -58,38 +58,38 @@ function GetList($dsql,$pageno,$pagesize,$orderby='aid'){
 	$dsql->Execute();
   while($row = $dsql->GetArray()){
     $row['msg'] = ereg_replace("[ \t\r]"," ",$row['msg']);
-    $row['msg'] = str_replace("  ","¡¡",$row['msg']);
+    $row['msg'] = str_replace("  ","ã€€",$row['msg']);
     $row['msg'] = str_replace("\n","<br>\n",$row['msg']);
     $line = "";
     $line .= "<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"3\" cellspacing=\"1\" bgcolor=\"#D9EDC0\" style=\"margin-bottom:6px\">";
     $line .= "\r\n<tr bgcolor=\"#E2EBC0\" height=\"24\"> ";
     $line .= "\r\n<td height=\"24\" colspan=\"2\" background=\"img/gbookbg.gif\">";
     $line .= "\r\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> ";
-    $line .= "\r\n<td width=\"85%\"> <strong>ÁôÑÔ±êÌâ£º".$row['title']."</strong></td>";
+    $line .= "\r\n<td width=\"85%\"> <strong>ç•™è¨€æ ‡é¢˜ï¼š".$row['title']."</strong></td>";
     $line .= "\r\n<td width=\"15%\" align=\"center\">";
     $line .= "\r\n<input name=\"ids\" type=\"checkbox\" id=\"ids\" value=\"".$row['aid']."\">";
-    $line .= "[<a href='#' onclick='DelNote(".$row['aid'].")'>É¾³ı</a>]";
+    $line .= "[<a href='#' onclick='DelNote(".$row['aid'].")'>åˆ é™¤</a>]";
     $line .= "\r\n</td></tr></table> ";
     $line .= "\r\n</td></tr>";
     $line .= "\r\n<tr height=\"24\"> ";
     $line .= "\r\n<td width=\"31%\" bgcolor=\"#F7FEE0\">";
-    $line .= "\r\n&nbsp;ÓÃ»§³Æºô£º".$row['uname'];
+    $line .= "\r\n&nbsp;ç”¨æˆ·ç§°å‘¼ï¼š".$row['uname'];
     $line .= "\r\n</td>";
-    $line .= "\r\n<td width=\"69%\" height=\"24\" bgcolor=\"FDFEF5\">";
-    $line .= "Ê±¼ä£º".strftime("%y-%m-%d %H:%M",$row['dtime'])."&nbsp;IPµØÖ·£º".$row['ip']."&nbsp;";
+    $line .= "\r\n<td width=\"69%\" height=\"24\" bgcolor=\"#F7FEE0\">";
+    $line .= "æ—¶é—´ï¼š".strftime("%y-%m-%d %H:%M",$row['dtime'])."&nbsp;IPåœ°å€ï¼š".$row['ip']."&nbsp;";
     if(!empty($row['gid'])){
-    	$line .= " <a href='index.php?uid=".$row['gid']."&action=memberinfo' target='_blank'>×ÊÁÏ</a>
-    	           <a href='index.php?uid=".$row['gid']."' target='_blank'>¿Õ¼ä</a>
-    	           <a href='index.php?uid=".$row['gid']."&action=feedback' target='_blank'>»Ø¸´</a>
+    	$line .= " <a href='index.php?uid=".$row['gid']."&action=memberinfo' target='_blank'>èµ„æ–™</a>
+    	           <a href='index.php?uid=".$row['gid']."' target='_blank'>ç©ºé—´</a>
+    	           <a href='index.php?uid=".$row['gid']."&action=feedback' target='_blank'>å›å¤</a>
     	         ";
     }
     $line .= "\r\n</td></tr>";
-    $line .= "\r\n<tr height=\"60\" bgcolor=\"FDFEF5\">";
+    $line .= "\r\n<tr height=\"60\" bgcolor=\"#FDFEF5\">";
     $line .= "\r\n<td valign=\"top\">";
     $line .= "\r\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;Email£º".$row['email']."</td></tr>";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;ÁªÏµµç»°£º".$row['tel']."</td></tr>";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;ÆäËü£º".$row['qq']."</td></tr>";
+    $line .= "\r\n<tr><td height=\"24\">&nbsp;Emailï¼š".$row['email']."</td></tr>";
+    $line .= "\r\n<tr><td height=\"24\">&nbsp;è”ç³»ç”µè¯ï¼š".$row['tel']."</td></tr>";
+    $line .= "\r\n<tr><td height=\"24\">&nbsp;å…¶å®ƒï¼š".$row['qq']."</td></tr>";
     $line .= "\r\n</table>";
     $line .= "\r\n</td>";
     $line .= "\r\n<td valign=\"top\">";
@@ -104,7 +104,7 @@ function PrintAjaxHead(){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 }
 
 ?>

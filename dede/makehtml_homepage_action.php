@@ -16,7 +16,7 @@ else if($dopost=="make")
 	$homeFile = dirname(__FILE__)."/".$position;
 	$homeFile = str_replace("\\","/",$homeFile);
 	$homeFile = str_replace("//","/",$homeFile);
-	$fp = fopen($homeFile,"w") or die("ÄãÖ¸¶¨µÄÎÄ¼þÃûÓÐÎÊÌâ£¬ÎÞ·¨´´½¨ÎÄ¼þ");
+	$fp = fopen($homeFile,"w") or die("ä½ æŒ‡å®šçš„æ–‡ä»¶åæœ‰é—®é¢˜ï¼Œæ— æ³•åˆ›å»ºæ–‡ä»¶");
 	fclose($fp);
 	if($saveset==1)
 	{
@@ -30,9 +30,12 @@ else if($dopost=="make")
 	$pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
 	$pv->SaveToHtml($homeFile);
 	$pv->Close();
-	echo "³É¹¦¸üÐÂÖ÷Ò³HTML£º".$homeFile;
-	echo "<br/><br/><a href='$position' target='_blank'>ä¯ÀÀ...</a>";
+	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	echo "æˆåŠŸæ›´æ–°ä¸»é¡µHTMLï¼š".$homeFile;
+	echo "<br/><br/><a href='$position' target='_blank'>æµè§ˆ...</a>";
 }
 $t2 = ExecTime();
 echo "<!-- ".($t2-$t1)." -->";
+
+ClearAllLink();
 ?>

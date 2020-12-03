@@ -1,15 +1,17 @@
 <?php 
+//ç³»ç»Ÿè®¾ç½®ä¸ºç»´æŠ¤çŠ¶æ€åä»å¯è®¿é—®
+$cfg_IsCanView = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_channel_unit.php");
 if(!isset($open)) $open = 0;
 if(!isset($aid)) $aid = "";
 $aid = ereg_replace("[^0-9]","",$aid);
-//¶ÁÈ¡Á´½ÓÁĞ±í
+//è¯»å–é“¾æ¥åˆ—è¡¨
 //------------------
 if($open==0)
 {
 	$dsql = new DedeSql(false);
-  //¶ÁÈ¡ÎÄµµ»ù±¾ĞÅÏ¢
+  //è¯»å–æ–‡æ¡£åŸºæœ¬ä¿¡æ¯
   $arctitle = "";
   $arcurl = "";
   $gquery = "Select
@@ -26,14 +28,14 @@ if($open==0)
 	  $arcurl = GetFileUrl($aid,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
   }else{
 	  $dsql->Close();
-	  ShowMsg("ÎŞ·¨»ñÈ¡Î´ÖªÎÄµµµÄĞÅÏ¢!","-1");
+	  ShowMsg("æ— æ³•è·å–æœªçŸ¥æ–‡æ¡£çš„ä¿¡æ¯!","-1");
 	  exit();
   }
 	$cu = new ChannelUnit($arcRow['channel'],$aid);
 	if(!is_array($cu->ChannelFields)) {
 		$cu->Close();
 		$dsql->Close();
-	  ShowMsg("»ñÈ¡ÎÄµµÁ´½ÓĞÅÏ¢Ê§°Ü£¡","-1");
+	  ShowMsg("è·å–æ–‡æ¡£é“¾æ¥ä¿¡æ¯å¤±è´¥ï¼","-1");
 	  exit();
 	}
 	$vname = "";
@@ -43,7 +45,7 @@ if($open==0)
 	if(!is_array($cu->ChannelFields)) {
 		$cu->Close();
 		$dsql->Close();
-	  ShowMsg("»ñÈ¡ÎÄµµÁ´½ÓĞÅÏ¢Ê§°Ü£¡","-1");
+	  ShowMsg("è·å–æ–‡æ¡£é“¾æ¥ä¿¡æ¯å¤±è´¥ï¼","-1");
 	  exit();
 	}
 	$row = $dsql->GetOne("Select $vname From ".$cu->ChannelInfos['addtable']." where aid='$aid'");
@@ -53,7 +55,7 @@ if($open==0)
 	require_once($cfg_basedir.$cfg_templets_dir."/plus/download_links_templet.htm");
 	exit();
 }
-//Ìá¹©Èí¼ş¸øÓÃ»§ÏÂÔØ
+//æä¾›è½¯ä»¶ç»™ç”¨æˆ·ä¸‹è½½
 //------------------------
 else if($open==1){
 	$link = base64_decode($link);

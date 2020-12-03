@@ -1,10 +1,11 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�㿨ҵ���¼</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>点卡业务记录</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
-//���ѡ����
+//获得选中项
 function getCheckboxItem()
 {
 	var allSel="";
@@ -33,39 +34,44 @@ function DelSel()
 {
 	var nid = getCheckboxItem();
 	if(nid==""){
-		alert("��ѡ��Ҫɾ���Ŀ�!\r\n");
+		alert("请选择要删除的卡!\r\n");
 		return ;
 	}
 	//location.href = "";
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
-    <td height="20" colspan="7" background='img/tbg.gif'><table width="98%" border="0" cellspacing="0" cellpadding="0">
+    <td height="20" colspan="7" bgcolor="#EDF9D5"><table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td width="30%"> <strong><a href="co_main.php"><u>��Ա����</u></a> &gt; 
-            �㿨ҵ�������</strong> </td>
-          <td width="45%" align="right" > <input type="button" name="ss13" value="δʹ��" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=0';" class='nbt'> 
-            <input type="button" name="ss14" value="���۳�" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=1';" class='nbt'> 
-            <input type="button" name="ss15" value="��ʹ��" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=-1';" class='nbt'> 
-            <input type="button" name="ss16" value="ȫ��" style="width:40px;margin-right:6px" onClick="location='member_card.php';" class='nbt'> 
+          <td width="30%"> <strong><a href="co_main.php"><u>会员管理</u></a> &gt; 
+            点卡业务管理：</strong> </td>
+          <td width="45%" align="right" > <input type="button" name="ss13" value="未使用" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=0';" class='inputbut'> 
+            <input type="button" name="ss14" value="已售出" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=1';" class='inputbut'> 
+            <input type="button" name="ss15" value="已使用" style="width:50px;margin-right:6px" onClick="location='member_card.php?isexp=-1';" class='inputbut'> 
+            <input type="button" name="ss16" value="全部" style="width:40px;margin-right:6px" onClick="location='member_card.php';" class='inputbut'> 
           </td>
-          <td width="25%" align="right"> <input type="button" name="ss1" value="���ɵ㿨" style="width:70px;margin-right:6px" onClick="location='member_card_make.php';" class='nbt'> 
-            <input type="button" name="ss12" value="�㿨��Ʒ����" style="width:90px;margin-right:6px" onClick="location='member_card_type.php';" class='nbt'> 
+          <td width="25%" align="right"> <input type="button" name="ss1" value="生成点卡" style="width:70px;margin-right:6px" onClick="location='member_card_make.php';" class='inputbut'> 
+            <input type="button" name="ss12" value="点卡产品分类" style="width:90px;margin-right:6px" onClick="location='member_card_type.php';" class='inputbut'> 
           </td>
         </tr>
-      </table></td>
+    </table></td>
   </tr>
   <tr align="center" bgcolor="#F8FBFB"> 
-    <td width="8%">ѡ��</td>
-    <td width="28%">����</td>
-    <td width="18%">�㿨����</td>
-    <td width="12%">��������</td>
-    <td width="12%">ʹ������</td>
-    <td width="8%">״̬</td>
-    <td width="14%">ʹ�û�Ա</td>
+    <td width="8%">选择</td>
+    <td width="28%">卡号</td>
+    <td width="18%">点卡类型</td>
+    <td width="12%">生成日期</td>
+    <td width="12%">使用日期</td>
+    <td width="8%">状态</td>
+    <td width="14%">使用会员</td>
   </tr>
   <form name="form1">
   <?php 
@@ -90,9 +96,9 @@ function DelSel()
  <?php  } ?>
 </form>
   <tr> 
-    <td height="24" colspan="7" bgcolor="#FCFDF7">&nbsp;
-<input type="button" name="b7" value="��ѡ" style="width:40" onClick="ReSel();" class='nbt'>
-      �������� </td>
+    <td height="30" colspan="7" bgcolor="#FCFDF7">&nbsp;
+<input type="button" name="b7" value="反选" style="width:40" onClick="ReSel();" class='inputbut'>
+      　　　　 </td>
   </tr>
   <tr> 
     <td height="24" colspan="7" bgcolor="#FCFDF7" align="center">

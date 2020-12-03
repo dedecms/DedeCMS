@@ -1,52 +1,71 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_archives_view.php");
+require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
+$ml = new MemberLogin();
 function ParamError(){
-	ShowMsg("¶Ô²»Æğ£¬ÄãÊäÈëµÄ²ÎÊıÓĞÎó£¡","javascript:;");
+	ShowMsg("å¯¹ä¸èµ·ï¼Œä½ è¾“å…¥çš„å‚æ•°æœ‰è¯¯ï¼","javascript:;");
 	exit();
 }
+
+if(!isset($aid)) $aid = 0;
+
 $aid = ereg_replace("[^0-9]","",$aid);
+
 if(empty($okview)) $okview="";
 if($aid==0||$aid=="") ParamError();
 
 $arc = new Archives($aid);
-
 
 if($arc->IsError) {
 	$arc->Close();
 	ParamError();
 }
 
-//¿Ûµã
+//æœªå®¡æ ¸æ–‡æ¡£
+if($arc->Fields['arcrank']==-1 && $arc->Fields['memberID']!=$ml->M_ID)
+{
+	require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
+	$ul = new userLogin();
+	if(empty($ul->userID))
+	{
+	   ShowMsg("å¯¹ä¸èµ·ï¼Œä½ æ— æƒè®¿é—®æœªå®¡æ ¸æ–‡æ¡£ï¼","javascript:;");
+	   $arc->Close();
+	   exit();
+	}
+}
+
+
+//æ‰£ç‚¹
 function PayMoney($ml,$arc,$money){
 	 global $aid;
    $row = $arc->dsql->GetOne("Select aid,money From #@__moneyrecord where aid='$aid' And uid='".$ml->M_ID."'");
    if(!is_array($row)){
-		   //½ğ±ÒÏû·Ñ¼ÇÂ¼
-		   $inquery = "INSERT INTO #@__moneyrecord(aid,uid,title,money,dtime) 
+		   //é‡‘å¸æ¶ˆè´¹è®°å½•
+		   $inquery = "INSERT INTO #@__moneyrecord(aid,uid,title,money,dtime)
                VALUES ('$aid','".$ml->M_ID."','{$arc->Fields['title']}','$money','".mytime()."');";
 		   if($arc->dsql->ExecuteNoneQuery($inquery)){
 		  	  $inquery = "Update #@__member set money=money-$money where ID='".$ml->M_ID."'";
 		      $arc->dsql->ExecuteNoneQuery($inquery);
+		      $ml->FushCache();
 		   }
 		}
 }
-//¼ì²éÔÄ¶ÁÈ¨ÏŞ
+//æ£€æŸ¥é˜…è¯»æƒé™
 //--------------------
 $needMoney = $arc->Fields['money'];
 $needRank = $arc->Fields['arcrank'];
 $arcTitle = $arc->Fields['title'];
-//ÉèÖÃÁËÈ¨ÏŞÏŞÖÆµÄÎÄÕÂ
-//»áÔ±È¨ÏŞËµÃ÷:
-//1¡¢¶ÔÓÚÉè¶¨ÁË°üÊ±µÄÖĞ¸ß¼¶»áÔ±£¬ä¯ÀÀÈÎºÎÈ¨ÏŞÄÚµÄÎÄµµ¶¼²»ĞèÒªÊ¹ÓÃ½ğ±Ò
-//2¡¢¶ÔÓÚÈ¨ÏŞ²»×ã£¬ÓÖÓĞ½ğ±ÒµÄÓÃ»§£¬¿ÉÒÔ»¨1¸ö½ğ±Òä¯ÀÀÈ¨ÏŞÍâµÄÎÄµµ£¬»ò»¨Éè¶¨µÄ½ğ±Òä¯ÀÀÄ³ÎÄµµ
+//è®¾ç½®äº†æƒé™é™åˆ¶çš„æ–‡ç« 
+//ä¼šå‘˜æƒé™è¯´æ˜:
+//1ã€å¯¹äºè®¾å®šäº†åŒ…æ—¶çš„ä¸­é«˜çº§ä¼šå‘˜ï¼Œæµè§ˆä»»ä½•æƒé™å†…çš„æ–‡æ¡£éƒ½ä¸éœ€è¦ä½¿ç”¨é‡‘å¸
+//2ã€å¯¹äºæƒé™ä¸è¶³ï¼Œåˆæœ‰é‡‘å¸çš„ç”¨æˆ·ï¼Œå¯ä»¥èŠ±1ä¸ªé‡‘å¸æµè§ˆæƒé™å¤–çš„æ–‡æ¡£ï¼Œæˆ–èŠ±è®¾å®šçš„é‡‘å¸æµè§ˆæŸæ–‡æ¡£
 //arctitle msgtitle moremsg
 //------------------------------------
+
 if($needMoney > 0 || $needRank > 0)
 {
 	if($needMoney<1 && $needRank > $ml->M_Type) $needMoney = 1;
-	require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
-	$ml = new MemberLogin();
 	$arctitle = $arc->Fields['title'];
 	$arclink = $arc->TypeLink->GetFileUrl($arc->ArcID,
 	                $arc->Fields["typeid"],
@@ -54,48 +73,48 @@ if($needMoney > 0 || $needRank > 0)
 	                $arc->Fields["title"],
 	                $arc->Fields["ismake"],
 	                $arc->Fields["arcrank"]);
-	
+
 	$arc->dsql->SetQuery("Select * From #@__arcrank");
 	$arc->dsql->Execute();
 	while($nrow = $arc->dsql->GetObject()){
 			$memberTypes[$nrow->rank] = $nrow->membername;
 	}
-	$memberTypes[0] = 'Î´ÉóºË»áÔ±';
-	$memberTypes[-1] = "<a href='{$cfg_memberurl}'>ÄãÉĞÎ´µÇÂ½</a>";
-	
-	$description =  $arc->Fields["description"]; 
+	$memberTypes[0] = 'æœªå®¡æ ¸ä¼šå‘˜';
+	$memberTypes[-1] = "<a href='{$cfg_memberurl}'>ä½ å°šæœªç™»é™†</a>";
+
+	$description =  $arc->Fields["description"];
 	$pubdate = GetDateTimeMk($arc->Fields["pubdate"]);
-	
-	//¶ÔÓÚÉè¶¨ÁË°üÊ±µÄÖĞ¸ß¼¶»áÔ±£¬ä¯ÀÀÈÎºÎÈ¨ÏŞÄÚµÄÎÄµµ¶¼²»ĞèÒªÊ¹ÓÃ½ğ±Ò
+
+	//å¯¹äºè®¾å®šäº†åŒ…æ—¶çš„ä¸­é«˜çº§ä¼šå‘˜ï¼Œæµè§ˆä»»ä½•æƒé™å†…çš„æ–‡æ¡£éƒ½ä¸éœ€è¦ä½¿ç”¨é‡‘å¸
 	//----------------------------------------------------------------
 	if( ($ml->M_Type > 10) && ($ml->M_Type >= $needRank ) ){
-		 //»áÔ±ÒÑ¾­¹ıÆÚ
+		 //ä¼šå‘˜å·²ç»è¿‡æœŸ
 		 if($ml->M_HasDay<1){
-			  //ÎŞ×ã¹»½ğ±Ò
+			  //æ— è¶³å¤Ÿé‡‘å¸
 			  if( $ml->M_Money < $needMoney )
 			  {
-			     $msgtitle = "ÔÄ¶Á£º{$arcTitle} È¨ÏŞ²»×ã£¡";
-		       $moremsg = "ÕâÆªÎÄµµĞèÒª [<font color='red'>".$memberTypes[$needRank]."</font>] ";
-		       $moremsg .= "»ò»¨·Ñ {$needMoney} ¸ö½ğ±Ò²ÅÄÜ·ÃÎÊ£¬ÄãÄ¿Ç°µÄ»áÔ±Éí·İÒÑ¾­¹ıÆÚ£¬ÓµÓĞ½ğ±Ò {$ml->M_Money} ¸ö£¡";
+			     $msgtitle = "é˜…è¯»ï¼š{$arcTitle} æƒé™ä¸è¶³ï¼";
+		       $moremsg = "è¿™ç¯‡æ–‡æ¡£éœ€è¦ [<font color='red'>".$memberTypes[$needRank]."</font>] ";
+		       $moremsg .= "æˆ–èŠ±è´¹ {$needMoney} ä¸ªé‡‘å¸æ‰èƒ½è®¿é—®ï¼Œä½ ç›®å‰çš„ä¼šå‘˜èº«ä»½å·²ç»è¿‡æœŸï¼Œæ‹¥æœ‰é‡‘å¸ {$ml->M_Money} ä¸ªï¼";
 		       include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
 		       exit();
-		    //ÓĞ×ã¹»½ğ±Ò
+		    //æœ‰è¶³å¤Ÿé‡‘å¸
 		    }else{
 		    	 PayMoney($ml,$arc,$needMoney);
 		    }
 		 }
-	//·Ç°üÊ±»áÔ±»ò¼¶±ğ²»×ãµÄ»áÔ±£¬Ê¹ÓÃ½ğ±ÒÔÄ¶Á
+	//éåŒ…æ—¶ä¼šå‘˜æˆ–çº§åˆ«ä¸è¶³çš„ä¼šå‘˜ï¼Œä½¿ç”¨é‡‘å¸é˜…è¯»
 	//-------------------------------------------------------------------
 	}else{
-		//ÎŞ×ã¹»½ğ±Ò
+		//æ— è¶³å¤Ÿé‡‘å¸
 		if( $ml->M_Money < $needMoney )
 		{
-			   $msgtitle = "ÔÄ¶Á£º{$arcTitle} È¨ÏŞ²»×ã£¡";
-		     $moremsg = "ÕâÆªÎÄµµĞèÒª [<font color='red'>".$memberTypes[$needRank]."</font>] ";
-		     $moremsg .= "»ò»¨·Ñ {$needMoney} ¸ö½ğ±Ò²ÅÄÜ·ÃÎÊ£¬ÄãÄ¿Ç°µÄ»áÔ±Éí·İÎª".$memberTypes[$ml->M_Type]."£¬ÓµÓĞ½ğ±Ò {$ml->M_Money} ¸ö£¡";
+			   $msgtitle = "é˜…è¯»ï¼š{$arcTitle} æƒé™ä¸è¶³ï¼";
+		     $moremsg = "è¿™ç¯‡æ–‡æ¡£éœ€è¦ [<font color='red'>".$memberTypes[$needRank]."</font>] ";
+		     $moremsg .= "æˆ–èŠ±è´¹ {$needMoney} ä¸ªé‡‘å¸æ‰èƒ½è®¿é—®ï¼Œä½ ç›®å‰çš„ä¼šå‘˜èº«ä»½ä¸º".$memberTypes[$ml->M_Type]."ï¼Œæ‹¥æœ‰é‡‘å¸ {$ml->M_Money} ä¸ªï¼";
 		     include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
 		     exit();
-		 //ÓĞ×ã¹»½ğ±Ò
+		 //æœ‰è¶³å¤Ÿé‡‘å¸
 		 }else{
 		    PayMoney($ml,$arc,$needMoney);
 		 }

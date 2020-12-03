@@ -1,7 +1,7 @@
 <?php 
 if(is_array($_GET))   { foreach($_GET AS $key => $value) if(!isset(${$key})) ${$key} = addslashes($value); }
 if (is_array($_POST)){
-	if(!$needFilter){
+	if(!$cfg_needFilter){
 		foreach($_POST AS $key => $value) if(!isset(${$key})) ${$key} = addslashes($value);
 	}else{
 		foreach($_POST AS $key => $value){
@@ -10,11 +10,11 @@ if (is_array($_POST)){
 	    	foreach($value as $k=>$v) ${$key}[$k] = addslashes($v);
 	    	continue;
 	    }
-	    if(strlen($value)>50){ //禁止字串
+	    if(strlen($value)>50){ //绂佹瀛椾覆
 	  	   if(!empty($cfg_notallowstr) && eregi($cfg_notallowstr,$value)){
-	  		    echo "你的信息中存在非法内容，被系统禁止！<a href='javascript:history.go(-1)'>[返回]</a>"; exit();
+	  		    echo "浣犵殑淇℃伅涓瓨鍦ㄩ潪娉曞唴瀹癸紝琚郴缁熺姝紒<a href='javascript:history.go(-1)'>[杩斿洖]</a>"; exit();
 	  	   }
-	  	   if(!empty($cfg_replacestr)){ //替换字串
+	  	   if(!empty($cfg_replacestr)){ //鏇挎崲瀛椾覆
 	  	  	  $value = eregi_replace($cfg_replacestr,'***',$value);
 	  	   }
 	    }

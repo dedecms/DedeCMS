@@ -1,0 +1,286 @@
+<?php
+if(empty($action))
+{
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>修改公司资料</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+<script language="javascript"><?php echo $sectorcache; echo $areacache;?></script>
+<script language='javascript' src='../include/common.js'></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+   if(document.form2.sectorchange.checked){
+	 if (!confirm("您选择了更改公司的主营行业，确定吗？")) return false;
+  }
+}
+-->
+</script>
+</head>
+<body>
+<center>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<!-- 中部开始 -->
+    <div id="manage_company_main">
+    <div class="clear">
+    </div>
+		<!-- 中部左边开始 -->
+        <?php include(dirname(__FILE__)."/commenu.php");?>
+	  <!-- 中部右边开始 -->
+
+  <div id="manage_company_right">
+  <div class="clear">
+  </div>
+   <form name="form2" action="mycominfo.php" method="post" onsubmit="return checksubmit();">
+        	<div id="manage_company_info">
+            	<div class="manage_company_info_title_bg">
+
+<input type="hidden" name="action" value="editcominfo" />
+<input type="hidden" name="oldemail" value="<?php echo $cominfo['email']; ?>" />
+                	<ul><li>公司简介</li></ul>
+                </div>
+                <div class="manage_company_info_text">提示：带 <span>*</span> 为必填项</div>
+ <table width="98%" border="0">
+  <tr>
+    <td width="90" align="left"><span class="manage_company_info_text">公司名称：</span></td>
+    <td align="left"><span class="manage_company_info_text">
+      <input type="text" name="comname" value="<?php echo $cominfo['comname']; ?>" class="company_manage_form_label" />
+      <span>*</span></span></td>
+    <td width="90" align="left"><span class="manage_company_info_text">成立时间：</span></td>
+    <td width="200" align="left"><span class="manage_company_info_text">
+      <input type="text" size=4 maxlength=4 name="regyear" value="<?php echo $cominfo['regyear']; ?>"class="company_manage_form_label" />
+      <span>*</span></span></td>
+  </tr>
+  <tr>
+    <td width="90" align="left"><span class="manage_company_info_text">注册地：</span></td>
+    <td align="left"><span class="manage_company_info_text"> <?php echo $areaidname; ?> - <?php echo $areaid2name; ?></span></td>
+    <td width="90" align="left"><span class="manage_company_info_text">
+      <input type="checkbox" name="areachange" onclick="javascript:showonobj('area',this.name)" />
+      更改</span></td>
+    <td width="200" align="left"><input type="hidden" name="oldareaid" value="<?php echo $cominfo[areaid]; ?>" />
+      <input type="hidden" name="oldareaid2" value="<?php echo $cominfo[areaid2]; ?>" />
+      <div id="area" style="display:none;">
+        <select name="areaid" id="areaid" onchange="javascript:selNext(this.document.form2.areaid2,this.value,'subareas')" >
+          <option value="0">--不限--</option>
+          <?php
+$db->SetQuery("Select * From #@__area where reid=0");
+$db->Execute();
+while($area = $db->GetArray())
+{
+	echo "<option value='".$area['id']."'>".$area['name']."</option>\r\n";
+}
+?>
+        </select>
+        <select name="areaid2" id="areaid2">
+          <option value="0">--不限--</option>
+        </select>
+      </div></td>
+  </tr>
+  <tr>
+    <td width="90" align="left"><span class="manage_company_info_text">主营行业：</span></td>
+    <td align="left"><span class="manage_company_info_text"><?php echo $typeid1name; ?> - <?php echo $typeid2name; ?> </span></td>
+    <td width="90" align="left"><span class="manage_company_info_text">
+      <input type="checkbox" name="sectorchange" onclick="javascript:showonobj('sector','sectorchange')" />
+      更改</span></td>
+    <td width="200" align="left"><input type="hidden" name="oldtypeid1" value="<?php echo $cominfo[typeid1]; ?>" />
+      <input type="hidden" name="oldtypeid2" value="<?php echo $cominfo[typeid2]; ?>" />
+      <div id="sector" style="display:none;">
+        <select name="typeid1" id="typeid1" onchange="javascript:selNext(this.document.form2.typeid2,this.value,'subsectors')" >
+          <option value="0">--不限--</option>
+          <?php
+$db->SetQuery("Select * From #@__sectors where reid=0");
+$db->Execute();
+while($cominfoa = $db->GetArray())
+{
+	if($cominfo['province']==$cominfoa['id'])
+	{
+		echo "<option value='".$cominfoa['id']."' selected>".$cominfoa['name']."</option>\r\n";
+	}else
+	{
+		echo "<option value='".$cominfoa['id']."'>".$cominfoa['name']."</option>\r\n";
+	}
+}
+?>
+        </select>
+        <select name="typeid2" id="typeid2">
+          <option value="0">--不限--</option>
+        </select>
+      </div></td>
+  </tr>
+  <tr>
+    <td width="90" align="left"><span class="manage_company_info_text">产品或服务：</span></td>
+    <td colspan="3" align="left"><span class="manage_company_info_text">
+    <input type="text" name="service" value="<?php echo $cominfo['service']; ?>" class="company_manage_form_label"  />
+    <span></span>（多个产品或服务以“|”分割)</span></td>
+    </tr>
+</table>
+
+<div class="manage_company_info_text">公司简介：</div> <table width="98%" border="0"><tr><td><?php
+GetEditor("cominfo",$cominfo['cominfo'],250,"MemberLit");
+?></td></tr></table>
+
+                <div class="manage_company_info_text">联系方式：</div>
+
+
+                <table width="98%" border="0">
+                  <tr>
+                    <td width="90" align="left"><span class="manage_company_info_text">姓 名：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="30" size=30 name="truename" value="<?php echo $cominfo['truename']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                    <td width="90" align="left"><span class="manage_company_info_text">部门和职务：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="business" value="<?php echo $cominfo['business']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <td width="90" align="left"><span class="manage_company_info_text">公司电话：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="phone" value="<?php echo $cominfo['phone']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                    <td width="90" align="left"><span class="manage_company_info_text">传 真：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="fax" value="<?php echo $cominfo['fax']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <td width="90" align="left"><span class="manage_company_info_text">手 机：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="mobi" value="<?php echo $cominfo['mobi']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                    <td width="90" align="left"><span class="manage_company_info_text">公司地址：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="comaddr" value="<?php echo $cominfo['comaddr']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <td width="90" align="left"><span class="manage_company_info_text">邮政编码：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="postid" value="<?php echo $cominfo['postid']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                    <td width="90" align="left"><span class="manage_company_info_text">Email：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="email" value="<?php echo $cominfo['email']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                  </tr>
+                  <tr>
+                    <td width="90" align="left"><span class="manage_company_info_text">公司网址：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                      <input maxlength="32" size=30 name="website" value="<?php echo $cominfo['website']; ?>" class="company_manage_form_label" />
+                    </span></td>
+                    <td width="90" align="left"><span class="manage_company_info_text">验证码：</span></td>
+                    <td align="left"><span class="manage_company_info_text">
+                    <input name="vdcode" type="text" id="vdcode" size="10" />
+                    <img src='../include/vdimgck.php' width='50' height='20' /> </span></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" align="center"><span class="br">
+                      <input type="submit" name="Submit2" value="确定修改" class="button" />
+                    </span></td>
+                  </tr>
+                </table>
+          </div>
+        
+    </form>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+        <?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</center>
+</body>
+</html>
+<?php
+}elseif($action == 'culture')
+{
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>修改公司资料</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<center>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<!-- 中部开始 -->
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+<?php include(dirname(__FILE__)."/commenu.php");?>
+	  <!-- 中部右边开始 -->
+  <div id="manage_company_right">
+  <div class="clear">
+  </div>
+        	<div id="manage_company_info">
+            	<div class="manage_company_info_title_bg">
+                	<ul><li>企业文化修改：*</li></ul>
+                </div>
+                <div class="manage_company_info_text">提示：带 <span>*</span> 为必填项</div>
+<form action="mycominfo.php" name="form1" method="post">
+    		<input type=hidden name=step value=2 />
+    		<input type=hidden name=action value=culture />
+<?php
+GetEditor("culture",$cominfo['culture'],450,"MemberLit");
+?>
+<br /><br />
+<input type="submit" name="Submit2" value="确定修改" class="button" />
+</form>
+                <div class="clear">
+                </div>
+          </div>
+          <div class="clear">
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+
+    </div>
+       <?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</center>
+</body>
+</html>
+<?php
+
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

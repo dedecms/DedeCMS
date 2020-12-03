@@ -1,78 +1,50 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?php echo $cfg_webname?> - ¸ß¼¶ËÑË÷</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-.style2 {color: #666666}
--->
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $cfg_webname?> - é«˜çº§æœç´¢</title>
+<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
 </head>
-<body leftmargin="0" topmargin="0">
-<center>
-  <table width="770" border="0" cellpadding="0" cellspacing="0">
-    <tr> 
-      <td height="71"><a href='http://www.dedecms.com'><img src="img/df_dedetitle.gif" width="250" height="53" border="0"></a> 
-      </td>
-    </tr>
-    <tr> 
-      <td height="6" valign="bottom" background="img/l_mbg.gif" bgcolor="#AFB95B"></td>
-    </tr>
-  </table>
-  <table width="770" border="0" cellspacing="0" cellpadding="0">
-    <tr> 
-      <td height="4"></td>
-    </tr>
-    <tr> 
-      <td valign="top">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td height="23" background="img/df_gbg.gif" bgcolor="#E9ECE1"> &nbsp; 
-              <a href='<?php echo $cfg_indexurl?>'> 
-              <?php echo $cfg_webname?>
-              </a> - ¸ß¼¶ËÑË÷£º </td>
-          </tr>
-          <tr> 
-            <td height="4"></td>
-          </tr>
-          <tr> 
-            <td height="84">
-			<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#C8D9C1">
-                <form name="form1" action="search.php" method="get">
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center" width="20%">ÍøÕ¾À¸Ä¿£º</td>
-                    <td> 
-                      <?php 
+</head>
+<body>
+
+<div class="stop">
+	<span class="toptitle">é«˜çº§æœç´¢</span>
+	<span class="toplink"><a href="/">è¿”å›žä¸»é¡µ</a></span></div>
+
+<div class="smain">
+	<div class="mtitle">
+		<div class="mtname"><strong><a href='<?php echo $cfg_indexurl?>'> 
+              <?php echo $cfg_webname?></a>- é«˜çº§æœç´¢ï¼š</strong></div>
+		</div>
+	<div class="mbox">
+		<div class="flbox"><br />
+          <table width="96%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#D1DDCE">
+            <form action="search.php" method="post" name="form1" id="form1">
+              <tr bgcolor="#FFFFFF">
+                <td height="30" align="center" width="20%">ç½‘ç«™æ ç›®ï¼š</td>
+                <td height="30">&nbsp;                  <?php 
               $tl = new TypeLink(0);
               $typeOptions = $tl->GetOptionArray(0,0,0);
               echo "<select name='typeid' style='width:200'>\r\n";
-              echo "<option value='0' selected>--²»ÏÞÀ¸Ä¿--</option>\r\n";
+              echo "<option value='0' selected>--ä¸é™æ ç›®--</option>\r\n";
               echo $typeOptions;
               echo "</select>";
 			  $tl->Close();
-            ?>
-                    </td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">¹Ø ¼ü ×Ö£º</td>
-                    <td width="490"><input name="keyword" type="text" id="keyword" style="width:200"></td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">·¢²¼Ê±¼ä£º</td>
-                    <td><select name="starttime" id="starttime" style="width:100">
-                        <option value="-1" selected>--²»ÏÞ--</option>
-                        <option value="7">Ò»ÖÜÒÔÄÚ</option>
-                        <option value="30">Ò»¸öÔÂÄÚ</option>
-                        <option value="90">Èý¸öÔÂÄÚ</option>
-                        <option value="180">°ëÄêÒÔÄÚ</option>
-                      </select></td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">ÄÚÈÝÀàÐÍ£º</td>
-                    <td> <select name="channeltype" id="channeltype" style="width:100">
-                        <option value="0" selected>--²»ÏÞ--</option>
-                        <?php 
+            ?>                </td>
+              </tr>
+              <tr bgcolor="#FFFFFF">
+                <td height="30" align="center">å…³ é”® å­—ï¼š</td>
+                <td width="490" height="30">&nbsp;
+<input name="keyword" type="text" id="keyword" style="width:200" /></td>
+              </tr>
+              <tr bgcolor="#FFFFFF">
+                <td height="30" align="center">å†…å®¹ç±»åž‹ï¼š</td>
+                <td height="30">&nbsp;
+                  <select name="channelid" id="channeltype" style="width:100">
+                    <option value="0" selected="selected">--ä¸é™--</option>
+                    <?php 
 					 $dsql = new DedeSql(false);
 					 $dsql->SetQuery("Select ID,typename From #@__channeltype order by ID desc");
 					 $dsql->Execute();
@@ -82,66 +54,33 @@
 					 }
 					 $dsql->Close();
 					 ?>
-                      </select> </td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">ÅÅÐò·½Ê½£º</td>
-                    <td> <select name="orderby" id="orderby" style="width:100">
-                        <option value="sortrank" selected>--Ä¬ÈÏ--</option>
-                        <option value="senddate">ÊÕÂ¼Ê±¼ä</option>
-                        <option value="pubdate">·¢²¼Ê±¼ä</option>
-                        <option value="ID">ÎÄµµID</option>
-                      </select> </td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">ÏÔÊ¾ÌõÊý£º</td>
-                    <td><input name="pagesize" type="text" id="pagesize" value="10" size="4"></td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF">
-                    <td height="25" align="center">¹Ø¼ü×ÖÄ£Ê½£º</td>
-                    <td><input name="kwtype" type="radio" value="1" checked>
-                      »ò 
-                      <input type="radio" name="kwtype" value="0">
-                      Óë</td>
-                  </tr>
-                  <tr bgcolor="#FFFFFF"> 
-                    <td height="25" align="center">ËÑË÷ÄÚÈÝ£º</td>
-                    <td>
-					<select name="searchtype" id="searchtype" class="op1">
-                     <option value="titlekeyword" selected>Ä¬ÈÏËÑË÷</option>
-                     <option value="title">½öËÑË÷±êÌâ</option>
-					 </select>
-					 </td>
-                  </tr>
-                  <tr bgcolor="#F4FCE4"> 
-                    <td height="31" colspan="2" align="center"><table width="600" border="0" cellspacing="0" cellpadding="0">
-                        <tr> 
-                          <td width="159" align="center"> <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0"></td>
-                          <td width="441"><img src="img/button_reset.gif" width="60" height="22"></td>
-                        </tr>
-                      </table></td>
-                  </tr>
-                </form>
-              </table>
-			  </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
-    <tr> 
-      <td colspan="3" height="3"></td>
-    </tr>
-    <tr align="center"> 
-      <td height="10" colspan="3" bgcolor="#F5F5F5"></td>
-    </tr>
-    <tr> 
-      <td height="20" colspan="3" align="center">
-	  <?php echo $cfg_powerby?>
-	  </td>
-    </tr>
-  </table>
-</center>
+                  </select></td>
+              </tr>
+              <tr bgcolor="#FFFFFF">
+                <td height="30" align="center">å…³é”®å­—æ¨¡å¼ï¼š</td>
+                <td height="30">&nbsp;
+<input name="kwtype" type="radio" value="0" checked="checked" />
+                  æˆ–
+                  <input type="radio" name="kwtype" value="1" />
+                  ä¸Ž</td>
+              </tr>
+              <tr bgcolor="#FFFFFF">
+                <td height="30" align="center">æœç´¢å†…å®¹ï¼š</td>
+                <td height="30">&nbsp;
+<select name="searchtype" id="searchtype" class="op1">
+                    <option value="titlekeyword" selected="selected">é»˜è®¤æœç´¢</option>
+                    <option value="title">ä»…æœç´¢æ ‡é¢˜</option>
+                  </select>                </td>
+              </tr>
+              <tr bgcolor="#F4FCE4">
+                <td height="31" colspan="2" align="center" bgcolor="#F4F9F2"><input type="submit" name="button" id="button" value="æœç´¢" class="submit"/>                </td>
+              </tr>
+            </form>
+          </table>
+</div>		
+  </div>
+</div>
+
+
 </body>
 </html>

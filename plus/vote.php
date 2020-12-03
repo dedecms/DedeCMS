@@ -5,7 +5,7 @@ if(empty($aid)) $aid="";
 $aid = ereg_replace("[^0-9]","",$aid);
 if($aid=="")
 {
-	ShowMsg("Ã»Ö¸¶¨Í¶Æ±ÏîÄ¿µÄID£¡","-1");
+	ShowMsg("æ²¡æŒ‡å®šæŠ•ç¥¨é¡¹ç›®çš„IDï¼","-1");
 	exit();
 }
 $vo = new DedeVote($aid);
@@ -13,19 +13,19 @@ $rsmsg = "";
 if($dopost=="send")
 {
   if(!empty($voteitem)){
-  	$rsmsg = "<br>&nbsp;Äã·½²ÅµÄÍ¶Æ±×´Ì¬£º".$vo->SaveVote($voteitem)."<br>";
+  	$rsmsg = "<br>&nbsp;ä½ æ–¹æ‰çš„æŠ•ç¥¨çŠ¶æ€ï¼š".$vo->SaveVote($voteitem)."<br>";
   }
 }
-$vo->Close(); //Õâ¸ö²Ù×÷½ö¹Ø±ÕÁËÊı¾İ¿â $voÊÇ»¹¿ÉÒÔÓÃµÄ 
+$vo->Close(); //è¿™ä¸ªæ“ä½œä»…å…³é—­äº†æ•°æ®åº“ $voæ˜¯è¿˜å¯ä»¥ç”¨çš„ 
 
              
 $voname = $vo->VoteInfos['votename'];
 $totalcount = $vo->VoteInfos['totalcount'];
 $starttime = GetDateMk($vo->VoteInfos['starttime']);
 $endtime = GetDateMk($vo->VoteInfos['endtime']);
-$votelist = $vo->GetVoteResult("98%",30,"30%"); 
+$votelist = $vo->GetVoteResult(); 
 
-//ÏÔÊ¾Ä£°å(¼òµ¥PHPÎÄ¼ş)
+//æ˜¾ç¤ºæ¨¡æ¿(ç®€å•PHPæ–‡ä»¶)
 include_once($cfg_basedir.$cfg_templets_dir."/plus/vote.htm"); 
 
 ?>

@@ -1,163 +1,195 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 require_once(dirname(__FILE__)."/inc/inc_batchup.php");
 @set_time_limit(0);
-//typeid,startid,endid,seltime,starttime,endtime,action,newtypeid
-//ÅúÁ¿²Ù×÷
-//check del move makehtml
-//»ñÈ¡IDÌõ¼ş
-//------------------------
-if(empty($startid)) $startid = 0;
+
+$t1 = $t2 = 0;
+$dsql = new DedeSql(false);
+
+if(empty($startid))	$startid = 0;
 if(empty($endid)) $endid = 0;
-if(empty($seltime)) $seltime = 0;
-//Éú³ÉHTML²Ù×÷ÓÉÆäËüÒ³Ãæ´¦Àí
-if($action=="makehtml")
+if(empty($seltime)){
+	$seltime = 0;
+}else{
+	$seltime = 1;
+	$t1 = min(GetMkTime($starttime),GetMkTime($endtime));
+	$t2 = max(GetMkTime($starttime),GetMkTime($endtime));
+}
+if(empty($typeid)) $typeid = 0;
+if(empty($newtypeid)) $newtypeid = 0;
+if(empty($keyword)) $keyword = '';
+$keyword = trim($keyword);
+
+$start = $startid;
+$startid = min(abs(intval($startid)),abs(intval($endid)));
+$endid = max(abs(intval($start)), abs(intval($endid)));
+$typeid = intval($typeid);
+$newtypeid = intval($newtypeid);
+
+$gwhere = array();
+if($startid > 0 ) $gwhere[] = "ID>=$startid";
+if($startid > 0 && $endid >= $startid) $gwhere[] = "ID<=$endid";
+if($typeid != 0){
+	$idArray = TypeGetSunID($typeid,$dsql,'',0,true);
+	$gwhere[] = "typeid in ($idArray)";
+}
+
+if($action == 'check' || $action == 'del'){
+	$where = implode(' and ',$gwhere);
+	if($where != ''){
+		$where = 'where '.$where;
+	}
+
+	$channelids = 0;
+	$query = "select DISTINCT channelid from `#@__full_search` $where";
+	$dsql->setquery($query);
+	$dsql->execute();
+	while($row = $dsql->getarray())
+	{
+		$channelids .= ','.$row[0];
+	}
+
+	if($seltime == 1){
+		if($t1 > 0) $gwhere[] = "senddate>$t1";
+		if($t2 > $t1) $gwhere[] = "senddate<$t2";
+	}
+	if($action == 'check'){
+		$gwhere[] = "arcrank='-1'";
+	}
+
+	$where = implode(' and ',$gwhere);
+	if($where != ''){
+		$where = ' where '.$where;
+	}
+
+	$query = "select ID,maintable,addtable from #@__channeltype where ID in ($channelids);";
+	$dsql->setquery($query);
+	$dsql->execute('channel');
+	$minid = array();
+	$minid = 0;
+	$nums = 0;
+	while( $row = $dsql->getarray('channel'))
+	{
+		if($action == 'check')
+		{
+			$rs = $dsql->getone("select ID from ".$row['maintable'].$where." order by ID asc limit 1");
+			if(is_array($rs)){
+				if($minid != 0){
+					$minid = min($rs['ID'], $minid);
+				}else{
+					$minid = $rs['ID'];
+				}
+			}else{
+				showmsg('æœªæ‰¾åˆ°ç¬¦åˆæ¡ä»¶çš„å†…å®¹','javascript:;');
+				exit();
+			}
+			$query = "update ".$row['maintable']." set arcrank=0 $where";
+			$dsql->setquery($query);
+			$nums += $dsql->executenonequery2();
+			$query = "OPTIMIZE TABLE ".$row['maintable'];
+			$dsql->executenonequery($query);
+			$dsql->close();
+		}elseif($action == 'del')
+		{
+			if($where == ''){
+				ShowMsg('è¯¥æ“ä½œå¿…é¡»æŒ‡å®šæ¡ä»¶ï¼','javascript:;');
+				exit();
+			}
+			$dsql->SetQuery("Select ID From ".$row['maintable'].$where);
+			$dsql->Execute('x');
+			$tdd = 0;
+			while($row = $dsql->GetObject('x')){ if(DelArc($row->ID)) $tdd++; }
+			$query = "OPTIMIZE TABLE ".$row['maintable'];
+			$dsql->executenonequery($query);
+			$query = "OPTIMIZE TABLE ".$row['addtable'];
+			$dsql->executenonequery($query);
+			$dsql->Close();
+			ShowMsg("æˆåŠŸåˆ é™¤ $tdd æ¡è®°å½•ï¼","javascript:;");
+			exit();
+		}
+	}// while end
+	$msg = "å…±å®¡æ ¸ $nums æ¡è®°å½•<br>";
+	if($minid > 0){
+		$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$minid";
+		$jumpurl .= "&typeid=$typeid&pagesize=20&seltime=$seltime";
+		$jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
+		$msg .= '<a href='.$jumpurl.'>ç‚¹å‡»æ­¤å¤„å¼€å§‹æ›´æ–°html</a>';
+	}
+	showmsg($msg,'javascript:;');
+	exit();
+}elseif($action == 'move')
+{
+	if($keyword != ''){
+		$gwhere[] = "title like %".$keyword."%";
+	}
+
+	$where = implode(' and ',$gwhere);
+	if($where != ''){
+		$where = 'where '.$where;
+	}
+
+	if(empty($typeid) || empty($newtypeid)){
+		ShowMsg('è¯¥æ“ä½œå¿…é¡»æŒ‡å®šæ ç›®ï¼','javascript:;');
+		exit();
+	}
+	$typeold = $dsql->GetOne("Select * From #@__arctype where ID='$typeid'; ");
+	$typenew = $dsql->GetOne("Select * From #@__arctype where ID='$newtypeid'; ");
+
+	if(!is_array($typenew) || !is_array($typeold)){
+		$dsql->Close();
+		ShowMsg("æ— æ³•æ£€æµ‹æ ç›®ä¿¡æ¯ï¼Œä¸èƒ½å®Œæˆæ“ä½œï¼","javascript:;");
+		exit();
+	}
+	if($typenew['ispart']!=0){
+		$dsql->Close();
+		ShowMsg("ä½ ä¸èƒ½æŠŠæ•°æ®ç§»åŠ¨åˆ°éæœ€ç»ˆåˆ—è¡¨çš„æ ç›®ï¼","javascript:;");
+		exit();
+	}
+	if($typenew['channeltype'] != $typeold['channeltype']){
+		$dsql->Close();
+		ShowMsg("ä¸èƒ½æŠŠæ•°æ®ç§»åŠ¨åˆ°å†…å®¹ç±»å‹ä¸åŒçš„æ ç›®ï¼","javascript:;");
+		exit();
+	}
+
+	$nrow = $dsql->GetOne("Select addtable,maintable From #@__channeltype where ID='{$typenew['channeltype']}' ");
+	$addtable = $nrow['addtable'];
+	$maintable = $nrow['maintable'];
+	if(empty($maintable)) $maintable = '#@__archives';
+
+	$dsql->SetQuery("Select ID From `$maintable` $where");
+	$dsql->Execute('m');
+	$tdd = 0;
+	while($row = $dsql->GetObject('m')){
+	 	 $rs = $dsql->ExecuteNoneQuery("Update `$maintable` set typeid='$newtypeid' where ID='{$row->ID}' ");
+	 	 if($rs) $rs = $dsql->ExecuteNoneQuery("Update `$addtable` set typeid='$newtypeid' where aid='{$row->ID}' ");
+	   if($rs) $tdd++;
+	}
+
+	$query = "OPTIMIZE TABLE ".$maintable;
+	$dsql->executenonequery($query);
+	$query = "OPTIMIZE TABLE ".$addtable;
+	$dsql->executenonequery($query);
+	$dsql->Close();
+	if($tdd>0)
+	{
+		$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
+		$jumpurl .= "&typeid=$newtypeid&pagesize=20&seltime=$seltime";
+		$jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
+		ShowMsg("æˆåŠŸç§»åŠ¨ $tdd æ¡è®°å½•ï¼Œå‡†å¤‡é‡æ–°ç”ŸæˆHTML...",$jumpurl);
+		exit();
+	}else{
+		ShowMsg("å®Œæˆæ“ä½œï¼Œæ²¡ç§»åŠ¨ä»»ä½•æ•°æ®...","javascript:;");
+		exit();
+	}
+}elseif($action == 'makehtml')
 {
 	$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
-  $jumpurl .= "&typeid=$typeid&pagesize=20&seltime=$seltime";
-  $jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
+	$jumpurl .= "&typeid=$typeid&pagesize=20&seltime=$seltime";
+	$jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
 	header("Location: $jumpurl");
 	exit();
 }
-
-//$gwhere = " where arcrank=0 ";
-$gwhere = " where 1=1 ";
-if($startid >0 ) $gwhere .= " And ID>= $startid ";
-if($endid > $startid) $gwhere .= " And ID<= $endid ";
-$dsql = new DedeSql(false);
-$idsql = "";
-if($typeid!=0){
-	$idArrary = TypeGetSunTypes($typeid,$dsql,0);
-	if(is_array($idArrary)){
-	  foreach($idArrary as $tid){
-		  if($idsql=="") $idsql .= " typeid=$tid ";
-		  else $idsql .= " or typeid=$tid ";
-	  }
-	  $gwhere .= " And ( ".$idsql." ) ";
-  }
-}
-if($seltime==1){
-	$t1 = GetMkTime($starttime);
-	$t2 = GetMkTime($endtime);
-	$gwhere .= " And (senddate >= $t1 And senddate <= $t2) ";
-}
-
-//ÌØÊâ²Ù×÷
-if(!empty($heightdone)) $action=$heightdone;
-
-//Ö¸Á¿ÉóºË
-if($action=='check')
-{
-	 if(empty($startid)||empty($endid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨ÆğÊ¼ID£¡','javascript:;');	
-	 	 exit();
-	 }
-	 $jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
-   $jumpurl .= "&typeid=$typeid&pagesize=20&seltime=$seltime";
-   $jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
-	 $dsql->SetQuery("Select ID,arcrank From #@__archives $gwhere");
-   $dsql->Execute('c');
-	 while($row = $dsql->GetObject('c')){
-	 	 if($row->arcrank==-1) $dsql->ExecuteNoneQuery("Update #@__archives set arcrank=0 where ID='{$row->ID}'");
-	 }
-	 $dsql->Close();
-	 ShowMsg("Íê³ÉÊı¾İ¿âµÄÉóºË´¦Àí£¬×¼±¸¸üĞÂHTML...",$jumpurl);
-	 exit();
-}
-//ÅúÁ¿É¾³ı
-else if($action=='del')
-{
-  if(empty($startid)||empty($endid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨ÆğÊ¼ID£¡','javascript:;');	
-	 	 exit();
-	}
-  $dsql->SetQuery("Select ID From #@__archives $gwhere");
-  $dsql->Execute('x');
-  $tdd = 0;
-  while($row = $dsql->GetObject('x')){ if(DelArc($row->ID)) $tdd++; }
-  $dsql->Close();
-	ShowMsg("³É¹¦É¾³ı $tdd Ìõ¼ÇÂ¼£¡","javascript:;");
-	exit();
-}
-//É¾³ı¿Õ±êÌâÎÄµµ
-else if($action=='delnulltitle')
-{
-  $dsql->SetQuery("Select ID From #@__archives where trim(title)='' ");
-  $dsql->Execute('x');
-  $tdd = 0;
-  while($row = $dsql->GetObject('x')){ if(DelArc($row->ID)) $tdd++; }
-  $dsql->Close();
-	ShowMsg("³É¹¦É¾³ı $tdd Ìõ¼ÇÂ¼£¡","javascript:;");
-	exit();
-}
-//É¾³ı¿ÕÄÚÈİÎÄÕÂ
-else if($action=='delnullbody')
-{
-  $dsql->SetQuery("Select aid From #@__addonarticle where LENGTH(body) < 10 ");
-  $dsql->Execute('x');
-  $tdd = 0;
-  while($row = $dsql->GetObject('x')){ if(DelArc($row->aid)) $tdd++; }
-  $dsql->Close();
-	ShowMsg("³É¹¦É¾³ı $tdd Ìõ¼ÇÂ¼£¡","javascript:;");
-	exit();
-}
-//ĞŞÕıËõÂÔÍ¼´íÎó
-else if($action=='modddpic')
-{
-  $dsql->ExecuteNoneQuery("Update #@__archives set litpic='' where trim(litpic)='litpic' ");
-  $dsql->Close();
-	ShowMsg("³É¹¦ĞŞÕıËõÂÔÍ¼´íÎó£¡","javascript:;");
-	exit();
-}
-//ÅúÁ¿ÒÆ¶¯
-else if($action=='move')
-{
-  if(empty($typeid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨À¸Ä¿£¡','javascript:;');	
-	 	 exit();
-	}
-  $typeold = $dsql->GetOne("Select * From #@__arctype where ID='$typeid'; ");
-  $typenew = $dsql->GetOne("Select * From #@__arctype where ID='$newtypeid'; ");
-  if(!is_array($typenew)){
-  	$dsql->Close();
-    ShowMsg("ÎŞ·¨¼ì²âÒÆ¶¯µ½µÄĞÂÀ¸Ä¿µÄĞÅÏ¢£¬²»ÄÜÍê³É²Ù×÷£¡","javascript:;");
-	  exit();
-  }
-  if($typenew['ispart']!=0){
-  	$dsql->Close();
-    ShowMsg("Äã²»ÄÜ°ÑÊı¾İÒÆ¶¯µ½·Ç×îÖÕÁĞ±íµÄÀ¸Ä¿£¡","javascript:;");
-	  exit();
-  }
-  if($typenew['channeltype']!=$typeold['channeltype']){
-  	$dsql->Close();
-    ShowMsg("²»ÄÜ°ÑÊı¾İÒÆ¶¯µ½ÄÚÈİÀàĞÍ²»Í¬µÄÀ¸Ä¿£¡","javascript:;");
-	  exit();
-  }
-  
-  $nrow = $dsql->GetOne("Select addtable From #@__channeltype where ID='{$typenew['channeltype']}' ");
-  $addtable = $nrow['addtable'];
-  
-  $gwhere .= " And channel='".$typenew['channeltype']."' And title like '%$keyword%'";
-  
-  $dsql->SetQuery("Select ID From #@__archives $gwhere");
-  $dsql->Execute('m');
-  $tdd = 0;
-  while($row = $dsql->GetObject('m')){
-	 	 $rs = $dsql->ExecuteNoneQuery("Update #@__archives set typeid='$newtypeid' where ID='{$row->ID}' ");
-	 	 if($rs) $rs = $dsql->ExecuteNoneQuery("Update $addtable set typeid='$newtypeid' where aid='{$row->ID}' ");
-	   if($rs) $tdd++;
-	}
-  $dsql->Close();
-  if($tdd>0)
-  {
-  	$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
-    $jumpurl .= "&typeid=$newtypeid&pagesize=20&seltime=$seltime";
-    $jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
-  	ShowMsg("³É¹¦ÒÆ¶¯ $tdd Ìõ¼ÇÂ¼£¬×¼±¸ÖØĞÂÉú³ÉHTML...",$jumpurl);
-  }
-  else ShowMsg("Íê³É²Ù×÷£¬Ã»ÒÆ¶¯ÈÎºÎÊı¾İ...","javascript:;");
-	exit();
-}
+ClearAllLink();
 ?>

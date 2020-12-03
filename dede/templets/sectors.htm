@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.STYLE1 {
+	color: #FF0000;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">互动模块</div>
+</div>
+<?php
+if(empty($action))
+{
+?>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td height="20" colspan="2" bgcolor="#EDF9D5"><strong>&nbsp;添加主行业 </strong></td>
+  </tr>
+  <tr><form name="form1" action="sectors.php" method="post">
+
+
+    <td width="19%" height="35" align="right" bgcolor="#FFFFFF">
+    	<input type="hidden" name="action" value="add" />
+	<input type="hidden" name="reid" value="0" />
+	行业名称	：</td>
+    <td width="81%" height="35" bgcolor="#FFFFFF"><input type="text" name="name" value="" />
+      <input type="submit" name="submit1" value="提交" class="inputbut"/></td></form>
+  </tr>
+  <tr>
+    <td colspan="2" bgcolor="#EDF9D5"><strong>&nbsp;添加子行业</strong></td>
+  </tr>
+<form name="form2" action="sectors.php" method="post">
+<input type="hidden" name="action" value="add" />
+  <tr>
+    <td height="35" align="right" bgcolor="#FFFFFF">
+	行业名称	：</td>
+    <td height="35" bgcolor="#FFFFFF"><input type="text" name="name" value="" />
+      <select name="reid">
+        <option value="0">所属主行业</option>
+        <?php echo $sectorscache; ?>
+      </select>
+      <input type="submit" name="submit2" value="提交" class="inputbut"/></td>
+  </tr>
+ </form>
+</table>
+
+
+
+<form name="form3" action="sectors.php" method="post">
+	<input type="hidden" name="action" value="update" />
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr>
+        <td height="20" bgcolor="#EDF9D5"><strong>&nbsp;编辑行业 </strong></td>
+    </tr>
+      <tr>
+        <td bgcolor="#FFFFFF">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist2">
+          <tr>
+            <td height="20" align="left" bgcolor="#F9FFE6">id</td>
+            <td height="20" align="left" bgcolor="#F9FFE6">名称</td>
+            <td height="20" align="left" bgcolor="#F9FFE6">排序</td>
+            <td height="20" align="left" bgcolor="#F9FFE6">管理操作</td>
+          </tr>
+          <?php
+foreach($sectors as $sector)
+{
+	if($sector['reid'] == 0)
+	{
+		echo "<tr  bgcolor='#f8f8f7'><td>$sector[id]</td><td><input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
+	}else
+	{
+		echo "<tr  bgcolor='#FFFFFF'><td>$sector[id]</td><td>|--<input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
+
+	}
+}
+?>
+        </table></td>
+    </tr>
+      <tr>
+        <td height="35" align="center" bgcolor="#FFFFFF"><input name="submit3" type="submit" value="提交" class="inputbut"/></td>
+    </tr>
+    </table>
+</form>
+<?php
+}elseif($action == 'edit')
+{
+?>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form name="form4" action="sectors.php" method="post">
+  	   	<input type=hidden name=action value=edit />
+    	<input type=hidden name=step value=2 />
+    	<input type=hidden name=id value=<?php echo $id; ?> />
+   <tr>
+    <td height="20" colspan="2" bgcolor="#EDF9D5"><strong>&nbsp;修改行业</strong></td>
+  </tr>
+
+  <tr>
+    <td width="20%" height="20" align="right" bgcolor="#FFFFFF">
+    	所属行业：</td>
+    <td width="80%" bgcolor="#FFFFFF"><select name="reid">
+      <?php echo $sectorscache; ?>
+    </select>    </td>
+  </tr>
+  <tr>
+    <td height="20" align="right" bgcolor="#FFFFFF">行业名称： </td>
+    <td bgcolor="#FFFFFF"><input type=text name=name value=<?php echo $sector['name']; ?> /></td>
+  </tr>
+  <tr>
+    <td height="20" align="right" bgcolor="#FFFFFF">顺序：</td>
+    <td bgcolor="#FFFFFF"><input type=text name=disorder value=<?php echo $sector['disorder']; ?> /></td>
+  </tr>
+  <tr>
+    <td height="35" colspan="2" align="center" bgcolor="#FFFFFF">
+    	<input name="submit6" type="submit" value="提交" class="inputbut"/></td>
+  </tr></form>
+</table>
+<?php
+}elseif($action == 'delete')
+{
+?>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+ <form action=sectors.php method=post name=form5>
+ <tr>
+    <td bgcolor="#EDF9D5"><strong>&nbsp;删除确认</strong></td>
+  </tr>
+  <tr>
+    <td height="40" align="center" bgcolor="#FFFFFF">	<input type=hidden name=action value=delete />
+	<input type=hidden name=step value=2 />
+	<input type=hidden name=id value=<?php echo $id; ?> />
+  <br>
+  <span class="STYLE1">删除行业时将删除该行业的所有下级行业，且不能恢复操作，请确认删除！</span><br />
+  <br />
+  <br /></td>
+  </tr>
+  <tr>
+    <td height="35" align="center" bgcolor="#FFFFFF"><input name="submit5" type="submit" value="确认删除" class="inputbut"/>
+      &nbsp;&nbsp;
+      <input type='button' value='返 回 继 续 操 作' onclick='javascript:history.go(-1);' class="inputbut"/></td>
+  </tr></form>
+</table>
+
+<?php
+}
+?>
+</body>
+</html>

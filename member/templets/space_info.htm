@@ -1,8 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title>¸ü¸Ä»áÔ±¿Õ¼ä×ÊÁÏ</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>æ›´æ”¹ä¼šå‘˜ç©ºé—´èµ„æ–™</title>
 <link href="newskin.css" rel="stylesheet" type="text/css">
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='main.js'></script>
 <script>
 function checkSubmit()
@@ -10,7 +12,7 @@ function checkSubmit()
   if(document.form1.vdcode.value=="")
   {
     document.form1.vdcode.focus();
-    alert("ÑéÖ¤Âë²»ÄÜÎª¿Õ£¡");
+    alert("éªŒè¯ç ä¸èƒ½ä¸ºç©ºï¼");
     return false;
   }
 }
@@ -19,51 +21,50 @@ function checkSubmit()
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top"> 
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
           <tr> 
-            
-          <td height="25" colspan="2" background="img/nnnbg.gif" class="gdt2">
-		  <strong>¡¡&nbsp;¸ü¸Ä¸öÈË¿Õ¼ä×ÊÁÏ£º</strong> 
-          </td>
+           <div class="manage_company_right_title" style="margin-top:10px;">
+                	<ul><li>æ›´æ”¹ä¸ªäººç©ºé—´èµ„æ–™ï¼š</li></ul>
+                </div> 
           </tr>
 	 </table>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mainbody" style="text-align:left;">
         <form action="index_do.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();">
           <input type="hidden" name="fmdo" value="user" />
           <input type="hidden" name="dopost" value="editSpace" />
           <tr> 
             <td height="35" colspan="2" > <table width="220" border="0" cellspacing="0" cellpadding="0" >
                 <tr> 
-                  <td width="80" >¡¡ÑéÖ¤Âë£º</td>
-                  <td width="70" ><input name="vdcode" type="text" id="vdcode" size="10" ></td>
+                  <td width="80" >ã€€éªŒè¯ç ï¼š</td>
+                  <td width="70" ><input name="vdcode" type="text" id="vdcode" size="10" class="yanzhengma" ></td>
                   <td width="70" align="center" ><img src='../include/vdimgck.php' width='50' height='20'></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td height="24" colspan="2" bgcolor="#FBFEEF" >¡¡¿Õ¼äÃû³Æ£º</td>
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >ã€€ç©ºé—´åç§°ï¼š</td>
           </tr>
           <tr> 
-            <td height="35" colspan="2" > ¡¡ 
-              <input name="spacename" type="text" id="spacename" size="35" value="<?php echo $spacename?>"> 
+            <td height="35" colspan="2" > ã€€ 
+              <input name="spacename" type="text" id="spacename" size="35" value="<?php echo $spacename?>" class="company_manage_form_label" /> 
             </td>
           </tr>
           <tr> 
-            <td height="24" colspan="2" bgcolor="#FBFEEF" >¡¡¸öÈËÇ©Ãû£º[ÉÙÓÚ125ÖĞÎÄ×Ö]</td>
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >ã€€ä¸ªäººç­¾åï¼š[å°‘äº125ä¸­æ–‡å­—]</td>
           </tr>
           <tr> 
-            <td height="84" colspan="2" align="left" > ¡¡ 
-              <textarea name="mybb" cols="50" rows="4" id="mybb"><?php echo $mybb?></textarea></td>
+            <td height="100" colspan="2" align="left" > ã€€ 
+              <textarea name="mybb" cols="50" rows="4" id="mybb" class="company_manage_form_label1" style="width:400px; height:80px; "><?php echo $mybb?></textarea></td>
           </tr>
           <tr> 
-            <td height="24" colspan="2" bgcolor="#FBFEEF" >¡¡¿Õ¼ä¹«¸æ£º</td>
+            <td height="24" colspan="2" bgcolor="#FBFEEF" >ã€€ç©ºé—´å…¬å‘Šï¼š</td>
           </tr>
           <tr> 
             <td height="150" colspan="2" style="padding-left:6px;padding-right:6px"> 
@@ -73,9 +74,9 @@ function checkSubmit()
             </td>
           </tr>
           <tr> 
-            <td height="45" colspan="2" >¡¡¿Õ¼äĞÎÏó£º 
-              <input name="spaceimage" type="file" id="spaceimage" onChange="SeePic($Obj('picview'),$Obj('spaceimage'));">
-              (´óĞ¡Îª150*110ÏñËØ×î¼Ñ4/3±ÈÀı)
+            <td height="80" colspan="2" >ã€€ç©ºé—´å½¢è±¡ï¼š 
+              <input name="spaceimage" type="file"  style="width:300px" id="spaceimage" onChange="SeePic($Obj('picview'),$Obj('spaceimage'));" class="company_manage_form_label" />
+              <div style="text-indent:10px; height:30px; color:#999;"> (å¤§å°ä¸º150*110åƒç´ æœ€ä½³4/3æ¯”ä¾‹)</div>
             </td>
           </tr>
           <tr> 
@@ -92,9 +93,9 @@ function checkSubmit()
           <tr> 
             <td height="67" align="right" >&nbsp;</td>
             <td height="67" >
-            	<input type="submit" name="Submit2" value="È·¶¨ĞŞ¸Ä" > 
+            	<input type="submit" name="Submit2" value="ç¡®å®šä¿®æ”¹" class="button" > 
               &nbsp;&nbsp;
-              <input type="reset" name="Submit222" value="ÖØÖÃ" >
+              <input type="reset" name="Submit222" value="é‡ç½®" class="button01" >
              </td>
           </tr>
         </form>

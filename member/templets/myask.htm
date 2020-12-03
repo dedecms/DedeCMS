@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>企业空间管理中心</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<center>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<!-- 中部开始 -->
+
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+      <?php  include(dirname(__FILE__)."/menu.php"); ?>
+		<!-- 中部右边开始 -->
+      <div id="myask_right">
+        	<div id="myask_info">
+            	<div class="myask_title">
+                	<ul><li>我的提问：</li></ul>
+                    <div class="subask"><a href="../ask/post.php">我要提问</a></div>
+                </div>
+                
+                <div class="myask_form">
+                	<div class="myask_formbg">
+                        <dl>
+                        <dd class="highbor bigtext">标题</dd>
+                        <dd class="smallbor bigtext">悬赏积分</dd>
+                        <dd class="smallbor bigtext">回答数</dd>
+                        <dd class="smallbor bigtext">状态</dd>
+                        <dd class="smallbor bigtext">提问时间</dd>
+                        </dl>
+
+<?php
+$myasks = $dbpage->GetDataList();
+while($row = $myasks->GetArray('dm')) {
+	$row['dateline'] = GetDateMk($row['dateline']);
+	if($row['status'] == 1){
+		$row['dbstatus'] = 1;
+		$row['status'] = '已解决';
+	}elseif($row['expiredtime'] < $timestamp) {
+		$row['dbstatus'] = 3;
+		$row['status'] = '已过期';
+	}elseif($row['status'] == 2) {
+		$row['dbstatus'] = 2;
+		$row['status'] = '已结束';
+	}else{
+		$row['dbstatus'] = 0;
+		$row['status'] = '未解决';
+	}
+
+		echo '<dl><dd class="highbor smalltext"><a target="_blank" href="../ask/question.php?id='.$row['id'].'">'.$row['title'].'</a></dd>';
+		echo '<dd class="smallbor smalltext">'.$row['reward'].'</dd>';
+		echo '<dd class="smallbor smalltext">'.$row['replies'].'</dd>';
+		echo '<dd class="smallbor smalltext">'.$row['status'].'</dd>';
+		echo '<dd class="smallbor smalltext">'.$row['dateline'].'</dd>';
+		echo '</dl>';
+
+}
+?>
+                        <div class="clear">
+                        </div>
+                    </div>
+            	</div>
+                <div class="clear">
+                </div>
+            </div>
+            <div id="myask_list_info"><?php echo $dbpage->GetPageList(7);?></div>
+		</div>
+ </div>
+</div>
+</center>
+</body>
+</html>

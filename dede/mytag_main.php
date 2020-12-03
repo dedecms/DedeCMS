@@ -7,14 +7,14 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function TestType($tname)
 {
-	if($tname=="") return "ËùÓÐÀ¸Ä¿";
+	if($tname=="") return "æ‰€æœ‰æ ç›®";
 	else return $tname;
 }
 
 function TimeSetValue($ts)
 {
-	if($ts==0) return "²»ÏÞÊ±¼ä";
-	else return "ÏÞÊ±±ê¼Ç";
+	if($ts==0) return "ä¸é™æ—¶é—´";
+	else return "é™æ—¶æ ‡è®°";
 }
 
 $sql = "Select 
@@ -30,4 +30,5 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/mytag_main.htm");
 $dlist->display();
 $dlist->Close();
+
 ?>

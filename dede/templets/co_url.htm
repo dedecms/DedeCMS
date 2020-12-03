@@ -1,10 +1,10 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�ɼ����ݹ���</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>采集内容管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
-//���ѡ���ļ����ļ���
+//获得选中文件的文件名
 function getCheckboxItem()
 {
 	var allSel="";
@@ -34,35 +34,45 @@ function DelSel()
 	var nid = getCheckboxItem();
 	if(nid=="")
 	{
-		alert("��ѡ��ڵ�!\r\n");
+		alert("请选择节点!\r\n");
 		return ;
 	}
 	location.href = "co_do.php?dopost=clear&ids="+nid;
 }
 </script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+td{ padding-left:6px; }
+-->
+</style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">采集管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
-    <td height="20" colspan="7" background='img/tbg.gif'>
-    	<table width="96%" border="0" cellpadding="0" cellspacing="0">
+    <td height="20" colspan="7" bgcolor="#EDF9D5">
+   	  <table width="96%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18"><strong>�ɼ����ݹ�����</strong></td>
-          <td width="80%" align="right">
+          <td width="20%" height="18"><strong>采集内容管理：</strong></td>
+          <td width="80%" align="right" style="padding-top:6px;">
           	<?php echo $exportbt?>
-          	<input type="button" name="b1" value="�ɼ��ڵ����" class="nbt" style="width:100" onClick="location.href='co_main.php';">
+          	<input type="button" name="b1" value="采集节点管理" class="inputbut" onClick="location.href='co_main.php';">
           	</td>
         </tr>
       </table></td>
   </tr>
   <tr align="center" bgcolor="#F8FBFB"> 
-    <td width="8%">ѡ��</td>
-    <td width="30%">���ݱ���</td>
-    <td width="15%">�����ڵ�</td>
-    <td width="15%">��ȡ����</td>
-    <td width="10%">����</td>
-    <td width="10%">����</td>
-    <td width="8%">��Դ��ҳ</td>
+    <td width="8%">选择</td>
+    <td width="30%">内容标题</td>
+    <td width="15%">所属节点</td>
+    <td width="15%">获取日期</td>
+    <td width="10%">下载</td>
+    <td width="10%">导出</td>
+    <td width="8%">来源网页</td>
   </tr>
   <form name="form1">
   <?php 
@@ -72,20 +82,20 @@ function DelSel()
  ?>
   <tr align="center" bgcolor="#FFFFFF"> 
     <td><input type='checkbox' name='aids' value='<?php echo $row['aid']?>' class='np'></td>
-    <td><a href='co_view.php?aid=<?php echo $row['aid']?>'><?php echo $row['title']?></a></td>
+    <td align="left"><a href='co_view.php?aid=<?php echo $row['aid']?>'><?php echo $row['title']?></a></td>
     <td><?php echo $row['gathername']?></td>
     <td><?php echo GetDateMk($row['dtime'])?></td>
     <td><?php echo IsDownLoad($row['isdown'])?></td>
     <td><?php echo IsExData($row['isex'])?></td>
-    <td><a href='<?php echo $row['url']?>' target='_blank'>[Դ��ַ]</a></td>
+    <td><a href='<?php echo $row['url']?>' target='_blank'>[源网址]</a></td>
   </tr>
  <?php  } ?>
 </form>
   <tr> 
-    <td height="24" colspan="7" bgcolor="#FCFDF7">&nbsp;
-<input type="button" name="b7" value="��ѡ" class="nbt" style="width:40" onClick="ReSel();">��������
-<input type="button" name="b5" value="ɾ����ѡ��ַ" class="nbt" style="width:100" onClick="DelSel();">
-    </td>
+    <td height="30" colspan="7" bgcolor="#FCFDF7" style="padding-top:6px;">
+<input type="button" name="b7" value="反选" class="inputbut" onClick="ReSel();">　　　　
+<input type="button" name="b5" value="删除所选网址" class="inputbut" onClick="DelSel();"> 
+   </td>
   </tr>
   <tr> 
     <td height="24" colspan="7" bgcolor="#FCFDF7" align="center">

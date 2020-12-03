@@ -2,98 +2,89 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
-if($cfg_mb_album=='·ñ'){
-	ShowMsg("¶Ô²»Æğ£¬ÏµÍ³½ûÓÃÁËÍ¼¼¯µÄ¹¦ÄÜ£¬Òò´ËÎŞ·¨Ê¹ÓÃ£¡","-1");
+if($cfg_mb_album=='N'){
+	ShowMsg("å¯¹ä¸èµ·ï¼Œç³»ç»Ÿç¦ç”¨äº†å›¾é›†çš„åŠŸèƒ½ï¼Œå› æ­¤æ— æ³•ä½¿ç”¨ï¼","-1");
 	exit();
 }
 
-require_once(dirname(__FILE__)."/../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-
-$typeid = ereg_replace("[^0-9]","",$typeid);
-$channelid = 2;
-$ID = ereg_replace("[^0-9]","",$ID);
-
-if($typeid==0){
-	ShowMsg("ÇëÖ¸¶¨ÎÄµµÁ¥ÊôµÄÀ¸Ä¿£¡","-1");
-	exit();
-}
-
-if(!CheckChannel($typeid,$channelid)){
-	ShowMsg("ÄãËùÑ¡ÔñµÄÀ¸Ä¿Óëµ±Ç°Ä£ĞÍ²»Ïà·û£¬»ò²»Ö§³ÖÍ¶¸å£¬ÇëÑ¡Ôñ°×É«µÄÑ¡Ïî£¡","-1");
-	exit();
-}
+$cfg_add_dftable = '#@__addonimages';
+require_once(dirname(__FILE__)."/archives_editcheck.php");
 
 CheckUserSpace($cfg_ml->M_ID);
-
-$dsql = new DedeSql(false);
-
-//¼ì²âÓÃ»§ÊÇ·ñÓĞÈ¨ÏŞ²Ù×÷ÕâÆªÎÄµµ
-//--------------------------------
-
-$row = $dsql->GetOne("Select arcrank From #@__archives where memberID='".$cfg_ml->M_ID."' And ID='$ID'");
-if(!is_array($row)){
-   $dsql->Close();
-   ShowMsg("ÄãÃ»È¨ÏŞ¸ü¸ÄÕâ¸öÍ¼¼¯£¡","-1");
-   exit();
-}
-
-$cInfos = $dsql->GetOne("Select arcsta From #@__channeltype  where ID='2'; ");
-if($cInfos['arcsta']==0){
-	$ismake = 0;
-	$arcrank = 0;
-}
-else if($cInfos['arcsta']==1){
-	$ismake = -1;
-	$arcrank = 0;
-}
-else{
-	$ismake = 0;
-	$arcrank = -1;
-}
 
 $title = ClearHtml($title);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
-if($keywords!=""){
-	$keywords = ereg_replace("[,;]"," ",trim(ClearHtml($keywords)));
-	$keywords = trim(cn_substr($keywords,60))." ";
-}
+$keywords = trim(cn_substr($keywords,60));
 $userip = GetIP();
 
-//´¦ÀíÉÏ´«µÄËõÂÔÍ¼
+//å¤„ç†ä¸Šä¼ çš„ç¼©ç•¥å›¾
 if(!empty($litpic)){
 	$litpic = GetUpImage('litpic',true,true);
-	$litpic = " litpic='$litpic', ";
+	$litpicsql = " litpic='$litpic', ";
 }else{
 	$litpic = "";
+	$litpicsql = '';
 }
 
 $memberID = $cfg_ml->M_ID;
 
-//¸üĞÂÊı¾İ¿âµÄSQLÓï¾ä
+//----------------------------------
+//åˆ†æå¤„ç†é™„åŠ è¡¨æ•°æ®
+//----------------------------------
+$inadd_f = '';
+if(!empty($dede_addonfields))
+{
+  $addonfields = explode(";",$dede_addonfields);
+  $inadd_f = "";
+  if(is_array($addonfields))
+  {
+    foreach($addonfields as $v)
+    {
+	     if($v=="") continue;
+	     $vs = explode(",",$v);
+	     //HTMLæ–‡æœ¬ç‰¹æ®Šå¤„ç†
+	     if($vs[1]=="htmltext"||$vs[1]=="textdata")
+	     {
+		     ${$vs[0]} = filterscript(stripslashes(${$vs[0]}));
+         //è‡ªåŠ¨æ‘˜è¦
+         if($description==''){
+    	      $description = cn_substr(html2text(${$vs[0]}),$cfg_auot_description);
+	          $description = trim(preg_replace("/#p#|#e#/","",$description));
+	          $description = addslashes($description);
+         }
+         ${$vs[0]} = addslashes(${$vs[0]});
+         ${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'add','','member');
+	     }else{
+		     ${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$ID);
+	     }
+	     $inadd_f .= ",`{$vs[0]}` = '".${$vs[0]}."'";
+    }
+  }
+}
+
+//æ›´æ–°æ•°æ®åº“çš„SQLè¯­å¥
 //----------------------------------
 $inQuery = "
-update #@__archives set
+update `$maintable` set
 ismake='$ismake',arcrank='$arcrank',typeid='$typeid',title='$title',source='$source',
 $litpic
 description='$description',keywords='$keywords',mtype='$mtype',userip='$userip'
 where ID='$ID' And memberID='$memberID';
 ";
-$dsql->SetQuery($inQuery);
-if(!$dsql->ExecuteNoneQuery()){
+if(!$dsql->ExecuteNoneQuery($inQuery)){
+	$gerr = $dsql->GetError();
 	$dsql->Close();
-	ShowMsg("°ÑÊı¾İ±£´æµ½Êı¾İ¿âarchives±íÊ±³ö´í£¬Çë¼ì²é£¡","-1");
+	ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“ä¸»è¡¨æ—¶å‡ºé”™ï¼Œé”™è¯¯åŸå› ä¸ºï¼š".$gerr,"javascript:;");
 	exit();
 }
 
 //-------------------------------
-//¸üĞÂ¸½¼Ó±í
+//æ›´æ–°é™„åŠ è¡¨
 //------------------------------
 
-//´¦Àí²¢±£´æËùÖ¸¶¨µÄÍ¼Æ¬
+//å¤„ç†å¹¶ä¿å­˜æ‰€æŒ‡å®šçš„å›¾ç‰‡
 $pagestyle = 2;
 
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='' row='0' col='0' value='$pagestyle'/}\r\n";
@@ -101,23 +92,23 @@ for($i=1;$i<=120;$i++){
 	if(isset(${'imgurl'.$i})|| 
 	(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name']))){
 		$iinfo = str_replace("'","`",stripslashes(${'imgmsg'.$i}));
-		//·ÇÉÏ´«Í¼Æ¬
+		//éä¸Šä¼ å›¾ç‰‡
 		if(!is_uploaded_file($_FILES['imgfile'.$i]['tmp_name'])){
 		    $iurl = ${'imgurl'.$i};
 		    if(trim($iurl)=="") continue;
 		    $iurl = trim(str_replace($cfg_basehost,"",$iurl));
-		    if((eregi("^http://",$iurl) && !eregi($cfg_basehost,$iurl)) && $isUrlOpen && $iurl!="http://")
-		    //Ô¶³ÌÍ¼Æ¬
+		    if((eregi("^http://",$iurl) && !eregi($cfg_basehost,$iurl)) && $cfg_isUrlOpen && $iurl!="http://")
+		    //è¿œç¨‹å›¾ç‰‡
 		    {
 			    $reimgs = "";
-			    if($isUrlOpen){
+			    if($cfg_isUrlOpen){
 				     $reimgs = GetRemoteImage($iurl,$cfg_ml->M_ID);
 			       if(is_array($reimgs)){ $imgurls .= "{dede:img text='$iinfo' width='".$reimgs[1]."' height='".$reimgs[2]."'} ".$reimgs[0]." {/dede:img}\r\n"; }
-			       else{ echo "ÏÂÔØ£º".$iurl." Ê§°Ü£¬¿ÉÄÜÍ¼Æ¬ÓĞ·´²É¼¯¹¦ÄÜ»òhttpÍ·²»ÕıÈ·£¡<br />\r\n"; }
+			       else{ echo "ä¸‹è½½ï¼š".$iurl." å¤±è´¥ï¼Œå¯èƒ½å›¾ç‰‡æœ‰åé‡‡é›†åŠŸèƒ½æˆ–httpå¤´ä¸æ­£ç¡®ï¼<br />\r\n"; }
 		      }else{
 		  	     $imgurls .= "{dede:img text='$iinfo' width='' height=''} ".$iurl." {/dede:img}\r\n";
 		      }
-		    //Õ¾ÄÚÍ¼Æ¬
+		    //ç«™å†…å›¾ç‰‡
 		    }else if($iurl!=""){
 			    $imgfile = $cfg_basedir.$iurl;
 			    if(is_file($imgfile)){
@@ -126,7 +117,7 @@ for($i=1;$i<=120;$i++){
 				      $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			    }
 		   }
-	  //Ö±½ÓÉÏ´«µÄÍ¼Æ¬
+	  //ç›´æ¥ä¸Šä¼ çš„å›¾ç‰‡
 	  }else{
 			 $oldiurl = ${'imgurl'.$i};
 			 $oldimgfile = $cfg_basedir.$oldiurl;
@@ -142,51 +133,61 @@ for($i=1;$i<=120;$i++){
 				    $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			 }
 	  }
-	}//º¬ÓĞÍ¼Æ¬µÄÌõ¼ş
-}//Ñ­»·½áÊø
+	}//å«æœ‰å›¾ç‰‡çš„æ¡ä»¶
+}//å¾ªç¯ç»“æŸ
 $imgurls = addslashes($imgurls);
 CloseFtp();
 
-//¸üĞÂ¸½¼Ó±í
+//æ›´æ–°é™„åŠ è¡¨
 //----------------------------------
-$query = "
-update #@__addonimages set 
+$addQuery = "Update `{$addtable}` set 
 typeid = '$typeid',
 maxwidth = '$maxwidth',
-imgurls = '$imgurls'
+imgurls = '$imgurls'{$inadd_f}
 where aid='$ID';
 ";
-$dsql->SetQuery($query);
-if(!$dsql->ExecuteNoneQuery()){
-	$dsql->Close();
-	ShowMsg("°ÑÊı¾İ±£´æµ½Êı¾İ¿â¸½¼Ó±í addonimages Ê±³ö´í£¬Çë¼ì²éÔ­Òò£¡","-1");
-	exit();
+
+if(!$dsql->ExecuteNoneQuery($addQuery)){
+   $gerr = $dsql->GetError();
+   $dsql->Close();
+   ShowMsg("æŠŠæ•°æ®ä¿å­˜åˆ°æ•°æ®åº“é™„åŠ æ—¶å‡ºé”™ï¼Œé”™è¯¯åŸå› ä¸ºï¼š".$gerr,"javascript:;");
+   exit();
 }
-$dsql->Close();
 
 $artUrl = MakeArt($ID);
 
+//æ›´æ–°å…¨ç«™æœç´¢ç´¢å¼•
+$datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'att'=>0,
+               'title'=>$title,'url'=>$artUrl,'keywords'=>$keywords,
+               'addinfos'=>$description,'arcrank'=>$arcrank,'mtype'=>$mtype);
+if($litpic != '') $datas['litpic'] = $litpic;
+UpSearchIndex($dsql,$datas);
+//æ›´æ–°Tagç´¢å¼•
+UpTags($dsql,$keywords,$ID,$memberID,$typeid,$arcrank);
+unset($datas);
+$dsql->Close();
+
 //---------------------------------
-//·µ»Ø³É¹¦ĞÅÏ¢
+//è¿”å›æˆåŠŸä¿¡æ¯
 //----------------------------------
 
 $msg = "
-ÇëÑ¡ÔñÄãµÄºóĞø²Ù×÷£º
-<a href='album_add.php?cid=$typeid'><u>¼ÌĞø·¢²¼ĞÂÍ¼¼¯</u></a>
+è¯·é€‰æ‹©ä½ çš„åç»­æ“ä½œï¼š
+<a href='album_add.php?cid=$typeid'><u>ç»§ç»­å‘å¸ƒæ–°å›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='album_edit.php?aid=$ID'><u>¸ü¸ÄÍ¼¼¯</u></a>
+<a href='album_edit.php?aid=$ID'><u>æ›´æ”¹å›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='$artUrl' target='_blank'><u>Ô¤ÀÀÍ¼¼¯</u></a>
+<a href='$artUrl' target='_blank'><u>é¢„è§ˆå›¾é›†</u></a>
 &nbsp;&nbsp;
-<a href='content_list.php?channelid=2'><u>ÒÑ·¢²¼Í¼¼¯¹ÜÀí</u></a>
+<a href='content_list.php?channelid=2'><u>å·²å‘å¸ƒå›¾é›†ç®¡ç†</u></a>
 &nbsp;&nbsp;
-<a href='index.php'><u>»áÔ±Ö÷Ò³</u></a>
+<a href='index.php'><u>ä¼šå‘˜ä¸»é¡µ</u></a>
 ";
 
-$wintitle = "³É¹¦¸ü¸ÄÒ»¸öÍ¼¼¯£¡";
-$wecome_info = "ÎÄµµ¹ÜÀí::¸ü¸ÄÍ¼¼¯";
+$wintitle = "æˆåŠŸæ›´æ”¹ä¸€ä¸ªå›¾é›†ï¼";
+$wecome_info = "æ–‡æ¡£ç®¡ç†::æ›´æ”¹å›¾é›†";
 $win = new OxWindow();
-$win->AddTitle("³É¹¦¸ü¸ÄÒ»¸öÍ¼¼¯£º");
+$win->AddTitle("æˆåŠŸæ›´æ”¹ä¸€ä¸ªå›¾é›†ï¼š");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();

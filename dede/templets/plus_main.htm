@@ -1,29 +1,35 @@
 {dede:page pagesize="50"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>²å¼ş¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æ’ä»¶ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">è¾…åŠ©æ’ä»¶</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr> 
-    <td height="19" colspan="5" background="img/tbg.gif">
-    	<table width='96%' cellpadding='0' cellspacing='0'>
+    <td height="19" colspan="5" bgcolor="#EDF9D5">
+<table width='96%' cellpadding='0' cellspacing='0'>
     		<tr>
-    		<td width='30%'><b>²å¼ş¹ÜÀí</b></td>
+    		<td width='30%'><b>&nbsp;æ’ä»¶ç®¡ç†</b></td>
         <td align='right'>
-    	  [<a href="plus_add.php"><u>°²×°ĞÂ²å¼ş</u></a>]
+    	  [<a href="plus_add.php"><u>å®‰è£…æ–°æ’ä»¶</u></a>]
         </td>
       </tr>
      </table>
     </td>
   </tr>
   <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="10%">IDºÅ</td>
-      <td width="40%">²å¼şÃû³Æ</td>
-      <td width="20%">²å¼ş×÷Õß</td>
-      <td width="30%">¹ÜÀí</td>
+      <td width="10%">IDå·</td>
+      <td width="40%">æ’ä»¶åç§°</td>
+      <td width="20%">æ’ä»¶ä½œè€…</td>
+      <td width="30%">ç®¡ç†</td>
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -37,7 +43,7 @@
       <td colspan="5">{dede:pagelist listsize=6/}</td>
      </tr>
    </table>
-   </td>
+</td>
 </tr>
 </table>
 </body>

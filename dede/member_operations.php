@@ -12,14 +12,14 @@ function GetMemberID($dsql,$mid){
 }
 
 function GetPType($tname){
-	if($tname=='card') return 'µãÊý¿¨';
-	else return '»áÔ±Éý¼¶';
+	if($tname=='card') return 'ç‚¹æ•°å¡';
+	else return 'ä¼šå‘˜å‡çº§';
 }
 
 function GetSta($sta){
-	if($sta==0) return 'Î´¸¶¿î';
-	else if($sta==1) return 'ÒÑ¸¶¿î';
-	else return 'ÒÑÍê³É';
+	if($sta==0) return 'æœªä»˜æ¬¾';
+	else if($sta==1) return 'å·²ä»˜æ¬¾';
+	else return 'å·²å®Œæˆ';
 }
 
 if(empty($buyid)) $buyid = '';
@@ -52,7 +52,7 @@ $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/member_operations.htm");
 $dlist->Close();
 
-
+ClearAllLink();
 ?>
 
 

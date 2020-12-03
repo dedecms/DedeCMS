@@ -1,5 +1,5 @@
 <?php 
 require(dirname(__FILE__)."/../include/config_base.php");
-//显示模板(简单PHP文件)
+//鏄剧ず妯℃澘(绠�鍗昉HP鏂囦欢)
 include_once($cfg_basedir.$cfg_templets_dir."/plus/flink-add.htm"); 
 ?>

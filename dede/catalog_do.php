@@ -1,35 +1,37 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)){
-	ShowMsg("¶Ô²»Æð£¬ÇëÖ¸¶¨À¸Ä¿²ÎÊý£¡","catalog_main.php");
+	ShowMsg("å¯¹ä¸èµ·ï¼Œè¯·æŒ‡å®šæ ç›®å‚æ•°ï¼","catalog_main.php");
 	exit();
 }
 if(empty($cid)) $cid = 0;
 $cid = ereg_replace("[^0-9]","",$cid);
 /*--------------------------
-//Ôö¼ÓÎÄµµ
+//å¢žåŠ æ–‡æ¡£
 function addArchives();
 ---------------------------*/
 if($dopost=="addArchives")
 {
 	if(empty($cid) && empty($channelid)){
+		$channelid = 1;
 		require_once(dirname(__FILE__)."/article_add.php");
 		exit();
 	}
 	$dsql = new DedeSql(false);
-	if(!empty($channelid)) $row = $dsql->GetOne("Select addcon from #@__channeltype where ID='$channelid'");
-	else $row = $dsql->GetOne("Select #@__channeltype.addcon from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
+	if(!empty($channelid)) $row = $dsql->GetOne("Select ID,addcon from #@__channeltype where ID='$channelid'");
+	else $row = $dsql->GetOne("Select #@__channeltype.addcon,#@__channeltype.ID from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
 	$gurl = $row["addcon"];
+	$channelid = $row['ID'];
 	$dsql->Close();
 	if($gurl==""){
-		ShowMsg("¶Ô²»Æð£¬ÄãÖ¸µÄÀ¸Ä¿¿ÉÄÜÓÐÎó£¡","catalog_main.php");
+		ShowMsg("å¯¹ä¸èµ·ï¼Œä½ æŒ‡çš„æ ç›®å¯èƒ½æœ‰è¯¯ï¼","catalog_main.php");
 	  exit();
 	}
 	require_once(dirname(__FILE__)."/$gurl");
 	exit();
 }
 /*--------------------------
-//¹ÜÀíÎÄµµ
+//ç®¡ç†æ–‡æ¡£
 function listArchives();
 ---------------------------*/
 else if($dopost=="listArchives")
@@ -42,21 +44,21 @@ else if($dopost=="listArchives")
 	}
 	if($cid>0)
 	{
-	  $dsql = new DedeSql(false);
-	  $row = $dsql->GetOne("Select #@__arctype.typename,#@__channeltype.typename as channelname,#@__channeltype.ID,#@__channeltype.mancon from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
+	  $dsql = new DedeSql(-100);
+	  $row = $dsql->GetOne("Select t.typename,c.typename as channelname,c.ID,c.mancon from #@__arctype t left join #@__channeltype c on c.ID=t.channeltype where t.ID='$cid'");
 	  $gurl = $row["mancon"];
 	  $channelid = $row["ID"];
 	  $typename = $row["typename"];
 	  $channelname = $row["channelname"];
 	  $dsql->Close();
 	  if($gurl==""){
-		  ShowMsg("¶Ô²»Æð£¬ÄãÖ¸µÄÀ¸Ä¿¿ÉÄÜÓÐÎó£¡","catalog_main.php");
+		  ShowMsg("å¯¹ä¸èµ·ï¼Œä½ æŒ‡çš„æ ç›®å¯èƒ½æœ‰è¯¯ï¼","catalog_main.php");
 	    exit();
 	  }
   }
   else if($channelid>0)
   {
-  	$dsql = new DedeSql(false);
+  	$dsql = new DedeSql(-100);
 	  $row = $dsql->GetOne("Select typename,ID,mancon from #@__channeltype where ID='$channelid'");
 	  $gurl = $row["mancon"];
 	  $channelid = $row["ID"];
@@ -64,11 +66,12 @@ else if($dopost=="listArchives")
 	  $channelname = $row["typename"];
 	  $dsql->Close();
   }
-	require_once(dirname(__FILE__)."/$gurl");
+  if(empty($gurl)) $gurl = 'content_list.php';
+	header("location:{$gurl}?channelid={$channelid}&cid={$cid}");
 	exit();
 }
 /*--------------------------
-//ä¯ÀÀÍ¨ÓÃÄ£°åÄ¿Â¼
+//æµè§ˆé€šç”¨æ¨¡æ¿ç›®å½•
 function viewTempletDir();
 ---------------------------*/
 else if($dopost=="viewTemplet")
@@ -77,7 +80,7 @@ else if($dopost=="viewTemplet")
 	exit();
 }
 /*--------------------------
-//ÁôÑÔ²¾¹ÜÀí
+//ç•™è¨€ç°¿ç®¡ç†
 function GoGuestBook();
 ---------------------------*/
 else if($dopost=="guestbook")
@@ -86,7 +89,7 @@ else if($dopost=="guestbook")
 	exit();
 }
 /*------------------------
-ä¯ÀÀµ¥¸öÒ³ÃæµÄÀ¸Ä¿
+æµè§ˆå•ä¸ªé¡µé¢çš„æ ç›®
 function ViewSgPage()
 ------------------------*/
 else if($dopost=="viewSgPage")
@@ -95,19 +98,19 @@ else if($dopost=="viewSgPage")
 	$lv = new ListView($cid);
   $pageurl = $lv->MakeHtml();
   $lv->Close();
-  ShowMsg("¸üÐÂ»º³å£¬ÇëÉÔºó...",$pageurl);
+  ShowMsg("æ›´æ–°ç¼“å†²ï¼Œè¯·ç¨åŽ...",$pageurl);
 	exit();
 }
 /*------------------------
-¸ü¸ÄÀ¸Ä¿ÅÅÁÐË³Ðò
+æ›´æ”¹æ ç›®æŽ’åˆ—é¡ºåº
 function upRank()
 ------------------------*/
 else if($dopost=="upRank")
 {
-	//¼ì²éÈ¨ÏÞÐí¿É
+	//æ£€æŸ¥æƒé™è®¸å¯
   CheckPurview('t_Edit,t_AccEdit');
-  //¼ì²éÀ¸Ä¿²Ù×÷Ðí¿É
-  CheckCatalog($cid,"ÄãÎÞÈ¨¸ü¸Ä±¾À¸Ä¿£¡");
+  //æ£€æŸ¥æ ç›®æ“ä½œè®¸å¯
+  CheckCatalog($cid,"ä½ æ— æƒæ›´æ”¹æœ¬æ ç›®ï¼");
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select reID,sortrank From #@__arctype where ID='$cid'");
 	$reID = $row['reID'];
@@ -119,12 +122,12 @@ else if($dopost=="upRank")
 		$dsql->ExecuteNoneQuery();
 	}
 	$dsql->Close();
-	ShowMsg("²Ù×÷³É¹¦£¬·µ»ØÄ¿Â¼...","catalog_main.php");
+	ShowMsg("æ“ä½œæˆåŠŸï¼Œè¿”å›žç›®å½•...","catalog_main.php");
 	exit();
 }
 else if($dopost=="upRankAll")
 {
-	//¼ì²éÈ¨ÏÞÐí¿É
+	//æ£€æŸ¥æƒé™è®¸å¯
   CheckPurview('t_Edit');
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select ID From #@__arctype order by ID desc");
@@ -138,11 +141,11 @@ else if($dopost=="upRankAll")
 		}
 	}
 	$dsql->Close();
-	ShowMsg("²Ù×÷³É¹¦£¬ÕýÔÚ·µ»Ø...","catalog_main.php");
+	ShowMsg("æ“ä½œæˆåŠŸï¼Œæ­£åœ¨è¿”å›ž...","catalog_main.php");
 	exit();
 }
 /*---------------------
-»ñÈ¡JSÎÄ¼þ
+èŽ·å–JSæ–‡ä»¶
 function GetJs
 ----------------------*/
 else if($dopost=="GetJs")
@@ -151,13 +154,13 @@ else if($dopost=="GetJs")
 	exit();
 }
 /*-----------
-±à¼­µ¥¶ÀÒ³Ãæ
+ç¼–è¾‘å•ç‹¬é¡µé¢
 function editSgPage();
 -----------*/
 else if($dopost=="editSgPage")
 {
-	//¼ì²éÈ¨ÏÞÐí¿É
-  CheckPurview('plus_ÎÄ¼þ¹ÜÀíÆ÷');
+	//æ£€æŸ¥æƒé™è®¸å¯
+  CheckPurview('plus_æ–‡ä»¶ç®¡ç†å™¨');
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select defaultname,typedir From #@__arctype where ID='$cid'");
 	$dsql->Close();
@@ -171,20 +174,20 @@ else if($dopost=="editSgPage")
  	exit();
 }
 /*-----------
-±à¼­Ä£°åÒ³Ãæ
+ç¼–è¾‘æ¨¡æ¿é¡µé¢
 function editSgTemplet();
 -----------*/
 else if($dopost=="editSgTemplet")
 {
-  //¼ì²éÈ¨ÏÞÐí¿É
-  CheckPurview('plus_ÎÄ¼þ¹ÜÀíÆ÷');
+  //æ£€æŸ¥æƒé™è®¸å¯
+  CheckPurview('plus_æ–‡ä»¶ç®¡ç†å™¨');
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select tempone From #@__arctype where ID='$cid'");
 	$dsql->Close();
 	$tempone = $row['tempone'];
 	$tempone = eregi_replace("\{style\}",$cfg_df_style,$tempone);
 	if(!is_file($cfg_basedir.$cfg_templets_dir."/".$tempone)){
-		ShowMsg("Õâ¸öµ¥¶ÀÒ³ÃæÃ»ÓÐÊ¹ÓÃÄ£°å£¬ÏÖÔÚ×ªÏòÖ±½Ó±à¼­Õâ¸öÒ³Ãæ¡£","catalog_do.php?cid=$cid&dopost=editSgPage");
+		ShowMsg("è¿™ä¸ªå•ç‹¬é¡µé¢æ²¡æœ‰ä½¿ç”¨æ¨¡æ¿ï¼ŒçŽ°åœ¨è½¬å‘ç›´æŽ¥ç¼–è¾‘è¿™ä¸ªé¡µé¢ã€‚","catalog_do.php?cid=$cid&dopost=editSgPage");
 		exit();
 	}
 	$tempones = explode('/',$tempone);
@@ -200,54 +203,53 @@ else if($dopost=="editSgTemplet")
  	exit();
 }
 /*-----------
-»ñµÃ×ÓÀàµÄÄÚÈÝ
+èŽ·å¾—å­ç±»çš„å†…å®¹
 function GetSunLists();
 -----------*/
 else if($dopost=="GetSunLists")
 {
+	$userChannel = $cuserLogin->getUserChannel();
 	require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
-	header("Content-Type: text/html; charset=gb2312");
+	AjaxHead();
 	PutCookie('lastCid',$cid,3600*24,"/");
-	$tu = new TypeUnit();
+	$tu = new TypeUnit($userChannel);
 	$tu->dsql = new DedeSql(false);
-  $tu->LogicListAllSunType($cid,"¡¡");
+  $tu->LogicListAllSunType($cid,"ã€€");
   $tu->Close();
 }
 /*-----------
-»ñµÃ×ÓÀàµÄÄÚÈÝ
+èŽ·å¾—å­ç±»çš„å†…å®¹
 function GetSunListsMenu();
 -----------*/
 else if($dopost=="GetSunListsMenu")
 {
+	$userChannel = $cuserLogin->getUserChannel();
 	require_once(dirname(__FILE__)."/../include/inc_typeunit_menu.php");
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	AjaxHead();
 	PutCookie('lastCidMenu',$cid,3600*24,"/");
-	$tu = new TypeUnit();
+	$tu = new TypeUnit($userChannel);
 	$tu->dsql = new DedeSql(false);
-	$tu->LogicListAllSunType($cid,"¡¡");
+	$tu->LogicListAllSunType($cid,"ã€€");
   $tu->Close();
 }
 /*-----------
-»ñµÃ×ÓÀàµÄÄÚÈÝ
+èŽ·å¾—å­ç±»çš„å†…å®¹
 function GetSunListsTree();
 -----------*/
 else if($dopost=="GetSunListsTree")
 {
+	$userChannel = $cuserLogin->getUserChannel();
 	require_once(dirname(__FILE__)."/../include/inc_type_tree.php");
 	if(empty($opall)) $opall = 0;
 	if(empty($c)) $c = 0;
 	if(empty($cid)) $cid = 0;
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	AjaxHead();
 	PutCookie('lastCidTree',$cid,3600*24,"/");
-	$tu = new TypeTree();
+	$tu = new TypeTree($userChannel);
 	$tu->dsql = new DedeSql(false);
-	$tu->LogicListAllSunType($cid,"¡¡",$opall,$c);
+	$tu->LogicListAllSunType($cid,"ã€€",$opall,$c);
   $tu->Close();
 }
+
+ClearAllLink();
 ?>

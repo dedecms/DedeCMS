@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 
@@ -9,12 +9,12 @@ if(!isset($ENV_GOBACK_URL)) $ENV_GOBACK_URL = '';
 
 /*----------------
 function __DelMember()
-ɾ����Ա
+删除会员
 ----------------*/
 if($dopost=="delmember")
 {
 	CheckPurview('member_Del');
-	
+
 	if($fmdo=="yes")
 	{
 		$ID = ereg_replace("[^0-9]","",$ID);
@@ -24,32 +24,31 @@ if($dopost=="delmember")
 		$dsql->ExecuteNoneQuery("Delete From #@__member_guestbook where mid='$ID'");
 		$dsql->ExecuteNoneQuery("Delete From #@__member_arctype where memberid='$ID'");
 		$dsql->ExecuteNoneQuery("Delete From #@__member_flink where mid='$ID'");
-		$dsql->ExecuteNoneQuery("update #@__archives set memberID='0' where memberID='$ID'");
 		$dsql->Close();
-		ShowMsg("�ɹ�ɾ��һ����Ա��",$ENV_GOBACK_URL);
+		ShowMsg("成功删除一个会员！",$ENV_GOBACK_URL);
 		exit();
 	}
-	
-	$wintitle = "��Ա����-ɾ����Ա";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>��Ա����</a>::ɾ����Ա";
+
+	$wintitle = "会员管理-删除会员";
+	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::删除会员";
 	$win = new OxWindow();
 	$win->Init("member_do.php","js/blank.js","POST");
 	$win->AddHidden("fmdo","yes");
 	$win->AddHidden("dopost",$dopost);
 	$win->AddHidden("ID",$ID);
-	$win->AddTitle("��ȷʵҪɾ��(ID:".$ID.")�����Ա?");
+	$win->AddTitle("你确实要删除(ID:".$ID.")这个会员?");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
 /*-----------------------------
 function __UpOperations()
-ҵ��״̬����Ϊ�Ѹ���״̬
+业务状态更改为已付款状态
 ------------------------------*/
 else if($dopost=="upoperations")
 {
 	CheckPurview('member_Operations');
 	if($nid==''){
-		ShowMsg("ûѡ��Ҫ���ĵ�ҵ���¼��","-1");
+		ShowMsg("没选定要更改的业务记录！","-1");
 		exit();
 	}
 	$nids = explode('`',$nid);
@@ -62,18 +61,18 @@ else if($dopost=="upoperations")
 	$dsql->SetQuery("update #@__member_operation set sta=1 $wh ");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("�ɹ�����ָ����ҵ���¼��",$ENV_GOBACK_URL);
+	ShowMsg("成功更改指定的业务记录！",$ENV_GOBACK_URL);
 	exit();
-}	
+}
 /*----------------------------
 function __OkOperations()
-ҵ��״̬���ĸ����״̬
+业务状态更改改完成状态
 -----------------------------*/
 else if($dopost=="okoperations")
 {
 	CheckPurview('member_Operations');
 	if($nid==''){
-		ShowMsg("ûѡ��Ҫ���ĵ�ҵ���¼��","-1");
+		ShowMsg("没选定要更改的业务记录！","-1");
 		exit();
 	}
 	$nids = explode('`',$nid);
@@ -86,17 +85,17 @@ else if($dopost=="okoperations")
 	$dsql->SetQuery("update #@__member_operation set sta=2 $wh ");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("�ɹ�����ָ����ҵ���¼��",$ENV_GOBACK_URL);
+	ShowMsg("成功更改指定的业务记录！",$ENV_GOBACK_URL);
 	exit();
-}	
+}
 /*----------------
 function __UpRank()
-��Ա����
+会员升级
 ----------------*/
 else if($dopost=="uprank")
 {
 	CheckPurview('member_Edit');
-	
+
 	if($fmdo=="yes")
 	{
 		$ID = ereg_replace("[^0-9]","",$ID);
@@ -105,20 +104,20 @@ else if($dopost=="uprank")
 		$dsql->SetQuery("update #@__member set membertype='$membertype',uptype='0' where ID='$ID'");
 		$dsql->ExecuteNoneQuery();
 		$dsql->Close();
-		ShowMsg("�ɹ�����һ����Ա��",$ENV_GOBACK_URL);
+		ShowMsg("成功升级一个会员！",$ENV_GOBACK_URL);
 		exit();
 	}
-	
+
 	$dsql = new DedeSql(false);
   $MemberTypes = "";
   $dsql->SetQuery("Select rank,membername From #@__arcrank where rank>0");
   $dsql->Execute();
-  $MemberTypes[0] = "��ͨ��Ա";
+  $MemberTypes[0] = "普通会员";
   while($row = $dsql->GetObject()){
 	  $MemberTypes[$row->rank] = $row->membername;
   }
   $dsql->Close();
-  
+
   $options = "<select name='membertype' style='width:100'>\r\n";
   foreach($MemberTypes as $k=>$v)
   {
@@ -126,24 +125,24 @@ else if($dopost=="uprank")
   	else $options .= "<option value='$k' selected>$v</option>\r\n";
   }
   $options .= "</select>\r\n";
-  
-	$wintitle = "��Ա����-��Ա����";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>��Ա����</a>::��Ա����";
+
+	$wintitle = "会员管理-会员升级";
+	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::会员升级";
 	$win = new OxWindow();
 	$win->Init("member_do.php","js/blank.js","POST");
 	$win->AddHidden("fmdo","yes");
 	$win->AddHidden("dopost",$dopost);
 	$win->AddHidden("ID",$ID);
-	$win->AddTitle("��Ա������");
-	$win->AddItem("��ԱĿǰ�ĵȼ���",$MemberTypes[$mtype]);
-	$win->AddItem("��Ա����ĵȼ���",$MemberTypes[$uptype]);
-	$win->AddItem("��ͨ�ȼ���",$options);
+	$win->AddTitle("会员升级：");
+	$win->AddItem("会员目前的等级：",$MemberTypes[$mtype]);
+	$win->AddItem("会员申请的等级：",$MemberTypes[$uptype]);
+	$win->AddItem("开通等级：",$options);
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
 /*----------------
 function __Recommend()
-�Ƽ���Ա
+推荐会员
 ----------------*/
 else if($dopost=="recommend")
 {
@@ -153,23 +152,23 @@ else if($dopost=="recommend")
 	if($matt==0){
 		$dsql->ExecuteNoneQuery("update #@__member set matt=1 where ID='$ID'");
 		$dsql->Close();
-		ShowMsg("�ɹ�����һ����Ա�Ƽ���",$ENV_GOBACK_URL);
+		ShowMsg("成功设置一个会员推荐！",$ENV_GOBACK_URL);
 	  exit();
 	}else{
 		$dsql->ExecuteNoneQuery("update #@__member set matt=0 where ID='$ID'");
 	  $dsql->Close();
-	  ShowMsg("�ɹ�ȡ��һ����Ա�Ƽ���",$ENV_GOBACK_URL);
+	  ShowMsg("成功取消一个会员推荐！",$ENV_GOBACK_URL);
 	  exit();
   }
 }
 /*----------------
 function __AddMoney()
-��Ա��ֵ
+会员充值
 ----------------*/
 else if($dopost=="addmoney")
 {
 	CheckPurview('member_Edit');
-	
+
 	if($fmdo=="yes")
 	{
 		$ID = ereg_replace("[^0-9]","",$ID);
@@ -178,37 +177,51 @@ else if($dopost=="addmoney")
 		$dsql->SetQuery("update #@__member set money=money+$money where ID='$ID'");
 		$dsql->ExecuteNoneQuery();
 		$dsql->Close();
-		ShowMsg("�ɹ���һ����Ա��ֵ��",$ENV_GOBACK_URL);
+		ShowMsg("成功给一个会员充值！",$ENV_GOBACK_URL);
 		exit();
 	}
 	if(empty($upmoney)) $upmoney = 500;
-	$wintitle = "��Ա����-��Ա��ֵ";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>��Ա����</a>::��Ա��ֵ";
+	$wintitle = "会员管理-会员充值";
+	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::会员充值";
 	$win = new OxWindow();
 	$win->Init("member_do.php","js/blank.js","POST");
 	$win->AddHidden("fmdo","yes");
 	$win->AddHidden("dopost",$dopost);
 	$win->AddHidden("ID",$ID);
-	$win->AddTitle("��Ա��ֵ��");
-	$win->AddMsgItem("�������ֵ������<input type='text' name='money' size='10' value='$upmoney'>",60);
+	$win->AddTitle("会员充值：");
+	$win->AddMsgItem("请输入充值点数：<input type='text' name='money' size='10' value='$upmoney'>",60);
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
 /*----------------
 function __EditUser()
-���Ļ�Ա
+更改会员
 ----------------*/
 else if($dopost=="edituser")
 {
 	CheckPurview('member_Edit');
 	$dsql = new DedeSql(false);
 	$uptime =  GetMkTime($uptime);
-	$query = "update #@__member set 
+	$edpwd = '';
+	if($newpwd!=''){
+		$newpwd = GetEncodePwd($newpwd);
+		$edpwd = "pwd='$newpwd',";
+	}
+	$query1 = "update #@__member set
+ 	  {$edpwd}
  	  membertype = '$membertype',
  	  uptime = '$uptime',
  	  exptime = '$exptime',
  	  money = '$money',
+ 	  scores = '$scores',
  	  email = '$email',
+    uname = '$uname',
+    sex = '$sex',
+    mybb = '$mybb',
+    spacename = '$spacename',
+    news = '$news'
+ 	  where ID='$ID'";
+ 	$query2 = "update #@__member_perinfo set
     uname = '$uname',
     sex = '$sex',
     birthday = '$birthday',
@@ -218,19 +231,18 @@ else if($dopost=="edituser")
     province = '$province',
     city = '$city',
     myinfo = '$myinfo',
-    mybb = '$mybb',
     oicq = '$oicq',
     tel = '$tel',
     homepage = '$homepage',
-    spacename = '$spacename',
-    news = '$news',
     fullinfo = '$fullinfo',
     address = '$address'
- 	  where ID='$ID'";
-	$dsql->SetQuery($query);
-	$rs = $dsql->ExecuteNoneQuery();
+ 	  where id='$ID'";
+	$dsql->ExecuteNoneQuery($query1);
+	$dsql->ExecuteNoneQuery($query2);
   $dsql->Close();
-  ShowMsg("�ɹ����Ļ�Ա���ϣ�",$ENV_GOBACK_URL);
+  ShowMsg("成功更改会员资料！",$ENV_GOBACK_URL);
   exit();
 }
+
+ClearAllLink();
 ?>

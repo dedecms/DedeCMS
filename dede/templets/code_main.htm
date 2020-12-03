@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--<?php
+print <<<EOT
+-->
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>类别管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">营销模块</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr><td bgcolor="#ffffff">
+	[<a href="code_main.php">登录营销平台</a>] 
+	[<a href="code_main.php?action=key">获取通用密钥</a>]
+	[<a href="code_main.php?action=info">社区营销介绍</a>]
+	[<a href="code_main.php?action=prompt">注意事项</a>]
+</td></tr>
+</table>
+<br>
+<!--
+EOT;
+if(!$action){print <<<EOT
+-->
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr><td height="25" bgcolor="#EDF9D5"><b>帮助信息</b></td>
+</tr>
+<tr>
+	<td height="29" bgcolor="#ffffff" style="line-height:150%">
+		&nbsp;&nbsp;·在使用前请先注册一个帐号，注册帐号会要求填写通用密钥，点击“[<a href="code_main.php?action=key">获取通用密钥</a>]”可获得。		</li>	</td>
+</tr>
+</table>
+<br />
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr><td height="25" colspan=2 bgcolor="#EDF9D5">登录营销平台</td>
+</tr>
+<tr>
+  <td bgcolor="#ffffff" style="line-height:150%" valign="top" align="center"><br />
+    <b>请输入您在营销平台的用户名和密码</b> <br />
+    <br />
+	<form name="form" action="$basename&" method="post" target="_blank">
+	<input type=hidden value=2 name=step>
+	<input type=hidden value=3600 name=cktime>
+	<input type=hidden name=jumpurl>
+    <table cellspacing="1" cellpadding="0" width="400" align="center">
+      <tbody>
+        <tr>
+          <td><table cellspacing="0" cellpadding="3" width="100%" class=i_table>
+              <tbody>
+                <tr bgcolor="#ffffff">
+                  <td valign="center" align="right" width="40%">请输入帐号ID</td>
+                  <td valign="center"><input name="lguser" type="text" size="25" /></td>
+                </tr>
+                <tr bgcolor="#ffffff">
+                  <td valign="center" align="right">请输入密码</td>
+                  <td valign="center"><input type="password" name="lgpwd" size="25" /></td>
+                </tr>
+              </tbody>
+          </table></td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    　　　　　　　　<input type="submit" value="登录营销平台" name="submit" class="inputbut"/>　<a href="http://union.phpwind.com/index.php?action=reg&key1=$cfg_siteid&key2=$cfg_siteownerid&sitehash=$cfg_sitehash" target="_blank"><font color="blue">注册营销平台帐号</font></a>
+	</form>
+<br />
+</td>
+</tr>
+</table>
+<!--
+EOT;
+}elseif($action=='prompt'){print <<<EOT
+-->
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tbody>
+<tr>
+<td height="25"><B>注意事项</B></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" style="LINE-HEIGHT: 150%">　　当您开启论坛营销模块时，由于模块需要分析并读取您的页面数据，可能会耗损部分站点页面执行效率，这是由于您选择的论坛营销模块特性及营销提供商的数据传送而产生的，正常情况下，并无明显影响，如遇特殊情况，导致站点访问效率明显下降时，可能由于营销提供商数据传送时出现了网络故障，这时我们建议您根据影响的程序考虑关闭部分营销模块，以确保站点的正常运行，并反馈相关信息至相应营销模块提供商，获取支持！ 
+  <BR>
+  <BR><B>意见反馈：</B><BR>　
+  PHPWind社区营销官方网站：<a href="http://union.phpwind.com" target="_blank">http://union.phpwind.com</a><BR></td>
+</tr></tbody></table>
+<!--
+EOT;
+}elseif($action=='info'){print <<<EOT
+-->
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr><td height="25"><b>社区营销介绍</b></td>
+</tr>
+<tr><td bgcolor="#ffffff" style="LINE-HEIGHT: 150%" vAlign=top><p>
+  　　PHPWind社区营销是帮助广大站长获取收益的<b>一站式营销</b>联盟平台。平台以BBS（社区、论坛）营销为出发点，结合当前多款主流BBS通用型系统和被广泛认可的广告模式为基础，以及社区站长赢利难的现状，依托PHPWind在互联网软件/服务行业的多年产品研发与市场拓展能力，而建立的多功能网络广告营销平台。 </p>
+<p><strong>什么是一站式营销？ </strong><br>
+　　系统集成营销模块，站长只需在后台轻松操作，即可完成站点的广告投放并获取收益。<br>
+　　PHPWind一站式营销联盟致力于打造专属于社区的广告营销联盟，将为站长们提供的是：</p>
+  <ol>
+    <li>轻松的后台操作：搭建PHPWind一站式营销平台作为中转站，使站长仅在自身站点后台操作即可直接参与营销并获取收益；</li>
+    <li>贴心的广告策划：周到的广告位及广告形式策划使站长能尽可能多地获取收益，每一种广告产品随站长意愿随时开启随时关闭；</li>
+    <li>优势的广告产品：PHPWind精心挑选合作伙伴及广告产品，为PHPWind一站式营销用户争取到更多额外优惠；</li>
+    <li>便捷的支付政策：所有产品都采取及人民币月结的结算方式并在平台上可以清晰查看所有产品类型收益。</li>
+  </ol>
+  <p align="left">　　社区营销计划的意义在于”利用 PHPWind 平台把传统营销概念与论坛强大互动性相结合，充分挖掘论坛潜在价值，解决网站经济来源问题，为站长解除后顾之忧。 </p>
+  <p>　　PHPWind一站式营销体系。从建站到挣钱，PHPWind永远是您最真诚的伙伴！</p>
+</td></tr></table>
+<br />
+<!--
+EOT;
+}elseif($action=='key'){print <<<EOT
+-->
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr><td height="25" colspan=2>您网站的通用密钥</td>
+</tr>
+<tr><td bgcolor="#ffffff" colspan=2 style="line-height:150%">
+<p align="left"><strong>什么是通用密钥？很重要！</strong><br />
+　　通用密钥是系统自动为每个网站生成的通用营销系统密钥（包括一对密钥和一个唯一识别码），用来做为您网站的唯一标识；“通用密钥”将用于部分营销模块中；注册PHPWind社区营销帐号时需用到，请保管好您的通用密钥，以防被他人利用。 </p>
+</td></tr>
+<tr>
+	<td width="30%" height="33" bgcolor="#ffffff">密钥一</td>
+  <td height="33" bgcolor="#ffffff">
+		<span style="float:right;margin-right:10em">
+<input type="button" value="复制代码" onClick="CopyCode(document.getElementById('code'));" class="inputbut"></span>
+		$cfg_siteid <input type="hidden" id="code" value="$cfg_siteid">
+	</td>
+</tr>
+<tr>
+	<td height="33" bgcolor="#ffffff">密钥二</td>
+  <td height="33" bgcolor="#ffffff">
+		<span style="float:right;margin-right:10em">
+<input type="button" value="复制代码" onClick="CopyCode(document.getElementById('code1'));" class="inputbut"></span>
+		$cfg_siteownerid <input type="hidden" id="code1" value="$cfg_siteownerid">
+	</td>
+</tr>
+<tr>
+	<td height="33" bgcolor="#ffffff">唯一识别码</td>
+  <td height="33" bgcolor="#ffffff">
+		<span style="float:right;margin-right:10em">
+<input type="button" value="复制代码" onClick="CopyCode(document.getElementById('code2'));" class="inputbut"></span>
+		$cfg_sitehash <input type="hidden" id="code2" value="$cfg_sitehash">
+	</td>
+</tr>
+</table>
+<script language="JavaScript">
+function CopyCode(obj){ 
+	obj.select(); 
+	var js=obj.createTextRange(); 
+	js.execCommand("Copy");
+	alert("代码已复制到剪贴板");
+}
+</script>
+<!--
+EOT;
+}print <<<EOT
+-->
+</body>
+</html>
+<!--
+EOT;
+?>-->

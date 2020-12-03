@@ -1,155 +1,107 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÓÃ»§ÆÀÂÛ£º<?php echo $arctitle?></title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<link href="../img/base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ç”¨æˆ·è¯„è®ºï¼š<?php echo $arctitle?></title>
+<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
+</head>
 </head>
 <body>
-<table width="860" border="0" align="center">
-  <tr> 
-<td><img src="img/feedback.gif" width="320" height="46"></td>
-</tr>
-<tr> 
-    <td bgcolor="#CCCC66" height="6"></td>
-</tr>
-<tr>
-    <td height="26" bgcolor="#F3FAE7"> <strong>&nbsp;ÆÀÂÛ£º <a href='<?php echo $arcurl?>' style='font-size:11pt'> 
-      <?php echo $arctitle?>
-      </a> </strong></td>
-</tr>
-</table>
 
-<table width="860" border="0" align="center" cellpadding="0" cellspacing="2">
-  <tr> 
-    <td width="660"><table width="100%" border="0" align="center" cellspacing="0">
-        <tr> 
-          <td> 
-            <table width="100%" border="0" cellpadding="1" cellspacing="1" style="border:1px solid #cdcdcd;margin-bottom:6px">
-              <tr>
-                <td width="18%" height="28" align="center" bgcolor="#FBFEF5">ÓÃ»§ÆÀ·Ö£º</td>
-                <td width="82%" bgcolor="#FBFEF5">
+<div class="stop">
+	<span class="toptitle">è¯„è®º</span>
+	<span class="toplink"><a href="/">è¿”å›žä¸»é¡µ</a></span></div>
+
+<div class="smain">
+	<div class="mtitle">
+		<div class="mtname">å¯¹ <strong><a href='<?php echo $arcurl?>' style='font-size:11pt'><?php echo $arctitle?></a><a href="#"></a> </strong> çš„è¯„è®º</div>
+	  <div class="mtlink"><!--<a href="#"></a>--></div>
+	</div>
+	<div class="mbox">
+  <!--è¯„è®º-->
+		<div class="comment">
+			<!--è¯„è®º:æ ‡é¢˜-->
+			<div class="commenttitle">
+				<div class="title"><strong>æœ€æ–°è¯„è®º</strong></div>
+			</div>
+			<!--è¯„è®ºå†…å®¹-->
+			<div class="commentbox">
 				<?php 
-				if(empty($agvrank)) $agvrank = 0.1;
-				$cowidth = ceil(($agvrank/5)*100);
-				$agvrank = number_format($agvrank,2);
-				?>
-				<table width="100%" border="0" cellspacing="1" cellpadding="1">
-                  <tr height="18px">
-                    <td width="70%" style="border:1px solid #ddeadd">
-					<div style="width:<?php echo $cowidth?>%;height:18px;background-color:#B1E891">&nbsp;</div>
-					</td>
-					<td align="center"><?php echo $agvrank?> ·Ö£¬×î´ó 5 ·Ö</td>
-                  </tr>
-                </table>
-				</td>
-              </tr>
-            </table>
-            <?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
-            <table width="100%" border="0" cellspacing="0" cellpadding="3" style="border:1px solid #cdcdcd;margin-bottom:6px">
-              <tr bgcolor="#f3f3f3"> 
-                <td width="7%" height="24" align="center" bgcolor="#FAFCEB"><img src="img/fbico.gif" width="16" height="15"></td>
-                <td width="22%" bgcolor="#FAFCEB">ÓÃ»§£º 
-                  <?php echo $row['username']?>                </td>
-                <td width="27%" bgcolor="#FAFCEB"> Ê±¼ä£º 
-                  <?php echo strftime("%y-%m-%d %H:%M:%S",$row['dtime'])?>                </td>
-                <td width="22%" bgcolor="#FAFCEB">IPµØÖ·£º 
-                  <?php echo  ereg_replace("[^\.]{1,3}$","*",$row['ip']);?>                </td>
-                <td width="23%" bgcolor="#FAFCEB">
-                	<a href="feedback.php?fid=<?php echo $row['ID']?>&action=good&arcID=<?php echo $arcID?>"><img src="img/good.gif" border="0"></a>ÏÊ»¨(<?php echo $row['good']?>)
-                	<a href="feedback.php?fid=<?php echo $row['ID']?>&action=bad&arcID=<?php echo $arcID?>"><img src="img/bad.gif" border="0"></a>¼¦µ°(<?php echo $row['bad']?>)</td>
-              </tr>
-              <tr> 
-                <td colspan="5"> 
-                  <?php echo $row['msg']?> 
-                </td>
-              </tr>
-            </table>
-            <?php 
+				<dl>
+					<dt><?php echo $row['username']?>(<?php echo  ereg_replace("[^\.]{1,3}$","*",$row['ip']);?>)   å‘è¡¨äºŽï¼š<?php echo strftime("%y-%m-%d %H:%M:%S",$row['dtime'])?>                 	<a href="feedback.php?fid=<?php echo $row['ID']?>&action=good&arcID=<?php echo $arcID?>"><img src="../templets/images/good.gif" border="0"></a>[<?php echo $row['good']?>]
+                	<a href="feedback.php?fid=<?php echo $row['ID']?>&action=bad&arcID=<?php echo $arcID?>"><img src="../templets/images/bad.gif" border="0"></a>[<?php echo $row['bad']?>]</dt>
+					<dd><span style="word-break: break-all"><?php echo $row['msg']?></span></dd>
+				</dl>
+                <?php 
 }
 ?>
-          </td>
-        </tr>
-        <tr> 
-          <td height="23" align="center" bgcolor="#F3FAE7" style="border:1px solid #cdcdcd"> 
-            <?php echo $dlist->GetPageList(7);?>          </td>
-        </tr>
-    </table>
-	<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#DDEEBD" style="margin-top:6px">
+
+		    <!--åˆ†é¡µ-->
+				<div class="pages">
+					<div class="plist">
+                    <?php echo $dlist->GetPageList(7);?></div>
+			  </div>
+
+			</div>
+<!--å‘è¡¨è¯„è®º:æ ‡é¢˜-->
+			<div class="posttitle"><strong>å‘è¡¨è¯„è®º</strong></div>
+			<!--å‘è¡¨è¯„è®º-->
+			<div class="postbox">
+			  <div class="txtbox">
+              <table width="100%" border="0" cellpadding="1" cellspacing="1" style="margin-top:6px">
               <form action="feedback.php" method="post" name="feedback">
                 <input type="hidden" name="action" value="send">
                 <input type="hidden" name="arcID" value="<?php echo $arcID?>">
-				<input type="hidden" name="isconfirm" value="yes">
+                <input type="hidden" name="arcurl" value="<?=$arcurl?>">
+                <input type="hidden" name="arctitle" value="<?=$arctitle?>">
+                <input type="hidden" name="feedid" value="<?=$feedid?>">
+				        <input type="hidden" name="isconfirm" value="yes">
                 <tr>
-                  <td height="24" bgcolor="#F3FAE7">¡¡<strong>¡ì·¢±íÐÂÆÀÂÛ£º</strong></td>
+                  <td height="24" bgcolor="#F4F9F2">ã€€<strong>Â§å‘è¡¨æ–°è¯„è®ºï¼š</strong></td>
                 </tr>
                 <tr> 
-                  <td bgcolor="#FFFFFF">¡¡ÓÃ»§Ãû£º 
-                    <input name="username" type="text" id="username" size="10" class="nb">
-                    £¨<a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>ÐÂ×¢²á</u></a>£© 
-                    ÃÜÂë£º 
-                    <input name="pwd" type="text" id="pwd" size="10"class="nb"> 
+                  <td bgcolor="#FFFFFF">ã€€ç”¨æˆ·åï¼š 
+                    <input name="username" type="text" id="username" size="10">
+                    ï¼ˆ<a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>æ–°æ³¨å†Œ</u></a>ï¼‰ 
+                    å¯†ç ï¼š 
+                    <input name="pwd" type="text" id="pwd" size="10"> 
                     <input name="notuser" type="checkbox" id="notuser" value="1">
-                    ÄäÃûÆÀÂÛ 
-                    <input type='button' value='·¢±íÆÀÂÛ' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("ÆÀÂÛÄÚÈÝ²»ÄÜÎª¿Õ£¡");' style='width:60;height:20'></td>
-                </tr>
-                <tr>
-                  <td bgcolor="#FFFFFF">¡¡ÆÀ¡¡·Ö£º
-                    <input type="radio" name="rank" value="1">
-1
-<input type="radio" name="rank" value="2">
-2
-<input name="rank" type="radio" value="3">
-3
-<input type="radio" name="rank" value="4">
-4
-<input type="radio" name="rank" value="5">
-5</td>
+                    åŒ¿åè¯„è®º                    </td>
                 </tr>
                 <tr>
                   <td bgcolor="#FFFFFF"><table width="300" border="0" cellspacing="1" cellpadding="1">
                     <tr>
-                      <td width="71">¡¡ÑéÖ¤Âë£º </td>
-                      <td width="81"><input name="validate" type="text" id="validate" size="10" class="nb"></td>
-                      <td><img src='../include/vdimgck.php' width='50' height='20'></td>
+                      <td>ã€€éªŒè¯ç ï¼š
+                      <input name="validate" type="text" id="validate" size="10">
+                      <img src='../include/vdimgck.php' width='50' height='20'>
+                      </td>
                     </tr>
                   </table></td>
                 </tr>
                 <tr> 
-                  <td bgcolor="#FFFFFF">¡¡ÆÀÂÛÄÚÈÝ£º(²»ÄÜ³¬¹ý500×Ö£¬Çë×Ô¾õ×ñÊØ»¥ÁªÍøÏà¹ØÕþ²ß·¨¹æ)</td>
+                  <td bgcolor="#FFFFFF">ã€€è¯„è®ºå†…å®¹ï¼š(ä¸èƒ½è¶…è¿‡500å­—ï¼Œè¯·è‡ªè§‰éµå®ˆäº’è”ç½‘ç›¸å…³æ”¿ç­–æ³•è§„)</td>
                 </tr>
                 <tr> 
-                  <td height="70" align="center" bgcolor="#FFFFFF"><textarea name="msg" rows="4" id="msg" style="width:96%"></textarea></td>
+                  <td height="70" align="center" bgcolor="#FFFFFF"><textarea name="msg" rows="4" id="msg" style="width:98%"></textarea></td>
+                </tr>
+                <tr>
+                  <td height="40" align="center" bgcolor="#FFFFFF"><input type='button' value='å‘è¡¨è¯„è®º' name='sb' onclick='javascript:if(document.feedback.msg.value!=&quot;&quot;) document.feedback.submit(); else alert(&quot;è¯„è®ºå†…å®¹ä¸èƒ½ä¸ºç©ºï¼&quot;);' class="submit" /></td>
                 </tr>
               </form>
             </table>
-	</td>    
-    <td width="200" align="right" valign="top"> 
-      <table width="97%" border="0" cellpadding="3" cellspacing="1" bgcolor="#DAE4D3">
-        <tr> 
-          <td height="21" align="center" bgcolor="#ECF8C9">¡ü×î½üÈÈÃÅÆÀÂÛ¡ý</td>
-</tr>
-<tr> 
-          <td height="146" valign="top" bgcolor="#FFFFFF">
-            <?php echo $feedback_hot?>
-          </td>
-</tr>
-</table>
-    </td>
-</tr>
-</table>
-<table width="860" border="0" align="center" cellpadding="0" cellspacing="2">
-  <tr>
-<td height="28" align="center">
-<hr size="1"></td>
-</tr>
-<tr> 
-<td height="40" align="center"><?php echo $cfg_powerby?></td>
-</tr>
-</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
 </body>
 </html>

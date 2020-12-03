@@ -4,11 +4,11 @@ CheckPurview('co_NewRule');
 if(empty($action)) $action = "";
 $aid = ereg_replace("[^0-9]","",$aid);
 if(empty($aid)){
-   ShowMsg("²ÎÊıÎŞĞ§!","-1");
+   ShowMsg("å‚æ•°æ— æ•ˆ!","-1");
    exit();
 }
 //----------------------------
-//ÊÂ¼ş´¥·¢´¦Àí
+//äº‹ä»¶è§¦å‘å¤„ç†
 //----------------------------
 if($action=="save")
 {
@@ -44,32 +44,32 @@ if($action=="save")
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery($query);
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÒ»¸ö¹æÔò!","co_export_rule.php");
+	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªè§„åˆ™!","co_export_rule.php");
 	exit();
 }
 else if($action=="delete")
 {
    if(empty($job)) $job="";
-   if($job=="") //È·ÈÏÌáÊ¾
+   if($job=="") //ç¡®è®¤æç¤º
    {
   	 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-  	 $wintitle = "É¾³ıÊı¾İ¹æÔòÄ£ĞÍ";
-	   $wecome_info = "<a href='co_export_rule.php'><u>Êı¾İ¹æÔòÄ£ĞÍ</u></a>::É¾³ı¹æÔò";
+  	 $wintitle = "åˆ é™¤æ•°æ®è§„åˆ™æ¨¡å‹";
+	   $wecome_info = "<a href='co_export_rule.php'><u>æ•°æ®è§„åˆ™æ¨¡å‹</u></a>::åˆ é™¤è§„åˆ™";
 	   $win = new OxWindow();
 	   $win->Init("co_export_rule_edit.php","js/blank.js","POST");
 	   $win->AddHidden("job","yes");
 	   $win->AddHidden("action",$action);
 	   $win->AddHidden("aid",$aid);
-	   $win->AddTitle("ÄãÈ·ÊµÒªÉ¾³ı[{$aid}]Õâ¸ö¹æÔò£¿");
+	   $win->AddTitle("ä½ ç¡®å®è¦åˆ é™¤[{$aid}]è¿™ä¸ªè§„åˆ™ï¼Ÿ");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
    }
-   else if($job=="yes") //²Ù×÷
+   else if($job=="yes") //æ“ä½œ
    {
    	 $dsql = new DedeSql(false);
 	   $dsql->ExecuteNoneQuery("Delete From #@__co_exrule where aid='$aid'");
 	   $dsql->Close();
-	   ShowMsg("³É¹¦É¾³ıÒ»¸ö¹æÔò!","co_export_rule.php");
+	   ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªè§„åˆ™!","co_export_rule.php");
 	   exit();
    }
    exit();
@@ -80,12 +80,12 @@ else if($action=="export")
    $row = $dsql->GetOne("Select * From #@__co_exrule where aid='$aid'");
    $dsql->Close();
    require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-   $wintitle = "É¾³ıÊı¾İ¹æÔòÄ£ĞÍ";
-	 $wecome_info = "<a href='co_export_rule.php'><u>Êı¾İ¹æÔòÄ£ĞÍ</u></a>::µ¼³ö¹æÔòÅäÖÃ";
+   $wintitle = "åˆ é™¤æ•°æ®è§„åˆ™æ¨¡å‹";
+	 $wecome_info = "<a href='co_export_rule.php'><u>æ•°æ®è§„åˆ™æ¨¡å‹</u></a>::å¯¼å‡ºè§„åˆ™é…ç½®";
 	 $win = new OxWindow();
 	 $win->Init();
-	 $win->AddTitle("ÒÔÏÂÎª¹æÔò[{$aid}]µÄÎÄ±¾ÅäÖÃ£¬Äã¿ÉÒÔ¹²Ïí¸øÄãµÄÅóÓÑ£º");
-	 $winform = $win->GetWindow("hand","<textarea name='cg' style='width:100%;height:300'>".$row['ruleset']."</textarea><br/><br/>");
+	 $win->AddTitle("ä»¥ä¸‹ä¸ºè§„åˆ™[{$aid}]çš„æ–‡æœ¬é…ç½®ï¼Œä½ å¯ä»¥å…±äº«ç»™ä½ çš„æœ‹å‹ï¼š");
+	 $winform = $win->GetWindow("hand","<textarea name='cg' style='width:100%;height:300px'>".$row['ruleset']."</textarea><br/><br/>");
 	 $win->Display();
    exit();
 }
@@ -107,213 +107,13 @@ if(is_array($dtp->CTags))
 }
 else
 {
-	ShowMsg("¸Ã¹æÔò²»ºÏ·¨£¬ÎŞ·¨½øĞĞ¸ü¸Ä!","-1");
+	ShowMsg("è¯¥è§„åˆ™ä¸åˆæ³•ï¼Œæ— æ³•è¿›è¡Œæ›´æ”¹!","-1");
 	$dsql->Close();
 	exit();
 }
 $noteinfos = $dtp->GetTagByName("note");
+
+require_once(dirname(__FILE__)."/templets/co_export_rule_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Êı¾İ¹æÔòÄ£ĞÍ</title>
-<script language='javascript'>
-var fieldstart = <?php echo ($noteid+1)?>;
-function CheckSubmit()
-{
-   if(document.form1.rulename.value==""){
-	   alert("¹æÔòÃû³Æ²»ÄÜÎª¿Õ£¡");
-	   document.form1.rulename.focus();
-	   return false;
-   }
-   if(document.form1.tablename.value==""){
-	   alert("µ¼ÈëµÄÊı¾İ±íµÄÖµ²»ÄÜÎª¿Õ£¡");
-	   document.form1.tablename.focus();
-	   return false;
-   }
-   return true;
-}
-function addMoreField()
-{
-   var objFieldNum = document.getElementById("fieldnum");
-   var objField = document.getElementById("morefield");
-   var addvalue = Number(objFieldNum.value);
-   var endnum = fieldstart + addvalue;
-   if(endnum>50){ alert("²»ÔÊĞí³¬¹ıÏŞ¶¨µÄÏîÄ¿!"); return; }
-   for(;fieldstart<endnum;fieldstart++)
-   {
-      if(fieldstart>9) objField.innerHTML += "×Ö¶Î"+fieldstart+"£º <input class='nnpp' name=\"fieldname"+fieldstart+"\" type=\"text\" size=\"15\"> ×¢½â£º <input class='nnpp' name=\"comment"+fieldstart+"\" type=\"text\" size=\"15\"> µİÊô±í£º <input class='nnpp' name=\"intable"+fieldstart+"\" type=\"text\" size=\"18\"><br>\r\n";
-      else objField.innerHTML += "×Ö¶Î0"+fieldstart+"£º <input class='nnpp' name=\"fieldname"+fieldstart+"\" type=\"text\" size=\"15\"> ×¢½â£º <input class='nnpp' name=\"comment"+fieldstart+"\" type=\"text\" size=\"15\"> µİÊô±í£º <input class='nnpp' name=\"intable"+fieldstart+"\" type=\"text\" size=\"18\"><br>\r\n";
-      objField.innerHTML += "ÖµÀàĞÍ£º <input type='radio' class='np' name='source"+fieldstart+"' value='function'>º¯Êı <input type='radio' class='np' name='source"+fieldstart+"' value='value'>Ö¸¶¨Öµ <input type='radio' class='np' name='source"+fieldstart+"' value='export' checked>µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º <input name='makevalue"+fieldstart+"' type='text' size='26' class='nnpp'><hr size=1 width=80%>\r\n";
-   }
-   
-}
-</script>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<style>
-	.nnpp{
-	border-bottom:1px solid #98CAEF;
-	border-top:1px solid #FFFFFF;
-	border-left:1px solid #FFFFFF;
-	border-right:1px solid #FFFFFF;
-	color:red;
-	filter:alpha(opacity=70);
- }
-</style>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td height="19" background="img/tbg.gif"><b><a href="co_export_rule.php"><u>Êı¾İ¹æÔòÄ£ĞÍ¹ÜÀí</u></a></b>&gt;&gt;ĞŞ¸Äµ¼Èë¹æÔò</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<form action="co_export_rule_edit.php" method="post" name="form1" onSubmit="return CheckSubmit();";>
-        <input type='hidden' name='action' value='save'>
-        <input type='hidden' name='aid' value='<?php echo $aid?>'>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ì»ù±¾²ÎÊı£º</strong></td>
-          </tr>
-          <tr> 
-            <td width="120" height="24" align="center">¹æÔòÃû³Æ£º</td>
-            <td height="24"> 
-              <input name="rulename" type="text" id="rulename" size="36" value="<?php echo $noteinfos->GetAtt('rulename')?>">
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">Èë¿âÀàĞÍ£º</td>
-            <td height="24">
-			<input name="etype" type="radio" class="np" value="µ±Ç°ÏµÍ³"<?php  if($noteinfos->GetAtt('etype')=='µ±Ç°ÏµÍ³') echo " checked";?>>
-             µ±Ç°ÏµÍ³ 
-            <input type="radio" name="etype" class="np" value="ÆäËüÏµÍ³"<?php  if($noteinfos->GetAtt('etype')=='ÆäËüÏµÍ³') echo " checked";?>>
-             ÆäËüÏµÍ³
-			</td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">Õë¶ÔÆµµÀ£º</td>
-            <td height="24">
-			<select name="channelid" id="channelid" style="width:150">
-                <option value="0">--·ÇÏµÍ³ÆµµÀÄ£ĞÍ--</option>
-				<?php 
-				$dsql = new DedeSql(false);
-				$dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0 order by ID asc");
-				$dsql->Execute();
-				while($row = $dsql->GetObject()){
-				   if($channelid==$row->ID) echo "<option value='{$row->ID}' selected>{$row->typename}</option>\r\n";
-				   else  echo "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
-				}
-				$dsql->Close();
-				?>
-              </select>
-			</td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ìÊı¾İ¿â»ù±¾²ÎÊı£º</strong></td>
-          </tr>
-          <tr> 
-            <td width="120" height="24" align="center">µ¼ÈëµÄÊı¾İ±í£º</td>
-            <td><input name="tablename" type="text" id="tablename" size="30" value="<?php echo $noteinfos->GetAtt('tablename')?>">
-              £¨¶à¸ö±íÓÃ¡°,¡±·Ö¿ª£¬×î¶àÖ§³ÖÁ½¸ö±í£©</td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">×Ô¶¯±àºÅ×Ö¶Î£º</td>
-            <td>
-            	<input name="autofield" type="text" id="autofield" size="15" value="<?php echo $noteinfos->GetAtt('autofield')?>">
-              (±íÊ¾Á½¸ö±í¹ØÁ¬Ê±£¬µÚÒ»¸ö±íµÄ×Ô¶¯±àºÅ×Ö¶Î)
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">¶à±íÍ¬²½×Ö¶Î£º</td>
-            <td>
-            	<input name="synfield" type="text" id="synfield" size="15" value="<?php echo $noteinfos->GetAtt('synfield')?>">
-              £¨±íÊ¾µÚ¶ş¸ö±íÓëµÚÒ»¸ö±íµÄ×Ô¶¯±àºÅ×Ö¶Î¹ØÁ¬×Ö¶Î£©
-             </td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td width="120" height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ì×Ö¶ÎÉè¶¨£º</strong></td>
-          </tr>
-          <tr> 
-            <td height="62" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="10%" height="45" align="center">Ôö¼Ó×Ö¶Î£º</td>
-                  <td width="90%"> <input name="fieldnum" type="text" id="fieldnum" value="5" size="8"> 
-                    <input type="button" name="Submit" value="Ôö¼Ó" onClick="addMoreField();" class='nbt'> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="60">&nbsp;</td>
-                  <td width="90%" align="left">
-                  	<?php 
-                  	if(is_array($dtp->CTags))
-                    {
-	                     $s = 0;
-	                     foreach($dtp->CTags as $ctag){
-		                      if($ctag->GetName()=='field')
-		                      {
-		                          $s++;
-		                          if($s<10) $ss="0".$s;
-		                          else $ss=$s;
-		                          $c1="";
-		                          $c2="";
-		                          $c3="";
-		                          if($ctag->GetAtt('source')=='function') $c1=" checked";
-		                          else if($ctag->GetAtt('source')=='value') $c2=" checked";
-		                          else  $c3=" checked";
-		                          $line="
-		                          ×Ö¶Î{$ss}£º 
-                    <input class='nnpp' name='fieldname{$s}' type='text' value='".$ctag->GetAtt('name')."' size='15'>
-                    ×¢½â£º 
-                    <input class='nnpp' name='comment{$s}' type='text' value='".$ctag->GetAtt('comment')."' size='15'>
-                    µİÊô±í£º 
-                    <input class='nnpp' name='intable{$s}' type='text' value='".$ctag->GetAtt('intable')."' size='18'> 
-                    <br>
-                    ÖµÀàĞÍ£º
-                  <input type='radio' class='np' name='source{$s}' value='function'{$c1}>º¯Êı
-                  <input type='radio' class='np' name='source{$s}' value='value'{$c2}>Ö¸¶¨Öµ
-                  <input type='radio' class='np' name='source{$s}' value='export'{$c3}>µ¼Èë/²É¼¯
-                  Ö¸¶¨Öµ»òº¯Êı£º
-                  <textarea class='nnpp' rows='1' cols='26' name='makevalue{$s}'>".$ctag->GetInnerText()."</textarea>
-                  <hr size=1 width=80%>\r\n";
-		                          echo $line;
-		                      }
-		                   }
-                    }
-                    
-                    ?>
-                    <span id='morefield'></span>
-                    </td>
-                </tr>
-              </table> </td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td bgcolor="#CCCCCC" height="1"></td>
-          </tr>
-          <tr> 
-            <td height="80"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td width="10%">&nbsp;</td>
-                  <td width="90%">
-				  <input name="imageField" class="np" type="image" src="img/button_save.gif" width="60" height="22" border="0">
-                    ¡¡ 
-                   <img class="np" src="img/button_reset.gif" width="60" height="22" border="0" style="cursor:hand" onClick="form1.reset();">
-				  </td>
-                </tr>
-              </table></td>
-          </tr>
-        </table>
-      </form>
-    </td>
-</tr>
-</table>
-</body>
-</html>

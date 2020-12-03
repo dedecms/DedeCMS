@@ -1,11 +1,11 @@
 <?php 
-/** ¼ì²éÈ¨ÏŞ ************************/
+/** æ£€æŸ¥æƒé™ ************************/
 $gotopagerank = "admin";
 require_once(dirname(__FILE__)."/config.php");
 
 if($cuserLogin->getUserRank()==-1)
 {
-	showMsg("¶Ô²»Æğ,ÄãÃ»ÓĞÈ¨ÏŞ£¡",-1);
+	showMsg("å¯¹ä¸èµ·,ä½ æ²¡æœ‰æƒé™ï¼",-1);
 	exit();
 }
 if(!empty($_COOKIE['GUEST_BOOK_MOVE'])) $GUEST_BOOK_MOVE = $_COOKIE['GUEST_BOOK_MOVE'];
@@ -21,7 +21,7 @@ if($job=="del")
 	$dsql->SetQuery("Delete From #@__guestbook where ID='$ID'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦É¾³ıÒ»ÌõÁôÑÔ£¡",$GUEST_BOOK_MOVE);
+	ShowMsg("æˆåŠŸåˆ é™¤ä¸€æ¡ç•™è¨€ï¼",$GUEST_BOOK_MOVE);
 	exit();
 }
 else if($job=="check")
@@ -29,7 +29,7 @@ else if($job=="check")
 	$dsql->SetQuery("update #@__guestbook set ischeck=1 where ID='$ID'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦ÉóºËÒ»ÌõÁôÑÔ£¡",$GUEST_BOOK_MOVE);
+	ShowMsg("æˆåŠŸå®¡æ ¸ä¸€æ¡ç•™è¨€ï¼",$GUEST_BOOK_MOVE);
 	exit();
 }
 else if($job=="editok")
@@ -38,13 +38,13 @@ else if($job=="editok")
 	if($remsg!=""){
 		$remsg = trimMsg($remsg,1);
 		$remsg = cn_substr($remsg,2000);
-		$msg = $msg."<br><font color=red>¹ÜÀíÔ±»Ø¸´£º$remsg</font>";
+		$msg = $msg."<br><font color=red>ç®¡ç†å‘˜å›å¤ï¼š$remsg</font>";
 	}
 	$ID = ereg_replace("[^0-9]","",$ID);
 	$dsql->SetQuery("update #@__guestbook set msg='$msg' where ID='$ID'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸Ä»ò»Ø¸´Ò»ÌõÁôÑÔ£¡",$GUEST_BOOK_MOVE);
+	ShowMsg("æˆåŠŸæ›´æ”¹æˆ–å›å¤ä¸€æ¡ç•™è¨€ï¼",$GUEST_BOOK_MOVE);
 	exit();
 }
 
@@ -54,8 +54,8 @@ $row = $dsql->GetObject();
 ?>
 <html>
 <head>
-<title>¹ÜÀíÁôÑÔ</title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>ç®¡ç†ç•™è¨€</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel=stylesheet href="images/css.css" type="text/css">
 </head>
 <body topmargin="2" >
@@ -73,47 +73,47 @@ $row = $dsql->GetObject();
 <td width="25%" height="20">&nbsp;</td>
 <td width="25%" height='5'>
 <td width="35%" align='right'><img src='images/quote.gif' border=0 height=16 width=16></td>
-<td width="15%"> &nbsp;<a href="#write"><b>¹ÜÀíÁôÑÔ</b></a></td>
+<td width="15%"> &nbsp;<a href="#write"><b>ç®¡ç†ç•™è¨€</b></a></td>
 </tr></table>
 <table width="760" border="0" cellspacing="1" cellpadding="4" align="center" bgcolor="#ABD82C">
 <form method="post" action="edit.php">
 <input type="hidden" name="ID" value="<?php echo $ID?>">
 <input type="hidden" name="job" value="editok">
 <tr bgcolor="#ffffff">
-  <td width="10%" align="center" nowrap><font color="#FF0000">*</font>ÄãµÄĞÕÃû£º</td>
+  <td width="10%" align="center" nowrap><font color="#FF0000">*</font>ä½ çš„å§“åï¼š</td>
   <td width="40%"><?php echo $row->uname?></td>
-  <td width="9%" align="center" nowrap>OICQºÅÂë£º</td>
+  <td width="9%" align="center" nowrap>OICQå·ç ï¼š</td>
   <td width="41%"><?php echo $row->qq?></td>
 </tr>
 <tr bgcolor="#ffffff">
-  <td align="center" nowrap width="10%">&nbsp;µç×ÓÓÊ¼ş£º</td>
+  <td align="center" nowrap width="10%">&nbsp;ç”µå­é‚®ä»¶ï¼š</td>
   <td width="40%"><?php echo $row->email?></td>
-  <td width="9%" align="center" nowrap height="12">¸öÈËÖ÷Ò³£º</td>
+  <td width="9%" align="center" nowrap height="12">ä¸ªäººä¸»é¡µï¼š</td>
   <td width="41%" height="12"><?php echo $row->homepage?></td>
 </tr>
 <tr bgcolor="#ffffff">
   <td align="center" nowrap width="10%">
-  <font color="#FF0000">*</font>ÁôÑÔÄÚÈİ£º<br>(1000×ÖÄÚ)
+  <font color="#FF0000">*</font>ç•™è¨€å†…å®¹ï¼š<br>(1000å­—å†…)
   </td>
   <td height="2" colspan="3" align="left"><textarea name="msg" cols="80" rows="6" class="textarea"><?php echo $row->msg?></textarea></td>
   </tr>
 <tr bgcolor="#ffffff">
-  <td align="center" nowrap>»Ø¸´ÁôÑÔ£º<br>
-    (1000×ÖÄÚ)</td>
+  <td align="center" nowrap>å›å¤ç•™è¨€ï¼š<br>
+    (1000å­—å†…)</td>
   <td colspan="3" nowrap><textarea name="remsg" cols="80" rows="6" class="textarea"></textarea></td>
   </tr>
 <tr bgcolor="#ffffff">
   <td align="center" nowrap colspan="4">
-	<input maxlength="1000" type="submit" name="Submit" value=" ±£ ´æ " class="btn">
+	<input maxlength="1000" type="submit" name="Submit" value=" ä¿ å­˜ " class="btn">
 	&nbsp;&nbsp;
-	<input type="reset" name="Submit2" value="È¡ Ïû" class="btn">
+	<input type="reset" name="Submit2" value="å– æ¶ˆ" class="btn">
   </td>
 </tr>
 </form>
 </table>
 <table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td height="40" align="center"><a href="http://www.dedecms.com" target="_blank">Power by DedeCms Ö¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³</a></td>
+    <td height="40" align="center"><a href="http://www.dedecms.com" target="_blank">Power by DedeCms ç»‡æ¢¦å†…å®¹ç®¡ç†ç³»ç»Ÿ</a></td>
   </tr>
 </table>
 </center>

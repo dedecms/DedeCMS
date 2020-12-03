@@ -1,10 +1,10 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 //-------------------------------------
 //class TypeLink
-//»ñµÃÎÄÕÂµÄÎ»ÖÃºÍÎÄÕÂµÄÀàÄ¿Î»ÖÃµÈ
-//·²ÒÔLogic¿ªÍ·µÄ³ÉÔ±,Ò»°ãÔÚÄÚµ÷ÓÃ,²»ÔÚÍâµ÷ÓÃ(Ïàµ±ÓÚ±£»¤¼¶³ÉÔ±)
+//èŽ·å¾—æ–‡ç« çš„ä½ç½®å’Œæ–‡ç« çš„ç±»ç›®ä½ç½®ç­‰
+//å‡¡ä»¥Logicå¼€å¤´çš„æˆå‘˜,ä¸€èˆ¬åœ¨å†…è°ƒç”¨,ä¸åœ¨å¤–è°ƒç”¨(ç›¸å½“äºŽä¿æŠ¤çº§æˆå‘˜)
 //-------------------------------------
 class TypeLink
 {
@@ -20,9 +20,9 @@ class TypeLink
 	var $valuePosition;
 	var $valuePositionName;
 	var $OptionArrayList;
-	//¹¹Ôìº¯Êý///////
+	//æž„é€ å‡½æ•°///////
 	//-------------
-	//php5¹¹Ôìº¯Êý
+	//php5æž„é€ å‡½æ•°
 	//-------------
 	function __construct($typeid)
  	{
@@ -37,17 +37,16 @@ class TypeLink
 	  $this->valuePositionName = "";
 	  $this->typeDir = "";
 	  $this->OptionArrayList = "";
-		//ÔØÈëÀàÄ¿ÐÅÏ¢
+		//è½½å…¥ç±»ç›®ä¿¡æ¯
 		$query = "
-		Select #@__arctype.*,#@__channeltype.typename as ctypename 
-		From #@__arctype left join #@__channeltype 
-		on #@__channeltype.ID=#@__arctype.channeltype 
+		Select #@__arctype.*,#@__channeltype.typename as ctypename
+		From #@__arctype left join #@__channeltype
+		on #@__channeltype.ID=#@__arctype.channeltype
 		where #@__arctype.ID='$typeid'
 		";
 		if($typeid > 0){
-		  $this->dsql->SetQuery($query);
-		  $this->TypeInfos = $this->dsql->GetOne();
-		  //Ä£°åºÍÂ·¾¶±äÁ¿´¦Àí
+		  $this->TypeInfos = $this->dsql->GetOne($query,MYSQL_ASSOC);
+		  //æ¨¡æ¿å’Œè·¯å¾„å˜é‡å¤„ç†
  		  $this->TypeInfos['typedir'] = MfTypedir($this->TypeInfos['typedir']);
  		  $this->TypeInfos['tempindex'] = MfTemplet($this->TypeInfos['tempindex']);
  		  $this->TypeInfos['templist'] = MfTemplet($this->TypeInfos['templist']);
@@ -55,18 +54,18 @@ class TypeLink
  		  $this->TypeInfos['tempone'] = MfTemplet($this->TypeInfos['tempone']);
 	  }
   }
-	//¶ÔÓÚÊ¹ÓÃÄ¬ÈÏ¹¹Ôìº¯ÊýµÄÇé¿ö
-	//GetPositionLink()½«²»¿ÉÓÃ
+	//å¯¹äºŽä½¿ç”¨é»˜è®¤æž„é€ å‡½æ•°çš„æƒ…å†µ
+	//GetPositionLink()å°†ä¸å¯ç”¨
 	function TypeLink($typeid){
 		$this->__construct($typeid);
 	}
-	//¹Ø±ÕÊý¾Ý¿âÁ¬½Ó£¬Îö·Å×ÊÔ´
+	//å…³é—­æ•°æ®åº“è¿žæŽ¥ï¼Œæžæ”¾èµ„æº
 	//-----------------------
 	function Close(){
 		$this->dsql->Close();
 	}
 	//------------------------
-	//ÖØÉèÀàÄ¿ID
+	//é‡è®¾ç±»ç›®ID
 	//------------------------
 	function SetTypeID($typeid){
 		$this->TypeID = $typeid;
@@ -74,23 +73,23 @@ class TypeLink
 	  $this->valuePositionName = "";
 	  $this->typeDir = "";
 	  $this->OptionArrayList = "";
-		//ÔØÈëÀàÄ¿ÐÅÏ¢
+		//è½½å…¥ç±»ç›®ä¿¡æ¯
 		$query = "
-		Select #@__arctype.*,#@__channeltype.typename as ctypename 
-		From #@__arctype left join #@__channeltype 
+		Select #@__arctype.*,#@__channeltype.typename as ctypename
+		From #@__arctype left join #@__channeltype
 		on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$typeid' ";
 		$this->dsql->SetQuery($query);
 		$this->TypeInfos = $this->dsql->GetOne();
 	}
 	//-----------------------
-	//»ñµÃÕâ¸öÀàÄ¿µÄÂ·¾¶
+	//èŽ·å¾—è¿™ä¸ªç±»ç›®çš„è·¯å¾„
 	//-----------------------
 	function GetTypeDir(){
 		if(empty($this->TypeInfos['typedir'])) return $GLOBALS['cfg_cmspath'].$GLOBALS['cfg_arcdir'];
 		else return $this->TypeInfos['typedir'];
 	}
 	//-----------------------------
-	//»ñµÃÎÄÕÂÍøÖ·
+	//èŽ·å¾—æ–‡ç« ç½‘å€
 	//----------------------------
 	function GetFileUrl($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0,$siterefer="",$sitepath=""){
 		$articleRule = "";
@@ -101,8 +100,8 @@ class TypeLink
 		else if(is_array($this->TypeInfos)) $articleDir = $this->GetTypeDir();
 		return GetFileUrl($aid,$typeid,$timetag,$title,$ismake,$rank,$articleRule,$articleDir,$money,$siterefer,$sitepath);
 	}
-	//»ñµÃÐÂÎÄ¼þÍøÖ·
-	//±¾º¯Êý»á×Ô¶¯´´½¨Ä¿Â¼
+	//èŽ·å¾—æ–°æ–‡ä»¶ç½‘å€
+	//æœ¬å‡½æ•°ä¼šè‡ªåŠ¨åˆ›å»ºç›®å½•
 	function GetFileNewName($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0,$siterefer="",$sitepath=""){
 		$articleRule = "";
 		$articleDir = "";
@@ -113,8 +112,8 @@ class TypeLink
 		return GetFileNewName($aid,$typeid,$timetag,$title,$ismake,$rank,$articleRule,$articleDir,$money,$siterefer,$sitepath);
 	}
 	//----------------------------------------------
-	//»ñµÃÄ³ÀàÄ¿µÄÁ´½ÓÁÐ±í Èç£ºÀàÄ¿Ò»>>ÀàÄ¿¶þ>> ÕâÑùµÄÐÎÊ½
-	//islink ±íÊ¾·µ»ØµÄÁÐ±íÊÇ·ñ´øÁ¬½Ó
+	//èŽ·å¾—æŸç±»ç›®çš„é“¾æŽ¥åˆ—è¡¨ å¦‚ï¼šç±»ç›®ä¸€>>ç±»ç›®äºŒ>> è¿™æ ·çš„å½¢å¼
+	//islink è¡¨ç¤ºè¿”å›žçš„åˆ—è¡¨æ˜¯å¦å¸¦è¿žæŽ¥
 	//----------------------------------------------
 	function GetPositionLink($islink=true)
 	{
@@ -127,68 +126,68 @@ class TypeLink
 		}
 		else if($this->TypeID==0){
 			if($islink) return $indexpage;
-			else return "Ã»Ö¸¶¨·ÖÀà£¡";
+			else return "æ²¡æŒ‡å®šåˆ†ç±»ï¼";
 		}
 		else
 		{
 			if($islink)
 			{
 			  $this->valuePosition = $this->GetOneTypeLink($this->TypeInfos);
-			  if($this->TypeInfos['reID']!=0){ //µ÷ÓÃµÝ¹éÂß¼­
+			  if($this->TypeInfos['reID']!=0){ //è°ƒç”¨é€’å½’é€»è¾‘
 			  	$this->LogicGetPosition($this->TypeInfos['reID'],true);
 			  }
 			  $this->valuePosition = $indexpage.$this->SplitSymbol.$this->valuePosition;
 			  return $this->valuePosition.$this->SplitSymbol;
 		  }else{
 		  	$this->valuePositionName = $this->TypeInfos['typename'];
-			  if($this->TypeInfos['reID']!=0){ //µ÷ÓÃµÝ¹éÂß¼­
+			  if($this->TypeInfos['reID']!=0){ //è°ƒç”¨é€’å½’é€»è¾‘
 			    $this->LogicGetPosition($this->TypeInfos['reID'],false);
 			  }
 			  return $this->valuePositionName;
 		  }
 		}
 	}
-	//»ñµÃÃû×ÖÁÐ±í
+	//èŽ·å¾—åå­—åˆ—è¡¨
 	function GetPositionName(){
 		return $this->GetPositionLink(false);
 	}
-	//»ñµÃÄ³ÀàÄ¿µÄÁ´½ÓÁÐ±í£¬µÝ¹éÂß¼­²¿·Ö
+	//èŽ·å¾—æŸç±»ç›®çš„é“¾æŽ¥åˆ—è¡¨ï¼Œé€’å½’é€»è¾‘éƒ¨åˆ†
 	function LogicGetPosition($ID,$islink)
-	{	
+	{
 		$this->dsql->SetQuery("Select ID,reID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl From #@__arctype where ID='".$ID."'");
 		$tinfos = $this->dsql->GetOne();
-		
-		if($islink) $this->valuePosition = $this->GetOneTypeLink($tinfos).$this->SplitSymbol.$this->valuePosition; 
-		else $this->valuePositionName = $tinfos['typename'].$this->SplitSymbol.$this->valuePositionName; 
-		
+
+		if($islink) $this->valuePosition = $this->GetOneTypeLink($tinfos).$this->SplitSymbol.$this->valuePosition;
+		else $this->valuePositionName = $tinfos['typename'].$this->SplitSymbol.$this->valuePositionName;
+
 		if($tinfos['reID']>0) $this->LogicGetPosition($tinfos['reID'],$islink);
 		else return 0;
-		
+
 	}
-	//»ñµÃÄ³¸öÀàÄ¿µÄ³¬Á´½ÓÐÅÏ¢
+	//èŽ·å¾—æŸä¸ªç±»ç›®çš„è¶…é“¾æŽ¥ä¿¡æ¯
 	//-----------------------
 	function GetOneTypeLink($typeinfos){
 	  $typepage = $this->GetOneTypeUrl($typeinfos);
 		$typelink = "<a href='".$typepage."'>".$typeinfos['typename']."</a>";
 		return $typelink;
 	}
-	//»ñµÃÄ³·ÖÀàÁ¬½ÓµÄURL
+	//èŽ·å¾—æŸåˆ†ç±»è¿žæŽ¥çš„URL
 	//---------------------
 	function GetOneTypeUrl($typeinfos){
 		return GetTypeUrl($typeinfos['ID'],MfTypedir($typeinfos['typedir']),$typeinfos['isdefault'],
 		$typeinfos['defaultname'],$typeinfos['ispart'],$typeinfos['namerule2'],$typeinfos['siteurl']);
 	}
-	//»ñµÃÄ³IDµÄÏÂ¼¶ID(°üÀ¨±¾Éí)µÄSQLÓï¾ä¡°($tb.typeid=id1 or $tb.typeid=id2...)¡±
+	//èŽ·å¾—æŸIDçš„ä¸‹çº§ID(åŒ…æ‹¬æœ¬èº«)çš„SQLè¯­å¥â€œ($tb.typeid=id1 or $tb.typeid=id2...)â€
 	//-------------------------------------------
-	function GetSunID($typeid=-1,$tb="#@__archives",$channel=0){
-    $ids = TypeGetSunID($typeid,$this->dsql,$tb,$channel);
+	function GetSunID($typeid=-1,$tb="#@__archives",$channel=0,$idlist=false){
+    $ids = TypeGetSunID($typeid,$this->dsql,$tb,$channel,$idlist);
 		return $ids;
 	}
 	//------------------------------
-	//»ñµÃÀà±ðÁÐ±í
-	//hid ÊÇÖ¸Ä¬ÈÏÑ¡ÖÐÀàÄ¿£¬0 ±íÊ¾¡°ÇëÑ¡ÔñÀàÄ¿¡±»ò¡°²»ÏÞÀàÄ¿¡±
-	//oper ÊÇÓÃ»§ÔÊÐí¹ÜÀíµÄÀàÄ¿£¬0 ±íÊ¾ËùÓÐÀàÄ¿
-	//channeltype ÊÇÖ¸ÀàÄ¿µÄÄÚÈÝÀàÐÍ£¬0 ±íÊ¾²»ÏÞÆµµÀ
+	//èŽ·å¾—ç±»åˆ«åˆ—è¡¨
+	//hid æ˜¯æŒ‡é»˜è®¤é€‰ä¸­ç±»ç›®ï¼Œ0 è¡¨ç¤ºâ€œè¯·é€‰æ‹©ç±»ç›®â€æˆ–â€œä¸é™ç±»ç›®â€
+	//oper æ˜¯ç”¨æˆ·å…è®¸ç®¡ç†çš„ç±»ç›®ï¼Œ0 è¡¨ç¤ºæ‰€æœ‰ç±»ç›®
+	//channeltype æ˜¯æŒ‡ç±»ç›®çš„å†…å®¹ç±»åž‹ï¼Œ0 è¡¨ç¤ºä¸é™é¢‘é“
 	//--------------------------------
 	function GetOptionArray($hid=0,$oper=0,$channeltype=0,$usersg=0){
 		return $this->GetOptionList($hid,$oper,$channeltype,$usersg);
@@ -204,21 +203,21 @@ class TypeLink
     }
     if($channeltype==0) $ctsql="";
     else $ctsql=" And channeltype='$channeltype' ";
-    	
+
     if($oper!=0){ $query = "Select ID,typename,ispart From #@__arctype where ispart<>2 And ID='$oper' $ctsql"; }
     else{ $query = "Select ID,typename,ispart From #@__arctype where ispart<>2 And reID=0 $ctsql order by sortrank asc"; }
-      
+
     $this->dsql->SetQuery($query);
     $this->dsql->Execute();
-    	
+
      while($row=$this->dsql->GetObject()){
         if($row->ID!=$hid){
           if($row->ispart==1) $this->OptionArrayList .= "<option value='".$row->ID."' style='background-color:#EFEFEF;color:#666666'>".$row->typename."</option>\r\n";
           else $this->OptionArrayList .= "<option value='".$row->ID."'>".$row->typename."</option>\r\n";
         }
-        $this->LogicGetOptionArray($row->ID,"©¤");
+        $this->LogicGetOptionArray($row->ID,"â”€");
      }
-     return $this->OptionArrayList; 
+     return $this->OptionArrayList;
 	}
 	function LogicGetOptionArray($ID,$step){
 		$this->dsql->SetQuery("Select ID,typename,ispart From #@__arctype where reID='".$ID."' And ispart<>2 order by sortrank asc");
@@ -226,12 +225,12 @@ class TypeLink
 		while($row=$this->dsql->GetObject($ID)){
       if($row->ispart==1) $this->OptionArrayList .= "<option value='".$row->ID."' style='background-color:#EFEFEF;color:#666666'>$step".$row->typename."</option>\r\n";
       else $this->OptionArrayList .= "<option value='".$row->ID."'>$step".$row->typename."</option>\r\n";
-      $this->LogicGetOptionArray($row->ID,$step."©¤");
+      $this->LogicGetOptionArray($row->ID,$step."â”€");
     }
 	}
 	//----------------------------
-	//»ñµÃÓë¸ÃÀàÏà¹ØµÄÀàÄ¿£¬±¾º¯ÊýÓ¦ÓÃÓÚÄ£°å±ê¼Ç{dede:channel}{/dede:channel}ÖÐ
-	//$typetype µÄÖµÎª£º sun ÏÂ¼¶·ÖÀà self Í¬¼¶·ÖÀà top ¶¥¼¶·ÖÀà
+	//èŽ·å¾—ä¸Žè¯¥ç±»ç›¸å…³çš„ç±»ç›®ï¼Œæœ¬å‡½æ•°åº”ç”¨äºŽæ¨¡æ¿æ ‡è®°{dede:channel}{/dede:channel}ä¸­
+	//$typetype çš„å€¼ä¸ºï¼š sun ä¸‹çº§åˆ†ç±» self åŒçº§åˆ†ç±» top é¡¶çº§åˆ†ç±»
 	//-----------------------------
 	function GetChannelList($typeid=0,$reID=0,$row=8,$typetype='sun',$innertext='',
 	$col=1,$tablewidth=100,$myinnertext='')
@@ -240,33 +239,33 @@ class TypeLink
 		if($row=="") $row = 8;
 		if($reID=="") $reID = 0;
 		if($col=="") $col = 1;
-		
+
 		$tablewidth = str_replace("%","",$tablewidth);
 		if($tablewidth=="") $tablewidth=100;
 		if($col=="") $col = 1;
-		$colWidth = ceil(100/$col); 
+		$colWidth = ceil(100/$col);
 		$tablewidth = $tablewidth."%";
 		$colWidth = $colWidth."%";
-		
+
 		if($typetype=="") $typetype="sun";
 		if($innertext=="") $innertext = GetSysTemplets("channel_list.htm");
-		
+
 		if($reID==0 && $typeid>0){
 		  $dbrow = $this->dsql->GetOne("Select reID From #@__arctype where ID='$typeid' ");
 		  if(is_array($dbrow)) $reID = $dbrow['reID'];
 		}
-		
+
 		$likeType = "";
 		if($typetype=="top"){
-		  $sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl 
+		  $sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
 		  From #@__arctype where reID=0 And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 		else if($typetype=="sun"||$typetype=="son"){
-		  $sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl 
+		  $sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
 		  From #@__arctype where reID='$typeid' And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 		else if($typetype=="self"){
-			$sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl 
+			$sql = "Select ID,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
 			From #@__arctype where reID='$reID' And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 		//And ID<>'$typeid'
@@ -287,23 +286,25 @@ class TypeLink
          if($row=$this->dsql->GetArray())
          {
 			     $row['id'] = $row['ID'];
-			     //´¦Àíµ±Ç°À¸Ä¿µÄÑùÊ½
-			     if($row['ID']=="$typeid"){
-			        if($myinnertext!=''){
+			     //å¤„ç†å½“å‰æ ç›®çš„æ ·å¼
+
+			     if($row['ID']=="$typeid" && $myinnertext != ''){
+
 			        	 $linkOkstr = $myinnertext;
 			        	 $row['typelink'] = $this->GetOneTypeUrl($row);
 			        	 $linkOkstr = str_replace("~typelink~",$row['typelink'],$linkOkstr);
 			        	 $linkOkstr = str_replace("~typename~",$row['typename'],$linkOkstr);
 			        	 $likeType .= $linkOkstr;
-			        }
-			     }else{//·Çµ±Ç°À¸Ä¿
+
+			     }else{//éžå½“å‰æ ç›®
+
 			       $row['typelink'] = $this->GetOneTypeUrl($row);
 			       if(is_array($dtp2->CTags)){
 			     	   foreach($dtp2->CTags as $tagid=>$ctag)
 			     	   { if(isset($row[$ctag->GetName()])) $dtp2->Assign($tagid,$row[$ctag->GetName()]); }
 			       }
 			       $likeType .= $dtp2->GetResult();
-			     }
+			    }
          }
          if($col>1) $likeType .= "	</td>\r\n";
          $GLOBALS['autoindex']++;

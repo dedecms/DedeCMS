@@ -4,24 +4,24 @@ CheckPurview('member_Data');
 if(empty($action)) $action = '';
 
 /*-------------------------------
-//ÁĞ³öÊı¾İ¿âÀïµÄ±í
+//åˆ—å‡ºæ•°æ®åº“é‡Œçš„è¡¨
 function __gettables()
 --------------------------------*/
 if($action=='gettables'){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
-	$qbutton = "<input type='button' name='seldbtable' value='Ñ¡ÔñÊı¾İ±í' class='nbt' onclick='SelectedTable()'>\r\n";
+	header("Content-Type: text/html; charset=utf-8");
+	$qbutton = "<input type='button' name='seldbtable' value='é€‰æ‹©æ•°æ®è¡¨' class='inputbut' onclick='SelectedTable()'>\r\n";
 	if($dbptype==2 && $dbname==""){
-		echo "<font color='red'>ÄãÃ»Ö¸¶¨Êı¾İ¿âÃû³Æ£¡</font><br>";
+		echo "<font color='red'>ä½ æ²¡æŒ‡å®šæ•°æ®åº“åç§°ï¼</font><br>";
 		echo $qbutton;
 		exit();
 	}
 	if($dbptype==3 
 	&& (empty($dbhost) || empty($dbname) || empty($dbuser)))
 	{
-		echo "<font color='red'>ÄãÑ¡ÔñÁË¡°Ö¸¶¨ĞÂµÄµÇÂ¼ĞÅÏ¢¡±£¬±ØĞëÌîĞ´ÍêËùÓĞÊı¾İ¿âµÇÂ¼Ñ¡Ïî£¡</font><br>";
+		echo "<font color='red'>ä½ é€‰æ‹©äº†â€œæŒ‡å®šæ–°çš„ç™»å½•ä¿¡æ¯â€ï¼Œå¿…é¡»å¡«å†™å®Œæ‰€æœ‰æ•°æ®åº“ç™»å½•é€‰é¡¹ï¼</font><br>";
 		echo $qbutton;
 		exit();
 	}
@@ -39,14 +39,14 @@ if($action=='gettables'){
 		$dsql->Open(false);
 	}
 	if(!$dsql->linkID){
-		echo "<font color='red'>Á¬½ÓÊı¾İ¿âÊ§°Ü£¡</font><br>";
+		echo "<font color='red'>è¿æ¥æ•°æ®åº“å¤±è´¥ï¼</font><br>";
 		echo $qbutton;
 		exit();
 	}
 	$dsql->SetQuery("Show Tables");
   $dsql->Execute('t');
   if($dsql->GetError()!=""){
-  	echo "<font color='red'>ÕÒ²»µ½ÄãËùÖ¸¶¨µÄÊı¾İ¿â£¡ $dbname</font><br>";
+  	echo "<font color='red'>æ‰¾ä¸åˆ°ä½ æ‰€æŒ‡å®šçš„æ•°æ®åº“ï¼ $dbname</font><br>";
 		echo $qbutton;
   }
   echo "<select name='exptable' id='exptable' size='10' style='width:60%' onchange='ShowFields()'>\r\n";
@@ -58,14 +58,14 @@ if($action=='gettables'){
 	exit();
 }
 /*-------------------------------
-//ÁĞ³öÊı¾İ¿â±íÀïµÄ×Ö¶Î
+//åˆ—å‡ºæ•°æ®åº“è¡¨é‡Œçš„å­—æ®µ
 function __getfields()
 --------------------------------*/
 if($action=='getfields'){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	if($dbptype==1){
 		$dsql = new DedeSql(false);
 	}
@@ -80,13 +80,13 @@ if($action=='getfields'){
 		$dsql->Open(false);
 	}
 	if(!$dsql->linkID){
-		echo "<font color='red'>Á¬½ÓÊı¾İÔ´µÄÊı¾İ¿âÊ§°Ü£¡</font><br>";
+		echo "<font color='red'>è¿æ¥æ•°æ®æºçš„æ•°æ®åº“å¤±è´¥ï¼</font><br>";
 		echo $qbutton;
 		exit();
 	}
 	$dsql->GetTableFields($exptable);
 	echo "<div style='border:1px solid #ababab;background-color:#FEFFF0;margin-top:6px;padding:3px;line-height:160%'>";
-	echo "±í(".$exptable.")º¬ÓĞµÄ×Ö¶Î£º<br>";
+	echo "è¡¨(".$exptable.")å«æœ‰çš„å­—æ®µï¼š<br>";
 	while($row = $dsql->GetFieldObject()){
 		echo $row->name." ";
 	}
@@ -95,7 +95,7 @@ if($action=='getfields'){
 	exit();
 }
 /*-------------------------------
-//±£´æÓÃ»§ÉèÖÃ£¬Çå¿Õ»áÔ±Êı¾İ
+//ä¿å­˜ç”¨æˆ·è®¾ç½®ï¼Œæ¸…ç©ºä¼šå‘˜æ•°æ®
 function __saveSetting()
 --------------------------------*/
 else if($action=='savesetting'){
@@ -103,11 +103,11 @@ else if($action=='savesetting'){
   else $validate = strtolower($validate);
   $svali = GetCkVdValue();
   if($validate=="" || $validate!=$svali){
-	  ShowMsg("°²È«È·ÈÏÂë²»ÕıÈ·!","javascript:;");
+	  ShowMsg("å®‰å…¨ç¡®è®¤ç ä¸æ­£ç¡®!","javascript:;");
 	  exit();
   }
   if(empty($userfield) || empty($pwdfield)){
-  	ShowMsg("ÓÃ»§ÃûºÍÃÜÂë×Ö¶Î±ØĞëÖ¸¶¨£¡","javascript:;");
+  	ShowMsg("ç”¨æˆ·åå’Œå¯†ç å­—æ®µå¿…é¡»æŒ‡å®šï¼","javascript:;");
   	exit();
   }
   $configfile = dirname(__FILE__)."/../include/config_hand.php";
@@ -118,8 +118,8 @@ else if($action=='savesetting'){
   $dsql->ExecuteNoneQuery("Update #@__sysconfig set value='$oldsign' where varname='cfg_ddsign' ");
   $dsql->SetQuery("Select varname,value From #@__sysconfig order by aid asc");
   $dsql->Execute();
-  copy($configfile,$configfile_bak) or die("±£´æÅäÖÃ{$configfile}Ê±Ê§°Ü£¡Çë¼ì²âÈ¨ÏŞ");
-	$fp = fopen($configfile,'w') or die("±£´æÅäÖÃ{$configfile}Ê±Ê§°Ü£¡Çë¼ì²âÈ¨ÏŞ");
+  copy($configfile,$configfile_bak) or die("ä¿å­˜é…ç½®{$configfile}æ—¶å¤±è´¥ï¼è¯·æ£€æµ‹æƒé™");
+	$fp = fopen($configfile,'w') or die("ä¿å­˜é…ç½®{$configfile}æ—¶å¤±è´¥ï¼è¯·æ£€æµ‹æƒé™");
 	flock($fp,3);
 	fwrite($fp,"<"."?php\r\n");
   while($row = $dsql->GetArray()){
@@ -135,18 +135,18 @@ else if($action=='savesetting'){
   $dsql->Close();
   $nurl = GetCurUrl();
   $nurl = str_replace("savesetting","converdata",$nurl);
-  ShowMsg("Íê³ÉÊı¾İ±£´æ£¬²¢Çå¿Õ±¾ÏµÍ³µÄ»áÔ±Êı¾İ£¬ÏÖÔÚ¿ªÊ¼µ¼ÈëÊı¾İ£¡",$nurl);
+  ShowMsg("å®Œæˆæ•°æ®ä¿å­˜ï¼Œå¹¶æ¸…ç©ºæœ¬ç³»ç»Ÿçš„ä¼šå‘˜æ•°æ®ï¼Œç°åœ¨å¼€å§‹å¯¼å…¥æ•°æ®ï¼",$nurl);
   exit();
 }
 /*-------------------------------
-//±£´æÓÃ»§ÉèÖÃ£¬×ª»»»áÔ±Êı¾İ
+//ä¿å­˜ç”¨æˆ·è®¾ç½®ï¼Œè½¬æ¢ä¼šå‘˜æ•°æ®
 function __ConverData()
 --------------------------------*/
 else if($action=='converdata'){
 	set_time_limit(0);
 	if(empty($tgmd5len)) $tgmd5len = 32;
 	if($tgmd5len < $cfg_md5len && $tgtype=='md5'){
-		ShowMsg("ÎŞ·¨´Ó¶ÌµÄMD5ÃÜÂë×ª»»Îª¸ü³¤µÄÃÜÂë£¡","javascript:;");
+		ShowMsg("æ— æ³•ä»çŸ­çš„MD5å¯†ç è½¬æ¢ä¸ºæ›´é•¿çš„å¯†ç ï¼","javascript:;");
 		exit();
 	}
 	$oldchar = $cfg_db_language;
@@ -165,7 +165,7 @@ else if($action=='converdata'){
 		$dsql->Open(false);
 	}
 	if(!$dsql->linkID){
-		ShowMsg("Á¬½ÓÊı¾İÔ´µÄÊı¾İ¿âÊ§°Ü£¡","javascript:;");
+		ShowMsg("è¿æ¥æ•°æ®æºçš„æ•°æ®åº“å¤±è´¥ï¼","javascript:;");
 		exit();
 	}
 	$fieldsql = '';
@@ -201,8 +201,8 @@ else if($action=='converdata'){
 		if(empty($sexfield)) $sex = '';
 		else{
 			$sex = $row[$sexfield];
-			if($sex==$sexman) $sex = 'ÄĞ';
-			else if($sex==$sexwoman) $sex = 'Å®';
+			if($sex==$sexman) $sex = 'ç”·';
+			else if($sex==$sexwoman) $sex = 'å¥³';
 			else $sex = '';
 		}
 		
@@ -220,8 +220,9 @@ else if($action=='converdata'){
 	}
 	$dsql->Close();
 	$dsql2->Close();
-	ShowMsg("³É¹¦µ¼Èë ".$c." ÌõÊı¾İ£¡","javascript:;");
+	ShowMsg("æˆåŠŸå¯¼å…¥ ".$c." æ¡æ•°æ®ï¼","javascript:;");
 	exit();
 }
 
+ClearAllLink();
 ?>

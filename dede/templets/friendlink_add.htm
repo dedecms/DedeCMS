@@ -1,0 +1,105 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>友情链接管理</title>
+<script language='javascript'>
+function CheckSubmit()
+{
+	if(document.form1.url.value=="http://"||document.form1.url.value=="")
+	{
+   		document.form1.url.focus();
+   		alert("网址不能为空！");
+   		return false;
+	}
+	if(document.form1.webname.value=="")
+	{
+   		document.form1.webname.focus();
+   		alert("网站名称不能为空！");
+   		return false;
+	}
+	return true;
+}
+</script>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">辅助插件</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td height="19" bgcolor="#EDF9D5"><b><a href="friendlink_main.php"><u>友情链接管理</u></a></b>&gt;&gt;增加链接</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<form action="friendlink_add.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return CheckSubmit();";>
+	<input type="hidden" name="dopost" value="add">
+	<table width="100%"  border="0" cellpadding="3" cellspacing="1" class="tblist">
+	  <tr>
+        <td width="19%" height="25">网址：</td>
+        <td width="81%"><input name="url" type="text" id="url" value="http://" size="30"></td>
+      </tr>
+      <tr>
+        <td height="25">网站名称：</td>
+        <td><input name="webname" type="text" id="webname" size="30"></td>
+      </tr>
+      <tr>
+        <td width="19%" height="25">排列位置：</td>
+        <td width="81%">
+        <input name="sortrank" type="text" id="sortrank" value="1" size="10">
+        (由小到大排列)        </td>
+      </tr>
+      <tr>
+        <td height="25">网站Logo：</td>
+        <td><input name="logo" type="text" id="logo" size="30">
+          (88*31 gif或jpg)</td>
+      </tr>
+      <tr>
+        <td height="25">上传Logo：</td>
+        <td><input name="logoimg" type="file" id="logoimg" size="30" /></td>
+      </tr>
+      <tr>
+        <td height="25">网站简况：</td>
+        <td><textarea name="msg" cols="50" rows="4" id="msg"></textarea></td>
+      </tr>
+      <tr>
+        <td height="25">站长Email：</td>
+        <td><input name="email" type="text" id="email" size="30"></td>
+      </tr>
+      <tr>
+        <td height="25">网站类型：</td>
+        <td>
+        <select name="typeid" id="typeid">
+        <?php 
+        $dsql->SetQuery("select * from #@__flinktype");
+        $dsql->Execute();
+        while($row=$dsql->GetObject())
+        {
+        	echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
+        }
+        ?>
+        </select>        </td>
+      </tr>
+      <tr>
+        <td height="25">链接位置：</td>
+        <td>
+        <select name="ischeck">
+        <option value="1">内页</option>
+        <option value="2">首页</option>
+        </select>        </td>
+      </tr>
+      <tr>
+        <td height="51">&nbsp;</td>
+        <td><input type="submit" name="Submit" value=" 提 交 " class="inputbut">　 　
+          <input type="reset" name="Submit" value=" 重 置 " class="inputbut"></td>
+      </tr>
+    </table>
+	</form>
+    </td>
+</tr>
+</table>
+</body>
+</html>

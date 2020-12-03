@@ -1,14 +1,14 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/inc_typelink.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 require_once(dirname(__FILE__)."/pub_splitword_www.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
-//±¾ÀàµÄÓÃÍ¾ÊÇÓÃÓÚÎÄµµËÑË÷
+//æœ¬ç±»çš„ç”¨é€”æ˜¯ç”¨äºæ–‡æ¡£æœç´¢
 ******************************************************/
 @set_time_limit(0);
 //-----------------------
-//ËÑË÷Àà
+//æœç´¢ç±»
 //-----------------------
 class SearchView
 {
@@ -31,70 +31,74 @@ class SearchView
 	var $SearchType;
 	var $KType;
 	var $Keyword;
+	var $TempletsFile;
+	var $result;
+	var $cacheid;
 	//-------------------------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------------------------
-	function __construct($typeid,$keyword,$orderby,$achanneltype="0",
-	                        $searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
+	function __construct($typeid, $keyword, $achanneltype=0, $searchtype="title",$kwtype=0, $cacheid=0)
  	{
- 		if(empty($upagesize)) $upagesize = 10;
- 		$this->TypeID = $typeid;
- 		$this->Keyword = $keyword;
-	  $this->OrderBy = $orderby;
-	  $this->KType = $kwtype;
-	  $this->PageSize = $upagesize;
-	  $this->StartTime = $starttime;
- 		$this->ChannelType = $achanneltype;
-	  
-	  if($searchtype=="") $this->SearchType = "titlekeyword";
-	  else $this->SearchType = $searchtype;
- 		
- 		$this->dsql = new DedeSql(false);
- 		$this->dtp = new DedeTagParse();
- 		$this->dtp->SetNameSpace("dede","{","}");
- 		$this->dtp2 = new DedeTagParse();
- 		$this->dtp2->SetNameSpace("field","[","]");
- 		$this->TypeLink = new TypeLink($typeid);
- 		$this->Keywords = $this->GetKeywords($keyword);
- 
- 		//ÉèÖÃÒ»Ğ©È«¾Ö²ÎÊıµÄÖµ
+
+		$this->TypeID = $typeid;
+		$this->Keyword = $keyword;
+		$this->OrderBy = '#@__full_search.aid desc';
+		$this->KType = $kwtype;
+		$this->PageSize = 20;
+		$this->ChannelType = $achanneltype;
+		$this->TempletsFile = '';
+		$this->SearchType = $searchtype;
+		$this->result = '';
+		$this->cacheid = $cacheid;
+
+		$this->dsql = new DedeSql(false);
+		$this->dtp = new DedeTagParse();
+		$this->dtp->SetNameSpace("dede","{","}");
+		$this->dtp2 = new DedeTagParse();
+		$this->dtp2->SetNameSpace("field","[","]");
+		$this->TypeLink = new TypeLink($typeid);
+		$this->Keywords = $this->GetKeywords($keyword);
+
+ 		//è®¾ç½®ä¸€äº›å…¨å±€å‚æ•°çš„å€¼
  		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
- 		
+
+ 		if(isset($GLOBALS['PageNo'])) $this->PageNo = $GLOBALS['PageNo'];
+ 		else $this->PageNo = 1;
  		$this->CountRecord();
- 		
+
  		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/search.htm";
  		if(!file_exists($tempfile)||!is_file($tempfile)){
  			$this->Close();
- 			echo "Ä£°åÎÄ¼ş£º'".$tempfile."' ²»´æÔÚ£¬ÎŞ·¨½âÎö£¡";
+ 			echo "æ¨¡æ¿æ–‡ä»¶ï¼š'".$tempfile."' ä¸å­˜åœ¨ï¼Œæ— æ³•è§£æï¼";
  			exit();
  		}
  		$this->dtp->LoadTemplate($tempfile);
+ 		$this->TempletsFile = ereg_replace("^".$GLOBALS['cfg_basedir'],'',$tempfile);
  		$this->TempInfos['tags'] = $this->dtp->CTags;
  		$this->TempInfos['source'] = $this->dtp->SourceString;
+
  		if($this->PageSize=="") $this->PageSize = 20;
-    $this->TotalPage = ceil($this->TotalResult/$this->PageSize);
-    
-    if($this->PageNo==1){
-    	$this->dsql->ExecuteNoneQuery("Update #@__search_keywords set result='".$this->TotalResult."' where keyword='".addslashes($keyword)."'; ");
-    }
-    
+   		$this->TotalPage = ceil($this->TotalResult/$this->PageSize);
+	    if($this->PageNo==1){
+	    	$this->dsql->ExecuteNoneQuery("Update #@__search_keywords set result='".$this->TotalResult."' where keyword='".addslashes($keyword)."'; ");
+	    }
+
   }
-  //php4¹¹Ôìº¯Êı
+  //php4æ„é€ å‡½æ•°
  	//---------------------------
- 	function SearchView($typeid,$keyword,$orderby,$achanneltype="all",
- 	                     $searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
+ 	function SearchView($typeid,$keyword,$achanneltype=0,$searchtype="title",$kwtype=0, $cacheid=0)
   {
- 		$this->__construct($typeid,$keyword,$orderby,$achanneltype,$searchtype,$starttime,$upagesize,$kwtype);
+ 		$this->__construct($typeid,$keyword,$achanneltype,$searchtype,$kwtype, $cacheid=0);
  	}
  	//---------------------------
- 	//¹Ø±ÕÏà¹Ø×ÊÔ´
+ 	//å…³é—­ç›¸å…³èµ„æº
  	//---------------------------
  	function Close()
  	{
  		$this->dsql->Close();
  		$this->TypeLink->Close();
  	}
- 	//»ñµÃ¹Ø¼ü×ÖµÄ·Ö´Ê½á¹û£¬²¢±£´æµ½Êı¾İ¿â
+ 	//è·å¾—å…³é”®å­—çš„åˆ†è¯ç»“æœï¼Œå¹¶ä¿å­˜åˆ°æ•°æ®åº“
   //--------------------------------
   function GetKeywords($keyword){
 	   $keyword = cn_substr($keyword,50);
@@ -108,7 +112,7 @@ class SearchView
 	     }else{
 	        $keywords = $keyword;
 	     }
-	     $inquery = "INSERT INTO `#@__search_keywords`(`keyword`,`spwords`,`count`,`result`,`lasttime`) 
+	     $inquery = "INSERT INTO `#@__search_keywords`(`keyword`,`spwords`,`count`,`result`,`lasttime`)
           VALUES ('".addslashes($keyword)."', '".addslashes($keywords)."', '1', '0', '".mytime()."');
        ";
 	     $this->dsql->ExecuteNoneQuery($inquery);
@@ -119,33 +123,53 @@ class SearchView
 	  return $keywords;
   }
  	//----------------
- 	//»ñµÃ¹Ø¼ü×ÖSQL
+ 	//è·å¾—å…³é”®å­—SQL
  	//----------------
   function GetKeywordSql()
  	{
+ 		$where = array();
+
+ 		if($this->TypeID > 0){
+ 			$where[] = "#@__full_search.typeid={$this->TypeID}";
+ 		}
+ 		if(!empty($this->ChannelType)){
+ 			$where[] = "#@__full_search.typeid={$this->ChannelType}";
+ 		}
+
  		$ks = explode(" ",$this->Keywords);
- 		$kwsql = "";
- 		foreach($ks as $k){
+ 		sort($ks);
+		reset ($ks);
+ 		$kwsqlarr = array();
+
+ 		foreach($ks as $k)
+ 		{
  			$k = trim($k);
  			if(strlen($k)<2) continue;
- 			//if(ord($k[0])>0x80 && strlen($k)<3) continue;
  			$k = addslashes($k);
- 			if($this->SearchType=="title"){
- 				 if($this->KType==1) $kwsql .= " Or #@__archives.title like '%$k%' ";
- 				 else $kwsql .= " And #@__archives.title like '%$k%' ";
+
+ 			if($this->SearchType != "titlekeyword"){
+ 				$kwsqlarr[] = " #@__full_search.title like '%$k%' ";
  			}else{
- 				 if($this->KType==1) $kwsql .= " Or CONCAT(#@__archives.title,' ',#@__archives.description,' ',#@__archives.writer,' ',#@__archives.source) like '%$k%' Or CONCAT(' ',#@__archives.keywords,' ') like '%$k %' ";
- 			   else $kwsql .= " And (CONCAT(#@__archives.title,' ',#@__archives.description,' ',#@__archives.writer,' ',#@__archives.source) like '%$k%' Or CONCAT(' ',#@__archives.keywords,' ') like '%$k %') ";
- 			}
+			 	$kwsqlarr[] = " #@__full_search.title like '%$k%' ";
+			 	$kwsqlarr[] = " #@__full_search.addinfos like '%$k%' ";
+			 	$kwsqlarr[] = " #@__full_search.keywords like '%$k%' ";
+			}
+
  		}
- 		if($this->KType==1) $kwsql = " ( ".ereg_replace("^ Or","",$kwsql)." ) ";
- 		else $kwsql = " ( ".ereg_replace("^ And","",$kwsql)." ) ";
- 		
- 		if($kwsql==" (  ) ") return "";
- 		else return $kwsql;
+		if($this->KType==1){
+			$where[] = implode(' AND ',$kwsqlarr);
+		}else{
+			$where[] = implode(' OR ',$kwsqlarr);
+		}
+
+
+ 		$wheresql = implode(' AND ',$where);
+
+ 		return $wheresql;
  	}
+
  	//-------------------
- 	//»ñµÃÏà¹ØµÄ¹Ø¼ü×Ö
+ 	//è·å¾—ç›¸å…³çš„å…³é”®å­—
  	//-------------------
  	function GetLikeWords($num=8){
  		$ks = explode(" ",$this->Keywords);
@@ -168,13 +192,13 @@ class SearchView
  				 if($row['count']>1000) $fstyle=" style='font-size:11pt;color:red'";
  				 else if($row['count']>300) $fstyle=" style='font-size:10pt;color:green'";
  				 else $style = "";
- 				 $likeword .= "¡¡<a href='search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword'".$style."><u>".$row['keyword']."</u></a> ";
+ 				 $likeword .= 'ã€€<a href="search.php?keyword='.urlencode($row['keyword']).'"'.$style."><u>".$row['keyword']."</u></a> ";
  			}
  			return $likeword;
  		}
  	}
  	//----------------
- 	//¼Ó´Ö¹Ø¼ü×Ö
+ 	//åŠ ç²—å…³é”®å­—
  	//----------------
  	function GetRedKeyWord($fstr)
  	{
@@ -189,33 +213,68 @@ class SearchView
  		return $fstr;
  	}
  	//------------------
- 	//Í³¼ÆÁĞ±íÀïµÄ¼ÇÂ¼
+ 	//ç»Ÿè®¡åˆ—è¡¨é‡Œçš„è®°å½•
  	//------------------
  	function CountRecord()
  	{
- 		$this->TotalResult = -1;
- 		if(isset($GLOBALS['TotalResult'])) $this->TotalResult = $GLOBALS['TotalResult'];
- 		if(isset($GLOBALS['PageNo'])) $this->PageNo = $GLOBALS['PageNo'];
- 		else $this->PageNo = 1;
- 		
- 		if($this->TotalResult==-1)
- 		{
- 		  $ksql = $this->GetKeywordSql();
- 		  if($ksql!="") $ksql = " And ".$ksql;
- 		  $addSql  = " arcrank > -1 $ksql";
- 		  if($this->TypeID > 0) $addSql .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
- 		  if($this->StartTime > 0) $addSql .= " And senddate>'".$this->StartTime."' ";
- 		  if($this->ChannelType != 0 ) $addSql .= " And channel='".$this->ChannelType."'";
- 		
- 	    $cquery = "Select count(*) as dd From #@__archives where $addSql";
-      $row = $this->dsql->GetOne($cquery);
- 		  if(is_array($row)) $this->TotalResult = $row['dd'];
- 		  else $this->TotalResult = 0;
- 	 }
- 		
- 	}
+		global $cfg_search_maxlimit, $cfg_search_cachetime;
+		$cfg_search_cachetime = max(1,intval($cfg_search_cachetime));
+		$expiredtime = time() - $cfg_search_cachetime * 3600;
+		if(empty($cfg_search_maxlimit)) $cfg_search_maxlimit = 500;
+		if(empty($this->cacheid)){
+			$where = $this->GetKeywordSql();
+			$query = "Select aid from #@__full_search where $where limit $cfg_search_maxlimit";
+			$md5 = md5($query);
+			$timestamp = time();
+			$cachequery = $this->dsql->getone("select * from #@__search_cache where md5='$md5' And addtime > $expiredtime limit 1");
+			if(is_array($cachequery))
+			{
+				$nums = $cachequery['nums'];
+				$result = $cachequery['result'];
+				$this->result = $result;
+				$this->TotalResult = $nums;
+				$this->cacheid = $cachequery['cacheid'];
+			}else{
+				$this->dsql->SetQuery($query);
+				$this->dsql->execute();
+				$aidarr = array();
+				$aidarr[] = 0;
+				while($row = $this->dsql->getarray()){
+					$aidarr[] = $row['aid'];
+				}
+				$nums = count($aidarr)-1;
+				$aids = implode(',', $aidarr);
+				$delete = "delete from #@__search_cache where addtime < $expiredtime;";
+				$this->dsql->SetQuery($delete);
+				$this->dsql->executenonequery();
+				$insert = "insert into #@__search_cache(`nums`, `md5`, `result`, `usetime`, `addtime`)
+				 values('$nums', '$md5', '$aids','$timestamp', '$timestamp')";
+				$this->dsql->SetQuery($insert);
+				$this->dsql->executenonequery();
+				$this->result = $aids;
+				$this->TotalResult = $nums;
+				$this->cacheid = $this->dsql->GetLastID();
+			}
+		}else{
+			$cachequery = $this->dsql->getone("select * from #@__search_cache where cacheid=".$this->cacheid." limit 1");
+			if(is_array($cachequery)){
+				$nums = $cachequery['nums'];
+				$result = $cachequery['result'];
+				$this->dsql->setquery($update);
+				$this->dsql->executenonequery();
+				$this->result = $result;
+				$this->TotalResult = $nums;
+			}else
+			{
+				ShowMsg("ç³»ç»Ÿå‡ºé”™ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼","javascript:;");
+				$this->Close();
+				exit();
+			}
+		}
+	}
+
  	//------------------
- 	//ÏÔÊ¾ÁĞ±í
+ 	//æ˜¾ç¤ºåˆ—è¡¨
  	//------------------
  	function Display()
  	{
@@ -252,20 +311,20 @@ class SearchView
  				$this->dtp->Assign($tagid,
  				GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
  			}
- 			else if($tagname=="field") //Àà±ğµÄÖ¸¶¨×Ö¶Î
+ 			else if($tagname=="field") //ç±»åˆ«çš„æŒ‡å®šå­—æ®µ
  			{
  					if(isset($this->Fields[$ctag->GetAtt('name')]))
  					  $this->dtp->Assign($tagid,$this->Fields[$ctag->GetAtt('name')]);
  					else
  					  $this->dtp->Assign($tagid,"");
  			}
- 			else if($tagname=="channel")//ÏÂ¼¶ÆµµÀÁĞ±í
+ 			else if($tagname=="channel")//ä¸‹çº§é¢‘é“åˆ—è¡¨
  			{
  				  if($this->TypeID>0){
  				  	$typeid = $this->TypeID; $reid = $this->TypeLink->TypeInfos['reID'];
  				  }
  				  else{ $typeid = 0; $reid=0; }
- 				  
+
  				  $this->dtp->Assign($tagid,
  				      $this->TypeLink->GetChannelList($typeid,
  				          $reid,
@@ -280,92 +339,51 @@ class SearchView
  		$this->dtp->Display();
  	}
  	//----------------------------------
-  //»ñµÃÎÄµµÁĞ±í
+  //è·å¾—æ–‡æ¡£åˆ—è¡¨
 //---------------------------------
-  function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
-  $imgwidth=120,$imgheight=90,$achanneltype="all",$orderby="default",$innertext="",$tablewidth="100")
+  function GetArcList($limitstart=0,$perpage=10,$col=1,$titlelen=30,$infolen=250,
+  $imgwidth=120,$imgheight=90,$achanneltype="all",$orderby=" aid desc ",$innertext="",$tablewidth="100")
   {
-    $typeid=$this->TypeID;
-		if($row=="") $row = 10;
+
+	    $typeid=$this->TypeID;
+    	if($perpage=="") $perpage = 10;
 		if($limitstart=="") $limitstart = 0;
 		if($titlelen=="") $titlelen = 30;
 		if($infolen=="") $infolen = 250;
-    if($imgwidth=="") $imgwidth = 120;
-    if($imgheight=="") $imgheight = 120;
-    if($achanneltype=="") $achanneltype = "0";
-		if($orderby=="") $orderby="default";
-		else $orderby=strtolower($orderby);
-		$tablewidth = str_replace("%","",$tablewidth);
-		if($tablewidth=="") $tablewidth=100;
-		if($col=="") $col=1;
-		$colWidth = ceil(100/$col); 
-		$tablewidth = $tablewidth."%";
-		$colWidth = $colWidth."%";
+	    if($achanneltype=="") $achanneltype = "0";
 		$innertext = trim($innertext);
 		if($innertext=="") $innertext = GetSysTemplets("search_list.htm");
-		
-		//°´²»Í¬Çé¿öÉè¶¨SQLÌõ¼ş
-		$ksql = $this->GetKeywordSql();
- 		if($ksql!="") $ksql = " And ".$ksql;
-		$orwhere = " #@__archives.arcrank > -1 $ksql";
- 		
- 		if($this->StartTime > 0) $orwhere .= " And #@__archives.senddate > '".$this->StartTime."' ";
- 		
- 		if($this->ChannelType != 0) $orwhere .= " And #@__archives.channel='".$this->ChannelType."'";
- 		if($this->TypeID>0) $orwhere .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
-		
-		//ÅÅĞò·½Ê½
-		$ordersql = "";
-		if($orderby=="senddate") $ordersql=" order by #@__archives.senddate desc";
-		else if($orderby=="pubdate") $ordersql=" order by #@__archives.pubdate desc";
-    else if($orderby=="id") $ordersql="  order by #@__archives.ID desc";
-		else $ordersql=" order by #@__archives.sortrank desc";
-		
-		//
-		//----------------------------
-		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.typeid,#@__archives.ismake,#@__archives.money,
-		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,#@__archives.click,
-		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
-		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart, 
-		#@__arctype.moresite,#@__arctype.siteurl
-		from #@__archives 
-		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
-		where $orwhere $ordersql limit $limitstart,$row";
-		
-		//echo $query;
-		
+		$ordersql = "order by ".$this->OrderBy;
+
+		$query = "select * from #@__full_search left join #@__arctype on #@__arctype.ID=#@__full_search.typeid
+				where aid in ($this->result) $ordersql limit $limitstart,$perpage ";
+
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute("al");
-    $artlist = "";
-    if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
-    $this->dtp2->LoadSource($innertext);
-    for($i=0;$i<$row;$i++)
+	    $artlist = "";
+	    $this->dtp2->LoadSource($innertext);
+	    for($i=0;$i<$perpage;$i++)
 		{
-       if($col>1) $artlist .= "<tr>\r\n";
-       for($j=0;$j<$col;$j++)
-			 {
-         if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
          if($row = $this->dsql->GetArray("al"))
          {
-           //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î
-           $row["arcurl"] = GetFileUrl($row["ID"],$row["typeid"],$row["senddate"],$row["title"],
-                        $row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"],$row["money"],true,$row["siteurl"]);
-           $row["description"] = $this->GetRedKeyWord(cn_substr($row["description"],$infolen));
+           //å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
+           $row["arcurl"] = $row["url"];
+           $row["description"] = $this->GetRedKeyWord(cn_substr($row["addinfos"],$infolen));
            $row["title"] = $this->GetRedKeyWord(cn_substr($row["title"],$titlelen));
-           $row["id"] =  $row["ID"];
+           $row["id"] =  $row["aid"];
            if($row["litpic"]=="") $row["litpic"] = $GLOBALS["cfg_plus_dir"]."/img/dfpic.gif";
            $row["picname"] = $row["litpic"];
            $row["typeurl"] = $this->GetListUrl($row["typeid"],$row["typedir"],$row["isdefault"],$row["defaultname"],$row["ispart"],$row["namerule2"],$row["siteurl"]);
            $row["info"] = $row["description"];
            $row["filename"] = $row["arcurl"];
-           $row["stime"] = GetDateMK($row["pubdate"]);
+           $row["stime"] = GetDateMK($row["uptime"]);
            $row["textlink"] = "<a href='".$row["filename"]."'>".$row["title"]."</a>";
            $row["typelink"] = "[<a href='".$row["typeurl"]."'>".$row["typename"]."</a>]";
            $row["imglink"] = "<a href='".$row["filename"]."'><img src='".$row["picname"]."' border='0' width='$imgwidth' height='$imgheight'></a>";
            $row["image"] = "<img src='".$row["picname"]."' border='0' width='$imgwidth' height='$imgheight'>";
            $row["phpurl"] = $GLOBALS["cfg_plus_dir"];
- 		       $row["templeturl"] = $GLOBALS["cfg_templets_dir"];
- 		       $row["memberurl"] = $GLOBALS["cfg_member_dir"];
+ 		   $row["templeturl"] = $GLOBALS["cfg_templets_dir"];
+ 		   $row["memberurl"] = $GLOBALS["cfg_member_dir"];
            //---------------------------
            if(is_array($this->dtp2->CTags)){
        	     foreach($this->dtp2->CTags as $k=>$ctag){
@@ -378,75 +396,70 @@ class SearchView
          else{
          	 $artlist .= "";
          }
-         if($col>1) $artlist .= "</td>\r\n";
-       }//Loop Col
-       if($col>1) $artlist .= "</tr>\r\n";
      }//Loop Line
-     if($col>1) $artlist .= "</table>\r\n";
      $this->dsql->FreeResult("al");
      return $artlist;
   }
   //---------------------------------
-  //»ñÈ¡¶¯Ì¬µÄ·ÖÒ³ÁĞ±í
+  //è·å–åŠ¨æ€çš„åˆ†é¡µåˆ—è¡¨
   //---------------------------------
 	function GetPageListDM($list_len)
 	{
+		global $id;
 		$prepage="";
 		$nextpage="";
 		$prepagenum = $this->PageNo-1;
 		$nextpagenum = $this->PageNo+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
-		if($totalpage<=1 && $this->TotalResult>0) return "¹²1Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		if($this->TotalResult == 0) return "¹²0Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		
+		if($totalpage<=1 && $this->TotalResult>0) return "å…±1é¡µ/".$this->TotalResult."æ¡";
+		if($this->TotalResult == 0) return "å…±0é¡µ/".$this->TotalResult."æ¡";
+
 		$purl = $this->GetCurUrl();
-		
 		$geturl = "keyword=".urlencode($this->Keyword)."&searchtype=".$this->SearchType;
-		$geturl .= "&channeltype=".$this->ChannelType."&orderby=".$this->OrderBy;
+		$geturl .= "&channeltype=".$this->ChannelType;
 		$geturl .= "&kwtype=".$this->KType."&pagesize=".$this->PageSize;
-		$geturl .= "&typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
-		
+		$geturl .= "&typeid=".$this->TypeID."&cacheid=".$this->cacheid."&";
+
 		$hidenform = "<input type='hidden' name='typeid' value='".$this->TypeID."'>\r\n";
 		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
-		
+
 		$purl .= "?".$geturl;
-		
-		//»ñµÃÉÏÒ»Ò³ºÍÏÂÒ»Ò³µÄÁ´½Ó
+
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸‹ä¸€é¡µçš„é“¾æ¥
 		if($this->PageNo != 1){
-			$prepage.="<td width='50'><a href='".$purl."PageNo=$prepagenum'>ÉÏÒ»Ò³</a></td>\r\n";
-			$indexpage="<td width='30'><a href='".$purl."PageNo=1'>Ê×Ò³</a></td>\r\n";
+			$prepage.="<a href='".$purl."PageNo=$prepagenum'>ä¸Šä¸€é¡µ</a>\r\n";
+			$indexpage="<a href='".$purl."PageNo=1'>é¦–é¡µ</a>\r\n";
 		}
 		else{
-			$indexpage="<td width='30'>Ê×Ò³</td>\r\n";
-		}	
-		
+			$indexpage="<a>é¦–é¡µ</a>\r\n";
+		}
+
 		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<td width='50'><a href='".$purl."PageNo=$nextpagenum'>ÏÂÒ»Ò³</a></td>\r\n";
-			$endpage="<td width='30'><a href='".$purl."PageNo=$totalpage'>Ä©Ò³</a></td>\r\n";
+			$nextpage.="<a href='".$purl."PageNo=$nextpagenum'>ä¸‹ä¸€é¡µ</a>\r\n";
+			$endpage="<a href='".$purl."PageNo=$totalpage'>æœ«é¡µ</a>\r\n";
 		}
 		else{
-			$endpage="<td width='30'>Ä©Ò³</td>\r\n";
+			$endpage="<a>æœ«é¡µ</a>\r\n";
 		}
-		//»ñµÃÊı×ÖÁ´½Ó
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
 		if($this->PageNo >= $total_list) {
     		$j = $this->PageNo-$list_len;
     		$total_list = $this->PageNo+$list_len;
     		if($total_list>$totalpage) $total_list=$totalpage;
-		}	
-		else{ 
+		}
+		else{
    			$j=1;
    			if($total_list>$totalpage) $total_list=$totalpage;
 		}
 		for($j;$j<=$total_list;$j++)
 		{
-   		if($j==$this->PageNo) $listdd.= "<td>$j&nbsp;</td>\r\n";
-   		else $listdd.="<td><a href='".$purl."PageNo=$j'>[".$j."]</a>&nbsp;</td>\r\n";
+   		if($j==$this->PageNo) $listdd.= "<strong>$j</strong>\r\n";
+   		else $listdd.="<a href='".$purl."PageNo=$j'>".$j."</a>\r\n";
 		}
-		$plist  =  "<table border='0' cellpadding='0' cellspacing='0'>\r\n";
-		$plist .= "<tr align='center' style='font-size:10pt'>\r\n";
+		$plist  =  "";
 		$plist .= "<form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
 		$plist .= $indexpage;
 		$plist .= $prepage;
@@ -454,21 +467,21 @@ class SearchView
 		$plist .= $nextpage;
 		$plist .= $endpage;
 		if($totalpage>$total_list){
-			$plist.="<td width='36'><input type='text' name='PageNo' style='width:30;height:18' value='".$this->PageNo."'></td>\r\n";
-			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:24;height:18;font-size:9pt'></td>\r\n";
+			$plist.="<input type='text' name='PageNo' style='width:30px;height:18px' value='".$this->PageNo."'>\r\n";
+			$plist.="<input type='submit' name='plistgo' value='GO' style='width:24px;height:18px;font-size:9pt'>\r\n";
 		}
-		$plist .= "</form>\r\n</tr>\r\n</table>\r\n";
+		$plist .= "</form>\r\n";
 		return $plist;
 	}
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µÄÆµµÀµÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šçš„é¢‘é“çš„é“¾æ¥
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
   	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
   //---------------
-  //»ñµÃµ±Ç°µÄÒ³ÃæÎÄ¼şµÄurl
+  //è·å¾—å½“å‰çš„é¡µé¢æ–‡ä»¶çš„url
   //----------------
   function GetCurUrl()
 	{

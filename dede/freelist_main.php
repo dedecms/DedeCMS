@@ -19,14 +19,14 @@ if(empty($keyword)){
 	$addsql = " where title like '%$keyword%' ";
 }
 
-//ÖØÔØÁĞ±í
+//é‡è½½åˆ—è¡¨
 if($dopost=='getlist'){
 	PrintAjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
 }
-//É¾³ı×Ö¶Î
+//åˆ é™¤å­—æ®µ
 else if($dopost=='del')
 {
 	$aid = ereg_replace("[^0-9]","",$aid);
@@ -37,7 +37,7 @@ else if($dopost=='del')
 	exit();
 }
 
-//µÚÒ»´Î½øÈëÕâ¸öÒ³Ãæ
+//ç¬¬ä¸€æ¬¡è¿›å…¥è¿™ä¸ªé¡µé¢
 if($dopost==''){
 	$row = $dsql->GetOne("Select count(*) as dd From #@__freelist $addsql ");
 	$totalRow = $row['dd'];
@@ -45,38 +45,41 @@ if($dopost==''){
   $dsql->Close();
 }
 
-//»ñµÃÌØ¶¨µÄTagÁĞ±í
+//è·å¾—ç‰¹å®šçš„Tagåˆ—è¡¨
 //---------------------------------
 function GetTagList($dsql,$pageno,$pagesize,$orderby='aid'){
 	global $cfg_phpurl,$addsql;
 	$start = ($pageno-1) * $pagesize;
-	$printhead ="<table width='99%' border='0' cellpadding='1' cellspacing='1' bgcolor='#333333' style='margin-bottom:3px'>
-    <tr align='center' bgcolor='#E5F9FF' height='24'> 
-      <td width='8%'><a href='#' onclick=\"ReloadPage('aid')\"><u>ID</u></a></td>
-      <td width='24%'>ÁĞ±íÃû³Æ</td>
-      <td width='30%'>Ä£°åÎÄ¼ş</td>
-      <td width='8%'><a href='#' onclick=\"ReloadPage('click')\"><u>µã»÷</u></a></td>
-      <td width='10%'>´´½¨Ê±¼ä</td>
-      <td>¹ÜÀí</td>
-    </tr>\r\n";
+	$printhead ="<table width='96%' border='0' cellpadding='1' cellspacing='1' align='center' style='margin:0px auto' class='tblist'>
+		<tr align='center'>
+          <td width='5%' class='tbsname'><a href='#' onclick=\"ReloadPage('aid')\"><u>ID</u></a></td>
+		  <td width='20%' class='tbsname'>åˆ—è¡¨åç§°</td>
+		  <td width='20%' class='tbsname'>æ¨¡æ¿æ–‡ä»¶</td>
+		  <td width='5%' class='tbsname'><a href='#' onclick=\"ReloadPage('click')\"><u>ç‚¹å‡»</u></a></td>
+		  <td width='15%' class='tbsname'>åˆ›å»ºæ—¶é—´</td>
+		  <td class='tbsname'>ç®¡ç†</td>
+  		  </tr>\r\n";
+
+
+	
     echo $printhead;
     $dsql->SetQuery("Select aid,title,templet,click,edtime,namerule,listdir,defaultpage,nodefault From #@__freelist $addsql order by $orderby desc limit $start,$pagesize ");
 	  $dsql->Execute();
     while($row = $dsql->GetArray()){
     $listurl = GetFreeListUrl($row['aid'],$row['namerule'],$row['listdir'],$row['defaultpage'],$row['nodefault']);
     $line = "
-      <tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#FCFEDA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"> 
-      <td height='24'>{$row['aid']}</td>
-      <td> <a href='$listurl' target='_blank'>{$row['title']}</a> </td>
-      <td> {$row['templet']} </td>
-      <td> {$row['click']} </td>
-      <td>".strftime("%y-%m-%d",$row['edtime'])."</td>
-      <td>
-      <a href='#' onclick='EditNote({$row['aid']})'>¸ü¸Ä</a> | 
-      <a href='#' onclick='CreateNote({$row['aid']})'>¸üĞÂ</a> | 
-      <a href='#' onclick='DelNote({$row['aid']})'>É¾³ı</a>
-      </td>
-    </tr>";
+		<tr align='center' onMouseMove=\"javascript:this.bgColor='#FCFEDA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"> 
+        <td>{$row['aid']}</td>
+        <td> <a href='$listurl' target='_blank'>{$row['title']}</a> </td>
+        <td> {$row['templet']} </td>
+        <td> {$row['click']} </td>
+        <td>".strftime("%y-%m-%d",$row['edtime'])."</td>
+        <td>
+			  <a href='#' onclick='EditNote({$row['aid']})'>æ›´æ”¹</a> | 
+    		  <a href='#' onclick='CreateNote({$row['aid']})'>æ›´æ–°</a> | 
+     		  <a href='#' onclick='DelNote({$row['aid']})'>åˆ é™¤</a>
+		</td>
+  </tr>";
     echo $line;
    }
 	 echo "</table>\r\n";
@@ -86,7 +89,7 @@ function PrintAjaxHead(){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 }
 ?>
 

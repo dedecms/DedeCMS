@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>×¨Ìâ¹ÜÀí</title>
-<link rel="stylesheet" type="text/css" href="base.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>ä¸“é¢˜ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script type="text/javascript" src="main.js"></script>
@@ -40,29 +41,29 @@ function delArc(aid){
 	if(aid==0) aid = getOneItem();
 	location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=delArchives";
 }
-//ÉÏÏÂÎÄ²Ëµ¥
+//ä¸Šä¸‹æ–‡èœå•
 function ShowMenu(obj,aid,atitle)
 {
   var eobj,popupoptions
   popupoptions = [
-    new ContextItem("ä¯ÀÀÎÄµµ",function(){ viewArc(aid); }),
-    new ContextItem("±à¼­ÎÄµµ",function(){ editArc(aid); }),
+    new ContextItem("æµè§ˆæ–‡æ¡£",function(){ viewArc(aid); }),
+    new ContextItem("ç¼–è¾‘æ–‡æ¡£",function(){ editArc(aid); }),
     new ContextSeperator(),
-    new ContextItem("¸üĞÂHTML",function(){ updateArc(aid); }),
-    new ContextItem("ÉóºËÎÄµµ",function(){ checkArc(aid); }),
-    new ContextItem("ÍÆ¼öÎÄµµ",function(){ adArc(aid); }),
+    new ContextItem("æ›´æ–°HTML",function(){ updateArc(aid); }),
+    new ContextItem("å®¡æ ¸æ–‡æ¡£",function(){ checkArc(aid); }),
+    new ContextItem("æ¨èæ–‡æ¡£",function(){ adArc(aid); }),
     new ContextSeperator(),
-    new ContextItem("É¾³ıÎÄµµ",function(){ delArc(aid); }),
+    new ContextItem("åˆ é™¤æ–‡æ¡£",function(){ delArc(aid); }),
     new ContextSeperator(),
-    new ContextItem("È«²¿Ñ¡Ôñ",function(){ selAll(); }),
-    new ContextItem("È¡ÏûÑ¡Ôñ",function(){ noSelAll(); }),
+    new ContextItem("å…¨éƒ¨é€‰æ‹©",function(){ selAll(); }),
+    new ContextItem("å–æ¶ˆé€‰æ‹©",function(){ noSelAll(); }),
     new ContextSeperator(),
-    new ContextItem("ÆµµÀ¹ÜÀí",function(){ location="catalog_main.php"; })
+    new ContextItem("é¢‘é“ç®¡ç†",function(){ location="catalog_main.php"; })
   ]
   ContextMenu.display(popupoptions)
 }
 
-//»ñµÃÑ¡ÖĞÎÄ¼şµÄÎÄ¼şÃû
+//è·å¾—é€‰ä¸­æ–‡ä»¶çš„æ–‡ä»¶å
 function getCheckboxItem()
 {
 	var allSel="";
@@ -80,7 +81,7 @@ function getCheckboxItem()
 	return allSel;	
 }
 
-//»ñµÃÑ¡ÖĞÆäÖĞÒ»¸öµÄid
+//è·å¾—é€‰ä¸­å…¶ä¸­ä¸€ä¸ªçš„id
 function getOneItem()
 {
 	var allSel="";
@@ -118,48 +119,40 @@ function noSelAll()
 }
 </script>
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif' onload="ContextMenu.intializeContextMenu()">
-<table width='98%' border='0' align='center' cellpadding='0' cellspacing='0'>
-<tr> 
-<td align='center' valign='top'>
-	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#98CAEF">
-		<tr> 
-    <td height="26" background="img/wbg.gif">
-    <table width="98%" border="0" cellspacing="0" cellpadding="0">
-     <tr> 
-     <td align="center">
-   <input type='button' onClick="location='makehtml_spec.php';" value='¸üĞÂ×¨ÌâHTML' class='nbt'>
-   <input type='button' onClick="location='spec_add.php';" value='Ìí¼Ó×¨Ìâ' class='nbt'>
-   <?php echo $CheckUserSend?> 
-   <input type='button' onClick="location='catalog_main.php';" value='ÆµµÀ¹ÜÀí' class='nbt'>
-       </td>
-     </tr>
-    </table>
+<body onLoad="ContextMenu.intializeContextMenu()">
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">ä¸“é¢˜ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="0" cellspacing="0" align="center" class="tbtitle" style="background:#F0F0F0; border:1px solid #DDD;line-height:31px;height:31px;">
+  <tr>
+    <td height="33" align="center" style="padding-top:6px">
+    	  <input type='button' onclick="location='makehtml_spec.php';" value='æ›´æ–°ä¸“é¢˜HTML' class="inputbut" />
+        <input type='button' onclick="location='spec_add.php';" value='æ·»åŠ ä¸“é¢˜' class="inputbut" />
+        <?php echo $CheckUserSend?>
+        <input type='button' onclick="location='catalog_main.php';" value='é¢‘é“ç®¡ç†' class="inputbut" />
     </td>
-    </tr>
-  </table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"><td height="4"></td></tr>
+  </tr>
 </table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
-<tr bgcolor="#E7E7E7"> 
-<td height="24" colspan="10" background="img/tbg.gif">
-	<strong> ¡ìÎÄÕÂÁĞ±í</strong>
-	(ÔÚÎÄÕÂ±êÌâ´¦Ê¹ÓÃÊó±êÓÒ¼ü½øĞĞ³£ÓÃ²Ù×÷)
-	</td>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<td align='center' valign='top'><table width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr> 
+<td height="24" colspan="10" align="left" bgcolor="#EDF9D5">
+	<strong> Â§æ–‡ç« åˆ—è¡¨</strong>
+	(åœ¨æ–‡ç« æ ‡é¢˜å¤„ä½¿ç”¨é¼ æ ‡å³é”®è¿›è¡Œå¸¸ç”¨æ“ä½œ)	</td>
 </tr>
 <form name="form2">
 <tr align="center" bgcolor="#F8FBFB" height="22"> 
 <td width="6%">ID</td>
-<td width="4%">Ñ¡Ôñ</td>
-<td width="30%">ÎÄÕÂ±êÌâ</td>
-<td width="10%">Â¼ÈëÊ±¼ä</td>
-<td width="11%">ÀàÄ¿</td>
-<td width="8%">µã»÷</td>
-<td width="5%">Í¼Æ¬</td>
+<td width="7%">é€‰æ‹©</td>
+<td width="28%">æ–‡ç« æ ‡é¢˜</td>
+<td width="10%">å½•å…¥æ—¶é—´</td>
+<td width="11%">ç±»ç›®</td>
+<td width="6%">ç‚¹å‡»</td>
+<td width="7%">å›¾ç‰‡</td>
 <td width="7%">HTML</td>
-<td width="10%">È¨ÏŞ</td>
-<td width="8%">ÍÆ¼ö</td>
+<td width="10%">æƒé™</td>
+<td width="8%">æ¨è</td>
 </tr>
 <?php 
 $mylist = $dlist->GetDataList();
@@ -168,7 +161,7 @@ while($row = $mylist->GetArray('dm'))
 ?>
 <tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(this,<?php echo $row['ID']?>,'<?php echo urlencode($row['title'])?>')"> 
 <td><?php echo $row['ID']?></td>
-<td><input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" class="np"></td>
+<td><input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" ></td>
 <td align='left'>
 <a href='archives_do.php?aid=<?php echo $row['ID']?>&dopost=editArchives' oncontextmenu="ShowMenu(this,<?php echo $row['ID']?>,'<?php echo urlencode($row['title'])?>')">
 	<u><?php echo $row['title']?></u>
@@ -186,66 +179,64 @@ while($row = $mylist->GetArray('dm'))
 }
 ?>
 <tr bgcolor="#F8FBFB"> 
-<td height="24" colspan="10">
-&nbsp;
-<a href="javascript:selAll()" class="coolbg">È«Ñ¡</a> 
-<a href="javascript:noSelAll()" class="coolbg">È¡Ïû</a> 
-<a href="javascript:viewArc(0)" class="coolbg">&nbsp;²é¿´&nbsp;</a> 
-<a href="javascript:editArc(0)" class="coolbg">&nbsp;¸ü¸Ä&nbsp;</a> 
-<a href="javascript:updateArc(0)" class="coolbg">&nbsp;¸üĞÂ&nbsp;</a> 
-<a href="javascript:checkArc(0)" class="coolbg">&nbsp;ÉóºË&nbsp;</a> 
-<a href="javascript:adArc(0)" class="coolbg">&nbsp;ÍÆ¼ö&nbsp;</a> 
-<a href="javascript:delArc(0)" class="coolbg">&nbsp;É¾³ı&nbsp;</a> 
-</td>
+<td height="28" colspan="10" align="left" style="padding-left:6px;padding-top:8px">
+<a href="javascript:selAll()" class="inputbutx">å…¨é€‰</a> 
+<a href="javascript:noSelAll()" class="inputbutx">å–æ¶ˆ</a> 
+<a href="javascript:viewArc(0)" class="inputbutx">æŸ¥çœ‹</a> 
+<a href="javascript:editArc(0)" class="inputbutx">æ›´æ”¹</a> 
+<a href="javascript:updateArc(0)" class="inputbutx">æ›´æ–°</a> 
+<a href="javascript:checkArc(0)" class="inputbutx">å®¡æ ¸</a> 
+<a href="javascript:adArc(0)" class="inputbutx">æ¨è</a> 
+<a href="javascript:delArc(0)" class="inputbutx">åˆ é™¤</a></td>
 </tr>
 </form>
-<tr align="right" bgcolor="#E5F9FF"> 
-<td height="20" colspan="10" align="center">
-	<?php echo $dlist->GetPageList(7);?>
+<tr align="right"> 
+<td height="20" colspan="10" align="center" bgcolor="#EDF9D5">
+	<?php echo $dlist->GetPageList(7);?></td>
+</tr>
+</table>
 </td>
 </tr>
 </table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+<table width="96%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
 <tr> 
 <td height="4"></td>
 </tr>
 <tr bgcolor="#FFFFFF"> 
 <td style="border: 1px solid #525252;" height="26">
 <table width='100%'  border='0' cellpadding='0' cellspacing='1' bgcolor='#ffffff'>
-   <tr bgcolor='#E5F9FF'> 
+   <tr> 
           <form name='form3' action='content_s_list.php' method='get'>
           <input type='hidden' name='dopost' value='listArchives'>
-          <td background='img/tbg.gif'>
+          <td>
           	<table width='600' border='0' cellpadding='0' cellspacing='0'>
           	<tr>
-          	<td width='90' align='center'>ÇëÑ¡ÔñÀàÄ¿£º</td>
+          	<td width='90' align='center'>è¯·é€‰æ‹©ç±»ç›®ï¼š</td>
           	<td width='160'>
           	<?php echo $optionarr?>
         </td>
         <td width='70'>
-          ¹Ø¼ü×Ö£º
+          å…³é”®å­—ï¼š
         </td>
           <td width='160'>
           	<input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150'>
           </td>
           <td>
-          <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">
+          <input name="imageField" type="submit" class="inputbut" value="æäº¤" />
          </td>
         </tr>
         </table>
           </td>
         </form>
         </tr>
-      </table>
-      
+      </table>  
 </td>
 </tr>
 <tr> 
 <td colspan="2" height="4"></td>
 </tr>
 </table>
-</td>
-</tr>
-</table>
+
 </body>
 </html>

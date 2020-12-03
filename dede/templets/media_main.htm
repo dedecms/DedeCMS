@@ -1,15 +1,18 @@
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¸½¼şÊı¾İ¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>é™„ä»¶æ•°æ®ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
+.imglit {
+   max-height: 100px; height:expression(this.height > 100 ? "100px" : this.height) ;      
+}
 </style>
 <script>
-function $(eid){ return document.getElementById(eid); }
-function ChangeImage(surl){ $('picview').src = surl; }
-	//»ñµÃÑ¡ÖĞÎÄ¼şµÄÎÄ¼şÃû
+function $DE(eid){ return document.getElementById(eid); }
+function ChangeImage(surl){ $DE('picview').src = surl; }
+	//è·å¾—é€‰ä¸­æ–‡ä»¶çš„æ–‡ä»¶å
 function getCheckboxItem(){
 	 var allSel="";
 	 if(document.form1.aids.value) return document.form1.aids.value;
@@ -40,28 +43,26 @@ function NoneSel(){
 function DelSel(){
 	 var nid = getCheckboxItem();
 	 if(nid==""){
-		  alert("ÇëÑ¡ÔñÏîÄ¿!\r\n");
+		  alert("è¯·é€‰æ‹©é¡¹ç›®!\r\n");
 		  return ;
 	 }
 	 location.href = "media_edit.php?dopost=del&ids="+nid;
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<div id="floater" class="napisdiv">
-<a href="javascript:;" onClick="ChangeImage('../include/dialog/img/picviewnone.gif');">
-	<img src='../include/dialog/img/picviewnone.gif' id='picview' name='picview' border='0' alt='µ¥»÷¹Ø±ÕÔ¤ÀÀ' style='z-index:10000'>
-</a>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">æ–‡æ¡£ç»´æŠ¤</div>
 </div>
-<SCRIPT language=JavaScript src="js/float.js"></SCRIPT>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;margin-top:8px">
   <tr> 
-    <td height="19" colspan="7" background="img/tbg.gif">
-    	<table width='96%' cellpadding='0' cellspacing='0'>
-    		<tr>
-    		<td width='30%'><b>¸½¼şÊı¾İ¹ÜÀí</b></td>
+    <td height="19" colspan="7" bgcolor="#EDF9D5">
+<table width='96%' border="0" cellpadding='0' cellspacing='0'>
+	  <tr>
+    		<td width='30%' style='padding-left:6px'><b>é™„ä»¶æ•°æ®ç®¡ç†</b></td>
         <td align='right'>
-    	  [<a href="media_add.php"><u>ÉÏ´«ĞÂÎÄ¼ş</u></a>]
+    	  [<a href="media_add.php"><u>ä¸Šä¼ æ–°æ–‡ä»¶</u></a>]
         </td>
       </tr>
      </table>
@@ -73,49 +74,45 @@ function DelSel(){
         <form name='forms' method='post' action='media_main.php'>
         <tr> 
           <td width="10">&nbsp;</td>
-          <td width="70" align="center">¹Ø¼ü×Ö£º</td>
+          <td width="70" height="30" align="center">å…³é”®å­—ï¼š</td>
           <td width="100"><input name="keyword" type="text" id="keyword" style="width:100" value="<?php echo $keyword?>"></td>
           <td width="100" align="center">
 		  <select name='mediatype' style='width:80'>
-              <option value='0'>ÎÄ¼şÀàĞÍ</option>
-              <option value='1'<?php if($mediatype==1) echo " selected"?>>Í¼Æ¬</option>
+              <option value='0'>æ–‡ä»¶ç±»å‹</option>
+              <option value='1'<?php if($mediatype==1) echo " selected"?>>å›¾ç‰‡</option>
               <option value='2'<?php if($mediatype==2) echo " selected"?>>FLASH</option>
-              <option value='3'<?php if($mediatype==3) echo " selected"?>>ÊÓÆµ/ÒôÆµ</option>
-              <option value='4'<?php if($mediatype==4) echo " selected"?>>ÆäËü¸½¼ş</option>
+              <option value='3'<?php if($mediatype==3) echo " selected"?>>è§†é¢‘/éŸ³é¢‘</option>
+              <option value='4'<?php if($mediatype==4) echo " selected"?>>å…¶å®ƒé™„ä»¶</option>
             </select> </td>
           <td width="100" align="center">
 		  <select name='membertype' style='width:80'>
-              <option value='0'>ÓÃ»§×é</option>
-              <option value='1'<?php if($membertype==1) echo " selected"?>>¹ÜÀíÔ±</option>
-              <option value='2'<?php if($membertype==2) echo " selected"?>>Íâ²¿»áÔ±</option>
+              <option value='0'>ç”¨æˆ·ç»„</option>
+              <option value='1'<?php if($membertype==1) echo " selected"?>>ç®¡ç†å‘˜</option>
+              <option value='2'<?php if($membertype==2) echo " selected"?>>å¤–éƒ¨ä¼šå‘˜</option>
 		</select>
 		  </td>
-          <td><input class="np" name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" style="height:22px"></td>
+          <td height="30"><input name="imageField" type="submit" class="inputbut" value="æœç´¢"></td>
         </tr>
       </form>
       </table>
     </td>
   </tr>
   <tr bgcolor="#F8FBFB" height="24" align="center"> 
-    <td width="8%">Ñ¡Ôñ</td>
-      
-    <td width="28%">ÎÄ¼ş±êÌâ</td>
-      
-    <td width="10%">ÎÄ¼ş´óĞ¡</td>
-      
-    <td width="15%">ÉÏ´«»áÔ±</td>
-      
-    <td width="15%">ÉÏ´«Ê±¼ä</td>
-      
-    <td width="9%">ÎÄ¼şÀàĞÍ</td>
-      
-    <td width="15%">¹ÜÀí</td>
+    <td width="8%">é€‰æ‹©</td>
+    <td width="28%">æ–‡ä»¶æ ‡é¢˜</td>
+    <td width="10%">æ–‡ä»¶å¤§å°</td>
+    <td width="15%">ä¸Šä¼ ä¼šå‘˜</td>
+    <td width="15%">ä¸Šä¼ æ—¶é—´</td>
+    <td width="9%">æ–‡ä»¶ç±»å‹</td>
+    <td width="15%">ç®¡ç†</td>
    </tr>
    <form name='form1'>
   <?php 
 $mylist = $dlist->GetDataList();
+$i = 0;
 while($row = $mylist->GetArray('dm'))
 {
+$i++;
 ?>
   <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
     <td>
@@ -125,7 +122,7 @@ while($row = $mylist->GetArray('dm'))
     	<a href='<?php echo $row['url']?>' title='<?php echo $row['url']?>' target='_blank'>
       <?php 
       if(eregi("\.(jpg|gif|png)",$row['url'])){
-      	echo "<img src='".$row['url']."' width='100' border='0'><br/>";
+      	echo "<img src='".$row['url']."' id='n{$i}' border='0' width='100' class='imglit'/><br />";
       }
       ?>
       <u><?php echo $row['title']?></u>
@@ -136,25 +133,24 @@ while($row = $mylist->GetArray('dm'))
     <td><?php echo strftime("%y-%m-%d %H:%M",$row['uptime'])?></td>
     <td><?php echo MediaType($row['mediatype'],$row['url'])?></td>
     <td>
-    	<a href='media_edit.php?aid=<?php echo $row['aid']?>&dopost=edit'>¸ü¸Ä</a> 
+    	<a href='media_edit.php?aid=<?php echo $row['aid']?>&dopost=edit'>æ›´æ”¹</a> 
       |
-      <a href='media_edit.php?aid=<?php echo $row['aid']?>&dopost=del'>É¾³ı</a> 
+      <a href='media_edit.php?aid=<?php echo $row['aid']?>&dopost=del'>åˆ é™¤</a> 
     </td>
      </tr>
 		<?php 
 	}
 		?>
   <tr bgcolor="#F8FBFB" height="24"> 
-   <td colspan="7">
-    &nbsp; <input type="button" name="b4" value="È«Ñ¡" class="nbt" style="width:40" onClick="AllSel();"> 
-    &nbsp; <input type="button" name="b5" value="È¡Ïû" class="nbt" style="width:40" onClick="NoneSel();"> 
-    &nbsp; <input type="button" name="b6" value="É¾³ıËùÑ¡" class="nbt" style="width:80" onClick="DelSel();">
-   </td>
+   <td height="30" colspan="7" style="padding-top:6px">
+    &nbsp; <input type="button" name="b4" value="å…¨é€‰" class="inputbut" style="width:40" onClick="AllSel();"> 
+    &nbsp; <input type="button" name="b5" value="å–æ¶ˆ" class="inputbut" style="width:40" onClick="NoneSel();"> 
+    &nbsp; <input type="button" name="b6" value="åˆ é™¤æ‰€é€‰" class="inputbut" style="width:80" onClick="DelSel();">   </td>
   </tr>
   <tr bgcolor="#EEFAC9" height="24"> 
-    <td colspan="7" align="center">
-    	<?php echo $dlist->GetPageList(7);?>
-    </td>
+    <td colspan="7" align="center" bgcolor="#EDF9D5" height="48">
+    	<?php echo $dlist->GetPageList(5);?> 
+	</td>
   </tr>
 </form>
 </table>

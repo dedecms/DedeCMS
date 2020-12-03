@@ -1,41 +1,45 @@
 {dede:page pagesize="20"/}
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÍøÕ¾»áÔ±¹ÜÀí</title>
-<link href='../base.css' rel='stylesheet' type='text/css'>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>ç½‘ç«™ä¼šå‘˜ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 .rb{ border-right:1px solid #98CAEF }
 .tb{ border-top:1px solid #98CAEF }
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" style="margin-bottom:6px">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">ä¼šå‘˜ç®¡ç†</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr>
-    <td height="30" align="center" bgcolor="#FAFCEF"> 
+    <td height="30" align="center" bgcolor="#FAFCEF">
       <form action="member_main.php" name="form1" method="get">
 	    <table border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td>&nbsp;¹Ø¼ü×Ö£º</td>
+          <tr>
+            <td>&nbsp;å…³é”®å­—ï¼š</td>
             <td width="110" align="center">
-            	<input name="keyword" type="text" id="keyword" size="12" style="width:100" value="{dede:global name='keyword'/}"> 
+            	<input name="keyword" type="text" id="keyword" size="12" style="width:100" value="{dede:global name='keyword'/}">
             </td>
-            <td width="50">&nbsp;ÅÅĞò£º</td>
+            <td width="50">&nbsp;æ’åºï¼š</td>
             <td width="110"> <select name="sortkey" id="sortkey" style="width:100">
                 {dede:global name='sortform'/}
-				<option value="ID">ID/×¢²áÊ±¼ä</option>
-                <option value="logintime">µÇÂ¼Ê±¼ä</option>
-                <option value="spaceshow">¿Õ¼ä·ÃÎÊÁ¿</option>
-                <option value="pageshow">ÎÄµµ×Üµã»÷Á¿</option>
+				<option value="ID">ID/æ³¨å†Œæ—¶é—´</option>
+                <option value="logintime">ç™»å½•æ—¶é—´</option>
+                <option value="spaceshow">ç©ºé—´è®¿é—®é‡</option>
+                <option value="pageshow">æ–‡æ¡£æ€»ç‚¹å‡»é‡</option>
               </select></td>
             <td width="70"> <select name="sex" id="sex" style="width:60">
                {dede:global name='sexform'/}
-                <option value="ÄĞ">ÄĞ</option>
-                <option value="Å®">Å®</option>
-                <option value="0">²»ÏŞ</option>
+                <option value="ç”·">ç”·</option>
+                <option value="å¥³">å¥³</option>
+                <option value="0">ä¸é™</option>
               </select></td>
-            <td width="100" align="center"> <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0"> 
+            <td width="100" align="center"> <input name="imageField" type="submit" class="inputbut" value="æœç´¢">
             </td>
           </tr>
         </table>
@@ -43,61 +47,60 @@
     </td>
   </tr>
 </table>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
-  <tr> 
-    <td height="24" colspan="9" background="img/tbg.gif"><table width="99%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="29%"><strong>ÍøÕ¾»áÔ±¹ÜÀí</strong></td>
-          <td width="71%" align="right"> <a href="member_main.php">ËùÓĞ»áÔ±</a> | 
-            <a href="member_main.php?att=ad">±»ÍÆ¼ö»áÔ±</a> | <a href="member_operations.php">»áÔ±ÒµÎñ¹ÜÀí</a> 
-            | <a href="member_card.php">µã¿¨¹ÜÀí</a></td>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td height="24" colspan="8" bgcolor="#EDF9D5">
+    <table width="99%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="29%"><strong>ç½‘ç«™ä¼šå‘˜ç®¡ç†</strong></td>
+          <td width="71%" align="right"> <a href="member_main.php">æ‰€æœ‰ä¼šå‘˜</a> | <a href="member_main.php?status=1">æœªå®¡æ ¸ä¼šå‘˜</a>
+            <a href="member_main.php?att=ad">è¢«æ¨èä¼šå‘˜</a> | <a href="member_operations.php">ä¼šå‘˜ä¸šåŠ¡ç®¡ç†</a>
+            | <a href="member_card.php">ç‚¹å¡ç®¡ç†</a></td>
         </tr>
       </table></td>
   </tr>
-  <tr bgcolor="#FDFEE9" height="26"> 
-    <td width="14%" align="center">ID/µÇÂ¼Ê±¼ä</td>
-    <td width="14%" align="center">¸½¼ÓĞÅÏ¢</td>
-    <td width="5%" align="center">ĞÔ±ğ</td>
-    <td width="10%" align="center">Ö÷Ò³/µã»÷</td>
-    <td width="13%" align="center">ÀàĞÍ</td>
-    <td width="9%" align="center">½ğ±Ò</td>
-    <td width="8%" align="center">»ı·Ö</td>
-    <td width="10%" align="center">µØÇø</td>
-    <td align="center">²Ù×÷</td>
+  <tr bgcolor="#FDFEE9" height="26">
+    <td width="14%" align="center">ID/ç™»å½•æ—¶é—´</td>
+    <td width="14%" align="center">é™„åŠ ä¿¡æ¯</td>
+    <td width="5%" align="center">æ€§åˆ«</td>
+    <td width="10%" align="center">ä¸»é¡µ/ç‚¹å‡»</td>
+    <td width="13%" align="center">ç±»å‹</td>
+    <td width="9%" align="center">é‡‘å¸</td>
+    <td width="8%" align="center">ç§¯åˆ†</td>
+    <td align="center">æ“ä½œ</td>
   </tr>
-  {dede:datalist} 
-  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-    <td> 
+  {dede:datalist}
+  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td>
 	<a href="member_view.php?ID=[field:ID/]"><u>[field:userid/]</u></a> <br>
 	[field:logintime function="GetDateMk('@me')"/]
     </td>
     <td> [field:email function='htmlspecialchars(@me)'/]<br>
-      êÇ³Æ£º[field:uname function='htmlspecialchars(@me)'/]
+      æ˜µç§°ï¼š[field:uname function='htmlspecialchars(@me)'/]
       [field:matt function='GetMAtt(@me)'/] </td>
     <td>[field:sex /]</td>
     <td> [field:spaceshow/]/ [field:pageshow/] </td>
     <td> [field:membertype function="GetMemberName('@me','ut')"/] </td>
     <td> [field:money /] </td>
-    <td> [field:jf /] </td>
-    <td> [field:province function="GetAreaName('@me','ÎŞ')"/] <br> [field:city function="GetAreaName('@me','')"/]</td>
+    <td> [field:scores /] </td>
     <td>
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td align="center" height="25"> <a href="member_view.php?ID=[field:ID/]">×ÊÁÏ</a> 
-            | <a href="member_do.php?ID=[field:ID/]&dopost=recommend&matt=[field:matt/]">ÍÆ¼ö</a><a href="content_list.php?memberid=[field:ID/]" target="_blank"> 
-            </a> | <a href="member_do.php?ID=[field:ID/]&dopost=delmember">É¾³ı</a></td>
+        <tr>
+          <td align="center" height="25"> <a href="member_view.php?ID=[field:ID/]">èµ„æ–™</a>
+            | <a href="member_do.php?ID=[field:ID/]&dopost=recommend&matt=[field:matt/]">æ¨è</a><a href="content_list.php?memberid=[field:ID/]" target="_blank">
+            </a> | <a href="member_do.php?ID=[field:ID/]&dopost=delmember">åˆ é™¤</a></td>
         </tr>
-        <tr> 
-         <td align="center" height="25" style="border-top:1px solid #cccccc"> 
-            <a href="../include/jump.php?gurl=[field:global name='cfg_memberurl'/]/index.php?uid=[field:userid/]" target="_blank">¿Õ¼ä</a>
-           | <a href="content_list.php?memberid=[field:ID/]" target="_blank">ÎÄµµ</a>
-           | <a href="media_main.php?memberid=[field:ID/]" target="_blank">¸½¼ş</a>
+        <tr>
+         <td align="center" height="25" style="border-top:1px solid #cccccc">
+            <a href="../include/jump.php?gurl=[field:global name='cfg_memberurl'/]/index.php?uid=[field:userid/]" target="_blank">ç©ºé—´</a>
+           | <a href="content_list.php?memberid=[field:ID/]" target="_blank">æ–‡æ¡£</a>
+           | <a href="media_main.php?memberid=[field:ID/]" target="_blank">é™„ä»¶</a>
           </td>
         </tr>
       </table></td>
   </tr>
-  {/dede:datalist} 
-  <tr bgcolor="#F8FBFB"> 
+  {/dede:datalist}
+  <tr bgcolor="#F8FBFB">
     <td height="26" colspan="9" align="center"> {dede:pagelist listsize=6/} </td>
   </tr>
 </table>

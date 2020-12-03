@@ -2,14 +2,14 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
 
-if($linkareas!=""&&$linkareae!="") $linkarea = $linkareas.'[var:ÇøÓò]'.$linkareae;
+if($linkareas!=""&&$linkareae!="") $linkarea = $linkareas.'[var:åŒºåŸŸ]'.$linkareae;
 else $linkarea = '';
 
-if($sppages!="" && $sppagee!="") $sppage = $sppages.'[var:·ÖÒ³ÇøÓò]'.$sppagee;
+if($sppages!="" && $sppagee!="") $sppage = $sppages.'[var:åˆ†é¡µåŒºåŸŸ]'.$sppagee;
 else $sppage = '';
 
 $itemconfig = "
-{!-- ½Úµã»ù±¾ĞÅÏ¢ --}
+{!-- èŠ‚ç‚¹åŸºæœ¬ä¿¡æ¯ --}
 
 {dede:item name=\\'$notename\\'
 	imgurl=\\'$imgurl\\' imgdir=\\'$imgdir\\' language=\\'$language\\'
@@ -17,9 +17,9 @@ $itemconfig = "
 	typeid=\\'$exrule\\' matchtype=\\'$matchtype\\'}
 {/dede:item}
 
-{!-- ²É¼¯ÁĞ±í»ñÈ¡¹æÔò --}
+{!-- é‡‡é›†åˆ—è¡¨è·å–è§„åˆ™ --}
 
-{dede:list source=\\'$source\\' sourcetype=\\'$sourcetype\\' 
+{dede:list source=\\'$source\\' sourcetype=\\'list\\' 
            varstart=\\'$varstart\\' varend=\\'$varend\\'}
   {dede:url value=\\'$sourceurl\\'}$sourceurls{/dede:url}	
   {dede:need}$need{/dede:need}
@@ -27,7 +27,7 @@ $itemconfig = "
   {dede:linkarea}$linkarea{/dede:linkarea}
 {/dede:list}
 
-{!-- ÍøÒ³ÄÚÈİ»ñÈ¡¹æÔò --}
+{!-- ç½‘é¡µå†…å®¹è·å–è§„åˆ™ --}
 
 {dede:art}
 {dede:sppage sptype=\\'$sptype\\'}$sppage{/dede:sppage}";	
@@ -55,7 +55,7 @@ for($i=1;$i<=50;$i++)
 		}
 	$matchstr = '';
 	if( !empty($GLOBALS["matchs".$i]) && !empty($GLOBALS["matche".$i]) ){
-		$matchstr = $GLOBALS["matchs".$i]."[var:ÄÚÈİ]".$GLOBALS["matche".$i];
+		$matchstr = $GLOBALS["matchs".$i]."[var:å†…å®¹]".$GLOBALS["matche".$i];
 	}
 	$itemconfig .= "
   
@@ -74,21 +74,26 @@ $itemconfig .= "
 ";
 
 $inQuery = "
-Update #@__conote set gathername='$notename',language='$language',noteinfo='$itemconfig' 
+Update #@__conote set gathername='$notename',language='$language',arcsource='$arcsource',noteinfo='$itemconfig' 
 Where nid='$nid';
 ";
 $dsql = new DedeSql(false);
-$dsql->SetSql($inQuery);
-if($dsql->ExecuteNoneQuery())
+if($dsql->ExecuteNoneQuery($inQuery))
 {
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÒ»¸ö½Úµã!","co_main.php");
+	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªèŠ‚ç‚¹!","co_main.php");
 	exit();
 }
 else
 {
+	$gerr = $dsql->GetError();
 	$dsql->Close();
-	ShowMsg("¸ü¸Ä½ÚµãÊ§°Ü,Çë¼ì²éÔ­Òò!","-1");
+	echo "SQLè¯­å¥ï¼š<xmp>$inQuery</xmp>";
+	echo "<hr>é”™è¯¯æç¤ºï¼š".$gerr."<hr>";
+	$dsql->Close();
+	ShowMsg("æ›´æ”¹èŠ‚ç‚¹å¤±è´¥,è¯·æ£€æŸ¥åŸå› !","javascript:;");
 	exit();
 }
+
+ClearAllLink();
 ?>

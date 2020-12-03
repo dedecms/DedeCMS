@@ -4,14 +4,14 @@ CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 require_once(dirname(__FILE__)."/inc/inc_batchup.php");
 //typeid,startid,endid,seltime,starttime,endtime,action,newtypeid
-//ÅúÁ¿²Ù×÷
+//æ‰¹é‡æ“ä½œ
 //check del move makehtml
-//»ñÈ¡IDÌõ¼ş
+//è·å–IDæ¡ä»¶
 //------------------------
 if(empty($startid)) $startid = 0;
 if(empty($endid)) $endid = 0;
 if(empty($seltime)) $seltime = 0;
-//Éú³ÉHTML²Ù×÷ÓÉÆäËüÒ³Ãæ´¦Àí
+//ç”ŸæˆHTMLæ“ä½œç”±å…¶å®ƒé¡µé¢å¤„ç†
 if($action=="makehtml")
 {
 	$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
@@ -26,6 +26,7 @@ if($endid > $startid) $gwhere .= " And ID<= $endid ";
 $dsql = new DedeSql(false);
 $idsql = "";
 if($typeid!=0){
+	$GLOBALS['idArray'] = array();
 	$idArrary = TypeGetSunTypes($typeid,$dsql,0);
 	if(is_array($idArrary)){
 	  foreach($idArrary as $tid){
@@ -40,11 +41,11 @@ if($seltime==1){
 	$t2 = GetMkTime($endtime);
 	$gwhere .= " And (senddate >= $t1 And senddate <= $t2) ";
 }
-//Ö¸Á¿ÉóºË
+//æŒ‡é‡å®¡æ ¸
 if($action=='check')
 {
 	 if(empty($startid)||empty($endid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨ÆğÊ¼ID£¡','javascript:;');	
+	 	 ShowMsg('è¯¥æ“ä½œå¿…é¡»æŒ‡å®šèµ·å§‹IDï¼','javascript:;');	
 	 	 exit();
 	 }
 	 $jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
@@ -56,14 +57,14 @@ if($action=='check')
 	 	 if($row->arcrank==-1) $dsql->ExecuteNoneQuery("Update #@__archives set arcrank=0 where ID='{$row->ID}'");
 	 }
 	 $dsql->Close();
-	 ShowMsg("Íê³ÉÊı¾İ¿âµÄÉóºË´¦Àí£¬×¼±¸¸üĞÂHTML...",$jumpurl);
+	 ShowMsg("å®Œæˆæ•°æ®åº“çš„å®¡æ ¸å¤„ç†ï¼Œå‡†å¤‡æ›´æ–°HTML...",$jumpurl);
 	 exit();
 }
-//ÅúÁ¿É¾³ı
+//æ‰¹é‡åˆ é™¤
 else if($action=='del')
 {
   if(empty($startid)||empty($endid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨ÆğÊ¼ID£¡','javascript:;');	
+	 	 ShowMsg('è¯¥æ“ä½œå¿…é¡»æŒ‡å®šèµ·å§‹IDï¼','javascript:;');	
 	 	 exit();
 	}
   $dsql->SetQuery("Select ID From #@__archives $gwhere");
@@ -71,31 +72,31 @@ else if($action=='del')
   $tdd = 0;
   while($row = $dsql->GetObject('x')){ if(DelArc($row->ID)) $tdd++; }
   $dsql->Close();
-	ShowMsg("³É¹¦É¾³ı $tdd Ìõ¼ÇÂ¼£¡","javascript:;");
+	ShowMsg("æˆåŠŸåˆ é™¤ $tdd æ¡è®°å½•ï¼","javascript:;");
 	exit();
 }
-//ÅúÁ¿ÒÆ¶¯
+//æ‰¹é‡ç§»åŠ¨
 else if($action=='move')
 {
   if(empty($typeid)){
-	 	 ShowMsg('¸Ã²Ù×÷±ØĞëÖ¸¶¨À¸Ä¿£¡','javascript:;');	
+	 	 ShowMsg('è¯¥æ“ä½œå¿…é¡»æŒ‡å®šæ ç›®ï¼','javascript:;');	
 	 	 exit();
 	}
   $typeold = $dsql->GetOne("Select * From #@__arctype where ID='$typeid'; ");
   $typenew = $dsql->GetOne("Select * From #@__arctype where ID='$newtypeid'; ");
   if(!is_array($typenew)){
   	$dsql->Close();
-    ShowMsg("ÎŞ·¨¼ì²âÒÆ¶¯µ½µÄĞÂÀ¸Ä¿µÄĞÅÏ¢£¬²»ÄÜÍê³É²Ù×÷£¡","javascript:;");
+    ShowMsg("æ— æ³•æ£€æµ‹ç§»åŠ¨åˆ°çš„æ–°æ ç›®çš„ä¿¡æ¯ï¼Œä¸èƒ½å®Œæˆæ“ä½œï¼","javascript:;");
 	  exit();
   }
   if($typenew['ispart']!=0){
   	$dsql->Close();
-    ShowMsg("Äã²»ÄÜ°ÑÊı¾İÒÆ¶¯µ½·Ç×îÖÕÁĞ±íµÄÀ¸Ä¿£¡","javascript:;");
+    ShowMsg("ä½ ä¸èƒ½æŠŠæ•°æ®ç§»åŠ¨åˆ°éæœ€ç»ˆåˆ—è¡¨çš„æ ç›®ï¼","javascript:;");
 	  exit();
   }
   if($typenew->channeltype!=$typeold->channeltype){
   	$dsql->Close();
-    ShowMsg("²»ÄÜ°ÑÊı¾İÒÆ¶¯µ½ÄÚÈİÀàĞÍ²»Í¬µÄÀ¸Ä¿£¡","javascript:;");
+    ShowMsg("ä¸èƒ½æŠŠæ•°æ®ç§»åŠ¨åˆ°å†…å®¹ç±»å‹ä¸åŒçš„æ ç›®ï¼","javascript:;");
 	  exit();
   }
   $gwhere .= " And channel='".$typenew['channeltype']."'";
@@ -113,9 +114,10 @@ else if($action=='move')
   	$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";
     $jumpurl .= "&typeid=$newtypeid&pagesize=20&seltime=$seltime";
     $jumpurl .= "&stime=".urlencode($starttime)."&etime=".urlencode($endtime);
-  	ShowMsg("³É¹¦ÒÆ¶¯ $tdd Ìõ¼ÇÂ¼£¬×¼±¸ÖØĞÂÉú³ÉHTML...",$jumpurl);
+  	ShowMsg("æˆåŠŸç§»åŠ¨ $tdd æ¡è®°å½•ï¼Œå‡†å¤‡é‡æ–°ç”ŸæˆHTML...",$jumpurl);
   }
-  else ShowMsg("Íê³É²Ù×÷£¬Ã»ÒÆ¶¯ÈÎºÎÊı¾İ...","javascript:;");
+  else ShowMsg("å®Œæˆæ“ä½œï¼Œæ²¡ç§»åŠ¨ä»»ä½•æ•°æ®...","javascript:;");
 	exit();
 }
+ClearAllLink();
 ?>

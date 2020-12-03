@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>文档管理</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+function viewArc(aid,tid){
+	window.open("<?php echo $cfg_plus_dir?>/view.php?aid="+aid+"&tid="+tid);
+}
+function editArc(aid,channelid){
+	var arceditFile;
+	arceditFile = "do.php?channelid="+channelid+"&";
+	location = arceditFile + "aid="+aid+"&action=edit";
+}
+function delArc(aid,channelid){
+	if(window.confirm('你确定要删除这篇文档吗?'))
+	location="do.php?aid="+aid+"&action=delete&channelid="+channelid;
+}
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr>
+    <td width="160" height="216" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+<td width="10">&nbsp;</td>
+<td  valign="top">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td height="183" valign="top">
+<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'>
+ <tr>
+<td align='center' valign='top'>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:3px; margin-top:10px;">
+<tr bgcolor="#ffffff">
+   <div class="manage_company_right_title">
+                	<ul><li>
+<?php echo $positionname?>
+内容列表</li></ul>
+                </div>
+</tr>
+</table>
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+<form name="form2">
+<tr align="center" bgcolor="#FAFAF1" height="24">
+<td width="33%" bgcolor="#F0F8D6">文章标题</td>
+<td width="14%" bgcolor="#F0F8D6">发布时间</td>
+<td width="16%" bgcolor="#F0F8D6">类目</td>
+<td width="10%" bgcolor="#F0F8D6">点击</td>
+<td width="9%" bgcolor="#F0F8D6">状态</td>
+<td width="18%" bgcolor="#F0F8D6">操作</td>
+</tr>
+<?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+<tr align='center' bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFEE9';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="24">
+<td align='left'>
+·<a href='<?php echo $cfg_plus_dir?>/view.php?aid=<?php echo $row['ID']?>&tid=<?php echo $row['typeid']?>' target='_blank'><u><?php echo $row['title']?><?php echo IsPicArchives($row['litpic'])?></u></a>
+</td>
+<td>
+<?php echo GetDateMk($row['senddate'])?>
+</td>
+<td>
+<?php echo $row['typename']?>
+</td>
+<td>
+<?php echo $row['click']?>
+</td>
+<td>
+<?php
+if($row['arcrank']>=0) echo "已审核";
+else echo "<font color='red'>未审核</font>";
+?>
+</td>
+<td>
+	<?php
+	if($row['arcrank']<0 || $arcsta!=-1){
+	?>
+	<a href="javascript:editArc(<?php echo $row['ID']?>,<?php echo $row['channel']?>);">改</a> |
+  <a href="javascript:delArc(<?php echo $row['ID']?>,<?php echo $row['channel']?>);">删</a> |
+<?php  }else{ echo "<font color='#ababab'>改 | 删 | </font>"; } ?>
+	<a href="javascript:viewArc(<?php echo $row['ID']?>,<?php echo $row['typeid']?>);">预览</a>
+</td>
+</tr>
+<?php
+}
+?>
+</form>
+<tr align="right" bgcolor="#EEF4EA">
+<td height="20" colspan="6" align="center" bgcolor="#F9FCEF">
+<?php echo $dlist->GetPageList(7);?></td>
+</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="4"></td>
+</tr>
+<tr bgcolor="#FFFFFF">
+<td style="border: 1px solid #D9EDC0;" height="26">
+<table width='100%'border='0' cellpadding='1' cellspacing='1'>
+<tr bgcolor='#EEF4EA'>
+<form name='form3' action='content_list.php' method='get'>
+<input type='hidden' name='dopost' value='listArchives'>
+<input type='hidden' name='channelid' value='<?php echo $channelid?>'>
+<td background="img/nnnbg.gif" bgcolor="#F3FADE"><table width='580' border='0' cellpadding='0' cellspacing='0'>
+<tr>
+<?php
+if($channelid=='1'||$channelid=='2'){
+?>
+<td width='90' align='center'>请选择类目：</td>
+<td width='160'>
+<select name='mtype' style='width:150'>
+<?php
+$dlist->dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' And channelid='$channelid';");
+$dlist->dsql->Execute('mylist');
+echo "<option value='0'>--请选择分类--</option>";
+while($arow = $dlist->dsql->GetObject('mylist')){
+  if($mtype==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
+  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
+}
+?>
+</select>
+</td>
+<?php
+}else{  echo "<td width='250'></td>\r\n"; }
+?>
+<td width='80'>　关键字： </td>
+<td width='150'> <input type='text' name='keyword' value='<?php echo $keyword?>' style='width:140'>
+</td>
+<td> <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">
+</td>
+</tr>
+</table></td>
+</form>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td colspan="2" height="4"></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="24" valign="top">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+</table>
+<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
+</body>
+</html>

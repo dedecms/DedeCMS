@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/product.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<!--头部开始-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a> </li>
+		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></li>
+		</ul>
+	</div>
+</div>
+<!--导航栏-->
+<div class="topmenu cbody">	<ul>
+		<li><a href="/">首页</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
+		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
+	</ul>
+	<div class="rssbut">		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
+	</div>
+</div>
+<!--搜索条-->
+<div class="topsearch cbody">
+	<div class="title"></div>
+	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<input type="hidden" name="kwtype" value="0">
+		<input name="keyword" id="keyword" type="text" class="searchtxt" />
+		<select name="searchtype" id="searchtype">
+			<option value="titlekeyword" selected>智能模糊搜索</option>
+			<option value="title">仅搜索标题</option>
+		</select>
+		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+	</div>
+	<div class="hots">		<strong>热门关键字：</strong>
+		{dede:hotwords num='5' subday='30'/}</div>
+</div>
+
+<!--内容-->
+<div class="main cbody margintop">
+	<!--左侧-->
+	<div class="pleft">
+		<!--位置导航-->
+		<div class="thisplace">
+			<div class="title">{dede:field name='typename'/}</div>
+			<div class="placenav">
+				<span>当前位置 :</span>
+				{dede:field name='position'/}列表
+			</div>
+		</div>
+
+		<div class="pdlist">
+			{dede:list pagesize='15'}
+            <dl>
+				<dt>[field:litpic function="CkLitImageView(@me,80)"/]</dt>
+				<dd class="pdtitle"><strong>产品名称：</strong><a href="[field:arcurl/]" class="ulink">[field:title/]</a></dd>
+				<dd class="pdinfo"><strong>上市日期：</strong>[field:pubdate function="GetDateTimeMK(@me)"/]   <strong>点击：</strong>[field:click/]   <strong>评论：</strong>[field:postnum/]  </dd>
+				<dd class="pdprev">产品简介：[field:description/] ... </dd>
+			</dl>
+            {/dede:list}
+		</div>
+
+		<!--分页-->
+		<div class="pages">
+			<div class="plist">
+				{dede:pagelist listsize='7' listitem='index pre pageno next end '/}
+			</div>
+		</div>
+
+	</div>
+
+	<!--右侧-->
+	<div class="pright">
+		<!--侧边信息列表-->
+         <div class="classbox">
+			<dl>
+				<dt>栏目列表</dt>
+				<dd>
+					<ul>
+                    {dede:channel type='sun'}
+                    <li><a href='[field:typelink/]'>[field:typename/]</a></li>
+                    {/dede:channel}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		<div class="rlist margintop">
+			<div class="title">热门产品</div>
+			<div class="rbox">
+				<ul>
+             	{dede:arclist orderby='click' titlelen='26' row='20'}
+                	  <li>[field:textlink/]</li>
+                {/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+		<!--侧边信息列表-->
+		<div class="rlist margintop">
+			<div class="title">随机推荐</div>
+			<div class="rbox">
+				<ul>
+					{dede:arclist type='commend' titlelen='26' orderby='rand' row='10'}
+                      <li>[field:textlink/]</li>
+                    {/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="floatclear"><!--清除浮动--></div>
+</div>
+
+
+<div class="footer cbody margintop">
+	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+	</div>
+	<div class="slogo">
+		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+	</div>
+	<div class="floatclear"></div>
+</div>
+
+
+</body>
+</html>

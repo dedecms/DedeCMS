@@ -1,77 +1,88 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>��Ա��¼</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<title>会员登录</title>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"> 
-<td height="50"><a href="index.php"><img src="img/member.gif" width="133" height="35" border="0"></a></td>
-</tr>
-</table>
-<table width="760" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
-  <tr>
-    <td height="26" background="img/nnnbg.gif"><font color="#333333"><strong>����Ա��¼��</strong></font></td>
-  </tr>
-  <tr>
-    <td height="102" align="center" bgcolor="#FFFFFF"><table width="98%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td height="10"></td>
-      </tr>
-      
-      <form name='form1' method='POST' action='index_do.php'>
-        <input type="hidden" name="fmdo" value="login">
-        <input type="hidden" name="dopost" value="login">
-        <input type="hidden" name="gourl" value="<?php if(!empty($gourl)) echo $gourl;?>">
-        <tr>
-          <td valign="top"><table width='100%' border='0' cellspacing='0' cellpadding='0'>
-              <tr>
-                <td width='60%' height="60">�û�����
-                  <input name='userid' type='text' size='12' style='height:18;width:90'>
-                  &nbsp;���룺
-                  <input name='pwd' type='password' size='12' style='height:18;width:90'>
-                  &nbsp;��֤�룺
-                  <input name="vdcode" type="text" id="vdcode" style='height:18;width:50'>                </td>
-                <td width='11%'><img src='../include/vdimgck.php' width='50' height='20'> </td>
-                <td width='9%'><input name='imageField2' type='image' src='img/log.gif' width='48' height='18' border='0' class='input_img'></td>
-                <td width='20%'><a href='index_do.php?fmdo=user&dopost=regnew'>[<u>ע���»�Ա</u>]</a></td>
-              </tr>
-          </table></td>
-        </tr>
-      </form>
-      <form name='form2' action="index_do.php">
-        <input type="hidden" name="fmdo" value="login">
-        <input type="hidden" name="dopost" value="getpwd">
-        <tr>
-          <td height="30" valign="top"><hr size="1">          </td>
-        </tr>
-        <tr>
-          <td height="24" valign="top"><strong>ȡ�����룺</strong>����֤����д��Ա��¼����ʾ��ͼƬ�ϵ���ĸ��</td>
-        </tr>
-        <tr>
-          <td height="57" valign="top"><table width="100%" border="0" cellspacing="1" cellpadding="1">
-              <tr>
-                <td width="32%" height="36">���������ҵ����룬���������Email�� </td>
-                <td width="17%"><input name="email" type="text" id="email" size="15" style='height:18;width:100'>                </td>
-                <td width="10%" align="center">��֤�룺 </td>
-                <td width="13%"><input name="vdcode" type="text" id="vdcode" size="10" style='height:18;width:60'></td>
-                <td width="12%"><input type="submit" name="Submit" value="ȡ������" class="nb"></td>
-                <td width="16%">&nbsp;</td>
-              </tr>
-              <tr>
-                <td height="29" colspan="6">&nbsp;</td>
-              </tr>
-          </table></td>
-        </tr>
-      </form>
-    </table></td>
-  </tr>
-</table>
-<p align='center'>
-<?php echo $cfg_powerby?>
-</p>
+
+<body>
+<div id="container">
+	<!--头部开始-->
+	<div id="login_header">
+    	<div class="login_topbg">
+        	<div class="login_topleft">
+            </div>
+            <div class="login_topmiddle">
+            	<div class="login_topmiddle_left">
+                </div>
+                <div class="login_topmiddle_right">
+                </div>
+            </div>
+            <div class="login_topright">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--头部结束-->
+    <!--中间开始-->
+    <div id="login_main">
+    	<div class="login_main_border">
+        	<div class="login_main_white">
+            </div>
+            <div class="login_main_title">
+            </div>
+            <div class="login_main_text">
+            	<div class="login_main_foum">      
+                <form name='form1' method='POST' action='index_do.php'>
+        			<input type="hidden" name="fmdo" value="login">
+        			<input type="hidden" name="dopost" value="login">
+        			<input type="hidden" name="gourl" value="<?php if(!empty($gourl)) echo $gourl;?>">
+            		<div class="login_main_text_label">用户名：<input name="userid" type="text" class="login_label" />
+                	</div>
+                	<div class="login_main_text_label">登录密码：<input name="pwd" type="password" class="login_label" />
+                	</div>
+                	<div class="login_main_text_label">验证码：<input name="vdcode" type="text" class="login_label1" />
+                	</div>
+                	<div class="login_main_text_label1"><img src="../include/vdimgck.php" />
+                	</div>
+                	<div class="login_main_text_label2"><input type="submit" name="Submit2" value="登录" class="login_button01" />
+                	</div>
+                	<div class="login_main_text_label1"><a href="index_do.php?fmdo=user&dopost=regnew">注册新会员</a>
+                	</div>
+                	<div class="clear">
+                	</div></form>
+                </div>
+              	<div class="login_notice"><span>取回密码：</span>（验证码填写会员登录所显示的图片上的字母）
+              	</div>
+                <div class="login_main_foum1">
+                <form name='form2' action="index_do.php">
+        			<input type="hidden" name="fmdo" value="login">
+        			<input type="hidden" name="dopost" value="getpwd">
+            		<div class="login_main_text_label">我忘记了我的密码，请输入你的Email：<input name="email" type="text" class="login_label2" />
+                	</div>
+                	<div class="login_main_text_label">验证码：<input name="vdcode" type="text" class="login_label1" />
+                	</div>
+                	<div class="login_main_text_label1"><img src="../include/vdimgck.php" />
+                	</div>
+                	<div class="login_main_text_label2"><input type="submit" name="Submit2" value="取回密码" class="login_button" />
+                	</div>
+                	<div class="clear">
+                	</div></form>
+                </div>
+            </div>
+            <div class="login_main_bottom">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--中间结束-->
+    <!--底部开始-->
+    <div id="login_footer"><?php echo $cfg_powerby?>
+    </div>
+    <!--底部结束-->
 </div>
 </body>
 </html>

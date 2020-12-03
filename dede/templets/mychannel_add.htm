@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>新增频道</title>
+<script language="javascript" src="main.js"></script>
+<script language="javascript">
+<!--
+function SelectGuide(fname)
+{
+   var posLeft = window.event.clientY-200;
+   var posTop = window.event.clientX-200;
+   window.open("mychannel_field_make.php?f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=no,statebar=no,width=600,height=420,left="+posLeft+", top="+posTop);
+}
+function CheckSubmit()
+{
+	if(document.form1.typename.value=='')
+	{
+		alert("频道名称不能为空！");
+		return false;
+	}
+	return true;
+}
+-->
+</script>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+td{ padding:2px; padding-left:6px; line-height:150%; }
+.STYLE2 {color: #666666; display:none; }
+-->
+</style>
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">频道管理</div>
+</div>
+
+  
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form name="form1" action="mychannel_add_action.php" method="post" onSubmit="return CheckSubmit();">
+    <tr bgcolor="#E2F5BC"> 
+      <td height="25" colspan="2" bgcolor="#EDF9D5"> <b>&nbsp;<a href="mychannel_main.php"><u>频道模型管理</u></a> 
+        &gt; 新增频道模型：</b> </td>
+    </tr>
+    <tr> 
+      <td width="35%" height="28" align="left" bgcolor="#FFFFFF">频道ID：<br />
+        <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span> </td>
+      <td width="65%" bgcolor="#FFFFFF"> <input name="ID" type="text" id="ID" size="10" value="<?php echo $newid?>">
+      * <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help1')" /></td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">频道名称：<br />
+        <span class="STYLE2" id="help3">　　频道的中文名称，在后台管理，前台发布等均使用此名字。</span></td>
+      <td bgcolor="#FFFFFF">
+	  <input name="typename" type="text" id="typename" style="width:180px">
+      *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help3')" />
+     </td>
+    </tr>
+    <tr> 
+      <td align="left" bgcolor="#FFFFFF">名字标识：<br />
+        <span class="STYLE2" id="help2">　　与文档的模板相关连，建议由英文、数字或下划线组成，因为部份Unix系统无法识别中文文件，频道默认文档模板是 “default/article_名字标识.htm”，列表模板、封面模板类推。 </span></td>
+      <td bgcolor="#FFFFFF">
+      	<input name="nid" type="text" id="nid" style="width:180px">
+        *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help2')" />
+        <input name="ispy" type="checkbox"  id="ispy" value="1" class="np" checked />用频道名称的拼音
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">主索引表：<br />
+        <span class="STYLE2" id="help4">　　系统会直接复制dede_archives的结构作为索引表，表名是允许相同的，当然使用不同的表分流数据可以提高负载性能。</span></td>
+      <td bgcolor="#FFFFFF">
+	  <input name="maintable" type="text" id="maintable" value="<?php echo $cfg_dbprefix; ?>archives<?php echo $newid; ?>" style="width:180px">
+	  *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help4')" />	
+	  <input name="isdel1" type="checkbox"  id="isdel1" value="1" class="np" checked />
+     删除已有的表 
+   </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">附加表：<br />
+        <span class="STYLE2" id="help5">　　必须由英文、数字、下划线组成，用于保存不包含在索引表中的个性化数据。</span></td>
+      <td bgcolor="#FFFFFF">
+	    <input name="addtable" type="text" id="addtable"  style="width:180px" value="<?php echo $cfg_dbprefix; ?>addon<?php echo $newid; ?>">
+        *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help5')" />
+        <input name="isdel2" type="checkbox"  id="isdel2" value="1" class="np" checked />
+        删除已有的表
+      </td>
+    </tr>
+    <tr>
+      <td height="28" align="left" bgcolor="#FFFFFF">模型字段配置：</td>
+      <td bgcolor="#FFFFFF"><span class="STYLE1">建立模型后在“更改”模型的地方添加字段即可。</span></td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">模型性质：</td>
+      <td bgcolor="#FFFFFF"> <input name="issystem" type="radio" class="np"  value="0" checked>
+        自动模型 
+        <input name="issystem" type="radio" class="np" value="1" >
+        系统模型</td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">是否支持会员投稿：</td>
+      <td bgcolor="#FFFFFF"> <input name="issend" type="radio" class="np"  value="0" checked>
+        不支持　 
+        <input name="issend" type="radio" class="np"  value="1">
+        支持 </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">投稿会员组：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="sendmember" type="radio" class="np"  value="0" checked>
+        个人会员 
+        <input name="sendmember" type="radio" class="np"  value="1">
+        企业会员
+        <input name="sendmember" type="radio" class="np"  value="2">
+      所有会员</td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">会员许可投稿级别：</td>
+      <td bgcolor="#FFFFFF">
+	  <select name="sendrank" id="sendrank" style="width:120">
+		  <?php 
+              $dsql->SetQuery("Select * from #@__arcrank where rank>=10");
+              $dsql->Execute();
+              while($row2 = $dsql->GetObject())
+              {
+              	echo "     <option value='".$row2->rank."'>".$row2->membername."</option>\r\n";
+              }
+          ?>
+        </select> </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">会员稿件默认状态：</td>
+      <td bgcolor="#FFFFFF"><input name="arcsta"  type="radio" class="np" value="-1" checked>
+        未审核 
+        <input name="arcsta"  type="radio" class="np" value="0">
+        已审核（自动生成HTML） 
+        <input name="arcsta"  type="radio" class="np" value="1">
+        已审核（仅使用动态文档）</td>
+    </tr>
+    
+
+    <tr>
+      <td colspan="2" bgcolor="#FFFFFF" height="28">
+      	　　◎以下的选项，如果你没有自己重新开发这个模型的发布程序，保留默认即可，系统会自动生成发布表单。
+      </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">档案发布程序：</td>
+      <td bgcolor="#FFFFFF"> <input name="addcon" type="text" id="addcon" value="archives_add.php" style="width:180px">
+        * </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">档案修改程序：</td>
+      <td bgcolor="#FFFFFF"> <input name="editcon" type="text" id="editcon" value="archives_edit.php" style="width:180px">
+        * </td>
+    </tr>
+    <tr> 
+      <td height="28" align="left" bgcolor="#FFFFFF">档案管理程序：</td>
+      <td bgcolor="#FFFFFF"><input name="mancon" type="text" id="mancon" value="content_list.php" style="width:180px">        
+      * </td>
+    </tr>
+    
+    <tr> 
+      <td align="left" bgcolor="#FFFFFF">会员发布程序：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="useraddcon" type="text" id="useraddcon" value="archives_add.php" style="width:180px">      </td>
+    </tr>
+    <tr> 
+      <td align="left" bgcolor="#FFFFFF">会员修改程序：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="usereditcon" type="text" id="usereditcon" value="archives_edit.php" style="width:180px">      </td>
+    </tr>
+    <tr> 
+      <td align="left" bgcolor="#FFFFFF">会员管理程序：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="usermancon" type="text" id="usermancon" value="content_list.php" style="width:180px">      </td>
+    </tr>
+    
+    <tr bgcolor="#F9FDF0"> 
+      <td height="28" colspan="2"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="26%" height="45">&nbsp;</td>
+            <td width="15%"><input type="submit" name="button" id="button" value="确定"  class="inputbut"/></td>
+            <td width="59%"><input name="按钮" type="button" class="inputbut"  id="button2" onclick="location='mychannel_main.php';" value="返回"/></td>
+          </tr>
+        </table></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

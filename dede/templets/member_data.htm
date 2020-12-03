@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title> 数据转换与导入</title>
+<script language='javascript' src='main.js'></script>
+<script language='javascript' src='../include/dedeajax2.js'></script>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language='javascript'>
+	function selDbset(){
+		if($DE('db2').checked){
+			$DE('dbinfo1').style.display = 'block';
+			$DE('dbinfo2').style.display = 'none';
+			$DE('dbhostc').style.display = 'none';
+		}else if($DE('db3').checked){
+			$DE('dbinfo1').style.display = 'block';
+			$DE('dbinfo2').style.display = 'block';
+			$DE('dbhostc').style.display = 'block';
+		}else{
+			$DE('dbinfo1').style.display = 'none';
+			$DE('dbinfo2').style.display = 'none';
+		}
+	}
+	function ShowChangeType(){
+		if($DE('tg2').checked){
+			$DE('ot1').checked = false;
+			$DE('ot2').checked = true;
+			$DE('ot3').checked = false;
+			$DE('ot4').checked = false;
+		}
+		if($DE('tg3').checked){
+			$DE('ot1').checked = false;
+			$DE('ot2').checked = false;
+			$DE('ot3').checked = false;
+			$DE('ot4').checked = true;
+		}
+	}
+	function SelectedTable(){
+		var dbhost = $DE('dbhost').value;
+		var dbname = $DE('dbname').value;
+		var dbuser = $DE('dbuser').value;
+		var dbpwd = $DE('dbpwd').value;
+		var dbptype = 1;
+		if($DE('db2').checked) dbptype = 2;
+		else if($DE('db3').checked) dbptype = 3;
+		var queryUrl = "member_data_action.php?action=gettables&dbptype="+dbptype+"&dbhost="+dbhost+"&dbname="+dbname+"&dbuser="+dbuser+"&dbpwd="+dbpwd;
+		var myajax = new DedeAjax($DE('tblist'),true,true,'','x','...');
+	  myajax.SendGet(queryUrl);
+	}
+	function ShowFields(){
+		var dbhost = $DE('dbhost').value;
+		var dbname = $DE('dbname').value;
+		var dbuser = $DE('dbuser').value;
+		var dbpwd = $DE('dbpwd').value;
+		var dbptype = 1;
+		var exptable = $DE('exptable').options[$DE('exptable').selectedIndex].value;
+		if($DE('db2').checked) dbptype = 2;
+		else if($DE('db3').checked) dbptype = 3;
+		var queryUrl = "member_data_action.php?exptable="+exptable+"&action=getfields&dbptype="+dbptype+"&dbhost="+dbhost+"&dbname="+dbname+"&dbuser="+dbuser+"&dbpwd="+dbpwd;
+		var myajax = new DedeAjax($DE('fields'),true,true,'','x','...');
+	  myajax.SendGet(queryUrl);
+	}
+	function CheckSubmit(){
+	   if(!$DE('tg1').checked && !$DE('tg2').checked){
+	      alert("请选择数据源的密码类型！");
+		  return false;
+	   }
+	   return true;
+	}
+</script>
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form action="member_data_action.php" name="form1" method="get" target="stafrm" onSubmit="return CheckSubmit()">
+  	<input type='hidden' name='action' value='savesetting'>
+    <tr> 
+      <td height="20" bgcolor="#EDF9D5"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="30%">
+            	<strong><a href="co_main.php"><u>会员管理</u></a> &gt;<A href="member_password.php" target="main">数据转换与导入</A>：</strong> </td>
+            <td>&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">
+<table width="100%" border="0" cellpadding="2" cellspacing="2">
+          <tr bgcolor="#FFFFFF"> 
+            <td colspan="4" style="line-height:180%"><img src="img/help.gif" width="16" height="16">本向导入于导入并转换第三方的用户数据，本程序会强制清空现有的DedeCms会员数据，请小心使用。<br>
+              如果你只想转换本地的数据的密码类型，请在[<a href="member_password.php"><u>密码类型变换</u></a>]的地方转换。</td>
+          </tr>
+          <tr bgcolor="#EFFAFE"> 
+            <td width="18%" bgcolor="#EDF9D5">数据源密码类型：</td>
+          <td width="82%" colspan="3" bgcolor="#EDF9D5">
+           	  <input type="radio" class='np' name="tgtype" id="tg1"  onClick="ShowChangeType()" value="none">
+              明文(不加密) 
+              <input type="radio" class='np' name="tgtype" id="tg2"  onClick="ShowChangeType()" value="md5">
+              MD5加密
+              <input type="radio" class='np' name="tgtype" id="tg3"  onClick="ShowChangeType()" value="md5m16">
+              MD5中间16位
+              &nbsp;
+              MD5长度： 
+              <input name="tgmd5len" type="text" id="tgmd5len" size="10">
+              （空或32表示全长度）
+            </td>
+          </tr>
+          <tr> 
+            <td height="66">数据源信息：</td>
+            <td colspan="3"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td height="24">
+                  	<input name="dbptype" type="radio" class='np' onClick="selDbset()" id="db1"  value="1" checked>
+                    使用与本系统相同的数据库主机、数据库名、用户、密码<br>
+                    <input type="radio" class='np' name="dbptype" onClick="selDbset()" id="db2"  value="2">
+                    使用与本系统相同的数据库主机、用户、密码 <br>
+                    <input type="radio" class='np' name="dbptype" onClick="selDbset()" id="db3"  value="3">
+                    指定新的登录信息 
+                    </td>
+                </tr>
+                <tr> 
+                  <td height="28" id="dbinfo1" style="display:none"> <span id='dbhostc' style='float:left;display:none'>数据库主机： 
+                    <input name="dbhost" type="text" id="dbhost">
+                    </span> <span id='dbnamec' style='float:left'>&nbsp;&nbsp;数据库名称： 
+                    <input name="dbname" type="text" id="dbname">
+                    </span> </td>
+                </tr>
+                <tr> 
+                  <td height="28" id="dbinfo2" style="display:none"> 数据库用户： 
+                    <input name="dbuser" type="text" id="dbuser"> &nbsp;&nbsp;数据库密码： 
+                    <input name="dbpwd" type="text" id="dbpwd">
+                  </td>
+                </tr>
+                <tr> 
+                  <td height="32"> <span id='tblist'> 
+                    <input type="button" name="Submit2" value="选择数据表" class="inputbut" onClick="SelectedTable()">
+                    </span> <span id='fields'></span> </td>
+                </tr>
+                <tr>
+                  <td height="32">数据表编码：
+                    <input type="radio" class='np' name="dbchar" value="gbk"  checked>
+                    GBK 
+                    <input type="radio" class='np' name="dbchar" value="latin1" >
+                    Iatin1</td>
+                </tr>
+                <tr> 
+                  <td height="32">用户名字段名： 
+                    <input name="userfield" type="text" id="userfield" size="12">
+                    密码字段名： 
+                    <input name="pwdfield" type="text" id="pwdfield" size="12">
+                    Email字段名： 
+                    <input name="emailfield" type="text" id="emailfield" value="email" size="12"></td>
+                </tr>
+                <tr> 
+                  <td height="32">用户昵称字段： 
+                    <input name="unamefield" type="text" id="unamefield" size="10">
+                    (空同用户名)　性别： 
+                    <input name="sexfield" type="text" id="sexfield" value="sex" size="10">
+                    性别转换：男 
+                    <input name="sexman" type="text" id="sexman" size="4">
+                    女 
+                    <input name="sexwoman" type="text" id="sexwoman" size="4">
+                    （填写代号码）</td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr bgcolor="#EFFAFE"> 
+            <td bgcolor="#EDF9D5">转换为：</td>
+          <td colspan="3" bgcolor="#EDF9D5">
+           	  <input type="radio" class='np' name="oldtype" onClick="ShowChangeType()" id="ot1"  value="none"<?php  if($cfg_pwdtype=='none') echo ' checked';?>>
+              明文(不加密) 
+              <input type="radio" class='np' name="oldtype" onClick="ShowChangeType()" id="ot2"  value="md5"<?php  if($cfg_pwdtype=='md5') echo ' checked';?>>
+              MD5加密 
+              <input type="radio" class='np' name="oldtype" onClick="ShowChangeType()" id="ot4"  value="md5m16"<?php  if($cfg_pwdtype=='md5m16') echo ' checked';?>>
+              MD5中间16位
+              <input type="radio" class='np' name="oldtype" onClick="ShowChangeType()" id="ot3"  value="dd"<?php  if($cfg_pwdtype=='dd') echo ' checked';?>>
+              Dede算法
+           </td>
+          </tr>
+          <tr> 
+            <td>MD5长度：</td>
+            <td><input name="oldmd5len" type="text" id="oldmd5len2" value="<?php echo $cfg_md5len?>"> 
+            </td>
+            <td>Dede密钥：</td>
+            <td><input name="oldsign" type="text" id="oldsign2" value="<?php echo $cfg_ddsign?>"></td>
+          </tr>
+          <tr> 
+            <td height="29">安全确认码：</td>
+            <td colspan="3"><table width="300"  border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="90"><input type="text" name="validate" style="width:80;height:20"></td>
+                  <td><img src='../include/vdimgck.php' width='50' height='20'></td>
+                </tr>
+              </table> </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td height="31" bgcolor="#F8FBFB" align="center">
+	  <input type="submit" name="Submit" value="开始导入并转换数据" class="inputbut"> 
+      </td>
+    </tr>
+  </form>
+  <tr bgcolor="#E5F9FF"> 
+    <td height="20" bgcolor="#EDF9D5"> <table width="100%">
+        <tr> 
+          <td width="74%"><strong>结果：</strong></td>
+          <td width="26%" align="right"> <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td id="mtd"> <div id='mdv' style='width:100%;height:100;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+      <script language="JavaScript">
+	  document.all.mdv.style.pixelHeight = screen.height - 420;
+	  </script> </td>
+  </tr>
+</table>
+</body>
+</html>

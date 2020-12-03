@@ -1,104 +1,88 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÖØ¸´ÎÄµµ¼ì²â</title>
-<link rel="stylesheet" type="text/css" href="base.css">
-<script language="javascript">
-
-//»ñµÃÑ¡ÖĞÎÄ¼şµÄÎÄ¼şÃû
-function getCheckboxItem()
-{
-	var allSel="";
-	if(document.form2.arcTitle.value) return document.form2.arcTitle.value;
-	for(i=0;i<document.form2.arcTitle.length;i++)
-	{
-		if(document.form2.arcTitle[i].checked)
-		{
-			if(allSel=="")
-				allSel=document.form2.arcTitle[i].value;
-			else
-				allSel=allSel+"`"+document.form2.arcTitle[i].value;
-		}
-	}
-	return allSel;	
-}
-
-//É¾³ıÎÄµµ
-function delArc(){
-	var qstr=getCheckboxItem();
-	document.form2.titles.value = qstr;
-	document.form2.submit();
-}
-
-function selAll()
-{
-	for(i=0;i<document.form2.arcTitle.length;i++){
-		if(!document.form2.arcTitle[i].checked){
-			document.form2.arcTitle[i].checked=true;
-		}
-	}
-}
-function noSelAll()
-{
-	for(i=0;i<document.form2.arcTitle.length;i++){
-		if(document.form2.arcTitle[i].checked){
-			document.form2.arcTitle[i].checked=false;
-		}
-	}
-}
-</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>é‡å¤æ–‡æ¡£æ£€æµ‹</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif'>
-<tr> 
-  <td align='center' valign='top'> 
-    <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
-      <tr bgcolor="#E7E7E7"> 
-        <td height="24" colspan="3" background="img/tbg.gif"> <strong>¡ìÖØ¸´ÎÄµµÁĞ±í£º</strong></td>
-      </tr>
-      <form name="form2" method="post" action="article_test_same.php">
-      	<input type='hidden' name='deltype' value='<?php echo $deltype?>'>
-      	<input type='hidden' name='dopost' value='delsel'>
-      	<input type='hidden' name='pagesize' value='<?php echo $pagesize?>'>
-      	<input type='hidden' name='titles' value=''>
-        <tr bgcolor="#F8FBFB" height="22"> 
-          <td width="9%" align="center">Ñ¡Ôñ</td>
-          <td width="10%" align="center">ÖØ¸´ÊıÁ¿</td>
-          <td width="81%">ÎÄµµ±êÌâ</td>
-        </tr>
-<?php 
-while($row = $dsql->GetArray())
-{
-	if($row['dd']==1) break;
-?>
-  <tr bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
-    <td align="center">
-     <input name="arcTitle" type="checkbox" id="arcTitle" value="<?php echo urlencode($row['title'])?>" class="np"> 
-    </td>
-    <td align="center"><?php 
-    		$okdd = $row['dd']; 
-    		$allarc += $okdd-1;
-    	  echo $okdd;
-    	?></td>
-    <td><?php echo $row['title']?></td>
-  </tr>
-<?php 
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">æ‰¹é‡ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form action="article_test_same.php?" name="form1" target="stafrm">
+    <input type='hidden' name='dopost' value='analyse'>
+    <tr>
+      <td height="20" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="30%" height="18"><strong>é‡å¤æ–‡æ¡£æ£€æµ‹ï¼š</strong></td>
+            <td width="70%" align="right">&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="31" align="center" bgcolor="#FFFFFF">
+	    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="20%" height="30" align="left">é¢‘é“ç±»å‹ï¼š</td>
+            <td align="left"><select name="channelid">
+<?php
+if(!empty($channelinfos)){
+	foreach($channelinfos as $rs){
+		echo "<option value=".$rs['ID'].">".$rs['typename']."</option>";
+	}
 }
 ?>
-    <tr bgcolor="#E5F9FF"> 
-        <td height="28" colspan="3"> 
-          &nbsp;
-          <input type='button' name='bt1' value='È«Ñ¡' onclick='selAll()'>
-          &nbsp;
-          <input type='button' name='bt2' value='·´Ñ¡' onclick='noSelAll()'>
-          &nbsp;
-          <input type='button' name='bt3' value='É¾³ı' onclick='delArc()'>
-          &nbsp;
-          (¹²ÓĞ <?php echo $allarc?> ÆªÖØ¸´±êÌâµÄÎÄµµ£¡)
-        </td>
-      </tr>
-      </form>
-    </table> 
-    </td>
-</tr>
+</select>
+			</td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="left">åˆ é™¤é€‰é¡¹ï¼š</td>
+            <td align="left"> <input name="deltype" type="radio"  value="delnew" checked>
+              ä¿ç•™æœ€æ—§çš„ä¸€æ¡
+              <input type="radio" name="deltype" value="delold" >
+              ä¿ç•™æœ€æ–°çš„ä¸€æ¡</td>
+          </tr>
+          <tr>
+            <td height="30" align="left">æ¯æ’åˆ—å‡ºè®°å½•ï¼š</td>
+            <td align="left"><input name="pagesize" type="text" id="pagesize" value="100" size="10">
+              æ¡</td>
+          </tr>
+        </table>
+	  </td>
+    </tr>
+    <tr>
+      <td height="31" bgcolor="#F8FBFB" align="center"> <input type="submit" name="Submit" value="åˆ†ææ ‡é¢˜é‡å¤çš„æ–‡æ¡£" class="inputbut"/>
+      </td>
+    </tr>
+  </form>
+  <tr bgcolor="#E5F9FF">
+    <td height="20" bgcolor="#EDF9D5"> <table width="100%">
+        <tr>
+          <td width="74%"><strong>ç»“æœï¼š</strong></td>
+          <td width="26%" align="right"> <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">å¢å¤§</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">ç¼©å°</a>]
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td id="mtd">
+    	<div id='mdv' style='width:100%;height:100;'>
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+      <script language="JavaScript">
+	  document.all.mdv.style.pixelHeight = screen.height - 420;
+	  </script>
+	  </td>
+  </tr>
+</table>
 </body>
 </html>

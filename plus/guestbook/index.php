@@ -10,7 +10,7 @@ else{ $userrank = -1; }
 
 function GetIsCheck($ischeck,$id)
 {
-	if($ischeck==0) return "<br><a href='edit.php?job=check&ID=$id' style='color:red'>[ÉóºË]</a>";
+	if($ischeck==0) return "<br><a href='edit.php?job=check&ID=$id' style='color:red'>[å®¡æ ¸]</a>";
 	else return "";
 }
 

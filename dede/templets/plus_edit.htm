@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>修改插件</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form name="form1" action="plus_edit.php" method="post">
+   <input type='hidden' name='dopost' value='saveedit'>
+   <input type='hidden' name='aid' value='<?php echo $aid?>'>
+    <tr> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5"> <b>&nbsp;<a href="plus_main.php"><u>插件管理</u></a> 
+        &gt; 修改插件：</b> </td>
+    </tr>
+    <tr> 
+      <td width="19%" align="center" bgcolor="#FFFFFF">插件名称</td>
+      <td width="81%" bgcolor="#FFFFFF">
+      	<input type='text' name='plusname' style='width:180px' value='<?php echo $row['plusname']?>'>
+      </td>
+    </tr>
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF">作者</td>
+      <td bgcolor="#FFFFFF">
+      	<?php echo $row['writer']?>
+      </td>
+    </tr>
+     <tr> 
+      <td align="center" bgcolor="#FFFFFF">菜单配置</td>
+      <td bgcolor="#FFFFFF">
+      	<textarea name="menustring" rows="6" id="menustring" style="width:80%"><?php echo $row['menustring']?></textarea>
+      </td>
+    </tr>
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF">文件列表</td>
+      <td bgcolor="#FFFFFF">文件用&quot;,&quot;分开，路径相对于管理目录（当前目录）<br>
+        <textarea name="filelist" rows="8" id="filelist" style="width:80%"><?php echo $row['filelist']?></textarea></td>
+    </tr>
+    <tr bgcolor="#F9FDF0"> 
+      <td height="28" colspan="2">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="26%">&nbsp;</td>
+            <td width="15%"><input name="imageField" type="submit" class="inputbut" value="确定" /></td>
+            <td width="59%"><input name="button" type="button" class="inputbut"  id="button" value="返回" onClick="location='plus_main.php';"/></td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

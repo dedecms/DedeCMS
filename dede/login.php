@@ -2,129 +2,260 @@
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
 if(empty($dopost)) $dopost="";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $cfg_softname." ".$cfg_version?></title>
+<style type="text/css">
+<!--
+*{
+	padding:0px;
+	margin:0px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+body {
+	margin: 0px;
+	background:#F7F7F7;
+	font-size:12px;
+}
+input{
+	vertical-align:middle;
+}
+img{
+	border:none;
+	vertical-align:middle;
+}
+a{
+	color:#333333;
+}
+a:hover{
+	color:#FF3300;
+	text-decoration:none;
+}
+.main{
+	width:640px;
+	margin:40px auto 0px;
+	border:4px solid #EEE;
+	background:#FFF;
+	padding-bottom:10px;
+}
+
+.main .title{
+	width:600px;
+	height:50px;
+	margin:0px auto;
+	background:url(images/login_toptitle.jpg) -10px 0px no-repeat;
+	text-indent:326px;
+	line-height:46px;
+	font-size:14px;
+	letter-spacing:2px;
+	color:#F60;
+	font-weight:bold;
+}
+
+.main .login{
+	width:560px;
+	margin:20px auto 0px;
+	overflow:hidden;
+}
+.main .login .inputbox{
+	width:260px;
+	float:left;
+	background:url(images/login_input_hr.gif) right center no-repeat;
+}
+.main .login .inputbox dl{
+	width:230px;
+	height:41px;
+	clear:both;
+}
+.main .login .inputbox dl dt{
+	float:left;
+	width:60px;
+	height:31px;
+	line-height:31px;
+	text-align:right;
+	font-weight:bold;
+}
+.main .login .inputbox dl dd{
+	width:160px;
+	float:right;
+	padding-top:1px;
+}
+.main .login .inputbox dl dd input{
+	font-size:12px;
+	font-weight:bold;
+	border:1px solid #888;
+	padding:4px;
+	background:url(images/login_input_bg.gif) left top no-repeat;
+}
+
+
+.main .login .butbox{
+	float:left;
+	width:200px;
+	margin-left:26px;
+}
+.main .login .butbox dl{
+	width:200px;
+}
+.main .login .butbox dl dt{
+	width:160px;
+	height:41px;
+	padding-top:5px;
+}
+.main .login .butbox dl dt input{
+	width:98px;
+	height:33px;
+	background:url(images/login_submit.gif) no-repeat;
+	border:none;
+	cursor:pointer;
+}
+.main .login .butbox dl dd{
+	height:21px;
+	line-height:21px;
+}
+.main .login .butbox dl dd a{
+	margin:5px;
+}
+
+
+
+.main .msg{
+	width:560px;
+	margin:10px auto;
+	clear:both;
+	line-height:17px;
+	padding:6px;
+	border:1px solid #FC9;
+	background:#FFFFCC;
+	color:#666;
+}
+
+.copyright{
+	width:640px;
+	text-align:right;
+	margin:10px auto;
+	font-size:10px;
+	color:#999999;
+}
+.copyright a{
+	font-weight:bold;
+	color:#F63;
+	text-decoration:none;
+}
+.copyright a:hover{
+	color:#000;
+}
+-->
+</style>
+<script type="text/javascript" language="javascript">
+<!--
+	window.onload = function (){
+		userid = document.getElementById("userid");
+		userid.focus();
+	}
+-->
+</script>
+</head>
+<body>
+
+<?php
 //--------------------------------
-//��¼���
+//登录检测
 //--------------------------------
 if($dopost=="login")
 {
   if(empty($validate)) $validate="";
   else $validate = strtolower($validate);
   $svali = GetCkVdValue();
-  if(($validate=="" || $validate!=$svali) && $cfg_use_vdcode=='��'){
-	  ShowMsg("��֤�벻��ȷ!","");
+  if(($validate=="" || $validate!=$svali) && $cfg_use_vdcode=='Y'){
+	  ShowMsg("验证码不正确!","");
   }else{
      $cuserLogin = new userLogin();
      if(!empty($userid)&&!empty($pwd))
      {
 	      $res = $cuserLogin->checkUser($userid,$pwd);
-	      //�ɹ���¼
+	      //成功登录
 	      if($res==1){
 		       $cuserLogin->keepUser();
 		       if(!empty($gotopage)){
-		       	ShowMsg("�ɹ���¼������ת�����������ҳ��",$gotopage);
+		       	ShowMsg("成功登录，正在转向管理管理主页！",$gotopage);
 		       	exit();
 		       }
 		       else{
-		       	ShowMsg("�ɹ���¼������ת�����������ҳ��","index.php");
+		       	ShowMsg("成功登录，正在转向管理管理主页！","index.php");
 		       	exit();
 		       }
 	      }
 	      else if($res==-1){
-		      ShowMsg("����û���������!","");
+		      ShowMsg("你的用户名不存在!","");
 	      }
 	      else{
-		      ShowMsg("����������!","");
+		      ShowMsg("你的密码错误!","");
 	      }
-     }//<-���벻Ϊ��
+     }//<-密码不为空
      else{
-	    ShowMsg("�û�������û��д����!","");
+	    ShowMsg("用户和密码没填写完整!","");
      }
      
-  }//<-��֤�û�
+  }//<-验证用户
 }
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?php echo $cfg_softname." ".$cfg_version?></title>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body style='MARGIN: 0px' bgColor='#ffffff' leftMargin='0' topMargin='0' scroll='no'>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
-  <tr> 
-    <td width="100%" height="64" background="img/indextitlebg.gif"><img src="img/df_dedetitle.gif" width="178" height="53"> 
-    </td>
-  </tr>
-  <tr> 
-    <td width="100%" height="20">��</td>
-  </tr>
-  <tr> 
-    <td width="100%" height="20" valign="bottom">
-    	<table width="540" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td align="right" style="FONT-SIZE: 2pt">&nbsp;</td>
-        </tr>
-        <tr> 
-          <td><IMG height=14 src="img/book1.gif" width=20>&nbsp; �û���¼</td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="1" background="img/sp_bg.gif"></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="2"></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="136" valign="top">
-    	<form name="form1" method="post" action="login.php">
-        <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>">
-        <input type="hidden" name="dopost" value="login">
-        <table width="540" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td colspan="2" height="4"></td>
-          </tr>
-          <tr> 
-            <td width="156" height="30" align="center"> �û�����</td>
-            <td width="384"> <input type="text" name="userid" style="width:150;height:20"> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="30" align="center"> �ܡ��룺 </td>
-            <td> <input type="password" name="pwd" style="width:150;height:20"> 
-            </td>
-          </tr>
-          <?php 
-          if($cfg_use_vdcode=='��'){
-          ?>
-          <tr> 
-            <td height="30" align="center"> ��֤�룺 </td>
-            <td> <table width="90%"  border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="25%"><input type="text" name="validate" style="width:80;height:20"></td>
-                  <td width="75%"><img src='../include/vdimgck.php' width='50' height='20'></td>
-                </tr>
-              </table></td>
-          </tr>
-          <?php 
-          }else{
-          	echo "<tr><td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>Ϊ��ʹ�����и���̶ȵļ��ݣ���̨Ĭ�Ϲر�����֤�룬Ϊ����ĵ�¼����ȫ����ȷ�����ϵͳ֧��GD���ں�̨�����п�����</font></td></tr>\r\n";
-          }
-          ?>
-          <tr> 
-            <td height="50" colspan="2" align="center">
-            	<input type="submit" name="sm1" value="��¼" class="nbt" onClick="this.form.submit();"> 
-              &nbsp;
-              <input type="button" name="sm2" value="�ٷ���վ" onClick="window.open('http://www.dedecms.com');" class="nbt"> 
-              &nbsp;
-              </td>
-          </tr>
-        </table>
-      </form></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="2" valign="top"></td>
-  </tr>
-</table>
+	<div class="main">
+		<div class="title">
+			管理登陆
+		</div>
+		
+		<div class="login">
+		<form action="login.php" method="post">
+            <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>">
+            <input type="hidden" name="dopost" value="login">
+            <div class="inputbox">
+				<dl>
+					<dt>用户名：</dt>
+					<dd><input type="text" name="userid" id="userid" size="20" onfocus="this.style.borderColor='#F93'" onblur="this.style.borderColor='#888'" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>密码：</dt>
+					<dd><input type="password" name="pwd" size="20" onfocus="this.style.borderColor='#F93'" onblur="this.style.borderColor='#888'" />
+					</dd>
+				</dl>
+				<?php if($cfg_use_vdcode=='Y'){	?>
+				<dl>
+					<dt>验证码：</dt>
+					<dd>
+						<input type="text" name="validate" size="4" onfocus="this.style.borderColor='#F90'" onblur="this.style.borderColor='#888'" />
+						<img src="../include/vdimgck.php" width="50" height="20" />
+					</dd>
+				</dl>
+				<?php } ?>
+            </div>
+            <div class="butbox">
+            <dl>
+					<dt><input name="submit" type="submit" value="" /></dt>
+					<dd><a href="http://www.dedecms.com">官方网站</a> | <a href="http://bbs.dedecms.com">技术论坛</a></dd>
+				</dl>
+			</div>
+		</form>
+		</div>
+		
+		<?php if($cfg_use_vdcode!='Y'){	?>
+		<div class="msg">
+			为了使程序有更大程度的兼容，后台默认关闭了验证码，为了你的登录更安全，请确认你的系统支持GD后，在后台参数中开启。
+		</div>
+		<?php } ?>
+	
+	</div>
+	
+	<div class="copyright">
+		Power by <a href="http://www.dedecms.com">DEDECMS <?php echo $cfg_version?></a> Copyright 2004-2007 
+	</div>
+
 </body>
 </html>
+<?php
+if(is_object($dsql)) $dsql->Close();
+?>

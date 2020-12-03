@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="{dede:field name='keywords'/}">
+<meta name="description" content="{dede:field name='description'/}">
+<title>{dede:field name='title'/} - {dede:field name='bookname'/} | {dede:global name='cfg_webname'/}</title>
+<link href="{dede:field name='templeturl'/}/style/book_style.css" rel="stylesheet" type="text/css" />
+<script language='javascript' src='{dede:global name='cfg_cmspath'/}/include/dedeajax2.js'></script>
+<script language='javascript'>
+function CheckLogin(){
+  var taget_obj = document.getElementById('book_welcome');
+  myajax = new DedeAjax(taget_obj,false,false,"","","");
+  myajax.SendGet2("{dede:global name="cfg_book_url"/}/loginsta.php");
+  myajax = null;
+}
+</script>
+</head>
+<body onload="CheckLogin()">
+<div id="container">
+	<!--头部开始-->
+    <div id="book_header">
+    	<div id="book_top">
+        	<div id="book_toplogo">
+            </div>
+			<div id="book_welcome">您好，请 <span><a href="/member/login.php">登录</a></span> 或 <span><a href="/member/index_do.php?fmdo=user&dopost=regnew">注册</a></span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div id="book_topimg">
+        	<div id="book_topbg">
+        		<div id="book_logo">
+            	</div>
+            	<div id="book_banner">
+            	</div>
+            	<div class="clear">
+            	</div>
+        	</div>
+        </div>
+
+        <div id="book_menubg">
+        	<div id="book_menu">
+            	<div id="book_go">
+                </div>
+                <ul>
+                    <li><a href='/'>主页</a></li>
+        			{dede:catalog}
+                    <li><a href="{in:field name='url'}{/in:field}">{in:field name='classname'}{/in:field}</a></li>
+        			{/dede:catalog}
+        			<li><a href='{dede:global name='cfg_cmspath'/}/member'>会员中心</a></li>
+                </ul>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+
+    </div>
+	<!--头部结束-->
+    <!--中间开始-->
+    <div id="main">
+    	<div id="book_middle">
+       	  <div class="book_middle_article">
+           	<div class="book_middle_title"><a href="">当前位置：<a href='{dede:global name='cfg_cmspath'/}'>主页</a> &gt;
+       <a href='{dede:global name='cfg_cmspath'/}/book'>小说连载</a> &gt;
+        <a href='{dede:field name='bookurl'/}'>{dede:field name='bookname'/}</a> &gt;
+        第 {dede:field name='chapnum'/} 章 {dede:field name='chaptername'/}
+            </div>
+                <div class="book_middle_text">
+                	<dl>
+                    <dt>第{dede:field name='sortid' /}节 {dede:field name='title'/}</dt>
+                    <dd>
+                    {dede:field name='body'/}
+                    </dd>
+                  </dl>
+                </div>
+            </div>
+
+            <div class="book_middle_text_next"><a href="{dede:prenext get='preurl'/}">上一篇</a>    <a href="book.php?id={dede:field name='bookid'/}">回目录</a>    <a href="{dede:prenext get='nexturl'/}">下一篇</a>
+            </div>
+
+            <div class="clear">
+            </div>
+        </div>
+
+    </div>
+<!--中间结束-->
+    <div class="book_footer">
+            Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+    </div>
+    <div class="clear">
+    </div>
+
+</div>
+</body>
+</html>

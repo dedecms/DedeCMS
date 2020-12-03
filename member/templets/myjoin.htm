@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>管理中心--我加入的圈子</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/head.htm"); ?>	
+<!-- 中部开始 -->
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+      <?php  include(dirname(__FILE__)."/menu.php"); ?> 
+		<!-- 中部右边开始 -->
+        <div id="myask_right">
+        	<div id="myask_info">
+            	<div class="myask_title">
+                	<ul>
+                	  <li>我加入的圈子：</li>
+                	</ul>
+                </div>
+                <div class="myask_form">
+                	<div class="myask_formbg">
+                        <dl>
+                        <dd class="highbor1 bigtext">圈子名称</dd>
+                        <dd class="middlebor bigtext">我的话题</dd>
+                        <dd class="middlebor bigtext">最后更新</dd>
+                      	</dl>
+                        <dl>
+                        <?php
+                        @$mylist = $dlist->GetDataList();
+                        if($dlist->totalResult > 0) {
+	                        while($row = $mylist->GetArray('dm'))
+	                        {
+	                        ?>
+	                        <dd class="highbor1 smalltext"><a href="../group/group.php?id=<?php echo $row['gid'];?>" target="_blank">·<?php echo $row['groupname'];?></a></dd>
+	                        <dd class="middlebor smalltext"><a href="../group/viewthread.php?id=<?php echo $row['gid'];?>&tid=<?php echo $row['tid'];?>" title="<?php echo $row['subject'];?>" target="_blank"><?php echo cn_substr($row['subject'],30);?></a></dd>
+	                        <dd class="middlebor smalltext"><?=GetDateMk($row['lastpost'])?></dd>
+	                        <?php
+	                        }
+	                      }else{
+	                      	echo "<ul style='color:red;font-size:13px;padding:6px;'>无任何记录!</ul>";
+	                      }
+                        ?>
+                        </dl>
+                      <div class="clear">
+                        </div>
+                    </div>
+            	</div>
+                <div class="clear">
+                </div>
+            </div>
+            <div id="myask_list_info"><?php echo $dlist->GetPageList(7);?></div>
+		</div>
+        <div class="clear">
+		</div>
+
+<div class="clear">
+</div>
+</div>
+</body> 
+</html>  

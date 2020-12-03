@@ -1,9 +1,9 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 /*-----------------
 function delStow()
-ɾ���ղ�
+删除收藏
 ------------------*/
 if($dopost=="delStow")
 {
@@ -15,59 +15,57 @@ if($dopost=="delStow")
 	$dsql->SetQuery("Delete From #@__memberstow where aid='$aid' And uid='".$cfg_ml->M_ID."'; ");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg("�ɹ�ɾ��һ���ղؼ�¼��",$ENV_GOBACK_URL);
+	ShowMsg("成功删除一条收藏记录！",$ENV_GOBACK_URL);
 	exit();
 }
 /*--------------------
 function delArchives()
-ɾ������
+删除文章
 --------------------*/
 else if($dopost=="delArc")
 {
-	
+
 	CheckRank(0,0);
 	require_once(dirname(__FILE__)."/inc/inc_batchup.php");
-	
+
 	if(!empty($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = $_COOKIE['ENV_GOBACK_URL'];
 	else $ENV_GOBACK_URL = 'content_list.php?channelid=';
-	$aid = ereg_replace("[^0-9]","",$aid);
-	
+	$aid = intval($aid);
+
 	$dsql = new DedeSql(false);
-	
-	$equery = "Select #@__archives.ID,#@__archives.arcrank,#@__archives.channel,#@__channeltype.arcsta
- 	from #@__archives left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
-	where #@__archives.memberID='".$cfg_ml->M_ID."' And #@__archives.ID='$aid'";
-	
+
+	$equery = "Select aid,uptime,arcrank,channelid From `#@__full_search` where aid='$aid' And mid='{$cfg_ml->M_ID}'";
 	$row = $dsql->GetOne($equery);
+	$exday = 3600 * 24 * $cfg_locked_day;
+  $ntime = mytime();
 	if(!is_array($row)){
 		$dsql->Close();
-	  ShowMsg("��û��Ȩ��ɾ����ƪ�ĵ���","-1");
+	  ShowMsg("你没有权限删除这篇文档！","-1");
 	  exit();
-	}else if($row['arcrank']>=0 && $row['arcsta']==-1){
+	}else if($row['arcrank']>=0 && $row['uptime']-$ntime > $exday){
 		$dsql->Close();
-	  ShowMsg("��ƪ�ĵ��ѱ�����Ա���������㲻����ɾ������","-1");
+	  ShowMsg("这篇文档已被锁定，你不能再删除它！","-1");
 	  exit();
 	}
-	
-	$channelid = $row['channel'];
-	
-	//ɾ���ĵ�
+	$channelid = $row['channelid'];
+
+	//删除文档
 	DelArc($aid);
-	
-	//�����û���¼
-	if($channelid==1) $dsql->ExecuteNoneQuery("Update #@__member set c1=c1-1 where ID='".$cfg_ml->M_ID."';");
-	else if($channelid==2) $dsql->ExecuteNoneQuery("Update #@__member set c2=c2-1 where ID='".$cfg_ml->M_ID."';");
-	else $dsql->ExecuteNoneQuery("Update #@__member set c3=c3-1 where ID='".$cfg_ml->M_ID."';");
-	
+
+	//更新用户记录
+	if($channelid==1) $dsql->ExecuteNoneQuery("Update `#@__member` set c1=c1-1,scores=scores-{$cfg_send_score} where ID='".$cfg_ml->M_ID."';");
+	else if($channelid==2) $dsql->ExecuteNoneQuery("Update `#@__member` set c2=c2-1,scores=scores-{$cfg_send_score} where ID='".$cfg_ml->M_ID."';");
+	else $dsql->ExecuteNoneQuery("Update `#@__member` set c3=c3-1,scores=scores-{$cfg_send_score} where ID='".$cfg_ml->M_ID."';");
+
 	$dsql->Close();
-	
+
 	if($ENV_GOBACK_URL=='content_list.php?channelid=') $ENV_GOBACK_URL = $ENV_GOBACK_URL.$channelid;
-	ShowMsg("�ɹ�ɾ��һƪ�ĵ���",$ENV_GOBACK_URL);
+	ShowMsg("成功删除一篇文档！",$ENV_GOBACK_URL);
 	exit();
 }
 /*-----------------
 function viewArchives()
-�鿴����
+查看文章
 ------------------*/
 else if($dopost=="viewArchives")
 {
@@ -77,7 +75,7 @@ else if($dopost=="viewArchives")
 }
 /*--------------
 function DelUploads()
-ɾ���ϴ��ĸ���
+删除上传的附件
 ----------------*/
 else if($dopost=="delUploads")
 {
@@ -115,20 +113,20 @@ else if($dopost=="delUploads")
 	    }
   	}
   }
-  ShowMsg("�ɹ�ɾ�� $tj ��������",$ENV_GOBACK_URL);
+  ShowMsg("成功删除 $tj 个附件！",$ENV_GOBACK_URL);
   $dsql->Close();
 	exit();
 }
 /*--------------
 function editUpload()
-�޸��ϴ��ĸ���
+修改上传的附件
 ----------------*/
 else if($dopost=="editUpload")
 {
 	CheckRank(0,0);
 	$svali = GetCkVdValue();
   if(strtolower($vdcode)!=$svali || $svali==""){
-  	 ShowMsg("��֤�����","-1");
+  	 ShowMsg("验证码错误！","-1");
   	 exit();
   }
   $aid = ereg_replace("[^0-9]","",$aid);
@@ -137,23 +135,23 @@ else if($dopost=="editUpload")
 	$arow = $dsql->GetOne("Select url,memberid,mediatype From #@__uploads where aid='$aid'; ");
 	if(is_array($arow) && $arow['memberid']==$cfg_ml->M_ID)
 	{
-	    //�����ϴ����ļ�
+	    //重新上传了文件
 	    if(is_uploaded_file($addonfile))
 	    {
 	    	if($addonfile_size > $cfg_mb_upload_size*1024){
 	    		  @unlink(is_uploaded_file($addonfile));
 	    		  $dsql->Close();
-		        ShowMsg("���ϴ��ĸ���̫�󣬲��������棡","-1");
+		        ShowMsg("你上传的附件太大，不允许保存！","-1");
 		        exit();
 	    	}
 	    	if(eregi("^text",$addonfile_type)){
 		        $dsql->Close();
-		        ShowMsg("�������ϴ��ı����͸���!","-1");
+		        ShowMsg("不允许上传文本类型附件!","-1");
 		        exit();
 	      }
 	    	$fsize = $addonfile_size;
 	    	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png");
-	    	//ͼƬ����
+	    	//图片附件
 	    	if(in_array($addonfile_type,$sparr))
 	    	{
 	    		  @move_uploaded_file($addonfile,$cfg_basedir.$arow['url']);
@@ -164,41 +162,41 @@ else if($dopost=="editUpload")
 	          $upquery = "Update #@__uploads set title='$title',mediatype='1', $addquery where aid='$aid'; ";
 	          $dsql->ExecuteNoneQuery($upquery);
 	          $dsql->Close();
-		        ShowMsg("�ɹ�����һ��ͼƬ��","space_upload_edit.php?aid=".$aid."&dopost=edit".time());
+		        ShowMsg("成功更新一个图片！",$ENV_GOBACK_URL);
 		        exit();
-	    	//��ͨ����
+	    	//普通附件
 	    	}else{
-	    		  if($cfg_mb_upload=='��'){
+	    		  if($cfg_mb_upload=='N'){
 	      	     $dsql->Close();
-		           ShowMsg("ϵͳ��������Ա�ϴ���ͼƬ����!","-1");
+		           ShowMsg("系统不允许会员上传非图片附件!","-1");
 		           exit();
 	          }
 	    		  if(!CheckAddonType($uploadfile_name)){
 		           $dsql->Close();
-		           ShowMsg("�����ϴ����ļ����ͱ���ֹ��ϵͳֻ�����ϴ�<br>".$cfg_mb_mediatype." ���͸�����ͼƬ��","-1");
+		           ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件和图片！","-1");
 		           exit();
 	          }else{
 	          	 @move_uploaded_file($addonfile,$cfg_basedir.$arow['url']);
 	             $upquery = "Update #@__uploads set title='$title',filesize='$fsize' where aid='$aid'; ";
 	             $dsql->ExecuteNoneQuery($upquery);
 	             $dsql->Close();
-	             ShowMsg("�ɹ�����һ��������","space_upload_edit.php?aid=".$aid."&dopost=edit".time());
+	             ShowMsg("成功更新一个附件！",$ENV_GOBACK_URL);
 		           exit();
 	          }
 	    	}
-	    //û�ϴ�����
+	    //没上传附件
 	    }else{
 	      $upquery = "Update #@__uploads set title='$title' where aid='$aid'; ";
 	      $dsql->ExecuteNoneQuery($upquery);
 	      $dsql->Close();
-	      ShowMsg("�ɹ����¸�����Ϣ��","space_upload_edit.php?aid=".$aid."&dopost=edit".time());
+	      ShowMsg("成功更新附件信息！",$ENV_GOBACK_URL);
 		    exit();
 	    }
 	}else{
 		$dsql->Close();
-		ShowMsg("��ûȨ�޸����ô˸�����","-1");
+		ShowMsg("你没权限更改让此附件！","-1");
 		exit();
 	}
-	
+
 }
 ?>

@@ -1,130 +1,167 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>»áÔ±×¢²á</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
-<script language='javascript' src='area.js'></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ä¼šå‘˜æ³¨å†Œ</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script language='javascript' src='<?php echo $cfg_cmspath; ?>/include/dedeajax2.js'></script>
 <script>
-function popUpWindow(URLStr, left, top, width, height)
+function TestUserOk()
 {
-window.open(URLStr, 'popcheckWin', 'toolbar=no,location=no,directories=no,status=no,menub ar=no,scrollbar=no,resizable=no,width='+width+',height='+height+',left='+left+', top='+top+',screenX='+left+',screenY='+top+'');
+  var taget_obj = document.getElementById('testCanReg');
+  myajax = new DedeAjax(taget_obj,false,false,"","","");
+  myajax.SendGet2("index_do.php?userid=" + document.form2.userid.value +"&fmdo=user&dopost=checkuser");
+  myajax = null;
 }
 function checkSubmit()
 {
 if(document.form2.userid.value=="")
 {
  document.form2.userid.focus();
- alert("ÓÃ»§Ãû²»ÄÜÎª¿Õ£¡");
+ alert("ç”¨æˆ·åä¸èƒ½ä¸ºç©ºï¼");
  return false;
 }
 if(document.form2.userpwd.value=="")
 {
  document.form2.userpwd.focus();
- alert("µÇÂ½ÃÜÂë²»ÄÜÎª¿Õ£¡");
+ alert("ç™»é™†å¯†ç ä¸èƒ½ä¸ºç©ºï¼");
  return false;
 }
 if(document.form2.userpwdok.value!=document.form2.userpwd.value)
 {
  document.form2.userpwdok.focus();
- alert("Á½´ÎÃÜÂë²»Ò»ÖÂ£¡");
+ alert("ä¸¤æ¬¡å¯†ç ä¸ä¸€è‡´ï¼");
  return false;
 }
 if(document.form2.email.value=="")
 {
  document.form2.email.focus();
- alert("Email ²»ÄÜÎª¿Õ£¡");
+ alert("Email ä¸èƒ½ä¸ºç©ºï¼");
  return false;
 }
 if(document.form2.uname.value=="")
 {
  document.form2.uname.focus();
- alert("ÓÃ»§êÇ³Æ²»ÄÜÎª¿Õ£¡");
+ alert("ç”¨æˆ·æ˜µç§°ä¸èƒ½ä¸ºç©ºï¼");
  return false;
 }
 if(document.form2.vdcode.value=="")
 {
  document.form2.vdcode.focus();
- alert("ÑéÖ¤Âë²»ÄÜÎª¿Õ£¡");
+ alert("éªŒè¯ç ä¸èƒ½ä¸ºç©ºï¼");
  return false;
 }
 }
-</script>	
+function ShowObj(objname){
+   var obj = $Obj(objname);
+   obj.style.display = "block";
+}
+
+function HideObj(objname){
+   var obj = $Obj(objname);
+   obj.style.display = "none";
+}
+</script>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-  <table width="760" border="0" cellspacing="6" cellpadding="1">
-    <tr>
-      <td><a href="index.php"><img src="img/reg.gif" width="320" height="46" border="0"></a></td>
-    </tr>
-  </table>
-  <table width="760" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
-  <tr>
-    <td height="26" background="img/nnnbg.gif"><font color="#333333"><strong>¡¡»áÔ±×¢²á£º</strong></font></td>
-  </tr>
-  <tr>
-    <td height="102" align="center" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="2" cellpadding="0">
-      <tr>
-        <td colspan="2"><strong>×¢²áĞëÖª£º<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;1¡¢ÔÚ±¾Õ¾×¢²áµÄ»áÔ±£¬±ØĞë×ñÊØ¡¶»¥ÁªÍøµç×Ó¹«¸æ·şÎñ¹ÜÀí¹æ¶¨¡·£¬²»µÃÔÚ±¾Õ¾·¢±í·Ì°ùËûÈË£¬ÇÖ·¸ËûÈËÒşË½£¬ÇÖ·¸ËûÈËÖªÊ¶²úÈ¨£¬´«²¥²¡¶¾£¬ÕşÖÎÑÔÂÛ£¬ÉÌÒµÑ¶Ï¢µÈĞÅÏ¢¡£<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;2¡¢ÔÚËùÓĞÔÚ±¾Õ¾·¢±íµÄÎÄÕÂ£¬±¾Õ¾¶¼¾ßÓĞ×îÖÕ±à¼­È¨£¬²¢ÇÒ±£ÁôÓÃÓÚÓ¡Ë¢»òÏòµÚÈı·½·¢±íµÄÈ¨Àû£¬Èç¹ûÄãµÄ×ÊÁÏ²»ÆëÈ«£¬ÎÒÃÇ½«ÓĞÈ¨²»×÷ÈÎºÎÍ¨ÖªÊ¹ÓÃÄãÔÚ±¾Õ¾·¢²¼µÄ×÷Æ·¡£</strong></td>
-      </tr>
-      <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
-        <input type="hidden" name="fmdo" value="user">
-        <input type="hidden" name="dopost" value="regok">
-        <tr>
-          <td height="35" colspan="2"><strong>&nbsp;(´ø*ºÅµÄ±íÊ¾Îª±ØÌîÏîÄ¿)</strong></td>
-        </tr>
-        <tr>
-          <td width="17%" height="25" align="right">µÇÂ½ÓÃ»§Ãû£º</td>
-          <td width="83%" height="25"><input name="userid" type="text" id="userid" size="20" style="width:150;height:20">
-            * &nbsp;&nbsp; <a href="#" onClick="popUpWindow('index_do.php?userid=' + form2.userid.value+'&fmdo=user&dopost=checkuser',200,200,300,60);">[¼ì²éÊÇ·ñÒÑ±»Õ¼ÓÃ]</a></td>
-        </tr>
-        <tr>
-          <td height="25" align="right">µÇÂ½ÃÜÂë£º</td>
-          <td height="25"><input name="userpwd" type="password" id="userpwd" size="18" style="width:150;height:20">
-            &nbsp;*&nbsp;È·ÈÏÃÜÂë£º
-            <input name="userpwdok" type="password" id="userpwdok" value="" size="18" style="width:150;height:20">
-            &nbsp;*</td>
-        </tr>
-        <tr>
-          <td height="25" align="right">ÄãµÄEmail£º</td>
-          <td height="25"><input name="email" type="text" id="email" style="width:150;height:20">
-            &nbsp;*</td>
-        </tr>
-        <tr>
-          <td height="25" align="right">ÄãµÄÍøÉÏêÇ³Æ£º</td>
-          <td height="25"><input name="uname" type="text" id="uname" size="20" style="width:150;height:20">
-            &nbsp;* ĞÔ±ğ£º
-            <input type="radio" name="sex" value="ÄĞ" checked>
-            ÄĞ &nbsp;
-            <input type="radio" name="sex" value="Å®">
-            Å® </td>
-        </tr>
-        <tr>
-          <td height="25" align="right">ÑéÖ¤Âë£º</td>
-          <td height="25"><table width="200" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td width="84"><input name="vdcode" type="text" id="vdcode" size="10"></td>
-                <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
-              </tr>
-          </table></td>
-        </tr>
-        <tr>
-          <td height="25" colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-          <td height="67" align="right">&nbsp;</td>
-          <td height="67"><input type="submit" name="Submit" value=" È·¶¨×¢²á ">
-            &nbsp;&nbsp;
-            <input type="reset" name="Submit22" value=" ÖØ ÖÃ "></td>
-        </tr>
-      </form>
-    </table></td>
-  </tr>
-</table>
-  <p align='center'>
-<?php echo $cfg_powerby?>
-</p>
+
+<body>
+<div id="container">
+	<!--å¤´éƒ¨å¼€å§‹-->
+	<div id="login_header">
+    	<div class="login_topbg">
+        	<div class="login_topleft">
+            </div>
+            <div class="login_topmiddle">
+            	<div class="reg_topmiddle_left">
+                </div>
+                <div class="login_topmiddle_right">
+                </div>
+            </div>
+            <div class="login_topright">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--å¤´éƒ¨ç»“æŸ-->
+    <!--ä¸­é—´å¼€å§‹-->
+    <div id="login_main">
+  <div class="login_main_border">
+        	<div class="login_main_white">
+            	<div class="login_main_announce">
+                	<h1>æ³¨å†Œé¡»çŸ¥ï¼š</h1>
+					<h2>				1ã€åœ¨æœ¬ç«™æ³¨å†Œçš„ä¼šå‘˜ï¼Œå¿…é¡»éµå®ˆã€Šäº’è”ç½‘ç”µå­å…¬å‘ŠæœåŠ¡ç®¡ç†è§„å®šã€‹ï¼Œä¸å¾—åœ¨æœ¬ç«™å‘è¡¨è¯½è°¤ä»–äººï¼Œä¾µçŠ¯ä»–äººéšç§ï¼Œä¾µçŠ¯ä»–äººçŸ¥è¯†äº§æƒï¼Œä¼ æ’­ç—…æ¯’ï¼Œæ”¿æ²»è¨€è®ºï¼Œå•†ä¸šè®¯æ¯ç­‰ä¿¡æ¯ã€‚</h2>
+<h2>2ã€åœ¨æ‰€æœ‰åœ¨æœ¬ç«™å‘è¡¨çš„æ–‡ç« ï¼Œæœ¬ç«™éƒ½å…·æœ‰æœ€ç»ˆç¼–è¾‘æƒï¼Œå¹¶ä¸”ä¿ç•™ç”¨äºå°åˆ·æˆ–å‘ç¬¬ä¸‰æ–¹å‘è¡¨çš„æƒåˆ©ï¼Œå¦‚æœä½ çš„èµ„æ–™ä¸é½å…¨ï¼Œæˆ‘ä»¬å°†æœ‰æƒä¸ä½œä»»ä½•é€šçŸ¥ä½¿ç”¨ä½ åœ¨æœ¬ç«™å‘å¸ƒçš„ä½œå“ã€‚</h2>	
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+            <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
+            <div class="reg_main_title">
+            </div>            
+        		<input type="hidden" name="fmdo" value="user">
+        		<input type="hidden" name="dopost" value="regok">
+            <div class="login_main_text">
+       			<div class="login_main_foum">       
+   				  <div class="reg_main_text_label1">ç™»é™†å¸å·ï¼š
+           		  		<input name="userid" type="text" class="reg_label" onchange="TestUserOk()" />* 
+   		    		</div>
+               		<div class="reg_main_text_label">
+               		<!-- AJAX åŒºåŸŸï¼Œå¿…é¡»å­˜åœ¨ id='testCanReg' çš„å®¹å™¨ -->
+               		<span id='testCanReg'><a href="javascript:TestUserOk();">[æ£€æŸ¥æ˜¯å¦å·²è¢«å ç”¨]</a></span>
+                    </div>
+                	<div class="reg_main_text_label1">ç™»é™†å¯†ç ï¼š
+   		  		  	<input name="userpwd" type="password" class="reg_label" />*
+   		    		</div>
+               		<div class="reg_main_text_label1">é‡å¤å¯†ç ï¼š
+       		  		  <input name="userpwdok" type="password" class="reg_label" />*
+   		    		</div>
+                    <div class="reg_main_text_label1">ç”µå­é‚®ç®±ï¼š
+       		  		  <input name="email" type="text" class="reg_label" />*
+   		    		</div>
+                    <div class="reg_main_text_label1">æ‚¨çš„æ˜µç§°ï¼š
+       		  		  <input name="uname" type="text" class="reg_label" />*
+   		    		</div>
+                    <div class="reg_main_text_label2">æ‚¨çš„æ€§åˆ«ï¼š
+       		  		  <input type="radio" name="sex" value="ç”·" checked>ç”· <input type="radio" name="sex" value="å¥³">å¥³
+   		    		</div>
+                    <div class="reg_main_text_label2">ä¼šå‘˜ç±»å‹ï¼š
+       		  		  <input type="radio" name="type" value="0" checked>ä¸ªäººä¼šå‘˜ <input type="radio" name="type" value="1">ä¼ä¸šä¼šå‘˜
+   		    		</div>
+                    <div class="reg_main_text_label2">å…¬å¸åç§°ï¼š
+       		  		  <input name="comname" type="text" class="reg_label" />ï¼ˆå…¬å¸ç”¨æˆ·å¡«å†™ï¼‰  
+   		    		</div>
+                    <div class="reg_main_text_label3">éªŒè¯ç ï¼š<input name="vdcode" type="text" class="login_label1" />
+                	</div>
+                	<div class="login_main_text_label1"><img src="../include/vdimgck.php" />
+                	</div>
+                
+                	<div class="clear">
+                	</div>
+           	  </div>
+                
+  <div class="login_main_foum1">
+              		<div class="reg_main_text_label4"><input type="submit" name="Submit2" value="ç¡®å®šæ³¨å†Œ" class="login_button" />
+                	</div>
+                    <div class="reg_main_text_label4">
+                    <input type="reset" name="Submit22" value="é‡ ç½®" class="login_button01">
+                    </div>
+                	<div class="clear">
+                	</div>
+                </div>
+            </div>
+            </form>
+            <div class="login_main_bottom">
+            </div>
+            <div class="clear">
+            </div>
+      </div>
+    </div>
+    <!--ä¸­é—´ç»“æŸ-->
+    <!--åº•éƒ¨å¼€å§‹-->
+    <div id="login_footer"><?php echo $cfg_powerby?>
+    </div>
+    <!--åº•éƒ¨ç»“æŸ-->
 </div>
 </body>
 </html>

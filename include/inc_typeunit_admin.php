@@ -1,8 +1,10 @@
-<?php 
+<?php
 //class TypeUnit
-//Õâ¸öÀàÖ÷ÒªÊÇ·â×°ÆµµÀ¹ÜÀíÊ±µÄÒ»Ğ©¸´ÔÓ²Ù×÷ 
+//è¿™ä¸ªç±»ä¸»è¦æ˜¯å°è£…é¢‘é“ç®¡ç†æ—¶çš„ä¸€äº›å¤æ‚æ“ä½œ
 //--------------------------------
 require_once(dirname(__FILE__)."/config_base.php");
+require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
+require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php");
 class TypeUnit
 {
 	var $dsql;
@@ -11,229 +13,405 @@ class TypeUnit
 	var $idCounter;
 	var $idArrary;
 	var $shortName;
-	
+	var $aChannels;
+	var $isAdminAll;
+	var $CatalogNums;
 	//-------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------
-	function __construct(){
+	function __construct($catlogs=''){
 		$this->idCounter = 0;
 		$this->artDir = $GLOBALS['cfg_cmspath'].$GLOBALS['cfg_arcdir'];
 		$this->baseDir = $GLOBALS['cfg_basedir'];
 		$this->shortName = $GLOBALS['art_shortname'];
 		$this->idArrary = "";
-		$this->dsql = 0;
+		$this->dsql = new DedeSql(false);
+		$this->aChannels = Array();
+		$this->isAdminAll = false;
+		if(!empty($catlogs) && $catlogs!='-1'){
+			$this->aChannels = explode(',',$catlogs);
+			foreach($this->aChannels as $cid)
+			{
+				if($_Cs[$cid][0]==0)
+				{
+					 $this->dsql->SetQuery("Select ID,ispart From `#@__arctype` where reID=$cid");
+					 $this->dsql->Execute();
+					 while($row = $this->dsql->GetObject()){
+						 if($row->ispart!=2) $this->aChannels[] = $row->ID;
+					 }
+				}
+			}
+		}else{
+			$this->isAdminAll = true;
+		}
   }
-	function TypeUnit(){
-		$this->__construct();
+	function TypeUnit($catlogs='')
+	{
+		$this->__construct($catlogs);
 	}
 	//------------------
-	//ÇåÀíÀà
+	//æ¸…ç†ç±»
 	//------------------
 	function Close(){
-		if($this->dsql){ $this->dsql->Close(); @$this->dsql=0; }
+		if(is_object($this->dsql)){
+			@$this->dsql->Close();
+			unset($this->dsql);
+		}
 		$this->idArrary = "";
 		$this->idCounter = 0;
 	}
 	//------------------------------
 	function GetTotalArc($tid){
-		$row = $this->dsql->GetOne("Select count(ID) as dd From #@__archives where typeid='$tid'");
-		return $row['dd'];
+		return $this->GetCatalogNum($tid);
 	}
 	//
-	//----¶Á³öËùÓĞ·ÖÀà,ÔÚÀàÄ¿¹ÜÀíÒ³(list_type)ÖĞÊ¹ÓÃ----------
+	//è·å–æ‰€æœ‰æ ç›®çš„æ–‡æ¡£IDæ•°
+	//
+	function UpdateCatalogNum()
+	{
+		$this->dsql->SetQuery("SELECT typeid,count(typeid) as dd FROM `#@__full_search` group by typeid");
+		$this->dsql->Execute();
+		while($row = $this->dsql->GetArray()){
+			$this->CatalogNums[$row['typeid']] = $row['dd'];
+		}
+	}
+	function GetCatalogNum($tid)
+	{
+		if(!is_array($this->CatalogNums)){ $this->UpdateCatalogNum(); }
+		if(!isset($this->CatalogNums[$tid])) return 0;
+		else
+		{
+			$totalnum = 0;
+			$GLOBALS['idArray'] = array();
+			$ids = TypeGetSunTypes($tid,$this->dsql,0);
+			foreach($ids as $tid){
+				if(isset($this->CatalogNums[$tid])) $totalnum += $this->CatalogNums[$tid];
+			}
+			return $totalnum;
+		}
+	}
+	//
+	//----è¯»å‡ºæ‰€æœ‰åˆ†ç±»,åœ¨ç±»ç›®ç®¡ç†é¡µ(list_type)ä¸­ä½¿ç”¨----------
 	//
 	function ListAllType($channel=0,$nowdir=0)
 	{
-		if($this->dsql==0){ $this->dsql = new DedeSql(); }
-		
-		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,sortrank,ishidden From #@__arctype where reID=0 order by sortrank");
-		$this->dsql->Execute(0);
-		
+
+		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,sortrank,ishidden,channeltype From #@__arctype where reID=0 order by sortrank");
+		$this->dsql->Execute('pn0');
+
 		$lastID = GetCookie('lastCid');
-		
-		while($row=$this->dsql->GetObject(0))
-		{	 
+
+		while($row=$this->dsql->GetObject('pn0'))
+		{
 			$typeDir = $row->typedir;
 			$typeName = $row->typename;
 			$ispart = $row->ispart;
 			$ID = $row->ID;
 			$rank = $row->sortrank;
-			if($row->ishidden=='1') $nss = "<font color='red'>[Òş]</font>";
+			$channeltype = $row->channeltype;
+			if($row->ishidden=='1') $nss = "<font color='red'>[éš]</font>";
 			else  $nss = "";
-			echo "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\r\n";
-			if($channel==0||$channel==$ID)
+
+			//æœ‰æƒé™æ ç›®
+			if($this->isAdminAll===true || in_array($ID,$this->aChannels))
 			{
-			  //ÆÕÍ¨ÁĞ±í
-			  if($ispart==0)
-			  {
-			     echo "  <tr bgcolor='#F5F5F5'>\r\n";
-			     echo "  <td width='2%' class='bline'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
-			     echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives' oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$ID."]</a>(ÎÄµµ£º".$this->GetTotalArc($ID).")";
-			     echo "    </td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>Ìí×ÓÀà</a>";
-			     echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			     echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-			  }
-			  //´ø·âÃæµÄÆµµÀ
-			  else if($ispart==1)
-			  {
-			     echo "  <tr bgcolor='#F5F5F5'>\r\n";
-			     echo "  <td width='2%' class='bline'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
-			     echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$ID."]</a>";
-			     echo "    </td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>Ìí×ÓÀà</a>";
-			     echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			    echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-			  }
-			  //¶ÀÁ¢Ò³Ãæ
+			   //print_r($this->aChannels);
+			   //äº’åŠ¨æ ç›®
+			   if($channeltype<-1)
+			   {
+			   	 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' oncontextmenu=\"CommonMenuWd(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>\r\n";
+				 echo "<td width='6%'>[ID:".$ID."]</td>\r\n";
+				 echo "<td width='27%' align='left'>\r\n<img onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a><font color='red'>[äº’]</font> </td>\r\n";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>\r\n";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>\r\n";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a>\r\n";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a>\r\n";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a>\r\n";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a>\r\n";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a>\r\n";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a>\r\n";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td>\r\n</tr>\r\n";
+			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
+
+			   }
+			   //æ™®é€šåˆ—è¡¨
+			   else if($ispart==0)
+			   {
+			   	 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>\r\n";
+				 echo "<td width='6%'>[ID:".$ID."]</td>\r\n";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>\r\n";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>\r\n";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>\r\n";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a>\r\n";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a>\r\n";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a>\r\n";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a>\r\n";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a>\r\n";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a>\r\n";
+				 echo "</td>\r\n<td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td>\r\n</tr>\r\n";
+			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
+
+			   }
+			   //å¸¦å°é¢çš„é¢‘é“
+			   else if($ispart==1)
+	       {
+			   	 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>\r\n";
+				 echo "<td width='6%'>[ID:".$ID."]</td>\r\n";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>\r\n";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>\r\n";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>\r\n";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a>\r\n";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a>\r\n";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a>\r\n";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a>\r\n";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a>\r\n";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a>\r\n";
+				 echo "</td>\r\n<td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td>\r\n</tr>\r\n";
+			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
+				 }
+			  //ç‹¬ç«‹é¡µé¢
 			  else if($ispart==2)
 			  {
-				  echo "  <tr height='24' bgcolor='#F5F5F5'>\r\n";
-			    echo "  <td width='2%' class='bline2'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
-			    echo "  <td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_edit.php?ID=".$ID."' oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$ID."]</a>";
-			    echo "    </td><td align='right'>";
-			    echo "<a href='catalog_do.php?cid={$ID}&dopost=viewSgPage' target='_blank'>Ô¤ÀÀ</a>";
-			    echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgPage'>Ò³Ãæ</a>";
-			    echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgTemplet'>¸ü¸ÄÄ£°å</a>";
-			    echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			    echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			    echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			    echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
+			   	 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>\r\n";
+				 echo "<td width='6%'>[ID:".$ID."]</td>\r\n";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>\r\n";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>\r\n";
+				 echo "<td width='8%'>ç‹¬ç«‹é¡µ</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>\r\n";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a>\r\n";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a>\r\n";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a>\r\n";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a>\r\n";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a>\r\n";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a>\r\n";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td>\r\n</tr>\r\n";
+			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
+				 }
+
+			  if($lastID==$ID){
+				   $this->LogicListAllSunType($ID,"ã€€",false);
 			  }
 		  }
-		  else
-		  {
-		  	//ÆÕÍ¨ÁĞ±í
-			  if($ispart==0)
-			  {
-			     echo "  <tr bgcolor='#F5F5F5'>\r\n";
-			     echo "  <td width='2%' class='bline'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-			     echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>{$nss}".$typeName."[ID:".$ID."]</a>(ÎÄµµ£º".$this->GetTotalArc($ID).")";
-			     echo "    </td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			     echo "&nbsp; </td></tr></table></td></tr>\r\n";
-			  }
-			  //´ø·âÃæµÄÆµµÀ
-			  else if($ispart==1)
-			  {
-			     echo "  <tr bgcolor='#F5F5F5'>\r\n";
-			     echo "  <td width='2%' class='bline'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-			     echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>{$nss}".$typeName."[ID:".$ID."]</a>";
-			     echo "    </td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			    echo "&nbsp; </td></tr></table></td></tr>\r\n";
-			  }
-			  //¶ÀÁ¢Ò³Ãæ
-			  else if($ispart==2)
-			  {
-				  echo "  <tr height='24' bgcolor='#F5F5F5'>\r\n";
-			    echo "  <td width='2%' class='bline2'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-			    echo "  <td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_edit.php?ID=".$ID."'>{$nss}".$typeName."[ID:".$ID."]</a>";
-			    echo "    </td><td align='right'>";
-			    echo "<a href='catalog_do.php?cid={$ID}&dopost=viewSgPage' target='_blank'>Ô¤ÀÀ</a>";
-			    echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgPage'>Ò³Ãæ</a>";
-			    echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgTemplet'>¸ü¸ÄÄ£°å</a>";
-			    echo "&nbsp; </td></tr></table></td></tr>\r\n";
+		  //æ²¡æƒé™æ ç›®
+		  else{
+		  	 $sonNeedShow = false;
+		  	 $this->dsql->SetQuery("Select ID From #@__arctype where reID={$ID}");
+		     $this->dsql->Execute('ss');
+		     while($srow=$this->dsql->GetArray('ss')){
+		        	if( in_array($srow['ID'],$this->aChannels) ){ $sonNeedShow = true;  break; }
+		     }
+		  	 //å¦‚æœäºŒçº§æ ç›®ä¸­æœ‰çš„æ‰€å±å½’ç±»æ–‡æ¡£
+		  	 if($sonNeedShow===true)
+		  	 {
+		  	    //äº’åŠ¨æ ç›®
+			      if($channeltype<-1)
+			      {
+				 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center'>";
+				 echo "<td width='7%'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='sortrank{$ID}' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "</table>\r\n <div id='suns".$ID."'>";
+			      }
+				  //æ™®é€šåˆ—è¡¨
+				  else if($ispart==0)
+			      {
+				 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center'>";
+				 echo "<td width='7%'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='10%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "</td><td width='10%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='sortrank{$ID}' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "</table>\r\n <div id='suns".$ID."'>";
+			      }
+				  //å¸¦å°é¢çš„é¢‘é“
+				  else if($ispart==1)
+	          {
+				 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center'>";
+				 echo "<td width='7%'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='10%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "</td><td width='10%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='sortrank{$ID}' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "</table>\r\n <div id='suns".$ID."'>";
+			     }
+				 //ç‹¬ç«‹é¡µé¢
+				 else if($ispart==2)
+				 {
+				 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center'>";
+				 echo "<td width='7%'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='10%'>ç‹¬ç«‹é¡µ</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "</td><td width='10%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "</table>\r\n <div id='suns".$ID."'>";
+			     }
+			     $this->LogicListAllSunType($ID,"ã€€",true);
 			  }
 		  }
-			echo "  <tr><td colspan='2' id='suns".$ID."'>";
-			if($channel==$ID || $lastID==$ID){
-				$this->LogicListAllSunType($ID,"¡¡");
-			}
-			echo "</td></tr>\r\n</table>\r\n";
-			
+			echo "</div>\r\n";
 		}
 	}
-	//»ñµÃ×ÓÀàÄ¿µÄµİ¹éµ÷ÓÃ
-	function LogicListAllSunType($ID,$step)
+	//è·å¾—å­ç±»ç›®çš„é€’å½’è°ƒç”¨
+	function LogicListAllSunType($ID,$step,$needcheck=true)
 	{
 		$fid = $ID;
-		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,sortrank,ishidden From #@__arctype where reID='".$ID."' order by sortrank");
-		$this->dsql->Execute($fid);
-		if($this->dsql->GetTotalRow($fid)>0)
+		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,sortrank,ishidden,channeltype From #@__arctype where reID='".$ID."' order by sortrank");
+		$this->dsql->Execute('s'.$fid);
+		while($row=$this->dsql->GetObject('s'.$fid))
 		{
-		  while($row=$this->dsql->GetObject($fid))
-		  {
 			  $typeDir = $row->typedir;
 			  $typeName = $row->typename;
 			  $reID = $row->reID;
 			  $ID = $row->ID;
 			  $ispart = $row->ispart;
-			  if($step=="¡¡") $stepdd = 2;
+			  $channeltype = $row->channeltype;
+			  if($step=="  ") $stepdd = 2;
 			  else $stepdd = 3;
 			  $rank = $row->sortrank;
-			  if($row->ishidden=='1') $nss = "<font color='red'>[Òş]</font>";
+			  if($row->ishidden=='1') $nss = "<font color='red'>[éš]</font>";
 			  else  $nss = "";
-			  echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
-			  //ÆÕÍ¨ÁĞ±í
-			  if($ispart==0)
+			  //æœ‰æƒé™æ ç›®
+			  if(in_array($ID,$this->aChannels) || $needcheck===false || $this->isAdminAll===true)
 			  {
-			     echo "<tr height='24' oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
-			     echo "<td class='nbline'>";
-			     echo "<table width='98%' border='0' cellspacing='0' cellpadding='0'>";
-			     echo "<tr onMouseMove=\"javascript:this.bgColor='#EAEAEA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-			     echo "<input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>$step ¡¤{$nss}".$typeName."[ID:".$ID."]</a>(ÎÄµµ£º".$this->GetTotalArc($ID).")";
-			     echo "</td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>Ìí×ÓÀà</a>";
-			     echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			     echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-			  }
-			  //·âÃæÆµµÀ
-			  else if($ispart==1)
-			  {
-			     echo " <tr height='24' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">\r\n";
-			     echo "<td class='nbline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr onMouseMove=\"javascript:this.bgColor='#EAEAEA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-			     echo "<input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>$step ¡¤{$nss}".$typeName."[ID:".$ID."]</a>";
-			     echo "</td><td align='right'>";
-			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>ÄÚÈİ</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>Ìí×ÓÀà</a>";
-			     echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			     echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-			  }
-			  //¶ÀÁ¢Ò³Ãæ
-			  else if($ispart==2)
-			  {
-				   echo "<tr height='24' oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
-			     echo "<td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'>";
-			     echo "<tr onMouseMove=\"javascript:this.bgColor='#EAEAEA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-			     echo "<input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>$step ¡¤{$nss}".$typeName."[ID:".$ID."]</a>";
-			     echo "</td><td align='right'>";
-			     echo "<a href='catalog_do.php?cid={$ID}&dopost=viewSgPage' target='_blank'>Ô¤ÀÀ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgPage'>Ò³Ãæ</a>";
-			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=editSgTemplet'>¸ü¸ÄÄ£°å</a>";
-			     echo "|<a href='catalog_edit.php?ID={$ID}'>¸ü¸Ä</a>";
-			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>ÒÆ¶¯</a>";
-			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>É¾³ı</a>";
-			     echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-			  }
-			  echo "    </table>\r\n";
-			  $this->LogicListAllSunType($ID,$step."¡¡");
-		  }
-		}
+			  	 //äº’åŠ¨æ ç›®
+			   if($channeltype<-1)
+			    {
+				 echo "<table width='96%' border='0' cellspacing='1' cellpadding='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' class='trlbg' oncontextmenu=\"CommonMenuWd(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'>$step   â”œ  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a><font color='red'>[äº’]</font> </td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a> ";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>åˆ—å‡º</a> ";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a> ";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a> ";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a> ";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a> ";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+				 echo "    </table>\r\n";
+			    }
+			    //æ™®é€šåˆ—è¡¨
+			    else if($ispart==0)
+			    {
+				 echo "<table width='96%' border='0' cellspacing='1' cellpadding='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' class='trlbg'  oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'>$step   â”œ  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a> </td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a> ";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a> ";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a> ";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a> ";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a> ";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a> ";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+				 echo "    </table>\r\n";
+
+			    }
+			    //å°é¢é¢‘é“
+			    else if($ispart==1)
+			    {
+				 echo "<table width='96%' border='0' cellspacing='1' cellpadding='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' class='trlbg' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'>$step   â”œ  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a><font color='red'>[å°é¢]</font></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='8%'>$channeltype</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a> ";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>åˆ—å‡º</a> ";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a> ";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a> ";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a> ";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a> ";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+				 echo "    </table>\r\n";
+			    }
+			    //ç‹¬ç«‹é¡µé¢
+			    else if($ispart==2)
+			    {
+				 echo "<table width='96%' border='0' cellspacing='1' cellpadding='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' class='trlbg' oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'>$step   â”œ  <a href='catalog_do.php?cid=".$ID."&dopost=listArchives' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a><font color='red'>[å°é¢]</font></td>";
+				 echo "<td width='10%'>(æ–‡æ¡£ï¼š".$this->GetTotalArc($ID).")</td>";
+				 echo "<td width='8%'>ç‹¬ç«‹é¡µ</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>é¢„è§ˆ</a> ";
+				 echo "| <a href='catalog_do.php?cid={$ID}&dopost=listArchives'>å†…å®¹</a> ";
+				 echo "| <a href='catalog_add.php?ID={$ID}'>æ·»åŠ </a> ";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>ä¿®æ”¹</a> ";
+				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>ç§»åŠ¨</a> ";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>åˆ é™¤</a> ";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "    </table>\r\n";
+				}
+			  $this->LogicListAllSunType($ID,$step."ã€€",false);
+		  }//if æœ‰æƒé™
+		}//End while
 	}
 	//------------------------------------------------------
-	//-----·µ»ØÓëÄ³¸öÄ¿Ïà¹ØµÄÏÂ¼¶Ä¿Â¼µÄÀàÄ¿IDÁĞ±í(É¾³ıÀàÄ¿»òÎÄÕÂÊ±µ÷ÓÃ)
+	//-----è¿”å›ä¸æŸä¸ªç›®ç›¸å…³çš„ä¸‹çº§ç›®å½•çš„ç±»ç›®IDåˆ—è¡¨(åˆ ç±»ç›®æˆ–æ–‡ç« æ—¶è°ƒç”¨)
 	//------------------------------------------------------
 	function GetSunTypes($ID,$channel=0)
 	{
-		if($this->dsql==0) $this->dsql = new DedeSql(false);
 		$this->idArray[$this->idCounter]=$ID;
 		$this->idCounter++;
 		$fid = $ID;
@@ -241,22 +419,18 @@ class TypeUnit
 	  else $csql = "";
 		$this->dsql->SetQuery("Select ID From #@__arctype where reID=$ID $csql");
 		$this->dsql->Execute("gs".$fid);
-    //if($this->dsql->GetTotalRow("gs".$fid)!=0)
-		//{
 		while($row=$this->dsql->GetObject("gs".$fid)){
 			$nid = $row->ID;
 			$this->GetSunTypes($nid,$channel);
 		}
-		//}
 		return $this->idArray;
 	}
 	//----------------------------------------------------------------------------
-	//»ñµÃÄ³IDµÄÏÂ¼¶ID(°üÀ¨±¾Éí)µÄSQLÓï¾ä¡°($tb.typeid=id1 or $tb.typeid=id2...)¡±
+	//è·å¾—æŸIDçš„ä¸‹çº§ID(åŒ…æ‹¬æœ¬èº«)çš„SQLè¯­å¥â€œ($tb.typeid=id1 or $tb.typeid=id2...)â€
 	//----------------------------------------------------------------------------
 	function GetSunID($ID,$tb="#@__archives",$channel=0)
 	{
 		$this->sunID = "";
-		if($this->dsql==0) $this->dsql = new DedeSql(false);
 		$this->idCounter = 0;
 		$this->idArray = "";
 		$this->GetSunTypes($ID,$channel);
@@ -273,77 +447,38 @@ class TypeUnit
 		return " (".$rquery.") ";
 	}
 	//----------------------------------------
-	//É¾³ıÀàÄ¿
+	//åˆ ç±»ç›®
 	//----------------------------------------
-	function DelType($ID,$isDelFile)
+	function DelType($ID,$isDelFile,$delson=true)
 	{
 		$this->idCounter = 0;
 		$this->idArray = "";
-		$this->GetSunTypes($ID);
-		
-		$query = "
-		Select #@__arctype.*,#@__channeltype.typename as ctypename,
-		#@__channeltype.addtable 
-		From #@__arctype left join #@__channeltype 
-		on #@__channeltype.ID=#@__arctype.channeltype 
-		where #@__arctype.ID='$ID'
-		";
-		$typeinfos = $this->dsql->GetOne($query);
-		$topinfos = $this->dsql->GetOne("Select moresite,siterefer,sitepath,siteurl From #@__arctype where ID='".$typeinfos['topID']."'");
-		
-		if(!is_array($typeinfos)) return false;
-		$indir = $typeinfos['typedir'];
-		$addtable = $typeinfos['addtable'];
-		$ispart = $typeinfos['ispart'];
-		$defaultname = $typeinfos['defaultname'];
-		
-		//É¾³ıÊı¾İ¿âÀïµÄÏà¹Ø¼ÇÂ¼
-		foreach($this->idArray as $id){
-			$myrow = $this->dsql->GetOne("Select * From #@__arctype where ID='$id'");
-			if($myrow['topID']>0)
-			{
-				$mytoprow = $this->dsql->GetOne("Select moresite,siterefer,sitepath,siteurl From #@__arctype where ID='".$myrow['topID']."'");
-				foreach($mytoprow as $k=>$v){
-	  		   if(!ereg("[0-9]",$k)) $myrow[$k] = $v;
-	  	  }
-			}
-			//É¾³ıÄ¿Â¼ºÍÄ¿Â¼ÀïµÄËùÓĞÎÄ¼ş ### ½ûÖ¹ÁË´Ë¹¦ÄÜ
-			//É¾³ıµ¥¶ÀÒ³Ãæ
-		  if($myrow['ispart']==2 && $myrow['typedir']==""){
-			  if( is_file($this->baseDir."/".$myrow['defaultname']) )
-			  { @unlink($this->baseDir."/".$myrow['defaultname']); }
-		  }
-			//É¾³ıÊı¾İ¿âĞÅÏ¢
-			$this->dsql->SetQuery("Delete From #@__arctype where ID='$id'");
-			$this->dsql->ExecuteNoneQuery();
-			$this->dsql->SetQuery("Delete From #@__archives where typeid='$id'");
-			$this->dsql->ExecuteNoneQuery();
-			$this->dsql->SetQuery("update #@__archives set typeid2=0 where typeid2='$id'");
-			$this->dsql->ExecuteNoneQuery();
-			$this->dsql->SetQuery("Delete From #@__spec where typeid='$id'");
-			$this->dsql->ExecuteNoneQuery();
-			$this->dsql->SetQuery("Delete From #@__feedback where typeid='$id'");
-			$this->dsql->ExecuteNoneQuery();
-      if($addtable!=""){
-        $this->dsql->SetQuery("Delete From $addtable where typeid='$id'");
-			  $this->dsql->ExecuteNoneQuery();
-		  }
+		if($delson){
+		   $this->GetSunTypes($ID);
+	  }else{
+	  	$this->idArray = array();
+	  	$this->idArray[] = $ID;
+	  }
+		//åˆ æ•°æ®åº“é‡Œçš„ç›¸å…³è®°å½•
+		foreach($this->idArray as $id)
+		{
+			$myrow = $this->dsql->GetOne("Select c.maintable,c.addtable From #@__arctype t left join #@__channeltype c  on c.ID=t.channeltype where t.ID='$id'",MYSQL_ASSOC);
+		  if($myrow['maintable']=='') $myrow['maintable'] = '#@__archives';
+		  //åˆ æ•°æ®åº“ä¿¡æ¯
+		  $this->dsql->ExecuteNoneQuery("Delete From `{$myrow['maintable']}` where typeid='$id'");
+		  if($myrow['addtable']!="") $this->dsql->ExecuteNoneQuery("Delete From `{$myrow['addtable']}` where typeid='$id'");
+			$this->dsql->ExecuteNoneQuery("update `{$myrow['maintable']}` set typeid2=0 where typeid2='$id'");
+			$this->dsql->ExecuteNoneQuery("Delete From `#@__spec` where typeid='$id'");
+			$this->dsql->ExecuteNoneQuery("Delete From `#@__feedback` where typeid='$id'");
+		  $this->dsql->ExecuteNoneQuery("Delete From `#@__arctype` where ID='$id'");
+		  $this->dsql->ExecuteNoneQuery("Delete From `#@__full_search` where typeid='$id'");
 		}
-		
-		//É¾³ıÄ¿Â¼ºÍÄ¿Â¼ÀïµÄËùÓĞÎÄ¼ş ### ½ûÖ¹ÁË´Ë¹¦ÄÜ
-		
-		//É¾³ıµ¥¶ÀÒ³Ãæ
-		if($ispart==2 && $indir==""){
-			if( is_file($this->baseDir."/".$defaultname) ) @unlink($this->baseDir."/".$defaultname);
-		}
-		
 		@reset($this->idArray);
 		$this->idCounter = 0;
-		
 		return true;
 	}
 	//---------------------------
-	//---- É¾³ıÖ¸¶¨Ä¿Â¼µÄËùÓĞÎÄ¼ş
+	//---- åˆ æŒ‡å®šç›®å½•çš„æ‰€æœ‰æ–‡ä»¶
 	//---------------------------
 	function RmDirFile($indir)
 	{

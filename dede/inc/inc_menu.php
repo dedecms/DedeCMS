@@ -1,183 +1,242 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/../../include/config_base.php");
 require_once(dirname(__FILE__)."/../../include/pub_dedetag.php");
+if(!isset($cfg_ct_mode)) $cfg_ct_mode = 0;
 $dsql = new DedeSql(false);
-//ÔØÈë¿É·¢²¼ÆµµÀ
-$dsql->SetQuery("Select ID,typename,addcon From #@__channeltype where ID>0 And isshow=1 order by ID asc");
-$dsql->Execute();
+//è½½å…¥å¯å‘å¸ƒ/ç®¡ç†é¢‘é“
+$listset = "";
 $addset = "";
-while($row = $dsql->GetObject())
-{
-  $addset .= "  <m:item name='·¢²¼".$row->typename."' link='".$row->addcon."?channelid=".$row->ID."' rank='' target='main' />\r\n";
-}
-//ÔØÈë²å¼þ
-$dsql->SetQuery("Select * From #@__plus where isshow=1 order by aid asc");
-$dsql->Execute();
 $plusset = "";
-while($row = $dsql->GetObject())
+if($c==2||$c==9||$c==0)
 {
-  $plusset .= $row->menustring."\r\n";
+
+  $listsetn = '';
+	$listsetn .= "<m:item name='æ‰€æœ‰æ¡£æ¡ˆåˆ—è¡¨' link='content_list.php' rank='a_List,a_AccList' target='main' />\r\n";
+  $listsetn .= "<m:item name='æˆ‘å‘å¸ƒçš„æ–‡æ¡£' link='content_list.php?adminid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />\r\n";
+  $listsetn .= "<m:item name='ç­‰å®¡æ ¸çš„æ–‡æ¡£' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />\r\n";
+  $listsetn .= "<m:item name='ä¼šå‘˜æŠ•ç¨¿æ–‡æ¡£' link='content_list.php?ismember=1' rank='a_Check,a_AccCheck' target='main' />\r\n";
+  $listsetn .= "<m:item name='åˆ†ç±»ä¿¡æ¯åˆ—è¡¨' link='info_list.php' rank='a_List,a_AccList' target='main' />\r\n";
+
+  $dsql->SetQuery("Select ID,typename,addcon,mancon From #@__channeltype where ID<>-1 And isshow=1 order by ID asc");
+  $dsql->Execute();
+  while($row = $dsql->GetArray())
+  {
+    $dds = $dsql->GetOne("Select count(ID) as dd From `#@__arctype` where channeltype={$row['ID']} ");
+    if($dds['dd']<1) continue;
+    if($row['mancon']=='') $row['mancon'] = "content_list.php";
+    if($row['addcon']=='') $row['addcon'] = "archives_add.php";
+    $addset .= "  <m:item name='å‘å¸ƒ".$row['typename']."' link='".$row['addcon']."?channelid=".$row['ID']."' rank='' target='main' />\r\n";
+    $listset .= "  <m:item name='{$row['typename']}ç®¡ç†' link='{$row['mancon']}?channelid={$row['ID']}' rank='t_List,t_AccList' target='main' />\r\n";
+  }
+  //ä¼ ç»Ÿéžåˆ†è¡¨ç®¡ç†æ¨¡å¼
+  if($cfg_ct_mode!=1)
+  {
+    $listset = $listsetn;
+  }
+  $userChannel = $cuserLogin->getUserChannel();
+  if(ereg(',',$userChannel) && !TestPurview('admin_AllowAll')){
+	  $addset = '';
+	  $listset = $listsetn;
+  }
 }
-$dsql->Close();
+//è½½å…¥æ’ä»¶
+if($c==5||$c==0)
+{
+  $dsql->SetQuery("Select * From #@__plus where isshow=1 order by aid asc");
+  $dsql->Execute();
+  while($row = $dsql->GetObject()){
+    $plusset .= $row->menustring."\r\n";
+  }
+}
 //////////////////////////
 $menus = "
 -----------------------------------------------
-<m:top name='¿ì½Ý²Ëµ¥' display='block' c='9,' rank=''>
-  <m:item name='ÍøÕ¾À¸Ä¿¹ÜÀí' link='catalog_main.php' rank='t_List,t_AccList' target='main' />
-  <m:item name='ËùÓÐµµ°¸ÁÐ±í' link='content_list.php' rank='a_List,a_AccList' target='main' />
-  <m:item name='ÎÒ·¢²¼µÄÎÄµµ' link='content_list.php?adminid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
-  <m:item name='µÈÉóºËµÄÎÄµµ' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='»áÔ±Í¶¸åÎÄµµ' link='content_list.php?ismember=1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='ÎÄµµÆÀÂÛ¹ÜÀí' link='feedback_main.php' rank='sys_Feedback' target='main' />
-  <m:item name='¸½¼þÊý¾Ý¹ÜÀí' link='media_main.php' rank='sys_Upload,sys_MyUpload' target='main' />
+<m:top name='å¿«æ·èœå•' display='block' c='9,' rank=''>
+  <m:item name='ç½‘ç«™æ ç›®ç®¡ç†' link='catalog_main.php' rank='t_List,t_AccList' target='main' />
+  <m:item name='æ‰€æœ‰æ¡£æ¡ˆåˆ—è¡¨' link='full_list.php' rank='a_List,a_AccList' target='main' />
+  <m:item name='æˆ‘å‘å¸ƒçš„æ–‡æ¡£' link='full_list.php?adminid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
+  <m:item name='ç­‰å®¡æ ¸çš„æ–‡æ¡£' link='full_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
+  <m:item name='ä¼šå‘˜æŠ•ç¨¿æ–‡æ¡£' link='full_list.php?ismember=1' rank='a_Check,a_AccCheck' target='main' />
+  <m:item name='æ–‡æ¡£è¯„è®ºç®¡ç†' link='feedback_main.php' rank='sys_Feedback' target='main' />
+  <m:item name='é™„ä»¶æ•°æ®ç®¡ç†' link='media_main.php' rank='sys_Upload,sys_MyUpload' target='main' />
 </m:top>
 
-<m:top name='ÆµµÀ¹ÜÀí' display='block' c='1,' rank=''>
-  <m:item name='ÄÚÈÝÄ£ÐÍ¹ÜÀí' link='mychannel_main.php' rank='c_List' target='main' />
-  <m:item name='ÍøÕ¾À¸Ä¿¹ÜÀí' link='catalog_main.php' rank='t_List,t_AccList' target='main' />
-  <m:item name='×ÔÓÉÁÐ±í¹ÜÀí' link='freelist_main.php' rank='c_FreeList' target='main' />
-  <m:item name='µ¥Ò³ÎÄµµ¹ÜÀí' link='templets_one.php' rank='temp_One' target='main'/>
+<m:top name='é¢‘é“ç®¡ç†' display='block' c='1,' rank=''>
+  <m:item name='å†…å®¹æ¨¡åž‹ç®¡ç†' link='mychannel_main.php' rank='c_List' target='main' />
+  <m:item name='ç½‘ç«™æ ç›®ç®¡ç†' link='catalog_main.php' rank='t_List,t_AccList' target='main' />
+  <m:item name='è‡ªç”±åˆ—è¡¨ç®¡ç†' link='freelist_main.php' rank='c_FreeList' target='main' />
+  <m:item name='å•é¡µæ–‡æ¡£ç®¡ç†' link='templets_one.php' rank='temp_One' target='main'/>
 </m:top>
 
-<m:top name='ÎÄµµÎ¬»¤' c='2,' display='block'>
-  <m:item name='ËùÓÐµµ°¸ÁÐ±í' link='content_list.php' rank='a_List,a_AccList' target='main' />
-  <m:item name='ÎÒ·¢²¼µÄÎÄµµ' link='content_list.php?adminid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
-  <m:item name='µÈÉóºËµÄÎÄµµ' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='»áÔ±Í¶¸åÎÄµµ' link='content_list.php?ismember=1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='ÎÄµµÆÀÂÛ¹ÜÀí' link='feedback_main.php' rank='sys_Feedback' target='main' />
-  <m:item name='¸½¼þÊý¾Ý¹ÜÀí' link='media_main.php' rank='sys_Upload,sys_MyUpload' target='main' />
-  <m:item name='ÎÄµµÐÅÏ¢Í³¼Æ' link='content_tj.php' rank='sys_ArcTj' target='main' />
+<m:top name='ä¿¡æ¯ç»´æŠ¤' c='2,' display='block'>
+  <m:item name='æ–‡æ¡£è¯„è®ºç®¡ç†' link='feedback_main.php' rank='sys_Feedback' target='main' />
+  <m:item name='é™„ä»¶æ•°æ®ç®¡ç†' link='media_main.php' rank='sys_Upload,sys_MyUpload' target='main' />
+  <m:item name='æœç´¢å…³é”®è¯ç®¡ç†' link='search_keywords_main.php' rank='sys_Keyword' target='main' />
+  <m:item name='æ–‡æ¡£ä¿¡æ¯ç»Ÿè®¡' link='content_tj.php' rank='sys_ArcTj' target='main' />
 </m:top>
 
-<m:top name='ÄÚÈÝ·¢²¼' c='9,' display='block' rank=''>
-  <m:item name='Ê÷ÐÎÀ¸Ä¿½á¹¹' link='catalog_menu.php' rank='' target='_self' />
-  $addset
+<m:top name='æ–‡æ¡£ç®¡ç†' c='2,' display='block'>
+  $listset
 </m:top>
 
-<m:top name='ÅúÁ¿¹ÜÀí' c='2,' display='block'>
-  <m:item name='ÎÄµµÅúÁ¿Î¬»¤' link='content_batch_up.php' rank='sys_ArcBatch' target='main' />
-  <m:item name='ÎÄµµ¹Ø¼ü´ÊÎ¬»¤' link='article_keywords_main.php' rank='sys_Keyword' target='main' />
-  <m:item name='ËÑË÷¹Ø¼ü´Ê´¦Àí' link='search_keywords_main.php' rank='sys_Keyword' target='main' />
-  <m:item name='×Ô¶¯ÕªÒª|·ÖÒ³' link='article_description_main.php' rank='sys_description' target='main' />
-  <m:item name='ÌáÈ¡ÎÄÕÂËõÂÔÍ¼' link='makeminiature/makeminiature.php' rank='sys_ArcBatch' target='main' />
-  <m:item name='ÖØ¸´ÎÄµµ¼ì²â' link='article_test_same.php' rank='sys_ArcBatch' target='main' />
-  <m:item name='Êý¾Ý¿âÄÚÈÝÌæ»»' link='sys_data_replace.php' rank='sys_ArcBatch' target='main' />
+<m:top name='å†…å®¹å‘å¸ƒ' c='9,' display='block' rank=''>
+  <m:item name='æ ‘å½¢æ ç›®ç»“æž„' link='catalog_menu.php' rank='' target='_self' />
 </m:top>
 
-<m:top name='×¨Ìâ¹ÜÀí' display='block' c='6,' rank=''>
-  <m:item name='´´½¨ÐÂ×¨Ìâ' link='spec_add.php' rank='spec_New' target='main' />
-  <m:item name='×¨ÌâÁÐ±í' link='content_s_list.php' rank='spec_List' target='main' />
-  <m:item name='¸üÐÂ×¨ÌâHTML' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
+<m:top name='æ‰¹é‡ç®¡ç†' c='2,' display='block'>
+  <m:item name='æ–‡æ¡£æ‰¹é‡ç»´æŠ¤' link='content_batch_up.php' rank='sys_ArcBatch' target='main' />
+  <m:item name='é‡å¤æ ‡é¢˜æ£€æµ‹' link='article_test_same.php' rank='sys_ArcBatch' target='main' />
+  <m:item name='æ–‡æ¡£é”™è¯¯ä¿®æ­£' link='content_batch_up2.php' rank='sys_ArcBatch' target='main' />
+  <m:item name='æ–‡æ¡£å…³é”®è¯ç»´æŠ¤' link='article_keywords_main.php' rank='sys_Keyword' target='main' />
+  <m:item name='æ‰¹é‡èŽ·å–æ‘˜è¦' link='description_fetch.php' rank='sys_description' target='main' />
+  <m:item name='æ‰¹é‡èŽ·å–å…³é”®è¯' link='article_keywords_fetch.php' rank='sys_description' target='main' />
+  <m:item name='è‡ªåŠ¨åˆ†é¡µ' link='pagination_main.php' rank='sys_description' target='main' />
+
+  <m:item name='æå–æ–‡ç« ç¼©ç•¥å›¾' link='makeminiature/makeminiature.php' rank='sys_ArcBatch' target='main' />
+  <m:item name='æ•°æ®åº“å†…å®¹æ›¿æ¢' link='sys_data_replace.php' rank='sys_ArcBatch' target='main' />
 </m:top>
 
-<m:top name='HTML¸üÐÂ' display='block' rank='' c='3,'>
-  <m:item name='¸üÐÂÖ÷Ò³HTML' link='makehtml_homepage.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂÀ¸Ä¿HTML' link='makehtml_list.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂÎÄµµHTML' link='makehtml_archives.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂÍøÕ¾µØÍ¼' link='makehtml_map_guide.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂRSSÎÄ¼þ' link='makehtml_rss.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='»ñÈ¡JSÎÄ¼þ' link='makehtml_js.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂ×¨ÌâÁÐ±í' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='¸üÐÂ×ÔÓÉÁÐ±í' link='makehtml_freelist.php' rank='sys_MakeHtml' target='main' />
+<m:top name='æ¨¡å—ç®¡ç†' c='5,6,' display='block'>
+  <m:item name='æ¨¡å—ç®¡ç†' link='module_main.php' rank='sys_module' target='main' />
+  <m:item name='ä¸Šä¼ æ–°æ¨¡å—' link='module_upload.php' rank='sys_module' target='main' />
+  <m:item name='æ¨¡å—ç”Ÿæˆå‘å¯¼' link='module_make.php' rank='sys_module' target='main' />
+  <!--m:item name='å®˜æ–¹æ¨¡å—åˆ—è¡¨' link='http://www.dedecms.com/modules.php' rank='' target='main' /-->
 </m:top>
 
-<m:top name='²É¼¯¹ÜÀí' display='block' rank='' c='6,'>
-  <m:item name='Êý¾Ý¹æÔòÄ£ÐÍ' link='co_export_rule.php' rank='co_NewRule' target='main' />
-  <m:item name='²É¼¯½Úµã¹ÜÀí' link='co_main.php' rank='co_ListNote' target='main' />
-  <m:item name='ÒÑÏÂÔØÄÚÈÝ¹ÜÀí' link='co_url.php' rank='co_ViewNote' target='main' />
-  <m:item name='µ¼ÈëÀëÏßÊý¾Ý' link='javascript:;' tmp='co_data_export_out.php' rank='co_GetOut' target='main'/>
+<m:top name='ä¸“é¢˜ç®¡ç†' display='block' c='4,' rank=''>
+  <m:item name='åˆ›å»ºæ–°ä¸“é¢˜' link='spec_add.php' rank='spec_New' target='main' />
+  <m:item name='ä¸“é¢˜åˆ—è¡¨' link='content_s_list.php' rank='spec_List' target='main' />
+  <m:item name='æ›´æ–°ä¸“é¢˜HTML' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
 </m:top>
 
-<m:top name='¸¨Öú²å¼þ' c='5,' display='block'>
-  <m:item name='²å¼þ¹ÜÀíÆ÷' link='plus_main.php' rank='10' target='main' />
+
+
+<m:top name='è‡ªåŠ¨ä»»åŠ¡' display='block' rank='' c='3,'>
+  <m:item name='ä¸€é”®æ›´æ–°ç½‘ç«™' link='makehtml_all.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='ç³»ç»Ÿè®¡åˆ’ä»»åŠ¡' link='makehtml_task.php' rank='sys_MakeHtml' target='main' />
+</m:top>
+
+<m:top name='HTMLæ›´æ–°' display='block' rank='' c='3,'>
+  <m:item name='æ›´æ–°ä¸»é¡µHTML' link='makehtml_homepage.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°æ ç›®HTML' link='makehtml_list.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°æ–‡æ¡£HTML' link='makehtml_archives.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°ç½‘ç«™åœ°å›¾' link='makehtml_map_guide.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°RSSæ–‡ä»¶' link='makehtml_rss.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='èŽ·å–JSæ–‡ä»¶' link='makehtml_js.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°ä¸“é¢˜åˆ—è¡¨' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°è‡ªç”±åˆ—è¡¨' link='makehtml_freelist.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='æ›´æ–°å°è¯´HTML' link='makehtml_story.php' rank='sys_MakeHtml' target='main' />
+</m:top>
+
+<m:top name='é‡‡é›†ç®¡ç†' display='block' rank='' c='4,'>
+  <m:item name='æ•°æ®è§„åˆ™æ¨¡åž‹' link='co_export_rule.php' rank='co_NewRule' target='main' />
+  <m:item name='é‡‡é›†èŠ‚ç‚¹ç®¡ç†' link='co_main.php' rank='co_ListNote' target='main' />
+  <m:item name='å·²ä¸‹è½½å†…å®¹ç®¡ç†' link='co_url.php' rank='co_ViewNote' target='main' />
+</m:top>
+
+<m:top name='è¾…åŠ©æ’ä»¶' c='5,' display='block'>
+  <m:item name='æ’ä»¶ç®¡ç†å™¨' link='plus_main.php' rank='sys_plus' target='main' />
   $plusset
 </m:top>
 
-<m:top name='Ä£°å¹ÜÀí' display='block' c='4,' rank=''>
-  <m:item name='ÖÇÄÜ±ê¼ÇÏòµ¼' link='mytag_tag_guide.php' rank='temp_Other' target='main'/>
-  <m:item name='×Ô¶¨Òåºê±ê¼Ç' link='mytag_main.php' rank='temp_MyTag' target='main'/>
-  <m:item name='È«¾Ö±ê¼Ç²âÊÔ' link='tag_test.php' rank='temp_Test' target='main'/>
-  <m:item name='ä¯ÀÀÄ£°åÄ¿Â¼' link='catalog_do.php?dopost=viewTemplet' rank='temp_All' target='main'/>
+<m:top name='æ¨¡æ¿ç®¡ç†' display='block' c='7,' rank=''>
+  <m:item name='æ™ºèƒ½æ ‡è®°å‘å¯¼' link='mytag_tag_guide.php' rank='temp_Other' target='main'/>
+  <m:item name='è‡ªå®šä¹‰å®æ ‡è®°' link='mytag_main.php' rank='temp_MyTag' target='main'/>
+  <m:item name='å…¨å±€æ ‡è®°æµ‹è¯•' link='tag_test.php' rank='temp_Test' target='main'/>
+  <m:item name='æµè§ˆæ¨¡æ¿ç›®å½•' link='catalog_do.php?dopost=viewTemplet' rank='temp_All' target='main'/>
 </m:top>
 
-<m:top name='Ä£°å±ê¼Ç²Î¿¼' display='block' c='4,' rank=''>
-  <m:item name='Í¨ÓÃÄ£°å±ê¼Ç' link='help_templet_all.php' rank='' target='main'/>
-  <m:item name='·âÃæÄ£°å±ê¼Ç' link='help_templet_index.php' rank='' target='main'/>
-  <m:item name='ÁÐ±íÄ£°å±ê¼Ç' link='help_templet_list.php' rank='' target='main'/>
-  <m:item name='ÎÄµµÄ£°å±ê¼Ç' link='help_templet_view.php' rank='' target='main'/>
-  <m:item name='ÆäËüÄ£°å±ê¼Ç' link='help_templet_other.php' rank='' target='main'/>
-  <m:item name='±ê¼ÇÏêÏ¸·ÖÀà' link='templets_menu.php' rank='' target='_self' />
+~~addmenu~~
+	
+	
+	
+	
+<m:top name='ä¼šå‘˜èµ„æ–™ç®¡ç†' c='4,' display='block'>
+  <m:item name='ä¸ªäººä¼šå‘˜åˆ—è¡¨' link='member_main.php' rank='member_List' target='main' />
+  <m:item name='ä¼ä¸šä¼šå‘˜åˆ—è¡¨' link='company_main.php' rank='member_List' target='main' />
+  <m:item name='ä¼šå‘˜çŸ­ä¿¡ç®¡ç†' link='member_pm.php' rank='member_Pm' target='main' />
+  <m:item name='ç§¯åˆ†å…‘æ¢è®°å½•' link='money2scores.php' rank='member_List' target='main' />
 </m:top>
 
-<m:top name='»áÔ±¹ÜÀí' c='6,' display='block'>
-  <m:item name='×¢²á»áÔ±ÁÐ±í' link='member_main.php' rank='member_List' target='main' />
-  <m:item name='»áÔ±¼¶±ðÉèÖÃ' link='member_rank.php' rank='member_Type' target='main' />
-  <m:item name='»áÔ±²úÆ··ÖÀà' link='member_type.php' rank='member_Type' target='main' />
-  <m:item name='µã¿¨²úÆ··ÖÀà' link='member_card_type.php' rank='member_Card' target='main' />
-  <m:item name='µã¿¨ÒµÎñ¼ÇÂ¼' link='member_card.php' rank='member_Operations' target='main' />
-  <m:item name='»áÔ±ÒµÎñ¼ÇÂ¼' link='member_operations.php' rank='member_Operations' target='main' />
-  <m:item name='Êý¾Ýµ¼ÈëÓë×ª»»' link='member_data.php' rank='member_Data' target='main' />
-  <m:item name='ÃÜÂëÀàÐÍ±ä»»' link='member_password.php' rank='member_Data' target='main' />
+<m:top name='ä¼šå‘˜ä¸šåŠ¡ç®¡ç†' c='4,' display='block'>
+  <m:item name='ç‚¹å¡ä¸šåŠ¡è®°å½•' link='member_card.php' rank='member_Operations' target='main' />
+  <m:item name='ä¼šå‘˜ä¸šåŠ¡è®°å½•' link='member_operations.php' rank='member_Operations' target='main' />
 </m:top>
 
-<m:top name='ÏµÍ³ÕÊºÅ¹ÜÀí' c='7,' display='block' rank=''>
-  <m:item name='ÏµÍ³ÕÊºÅ¹ÜÀí' link='sys_admin_user.php' rank='sys_User' target='main' />
-  <m:item name='ÓÃ»§×éÉè¶¨' link='sys_group.php' rank='sys_Group' target='main' />
+<m:top name='ä¼šå‘˜ç›¸å…³è®¾ç½®' c='4,' display='block'>
+  <m:item name='ä¼šå‘˜çº§åˆ«è®¾ç½®' link='member_rank.php' rank='member_Type' target='main' />
+  <m:item name='ç§¯åˆ†å¤´è¡”è®¾ç½®' link='member_scores.php' rank='member_Scores' target='main' />
+  <m:item name='ä¼šå‘˜äº§å“åˆ†ç±»' link='member_type.php' rank='member_Type' target='main' />
+  <m:item name='ç‚¹å¡äº§å“åˆ†ç±»' link='member_card_type.php' rank='member_Card' target='main' />
+  <m:item name='å¯†ç ç±»åž‹å˜æ¢' link='member_password.php' rank='member_Data' target='main' />
 </m:top>
 
-<m:top name='ÏµÍ³ÉèÖÃ' c='7,' display='block' rank=''>
-  <m:item name='ÏµÍ³±äÁ¿ÅäÖÃ' link='sys_info.php' rank='sys_Edit' target='main' />
-  <m:item name='Í¼Æ¬Ë®Ó¡ÉèÖÃ' link='sys_info_mark.php' rank='sys_Edit' target='main' />
-  <m:item name='Í¨ÐÐÖ¤ÉèÖÃ' link='sys_passport.php' rank='sys_Passport' target='main' />
-  <m:item name='ÏµÍ³ÈÕÖ¾¹ÜÀí' link='log_list.php' rank='sys_Log' target='main' />
+<m:top name='äº’åŠ¨æ¨¡å—è®¾ç½®' c='1,4,' display='block' rank=''>
+  <m:item name='è¡Œä¸šç®¡ç†' link='sectors.php' rank='sectors_All' target='main' />
+  <m:item name='åœ°åŒºç®¡ç†' link='area.php' rank='area_All' target='main' />
+  <m:item name='å°åˆ†ç±»ç®¡ç†' link='smalltype.php' rank='smalltype_All' target='main' />
 </m:top>
 
-<m:top name='¿ìËÙÉèÖÃ' c='9,' display='block' rank=''>
-  <m:item name='ÏµÍ³ÕÊºÅ¹ÜÀí' link='sys_admin_user.php' rank='sys_User' target='main' />
-  <m:item name='ÏµÍ³±äÁ¿ÅäÖÃ' link='sys_info.php' rank='sys_Edit' target='main' />
-  <m:item name='Í¼Æ¬Ë®Ó¡ÉèÖÃ' link='sys_info_mark.php' rank='sys_Edit' target='main' />
-  <m:item name='Í¨ÐÐÖ¤ÉèÖÃ' link='sys_passport.php' rank='sys_Passport' target='main' />
+
+
+<m:top name='ç³»ç»Ÿå¸å·ç®¡ç†' c='7,' display='block' rank=''>
+  <m:item name='æ›´æ”¹ä¸ªäººèµ„æ–™' link='my_acc_edit.php' rank='sys_MdPwd' target='main' />
+  <m:item name='ç³»ç»Ÿå¸å·ç®¡ç†' link='sys_admin_user.php' rank='sys_User' target='main' />
+  <m:item name='ç”¨æˆ·ç»„è®¾å®š' link='sys_group.php' rank='sys_Group' target='main' />
 </m:top>
 
-<m:top name='ÆµµÀÉèÖÃ' c='7,1,2,' display='block' rank=''>
-  <m:item name='×Ô¶¨ÒåÎÄµµÊôÐÔ' link='content_att.php' rank='sys_Att' target='main' />
-  <m:item name='Èí¼þÆµµÀÉèÖÃ' link='soft_config.php' rank='sys_SoftConfig' target='main' />
-  <m:item name='·À²É¼¯´®»ìÏý' link='article_string_mix.php' rank='sys_StringMix' target='main' />
-  <m:item name='À´Ô´¹ÜÀí' link='article_source_edit.php' rank='sys_Source' target='main' />
-  <m:item name='×÷Õß¹ÜÀí' link='article_writer_edit.php' rank='sys_Writer' target='main' />
+<m:top name='ç³»ç»Ÿè®¾ç½®' c='7,' display='block' rank=''>
+  <m:item name='ç³»ç»Ÿå˜é‡é…ç½®' link='sys_info.php' rank='sys_Edit' target='main' />
+  <m:item name='å›¾ç‰‡æ°´å°è®¾ç½®' link='sys_info_mark.php' rank='sys_Edit' target='main' />
+  <m:item name='é€šè¡Œè¯è®¾ç½®' link='sys_passport.php' rank='sys_Passport' target='main' />
+  <m:item name='ç³»ç»Ÿæ—¥å¿—ç®¡ç†' link='log_list.php' rank='sys_Log' target='main' />
 </m:top>
 
-<m:top name='Êý¾Ý¿â¹ÜÀí' c='7,' display='block' rank=''>
-  <m:item name='SQLÃüÁîÔËÐÐÆ÷' link='sys_sql_query.php' rank='sys_Data' target='main' />
-  <m:item name='Êý¾Ý¿â±¸·Ý' link='sys_data.php' rank='sys_Data' target='main' />
-  <m:item name='Êý¾Ý¿â»¹Ô­' link='sys_data_revert.php' rank='sys_Data' target='main' />
+<m:top name='PWè¥é”€æ¨¡å—' display='block' c='7,' rank=''>
+  <m:item name='è¥é”€æ¨¡å—è®¾ç½®' link='code_main.php' rank='sys_Edit' target='main' />
 </m:top>
 
-<m:top name='ÏµÍ³°ïÖú' c='7,4,9,' display='block'>
-  <m:item name='Ä£°å´úÂë²Î¿¼' link='http://www.dedecms.com/archives/templethelp/help/index.htm' rank='' target='_blank' />
-  <m:item name='¹Ù·½ÂÛÌ³' link='http://bbs.dedecms.com/' rank='' target='_blank' />
+<m:top name='å¿«é€Ÿè®¾ç½®' c='9,' display='block' rank=''>
+  <m:item name='ç³»ç»Ÿå¸å·ç®¡ç†' link='sys_admin_user.php' rank='sys_User' target='main' />
+  <m:item name='ç³»ç»Ÿå˜é‡é…ç½®' link='sys_info.php' rank='sys_Edit' target='main' />
+  <m:item name='å›¾ç‰‡æ°´å°è®¾ç½®' link='sys_info_mark.php' rank='sys_Edit' target='main' />
+  <m:item name='é€šè¡Œè¯è®¾ç½®' link='sys_passport.php' rank='sys_Passport' target='main' />
 </m:top>
 
+<m:top name='é¢‘é“è®¾ç½®' c='7,1,' display='block' rank=''>
+  <m:item name='è‡ªå®šä¹‰æ–‡æ¡£å±žæ€§' link='content_att.php' rank='sys_Att' target='main' />
+  <m:item name='è½¯ä»¶é¢‘é“è®¾ç½®' link='soft_config.php' rank='sys_SoftConfig' target='main' />
+  <m:item name='é˜²é‡‡é›†ä¸²æ··æ·†' link='article_string_mix.php' rank='sys_StringMix' target='main' />
+  <m:item name='æ¥æºç®¡ç†' link='article_source_edit.php' rank='sys_Source' target='main' />
+  <m:item name='ä½œè€…ç®¡ç†' link='article_writer_edit.php' rank='sys_Writer' target='main' />
+</m:top>
+
+<m:top name='æ•°æ®åº“ç®¡ç†' c='7,' display='block' rank=''>
+  <m:item name='SQLå‘½ä»¤è¿è¡Œå™¨' link='sys_sql_query.php' rank='sys_Data' target='main' />
+  <m:item name='æ•°æ®åº“å¤‡ä»½' link='sys_data.php' rank='sys_Data' target='main' />
+  <m:item name='æ•°æ®åº“è¿˜åŽŸ' link='sys_data_revert.php' rank='sys_Data' target='main' />
+</m:top>
+
+<m:top name='ç³»ç»Ÿå¸®åŠ©' c='7,9,' display='block'>
+  <m:item name='æ¨¡æ¿ä»£ç å‚è€ƒ' link='http://www.dedecms.com/archives/templethelp/help/index.htm' rank='' target='_blank' />
+  <m:item name='å®˜æ–¹è®ºå›' link='http://bbs.dedecms.com/' rank='' target='_blank' />
+</m:top>
 -----------------------------------------------
 ";
 function GetMenus($userrank)
 {
-if(isset($_GET['c'])) $catalog = $_GET['c'];
-else $catalog = 2;
-global $menus;
+global $c,$menus;
+$catalog =(isset($c) ? $c : 2);
 $headTemplet = "
-  <div onClick='showHide(\"items~cc~\")' class='topitem' align='left'> 
-    <div class='topl'><img src='img/mtimg1.gif' width='21' height='24' border='0'></div>
-    <div class='topr'>~channelname~</div>
-  </div>
-  <div style='clear:both'></div>
-  <div style='display:~display~' id='items~cc~' class='itemsct'> 
+<dl>
+    <dt><a href=\"###\" onclick=\"showHide('items~cc~');\" target=\"_self\">~channelname~</a></dt>
+    <dd id=\"items~cc~\" style=\"display:~display~;\">
+			<ul>
 ";
-$footTemplet = "  </div>";
-$itemTemplet = "  <dl class='itemem'> 
-    <dd class='tdl'><img src='img/newitem.gif' width='7' height='10' alt=''/></dd>
-    <dd class='tdr'><a href='~link~' target='~target~'>~itemname~</a></dd>
-  </dl>
+$footTemplet = "  			</ul>
+		</dd>
+	</dl>";
+$itemTemplet = "<li><a href='~link~' target='~target~'>~itemname~</a></li>
 ";
 /////////////////////////////////////////
 $dtp = new DedeTagParse();
@@ -188,26 +247,30 @@ $dtp2->SetNameSpace("m","<",">");
 foreach($dtp->CTags as $i=>$ctag)
 {
 	$lc = $ctag->GetAtt('c');
-	if($ctag->GetName()=="top" 
+	if($ctag->GetName()=="top"
 	&& (ereg($catalog.',',$lc) || $catalog=='0') )
 	{
 		echo "<!-- Item ".($i+1)." Strat -->\r\n";
 		$htmp = str_replace("~channelname~",$ctag->GetAtt("name"),$headTemplet);
-		$htmp = str_replace("~display~",$ctag->GetAtt("display"),$htmp);
+		if($catalog==0) $dpy = 'none';
+		else $dpy = $ctag->GetAtt("display");
+		$htmp = str_replace("~display~",$dpy,$htmp);
 		$htmp = str_replace("~cc~",$i,$htmp);
 		echo $htmp;
 		$dtp2->LoadSource($ctag->InnerText);
-		foreach($dtp2->CTags as $j=>$ctag2)
-		{
-			if($ctag2->GetName()=="item"
-			&& ($ctag2->GetAtt('rank')=='' || TestPurview($ctag2->GetAtt('rank')) )
-			)
+		if(!empty($dtp2->CTags) && is_array($dtp2->CTags)){
+			foreach($dtp2->CTags as $j=>$ctag2)
 			{
-				 $itemtmp = str_replace("~link~",$ctag2->GetAtt("link"),$itemTemplet);
-				 $itemtmp = str_replace("~target~",$ctag2->GetAtt("target"),$itemtmp);
-				 $itemtmp = str_replace("~n~",$i,$itemtmp);
-				 $itemtmp = str_replace("~itemname~",$ctag2->GetAtt("name"),$itemtmp);
-				 echo $itemtmp;
+				if($ctag2->GetName()=="item"
+				&& ($ctag2->GetAtt('rank')=='' || TestPurview($ctag2->GetAtt('rank')) )
+				)
+				{
+					 $itemtmp = str_replace("~link~",$ctag2->GetAtt("link"),$itemTemplet);
+					 $itemtmp = str_replace("~target~",$ctag2->GetAtt("target"),$itemtmp);
+					 $itemtmp = str_replace("~n~",$i,$itemtmp);
+					 $itemtmp = str_replace("~itemname~",$ctag2->GetAtt("name"),$itemtmp);
+					 echo $itemtmp;
+				}
 			}
 		}
 		echo $footTemplet;

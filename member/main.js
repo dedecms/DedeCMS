@@ -41,43 +41,48 @@ function ShowItem2(){
 
 function SeePic(img,f,picarea){
    if ( f.value != "" ) { 
-     picarea.style.display = 'block';
-	 img.src = f.value;
+     if(picarea) picarea.style.display = 'block';
+	   img.src = f.value;
    }
 }
 
 function SelectFlash(){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-300; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
-   window.open("../include/dialoguser/select_media.php?f=form1.flashurl", "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
+   //if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+   //else{ var posLeft = 100; var posTop = 100; }
+   var posLeft = 150; var posTop = 100;
+   window.open("../include/dialoguser/select_media.php?f=form1.flashurl", "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 
 function SelectMedia(fname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-200; var posTop = window.event.clientY; }
-   else{ var posLeft = 100;var posTop = 100; }
-   window.open("../include/dialoguser/select_media.php?f="+fname, "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
+   //if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+   //else{ var posLeft = 150;var posTop = 100; }
+   var posLeft = 150; var posTop = 100;
+   window.open("../include/dialoguser/select_media.php?f="+fname, "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 
 function SelectSoft(fname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-200; var posTop = window.event.clientY-50; }
-   else{ var posLeft = 100; var posTop = 100; }
-   window.open("../include/dialoguser/select_soft.php?f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   //if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY-50; }
+   //else{ var posLeft = 150; var posTop = 100; }
+   var posLeft = 150; var posTop = 100;
+   window.open("../include/dialoguser/select_soft.php?f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 
 function SelectImage(fname,stype){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
+   //if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+   //else{ var posLeft = 100; var posTop = 100; }
+   var posLeft = 150; var posTop = 100;
    if(!fname) fname = 'form1.picname';
    if(!stype) stype = '';
-   window.open("../include/dialoguser/select_images.php?f="+fname+"&imgstick="+stype, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("../include/dialoguser/select_images.php?f="+fname+"&imgstick="+stype, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 
 function SelectImageN(fname,stype,vname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
+   //if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+   //else{ var posLeft = 100; var posTop = 100; }
+   var posLeft = 150; var posTop = 100;
    if(!fname) fname = 'form1.picname';
    if(!stype) stype = '';
-   window.open("../include/dialoguser/select_images.php?f="+fname+"&imgstick="+stype+"&v="+vname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("../include/dialoguser/select_images.php?f="+fname+"&imgstick="+stype+"&v="+vname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 
 function SelectKeywords(f){

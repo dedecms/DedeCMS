@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DedeCms V5 2008版安装程序 -- 检测环境</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.twbox * td{
+	text-indent:20px;
+}
+.onetd{
+	border-right:1px solid #EEE;
+}
+.STYLE2 {color: #339900}
+
+-->
+</style>
+<script src="jquery.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+<!--
+	$(document).ready(function(){
+		//列表第一格CSS
+		$(".twbox tr").each(function(){ $(this).children("td").eq(0).addClass("onetd");});
+
+		//列表行鼠标悬停
+		$(".twbox tr").mouseover(function(){ $(this).addClass("moncolor");}).mouseout(function(){$(this).removeClass("moncolor");	});
+
+	});
+-->
+</script>
+</head>
+
+<body>
+<div class="top boxcenter">正在安装: <em>V5.0.1 UTF-8版</em></div>
+
+<div class="topstep boxcenter">
+	<div class="stepbox">
+		<ul>
+			<li>许可协议</li>
+			<li class="this">检测环境</li>
+			<li>安装参数</li>
+			<li>开始安装</li>
+		</ul>
+	</div>
+</div>
+
+<div class="main boxcenter">
+	<div class="boxtitle">
+		<span>服务器信息</span>
+	</div>
+	
+	<table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+		<tr>
+			<th width="300" align="center"><strong>参数</strong></th>
+			<th width="424"><strong>值</strong></th>
+		</tr>
+		<tr>
+				<td><strong>服务器域名/IP地址</strong></td>
+				<td><?php echo $sp_name."  ".$sp_host; ?></td>
+		</tr>
+		<tr>
+				<td><strong>服务器操作系统</strong></td>
+				<td><?php echo $sp_os; ?></td>
+		</tr>
+		<tr>
+				<td><strong>服务器解译引擎</strong></td>
+				<td><?php echo $sp_server; ?></td>
+		</tr>
+		<tr>
+				<td><strong>PHP版本</strong></td>
+				<td><?php echo $phpv; ?></td>
+		</tr>
+		<tr>
+				<td><strong>DedeCms路径</strong></td>
+				<td><?php echo DEDEROOT; ?></td>
+		</tr>
+		<tr>
+				<td><strong>脚本超时时间</strong></td>
+				<td><?php echo $sp_max_execution_time; ?> 秒</td>
+		</tr>
+	</table>
+	
+	<div class="boxtitle">
+		<span>系统环境要求</span>
+	</div>
+	
+	<div style="width:720px; margin:10px auto; color:#666;">
+	系统环境要求必须满足下列所有条件，否则系统或系统部份功能将无法使用！.
+	</div>
+	
+	<table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+		<tr>
+			<th width="254" align="center"><strong>需开启的变量或函数</strong></th>
+			<th width="61"><strong>要求</strong></th>
+			<th width="409"><strong>实际状态及建议</strong></th>
+		</tr>
+		<tr>
+				<td>allow_url_fopen</td>
+				<td>On </td>
+				<td><?php echo $sp_allow_url_fopen; ?>(不符合要求将导致采集、远程资料本地化等功能无法应用)</td>
+		</tr>
+		<tr>
+				<td>safe_mode</td>
+				<td>Off</td>
+				<td><?php echo $sp_safe_mode; ?>(本系统不支持在<span class="STYLE2">非win主机的安全模式</span>下运行)</td>
+		</tr>
+		
+		<tr>
+				<td>GD 支持 </td>
+				<td>On</td>
+				<td><?php echo $sp_gd; ?>(不支持将导致与图片相关的大多数功能无法使用或引发警告)</td>
+		</tr>
+		<tr>
+				<td>MySQL 支持</td>
+				<td>On</td>
+				<td><?php echo $sp_mysql; ?>(不支持无法使用本系统)</td>
+		</tr>
+	</table>
+	<div class="boxtitle">
+		<span>目录权限检测</span>
+	</div>
+	
+	<div style="width:720px; margin:10px auto; color:#666;">
+	系统要求必须满足下列所有的目录权限全部可读写的需求才能使用，其它应用目录安装后自行在管理后台检测。</div>
+	
+	<table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+		<tr>
+			<th width="255" align="center"><strong>目录名</strong></th>
+			<th width="66"><strong>要求</strong></th>
+			<th width="403"><strong>实际状态及建议</strong></th>
+		</tr>
+	<?php
+	foreach($sp_testdirs as $d)
+	{
+	  if($d!='/') $fulld = DEDEROOT.$d;
+	  else $fulld = DEDEROOT;
+	  if($d!='/')
+	  {  $rsta = (is_readable($fulld) ? '<font color=green>[√]读</font>' : '<font color=red>[×]读</font>'); }
+	  else 
+	  {  $rsta = ''; }
+	  //$wsta = (is_writeable($fulld) ? '<font color=green>[√]写</font>' : '<font color=red>[×]写</font>');
+	  $wsta = (TestWrite($fulld) ? '<font color=green>[√]写</font>' : '<font color=red>[×]写</font>');
+	?>
+	<tr>
+	  <td><?php echo $d; ?></td>
+	  <td>读写</td>
+	  <td><?php echo $rsta." ".$wsta; ?></td>
+	 </tr>
+	<?php } ?>
+	</table>
+</div>
+
+<div class="butbox boxcenter">
+	<input type="button" class="backbut" value="" onclick="history.back();" style="margin-right:20px" />
+	<?php if(!$sp_mysql_err){ ?>
+	<input type="button" class="nextbut" value="" onclick="window.location.href='index.php?step=3';" />
+	<?php } ?>
+</div>
+</body>
+</html>

@@ -1,11 +1,12 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>文件上传</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>鏂囦欢涓婁紶</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script src="menu.js" language="JavaScript"></script>
 </head>
-<body background="img/allbg.gif" leftmargin="0" topmargin="0">
+<body>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr> 
 <td height="425" align="center" valign="top">
@@ -15,12 +16,12 @@ function make_upload()
 { 
   i++;
   myob = document.getElementById("upfield");
-  myob.innerHTML+="<br>文件"+i+":<input type='file' name='upfile"+i+"' size='30'>";
+  myob.innerHTML+="<br>鏂囦欢"+i+":<input type='file' name='upfile"+i+"' size='30'>";
 }
 function reset_upload()
 { 
   myob = document.getElementById("upfield");
-  myob.innerHTML="文件1:<input type='file' name='upfile1' size='30'>";
+  myob.innerHTML="鏂囦欢1:<input type='file' name='upfile1' size='30'>";
 }
 </script>
 <form method="POST" enctype="multipart/form-data" action="file_manage_control.php" name="form1">
@@ -33,22 +34,22 @@ function reset_upload()
 <tr>
 <td width="10%" height="40" valign="top"></td>
 <td width="90%">
-<input type="button" value="增加上传框" name="bbb" onClick="make_upload();" class='nbt'>
-<a href="file_manage_main.php?activepath={dede:global name='activepath'/}">[<u>返回目录{dede:global name='activepath'/}</u>]</a>
+<input type="button" value="澧炲姞涓婁紶妗�" name="bbb" onClick="make_upload();" class="inputbut">
+<a href="file_manage_main.php?activepath={dede:global name='activepath'/}">[<u>杩斿洖鐩綍{dede:global name='activepath'/}</u>]</a>
 </td>
 </tr>
 <tr>
-<td width="10%">　</td>
+<td width="10%">銆�</td>
 <td width="90%">
-<div id="upfield">文件1:<input type='file' name='upfile1' size='30'></div>
+<div id="upfield">鏂囦欢1:<input type='file' name='upfile1' size='30' /></div>
 </td>
 </tr>
 <tr>
 <td width="100%" height="40" colspan="2">
 &nbsp;&nbsp;&nbsp;&nbsp;
-<input type="submit" value=" 上传文件 " name="B1" class='nbt'>
+<input type="submit" value=" 涓婁紶鏂囦欢 " name="B1" class="inputbut">
 &nbsp;
-<input type="button" value=" 重设表单 " name="B12" onClick="reset_upload();" class='nbt'>
+<input type="button" value=" 閲嶈琛ㄥ崟 " name="B12" onClick="reset_upload();" class="inputbut">
 </td>
 </tr>
 </table>

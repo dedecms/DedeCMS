@@ -1,0 +1,372 @@
+@charset "utf-8";
+/*---------------产品*/
+/*---------------左侧*/
+.pleft{
+	width:670px;
+	float:left;
+	overflow:hidden;
+}
+/*---------------左侧:当前位置*/
+.thisplace{
+	width:670px;
+	height:31px;
+	background:url(../images/place_bg.jpg) repeat-x;
+
+}
+.thisplace .title{
+	display:block;
+	width:156px;
+	height:31px;
+	line-height:29px;
+	text-indent:22px;
+	letter-spacing:4px;
+	font-weight:bold;
+	background:url(../images/place_left.gif) right top no-repeat;
+	float:left;
+}
+.thisplace .placenav{
+	float:right;
+	margin-right:10px;
+	line-height:31px;
+}
+.thisplace .placenav a{
+	color:#666666;
+}
+
+
+/*---------------右侧*/
+.pright{
+	float:right;
+}
+/*-------------------------右侧:常规列表定义*/
+.rlist{
+	width:222px;
+}
+.rlist .title{
+	width:222px;
+	height:19px;
+	padding-top:9px;
+	background:url(../images/rlist_title_bg.gif) no-repeat;
+	text-indent:10px;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#555;
+}
+.rbox{
+	border:1px solid #DDD;
+	width:220px;
+	padding:5px 0px 7px 0px;
+}
+.rbox ul li{
+	height:27px;
+	line-height:27px;
+	background:url(../images/ico_4.gif) 12px 13px no-repeat;
+	text-indent:23px;
+}
+.rbox ul li a{
+	color:#039;
+}
+
+
+.pdlist{
+	width:670px;
+}
+.pdlist dl{
+	width:670px;
+	margin:10px auto 0px;
+	border-bottom:1px dotted #DDD;
+	padding-bottom:10px;
+	overflow:hidden;
+}
+.pdlist dl dt{
+	width:120px;
+	margin-left:10px;
+	float:left;
+	display:inline;
+}
+.pdlist dl dt img{
+	width:112px;
+	height:82px;
+	display:block;
+}
+.pdlist dl dt span{
+	display:block;
+	width:112px;
+	text-align:center;
+	line-height:32px;
+	font-weight:bold;
+	color:#FF3300;
+	font-size:12px;
+}
+.pdlist dl dd{
+	width:510px;
+	float:right;
+	margin-right:15px;
+	display:inline;
+	border-left:1px solid #EEE;
+	padding-left:10px;
+}
+.pdlist dl dd.pdtitle a{
+	font-size:14px;
+	color:#03C;
+	line-height:21px;
+	font-weight:bold;
+	
+}
+.pdlist dl dd.pdinfo{
+	color:#669933;
+	line-height:25px;
+
+}
+.pdlist dl dd.pdinfo strong{
+	color:#666666;
+	margin-left:10px;
+}
+.pdlist dl dd.pdprev{
+	font-size:14px;
+	line-height:21px;
+	color:#666666;
+}
+
+/*---------------标题*/
+.stitle{
+	width:670px;
+	height:35px;
+	line-height:35px;
+	text-indent:14px;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:2px;
+	background:url(../images/soft_rlist_bg.gif);
+}
+/*---------------列表*/
+.sbox{
+	width:670px;
+	overflow:auto;
+}
+.sbox dl{
+	width:650px;
+	margin:10px auto 0px;
+	border-bottom:1px dotted #DDD;
+	padding-bottom:4px;
+	overflow:hidden;
+}
+.sbox dl dt{
+	width:650px;
+	margin:0px auto 0px; 
+}
+.sbox dl dt{
+	line-height:27px;
+	text-indent:24px;
+	background:url(../images/ico_12.gif) 2px 8px no-repeat;
+}
+.sbox dl dt a{
+	color:#049;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:1px;
+}
+.sbox dl dd{
+	width:650px;
+	margin:0px auto 0px; 
+}
+.sbox dl dd.info{
+	overflow:hidden;
+	color:#090;
+	line-height:23px;
+}
+.sbox dl dd.info strong{
+	color:#666666;
+	margin-left:22px;
+}
+.sbox dl dd.preview{
+	width:620px;
+	margin-left:22px;
+	line-height:21px;
+	color:#666666;
+}
+
+/*---------------内容页*/
+.sview{
+	width:668px;
+	border-left:1px solid #DDD;
+	border-right:1px solid #DDD;
+	overflow:hidden;
+}
+.sview .sinfo{
+	width:620px;
+	margin:5px auto 0px;
+	overflow:hidden;
+}
+.sview .sinfo ul{
+	width:300px;
+	float:left;
+}
+.sview .sinfo ul li{
+	width:300px;
+	height:29px;
+	line-height:29px;
+}
+.sview .sinfo ul li strong{
+	color:#888;
+}
+.sview .sinfo .spic{
+	width:284px;
+	float:right;
+	padding:8px;
+	border:1px solid #EEE;
+	overflow:hidden;
+	background:url(../images/no-img.gif) center center no-repeat;
+}
+.sview .sinfo .spic img{
+	width:282px;
+	height:206;
+}
+.sview .vtitle{
+	width:668px;
+	height:27px;
+	line-height:27px;
+	margin-top:10px;
+	text-indent:10px;
+	letter-spacing:2px;
+	font-weight:bold;
+	background:url(../images/title_bg_1.gif) 0px 1px repeat-x;
+	border-bottom:1px solid #EEE;
+	border-top:1px solid #EEE;
+}
+.sview .sintro{
+	width:620px;
+	margin:10px auto 10px;
+	font-size:14px;
+	color:#666666;
+	line-height:25px;
+}
+
+/*---------------内容页:评论*/
+.comment{
+	width:668px;
+	border:1px solid #DDD;
+	margin-top:7px;
+}
+.comment .commenttitle{
+	width:666px;
+	height:26px;
+	margin:1px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-bottom:1px solid #DDD;
+}
+.comment .commenttitle .title{
+	float:left;
+	margin:5px 0px 0px 12px;
+	color:#999;
+	display:inline;
+}
+.comment .commenttitle .title strong{
+	letter-spacing:4px;
+	color:#444;
+	margin-right:10px;
+}
+.comment .commenttitle .gotopost{
+	float:right;
+	display:block;
+	width:100px;
+	height:23px;
+}
+.comment .commenttitle .gotopost a{
+	width:95px;
+	height:22px;
+	display:inline;
+	float:right;
+	text-align:center;
+	line-height:22px;
+	text-decoration:none;
+	background:url(../images/ico_gotopost.gif) no-repeat;
+	margin:1px 3px 0px 0px;
+}
+.comment .commentbox{
+	width:668px;
+}
+.comment .commentbox dl{
+	width:636px;
+	margin:10px auto 0px;
+	border:1px solid #D1DDCE;
+}
+.comment .commentbox dl dt{
+	width:636px;
+	background:#F4F9F2;
+	line-height:25px;
+	text-indent:10px;
+	color:#333;
+	border-bottom:1px solid #E6ECE3;
+}
+.comment .commentbox dl dt span{
+	color:#669933;
+	font-size:11px;
+}
+.comment .commentbox dl dd{
+	padding:10px;
+	font-size:14px;
+	line-height:25px;
+	color:#666;
+}
+/*---------------内容页:发表评论:标题*/
+.comment .posttitle{
+	width:666px;
+	height:26px;
+	margin:10px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-top:1px solid #DDD;
+	border-bottom:1px solid #DDD;
+}
+.comment .posttitle strong{
+	letter-spacing:4px;
+	color:#444;
+	display:block;
+	margin:7px 0px 0px 13px;
+}
+.comment .postbox{
+	width:636px;
+	margin:5px auto;
+	overflow:hidden;
+}
+
+.comment .postbox .userbox{
+	width:636px;
+	overflow:hidden;
+	margin-top:10px;
+}
+.comment .postbox .userbox dl{
+	width:636px;
+}
+.comment .postbox .userbox dl dd{
+	float:left;
+	display:block;
+	padding-bottom:2px;
+}
+.comment .postbox .userbox dl dd input.username,.comment .postbox .userbox dl dd input.password{
+	width:100px;
+	border:1px solid #CCC;
+	padding:3px 0px 2px 5px;
+	margin-right:10px;
+}
+.comment .postbox .userbox dl dd.mtop{
+	margin:7px 7px 0px 0px;
+}
+.comment .postbox .txtbox{
+	width:636px;
+	line-height:25px;
+}
+.comment .postbox .txtbox textarea{
+	border:1px solid #CCC;
+	width:600px;
+	height:80px;
+	padding:5px;
+}
+.comment .postbox  .sbut{
+	margin:10px;
+}
+.comment .postbox .userbox .submit{
+	width:100px;
+	height:25px;
+	padding-top:2px;
+}

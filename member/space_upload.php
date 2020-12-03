@@ -7,10 +7,10 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function MediaType($tid,$nurl)
 {
-	if($tid==1) return "Í¼Æ¬";
+	if($tid==1) return "å›¾ç‰‡";
 	else if($tid==2) return "FLASH";
-	else if($tid==3) return "ÊÓÆµ/ÒôÆµ";
-	else return "¸½¼ş/ÆäËü";
+	else if($tid==3) return "è§†é¢‘/éŸ³é¢‘";
+	else return "é™„ä»¶/å…¶å®ƒ";
 }
 
 function GetFileSize($fs){

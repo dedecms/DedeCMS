@@ -1,10 +1,10 @@
 <?php 
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
-$lang_pre_page = "ÉÏÒ³";
-$lang_next_page = "ÏÂÒ³";
-$lang_index_page = "Ê×Ò³";
-$lang_end_page = "Ä©Ò³";
+$lang_pre_page = "ä¸Šé¡µ";
+$lang_next_page = "ä¸‹é¡µ";
+$lang_index_page = "é¦–é¡µ";
+$lang_end_page = "æœ«é¡µ";
 //////////////////////////////////////////////
 class DataList
 {
@@ -18,7 +18,7 @@ class DataList
 	var $getValues;
 	var $dtp;
 	var $dsql;
-	//¹¹Ôìº¯Êı///////
+	//æ„é€ å‡½æ•°///////
 	//-------------
 	function __construct()
  	{
@@ -32,8 +32,7 @@ class DataList
 	  $this->inTagE = "]";
 	  $this->getValues=Array();
 	  $this->dtp;
-		$this->dsql = new DedeSql();
-		$this->dsql->Init(false);
+		$this->dsql = new DedeSql(false);
 		$this->nowPage = $nowpage;
 		$this->totalResult = $totalresult;
   }
@@ -45,7 +44,7 @@ class DataList
 	{
 		return "";
 	}
-	//ÉèÖÃÒª½âÎöµÄÄ£°å
+	//è®¾ç½®è¦è§£æçš„æ¨¡æ¿
 	function SetTemplet($modpage)
 	{
 		if(!file_exists($modpage))
@@ -58,17 +57,16 @@ class DataList
 		$pid = $this->dtp->GetTagID("page");
 		if($pid!=-1) $this->pageSize = $this->dtp->CTags[$pid]->GetAtt("pagesize");
 	}
-	//ÉèÖÃÍøÖ·µÄGet²ÎÊı¼üÖµ
+	//è®¾ç½®ç½‘å€çš„Getå‚æ•°é”®å€¼
 	function SetParameter($key,$value)
 	{
 		$this->getValues[$key] = $value;
 	}
 	function SetSource($sql)
 	{
-		$this->sourceSql = $sql;
-		$this->dsql->SetSql($sql);
+		$this->sourceSql = trim($sql);
 	}
-	//ÏÔÊ¾Ä£°å
+	//æ˜¾ç¤ºæ¨¡æ¿
 	function Display()
 	{
 		$dlistid = $this->dtp->GetTagID("datalist");
@@ -90,7 +88,7 @@ class DataList
 		}
 		$this->dtp->Display();
 	}
-	//±£´æ½á¹ûÎªÎÄ¼ş
+	//ä¿å­˜ç»“æœä¸ºæ–‡ä»¶
 	function SaveTo($filename)
 	{
 		$dlistid = $this->dtp->GetTagID("datalist");
@@ -109,7 +107,7 @@ class DataList
 		}
 		$this->dtp->SaveTo($filename);
 	}
-	//»ñµÃ½âÎöºóµÄÄ£°å½á¹û×Ö·û´®
+	//è·å¾—è§£æåçš„æ¨¡æ¿ç»“æœå­—ç¬¦ä¸²
 	function GetResult()
 	{
 		$dlistid = $this->dtp->GetTagID("datalist");
@@ -126,22 +124,20 @@ class DataList
 		}
 		return $this->dtp->GetResult();
 	}
-	//»ñµÃÁĞ±íÄÚÈİ
+	//è·å¾—åˆ—è¡¨å†…å®¹
 	function GetDataList($innertext)
 	{
-		$timedd = "Î´Öª";
-		$starttime = $this->ExecTime(); 
+		$timedd = "æœªçŸ¥";
+		$starttime = ExecTime(); 
 		$DataListValue = "";
 		if($this->totalResult==0){
-			$this->dsql->Query();
-			$this->totalResult = $this->dsql->GetTotalRow();
-			$this->dsql->queryString .= " limit 0,".$this->pageSize;
-			$this->dsql->FreeResult();
-		}else{
-			$this->dsql->queryString .= " limit ".(($this->nowPage-1)*$this->pageSize).",".$this->pageSize;
+			$query = preg_replace("/^(.*)[\s]from[\s]/is",'Select count(*) as dd From ',$this->sourceSql);
+			$rowdm = $this->dsql->GetOne($query);
+			$this->totalResult = $rowdm['dd'];
 		}
-		$this->dsql->Query();
-		//¼ÆËãÖ´ĞĞÊ±¼ä
+		$this->sourceSql .= " limit ".(($this->nowPage-1)*$this->pageSize).",".$this->pageSize;
+		$this->dsql->Query('dms',$this->sourceSql);
+		//è®¡ç®—æ‰§è¡Œæ—¶é—´
 		$endtime = $this->ExecTime();
 		if($starttime!=""&&$endtime!=""){
 			$timedd=$endtime-$starttime;
@@ -159,7 +155,7 @@ class DataList
 		$dtp2->CharToLow=FALSE;
 		$dtp2->LoadSource($innertext);
 		$fnum = 0;
-		while($GLOBALS["row"] = $this->dsql->GetArray())
+		while($GLOBALS["row"] = $this->dsql->GetArray('dms'))
 		{
 			$fnum++;
 			for($i=0;$i<=$dtp2->Count;$i++)
@@ -174,7 +170,7 @@ class DataList
 		$GLOBALS["row"] = "";
 		return $DataListValue;
 	}
-	//»ñÈ¡·ÖÒ³ÁĞ±í
+	//è·å–åˆ†é¡µåˆ—è¡¨
 	function GetPageList($list_len)
 	{
 		global $lang_pre_page;
@@ -188,8 +184,8 @@ class DataList
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
 		$totalpage = ceil($this->totalResult/$this->pageSize);
 		
-		if($totalpage<=1&&$this->totalResult>0) return "¹²1Ò³/".$this->totalResult."Ìõ¼ÇÂ¼"; 
-		if($this->totalResult == 0) return "¹²0Ò³/".$this->totalResult."Ìõ¼ÇÂ¼"; 
+		if($totalpage<=1&&$this->totalResult>0) return "å…±1é¡µ/".$this->totalResult."æ¡è®°å½•"; 
+		if($this->totalResult == 0) return "å…±0é¡µ/".$this->totalResult."æ¡è®°å½•"; 
 		
 		$purl = $this->GetCurUrl();
 		$geturl="";
@@ -206,11 +202,11 @@ class DataList
 		}
 		$purl .= "?".$geturl;
 		
-		//»ñµÃÉÏÒ»Ò³ºÍÏÂÒ»Ò³µÄÁ´½Ó
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸‹ä¸€é¡µçš„é“¾æ¥
 		if($this->nowPage!=1)
 		{
 			$prepage.="<td width='50'><a href='".$purl."nowpage=$prepagenum'>$lang_pre_page</a></td>\r\n";
-			$indexpage="<td width='30'><a href='".$purl."nowpage=1'>$lang_index_page</a></td>\r\n";
+			$indexpage="<td width='40'><a href='".$purl."nowpage=1'>$lang_index_page</a></td>\r\n";
 		}
 		else
 		{
@@ -219,13 +215,13 @@ class DataList
 		if($this->nowPage!=$totalpage&&$totalpage>1)
 		{
 			$nextpage.="<td width='50'><a href='".$purl."nowpage=$nextpagenum'>$lang_next_page</a></td>\r\n";
-			$endpage="<td width='30'><a href='".$purl."nowpage=$totalpage'>$lang_end_page</a></td>\r\n";
+			$endpage="<td width='40'><a href='".$purl."nowpage=$totalpage'>$lang_end_page</a></td>\r\n";
 		}
 		else
 		{
 			$endpage="<td width='30'>$lang_end_page</td>\r\n";
 		}
-		//»ñµÃÊı×ÖÁ´½Ó
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
 		if($this->nowPage>=$total_list) 
@@ -245,7 +241,7 @@ class DataList
    			else $listdd.="<td width='20'><a href='".$purl."nowpage=$j'>[".$j."]</a></td>\r\n";
 		}
 	
-		$plist = "<table border='0' cellpadding='0' cellspacing='0'>\r\n";
+		$plist = "<table border='0' cellpadding='0' cellspacing='0' class='dedePagelist'>\r\n";
 		$plist.="<tr align='center' style='font-size:10pt'>\r\n";
 		$plist.="<form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
 		$plist.=$indexpage;
@@ -255,17 +251,16 @@ class DataList
 		$plist.=$endpage;
 		if($totalpage>$total_list)
 		{
-			$plist.="<td width='36'><input type='text' name='nowpage' style='width:30;height:18'></td>\r\n";
-			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:24;height:18;font-size:9pt'></td>\r\n";
+			$plist.="<td width='36'><input type='text' name='nowpage' style='width:30px;height:24px'></td>\r\n";
+			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:36px;height:24px;font-size:9pt'></td>\r\n";
 		}
 		$plist.="</form>\r\n</tr>\r\n</table>\r\n";
 		return $plist;
 	}
-	//Çå³ıÏµÍ³ËùÕ¼ÓÃ×ÊÔ´
+	//æ¸…é™¤ç³»ç»Ÿæ‰€å ç”¨èµ„æº
 	function ClearList()
 	{
 		$this->dsql->Close();
-		$this->dsql="";
 		$dtp="";
 	}
 	function Clear()
@@ -295,12 +290,12 @@ class DataList
 	}
 }
 /*
-//Ê¹ÓÃÊ¾·¶
+//ä½¿ç”¨ç¤ºèŒƒ
 $dlist = new DataList();
 $dlist->Init();
 $dlist->SetTemplet("dlist.htm");
 $dlist->SetSource("select * from #@__admin");
-$dlist->Display();//½á¹ûµÈÍ¬ÓÚ echo $dlist->GetResult();µ«Ç°Õß²¢·ÇÊÇÒ»´ÎĞÔÊä³öµÄ
+$dlist->Display();//ç»“æœç­‰åŒäº echo $dlist->GetResult();ä½†å‰è€…å¹¶éæ˜¯ä¸€æ¬¡æ€§è¾“å‡ºçš„
 $dlist->Close();
 //dlist.htm
 //===============================

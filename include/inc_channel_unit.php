@@ -1,9 +1,9 @@
 <?php 
-require_once(dirname(__FILE__)."/config_base.php");
-require_once(dirname(__FILE__)."/pub_dedetag.php");
-require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
+require_once(DEDEINC."/pub_dedetag.php");
+require_once(DEDEINC."/inc_channel_unit_functions.php");
+$GLOBALS['cfg_softinfos'] = '';
 /*----------------------------------
-±íÊ¾ÌØ¶¨ÆµµÀµÄ¸½¼ÓÊı¾İ½á¹¹ĞÅÏ¢
+è¡¨ç¤ºç‰¹å®šé¢‘é“çš„é™„åŠ æ•°æ®ç»“æ„ä¿¡æ¯
 function C____ChannelUnit();
 -----------------------------------*/
 class ChannelUnit
@@ -16,7 +16,7 @@ class ChannelUnit
 	var $dsql;
 	var $SplitPageField;
 	//-------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------
 	function __construct($cid,$aid=0)
  	{
@@ -29,7 +29,12 @@ class ChannelUnit
  		$this->dsql = new DedeSql(false);
  		$this->ChannelInfos = $this->dsql->GetOne("Select * from #@__channeltype where ID='$cid'");
  		if(!is_array($this->ChannelInfos)){
- 			echo "¶ÁÈ¡ÆµµÀĞÅÏ¢Ê§°Ü£¬ÎŞ·¨½øĞĞºóĞø²Ù×÷£¡";
+ 			echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+ 			echo "<div style='font-size:14px;line-height:150%;margin-left:20px'>";
+ 			echo "è¯»å–é¢‘é“ {$cid} ä¿¡æ¯å¤±è´¥ï¼Œæ— æ³•è¿›è¡Œåç»­æ“ä½œï¼<br/>\r\n";
+ 			echo "ä½ å¯ä»¥å°è¯•å…ˆå¯¹é”™è¯¯æ–‡æ¡£è¿›è¡Œæ¸…ç†ï¼Œç„¶åå†åˆ·æ–°æœ¬é¡µã€‚<br/>\r\n";
+ 			echo "è¯·é€‰æ‹©æ“ä½œï¼š <a href='javascript:location.reload();'>[é‡è¯•]</a> <a href='archives_clear.php' target='_blank'>[æ¸…ç†é”™è¯¯æ–‡æ¡£]</a> ";
+ 			echo "</div>";
  			exit();
  		}
  		$dtp = new DedeTagParse();
@@ -67,25 +72,32 @@ class ChannelUnit
 		$this->__construct($cid,$aid);
 	}
 	
-	//ÉèÖÃµµ°¸ID
+	//è®¾ç½®æ¡£æ¡ˆID
 	//-----------------------
 	function SetArcID($aid)
 	{
 		$this->ArcID = $aid;
 	}
 	
-	//´¦ÀíÄ³¸ö×Ö¶ÎµÄÖµ
+	//å¤„ç†æŸä¸ªå­—æ®µçš„å€¼
 	//----------------------
 	function MakeField($fname,$fvalue,$addvalue="")
 	{
 		if($fvalue==""){ $fvalue = $this->ChannelFields[$fname]["default"]; }
+		$ftype = $this->ChannelFields[$fname]["type"];
+		
+		//æ‰§è¡Œå‡½æ•°
 		if($this->ChannelFields[$fname]["function"]!=""){
 			$fvalue = $this->EvalFunc($fvalue,$this->ChannelFields[$fname]["function"]);
 		}
-		//´¦Àí¸÷ÖÖÊı¾İÀàĞÍ
-		$ftype = $this->ChannelFields[$fname]["type"];
-		if($ftype=="text"){
+		//å¤„ç†å„ç§æ•°æ®ç±»å‹
+		
+		if($ftype=="text"||$ftype=="textchar"){
 			$fvalue = ClearHtml($fvalue);
+		}
+		else if($ftype=="multitext"){
+			$fvalue = ClearHtml($fvalue);
+			$fvalue = Text2Html($fvalue);
 		}
 		else if($ftype=="img"){
 			$fvalue = $this->GetImgLinks($fvalue);
@@ -99,10 +111,10 @@ class ChannelUnit
 		}
 		else if($ftype=="addon"){
 			$foldvalue = $fvalue;
-			$fvalue  = "<table width='300'><tr><td height='30' width='20'>";
-			$fvalue .= "<a href='$foldvalue' target='_blank'><img src='".$GLOBALS['cfg_plus_dir']."/img/addon.gif' border='0' align='center'></a>";
-			$fvalue .= "</td><td><a href='$foldvalue' target='_blank'><u>$foldvalue</u></a>";
-			$fvalue .= "</td></tr></table>\r\n";
+			$tempStr = GetSysTemplets("channel/channel_addon.htm");
+			$tempStr = str_replace('~phppath~',$GLOBALS['cfg_plus_dir'],$tempStr);
+			$tempStr = str_replace('~link~',$foldvalue,$tempStr);
+			$fvalue = $tempStr;
 		}
 		else if($ftype=="softlinks"){
 			$fvalue = $this->GetAddLinkPage($fvalue);
@@ -112,11 +124,11 @@ class ChannelUnit
 		}
 		return $fvalue;
 	}
-	//»ñµÃ×¨ÌâÎÄÕÂµÄÁĞ±í
+	//è·å¾—ä¸“é¢˜æ–‡ç« çš„åˆ—è¡¨
 	//--------------------------------
 	function GetSpecList($fname,$noteinfo,$noteid="")
 	{
-		if(!isset($GLOBALS['__SpGetArcList'])) require_once(dirname(__FILE__)."/inc/inc_fun_SpGetArcList.php");
+		if(!isset($GLOBALS['__SpGetFullList'])) require_once(dirname(__FILE__)."/inc/inc_fun_SpFullList.php");
 		if($noteinfo=="") return "";
 		$rvalue = "";
 		$tempStr = GetSysTemplets("channel/channel_spec_note.htm");
@@ -126,7 +138,7 @@ class ChannelUnit
 		{
 			foreach($dtp->CTags as $k=>$ctag){
 				$notename = $ctag->GetAtt("name");
-				if($noteid!="" && $ctag->GetAtt("noteid")!=$noteid){ continue; } //Ö¸¶¨Ãû³ÆµÄ×¨Ìâ½Úµã
+				if($noteid!="" && $ctag->GetAtt("noteid")!=$noteid){ continue; } //æŒ‡å®šåç§°çš„ä¸“é¢˜èŠ‚ç‚¹
 				$isauto = $ctag->GetAtt("isauto");
 				$idlist = trim($ctag->GetAtt("idlist"));
 				$rownum = trim($ctag->GetAtt("rownum"));
@@ -139,15 +151,19 @@ class ChannelUnit
 				  $keywords = trim($ctag->GetAtt("keywords"));
 				  $stypeid = $ctag->GetAtt("typeid");
 			  }
+			  
+			  //echo "hgdshgdhgdg".$idlist."|";
 				
 				if(trim($ctag->GetInnerText())!="") $listTemplet = $ctag->GetInnerText();
 				else $listTemplet = GetSysTemplets("spec_arclist.htm");
-				$idvalue = SpGetArcList($this->dsql,
-				$stypeid,$rownum,$ctag->GetAtt("col"),
-				$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
-				$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
-				"all","default",$keywords,$listTemplet,100,0,$idlist);
-				
+				$idvalue = SpGetFullList($this->dsql,0,-1,$rownum,$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
+   $keywords,$listTemplet,$idlist,'',0,'',$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"));
+				/*
+				SpGetArcList(
+				        $this->dsql,'spec',$stypeid,$rownum,$ctag->GetAtt("col"),
+				        $ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
+				"all","default",$keywords,$listTemplet,100,0,$idlist,0,"",0,"desc",0,0,'#@__archives',false);
+				*/
 				$notestr = str_replace("~notename~",$notename,$tempStr);
 				$notestr = str_replace("~spec_arclist~",$idvalue,$notestr);
 				$rvalue .= $notestr;
@@ -158,7 +174,7 @@ class ChannelUnit
 		return $rvalue;
 	}
 	
-	//»ñµÃ½øÈë¸½¼şÏÂÔØÒ³ÃæµÄÁ´½Ó
+	//è·å¾—è¿›å…¥é™„ä»¶ä¸‹è½½é¡µé¢çš„é“¾æ¥
 	//---------------------------------
 	function GetAddLinkPage($fvalue)
 	{
@@ -175,27 +191,33 @@ class ChannelUnit
 	  }
 	}
 	
-	//»ñµÃ¸½¼şµÄÏÂÔØËùÓĞÁ´½ÓµØÖ·
+	//è·å¾—é™„ä»¶çš„ä¸‹è½½æ‰€æœ‰é“¾æ¥åœ°å€
 	//-----------------------------------
 	function GetAddLinks($fvalue)
 	{
-		$row = $this->dsql->GetOne("Select ismoresite,sites,gotojump From #@__softconfig");
+		global $cfg_softinfos;
+		if(!is_array($cfg_softinfos)){
+			$cfg_softinfos = $this->dsql->GetOne("Select ismoresite,sites,gotojump,showlocal From #@__softconfig");
+	  }
 		$phppath = $GLOBALS['cfg_phpurl'];
 		$downlinks = "";
 		$dtp = new DedeTagParse();
     $dtp->LoadSource($fvalue);
     if(!is_array($dtp->CTags)){
     	$dtp->Clear();
-    	return "ÎŞÁ´½ÓĞÅÏ¢£¡";
+    	return "æ— é“¾æ¥ä¿¡æ¯ï¼";
     }
     $tempStr = GetSysTemplets("channel/channel_downlinks.htm");
-    foreach($dtp->CTags as $ctag){
-    	if($ctag->GetName()=="link"){
+    foreach($dtp->CTags as $ctag)
+    {
+    	if($ctag->GetName()=="link")
+    	{
     	  $links = trim($ctag->GetInnerText());
     	  $serverName = trim($ctag->GetAtt("text"));
     	  if(!isset($firstLink)){ $firstLink = $links; }
-    	  if($row['ismoresite']!=1){
-    	     if($row['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
+    	  if($cfg_softinfos['showlocal']==0 || $cfg_softinfos['ismoresite']!=1)
+    	  {
+    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
     	     $temp = str_replace("~link~",$links,$tempStr);
     	     $temp = str_replace("~server~",$serverName,$temp);
     	     $downlinks .= $temp;
@@ -203,20 +225,74 @@ class ChannelUnit
       }
     }
     $dtp->Clear();
-    //ÆôÓÃ¾µÏñ¹¦ÄÜµÄÇé¿ö
-    if($row['ismoresite']==1 && !empty($row['sites']) && isset($firstLink)){
-    	$firstLink = eregi_replace($GLOBALS['cfg_basehost'],"",$firstLink);
-    	$row['sites'] = ereg_replace("\n{1,}","\n",str_replace("\r","\n",$row['sites']));
-    	$sites = explode("\n",trim($row['sites']));
-    	foreach($sites as $site){
+    //å¯ç”¨é•œåƒåŠŸèƒ½çš„æƒ…å†µ
+    if($cfg_softinfos['ismoresite']==1 && !empty($cfg_softinfos['sites']) && isset($firstLink))
+    {
+    	if(!empty($GLOBALS['cfg_basehost'])) $firstLink = eregi_replace($GLOBALS['cfg_basehost'],"",$firstLink);
+    	
+    	$cfg_softinfos['sites'] = ereg_replace("\n{1,}","\n",str_replace("\r","\n",$cfg_softinfos['sites']));
+    	$sites = explode("\n",trim($cfg_softinfos['sites']));
+    	foreach($sites as $site)
+    	{
     		if(trim($site)=='') continue;
     		list($link,$serverName) = explode('|',$site);
     		
-    		if(!eregi("^(http|ftp)://",$firstLink)) $link = trim($link).$firstLink;
-    		else $link = $firstLink;
+    		if(!eregi("^(http|ftp)://",$firstLink)) $flink = trim($link).$firstLink;
+    		else $flink = $firstLink;
     		
-    		if($row['gotojump']==1) $link = $phppath."/download.php?open=1&link=".urlencode(base64_encode($link));
-    	  $temp = str_replace("~link~",$link,$tempStr);
+    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&link=".urlencode(base64_encode($flink));
+    	  $temp = str_replace("~link~",$flink,$tempStr);
+    	  $temp = str_replace("~server~",$serverName,$temp);
+    	  $downlinks .= $temp;
+    	}
+    }
+    return $downlinks;global $cfg_softinfos;
+		if(!is_array($cfg_softinfos)){
+			$cfg_softinfos = $this->dsql->GetOne("Select ismoresite,sites,gotojump,showlocal From #@__softconfig");
+	  }
+		$phppath = $GLOBALS['cfg_phpurl'];
+		$downlinks = "";
+		$dtp = new DedeTagParse();
+    $dtp->LoadSource($fvalue);
+    if(!is_array($dtp->CTags)){
+    	$dtp->Clear();
+    	return "æ— é“¾æ¥ä¿¡æ¯ï¼";
+    }
+    $tempStr = GetSysTemplets("channel/channel_downlinks.htm");
+    foreach($dtp->CTags as $ctag)
+    {
+    	if($ctag->GetName()=="link")
+    	{
+    	  $links = trim($ctag->GetInnerText());
+    	  $serverName = trim($ctag->GetAtt("text"));
+    	  if(!isset($firstLink)){ $firstLink = $links; }
+    	  if($cfg_softinfos['showlocal']==0 || $cfg_softinfos['ismoresite']!=1)
+    	  {
+    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
+    	     $temp = str_replace("~link~",$links,$tempStr);
+    	     $temp = str_replace("~server~",$serverName,$temp);
+    	     $downlinks .= $temp;
+    	  }
+      }
+    }
+    $dtp->Clear();
+    //å¯ç”¨é•œåƒåŠŸèƒ½çš„æƒ…å†µ
+    if($cfg_softinfos['ismoresite']==1 && !empty($cfg_softinfos['sites']) && isset($firstLink))
+    {
+    	if(!empty($GLOBALS['cfg_basehost'])) $firstLink = eregi_replace($GLOBALS['cfg_basehost'],"",$firstLink);
+    	
+    	$cfg_softinfos['sites'] = ereg_replace("\n{1,}","\n",str_replace("\r","\n",$cfg_softinfos['sites']));
+    	$sites = explode("\n",trim($cfg_softinfos['sites']));
+    	foreach($sites as $site)
+    	{
+    		if(trim($site)=='') continue;
+    		list($link,$serverName) = explode('|',$site);
+    		
+    		if(!eregi("^(http|ftp)://",$firstLink)) $flink = trim($link).$firstLink;
+    		else $flink = $firstLink;
+    		
+    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&link=".urlencode(base64_encode($flink));
+    	  $temp = str_replace("~link~",$flink,$tempStr);
     	  $temp = str_replace("~server~",$serverName,$temp);
     	  $downlinks .= $temp;
     	}
@@ -224,7 +300,7 @@ class ChannelUnit
     return $downlinks;
 	}
 	
-	//»ñµÃÍ¼Æ¬µÄÕ¹Ê¾Ò³Ãæ
+	//è·å¾—å›¾ç‰‡çš„å±•ç¤ºé¡µé¢
 	//---------------------------
 	function GetImgLinks($fvalue)
 	{
@@ -233,7 +309,7 @@ class ChannelUnit
     $dtp->LoadSource($fvalue);
     if(!is_array($dtp->CTags)){
     	$dtp->Clear();
-    	return "ÎŞÍ¼Æ¬ĞÅÏ¢£¡";
+    	return "æ— å›¾ç‰‡ä¿¡æ¯ï¼";
     }
     $ptag = $dtp->GetTag("pagestyle");
     if(is_object($ptag)){
@@ -252,11 +328,13 @@ class ChannelUnit
       if(empty($irow)) $irow = 4;
       if(empty($icol)) $icol = 4;
     }
-    //±éÀúÍ¼Æ¬ĞÅÏ¢
+    //éå†å›¾ç‰‡ä¿¡æ¯
     $mrow = 0;
     $mcol = 0;
     $photoid = 0;
     $images = array();
+    
+    $sysimgpath = $GLOBALS['cfg_templeturl']."/sysimg";
     foreach($dtp->CTags as $ctag){
     	if($ctag->GetName()=="img"){
     		$iw = $ctag->GetAtt('width');
@@ -266,15 +344,56 @@ class ChannelUnit
     		$ddimg = $ctag->GetAtt('ddimg');
     		if($iw > $maxwidth) $iw = $maxwidth;
     		$iw = (empty($iw) ? "" : "width='$iw'");
-    		//È«²¿ÁĞ³öÊ½»ò·ÖÒ³Ê½Í¼¼¯
+    		//å…¨éƒ¨åˆ—å‡ºå¼æˆ–åˆ†é¡µå¼å›¾é›†
     		if($pagestyle<3){
     		   if($revalue==""){
-    			   $revalue = "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
+    			   if($pagestyle==2){
+                $playsys = "
+			<div class='butbox'>
+				<a href='$src' target='_blank' class='c1'>åŸå§‹å›¾ç‰‡</a>\r\n
+				<a href='javascript:dPlayPre();' class='c1'>ä¸Šä¸€å¼ </a>\r\n
+				<a href='javascript:dPlayNext();' class='c1'>ä¸‹ä¸€å¼ </a>\r\n
+				<a href='javascript:dStopPlay();' class='c1'>è‡ªåŠ¨ / æš‚åœæ’­æ”¾</a>\r\n
+			</div>\r\n";
+    			   	  $revalue = " {$playsys} 
+				<div class='imgview'>\r\n
+				<center>
+				<a href='javascript:dPlayNext();'><img src='$src' alt='$alt'/></a>\r\n
+				</center>
+				</div>\r\n
+				<script language='javascript'>dStartPlay();</script>\r\n";
+    		     }
+    		     else $revalue = "
+				<div class='imgview'>\r\n
+				<center>
+				<a href='$src' target='_blank'><img src='$src' alt='$alt' /></a>\r\n
+				</center>
+				</div>\r\n";
     		   }else{
-    			   if($pagestyle==2) $revalue .= "#p#·ÖÒ³±êÌâ#e#<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
-    			   else $revalue .= "<center><a href='$src' target='_blank'><img src='$src' alt='$alt' $iw border='0'/></a><br/>$alt<br/></center>\r\n";
+    			   if($pagestyle==2){
+    			   	   $playsys = "
+			<div class='butbox'>
+				<a href='$src' target='_blank' class='c1'>åŸå§‹å›¾ç‰‡</a>\r\n
+				<a href='javascript:dPlayPre();' class='c1'>ä¸Šä¸€å¼ </a>\r\n
+				<a href='javascript:dPlayNext();' class='c1'>ä¸‹ä¸€å¼ </a>\r\n
+				<a href='javascript:dStopPlay();' class='c1'>è‡ªåŠ¨ / æš‚åœæ’­æ”¾</a>\r\n
+			</div>\r\n";
+    			   	   $revalue .= "#p#åˆ†é¡µæ ‡é¢˜#e# {$playsys}
+				<div class='imgview'>\r\n
+				<center>
+				<a href='javascript:dPlayNext();'><img src='$src' alt='$alt'/></a>\r\n
+				</center>
+				</div>\r\n
+				<script language='javascript'>dStartPlay();</script>\r\n";
+    			   }
+    			   else $revalue .= "
+				<div class='imgview'>\r\n
+				<center>
+				<a href='$src' target='_blank'><img src='$src' alt='$alt' /></a>\r\n
+				</center>
+				</div>\r\n";
     		   }
-    		//¶àÁĞÊ½Í¼¼¯
+    		//å¤šåˆ—å¼å›¾é›†
     		}else if($pagestyle==3){
     			$images[$photoid][0] = $src;
     			$images[$photoid][1] = $alt;
@@ -283,7 +402,7 @@ class ChannelUnit
     		}
       }
     }
-    //ÖØĞÂÔËËã¶àÁĞÊ½Í¼¼¯
+    //é‡æ–°è¿ç®—å¤šåˆ—å¼å›¾é›†
     if($pagestyle==3){
     	if(empty($ddmaxwidth)) $ddmaxwidth = 200;
     	$picnum = count($images);
@@ -292,9 +411,9 @@ class ChannelUnit
     	$tdwidth = ceil(100 / $icol);
     	while($sPos < $picnum){
     		for($i=0;$i < $irow;$i++){
-    			$revalue .= "<ul class='imgline'>\r\n";
+    			//$revalue .= "<ul class='imgline'>\r\n";
     			for($j=0;$j < $icol;$j++){
-    				if(!isset($images[$sPos])){ $revalue .= "<li class='imgitem'>&nbsp;</li>\r\n"; }
+    				if(!isset($images[$sPos])){ $revalue .= ""; }
     				else{
     					$src = $images[$sPos][0];
     					$alt = $images[$sPos][1];
@@ -306,17 +425,21 @@ class ChannelUnit
     					}else{
     						$tpwidth = " width='$tpwidth'";
     					}
-    					$revalue .= "<li class='imgitem'><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'><img src='$litsrc' alt='$alt'{$tpwidth} border='0'/></a><br/>$alt\r\n</li>\r\n";
+						//å¤šè¡Œå¤šåˆ—imgurlsæ ‡ç­¾ç”Ÿæˆä»£ç 
+    					$revalue .= "<dl>\r\n
+						<dt><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'><img src='$litsrc' alt='$alt'{$tpwidth} border='0'/></a></dt>\r\n
+						<dd class='title'><img src='/templets/images/ico_15.gif' /><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'>$alt</a></dd>\r\n
+						</dl>\r\n";
     					$sPos++;
     				}
     			}
-    			$revalue .= "</ul>\r\n";
+    			//$revalue .= "</ul>\r\n";
     			if(!isset($images[$sPos])) break;
     		}
     		if(!isset($images[$sPos])){
     			break;
     		}else{
-    			$revalue .= "#p#·ÖÒ³±êÌâ#e#";
+    			$revalue .= "#p#åˆ†é¡µæ ‡é¢˜#e#";
     		}
     	}
     }
@@ -325,7 +448,7 @@ class ChannelUnit
     return $revalue;
 	}
 	
-	//´¦ÀíÒıÓÃµÄº¯ÊıµÄ×Ö¶Î
+	//å¤„ç†å¼•ç”¨çš„å‡½æ•°çš„å­—æ®µ
 	//-----------------------------
 	function EvalFunc($fvalue,$functionname)
 	{
@@ -335,7 +458,7 @@ class ChannelUnit
 		return $DedeMeValue;
 	}
 	
-	//¹Ø±ÕËùÕ¼ÓÃµÄ×ÊÔ´
+	//å…³é—­æ‰€å ç”¨çš„èµ„æº
  	//------------------
  	function Close(){
  		$this->dsql->Close();

@@ -1,85 +1,73 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÆÀÂÛÈ·ÈÏ</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<link href="../img/base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>è¯„è®ºç¡®è®¤</title>
+<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
+</head>
 </head>
 <body>
-<table width="700" border="0" align="center" cellspacing="2">
-<tr> 
-<td><img src="img/feedback.gif" width="320" height="46"></td>
-</tr>
-<tr> 
-<td bgcolor="#CCCC99" height="6"></td>
-</tr>
-<tr>
-    <td height="26" bgcolor="#F0FADE"> <strong>&nbsp;<a href="feedback.php?arcID=<?=$arcID?>">&lt;&lt;·µ»Ø&gt;&gt;</a>¡¡È·ÈÏÄãÆÀÂÛµÄÄÚÈÝ£º</strong></td>
-</tr>
-</table>
 
-<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="12">&nbsp;</td>
-    <td width="688"><table width="100%" border="0" cellspacing="0">
-        <tr> 
-          <td> <table width="100%" border="0" cellpadding="1" cellspacing="1">
-              <form action="feedback.php" method="post" name="feedback">
-                <input type="hidden" name="action" value="send">
-                <input type="hidden" name="arcID" value="<?=$arcID?>">
-                <input type="hidden" name="isconfirm" value="yes">
-                <tr> 
-                  <td height="36">ÓÃ»§Ãû£º 
-                    <input name="username" type="text" id="username3" size="10" class="nb" value="<?=$username?>">
-                    £¨<a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>ÐÂ×¢²á</u></a>£© 
-                    ÃÜÂë£º 
-                    <input name="pwd" type="password" id="pwd2" size="10"class="nb" value="<?=$pwd?>"> 
-                    <input name="notuser" type="checkbox" id="notuser2" value="1"<?if(!empty($notuser)) echo " checked";?>>
-                    ÄäÃûÆÀÂÛ 
-                    <input type='button' value='·¢±íÆÀÂÛ' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("ÆÀÂÛÄÚÈÝ²»ÄÜÎª¿Õ£¡");' style='width:60;height:20'>                  </td>
-                </tr>
-                <tr>
-                  <td height="36">ÆÀ¡¡·Ö£º
-                    <input type="radio" name="rank" value="1"<?if($rank==1) echo " checked";?>>
-1
-<input type="radio" name="rank" value="2"<?if($rank==2) echo " checked";?>>
-2
-<input name="rank" type="radio" value="3"<?if($rank==3) echo " checked";?>>
-3
-<input type="radio" name="rank" value="4"<?if($rank==4) echo " checked";?>>
-4
-<input type="radio" name="rank" value="5"<?if($rank==5) echo " checked";?>>
-5</td>
-                </tr>
-                <tr> 
-                  <td height="36"> <table width="300" border="0" cellspacing="1" cellpadding="1">
-                      <tr> 
-                        <td width="51">ÑéÖ¤Âë£º </td>
-                        <td width="81"><input name="validate" type="text" id="validate" size="10" class="nb"></td>
-                        <td width="158"><img src='../include/vdimgck.php' width='50' height='20'></td>
-                      </tr>
+<div class="stop">
+	<span class="toptitle">è¯„è®º</span>
+	<span class="toplink"><a href="/">è¿”å›žä¸»é¡µ</a></span></div>
+
+<div class="smain">
+	<div class="mtitle">
+		<div class="mtname"><a href="feedback.php?arcID=<?=$arcID?>">&lt;&lt;è¿”å›ž&gt;&gt;</a>ã€€ç¡®è®¤ä½ è¯„è®ºçš„å†…å®¹ï¼š</div>
+		</div>
+	<div class="">
+
+		<div class="svote">
+			<div class="vtbox">
+			  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+                <form action="feedback.php" method="post" name="feedback" id="feedback">
+                  <input type="hidden" name="action" value="send" />
+                  <input type="hidden" name="arcID" value="<?=$arcID?>" />
+                  <input type="hidden" name="arcurl" value="<?=$arcurl?>" />
+                  <input type="hidden" name="arctitle" value="<?=$arctitle?>" />
+                  <input type="hidden" name="feedid" value="<?=$feedid?>" />
+                  <input type="hidden" name="isconfirm" value="yes" />
+                  <tr>
+                    <td height="36">ç”¨æˆ·åï¼š
+                      <input name="username" type="text" id="username3" size="10" class="nb" value="<?=$username?>" />
+                      ï¼ˆ<a href="../member/index_do.php?fmdo=user&amp;dopost=regnew" target="_blank"><u>æ–°æ³¨å†Œ</u></a>ï¼‰ 
+                      å¯†ç ï¼š
+                      <input name="pwd" type="password" id="pwd2" size="10"class="nb" value="<?=$pwd?>" />
+                      <input name="notuser" type="checkbox" id="notuser2" value="1"<?if(!empty($notuser)) echo " checked";?> />
+                      åŒ¿åè¯„è®º
+                      <input type='button' value='å‘è¡¨è¯„è®º' name='sb' onclick='javascript:if(document.feedback.msg.value!=&quot;&quot;) document.feedback.submit(); else alert(&quot;è¯„è®ºå†…å®¹ä¸èƒ½ä¸ºç©ºï¼&quot;);' style='width:60;height:20' />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="36"><table width="300" border="0" cellspacing="1" cellpadding="1">
+                        <tr>
+                          <td width="51">éªŒè¯ç ï¼š </td>
+                          <td width="81"><input name="validate" type="text" id="validate" size="10" class="nb" /></td>
+                          <td width="158"><img src='../include/vdimgck.php' width='50' height='20' /></td>
+                        </tr>
                     </table></td>
-                </tr>
-                <tr> 
-                  <td height="30">ÆÀÂÛÄÚÈÝ£º(²»ÄÜ³¬¹ý500×Ö£¬Çë×Ô¾õ×ñÊØ»¥ÁªÍøÏà¹ØÕþ²ß·¨¹æ)</td>
-                </tr>
-                <tr> 
-                  <td height="127"> <textarea name="msg" rows="6" id="textarea" style="width:98%"><?=$msg?></textarea></td>
-                </tr>
-              </form>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr>
-<td height="28" align="center">
-<hr size="1"></td>
-</tr>
-<tr> 
-<td height="40" align="center"><?=$cfg_powerby?></td>
-</tr>
-</table>
+                  </tr>
+                  <tr>
+                    <td height="30">è¯„è®ºå†…å®¹ï¼š(ä¸èƒ½è¶…è¿‡500å­—ï¼Œè¯·è‡ªè§‰éµå®ˆäº’è”ç½‘ç›¸å…³æ”¿ç­–æ³•è§„)</td>
+                  </tr>
+                  <tr>
+                    <td height="127"><textarea name="msg" rows="6" id="textarea" style="width:98%"><?=$msg?>
+              </textarea></td>
+                  </tr>
+                </form>
+		      </table>
+			</div>
+		</div>
+
+
+
+
+
+	</div>
+</div>
+
+
 </body>
 </html>

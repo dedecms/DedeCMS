@@ -3,8 +3,8 @@ require_once(dirname(__FILE__)."/../config_base.php");
 ?>
 <HTML>
 <HEAD>
-<title>���븽��</title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>插入附件</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style>
 .td{font-size:10pt;}
 </style>
@@ -34,18 +34,18 @@ function SelectAddon(fname)
   <table border="0" width="98%" align="center">
   	<form name="theform">
     <tr> 
-      <td align="right">����ַ:</td>
+      <td align="right">网　址:</td>
       <td colspan="3">
       	<input name="rurl" type="text" id="rurl" style="width:300px" value="http://">
-      	<input type="button" name="selmedia" class="binput" style="width:60px" value="���..." onClick="SelectAddon('theform.rurl')">
+      	<input type="button" name="selmedia" class="binput" style="width:60px" value="浏览..." onClick="SelectAddon('theform.rurl')">
       </td>
     </tr>
     <tr height="50"> 
       <td align="right">&nbsp;</td>
       <td nowrap>&nbsp; </td>
       <td colspan="2" align="right" nowrap>
-      	<input onclick="TableOK();" type="button" name="Submit2" value=" ȷ�� " class="binput"> 
-        <input type="button" name="Submit" onclick="window.close();" value=" ȡ�� " class="binput"> 
+      	<input onclick="TableOK();" type="button" name="Submit2" value=" 确定 " class="binput"> 
+        <input type="button" name="Submit" onclick="window.close();" value=" 取消 " class="binput"> 
       </td>
     </tr>
     </form>

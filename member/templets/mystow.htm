@@ -1,67 +1,71 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>我的收藏夹</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>鎴戠殑鏀惰棌澶�</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="216" valign="top">
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
-        <tr> 
-          <td background="img/nnnbg.gif" height="25" class="gdt2">
-		  <font color="#333333"> 
-            <strong>　&nbsp;我的收藏夹：</strong></font>
-		  </td>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:5px;">
+        <tr>
+             <div class="manage_company_right_title" style="margin-top:10px;">
+                	<ul><li>鎴戠殑鏀惰棌澶癸細</li></ul>
+                </div>
         </tr>
     </table>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-              <tr bgcolor="E9FBC9"> 
-                <td width="47%" align="center" bgcolor="#F0F8D6">档案标题</td>
-                <td width="31%" align="center" bgcolor="#F0F8D6">收藏时间</td>
-                <td width="22%" align="center" bgcolor="#F0F8D6">管理</td>
+        <tr>
+          <td height="183" valign="top">
+          	<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+              <tr bgcolor="E9FBC9" height='24'>
+                <td width="47%" align="center" bgcolor="#F0F8D6">妗ｆ鏍囬</td>
+                <td width="31%" align="center" bgcolor="#F0F8D6">鏀惰棌鏃堕棿</td>
+                <td width="22%" align="center" bgcolor="#F0F8D6">绠＄悊</td>
               </tr>
-              <?php 
+              <?php
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
+	if($row['url'] == ''){
+		$row['url'] = $cfg_cmspath.'/plus/view.php?aid='.$row['aid'];
+	}
 ?>
-              <tr bgcolor="#FFFFFF" align="center"> 
-                <td> <a href='archives_do.php?dopost=viewArchives&aid=<?php echo $row["arcid"]?>' target='_blank'> 
+              <tr bgcolor="#FFFFFF" align="center" height='24'>
+                <td> <a href='<?php echo $row['url']?>' target='_blank'>
                   <?php echo $row["title"]?>
                   </a> </td>
-                <td> 
+                <td>
                   <?php echo GetDateTimeMk($row['addtime'])?>
                 </td>
-                <td><a href='archives_do.php?dopost=delStow&aid=<?php echo $row["aid"]?>' target='_blank'>[删除该项]</a></td>
+                <td><a href='archives_do.php?dopost=delStow&aid=<?php echo $row["aid"]?>' target='_blank'>[鍒犻櫎璇ラ」]</a></td>
               </tr>
-              <?php 
+              <?php
 }
 ?>
-              <tr bgcolor="E9FBC9"> 
-                <td colspan="3" align="center" bgcolor="#F9FCEF"> 
+              <tr bgcolor="E9FBC9" height='24'>
+                <td colspan="3" align="center" bgcolor="#F9FCEF">
                   <?php echo $dlist->GetPageList(7);?>                </td>
               </tr>
             </table></td>
         </tr>
-        <tr> 
+        <tr>
           <td height="24" valign="top">&nbsp;</td>
         </tr>
       </table></td>
   </tr>
 </table>
-<?php 
+<?php
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
-include(dirname(__FILE__)."/foot.htm"); 
+include(dirname(__FILE__)."/foot.htm");
 ?>
 </div>
 </body>

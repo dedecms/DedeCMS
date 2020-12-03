@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/search.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<!--头部开始-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">
+		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a> </li>
+		  	<li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></li>
+		</ul>
+	</div>
+</div>
+<!--导航栏-->
+<div class="topmenu cbody">
+	<ul>
+		<li><a href="/">首页</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
+		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
+	</ul>
+	<div class="rssbut">
+		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
+	</div>
+</div>
+<!--搜索条-->
+<div class="topsearch cbody">
+	<div class="title"></div>
+	<div class="inpbox">
+    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<input type="hidden" name="kwtype" value="0">
+		<input name="keyword" id="keyword" type="text" class="searchtxt" />
+		<select name="searchtype" id="searchtype">
+			<option value="titlekeyword" selected>智能模糊搜索</option>
+			<option value="title">仅搜索标题</option>
+		</select>
+		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+	</div>
+	<div class="hots">
+		<strong>热门关键字：</strong>
+		{dede:hotwords num='5' subday='30'/}
+	</div>
+</div>
+
+<!--内容-->
+<div class="main cbody margintop">
+	<!--左侧-->
+	<div class="pleft">
+		<!--位置导航-->
+		<div class="thisplace">
+			<div class="title">{dede:field name='position'/}</div>
+			<div class="placenav">
+				<span><a href='{dede:global name='cfg_cmspath'/}/tag.php'>Tag文档列表</a></span>
+			</div>
+		</div>
+
+		<!--列表-->
+		<div class="newslist">
+			{dede:list pagesize='15'}
+            <dl>
+				<dt>[field:typelink function='str_replace("a ","a class=ulink ",@me)'/]<a href="[field:arcurl/]" class="ulink">[field:title/]</a></dt>
+				<dd class="preview">[field:description/]...</dd>
+				<dd class="info">更新：<span>[field:pubdate function="GetDateTimeMK(@me)"/]</span>　<span></span> <a href="[field:arcurl/]">查阅全文...</a></dd>
+			</dl>
+            {/dede:list}
+
+			<!--分页-->
+			<div class="pages">
+				<div class="plist">
+					{dede:pagelist listsize='7' listitem='index pre pageno next end '/}
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<!--右侧-->
+	<div class="pright">
+		<!--侧边信息列表-->
+		<div class="rlist">
+			<div class="title">热门Tags</div>
+			<div class="rtags">
+					{dede:tag row='30' sort='week'}
+    	<a href='[field:link/]'>[field:highlight/]([field:result/])</a>&nbsp;
+    	{/dede:tag}
+			</div>
+		</div>
+	</div>
+
+	<div class="floatclear"><!--清除浮动--></div>
+</div>
+
+
+<div class="footer cbody margintop">
+	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+	</div>
+	<div class="slogo">
+		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+	</div>
+	<div class="floatclear"></div>
+</div>
+
+
+</body>
+</html>

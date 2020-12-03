@@ -1,39 +1,40 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_imgbt.php");
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 CheckRank(0,0);
 
-if($cfg_mb_sendall=='·ñ'){
-	ShowMsg("¶Ô²»Æð£¬ÏµÍ³½ûÓÃÁË×Ô¶¨ÒåÄ£ÐÍÍ¶¸å£¬Òò´ËÎÞ·¨Ê¹ÓÃ´Ë¹¦ÄÜ£¡","-1");
+if($cfg_mb_sendall=='N'){
+	ShowMsg("å¯¹ä¸èµ·ï¼Œç³»ç»Ÿç¦ç”¨äº†è‡ªå®šä¹‰æ¨¡åž‹æŠ•ç¨¿ï¼Œå› æ­¤æ— æ³•ä½¿ç”¨æ­¤åŠŸèƒ½ï¼","-1");
 	exit();
 }
-require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_all.php");
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 
-if(!isset($channelid)) $channelid=0;
-else $channelid = trim(ereg_replace("[^0-9]","",$channelid));
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
+
+
+$channelid = (empty($channelid) ? 1 : intval($channelid));
 
 $dsql = new DedeSql(false);
 $cInfos = $dsql->GetOne("Select * From #@__channeltype  where ID='$channelid'; ");	
 
-if($cInfos['issystem']!=0 || $cInfos['issend']!=1){
+if($cInfos['issend']!=1){
 	$dsql->Close();
-	ShowMsg("ÄãÖ¸¶¨µÄÆµµÀ²ÎÊý´íÎó»ò²»ÔÊÐíÍ¶¸å£¡","-1");
+	ShowMsg("ä½ æŒ‡å®šçš„é¢‘é“ä¸å…è®¸æŠ•ç¨¿ï¼","-1");
 	exit();
 }
+
 
 if($cInfos['sendrank'] > $cfg_ml->M_Type){
 	$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$cInfos['sendrank']."' ");
 	$dsql->Close();
-	ShowMsg("¶Ô²»Æð£¬ÐèÒª[".$row['membername']."]²ÅÄÜÔÚÕâ¸öÆµµÀ·¢²¼ÎÄµµ£¡","-1","0",5000);
+	ShowMsg("å¯¹ä¸èµ·ï¼Œéœ€è¦[".$row['membername']."]æ‰èƒ½åœ¨è¿™ä¸ªé¢‘é“å‘å¸ƒæ–‡æ¡£ï¼","-1","0",5000);
 	exit();
 }
 
 
 $channelid = $cInfos['ID'];
-$addtable = $cInfos['addtable'];
+$addtable  = $cInfos['addtable'];
 
 require_once(dirname(__FILE__)."/templets/archives_add.htm");
 
+$dsql->Close();
 ?>

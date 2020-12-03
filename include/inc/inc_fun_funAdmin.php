@@ -23,9 +23,9 @@ function SpGetPinyin($str,$ishead=0,$isclose=1){
 			if(isset($pinyins[$c])){
 				if($ishead==0) $restr .= $pinyins[$c];
 				else $restr .= $pinyins[$c][0];
-			}else $restr .= "_";
+			}else $restr .= "-";
 		}else if( eregi("[a-z0-9]",$str[$i]) ){	$restr .= $str[$i]; }
-		else{ $restr .= "_";  }
+		else{ $restr .= "-";  }
 	}
 	if($isclose==0) unset($pinyins);
 	return $restr;
@@ -38,7 +38,7 @@ function SpCreateDir($spath,$siterefer="",$sitepath=""){
 	if($siterefer==1) $truepath = ereg_replace("/{1,}","/",$cfg_basedir."/".$sitepath);
 	else if($siterefer==2){
 		$truepath = $sitepath;
-		if($isSafeMode||$cfg_ftp_mkdir=='ÊÇ'){ echo "ÔÚPHP°²È«Ä£Ê½ÖĞ£¬ÎŞ·¨ÆôÓÃ¶ÔÎÄ¼ş±£´æÔÚÖ÷Õ¾ÒÔÍâÄ¿Â¼µÄ×ÓÕ¾µãµÄÖ§³Ö£¡"; exit(); }
+		if($cfg_isSafeMode||$cfg_ftp_mkdir=='Y'){ echo "åœ¨PHPå®‰å…¨æ¨¡å¼ä¸­ï¼Œæ— æ³•å¯ç”¨å¯¹æ–‡ä»¶ä¿å­˜åœ¨ä¸»ç«™ä»¥å¤–ç›®å½•çš„å­ç«™ç‚¹çš„æ”¯æŒï¼"; exit(); }
 	}
 	else $truepath = $cfg_basedir;
 	$spaths = explode("/",$spath);
@@ -49,10 +49,10 @@ function SpCreateDir($spath,$siterefer="",$sitepath=""){
 		$truepath .= "/".$spath;
 		$truepath = str_replace("\\","/",$truepath);
 		$truepath = ereg_replace("/{1,}","/",$truepath);
-		if(!is_dir($truepath) || !is_writeable($truepath)){
-			 if(!is_dir($truepath)) $isok = MkdirAll($truepath,777);
-			 else $isok = ChmodAll($truepath,777);
-			 if(!$isok){ echo "´´½¨»òĞŞ¸ÄÄ¿Â¼£º".$truepath." Ê§°Ü£¡<br>"; CloseFtp(); return false; }
+		if(!is_dir($truepath) || !is_writeable($truepath)){ 
+			 if(!is_dir($truepath)) $isok = MkdirAll($truepath,$GLOBALS['cfg_dir_purview']);
+			 else $isok = ChmodAll($truepath,$GLOBALS['cfg_dir_purview']);
+			 if(!$isok){ echo "åˆ›å»ºæˆ–ä¿®æ”¹ç›®å½•ï¼š".$truepath." å¤±è´¥ï¼<br>"; CloseFtp(); return false; }
 		}
 	}
 	CloseFtp();
@@ -71,7 +71,7 @@ function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print"
 	  $fck->Height		= $nheight ;
 	  $fck->ToolbarSet	= $etype ;
 	  $fck->Config['FullPage'] = $isfullpage;
-	  if($GLOBALS['cfg_fck_xhtml']=='ÊÇ'){
+	  if($GLOBALS['cfg_fck_xhtml']=='Y'){
 	  	$fck->Config['EnableXHTML'] = 'true';
 	    $fck->Config['EnableSourceXHTML'] = 'true';
 	  }

@@ -5,7 +5,7 @@ require_once(dirname(__FILE__)."/../include/pub_collection.php");
 if(empty($islisten)) $islisten = 0;
 if($nid=="") 
 {
-	ShowMsg("²ÎÊýÎÞÐ§!","-1");	
+	ShowMsg("å‚æ•°æ— æ•ˆ!","-1");	
 	exit();
 }
 
@@ -18,7 +18,7 @@ $gurlList = "co_getsource_url_action.php?islisten=$islisten&nid=$nid&startdd=$st
 
 if($totalnum>0)
 {
-	ShowMsg("µ±Ç°½ÚµãÒÑÏÂÔØÍøÒ³ÍøÖ·£¬³ÌÐòÖ±½Ó×ªÏòÍøÒ³²É¼¯...",$gurl."&totalnum=$totalnum");
+	ShowMsg("å½“å‰èŠ‚ç‚¹å·²ä¸‹è½½ç½‘é¡µç½‘å€ï¼Œç¨‹åºç›´æŽ¥è½¬å‘ç½‘é¡µé‡‡é›†...",$gurl."&totalnum=$totalnum");
 	exit();
 }
 
@@ -35,15 +35,16 @@ if($limitList==0)
   $row = $co->dsql->GetObject();
   $totalnum = $row->dd;
 	$co->Close();
-	ShowMsg("ÒÑ»ñµÃËùÓÐ´ýÏÂÔØÍøÖ·£¬×ªÏòÍøÒ³²É¼¯...",$gurl."&totalnum=$totalnum");
+	ShowMsg("å·²èŽ·å¾—æ‰€æœ‰å¾…ä¸‹è½½ç½‘å€ï¼Œè½¬å‘ç½‘é¡µé‡‡é›†...",$gurl."&totalnum=$totalnum");
 	exit();
 }else if($limitList>0)
 {
 	$co->Close();
-	ShowMsg("²É¼¯ÁÐ±íÊ£Óà£º{$limitList} ¸öÒ³Ãæ£¬¼ÌÐø²É¼¯...",$gurlList."&glstart=".($glstart+$pagesize),0,100);
+	ShowMsg("é‡‡é›†åˆ—è¡¨å‰©ä½™ï¼š{$limitList} ä¸ªé¡µé¢ï¼Œç»§ç»­é‡‡é›†...",$gurlList."&glstart=".($glstart+$pagesize),0,100);
 	exit();
 }else{
-	echo "»ñÈ¡ÁÐ±íÍøÖ·Ê§°Ü£¬ÎÞ·¨Íê³É²É¼¯£¡";
+	echo "èŽ·å–åˆ—è¡¨ç½‘å€å¤±è´¥ï¼Œæ— æ³•å®Œæˆé‡‡é›†ï¼";
 }
 
+ClearAllLink();
 ?>

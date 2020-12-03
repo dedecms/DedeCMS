@@ -1,10 +1,10 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�ɼ����ݹ���</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>采集内容管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
-//���ѡ���ļ����ļ���
+//获得选中文件的文件名
 function getCheckboxItem()
 {
 	var allSel="";
@@ -34,22 +34,22 @@ function DelSel()
 	var nid = getCheckboxItem();
 	if(nid=="")
 	{
-		alert("��ѡ��ڵ�!\r\n");
+		alert("请选择节点!\r\n");
 		return ;
 	}
 	location.href = "co_do.php?dopost=clear&ids="+nid;
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='0' topmargin='0'>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr align="center" bgcolor="#F8FBFB"> 
-    <td width="8%">ѡ��</td>
-    <td width="35%">���ݱ���</td>
-    <td width="18%">�����ڵ�</td>
-    <td width="18%">��ȡ����</td>
-    <td width="10%">�Ƿ�����</td>
-    <td width="8%">��Դ</td>
+    <td width="8%" bgcolor="#EDF9D5">选择</td>
+    <td width="35%" bgcolor="#EDF9D5">内容标题</td>
+    <td width="18%" bgcolor="#EDF9D5">所属节点</td>
+    <td width="18%" bgcolor="#EDF9D5">获取日期</td>
+    <td width="10%" bgcolor="#EDF9D5">是否下载</td>
+    <td width="8%" bgcolor="#EDF9D5">来源</td>
   </tr>
   <form name='form1'>
   <?php 
@@ -63,15 +63,14 @@ function DelSel()
     <td><?php echo $row['gathername']?></td>
     <td><?php echo GetDateMk($row['dtime'])?></td>
     <td><?php echo IsDownLoad($row['isdown'])?></td>
-    <td><a href='<?php echo $row['url']?>' target='_blank'>[Դ��ַ]</a></td>
+    <td><a href='<?php echo $row['url']?>' target='_blank'>[源网址]</a></td>
   </tr>
  <?php  } ?>
 </form>
   <tr> 
-    <td height="24" colspan="6" bgcolor="#FCFDF7">&nbsp;
-<input type="button" name="b7" value="��ѡ" class="nbt" style="width:40" onClick="ReSel();">��������
-<input type="button" name="b5" value="ɾ����ѡ��ַ" class="nbt" style="width:100" onClick="DelSel();">��
-    </td>
+    <td height="30" colspan="6" bgcolor="#FCFDF7">&nbsp;
+<input type="button" name="b7" value="反选" class="inputbut" style="width:40" onClick="ReSel();">　　　　
+<input type="button" name="b5" value="删除所选网址" class="inputbut" style="width:100" onClick="DelSel();">　    </td>
   </tr>
   <tr> 
     <td height="24" colspan="6" bgcolor="#FCFDF7" align="center">

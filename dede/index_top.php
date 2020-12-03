@@ -1,32 +1,13 @@
 <?php 
 require(dirname(__FILE__)."/config.php");
+ClearAllLink();
 ?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>dedecms</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-<style>
-	#ldd1 { float:left; position:absolute; left:0px; top:0px; }
-	#ldd2 { float:right; }
-	#ldd2 dd{ float:right }
-	#ldd2 dl{ margin-right:26px }
-	#sktop{ text-align:right; margin-right:28px;
-  height:22; margin-top:4px; margin-bottom:3px; line-height:22px  }
-	.bdd{ float:right; height:26px; padding-left:6px; padding-right:6px;
-	     background-image:url(img/tn2.gif); line-height:29px;
-	     border-right:1px solid #2C6FA8;border-left:1px solid #efefef }
-	.bdd2{ float:right; height:26px; padding-left:6px; padding-right:6px;
-	     background-image:url(img/tn22.gif); line-height:29px;
-	     border-right:1px solid #2C6FA8;border-left:1px solid #efefef }
-	#bdds{ float:right; height:26px; padding-left:3px; padding-right:6px;
-	     background-image:url(img/tn2.gif); line-height:29px;
-	     border-right:1px solid #2C6FA8; } 
-	#bdde{ float:right; height:26px; padding-left:6px; padding-right:3px;
-	     background-image:url(img/tn2.gif); line-height:29px;
-	     border-left:1px solid #efefef }
-	#main{ margin:0px; padding:0px; width:100%; height:60px; background-image:url(img/ntbg2.gif) }
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Top</title>
+<link href="css_top.css" rel="stylesheet" type="text/css" />
 <script language='javascript'>
 
 function $Nav(){
@@ -42,15 +23,15 @@ function OpenMenu(cid,lurl,rurl,bid){
      if(rurl!='') top.document.frames.main.location = rurl;
      if(cid > -1) top.document.frames.menu.location = 'index_menu.php?c='+cid;
      else if(lurl!='') top.document.frames.menu.location = lurl;
-     if(bid>0) document.getElementById("d"+bid).className = 'bdd2';
-     if(preID>0 && preID!=bid) document.getElementById("d"+preID).className = 'bdd';
+     if(bid>0) document.getElementById("d"+bid).className = 'thisclass';
+     if(preID>0 && preID!=bid) document.getElementById("d"+preID).className = '';
      preID = bid;
    }else{
      if(rurl!='') top.document.getElementById("main").src = rurl;
      if(cid > -1) top.document.getElementById("menu").src = 'index_menu.php?c='+cid;
      else if(lurl!='') top.document.getElementById("menu").src = lurl;
-     if(bid>0) document.getElementById("d"+bid).className = 'bdd2';
-     if(preID>0 && preID!=bid) document.getElementById("d"+preID).className = 'bdd';
+     if(bid>0) document.getElementById("d"+bid).className = 'thisclass';
+     if(preID>0 && preID!=bid) document.getElementById("d"+preID).className = '';
      preID = bid;
    }
 }
@@ -86,39 +67,39 @@ function resetBT(){
 
 </script>
 </head>
-<body bgColor='#ffffff' leftMargin='0' topMargin='0'>
-<div id='ldd1'><a href="http://www.dedecms.com" target="_blank"><img src="img/nttitle2.gif" width="177" height="55" border="0" alt="Ö¯ÃÎÍøÕ¾¹ÜÀíÏµÍ³"></a></div>
-<div id='main'>
-	<div id='ldd2'>
-    <div id='sktop'>
-    ÄãºÃ£º<?php echo $cuserLogin->getUserName()?> £¬»¶Ó­µÇÂ¼Ö¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³£¡
-    <a href="javascript:ChangeMenu(-1)">
-    	<img src='img/frame-l.gif' border='0' alt="¼õĞ¡×ó¿ò¼Ü">
-    </a>
-    <a href="javascript:ChangeMenu(0)">
-    <img src='img/frame_on.gif' border='0' alt="Òş²Ø/ÏÔÊ¾×ó¿ò¼Ü">
-    </a>
-    <a href="javascript:ChangeMenu(1)" title="Ôö´ó×ó¿ò¼Ü">
-    	<img src='img/frame-r.gif' border='0' alt="Ôö´ó×ó¿ò¼Ü">
-    </a>
+<body>
+<div class="topnav">
+	<div class="sitenav">
+		<div class="welcome">
+			ä½ å¥½ï¼š<span class="username"><?php echo $cuserLogin->getUserName()?> </span>ï¼Œæ¬¢è¿ä½¿ç”¨Dedecmsã€‚
+		</div>
+		<div class="welcome">
+		<a href="javascript:ChangeMenu(-1)"><img src='img/frame-l.gif' border='0' alt="å‡å°å·¦æ¡†æ¶"></a>
+    <a href="javascript:ChangeMenu(0)"><img src='img/frame_on.gif' border='0' alt="éšè—/æ˜¾ç¤ºå·¦æ¡†æ¶"></a>
+    <a href="javascript:ChangeMenu(1)" title="å¢å¤§å·¦æ¡†æ¶"><img src='img/frame-r.gif' border='0' alt="å¢å¤§å·¦æ¡†æ¶"></a>
     </div>
-    <dl>
-      <dd><img src='img/ttn3.gif' width='7' height='26'></dd>
-      <dd id='bdde'><a href='exit.php' target='_parent'>¡º×¢Ïú¡»</a></dd>
-      <dd class='bdd' id='d9'><a href="javascript:OpenMenu(0,'index_menu.php','',9)">¡¸È«²¿¡¹</a></dd>
-      <dd class='bdd' id='d8'><a href="javascript:OpenMenu(7,'','sys_info.php',8)">ÏµÍ³ÉèÖÃ</a></dd>
-      <dd class='bdd' id='d7'><a href="javascript:OpenMenu(6,'','member_main.php',7)">¹¦ÄÜÄ£¿é</a></dd>
-      <dd class='bdd' id='d6'><a href="javascript:OpenMenu(5,'','plus_main.php',6)">¸¨Öú²å¼ş</a></dd>
-      <dd class='bdd' id='d5'><a href="javascript:OpenMenu(4,'','file_manage_main.php?activepath=<?php echo $cfg_templets_dir?>',5)">Ä£°å¹ÜÀí</a></dd>
-      <dd class='bdd' id='d4'><a href="javascript:OpenMenu(3,'','makehtml_list.php',4)">HTML¸üĞÂ</a></dd>
-      <dd class='bdd' id='d3'><a href="javascript:OpenMenu(2,'','feedback_main.php',3)">ÄÚÈİÎ¬»¤</a></dd>
-      <dd class='bdd' id='d2'><a href="javascript:OpenMenu(-1,'catalog_menu.php','article_add.php?channelid=1',2)">ÄÚÈİ·¢²¼</a></dd>
-      <dd class='bdd' id='d1'><a href="javascript:OpenMenu(1,'','catalog_main.php',1)">ÆµµÀ¹ÜÀí</a></dd>
-      <dd id='bdds'><a href="javascript:OpenMenu(9,'','index_body.php',0)">Ö÷Ò³</a></dd>
-      <dd><img src='img/ttn1.gif' width='20' height='26'></dd>
-    </dl>
-  </div>
-</div>
+		<div class="sitelink">
+			<a href="javascript:OpenMenu(9,'','index_body.php',0)">ç®¡ç†ä¸»é¡µ</a> | 
+			<a href="javascript:OpenMenu(0,'index_menu.php','',9)">åŠŸèƒ½èœå•</a> | 
+			<a href="http://www.dedecms.com/archives/templethelp/help/index.htm" target="_blank">å¸®åŠ©</a> | 
+			<a href="../" target="_blank">ç½‘ç«™ä¸»é¡µ</a> | 
+			<a href="exit.php" target="_parent">æ³¨é”€ç™»å½•</a>
+		</div>
+	</div>
+	<div class="leftnav">
+		<ul>
+			<li class="navleft"></li>
+			<li id='d1'><a href="javascript:OpenMenu(1,'','catalog_main.php',1)">é¢‘é“ç®¡ç†</a></li>
+			<li id='d2'><a href="javascript:OpenMenu(-1,'catalog_menu.php','public_guide.php',2)">å†…å®¹å‘å¸ƒ</a></li>
+			<li id='d3'><a href="javascript:OpenMenu(2,'','content_list.php',3)">å†…å®¹ç»´æŠ¤</a></li>
+			<li id='d4'><a href="javascript:OpenMenu(3,'','makehtml_homepage.php',4)">HTMLæ›´æ–°</a></li>
+			<li id='d5'><a href="javascript:OpenMenu(4,'','member_main.php',5)">æ ¸å¿ƒæ¨¡å—</a></li>
+			<li id='d7'><a href="javascript:OpenMenu(6,'','module_main.php',7)">æ‰©å±•æ¨¡å—</a></li>
+			<li id='d6'><a href="javascript:OpenMenu(5,'','plus_main.php',6)">è¾…åŠ©æ’ä»¶</a></li>
+			<li id='d8'><a href="javascript:OpenMenu(7,'','sys_info.php',8)">ç³»ç»Ÿç®¡ç†</a></li>
+			<li class="navright"></li>
+		</ul>
+	</div>
 </div>
 </body>
 </html>

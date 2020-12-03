@@ -1,0 +1,49 @@
+产品展示：
+<?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+	$row['arcurl'] = GetFileUrl($row['ID'],$row['typeid'],$row['senddate'],
+	$row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
+	$row['typedir'],$row['money'],true,$row['siteurl']);
+
+	if($row['litpic']=="") $row['litpic'] = "img/dfpic.gif";
+	if($cfg_multi_site=='是'){
+	if(!eregi("^http://",$row['litpic'])){
+	$row['litpic'] = $cfg_mainsite.$row['litpic'];
+	}
+	}
+?>
+<table border='0' width='100%'>
+<tr height='24'>
+<td width='19%' rowspan="2" align="center">
+<table width="100" border='0' cellpadding='1' cellspacing='1' bgcolor="#E6EAE3">
+<tr>
+<td bgcolor="#FFFFFF">
+<a href='<?php echo $row['arcurl']?>' target='_blank'><img border='0' src='<?php echo $row['litpic']?>' width='100' alt='<?php echo $row['title']?>'></a>
+</td>
+</tr>
+</table>
+</td>
+<td width='3%' align="center"><img src="img/file.gif" width="18" height="17"></td>
+<td width='54%'><b><a href='<?php echo $row['arcurl']?>' target='_blank'><?php echo $row['title']?></a></b></td>
+<td width="24%">点击:<?php echo $row['click']?></td>
+</tr>
+<tr>
+<td height="56" colspan='3'> 　　<?php echo $row['description']?><font color='#8F8C89'>(<?php echo strftime('%y-%m-%d %H:%M',$row['senddate'])?>)</font>
+</td>
+</tr>
+<tr>
+<td height='2' colspan='4' background='img/writerbg.gif'></td>
+</tr>
+</table>
+<?php
+}
+?>
+
+<?php echo $dlist->GetPageList(7);?>
+
+<?php
+$dlist->Close();
+$dsql->Close();
+?>

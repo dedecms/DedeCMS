@@ -1,12 +1,13 @@
 <?php 
-//±¾ÎÄ¼şÓÃÓÚÀ©Õ¹²É¼¯½á¹û
-//ÏÂÔØ¾ÓÓÚhttp 1.1Ğ­ÒéµÄ·ÀµÁÁ´Í¼Æ¬
+//æœ¬æ–‡ä»¶ç”¨äºæ‰©å±•é‡‡é›†ç»“æœ
+//ä¸‹è½½å±…äºhttp 1.1åè®®çš„é˜²ç›—é“¾å›¾ç‰‡
 //------------------------------------
 function DownImageKeep($gurl,$rfurl,$filename,$gcookie="",$JumpCount=0,$maxtime=30){
    $urlinfos = GetHostInfo($gurl);
-   $ghost = $urlinfos['host'];
+   $ghost = trim($urlinfos['host']);
+   if($ghost=='') return false;
    $gquery = $urlinfos['query'];
-   if($gcookie=="") $gcookie = RefurlCookie($rfurl);
+   if($gcookie=="" && !empty($rfurl)) $gcookie = RefurlCookie($rfurl);
    $sessionQuery = "GET $gquery HTTP/1.1\r\n";
    $sessionQuery .= "Host: $ghost\r\n";
    $sessionQuery .= "Referer: $rfurl\r\n";
@@ -19,7 +20,7 @@ function DownImageKeep($gurl,$rfurl,$filename,$gcookie="",$JumpCount=0,$maxtime=
    $m_fp = fsockopen($ghost, 80, $errno, $errstr,10);
    fwrite($m_fp,$sessionQuery);
    $lnum = 0;
-   //»ñÈ¡ÏêÏ¸Ó¦´ğÍ·
+   //è·å–è¯¦ç»†åº”ç­”å¤´
    $m_httphead = Array();
 	 $httpstas = explode(" ",fgets($m_fp,256));
 	 $m_httphead["http-edition"] = trim($httpstas[0]);
@@ -38,7 +39,7 @@ function DownImageKeep($gurl,$rfurl,$filename,$gcookie="",$JumpCount=0,$maxtime=
 			$hkey = trim($hkey);
 			if($hkey!="") $m_httphead[strtolower($hkey)] = trim($hvalue);
 	 }
-	 //·ÖÎö·µ»Ø¼ÇÂ¼
+	 //åˆ†æè¿”å›è®°å½•
 	 if(ereg("^3",$m_httphead["http-state"])){
 	 	  if(isset($m_httphead["location"]) && $JumpCount<3){
 	 	  	$JumpCount++;
@@ -51,17 +52,17 @@ function DownImageKeep($gurl,$rfurl,$filename,$gcookie="",$JumpCount=0,$maxtime=
 	 }
 	 if(!isset($m_httphead)) return false;
 	 $contentLength = $m_httphead['content-length'];
-	 //±£´æÎÄ¼ş
-	 $fp = fopen($filename,"w") or die("Ğ´ÈëÎÄ¼ş£º{$filename} Ê§°Ü£¡");
+	 //ä¿å­˜æ–‡ä»¶
+	 $fp = fopen($filename,"w") or die("å†™å…¥æ–‡ä»¶ï¼š{$filename} å¤±è´¥ï¼");
 	 $i=0;
 	 $okdata = "";
 	 $starttime = time();
 	 while(!feof($m_fp)){
 			$okdata .= fgetc($m_fp);
 			$i++;
-			//³¬Ê±½áÊø
+			//è¶…æ—¶ç»“æŸ
 			if(time()-$starttime>$maxtime) break;
-			//µ½´ïÖ¸¶¨´óĞ¡½áÊø
+			//åˆ°è¾¾æŒ‡å®šå¤§å°ç»“æŸ
 			if($i >= $contentLength) break;
 	 }
 	 if($okdata!="") fwrite($fp,$okdata);
@@ -74,9 +75,14 @@ function DownImageKeep($gurl,$rfurl,$filename,$gcookie="",$JumpCount=0,$maxtime=
 	 fclose($m_fp);
 	 return true;
 }
-//»ñµÃÄ³Ò³Ãæ·µ»ØµÄCookieĞÅÏ¢
+//è·å¾—æŸé¡µé¢è¿”å›çš„Cookieä¿¡æ¯
 //----------------------------
 function RefurlCookie($gurl){
+	global $gcookie,$lastRfurl;
+	$gurl = trim($gurl);
+	if(!empty($gcookie) && $lastRfurl==$gurl) return $gcookie;
+	else $lastRfurl=$gurl;
+	if(trim($gurl)=='') return '';
 	$urlinfos = GetHostInfo($gurl);
   $ghost = $urlinfos['host'];
   $gquery = $urlinfos['query'];
@@ -87,10 +93,10 @@ function RefurlCookie($gurl){
   $sessionQuery .= "Connection: Close\r\n\r\n";
   $errno = "";
   $errstr = "";
-  $m_fp = fsockopen($ghost, 80, $errno, $errstr,10);
+  $m_fp = fsockopen($ghost, 80, $errno, $errstr,10) or die($ghost.'<br />');
   fwrite($m_fp,$sessionQuery);
   $lnum = 0;
-  //»ñÈ¡ÏêÏ¸Ó¦´ğÍ·
+  //è·å–è¯¦ç»†åº”ç­”å¤´
   $gcookie = "";
 	while(!feof($m_fp)){
 			$line = trim(fgets($m_fp,256));
@@ -105,22 +111,49 @@ function RefurlCookie($gurl){
    fclose($m_fp);
    return $gcookie;
 }
-//»ñµÃÍøÖ·µÄhostºÍquery²¿·İ
+
+//è·å¾—ç½‘å€çš„hostå’Œqueryéƒ¨ä»½
 //-------------------------------------
 function GetHostInfo($gurl){
-	$gurl = eregi_replace("^http://","",$gurl);
+	$gurl = eregi_replace("^http://","",trim($gurl));
 	$garr['host'] = eregi_replace("/(.*)$","",$gurl);
 	$garr['query'] = "/".eregi_replace("^([^/]*)/","",$gurl);
 	return $garr;
 }
-//HTMLÀïµÄÍ¼Æ¬×ªDEDE¸ñÊ½
+
+//HTMLé‡Œçš„å›¾ç‰‡è½¬DEDEæ ¼å¼
 //-----------------------------------
-function TurnImageTag($ttx){
-   preg_match_all('/src="(.+?)"/is',$ttx,$match);
-   for($i=0;$i<count($match[1]);$i++){
-     $tx .="{dede:img text='' }".$match[1][$i]." {/dede:img}"."\r\n";
+function TurnImageTag(&$body){
+   global $cfg_album_width,$cfg_ddimg_width;
+   if(empty($cfg_album_width)) $cfg_album_width = 800;
+   if(empty($cfg_ddimg_width)) $cfg_ddimg_width = 150;
+   preg_match_all('/src=[\'"](.+?)[\'"]/is',$body,$match);
+   $ttx = '';
+   if(is_array($match[1]) && count($match[1])>0){
+     for($i=0;isset($match[1][$i]);$i++){
+       $ttx .= "{dede:img text='' }".$match[1][$i]." {/dede:img}"."\r\n";
+     }
    }
-   $ttx="{dede:pagestyle maxwidth='800' ddmaxwidth='150' row='3' col='3' value='3'/}\r\n".$tx;
+   $ttx = "{dede:pagestyle maxwidth='{$cfg_album_width}' ddmaxwidth='{$cfg_ddimg_width}' row='3' col='3' value='2'/}\r\n".$ttx;
    return $ttx;
 }
+
+//HTMLé‡Œçš„ç½‘å€æ ¼å¼è½¬æ¢
+//-----------------------------------
+function TurnLinkTag(&$body){
+   $ttx = '';
+   $handid = 'æœåŠ¡å™¨';
+   preg_match_all("/<a href=['\"](.+?)['\"]([^>]+?)>(.+?)<\/a>/is",$body,$match);
+   if(is_array($match[1]) && count($match[1])>0)
+   {
+     for($i=0;isset($match[1][$i]);$i++)
+     {
+       $servername = (isset($match[3][$i]) ? str_replace("'","`",$match[3][$i]) : $handid.($i+1));
+       if(ereg("[<>]",$servername) || strlen($servername)>40) $servername = $handid.($i+1);
+       $ttx .= "{dede:link text='$servername'} {$match[1][$i]} {/dede:link}\r\n";
+     }
+   }
+   return $ttx;
+}
+
 ?>

@@ -1,51 +1,50 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/../inc_type_tree_member.php");
-if(empty($dopost)) $dopost = '';
-if(empty($c)) $c = 0;
-if(empty($opall)) $opall=false;
-else $opall = true;
-if(empty($issend)) $issend=true;
-else $issend = false;
-if(empty($channelid)) $channelid = 0;
-//ÔØÈë×ÓÀ¸Ä¿
+if(!isset($dopost)) $dopost = '';
+if(!isset($c)) $c = 0;
+$opall = (empty($opall) ? false : true);
+$issend = (empty($issend) ? 1 : $issend);
+$channelid = (empty($channelid) ? 0 : $channelid);
+//è½½å…¥å­æ ç›®
 if($dopost=='GetSunListsTree'){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	PutCookie('lastCidTree',$cid,3600*24,"/");
 	$tu = new TypeTreeMember();
 	$tu->dsql = new DedeSql(false);
-	$tu->LogicListAllSunType($cid,"¡¡",$opall,$issend,$channelid);
+	$tu->LogicListAllSunType($cid,"ã€€",$opall,$issend,$channelid);
   $tu->Close();
   exit();
 }
+
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>À¸Ä¿Ñ¡Ôñ</title>
-<link href='<?php echo $cfg_phpurl?>/base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æ ç›®é€‰æ‹©</title>
+<link href='<?php echo $cfg_phpurl?>/base2.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="<?php echo $cfg_mainsite.$cfg_cmspath?>/include/dedeajax2.js"></script>
 <script language="javascript">
-function LoadSuns(ctid,tid)
+function LoadSuns(ctid,tid,channelid)
 {
-   if($(ctid).innerHTML.length < 10){
-      var myajax = new DedeAjax($(ctid),true,true,'','Ã»×ÓÀ¸Ä¿','...');
-      myajax.SendGet('catalog_tree.php?opall=<?php echo $opall?>&dopost=GetSunListsTree&cid='+tid);
+   if($DE(ctid).innerHTML.length < 10){
+      var myajax = new DedeAjax($DE(ctid),true,true,'','æ²¡å­æ ç›®','...');
+      myajax.SendGet('catalog_tree.php?opall=<?php echo $opall; ?>&issend=<?php echo $issend; ?>&dopost=GetSunListsTree&channelid='+channelid+'&cid='+tid);
    }else{
    	 if(document.all) showHide(ctid);
    }
 }
 function showHide(objname)
 {
-   if($(objname).style.display=="none") $(objname).style.display = "block";
-   else $(objname).style.display="none";
+   if($DE(objname).style.display=="none") $DE(objname).style.display = "block";
+   else $DE(objname).style.display="none";
    return false;
 }
 function ReSel(ctid,cname){
-	
-	if($('selid'+ctid).checked){
+
+	if($DE('selid'+ctid).checked){
 		window.opener.document.<?php echo $f?>.<?php echo $v?>.value=ctid;
 		window.opener.document.<?php echo $f?>.<?php echo $bt?>.value=cname;
 	  if(document.all) window.opener=true;
@@ -64,8 +63,9 @@ dl{ clear:left; margin:0px; padding:0px }
 #items1{ border-bottom: 1px solid #3885AC;
          border-left: 1px solid #2FA1DB;
          border-right: 1px solid #2FA1DB;
+         padding-left:8px;
 }
-.sunlist{ width:100%; padding-left:0px; margin:0px; clear:left } 
+.sunlist{ width:100%; padding-left:0px; margin:0px; clear:left }
 .tdborder{
 border-left: 1px solid #43938B;
 border-right: 1px solid #43938B;
@@ -94,15 +94,15 @@ scrollbar-shadow-color:#6994C2
 <base target="main">
 <body leftmargin="0" bgcolor="#86C1FF" topmargin="3" target="main">
 <table width='98%' border='0' align='center' cellpadding='0' cellspacing='0'>
-  <tr> 
+  <tr>
     <td height='24' background='<?php echo $cfg_phpurl?>/img/mtbg1.gif'  style='border-left: 1px solid #2FA1DB; border-right: 1px solid #2FA1DB;'>
-		¡¡<strong>¡ÌÇëÔÚÒªÑ¡ÔñµÄÀ¸Ä¿´ò¹´</strong>
-	  <input type='checkbox' name='nsel' id='selid0' class='np' onClick="ReSel(0,'ÇëÑ¡Ôñ...')">²»ÏŞÀ¸Ä¿
+		ã€€<strong>âˆšè¯·åœ¨è¦é€‰æ‹©çš„æ ç›®æ‰“å‹¾</strong>
+	  <input type='checkbox' name='nsel' id='selid0' class='np' onClick="ReSel(0,'è¯·é€‰æ‹©...')">ä¸é™æ ç›®
 	</td>
   </tr>
-  <tr bgcolor='#EEFAFE'> 
-    <td id='items1' align='center'> 
-<?php 
+  <tr bgcolor='#EEFAFE'>
+    <td id='items1'>
+<?php
 $tu = new TypeTreeMember();
 $tu->ListAllType($c,$issend,$opall,$channelid);
 $tu->Close();

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>文档自动摘要、自动分页</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">批量管理</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form action="action/article_description_action.php" name="form1" target="stafrm">
+  <tr> 
+    <td height="20" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+            <td width="30%" height="18"><strong>文档自动摘要、自动分页：</strong></td>
+          <td width="70%" align="right">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+      <td height="33" bgcolor="#FFFFFF">　　本向用于自动更新你系统没有填写摘要的文档的摘要信息或更新没分页的文档的自动分页标识（文档使用了自动分页后会降低HTML生成速度，并且在没人工干扰的情况下可能导致分页内容的HTML错误，请小心使用此功能）。</td>
+  </tr>
+  <tr> 
+    <td height="48" bgcolor="#FFFFFF"><table width="90%" border="0" cellpadding="2" cellspacing="2">
+          <tr> 
+            <td width="50%">频道ID： 
+              <input name="channel" type="text" id="channel" value="1" size="10">
+              （可在“<a href="mychannel_main.php"><u>频道模型管理</u></a>”处获得）</td>
+            <td width="50%">摘要大小： 
+              <input name="dsize" type="text" id="dsize" size="15" value="<?php echo $cfg_auot_description?>">
+              (最大250字节)</td>
+          </tr>
+          <tr> 
+            <td>数据表： 
+              <input name="table" type="text" id="table2" value="<?php echo $cfg_dbprefix?>addonarticle" size="20"></td>
+            <td>分析字段： 
+              <input name="field" type="text" id="field2" value="body" size="15"></td>
+          </tr>
+          <tr> 
+            <td>最小值： 
+              <input name="msize" type="text" id="msize2" value="512" size="10">
+              （字节，内容大于该值才分析）</td>
+            <td>每批处理： 
+              <input name="pagesize" type="text" id="pagesize" value="100" size="10">
+              条记录</td>
+          </tr>
+          <tr> 
+            <td>开始ID： 
+              <input name="sid" type="text" id="sid3" size="8">
+              结束ID： 
+              <input name="eid" type="text" id="eid" size="8"></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr> 
+            <td>操　作： 
+              <input name="dojob" type="radio"  value="des" checked>
+              自动摘要　 
+              <input type="radio" name="dojob"  value="page">
+              自动分页　</td>
+            <td>（自动分页大小： 
+              <?php echo $cfg_arcautosp_size?>
+              K，<a href='sys_info.php'><u>修改系统参数</u></a>）</td>
+          </tr>
+        </table></td>
+  </tr>
+  <tr> 
+    <td height="31" bgcolor="#F8FBFB" align="center">
+	<input type="submit" name="Submit" value="开始执行分析" class="inputbut"> 
+    </td>
+  </tr>
+  </form>
+  <tr bgcolor="#E5F9FF"> 
+    <td height="20" bgcolor="#EDF9D5"> <table width="100%">
+        <tr> 
+          <td width="74%"><strong>结果：</strong></td>
+          <td width="26%" align="right"> <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td id="mtd"> <div id='mdv' style='width:100%;height:100;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+      <script language="JavaScript">
+	  document.all.mdv.style.pixelHeight = screen.height - 420;
+	  </script> </td>
+  </tr>
+</table>
+</body>
+</html>

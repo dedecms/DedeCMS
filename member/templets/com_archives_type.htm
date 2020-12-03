@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>管理我的分类</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+<script language='javascript'src='main.js'></script>
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript">
+<!--
+//增加类目
+function AddnewType(){
+  var taget_obj = $Obj('typeList');
+  var typename = $Obj('typename').value;
+  var rank = $Obj('rank').value;
+  var channelid = 1;
+  if(typename==''){
+    alert("类目名称不能为空！");
+    return false;
+  }
+  if($Obj('channelid02')){
+  	if($Obj('channelid02').checked) channelid = 2;
+  }
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("com_archives_type_action.php?dopost=addnew&typename="+typename+"&channelid="+channelid+"&rank="+rank);
+  $Obj('rank').value++;
+  $Obj('typename').value = "";
+}
+
+//更新类目
+function UpdateType(tid){
+  var taget_obj = $Obj('typeList');
+  var typename = $Obj('typename'+tid).value;
+  var rank = $Obj('rank'+tid).value;
+  if(typename==''){
+    alert("类目名称不能为空！");
+    return false;
+  }
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"-",errMsg,"正在处理...");
+  myajax.SendGet("com_archives_type_action.php?dopost=update&aid="+tid+"&typename="+typename+"&rank="+rank);
+}
+
+//删除类目
+function DelType(tid){
+  var taget_obj = $Obj('typeList');
+  var typename = $Obj('typename'+tid).value;
+  if(!window.confirm('你确定要删除分类：'+typename+' 吗？')){ return false; }
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
+  myajax.SendGet("com_archives_type_action.php?dopost=del&aid="+tid);
+}
+
+//重载类目
+function ReLoadList(orderby){
+  var taget_obj = $Obj('typeList');
+  var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
+  var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在加载中...");
+  myajax.SendGet("com_archives_type_action.php?dopost=reload&orderby="+orderby);
+}
+-->
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="299" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
+          <tr>
+          <div class="manage_company_right_title" style="margin-top:10px;">
+                	<ul><li>管理我的分类：</li></ul>
+            </div>
+          </tr>
+	 </table>
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
+        <tr bgcolor="#F2F9E6">
+          <td height="30" colspan="2" align="left" style="padding-left:6px;">增加新的分类：</td>
+        </tr>
+        <tr>
+          <td width="20%" height="30" align="center" bgcolor="#FFFFFF" style="padding-left:6px;">分类名称：</td>
+          <td width="80%" height="30" align="left" bgcolor="#FFFFFF" style="padding-left:6px;">
+		  <input name="typename" type="text" id="typename" style="width:150px" class="jifenlabel" />		  </td>
+        </tr>
+        <tr>
+          <td height="30" align="center" bgcolor="#FFFFFF" style="padding-left:6px;">内容类型：</td>
+      <td height="30" align="left" bgcolor="#FFFFFF" style="padding-left:6px;">
+	          <input name="channelid" id="channelid01" type="radio" value="1" checked>
+            文章
+            <?php  if($cfg_mb_album=='是'){ ?>
+            <input type="radio" id="channelid02" name="channelid" value="2">
+            图集
+            <?php  } ?>		</td>
+        </tr>
+        <tr>
+          <td height="30" align="center" valign="middle" bgcolor="#FFFFFF" style="padding-left:6px;">排序级别：</td>
+          <td height="30" align="left" bgcolor="#FFFFFF" style="padding-left:6px;">
+		  <input name="rank" type="text" id="rank" style="width:80px" value="<?php echo $nrank?>" class="jifenlabel" />
+          <input type="button" name="bt" value="增加" style="width:50px" onClick="AddnewType()" />		  </td>
+        </tr>
+        <tr bgcolor="#F2F9E6">
+          <td height="30" colspan="2" align="left" style="padding-left:6px;">已有分类管理： </td>
+        </tr>
+        <tr>
+          <td id="typeList" height="380" colspan="2" valign="top" bgcolor="#FFFFFF" style="padding-left:6px;padding-top:6px">
+          	<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:10px;">
+            <tr align="center" bgcolor="#FBFCD1">
+              <td width="11%" height="25">ID</td>
+              <td width="32%">分类名称</td>
+              <td width="15%" style="color:#000;"><a href='javascript:ReLoadList(1)'><u>内容类型</u></a></td>
+              <td width="18%"><a href='javascript:ReLoadList(0)'><u>排序级别</u></a></td>
+              <td>操作</td>
+            </tr>
+            <?php
+	$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' order by rank desc");
+  $dsql->Execute();
+  while($row = $dsql->GetObject()){
+  	if($row->channelid==1){ $cktype = " 文章 "; }
+  	else{ $cktype = " <font color='#3C9636'>图集<font> "; }
+  	echo "<tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#EFEFEF';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">\r\n";
+  	echo "<td height=\"30\">{$row->aid}</td>\r\n";
+    echo "<td><input name='typename{$row->aid}' type='text' id='typename{$row->aid}' style='width:150px' value='{$row->typename}' class=\"jifenlabel\" /></td>\r\n";
+    echo "<td>{$cktype}</td>\r\n";
+    echo "<td><input name='rank{$row->aid}' type='text' id='rank{$row->aid}' style='width:60px' value='{$row->rank}' class=\"jifenlabel\" /></td>\r\n";
+    echo "<td>［<a href='#' onclick='UpdateType({$row->aid})'>更新</a>］［<a href='#' OnClick='DelType({$row->aid})'>删除</a>］</td>\r\n</tr>\r\n";
+  }
+		?>
+          </table></td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

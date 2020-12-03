@@ -3,19 +3,21 @@ require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
 $ID = trim(ereg_replace("[^0-9]","",$ID));
 
-//¼ì²éÈ¨ÏŞĞí¿É
+//æ£€æŸ¥æƒé™è®¸å¯
 CheckPurview('t_Del,t_AccDel');
-//¼ì²éÀ¸Ä¿²Ù×÷Ğí¿É
-CheckCatalog($ID,"ÄãÎŞÈ¨É¾³ı±¾À¸Ä¿£¡");
+//æ£€æŸ¥æ ç›®æ“ä½œè®¸å¯
+CheckCatalog($ID,"ä½ æ— æƒåˆ é™¤æœ¬æ ç›®ï¼");
 
 if(empty($dopost)) $dopost="";
 if($dopost=="ok"){
 	 $ut = new TypeUnit();
 	 $ut->DelType($ID,$delfile);
+	 //æ›´æ–°ç¼“å­˜
+   UpDateCatCache($dsql);
 	 $ut->Close();
-	 //¸üĞÂÊ÷ĞÎ²Ëµ¥
+	 //æ›´æ–°æ ‘å½¢èœå•
    $rndtime = time();
-   $rflwft = "<script language='javascript'>
+   $uptree = "<script language='javascript'>
    if(window.navigator.userAgent.indexOf('MSIE')>=1){
      if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
      { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
@@ -24,64 +26,12 @@ if($dopost=="ok"){
      { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
    }
    </script>";
-   echo $rflwft;
-	 ShowMsg("³É¹¦É¾³ıÒ»¸öÀ¸Ä¿£¡","catalog_main.php");
+   echo $uptree;
+	 ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªæ ç›®ï¼","catalog_main.php");
 	 exit();
 }
-?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>É¾³ıÀ¸Ä¿</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script src='menu.js' language='JavaScript'></script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr> 
-    <td height="19" background='img/tbg.gif'><a href="catalog_main.php"><u>À¸Ä¿¹ÜÀí</u></a>&gt;&gt;É¾³ıÀ¸Ä¿</td>
-  </tr>
-  <tr> 
-    <td height="60" align="center" bgcolor="#FFFFFF"> 
-      <table width="96%" border="0" cellspacing="0" cellpadding="0">
-        <form name="form1" action="catalog_del.php" method="post">
-          <input type="hidden" name="ID" value="<?php echo $ID?>">
-          <input type="hidden" name="dopost" value="ok">
-          <tr> 
-            <td colspan="2">&nbsp;</td>
-          </tr>
-          <tr> 
-            <td colspan="2">ÄãÒªÉ¾³ıÀ¸Ä¿£º 
-              <?php echo $typeoldname?>
-            </td>
-          </tr>
-          <tr> 
-            <td colspan="2">À¸Ä¿µÄÎÄ¼ş±£´æÄ¿Â¼£º 
-              <?php 
-              $dsql = new DedeSql();
-              $dsql->SetQuery("Select typedir From #@__arctype where ID=".$ID);
-              $row = $dsql->GetOne();
-              $dsql->Close();
-              echo $row["typedir"];
-              ?>
-            </td>
-          </tr>
-          <tr> 
-            <td width="42%" height="36">ÊÇ·ñÉ¾³ıÎÄ¼ş£º 
-              <input type="radio" name="delfile" class="np" value="no" checked>
-              ·ñ &nbsp;&nbsp; <input type="radio" name="delfile" class="np" value="yes">
-              ÊÇ </td>
-            <td width="58%" height="36"><input type="button" name="Submit" value=" È·¶¨ " onClick="javascript:document.form1.submit();" class='nbt'> 
-              &nbsp; <input type="button" name="Submit2" value=" ·µ»Ø " onClick="javascript:location.href='catalog_main.php';" class='nbt'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="20" colspan="2">&nbsp;</td>
-          </tr>
-        </form>
-      </table></td>
-  </tr>
-</table>
-</body>
 
-</html>
+require_once(dirname(__FILE__)."/templets/catalog_del.htm");
+
+ClearAllLink();
+?>

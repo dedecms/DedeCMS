@@ -12,9 +12,9 @@ $dsql->Execute();
 while($row = $dsql->GetArray()){
    $aid = $row['aid'];
    DelArc($aid);
-   echo "É¾³ý $aid OK<br>";
+   echo "åˆ é™¤ $aid OK<br>";
 }
 
-$dsql->Close();
+ClearAllLink();
 
 ?>

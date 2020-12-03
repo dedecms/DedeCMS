@@ -5,7 +5,7 @@ require_once(dirname(__FILE__)."/../include/inc_functions.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 function GetDatePage($mktime)
 {
-	if($mktime=="0") return "´ÓÎ´²É¼¯¹ý";
+	if($mktime=="0") return "ä»Žæœªé‡‡é›†è¿‡";
 	return strftime("%Y-%m-%d",$mktime);
 }
 
@@ -42,5 +42,5 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/co_main.htm");
 $dlist->display();
 $dlist->Close();
-$dsql->Close();
+ClearAllLink();
 ?>

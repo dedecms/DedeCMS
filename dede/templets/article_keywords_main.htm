@@ -1,9 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�ؼ��ֹ���</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>关键字管理</title>
 <link href="div.css" rel="stylesheet" type="text/css">
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <style>
 	.nnpp{
 	border-bottom:1px solid #98CAEF;
@@ -14,48 +15,53 @@
  }
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">批量管理</div>
+</div>
 <div class="main"> 
-  <table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#333333">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
     <tr> 
-      <td height="26" colspan="6" background="img/tbg.gif"><table width="96%" border="0">
+      <td height="26" colspan="6"><table width="96%" border="0" align="center">
           <tr> 
-            <td width="25%"><strong>�ؼ���ά��</strong></td>
+            <td width="25%" height="35" align="left"><strong>关键词维护</strong></td>
             <form name='form2' action="article_keywords_main.php">
-            <td width="75%" align="right">
-   	        ������<input type='text' name='keyword' size='10'> 
-   	        <input type='submit' name='sb' value='ȷ��' class='np'>
+            <td width="75%" align="left">
+   	        搜索：
+   	          <input type='text' name='keyword' size='10'> 
+   	        <input type='submit' name='sb' value='确定' class="inputbut" />
    	        &nbsp;
-            <input class="nbt" name="n1" type="button" id="n1" value="����ϵͳ�ڵĹؼ���" onClick="location='article_keywords_make.php';" style="width:130"> 
+            <input name="n1" type="button" id="n1" value="分析系统内的关键字" onClick="location='article_keywords_make.php';" class="inputbut" /> 
             &nbsp;
-            <input class="nbt" name="n11" type="button" id="n11" value="���������Ĺؼ���" onClick="location='search_keywords_main.php';" style="width:125">
+            <input name="n11" type="button" id="n11" value="管理搜索的关键字" onClick="location='search_keywords_main.php';" class="inputbut" />
             </td></form>
           </tr>
         </table></td>
     </tr>
     <form name='forma' action="article_keywords_add.php">
       <tr align="center" bgcolor="#F0FDDB"> 
-        <td width="100%" height="24" colspan="6">
-        	<table border="0" cellspacing="0" cellpadding="0">
+        <td width="100%" height="24" colspan="6" bgcolor="#EDF9D5">
+       	  <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
-              <td width="100" align="center">�����ؼ��֣�</td>
+              <td width="100" align="center">新增关键字：</td>
               <td width="140"><input name="keyword" type="text" id="keyword" style="width:130"></td>
-              <td width="60">������ַ��</td>
+              <td width="100">链接网址：</td>
               <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130"></td>
-              <td width="40">Ƶ�ʣ�</td>
+              <td width="40">频率：</td>
               <td width="50"><input name="rank" type="text" id="rank" style="width:30" value="30"></td>
-              <td width="80"><input type="submit" name="Submit" value="����" class="np"></td>
+              <td width="80"><input type="submit" name="Submit" value="保存" class="inputbut" /></td>
             </tr>
           </table>
           </td>
       </tr>
     </form>
     <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="8%">ѡ��</td>
-      <td width="25%">�ؼ���</td>
-      <td width="35%">������ַ</td>
-      <td width="10%">Ƶ��</td>
-      <td width="22%">����</td>
+      <td width="8%">选择</td>
+      <td width="25%">关键字</td>
+      <td width="35%">链接网址</td>
+      <td width="10%">频率</td>
+      <td width="22%">管理</td>
     </tr>
 	<form name='form1' action="article_keywords_saveall.php" method="post">
 <?php 
@@ -65,7 +71,7 @@ while($row = $mylist->GetArray('dm'))
 ?>
     <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EEFAAB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
       <td height="24">
-      	<input name="aids[]" type="checkbox" value="<?php echo $row['aid']?>" class="np" checked> 
+      	<input name="aids[]" type="checkbox" value="<?php echo $row['aid']?>"  checked> 
       </td>
       <td>
       	<input type='hidden' value='<?php echo $row['keyword']?>' name='keyword_<?php echo $row['aid']?>'>
@@ -81,19 +87,18 @@ while($row = $mylist->GetArray('dm'))
       <td>
       	<input type='hidden' name='staold_<?php echo $row['aid']?>' value='<?php echo $row['sta']?>'>
       	<input type='checkbox' name='isnouse_<?php echo $row['aid']?>' class='np' value='1'<?php echo GetSta($row['sta'])?>>
-      	����
+      	禁用
       	&nbsp;
       	<input type='checkbox' name='isdel_<?php echo $row['aid']?>' class='np' value='1'>
-      	ɾ��
+      	删除
       </td>
     </tr>
 <?php 
 }
 ?>
      <tr bgcolor="#F0FBBD"> 
-      <td height="26" colspan="6">
-	    &nbsp; <input type="button" name="dl" value="�������" onclick="this.form.submit();" class='nbt'>
-	  </td>
+      <td height="35" colspan="6" bgcolor="#EDF9D5">
+	    &nbsp; <input type="button" name="dl" value="保存更改" onClick="this.form.submit();" class="inputbut" />	  </td>
     </tr>
 	</form>
     <tr align="center" bgcolor="#FAFDF0">

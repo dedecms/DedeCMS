@@ -1,9 +1,9 @@
-<?
+<?php
 require_once(dirname(__FILE__)."/../config_base.php");
 require_once(dirname(__FILE__)."/../inc_userlogin.php");
 if(empty($dopost)) $dopost="";
 //--------------------------------
-//��¼���
+//登录检测
 //--------------------------------
 if($dopost=="login")
 {
@@ -13,41 +13,41 @@ if($dopost=="login")
   $svali = GetCkVdValue();
   
   if($validate=="" || $validate!=$svali){
-	  ShowMsg("��֤�벻��ȷ!","");
+	  ShowMsg("验证码不正确!","");
   }else{
      $cuserLogin = new userLogin();
      if(!empty($userid)&&!empty($pwd))
      {
 	      $res = $cuserLogin->checkUser($userid,$pwd);
-	      //�ɹ���¼
+	      //成功登录
 	      if($res==1){
 		       $cuserLogin->keepUser();
 		       if(!empty($gotopage)){
-		       	 ShowMsg("�ɹ���¼������ת��...",$gotopage);
+		       	 ShowMsg("成功登录，正在转向...",$gotopage);
 		       	 exit();
 		       }else{
-		       	 ShowMsg("�ɹ���¼����رձ����ں���һ���´��ڣ�","javascript:;");
+		       	 ShowMsg("成功登录，请关闭本窗口后开启一个新窗口！","javascript:;");
 		       	 exit();
 		       }
 	      }
 	      else if($res==-1){
-		      ShowMsg("����û���������!","");
+		      ShowMsg("你的用户名不存在!","");
 	      }
 	      else{
-		      ShowMsg("����������!","");
+		      ShowMsg("你的密码错误!","");
 	      }
-     }//<-���벻Ϊ��
+     }//<-密码不为空
      else{
-	    ShowMsg("�û�������û��д����!","");
+	    ShowMsg("用户和密码没填写完整!","");
      }
      
-  }//<-��֤�û�
+  }//<-验证用户
 }
 ?>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>֯�����ݹ���ϵͳ DedeCms V3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>织梦内容管理系统 DedeCms V3</title>
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body style='MARGIN: 0px' bgColor='#ffffff' leftMargin='0' topMargin='0' scroll='no'>
@@ -58,7 +58,7 @@ if($dopost=="login")
     </td>
   </tr>
   <tr> 
-    <td width="100%" height="20">��</td>
+    <td width="100%" height="20">　</td>
   </tr>
   <tr> 
     <td width="100%" height="20" valign="bottom">
@@ -67,7 +67,7 @@ if($dopost=="login")
           <td align="right" style="FONT-SIZE: 2pt">&nbsp;</td>
         </tr>
         <tr> 
-          <td><IMG height=14 src="img/book1.gif" width=20>&nbsp; �û���¼</td>
+          <td><IMG height=14 src="img/book1.gif" width=20>&nbsp; 用户登录</td>
         </tr>
       </table></td>
   </tr>
@@ -87,17 +87,17 @@ if($dopost=="login")
             <td colspan="2" height="4"></td>
           </tr>
           <tr> 
-            <td width="156" height="30" align="center"> �û�����</td>
+            <td width="156" height="30" align="center"> 用户名：</td>
             <td width="384"> <input type="text" name="userid" style="width:150;height:20"> 
             </td>
           </tr>
           <tr> 
-            <td height="30" align="center"> �ܡ��룺 </td>
+            <td height="30" align="center"> 密　码： </td>
             <td> <input type="password" name="pwd" style="width:150;height:20"> 
             </td>
           </tr>
           <tr> 
-            <td height="30" align="center"> ��֤�룺 </td>
+            <td height="30" align="center"> 验证码： </td>
             <td> <table width="90%"  border="0" cellspacing="0" cellpadding="0">
                 <tr> 
                   <td width="25%"><input type="text" name="validate" style="width:80;height:20"></td>
@@ -106,7 +106,7 @@ if($dopost=="login")
               </table></td>
           </tr>
           <tr> 
-            <td height="50" colspan="2" align="center"> <input type="button" name="sm1" value="��¼" style="background-color:#BAE171;border:1px solid #666666" onClick="this.form.submit();"> 
+            <td height="50" colspan="2" align="center"> <input type="button" name="sm1" value="登录" style="background-color:#BAE171;border:1px solid #666666" onClick="this.form.submit();"> 
               &nbsp; <input type="button" name="sm2" value="Power by DedeCms" onClick="window.open('http://www.dedecms.com');" style="background-color:#FFFFFF;border:1px solid #DDDDDD;color:#DDDDDD"> 
               &nbsp; </td>
           </tr>

@@ -15,7 +15,7 @@ else $isediter=0;
 ?>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>DedeCms HtmlEditer</title>
 <script type="text/JavaScript" language="JavaScript">
 var _MyEDoc;
@@ -64,9 +64,9 @@ var parentForm = parentField.form;
       <table>
       <tr>
          <td width="25"><input name="modeCheck" type="radio" onClick="Show_MyEditor();" value="1" checked></td>
-            <td width="49">可视化</td>
+            <td width="49">鍙鍖�</td>
             <td width="28"><input type="radio" name="modeCheck" value="0" onClick="ShowCode_MyEditor();"></td>
-            <td width="62">编辑源码</td>
+            <td width="62">缂栬緫婧愮爜</td>
             <td></td>
         </tr>
         </table>

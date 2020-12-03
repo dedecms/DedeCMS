@@ -4,15 +4,15 @@ if(empty($dopost)) $dopost = "";
 if(empty($ID)) $ID="0";
 $ID = ereg_replace("[^0-9]","",$ID);
 
-//¼ì²éÈ¨ÏŞĞí¿É
+//æ£€æŸ¥æƒé™è®¸å¯
 CheckPurview('t_Edit,t_AccEdit');
-//¼ì²éÀ¸Ä¿²Ù×÷Ğí¿É
-CheckCatalog($ID,"ÄãÎŞÈ¨¸ü¸Ä±¾À¸Ä¿£¡");
+//æ£€æŸ¥æ ç›®æ“ä½œè®¸å¯
+CheckCatalog($ID,"ä½ æ— æƒæ›´æ”¹æœ¬æ ç›®ï¼");
 
 $dsql = new DedeSql(false);
 
 //----------------------------------
-//±£´æ¸Ä¶¯ Action Save
+//ä¿å­˜æ”¹åŠ¨ Action Save
 //-----------------------------------
 if($dopost=="save")
 {
@@ -22,9 +22,21 @@ if($dopost=="save")
    if($cfg_cmspath!="") $typedir = ereg_replace("^".$cfg_cmspath,"{cmspath}",$typedir);
    else if(!eregi("{cmspath}",$typedir) && $moresite==0) $typedir = "{cmspath}".$typedir;
    
+   //å­åˆ†ç±»
+   $sonlists = (empty($sonlists) ? '' : $sonlists);
+   $smalltypes = "";
+   if(is_array($sonlists) && isset($needson)){
+   	 $n = count($sonlists);
+   	 for($i=0;$i<$n;$i++){
+   	 	 if($i==($n-1)) $smalltypes .= $sonlists[$i];
+   	 	 else $smalltypes .= $sonlists[$i].",";
+   	 }
+   }
+   
+   if(empty($siterefer)) $siterefer=1;
+   
    $upquery = "
      Update #@__arctype set
-     issend='$issend',
      sortrank='$sortrank',
      typename='$typename',
      typedir='$typedir',
@@ -46,28 +58,32 @@ if($dopost=="save")
      siterefer='$siterefer',
      sitepath='$sitepath',
      siteurl='$siteurl',
-     ishidden='$ishidden'
+     ishidden='$ishidden',
+     smalltypes='$smalltypes'
    where ID='$ID'";
    
    if(!$dsql->ExecuteNoneQuery($upquery)){
-   	 ShowMsg("±£´æµ±Ç°À¸Ä¿¸ü¸ÄÊ±Ê§°Ü£¬Çë¼ì²éÄãµÄÊäÈë×ÊÁÏÊÇ·ñ´æÔÚÎÊÌâ£¡","-1");
+   	 ShowMsg("ä¿å­˜å½“å‰æ ç›®æ›´æ”¹æ—¶å¤±è´¥ï¼Œè¯·æ£€æŸ¥ä½ çš„è¾“å…¥èµ„æ–™æ˜¯å¦å­˜åœ¨é—®é¢˜ï¼","-1");
    	 exit();
    }
    
-   //¸ü¸Ä±¾À¸Ä¿ÎÄµµµÄÈ¨ÏŞ
+   //æ›´æ”¹æœ¬æ ç›®æ–‡æ¡£çš„æƒé™
    
    if($corank != $corank_old){
       $dsql->ExecuteNoneQuery("Update #@__archives set arcrank='$corank' where typeid='$ID' ");
    }
    
-   //Èç¹ûÑ¡Ôñ×ÓÀ¸Ä¿¿ÉÍ¶¸å£¬¸üĞÂ¶¥¼¶À¸Ä¿Îª¿ÉÍ¶¸å
-   if($topID>0 && $issend==1){
-   	 $dsql->ExecuteNoneQuery("Update #@__arctype set issend='$issend' where ID='$topID'; ");
+   //å¦‚æœé€‰æ‹©å­æ ç›®å¯æŠ•ç¨¿ï¼Œæ›´æ–°é¡¶çº§æ ç›®åŠé¢‘é“æ¨¡å‹ä¸ºå¯æŠ•ç¨¿
+   if($issend==1){
+   	 if($topID>0) $dsql->ExecuteNoneQuery("Update `#@__arctype` set issend='1' where ID='$topID'; ");
+   	 $dsql->ExecuteNoneQuery("Update `#@__channeltype` set issend='1' where ID='$channeltype'; ");
    }
    
-   //¸üĞÂÊ÷ĞÎ²Ëµ¥
+   //æ›´æ–°æ ‘å½¢èœå•
    $rndtime = time();
-   $rflwft = "<script language='javascript'>
+   $rflwft = "
+   <script language='javascript'>
+   <!--
    if(window.navigator.userAgent.indexOf('MSIE')>=1){
      if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
      { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
@@ -75,9 +91,13 @@ if($dopost=="save")
   	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
      { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
    }
-   </script>";
+   -->
+   </script>
+   ";
+
+//"-------------------------------
    
-   //¸ü¸Ä×ÓÀ¸Ä¿ÊôĞÔ
+   //æ›´æ”¹å­æ ç›®å±æ€§
    if(!empty($upnext))
    {
    	 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -98,21 +118,21 @@ if($dopost=="save")
        siterefer='$siterefer',
        sitepath='$sitepath',
        siteurl='$siteurl',
-       ishidden='$ishidden'
+       ishidden='$ishidden',
+       smalltypes='$smalltypes'
      where 1=1 And $slinks";
    
      if(!$dsql->ExecuteNoneQuery($upquery)){
        echo $rflwft;
-   	   ShowMsg("¸ü¸Äµ±Ç°À¸Ä¿³É¹¦£¬µ«¸ü¸ÄÏÂ¼¶À¸Ä¿ÊôĞÔÊ±Ê§°Ü£¡","-1");
+   	   ShowMsg("æ›´æ”¹å½“å‰æ ç›®æˆåŠŸï¼Œä½†æ›´æ”¹ä¸‹çº§æ ç›®å±æ€§æ—¶å¤±è´¥ï¼","-1");
    	   exit();
      }
-     $tl->Close();
-     
    }
-   //--------------------------
+   //æ›´æ–°ç¼“å­˜
+   UpDateCatCache($dsql);
    $dsql->Close();
    echo $rflwft;
-   ShowMsg("³É¹¦¸ü¸ÄÒ»¸ö·ÖÀà£¡","catalog_main.php");
+   ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªåˆ†ç±»ï¼","catalog_main.php");
    exit();
 }//End Save Action
 
@@ -127,19 +147,19 @@ if($topID>0)
 	  if(!ereg("[0-9]",$k)) $myrow[$k] = $v;
 	}
 }
-//¶ÁÈ¡ÆµµÀÄ£ĞÍĞÅÏ¢
+//è¯»å–é¢‘é“æ¨¡å‹ä¿¡æ¯
 $channelid = $myrow['channeltype'];
 $row = $dsql->GetOne("select * from #@__channeltype where ID='$channelid'");
 $nid = $row['nid'];
-//¶ÁÈ¡ËùÓĞÄ£ĞÍ×ÊÁÏ
-$dsql->SetQuery("select * from #@__channeltype where ID>-1 And isshow=1 order by ID");
+//è¯»å–æ‰€æœ‰æ¨¡å‹èµ„æ–™
+$dsql->SetQuery("select * from #@__channeltype where ID<>-1 And isshow=1 order by ID");
 $dsql->Execute();
 while($row=$dsql->GetObject())
 {
   $channelArray[$row->ID]['typename'] = $row->typename;
   $channelArray[$row->ID]['nid'] = $row->nid;
 }
-//¸¸À¸Ä¿ÊÇ·ñÎª¶ş¼¶Õ¾µã
+//çˆ¶æ ç›®æ˜¯å¦ä¸ºäºŒçº§ç«™ç‚¹
 if(!empty($myrow['moresite'])){
 	 $moresite = $myrow['moresite'];
 }else{
@@ -149,333 +169,9 @@ if(!empty($myrow['moresite'])){
 if($myrow['topID']==0){
 	PutCookie('lastCid',$ID,3600*24,"/");
 }
+
+require_once(dirname(__FILE__)."/templets/catalog_edit.htm");
+
+ClearAllLink();
+
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>À¸Ä¿¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script language="javascript">
-var channelArray = new Array();
-<?php     
-$i = 0;
-foreach($channelArray as $k=>$arr){
-  echo "channelArray[$k] = \"{$arr['nid']}\";\r\n";
-}
-?>
-	
-function SelectTemplets(fname){
-   var posLeft = window.event.clientY-200;
-   var posTop = window.event.clientX-300;
-   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
-}
-  
-function ShowHide(objname){
-  var obj = document.getElementById(objname);
-  if(obj.style.display == "block" || obj.style.display == "")
-	   obj.style.display = "none";
-  else
-	   obj.style.display = "block";
-}
-  
-function ShowObj(objname){
-   var obj = document.getElementById(objname);
-	 obj.style.display = "block";
-}
-  
-function HideObj(objname){
-  var obj = document.getElementById(objname);
-	obj.style.display = "none";
-}
-  
-function ShowItem1(){
-  ShowObj('head1'); ShowObj('needset'); HideObj('head2'); HideObj('adset');
-}
-  
-function ShowItem2(){
-  ShowObj('head2'); ShowObj('adset'); HideObj('head1'); HideObj('needset');
-}
-  
-function CheckTypeDir(){
-  var upinyin = document.getElementById('upinyin');
-  var tpobj = document.getElementById('typedir');
-  if(upinyin.checked) tpobj.style.display = "none";
-  else tpobj.style.display = "block";
-}
-  
-function ParTemplet(obj)
-{
-  var sevvalue = channelArray[obj.value];
-  var tempindex = document.getElementsByName('tempindex');
-  var templist = document.getElementsByName('templist');
-  var temparticle = document.getElementsByName('temparticle');
-  //var dfstyle = document.getElementsByName('dfstyle');
-  //var dfstyleValue = dfstyle[0].value;
-  tempindex[0].value = "{style}/index_"+sevvalue+".htm";
-  templist[0].value = "{style}/list_"+sevvalue+".htm";
-  temparticle[0].value = "{style}/article_"+sevvalue+".htm";
-}
-  
-function checkSubmit()
-{
-   if(document.form1.typename.value==""){
-		  alert("À¸Ä¿Ãû³Æ²»ÄÜÎª¿Õ£¡");
-		  document.form1.typename.focus();
-		  return false;
-	 }
-	 return true;
-}
-</script>
-</head>
-<body leftmargin='15' topmargin='10'>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
-  <tr> 
-    <td width="100%" height="20" valign="top">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;<a href="catalog_main.php"><u>À¸Ä¿¹ÜÀí</u></a>&gt;&gt;ĞŞ¸ÄÀ¸Ä¿</td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="1" background="img/sp_bg.gif"></td>
-  </tr>
-</table>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr><td height="10"></td></tr>
-  <tr>
-  <form name="form1" action="catalog_edit.php" method="post" onSubmit="return checkSubmit();">
-  <input type="hidden" name="dopost" value="save">
-  <input type="hidden" name="ID" value="<?php echo $ID?>">
-  <input type="hidden" name="topID" value="<?php echo $myrow['topID']?>">
-  <td height="95" align="center" bgcolor="#FFFFFF">
-	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" class="htable">
-     <tr> 
-       <td colspan="2" bgcolor="#FFFFFF">
-<table width="168" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;³£¹æÑ¡Ïî&nbsp;</td>
-                  <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>¸ß¼¶Ñ¡Ïî</u></a>&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table> 
-        <table width="100%" border="0" cellspacing="0" id="head2" cellpadding="0" style="border-bottom:1px solid #CCCCCC;display:none">
-          <tr>
-            <td colspan="2" bgcolor="#FFFFFF">
-<table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
-                <tr> 
-                  <td width="84" align="center" background="img/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>³£¹æÑ¡Ïî</u></a>&nbsp;</td>
-                  <td width="84" align="center" background="img/itemnote1.gif">¸ß¼¶Ñ¡Ïî&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-       </table>
-	    <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="120" class='bline' height="26">ÊÇ·ñÖ§³ÖÍ¶¸å£º</td>
-            <td class='bline'> <input type='radio' name='issend' value='0' class='np' <?php if($myrow['issend']=="0") echo " checked";?>>
-              ²»Ö§³Ö&nbsp; <input type='radio' name='issend' value='1' class='np' <?php if($myrow['issend']=="1") echo " checked";?>>
-              Ö§³Ö </td>
-          </tr>
-          <tr> 
-            <td width="120" class='bline' height="26">ÊÇ·ñÒş²ØÀ¸Ä¿£º</td>
-            <td class='bline'> <input type='radio' name='ishidden' value='0' class='np'<?php if($myrow['ishidden']=="0") echo " checked";?>>
-              ÏÔÊ¾¡¡&nbsp; <input type='radio' name='ishidden' value='1' class='np'<?php if($myrow['ishidden']=="1") echo " checked";?>>
-              Òş²Ø </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">À¸Ä¿Ãû³Æ£º</td>
-            <td class='bline'><input name="typename" type="text" id="typename" size="30" value="<?php echo $myrow['typename']?>"></td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26"> ÅÅÁĞË³Ğò£º </td>
-            <td class='bline'> <input name="sortrank" size="6" type="text" value="<?php echo $myrow['sortrank']?>">
-              £¨ÓÉµÍ -&gt; ¸ß£© </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ä¯ÀÀÈ¨ÏŞ£º</td>
-            <td class='bline'>
-			<input type="hidden" name="corank_old" value="<?php echo $myrow['corank']?>">
-			<select name="corank" id="corank" style="width:100">
-                <?php 
-              $dsql->SetQuery("Select * from #@__arcrank where rank >= 0");
-              $dsql->Execute();
-              while($row = $dsql->GetObject())
-              {
-              	if($myrow['corank']==$row->rank)
-              	  echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";
-				        else
-				          echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n";
-              }
-              ?>
-              </select>
-              (±¾È¨ÏŞ½ö¶Ô<font color="#0000FF"><strong>×îÖÕÁĞ±íÀ¸Ä¿</strong></font>ÓĞĞ§£¬ÉèÖÃºó±¾À¸Ä¿·¢²¼»òÉóºËºóµÄËùÓĞÎÄµµ½«Ê¹ÓÃ´ËÈ¨ÏŞ) 
-            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ÎÄ¼ş±£´æÄ¿Â¼£º</td>
-            <td class='bline'> <input name="typedir" type="text" id="typedir" value="<?php echo $myrow['typedir']?>" style="width:300"> 
-            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ÄÚÈİÄ£ĞÍ£º &nbsp; </td>
-            <td class='bline'> <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
-                <?php     
-            foreach($channelArray as $k=>$arr)
-            {
-            	if($k==$channelid) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
-              else  echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
-            }
-            ?>
-              </select> </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">À¸Ä¿ÁĞ±íÑ¡Ïî£º</td>
-            <td class='bline'> <input type='radio' name='isdefault' value='1' class='np'<?php  if($myrow['isdefault']==1) echo" checked";?>>
-              Á´½Óµ½Ä¬ÈÏÒ³ 
-              <input type='radio' name='isdefault' value='0' class='np'<?php  if($myrow['isdefault']==0) echo" checked";?>>
-              Á´½Óµ½ÁĞ±íµÚÒ»Ò³ 
-              <input type='radio' name='isdefault' value='-1' class='np'<?php  if($myrow['isdefault']==-1) echo" checked";?>>
-              Ê¹ÓÃ¶¯Ì¬Ò³ </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">Ä¬ÈÏÒ³µÄÃû³Æ£º </td>
-            <td class='bline'><input name="defaultname" type="text" value="<?php echo $myrow['defaultname']?>"></td>
-          </tr>
-          <tr> 
-            <td height="26" class='bline'>À¸Ä¿ÊôĞÔ£º</td>
-            <td class='bline'> <input name="ispart" type="radio" id="radio" value="0" class='np'<?php  if($myrow['ispart']==0) echo" checked";?>>
-              ×îÖÕÁĞ±íÀ¸Ä¿£¨ÔÊĞíÔÚ±¾À¸Ä¿·¢²¼ÎÄµµ£¬²¢Éú³ÉÎÄµµÁĞ±í£©<br> <input name="ispart" type="radio" id="radio2" value="1" class='np'<?php  if($myrow['ispart']==1) echo" checked";?>>
-              ÆµµÀ·âÃæ£¨À¸Ä¿±¾Éí²»ÔÊĞí·¢²¼ÎÄµµ£©<br> <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php  if($myrow['ispart']==2) echo" checked";?>>
-              µ¥¶ÀÒ³Ãæ£¨À¸Ä¿±¾Éí²»ÔÊĞí·¢²¼ÎÄµµ£© </td>
-          </tr>
-        </table>
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none" id="adset">
-          <tr> 
-            <td class='bline' width="120" height="24">¶àÕ¾µãÖ§³Ö£º</td>
-            <td class='bline'> <input name="moresite" type="radio"  class="np" value="0"<?php  if($myrow['moresite']==0) echo" checked";?>>
-              ²»ÆôÓÃ 
-              <input type="radio" name="moresite" class="np" value="1"<?php  if($myrow['moresite']==1) echo" checked";?>>
-              ÆôÓÃ </td>
-          </tr>
-          <tr> 
-            <td height="24" bgcolor="#F3F7EA">ËµÃ÷£º</td>
-            <td bgcolor="#F3F7EA">°óÃû°ó¶¨½öĞèÒªÔÚ¶¥¼¶À¸Ä¿Éè¶¨£¬ÏÂ¼¶À¸Ä¿¸ü¸ÄÎŞĞ§¡£</td>
-          </tr>
-          <tr> 
-            <td class='bline' height="24">°ó¶¨ÓòÃû£º</td>
-            <td class='bline'> <input name="siteurl" type="text" id="siteurl" size="35" value="<?php echo $myrow['siteurl']?>">
-              (Ğè¼Ó http://£¬Ò»¼¶»ò¶ş¼¶ÓòÃûµÄ¸ùÍøÖ·) </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="24">Õ¾µã¸ùÄ¿Â¼£º</td>
-            <td class='bline'> <input name="sitepath" type="text" id="sitepath" size="35" value="<?php echo $myrow['sitepath']?>"> 
-              <input name="siterefer" type="radio" id="siterefer1" class="np" value="1"<?php  if($myrow['siterefer']==1) echo" checked";?>>
-              Ïà¶ÔÓÚµ±Ç°Õ¾µã¸ùÄ¿Â¼ 
-              <input name="siterefer" type="radio" id="siterefer2" class="np" value="2"<?php  if($myrow['siterefer']==2) echo" checked";?>>
-              ¾ø¶ÔÂ·¾¶ </td>
-          </tr>
-          <tr id='helpvar1' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">Ö§³Ö±äÁ¿£º </td>
-            <td bgcolor="#F3F7EA"> {tid}±íÊ¾À¸Ä¿ID£¬<br>
-              {cid}±íÊ¾ÆµµÀÄ£ĞÍµÄ'Ãû×ÖID' <font color='#888888'> £¨ 
-              <?php 
-              foreach($channelArray as $k=>$arr)
-              {
-            	   echo "{$arr['typename']}({$arr['nid']})¡¢";
-              }
-             ?>
-              £© </font> <br/>
-              Ä£°åÎÄ¼şµÄÄ¬ÈÏÎ»ÖÃÊÇ·ÅÔÚÄ£°åÄ¿Â¼ "cms°²×°Ä¿Â¼ 
-              <?php echo $cfg_templets_dir ?>
-              " ÄÚ¡£ 
-              <input type='hidden' value='{style}' name='dfstyle'> </td>
-          </tr>
-          <tr> 
-            <td height="26">·âÃæÄ£°å£º</td>
-            <td> <input name="tempindex" type="text" value="<?php echo $myrow['tempindex']?>" style="width:300"> 
-              <input type="button" name="set1" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.tempindex');" class='nbt'> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar1')"> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">ÁĞ±íÄ£°å£º</td>
-            <td> <input name="templist" type="text" value="<?php echo $myrow['templist']?>" style="width:300"> 
-              <input type="button" name="set3" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.templist');" class='nbt'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">ÎÄÕÂÄ£°å£º</td>
-            <td><input name="temparticle" type="text" value="<?php echo $myrow['temparticle']?>" style="width:300"> 
-              <input type="button" name="set4" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.temparticle');" class='nbt'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">µ¥¶ÀÒ³ÃæÄ£°å£º</td>
-            <td><input name="tempone" type="text" value="<?php echo $myrow['tempone']?>" style="width:300"> 
-              <input type="button" name="set2" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.tempone');" class='nbt'> 
-            </td>
-          </tr>
-          <tr id='helpvar2' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">Ö§³Ö±äÁ¿£º </td>
-            <td height="24" bgcolor="#F3F7EA"> {Y}¡¢{M}¡¢{D} ÄêÔÂÈÕ<br/>
-              {timestamp} INTÀàĞÍµÄUNIXÊ±¼ä´Á<br/>
-              {aid} ÎÄÕÂID<br/>
-              {pinyin} Æ´Òô+ÎÄÕÂID<br/>
-              {py} Æ´Òô²¿Ê×+ÎÄÕÂID<br/>
-              {typedir} À¸Ä¿Ä¿Â¼ <br/>
-              {cc} ÈÕÆÚ+ID»ì±àºóÓÃ×ª»»ÎªÊÊºÏµÄ×ÖÄ¸ <br/>
-              </td>
-          </tr>
-          <tr> 
-            <td height="26">ÎÄÕÂÃüÃû¹æÔò£º</td>
-            <td> <input name="namerule" type="text" id="namerule" value="<?php echo $myrow['namerule']?>" size="40"> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar2')"> 
-            </td>
-          </tr>
-          <tr id='helpvar3' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">Ö§³Ö±äÁ¿£º </td>
-            <td bgcolor="#F3F7EA">{page} ÁĞ±íµÄÒ³Âë</td>
-          </tr>
-          <tr> 
-            <td height="26">ÁĞ±íÃüÃû¹æÔò£º</td>
-            <td> <input name="namerule2" type="text" id="namerule2" value="<?php echo $myrow['namerule2']?>" size="40"> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar3')"></td>
-          </tr>
-          <tr> 
-            <td height="65">¹Ø¼ü×Ö£º</td>
-            <td> <textarea name="keywords" cols="40" rows="3" id="keywords"><?php echo $myrow['keywords']?></textarea> 
-            </td>
-          </tr>
-          <tr>
-            <td height="65">À¸Ä¿ÃèÊö£º</td>
-            <td height="65"><textarea name="description" cols="40" rows="3" id="textarea"><?php echo $myrow['description']?></textarea></td>
-          </tr>
-          <tr> 
-            <td height="45">¼Ì³ĞÑ¡Ïî£º</td>
-            <td> 
-              <input name="upnext" type="checkbox" id="upnext" value="1" class="np">
-              Í¬Ê±¸ü¸ÄÏÂ¼¶À¸Ä¿µÄÄÚÈİÀàĞÍ¡¢Ä£°å·ç¸ñ¡¢ÃüÃû¹æÔòµÈÍ¨ÓÃÊôĞÔ </td>
-          </tr>
-        </table>
-          <table width="98%" border="0" cellspacing="0" cellpadding="0">
-		       <tr> 
-            <td width="1%" height="50"></td>
-            <td width="99%" valign="bottom">
-            <input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np">
-            &nbsp;&nbsp;&nbsp;
-            <a href="catalog_main.php"><img src="img/button_back.gif" width="60" height="22" border="0"></a>
-			    </td>
-          </tr>
-        </table></td>
-	  </form>
-  </tr>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

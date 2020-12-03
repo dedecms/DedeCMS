@@ -1,11 +1,11 @@
 <?php 
-//±¾¼ÆÊýÆ÷ÓÃÓÚ×ÔÓÉÁÐ±íµÄä¯ÀÀÁ¿¼ÆÊý
+//æœ¬è®¡æ•°å™¨ç”¨äºŽè‡ªç”±åˆ—è¡¨çš„æµè§ˆé‡è®¡æ•°
 $__ONLYDB = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 
 if(empty($aid)) $aid="0";
 
-//½öµÚÒ»Ò³²Å¼ÆÊý£¬Èç¹ûÏëÃ¿Ò³¶¼¼ÆÊý£¬°ÑÄ£°åÀïµÄJS´«µÝµÄ pageno È¥³ý¼´¿É
+//ä»…ç¬¬ä¸€é¡µæ‰è®¡æ•°ï¼Œå¦‚æžœæƒ³æ¯é¡µéƒ½è®¡æ•°ï¼ŒæŠŠæ¨¡æ¿é‡Œçš„JSä¼ é€’çš„ pageno åŽ»é™¤å³å¯
 if(empty($pageno)) $pageno = 1;
 if($pageno!=1) exit();
 
@@ -21,9 +21,9 @@ $dsql->Close();
 exit();
 
 /*-----------------------------------
-Èç¹ûÏëÏÔÊ¾ä¯ÀÀ´ÎÊý,ÇëÔö¼Óview²ÎÊý,¼´°ÑÏÂÃæ£Ê£Óµ÷ÓÃ·Åµ½ÎÄµµÄ£°åÊÊµ±Î»ÖÃ 
+å¦‚æžœæƒ³æ˜¾ç¤ºæµè§ˆæ¬¡æ•°,è¯·å¢žåŠ viewå‚æ•°,å³æŠŠä¸‹é¢ï¼ªï¼³è°ƒç”¨æ”¾åˆ°æ–‡æ¡£æ¨¡æ¿é€‚å½“ä½ç½® 
 <script src="{dede:field name='phpurl'/}/count-freelist.php?view=yes&aid={dede:field name='aid'/}&pageno={dede:pageno/}" language="javascript"></script>
-ÆÕÍ¨¼ÆÊýÆ÷Îª
+æ™®é€šè®¡æ•°å™¨ä¸º
 <script src="{dede:field name='phpurl'/}/count-freelist.php?aid={dede:field name='aid'/}&pageno={dede:pageno/}" language="javascript"></script>
 ----------------------------------*/
 ?>

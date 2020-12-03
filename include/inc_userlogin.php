@@ -1,21 +1,20 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config_base.php");
 session_start();
-
-//¼ìÑéÓÃ»§ÊÇ·ñÓĞÈ¨Ê¹ÓÃÄ³¹¦ÄÜ
+$GLOBALS['groupRanks'] = '';
+//æ£€éªŒç”¨æˆ·æ˜¯å¦æœ‰æƒä½¿ç”¨æŸåŠŸèƒ½
 function TestPurview($n)
 {
+	global $groupRanks;
 	$rs = false;
 	$purview = $GLOBALS['cuserLogin']->getPurview();
-  
   if(eregi('admin_AllowAll',$purview)) return true;
-  if($n=="") return true;
-  
-  if(!isset($GLOBALS['groupRanks'])) $GLOBALS['groupRanks'] = explode(' ',$purview);
+  if($n=='') return true;
+  if(!is_array($groupRanks)){ $groupRanks = explode(' ',$purview); }
 	$ns = explode(',',$n);
-	foreach($ns as $n){ //Ö»ÒªÕÒµ½Ò»¸öÆ¥ÅäµÄÈ¨ÏŞ£¬¼´¿ÉÈÏÎªÓÃ»§ÓĞÈ¨·ÃÎÊ´ËÒ³Ãæ
-	  if($n=="") continue;
-	  if(in_array($n,$GLOBALS['groupRanks'])){ $rs = true; break; }
+	foreach($ns as $v){ //åªè¦æ‰¾åˆ°ä¸€ä¸ªåŒ¹é…çš„æƒé™ï¼Œå³å¯è®¤ä¸ºç”¨æˆ·æœ‰æƒè®¿é—®æ­¤é¡µé¢
+	  if($v=='') continue;
+	  if(in_array($v,$groupRanks)){ $rs = true; break; }
   }
   return $rs;
 }
@@ -23,12 +22,12 @@ function TestPurview($n)
 function CheckPurview($n)
 {
   if(!TestPurview($n)){
-  	ShowMsg("¶Ô²»Æğ£¬ÄãÃ»ÓĞÈ¨ÏŞÖ´ĞĞ´Ë²Ù×÷£¡<br/><br/><a href='javascript:history.go(-1);'>µã»÷´Ë·µ»ØÉÏÒ»Ò³&gt;&gt;</a>",'javascript:;');
+  	ShowMsg("å¯¹ä¸èµ·ï¼Œä½ æ²¡æœ‰æƒé™æ‰§è¡Œæ­¤æ“ä½œï¼<br/><br/><a href='javascript:history.go(-1);'>ç‚¹å‡»æ­¤è¿”å›ä¸Šä¸€é¡µ&gt;&gt;</a>",'javascript:;');
   	exit();
   }
 }
 
-//ÊÇ·ñÃ»È¨ÏŞÏŞÖÆ(³¬¼¶¹ÜÀíÔ±)
+//æ˜¯å¦æ²¡æƒé™é™åˆ¶(è¶…çº§ç®¡ç†å‘˜)
 function TestAdmin(){
 	$purview = $GLOBALS['cuserLogin']->getPurview();
   if(eregi('admin_AllowAll',$purview)) return true;
@@ -36,7 +35,7 @@ function TestAdmin(){
 }
 
 $DedeUserCatalogs = Array();
-//»ñµÃÓÃ»§ÊÚÈ¨µÄËùÓĞÀ¸Ä¿ID
+//è·å¾—ç”¨æˆ·æˆæƒçš„æ‰€æœ‰æ ç›®ID
 function GetMyCatalogs($dsql,$cid)
 {
 	$GLOBALS['DedeUserCatalogs'][] = $cid;
@@ -46,27 +45,58 @@ function GetMyCatalogs($dsql,$cid)
 		GetMyCatalogs($dsql,$row->ID);
 	}
 }
+
 function MyCatalogs(){
+	global $dsql;
 	if(count($GLOBALS['DedeUserCatalogs'])==0){
-		$dsql = new DedeSql(false);
-		GetMyCatalogs($dsql,$GLOBALS['cuserLogin']->getUserChannel());
-		$dsql->Close();
+		 if(!is_array($dsql)) $dsql = new DedeSql(true);
+		 $ids = $GLOBALS['cuserLogin']->getUserChannel();
+		 $ids = ereg_replace('[><]','',str_replace('><',',',$ids));
+		 $ids = explode(',',$ids);
+		 if(is_array($ids))
+		 {
+		    foreach($ids as $id)
+		    {  GetMyCatalogs($dsql,$id);  }
+		 }
 	}
 	return $GLOBALS['DedeUserCatalogs'];
 }
 
-//¼ì²âÓÃ»§ÊÇ·ñÓĞÈ¨ÏŞ²Ù×÷Ä³À¸Ä¿
-function CheckCatalog($cid,$msg){
-	if($GLOBALS['cuserLogin']->getUserChannel()=="0"||TestAdmin()) return true;
-	if(!in_array($cid,MyCatalogs())){
-		ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>µã»÷´Ë·µ»ØÉÏÒ»Ò³&gt;&gt;</a>",'javascript:;');
+function MyCatalogInArr()
+{
+	 $r = '';
+	 $arr = MyCatalogs();
+	 if(is_array($arr))
+	 {
+
+		  foreach($arr as $v){
+			  if($r=='') $r .= $v;
+			  else $r .= ','.$v;
+		  }
+	 }
+	 return $r;
+}
+
+//æ£€æµ‹ç”¨æˆ·æ˜¯å¦æœ‰æƒé™æ“ä½œæŸæ ç›®
+function CheckCatalog($cid,$msg)
+{
+	if(!CheckCatalogTest($cid)){
+		ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>ç‚¹å‡»æ­¤è¿”å›ä¸Šä¸€é¡µ&gt;&gt;</a>",'javascript:;');
   	exit();
 	}
   return true;
 }
 
+//æ£€æµ‹ç”¨æˆ·æ˜¯å¦æœ‰æƒé™æ“ä½œæŸæ ç›®
+function CheckCatalogTest($cid,$uc=''){
+	if(empty($uc)) $uc = $GLOBALS['cuserLogin']->getUserChannel();
+	if(empty($uc)||$uc==-1||TestAdmin()) return true;
+	if(!in_array($cid,MyCatalogs())) return false;
+  else return true;
+}
 
-//µÇÂ¼Àà
+
+//ç™»å½•ç±»
 class userLogin
 {
 	var $userName = "";
@@ -80,7 +110,7 @@ class userLogin
 	var $keepUserChannelTag = "dede_admin_channel";
 	var $keepUserNameTag = "dede_admin_name";
 	var $keepUserPurviewTag = "dede_admin_purview";
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	function __construct()
  	{
  		if(isset($_SESSION[$this->keepUserIDTag])){
@@ -94,10 +124,10 @@ class userLogin
 	function userLogin(){
 		$this->__construct();
 	}
-	//¼ìÑéÓÃ»§ÊÇ·ñÕıÈ·
+	//æ£€éªŒç”¨æˆ·æ˜¯å¦æ­£ç¡®
 	function checkUser($username,$userpwd)
 	{
-		//Ö»ÔÊĞíÓÃ»§ÃûºÍÃÜÂëÓÃ0-9,a-z,A-Z,'@','_','.','-'ÕâĞ©×Ö·û
+		//åªå…è®¸ç”¨æˆ·åå’Œå¯†ç ç”¨0-9,a-z,A-Z,'@','_','.','-'è¿™äº›å­—ç¬¦
 		$this->userName = ereg_replace("[^0-9a-zA-Z_@\!\.-]","",$username);
 		$this->userPwd = ereg_replace("[^0-9a-zA-Z_@\!\.-]","",$userpwd);
 		$pwd = substr(md5($this->userPwd),0,24);
@@ -127,33 +157,33 @@ class userLogin
 			return 1;
 		}
 	}
-	//±£³ÖÓÃ»§µÄ»á»°×´Ì¬
-	//³É¹¦·µ»Ø 1 £¬Ê§°Ü·µ»Ø -1
+	//ä¿æŒç”¨æˆ·çš„ä¼šè¯çŠ¶æ€
+	//æˆåŠŸè¿”å› 1 ï¼Œå¤±è´¥è¿”å› -1
 	function keepUser()
 	{
 		if($this->userID!=""&&$this->userType!="")
 		{
 			session_register($this->keepUserIDTag);
 			$_SESSION[$this->keepUserIDTag] = $this->userID;
-			
+
 			session_register($this->keepUserTypeTag);
 			$_SESSION[$this->keepUserTypeTag] = $this->userType;
-			
+
 			session_register($this->keepUserChannelTag);
 			$_SESSION[$this->keepUserChannelTag] = $this->userChannel;
-			
+
 			session_register($this->keepUserNameTag);
 			$_SESSION[$this->keepUserNameTag] = $this->userName;
-			
+
 			session_register($this->keepUserPurviewTag);
 			$_SESSION[$this->keepUserPurviewTag] = $this->userPurview;
-			
+
 			return 1;
 		}
 		else
 			return -1;
 	}
-	//½áÊøÓÃ»§µÄ»á»°×´Ì¬
+	//ç»“æŸç”¨æˆ·çš„ä¼šè¯çŠ¶æ€
 	function exitUser()
 	{
 		@session_unregister($this->keepUserIDTag);
@@ -164,13 +194,13 @@ class userLogin
 		session_destroy();
 	}
 	//-----------------------------
-	//»ñµÃÓÃ»§¹ÜÀíÆµµÀµÄÖµ
+	//è·å¾—ç”¨æˆ·ç®¡ç†é¢‘é“çš„å€¼
 	//-----------------------------
 	function getUserChannel(){
 		if($this->userChannel!="") return $this->userChannel;
 		else return -1;
 	}
-	//»ñµÃÓÃ»§µÄÈ¨ÏŞÖµ
+	//è·å¾—ç”¨æˆ·çš„æƒé™å€¼
 	function getUserType(){
 		if($this->userType!="") return $this->userType;
 		else return -1;
@@ -178,17 +208,17 @@ class userLogin
 	function getUserRank(){
 		return $this->getUserType();
 	}
-	//»ñµÃÓÃ»§µÄID
+	//è·å¾—ç”¨æˆ·çš„ID
 	function getUserID(){
 		if($this->userID!="") return $this->userID;
 		else return -1;
 	}
-	//»ñµÃÓÃ»§µÄ±ÊÃû
+	//è·å¾—ç”¨æˆ·çš„ç¬”å
 	function getUserName(){
 		if($this->userName!="") return $this->userName;
 		else return -1;
 	}
-	//ÓÃ»§È¨ÏŞ±í
+	//ç”¨æˆ·æƒé™è¡¨
 	function getPurview(){
 		return $this->userPurview;
 	}

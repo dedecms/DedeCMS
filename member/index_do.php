@@ -1,46 +1,42 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-if(empty($fmdo)) $fmdo = "";
-if(empty($dopost)) $dopost = "";
 if(empty($_POST) && empty($_GET))
 {
-	ShowMsg("±¾Ò³Ãæ½ûÖ¹·µ»Ø!","control.php");
+	ShowMsg("æœ¬é¡µé¢ç¦æ­¢è¿”å›!","control.php");
 	exit();
 }
-
+if(empty($fmdo)) $fmdo = "";
+if(empty($dopost)) $dopost = "";
 switch($fmdo){
  /*********************
  function A_User()
  *******************/
  case "user":
  /*
- ¼ì²éÓÃ»§ÃûÊÇ·ñ´æÔÚ
+ æ£€æŸ¥ç”¨æˆ·åæ˜¯å¦å­˜åœ¨
  function ACheckUser();
  */
  if($dopost=="checkuser")
  {
+ 	 AjaxHead();
  	 $msg = "";
  	 $userid = trim($userid);
  	 if($userid==""||!TestStringSafe($userid)){
- 	 	 $msg = "ÄãµÄÓÃ»§Ãûº¬ÓĞ·Ç·¨×Ö·û£¡";
+ 	 	 $msg = "<font color='red'> ç”¨æˆ·åå«æœ‰éæ³•å­—ç¬¦ï¼ </font>";
  	 }else{
  	   $dsql = new DedeSql(false);
  	   $dsql->SetQuery("Select ID From #@__member where userid='$userid'");
  	   $dsql->Execute();
  	   $rowcount = $dsql->GetTotalRow();
  	   $dsql->Close();
- 	   if($rowcount>0){ $msg = "¡¡¡¡ÄãÑ¡ÔñµÄÓÃ»§Ãû£º[<font color='red'>$userid</font>] £¬ÒÑ¾­±»ÈËÊ¹ÓÃ£¬ÇëÊ¹ÓÃÆäËüÓÃ»§Ãû¡£"; }
- 	   else{ $msg = "¡¡¡¡ÄãÑ¡ÔñµÄÓÃ»§Ãû£º[<font color='red'>$userid</font>] £¬¿ÉÒÔÕı³£Ê¹ÓÃ£¬»¶Ó­×¢²á¡£"; }
+ 	   if($rowcount>0){ $msg = "ç”¨æˆ·å [<font color='red'>$userid</font>]ï¼Œå·²ç»è¢«äººä½¿ç”¨ï¼Œè¯·ä½¿ç”¨å…¶å®ƒç”¨æˆ·åã€‚"; }
+ 	   else{ $msg = "ç”¨æˆ·å [<font color='red'>$userid</font>]ï¼Œå¯ä»¥æ­£å¸¸ä½¿ç”¨ã€‚"; }
  	 }
- 	 $htmlhead  = "<html>\r\n<head>\r\n<title>ÌáÊ¾ĞÅÏ¢</title>\r\n";
-	 $htmlhead .= "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\" />\r\n";
-	 $htmlhead .= "</head>\r\n<body leftmargin='8' topmargin='8' background='img/dedebg.gif' bgcolor='#D0E8C8' style='font-size:10pt;line-height:150%'>";
-	 $htmlfoot  = "</body>\r\n</html>\r\n";
-	 echo $htmlhead.$msg.$htmlfoot;
+ 	 echo $msg;
 	 exit();
  }
  /*
- ĞÂÓÃ»§×¢²á
+ æ–°ç”¨æˆ·æ³¨å†Œ
  function AUserReg()
  */
  else if($dopost=="regnew")
@@ -60,7 +56,7 @@ switch($fmdo){
    }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
-  	 ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	 ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	 exit();
    }
  	 $userid = trim($userid);
@@ -68,48 +64,45 @@ switch($fmdo){
  	 $pwdc = trim($userpwdok);
  	 if(!TestStringSafe($userid)||!TestStringSafe($pwd))
  	 {
- 	 	  ShowMsg("ÄãµÄÓÃ»§Ãû»òÃÜÂë²»ºÏ·¨£¡","-1");
+ 	 	  ShowMsg("ä½ çš„ç”¨æˆ·åæˆ–å¯†ç ä¸åˆæ³•ï¼","-1");
  	 	  exit();
  	 }
  	 if(strlen($userid)<3||strlen($pwd)<3){
- 	 	  ShowMsg("ÄãµÄÓÃ»§Ãû»òÃÜÂëĞ¡ÓÚÈıÎ»£¬²»ÔÊĞí×¢²á£¡","-1");
+ 	 	  ShowMsg("ä½ çš„ç”¨æˆ·åæˆ–å¯†ç å°äºä¸‰ä½ï¼Œä¸å…è®¸æ³¨å†Œï¼","-1");
  	 	  exit();
  	 }
  	 if(strlen($userid)>24||strlen($pwd)>24){
- 	 	  ShowMsg("ÄãµÄÓÃ»§Ãû»òÃÜÂë³¤¶È²»ÄÜ³¬¹ı24Î»£¡","-1");
+ 	 	  ShowMsg("ä½ çš„ç”¨æˆ·åæˆ–å¯†ç é•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼","-1");
  	 	  exit();
  	 }
  	 if($pwdc!=$pwd){
- 	 	 ShowMsg("ÄãÁ½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ£¡","-1");
+ 	 	 ShowMsg("ä½ ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´ï¼","-1");
  	 	 exit();
  	 }
  	 $dsql = new DedeSql(false);
- 	 
- 	 //»áÔ±µÄÄ¬ÈÏ½ğ±Ò
+
+ 	 //ä¼šå‘˜çš„é»˜è®¤é‡‘å¸
  	 $dfrank = $dsql->GetOne("Select money From #@__arcrank where rank='10' ");
  	 if(is_array($dfrank)) $dfmoney = $dfrank['money'];
  	 else $dfmoney = 0;
- 	 
+
  	 $dsql->SetQuery("Select ID From #@__member where userid='$userid'");
  	 $dsql->Execute();
  	 $rowcount = $dsql->GetTotalRow();
  	 if($rowcount>0){
  	 	 $dsql->Close();
- 	 	 ShowMsg("ÄãÖ¸¶¨µÄÓÃ»§ÃûÒÑ´æÔÚ£¬ÇëÊ¹ÓÃ±ğµÄÓÃ»§Ãû£¡","-1");
+ 	 	 ShowMsg("ä½ æŒ‡å®šçš„ç”¨æˆ·åå·²å­˜åœ¨ï¼Œè¯·ä½¿ç”¨åˆ«çš„ç”¨æˆ·åï¼","-1");
  	 	 exit();
    }
-   if(!TestStringSafe($uname)){
-   	 $dsql->Close();
-   	 ShowMsg("ÓÃ»§êÇ³ÆÓĞ·Ç·¨×Ö·û£¡","-1");
- 	 	 exit();
-   }
+	$uname = eregi_replace("['\"\$ \r\n\t;<>\*%\?]", '', $uname);
    $pwd = GetEncodePwd($pwd);
  	 $jointime = mytime();
  	 $logintime = mytime();
  	 $joinip = GetIP();
  	 $loginip = GetIP();
- 	 
- 	 //ÉèÖÃ¿ÉÑ¡×¢²áÏîÄ¿µÄÄ¬ÈÏÖµ
+
+
+ 	 //è®¾ç½®å¯é€‰æ³¨å†Œé¡¹ç›®çš„é»˜è®¤å€¼
  	 $dfregs['birthday_y'] = '0000';
  	 $dfregs['birthday_m'] = '00';
  	 $dfregs['birthday_d'] = '00';
@@ -121,51 +114,93 @@ switch($fmdo){
  	 $dfregs['city'] = '0';
  	 $dfregs['myinfo'] = '';
  	 $dfregs['tel'] = '';
+ 	 $dfregs['type'] = 0;
  	 $dfregs['oicq'] = '';
  	 $dfregs['homepage'] = '';
  	 $dfregs['address'] = '';
+ 	 $dfregs['spacename'] = '';
  	 $dfregs['showaddr'] = '0';
  	 foreach($dfregs as $k=>$v){
  	 	 if(!isset($$k)) $$k = $v;
  	 }
- 	 
+$membertype = 10;
+if($cfg_member_regsta == 'Y'){
+	$membertype = 0;
+}
+	if($type == 1){
+		if(trim($comname) == ''){
+			ShowMsg("å…¬å¸ç”¨æˆ·å¿…é¡»å¡«å†™å…¬å¸åç§°","-1");
+			exit();
+		}
+		$comname = htmlEncode(trim($comname));
+	}else{
+		$type = 0;
+	}
+
+   if(empty($spacename) && !empty($comname)) $spacename = $comname;
+   if(empty($spacename)) $spacename = $uname.'çš„ä¸ªäººç©ºé—´';
+
  	 $birthday = GetAlabNum($birthday_y)."-".GetAlabNum($birthday_m)."-".GetAlabNum($birthday_d);
  	 if($birthday=='0-0-0'){
  	 	 $birthday = '0000-00-00';
  	 }
+
  	 $height = GetAlabNum($height);
 
  	 $inQuery = "
- 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,money,
- 	 weight,height,job,province,city,myinfo,tel,oicq,email,homepage,
- 	 jointime,joinip,logintime,loginip,showaddr,address) 
-   VALUES ('$userid','$pwd','$uname','$sex','$birthday','10','$dfmoney',
-   '$weight','$height','$job','$province','$city','$myinfo','$tel','$oicq','$email','$homepage',
-   '$jointime','$joinip','$logintime','$loginip','$showaddr','$address');
- 	 ";
- 	 if($dsql->ExecuteNoneQuery($inQuery))
- 	 {
- 	 	  $dsql->Close();
- 	 	  $ml = new MemberLogin();
- 	 	  $rs = $ml->CheckUser($userid,$pwd);
- 	 	  if($rs==1){
- 	 	  	ShowMsg("×¢²á³É¹¦£¬5ÃëÖÓºó×ªÏò¿Õ¼ä¹ÜÀíÖĞĞÄ...","control.php",0,2000);
- 	 	    exit();
- 	 	  }
- 	 	  else{
- 	 	  	ShowMsg("×¢²á³É¹¦£¬5ÃëÖÓºó×ªÏòµÇÂ¼Ò³Ãæ...","login.php",0,2000);
- 	 	    exit();
- 	 	  }
- 	 }
- 	 else
- 	 {
- 	 	 $dsql->Close();
- 	 	 ShowMsg("×¢²áÊ§°Ü£¬Çë¼ì²é×ÊÁÏÊÇ·ñÓĞÎó»òÓë¹ÜÀíÔ±ÁªÏµ£¡","-1");
- 	 	 exit();
- 	 }
+ 	  INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` , `membertype` , `uptime` , `exptime` ,
+ 	   `money` , `email` , `jointime` , `joinip` , `logintime` , `loginip` ,
+ 	    `c1` , `c2` , `c3` , `matt` , `guestbook` , `spaceshow` , `pageshow` , `spacestyle` ,
+ 	     `spacename` , `spaceimage` , `news` , `mybb` , `listnum` , `scores` )
+    VALUES ('$userid', '$pwd', '$type', '$uname', '$membertype', '0', '0',
+     '0', '$email', '$jointime', '$joinip', '$jointime', '$joinip',
+      '0', '0', '0', '0', '0', '0', '0', '',
+       '$spacename', '', '', '', '20', '{$cfg_df_score}')
+	 ";
+
+	if($dsql->ExecuteNoneQuery($inQuery))
+	{
+		$id = $dsql->GetLastID();
+		if($type == 1)
+		{
+			$inQuery = "INSERT INTO #@__member_cominfo(id, comname) VALUES ('$id', '$comname');";
+			$dsql->ExecuteNoneQuery($inQuery);
+		}
+		else
+		{
+			$inQuery = "
+	     INSERT INTO `#@__member_perinfo` (`id`, `uname` , `sex` , `birthday` , `weight` ,`height` , `job` , `province` , `city` , `myinfo` ,
+	     `tel` , `oicq` , `homepage` , `showaddr` ,`address` , `fullinfo`)
+      VALUES ('$id','$uname', '$sex', '$birthday', '$weight','$height', '$job', '$province', '$city', '$myinfo' ,
+        '$tel' , '$oicq' , '$homepage' ,'$showaddr','$address','');";
+      $dsql->ExecuteNoneQuery($inQuery);
+		}
+		$dsql->Close();
+		$ml = new MemberLogin();
+		$rs = $ml->CheckUser($userid,$pwd);
+		if($rs==1)
+		{
+			if($type == 1){
+				ShowMsg("æ³¨å†ŒæˆåŠŸï¼Œè¯·æ‚¨ç«‹å³å¡«å†™ä¼ä¸šç›¸å…³èµ„æ–™","mycominfo.php",0,2000);
+				exit();
+			}
+			ShowMsg("æ³¨å†ŒæˆåŠŸï¼Œ5ç§’é’Ÿåè½¬å‘ç©ºé—´ç®¡ç†ä¸­å¿ƒ","control.php",0,2000);
+			exit();
+		}else
+		{
+			ShowMsg("æ³¨å†ŒæˆåŠŸï¼Œ5ç§’é’Ÿåè½¬å‘ç™»å½•é¡µé¢...","login.php",0,2000);
+			exit();
+		}
+	}else
+	{
+		echo $dsql->GetError();
+		$dsql->Close();
+		ShowMsg("æ³¨å†Œå¤±è´¥ï¼Œè¯·æ£€æŸ¥èµ„æ–™æ˜¯å¦æœ‰è¯¯æˆ–ä¸ç®¡ç†å‘˜è”ç³»ï¼","javascript:;");
+		exit();
+	}
  }
   /*
- ¸ü¸ÄÓÃ»§×ÊÁÏ
+ æ›´æ”¹ç”¨æˆ·èµ„æ–™
  function AEditUser()
  */
  else if($dopost=="editUserSafe")
@@ -177,30 +212,30 @@ switch($fmdo){
  	  CheckRank(0,0);
  	  $svali = GetCkVdValue();
     if(strtolower($vdcode)!=$svali || $svali==""){
-  	  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	  ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	  exit();
     }
  	  if($oldpwd==""){
- 	  	ShowMsg("ÄãÃ»ÓĞÌîĞ´ÄãµÄ¾ÉÃÜÂë£¡","-1");
+ 	  	ShowMsg("ä½ æ²¡æœ‰å¡«å†™ä½ çš„æ—§å¯†ç ï¼","-1");
  	  	exit();
  	  }
  	  $pwd = trim($userpwd);
  	  $pwdc = trim($userpwdok);
  	  if($pwd!=""){
  	      if(strlen($pwd)>24){
- 	 	       ShowMsg("ÃÜÂë³¤¶È²»ÄÜ³¬¹ı24Î»£¡","-1");
+ 	 	       ShowMsg("å¯†ç é•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼","-1");
  	 	       exit();
  	      }
  	      if(!TestStringSafe($pwd)){
- 	 	      ShowMsg("ÄãµÄĞÂÃÜÂëº¬ÓĞ·Ç·¨×Ö·û£¡","-1");
+ 	 	      ShowMsg("ä½ çš„æ–°å¯†ç å«æœ‰éæ³•å­—ç¬¦ï¼","-1");
  	 	      exit();
  	      }
  	      if($pwdc!=$pwd){
- 	 	      ShowMsg("ÄãÁ½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ£¡","-1");
+ 	 	      ShowMsg("ä½ ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´ï¼","-1");
  	 	      exit();
  	      }
  	  }else{
- 	  	ShowMsg("ÄãÃ»ÓĞÉèÖÃÒª¸ü¸ÄµÄÃÜÂë£¡","-1");
+ 	  	ShowMsg("ä½ æ²¡æœ‰è®¾ç½®è¦æ›´æ”¹çš„å¯†ç ï¼","-1");
  	 	  exit();
  	  }
  	  $dsql = new DedeSql(false);
@@ -208,13 +243,13 @@ switch($fmdo){
  	  $oldpwd = GetEncodePwd($oldpwd);
  	  if(!is_array($row)||$row['pwd']!=$oldpwd){
  	     $dsql->Close();
- 	     ShowMsg("ÄãÊäÈëµÄ¾ÉÃÜÂë´íÎó£¡","-1");
+ 	     ShowMsg("ä½ è¾“å…¥çš„æ—§å¯†ç é”™è¯¯ï¼","-1");
  	 	   exit();
  	  }
  	  $pwd = GetEncodePwd($pwd);
  	  $query = "update #@__member set pwd = '$pwd' where ID='".$cfg_ml->M_ID."'";
  	  $dsql->ExecuteNoneQuery($query);
- 	  ShowMsg("³É¹¦¸ü¸ÄÄãµÄÃÜÂë£¡","-1");
+ 	  ShowMsg("æˆåŠŸæ›´æ”¹ä½ çš„å¯†ç ï¼","-1");
  	 	exit();
  }
  else if($dopost=="editUser")
@@ -222,26 +257,16 @@ switch($fmdo){
  	  CheckRank(0,0);
  	  $svali = GetCkVdValue();
     if(strtolower($vdcode)!=$svali || $svali==""){
-  	  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	  ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	  exit();
     }
- 	  /*
- 	  if($oldpwd==""){
- 	  	ShowMsg("ÄãÃ»ÓĞÌîĞ´ÄãµÄÃÜÂë£¡","-1");
- 	  	exit();
- 	  }
- 	  
- 	  $dsql = new DedeSql(false);
- 	  $row = $dsql->GetOne("Select pwd From #@__member where ID='".$cfg_ml->M_ID."'");
- 	  $oldpwd = GetEncodePwd($oldpwd);
- 	  if(!is_array($row)||$row['pwd']!=$oldpwd){
- 	     $dsql->Close();
- 	     ShowMsg("ÄãÊäÈëµÄÃÜÂë´íÎó£¡","-1");
- 	 	   exit();
- 	  }*/
- 	  $query = "
- 	  update #@__member set 
- 	  email = '$email',
+ 	  $query1 = "
+ 	  update #@__member set
+ 	  email = '$email',uname = '$uname'
+ 	  where ID='".$cfg_ml->M_ID."'
+ 	  ";
+ 	  $query2 = "
+ 	  update #@__member_perinfo set
     uname = '$uname',
     sex = '$sex',
     birthday = '$birthday',
@@ -259,21 +284,15 @@ switch($fmdo){
     homepage = '$homepage'
  	  where ID='".$cfg_ml->M_ID."'
  	  ";
- 	  $dsql->SetQuery($query);
- 	  if(!$dsql->ExecuteNoneQuery())
- 	  {
- 	  	 $dsql->Close();
- 	     ShowMsg("¸ü¸Ä×ÊÁÏ³ö´í£¬Çë¼ì²éÊäÈëÊÇ·ñºÏ·¨£¡","-1");
- 	 	   exit();
- 	  }
- 	  else{
- 	    $dsql->Close();
- 	    ShowMsg("³É¹¦¸üĞÂÄãµÄ¸öÈË×ÊÁÏ£¡","edit_info.php");
- 	 	  exit();
- 	  }
+ 	  $dsql = new DedeSql(false);
+ 	  $dsql->ExecuteNoneQuery($query1);
+ 	  $dsql->ExecuteNoneQuery($query2);
+ 	  $dsql->Close();
+ 	  ShowMsg("æˆåŠŸæ›´æ–°ä½ çš„ä¸ªäººèµ„æ–™ï¼","edit_info.php");
+ 	 	exit();
  }
   /*
- ¸ü¸Ä¸öÈË¿Õ¼ä×ÊÁÏ
+ æ›´æ”¹ä¸ªäººç©ºé—´èµ„æ–™
  function EditSpace()
  */
  else if($dopost=="editSpace")
@@ -281,11 +300,11 @@ switch($fmdo){
  	  CheckRank(0,0);
  	  $svali = GetCkVdValue();
     if(strtolower($vdcode)!=$svali || $svali==""){
-  	  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	  ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	  exit();
     }
     require_once("./inc/inc_archives_functions.php");
-    $title = "¿Õ¼äĞÎÏó";
+    $title = "ç©ºé—´å½¢è±¡";
     $spaceimage = GetUpImage('spaceimage',true,true,150,112,'myface');
     if($spaceimage=="" && $oldimg!="" && $oldimg!="img/pview.gif"){
     	 if(file_exists($cfg_basedir.$oldimg)){
@@ -297,18 +316,18 @@ switch($fmdo){
  	  $news = eregi_replace("<(iframe|script|javascript)","",$news);
  	  $spacename = ereg_replace("[><]","",$spacename);
  	  $mybb = addslashes(html2text(stripslashes($mybb)));
- 	  $upquery = "Update #@__member set 
- 	      spacename='$spacename',spaceimage='$spaceimage',news='$news',mybb='$mybb' 
+ 	  $upquery = "Update #@__member set
+ 	      spacename='$spacename',spaceimage='$spaceimage',news='$news',mybb='$mybb'
  	      where ID='".$cfg_ml->M_ID."';
  	  ";
  	  $ok = $dsql->ExecuteNoneQuery($upquery);
  	  if($ok){
  	  	$dsql->Close();
- 	  	ShowMsg("³É¹¦¸üĞÂÄãµÄ¸öÈË¿Õ¼ä½éÉÜ£¡","space_info.php?".time().mt_rand(100,900));
+ 	  	ShowMsg("æˆåŠŸæ›´æ–°ä½ çš„ä¸ªäººç©ºé—´ä»‹ç»ï¼","space_info.php?".time().mt_rand(100,900));
  	  	exit();
  	  }else{
  	  	$dsql->Close();
- 	    ShowMsg("¸üĞÂ×ÊÁÏÊ§°Ü£¡","space_info.php?".time().mt_rand(100,900));
+ 	    ShowMsg("æ›´æ–°èµ„æ–™å¤±è´¥ï¼","space_info.php?".time().mt_rand(100,900));
  	 	  exit();
  	  }
  }
@@ -320,7 +339,7 @@ switch($fmdo){
  case "login":
  //
  /*
- ÓÃ»§µÇÂ¼
+ ç”¨æˆ·ç™»å½•
  function BUserLogin()
  */
  if($dopost=="login")
@@ -331,43 +350,42 @@ switch($fmdo){
    }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
-  	 ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	 ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	 exit();
    }
    if(!TestStringSafe($userid)||!TestStringSafe($pwd))
    {
-   	 ShowMsg("ÓÃ»§Ãû»òÃÜÂë²»ºÏ·¨£¡","-1",0,2000);
+   	 ShowMsg("ç”¨æˆ·åæˆ–å¯†ç ä¸åˆæ³•ï¼","-1",0,2000);
   	 exit();
    }
    if($userid==""||$pwd==""){
-   	 ShowMsg("ÓÃ»§Ãû»òÃÜÂë²»ÄÜÎª¿Õ£¡","-1",0,2000);
+   	 ShowMsg("ç”¨æˆ·åæˆ–å¯†ç ä¸èƒ½ä¸ºç©ºï¼","-1",0,2000);
   	 exit();
    }
-   //¼ì²éÕÊºÅ
+   //æ£€æŸ¥å¸å·
    $rs = $cfg_ml->CheckUser($userid,GetEncodePwd($pwd));
    if($rs==0) {
-   	 ShowMsg("ÓÃ»§Ãû²»´æÔÚ£¡","-1",0,2000);
+   	 ShowMsg("ç”¨æˆ·åä¸å­˜åœ¨ï¼","-1",0,2000);
   	 exit();
    }
    else if($rs==-1){
-   	 ShowMsg("ÃÜÂë´íÎó£¡","-1",0,2000);
+   	 ShowMsg("å¯†ç é”™è¯¯ï¼","-1",0,2000);
   	 exit();
    }
    else{
-   	 $dsql = new DedeSql(false);
    	 $dsql->SetQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
    	 $dsql->ExecuteNoneQuery();
    	 $dsql->Close();
    	 if(empty($gourl)||eregi("action|_do",$gourl)){
-   	 	  ShowMsg("³É¹¦µÇÂ¼£¬5ÃëÖÓºó×ªÏòÏµÍ³¹ÜÀíÖĞĞÄ...","control.php",0,2000);
+   	 	  ShowMsg("æˆåŠŸç™»å½•ï¼Œ5ç§’é’Ÿåè½¬å‘ç³»ç»Ÿç®¡ç†ä¸­å¿ƒ...","control.php",0,2000);
    	 }else{
-   	 	  ShowMsg("³É¹¦µÇÂ¼£¬×ªµ½½øÈëÒ³Ãæ...",$gourl,0,2000);
+   	 	  ShowMsg("æˆåŠŸç™»å½•ï¼Œè½¬åˆ°è¿›å…¥é¡µé¢...",$gourl,0,2000);
    	 }
   	 exit();
    }
  }
  /*
- ÍË³öµÇÂ¼
+ é€€å‡ºç™»å½•
  function BUserExit()
  */
  else if($dopost=="exit")
@@ -378,43 +396,45 @@ switch($fmdo){
 	    exit();
    }
  	 $cfg_ml->ExitCookie();
- 	 ShowMsg("³É¹¦ÍË³öµÇÂ¼£¡","login.php",0,2000);
+ 	 if(empty($cfg_mb_exiturl)) $cfg_mb_exiturl = $cfg_indexurl;
+ 	 if(empty($cfg_mb_exiturl)) $cfg_mb_exiturl = '/';
+ 	 ShowMsg("æˆåŠŸé€€å‡ºç™»å½•ï¼",$cfg_mb_exiturl,0,2000);
    exit();
  }
 /*
- »ñÈ¡ÃÜÂë
+ è·å–å¯†ç 
  function BUserGetPwd()
 */
  else if($dopost=="getpwd")
  {
  	 if($cfg_pwdtype=='md5'){
- 	 	 ShowMsg("ÏµÍ³µÄÃÜÂë±»ÉèÖÃÎªµ¥Ïò¼ÓÃÜ£¬ÎŞ·¨È¡»Ø£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ¡£","javascript:;");
+ 	 	 ShowMsg("ç³»ç»Ÿçš„å¯†ç è¢«è®¾ç½®ä¸ºå•å‘åŠ å¯†ï¼Œæ— æ³•å–å›ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ã€‚","javascript:;");
  	 	 exit();
  	 }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
-  	 ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  	 ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   	 exit();
    }
    if(!ereg("(.*)@(.*)\.(.*)",$email)||!TestStringSafe($email)){
-   	 ShowMsg("ÓÊÏäµØÖ·¸ñÊ½²»ÕıÈ·£¡","-1");
+   	 ShowMsg("é‚®ç®±åœ°å€æ ¼å¼ä¸æ­£ç¡®ï¼","-1");
   	 exit();
    }
    $dsql = new DedeSql(false);
    $row = $dsql->GetOne("Select userid,pwd,uname,email From #@__member where email='$email'");
    if(!is_array($row)){
      $dsql->Close();
-     ShowMsg("ÏµÍ³ÕÒ²»µ½´ËÓÊÏäµØÖ·£¡","-1");
+     ShowMsg("ç³»ç»Ÿæ‰¾ä¸åˆ°æ­¤é‚®ç®±åœ°å€ï¼","-1");
   	 exit();
    }
    $dsql->Close();
-	 $mailtitle = "ÄãÔÚ".$cfg_webname."µÄÓÃ»§ÃûºÍÃÜÂë";
-	 $mailbody = "\r\nÓÃ»§Ãû£º'".$row['userid']."'  ÃÜÂë£º'".$row['pwd']."'\r\n\r\n£¬
+	 $mailtitle = "ä½ åœ¨".$cfg_webname."çš„ç”¨æˆ·åå’Œå¯†ç ";
+	 $mailbody = "\r\nç”¨æˆ·åï¼š'".$row['userid']."'  å¯†ç ï¼š'".$row['pwd']."'\r\n\r\nï¼Œ
 	 $cfg_powerby";
 	 $headers = "From: ".$cfg_adminemail."\r\nReply-To: $cfg_adminemail";
-   @mail($email, $mailtitle, $mailbody, $headers);
+   sendmail($email, $mailtitle, $mailbody, $headers);
    $gurl = explode("@",$email);
-   ShowMsg("³É¹¦·¢³öÄãµÄÓÃ»§ÃûºÍÃÜÂë£¬Çë×¢Òâ²éÊÕ£¡","login.php");
+   ShowMsg("æˆåŠŸå‘å‡ºä½ çš„ç”¨æˆ·åå’Œå¯†ç ï¼Œè¯·æ³¨æ„æŸ¥æ”¶ï¼","login.php");
    exit();
  }
  //

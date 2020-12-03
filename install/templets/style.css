@@ -1,0 +1,198 @@
+@charset "utf-8";
+@import "tablebox.css";
+
+/*------------------------全局------------------------*/
+*{
+	padding:0px;
+	margin:0px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+html{
+	background:#F5FCEF;
+}
+
+body{
+	padding-top:0px;
+	padding-bottom:20px;
+	font-size:12px;
+	background:#FDFEFC;
+	width:830px; 
+	margin:6px auto;
+	padding-top:18px;
+	border:5px solid #E6F2DD;
+}
+
+a{
+	color:#06C;
+}
+a:hover{
+	color:#F30;
+}
+
+.boxcenter{
+	margin:0px auto;
+}
+
+/*------------------------------------------------*/
+.top{
+	width:760px;
+	height:31px;
+	line-height:30px;
+	background:url(images/toplogo.gif) left center no-repeat;
+	text-indent:280px;
+	color:#888;
+}
+.top em{
+	font-weight:bold;
+	color:#FF3333;
+}
+
+.topstep{
+	width:760px;
+	background:url(images/nav_left.gif) left center no-repeat;
+	height:35px;
+	overflow:hidden;
+	margin-top:10px;
+}
+.stepbox{
+	width:756px;
+	height:35px;
+	margin-left:4px;
+	background:url(images/nav_right.gif) right center no-repeat;
+	overflow:hidden;
+}
+.stepbox ul{
+	width:750px;
+	height:35px;
+	margin-left:-30px;
+	list-style:none;
+	background:url(images/nav_bg.gif) repeat-x;
+
+}
+.stepbox ul li{
+	float:left;
+	width:100px;
+	padding-left:46px;
+	background:url(images/nav_but.gif) left bottom no-repeat;
+	padding-top:13px;
+	height:22px;
+	font-size:14px;
+	color:#060;
+	letter-spacing:3px;
+	cursor:default;
+	text-align:center;
+}
+.stepbox ul li a{
+	color:#060;
+}
+.stepbox ul li a:hover{
+	color:#000;
+	text-decoration:none;
+}
+.stepbox ul li.this{
+	padding-top:15px;
+	height:20px;
+	background:url(images/nav_this.gif) left bottom no-repeat;
+	font-weight:bold;
+	color:#F60;
+}
+
+.main{
+	width:760px;
+	margin-top:10px;
+}
+
+.boxtitle{
+	width:730px;
+	height:22px;
+	margin:10px auto 0px;
+	background:url(images/boxtitle_bg.gif) 0px 20px repeat-x;
+	overflow:hidden;
+}
+.boxtitle span{
+	width:158px;
+	height:22px;
+	line-height:22px;
+	overflow:hidden;
+	display:block;
+	font-size:12px;
+	padding-top:1px;
+	text-indent:10px;
+	background:url(images/boxtitle_bg.gif) 0px -2px no-repeat;
+	letter-spacing:1px;
+	color:#6D8A4F;
+}
+.butbox{
+	width:760px;
+	text-align:center;
+	margin-top:20px;
+}
+
+.nextbut{
+	width:104px;
+	height:34px;
+	border:none;
+	background:url(images/but_next.gif) no-repeat;
+	cursor:pointer;
+}
+
+.backbut{
+	width:104px;
+	height:34px;
+	border:none;
+	background:url(images/but_back.gif) no-repeat;
+	cursor:pointer;
+}
+
+
+.setupbut{
+	width:104px;
+	height:34px;
+	border:none;
+	background:url(images/but_setup.gif) no-repeat;
+	cursor:pointer;
+}
+
+
+
+
+/*----------------------- STEP 1 -------------------------*/
+.pact{
+	width:730px;
+	margin:15px auto;
+	color:#888;
+	line-height:200%;
+	/*height:380px;*/
+	overflow:auto;
+}
+.pact h4{
+	color:#666;
+	font-size:12px;
+}
+.pact p{
+	text-indent:30px;
+}
+.readpact{
+	width:760px;
+	padding-top:20px;
+	text-align:center;
+	border-top:1px solid #DDD;
+	font-size:14px;
+	letter-spacing:2px;
+}
+* html .readpact input{
+	margin:-1px 10px 2px 0px;
+}
+.readpact input[type="checkbox"]{
+	margin: -1px 10px 0 0px;
+}
+
+
+/*----------------------- STEP 4 -------------------------*/
+.setupinfo{
+	width:700px;
+	margin:20px auto;
+	font-size:16px;
+	color:#999;
+	line-height:23px;
+}

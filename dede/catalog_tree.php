@@ -4,18 +4,19 @@ require_once(dirname(__FILE__)."/../include/inc_type_tree.php");
 if(empty($c)) $c = 0;
 if(empty($opall)) $opall=false;
 else $opall = true;
+$userChannel = $cuserLogin->getUserChannel();
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>À¸Ä¿Ñ¡Ôñ</title>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æ ç›®é€‰æ‹©</title>
 <link href='base.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript">
 function LoadSuns(ctid,tid,c)
 {
-   if($(ctid).innerHTML.length < 10){
-      var myajax = new DedeAjax($(ctid),true,true,'','Ã»×ÓÀ¸Ä¿','...');
+   if($DE(ctid).innerHTML.length < 10){
+      var myajax = new DedeAjax($DE(ctid),true,true,'','æ²¡å­æ ç›®','...');
       myajax.SendGet('catalog_do.php?opall=<?php echo $opall?>&dopost=GetSunListsTree&c='+c+'&cid='+tid);
    }else{
    	 if(document.all) showHide(ctid);
@@ -23,14 +24,14 @@ function LoadSuns(ctid,tid,c)
 }
 function showHide(objname)
 {
-   if($(objname).style.display=="none") $(objname).style.display = "block";
-   else $(objname).style.display="none";
+   if($DE(objname).style.display=="none") $DE(objname).style.display = "block";
+   else $DE(objname).style.display="none";
    return false;
 }
 function ReSel(ctid,cname){
 	
-	if($('selid'+ctid).checked){
-		window.opener.document.<?php echo $f?>.<?php echo $v?>.value=ctid;
+	if($DE('selid'+ctid).checked){
+		window.opener.document.<?php echo $f; ?>.<?php echo $v; ?>.value=ctid;
 		window.opener.document.<?php echo $f?>.<?php echo $bt?>.value=cname;
 	  if(document.all) window.opener=true;
     window.close();
@@ -69,25 +70,25 @@ border-right: 1px solid #788C47;
 }
 .top{cursor: hand;}
 body {
-scrollbar-base-color:#8CC1FE;
+scrollbar-base-color:#bae87c;
 scrollbar-arrow-color:#FFFFFF;
-scrollbar-shadow-color:#6994C2
+scrollbar-shadow-color:#c1ea8b
 }
 </style>
 </head>
 <base target="main">
-<body leftmargin="0" bgcolor="#86C1FF" topmargin="3" target="main">
+<body leftmargin="0" bgcolor="#007400" topmargin="3" target="main">
 <table width='98%' border='0' align='center' cellpadding='0' cellspacing='0'>
   <tr> 
     <td height='24' background='img/mtbg1.gif'  style='border-left: 1px solid #2FA1DB; border-right: 1px solid #2FA1DB;'>
-		¡¡<strong>¡ÌÇëÔÚÒªÑ¡ÔñµÄÀ¸Ä¿´ò¹´</strong>
-	  <input type='checkbox' name='nsel' id='selid0' class='np' onClick="ReSel(0,'ÇëÑ¡Ôñ...')">²»ÏŞÀ¸Ä¿
+		ã€€<strong>âˆšè¯·åœ¨è¦é€‰æ‹©çš„æ ç›®æ‰“å‹¾</strong>
+	  <input type='checkbox' name='nsel' id='selid0' class='np' onClick="ReSel(0,'è¯·é€‰æ‹©...')">ä¸é™æ ç›®
 	</td>
   </tr>
   <tr bgcolor='#EEFAFE'> 
-    <td id='items1' align='center'> 
+    <td align='center' bgcolor="#eefef0" id='items1'> 
 <?php 
-$tu = new TypeTree();
+$tu = new TypeTree($userChannel);
 $tu->ListAllType(0,$opall,$c);
 $tu->Close();
 ?>    </td>

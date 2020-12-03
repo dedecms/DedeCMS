@@ -9,50 +9,50 @@ if($cfg_ml->M_ID>0) $burl = "control.php";
 else $burl = "javascript:;";
 
 if(empty($_POST['m_orderid'])){
-	echo "·Ç·¨·ÃÎÊ£¡";
+	echo "éæ³•è®¿é—®ï¼";
 	exit();
 }
 
-//$m_id;                 //ÉÌ¼ÒºÅ	
-//$m_oamount             //Ö§¸¶½ğ¶î
-//$modate		=	$modate;   //·µ»ØÈÕÆÚ
+//$m_id;                 //å•†å®¶å·	
+//$m_oamount             //æ”¯ä»˜é‡‘é¢
+//$modate		=	$modate;   //è¿”å›æ—¥æœŸ
 
-$memberid	= 	$m_ocomment;			//±¸×¢ ÕâÀïÊÇ·µ»ØÕ¾ÄÚµÄ»áÔ±±àºÅ
-$buyid	= 	ereg_replace("[^0-9A-Za-z]","",$m_orderid);   //ÉÌ¼Ò¶©µ¥ºÅ
-$mState		=	$_POST['m_status'];				         //Ö§¸¶×´Ì¬2³É¹¦,3Ê§°Ü
-$OrderInfo	=	$OrderMessage;  //¶©µ¥¼ÓÃÜĞÅÏ¢
-$signMsg 	=	$Digest;				   //ÃÜ³×
-//½ÓÊÕĞÂµÄmd5¼ÓÃÜÈÏÖ¤
+$memberid	= 	$m_ocomment;			//å¤‡æ³¨ è¿™é‡Œæ˜¯è¿”å›ç«™å†…çš„ä¼šå‘˜ç¼–å·
+$buyid	= 	ereg_replace("[^0-9A-Za-z]","",$m_orderid);   //å•†å®¶è®¢å•å·
+$mState		=	$_POST['m_status'];				         //æ”¯ä»˜çŠ¶æ€2æˆåŠŸ,3å¤±è´¥
+$OrderInfo	=	$OrderMessage;  //è®¢å•åŠ å¯†ä¿¡æ¯
+$signMsg 	=	$Digest;				   //å¯†åŒ™
+//æ¥æ”¶æ–°çš„md5åŠ å¯†è®¤è¯
 $newmd5info	=	$newmd5info;
 $digest = strtoupper(md5($OrderInfo.$cfg_merpassword));
 	
-//±¾µØµÄĞ£¶ÔÃÜÔ¿
+//æœ¬åœ°çš„æ ¡å¯¹å¯†é’¥
 $newtext = $m_id.$m_orderid.$m_oamount.$cfg_merpassword.$mState;
 $myDigest = strtoupper(md5($newtext));
 $mysign == md5($cfg_merchant.$buyid.$money.$success.$cfg_merpassword);
 //--------------------------------------------------------
 
-//Ç©ÃûÕıÈ·
+//ç­¾åæ­£ç¡®
 if($digest == $signMsg && $mState==2){
 	$OrderInfo = HexToStr($OrderInfo);
-	if($newmd5info == $myDigest) //md5ÃÜ³×ÈÏÖ¤
+	if($newmd5info == $myDigest) //md5å¯†åŒ™è®¤è¯
 	{
      $dsql = new DedeSql(false);
-     //»ñÈ¡¶©µ¥ĞÅÏ¢£¬¼ì²é¶©µ¥µÄÓĞĞ§ĞÔ
+     //è·å–è®¢å•ä¿¡æ¯ï¼Œæ£€æŸ¥è®¢å•çš„æœ‰æ•ˆæ€§
      $row = $dsql->GetOne("Select * From #@__member_operation where buyid='$buyid' ");
      if(!is_array($row)||$row['sta']==2){
 		   $oldinfo = $row['oldinfo'];
-		   $msg = "±¾½»Ò×ÒÑ¾­Íê³É£¡£¬ÏµÍ³·µ»ØĞÅÏ¢( $oldinfo ) <br><br> <a href='control.php'>·µ»ØÖ÷Ò³</a> ";
+		   $msg = "æœ¬äº¤æ˜“å·²ç»å®Œæˆï¼ï¼Œç³»ç»Ÿè¿”å›ä¿¡æ¯( $oldinfo ) <br><br> <a href='control.php'>è¿”å›ä¸»é¡µ</a> ";
 		   ShowMsg($msg,"javascript:;");
 		   $dsql->Close();
 		   exit();
 	   }
 	   $mid = $row['mid'];
 	   $pid = $row['pid'];
-     //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¸¶¿î
+     //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²ä»˜æ¬¾
 	   $dsql->ExecuteNoneQuery("Update #@__member_operation set sta=1 where buyid='$buyid' ");
 	   //-------------------------------------------
-	   //»áÔ±²úÆ·
+	   //ä¼šå‘˜äº§å“
 	   //-------------------------------------------
 	   if($row['product']=='member')
 	   {
@@ -62,43 +62,43 @@ if($digest == $signMsg && $mState==2){
 		    $equery =  " Update #@__member set 
 		                membertype='$rank',exptime='$exptime',uptime='".time()."' where ID='$mid' ";
 		    $dsql->ExecuteNoneQuery($equery);
-			  //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			  $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='»áÔ±Éı¼¶³É¹¦£¡' where buyid='$buyid' ");
+			  //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			  $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='ä¼šå‘˜å‡çº§æˆåŠŸï¼' where buyid='$buyid' ");
 		    $dsql->Close();
-        ShowMsg("³É¹¦Íê³É½»Ò×£¡",$burl);
+        ShowMsg("æˆåŠŸå®Œæˆäº¤æ˜“ï¼",$burl);
 	      exit();
 	   }
-	   //µã¿¨²úÆ·
+	   //ç‚¹å¡äº§å“
 	   else if($row['product']=='card')
 	   {
 		    $row = $dsql->GetOne("Select cardid From #@__moneycard_record where ctid='$pid' And isexp='0' ");
-		    //Èç¹ûÕÒ²»µ½Ä³ÖÖÀàĞÍµÄ¿¨£¬Ö±½ÓÎªÓÃ»§Ôö¼Ó½ğ±Ò
+		    //å¦‚æœæ‰¾ä¸åˆ°æŸç§ç±»å‹çš„å¡ï¼Œç›´æ¥ä¸ºç”¨æˆ·å¢åŠ é‡‘å¸
 		    if(!is_array($row)){
 		    	  $nrow = $dsql->GetOne("Select num From  #@__moneycard_type where tid='$pid' ");
 		    	  $dnum = $nrow['num'];
 		    	  $equery =  " Update #@__member set money=money+".$dnum." where ID='$mid' ";
 		        $dsql->ExecuteNoneQuery($equery);
-		        //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			      $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='Ö±½Ó³äÖµÁË {$dnum} ½ğ±Òµ½ÕÊºÅ£¡' where buyid='$buyid' ");
-		        ShowMsg("ÓÉÓÚ´Ëµã¿¨ÒÑ¾­ÂôÍê£¬ÏµÍ³Ö±½ÓÎªÄãµÄÕÊºÅÔö¼ÓÁË£º{$dnum} ¸ö½ğ±Ò£¡",$burl);
+		        //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			      $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='ç›´æ¥å……å€¼äº† {$dnum} é‡‘å¸åˆ°å¸å·ï¼' where buyid='$buyid' ");
+		        ShowMsg("ç”±äºæ­¤ç‚¹å¡å·²ç»å–å®Œï¼Œç³»ç»Ÿç›´æ¥ä¸ºä½ çš„å¸å·å¢åŠ äº†ï¼š{$dnum} ä¸ªé‡‘å¸ï¼",$burl);
 		        $dsql->Close();
 		        exit();
 		    }else{
 		    	 $cardid = $row['cardid'];
 		    	 $dsql->ExecuteNoneQuery(" Update #@__moneycard_record set uid='$mid',isexp='1',utime='".time()."' where cardid='$cardid' ");
-		    	 //¸üĞÂ½»Ò××´Ì¬ÎªÒÑ¹Ø±Õ
-			     $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='³äÖµÃÜÂë£º{$cardid}' where buyid='$buyid' ");
-		    	 ShowMsg("½»Ò×³É¹¦£¡<a href='control.php'><u>[·µ»Ø]</u></a><br> ³äÖµÃÜÂë£º{$cardid}","javascript:;");
+		    	 //æ›´æ–°äº¤æ˜“çŠ¶æ€ä¸ºå·²å…³é—­
+			     $dsql->ExecuteNoneQuery(" Update #@__member_operation set sta=2,oldinfo='å……å€¼å¯†ç ï¼š{$cardid}' where buyid='$buyid' ");
+		    	 ShowMsg("äº¤æ˜“æˆåŠŸï¼<a href='control.php'><u>[è¿”å›]</u></a><br> å……å€¼å¯†ç ï¼š{$cardid}","javascript:;");
 		    	 $dsql->Close();
 		       exit();
 		    }
 	   }
   }else{
-  	ShowMsg("½»Ò×ÃÜÔ¿´íÎó£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡",$burl);
+  	ShowMsg("äº¤æ˜“å¯†é’¥é”™è¯¯ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼",$burl);
 	  exit();
   }
 }else{
-	ShowMsg("½»Ò×ÃÜÔ¿´íÎó£¬ÇëÓë¹ÜÀíÔ±ÁªÏµ£¡",$burl);
+	ShowMsg("äº¤æ˜“å¯†é’¥é”™è¯¯ï¼Œè¯·ä¸ç®¡ç†å‘˜è”ç³»ï¼",$burl);
 	exit();
 }
 ?>

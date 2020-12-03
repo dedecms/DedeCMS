@@ -6,14 +6,14 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function TestType($tname)
 {
-	if($tname=="") return "ËùÓĞÀ¸Ä¿";
+	if($tname=="") return "æ‰€æœ‰æ ç›®";
 	else return $tname;
 }
 
 function TimeSetValue($ts)
 {
-	if($ts==0) return "²»ÏŞÊ±¼ä";
-	else return "ÏŞÊ±±ê¼Ç";
+	if($ts==0) return "ä¸é™æ—¶é—´";
+	else return "é™æ—¶æ ‡è®°";
 }
 
 $sql = "Select 

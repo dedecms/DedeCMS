@@ -31,7 +31,7 @@ if($action=="save")
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery($query);
 	$dsql->Close();
-	ShowMsg("³É¹¦Ôö¼ÓÒ»¸ö¹æÔò!","co_export_rule.php");
+	ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªè§„åˆ™!","co_export_rule.php");
 	exit();
 }
 else if($action=="hand")
@@ -40,14 +40,14 @@ else if($action=="hand")
 	 if($job=="")
 	 {
      require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-     $wintitle = "Êı¾İµ¼Èë¹æÔò";
-	   $wecome_info = "<a href='co_export_rule.php'><u>Êı¾İµ¼Èë¹æÔò</u></a>::µ¼ÈëÎÄ±¾ÅäÖÃ";
+     $wintitle = "æ•°æ®å¯¼å…¥è§„åˆ™";
+	   $wecome_info = "<a href='co_export_rule.php'><u>æ•°æ®å¯¼å…¥è§„åˆ™</u></a>::å¯¼å…¥æ–‡æœ¬é…ç½®";
 	   $win = new OxWindow();
 	   $win->Init("co_export_rule_add.php","js/blank.js","POST");
 	   $win->AddHidden("job","yes");
 	   $win->AddHidden("action",$action);
-	   $win->AddTitle("ÇëÔÚÏÂÃæÊäÈëÄãÒªµ¼ÈëµÄÎÄ±¾ÅäÖÃ£º");
-	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300'></textarea>");
+	   $win->AddTitle("è¯·åœ¨ä¸‹é¢è¾“å…¥ä½ è¦å¯¼å…¥çš„æ–‡æœ¬é…ç½®ï¼š");
+	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px'></textarea>");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
      exit();
@@ -61,7 +61,7 @@ else if($action=="hand")
       $dtp->LoadString($notes);
    	  if(!is_array($dtp->CTags))
       {
-	      ShowMsg("¸Ã¹æÔò²»ºÏ·¨£¬ÎŞ·¨±£´æ!","-1");
+	      ShowMsg("è¯¥è§„åˆ™ä¸åˆæ³•ï¼Œæ— æ³•ä¿å­˜!","-1");
 	      $dsql->Close();
 	      exit();
       }
@@ -73,254 +73,13 @@ else if($action=="hand")
 	    $dsql = new DedeSql(false);
 	    $dsql->ExecuteNoneQuery($query);
 	    $dsql->Close();
-	    ShowMsg("³É¹¦µ¼ÈëÒ»¸ö¹æÔò!","co_export_rule.php");
+	    ShowMsg("æˆåŠŸå¯¼å…¥ä¸€ä¸ªè§„åˆ™!","co_export_rule.php");
 	    exit();
    }
 }
+
+
+require_once(dirname(__FILE__)."/templets/co_export_rule_add.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ĞÂ½¨Êı¾İµ¼Èë¹æÔò</title>
-<script language='javascript'>
-var fieldstart = 6;
-function CheckSubmit()
-{
-   if(document.form1.rulename.value==""){
-	   alert("¹æÔòÃû³Æ²»ÄÜÎª¿Õ£¡");
-	   document.form1.rulename.focus();
-	   return false;
-   }
-   if(document.form1.tablename.value==""){
-	   alert("µ¼ÈëµÄÊı¾İ±íµÄÖµ²»ÄÜÎª¿Õ£¡");
-	   document.form1.tablename.focus();
-	   return false;
-   }
-   return true;
-}
-function addMoreField()
-{
-   var objFieldNum = document.getElementById("fieldnum");
-   var objField = document.getElementById("morefield");
-   var addvalue = Number(objFieldNum.value);
-   var endnum = fieldstart + addvalue;
-   if(endnum>50){ alert("²»ÔÊĞí³¬¹ıÏŞ¶¨µÄÏîÄ¿!"); return; }
-   for(;fieldstart<endnum;fieldstart++)
-   {
-      if(fieldstart>9) objField.innerHTML += "×Ö¶Î"+fieldstart+"£º <input class='nnpp' name=\"fieldname"+fieldstart+"\" type=\"text\" size=\"15\"> ×¢½â£º <input class='nnpp' name=\"comment"+fieldstart+"\" type=\"text\" size=\"15\"> µİÊô±í£º <input class='nnpp' name=\"intable"+fieldstart+"\" type=\"text\" size=\"18\"><br>\r\n";
-      else objField.innerHTML += "×Ö¶Î0"+fieldstart+"£º <input class='nnpp' name=\"fieldname"+fieldstart+"\" type=\"text\" size=\"15\"> ×¢½â£º <input class='nnpp' name=\"comment"+fieldstart+"\" type=\"text\" size=\"15\"> µİÊô±í£º <input class='nnpp' name=\"intable"+fieldstart+"\" type=\"text\" size=\"18\"><br>\r\n";
-      objField.innerHTML += "ÖµÀàĞÍ£º <input type='radio' class='np' name='source"+fieldstart+"' value='function'>º¯Êı <input type='radio' class='np' name='source"+fieldstart+"' value='value'>Ö¸¶¨Öµ <input type='radio' class='np' name='source"+fieldstart+"' value='export' checked>µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º <input name='makevalue"+fieldstart+"' type='text' size='26' class='nnpp'><hr size=1 width=80%>\r\n";
-   }
-   
-}
-</script>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<style>
-	.nnpp{
-	border-bottom:1px solid #98CAEF;
-	border-top:1px solid #FFFFFF;
-	border-left:1px solid #FFFFFF;
-	border-right:1px solid #FFFFFF;
-	color:red;
-	filter:alpha(opacity=70);
- }
-</style>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td height="19" background="img/tbg.gif"><b><a href="co_export_rule.php"><u>Êı¾İµ¼Èë¹æÔò¹ÜÀí</u></a></b>&gt;&gt;ĞÂ½¨Êı¾İµ¼Èë¹æÔò</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<form action="co_export_rule_add.php" method="post" name="form1" onSubmit="return CheckSubmit();";>
-        <input type='hidden' name='action' value='save'>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ì»ù±¾²ÎÊı£º</strong></td>
-          </tr>
-          <tr> 
-            <td width="120" height="24" align="center">¹æÔòÃû³Æ£º</td>
-            <td height="24"> <input name="rulename" type="text" id="rulename" size="36"> 
-            </td>
-          </tr>
-          <tr>
-            <td height="24" align="center">Èë¿âÀàĞÍ£º</td>
-            <td height="24"> <input name="etype" type="radio" class="np" value="µ±Ç°ÏµÍ³" checked>
-              µ±Ç°ÏµÍ³ 
-              <input type="radio" name="etype" class="np" value="ÆäËüÏµÍ³">
-              ÆäËüÏµÍ³ </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">Õë¶ÔÆµµÀ£º</td>
-            <td height="24">
-			<select name="channelid" id="channelid" style="width:150">
-                <option value="0">--·ÇÏµÍ³ÆµµÀÄ£ĞÍ--</option>
-				<?php 
-				$dsql = new DedeSql(false);
-				$dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0 order by ID asc");
-				$dsql->Execute();
-				while($row = $dsql->GetObject()){
-				   echo "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
-				}
-				$dsql->Close();
-				?>
-              </select>
-			</td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr> 
-            <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ìÊı¾İ¿â»ù±¾²ÎÊı£º</strong></td>
-          </tr>
-          <tr> 
-            <td width="120" height="24" align="center">µ¼ÈëµÄÊı¾İ±í£º</td>
-            <td><input name="tablename" type="text" id="tablename" size="30">
-              £¨¶à¸ö±íÓÃ¡°,¡±·Ö¿ª£¬×î¶àÖ§³ÖÁ½¸ö±í£©</td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">×Ô¶¯±àºÅ×Ö¶Î£º</td>
-            <td>
-            	<input name="autofield" type="text" id="autofield" size="15">
-            	(±íÊ¾Á½¸ö±í¹ØÁ¬Ê±£¬µÚÒ»¸ö±íµÄ×Ô¶¯±àºÅ×Ö¶Î)
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">Í¬²½×Ö¶Î£º</td>
-            <td>
-            	<input name="synfield" type="text" id="synfield" size="15"> 
-              £¨±íÊ¾µÚ¶ş¸ö±íÓëµÚÒ»¸ö±íµÄ×Ô¶¯±àºÅ×Ö¶Î¹ØÁ¬×Ö¶Î£©
-            </td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="1" cellpadding="1">
-          <tr>
-            <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;¡ì×Ö¶ÎÉè¶¨£º</strong></td>
-          </tr>
-          <tr> 
-            <td height="20" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="90%">&nbsp;&nbsp;&nbsp;&nbsp;Èç¹ûÑ¡¹Ì¶¨Öµ£¬ÔÊĞíÓÃ{cid}±íÊ¾ÆµµÀID¡¢{typeid}À¸Ä¿ID¡¢{rank}ÊÇ·ñÉóºË×´Ì¬£¨1»ò0£©£¬ÕâĞ©±äÁ¿¾ßÌåÖµ¿ÉÒÔÔÚµ¼³öÊı¾İÊ±Ñ¡Ôñ¡£</td>
-                </tr>
-              </table></td>
-          </tr>
-          <tr> 
-            <td height="62" colspan="2"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="10%" height="45" align="center">Ôö¼Ó×Ö¶Î£º</td>
-                  <td width="90%"> <input name="fieldnum" type="text" id="fieldnum" value="5" size="8"> 
-                    <input type="button" name="Submit" value="Ôö¼Ó" onClick="addMoreField();" class='nbt'> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="60">&nbsp;</td>
-                  <td width="90%" align="left">×Ö¶Î01£º 
-                    <input name="fieldname1" class='nnpp' type="text" id="fieldname1" size="15">
-                    ×¢½â£º 
-                    <input name="comment1" class='nnpp' type="text" id="comment1" size="15">
-                    µİÊô±í£º 
-                    <input name="intable1" class='nnpp' type="text" id="intable1" size="18"> 
-                    <br>
-                    ÖµÀàĞÍ£º 
-                    <input type='radio' class='np' name='source1' value='function'>
-                    º¯Êı 
-                    <input type='radio' class='np' name='source1' value='value'>
-                    Ö¸¶¨Öµ 
-                    <input type='radio' class='np' name='source1' value='export' checked>
-                    µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º 
-                    <input name="makevalue1" type="text" size="26" class='nnpp'> 
-                    <hr size=1 width=80%>
-                    ×Ö¶Î02£º 
-                    <input name="fieldname2" class='nnpp' type="text" id="fieldname2" size="15">
-                    ×¢½â£º 
-                    <input name="comment2" class='nnpp' type="text" id="comment2" size="15">
-                    µİÊô±í£º 
-                    <input name="intable2" class='nnpp' type="text" id="intable2" size="18"> 
-                    <br>
-                    ÖµÀàĞÍ£º 
-                    <input type='radio' class='np' name='source2' value='function'>
-                    º¯Êı 
-                    <input type='radio' class='np' name='source2' value='value'>
-                    Ö¸¶¨Öµ 
-                    <input type='radio' class='np' name='source2' value='export' checked>
-                    µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º 
-                    <input name="makevalue2" type="text" size="26" class='nnpp'> 
-                    <hr size=1 width=80%>
-                    ×Ö¶Î03£º 
-                    <input name="fieldname3" class='nnpp' type="text" id="fieldname3" size="15">
-                    ×¢½â£º 
-                    <input name="comment3" class='nnpp' type="text" id="comment3" size="15">
-                    µİÊô±í£º 
-                    <input name="intable3" class='nnpp' type="text" id="intable3" size="18"> 
-                    <br>
-                    ÖµÀàĞÍ£º 
-                    <input type='radio' class='np' name='source3' value='function'>
-                    º¯Êı 
-                    <input type='radio' class='np' name='source3' value='value'>
-                    Ö¸¶¨Öµ 
-                    <input type='radio' class='np' name='source3' value='export' checked>
-                    µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º 
-                    <input name="makevalue3" type="text" size="26" class='nnpp'> 
-                    <hr size=1 width=80%>
-                    ×Ö¶Î04£º 
-                    <input name="fieldname4" class='nnpp' type="text" id="fieldname4" size="15">
-                    ×¢½â£º 
-                    <input name="comment4" class='nnpp' type="text" id="comment4" size="15">
-                    µİÊô±í£º 
-                    <input name="intable4" class='nnpp' type="text" id="intable4" size="18"> 
-                    <br>
-                    ÖµÀàĞÍ£º 
-                    <input type='radio' class='np' name='source4' value='function'>
-                    º¯Êı 
-                    <input type='radio' class='np' name='source4' value='value'>
-                    Ö¸¶¨Öµ 
-                    <input type='radio' class='np' name='source4' value='export' checked>
-                    µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º 
-                    <input name="makevalue4" type="text" size="26" class='nnpp'> 
-                    <hr size=1 width=80%>
-                    ×Ö¶Î05£º 
-                    <input name="fieldname5" class='nnpp' type="text" id="fieldname5" size="15">
-                    ×¢½â£º 
-                    <input name="comment5" class='nnpp' type="text" id="comment5" size="15">
-                    µİÊô±í£º 
-                    <input name="intable5" class='nnpp' type="text" id="intable5" size="18"> 
-                    <br>
-                    ÖµÀàĞÍ£º 
-                    <input type='radio' class='np' name='source5' value='function'>
-                    º¯Êı 
-                    <input type='radio' class='np' name='source5' value='value'>
-                    Ö¸¶¨Öµ 
-                    <input type='radio' class='np' name='source5' value='export' checked>
-                    µ¼Èë/²É¼¯ Ö¸¶¨Öµ»òº¯Êı£º 
-                    <input name="makevalue5" type="text" size="26" class='nnpp'> 
-                    <hr size=1 width=80%> <span id='morefield'></span> </td>
-                </tr>
-              </table></td>
-          </tr>
-        </table>
-        <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td bgcolor="#CCCCCC" height="1"></td>
-          </tr>
-          <tr> 
-            <td height="80"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td width="10%">&nbsp;</td>
-                  <td width="90%">
-				  <input name="imageField" class="np" type="image" src="img/button_save.gif" width="60" height="22" border="0">
-                    ¡¡ 
-                   <img class="np" src="img/button_reset.gif" width="60" height="22" border="0" style="cursor:hand" onClick="form1.reset();">
-				  </td>
-                </tr>
-              </table></td>
-          </tr>
-        </table>
-      </form>
-    </td>
-</tr>
-</table>
-</body>
-</html>

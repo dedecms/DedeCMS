@@ -6,28 +6,28 @@ if($dopost=="addnew"){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	$dsql = new DedeSql(false);
 	$row = $dsql->GetOne("Select count(*) as dd From #@__member_arctype where memberid='".$cfg_ml->M_ID."';");
 	if($row['dd']>=16){
-		PrintTypeList("<font color='red'>Äã²»ÄÜ¶¨Òå³¬¹ıÊ®Áù¸ö·ÖÀà£¡</font>");
+		PrintTypeList("<font color='red'>ä½ ä¸èƒ½å®šä¹‰è¶…è¿‡åå…­ä¸ªåˆ†ç±»ï¼</font>");
 		exit();
 	}else{
 		$typename = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($typename))),50);
     $typename = trim(addslashes($typename));
 		if($typename==""){
-			PrintTypeList("<font color='red'>·ÖÀàÃû³Æ·Ç·¨»òÎª¿Õ£¡</font>");
+			PrintTypeList("<font color='red'>åˆ†ç±»åç§°éæ³•æˆ–ä¸ºç©ºï¼</font>");
 			exit();
 		}
 		$rank = ereg_replace("[^0-9]","",trim($rank));
 		if($channelid!=1 && $channelid!=2) $channelid = 1;
 		$row = $dsql->GetOne("Select typename From #@__member_arctype where memberid='".$cfg_ml->M_ID."' And typename='$typename' And channelid='$channelid';");
 		if(is_array($row)){
-			PrintTypeList("<font color='red'>ÄãÒÑ¾­¶¨ÒåÍ¬ÃûµÄ·ÖÀà£¡</font>");
+			PrintTypeList("<font color='red'>ä½ å·²ç»å®šä¹‰åŒåçš„åˆ†ç±»ï¼</font>");
 			exit();
 		}
 		if($rank=="") $rank = 0;
-		$dsql->ExecuteNoneQuery("Insert Into #@__member_arctype(typename,memberid,channelid,rank) Values('$typename','".$cfg_ml->M_ID."','$channelid','$rank'); ");
+		$dsql->ExecuteNoneQuery("Insert Into #@__member_arctype(typename,memberid,channelid,rank) Values('$typename','".$cfg_ml->M_ID."','0','$rank'); ");
 		$dsql->Close();
 		PrintTypeList();
 	}
@@ -36,38 +36,38 @@ else if($dopost=="reload"){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	PrintTypeList("",$orderby);
 }
 else if($dopost=="del"){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	$aid = ereg_replace("[^0-9]","",$aid);
 	if($aid==''||$aid==0){ echo ""; exit(); }
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery("Delete From #@__member_arctype where aid='$aid' And memberid='".$cfg_ml->M_ID."';");
 	$dsql->Close();
-	PrintTypeList("<font color='red'>³É¹¦É¾³ıÒ»·ÖÀà£¡</font>");
+	PrintTypeList("<font color='red'>æˆåŠŸåˆ é™¤ä¸€åˆ†ç±»ï¼</font>");
 }
 else if($dopost=="update"){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 	$dsql = new DedeSql(false);
 	$typename = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($typename))),50);
   $typename = trim(addslashes($typename));
 	if($typename==""){
-		PrintTypeList("<font color='red'>·ÖÀàÃû³Æ²»ÄÜÎª¿Õ£¡</font>");
+		PrintTypeList("<font color='red'>åˆ†ç±»åç§°ä¸èƒ½ä¸ºç©ºï¼</font>");
 		exit();
 	}
 	$rank = ereg_replace("[^0-9]","",trim($rank));
 	$aid = ereg_replace("[^0-9]","",$aid);
 	$row = $dsql->GetOne("Select typename From #@__member_arctype where aid!='$aid' And memberid='".$cfg_ml->M_ID."' And typename='$typename';");
 	if(is_array($row)){
-		PrintTypeList("<font color='red'>´æÔÚÍ¬Ãû·ÖÀà£¬¸üĞÂ·ÖÀà {$aid} Îª£º{$typename} Ê§°Ü£¡</font>");
+		PrintTypeList("<font color='red'>å­˜åœ¨åŒååˆ†ç±»ï¼Œæ›´æ–°åˆ†ç±» {$aid} ä¸ºï¼š{$typename} å¤±è´¥ï¼</font>");
 		exit();
 	}
 	$upquery = "
@@ -77,11 +77,11 @@ else if($dopost=="update"){
 	";
 	$rs = $dsql->ExecuteNoneQuery($upquery);
 	$dsql->Close();
-	if($rs) PrintTypeList("<font color='red'>³É¹¦¸üĞÂ·ÖÀà£º{$typename}");
-	else PrintTypeList("<font color='red'>¸üĞÂ·ÖÀà£º{$typename} Ê§°Ü£¡</font>");
+	if($rs) PrintTypeList("<font color='red'>æˆåŠŸæ›´æ–°åˆ†ç±»ï¼š{$typename}");
+	else PrintTypeList("<font color='red'>æ›´æ–°åˆ†ç±»ï¼š{$typename} å¤±è´¥ï¼</font>");
 }
 //-----------
-//¸üĞÂÀàÄ¿ÁĞ±í
+//æ›´æ–°ç±»ç›®åˆ—è¡¨
 //-----------
 function PrintTypeList($addstr="",$orderby=0){
 	global $cfg_ml;
@@ -90,23 +90,23 @@ function PrintTypeList($addstr="",$orderby=0){
 	echo "<table width='98%' border='0' cellpadding='3' cellspacing='1' bgcolor='#CCCCCC' style='margin-bottom:10px'>\r\n";
 	echo "<tr align='center' bgcolor='#FBFCD1'>\r\n";
 	echo "<td width='11%'>ID</td>\r\n";
-  echo "<td width='32%'>·ÖÀàÃû³Æ</td>\r\n";
-  echo "<td width='15%'><a href='javascript:ReLoadList(1)'><u>ÄÚÈİÀàĞÍ</u></a></td>\r\n";
-  echo "<td width='18%'><a href='javascript:ReLoadList(0)'><u>ÅÅĞò¼¶±ğ</u></a></td>\r\n";
-  echo "<td>²Ù×÷</td>\r\n</tr>\r\n";
+  echo "<td width='32%'>åˆ†ç±»åç§°</td>\r\n";
+  echo "<td width='15%'><a href='javascript:ReLoadList(1)'><u>å†…å®¹ç±»å‹</u></a></td>\r\n";
+  echo "<td width='18%'><a href='javascript:ReLoadList(0)'><u>æ’åºçº§åˆ«</u></a></td>\r\n";
+  echo "<td>æ“ä½œ</td>\r\n</tr>\r\n";
   if($orderby==1) $orderby = " order by channelid desc ";
   else $orderby = " order by rank desc ";
   $dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' $orderby");
   $dsql->Execute();
   while($row = $dsql->GetObject()){
-  	if($row->channelid==1){ $cktype = " ÎÄÕÂ "; }
-  	else{ $cktype = " <font color='#3C9636'>Í¼¼¯<font> "; }
+  	if($row->channelid==1){ $cktype = " æ–‡ç«  "; }
+  	else{ $cktype = " <font color='#3C9636'>å›¾é›†<font> "; }
   	echo "<tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#EFEFEF';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">\r\n";
   	echo "<td>{$row->aid}</td>\r\n";
     echo "<td><input name='typename{$row->aid}' type='text' id='typename{$row->aid}' style='width:150px' value='{$row->typename}'></td>\r\n";
     echo "<td>{$cktype}</td>\r\n";
     echo "<td><input name='rank{$row->aid}' type='text' id='rank{$row->aid}' style='width:60px' value='{$row->rank}'></td>\r\n";
-    echo "<td>£Û<a href='#' onclick='UpdateType({$row->aid})'>¸üĞÂ</a>£İ£Û<a href='#' OnClick='DelType({$row->aid})'>É¾³ı</a>£İ</td>\r\n</tr>\r\n";
+    echo "<td>ï¼»<a href='#' onclick='UpdateType({$row->aid})'>æ›´æ–°</a>ï¼½ï¼»<a href='#' OnClick='DelType({$row->aid})'>åˆ é™¤</a>ï¼½</td>\r\n</tr>\r\n";
   }
 	echo "</table>\r\n";
 	$dsql->Close();

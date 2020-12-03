@@ -1,55 +1,93 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('c_New');
-if(empty($ismake)) $ismake = 0;
-//¼ì²éÊäÈë
+if(empty($isdel1)) $isdel1 = 0;
+if(empty($isdel2)) $isdel2 = 0;
+//æ£€æŸ¥è¾“å…¥
 //----------------------------
-if(ereg("[^0-9]",$ID)||$ID==""){
-	ShowMsg("<font color=red>'ÆµµÀID'</font>±ØĞëÎªÊı×Ö£¡","-1");
+if(ereg("[^0-9-]",$ID)||$ID==""){
+	ShowMsg("<font color=red>'é¢‘é“ID'</font>å¿…é¡»ä¸ºæ•°å­—ï¼","-1");
 	exit();
 }
-if(eregi("[^a-z]",$nid)||$nid==""){
-	ShowMsg("<font color=red>'ÆµµÀÃû×Ö±êÊ¶'</font>±ØĞëÎªÓ¢ÎÄ×ÖÄ¸£¡","-1");
-	exit();
+if(eregi("[^a-z0-9_-]",$nid)||$nid==""){
+	$nid = GetPinyin($typename);
 }
 if($addtable==""){
-	ShowMsg("¸½¼Ó±í²»ÄÜÎª¿Õ£¡","-1");
+	ShowMsg("é™„åŠ è¡¨ä¸èƒ½ä¸ºç©ºï¼","-1");
 	exit();
 }
 $dsql = new DedeSql(false);
-$trueTable = str_replace("#@__",$cfg_dbprefix,$addtable);
-//¼ì²éIDÊÇ·ñÖØ¸´
+$trueTable1 = str_replace("#@__",$cfg_dbprefix,$maintable);
+$trueTable2 = str_replace("#@__",$cfg_dbprefix,$addtable);
+//æ£€æŸ¥IDæ˜¯å¦é‡å¤
 //--------------------------
-$row = $dsql->GetOne("Select * from #@__channeltype where ID='$ID' Or nid like '$nid' Or addtable like '$addtable'");
+$row = $dsql->GetOne("Select * from #@__channeltype where ID='$ID' Or nid like '$nid' Or typename like '$typename' ");
 if(is_array($row)){
 	$dsql->Close();
-	ShowMsg("¿ÉÄÜ¡®ÆµµÀID¡¯¡¢¡®ÆµµÀÃû³Æ±êÊ¶¡¯¡¢¡®¸½¼Ó±íÃû³Æ¡¯ÔÚÊı¾İ¿âÒÑ´æÔÚ£¬²»ÄÜÖØ¸´Ê¹ÓÃ£¡","-1");
+	ShowMsg("å¯èƒ½â€˜é¢‘é“IDâ€™ã€â€˜é¢‘é“åç§°/æ ‡è¯†â€™åœ¨æ•°æ®åº“å·²å­˜åœ¨ï¼Œä¸èƒ½é‡å¤ä½¿ç”¨ï¼","-1");
 	exit();
 }
 $mysql_version = $dsql->GetVersion();
 $mysql_versions = explode(".",trim($mysql_version));
 $mysql_version = $mysql_versions[0].".".$mysql_versions[1];
-//¼ì²é¸½¼Ó±í
+//å¤åˆ¶å¹¶åˆ›å»ºç´¢å¼•è¡¨
 //--------------------
-if(!$dsql->IsTable($trueTable)){
-   $tabsql = "CREATE TABLE IF NOT EXISTS  `$trueTable`(
+$istb = $dsql->IsTable($trueTable1);
+if(!$istb || ($isdel1==1 && strtolower($trueTable1)!="{$cfg_dbprefix}archives") )
+{
+	$dsql->SetQuery("SHOW CREATE TABLE {$dsql->dbName}.#@__archives");
+  $dsql->Execute();
+  $row2 = $dsql->GetArray();
+  $dftable = $row2[1];
+	$dsql->ExecuteNoneQuery("DROP TABLE IF EXISTS `{$trueTable1}`;");
+	$dftable = str_replace("{$cfg_dbprefix}archives",$trueTable1,$dftable);
+	$rs = $dsql->ExecuteNoneQuery($dftable);
+	if(!$rs){
+		$dsql->Close();
+		ShowMsg("åˆ›å»ºä¸»ç´¢å¼•è¡¨å‰¯æœ¬å¤±è´¥!","-1");
+		exit();
+	}
+}
+//åˆ›å»ºé™„åŠ è¡¨
+//--------------------
+if($trueTable2!='')
+{
+  $istb = $dsql->IsTable($trueTable2);
+  if(!$istb || $isdel2==1)
+  {
+	  $dsql->ExecuteNoneQuery("DROP TABLE IF EXISTS `{$trueTable2}`;");
+	  $tabsql = "CREATE TABLE `$trueTable2`(
 	           `aid` int(11) NOT NULL default '0',
              `typeid` int(11) NOT NULL default '0',
-  ";
-	if($mysql_version < 4.1){
-     $tabsql .= "    PRIMARY KEY  (`aid`), KEY `".$trueTable."_index` (`typeid`)\r\n) TYPE=MyISAM; ";
-  }else{
-     $tabsql .= "    PRIMARY KEY  (`aid`), KEY `".$trueTable."_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language."; ";
+    ";
+	  if($mysql_version < 4.1)
+       $tabsql .= "    PRIMARY KEY  (`aid`), KEY `".$trueTable2."_index` (`typeid`)\r\n) TYPE=MyISAM; ";
+    else
+       $tabsql .= "    PRIMARY KEY  (`aid`), KEY `".$trueTable2."_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language."; ";
+    $rs = $dsql->ExecuteNoneQuery($tabsql);
+    if(!$rs){
+		  $dsql->Close();
+		  ShowMsg("åˆ›å»ºé™„åŠ è¡¨å¤±è´¥!","-1");
+		  exit();
+	  }
   }
-  $dsql->ExecuteNoneQuery($tabsql);
 }
+
 $inQuery = "
-INSERT INTO #@__channeltype(ID,nid,typename,addtable,addcon,mancon,editcon,fieldset,listadd,issystem,issend,arcsta,sendrank) 
-VALUES ('$ID','$nid','$typename','$addtable','$addcon','$mancon','$editcon','','$listadd','$issystem','$issend','$arcsta','$sendrank');
+INSERT INTO #@__channeltype(ID,nid,typename,maintable,addtable,
+           addcon,mancon,editcon,useraddcon,usermancon,usereditcon,
+           fieldset,listadd,issystem,issend,arcsta,sendrank,sendmember) 
+VALUES ('$ID','$nid','$typename','$maintable','$addtable',
+          '$addcon','$mancon','$editcon','$useraddcon','$usermancon','$usereditcon',
+            '',     '',   '$issystem','$issend','$arcsta','$sendrank','$sendmember');
 ";
-$dsql->SetQuery($inQuery);
-$dsql->ExecuteNoneQuery();
-$dsql->Close();
-ShowMsg("³É¹¦Ôö¼ÓÒ»¸öÆµµÀÄ£ĞÍ£¡","mychannel_main.php");
+
+$rs = $dsql->ExecuteNoneQuery($inQuery);
+
+ClearAllLink();
+
+ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªé¢‘é“æ¨¡å‹ï¼","mychannel_edit.php?ID={$ID}&dopost=edit");
+
 exit();
+
 ?>

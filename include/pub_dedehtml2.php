@@ -1,9 +1,9 @@
 <?php 
 /*******************************
-//Ö¯ÃÎHTML½âÎöÀàV1.1 PHP°æ
+//ç»‡æ¢¦HTMLè§£æç±»V1.1 PHPç‰ˆ
 //www.dedecms.com
 function c____DedeHtml2();
-Õâ¸öÀàÕë¶ÔÓÚ²É¼¯³ÌĞò£¬ÓëDedeHtmlÀà¹¦ÄÜ²»¾¡ÏàÍ¬
+è¿™ä¸ªç±»é’ˆå¯¹äºé‡‡é›†ç¨‹åºï¼Œä¸DedeHtmlç±»åŠŸèƒ½ä¸å°½ç›¸åŒ
 ********************************/
 class DedeHtml2
 {
@@ -22,7 +22,7 @@ class DedeHtml2
 	var $ImgWidth;
 	var $GetLinkType;
 	//-------------------------
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	//-------------------------
 	function __construct()
  	{
@@ -45,9 +45,9 @@ class DedeHtml2
  	{
  		$this->__construct();
   }
-	//ÉèÖÃHTMLµÄÄÚÈİºÍÀ´Ô´ÍøÖ·
-	//gethead ÊÇÖ¸ÊÇ·ñÒª·ÖÎöhtmlÍ·
-	//Èç¹ûÊÇ¾Ö²¿HTML,´ËÏî±ØĞëÉèÎªfalse,·ñÔòÎŞ·¨·ÖÎöÍøÒ³
+	//è®¾ç½®HTMLçš„å†…å®¹å’Œæ¥æºç½‘å€
+	//gethead æ˜¯æŒ‡æ˜¯å¦è¦åˆ†æhtmlå¤´
+	//å¦‚æœæ˜¯å±€éƒ¨HTML,æ­¤é¡¹å¿…é¡»è®¾ä¸ºfalse,å¦åˆ™æ— æ³•åˆ†æç½‘é¡µ
 	function SetSource(&$html,$url="",$gethead=false)
 	{
 		$this->__construct();
@@ -57,7 +57,7 @@ class DedeHtml2
 		$url = trim($url);
 		$this->SourceHtml = $html;
 		$this->BaseUrl = $url;
-		//ÅĞ¶ÏÎÄµµÏà¶ÔÓÚµ±Ç°µÄÂ·¾¶
+		//åˆ¤æ–­æ–‡æ¡£ç›¸å¯¹äºå½“å‰çš„è·¯å¾„
 		$urls = @parse_url($url);
 		$this->HomeUrl = $urls["host"];
 		$this->BaseUrlPath = $this->HomeUrl.$urls["path"];
@@ -66,7 +66,7 @@ class DedeHtml2
 		if($html!="") $this->Analyser();
 	}
 	//-----------------------
-	//½âÎöHTML
+	//è§£æHTML
 	//-----------------------
 	function Analyser()
 	{
@@ -98,7 +98,7 @@ class DedeHtml2
 			$c = $this->SourceHtml[$i];
 			if($c=="<")
 			{
-				//ÕâÖÖÇé¿öÒ»°ãÊÇÓÃÓÚ²É¼¯³ÌĞòµÄÄ£Ê½
+				//è¿™ç§æƒ…å†µä¸€èˆ¬æ˜¯ç”¨äºé‡‡é›†ç¨‹åºçš„æ¨¡å¼
 				$tagName = "";
 				$j = 0;
 				for($i=$i+1; $i < $slen; $i++){
@@ -123,16 +123,16 @@ class DedeHtml2
 				}else{
 					continue;
 				}
-				//¼ì²âHTMLÍ·ĞÅÏ¢
+				//æ£€æµ‹HTMLå¤´ä¿¡æ¯
 				if(!$this->IsHead)
 				{
 					if($tagName=="meta"){
-					  //·ÖÎönameÊôĞÔ
+					  //åˆ†ænameå±æ€§
 					  $tmpValue = strtolower($cAtt->GetAtt("http-equiv"));
 					  if($tmpValue=="content-type"){
 							  $this->CharSet = strtolower($cAtt->GetAtt("charset"));
 						}
-				  } //End meta ·ÖÎö
+				  } //End meta åˆ†æ
 				  else if($tagName=="title"){
 						$this->Title = $this->GetInnerText($i,"title");
 						$i += strlen($this->Title)+12;
@@ -144,28 +144,28 @@ class DedeHtml2
 			  }
 			  else
 			  {
-					//Ğ¡ĞÍ·ÖÎöµÄÊı¾İ
-					//Ö»»ñµÃÄÚÈİÀïµÄ¶àÃ½Ìå×ÊÔ´Á´½Ó£¬²»»ñÈ¡text
-					if($tagName=="img"){ //»ñÈ¡Í¼Æ¬ÖĞµÄÍøÖ·
+					//å°å‹åˆ†æçš„æ•°æ®
+					//åªè·å¾—å†…å®¹é‡Œçš„å¤šåª’ä½“èµ„æºé“¾æ¥ï¼Œä¸è·å–text
+					if($tagName=="img"){ //è·å–å›¾ç‰‡ä¸­çš„ç½‘å€
 						$this->InsertMedia($cAtt->GetAtt("src"),"img"); 
 					}
-					else if($tagName=="embed"){ //»ñµÃFlash»òÆäËüÃ½ÌåµÄÄÚÈİ
+					else if($tagName=="embed"){ //è·å¾—Flashæˆ–å…¶å®ƒåª’ä½“çš„å†…å®¹
 						$rurl = $this->InsertMedia($cAtt->GetAtt("src"),"embed");
 						if($rurl != ""){
 						  $this->MediaInfos[$rurl][0] = $cAtt->GetAtt("width");
 						  $this->MediaInfos[$rurl][1] = $cAtt->GetAtt("height");
 						}
 					}
-					else if($tagName=="a"){ //»ñµÃFlash»òÆäËüÃ½ÌåµÄÄÚÈİ
+					else if($tagName=="a"){ //è·å¾—Flashæˆ–å…¶å®ƒåª’ä½“çš„å†…å®¹
 						$this->InsertLink($cAtt->GetAtt("href"),$this->GetInnerText($i,"a"));
 					}
-				}//½áÊø½âÎöbodyµÄÄÚÈİ
+				}//ç»“æŸè§£æbodyçš„å†…å®¹
 			}//End if char
 		}//End for
 		if($this->Title=="") $this->Title = $this->BaseUrl;
 	}
 	//
-	//ÖØÖÃ×ÊÔ´
+	//é‡ç½®èµ„æº
 	//
 	function Clear()
 	{
@@ -178,7 +178,7 @@ class DedeHtml2
 		$this->BaseUrlPath = "";
 	}
 	//
-	//·ÖÎöÃ½ÌåÁ´½Ó
+	//åˆ†æåª’ä½“é“¾æ¥
 	//
 	function InsertMedia($url,$mtype)
 	{
@@ -195,7 +195,7 @@ class DedeHtml2
 		return $url;
 	}
 	//
-	//·ÖÎöcontent-typeÖĞµÄ×Ö·ûÀàĞÍ
+	//åˆ†æcontent-typeä¸­çš„å­—ç¬¦ç±»å‹
 	//
 	function ParCharSet($att)
 	{
@@ -211,14 +211,14 @@ class DedeHtml2
 		}
 	}
 	//
-	//·ÖÎörefreshÖĞµÄÍøÖ·
+	//åˆ†ærefreshä¸­çš„ç½‘å€
 	//
 	function ParRefresh($att)
 	{
 		return $this->ParCharSet($att);
 	}
 	//
-	//²¹È«Ïà¶ÔÍøÖ·
+	//è¡¥å…¨ç›¸å¯¹ç½‘å€
 	//
 	function FillUrl($surl)
   {
@@ -274,7 +274,7 @@ class DedeHtml2
     return "http://".$okurl;
   }
   //
-	//»ñµÃºÍÏÂÒ»¸ö±ê¼ÇÖ®¼äµÄÎÄ±¾ÄÚÈİ
+	//è·å¾—å’Œä¸‹ä¸€ä¸ªæ ‡è®°ä¹‹é—´çš„æ–‡æœ¬å†…å®¹
 	//
 	function GetInnerText($pos,$tagname)
 	{
@@ -303,18 +303,18 @@ class DedeHtml2
 	}
 }//End class
 /*******************************
-//ÊôĞÔ½âÎöÆ÷
+//å±æ€§è§£æå™¨
 function c____DedeAttribute2();
 ********************************/
 class DedeAttribute2
 {
 	var $SourceString = "";
 	var $SourceMaxSize = 1024;
-	var $CharToLow = FALSE;  //ÊôĞÔÖµÊÇ·ñ²»·Ö´óĞ¡Ğ´(ÊôĞÔÃûÍ³Ò»ÎªĞ¡Ğ´)
-	var $IsTagName = TRUE; //ÊÇ·ñ½âÎö±ê¼ÇÃû³Æ
+	var $CharToLow = FALSE;  //å±æ€§å€¼æ˜¯å¦ä¸åˆ†å¤§å°å†™(å±æ€§åç»Ÿä¸€ä¸ºå°å†™)
+	var $IsTagName = TRUE; //æ˜¯å¦è§£ææ ‡è®°åç§°
 	var $Count = -1;
-  var $Items = ""; //ÊôĞÔÔªËØµÄ¼¯ºÏ
-  //ÉèÖÃÊôĞÔ½âÎöÆ÷Ô´×Ö·û´®
+  var $Items = ""; //å±æ€§å…ƒç´ çš„é›†åˆ
+  //è®¾ç½®å±æ€§è§£æå™¨æºå­—ç¬¦ä¸²
 	function SetSource($str="")
 	{
 		$this->Count = -1;
@@ -322,34 +322,34 @@ class DedeAttribute2
 		$strLen = 0;
 		$this->SourceString = trim(preg_replace("/[ \t\r\n]{1,}/"," ",$str));
 		$strLen = strlen($this->SourceString);
-		$this->SourceString .= " "; //Ôö¼ÓÒ»¸ö¿Õ¸ñ½áÎ²,ÒÔ·½±ã´¦ÀíÃ»ÓĞÊôĞÔµÄ±ê¼Ç
+		$this->SourceString .= " "; //å¢åŠ ä¸€ä¸ªç©ºæ ¼ç»“å°¾,ä»¥æ–¹ä¾¿å¤„ç†æ²¡æœ‰å±æ€§çš„æ ‡è®°
 		if($strLen>0&&$strLen<=$this->SourceMaxSize){
 			$this->PrivateAttParse();
 		}
 	}
-  //»ñµÃÄ³¸öÊôĞÔ
+  //è·å¾—æŸä¸ªå±æ€§
   function GetAtt($str){
     if($str=="") return "";
     $str = strtolower($str);
     if(isset($this->Items[$str])) return $this->Items[$str];
     else return "";
   }
-  //ÅĞ¶ÏÊôĞÔÊÇ·ñ´æÔÚ
+  //åˆ¤æ–­å±æ€§æ˜¯å¦å­˜åœ¨
   function IsAtt($str){
     if($str=="") return false;
     $str = strtolower($str);
     if(isset($this->Items[$str])) return true;
     else return false;
   }
-  //»ñµÃ±ê¼ÇÃû³Æ
+  //è·å¾—æ ‡è®°åç§°
   function GetTagName(){
      return $this->GetAtt("tagname");
   }
-  // »ñµÃÊôĞÔ¸öÊı
+  // è·å¾—å±æ€§ä¸ªæ•°
   function GetCount(){
       return $this->Count+1;
 	}
-	//½âÎöÊôĞÔ(½ö¸øSetSourceµ÷ÓÃ)
+	//è§£æå±æ€§(ä»…ç»™SetSourceè°ƒç”¨)
 	function PrivateAttParse()
 	{
 		$d = "";
@@ -359,10 +359,10 @@ class DedeAttribute2
 		$ddtag="";
 		$strLen = strlen($this->SourceString);
 		$j = 0;
-		//ÕâÀïÊÇ»ñµÃ±ê¼ÇµÄÃû³Æ
+		//è¿™é‡Œæ˜¯è·å¾—æ ‡è®°çš„åç§°
 		if($this->IsTagName)
 		{
-			//Èç¹ûÊôĞÔÊÇ×¢½â£¬²»ÔÙ½âÎöÀïÃæµÄÄÚÈİ£¬Ö±½Ó·µ»Ø
+			//å¦‚æœå±æ€§æ˜¯æ³¨è§£ï¼Œä¸å†è§£æé‡Œé¢çš„å†…å®¹ï¼Œç›´æ¥è¿”å›
 			if(isset($this->SourceString[2]))
 			{
 				if($this->SourceString[0].$this->SourceString[1].$this->SourceString[2]=="!--")
@@ -382,11 +382,11 @@ class DedeAttribute2
 			}
 			if($j>0) $j = $j-1;
 	  }
-		//±éÀúÔ´×Ö·û´®£¬»ñµÃ¸÷ÊôĞÔ
+		//éå†æºå­—ç¬¦ä¸²ï¼Œè·å¾—å„å±æ€§
 		for($i=$j;$i<$strLen;$i++)
 		{
 			$d = $this->SourceString[$i];
-			//»ñµÃÊôĞÔµÄ¼ü
+			//è·å¾—å±æ€§çš„é”®
 			if($startdd==-1){
 				if($d!="=")	$tmpatt .= $d;
 				else{
@@ -394,7 +394,7 @@ class DedeAttribute2
 					$startdd=0;
 				}
 			}
-			//¼ì²âÊôĞÔÖµÊÇÓÃÊ²Ã´°üÎ§µÄ£¬ÔÊĞíÊ¹ÓÃ '' "" »ò¿Õ°×
+			//æ£€æµ‹å±æ€§å€¼æ˜¯ç”¨ä»€ä¹ˆåŒ…å›´çš„ï¼Œå…è®¸ä½¿ç”¨ '' "" æˆ–ç©ºç™½
 			else if($startdd==0){
 				switch($d){
 					case ' ':
@@ -415,7 +415,7 @@ class DedeAttribute2
 						break;
 				}
 			}
-			//»ñµÃÊôĞÔµÄÖµ
+			//è·å¾—å±æ€§çš„å€¼
 			else if($startdd==1)
 			{
 				if($d==$ddtag){
@@ -430,7 +430,7 @@ class DedeAttribute2
 					$tmpvalue.=$d;
 			}
 	  }//End for
-	  //´¦ÀíÃ»ÓĞÖµµÄÊôĞÔ(±ØĞë·ÅÔÚ½áÎ²²ÅÓĞĞ§)Èç£º"input type=radio name=t1 value=aaa checked"
+	  //å¤„ç†æ²¡æœ‰å€¼çš„å±æ€§(å¿…é¡»æ”¾åœ¨ç»“å°¾æ‰æœ‰æ•ˆ)å¦‚ï¼š"input type=radio name=t1 value=aaa checked"
 	  if($tmpatt!="")
 	  { $this->Items[$tmpatt] = "";}
  }//End Function PrivateAttParse

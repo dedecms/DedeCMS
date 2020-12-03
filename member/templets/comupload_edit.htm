@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>修改附件</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">
+<script language='javascript' src='main.js'></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+
+if(document.form1.title.value==""){
+	 alert("标题不能为空！");
+	 document.form1.title.focus();
+	 return false;
+}
+
+if(document.form1.vdcode.value==""){
+ document.form1.vdcode.focus();
+ alert("验证码不能为空！");
+ return false;
+}
+
+}
+-->
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="150" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="26" background="img/nnnbg.gif"> <font color="#333333">
+            <strong>　&nbsp;修改附件：</strong></font></td>
+        </tr>
+        <tr>
+		<form name="form1" action="archives_do.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
+          <input type="hidden" name="aid" value="<?php echo $aid?>">
+		  <input type="hidden" name="dopost" value="editUpload">
+          <td height="183" valign="top" style="padding-top:3px">
+		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
+                <tr>
+                  <td width="20%" height="28" align="center" bgcolor="#FFFFFF">说明标题：</td>
+                  <td colspan="3" bgcolor="#FFFFFF">
+                  	<input name="title" type="text" id="title" size="30" class="nb" value="<?php echo $arow['title']?>">
+                    <font color="#FF0000">*</font>
+                  </td>
+                </tr>
+                <tr bgcolor="#F7FDF0">
+                  <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
+                  <td colspan="3" bgcolor="#F7FDF0"> <table width="200" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="84"><input name="vdcode" type="text" id="vdcode" size="10"></td>
+                        <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                      </tr>
+                    </table></td>
+                </tr>
+                <?php
+                if($arow['mediatype']==1){
+                ?>
+                <tr bgcolor="#FFFFFF">
+                  <td height="28" align="center">更换图片：</td>
+                  <td colspan="3"><input name="addonfile" type="file" id="addonfile" style="width:300" onChange="SeePic($Obj('picview'),$Obj('addonfile'));"></td>
+                </tr>
+                <tr>
+                  <td colspan="4" align="center" bgcolor="#FFFFFF">
+                  	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center">
+                        	<?php
+                        	$furl = $arow['url'];
+                        	$w = 150;
+                        	if($furl!="" && file_exists($cfg_basedir.$furl)){
+                        		$info = "";
+                        		$datas = GetImageSize($cfg_basedir.$furl,$info);
+                        		if($datas[0]>500) $w = 500;
+                        		else $w = $datas[0];
+                        		$furl = $furl."?".time();
+                        	}else{
+                        		$furl = "img/pview.gif";
+                        	}
+                        	?>
+                        <a href="<?php echo $furl?>" target="_blank"><img src="<?php echo $furl?>" id="picview" width="<?php echo $w?>" border="0"></a>
+                        </td>
+                      </tr>
+                    </table>
+                   </td>
+                </tr>
+                <?php
+                 }else{
+                 ?>
+                <tr bgcolor="#FFFFFF">
+                  <td height="28" align="center">更换附件：</td>
+                  <td colspan="3"> <input name="addonfile" type="file" id="addonfile" style="width:300"></td>
+                </tr>
+                 <?php
+                 }
+                ?>
+                <tr bgcolor="#F7FDF0">
+                  <td height="44" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0">
+                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();">
+                  </td>
+                </tr>
+              </table>
+
+
+
+            </td>
+			</form>
+        </tr>
+        <tr>
+          <td height="10"></td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

@@ -3,19 +3,20 @@ require(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
 $nid = ereg_replace("[^0-9]","",$nid);
 if(empty($nid)){
-   ShowMsg("²ÎÊıÎŞĞ§!","-1");
+   ShowMsg("å‚æ•°æ— æ•ˆ!","-1");
    exit();
 }
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__conote where nid='$nid'");
 $dsql->Close();
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-$wintitle = "µ¼³ö²É¼¯¹æÔò";
-$wecome_info = "<a href='co_main.php'><u>²É¼¯½Úµã¹ÜÀí</u></a>::µ¼³ö²É¼¯¹æÔò";
+$wintitle = "å¯¼å‡ºé‡‡é›†è§„åˆ™";
+$wecome_info = "<a href='co_main.php'><u>é‡‡é›†èŠ‚ç‚¹ç®¡ç†</u></a>::å¯¼å‡ºé‡‡é›†è§„åˆ™";
 $win = new OxWindow();
 $win->Init();
-$win->AddTitle("ÒÔÏÂÎª¹æÔò [{$row['gathername']}] µÄÎÄ±¾ÅäÖÃ£¬Äã¿ÉÒÔ¹²Ïí¸øÄãµÄÅóÓÑ£º");
+$win->AddTitle("ä»¥ä¸‹ä¸ºè§„åˆ™ [{$row['gathername']}] çš„æ–‡æœ¬é…ç½®ï¼Œä½ å¯ä»¥å…±äº«ç»™ä½ çš„æœ‹å‹ï¼š");
 $winform = $win->GetWindow("hand","<xmp style='color:#333333;background-color:#ffffff'>".$row['noteinfo']."</xmp>");
 $win->Display();
-exit();
+
+ClearAllLink();
 ?>

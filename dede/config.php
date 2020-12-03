@@ -1,19 +1,23 @@
 <?php 
-//∏√“≥Ωˆ”√”⁄ºÏ≤‚”√ªßµ«¬ºµƒ«Èøˆ£¨»Á“™ ÷π§∏¸∏ƒœµÕ≥≈‰÷√£¨«Î∏¸∏ƒconfig_base.php
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
+//Á≥ªÁªüËÆæÁΩÆ‰∏∫Áª¥Êä§Áä∂ÊÄÅÂêé‰ªçÂèØËÆøÈóÆÂêéÂè∞
+$cfg_IsCanView = true;
+//ÂÖÅËÆ∏Âú®ÂêéÂè∞‰∏ä‰º†PHPÊñá‰ª∂
+$cfg_NoUploadSafeCheck = true;
+define('DEDEADMIN',dirname(__FILE__));
+require_once(DEDEADMIN."/../include/config_base.php");
+require_once(DEDEADMIN."/../include/inc_userlogin.php");
+require_once(DEDEADMIN."/inc/inc_admin_pub.php");
 header("Cache-Control:private");
 
-//ªÒµ√µ±«∞Ω≈±æ√˚≥∆£¨»Áπ˚ƒ„µƒœµÕ≥±ªΩ˚”√¡À$_SERVER±‰¡ø£¨«Î◊‘––∏¸∏ƒ’‚∏ˆ—°œÓ
+//Ëé∑ÂæóÂΩìÂâçËÑöÊú¨ÂêçÁß∞ÔºåÂ¶ÇÊûú‰Ω†ÁöÑÁ≥ªÁªüË¢´Á¶ÅÁî®‰∫Ü$_SERVERÂèòÈáèÔºåËØ∑Ëá™Ë°åÊõ¥ÊîπËøô‰∏™ÈÄâÈ°π
 $dedeNowurl = "";
 $s_scriptName="";
-$isUrlOpen = @ini_get("allow_url_fopen");
  
 $dedeNowurl = GetCurUrl();
 $dedeNowurls = explode("?",$dedeNowurl);
 $s_scriptName = $dedeNowurls[0];
 
-//ºÏ—È”√ªßµ«¬º◊¥Ã¨
+//Ê£ÄÈ™åÁî®Êà∑ÁôªÂΩïÁä∂ÊÄÅ
 $cuserLogin = new userLogin();
 if($cuserLogin->getUserID()==-1)
 {
@@ -21,8 +25,9 @@ if($cuserLogin->getUserID()==-1)
 	exit();
 }
 
-if($cfg_dede_log==' «'){
-  $s_nologfile = "_main|_list";
+if($cfg_dede_log=='Y')
+{
+  $s_nologfile = "_main|_list|index";
   $s_needlogfile = "sys_|file_";
   isset($_SERVER['REQUEST_METHOD']) ? $s_method=$_SERVER['REQUEST_METHOD'] : $s_method="";
   isset($dedeNowurls[1]) ? $s_query = $dedeNowurls[1] : $s_query = "";
@@ -34,20 +39,11 @@ if($cfg_dede_log==' «'){
   || eregi($s_needlogfile,$s_scriptNames) )
   {
      $dsql = new DedeSql(false);
-     $inquery = "INSERT INTO #@__log(adminid,filename,method,query,cip,dtime)
+     $inquery = "INSERT INTO `#@__log`(adminid,filename,method,query,cip,dtime)
              VALUES ('".$cuserLogin->getUserID()."','{$s_scriptNames}','{$s_method}','".addslashes($s_query)."','{$s_userip}','".mytime()."');";
      $dsql->ExecuteNoneQuery($inquery);
-     $dsql->Close();
   }
 }
 
-
-function GetTypeidSel($fname,$f1,$f2,$cc,$selv='0',$selname='«Î—°‘Ò...',$pos=''){
-  global $opall;
-  if(empty($opall)) $opall = 0;
-  $rstr = "<input type=\"hidden\" name=\"$f1\" value=\"$selv\">\r\n";
-	$rstr .= "<input type=\"button\" name=\"$f2\" value=\"$selname\" style=\"height:21px;width:150px;border:0px;background-image:url({$pos}img/ctbg.gif);padding-top:2px; background-color: transparent\" onClick=\"SelectCatalog('$fname','$f1','$f2',$cc,'$pos','$opall');\">\r\n";
-	return $rstr;
-}
 
 ?>

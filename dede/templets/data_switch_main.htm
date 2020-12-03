@@ -1,24 +1,24 @@
 {dede:page pagesize="20"/}
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>外部数据导入</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>澶栭儴鏁版嵁瀵煎叆</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<body>
+   <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr>
-    <td height="19" background="img/tbg.gif" colspan="7"> <strong>外部数据导入</strong>&nbsp; 
-      [<a href="friendlink_add.php"><u>增加规则</u></a>] [<a href='{dede:global name='cfg_plus_dir' '''/}/flink-add.php' target='_blank'><u>导入规则</u></a>]</td>
+    <td height="19" colspan="7" bgcolor="#EDF9D5"> <strong>澶栭儴鏁版嵁瀵煎叆</strong>&nbsp; 
+      [<a href="friendlink_add.php"><u>澧炲姞瑙勫垯</u></a>] [<a href='{dede:global name='cfg_plus_dir' '''/}/flink-add.php' target='_blank'><u>瀵煎叆瑙勫垯</u></a>]</td>
 </tr>
   <tr align="center" bgcolor="#F8FBFB" height="24"> 
-          <td width="26%">网站名称</td>
-          <td width="12%">网站Logo</td>
-          <td width="15%">站长Email</td>
-          <td width="18%">时间</td>
-          <td width="8%">状态</td>
-          <td width="8%">顺序</td>
-          <td width="15%">管理</td>
+          <td width="26%">缃戠珯鍚嶇О</td>
+          <td width="12%">缃戠珯Logo</td>
+          <td width="15%">绔欓暱Email</td>
+          <td width="18%">鏃堕棿</td>
+          <td width="8%">鐘舵��</td>
+          <td width="8%">椤哄簭</td>
+          <td width="15%">绠＄悊</td>
         </tr>
         {dede:datalist}
         <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -32,8 +32,8 @@
           <td>[field:ischeck function="GetSta('@me')" /]</td>
           <td>[field:sortrank /]</td>
           <td>
-          	<a href='friendlink_edit.php?ID=[field:ID /]&dopost=getedit'>[更改]</a>
-		        <a href='friendlink_edit.php?ID=[field:ID /]&dopost=delete'>[删除]</a>
+          	<a href='friendlink_edit.php?ID=[field:ID /]&dopost=getedit'>[鏇存敼]</a>
+		        <a href='friendlink_edit.php?ID=[field:ID /]&dopost=delete'>[鍒犻櫎]</a>
 		      </td>
         </tr>
 		{/dede:datalist}

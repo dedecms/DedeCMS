@@ -9,10 +9,12 @@ if($typeid>0) $pv = new PartView($typeid);
 else $pv = new PartView();
 $pv->SetTemplet($partcode,"string");
 if($showsource==""||$showsource=="yes"){
-  echo "模板代码:";
+  echo "妯℃澘浠ｇ爜:";
   echo "<span style='color:red;'><pre>".htmlspecialchars($partcode)."</pre></span>";
-  echo "结果:<hr size='1' width='100%'>";
+  echo "缁撴灉:<hr size='1' width='100%'>";
 }
 $pv->Display();
 $pv->Close();
+
+ClearAllLink();
 ?>

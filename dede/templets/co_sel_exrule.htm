@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>选择数据规则模型</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+td{ padding-left:6px; }
+-->
+</style>
+<script language='javascript'>
+	function CheckSel(seln)
+	{
+		var ex1 = document.getElementById('ex1');
+		var ex2 = document.getElementById('ex2');
+		var sel1 = document.getElementById('sel1');
+		var sel2 = document.getElementById('sel2');
+		if(seln==1){
+			ex1.checked = true;
+			ex2.checked = false;
+			sel1.style.display = 'block';
+			sel2.style.display = 'none';
+		}else{
+			ex1.checked = false;
+			ex2.checked = true;
+			sel1.style.display = 'none';
+			sel2.style.display = 'block';
+		}
+	}
+</script>
+</head>
+<body>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form name="form1" action="co_add.php" method="get">
+    <tr> 
+      <td width="100%" height="28" colspan="3" bgcolor="#EDF9D5"> <strong>选择数据规则模型</strong>      </td>
+    </tr>
+    <tr> 
+      <td height="36" colspan="3" bgcolor="#FFFFFF">
+	  规则类型：
+	  <input type='checkbox' id='ex2' name='extype' value='1' onclick="CheckSel(2)" class='np' /> 频道模型
+	  <input type='checkbox' id='ex1' name='extype' value='0' onclick="CheckSel(1)" class='np' checked='checked' /> 数据规则(旧)
+	  </td>
+    <tr id='sel1'> 
+      <td height="36" colspan="3" bgcolor="#FFFFFF">
+	  请选择采集规则：
+	  <select name="exrule" id="exrule" style="width:200px">
+      <?php 
+	  $dsql->SetQuery("Select aid,rulename From #@__co_exrule order by aid asc");
+	  $dsql->Execute();
+	  while($row = $dsql->GetObject())
+	  {
+	     echo "<option value='{$row->aid}'>{$row->rulename}</option>";
+	  }
+	  ?>
+	  </select>
+	  </td>
+    </tr>
+    <tr id='sel2' style='display:none'> 
+      <td height="36" colspan="3" bgcolor="#FFFFFF">
+	   请选择频道模型：
+	  <select name="channelid" id="channelid" style="width:200px">
+      <?php 
+	  $channels = '';
+	  $dsql->SetQuery("Select channeltype,count(channeltype) as dd From #@__arctype group by channeltype");
+	  $dsql->Execute();
+	  while($row = $dsql->GetObject()){
+	  	if($row->dd>0) $channels .= ($channels=='' ? $row->channeltype : ','.$row->channeltype);
+	  }
+	  echo $channels;
+	  if($channels!=''){
+	    $dsql->SetQuery("Select ID,typename From #@__channeltype where ID in ($channels)");
+	    $dsql->Execute();
+	    while($row = $dsql->GetObject()){
+	       echo "<option value='{$row->ID}'>{$row->typename}</option>";
+	    }
+	  }
+	  ?>
+	  </select>
+	  </td>
+    </tr>
+    <tr> 
+      <td height="24" colspan="3" bgcolor="#F8FCF1" style='padding-top:6px'><input name="imageField" type="submit" class="inputbut" value="确定" /></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

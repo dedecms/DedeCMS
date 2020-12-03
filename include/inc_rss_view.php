@@ -5,8 +5,8 @@ require_once(dirname(__FILE__)."/inc_typelink.php");
 require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 /******************************************************
 //Copyright 2005-2007 by DedeCms.com itprato
-//±¾ÀàµÄÓÃÍ¾ÊÇÓÃÓÚä¯ÀÀÆµµÀRSS»ò¶ÔRSSÉú³É¾²Ì¬ÎÄ¼ş
-//×îºóĞŞ¸ÄÈÕÆÚ 2007-3-27 By dedecms ÓÃ»§ baijixing
+//æœ¬ç±»çš„ç”¨é€”æ˜¯ç”¨äºæµè§ˆé¢‘é“RSSæˆ–å¯¹RSSç”Ÿæˆé™æ€æ–‡ä»¶
+//æœ€åä¿®æ”¹æ—¥æœŸ 2007-3-27 By dedecms ç”¨æˆ· baijixing
 ******************************************************/
 @set_time_limit(0);
 class RssView
@@ -18,7 +18,7 @@ class RssView
 	var $MaxRow;
 	var $dtp;
 	//-------------------------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------------------------
 	function __construct($typeid,$max_row=50)
  	{
@@ -40,13 +40,13 @@ class RssView
  		}
  		$this->ParseTemplet();
   }
-  //php4¹¹Ôìº¯Êı
+  //php4æ„é€ å‡½æ•°
  	//---------------------------
  	function RssView($typeid,$max_row=50){
  		$this->__construct($typeid,$max_row);
  	}
  	//---------------------------
- 	//¹Ø±ÕÏà¹Ø×ÊÔ´
+ 	//å…³é—­ç›¸å…³èµ„æº
  	//---------------------------
  	function Close()
  	{
@@ -54,14 +54,14 @@ class RssView
  		$this->TypeLink->Close();
  	}
  	//------------------
- 	//ÏÔÊ¾ÁĞ±í
+ 	//æ˜¾ç¤ºåˆ—è¡¨
  	//------------------
  	function Display()
  	{
  		$this->dtp->Display();
  	}
  	//------------------
- 	//¿ªÊ¼´´½¨ÁĞ±í
+ 	//å¼€å§‹åˆ›å»ºåˆ—è¡¨
  	//------------------
  	function MakeRss()
  	{
@@ -71,7 +71,7 @@ class RssView
  		return $murl;
  	}
  	//------------------
- 	//½âÎöÄ£°å
+ 	//è§£ææ¨¡æ¿
  	//------------------
  	function ParseTemplet()
  	{
@@ -87,7 +87,7 @@ class RssView
  		}
  	}
  	//----------------------------------
-  //»ñµÃÎÄµµÁĞ±í
+  //è·å¾—æ–‡æ¡£åˆ—è¡¨
   //---------------------------------
   function GetArcList($innertext="")
   {
@@ -114,7 +114,7 @@ class RssView
     $dtp2->LoadSource($innertext);
     while($row = $this->dsql->GetArray("al"))
     {
-      //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î
+      //å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
       if($row["litpic"]=="") $row["litpic"] = $GLOBALS["cfg_plus_dir"]."/img/dfpic.gif";
       $row["picname"] = $row["litpic"];
       $row["arcurl"] = $this->GetArcUrl($row["ID"],$row["typeid"],$row["senddate"],$row["title"],
@@ -128,7 +128,7 @@ class RssView
       $row["phpurl"] = $GLOBALS["cfg_plus_dir"];
  		  $row["templeturl"] = $GLOBALS["cfg_templets_dir"];
  		  if($row["source"]=="") $row["source"] = $GLOBALS['cfg_webname'];
- 		  if($row["writer"]=="") $row["writer"] = "ÖÈÃû";
+ 		  if($row["writer"]=="") $row["writer"] = "ç§©å";
  		  
  		  foreach($row as $k=>$v){
  		  	$row[$k] = htmlspecialchars($v);
@@ -146,14 +146,14 @@ class RssView
      return $artlist;
   }
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µÄÆµµÀµÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šçš„é¢‘é“çš„é“¾æ¥
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
   	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µµ°¸µÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šæ¡£æ¡ˆçš„é“¾æ¥
  	//--------------------------
  	function GetArcUrl($aid,$typeid,$timetag,$title,$ismake=0,$rank=0,$namerule="",$artdir="",$money=0)
   {

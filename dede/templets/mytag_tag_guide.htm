@@ -1,0 +1,189 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>智能标记向导</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript">
+function ChangeListStyle(){
+   var itxt = document.getElementById("myinnertext");
+   var myems = document.getElementsByName("liststyle");
+   if(myems[0].checked) itxt.value = document.getElementById("list1").innerHTML;
+   else if(myems[1].checked) itxt.value = document.getElementById("list2").innerHTML;
+   else if(myems[2].checked) itxt.value = document.getElementById("list3").innerHTML;
+   else if(myems[3].checked) itxt.value = document.getElementById("list4").innerHTML;
+   itxt.value = itxt.value.replace("<BR>","<BR/>");
+   itxt.value = itxt.value.toLowerCase();
+}
+function DoSubmit(j){
+	document.form1.dopost.value = j;
+	document.form1.submit();
+}
+</script>
+<script src="main.js" language="javascript"></script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">模板管理</div>
+</div>
+<center>
+<span style="display:none" id="list1">
+·[field:textlink/]([field:pubdate function=strftime('%m-%d',@me)/])<br/>
+</span>
+<span style="display:none" id="list2">
+·[field:typelink/] [field:textlink/]<br/>
+</span>
+<span style="display:none" id="list3">
+<table width='98%' border='0' cellspacing='2' cellpadding='0'>
+   <tr><td align='center'>[field:imglink/]</td></tr>
+   <tr><td align='center'>[field:textlink/]</td></tr>
+</table>
+</span>
+<span style="display:none" id="list4">
+<table width='100%' border='0' cellspacing='2' cellpadding='2'>
+  <tr> 
+    <td width='30%' rowspan='2' align='center'>[field:imglink/]</td>
+    <td width='70%'><a href='[field:filename/]'>[field:title/]</a></td>
+  </tr>
+  <tr><td>[field:info/]</td></tr>
+</table>
+</span>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form action="mytag_tag_guide_ok.php" method="post" target="stafrm" name="form1">
+  <input type="hidden" name="dopost" value="gettag"/>
+  <tr> 
+    <td height="23" align="left" bgcolor="#EDF9D5">&nbsp;&nbsp;<b><a href="mytag_main.php"><u>自定义标记管理</u></a></b> &gt;&gt; 智能标记生成向导：</td>
+  </tr>
+  <tr> 
+    <td height="265" valign="top" bgcolor="#FFFFFF"><table width="99%" border="0" align="right" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;列表样式：</td>
+          </tr>
+          <tr> 
+            <td height="72" align="left"><table width="99%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="25%" height="126"><img src="img/g_t2.gif" width="130" height="100"> 
+                    <input name="liststyle"  type="radio" onClick="ChangeListStyle()" value="1" checked> 
+                  </td>
+                  <td width="25%"><img src="img/g_t1.gif" width="130" height="110"> 
+                    <input type="radio"  onClick="ChangeListStyle()" name="liststyle" value="2"></td>
+                  <td width="25%"><img src="img/g_t3.gif" width="130" height="110"> 
+                    <input type="radio"  onClick="ChangeListStyle()" name="liststyle" value="3"></td>
+                  <td><img src="img/g_t4.gif" width="130" height="110"> <input type="radio"  onClick="ChangeListStyle()" name="liststyle" value="4"></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;调用栏目：              
+              <?php 
+              $opall = 1;
+              echo GetTypeidSel('form1','typeid','selbt1',0);
+              ?>             </td>
+          </tr>
+          <tr> 
+            <td height="28" align="left"> &nbsp;&nbsp;限定频道： 
+              <?php   
+	   echo "<select name='channel' style='width:100'>\r\n";
+       echo "<option value='0' selected>不限频道...</option>\r\n";
+       $dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0");
+	   $dsql->Execute();
+	   while($row = $dsql->GetObject())
+	   {
+	      echo "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
+	   }
+       echo "</select>";
+		?>
+              　附加属性： 
+              <?php 
+       echo "<select name='att' style='width:100'>\r\n";
+       echo "<option value='0' selected>不限...</option>\r\n";
+       $dsql->SetQuery("Select * From #@__arcatt");
+	   $dsql->Execute();
+	   while($row = $dsql->GetObject())
+	   {
+	      echo "<option value='{$row->att}'>{$row->attname}</option>\r\n";
+	   }
+       echo "</select>";
+		?>            </td>
+          </tr>
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;调用记录条数： 
+              <input name="row" type="text" id="row" value="10" size="4">
+              　显示列数： 
+              <input name="col" type="text" id="col" value="1" size="4">
+              　标题长度： 
+              <input name="titlelen" type="text" id="titlelen" value="24" size="4">
+              （1 字节 = 0.5个中文字）</td>
+          </tr>
+          <tr> 
+            <td height="28" align="left"> &nbsp;&nbsp;高级筛选： 
+              <input name="types[]" type="checkbox" id="type[]" value="image" >
+              带缩略图 
+              <input name="types[]" type="checkbox" id="type[]" value="commend" >
+              推荐 
+              <input name="types[]" type="checkbox" id="type[]" value="spec" >
+              专题　关键字： 
+              <input name="keyword" type="text" id="keyword">
+              （&quot;,&quot;逗号分开）</td>
+          </tr>
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;排列顺序： 
+              <select name="orderby" id="orderby" style="width:120">
+                <option value="sortrank">置顶权限值</option>
+                <option value="pubdate" selected>发布时间</option>
+                <option value="senddate">录入时间</option>
+                <option value="click">点击量</option>
+                <option value="id">文档ＩＤ</option>
+                <option value="lastpost">最后评论时间</option>
+                <option value="postnum">评论总数</option>
+                <option value="rand">随机获取</option>
+              </select>
+              　 
+              <input name="order" type="radio"   value="desc" checked>
+              由高到低 
+              <input type="radio" name="order"  value="asc">
+              由低到高</td>
+          </tr>
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;文档发布时间： 
+              <input name="subday" type="text" id="subday" value="0" size="6">
+              天以内 （0 表示不限）</td>
+          </tr>
+          <tr> 
+            <td height="28" align="left">&nbsp;&nbsp;单条记录样式(InnerText)：</td>
+          </tr>
+          <tr>
+            <td height="99" align="left"><textarea name="innertext" cols="80" rows="6" id="myinnertext">·[field:textlink/]([field:pubdate function=strftime('%m-%d',@me)/])<br/></textarea></td>
+          </tr>
+          <tr> 
+            <td height="80" align="left"><font color="#CC6600">&nbsp;&nbsp;支持字段：id,title,color,typeid,ismake,description,pubdate,senddate,arcrank,click,litpic,typedir,typename,arcurl,typeurl,<br>
+              stime(pubdate 的&quot;0000-00-00&quot;格式),textlink,typelink,imglink,image 
+              普通字段直接用[field:字段名/]表示。<br>
+              ·Pubdate发布时间的调用参数 [field:pubdate function=strftime('%Y-%m-%d %H:%M:%S',@me)/]</font>            </td>
+          </tr>
+          <tr> 
+            <td height="39" align="left">
+            	<input name="Submit1" type="button" id="Submit1" onClick="DoSubmit('gettag')" value="生成模板调用标记" class="inputbut">
+            	&nbsp;
+              <input name="Submit2" type="button" id="Submit2" onClick="DoSubmit('savetag')" value="保存为自定义标记" class="inputbut">
+              </td>
+          </tr>
+        </table></td>
+  </tr>
+</form>
+  <tr>
+    <td valign="top" bgcolor="#EFF7E6">&nbsp;&nbsp;输出结果：</td>
+  </tr>
+  <tr> 
+      <td height="150" valign="top" bgcolor="#FFFFFF">
+	  <div id='mdv' style='width:100%;height:130;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
+      </div>
+	  </td>
+  </tr>
+</table>
+</center>
+</body>
+</html>

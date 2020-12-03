@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>消费记录</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="216" valign="top">
+      <?php include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="50" cellspacing="1" style="margin-bottom:3px;margin-top:10px;">
+        <tr><td colspan="2" class="manage_company_right_title">
+                	<ul><li>金币、积分兑换</li></ul>
+        </td></tr>
+<tr><td align="left" style="text-indent:20px;" height="30px">您拥有的金币：<span style="color:red"><?php echo $member['money'] ?></span></td><td align="left">您拥有的积分：<span style="color:red"><?php echo $member['scores']; ?></span></td></tr>
+    </table>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="183" valign="top">
+          	<table width="100%" border="0" cellpadding="6" cellspacing="1" bgcolor="#D9EDC0" style="line-height:30px; text-align:left;">
+              <tr bgcolor="E9FBC9" align="left">
+                <td bgcolor="#F0F8D6" style="text-indent:10px; font-weight:700; color:#355b00;">金币购买积分</td>
+              </tr>
+              <tr><td bgcolor="#ffffff"  style="text-indent:20px; color:#999;">1个金币 可购买 <?php echo $cfg_money2score;?> 个积分</td></tr>
+				<tr><td bgcolor="#ffffff" height="30" style="text-indent:20px;">
+					<form name="money2score" action="money2score.php?action=buy" method="post">
+						请输入消费金币数： <input type="text" name="money" value="" class="jifenlabel" />
+						<input type="hidden" name="type" value="money2score" /><span style="color:red">金币</span>
+						<input type="submit" name="submit" value="提交" />
+					</form>
+				</td></tr></table>
+          	<table width="100%" border="0" cellpadding="6" cellspacing="1" bgcolor="#D9EDC0" style="line-height:30px; text-align:left;">
+              <tr bgcolor="E9FBC9" align="left">
+                <td bgcolor="#F0F8D6" style="text-indent:10px; font-weight:700; color:#355b00;">积分兑换金币</td>
+              </tr>
+              <tr><td bgcolor="#ffffff" style="text-indent:20px; color:#999;"><?php echo $cfg_score2money;?> 个积分 可兑换 1个金币</td></tr>
+			<tr><td bgcolor="#ffffff" height="30" style="text-indent:20px;">
+				<form name="money2score" action="money2score.php?action=buy" method="post">
+					请输入兑换积分数： <input type="text" name="score" value="" class="jifenlabel" />
+					<input type="hidden" name="type" value="score2money" /> <span style="color:red">积分</span>
+					<input type="submit" name="submit" value="提交" />(必须为 <?php echo $cfg_score2money;?>的倍数 )
+				</form>
+			</td></tr></table>
+
+          	<table width="100%" border="0" cellpadding="6" cellspacing="1" bgcolor="#D9EDC0" style="line-height:30px; text-align:left;">
+              <tr bgcolor="#E9FBC9" align="left">
+                <td bgcolor="#F0F8D6" colspan="5" style="text-indent:10px; font-weight:700; color:#355b00;">积分、金币兑换记录</td>
+              </tr>
+              <tr bgcolor="#ffffff" align="center">
+           	 <td>记录</td><td>类型</td><td>时间</td><td>积分</td><td>金币</td>
+
+              </tr>
+              <?php
+foreach($logs as $k => $row){
+?>
+              <tr bgcolor="#FFFFFF" align="center">
+                <td>
+                  <?php echo $k+1;?>
+                </td>
+                <td> <?php echo $row['dbtype']?></td>
+                <td>
+                  <?php echo $row['dbdateline'];?>
+                </td>
+                <td>
+                  <?php echo $row['score']?>
+                </td>
+                <td>
+                  <?php echo $row['money']?>
+                </td>
+              </tr>
+              <?php
+}
+?>
+              <tr bgcolor="#E9FBC9">
+                <td colspan="5" align="center" bgcolor="#F9FCEF">
+                  <?php echo $dlist->GetPageList(7);?>                </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td height="24" valign="top">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<?php
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

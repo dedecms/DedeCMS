@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -8,7 +8,7 @@ if(empty($dopost)) $dopost = '';
 
 $dsql = new DedeSql(false);
 
-//ÓÃ»§²éÑ¯Ìõ¼ş
+//ç”¨æˆ·æŸ¥è¯¢æ¡ä»¶
 if(empty($keyword)) $keyword = '';
 else{
 	$keyword = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($keyword))),30);
@@ -16,10 +16,10 @@ else{
 }
 
 if(empty($sex)) $sex = '';
-else{ if($sex!='ÄĞ' && $sex!='Å®') $sex = ''; }
+else{ if($sex!='ç”·' && $sex!='å¥³') $sex = ''; }
 
 if(!empty($age1) && !empty($age2)){
-	$age1 = GetAlabNum($age1); 
+	$age1 = GetAlabNum($age1);
 	$age2 = GetAlabNum($age2);
 }else{
 	$age1 = 0; $age2=0;
@@ -34,23 +34,23 @@ else $city = GetAlabNum($city);
 if(empty($pic)) $pic = 0;
 
 $addQuery = " where 1 ";
-if(!empty($sex)) $addQuery .= " And sex='$sex' ";
+if(!empty($sex)) $addQuery .= " And p.sex='$sex' ";
 if(!empty($age1) && $age2>$age1){
-	$addQuery .= " And ((YEAR(NOW()) - YEAR(birthday)>=$age1) And (YEAR(NOW()) - YEAR(birthday)<=$age2)) ";
+	$addQuery .= " And ((YEAR(NOW()) - YEAR(p.birthday)>=$age1) And (YEAR(NOW()) - YEAR(p.birthday)<=$age2)) ";
 }
-if(!empty($province)) $addQuery .= " And province='$province' ";
+if(!empty($province)) $addQuery .= " And p.province='$province' ";
 
-if(!empty($city)) $addQuery .= " And city='$city' ";
+if(!empty($city)) $addQuery .= " And p.city='$city' ";
 
-if($pic==1) $addQuery .= " And spaceimage<>'' ";
+if($pic==1) $addQuery .= " And m.spaceimage<>'' ";
 
-if(strlen($keyword)>=2) $addQuery .= " And CONCAT(uname,myinfo,spacename) like '%$keyword%' ";
+if(strlen($keyword)>=2) $addQuery .= " And CONCAT(m.uname,p.myinfo,m.spacename) like '%$keyword%' ";
 
-//Í³¼Æ¼ÇÂ¼×ÜÊı
-$row = $dsql->GetOne("Select count(*) as dd From #@__member $addQuery ");
+//ç»Ÿè®¡è®°å½•æ€»æ•°
+$row = $dsql->GetOne("Select count(*) as dd From #@__member m left join #@__member_perinfo p on p.id=m.ID $addQuery ");
 $totalRow = $row['dd'];
 
-//ÖØÔØÁĞ±í
+//é‡è½½åˆ—è¡¨
 if($dopost=='getlist'){
 	$dsql = new DedeSql(false);
 	PrintAjaxHead();
@@ -59,36 +59,36 @@ if($dopost=='getlist'){
 	exit();
 }
 
-//µÚÒ»´Î½øÈëÕâ¸öÒ³Ãæ
+//ç¬¬ä¸€æ¬¡è¿›å…¥è¿™ä¸ªé¡µé¢
 if($dopost==''){
 	include(dirname(__FILE__)."/templets/search_member.htm");
   exit();
 }
 
-//»ñµÃÌØ¶¨µÄ¹Ø¼ü×ÖÁĞ±í
+//è·å¾—ç‰¹å®šçš„å…³é”®å­—åˆ—è¡¨
 //---------------------------------
 function GetList($dsql,$pageno,$pagesize){
 	global $cfg_phpurl,$addQuery;
 	$start = ($pageno-1) * $pagesize;
   $query = "
-    Select ID,userid,uname,sex,(YEAR(NOW()) - YEAR(birthday)) as age,province,city,
-    spacename,spaceimage,myinfo,logintime 
-    From #@__member $addQuery order by logintime desc limit $start,$pagesize
+    Select m.ID,m.userid,m.uname,p.sex,(YEAR(NOW()) - YEAR(p.birthday)) as age,p.province,p.city,
+    m.spacename,m.spaceimage,p.myinfo,m.logintime
+    From #@__member m left join #@__member_perinfo p on p.id=m.ID  $addQuery order by m.logintime desc limit $start,$pagesize
   ";
   $dsql->SetQuery($query);
 	$dsql->Execute();
   while($row = $dsql->GetArray()){
-      if($row['age']>100 || $row['age']<12) $age = ' ²»Ïê ';
+      if($row['age']>100 || $row['age']<12) $age = ' ä¸è¯¦ ';
       else $age = $row['age'];
       $msg = str_replace("\n","<br />",html2text($row['myinfo']));
       $area = '';
       if($row['province']>0){ $area .= GetProvince($row['province'],$dsql); }
       if($row['city']>0){ $area .= " &gt; ".GetProvince($row['city'],$dsql); }
-      if($area=='') $area = ' ²»Ïê ';
-      
+      if($area=='') $area = ' ä¸è¯¦ ';
+
       if($row['spaceimage']!='') $imagsrc = $row['spaceimage'];
       else $imagsrc = "img/dfpic.gif";
-      
+
       $line = "";
       $line .= "<table width='100%' border='0' cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#FFFFFF\" class=\"mbb\">\r\n";
       $line .= "<tr> \r\n";
@@ -99,17 +99,17 @@ function GetList($dsql,$pageno,$pagesize){
       $line .= "</tr>\r\n";
       $line .= "</table>\r\n";
       $line .= "</td>\r\n";
-      $line .= "<td width=\"15%\" height=\"22\" align=\"center\" bgcolor=\"#E8F1C9\">ÓÃ»§êÇ³Æ£º</td>\r\n";
+      $line .= "<td width=\"15%\" height=\"22\" align=\"center\" bgcolor=\"#E8F1C9\">ç”¨æˆ·æ˜µç§°ï¼š</td>\r\n";
       $line .= "<td width=\"15%\" bgcolor=\"#F3FADE\"> ".$row['uname']." </td>\r\n";
-      $line .= "<td width=\"28%\" bgcolor=\"#F3FADE\">×îºóµÇÂ¼£º".strftime('%y-%m-%d %H:%M',$row['logintime'])."</td>\r\n";
-      $line .= "<td width=\"24%\" align=\"center\" bgcolor=\"#F3FADE\">\r\n";
-      $line .= " [<a href='index.php?uid=".$row['userid']."' target='_blank'>¿Õ¼ä</a>] [<a href='index.php?uid=".$row['userid']."&action=memberinfo' target='_blank'>×ÊÁÏ</a>] [<a href='index.php?uid=".$row['userid']."&action=feedback' target='_blank'>ÁôÑÔ</a>] ";
+      $line .= "<td width=\"28%\" bgcolor=\"#F3FADE\">æœ€åç™»å½•ï¼š".strftime('%y-%m-%d %H:%M',$row['logintime'])."</td>\r\n";
+      $line .= "<td width=\"24%\" align=\"center\" bgcolor=\"#F3FADE\" class='ntd'>\r\n";
+      $line .= " [<a href='index.php?uid=".$row['userid']."' target='_blank'>ç©ºé—´</a>] [<a href='index.php?uid=".$row['userid']."&action=memberinfo' target='_blank'>èµ„æ–™</a>] [<a href='index.php?uid=".$row['userid']."&action=feedback' target='_blank'>ç•™è¨€</a>] ";
       $line .= "</td>\r\n</tr>\r\n";
       $line .= "<tr> \r\n";
-      $line .= "<td height=\"24\" colspan=\"4\" class=\"mbline\">&nbsp;ĞÔ±ğ£º".$row['sex']." ÄêÁä£º".$age." µØÇø£º".$area."</td>\r\n";
+      $line .= "<td height=\"24\" colspan=\"4\" class=\"mbline\" align='left'>&nbsp;æ€§åˆ«ï¼š".$row['sex']." å¹´é¾„ï¼š".$age." åœ°åŒºï¼š".$area."</td>\r\n";
       $line .= "</tr>\r\n";
       $line .= "<tr> \r\n";
-      $line .= "<td colspan=\"4\" valign=\"top\" height=\"31\">&nbsp;¸öÈËËµÃ÷£º".$msg."</td>\r\n";
+      $line .= "<td colspan=\"4\" valign=\"top\" height=\"31\"  align='left'>&nbsp;ä¸ªäººè¯´æ˜ï¼š".$msg."</td>\r\n";
       $line .= "</tr>\r\n";
       $line .= "</table>\r\n";
       echo $line;
@@ -120,7 +120,7 @@ function PrintAjaxHead(){
 	header("Pragma:no-cache\r\n");
   header("Cache-Control:no-cache\r\n");
   header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=gb2312");
+	header("Content-Type: text/html; charset=utf-8");
 }
 
 ?>

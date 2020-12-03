@@ -9,9 +9,9 @@ function GetSta($sta,$ID,$title)
 {
 	if($sta==1)
 	{
-		return " &nbsp; <a href='plus_edit.php?dopost=edit&aid=$ID'><u>ĞŞ¸Ä</u></a> &nbsp; ÆôÓÃ  &gt; <a href='plus_edit.php?dopost=hide&aid=$ID'><u>½ûÓÃ</u></a> &nbsp; <a href='plus_edit.php?dopost=delete&aid=$ID&title=".urlencode($title)."'><u>É¾³ı</u></a>";
+		return " &nbsp; <a href='plus_edit.php?dopost=edit&aid=$ID'><u>ä¿®æ”¹</u></a> &nbsp; å¯ç”¨  &gt; <a href='plus_edit.php?dopost=hide&aid=$ID'><u>ç¦ç”¨</u></a> &nbsp; <a href='plus_edit.php?dopost=delete&aid=$ID&title=".urlencode($title)."'><u>åˆ é™¤</u></a>";
 	}
-	else return " &nbsp; <a href='plus_edit.php?aid=$ID'><u>ĞŞ¸Ä</u></a> &nbsp; ½ûÓÃ &gt; <a href='plus_edit.php?dopost=show&aid=$ID'><u>ÆôÓÃ</u></a> &nbsp; <a href='plus_edit.php?dopost=delete&aid=$ID&title=".urlencode($title)."'><u>²á³ı</u></a>";
+	else return " &nbsp; <a href='plus_edit.php?aid=$ID'><u>ä¿®æ”¹</u></a> &nbsp; ç¦ç”¨ &gt; <a href='plus_edit.php?dopost=show&aid=$ID'><u>å¯ç”¨</u></a> &nbsp; <a href='plus_edit.php?dopost=delete&aid=$ID&title=".urlencode($title)."'><u>å†Œé™¤</u></a>";
 }
 
 $sql = "Select aid,plusname,writer,isshow From #@__plus order by aid asc";

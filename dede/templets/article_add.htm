@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>增加文章</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language='javascript' src='main.js'></script>
+<script language="javascript">
+<!--
+function SelectTemplets(fname){
+   var posLeft = window.event.clientY-200;
+   var posTop = window.event.clientX-300;
+   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+-->
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+-->
+</style>
+</head>
+<body topmargin="8">
+<form name="form1" action="action/article_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return CS_ArchivesAdd();">
+  <input type="hidden" name="channelid" value="<?php echo $channelid?>">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr> 
+      <td height="30">&nbsp;<a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a>&gt;&gt;发布文章</td>
+      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="1%">&nbsp;</td>
+    </tr>
+  </table>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+    <tr>
+      <td bgcolor="#FFFFFF">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable" style="border-bottom:1px solid #99CC33">
+    <tr> 
+      <td colspan="2" bgcolor="#E2F5BC">
+      	<table border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" height="24" align="center" bgcolor="#FFFFFF">&nbsp;常规内容&nbsp;</td>
+            <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onClick="ShowItem2()"><u>其它参数</u></a></td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+  </table>
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #99CC33;display:none">
+    <tr> 
+      <td colspan="2" bgcolor="#E2F5BC">
+      	<table height="24" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
+            <td width="84" align="center" bgcolor="#FFFFFF">其它参数&nbsp;</td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+  </table>
+  
+        <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+            <td height="2"></td>
+          </tr>
+        </table>
+        <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
+          <tr>
+            <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;文章标题：</td>
+                  <td width="250"><input name="title" type="text" id="title" style="width:230px" />
+                  </td>
+                  <td width="90">附加参数：</td>
+                  <td><input name="iscommend" type="checkbox" id="iscommend" value="11"  />
+                    推荐
+                    <input name="isbold" type="checkbox" id="isbold" value="5"  />
+                    加粗
+                    <input name="isjump" type="checkbox" id="isjump" value="1" onclick="ShowUrlTr()"  />
+                    跳转网址</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" class="bline" id="redirecturltr" style="display:none">
+            <table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;跳转网址：</td>
+                  <td><input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="" />
+                  </td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+      <tr>
+      <td height="24" class="bline">
+	   <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;Tag标签：</td>
+            <td>
+			<input name="tag" type="text" id="tag" style="width:300px" value=""> 
+			(用空格或','分开)
+            </td>
+          </tr>
+       </table>
+	 </td>
+    </tr>
+     <tr>
+            <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90" height="33">&nbsp;文章来源：</td>
+                  <td width="240" height="33"><input name="source" type="text" id="source" style="width:160px" size="16" />
+                      <input name="selsource" type="button" id="selsource" value="选择" class="inputbut" /></td>
+                  <td width="90" height="33">作　者：</td>
+                  <td height="33"><input name="writer" type="text" id="writer" style="width:120px" />
+                      <input name="selwriter" type="button" id="selwriter" value="选择" class="inputbut" />
+                  </td>
+                </tr>
+              </table>
+                <script language='JavaScript' type="text/javascript">InitPage();</script>
+            </td>
+          </tr>
+	 <tr id="pictable">
+            <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="135" height="81">&nbsp;缩 略 图：<br/>
+                    &nbsp;
+                    <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote' onclick="CkRemote('ddisremote','litpic')" />
+                    远程图片 <br />
+                  </td>
+                  <td width="464"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+                      <tr>
+                        <td height="30"> 本地上传请点击“浏览”按钮
+                          <input name="litpic" type="file" id="litpic" style="width:200px" onchange="SeePic(document.picview,document.form1.litpic);" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td height="30"><input name="picname" type="text" id="picname" style="width:250px" />
+                            <input type="button" name="Submit2" value="在网站内选择" style="width:120px" onclick="SelectImage('form1.picname','small');" class="inputbut" />
+                        </td>
+                      </tr>
+                  </table></td>
+                  <td width="201" align="center"><img src="img/pview.gif" width="150" id="picview" name="picview" /></td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;文章主栏目：</td>
+                  <td width="400">
+             <?php 
+           	if(empty($cid) && empty($cfg_cat_seltype)) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		          echo "<select name='typeid' style='width:300px'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?>
+                  </td>
+                  <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+       <td style="padding:0px;">
+        <?php 
+        PrintAutoFieldsAdd($cInfos['fieldset'],'autofield','90');
+        ?>
+        </td>
+       </tr>
+       <tr>
+            <td colspan="2" bgcolor="#EDF9D5">
+            	<table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" align="center" bgcolor="#FFFFFF">文章内容</td>
+                  <td width="84" align="center">&nbsp;</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="2"></td>
+          </tr>
+          <tr>
+            <td width="100%" height="24" class="bline">
+            	<table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;附加选项：</td>
+                  <td>
+                  	<input name="remote" type="checkbox"  id="remote" value="1" checked="checked" />
+                    下载远程图片和资源
+                    <input name="dellink" type="checkbox"  id="dellink" value="1" />
+                    删除非站内链接
+                    <input name="autolitpic" type="checkbox"  id="autolitpic" value="1" />
+                    提取第一个图片为缩略图
+                    <input name="autokey" type="checkbox"  id="autokey" value="1" />
+                    自动获取关键词
+                   </td>
+                </tr>
+            </table>
+            </td>
+          </tr>
+          <tr>
+            <td width="100%" height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>&nbsp;分页方式：</td>
+                  <td><input name="sptype" type="radio"  value="hand"<?php if($cfg_arcautosp=='否') echo " checked"?> />
+                    手动分页
+                    <input type="radio" name="sptype" value="auto" <?php if($cfg_arcautosp=='是') echo " checked"?> />
+                    自动分页　自动分页大小：
+                    <input name="spsize" type="text" id="spsize" value="<?php echo $cfg_arcautosp_size?>" size="6" />
+                    (K) </td>
+                </tr>
+                <tr>
+                  <td width="90">&nbsp;</td>
+                  <td>（手动分页在需分的地方加上 <font color="#FF0000">#p#分页标题#e# </font>，编辑器里包含该按钮）</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" bgcolor="#FFFFFF">&nbsp;文章内容：</td>
+          </tr>
+          <tr>
+            <td><?php 
+	GetEditor("body","",450);
+	?>
+            </td>
+          </tr>
+          <tr>
+            <td height="6"></td>
+          </tr>
+        </table>
+        
+<table width="98%" border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
+         <tr>
+            <td height="24" width="90" class="bline">
+            	<table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;简略标题：</td>
+                  <td width="250"><input name="shorttitle" type="text" id="shorttitle" style="width:150px" />
+                  </td>
+                  <td width="90">自定义属性：</td>
+                  <td><select name='arcatt' style='width:150px'>
+                      <option value='0'>普通文档</option>
+                      <?php 
+            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
+            	$dsql->Execute();
+            	while($trow = $dsql->GetObject())
+            	{
+            		echo "<option value='{$trow->att}'>{$trow->attname}(att={$trow->att})</option>";
+            	}
+            	?>
+                    </select>
+                  </td>
+                </tr>
+            </table>
+            </td>
+          </tr>
+         <tr> 
+       <td width="90" class="bline">
+        <table width="800" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+           <td width="90" height="33">&nbsp;副 栏 目：</td>
+           <td height="33"><?php echo GetTypeidSel('form1','typeid2','selbt2',$channelid)?></td>
+          </tr>
+        </table>
+          </td>
+        </tr>
+    <tr>
+      <td height="24" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+           <td width="90" height="33">&nbsp;文章模板：</td>
+           <td height="33"><input name="templet" type="text" id="templet" size="30" />
+           <input type="button" name="set3" value="浏览..." style="width:60px" onclick="SelectTemplets('form1.templet');" class="inputbut" />
+           如果模板为空，则使用文章所在栏目定义的模板）
+          </td>
+          </tr>
+        </table></td>
+   </tr>
+	<tr> 
+    <td height="24" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;发布时间：</td>
+            <td width="241"> 
+              <?php 
+			$nowtime = GetDateTimeMk(mytime());
+			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\">";
+			?>            </td>
+            <td width="88">消费点数：</td>
+            <td width="381"> <input name="money" type="text" id="money" value="0" size="10">            </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr> 
+      <td height="24" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90" height="22">&nbsp;文档排序：</td>
+            <td width="240"> <select name="sortup" id="sortup" style="width:150px">
+                <option value="0" selected>默认排序</option>
+                <option value="7">置顶一周</option>
+                <option value="30">置顶一个月</option>
+                <option value="90">置顶三个月</option>
+                <option value="180">置顶半年</option>
+                <option value="360">置顶一年</option>
+              </select> </td>
+            <td width="90">标题颜色：</td>
+            <td> <input name="color" type="text" id="color" style="width:120px"> 
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class="inputbut">            </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr> 
+      <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;阅读权限：</td>
+            <td width="240"> <select name="arcrank" id="arcrank" style="width:150px">
+                <?php 
+              $dsql->SetQuery("Select * from #@__arcrank ");
+              $dsql->Execute();
+              while($row = $dsql->GetObject())
+              {
+              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
+              }
+              ?>
+              </select> </td>
+            <td width="90">发布选项：</td>
+            <td> <input name="ishtml" type="radio"  value="1" checked>
+              生成HTML 
+              <input type="radio" name="ishtml"  value="0">
+              仅动态浏览</td>
+          </tr>
+        </table></td>
+    </tr>
+	<tr>
+	  <td height="76" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="51">&nbsp;文档摘要：</td>
+          <td width="446"><textarea name="description" rows="3" id="description" style="width:80%"></textarea></td>
+          <td>&nbsp;</td>
+        </tr>
+      </table></td>
+    </tr>
+	<tr>
+	  <td height="76" class="bline">
+	  	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="51">&nbsp;关键字：</td>
+          <td width="446"><textarea name="keywords" rows="3" id="keywords" style="width:80%"></textarea></td>
+          <td>用空格分开<br/>
+              <input type="button" name="Submit" value="浏览..." style="width:56px;height:20" onClick="SelectKeywords('form1.keywords');" class="inputbut" /></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+	  <td height="76" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;相关文档：</td>
+            <td width="446">
+            
+            <textarea name="likeid" rows="3" id="likeid" style="width:80%;"></textarea>             </td>
+            <td>把文档ID，用逗号“,”分开<br/>
+                <input name="lsel" type="button" id="lsel" class="nbt" style="width:150px" onChange="" value="从已发布文档中选取..." onClick="SelectArcListA('form1.likeid');">            </td>
+          </tr>
+        </table>
+       </td>
+    </tr>
+</table>       
+ <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="56"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+                <tr>
+                  <td width="17%">&nbsp;</td>
+                  <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="115" height="35"><input name="imageField" type="submit" class="inputbut" value="确定" /></td>
+                        <td width="99" height="35"><a href="catalog_main.php">
+                          <input name="button" type="reset" class="inputbut" id="button" value="重置"/>
+                        </a></td>
+                      </tr>
+                  </table></td>
+                </tr>
+            </table></td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  </form>
+</body>
+</html>

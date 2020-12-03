@@ -1,0 +1,67 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>投票管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">辅助插件</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td height="19" bgcolor="#EDF9D5"><b>&nbsp;投票管理</b>&gt;&gt;增加投票&nbsp;&nbsp;[<a href="vote_main.php"><u>管理以往投票内容记录</u></a>]</td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<form name="form1" method="post" action="vote_edit.php">
+	<input type="hidden" name="dopost" value="saveedit">
+	<input type="hidden" name="aid" value="<?php echo $aid?>">
+	    <table width="100%" border="0" cellspacing="4" cellpadding="4">
+          <tr> 
+            <td width="15%" align="center">投票名称：</td>
+            <td width="85%"> <input name="votename" type="text" id="votename" value="<?php echo $row['votename']?>"> 
+            </td>
+          </tr>
+          <tr>
+            <td align="center">投票总人数：</td>
+            <td><input name="totalcount" type="text" id="totalcount" value="<?php echo $row['totalcount']?>"></td>
+          </tr>
+          <tr> 
+            <td align="center">开始时间：</td>
+            <td><input name="starttime" type="text" id="starttime" value="<?php echo GetDateMk($row['starttime'])?>"></td>
+          </tr>
+          <tr> 
+            <td align="center">结束时间：</td>
+            <td><input name="endtime" type="text" id="endtime" value="<?php echo GetDateMk($row['endtime'])?>"></td>
+          </tr>
+          <tr> 
+            <td align="center">是否多选：</td>
+            <td> <input name="ismore" type="radio"  value="0"<?php if($row['ismore']==0) echo " checked";?>>
+              单选 　 
+              <input type="radio" name="ismore"  value="1"<?php if($row['ismore']==1) echo " checked";?>>
+              多选 </td>
+          </tr>
+          <tr> 
+            <td align="center">投 票 项：<br/>
+              (请按相同的形式来增加或修改节点，其中属性：id不能重复) </td>
+            <td><textarea name="votenote" rows="8" id="votenote" style="width:80%"><?php echo $row['votenote']?></textarea> 
+            </td>
+          </tr>
+          <tr> 
+            <td height="47">&nbsp;</td>
+            <td><input type="submit" name="Submit" value="保存投票数据" class="inputbut"></td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </table>
+	  </form>
+	  </td>
+</tr>
+</table>
+</body>
+</html>

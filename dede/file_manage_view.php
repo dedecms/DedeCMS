@@ -1,86 +1,86 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-CheckPurview('plus_ÎÄ¼ş¹ÜÀíÆ÷');
+CheckPurview('plus_æ–‡ä»¶ç®¡ç†å™¨');
 
 $activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 if($activepath == "/") $activepath = "";
 if($activepath == "") $inpath = $cfg_basedir;
 else $inpath = $cfg_basedir.$activepath;
-//ÏÔÊ¾¿ØÖÆ²ã
-//¸ü¸ÄÎÄ¼şÃû
+//æ˜¾ç¤ºæ§åˆ¶å±‚
+//æ›´æ”¹æ–‡ä»¶å
 if($fmdo=="rename")
 {
-	if($activepath=="") $ndirstring = "¸ùÄ¿Â¼";
+	if($activepath=="") $ndirstring = "æ ¹ç›®å½•";
 	$ndirstring = $activepath;
-	$wintitle = "ÎÄ¼ş¹ÜÀí";
-	$wecome_info = "ÎÄ¼ş¹ÜÀí::¸ü¸ÄÎÄ¼şÃû [<a href='file_manage_main.php?activepath=$activepath'>ÎÄ¼şä¯ÀÀÆ÷</a>]</a>";
+	$wintitle = "æ–‡ä»¶ç®¡ç†";
+	$wecome_info = "æ–‡ä»¶ç®¡ç†::æ›´æ”¹æ–‡ä»¶å [<a href='file_manage_main.php?activepath=$activepath'>æ–‡ä»¶æµè§ˆå™¨</a>]</a>";
 	$win = new OxWindow();
 	$win->Init("file_manage_control.php","js/blank.js","POST");
 	$win->AddHidden("fmdo",$fmdo);
 	$win->AddHidden("activepath",$activepath);
 	$win->AddHidden("filename",$filename);
-	$win->AddTitle("¸ü¸ÄÎÄ¼şÃû£¬µ±Ç°Â·¾¶£º$ndirstring");
-	$win->AddItem("¾ÉÃû³Æ£º","<input name='oldfilename' type='input' id='oldfilename' size='40' value='$filename'>");
-	$win->AddItem("ĞÂÃû³Æ£º","<input name='newfilename' type='input' size='40' id='newfilename'>");
+	$win->AddTitle("æ›´æ”¹æ–‡ä»¶åï¼Œå½“å‰è·¯å¾„ï¼š$ndirstring");
+	$win->AddItem("æ—§åç§°ï¼š","<input name='oldfilename' type='input' id='oldfilename' size='40' value='$filename'>");
+	$win->AddItem("æ–°åç§°ï¼š","<input name='newfilename' type='input' size='40' id='newfilename'>");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
-//ĞÂ½¨Ä¿Â¼
+//æ–°å»ºç›®å½•
 else if($fmdo=="newdir")
 {
-	if($activepath=="") $activepathname="¸ùÄ¿Â¼";
+	if($activepath=="") $activepathname="æ ¹ç›®å½•";
 	else $activepathname=$activepath;
-	$wintitle = "ÎÄ¼ş¹ÜÀí";
-	$wecome_info = "ÎÄ¼ş¹ÜÀí::ĞÂ½¨Ä¿Â¼ [<a href='file_manage_main.php?activepath=$activepath'>ÎÄ¼şä¯ÀÀÆ÷</a>]</a>";
+	$wintitle = "æ–‡ä»¶ç®¡ç†";
+	$wecome_info = "æ–‡ä»¶ç®¡ç†::æ–°å»ºç›®å½• [<a href='file_manage_main.php?activepath=$activepath'>æ–‡ä»¶æµè§ˆå™¨</a>]</a>";
 	$win = new OxWindow();
 	$win->Init("file_manage_control.php","js/blank.js","POST");
 	$win->AddHidden("fmdo",$fmdo);
 	$win->AddHidden("activepath",$activepath);
 	//$win->AddHidden("filename",$filename);
-	$win->AddTitle("µ±Ç°Ä¿Â¼ $activepathname ");
-	$win->AddItem("ĞÂÄ¿Â¼£º","<input name='newpath' type='input' id='newpath'>");
+	$win->AddTitle("å½“å‰ç›®å½• $activepathname ");
+	$win->AddItem("æ–°ç›®å½•ï¼š","<input name='newpath' type='input' id='newpath'>");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
-//ÒÆ¶¯ÎÄ¼ş
+//ç§»åŠ¨æ–‡ä»¶
 else if($fmdo=="move")
 {
-	$wintitle = "ÎÄ¼ş¹ÜÀí";
-	$wecome_info = "ÎÄ¼ş¹ÜÀí::ÒÆ¶¯ÎÄ¼ş [<a href='file_manage_main.php?activepath=$activepath'>ÎÄ¼şä¯ÀÀÆ÷</a>]</a>";
+	$wintitle = "æ–‡ä»¶ç®¡ç†";
+	$wecome_info = "æ–‡ä»¶ç®¡ç†::ç§»åŠ¨æ–‡ä»¶ [<a href='file_manage_main.php?activepath=$activepath'>æ–‡ä»¶æµè§ˆå™¨</a>]</a>";
 	$win = new OxWindow();
 	$win->Init("file_manage_control.php","js/blank.js","POST");
 	$win->AddHidden("fmdo",$fmdo);
 	$win->AddHidden("activepath",$activepath);
 	$win->AddHidden("filename",$filename);
-	$win->AddTitle("ĞÂÎ»ÖÃÇ°Ãæ²»¼Ó'/'±íÊ¾Ïà¶ÔÓÚµ±Ç°Î»ÖÃ£¬¼Ó'/'±íÊ¾Ïà¶ÔÓÚ¸ùÄ¿Â¼¡£");
-	$win->AddItem("±»ÒÆ¶¯ÎÄ¼ş£º",$filename);
-	$win->AddItem("µ±Ç°Î»ÖÃ£º",$activepath);
-	$win->AddItem("ĞÂÎ»ÖÃ£º","<input name='newpath' type='input' id='newpath' size='40'>");
+	$win->AddTitle("æ–°ä½ç½®å‰é¢ä¸åŠ '/'è¡¨ç¤ºç›¸å¯¹äºå½“å‰ä½ç½®ï¼ŒåŠ '/'è¡¨ç¤ºç›¸å¯¹äºæ ¹ç›®å½•ã€‚");
+	$win->AddItem("è¢«ç§»åŠ¨æ–‡ä»¶ï¼š",$filename);
+	$win->AddItem("å½“å‰ä½ç½®ï¼š",$activepath);
+	$win->AddItem("æ–°ä½ç½®ï¼š","<input name='newpath' type='input' id='newpath' size='40'>");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
-//É¾³ıÎÄ¼ş
+//åˆ é™¤æ–‡ä»¶
 else if($fmdo=="del")
 {
-	$wintitle = "ÎÄ¼ş¹ÜÀí";
-	$wecome_info = "ÎÄ¼ş¹ÜÀí::É¾³ıÎÄ¼ş [<a href='file_manage_main.php?activepath=$activepath'>ÎÄ¼şä¯ÀÀÆ÷</a>]</a>";
+	$wintitle = "æ–‡ä»¶ç®¡ç†";
+	$wecome_info = "æ–‡ä»¶ç®¡ç†::åˆ é™¤æ–‡ä»¶ [<a href='file_manage_main.php?activepath=$activepath'>æ–‡ä»¶æµè§ˆå™¨</a>]</a>";
 	$win = new OxWindow();
 	$win->Init("file_manage_control.php","js/blank.js","POST");
 	$win->AddHidden("fmdo",$fmdo);
 	$win->AddHidden("activepath",$activepath);
 	$win->AddHidden("filename",$filename);
 	if(@is_dir($cfg_basedir.$activepath."/$filename"))
-		$wmsg = "ÄãÈ·ĞÅÒªÉ¾³ıÄ¿Â¼£º$filename Âğ£¿";
+		$wmsg = "ä½ ç¡®ä¿¡è¦åˆ é™¤ç›®å½•ï¼š$filename å—ï¼Ÿ";
 	else
-		$wmsg = "ÄãÈ·ĞÅÒªÉ¾³ıÎÄ¼ş£º$filename Âğ£¿";
-	$win->AddTitle("É¾³ıÎÄ¼şÈ·ÈÏ");
+		$wmsg = "ä½ ç¡®ä¿¡è¦åˆ é™¤æ–‡ä»¶ï¼š$filename å—ï¼Ÿ";
+	$win->AddTitle("åˆ é™¤æ–‡ä»¶ç¡®è®¤");
 	$win->AddMsgItem($wmsg,"50");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
-//±à¼­ÎÄ¼ş
+//ç¼–è¾‘æ–‡ä»¶
 else if($fmdo=="edit")
 {
 	if(!isset($backurl)) $backurl = "";
@@ -103,7 +103,7 @@ else if($fmdo=="edit")
 	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit.htm");
 	$ctp->display();
 }
-//±à¼­ÎÄ¼ş£¬¿ÉÊÓ»¯Ä£Ê½
+//ç¼–è¾‘æ–‡ä»¶ï¼Œå¯è§†åŒ–æ¨¡å¼
 else if($fmdo=="editview")
 {
 	if(!isset($backurl)) $backurl = "";
@@ -123,7 +123,7 @@ else if($fmdo=="editview")
 	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit_view.htm");
 	$ctp->display();
 }
-//ĞÂ½¨ÎÄ¼ş
+//æ–°å»ºæ–‡ä»¶
 else if($fmdo=="newfile")
 {
 	$content = "";
@@ -133,11 +133,13 @@ else if($fmdo=="newfile")
 	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit.htm");
 	$ctp->display();
 }
-//ÉÏ´«ÎÄ¼ş
+//ä¸Šä¼ æ–‡ä»¶
 else if($fmdo=="upload")
 {
 	$ctp = new DedeTagParse();
 	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_upload.htm");
 	$ctp->display();
 }
+
+ClearAllLink();
 ?>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>移动列表</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td width="100%" height="24" colspan="2" bgcolor="#EDF9D5">
+    &nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&gt;&gt;移动列表    </td>
+  </tr>
+  <tr>
+    <td height="200" colspan="2" valign="top" bgcolor="#FFFFFF"> 
+      <form name="form1" method="get" action="catalog_move.php">
+      <input name="typeid" type="hidden" id="typeid" value="<?php echo $typeid?>">
+      <input name="job" type="hidden" id="job" value="moveok">
+	    <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="2" height="12"></td>
+          </tr>
+          <tr> 
+            <td height="25" colspan="2" bgcolor="#F2F8FB">
+            &nbsp;移动目录时不会删除原来已创建的列表，移动后需重新对栏目创建HTML。 
+            </td>
+          </tr>
+          <tr> 
+            <td width="30%" height="25">你选择的栏目是：</td>
+            <td width="70%">
+            <?php 
+			echo "$typename($typeid)";
+            ?>
+            </td>
+          </tr>
+          <tr> 
+            <td height="30">你希望移动到那个栏目？</td>
+            <td>
+            <select name="movetype">
+              <option value='0'>移动为顶级栏目</option>
+              <?php echo $typeOptions?>
+             </select>
+            </td>
+          </tr>
+          <tr> 
+            <td height="25" colspan="2" bgcolor="#F2F8FB">
+            &nbsp;不允许从父级移动到子级目录，只允许子级到更高级或同级或不同父级的情况。
+             </td>
+          </tr>
+          <tr> 
+            <td height="74">&nbsp;</td>
+            <td>
+            <input type="submit" name="Submit" value="确定操作" class="inputbut"> 　 
+            <input name="Submit11" type="button" id="Submit11" value="-不理返回-" onClick="history.go(-1);" class="inputbut">
+            </td>
+          </tr>
+        </table>
+	  </form>
+	  </td>
+  </tr>
+</table>
+</body>
+</html>

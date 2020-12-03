@@ -1,0 +1,59 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>删除栏目</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script src='menu.js' language='JavaScript'></script>
+</head>
+<body>
+
+<table width="600px" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr> 
+    <td height="19" bgcolor="#EDF9D5">&nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&gt;&gt;删除栏目</td>
+  </tr>
+  <tr> 
+    <td height="60" align="center" bgcolor="#FFFFFF"> 
+      <table width="96%" border="0" cellspacing="0" cellpadding="0">
+        <form name="form1" action="catalog_del.php" method="post">
+          <input type="hidden" name="ID" value="<?php echo $ID?>">
+          <input type="hidden" name="dopost" value="ok">
+          <tr> 
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2">&nbsp;你要删除栏目： 
+              <?php echo $typeoldname?>
+            </td>
+          </tr>
+          <tr> 
+            <td colspan="2">栏目的文件保存目录： 
+              <?php 
+              $dsql = new DedeSql();
+              $dsql->SetQuery("Select typedir From #@__arctype where ID=".$ID);
+              $row = $dsql->GetOne();
+              $dsql->Close();
+              echo $row["typedir"];
+              ?>
+            </td>
+          </tr>
+          <tr> 
+            <td width="42%" height="36">是否删除文件： 
+              <input type="radio" name="delfile"  value="no" checked>
+              否 &nbsp;&nbsp; <input type="radio" name="delfile"  value="yes">
+              是 </td>
+            <td width="58%" height="36"><input type="button" name="Submit" value=" 确定 " onClick="javascript:document.form1.submit();" class="inputbut"> 
+              &nbsp; <input type="button" name="Submit2" value=" 返回 " onClick="javascript:location.href='catalog_main.php';" class="inputbut"> 
+            </td>
+          </tr>
+          <tr> 
+            <td height="20" colspan="2">&nbsp;</td>
+          </tr>
+        </form>
+      </table></td>
+  </tr>
+</table>
+</body>
+
+</html>

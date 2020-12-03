@@ -4,13 +4,13 @@ CheckRank(0,0);
 $svali = GetCkVdValue();
 
 if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
+  ShowMsg("éªŒè¯ç é”™è¯¯ï¼","-1");
   exit();
 }
 
 $cardid = ereg_replace("[^0-9A-Za-z-]","",$cardid);
 if(empty($cardid)){
-	ShowMsg("¿¨ºÅÎª¿Õ£¡","-1");
+	ShowMsg("å¡å·ä¸ºç©ºï¼","-1");
   exit();
 }
 
@@ -19,13 +19,13 @@ $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__moneycard_record where cardid='$cardid' ");
 
 if(!is_array($row)){
-	ShowMsg("¿¨ºÅ´íÎó£º²»´æÔÚ´Ë¿¨ºÅ£¡","-1");
+	ShowMsg("å¡å·é”™è¯¯ï¼šä¸å­˜åœ¨æ­¤å¡å·ï¼","-1");
 	$dsql->Close();
   exit();
 }
 
 if($row['isexp']==-1){
-	ShowMsg("´Ë¿¨ºÅÒÑ¾­Ê§Ð§£¬²»ÄÜÔÙ´ÎÊ¹ÓÃ£¡","-1");
+	ShowMsg("æ­¤å¡å·å·²ç»å¤±æ•ˆï¼Œä¸èƒ½å†æ¬¡ä½¿ç”¨ï¼","-1");
 	$dsql->Close();
   exit();
 }
@@ -36,7 +36,7 @@ $dsql->ExecuteNoneQuery("update #@__moneycard_record set uid='".$cfg_ml->M_ID."'
 
 $dsql->ExecuteNoneQuery("update #@__member set money=money+$hasMoney where ID='".$cfg_ml->M_ID."'");
 
-ShowMsg("³äÖµ³É¹¦£¬Äã±¾´ÎÔö¼ÓµÄ½ð±ÒÎª£º{$hasMoney} ¸ö£¡","control.php");
+ShowMsg("å……å€¼æˆåŠŸï¼Œä½ æœ¬æ¬¡å¢žåŠ çš„é‡‘å¸ä¸ºï¼š{$hasMoney} ä¸ªï¼","control.php");
 $dsql->Close();
 exit();
 

@@ -1,0 +1,110 @@
+@charset "gbk";
+/* ------------------------------------------------------------ 企业搜索首页 -------------------------------------------------------------*/
+/* -- 全局定位 --*/
+* { margin:0px auto; padding:0px; font-size:12px; font-weight:normal; list-style-type:none;  }
+html, body { margin:auto; padding:0px;background-color:#fff; text-align:center; }
+#container { margin:auto; width:100%; height:100%; }
+.button{ background:url(../images/button.gif) repeat-x -1px; width:89px; height:30px; text-align:center; font-size:12px; color:#676767; line-height:30px; margin-top:5px; margin-bottom:5px; border:0;}
+.button a{ text-decoration:none; font-size:12px; color:#676767;}
+.button a:hover{font-size:12px; color:#ac0000;}
+.button01{ background:url(../images/button01.gif) repeat-x; width:62px; height:30px; text-align:center; font-size:12px; color:#676767; line-height:30px; margin:10px 0px 5px 20px; border:0;}
+.button01 a{ text-decoration:none; font-size:12px; color:#676767;}
+.button01 a:hover{font-size:12px; color:#ac0000;}
+.clear { clear:both; }
+
+/* -- 头部 --*/
+#search_header { width:100%; margin:auto; text-align:center; }
+#centertext { width:760px; text-align:center; height:59px; margin-top:20px; }
+.search_logo { background:url(../images/search_logo.gif) no-repeat; height:59px; width:263px; float:left; }
+.search_top { width:497px; float:right; height:35px; padding-top:24px;}
+.search_menu a{ color:#799c00;}
+.search_menu a:hover{ color:#00529f; }
+.search_menu { float:right;position: relative;width: 297px!important;border-bottom: #CCCCCC 2px solid; }
+.search_menu li {text-align:center;float: left;font-weight: bold;line-height: 24px;}
+.search_menu ul li.one {width: 73px;background-color:#ffffff;border-bottom: #a2b952 1px solid;border-left: #a2b952 1px solid;font-size:14px;border-top: #a2b952 1px solid;}
+.search_menu ul li.two {width: 73px;background-color:#ffffff;border-bottom: #a2b952 1px solid;border-left: #a2b952 1px solid;font-size:14px;border-top: #a2b952 1px solid; border-right:#a2b952 1px solid;}
+
+/* -- 搜索 --*/
+#company_search {width:100%;text-align:center; margin-top:10px;}
+#search_middle {width:758px;border:1px solid #bbd186; background-color:#e9f9c3; }
+.serach_top_titlebg { width:758px; height:5px; background-color:#f8fded; line-height:0px; font-size:0px; }
+.search_font {margin-top:10px; color:#8fa952;  }
+.search_form_bar { height:31px;}
+.search_img { background:url(../images/search.gif) no-repeat 30px; height:31px; float:left; width:160px; }
+.search_inputform { width:598px; float:left; padding-top:5px; text-align:left; }
+.search_input { height:20px; background-color:#f5ffd5; border:1px solid #a3a561; width:500px; }
+.search_select{ width:758px; height:40px; }
+.search_select_text { width:250px; margin:5px 0px 0px 80px; float:left; height:35px; }
+.search_select_form { float:left; border:1px solid #C0C0C0; width:100px; height:16px; overflow:hidden; }
+.search_select_form select{position:relative; font-size:12px; width:100px; line-height:18px;border:0px; color:#909993; }
+.search_button { width:348px; height:40px; float:left; text-align:left; }
+.search_button_img {background:url(../images/search_button.gif) repeat-x -2px; width:86px; height:30px; border:0px;  }
+.search_bottom { height:30px; text-align:center; color:#576c23; background-color:#d7eea1; width:758px; }
+
+/* -- 中间 --*/
+#search_main { width:100%; text-align:center; margin-top:10px; }
+#search_main_middle { width:760px; margin:auto; text-align:center;}
+
+/* -- 左边 --*/
+.search_left { width:515px; margin-right:10px; border:1px solid #bbd186; float:left; }
+.search_class_title { background:url(../images/right_titlebg.gif) repeat-x; height:29px; text-align:left; border-bottom:1px solid #bbd186;margin-bottom:5px; }
+.search_class_title ul { list-style:none; }
+.search_class_title li { background:url(../images/title01.gif) no-repeat 10px; height:29px; font-size:12px; color:#355b00; font-weight:bold; text-indent:30px; line-height:29px; }
+.search_class_text { width:515px; margin:auto; text-align:center; height:100%; }
+.search_class_box { margin:5px 5px 5px 15px; width:227px; float:left; border-bottom:1px #999 dotted; padding-bottom:5px; }
+.search_class_box a:hover{ color:#FF6600; }
+.search_class_box dt{ font-size:14px; font-weight:bold; color:#3d362b; text-align:left; padding-bottom:5px; }
+.search_class_box dt a{  font-size:14px; font-weight:bold; color:#3d362b; }
+.search_class_box dd{ text-align:left; font-size:12px; color:#3d362b; float:left; padding-left:3px; width: 110px;}
+.search_class_box dd a{  font-size:12px; color:#3d362b; }
+
+/* -- 右边 --*/
+.search_right { width:233px; float:right; }
+.search_right_join {width:233px; height:104px; margin-bottom:5px; }
+.search_right_join a{ background:url(../images/join_company.gif) no-repeat; width:233px; height:104px; display:block; }
+.search_right_title { background:url(../images/right_titlebg01.gif) no-repeat; width:233px; height:27px; line-height:27px; margin-bottom:5px; }
+.search_right_title ul {list-style:none;}
+.search_right_title li { background:url(../images/right_next.gif) no-repeat 10px 6px; height:20px; color:#FFFFFF; text-align:left; text-indent:30px; font-size:14px; font-weight:bold; clear:both; }
+.search_right_text { width:231px; border:1px solid #bbd186; height:100%; padding:5px 0px 5px 0px; }
+.search_right_text ul {list-style:none; text-align:center; padding-top:5px; }
+.search_right_text li { width:57px; color:#3c7100; float:left; }
+.search_right_text li a{ color:#3c7100; text-decoration:none;  }
+.search_right_text li a:hover{ color:#FF6600; }
+.search_ad { width:233px; height:176px; margin-top:5px; }
+.search_ad a { background:url(../images/search_ad.gif) no-repeat; width:233px; height:176px; text-indent:-9999px; display:block;  }
+
+
+/* -- 底部信息--*/
+#footer {width:100%; margin:auto; text-align:center;}
+.footer_bar {border-top:4px solid #619921; width:100%; margin-top:30px; }
+.footer_main { width:760px; height:30px; line-height:30px; }
+.footer_text  {font-family:PMingLiU, sans-serif; font-size:12px; color:#333333; float:left; }
+.footer_logo { background:url(../images/footer_logo.gif) no-repeat; width:136px; height:23px; float:right; margin-top:5px; }
+
+
+/* ------------------------------------------------------------ 企业搜索列表 -------------------------------------------------------------*/
+.search_bottom_title {  width:758px; color:#576c23; height:30px; line-height:30px; text-align:left; text-indent:15px; }
+.search_bottom_title a { color:#576c23; text-decoration:none; }
+.search_bottom_title a:hover {color:#501faa; }
+.search_bottom_text {width: 758px; color:#576c23; background-color:#d7eea1; border-top:1px solid #c2d98b; padding-top:5px; }
+.search_bottom_text dt { font-weight:bold; background:url(../images/search_ico01.gif) no-repeat 15px 5px; height:20px; line-height:20px; text-align:left; text-indent:25px; }
+.search_bottom_text dd { padding-left:25px; width:50px; float:left; height:25px; line-height:25px; }
+.search_bottom_text dd a{ color:#576c23; text-decoration:none; }
+.search_bottom_text dd a:hover { color:#501faa; border-bottom:2px solid #576c23; }
+
+/* -- 中间信息--*/
+#search_list_middle { width:758px; margin:auto; text-align:center; border:1px solid #bbd186; }
+.search_list_title { background:url(../images/right_titlebg.gif) repeat-x; height:29px; text-align:left; border-bottom:1px solid #bbd186;margin-bottom:5px; width:500px; float:left; }
+.search_list_title ul { list-style:none; }
+.search_list_title li { background:url(../images/title01.gif) no-repeat 10px; height:29px; font-size:12px; color:#355b00; font-weight:bold; text-indent:30px; line-height:29px;  }
+.search_list_title1 { width:129px; margin-bottom:5px; height:29px;float:left;background:url(../images/right_titlebg.gif) repeat-x;border-bottom:1px solid #bbd186; line-height:29px; color:#355b00; }
+.search_list_main { width:758px; margin-bottom:10px; border-bottom:1px #CCCCCC dotted; }
+.search_list_text { width:480px; float:left; padding:5px 10px 5px 10px; }
+.search_list_text dt {  color:#576c23; text-align:left; text-indent:15px; }
+.search_list_text dt a{ color:#576c23; text-decoration:none;font-size:14px; font-weight:bold; }
+.search_list_text dt a:hover { color:#ff6600; }
+.search_list_text dd { font-size:12px; color:#999999; text-align:left;  padding:5px 0px 0px 15px;; }
+.search_list_text1 { height:29px; font-size:12px; color:#355b00; line-height:29px; float:left; width:129px;}
+.search_class_list { width:743px; height:30px; background-color:#e9f9c3; border:1px solid #bbd186; color:#576c23; text-align:right; padding-right:15px;line-height:30px; margin-top:10px; }
+.search_class_list a{ color:#576c23; text-decoration:none; }
+.search_class_list a:hover{ color:#ff6600; }

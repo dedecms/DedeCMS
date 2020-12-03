@@ -1,9 +1,9 @@
 var MenuWidth = 120;
 var ItemHeight = 16;
 var ItemNumber = 0;
-//WebFXÓÒ¼ü²Ëµ¥³ÌĞò±»Ö¯ÃÎĞŞ¸ÄµÄÏîÎª:
-//Ôö¼ÓÁËÄ¬ÈÏ¿í¶ÈºÍ²Ëµ¥¸ß¶ÈµÄ¶¨Òå
-//ÕâÑù¿ÉÒÔĞŞÕıÔ­À´µÚÒ»´ÎÔØÈëÊ±ÏÔÊ¾²»ÕıÈ·µÄÇé¿ö
+//WebFXå³é”®èœå•ç¨‹åºè¢«ç»‡æ¢¦ä¿®æ”¹çš„é¡¹ä¸º:
+//å¢åŠ äº†é»˜è®¤å®½åº¦å’Œèœå•é«˜åº¦çš„å®šä¹‰
+//è¿™æ ·å¯ä»¥ä¿®æ­£åŸæ¥ç¬¬ä¸€æ¬¡è½½å…¥æ—¶æ˜¾ç¤ºä¸æ­£ç¡®çš„æƒ…å†µ
 ContextMenu.intializeContextMenu=function()
 {
 	document.body.insertAdjacentHTML("BeforeEnd", '<iframe src="#" scrolling="no" class="WebFX-ContextMenu" marginwidth="0" marginheight="0" frameborder="0" style="position:absolute;display:none;z-index:50000000;" id="WebFX_PopUp"></iframe>');
@@ -80,7 +80,7 @@ ContextMenu.fixPos=function(x,y)
 
 ContextMenu.fixSize=function()
 {
-	//Õâ¸ö·½·¨ÊÇ¶¯Ì¬µ÷ÕûIframeµÄ¿í¶ÈºÍ¸ß¶È£¬±»Ö¯ÃÎĞŞ¸Ä¹ı
+	//è¿™ä¸ªæ–¹æ³•æ˜¯åŠ¨æ€è°ƒæ•´Iframeçš„å®½åº¦å’Œé«˜åº¦ï¼Œè¢«ç»‡æ¢¦ä¿®æ”¹è¿‡
 	//var body;
 	//WebFX_PopUpcss.style.width = "120px";
 	//body = WebFX_PopUp.document.body; 

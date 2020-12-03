@@ -1,56 +1,70 @@
 {dede:page pagesize="50"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÆµµÀÄ£ĞÍ¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>é¢‘é“æ¨¡å‹ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr> 
-    <td height="19" colspan="7" background="img/tbg.gif">
-    	<table width='96%' cellpadding='0' cellspacing='0'>
-    		<tr>
-    		<td width='30%'><b>ÆµµÀÄ£ĞÍ¹ÜÀí</b></td>
-        <td align='right'>
-    	  [<a href="mychannel_add.php"><u>Ôö¼ÓĞÂÄ£ĞÍ</u></a>]
-        </td>
-      </tr>
-     </table>
-    </td>
+<body leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">é¢‘é“ç®¡ç†</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+		<tr>
+				<td bgcolor="#EDF9D5" class="tbtitletxt">
+				  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
+                  <tr>
+                    <td width='30%' class="tbtitletxt"><strong>é¢‘é“æ¨¡å‹ç®¡ç†</strong></td>
+                    <td align='right'>
+                    	[å›¾ç‰‡è¯´æ˜ï¼š
+                    	<img src='img/manage1.gif' alt='æ›´æ”¹' />æ›´æ”¹
+		                  <img src='img/file_del.gif' alt='åˆ é™¤' />åˆ é™¤
+                      <img src='img/copy.gif' alt='å¤åˆ¶' />å¤åˆ¶
+                      <img src='img/part-index.gif' alt='æ¨¡æ¿' />æ¨¡æ¿]
+                    	[<a href="mychannel_add.php"><u>å¢åŠ æ–°æ¨¡å‹</u></a>]
+                   </td>
+                  </tr>
+         </table>
+      </td>
   </tr>
-  <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="6%">IDºÅ</td>
-      <td width="18%">ÆµµÀÃû³Æ</td>
-      <td width="15%">Ê¶±ğID</td>
-      <td width="18%">¸½¼Ó±í</td>
-      <td width="12%">×´Ì¬</td>
-      <td width="9%">Ä£ĞÍ</td>
-      <td width="22%">¹ÜÀí</td>
-   </tr>
-   {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+</table>
+			
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+		<tr align="center">
+          <td class="tbsname">ID</td>
+		  <td class="tbsname">é¢‘é“åç§°</td>
+		  <td class="tbsname">è¯†åˆ«ID</td>
+		  <td class="tbsname">é™„åŠ è¡¨</td>
+		  <td class="tbsname">çŠ¶æ€</td>
+		  <td class="tbsname">æ¨¡å‹</td>
+		  <td class="tbsname">ç®¡ç†</td>
+  </tr>
+		   {dede:datalist}
+		  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>[field:ID/]</td>
-        <td>[field:typename/]</td>
+        <td><a href='[field:mancon/]?channelid=[field:ID/]'>[field:typename/]</a></td>
         <td>[field:nid/]</td>
         <td>[field:addtable function="str_replace('#@__',$GLOBALS{'cfg_dbprefix'},'@me')"/]</td>
         <td>[field:isshow function='GetSta(@me,$GLOBALS{"row"}{"ID"})'/]</td>
         <td>[field:issystem function='IsSystem(@me)'/]</td>
         <td>
-         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=edit'>¸ü¸Ä</a> | 
-         <a href='mychannel_field.php?ID=[field:ID/]'>×Ö¶Î</a> | 
-         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=gettemplets'>Ä£°å</a> | 
-		     <a href='mychannel_edit.php?ID=[field:ID/]&dopost=delete'>É¾³ı</a> | 
-		     
+         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=edit'><img src='img/manage1.gif' alt='æ›´æ”¹' /></a> | 
+		     <a href='mychannel_edit.php?ID=[field:ID/]&dopost=delete'><img src='img/file_del.gif' alt='åˆ é™¤' /></a> |  
+         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=copy'><img src='img/copy.gif' alt='å¤åˆ¶' /></a> | 
+         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=gettemplets'><img src='img/part-index.gif' alt='æ¨¡æ¿' /></a> 
 		    </td>
      </tr>
-		{/dede:datalist}
-     <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td colspan="7">{dede:pagelist listsize=6/}</td>
-     </tr>
-   </table>
-   </td>
-</tr>
+		   {/dede:datalist}
+</table>
+
+		
+<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+			<td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
+  </tr>
 </table>
 </body>
 </html>

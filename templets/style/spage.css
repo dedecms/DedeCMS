@@ -1,0 +1,198 @@
+@charset "utf-8";
+/*---------------SPAGE:评论,投票,友情链接*/
+.stop{
+	width:720px;
+	height:68px;
+	margin:0px auto;
+	background:url(../images/toplogo.gif) left 30px no-repeat;
+	border-bottom:2px solid #F90;
+}
+.stop .toptitle{
+	width:200px;
+	height:30px;
+	display:block;
+	float:left;
+	margin-top:35px;
+	line-height:30px;
+	padding-left:200px;
+	font-size:16px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+.stop .toplink{
+	text-align:right;
+	width:200px;
+	height:21px;
+	display:block;
+	float:right;
+	margin-top:41px;
+	line-height:21px;
+}
+.stop .toplink a{
+	color:#FF6600;
+	margin-right:10px;
+}
+
+
+.smain{
+	width:670px;
+	margin:20px auto;
+	overflow:hidden;
+	clear:both;
+}
+.smain .mtitle{
+	width:670px;
+	height:35px;
+	background:url(../images/soft_rlist_bg.gif) no-repeat;
+}
+.smain .mtitle .mtname{
+	font-size:14px;
+	letter-spacing:3px;
+	line-height:35px;
+	text-indent:16px;
+}
+.smain .mtitle .mtlink{
+	height:27px;
+	float:right;
+	text-align:right;
+	margin-top:-25px;
+	overflow:hidden;
+	letter-spacing:2px;
+	position:relative;
+}
+.smain .mtitle .mtlink span{
+	padding-right:10px;
+	color:#777;
+}
+.smain .mtitle .mtlink a{
+	display:block;
+	padding-left:10px;
+	padding-right:10px;
+	border-right:1px solid #DDD;
+	margin-right:-1px;
+	float:right;
+	color:#666666;
+}
+
+.mbox{
+	width:670px;
+	clear:both;
+	overflow:hidden;
+}
+.flbox ul{
+	width:660px;
+	margin:2px auto;
+}
+.flbox ul li{
+	width:165px;
+	float:left;
+	height:45px;
+	line-height:41px;
+	text-align:center;
+	border-bottom:1px dotted #F7F7F7;
+}
+
+.ptlink dl{
+	clear:both;
+	height:29px;
+	line-height:29px;
+	margin-top:13px;
+}
+.ptlink dl dt{
+	float:left;
+	display:block;
+	width:120px;
+	text-align:right;
+	font-size:14px;
+}
+.ptlink dl dd{
+	float:left;
+}
+.ptlink dl dd input{
+	height:13px;
+	font-size:12px;
+	padding:6px 0 6px 5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#808080 #D4D0C8 #D4D0C8 #808080;
+}
+.ptlink dl dd textarea{
+	font-size:12px;
+	padding:6px 0 6px 5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#808080 #D4D0C8 #D4D0C8 #808080;
+} 
+.ptlink dl dd img{
+	vertical-align:middle;
+}
+.ptlink dl dd input.gdcode{
+	width:52px;
+}
+.ptlink .lksubmit{
+	text-align:center;
+	margin-top:15px;
+	height:33px;
+	border-top:1px solid #EEE;
+	padding-top:15px;
+}
+.ptlink .lksubmit input{
+	width:200px;
+	height:29px;
+}
+
+
+.svote{
+	width:660px;
+	margin:10px auto;
+}
+.svote .vtinfo{
+	width:638px;
+	border:1px solid #DDD;
+	padding:10px;
+	background:#FAFAFA;
+}
+.svote .vtbox dl{
+	width:600px;
+	height:41px;
+	clear:both;
+	overflow:hidden;
+	margin:15px auto 0px;
+	border-bottom:1px dotted #EEE;
+}
+.svote .vtbox dl dt{
+	width:160px;
+	height:27px;
+	display:block;
+	float:left;
+	text-align:right;
+	line-height:27px;
+	font-size:14px;
+	font-weight:bold;
+	letter-spacing:2px;
+}
+.svote .vtbox dl dd{
+	display:block;
+	float:right;
+	width:420px;
+}
+.svote .vtbox dl dd span{
+	display:block;
+	height:23px;
+	line-height:23px;
+	text-indent:10px;
+	font-weight:bold;
+	border-bottom:1px solid #E0EFB1;
+	border-top:1px solid #E0EFB1;
+	background:url(../images/but_bg_sr.gif) repeat-x;
+}
+.mbox .cminfo {
+	width:638px;
+	border:1px solid #DDD;
+	padding:10px;
+	background:#FAFAFA;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}

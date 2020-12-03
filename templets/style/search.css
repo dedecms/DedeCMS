@@ -1,0 +1,133 @@
+@charset "utf-8";
+/*---------------评论*/
+/*---------------左侧*/
+.pleft{
+	width:670px;
+	float:left;
+	overflow:hidden;
+}
+/*---------------左侧:当前位置*/
+.thisplace{
+	width:670px;
+	height:31px;
+	background:url(../images/place_bg.jpg) repeat-x;
+
+}
+.thisplace .title{
+	display:block;
+	width:156px;
+	height:31px;
+	line-height:29px;
+	text-indent:22px;
+	letter-spacing:4px;
+	font-weight:bold;
+	background:url(../images/place_left.gif) right top no-repeat;
+	float:left;
+}
+.thisplace .placenav{
+	float:right;
+	margin-right:10px;
+	line-height:31px;
+}
+.thisplace .placenav a{
+	color:#666666;
+}
+
+
+/*---------------右侧*/
+.pright{
+	float:right;
+}
+/*-------------------------右侧:常规列表定义*/
+.rlist{
+	width:222px;
+}
+.rlist .title{
+	width:222px;
+	height:19px;
+	padding-top:9px;
+	background:url(../images/rlist_title_bg.gif) no-repeat;
+	text-indent:10px;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#555;
+}
+.rbox{
+	border:1px solid #DDD;
+	width:220px;
+	padding:5px 0px 7px 0px;
+}
+.rbox ul li{
+	height:27px;
+	line-height:27px;
+	background:url(../images/ico_4.gif) 12px 13px no-repeat;
+	text-indent:23px;
+}
+.rbox ul li a{
+	color:#039;
+}
+
+
+.rtags{
+	border:1px solid #DDD;
+	width:204px;
+	padding:5px 8px 7px 8px;
+}
+
+.rtags a{
+	margin:10px;
+	word-break:break-all;
+	line-height:24px;
+}
+
+
+/*---------------列表页:列表区域*/
+.newslist{
+	width:668px;
+	border:1px solid #DDD;
+	margin-top:10px;
+	padding-bottom:10px;
+	background:url(../images/place_bg.jpg) 1px 1px repeat-x;
+}
+.newslist dl{
+	width:650px;
+	margin:10px auto 0px;
+	display:block;
+	border-bottom:1px dotted #DDD;
+}
+.newslist dl dt{
+	width:638px;
+	margin:0px auto 0px;
+	background:url(../images/ico_2.gif) 3px 11px no-repeat;
+}	
+.newslist dl dt a{
+	color:#039;
+	line-height:27px;
+	font-size:14px;
+	font-weight:bold;
+	margin-left:20px;
+	letter-spacing:1px;
+}
+.newslist dl dd{
+	width:624px;
+	margin:0px auto 0px;
+}
+.newslist dl dd.preview{
+	line-height:19px;
+	color:#777;
+	text-indent:14px;
+}
+.newslist dl dd.info{
+	line-height:31px;
+	color:#999;
+}
+.newslist dl dd.info span{
+	color:#F60;
+	margin-right:20px;
+}
+.newslist dl dd.info a{
+	color:#039;
+	float:right;
+	position:relative;
+	margin:-30px 5px 0px 0px;
+}

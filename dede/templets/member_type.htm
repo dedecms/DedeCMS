@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>会员类型管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <form name="form1" action="member_type.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+    <tr> 
+      <td height="24" colspan="5" bgcolor="#EDF9D5"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="30%"> <strong><a href="co_main.php"><u>会员管理</u></a> &gt; 
+              会员产品分类：</strong> </td>
+            <td align="right"> <input type="button" name="ss1" value="会员级别管理" style="width:90px;margin-right:6px" onClick="location='member_rank.php';" class='inputbut'> 
+              <input type="button" name="ss2" value="会员业务记录" style="width:90px" onClick="location='member_operations.php';" class='inputbut'> 
+            </td>
+          </tr>
+        </table> </td>
+    </tr>
+    <tr bgcolor="#FDFEE9"> 
+      <td width="22%" height="24" align="center" valign="top">产品名称</td>
+      <td width="23%" align="center" valign="top">会员级别</td>
+      <td width="21%" align="center">产品价格</td>
+      <td width="18%" align="center">会员期限(天)</td>
+      <td width="16%" align="center">状态</td>
+    </tr>
+    <?php 
+	$dsql->SetQuery("Select * From #@__member_type");
+	$dsql->Execute();
+	$k=0;
+	while($row = $dsql->GetObject())
+	{
+	  $k++;
+	?>
+    <input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->aid?>">
+    <tr align="center" bgcolor="#FFFFFF"> 
+      <td height="24" valign="top"> <input name="pname_<?php echo $k?>" value="<?php echo $row->pname?>" type="text" id="pname_<?php echo $k?>" style="width:90%"> 
+      </td>
+      <td height="24" valign="top"> <select name='rank_<?php echo $k?>' id='rank_<?php echo $k?>' style='width:90%'>
+          <?php 
+	   	foreach($arcranks as $kkk=>$vvv){
+	   		if($row->rank==$kkk) echo "    <option value='{$kkk}' selected>{$vvv}</option>\r\n";
+	   		else echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
+	   	} 
+	   	?>
+        </select> </td>
+      <td> <input name="money_<?php echo $k?>" value="<?php echo $row->money?>" type="text" id="money_<?php echo $k?>" style="width:80%">
+        (元) </td>
+      <td> <select name='exptime_<?php echo $k?>' id='exptime_<?php echo $k?>' style='width:90%'>
+          <?php 
+	   	foreach($times as $kkk=>$vvv){
+	   		if($row->exptime==$kkk) echo "    <option value='{$kkk}' selected>{$vvv}</option>\r\n";
+	   		else echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
+	   	} 
+	   	?>
+        </select> </td>
+      <td> <input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>"  value="1" checked>
+        保留 </td>
+    </tr>
+    <?php 
+	}
+	?>
+    <input type="hidden" name="idend" value="<?php echo $k?>">
+    <tr bgcolor="#F8FCF1"> 
+      <td height="24" colspan="5" valign="top"><strong>新增一个会员产品类型：</strong></td>
+    </tr>
+    <tr height="24" align="center" bgcolor="#FFFFFF"> 
+      <td valign="top"> <input name="pname_new" type="text" id="pname_new" style="width:90%"> 
+      </td>
+      <td valign="top"> <select name='rank_new' id='rank_new' style='width:90%'>
+          <?php 
+	   	foreach($arcranks as $kkk=>$vvv){
+	   		echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
+	   	} 
+	   	?>
+        </select> </td>
+      <td valign="top"> <input name="money_new" type="text" id="money_new" style='width:80%' value="100">
+        (元) </td>
+      <td valign="top"> <select name='exptime_new' id='exptime_new' style='width:90%'>
+          <?php 
+	   	foreach($times as $kkk=>$vvv){
+	   		echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
+	   	} 
+	   	?>
+        </select> </td>
+      <td align="center" bgcolor="#FFFFFF"> <input name="check_new" type="checkbox"  id="check_new" value="1" checked>
+        新增 </td>
+    </tr>
+    <tr> 
+      <td height="24" colspan="5" bgcolor="#F8FCF1">&nbsp;</td>
+    </tr>
+    <tr> 
+      <td height="34" colspan="5" align="center" bgcolor="#FFFFFF"> <input name="imageField"  type="submit" class="inputbut" value="确定"> 
+      </td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

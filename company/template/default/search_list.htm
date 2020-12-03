@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>搜索企业</title>
+<link href="template/default/css/style.css" rel="stylesheet" type="text/css" />
+<script language="javascript"><?php if(isset($sectorcache)){echo $sectorcache;} if(isset($areacache)){ echo $areacache;} ?></script>
+<script language='javascript' src='../include/common.js'></script>
+</head>
+
+<body>
+<div id="container">
+<!-- 头部开始 -->
+	<div id="search_header">
+   	  <div id="centertext">
+        	<div class="search_logo">
+            </div>
+            <div class="search_top">
+          		<div class="search_menu">
+           			<ul>
+					<li class="one"><a href="../">网站首页</a></li>
+<?php
+	if(!empty($cfg_ml->M_ID)){
+?>
+			  		<li class="one"><a target="_blank" href="../member/control.php">控制面板</a></li>
+					<li class="one"><a target="_blank" href="../member/index.php?id=<?php echo $cfg_ml->M_ID;?>">企业网站</a></li>
+<?php
+	}else{
+
+?>
+			  		<li class="one"><a href="../member/login.php">登录管理</a></li>
+					<li class="one"><a href="../member/index_do.php?fmdo=user&dopost=regnew">加入企业库</a></li>
+<?php
+}
+?>
+					<li class="two"><a href="http://bbs.dedecms.com">织梦论坛</a></li>
+					</ul>
+          		</div>
+            </div>
+            <div class="clear">
+            </div>
+      </div>
+    </div>
+
+    <!-- 搜索开始 -->
+
+    <div id="company_search">
+    	<div id="search_middle">
+        	<div class="serach_top_titlebg">
+            </div>
+            <div class="search_font">输入企业名称、行业、产品、服务、地址或企业类型进行搜索
+            </div>
+            <div class="search_form_bar">
+            	<div class="search_img"></div>
+            	 <form name="form2" action="search.php" method="post">
+                <div class="search_inputform"><input name="comname" type="text" class="search_input" /></div>
+                <div class="clear"></div>
+            </div>
+            <div class="search_select">
+            	<div class="search_select_text">
+            		<div class="search_select_form">
+
+<select name="areaid" id="areaid" onChange="javascript:selNext(this.document.form2.areaid2,this.value,'subareas')">
+<option value="0">--不限--</option>
+<?php
+$dsql->SetQuery("Select * From #@__area where reid=0");
+$dsql->Execute();
+while($area = $dsql->GetArray())
+{
+	echo "<option value='".$area['id']."'>".$area['name']."</option>\r\n";
+}
+?>
+</select>
+</div>
+            		<div class="search_select_form">
+<select name="areaid2" id="areaid2">
+<option value="0">--不限--</option>
+</select>
+                	</div>
+            	</div>
+                <div class="search_button">
+                	<div><input type="submit" name="Submit2" value="" class="search_button_img" />
+                    </div>
+                    </form>
+                </div>
+            	<div class="clear"></div>
+			</div>
+            <div class="search_bottom">
+            	<div class="search_bottom_title"><a href="../">首页</a> 》 <a href="./">公司库首页</a> 》 搜索公司</a>
+                </div>
+                <div class="clear">
+          		</div>
+            </div>
+<?php
+if($subsectors){
+	?>
+            <div class="search_bottom_text">
+            	<dl>
+                <dt>按类目选择</dt>
+<?php
+foreach($subsectors as $subsector){
+	echo "<dd><a href=\"search.php?sectorid2=$subsector[id]\">$subsector[name]</a></dd>\n";
+}
+?>
+                </dl>
+                <div class="clear">
+                </div>
+<?php
+}
+?>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+    </div>
+
+    <!-- 中间开始 -->
+    <div id="search_main">
+   	  <div id="search_list_middle">
+      	<div class="search_list_title">
+                <ul>
+                  <li>企业名称</li>
+                </ul>
+        </div>
+        <div class="search_list_title1">注册时间
+        </div>
+        <div class="search_list_title1">注册地
+        </div>
+
+<?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+	$row['areaidname'] = $areas[$row['areaid']];
+	$row['areaid2name'] = $areas[$row['areaid2']];
+	$row['sectoridname'] = $allsectors[$row['typeid1']];
+	$row['sectorid2name'] = $allsectors[$row['typeid2']];
+?>
+
+        <div class="search_list_main">
+        	<div class="search_list_text">
+        		<dl>
+            	<dt><a href="../member/index.php?id=<?php echo $row['id'];?>"><?php echo $row['comname'];?></a></dt>
+            	<dd><?php echo $row['service'].'<br>'.$row['comaddr'];?></dd>
+            	</dl>
+        	</div>
+        	<div class="search_list_text1"><?php echo $row['regyear'];?>
+            </div>
+        	<div class="search_list_text1"><?php echo $row['areaidname'].' - '.$row['areaid2name'];?>
+        	</div>
+            <div class="clear">
+        	</div>
+        </div>
+<?php
+}
+?>
+
+
+      </div>
+    </div>
+
+    <div class="search_class_list"><?php echo $dlist->GetPageList(7);?>
+    </div>
+
+
+    <!-- 底部footer -->
+    <div id="footer">
+    	<div class="footer_bar">
+        </div>
+        <div class="footer_main">
+        	<div class="footer_text">Power by DedeCms Copyright &copy; 2007-2008</div>
+            <div class="footer_logo"></div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

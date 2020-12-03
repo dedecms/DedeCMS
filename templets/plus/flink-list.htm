@@ -1,95 +1,131 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ËùÓĞÁ´½Ó</title>
-<link href="../base.css" rel="stylesheet" type="text/css">
-<style type="text/css">
-<!--
-.style2 {
-	color: #CC0000;
-	font-size: 11pt;
-}
--->
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>å‹æƒ…é“¾æ¥</title>
+<link href="../templets/style/nspage.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-<table width="650" border="0" align="center" cellspacing="2">
-  <tr> 
-    <td><img src="img/flink.gif" width="320" height="46"></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCC99" height="6"></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#DEEFE2">
-    	 ÓÑÇéÁ´½Ó£º
-    	 <a href='/'>[·µ»ØÖ÷Ò³]</a>
-    	 <a href='flink-add.php'>[ÉêÇëÁ´½Ó]</a> 
-    </td>
-  </tr>
-  <tr> 
-    <td>
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td height="3"></td>
-        </tr>
-        <tr> 
-          <td height="100" align="center" valign="top">
-		  <?php 
-		  $row = 180;
-		  $col = 6;
-		  $titlelen = 50;
-		  $tdwidth = (100/6)."%";
-		  $dsql->SetQuery("Select * from #@__flink where ischeck>0 order by sortrank asc");
-		  $dsql->Execute();
-		$revalue = "<table width='100%' border='0' cellspacing='1' cellpadding='1' bgcolor='#F5F5F5'>\r\n";
-		for($i=1;$i<=$row;$i++)
-		{
-			$revalue.="<tr bgcolor='#FFFFFF' height='20'>\r\n";
-			for($j=1;$j<=$col;$j++)
-			{
-				if($dbrow=$dsql->GetObject())
-				{
-					$wtitle = cn_substr($dbrow->webname,$titlelen);
-					if($dbrow->logo=="")
-						$link = " <a href='".$dbrow->url."' target='_blank'>$wtitle</a>";
-					else
-						$link = " <a href='".$dbrow->url."' target='_blank'><img src='".$dbrow->logo."' width='88' height='31' border='0' alt='$wtitle'></a>";
-					$revalue.="<td width='$tdwidth'>$link</td>\r\n";
-				}
-				else
-				{
-					$revalue.="<td></td>\r\n";
-				}
-			}
-			$revalue.="</tr>\r\n";
-			if(!$dbrow) break;
+
+<?php
+	$titlelen = 50;
+	$dsql = new DedeSql(false);
+	$dsql->SetQuery("Select * from #@__flink where ischeck>0 order by sortrank asc");
+	$dsql->Execute();
+	$txtlink ="";
+	$imglink ="";
+	$linkdata = "";
+	while($dbrow=$dsql->GetObject())
+	{
+		$wtitle = cn_substr($dbrow->webname,$titlelen);
+		
+		if($dbrow->logo==""){
+			$txtlink .= "<a href='".$dbrow->url."' target='_blank'>$wtitle</a>\n\t\t\t\t\t";
+		}else{
+			$imglink .= "<a href='".$dbrow->url."' target='_blank'><img src='".$dbrow->logo."' width='88' height='31' border='0' alt='$wtitle'></a>\n\t\t\t\t\t";
 		}
-		$revalue .= "</table>";
-		echo  $revalue;
-		$dsql->Close();
-		  ?>
-			</td>
-        </tr>
-        <tr> 
-          <td height="3"></td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCC99" height="6"></td>
-  </tr>
-  <tr> 
-    <td align="center" height="30">
-    <a href="http://www.dedecms.com" target="_blank">Power by DedeCms Ö¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³</a>
-    </td>
-  </tr>
-</table>
-	</td>
-  </tr>
-  <tr>
-    <td height="20"> </td>
-  </tr>
-</table>
+	}
+	$dsql->Close();
+
+	if($dopost=="save"){
+	  ShowMsg("æˆåŠŸå¢åŠ ä¸€ä¸ªé“¾æ¥ï¼Œä½†éœ€è¦å®¡æ ¸åæ‰èƒ½æ˜¾ç¤º!","",1);
+	}
+?>
+<body>
+
+<div class="main mceneter">
+	<div class="toplogo">
+		<div class="logo">
+				<a href="/"><img src="../templets/images/toplogo.gif" /></a>		</div>
+		<div class="title">
+			å‹æƒ…é“¾æ¥
+		</div>
+	</div>
+	<div class="cmain">
+		<div class="ctitle">
+			<h1>æ‰€æœ‰é“¾æ¥</h1>
+			<span></span>
+		</div>
+		<div class="cbox mceneter">
+			<div class="linklist">
+				
+				<div class="txtlink">
+					<?php echo $txtlink; ?>
+				
+				</div>
+				<div class="imglink">
+					<?php echo $imglink; ?>
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="ctitle">
+			<h1>ç”³è¯·åŠ å…¥</h1>
+			<span></span>
+		</div>
+		<div class="cbox mceneter">
+			<div class="linkadd">
+			<form name="addlink" method="post" action="flink.php">
+			<input type='hidden' name='dopost' value='save' />
+				<dl>
+					<dt>ç½‘ç«™å:</dt>
+					<dd><input name="webname" type="text" size="30" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>ç½‘å€:</dt>
+					<dd><input name="url" type="text" size="30" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>ç½‘ç«™LOGO:</dt>
+					<dd><input name="logo" type="text" size="30" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>ç«™é•¿eMail:</dt>
+					<dd><input name="email" type="text" size="30" />
+					</dd>
+				</dl>
+				<dl>
+					<dt>ç½‘ç«™ç±»å‹:</dt>
+					<dd>
+						<select name="typeid" id="typeid">
+							<?php 
+								$dsql = new DedeSql(false);
+								$dsql->SetQuery("select * from #@__flinktype");
+								$dsql->Execute();
+								while($row=$dsql->GetObject())
+								{
+								echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
+								}
+								$dsql->Close();
+							?>
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>ç½‘ç«™æ¦‚å†µ:</dt>
+					<dd><textarea name="msg" cols="30" rows="3"></textarea>
+					</dd>
+				</dl>
+				<dl>
+					<dt>éªŒè¯ç :</dt>
+					<dd><input name="validate" type="text" size="4" /><img src="../include/vdimgck.php" width="50" height="20" />
+					</dd>
+				</dl>
+				<div class="submit">
+					<input name="æäº¤" type="submit" id="æäº¤" value="æäº¤" class="button" />
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="copyright mceneter">
+Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+</div>
+
+
 </body>
 </html>

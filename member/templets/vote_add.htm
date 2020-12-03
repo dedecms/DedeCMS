@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>发布作品</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">	
+<link href="company_style.css" rel="stylesheet" type="text/css">
+<script language='javascript' src='main.js'></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+  if(document.form1.title.value==""){
+	 alert("作品名称不能为空！");
+	 document.form1.title.focus();
+	 return false;
+  }
+  if(document.form1.upload.value==""){
+	 alert("作品名称附件必须上传！");
+	 document.form1.upload.focus();
+	 return false;
+  }
+  if(document.form1.bigpic.value==""){
+	 alert("作品预览图不能为空！");
+	 document.form1.bigpic.focus();
+	 return false;
+  }
+  if(document.form1.vdcode.value==""){
+     document.form1.vdcode.focus();
+     alert("验证码不能为空！");
+     return false;
+  }
+}
+-->
+</script>
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:8px">
+        <tr> 
+            <td background="img/nnnbg.gif" height="25" class="gdt2"> <font color="#333333"> 
+              <strong>　&nbsp;上传作品：</strong></font> </td>
+        </tr>
+        <tr>
+		<form name="form1" action="vote_add_action.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
+          <td height="183" valign="top" style="padding-top:3px">
+		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
+                  <tr> 
+                    <td width="19%" height="28" align="center" bgcolor="#FFFFFF">作品名称：</td>
+                    <td width="81%" bgcolor="#FFFFFF"> <input name="title" type="text" id="title" size="30" class="nb"> 
+                      <font color="#FF0000">*</font> 发布人： 
+                      <input name="writer" type="text" id="writer" size="15" class="nb" value="<?php echo $cfg_ml->M_UserName?>"></td>
+                  </tr>
+                  <tr bgcolor="#F7FDF0"> 
+                    <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
+                    <td bgcolor="#F7FDF0"> <table width="200" border="0" cellspacing="0" cellpadding="0">
+                        <tr> 
+                          <td width="84"><input name="vdcode" type="text" id="vdcode2" size="10"></td>
+                          <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                        </tr>
+                      </table></td>
+                  </tr>
+                  <tr bgcolor="#F7FDF0">
+                  <td height="28" align="center" bgcolor="#FFFFFF">隶属栏目：</td>
+                  <td colspan="3" bgcolor="#FFFFFF"><?php 
+           	 $selname = '请选择...';
+           	 $delv = '0';
+           	 if(!empty($cid)){
+           	 	 $crow = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
+           	 	 $selname = $crow['typename'];
+           	 	 $selv = $crow['ID'];
+           	 }
+           	 echo GetTypeidSelMember('form1','typeid','selbt1',15,$selv,$selname,false);
+			       ?></td>
+                </tr>
+                  <tr bgcolor="#FFFFFF"> 
+                    <td height="60" align="center">作品简介：</td>
+                    <td  bgcolor="#FFFFFF"> <textarea name="description" id="description" style="width:80%;height:50"></textarea> 
+                    </td>
+                  </tr>
+                  <tr> 
+                    <td rowspan="2" align="center" bgcolor="#FFFFFF">作品附件：</td>
+                    <td height="28" bgcolor="#FFFFFF">作品附件仅官方人员和作者本身可以查看。</td>
+                  </tr>
+                  <tr> 
+                    <td height="28" bgcolor="#FFFFFF"><input type='text' name='upload' id='upload' style='width:300'> 
+                      <input name='upload_bt' type='button' value='浏览...' onClick="SelectSoft('form1.upload')"></td>
+                  </tr>
+                  <tr> 
+                    <td rowspan="2" align="center" bgcolor="#FFFFFF">作品预览图：</td>
+                    <td height="28" bgcolor="#FFFFFF">图片宽度必须为800像素，请自行处理，这将直接影响用户对你作品的评价。</td>
+                  </tr>
+                  <tr> 
+                    <td height="28" bgcolor="#FFFFFF"><input type='text' name='bigpic' id='bigpic' style='width:300'> 
+                      <input name='bigpic_bt' type='button' value='浏览...' onClick="SelectImage('form1.bigpic','big')"></td>
+                  </tr>
+                  <tr> 
+                    <td rowspan="2" align="center" bgcolor="#FFFFFF">缩略图：</td>
+                    <td height="28" bgcolor="#FFFFFF">请使用比例为4:3大于200 x 150像素的图片</td>
+                  </tr>
+                  <tr> 
+                    <td height="28" bgcolor="#FFFFFF"> <input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));"></td>
+                  </tr>
+                  <tr id="picarea" style="display:none"> 
+                    <td colspan="2" align="center" bgcolor="#FFFFFF"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr> 
+                          <td width="18%" height="110">&nbsp;</td>
+                          <td width="82%"><img src="img/pview.gif" id="picview" width="150" height="120"></td>
+                        </tr>
+                      </table></td>
+                  </tr>
+                </table>
+                <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+                  <tr bgcolor="#F7FDF0"> 
+                    <td width="400%" height="45" colspan="4" align="center" bgcolor="#F0FBE3"> 
+                      <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
+                      &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();"> 
+                    </td>
+                  </tr>
+                </table></td>
+			</form>
+        </tr>
+        <tr> 
+          <td height="10"></td>
+        </tr>
+      </table> </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

@@ -1,57 +1,64 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>¹ÜÀíÔ±ÕÊºÅ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>ç®¡ç†å‘˜å¸å·</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">ç³»ç»Ÿå¸å·ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr> 
-    <td height="27" colspan="5" background="img/tbg.gif" bgcolor="#E7E7E7">
-    	<table width="96%" border="0" cellspacing="1" cellpadding="1">
+    <td height="27" colspan="5" bgcolor="#EDF9D5">
+   	  <table width="96%" border="0" cellspacing="1" cellpadding="1">
         <tr> 
-          <td width="24%"><b>¹ÜÀíÔ±ÕÊºÅ</b> </td>
+          <td width="24%"><b>&nbsp;ç®¡ç†å‘˜å¸å·</b> </td>
           <td width="76%" align="right"><b>
-          	<a href="sys_admin_user_add.php"><u>Ôö¼Ó¹ÜÀíÔ±</u></a>
+          	<a href="sys_admin_user_add.php"><u>å¢åŠ ç®¡ç†å‘˜</u></a>
           	|
-          	<a href="sys_group.php"><u>ÓÃ»§×é¹ÜÀí</u></a>
+          	<a href="sys_group.php"><u>ç”¨æˆ·ç»„ç®¡ç†</u></a>
           	</b>
           </td>
         </tr>
       </table>
-     </td>
+    </td>
   </tr>
   <tr bgcolor="#FFFFFF"> 
-    <td height="24" colspan="5">¡¡¡ìÎªÁË·ÀÖ¹´íÎó²Ù×÷£¬ÏµÍ³²»ÔÊĞíÔÚ¹ÜÀí½çÃæÉ¾³ı³¬¼¶¹ÜÀíÔ±£¬Èç¹ûÈ·ÊµÒªÉ¾³ı£¬Çë×ÔĞĞÔÚÊı¾İ±ídede_adminÖĞÉ¾³ı¡£</td>
+    <td height="24" colspan="5">ã€€Â§ä¸ºäº†é˜²æ­¢é”™è¯¯æ“ä½œï¼Œç³»ç»Ÿä¸å…è®¸åœ¨ç®¡ç†ç•Œé¢åˆ é™¤è¶…çº§ç®¡ç†å‘˜ï¼Œå¦‚æœç¡®å®è¦åˆ é™¤ï¼Œè¯·è‡ªè¡Œåœ¨æ•°æ®è¡¨dede_adminä¸­åˆ é™¤ã€‚</td>
   </tr>
   <tr bgcolor="#ECF8FF"> 
-    <td width="18%" height="24" align="center" bgcolor="#ECF8FF">µÇÂ¼ID</td>
-    <td width="13%" align="center" bgcolor="#ECF8FF">±ÊÃû</td>
-    <td width="22%" align="center" bgcolor="#ECF8FF">¼¶±ğ</td>
-    <td width="22%" align="center" bgcolor="#ECF8FF">ÆµµÀ</td>
-    <td width="23%" align="center" bgcolor="#ECF8FF">¹ÜÀíÏî</td>
+    <td width="14%" height="24" align="center" bgcolor="#EEF5D3">ç™»å½•ID</td>
+    <td width="12%" align="center" bgcolor="#EEF5D3">ç¬”å</td>
+    <td width="16%" align="center" bgcolor="#EEF5D3">çº§åˆ«</td>
+    <td width="16%" align="center" bgcolor="#EEF5D3">é¢‘é“</td>
+    <td align="center" bgcolor="#EEF5D3">ç®¡ç†é¡¹</td>
   </tr>
   {dede:datalist} 
   <tr bgcolor="#FFFFFF" align="center"> 
     <td rowspan="2">[field:userid /]</td>
     <td rowspan="2">[field:uname /]<br> </td>
     <td>[field:usertype function="GetUserType('@me')"/]</td>
-    <td>[field:typename function="GetChannel('@me')"/]</td>
+    <td>è¯·æŸ¥çœ‹è¯¦ç»†</td>
     <td rowspan="2">
-	   <a href='sys_admin_user_edit.php?ID=[field:ID/]&dopost=edit'><u>¸ü¸Ä</u></a> | 
-     <a href='sys_admin_user_edit.php?ID=[field:ID/]&userid=[field:userid/]&dopost=delete'><u>É¾³ı</u></a> |
-     <a href='content_list.php?adminid=[field:ID/]'><u>ÎÄµµ</u></a>¡¡
+	   <a href='sys_admin_user_edit.php?ID=[field:ID/]&dopost=edit'><u>æ›´æ”¹</u></a> | 
+     <a href='sys_admin_user_edit.php?ID=[field:ID/]&userid=[field:userid/]&dopost=delete'><u>åˆ é™¤</u></a> |
+     <a href='content_list.php?adminid=[field:ID/]'><u>æ–‡æ¡£</u></a> |
+     <a href='sys_admin_user_tj.php?ID=[field:ID/]'><u>è¯¦ç»†ç»Ÿè®¡</u></a>ã€€ã€€
     </td>
   </tr>
   <tr> 
   <td colspan="2" align="center" bgcolor="#FFFFFF">
-	µÇÂ¼Ê±¼ä£º[field:logintime /]¡¡µÇÂ¼IP£º[field:loginip/]
+	ç™»å½•æ—¶é—´ï¼š[field:logintime /]
+	IPï¼š[field:loginip /]
 	</td>
   </tr>
   {/dede:datalist} 
   <tr bgcolor="#ECF8FF"> 
-    <td height="24" colspan="5" align="center" valign="top">
+    <td height="30" colspan="5" align="center" valign="top" bgcolor="#EEF5D3">
     	{dede:pagelist listsize='7' /}
     </td>
   </tr>

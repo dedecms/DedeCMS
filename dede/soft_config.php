@@ -2,106 +2,28 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_SoftConfig');
 if(empty($dopost)) $dopost = "";
-//±£´æ
+//ä¿å­˜
 $dsql = new DedeSql(false);
+$upok = '';
 if($dopost=="save")
 {
-   $query = "UPDATE `#@__softconfig` SET downtype = '$downtype' , 
+   $query = "UPDATE `#@__softconfig` SET downtype = '$downtype' , showlocal = '$showlocal', 
    gotojump='$gotojump' , ismoresite = '$ismoresite',sites = '$sites'";
    $dsql->SetQuery($query);
    $dsql->ExecuteNoneQuery();
+   $upok = "<font color='red'>æˆåŠŸä¿å­˜æ›´æ”¹ï¼</font>";
 }
-//¶ÁÈ¡²ÎÊı
+//è¯»å–å‚æ•°
 $row = $dsql->GetOne("select * From #@__softconfig");
 if(!is_array($row)){
-	$dsql->ExecuteNoneQuery("INSERT INTO `#@__softconfig` ( `downtype` , `ismoresite` , `gotojump` , `sites` ) VALUES ('0', '0', '0', '');");
+	$dsql->ExecuteNoneQuery("INSERT INTO `#@__softconfig` ( `downtype` , `ismoresite` ,`showlocal` , `gotojump` , `sites` ) VALUES ('0', '0','0' , '0', '');");
 	$row['downtype']=1;
 	$row['ismoresite']=0;
 	$row['sites']="";
 	$row['gotojump']=0;
 }
-$dsql->Close();
+
+require_once(dirname(__FILE__)."/templets/soft_config.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÎÄÕÂÀ´Ô´¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-<script language="JavaScript">
-function AddServer()
-{
-   if(document.form1.serverurl.value==""||document.form1.serverurl.value=="http://"){ alert('·şÎñÆ÷ÍøÖ·²»ÄÜÎª¿Õ£¡'); return ;}
-   if(document.form1.servername.value==""){ alert('·şÎñÆ÷Ãû³Æ²»ÄÜÎª¿Õ£¡'); return ;}
-   document.form1.sites.value += document.form1.serverurl.value+" | "+document.form1.servername.value+"\r\n";
-}
-</script>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
-  <form name="form1" action="soft_config.php" method="post">
-    <input type="hidden" name="dopost" value="save">
-    <tr> 
-      <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="30%" height="18"><strong>Èí¼şÆµµÀÉèÖÃ£º</strong></td>
-            <td width="70%" align="right">&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td width="125" valign="top" bgcolor="#FFFFFF">Á´½ÓÏÔÊ¾·½Ê½£º</td>
-      <td width="827" valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="downtype" class="np" value="0"<?php if($row['downtype']==0) echo " checked";?>>
-        Ö±½ÓÏÔÊ¾µØÖ·ÁĞ±í 
-        <input name="downtype" type="radio" value="1" class="np"<?php if($row['downtype']==1) echo " checked";?>>
-        ÒªÇó½øÈëÏÂÔØµØÖ·ÁĞ±íÒ³
-       </td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#FFFFFF">¸½¼şÏÂÔØ·½Ê½£º</td>
-      <td valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="gotojump" class="np" value="0"<?php if($row['gotojump']==0) echo " checked";?>>
-        Á´½Óµ½ÕæÊµÈí¼şµØÖ· 
-        <input name="gotojump" type="radio" class="np" value="1"<?php if($row['gotojump']==1) echo " checked";?>>
-        Á´½Óµ½Ìø×ªÒ³Ãæ
-       </td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#FFFFFF">ÊÇ·ñÆôÓÃ¾µÏñÕ¾µã£º</td>
-      <td valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="ismoresite" class="np" value="1"<?php if($row['ismoresite']==1) echo " checked";?>>
-        ÆôÓÃ 
-        <input name="ismoresite" type="radio" class="np" value="0"<?php if($row['ismoresite']==0) echo " checked";?>>
-        ²»ÆôÓÃ
-       </td>
-    </tr>
-    <tr bgcolor="#FFFFFF"> 
-      <td colspan="2" valign="top">
-      	Èç¹ûÆôÓÃÁË·şÎñÆ÷¾µÏñ¹¦ÄÜ£¬Ôö¼ÓÏÂÔØµØÖ·Ê±£¬Ö»ĞèÒªÌîĞ´±¾µØÁ´½ÓµÄµØÖ·£¬ÏµÍ³»á×Ô¶¯Éú³É¾µÏñ·şÎñÆ÷µÄµØÖ·¡£
-      </td>
-    </tr>
-    <tr bgcolor="#F1FCEF"> 
-      <td colspan="2" valign="top">
-      	¾µÏñ·şÎñÆ÷ÁĞ±í£º
-      </td>
-    </tr>
-    <tr> 
-      <td colspan="2" valign="top" bgcolor="#FFFFFF">·şÎñÆ÷ÍøÖ·£º 
-        <input name="serverurl" type="text" id="serverurl" value="http://">
-        ·şÎñÆ÷Ãû³Æ£º 
-        <input name="servername" type="text" id="servername">
-		<input type="button" name="Submit" value="Ôö¼ÓÒ»Ïî" onClick="AddServer()" class='nbt'>
-	  </td>
-    </tr>
-    <tr> 
-      <td height="62" colspan="2" bgcolor="#FFFFFF"> <textarea name="sites" id="sites" style="width:100%;height:300"><?php echo $row['sites']?></textarea> 
-      </td>
-    </tr>
-    <tr> 
-      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center"> <input type="submit" name="Submit" value="±£´æÊı¾İ"> 
-      </td>
-    </tr>
-  </form>
-</table>
-</body>
-</html>

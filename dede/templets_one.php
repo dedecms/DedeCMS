@@ -7,8 +7,8 @@ setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 
 function GetIsMake($im)
 {
-	if($im==1) return "Ðè±àÒë";
-	else  return "²»±àÒë";
+	if($im==1) return "éœ€ç¼–è¯‘";
+	else  return "ä¸ç¼–è¯‘";
 }
 
 $sql = "Select aid,title,ismake,uptime,filename From #@__sgpage order by aid desc";
@@ -19,4 +19,6 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/templets_one.htm");
 $dlist->display();
 $dlist->Close();
+
+ClearAllLink();
 ?>

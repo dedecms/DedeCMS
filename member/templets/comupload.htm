@@ -1,0 +1,122 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>附件数据管理</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
+<style>
+.napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
+</style>
+<script>
+function $DE(eid){ return document.getElementById(eid); }
+function ChangeImage(surl){ $DE('picview').src = surl; }
+	//获得选中文件的文件名
+function getCheckboxItem(){
+	 var allSel="";
+	 if(document.form1.aids.value) return document.form1.aids.value;
+	 for(i=0;i<document.form1.aids.length;i++)
+	 {
+		 if(document.form1.aids[i].checked){
+			 if(allSel=="")
+				 allSel=document.form1.aids[i].value;
+			 else
+				 allSel=allSel+","+document.form1.aids[i].value;
+		 }
+	 }
+	 return allSel;
+}
+
+function AllSel(){
+	for(i=0;i<document.form1.aids.length;i++){
+		document.form1.aids[i].checked = true;
+	}
+}
+
+function NoneSel(){
+	for(i=0;i<document.form1.aids.length;i++){
+		document.form1.aids[i].checked = false;
+	}
+}
+
+function DelSel(){
+	 var nid = getCheckboxItem();
+	 if(nid==""){
+		  alert("请选择项目!\r\n");
+		  return ;
+	 }
+	 location.href = "archives_do.php?dopost=delUploads&ids="+nid;
+}
+</script>
+</head>
+<body leftmargin='0' topmargin='0'>
+<div align="center">
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="160" height="216" valign="top">
+      <?php include(dirname(__FILE__)."/commenu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  align="top" valign="top">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px;margin-top:10px">
+        <tr align="right" bgcolor="#ffffff">
+          <div class="manage_company_right_title">
+                	<ul><li>附件数据管理：</li></ul>
+                </div>
+        </tr>
+		</table>
+		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D9EDC0">
+
+        <tr bgcolor="#F9FCEF" height="24" align="center">
+          <td width="8%">选择</td>
+          <td width="28%">文件标题</td>
+          <td width="10%">文件大小</td>
+          <td width="15%">上传时间</td>
+          <td width="9%">文件类型</td>
+          <td width="15%">管理</td>
+        </tr>
+        <form name='form1'>
+          <?php
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+          <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+            <td> <input type='checkbox' name='aids' id='aids<?php echo $row['aid']?>' value='<?php echo $row['aid']?>' class='np'/>
+            </td>
+            <td>
+			<a href='<?php echo $row['url']?>' target='_blank'><?php echo GetImageView($row['url'],$row['mediatype'])?><u><?php echo $row['title']?></u></a>
+			</td>
+            <td>
+              <?php echo GetFileSize($row['filesize'])?>
+            </td>
+            <td>
+              <?php echo strftime("%y-%m-%d %H:%M",$row['uptime'])?>
+            </td>
+            <td>
+              <?php echo MediaType($row['mediatype'],$row['url'])?>
+            </td>
+            <td> <a href='comupload_edit.php?aid=<?php echo $row['aid']?>&dopost=edit'>更改</a>
+              | <a href='archives_do.php?dopost=delUploads&aid=<?php echo $row['aid']?>'>删除</a>
+            </td>
+          </tr>
+          <?php
+	}
+		?>
+          <tr bgcolor="#F9FCEF" height="30">
+            <td colspan="6" bgcolor="#F9FCEF" height="30"> &nbsp; <input type="button" name="b4" value="全选" class="np2" style="width:40" onClick="AllSel();">
+              &nbsp; <input type="button" name="b5" value="取消" class="np2" style="width:40" onClick="NoneSel();">
+              &nbsp; <input type="button" name="b6" value="删除所选" class="np2" style="width:80" onClick="DelSel();">            </td>
+          </tr>
+          <tr bgcolor="#EEFAC9" height="24">
+            <td height="24" colspan="6" align="center">
+              <?php echo $dlist->GetPageList(7);?>            </td>
+          </tr>
+        </form>
+      </table>
+    </td>
+  </tr>
+</table>
+<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
+</body>
+</html>

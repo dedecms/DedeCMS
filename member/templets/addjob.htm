@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文档管理</title>
+<link href="company_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<center>
+<div id="container">
+<!-- 头部开始 -->
+<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
+<!-- 中部开始 -->
+    <div id="manage_company_main">
+		<!-- 中部左边开始 -->
+           <?php include(dirname(__FILE__)."/commenu.php");?>
+		<!-- 中部右边开始 -->
+        <div id="manage_company_right">
+        	<div id="manage_company_info">
+            	<div class="manage_company_info_title_bg">
+                	<ul>
+                	  <li>发布招聘</li>
+                	</ul>
+                </div>
+                <div class="addjob_form" style="line-height:30px;">
+                	<form name="form1" action="addjob.php" method="post">
+					<input type=hidden name=step value="2">
+                    公司名称：<input type=text name=name value="<?php echo $comname;?>" class="company_manage_form_label"><br />
+					职位名称：<input type=text name=job value="" class="company_manage_form_label"><br />
+					招聘人数：<input type=text name=nums value="" class="company_manage_form_label"><br />
+					招聘部门：<input type=text name=department value="" class="company_manage_form_label"><br />
+					工作地址：<input type=text name=address value="" class="company_manage_form_label"><br />
+					有 效 期：<input type=text name=endtime value="30" class="company_manage_form_label">天，自发布日期开始算起<br />
+					薪酬范围：<input type=text name=salaries value="0" class="company_manage_form_label">只能填写数字，0为薪酬面议<br />
+<div style="border-top:1px dotted #dedede; margin-top:10px;">
+					职位描述：</div>
+					<?php
+						GetEditor("message","",350,"MemberLit");
+					?><br />
+                    <div style="padding-bottom:30px;">
+					<input type=submit name=submit value="提交" class="button" />
+					</form>
+                    </div>
+                </div>
+                <div class="clear">
+                </div>
+          </div>
+        </div>
+        <div class="clear">
+		</div> 
+    </div>
+     <?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
+</center>
+</body>
+</html>
+
+
+
+
+
+
+

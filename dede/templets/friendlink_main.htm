@@ -1,9 +1,10 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>ÓÑÇéÁ´½Ó¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>å‹æƒ…é“¾æ¥ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language='javascript'>
 function Sel(stype)
 {
@@ -21,7 +22,7 @@ function checkSubmit(){
 		  }
 	}
 	if(str==""){
-		alert("ÄãÃ»Ñ¡ÔñÈÎºÎÄÚÈİ£¡");
+		alert("ä½ æ²¡é€‰æ‹©ä»»ä½•å†…å®¹ï¼");
 		return false;
 	}else{
 		document.form1.allid.value = str;
@@ -30,45 +31,48 @@ function checkSubmit(){
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-<td height="19" background="img/tbg.gif" colspan="8">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">è¾…åŠ©æ’ä»¶</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
 <form name='formsearch' method='post' action='friendlink_main.php'>
-<ul>
-<li class='fl'><b>ÓÑÇéÁ´½Ó¹ÜÀí</b>&nbsp;</li>
-<li class='fl'>[<a href="friendlink_add.php"><u>Ôö¼ÓÁ´½Ó</u></a>]</li>
-<li class='fl'>[<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>Íâ²¿ÉêÇë±íµ¥</u></a>]</li>
-<li class='fl'><b>ËÑË÷£º</b></li>
-<li class='fl'><input type='text' name='keyword' style='width:100px'></li>
-<li class='fl'>
-	<select name="ischeck">
+<tr>
+<td height="30" colspan="8" bgcolor="#EDF9D5">
+	&nbsp;
+
+  <b>å‹æƒ…é“¾æ¥ç®¡ç†</b>&nbsp;
+  	[<a href="friendlink_add.php"><u>å¢åŠ é“¾æ¥</u></a>]
+  	&nbsp;
+  	[<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>å¤–éƒ¨ç”³è¯·è¡¨å•</u></a>]
+  	&nbsp;
+  	<b>æœç´¢ï¼š</b>
+    <input type='text' name='keyword' style='width:100px;height:12px'>
+    <select name="ischeck">
     {dede:global name='seloption'/}
-    <option value="1">ÄÚÒ³</option>
-    <option value="2">Ê×Ò³</option>
-    <option value="3">ÒÑÉóºË</option>
-    <option value="0">Î´ÉóºË</option>
-  </select>
-</li>
-<li class='fl'>
-<input type='submit' name='sss' value='ËÑË÷'>
-</li>
-</ul>
- </form>
+    <option value="1">å†…é¡µ</option>
+      <option value="2">é¦–é¡µ</option>
+      <option value="3">å·²å®¡æ ¸</option>
+      <option value="0">æœªå®¡æ ¸</option>
+    </select>
+    &nbsp;
+    <input type='submit' name='sss' value='æœç´¢' class="inputbut" />
   </td>
 </tr>
+</form>
  <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
   	<input type='hidden' name='dopost' value='delall'/>
   	<input type='hidden' name='allid' value=''/>
  <tr align="center" bgcolor="#F8FBFB" height="24"> 
-          <td width="6%">Ñ¡Ôñ</td>
-          <td width="23%">ÍøÕ¾Ãû³Æ</td>
-          <td width="12%">ÍøÕ¾Logo</td>
-          <td width="15%">Õ¾³¤Email</td>
-          <td width="15%">Ê±¼ä</td>
-          <td width="8%">×´Ì¬</td>
-          <td width="8%">Ë³Ğò</td>
-          <td width="15%">¹ÜÀí</td>
+          <td width="6%">é€‰æ‹©</td>
+          <td width="23%">ç½‘ç«™åç§°</td>
+          <td width="12%">ç½‘ç«™Logo</td>
+          <td width="15%">ç«™é•¿Email</td>
+          <td width="15%">æ—¶é—´</td>
+          <td width="8%">çŠ¶æ€</td>
+          <td width="8%">é¡ºåº</td>
+          <td width="15%">ç®¡ç†</td>
         </tr>
         {dede:datalist}
         <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -80,22 +84,20 @@ function checkSubmit(){
           <td>[field:ischeck function="GetSta('@me')"/]</td>
           <td>[field:sortrank/]</td>
           <td>
-          	<a href='friendlink_edit.php?ID=[field:ID/]&dopost=getedit'>[¸ü¸Ä]</a>
-		        <a href='friendlink_edit.php?ID=[field:ID/]&dopost=delete'>[É¾³ı]</a>
+          	<a href='friendlink_edit.php?ID=[field:ID/]&dopost=getedit'>[æ›´æ”¹]</a>
+		        <a href='friendlink_edit.php?ID=[field:ID/]&dopost=delete'>[åˆ é™¤]</a>
 		      </td>
         </tr>
 		{/dede:datalist}
      <tr bgcolor="#FDFEEF" height="24"> 
-      <td colspan="8">
-      	¡¡
-        <a href='#' onclick='Sel("all");'>[È«Ñ¡]</a>
+      <td height="35" colspan="8" style="padding-top:6px">
+      	ã€€
+        <a href='#' onclick='Sel("all");' class="inputbutx">å…¨é€‰</a>
       	
-      	<a href='#' onclick='Sel("none");'>[È¡Ïû]</a>
+      	<a href='#' onclick='Sel("none");' class="inputbutx">å–æ¶ˆ</a>
       	
-      	<input type='submit' name='bt' value='ÅúÁ¿É¾³ı' class='np'>
-      	
-      </td>
-     </tr>
+      	<input type='submit' name='bt' value='æ‰¹é‡åˆ é™¤' class="inputbut" />      </td>
+    </tr>
      <tr align="center" bgcolor="#F8FBFB" height="24"> 
       <td colspan="8">{dede:pagelist listsize=6/}</td>
      </tr>

@@ -1,37 +1,71 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
-require_once(dirname(__FILE__)."/../include/inc_imgbt.php");
 CheckRank(0,0);
 
-$aid = ereg_replace("[^0-9]","",$aid);
-$channelid="1";
+$aid = (empty($aid) ? 0 : intval($aid));
+if($aid==0)
+{
+	ShowMsg("你没指定文档ID，不允许访问本页面！","-1");
+	exit();
+}
+
+require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
+require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
+
 $dsql = new DedeSql(false);
-//��ȡ�鵵��Ϣ
+
+$cInfos = $dsql->GetOne("Select c.* From `#@__full_search` a left join #@__channeltype c on c.ID=a.channelid where a.aid='$aid' And a.mid='{$cfg_ml->M_ID}' ",MYSQL_ASSOC);
+
+if(!is_array($cInfos)){
+	$dsql->Close();
+	ShowMsg("读取频道信息出错，可能指定的ID有问题！","-1");
+	exit();
+}
+
+if($cInfos['issend']!=1){
+	$dsql->Close();
+	ShowMsg("你指定的频道不允许投稿！","-1");
+	exit();
+}
+
+$maintable = ($cInfos['maintable']=='' ? '#@__archives' : $cInfos['maintable']);
+$addtable = ($cInfos['addtable']=='' ? '#@__addonarticle' : $cInfos['addtable']);
+
+//读取归档信息
 //------------------------------
-$arcQuery = "Select 
-#@__archives.*,#@__addonarticle.body
-From #@__archives
-left join #@__addonarticle on #@__addonarticle.aid=#@__archives.ID
-where #@__archives.ID='$aid' And #@__archives.memberID='".$cfg_ml->M_ID."'";
-$dsql->SetQuery($arcQuery);
-$row = $dsql->GetOne($arcQuery);
+$arcQuery = "Select c.typename as channelname,t.typename,ar.membername as rankname,a.* 
+From `$maintable` a
+left join `#@__channeltype` c on c.ID=a.channel 
+left join `#@__arcrank` ar on ar.rank=a.arcrank
+left join `#@__arctype` t on t.ID=a.typeid
+where a.ID='$aid'";
+
+$row = $dsql->GetOne($arcQuery,MYSQL_ASSOC);
 if(!is_array($row)){
 	$dsql->Close();
-	ShowMsg("��ȡ������Ϣ����!","-1");
+	ShowMsg("读取档案基本信息出错!","-1");
 	exit();
 }
 
-$cInfos = $dsql->GetOne("Select arcsta From #@__channeltype  where ID='1'; ");	
+$exday = 3600 * 24 * $cfg_locked_day;
+$ntime = mytime();
 
-if($row['arcrank']>=0 && $cInfos['arcsta']==-1){
+if($row['arcrank']>=0 && $ntime - $row['senddate'] > $exday){
 	$dsql->Close();
-	ShowMsg("�Բ�����ƪ�����Ѿ�������Ա�������㲻���ٸ���!","-1");
+	ShowMsg("对不起，这则信息已经被管理员锁定，你不能再更改!","-1");
 	exit();
 }
 
-$arow = $dsql->GetOne(" Select typename From #@__arctype where ID='".$row['typeid']."'; ");
+$channelid = $row['channel'];
+
+if($addtable!=''){
+  $addQuery = "Select * From `{$addtable}` where aid='$aid'";
+  $addRow = $dsql->GetOne($addQuery,MYSQL_ASSOC);
+}
+
+$arow['typename'] = $row['typename'];
 
 require_once(dirname(__FILE__)."/templets/article_edit.htm");
 
+$dsql->Close();
 ?>

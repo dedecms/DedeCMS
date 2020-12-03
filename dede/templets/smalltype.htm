@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">			
+<head>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">互动模块</div>
+</div>
+<?php
+if(empty($action))
+{
+?>
+<form name="form1" action="smalltype.php" method="post">
+
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr>
+        <td height="20" colspan="2" bgcolor="#EDF9D5"><strong>&nbsp;添加小分类</strong>
+      <input type="hidden" name="action" value="add" /></td>
+    </tr>
+      <tr>
+        <td width="150" height="20" align="right" bgcolor="#FFFFFF">小分类名称：</td>
+        <td height="20" bgcolor="#FFFFFF"><input type="text" name="name" value="" /></td>
+    </tr>
+      <tr>
+        <td height="20" align="right" bgcolor="#FFFFFF">显示顺序：</td>
+        <td height="20" bgcolor="#FFFFFF"><input type="text" name="disorder" value="0" /></td>
+    </tr>
+      <tr>
+        <td height="20" align="right" bgcolor="#FFFFFF">说明：</td>
+        <td height="20" bgcolor="#FFFFFF"><input type="text" name="description" value="" /></td>
+    </tr>
+      <tr>
+        <td height="35" bgcolor="#FFFFFF">&nbsp;</td>
+        <td height="20" bgcolor="#FFFFFF"><input type="submit" name="submit1" value="提交" class="inputbut"/>(说明：增加小分类后并没有任何栏目立即启用小分类，还需要在相应的栏目选择启用您需要的小分类才行)</td>
+    </tr>
+    </table>
+
+</form>
+
+<form name="form3" action="smalltype.php" method="post">
+	<input type="hidden" name="action" value="update" />
+    <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+
+      <tr>
+        <td height="20" bgcolor="#EDF9D5"><strong>&nbsp;编辑小分类</strong> </td>
+      </tr>
+      <tr>
+        <td bgcolor="#FFFFFF">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+
+          <tr>
+            <td height="20">id</td>
+            <td height="20">name</td>
+            <td height="20">排序</td>
+            <td height="20">说明</td>
+            <td height="20">管理操作</td>
+            <td height="20">关联栏目</td>
+          </tr>
+          <?php
+foreach($smalltypes as $smalltype)
+{
+	echo "<tr><td>$smalltype[id]</td><td><input type=\"text\" name=\"names[$smalltype[id]]\" value=\"$smalltype[name]\" /></td><td><input type=\"text\" name=\"disorders[$smalltype[id]]\" value=\"$smalltype[disorder]\" /></td><td><input type=\"text\" name=\"descriptions[$smalltype[id]]\" value=\"$smalltype[description]\" /></td><td><a href=\"smalltype.php?action=delete&amp;id=$smalltype[id]&amp;types=$smalltype[types]\">删除</a></td><td>$smalltype[relatetype]</td></tr>";
+}
+?>
+        </table>        </td>
+      </tr>
+      <tr>
+        <td height="35" align="center" bgcolor="#FFFFFF"><input name="submit3" type="submit" value="提交" class="inputbut"/></td>
+      </tr>
+    </table>
+</form>
+<?php
+}
+?>
+</body>
+</html>

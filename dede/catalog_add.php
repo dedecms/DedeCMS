@@ -1,21 +1,20 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 if(empty($ID)) $ID = 0;
 if(empty($listtype)) $listtype="";
 if(empty($dopost)) $dopost = "";
 if(empty($channelid)) $channelid = 1;
-$ID = ereg_replace("[^0-9]","",$ID);
-
+$ID = intval($ID);
 if($ID==0){ CheckPurview('t_New'); }
 else{
 	CheckPurview('t_AccNew');
-	CheckCatalog($ID,"ÄãÎŞÈ¨ÔÚ±¾À¸Ä¿ÏÂ´´½¨×ÓÀà£¡");
+	CheckCatalog($ID,"ä½ æ— æƒåœ¨æœ¬æ ç›®ä¸‹åˆ›å»ºå­ç±»ï¼");
 }
 
 $dsql = new DedeSql(false);
 
 
-//±£´æÀ¸Ä¿
+//ä¿å­˜æ ç›®
 /*------------------------
 function __SaveCatalog()
 --------------------------*/
@@ -25,72 +24,101 @@ if($dopost=="save")
    if(empty($upinyin)) $upinyin = 0;
    $description = Html2Text($description);
    $keywords = Html2Text($keywords);
-   
-   //À¸Ä¿µÄ²ÎÕÕÄ¿Â¼
+
+   //æ ç›®çš„å‚ç…§ç›®å½•
    if($reID==0 && $moresite==1) $nextdir = "/";
    else{
      if($referpath=="cmspath") $nextdir = "{cmspath}";
      else if($referpath=="basepath") $nextdir = "";
      else $nextdir = $nextdir;
    }
-   //ÓÃÆ´ÒôÃüÃû
-   if( $upinyin==1 || 
-     ( $typedir=="" && $sitepath=="" ) || 
+   //ç”¨æ‹¼éŸ³å‘½å
+   if( $upinyin==1 ||
+     ( $typedir=="" && $sitepath=="" ) ||
      ( $typedir=="" && $moresite==1 && $reID>0 ) )
    {
      	 $typedir = GetPinyin($typename);
    }
-   
+
+   //å­åˆ†ç±»
+   $sonlists = (empty($sonlists) ? '' : $sonlists);
+   $smalltypes = '';
+   if(is_array($sonlists) && isset($needson)){
+   	 $n = count($sonlists);
+   	 for($i=0;$i<$n;$i++){
+   	 	 if($i==($n-1)) $smalltypes .= $sonlists[$i];
+   	 	 else $smalltypes .= $sonlists[$i].",";
+   	 }
+   }
+
    $typedir = $nextdir."/".$typedir;
-   
+
    $typedir = ereg_replace("/{1,}","/",$typedir);
-   
+
    if($referpath=="basepath" && $siteurl!="") $typedir = "";
-   
-   //¼ì²â¶ş¼¶ÍøÖ·
+
+   //æ£€æµ‹äºŒçº§ç½‘å€
    if($siteurl!=""){
       $siteurl = ereg_replace("/$","",$siteurl);
       if(!eregi("http://",$siteurl)){
       	$dsql->Close();
-   	    ShowMsg("Äã°ó¶¨µÄ¶ş¼¶ÓòÃûÎŞĞ§£¬ÇëÓÃ(http://ÓòÃû)µÄĞÎÊ½£¡","-1");
+   	    ShowMsg("ä½ ç»‘å®šçš„äºŒçº§åŸŸåæ— æ•ˆï¼Œè¯·ç”¨(http://åŸŸå)çš„å½¢å¼ï¼","-1");
    	    exit();
       }
       if(eregi($cfg_basehost,$siteurl)){
       	$dsql->Close();
-   	    ShowMsg("Äã°ó¶¨µÄ¶ş¼¶ÓòÃûÓëµ±Ç°Õ¾µãÊÇÍ¬Ò»¸öÓòÃû£¬²»ĞèÒª°ó¶¨£¡","-1");
+   	    ShowMsg("ä½ ç»‘å®šçš„äºŒçº§åŸŸåä¸å½“å‰ç«™ç‚¹æ˜¯åŒä¸€ä¸ªåŸŸåï¼Œä¸éœ€è¦ç»‘å®šï¼","-1");
    	    exit();
       }
    }
-   
-   //´´½¨Ä¿Â¼
+
+   //åˆ›å»ºç›®å½•
    $true_typedir = str_replace("{cmspath}",$cfg_cmspath,$typedir);
    $true_typedir = ereg_replace("/{1,}","/",$true_typedir);
    if(!CreateDir($true_typedir,$siterefer,$sitepath))
    {
    	  $dsql->Close();
-   	  ShowMsg("´´½¨Ä¿Â¼ {$true_typedir} Ê§°Ü£¬Çë¼ì²éÄãµÄÂ·¾¶ÊÇ·ñ´æÔÚÎÊÌâ£¡","-1");
+   	  ShowMsg("åˆ›å»ºç›®å½• {$true_typedir} å¤±è´¥ï¼Œè¯·æ£€æŸ¥ä½ çš„è·¯å¾„æ˜¯å¦å­˜åœ¨é—®é¢˜ï¼","-1");
    	  exit();
    }
-   
+
+   if($channeltype == '-2'){
+   		$isdefault = '-1';
+
+
+	}
+
+
    $in_query = "insert into #@__arctype(
     reID,sortrank,typename,typedir,isdefault,defaultname,issend,channeltype,
     tempindex,templist,temparticle,tempone,modname,namerule,namerule2,
-    ispart,corank,description,keywords,moresite,siterefer,sitepath,siteurl,ishidden)Values(
+    ispart,corank,description,keywords,moresite,siterefer,sitepath,siteurl,ishidden,smalltypes)Values(
     '$reID','$sortrank','$typename','$typedir','$isdefault','$defaultname','$issend','$channeltype',
     '$tempindex','$templist','$temparticle','$tempone','default','$namerule','$namerule2',
-    '$ispart','$corank','$description','$keywords','$moresite','$siterefer','$sitepath','$siteurl','$ishidden')";
-   
-   
-   $dsql->SetQuery($in_query);
+    '$ispart','$corank','$description','$keywords','$moresite','$siterefer','$sitepath','$siteurl','$ishidden','$smalltypes')";
+
+
    if(!$dsql->ExecuteNoneQuery($in_query))
    {
    	 $dsql->Close();
-   	 ShowMsg("±£´æÄ¿Â¼Êı¾İÊ±Ê§°Ü£¬Çë¼ì²éÄãµÄÊäÈë×ÊÁÏÊÇ·ñ´æÔÚÎÊÌâ£¡","-1");
+   	 ShowMsg("ä¿å­˜ç›®å½•æ•°æ®æ—¶å¤±è´¥ï¼Œè¯·æ£€æŸ¥ä½ çš„è¾“å…¥èµ„æ–™æ˜¯å¦å­˜åœ¨é—®é¢˜ï¼","-1");
    	 exit();
    }
+   //æ›´æ–°ç¼“å­˜
+   UpDateCatCache($dsql);
+   
+   //å¦‚æœé€‰æ‹©å­æ ç›®å¯æŠ•ç¨¿ï¼Œé¢‘é“æ¨¡å‹ä¸ºå¯æŠ•ç¨¿
+   $topID = (empty($topID) ? '0' : $topID);
+   if($issend==1){
+   	 if($topID>0) $dsql->ExecuteNoneQuery("Update `#@__arctype` set issend='1' where ID='$topID'; ");
+   	 $dsql->ExecuteNoneQuery("Update `#@__channeltype` set issend='1' where ID='$channeltype'; ");
+   }
+   
    $dsql->Close();
    $rndtime = time();
-   $rflwft = "<script language='javascript'>
+   $rflwft = "
+   <script language='javascript'>
+   <!--
    if(window.navigator.userAgent.indexOf('MSIE')>=1){
      if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
      { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
@@ -98,19 +126,24 @@ if($dopost=="save")
   	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
      { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
    }
-   </script>";
-   echo $rflwft;
-   ShowMsg("³É¹¦´´½¨Ò»¸ö·ÖÀà£¡","catalog_main.php");
-   exit();
+   -->
+   </script>
+   ";
    
+//"--------------------
+
+   echo $rflwft;
+   ShowMsg("æˆåŠŸåˆ›å»ºä¸€ä¸ªåˆ†ç±»ï¼","catalog_main.php");
+   exit();
+
 }
 //End dopost==save
-//½áÊø±£´æÀ¸Ä¿ÊÂ¼ş
+//ç»“æŸä¿å­˜æ ç›®äº‹ä»¶
 
 //--------------------------
-//¶ÁÈ¡¸¸Àà²ÎÊı
+//è¯»å–çˆ¶ç±»å‚æ•°
 //----------------------------
-if(empty($myrow)) $myrow = "";
+$myrow['moresite'] = $myrow['siterefer'] = $myrow['sitepath'] = $myrow['siteurl'] = '';
 $issend = 1;
 $corank = 0;
 
@@ -122,437 +155,30 @@ if($ID>0)
 	$topID = $myrow['topID'];
 	$issend = $myrow['issend'];
 	$corank = $myrow['corank'];
-	if($topID>0)
-	{
-	  	$toprow = $dsql->GetOne("Select moresite,siterefer,sitepath,siteurl From #@__arctype where ID=$topID");
-	  	foreach($toprow as $k=>$v){
-	  		if(!ereg("[0-9]",$k)) $myrow[$k] = $v;
-	  	}
-	}
 	$typedir = $myrow['typedir'];
 }
-//¶ÁÈ¡ÆµµÀÄ£ĞÍĞÅÏ¢
-if(is_array($myrow)) $channelid = $myrow['channeltype'];
+//è¯»å–é¢‘é“æ¨¡å‹ä¿¡æ¯
+if(isset($myrow['channeltype'])) $channelid = $myrow['channeltype'];
 else $channelid = 1;
 $row = $dsql->GetOne("select * from #@__channeltype where ID='$channelid'");
 $nid = $row['nid'];
-//¶ÁÈ¡ËùÓĞÄ£ĞÍ×ÊÁÏ
-$dsql->SetQuery("select * from #@__channeltype where ID>-1 And isshow=1 order by ID");
+//è¯»å–æ‰€æœ‰æ¨¡å‹èµ„æ–™
+$dsql->SetQuery("select * from #@__channeltype where ID<>-1 And isshow=1 order by ID");
 $dsql->Execute();
 while($row=$dsql->GetObject())
 {
   $channelArray[$row->ID]['typename'] = $row->typename;
   $channelArray[$row->ID]['nid'] = $row->nid;
 }
-//¸¸À¸Ä¿ÊÇ·ñÎª¶ş¼¶Õ¾µã
+//çˆ¶æ ç›®æ˜¯å¦ä¸ºäºŒçº§ç«™ç‚¹
 if(!empty($myrow['moresite'])){
 	 $moresite = $myrow['moresite'];
 }else{
 	 $moresite = 0;
 }
 
-?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>À¸Ä¿¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-<script language="javascript">
-var channelArray = new Array();
-<?php     
-$i = 0;
-foreach($channelArray as $k=>$arr)
-{
-echo "channelArray[$k] = \"{$arr['nid']}\";\r\n";
-}
-?>
+require_once(dirname(__FILE__)."/templets/catalog_add.htm");
 
-function SelectTemplets(fname){
-   var posLeft = window.event.clientY-200;
-   var posTop = window.event.clientX-300;
-   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
-}
-  
-function ShowHide(objname){
-  var obj = document.getElementById(objname);
-  if(obj.style.display == "block" || obj.style.display == "")
-	   obj.style.display = "none";
-  else
-	   obj.style.display = "block";
-}
-  
-function ShowObj(objname){
-   var obj = document.getElementById(objname);
-	 obj.style.display = "block";
-}
-  
-function HideObj(objname){
-  var obj = document.getElementById(objname);
-	obj.style.display = "none";
-}
-  
-function ShowItem1(){
-  ShowObj('head1'); ShowObj('needset'); HideObj('head2'); HideObj('adset');
-}
-  
-function ShowItem2(){
-  ShowObj('head2'); ShowObj('adset'); HideObj('head1'); HideObj('needset');
-}
-  
-function CheckTypeDir(){
-  var upinyin = document.getElementById('upinyin');
-  var tpobj = document.getElementById('typedir');
-  if(upinyin.checked) tpobj.style.display = "none";
-  else tpobj.style.display = "block";
-}
-  
-function ParTemplet(obj)
-{
-  var sevvalue = channelArray[obj.value];
-  var tempindex = document.getElementsByName('tempindex');
-  var templist = document.getElementsByName('templist');
-  var temparticle = document.getElementsByName('temparticle');
-  var dfstyle = document.getElementsByName('dfstyle');
-  var dfstyleValue = dfstyle[0].value;
-  tempindex[0].value = dfstyleValue+"/index_"+sevvalue+".htm";
-  templist[0].value = dfstyleValue+"/list_"+sevvalue+".htm";
-  temparticle[0].value = dfstyleValue+"/article_"+sevvalue+".htm";
-}
-  
-function checkSubmit()
-{
-   if(document.form1.typename.value==""){
-		  alert("À¸Ä¿Ãû³Æ²»ÄÜÎª¿Õ£¡");
-		  document.form1.typename.focus();
-		  return false;
-	 }
-	 return true;
-}
+ClearAllLink();
 
-function CheckPathSet()
-{
-	var surl = document.getElementById("siteurl");
-	var sreid = document.getElementById("reID");
-	var mysel = document.getElementById("truepath3");
-	if(surl.value!=""){
-		if(sreid.value=="0" || sreid.value==""){
-			mysel.checked = true;
-		}
-	}
-}
-
-</script>
-</head>
-<body leftmargin='15' topmargin='10'>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
-  <tr> 
-    <td width="100%" height="20" valign="top">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;<a href="catalog_main.php"><u>À¸Ä¿¹ÜÀí</u></a>&gt;&gt;Ôö¼ÓÀ¸Ä¿</td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr> 
-    <td width="100%" height="1" background="img/sp_bg.gif"></td>
-  </tr>
-</table>
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr><td height="10"></td></tr>
-  <tr>
-  <form name="form1" action="catalog_add.php" method="post" onSubmit="return checkSubmit();">
-  <input type="hidden" name="dopost" value="save">
-  <input type="hidden" name="reID" id="reID" value="<?php echo $ID;?>">
-  <?php 
-  if($listtype!="all")
-  {
-  	echo "<input type='hidden' name='moresite' value='{$myrow['moresite']}'>\r\n";
-  	echo "<input type='hidden' name='siterefer' value='{$myrow['siterefer']}'>\r\n";
-  	echo "<input type='hidden' name='sitepath' value='{$myrow['sitepath']}'>\r\n";
-  	echo "<input type='hidden' name='siteurl' value='{$myrow['siteurl']}'>\r\n";
-  }
-  ?>
-    <td height="95" align="center" bgcolor="#FFFFFF">
-	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" class="htable">
-          <tr> 
-            <td colspan="2" bgcolor="#FFFFFF">
-<table width="168" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;³£¹æÑ¡Ïî&nbsp;</td>
-                  <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>¸ß¼¶Ñ¡Ïî</u></a>&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table> 
-        <table width="100%" border="0" cellspacing="0" id="head2" cellpadding="0" style="border-bottom:1px solid #CCCCCC;display:none">
-          <tr>
-            <td colspan="2" bgcolor="#FFFFFF">
-<table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
-                <tr> 
-                  <td width="84" align="center" background="img/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>³£¹æÑ¡Ïî</u></a>&nbsp;</td>
-                  <td width="84" align="center" background="img/itemnote1.gif">¸ß¼¶Ñ¡Ïî&nbsp;</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-       </table>
-	    <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="120" class='bline' height="26">ÊÇ·ñÖ§³ÖÍ¶¸å£º</td>
-            <td class='bline'>
-            	<input type='radio' name='issend' value='0' class='np' <?php if($issend=="0") echo " checked";?>>
-              ²»Ö§³Ö&nbsp;
-              <input type='radio' name='issend' value='1' class='np' <?php if($issend=="1") echo " checked";?>>
-              Ö§³Ö             </td>
-          </tr>
-          <tr> 
-            <td width="120" class='bline' height="26">ÊÇ·ñÒş²ØÀ¸Ä¿£º</td>
-            <td class='bline'>
-            	<input type='radio' name='ishidden' value='0' class='np' checked>
-              ÏÔÊ¾¡¡&nbsp;
-              <input type='radio' name='ishidden' value='1' class='np'>
-              Òş²Ø             </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">À¸Ä¿Ãû³Æ£º</td>
-            <td class='bline'><input name="typename" type="text" id="typename" size="30"></td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26"> ÅÅÁĞË³Ğò£º </td>
-            <td class='bline'><input name="sortrank" size="6" type="text" value="50">
-              £¨ÓÉµÍ -&gt; ¸ß£© </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ä¯ÀÀÈ¨ÏŞ£º</td>
-            <td class='bline'>
-            	<select name="corank" id="corank" style="width:100">
-                <?php 
-              $dsql->SetQuery("Select * from #@__arcrank where rank >= 0");
-              $dsql->Execute();
-              while($row = $dsql->GetObject())
-              {
-              	if($corank==$row->rank) echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";
-				        else
-				        {
-				        	//Èç¹ûÉÏ¼¶Ä¿Â¼µÄcorank>0£¬ÏÂ¼¶±ØĞë¼Ì³Ğ
-				        	if($corank==0)
-				        	{ echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n"; }
-				        }
-              }
-              ?>
-              </select>
-              (±¾È¨ÏŞ½ö¶Ô<strong><font color="#0000FF">×îÖÕÁĞ±íÀ¸Ä¿</font></strong>ÓĞĞ§£¬ÉèÖÃºó±¾À¸Ä¿·¢²¼»òÉóºËºóµÄËùÓĞÎÄµµ½«Ê¹ÓÃ´ËÈ¨ÏŞ)            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ÉÏ¼¶Ä¿Â¼£º</td>
-            <td class='bline'> 
-              <?php 
-            $pardir = "{cmspath}".$cfg_arcdir;
-            if(!empty($typedir) || $moresite==1) $pardir = $typedir."/";
-            $pardir = ereg_replace("/{1,}","/",$pardir);
-            echo $pardir;
-            ?>
-              <input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>">            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ÎÄ¼ş±£´æÄ¿Â¼£º</td>
-            <td class='bline'>
-            	<table width="500" border="0" cellspacing="1" cellpadding="1">
-                <tr> 
-                  <td width="200">
-                  	<input name="typedir" type="text" id="typedir" style="width:300">                  </td>
-                  <td width="300">
-                  <input name="upinyin" type="checkbox" id="upinyin" class="np" value="1" onClick="CheckTypeDir()">
-                  Æ´Òô                  </td>
-                </tr>
-              </table>              </td>
-          </tr>
-          <tr>
-            <td class='bline' height="26">Ä¿Â¼Ïà¶ÔÎ»ÖÃ£º</td>
-            <td class='bline'>
-			        <input name="referpath" type="radio" id="truepath1" class="np" value="parent" checked>
-              ÉÏ¼¶Ä¿Â¼ 
-              <?php 
-              if($moresite==0){
-              ?>
-              <input name="referpath" type="radio" id="truepath2" class="np" value="cmspath">
-              CMS¸ùÄ¿Â¼ 
-              <?php  } ?>
-              <input name="referpath" type="radio" id="truepath3" class="np" value="basepath">
-              Õ¾µã¸ùÄ¿Â¼              </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">ÄÚÈİÄ£ĞÍ£º &nbsp; </td>
-            <td class='bline'> 
-           <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
-            <?php     
-            foreach($channelArray as $k=>$arr)
-            {
-            	if($k==$channelid) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
-              else  echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
-            }
-            ?>
-              </select>            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">À¸Ä¿ÁĞ±íÑ¡Ïî£º</td>
-            <td class='bline'> <input type='radio' name='isdefault' value='1' class='np' checked>
-              Á´½Óµ½Ä¬ÈÏÒ³ 
-              <input type='radio' name='isdefault' value='0' class='np'>
-              Á´½Óµ½ÁĞ±íµÚÒ»Ò³ 
-              <input type='radio' name='isdefault' value='-1' class='np'>
-              Ê¹ÓÃ¶¯Ì¬Ò³ </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="26">Ä¬ÈÏÒ³µÄÃû³Æ£º </td>
-            <td class='bline'><input name="defaultname" type="text" value="index.html"></td>
-          </tr>
-          <tr> 
-            <td height="26" class='bline'>À¸Ä¿ÊôĞÔ£º</td>
-            <td class='bline'>
-            	<input name="ispart" type="radio" id="radio" value="0" class='np' checked>
-              ×îÖÕÁĞ±íÀ¸Ä¿£¨ÔÊĞíÔÚ±¾À¸Ä¿·¢²¼ÎÄµµ£¬²¢Éú³ÉÎÄµµÁĞ±í£© <br>
-              <input name="ispart" type="radio" id="radio" value="1" class='np'>
-              ÆµµÀ·âÃæ£¨À¸Ä¿±¾Éí²»ÔÊĞí·¢²¼ÎÄµµ£© <br>
-              <input name="ispart" type="radio" id="radio" value="2" class='np'>
-              µ¥¶ÀÒ³Ãæ£¨À¸Ä¿±¾Éí²»ÔÊĞí·¢²¼ÎÄµµ£©             </td>
-          </tr>
-        </table>
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="adset" style="display:none">
-          <?php 
-          if($listtype=="all")
-          {
-          ?>
-		  <tr> 
-            <td class='bline' width="120" height="24">¶àÕ¾µãÖ§³Ö£º</td>
-            <td class='bline'> <input name="moresite" type="radio"  class="np" value="0" checked>
-              ²»ÆôÓÃ 
-              <input type="radio" name="moresite" class="np" value="1">
-              ÆôÓÃ </td>
-          </tr>
-          <tr> 
-            <td height="24" bgcolor="#B9E9FF">ËµÃ÷£º</td>
-            <td bgcolor="#B9E9FF">°óÃû°ó¶¨½öĞèÒªÔÚ¶¥¼¶À¸Ä¿Éè¶¨£¬ÏÂ¼¶À¸Ä¿µÄÄ¿Â¼ºÍÓòÃû½«Ïà¶ÔÓÚ¶¥¼¶À¸Ä¿¡£</td>
-          </tr>
-          <tr>
-            <td class='bline' height="24">°ó¶¨ÓòÃû£º</td>
-            <td class='bline'>
-            	<input name="siteurl" type="text" id="siteurl" size="35" onChange="CheckPathSet();">
-              (Ğè¼Ó http://£¬Ò»¼¶»ò¶ş¼¶ÓòÃûµÄ¸ùÍøÖ·)
-            </td>
-          </tr>
-          <tr> 
-            <td class='bline' height="24">Õ¾µã¸ùÄ¿Â¼£º</td>
-            <td class='bline'>
-            	<input name="sitepath" type="text" id="sitepath" size="35"> 
-              <input name="siterefer" type="radio" class="np" id="truepath" value="1" checked>
-              Ïà¶ÔÓÚÖ÷Õ¾µã¸ùÄ¿Â¼ 
-              <input name="siterefer" type="radio" id="truepath" class="np" value="2">
-              ¾ø¶ÔÂ·¾¶
-            </td>
-          </tr>
-          <?php 
-          }
-          ?>
-		  <tr id='helpvar1' style='display:none'> 
-            <td height="24" bgcolor="#B9E9FF">Ö§³Ö±äÁ¿£º </td>
-            <td bgcolor="#B9E9FF"> {tid}±íÊ¾À¸Ä¿ID£¬<br>
-              {cid}±íÊ¾ÆµµÀÄ£ĞÍµÄ'Ãû×ÖID' <font color='#888888'> £¨ 
-              <?php 
-              foreach($channelArray as $k=>$arr)
-              {
-            	   echo "{$arr['typename']}({$arr['nid']})¡¢";
-              }
-             ?>
-              £© </font> <br/>
-              Ä£°åÎÄ¼şµÄÄ¬ÈÏÎ»ÖÃÊÇ·ÅÔÚÄ£°åÄ¿Â¼ "cms°²×°Ä¿Â¼ 
-              <?php echo $cfg_templets_dir ?>
-              " ÄÚ¡£ 
-              <input type='hidden' value='{style}' name='dfstyle'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">·âÃæÄ£°å£º</td>
-            <td> <input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" style="width:300"> 
-              <input type="button" name="set1" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.tempindex');" class='nbt'> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar1')"> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">ÁĞ±íÄ£°å£º</td>
-            <td> <input name="templist" type="text" value="{style}/list_<?php echo $nid?>.htm" style="width:300"> 
-              <input type="button" name="set3" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.templist');" class='nbt'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">ÎÄÕÂÄ£°å£º</td>
-            <td><input name="temparticle" type="text" value="{style}/article_<?php echo $nid?>.htm" style="width:300"> 
-              <input type="button" name="set4" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.temparticle');" class='nbt'> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">µ¥¶ÀÒ³ÃæÄ£°å£º</td>
-            <td><input name="tempone" type="text" value="" style="width:300"> 
-              <input type="button" name="set2" value="ä¯ÀÀ..." style="width:60" onClick="SelectTemplets('form1.tempone');" class='nbt'> 
-            </td>
-          </tr>
-          <tr id='helpvar2' style='display:none'> 
-            <td height="24" bordercolor="#00CCFF" bgcolor="#B9E9FF">Ö§³Ö±äÁ¿£º </td>
-            <td height="24" bgcolor="#B9E9FF"> {Y}¡¢{M}¡¢{D} ÄêÔÂÈÕ<br/>
-              {timestamp} INTÀàĞÍµÄUNIXÊ±¼ä´Á<br/>
-              {aid} ÎÄÕÂID<br/>
-              {pinyin} Æ´Òô+ÎÄÕÂID<br/>
-              {py} Æ´Òô²¿Ê×+ÎÄÕÂID<br/>
-              {typedir} À¸Ä¿Ä¿Â¼ <br/>
-              {cc} ÈÕÆÚ+ID»ì±àºóÓÃ×ª»»ÎªÊÊºÏµÄ×ÖÄ¸ <br/>
-            </td>
-          </tr>
-          <tr> 
-            <td height="26">ÎÄÕÂÃüÃû¹æÔò£º</td>
-            <td> <input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" size="40"> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar2')"> 
-            </td>
-          </tr>
-          <tr id='helpvar3' style='display:none'> 
-            <td height="24" bgcolor="#B9E9FF">Ö§³Ö±äÁ¿£º </td>
-            <td bgcolor="#B9E9FF">{page} ÁĞ±íµÄÒ³Âë</td>
-          </tr>
-          <tr> 
-            <td height="26">ÁĞ±íÃüÃû¹æÔò£º</td>
-            <td>
-              <input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" size="40"> 
-              <img src="img/help.gif" alt="°ïÖú" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar3')"></td>
-          </tr>
-		  <tr>
-            <td class='bline' height="26">À¸Ä¿ËõÂÔÍ¼£º</td>
-            <td class='bline'>&nbsp;</td>
-          </tr>
-          <tr> 
-            <td height="65">¹Ø¼ü×Ö£º</td>
-            <td> <textarea name="keywords" cols="40" rows="3" id="keywords"></textarea> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="65">À¸Ä¿ÃèÊö£º</td>
-            <td height="65"> <textarea name="description" cols="40" rows="3" id="textarea2"></textarea></td>
-          </tr>
-        </table>
-          <table width="98%" border="0" cellspacing="0" cellpadding="0">
-		  <tr> 
-            <td width="1%" height="50"></td>
-            <td width="99%" valign="bottom">
-<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np">
-&nbsp;&nbsp;&nbsp;
-            <a href="catalog_main.php"><img src="img/button_back.gif" width="60" height="22" border="0"></a>
-			</td>
-          </tr>
-        </table></td>
-	  </form>
-  </tr>
-</table>
-<?php 
-$dsql->Close();
 ?>
-</body>
-</html>

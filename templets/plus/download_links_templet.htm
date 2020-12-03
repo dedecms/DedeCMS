@@ -1,42 +1,38 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>下载地址列表</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>涓嬭浇鍦板潃鍒楄〃</title>
+<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
+</head>
 </head>
 <body>
-<table width="700" border="0" align="center" cellspacing="2">
-  <tr> 
-    <td><img src="img/softlinks.gif" width="320" height="46"></td>
-  </tr>
-  <tr> 
-    <td bgcolor="#CCCC99" height="6"></td>
-  </tr>
-  <tr>
-    <td bgcolor="#F2F7E6">软件名称：</td>
-  </tr>
-  <tr> 
-    <td>
-    	<a href='<?php echo $arcurl?>' style='font-size:11pt'>
-    	<?php echo $arctitle?>
-    	</a>
-    </td>
-  </tr>
-  <tr> 
-    <td height="23" bgcolor="#F2F7E6">下载地址列表： </td>
-  </tr>
-  <tr> 
-    <td height="78"><?php echo $downlinks?></td>
-  </tr>
-</table>
-<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td height="28" align="center">
-<hr size="1"></td>
-  </tr>
-  <tr> 
-    <td height="40" align="center"><?php echo $cfg_powerby?></td>
-  </tr>
-</table>
+
+<div class="stop">
+	<span class="toptitle">涓嬭浇</span>
+	<span class="toplink"><a href="/">杩斿洖涓婚〉</a></span></div>
+
+<div class="smain">
+	<div class="mtitle">
+		<div class="mtname">杞欢鍚嶇О:<a href='<?php echo $arcurl?>' style='font-size:11pt'><?php echo $arctitle?></a></div>
+		</div>
+	<div class="">
+
+		<div class="svote">
+			<div class="vtinfo">
+			涓嬭浇鍦板潃鍒楄〃锛�
+		  </div>
+			<div class="vtbox"><?php echo $downlinks?></div>
+	  </div>
+
+
+
+
+
+	</div>
+</div>
+
+
 </body>
 </html>

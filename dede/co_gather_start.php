@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_collection.php");
 if($nid=="") 
 {
-	ShowMsg("²ÎÊıÎŞĞ§!","-1");	
+	ShowMsg("å‚æ•°æ— æ•ˆ!","-1");	
 	exit();
 }
 $co = new DedeCollection();
@@ -17,120 +17,14 @@ $dd = $row->dd;
 $dsql->Close();
 if($dd==0)
 {
-	$unum = "Ã»ÓĞ¼ÇÂ¼»ò´ÓÀ´Ã»ÓĞ²É¼¯¹ıÕâ¸ö½Úµã£¡";
+	$unum = "æ²¡æœ‰è®°å½•æˆ–ä»æ¥æ²¡æœ‰é‡‡é›†è¿‡è¿™ä¸ªèŠ‚ç‚¹ï¼";
 }
 else
 {
-	$unum = "¹²ÓĞ $dd ¸öÀúÊ·ÖÖ×ÓÍøÖ·£¡<a href='javascript:SubmitNew();'>[<u>¸üĞÂÖÖ×ÓÍøÖ·£¬²¢²É¼¯</u>]</a>";
+	$unum = "å…±æœ‰ $dd ä¸ªå†å²ç§å­ç½‘å€ï¼<a href='javascript:SubmitNew();'>[<u>æ›´æ–°ç§å­ç½‘å€ï¼Œå¹¶é‡‡é›†</u>]</a>";
 }
-?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>²É¼¯½Úµã</title>
-<script language='javascript'>
-	function SubmitNew()
-	{
-		document.form1.totalnum.value = "0";
-		document.form1.submit();
-	}
-</script>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
-  <tr> 
-      <td height="20" colspan="2" background='img/tbg.gif'>
-      	<table width="98%" border="0" cellpadding="0" cellspacing="0">
-         <form name='form2' action='co_url.php' target='stafrm'>
-         	<input type='hidden' name='small' value='1'>
-         	<input type='hidden' name='nid' value='<?php echo $nid?>'>
-         	</form>
-          <tr> 
-            <td width="30%" height="18"><strong>²É¼¯Ö¸¶¨½Úµã£º</strong></td>
-            <td width="70%" align="right">
-            	<input type="button" name="b11" value="²é¿´ÒÑÏÂÔØ"  class='nbt' onClick="document.form2.submit();" style="width:90"> 
-              <input type="button" name="b12" value="²É¼¯½Úµã¹ÜÀí"  class='nbt' style="width:90" onClick="location.href='co_main.php';">
-              <input type="button" name="b13" value="µ¼³öÊı¾İ"  class='nbt' style="width:90" onClick="location.href='co_export.php?nid=<?php echo $nid?>';">
-              </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td width="108" valign="top" bgcolor="#FFFFFF">½ÚµãÃû³Æ£º</td>
-      <td width="377" valign="top" bgcolor="#FFFFFF"> 
-        <?php echo $co->Item["name"]?>
-      </td>
-    </tr>
-    <tr> 
-      <td height="20" valign="top" bgcolor="#FFFFFF">ÖÖ×ÓÍøÖ·Êı£º</td>
-      <td height="20" valign="top" bgcolor="#FFFFFF"> 
-        <?php echo $unum?>
-      </td>
-    </tr>
-    <form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
-    <input type='hidden' name='nid' value='<?php echo $nid?>'>
-    <input type='hidden' name='totalnum' value='<?php echo $dd?>'>
-    <input type='hidden' name='startdd' value='0'>
-    <tr> 
-      <td height="20" bgcolor="#FFFFFF">Ã¿Ò³²É¼¯£º</td>
-      <td height="20" bgcolor="#FFFFFF">
-      	<input name="pagesize" type="text" id="pagesize" value="5" size="3">
-        Ìõ£¬Ïß³ÌÊı£º 
-        <input name="threadnum" type="text" id="threadnum" value="1" size="3">
-        ¼ä¸ôÊ±¼ä£º 
-        <input name="sptime" type="text" id="sptime" value="0" size="3">
-        Ãë£¨·ÀË¢ĞÂµÄÕ¾µãĞèÉèÖÃ£©</td>
-    </tr>
-    <tr> 
-      <td height="20" bgcolor="#FFFFFF">¸½¼ÓÑ¡Ïî£º</td>
-      <td height="20" bgcolor="#FFFFFF">
-      	<input name="islisten" type="radio" class="np" value="0" checked>
-        ²»ÏÂÔØÔøÏÂÔØµÄÍøÖ·
-        <input name="islisten" type="radio" class="np" value="-1">
-        ½öÏÂÔØÎ´ÏÂÔØÄÚÈİ
-      	<input name="islisten" type="radio" class="np" value="1">
-      	ÖØĞÂÏÂÔØËùÓĞÄÚÈİ
-      	</td>
-    </tr>
-    <tr> 
-      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
-      	<input name="b112" type="button"  class='nbt' value="¿ªÊ¼²É¼¯ÍøÒ³" onClick="document.form1.submit();" style="width:100">¡¡
-      	<input type="button" name="b113" value="²é¿´ÖÖ×ÓÍøÖ·"  class='nbt' onClick="document.form2.submit();" style="width:100">
-      </td>
-    </tr>
-  </form>
-    <tr bgcolor="#E5F9FF"> 
-      <td height="20" colspan="2">
-<table width="100%">
-          <tr> 
-            <td width="74%">½ÚµãµÄÖÖ×ÓÍøÖ·£º </td>
-            <td width="26%" align="right">
-            	<script language='javascript'>
-            	function ResizeDiv(obj,ty)
-            	{
-            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
-            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-            	}
-            	</script>
-            	[<a href='#' onClick="ResizeDiv('mdv','+');">Ôö´ó</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">ËõĞ¡</a>]
-            	</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr bgcolor="#FFFFFF"> 
-      <td colspan="2" id="mtd">
-	  <div id='mdv' style='width:100%;height:100;'>
-	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?php if($dd>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
-	  </div>
-	  <script language="JavaScript">
-	  document.all.mdv.style.pixelHeight = screen.height - 360;
-	  </script>
-	  </td>
-    </tr>
-</table>
-</body>
-</html>
-<?php 
+require_once(dirname(__FILE__)."/templets/co_gather_start.htm");
 $co->Close();
+
+ClearAllLink();
 ?>

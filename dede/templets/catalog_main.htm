@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>类别管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/ieemu.js"></script>
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript">
+function LoadSuns(ctid,tid)
+{
+	if(document.getElementById(ctid).innerHTML.length < 10){
+	  var myajax = new DedeAjax($DE(ctid),false,true,'-','-','...');
+	  myajax.SendGet('catalog_do.php?dopost=GetSunLists&cid='+tid);
+	  //DedeXHTTP = null;
+  }
+  else{ showHide(ctid); }
+}
+function showHide(objname)
+{
+   if(document.getElementById(objname).style.display=="none") document.getElementById(objname).style.display = "block";
+	 else document.getElementById(objname).style.display="none";
+}
+if(moz) {
+	extendEventObject();
+	extendElementModel();
+	emulateAttachEvent();
+}
+//普通栏目
+function CommonMenu(obj,tid,tname)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("增加内容",function(){ location="catalog_do.php?cid="+tid+"&dopost=addArchives"; }),
+    new ContextItem("管理内容",function(){ location="catalog_do.php?cid="+tid+"&dopost=listArchives"; }),
+    new ContextSeperator(),
+    new ContextItem("预览分类",function(){ window.open("<?php echo $cfg_plus_dir?>/list.php?tid="+tid); }),
+    new ContextItem("更新HTML",function(){ location="makehtml_list.php?cid="+tid; }),
+    new ContextItem("获取JS文件",function(){ location="catalog_do.php?cid="+tid+"&dopost=GetJs"; }),
+    new ContextSeperator(),
+    new ContextItem("增加子类",function(){ location="catalog_add.php?ID="+tid; }),
+    new ContextItem("更改栏目",function(){ location="catalog_edit.php?ID="+tid; }),
+    new ContextSeperator(),
+    new ContextItem("移动栏目",function(){ location='catalog_move.php?job=movelist&typeid='+tid }),
+    new ContextItem("删除栏目",function(){ location="catalog_del.php?ID="+tid+"&typeoldname="+tname; }),
+    new ContextSeperator(),
+    new ContextItem("向上排前一级",function(){ location="catalog_do.php?cid="+tid+"&dopost=upRank"; })
+  ]
+  ContextMenu.display(popupoptions)
+}
+//互动栏目
+function CommonMenuWd(obj,tid,tname)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("预览分类",function(){ window.open("<?php echo $cfg_plus_dir?>/list.php?tid="+tid); } ),
+    new ContextSeperator(),
+    new ContextItem("增加内容",function(){location="catalog_do.php?cid="+tid+"&dopost=addArchives";}),
+    new ContextItem("管理内容",function(){location="catalog_do.php?cid="+tid+"&dopost=listArchives";}),
+    new ContextSeperator(),
+    new ContextItem("增加子类",function(){location="catalog_add.php?ID="+tid;}),
+    new ContextItem("更改栏目",function(){location="catalog_edit.php?ID="+tid;}),
+    new ContextSeperator(),
+    new ContextItem("移动栏目",function(){location='catalog_move.php?job=movelist&typeid='+tid}),
+    new ContextItem("删除栏目",function(){location="catalog_del.php?ID="+tid+"&typeoldname="+tname;}),
+    new ContextSeperator(),
+    new ContextItem("向上排前一级",function(){ location="catalog_do.php?cid="+tid+"&dopost=upRank"; })
+  ]
+  ContextMenu.display(popupoptions)
+}
+//封面模板
+function CommonMenuPart(obj,tid,tname)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("增加内容",function(){top.document.frames['main'].location="catalog_do.php?cid="+tid+"&dopost=addArchives";}),
+    new ContextItem("管理内容",function(){location="catalog_do.php?cid="+tid+"&dopost=listArchives";}),
+    new ContextSeperator(),
+    new ContextItem("预览分类",function(){ window.open("<?php echo $cfg_plus_dir?>/list.php?tid="+tid); }),
+    new ContextItem("更新HTML",function(){ location="makehtml_list.php?cid="+tid; }),
+    new ContextItem("获取JS文件",function(){ location="catalog_do.php?cid="+tid+"&dopost=GetJs"; }),
+    new ContextSeperator(),
+    new ContextItem("增加子类",function(){location="catalog_add.php?ID="+tid;}),
+    new ContextItem("更改栏目",function(){location="catalog_edit.php?ID="+tid;}),
+    new ContextSeperator(),
+    new ContextItem("移动栏目",function(){location='catalog_move.php?job=movelist&typeid='+tid}),
+    new ContextItem("删除栏目",function(){location="catalog_del.php?ID="+tid+"&typeoldname="+tname;}),
+    new ContextSeperator(),
+    new ContextItem("向上排前一级",function(){ location="catalog_do.php?cid="+tid+"&dopost=upRank"; })
+  ]
+  ContextMenu.display(popupoptions)
+}
+//单个页面
+function SingleMenu(obj,tid,tname)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("预览页面",function(){ window.open("catalog_do.php?cid="+tid+"&dopost=viewSgPage"); }),
+    new ContextItem("编辑页面",function(){ location="catalog_do.php?cid="+tid+"&dopost=editSgPage"; }),
+    new ContextItem("编辑模板",function(){ location="catalog_do.php?cid="+tid+"&dopost=editSgTemplet"; }),
+    new ContextSeperator(),
+    new ContextItem("更改栏目",function(){location="catalog_edit.php?ID="+tid;}),
+    new ContextSeperator(),
+    new ContextItem("移动栏目",function(){location='catalog_move.php?job=movelist&typeid='+tid}),
+    new ContextItem("删除栏目",function(){location="catalog_del.php?ID="+tid+"&typeoldname="+tname;}),
+    new ContextSeperator(),
+    new ContextItem("向上排前一级",function(){ window.location="catalog_do.php?cid="+tid+"&dopost=upRank"; })
+  ]
+  ContextMenu.display(popupoptions)
+}
+</script>
+<style>
+.coolbg2 {
+  border: 1px solid #000000;
+  background-color: #F2F5E9;
+  height:18px
+}
+.coolbt2 {
+  border-left: 2px solid #EFEFEF;
+  border-top: 2px solid #EFEFEF;
+  border-right: 2px solid #ACACAC;
+  border-bottom: 2px solid #ACACAC;
+  background-color: #F7FCDA
+}
+.bline {border-bottom: 1px solid #BCBCBC;background-color:#F3F6FA;}
+.nbline {border-bottom: 1px solid #DEDEDE;background-color:#FFFFFF;}
+.bline2 {border-bottom: 1px solid #BCBCBC;background-color:#F8F8F8;}
+.bline3 {border-bottom: 1px solid #A3B3BE;background-color:#FFFFF0;}
+</style>
+</head>
+<body leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">频道管理</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+		<tr>
+		<td bgcolor="#EDF9D5" class="tbtitletxt">
+			<div style='float:left'><strong>网站栏目管理</strong>(在IE浏览器中可使用右键菜单进行操作。)</div>
+			<div style='float:right;padding-right:30px'><a href='catalog_add.php?listtype=all'><b>↑创建顶级栏目</b></a></div>
+		</td>
+  </tr>
+</table>
+<form name="form1" action="catalog_do.php?dopost=upRankAll" method="post">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+		<tr align="center">
+				<td width="7%" class="tbsname">选择</td>
+				<td width="6%" class="tbsname">ID</td>
+				<td width="27%" class="tbsname">名称</td>
+				<td width="10%" class="tbsname">记录数</td>
+				<td width="8%" class="tbsname">内容模型</td>
+				<td width="34%" class="tbsname">管理</td>
+				<td width="8%" class="tbsname">排序</td>
+		</tr>
+</table>
+<?php
+if(empty($opendir)) $opendir=-1;
+$tu = new TypeUnit($userChannel);
+$tu->ListAllType($userChannel,$opendir);
+$tu->Close();
+?>
+</form>
+<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+			<td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+				  <input type="button" value="增加顶级栏目" class="inputbut" onClick="location='catalog_add.php?listtype=all';"/>
+				  <input type="button" value="更新排序" class="inputbut" onClick="document.form1.submit();"/>
+				  <input type="button" value="获取JS" class="inputbut" onClick="location='makehtml_js.php';"/>
+				  <input type="button" value="更新栏目HTML" class="inputbut" onClick="location='makehtml_list.php';"/>
+				  <input type="button" value="更新文档HTML" class="inputbut" onClick="location='makehtml_archives.php';"/>
+
+		            </p></td>
+		</tr>
+</table>
+</body>
+</html>

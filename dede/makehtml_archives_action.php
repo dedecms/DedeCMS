@@ -3,92 +3,107 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_MakeHtml');
 $t1 = ExecTime();
 require_once(dirname(__FILE__)."/../include/inc_archives_view.php");
-if(empty($startid)) $startid = 1;//ÆğÊ¼IDºÅ
-if(empty($endid)) $endid = 0;//½áÊøIDºÅ
-if(empty($startdd)) $startdd = 0;//½á¹û¼¯ÆğÊ¼¼ÇÂ¼Öµ
+if(empty($startid)) $startid = 0;//èµ·å§‹IDå·
+if(empty($endid)) $endid = 0;//ç»“æŸIDå·
+if(empty($startdd)) $startdd = 0;//ç»“æœé›†èµ·å§‹è®°å½•å€¼
 if(empty($pagesize)) $pagesize = 20;
 if(empty($totalnum)) $totalnum = 0;
 if(empty($typeid)) $typeid = 0;
-if(empty($seltime)) $seltime = 0;
-if(empty($stime)) $stime = "";
-if(empty($etime)) $etime = "";
 if(empty($sss)) $sss = time();
+if(empty($mkvalue)) $mkvalue = '';
+//ä¸€é”®æ›´æ–°ä¼ é€’çš„å‚æ•°
+if(!empty($uptype)){
+	if($uptype!='time') $startid = $mkvalue;
+}else{
+	$uptype = '';
+}
 
 $dsql = new DedeSql(false);
-//»ñÈ¡Ìõ¼ş
+//è·å–æ¡ä»¶
 //------------------------
-$gwhere = " where ID>=$startid And arcrank=0 ";
-if($endid > $startid) $gwhere .= " And ID<= $endid ";
-$idsql = "";
+$gwhere = " where arcrank=0 ";
+if($startid>0) $gwhere .= " And aid >= $startid ";
+if($endid > $startid) $gwhere .= " And aid <= $endid ";
+
 if($typeid!=0){
-	$idArrary = TypeGetSunTypes($typeid,$dsql,0);
-	if(is_array($idArrary))
-	{
-	  foreach($idArrary as $tid){
-		  if($idsql=="") $idsql .= " typeid=$tid ";
-		  else $idsql .= " or typeid=$tid ";
-	  }
-	  $idsql = " And (".$idsql.")";
-  }
-  $idsql = $gwhere.$idsql;
+	$typeids = TypeGetSunID($typeid,$dsql,"",0,true);
+  $gwhere .= " And typeid in ($typeids)";
 }
-if($idsql=="") $idsql = $gwhere;
-if($seltime==1){
-	 $t1 = GetMkTime($stime);
-	 $t2 = GetMkTime($etime);
-	 $idsql .= " And (senddate >= $t1 And senddate <= $t2) ";
+
+if($uptype=='time'){
+	 $gwhere .= " And uptime >= '$mkvalue' ";
 }
-//Í³¼Æ¼ÇÂ¼×ÜÊı
+
+//ç»Ÿè®¡è®°å½•æ€»æ•°
 //------------------------
 if($totalnum==0)
 {
-	$row = $dsql->GetOne("Select count(*) as dd From #@__archives $idsql");
+	$row = $dsql->GetOne("Select count(*) as dd From `#@__full_search` $gwhere");
 	$totalnum = $row['dd'];
 }
-//»ñÈ¡¼ÇÂ¼£¬²¢Éú³ÉHTML
-if($totalnum > $startdd+$pagesize) $limitSql = " limit $startdd,$pagesize";
-else $limitSql = " limit $startdd,".($totalnum - $startdd);
+//è·å–è®°å½•ï¼Œå¹¶ç”ŸæˆHTML
+$nlimit = $totalnum - $startdd;
+if($totalnum > $startdd+$pagesize){
+	$limitSql = " limit $startdd,$pagesize";
+	$nlimit = 1;
+}else{
+	$limitSql = " limit $startdd,{$nlimit}";
+}
+
 $tjnum = $startdd;
-$dsql->SetQuery("Select ID From #@__archives $idsql $limitSql");
-$dsql->Execute();
-while($row=$dsql->GetObject())
+if($nlimit>0)
 {
-	$tjnum++;
-	$ID = $row->ID;
-	$ac = new Archives($ID);
-	$rurl = $ac->MakeHtml();
-	$ac->Close();
+  $dsql->SetQuery("Select aid as ID From `#@__full_search` $gwhere $limitSql");
+  $dsql->Execute();
+  while($row=$dsql->GetObject())
+  {
+	  $tjnum++;
+	  $ID = $row->ID;
+	  $ac = new Archives($ID);
+	  if(!$ac->IsError){
+	  	$rurl = $ac->MakeHtml();
+	  }else{
+	  	echo "æ–‡æ¡£ï¼š $ID é”™è¯¯ï¼<br />\r\n";
+	  	$rurl = '';
+	  }
+  }
 }
 
 $t2 = ExecTime();
 $t2 = ($t2 - $t1);
 
-//·µ»ØÌáÊ¾ĞÅÏ¢
+//è¿”å›æç¤ºä¿¡æ¯
 if($totalnum>0) $tjlen = ceil( ($tjnum/$totalnum) * 100 );
 else $tjlen=100;
+
 $dvlen = $tjlen * 2;
 $nntime = time();
 $utime = $nntime - $sss;
-if($utime>0){
-	$utime = number_format(($utime/60),2);
-}
-$tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
-$tjsta .= "<br>±¾´ÎÓÃÊ±£º".number_format($t2,2)." µ½´ïÎ»ÖÃ£º".($startdd+$pagesize)."<br/>Íê³É´´½¨ÎÄ¼ş×ÜÊıµÄ£º$tjlen %£¬<br> ×ÜÓÃÊ±: {$utime} ·ÖÖÓ£¬ ¼ÌĞøÖ´ĞĞÈÎÎñ...";
 
+if($utime>0){ $utime = number_format(($utime/60),2); }
+
+$tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
+$tjsta .= "<br>æœ¬æ¬¡ç”¨æ—¶ï¼š".number_format($t2,2)." åˆ°è¾¾ä½ç½®ï¼š".($startdd+$pagesize)."<br/>å®Œæˆåˆ›å»ºæ–‡ä»¶æ€»æ•°çš„ï¼š$tjlen %ï¼Œ<br> æ€»ç”¨æ—¶: {$utime} åˆ†é’Ÿï¼Œ ç»§ç»­æ‰§è¡Œä»»åŠ¡...";
+  
 if($tjnum < $totalnum)
 {
-	$nurl  = "makehtml_archives_action.php?sss=$sss&endid=$endid&startid=$startid&typeid=$typeid";
-	$nurl .= "&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize";
-	$nurl .= "&seltime=$seltime&stime=".urlencode($stime)."&etime=".urlencode($etime);
-	$dsql->Close();
-	ShowMsg($tjsta,$nurl,0,100);
-	exit();
-}
-else
+	 $nurl  = "makehtml_archives_action.php?sss=$sss&endid=$endid&startid=$startid&typeid=$typeid";
+	 $nurl .= "&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize&uptype={$uptype}&mkvalue={$mkvalue}";
+	 ShowMsg($tjsta,$nurl,0,100);
+	 ClearAllLink();
+	 exit();
+}else
 {
-	$dsql->Close();
-	echo "Íê³ÉËùÓĞ´´½¨ÈÎÎñ£¬×ÜÓÃÊ±: {$utime} ·ÖÖÓ ¡£";
-	exit();
+	 if($uptype==''){
+		  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	 	  echo "å®Œæˆæ‰€æœ‰åˆ›å»ºä»»åŠ¡ï¼Œæ€»ç”¨æ—¶: {$utime} åˆ†é’Ÿ ã€‚";
+		  ClearAllLink();
+	    exit();
+	 }else{
+		  ShowMsg("å®Œæˆæ‰€æœ‰æ–‡æ¡£æ›´æ–°ï¼Œç°åœ¨é‡æ–°ä¼˜åŒ–æ•°æ®ï¼","makehtml_all.php?action=make&step=4&uptype={$uptype}&mkvalue={$mkvalue}");
+		  ClearAllLink();
+		  exit();
+	 }
 }
 
 ?>

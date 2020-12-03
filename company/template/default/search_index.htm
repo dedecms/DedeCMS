@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="template/default/css/style.css" rel="stylesheet" type="text/css" />
+<title>搜索企业</title>
+<script language="javascript"><?php if(isset($sectorcache)){echo $sectorcache;}if(isset($areacache)){ echo $areacache;}?></script>
+<script language='javascript' src='../include/common.js'></script>
+</head>
+
+<body>
+<div id="container">
+<!-- 头部开始 -->
+	<div id="search_header">
+   	  <div id="centertext">
+        	<div class="search_logo">
+            </div>
+            <div class="search_top">
+          		<div class="search_menu">
+           			<ul>
+					<li class="one"><a href="../">网站首页</a></li>
+<?php
+	if(!empty($cfg_ml->M_ID)){
+?>
+			  		<li class="one"><a target="_blank" href="../member/control.php">控制面板</a></li>
+					<li class="one"><a target="_blank" href="../member/index.php?id=<?php echo $cfg_ml->M_ID;?>">企业网站</a></li>
+<?php
+	}else{
+
+?>
+			  		<li class="one"><a href="../member/login.php">登录管理</a></li>
+					<li class="one"><a href="../member/index_do.php?fmdo=user&dopost=regnew">加入企业库</a></li>
+<?php
+}
+?>
+					<li class="two"><a href="http://bbs.dedecms.com">织梦论坛</a></li>
+					</ul>
+          		</div>
+            </div>
+            <div class="clear">
+            </div>
+      </div>
+    </div>
+
+    <!-- 搜索开始 -->
+    <div id="company_search">
+    	<div id="search_middle">
+        	<div class="serach_top_titlebg">
+            </div>
+            <div class="search_font">输入企业名称、行业、产品、服务、地址或企业类型进行搜索
+            </div>
+            <div class="search_form_bar">
+            	<div class="search_img"></div> <form name="form2" action="search.php" method="post">
+                <div class="search_inputform"><input name="comname" type="text" class="search_input" /></div>
+                <div class="clear"></div>
+            </div>
+            <div class="search_select">
+            	<div class="search_select_text">
+            		<div class="search_select_form">
+<select name="areaid" id="areaid" onChange="javascript:selNext(this.document.form2.areaid2,this.value,'subareas')">
+<option value="0">--不限--</option>
+<?php
+$dsql->SetQuery("Select * From #@__area where reid=0");
+$dsql->Execute();
+while($area = $dsql->GetArray())
+{
+	echo "<option value='".$area['id']."'>".$area['name']."</option>\r\n";
+}
+?>
+</select>
+</div>
+            		<div class="search_select_form">
+<select name="areaid2" id="areaid2">
+<option value="0">--不限--</option>
+</select>
+                	</div>
+            	</div>
+                <div class="search_button">
+                	<div><input type="submit" name="Submit2" value="" class="search_button_img" />
+                	</form>
+                    </div>
+                </div>
+            	<div class="clear"></div>
+			</div>
+            <div class="search_bottom">
+            </div>
+        </div>
+    </div>
+
+    <!-- 中间开始 -->
+    <div id="search_main">
+    	<div id="search_main_middle">
+            <!-- 左边开始 -->
+        	<div class="search_left">
+           		<div class="search_class_title">
+                	<ul><li>按行业分类查找客户</li></ul>
+            	</div>
+                <div  class="search_class_text">
+
+<?php
+
+if($sectors){
+	$temp = 0;
+	foreach($sectors as $sector){
+
+		if($sector['reid'] == 0){
+			if($temp > 0){
+				echo "</dl></div>\n\n";
+			}
+			 echo "<div class=\"search_class_box\"><dl>\n";
+             echo "<dt><a href=\"search.php?sectorid=$sector[id]\">$sector[name]</a></dt>\n";
+			$temp++;
+		}else{
+			echo "<dd><a href=\"search.php?sectorid2=$sector[id]\">$sector[name]</a></dd>\n";
+		}
+	}
+	echo "</dl></div>\n";
+}
+?>
+                    <div class="clear">
+                    </div>
+                </div>
+            </div>
+
+            <!--右边开始-->
+            <div class="search_right">
+       		  <div class="search_right_join"><a href="../member/index_do.php?fmdo=user&dopost=regnew"></a>
+           	  </div>
+           		<div class="search_right_title">
+           		  <ul><li>按地区搜索</li></ul>
+            	</div>
+           		<div class="search_right_text">
+           		  <ul>
+           		  	<?php
+           		  	if($toparea){
+           		  		foreach($toparea as $area){
+           		  			echo "<li><a href=\"search.php?areaid=$area[id]\">$area[name]</a></li>";
+           		  		}
+           		  	}
+           		  	?>
+                	</ul>
+                	<div class="clear">
+                  </div>
+                </div>
+                <div class="search_ad"><a href="http://www.dedecms.com">点击下载织梦CMS</a>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!-- 底部footer -->
+    <div id="footer">
+    	<div class="footer_bar">
+        </div>
+        <div class="footer_main">
+        	<div class="footer_text">Power by DedeCms Copyright &copy; 2007-2008</div>
+            <div class="footer_logo"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

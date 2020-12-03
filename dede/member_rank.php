@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('member_Type');
 if(empty($dopost)) $dopost = "";
 $dsql = new DedeSql(false);
-//保存更改
+//淇濆瓨鏇存敼
 //--------------------
 if($dopost=="save")
 {
@@ -35,88 +35,10 @@ if($dopost=="save")
    	   $dsql->ExecuteNoneQuery();
    	 }
    }
-   echo "<script> alert('成功更新会员等级表！'); </script>";
+   echo "<script> alert('鎴愬姛鏇存柊浼氬憳绛夌骇琛紒'); </script>";
 }
+
+require_once(dirname(__FILE__)."/templets/member_rank.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>会员权限管理</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
-  <form name="form1" action="member_rank.php" method="post">
-    <input type="hidden" name="dopost" value="save">
-    <tr> 
-      <td height="24" colspan="4" background='img/tbg.gif'><strong><a href="co_main.php"><u>会员管理</u></a> 
-        &gt; 会员级别管理：</strong></td>
-    </tr>
-    <tr bgcolor="#F8FCF1"> 
-      <td height="24" colspan="4"><strong>会员名称和级别值：（注册会员这个级别禁止删除）</strong></td>
-    </tr>
-    <tr bgcolor="#FDFEE9"> 
-      <td width="25%" height="24" align="center" valign="top">名称</td>
-      <td width="27%" align="center" valign="top">级别值</td>
-      <td width="24%" align="center">默认拥有金币</td>
-      <td width="24%" align="center">状态</td>
-    </tr>
-	<?php 
-	$dsql->SetQuery("Select * From #@__arcrank where rank>0 order by rank");
-	$dsql->Execute();
-	$k=0;
-	while($row = $dsql->GetObject())
-	{
-	  $k++;
-	?>
-	<input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->ID?>">
-    <tr align="center" bgcolor="#FFFFFF"> 
-      <td height="24" valign="top">
-	  <input name="name_<?php echo $k?>" value="<?php echo $row->membername?>" type="text" id="name_<?php echo $k?>" size="20">
-	  </td>
-      <td height="24" valign="top">
-	  <input name="rank_<?php echo $k?>" value="<?php echo $row->rank?>"  type="text" id="rank_<?php echo $k?>" size="20">
-	  </td>
-      <td>
-	  <input name="money_<?php echo $k?>"  value="<?php echo $row->money?>"  type="text" id="money_<?php echo $k?>" size="20">
-	  </td>
-      <td>
-	  <input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>" class="np" value="1" checked>
-       继续使用
-	 </td>
-    </tr>
-	<?php 
-	}
-	?>
-	<input type="hidden" name="idend" value="<?php echo $k?>">
-    <tr bgcolor="#F8FCF1"> 
-      <td height="24" colspan="4" valign="top"><strong>新增一个等级：</strong></td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
-	  <input name="name_new" type="text" id="name_new" size="20">
-	  </td>
-      <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
-	  <input name="rank_new" type="text" id="rank_new" size="20">
-	  </td>
-      <td align="center" bgcolor="#FFFFFF">
-      <input name="money_new" type="text" id="money_new" size="20">
-      </td>
-      <td align="center" bgcolor="#FFFFFF"><input name="check_new" type="checkbox" id="check_new" class="np" value="1">
-        增加新等级</td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" bgcolor="#F8FCF1">&nbsp;</td>
-    </tr>
-    <tr> 
-      <td height="34" colspan="4" align="center" bgcolor="#FFFFFF">
-      	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np">
-      </td>
-    </tr>
-  </form>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

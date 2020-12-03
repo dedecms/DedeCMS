@@ -1,0 +1,465 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>增加软件集</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language='javascript' src='main.js'></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+   if(document.form1.title.value==""){
+	   alert("软件名称不能为空！");
+	   document.form1.title.focus();
+	   return false;
+  }
+  if(document.form1.typeid.value==0){
+	   alert("请选择档案的主类别！");
+	   return false;
+  }
+}
+
+function MakeUpload()
+{
+   var startNum = 2;
+   var upfield = document.getElementById("uploadfield");
+   var endNum =  document.form1.picnum.value;
+   if(endNum>9) endNum = 9;
+   upfield.innerHTML = "";
+   for(startNum;startNum<=endNum;startNum++){
+	   upfield.innerHTML += "软件地址"+startNum+"：<input type='text' name='softurl"+startNum+"' style='width:280px' value='http://'> ";
+	   upfield.innerHTML += " ";
+	   upfield.innerHTML += "服务器名称：<input type='text' name='servermsg"+startNum+"' style='width:150'><br/>\r\n";
+	 }
+}
+-->
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+-->
+</style>
+</head>
+<body topmargin="8">
+<form name="form1" action="action/soft_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr> 
+      <td height="30">&nbsp;<a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>软件列表</u></a>&gt;&gt;发布新软件</td>
+      <td width="31%" align="right">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> 
+        [<a href="soft_config.php"><u>下载频道参数设定</u></a>]</td>
+      <td width="1%">&nbsp;</td>
+    </tr>
+  </table>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr>
+      <td bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
+        <tr>
+          <td colspan="2" bgcolor="#EDF9D5"><table border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="84" height="28" align="center" bgcolor="#FFFFFF">&nbsp;常规参数&nbsp;</td>
+                <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onclick="ShowItem2()"><u>软件内容</u></a></td>
+              </tr>
+          </table></td>
+        </tr>
+      </table>
+        <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
+          <tr>
+            <td colspan="2" bgcolor="#EDF9D5"><table height="28" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onclick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
+                  <td width="84" align="center" bgcolor="#FFFFFF">软件内容</td>
+                </tr>
+            </table></td>
+          </tr>
+        </table>
+        <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+            <td height="2"></td>
+          </tr>
+        </table>
+        <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
+          <tr>
+            <td width="400%" height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件名称：</td>
+                  <td width="250"><input name="title" type="text" id="title" style="width:230px" />
+                  </td>
+                  <td width="90">附加参数：</td>
+                  <td><input name="iscommend" type="checkbox" id="iscommend" value="11"  />
+                    推荐
+                    <input name="isbold" type="checkbox" id="isbold" value="5"  />
+                    加粗
+                    <input name="isjump" type="checkbox" id="isjump" value="1" onclick="ShowUrlTr()"  />
+                    跳转网址 </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline" id="redirecturltr" style="display:none">
+            <table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;跳转网址：</td>
+                  <td><input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="" />
+                  </td>
+                </tr>
+            </table>
+            </td>
+          </tr>
+          <tr>
+      <td height="28" colspan="4" class="bline">
+	   <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;Tag标签：</td>
+            <td>
+			<input name="tag" type="text" id="tag" style="width:300px" value=""> 
+			(用空格或','分开)            </td>
+          </tr>
+       </table>	 </td>
+       </tr>
+          <tr id="pictable">
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="135" height="81">&nbsp;缩 略 图：<br/>
+                    &nbsp;
+                    <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote' onclick="CkRemote('ddisremote','litpic')" />
+                    远程图片 <br />
+                  </td>
+                  <td width="464"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+                      <tr>
+                        <td height="30"> 本地上传请点击“浏览”按钮
+                          <input name="litpic" type="file" id="litpic" style="width:200px" onchange="SeePic(document.picview,document.form1.litpic);" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td height="30"><input name="picname" type="text" id="picname" style="width:250px" />
+                            <input type="button" name="Submit2" value="在网站内选择" style="width:120px" onclick="SelectImage('form1.picname','small');" class="inputbut" />
+                        </td>
+                      </tr>
+                  </table></td>
+                  <td width="201" align="center"><img src="img/pview.gif" width="150" id="picview" name="picview" /></td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;简略标题：</td>
+                  <td width="250"><input name="shorttitle" type="text" id="shorttitle" style="width:150px" />
+                  </td>
+                  <td width="90">自定义属性：</td>
+                  <td><select name='arcatt' style='width:150px'>
+                      <option value='0'>普通文档</option>
+                      <?php 
+            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
+            	$dsql->Execute();
+            	while($trow = $dsql->GetObject())
+            	{
+            		echo "<option value='{$trow->att}'>{$trow->attname}(att={$trow->att})</option>";
+            	}
+            	?>
+                    </select>
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件主栏目：</td>
+                  <td width="400"><?php 
+           	if(empty($cid)) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		          echo "<select name='typeid' style='width:300px'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?></td>
+                  <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" bgcolor="#FFFFFF" class="bline2"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件副栏目：</td>
+                  <td><?php echo GetTypeidSel('form1','typeid2','selbt2',$channelid)?></td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90" height="22">&nbsp;内容排序：</td>
+                  <td width="240"><select name="sortup" id="sortup" style="width:150px">
+                      <option value="0" selected="selected">默认排序</option>
+                      <option value="7">置顶一周</option>
+                      <option value="30">置顶一个月</option>
+                      <option value="90">置顶三个月</option>
+                      <option value="180">置顶半年</option>
+                      <option value="360">置顶一年</option>
+                    </select>
+                  </td>
+                  <td width="90">标题颜色：</td>
+                  <td width="159"><input name="color" type="text" id="color" style="width:120px" />
+                  </td>
+                  <td><input name="modcolor" type="button" id="modcolor" value="选取" onclick="ShowColor()" class="inputbut" />
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;阅读权限：</td>
+                  <td width="240"><select name="arcrank" id="arcrank" style="width:150px">
+                      <?php 
+              $dsql->SetQuery("Select * from #@__arcrank ");
+              $dsql->Execute();
+              while($row = $dsql->GetObject())
+              {
+              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
+              }
+              ?>
+                    </select>
+                  </td>
+                  <td width="90">发布选项：</td>
+                  <td><input name="ishtml" type="radio"  value="1" checked="checked" />
+                    生成HTML
+                    <input type="radio" name="ishtml"  value="0" />
+                    仅动态浏览</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="76" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="81" height="51">&nbsp;简要说明：</td>
+                  <td width="235"><textarea name="description" rows="3" id="description" style="width:200px"></textarea>
+                  </td>
+                  <td width="81">关键字：</td>
+                  <td width="211"><textarea name="keywords" rows="3" id="keywords" style="width:200px"></textarea>
+                  </td>
+                  <td width="192" align="left"> 用空格分开<br/>
+                      <input type="button" name="Submit" value="浏览..." style="width:56px;height:20px" onclick="SelectKeywords('form1.keywords');" class="inputbut" />
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;发布时间：</td>
+                  <td width="400"><?php 
+			$nowtime = GetDateTimeMk(mytime());
+			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\">";
+			?>
+                  </td>
+                  <td width="99" align="center">消费点数：</td>
+                  <td width="211"><input name="money" type="text" id="money" value="0" size="10" />
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline">
+            	<table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90" height="65">&nbsp;相关文档：</td>
+                  <td width="330"><textarea name="likeid" cols="50" rows="6" id="likeid" style="width:320px;height:51px;float:left;margin-right:10px"></textarea></td>
+                  <td>
+                  	<span style="padding-top:10px;maring:0px;">把文档ID，用逗号“,”分开<br/>
+                      <input name="lsel" type="button" id="lsel" class="inputbut" style="width:150px" onchange="" value="从已发布文档中选取..." onclick="SelectArcListA('form1.likeid');" />
+                  </span>
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+        </table>
+        <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="6"></td>
+          </tr>
+        </table>
+        <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
+       <tr>
+       <td style="padding:0px;">
+        <?php 
+        PrintAutoFieldsAdd($cInfos['fieldset'],'autofield','90');
+        ?>
+        </td>
+        </tr>
+		  <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件来源：</td>
+                  <td width="240"><input name="source" type="text" id="source" style="width:200px" />
+                  </td>
+                  <td width="90">软件作者：</td>
+                  <td width="159"><input name="writer" type="text" id="writer" style="width:120px" /></td>
+                  <td>&nbsp;</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td width="100%" height="28" class="bline">
+            	<table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;文件类型：</td>
+                  <td width="240"><select name="filetype" id="filetype" style="width:100px">
+                      <option value=".exe" selected="selected">.exe</option>
+                      <option value=".zip">.zip</option>
+                      <option value=".rar">.rar</option>
+                      <option value=".iso">.iso</option>
+                      <option value=".gz">.gz</option>
+                      <option value="其它">其它</option>
+                    </select>
+                  </td>
+                  <td width="90">界面语言：</td>
+                  <td><select name="language" id="language" style="width:100px">
+                      <option value="简体中文" selected="selected">简体中文</option>
+                      <option value="英文软件">英文软件</option>
+                      <option value="繁体中文">繁体中文</option>
+                      <option value="其它类型">其它类型</option>
+                    </select>
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件类型：</td>
+                  <td width="240"><select name="softtype" id="softtype" style="width:100px">
+                      <option value="国产软件" selected="selected">国产软件</option>
+                      <option value="国外软件">国外软件</option>
+                      <option value="汉化补丁">汉化补丁</option>
+                    </select>
+                  </td>
+                  <td width="90">授权方式：</td>
+                  <td><select name="accredit" id="accredit" style="width:100px">
+                      <option value="共享软件" selected="selected">共享软件</option>
+                      <option value="免费软件">免费软件</option>
+                      <option value="开源软件">开源软件</option>
+                      <option value="商业软件">商业软件</option>
+                      <option value="破解软件">破解软件</option>
+                      <option value="游戏外挂">游戏外挂</option>
+                    </select>
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;运行环境：</td>
+                  <td width="240"><input type='text' name='os' value='Win2003,WinXP,Win2000,Win9X' style='width:200px' />
+                  </td>
+                  <td width="90">软件等级：</td>
+                  <td><select name="softrank" id="softrank" style="width:100px">
+                      <option value="1">一星</option>
+                      <option value="2">二星</option>
+                      <option value="3" selected="selected">三星 </option>
+                      <option value="4">四星</option>
+                      <option value="5">五星</option>
+                    </select>
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;官方网址：</td>
+                  <td width="240"><input name="officialUrl" type="text" id="officialUrl" value="http://" />
+                  </td>
+                  <td width="90">程序演示：</td>
+                  <td><input name="officialDemo" type="text" id="officialDemo" />
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">&nbsp;软件大小：</td>
+                  <td width="240"><input name="softsize" type="text" id="softsize" style="width:100px" />
+                      <select name="unit" id="unit">
+                        <option value="MB" selected="selected">MB</option>
+                        <option value="KB">KB</option>
+                        <option value="GB">GB</option>
+                      </select>
+                  </td>
+                  <td width="90">&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" bgcolor="#F1F5F2" class="bline2"><strong>&nbsp;软件链接列表：</strong></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90" height="33">&nbsp;本地下载：</td>
+                  <td height="33"><input name="softurl1" type="text" id="softurl1" size="40" />
+                      <input name="sel1" type="button" id="sel1" value="选取" onclick="SelectSoft('form1.softurl1')" class="inputbut" />
+                  </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><table width="600" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90" height="33">&nbsp;其它地址：</td>
+                  <td height="33"><input name="picnum" type="text" id="picnum" size="8" value="5" />
+                      <input name='kkkup' type='button' id='kkkup2' value='生成表单' onclick="MakeUpload();" class="inputbut" />
+                  (最多为9个链接) </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" class="bline"><span id='uploadfield'></span></td>
+          </tr>
+          <tr>
+            <td height="28" bgcolor="#F1F5F2" class="bline2"><strong>软件详细介绍：</strong></td>
+          </tr>
+          <tr>
+            <td height="100" class="bline">
+			<?php 
+	         GetEditor("body","",250,"Small");
+	        ?>
+            </td>
+          </tr>
+        </table>
+        <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="56"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+                <tr>
+                  <td width="17%">&nbsp;</td>
+                  <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td width="115" height="35"><input name="imageField" type="submit" class="inputbut" value="确定" /></td>
+                        <td width="99" height="35"><input name="button" type="reset" class="inputbut" id="button" value="重置"/></td>
+                      </tr>
+                  </table></td>
+                </tr>
+            </table></td>
+          </tr>
+        </table>
+</td>
+    </tr>
+  </table>
+  </form>
+<script type="text/javascript">
+<!--
+if($Nav()!="IE") ShowObj('adset');
+InitPage();
+//-->
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@ if(empty($dopost)) $dopost = "";
 if($dopost=='save')
 {
 	if($rank==10){
-		ShowMsg("³¬¼¶¹ÜÀíÔ±µÄÈ¨ÏÞ²»ÔÊÐí¸ü¸Ä!","sys_group.php");
+		ShowMsg("è¶…çº§ç®¡ç†å‘˜çš„æƒé™ä¸å…è®¸æ›´æ”¹!","sys_group.php");
 	  $dsql->Close();
 	  exit();
 	}
@@ -19,13 +19,13 @@ if($dopost=='save')
   }
 	$dsql->ExecuteNoneQuery("Update #@__admintype set typename='$typename',purviews='$purview' where rank='$rank'");
 	$dsql->Close();
-	ShowMsg("³É¹¦¸ü¸ÄÓÃ»§×éµÄÈ¨ÏÞ!","sys_group.php");
+	ShowMsg("æˆåŠŸæ›´æ”¹ç”¨æˆ·ç»„çš„æƒé™!","sys_group.php");
 	exit();
 }
 else if($dopost=='del')
 {
 	$dsql->ExecuteNoneQuery("Delete From #@__admintype where rank='$rank' And system='0';");
-  ShowMsg("³É¹¦É¾³ýÒ»¸öÓÃ»§×é!","sys_group.php");
+  ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªç”¨æˆ·ç»„!","sys_group.php");
 	$dsql->Close();
 	exit();
 }
@@ -33,105 +33,15 @@ $groupRanks = Array();
 $groupSet = $dsql->GetOne("Select * From #@__admintype where rank='".$rank."'");
 $groupRanks = explode(' ',$groupSet['purviews']);
 
-//¼ì²éÊÇ·ñÒÑ¾­ÓÐ´ËÈ¨ÏÞ
+//æ£€æŸ¥æ˜¯å¦å·²ç»æœ‰æ­¤æƒé™
 function CRank($n){
 	global $groupRanks;
 	if(in_array($n,$groupRanks)) return ' checked';
 	else  return '';
 }
+
+require_once(dirname(__FILE__)."/templets/sys_group_edit.htm");
+
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>×éÈ¨ÏÞÉèÖÃ</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<center>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
-<form name='form1' action='sys_group_edit.php' method='post'> 
-<input type='hidden' name='dopost' value='save'>
-  <tr>
-    <td height="23" background="img/tbg.gif"><b><a href='sys_group.php'>ÏµÍ³ÓÃ»§×é¹ÜÀí</a>&gt;&gt;¸ü¸ÄÓÃ»§×é£º</b></td>
-</tr>
-  <tr> 
-    <td valign="top" bgcolor="#FFFFFF" align="center"> 
-      <table width="98%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="9%" height="30">×éÃû³Æ£º</td>
-          <td width="91%"> <input name="typename" type="text" id="typename" value="<?php echo $groupSet['typename']?>"> 
-          </td>
-        </tr>
-        <tr> 
-          <td width="9%" height="30">¼¶±ðÖµ£º</td>
-          <td width="91%">
-          	<input name="rank" type="hidden" id="rank" value="<?php echo $groupSet['rank']?>">
-          	<?php echo $groupSet['rank']?>
-          </td>
-        </tr>
-        <?php 
-        $start = 0;
-        $k = 0;
-        $gouplists = file(dirname(__FILE__).'/inc/grouplist.txt');
-        foreach($gouplists as $line)
-        {
-        	$line = trim($line);
-        	if($line=="") continue;
-        	if(ereg("^>>",$line))
-        	{
-        		if($start>0) echo "        	 </td></tr>\r\n";
-        		$start++;
-        		$lhead = "
-        	 <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'>{$start}¡¢".str_replace('>>','',$line)."</td></tr>
-           <tr><td height='25' colspan='2'>
-        		"; 
-        		echo $lhead;
-        	}
-        	else if(ereg("^>",$line))
-        	{
-        		$ls = explode('>',$line);
-        		$tag = $ls[1];
-        		$tagname = str_replace('[br]','<br>',$ls[2]);
-        		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'".CRank($tag).">$tagname\r\n";
-        	  $k++;
-        	}
-        }
-        $start++;
-        ?>
-        </td>
-        </tr>
-        <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'><?php echo $start?>¡¢²å¼þÈ¨ÏÞ</td>
-         </tr>
-        <tr>
-        <td height='25' colspan='2'>
-         <?php 
-         $l = 0;
-         $dsql->SetQuery('Select plusname From #@__plus');
-         $dsql->Execute();
-         while($row=$dsql->GetObject()){
-         	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'".CRank("plus_{$row->plusname}").">{$row->plusname}\r\n";
-        	 $k++;
-        	 $l++;
-        	 if($l%4==0) echo "<br>";
-         }
-         ?>  	
-        </td>
-        </tr>
-        <tr> 
-          <td height="50" align="center">&nbsp;</td>
-          <td height="50"><input  class="np" name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0">
-          </td>
-        </tr>
-      </table>
-    </td>
-</tr>
-</form>
-</table>
-</center>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

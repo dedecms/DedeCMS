@@ -1,0 +1,98 @@
+<?php
+$userNumID = ereg_replace("[^0-9]","",$userNumID);
+?>
+			<div id="space_left"><!--左边开始-->
+            	<div class="space_form"><!--个人信息-->
+                	<div class="space_title">
+                    	<ul>
+                        <li>个人基本信息</li>
+                        </ul>
+                    </div>
+                    <div class="space_text">
+                    	<div class="space_info_img"><a href="index.php?uid=<?php echo $uid?>"><img name="myface" src="<?php echo $spaceimage?>" border="0"></a>
+                        </div>
+                        <div class="space_text_font">
+                       		<dl>
+                            <dd class="space_name">昵称：<?php echo $uname?></dd>
+                            <dd class="space_dangan"><a href="index.php?uid=<?php echo $uid?>&action=memberinfo">我的档案</a></dd>
+                        	</dl>
+                            <dl><dd><div style="float:left;">等级：</div><div class="space_star_<?php echo $space_star;?>" title="积分：<?php echo $scores;?>"></div> <?php echo $honor;?></dd></dl>
+                            <dl class="clear">
+                            <dd>最后在线： <?php echo strftime("%y-%m-%d %H:%M",$logintime)?></dd>
+                        	</dl>
+                            <dl>
+                            <dd class="space_article"><a href="control.php">控制面板</a></dd>
+                            <dd class="space_photo"><a href="pm.php?action=send&vwriter=<?php echo $uid;?>">短信息</a></dd>
+                            <dd class="space_friend"><img src="images/space/add_friend.gif" align="absmiddle" title="加为好友" /> <a href="my_friends.php?uid=<?php echo $userNumID;?>&action=add" title="加为好友">好友</a></dd>
+                       	  </dl>
+                            <div class="clear">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space_form"><!--文档分类-->
+                	<div class="space_files">
+                    	<ul>
+                        <li>文档分类</li>
+                        </ul>
+                    </div>
+                    <div class="space_text">
+                    	<div class="space_text_font">
+                       		<ul>
+                            <li><a href="member_archives.php?uid=<?php echo $uid?>&channelid=1">我的文章[<?php echo  $c1?>]</a></li>
+                            <li><a href="member_archives.php?uid=<?php echo $uid?>&channelid=2">我的图集[<?php echo  $c2?>]</a></li>
+                            <li><a href="index.php?id=<?php echo $userNumID?>&action=group">我的圈子</a></li>
+                            <li><a href="index.php?id=<?php echo $userNumID?>&action=threads">我的帖子</a></li>
+                            <li><a href="index.php?id=<?php echo $userNumID?>&action=ask">我的问答</a></li>
+                            <li><a href="index.php?id=<?php echo $userNumID?>&action=info">我的分类</a></li>
+                            <?php
+                            if(!isset($dsql) || !is_object($dsql)){
+                                $dsql = new DedeSql(false);
+                            }
+                            $addQuery = "";
+                            if(!empty($channelid)){
+                                $channelid = ereg_replace("[^0-9]","",$channelid);
+                                $addQuery = " And channelid='$channelid' ";
+                            }
+                            $userNumID = ereg_replace("[^0-9]","",$userNumID);
+                            $dsql->SetQuery("Select * From #@__member_arctype where memberid='$userNumID' $addQuery order by rank desc; ");
+                            $dsql->Execute();
+                            while($menurow = $dsql->GetArray())
+                            {
+                            ?>
+                             <li><a href='member_archives.php?uid=<?php echo $uid?>&channelid=<?php echo $menurow['channelid']?>&mtype=<?php echo $menurow['aid']?>'><?php echo $menurow['typename']?></a></li>
+                            <?php
+                            }
+                            ?>
+                            </ul>
+                            <div class="clear">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space_form"><!--友情链接-->
+                	<div class="space_link">
+                    	<ul>
+                        <li>友情链接</li>
+                        </ul>
+                    </div>
+                    <div class="space_text">
+                    	<div class="space_link_font">
+                       		<ul>
+                            <?php
+                              $dsql->SetQuery("Select * From #@__member_flink where mid='$userNumID' order by aid desc");
+                              $dsql->Execute();
+                              while($row = $dsql->GetArray())
+                              {
+                                if($row['linktype']==2) $textname = "<img src='{$row['imgurl']}' width='{$row['imgwidth']}' height='{$row['imgheight']}' border='0' alt='{$row['title']}'>";
+                                else $textname = $row['title'];
+                              ?>
+                            <li><a href='<?php echo $row['url']?>' target='_blank'><?php echo $textname?></a></li>
+                            <?php  } ?>
+                            </ul>
+                            <div class="clear">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

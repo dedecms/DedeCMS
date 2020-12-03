@@ -1,0 +1,43 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbspan" style="margin-top:6px">
+<tr> 
+<td height="1" colspan="2" background="[field:templeturl/]/img/dot_hor.gif"></td>
+</tr>
+<tr> 
+<td width="5%" height="26" align="center"><img src="[field:templeturl/]/img/item.gif" width="18" height="17"></td>
+<td height="26">
+	<b>
+		[field:typelink function='str_replace("a ","a class=ulink ",@me)'/]
+		<a href="[field:arcurl/]" class="ulink">[field:title/]</a>	</b></td>
+</tr>
+<tr> 
+<td height="20" colspan="2" style="padding-left:3px">
+	<table width="100%" border="0" cellspacing="1" cellpadding="1">
+    <tr>
+     <td width="15%" rowspan="2" align="center">
+     <table width="80" border="0" cellpadding="3" cellspacing="0" bgcolor="#FFFFCC">
+     <tr>
+     <td align="center">
+<div id='digg[field:id/]' class='diggArea'>
+  <div class='diggNum'>[field:digg/]</div>
+  <div class="diggLink"><a href='javascript:Digg('digg',[field:id/]);'>顶一下</a></div>
+</div>
+</td>
+   </tr>
+ </table>
+ </td>
+<td width="85%">
+	<font color="#8F8C89">日期：[field:pubdate function="GetDateTimeMK(@me)"/]
+	点击：[field:click/] 评论：[field:postnum/]</font>
+	<a href="[field:phpurl/]/feedback.php?arcID=[field:id/]"><img src="[field:templeturl/]/img/comment.gif" width="12" height="12" border="0" title="查看评论"></a>
+</td>
+  </tr>
+<tr>
+  <td height="48">[field:description/]</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr> 
+<td colspan="2" style="padding-left:3px">&nbsp;</td>
+</tr>
+</table>

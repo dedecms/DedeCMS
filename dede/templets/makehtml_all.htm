@@ -1,0 +1,91 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>一键更新</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language='javascript'>
+function SelUp(){
+   var ob1 = document.getElementById("uptype1");
+   var ob2 = document.getElementById("uptype2");
+   if(ob1.checked){
+      document.getElementById("seltime").style.display = "block";
+	  document.getElementById("selid").style.display = "none";
+   }else{
+      document.getElementById("seltime").style.display = "none";
+	  document.getElementById("selid").style.display = "block";
+   }
+}
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">HTML更新</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form name="form1" action="makehtml_all.php" target="stafrm" method="post">
+  <input type="hidden" name="action" value="make">
+    <tr> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5">
+	  <table width="98%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="30%" height="18"><strong>&nbsp;&nbsp;一键更新网站：</strong></td>
+            <td width="70%" align="right">&nbsp;</td>
+          </tr>
+        </table>		</td>
+    </tr>
+    <tr> 
+      <td width="10%" height="30"  bgcolor="#FFFFFF">&nbsp;&nbsp;更新选项：</td>
+      <td valign="top" bgcolor="#FFFFFF">
+	   <input name="uptype" id="uptype1" type="radio" class="np" value="time" onclick="SelUp()" checked="checked" />
+	   指定时间的所有更新
+	   <input name="uptype" id="uptype2" type="radio" class="np" onclick="SelUp()" value="id" />
+	   指定ID文档的所有更新
+	   </td>
+    </tr>
+    
+    <tr id='seltime'>
+      <td height="20"  bgcolor="#FFFFFF">&nbsp;&nbsp;起始时间：</td>
+      <td height="20"  bgcolor="#FFFFFF"><input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(mytime()); ?>" style="width:200px" /></td>
+    </tr>
+    <tr id='selid' style='display:none'> 
+      <td height="20" bgcolor="#FFFFFF">&nbsp;&nbsp;起始ID：</td>
+      <td height="20" bgcolor="#FFFFFF"><input name="startid" type="text" id="startid" value="0" size="4" /></td>
+    </tr>
+	
+	<tr> 
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center" style="padding-top:6px">
+      <input type="submit" name="Submit" value="开始更新" class="inputbut"/>      </td>
+    </tr>
+  </form>
+  <tr bgcolor="#E5F9FF"> 
+    <td height="20" colspan="2" bgcolor="#EDF9D5"><table width="100%">
+        <tr> 
+          <td width="74%">进行状态： </td>
+          <td width="26%" align="right">
+		    <script language='javascript'>
+            	function ResizeDiv(obj,ty)
+            	{
+            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
+            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
+            	}
+            	</script>
+            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]          </td>
+        </tr>
+      </table> </td>
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td colspan="2" id="mtd">
+	<div id='mdv' style='width:100%;height:350px;'> 
+        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="350px">
+        <script language="JavaScript">
+	  document.all.mdv.style.pixelHeight = screen.height - 360;
+	  </script>
+        </iframe>
+      </div>	  </td>
+  </tr>
+</table>
+</body>
+</html>

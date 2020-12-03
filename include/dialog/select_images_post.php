@@ -6,41 +6,41 @@ if($job=="newdir")
 {
 	$dirname = trim(ereg_replace("[ \r\n\t\.\*\%\\/\?><\|\":]{1,}","",$dirname));
 	if($dirname==""){
-		ShowMsg("Ä¿Â¼Ãû·Ç·¨£¡","-1");
+		ShowMsg("ç›®å½•åéžæ³•ï¼","-1");
 		exit();
 	}
-	MkdirAll($cfg_basedir.$activepath."/".$dirname,777);
+	MkdirAll($cfg_basedir.$activepath."/".$dirname,$GLOBALS['cfg_dir_purview']);
 	CloseFtp();
-	ShowMsg("³É¹¦´´½¨Ò»¸öÄ¿Â¼£¡","select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode($activepath."/".$dirname));
+	ShowMsg("æˆåŠŸåˆ›å»ºä¸€ä¸ªç›®å½•ï¼","select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode($activepath."/".$dirname));
 	exit();
 }
 if($job=="upload")
 {
 	if(empty($imgfile)) $imgfile="";
 	if(!is_uploaded_file($imgfile)){
-		 ShowMsg("ÄãÃ»ÓÐÑ¡ÔñÉÏ´«µÄÎÄ¼þ!","-1");
+		 ShowMsg("ä½ æ²¡æœ‰é€‰æ‹©ä¸Šä¼ çš„æ–‡ä»¶!","-1");
 	   exit();
 	}
 	if(ereg("^text",$imgfile_type)){
-		ShowMsg("²»ÔÊÐíÎÄ±¾ÀàÐÍ¸½¼þ!","-1");
+		ShowMsg("ä¸å…è®¸æ–‡æœ¬ç±»åž‹é™„ä»¶!","-1");
 		exit();
 	}
 	$nowtme = mytime();
 	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
   $imgfile_type = strtolower(trim($imgfile_type));
   if(!in_array($imgfile_type,$sparr)){
-		ShowMsg("ÉÏ´«µÄÍ¼Æ¬¸ñÊ½´íÎó£¬ÇëÊ¹ÓÃJPEG¡¢GIF¡¢PNG¡¢WBMP¸ñÊ½µÄÆäÖÐÒ»ÖÖ£¡","-1");
+		ShowMsg("ä¸Šä¼ çš„å›¾ç‰‡æ ¼å¼é”™è¯¯ï¼Œè¯·ä½¿ç”¨JPEGã€GIFã€PNGã€WBMPæ ¼å¼çš„å…¶ä¸­ä¸€ç§ï¼","-1");
 		exit();
 	}
 	
 	$mdir = strftime("%y%m%d",$nowtme);
 	if(!is_dir($cfg_basedir.$activepath."/$mdir")){
-		 MkdirAll($cfg_basedir.$activepath."/$mdir",777);
+		 MkdirAll($cfg_basedir.$activepath."/$mdir",$GLOBALS['cfg_dir_purview']);
 		 CloseFtp();
 	}
 	
 	$sname = '.jpg';
-	//Í¼Æ¬µÄÏÞ¶¨À©Õ¹Ãû
+	//å›¾ç‰‡çš„é™å®šæ‰©å±•å
 	if($imgfile_type=='image/pjpeg'||$imgfile_type=='image/jpeg'){
 		$sname = '.jpg';
 	}else if($imgfile_type=='image/gif'){
@@ -59,12 +59,12 @@ if($job=="upload")
   $fullfilename = $cfg_basedir.$activepath."/".$filename;
   
   if(file_exists($fullfilename)){
-  	ShowMsg("±¾Ä¿Â¼ÒÑ¾­´æÔÚÍ¬ÃûµÄÎÄ¼þ£¬Çë¸ü¸Ä£¡","-1");
+  	ShowMsg("æœ¬ç›®å½•å·²ç»å­˜åœ¨åŒåçš„æ–‡ä»¶ï¼Œè¯·æ›´æ”¹ï¼","-1");
 		exit();
   }
   
   if(!eregi("\.(jpg|gif|png|bmp)$",$fullfilename)){
-		ShowMsg("ÄãËùÉÏ´«µÄÎÄ¼þÀàÐÍ±»½ûÖ¹£¬ÏµÍ³Ö»ÔÊÐíÉÏ´«jpg¡¢gif¡¢png¡¢bmpÀàÐÍÍ¼Æ¬£¡","-1");
+		ShowMsg("ä½ æ‰€ä¸Šä¼ çš„æ–‡ä»¶ç±»åž‹è¢«ç¦æ­¢ï¼Œç³»ç»Ÿåªå…è®¸ä¸Šä¼ jpgã€gifã€pngã€bmpç±»åž‹å›¾ç‰‡ï¼","-1");
 		exit();
 	}
   
@@ -96,7 +96,7 @@ if($job=="upload")
   $dsql->Close();
   
 	@unlink($imgfile);
-	ShowMsg("³É¹¦ÉÏ´«Ò»·ùÍ¼Æ¬£¡","select_images.php?imgstick=$imgstick&comeback=".urlencode($filename_name)."&v=$v&f=$f&activepath=".urlencode($activepath)."/$mdir&d=".mytime());
+	ShowMsg("æˆåŠŸä¸Šä¼ ä¸€å¹…å›¾ç‰‡ï¼","select_images.php?imgstick=$imgstick&comeback=".urlencode($filename_name)."&v=$v&f=$f&activepath=".urlencode($activepath)."/$mdir&d=".mytime());
 	exit();
 }
 ?>

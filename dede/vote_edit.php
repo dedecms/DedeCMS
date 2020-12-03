@@ -1,12 +1,12 @@
 <?php 
 require(dirname(__FILE__)."/config.php");
-CheckPurview('plus_Õ∂∆±ƒ£øÈ');
+CheckPurview('plus_ÊäïÁ•®Ê®°Âùó');
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 if(empty($dopost)) $dopost="";
 if(empty($aid)) $aid="";
 $aid = trim(ereg_replace("[^0-9]","",$aid));
 if($aid==""){
-	ShowMsg('ƒ„√ª”–÷∏∂®Õ∂∆±ID£°','-1');
+	ShowMsg('‰Ω†Ê≤°ÊúâÊåáÂÆöÊäïÁ•®IDÔºÅ','-1');
 	exit();
 }
 if(!empty($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = $_COOKIE['ENV_GOBACK_URL'];
@@ -18,7 +18,7 @@ if($dopost=="delete")
 	$dsql->SetQuery("Delete From #@__vote where aid='$aid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg('≥…π¶…æ≥˝“ª◊ÈÕ∂∆±!',$ENV_GOBACK_URL);
+	ShowMsg('ÊàêÂäüÂà†Èô§‰∏ÄÁªÑÊäïÁ•®!',$ENV_GOBACK_URL);
 	exit();
 }
 else if($dopost=="saveedit")
@@ -35,73 +35,13 @@ else if($dopost=="saveedit")
 	$dsql->SetQuery($query);
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
-	ShowMsg('≥…π¶∏¸∏ƒ“ª◊ÈÕ∂∆±!',$ENV_GOBACK_URL);
+	ShowMsg('ÊàêÂäüÊõ¥Êîπ‰∏ÄÁªÑÊäïÁ•®!',$ENV_GOBACK_URL);
 	exit();
 }
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
+
+require_once(dirname(__FILE__)."/templets/vote_edit.htm");
+
+ClearAllLink();
 ?>
-<html>
-<head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Õ∂∆±π‹¿Ì</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
-</head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
-  <tr>
-    <td height="19" background="img/tbg.gif"><b>Õ∂∆±π‹¿Ì</b>&gt;&gt;‘ˆº”Õ∂∆±&nbsp;&nbsp;[<a href="vote_main.php"><u>π‹¿Ì“‘Õ˘Õ∂∆±ƒ⁄»›º«¬º</u></a>]</td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<form name="form1" method="post" action="vote_edit.php">
-	<input type="hidden" name="dopost" value="saveedit">
-	<input type="hidden" name="aid" value="<?php echo $aid?>">
-	    <table width="100%" border="0" cellspacing="4" cellpadding="4">
-          <tr> 
-            <td width="15%" align="center">Õ∂∆±√˚≥∆£∫</td>
-            <td width="85%"> <input name="votename" type="text" id="votename" value="<?php echo $row['votename']?>"> 
-            </td>
-          </tr>
-          <tr>
-            <td align="center">Õ∂∆±◊‹»À ˝£∫</td>
-            <td><input name="totalcount" type="text" id="totalcount" value="<?php echo $row['totalcount']?>"></td>
-          </tr>
-          <tr> 
-            <td align="center">ø™ º ±º‰£∫</td>
-            <td><input name="starttime" type="text" id="starttime" value="<?php echo GetDateMk($row['starttime'])?>"></td>
-          </tr>
-          <tr> 
-            <td align="center">Ω· ¯ ±º‰£∫</td>
-            <td><input name="endtime" type="text" id="endtime" value="<?php echo GetDateMk($row['endtime'])?>"></td>
-          </tr>
-          <tr> 
-            <td align="center"> «∑Ò∂‡—°£∫</td>
-            <td> <input name="ismore" type="radio" class="np" value="0"<?php if($row['ismore']==0) echo " checked";?>>
-              µ•—° °° 
-              <input type="radio" name="ismore" class="np" value="1"<?php if($row['ismore']==1) echo " checked";?>>
-              ∂‡—° </td>
-          </tr>
-          <tr> 
-            <td align="center">Õ∂ ∆± œÓ£∫<br/>
-              («Î∞¥œ‡Õ¨µƒ–Œ Ω¿¥‘ˆº”ªÚ–ﬁ∏ƒΩ⁄µ„£¨∆‰÷– Ù–‘£∫id≤ªƒ‹÷ÿ∏¥) </td>
-            <td><textarea name="votenote" rows="8" id="votenote" style="width:80%"><?php echo $row['votenote']?></textarea> 
-            </td>
-          </tr>
-          <tr> 
-            <td height="47">&nbsp;</td>
-            <td><input type="submit" name="Submit" value="±£¥ÊÕ∂∆± ˝æ›"></td>
-          </tr>
-          <tr> 
-            <td colspan="2">&nbsp;</td>
-          </tr>
-        </table>
-	  </form>
-	  </td>
-</tr>
-</table>
-<?php 
-$dsql->Close();
-?>
-</body>
-</html>

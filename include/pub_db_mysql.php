@@ -1,11 +1,12 @@
-<?php 
-//µ÷ÓÃÕâ¸öÀàÇ°,ÇëÏÈÉè¶¨ÕâĞ©Íâ²¿±äÁ¿
+<?php
+//è°ƒç”¨è¿™ä¸ªç±»å‰,è¯·å…ˆè®¾å®šè¿™äº›å¤–éƒ¨å˜é‡
 //$cfg_dbhost="";
 //$cfg_dbname="";
 //$cfg_dbuser="";
 //$cfg_dbpwd="";
-//Ç°×ºÃû³Æ
+//å‰ç¼€åç§°
 //$cfg_dbprefix="";
+$dsql = new DedeSql(false);
 class DedeSql
 {
 	var $linkID;
@@ -17,19 +18,21 @@ class DedeSql
 	var $result;
 	var $queryString;
 	var $parameters;
+	var $isClose;
 	//
-	//ÓÃÍâ²¿¶¨ÒåµÄ±äÁ¿³õÊ¼Àà£¬²¢Á¬½ÓÊı¾İ¿â
+	//ç”¨å¤–éƒ¨å®šä¹‰çš„å˜é‡åˆå§‹ç±»ï¼Œå¹¶è¿æ¥æ•°æ®åº“
 	//
 	function __construct($pconnect=false,$nconnect=true)
  	{
- 		if($this->linkID==0 && $nconnect) $this->Init($pconnect);
+ 		$this->isClose = false;
+ 		if($nconnect) $this->Init($pconnect);
   }
-	
+
 	function DedeSql($pconnect=false,$nconnect=true)
 	{
 		$this->__construct($pconnect,$nconnect);
 	}
-	
+
 	function Init($pconnect=false)
 	{
 		$this->linkID = 0;
@@ -44,7 +47,7 @@ class DedeSql
 		$this->Open($pconnect);
 	}
 	//
-	//ÓÃÖ¸¶¨²ÎÊı³õÊ¼Êı¾İ¿âĞÅÏ¢
+	//ç”¨æŒ‡å®šå‚æ•°åˆå§‹æ•°æ®åº“ä¿¡æ¯
 	//
 	function SetSource($host,$username,$pwd,$dbname,$dbprefix="dede_")
 	{
@@ -60,60 +63,92 @@ class DedeSql
 		mysql_select_db($dbname);
 	}
 	//
-	//ÉèÖÃSQLÀïµÄ²ÎÊı
+	//è®¾ç½®SQLé‡Œçš„å‚æ•°
 	//
 	function SetParameter($key,$value){
 		$this->parameters[$key]=$value;
 	}
 	//
-	//Á¬½ÓÊı¾İ¿â
+	//è¿æ¥æ•°æ®åº“
 	//
-	function Open($pconnect=true)
+	function Open($pconnect=false)
 	{
-		//Á¬½ÓÊı¾İ¿â
-		//if($pconnect){ $this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd); }
-		//else{ $this->linkID = @mysql_connect($this->dbHost,$this->dbUser,$this->dbPwd); }
-		
-		//Ö±½ÓÊ¹ÓÃpconnect
-		$this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd);
-		
-		//´¦Àí´íÎó£¬³É¹¦Á¬½ÓÔòÑ¡ÔñÊı¾İ¿â
+		global $dsql;
+		//è¿æ¥æ•°æ®åº“
+		if($dsql && !$dsql->isClose) $this->linkID = $dsql->linkID;
+		else
+		{
+		  if(!$pconnect){ $this->linkID  = @mysql_connect($this->dbHost,$this->dbUser,$this->dbPwd); }
+		  else{ $this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd); }
+		  //å¤åˆ¶ä¸€ä¸ªå¯¹è±¡å‰¯æœ¬
+		  CopySQLPoint($this);
+    }
+		//å¤„ç†é”™è¯¯ï¼ŒæˆåŠŸè¿æ¥åˆ™é€‰æ‹©æ•°æ®åº“
 		if(!$this->linkID){
-			$this->DisplayError("Connect Database Server False!");
-			return false;
+			$this->DisplayError("DedeCmsé”™è¯¯è­¦å‘Šï¼š<font color='red'>è¿æ¥æ•°æ®åº“å¤±è´¥ï¼Œå¯èƒ½æ•°æ®åº“å¯†ç ä¸å¯¹æˆ–æ•°æ®åº“æœåŠ¡å™¨å‡ºé”™ï¼Œå¦‚æœªå®‰è£…æœ¬ç³»ç»Ÿï¼Œè¯·å…ˆè¿è¡Œå®‰è£…ç¨‹åºï¼Œå¦‚æœå·²ç»å®‰è£…ï¼Œè¯·æ£€æŸ¥MySQLæœåŠ¡æˆ–ä¿®æ”¹include/config_base.phpçš„é…ç½®ï¼</font>");
+			exit();
 		}
-		else{ @mysql_select_db($this->dbName); }
+		@mysql_select_db($this->dbName);
 		@mysql_query("SET NAMES '".$GLOBALS['cfg_db_language']."';",$this->linkID);
 		return true;
 	}
 	//
-	//»ñµÃ´íÎóÃèÊö
+	//è·å¾—é”™è¯¯æè¿°
 	//
 	function GetError()
 	{
 		$str = ereg_replace("'|\"","`",mysql_error());
 		return $str;
 	}
+
+
 	//
-	//¹Ø±ÕÊı¾İ¿â
+	//å…³é—­æ•°æ®åº“
 	//
 	function Close()
 	{
 		@mysql_close($this->linkID);
+		$this->isClose = true;
+		if(is_object($GLOBALS['dsql'])){ $GLOBALS['dsql']->isClose = true; }
 		$this->FreeResultAll();
 	}
+
+
+	//-----------------
+	//å®šæœŸæ¸…ç†æ­»è¿æ¥
+	//-----------------
+	function ClearErrLink()
+	{
+		global $cfg_dbkill_time;
+		if(empty($cfg_dbkill_time)) $cfg_dbkill_time = 30;
+		@$result=mysql_query("SHOW PROCESSLIST",$this->linkID);
+    if($result)
+    {
+       while($proc=mysql_fetch_assoc($result))
+       {
+          if($proc['Command']=='Sleep'
+             && $proc['Time']>$cfg_dbkill_time) @mysql_query("KILL ".$proc["Id"],$this->linkID);
+       }
+    }
+	}
+
 	//
-	//¹Ø±ÕÖ¸¶¨µÄÊı¾İ¿âÁ¬½Ó
+	//å…³é—­æŒ‡å®šçš„æ•°æ®åº“è¿æ¥
 	//
 	function CloseLink($dblink)
 	{
 		@mysql_close($dblink);
 	}
 	//
-	//Ö´ĞĞÒ»¸ö²»·µ»Ø½á¹ûµÄSQLÓï¾ä£¬Èçupdate,delete,insertµÈ
+	//æ‰§è¡Œä¸€ä¸ªä¸è¿”å›ç»“æœçš„SQLè¯­å¥ï¼Œå¦‚update,delete,insertç­‰
 	//
 	function ExecuteNoneQuery($sql="")
 	{
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
 		if($sql!="") $this->SetQuery($sql);
 		if(is_array($this->parameters)){
 			foreach($this->parameters as $key=>$value){
@@ -122,15 +157,39 @@ class DedeSql
 		}
 		return mysql_query($this->queryString,$this->linkID);
 	}
+	//
+	//æ‰§è¡Œä¸€ä¸ªè¿”å›å½±å“è®°å½•æ¡æ•°çš„SQLè¯­å¥ï¼Œå¦‚update,delete,insertç­‰
+	//
+	function ExecuteNoneQuery2($sql="")
+	{
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
+		if($sql!="") $this->SetQuery($sql);
+		if(is_array($this->parameters)){
+			foreach($this->parameters as $key=>$value){
+				$this->queryString = str_replace("@".$key,"'$value'",$this->queryString);
+			}
+		}
+		mysql_query($this->queryString,$this->linkID);
+		return mysql_affected_rows($this->linkID);
+	}
 	function ExecNoneQuery($sql="")
 	{
 		return $this->ExecuteNoneQuery($sql);
 	}
 	//
-	//Ö´ĞĞÒ»¸ö´ø·µ»Ø½á¹ûµÄSQLÓï¾ä£¬ÈçSELECT£¬SHOWµÈ
+	//æ‰§è¡Œä¸€ä¸ªå¸¦è¿”å›ç»“æœçš„SQLè¯­å¥ï¼Œå¦‚SELECTï¼ŒSHOWç­‰
 	//
 	function Execute($id="me",$sql="")
 	{
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
 		if($sql!="") $this->SetQuery($sql);
 		$this->result[$id] = @mysql_query($this->queryString,$this->linkID);
 		if(!$this->result[$id]){
@@ -142,34 +201,45 @@ class DedeSql
 		$this->Execute($id,$sql);
 	}
 	//
-	//Ö´ĞĞÒ»¸öSQLÓï¾ä,·µ»ØÇ°Ò»Ìõ¼ÇÂ¼»ò½ö·µ»ØÒ»Ìõ¼ÇÂ¼
+	//æ‰§è¡Œä¸€ä¸ªSQLè¯­å¥,è¿”å›å‰ä¸€æ¡è®°å½•æˆ–ä»…è¿”å›ä¸€æ¡è®°å½•
 	//
-	function GetOne($sql="")
+	function GetOne($sql="",$acctype=MYSQL_BOTH)
 	{
-		if($sql!=""){ 
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
+		if($sql!=""){
 		  if(!eregi("limit",$sql)) $this->SetQuery(eregi_replace("[,;]$","",trim($sql))." limit 0,1;");
 		  else $this->SetQuery($sql);
 		}
 		$this->Execute("one");
-		$arr = $this->GetArray("one");
+		$arr = $this->GetArray("one",$acctype);
 		if(!is_array($arr)) return("");
 		else { @mysql_free_result($this->result["one"]); return($arr);}
-		
+
 	}
 	//
-	//Ö´ĞĞÒ»¸ö²»ÓëÈÎºÎ±íÃûÓĞ¹ØµÄSQLÓï¾ä,CreateµÈ
+	//æ‰§è¡Œä¸€ä¸ªä¸ä¸ä»»ä½•è¡¨åæœ‰å…³çš„SQLè¯­å¥,Createç­‰
 	//
 	function ExecuteSafeQuery($sql,$id="me")
 	{
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
 		$this->result[$id] = @mysql_query($sql,$this->linkID);
 	}
 	//
-	//·µ»Øµ±Ç°µÄÒ»Ìõ¼ÇÂ¼²¢°ÑÓÎ±êÒÆÏòÏÂÒ»¼ÇÂ¼
+	//è¿”å›å½“å‰çš„ä¸€æ¡è®°å½•å¹¶æŠŠæ¸¸æ ‡ç§»å‘ä¸‹ä¸€è®°å½•
+	// MYSQL_ASSOCã€MYSQL_NUMã€MYSQL_BOTH
 	//
-	function GetArray($id="me")
+	function GetArray($id="me",$acctype=MYSQL_BOTH)
 	{
 		if($this->result[$id]==0) return false;
-		else return mysql_fetch_array($this->result[$id]);
+		else return mysql_fetch_array($this->result[$id],$acctype);
 	}
 	function GetObject($id="me")
 	{
@@ -177,48 +247,54 @@ class DedeSql
 		else return mysql_fetch_object($this->result[$id]);
 	}
 	//
-	//¼ì²âÊÇ·ñ´æÔÚÄ³Êı¾İ±í
+	//æ£€æµ‹æ˜¯å¦å­˜åœ¨æŸæ•°æ®è¡¨
 	//
 	function IsTable($tbname)
 	{
-		$this->result = mysql_list_tables($this->dbName,$this->linkID);
-		while ($row = mysql_fetch_array($this->result)){
-			if($row[0]==$tbname)
+		$this->result[0] = mysql_list_tables($this->dbName,$this->linkID);
+		while ($row = mysql_fetch_array($this->result[0]))
+		{
+			if(strtolower($row[0])==strtolower($tbname))
 			{
-				mysql_freeresult($this->result);
+				mysql_freeresult($this->result[0]);
 				return true;
 			}
 		}
-		mysql_freeresult($this->result);
+		mysql_freeresult($this->result[0]);
 		return false;
 	}
 	//
-	//»ñµÃMySqlµÄ°æ±¾ºÅ
+	//è·å¾—MySqlçš„ç‰ˆæœ¬å·
 	//
 	function GetVersion()
 	{
+		global $dsql;
+		if($dsql->isClose){
+			$this->Open(false);
+			$dsql->isClose = false;
+		}
 		$rs = mysql_query("SELECT VERSION();",$this->linkID);
-    $row = mysql_fetch_array($rs);
-    $mysql_version = $row[0];
-    mysql_free_result($rs);
-    return $mysql_version;
+		$row = mysql_fetch_array($rs);
+		$mysql_version = $row[0];
+		mysql_free_result($rs);
+		return $mysql_version;
 	}
 	//
-	//»ñÈ¡ÌØ¶¨±íµÄĞÅÏ¢
+	//è·å–ç‰¹å®šè¡¨çš„ä¿¡æ¯
 	//
 	function GetTableFields($tbname,$id="me")
 	{
 		$this->result[$id] = mysql_list_fields($this->dbName,$tbname,$this->linkID);
 	}
 	//
-	//»ñÈ¡×Ö¶ÎÏêÏ¸ĞÅÏ¢
+	//è·å–å­—æ®µè¯¦ç»†ä¿¡æ¯
 	//
 	function GetFieldObject($id="me")
 	{
 		return mysql_fetch_field($this->result[$id]);
 	}
 	//
-	//»ñµÃ²éÑ¯µÄ×Ü¼ÇÂ¼Êı
+	//è·å¾—æŸ¥è¯¢çš„æ€»è®°å½•æ•°
 	//
 	function GetTotalRow($id="me")
 	{
@@ -226,19 +302,19 @@ class DedeSql
 		else return mysql_num_rows($this->result[$id]);
 	}
 	//
-	//»ñÈ¡ÉÏÒ»²½INSERT²Ù×÷²úÉúµÄID 
+	//è·å–ä¸Šä¸€æ­¥INSERTæ“ä½œäº§ç”Ÿçš„ID
 	//
 	function GetLastID()
 	{
-		//Èç¹û AUTO_INCREMENT µÄÁĞµÄÀàĞÍÊÇ BIGINT£¬Ôò mysql_insert_id() ·µ»ØµÄÖµ½«²»ÕıÈ·¡£
-		//¿ÉÒÔÔÚ SQL ²éÑ¯ÖĞÓÃ MySQL ÄÚ²¿µÄ SQL º¯Êı LAST_INSERT_ID() À´Ìæ´ú¡£ 
+		//å¦‚æœ AUTO_INCREMENT çš„åˆ—çš„ç±»å‹æ˜¯ BIGINTï¼Œåˆ™ mysql_insert_id() è¿”å›çš„å€¼å°†ä¸æ­£ç¡®ã€‚
+		//å¯ä»¥åœ¨ SQL æŸ¥è¯¢ä¸­ç”¨ MySQL å†…éƒ¨çš„ SQL å‡½æ•° LAST_INSERT_ID() æ¥æ›¿ä»£ã€‚
 		//$rs = mysql_query("Select LAST_INSERT_ID() as lid",$this->linkID);
 		//$row = mysql_fetch_array($rs);
 		//return $row["lid"];
 		return mysql_insert_id($this->linkID);
 	}
 	//
-	//ÊÍ·Å¼ÇÂ¼¼¯Õ¼ÓÃµÄ×ÊÔ´
+	//é‡Šæ”¾è®°å½•é›†å ç”¨çš„èµ„æº
 	//
 	function FreeResult($id="me")
 	{
@@ -252,64 +328,26 @@ class DedeSql
 		}
 	}
 	//
-	//ÉèÖÃSQLÓï¾ä£¬»á×Ô¶¯°ÑSQLÓï¾äÀïµÄ#@__Ìæ»»Îª$this->dbPrefix(ÔÚÅäÖÃÎÄ¼şÖĞÎª$cfg_dbprefix)
+	//è®¾ç½®SQLè¯­å¥ï¼Œä¼šè‡ªåŠ¨æŠŠSQLè¯­å¥é‡Œçš„#@__æ›¿æ¢ä¸º$this->dbPrefix(åœ¨é…ç½®æ–‡ä»¶ä¸­ä¸º$cfg_dbprefix)
 	//
 	function SetQuery($sql)
 	{
 		$prefix="#@__";
-		$sql = trim($sql);
-		$inQuote = false;
-		$escaped = false;
-		$quoteChar = '';
-		$n = strlen($sql);
-		$np = strlen($prefix);
-		$restr = '';
-		for($j=0; $j < $n; $j++)
-		{
-			$c = $sql{$j};
-			$test = substr($sql, $j, $np);
-			if(!$inQuote)
-			{
-				if ($c == '"' || $c == "'") {
-					$inQuote = true;
-					$escaped = false;
-					$quoteChar = $c;
-				}
-			}
-			else
-			{
-				if ($c == $quoteChar && !$escaped) {
-					$inQuote = false;
-				} else if ($c == "\\" && !$escaped) {
-					$escaped = true;
-				} else {
-					$escaped = false;
-				}
-			}
-			if ($test == $prefix && !$inQuote)
-			{
-			    $restr .= $this->dbPrefix;
-			    $j += $np-1;
-			}
-			else
-			{
-				$restr .= $c;
-			}
-		}
-		$this->queryString = $restr;
+		$sql = str_replace($prefix,$this->dbPrefix,$sql);
+		$this->queryString = $sql;
 	}
 	function SetSql($sql)
 	{
 		$this->SetQuery($sql);
 	}
 	//
-	//ÏÔÊ¾Êı¾İÁ´½Ó´íÎóĞÅÏ¢
+	//æ˜¾ç¤ºæ•°æ®é“¾æ¥é”™è¯¯ä¿¡æ¯
 	//
 	function DisplayError($msg)
 	{
 		echo "<html>\r\n";
 		echo "<head>\r\n";
-		echo "<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>\r\n";
+		echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 		echo "<title>DedeCms Error Track</title>\r\n";
 		echo "</head>\r\n";
 		echo "<body>\r\n<p style='line-helght:150%;font-size:10pt'>\r\n";
@@ -317,7 +355,16 @@ class DedeSql
 		echo "<br/><br/>";
 		echo "</p>\r\n</body>\r\n";
 		echo "</html>";
+		//$this->Close();
 		//exit();
 	}
 }
+
+//å¤åˆ¶ä¸€ä¸ªå¯¹è±¡å‰¯æœ¬
+function CopySQLPoint(&$ndsql)
+{
+	$GLOBALS['dsql'] = $ndsql;
+}
+
+
 ?>

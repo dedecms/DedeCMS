@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="templets/company/css/style.css" rel="stylesheet" type="text/css" />
+<title>企业空间--首页</title>
+</head>
+
+<body>
+<div id="container">
+<!-- 头部开始 -->
+	<div id="header">
+    	<div id="topbg">
+    		<div id="top">
+        		<div class="topmanage"></div>
+            	<div class="topmenu">
+                	<ul>
+                        <li><a href="index.php">中心主页</a></li>
+                        <li><a href="index.php?uid=<?=$uid?>">企业空间</a></li>
+                        <li><a href="../company/">搜索企业</a></li>
+                        <li><a href="../">网站主页</a></li>
+                    </ul>
+                </div>
+       	 	</div>
+        </div>
+        <div id="topmain">
+        	<div id="toplogo">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+ <!-- 中间开始 -->
+	<div id="main">
+    	<div id="left">
+        	<div class="lefttitle">
+            </div>
+            <div class="leftmenu">
+            	<ul>
+                	<li><a href="index.php?uid=<?=$uid?>">公司首页</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=cominfo">公司简介</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=culture">企业文化</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=news">公司新闻</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=info">供求信息</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=product">产品展示</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=job">人才招聘</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=guestbook">在线留言</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=contact">联系我们</a></li>
+                </ul>
+          </div>
+      <div class="leftlink">
+            	<div class="leftlink_title">联系我们
+                </div>
+                <div class="leftlink_text">
+                	联系人：<?=$cominfo['truename']?><br>
+                	电话：<?=$cominfo['phone']?><br>
+                	传真：<?=$cominfo['fax']?><br>
+                	地址：<?=$cominfo['comaddr']?><br>
+                	邮编：<?=$cominfo['postid']?><br>
+                </div>
+            </div>
+            <div class="clear">
+        	</div>
+        </div>
+         <!-- 公司简介 -->
+        <div id="right">
+        	<div class="right_about">
+            	<div class="right_title">
+                	<ul><li>公司简介</li></ul>
+                	<div class="rightabout_text"><?=$cominfo['cominfo']?>
+                	</div>
+                    <div class="clear">
+                    </div>
+            	</div>
+                <div class="clear">
+        		</div>
+            </div>
+            
+        <!-- 公司文化 -->
+        	<div class="right_culture">
+            	<div class="right_culture_title">
+                	<ul><li>公司文化</li></ul>
+                    <div class="right_culture_text">
+                      <?=$cominfo['culture']?>
+                    </div>
+                    <div class="clear">
+                    </div>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+        <!-- 公司新闻 -->
+            <div class="right_news">
+            	<div class="right_news_title">
+                	<ul><li>公司新闻</li></ul>
+                    <div class="right_news_text">
+<?php
+if($news){
+	foreach($news as $new){
+?>
+<br><br>
+<p>·<a href="<?=$new['arcurl']?>"><?=$new['title']?></a></p>
+
+<?php
+	}
+}
+?>
+                    </div>
+                </div>
+            </div> 
+            <!-- 产品展示 -->
+            <div class="right_product">
+            	<div class="right_product_title">
+                	<ul><li>产品展示</li></ul>
+                </div>
+<?php
+if($products){
+	foreach($products as $product){
+?>
+<div class="right_img">
+<img src="<?=$product['litpic']?>" /></a><br />
+<a href="<?=$product['arcurl']?>"><?=$product['title']?></a>
+</div>
+<?php
+	}
+}
+?>
+
+            </div>
+            <!-- 供求信息 -->
+            <div class="right_info">
+            	<div class="right_info_title">
+                	<ul><li>供求信息</li></ul>
+                </div>
+                <div class="right_info_text">
+<?php
+if($infos){
+	foreach($infos as $info){
+?>
+<p>·<a href="<?=$info['arcurl']?>"><?=$info['title']?></a></p>
+<?php
+	}
+}
+?>
+                </div>
+            </div>
+            <!-- 人才招聘 -->
+            <div class="right_job">
+            	<div class="right_job_title">
+                	<ul><li>人才招聘</li></ul>
+                </div>
+                <div class="right_job_text">
+<?php
+if($jobs){
+	foreach($jobs as $job){
+?>
+<p>·<a href="<?=$job['arcurl']?>"><?=$job['job']?></a></p>
+<?php
+	}
+}
+?>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <!-- 尾部开始 -->
+    <div id="footer">
+    	<div class="footer_text">织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -23,38 +23,38 @@ $opall=1;
 if(is_array($seltypeids)){
 	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
 }else{
-	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'ÇëÑ¡Ôñ...');
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'è¯·é€‰æ‹©...');
 }
 
-$whereSql = " where #@__archives.channel = -1 ";
+$whereSql = " where arcs.channel = -1 ";
 
 if($keyword!=""){
-	$whereSql .= " And (title like '%$keyword%' Or writer like '%$keyword%' Or source like '%$keyword%') ";
+	$whereSql .= " And (arcs.title like '%$keyword%' Or arcs.writer like '%$keyword%' Or arcs.source like '%$keyword%') ";
 }
 
 if($typeid!=0){
-	$tlinkSql = $tl->GetSunID($typeid,"#@__archives",0);
+	$tlinkSql = $tl->GetSunID($typeid,"arcs",0);
 	$whereSql .= " And $tlinkSql ";
 }
 
 if($arcrank!=""){
-	$whereSql .= " And arcrank=$arcrank ";
-	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."';\" value='ËùÓÐ×¨Ìâ' class='nbt'>";
+	$whereSql .= " And arcs.arcrank=$arcrank ";
+	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."';\" value='æ‰€æœ‰ä¸“é¢˜' class='inputbut' />";
 }
 else
 {
-	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."&arcrank=-1';\" value='´ýÉóºË×¨Ìâ' class='nbt'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."&arcrank=-1';\" value='å¾…å®¡æ ¸ä¸“é¢˜' class='inputbut' />";
 }
 
 $tl->Close();
 
 $query = "
-select #@__archives.ID,#@__archives.typeid,#@__archives.senddate,#@__archives.iscommend,#@__archives.ismake,#@__archives.channel,#@__archives.arcrank,#@__archives.click,#@__archives.title,#@__archives.color,#@__archives.litpic,#@__archives.pubdate,#@__archives.adminID,#@__archives.memberID,#@__arctype.typename,#@__channeltype.typename as channelname 
-from #@__archives 
-left join #@__arctype on #@__arctype.ID=#@__archives.typeid
-left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
+select arcs.ID,arcs.typeid,arcs.senddate,arcs.iscommend,arcs.ismake,arcs.channel,arcs.arcrank,arcs.click,arcs.title,arcs.color,arcs.litpic,arcs.pubdate,arcs.adminID,arcs.memberID,`#@__arctype`.typename,`#@__channeltype`.typename as channelname 
+from `#@__archivesspec` arcs 
+left join `#@__arctype` on #@__arctype.ID=arcs.typeid
+left join `#@__channeltype` on #@__channeltype.ID=arcs.channel
 $whereSql
-order by ID desc
+order by arcs.ID desc
 ";
 
 $dlist = new DataList();
@@ -67,4 +67,6 @@ $dlist->SetParameter("channelid",$channelid);
 $dlist->SetSource($query);
 include(dirname(__FILE__)."/templets/content_s_list.htm");
 $dlist->Close();
+
+ClearAllLink();
 ?>

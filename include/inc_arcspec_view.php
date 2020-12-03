@@ -1,8 +1,9 @@
 <?php 
 require_once(dirname(__FILE__)."/inc_arcpart_view.php");
+require_once(dirname(__FILE__)."/inc_pubtag_make.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
-//±¾ÀàµÄÓÃÍ¾ÊÇÓÃÓÚä¯ÀÀËùÓĞ×¨ÌâÁĞ±í»ò¶Ô×¨ÌâÁĞ±íÉú³ÉHTML
+//æœ¬ç±»çš„ç”¨é€”æ˜¯ç”¨äºæµè§ˆæ‰€æœ‰ä¸“é¢˜åˆ—è¡¨æˆ–å¯¹ä¸“é¢˜åˆ—è¡¨ç”ŸæˆHTML
 ******************************************************/
 @set_time_limit(0);
 class SpecView
@@ -22,8 +23,9 @@ class SpecView
 	var $Fields;
 	var $PartView;
 	var $StartTime;
+	var $TempletsFile;
 	//-------------------------------
-	//php5¹¹Ôìº¯Êı
+	//php5æ„é€ å‡½æ•°
 	//-------------------------------
 	function __construct($starttime=0)
  	{
@@ -35,7 +37,7 @@ class SpecView
  		$this->dtp2->SetNameSpace("field","[","]");
  		$this->TypeLink = new TypeLink(0);
  		$this->ChannelUnit = new ChannelUnit(-1);
- 		//ÉèÖÃÒ»Ğ©È«¾Ö²ÎÊıµÄÖµ
+ 		//è®¾ç½®ä¸€äº›å…¨å±€å‚æ•°çš„å€¼
  		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
  		
  		if($starttime==0) $this->StartTime = 0;
@@ -48,10 +50,11 @@ class SpecView
  		$this->CountRecord();
  		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_spec.htm";
  		if(!file_exists($tempfile)||!is_file($tempfile)){
- 			 echo "Ä£°åÎÄ¼ş£º'".$tempfile."' ²»´æÔÚ£¬ÎŞ·¨½âÎöÎÄµµ£¡";
+ 			 echo "æ¨¡æ¿æ–‡ä»¶ï¼š'".$tempfile."' ä¸å­˜åœ¨ï¼Œæ— æ³•è§£ææ–‡æ¡£ï¼";
  			 exit();
  		 }
  		 $this->dtp->LoadTemplate($tempfile);
+ 		 $this->TempletsFile = ereg_replace("^".$GLOBALS['cfg_basedir'],'',$tempfile);
  		 $this->TempInfos['tags'] = $this->dtp->CTags;
  		 $this->TempInfos['source'] = $this->dtp->SourceString;
  		 $ctag = $this->dtp->GetTag("page");
@@ -62,13 +65,13 @@ class SpecView
      }
      $this->TotalPage = ceil($this->TotalResult/$this->PageSize);
   }
-  //php4¹¹Ôìº¯Êı
+  //php4æ„é€ å‡½æ•°
  	//---------------------------
  	function SpecView($starttime=0){
  		$this->__construct($starttime);
  	}
  	//---------------------------
- 	//¹Ø±ÕÏà¹Ø×ÊÔ´
+ 	//å…³é—­ç›¸å…³èµ„æº
  	//---------------------------
  	function Close()
  	{
@@ -77,7 +80,7 @@ class SpecView
  		$this->ChannelUnit->Close();
  	}
  	//------------------
- 	//Í³¼ÆÁĞ±íÀïµÄ¼ÇÂ¼
+ 	//ç»Ÿè®¡åˆ—è¡¨é‡Œçš„è®°å½•
  	//------------------
  	function CountRecord()
  	{
@@ -90,15 +93,15 @@ class SpecView
  		
  		if($this->TotalResult==-1)
  		{
- 		  if($this->StartTime>0) $timesql = " And #@__archives.senddate>'".$this->StartTime."'";
+ 		  if($this->StartTime>0) $timesql = " And senddate>'".$this->StartTime."'";
  		  else $timesql = "";
- 			$row = $this->dsql->GetOne("Select count(*) as dd From #@__archives where #@__archives.arcrank > -1 And channel=-1 $timesql");
+ 			$row = $this->dsql->GetOne("Select count(*) as dd From `#@__archivesspec` where arcrank > -1 And channel=-1 $timesql");
  			if(is_array($row)) $this->TotalResult = $row['dd'];
  			else $this->TotalResult = 0;
  		}
  	}
  	//------------------
- 	//ÏÔÊ¾ÁĞ±í
+ 	//æ˜¾ç¤ºåˆ—è¡¨
  	//------------------
  	function Display()
  	{
@@ -137,11 +140,12 @@ class SpecView
  		$this->dtp->Display();
  	}
  	//------------------
- 	//¿ªÊ¼´´½¨ÁĞ±í
+ 	//å¼€å§‹åˆ›å»ºåˆ—è¡¨
  	//------------------
  	function MakeHtml()
  	{
- 		//³õ²½¸ø¹Ì¶¨ÖµµÄ±ê¼Ç¸³Öµ
+ 		//åˆæ­¥ç»™å›ºå®šå€¼çš„æ ‡è®°èµ‹å€¼
+ 		$indexfile = '';
  		$this->ParseTempletsFirst();
  		$totalpage = ceil($this->TotalResult/$this->PageSize);
  		if($totalpage==0) $totalpage = 1;
@@ -178,132 +182,25 @@ class SpecView
  	    $murl = $makeFile;
  	    $makeFile = $GLOBALS['cfg_basedir'].$makeFile;
  	    $this->dtp->SaveTo($makeFile);
- 	    echo "³É¹¦´´½¨£º<a href='$murl' target='_blank'>$murl</a><br/>";
+ 	    if(empty($indexfile)){
+ 	    	$indexfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_special']."/index".$GLOBALS['art_shortname'];
+ 	    	copy($makeFile,$indexfile);
+ 	    }
+ 	    echo "æˆåŠŸåˆ›å»ºï¼š<a href='$murl' target='_blank'>$murl</a><br/>";
  	  }
  		$this->Close();
  		return $murl;
  	}
  	//--------------------------------
- 	//½âÎöÄ£°å£¬¶Ô¹Ì¶¨µÄ±ê¼Ç½øĞĞ³õÊ¼¸øÖµ
+ 	//è§£ææ¨¡æ¿ï¼Œå¯¹å›ºå®šçš„æ ‡è®°è¿›è¡Œåˆå§‹ç»™å€¼
  	//--------------------------------
  	function ParseTempletsFirst()
  	{
- 	  //½âÎöÄ£°å
- 		//-------------------------
- 		if(is_array($this->dtp->CTags))
- 		{
- 		 foreach($this->dtp->CTags as $tagid=>$ctag){
- 			 $tagname = $ctag->GetName();
- 			 if($tagname=="field") //Àà±ğµÄÖ¸¶¨×Ö¶Î
- 			 {
- 					if(isset($this->Fields[$ctag->GetAtt('name')]))
- 					  $this->dtp->Assign($tagid,$this->Fields[$ctag->GetAtt('name')]);
- 					else
- 					  $this->dtp->Assign($tagid,"");
- 			 }
- 			 //×Ô¶¨Òå±ê¼Ç
- 			 //-----------------------
- 			 else if($tagname=="mytag")
- 			 {
- 				  $this->dtp->Assign($tagid,$this->PartView->GetMyTag(
- 				        $ctag->GetAtt("typeid"),
- 				        $ctag->GetAtt("name"),
- 				        $ctag->GetAtt("ismake")
- 				     )
- 				  );
- 			 }
- 			 else if($tagname=="onetype"||$tagname=="type")
- 			 {
- 				 $this->dtp->Assign($tagid,
- 				   $this->GetOneType($ctag->GetAtt("typeid"),$ctag->GetInnerText())
- 				 );
- 			 }
- 			 //¹ã¸æ±ê¼Ç
- 			 //-----------------------
- 			 else if($tagname=="myad")
- 			 {
- 				  $this->dtp->Assign($tagid,$this->PartView->GetMyAd(
- 				        $ctag->GetAtt("typeid"),
- 				        $ctag->GetAtt("name")
- 				     )
- 				  );
- 			 }
- 			 //ÈÈÃÅ¹Ø¼ü×Ö
- 			 else if($tagname=="hotwords"){
- 				 $this->dtp->Assign($tagid,
- 				 GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
- 			 }
- 			 else if($tagname=="channel")//ÏÂ¼¶ÆµµÀÁĞ±í
- 			 {
- 				  $this->dtp->Assign($tagid,
- 				      $this->TypeLink->GetChannelList(
- 				          $ctag->GetAtt("typeid"),
- 				          0,
- 				          $ctag->GetAtt("row"),
- 				          $ctag->GetAtt("type"),
- 				          $ctag->GetInnerText(),
- 				          $ctag->GetAtt("col"),
- 				          $ctag->GetAtt("tablewidth"),
- 				          $ctag->GetAtt("currentstyle")
- 				      )
- 				  );
- 			 }
- 			 else if($tagname=="arclist"||$tagname=="artlist"||$tagname=="likeart"||$tagname=="hotart"
- 			 ||$tagname=="imglist"||$tagname=="imginfolist"||$tagname=="coolart"||$tagname=="specart")
- 			 {
- 			 	  //ÌØ¶¨µÄÎÄÕÂÁĞ±í
- 				  $channelid = $ctag->GetAtt("channelid");
- 				  if($tagname=="imglist"||$tagname=="imginfolist"){ $listtype = "image"; }
- 				  else if($tagname=="specart"){ $channelid = -1; $listtype=""; }
- 				  else if($tagname=="coolart"){ $listtype = "commend"; }
- 				  else{ $listtype = $ctag->GetAtt('type'); }
- 				  
- 				  //ÅÅĞò
- 				  if($ctag->GetAtt('sort')!="") $orderby = $ctag->GetAtt('sort');
- 				  else if($tagname=="hotart") $orderby = "click";
- 				  else $orderby = $ctag->GetAtt('orderby');
- 				  
- 				  //¶ÔÏàÓ¦µÄ±ê¼ÇÊ¹ÓÃ²»Í¬µÄÄ¬ÈÏinnertext
- 				  if(trim($ctag->GetInnerText())!="") $innertext = $ctag->GetInnerText();
- 				  else if($tagname=="imglist") $innertext = GetSysTemplets("part_imglist.htm");
- 				  else if($tagname=="imginfolist") $innertext = GetSysTemplets("part_imginfolist.htm");
- 				  else $innertext = GetSysTemplets("part_arclist.htm");
- 				  
- 				  //¼æÈİtitlelength
- 				  if($ctag->GetAtt('titlelength')!="") $titlelen = $ctag->GetAtt('titlelength');
- 				  else $titlelen = $ctag->GetAtt('titlelen');
- 				
- 				  //¼æÈİinfolength
- 				  if($ctag->GetAtt('infolength')!="") $infolen = $ctag->GetAtt('infolength');
- 				  else $infolen = $ctag->GetAtt('infolen');
- 				  
- 				  $this->dtp->Assign($tagid,
- 				      $this->PartView->GetArcList(
- 				         $ctag->GetAtt("typeid"),
- 				         $ctag->GetAtt("row"),
- 				         $ctag->GetAtt("col"),
- 				         $titlelen,
- 				         $infolen,
- 				         $ctag->GetAtt("imgwidth"),
- 				         $ctag->GetAtt("imgheight"),
- 				         $listtype,
- 				         $orderby,
- 				         $ctag->GetAtt("keyword"),
- 				         $innertext,
- 				         $ctag->GetAtt("tablewidth"),
- 				         0,
- 				         "",
- 				         $channelid,
- 				         $ctag->GetAtt("limit"),
- 				         $ctag->GetAtt("att")
- 				      )
- 				  );
- 			  }//End if tagname
- 			}//½áÊøÄ£°åÑ­»·
- 		}
+ 	   //å¯¹å…¬ç”¨æ ‡è®°çš„è§£æï¼Œè¿™é‡Œå¯¹å¯¹è±¡çš„è°ƒç”¨å‡æ˜¯ç”¨å¼•ç”¨è°ƒç”¨çš„ï¼Œå› æ­¤è¿ç®—åä¼šè‡ªåŠ¨æ”¹å˜ä¼ é€’çš„å¯¹è±¡çš„å€¼
+ 	   MakePublicTag($this,$this->dtp,$this->PartView,$this->TypeLink,$this->TypeID,0,0);
  	}
  	//----------------------------------
-  //»ñÈ¡ÄÚÈİÁĞ±í
+  //è·å–å†…å®¹åˆ—è¡¨
   //---------------------------------
   function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
   $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$innertext="",$tablewidth="100")
@@ -326,26 +223,24 @@ class SpecView
 		$colWidth = $colWidth."%";
 		$innertext = trim($innertext);
 		if($innertext=="") $innertext = GetSysTemplets("spec_list.htm");
-		//°´²»Í¬Çé¿öÉè¶¨SQLÌõ¼ş
-		$orwhere = " #@__archives.arcrank > -1 And #@__archives.channel = -1 ";
-		if($this->StartTime>0) $orwhere .= " And #@__archives.senddate>'".$this->StartTime."'";
+		//æŒ‰ä¸åŒæƒ…å†µè®¾å®šSQLæ¡ä»¶
+		$orwhere = " arcs.arcrank > -1 And arcs.channel = -1 ";
+		if($this->StartTime>0) $orwhere .= " And arcs.senddate>'".$this->StartTime."'";
 		
-		//ÅÅĞò·½Ê½
+		//æ’åºæ–¹å¼
 		$ordersql = "";
-		if($orderby=="senddate") $ordersql=" order by #@__archives.senddate desc";
-		else if($orderby=="pubdate") $ordersql=" order by #@__archives.pubdate desc";
-    else if($orderby=="id") $ordersql="  order by #@__archives.ID desc";
-		else $ordersql=" order by #@__archives.sortrank desc";
+		if($orderby=="senddate") $ordersql=" order by arcs.senddate desc";
+		else if($orderby=="pubdate") $ordersql=" order by arcs.pubdate desc";
+    else if($orderby=="id") $ordersql="  order by arcs.ID desc";
+		else $ordersql=" order by arcs.sortrank desc";
 		//
 		//----------------------------
-		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.typeid,#@__archives.ismake,
-		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,
-		#@__archives.click,#@__archives.postnum,#@__archives.lastpost,#@__archives.money,
-		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
-		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
-		#@__arctype.moresite,#@__arctype.siteurl
-		from #@__archives 
-		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
+		$query = "Select arcs.ID,arcs.title,arcs.typeid,arcs.ismake,
+		arcs.description,arcs.pubdate,arcs.senddate,arcs.arcrank,
+		arcs.click,arcs.postnum,arcs.lastpost,arcs.money,arcs.litpic,t.typedir,t.typename,t.isdefault,
+		t.defaultname,t.namerule,t.namerule2,t.ispart,t.moresite,t.siteurl
+		from `#@__archivesspec` arcs 
+		left join #@__arctype t on arcs.typeid=t.ID
 		where $orwhere $ordersql limit $limitstart,$row";
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute("al");
@@ -360,7 +255,7 @@ class SpecView
          if($col>1) $artlist .= "<td width='$colWidth'>\r\n";
          if($row = $this->dsql->GetArray("al"))
          {
-           //´¦ÀíÒ»Ğ©ÌØÊâ×Ö¶Î
+           //å¤„ç†ä¸€äº›ç‰¹æ®Šå­—æ®µ
            $row["description"] = cnw_left($row["description"],$infolen);
            $row["title"] = cnw_left($row["title"],$titlelen);
            $row["id"] =  $row["ID"];
@@ -379,7 +274,7 @@ class SpecView
            $row["phpurl"] = $GLOBALS["cfg_plus_dir"];
  		       $row["templeturl"] = $GLOBALS["cfg_templets_dir"];
  		       $row["memberurl"] = $GLOBALS["cfg_member_dir"];
-           //±àÒë¸½¼Ó±íÀïµÄÊı¾İ
+           //ç¼–è¯‘é™„åŠ è¡¨é‡Œçš„æ•°æ®
            foreach($this->ChannelUnit->ChannelFields as $k=>$arr){
  		  	      if(isset($row[$k])) $row[$k] = $this->ChannelUnit->MakeField($k,$row[$k]);
  		  	   }
@@ -404,7 +299,7 @@ class SpecView
      return $artlist;
   }
   //---------------------------------
-  //»ñÈ¡¾²Ì¬µÄ·ÖÒ³ÁĞ±í
+  //è·å–é™æ€çš„åˆ†é¡µåˆ—è¡¨
   //---------------------------------
 	function GetPageListST($list_len)
 	{
@@ -414,29 +309,29 @@ class SpecView
 		$nextpagenum = $this->PageNo+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
-		if($totalpage<=1 && $this->TotalResult>0) return "¹²1Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		if($this->TotalResult == 0) return "¹²0Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
+		if($totalpage<=1 && $this->TotalResult>0) return "å…±1é¡µ/".$this->TotalResult."æ¡è®°å½•"; 
+		if($this->TotalResult == 0) return "å…±0é¡µ/".$this->TotalResult."æ¡è®°å½•"; 
 		$purl = $this->GetCurUrl();
 		
 		$tnamerule = "spec_";
 		
-		//»ñµÃÉÏÒ»Ò³ºÍÏÂÒ»Ò³µÄÁ´½Ó
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸‹ä¸€é¡µçš„é“¾æ¥
 		if($this->PageNo != 1){
-			$prepage.="<a href='".$tnamerule."_$prepagenum".$GLOBALS['art_shortname']."'>ÉÏÒ»Ò³</a>\r\n";
-			$indexpage="<a href='".$tnamerule."_1".$GLOBALS['art_shortname']."'>Ê×Ò³</a>\r\n";
+			$prepage.="<a href='".$tnamerule."_$prepagenum".$GLOBALS['art_shortname']."'>ä¸Šä¸€é¡µ</a>\r\n";
+			$indexpage="<a href='".$tnamerule."_1".$GLOBALS['art_shortname']."'>é¦–é¡µ</a>\r\n";
 		}
 		else{
-			$indexpage="Ê×Ò³\r\n";
+			$indexpage="é¦–é¡µ\r\n";
 		}	
 		//
 		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<a href='".$tnamerule."_$nextpagenum".$GLOBALS['art_shortname']."'>ÏÂÒ»Ò³</a>\r\n";
-			$endpage="<a href='".$tnamerule."_$totalpage".$GLOBALS['art_shortname']."'>Ä©Ò³</a>\r\n";
+			$nextpage.="<a href='".$tnamerule."_$nextpagenum".$GLOBALS['art_shortname']."'>ä¸‹ä¸€é¡µ</a>\r\n";
+			$endpage="<a href='".$tnamerule."_$totalpage".$GLOBALS['art_shortname']."'>æœ«é¡µ</a>\r\n";
 		}
 		else{
-			$endpage="Ä©Ò³\r\n";
+			$endpage="æœ«é¡µ\r\n";
 		}
-		//»ñµÃÊı×ÖÁ´½Ó
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
 		if($this->PageNo >= $total_list) {
@@ -457,7 +352,7 @@ class SpecView
 		return $plist;
 	}
   //---------------------------------
-  //»ñÈ¡¶¯Ì¬µÄ·ÖÒ³ÁĞ±í
+  //è·å–åŠ¨æ€çš„åˆ†é¡µåˆ—è¡¨
   //---------------------------------
 	function GetPageListDM($list_len)
 	{
@@ -467,8 +362,8 @@ class SpecView
 		$nextpagenum = $this->PageNo+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
-		if($totalpage<=1 && $this->TotalResult>0) return "¹²1Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
-		if($this->TotalResult == 0) return "¹²0Ò³/".$this->TotalResult."Ìõ¼ÇÂ¼"; 
+		if($totalpage<=1 && $this->TotalResult>0) return "å…±1é¡µ/".$this->TotalResult."æ¡è®°å½•"; 
+		if($this->TotalResult == 0) return "å…±0é¡µ/".$this->TotalResult."æ¡è®°å½•"; 
 		
 		$purl = $this->GetCurUrl();
 		$geturl = "typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
@@ -477,23 +372,23 @@ class SpecView
 		
 		$purl .= "?".$geturl;
 		
-		//»ñµÃÉÏÒ»Ò³ºÍÏÂÒ»Ò³µÄÁ´½Ó
+		//è·å¾—ä¸Šä¸€é¡µå’Œä¸‹ä¸€é¡µçš„é“¾æ¥
 		if($this->PageNo != 1){
-			$prepage.="<td width='50'><a href='".$purl."PageNo=$prepagenum'>ÉÏÒ»Ò³</a></td>\r\n";
-			$indexpage="<td width='30'><a href='".$purl."PageNo=1'>Ê×Ò³</a></td>\r\n";
+			$prepage.="<td width='50'><a href='".$purl."PageNo=$prepagenum'>ä¸Šä¸€é¡µ</a></td>\r\n";
+			$indexpage="<td width='30'><a href='".$purl."PageNo=1'>é¦–é¡µ</a></td>\r\n";
 		}
 		else{
-			$indexpage="<td width='30'>Ê×Ò³</td>\r\n";
+			$indexpage="<td width='30'>é¦–é¡µ</td>\r\n";
 		}	
 		
 		if($this->PageNo!=$totalpage && $totalpage>1){
-			$nextpage.="<td width='50'><a href='".$purl."PageNo=$nextpagenum'>ÏÂÒ»Ò³</a></td>\r\n";
-			$endpage="<td width='30'><a href='".$purl."PageNo=$totalpage'>Ä©Ò³</a></td>\r\n";
+			$nextpage.="<td width='50'><a href='".$purl."PageNo=$nextpagenum'>ä¸‹ä¸€é¡µ</a></td>\r\n";
+			$endpage="<td width='30'><a href='".$purl."PageNo=$totalpage'>æœ«é¡µ</a></td>\r\n";
 		}
 		else{
-			$endpage="<td width='30'>Ä©Ò³</td>\r\n";
+			$endpage="<td width='30'>æœ«é¡µ</td>\r\n";
 		}
-		//»ñµÃÊı×ÖÁ´½Ó
+		//è·å¾—æ•°å­—é“¾æ¥
 		$listdd="";
 		$total_list = $list_len * 2 + 1;
 		if($this->PageNo >= $total_list) {
@@ -526,14 +421,14 @@ class SpecView
 		return $plist;
 	}
  	//--------------------------
- 	//»ñµÃÒ»¸öÖ¸¶¨µÄÆµµÀµÄÁ´½Ó
+ 	//è·å¾—ä¸€ä¸ªæŒ‡å®šçš„é¢‘é“çš„é“¾æ¥
  	//--------------------------
  	function GetListUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2)
   {
   	return GetTypeUrl($typeid,MfTypedir($typedir),$isdefault,$defaultname,$ispart,$namerule2);
   }
   //---------------
-  //»ñµÃµ±Ç°µÄÒ³ÃæÎÄ¼şµÄurl
+  //è·å¾—å½“å‰çš„é¡µé¢æ–‡ä»¶çš„url
   //----------------
   function GetCurUrl()
 	{

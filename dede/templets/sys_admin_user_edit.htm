@@ -1,0 +1,107 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>管理员帐号--更改帐号</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">系统帐号管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td height="19" bgcolor="#EDF9D5"> 
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%"><b><strong>&nbsp;&nbsp;更改帐号</strong></b> </td>
+          <td width="76%" align="right"><strong><a href="sys_admin_user.php"><u>管理帐号</u></a></strong></td>
+        </tr>
+      </table></td>
+</tr>
+<tr>
+    <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
+	<form name="form1" action="sys_admin_user_edit.php" method="post">
+	<input type="hidden" name="dopost" value="saveedit">
+	<input type="hidden" name="ID" value="<?php echo $row['ID']?>">
+        <table width="100%" border="0" cellpadding="1" cellspacing="1" class="tblist">
+          <tr> 
+            <td width="16%" height="30">用户登录ID：</td>
+            <td width="84%" align="left"><?php echo $row['userid']?></td>
+          </tr>
+          <tr> 
+            <td height="30">用户笔名：</td>
+            <td align="left"><input name="uname" type="text" id="uname" size="16" value="<?php echo $row['uname']?>" style="width:150"> &nbsp;（发布文章后显示责任编辑的名字）</td>
+          </tr>
+          <tr> 
+            <td height="30">用户密码：</td>
+            <td align="left"><input name="pwd" type="text" id="pwd" size="16" style="width:150"> &nbsp;（空不变，只能用'0-9'、'a-z'、'A-Z'、'.'、'@'、'_'、'-'、'!'以内范围的字符）</td>
+          </tr>
+          <tr> 
+            <td height="30">用户类型：</td>
+            <td align="left">
+			  <select name='usertype' style='width:150'>
+			  	<?php 
+			  	$dsql->SetQuery("Select * from #@__admintype order by rank asc");
+			  	$dsql->Execute("ut");
+			  	while($myrow = $dsql->GetObject("ut"))
+			  	{
+			  		if($row['usertype']==$myrow->rank) echo "<option value='".$myrow->rank."' selected>".$myrow->typename."</option>\r\n";
+			  		else echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
+			  	}
+			  	?>
+			  </select>
+			  </td>
+          </tr>
+          <tr> 
+            <td height="30">负责频道：</td>
+            <td align="left">
+			
+			<select name="typeid[]" style="width:250" size="10" id="typeid" multiple>
+<?php
+    $typeOptions = "";
+    $typeids = Array();
+    if($row['typeid']!=''){
+	     $typeids = explode(',',$row['typeid']);
+	     echo "<option value='0'>--所有频道--</option>";
+    }else{
+    	 echo "<option value='0' selected>--所有频道--</option>";
+    }
+		$dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 And (ispart=0 Or ispart=1)");
+    $dsql->Execute('op');
+    while($row1 = $dsql->GetObject('op')){
+	     if(!in_array($row1->ID,$typeids)) echo "<option value='{$row1->ID}'>{$row1->typename}</option>\r\n";
+	     else  echo "<option value='{$row1->ID}' selected>{$row1->typename}</option>\r\n";
+	     $dsql->SetQuery("Select ID,typename From #@__arctype where reID={$row1->ID} And (ispart=0 Or ispart=1)");
+       $dsql->Execute('s');
+       while($row2 = $dsql->GetObject('s')){
+	        if(!in_array($row2->ID,$typeids)) echo "<option value='{$row->ID}-{$row2->ID}'>　--{$row2->typename}</option>\r\n";
+	        else  echo "<option value='{$row1->ID}-{$row2->ID}' selected>　--{$row2->typename}</option>\r\n";
+	     }
+    }
+?>
+       </select>
+       <br/>
+       使用 Ctrl 进行多选，如果选择了顶级目录，子目录将自动被授权为可管理。			 </td>
+          </tr>
+          <tr> 
+            <td height="30">真实姓名：</td>
+            <td align="left"><input name="tname" type="text" id="tname" size="16" style="width:150" value="<?php echo $row['tname']?>"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="30">电子邮箱：</td>
+            <td align="left"><input name="email" type="text" id="email" size="16" style="width:150" value="<?php echo $row['email']?>"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="30">&nbsp;</td>
+            <td align="left"><input type="submit" name="Submit" value=" 保存用户 " class="inputbut"/></td>
+          </tr>
+        </table>
+      </form>
+	  </td>
+</tr>
+</table>
+</body>
+</html>

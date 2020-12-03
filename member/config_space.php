@@ -1,13 +1,20 @@
 <?php 
-$needFilter = true;
+$cfg_needFilter = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 
 $cfg_egstr = "[\|\"\s\*\.\?\(\)\$ ;,'%]";
 
-//¼ì²éÊÇ·ñ¿ª·Å»áÔ±¹¦ÄÜ
-if($cfg_mb_open=='·ñ'){
-	ShowMsg("ÏµÍ³¹Ø±ÕÁË»áÔ±¹¦ÄÜ£¬Òò´ËÄãÎÞ·¨·ÃÎÊ´ËÒ³Ãæ£¡","javascript:;");
+//æ£€æŸ¥æ˜¯å¦å¼€æ”¾ä¼šå‘˜åŠŸèƒ½
+if($cfg_mb_open=='N'){
+	ShowMsg("ç³»ç»Ÿå…³é—­äº†ä¼šå‘˜åŠŸèƒ½ï¼Œå› æ­¤ä½ æ— æ³•è®¿é—®æ­¤é¡µé¢ï¼","javascript:;");
 	exit();
 }
-
+//ç§¯åˆ†å¯¹åº”å¤´è¡”
+function Gethonor($scores){
+	global $dsql;
+	if(!isset($dsql) || !is_object($dsql)) $dsql = new DedeSql(false);
+	$rs = $dsql->GetOne("Select titles,icon From #@__scores where integral<={$scores} order by integral desc");
+	if(is_array($rs)) return $rs['titles']."#|".$rs['icon'];
+	else return "æœªæŽˆè¡”#|1";
+}
 ?>

@@ -20,4 +20,6 @@ $dlist->SetSource($sql);
 $dlist->SetTemplet(dirname(__FILE__)."/templets/mynews_main.htm");
 $dlist->display();
 $dlist->Close();
+
+ClearAllLink();
 ?>

@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>²éÕÒ»áÔ±</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æŸ¥æ‰¾ä¼šå‘˜</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
 .mbb { margin-bottom:3px; border:1px dashed #cdcdcd; }
@@ -16,12 +17,12 @@ var pageno = 1;
 var totalrow = <?php echo $totalRow?>;
 var pagesize = <?php echo $pagesize?>;
 var fkeyword,fsex,fage1,fage2,fprovince,fcity,fpic;
-//·ÖÎöËÑË÷±íµ¥
+//åˆ†ææœç´¢è¡¨å•
 function GetSearchQuery(){
 	var searchQuery = "";
 	fkeyword = $Obj('keyword').value.replace('&','');
-	if($Obj('sex1').checked) fsex='ÄĞ';
-	else if($Obj('sex2').checked) fsex='Å®';
+	if($Obj('sex1').checked) fsex='ç”·';
+	else if($Obj('sex2').checked) fsex='å¥³';
 	else fsex = '';
 	fage1 = $Obj('age1').value;
 	fage2 = $Obj('age2').value;
@@ -32,20 +33,20 @@ function GetSearchQuery(){
 	searchQuery = "keyword="+fkeyword+"&sex="+fsex+"&age1="+fage1+"&age2="+fage2+"&province="+fprovince+"&city="+fcity+"&pic="+fpic;
   return searchQuery;
 }
-//¼ÓÔØÁĞ±í
+//åŠ è½½åˆ—è¡¨
 function ReLoadPage(){
 	var listArea = $Obj('memberlist');
-	var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í»òÃ»ÓĞÕÒµ½ÈÎºÎ¼ÇÂ¼£¡<br>[<a href=\"javascript:ReloadPage()\"><u>µã»÷´ËÖØĞÂ³¢ÊÔ</u></a>]";
-  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ¼ÓÔØ...");
+	var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™æˆ–æ²¡æœ‰æ‰¾åˆ°ä»»ä½•è®°å½•ï¼<br>[<a href=\"javascript:ReloadPage()\"><u>ç‚¹å‡»æ­¤é‡æ–°å°è¯•</u></a>]";
+  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨åŠ è½½...");
   myajax.SendGet("search_member.php?dopost=getlist&pageno="+pageno+"&"+GetSearchQuery());
 }
-//ÔØÈëÖ¸¶¨Ò³µÄÁĞ±í
+//è½½å…¥æŒ‡å®šé¡µçš„åˆ—è¡¨
 function LoadPage(npage){
 	pageno = npage;
 	ReLoadPage();
 	ReloadPageNum(pageno);
 }
-//ÖØĞÂ¼ÓÔØ·ÖÒ³ÁĞ±í
+//é‡æ–°åŠ è½½åˆ†é¡µåˆ—è¡¨
 function ReloadPageNum(startnum){
 var ListArea = $Obj('pagelist');
 var pagenum = Math.ceil(totalrow/pagesize);
@@ -53,9 +54,9 @@ var listsize = 3;
 var ahtml = "";
 var startloop = 1;
 var endnum = 0;
-ahtml += "¹²£º"+totalrow+" Ìõ¼ÇÂ¼/"+pagenum+"Ò³ ";
-if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>Ê×Ò³</a> ";
-if(pageno>1) ahtml += "<a href='javascript:LoadPage("+(pageno-1)+");'>¡üÉÏÒ³</a> ";
+ahtml += "å…±ï¼š"+totalrow+" æ¡è®°å½•/"+pagenum+"é¡µ ";
+if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>é¦–é¡µ</a> ";
+if(pageno>1) ahtml += "<a href='javascript:LoadPage("+(pageno-1)+");'>â†‘ä¸Šé¡µ</a> ";
 if(startnum >= pagenum-listsize){
 	startloop = pagenum-(listsize*2);
 	if(startloop<1) startloop = 1;
@@ -80,8 +81,8 @@ else{
 		else ahtml += "<a href='javascript:LoadPage("+i+");'>["+i+"]</a> ";
 	}
 }
-if(pageno<pagenum) ahtml += "<a href='javascript:LoadPage("+(pageno+1)+");'>ÏÂÒ³¡ı</a> ";
-if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>Ä©Ò³</a>";
+if(pageno<pagenum) ahtml += "<a href='javascript:LoadPage("+(pageno+1)+");'>ä¸‹é¡µâ†“</a> ";
+if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>æœ«é¡µ</a>";
 ListArea.innerHTML = ahtml;
 }
 </script>
@@ -96,53 +97,54 @@ ListArea.innerHTML = ahtml;
 </td>
 <td width="9">&nbsp;</td>
 <td width="608" valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px;margin-top:10px;">
 <tr align="right" bgcolor="#ffffff"> 
 <td background="img/nnnbg.gif" class="gdt">
-<table width='97%' cellpadding='0' cellspacing='0'>
+<table width='100%' cellpadding='0' cellspacing='0'>
 <tr>
-<td width='30%'><b>²éÕÒ»áÔ±£º</b></td>
-<td align='right'>&nbsp; </td></tr>
+<div class="manage_company_right_title">
+                	<ul><li>æŸ¥æ‰¾ä¼šå‘˜ï¼š</li></ul>
+                </div></tr>
 </table>
 </td>
 </tr>
 </table>
-<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666" style="margin-bottom:6px">
+<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666" style="margin-bottom:6px;text-align:left;">
 <tr bgcolor="#E2EBC0" height="24"> 
 <td colspan="6" bgcolor="#FFFFFF">
 <form name='form2' action='search_member.php' method='post'>
-<table width="585" border="0" cellspacing="2" cellpadding="2">
+<table width="585" border="0" cellspacing="2" cellpadding="2" style="text-align:left;">
 <tr> 
-<td align="center">¹Ø¼ü×Ö£º</td>
+<td align="center">å…³é”®å­—ï¼š</td>
 <td><input name="keyword" type="text" id="keyword" style="width:90%" value="<?php echo $keyword?>"></td>
-<td>ĞÔ¡¡±ğ£º</td>
+<td>æ€§ã€€åˆ«ï¼š</td>
 <td>
-	<input type="radio" id="sex1" name="sex" value="ÄĞ" class="np"<?php if($sex=='ÄĞ') echo ' checked';?>>
-ÄĞ 
-<input type="radio" id="sex2" name="sex" value="Å®" class="np"<?php if($sex=='Å®') echo ' checked';?>>
-Å® 
+	<input type="radio" id="sex1" name="sex" value="ç”·" class="np"<?php if($sex=='ç”·') echo ' checked';?>>
+ç”· 
+<input type="radio" id="sex2" name="sex" value="å¥³" class="np"<?php if($sex=='å¥³') echo ' checked';?>>
+å¥³ 
 <input type="radio" id="sex3" name="sex" value="" class="np"<?php if($sex=='') echo ' checked';?>>
-²»ÏŞ
+ä¸é™
 </td>
 </tr>
 <tr> 
-<td align="center">Äê¡¡Áä£º</td>
+<td align="center">å¹´ã€€é¾„ï¼š</td>
 <td width="181">
 <input name="age1" type="text" id="age1" style="width:50px" value="<?php echo $age1?>">
-µ½ 
+åˆ° 
 <input name="age2" type="text" id="age2" style="width:50px" value="<?php echo $age2?>">
-Ëê
+å²
 </td>
-<td width="72">µØ¡¡Çø£º</td>
+<td width="72">åœ°ã€€åŒºï¼š</td>
 <td width="236">
 <select name="province" size="1" id="province" width="4" onChange="javascript:selNext($Obj('city'),this.value)" style="width:85">
 <?php  if($province>0) echo "<option value='$province' selected>".GetProvince($province,$dsql)."</option>"; ?>
-<option value="0">--²»ÏŞ--</option>
+<option value="0">--ä¸é™--</option>
 </select>
- &nbsp;³ÇÊĞ£º 
+ &nbsp;åŸå¸‚ï¼š 
 <select id="city" name="city" width="4" style="width:85">
 <?php  if($city>0) echo "<option value='$city' selected>".GetProvince($city,$dsql)."</option>"; ?>
-<option value="0">--²»ÏŞ--</option>
+<option value="0">--ä¸é™--</option>
 </select>
 <script language='javascript'>
 selTop($Obj('province'));
@@ -153,12 +155,12 @@ selNextDf($Obj('city'),<?php echo $province?>,<?php echo $city?>,"<?php echo Get
 </td>
 </tr>
 <tr> 
-<td width="70" align="center">Ïà¡¡Æ¬£º</td>
+<td width="70" align="center">ç›¸ã€€ç‰‡ï¼š</td>
 <td>
 <input type="radio" id="pic1" name="pic" value="1"<?php if($pic==1) echo " checked";?>>
-ÓĞ 
+æœ‰ 
 <input name="pic" id="pic2" type="radio" value="0"<?php if(empty($pic)) echo " checked";?>>
-²»ÏŞ
+ä¸é™
 </td>
 <td>&nbsp;</td>
 <td><input class="np" name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0"></td>

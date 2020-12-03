@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>发布分类信息</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language='javascript' src='../include/common.js'></script>
+<script language="javascript">
+<!--
+<?php
+echo $areacache;
+echo $sectorcache;
+?>
+function checkSubmit()
+{
+   if(document.form1.title.value==""){
+	    alert("标题不能为空！");
+	    document.form1.title.focus();
+	    return false;
+  }
+  if(document.form1.typeid.value==0){
+	   alert("请选择档案的主类别！");
+	   return false;
+  }
+}
+
+-->
+</script>
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+-->
+</style>
+</head>
+<body topmargin="8">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+    <tr>
+      <td height="30">
+	  &nbsp;<strong>●<a href="catalog_do.php?cid=<?php echo $cid; ?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>信息列表</u></a></strong>&gt;&gt;发布信息	  </td>
+      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="1%">&nbsp;</td>
+    </tr>
+</table>
+<form name="form1" action="action/info_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
+<input type="hidden" name="step" value="2">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td align="left" bgcolor="#FFFFFF"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#E2F5BC" class="htable" id="head1">
+      <tr>
+        <td bgcolor="#EDF9D5"><table width="84" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="84" height="24" align="center" bgcolor="#FFFFFF">&nbsp;常规参数&nbsp;</td>
+            </tr>
+        </table></td>
+      </tr>
+    </table>
+        <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
+          <tr>
+            <td width="400%" height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="90">信息标题：</td>
+                  <td><input type="text" size="50" name="title" value="" />
+                    <input name="iscommend" type="checkbox" id="iscommend" value="11">
+推荐
+<input name="isbold" type="checkbox" id="isbold" value="5">
+加粗</td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">Tag标签：</td>
+                <td><input name="tag" type="text" id="tag" style="width:300px" value="" />
+(用空格或','分开) </td>
+                </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline" id="redirecturltr" style="display:none"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">排序方式：</td>
+                <td width="250"><select name="sortup" id="sortup" style="width:150">
+                  <option value="0" selected="selected">默认排序</option>
+                  <option value="7">置顶一周</option>
+                  <option value="30">置顶一个月</option>
+                  <option value="90">置顶三个月</option>
+                  <option value="180">置顶半年</option>
+                  <option value="360">置顶一年</option>
+                </select></td>
+                <td width="90">有效期：</td>
+                <td><input type="text" name="endtime" value="30" />
+天</td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline"><table width="800" border="0" cellpadding="0" cellspacing="0" id="pictable2">
+              <tr>
+                <td width="90" height="80" align="right">缩 略 图：</td>
+                <td width="395"><input name="picname" type="text" id="picname" style="width:250px" value="" />
+                    <input type="button" name="Submit" value="浏览..." style="width:60" onclick="SelectImage('form1.picname','');" class="inputbut" />
+                </td>
+                <td><img src="img/pview.gif" width="150" height="100" id="picview2" name="picview" /> </td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr id="pictable">
+            <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">关键词：</td>
+                <td width="250"><input type="text" name="keywords" value="" style="width:200px" /></td>
+                <td width="90">摘要：</td>
+                <td><textarea name="description" rows="3" id="description" style="width:200px"></textarea></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">信息栏目：</td>
+                <td width="250">
+            <?php 
+           	if(empty($cid)  && empty($cfg_cat_seltype) ) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		      echo "<select name='typeid' style='width:200px'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?>
+                </td>
+                <td width="90">小分类：</td>
+                <td><select name="smalltypeid">
+                  <option value="0">-不限-</option>
+                  <?php echo $smalltypes;?>
+                </select></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">地区：</td>
+                <td width="250"><select name="areaid" id="areaid" onchange="javascript:selNext(this.document.form1.areaid2,this.value,'subareas')">
+                  <option value="0">--不限--</option>
+                  <?php
+$dsql->SetQuery("Select * From #@__area where reid=0");
+$dsql->Execute();
+while($area = $dsql->GetArray())
+{
+	echo "<option value='".$area['id']."'>".$area['name']."</option>\r\n";
+}
+?>
+                </select>
+                  <select name="areaid2" id="areaid2">
+                    <option value="0">--不限--</option>
+                  </select></td>
+                <td width="90">行业：</td>
+                <td><select name="sectorid" id="sectorid" onchange="javascript:selNext(this.document.form1.sectorid2,this.value,'subsectors')">
+                  <option value="0">--不限--</option>
+                  <?php
+$dsql->SetQuery("Select * From #@__sectors where reid=0");
+$dsql->Execute();
+while($sector = $dsql->GetArray())
+{
+	echo "<option value='".$sector['id']."'>".$sector['name']."</option>\r\n";
+}
+?>
+                </select>
+                  <select name="sectorid2" id="sectorid2">
+                    <option value="0">--不限--</option>
+                  </select></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">自定义属性：</td>
+                <td width="250"><select name='arcatt' style='width:150'>
+                  <option value='0'>普通文档</option>
+                  <?php
+$dsql->SetQuery("Select * From #@__arcatt order by att asc");
+$dsql->Execute();
+while($trow = $dsql->GetObject())
+{
+	echo "<option value='{$trow->att}'>{$trow->attname}(att={$trow->att})</option>";
+}
+?>
+                </select></td>
+                <td width="90">发布时间：</td>
+                <td><?php
+$nowtime = GetDateTimeMk(mytime());
+echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\">";
+?></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90" height="25" bgcolor="#FFFFFF">联系人：</td>
+                <td width="250" height="25" bgcolor="#FFFFFF"><input type="text" name="contact" style="width:200px" value="" /></td>
+                <td width="90" height="25" bgcolor="#FFFFFF">传真：</td>
+                <td height="25" bgcolor="#FFFFFF"><input type="text" name="fax" style="width:200px" value="" /></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="28" colspan="4" bgcolor="#FFFFFF" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90" height="25" bgcolor="#FFFFFF">电话：</td>
+                <td width="250" height="25" bgcolor="#FFFFFF"><input type="text" style="width:200px" name="phone" value="" /></td>
+                <td width="90" height="25" bgcolor="#FFFFFF">地址：</td>
+                <td height="25" bgcolor="#FFFFFF"><input type="text" name="address" style="width:200px" value="" /></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90" height="25" bgcolor="#FFFFFF">Email：</td>
+                <td width="250" height="25" bgcolor="#FFFFFF"><input type="text" style="width:200px" name="email" value="" /></td>
+                <td width="90" height="25" bgcolor="#FFFFFF">QQ：</td>
+                <td height="25" bgcolor="#FFFFFF"><input type="text" name="qq" style="width:200px" value="" /></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="90">MSN：</td>
+                <td width="250"><input type="text" name="msn" style="width:200px" value="" /></td>
+                <td width="90">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td style="padding:0px;"><?php 
+        PrintAutoFieldsAdd($cInfos['fieldset'],'autofield','90');
+        ?>
+            </td>
+          </tr>
+        </table>
+        <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#E2F5BC" id="head2" style="border-top:1px solid #E2F5BC;">
+          <tr>
+            <td colspan="2" bgcolor="#EDF9D5"><table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" align="center" bgcolor="#FFFFFF">信息内容</td>
+                  <td width="84" align="center">&nbsp;</td>
+                </tr>
+            </table></td>
+          </tr>
+      </table>
+      <table width="98%" border="0">
+        <tr>
+          <td><table width="800" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="90">&nbsp;附加选项：</td>
+              <td><input name="remote" type="checkbox"  id="remote" value="1" checked="checked" />
+                下载远程图片和资源
+                <input name="dellink" type="checkbox"  id="dellink" value="1" />
+                删除非站内链接
+                <input name="autolitpic" type="checkbox"  id="autolitpic" value="1" />
+                提取第一个图片为缩略图
+                <input name="autokey" type="checkbox"  id="autokey" value="1" />
+                自动获取关键词 </td>
+            </tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td><?php
+	GetEditor("body",'',450);
+	?></td>
+          </tr>
+        <tr>
+          <td height="35" align="center">
+		  <input name="imageField" type="submit" class="inputbut" value="确定" />
+		  &nbsp;
+          <input name="button" type="reset" class="inputbut" id="button" value="重置"/>			</td>
+          </tr>
+      </table></td>
+  </tr>
+</table>
+</form>
+<?php
+$dsql->Close();
+?>
+</body>
+</html>

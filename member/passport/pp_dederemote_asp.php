@@ -1,25 +1,25 @@
 <?php 
 /*-------------------------------------------
-Í¨ÐÐÕ¾·´ÏòÕûºÏ½Ó¿ÚÔ¶³Ìµ÷ÓÃÎÄ¼þ
-£¨Ó¦ÓÃÓÚÆäËüÏµÍ³ÕûºÏDedecms--¼´ÊÇÊ¹ÓÃÆäËüÏµÍ³×÷ÎªµÇÂ¼¡¢×¢²áÖ÷Èë¿Ú£©
-×÷Õß£º IT°ØÀ­Í¼  ×îºóÐÞ¸ÄÈÕÆÚ 2007-3-29
-±¾ÎÄ¼þÓÃÓÚÕûºÏASPÀàµÄÏµÍ³£¨×Ö´®Ã»ÓÐÊ¹ÓÃbase64¼ÓÃÜ£©
+é€šè¡Œç«™åå‘æ•´åˆæŽ¥å£è¿œç¨‹è°ƒç”¨æ–‡ä»¶
+ï¼ˆåº”ç”¨äºŽå…¶å®ƒç³»ç»Ÿæ•´åˆDedecms--å³æ˜¯ä½¿ç”¨å…¶å®ƒç³»ç»Ÿä½œä¸ºç™»å½•ã€æ³¨å†Œä¸»å…¥å£ï¼‰
+ä½œè€…ï¼š ITæŸæ‹‰å›¾  æœ€åŽä¿®æ”¹æ—¥æœŸ 2007-12-07
+æœ¬æ–‡ä»¶ç”¨äºŽæ•´åˆASPç±»çš„ç³»ç»Ÿï¼ˆå­—ä¸²æ²¡æœ‰ä½¿ç”¨base64åŠ å¯†ï¼‰
 //**********************************************************************
-±¾ÎÄ¼þ½ö×÷ÎªÍø¹Ø¹©Ô¶³Ìµ÷ÓÃ
-ÇëÊ¹ÓÃ»ò²Î¿¼ pp_dederemote_interface.asp Ìá¹©µÄ½Ó¿Úº¯Êý½øÐÐÕûºÏ±à³Ì
+æœ¬æ–‡ä»¶ä»…ä½œä¸ºç½‘å…³ä¾›è¿œç¨‹è°ƒç”¨
+è¯·ä½¿ç”¨æˆ–å‚è€ƒ pp_dederemote_interface.asp æä¾›çš„æŽ¥å£å‡½æ•°è¿›è¡Œæ•´åˆç¼–ç¨‹
 -----------------------------------------*/
 require_once(dirname(__FILE__)."/../../include/config_base.php");
-header("Content-Type: text/html; charset=gb2312");
+header("Content-Type: text/html; charset=utf-8");
 
 if($cfg_pp_isopen = 0){
-	echo "ÏµÍ³Ã»¿ªÆôÍ¨ÐÐÖ¤¹¦ÄÜ£¬½ûÖ¹Ô¶³Ìµ÷ÓÃ£¡";
+	echo "ç³»ç»Ÿæ²¡å¼€å¯é€šè¡Œè¯åŠŸèƒ½ï¼Œç¦æ­¢è¿œç¨‹è°ƒç”¨ï¼";
 	exit();
 }
 
 $cfg_ndsql = 0;
 
 if(empty($rmdata)){
-	echo "Ã»½ÓÊÕµ½ÈÎºÎÔ¶³ÌÊý¾Ý£¡";
+	echo "æ²¡æŽ¥æ”¶åˆ°ä»»ä½•è¿œç¨‹æ•°æ®ï¼";
 	exit();
 }
 
@@ -27,7 +27,7 @@ $keys = Array('userid','userpwd','signstr','newuserpwd','action','email','sex','
 
 foreach($keys as $v) $$v = '';
 
-//½âÂëGET×Ö·û´®
+//è§£ç GETå­—ç¬¦ä¸²
 $datas = explode('&',$rmdata);
 foreach($datas as $ky){
 	$nkys = explode('=',$ky);
@@ -37,46 +37,46 @@ foreach($datas as $ky){
 $ntime = time();
 
 if($action!='exit'){
-  //ÑéÖ¤Ö¤Êé
+  //éªŒè¯è¯ä¹¦
   if($userid==''||!TestStringSafe($userid)){
-	  echo "ÓÃ»§IDÎª¿Õ»ò´æÔÚ·Ç·¨×Ö·û´®£¡".$oldrmdata;
+	  echo "ç”¨æˆ·IDä¸ºç©ºæˆ–å­˜åœ¨éžæ³•å­—ç¬¦ä¸²ï¼".$oldrmdata;
 	  exit();
   }
   if(strlen($userid)>24){
-	  echo "ÓÃ»§ID³¤¶È²»ÄÜ³¬¹ý24Î»£¡";
+	  echo "ç”¨æˆ·IDé•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼";
 	  exit();
   }
   $testSign = substr(md5($userid.$cfg_cookie_encode),0,24);
   if($testSign!=$signstr){
-	  echo "Ö¤ÊéÑéÖ¤Ê§°Ü£¡";
+	  echo "è¯ä¹¦éªŒè¯å¤±è´¥ï¼";
 	  exit();
   }
 }
 
-//×¢½âÀïµÄfunction½ö·½±ãUltraEditË÷Òý£¬²¢ÎÞÆäËüÒâÒå
+//æ³¨è§£é‡Œçš„functionä»…æ–¹ä¾¿UltraEditç´¢å¼•ï¼Œå¹¶æ— å…¶å®ƒæ„ä¹‰
 /*--------------------------------
-»áÔ±×¢²á
+ä¼šå‘˜æ³¨å†Œ
 function __UserReg()
 ---------------------------------*/
 if($action=='reg'){
 	if($userpwd==''||!TestStringSafe($userpwd)){
-	  echo "ÓÃ»§ÃÜÂëÎª¿Õ»ò´æÔÚ·Ç·¨×Ö·û´®£¡";
+	  echo "ç”¨æˆ·å¯†ç ä¸ºç©ºæˆ–å­˜åœ¨éžæ³•å­—ç¬¦ä¸²ï¼";
 	  exit();
   }
   if(strlen($userpwd)>24){
-	  echo "ÓÃ»§ÃÜÂë³¤¶È²»ÄÜ³¬¹ý24Î»£¡";
+	  echo "ç”¨æˆ·å¯†ç é•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼";
 	  exit();
   }
 	Z_OpenSql();
 	$row = $cfg_ndsql->GetOne("Select ID,pwd From #@__member where userid like '$userid' ");
-	//Èç¹ûÒÑ¾­´æÔÚÓÃ»§Ãû£¬¼ì²âÃÜÂëÊÇ·ñÕýÈ·£¬Èç¹ûÃÜÂëÕýÈ·£¬Ôò·µ»ØµÇÂ¼ÐÅÏ¢£¬·ñÔò²»ÔÊÐí×¢²á
+	//å¦‚æžœå·²ç»å­˜åœ¨ç”¨æˆ·åï¼Œæ£€æµ‹å¯†ç æ˜¯å¦æ­£ç¡®ï¼Œå¦‚æžœå¯†ç æ­£ç¡®ï¼Œåˆ™è¿”å›žç™»å½•ä¿¡æ¯ï¼Œå¦åˆ™ä¸å…è®¸æ³¨å†Œ
 	if(is_array($row)){
 		 $userpwd = GetEncodePwd($userpwd);
 	   $ID = $row['ID'];
 	   $pwd = $row['pwd'];
 	   Z_CloseSql();
 	   if($userpwd != $pwd){
-		    echo "ÓÃ»§ID£º{$userid} ÒÑ´æÔÚ£¬ÇëÊ¹ÓÃÆäËüÓÃ»§Ãû£¡";
+		    echo "ç”¨æˆ·IDï¼š{$userid} å·²å­˜åœ¨ï¼Œè¯·ä½¿ç”¨å…¶å®ƒç”¨æˆ·åï¼";
 		    exit();
 	   }else{
 	      $backString = $ID;
@@ -86,17 +86,37 @@ if($action=='reg'){
 	}
 	$userpwd = GetEncodePwd($userpwd);
 	$loginip = Z_GetIP();
-	$inQuery = "
- 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,money,
- 	 weight,height,job,province,city,myinfo,tel,oicq,email,homepage,
- 	 jointime,joinip,logintime,loginip,showaddr,address) 
-   VALUES ('$userid','$userpwd','$uname','$sex','0000-00-00','10','0',
-   '0','0','','0','0','','','','','','$ntime','$loginip','$ntime','$loginip','0','');";
+	
+	$uname = $ppuserid;
+   $inQuery1 = "
+ 	 INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` , `membertype` , `uptime` , `exptime` ,
+ 	   `money` , `email` , `jointime` , `joinip` , `logintime` , `loginip` ,
+ 	    `c1` , `c2` , `c3` , `matt` , `guestbook` , `spaceshow` , `pageshow` , `spacestyle` ,
+ 	     `spacename` , `spaceimage` , `news` , `mybb` , `listnum` , `scores` ) 
+    VALUES ('$ppuserid', '$userpwd', '0', '$uname', '10', '0', '0',
+     '0', '', '$ntime', '$loginip', '$ntime', '$loginip',
+      '0', '0', '0', '0', '0', '0', '0', '',
+       '', '', '', '', '20', '1000');
+	 ";
+   
    $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   
+   $id = $cfg_ndsql->GetLastID();
+   if($id>0){
+      $inQuery2 = "
+	      INSERT INTO `#@__member_perinfo` (`id`, `uname` , `sex` , `birthday` , `weight` ,`height` , `job` , `province` , `city` , `myinfo` , 
+	     `tel` , `oicq` , `homepage` , `showaddr` ,`address` , `fullinfo`) 
+       VALUES ('$id','$uname', '', '0000-00-00', '0','0', '0', '0', '0', '0' ,
+        '0' , '0' , '0' ,'0','0','');
+     ";	
+     $cfg_ndsql->ExecuteNoneQuery($inQuery);
+   }
+   
+   
    $row = $cfg_ndsql->GetOne("Select ID From #@__member where userid like '$userid' ");
 	 if(!is_array($row)){
 		 Z_CloseSql();
-		 echo "ÏµÍ³³ö´í£¬ÎÞ·¨Íê³É×¢²á£¬ÇëÁªÏµ¹ÜÀíÔ±£¡";
+		 echo "ç³»ç»Ÿå‡ºé”™ï¼Œæ— æ³•å®Œæˆæ³¨å†Œï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼";
 		 exit();
 	 }
 	 $ID = $row['ID'];
@@ -106,7 +126,7 @@ if($action=='reg'){
 	 exit();
 }
 /*--------------------------------
-¼ì²éÊÇ·ñ´æÔÚÓÃ»§Ãû
+æ£€æŸ¥æ˜¯å¦å­˜åœ¨ç”¨æˆ·å
 function __UserTest()
 ---------------------------------*/
 else if($action=='test'){
@@ -114,12 +134,12 @@ else if($action=='test'){
 	$row = $cfg_ndsql->GetOne("Select count(ID) as dd From #@__member where userid like '$userid' ");
 	if(!is_array($row)){
 		 Z_CloseSql();
-		 echo "ÏµÍ³³ö´í£¬ÎÞ·¨Íê³É×¢²á£¬ÇëÁªÏµ¹ÜÀíÔ±£¡";
+		 echo "ç³»ç»Ÿå‡ºé”™ï¼Œæ— æ³•å®Œæˆæ³¨å†Œï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼";
 		 exit();
 	}
 	if($row['dd']>0){
 		 Z_CloseSql();
-		 echo "ÓÃ»§IDÒÑ´æÔÚ£¡";
+		 echo "ç”¨æˆ·IDå·²å­˜åœ¨ï¼";
 		 exit();
 	}
 	 Z_CloseSql();
@@ -127,7 +147,7 @@ else if($action=='test'){
 	 exit();
 }
 /*--------------------------------
-»áÔ±µÇÂ¼
+ä¼šå‘˜ç™»å½•
 function __UserLogin()
 ---------------------------------*/
 else if($action=='login'){
@@ -135,11 +155,11 @@ else if($action=='login'){
 	$row = $cfg_ndsql->GetOne("Select ID,pwd From #@__member where userid like '$userid' ");
 	if(!is_array($row)){
 		 Z_CloseSql();
-		 echo "ÓÃ»§Ãû²»´æÔÚ£¬ÎÞ·¨µÇÂ¼±¾ÏµÍ³£¡";
+		 echo "ç”¨æˆ·åä¸å­˜åœ¨ï¼Œæ— æ³•ç™»å½•æœ¬ç³»ç»Ÿï¼";
 		 exit();
 	}
 	if(strlen($userpwd)>24){
-	  echo "ÓÃ»§ÃÜÂë³¤¶È²»ÄÜ³¬¹ý24Î»£¡";
+	  echo "ç”¨æˆ·å¯†ç é•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼";
 	  exit();
   }
 	$userpwd = GetEncodePwd($userpwd);
@@ -147,7 +167,7 @@ else if($action=='login'){
 	$pwd = $row['pwd'];
 	if($userpwd != $pwd){
 		 Z_CloseSql();
-		 echo "ÃÜÂë´íÎó£¡";
+		 echo "å¯†ç é”™è¯¯ï¼";
 		 exit();
 	}
 	$loginip = Z_GetIP();
@@ -158,16 +178,16 @@ else if($action=='login'){
 	exit();
 }
 /*--------------------------------
-¸ü¸ÄÃÜÂë
+æ›´æ”¹å¯†ç 
 function __UserEdit()
 ---------------------------------*/
 else if($action=='edit'){
 	if($newuserpwd==''||!TestStringSafe($newuserpwd)){
-	   echo "ÓÃ»§ÃÜÂëÎª¿Õ»ò´æÔÚ·Ç·¨×Ö·û´®£¡";
+	   echo "ç”¨æˆ·å¯†ç ä¸ºç©ºæˆ–å­˜åœ¨éžæ³•å­—ç¬¦ä¸²ï¼";
 	   exit();
   }
   if(strlen($newuserpwd)>24){
-	  echo "ÓÃ»§ÃÜÂë³¤¶È²»ÄÜ³¬¹ý24Î»£¡";
+	  echo "ç”¨æˆ·å¯†ç é•¿åº¦ä¸èƒ½è¶…è¿‡24ä½ï¼";
 	  exit();
   }
   $newuserpwd = GetEncodePwd($newuserpwd);
@@ -177,7 +197,7 @@ else if($action=='edit'){
 	echo 'OK!';
 }
 /*--------------------------------
-ÍË³öÏµÍ³
+é€€å‡ºç³»ç»Ÿ
 function __UserExit()
 ---------------------------------*/
 else if($action=='exit'){
@@ -186,15 +206,15 @@ else if($action=='exit'){
 	exit();
 }
 /*--------------------------------
-ÎÞ·¨Ê¶±ðÔ¶³Ì¶¯×÷
+æ— æ³•è¯†åˆ«è¿œç¨‹åŠ¨ä½œ
 function __ActionError()
 ---------------------------------*/
 else{
-	echo "ÎÞ·¨Ê¶±ðÄãµÄ¶¯×÷£¡";
+	echo "æ— æ³•è¯†åˆ«ä½ çš„åŠ¨ä½œï¼";
 	exit();
 }
 
-//ÆäËü¹¦ÄÜÈçº¯Êý
+//å…¶å®ƒåŠŸèƒ½å¦‚å‡½æ•°
 function Z_OpenSql(){
 	global $cfg_ndsql;
 	if(!$cfg_ndsql) $cfg_ndsql = new DedeSql(false);
@@ -207,7 +227,7 @@ function Z_GetIP(){
 	if(!empty($_SERVER["HTTP_CLIENT_IP"])) $cip = $_SERVER["HTTP_CLIENT_IP"];
 	else if(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 	else if(!empty($_SERVER["REMOTE_ADDR"])) $cip = $_SERVER["REMOTE_ADDR"];
-	else $cip = "ÎÞ·¨»ñÈ¡£¡";
+	else $cip = "æ— æ³•èŽ·å–ï¼";
 	return $cip;
 }
 ?>

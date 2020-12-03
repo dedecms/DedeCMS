@@ -1,9 +1,9 @@
 <?php 
-//¸ÃÒ³½öÓÃÓÚ¼ì²âÓÃ»§µÇÂ¼µÄÇé¿ö£¬ÈçÒªÊÖ¹¤¸ü¸ÄÏµÍ³ÅäÖÃ£¬Çë¸ü¸Äconfig_base.php
+//è¯¥é¡µä»…ç”¨äºŽæ£€æµ‹ç”¨æˆ·ç™»å½•çš„æƒ…å†µï¼Œå¦‚è¦æ‰‹å·¥æ›´æ”¹ç³»ç»Ÿé…ç½®ï¼Œè¯·æ›´æ”¹config_base.php
 require_once(dirname(__FILE__)."/../config_base.php");
 require_once(dirname(__FILE__)."/../inc_userlogin.php");
 
-//»ñµÃµ±Ç°½Å±¾Ãû³Æ£¬Èç¹ûÄãµÄÏµÍ³±»½ûÓÃÁË$_SERVER±äÁ¿£¬Çë×ÔÐÐ¸ü¸ÄÕâ¸öÑ¡Ïî
+//èŽ·å¾—å½“å‰è„šæœ¬åç§°ï¼Œå¦‚æžœä½ çš„ç³»ç»Ÿè¢«ç¦ç”¨äº†$_SERVERå˜é‡ï¼Œè¯·è‡ªè¡Œæ›´æ”¹è¿™ä¸ªé€‰é¡¹
 $dedeNowurl = "";
 $s_scriptName="";
  
@@ -11,7 +11,7 @@ $dedeNowurl = GetCurUrl();
 $dedeNowurls = explode("?",$dedeNowurl);
 $s_scriptName = $dedeNowurls[0];
 
-//¼ìÑéÓÃ»§µÇÂ¼×´Ì¬
+//æ£€éªŒç”¨æˆ·ç™»å½•çŠ¶æ€
 $cuserLogin = new userLogin();
 if($cuserLogin->getUserID()==-1)
 {

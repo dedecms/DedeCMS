@@ -11,16 +11,16 @@ $mid = $cfg_ml->M_ID;
 $buyid = 'M'.$mid.'T'.$mtime.'RN'.mt_rand(100,999);
 $dsql = new DedeSql(false);
 
-//É¾³ýÓÃ»§¾ÉµÄÎ´¸¶¿îµÄÍ¬Àà¼ÇÂ¼
+//åˆ é™¤ç”¨æˆ·æ—§çš„æœªä»˜æ¬¾çš„åŒç±»è®°å½•
 $mid = intval($mid);
 $dsql->ExecuteNoneQuery("Delete From #@__member_operation where mid='$mid' And sta=0 And product='$product'");
 
 $pid = intval($pid);
 if($product=='member'){
-	$ptype = "»áÔ±Éý¼¶";
+	$ptype = "ä¼šå‘˜å‡çº§";
 	$row = $dsql->GetOne("Select * From #@__member_type where aid='{$pid}'");
 	if(!is_array($row)){
-		echo "ÎÞ·¨Ê¶±ðÄãµÄ¶©µ¥£¡";
+		echo "æ— æ³•è¯†åˆ«ä½ çš„è®¢å•ï¼";
 		$dsql->Close();
 	  exit();
 	}
@@ -28,10 +28,10 @@ if($product=='member'){
 	$price = $row['money'];
 }
 else if($product=='card'){
-	$ptype = "µã¿¨¹ºÂò";
+	$ptype = "ç‚¹å¡è´­ä¹°";
 	$row = $dsql->GetOne("Select * From #@__moneycard_type where tid='{$pid}'");
 	if(!is_array($row)){
-		echo "ÎÞ·¨Ê¶±ðÄãµÄ¶©µ¥£¡";
+		echo "æ— æ³•è¯†åˆ«ä½ çš„è®¢å•ï¼";
 		$dsql->Close();
 	  exit();
 	}
@@ -39,9 +39,9 @@ else if($product=='card'){
 	$price = $row['money'];
 }
 
-if($product=='card'){ $okptype = $ptype.' : Î´»ñµÃ¿¨ºÅ'; }
+if($product=='card'){ $okptype = $ptype.' : æœªèŽ·å¾—å¡å·'; }
 else{ $okptype = $ptype; }
-//±£´æ¶¨µ¥ÐÅÏ¢
+//ä¿å­˜å®šå•ä¿¡æ¯
 
 $inquery = "
    INSERT INTO #@__member_operation(`buyid` , `pname` , `product` , `money` , `mtime` , `pid` , `mid` , `sta` ,`oldinfo`) 
@@ -51,13 +51,13 @@ $inquery = "
 $isok = $dsql->ExecuteNoneQuery($inquery);
 
 if(!$isok){
-  echo "Êý¾Ý¿â³ö´í£¬ÇëÖØÐÂ³¢ÊÔ£¡".$dsql->GetError();
+  echo "æ•°æ®åº“å‡ºé”™ï¼Œè¯·é‡æ–°å°è¯•ï¼".$dsql->GetError();
 	$dsql->Close();
 	exit();
 }
 
 if($price==''){
-	echo "ÎÞ·¨Ê¶±ðÄãµÄ¶©µ¥£¡";
+	echo "æ— æ³•è¯†åˆ«ä½ çš„è®¢å•ï¼";
 	$dsql->Close();
 	exit();
 }

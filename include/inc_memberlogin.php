@@ -1,29 +1,29 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config_base.php");
 
-//¼ì²âÓÃ»§ÉÏ´«¿Õ¼ä
+//æ£€æµ‹ç”¨æˆ·ä¸Šä¼ ç©ºé—´
 function GetUserSpace($uid,$dsql){
 	$row = $dsql->GetOne("select sum(filesize) as fs From #@__uploads where memberID='$uid'; ");
 	return $row['fs'];
 }
 
 function CheckUserSpace($uid){
-	global $cfg_mb_max;
-	$dsql = new DedeSql(false);
+	global $cfg_mb_max,$dsql;
+	if(!is_object($dsql)) $dsql = new DedeSql(false);
 	$hasuse = GetUserSpace($uid,$dsql);
 	$maxSize = $cfg_mb_max * 1024 * 1024;
 	if($hasuse >= $maxSize){
 		 $dsql->Close();
-		 ShowMsg('ÄãµÄ¿Õ¼äÒÑÂú£¬²»ÔÊĞíÉÏ´«ĞÂÎÄ¼ş£¡','-1');
+		 ShowMsg('ä½ çš„ç©ºé—´å·²æ»¡ï¼Œä¸å…è®¸ä¸Šä¼ æ–°æ–‡ä»¶ï¼','-1');
 		 exit();
 	}
 }
 
-//¼ì²âÓÃ»§µÄ¸½¼şÀàĞÍ
+//æ£€æµ‹ç”¨æˆ·çš„é™„ä»¶ç±»å‹
 function CheckAddonType($aname){
 	global $cfg_mb_mediatype;
 	if(empty($cfg_mb_mediatype)){
-		$cfg_mb_mediatype = "jpg|gif|png|swf|mpg|mp3|rm|rmvb|wmv|asf|wma|zip|rar|doc|xsl|ppt|wps";
+		$cfg_mb_mediatype = "jpg|gif|png|bmp|swf|mpg|mp3|rm|rmvb|wmv|asf|wma|zip|rar|doc|xsl|ppt|wps";
 	}
 	$anames = explode('.',$aname);
 	$atype = $anames[count($anames)-1];
@@ -36,24 +36,83 @@ function CheckAddonType($aname){
 	}
 }
 
-//»ñÈ¡Ê¡·İĞÅÏ¢
+$GLOBALS['MemberAreas'] = Array();
+//è·å–çœä»½ä¿¡æ¯
 function GetProvince($pid,$dsql){
-	global $dsql;
-	if($pid<=0) return "Î´Öª";
+	global $dsql,$MemberAreas;
+	if($pid<=0) return "æœªçŸ¥";
 	else{
-		$row = $dsql->GetOne("Select name From #@__area where eid='$pid';");
-		return $row['name'];
+		if(isset($MemberAreas[$pid])) return $MemberAreas[$pid];
+		$dsql->SetQuery("Select `id`,`name` From #@__area ");
+		$dsql->Execute('eee');
+		while($row = $dsql->GetObject('eee')){
+			$MemberAreas[$row->id] = $row->name;
+		}
+		if(isset($MemberAreas[$pid])) return $MemberAreas[$pid];
+		else return "æœªçŸ¥";
 	}
 }
 
+//è·å–ç”¨æˆ·çš„ä¼šè¯ä¿¡æ¯
+function GetUserInfos($uid)
+{
+   $tpath = ceil($uid/5000);
+   $userfile = dirname(__FILE__)."/../data/cache/user/$tpath/{$uid}.php";
+   if(!file_exists($userfile)) return '';
+   else{
+   	 require_once($userfile);
+   	 return $cfg_userinfos;
+   }
+}
+
+//å†™å…¥ç”¨æˆ·çš„ä¼šè¯ä¿¡æ¯
+function WriteUserInfos($uid,$row)
+{
+   $tpath = ceil($uid/5000);
+   $ndir = dirname(__FILE__)."/../data/cache/user/$tpath/";
+   if(!is_dir($ndir)){
+   	 mkdir($ndir,$GLOBALS['cfg_dir_purview']);
+   	 chmod($ndir,$GLOBALS['cfg_dir_purview']);
+   }
+   $userfile = $ndir.$uid.'.php';
+   $infos = "<"."?php\r\n";
+   $infos .= "\$cfg_userinfos['wtime'] = '".mytime()."';\r\n";
+   foreach($row as $k=>$v){
+   	 if(ereg('[^0-9]',$k)){
+		$v = str_replace("'","\\'",$v);
+		$v = ereg_replace("(<\?|\?>)","",$v);
+		if(in_array($k, array('userid','uname','pwd'))){
+			$infos .= "\$cfg_userinfos['{$k}'] = ".'base64_decode("'.base64_encode($v)."\");\r\n";
+		}else{
+			$infos .= "\$cfg_userinfos['{$k}'] = '{$v}';\r\n";
+		}
+   	 }
+   }
+   $infos .= "\r\n?".">";
+   @$fp = fopen($userfile,'w');
+   @flock($fp);
+   @fwrite($fp,$infos);
+   @fclose($fp);
+   return $infos;
+}
+
+//åˆ é™¤ç”¨æˆ·çš„ä¼šè¯ä¿¡æ¯
+function DelUserInfos($uid)
+{
+   $tpath = ceil($uid/5000);
+   $userfile = dirname(__FILE__)."/../data/cache/user/$tpath/".$uid.'.php';
+   if(file_exists($userfile)) @unlink($userfile);
+}
+
 //------------------------
-//ÍøÕ¾»áÔ±µÇÂ¼Àà
+//ç½‘ç«™ä¼šå‘˜ç™»å½•ç±»
 //------------------------
 class MemberLogin
 {
 	var $M_ID;
 	var $M_LoginID;
 	var $M_Type;
+	var $M_utype;
 	var $M_Money;
 	var $M_UserName;
 	var $M_MySafeID;
@@ -63,7 +122,11 @@ class MemberLogin
 	var $M_UpTime;
  	var $M_ExpTime;
  	var $M_HasDay;
-	//php5¹¹Ôìº¯Êı
+ 	var $M_Scores;
+ 	var $M_Honor;
+ 	var $M_Newpm;
+ 	var $M_UserIcon;
+	//php5æ„é€ å‡½æ•°
 	function __construct($kptime = 0)
  	{
  		if(empty($kptime)) $this->M_KeepTime = 3600 * 24 * 15;
@@ -71,103 +134,149 @@ class MemberLogin
  		$this->M_ID = $this->GetNum(GetCookie("DedeUserID"));
  		$this->M_LoginTime = GetCookie("DedeLoginTime");
  		if(empty($this->M_LoginTime)) $this->M_LoginTime = time();
- 		if(empty($this->M_ID)){
+ 		if(empty($this->M_ID))
+ 		{
  			$this->ResetUser();
- 		}else{
+ 		}else
+ 		{
  		  $this->M_ID = ereg_replace("[^0-9]","",$this->M_ID);
- 		  $dsql = new DedeSql(false);
- 		  $row = $dsql->GetOne("Select ID,userid,pwd,uname,membertype,money,uptime,exptime From #@__member where ID='{$this->M_ID}' ");
- 		  if(is_array($row)) $dsql->ExecuteNoneQuery("update #@__member set logintime='".mytime()."' where ID='".$row['ID']."';");
- 		  $dsql->Close();
- 		  if(is_array($row)){
- 		    $this->M_LoginID = $row['userid'];
- 		    $this->M_UserPwd = $row['pwd'];
- 		    $this->M_Type = $row['membertype'];
- 		    $this->M_Money = $row['money'];
- 		    $this->M_UserName = $row['uname'];
- 		    $this->M_UpTime = $row['uptime'];
- 		    $this->M_ExpTime = $row['exptime'];
- 		    $this->M_HasDay = 0;
- 		    if($this->M_UpTime>0){
- 		    	$nowtime = time();
- 		    	$mhasDay = $this->M_ExpTime - ceil(($nowtime - $this->M_UpTime)/3600/24) + 1;
- 		    	$this->M_HasDay = $mhasDay;
- 		    }
- 		  }else{
- 		  	$this->ResetUser();
- 		  }
+
+ 		  //è¯»å–ç”¨æˆ·ç¼“å­˜ä¿¡æ¯
+ 		  $row =  GetUserInfos($this->M_ID);
+
+ 		  //å¦‚æœä¸å­˜åœ¨å°±æ›´æ–°ç¼“å­˜
+ 		  if(!is_array($row) && $this->M_ID>0) $row = $this->FushCache();
+
+ 		  //å­˜åœ¨ç”¨æˆ·ä¿¡æ¯
+ 		  if(is_array($row))
+ 		  {
+ 		     $this->M_LoginID = $row['userid'];
+ 		     $this->M_UserPwd = $row['pwd'];
+ 		     $this->M_Type = $row['membertype'];
+ 		     $this->M_utype = $row['type'];
+ 		     $this->M_Money = $row['money'];
+ 		     $this->M_UserName = $row['uname'];
+ 		     $this->M_UpTime = $row['uptime'];
+ 		     $this->M_ExpTime = $row['exptime'];
+ 		     $this->M_Scores = $row['scores'];
+ 		     $this->M_Honor = $row['honor'];
+ 		     $this->M_Newpm = $row['newpm'];
+ 		     $this->M_UserIcon = $row['spaceimage'];
+ 		     $this->M_HasDay = 0;
+ 		     if($this->M_UpTime>0)
+ 		     {
+ 		    	 $nowtime = time();
+ 		    	 $mhasDay = $this->M_ExpTime - ceil(($nowtime - $this->M_UpTime)/3600/24) + 1;
+ 		    	 $this->M_HasDay = $mhasDay;
+ 		     }
+ 		   }else
+ 		   {
+ 		  	 $this->ResetUser();
+ 		   }
  	  }
   }
   function MemberLogin($kptime = 0){
   	$this->__construct($kptime);
   }
-  //ÍË³öcookieµÄ»á»°
+
+  //æ›´æ–°ç¼“å­˜
+  function FushCache($mid=0)
+  {
+  	if(empty($mid)) $mid = $this->M_ID;
+  	$dsql = new DedeSql(false);
+ 		$row = $dsql->GetOne("Select ID,userid,pwd,type,uname,membertype,money,uptime,exptime,scores,newpm,spaceimage From #@__member where ID='{$mid}' ");
+ 		if(is_array($row))
+ 		{
+ 		  $scrow = $dsql->GetOne("Select titles From #@__scores where integral<={$row['scores']} order by integral desc");
+ 		  $row['honor'] = $scrow['titles'];
+ 		}
+ 		if(is_array($row)) return WriteUserInfos($mid,$row);
+ 		else return '';
+  }
+
+  //é€€å‡ºcookieçš„ä¼šè¯
   function ExitCookie(){
+  	DelUserInfos($this->M_ID);
   	$this->ResetUser();
   }
-  //ÑéÖ¤ÓÃ»§ÊÇ·ñÒÑ¾­µÇÂ¼
+  //éªŒè¯ç”¨æˆ·æ˜¯å¦å·²ç»ç™»å½•
   function IsLogin(){
   	if($this->M_ID > 0) return true;
   	else return false;
   }
-  //ÖØÖÃÓÃ»§ĞÅÏ¢
+  //é‡ç½®ç”¨æˆ·ä¿¡æ¯
   function ResetUser(){
   	$this->M_ID = 0;
  		$this->M_LoginID = "";
  		$this->M_Type = -1;
+ 		$this->M_utype = 0;
  		$this->M_Money = 0;
  		$this->M_UserName = "";
  		$this->M_LoginTime = 0;
  		$this->M_UpTime = 0;
  		$this->M_ExpTime = 0;
  		$this->M_HasDay = 0;
+ 		$this->M_Scores = 0;
+ 		$this->M_Newpm = 0;
+ 		$this->M_UserIcon = "";
  		DropCookie("DedeUserID");
  		DropCookie("DedeLoginTime");
   }
-  //»ñÈ¡ÕûÊıÖµ
+  //è·å–æ•´æ•°å€¼
   function GetNum($fnum){
 	  $fnum = ereg_replace("[^0-9\.]","",$fnum);
 	  return $fnum;
   }
-  //ÓÃ»§µÇÂ¼
-  function CheckUser($loginuser,$loginpwd){
+  //ç”¨æˆ·ç™»å½•
+  function CheckUser($loginuser,$loginpwd)
+  {
+ 		if(!TestStringSafe($loginuser)||!TestStringSafe($loginpwd))
+ 		{
+ 			ShowMsg("ç”¨æˆ·åæˆ–å¯†ç ä¸åˆæ³•ï¼","-1");
+ 			exit();
+ 		}
  		$loginuser = ereg_replace("[;%'\\\?\*\$]","",$loginuser);
  		$dsql = new DedeSql(false);
  		$row = $dsql->GetOne("Select ID,pwd From #@__member where userid='$loginuser' ");
- 		$dsql->Close();
- 		if(is_array($row)) //ÓÃ»§´æÔÚ
+ 		if(is_array($row)) //ç”¨æˆ·å­˜åœ¨
  		{
- 		    //ÃÜÂë´íÎó
+ 		    //å¯†ç é”™è¯¯
  		   if($row['pwd'] != $loginpwd){ return -1; }
- 		   else{ //³É¹¦µÇÂ¼
+ 		   else{ //æˆåŠŸç™»å½•
+ 		   	 $dsql->ExecuteNoneQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='{$row['ID']}';");
+ 		   	 $dsql->Close();
  		   	 $this->PutLoginInfo($row['ID']);
+ 		   	 $this->FushCache();
  		     return 1;
  		   }
- 	  }else{ //ÓÃ»§²»´æÔÚ
+ 	  }else{ //ç”¨æˆ·ä¸å­˜åœ¨
  	  	return 0;
  	  }
   }
-  //±£´æÓÃ»§cookie
+  //ä¿å­˜ç”¨æˆ·cookie
   function PutLoginInfo($uid){
   	$this->M_ID = $uid;
  		$this->M_LoginTime = mytime();
  		PutCookie("DedeUserID",$uid,$this->M_KeepTime);
  		PutCookie("DedeLoginTime",$this->M_LoginTime,$this->M_KeepTime);
+
   }
-  //»ñµÃ»áÔ±Ä¿Ç°µÄ×´Ì¬
+  //è·å¾—ä¼šå‘˜ç›®å‰çš„çŠ¶æ€
   function GetSta($dsql)
   {
   	$sta = "";
-  	if($this->M_Type==0) $sta .= "ÄãÄ¿Ç°µÄÉí·İÊÇ£ºÎ´ÉóºË»áÔ± ";
+  	if($this->M_Type==0) $sta .= "ä½ ç›®å‰çš„èº«ä»½æ˜¯ï¼šæœªå®¡æ ¸ä¼šå‘˜ ";
   	else{
   		$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$this->M_Type."'");
-  		$sta .= "ÄãÄ¿Ç°µÄÉí·İÊÇ£º".$row['membername'];
+  		$sta .= "ä½ ç›®å‰çš„èº«ä»½æ˜¯ï¼š".$row['membername'];
   		if($this->M_Type>10){
-  			$sta .= " Ê£ÓàÌìÊı: ".$this->M_HasDay."  Ìì ";
+  			$sta .= " å‰©ä½™å¤©æ•°: ".$this->M_HasDay."  å¤© ";
   		}
   	}
-  	$sta .= " ÄãÄ¿Ç°ÓµÓĞ½ğ±Ò£º".$this->M_Money." ¸ö¡£";
+  	$sta .= " ä½ ç›®å‰æ‹¥æœ‰é‡‘å¸ï¼š".$this->M_Money." ä¸ªã€‚";
   	return $sta;
   }
 }
+
+
 ?>

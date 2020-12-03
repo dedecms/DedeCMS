@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<link href="templets/company/css/style.css" rel="stylesheet" type="text/css" />
+<title>企业空间--在线留言</title>
+</head>
+
+<body>
+<div id="container">
+<!-- 头部开始 -->
+	<div id="header">
+    	<div id="topbg">
+    		<div id="top">
+        		<div class="topmanage"></div>
+            	<div class="topmenu">
+                	<ul>
+                        <li><a href="index.php">中心主页</a></li>
+                        <li><a href="index.php?uid=<?=$uid?>">企业空间</a></li>
+                        <li><a href="../company/">搜索企业</a></li>
+                        <li><a href="../">网站主页</a></li>
+                    </ul>
+                </div>
+       	 	</div>
+        </div>
+        <div id="topmain">
+        	<div id="toplogo">
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+ <!-- 中间开始 -->
+	<div id="main">
+    	<div id="left">
+        	<div class="lefttitle">
+            </div>
+            <div class="leftmenu">
+            	<ul>
+                	<li><a href="index.php?uid=<?=$uid?>">公司首页</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=cominfo">公司简介</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=culture">企业文化</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=news">公司新闻</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=info">供求信息</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=product">产品展示</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=job">人才招聘</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=guestbook">在线留言</a></li>
+                    <li><a href="index.php?uid=<?=$uid?>&type=contact">联系我们</a></li>
+                </ul>
+          </div>
+      <div class="leftlink">
+            	<div class="leftlink_title">联系我们
+                </div>
+                <div class="leftlink_text">
+                	联系人：<?=$cominfo['truename']?><br>
+                	电话：<?=$cominfo['phone']?><br>
+                	传真：<?=$cominfo['fax']?><br>
+                	地址：<?=$cominfo['comaddr']?><br>
+                	邮编：<?=$cominfo['postid']?><br>
+                </div>
+            </div>
+            <div class="clear">
+        	</div>
+        </div>
+         <!-- 公司简介 -->
+         <div id="about_now">
+         	<div class="about_titleicon">当前位置 -- 在线留言
+            </div>
+         	<div class="about_culture_title">
+            	<ul><li>在线留言</li></ul>
+         	</div>
+
+         	<form action="member_guestbook_action.php" name="form1" method="post">
+         	<input type="hidden" name="uidnum" value="<?php echo $spaceInfos['ID'];?>">
+			<input type="hidden" name="uid" value="<?php echo $uid?>">
+            <div class="product_form">
+                <div class="product_form_text">留言标题：
+                	<label for="fname" accesskey="f" tabindex="1" ></label>
+					<input type="text" id="title" name="title" value="" class="product_form_label" />
+                </div>
+                <div class="product_form_text">详细内容：
+					<input type="text" id="msg" name="msg" value="" class="product_form_label01" />
+                </div>
+                <div class="product_form_text">联系姓名：
+					<input type="text" id="uname" name="uname" value="<?php  if(isset($cfg_ml->M_UserName) && $cfg_ml->M_UserName!="") echo $cfg_ml->M_UserName; ?>" class="product_form_label" />
+                </div>
+                <div class="product_form_text">电子信箱：
+					<input type="text" id="email" name="email" value="" class="product_form_label" />
+                </div>
+                <div class="product_form_text">即时通信：
+					<input type="text" id="qq" name="qq" value="" class="product_form_label" />（注明ＱＱ或ＭＳＮ等）
+                </div>
+                <div class="product_form_text">联系电话：
+					<input type="text" id="tel" name="tel" value="" class="product_form_label" />
+                </div>
+                <div class="product_form_text">验证码：
+                	<label for="fname" accesskey="f" tabindex="1" ></label>
+					<input type="text" id="vdcode" name="vdcode" value="" class="product_form_label" />
+					<img src='../include/vdimgck.php' width='50' height='20'>
+                </div>
+                <div class="product_form_button">
+               	  <input type="submit" class="button" value="提交留言" />
+                  <input type="reset" class="button01" value="重填" />
+                </div>
+
+            </div>
+            </form>
+         </div>
+         <div class="clear">
+         </div>
+    </div>
+    <div id="about_footer">
+    	<div class="about_footer_text">织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <!-- 尾部开始 -->
+</div>
+</body>
+</html>

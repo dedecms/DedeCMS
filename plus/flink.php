@@ -9,7 +9,7 @@ if($dopost=="save")
   else $validate = strtolower($validate);
   $svali = GetCkVdValue();
   if($validate=="" || $validate!=$svali){
-	  ShowMsg("验证码不正确!","");
+	  ShowMsg("楠岃瘉鐮佷笉姝ｇ‘!","");
 	  exit();
   }
   $dtime = strftime("%Y-%m-%d %H:%M:%S",mytime());
@@ -17,10 +17,9 @@ if($dopost=="save")
   Values('50','$url','$webname','$logo','$msg','$email','$typeid','$dtime','0')";
   $dsql->SetQuery($query);
   $dsql->ExecuteNoneQuery();
-  ShowMsg("成功增加一个链接，但需要审核后才能显示!","",1);
 }
 
-//显示模板(简单PHP文件)
+//鏄剧ず妯℃澘(绠�鍗昉HP鏂囦欢)
 include_once($cfg_basedir.$cfg_templets_dir."/plus/flink-list.htm"); 
 
 ?>

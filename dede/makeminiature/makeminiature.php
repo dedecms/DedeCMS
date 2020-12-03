@@ -2,77 +2,81 @@
 require_once(dirname(__FILE__)."/../config.php");
 require_once(dirname(__FILE__)."/../../include/inc_typelink.php");
 ?>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>ÅúÁ¿Éú³ÉËõÂÔÍ¼</title>
-<link href="../base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>æ‰¹é‡ç”Ÿæˆç¼©ç•¥å›¾</title>
+<link href="../css_body.css" rel="stylesheet" type="text/css" />
 <script src="../main.js" language="javascript"></script>
 </head>
-<body background='../img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name='form2' action='../content_list.php' method="get" target='stafrm'>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">æ‰¹é‡ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+	 <form name='form2' action='../content_list.php' method="get" target='stafrm'>
    <input type='hidden' name='nullfield' value='ok'>
   </form>
   <form name="form1" action="makeminiature_action.php" method="get" target='stafrm'>
   <tr> 
-    <td height="20" colspan="2" background='../img/tbg.gif'>
+    <td height="20" colspan="2">
     	<table width="98%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td height="18"><strong>¸üÐÂËõÂÔÍ¼£º</strong>£¨±¾²å¼þÓÉÍøÓÑ¡°<a href='mailto:smpluckly@gmail.com'><u>ÂäÃÎÌìÐ«[beluckly]</u></a>¡±±àÐ´£©</td>
+          <td height="18"><strong>æ›´æ–°ç¼©ç•¥å›¾ï¼š</strong>ï¼ˆæœ¬æ’ä»¶ç”±ç½‘å‹â€œ<a href='mailto:smpluckly@gmail.com'><u>è½æ¢¦å¤©èŽ[beluckly]</u></a>â€ç¼–å†™ï¼‰</td>
         </tr>
       </table></td>
   </tr>
   <tr> 
-    <td width="108" valign="top" bgcolor="#FFFFFF">Ñ¡ÔñÀ¸Ä¿£º</td>
+    <td width="108" valign="top" bgcolor="#FFFFFF">é€‰æ‹©æ ç›®ï¼š</td>
     <td width="377" valign="top" bgcolor="#FFFFFF">
    <?php
    $opall = 1;
-   echo GetTypeidSel('form1','typeid','selbt1',0,0,'ÇëÑ¡Ôñ...','../');
+   echo GetTypeidSel('form1','typeid','selbt1',0,0,'è¯·é€‰æ‹©...','../');
    ?>
    </td>
   </tr>
   <tr>
-    <td height="20" valign="top" bgcolor="#FFFFFF">ÆðÊ¼ID£º</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">èµ·å§‹IDï¼š</td>
     <td height="20" valign="top" bgcolor="#FFFFFF"><input name="startid" type="text" id="startid" size="10">
-      £¨¿Õ»ò0±íÊ¾´ÓÍ·¿ªÊ¼£©</td>
+      ï¼ˆç©ºæˆ–0è¡¨ç¤ºä»Žå¤´å¼€å§‹ï¼‰</td>
   </tr>
   <tr> 
-    <td height="20" valign="top" bgcolor="#FFFFFF">½áÊøID£º</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">ç»“æŸIDï¼š</td>
     <td height="20" valign="top" bgcolor="#FFFFFF"><input name="endid" type="text" id="endid" size="10">
-      £¨¿Õ»ò0±íÊ¾Ö±µ½½áÊøID£© </td>
+      ï¼ˆç©ºæˆ–0è¡¨ç¤ºç›´åˆ°ç»“æŸIDï¼‰ </td>
   </tr>
   <tr> 
-    <td height="20" valign="top" bgcolor="#FFFFFF">Éú³ÉÀàÐÍ£º</td>
-    <td height="20" valign="top" bgcolor="#FFFFFF"><input type=radio class=np name=isall id=isall value=1>È«²¿ÌáÈ¡µÚÒ»¸öÍ¼Æ¬Éú³É
-      <input type=radio class=np name=isall id=isall value=2 checked=1>ÒÑÓÐÉÏ´«ËõÍ¼²»Éú³É</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">ç”Ÿæˆç±»åž‹ï¼š</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input type=radio class=np name=isall id=isall value=1>å…¨éƒ¨æå–ç¬¬ä¸€ä¸ªå›¾ç‰‡ç”Ÿæˆ
+      <input type=radio class=np name=isall id=isall value=2 checked=1>å·²æœ‰ä¸Šä¼ ç¼©å›¾ä¸ç”Ÿæˆ</td>
   </tr>
   <tr>
-    <td height="20" valign="top" bgcolor="#FFFFFF">Éú³ÉËõÍ¼ÀàÐÍ£º</td>
-    <td height="20" valign="top" bgcolor="#FFFFFF"><input type=radio class=np name=maketype id=maketype value=1>Å¤Çú±äÐÎÐÍ&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=2>±ÈÀýËõ·ÅÐÍ&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=3>²¿·Ö²Ã¼ôÐÍ&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=4 checked="1">±³¾°Ìî³äÐÍ&nbsp;&nbsp;±³¾°É«£º<input type="text" name="backcolor1" id="backcolor1" size=5 value="255">&nbsp;&nbsp;<input type="text" name="backcolor2" id="backcolor2" size=5 value="255">&nbsp;&nbsp;<input type="text" name="backcolor3" id="backcolor3" size=5 value="255"></td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">ç”Ÿæˆç¼©å›¾ç±»åž‹ï¼š</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input type=radio class=np name=maketype id=maketype value=1>æ‰­æ›²å˜å½¢åž‹&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=2>æ¯”ä¾‹ç¼©æ”¾åž‹&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=3>éƒ¨åˆ†è£å‰ªåž‹&nbsp;&nbsp;<input type=radio class=np name=maketype id=maketype value=4 checked="1">èƒŒæ™¯å¡«å……åž‹&nbsp;&nbsp;èƒŒæ™¯è‰²ï¼š<input type="text" name="backcolor1" id="backcolor1" size=5 value="255">&nbsp;&nbsp;<input type="text" name="backcolor2" id="backcolor2" size=5 value="255">&nbsp;&nbsp;<input type="text" name="backcolor3" id="backcolor3" size=5 value="255"></td>
   </tr>
   <tr> 
-    <td height="20" valign="top" bgcolor="#FFFFFF">ËõÂÔÍ¼¿íºÍ¸ß£º</td>
-    <td height="20" valign="top" bgcolor="#FFFFFF">¿í£º<input name="imgwidth" type="text" id="imgwidth" size="10" value="240">
-      ¸ß£º<input name="imgheight" type="text" id="imgheight" size="10" value="180"> </td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">ç¼©ç•¥å›¾å®½å’Œé«˜ï¼š</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF">å®½ï¼š<input name="imgwidth" type="text" id="imgwidth" size="10" value="240">
+      é«˜ï¼š<input name="imgheight" type="text" id="imgheight" size="10" value="180"> </td>
   </tr>
     <tr> 
-      <td height="20" bgcolor="#FFFFFF">Ã¿Ò³Éú³É£º</td>
+      <td height="20" bgcolor="#FFFFFF">æ¯é¡µç”Ÿæˆï¼š</td>
       <td height="20" bgcolor="#FFFFFF"> <input name="pagesize" type="text" id="pagesize" value="10" size="8">
-        ¸öÎÄ¼þ</td>
+        ä¸ªæ–‡ä»¶</td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
-      	<input name="b112" type="button" class="nbt" value="¿ªÊ¼Éú³ÉËõÂÔÍ¼" onClick="document.form1.submit();" style="width:100">
+      <td height="35" colspan="2" bgcolor="#FAFAF1" align="center">
+      	<input name="b112" type="button" value="å¼€å§‹ç”Ÿæˆç¼©ç•¥å›¾" onClick="document.form1.submit();" class="inputbut" />
         &nbsp;
-        <input type="button" name="b113" value="²é¿´ËùÓÐÎÄµµ" class="nbt" onClick="document.form2.submit();" style="width:100"> 
-      </td>
+        <input type="button" name="b113" value="æŸ¥çœ‹æ‰€æœ‰æ–‡æ¡£" onClick="document.form2.submit();" class="inputbut" />      </td>
     </tr>
   </form>
   <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
-          <td width="74%">½øÐÐ×´Ì¬£º </td>
+          <td width="74%">è¿›è¡ŒçŠ¶æ€ï¼š </td>
           <td width="26%" align="right">
           	<script language='javascript'>
             	function ResizeDiv(obj,ty)
@@ -81,7 +85,7 @@ require_once(dirname(__FILE__)."/../../include/inc_typelink.php");
             		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
             	}
             	</script>
-            [<a href='#' onClick="ResizeDiv('mdv','+');">Ôö´ó</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">ËõÐ¡</a>] 
+            [<a href='#' onClick="ResizeDiv('mdv','+');">å¢žå¤§</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">ç¼©å°</a>] 
           </td>
         </tr>
       </table></td>

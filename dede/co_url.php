@@ -10,17 +10,17 @@ if(!empty($nid)) $where = " where #@__courl.nid='$nid' ";
 if(empty($small)) $small = 0;
 
 function IsDownLoad($isd){
-	if($isd=="0") return "Î´ÏÂÔØ";
-	else return "ÒÑÏÂÔØ";
+	if($isd=="0") return "æœªä¸‹è½½";
+	else return "å·²ä¸‹è½½";
 }
 
 function IsExData($isex){
-	if($isex==0) return "Î´µ¼³ö";
-	else return "ÒÑµ¼³ö";
+	if($isex==0) return "æœªå¯¼å‡º";
+	else return "å·²å¯¼å‡º";
 }
 
 if($nid!=""){
-	$exportbt = "<input type='button' name='b0' value='µ¼³ö²É¼¯ÄÚÈÝ'  class='nbt' style='width:100' onClick=\"location.href='co_export.php?nid=$nid';\">&nbsp;";
+	$exportbt = "<input type='button' name='b0' value='å¯¼å‡ºé‡‡é›†å†…å®¹'  class='inputbut' style='width:100' onClick=\"location.href='co_export.php?nid=$nid';\">&nbsp;";
 }
 else{
 	$exportbt = "";
@@ -39,4 +39,6 @@ $dlist->SetSource($sql);
 if($small==0) include(dirname(__FILE__)."/templets/co_url.htm");
 else include(dirname(__FILE__)."/templets/co_url_2.htm");
 $dlist->Close();
+
+ClearAllLink();
 ?>

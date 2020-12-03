@@ -1,31 +1,36 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Õ¾ÄÚĞÂÎÅ¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>ç«™å†…æ–°é—»ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">è¾…åŠ©æ’ä»¶</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr> 
-    <td height="24" colspan="6" background="img/tbg.gif">
-    	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <td height="24" colspan="6" bgcolor="#EDF9D5">
+   	  <table width="90%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td><strong>&nbsp;Õ¾ÄÚĞÂÎÅ¹ÜÀí</strong></td>
+          <td><strong>&nbsp;ç«™å†…æ–°é—»ç®¡ç†</strong></td>
           <td align="right">
-		  <a href="mynews_add.php"><img src="img/file_edit.gif" width="15" height="16" border="0"><u>ĞÂÔöÒ»ÔòÕ¾ÄÚĞÂÎÅ</u></a>
+		  <a href="mynews_add.php"><img src="img/file_edit.gif" width="15" height="16" border="0"><u>æ–°å¢ä¸€åˆ™ç«™å†…æ–°é—»</u></a>
 		  </td>
         </tr>
       </table>
     </td>
   </tr>
   <tr align="center"> 
-    <td height="26" bgcolor="#F9FBF2">ĞÂÎÅID</td>
-    <td bgcolor="#F9FBF2">ĞÂÎÅ±êÌâ</td>
-    <td bgcolor="#F9FBF2">ËùÊôÆµµÀ</td>
-    <td bgcolor="#F9FBF2">·¢²¼Ê±¼ä</td>
-    <td bgcolor="#F9FBF2">·¢²¼ÈË</td>
-    <td bgcolor="#F9FBF2">²Ù×÷</td>
+    <td height="26" bgcolor="#F9FBF2">æ–°é—»ID</td>
+    <td bgcolor="#F9FBF2">æ–°é—»æ ‡é¢˜</td>
+    <td bgcolor="#F9FBF2">æ‰€å±é¢‘é“</td>
+    <td bgcolor="#F9FBF2">å‘å¸ƒæ—¶é—´</td>
+    <td bgcolor="#F9FBF2">å‘å¸ƒäºº</td>
+    <td bgcolor="#F9FBF2">æ“ä½œ</td>
   </tr>
   {dede:datalist}
   <tr align="center" height="26" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#F3F7EA';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -35,8 +40,8 @@
     <td width="14%">[field:senddate function="GetDateMk('@me')" /]</td>
     <td width="16%">[field:writer /]</td>
     <td width="16%">
-	<a href='mynews_edit.php?aid=[field:aid /]'>[ĞŞ¸Ä]</a>
-	<a href='mynews_edit.php?dopost=del&aid=[field:aid /]'>[É¾³ı]</a>
+	<a href='mynews_edit.php?aid=[field:aid /]'>[ä¿®æ”¹]</a>
+	<a href='mynews_edit.php?dopost=del&aid=[field:aid /]'>[åˆ é™¤]</a>
 	</td>
   </tr>
   {/dede:datalist}

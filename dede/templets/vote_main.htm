@@ -1,24 +1,28 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Í¶Æ±¹ÜÀí</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>æŠ•ç¥¨ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">è¾…åŠ©æ’ä»¶</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr>
-   <td height="19" background="img/tbg.gif" colspan="6">
-     <b>Í¶Æ±¹ÜÀí</b>&nbsp;[<a href="vote_add.php"><u>Ôö¼ÓÒ»×éÍ¶Æ±</u></a>]
-	</td>
+   <td height="19" colspan="6" bgcolor="#EDF9D5">
+     &nbsp;<b>æŠ•ç¥¨ç®¡ç†</b>&nbsp;[<a href="vote_add.php"><u>å¢åŠ ä¸€ç»„æŠ•ç¥¨</u></a>]	</td>
 </tr>
   <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="8%">Í¶Æ±ID</td>
-      <td width="27%">Í¶Æ±Ãû³Æ</td>
-      <td width="15%">¿ªÊ¼Ê±¼ä</td>
-      <td width="15%">½áÊøÊ±¼ä</td>
-      <td width="10%">Í¶Æ±×ÜÊı</td>
-      <td width="25%">¹ÜÀí</td>
+      <td width="8%">æŠ•ç¥¨ID</td>
+      <td width="27%">æŠ•ç¥¨åç§°</td>
+      <td width="15%">å¼€å§‹æ—¶é—´</td>
+      <td width="15%">ç»“æŸæ—¶é—´</td>
+      <td width="10%">æŠ•ç¥¨æ€»æ•°</td>
+      <td width="25%">ç®¡ç†</td>
    </tr>
         {dede:datalist}
          <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -32,10 +36,10 @@
           <td>[field:endtime function="GetDateMk('@me')" /]</td>
           <td>[field:totalcount /]</td>
           <td>
-          	<a href='vote_getcode.php?aid=[field:aid /]'>[»ñÈ¡´úÂë]</a>
-          	<a href='vote_edit.php?aid=[field:aid /]&dopost=edit'>[¸ü¸Ä]</a>
+          	<a href='vote_getcode.php?aid=[field:aid /]'>[è·å–ä»£ç ]</a>
+          	<a href='vote_edit.php?aid=[field:aid /]&dopost=edit'>[æ›´æ”¹]</a>
 		        &nbsp;
-		        <a href='vote_edit.php?aid=[field:aid /]&dopost=delete'>[É¾³ı]</a>
+		        <a href='vote_edit.php?aid=[field:aid /]&dopost=delete'>[åˆ é™¤]</a>
 		      </td>
         </tr>
 		{/dede:datalist}

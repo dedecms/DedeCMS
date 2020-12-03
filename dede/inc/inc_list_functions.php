@@ -1,24 +1,24 @@
-<?php 
-if(!isset($registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
-//»ñµÃÊÇ·ñÍÆ¼öµÄ±íÊö
+<?php
+if(!isset($cfg_registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
+//è·å¾—æ˜¯å¦æ¨èçš„è¡¨è¿°
 //---------------------------------
 function IsCommendArchives($iscommend)
 {
-  if($iscommend==5) return "¼Ó´Ö";
-  else if($iscommend==11) return "ÍÆ¼ö";
-  else if($iscommend==16) return "ÍÆ¼ö¼Ó´Ö";
-  else return "ÎŞ";
+  if($iscommend==5) return "<font color='blue'>(ç²—)</font>";
+  else if($iscommend==11) return "<font color='blue'>(è)</font>";
+  else if($iscommend==16) return "<font color='blue'>(è)(ç²—)</font>";
+  else return "";
 }
-//»ñµÃÍÆ¼öµÄ±êÌâ
+//è·å¾—æ¨èçš„æ ‡é¢˜
 //---------------------------------
 function GetCommendTitle($title,$iscommend)
 {
 	if($iscommend==5) return "<b>$title</b>";
-  else if($iscommend==11) return "$title<font color='red'>(ÍÆ¼ö)</font>";
-  else if($iscommend==16) return "<b>$title<font color='red'>(ÍÆ¼ö)</font></b>";
+  else if($iscommend==11) return "$title<font color='red'>(æ¨è)</font>";
+  else if($iscommend==16) return "<b>$title<font color='red'>(æ¨è)</font></b>";
   else return "$title";
 }
-//¸ü»»ÑÕÉ«
+//æ›´æ¢é¢œè‰²
 //--------------------
 $GLOBALS['RndTrunID'] = 1;
 function GetColor($color1,$color2)
@@ -28,41 +28,58 @@ function GetColor($color1,$color2)
 	else return $color2;
 }
 
-//¼ì²éÍ¼Æ¬ÊÇ·ñ´æÔÚ
+//æ£€æŸ¥å›¾ç‰‡æ˜¯å¦å­˜åœ¨
 //-----------------------
 function CheckPic($picname)
 {
 	if($picname!="") return $picname;
 	else return "img/dfpic.gif";
 }
-//ÅĞ¶ÏÄÚÈİÊÇ·ñÉú³ÉHTML
+//åˆ¤æ–­å†…å®¹æ˜¯å¦ç”ŸæˆHTML
 //-----------------------
 function IsHtmlArchives($ismake)
 {
-	if($ismake==1) return "ÒÑÉú³É";
-	else if($ismake==-1) return "½ö¶¯Ì¬";
-	else return "<font color='red'>Î´Éú³É</font>";
+	if($ismake==1) return "å·²ç”Ÿæˆ";
+	else if($ismake==-1) return "ä»…åŠ¨æ€";
+	else return "<font color='red'>æœªç”Ÿæˆ</font>";
 }
-//»ñµÃÄÚÈİµÄÏŞ¶¨¼¶±ğÃû³Æ
+//è·å¾—å†…å®¹çš„é™å®šçº§åˆ«åç§°
 //-------------------------
 function GetRankName($arcrank)
 {
-	global $arcArray;
+	global $arcArray,$dsql;
 	if(!is_array($arcArray)){
 		$dsql = new DedeSql(false);
 		$dsql->SetQuery("Select * from #@__arcrank");
-		$dsql->Execute();
-		while($row = $dsql->GetObject()){ $arcArray[$row->rank]=$row->membername; }
-		$dsql->Close();
+		$dsql->Execute('rn1');
+		while($row = $dsql->GetObject('rn1')){ $arcArray[$row->rank]=$row->membername; }
 	}
 	if(isset($arcArray[$arcrank])) return $arcArray[$arcrank];
-	else return "²»ÏŞ";
+	else return "ä¸é™";
 }
-//ÅĞ¶ÏÄÚÈİÊÇ·ñÎªÍ¼Æ¬ÎÄÕÂ
+//åˆ¤æ–­å†…å®¹æ˜¯å¦ä¸ºå›¾ç‰‡æ–‡ç« 
 //----------------------
 function IsPicArchives($picname)
 {
-	if($picname!="") return "<font color='red'>(Í¼)</font>";
+	if($picname!="") return "<font color='red'>(å›¾)</font>";
 	else return "";
+}
+
+//
+//----------------
+function GetChannelOptopns($dsql,$channelid)
+{
+	global $arcrank,$adminid;
+	$options = "<option value='full_list.php'>æ‰€æœ‰é¢‘é“...</option>\r\n";
+	$dsql->SetQuery("Select ID,typename,mancon From `#@__channeltype` where ID<>-1 And isshow=1 order by ID asc");
+	$dsql->Execute('rn2');
+	while($row = $dsql->GetObject('rn2'))
+	{
+		if(empty($row->mancon)) $mancon = "content_list.php?channelid=0&arcrank={$arcrank}&adminid={$adminid}";
+		else $mancon = $row->mancon;
+		if($row->ID==$channelid) $options .= "<option value='{$mancon}?channelid={$row->ID}&arcrank={$arcrank}&adminid={$adminid}' selected>{$row->typename}</option>\r\n";
+		else $options .= "<option value='{$mancon}?channelid={$row->ID}&arcrank={$arcrank}&adminid={$adminid}'>{$row->typename}</option>\r\n";
+	}
+	return $options;
 }
 ?>

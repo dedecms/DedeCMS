@@ -1,0 +1,108 @@
+{dede:page pagesize="20"/}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>企业会员管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+</style>
+</head>
+<body>
+
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">会员管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td height="30" align="center" bgcolor="#FAFCEF">
+      <form action="company_main.php" name="form1" method="get">
+	    <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>&nbsp;关键字：</td>
+            <td width="110" align="center">
+            	<input name="keyword" type="text" id="keyword" size="12" style="width:100" value="{dede:global name='keyword'/}">
+            </td>
+            <td width="50">&nbsp;排序：</td>
+            <td width="110"> <select name="sortkey" id="sortkey" style="width:100">
+                {dede:global name='sortform'/}
+				<option value="ID">ID/注册时间</option>
+                <option value="logintime">登录时间</option>
+                <option value="spaceshow">空间访问量</option>
+                <option value="pageshow">文档总点击量</option>
+              </select></td>
+            <td width="70"> <select name="sex" id="sex" style="width:60">
+               {dede:global name='sexform'/}
+                <option value="男">男</option>
+                <option value="女">女</option>
+                <option value="0">不限</option>
+              </select></td>
+            <td width="100" align="center"> <input name="imageField" type="submit" class="inputbut" value="搜索">
+            </td>
+          </tr>
+        </table>
+	  </form>
+    </td>
+  </tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td height="24" colspan="8" bgcolor="#EDF9D5">
+   	  <table width="99%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="29%"> <strong>网站会员管理-企业会员</strong></td>
+          <td width="71%" align="right"> <a href="company_main.php">所有会员</a> |
+            <a href="company_main.php?att=ad">被推荐会员</a> | <a href="member_operations.php">会员业务管理</a>
+            | <a href="member_card.php">点卡管理</a></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FDFEE9" height="26">
+    <td width="14%" align="center">ID/登录时间</td>
+    <td width="14%" align="center">附加信息</td>
+    <td width="5%" align="center">性别</td>
+    <td width="10%" align="center">主页/点击</td>
+    <td width="13%" align="center">类型</td>
+    <td width="9%" align="center">金币</td>
+    <td width="8%" align="center">积分</td>
+    <td align="center">操作</td>
+  </tr>
+  {dede:datalist}
+  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <td>
+	<a href="company_view.php?ID=[field:ID/]"><u>[field:userid/]</u></a> <br>
+	[field:logintime function="GetDateMk('@me')"/]
+    </td>
+    <td> [field:email function='htmlspecialchars(@me)'/]<br>
+      [field:spacename/]
+      [field:matt function='GetMAtt(@me)'/] </td>
+    <td>[field:sex /]</td>
+    <td> [field:spaceshow/]/ [field:pageshow/] </td>
+    <td> [field:membertype function="GetMemberName('@me','ut')"/] </td>
+    <td> [field:money /] </td>
+    <td> [field:scores /] </td>
+    <td>
+	<table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" height="25"> <a href="company_view.php?ID=[field:ID/]">资料</a>
+            | <a href="company_do.php?ID=[field:ID/]&dopost=recommend&matt=[field:matt/]">推荐</a> | <a href="company_do.php?ID=[field:ID/]&dopost=delmember">删除</a></td>
+        </tr>
+        <tr>
+         <td align="center" height="25" style="border-top:1px solid #cccccc">
+            <a href="../include/jump.php?gurl=[field:global name='cfg_memberurl'/]/index.php?uid=[field:userid/]" target="_blank">空间</a>
+           | <a href="content_list.php?memberid=[field:ID/]" target="_blank">文档</a>
+           | <a href="media_main.php?memberid=[field:ID/]" target="_blank">附件</a>
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  {/dede:datalist}
+  <tr bgcolor="#F8FBFB">
+    <td height="26" colspan="9" align="center"> {dede:pagelist listsize=6/} </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/space.css" rel="stylesheet" type="text/css" />
+<title><?php echo $spacename?></title>
+</head>
+
+<body>
+<div id="container">
+	<!--头部开始-->
+	<?php include(dirname(__FILE__)."/member_head.htm");?>
+    <!--头部结束-->
+    <!--中间开始-->
+    <div id="spacemain">
+    	<div id="space_main">
+        	<?php include(dirname(__FILE__)."/member_left.htm");?>
+        	<!--左边结束-->
+            
+            <div id="space_right"><!--右边开始-->
+            	
+                <div class="space_notice">
+                	<div class="space_title02">
+                    	<ul>
+                        <li><?php echo $uname?>创建的圈子</li>
+                        </ul>
+                    </div>
+                    <div class="space_notice_text">
+                    
+                    <table width="100%" border="0" cellpadding="1" cellspacing="1" align="center">
+                      <!--分页-->
+                      <?php  
+                      $mylist = $dlist->GetDataList();
+                      while($row = $mylist->GetArray('dm'))
+                      {
+                      $icon = $row['groupimg'];
+                      if(!$icon) $icon = "img/dfpic.gif";
+                      ?>
+                      <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#def0ff';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+                        <td width="120" height="100">
+                        <div>
+                        <img src="<?=$icon?>" align="absmiddle" />                        </div>
+                        
+                        <div>
+                        <a href="../group/group.php?id=<?=$row['groupid']?>" style="font-size:15px;color:#005294;" target="_blank"><?=$row['groupname']?></a>
+                        </div>
+                        </td>
+                        <td height="100" align="left" valign="top" class="space_group_des">
+                        <p>
+                        <?php if($row['isindex']) echo "[<font color='red'>荐</font>]";?> <?=$row['des']?>
+                        </p>
+                        <div style="float:left;margin-top:3px;margin-left:5px;">会员：<?php echo $row['members'];?> 贴子：<?php echo $row['threads'];?> 浏览：<?php echo $row['hits'];?> 创建时间：<?=GetDateMk($row['stime'])?></div>
+                        <div style="float:right;margin-top:3px;"><span><a href="../group/reg.php?id=<?=$row['groupid']?>">加入圈子</a></span></div>
+                        </td>
+                      </tr>
+                      <?php
+                      } ?>
+                    </table>
+                        <div class="space_news_text">&nbsp;&nbsp;<?php echo $dlist->GetPageList(7);?>
+                        </div>
+                    </div>
+                </div>
+            </div><!--右边结束-->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--中间结束-->
+    <!--底部开始-->
+	<?php include(dirname(__FILE__)."/member_footer.htm");?>
+    <!--底部结束-->
+    
+</div>
+</body>
+</html>

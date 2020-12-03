@@ -8,7 +8,8 @@ $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select ID From #@__arctype where ID>'$tid' And ispart<>2 order by ID asc limit 0,1;");
 $dsql->Close();
 if(!is_array($row)){
-	echo "完成所有文件更新！";
+	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+	echo "瀹屾垚鎵�鏈夋枃浠舵洿鏂帮紒";
 	exit();
 }
 else{
@@ -16,7 +17,9 @@ else{
 	$rssurl = $rv->MakeRss();
 	$rv->Close();
 	$tid = $row['ID'];
-	ShowMsg("成功更新".$rssurl."，继续进行操作！","makehtml_rss_action.php?tid=$tid&maxrecord=$maxrecord",0,100);
+	ShowMsg("鎴愬姛鏇存柊".$rssurl."锛岀户缁繘琛屾搷浣滐紒","makehtml_rss_action.php?tid=$tid&maxrecord=$maxrecord",0,100);
   exit();
 }
+
+ClearAllLink();
 ?>

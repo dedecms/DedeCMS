@@ -1,173 +1,128 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:global name='cfg_webname'/} - ×¨ÌâÁĞ±í</title>
-<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:global name='cfg_webname'/} - ä¸“é¢˜åˆ—è¡¨</title>
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/special.css" rel="stylesheet" type="text/css" />
 </head>
-<body leftmargin="0" topmargin="0">
-<center>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="190" height="68" align="center"><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53"></td>
-<td width="20" align="center">&nbsp;</td>
-<td width="486">&nbsp;</td>
-<td width="190">&nbsp;</td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
-<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif">
-	<a href='/'>Ê×Ò³</a>
-	{dede:channel type='top' row='8'}
-| <a href='[field:typelink/]'>[field:typename/]</a>
-{/dede:channel}
-	| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>×¨Ìâ</a> 
-| <a href="{dede:field name='memberurl'/}">»áÔ±ÖĞĞÄ</a>
-	| <a href="http://bbs.dedecms.com">Ö§³ÖÂÛÌ³</a>
-</td>
-<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="10" height="32" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c3.gif" width="4" height="32"></td>
-<td width="508" background="{dede:field name='templeturl'/}/img/31bg2.gif">
-	<div class="hotworddiv">ÈÈÃÅ¹Ø¼ü×Ö£º{dede:hotwords num='5' subday='30'/}</div>
- </td>
-<td width="372" align="center" background="{dede:field name='templeturl'/}/img/31bg2.gif">
-	<form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-	<input type="hidden" name="kwtype" value="0">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="47%"><input name="keyword" type="text" id="keyword2" class="kw1"></td>
-<td width="30%" align="center"> 
-<select name="searchtype" id="searchtype" class="op1">
-<option value="titlekeyword" selected>ÖÇÄÜÄ£ºıËÑË÷</option>
-<option value="title">½öËÑË÷±êÌâ</option>
-			</select>
-</td>
-<td width="23%" align="center"> 
-<input name="imageField" type="image" src="{dede:field name='templeturl'/}/img/v31s.gif" width="73" height="19" border="0"></td>
-</tr>
-</table>
-	</form>
-	</td>
-<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c4.gif" width="4" height="32"></td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td height="450" valign="top"> 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
-<tr> 
-<td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
-<td width="3%" align="center" bgcolor="#EAEFA7"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
-<td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">µ±Ç°Î»ÖÃ£º{dede:field 
-name='position'/}×¨ÌâÁĞ±í£º</td>
-</tr>
-<tr> 
-<td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
-</tr>
-</table>
-<table width="100%" height="412" border="0" cellpadding="0" cellspacing="0">
-<tr> 
- <td height="220" valign="top">
- {dede:list pagesize='15' col='1' titlelen='60' imgwidth='110' imgheight='85'} 
-     <table border='0' width='100%'>
-                <tr height='24'>
-                  <td width='15%' rowspan="3"> <table width="100" height="75" border='0' cellpadding='1' cellspacing='1' bgcolor="#E6EAE3">
-                      <tr> 
-                        <td bgcolor="#FFFFFF">[field:imglink/]</td>
-                      </tr>
-                    </table></td>
-                  <td height="20" align="center"><img src="[field:global name='cfg_plus_dir'/]/img/file.gif" width="18" height="17"></td>
-                  <td><b>[field:textlink /]</b></td>
-                </tr>
-                <tr height='24'> 
-                  <td width='6%' height="20" align="center">&nbsp;</td>
-                  <td><font color="#8F8C89">ÈÕÆÚ£º[field:pubdate function="GetDateTimeMK(@me)"/] 
-                    µã»÷£º[field:click/] ÆÀÂÛ£º[field:postnum/]</font> <a href="[field:phpurl/]/feedback.php?arcID=[field:id/]"><img src="[field:templeturl/]/img/comment.gif" width="12" height="12" border="0" title="²é¿´ÆÀÂÛ"></a> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="30" colspan='2'> ¡¡¡¡[field:description/]<font color='#8F8C89'>([field:stime/])</font> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height='2' colspan='3' background='[field:global name='cfg_plus_dir'/]/img/writerbg.gif'></td>
-                </tr>
-        </table>
-      {/dede:list}
-  </td>
-</tr>
-</table>
-<table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D8E7A5" class="tbspan">
-<tr> 
-<td height="25" align="center" bgcolor="#F4FAE2">{dede:pagelist listsize='3'/}</td>
-</tr>
-</table>
-</td>
-<td width="6">&nbsp; </td>
-<td width="220" valign="top" bgcolor="#F3F9FC"> 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>ÍÆ¼ö×¨Ìâ</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
-titlelen='30' row='12'/} </td>
-</tr>
-</table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="28" background="{dede:field name='templeturl'/}/img/31bg3.gif"> 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>±¾ÔÂÈÈµã×¨Ìâ</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
-titlelen='30' row='12' subday='30'/}</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
-<tr> 
-<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+<body>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
-	{dede:global name='cfg_powerby'/}
-</td>
+<!--å¤´éƒ¨å¼€å§‹-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">é«˜çº§æœç´¢</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">æ”¶è—æœ¬ç«™</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">ç½‘ç«™åœ°å›¾</a> </li>
+		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSSè®¢é˜…</a></li>
+		</ul>
+	</div>
+</div>
+<!--å¯¼èˆªæ -->
+<div class="topmenu cbody">	<ul>
+		<li><a href="/">é¦–é¡µ</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>ä¸“é¢˜</a></li>
+		<li><a href="http://bbs.dedecms.com">æ”¯æŒè®ºå›</a></li>
+	</ul>
+	<div class="rssbut">
+		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
+	</div>
+</div>
+<!--æœç´¢æ¡-->
+<div class="topsearch cbody">
+	<div class="title"></div>
+	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<input type="hidden" name="kwtype" value="0">
+		<input name="keyword" id="keyword" type="text" class="searchtxt" />
+		<select name="searchtype" id="searchtype">
+			<option value="titlekeyword" selected>æ™ºèƒ½æ¨¡ç³Šæœç´¢</option>
+			<option value="title">ä»…æœç´¢æ ‡é¢˜</option>
+		</select>
+		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+	</div>
+	<div class="hots">		<strong>çƒ­é—¨å…³é”®å­—ï¼š</strong>
+		{dede:hotwords num='5' subday='30'/}</div>
+</div>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
-</tr>
-</table>
+<!--å†…å®¹-->
+<div class="main cbody margintop">
+	<!--å·¦ä¾§-->
+	<div class="pleft">
+		<!--ä½ç½®å¯¼èˆª-->
+		<div class="thisplace">
+			<div class="title">ä¸“é¢˜åˆ—è¡¨</div>
+			<div class="placenav">
 
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr><td height="6"></td></tr>
-</table>
-</center>
+			</div>
+		</div>
+
+		<div class="spelist">
+         {dede:list pagesize='15' col='1' titlelen='60' imgwidth='96' imgheight='56'}
+			<dl>
+				<dd class="speimg">[field:imglink/]</dd>
+				<dd class="spetitle">[field:textlink /]</dd>
+				<dd class="speinfo"><strong>æ—¥æœŸï¼š</strong>[field:pubdate function="GetDateTimeMK(@me)"/]   <strong>ç‚¹å‡»ï¼š</strong>[field:click/]   <strong>è¯„è®ºï¼š</strong>[field:postnum/]  </dd>
+				<dt>[field:description/]</dt>
+			</dl>
+         {/dede:list}
+		</div>
+
+
+		<!--åˆ†é¡µ-->
+		<div class="pages">
+			<div class="plist">
+				{dede:pagelist listsize='7' listitem='index pre pageno next end '/}</div>
+		</div>
+
+	</div>
+
+	<!--å³ä¾§-->
+	<div class="pright">
+		<!--ä¾§è¾¹ä¿¡æ¯åˆ—è¡¨-->
+		<div class="rlist">
+			<div class="title">çƒ­é—¨ä¸“é¢˜</div>
+			<div class="rbox">
+				<ul>
+					{dede:arclist row=10 titlelen=24 orderby=click type='spec.'}
+					<li>[field:textlink/]</li>
+					{/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+		<!--ä¾§è¾¹ä¿¡æ¯åˆ—è¡¨-->
+		<div class="rlist margintop">
+			<div class="title">éšæœºæ¨è</div>
+			<div class="rbox">
+				<ul>
+					{dede:arclist row=10 titlelen=24 orderby=rand}
+					<li>[field:textlink/]</li>
+					{/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="floatclear"><!--æ¸…é™¤æµ®åŠ¨--></div>
+</div>
+
+
+<div class="footer cbody margintop">
+	<div class="copyright">
+		 Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+	</div>
+	<div class="slogo">
+		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+	</div>
+	<div class="floatclear"></div>
+</div>
+
+
 </body>
 </html>

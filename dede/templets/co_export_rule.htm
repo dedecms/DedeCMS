@@ -1,20 +1,32 @@
 {dede:page pagesize="25"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>Êı¾İ¹æÔòÄ£ĞÍ¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>æ•°æ®è§„åˆ™æ¨¡å‹ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+<!--
+.STYLE1 {color: #FFFFFF}
+td{ padding-left:6px; }
+-->
+</style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">é‡‡é›†ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
   <tr> 
-    <td height="20" colspan="5" background='img/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <td height="20" colspan="5" bgcolor="#EDF9D5">
+    	<table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18"><strong>Êı¾İ¹æÔòÄ£ĞÍ¹ÜÀí£º</strong></td>
-          <td width="80%" align="right">
-          	<input type="button" name="ba" value="Ìí¼ÓĞÂ¹æÔò" onClick="location='co_export_rule_add.php';" class="nbt" style="width:100">
+          <td width="20%" height="18"><strong>æ•°æ®è§„åˆ™æ¨¡å‹ç®¡ç†ï¼š</strong></td>
+          <td width="80%" align="right" style="padding-top:6px">
+          	<input type="button" name="ba" value="æ·»åŠ æ–°è§„åˆ™" onClick="location='co_export_rule_add.php';" class="inputbut">
           	&nbsp;
-          	<input type="button" name="banew" value="µ¼ÈëÎÄ±¾ÅäÖÃ" onClick="location='co_export_rule_add.php?action=hand';" class="nbt" style="width:100">
+          	<input type="button" name="banew" value="å¯¼å…¥æ–‡æœ¬é…ç½®" onClick="location='co_export_rule_add.php?action=hand';" class="inputbut">
             &nbsp;
           </td>
         </tr>
@@ -22,10 +34,10 @@
   </tr>
   <tr align="center" bgcolor="#F8FBFB"> 
     <td width="8%">ID</td>
-    <td width="35%">µ¼Èë¹æÔòÃû³Æ</td>
-    <td width="12%">¿âÀàĞÍ</td>
-    <td width="18%">½¨Á¢Ê±¼ä</td>
-    <td width="27%">¹ÜÀí</td>
+    <td width="35%">å¯¼å…¥è§„åˆ™åç§°</td>
+    <td width="12%">åº“ç±»å‹</td>
+    <td width="18%">å»ºç«‹æ—¶é—´</td>
+    <td width="27%">ç®¡ç†</td>
   </tr>
   <form name="form1">
     {dede:datalist} 
@@ -34,10 +46,10 @@
       <td>[field:rulename/]</td>
       <td>[field:etype/]</td>
       <td>[field:dtime function='GetDateMk(@me)'/]</td>
-      <td>
-      	<a href="co_export_rule_edit.php?aid=[field:aid/]">ĞŞ¸Ä</a> |
-      	<a href="co_export_rule_edit.php?aid=[field:aid/]&action=export">µ¼³öÅäÖÃ</a> |
-      	<a href="co_export_rule_edit.php?aid=[field:aid/]&action=delete">É¾³ı</a>
+      <td style="padding-top:6px">
+      	<a href="co_export_rule_edit.php?aid=[field:aid/]">ä¿®æ”¹</a> |
+      	<a href="co_export_rule_edit.php?aid=[field:aid/]&action=export">å¯¼å‡ºé…ç½®</a> |
+      	<a href="co_export_rule_edit.php?aid=[field:aid/]&action=delete">åˆ é™¤</a>
       </td>
     </tr>
     {/dede:datalist} 

@@ -1,10 +1,10 @@
 <?php 
 @set_time_limit(0);
 /*=======================================
-//Ö¯ÃÎHttpÏÂÔØÀàV1.1°æ£¬±¾°æÔö¼ÓÁËPOST·¢ËÍÊı¾İµÄ·½Ê½
-//°ÑÒªPOSTµÄÊı¾İÏñGETÒ»Ñù¸úÔÚÍøÖ·ºó£¬³ÌĞò»á×Ô¶¯´¦Àí£¬²¢ÓÃPOST·½Ê½·¢ËÍ
-//POST½öÖ§³Öapplication/x-www-form-urlencoded·½Ê½
-//×îºóĞŞ¸ÄÈÕÆÚ£º2006-6-10
+//ç»‡æ¢¦Httpä¸‹è½½ç±»V1.1ç‰ˆï¼Œæœ¬ç‰ˆå¢åŠ äº†POSTå‘é€æ•°æ®çš„æ–¹å¼
+//æŠŠè¦POSTçš„æ•°æ®åƒGETä¸€æ ·è·Ÿåœ¨ç½‘å€åï¼Œç¨‹åºä¼šè‡ªåŠ¨å¤„ç†ï¼Œå¹¶ç”¨POSTæ–¹å¼å‘é€
+//POSTä»…æ”¯æŒapplication/x-www-form-urlencodedæ–¹å¼
+//æœ€åä¿®æ”¹æ—¥æœŸï¼š2006-6-10
 =======================================*/
 class DedeHttpDown
 {
@@ -24,9 +24,9 @@ class DedeHttpDown
 	var $m_puthead = "";
 	var $BaseUrlPath = "";
 	var $HomeUrl = "";
-	var $JumpCount = 0;//·ÀÖ¹¶àÖØÖØ¶¨ÏòÏİÈëËÀÑ­»·
+	var $JumpCount = 0;//é˜²æ­¢å¤šé‡é‡å®šå‘é™·å…¥æ­»å¾ªç¯
 	//
-	//³õÊ¼»¯ÏµÍ³
+	//åˆå§‹åŒ–ç³»ç»Ÿ
 	//
 	function PrivateInit($url)
 	{
@@ -66,7 +66,7 @@ class DedeHttpDown
 	}
 	function ResetAny()
 	{
-		//ÖØÉè¸÷²ÎÊı
+		//é‡è®¾å„å‚æ•°
 		$this->m_url = "";
 		$this->m_urlpath = "";
 		$this->m_scheme = "http";
@@ -79,7 +79,7 @@ class DedeHttpDown
 		$this->m_error = "";
 	}
 	//
-	//´ò¿ªÖ¸¶¨ÍøÖ·
+	//æ‰“å¼€æŒ‡å®šç½‘å€
 	//
 	function OpenUrl($url,$requestType="GET")
 	{
@@ -88,12 +88,12 @@ class DedeHttpDown
 		$this->m_httphead = Array() ;
 		$this->m_html = "";
 		$this->Close();
-		//³õÊ¼»¯ÏµÍ³
+		//åˆå§‹åŒ–ç³»ç»Ÿ
 		$this->PrivateInit($url);
 		$this->PrivateStartSession($requestType);
 	}
 	//
-	//×ªµ½303ÖØ¶¨ÏòÍøÖ·
+	//è½¬åˆ°303é‡å®šå‘ç½‘å€
 	//
 	function JumpOpenUrl($url)
 	{
@@ -102,21 +102,21 @@ class DedeHttpDown
 		$this->m_httphead = Array() ;
 		$this->m_html = "";
 		$this->Close();
-		//³õÊ¼»¯ÏµÍ³
+		//åˆå§‹åŒ–ç³»ç»Ÿ
 		$this->PrivateInit($url);
 		$this->PrivateStartSession('GET');
 	}
 	//
-	//»ñµÃÄ³²Ù×÷´íÎóµÄÔ­Òò
+	//è·å¾—æŸæ“ä½œé”™è¯¯çš„åŸå› 
 	//
 	function printError()
 	{
-		echo "´íÎóĞÅÏ¢£º".$this->m_error;
-		echo "<br/>¾ßÌå·µ»ØÍ·£º<br/>";
+		echo "é”™è¯¯ä¿¡æ¯ï¼š".$this->m_error;
+		echo "<br/>å…·ä½“è¿”å›å¤´ï¼š<br/>";
 		foreach($this->m_httphead as $k=>$v){ echo "$k => $v <br/>\r\n"; }
 	}
 	//
-	//ÅĞ±ğÓÃGet·½·¨·¢ËÍµÄÍ·µÄÓ¦´ğ½á¹ûÊÇ·ñÕıÈ·
+	//åˆ¤åˆ«ç”¨Getæ–¹æ³•å‘é€çš„å¤´çš„åº”ç­”ç»“æœæ˜¯å¦æ­£ç¡®
 	//
 	function IsGetOK()
 	{
@@ -127,7 +127,7 @@ class DedeHttpDown
 		}
 	}
 	//
-	//¿´¿´·µ»ØµÄÍøÒ³ÊÇ·ñÊÇtextÀàĞÍ
+	//çœ‹çœ‹è¿”å›çš„ç½‘é¡µæ˜¯å¦æ˜¯textç±»å‹
 	//
 	function IsText()
 	{
@@ -136,12 +136,12 @@ class DedeHttpDown
 		{	return true; }
 		else
 		{
-			$this->m_error .= "ÄÚÈİÎª·ÇÎÄ±¾ÀàĞÍ»òÍøÖ·ÖØ¶¨Ïò<br/>";
+			$this->m_error .= "å†…å®¹ä¸ºéæ–‡æœ¬ç±»å‹æˆ–ç½‘å€é‡å®šå‘<br/>";
 			return false;
 		}
 	}
 	//
-	//ÅĞ¶Ï·µ»ØµÄÍøÒ³ÊÇ·ñÊÇÌØ¶¨µÄÀàĞÍ
+	//åˆ¤æ–­è¿”å›çš„ç½‘é¡µæ˜¯å¦æ˜¯ç‰¹å®šçš„ç±»å‹
 	//
 	function IsContentType($ctype)
 	{
@@ -150,17 +150,17 @@ class DedeHttpDown
 		{	return true; }
 		else
 		{
-			$this->m_error .= "ÀàĞÍ²»¶Ô ".$this->GetHead("content-type")."<br/>";
+			$this->m_error .= "ç±»å‹ä¸å¯¹ ".$this->GetHead("content-type")."<br/>";
 			return false;
 		}
 	}
 	//
-	//ÓÃHttpĞ­ÒéÏÂÔØÎÄ¼ş
+	//ç”¨Httpåè®®ä¸‹è½½æ–‡ä»¶
 	//
 	function SaveToBin($savefilename)
 	{
 		if(!$this->IsGetOK()) return false;
-		if(@feof($this->m_fp)) { $this->m_error = "Á¬½ÓÒÑ¾­¹Ø±Õ£¡"; return false; }
+		if(@feof($this->m_fp)) { $this->m_error = "è¿æ¥å·²ç»å…³é—­ï¼"; return false; }
 		
 		$fp = fopen($savefilename,"w");
 		while(!feof($this->m_fp)){
@@ -172,7 +172,7 @@ class DedeHttpDown
 		return true;
 	}
 	//
-	//±£´æÍøÒ³ÄÚÈİÎªTextÎÄ¼ş
+	//ä¿å­˜ç½‘é¡µå†…å®¹ä¸ºTextæ–‡ä»¶
 	//
 	function SaveToText($savefilename)
 	{
@@ -180,7 +180,7 @@ class DedeHttpDown
 		else return "";
 	}
 	//
-	//ÓÃHttpĞ­Òé»ñµÃÒ»¸öÍøÒ³µÄÄÚÈİ
+	//ç”¨Httpåè®®è·å¾—ä¸€ä¸ªç½‘é¡µçš„å†…å®¹
 	//
 	function GetHtml()
 	{
@@ -194,13 +194,13 @@ class DedeHttpDown
 		return $this->m_html;
 	}
 	//
-	//¿ªÊ¼HTTP»á»°
+	//å¼€å§‹HTTPä¼šè¯
 	//
 	function PrivateStartSession($requestType="GET")
 	{
 		
 		if(!$this->PrivateOpenHost()){
-			$this->m_error .= "´ò¿ªÔ¶³ÌÖ÷»ú³ö´í!";
+			$this->m_error .= "æ‰“å¼€è¿œç¨‹ä¸»æœºå‡ºé”™!";
 			return false;
 		}
 		
@@ -208,12 +208,12 @@ class DedeHttpDown
 		else $httpv = "HTTP/1.0";
 		
 		$ps = explode('?',$this->m_urlpath);
-		//·¢ËÍ¹Ì¶¨µÄÆğÊ¼ÇëÇóÍ·GET¡¢HostĞÅÏ¢
+		//å‘é€å›ºå®šçš„èµ·å§‹è¯·æ±‚å¤´GETã€Hostä¿¡æ¯
 		if($requestType=="GET") fputs($this->m_fp,"GET ".$this->m_urlpath." $httpv\r\n");
 		else fputs($this->m_fp,"POST ".$ps[0]." $httpv\r\n");
 		$this->m_puthead["Host"] = $this->m_host;
 		
-		//·¢ËÍÓÃ»§×Ô¶¨ÒåµÄÇëÇóÍ·
+		//å‘é€ç”¨æˆ·è‡ªå®šä¹‰çš„è¯·æ±‚å¤´
 		if(!isset($this->m_puthead["Accept"])) { $this->m_puthead["Accept"] = "*/*"; }
 		if(!isset($this->m_puthead["User-Agent"])) { $this->m_puthead["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2)"; }
 		
@@ -239,8 +239,8 @@ class DedeHttpDown
 		   fputs($this->m_fp,"Content-Length: $plen\r\n");
 	  }
 		
-		//·¢ËÍ¹Ì¶¨µÄ½áÊøÇëÇóÍ·
-		//HTTP1.1Ğ­Òé±ØĞëÖ¸¶¨ÎÄµµ½áÊøºó¹Ø±ÕÁ´½Ó,·ñÔò¶ÁÈ¡ÎÄµµÊ±ÎŞ·¨Ê¹ÓÃfeofÅĞ¶Ï½áÊø
+		//å‘é€å›ºå®šçš„ç»“æŸè¯·æ±‚å¤´
+		//HTTP1.1åè®®å¿…é¡»æŒ‡å®šæ–‡æ¡£ç»“æŸåå…³é—­é“¾æ¥,å¦åˆ™è¯»å–æ–‡æ¡£æ—¶æ— æ³•ä½¿ç”¨feofåˆ¤æ–­ç»“æŸ
 		if($httpv=="HTTP/1.1") fputs($this->m_fp,"Connection: Close\r\n\r\n");
 		else fputs($this->m_fp,"\r\n");
 		
@@ -248,7 +248,7 @@ class DedeHttpDown
 		   fputs($this->m_fp,$postdata);
 	  }
 		
-		//»ñÈ¡Ó¦´ğÍ·×´Ì¬ĞÅÏ¢
+		//è·å–åº”ç­”å¤´çŠ¶æ€ä¿¡æ¯
 		$httpstas = explode(" ",fgets($this->m_fp,256));
 		$this->m_httphead["http-edition"] = trim($httpstas[0]);
 		$this->m_httphead["http-state"] = trim($httpstas[1]);
@@ -256,7 +256,7 @@ class DedeHttpDown
 		for($i=2;$i<count($httpstas);$i++){
 			$this->m_httphead["http-describe"] .= " ".trim($httpstas[$i]);
 		}
-		//»ñÈ¡ÏêÏ¸Ó¦´ğÍ·
+		//è·å–è¯¦ç»†åº”ç­”å¤´
 		while(!feof($this->m_fp)){
 			$line = trim(fgets($this->m_fp,256));
 			if($line == "") break;
@@ -272,7 +272,7 @@ class DedeHttpDown
 			if($hkey!="") $this->m_httphead[strtolower($hkey)] = trim($hvalue);
 		}
 		
-		//ÅĞ¶ÏÊÇ·ñÊÇ3xx¿ªÍ·µÄÓ¦´ğ
+		//åˆ¤æ–­æ˜¯å¦æ˜¯3xxå¼€å¤´çš„åº”ç­”
 		if(ereg("^3",$this->m_httphead["http-state"]))
 		{
 			if($this->JumpCount > 3) return;
@@ -287,11 +287,11 @@ class DedeHttpDown
 				}
 			}
 			else
-			{	$this->m_error = "ÎŞ·¨Ê¶±ğµÄ´ğ¸´£¡"; }
+			{	$this->m_error = "æ— æ³•è¯†åˆ«çš„ç­”å¤ï¼"; }
 		}//
 	}
 	//
-	//»ñµÃÒ»¸öHttpÍ·µÄÖµ
+	//è·å¾—ä¸€ä¸ªHttpå¤´çš„å€¼
 	//
 	function GetHead($headname)
 	{
@@ -302,14 +302,14 @@ class DedeHttpDown
 			return "";
 	}
 	//
-	//ÉèÖÃHttpÍ·µÄÖµ
+	//è®¾ç½®Httpå¤´çš„å€¼
 	//
 	function SetHead($skey,$svalue)
 	{
 		$this->m_puthead[$skey] = $svalue;
 	}
 	//
-	//´ò¿ªÁ¬½Ó
+	//æ‰“å¼€è¿æ¥
 	//
 	function PrivateOpenHost()
 	{
@@ -324,13 +324,13 @@ class DedeHttpDown
 		else{ return true; }
 	}
 	//
-	//¹Ø±ÕÁ¬½Ó
+	//å…³é—­è¿æ¥
 	//
 	function Close(){
 		@fclose($this->m_fp);
 	}
 	//
-	//²¹È«Ïà¶ÔÍøÖ·
+	//è¡¥å…¨ç›¸å¯¹ç½‘å€
 	//
 	function FillUrl($surl)
   {

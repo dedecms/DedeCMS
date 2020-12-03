@@ -1,180 +1,180 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
-<title><?php echo $spacename?>- ””ªªµµ∞∞</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
-<link href="../base.css" rel="stylesheet" type="text/css">		
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/space.css" rel="stylesheet" type="text/css" />
+<title><?php echo $spacename?></title>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/member_head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr> 
-<td width="170" height="216" valign="top"> 
-<?php include(dirname(__FILE__)."/member_menu.php");?>
-</td>
-<td width="10">&nbsp;</td>
-    <td width="590" valign="top"> 
-      <table width="100%"border="0" cellpadding="0" cellspacing="0" style="margin:0px">
-        <tr> 
-          <td width="2%" background="img/mtbg.gif"><img src="img/mc1.gif" width="6" height="27"></td>
-          <td width="96%" background="img/mtbg.gif"><font color="#666600"><b>°æ”√ªßµµ∞∏°ø</b></font></td>
-          <td width="2%" align="right" background="img/mtbg.gif"><img src="img/mc2.gif" width="6" height="27"></td>
-        </tr>
-      </table>
-      <table width="100%"border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:6px">
-        <tr bgcolor="#FFFFFF"> 
-          <td height="63" colspan="2"> <table width="100%"border="0" cellspacing="1" cellpadding="1">
-              <tr> 
-                <td height="247" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
-                    <tr> 
-                      <td height="25" colspan="2" ><strong>&gt;&gt;ª˘±æ◊ ¡œ£∫</strong></td>
+
+<body>
+<div id="container">
+	<?php include(dirname(__FILE__)."/member_head.htm");?>
+    <!--Â§¥ÈÉ®ÁªìÊùü-->
+    <!--‰∏≠Èó¥ÂºÄÂßã-->
+    <div id="spacemain">
+    	<div id="space_main">
+        	<?php include(dirname(__FILE__)."/member_left.htm");?>
+        	<!--Â∑¶ËæπÁªìÊùü-->
+            
+            <div id="space_right"><!--Âè≥ËæπÂºÄÂßã-->            	
+                <div class="space_notice">
+                	<div class="space_title02">
+                    	<ul>
+                        <li><font color="#666600"><b>„ÄêÁî®Êà∑Ê°£Ê°à„Äë</b></font></li>
+                        </ul>
+                    </div>
+                    <div class="space_notice_text">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+                    <tr>
+                      <td height="25" colspan="2" ><strong>&gt;&gt;Âü∫Êú¨ËµÑÊñôÔºö</strong></td>
                     </tr>
-                    <tr> 
-                      <td width="17%" height="25" align="right" >Í«°°≥∆£∫</td>
-                      <td width="83%"> 
+                    <tr>
+                      <td width="17%" height="25" align="right" >Êòµ„ÄÄÁß∞Ôºö</td>
+                      <td width="83%">
                         <?php echo $spaceInfos['uname']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >–‘°°±£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >ÊÄß„ÄÄÂà´Ôºö</td>
+                      <td>
                         <?php echo $spaceInfos['sex']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >…˙°°»’£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >Áîü„ÄÄÊó•Ôºö</td>
+                      <td>
                         <?php echo $spaceInfos['birthday']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >ÃÂ°°–Õ£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >‰Ωì„ÄÄÂûãÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['weight']?>
-                        &nbsp; …Ì∏ﬂ£∫ 
+                        &nbsp; Ë∫´È´òÔºö
                         <?php echo $spaceInfos['height']?>
-                        ¿Â√◊ </td>
+                        ÂéòÁ±≥ </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >÷∞°°“µ£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >ËÅå„ÄÄ‰∏öÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['job']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >µÿ°°«¯£∫</td>
+                    <tr>
+                      <td height="25" align="right" >Âú∞„ÄÄÂå∫Ôºö</td>
                       <td>
-                      	  °£∫<?php echo GetProvince($spaceInfos['province'],$dsql);?>  –«¯£∫<?php echo GetProvince($spaceInfos['city'],$dsql);?>
+                      	 ÁúÅÔºö<?php echo GetProvince($spaceInfos['province'],$dsql);?> Â∏ÇÂå∫Ôºö<?php echo GetProvince($spaceInfos['city'],$dsql);?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >∏ˆ»ÀÀµ√˜£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >‰∏™‰∫∫ËØ¥ÊòéÔºö</td>
+                      <td>
                         <?php echo str_replace("\n","<br />",html2text($spaceInfos['myinfo']))?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >œÍœ∏ΩÈ…‹£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >ËØ¶ÁªÜ‰ªãÁªçÔºö</td>
+                      <td>
                         <?php echo str_replace("\n","<br />",html2text($spaceInfos['fullinfo']))?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" colspan="2" ><strong>&gt;&gt;ø’º‰–≈œ¢£∫</strong></td>
+                    <tr>
+                      <td height="25" colspan="2" ><strong>&gt;&gt;Á©∫Èó¥‰ø°ÊÅØÔºö</strong></td>
                     </tr>
-                    <tr> 
+                    <tr>
                       <td height="25" colspan="2" > <table width="96%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC">
-                          <tr bgcolor="#FFFFFF"> 
-                            <td width="21%">°°∑¢±ÌµƒŒƒ’¬£∫</td>
-                            <td width="27%">&nbsp; 
+                          <tr bgcolor="#FFFFFF">
+                            <td width="21%">„ÄÄÂèëË°®ÁöÑÊñáÁ´†Ôºö</td>
+                            <td width="27%">&nbsp;
                               <?php echo $spaceInfos['c1']?>
                             </td>
-                            <td width="18%">°°∑¢±ÌµƒÕººØ£∫</td>
-                            <td width="34%">&nbsp; 
+                            <td width="18%">„ÄÄÂèëË°®ÁöÑÂõæÈõÜÔºö</td>
+                            <td width="34%">&nbsp;
                               <?php echo $spaceInfos['c2']?>
                             </td>
                           </tr>
-                          <tr bgcolor="#FFFFFF"> 
-                            <td>°°∑¢±Ìµƒ∆‰À¸–≈œ¢£∫</td>
-                            <td>&nbsp; 
+                          <tr bgcolor="#FFFFFF">
+                            <td>„ÄÄÂÖ∂ÂÆÉ‰ø°ÊÅØÔºö</td>
+                            <td>&nbsp;
                               <?php echo $spaceInfos['c3']?>
                             </td>
-                            <td>°°ø’º‰∑√Œ ¡ø£∫</td>
-                            <td>&nbsp; 
+                            <td>„ÄÄÁ©∫Èó¥ËÆøÈóÆÈáèÔºö</td>
+                            <td>&nbsp;
                               <?php echo $spaceInfos['spaceshow']?>
                             </td>
                           </tr>
                         </table></td>
                     </tr>
-                    <tr> 
-                      <td height="25" colspan="2" ><strong>&gt;&gt;◊Ó–¬π´∏Ê£∫</strong></td>
+                    <tr>
+                      <td height="25" colspan="2" ><strong>&gt;&gt;ÊúÄÊñ∞ÂÖ¨ÂëäÔºö</strong></td>
                     </tr>
-                    <tr> 
-                      <td height="25" colspan="2" > 
+                    <tr>
+                      <td height="25" colspan="2" >
                         <?php echo $spaceInfos['news']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" colspan="2" ><strong>&gt;&gt;¡™œµ∑Ω∑®£∫</strong></td>
+                    <tr>
+                      <td height="25" colspan="2" ><strong>&gt;&gt;ËÅîÁ≥ªÊñπÊ≥ïÔºö</strong></td>
                     </tr>
-                    <?php 
+                    <?php
 if($spaceInfos['showaddr']==1){
 ?>
-                    <tr> 
-                      <td height="25" align="right" >∏ˆ»À÷˜“≥£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >‰∏™‰∫∫‰∏ªÈ°µÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['homepage']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >µÁ◊”” œ‰£∫ </td>
+                    <tr>
+                      <td height="25" align="right" >ÁîµÂ≠êÈÇÆÁÆ±Ôºö </td>
                       <td>&nbsp;</td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >OICQ∫≈¬Î£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >OICQÂè∑Á†ÅÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['oicq']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >¡™œµµÁª∞£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >ËÅîÁ≥ªÁîµËØùÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['tel']?>
                       </td>
                     </tr>
-                    <tr> 
-                      <td height="25" align="right" >œÍœ∏µÿ÷∑£∫</td>
-                      <td> 
+                    <tr>
+                      <td height="25" align="right" >ËØ¶ÁªÜÂú∞ÂùÄÔºö</td>
+                      <td>
                         <?php echo $spaceInfos['address']?>
                       </td>
                     </tr>
-                    <?php 
+                    <?php
 }
 else{
 ?>
-                    <tr> 
-                      <td height="25" colspan="2"> <font color='red'>∏√”√ªß“˛≤ÿ¡À¡™œµ∑Ω Ω£¨«Î‘⁄œﬂ”ÎÀ˝¡™œµ£°</font> 
+                    <tr>
+                      <td height="25" colspan="2"> <font color='red'>ËØ•Áî®Êà∑ÈöêËóè‰∫ÜËÅîÁ≥ªÊñπÂºèÔºåËØ∑Âú®Á∫ø‰∏éÂ•πËÅîÁ≥ªÔºÅ</font>
                       </td>
                     </tr>
-                    <?php 
+                    <?php
 }
 ?>
-                    <tr> 
+                    <tr>
                       <td height="86" align="center" >&nbsp;</td>
                       <td height="86" ><a href="index.php?uid=<?php echo $uid?>&action=feedback"><img src="img/feedback.gif" width="115" height="34" border="0"></a></td>
                     </tr>
-                  </table></td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-</tr>
-</table>
-<?php 
-$dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+                  </table>
+                  </div>
+                </div>
+            </div><!--Âè≥ËæπÁªìÊùü-->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--‰∏≠Èó¥ÁªìÊùü-->
+    <!--Â∫ïÈÉ®ÂºÄÂßã-->
+	<?php include(dirname(__FILE__)."/member_footer.htm");?>
+    <!--Â∫ïÈÉ®ÁªìÊùü-->
+    
 </div>
 </body>
 </html>

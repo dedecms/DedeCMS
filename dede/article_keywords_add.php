@@ -6,7 +6,7 @@ $keyword = trim($keyword);
 $rank = ereg_replace("[^0-9]","",$rank);
 if(ereg(" ",$keyword)||$keyword=="")
 {
-	ShowMsg("¹Ø¼ü×Ö²»ÄÜ´øÓÐ¿Õ¸ñ»òÎª¿Õ£¡",-1);
+	ShowMsg("å…³é”®å­—ä¸èƒ½å¸¦æœ‰ç©ºæ ¼æˆ–ä¸ºç©ºï¼",-1);
 	exit();
 }
 $dsql = new DedeSql(false);
@@ -14,7 +14,7 @@ $row = $dsql->GetOne("Select * From #@__keywords where keyword like '$keyword'")
 if(is_array($row))
 {
 	$dsql->Close();
-	ShowMsg("¹Ø¼ü×ÖÒÑ´æÔÚ¿âÖÐ£¡","-1");
+	ShowMsg("å…³é”®å­—å·²å­˜åœ¨åº“ä¸­ï¼","-1");
 	exit();
 }
 $inquery = "
@@ -22,6 +22,6 @@ INSERT INTO #@__keywords(keyword,rank,sta,rpurl) VALUES ('$keyword','$rank','1',
 ";
 $dsql->SetQuery($inquery);
 $dsql->ExecuteNoneQuery();
-$dsql->Close();
-ShowMsg("³É¹¦Ôö¼ÓÒ»¸ö¹Ø¼ü×Ö£¡",$ENV_GOBACK_URL);
+ClearAllLink();
+ShowMsg("æˆåŠŸå¢žåŠ ä¸€ä¸ªå…³é”®å­—ï¼",$ENV_GOBACK_URL);
 ?>

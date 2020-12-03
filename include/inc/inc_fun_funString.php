@@ -12,7 +12,7 @@ function SpHtml2Text($str){
       else if(ord($str[$i])>31) $alltext .= $str[$i];
     }
   }
-  $alltext = str_replace("¡¡"," ",$alltext);
+  $alltext = str_replace("ã€€"," ",$alltext);
   $alltext = preg_replace("/&([^;&]*)(;|&)/","",$alltext);
   $alltext = preg_replace("/[ ]+/s"," ",$alltext);
   return $alltext;

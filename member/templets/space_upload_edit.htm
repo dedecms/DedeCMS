@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>�޸ĸ���</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>修改附件</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript' src='main.js'></script>
 <script language="javascript">
 <!--
@@ -10,14 +11,14 @@ function checkSubmit()
 {
 
 if(document.form1.title.value==""){
-	 alert("���ⲻ��Ϊ�գ�");
+	 alert("标题不能为空！");
 	 document.form1.title.focus();
 	 return false;
 }
 
 if(document.form1.vdcode.value==""){
  document.form1.vdcode.focus();
- alert("��֤�벻��Ϊ�գ�");
+ alert("验证码不能为空！");
  return false;
 }
 
@@ -28,33 +29,34 @@ if(document.form1.vdcode.value==""){
 <body leftmargin="0" topmargin="0">
 <div align="center">
 <?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="150" valign="top"> 
       <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:10px;">
         <tr> 
-          <td height="26" background="img/nnnbg.gif"> <font color="#333333"> 
-            <strong>��&nbsp;�޸ĸ�����</strong></font></td>
+            <div class="manage_company_right_title">
+                	<ul><li>修改附件：</li></ul>
+                </div>
         </tr>
         <tr>
 		<form name="form1" action="archives_do.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
           <input type="hidden" name="aid" value="<?php echo $aid?>"> 
 		  <input type="hidden" name="dopost" value="editUpload">
           <td height="183" valign="top" style="padding-top:3px">
-		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
+		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px; text-align:left;">
                 <tr> 
-                  <td width="20%" height="28" align="center" bgcolor="#FFFFFF">˵�����⣺</td>
+                  <td width="20%" height="28" align="center" bgcolor="#FFFFFF">说明标题：</td>
                   <td colspan="3" bgcolor="#FFFFFF">
                   	<input name="title" type="text" id="title" size="30" class="nb" value="<?php echo $arow['title']?>"> 
                     <font color="#FF0000">*</font>
                   </td>
                 </tr>
                 <tr bgcolor="#F7FDF0"> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">��֤�룺</td>
+                  <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
                   <td colspan="3" bgcolor="#F7FDF0"> <table width="200" border="0" cellspacing="0" cellpadding="0">
                       <tr> 
                         <td width="84"><input name="vdcode" type="text" id="vdcode" size="10"></td>
@@ -66,7 +68,7 @@ if(document.form1.vdcode.value==""){
                 if($arow['mediatype']==1){
                 ?>
                 <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center">����ͼƬ��</td>
+                  <td height="28" align="center">更换图片：</td>
                   <td colspan="3"><input name="addonfile" type="file" id="addonfile" style="width:300" onChange="SeePic($Obj('picview'),$Obj('addonfile'));"></td>
                 </tr>
                 <tr> 
@@ -97,7 +99,7 @@ if(document.form1.vdcode.value==""){
                  }else{
                  ?>
                 <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center">����������</td>
+                  <td height="28" align="center">更换附件：</td>
                   <td colspan="3"> <input name="addonfile" type="file" id="addonfile" style="width:300"></td>
                 </tr>
                  <?php 

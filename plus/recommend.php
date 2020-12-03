@@ -1,4 +1,4 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/../include/config_base.php");
 require(dirname(__FILE__)."/../include/inc_channel_unit.php");
 if(!isset($action)) $action = "";
@@ -6,14 +6,14 @@ if(!empty($artID)) $arcID = $artID;
 if(!isset($arcID)) $arcID = "";
 $arcID = ereg_replace("[^0-9]","",$arcID);
 if(empty($arcID)){
-	  ShowMsg("ÎÄµµID²»ÄÜÎª¿Õ!","-1");
+	  ShowMsg("æ–‡æ¡£IDä¸èƒ½ä¸ºç©º!","-1");
 	  exit();
 }
 //////////////////////////////////////////////
 if($action=="")
 {
   $dsql = new DedeSql(false);
-  //¶ÁÈ¡ÎÄµµĞÅÏ¢
+  //è¯»å–æ–‡æ¡£ä¿¡æ¯
   $arctitle = "";
   $arcurl = "";
   $arcRow = $dsql->GetOne("Select #@__archives.title,#@__archives.senddate,#@__archives.arcrank,#@__archives.ismake,#@__archives.money,#@__archives.typeid,#@__arctype.typedir,#@__arctype.namerule From #@__archives  left join #@__arctype on #@__arctype.ID=#@__archives.typeid where #@__archives.ID='$arcID'");
@@ -23,33 +23,33 @@ if($action=="")
   }
   else{
 	  $dsql->Close();
-	  ShowMsg("ÎŞ·¨°ÑÎ´ÖªÎÄµµÍÆ¼ö¸øºÃÓÑ!","-1");
+	  ShowMsg("æ— æ³•æŠŠæœªçŸ¥æ–‡æ¡£æ¨èç»™å¥½å‹!","-1");
 	  exit();
   }
   $dsql->Close();
 }
-//·¢ËÍÍÆ¼öĞÅÏ¢
+//å‘é€æ¨èä¿¡æ¯
 //-----------------------------------
 else if($action=="send")
 {
 	if(!eregi("(.*)@(.*)\.(.*)",$email)){
-	  echo "<script>alert('Email²»ÕıÈ·!');history.go(-1);</script>";
+	  echo "<script>alert('Emailä¸æ­£ç¡®!');history.go(-1);</script>";
 	  exit();
   }
   $mailbody = "";
   $msg = ereg_replace("[><]","",$msg);
-  $mailtitle = "ÄãµÄºÃÓÑ¸øÄãÍÆ¼öÁËÒ»ÆªÎÄÕÂ";
+  $mailtitle = "ä½ çš„å¥½å‹ $name ç»™ä½ æ¨èäº†ä¸€ç¯‡æ–‡ç« ";
   $mailbody .= "$msg \r\n\r\n";
-  $mailbody .= "Power by http://www.dedecms.com Ö¯ÃÎÄÚÈİ¹ÜÀíÏµÍ³£¡";
+  $mailbody .= "Powered by http://www.dedecms.com ç»‡æ¢¦å†…å®¹ç®¡ç†ç³»ç»Ÿï¼";
   if(eregi("(.*)@(.*)\.(.*)",$email)){
-	  $headers = "From: ".$cfg_adminemail."\r\nReply-To: ".$cfg_adminemail;
-    @mail($email, $mailtitle, $mailbody, $headers);
+	$headers = "From: ".$cfg_adminemail."\r\nReply-To: ".$cfg_adminemail;
+	sendmail($email, $mailtitle, $mailbody, $headers);
   }
-  ShowMsg("³É¹¦ÍÆ¼öÒ»ÆªÎÄÕÂ!",$arcurl);
+  ShowMsg("æˆåŠŸæ¨èä¸€ç¯‡æ–‡ç« !",$arcurl);
   exit();
 }
 
-//ÏÔÊ¾Ä£°å(¼òµ¥PHPÎÄ¼ş)
+//æ˜¾ç¤ºæ¨¡æ¿(ç®€å•PHPæ–‡ä»¶)
 include_once($cfg_basedir.$cfg_templets_dir."/plus/recommend.htm");
 
 ?>

@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>∏¸∏ƒ–≈œ¢</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">	
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Êõ¥Êîπ‰ø°ÊÅØ</title>
+<link href="company_style.css" rel="stylesheet" type="text/css">
 <script language='javascript' src='main.js'></script>	
 <script language="javascript">
 <!--
@@ -10,25 +11,19 @@ function checkSubmit()
 {
 
 if(document.form1.title.value==""){
-	 alert("Œƒµµ±ÍÃ‚≤ªƒ‹Œ™ø’£°");
+	 alert("ÊñáÊ°£Ê†áÈ¢ò‰∏çËÉΩ‰∏∫Á©∫ÔºÅ");
 	 document.form1.title.focus();
 	 return false;
 }
 
 if(document.form1.typeid.value==0){
-	 alert("Œƒµµ¡• Ù¿∏ƒø±ÿ–Î—°‘Ò£°");
+	 alert("ÊñáÊ°£Èö∂Â±ûÊ†èÁõÆÂøÖÈ°ªÈÄâÊã©ÔºÅ");
 	 return false;
-}
-
-if(document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
-{
-	alert("Œƒµµ¡• Ù¿∏ƒø±ÿ–Î—°‘Ò∞◊…´±≥æ∞µƒœÓƒø£°");
-	return false;
 }
 
 if(document.form1.vdcode.value==""){
   document.form1.vdcode.focus();
-  alert("—È÷§¬Î≤ªƒ‹Œ™ø’£°");
+  alert("È™åËØÅÁ†Å‰∏çËÉΩ‰∏∫Á©∫ÔºÅ");
   return false;
 }
 
@@ -46,13 +41,11 @@ if(document.form1.vdcode.value==""){
     </td>
     <td width="10">&nbsp;</td>
     <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:10px;">
         <tr> 
-          <td background="img/nnnbg.gif" height="25" class="gdt2">
-		  <font color="#333333"> 
-            <strong>°°&nbsp;∏¸∏ƒ–≈œ¢£∫</strong>
-		   </font>
-		</td>
+        <div class="manage_company_right_title">
+                	<ul><li>Êõ¥Êîπ‰ø°ÊÅØÔºö</li></ul>
+            </div>
         </tr>
         <tr>
 		<form name="form1" action="archives_edit_action.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
@@ -60,87 +53,91 @@ if(document.form1.vdcode.value==""){
       <input type="hidden" name="ID" value="<?php echo $arcRow['ID']?>">
       <input type="hidden" name="channelid" value="<?php echo $arcRow['channel']?>">
       <td height="183" valign="top" style="padding-top:3px">
-		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
-                <tr> 
-                  <td height="24" colspan="2" bgcolor="#F0FBE3">°°<strong>°Ù≥£πÊ≤Œ ˝£∫</strong></td>
-                </tr>
-                <tr> 
-                  <td width="19%" height="28" align="center" bgcolor="#FFFFFF">–≈œ¢±ÍÃ‚£∫</td>
-                  <td width="81%" bgcolor="#FFFFFF"> 
-                    <input name="title" type="text" id="title" size="30" class="nb" value="<?php echo $arcRow['title']?>">
-                    <font color="#FF0000">*</font>
-					∑¢≤º»À£∫					
-					<input name="writer" type="text" id="writer" size="15" class="nb" value="<?php echo $arcRow['writer']?>"></td>
-                </tr>
-                <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">¡• Ù¿∏ƒø£∫</td>
-                  <td bgcolor="#F7FDF0"> 
-                    <?php 
-           	 echo GetTypeidSelMember('form1','typeid','selbt1',1,$arcRow['typeid'],$arow['typename'],false);
-			       ?>                    </td>
-                </tr>
-                <tr>
-                  <td height="60" align="center" bgcolor="#FFFFFF">ƒ⁄»›ºÚΩÈ£∫</td>
-                  <td bgcolor="#FFFFFF"><textarea name="description" id="description" style="width:80%;height:50"><?php echo $arcRow['description']?>
-                  </textarea></td>
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
+                  <tr>
+                    <td height="24" bgcolor="#F0FBE3"><strong>‚óÜÂ∏∏ËßÑÂèÇÊï∞Ôºö</strong></td>
                   </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">πÿº¸¥ £∫</td>
-                  <td bgcolor="#F7FDF0">
-                    <input name="keywords" type="text" id="keywords" style="width:50%;" value="<?php echo $arcRow['keywords']?>"> 
-                    (∂‡∏ˆπÿº¸◊÷”√ø’∏Ò∑÷ø™)</td>
-                </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#FFFFFF">Àı¬‘Õº£∫</td>
-                  <td bgcolor="#FFFFFF">
-<input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));"></td>
-                </tr>
-                <tr id="picarea" style="<?php  if($arcRow['litpic']) echo "display:block"; else echo "display:none"; ?>">
-                  <td colspan="2" align="center" bgcolor="#FFFFFF">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td width="18%" height="110">&nbsp;</td>
-                        <td width="82%"><img src="<?php  if($arcRow['litpic']){ echo $arcRow['litpic']; }else{ echo "img/pview.gif"; } ?>" id="picview" width="150" height="120"></td>
-                      </tr>
-                    </table>                  </td>
-                </tr>
-              </table>
-				
-				
-              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-                <tr bgcolor="#F0FBE3"> 
-                  <td width="100%" height="24" colspan="4"> °°<strong>°Ù∏Ωº”ƒ⁄»›£∫</strong></td>
-                </tr>
-                <tr> 
-                  <td height="51" colspan="4" bgcolor="#FFFFFF">
-                  	<table width="100%"  border="0" align="center" cellpadding="2" cellspacing="2" id="addtable">
-        <?php 
-        $dtp = new DedeTagParse();
-	      $dtp->SetNameSpace("field","<",">");
-        $dtp->LoadSource($cInfos['fieldset']);
-        $dede_addonfields = "";
-        if(is_array($dtp->CTags))
-        {
-        	 foreach($dtp->CTags as $tid=>$ctag){
-        ?>
-        <tr> 
-          <td width="100%" height="24" colspan="4" class="bline">
-          	<?php 
-          	echo GetFormItemValue($ctag,$addRow[$ctag->GetName()]);
-          	?>
-          </td>
-         </tr>
-         <?php 
-           }
-         }
-         ?>
-      </table>
-                  </td>
-                </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28"><?php echo $cInfos['typename'];?>Ê†áÈ¢òÔºö</td>
+                          <td align="left"><input name="title" type="text" style="width:220px" id="title" size="30" class="company_manage_form_label" value="<?php echo $arcRow['title']?>" />
+                            <font color="#FF0000">*</font> ÂèëÂ∏É‰∫∫Ôºö
+                          <input name="writer" type="text" id="writer" style="width:120px"  size="15" class="company_manage_form_label" value="<?php echo $arcRow['writer']?>" /></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">Èö∂Â±ûÊ†èÁõÆÔºö</td>
+                          <td align="left"><?php 
+           	 echo GetTypeidSelMember('form1','typeid','selbt1',$arcRow['channel'],$arcRow['typeid'],$arow['typename'],false);
+			       ?></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">ÊàëÁöÑÂàÜÁ±ªÔºö</td>
+                          <td align="left"><select name="mtype" id="mtype" style="width:200px">
+                            <?php 
+$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' ;");
+$dsql->Execute();
+if($row['mtype']==0) echo "<option value='0'>--ËØ∑ÈÄâÊã©ÂàÜÁ±ª--</option>"; 
+while($arow = $dsql->GetObject()){
+  if($row['mtype']==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
+  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
+}
+?>
+                          </select></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">ÂÜÖÂÆπÁÆÄ‰ªãÔºö</td>
+                          <td align="left"><textarea name="description" id="description" style="width:80%;height:50px"><?php echo $arcRow['description']?>
+                          </textarea></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">Ê†áÁ≠æÔºàTAGÔºâÔºö</td>
+                          <td align="left"><input name="keywords" type="text" id="keywords" style="width:50%;" value="<?php echo $arcRow['keywords']?>" class="company_manage_form_label" />
+(Â§ö‰∏™Ê†áÁ≠æÔºàTAGÔºâÁî®Á©∫Ê†ºÂàÜÂºÄ)</td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                  <tr>
+                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
+                        <tr>
+                          <td width="20%" height="28">Áº©Áï•ÂõæÔºö</td>
+                          <td align="left"><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
+                        </tr>
+                        <tr id="picarea" style='<?php echo ($arcRow['litpic']!='' ? '' : 'display:none'); ?>'>
+                          <td height="28">È¢Ñ„ÄÄËßàÔºö</td>
+                          <td align="left"><img src="<?php echo ($arcRow['litpic']!='' ? $arcRow['litpic'] : "img/pview.gif"); ?>" id="picview" width="150" height="120" /></td>
+                        </tr>
+                    </table></td>
+                  </tr>
+                </table>
+				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
+                  <tr>
+                    <td height="24" bgcolor="#F0FBE3"><strong>‚óÜÈôÑÂä†ÂèÇÊï∞Ôºö</strong></td>
+                  </tr>
+                  <?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?>
+                </table>
+                <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">  
                 <tr bgcolor="#F7FDF0"> 
-                  <td height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
-                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();"> 
-                  </td>
+                  <td width="400%" height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
+                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();">                  </td>
                 </tr>
               </table></td>
 			</form>

@@ -1,6 +1,6 @@
 <?php 
 /******************************
-//UTF-8 ×ªGB±àÂë
+//UTF-8 è½¬GBç¼–ç 
 *******************************/
 function utf82gb($utfstr)
 {
@@ -12,7 +12,7 @@ function utf82gb($utfstr)
 		$filename = dirname(__FILE__)."/data/gb2312-utf8.table";
 		$fp = fopen($filename,"r");
 		while($l = fgets($fp,15))
-		{	$UC2GBTABLE[hexdec(substr($l, 7, 6))] = hexdec(substr($l, 0, 6));}
+		{	$UC2GBTABLE[hexdec(substr($l, 5, 4))] = hexdec(substr($l, 0, 4));}
 		fclose($fp);
 	}
 	$okstr = "";
@@ -40,7 +40,7 @@ function utf82gb($utfstr)
 	return $okstr;
 }
 /*******************************
-//GB×ªUTF-8±àÂë
+//GBè½¬UTF-8ç¼–ç 
 *******************************/
 function gb2utf8($gbstr) {
 	if(function_exists('iconv')){ return iconv('gbk','utf-8',$gbstr); }
@@ -50,7 +50,7 @@ function gb2utf8($gbstr) {
 		$filename = dirname(__FILE__)."/data/gb2312-utf8.table";
 		$fp = fopen($filename,"r");
 		while ($l = fgets($fp,15))
-		{ $CODETABLE[hexdec(substr($l, 0, 6))] = substr($l, 7, 6); }
+		{ $CODETABLE[hexdec(substr($l, 0, 4))] = substr($l, 5, 4); }
 		fclose($fp);
 	}
 	$ret = "";
@@ -74,10 +74,10 @@ function gb2utf8($gbstr) {
 	}
 	return $ret;
 }
-//Unicode×ªutf8
+//Unicodeè½¬utf8
 function u2utf8($c) {
-	for ($i = 0;$i < count($c);$i++)
-		$str = "";
+	//for ($i = 0;$i < count($c);$i++)
+	$str = '';
 	if ($c < 0x80) {
 		$str .= $c;
 	} else if ($c < 0x800) {
@@ -95,7 +95,7 @@ function u2utf8($c) {
 	}
 	return $str;
 }
-//utf8×ªUnicode
+//utf8è½¬Unicode
 function utf82u($c)
 {
   switch(strlen($c)) {
@@ -119,7 +119,7 @@ function utf82u($c)
   }
 }
 /**********************************
-//Big5Âë×ª»»³ÉGBÂë
+//Big5ç è½¬æ¢æˆGBç 
 **********************************/
 function big52gb($Text) {
 	if(function_exists('iconv')){ return iconv('big5','gbk',$Text); }
@@ -136,7 +136,7 @@ function big52gb($Text) {
 		if($h>=0x80) {
 			$l = ord($Text[$i+1]);
 			if($h==161 && $l==64) {
-					$gbstr = "¡¡";
+					$gbstr = "ã€€";
 			}else{
 					$p = ($h-160)*510+($l-1)*2;
 					$gbstr = $BIG5_DATA[$p].$BIG5_DATA[$p+1];
@@ -149,7 +149,7 @@ function big52gb($Text) {
 	return $Text;
 }
 /********************************
-//GBÂë×ª»»³ÉBig5Âë
+//GBç è½¬æ¢æˆBig5ç 
 *********************************/
 function gb2big5($Text) {
 	if(function_exists('iconv')){ return iconv('gbk','big5',$Text); }
@@ -166,7 +166,7 @@ function gb2big5($Text) {
 		if($h>=0x80) {
 			$l = ord($Text[$i+1]);
 			if($h==161 && $l==64) {
-			$big = "¡¡";
+			$big = "ã€€";
 			}else{
 				$p = ($h-160)*510+($l-1)*2;
 				$big = $GB_DATA[$p].$GB_DATA[$p+1];
@@ -177,5 +177,46 @@ function gb2big5($Text) {
 		}
 	}
 	return $Text;
+}
+
+/********************************
+//unicode urlç¼–ç è½¬gbkç¼–ç å‡½æ•°
+//Dic and Code by it prato
+*********************************/
+function UnicodeUrl2Gbk($str)
+{
+   //è½½å…¥å¯¹ç…§è¯å…¸
+   if(!isset($GLOBALS['GbkUniDic']))
+   {
+     $fp = fopen(dirname(__FILE__).'/data/gbk_unicode.dic','rb');
+     while(!feof($fp)) $GLOBALS['GbkUniDic'][bin2hex(fread($fp,2))] = fread($fp,2);
+     fclose($fp);
+  }
+  //å¤„ç†å­—ç¬¦ä¸²
+  $str = str_replace('$#$','+',$str);
+  $glen = strlen($str);
+  $okstr = "";
+  for($i=0; $i < $glen; $i++)
+  {
+    if($glen-$i > 4)
+    {
+       if($str[$i]=='%' && $str[$i+1]=='u')
+       {
+           $uni = strtolower(substr($str,$i+2,4));
+           $i = $i+5;
+           if(isset($GLOBALS['GbkUniDic'][$uni])){
+           	  $okstr .= $GLOBALS['GbkUniDic'][$uni];
+           }
+           else $okstr .= "&#".hexdec('0x'.$uni).";";
+        }
+        else{
+          $okstr .= $str[$i];
+        }
+     }
+     else{
+       $okstr .= $str[$i];
+     }
+  }
+  return $okstr;
 }
 ?>

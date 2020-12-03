@@ -12,26 +12,26 @@ if($dopost=="upload")
 {
 	if(empty($imgfile)) $imgfile="";
 	if(!is_uploaded_file($imgfile)){
-		 ShowMsg("��û��ѡ���ϴ����ļ�!","-1");
+		 ShowMsg("你没有选择上传的文件!","-1");
 	   exit();
 	}
 	if(ereg("^text",$imgfile_type)){
-		ShowMsg("�������ı����͸���!","-1");
+		ShowMsg("不允许文本类型附件!","-1");
 		exit();
 	}
 	if(!eregi("\.(jpg|gif|png|bmp)$",$imgfile_name)){
-		ShowMsg("�����ϴ����ļ����ͱ���ֹ��","-1");
+		ShowMsg("你所上传的文件类型被禁止！","-1");
 		exit();
 	}
 	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
   $imgfile_type = strtolower(trim($imgfile_type));
   if(!in_array($imgfile_type,$sparr)){
-		ShowMsg("�ϴ���ͼƬ��ʽ������ʹ��JPEG��GIF��PNG��WBMP��ʽ������һ�֣�","-1");
+		ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG、WBMP格式的其中一种！","-1");
 		exit();
 	}
 	
 	$sname = '.jpg';
-	//�ϴ����ͼƬ�Ĵ���
+	//上传后的图片的处理
 	if($imgfile_type=='image/pjpeg'||$imgfile_type=='image/jpeg'){
 		$sname = '.jpg';
 	}else if($imgfile_type=='image/gif'){
@@ -48,28 +48,28 @@ if($dopost=="upload")
   CloseFtp();
   $rndname = dd2char(strftime("%d%H%M%S",$nowtime).$cfg_ml->M_ID.mt_rand(1000,9999));
 	$filename = $savepath."/".$rndname;
-	$rndname  = $rndname.$sname; //����ע����
+	$rndname  = $rndname.$sname; //仅作注解用
   
-  //��СͼURL
+  //大小图URL
   $bfilename = $filename.$sname;
 	$litfilename = $filename."_lit".$sname;
 	
-  //��Сͼ��ʵ��ַ
+  //大小图真实地址
   $fullfilename = $cfg_basedir.$bfilename;
   $full_litfilename = $cfg_basedir.$litfilename;
   
   if(file_exists($fullfilename)){
-  	ShowMsg("��Ŀ¼�Ѿ�����ͬ�����ļ��������ԣ�","-1");
+  	ShowMsg("本目录已经存在同名的文件，请重试！","-1");
 		exit();
   }
   
-  //�ϸ������յ��ļ���
+  //严格检查最终的文件名
   if(eregi("\.(php|asp|pl|shtml|jsp|cgi|aspx)",$fullfilename)){
-		ShowMsg("�����ϴ����ļ����ͱ���ֹ��ϵͳֻ�����ϴ�<br>".$cfg_mb_mediatype." ���͸�����","-1");
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件！","-1");
 		exit();
 	}
 	if(eregi("\.(php|asp|pl|shtml|jsp|cgi|aspx)",$full_litfilename)){
-		ShowMsg("�����ϴ����ļ����ͱ���ֹ��ϵͳֻ�����ϴ�<br>".$cfg_mb_mediatype." ���͸�����","-1");
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件！","-1");
 		exit();
 	}
   
@@ -89,7 +89,7 @@ if($dopost=="upload")
 	    $imgsize = filesize($full_litfilename);
 	    $inquery = "
        INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
-       VALUES ('Сͼ{$dblitfile}','$imgsrcValue','1','$imgwidthValue','$imgheightValue','0','{$imgsize}','{$nowtme}','".$cuserLogin->getUserID()."','0');
+       VALUES ('小图{$dblitfile}','$imgsrcValue','1','$imgwidthValue','$imgheightValue','0','{$imgsize}','{$nowtme}','".$cuserLogin->getUserID()."','0');
      ";
      $dsql->ExecuteNoneQuery($inquery);
 	}else{	
@@ -101,6 +101,7 @@ if($dopost=="upload")
 	  $imgheightValue = $sizes[1];
 	  $imgsize = filesize($fullfilename);
 	}
+	$info = '';
 	$bsizes = getimagesize($fullfilename,$info);
   $bimgwidthValue = $bsizes[0];
 	$bimgheightValue = $bsizes[1];
@@ -123,8 +124,8 @@ if(!eregi("^http:",$imgsrcValue)){
 ?>
 <HTML>
 <HEAD>
-<title>����ͼƬ</title>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>插入图片</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style>
 td{font-size:10pt;}
 </style>
@@ -204,49 +205,49 @@ function UpImgSizeW()
     <tr height="20"> 
       <td colspan="3">
       <fieldset>
-        <legend>ͼƬ����</legend>
+        <legend>图片属性</legend>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="65" height="25" align="right">��ַ��</td>
+            <td width="65" height="25" align="right">网址：</td>
             <td colspan="2">
             	<input name="imgsrc" type="text" id="imgsrc" size="30" onChange="SeePic(document.form1.picview,document.form1.imgsrc);" value="<?php echo $imgsrcValue?>">
-              <input onClick="SelectMedia('form1.imgsrc');" type="button" name="selimg" value=" ������... " class="binput" style="width:80"> 
+              <input onClick="SelectMedia('form1.imgsrc');" type="button" name="selimg" value=" 服务器... " class="binput" style="width:80"> 
             </td>
           </tr>
           <tr> 
-            <td height="25" align="right">���ȣ�</td>
+            <td height="25" align="right">宽度：</td>
             <td colspan="2" nowrap>
             	<input type="text"  id="imgwidth" name="imgwidth" size="8" value="<?php echo $imgwidthValue?>" onChange="UpImgSizeW()"> 
-              &nbsp;&nbsp; �߶�: 
+              &nbsp;&nbsp; 高度: 
               <input name="imgheight" type="text" id="imgheight" size="8" value="<?php echo $imgheightValue?>" onChange="UpImgSizeH()">
-              <input type="button" name="Submit" value="ԭʼ" class="binput" style="width:40" onclick="UpdateImageInfo()">
+              <input type="button" name="Submit" value="原始" class="binput" style="width:40" onclick="UpdateImageInfo()">
               <input name="autoresize" type="checkbox" id="autoresize" value="1" checked>
-              ����Ӧ
+              自适应
               </td>
           </tr>
           <tr> 
-            <td height="25" align="right">�߿�</td>
+            <td height="25" align="right">边框：</td>
             <td colspan="2" nowrap><input name="border" type="text" id="border" size="4" value="0"> 
-              &nbsp;�������: 
+              &nbsp;替代文字: 
               <input name="alt" type="text" id="alt" size="10"></td>
           </tr>
           <tr> 
-            <td height="25" align="right">���ӣ�</td>
+            <td height="25" align="right">链接：</td>
             <td width="166" nowrap><input name="url" type="text" id="url" size="30"   value="<?php echo $urlValue?>"></td>
             <td width="155" align="center" nowrap>&nbsp;</td>
           </tr>
 		  <tr>
-            <td height="25" align="right">���룺</td>
+            <td height="25" align="right">对齐：</td>
             <td nowrap><select name="ialign" id="ialign">
-                <option value="0" selected>Ĭ��</option>
-                <option value="right">�Ҷ���</option>
-                <option value="center">�м�</option>
-                <option value="left">�����</option>
-                <option value="top">����</option>
-                <option value="bottom">�ײ�</option>
+                <option value="0" selected>默认</option>
+                <option value="right">右对齐</option>
+                <option value="center">中间</option>
+                <option value="left">左对齐</option>
+                <option value="top">顶端</option>
+                <option value="bottom">底部</option>
               </select></td>
-            <td align="center" nowrap><input onClick="ImageOK();" type="button" name="Submit2" value=" ȷ�� " class="binput"> 
-              <input type="button" name="Submit" onClick="window.close();" value=" ȡ�� " class="binput"> 
+            <td align="center" nowrap><input onClick="ImageOK();" type="button" name="Submit2" value=" 确定 " class="binput"> 
+              <input type="button" name="Submit" onClick="window.close();" value=" 取消 " class="binput"> 
             </td>
           </tr>
         </table>
@@ -255,21 +256,21 @@ function UpImgSizeW()
     </tr>
     <tr height="25"> 
       <td colspan="3" nowrap> <fieldset>
-        <legend>�ϴ���ͼƬ</legend>
+        <legend>上传新图片</legend>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr height="30"> 
-            <td align="right" nowrap>����ͼƬ��</td>
+            <td align="right" nowrap>　新图片：</td>
             <td colspan="2" nowrap><input name="imgfile" type="file" id="imgfile" onChange="SeePic(document.form1.picview,document.form1.imgfile);" style="height:22" class="binput"> 
-              &nbsp; <input type="submit" name="picSubmit" id="picSubmit" value=" �� ��  " style="height:22" class="binput"></td>
+              &nbsp; <input type="submit" name="picSubmit" id="picSubmit" value=" 上 传  " style="height:22" class="binput"></td>
           </tr>
           <tr height="30"> 
-            <td align="right" nowrap>��ѡ���</td>
+            <td align="right" nowrap>　选　项：</td>
             <td colspan="2" nowrap>
-			<input type="checkbox" name="dd" value="yes">��������ͼ
+			<input type="checkbox" name="dd" value="yes">生成缩略图
 				&nbsp;
-			����ͼ����
+			缩略图宽度
               <input name="w" type="text" value="160" size="3">
-		   ����ͼ�߶�
+		   缩略图高度
               <input name="h" type="text" value="120" size="3">
 			</td>
           </tr>
@@ -277,11 +278,11 @@ function UpImgSizeW()
         </fieldset></td>
     </tr>
     <tr height="50"> 
-      <td height="140" align="right" nowrap>Ԥ����:</td>
+      <td height="140" align="right" nowrap>预览区:</td>
       <td height="140" colspan="2" nowrap>
 	  <table width="150" height="120" border="0" cellpadding="1" cellspacing="1">
           <tr> 
-            <td align="center"><img name="picview" src="img/picview.gif" width="160" height="120" alt="Ԥ��ͼƬ"></td>
+            <td align="center"><img name="picview" src="img/picview.gif" width="160" height="120" alt="预览图片"></td>
           </tr>
         </table>
         <script language="JavaScript">

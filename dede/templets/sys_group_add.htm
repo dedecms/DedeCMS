@@ -1,0 +1,100 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>组权限设置</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<center>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<form name='form1' action='sys_group_add.php' method='post'> 
+<input type='hidden' name='dopost' value='save'>
+  <tr>
+    <td height="23" bgcolor="#EDF9D5"><b><a href='sys_group.php'>系统用户组管理</a>&gt;&gt;增加用户组：</b></td>
+</tr>
+  <td bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"><tr> 
+    <td bgcolor="#FFFFFF">
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td width="9%" height="30" align="left">组名称：</td>
+          <td width="91%" align="left"> <input name="groupname" type="text" id="groupname"> 
+          </td>
+        </tr>
+        <tr> 
+          <td width="9%" height="30" align="left">级别值：</td>
+          <td width="91%" align="left"> <input name="rankid" type="text" id="rankid" size="6">
+            （数字，系统已占用的级别值：
+            <?php 
+          	$dsql = new DedeSql(false);
+          	$dsql->SetQuery("Select rank From #@__admintype");
+          	$dsql->Execute();
+          	while($row = $dsql->GetObject()) echo '<font color=red>'.$row->rank.'</font>、';
+          	$dsql->Close();
+          	?>
+            ） </td>
+        </tr>
+        <?php 
+        $start = 0;
+        $k = 0;
+        $gouplists = file(dirname(__FILE__).'/../inc/grouplist.txt');
+        foreach($gouplists as $line)
+        {
+        	$line = trim($line);
+        	if($line=="") continue;
+        	if(ereg("^>>",$line))
+        	{
+        		if($start>0) echo "        	 </td></tr>\r\n";
+        		$start++;
+        		$lhead = "
+        	 <tr> 
+           <td height='25' colspan='2' bgcolor='#F9FAF3' align='left'>{$start}、".str_replace('>>','',$line)."</td></tr>
+           <tr><td height='25' colspan='2' align='left'>
+        		"; 
+        		echo $lhead;
+        	}
+        	else if(ereg("^>",$line))
+        	{
+        		$ls = explode('>',$line);
+        		$tag = $ls[1];
+        		$tagname = str_replace('[br]','<br>',$ls[2]);
+        		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'>$tagname\r\n";
+        	  $k++;
+        	}
+        }
+        $start++;
+        ?>
+
+        <tr> 
+           <td height='25' colspan='2' align="left"><?php echo $start?>、插件权限</td>
+         </tr>
+        <tr>
+        <td height='25' colspan='2' align="left">
+         <?php 
+         $l = 0;
+         $dsql = new DedeSql(false);
+         $dsql->SetQuery('Select plusname From #@__plus');
+         $dsql->Execute();
+         while($row=$dsql->GetObject()){
+         	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'>{$row->plusname}\r\n";
+        	 $k++;
+        	 $l++;
+        	 if($l%4==0) echo "<br>";
+         }
+         $dsql->Close();
+         ?>        </td>
+        </tr>
+        <tr> 
+          <td height="50" align="center">&nbsp;</td>
+          <td height="50"> <input name="imageField" type="submit" class="inputbut" value="确定" />
+          </td>
+        </tr>
+      </table>
+    </td>
+</tr>
+</form>
+</table>
+</center>
+</body>
+</html>

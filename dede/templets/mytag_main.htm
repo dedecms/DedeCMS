@@ -1,26 +1,30 @@
 {dede:page pagesize="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>×Ô¶¨Òå±ê¼Ç</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>è‡ªå®šä¹‰æ ‡è®°</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+  <div class="bodytitletxt">æ¨¡æ¿ç®¡ç†</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
   <tr>
-   <td height="19" background="img/tbg.gif" colspan="7">
-     <b>×Ô¶¨Òå±ê¼Ç¹ÜÀí</b>
-     &nbsp;[<a href="mytag_add.php"><u>Ôö¼ÓÒ»¸ö±ê¼Ç</u></a>]
-     &nbsp;[<a href="mytag_tag_guide.php"><u>ÖÇÄÜ±ê¼ÇÏòµ¼</u></a>]
-	</td>
+   <td height="19" colspan="7" bgcolor="#EDF9D5">
+     <b>&nbsp;&nbsp;è‡ªå®šä¹‰æ ‡è®°ç®¡ç†</b>
+     &nbsp;[<a href="mytag_add.php"><u>å¢åŠ ä¸€ä¸ªæ ‡è®°</u></a>]
+     &nbsp;[<a href="mytag_tag_guide.php"><u>æ™ºèƒ½æ ‡è®°å‘å¯¼</u></a>]	</td>
 </tr>
   <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td width="10%">±àºÅ</td>
-      <td width="20%">±ê¼ÇÃû³Æ</td>
-      <td width="15%">ËùÊôÀ¸Ä¿</td>
-      <td width="15%">Ê±¼äÏŞÖÆ</td>
-      <td width="20%">½áÊøÊ±¼ä</td>
-      <td width="20%">¹ÜÀí</td>
+      <td width="10%">ç¼–å·</td>
+      <td width="20%">æ ‡è®°åç§°</td>
+      <td width="15%">æ‰€å±æ ç›®</td>
+      <td width="15%">æ—¶é—´é™åˆ¶</td>
+      <td width="20%">ç»“æŸæ—¶é—´</td>
+      <td width="20%">ç®¡ç†</td>
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
@@ -30,9 +34,9 @@
         <td>[field:timeset function='TimeSetValue(@me)'/]</td>
         <td>[field:endtime function='GetDateMk(@me)'/]</td>
         <td>
-          	<a href='mytag_edit.php?aid=[field:aid /]&dopost=edit'>¸ü¸Ä</a> | 
-		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=delete'>É¾³ı</a> | 
-		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=getjs'>JSµ÷ÓÃ</a>
+          	<a href='mytag_edit.php?aid=[field:aid /]&dopost=edit'>æ›´æ”¹</a> | 
+		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=delete'>åˆ é™¤</a> | 
+		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=getjs'>JSè°ƒç”¨</a>
 		    </td>
      </tr>
 		{/dede:datalist}
@@ -40,8 +44,5 @@
       <td colspan="7">{dede:pagelist listsize=6/}</td>
      </tr>
    </table>
-   </td>
-</tr>
-</table>
-</body>
+   </body>
 </html>

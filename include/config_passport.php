@@ -1,6 +1,6 @@
 <?php 
 $cfg_pp_isopen = '0';
-$cfg_pp_name = 'ÂÛÌ³';
+$cfg_pp_name = 'è®ºå›';
 $cfg_pp_indexurl = 'http://www.cms.com/bbs';
 $cfg_pp_regurl = 'http://www.cms.com/bbs/register.php';
 $cfg_pp_loginurl = 'http://www.cms.com/bbs/login.php';

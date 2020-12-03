@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/space.css" rel="stylesheet" type="text/css" />
+<title><?php echo $spacename?></title>
+</head>
+
+<body>
+<div id="container">
+	<!--头部开始-->
+	<?php include(dirname(__FILE__)."/member_head.htm");?>
+    <!--头部结束-->
+    <!--中间开始-->
+    <div id="spacemain">
+    	<div id="space_main">
+        	<?php include(dirname(__FILE__)."/member_left.htm");?>
+        	<!--左边结束-->
+
+            <div id="space_right"><!--右边开始-->
+
+                <div class="space_notice">
+                	<div class="space_title02">
+                    	<ul>
+                        <li><?php echo $uname?> 的分类信息</li>
+                      </ul>
+                  </div>
+                  <div class="space_notice_text">
+                    <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" >
+                      <tr>
+                        <td height="30" align="center" bgcolor="#FDFEE9">标题</td>
+                        <td width="20%" height="30" align="center" bgcolor="#FDFEE9">发布时间</td>
+                        <td width="15%" height="30" align="center" bgcolor="#FDFEE9">有效期(天)</td>
+                      </tr>
+                      <?php
+                      $mylist = $dlist->GetDataList();
+                      while($row = $mylist->GetArray('dm'))
+                      {
+
+						$row['mjj'] = @ceil(($row['endtime'] - $row['senddate'])/86400);
+						$row['senddate'] = GetDateMk($row['senddate']);
+                      ?>
+                      <tr>
+                        <td height="28" align="center" bgcolor="#FFFFFF"><a href="../plus/view.php?aid=<?php echo $row['ID'];?>&tid=<?=$row['typeid']?>" title="<?php echo $row['title'];?>" target="_blank"><?=$row['title']?></a></td>
+                        <td height="28" align="center" bgcolor="#FFFFFF"><?=$row['senddate']?></td>
+                        <td height="28" align="center" bgcolor="#FFFFFF"><?=$row['mjj']?>天</td>
+                      </tr>
+                      <?php
+                      }
+                      ?>
+                    </table>
+                    <div class="space_news_text">&nbsp;&nbsp;<?php echo $dlist->GetPageList(7);?></div>
+                    </div>
+                </div>
+            </div><!--右边结束-->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--中间结束-->
+    <!--底部开始-->
+	<?php include(dirname(__FILE__)."/member_footer.htm");?>
+    <!--底部结束-->
+
+</div>
+</body>
+</html>

@@ -21,28 +21,28 @@ if(empty($comeback)) $comeback = "";
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
-<title>Í¼Æ¬ä¯ÀÀÆ÷</title>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>å›¾ç‰‡æµè§ˆå™¨</title>
 <link href='base.css' rel='stylesheet' type='text/css'>
 <style>
 .linerow {border-bottom: 1px solid #CBD8AC;}
 .napisdiv {left:40;top:3;width:150;height:100;position:absolute;z-index:3}
 </style>
 <script>
-	function $(eid){ return document.getElementById(eid); }
+	function $DE(eid){ return document.getElementById(eid); }
   function nullLink(){ return; }
-	function ChangeImage(surl){ $('picview').src = surl; }
+	function ChangeImage(surl){ $DE('picview').src = surl; }
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='0' topmargin='0'>
 <div id="floater" class="napisdiv">
-<a href="javascript:nullLink();" onClick="ChangeImage('img/picviewnone.gif');"><img src='img/picviewnone.gif' name='picview' border='0' alt='µ¥»÷¹Ø±ÕÔ¤ÀÀ'></a>
+<a href="javascript:nullLink();" onClick="ChangeImage('img/picviewnone.gif');"><img src='img/picviewnone.gif' name='picview' border='0' alt='å•å‡»å…³é—­é¢„è§ˆ'></a>
 </div>
 <SCRIPT language=JavaScript src="js/float.js"></SCRIPT>
 <SCRIPT language=JavaScript>
-function $(eid){ return document.getElementById(eid); }
+function $DE(eid){ return document.getElementById(eid); }
 function nullLink(){ return; }
-function ChangeImage(surl){ $('picview').src = surl; }
+function ChangeImage(surl){ $DE('picview').src = surl; }
 function ReturnImg(reimg)
 {
 	window.opener.document.<?php echo $f?>.value=reimg;
@@ -61,14 +61,14 @@ function ReturnImg(reimg)
 <td colspan='4'>
 <table width='100%' border='0' cellspacing='0' cellpadding='2'>
 <tr bgcolor="#CCCCCC"> 
-<td width="8%" align="center" class='linerow' bgcolor='#EEF4EA'><strong>Ô¤ÀÀ</strong></td>
-<td width="47%" align="center" background="img/wbg.gif" class='linerow'><strong>µã»÷Ãû³ÆÑ¡ÔñÍ¼Æ¬</strong></td>
-<td width="15%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>ÎÄ¼ş´óĞ¡</strong></td>
-<td width="30%" align="center" background="img/wbg.gif" class='linerow'><strong>×îºóĞŞ¸ÄÊ±¼ä</strong></td>
+<td width="8%" align="center" class='linerow' bgcolor='#EEF4EA'><strong>é¢„è§ˆ</strong></td>
+<td width="47%" align="center" background="img/wbg.gif" class='linerow'><strong>ç‚¹å‡»åç§°é€‰æ‹©å›¾ç‰‡</strong></td>
+<td width="15%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>æ–‡ä»¶å¤§å°</strong></td>
+<td width="30%" align="center" background="img/wbg.gif" class='linerow'><strong>æœ€åä¿®æ”¹æ—¶é—´</strong></td>
 </tr>
 <tr>
 <td class='linerow' colspan='4' bgcolor='#F9FBF0'>
-µã»÷¡°V¡±Ô¤ÀÀÍ¼Æ¬£¬µã»÷Í¼Æ¬ÃûÑ¡ÔñÍ¼Æ¬£¬ÏÔÊ¾Í¼Æ¬ºóµã»÷¸ÃÍ¼Æ¬¹Ø±ÕÔ¤ÀÀ¡£
+ç‚¹å‡»â€œVâ€é¢„è§ˆå›¾ç‰‡ï¼Œç‚¹å‡»å›¾ç‰‡åé€‰æ‹©å›¾ç‰‡ï¼Œæ˜¾ç¤ºå›¾ç‰‡åç‚¹å‡»è¯¥å›¾ç‰‡å…³é—­é¢„è§ˆã€‚
 </td>
 </tr>
 <?php 
@@ -77,7 +77,7 @@ $ty1="";
 $ty2="";
 while($file = $dh->read()) {
 
- //-----¼ÆËãÎÄ¼ş´óĞ¡ºÍ´´½¨Ê±¼ä
+ //-----è®¡ç®—æ–‡ä»¶å¤§å°å’Œåˆ›å»ºæ—¶é—´
  if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
    $filesize = filesize("$inpath/$file");
    $filesize=$filesize/1024;
@@ -100,20 +100,20 @@ while($file = $dh->read()) {
    $tmp = eregi_replace("[/][^/]*$","",$activepath);
    $line = "\n<tr>
    <td class='linerow' colspan='2'>
-   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode($tmp)."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>ÉÏ¼¶Ä¿Â¼</a></td>
-   <td colspan='2' class='linerow'> µ±Ç°Ä¿Â¼:$activepath</td>
+   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode($tmp)."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>ä¸Šçº§ç›®å½•</a></td>
+   <td colspan='2' class='linerow'> å½“å‰ç›®å½•:$activepath</td>
    </tr>
    ";
    echo $line;
 }
 else if(is_dir("$inpath/$file")){
-   if(eregi("^_(.*)$",$file)) continue; #ÆÁ±ÎFrontPageÀ©Õ¹Ä¿Â¼ºÍlinuxÒş±ÎÄ¿Â¼
+   if(eregi("^_(.*)$",$file)) continue; #å±è”½FrontPageæ‰©å±•ç›®å½•å’Œlinuxéšè”½ç›®å½•
    if(eregi("^\.(.*)$",$file)) continue;
    $line = "\n<tr>
    <td bgcolor='#F9FBF0' class='linerow' colspan='2'>
    <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode("$activepath/$file")."'><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
-   <td class='linerow'>¡¡</td>
-   <td bgcolor='#F9FBF0' class='linerow'>¡¡</td>
+   <td class='linerow'>ã€€</td>
+   <td bgcolor='#F9FBF0' class='linerow'>ã€€</td>
    </tr>";
    echo "$line";
 }
@@ -172,12 +172,13 @@ $dh->close();
 <input type='hidden' name='imgstick' value='<?php echo $imgstick?>'>
 <input type='hidden' name='job' value='upload'>
 <tr>
-<td background="img/tbg.gif" bgcolor="#99CC00">
-  &nbsp;ÉÏ¡¡´«£º <input type='file' name='imgfile' style='width:200'>
-  <input type='checkbox' name='resize' value='1' class='np'>×Ô¶¯ËõĞ¡
-  ¿í£º<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>'>
-  ¸ß£º<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>'>
-  <input type='submit' name='sb1' value='È·¶¨'>
+<td background="img/tbg.gif" bgcolor="#99CC00" style="clear:all">
+  &nbsp;ä¸Šã€€ä¼ ï¼š <input type='file' name='imgfile' style='width:200px' style="clear:all">
+  &nbsp;
+  <input type='checkbox' name='resize' value='1' class='np' style="clear:all">è‡ªåŠ¨ç¼©å°
+  å®½ï¼š<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>'>
+  é«˜ï¼š<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>'>
+  <input type='submit' name='sb1' value='ç¡®å®š'>
 </td>
 </tr>
 </form>
@@ -188,9 +189,9 @@ $dh->close();
 <input type='hidden' name='imgstick' value='<?php echo $imgstick?>'>
 <input type='hidden' name='job' value='newdir'>
 <tr>
-  <td background="img/tbg.gif" bgcolor='#66CC00'> &nbsp;ĞÂÄ¿Â¼£º 
+  <td background="img/tbg.gif" bgcolor='#66CC00'> &nbsp;æ–°ç›®å½•ï¼š 
   <input type='text' name='dirname' value='' style='width:150'>
-  <input type='submit' name='sb2' value='´´½¨' style='width:40'>
+  <input type='submit' name='sb2' value='åˆ›å»º' style='width:40'>
 </td>
 </tr>
 </form>

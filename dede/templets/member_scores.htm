@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>会员管理>积分头衔设置</title>
+<script language='javascript' src='main.js'></script>
+<script type="text/javascript">
+function CheckAll(form, prefix, checkall) {
+	var checkall = checkall ? checkall : 'chkall';
+	for(var i = 0; i < form.elements.length; i++) {
+		var e = form.elements[i];
+		if(e.name && e.name != checkall && (!prefix || (prefix && e.name.match(prefix)))) {
+			e.checked = form.elements[checkall].checked;
+		}
+	}
+}
+</script>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+</style>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">积分头衔设置</div>
+</div>
+<form action="member_scores.php" method="post" >
+<input name="action" type="hidden" value="save" />
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <tr>
+    <td width="100%" height="24" bgcolor="#EDF9D5">　<strong><a href="co_main.php"><U>会员管理</U></a> &gt; 积分头衔设置：</strong></td>
+  </tr>
+  <tr >
+    <td height="26" align="left" bgcolor="#FFFFFF">  
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#E2F5BC">
+        <tr>
+          <td width="5%" height="30" align="center" valign="middle" bgcolor="#FEFCEF"><input type="checkbox" name="chkall" id="chkall" onClick="CheckAll(this.form)" />
+          删?</td>
+          <td width="24%" height="30" align="left" bgcolor="#FEFCEF">积分大于</td>
+          <td width="24%" height="30" align="left" bgcolor="#FEFCEF">星星数</td>
+          <td width="23%" height="30" align="left" bgcolor="#FEFCEF">级别头衔</td>
+          <td width="24%" height="30" align="left" bgcolor="#FEFCEF">是否默认</td>
+        </tr>
+        <?php
+		foreach($Scores as $v){	
+		?>
+        <tr height="28" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+          <td height="28" align="center" ><input name="Ids-<?=$v['id']?>" type="checkbox" id="Ids-<?=$v['id']?>" value="1" /></td>
+          <td height="28" align="left" >
+          <input name="integral-<?=$v['id']?>" type="text" id="integral-<?=$v['id']?>" value="<?=$v['integral']?>" size="10" /></td>
+          <td height="28" align="left" >
+          <input name="icon-<?=$v['id']?>" type="text" id="icon-<?=$v['id']?>" value="<?=$v['icon']?>" size="3" /></td>
+          <td height="28" align="left" >
+          <input name="titles-<?=$v['id']?>" type="text" id="titles-<?=$v['id']?>" value="<?=$v['titles']?>" size="20" /></td>
+          <td height="28" align="left" >
+            <select name="isdefault-<?=$v['id']?>" id="isdefault-<?=$v['id']?>">
+              <option value="1" <?php if($v['isdefault']) echo " selected='selected'";?>>是</option>
+              <option value="0" <?php if(!$v['isdefault']) echo " selected='selected'";?>>否</option>            
+            </select>
+            </td>
+        </tr>
+        <?php
+		}
+		?>
+        <tr>
+          <td height="28" bgcolor="#EDF9D5">&nbsp;&nbsp;新增：</td>
+          <td height="28" bgcolor="#EDF9D5"><input name="add_integral" type="text" id="add_integral" size="10" /></td>
+          <td height="28" bgcolor="#EDF9D5"><input name="add_icon" type="text" id="add_icon" size="3" /></td>
+          <td height="28" bgcolor="#EDF9D5"><input name="add_titles" type="text" id="add_titles" size="20" /></td>
+          <td height="28" bgcolor="#EDF9D5">
+          <select name="add_isdefault" id="add_isdefault">
+              <option value="1" >是</option>
+              <option value="0" >否</option>            
+          </select></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br>
+<table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="40" align="center"><input name="imageField" type="submit" class="inputbut" value="提交" id="imageField"/></td>
+  </tr>
+</table>
+</form>
+
+
+</body>
+</html>

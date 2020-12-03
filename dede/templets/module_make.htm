@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript">
+function LoadHashCode()
+{
+	var tgobj = document.getElementById('modulcode');
+	var email = document.form1.email.value;
+	var modulname = document.form1.modulname.value;
+	var myajax = new DedeAjax(tgobj,false,true,'-','-','...');
+	myajax.SendGet2('module_make.php?action=gethash&email='+email+'&modulname='+modulname);
+	DedeXHTTP = null;
+}
+</script>
+<title>模块打包</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<style>
+td{padding-left:8px}
+</style>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">模块管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form action="module_make.php" method="post" enctype="multipart/form-data" name="form1">
+   <input type='hidden' name='action' value='make'>
+    <tr> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5"> <b>&nbsp;<a href="module_main.php"><u>模块管理</u></a> 
+        &gt; 模块打包：</b> </td>
+    </tr>
+    <tr> 
+      <td width="19%" align="center" bgcolor="#FFFFFF">模块名称：</td>
+      <td width="81%" bgcolor="#FFFFFF">
+      	<input name="modulname" type="text" id="modulname" style="width:180px" />
+      </td>
+    </tr>
+    
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">联系Email：</td>
+      <td bgcolor="#FFFFFF"><input name="email" type="text" id="email" style="width:180px" onchange="LoadHashCode()"/> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">模块识别码：</td>
+      <td bgcolor="#FFFFFF">
+      <span id='modulcode'></span>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">开发团队：</td>
+      <td bgcolor="#FFFFFF"><input name="team" type="text" id="team" style="width:180px" /> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">发布时间：</td>
+      <td bgcolor="#FFFFFF">
+      	<input name="mtime" type="text" id="mtime" style="width:180px" value="<?php echo GetDateMk(time()); ?>"/>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">官方网址：</td>
+      <td bgcolor="#FFFFFF"><input name="url" type="text" id="url"  style="width:180px" /> </td>
+    </tr>
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF">协议文件：</td>
+      <td bgcolor="#FFFFFF"><input name="readme" type="file" id="readme"  style="width:350px" /> </td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">安装程序：</td>
+      <td bgcolor="#FFFFFF"><input name="setup" type="file" id="setup" style="width:350px" /></td>
+    </tr>
+    <tr>
+      <td align="center" bgcolor="#FFFFFF">删除程序：</td>
+      <td bgcolor="#FFFFFF"><input name="uninstall" type="file" id="uninstall" style="width:350px" /></td>
+    </tr>
+    
+    <tr> 
+      <td align="center" bgcolor="#FFFFFF">文件列表：</td>
+      <td bgcolor="#FFFFFF"><p>每行指定一个文件或目录，路径为相对于本目录，本目录的文件则直接用文件名即可，对于整个打包的目录，不需要指定子目录里的文件。<br />
+        如：<br />
+          如果已经指定了： ../book 则不需要再指定目录里的 ../book/index.php 等文件或目录，系统会自动索引整个目录，<br />
+          对于不需要索引整个目录的，请不要指定这个目录，否则可能会把不必要的文件也放进模块中。 <br>
+          <textarea name="filelist" rows="8" id="filelist" style="width:60%"></textarea>
+          </p>
+        </td>
+    </tr>
+    <tr bgcolor="#F9FDF0"> 
+      <td height="28" colspan="2"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="26%">&nbsp;</td>
+            <td width="15%"><input name="imageField" type="submit" class="inputbut" value="提交" /></td>
+            <td width="59%"><input type="button" name="button" id="button" value="返回" onClick="location='plus_main.php';" class="inputbut" /></td>
+          </tr>
+        </table></td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

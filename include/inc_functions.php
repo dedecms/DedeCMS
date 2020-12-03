@@ -1,15 +1,14 @@
-<?php 
-//Æ´ÒôµÄ»º³åÊı×é
+<?php
+require_once(dirname(__FILE__).'/pub_charset.php');
+//æ‹¼éŸ³çš„ç¼“å†²æ•°ç»„
 $pinyins = Array();
 $g_ftpLink = false;
-//¿Í»§¶ËÓë·şÎñÊ±¼ä²îĞ£Õı
-function mytime(){
-	 global $cfg_cli_time;
-	 if(empty($cfg_cli_time)) $cfg_cli_time = 0;
-	 $addtime = $cfg_cli_time * 3600;
-	 return (time() + $cfg_cli_time);
+//å®¢æˆ·ç«¯ä¸æœåŠ¡æ—¶é—´å·®æ ¡æ­£
+function mytime()
+{
+	return time();
 }
-//»ñµÃµ±Ç°µÄ½Å±¾ÍøÖ·
+//è·å¾—å½“å‰çš„è„šæœ¬ç½‘å€
 function GetCurUrl(){
 	if(!empty($_SERVER["REQUEST_URI"])){
 		$scriptName = $_SERVER["REQUEST_URI"];
@@ -21,47 +20,59 @@ function GetCurUrl(){
 	}
 	return $nowurl;
 }
-//°ÑÈ«½ÇÊı×Ö×ªÎª°ë½ÇÊı×Ö
+//æŠŠå…¨è§’æ•°å­—è½¬ä¸ºåŠè§’æ•°å­—
 function GetAlabNum($fnum){
-	$nums = array("£°","£±","£²","£³","£´","£µ","£¶","£·","£¸","£¹");
-	$fnums = "0123456789";
-	for($i=0;$i<=9;$i++) $fnum = str_replace($nums[$i],$fnums[$i],$fnum);
-	$fnum = ereg_replace("[^0-9\.]|^0{1,}","",$fnum);
-	if($fnum=="") $fnum=0;
-	return $fnum;
+	$fnum = utf82gb($fnum);
+	$nums = array('ï¼','ï¼‘','ï¼’','ï¼“','ï¼”','ï¼•','ï¼–','ï¼—','ï¼˜','ï¼™','ï¼','ï¼','ï¼‹','ï¼š');
+	$fnums = array('0','1',  '2','3',  '4','5',  '6', '7','8',  '9','.',  '-', '+',':');
+	$fnlen = count($fnums);
+	for($i=0;$i<$fnlen;$i++) $fnum = str_replace($nums[$i],$fnums[$i],$fnum);
+	$slen = strlen($fnum);
+	$oknum = '';
+	for($i=0;$i<$slen;$i++){
+		if(ord($fnum[$i]) > 0x80) $i++;
+		else $oknum .= $fnum[$i];
+	}
+	if($oknum=="") $oknum=0;
+	return $oknum;
 }
-//È¥³ıHTML±ê¼Ç·ûºÅ
-//function ClearHtml($html){
-	//return trim(preg_replace("/[><]/","",$html));
-//}
+//æ–‡æœ¬è½¬HTML
 function Text2Html($txt){
-	$txt = str_replace("  ","¡¡",$txt);
+	$txt = str_replace("  ","ã€€",$txt);
 	$txt = str_replace("<","&lt;",$txt);
 	$txt = str_replace(">","&gt;",$txt);
 	$txt = preg_replace("/[\r\n]{1,}/isU","<br/>\r\n",$txt);
 	return $txt;
 }
-//»ñµÃHTMLÀïµÄÎÄ±¾
+//è·å¾—HTMLé‡Œçš„æ–‡æœ¬
 function Html2Text($str){
   if(!isset($GLOBALS['__funString'])) require_once(dirname(__FILE__)."/inc/inc_fun_funString.php");
   return SpHtml2Text($str);
 }
-//Çå³ıHTML±ê¼Ç
+//æ¸…é™¤HTMLæ ‡è®°
 function ClearHtml($str){
+	$str = Html2Text($str);
 	$str = str_replace('<','&lt;',$str);
 	$str = str_replace('>','&gt;',$str);
 	return $str;
 }
-//ÖĞÎÄ½ØÈ¡°ÑË«×Ö½Ú×Ö·ûÒ²¿´×÷Ò»¸ö×Ö·û
+//ä¸­æ–‡æˆªå–æŠŠåŒå­—èŠ‚å­—ç¬¦ä¹Ÿçœ‹ä½œä¸€ä¸ªå­—ç¬¦
 function cnw_left($str,$len){
-  return cnw_mid($str,0,$len);
+   $str =  utf82gb($str);
+	return gb2utf8(cnw_mid($str,0,$len));
 }
+//æ­¤å‡½æ•°åœ¨UTF8ç‰ˆä¸­ä¸èƒ½ç›´æ¥è°ƒç”¨
 function cnw_mid($str,$start,$slen){
   if(!isset($GLOBALS['__funString'])) require_once(dirname(__FILE__)."/inc/inc_fun_funString.php");
   return Spcnw_mid($str,$start,$slen);
 }
-//ÖĞÎÄ½ØÈ¡2£¬µ¥×Ö½Ú½ØÈ¡Ä£Ê½
+//ä¸­æ–‡æˆªå–2ï¼Œå•å­—èŠ‚æˆªå–æ¨¡å¼
 function cn_substr($str,$slen,$startdd=0){
+  $str =  utf82gb($str);
+  return gb2utf8(cn_substrGb($str,$slen,$startdd));
+}
+//æ­¤å‡½æ•°åœ¨UTF8ç‰ˆä¸­ä¸èƒ½ç›´æ¥è°ƒç”¨
+function cn_substrGb($str,$slen,$startdd=0){
 	$restr = "";
 	$c = "";
 	$str_len = strlen($str);
@@ -72,7 +83,7 @@ function cn_substr($str,$slen,$startdd=0){
 	{
 		if($startdd==0) $restr .= $c;
 		else if($i > $startdd) $restr .= $c;
-		
+
 		if(ord($str[$i])>0x80){
 			if($str_len>$i+1) $c = $str[$i].$str[$i+1];
 			$i++;
@@ -86,19 +97,16 @@ function cn_substr($str,$slen,$startdd=0){
 	}
 	return $restr;
 }
-function cn_midstr($str,$start,$len){
-	return cn_substr($str,$slen,$startdd);
-}
 
 function GetMkTime($dtime)
 {
 	if(!ereg("[^0-9]",$dtime)) return $dtime;
 	$dt = Array(1970,1,1,0,0,0);
-	$dtime = ereg_replace("[\r\n\t]|ÈÕ|Ãë"," ",$dtime);
-	$dtime = str_replace("Äê","-",$dtime);
-	$dtime = str_replace("ÔÂ","-",$dtime);
-	$dtime = str_replace("Ê±",":",$dtime);
-	$dtime = str_replace("·Ö",":",$dtime);
+	$dtime = ereg_replace("[\r\n\t]|æ—¥|ç§’"," ",$dtime);
+	$dtime = str_replace("å¹´","-",$dtime);
+	$dtime = str_replace("æœˆ","-",$dtime);
+	$dtime = str_replace("æ—¶",":",$dtime);
+	$dtime = str_replace("åˆ†",":",$dtime);
 	$dtime = trim(ereg_replace("[ ]{1,}"," ",$dtime));
 	$ds = explode(" ",$dtime);
 	$ymd = explode("-",$ds[0]);
@@ -147,11 +155,12 @@ function GetIP(){
 	if(!empty($_SERVER["HTTP_CLIENT_IP"])) $cip = $_SERVER["HTTP_CLIENT_IP"];
 	else if(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 	else if(!empty($_SERVER["REMOTE_ADDR"])) $cip = $_SERVER["REMOTE_ADDR"];
-	else $cip = "ÎŞ·¨»ñÈ¡£¡";
+	else $cip = "æ— æ³•è·å–ï¼";
 	return $cip;
 }
-//»ñÈ¡Ò»´®ÖĞÎÄ×Ö·ûµÄÆ´Òô ishead=0 Ê±£¬Êä³öÈ«Æ´Òô ishead=1Ê±£¬Êä³öÆ´ÒôÊ××ÖÄ¸
+//è·å–ä¸€ä¸²ä¸­æ–‡å­—ç¬¦çš„æ‹¼éŸ³ ishead=0 æ—¶ï¼Œè¾“å‡ºå…¨æ‹¼éŸ³ ishead=1æ—¶ï¼Œè¾“å‡ºæ‹¼éŸ³é¦–å­—æ¯
 function GetPinyin($str,$ishead=0,$isclose=1){
+	$str = utf82gb($str);
 	if(!isset($GLOBALS['__funAdmin'])) require_once(dirname(__FILE__)."/inc/inc_fun_funAdmin.php");
   return SpGetPinyin($str,$ishead,$isclose);
 }
@@ -161,53 +170,56 @@ function GetNewInfo(){
   return SpGetNewInfo();
 }
 
-function ShowMsg($msg,$gourl,$onlymsg=0,$limittime=0){
-		$htmlhead  = "<html>\r\n<head>\r\n<title>ÌáÊ¾ĞÅÏ¢</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\" />\r\n";
+function ShowMsg($msg,$gourl,$onlymsg=0,$limittime=0)
+{
+	  global $dsql;
+		$htmlhead  = "<html>\r\n<head>\r\n<title>DedeCms ç³»ç»Ÿæç¤º</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n";
 		$htmlhead .= "<base target='_self'/>\r\n</head>\r\n<body leftmargin='0' topmargin='0'>\r\n<center>\r\n<script>\r\n";
 		$htmlfoot  = "</script>\r\n</center>\r\n</body>\r\n</html>\r\n";
-		
+
 		if($limittime==0) $litime = 1000;
 		else $litime = $limittime;
-		
+
 		if($gourl=="-1"){
 			if($limittime==0) $litime = 5000;
 			$gourl = "javascript:history.go(-1);";
 		}
-		
+
 		if($gourl==""||$onlymsg==1){
-			$msg = "<script>alert(\"".str_replace("\"","¡°",$msg)."\");</script>";
+			$msg = "<script>alert(\"".str_replace("\"","â€œ",$msg)."\");</script>";
 		}else{
 			$func = "      var pgo=0;
       function JumpUrl(){
         if(pgo==0){ location='$gourl'; pgo=1; }
       }\r\n";
 			$rmsg = $func;
-			$rmsg .= "document.write(\"<br/><div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #7ECDFB;border-top:1px solid #7ECDFB;border-right:1px solid #7ECDFB;background-color:#ACE4FF;'>DEDECMS ÌáÊ¾ĞÅÏ¢£¡</div>\");\r\n";
-			$rmsg .= "document.write(\"<div style='width:400px;height:100;font-size:10pt;border:1px solid #7ECDFB;background-color:#EEFAFE'><br/><br/>\");\r\n";
-			$rmsg .= "document.write(\"".str_replace("\"","¡°",$msg)."\");\r\n";
+			$rmsg .= "document.write(\"<br/><div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #b9df92;border-top:1px solid #b9df92;border-right:1px solid #b9df92;background-color:#def5c2;'>DedeCms æç¤ºä¿¡æ¯ï¼š</div>\");\r\n";
+			$rmsg .= "document.write(\"<div style='width:400px;height:100;font-size:10pt;border:1px solid #b9df92;background-color:#f9fcf3'><br/><br/>\");\r\n";
+			$rmsg .= "document.write(\"".str_replace("\"","â€œ",$msg)."\");\r\n";
 			$rmsg .= "document.write(\"";
 			if($onlymsg==0){
-				if($gourl!="javascript:;" && $gourl!=""){ $rmsg .= "<br/><br/><a href='".$gourl."'>Èç¹ûÄãµÄä¯ÀÀÆ÷Ã»·´Ó¦£¬Çëµã»÷ÕâÀï...</a>"; }
+				if($gourl!="javascript:;" && $gourl!=""){ $rmsg .= "<br/><br/><a href='".$gourl."'>å¦‚æœä½ çš„æµè§ˆå™¨æ²¡ååº”ï¼Œè¯·ç‚¹å‡»è¿™é‡Œ...</a>"; }
 				$rmsg .= "<br/><br/></div>\");\r\n";
 				if($gourl!="javascript:;" && $gourl!=""){ $rmsg .= "setTimeout('JumpUrl()',$litime);"; }
 			}else{ $rmsg .= "<br/><br/></div>\");\r\n"; }
 			$msg  = $htmlhead.$rmsg.$htmlfoot;
-		}		
+		}
+		if(isset($dsql) && is_object($dsql)) @$dsql->Close();
 		echo $msg;
 }
 
-function ExecTime(){ 
+function ExecTime(){
 	$time = explode(" ", microtime());
-	$usec = (double)$time[0]; 
-	$sec = (double)$time[1]; 
-	return $sec + $usec; 
+	$usec = (double)$time[0];
+	$sec = (double)$time[1];
+	return $sec + $usec;
 }
 
 function GetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print",$isfullpage="false"){
 	if(!isset($GLOBALS['__funAdmin'])) require_once(dirname(__FILE__)."/inc/inc_fun_funAdmin.php");
   return SpGetEditor($fname,$fvalue,$nheight,$etype,$gtype,$isfullpage);
 }
-//»ñµÃÖ¸¶¨Î»ÖÃÄ£°å×Ö·û´®
+//è·å¾—æŒ‡å®šä½ç½®æ¨¡æ¿å­—ç¬¦ä¸²
 function GetTemplets($filename){
 	if(file_exists($filename)){
      $fp = fopen($filename,"r");
@@ -219,12 +231,12 @@ function GetTemplets($filename){
 function GetSysTemplets($filename){
 	return GetTemplets($GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir'].'/system/'.$filename);
 }
-//¸ø±äÁ¿¸³Ä¬ÈÏÖµ
+//ç»™å˜é‡èµ‹é»˜è®¤å€¼
 function AttDef($oldvar,$nv){
  	if(empty($oldvar)) return $nv;
  	else return $oldvar;
 }
-//°Ñ·ûºÏ¹æÔòµÄÊı×Ö×ªÎª×Ö·û
+//æŠŠç¬¦åˆè§„åˆ™çš„æ•°å­—è½¬ä¸ºå­—ç¬¦
 function dd2char($dd){
   $slen = strlen($dd);
   $okdd = "";
@@ -237,33 +249,39 @@ function dd2char($dd){
   }
   return $okdd;
 }
-//°´Ä¬ÈÏ²ÎÊıÉèÖÃÒ»¸öCookie
+//æŒ‰é»˜è®¤å‚æ•°è®¾ç½®ä¸€ä¸ªCookie
 function PutCookie($key,$value,$kptime,$pa="/"){
 	 global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
-	 if($cfg_pp_isopen=='0'||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost)){
-	   setcookie($key,$value,time()+$kptime,$pa);
-	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa);
-	 }else{
+	 if(empty($cfg_pp_isopen)
+	  ||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost))
+	 {
+	   setcookie($key,$value,mytime()+$kptime,$pa);
+	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),mytime()+$kptime,$pa);
+	 }else
+	 {
 	 	 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
 	 	 $dm = ereg_replace("/(.*)","",$dm);
-	 	 setcookie($key,$value,time()+$kptime,$pa,$dm);
-	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa,$dm);
+	 	 setcookie($key,$value,mytime()+$kptime,$pa,$dm);
+	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),mytime()+$kptime,$pa,$dm);
 	 }
 }
-//Ê¹CookieÊ§Ğ§
+//ä½¿Cookieå¤±æ•ˆ
 function DropCookie($key){
   global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
-	if($cfg_pp_isopen=='0'||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost)){
-    setcookie($key,"",time()-3600000,"/");
-	  setcookie($key.'ckMd5',"",time()-3600000,"/");
-	}else{
+	if(empty($cfg_pp_isopen)
+	||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost))
+	{
+	  setcookie($key,"",mytime()-3600000,"/");
+	  setcookie($key.'ckMd5',"",mytime()-3600000,"/");
+	}else
+	{
 		 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
 		 $dm = ereg_replace("/(.*)","",$dm);
-	 	 setcookie($key,"",time(),"/",$dm);
-	   setcookie($key.'ckMd5',"",time(),"/",$dm);
+	 	 setcookie($key,"",mytime(),"/",$dm);
+	   setcookie($key.'ckMd5',"",mytime(),"/",$dm);
 	}
 }
-//»ñµÃÒ»¸öcookieÖµ
+//è·å¾—ä¸€ä¸ªcookieå€¼
 function GetCookie($key){
 	 global $cfg_cookie_encode;
 	 if( !isset($_COOKIE[$key]) || !isset($_COOKIE[$key.'ckMd5']) ) return '';
@@ -272,7 +290,7 @@ function GetCookie($key){
 	   else return $_COOKIE[$key];
 	 }
 }
-//»ñµÃÑéÖ¤ÂëµÄÖµ
+//è·å¾—éªŒè¯ç çš„å€¼
 function GetCkVdValue(){
 	@session_start();
 	if(isset($_SESSION["dd_ckstr"])) $ckvalue = $_SESSION["dd_ckstr"];
@@ -280,7 +298,7 @@ function GetCkVdValue(){
 	//DropCookie("dd_ckstr");
 	return $ckvalue;
 }
-//ÓÃFTP´´½¨Ò»¸öÄ¿Â¼
+//ç”¨FTPåˆ›å»ºä¸€ä¸ªç›®å½•
 function FtpMkdir($truepath,$mmode,$isMkdir=true){
 	global $cfg_basedir,$cfg_ftp_root,$g_ftpLink;
 	OpenFtp();
@@ -289,63 +307,63 @@ function FtpMkdir($truepath,$mmode,$isMkdir=true){
 	if($isMkdir) ftp_mkdir($g_ftpLink,$mdir);
 	return ftp_site($g_ftpLink,"chmod $mmode $mdir");
 }
-//ÓÃFTP¸Ä±äÒ»¸öÄ¿Â¼µÄÈ¨ÏŞ
+//ç”¨FTPæ”¹å˜ä¸€ä¸ªç›®å½•çš„æƒé™
 function FtpChmod($truepath,$mmode){
 	return FtpMkdir($truepath,$mmode,false);
 }
-//´ò¿ªFTPÁ¬½Ó
+//æ‰“å¼€FTPè¿æ¥
 function OpenFtp(){
 	global $cfg_basedir,$cfg_ftp_host,$cfg_ftp_port;
 	global $cfg_ftp_user,$cfg_ftp_pwd,$cfg_ftp_root,$g_ftpLink;
 	if(!$g_ftpLink){
 		if($cfg_ftp_host==""){
-		  echo "ÓÉÓÚÄãµÄÕ¾µãµÄPHPÅäÖÃ´æÔÚÏŞÖÆ£¬³ÌĞò³¢ÊÔÓÃFTP½øĞĞÄ¿Â¼²Ù×÷£¬Äã±ØĞëÔÚºóÌ¨Ö¸¶¨FTPÏà¹ØµÄ±äÁ¿£¡";
+		  echo "ç”±äºä½ çš„ç«™ç‚¹çš„PHPé…ç½®å­˜åœ¨é™åˆ¶ï¼Œç¨‹åºå°è¯•ç”¨FTPè¿›è¡Œç›®å½•æ“ä½œï¼Œä½ å¿…é¡»åœ¨åå°æŒ‡å®šFTPç›¸å…³çš„å˜é‡ï¼";
 		  exit();
 	  }
 		$g_ftpLink = ftp_connect($cfg_ftp_host,$cfg_ftp_port);
-	  if(!$g_ftpLink){ echo "Á¬½ÓFTPÊ§°Ü£¡"; exit(); }
-	  if(!ftp_login($g_ftpLink,$cfg_ftp_user,$cfg_ftp_pwd)){ echo "µÇÂ½FTPÊ§°Ü£¡"; exit(); }
+	  if(!$g_ftpLink){ echo "è¿æ¥FTPå¤±è´¥ï¼"; exit(); }
+	  if(!ftp_login($g_ftpLink,$cfg_ftp_user,$cfg_ftp_pwd)){ echo "ç™»é™†FTPå¤±è´¥ï¼"; exit(); }
 	}
 }
-//¹Ø±ÕFTPÁ¬½Ó
+//å…³é—­FTPè¿æ¥
 function CloseFtp(){
 	global $g_ftpLink;
 	if($g_ftpLink) @ftp_quit($g_ftpLink);
 }
-//Í¨ÓÃµÄ´´½¨Ä¿Â¼µÄº¯Êı
+//é€šç”¨çš„åˆ›å»ºç›®å½•çš„å‡½æ•°
 function MkdirAll($truepath,$mmode){
-	global $cfg_ftp_mkdir,$isSafeMode; 
-	if($isSafeMode||$cfg_ftp_mkdir=='ÊÇ'){ return FtpMkdir($truepath,$mmode); }
+	global $cfg_ftp_mkdir,$cfg_isSafeMode;
+	if($cfg_isSafeMode||$cfg_ftp_mkdir=='Y'){ return FtpMkdir($truepath,$mmode); }
 	else{
 		  if(!file_exists($truepath)){
-		  	 mkdir($truepath,0777);
-		  	 chmod($truepath,0777);
+		  	 mkdir($truepath,$GLOBALS['cfg_dir_purview']);
+		  	 chmod($truepath,$GLOBALS['cfg_dir_purview']);
 		  	 return true;
 		  }else{
 		  	return true;
 		  }
   }
 }
-//Í¨ÓÃµÄ¸ü¸ÄÄ¿Â¼»òÎÄ¼şÈ¨ÏŞµÄº¯Êı
+//é€šç”¨çš„æ›´æ”¹ç›®å½•æˆ–æ–‡ä»¶æƒé™çš„å‡½æ•°
 function ChmodAll($truepath,$mmode){
-	global $cfg_ftp_mkdir,$isSafeMode; 
-	if($isSafeMode||$cfg_ftp_mkdir=='ÊÇ'){ return FtpChmod($truepath,$mmode); }
+	global $cfg_ftp_mkdir,$cfg_isSafeMode;
+	if($cfg_isSafeMode||$cfg_ftp_mkdir=='Y'){ return FtpChmod($truepath,$mmode); }
 	else{ return chmod($truepath,'0'.$mmode); }
 }
 
-//´´½¨¶à²ã´ÎµÄÄ¿Â¼
+//åˆ›å»ºå¤šå±‚æ¬¡çš„ç›®å½•
 function CreateDir($spath,$siterefer="",$sitepath=""){
 	if(!isset($GLOBALS['__funAdmin'])) require_once(dirname(__FILE__)."/inc/inc_fun_funAdmin.php");
   return SpCreateDir($spath,$siterefer,$sitepath);
 }
 
-//¹ıÂËÓÃ»§ÊäÈëÓÃÓÚ²éÑ¯µÄ×Ö·û´®
+//è¿‡æ»¤ç”¨æˆ·è¾“å…¥ç”¨äºæŸ¥è¯¢çš„å­—ç¬¦ä¸²
 function StringFilterSearch($str,$isint=0){
 	return $str;
 }
 
-//»áÔ±Ğ£¶ÔÃÜÂë
-//°ÑÓÃ»§µÄÃÜÂë¾­¹ı´Ëº¯ÊıºóÓëÊı¾İ¿âµÄÃÜÂë¶Ô±È
+//ä¼šå‘˜æ ¡å¯¹å¯†ç 
+//æŠŠç”¨æˆ·çš„å¯†ç ç»è¿‡æ­¤å‡½æ•°åä¸æ•°æ®åº“çš„å¯†ç å¯¹æ¯”
 function GetEncodePwd($pwd){
 	global $cfg_pwdtype,$cfg_md5len,$cfg_ddsign;
 	$cfg_pwdtype = strtolower($cfg_pwdtype);
@@ -355,20 +373,22 @@ function GetEncodePwd($pwd){
 		else return substr(md5($pwd),0,$cfg_md5len);
 	}else if($cfg_pwdtype=='dd'){
 		return DdPwdEncode($pwd,$cfg_ddsign);
+	}else if($cfg_pwdtype=='md5m16'){
+		return substr(md5($pwd),8,16);
 	}else{
 		return $pwd;
 	}
 }
 
-//ÓÃ»§IDºÍÃÜÂë»òÆäËü×Ö·û´®°²È«ĞÔ²âÊÔ
+//ç”¨æˆ·IDå’Œå¯†ç æˆ–å…¶å®ƒå­—ç¬¦ä¸²å®‰å…¨æ€§æµ‹è¯•
 function TestStringSafe($uid){
-	//if(ereg("[><]",$uid)) return false;
 	if($uid!=addslashes($uid)) return false;
+	if(ereg("[><\$\r\n\t '\"`\\]",$uid)) return false;
 	return true;
 }
 
-//DedeÃÜÂë¼ÓÃÜËã·¨
-//¼ÓÃÜ³ÌĞò
+//Dedeå¯†ç åŠ å¯†ç®—æ³•
+//åŠ å¯†ç¨‹åº
 function DdPwdEncode($pwd,$sign=''){
 	global $cfg_ddsign;
 	if($sign=='') $sign = $cfg_ddsign;
@@ -397,7 +417,7 @@ function DdPwdEncode($pwd,$sign=''){
 	return $rtstr;
 }
 
-//½âÃÜ³ÌĞò
+//è§£å¯†ç¨‹åº
 function DdPwdDecode($epwd,$sign=''){
 	global $cfg_ddsign;
 	$n1=0;
@@ -428,4 +448,191 @@ function DdPwdDecode($epwd,$sign=''){
 	return $restr;
 }
 
+/*----------------------
+è¿‡æ»¤HTMLä»£ç çš„å‡½æ•°
+-----------------------*/
+function htmlEncode($string) {
+	$string=trim($string);
+	$string=str_replace("&","&amp;",$string);
+	$string=str_replace("'","&#39;",$string);
+	$string=str_replace("&amp;amp;","&amp;",$string);
+	$string=str_replace("&amp;quot;","&quot;",$string);
+	$string=str_replace("\"","&quot;",$string);
+	$string=str_replace("&amp;lt;","&lt;",$string);
+	$string=str_replace("<","&lt;",$string);
+	$string=str_replace("&amp;gt;","&gt;",$string);
+	$string=str_replace(">","&gt;",$string);
+	$string=str_replace("&amp;nbsp;","&nbsp;",$string);
+	$string=nl2br($string);
+	return $string;
+}
+
+function filterscript($str) {
+	$str = eregi_replace("iframe","ï½‰ï½†ï½’ï½ï½ï½…",$str);
+	$str = eregi_replace("script","ï½“ï½ƒï½’ï½‰ï½ï½”",$str);
+	return $str;
+}
+
+function AjaxHead()
+{
+	header("Pragma:no-cache\r\n");
+  header("Cache-Control:no-cache\r\n");
+  header("Expires:0\r\n");
+	header("Content-Type: text/html; charset=utf-8");
+}
+
+function getarea($areaid)
+{
+	global $dsql;
+	if($areaid==0) return '';
+	if(!is_object($dsql)) $dsql = new dedesql(false);
+	$areaname = $dsql->GetOne("select name from #@__area where id=$areaid");
+	return $areaname['name'];
+}
+
+
+//ç”¨æˆ·è‡ªè¡Œæ‰©å±•function
+
+if(file_exists( dirname(__FILE__).'/inc_extend_functions.php' )){
+	require_once(dirname(__FILE__).'/inc_extend_functions.php');
+}
+
+//--------------------
+// è·å¾—é™„åŠ è¡¨å’Œä¸»è¡¨åç§°
+//----------------------
+function GetChannelTable($dsql,$id,$formtype='channel')
+{
+	global $cfg_dbprefix;
+	$retables = array();
+	$oldarrays = array(1=>'addonarticle',2=>'addonimages',3=>'addonsoft',4=>'addonflash',5=>'addonproduct',-2=>'addoninfos',-1=>'addonspec');
+	if(isset($oldarrays[$id]) && $formtype!='arc')
+	{
+		$retables['addtable'] = $cfg_dbprefix.$oldarrays[$id];
+		$retables['maintable'] = $cfg_dbprefix.'archives';
+		if($id==-1) $retables['maintable'] = $cfg_dbprefix.'archivesspec';
+		else if($id==-2) $retables['maintable'] = $cfg_dbprefix.'infos';
+		$retables['channelid'] = $id;
+	}else
+	{
+	   if($formtype=='arc'){
+	   	$retables = $dsql->GetOne(" select c.ID as channelid,c.maintable,c.addtable from `#@__full_search` a left join  #@__channeltype c on  c.ID = a.channelid where a.aid='$id' ",MYSQL_ASSOC);
+	   }
+	   else{
+	   	$retables = $dsql->GetOne(" Select ID as channelid,maintable,addtable From #@__channeltype where ID='$id' ",MYSQL_ASSOC);
+	   }
+	   if(!isset($retables['maintable'])) $retables['maintable'] = $cfg_dbprefix.'archives';
+	   if(!isset($retables['addtable'])) $retables['addtable'] = '';
+  }
+	return $retables;
+}
+
+//-----------------------
+//è·å–ä¸€æ¡ç´¢å¼•ID
+//-----------------------
+function GetIndexKey($dsql,$typeid=0,$channelid=0)
+{
+	global $typeid,$channelid,$arcrank,$title,$cfg_plus_dir;
+	$typeid = (empty($typeid) ? 0 : $typeid);
+	$channelid = (empty($channelid) ? 0 : $channelid);
+	$arcrank = (empty($arcrank) ? 0 : $arcrank);
+	$iquery = "INSERT INTO `#@__full_search` (`typeid` , `channelid` , `adminid` , `mid` , `att` , `arcrank` ,
+	            `uptime` , `title` , `url` , `litpic` , `keywords` , `addinfos` , `digg` , `diggtime` )
+                 VALUES ('$typeid', '$channelid', '0', '0', '0', '$arcrank',
+              '0', '$title', '', '', '', '', '0', '0');
+           ";
+	$dsql->ExecuteNoneQuery($iquery);
+	return $dsql->GetLastID();
+}
+
+//-----------------------
+//æ›´æ–°ä¸€æ¡æ•´ç«™æœç´¢çš„ç´¢å¼•è®°å½•
+//-----------------------
+function WriteSearchIndex($dsql,&$datas)
+{
+	UpSearchIndex($dsql,$datas);
+}
+
+function UpSearchIndex($dsql,&$datas)
+{
+	$addf = '';
+	foreach($datas as $k=>$v){
+		if($k!='aid') $addf .= ($addf=='' ? "`$k`='$v'" : ",`$k`='$v'");
+	}
+	$uquery = "update `#@__full_search` set $addf where aid = '{$datas['aid']}';";
+	$rs = $dsql->ExecuteNoneQuery($uquery);
+	if(!$rs){
+		$gerr = $dsql->GetError();
+		//$tbs = GetChannelTable($dsql,$datas['channelid'],'channel');
+		//$dsql->ExecuteNoneQuery("Delete From `{$tbs['maintable']}` where ID='{$datas['aid']}'");
+		//$dsql->ExecuteNoneQuery("Delete From `{$tbs['addtable']}` where aid='{$datas['aid']}'");
+	  //$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='{$datas['aid']}'");
+		echo "æ›´æ–°æ•´ç«™ç´¢å¼•æ—¶å¤±è´¥ï¼Œé”™è¯¯åŸå› ï¼š [".$gerr."]";
+		echo "<br /> SQLè¯­å¥ï¼š<font color='red'>{$uquery}</font>";
+		$dsql->Close();
+		exit();
+	}
+	return $rs;
+}
+
+//
+//æ£€æŸ¥æŸæ ç›®ä¸‹çº§æ˜¯å¦åŒ…å«ç‰¹å®šé¢‘é“çš„å†…å®¹
+//
+function TestHasChannel($cid,$channelid,$issend=-1,$carr='')
+{
+	global $_Cs;
+	if(!is_array($_Cs) && !is_array($carr)){ require_once(dirname(__FILE__)."/../data/cache/inc_catalog_base.php"); }
+	if($channelid==0) return 1;
+	if(!isset($_Cs[$cid])) return 0;
+	if($issend==-1){
+	  if($_Cs[$cid][1]==$channelid||$channelid==0) return 1;
+	  else{
+	    foreach($_Cs as $k=>$vs){
+	  	  if($vs[0]==$cid) return TestHasChannel($k,$channelid,$issend,$_Cs);
+	    }
+	  }
+	}else
+	{
+		if($_Cs[$cid][2]==$issend && ($_Cs[$cid][1]==$channelid||$channelid==0)) return 1;
+	  else{
+	    foreach($_Cs as $k=>$vs){
+	  	  if($vs[0]==$cid) return TestHasChannel($k,$channelid,$issend,$_Cs);
+	    }
+	  }
+	}
+	return 0;
+}
+
+//æ›´æ–°æ ç›®ç´¢å¼•ç¼“å­˜
+function UpDateCatCache($dsql)
+{
+	$cache1 = dirname(__FILE__)."/../data/cache/inc_catalog_base.php";
+	$dsql->SetQuery("Select ID,reID,channeltype,issend From #@__arctype");
+	$dsql->Execute();
+	$fp1 = fopen($cache1,'w');
+	$phph = '?';
+	$fp1Header = "<{$phph}php\r\nglobal \$_Cs;\r\n\$_Cs=array();\r\n";
+	fwrite($fp1,$fp1Header);
+	while($row=$dsql->GetObject()){
+		fwrite($fp1,"\$_Cs[{$row->ID}]=array({$row->reID},{$row->channeltype},{$row->issend});\r\n");
+	}
+	fwrite($fp1,"{$phph}>");
+	fclose($fp1);
+}
+
+//é‚®ä»¶å‘é€å‡½æ•°
+function sendmail($email, $mailtitle, $mailbody, $headers)
+{
+	global $cfg_sendmail_bysmtp, $cfg_smtp_server, $cfg_smtp_port, $cfg_smtp_usermail, $cfg_smtp_user, $cfg_smtp_password, $cfg_adminemail;
+	if($cfg_sendmail_bysmtp == 'Y'){
+		$mailtype = 'TXT';
+		require_once(dirname(__FILE__).'/mail.class.php');
+		$smtp = new smtp($cfg_smtp_server,$cfg_smtp_port,true,$cfg_smtp_usermail,$cfg_smtp_password);
+		$smtp->debug = false;
+		$smtp->sendmail($email, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
+	}else{
+		@mail($email, $mailtitle, $mailbody, $headers);
+	}
+}
+
+$startRunMe = ExecTime();
 ?>

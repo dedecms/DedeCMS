@@ -1,5 +1,5 @@
 <?php 
-$needFilter = true;
+$cfg_needFilter = true;
 require(dirname(__FILE__)."/../../include/config_base.php");
 
 if(empty($gotopagerank)) $gotopagerank="";
@@ -7,12 +7,12 @@ if($gotopagerank=="admin")
 {
 	require(dirname(__FILE__)."/../../include/inc_userlogin.php");
 	$cuserLogin = new userLogin();
-	CheckPurview('plus_ÁôÑÔ²¾Ä£¿é');
+	CheckPurview('plus_ç•™è¨€ç°¿æ¨¡å—');
 }
 
-//ÉèÖÃÎª 0,±íÊ¾ÁôÑÔÐèÒªÉóºË
-//Èç¹ûÉèÖÃÎª 1 ,ÔòÁôÑÔ²»ÐèÒªÉóºË¾ÍÄÜÏÔÊ¾
-if($cfg_feedbackcheck=='ÊÇ') $needCheck = 0;
+//è®¾ç½®ä¸º 0,è¡¨ç¤ºç•™è¨€éœ€è¦å®¡æ ¸
+//å¦‚æžœè®¾ç½®ä¸º 1 ,åˆ™ç•™è¨€ä¸éœ€è¦å®¡æ ¸å°±èƒ½æ˜¾ç¤º
+if($cfg_feedbackcheck=='Y') $needCheck = 0;
 else $needCheck = 1;
 
 function trimMsg($msg,$gtype=0)

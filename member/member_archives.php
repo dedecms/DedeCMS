@@ -12,32 +12,37 @@ if(empty($channelid)) $channelid = 0;
 if(empty($mtype)) $mtype = 0;
 
 if(!TestStringSafe($uid)){
-		ShowMsg("ÓÃ»§ID²»ºÏ·¨£¡","-1");
+		ShowMsg("ç”¨æˆ·IDä¸åˆæ³•ï¼","-1");
 		exit();
 }
 
 if(empty($channelid)){
-	$listName = '¡¡¡ìËùÓĞÎÄµµ';
+	$listName = 'ã€€Â§æ‰€æœ‰æ–‡æ¡£';
 }
 else if($channelid==1){
-	$listName = "¡¡¡ì<a href='member_archives.php?uid=$uid' style='color:#666600'>ËùÓĞÎÄµµ</a>&gt;&gt;ÎÒµÄÎÄÕÂ";
+	$listName = "ã€€Â§<a href='member_archives.php?uid=$uid' style='color:#666600'>æ‰€æœ‰æ–‡æ¡£</a>&gt;&gt;æˆ‘çš„æ–‡ç« ";
 }
 else if($channelid==2){
-	$listName = "¡¡¡ì<a href='member_archives.php?uid=$uid' style='color:#666600'>ËùÓĞÎÄµµ</a>&gt;&gt;ÎÒµÄÍ¼¼¯";
+	$listName = "ã€€Â§<a href='member_archives.php?uid=$uid' style='color:#666600'>æ‰€æœ‰æ–‡æ¡£</a>&gt;&gt;æˆ‘çš„å›¾é›†";
 }
 
-//ÓÃ»§ĞÅÏ¢
+//ç”¨æˆ·ä¿¡æ¯
 $dsql = new DedeSql(false);
-$spaceInfos = $dsql->GetOne("Select ID,uname,spacename,spaceimage,sex,c1,c2,spaceshow,logintime From #@__member where userid='$uid'; ");
+$spaceInfos = $dsql->GetOne("Select ID,uname,spacename,spaceimage,sex,c1,c2,spaceshow,logintime,scores From #@__member where userid='$uid'; ");
 if(!is_array($spaceInfos)){
-	ShowMsg("²ÎÊı´íÎó»òÕßÓÃ»§ÒÑ¾­±»É¾³ı£¡","-1");
+	ShowMsg("å‚æ•°é”™è¯¯æˆ–è€…ç”¨æˆ·å·²ç»è¢«åˆ é™¤ï¼","-1");
 	exit();
 }
+//ç§¯åˆ†å¤´è¡”
+$scores = $spaceInfos['scores'];
+$honors = @explode("#|",Gethonor($scores));
+$honor = $honors[0];
+$space_star = $honors[1];
 foreach( $spaceInfos as $k=>$v){if(ereg("[^0-9]",$k)) $$k = $v; }
 $userNumID = $ID;
 if($spaceimage==''){
-	if($sex=='Å®') $spaceimage = 'img/dfgril.gif';
-	else $spaceimage = 'img/dfboy.gif';
+	if($sex=='å¥³') $spaceimage = 'images/space_nophoto.gif';
+	else $spaceimage = 'images/space_nophoto.gif';
 }
 
 if(!empty($mtype)){
@@ -46,20 +51,16 @@ if(!empty($mtype)){
 	$listName .= "&gt;&gt;".$rows['typename'];
 }
 
-//»ñÈ¡ÎÄµµÁĞ±í
-$whereSql = " arc.memberID='$userNumID' ";
-if(!empty($channelid)) $whereSql .= " And arc.channel='$channelid' ";
+//è·å–æ–‡æ¡£åˆ—è¡¨
+$whereSql = " arc.mid='$userNumID' ";
+if(!empty($channelid)) $whereSql .= " And arc.channelid='$channelid' ";
 if(!empty($mtype)) $whereSql .= " And (arc.mtype='$mtype') ";
 if($keyword!=""){
 	$whereSql .= " And (arc.title like '%$keyword%') ";
 }
 
-$query = "
-	Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,
-	tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
-	From #@__archives arc left join #@__arctype tp on arc.typeid=tp.ID
-	where $whereSql order by arc.senddate desc
-";
+$query = "Select arc.*,tp.typename From `#@__full_search` arc left join #@__arctype tp on tp.ID = arc.typeid
+ where $whereSql order by arc.aid desc";
 
 $dlist = new DataList();
 $dlist->pageSize = 10;

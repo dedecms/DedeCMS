@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript">
+function AddServer()
+{
+   if(document.form1.serverurl.value==""||document.form1.serverurl.value=="http://"){ alert('服务器网址不能为空！'); return ;}
+   if(document.form1.servername.value==""){ alert('服务器名称不能为空！'); return ;}
+   document.form1.sites.value += document.form1.serverurl.value+" | "+document.form1.servername.value+"\r\n";
+}
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">频道设置</div>
+</div>
+  <form name="form1" action="soft_config.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+		<tr>
+				<td bgcolor="#EDF9D5" class="tbtitletxt"><strong>软件频道设置：</strong> <?php echo $upok; ?></td>
+	</tr>
+</table>
+			
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
+		<tr align="center">
+		  <td width="232" height="28" align="left" bgcolor="#FFFFFF">链接显示方式：<br /></td>
+		  <td align="left" bgcolor="#FFFFFF"><input type="radio" name="downtype"  value="0"<?php if($row['downtype']==0) echo " checked";?> />
+直接显示地址列表
+  <input name="downtype" type="radio" value="1" <?php if($row['downtype']==1) echo " checked";?> />
+要求进入下载地址列表页 </td>
+  </tr>
+		<tr align="center">
+		  <td width="232" height="28" align="left" bgcolor="#FFFFFF">附件下载方式：</td>
+		  <td align="left" bgcolor="#FFFFFF"><input type="radio" name="gotojump"  value="0"<?php if($row['gotojump']==0) echo " checked";?> />
+链接到真实软件地址
+  <input name="gotojump" type="radio"  value="1"<?php if($row['gotojump']==1) echo " checked";?> />
+链接到跳转页面 </td>
+  </tr>
+		<tr align="center">
+		  <td height="28" align="left" bgcolor="#FFFFFF">是否启用镜像站点：</td>
+		  <td align="left" bgcolor="#FFFFFF"><input type="radio" name="ismoresite"  value="1"<?php if($row['ismoresite']==1) echo " checked";?> />
+启用
+  <input name="ismoresite" type="radio"  value="0"<?php if($row['ismoresite']==0) echo " checked";?> />
+不启用 </td>
+    </tr>
+		<tr align="center">
+		  <td width="232" height="28" align="left" bgcolor="#FFFFFF">是否显示本地下载链接：</td>
+		  <td align="left" bgcolor="#FFFFFF">
+		  <input type="radio" name="showlocal"  value="1"<?php if($row['showlocal']==1) echo " checked";?> />
+显示
+  <input name="showlocal" type="radio"  value="0"<?php if($row['showlocal']==0) echo " checked";?> />
+不显示
+		  </td>
+  </tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="0" align="center" style="margin:0px auto" class="tblist2">
+		<tr align="center">
+				<td height="28" align="left" class="hg">   　如果启用了服务器镜像功能，增加下载地址时，只需要填写本地链接的地址，系统会自动生成镜像服务器的地址。      </td>
+		</tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="0" align="center" style="margin:0px auto" class="tblist2">
+  <tr align="center" class="trlbg">
+    <td height="28" align="left" class="hg">  　镜像服务器列表：</td>
+  </tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="0" align="center" style="margin:0px auto" class="tblist2">
+		<tr align="center">
+				<td height="36" align="left">　服务器网址： 
+                  <input name="serverurl" type="text" id="serverurl" value="http://">
+        服务器名称： 
+        <input name="servername" type="text" id="servername">
+		<input name="Submit" type="button" class="inputbut" onClick="AddServer()" value="增加一项" ></td>
+		</tr>
+</table>
+<table width="96%" border="0" cellpadding="1" cellspacing="0" align="center" style="margin:0px auto" class="tblist2">
+		<tr align="center">
+		  <td height="120" align="center"><textarea name="sites" rows="5" id="sites" style="width:96%;height:100px"><?php echo $row['sites']?></textarea></td>
+		</tr>
+</table>
+<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+			<td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+				<input type="submit" name="Submit2" value="保存数据"  class="inputbut" /></td>
+		</tr>
+</table>
+  </form>
+</body>
+</html>

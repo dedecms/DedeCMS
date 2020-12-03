@@ -1,0 +1,66 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>系统用户组管理</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">系统帐号管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <form name="form1" action="content_att.php" method="post">
+    <input type="hidden" name="dopost" value="save">
+    <tr> 
+      <td height="28" colspan="3" bgcolor="#EDF9D5">
+       <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%"><b>&nbsp;&nbsp;系统用户组管理</b> </td>
+          <td width="76%" align="right"><b>
+          	<a href="sys_group_add.php"><u>增加一个用户组</u></a>
+          	|
+            <a href="sys_admin_user.php"><u>管理系统用户</u></a>
+          	</b>
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr bgcolor="#FDFEE9" align="center" > 
+      <td width="20%" height="24">Rank</td>
+      <td width="45%">组名称</td>
+      <td width="35%">管理</td>
+    </tr>
+    <?php 
+	$dsql->SetQuery("Select rank,typename,system From #@__admintype");
+	$dsql->Execute();
+	while($row = $dsql->GetObject())
+	{
+	?>
+   <tr align="center" bgcolor="#FFFFFF"> 
+      <td height="24"> 
+        <?php echo $row->rank?>
+      </td>
+      <td height="24">
+      	<?php echo $row->typename?>
+      </td>
+      <td>
+        <a href='sys_group_edit.php?rank=<?php echo $row->rank?>'>[权限设定]</a>
+      	<a href='sys_admin_user.php?rank=<?php echo $row->rank?>'>[组用户]</a>
+      <?php if($row->system==0){?><a href='sys_group_edit.php?dopost=del&rank=<?php echo $row->rank?>'>[删除组]</a><?php }?>
+      </td>
+    </tr>
+    <?php 
+	}
+	?>
+    <input type="hidden" name="idend" value="<?php echo $k?>">
+    <tr> 
+      <td height="24" colspan="3" bgcolor="#F8FCF1">&nbsp;</td>
+    </tr>
+  </form>
+</table>
+</body>
+</html>

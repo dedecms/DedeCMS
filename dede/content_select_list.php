@@ -13,36 +13,38 @@ $typeid = $cid;
 
 $tl = new TypeLink($cid);
 $seltypeids = 0;
+
 if(!empty($cid)){
 	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ");
 }
+
 $opall=1;
 if(is_array($seltypeids)){
-	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+	$optionarr = GetTypeidSel('form3','cid','selbt1',$channelid,$seltypeids['ID'],$seltypeids['typename']);
 }else{
-	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'ÇëÑ¡Ôñ...');
+	$optionarr = GetTypeidSel('form3','cid','selbt1',$channelid,0,'è¯·é€‰æ‹©...');
 }
 
-$whereSql = " where #@__archives.channel > 0 ";
+if(empty($channelid)) $whereSql = " where arc.channelid != -1 ";
+else $whereSql = " where arc.channelid = '$channelid' ";
 
 if($keyword!=""){
-	$whereSql .= " And (title like '%$keyword%' Or writer like '%$keyword%' Or source like '%$keyword%') ";
+	$whereSql .= " And (arc.title like '%$keyword%' Or arc.writer like '%$keyword%' Or arc.source like '%$keyword%') ";
 }
 
 if($typeid!=0){
-	$tlinkSql = $tl->GetSunID($typeid,"#@__archives",0);
-	$whereSql .= " And $tlinkSql ";
+	$tids = $tl->GetSunID($typeid,'',$channelid,true);
+	$whereSql .= " And arc.typeid in($tids) ";
 }
 
-$tl->Close();
-
 $query = "
-select #@__archives.ID,#@__archives.typeid,#@__archives.senddate,#@__archives.iscommend,#@__archives.ismake,#@__archives.channel,#@__archives.arcrank,#@__archives.click,#@__archives.title,#@__archives.color,#@__archives.litpic,#@__archives.pubdate,#@__archives.adminID,#@__archives.memberID,#@__arctype.typename,#@__channeltype.typename as channelname 
-from #@__archives 
-left join #@__arctype on #@__arctype.ID=#@__archives.typeid
-left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
+select arc.aid as ID,arc.typeid,arc.uptime,arc.channelid,arc.arcrank,arc.title,
+arc.litpic,arc.adminID,arc.mid,t.typename,c.typename as channelname 
+from `#@__full_search` arc 
+left join #@__arctype t on t.ID=arc.typeid
+left join #@__channeltype c on c.ID=arc.channelid
 $whereSql
-order by ID desc
+order by aid desc
 ";
 
 $dlist = new DataList();
@@ -55,5 +57,6 @@ $dlist->SetParameter("arcrank",$arcrank);
 $dlist->SetParameter("channelid",$channelid);
 $dlist->SetSource($query);
 include(dirname(__FILE__)."/templets/content_select_list.htm");
-$dlist->Close();
+
+ClearAllLink();
 ?>

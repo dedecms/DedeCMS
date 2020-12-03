@@ -1,139 +1,79 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/space.css" rel="stylesheet" type="text/css" />
 <title><?php echo $spacename?></title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
-<link href="../base.css" rel="stylesheet" type="text/css">		
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/member_head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="170" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/member_menu.php");?>
-      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:6px">
-        <tr align="center"> 
-          <td height="22" colspan="2" class="mmt"> <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:2px">
-              <tr> 
-                <td width="28%" height="18" align="right" valign="top"><img src="img/dd/dedeexplode.gif" width="11" height="11" class="ittop"></td>
-                <td width="72%"><strong>”—«È¡¥Ω”</strong></td>
-              </tr>
-            </table></td>
-        </tr>
-        <tr bgcolor="#FFFFFF"> 
-          <td colspan="2" align="center" class="mma">
-          	<table width="98%" border="0" cellspacing="0" cellpadding="0" style="padding-top:6px">
-              <?php 
-              $dsql->SetQuery("Select * From #@__member_flink where mid='$userNumID' order by aid desc");
-              $dsql->Execute();
-              while($row = $dsql->GetArray())
-              {
-              	if($row['linktype']==2) $textname = "<img src='{$row['imgurl']}' width='{$row['imgwidth']}' height='{$row['imgheight']}' border='0' alt='{$row['title']}'>";
-                else $textname = $row['title'];
-              ?>
-              <tr align="center"> 
-                <td height="24" class="mmbb">
-                <a href='<?php echo $row['url']?>' target='_blank'><?php echo $textname?></a>
-                </td>
-              </tr>
-              <?php  } ?>
-            </table>
-            </td>
-        </tr>
-        <tr> 
-          <td colspan="2" height="6" class="mmb">&nbsp;</td>
-        </tr>
-      </table> </td>
-    <td width="10">&nbsp;</td>
-    <td width="590" valign="top">
-      <table width="100%"  border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:6px">
-        <tr> 
-          <td height='24' background="img/tbg2.gif"><font color="#666600"><b>°æø’º‰π´∏Ê°ø</b></font></td>
-        </tr>
-        <tr bgcolor="#FFFFFF"> 
-          <td height="63" colspan="2">
-          	<table width="100%"  border="0" cellspacing="1" cellpadding="1">
-              <tr> 
-                <td height="63"> 
-                  <?php echo $news?>
-                </td>
-              </tr>
-            </table></td>
-        </tr>
-      </table>
-	  <table width="100%"  border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:6px">
-        <tr> 
-          <td colspan="2" background="img/tbg2.gif" bgcolor="#EEF4EA"><font color="#666600"><b>°æ◊Ó–¬Œƒµµ°ø</b></font></td>
-        </tr>
-        <tr bgcolor="#FFFFFF"> 
-          <td height="63" colspan="2"> <table width="100%"  border="0" cellspacing="1" cellpadding="1">
-              <tr>
-                <td height="219" valign="top">
-				<?php 
-				$squery = "
-				   Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,
-				   tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
-				   From #@__archives arc left join #@__arctype tp on arc.typeid=tp.ID
-				   where arc.memberid='$userNumID' order by arc.senddate desc limit 0,6;
-				";
-				$dsql->SetQuery($squery);
-				$dsql->Execute();
-				while($row = $dsql->GetArray()){
-					$row['arcurl'] = GetFileUrl($row['ID'],$row['typeid'],$row['senddate'],
-                            $row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
-                            $row['typedir'],$row['money'],true,$row['siteurl']);
-           
-          if($row['litpic']=="") $row['litpic'] = "img/dfpic.gif";
-          if($cfg_multi_site==' «'){
-           	 if(!eregi("^http://",$row['litpic'])){
-           	 	  $row['litpic'] = $cfg_mainsite.$row['litpic'];
-           	 }
-          }
-				?>
-				<table border='0' width='100%'>
-          <tr height='24'> 
-               <td width='19%' rowspan="2" align="center"> 
-                        <table width="100" border='0' cellpadding='1' cellspacing='1' bgcolor="#E6EAE3">
-                          <tr> 
-                            <td bgcolor="#FFFFFF">
-                            <a href='<?php echo $row['arcurl']?>' target='_blank'><img border='0' src='<?php echo $row['litpic']?>' width='100' alt='<?php echo $row['title']?>'></a>
-                            </td>
-                          </tr>
-                        </table>
-                      </td>
-                      <td width='3%' align="center"><img src="img/file.gif" width="18" height="17"></td>
-                      <td width='54%'><b><a href='<?php echo $row['arcurl']?>' target='_blank'><?php echo $row['title']?></a></b></td>
-                      <td width="24%">µ„ª˜:<?php echo $row['click']?></td>
-                    </tr>
-                    <tr> 
-                      <td height="56" colspan='3'> °°°°<?php echo $row['description']?><font color='#8F8C89'>(<?php echo strftime('%y-%m-%d %H:%M',$row['senddate'])?>)</font> 
-                      </td>
-                    </tr>
-                    <tr> 
-                      <td height='2' colspan='4' background='img/writerbg.gif'></td>
-                    </tr>
-            </table>
-				  <?php 
-				}
-				  ?>
-				  </td>
-              </tr>
-              <tr> 
-                <td height="20" align="right">
-                <a href="member_archives.php?uid=<?php echo $uid?>">&lt;&lt; ‰Ø¿¿∏√”√ªßÀ˘”–Œƒµµ &gt;&gt;</a>
-                </td>
-              </tr>
-            </table></td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<?php 
-$dsql->ExecuteNoneQuery("Update #@__member set spaceshow=spaceshow+1 where ID='$userNumID'; ");
-if(isset($dsql) && is_object($dsql)) $dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+
+<body>
+<div id="container">
+	<!--Â§¥ÈÉ®ÂºÄÂßã-->
+	<?php include(dirname(__FILE__)."/member_head.htm");?>
+    <!--Â§¥ÈÉ®ÁªìÊùü-->
+    <!--‰∏≠Èó¥ÂºÄÂßã-->
+    <div id="spacemain">
+    	<div id="space_main">
+        	<?php include(dirname(__FILE__)."/member_left.htm");?>
+        	<!--Â∑¶ËæπÁªìÊùü-->
+            
+            <div id="space_right"><!--Âè≥ËæπÂºÄÂßã-->
+            	<div class="space_notice"><!--Á©∫Èó¥ÂÖ¨Âëä-->
+                	<div class="space_title01">
+                    	<ul>
+                        <li>Á©∫Èó¥ÂÖ¨Âëä</li>
+                        </ul>
+                    </div>
+                    <div class="space_notice_text"><?php echo $news?>
+                    </div>
+                </div>
+                <div class="space_notice"><!--Á©∫Èó¥ÂÖ¨Âëä-->
+                	<div class="space_title02">
+                    	<ul>
+                        <li>ÊúÄÊñ∞ÊñáÊ°£</li>
+                        </ul>
+                    </div>
+                    <div class="space_notice_text">
+                    <?php 
+                        $squery = "
+                           Select arc.*,tp.typedir,tp.typename
+                           From `#@__full_search` arc left join #@__arctype tp on tp.ID = arc.typeid
+                           where arc.mid='$userNumID' order by arc.aid desc limit 0,6;
+                        ";
+                        $dsql->SetQuery($squery);
+                        $dsql->Execute();
+                        while($row = $dsql->GetArray()){
+                            $row['arcurl'] = $row['url'];
+                            if($row['litpic']=="") $row['litpic'] = "img/dfpic.gif";
+                            if($cfg_multi_site=='ÊòØ'){
+                            if(!eregi("^http://",$row['litpic'])){
+                                $row['litpic'] = $cfg_mainsite.$row['litpic'];
+                            }
+                        }
+                        ?>
+                    	<dl>
+                        <dd class="space_biaoti"><a href='<?php echo $row['arcurl']?>' target='_blank'><?php echo $row['title']?></a> </dd>
+                        <dd class="space_dianji">ÁÇπÂáª:<?php echo $row['click']?></dd>
+                        <dd class="clear">
+                        </dd>
+                        </dl>
+                        <?php 
+                        }
+                        ?>
+                        <div class="space_news_text"><a href="member_archives.php?uid=<?php echo $uid?>">&lt;&lt; ÊµèËßàËØ•Áî®Êà∑ÊâÄÊúâÊñáÊ°£ &gt;&gt;</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!--Âè≥ËæπÁªìÊùü-->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    <!--‰∏≠Èó¥ÁªìÊùü-->
+    <!--Â∫ïÈÉ®ÂºÄÂßã-->
+	<?php include(dirname(__FILE__)."/member_footer.htm");?>
+    <!--Â∫ïÈÉ®ÁªìÊùü-->
+    
 </div>
 </body>
 </html>

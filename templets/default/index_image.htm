@@ -1,168 +1,149 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>图集--{dede:field name='title'/}</title>
-<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/article.css" rel="stylesheet" type="text/css" />
 </head>
-<body leftmargin="0" topmargin="0">
-<center>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecms织梦内容管理系统"></a></td>
-<td width="20" align="center">&nbsp;</td>
-<td width="486">&nbsp;</td>
-<td width="190">&nbsp;</td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
-<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif">
-	<a href='/'>首页</a>
-	{dede:channel type='top' row='8'}
-| <a href='[field:typelink/]'>[field:typename/]</a>
-{/dede:channel}
-	| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
-| <a href="{dede:field name='memberurl'/}">会员中心</a>
-| <a href="http://bbs.dedecms.com">支持论坛</a>
-</td>
-<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td width="10" height="32" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c3.gif" width="4" height="32"></td>
-<td width="508" background="{dede:field name='templeturl'/}/img/31bg2.gif"> 
-<div class="hotworddiv">热门关键字：{dede:hotwords num='5' subday='30'/}</div></td>
-<td width="372" align="center" background="{dede:field name='templeturl'/}/img/31bg2.gif"> 
-<form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-<input type="hidden" name="kwtype" value="0">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="47%"><input name="keyword" type="text" id="keyword2" class="kw1"></td>
-<td width="30%" align="center"> <select name="searchtype" id="searchtype" class="op1">
-<option value="titlekeyword" selected>智能模糊搜索</option>
-<option value="title">仅搜索标题</option>
-</select> </td>
-<td width="23%" align="center"> <input name="imageField" type="image" src="{dede:field name='templeturl'/}/img/v31s.gif" width="73" height="19" border="0"></td>
-</tr>
-</table>
-</form></td>
-<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c4.gif" width="4" height="32"></td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td>
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
-<tr> 
-<td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
-<td width="3%" align="center"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
-<td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">当前位置：{dede:field 
-name='position'/}</td>
-</tr>
-<tr> 
-<td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-<table width="900" height="450" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr> 
-<td width="219" valign="top" bgcolor="#F3F9FC">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月热点图集</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
-titlelen='28' row='12' subday='30'/}</td>
-</tr>
-</table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月推荐图集</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
-titlelen='28' row='12' subday='30'/} </td>
-</tr>
-</table> 
-</td>
-<td width="6"></td>
-<td width="678" valign="top"> {dede:channelArtlist col=1 tablewidth='100%'} 
-<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#BFCFA9">
-<tr> 
-<td background="{dede:global name='cfg_templeturl'/}/img/indbg1.gif" bgcolor="#E6F2CC"> 
-{dede:type} 
-<table border="0" cellpadding="0" cellspacing="0" width="98%">
-<tr> 
-<td width='5%'><img src='[field:global name='cfg_plus_dir'/]/img/channellist.gif' width='14' height='16'></td>
-<td width='65%'> <a href="[field:typelink /]">[field:typename 
-/]</a> </td>
-<td width='30%' align='right'> <a href="[field:typelink /]">更多...</a> 
-</td>
-</tr>
-</table>
-{/dede:type} </td>
-</tr>
-<tr> 
-<td height="100" valign="top" bgcolor="#FFFFFF"> {dede:arclist col='4' 
-row='8' imgwidth='150' imgheight='110'} 
-<table width='160' border='0' align="center" cellpadding='2' cellspacing='1' bgcolor="#E6EAE3">
-<tr> 
-<td height='120' align="center" bgcolor="#FFFFFF">[field:imglink/]</td>
-</tr>
-<tr> 
-<td height='20' align="center" bgcolor="#F8FCEF">[field:textlink/] 
-</td>
-</tr>
-</table>
-<div style="font-size:3pt">&nbsp;</div>
-{/dede:arclist} </td>
-</tr>
-</table>
-<div style='font-size:2px'>&nbsp;</div>
-{/dede:channelArtlist} </td>
-</tr>
-</table>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
-<tr> 
-<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+<body>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
-	{dede:global name='cfg_powerby'/}
-</td>
+<!--澶撮儴寮�濮�-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">
+		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">楂樼骇鎼滅储</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">鏀惰棌鏈珯</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">缃戠珯鍦板浘</a> </li>
+		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS璁㈤槄</a></li>
+		</ul>
+	</div>
+</div>
+<!--瀵艰埅鏍�-->
+<div class="topmenu cbody">
+	<ul>
+		<li><a href="/">棣栭〉</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>涓撻</a></li>
+		<li><a href="http://bbs.dedecms.com">鏀寔璁哄潧</a></li>
+	</ul>
+	<div class="rssbut">
+		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>	</div>
+</div>
+<!--鎼滅储鏉�-->
+<div class="topsearch cbody">
+	<div class="title"></div>
+	<div class="inpbox">
+    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<input type="hidden" name="kwtype" value="0">
+		<input name="keyword" id="keyword" type="text" class="searchtxt" />
+		<select name="searchtype" id="searchtype">
+			<option value="titlekeyword" selected>鏅鸿兘妯＄硦鎼滅储</option>
+			<option value="title">浠呮悳绱㈡爣棰�</option>
+		</select>
+		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+	</div>
+	<div class="hots">
+		<strong>鐑棬鍏抽敭瀛楋細</strong>
+		{dede:hotwords num='5' subday='30'/}
+	</div>
+</div>
 
-<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
-</tr>
-</table>
+<!--鍐呭-->
+<div class="main cbody margintop">
+	<!--宸︿晶-->
+	<div class="pleft">
+		<!--浣嶇疆瀵艰埅-->
+		<div class="thisplace">
+			<div class="title">{dede:field name='typename'/}</div>
+			<div class="placenav">
+				<span>褰撳墠浣嶇疆 :</span>
+				{dede:field name='position'/}
+			</div>
+		</div>
 
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
-<tr><td height="6"></td></tr>
-</table> 
-</center>
+
+		<div class="picnews margintop">
+				<dl>
+						{dede:arclist row=4 titlelen=20 orderby=pubdate type='image.' imgwidth='152' imgheight='98'}
+						<dd><a href="[field:arcurl/]" class="pimg" >[field:image/]</a><span>[field:textlink/]</span></dd>
+						{/dede:arclist}
+				</dl>
+		</div>
+
+
+		<div class="listbox">
+			{dede:channelArtlist}
+            <dl>{dede:type}
+				<dt>
+					<span class="title"><a href="[field:typelink /]">[field:typename /]</a></span>
+					<span class="more"><a href="[field:typelink /]">鏇村...</a></span>
+				</dt> {/dede:type}
+				<dd>
+                	{dede:arclist orderby='ID' row='8' titlelen='36'}
+					<a href="[field:arcurl /]">[field:title /]</a>
+                    {/dede:arclist}
+				</dd>
+			</dl>
+            {/dede:channelArtlist}
+			</div>
+	</div>
+
+	<!--鍙充晶-->
+	<div class="pright">
+		<!--渚ц竟淇℃伅鍒楄〃-->
+                <div class="classbox">
+			<dl>
+				<dt>鏍忕洰鍒楄〃</dt>
+				<dd>
+					<ul>
+                    {dede:channel type='sun'}
+                    <li><a href='[field:typelink/]'>[field:typename/]</a></li>
+                    {/dede:channel}
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		<div class="rlist margintop">
+			<div class="title">闅忔満鎺ㄨ崘</div>
+			<div class="rbox">
+				<ul>
+                	{dede:arclist type='commend' titlelen='26' orderby='rand' row='10'}
+                      <li>[field:textlink/]</li>
+                    {/dede:arclist}
+				</ul>
+			</div>
+		</div>
+
+		<!--渚ц竟淇℃伅鍒楄〃-->
+		<div class="rlist margintop">
+			<div class="title">鐑棬鍏虫敞</div>
+			<div class="rbox">
+				<ul>
+                	{dede:arclist orderby='click' titlelen='26' row='20'}
+                	  <li>[field:textlink/]</li>
+                    {/dede:arclist}
+					</ul>
+			</div>
+		</div>
+
+	</div>
+	<div class="floatclear"><!--娓呴櫎娴姩--></div>
+</div>
+
+
+<div class="footer cbody margintop">
+	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        {dede:global name='cfg_powerby'/}
+	</div>
+	<div class="slogo">
+		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+	</div>
+	<div class="floatclear"></div>
+</div>
 </body>
 </html>

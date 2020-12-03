@@ -1,12 +1,12 @@
 <?php 
-//nps ÍøÉÏÖ§¸¶½Ó¿Ú
+//nps ç½‘ä¸Šæ”¯ä»˜æŽ¥å£
 
-//ÉÌ»§ºÅ
+//å•†æˆ·å·
 $cfg_merchant = "";
-//ÉÌ»§ÃÜÔ¿
+//å•†æˆ·å¯†é’¥
 $cfg_merpassword = "";
 
-// ¹«¹²º¯Êý¶¨Òå
+// å…¬å…±å‡½æ•°å®šä¹‰
 function HexToStr($hex)
 {
     $string="";
@@ -24,15 +24,15 @@ function StrToHex($string)
 
 if(!isset($pagePos)) $pagePos = '';
 
-//npsÐÅÏ¢
+//npsä¿¡æ¯
 $m_language	=	1;
-$s_name		=	"³Â¿µ";
-$s_addr		=	"ÉîÛÚ";
+$s_name		=	"é™ˆåº·";
+$s_addr		=	"æ·±åœ³";
 $s_postcode	=	518000;
 $s_tel		=	"0755-83791960";
 $s_eml		=	"sway@nps.cn";
-$r_name		=	"³Â´ó¿µ";
-$r_addr		=	"ÉîÛÚ";
+$r_name		=	"é™ˆå¤§åº·";
+$r_addr		=	"æ·±åœ³";
 $r_postcode	=	100080;
 $r_tel		=	"010-81234567";
 $r_eml		=	"service@nps.cn";
@@ -50,14 +50,14 @@ if($pagePos == 'post_to_pay'){
 	$modate		=	GetDateTimeMk($mtime);
 	
 
-	//×éÖ¯¶©µ¥ÐÅÏ¢
+	//ç»„ç»‡è®¢å•ä¿¡æ¯
 	$m_info = $m_id."|".$m_orderid."|".$m_oamount."|".$m_ocurrency."|".$m_url."|".$m_language;
 	$s_info = $s_name."|".$s_addr."|".$s_postcode."|".$s_tel."|".$s_eml;
 	$r_info = $r_name."|".$r_addr."|".$r_postcode."|".$r_tel."|".$r_eml."|".$m_ocomment."|".$m_status."|".$modate;
 
 	$OrderInfo = $m_info."|".$s_info."|".$r_info;
 
-	//¶©µ¥ÐÅÏ¢ÏÈ×ª»»³ÉHEX£¬È»ºóÔÙ¼ÓÃÜ
+	//è®¢å•ä¿¡æ¯å…ˆè½¬æ¢æˆHEXï¼Œç„¶åŽå†åŠ å¯†
 	$OrderInfo = StrToHex($OrderInfo);
 	$digest = strtoupper(md5($OrderInfo.$cfg_merpassword));
 

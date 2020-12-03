@@ -1,0 +1,253 @@
+@charset "utf-8";
+/*----------首页左侧*/
+.ileft{
+	width:608px;
+	float:left;
+}
+/*----------推荐信息*/
+.nlist{
+	width:608px;
+	background:url(../images/nlist_title_bg.gif) repeat-x;
+	padding-top:4px;
+}
+/*----------推荐信息:分类*/
+.nlist .nltitle{
+	width:608px;
+	height:25px;
+	background:url(../images/nlist_title_sr.gif) right no-repeat;
+}
+.nlist .nltitle ul {
+	width:608px;
+	height:25px;
+	float:left;
+	background:url(../images/nlist_title_sr.gif) left no-repeat;
+}
+.nlist .nltitle ul li{
+	float:left;
+	text-align:center;
+	margin-left:10px;
+	display:inline;
+}
+.nlist .nltitle ul li a{
+	display:block;
+	width:82px;
+	height:25px;
+	background:url(../images/nlist_li_bg.gif) left top repeat-x;
+	line-height:25px;
+	color:#C30;
+	text-decoration:none;
+}
+.nlist .nltitle ul li a:hover{
+	background:url(../images/nlist_li_bg.gif) left bottom repeat-x;
+}
+.nlist .nltitle ul li a.thisclass,.nlist ul li a.thisclass:hover{
+	background:url(../images/nlist_li_on.gif);
+	color:#FFF;
+	letter-spacing:2px;
+	font-weight:bold;
+}
+/*----------推荐信息:列表*/
+.nlist dl{
+	width:600px;
+	margin:4px auto 0px;
+}
+.nlist dd{
+	width:600px;
+	display:none;
+}
+.nlist dd ul{
+	width:600px;
+}
+.nlist dd ul li{
+	width:300px;
+	line-height:31px;
+	float:left;
+	display:block;
+	overflow:hidden;
+}
+.nlist dd ul li span a{
+	text-decoration:none;
+	font-weight:bold;
+	color:#F63;
+	margin-left:10px;
+}
+.nlist dd ul li span a:hover{
+	color:#C00;
+}
+.nlist dd ul li a{
+	color:#666666;
+}
+
+/*----------分类*/
+.classbox{
+	width:608px;
+}
+/*----------分类:标题*/
+.classbox .cbtitle{
+	width:608px;
+	height:27px;
+	background:url(../images/classbox_tbg.gif) repeat-x;
+	clear:both;
+}
+.classbox .cbtitle .clsname{
+	width:150px;
+	height:17px;
+	padding-top:10px;
+	float:left;
+	margin-left:5px;
+	background:url(../images/classbox_tb.gif) left bottom no-repeat;
+	text-indent:10px;
+	font-weight:bold;
+	font-size:14px;
+}
+/*----------分类:地区*/
+.classbox .cbtitle .area{
+	float:right;
+	margin-right:10px;
+	line-height:27px;
+	color:#FFFFFF;
+}
+.classbox .cbtitle .area a{
+	color:#FFFFFF;
+}
+/*----------分类:列表*/
+.classbox .cblist{
+	width:606px;
+	margin:4px auto 0px;
+	border-left:1px solid #EEE;
+	border-right:1px solid #EEE;
+	overflow:hidden;
+	clear:both;
+}
+/*----------分类:BOX*/
+.classbox .cblist dl{
+	width:572px;
+	display:block;
+	margin:18px auto 0px;
+	overflow:hidden;
+}
+.classbox .cblist dl dt{
+	display:block;
+	width:270px;
+	height:29px;
+	background:url(../images/cls_bbg.gif) no-repeat;
+	line-height:29px;
+}
+.classbox .cblist dl dt a{
+	font-weight:bold;
+	font-size:14px;
+	margin-left:10px;
+}
+.classbox .cblist dl dt span{
+	font-size:11px;
+	margin-left:5px;
+	color:#999999;
+}
+.classbox .cblist dl dd{
+	overflow:hidden;
+}
+.classbox .cblist dl dd a{
+	height:15px;
+	line-height:15px;
+	display:block;
+	float:left;
+	white-space:nowrap;
+	padding-left:10px;
+	padding-right:10px;
+	margin:10px 0px 3px -1px;
+	color:#36C;
+	overflow:hidden;
+	border-left:1px solid #DDD;
+}
+
+/*----------首页右侧*/
+.iright{
+	width:280px;
+	float:right;
+}
+/*----------功能按钮*/
+.butbox{
+	width:280px;
+	background:url(../images/butbox_bg.gif) top center no-repeat;
+	padding-top:5px;
+}
+.butbox ul{
+	width:278px;
+	border-color:#FFEC82;
+	border-style:solid;
+	border-width:0px 1px 1px 1px;
+	overflow:auto;
+	padding-bottom:8px;
+}
+.butbox ul li{
+	width:120px;
+	height:33px;
+	line-height:33px;
+	text-align:center;
+	float:left;
+	margin:7px 0px 0px 12px;
+	display:inline;
+}
+.butbox ul li a{
+	float:left;
+	display:block;
+	width:120px;
+	height:33px;
+	background:url(../images/butbox_but.gif) top no-repeat;
+	font-size:14px;
+	font-weight:bold;
+	color:#FFC;
+	letter-spacing:2px;
+	text-decoration:none;
+}
+.butbox ul li a:hover{
+	color:#600;
+	background-position:bottom;
+}
+/*----------列表*/
+.slist{
+	width:280px;
+	background:url(../images/rlist_title_bg.jpg) left top no-repeat;
+}
+.slist dl{
+	width:280px;
+	background:url(../images/rlist_title_r.gif) right top no-repeat;
+}
+.slist dl dt{
+	width:280px;
+	line-height:21px;
+	padding-top:6px;
+	height:25px;
+	text-indent:12px;
+	font-weight:bold;
+	color:#FFF;
+	letter-spacing:2px;
+}
+.slist dl dd{
+	width:278px;
+	border-color:#EEE;
+	border-style:solid;
+	border-width:0px 1px 1px 1px;
+	overflow:auto;
+	padding-bottom:5px;
+}
+.slist dl dd ul{
+	width:276px;
+}
+.slist dl dd ul li{
+	width:276px;
+	line-height:31px;
+	float:left;
+	display:block;
+	overflow:hidden;
+}
+.slist dl dd ul li span a{
+	text-decoration:none;
+	color:#F63;
+	margin-left:16px;
+	margin-right:4px;
+	color:#999999;
+}
+.slist dl dd ull li a{
+	color:#333;
+}

@@ -1,9 +1,9 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Keyword');
 empty($_COOKIE['ENV_GOBACK_URL']) ? $ENV_GOBACK_URL = "article_keywords_main.php" : $ENV_GOBACK_URL=$_COOKIE['ENV_GOBACK_URL'];
 if(!isset($aids)){
-	ShowMsg("ÄãÃ»ÓÐÑ¡ÔñÒª¸ü¸ÄµÄ¶«¶«£¡",$ENV_GOBACK_URL);
+	ShowMsg("ä½ æ²¡æœ‰é€‰æ‹©è¦æ›´æ”¹çš„ä¸œä¸œï¼",$ENV_GOBACK_URL);
 	exit();
 }
 $dsql = new DedeSql(false);
@@ -12,17 +12,17 @@ foreach($aids as $aid)
 	$rpurl = ${'rpurl_'.$aid};
 	$rpurlold = ${'rpurlold_'.$aid};
 	$keyword = ${'keyword_'.$aid};
-	//É¾³ýÏîÄ¿
+	//åˆ é™¤é¡¹ç›®
 	if(!empty(${'isdel_'.$aid}))
 	{
-		 $query = "update #@__archives set keywords = Replace(keywords,' $keyword ',' ') where channel=1";
+		 $query = "update #@__full_search set keywords = Replace(keywords,' $keyword ',' ')";
      $dsql->SetQuery($query);
 	   $dsql->ExecuteNoneQuery();
 	   $dsql->SetQuery("Delete From #@__keywords where aid='$aid'");
      $dsql->ExecuteNoneQuery();
      continue;
 	}
-	//½ûÓÃÏîÄ¿
+	//ç¦ç”¨é¡¹ç›®
 	$staold = ${'staold_'.$aid};
 	if(!empty(${'isnouse_'.$aid})) $sta = 0;
 	else $sta = 1;
@@ -33,13 +33,13 @@ foreach($aids as $aid)
 	  $dsql->ExecuteNoneQuery();
 	  if($sta==0)
 	  {
-	    $query2 = "update #@__archives set keywords = Replace(keywords,' $keyword ',' ') where channel=1";
+	    $query2 = "update #@__full_search set keywords = Replace(keywords,' $keyword ',' ')";
       $dsql->SetQuery($query2);
 	    $dsql->ExecuteNoneQuery();
 	  }
 	  continue;
 	}
-	//¸üÐÂÁ´½ÓÍøÖ·
+	//æ›´æ–°é“¾æŽ¥ç½‘å€
 	if($rpurl!=$rpurlold)
 	{
 		$query1 = "update #@__keywords set rpurl='$rpurl' where aid='$aid' ";
@@ -47,7 +47,9 @@ foreach($aids as $aid)
 	  $dsql->ExecuteNoneQuery();
 	}
 }
-$dsql->Close();
-ShowMsg("Íê³ÉÖ¸¶¨µÄ¸ü¸Ä£¡",$ENV_GOBACK_URL);
+
+ShowMsg("å®ŒæˆæŒ‡å®šçš„æ›´æ”¹ï¼",$ENV_GOBACK_URL);
 exit();
+
+ClearAllLink();
 ?>

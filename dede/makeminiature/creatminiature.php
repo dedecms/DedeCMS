@@ -1,19 +1,19 @@
 <?php
 /***************************************
-*×÷Õß£ºÂäÃÎÌìĞ«£¨beluckly£©
-*ÓÊÏä&MSN£ºsmpluckly@gmail.com
-*Íê³ÉÊ±¼ä£º2006-12-18
-*ÀàÃû£ºCreatMiniature
-*¹¦ÄÜ£ºÉú³É¶àÖÖÀàĞÍµÄËõÂÔÍ¼
-*»ù±¾²ÎÊı£º$srcFile,$echoType
-*·½·¨ÓÃµ½µÄ²ÎÊı£º
-				$toFile,Éú³ÉµÄÎÄ¼ş
-				$toW,Éú³ÉµÄ¿í
-				$toH,Éú³ÉµÄ¸ß
-				$bk1,±³¾°ÑÕÉ«²ÎÊı ÒÔ255Îª×î¸ß
-				$bk2,±³¾°ÑÕÉ«²ÎÊı
-				$bk3,±³¾°ÑÕÉ«²ÎÊı
-*Àı£º
+*ä½œè€…ï¼šè½æ¢¦å¤©èï¼ˆbelucklyï¼‰
+*é‚®ç®±&MSNï¼šsmpluckly@gmail.com
+*å®Œæˆæ—¶é—´ï¼š2006-12-18
+*ç±»åï¼šCreatMiniature
+*åŠŸèƒ½ï¼šç”Ÿæˆå¤šç§ç±»å‹çš„ç¼©ç•¥å›¾
+*åŸºæœ¬å‚æ•°ï¼š$srcFile,$echoType
+*æ–¹æ³•ç”¨åˆ°çš„å‚æ•°ï¼š
+				$toFile,ç”Ÿæˆçš„æ–‡ä»¶
+				$toW,ç”Ÿæˆçš„å®½
+				$toH,ç”Ÿæˆçš„é«˜
+				$bk1,èƒŒæ™¯é¢œè‰²å‚æ•° ä»¥255ä¸ºæœ€é«˜
+				$bk2,èƒŒæ™¯é¢œè‰²å‚æ•°
+				$bk3,èƒŒæ™¯é¢œè‰²å‚æ•°
+*ä¾‹ï¼š
 	include("creatminiature.php");
 	$cm=new CreatMiniature();
 	$cm->SetVar("bei1.jpg","file");
@@ -24,14 +24,14 @@
 ***************************************/
 class CreatMiniature
 {
-	//¹«¹²±äÁ¿
-	var $srcFile="";        //Ô­Í¼
-	var $echoType;			//Êä³öÍ¼Æ¬ÀàĞÍ£¬link--²»±£´æÎªÎÄ¼ş£»file--±£´æÎªÎÄ¼ş
-	var $im="";				//ÁÙÊ±±äÁ¿
-	var $srcW="";			//Ô­Í¼¿í
-	var $srcH="";			//Ô­Í¼¸ß
+	//å…¬å…±å˜é‡
+	var $srcFile="";        //åŸå›¾
+	var $echoType;			//è¾“å‡ºå›¾ç‰‡ç±»å‹ï¼Œlink--ä¸ä¿å­˜ä¸ºæ–‡ä»¶ï¼›file--ä¿å­˜ä¸ºæ–‡ä»¶
+	var $im="";				//ä¸´æ—¶å˜é‡
+	var $srcW="";			//åŸå›¾å®½
+	var $srcH="";			//åŸå›¾é«˜
 
-	//ÉèÖÃ±äÁ¿¼°³õÊ¼»¯
+	//è®¾ç½®å˜é‡åŠåˆå§‹åŒ–
 	function SetVar($srcFile,$echoType)
 	{
 		$this->srcFile=$srcFile;
@@ -43,14 +43,14 @@ class CreatMiniature
 	    {
 		 case 1:
 		   if(!function_exists("imagecreatefromgif")){
-		    echo "ÄãµÄGD¿â²»ÄÜÊ¹ÓÃGIF¸ñÊ½µÄÍ¼Æ¬£¬ÇëÊ¹ÓÃJpeg»òPNG¸ñÊ½£¡<a href='javascript:go(-1);'>·µ»Ø</a>";
+		    echo "ä½ çš„GDåº“ä¸èƒ½ä½¿ç”¨GIFæ ¼å¼çš„å›¾ç‰‡ï¼Œè¯·ä½¿ç”¨Jpegæˆ–PNGæ ¼å¼ï¼<a href='javascript:go(-1);'>è¿”å›</a>";
 		    exit();
 		   }
 		   $this->im = ImageCreateFromGIF($this->srcFile);
 		   break;
 		case 2:
 		  if(!function_exists("imagecreatefromjpeg")){
-		   echo "ÄãµÄGD¿â²»ÄÜÊ¹ÓÃjpeg¸ñÊ½µÄÍ¼Æ¬£¬ÇëÊ¹ÓÃÆäËü¸ñÊ½µÄÍ¼Æ¬£¡<a href='javascript:go(-1);'>·µ»Ø</a>";
+		   echo "ä½ çš„GDåº“ä¸èƒ½ä½¿ç”¨jpegæ ¼å¼çš„å›¾ç‰‡ï¼Œè¯·ä½¿ç”¨å…¶å®ƒæ ¼å¼çš„å›¾ç‰‡ï¼<a href='javascript:go(-1);'>è¿”å›</a>";
 		   exit();
 		  }
 		  $this->im = ImageCreateFromJpeg($this->srcFile);    
@@ -63,7 +63,7 @@ class CreatMiniature
 	  $this->srcH=ImageSY($this->im); 
 	}
 	
-	//Éú³ÉÅ¤ÇúĞÍËõÍ¼
+	//ç”Ÿæˆæ‰­æ›²å‹ç¼©å›¾
 	function Distortion($toFile,$toW,$toH)
 	{
 		$cImg=$this->CreatImage($this->im,$toW,$toH,0,0,0,0,$this->srcW,$this->srcH);
@@ -71,7 +71,7 @@ class CreatMiniature
 		ImageDestroy($cImg);
 	}
 	
-	//Éú³É°´±ÈÀıËõ·ÅµÄËõÍ¼
+	//ç”ŸæˆæŒ‰æ¯”ä¾‹ç¼©æ”¾çš„ç¼©å›¾
 	function Prorate($toFile,$toW,$toH)
 	{
 		$toWH=$toW/$toH;
@@ -100,7 +100,7 @@ class CreatMiniature
 		}
 	}
 	
-	//Éú³É×îĞ¡²Ã¼ôºóµÄËõÍ¼
+	//ç”Ÿæˆæœ€å°è£å‰ªåçš„ç¼©å›¾
 	function Cut($toFile,$toW,$toH)
 	{
 		  $toWH=$toW/$toH;
@@ -122,7 +122,7 @@ class CreatMiniature
 		ImageDestroy($allImg);
 	}
 
-	//Éú³É±³¾°Ìî³äµÄËõÍ¼
+	//ç”ŸæˆèƒŒæ™¯å¡«å……çš„ç¼©å›¾
 	function BackFill($toFile,$toW,$toH,$bk1=255,$bk2=255,$bk3=255)
 	{
 		$toWH=$toW/$toH;
@@ -149,7 +149,7 @@ class CreatMiniature
 		{
 			$cImg=ImageCreate($toW,$toH);
 		}
-		$backcolor = imagecolorallocate($cImg, $bk1, $bk2, $bk3);		//Ìî³äµÄ±³¾°ÑÕÉ«
+		$backcolor = imagecolorallocate($cImg, $bk1, $bk2, $bk3);		//å¡«å……çš„èƒŒæ™¯é¢œè‰²
 		ImageFilledRectangle($cImg,0,0,$toW,$toH,$backcolor);
 		if($this->srcW>$toW||$this->srcH>$toH)
 		{	 
@@ -197,7 +197,7 @@ class CreatMiniature
 		 return $creatImg;
 	}
 	
-	//Êä³öÍ¼Æ¬£¬link---Ö»Êä³ö£¬²»±£´æÎÄ¼ş¡£file--±£´æÎªÎÄ¼ş
+	//è¾“å‡ºå›¾ç‰‡ï¼Œlink---åªè¾“å‡ºï¼Œä¸ä¿å­˜æ–‡ä»¶ã€‚file--ä¿å­˜ä¸ºæ–‡ä»¶
 	function EchoImage($img,$to_File)
 	{
 		switch($this->echoType)

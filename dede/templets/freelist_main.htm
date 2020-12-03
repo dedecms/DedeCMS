@@ -1,18 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>×ÔÓÉÁĞ±í¹ÜÀí</title>
-<link href="base.css" rel="stylesheet" type="text/css">
-<link href="div.css" rel="stylesheet" type="text/css">
-<style>
-	.nnpp{
-	border-bottom:1px solid #98CAEF;
-	border-top:1px solid #FFFFFF;
-	border-left:1px solid #FFFFFF;
-	border-right:1px solid #FFFFFF;
-	filter:alpha(opacity=50);
- }
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>è‡ªç”±åˆ—è¡¨ç®¡ç†</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../include/dedeajax2.js"></script>
 <script language='javascript' src='main.js'></script>
 <script language="JavaScript">
@@ -21,41 +12,41 @@ var totalrow = <?php echo $totalRow?>;
 var pagesize = <?php echo $pagesize?>;
 var orderby = '<?php echo $orderby?>';
 var addget = "<?php echo $addget?>";
-//¼ÓÔØÁĞ±í
+//åŠ è½½åˆ—è¡¨
 function ReloadPage(ordertype){
 	orderby = ordertype;
 	var listArea = $Obj('rslist');
-	var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href=\"javascript:ReloadPage('"+ordertype+"')\"><u>µã»÷´ËÖØĞÂ¼ÓÔØÁĞ±í</u></a>]";
-  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ¼ÓÔØ...");
+	var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href=\"javascript:ReloadPage('"+ordertype+"')\"><u>ç‚¹å‡»æ­¤é‡æ–°åŠ è½½åˆ—è¡¨</u></a>]";
+  var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨åŠ è½½...");
   myajax.SendGet("freelist_main.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype+addget);
 }
-//ÔØÈëÖ¸¶¨Ò³µÄÁĞ±í
+//è½½å…¥æŒ‡å®šé¡µçš„åˆ—è¡¨
 function LoadPage(npage){
 	pageno = npage;
 	ReloadPage(orderby);
 	ReloadPageNum(pageno);
 }
-//¸ü¸Ä
+//æ›´æ”¹
 function EditNote(nid){
   location.href = 'freelist_edit.php?aid='+nid;
 }
-//¸üĞÂHTML
+//æ›´æ–°HTML
 function CreateNote(nid){
   location.href = 'makehtml_freelist.php?aid='+nid;
 }
-//É¾³ı
+//åˆ é™¤
 function DelNote(nid){
-	if(!window.confirm("ÄãÈ·ÈÏÒªÉ¾³ıÕâÌõ¼ÇÂ¼Ã´£¡")){ return false; }
+	if(!window.confirm("ä½ ç¡®è®¤è¦åˆ é™¤è¿™æ¡è®°å½•ä¹ˆï¼")){ return false; }
 	var listArea = $Obj('rslist');
 	totalrow = totalrow - 1;
   var pagenum = Math.ceil(totalrow/pagesize);
   if(pagenum<=pageno) pageno = pagenum;
-  var errMsg = "ÍøÂçÍ¨ĞÅ³ö´í£¡<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>µã»÷´ËÖØĞÂ¼ÓÔØÁĞ±í</u></a>]";
-	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"ÕıÔÚ´¦Àí...");
+  var errMsg = "ç½‘ç»œé€šä¿¡å‡ºé”™ï¼<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>ç‚¹å‡»æ­¤é‡æ–°åŠ è½½åˆ—è¡¨</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"æ­£åœ¨å¤„ç†...");
   myajax.SendGet("freelist_main.php?dopost=del&aid="+nid+"&pageno="+pageno);
   ReloadPageNum(pageno);
 }
-//ÖØĞÂ¼ÓÔØ·ÖÒ³ÁĞ±í
+//é‡æ–°åŠ è½½åˆ†é¡µåˆ—è¡¨
 function ReloadPageNum(startnum){
   var ListArea = $Obj('pagelist');
   var pagenum = Math.ceil(totalrow/pagesize);
@@ -63,9 +54,9 @@ function ReloadPageNum(startnum){
   var ahtml = "";
   var startloop = 1;
   var endnum = 0;
-  ahtml += "¹²£º"+totalrow+" Ìõ¼ÇÂ¼/"+pagenum+"Ò³";
-  if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>Ê×Ò³</a> ";
-  if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>¡üÉÏÒ³</a> ";
+  ahtml += "å…±ï¼š"+totalrow+" æ¡è®°å½•/"+pagenum+"é¡µ";
+  if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>é¦–é¡µ</a> ";
+  if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>â†‘ä¸Šé¡µ</a> ";
   if(startnum >= pagenum-listsize){
   	startloop = pagenum-(listsize*2);
   	if(startloop<1) startloop = 1;
@@ -90,57 +81,60 @@ function ReloadPageNum(startnum){
   		else ahtml += "<a href='#' onclick='LoadPage("+i+")'>["+i+"]</a> ";
   	}
   }
-  if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>ÏÂÒ³¡ı</a> ";
-  if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>Ä©Ò³</a>";
+  if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>ä¸‹é¡µâ†“</a> ";
+  if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>æœ«é¡µ</a>";
   ListArea.innerHTML = ahtml;
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<div class="main"> 
-  <table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#333333" style="margin-bottom:3px">
-    <tr> 
-      <td height="25" colspan="8" valign="bottom" background="img/tbg.gif"> 
-        <table width="96%" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="29%"><strong>&nbsp;×ÔÓÉÁĞ±í¹ÜÀí</strong></td>
-            <td width="42%"><table width="250" border="0" cellspacing="0" cellpadding="0">
-                <form action="freelist_main.php" name="form1">
-                  <tr> 
-                    <td width="179" align="center">
-                    	<input name="keyword" type="text" id="keyword" style="width:170px" value="<?php echo $keyword?>"> 
-                    </td>
-                    <td width="121">
-                    	<input type="submit" name="Submit" value="ËÑË÷" class="nbt"> 
-                    </td>
-                  </tr>
-                </form>
-              </table></td>
-            <td width="29%" align="right">
-			<input type="button" name="bt1" value="Ôö¼ÓÁĞ±í" class="nbt" style="width:70px" onclick="location='freelist_add.php';">
-			&nbsp;
-            <input type="button" name="bt2" value="¸üĞÂËùÓĞÁĞ±íHTML" class="nbt" style="width:110px" onclick="location='makehtml_freelist.php';"> 
-            </td>
-          </tr>
-        </table>
-      </td>
+<body leftmargin='8' topmargin='8'>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">é¢‘é“ç®¡ç†</div>
+</div>
+
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<tr>
+<td bgcolor="#EDF9D5" class="tbtitletxt">
+	<table width='100%' border="0" cellpadding='0' cellspacing='0'>
+    <tr>
+     <td width='30%' class="tbtitletxt"><strong>è‡ªç”±åˆ—è¡¨ç®¡ç†</strong></td>
+     <td>&nbsp;</td>
+     <td align='right'>&nbsp;</td>
     </tr>
-	</table>
+  </table>
+  </td>
+  </tr>
+</table>
 	<span id='rslist'>
 	<?php 
 		GetTagList($dsql,$pageno,$pagesize,$orderby);
 	?>
 	</span>
-  
-  <table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#333333" style="margin-bottom:3px">
-    <tr align="center"> 
-      <td height="35" colspan="8" bgcolor="#F9FCF1">
-      <span id='pagelist'></span>
-      <script language='javascript'>ReloadPageNum(1);</script>
-      </td>
-    </tr>
-  </table>
-  
-</div>
+	<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+		<tr>
+		  <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 3px 6px;" >
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <form action="freelist_main.php" name="form1" id="form1">
+          <tr>
+            <td width="200" align="center">
+            	<input type="text" name="keyword" id="keyword" style="width:170px" value="<?php echo $keyword?>" />
+            </td>
+            <td width="80" align="left">
+            	<input type="submit" name="Submit2" value="æœç´¢" class="inputbut" />
+            </td>
+            <td align="left">
+            	<input type="button" name="bt1" value="å¢åŠ åˆ—è¡¨" class="inputbut" style="width:70px" onclick="location='freelist_add.php';" />
+              &nbsp;
+              <input type="button" name="bt2" value="æ›´æ–°æ‰€æœ‰åˆ—è¡¨HTML" class="inputbut" style="width:180px" onclick="location='makehtml_freelist.php';" />
+            </td>
+            <td width="200">
+            	<span id='pagelist'><script language='javascript'>ReloadPageNum(1);</script></span>
+            </td>
+          </tr>
+        </form>
+      </table></td>
+  </tr>
+</table>
 </body>
 </html>

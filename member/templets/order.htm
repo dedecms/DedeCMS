@@ -1,0 +1,22 @@
+<div id="joblist">
+<ul>
+<li>公司名称：<?=$order['company']?></li>
+<li>联系人姓名：<?=$order['username']?></li>
+<li>电话：<?=$order['phone']?></li>
+<li>传真：<?=$order['fax']?></li>
+<li>email：<?=$order['email']?></li>
+<li>qq：<?=$order['qq']?></li>
+<li>msn：<?=$order['msn']?></li>
+<li>地址：<?=$order['address']?></li>
+<li>订购产品名称：<?=$order['products']?></li>
+<li>订购数量：<?=$order['nums']?></li>
+<li>订单详细说明：<?=$order['content']?></li>
+<li>订购时间：<?=$order['dateline']?></li>
+<li>订单状态：<?=$order['status']?>
+[<a href="#" onclick="DealNote('<?=$order['orderid']?>')">标记订单为已处理</a>]</li>
+<li>公司网址：<?=$order['homepage']?></li><br>
+<li><input name="ids" type="checkbox" id="ids" value="<?=$order['orderid']?>">
+[<a href="#" onclick="DelNote('<?=$order['orderid']?>')">删除订单</a>]</li>
+</ul>
+<br><br>
+</div>

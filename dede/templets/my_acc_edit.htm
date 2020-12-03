@@ -1,0 +1,135 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>更改我的帐号</title>
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<script>
+function checkSubmit()
+{
+   if(document.form1.pwd.value!=''){
+	   if(document.form1.pwd.value!=document.form1.pwd2.value){
+	     alert("两次输入密码不一致！");
+	     return false;
+	   }
+  }
+  return true;
+}
+function checkPwd()
+{
+   if(document.form1.pwd.value!='')
+   {
+	   pw1 = document.form1.pwd.value;
+	   pw2 = document.form1.pwd2.value;
+	   pw3 = pw1.replace(/[^0-9a-z_@!\.\-]/ig,'');
+	   if(pw1!=pw3){
+	      document.getElementById('checkokpwd').innerHTML = "<font color='red'>密码含有非法字符！</font>";
+	   }else if(pw1!=pw2){
+	   	  document.getElementById('checkokpwd').innerHTML = "<font color='red'>两次密码不一致！</font>";
+	   }else{
+	   	  document.getElementById('checkokpwd').innerHTML = "<font color='green'>密码正确！</font>";
+	   }
+  }
+}
+</script>
+</head>
+<body>
+<div class="bodytitle">
+	<div class="bodytitleleft"></div>
+	<div class="bodytitletxt">系统帐号管理</div>
+</div>
+<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td height="19" bgcolor="#EDF9D5"> 
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr> 
+          <td width="24%"><b><strong>&nbsp;&nbsp;更改个人资料</strong></b> </td>
+          <td width="76%" align="right"></td>
+        </tr>
+      </table></td>
+</tr>
+<tr>
+    <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
+	<form name="form1" action="my_acc_edit.php" method="post" onSubmit="return checkSubmit();">
+	<input type="hidden" name="dopost" value="saveedit">
+        <table width="100%" border="0" cellpadding="1" cellspacing="1" class="tblist">
+          <tr> 
+            <td width="16%" height="28">登录ID：</td>
+            <td width="84%" align="left"><?php echo $row['userid']?></td>
+          </tr>
+          <tr> 
+            <td height="24">帐户类型：</td>
+            <td align="left">
+			  	<?php 
+			  	$mrow = $dsql->GetOne("Select * from #@__admintype where rank='{$row['usertype']}' ");
+			  	echo $mrow['typename'];
+			  	?>
+			    </td>
+          </tr>
+          <tr> 
+            <td height="24">负责频道：</td>
+            <td align="left">
+<?php
+    $typeOptions = "";
+    $typeids = Array();
+    if($row['typeid']!='')
+    {
+	     $typeids = explode(',',$row['typeid']);
+       $dsql->Execute('op',"Select ID,typename From #@__arctype where reID=0 And (ispart=0 Or ispart=1)");
+       while($row1 = $dsql->GetObject('op'))
+       {
+	        if(in_array($row1->ID,$typeids)){ echo "{$row1->typename}、"; }
+          $dsql->Execute('s',"Select ID,typename From #@__arctype where reID={$row1->ID} And (ispart=0 Or ispart=1)");
+          while($row2 = $dsql->GetObject('s')){
+	            if(in_array($row2->ID,$typeids)){ echo "{$row2->typename}、"; }
+	        }
+       }
+    }else{
+    	echo "所有频道";
+    }
+		
+?>
+       </td>
+          </tr>
+          <tr>
+            <td height="24" colspan="2" align="left" style="background-color: #FFFFCC;height:24px"><strong>如果不需要改密码，下面两项保留为空。</strong></td>
+          </tr>
+          <tr> 
+            <td height="24">新密码：</td>
+            <td align="left"><input name="pwd" type="text" id="pwd" size="16" style="width:150px" onchange="checkPwd()" /> &nbsp;（只能用'0-9'、'a-z'、'A-Z'、'.'、'@'、'_'、'-'、'!'以内范围的字符）</td>
+          </tr>
+          <tr>
+            <td height="24">确认新密码：</td>
+            <td align="left">
+            	<div style='float:left;margin-right:6px;'><input name="pwd2" type="text" id="pwd2" size="16" style="width:150px" onchange="checkPwd()" /></div>
+            	<div id='checkokpwd'></div>
+            </td>
+          </tr>
+		      <tr> 
+            <td height="28">笔名：</td>
+            <td align="left"><input name="uname" type="text" id="uname" size="16" value="<?php echo $row['uname']?>" style="width:150px"> &nbsp;（发布文章后显示责任编辑的名字）</td>
+          </tr>
+           <tr> 
+            <td height="24">真实姓名：</td>
+            <td align="left"><input name="tname" type="text" id="tname" size="16" style="width:150px" value="<?php echo $row['tname']?>"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td height="24">电子邮箱：</td>
+            <td align="left"><input name="email" type="text" id="email" size="16" style="width:150px" value="<?php echo $row['email']?>"> &nbsp;</td>
+          </tr>
+          <tr> 
+            <td colspan="2" align="left" style="background-color:#ECFABE;height:24px;padding-left:180px">
+			<input type="submit" name="Submit" value=" 保存资料 " class="inputbut"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+	  </td>
+</tr>
+</table>
+<?php
+echo $msg;
+?>
+</body>
+</html>
