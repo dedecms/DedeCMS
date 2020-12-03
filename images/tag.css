@@ -1,0 +1,307 @@
+@import url(global.css);
+
+dl.articleBox {
+ border:1px solid #aaccee;
+ background-color:#fff;
+ margin-bottom: 7px;
+ margin-top:3px; 
+ padding:1px;
+ background:url(dtbg.gif) #fff repeat-x;  
+}
+
+dl.articleBox dt {
+	font-weight:bold;
+	border-bottom:1px solid #aaccee;
+	padding: 3px 3px 3px 26px; 
+	margin-bottom:3px;
+	background:url(fbico.gif) no-repeat 6px;  
+	font-size:12px;
+	color:#0D2680;
+}
+
+dl.articleBox dt a {
+   font-weight:bold;
+}
+
+dl.articleBox dd {
+   padding: 3px;
+}
+
+dl.articleBox dd a{
+   font-size:13px;
+}
+
+#articleInfo
+{
+   color: #666666;
+   font-size: 12px;
+   padding:0 0 10px 0;
+}
+
+#mainContent
+{ 
+	margin: 3px 0 8px 2px;
+	float: left;
+	width: 74%;
+	border:1px solid #aaccee;
+	padding: 1px;
+} 
+
+#mainContent2
+{ 
+	margin: 3px 0 8px 2px;
+	float: left;
+	width: 74%;
+	padding: 1px;
+} 
+
+#mainContentR
+{ 
+	margin: 3px 5px 8px 0px;
+	float: right;
+	width: 74%;
+	padding: 1px;
+	border:1px solid #aaccee;
+} 
+
+#sidebarL {
+	float: left; 
+	width: 24%;
+	background: #ffffff;  
+	padding-left: 3px;
+	padding-right: 0px;
+}	
+
+#mainContentCt
+{
+	padding: 5px;
+}
+
+#curpos
+{
+	border-bottom:1px solid #aaccee;
+	background-color:#ebf3fb;
+	padding:3px;
+}
+
+#curpos2
+{
+	background-color:#ebf3fb;
+	padding:3px;
+}
+
+#imglist dl{
+	background:url(imglistbg.gif) #fff repeat-x;
+	margin:6px 0px 6px 0px;
+	border:1px solid #aaccee;
+	overflow:hidden;
+}
+
+#imglist img{
+	height: 90px;
+	width: 130px;
+}
+
+#imglist dl dd{
+	float:left;
+	padding:12px 0px 0px 25px;
+}
+
+#imglist dd a{
+	font-size:13px;
+	display:block;
+	margin-bottom:3px;
+}
+
+#sidebar1 {
+	float: right; 
+	width: 24%;
+	background: #ffffff;  
+	padding-left: 2px;
+	padding-right: 2px;
+}	
+
+#sidebar1 h3, #sidebar1 p {
+	margin-left: 10px; 
+	margin-right: 10px;
+}
+
+#footer { 
+	border-top:1px solid #aaccee;
+	text-align:center;
+	padding: 0 10px; 
+	background:#ebf3fb; 
+} 
+
+#footer p {
+	margin: 0; 
+	padding: 10px 0; 
+	font: 12px Arial, sans-serif;
+	color: #333333;
+}
+
+#footer a {
+	color: #333333;
+	font-size:10px;
+}
+
+#listmain{
+	padding-left:3px;
+	padding-right:3px;
+	width:100%;
+}
+
+.addinfos{
+	color: #333333;
+	font-size:13px;
+}
+
+.mainlinklist {
+	background:#f5fbff;
+}
+
+.col1 {
+	background-color:#ffffff;
+	border-bottom: 1px dotted #aaccee;
+	width:99%;
+}
+
+.col1 a{
+	font-size:13px;
+	line-height:180%;
+	font-weight: bold;
+}
+
+.col2 {
+	background-color:#ffffff;
+	border-left: 1px dotted #aaccee;
+	border-bottom: 1px dotted #aaccee;
+	text-align:center;
+}
+
+.col3 {
+	background-color:#f5fbff;
+	padding:8px;
+}
+
+.col3 a {
+	font-size:12px;
+}
+
+.pagelistbox {
+	padding: 0 3px 0 0;
+}
+
+td {
+	line-height: 18px;
+	font-size:12px;
+}
+
+td a {
+	color:#0D2680; 
+	text-decoration:underline;
+}
+
+.descriptions {
+	font-size:12px;
+	color: #464A55;
+}
+
+.addinfos {
+	padding-left:20px;
+	font-color:#ababab;
+}
+
+#pagebreak{
+   padding:10px;
+   text-align:center;
+}
+
+#commend{
+  text-align:right;
+  padding:0px 8px 3px 0px;
+  border-bottom:1px solid #999999;
+  margin-bottom:3px;
+}
+#commend a{
+  font-size:12px
+}
+
+#feedback.ff td a {
+   font-size:12px
+}
+
+table.ff {
+  margin-bottom:6px;
+}
+
+.articleBox1 {
+  width:49%;
+  float:left;
+}
+.articleBox2 {
+ width:49%;
+ float:right;
+}
+
+#partindexpos {
+	border: 1px solid #aaccee;
+	padding: 1px;
+}
+
+dl.likeidlink{
+	border:1px solid #fff;
+}
+
+.likeidlink dd{
+	background:url(sgpagedd.gif) #fff no-repeat;
+	margin-bottom:1px;
+	padding-left:20px;
+}
+
+.likeidlink dd a{
+	padding-left:16px;
+	font-weight:bold;
+}
+
+.likeidlink dd span{
+	padding-left:16px;
+	font-size:13px;
+	font-weight:bold;
+	color:#4579CF;
+}
+
+.likeidlink dd.cur{
+	background:url(sgpagedd2.gif) #fff no-repeat;
+}
+
+.tagc1 {
+	font-weight:bold;
+	font-size:14px;
+}
+
+.tagc2 {
+	font-size:12px;
+}
+
+.tagc3 {
+	font-size:14px;
+	color:blue;
+}
+
+.tagc4 {
+	font-weight:bold;
+	font-size:12px;
+	color:bule;
+}
+
+.tagc5 {
+	font-weight:bold;
+	font-size:16px;
+}
+
+.tagc6 {
+	font-weight:bold;
+	font-size:14px;
+	color:red;
+}

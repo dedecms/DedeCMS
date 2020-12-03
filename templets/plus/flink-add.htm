@@ -1,89 +1,110 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>申请友情链接 - powered by dedecms</title>
-<link href="../templets/style/nspage.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title><?php echo $cfg_webname;?>_申请友情链接</title>
+<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-<body>
+<body class="flinkpage">
 
-<div class="main mceneter">
-	<div class="toplogo">
-		<div class="logo">
-				<a href="/"><img src="../templets/images/toplogo.gif" /></a>		</div>
+<div class="header">
+	<div class="top w960 center">
 		<div class="title">
-			友情链接
-		</div>
+			<h1>
+				<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
+			</h1>
+		</div><!-- /title -->
+
+	</div><!-- /top -->
+</div><!-- /header -->
+
+<div class="w960 clear center mt1 cmt-box">
+	<div class="sp-title">
+		<h2>申请链接</h2>
+		<span class="more">
+			<a href="<?php echo "$cfg_phpurl/flink.php"; ?>">查看链接</a>
+		</span>
 	</div>
-	<div class="cmain">
-		
-		<div class="ctitle">
-			<h1>申请加入</h1>
-			<span></span>
-		</div>
-		<div class="cbox mceneter">
-			<div class="linkadd">
-			<form name="addlink" method="post" action="flink.php">
-			<input type='hidden' name='dopost' value='save' />
-				<dl>
-					<dt>网站名:</dt>
-					<dd><input name="webname" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网址:</dt>
-					<dd><input name="url" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站LOGO:</dt>
-					<dd><input name="logo" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>站长eMail:</dt>
-					<dd><input name="email" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站类型:</dt>
-					<dd>
-						<select name="typeid" id="typeid">
-							<?php 
-								$dsql = new DedeSql(false);
-								$dsql->SetQuery("select * from #@__flinktype");
-								$dsql->Execute();
-								while($row=$dsql->GetObject())
-								{
-								echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
-								}
-								$dsql->Close();
-							?>
-						</select>
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站概况:</dt>
-					<dd><textarea name="msg" cols="30" rows="3"></textarea>
-					</dd>
-				</dl>
-				<dl>
-					<dt>验证码:</dt>
-					<dd><input name="validate" type="text" size="4" /><img src="../include/vdimgck.php" width="50" height="20" />
-					</dd>
-				</dl>
-				<div class="submit">
-					<input name="提交" type="submit" id="提交" value="提交" class="button" />
-				</div>
-			</form>
-			</div>
-		</div>
+	<div class="formbox">
+		  <form name="form1" method="post" action="flink.php">
+		  	<input type='hidden' name='dopost' value='save'>
+		      <table width="100%"  border="0" cellspacing="1" cellpadding="3">
+                <tr> 
+                  <td height="25">网站名称：</td>
+                  <td><input name="webname" type="text" id="webname" size="30" class="ipt-txt"></td>
+                </tr>
+                <tr> 
+                  <td height="25">网址：</td>
+                  <td>
+                  	<input name="url" type="text" id="url" value="" size="30" class="ipt-txt">
+                  	(格式如：<a href='http://www.dedecms.com' target='_blank' style='text-decoration:none;color:#333'>http://www.dedecms.com</a>)
+                  </td>
+                </tr>
+                <tr> 
+                  <td height="25">网站Logo：</td>
+                  <td><input name="logo" type="text" id="logo" size="30" class="ipt-txt">
+                    (88*31 gif或jpg)</td>
+                </tr>
+                <tr> 
+                  <td height="25">网站简况：</td>
+                  <td> <textarea name="msg" cols="40" rows="4" id="msg" class="ipt-txt"></textarea></td>
+                </tr>
+                <tr> 
+                  <td height="25">站长Email：</td>
+                  <td><input name="email" type="text" id="email" size="30" class="ipt-txt"></td>
+                </tr>
+                <tr> 
+                  <td height="25">网站类型：</td>
+                  <td> <select name="typeid" id="typeid" >
+                      <?php
+        
+        $dsql->SetQuery("select * from #@__flinktype");
+        $dsql->Execute();
+        while($row=$dsql->GetObject())
+        {
+        	echo "	<option value='".$row->id."'>".$row->typename."</option>\r\n";
+        }
+        ?>
+                    </select> </td>
+                </tr>
+                <tr>
+                  <td height="25">验证码：</td>
+                  <td><table width="200" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="84"><input name="validate" type="text" id="vdcode2" size="10"></td>
+                        <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                      </tr>
+                    </table></td>
+                </tr>
+                <tr> 
+                  <td height="51">&nbsp;</td>
+                  <td><input type="submit" name="Submit" value=" 提 交 " class="btn-2">
+                    　 　 
+                    <input type="reset" name="Submit" value=" 重 置 " class="btn-2"></td>
+                </tr>
+              </table>
+		  </form>
+
+	
 	</div>
-</div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+
 </div>
 
+
+
+<div class="footer">
+<p class="link">
+		网站版权信息及免责声明
+  </p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
+</div>
 
 </body>
 </html>

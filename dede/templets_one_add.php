@@ -1,49 +1,42 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
-if(empty($dopost)) $dopost = "";
 CheckPurview('temp_One');
-//////////////////////////////////////////
+if(empty($dopost))
+{
+	$dopost = "";
+}
 if($dopost=="save")
 {
-	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+	require_once(DEDEINC."/arc.partview.class.php");
 	$uptime = time();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
-	
-	$inQuery = "
-	 Insert Into #@__sgpage(title,ismake,filename,uptime,body)
-	 Values('$title','$ismake','$filename','$uptime','$body');
-	";
-	$dsql = new DedeSql(false);
-	$dsql->SetQuery($inQuery);
-	if(!$dsql->ExecuteNoneQuery())
+	if($likeid=='')
 	{
-		$dsql->Close();
-		ShowMsg("增加页面失败，请检查长相是否有问题！","-1");
-	  exit();
+		$likeid = $likeidsel;
 	}
-	$dsql->Close();
-	
-	$filename = $cfg_basedir.$cfg_cmspath."/".$filename;
-	
-	if($ismake==1)
+	$row = $dsql->GetOne("Select filename From `#@__sgpage` where likeid='$likeid' And filename like '$filename' ");
+	if(is_array($row))
 	{
-	  $pv = new PartView();
-    $pv->SetTemplet(stripslashes($body),"string");
-    $pv->SaveToHtml($filename);
-    $pv->Close();
-  }
-  else
-  {
-  	$fp = fopen($filename,"w") or die("创建：{$filename} 失败，可能是没有权限！");
-  	fwrite($fp,stripslashes($body));
-  	fclose($fp);
-  }
+		ShowMsg("已经存在相同的文件名，请更改为其它文件名！","-1");
+		exit();
+	}
+	$inQuery = "Insert Into `#@__sgpage`(title,keywords,description,template,likeid,ismake,filename,uptime,body)
+	 Values('$title','$keywords','$description','$template','$likeid','$ismake','$filename','$uptime','$body'); ";
+	if(!$dsql->ExecuteNoneQuery($inQuery))
+	{
+		ShowMsg("增加页面失败，请检内容是否有问题！","-1");
+		exit();
+	}
+	$id = $dsql->GetLastID();
+	include_once(DEDEINC."/arc.sgpage.class.php");
+	$sg = new sgpage($id);
+	$sg->SaveToHtml();
 	ShowMsg("成功增加一个页面！","templets_one.php");
 	exit();
 }
+$row = $dsql->GetOne("Select max(aid) as aid From `#@__sgpage`  ");
+$nowid = is_array($row) ? $row['aid']+1 : '';
+include_once(DEDEADMIN."/templets/templets_one_add.htm");
 
-require_once(dirname(__FILE__)."/templets/templets_one_add.htm");
-
-ClearAllLink();
 ?>

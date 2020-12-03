@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:var.spacename /}--我的文章</title>
+<link href="space/person/img/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--topb-->
+{dede:include file='space-top.htm'/}
+<!--c1c2e-->
+<!--c3b-->
+		<div id="c3">
+			<div class="c3c">
+				<div class="c3c1">
+
+					<!--内容块开始-->
+					{dede:datalist}
+					<div class="ck">
+						<h1>
+							<span>日期:{dede:field.pubdate function="MyDate('y-m-d h:i',@me)"/}</span>
+							<a href="{dede:field.arcurl/}">{dede:field.title/}</a>
+						</h1>
+						<div class="cc">
+							{dede:if !ereg('defaultpic',$fields['litpic']) }
+							<img src='{dede:field.litpic/}' />
+							{/dede:if}
+							{dede:field.description function="html2text(@me)" /}
+						</div>
+						<div class="cb">
+							<dl>
+								<dd><a href="{dede:field.arcurl/}" target="_blank">查看全文</a><span>|</span></dd>
+							  <dd><a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">好评度：({dede:field.scores/})</a></dd>
+								<dd><a href="{dede:global.cfg_phpurl/}/feedback.php?aid={dede:field.id/}" target="_blank">去踩一下</a></dd>
+						  </dl>
+						</div>
+					</div>
+					{/dede:datalist}
+					<!--内容块结束-->
+					<div class="plcb plcb2">
+						{dede:pagelist/}
+					</div>
+				</div>
+				<div class="c3c2">
+					<!--photob-->
+					<div class="photo">
+						{dede:include file='space-userinfo.htm'/}
+					</div>
+					<!--photoe-->
+					<!--conkb-->
+					<div class="c3r noli">
+						<h1>我的网址书签</h1>
+						<ul>
+							<?php
+							$dsql->Execute('fl',"Select * From `#@__member_flink` where mid='{$_vars['mid']}' ");
+							while($arr = $dsql->GetArray('fl'))
+							{
+								echo "    <li>·<a href='{$arr['url']}' target='_blank'>{$arr['title']}</a></li>\r\n";
+							}
+						  ?>
+						</ul>
+					</div>
+					<div class="c3r noli fir">
+						<h1>最近访问</h1>
+						<ul>
+							{dede:newvisitor row=6}
+							<li>
+							  <div class='lside'>
+							  	<a href="{dede:field.url/}" target="_blank"><img src="{dede:field.face/}" /></a>
+							  </div>
+								<div class='rside'>
+									<h2><a href="{dede:field.url/}" target="_blank">{dede:field.uname/}</a></h2>
+									<div class='msg'>{dede:field.sign function="cn_substr(@me,60)" /}</div>
+								</div>
+							</li>
+							{/dede:newvisitor}
+						</ul>
+					</div>
+					<!--conke-->
+				</div>
+			</div>
+		</div>
+		<!--c3e-->
+	{dede:include file='space-foot.htm'/}
+	</div>
+	<!--cone-->
+</body>
+</html>

@@ -1,283 +1,180 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>修改图集</title>
-<link href="newskin.css" rel="stylesheet" type="text/css">
-<link href="company_style.css" rel="stylesheet" type="text/css">
-<script language='javascript' src='main.js'></script>	
-<script language="javascript">
-<!--
-
-function checkSubmit()
-{
-if(document.form1.title.value==""){
-	 alert("图集标题不能为空！");
-	 document.form1.title.focus();
-	 return false;
-}
-
-if(document.form1.typeid.value==0){
-	 alert("图集隶属栏目必须选择！");
-	 return false;
-}
-
-if(document.form1.vdcode.value==""){
- document.form1.vdcode.focus();
- alert("验证码不能为空！");
- return false;
-}
-}
-
-var startNum = 1;
-function MakeUpload(mnum)
-{
-   var endNum = 0;
-   var upfield = document.getElementById("uploadfield");
-   var pnumObj = document.getElementById("picnum");
-   var fhtml = "";
- 
-   if(mnum==0) endNum = startNum + Number(pnumObj.value);
-   else endNum = mnum;
-   if(endNum>120) endNum = 120;
-   
-   for(startNum;startNum < endNum;startNum++){
-	   fhtml = "";
-	   fhtml += "<table width='600' align=\"center\"><tr><td align='left'><input type='checkbox' name='isokcheck"+startNum+"' id='isokcheck"+startNum+"' value='1' class='np' onClick='CheckSelTable("+startNum+")'>显示/隐藏图片["+startNum+"]的选框</td></tr></table>";
-	   fhtml += "<table width=\"600\" border=\"0\" id=\"seltb"+startNum+"\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;\" align=\"center\"><tobdy>";
-	   fhtml += "<tr bgcolor=\"#F4F9DD\">\r\n";
-	   fhtml += "<td height=\"25\" colspan=\"2\" align='left'>　<b>图片"+startNum+"：</b></td>";
-	   fhtml += "</tr>";
-	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td width=\"410\" height=\"25\" align='left'> 　本地上传： ";
-	   fhtml += "<?php if($cfg_mb_upload=='Y'){?><input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"><?php }else{ echo "系统禁止了文件上传功能！";}?></td>";
-	   fhtml += "<td width=\"164\" rowspan=\"3\" align=\"center\"><img src=\"img/pview.gif\" width=\"150\" id=\"picview"+startNum+"\" name=\"picview"+startNum+"\"></td>";
-	   fhtml += "</tr>";
-	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td height=\"25\" align='left'> 　指定网址： ";
-	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' value='http://' style=\"width:260px\"> ";
-	   fhtml += "</td></tr>";
-	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-	   fhtml += "<td height=\"56\">　图片简介： ";
-	   fhtml += "<textarea name='imgmsg"+startNum+"' style=\"height:46px;width:330px\"></textarea> </td>";
-	   fhtml += "</tr></tobdy></table>\r\n";
-	   upfield.innerHTML += fhtml;
-  }
-}
-
-function CheckSelTable(nnum){
-	var cbox = $Obj('isokcheck'+nnum);
-	var seltb = $Obj('seltb'+nnum);
-	if(cbox.checked) seltb.style.display = 'none';
-	else seltb.style.display = 'block';
-}
-
--->
-</script>
+<title>修改图集:<?php echo $row['title']?></title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script type="text/javascript" language='javascript' src='js/main.js'></script>
+<script type="text/javascript" language='javascript' src='js/album.js'></script>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/menu.php");?>
-    </td>
-    <td width="10">&nbsp;</td>
-    <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-        <tr> 
-          <div class="manage_company_right_title">
-                	<ul><li>修改图集：</li></ul>
-                </div>
-        </tr>
-        <tr>
-		  <form action="album_edit_action.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();">
-            <input type="hidden" name="ID" value="<?php echo $row['ID']; ?>"> 
-            <input type="hidden" name="channelid" value="<?php echo $channelid; ?>">
-          <td height="183" valign="top" style="padding-top:3px">
-				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
-                  <tr>
-                    <td height="24" align="left" bgcolor="#F0FBE3"><strong>◆常规参数：</strong></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">图集名称：</td>
-                          <td align="left"><input name="title" type="text" style="width:250px" id="title" size="30" class="company_manage_form_label" value="<?php echo $row['title']?>" />
-                            <font color="#FF0000">*</font></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">图片来源：</td>
-                          <td align="left"><input name="source" type="text" id="source" size="30" class="company_manage_form_label" value="<?php echo $row['source']?>" />
-作者：
-  <input name="writer" type="text" id="writer" size="15" class="company_manage_form_label" value="<?php echo $row['writer']?>" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">隶属栏目：</td>
-                          <td align="left"><?php 
-           	 echo GetTypeidSelMember('form1','typeid','selbt1',$row['channel'],$row['typeid'],$arow['typename'],false);
-			       ?></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">我的分类：</td>
-                          <td align="left"><select name="mtype" id="mtype" style="width:200px">
-                            <?php 
-$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' ;");
-$dsql->Execute();
-if($row['mtype']==0) echo "<option value='0'>--请选择分类--</option>"; 
-while($arow = $dsql->GetObject()){
-  if($row['mtype']==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
-  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
-}
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="titEditChannel2 icon">修改</span>图集</div>
+        <form class="mTB10 mR10 mL10" name="form1" action="album_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
+          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
+          <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
+          <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
+          <input type="hidden" name="imagebody" id="imagebody" value='' />
+          <table cellspacing="1" class="submit mB10">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>常规参数</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top">图集标题：</td>
+                <td><input name="title" type="text" id="title" class="text" size="30" value="<?php echo $row['title']?>" style="width:400px;" />
+                  <span style="color:#F00">*</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">标签TAG：</td>
+                <td><input name="tags" type="text" id="tags" size="30" class="text" style='width:400px' value="<?php echo GetTags($row['id']); ?>" />
+                  (用逗号分开)</td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">作者：</td>
+                <td><input name="writer" type="text" id="writer" size="30" style="width:95px;" class="text" value="<?php echo $cfg_ml->M_UserName?>" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">隶属栏目：</td>
+                <td><?php
+    $typeOptions = GetOptionList($row["typeid"],$row["channel"]);
+    echo "<select name='typeid' size='1'>\r\n";
+    echo $typeOptions;
+    echo "</select>";
+		?>
+                  <span style="color:#F00">*</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">图集简介：</td>
+                <td><textarea name="description" id="description" style="height:50px"><?php echo $row["description"]; ?></textarea>
+                  (内容的简要说明) </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">缩略图：</td>
+                <td><input name="litpic" type="file" id="litpic" style="width:408px" onchange="SeePicNew('divpicview',this);"  />
+                  <div id='divpicview' class='divpre'></div></td>
+              </tr>
+              <?php if($row['litpic']!=''){ ?>
+              <tr>
+                <td align="right" valign="top">原来的缩略图：</td>
+                <td><div id='divpicview' class='divpre mTB10 litPic'> <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>'  /></div></td>
+              </tr>
+              <?php
+      }
+      //自定义字段
+      PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
+      ?>
+            </tbody>
+          </table>
+          <input name="maxwidth" type="hidden" id="maxwidth" value="<?php echo $abinfo->GetAtt('maxwidth'); ?>" />
+          <input name="prow" type="hidden"  value="<?php echo $abinfo->GetAtt('row'); ?>"  />
+          <input name="pcol" type="hidden"  value="<?php echo $abinfo->GetAtt('col'); ?>" />
+          <input name="ddmaxwidth" type="hidden" value="<?php echo $abinfo->GetAtt('ddmaxwidth'); ?>" />
+          <table cellspacing="1" class="submit">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>图集内容</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top">表现方式：</td>
+                <td><input name="pagestyle" type="radio" id="pagestyle1" onclick="checkMuList()" value="1" <?php if($abinfo->GetAtt('value')==1) echo " checked='checked'"; ?> />
+                  多页多图显示(适用于QQ表情)
+                  <input name="pagestyle" type="radio" id="pagestyle2" onclick="checkMuList()" value="2" <?php if($abinfo->GetAtt('value')==2) echo " checked='checked'"; ?> />
+                  多页单图显示(幻灯)
+                  <input name="pagestyle" type="radio" id="pagestyle3" onclick="checkMuList()" value="3" <?php if($abinfo->GetAtt('value')==3) echo " checked='checked'"; ?>/>
+                  多行多列显示(缩略图)
+                  <div id='spagelist' style='<?php if($abinfo->GetAtt('value')!=2) echo "display:none"; ?>' class="mTB10"> 每页图片数：
+                    <input name='pagpicnum' id='pagpicnum' size='10' class="text" value='<?php echo $abinfo->GetAtt('pagpicnum'); ?>' />
+                  </div></td>
+              </tr>
+              <tr id="handfield">
+                <td align="right" valign="top">手工上传：</td>
+                <td>
+                  <input name="picnum" type="text" id="picnum" size="8" value="3" class="text" />
+                  <button class="buttonGary2" name='kkkup' type='button' id='kkkup2' onclick="MakeUpload(0);">追加</button>
+                  (最大60幅)
+                 </td>
+              </tr>
+              <tr id="handfield">
+                <td align="right" valign="top">&nbsp;</td>
+                <td>
+                	<div id="uploadfield"></div>
+             <?php
+       $j = 1;
+       if(is_array($dtp->CTags))
+       {
+       	foreach($dtp->CTags as $ctag){
+       		if($ctag->GetName()=="img"){
 ?>
-                          </select></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">内容简介：</td>
-                          <td align="left"><textarea name="description" id="description" style="width:80%;height:50px"><?php echo $row['description']?>
-                          </textarea></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">标签（TAG）：</td>
-                          <td align="left"><input name="keywords" type="text" id="keywords" style="width:50%;" value="<?php echo $row['keywords']?>" class="company_manage_form_label" />
-(多个标签（TAG）用空格分开)</td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">缩略图：</td>
-                          <td align="left"><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
-                        </tr>
-                        <tr id="picarea" style='<?php echo ($row['litpic']!='' ? '' : 'display:none'); ?>'>
-                          <td height="28">预　览：</td>
-                          <td align="left"><img src="<?php echo ($row['litpic']!='' ? $row['litpic'] : "img/pview.gif"); ?>" id="picview" width="150" height="120" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?>
-                </table>
-              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-                <tr bgcolor="#F0FBE3">
-                  <td height="24" colspan="4" align="left" bgcolor="#F0FBE3"><strong>◆图集内容：</strong></td>
-                </tr>
-                <tr bgcolor="#F0FBE3"> 
-                  <td width="100%" height="24" colspan="4" bgcolor="#FFFFFF">
-				  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td height="24">宽度限制：</td>
-                        <td align="left"><input name="maxwidth" type="text" id="maxwidth" value="<?php echo $addRow['maxwidth']?>" size="8" class="yanzhengma" />
-                          像素（图片太大会撑坏版面美观，可以在此设定限制）</td>
-                      </tr>
-                      <tr> 
-                        <td width="19%" height="24">&nbsp;图片：</td>
-                        <td width="81%" align="left"> <input name="picnum" type="text" id="picnum" size="8" value="5" class="yanzhengma"> 
-                          <input name='kkkup' type='button' id='kkkup2' value='增加上传框' onClick="MakeUpload(0);">
-                          （注：最大60幅） </td>
-                      </tr>
-                    </table></td>
-                </tr>
-                <tr> 
-                  <td height="150" colspan="4" align="center" valign="top" bgcolor="#FFFFFF"> 
-<?php 
-$j = 1;
-if($addRow['imgurls']!=""){
-  $dtp = new DedeTagParse();
-  $dtp->LoadSource($addRow['imgurls']);
-  if(is_array($dtp->CTags))
-  {
-     foreach($dtp->CTags as $ctag){
-       if($ctag->GetName()=="img"){
-?>
-<table width='600' style="clear:both">
-	<tr><td height="18" align="left">
-  <input type='checkbox' name='isokcheck<?php echo $j?>' id='isokcheck<?php echo $j?>' value='1' class='np' onClick='CheckSelTable(<?php echo $j?>)'>显示/隐藏图片[<?php echo $j?>]的选框
-  </td></tr>
-</table>
-<table width="600" border="0" id="seltb<?php echo $j?>" cellpadding="1" cellspacing="1" bgcolor="#E8F5D6" align="center" style="margin-bottom:6px;">
-	 <tr bgcolor="#F4F9DD">
-	   <td height="25" colspan="2" align="left">　<b>图片<?php echo $j?></b></td>
-	 </tr>
-	 <tr bgcolor="#FFFFFF"> 
-	   <td width="410" height="25" align="left"> 　本地上传： 
-	   <?php 
-	   if($cfg_mb_upload=='Y'){
-	   ?>
-	   <input type="file" name='imgfile<?php echo $j?>' style="width:330px"  onChange="SeePic(document.picview<?php echo $j?>,document.form1.imgfile<?php echo $j?>);" class="company_manage_form_label">
-	   <?php 
-	   }else{
-	   	echo "系统禁止了文件上传功能！";
-	   }
-	   ?>
-	   </td>
-	   <td width="164" rowspan="3" align="center">
-	   	<img src="<?php echo trim($ctag->GetInnerText())?>" width="150" id="picview<?php echo $j?>" name="picview<?php echo $j?>">
-	   </td>
-	 </tr>
-	 <tr bgcolor="#FFFFFF"> 
-	   <td height="25" align="left"> 　指定网址： 
-	   <input type="text" name='imgurl<?php echo $j?>' value='<?php echo trim($ctag->GetInnerText())?>' style="width:260px" class="company_manage_form_label"> 
-	   </td>
-	 </tr>
-	 <tr bgcolor="#FFFFFF"> 
-	   <td height="56">　图片简介： 
-	   <textarea name='imgmsg<?php echo $j?>' style="height:46px;width:330px"><?php echo trim($ctag->GetAtt('text'))?></textarea>
-	   </td>
-	  </tr>
-</table>
-<?php 
+                  <table width='98%' align="center">
+                    <tr>
+                      <td height="18"><input type='checkbox' name='isokcheck<?php echo $j; ?>' id='isokcheck<?php echo $j; ?>' value='1' class='np' onclick='CheckSelTable(<?php echo $j; ?>)' checked='1' />
+                        显示/隐藏图片[<?php echo $j; ?>]的选框 </td>
+                    </tr>
+                  </table>
+                  <table width="98%" border="0" id="seltb<?php echo $j; ?>" cellpadding="1" cellspacing="1" bgcolor="#E8F5D6" style="margin-bottom:6px;" align="center">
+                    <tr bgcolor="#F4F9DD">
+                      <td height="25" colspan="2">　<strong>图片</strong></td>
+                    </tr>
+                    <tr bgcolor="#FFFFFF">
+                      <td width="450" height="25"> 　本地上传：
+                        <input type="file" name='imgfile<?php echo $j; ?>' style="width:330px"  onchange="SeePicNew('divpicview<?php echo $j; ?>',this);" />
+                      </td>
+                      <td width="164" rowspan="3" align="center"><div id='divpicview<?php echo $j; ?>' class='divpre'></div>
+                        <img src="<?php echo trim($ctag->GetInnerText()); ?>" id="picview<?php echo $j; ?>" name="picview<?php echo $j; ?>" /> </td>
+                    </tr>
+                    <input type="hidden" name='imgurl<?php echo $j; ?>' value='<?php echo trim($ctag->GetInnerText())?>' />
+                    <tr bgcolor="#FFFFFF">
+                      <td height="56">　图片简介：
+                        <textarea name='imgmsg<?php echo $j; ?>' style="height:46px;width:330px"><?php echo trim($ctag->GetAtt('text'))?></textarea>
+                      </td>
+                    </tr>
+                  </table>
+                  <?php
 $j++;
-     }
-   }
- }
-$dtp->Clear();
-}
+       		}
+       	}
+       }
+       $dtp->Clear();
 ?>
-<span id='uploadfield'></span>
-<script language="JavaScript">
-startNum = <?php echo $j?>;
+                  <span id='uploadfield'></span>
+                  <script language="JavaScript">
+startNum = <?php echo $j; ?>;
 </script>
-				 </td>
-                </tr>
-                <tr bgcolor="#F7FDF0"> 
-                  <td height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
-                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();"> 
-                  </td>
-                </tr>
-              </table></td>
-			</form>
-        </tr>
-        <tr> 
-          <td height="10"></td>
-        </tr>
-      </table> </td>
-  </tr>
-</table>
-<?php 
-include(dirname(__FILE__)."/foot.htm");
-?>
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">验证码：</td>
+                <td><input name="vdcode" type="text" id="vdcode" size="10" class="text" style='width:50px;text-transform:uppercase;' />
+                  <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle" /></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">提交</button>
+                  <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>我的收藏夹</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">我的收藏</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="mystow.php">我的收藏</a></li>
+            <li class="select"><a href="mystow.php?type=top20">收藏排行</a></li>
+          </ul>
+        </div>
+        <div class="mTB10 mL10 mR10">
+          <!--
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"></div>
+            <div class="fRight titSecondary" style="margin-top:5px;"><em><a id="allDeploy">全部展开</a></em></div>
+          </div>
+          -->
+          {dede:datalist}
+          <div class="item favorite">
+            <div class="itemHead" >
+              <div class="fRight"> <span class="itemDigg"><a class="text_button" href="../plus/recommend.php?aid={dede:field.aid/}" target="_blank">[推荐]</a></span> </div>
+              <span class="itemHeadTitle"><a href='archives_do.php?dopost=viewArchives&aid=<?php echo $fields["aid"]; ?>' target='_blank'><?php echo $fields["title"]; ?></a> </span>
+              <div class="itemTip">收藏次数: {dede:field.num/}</div>
+            </div>
+            <div class="itemBody invisible" >
+              <div class="itemContent"></div>
+              <div class="itemBodyFoot"></div>
+            </div>
+          </div>
+          <hr class="dotted" />
+          {/dede:datalist}
+          <div class="pages">{dede:pagelist listsize=5 /}</div>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

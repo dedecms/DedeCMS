@@ -1,51 +1,60 @@
 <?php
-require_once(dirname(__FILE__)."/../include/inc_arcsearch_view.php");
+require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once(DEDEINC."/arc.searchview.class.php");
 
-$timestamp = time();
-$timelock = '../data/time.lock';
-if($cfg_allsearch_limit < 1) $cfg_allsearch_limit = 1;
-if(file_exists($timelock)){
-	if($timestamp - filemtime($timelock) < $cfg_allsearch_limit){
-		showmsg('服务器忙，请稍后搜索','-1');
-		exit();
-	}
-}
-@touch($timelock,$timestamp);
+$pagesize = (isset($pagesize) && is_numeric($pagesize)) ? $pagesize : 10;
+$typeid = (isset($typeid) && is_numeric($typeid)) ? $typeid : 0;
+$channeltype = (isset($channeltype) && is_numeric($channeltype)) ? $channeltype : 0;
+$kwtype = (isset($kwtype) && is_numeric($kwtype)) ? $kwtype : 1;
 
-$channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 0;
+if(!isset($orderby)) $orderby='';
+else $orderby = eregi_replace('[^a-z]','',$orderby);
 
-if(empty($typeid)) $typeid = 0;
-else $typeid = ereg_replace("[^0-9]","",$typeid);
+if(!isset($searchtype)) $searchtype = 'titlekeyword';
+else $searchtype = eregi_replace('[^a-z]','',$searchtype);
 
-if($typeid){
-	$channelid = 0;
-}
+if(!isset($keyword)) $keyword = '';
 
-if(!isset($searchtype)) $searchtype = '';
-if($searchtype != 'titlekeyword') $searchtype = "title";
+$keyword = FilterSearch(stripslashes($keyword));
+$keyword = addslashes(cn_substr($keyword,30));
 
-$cacheid = isset($cacheid) && is_numeric($cacheid) ? $cacheid : 0;
-$kwtype = isset($kwtype) && $kwtype == 0 ? 0 : 1;
-
-$keyword = stripslashes($keyword);
-if(ereg("[><]",$keyword)){
-	ShowMsg("你的关键词输入不合法！","-1");
-	exit();
-}
-$keyword = ereg_replace("[\|\"\r\n\f\t%\*\?\(\)\$;,'%-><]"," ",trim($keyword));
-
-if( ($cfg_notallowstr!='' && eregi($cfg_notallowstr,$keyword)) || ($cfg_replacestr!='' && eregi($cfg_replacestr,$keyword)) ){
-	echo "你的信息中存在非法内容，被系统禁止！<a href='javascript:history.go(-1)'>[返回]</a>"; exit();
-}
-
-if($keyword=="" || strlen($keyword) < 3 || strlen($keyword) > 30){
-	ShowMsg("关键字长度必须要3-30字节之间！","-1");
+if($cfg_notallowstr !='' && eregi($cfg_notallowstr,$keyword))
+{
+	ShowMsg("你的搜索关键字中存在非法内容，被系统禁止！","-1");
 	exit();
 }
 
+if($keyword=='' || strlen($keyword)<2)
+{
+	ShowMsg('关键字不能小于2个字节！','-1');
+	exit();
+}
 
-$sp = new SearchView($typeid,$keyword,$channelid,$searchtype,$kwtype,$cacheid);
+//检查搜索间隔时间
+$lockfile = DEDEROOT.'/data/time.lock.inc';
+if(!file_exists($lockfile)) {
+	$fp = fopen($lockfile,'w');
+	flock($fp,1);
+	fwrite($fp,time());
+	fclose($fp);
+}
+
+//开始时间
+if(empty($starttime)) $starttime = -1;
+else
+{
+	$starttime = (is_numeric($starttime) ? $starttime : -1);
+	if($starttime>0)
+	{
+	   $dayst = GetMkTime("2008-1-2 0:0:0") - GetMkTime("2008-1-1 0:0:0");
+	   $starttime = time() - ($starttime * $dayst);
+  }
+}
+
+$t1 = ExecTime();
+
+$sp = new SearchView($typeid,$keyword,$orderby,$channeltype,$searchtype,$starttime,$pagesize,$kwtype);
 $sp->Display();
-$sp->Close();
 
+//echo ExecTime() - $t1;
 ?>

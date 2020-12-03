@@ -1,75 +1,72 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>消费记录</title>
-<link href="company_style.css" rel="stylesheet" type="text/css">	
+<title>我购买的服务</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/menu.php");?>
-    </td>
-    <td width="10">&nbsp;</td>
-    <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px;">
-        <tr> 
-          <div class="manage_company_right_title" style="margin-top:10px;">
-                	<ul><li>我的消费记录：</li></ul>
-                </div>
-        </tr>
-    </table>
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td height="183" valign="top">
-          	<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="line-height:30px; text-align:left;">
-              <tr bgcolor="E9FBC9" align="center"> 
-                <td width="10%" bgcolor="#F0F8D6">ID</td>
-                <td width="40%" bgcolor="#F0F8D6">档案标题</td>
-                <td width="30%" bgcolor="#F0F8D6">收藏时间</td>
-                <td width="20%" bgcolor="#F0F8D6">消费点数</td>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">我购买的服务</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
+            <li><a href="shops_products.php">商品</a></li>
+          </ul>
+        </div>
+        <div class="mL10 mR10 mTB10">
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"><strong>购买的服务</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> 
+            <em class="mR10"><a href="mypay.php">购买的服务</a></em> 
+            <em class="mR10"><a href="operation.php">历史订单</a></em> </div>
+          </div>
+          <table cellspacing="1" class="list">
+            <thead>
+              <tr>
+                <th align="left" width="1%">ID</th>
+                <th >标题</th>
+                <th width="5%">消费点数</th>
+                <th width="5%">消费时间</th>
               </tr>
-              <?php 
-$mylist = $dlist->GetDataList();
-while($row = $mylist->GetArray('dm'))
+            </thead>
+            <tbody>
+            
+            {dede:datalist}
+            <tr>
+              <td><?php echo $fields['aid']; ?></td>
+              <td>
+<?php if(strpos($fields['buyid'], 'ARCHIVE') === 0)
 {
-?>
-              <tr bgcolor="#FFFFFF" align="center"> 
-                <td>
-                  <?php echo $row['ID']?>
-                </td>
-                <td><a href='archives_do.php?dopost=viewArchives&aid=<?php echo $row["aid"]?>' target='_blank'> 
-                  <?php echo $row['title']?>
-                  </a></td>
-                <td> 
-                  <?php echo GetDateTimeMk($row['dtime'])?>
-                </td>
-                <td> 
-                  <?php echo $row['money']?>
-                </td>
-              </tr>
-              <?php 
+	echo '<a href="../plus/view.php?aid='.str_replace('ARCHIVE', '', $fields['buyid']).'" target="_blank">'.$fields['oldinfo'].'</a>'; 
+} else {
+	echo $fields['oldinfo'];
 }
 ?>
-              <tr bgcolor="E9FBC9"> 
-                <td colspan="4" align="center" bgcolor="#F9FCEF"> 
-                  <?php echo $dlist->GetPageList(7);?>                </td>
+</td>
+              <td align="center"><?php echo $fields['money']; ?></td>
+              <td align="center"><?php echo GetDateTimeMk($fields['mtime']); ?></td>
+            </tr>
+            {/dede:datalist}
+            </tbody>
+            
+            <tfoot>
+              <tr>
+                <td colspan="6"><div class="pages fRight">{dede:pagelist listsize=5/}</div></td>
               </tr>
-            </table></td>
-        </tr>
-        <tr> 
-          <td height="24" valign="top">&nbsp;</td>
-        </tr>
-      </table></td>
-  </tr>
-</table>
-<?php 
-if(isset($dsql) && is_object($dsql)) $dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

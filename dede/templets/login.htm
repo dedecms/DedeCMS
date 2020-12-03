@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $cfg_softname." ".$cfg_version; ?></title>
+<link href="img/frame.css" rel="stylesheet" type="text/css" />
+</head>
+<body bgcolor="#f4fbf4">
+<div class="head">
+  <div class="top">
+    <div class="top_logo"> <img src="img/admin_top_logo.gif" width="170" height="37" alt="DedeCms Logo" title="Welcome use DedeCms" /> </div>
+    <div class="top_link">
+      <ul>
+        <li class="welcome">
+          <script type="text/javascript">
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+          您可以访问您的</li>
+        <li><a href="../index.php" target="_blank">网站主页</a></li>
+        <li><a href="../member" target="_blank">会员中心</a></li>
+        <li><a href="http://www.dedecms.com" target="_blank" title="织梦官方论坛">或者登录官方网站</a>或<a href="http://bbs.dedecms.com" target="_blank" title="织梦交流论坛">论坛</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="topnav">
+    <div class="menuact" style="width:220px; float:right"><a href="http://www.dedecms.com" target="_blank">版本号：DEDECMS <?php echo $cfg_version; ?></a></div>
+  </div>
+</div>
+<?php echo $redmsg; ?>
+<div id="login">
+  <div class="theme fLeft">
+    <form name="form1" method="post" action="login.php">
+      <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>" />
+      <input type="hidden" name="dopost" value="login" />
+      <ul>
+        <li><span>用户名：</span>
+          <input type="text" name="userid" class="text" />
+        </li>
+        <li><span>密&nbsp;&nbsp;&nbsp;码：</span>
+          <input type="password" name="pwd" class="text" />
+        </li>
+        <li><span>后台风格：</span>
+          <input name='adminstyle' type='radio' value='newdedecms' class='radio' checked='1' />
+          宽屏
+          <input name='adminstyle' type='radio' value='dedecms' class='radio' />
+          传统</li>
+        <li><span>验证码：</span>
+          <input name="validate" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
+          <img id="vdimgck" src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></li>
+        <li style="padding-top:10px;"><span>&nbsp;</span>
+          <input type="submit" name="sm1" value="登录" style='background:url(img/bt.gif);width:79px;height:24px;border:0px;cursor:pointer;font-size:12px'  onclick="this.form.submit();" />
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
+</body>
+</html>

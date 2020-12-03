@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>订单确认</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">订单确认</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
+            <li><a href="shops_products.php">商品</a></li>
+          </ul>
+        </div>
+        <div class="mL10 mR10 mTB10">
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"><strong>购买系统服务</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> <em class="mR10"><a href="buy.php">购买服务</a></em> <em class="mR10"><a href="mypay.php">消费记录</a></em> <em class="mR10"><a href="operation.php">历史订单</a></em> </div>
+          </div>
+          <div class="titleBar lineBorder mB10"> &nbsp;&nbsp;* 你申请购买的产品如下，确认无误后请点击“购买并支付”按钮，进行网上支付，如果支付失败，请与管理员联系其它支付方式： </div>
+          <form method="post" name="E_FORM" action="buy_action.php" target="_blank">
+            <input type="hidden" name="pd_encode" value="<?php echo $pr_encode;?>">
+            <input type="hidden" name="pd_verify" value="<?php echo $pr_verify;?>">
+            <table cellspacing="1" class="submit">
+              <tbody>
+                <tr>
+                  <td width="15%" align="right" valign="top">订单编号：</td>
+                  <td><?php echo $buyid?></td>
+                </tr>
+                <tr>
+                  <td align="right" valign="top">产品类型：</td>
+                  <td><?php echo $ptype?></td>
+                </tr>
+                <tr>
+                  <td align="right" valign="top">产品名称：</td>
+                  <td><?php echo $pname?></td>
+                </tr>
+                <tr>
+                  <td align="right" valign="top"><span class="td1">产品价格：</span></td>
+                  <td><?php echo $price;?>元</td>
+                </tr>
+                <tr>
+                  <td align="right" valign="top"><span class="td1">支付方式：</span></td>
+                  <td><?php foreach($payment_list as $k => $val) {?>
+                    <label for="online_payment_<?php echo $val['value'];?>">
+                    <input class="radio" type="radio" name="online_payment"	id="online_payment_<?php echo $val['value'];?>" value="<?php echo $val['value'];?>" <?php if($k < 1) {?> checked="checked" <?php }?> />
+                    <?php echo $val['name'];?>(手续费:<?php echo $val['exp'];?>元)<br />
+                    <img src="<?php echo $val['logo'];?>" alt="<?php echo $val['name'];?>" /> <br />
+                    <?php echo $val['des'];?><br />
+                    </label>
+                    <?php }?></td>
+                </tr>
+                <tr>
+                  <td align="right" valign="top">&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td align="right" valign="top">&nbsp;</td>
+                  <td><button class="button5" type="submit">购买并支付</button>
+                    <button class="buttonGary2 mL10" type="button" onclick="location='buy.php'">返回</button></td>
+                </tr>
+              </tfoot>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

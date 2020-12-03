@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>银行账号信息</title>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<meta name="generator" content="DedeCMS V5.3" />
+<meta name="author" content="desdev.cn" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templeturl/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="buycarpage">
+
+<div class="header">
+	<div class="top w960 center">
+		<div class="title">
+			<h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a> </h1>
+		</div><!-- /title -->
+		<div class="welcome">
+            <?php
+            if(!$cfg_ml->IsLogin()){
+            ?>
+            您好,欢迎来到本网站, 请 <a href="../member/login.php?gourl=<?php echo urlencode(GetCurUrl());?>">登录</a> 或 <a href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a>
+            <?php
+            }else{
+            ?>
+            <?php echo $cfg_ml->M_UserName; ?> 您好,欢迎来到本网站, <a href="../member/">会员中心</a> | <a href="../member/index_do.php?fmdo=login&dopost=exit">退出</a>
+            <?php
+            }
+            ?>
+		</div><!-- /banner -->
+	</div><!-- /top -->
+	<div class="nav mt1">
+		<div class="w960 center">
+			<ul>
+              <li class="r1"><a href="{dede:global.cfg_memberurl/}">会员中心</a></li>
+              <li class="r2"><a href="{dede:global.cfg_cmsurl/}/tags.php">TAG标签</a></li>
+              <li class="r3"><a href="{dede:global.cfg_dataurl/}/sitemap.html">网站地图</a></li>
+              <li class="r4"><a href="{dede:global.cfg_dataurl/}/rssmap.html">RSS订阅</a></li>
+			</ul>
+		</div>
+	</div><!-- /nav -->
+</div><!-- /header -->
+
+<div class="w960 clear center mt1 cmt-box">
+	<div class="sp-title"><h2>银行账号信息</h2></div>
+	<div class="buycar">
+        <table cellpadding="0" cellspacing="0" class="flow">
+			<tr>
+				<td>下单购买</td>
+				<td class="thisclass">买家付款</td>
+				<td>确认收货</td>
+				<td>交易结束 </td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dede_table">
+			<thead>
+				<tr>
+					<td colspan="6">付款细节</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td width="180" class="td1">支付方式</td>
+					<td><strong>{dede:var.banks.paytype/}</strong></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">支付信息</td>
+					<td>{dede:var.banks.des/}</td>
+				</tr>         
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2">
+					<button type="submit" class="btn-2" onClick="window.close()">关闭该窗口</button>
+					</td>
+				</tr>
+			</tfoot>
+		</table>        
+	</div>
+	
+</div>
+
+<div class="footer w960 center mt1 clear">
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>DedeCMS<span>{dede:global.cfg_version/}</span></strong></a> &copy; 2004-2008 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.	</p>
+<!-- /powered -->
+	<p class="copyright">
+		{dede:global.cfg_powerby/}<br />{dede:global.cfg_beian/}
+  </p>
+</div>
+</body>
+</html>

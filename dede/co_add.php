@@ -1,123 +1,197 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_AddNote');
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-if(empty($action)) $action = "";
-if(empty($exrule)) $exrule = "";
+if(empty($step))
+{
+	$step = "";
+}
+if(empty($exrule))
+{
+	$exrule = "";
+}
 
-if($action=="select"){
-	require_once(dirname(__FILE__)."/templets/co_sel_exrule.htm");
-	ClearAllLink();
+//选择操作频道类型，载入表单
+/*----------------------
+function Init(){ }
+----------------------*/
+if(empty($step))
+{
+	require_once(DEDEADMIN."/templets/co_add_step0.htm");
+	exit();
+}
+else if($step==1)
+{
+	require_once(DEDEADMIN."/templets/co_add_step1.htm");
 	exit();
 }
 
-if($exrule==""){
-	ShowMsg("请先选择一个导入规则！","co_sel_exrule.php");
-	exit();
-}
-
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-$dsql = new DedeSql(false);
-if(empty($extype))
+//保存索引规则
+/*----------------------
+function Save_List(){ }
+----------------------*/
+else if($step==2)
 {
-  $row = $dsql->GetOne("Select * From #@__co_exrule where aid='$exrule'");
-}else
-{
-	$row = $dsql->GetOne("Select * From #@__co_exrule where channelid='$channelid'");
-	//如果不存在某频道的规则，系统自动生成一个规则
-	if(!is_array($row))
+	//对完整规则进行测试
+	if($dopost=='test')
 	{
-		$cinfos = $dsql->GetOne("Select * From #@__channeltype where ID='$channelid'",MYSQL_ASSOC);
-		$maintable = ($cinfos['maintable']=='' ? '#@__archives' : $cinfos['maintable'] );
-		$addtable = $cinfos['addtable'];
-		$tablesinfo = ($addtable=='' ? $maintable : $maintable.','.$addtable);
-    $dtp = new DedeTagParse();
-    $dtp->SetNameSpace("field","<",">");
-    $dtp->LoadString($cinfos['fieldset']);
-    $exRule = "
-{dede:note 
-  rulename='{$cinfos['typename']}模型'
-  etype='当前系统'
-  tablename='{$tablesinfo}'
-  autofield='ID'
-  synfield='aid'
-  channelid='{$cinfos['ID']}'
-/}
-{dede:field name='typeid' comment='栏目ID' intable='{$maintable}' source='value'}{tid}{/dede:field}
-{dede:field name='arcrank' comment='文档权限' intable='{$maintable}' source='value'}{rank}{/dede:field}
-{dede:field name='channel' comment='频道类型' intable='{$maintable}' source='value'}{cid}{/dede:field}
-{dede:field name='typeid' comment='栏目ID' intable='{$addtable}' source='value'}{tid}{/dede:field}
-{dede:field name='adminID' comment='管理员ID' intable='{$maintable}' source='value'}{admin}{/dede:field}
-{dede:field name='sortrank' comment='排序级别' intable='{$maintable}' source='value'}{senddate}{/dede:field}
-{dede:field name='senddate' comment='录入时间' intable='{$maintable}' source='value'}{senddate}{/dede:field}
-{dede:field name='source' comment='来源' intable='{$maintable}' source='value'}{source}{/dede:field}
-{dede:field name='pubdate' comment='发布时间' intable='{$maintable}' source='function'} @me = (@me=='' ? time() : GetMkTime(@me));{/dede:field}
-{dede:field name='litpic' comment='缩略图' intable='{$maintable}' source='function'}@me = @litpic;{/dede:field}
-{dede:field name='title' comment='标题' intable='{$maintable}' source='export'}{/dede:field}
-{dede:field name='writer' comment='作者' intable='{$maintable}' source='export'}{/dede:field}
-";
+		include(DEDEINC."/dedecollection.class.php");
+		$usemore = (!isset($usemore) ? 0 : 1);
+		$listconfig = "{dede:noteinfo notename=\\\"$notename\\\" channelid=\\\"$channelid\\\" macthtype=\\\"$macthtype\\\"
+refurl=\\\"$refurl\\\" sourcelang=\\\"$sourcelang\\\" cosort=\\\"$cosort\\\" isref=\\\"$isref\\\" exptime=\\\"$exptime\\\" usemore=\\\"$usemore\\\" /}
 
-    if(is_array($dtp->CTags))
-    {
-    	foreach($dtp->CTags as $tagid=>$ctag)
-    	{
-    		 $action = '';
-    		 if($ctag->GetAtt('notsend')==1) continue;
-    		 $ctype = $ctag->GetAtt('type');
-    		 if($ctype=='int'||$ctype=='float'){
-    		 	 $action = "@me = ((\$str = preg_replace(\"/[^0-9\.\-]/is\",\"\",@me))=='' ? '0' : \$str);";
-    		 }else if($ctype=='softlinks'){
-    		 	 $action = "@me = TurnLinkTag(@me);";
-    		 }else if($ctype=='img'){
-    		 	 $action = "@me = TurnImageTag(@me);";
-    		 }
-    		 $exRule .= "{dede:field name='".$ctag->GetName()."' comment='".$ctag->GetAtt('itemname')."' intable='".$addtable."' source='export'}{$action}{/dede:field}\r\n";
-    	}
-    }
-    $row['ruleset'] = $exRule;
-	 $exRule = addslashes($exRule);
-	 $ntime = time();
-	 $query = "
-	Insert Into `#@__co_exrule`(channelid,rulename,etype,dtime,ruleset)
-	Values('$channelid','{$cinfos['typename']}模型','当前系统','".time()."','$exRule')
-	";
-	 $dsql->ExecuteNoneQuery($query);
-	 $gerr = $dsql->GetError();
-	 $row['aid'] = $exrule = $dsql->GetLastID();
-	 if($row['aid']<1){
-		 ClearAllLink();
-		 ShowMsg("生成规则错误，无法进行操作！".$gerr,"javascript:;");
-		 exit();
-	 }
-	 $row['channelid'] = $channelid;
-	 $row['rulename'] = "{$cinfos['typename']}模型";
-	 $row['etype'] = "当前系统";
-	 $row['dtime'] = $ntime;
+{dede:listrule sourcetype=\\\"$sourcetype\\\" rssurl=\\\"$rssurl\\\" regxurl=\\\"$regxurl\\\"
+startid=\\\"$startid\\\" endid=\\\"$endid\\\" addv=\\\"$addv\\\" urlrule=\\\"$urlrule\\\"
+ musthas=\\\"$musthas\\\" nothas=\\\"$nothas\\\" listpic=\\\"$listpic\\\" usemore=\\\"$usemore\\\"}
+	{dede:addurls}$addurls{/dede:addurls}
+	{dede:batchrule}$batchrule{/dede:batchrule}
+	{dede:regxrule}$regxrule{/dede:regxrule}
+	{dede:areastart}$areastart{/dede:areastart}
+	{dede:areaend}$areaend{/dede:areaend}
+{/dede:listrule}\r\n";
+		$tmplistconfig = stripslashes($listconfig);
+		$notename = stripslashes($notename);
+		if($sourcetype=='rss' && $refurl='')
+		{
+			$refurl = $rssurl;
+		}
+		$refurl = stripslashes($refurl);
+		$errmsg = '';
+
+		//测试规则
+		if($sourcetype=='rss')
+		{
+			$links = GetRssLinks(stripslashes($rssurl));
+			$demopage = $rssurl;
+		}
+		else
+		{
+			$links = array();
+			$lists = GetUrlFromListRule($regxurl,stripslashes($addurls),$startid,$endid,$addv,$usemore,stripslashes($batchrule));
+			if(isset($lists[0][0]))
+			{
+				$demopage = $lists[0][0];
+				$dc = new DedeCollection();
+				$dc->LoadListConfig($tmplistconfig);
+				$listurl = '';
+				$links = $dc->Testlists($listurl);
+				$errmsg = $dc->errString;
+			}
+			else
+			{
+				$demopage = '没有匹配到适合的列表页!';
+			}
+		}
+		require_once(DEDEADMIN."/templets/co_add_step1_test.htm");
+		exit();
+	}
+
+	//从预览并提示进入下一步
+	else
+	{
+		$row = $dsql->GetOne("Select nid,channelid From `#@__co_note` where isok=0 And notename like '$notename' ");
+		if(!is_array($row))
+		{
+			$uptime = time();
+			$listconfig = urldecode($listconfig);
+			$inquery = " INSERT INTO `#@__co_note`(`channelid`,`notename`,`sourcelang`,`uptime`,`cotime`,`pnum`,`isok`,`usemore`,`listconfig`,`itemconfig`)
+               VALUES ('$channelid','$notename','$sourcelang','$uptime','0','0','0','$usemore','$listconfig',''); ";
+			$rs = $dsql->ExecuteNoneQuery($inquery);
+			if(!$rs)
+			{
+				ShowMsg("保存信息时出现错误！".$dsql->GetError(),"-1");
+				exit();
+			}
+			$nid = $dsql->GetLastID();
+		}
+		else
+		{
+			$channelid=$row['channelid'];
+			$uptime = time();
+			if(empty($freq))
+			{
+				$freq = 1;
+			}
+			if(empty($extypeid))
+			{
+				$extypeid = 0;
+			}
+			if(empty($islisten))
+			{
+				$islisten = 0;
+			}
+			$usemore = (!isset($usemore) ? 0 : 1);
+			$query = " update `#@__co_note` set
+	     `channelid`='$channelid',
+	     `notename`='$notename',
+	     `sourcelang`='$sourcelang',
+	     `uptime`='$uptime',
+	     `isok`='1',
+	     `usemore`='$usemore',
+	     `listconfig`='$listconfig' where nid='$nid'; ";
+			$dsql->ExecuteNoneQuery($query);
+			$nid = $row['nid'];
+		}
+		if(!isset($previewurl))
+		{
+			$previewurl = '';
+		}
+		require_once(DEDEINC.'/dedetag.class.php');
+		require_once(DEDEADMIN."/templets/co_add_step2.htm");
+		exit();
 	}
 }
-if(empty($exrule)) $exrule = $row['aid'];
-if(empty($exrule)){
-	ClearAllLink();
-  ShowMsg("读取规则错误，无法继续操作！","javascript:;");
-	exit();
-}
-$ruleset = $row['ruleset'];
-$dtp = new DedeTagParse();
-$dtp->LoadString($ruleset);
-$noteid = 0;
-if(is_array($dtp->CTags))
+
+//保存文章规则
+/*----------------------
+function Save_Art(){ }
+----------------------*/
+else if($step==5)
 {
-	foreach($dtp->CTags as $ctag){
-		if($ctag->GetName()=='field') $noteid++;
-		if($ctag->GetName()=='note') $noteinfos = $ctag;
+	/*
+	[previewurl] => ''
+	*/
+	$itemconfig = "{dede:sppage sptype=\\'$sptype\\'}$sppage{/dede:sppage}\r\n";
+	$itemconfig .= "{dede:previewurl}$previewurl{/dede:previewurl}\r\n";
+	$itemconfig .= "{dede:keywordtrim}$keywordtrim{/dede:keywordtrim}\r\n";
+	$itemconfig .= "{dede:descriptiontrim}$descriptiontrim{/dede:descriptiontrim}\r\n";
+	$fs = explode(',','value,match,isunit,isdown,trim,function');
+	foreach($fields as $field)
+	{
+		foreach($fs as $f)
+		{
+			$GLOBALS[$f.'_'.$field] = (!isset($GLOBALS[$f.'_'.$field]) ? '' : $GLOBALS[$f.'_'.$field]);
+		}
+		$matchstr = $GLOBALS["match_".$field];
+		$trimstr = $GLOBALS["trim_".$field];
+		$trimstr = trim(str_replace('&nbsp;','#n#',$trimstr));
+		$matchstr = trim(str_replace('&nbsp;','#n#',$matchstr));
+		if($trimstr!='' && !eregi('{dede:trim',$trimstr))
+		{
+			$trimstr = "    {dede:trim}$trimstr{/dede:trim}\r\n";
+		}
+		$itemconfig .= "{dede:item field=\\'".$field."\\' value=\\'".$GLOBALS["value_".$field]."\\' isunit=\\'".$GLOBALS["isunit_".$field]."\\' isdown=\\'".$GLOBALS["isdown_".$field]."\\'}
+   {dede:match}".$matchstr."{/dede:match}
+   $trimstr
+   {dede:function}".$GLOBALS["function_".$field]."{/dede:function}
+{/dede:item}\r\n";
 	}
-}
-else
-{
-	ShowMsg("该规则不合法，无法进行生成采集配置!","-1");
-	$dsql->Close();
+	$dsql->ExecuteNoneQuery("Update `#@__co_note` set itemconfig='$itemconfig' where nid='$nid' ");
+	//echo $dsql->GetError();
+	require_once(DEDEINC.'/dedecollection.class.php');
+	require_once(DEDEADMIN."/templets/co_add_step2_test.htm");
 	exit();
 }
-require_once(dirname(__FILE__)."/templets/co_add.htm");
-ClearAllLink();
+else if($step==6)
+{
+	$dsql->ExecuteNoneQuery("Update `#@__co_note` set isok='1' where nid='$nid' ");
+	ShowMsg("成功设置一个规则！","co_main.php");
+	exit();
+}
+else if($step==7)
+{
+	$dsql->ExecuteNoneQuery("Update `#@__co_note` set isok='1' where nid='$nid' ");
+	ShowMsg("成功设置一个规则，现在转向采集页面！","co_gather_start.php?nid=$nid");
+	exit();
+}
+
 ?>

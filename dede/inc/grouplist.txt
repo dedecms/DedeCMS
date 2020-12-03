@@ -9,6 +9,7 @@
 >c_New>新建频道　
 >c_Edit>修改频道　
 >c_Del>删除频道
+>c_Stepselect>联动类别管理
 
 >>栏目管理
 
@@ -21,8 +22,6 @@
 >t_AccNew>新建授权子栏目　
 >t_AccEdit>修改授权子栏目　
 >t_AccDel>删除授权子栏目
->c_Tag>Tag管理
->c_FreeList>自由列表管理
 
 >>内容管理
 
@@ -41,6 +40,7 @@
 >a_MyEdit>修改我发布的文档　
 >a_MyDel>删除我发布的文档　
 >a_MyCheck>审核我发布的文档
+>a_Recycling>管理回收站
 
 >>采集管理
 
@@ -66,14 +66,6 @@
 >temp_Test>测试标记
 >temp_Other>模板其它管理
 
->>连载管理
-
->story_Catalog>连载栏目管理
->story_New>新建连载内容　
->story_Edit>修改连载内容　
->story_Del>删除连载内容
->story_Other>其它连载权限
-
 >>专题管理
 
 >spec_New>新建专题　
@@ -84,43 +76,28 @@
 
 >sys_User>系统用户管理　
 >sys_Group>系统组管理
->sys_MdPwd>更改个人密码
+>sys_MdPwd>更改个人密码[br]
 >sys_Edit>修改系统参数　
->sys_Passport>通行证设置
 >sys_Log>管理日志
->sys_module>模块管理
->sys_plus>插件管理[br]
->sys_Data>数据备份还原
+>sys_plus>插件管理
+>sys_Data>数据备份还原[br]
 >sys_Att>自定义文档属性　
 >sys_ArcBatch>文档批量维护　
->sys_ArcTj>文档信息统计
+>sys_ArcTj>文档信息统计[br]
 >sys_Source>新闻来源
->sys_Writer>作者管理[br]
+>sys_Writer>作者管理　
 >sys_SoftConfig>软件频道参数　
->sys_Keyword>关键字管理
+>sys_Keyword>关键字管理[br]
 >sys_MakeHtml>更新HTML　
->sys_Feedback>评论管理[br]
+>sys_Feedback>评论管理
 >sys_Upload>管理任意上传
 >sys_MyUpload>管理我的上传
 >sys_DelUpload>删除附件
 >pic_view>图片浏览器
->sys_description>自动摘要管理
 
 >>会员管理
 　
->member_Type>会员级别管理
+>member_Type>会员类型管理
 >member_List>列出会员
 >member_Edit>更改会员
 >member_Del>删除会员
->member_Card>点卡管理
->member_Operations>会员业务管理
->member_Data>数据导入与转换
-
->>互动模块
-
->sectors_All>行业管理
->area_All>地区管理
->smalltype_All>小分类管理
->group_All>圈子管理
->ask_All>问答模块管理
-

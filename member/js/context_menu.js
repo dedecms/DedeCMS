@@ -28,41 +28,41 @@ ContextMenu.showPopup=function(x,y)
 
 ContextMenu.display=function(popupoptions,h)
 {
-  var eobj,x,y;
+	var eobj,x,y;
 	eobj = window.event;
 	x    = eobj.x;
 	y    = eobj.y
-	
+
 	/*
 	not really sure why I had to pass window here
 	it appears that an iframe inside a frames page
 	will think that its parent is the frameset as
 	opposed to the page it was created in...
 	*/
-	ContextMenu.populatePopup(popupoptions,window)	
+	ContextMenu.populatePopup(popupoptions,window)
 	ContextMenu.showPopup(x,y);
 	ContextMenu.fixSize();
 	ContextMenu.fixPos(x,y);
-  eobj.cancelBubble = true;
-  eobj.returnValue  = false;
+	eobj.cancelBubble = true;
+	eobj.returnValue  = false;
 }
 
 //TODO
- ContextMenu.getScrollTop=function()
- {
- 	return document.body.scrollTop;
+ContextMenu.getScrollTop=function()
+{
+	return document.body.scrollTop;
 	//window.pageXOffset and window.pageYOffset for moz
- }
- 
- ContextMenu.getScrollLeft=function()
- {
- 	return document.body.scrollLeft;
- }
- 
+}
+
+ContextMenu.getScrollLeft=function()
+{
+	return document.body.scrollLeft;
+}
+
 
 ContextMenu.fixPos=function(x,y)
 {
-	var docheight,docwidth,dh,dw;	
+	var docheight,docwidth,dh,dw;
 	docheight = document.body.clientHeight;
 	docwidth  = document.body.clientWidth;
 	dh = (WebFX_PopUpcss.offsetHeight+y) - docheight;
@@ -83,7 +83,7 @@ ContextMenu.fixSize=function()
 	//这个方法是动态调整Iframe的宽度和高度，被织梦修改过
 	//var body;
 	//WebFX_PopUpcss.style.width = "120px";
-	//body = WebFX_PopUp.document.body; 
+	//body = WebFX_PopUp.document.body;
 	//var dummy = WebFX_PopUpcss.offsetHeight + " dummy";
 	//h = body.scrollHeight + WebFX_PopUpcss.offsetHeight - body.clientHeight;
 	//w = body.scrollWidth + WebFX_PopUpcss.offsetWidth - body.clientWidth;
@@ -125,12 +125,12 @@ ContextMenu.populatePopup=function(arr,win)
 				tmpobj.innerHTML = arr[i].text;
 				tmpobj.onclick = (function (f)
 				{
-				   	return function () {
-			    			win.WebFX_PopUpcss.style.display='none'
-								if (typeof(f)=="function"){ f(); }
-             };
+					return function () {
+						win.WebFX_PopUpcss.style.display='none'
+						if (typeof(f)=="function"){ f(); }
+					};
 				})(arr[i].action);
-					
+
 				tmpobj.onmouseover = function(){this.className="WebFX-ContextMenu-Over"}
 				tmpobj.onmouseout  = function(){this.className="WebFX-ContextMenu-Item"}
 			}
@@ -148,6 +148,6 @@ ContextMenu.populatePopup=function(arr,win)
 function ContextItem(str,fnc,disabled)
 {
 	this.text     = str;
-	this.action   = fnc; 
+	this.action   = fnc;
 	this.disabled = disabled || false;
 }

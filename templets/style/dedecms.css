@@ -1,0 +1,384 @@
+/***
+ *	DedeCMS v5.3 Style (grass green)
+ *	dedecms.com  Author pigz  2008-11-07 11:49
+ **/
+ 
+/*---------- import ---------*/
+@import url("layout.css");
+@import url("page.css");
+
+
+/*---------- base ---------*/
+*{
+	padding:0px;
+	margin:0px;
+}
+html{
+	background:#FFF;
+}
+body{
+	font:12px Verdana,Arial,Tahoma;
+}
+img{
+	border:none;
+}
+
+a{
+	color:#3366CC;
+	text-decoration:none;
+}
+a:hover{
+	color:#F33;
+	text-decoration:underline;
+}
+ul{
+	list-style:none;
+}
+input,select,button{
+	font:12px Verdana,Arial,Tahoma;
+	vertical-align:middle;
+}
+/*---------- stock ---------*/
+.center{
+	margin:0px auto;
+}
+.w960{
+	width:960px;
+	position:relative;
+}
+.mt1{/* ( margin-top * 1 ) */
+	margin-top:8px;
+}
+.mt2{/* ( margin-top * 2 ) */
+	margin-top:16px;
+}
+.clear{
+	overflow:hidden;
+}
+.fs-12{
+	font-size:12px;
+}
+.fc-f60{
+	color:#F60;
+}
+.fc-f90{
+	color:#F90;
+}
+.ipt-txt{
+	line-height:15px;
+	padding:4px 5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#666 #BBB #BBB #666;
+	font-size:12px;
+	margin-right:2px;
+}
+.btn-1{
+	width:56px;
+	height:23px;
+	border:none;
+	background:url(../images/btn-bg1.gif) no-repeat;
+	line-height:25px;
+	letter-spacing:1px;
+	overflow:hidden;
+	color:#2F592E;
+}
+.btn-2{
+	width:70px;
+	height:25px;
+	border:none;
+	background:url(../images/btn-bg2.gif) left top no-repeat;
+	line-height:25px;
+	overflow:hidden;
+	color:#444;
+	margin-right:2px;
+}
+/*---------- frame ---------*/
+/*---------- frame : header ---------*/
+.header{
+	width:100%;
+	padding-top:16px;
+	overflow:hidden;
+}
+.header a{
+	color:#777;
+}
+.header a:hover{
+	color:#390;
+	text-decoration:none;
+}
+.header .top{
+	clear:both;
+	overflow:hidden;
+}
+.header .title{
+	float:left;
+	padding-left:16px;
+}
+.header .title h1 a{
+	width:200px;
+	height:56px;
+	display:block;
+	font-size:0px;
+	text-indent:-200px;
+	overflow:hidden;
+	background:url(../images/top-logo.gif) center center no-repeat;
+}
+.header .banner{
+	width:480px;
+	height:56px;
+	float:left;
+	margin-left:40px;
+	overflow:hidden;
+}
+.header .banner img{
+	width:480px;
+	height:56px;
+	display:block;
+}
+.header .rlink{
+	width:172px;
+	height:52px;
+	float:left;
+	margin-left:32px;
+	overflow:hidden;
+	padding-top:4px;
+}
+.header .rlink ul li{
+	width:78px;
+	height:21px;
+	background:url(../images/toprlink-bg.gif) left top no-repeat;
+	float:left;
+	margin-right:8px;
+	margin-bottom:8px;
+	overflow:hidden;
+}
+.header .rlink ul li a{
+	display:block;
+	color:#777;
+	line-height:21px;
+	text-indent:22px;
+	background-image:url(../images/toprlink-bg.gif);
+	background-repeat:no-repeat;
+}
+.header .rlink ul li a:hover{
+	color:#000;
+}
+.header .rlink ul li.r1 a{
+	background-position:0px -21px;
+}
+.header .rlink ul li.r2 a{
+	background-position:0px -42px;
+}
+.header .rlink ul li.r3 a{
+	background-position:0px -63px;
+}
+.header .rlink ul li.r4 a{
+	background-position:0px -84px;
+}
+.header .welcome{
+	float:right;
+	margin-top:20px;
+	padding-right:10px;
+	color:#999;
+}
+.header .welcome a{
+	margin:0px 3px;	
+}
+.header .nav{
+	width:100%;
+	height:32px;
+	background:url(../images/nav-bg.gif) repeat-x;
+	clear:both;
+	overflow:hidden;
+}
+.header .nav ul{
+	height:32px;
+	margin:0px auto;
+	overflow:hidden;
+}
+.header .nav ul li{
+	float:left;
+	line-height:31px;
+	background:url(../images/nav-bg.gif) 0px -32px no-repeat;
+	margin-left:-2px;
+}
+.header .nav ul li a{
+	height:32px;
+	padding:0px 16px 0px 17px;
+	display:block;
+	color:#FFF;
+	float:left;
+}
+.header .nav ul li a:hover{
+	color:#FF3;	
+}
+.header .search{
+	height:40px;
+	background:url(../images/search-bg.png) repeat-x;
+	clear:both;
+}
+.header .search .form{
+	padding-left:8px;
+	padding-top:5px;
+	float:left;
+}
+.header .search .form h4{
+	display:none;
+}
+.header .search .form input.search-keyword{
+	width:156px;
+	height:18px;
+	border:none;
+	background:url(../images/search-bg.gif) left top no-repeat;
+	line-height:15px;
+	font-size:12px;
+	padding:5px 3px 0px 58px;
+	overflow:hidden;
+}
+.header .search .form select.search-option{
+	margin-left:2px;
+}
+.header .search .form button.search-submit{
+	width:68px;
+	height:22px;
+	border:none;
+	background:#F00 url(../images/search-bg.gif) right top no-repeat;
+	font-size:0px;
+	line-height:100px;
+	margin-left:2px;
+	*margin-left:5px;
+	overflow:hidden;
+}
+.header .tags{
+	float:left;
+	margin-left:16px;
+	padding-top:8px;
+}
+.header .tags h4{
+	width:66px;
+	height:19px;
+	float:left;
+	font-size:0px;
+	line-height:100px;
+	overflow:hidden;
+	background:url(../images/search-tags-title.gif) no-repeat;
+}
+.header .tags ul{
+	height:21px;
+	float:left;
+	overflow:hidden;
+}
+.header .tags ul li{
+	float:left;
+	line-height:19px;
+	padding:0px 5px;
+}
+
+/*---------- frame : channel-nav ---------*/
+.channel-nav{
+	height:31px;
+	border-bottom:1px solid #E5EFD6;
+}
+.channel-nav ul{
+	height:22px;
+	padding-left:10px;
+	padding-top:3px;
+	overflow:hidden;
+	float:left;
+}
+.channel-nav ul li{
+	height:22px;
+	float:left;
+	overflow:hidden;
+	margin-right:10px;
+}
+.channel-nav ul li a{
+	height:22px;
+	display:block;
+	padding-right:10px;
+	float:left;
+	background:url(../images/channel-nav-bg.gif) right 0px no-repeat;
+	overflow:hidden;
+}
+.channel-nav ul li a span{
+	display:block;
+	float:left;
+	height:22px;
+	padding-left:10px;
+	background:url(../images/channel-nav-bg.gif) left 0px no-repeat;
+	cursor:pointer;
+	overflow:hidden;
+	line-height:23px;
+	color:#666666;
+}
+.channel-nav ul li a:hover{
+	text-decoration:none;
+	background:url(../images/channel-nav-bg.gif) right -22px no-repeat;
+}
+.channel-nav ul li a:hover span{
+	color:#78A63C;
+	text-decoration:none;
+	background:url(../images/channel-nav-bg.gif) left -22px no-repeat;
+}
+.channel-nav ul li.thisclass{
+}
+.channel-nav ul li.thisclass a,.channel-nav ul li.thisclass a:hover{
+	background:url(../images/channel-nav-bg.gif) right -44px no-repeat;
+	cursor:default;
+}
+.channel-nav ul li.thisclass a span,.channel-nav ul li.thisclass a:hover span{
+	background:url(../images/channel-nav-bg.gif) left -44px no-repeat;
+	color:#FFF;
+	cursor:default;
+}
+.channel-nav .back{
+	display:block;
+	height:22px;
+	line-height:21px;
+	padding-top:6px;
+	padding-right:10px;
+	padding-left:20px;
+	letter-spacing:2px;
+	float:right;
+	background:url(../images/ico-home.gif) 4px 10px no-repeat;
+} 
+.channel-nav .back a{
+	color:#94B56A;
+}
+.channel-nav .back a:hover{
+	text-decoration:none;
+	color:#777;
+}
+
+/*---------- frame : footer ---------*/
+.footer{
+	color:#999;
+	text-align:center;
+	padding-bottom:10px;
+	border-top:1px solid #E5EFD6;
+	padding-top:10px;
+}
+.footer .link{
+	text-align:center;
+	padding:5px 0px;
+}
+.footer .link a{
+	margin:0px 5px;
+	color:#666666;
+}
+.footer .powered{
+	font-size:10px;
+	line-height:25px;
+}
+.footer .powered strong{
+	color:#690;
+}
+.footer .powered strong span{
+	color:#F93;
+}
+.footer .copyright{
+	color:#666666;
+	line-height:23px;
+
+}

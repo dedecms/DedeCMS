@@ -1,47 +1,53 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_投票模块');
-require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
-if(empty($dopost)) $dopost="";
-if(empty($aid)) $aid="";
-$aid = trim(ereg_replace("[^0-9]","",$aid));
-if($aid==""){
-	ShowMsg('你没有指定投票ID！','-1');
-	exit();
+require_once(DEDEINC."/dedetag.class.php");
+if(empty($dopost))
+{
+	$dopost="";
 }
-if(!empty($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = $_COOKIE['ENV_GOBACK_URL'];
-else $ENV_GOBACK_URL = "vote_main.php";
-///////////////////////////////////////
+$aid = isset($aid) && is_numeric($aid) ? $aid : 0;
+$ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? "vote_main.php" : $_COOKIE['ENV_GOBACK_URL'];
 if($dopost=="delete")
 {
-	$dsql = new DedeSql(false);
-	$dsql->SetQuery("Delete From #@__vote where aid='$aid'");
-	$dsql->ExecuteNoneQuery();
-	$dsql->Close();
-	ShowMsg('成功删除一组投票!',$ENV_GOBACK_URL);
-	exit();
+	if($dsql->ExecuteNoneQuery("Delete From #@__vote where aid='$aid'"))
+	{
+		ShowMsg('成功删除一组投票!',$ENV_GOBACK_URL);
+	}
+	else
+	{
+		ShowMsg('指定删除投票不存在!',$ENV_GOBACK_URL);
+	}
 }
 else if($dopost=="saveedit")
 {
-	$dsql = new DedeSql(false);
 	$starttime = GetMkTime($starttime);
 	$endtime = GetMkTime($endtime);
 	$query = "Update #@__vote set votename='$votename',
-	starttime='$starttime',
-	endtime='$endtime',
-	totalcount='$totalcount',
-	ismore='$ismore',
-	votenote='$votenote' where aid='$aid'";
-	$dsql->SetQuery($query);
-	$dsql->ExecuteNoneQuery();
-	$dsql->Close();
-	ShowMsg('成功更改一组投票!',$ENV_GOBACK_URL);
-	exit();
+		starttime='$starttime',
+		endtime='$endtime',
+		totalcount='$totalcount',
+		ismore='$ismore',
+		votenote='$votenote' where aid='$aid'
+		";
+	if($dsql->ExecuteNoneQuery($query))
+	{
+		ShowMsg('成功更改一组投票!',$ENV_GOBACK_URL);
+	}
+	else
+	{
+		ShowMsg('更改一组投票失败!',$ENV_GOBACK_URL);
+	}
 }
-$dsql = new DedeSql(false);
-$row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
+else
+{
+	$row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
+	if(!is_array($row))
+	{
+		ShowMsg('指定投票不存在！','-1');
+		exit();
+	}
+	include DedeInclude('templets/vote_edit.htm');
+}
 
-require_once(dirname(__FILE__)."/templets/vote_edit.htm");
-
-ClearAllLink();
 ?>

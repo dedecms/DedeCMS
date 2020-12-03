@@ -1,0 +1,270 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DedeCms Home</title>
+<base target="_self">
+<link rel="stylesheet" type="text/css" href="img/base.css" />
+<link rel="stylesheet" type="text/css" href="img/indexbody.css" />
+<script language='javascript' src='../include/dedeajax2.js'></script>
+<script language='javascript' src='js/indexbody.js'></script>
+</head>
+<body leftmargin="8" topmargin='8'>
+	
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+     <div style='float:left'>
+       <img height="14" src="img/book1.gif" width="20" />&nbsp; 欢迎使用专业的PHP网站管理系统，轻松建站的首选利器 -- <?php echo $cfg_softname; ?>
+     </div>
+     <div style='float:right;padding-right:8px;'>
+     	<!--  //保留接口  -->
+     </div>
+   </td>
+  </tr>
+  <tr>
+    <td height="1" background="img/sp_bg.gif" style='padding:0px'></td>
+  </tr>
+</table>
+
+<table width="98%" align="center" border="0" cellpadding="3" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:8px;margin-top:8px;">
+	<tr>
+			<td background="img/wbg.gif" bgcolor="#EEF4EA" class='title'>
+				<span><?php echo $cfg_soft_enname; ?> 更新消息</span>
+			</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+			<table width="100%"  border="0" cellspacing="1" cellpadding="1">
+				<tr>
+					<td width="15%" align="center"><img src="img/ico_spider.gif" width="90" height="70" /></td>
+					<td id='updateinfos'>
+						<?php
+						echo "<div class='updatedvt'><b>你系统版本最后更新时间为：{$oktime} </b>";
+						echo " <a href='javascript:LoadUpdateInfos();' class='np coolbg'>进行在线更新</a> &nbsp; \r\n";
+						echo " <a href='sys_repair.php' class='np coolbg'>系统错误修复</a></div>\r\n";
+						echo "<iframe name='stafrm' src='{$offUrl}&uptime={$oktime}' frameborder='0' id='stafrm' width='100%' height='50'></iframe>";
+						?>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>  
+   
+<table width="98%" align="center" border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:8px">
+	<tr>
+		<td colspan="2" background="img/wbg.gif" bgcolor="#EEF4EA" class='title'>
+			<div style='float:left'><span>快捷操作</span></div>
+			<div style='float:right;padding-right:10px;'>
+				<a href='#' onClick="AddNew()"><b>【新增】</b></a>
+				<a href='#' onClick="ListAll()"><b>【管理】</b></a>
+			</div>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td height="30" colspan="2" align="center" valign="bottom">
+			<table width="100%" border="0" cellspacing="1" cellpadding="1">
+				<tr>
+					<td width="15%" height="31" align="center"><img src="img/qc.gif" width="90" height="30" /></td>
+					<td width="85%" valign="bottom">
+							<?php
+                	$dtp = new DedeTagparse();
+                	$dtp->SetNameSpace('menu','<','>');
+                	$dtp->LoadTemplet($myIcoFile);
+                	if(is_array($dtp->CTags))
+                	{
+                		foreach($dtp->CTags as $ctag) {
+                			$title = $ctag->GetAtt('title');
+                			$ico = $ctag->GetAtt('ico');
+                			$link = $ctag->GetAtt('link');
+                			echo "<div class='icoitem'><div class='ico'><img src='{$ico}' width='16' height='16' /></div><div class='txt'><a href='{$link}'><u>{$title}</u></a></div></div>\r\n";
+                		}
+			            }
+							?>
+					</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
+</table>
+   
+<table width="98%" align="center" border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:8px">
+	<tr bgcolor="#EEF4EA">
+		<td colspan="2" background="img/wbg.gif" class='title'>
+			<span>系统基本信息</span>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td width="25%" bgcolor="#FFFFFF">您的级别：</td>
+		<td width="75%" bgcolor="#FFFFFF">
+        <?php
+        if($cuserLogin->getUserType()==10) {
+        	echo "总管理员";
+        }
+        else if($cuserLogin->getUserType()==5) {
+        	echo "频道总编";
+        }
+        else {
+        	echo "信息采集员或其它管理员";
+        }
+        ?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td rowspan="5">PHP环境摘要：</td>
+		<td> PHP版本：
+            <?php echo @phpversion(); ?>
+            &nbsp;
+            GD版本：
+           <?php echo @gdversion(); ?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+			是否安全模式：<font color='red'><?php echo ($isSafeMode ? 'On' : 'Off')?></font>
+			<?php
+          	if($isSafeMode) {
+          		echo "<br>　　<font color='blue'>由于你的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href='sys_info.php'><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href='testenv.php' style='color:red'><u>点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>";
+          	}
+          	else {
+          		echo "　<a href='testenv.php' style='color:blue'><u>如果你第一次进入本系统，建议点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>";
+          	}
+			?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+			Register_Globals：<font color='red'><?php echo ini_get("register_globals") ? 'On' : 'Off'?></font> &nbsp;
+			Magic_Quotes_Gpc：<font color='red'><?php echo ini_get("magic_quotes_gpc") ? 'On' : 'Off'?></font>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+			支持上传的最大文件：<?php echo ini_get("post_max_size")?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+			是否允许打开远程连接：<?php echo ini_get("allow_url_fopen") ? '支持' : '不支持'?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td>
+      其它必须函数检测：
+		</td>
+		<td>
+			<?php
+          $needfunc = array('dir','phpinfo');
+          $n = 0;
+          foreach($needfunc as $k) {
+          	if(!function_exists($k)) {
+          		echo "<font color='red'>[{$k}×]</font> ";
+          		$n++;
+          	}
+          }
+          if($n==0) {
+          	echo "符合要求";
+          }
+          else {
+          	echo "被禁用的函数可能导致部份功能无法使用！";
+          }
+       ?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td> 软件版本信息： </td>
+		<td>
+      版本名称：<?php echo $cfg_soft_enname; ?>
+        &nbsp;
+      版本号：<?php echo $cfg_version; ?>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td width="25%">
+			开发团队：
+		</td>
+		<td width="75%">
+			<?php echo $cfg_soft_devteam; ?>
+		</td>
+	</tr>
+</table>
+
+<table width="98%" align="center" border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC">
+	<tr bgcolor="#EEF4EA">
+		<td colspan="2" background="img/wbg.gif" class='title'>
+			<span>使用帮助</span>
+		</td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td height="36"> 推荐主机： </td>
+		<td> <?php echo $dedeIDC; ?> </td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td height="32">官方论坛：</td>
+		<td><a href="http://bbs.dedecms.com/" target="_blank"><u>http://bbs.dedecms.com</u></a></td>
+	</tr>
+	<tr bgcolor="#FFFFFF">
+		<td width="25%" height="32">在线文档：</td>
+		<td width="75%">
+			<a href="http://help.dedecms.com/" target="_blank"><u>http://help.dedecms.com</u></a>
+		</td>
+	</tr>
+</table>
+<p align="center">
+<?php echo $cfg_powerby?>
+<br/>
+<br/>
+</p>
+
+<!--  下面是隐藏的项目  -->
+
+<div id='loaddiv' style='display:none'>
+	<p align='center' style='padding-top:200px'><img src='img/loadinglit.gif' /> 请稍后，正在下载更新文件列表...</p>
+</div>
+
+<div id="editTab">
+<span id='editTabBody'>请稍候，正在载入...</span>
+</div>
+<div id="addTab">
+<form name='addform' action='index_body.php'>
+<input type='hidden' name='dopost' value='addnew' />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+     <td height='28' colspan='3' background="img/tbg.gif">
+     	<div style='float:left'><b>增加快捷操作项</b></div>
+      <div style='float:right;padding:3px 10px 0 0;'>
+     		<a href="javascript:CloseTab('addTab')"><img src="img/close.gif" width="12" height="12" border="0" /></a>
+      </div>
+     </td>
+   </tr>
+ 	 <tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td></tr>
+   <tr>
+     <td width="20%" height="28">链接标题：</td>
+     <td width="70%">
+     	<input name="title" type="text" id="title" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%">ICO图片：</td>
+     <td width="70%">
+     	<input name="ico" type="text" id="ico" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="28" width="20%">链接网址：</td>
+     <td width="70%">
+     	<input name="link" type="text" id="link" class='pubinputs' />
+     </td>
+   </tr>
+   <tr>
+     <td height="45">&nbsp;</td>
+     <td>
+     	<input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
+     </td>
+   </tr>
+  </table>
+</form>
+</div>
+
+</body>
+</html>

@@ -1,178 +1,142 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>发布<?php echo $cInfos['typename'];  ?></title>
-<link href="company_style.css" rel="stylesheet" type="text/css">	
-<script language='javascript' src='main.js'></script>
+<title>发表<?php echo $cInfos['typename']; ?></title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language='javascript' src='js/main.js'></script>
 <script language="javascript">
 <!--
 function checkSubmit()
 {
 
-if(document.form1.title.value==""){
-	 alert("文档标题不能为空！");
-	 document.form1.title.focus();
-	 return false;
-}
+	if(document.form1.title.value==""){
+		alert("<?php echo $cInfos['titlename']; ?>不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
 
-if(document.form1.typeid.value==0){
-	 alert("文档隶属栏目必须选择！");
-	 return false;
-}
+	if(document.form1.typeid.value==0){
+		alert("隶属栏目必须选择！");
+		return false;
+	}
 
-if(document.form1.vdcode.value==""){
- document.form1.vdcode.focus();
- alert("验证码不能为空！");
- return false;
-}
+	if(document.form1.typeid.options && document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
+	{
+		alert("隶属栏目必须选择白色背景的项目！");
+		return false;
+	}
+
+	if(document.form1.vdcode.value==""){
+		document.form1.vdcode.focus();
+		alert("验证码不能为空！");
+		return false;
+	}
 
 }
 -->
 </script>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/comhead.htm"); ?>
-<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/commenu.php");?>
-    </td>
-    <td width="10">&nbsp;</td>
-    <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="turnleft" style="margin-top:10px">
-        <tr> 
-          <td background="img/nnnbg.gif" height="25" class="gdt2">
-		  <font color="#333333"> 
-                   <div class="manage_company_right_title">
-                	<ul><li>&nbsp;发布新<?php echo $cInfos['typename'];?>：</li></ul>
-                </div>
-		</td>
-        </tr>
-        <tr>
-		<form name="form1" action="archives_add_action.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
-          <input type="hidden" name="channelid" value="<?php echo $channelid?>"> 
-          <td height="183" valign="top" style="padding-top:3px">
-                <table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
-                  <tr>
-                    <td height="24" bgcolor="#F0FBE3"><strong>◆常规参数：</strong></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28"><?php echo $cInfos['typename'];?>标题：</td>
-                          <td><input name="title" type="text" id="title" size="30" class="company_manage_form_label" />
-                            <font color="#FF0000">*</font> 发布人：
-                          <input name="writer" type="text" id="writer" size="15" class="company_manage_form_label" value="<?php echo $cfg_ml->M_UserName?>" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">隶属栏目：</td>
-                          <td><?php 
-           	 $selname = '请选择...';
-           	 $delv = '0';
-           	 if(!empty($cid)){
-           	 	 $crow = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
-           	 	 $selname = $crow['typename'];
-           	 	 $selv = $crow['ID'];
-           	 }
-           	 echo GetTypeidSelMember('form1','typeid','selbt1',$channelid,$selv,$selname,false);
-			       ?></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">验证码：</td>
-                          <td><table width="200" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                              <td width="84"><input name="vdcode" style="width:80px" type="text" id="vdcode" size="10" class="yanzhengma" /></td>
-                              <td width="116"><img src='../include/vdimgck.php' width='50' height='20' /></td>
-                            </tr>
-                          </table></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">我的分类：</td>
-                          <td><select name="mtype" id="mtype" style="width:200px">
-                            <option value='0'>--请选择分类--</option>
-                            <?php 
-$dsql->SetQuery("Select * From #@__member_arctype where  memberid='".$cfg_ml->M_ID."' ;");
-$dsql->Execute();
-while($row = $dsql->GetObject()){
-  echo "<option value='".$row->aid."'>".$row->typename."</option>\r\n";
-}
-?>
-                          </select></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">内容简介：</td>
-                          <td><textarea name="description" id="description" style="width:80%;height:50px"></textarea></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">标签（TAG）：</td>
-                          <td><input name="keywords" type="text" id="keywords" style="width:50%;" value="" class="company_manage_form_label" />
-(多个标签（TAG）用空格分开)</td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">缩略图：</td>
-                          <td><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
-                        </tr>
-                        <tr id="picarea" style='display:none'>
-                          <td height="28">预　览：</td>
-                          <td><img src="img/pview.gif" id="picview" width="150" height="120" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                </table>
-				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
-                  <tr>
-                    <td height="24" bgcolor="#F0FBE3"><strong>◆附加参数：</strong></td>
-                  </tr>
-                  <?php 
-                  if($cInfos['ID']==5) PrintAutoFieldsAdd($cInfos['fieldset'],'all');
-                  else PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
-                  ?>
-                </table>
-				<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-                <tr bgcolor="#F7FDF0"> 
-                  <td width="400%" height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
-                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();">                  </td>
-                </tr>
-              </table></td>
-			</form>
-        </tr>
-        <tr> 
-          <td height="10"></td>
-        </tr>
-      </table> </td>
-  </tr>
-</table>
-<?php 
-if(isset($dsql) && is_object($dsql)) $dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="titAddChannel1 icon">发表</span><?php echo $cInfos['typename']; ?></div>
+        <form class="mTB10 mL10 mR10" name="form1" action="archives_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
+          <table cellspacing="1" class="submit">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>常规参数</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top"><?php echo $cInfos['titlename']; ?>：</td>
+                <td><input name="title" type="text" id="title" size="30" class="text" style="width:400px;"/>
+                  <span style="color:#F00">*</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">标签TAG：</td>
+                <td><input name="tags" type="text" id="tags" size="30" class="text" style="width:400px;"/>
+                  (用逗号分开) </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">作者：</td>
+                <td><input type="text" name="writer" id="writer" size="30" class="text" value="<?php echo $cfg_ml->M_UserName?>" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">隶属栏目：</td>
+                <td><?php
+		$typeOptions = GetOptionList(0,$channelid);
+		echo "<select name='typeid' size='1'>\r\n";
+		echo "<option value='0' selected>请选择栏目...</option>\r\n";
+		echo $typeOptions;
+		echo "</select>";
+		?>
+                  <span style="color:#F00">*</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">隶属分类：</td>
+                <td><?php
+            	$classlist = classification("$cfg_ml->M_ID");
+            	echo "<select name='mtypesid' size='1'>\r\n";
+            	echo "<option value='0' selected>请选择分类...</option>\r\n";
+				echo $classlist;
+				echo "</select>";
+            ?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">信息摘要：</td>
+                <td><textarea name="description" id="description" style="height:50px"></textarea>
+                  (内容的简要说明) </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">缩略图：</td>
+                <td><input class="file" name="litpic" type="file" id="litpic" style="width:408px" onchange="SeePicNew('divpicview',this);"  />
+                  <div id='divpicview' class='divpre'></div></td>
+              </tr>
+              <?php
+      //自定义字段
+      PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
+      ?>
+              <tr>
+                <td align="left" valign="top"><strong>详细内容：</strong></td>
+                <td><?php GetEditor("body","",350,"Member"); ?></td>
+              </tr>
+              <?php
+      //游客强制加验证码，会员则判断后台开关
+      if(!$cfg_ml->IsLogin() || $cfg_vdcode_member=='Y'){
+      ?>
+              <tr>
+                <td align="right" valign="top">验证码：</td>
+                <td><input class="text" name="vdcode" type="text" id="vdcode" size="10" style='width:50px;text-transform:uppercase;' />
+                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" /></td>
+              </tr>
+              <?php
+      }else {
+      	echo "<input name='vdcode' type='hidden' id='vdcode' value='notuse' />";
+      }
+      ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">提交</button>
+                  <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

@@ -1,13 +1,24 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 CheckRank(0,0);
+require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",GetCurUrl(),time()+3600,"/");
-$sql = "Select * From #@__memberstow where uid='".$cfg_ml->M_ID."' order by addtime desc";
-$dlist = new DataList();
-$dlist->Init();
+$type = isset($type) ? trim($type) : '';
+
+if($type == '')
+{
+	$sql = "Select * From `#@__member_stow` where mid='".$cfg_ml->M_ID."' order by id desc";
+	$tpl = 'mystow';
+}
+else
+{
+	$sql = "select *,count(aid) as num from #@__member_stow group by aid order by num desc";
+	$tpl = 'stowtop';
+}
+
+$dlist = new DataListCP();
 $dlist->pageSize = 20;
+$dlist->SetTemplate(DEDEMEMBER."/templets/$tpl.htm");
 $dlist->SetSource($sql);
-require_once(dirname(__FILE__)."/templets/mystow.htm");
-$dlist->Close();
+$dlist->Display();
 ?>

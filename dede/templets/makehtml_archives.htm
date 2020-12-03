@@ -1,80 +1,67 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>生成HTML</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="main.js"></script>
+<link href="img/base.css" rel="stylesheet" type="text/css">
 </head>
-<body>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">HTML更新</div>
-</div>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
   <form name='form2' action='content_list.php' method="get" target='stafrm'>
    <input type='hidden' name='nullfield' value='ok'>
   </form>
   <form name="form1" action="makehtml_archives_action.php" method="get" target='stafrm'>
   <tr> 
-    <td height="20" colspan="2" bgcolor="#EDF9D5">
+    <td height="28" colspan="2" background='img/tbg.gif'>
     	<table width="98%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="30%" height="18"><strong>&nbsp;&nbsp;更新文档HTML：</strong></td>
-          <td width="70%" align="right">&nbsp; </td>
+          <td width="30%" height="18"><strong>更新文档HTML：</strong></td>
+          <td width="70%" align="right">
+          	<a href="makehtml_list.php?typeid=<?php echo (isset($typeid) ? $typeid : 0); ?>" class="np coolbg">更新栏目HTML</a>
+          </td>
         </tr>
       </table></td>
   </tr>
   <tr> 
-    <td width="108" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>选择栏目：</td>
-    <td width="377" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>      <?php 
-			$seltypeids = 0;
-			if(!empty($cid)){
-			  $dsql = new DedeSql(false);
-			  $seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
-			  $dsql->Close();
-			}
-			$opall=1;
-			if(is_array($seltypeids)){
-			   echo GetTypeidSel('form1','typeid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
-			}else{
-			   echo GetTypeidSel('form1','typeid','selbt1',0,0,'请选择...');
-			}
-        ?></td>
+    <td width="108" valign="top" bgcolor="#FFFFFF">选择栏目：</td>
+    <td width="377" valign="top" bgcolor="#FFFFFF">
+    <?php
+       if(empty($cid)) $cid="0";
+       $tl = new TypeLink($cid);
+       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0);
+       echo "<select name='typeid' style='width:300'>\r\n";
+       if($cid=="0") echo "<option value='0' selected>更新所有文档...</option>\r\n";
+       echo $typeOptions;
+       echo "</select>";
+		?>
+   </td>
   </tr>
   <tr>
-    <td height="20" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>起始ID：</td>
-    <td height="20" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>
-      <input name="startid" type="text" id="startid" size="10">
+    <td height="20" valign="top" bgcolor="#FFFFFF">起始ID：</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input name="startid" type="text" id="startid" size="10">
       （空或0表示从头开始）</td>
   </tr>
   <tr> 
-    <td height="20" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>结束ID：</td>
-    <td height="20" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>
-      <input name="endid" type="text" id="endid" size="10">
+    <td height="20" valign="top" bgcolor="#FFFFFF">结束ID：</td>
+    <td height="20" valign="top" bgcolor="#FFFFFF"><input name="endid" type="text" id="endid" size="10">
       （空或0表示直到结束ID） </td>
   </tr>
     <tr> 
-      <td height="20" bgcolor="#FFFFFF"><strong>&nbsp;&nbsp;</strong>每页生成：</td>
-      <td height="20" bgcolor="#FFFFFF"> <strong>&nbsp;&nbsp;</strong>
-        <input name="pagesize" type="text" id="pagesize" value="20" size="8">
-        个文件
-        <input type="checkbox" name="onlymake" value="1" />仅更新未生成html的文档
-       </td>
+      <td height="20" bgcolor="#FFFFFF">每页生成：</td>
+      <td height="20" bgcolor="#FFFFFF"> <input name="pagesize" type="text" id="pagesize" value="20" size="8">
+        个文件</td>
     </tr>
     <tr> 
-      <td height="35" colspan="2" align="center" valign="middle" bgcolor="#F8FBFB" style="padding-top:6px">
-      	<input name="b112" type="button" value="开始生成HTML" onClick="document.form1.submit();" class="inputbut"/>
+      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
+      	<input name="b112" type="button" class='coolbg np' value="开始生成HTML" onClick="document.form1.submit();" style="width:100">
         &nbsp;
-        <input type="button" name="b113" value="查看所有文档" onClick="document.form2.submit();" class="inputbut"/> 
+        <input type="button" name="b113" value="查看所有文档"  class='coolbg np' onClick="document.form2.submit();" style="width:100"> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E5F9FF"> 
-    <td height="20" colspan="2" bgcolor="#EDF9D5"> <table width="100%">
+  <tr bgcolor="#E6F3CD"> 
+    <td height="20" colspan="2"> <table width="100%">
         <tr> 
-          <td width="74%"><strong>&nbsp;&nbsp;</strong>进行状态： </td>
+          <td width="74%">进行状态： </td>
           <td width="26%" align="right">
           	<script language='javascript'>
             	function ResizeDiv(obj,ty)
@@ -89,12 +76,11 @@
       </table></td>
   </tr>
   <tr bgcolor="#FFFFFF"> 
-    <td colspan="2" id="mtd"> <div id='mdv' style='width:100%;height:100;'> 
+    <td colspan="2" id="mtd">
+    	<div id='mdv' style='width:100%;height:350px;'> 
         <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
       </div>
-      <script language="JavaScript">
-	  document.all.mdv.style.pixelHeight = screen.height - 360;
-	  </script> </td>
+    </td>
   </tr>
 </table>
 </body>

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:var.spacename /}--留言本</title>
+<link href="space/person/img/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--topb-->
+{dede:include file='space-top.htm'/}
+<!--c1c2e-->
+<!--c3b-->
+		<div id="c3">
+			<div class="c3c">
+				<div class="c3c1">	
+<div style="padding-top:8px;" align="center">
+{dede:datalist}
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D7D18C" style="margin-bottom:6px">
+<tr bgcolor="#E7E1BB"> 
+ <td height="28" colspan="2" background="img/gbookbg.gif">
+  <span style="float:left"><strong>{dede:field.title/}</strong></span>
+  <span style="float:right;padding-right:20px;">
+用户：<a href='index.php?uid={dede:field.uname/}'>{dede:field.uname/}</a>
+时间：{dede:field.dtime function="MyDate('Y-m-d H:i',@me)" /}
+&nbsp; 
+<a href='index.php?uid={dede:field.uname/}&action=infos' target='_blank'>资料</a>
+<a href='index.php?uid={dede:field.uname/}' target='_blank'>空间</a> 
+  </span>
+ </td>
+</tr>
+</tr>
+<tr height="60" bgcolor="#ffffff">
+<td align="left" colspan="2">
+	{dede:field.msg function="Text2Html(@me)" /}
+</td>
+</tr>
+</table>
+{/dede:datalist}
+</div>
+					<!--内容块结束-->
+					<div class="plcb plcb2 plcb3">
+						{dede:pagelist/}
+					</div>
+					<!-- 详细留言 -->
+					<div class="ps ps1">
+						<h1>给我留言</h1>
+ <form action="index.php" name="form1" method="post">
+	<input type="hidden" name="action" value="guestbooksave" />
+	<input type="hidden" name="uidnum" value="{dede:var.mid/}" />
+	<input type="hidden" name="uid" value="{dede:var.userid/}" />
+	<table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
+    <tr> 
+      <td width="15%" height="26">验证码：</td>
+      <td width="85%">
+        <span style="float:left"><input name="vdcode" type="text" id="vdcode" size="10" style=""/></span>
+        <span style="float:left;padding-left:6px;"><img src='../include/vdimgck.php' width='50' height='20' style="padding-top:1px;" /></span>
+      </td>
+   </tr>
+   <tr> 
+     <td height="26">留言标题：</td>
+     <td><input name="title" type="text" id="title" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">留言内容：</td>
+     <td><textarea name="msg" id="msg" style="width:80%;height:80px"></textarea> </td>
+   </tr>
+   <tr> 
+     <td height="46" colspan="2"><strong>&gt;&gt;联系方法：</strong></td>
+   </tr>
+   <tr> 
+     <td height="26">你的昵称：</td>
+     <td><input name="uname" type="text" id="uname" value="<?php if(isset($cfg_ml->M_LoginID) && $cfg_ml->M_LoginID!='') echo $cfg_ml->M_LoginID; ?>" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">电子邮箱：</td>
+     <td><input name="email" type="text" id="email" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">即时通信软件：</td>
+     <td><input name="qq" type="text" id="qq" style="width:250px;" />
+       （注明ＱＱ或ＭＳＮ等）</td>
+   </tr>
+   <tr> 
+     <td height="26">联系电话：</td>
+     <td><input name="tel" type="text" id="tel" style="width:250px;" /></td>
+   </tr>
+   <tr align="center"> 
+     <td height="68" colspan="2">
+         <span style="float:left;margin-left:100px;"><input name="imageField" type="image" src="space/person/img/button_ok.gif" width="60" height="22" border="0" style="border:0px;height:22px" /></span>
+     </td>
+   </tr>
+   </table>
+	</form>
+				  </div>
+				</div>
+				<div class="c3c2">
+					<!--photob-->
+					<div class="photo">
+						{dede:include file='space-userinfo.htm'/}
+					</div>
+					<!--photoe-->
+					<div class="c3r noli fir">
+						<h1>最近访问</h1>
+						<ul>
+							{dede:newvisitor row=6}
+							<li>
+							  <div class='lside'>
+							  	<a href="{dede:field.url/}" target="_blank"><img src="{dede:field.face/}" /></a>
+							  </div>
+								<div class='rside'>
+									<h2><a href="{dede:field.url/}" target="_blank">{dede:field.uname/}</a></h2>
+									<div class='msg'>{dede:field.sign function="cn_substr(@me,60)" /}</div>
+								</div>
+							</li>
+							{/dede:newvisitor}
+						</ul>
+					</div>
+					<!--conke-->
+				</div>
+			</div>
+		</div>
+		<!--c3e-->
+	{dede:include file='space-foot.htm'/}
+	</div>
+	<!--cone-->
+</body>
+</html>

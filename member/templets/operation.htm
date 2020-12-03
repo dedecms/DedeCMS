@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>历史订单</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">历史订单</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
+            <li><a href="shops_products.php">商品</a></li>
+          </ul>
+        </div>
+        <div class="mL10 mR10 mTB10">
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"><strong>历史订单</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> 
+            <em class="mR10"><a href="mypay.php">购买的服务</a></em> 
+            <em class="mR10"><a href="operation.php">历史订单</a></em> </div>
+          </div>
+          <table cellspacing="1" class="list">
+            <thead>
+              <tr>
+                <th width="15%">订单号</th>
+                <th >产品</th>
+                <th width="5%">状态</th>
+                <th width="5%">系统信息</th>
+                <th width="5%">时间</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+            {dede:datalist}
+            <tr>
+              <td align="center">{dede:field.buyid/}</td>
+              <td>
+<?php
+if(strpos($fields['buyid'], 'ARCHIVE') === 0)
+{
+	echo '<a href="../plus/view.php?aid='.str_replace('ARCHIVE', '', $fields['buyid']).'" target="_blank">文章订阅</a>'; 
+} else {
+	echo $fields['pname'];
+}
+?>
+</td>
+              <td align="center">{dede:field.sta function="GetSta(@me)" /}</td>
+              <td align="center">
+<?php
+if(strpos($fields['buyid'], 'ARCHIVE') === 0)
+{
+	echo '<a href="../plus/view.php?aid='.str_replace('ARCHIVE', '', $fields['buyid']).'" target="_blank">'.$fields['oldinfo'].'</a>'; 
+} else {
+	echo $fields['oldinfo'];
+}
+?>
+</td>
+              <td align="center">{dede:field.mtime function="GetDateMk(@me)" /}</td>
+            </tr>
+            {/dede:datalist}
+            </tbody>
+            
+            <tfoot>
+              <tr>
+                <td colspan="6"><div class="pages fRight">{dede:pagelist listsize=5/}</div></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

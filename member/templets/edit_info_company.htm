@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>更改公司资料</title>
+
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+
+<script type="text/javascript" language="javascript">
+<?php echo GetEnumsJs('nativeplace'); ?>
+</script>
+<script type="text/javascript" language="javascript" src="../images/enums.js"></script>
+<script type="text/javascript" language="javascript" src="js/webcalendar.js"></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">设置公司资料</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="mtypes.php">分类管理</a></li>
+            <li><a href="flink_main.php">书签管理</a></li>
+            <li class="select"><a href="">公司资料</a></li>
+          </ul>
+        </div>
+        <form class="mTB10 mL10 mR10" name="form2" action="edit_fullinfo.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"><strong>详细资料</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+          </div>
+          <div class="item info">
+            <div class="itemHead bgGrass titleBar" >
+              <div class="fLeft">基本资料</div>
+              <div class="fRight titShow icon16" style="margin-top:5px;"></div>
+            </div>
+            <div class="itemBody" >
+              <table cellspacing="1" class="submit">
+                <tbody>
+                  <tr>
+                    <td width="15%" align="right" valign="top">公司名称：</td>
+                    <td><input name="company" type="text" class="text" id="company" value="<?php echo $row['company']; ?>" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">公司所在地：</td>
+                    <td>
+                    	<select name="province" id="province" onchange="javascript:selNext(document.getElementById('city'),this.value)">
+                        <option value='0'>选择一级地区</option>
+             <?php
+              $places = GetEnumsTypes($row['place']);
+              foreach($em_nativeplaces as $k=>$v)
+							{
+								if($k%500 == 0)
+								{
+									if($places['top']==$k) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+									else echo "<option value='$k'>$v</option>\r\n";
+								}
+							}
+            ?>
+                  </select>
+                      &nbsp;
+                  <select id="city" name="city">
+                  <option value='0'>选择具体地区</option>
+            <?php
+              if($places['son']>0)
+              {
+              	foreach($em_nativeplaces as $k=>$v)
+								{
+									 if($k > $places['top'] && $k < $places['top'] + 500)
+									 {
+											if($k==$places['son']) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+											else echo "<option value='$k'>$v</option>\r\n";
+									 }
+								}
+						  }
+            ?>
+                    </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">公司规模：</td>
+                    <td><?php echo GetEnumsForm('cosize',$row['cosize'],'',''); ?></td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">所属行业：</td>
+                    <td><?php echo GetEnumsForm('vocation',$row['vocation'],'',''); ?></td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">主营产品：</td>
+                    <td><input name="product" type="text" class="text" id="product" value="<?php echo $row['product']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">电话：</td>
+                    <td><input name="tel" type="text" id="tel" class="text" value="<?php echo $row['tel']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">传真：</td>
+                    <td><input name="fax" type="text" id="mobile" class="text" value="<?php echo $row['fax']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">联系人：</td>
+                    <td><input name="linkman" type="text" id="linkman" class="text" value="<?php echo $row['linkman']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">移动电话：</td>
+                    <td><input name="mobile" type="text" id="mobile2" class="text" value="<?php echo $row['mobile']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">电子邮箱：</td>
+                    <td><input name="email" type="text" id="email" class="text" value="<?php echo $row['email']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">公司网址：</td>
+                    <td><input name="url" type="text" id="url" class="text" value="<?php echo $row['url']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">详细地址：</td>
+                    <td><input name="address" type="text" class="text" id="address" value="<?php echo $row['address']; ?>" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">形象图片：</td>
+                    <td><input name="oldcomface" type="hidden" value="<?php echo $row['comface']; ?>" />
+                      <input name="comface" type="file" id="comface" size='45' style="width:350px" /></td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">原有形象图片：</td>
+                    <td><div id='logoview' class='divpre mTB10 litPic'> <img src='<?php echo $row['comface'];?>' width="200" height="145" /> </div>
+                      (建议大小200 x 145)</td>
+                  </tr>
+                  <tr>
+                    <td align="right" valign="top">公司简介：</td>
+                    <td><?php
+    GetEditor("introduce",$row['introduce'],250,"MemberLit");
+    ?></td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr></tr>
+                </tbody>
+                <tbody>
+                  <tr></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <hr />
+          <div style="margin-left:15%">
+            <button class="button2" type="submit">更新</button>
+            <button class="button2 mL10" type="reset">重设</button>
+          </div>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

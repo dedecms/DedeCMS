@@ -1,13 +1,15 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('member_Edit');
-if(!isset($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = "";
-else $ENV_GOBACK_URL="member_main.php";
-$ID = ereg_replace("[^0-9]","",$ID);
-$dsql = new DedeSql(false);
-$row=$dsql->GetOne("select  * from #@__member where ID='$ID'");
-$rowper=$dsql->GetOne("select  * from #@__member_perinfo where ID='$ID'");
-require_once(dirname(__FILE__)."/templets/member_view.htm");
+$ENV_GOBACK_URL = isset($_COOKIE['ENV_GOBACK_URL']) ? "member_main.php" : '';
+$id = ereg_replace("[^0-9]","",$id);
+$row = $dsql->GetOne("select  * from #@__member where mid='$id'");
 
-ClearAllLink();
+//如果这个用户是管理员帐号，必须有足够权限的用户才能操作
+if($row['matt']==10)
+{
+	CheckPurview('sys_User');
+}
+include DedeInclude('templets/member_view.htm');
+
 ?>

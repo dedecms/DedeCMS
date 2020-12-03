@@ -2,182 +2,86 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>&quot;{dede:global name='keyword'/}&quot;的搜索结果 - {dede:global name='cfg_webname'/} - powered by dedecms</title>
-<style type="text/css">
-<!--
-*{
-	padding:0px;
-	margin:0px;
-}
-body{
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:14px;
-}
-a{
-	color:#03F;
-}
-a:hover{
-	color:#F30;
-	text-decoration:none;
-}
-
-.cbox{
-	width:98%;
-	margin:8px auto 0px;;
-}
-
-.top{
-	height:60px;
-	background:url({dede:global name='cfg_cmspath'/}/templets/images/toplogo.gif) 6px center no-repeat;
-}
-.searchbox{
-	margin:20px 0px 0px 240px;	
-}
-input,select,textarea{
-	vertical-align:middle;
-	font-size:14px;
-}
-.searchbox .keyword{
-	margin:-1px 5px 0 2px;
-	padding:5px;
-	width:223px;
-	height:13px;
-	border:1px solid #a7a6aa;
-	font-size:14px;
-}
-.searchbox .searchbut{
-	padding:1px 6px 0px 6px;
-	height:23px;
-	line-height:12px;
-	font-size:14px;
-	margin-top:-2px;
-}
-.searchbox .adslink{
-	margin-left:10px;
-}
-.stitle{
-	height:35px;
-	line-height:35px;
-	background-color:#F0F9EE;
-	text-indent:20px;
-}
-.lightkeyword{
-	font-weight:bold;
-	color:#F00;
-}
-.slist{
-	
-}
-.slist dl{
-	display:block;
-	width:96%;
-	margin:12px auto 0px;
-	padding-bottom:8px;
-}
-.slist dl dt a{
-	line-height:27px;
-	font-size:14px;
-	letter-spacing:1px;
-	/*font-weight:bold;*/
-}
-.slist dl dd p{
-	line-height:19px;
-	color:#444;
-	font-size:14px;
-	margin-left:5px;
-}
-.slist dl dd span{
-	font-size:12px;
-	line-height:23px;
-	color:#390;
-}
-.slist dl dd a{
-	color:#777;
-	text-decoration:none
-}
-.slist dl dd a:hover{
-	color:#F30;
-}
-.slist dl dd span{
-	margin-right:10px;
-}
-.spage{
-	margin-top:10px;
-	line-height:25px;
-	height:25px;
-	background:#F7F7F7;
-	text-align:center;
-}
-.spage *{
-	text-decoration:none;
-	vertical-align:middle;
-	letter-spacing:1px;
-}
-.otherkey{
-	margin-top:10px;
-	height:31px;
-	line-height:31px;
-	overflow:hidden;
-	text-indent:10px;
-}
-.footer{
-	text-align:center;
-	margin-top:10px;
-	border-top:1px solid #DDD;
-	font-size:12px;
-	line-height:37px;
-}
-.footer span{
-	color:#060;
-}
--->
-</style>
+<title>{dede:global.cfg_webname/}_搜索结果</title>
+<link href="{dede:global.cfg_templeturl/}/style/search.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 
-<div class="top cbox">
-	<div class="searchbox">
-	<form action="{dede:field name='phpurl'/}/search.php" name="formsearch" target="_self">
-		<input name="keyword" type="text" id="keyword2" class="keyword" value="{dede:global name='keyword'/}" />
-		<input type="hidden" name="kwtype" value="1" />
-		<select name="searchtype" id="searchtype" class="op1">
-				<option value="titlekeyword">智能模糊搜索</option>
-				<option value="title">仅搜索标题</option>
-		</select>
-		<input type="submit" name="button" class="searchbut" value="搜索" />
-		<span class="adslink"><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a> &nbsp; <a href="{dede:global name='cfg_indexurl'/}">返回主页</a></span>
-	</form>
+<div class="header">
+	<div class="toplogo">
+		<h1><a href="{dede:global.cfg_cmsurl/}/">{dede:global.cfg_webname/}</a></h1>
+	</div>
+	<div class="searchform">
+      <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+		<div class="s1">搜索</div>
+		<div class="s2">
+           <input type="hidden" name="kwtype" value="0" />
+           <input name="keyword" type="text" class="search-keyword" id="search-keyword" />
+           <select name="searchtype" class="search-option" id="search-option">
+               <option value="titlekeyword" selected='1'>智能模糊搜索</option>
+               <option value="title">仅搜索标题</option>
+           </select>
+          <button type="submit" class="search-submit">搜索</button>        
+        </div>
+        </form>
+		<div class="s3">
+			<a href="heightsearch.php">高级搜索</a>
+			<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+		</div>
 	</div>
 </div>
-<div class="stitle cbox">
-	搜索 &quot;<span class="lightkeyword">{dede:global name='keyword'/}</span>&quot; 的结果
+
+<div class="msgbar">
+	<p>
+		搜索 <strong class="fc_03c">{dede:global name='keyword'/}</strong> 的结果
+	</p>
 </div>
-<div class="slist cbox">
-{dede:list titlelen='80' infolen='250'}	
-		<dl>
-			<dt>[field:textlink /]</dt>
-			<dd><p>[field:description/]...</p></dd>
-			<dd>
-				<span><a href="[field:arcurl/]">[field:arcurl/]</a></span>
-				<span>类别: <a href="[field:typeurl/]">[field:typename/]</a></span>
-				<span>点击: [field:click/]</span>
-				<span>日期: [field:stime/]</span>
-			</dd>
-		</dl>
+
+<div class="resultlist">
+	
+{dede:list perpage='20'}
+
+	<div class="item">
+		<h3><a href="[field:arcurl/]" target="_blank">[field:title/]</a></h3>
+		<p class="intro">[field:description/]...</p>
+		<p class="info">
+			<small>分类：</small><span> <a href="[field:typeurl/]" target="_blank">[field:typename/]</a></span>
+			<small>点击：</small><span> [field:click/]</span>
+			<small>日期：</small><span> [field:stime/]</span>
+		</p>
+        <p><span><a href="[field:arcurl/]" target="_blank">[field:arcurl/]</a></span></p>
+	</div>
 {/dede:list}
-</div>
-<div class="spage cbox">
-	{dede:pagelist listsize='3' listitem='index pre pageno next end '/}
+
+
+
 </div>
 
-<div class="otherkey cbox">
-	{dede:likewords num='8'runphp='yes'}
-		if (@me!=''){@me = "相关搜索:".@me;}
-	{/dede:likewords}
+<div class="dede_pages">
+	<ul class="pagelist">
+		{dede:pagelist listsize='5'/}  
+	</ul>
+</div><!-- /pages -->
+
+<div class="othersearch">
+	<h2>相关搜索:</h2>
+	<ul>
+		{dede:likewords num='8'/}
+	</ul>
 </div>
 
-<div class="footer cbox">
-	<span>Power by <a href="http://www.dedecms.com" target="_blank">dedecms.com</a> Copyright 2004-2007</span> <a href="http://www.dedecms.com" target="_blank">织梦内容管理系统(DedeCms)</a>
+<div class="footer">
+	<p class="link">
+		网站版权信息及免责声明
+	</p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> © 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
 </div>
 
 </body>

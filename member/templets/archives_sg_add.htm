@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>发表<?php echo $cInfos['typename']; ?></title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language='javascript' src='js/main.js'></script>
+<script language="javascript">
+<!--
+function checkSubmit()
+{
+
+	if(document.form1.title.value==""){
+		alert("<?php echo $cInfos['titlename']; ?>不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+
+	if(document.form1.typeid.value==0){
+		alert("隶属栏目必须选择！");
+		return false;
+	}
+
+	if(document.form1.typeid.options && document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
+	{
+		alert("隶属栏目必须选择白色背景的项目！");
+		return false;
+	}
+
+	if(document.form1.vdcode.value==""){
+		document.form1.vdcode.focus();
+		alert("验证码不能为空！");
+		return false;
+	}
+
+}
+-->
+</script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="titAddChannel1 icon">发表</span><?php echo $cInfos['typename']; ?></div>
+        <form class="mTB10 mL10 mR10" name="form1" action="archives_sg_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="margin-bottom:6px" class="submit">
+            <thead>
+              <tr bgcolor="#F0FBE3">
+                <th colspan="4"><strong>常规参数：</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="19%" height="28" align="center" bgcolor="#FFFFFF"><?php echo $cInfos['titlename']; ?>：</td>
+                <td width="81%" colspan="3" bgcolor="#FFFFFF"><input name="title" type="text" id="title" size="30" class="nb" style='width:250px' />
+                  <font color="#FF0000">*</font> </td>
+              </tr>
+              <?php if($cInfos['dfcid']>0)
+      {
+      	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
+      }
+      else
+      {
+      ?>
+              <tr>
+                <td height="28" align="center" bgcolor="#F7FDF0">隶属栏目：</td>
+                <td colspan="3" bgcolor="#F7FDF0"><?php
+		$typeOptions = GetOptionList(0,$channelid);
+		echo "<select name='typeid' style='width:350px' size='1'>\r\n";
+		echo "<option value='0' selected>请选择栏目...</option>\r\n";
+		echo $typeOptions;
+		echo "</select>";
+		?>
+                  (只允许并且必须选择白色背景的项目<font color="#FF0000">*</font>) </td>
+              </tr>
+              <tr style='<?php if($cInfos['needpic']==0) echo 'display:none'; ?>'>
+                <td height="28" align="center"  class='tdline'>缩略图：</td>
+                <td colspan="3"  class='tdline'><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePicNew('divpicview',this);"  />
+                  <div id='divpicview' class='divpre'></div></td>
+              </tr>
+              <?php
+      }
+      //自定义字段
+      PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
+      //游客强制加验证码，会员则判断后台开关
+      if(!$cfg_ml->IsLogin() || $cfg_vdcode_member=='Y')
+      {
+      ?>
+              <tr>
+                <td align="right" valign="top">验证码：</td>
+                <td><input class="text" name="vdcode" type="text" id="vdcode" size="10" style='width:50px;text-transform:uppercase;' />
+                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" /></td>
+              </tr>
+              <?php
+      }
+      else
+      {
+      	echo "<input name='vdcode' type='hidden' id='vdcode' value='notuse' />";
+      }
+      ?>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">提交</button>
+                  <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

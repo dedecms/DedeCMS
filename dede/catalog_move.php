@@ -1,64 +1,66 @@
-<?php 
-require_once("config.php");
+<?php
+require_once('config.php');
 CheckPurview('t_Move');
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-if(empty($typeid)) $typeid="";
-if(empty($job)) $job="movelist";
-$typeid = ereg_replace("[^0-9]","",$typeid);
-$dsql = new DedeSql(false);
-$row  = $dsql->GetOne("Select reID,typename,channeltype From #@__arctype where ID='$typeid'");
+require_once(DEDEINC.'/oxwindow.class.php');
+require_once(DEDEINC.'/typelink.class.php');
+$typeid = isset($typeid) ? intval($typeid) : 0;
+if(empty($dopost))
+{
+	$dopost = 'movelist';
+}
+$row  = $dsql->GetOne(" Select reid,typename,channeltype From `#@__arctype` where id='$typeid' ");
 $typename = $row['typename'];
-$reID = $row['reID'];
+$reid = $row['reid'];
 $channelid = $row['channeltype'];
+
 //移动栏目
-//------------------
-if($job=="moveok")
+if($dopost=='moveok')
 {
 	if($typeid==$movetype)
 	{
-		$dsql->Close();
-		ShowMsg("移对对象和目标位置相同！","catalog_main.php");
-	  exit();
+		ShowMsg('移对对象和目标位置相同！','catalog_main.php');
+		exit();
 	}
 	if(IsParent($movetype,$typeid,$dsql))
 	{
-		$dsql->Close();
-		ShowMsg("不能从父类移动到子类！","catalog_main.php");
-	  exit();
+		ShowMsg('不能从父类移动到子类！','catalog_main.php');
+		exit();
 	}
-	$dsql->SetQuery("Update #@__arctype set reID='$movetype' where ID='$typeid'");
-	$dsql->ExecuteNoneQuery();
-	$dsql->Close();
-	//更新树形菜单
-   $rndtime = time();
-   $uptreejs = "<script language='javascript'>
-   if(window.navigator.userAgent.indexOf('MSIE')>=1){
-     if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
-     { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
-   }else{
-  	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
-     { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
-   }
-   </script>";
-   echo $uptreejs;
-	 ShowMsg("成功移动目录！","catalog_main.php");
-	 exit();
+	$dsql->ExecuteNoneQuery("Update `#@__arctype` set reid='$movetype' where id='$typeid'");
+	ShowMsg('成功移动目录！','catalog_main.php');
+	exit();
 }
+
 function IsParent($myid,$topid,$dsql)
 {
-	$row = $dsql->GetOne("select ID,reID from #@__arctype where ID='$myid'");
-	if($row['reID']==$topid) return true;
-	else if($row['reID']==0) return false;
-	else return IsParent($row['reID'],$topid,$dsql);
+	$row = $dsql->GetOne("select id,reid,topid from #@__arctype where topid='$myid' or id='$myid'");
+	if($row['reid']==$topid)
+	{
+		return true;
+	}
+	else if($row['reid']==0)
+	{
+		return false;
+	}
+	else
+	{
+		return IsParent($row['reid'],$topid,$dsql);
+	}
 }
-///////////////////////////////////////////////////
-
 
 $tl = new TypeLink($typeid);
 $typeOptions = $tl->GetOptionArray(0,0,$channelid);
-$tl->Close();
+$wintitle = "移动栏目";
+$wecome_info = "<a href='catalog_main.php'>栏目管理</a> &gt;&gt; 移动栏目";
+$win = new OxWindow();
+$win->Init('catalog_move.php','js/blank.js','POST');
+$win->AddHidden('typeid',$typeid);
+$win->AddHidden('dopost','moveok');
+$win->AddTitle("移动目录时不会删除原来已创建的列表，移动后需重新对栏目创建HTML。");
+$win->AddItem('你选择的栏目是：',"$typename($typeid)");
+$win->AddItem('你希望移动到那个栏目？',"<select name='movetype'>\r\n<option value='0'>移动为顶级栏目</option>\r\n$typeOptions\r\n</select>");
+$win->AddItem('注意事项：','不允许从父级移动到子级目录，只允许子级到更高级或同级或不同父级的情况。');
+$winform = $win->GetWindow('ok');
+$win->Display();
 
-require_once(dirname(__FILE__)."/templets/catalog_move.htm");
-
-ClearAllLink();
 ?>

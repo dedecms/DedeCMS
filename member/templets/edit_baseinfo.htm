@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>更改帐号基本资料</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language='javascript'>
+function checkSubmit()
+{
+	if(document.form2.oldpwd.value=='')
+	{
+		document.form2.oldpwd.focus();
+		alert("旧密码必须填写！");
+		return false;
+	}
+	if(document.form2.userpwdok.value!=document.form2.userpwd.value)
+	{
+		document.form2.userpwdok.focus();
+		alert("两次密码不一致！");
+		return false;
+	}
+	if(document.form2.email.value=="")
+	{
+		document.form2.email.focus();
+		alert("Email不能为空！");
+		return false;
+	}
+	if(document.form2.uname.value=="")
+	{
+		document.form2.uname.focus();
+		alert("用户昵称不能为空！");
+		return false;
+	}
+	if(document.form2.vdcode.value=="")
+	{
+		document.form2.vdcode.focus();
+		alert("验证码不能为空！");
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">设置个人资料</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="mtypes.php">分类管理</a></li>
+            <li><a href="flink_main.php">书签管理</a></li>
+            <li class="select"><a href="">个人资料</a></li>
+          </ul>
+        </div>
+        <form class="mTB10 mL10 mR10" name="form2" action="edit_baseinfo.php" method="post" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <div class="titleBar bgGrass lineB">
+            <div class="fLeft"><strong>基本资料</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+          </div>
+          <table cellspacing="1" class="submit">
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top">帐号类型：</td>
+                <td><?php echo $row['mtype']; ?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">用户名：</td>
+                <td><?php echo $cfg_ml->M_LoginID; ?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">昵称/公司名称：</span></td>
+                <td><input name="uname" type="text" id="uname" size="20" class="text" value="<?php echo $row['uname']; ?>"/>
+                  * <span id="_uname">(个人会员该项为昵称，企业会员填写公司名称)</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">原登陆密码：</span></td>
+                <td><input name="oldpwd" type="password" id="oldpwd" size="20" class="text" />
+                  <span style="color:red;">*</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">新密码：</span></td>
+                <td><input name="userpwd" type="password" id="userpwd" size="20" class="text" />
+                  <span id="_userpwdok">(不修改密码请保留此项为空)</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">确认新密码：</td>
+                <td><span class="tdr">
+                  <input name="userpwdok" type="password" id="userpwdok" value="" size="20" class="text" />
+                  <span id="_userpwdok2">(不修改密码请保留此项为空)</span> </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">原安全问题：</span></td>
+                <td><span class="tdr">
+                  <?php
+      require(DEDEDATA.'/safequestions.php');
+      echo GetSafequestion($row['safequestion'],'safequestion');
+      ?>
+                  <span id="_safequestion">(忘记密码时重设密码用)</span> </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">原问题答案：</span></td>
+                <td><span class="tdr">
+                  <input name="safeanswer" type="text" id="safeanswer" class="text" value="" />
+                  </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">新安全问题：</span></td>
+                <td><span class="tdr">
+                  <?php
+      echo GetSafequestion(0,'newsafequestion');
+      ?>
+                  <span id="_safequestionnew">(不修改不用填写)</span> </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">新问题答案：</span></td>
+                <td><span class="tdr">
+                  <input name="newsafeanswer" type="text" id="newsafeanswer" class="text" value="" />
+                  </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">电子邮箱：</span></td>
+                <td><span class="tdr">
+                  <input name="email" type="text" id="email" class="text" value="<?php echo $row['email']; ?>" />
+                  * <span id="_email">(每个电子邮邮箱只能注册一个帐号，要修改电子邮箱必须填写正确安全问题的答案)</span> </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">性别： </span></td>
+                <td><span class="tdr">
+                  <input type="radio" name="sex" value="男" <?php if($row['sex']=='男') echo " checked='checked' "; ?>/>
+                  男 &nbsp;
+                  <input type="radio" name="sex" value="女" <?php if($row['sex']=='女') echo " checked='checked' "; ?>/>
+                  女 &nbsp;
+                  <input type="radio" name="sex" value="保密'" <?php if($row['sex']=='保密') echo " checked='checked' "; ?>/>
+                  保密 </span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"><span class="tdl">验证码：</span></td>
+                <td><input name="vdcode" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
+                  <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle" /></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">更新</button>
+                  <button class="button2 mL10" type="reset">重设</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

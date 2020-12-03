@@ -1,110 +1,93 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
-
-$dsql = new DedeSql(false);
-
-if(empty($pagesize)) $pagesize = 5;
-if(empty($pageno)) $pageno = 1;
-if(empty($dopost)) $dopost = '';
-if(empty($orderby)) $orderby = 'aid';
+$pagesize = isset($pagesize) && is_numeric($pagesize) ? $pagesize : 5;
+$pageno = isset($pageno) && is_numeric($pageno) ? max(1,$pageno) : 1;
+if(empty($dopost))
+{
+	$dopost = '';
+}
 
 //重载列表
-if($dopost=='getlist'){
-	PrintAjaxHead();
-	GetList($dsql,$pageno,$pagesize,$orderby);
-	$dsql->Close();
+if($dopost=='getlist')
+{
+	AjaxHead();
+	GetList($dsql,$pageno,$pagesize);
 	exit();
 }
+
 //删除留言
 if($dopost=='del')
 {
-	if(!empty($aid)){
-	   $aid = ereg_replace("[^0-9]","",$aid);
-	   $dsql->ExecuteNoneQuery("Delete From #@__member_guestbook where aid='$aid' And mid='".$cfg_ml->M_ID."'; ");
-  }else if(!empty($ids)){
-  	$ids = explode(',',$ids);
-  	$idsql = "";
-  	foreach($ids as $aid){
-  		$aid = ereg_replace("[^0-9]","",$aid);
-  		if(empty($aid)) continue;
-  		if($idsql=="") $idsql .= " aid='$aid' ";
-  		else $idsql .= " Or aid='$aid' ";
-  	}
-  	if($idsql!=""){
-  		$dsql->ExecuteNoneQuery("Delete From #@__member_guestbook where ($idsql) And mid='".$cfg_ml->M_ID."'; ");
-  	}
-  }
-	PrintAjaxHead();
-	GetList($dsql,$pageno,$pagesize,$orderby);
-	$dsql->Close();
+	if(!empty($aid))
+	{
+		$aid = intval($aid);
+		$dsql->ExecuteNoneQuery("Delete From `#@__member_guestbook` where aid='$aid' And mid='".$cfg_ml->M_ID."'; ");
+	}
+	else if(!empty($ids))
+	{
+		$ids = ereg_replace("[^0-9,]",'',$ids);
+		if($ids!='')
+		{
+			$dsql->ExecuteNoneQuery("Delete From `#@__member_guestbook` where aid in($ids) And mid='".$cfg_ml->M_ID."'; ");
+		}
+	}
+	AjaxHead();
+	GetList($dsql,$pageno,$pagesize);
 	exit();
 }
 
 //第一次进入这个页面
-if($dopost==''){
-	$row = $dsql->GetOne("Select count(*) as dd From #@__member_guestbook where mid='".$cfg_ml->M_ID."'; ");
+if($dopost=='')
+{
+	$row = $dsql->GetOne("Select count(*) as dd From `#@__member_guestbook` where mid='".$cfg_ml->M_ID."'; ");
 	$totalRow = $row['dd'];
 	include(dirname(__FILE__)."/templets/guestbook_admin.htm");
-  $dsql->Close();
 }
 
 //获得特定的关键字列表
-//---------------------------------
-function GetList($dsql,$pageno,$pagesize,$orderby='aid'){
+function GetList($dsql,$pageno,$pagesize)
+{
 	global $cfg_phpurl,$cfg_ml;
+	$pagesize = intval($pagesize);
+	$pageno = intval($pageno);
 	$start = ($pageno-1) * $pagesize;
-  $dsql->SetQuery("Select * From #@__member_guestbook where mid='".$cfg_ml->M_ID."' order by $orderby desc limit $start,$pagesize ");
+	$dsql->SetQuery("Select * From `#@__member_guestbook` where mid='".$cfg_ml->M_ID."' order by aid desc limit $start,$pagesize ");
 	$dsql->Execute();
-  while($row = $dsql->GetArray()){
-    $row['msg'] = ereg_replace("[ \t\r]"," ",$row['msg']);
-    $row['msg'] = str_replace("  ","　",$row['msg']);
-    $row['msg'] = str_replace("\n","<br>\n",$row['msg']);
-    $line = "";
-    $line .= "<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"3\" cellspacing=\"1\" bgcolor=\"#D9EDC0\" style=\"margin-bottom:6px\">";
-    $line .= "\r\n<tr bgcolor=\"#E2EBC0\" height=\"24\"> ";
-    $line .= "\r\n<td height=\"24\" colspan=\"2\" background=\"img/gbookbg.gif\">";
-    $line .= "\r\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> ";
-    $line .= "\r\n<td width=\"85%\"> <strong>留言标题：".$row['title']."</strong></td>";
-    $line .= "\r\n<td width=\"15%\" align=\"center\">";
-    $line .= "\r\n<input name=\"ids\" type=\"checkbox\" id=\"ids\" value=\"".$row['aid']."\">";
-    $line .= "[<a href='#' onclick='DelNote(".$row['aid'].")'>删除</a>]";
-    $line .= "\r\n</td></tr></table> ";
-    $line .= "\r\n</td></tr>";
-    $line .= "\r\n<tr height=\"24\"> ";
-    $line .= "\r\n<td width=\"31%\" bgcolor=\"#F7FEE0\">";
-    $line .= "\r\n&nbsp;用户称呼：".$row['uname'];
-    $line .= "\r\n</td>";
-    $line .= "\r\n<td width=\"69%\" height=\"24\" bgcolor=\"#F7FEE0\">";
-    $line .= "时间：".strftime("%y-%m-%d %H:%M",$row['dtime'])."&nbsp;IP地址：".$row['ip']."&nbsp;";
-    if(!empty($row['gid'])){
-    	$line .= " <a href='index.php?uid=".$row['gid']."&action=memberinfo' target='_blank'>资料</a>
-    	           <a href='index.php?uid=".$row['gid']."' target='_blank'>空间</a>
-    	           <a href='index.php?uid=".$row['gid']."&action=feedback' target='_blank'>回复</a>
-    	         ";
-    }
-    $line .= "\r\n</td></tr>";
-    $line .= "\r\n<tr height=\"60\" bgcolor=\"#FDFEF5\">";
-    $line .= "\r\n<td valign=\"top\">";
-    $line .= "\r\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;Email：".$row['email']."</td></tr>";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;联系电话：".$row['tel']."</td></tr>";
-    $line .= "\r\n<tr><td height=\"24\">&nbsp;其它：".$row['qq']."</td></tr>";
-    $line .= "\r\n</table>";
-    $line .= "\r\n</td>";
-    $line .= "\r\n<td valign=\"top\">";
-    $line .= $row['msg'];
-    $line .= "\r\n</td></tr>";
-    $line .= "\r\n</table>";
-    echo $line;
-   }
-}
+	$line = '';
+	while($row = $dsql->GetArray())
+	{
 
-function PrintAjaxHead(){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+		$line .= "<table cellspacing='1' class='list mB10'>
+  <thead>
+    <tr>
+      <th colspan='2' ><strong class='fLeft'>留言标题：".$row['title']."</strong><span class='fRight'>
+        <input name=\"ids\" type=\"checkbox\" id=\"ids\" value=\"".$row['aid']."\" />
+        <a href='#' onclick='DelNote(".$row['aid'].")'>删除</a></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width='15%' align='left' valign='top'>用户称呼：".$row['uname']."</td>
+      <td>时间：".MyDate("Y-m-d H:i",$row['dtime'])."&nbsp;IP地址：".$row['ip']."&nbsp;";
+
+		if(!empty($row['gid']))
+		{
+			$line .= " <a href='index.php?uid={$row['uname']}&action=infos' target='_blank'>资料</a> <a href='index.php?uid={$row['uname']}' target='_blank'>空间</a> <a href='index.php?uid={$row['uname']}&action=guestbook' target='_blank'>回复</a> ";
+		}
+		$line .= "
+		</td>
+    </tr>
+    <tr>
+      <td align='left' valign='top'><p>Email：".$row['email']."</p><p>联系电话：".$row['tel']."</p><p>其它：".$row['qq']."</p></td>
+      <td align='left' valign='top'>".Text2Html($row['msg'])."</td>
+    </tr>
+  </tbody>
+</table>";
+
+	}
+	$line = $line == '' ? '暂无留言' : $line;
+	echo $line;
 }
 
 ?>

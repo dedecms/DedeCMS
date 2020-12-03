@@ -1,150 +1,144 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
-<meta name="keywords" content="{dede:field name='keywords'/}">
-<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
-<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
-<link href="{dede:field name='templeturl'/}/style/article.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
 </head>
-<body>
+<body class="channel">
+{dede:include filename="head.htm"/}
+<!-- /header -->
 
-<!--头部开始-->
-<div class="top cbody">
-	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
-	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
-	<div class="toplink">
-		<ul>
-			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
-			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></li>
-			<li><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a> </li>
-		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></li>
-		</ul>
-	</div>
-</div>
-<!--导航栏-->
-<div class="topmenu cbody">
+<div class="channel-nav w960 center clear">
 	<ul>
-		<li><a href="/">首页</a></li>
-        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
-        {/dede:channel}
-		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
+              {dede:channel type='sun' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
+          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
 	</ul>
-	<div class="rssbut">
-		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>	</div>
-</div>
-<!--搜索条-->
-<div class="topsearch cbody">
-	<div class="title"></div>
-	<div class="inpbox">
-    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="1">
-		<input name="keyword" id="keyword" type="text" class="searchtxt" />
-		<select name="searchtype" id="searchtype">
-			<option value="titlekeyword" selected>智能模糊搜索</option>
-			<option value="title">仅搜索标题</option>
-		</select>
-		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
-    </form>
-	</div>
-	<div class="hots">
-		<strong>热门关键字：</strong>
-		{dede:hotwords num='5' subday='30'/}
-	</div>
-</div>
+	<span class="back">
+		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+	</span>
+</div><!-- /channel-nav -->
 
-<!--内容-->
-<div class="main cbody margintop">
-	<!--左侧-->
+<div class="w960 center clear mt1">
 	<div class="pleft">
-		<!--位置导航-->
-		<div class="thisplace">
-			<div class="title">{dede:field name='typename'/}</div>
-			<div class="placenav">
-				<span>当前位置 :</span>
-				{dede:field name='position'/}
-			</div>
-		</div>
-
-
-		<div class="picnews margintop">
-				<dl>
-						{dede:arclist row=4 titlelen=20 orderby=pubdate type='image.' imgwidth='152' imgheight='98'}
-						<dd><a href="[field:arcurl/]" class="pimg" >[field:image/]</a><span>[field:textlink/]</span></dd>
-						{/dede:arclist}
-				</dl>
-		</div>
-
-
+		<div class="flashnews">
+			<script language='javascript'>
+linkarr = new Array();
+picarr = new Array();
+textarr = new Array();
+var swf_width=280;
+var swf_height=192;
+var files = "";
+var links = "";
+var texts = "";
+//这里设置调用标记
+{dede:arclist flag='f' row='5'}
+linkarr[[field:global.autoindex/]] = "[field:arcurl/]";
+picarr[[field:global.autoindex/]]  = "[field:litpic/]";
+textarr[[field:global.autoindex/]] = "[field:title function='html2text(@me)'/]";
+{/dede:arclist}
+for(i=1;i<picarr.length;i++){
+  if(files=="") files = picarr[i];
+  else files += "|"+picarr[i];
+}
+for(i=1;i<linkarr.length;i++){
+  if(links=="") links = linkarr[i];
+  else links += "|"+linkarr[i];
+}
+for(i=1;i<textarr.length;i++){
+  if(texts=="") texts = textarr[i];
+  else texts += "|"+textarr[i];
+}
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
+document.write('<param name="movie" value="{dede:global.cfg_templeturl/}/images/bcastr3.swf"><param name="quality" value="high">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'">');
+document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'& menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>'); 
+</script>
+		</div><!-- /flashnews -->
+		<div class="topcommand">
+			<dl class="tbox">
+				<dt><strong>频道推荐</strong></dt>
+				<dd>
+					<div class="onenews">
+                        {dede:arclist flag='c' limit='0,1'}
+                        <h2><a href="[field:arcurl/]">[field:title/]</a></h2>
+                        <p>[field:description function='cn_substr(@me,110)'/]...<a href="[field:arcurl/]">[查看全文]</a></p>
+                        {/dede:arclist}
+					</div><!-- /onenews -->
+					<ul class="c2 ico1">
+                        {dede:arclist flag='c' limit='1,4'}
+                        <li><a href="[field:arcurl/]">[field:title/]</a></li>
+                        {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /topcommand -->
+		
+	
 		<div class="listbox">
-			{dede:channelArtlist}
-            <dl>{dede:type}
-				<dt>
-					<span class="title"><a href="[field:typelink /]">[field:typename /]</a></span>
-					<span class="more"><a href="[field:typelink /]">更多...</a></span>
-				</dt> {/dede:type}
-				<dd>
-                	{dede:arclist orderby='ID' row='8' titlelen='36'}
-					<a href="[field:arcurl /]">[field:title /]</a>
-                    {/dede:arclist}
-				</dd>
-			</dl>
-            {/dede:channelArtlist}
-			</div>
-	</div>
-
-	<!--右侧-->
+	{dede:channelartlist}
+      <dl class="tbox">
+        <dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><span class="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt>
+        <dd>
+          <ul class="e6">
+          {dede:arclist row='3' type='image.'}
+           <li><a href="[field:arcurl/]" title="[field:title function='html2text(@me)' /]"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a></li>
+		{/dede:arclist}
+          </ul>
+          <ul class="d2 ico3">
+          {dede:arclist titlelen='60' row='5'}
+            <li><span class="date">[field:pubdate function="GetDateMK(@me)"/]</span><a href="[field:arcurl /]">[field:title /]</a></li>
+			{/dede:arclist}
+          </ul>
+        </dd>
+      </dl>
+	{/dede:channelartlist}
+		</div><!-- /listbox -->
+	</div><!-- /pleft -->
+	
 	<div class="pright">
-		<!--侧边信息列表-->
-                <div class="classbox">
-			<dl>
-				<dt>栏目列表</dt>
+    		<div class="">
+			<dl class="tbox">
+				<dt><strong>热点图集</strong></dt>
 				<dd>
-					<ul>
-                    {dede:channel type='sun'}
-                    <li><a href='[field:typelink/]'>[field:typename/]</a></li>
-                    {/dede:channel}
+					<ul class="e3">
+                    {dede:arclist row='5' type='image.' orderby=click}
+						<li>
+							<a href="[field:arcurl/]" class="preview"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a>
+							<a href="[field:arcurl/]" class="title">[field:title/]</a>
+							<span class="intro">更新:[field:pubdate function="GetDateMK(@me)"/]</span>
+						</li>
+                     {/dede:arclist}
+
 					</ul>
 				</dd>
 			</dl>
 		</div>
-		<div class="rlist margintop">
-			<div class="title">随机推荐</div>
-			<div class="rbox">
-				<ul>
-                	{dede:arclist type='commend' titlelen='26' orderby='rand' row='10'}
-                      <li>[field:textlink/]</li>
-                    {/dede:arclist}
-				</ul>
-			</div>
-		</div>
-
-		<!--侧边信息列表-->
-		<div class="rlist margintop">
-			<div class="title">热门关注</div>
-			<div class="rbox">
-				<ul>
-                	{dede:arclist orderby='click' titlelen='26' row='20'}
-                	  <li>[field:textlink/]</li>
+        
+		<div class="mt1">
+			<dl class="tbox">
+				<dt><strong>推荐图集</strong></dt>
+				<dd>
+					<ul class="e9">
+                    {dede:arclist row='8' type='image.commend.'}
+						<li><a href="[field:arcurl/]"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/><span class="title">[field:title/]</span></a></li>
                     {/dede:arclist}
 					</ul>
-			</div>
+				</dd>
+			</dl>
 		</div>
+		
+		
 
-	</div>
-	<div class="floatclear"><!--清除浮动--></div>
+
+	</div><!-- /pright -->
 </div>
 
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
 
-<div class="footer cbody margintop">
-		<div class="copyright"> 
-                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
-                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
-            </div> 
-		Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms {dede:global name='cfg_version'/}</a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.</a><br />
-	</div>
-	<div class="floatclear"></div>
-</div>
 </body>
 </html>

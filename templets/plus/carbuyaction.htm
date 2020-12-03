@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>购物车 - 下单购买{dede:var.carts.orders_id/}</title>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<meta name="generator" content="DedeCMS V5.3" />
+<meta name="author" content="desdev.cn" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templeturl/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="buycarpage">
+
+<div class="header">
+	<div class="top w960 center">
+		<div class="title">
+			<h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a> </h1>
+		</div><!-- /title -->
+		<div class="welcome">
+            <?php
+            if(!$cfg_ml->IsLogin()){
+            ?>
+            您好,欢迎来到本网站, 请 <a href="../member/login.php?gourl=<?php echo urlencode(GetCurUrl());?>">登录</a> 或 <a href="../member/index_do.php?fmdo=user&dopost=regnew">注册</a>
+            <?php
+            }else{
+            ?>
+            <?php echo $cfg_ml->M_UserName; ?> 您好,欢迎来到本网站, <a href="../member/">会员中心</a> | <a href="../member/index_do.php?fmdo=login&dopost=exit">退出</a>
+            <?php
+            }
+            ?>
+		</div><!-- /banner -->
+	</div><!-- /top -->
+	<div class="nav mt1">
+		<div class="w960 center">
+			<ul>
+              <li class="r1"><a href="{dede:global.cfg_memberurl/}">会员中心</a></li>
+              <li class="r2"><a href="{dede:global.cfg_cmsurl/}/tags.php">TAG标签</a></li>
+              <li class="r3"><a href="{dede:global.cfg_dataurl/}/sitemap.html">网站地图</a></li>
+              <li class="r4"><a href="{dede:global.cfg_dataurl/}/rssmap.html">RSS订阅</a></li>
+			</ul>
+		</div>
+	</div><!-- /nav -->
+</div><!-- /header -->
+
+<div class="w960 clear center mt1 cmt-box">
+	<div class="sp-title"><h2>商品购买</h2></div>
+	<div class="buycar">
+		<form id="fixupformid" name="fixupform" action="carbuyaction.php" method="post">
+        <input name="do" type="hidden" value="clickout">
+        <table cellpadding="0" cellspacing="0" class="flow">
+			<tr>
+				<td class="thisclass">下单购买</td>
+				<td>买家付款</td>
+				<td>确认收货</td>
+				<td>交易结束 </td>
+			</tr>
+		</table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dede_table">
+			<thead>
+				<tr>
+					<td colspan="6">确认订单信息</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td width="180" class="td1">订单编号</td>
+					<td><strong>{dede:var.carts.orders_id/}</strong></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">订单价格</td>
+					<td><strong class="fc-f60" id="priceCount">{dede:var.carts.price_count/}</strong> 元</td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">商品总数</td>
+					<td>{dede:var.carts.cart_count/}件</td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">支付方式</td>
+					<td>
+                        {dede:array.shops_paytypearr}
+                        <input name="paytype" type="radio" value="{dede:value.pid/}" {dede:value.checked/}{dede:value.disabled/}/>
+                        {dede:value.paytype/}
+                        {/dede:array}
+					</td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">配送方式</td>
+			  <td>
+                        {dede:array.shops_deliveryarr}
+                        <p><input type="radio" name="pid" value="{dede:value.pid/}" onclick="Dodelivery(this.value)" /><strong>{dede:value.dname/}</strong> <span class="fc-f90">手续费：<em id="delivery_price_{dede:value.pid/}">{dede:value.price/}</em>元</span> <small>{dede:value.des/}.</small> </p>
+                        {/dede:array}
+					</td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">状态</td>
+					<td>下单</td>
+				</tr>
+			</tbody>
+		</table>
+        
+        
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dede_table">
+			<thead>
+				<tr>
+					<td colspan="6">确认订单信息</td>
+				</tr>
+			</thead>            
+			<tbody>
+				<tr>
+					<td width="180" class="td1">街道地址</td>
+					<td><input name="address" id="address" type="text" class="ipt-txt" size="50" /> <small>请填写街道地址，不能为空!</small></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">收货人</td>
+					<td><input name="postname" id="postname" type="text" class="ipt-txt" size="20" /> <small>请填写收货人姓名</small></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">E-Mail</td>
+					<td><input name="email" id="email" type="text" class="ipt-txt" size="30" /> <small>可选，联系您的电子邮箱</small></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">手机/电话</td>
+					<td><input name="tel" id="tel" type="text" class="ipt-txt" size="30" /> <small>请填写可以联系到您的电话</small></td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">邮编</td>
+					<td><input name="zip" id="zip" type="text" class="ipt-txt" size="30" /> <small>请填写格式如：300030</small></td>
+				</tr>
+			</tbody>
+		</table>
+        
+        <?php if(!$cfg_ml->IsLogin()){ ?>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dede_table">
+			<thead>
+				<tr>
+					<td colspan="6">用户登录</td>
+				</tr>
+			</thead>
+            <tbody>
+            	<tr>
+                	<td width="180" class="td1">用 户 名</td>
+                    <td><input name="username" type="text" class="ipt-txt" maxLength="255" size="18" style="width:120px;">
+                    <small>我是新用户(还没注册) 请, <a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank">注册成为会员</a></small>
+                    </td>
+            	</tr>
+            	<tr>
+                	<td width="180" class="td1">密　　码</td>
+                    <td><input name="password" type="password" class="ipt-txt" maxLength="255" size="18" style="width:120px;"> <small>请输入登录密码</small></td>
+            	</tr>
+            <tbody>
+        </table>
+        <?php }?>
+			
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="dede_table">
+			<thead>
+				<tr>
+					<td colspan="6">确认订单信息</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td width="180" class="td1">购买留言</td>
+					<td>
+						<textarea name="des" id="des" cols="50" rows="5" class="ipt-txt"></textarea>
+						<p><small>请在购买留言中填写您对商品的特殊要求，如“我要红色的小码”(100个字以内)</small></p>
+					</td>
+				</tr>
+				<tr>
+					<td width="180" class="td1">验证码</td>
+					<td>
+                    <a name="mate_vdimgck" />
+                    <input name="vdcode" id="vdcode" type="text" class="ipt-txt" size="10" /><a href="#mate_vdimgck"><img id="vdimgck_img" src="../include/vdimgck.php" hspace="6" align="absmiddle" onClick="vdimgck();" title="看不清换一张" /></a> <a href="#mate_vdimgck" onClick="vdimgck();">看不清换一张</a></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="2">
+					<button type="submit" class="btn-2">确认下单</button>
+					</td>
+				</tr>
+			</tfoot>
+		</table>		
+		</form>
+	</div>
+	
+</div>
+
+<script language="JavaScript" type="text/javascript">
+function Dodelivery(_id){
+	var _price = document.getElementById("delivery_price_"+_id).innerHTML;
+	var _priceCount = parseFloat(<?php echo str_replace(",","",$priceCount);?>)+parseFloat(_price);
+	document.getElementById("priceCount").innerHTML = number_format(_priceCount,2);
+	_priceCount = null;
+}
+function number_format(number)   {
+	if(number<0){
+		return '-'+outputDollars(Math.floor(Math.abs(number)-0)+'')+outputCents(Math.abs(number)-0);
+	}else{
+		return outputDollars(Math.floor(number-0)+'')   +   outputCents(number-0);
+	}
+}
+function outputDollars(number)   {
+	if(number.length <= 3){
+		return (number == '' ? '0' : number);
+	}else{
+		var mod = number.length%3;
+		var output = (mod == 0 ? '' : (number.substring(0,mod)));
+		for(i=0   ;   i<   Math.floor(number.length/3)   ;   i++)   {
+			if((mod == 0) && (i == 0))
+			output+= number.substring(mod+3*i,mod+3*i+3);
+			else
+			output+= ',' + number.substring(mod+3*i,mod+3*i+3);
+		}
+		return (output);
+	}
+}
+function outputCents(amount){
+	amount = Math.round(((amount)-Math.floor(amount))*100);
+	return (amount<10 ? '.0' + amount : '.' + amount);
+}
+function vdimgck()
+{
+	document.getElementById("vdimgck_img").src = '../include/vdimgck.php?'+Math.random();
+}
+</script>
+
+<div class="footer w960 center mt1 clear">
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>DedeCMS<span>{dede:global.cfg_version/}</span></strong></a> &copy; 2004-2008 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.	</p>
+<!-- /powered -->
+	<p class="copyright">
+		{dede:global.cfg_powerby/}<br />{dede:global.cfg_beian/}
+  </p>
+</div>
+</body>
+</html>

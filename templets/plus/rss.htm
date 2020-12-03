@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="{dede:global.cfg_soft_lang /}" ?>
 <rss version="2.0">
 <channel>
 <title>{dede:field name='typename'/}</title>
 <link>{dede:field name='typelink'/}</link>
-<description>{dede:field name='title'/}</description>
+<description>{dede:field name='title' function='html2text(@me)'/}</description>
 <language>zh-cn</language>
-<generator>{dede:field name='powerby'/}</generator>
+<generator><![CDATA[{dede:field name='powerby'/}]]></generator>
 <webmaster>{dede:field name='adminemail'/}</webmaster>
 {dede:rssitem}
 <item>
-    <title>[field:title/]</title>
+    <title><![CDATA[[field:title/]]]></title>
     <link>[field:fullurl/]</link>
-    <description>[field:description/]</description>
+    <description><![CDATA[[field:description function='html2text(@me)'/]]]></description>
     <pubDate>[field:stime/]</pubDate>
     <category>[field:typename/]</category>
     <author>[field:writer/]</author>

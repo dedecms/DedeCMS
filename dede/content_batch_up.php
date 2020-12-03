@@ -1,8 +1,6 @@
-<?php 
-require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
+<?php
+require_once(dirname(__FILE__).'/config.php');
+require_once(DEDEINC.'/typelink.class.php');
+include DedeInclude('templets/content_batch_up.htm');
 
-require_once(dirname(__FILE__)."/templets/content_batch_up.htm");
-
-ClearAllLink();
 ?>

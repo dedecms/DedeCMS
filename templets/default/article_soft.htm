@@ -1,199 +1,327 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
-<meta name="keywords" content="{dede:field name='keywords'/}">
-<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
-<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
-<link href="{dede:field name='templeturl'/}/style/soft.css" rel="stylesheet" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field.keywords/}" />
+<meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+function CheckLogin(){
+	var taget_obj = document.getElementById('_ajax_feedback');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
+	DedeXHTTP = null;
+}
+function checkSubmit(){
+	if(document.feedback.msg.value!='') document.feedback.submit();
+	else alert("评论内容不能为空！");
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:field name='phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+	DedeXHTTP = null;
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "{dede:global.cfg_phpurl/}/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+	DedeXHTTP = null;
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("{dede:global.cfg_phpurl/}/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+
+-->
+</script>
 </head>
-<body>
+<body class="downlist">
+{dede:include filename="head.htm"/}
+<!-- /header -->
 
-<!--头部开始-->
-<div class="top cbody">
-	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
-	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
-	<div class="toplink">		<ul>
-			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
-			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></li>
-			<li><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a> </li>
-		  <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></li>
-		</ul>
-	</div>
-</div>
-<!--导航栏-->
-<div class="topmenu cbody">	<ul>
-		<li><a href="/">首页</a></li>
-        {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
-        {/dede:channel}
-		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
+<div class="channel-nav w960 center clear">
+	<ul>
+		{dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
+          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
 	</ul>
-	<div class="rssbut">
-		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
-	</div>
-</div>
-<!--搜索条-->
-<div class="topsearch cbody">
-	<div class="title"></div>
-	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="1">
-		<input name="keyword" id="keyword" type="text" class="searchtxt" />
-		<select name="searchtype" id="searchtype">
-			<option value="titlekeyword" selected>智能模糊搜索</option>
-			<option value="title">仅搜索标题</option>
-		</select>
-		<input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
-    </form>
-	</div>
-	<div class="hots">		<strong>热门关键字：</strong>
-		{dede:hotwords num='5' subday='30'/}</div>
-</div>
+	<span class="back">
+		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+	</span>
+</div><!-- /channel-nav -->
 
-<!--内容-->
-<div class="main cbody margintop">
-	<!--左侧-->
+<div class="w960 center clear mt1">
 	<div class="pleft">
-		<!--分类列表-->
-		<div class="clsbox">
-			<ul>
-            {dede:channel type='self'}<li><a href="[field:typelink/]"><span>[field:typename/]</span></a></li>{/dede:channel}
-			</ul>
-		</div>
-
-		<!--热门下载-->
-		<div class="leftlist margintop">
-			<dl>
-				<dt>热门下载</dt>
-				<dd>
+		<div class="place">
+			<strong>当前位置:</strong> {dede:field name='position'/}
+		</div><!-- /place -->
+		<div class="viewbox">
+			<div class="title">
+				<h2>{dede:field.title /}</h2>
+			</div><!-- /title -->
+			<div class="infolist">
+				<small>软件类型：</small><span>{dede:field.softtype/}</span>
+				<small>授权方式：</small><span>{dede:field.accredit/}</span>
+				<small>界面语言：</small><span>{dede:field.language/}</span>
+				<small>软件大小：</small><span>{dede:field.softsize/}</span>
+				<small>文件类型：</small><span>{dede:field.filetype/}</span>
+				<small>运行环境：</small><span>{dede:field.os/}</span>
+				<small>软件等级：</small><span>{dede:field.softrank function='GetRankStar(@me)'/}</span>
+				<small>发布时间：</small><span>{dede:field.pubdate function="GetDateMk('@me')"/}</span>
+				<small>官方网址：</small><span>{dede:field.officialurl/}</span>
+                <small>演示网址：</small><span>{dede:field.officialdemo/}</span>
+                <small>下载次数：</small><span><script src="{dede:field.phpurl/}/disdls.php?aid={dede:field.id/}" language="javascript"></script></span>
+			</div><!-- /info -->
+			<div class="picview">
+				{dede:field name='image'/}
+			</div><!-- /info -->
+			<div class="labeltitle">
+				<strong>软件介绍</strong>
+			</div>
+			<div class="content">
+				{dede:field.introduce/}
+			</div>
+			<div class="labeltitle">
+				<strong>下载地址</strong>
+			</div>
+			<div class="content">
+				<ul class="downurllist">
+                	{dede:field name='softlinks'/}
+                </ul>
+			</div>
+			<div class="labeltitle">
+				<strong>下载说明</strong>
+			</div>
+			<div class="intro">
+				{dede:softmsg/}
+			</div>
+			<div class="newdigg" id="newdigg">
+				<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',{dede:field.id/})">
+					<div class="digg_act">顶一下</div>
+					<div class="digg_num">({dede:field.goodpost/})</div>
+					<div class="digg_percent">
+						<div class="digg_percent_bar"><span style="width:{dede:field.goodper/}%"></span></div>
+						<div class="digg_percent_num">{dede:field.goodper/}%</div>
+					</div>
+				</div>
+				<div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition='right bottom';" onmouseout="this.style.backgroundPosition='right top';" onclick="javascript:postDigg('bad',{dede:field.id/})">
+					<div class="digg_act">踩一下</div>
+					<div class="digg_num">({dede:field.badpost/})</div>
+					<div class="digg_percent">
+						<div class="digg_percent_bar"><span style="width:{dede:field.badper/}%"></span></div>
+						<div class="digg_percent_num">{dede:field.badper/}%</div>
+					</div>
+				</div>
+			</div>
+			 <script language="javascript" type="text/javascript">getDigg({dede:field.id/});</script>
+			<div class="boxoff">
+				<strong>------分隔线----------------------------</strong>
+			</div>
+			<div class="handle">
+				<div class="context">
 					<ul>
-						{dede:arclist row=15 titlelen=24 orderby=click channel=3}
-						<li>[field:textlink/]</li>
-						{/dede:arclist}
+						<li>{dede:prenext get='pre'/}</li>
+						<li>{dede:prenext get='next'/}</li>
 					</ul>
+				</div><!-- /context -->
+				<div class="actbox">
+					<ul>
+						<li id="act-fav"><a href="{dede:field name='phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
+						<li id="act-err"><a href="{dede:field name='phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
+						<li id="act-pus"><a href="{dede:field name='phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
+						<li id="act-pnt"><a href="#" onClick="window.print();">打印</a></li>
+					</ul>
+				</div><!-- /actbox -->
+			</div><!-- /handle -->
+		</div><!-- /viewbox -->
+
+		<div class="mt1">
+			<dl class="tbox">
+				<dt>
+					<strong>最新评论</strong>
+					<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
+				</dt>
+				<dd>
+					<div class="dede_comment">
+                    <script language='javascript' type='text/javascript' src="{dede:field name='phpurl'/}/feedback_js.php?aid={dede:field name='id'/}"></script>
+					</div><!-- /dede_comment -->
 				</dd>
 			</dl>
-		</div>
+		</div><!-- /comment -->
+		<div class="mt1">
+		<dl class="tbox">
+			<dt>
+				<strong>发表评论</strong>
+				<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
+			</dt>
+			<dd>
+				<div class="dede_comment_post">
+          <form action="{dede:field name='phpurl'/}/feedback.php" method="post" name="feedback">
+          <input type="hidden" name="action" value="send" />
+          <input type="hidden" name="comtype" value="comments">
+          <input type="hidden" name="aid" value="{dede:field name="id"/}" />
+          <input type="hidden" name="isconfirm" value="yes" />
+                    <div class="dcmp-title">
+						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
+					</div><!-- /dcmp-title -->
+					<div class="dcmp-stand">
+						<strong>评价:</strong>
+							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="{dede:global.cfg_templeturl/}/images/cmt-neu.gif" />中立</label>
+							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="{dede:global.cfg_templeturl/}/images/cmt-good.gif" />好评</label>
+							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="{dede:global.cfg_templeturl/}/images/cmt-bad.gif" />差评</label>
+					</div><!-- /dcmp-stand -->
+					<div class="dcmp-content">
+						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
+					</div><!-- /dcmp-content -->
 
-		<!--热门下载-->
-		<div class="leftlist margintop">
-			<dl>
-				<dt>热门资讯</dt>
-				<dd>
-					<ul>
-						{dede:arclist row=15 titlelen=24 orderby=postnum channel=1}
-						<li>[field:textlink/]</li>
-						{/dede:arclist}
-					</ul>
-				</dd>
-			</dl>
-		</div>
-
+					<div class="dcmp-mood">
+						<strong>表情:</strong>
+						<ul>
+								<li><input type="radio" name='face' value='6' checked="1" /><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-6.gif" /></li>
+								<li><input type="radio" name='face' value='4'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-4.gif" /></li>
+								<li><input type="radio" name='face' value='3'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-3.gif" /></li>
+								<li><input type="radio" name='face' value='5'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-5.gif" /></li>
+								<li><input type="radio" name='face' value='2'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-2.gif" /></li>
+								<li><input type="radio" name='face' value='1'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-1.gif" /></li>
+								<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-7.gif" /></li>
+						</ul>
+					</div><!-- /dcmp-mood -->
+					<div class="dcmp-post"><!--未登陆-->
+							<div class="dcmp-userinfo" id="_ajax_feedback">
+								用户名:<input type="text" name="username" size="16" class="ipt-txt" />
+								密码:<input name="pwd" type="password" size="16" class="ipt-txt" />
+								验证码:<input type="text" name="validate" size="4" class="ipt-txt" /><img src="{dede:global.cfg_cmsurl/}/include/vdimgck.php" />
+                                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest"> 匿名? </label>
+							</div>
+                             <script language="javascript" type="text/javascript">CheckLogin();</script>
+							<div class="dcmp-submit">
+								<button type="button" onClick='checkSubmit()'>发表评论</button>
+							</div>
+						</div>
+                    </form>
+				</div><!-- /dede_comment_post -->
+			</dd>
+		</dl>
 	</div>
+	</div><!-- /pleft -->
 
-	<!--右侧-->
 	<div class="pright">
-		<!--位置导航-->
-		<div class="thisplace">
-			<div class="title"></div>
-	  <div class="placenav">
-				<span>当前位置 :</span>
-				{dede:field name='position'/}
-		  </div>
+        	<div class="infos_userinfo">
+ 			{dede:memberinfos}
+			<dl class="tbox">
+				<dt><strong>发布者资料</strong></dt>
+				<dd>
+					<a href="[field:spaceurl /]" class="userface"><img src="[field:face/]" width="52" height="52" /></a>
+					<a href='[field:spaceurl /]' class="username">[field:uname/]</a>
+					<span class="useract">
+						<a href="[field:spaceurl /]" class="useract-vi">查看详细资料</a>
+                        <a href="[field:spaceurl /]&action=guestbook" class="useract-pm">发送留言</a>
+						<a href="[field:spaceurl /]&action=newfriend" class="useract-af">加为好友</a>
+					</span>
+					<span class="userinfo-sp"><small>用户等级:</small>[field:rankname /]</span>
+					<span class="userinfo-sp"><small>注册时间:</small>[field:jointime function="MyDate('Y-m-d H:m',@me)"/]</span>
+					<span class="userinfo-sp"><small>最后登录:</small>[field:logintime function="MyDate('Y-m-d H:m',@me)"/]</span>
+				</dd>
+			</dl>
+			{/dede:memberinfos}
+   	 	</div>
+
+		<div class="downrange mt1">
+			<dl class="tbox">
+				<dt><strong>推荐软件</strong></dt>
+				<dd>
+					<ul class="f1">
+                    {dede:arclist flag='c' titlelen=42 row=8}
+						<li>
+							<a href="[field:arcurl/]">[field:title/]</a>
+							<span><small>好评:</small>[field:scores/]</span>
+							<span><small>人气:</small>[field:click/]</span>
+						</li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /downrange -->
+
+		<div class="hot mt1">
+			<dl class="tbox">
+				<dt><strong>热门软件</strong></dt>
+				<dd>
+					<ul class="c1 ico2">
+                    {dede:arclist row=10 orderby=click}
+                    	<li><a href="[field:arcurl/]">[field:title/]</a></li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
 		</div>
 
-		<!--列表标题-->
-		<div class="stitle margintop">{dede:field name='title'/}</div>
-
-		<!--内容浏览-->
-		<div class="sview margintop">
-			<!--软件信息-->
-			<div class="sinfo">
-				<ul>
-					<li><strong>文件类型：</strong>	{dede:field name='filetype'/}</li>
-					<li><strong>软件大小：</strong>	{dede:field name='softsize'/}</li>
-					<li><strong>下载次数：</strong> <script src="{dede:field name='phpurl'/}/countdownloads.php?aid={dede:field name='aid'/}&cid={dede:field name='channel'/}" language="javascript"></script></li>
-					<li><strong>软件类别：</strong>	{dede:field name='softtype'/}</li>
-					<li><strong>软件语言：</strong>	{dede:field name='language'/}</li>
-					<li><strong>授权方式：</strong>	{dede:field name='accredit'/}</li>
-					<li><strong>运行环境：</strong>	{dede:field name='os'/}</li>
-					<li><strong>更新时间：</strong>	{dede:field name='pubdate' function="GetDateMk('@me')"/}</li>
-					<li><strong>官方网址：</strong>	<a href="{dede:field name='officialurl'/}">{dede:field name='officialurl'/}</a></li>
-                    <li><strong>软件Tag：</strong>{dede:tag type='current'/}</li>
-				</ul>
-    <!--缩略图-->
-				<div class="spic"> <img src="{dede:field name='litpic'/}" width="282" height="206" /></div>
-			</div>
-<!--简介-->
-			<div class="vtitle">软件简介：</div>
-			<div class="sintro">
-            {dede:field name='introduce'/}
-            </div>
-	    <!--下载-->
-			<div class="vtitle">下载地址：</div>
-			<div class="sdown">
-				<strong>下载地址：</strong>
-				{dede:field name='softlinks'/}
-			</div>
-			<div class="downdoc">
-				☉推荐使用网际快车下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br />
-				☉如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br />
-				☉下载本站资源，如果服务器暂不能下载请过一段时间重试！<br />
-				☉如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br />
-				☉本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。 <br />
-			</div>
-		</div>
-
-		<!--评论-->
-		<div class="comment">
-			<!--评论:标题-->
-			<div class="commenttitle">
-				<div class="title"><strong>最新评论</strong>共有 {dede:field
-name='postnum'/} 位网友发表了评论 </div>
-				<div class="gotopost"><a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}">查看所有评论</a></div>
-			</div>
-			<!--评论内容-->
-			<div class="commentbox">
-				<script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script>
-			</div>
-			<!--发表评论:标题-->
-			<div class="posttitle"><strong>发表评论</strong></div>
-			<!--发表评论-->
-            <form action="{dede:field name='phpurl'/}/feedback.php?action=send" method="post" name="feedback">
-			<input type="hidden" name="arcID" value="{dede:field name="id"/}">
-			<div class="postbox">
-				<div class="txtbox">
-					<strong>评论内容：</strong>不能超过250字，需审核，请自觉遵守互联网相关政策法规。
-					<textarea name="msg" cols="60" rows="6"></textarea>
-				</div>
-				<div class="userbox">
-					<dl>
-						<dd>
-							<strong>用户名：</strong><input name="username" class="username" type="text" maxlength="20" />
-							<strong>密码：</strong><input name="pwd" class="password" type="password" maxlength="20" />
-						</dd>
-						<dd></dd>
-						<dd class="mtop"><input name="notuser" type="checkbox" value="1" /> <strong>匿名?</strong></dd>
-						<dd><input name="sb" type="button" class="submit" value="发表评论" onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");'/></dd>
-						<dd class="mtop"><a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew" target="_blank">注册</a></dd>
-				  </dl>
-				</div>
-			</div></form>
-		</div>
-	</div>
-
-	<div class="floatclear"><!--清除浮动--></div>
+	</div><!-- /pright -->
 </div>
 
-
-<div class="footer cbody margintop">
-		<div class="copyright"> 
-                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
-                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
-            </div> 
-		Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms {dede:global name='cfg_version'/}</a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.</a><br />
-	</div>
-	<div class="floatclear"></div>
-</div>
+{dede:include filename="footer.htm"/}
+<!-- /footer -->
+<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
 </body>
 </html>

@@ -1,41 +1,24 @@
 <?php
-//系统设置为维护状态可访问
-$cfg_IsCanView = true;
-require(dirname(__FILE__)."/../include/config_base.php");
-if(!empty($artID)) $arcID = $artID;
-if(!isset($arcID)) $arcID = "";
-if(!isset($arcurl)) $arcurl = '';
-//echo $arcurl;exit;
-$arcID = intval($arcID);
-if(empty($arcID) && empty($arcurl)) exit();
+require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once(DEDEINC."/datalistcp.class.php");
 
-require_once(dirname(__FILE__)."/../include/pub_datalist.php");
-
-$dlist = new DataList();
-
-$urlindex = 0;
-if(empty($arcID))
+if(isset($arcID))
 {
-	$row = $dlist->dsql->GetOne("Select id From `#@__cache_feedbackurl` where url='$arcurl' ");
-	if(is_array($row)) $urlindex = $row['id'];
+	$aid = $arcID;
 }
-if(empty($arcID) && empty($urlindex)) exit();
-//Javascript内容屏蔽函数
-function cnw_left_safe($str,$len)
+$arcID = $aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
+if($aid==0)
 {
-  $str = cnw_mid($str,0,$len);
-  $str = ereg_replace("['\"\r\n]","",$str);
-  return $str;
+	exit(" Request Error! ");
 }
 
-//返回的评论条数
-//--------------
-if(empty($arcID)) $wq = " urlindex = '$urlindex' "; 
-else $wq = " aid='$arcID' ";
- $querystring = "select * from `#@__feedback` where $wq and ischeck='1' order by dtime desc";
-$dlist->Init();
-$dlist->SetSource($querystring);
+$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores from `#@__feedback` fb
+                 left join `#@__member` mb on mb.mid = fb.mid
+                 where fb.aid='$aid' and fb.ischeck='1' order by fb.id desc";
+$dlist = new DataListCP();
+$dlist->pageSize = 6;
 $dlist->SetTemplet($cfg_basedir.$cfg_templets_dir."/plus/feedback_templet_js.htm");
+$dlist->SetSource($querystring);
 $dlist->display();
-$dlist->Close();
+
 ?>

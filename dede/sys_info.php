@@ -1,59 +1,98 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Edit');
-if(empty($dopost)) $dopost = "";
-$configfile = dirname(__FILE__)."/../include/config_hand.php";
-$configfile_bak = dirname(__FILE__)."/../include/config_hand_bak.php";
+if(empty($dopost))
+{
+	$dopost = "";
+}
+$configfile = DEDEDATA.'/config.cache.inc.php';
 
-header("Content-Type: text/html; charset={$cfg_ver_lang}");
-
-if(!is_writeable($configfile)){
-	echo "配置文件'{$configfile}'不支持写入，严禁修改系统配置参数！";
-	exit();
+//更新配置函数
+function ReWriteConfig()
+{
+	global $dsql,$configfile;
+	if(!is_writeable($configfile))
+	{
+		echo "配置文件'{$configfile}'不支持写入，无法修改系统配置参数！";
+		exit();
+	}
+	$fp = fopen($configfile,'w');
+	flock($fp,3);
+	fwrite($fp,"<"."?php\r\n");
+	$dsql->SetQuery("Select `varname`,`type`,`value`,`groupid` From `#@__sysconfig` order by aid asc ");
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
+		if($row['type']=='number')
+		{
+			if($row['value']=='') $row['value'] = 0;
+			fwrite($fp,"\${$row['varname']} = ".$row['value'].";\r\n");
+		}
+		else
+		{
+			fwrite($fp,"\${$row['varname']} = '".str_replace("'",'',$row['value'])."';\r\n");
+		}
+	}
+	fwrite($fp,"?".">");
+	fclose($fp);
 }
 
-if(empty($gp)) $gp = 1;
-
-//保存更改
+//保存配置的改动
 if($dopost=="save")
 {
-	$dsql = new DedeSql(false);
-	foreach($_POST as $k=>$v){
-	if(ereg("^edit___",$k)){
-		$v = ${$k};
-
-	}else continue;
-		$k = ereg_replace("^edit___","",$k);
-		if(strlen($v) > 250){
-			showmsg("$k 太长，不能超过250字节",'-1');
-			exit;
+	foreach($_POST as $k=>$v)
+	{
+		if(ereg("^edit___",$k))
+		{
+			$v = cn_substrR(${$k},500);
 		}
-		$dsql->ExecuteNoneQuery("Update #@__sysconfig set `value`='$v' where `varname`='$k' And `group`<>-1 ");
+		else
+		{
+			continue;
+		}
+		$k = ereg_replace("^edit___","",$k);
+		$dsql->ExecuteNoneQuery("Update `#@__sysconfig` set `value`='$v' where varname='$k' ");
 	}
-	$dsql->SetQuery("Select `varname`,`value` From `#@__sysconfig` order by `aid` asc");
-  $dsql->Execute();
-  if($dsql->GetTotalRow()<=0){
-		$dsql->Close();
-		ShowMsg("成功保存变量但从数据库读取所有数据时失败，无法更新配置文件！","javascript:;");
-	  exit();
-	}
-  @copy($configfile,$configfile_bak);
-	$fp = @fopen($configfile,'w');
-	@flock($fp,3);
-	@fwrite($fp,"<"."?php\r\n") or die("配置文件'{$configfile}'不支持写入，本次操作无效！<a href='sys_info.php'>返回</a>");
-  while($row = $dsql->GetArray()){
-  	$row['value'] = str_replace("'","\\'",$row['value']);
-  	fwrite($fp,"\${$row['varname']} = '".$row['value']."';\r\n");
-  }
-  fwrite($fp,"?>");
-  fclose($fp);
-	$dsql->Close();
+	ReWriteConfig();
 	ShowMsg("成功更改站点配置！","sys_info.php");
 	exit();
 }
 
+//增加新变量
+else if($dopost=='add')
+{
+	if($vartype=='bool' && ($nvarvalue!='Y' && $nvarvalue!='N'))
+	{
+		ShowMsg("布尔变量值必须为'Y'或'N'!","-1");
+		exit();
+	}
+	$row = $dsql->GetOne("Select varname From `#@__sysconfig` where varname like '$nvarname' ");
+	if(is_array($row))
+	{
+		ShowMsg("该变量名称已经存在!","-1");
+		exit();
+	}
+	$row = $dsql->GetOne("Select aid From `#@__sysconfig` order by aid desc ");
+	$aid = $row['aid']+1;
+	$inquery = "INSERT INTO `#@__sysconfig`(`aid`,`varname`,`info`,`value`,`type`,`groupid`)
+    VALUES ('$aid','$nvarname','$varmsg','$nvarvalue','$vartype','$vargroup')";
+	$rs = $dsql->ExecuteNoneQuery($inquery);
+	if(!$rs)
+	{
+		ShowMsg("新增变量失败，可能有非法字符！","sys_info.php?gp=$vargroup");
+		exit();
+	}
+	if(!is_writeable($configfile))
+	{
+		ShowMsg("成功保存变量，但由于 $configfile 无法写入，因此不能更新配置文件！","sys_info.php?gp=$vargroup");
+		exit();
+	}else
+	{
+		ReWriteConfig();
+		ShowMsg("成功保存变量并更新配置文件！","sys_info.php?gp=$vargroup");
+		exit();
+	}
+}
+include DedeInclude('templets/sys_info.htm');
 
-require_once(dirname(__FILE__)."/templets/sys_info.htm");
-
-ClearAllLink();
 ?>

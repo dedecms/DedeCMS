@@ -1,91 +1,146 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/inc/inc_batchup.php");
-require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-empty($_COOKIE['ENV_GOBACK_URL']) ? $ENV_GOBACK_URL = "content_list.php" : $ENV_GOBACK_URL=$_COOKIE['ENV_GOBACK_URL'];
-if(empty($dopost)||empty($aid)){
-	ShowMsg("对不起，你没指定运行参数！","-1");
+require_once(dirname(__FILE__).'/config.php');
+require_once(DEDEADMIN.'/inc/inc_batchup.php');
+require_once(DEDEADMIN.'/inc/inc_archives_functions.php');
+require_once(DEDEINC.'/typelink.class.php');
+require_once(DEDEINC.'/arc.archives.class.php');
+$ENV_GOBACK_URL = (empty($_COOKIE['ENV_GOBACK_URL']) ? 'content_list.php' : $_COOKIE['ENV_GOBACK_URL']);
+
+if(empty($dopost) || empty($aid))
+{
+	ShowMsg('对不起，你没指定运行参数！','-1');
 	exit();
 }
-$aid = ereg_replace("[^0-9]","",$aid);
+$aid = ereg_replace('[^0-9]','',$aid);
 
 /*--------------------------
 //编辑文档
-function editArchives();
+function editArchives(){ }
 ---------------------------*/
-if($dopost=="editArchives")
+if($dopost=='editArchives')
 {
-	$dsql = new DedeSql(-100);
-	$row = $dsql->GetOne("Select c.editcon from `#@__full_search` i left join #@__channeltype c on c.ID=i.channelid where i.aid='$aid'");
-	$gurl = $row["editcon"];
-	$dsql->Close();
-	if($gurl==""){ $gurl="article_edit.php"; }
-	require_once(dirname(__FILE__)."/$gurl");
+	$query = "Select arc.id,arc.typeid,ch.maintable,ch.editcon
+           From `#@__arctiny` arc
+           left join `#@__arctype` tp on tp.id=arc.typeid
+           left join `#@__channeltype` ch on ch.id=arc.channel
+          where arc.id='$aid' ";
+	$row = $dsql->GetOne($query);
+	$gurl = $row['editcon'];
+	if($gurl=='')
+	{
+		$gurl='article_edit.php';
+	}
+	header("location:{$gurl}?aid=$aid");
+	exit();
 }
+
 /*--------------------------
 //浏览文档
-function viewArchives();
+function viewArchives(){ }
 ---------------------------*/
 else if($dopost=="viewArchives")
 {
-	$aid = intval($aid);
-	$dsql = new DedeSql(-100);
-	$tables = GetChannelTable($dsql,$aid,'arc');
-	$arcQuery = "
-    Select arc.ID,arc.title,arc.typeid,arc.channel,
-    arc.ismake,arc.senddate,arc.arcrank,c.addtable,
- 		arc.money,t.typedir,t.typename,t.namerule,t.namerule2,t.ispart,
- 		t.moresite,t.siteurl,t.siterefer,t.sitepath
-		from `{$tables['maintable']}` arc
-		left join #@__arctype t on t.ID = arc.typeid
-		left join #@__channeltype c on c.ID = arc.channel
-		where arc.ID='$aid'
-  ";
-  $arcRow = $dsql->GetOne($arcQuery);
-	if($arcRow['ismake']==-1||$arcRow['arcrank']!=0
-    ||$arcRow['typeid']==0||$arcRow['money']>0||$arcRow['channel']<-1)
-  {
-    	$dsql->Close();
-    	echo "<script language='javascript'>location.href='{$cfg_plus_dir}/view.php?aid={$aid}';</script>";
-    	exit();
-  }
-  $arcurl = GetFileUrl($arcRow['ID'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
-           $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],true,$arcRow['siteurl']);
-  $arcfile = GetFileUrl($arcRow['ID'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
-           $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],false,'');
-	$truefile = GetTruePath($arcRow['siterefer'],$arcRow['sitepath']).$arcfile;
-  MakeArt($aid,true);
-  $dsql->Close();
-  echo "<script language='javascript'>location.href='$arcurl"."?".time()."';</script>";
+	$aid = ereg_replace('[^0-9]','',$aid);
+
+	//获取主表信息
+	$query = "Select arc.*,ch.maintable,ch.addtable,ch.issystem,ch.editcon,
+	          tp.typedir,tp.typename,tp.corank,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.sitepath,tp.siteurl
+           From `#@__arctiny` arc
+           left join `#@__arctype` tp on tp.id=arc.typeid
+           left join `#@__channeltype` ch on ch.id=tp.channeltype
+           where arc.id='$aid' ";
+	$trow = $dsql->GetOne($query);
+	$trow['maintable'] = ( trim($trow['maintable'])=='' ? '#@__archives' : trim($trow['maintable']) );
+	if($trow['issystem'] != -1)
+	{
+		$arcQuery = "Select arc.*,tp.typedir,tp.typename,tp.corank,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.sitepath,tp.siteurl
+		           from `{$trow['maintable']}` arc left join `#@__arctype` tp on arc.typeid=tp.id
+		           left join `#@__channeltype` ch on ch.id=arc.channel where arc.id='$aid' ";
+		$arcRow = $dsql->GetOne($arcQuery);
+		if($arcRow['ismake']==-1 || $arcRow['corank']!=0 || $arcRow['arcrank']!=0 || $arcRow['typeid']==0 || $arcRow['money']>0)
+		{
+			echo "<script language='javascript'>location.href='{$cfg_phpurl}/view.php?aid={$aid}';</script>";
+			exit();
+		}
+	}
+	else
+	{
+		$arcRow['id'] = $aid;
+		$arcRow['typeid'] = $trow['typeid'];
+		$arcRow['senddate'] = $trow['senddate'];
+		$arcRow['title'] = '';
+		$arcRow['ismake'] = 1;
+		$arcRow['arcrank'] = $trow['corank'];
+		$arcRow['namerule'] = $trow['namerule'];
+		$arcRow['typedir'] = $trow['typedir'];
+		$arcRow['money'] = 0;
+		$arcRow['filename'] = '';
+		$arcRow['moresite'] = $trow['moresite'];
+		$arcRow['siteurl'] = $trow['siteurl'];
+		$arcRow['sitepath'] = $trow['sitepath'];
+	}
+	$arcurl  = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],$arcRow['arcrank'],
+	$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename'],$arcRow['moresite'],$arcRow['siteurl'],$arcRow['sitepath']);
+	$arcfile = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],
+	$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename']);
+	if(eregi('^http:',$arcfile))
+	{
+		$arcfile = eregi_replace("^http://([^/]*)/",'/',$arcfile);
+	}
+	$truefile = GetTruePath().$arcfile;
+	if(!file_exists($truefile))
+	{
+		MakeArt($aid,true);
+	}
+	echo "<script language='javascript'>location.href='$arcurl"."?".time()."';</script>";
 	exit();
 }
+
 /*--------------------------
 //推荐文档
-function commendArchives();
+function commendArchives(){ }
 ---------------------------*/
 else if($dopost=="commendArchives")
 {
 	CheckPurview('a_Commend,sys_ArcBatch');
-	$dsql = new DedeSql(false);
-	if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
-	if($qstr==""){
-	  ShowMsg("参数无效！",$ENV_GOBACK_URL);
-	  exit();
-	}
-	$qstrs = explode("`",$qstr);
-	$dsql = new DedeSql(false);
-	foreach($qstrs as $aid)
+	if( !empty($aid) && empty($qstr) )
 	{
-	  $aid = ereg_replace("[^0-9]","",$aid);
-	  if($aid=='') continue;
-	  $tables = GetChannelTable($dsql,$aid,'arc');
-	  $dsql->ExecuteNoneQuery(" Update `{$tables['maintable']}` set iscommend=iscommend+11 where ID='$aid' and iscommend<11 ");
+		$qstr = $aid;
 	}
-	$dsql->Close();
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！",$ENV_GOBACK_URL);
+		exit();
+	}
+	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
+	$query = "Select arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable From `#@__arctiny` arc
+           left join `#@__arctype` tp on tp.id=arc.typeid
+           left join `#@__channeltype` ch on ch.id=tp.channeltype
+          where arc.id in($arcids) ";
+	$dsql->SetQuery($query);
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
+		$aid = $row['id'];
+		if($row['issystem']!=-1)
+		{
+			$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where id='$aid' ");
+			$flag = ($arr['flag']=='' ? 'c' : $arr['flag'].',c');
+			$dsql->ExecuteNoneQuery(" Update `{$maintable}` set `flag`='$flag' where id='{$aid}' ");
+		}
+		else
+		{
+			$maintable = trim($row['addtable']);
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where aid='$aid' ");
+			$flag = ($arr['flag']=='' ? 'c' : $arr['flag'].',c');
+			$dsql->ExecuteNoneQuery(" Update `{$maintable}` set `flag`='$flag' where aid='{$aid}' ");
+		}
+	}
 	ShowMsg("成功把所选的文档设为推荐！",$ENV_GOBACK_URL);
 	exit();
 }
+
 /*--------------------------
 //生成HTML
 function makeArchives();
@@ -93,173 +148,355 @@ function makeArchives();
 else if($dopost=="makeArchives")
 {
 	CheckPurview('sys_MakeHtml,sys_ArcBatch');
-	$aid = ereg_replace("[^0-9]","",$aid);
-	require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
-	if(empty($qstr)){
-	  $pageurl = MakeArt($aid,true);
-	  ClearAllLink();
-	  ShowMsg("成功更新{$pageurl}...",$ENV_GOBACK_URL);
-	  exit();
-  }
-  else{
-  	$qstrs = explode("`",$qstr);
-  	$i = 0;
-  	foreach($qstrs as $aid){
-  		$i++;
-  		$pageurl = MakeArt($aid,true);
-  	}
-  	ClearAllLink();
-  	ShowMsg("成功更新指定 $i 个文件...",$ENV_GOBACK_URL);
-  	exit();
-  }
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	if($qstr=='')
+	{
+		ShowMsg('参数无效！',$ENV_GOBACK_URL);
+		exit();
+	}
+	require_once(DEDEADMIN.'/inc/inc_archives_functions.php');
+	$qstrs = explode('`',$qstr);
+	$i = 0;
+	foreach($qstrs as $aid)
+	{
+		$i++;
+		$pageurl = MakeArt($aid,false);
+	}
+	ShowMsg("成功更新指定 $i 个文件...",$ENV_GOBACK_URL);
+	exit();
 }
+
 /*--------------------------
 //审核文档
-function checkArchives();
+function checkArchives() {   }
 ---------------------------*/
 else if($dopost=="checkArchives")
 {
 	CheckPurview('a_Check,a_AccCheck,sys_ArcBatch');
 	require_once(DEDEADMIN."/inc/inc_archives_functions.php");
-	$dsql = new DedeSql(false);
-	if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
-	if($qstr==""){
-	  ShowMsg("参数无效！",$ENV_GOBACK_URL);
-	  exit();
-	}
-	$qstrs = explode("`",$qstr);
-	foreach($qstrs as $aid)
+	if( !empty($aid) && empty($qstr) )
 	{
-	  $aid = ereg_replace("[^0-9]","",$aid);
-	  if($aid=="") continue;
-	  $tables = GetChannelTable($dsql,$aid,'arc');
-	  $dsql->ExecuteNoneQuery(" Update `{$tables['maintable']}` set arcrank='0' where ID='$aid' And arcrank<'0' ");
-	  $dsql->ExecuteNoneQuery(" Update `#@__full_search` set arcrank='0' where aid='$aid' And arcrank<'0' ");
-	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `{$tables['maintable']}`; ");
-	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `#@__full_search`; ");
-	  $pageurl = MakeArt($aid,true);
-	  $dsql->ExecuteNoneQuery(" Update `#@__full_search` set url='$pageurl' where aid='$aid'");
+		$qstr = $aid;
 	}
-	ClearAllLink();
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！",$ENV_GOBACK_URL);
+		exit();
+	}
+	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
+	$query = "Select arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable From `#@__arctiny` arc
+           	left join `#@__arctype` tp on tp.id=arc.typeid
+            left join `#@__channeltype` ch on ch.id=tp.channeltype
+            where arc.id in($arcids) ";
+	$dsql->SetQuery($query);
+	$dsql->Execute('ckall');
+	while($row = $dsql->GetArray('ckall'))
+	{
+		$aid = $row['id'];
+		//print_r($row);
+		$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
+		$dsql->ExecuteNoneQuery("Update `#@__arctiny` set arcrank='0' where id='$aid' ");
+		if($row['issystem']==-1)
+		{
+			$dsql->ExecuteNoneQuery("Update `".trim($row['addtable'])."` set arcrank='0' where aid='$aid' ");
+		}
+		else
+		{
+			$dsql->ExecuteNoneQuery("Update `$maintable` set arcrank='0' where id='$aid' ");
+		}
+		$pageurl = MakeArt($aid,false);
+	}
 	ShowMsg("成功审核指定的文档！",$ENV_GOBACK_URL);
 	exit();
 }
+
 /*--------------------------
 //删除文档
-function delArchives();
+function delArchives(){ }
 ---------------------------*/
 else if($dopost=="delArchives")
 {
 	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
-	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-	if(empty($fmdo)) $fmdo = "";
-	if($fmdo=="yes")
+	require_once(DEDEINC."/oxwindow.class.php");
+	if(empty($fmdo))
 	{
-	  if( $aid!="" && !ereg("(".$aid."`|`".$aid.")",$qstr) ) $qstr .= "`".$aid;
-	  if($qstr==""){
-	  	ShowMsg("参数无效！",$ENV_GOBACK_URL);
-	  	exit();
-	  }
-	  $qstrs = explode("`",$qstr);
-	  $okaids = Array();
-	  $dsql = new DedeSql(false);
-	  foreach($qstrs as $aid){
-	  	echo $channelid;
-	    if(!isset($okaids[$aid])) DelArc($aid,false,$channelid);
-	    else $okaids[$aid] = 1;
-    }
-    $dsql->Close();
-    ShowMsg("成功删除指定的文档！",$ENV_GOBACK_URL);
-	  exit();
-  }//确定刪除操作完成
+		$fmdo = '';
+	}
 
-  //删除确认消息
-  //-----------------------
-	$wintitle = "文档管理-删除文档";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>文档管理</a>::删除文档";
-	$win = new OxWindow();
-	$win->Init("archives_do.php","js/blank.js","POST");
-	$win->AddHidden("fmdo","yes");
-	$win->AddHidden("dopost",$dopost);
-	$win->AddHidden("channelid",$channelid);
-	$win->AddHidden("qstr",$qstr);
-	$win->AddHidden("aid",$aid);
-	$win->AddTitle("你确实要删除“ $qstr 和 $aid ”这些文档？");
-	$winform = $win->GetWindow("ok");
-	$win->Display();
-}
-/*-----------------------------
-function moveArchives()
-------------------------------*/
-else if($dopost=='moveArchives'){
-	CheckPurview('sys_ArcBatch');
-	require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
-	require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-	if(empty($targetTypeid)){
-		$tl = new TypeLink(0);
-		$typeOptions = $tl->GetOptionArray(0,$tl->TypeInfos['channeltype'],0);
-		$tl->Close();
-		$typeOptions = "
-		<select name='targetTypeid' style='width:350'>
-		<option value='0'>请选择移动到的位置...</option>\r\n
-     $typeOptions
-    </select>
-    ";
-		$wintitle = "文档管理-移动文档";
-	  $wecome_info = "<a href='".$ENV_GOBACK_URL."'>文档管理</a>::移动文档";
-	  $win = new OxWindow();
-	  $win->Init("archives_do.php","js/blank.js","POST");
-	  $win->AddHidden("fmdo","yes");
-	  $win->AddHidden("dopost",$dopost);
-	  $win->AddHidden("qstr",$qstr);
-	  $win->AddHidden("aid",$aid);
-	  $win->AddTitle("你目前的操作是移动文档，请选择目标栏目：");
-	  $win->AddMsgItem($typeOptions,"30","1");
-	  $win->AddMsgItem("你选中的文档ID是： $qstr <br>移动的栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。","30","1");
-	  $winform = $win->GetWindow("ok");
-	  $win->Display();
-	}else{
-		$targetTypeid = ereg_replace('[^0-9]','',$targetTypeid);
-		$dsql = new DedeSql(false);
-		$typeInfos = $dsql->GetOne(" Select * From #@__arctype where ID='$targetTypeid' ");
-		if(!is_array($typeInfos)){
-			ShowMsg("参数错误！","-1");
-			$dsql->Close();
+	//确定刪除操作完成
+	if($fmdo=='yes')
+	{
+		if( !empty($aid) && empty($qstr) )
+		{
+			$qstr = $aid;
+		}
+		if($qstr=='')
+		{
+			ShowMsg("参数无效！",$ENV_GOBACK_URL);
 			exit();
 		}
-		if($typeInfos['ispart']!=0){
-			ShowMsg("文档保存的栏目必须为最终列表栏目！","-1");
-			$dsql->Close();
-			exit();
-		}
-		$arcids = explode('`',$qstr);
-		$arc = "";
-		$j = 0;
-		$okids = Array();
-		foreach($arcids as $arcid){
-			$arcid = ereg_replace('[^0-9]','',$arcid);
-			$tables = GetChannelTable($dsql,$arcid,'arc');
-			if($tables['channelid']==$typeInfos['channeltype'])
+		$qstrs = explode("`",$qstr);
+		$okaids = Array();
+
+		foreach($qstrs as $aid)
+		{
+			if(!isset($okaids[$aid]))
 			{
-				$dsql->ExecuteNoneQuery("Update `{$tables['maintable']}` Set typeid='$targetTypeid' where ID='$arcid' ");
-				$dsql->ExecuteNoneQuery("Update `{$tables['addtable']}` Set typeid='$targetTypeid' where aid='$arcid' ");
-				$dsql->ExecuteNoneQuery("Update `#@__full_search` Set typeid='$targetTypeid' where aid='$arcid' ");
-        $okids[] = $arcid;
-        $j++;
-		  }
+				DelArc($aid);
+			}
+			else
+			{
+				$okaids[$aid] = 1;
+			}
+		}
+		ShowMsg("成功删除指定的文档！",$ENV_GOBACK_URL);
+		exit();
+	}
+
+	//删除确认提示
+	else
+	{
+		$wintitle = "文档管理-删除文档";
+		$wecome_info = "<a href='".$ENV_GOBACK_URL."'>文档管理</a>::删除文档";
+		$win = new OxWindow();
+		$win->Init("archives_do.php","js/blank.js","POST");
+		$win->AddHidden("fmdo","yes");
+		$win->AddHidden("dopost",$dopost);
+		$win->AddHidden("qstr",$qstr);
+		$win->AddHidden("aid",$aid);
+		$win->AddTitle("你确实要删除“ $qstr 和 $aid ”这些文档？");
+		$winform = $win->GetWindow("ok");
+		$win->Display();
+	}
+}
+
+/*-----------------------------
+function moveArchives(){ }
+------------------------------*/
+else if($dopost=='moveArchives')
+{
+	CheckPurview('sys_ArcBatch');
+	if(empty($totype))
+	{
+		require_once(DEDEINC."/oxwindow.class.php");
+		require_once(DEDEINC."/typelink.class.php");
+		$tl = new TypeLink($aid);
+		$typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0);
+		$typeOptions = "<select name='totype' style='width:350px'>
+		<option value='0'>请选择移动到的位置...</option>\r\n
+		$typeOptions
+		</select>";
+		$wintitle = "文档管理-移动文档";
+		$wecome_info = "<a href='".$ENV_GOBACK_URL."'>文档管理</a>::移动文档";
+		$win = new OxWindow();
+		$win->Init("archives_do.php","js/blank.js","POST");
+		$win->AddHidden("fmdo","yes");
+		$win->AddHidden("dopost",$dopost);
+		$win->AddHidden("qstr",$qstr);
+		$win->AddHidden("aid",$aid);
+		$win->AddTitle("你目前的操作是移动文档，请选择目标栏目：");
+		$win->AddMsgItem($typeOptions,"30","1");
+		$win->AddMsgItem("你选中的文档ID是： $qstr <br>移动的栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。","30","1");
+		$winform = $win->GetWindow("ok");
+		$win->Display();
+	}
+	else
+	{
+		$totype = ereg_replace('[^0-9]','',$totype);
+		$typeInfos = $dsql->GetOne("Select tp.channeltype,tp.ispart,tp.channeltype,ch.maintable,ch.addtable From `#@__arctype` tp left join `#@__channeltype` ch on ch.id=tp.channeltype where tp.id='$totype' ");
+		if(!is_array($typeInfos))
+		{
+			ShowMsg('参数错误！','-1');
+			exit();
+		}
+		if($typeInfos['ispart']!=0)
+		{
+			ShowMsg('文档保存的栏目必须为最终列表栏目！','-1');
+			exit();
+		}
+		if(empty($typeInfos['maintable']))
+		{
+			$typeInfos['maintable'] = '#@__archives';
+		}
+		$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
+		$arc = '';
+		$j = 0;
+		$okids = array();
+		$dsql->SetQuery("Select id,typeid From `{$typeInfos['maintable']}` where id in($arcids) And channel='{$typeInfos['channeltype']}' ");
+		$dsql->Execute();
+		while($row = $dsql->GetArray())
+		{
+			if($row['typeid']!=$totype)
+			{
+				$dsql->ExecuteNoneQuery("Update `#@__arctiny`  Set typeid='$totype' where id='{$row['id']}' ");
+				$dsql->ExecuteNoneQuery("Update `{$typeInfos['maintable']}` Set typeid='$totype' where id='{$row['id']}' ");
+				$dsql->ExecuteNoneQuery("Update `{$typeInfos['addtable']}` Set typeid='$totype' where aid='{$row['id']}' ");
+				$okids[] = $row['id'];
+				$j++;
+			}
 		}
 		//更新HTML
-		require_once(DEDEADMIN."/../include/inc_archives_view.php");
-		foreach($okids as $aid){
+		foreach($okids as $aid)
+		{
 			$arc = new Archives($aid);
-      $arc->MakeHtml();
+			$arc->MakeHtml();
 		}
-		$dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `{$tables['maintable']}`; ");
-	  $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `#@__full_search`; ");
-		$dsql->Close();
-		if(is_object($arc)) $arc->Close();
 		ShowMsg("成功移动 $j 个文档！",$ENV_GOBACK_URL);
 		exit();
+	}
+}
+
+//还原文档；
+else if($dopost=='return')
+{
+	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
+	require_once(DEDEINC."/oxwindow.class.php");
+
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！","recycling.php");
+		exit();
+	}
+	$qstrs = explode("`",$qstr);
+	foreach($qstrs as $aid)
+	{
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set arcrank='-1',ismake='0' where id='$aid'");
+		$dsql->ExecuteNoneQuery("Update `#@__arctiny` set `arcrank` = '-1' where id = '$aid'; ");
+	}
+	ShowMsg("成功还原指定的文档！","recycling.php");
+	exit();
+}
+
+//清空文档；
+else if($dopost=='clear')
+{
+	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
+	require_once(DEDEINC."/oxwindow.class.php");
+	if(empty($fmdo))
+	{
+		$fmdo = '';
+	}
+
+	//确定刪除操作完成
+	if($fmdo=='yes')
+	{
+		if( !empty($aid) && empty($qstr) )
+		{
+			$qstr = $aid;
+		}
+		if($qstr=='')
+		{
+			ShowMsg("参数无效！","recycling.php");
+			exit();
+		}
+		$qstrs = explode(",",$qstr);
+		$okaids = Array();
+		foreach($qstrs as $aid)
+		{
+			if(!isset($okaids[$aid]))
+			{
+				DelArc($aid,"OK");
+			}
+			else
+			{
+				$okaids[$aid] = 1;
+			}
+		}
+		ShowMsg("成功删除指定的文档！","recycling.php");
+		exit();
+	}
+	else
+	{
+		$dsql->SetQuery("SELECT id FROM `#@__archives` WHERE `arcrank` = '-2'");
+		$dsql->Execute();
+		$qstr = '';
+		while($row = $dsql->GetArray())
+		{
+			$qstr .= $row['id'].",";
+			$aid = $row['id'];
+		}
+		$num = $dsql->GetTotalRow();
+		if(empty($num))
+		{
+			ShowMsg("对不起，未发现相关文档！","recycling.php");
+			exit();
+		}
+		$wintitle = "文档管理-清空所有文档";
+		$wecome_info = "<a href='recycling.php'>文档回收站</a>::清空所有文档";
+		$win = new OxWindow();
+		$win->Init("archives_do.php","js/blank.js","POST");
+		$win->AddHidden("fmdo","yes");
+		$win->AddHidden("dopost",$dopost);
+		$win->AddHidden("qstr",$qstr);
+		$win->AddHidden("aid",$aid);
+		$win->AddTitle("本次操作将清空回收站<font color='#FF0000'>所有共 $num 篇文档</font><br>你确实要永久删除“ $qstr ”这些文档？");
+		$winform = $win->GetWindow("ok");
+		$win->Display();
+	}
+
+}
+
+//清除文档；
+else if($dopost=='del')
+{
+	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
+	require_once(DEDEINC."/oxwindow.class.php");
+	if(empty($fmdo))
+	{
+		$fmdo = '';
+	}
+
+	//确定刪除操作完成
+	if($fmdo=='yes')
+	{
+		if( !empty($aid) && empty($qstr) )
+		{
+			$qstr = $aid;
+		}
+		if($qstr=='')
+		{
+			ShowMsg("参数无效！","recycling.php");
+			exit();
+		}
+		$qstrs = explode("`",$qstr);
+		$okaids = Array();
+
+		foreach($qstrs as $aid)
+		{
+			if(!isset($okaids[$aid]))
+			{
+				DelArc($aid,"OK");
+			}
+			else
+			{
+				$okaids[$aid] = 1;
+			}
+		}
+		ShowMsg("成功删除指定的文档！","recycling.php");
+		exit();
+	}
+
+	//删除确认提示
+	else
+	{
+		$wintitle = "文档管理-删除文档";
+		$wecome_info = "<a href='recycling.php'>文档管理</a>::删除文档";
+		$win = new OxWindow();
+		$win->Init("archives_do.php","js/blank.js","POST");
+		$win->AddHidden("fmdo","yes");
+		$win->AddHidden("dopost",$dopost);
+		$win->AddHidden("qstr",$qstr);
+		$win->AddHidden("aid",$aid);
+		$win->AddTitle("你确实要永久删除“ $qstr 和 $aid ”这些文档？");
+		$winform = $win->GetWindow("ok");
+		$win->Display();
 	}
 }
 ?>

@@ -1,13 +1,12 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 CheckRank(0,0);
+require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",GetCurUrl(),time()+3600,"/");
-$sql = "Select * From #@__moneyrecord where uid='".$cfg_ml->M_ID."' order by ID desc";
-$dlist = new DataList();
-$dlist->Init();
+$query = "Select * From `#@__member_operation` where mid='".$cfg_ml->M_ID."' order by aid desc";
+$dlist = new DataListCP();
 $dlist->pageSize = 20;
-$dlist->SetSource($sql);
-require_once(dirname(__FILE__)."/templets/mypay.htm");
-$dlist->Close();
+$dlist->SetTemplate(DEDEMEMBER."/templets/mypay.htm");
+$dlist->SetSource($query);
+$dlist->Display();
 ?>

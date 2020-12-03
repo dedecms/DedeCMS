@@ -1,73 +1,191 @@
 <?php
-require_once(dirname(__FILE__)."/../../include/inc_channel_unit_functions.php");
-function DelArc($aid,$onlyfile=false,$channelid=0)
+if(!defined('DEDEMEMBER'))
 {
-	  global $dsql;
-	  if(!is_object($dsql)) $dsql = new DedeSql(false);
-	  $tables = GetChannelTable($dsql,$aid,'arc');
-    //读取文档信息
-    $arctitle = "";
-    $arcurl = "";
-    $arcQuery = "
-    Select a.ID,a.title,a.typeid,
-    a.ismake,a.senddate,a.arcrank,c.addtable,
- 		a.money,t.typedir,t.typename,a.adminID,
- 		t.namerule,t.namerule2,t.ispart,
- 		t.moresite,t.siteurl,t.siterefer,t.sitepath 
-		from `{$tables['maintable']}` a 
-		left join `#@__arctype` t on a.typeid=t.ID
-		left join `#@__channeltype` c on c.ID=a.channel
-    where a.ID='$aid'
-    ";
-    $arcRow = $dsql->GetOne($arcQuery);
-    if(!is_array($arcRow)) return false;
-    //删除数据库的内容
-    $rs = $dsql->ExecuteNoneQuery("Delete From `{$tables['maintable']}` where ID='$aid'");
-    if($rs){
-       $dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$aid'");
-       if($arcRow['addtable']!=""){
-         $dsql->ExecuteNoneQuery("Delete From `{$tables['addtable']}` where aid='$aid'");
-       }
-       $dsql->ExecuteNoneQuery("Delete From `#@__feedback` where aid='$aid'");
-       $dsql->ExecuteNoneQuery("Delete From `#@__memberstow` where arcid='$aid'");
-    }
-    //删除HTML
-    if($arcRow['ismake']==-1||$arcRow['arcrank']!=0
-    ||$arcRow['typeid']==0||$arcRow['money']>0){
-  		return true;
-  	}
-  	$arcurl = GetFileUrl($arcRow['ID'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
-           $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],false,'');
-    if(!ereg("\?",$arcurl)){
-    	 $truedir = GetTruePath($arcRow['siterefer'],$arcRow['sitepath']);
-    	 $htmlfile = $truedir.$arcurl;
-    	 if(file_exists($htmlfile) && !is_dir($htmlfile)) unlink($htmlfile);
-    	 $arcurls = explode(".",$arcurl);
-    	 $sname = $arcurls[count($arcurls)-1];
-    	 $fname = ereg_replace("(\.$sname)$","",$arcurl);
-    	 for($i=2;$i<=100;$i++){
-    		 $htmlfile = $truedir.$fname."_$i".".".$sname;
-    		 if(file_exists($htmlfile) && !is_dir($htmlfile)) unlink($htmlfile);
-    		 else break;
-    	 }
-    }
-    //删除文本文件
-    $ipath = $GLOBALS['cfg_cmspath']."/data/textdata/".(ceil($aid/5000))."/";
-		$filename = $GLOBALS['cfg_basedir'].$ipath."{$aid}.txt";
-		if(is_file($filename)) unlink($filename);
-    return true;
+	exit("dedecms");
 }
-//获取真实路径
-//--------------------------
-function GetTruePath($siterefer,$sitepath)
+require_once(DEDEINC."/channelunit.func.php");
+
+function DelArc($aid)
 {
- 		if($GLOBALS['cfg_multi_site']=='Y'){
- 		   if($siterefer==1) $truepath = ereg_replace("/{1,}","/",$GLOBALS["cfg_basedir"]."/".$sitepath);
-	     else if($siterefer==2) $truepath = $sitepath;
-	     else $truepath = $GLOBALS["cfg_basedir"];
-	  }else{
-	  	$truepath = $GLOBALS["cfg_basedir"];
-	  }
-	  return $truepath;
+	global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir;
+	$aid = intval($aid);
+
+	//读取文档信息
+	$arctitle = '';
+	$arcurl = '';
+
+	$arcQuery = "Select arc.id,arc.title,arc.typeid,arc.ismake,arc.senddate,arc.arcrank,ch.addtable,
+ 		  arc.money,tp.typedir,tp.typename,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath,ch.nid
+		  from `#@__archives` arc
+		  left join `#@__arctype` tp on tp.id=arc.typeid
+		  left join `#@__channeltype` ch on ch.id=arc.channel
+		where arc.id='$aid' ";
+	$arcRow = $dsql->GetOne($arcQuery);
+	if(!is_array($arcRow))
+	{
+		return false;
+	}
+
+	//删除数据库的内容
+	$dsql->ExecuteNoneQuery(" Delete From `#@__arctiny` where id='$aid' ");
+	if($arcRow['addtable']!='')
+	{
+		//判断删除文章附件变量是否开启；
+		if($cfg_upload_switch == 'Y')
+		{
+			//判断文章属性；
+			switch($arcRow['nid'])
+			{
+				case "image":
+					$nid = "imgurls";
+					break;
+				case "article":
+					$nid = "body";
+					break;
+				case "soft":
+					$nid = "softlinks";
+					break;
+				case "shop":
+					$nid = "body";
+					break;
+				default:
+					$nid = "";
+					break;
+			}
+			if($nid !="")
+			{
+				$row = $dsql->GetOne("SELECT $nid FROM ".$arcRow['addtable']." WHERE aid = '$aid'");
+				$licp = $dsql->GetOne("SELECT litpic FROM `#@__archives` WHERE id = '$aid'");
+				if($licp['litpic'] != "")
+				{
+					$litpic = DEDEROOT.$licp['litpic'];
+					if(file_exists($litpic) && !is_dir($litpic))
+					{
+						@unlink($litpic);
+					}
+				}
+				$tmpname = '/(\\'.$cfg_medias_dir.'.+?)(\"| )/';
+
+				//取出文章附件；
+				preg_match_all("$tmpname", $row["$nid"], $delname);
+
+				//移出重复附件；
+				$delname = array_unique($delname['1']);
+				foreach ($delname as $var)
+				{
+					$dsql->ExecuteNoneQuery("Delete From `#@__uploads` where url='$var' AND mid = '$cfg_ml->M_ID'");
+					$upname = DEDEROOT.$var;
+					if(file_exists($upname) && !is_dir($upname))
+					{
+						@unlink($upname);
+					}
+				}
+			}
+		}
+		$dsql->ExecuteNoneQuery("Delete From `".$arcRow['addtable']."` where aid='$aid' ");
+	}
+	$dsql->ExecuteNoneQuery(" Delete From `#@__archives` where id='$aid' ");
+	$dsql->ExecuteNoneQuery("Delete From `#@__feedback` where aid='$aid'");
+	$dsql->ExecuteNoneQuery("Delete From `#@__member_stow` where aid='$aid'");
+	$dsql->ExecuteNoneQuery("Delete From `#@__taglist ` where aid='$aid'");
+
+	//删除HTML
+	if($arcRow['ismake']==-1||$arcRow['arcrank']!=0 ||$arcRow['typeid']==0||$arcRow['money']>0)
+	{
+		return true;
+	}
+	$arcurl = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
+	$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename']);
+	if(!ereg("\?",$arcurl))
+	{
+		$htmlfile = GetTruePath().str_replace($GLOBALS['cfg_basehost'],'',$arcurl);
+		if(file_exists($htmlfile) && !is_dir($htmlfile))
+		{
+			@unlink($htmlfile);
+			$arcurls = explode(".",$htmlfile);
+			$sname = $arcurls[count($arcurls)-1];
+			$fname = ereg_replace("(\.$sname)$","",$htmlfile);
+			for($i=2;$i<=100;$i++)
+			{
+				$htmlfile = $fname."_$i".".".$sname;
+				if(file_exists($htmlfile) && !is_dir($htmlfile)) @unlink($htmlfile);
+				else break;
+			}
+		}
+	}
+
+	//删除文本文件
+	$filenameh = DEDEDATA."/textdata/".(ceil($aid/5000))."/{$aid}-".substr(md5($cfg_cookie_encode),0,16).".txt";
+	if(is_file($filename))
+	{
+		@unlink($filename);
+	}
+	return true;
+}
+
+//删除不带主表内容模型的数据
+function DelArcSg($aid)
+{
+	global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir;
+	$aid = intval($aid);
+
+	//读取文档信息
+	$arctitle = '';
+	$arcurl = '';
+
+	$arcQuery = "Select arc.id,arc.typeid,arc.senddate,arc.arcrank,ch.addtable,ch.nid,
+	    tp.typedir,tp.typename,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+		  from `#@__arctiny` arc
+		  left join `#@__arctype` tp on tp.id=arc.typeid
+		  left join `#@__channeltype` ch on ch.id=arc.channel
+		where arc.id='$aid' ";
+	$arcRow = $dsql->GetOne($arcQuery);
+
+	if(!is_array($arcRow))
+	{
+		return false;
+	}
+
+	//删除数据库的内容
+	$dsql->ExecuteNoneQuery("Delete From `#@__arctiny` where id='$aid' ");
+	$dsql->ExecuteNoneQuery("Delete From `".$arcRow['addtable']."` where aid='$aid' ");
+	$dsql->ExecuteNoneQuery("Delete From `#@__feedback` where aid='$aid'");
+	$dsql->ExecuteNoneQuery("Delete From `#@__member_stow` where aid='$aid'");
+	$dsql->ExecuteNoneQuery("Delete From `#@__taglist ` where aid='$aid'");
+
+	//删除HTML
+	if($arcRow['arcrank']!=0 ||$arcRow['typeid']==0)
+	{
+		return true;
+	}
+	$arcurl = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],'',1,
+	          $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],0,'');
+	if(!ereg("\?",$arcurl))
+	{
+		$htmlfile = GetTruePath().str_replace($GLOBALS['cfg_basehost'],'',$arcurl);
+		if(file_exists($htmlfile) && !is_dir($htmlfile))
+		{
+			 @unlink($htmlfile);
+			 $arcurls = explode(".",$htmlfile);
+			 $sname = $arcurls[count($arcurls)-1];
+			 $fname = ereg_replace("(\.$sname)$","",$htmlfile);
+			 for($i=2;$i<=100;$i++)
+			 {
+				   $htmlfile = $fname."_$i".".".$sname;
+				   if(file_exists($htmlfile) && !is_dir($htmlfile)) @unlink($htmlfile);
+				   else break;
+			 }
+		}
+	}
+	//删除文本文件
+	$filenameh = DEDEDATA."/textdata/".(ceil($aid/5000))."/{$aid}-".substr(md5($cfg_cookie_encode),0,16).".txt";
+	return true;
+}
+
+//获取真实路径
+function GetTruePath()
+{
+	$truepath = $GLOBALS["cfg_basedir"];
+	return $truepath;
 }
 ?>

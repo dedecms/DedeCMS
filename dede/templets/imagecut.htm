@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图片裁剪 Image Cropper</title>
+<script>var targetname = '<?php echo $f;?>';</script>
+<script type="text/javascript" src="../images/js/j.js"></script>
+<script src="../images/js/ui.core.js"></script>
+<script src="../images/js/ui.draggable.js"></script>
+<script  src="../images/js/ui.resizable.js"></script>
+
+<style type="text/css">
+body{padding:50px 0;margin:0;background:#333;font-size:12px;line-height:14px;}
+form,ul,ol,h1,h2,h3,h4,h5,h6,p{margin:0;padding:0;}
+input,textarea,select,button{font-size:12px;}
+img{border:none;}
+em{font-style:normal;}
+cite,small,address{font-size:12px;font-style:normal;color:#999;}
+a{color:#00f;text-decoration:underline;}
+
+/*页面*/
+#box{padding:20px;margin:0 50px;background:#999;font-size:14px;}
+#box h1{font-size:40px;line-height:50px;height:90px;}
+#box h3{font-size:16px;padding:20px 0 10px;}
+code{font-size:12px;color:#333;margin:10px;display:block;}
+#box ol{margin:0;padding:0;list-style-position:inside;list-style-type:decimal;}
+#box ol li{margin:0 0 20px 0;line-height:18px;}
+#box ol li span{color:#00f;text-decoration:underline;cursor:pointer;}
+#box ol li strong{display:block;}
+#box p{line-height:18px;}
+
+/*演示内容*/
+#setFace{position:relative;height:526px;width:556px;margin:50px 0;}
+#imgBox_pre{float:left;width:200px;margin-left:50px;}
+#imgBox_pre strong{display:block;font-size:12px;text-align:center;}
+#imgBox_pre button{display:block;width:70px;margin:0 auto;}
+#imgBox_pre div{width:120px;height:90px;margin:5px auto 20px;overflow:hidden;border:#666 5px solid;}
+#imgBox{float:left;border:#333 3px solid;}
+#imgCut{border:#fff 1px dashed;width:124px;height:94px;position:absolute;top:20px;left:20px;cursor:move;}
+#faceImg{width:300px;}
+#data{clear:both;padding-top:20px;}
+
+</style>
+</head>
+<body>
+<div id="box">
+	<form id="setFace" name="setFace" method="post" action="?f=<?php echo $f;?>">
+	<input type="hidden" name="action" value="cut" />
+	<input type="hidden" name="file" value="<?php echo $file;?>" />
+    <div id="imgBox"><img id="faceImg" src="<?php echo $file;?>" /><div id="imgCut"></div></div>
+    <div id="imgBox_pre"><strong>预览</strong><div><img id="faceImg_pre" src="<?php echo $file;?>" /></div><button type="submit">裁剪</button></div>
+
+    <div id="data">
+    left<input name="left" type="text" id="left" size="3" readonly="readonly" />
+    top<input name="top" type="text" id="top" size="3" readonly="readonly" />
+    width<input name="width" type="text" id="width" size="3" readonly="readonly" />
+    height<input name="height" type="text" id="height" size="3" readonly="readonly" />
+    </div>
+  </form>
+
+</div>
+<script type="text/javascript">
+var scale=1;
+var imgH=$("#faceImg").height();
+var imgW=$("#faceImg").width();
+var src=$("#faceImg").attr("src");
+var scale=120/120;
+$(function(){
+  $("#imgBox").width(imgW).height(imgH);
+  $("#setFace").width(700).height(imgH+4);
+  $("#imgCut").css("background","url(../../images/transparent.gif) repeat");
+  $("#faceImg_pre").height(imgH*scale);
+  $("#imgBox_pre div").scrollTop(20*scale).scrollLeft(20*scale);
+});
+$("#imgCut").draggable({
+  containment:$("#faceImg"),
+  drag:function(){
+    var temp_top=$(this).offset().top-$("#faceImg").offset().top;
+	var temp_left=$(this).offset().left-$("#faceImg").offset().left;
+    scale=90/$(this).height();
+    $("#faceImg_pre").height(imgH*scale);
+	$(this).css("background"," url(../../images/transparent.gif) repeat");
+    $("#imgBox_pre div").scrollTop(temp_top*scale).scrollLeft(temp_left*scale);
+	$("#width").val($(this).width());
+	$("#height").val($(this).height());
+	$("#left").val(($(this).offset().left-$("#faceImg").offset().left));
+	$("#top").val(($(this).offset().top-$("#faceImg").offset().top));
+  },
+  stop:function(){
+
+  }
+});
+$("#imgCut").resizable({
+  containment:$("#faceImg"),
+  handles:"all",
+  knobHandles:true,
+  aspectRatio:true,
+  minWidth:120,
+  minHeight:90,
+  resize:function(){
+    var temp_top=$(this).offset().top-$("#faceImg").offset().top;
+	var temp_left=$(this).offset().left-$("#faceImg").offset().left;
+    scale=90/$(this).height();
+    $("#faceImg_pre").height(imgH*scale);
+	$(this).css("background","url(../../images/transparent.gif) repeat");
+    $("#imgBox_pre div").scrollTop(temp_top*scale).scrollLeft(temp_left*scale);
+	$("#width").val($(this).width());
+	$("#height").val($(this).height());
+	$("#left").val(($(this).offset().left-$("#faceImg").offset().left));
+	$("#top").val(($(this).offset().top-$("#faceImg").offset().top));
+  },
+  stop:function(e,ui){
+
+  }
+});
+</script>
+</body>
+</html>

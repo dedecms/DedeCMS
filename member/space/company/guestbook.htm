@@ -1,0 +1,135 @@
+{dede:include file='space-top.htm'/}
+		<!--c3b-->
+		<div class="c3">
+			<!--c3lb-->
+			<div class="c3l">
+				<!--ccb-->
+				<div class="cc">
+					<!--cctb-->
+					<div class="cct">
+						<div class="cctl">
+						</div>
+						<div class="cctm">
+							<h2>产品分类</h2>
+						</div>
+						<div class="cctr">
+						</div>
+					</div>
+					<!--ccte-->
+					<!--ccmb-->
+					<div class="ccm2">
+					<ul>
+					{dede:array.mtypearr}
+<li><p><a href="?uid=company&action=products&mtype={dede:value.mtypeid/}" target="_blank">{dede:value.mtypename/}</p></a></li>
+{/dede:array}
+					</ul>
+					</div>
+					<!--ccme-->
+				</div>
+				<!--cce-->
+			</div>
+		<!--c3le-->
+			<div class="c3r">
+				<img src="space/company/img/222.jpg" alt="dede" style="margin-bottom:5px;"/>
+				<!--c4b-->
+				<div class="c4">
+
+					<!--c4tb-->
+					<div class="c4t">
+						<div class="c4tl">
+						</div>
+						<div class="c4tm">
+							<h2>留言板</h2>
+						</div>
+						<div class="c4tr">
+						</div>
+					</div>
+					<!--c4te-->
+<div style="padding-top:8px;" align="center" class="readly">
+{dede:datalist}
+<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#C1C9B4" style="margin-bottom:6px">
+<tr bgcolor="#EDF8DD"> 
+ <td height="28" colspan="2" background="img/gbookbg.gif">
+  <span style="float:left;margin-top:2px;margin-left:10px;"><strong>{dede:field.title/}</strong></span>
+  <span style="float:right;padding-right:20px;">
+用户：<a href='index.php?uid={dede:field.uname/}'>{dede:field.uname/}</a>
+时间：{dede:field.dtime function="MyDate('Y-m-d H:i',@me)" /}
+&nbsp; 
+<a href='index.php?uid={dede:field.uname/}&action=infos' target='_blank'>资料</a>
+<a href='index.php?uid={dede:field.uname/}' target='_blank'>空间</a> 
+  </span>
+ </td>
+</tr>
+</tr>
+<tr height="60" bgcolor="#ffffff">
+<td align="left" colspan="2" style="padding-left:7px;">
+	{dede:field.msg function="Text2Html(@me)" /}
+</td>
+</tr>
+</table>
+{/dede:datalist}
+</div>
+<div class="np np1">
+						{dede:pagelist/}
+					</div>		
+					<!--c4bb-->
+						<div class="c4bc">
+							<div class="c4bct">
+							</div>
+							<div class="c4bcm">
+		<form action="index.php" name="form1" method="post">
+	<input type="hidden" name="action" value="guestbooksave" />
+	<input type="hidden" name="uidnum" value="{dede:var.mid/}" />
+	<input type="hidden" name="uid" value="{dede:var.userid/}" />
+		<table width="88%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin-top:20px;">
+    <tr> 
+      <td width="15%" height="26">验证码：</td>
+      <td width="85%">
+        <input name="vdcode" type="text" id="vdcode" size="5" style=""/><img src='../include/vdimgck.php' width='50' height='20' style="padding-top:1px;vertical-align:top;margin-left:5px;" />
+      </td>
+   </tr>
+   <tr> 
+     <td height="26">留言标题：</td>
+     <td><input name="title" type="text" id="title" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">留言内容：</td>
+     <td><textarea name="msg" id="msg" style="width:80%;height:80px"></textarea> </td>
+   </tr>
+   <tr> 
+     <td height="46" colspan="2"><strong>&gt;&gt;联系方法：</strong></td>
+   </tr>
+   <tr> 
+     <td height="26">你的昵称：</td>
+     <td><input name="uname" type="text" id="uname" value="<?php if(isset($cfg_ml->M_LoginID) && $cfg_ml->M_LoginID!='') echo $cfg_ml->M_LoginID; ?>" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">电子邮箱：</td>
+     <td><input name="email" type="text" id="email" style="width:250px;" /></td>
+   </tr>
+   <tr> 
+     <td height="26">即时通信软件：</td>
+     <td><input name="qq" type="text" id="qq" style="width:250px;" />
+       （注明ＱＱ或ＭＳＮ等）</td>
+   </tr>
+   <tr> 
+     <td height="26">联系电话：</td>
+     <td><input name="tel" type="text" id="tel" style="width:250px;" /></td>
+   </tr>
+   <tr align="center"> 
+     <td height="68" colspan="2">
+         <span style="float:left;margin-left:3px;"><input name="imageField" type="image" src="space/person/img/button_ok.gif" width="60" height="22" border="0" style="border:0px;height:22px" /></span>
+     </td>
+   </tr>
+   </table>						
+							</div>
+							<div class="c4bcb">
+							</div>
+						</div>
+					<!--c4be-->
+				</div>
+				<!--c4e-->
+			</div>
+		</div>
+		<!--c3e-->
+{dede:include file='space-foot.htm'/}

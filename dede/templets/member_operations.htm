@@ -1,9 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>业务管理</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
+<link href="img/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 //获得选中项
 function getCheckboxItem()
@@ -20,7 +19,7 @@ function getCheckboxItem()
 				allSel=allSel+"`"+document.form1.aids[i].value;
 		}
 	}
-	return allSel;	
+	return allSel;
 }
 function ReSel()
 {
@@ -50,47 +49,43 @@ function OkSel()
 }
 </script>
 </head>
-<body>
-
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">会员管理</div>
-</div>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
-  <tr> 
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;margin-bottom:5px;">
+  <tr>
     <td height="30" align="center" bgcolor="#FAFCEF">
 	<form name="form2" method="get" action="member_operations.php">
         <table border="0" cellspacing="0" cellpadding="0">
-          <tr> 
+          <tr>
             <td>输入订单号：</td>
-            <td> 
+            <td>
               <input name="buyid" type="text" id="buyid"></td>
-            <td width="100" align="center"> <input name="imageField" type="submit" class="inputbut" value="搜索"> 
+            <td width="100" align="center"> <input name="imageField" type="submit" value="搜索" class='np coolbg' />
             </td>
           </tr>
         </table>
       </form></td>
   </tr>
 </table>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
-  <tr> 
-    <td height="20" colspan="8" bgcolor="#EDF9D5"> <table width="98%" border="0" cellspacing="0" cellpadding="0">
-        <tr> 
-          <td width="30%"> <strong><a href="co_main.php"><u>会员管理</u></a> &gt; 
-            会员业务管理：</strong> </td>
-          <td width="45%" align="right" >
-          	<input type="button" name="ss13" value="未付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='inputbut'> 
-            <input type="button" name="ss14" value="已付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='inputbut'>
-            <input type="button" name="ss142" value="已完成" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=2';" class='inputbut'> 
-            <input type="button" name="ss16" value="全部" style="width:40px;margin-right:6px" onClick="location='member_operations.php';" class='inputbut'> 
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <tr>
+    <td height="28" colspan="8" bgcolor="#EDF9D5" background='img/tbg.gif'>
+    	<table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="30%">&nbsp;<strong>&gt;
+            会员消费管理：</strong> </td>
+          <td width="45%" align="right" style="padding-top:4px;">
+          	<input type="button" name="ss13" value="未付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='np coolbg' />
+            <input type="button" name="ss14" value="已付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='np coolbg' />
+            <input type="button" name="ss142" value="已完成" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=2';" class='np coolbg' />
+            <input type="button" name="ss16" value="全部" style="width:40px;margin-right:6px" onClick="location='member_operations.php';" class='np coolbg' />
           </td>
-          <td width="25%" align="right">
-          	<input type="button" name="ss12" value="会员管理" style="width:90px;margin-right:6px" onClick="location='member_main.php';" class='inputbut'> 
+          <td width="25%" align="right" style="padding-top:4px;">
+          	<input type="button" name="ss12" value="会员管理" style="width:90px;margin-right:6px" onClick="location='member_main.php';" class='np coolbg' />
           </td>
         </tr>
       </table></td>
   </tr>
-  <tr bgcolor="#F8FBFB"> 
+  <tr bgcolor="#F8FBFB">
     <td width="8%" align="center">选择</td>
     <td width="30%" align="center">订单号</td>
     <td width="13%" align="center">产品名称</td>
@@ -101,48 +96,45 @@ function OkSel()
     <td width="13%" align="center">会员</td>
   </tr>
   <form name="form1">
-    <?php 
-  $mylist = $dlist->GetDataList();
-  while($row = $mylist->GetArray('dm'))
-  {
- ?>
-    <tr bgcolor="#FFFFFF"> 
+{dede:datalist}
+    <tr bgcolor="#FFFFFF">
       <td align="center">
-<input type='checkbox' name='aids' value='<?php echo $row['aid']?>' class='np'></td>
-      <td align="center"> 
-        <?php echo $row['buyid']?>
+<input type='checkbox' name='aids' value='<?php echo $fields['aid']?>' class='np'></td>
+      <td align="center">
+        <?php echo $fields['buyid']?>
       </td>
-      <td align="center"> 
-        <?php echo $row['pname']?>
+      <td align="center">
+        <?php echo $fields['pname']?>
       </td>
-      <td align="center"> 
-        <?php echo GetPType($row['product'])?>
+      <td align="center">
+        <?php echo GetPType($fields['product'])?>
       </td>
-      <td align="center"> 
-        <?php echo GetDateMk($row['mtime'])?>
+      <td align="center">
+        <?php echo GetDateMk($fields['mtime'])?>
       </td>
-      <td align="center"> 
-        <?php echo $row['money']?>
+      <td align="center">
+        <?php echo $fields['money']?>
       </td>
-      <td align="center"> 
-        <?php echo GetSta($row['sta'])?>
+      <td align="center">
+        <?php echo GetSta($fields['sta'])?>
       </td>
-      <td align="center"> 
-        <?php echo GetMemberID($dlist->dsql,$row['mid'])?>
+      <td align="center">
+        <?php echo GetMemberID($fields['mid'])?>
       </td>
     </tr>
-    <?php  } ?>
+{/dede:datalist}
   </form>
-  <tr> 
-    <td height="28" colspan="8" bgcolor="#FCFDF7">&nbsp; 
-      <input type="button" name="b7" value="反选" class="inputbut" style="width:40" onClick="ReSel();">
-      <input type="button" name="b5" value="设为已付款状态" class="inputbut" style="width:100" onClick="UpSel();">
-      <input type="button" name="b9" value="设为已完成状态" class="inputbut" style="width:100" onClick="OkSel();">
+  <tr>
+    <td height="28" colspan="8" bgcolor="#FCFDF7" style="padding-top:4px;">
+    	&nbsp;
+      <input type="button" name="b7" value="反选" style="width:40" onClick="ReSel();" class='np coolbg' />
+      <input type="button" name="b5" value="设为已付款状态" style="width:100" onClick="UpSel();" class='np coolbg' />
+      <input type="button" name="b9" value="设为已完成状态" style="width:100" onClick="OkSel();" class='np coolbg' />
     </td>
   </tr>
-  <tr> 
-    <td height="24" colspan="8" bgcolor="#FCFDF7" align="center"> 
-      <?php  $dlist->GetPageList(7); ?>
+  <tr>
+    <td height="36" colspan="8" bgcolor="#FCFDF7" align="center">
+     {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
     </td>
   </tr>
 </table>

@@ -1,70 +1,58 @@
-{dede:page pagesize="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{dede:config.pagesize value="20"/}
+<html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>友情链接管理</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
+<link href='img/base.css' rel='stylesheet' type='text/css'>
 <script language='javascript'>
 function Sel(stype)
 {
-	  for(var i=0;i < document.form1.aids.length;i++){
-		  if(stype=='all') document.form1.aids[i].checked=true;
-		  else document.form1.aids[i].checked=false;
+	  for(var i=0;i < document.getElementsByName('aids').length;i++)
+	  {
+		  if(stype=='all') document.getElementsByName('aids')[i].checked=true;
+		  else document.getElementsByName('aids')[i].checked=false;
 	  }
 }
-function checkSubmit(){
-	var str = "";
-	for(var i=0;i < document.form1.aids.length;i++){
-		  if(document.form1.aids[i].checked){
-		  	if(str=="") str += document.form1.aids[i].value;
-		  	else str += "," + document.form1.aids[i].value;
+function checkSubmit()
+{
+	var str = '';
+	for(var i=0;i < document.getElementsByName('aids').length;i++)
+	{
+		  if(document.getElementsByName('aids')[i].checked){
+		  	if(str=='') str += document.getElementsByName('aids')[i].value;
+		  	else str += ',' + document.getElementsByName('aids')[i].value;
 		  }
 	}
-	if(str==""){
-		alert("你没选择任何内容！");
+	if(str=='')
+	{
+		alert('你没选择任何内容！');
 		return false;
-	}else{
-		document.form1.allid.value = str;
-		return true;
+	}
+	else
+	{
+		location="friendlink_edit.php?aids="+str+"&dopost=delall";
 	}
 }
 </script>
 </head>
-<body>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">辅助插件</div>
-</div>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
-<form name='formsearch' method='post' action='friendlink_main.php'>
-<tr>
-<td height="30" colspan="8" bgcolor="#EDF9D5">
-	&nbsp;
-
-  <b>友情链接管理</b>&nbsp;
-  	[<a href="friendlink_add.php"><u>增加链接</u></a>]
-  	&nbsp;
-  	[<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>外部申请表单</u></a>]
-  	&nbsp;
-  	<b>搜索：</b>
-    <input type='text' name='keyword' style='width:100px;height:12px'>
-    <select name="ischeck">
-    {dede:global name='seloption'/}
-    <option value="1">内页</option>
-      <option value="2">首页</option>
-      <option value="3">已审核</option>
-      <option value="0">未审核</option>
-    </select>
-    &nbsp;
-    <input type='submit' name='sss' value='搜索' class="inputbut" />
-  </td>
-</tr>
-</form>
- <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+  <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
   	<input type='hidden' name='dopost' value='delall'/>
   	<input type='hidden' name='allid' value=''/>
- <tr align="center" bgcolor="#F8FBFB" height="24"> 
+  <tr>
+    <td height="28" background="img/tbg.gif" colspan="8">
+  <div style="float:left">
+  	<b>友情链接管理</b>
+	</div>
+	<div style="float:right;padding-right:6px;">
+		[<a href="friendlink_add.php"><u>增加链接</u></a>]
+ 	 	[<a href="friendlink_type.php"><u>网站类型管理</u></a>]
+  	[<a href='{dede:global name='cfg_phpurl' /}/flink.php' target='_blank'><u>友情链接预览</u></a>]
+  </div>
+  </td>
+</tr>
+  <tr align="center" bgcolor="#F9FCEF" height="26">
           <td width="6%">选择</td>
           <td width="23%">网站名称</td>
           <td width="12%">网站Logo</td>
@@ -75,31 +63,34 @@ function checkSubmit(){
           <td width="15%">管理</td>
         </tr>
         {dede:datalist}
-        <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-          <td><input type='checkbox' name='aids' value='[field:ID/]' class='np'></td>
-          <td><a href="[field:url/]" target='_blank'>[field:webname/]</a></td>
-          <td><a href="[field:url/]" target='_blank'>[field:logo function="GetPic('@me')"/]</a></td>
-          <td>[field:email/]</td>
-          <td>[field:dtime/]</td>
-          <td>[field:ischeck function="GetSta('@me')"/]</td>
-          <td>[field:sortrank/]</td>
+        <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+        	 onMouseOut="javascript:this.bgColor='#FFFFFF';">
+          <td><input type='checkbox' name='aids' value='{dede:field.id/}' class='np'></td>
+          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.webname/}</a></td>
+          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.logo function="GetPic(@me)"/}</a></td>
+          <td>{dede:field.email/}</td>
+          <td>{dede:field.dtime function="MyDate('Y-m-d',@me)"/}</td>
+          <td>{dede:field.ischeck function="GetSta(@me)"/}</td>
+          <td>{dede:field.sortrank/}</td>
           <td>
-          	<a href='friendlink_edit.php?ID=[field:ID/]&dopost=getedit'>[更改]</a>
-		        <a href='friendlink_edit.php?ID=[field:ID/]&dopost=delete'>[删除]</a>
+          	<a href='friendlink_edit.php?id={dede:field.id/}&dopost=getedit'>[更改]</a>
+		        <a href='friendlink_edit.php?id={dede:field.id/}&dopost=delete'>[删除]</a>
 		      </td>
         </tr>
 		{/dede:datalist}
-     <tr bgcolor="#FDFEEF" height="24"> 
-      <td height="35" colspan="8" style="padding-top:6px">
+     <tr bgcolor="#FDFEEF" height="28">
+      <td colspan="8">
       	　
-        <a href='#' onclick='Sel("all");' class="inputbutx">全选</a>
-      	
-      	<a href='#' onclick='Sel("none");' class="inputbutx">取消</a>
-      	
-      	<input type='submit' name='bt' value='批量删除' class="inputbut" />      </td>
-    </tr>
-     <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td colspan="8">{dede:pagelist listsize=6/}</td>
+        <a href='#' onclick='Sel("all")' class='np coolbg'>[全选]</a>
+      	<a href='#' onclick='Sel("none")' class='np coolbg'>[取消]</a>
+      	<a href='#' onclick='checkSubmit()' class='np coolbg'>批量删除</a>
+
+      </td>
+     </tr>
+     <tr align="center" bgcolor="#F9FCEF" height="28">
+      <td colspan="8">
+      	{dede:pagelist listsize=6/}
+      </td>
      </tr>
     </form>
    </table>

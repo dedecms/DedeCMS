@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>访客历史记录</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">
+          <?php if($dopost == "viewme" || empty($dopost)) echo '关注我的人';?>
+          </li>
+          <?php if($dopost == "meview") echo '我最近访问';?>
+        </div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="myfriend.php?ftype=0">所有好友</a></li>
+            <li><a href="search.php">查找好友</a></li>
+            <li <?php if($dopost == "viewme" || empty($dopost)) echo 'class="select"';?>><a href="visit-history.php?dopost=viewme">关注我的人</a></li>
+            <li <?php if($dopost == "meview") echo 'class="select"';?>><a href="visit-history.php?dopost=meview">我最近访问</a></li>
+          </ul>
+        </div>
+        <div class="mTB10 mL10 mR10">
+          <div class="titleBar lineB mB10 bgGrass">
+            <div class="fLeft"><strong>昵称</strong></div>
+            <div class="fRight titSecondary" style="margin-top:5px;"><em><a id="allDeploy">全部展开</a></em></div>
+          </div>
+          {dede:datalist}
+          <?php if($dopost == "viewme" || $dopost==''){ ?>
+          <div class="item visit">
+            <div class="itemHead" >
+              <div class="fLeft"> <span class="itemHeadTitle yellow"><a href='index.php?uid=<?php echo $fields['vloginid']; ?>' target='_blank'><?php echo $fields['vloginid']; ?></a></span> <span class="itemTip mL10"></span></div>
+              <div class="fRight"> <span class="itemHeadNum mR10">访问 <strong><?php echo $fields['count']; ?></strong> 次</span> <a href='index.php?uid={dede:field.vloginid /}&action=infos' target='_blank'>[资料]</a> <a href='index.php?uid={dede:field.vloginid /}&action=guestbook' target='_blank'>[留言]</a> <a href='index.php?action=newfriend&uid={dede:field.vloginid /}' target='_blank'>[加为好友]</a> </div>
+            </div>
+            <div class="itemBody invisible" >
+              <div class="itemContent">
+                <ul>
+                  <li>访问IP:<?php echo $fields['vip']; ?></li>
+                  <li>访问时间:<?php echo MyDate('y-m-d H:i:s',$fields['vtime']); ?></li>
+                </ul>
+              </div>
+              <div class="itemBodyFoot"></div>
+            </div>
+          </div>
+          <hr class="dotted" />
+          <?php }else{ ?>
+          <div class="item visit">
+            <div class="itemHead" >
+              <div class="fLeft"> <span class="itemHeadTitle yellow"><a href='index.php?uid=<?php echo urlencode($fields['loginid']); ?>' target='_blank'> <?php echo $fields['loginid']; ?></a></span> <span class="itemTip mL10"></span></div>
+              <div class="fRight"> <span class="itemHeadNum mR10">访问 <strong><?php echo $fields['count']; ?></strong> 次</span> <a href='index.php?uid={dede:field.loginid /}&action=infos' target='_blank'>[资料]</a> <a href='index.php?uid={dede:field.loginid /}&action=guestbook' target='_blank'>[留言]</a> </div>
+            </div>
+            <div class="itemBody invisible" >
+              <div class="itemContent">
+                <ul>
+                  <li>访问IP:<?php echo $fields['vip']; ?></li>
+                  <li>访问时间:<?php echo MyDate('y-m-d H:i:s',$fields['vtime']); ?></li>
+                </ul>
+              </div>
+              <div class="itemBodyFoot"></div>
+            </div>
+          </div>
+          <hr class="dotted" />
+          <?php } ?>
+          {/dede:datalist}
+          <div>
+            <div class="pages fRight">{dede:pagelist listsize=5 /}</div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

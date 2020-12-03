@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>文件校验</title>
+<link href='img/base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<tr>
+    <td height="19" background="img/tbg.gif">
+      <table width="96%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <td width="24%">
+          	<strong><a href='sys_verifies.php'><b>文件校验</b></a> &gt;&gt; 文件效验管理</strong>
+          </td>
+          <td width="76%" align="right">
+          </td>
+        </tr>
+      </table>
+   </td>
+</tr>
+<tr>
+    <td height="200" bgcolor="#FFFFFF" valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <form action="sys_verifies.php?action=modify" method="post">
+      <tr>
+          <td class='bline2'> 修改? </td>
+          <td class='bline2'> 文件名(用 Ctrl+F 搜索) </td>
+          <td class='bline2'> 文件HASH </td>
+          <td class='bline2'> 校验方式 </td>
+          </tr>
+          <?php
+          foreach ($filelist as $key => $file)
+          {
+          ?>
+          <tr>
+          <td class='bline'>
+          	<input type="checkbox" name="modifys[]" value="<?php echo $file['filename'];?>" />
+          </td>
+          <td class='bline'>
+          	<?php echo $file['filename'];?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['cthash'];?>
+          </td>
+          <td class='bline'>
+          	<?php echo $file['method'];?>
+          </td>
+          </tr>
+          <?php
+          }
+          ?>
+          <tr>
+          <td colspan="20" height='28'>
+          	<label><input type="radio" name="method" value="offical" />官方(official)</label>
+         	 <label><input type="radio" name="method" value="local" checked='1' />本地(local)</label>
+          </td>
+          </tr>
+          <tr>
+          	<td colspan="20" height='36'>
+          	 <input type="submit" name="submit" value="修改要文件的校验方式" class='np coolbg' />
+          	</td>
+           </tr>
+        </form>
+      </table>
+	 </td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,39 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>下载地址列表</title>
-<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
-<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
-</head>
+<title><?php echo $title; ?>_下载地址列表_<?php echo $cfg_webname;?></title>
+<link href="<?php echo $cfg_templeturl; ?>/style/search.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 
-<div class="stop">
-	<span class="toptitle">下载</span>
-	<span class="toplink"><a href="/">返回主页</a></span></div>
-
-<div class="smain">
-	<div class="mtitle">
-		<div class="mtname">软件名称:<a href='<?php echo $arcurl?>' style='font-size:11pt'><?php echo $arctitle?></a></div>
-		</div>
-	<div class="">
-
-		<div class="svote">
-			<div class="vtinfo">
-			下载地址列表：
-					<div class="vtbox"><?php echo $downlinks?></div>
-		  </div>
-			
-	  </div>
-
-
-
-
-
+<div class="header">
+	<div class="toplogo">
+		<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
 	</div>
 </div>
 
+<div class="msgbar">
+	<p>
+		<strong>软件名称：<a href='<?php echo $arcurl; ?>'><?php echo $title; ?></a></strong>
+	</p>
+</div>
+<div class="advancedsearch">
+  <table width="100%" border="0" align="center" cellspacing="2">
+    <tr>
+      <td height="30" bgcolor="#F2F7E6">下载地址列表：</td>
+    </tr>
+    <tr>
+      <td height="78"><?php echo $downlinks; ?></td>
+    </tr>
+  </table>
+</div>
+<div class="footer">
+<p class="link">
+		网站版权信息及免责声明
+  </p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
+</div>
 
 </body>
 </html>

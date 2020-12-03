@@ -1,6 +1,6 @@
 <!--
 function CheckSubmit()
 {
-	return true; 
+	return true;
 }
 -->

@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>标签源码碎片管理</title>
+<link href="img/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.linerow { border-bottom: 1px solid #CBD8AC; }
+td { padding-left:5px; }
+</style>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" style="margin-bottom:6px;">
+  <tr>
+   <td height="28" background="img/tbg.gif" colspan="7">
+     <b>标签源码碎片管理</b> &nbsp; (DedeCms 5.3及以上版本标签源码是完全独立的，懂程序的用户可以按需修改或自行增加标签)
+	</td>
+</tr>
+</table>
+<table width='98%' border='0' cellspacing='0' cellpadding='0' style="border:1px solid #CBD8AC;" align="center">
+   <tr height="26" align="center">
+     <td width="25%" class='linerow' background="img/wbg.gif"><strong>标签文件名</strong></td>
+     <td width="33%" class='linerow' background="img/wbg.gif" align="left"><strong>标签说明</strong></td>
+     <td width="22%" class='linerow' background="img/wbg.gif"><strong>修改时间</strong></td>
+     <td width="20%" class='linerow' background="img/wbg.gif"><strong>操作</strong></td>
+   </tr>
+   <tr>
+      <td class='linerow' colspan='4' height="28" bgcolor='#FAFEEF'>
+      	<div style='float:left'>
+      	<b>
+      		当前位置：标签源码碎片管理(文件存放在 ../include/taglib 文件夹)
+      	</b>
+        </div>
+      	<div style='float:right;padding-right:10px'>
+      		<a href='tpl.php?action=addnewtag'>[<u>增加一个新的标签</u>]</a>
+        </div>
+      </td>
+   </tr>
+   <?php
+   $dh = dir($libdir);
+   while($filename=$dh->read())
+   {
+   	  if(!ereg("\.php$",$filename)) continue;
+   	  $filetime = filemtime($libdir.'/'.$filename);
+      $filetime = MyDate("Y-m-d H:i",$filetime);
+      $fileinfo = GetHelpInfo(str_replace('.lib.php','',$filename));
+   ?>
+   <tr height="26" bgcolor='#FFFFFF' onMouseMove="javascript:this.bgColor='#F9FBF0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+	  <td class='linerow'>
+       <img src='img/htm.gif' border='0' align='absmiddle' /><?php echo $filename; ?>
+    </td>
+		<td class='linerow'>
+			<?php echo $fileinfo; ?>
+		</td>
+		<td align='center' class='linerow'>
+			<?php echo $filetime; ?>
+		</td>
+		<td class='linerow' align='center'>
+			<a href='tpl.php?action=edittag&filename=<?php echo $filename; ?>'>[编辑]</a>
+		</td>
+	</tr>
+	<?php } ?>
+	<tr>
+    <td colspan="4" height='32' bgcolor='#F8FEE0'>
+      <p style="text-align:center;color:red">修改系统标签有风险，请小心操作！</p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

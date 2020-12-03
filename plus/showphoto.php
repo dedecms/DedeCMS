@@ -1,35 +1,40 @@
-<?php 
-require_once(dirname(__FILE__)."/../include/config_base.php");
-require_once(dirname(__FILE__)."/../include/inc_channel_unit.php");
-if(!isset($aid)){ exit(); }
-$aid = ereg_replace("[^0-9]","",$aid);
-if(empty($aid)){ exit(); } 
-$dsql = new DedeSql(false);
+<?php
+require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once(DEDEINC."/channelunit.class.php");
+
+if(isset($arcID)) $aid = $arcID;
+$arcID = $aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
+if($aid==0) die(" Request Error! ");
+
 //读取文档信息
-$arctitle = "";
-$arcurl = "";
-$topID = 0;
-$arcRow = $dsql->GetOne("Select #@__archives.title,#@__archives.senddate,#@__archives.arcrank,#@__archives.ismake,#@__archives.money,#@__archives.typeid,#@__arctype.topID,#@__arctype.typedir,#@__arctype.namerule From #@__archives  left join #@__arctype on #@__arctype.ID=#@__archives.typeid where #@__archives.ID='$aid'");
-if(is_array($arcRow)){
+$arctitle = '';
+$arcurl = '';
+$topid = 0;
+$arcRow = $dsql->GetOne("Select arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,tp.topid,tp.typedir,tp.namerule,
+                 tp.moresite,tp.siteurl,tp.sitepath From `#@__archives` arc  left join `#@__arctype` tp on tp.id=arc.typeid where arc.id='$aid'");
+if(is_array($arcRow))
+{
 	$arctitle = $arcRow['title'];
-	$topID = $arcRow['topID'];
-	$arcurl = GetFileUrl($aid,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
+	$topid = $arcRow['topid'];
+	$arcurl = @GetFileUrl($aid,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],
+	                    $arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename'],$arcRow['moresite'],$arcRow['siteurl'],$arcRow['sitepath']);
 }
-else{
-	$dsql->Close();
-	ShowMsg("无法浏览未知文档!","-1");
+else
+{
+	ShowMsg('无法浏览未知文档!','-1');
 	exit();
 }
 if(empty($mx)){ $mx=$cfg_album_width; }
 $pageGuide = "";
 //获取上下幅图片链接
-$row = $dsql->GetOne("Select imgurls From #@__addonimages where aid='{$aid}'");
+$row = $dsql->GetOne("Select imgurls From `#@__addonimages` where aid='{$aid}'");
 $i = 0;
-$nextSrc = "";
-$preSrc = "";
+$nextSrc = '';
+$preSrc = '';
 $dtp = new DedeTagParse();
 $dtp->LoadSource($row['imgurls']);
-foreach($dtp->CTags as $ctag){
+foreach($dtp->CTags as $ctag)
+{
   if($ctag->GetName()=="img"){
     if($i==($npos-1)){ $preSrc = trim($ctag->GetInnerText()); }
     if($i==($npos+1)){ $nextSrc = trim($ctag->GetInnerText()); }
@@ -41,14 +46,25 @@ if($cfg_multi_site=='Y'){
 	if(!preg_match("/^http:/i",$preSrc) && !empty( $preSrc)) $preSrc = $cfg_basehost.$preSrc;
 	if(!preg_match("/^http:/i",$nextSrc) && !empty($nextSrc)) $nextSrc = $cfg_basehost.$nextSrc;
 }
-if($preSrc!=""){
+if($preSrc!='')
+{
 	$pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($preSrc)."&npos=".($npos-1)."'>&lt;&lt;上一幅图片</a> ";
 }
-if($nextSrc!=""){
+else
+{
+	$pageGuide .= "这是开始";
+}
+$nextlink = 'javascript:;';
+if($nextSrc!='')
+{
+  $nextlink = "showphoto.php?aid={$aid}&src=".urlencode($nextSrc)."&npos=".($npos+1);
   if($pageGuide!="") $pageGuide .= " | ";
   $pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($nextSrc)."&npos=".($npos+1)."'>下一幅图片&gt;&gt;</a>";
 }
-$dsql->Close();
+else
+{
+	$pageGuide .= " | 没有了";
+}
 require_once($cfg_basedir.$cfg_templets_dir."/plus/showphoto.htm");
 exit();
 ?>

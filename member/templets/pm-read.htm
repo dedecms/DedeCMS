@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>消息管理</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script type="text/javascript" language="javascript" src="js/box.js"></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeCenter" id="personal">
+        <div class="location">阅读消息</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul id="pm">
+            <li><a href="pm.php?dopost=send">写新消息</a></li>
+            <li><a href="pm.php?folder=inbox">收件箱</a></li>
+            <li><a href="pm.php?folder=outbox">发件箱</a></li>
+            <li><a href="pm.php?folder=track">已发出信息</a></li>
+          </ul>
+        </div>
+        <div class="mTB10 mL10 mR10">
+          <table cellspacing="1" class="lineBorder submit">
+            <thead>
+              <tr>
+                <th><div class="fLeft"><?php echo $row['subject']; ?></div>
+                  <em class="fRight mR10"><a class="buttonGary2  button block black" href="pm.php?dopost=send">回复</a></em></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><?php echo text2html($row['message']); ?></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="30"><a class="fLeft" href="index.php?uid=<?php echo $row['floginid']; ?>" target='_blank'><?php echo $row['floginid']; ?></a> <span class="fRight">08-11-20 17:02:05</span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="dedeRight">
+      <!--好友列表 -->
+      <script type="text/javascript">
+		$(document).ready(function(){
+			$(".buddy dt").click(function(){$(this).toggleClass("close");$(this).next("dd").toggle();});
+			$(".buddy li").hover(function(){$(this).addClass("hover"); },function(){$(this).removeClass("hover"); });
+		});
+		</script>
+      <div class="titleBar bgGaryImg">
+        <h5 class="fLeft">好友列表</h5>
+        <span class="fRight"><a href="myfriend.php" title="好友管理">管理</a></span> </div>
+      <dl class="buddy overflow mL10 mR10">
+        <dt class="buddySort icon">所有好友</dt>
+        <dd class="buddyList">
+          <ul>
+            <?php
+            foreach ($friends as $friend)
+            {
+            echo '<li class="thickbox"><span class="fLeft icon16 titOnline"></span>'.$friend['funame'].'</li>';
+            }
+            ?>
+          </ul>
+        </dd>
+        <dt class="buddySort icon">特别关注(0/1)</dt>
+        <dd class="buddyList">
+          <ul>
+            <li class="thickbox"><span class="fLeft icon16 titOffline" title="不在线"></span>刘德华</li>
+          </ul>
+        </dd>
+        <dt class="buddySort icon">黑名单</dt>
+      </dl>
+      <hr />
+      <!--好友搜索 -->
+      <div class="buddySearch textCenter">
+        <form action="search.php">
+          <input class="text" type="text" name="keyword" value="查找新好友" style="width:150px;" />
+          <button class="button1" type="submit">搜</button>
+        </form>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

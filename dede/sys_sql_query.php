@@ -1,100 +1,168 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
-if(empty($dopost)) $dopost = "";
-header("Content-Type: text/html; charset={$cfg_ver_lang}");
-$dsql = new DedeSql(false);
-if($dopost=="viewinfo") //查看表结构
+if(empty($dopost))
 {
-	if(empty($tablename)) echo "没有指定表名！";
-	else{
-			$dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
-		$dsql->Execute();
-		$row2 = $dsql->GetArray();
+	$dopost = "";
+}
+
+//查看表结构
+if($dopost=="viewinfo")
+{
+	if(empty($tablename))
+	{
+		echo "没有指定表名！";
+	}
+	else
+	{
+		$dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
+		$dsql->Execute('me');
+		$row2 = $dsql->GetArray('me',MYSQL_BOTH);
 		$ctinfo = $row2[1];
 		echo "<xmp>".trim($ctinfo)."</xmp>";
 	}
-	$dsql->Close();
 	exit();
 }
-else if($dopost=="opimize") //优化表
+//优化表
+else if($dopost=="opimize")
 {
-	if(empty($tablename)) echo "没有指定表名！";
-	else{
-	  $dsql->ExecuteNoneQuery("OPTIMIZE TABLE '$tablename'");
-	  $dsql->Close();
-	  echo "执行优化表： $tablename  OK！";
+	if(empty($tablename))
+	{
+		echo "没有指定表名！";
+	}
+	else
+	{
+		$rs = $dsql->ExecuteNoneQuery("OPTIMIZE TABLE `$tablename` ");
+		if($rs)  echo "执行优化表： $tablename  OK！";
+		else echo "执行优化表： $tablename  失败，原因是：".$dsql->GetError();
 	}
 	exit();
-}else if($dopost=="repair") //修复表
+}
+//优化全部表
+else if($dopost=="opimizeAll")
 {
-	if(empty($tablename)) echo "没有指定表名！";
-	else{
-	  $rs = $dsql->ExecuteNoneQuery("REPAIR TABLE '$tablename'");
-	  $dsql->Close();
-	  echo "修复表： $tablename  OK！";
+	$dsql->SetQuery("Show Tables");
+	$dsql->Execute('t');
+	while($row = $dsql->GetArray('t',MYSQL_BOTH))
+	{
+		$rs = $dsql->ExecuteNoneQuery("OPTIMIZE TABLE `{$row[0]}` ");
+		if($rs) {
+		  echo "优化表: {$row[0]} ok!<br />\r\n";
+		}
+		else {
+			echo "优化表: {$row[0]} 失败! 原因是: ".$dsql->GetError()."<br />\r\n";
+		}
 	}
 	exit();
-}else if($dopost=="query") //执行SQL语句
+}
+//修复表
+else if($dopost=="repair")
 {
-	$t1 = ExecTime();
+	if(empty($tablename))
+	{
+		echo "没有指定表名！";
+	}
+	else
+	{
+		$rs = $dsql->ExecuteNoneQuery("REPAIR TABLE `$tablename` ");
+		if($rs) echo "修复表： $tablename  OK！";
+		else echo "修复表： $tablename  失败，原因是：".$dsql->GetError();
+	}
+	exit();
+}
+//修复全部表
+else if($dopost=="repairAll")
+{
+	$dsql->SetQuery("Show Tables");
+	$dsql->Execute('t');
+	while($row = $dsql->GetArray('t',MYSQL_BOTH))
+	{
+		$rs = $dsql->ExecuteNoneQuery("REPAIR TABLE `{$row[0]}` ");
+		if($rs) {
+		  echo "修复表: {$row[0]} ok!<br />\r\n";
+		}
+		else {
+			echo "修复表: {$row[0]} 失败! 原因是: ".$dsql->GetError()."<br />\r\n";
+		}
+	}
+	exit();
+}
+//执行SQL语句
+else if($dopost=="query")
+{
 	$sqlquery = trim(stripslashes($sqlquery));
-	if(eregi("drop(.*)table",$sqlquery) 
-	|| eregi("drop(.*)database",$sqlquery)){
+	if(eregi("drop(.*)table",$sqlquery) || eregi("drop(.*)database",$sqlquery))
+	{
 		echo "<span style='font-size:10pt'>删除'数据表'或'数据库'的语句不允许在这里执行。</span>";
-		$dsql->Close();
-	  exit();
+		exit();
 	}
 	//运行查询语句
 	if(eregi("^select ",$sqlquery))
 	{
 		$dsql->SetQuery($sqlquery);
-	  $dsql->Execute();
-	  if($dsql->GetTotalRow()<=0) echo "运行SQL：{$sqlquery}，无返回记录！";
-	  else echo "运行SQL：{$sqlquery}，共有".$dsql->GetTotalRow()."条记录，最大返回100条！";
-	  $j = 0;
-	  while($row = $dsql->GetArray())
-	  {
-	  	 $j++;
-	  	 if($j>100) break;
-	  	 echo "<hr size=1 width='100%'/>";
-	  	 echo "记录：$j";
-	  	 echo "<hr size=1 width='100%'/>";
-	  	 foreach($row as $k=>$v){
-	  		  if(ereg("[^0-9]",$k)){ echo "<font color='red'>{$k}：</font>{$v}<br/>\r\n"; }
-	  	 }
-	  }
-	  $t2 = ExecTime();
-	  echo "<hr>执行时间：".($t2-$t1);
-	  exit();
+		$dsql->Execute();
+		if($dsql->GetTotalRow()<=0)
+		{
+			echo "运行SQL：{$sqlquery}，无返回记录！";
+		}
+		else
+		{
+			echo "运行SQL：{$sqlquery}，共有".$dsql->GetTotalRow()."条记录，最大返回100条！";
+		}
+		$j = 0;
+		while($row = $dsql->GetArray())
+		{
+			$j++;
+			if($j>100)
+			{
+				break;
+			}
+			echo "<hr size=1 width='100%'/>";
+			echo "记录：$j";
+			echo "<hr size=1 width='100%'/>";
+			foreach($row as $k=>$v)
+			{
+				echo "<font color='red'>{$k}：</font>{$v}<br/>\r\n";
+			}
+		}
+		exit();
 	}
-	if($querytype==2){
-	   //普通的SQL语句
-	   $sqlquery = str_replace("\r","",$sqlquery);
-	   $sqls = split(";[ \t]{0,}\n",$sqlquery);
-	   $nerrCode = ""; $i=0;
-	   foreach($sqls as $q){
-	     $q = trim($q); if($q==""){ continue; }
-	     $dsql->ExecuteNoneQuery($q);
-	     $errCode = trim($dsql->GetError());
-	     if($errCode=="") $i++;
-	     else $nerrCode .= "执行： <font color='blue'>$q</font> 出错，错误提示：<font color='red'>".$errCode."</font><br>";
-     }
-	   echo "成功执行{$i}个SQL语句！<br><br>";
-	   echo $nerrCode;
-  }else{
-  	$dsql->ExecuteNoneQuery($sqlquery);
-  	$nerrCode = trim($dsql->GetError());
-  	echo "成功执行1个SQL语句！<br><br>";
-	  echo $nerrCode;
+	if($querytype==2)
+	{
+		//普通的SQL语句
+		$sqlquery = str_replace("\r","",$sqlquery);
+		$sqls = split(";[ \t]{0,}\n",$sqlquery);
+		$nerrCode = ""; $i=0;
+		foreach($sqls as $q)
+		{
+			$q = trim($q);
+			if($q=="")
+			{
+				continue;
+			}
+			$dsql->ExecuteNoneQuery($q);
+			$errCode = trim($dsql->GetError());
+			if($errCode=="")
+			{
+				$i++;
+			}
+			else
+			{
+				$nerrCode .= "执行： <font color='blue'>$q</font> 出错，错误提示：<font color='red'>".$errCode."</font><br>";
+			}
+		}
+		echo "成功执行{$i}个SQL语句！<br><br>";
+		echo $nerrCode;
 	}
-	$dsql->Close();
-	$t2 = ExecTime();
-	echo "<hr>执行时间：".($t2-$t1);
+	else
+	{
+		$dsql->ExecuteNoneQuery($sqlquery);
+		$nerrCode = trim($dsql->GetError());
+		echo "成功执行1个SQL语句！<br><br>";
+		echo $nerrCode;
+	}
 	exit();
 }
+include DedeInclude('templets/sys_sql_query.htm');
 
-require_once(dirname(__FILE__)."/templets/sys_sql_query.htm");
-
-ClearAllLink();
 ?>

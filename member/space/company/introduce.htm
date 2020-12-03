@@ -1,0 +1,110 @@
+{dede:include file='space-top.htm'/}
+		<!--c3b-->
+		<div class="c3">
+			<!--c3lb-->
+			<div class="c3l">
+				<!--ccb-->
+				<div class="cc">
+					<!--cctb-->
+					<div class="cct">
+						<div class="cctl">
+						</div>
+						<div class="cctm">
+							<h2>产品分类</h2>
+						</div>
+						<div class="cctr">
+						</div>
+					</div>
+					<!--ccte-->
+					<!--ccmb-->
+					<div class="ccm2">
+					<ul>
+					{dede:array.mtypearr}
+<li><p><a href="?uid=company&action=products&mtype={dede:value.mtypeid/}" target="_blank">{dede:value.mtypename/}</p></a></li>
+{/dede:array}
+					</ul>
+					</div>
+					<!--ccme-->
+					<!--cctb-->
+					<div class="cct">
+						<div class="cctl">
+						</div>
+						<div class="cctm">
+							<h2>联系方式</h2>
+						</div>
+						<div class="cctr">
+						</div>
+					</div>
+					<!--ccte-->
+					<!--ccmb-->
+					<div class="ccm2">
+					<ul>
+						<li>联系人：{dede:var.linkman/}</li>
+						<li>电话：{dede:var.tel/}</li>
+						<li>传真：{dede:var.fax/}</li>
+						<li>网址: {dede:var.url/}</li>
+						<li>Email: {dede:var.email/}</li>
+						<li>地址：{dede:var.address/}</li>
+					</ul>
+					</div>
+					<!--ccme-->
+				</div>
+				<!--cce-->
+			</div>
+		<!--c3le-->
+			<div class="c3r">
+				<img src="space/company/img/222.jpg" alt="dede" style="margin-bottom:5px;"/>
+				<!--c4b-->
+				<div class="c4">
+				<!--c4tb-->
+					<div class="c4t">
+						<div class="c4tl">
+						</div>
+						<div class="c4tm">
+							<h2>公司简介</h2>
+						</div>
+						<div class="c4tr">
+						</div>
+					</div>
+					<!--c4te-->
+					<!--c4bb-->
+					<div class="c4b">
+						<img src="{dede:var.comface/}" alt="公司照片">
+						{dede:var.introduce/}
+					</div>
+					<!--c4be-->
+					<!--c4tb-->
+					<div class="c4t">
+						<div class="c4tl">
+						</div>
+						<div class="c4tm">
+							<h2>公司信息</h2>
+						</div>
+						<div class="c4tr">
+						</div>
+					</div>
+					<!--c4te-->
+					<!--c4bb-->
+						<div class="c4bc">
+							<div class="c4bct">
+							</div>
+							<div class="c4bcm">
+								<ul>
+									<li><span>公司名字:</span>{dede:var.company/}</li>
+									<li><span>贸易种类:</span>{dede:var.vocation/}</li>
+									<li><span>主营产品:</span>{dede:var.product/}</li>
+									<li><span>公司规模:</span>{dede:var.cosize/}</li>
+									<li><span>所在地:</span>{dede:var.place/}</li>
+								</ul>
+								<div class="ct"><a href="?uid={dede:var.userid_e /}&action=contact" target="_blank">联系该公司</a></div>
+							</div>
+							<div class="c4bcb">
+							</div>
+						</div>
+					<!--c4be-->
+				</div>
+				<!--c4e-->
+			</div>
+		</div>
+		<!--c3e-->
+{dede:include file='space-foot.htm'/}

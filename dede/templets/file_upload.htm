@@ -1,12 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>文件上传</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
+<link href="img/base.css" rel="stylesheet" type="text/css">
 <script src="menu.js" language="JavaScript"></script>
 </head>
-<body>
+<body background="img/allbg.gif" leftmargin="0" topmargin="0">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr> 
 <td height="425" align="center" valign="top">
@@ -34,22 +33,22 @@ function reset_upload()
 <tr>
 <td width="10%" height="40" valign="top"></td>
 <td width="90%">
-<input type="button" value="增加上传框" name="bbb" onClick="make_upload();" class="inputbut">
-<a href="file_manage_main.php?activepath={dede:global name='activepath'/}">[<u>返回目录{dede:global name='activepath'/}</u>]</a>
+<input type="button" value="增加上传框" name="bbb" class="bt1" onClick="make_upload();">
+<a href="file_manage_main.php?activepath={dede:global name='activepath'/}">[返回目录{dede:global name='activepath'/}]</a>
 </td>
 </tr>
 <tr>
 <td width="10%">　</td>
 <td width="90%">
-<div id="upfield">文件1:<input type='file' name='upfile1' size='30' /></div>
+<div id="upfield">文件1:<input type='file' name='upfile1' size='30'></div>
 </td>
 </tr>
 <tr>
 <td width="100%" height="40" colspan="2">
 &nbsp;&nbsp;&nbsp;&nbsp;
-<input type="submit" value=" 上传文件 " name="B1" class="inputbut">
+<input type="submit" value=" 上传文件 " name="B1">
 &nbsp;
-<input type="button" value=" 重设表单 " name="B12" onClick="reset_upload();" class="inputbut">
+<input type="button" value=" 重设表单 " name="B12" onClick="reset_upload();">
 </td>
 </tr>
 </table>

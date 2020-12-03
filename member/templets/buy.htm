@@ -1,90 +1,107 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>空间管理中心</title>
-<link href="company_style.css" rel="stylesheet" type="text/css">
+<title>服务购买</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center"> 
-  <?php  include(dirname(__FILE__)."/head.htm"); ?>
-  <table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php  include(dirname(__FILE__)."/menu.php"); ?>
-    </td>
-    <td width="10">&nbsp;</td>
-    <td  valign="top">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="text-align:left; margin-top:10px;">
-          <tr> 
-            <td width="100%" height="103" colspan="2"><img src="img/indbanner.jpg" width="580" height="100"></td>
-          </tr>
-          <tr> 
-            <td height="140" colspan="2">
-			<form name='f1' action='buy_action.php' method='post'>
-			<input type='hidden' name='product' value='card'>
-			<table width="98%" border="0" cellpadding="3" cellspacing="0" style="margin-top:3px; margin-bottom:8px; border-bottom:1px solid #ababab; text-indent:10px;">
-                <tr bgcolor="#F2FCE0"> 
-                  <div class="manage_company_right_title" style="margin-top:10px;">
-                	<ul><li>会员产品种类与价格：</li></ul>
-                </div>
-                </tr>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">服务购买</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
+            <li><a href="shops_products.php">商品</a></li>
+          </ul>
+        </div>
+        <div class="mL10 mR10 mTB10">
+          <div class="item rechargeable">
+            <div class="itemHead bgGrass titleBar" >
+              <div class="fLeft"><strong>充值</strong></div>
+              <div class="fRight titShow icon16" style="margin-top:5px;"></div>
+            </div>
+            <div class="itemBody" >
+              <form name="formrank" action="check_card.php" method="post">
+                <table cellspacing="1" class="submit">
+                  <tbody>
+                    <tr>
+                      <td width="15%" align="right" valign="top">充值密码：</td>
+                      <td><input name="cardid" type="text" id="cardid" size="38" class="text" /></td>
+                    </tr>
+                    <tr>
+                      <td align="right" valign="top">验证码：</td>
+                      <td><input name="vdcode" type="text" id="vdcode" size="8" class="text" style='width:50px;text-transform:uppercase;' />
+                        <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle" /></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td align="right" valign="top">&nbsp;</td>
+                      <td><button class="button2" type="submit">充值</button></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </form>
+            </div>
+          </div>
+          <div class="card">
+            <form name="f1" action="buy_action.php" method="post">
+              <div class="titleBar bgGrass lineB mB10 invisible">
+                <div class="fLeft"><strong>充值卡购买</strong></div>
+                <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a class="buyCard">充值卡购买</a></em> <em class="mL10 mR10"><a class="buyLevel">会员升级</a></em></div>
+              </div>
+              <input type="hidden" name="product" value="card" />
+              <table cellspacing="1" class="list mT10">
+                <thead>
+                  <tr>
+                    <th width="1%">选择</th>
+                    <th >产品名称</th>
+                    <th width="5%">金币</th>
+                    <th width="5%">价格</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php echo $moneycards;?>
+                </tbody>
               </table>
-              <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:8px">
-                <tr bgcolor="#F0FCDA"> 
-                  <td height="30" colspan="4" style="font-weight:700; text-indent:10px;">充值卡：</td>
-                </tr>
-                <tr align="center" bgcolor="#F9FEE7"> 
-                  <td width="12%" height="30">选择</td>
-                  <td width="48%" height="30">产品名称</td>
-                  <td width="20%" height="30">点数</td>
-                  <td width="20%" height="30">价格</td>
-                </tr>
-                <?php echo $moneycards;?>
-                <tr align="center" bgcolor="#F0FCDA"> 
-                  <td height="30" colspan="4">
-				    <input name="imageField" type="image" src="img/buysb.gif" width="85" height="20" border="0" class="np">
-				  </td>
-                </tr>
-              </table>
+              <button class="button2 mTB10" type="submit">购买</button>
             </form>
-            <form name='f2' action='buy_action.php' method='post'>
-			      <input type='hidden' name='product' value='member'>
-              <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:8px">
-                <tr bgcolor="#F0FCDA"> 
-                  <td height="30" colspan="6" style="text-indent:10px;"><span style="font-weight:700;">会员升级：</span>（会员查看本等级的文档不扣金币，查看更高等级的文档才会扣金币） 
-</td>
-                </tr>
-                <tr align="center" bgcolor="#F9FEE7"> 
-                  <td width="12%" height="30">选择</td>
-                  <td width="35%" height="30" bgcolor="#F9FEE7">产品名称</td>
-                  <td width="20%" height="30" bgcolor="#F9FEE7">会员类型</td>
-                  <td width="12%" height="30">时限</td>
-				  <td width="12%" height="30">金币</td>
-                  <td width="12%" height="30">价格</td>
-                </tr>
-                <?php echo $membertypes?>
-                <tr align="center" bgcolor="#F0FCDA"> 
-                  <td height="30" colspan="6">
-				    <input name="imageField2" type="image" src="img/buysb.gif" width="85" height="20" border="0" class="np">
-                  </td>
-                </tr>
+          </div>
+          <div class="level">
+            <form name="f1" action="buy_action.php" method="post">
+              <div class="titleBar bgGrass lineB mB10 invisible">
+                <div class="fLeft"><strong>会员升级</strong></div>
+                <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a class="buyCard">充值卡购买</a></em> <em class="mL10 mR10"><a class="buyLevel">会员升级</a></em></div>
+              </div>
+              <input type="hidden" name="product" value="member" />
+              <table cellspacing="1" class="list mT10">
+                <thead>
+                  <tr>
+                    <th width="1%">选择</th>
+                    <th >产品名称</th>
+                    <th width="10%">会员类型</th>
+                    <th width="10%">时限(天)</th>
+                    <th width="5%">价格</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php echo $membertypes?>
+                </tbody>
               </table>
-             </form>
-              <table width="98%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td>&nbsp;</td>
-                </tr>
-              </table> </td>
-          </tr>
-        </table>
-    </td>
-  </tr>
-</table>
-<?php 
-if(isset($dsql) && is_object($dsql)) $dsql->Close();
-include(dirname(__FILE__)."/foot.htm");
-?>
+              <button class="button2 mTB10" type="submit">购买</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

@@ -2,36 +2,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>RSS - powered by dedecms</title>
-<link href="../templets/style/nspage.css" rel="stylesheet" type="text/css" />
+<title>{dede:global name='cfg_webname'/}_RSS订阅地图</title>
+<link href="{dede:global name='cfg_templeturl'/}/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-<body>
+<body class="mapspage">
 
-<div class="main mceneter">
-	<div class="toplogo">
-		<div class="logo">
-				<a href="/"><img src="../templets/images/toplogo.gif" /></a>		</div>
+<div class="header">
+	<div class="top w960 center">
 		<div class="title">
-			RSS订阅地图
-		</div>
+			<h1>
+				<h1><a href="{dede:global name='cfg_basehost'/}">{dede:global name='cfg_webname'/}</a></h1>
+			</h1>
+		</div><!-- /title -->
+	</div><!-- /top -->
+</div><!-- /header -->
+
+<div class="w960 clear center mt1">
+	<div class="sp-title">
+    <h2>RSS地图</h2>
+    <span class="more">	<a href='{dede:global name='cfg_basehost'/}'>返回首页</a></span>
+    </div>
+
+	<div class="linkbox">
+	{dede:global name='maplist'/}
 	</div>
-	<div class="cmain">
-		
-		<div class="ctitle">
-			<h1>RSS订阅地图</h1>
-			<span></span>
-		</div>
-		<div class="cbox mceneter">
-			<div class="maplist">
-			{dede:global name='maplist'/}
-			</div>
-		</div>
-	</div>
-</div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+
+
 </div>
 
+
+<div class="footer">
+<p class="link">
+		网站版权信息及免责声明
+  </p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
+</div>
 
 </body>
 </html>

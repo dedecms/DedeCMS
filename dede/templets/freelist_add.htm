@@ -1,11 +1,10 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>新增自由列表</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
-<script src="main.js" language="javascript"></script>
+<link href='img/base.css' rel='stylesheet' type='text/css'>
+<script src="js/main.js" language="javascript"></script>
 <script language="JavaScript">
 function ChangeListStyle(){
    var itxt = document.getElementById("myinnertext");
@@ -26,9 +25,15 @@ function ShowHide(objname){
 }
 function SelectTemplets(fname)
 {
-   var posLeft = window.event.clientY-200;
-   var posTop = window.event.clientX-300;
-   window.open("../include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir)?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   if(document.all){
+     var posLeft = window.event.clientY-200;
+     var posTop = window.event.clientX-300;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
+   window.open("/include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir)?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 function CheckSubmit(){
    if(document.form1.title.value==""){
@@ -46,57 +51,34 @@ function CheckSubmit(){
 	<div class="bodytitletxt">频道管理</div>
 </div>
 <center>
-<span style="display:none" id="list1">
-<dl>
-<dt><a href="[field:arcurl/]">[field:title/]</a></dt>
-<dd class="preview">[field:description/]...</dd>
-<dd class="info">作者：<span>[field:writer /]</span>发表于：<span>[field:pubdate function="GetDateTimeMK(@me)"/]</span>　点击：<span>[field:click/]</span>　评论：<span>[field:postnum/]</span> <a href="[field:arcurl/]">查阅全文...</a></dd>
-</dl>
-</span>
-<span style="display:none" id="list2">
-<dl>
-<dt>[field:typelink function='str_replace("a ","a class=ulink ",@me)'/]<a href="[field:arcurl/]">[field:title/]</a></dt>
-<dd class="preview">[field:description/]...</dd>
-<dd class="info">作者：<span>[field:writer /]</span>发表于：<span>[field:pubdate function="GetDateTimeMK(@me)"/]</span>　点击：<span>[field:click/]</span>　评论：<span>[field:postnum/]</span> <a href="[field:arcurl/]">查阅全文...</a></dd>
-</dl>
-</span>
-<span style="display:none" id="list3">
+<div style="display:none" id="list1">
+<li>[field:textlink/]</li>
+</div>
+
+<div style="display:none" id="list2">
+<li>[[field:typelink/]][field:textlink/]</li>
+</div>
+
+<div style="display:none" id="list3">
 <table width='98%' border='0' cellspacing='2' cellpadding='0'>
    <tr><td align='center'>[field:imglink/]</td></tr>
    <tr><td align='center'>[field:textlink/]</td></tr>
 </table>
-</span>
-<span style="display:none" id="list4">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbspan" style="margin-top:6px">
-<tr>
-<td height="1" colspan="2" background="[field:templeturl/]/img/dot_hor.gif"></td>
-</tr>
-<tr>
-<td width="5%" height="26" align="center"><img src="[field:templeturl/]/img/item.gif" width="18" height="17"></td>
-<td height="26">
-	<b>
-		[field:typelink function='str_replace("a ","a class=ulink ",@me)'/]
-		<a href="[field:arcurl/]" class="ulink">[field:title/]</a>
-	</b>
-</td>
-</tr>
-<tr>
-<td height="20" style="padding-left:3px">&nbsp;</td>
-<td style="padding-left:3px">
-				<font color="#8F8C89">日期：[field:pubdate function="GetDateTimeMK(@me)"/]
-点击：[field:click/] 评论：[field:postnum/]</font>
-				<a href="[field:phpurl/]/feedback.php?arcID=[field:id/]"><img src="[field:templeturl/]/img/comment.gif" width="12" height="12" border="0" title="查看评论"></a>
-	  </td>
-</tr>
-<tr>
-<td colspan="2" style="padding-left:3px">
-  [field:litpic function="CkLitImageView(@me,80)"/]
-	[field:description/]
-</td>
-</tr>
-</table>
-</span>
-  <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+</div>
+
+<div style="display:none" id="list4">
+<li>
+   [field:imglink/]
+    [field:textlink/]
+    <span class="info">
+        <small>日期：</small>[field:pubdate function="GetDateMK(@me)"/]
+        <small>点击：</small>[field:click/]
+        <small>好评：</small>[field:scores/]
+    </span>
+    <p class="intro"> [field:description/]...</p>
+    </li>
+</div>
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
     <tr>
       <td align="left" bgcolor="#EDF9D5"><strong>＞自自由列表管理 &gt;&gt; 增加一个列表：</strong></td>
       <td align="right" bgcolor="#EDF9D5"><input type="button" name="b113" value="管理自由列表" onclick="location='freelist_main.php';" class="inputbut"/>
@@ -104,7 +86,7 @@ function CheckSubmit(){
         <input type="button" name="bt2" value="更新列表HTML" onclick="location='makehtml_freelist.php';" class="inputbut"/>      </td>
     </tr>
   </table>
-  <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
     <form action="freelist_action.php" method="post"  name="form1" onSubmit="return CheckSubmit();">
       <input type="hidden" name="dopost" value="addnew">
       <tr>
@@ -155,7 +137,7 @@ function CheckSubmit(){
                 </table></td>
             </tr>
             <tr>
-              <td height="26" align="left" background="img/menubg.gif"><img src="img/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">列表样式：（这里是定义自由列表模板里的{dede:freelist
+              <td height="26" align="left" style="background:#E2F5BC;"><img src="img/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">列表样式：（这里是定义自由列表模板里的{dede:freelist
                 /}标记的样式和属性）</td>
             </tr>
             <tr>
@@ -174,13 +156,27 @@ function CheckSubmit(){
             </tr>
             <tr>
               <td height="28" align="left"> 限定栏目：
-                <?php echo GetTypeidSel('form1','typeid','selbt1',0)?>              </td>
+               <?php
+                 echo "<select name='typeid' style='width:100'>\r\n";
+                 echo "<option value='0'>不限栏目...</option>\r\n";
+                $dsql->SetQuery("Select ID,typename, channeltype From #@__arctype");
+                $dsql->Execute();
+                while($lrow = $dsql->GetObject()){
+               	$disable = '';
+               	if($lrow->channeltype < -1)
+               	{
+               		$disable = 'disabled';
+               	}
+		 echo "<option value='{$lrow->ID}' $disable>{$lrow->typename}</option>\r\n";
+                }
+		echo "</select>";
+		?>            </td>
             </tr>
             <tr>
               <td height="28" align="left"> 限定频道：
                 <?php
        echo "<select name='channel' style='width:100'>\r\n";
-       //echo "<option value='0' selected>不限...</option>\r\n";
+       echo "<option value='0' selected>不限...</option>\r\n";
        $dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0");
 	   $dsql->Execute();
 	   while($row = $dsql->GetObject())
@@ -216,9 +212,6 @@ function CheckSubmit(){
                 标题长度：
                 <input name="titlelen" type="text" id="titlelen" value="60" size="4">
                 （1 字节 = 0.5个中文字）</td>
-            </tr>
-            <tr>
-              <td height="28" align="left">摘要长度：</td>
             </tr>
             <tr>
               <td height="28" align="left"> 高级筛选：
@@ -260,7 +253,7 @@ function CheckSubmit(){
               <td height="80" align="left" id='innervar' style="display:none"><font color="#CC6600"><img src="img/help.gif" width="16" height="16">支持字段(底层变量[field:varname/])：id,title,color,typeid,ismake,description,pubdate,senddate,arcrank,click,litpic,typedir,typename,arcurl,typeurl,<br>
                 stime(pubdate 的&quot;0000-00-00&quot;格式),textlink,typelink,imglink,image
                 普通字段直接用[field:字段名/]表示。<br>
-                ·Pubdate发布时间的调用参数 [field:pubdate function=strftime('%Y-%m-%d %H:%M:%S',@me)/]</font>
+                ·Pubdate发布时间的调用参数 [field:pubdate function=MyDate('Y-m-d H:i:s',@me)/]</font>
               </td>
             </tr>
             <tr>

@@ -1,73 +1,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>推荐 - powered by dedecms</title>
-<link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
-<link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
+<title>推荐_<?php echo $title; ?>_{dede:global name='cfg_webname'/}</title>
+<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-</head>
-<body>
+<body class="flinkpage">
 
-<div class="stop">
-	<span class="toptitle">推荐</span>
-	<span class="toplink"><a href="/">返回主页</a> <a href="flink.php">所有链接</a></span></div>
+<div class="header">
+	<div class="top w960 center">
+		<div class="title">
+			<h1>
+				<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
+			</h1>
+		</div><!-- /title -->
 
-<div class="smain">
-	<div class="mtitle">
-		<div class="mtname">文章名称：<strong><a href="<?php  echo $arcurl ?>"><?php  echo $arctitle ?></a></strong></div>
-		</div>
-	<div class="mbox">
-		<div class="flbox">
-			<ul>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td height="3"></td>
-</tr>
-<tr>
-<td height="100" align="center" valign="top">
+  </div><!-- /top -->
+</div><!-- /header -->
+<div class="w960 clear center mt1 cmt-box">
+  <div class="sp-title">
+    <h2>推荐：<?php echo $title; ?></h2>
+</div>
+  <div class="formbox">
 <form name="form1" method="post" action="recommend.php">
-<input type="hidden" name="arcurl" value="<?php  echo $arcurl ?>">
+<input type="hidden" name="arcurl" value="<?php echo $arcurl; ?>">
 <input type="hidden" name="action" value="send">
-<input type="hidden" name="arcID" value="<?php echo $arcID?>">
-<table width="98%" border="0" cellspacing="0" cellpadding="0">
+<input type="hidden" name="arcID" value="<?php echo $aid; ?>">
+<table width="100%" border="0" cellspacing="2" cellpadding="1">
 <tr>
-<td width="15%" height="30">你好友的Email：</td>
-<td width="85%" align="left"><input name="email" type="text" id="email"></td></tr>
-<tr>
-<td width="15%" height="30">你的大名：</td>
-<td width="85%" align="left"><input name="name" type="text" id="name"></td></tr>
-<tr>
-<td height="30">你的留言：</td>
-<td>&nbsp;</td>
+<td height="30" align="right" width="150">你好友的Email：</td>
+<td height="30" align="left"><input name="email" type="text" class="ipt-txt" id="email" value="@"/></td>
 </tr>
-<tr align="center">
-<td height="61" colspan="2">
-<textarea name="msg" cols="72" rows="6" id="msg" style="width:98%">
-你好，我在 [<?php echo $cfg_webname?>] 发现了一个很好的东东：
+<tr>
+  <td height="30" align="right">你的留言：</td>
+  <td height="30" align="left"><textarea name="msg" cols="80" rows="16" id="msg" class="ipt-txt">
+你好，我在 [<?php echo $cfg_webname; ?>] 发现了一个很好的东东：
 你不妨去看看吧！
-文档的名称是：<?php echo $arctitle?>
-网址是：<?php echo $cfg_basehost.$arcurl?>
-</textarea>
-</td>
+
+文档的名称是：<?php echo $title; ?>
+
+网址是：<?php $arcUrl = ($cfg_multi_site != 'Y' ? $cfg_basehost : '').$arcurl; echo $arcUrl;?>
+</textarea></td>
 </tr>
 <tr>
-<td height="50">&nbsp;</td>
-<td align="left"><input type="submit" name="Submit" value=" 发 送 "></td>
+<td height="30" align="left">&nbsp;</td>
+<td height="30" align="left"><input type="submit" class="btn-2" value="发送" /></td>
 </tr>
 </table>
 </form>
-</td>
-</tr>
-<tr>
-<td height="3"></td>
-</tr>
-</table>
-			</ul>
-		</div>
-	</div>
+  </div>
 </div>
+<div class="footer">
+  <p class="link">
+    网站版权信息及免责声明
+  </p>
+<!--
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
 
+</div>
 
 </body>
 </html>

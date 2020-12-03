@@ -1,20 +1,51 @@
 var MenuWidth = 120;
 var ItemHeight = 16;
 var ItemNumber = 0;
-//WebFX右键菜单程序被织梦修改的项为:
-//增加了默认宽度和菜单高度的定义
-//这样可以修正原来第一次载入时显示不正确的情况
-ContextMenu.intializeContextMenu=function()
+
+function CurNav()
 {
-	document.body.insertAdjacentHTML("BeforeEnd", '<iframe src="#" scrolling="no" class="WebFX-ContextMenu" marginwidth="0" marginheight="0" frameborder="0" style="position:absolute;display:none;z-index:50000000;" id="WebFX_PopUp"></iframe>');
-	WebFX_PopUp    = self.frames["WebFX_PopUp"]
-	WebFX_PopUpcss = document.getElementById("WebFX_PopUp")
-	document.body.attachEvent("onmousedown",function(){WebFX_PopUpcss.style.display="none"})
-	WebFX_PopUpcss.onfocus  = function(){WebFX_PopUpcss.style.display="inline"};
-	WebFX_PopUpcss.onblur  = function(){WebFX_PopUpcss.style.display="none"};
-	self.attachEvent("onblur",function(){WebFX_PopUpcss.style.display="none"})
+	if(window.navigator.userAgent.indexOf("MSIE")>=1) return 'IE';
+  else if(window.navigator.userAgent.indexOf("Firefox")>=1) return 'FF';
+  else return 'OT';
 }
 
+function InsertHtm(op,code,isStart)
+{ 
+  if(CurNav()=='IE') {
+  	op.insertAdjacentHTML(isStart ? "beforeEnd" : "afterEnd",code); 
+  }
+  else
+  { 
+    var range=op.ownerDocument.createRange(); 
+    range.setStartBefore(op); 
+    var fragment = range.createContextualFragment(code); 
+    if(isStart) op.insertBefore(fragment,op.firstChild); 
+    else op.appendChild(fragment);
+  } 
+}
+
+ContextMenu.WebFX_PopUp = null;
+ContextMenu.WbFX_PopUpcss = null;
+
+ContextMenu.intializeContextMenu=function()
+{
+	InsertHtm(document.body,'<iframe src="#" scrolling="no" class="WebFX-ContextMenu" marginwidth="0" marginheight="0" frameborder="0" style="position:absolute;display:none;z-index:50000000;" id="WebFX_PopUp"></iframe>',true);
+	
+	if(CurNav()=='IE') WebFX_PopUp = document.frames['WebFX_PopUp'];
+	else WebFX_PopUp = document.getElementById('WebFX_PopUp');
+		
+	WebFX_PopUpcss = document.getElementById('WebFX_PopUp');	
+	
+	WebFX_PopUpcss.onfocus  = function(){WebFX_PopUpcss.style.display="inline"};
+	WebFX_PopUpcss.onblur  = function(){WebFX_PopUpcss.style.display="none"};
+	
+	if(CurNav()=='IE') document.body.attachEvent("onmousedown",function(){WebFX_PopUpcss.style.display="none"});
+	else  document.addEventListener("onblur",function(){WebFX_PopUpcss.style.display="none"},false);
+		
+	if(CurNav()=='IE') document.attachEvent("onblur",function(){WebFX_PopUpcss.style.display="none"});
+	else document.addEventListener("onblur",function(){WebFX_PopUpcss.style.display="none"},false);
+		
+}
 
 
 function ContextSeperator(){}
@@ -26,19 +57,17 @@ ContextMenu.showPopup=function(x,y)
 	WebFX_PopUpcss.style.display = "block"
 }
 
-ContextMenu.display=function(popupoptions,h)
-{
+ContextMenu.display=function(evt,popupoptions)
+{ 
   var eobj,x,y;
-	eobj = window.event;
-	x    = eobj.x;
-	y    = eobj.y
+  
+	eobj = evt ? evt:(window.event ? window.event : null);
 	
-	/*
-	not really sure why I had to pass window here
-	it appears that an iframe inside a frames page
-	will think that its parent is the frameset as
-	opposed to the page it was created in...
-	*/
+	if(CurNav()=='IE')
+	{ x  = eobj.x;y  = eobj.y }
+	else
+	{ x = eobj.clientX; y = eobj.clientY; }
+	
 	ContextMenu.populatePopup(popupoptions,window)	
 	ContextMenu.showPopup(x,y);
 	ContextMenu.fixSize();
@@ -62,7 +91,8 @@ ContextMenu.display=function(popupoptions,h)
 
 ContextMenu.fixPos=function(x,y)
 {
-	var docheight,docwidth,dh,dw;	
+	var docheight,docwidth,dh,dw;
+	if(!x) { x=0; y=0; }	
 	docheight = document.body.clientHeight;
 	docwidth  = document.body.clientWidth;
 	dh = (WebFX_PopUpcss.offsetHeight+y) - docheight;
@@ -71,8 +101,7 @@ ContextMenu.fixPos=function(x,y)
 	{ WebFX_PopUpcss.style.left = (x - dw) + ContextMenu.getScrollLeft() + "px"; }
 	else
 	{ WebFX_PopUpcss.style.left = x + ContextMenu.getScrollLeft(); }
-	//
-	if(dh>0)
+  if(dh>0)
 	{ WebFX_PopUpcss.style.top = (y - dh) + ContextMenu.getScrollTop() + "px" }
 	else
 	{ WebFX_PopUpcss.style.top  = y + ContextMenu.getScrollTop(); }
@@ -80,13 +109,6 @@ ContextMenu.fixPos=function(x,y)
 
 ContextMenu.fixSize=function()
 {
-	//这个方法是动态调整Iframe的宽度和高度，被织梦修改过
-	//var body;
-	//WebFX_PopUpcss.style.width = "120px";
-	//body = WebFX_PopUp.document.body; 
-	//var dummy = WebFX_PopUpcss.offsetHeight + " dummy";
-	//h = body.scrollHeight + WebFX_PopUpcss.offsetHeight - body.clientHeight;
-	//w = body.scrollWidth + WebFX_PopUpcss.offsetWidth - body.clientWidth;
 	WebFX_PopUpcss.style.height = ItemHeight * ItemNember + "px";
 	WebFX_PopUpcss.style.width =  MenuWidth + "px";
 	ItemNember = 0;
@@ -97,9 +119,13 @@ ContextMenu.populatePopup=function(arr,win)
 	var alen,i,tmpobj,doc,height,htmstr;
 	alen = arr.length;
 	ItemNember = alen;
-	doc  = WebFX_PopUp.document;
-	doc.body.innerHTML  = ""
-	if (doc.getElementsByTagName("LINK").length == 0) {
+	
+	if(CurNav()=='IE') doc = WebFX_PopUp.document;
+	else doc  = WebFX_PopUp.contentWindow.document;
+	
+	doc.body.innerHTML  = '';
+	if (doc.getElementsByTagName("LINK").length == 0)
+	{
 		doc.open();
 		doc.write('<html><head><link rel="StyleSheet" type="text/css" href="js/contextmenu.css"></head><body></body></html>');
 		doc.close();

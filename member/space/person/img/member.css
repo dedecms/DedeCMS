@@ -1,0 +1,133 @@
+
+.maintable {
+	borderoo:1px solid #D1DDAA;
+	margin-top:8px;
+	width:98%;
+}
+
+dl.mt {
+	border-bottom:1px solid #D1DDAA;
+	background:url(tbgnew.gif);
+	height:28px;
+	font-weight:bold;
+	width:100%;
+	line-height:28px;
+	font-size:13px;
+	color:#0D570D;
+}
+dd.mt1 {
+	float:left;
+	width:30%;
+	padding-left:3px;
+}
+dd.mt2 {
+	float:right;
+	padding-right:6px;
+}
+
+dl.tr0 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #D1DDAA;
+}
+
+dl.tr1 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #888;
+	height:28px;
+	line-height:28px;
+}
+
+dl.tr2 {
+	width:100%;
+	background:#F7F7F7;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #888;
+	height:28px;
+	line-height:28px;
+}
+
+dl.tr5 {
+	width:100%;
+	height:28px;
+	line-height:29px;
+	background:url(h1bg.gif) no-repeat left top;
+	overflow:hidden;
+	border-top:1px #666 solid;
+	border-bottom:1px #666 solid;
+}
+dl.tr52 {
+	border-top:none;
+}
+dl.tr5 dd{
+	font-weight:bold;
+	color:#222;
+	margin-left:10px;
+	display:inline;
+}
+
+dl.tr31 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	height:35px;
+	padding-top:12px;
+}
+
+dl.tr32 {
+	width:100%;
+	background:#F3FFDD;
+	border-top:1px solid #ffffff;
+	height:35px;
+	padding-top:12px;
+}
+
+dd.tdl {
+  color:#000;
+  float:left;
+  width:20%;
+  padding-left:3px;
+}
+
+dd.tdl2 {
+  font-weight:bold;
+  color:#666666;
+  float:left;
+  width:30%;
+  padding-left:3px;
+}
+
+dd.tdr {
+  float:left;
+  color:#333;
+}
+
+dd.tdr2 {
+  float:left;
+  width:20%;
+   color:#333;
+}
+
+dd.tdr3 {
+  float:left;
+  width:10%;
+}
+
+dd.tdr5 {
+  float:left;
+  width:78%;
+}
+
+.enumselect {
+	width:90px;
+}
+
+div.trckbox
+{
+	width:15%;
+	float:left;
+}
+

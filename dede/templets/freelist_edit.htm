@@ -1,42 +1,47 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>更改自由列表</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
-<script src="main.js" language="javascript"></script>
+<link href='img/base.css' rel='stylesheet' type='text/css'>
+<script src="js/main.js" language="javascript"></script>
 <script language="JavaScript">
 function ChangeListStyle(){
-   var itxt = document.getElementById("myinnertext");
-   var myems = document.getElementsByName("liststyle");
-   if(myems[0].checked) itxt.value = document.getElementById("list1").innerHTML;
-   else if(myems[1].checked) itxt.value = document.getElementById("list2").innerHTML;
-   else if(myems[2].checked) itxt.value = document.getElementById("list3").innerHTML;
-   else if(myems[3].checked) itxt.value = document.getElementById("list4").innerHTML;
-   itxt.value = itxt.value.replace("<BR>","<BR/>");
-   itxt.value = itxt.value.toLowerCase();
+	var itxt = document.getElementById("myinnertext");
+	var myems = document.getElementsByName("liststyle");
+	if(myems[0].checked) itxt.value = document.getElementById("list1").innerHTML;
+	else if(myems[1].checked) itxt.value = document.getElementById("list2").innerHTML;
+	else if(myems[2].checked) itxt.value = document.getElementById("list3").innerHTML;
+	else if(myems[3].checked) itxt.value = document.getElementById("list4").innerHTML;
+	itxt.value = itxt.value.replace("<BR>","<BR/>");
+	itxt.value = itxt.value.toLowerCase();
 }
 function ShowHide(objname){
-  var obj = document.getElementById(objname);
-  if(obj.style.display == "block" || obj.style.display == "")
-	   obj.style.display = "none";
-  else
-	   obj.style.display = "block";
+	var obj = document.getElementById(objname);
+	if(obj.style.display == "block" || obj.style.display == "")
+	obj.style.display = "none";
+	else
+	obj.style.display = "block";
 }
 function SelectTemplets(fname)
 {
-   var posLeft = window.event.clientY-200;
-   var posTop = window.event.clientX-300;
-   window.open("../include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir)?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   if(document.all){
+     var posLeft = window.event.clientY-200;
+     var posTop = window.event.clientX-300;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
+	window.open("/include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir)?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 function CheckSubmit(){
-   if(document.form1.title.value==""){
-       alert("自由列表标题标题不能为空！");
-	   document.form1.title.focus();
-	   return false;
-   }
-   return true;
+	if(document.form1.title.value==""){
+		alert("自由列表标题标题不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
+	return true;
 }
 </script>
 </head>
@@ -51,11 +56,11 @@ function CheckSubmit(){
       <input type="hidden" name="dopost" value="edit">
       <input type="hidden" name="aid" value="<?php echo $row['aid']?>">
       <tr>
-        <td height="23" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <td height="28" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
             <tr>
-              <td width="35%" height="18" align="left"><a href="mytag_main.php"><strong>＞自自由列表管理</strong></a>
+              <td width="35%" height="18" align="left"><a href="freemenu_main.php"><strong>＞自自由列表管理</strong></a>
                 <strong>&gt;&gt; 更改自由列表：</strong></td>
-              <td width="65%" align="right"> <input type="button" name="b113" value="管理自由列表" onClick="location='freelist_main.php';" class="inputbut"/>
+              <td width="65%" align="right"> <input type="button" name="b113" value="管理自由列表" onClick="location='freemenu_main.php';" class="inputbut"/>
                 &nbsp; <input type="button" name="bt2" value="更新列表HTML" onClick="location='makehtml_freelist.php';" class="inputbut"/>
               </td>
             </tr>
@@ -110,53 +115,66 @@ function CheckSubmit(){
                 </table></td>
             </tr>
             <tr>
-              <td height="26" align="left" background="img/menubg.gif"><img src="img/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">
+              <td height="26" align="left" style="background:#E2F5BC;" ><img src="img/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">
               	列表样式：（这里是定义自由列表模板里的{dede:freelist/}标记的样式和属性）              </td>
             </tr>
             <tr>
               <td height="28" align="left">
               	限定栏目：
                <?php
-                $typeid = $ctag->GetAtt('typeid');
-                if(!empty($typeid)){
-                    $typeinfos = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$typeid' ");
-                    echo GetTypeidSel('form1','typeid','selbt1',0,$typeinfos['ID'],$typeinfos['typename']);
-                }else{
-                	echo GetTypeidSel('form1','typeid','selbt1',0);
-                }
-               ?>              </td>
+               $typeid = $ctag->GetAtt('typeid');
+               echo "<select name='typeid' style='width:100'>\r\n";
+               echo "<option value='0'>不限栏目...</option>\r\n";
+               $dsql->SetQuery("Select id,typename, channeltype From #@__arctype");
+               $dsql->Execute();
+               while($lrow = $dsql->GetObject()){
+               	$disable = '';
+               	if($lrow->channeltype < -1)
+               	{
+               		$disable = 'disabled';
+               	}
+               	if($lrow->id==$typeid) echo "<option value='{$lrow->id}' selected $disable>{$lrow->typename}</option>\r\n";
+               	else echo "<option value='{$lrow->id}' $disable>{$lrow->typename}</option>\r\n";
+               }
+               echo "</select>";
+		?></td>
             </tr>
             <tr>
               <td height="28" align="left"> 限定频道：
                 <?php
-       $channel  = $ctag->GetAtt('channel');
-       echo "<select name='channel' style='width:100'>\r\n";
-       //echo "<option value='0'>不限...</option>\r\n";
-       $dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0");
-	   $dsql->Execute();
-	   while($nrow = $dsql->GetObject())
-	   {
-	      if($nrow->ID==$channel) echo "<option value='{$nrow->ID}' selected>{$nrow->typename}</option>\r\n";
-	      else echo "<option value='{$nrow->ID}'>{$nrow->typename}</option>\r\n";
-	   }
-       echo "</select>";
+                $channel  = $ctag->GetAtt('channel');
+                echo "<select name='channel' style='width:100'><option value='0'>不限</option>\r\n";
+                $dsql->SetQuery("Select id,typename From #@__channeltype where id>0");
+                $dsql->Execute();
+                while($nrow = $dsql->GetObject())
+                {
+                	if($nrow->id==$channel) echo "<option value='{$nrow->id}' selected>{$nrow->typename}</option>\r\n";
+                	else echo "<option value='{$nrow->id}'>{$nrow->typename}</option>\r\n";
+                }
+                echo "</select>";
 		?>
                 　(如果限定了频道内容模型，则允许使用附加表指定的列表字段作为底层变量)</td>
             </tr>
             <tr>
               <td height="28" align="left">附加属性：
                 <?php
-       $att  = $ctag->GetAtt('att');
-       echo "<select name='att' style='width:100'>\r\n";
-       echo "<option value='0'>不限...</option>\r\n";
-       $dsql->SetQuery("Select * From #@__arcatt");
-	   $dsql->Execute();
-	   while($nrow = $dsql->GetObject())
-	   {
-	      if($att==$nrow->att) echo "<option value='{$nrow->att}' selected>{$nrow->attname}</option>\r\n";
-	      else echo "<option value='{$nrow->att}'>{$nrow->attname}</option>\r\n";
-	   }
-       echo "</select>";
+                $att  = $ctag->GetAtt('att');
+                echo "<select name='att' style='width:100'>\r\n";
+                echo "<option value='0'>不限...</option>\r\n";
+                $dsql->SetQuery("Select * From #@__arcatt");
+                $dsql->Execute();
+                while($nrow = $dsql->GetObject())
+                {
+                	if($att==$nrow->att)
+                	{
+                		echo "<option value='{$nrow->att}' selected>{$nrow->attname}</option>\r\n";
+                	}
+                	else
+                	{
+                		echo "<option value='{$nrow->att}'>{$nrow->attname}</option>\r\n";
+                	}
+                }
+                echo "</select>";
 		?>
                 文档发布时间：
                 <input name="subday" type="text" id="subday" size="6" value="<?php echo $ctag->GetAtt('subday')?>">
@@ -194,7 +212,8 @@ function CheckSubmit(){
                 $orderby = $ctag->GetAtt('orderby');
                 $sorta = "sortrank,置顶权限值;pubdate,发布时间;senddate,录入时间;click,点击量;id,文档ＩＤ,lastpost,最后评论时间;postnum,评论总数;rand,随机获取";
                 $sortas = explode(';',$sorta);
-                foreach($sortas as $v){
+                foreach($sortas as $v)
+                {
                 	$vs = explode(',',$v);
                 	$vs[0] = trim($vs[0]);
                 	$sortarrs[$vs[0]] = $vs[1];
@@ -230,7 +249,7 @@ function CheckSubmit(){
               <td height="80" align="left" id='innervar' style="display:none"><font color="#CC6600"><img src="img/help.gif" width="16" height="16">支持字段(底层变量[field:varname/])：id,title,color,typeid,ismake,description,pubdate,senddate,arcrank,click,litpic,typedir,typename,arcurl,typeurl,<br>
                 stime(pubdate 的&quot;0000-00-00&quot;格式),textlink,typelink,imglink,image
                 普通字段直接用[field:字段名/]表示。<br>
-                ·Pubdate发布时间的调用参数 [field:pubdate function=strftime('%Y-%m-%d %H:%M:%S',@me)/]</font>
+                ·Pubdate发布时间的调用参数 [field:pubdate function=MyDate('Y--%d H:i:s',@me)/]</font>
               </td>
             </tr>
             <tr>

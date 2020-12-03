@@ -1,178 +1,447 @@
 <?php
-require_once(dirname(__FILE__)."/../../include/pub_httpdown.php");
-require_once(dirname(__FILE__)."/../../include/inc_photograph.php");
-require_once(dirname(__FILE__)."/../../include/pub_dedetag.php");
-require_once(dirname(__FILE__)."/../../include/pub_oxwindow.php");
-require_once(dirname(__FILE__)."/../../include/inc_tag_functions.php");
-require_once(dirname(__FILE__)."/../../include/inc_custom_fields.php");
-
-//------------------------------
-//获取一个远程图片
-//------------------------------
-function GetRemoteImage($url,$uid=0)
+if(!defined('DEDEMEMBER'))
 {
-	global $title,$cfg_mb_rmdown,$cfg_photo_typenames,$cfg_ml;
-	if($cfg_mb_rmdown=='N') return '';
-	$cfg_uploaddir = $GLOBALS['cfg_user_dir'];
-	$cfg_basedir = $GLOBALS['cfg_basedir'];
-	$revalues = Array();
-	$revalues[0] = '';
-	$revalues[1] = '';
-	$revalues[2] = '';
-	$ok = false;
-	$htd = new DedeHttpDown();
-	$htd->OpenUrl($url);
-	$sparr = $cfg_photo_typenames;
-	if(!in_array($htd->GetHead("content-type"),$sparr)){
-		return "";
-	}else{
-  	$imgUrl = $cfg_uploaddir."/".$cfg_ml->M_ID;
-	  $imgPath = $cfg_basedir.$imgUrl;
-	  CreateDir($imgUrl);
-  	$itype = $htd->GetHead("content-type");
-		if($itype=="image/gif") $itype = ".gif";
-		else if($itype=="image/png") $itype = ".png";
-		else if($itype=="image/wbmp") $itype = ".bmp";
-		else $itype = ".jpg";
-		$rndname = dd2char($cfg_ml->M_ID."0".strftime("%y%m%d%H%M%S",$nowtme)."0".mt_rand(1000,9999)).'-rm';
-		$rndtrueName = $imgPath."/".$rndname.$itype;
-		$fileurl = $imgUrl."/".$rndname.$itype;
-  	$ok = $htd->SaveToBin($rndtrueName);
-  	if($ok){
-  	  $info = "";
-  	  $data = GetImageSize($rndtrueName,$info);
-  	  $revalues[0] = $fileurl;
-	    $revalues[1] = $data[0];
-	    $revalues[2] = $data[1];
-	  }
-	  @WaterImg($rndtrueName,'down');
-	  //保存用户上传的记录到数据库
-	  if($title=='') $title = '用户保存的远程图片';
-	  $addinfos[0] = $data[0];
-	  $addinfos[1] = $data[1];
-	  $addinfos[2] = filesize($rndtrueName);
-	  SaveUploadInfo($title."(远程图片)",$fileurl,1,$addinfos);
-  }
-	$htd->Close();
-	if($ok) return $revalues;
-	else return '';
+	exit("dedecms");
 }
-//------------------
-//获得上传的图片
-//------------------
-function GetUpImage($litpic,$isdd=false,$exitErr=false,$iw=0,$ih=0,$iname='')
+require_once(DEDEINC."/image.func.php");
+require_once(DEDEINC.'/archives.func.php');
+
+//---------------------------
+//获得HTML里的外部资源，针对图集
+//---------------------
+function GetCurContentAlbum($body,$rfurl,&$firstdd)
 {
-	global $cfg_ml,$cfg_ddimg_width,$cfg_ddimg_height;
-	global $cfg_basedir,$cfg_user_dir,$title,$cfg_mb_upload_size,$cfg_photo_typenames;
-	if($iw==0) $iw = $cfg_ddimg_width;
-	if($ih==0) $ih = $cfg_ddimg_height;
-	$ntime = $nowtme = mytime();
-	if(!isset($_FILES[$litpic])) return "";
-	if(is_uploaded_file($_FILES[$litpic]['tmp_name']))
+	global $cfg_multi_site,$cfg_basehost,$ddmaxwidth,$cfg_basedir,$pagestyle,$cfg_mb_rmdown,$title,$cfg_ml,$cfg_user_dir;
+	include_once(DEDEINC."/dedecollection.func.php");
+	if(empty($ddmaxwidth)) $ddmaxwidth = 240;
+	$rsimg = '';
+	$basehost = "http://".$_SERVER["HTTP_HOST"];
+	$img_array = array();
+	preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/([^>]*)\.(gif|jpg|png))/isU",$body,$img_array);
+	$img_array = array_unique($img_array[2]);
+	$imgUrl = $cfg_user_dir."/".$cfg_ml->M_ID;
+	$imgPath = $cfg_basedir.$imgUrl;
+	if(!is_dir($imgPath."/"))
 	{
-      //超过限定大小的文件不给上传
-      if($_FILES[$litpic]['size'] > $cfg_mb_upload_size*1024){
-      	@unlink($_FILES[$litpic]['tmp_name']);
-      	return "";
-      }
-      $sparr = $cfg_photo_typenames;
-      $_FILES[$litpic]['type'] = strtolower(trim($_FILES[$litpic]['type']));
-      if(!in_array($_FILES[$litpic]['type'],$sparr)){
-		    if($exitErr){
-		    	ShowMsg("上传的缩略图片格式错误，请使用JPEG、GIF、PNG格式的其中一种！","-1");
-		      exit();
-		    }else{ return ""; }
-	    }
+		MkdirAll($imgPath,$GLOBALS['cfg_dir_purview']);
+		CloseFtp();
+	}
+	$milliSecond = MyDate("ymdHis",time());
+	foreach($img_array as $key=>$value)
+	{
+		if(eregi($basehost,$value))
+		{
+			continue;
+		}
+		if($cfg_basehost!=$basehost && eregi($cfg_basehost,$value))
+		{
+			continue;
+		}
+		if(!eregi("^http://",$value))
+		{
+			continue;
+		}
+		if($cfg_mb_rmdown=='Y')
+		{
+			$value = trim($value);
+			$itype =  substr($value,-4,4);
+			if(!eregi("\.(gif|jpg|png)",$itype))
+			{
+				$itype = ".jpg";
+			}
+			$rndFileName = $imgPath."/".$milliSecond.$key.$itype;
+			$iurl = $imgUrl."/".$milliSecond.$key.$itype;
 
-      $savepath = $cfg_user_dir."/".$cfg_ml->M_ID;
-      CreateDir($savepath);
-
-      if($iname=='') $itname = dd2char($cfg_ml->M_ID."0".strftime("%y%m%d%H%M%S",$nowtme)."0".mt_rand(1000,9999)).'-lit';
-      else $itname = $iname;
-
-      $fullUrl = $savepath."/".$itname;
-
-      //强制检测文件类型
-      if($iname==''){
-          if(strtolower($_FILES[$litpic]['type'])=="image/gif") $fullUrl = $fullUrl.".gif";
-          else if(strtolower($_FILES[$litpic]['type'])=="image/png") $fullUrl = $fullUrl.".png";
-          else $fullUrl = $fullUrl.".jpg";
-      }else{
-      	  $fullUrl = $fullUrl.'.jpg';
-      }
-
-      @move_uploaded_file($_FILES[$litpic]['tmp_name'],$cfg_basedir.$fullUrl);
-	    $litpic = $fullUrl;
-
-	    if($isdd) @ImageResize($cfg_basedir.$fullUrl,$iw,$ih);
-	    else @WaterImg($cfg_basedir.$fullUrl,'up');
-
-	    //保存用户上传的记录到数据库
-	    if($title==''){
-	    	if($isdd) $title = '用户上传的图片';
-	    	else $title = '用户上传的略略图';
-	    }
-	    $info = "";
-	    $datas[0] = 0;
-	    $datas[1] = 0;
-	    $datas = GetImageSize($cfg_basedir.$fullUrl,$info);
-	    $addinfos[0] = $datas[0];
-	    $addinfos[1] = $datas[1];
-	    $addinfos[2] = filesize($cfg_basedir.$fullUrl);
-	    SaveUploadInfo($title,$fullUrl,1,$addinfos);
-
-	    return $litpic;
-  }else{
-  	 return "";
-  }
+			//下载并保存文件
+			//$rs = $htd->SaveToBin($rndFileName);
+			$rs = DownImageKeep($value,$rfurl,$rndFileName,'',0,30);
+			if($rs)
+			{
+				if($pagestyle > 2)
+				{
+					$litpicname = GetImageMapDD($iurl,$ddmaxwidth);
+					if($litpicname!='')
+					{
+						SaveUploadInfo($title,$litpicname,1,$addinfos);
+					}
+				}
+				else
+				{
+					$litpicname = '';
+				}
+				if(empty($firstdd))
+				{
+					$firstdd = $litpicname;
+					if(!file_exists($cfg_basedir.$firstdd))
+					{
+						$firstdd = $iurl;
+					}
+				}
+				@WaterImg($rndFileName,'down');
+				$info = '';
+				$imginfos = GetImageSize($rndFileName,$info);
+				SaveUploadInfo($title,$iurl,1,$imginfos);
+				$rsimg .= "{dede:img ddimg='$litpicname' text='' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
+			}
+		}
+		else
+		{
+			$rsimg .= "{dede:img ddimg='$value' text='' width='0' height='0'} $value {/dede:img}\r\n";
+		}
+	}
+	return $rsimg;
 }
+
+//图集里大图的小图
+function GetImageMapDD($filename,$ddm,$oldname='')
+{
+	if($oldname!='' && !eregi("^http://",$oldname))
+	{
+		$ddpicok = $oldname;
+	}
+	else
+	{
+		$ddn = substr($filename,-3);
+		$ddpicok = ereg_replace("\.".$ddn."$","-lp.".$ddn,$filename);
+	}
+	$toFile = $GLOBALS['cfg_basedir'].$ddpicok;
+	ImageResize($GLOBALS['cfg_basedir'].$filename,$ddm,300,$toFile);
+	return $ddpicok;
+}
+
 //-----------------------
 //把上传的信息保存到数据库
 //------------------------
 function SaveUploadInfo($title,$filename,$medaitype=1,$addinfos='')
 {
-		global $dsql,$cfg_ml;
-		if($filename=="") return "";
-		if(!is_object($dsql)){ $dsql = new DedeSql(false); }
-		if(!is_array($addinfos)){
-			$addinfos[0] = 0; $addinfos[1] = 0; $addinfos[2] = 0;
-		}
-		$row = $dsql->GetOne("Select title,url From #@__uploads where url='$filename'; ");
-		if(is_array($row) && count($row)>0){ return '';}
-		$inquery = "
-       INSERT INTO `#@__uploads`(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid)
-       VALUES ('$title','$filename','1','".$addinfos[0]."','".$addinfos[1]."','0','".$addinfos[2]."','".mytime()."','0','".$cfg_ml->M_ID."');
-    ";
-    $dsql->SetQuery($inquery);
-    $dsql->ExecuteNoneQuery();
+	global $dsql,$cfg_ml,$cfg_basedir;
+	if($filename=='')
+	{
+		return false;
+	}
+	if(!is_array($addinfos))
+	{
+		$addinfos[0] = $addinfos[1] = $addinfos[2] = 0;
+	}
+	if($medaitype==1)
+	{
+		$info = '';
+		$addinfos = GetImageSize($cfg_basedir.$filename,$info);
+	}
+	$addinfos[2] = @filesize($cfg_basedir.$filename);
+	$row = $dsql->GetOne("Select aid,title,url From `#@__uploads` where url like '$filename' And mid='".$cfg_ml->M_ID."'; ");
+	$uptime = time();
+	if(is_array($row))
+	{
+		$query = "Update `#@__uploads` set title='$title',mediatype='$medaitype',
+			         width='{$addinfos[0]}',height='{$addinfos[1]}',filesize='{$addinfos[2]}',uptime='$uptime'
+			         where aid='{$row['aid']}'; ";
+		$dsql->ExecuteNoneQuery($query);
+	}
+	else
+	{
+		$inquery = "INSERT INTO `#@__uploads`(title,url,mediatype,width,height,playtime,filesize,uptime,mid)
+           VALUES ('$title','$filename','$medaitype','".$addinfos[0]."','".$addinfos[1]."','0','".$addinfos[2]."','$uptime','".$cfg_ml->M_ID."'); ";
+		$dsql->ExecuteNoneQuery($inquery);
+	}
+	return true;
 }
 
-//---------------
-//检测频道ID
-//---------------
-function CheckChannel($typeid,$channelid)
+//获得一个附加表单
+//-----------------------------
+function GetFormItemA($ctag)
 {
-	 global $dsql;
-	 if($typeid==0) return false;
-	 $query = "Select t.ispart,t.channeltype,t.issend,c.issend as cissend From `#@__arctype` t 
-	            left join `#@__channeltype` c on c.ID=t.channeltype where t.ID='$typeid'
-	          ";
-	 $row = $dsql->GetOne($query,MYSQL_ASSOC);
-	 if($row['cissend']!=1) $msg="模型不允许投稿";
-	 else if($row['issend']!=1) $msg="栏目不允许投稿";
-	 else if($row['ispart']!=0) $msg="非最终列表栏目";
-	 else if($row['channeltype']!=$channelid) $msg="栏目不属于所选模型";
-	 else $msg = '';
-	 return $msg;
+	return GetFormItem($ctag,'member');
 }
+
+//---------------------------
+//处理不同类型的数据
+//---------------------------
+function GetFieldValueA($dvalue,$dtype,$aid=0,$job='add',$addvar='')
+{
+	return GetFieldValue($dvalue,$dtype,$aid,$job,$addvar,'member');
+}
+
+//获得带值的表单(编辑时用)
+//-----------------------------
+function GetFormItemValueA($ctag,$fvalue)
+{
+	return GetFormItemValue($ctag,$fvalue,'member');
+}
+
+//载入自定义表单(用于发布)
+function PrintAutoFieldsAdd(&$fieldset,$loadtype='all')
+{
+	$dtp = new DedeTagParse();
+	$dtp->SetNameSpace('field','<','>');
+	$dtp->LoadSource($fieldset);
+	$dede_addonfields = '';
+	if(is_array($dtp->CTags))
+	{
+		foreach($dtp->CTags as $tid=>$ctag)
+		{
+			if($loadtype!='autofield' ||  $ctag->GetAtt('autofield')==1 )
+			{
+				$dede_addonfields .= ( $dede_addonfields=="" ? $ctag->GetName().",".$ctag->GetAtt('type') : ";".$ctag->GetName().",".$ctag->GetAtt('type') );
+				echo  GetFormItemA($ctag);
+			}
+		}
+	}
+	echo "<input type='hidden' name='dede_addonfields' value=\"".$dede_addonfields."\">\r\n";
+}
+
+//载入自定义表单(用于编辑)
+function PrintAutoFieldsEdit(&$fieldset,&$fieldValues,$loadtype='all')
+{
+	$dtp = new DedeTagParse();
+	$dtp->SetNameSpace("field","<",">");
+	$dtp->LoadSource($fieldset);
+	$dede_addonfields = "";
+	if(is_array($dtp->CTags))
+	{
+		foreach($dtp->CTags as $tid=>$ctag)
+		{
+			if($loadtype!='autofield'
+			|| ($loadtype=='autofield' && $ctag->GetAtt('autofield')==1) )
+			{
+				$dede_addonfields .= ( $dede_addonfields=='' ? $ctag->GetName().",".$ctag->GetAtt('type') : ";".$ctag->GetName().",".$ctag->GetAtt('type') );
+				echo GetFormItemValueA($ctag,$fieldValues[$ctag->GetName()]);
+			}
+		}
+	}
+	echo "<input type='hidden' name='dede_addonfields' value=\"".$dede_addonfields."\">\r\n";
+}
+
 //-----------------------
 //创建指定ID的文档
 //-----------------------
-function MakeArt($aid,$checkLike=false)
+function MakeArt($aid,$ismakesign=false)
 {
-	include_once(dirname(__FILE__)."/../../include/inc_archives_view.php");
+	global $cfg_makeindex,$cfg_basedir,$cfg_templets_dir,$cfg_df_style;
+	include_once(DEDEINC.'/arc.archives.class.php');
+	if($ismakesign)
+	{
+		$envs['makesign'] = 'yes';
+	}
 	$arc = new Archives($aid);
-  $reurl = $arc->MakeHtml();
-  return $reurl;
+	$reurl = $arc->MakeHtml();
+	if(isset($typeid))
+	{
+		$preRow =  $arc->dsql->GetOne("Select id From `#@__arctiny` where id<$aid And arcrank>-1 And typeid='$typeid' order by id desc");
+		$nextRow = $arc->dsql->GetOne("Select id From `#@__arctiny` where id>$aid And arcrank>-1 And typeid='$typeid' order by id asc");
+		if(is_array($preRow))
+		{
+			$arc = new Archives($preRow['id']);
+			$arc->MakeHtml();
+		}
+		if(is_array($nextRow))
+		{
+			$arc = new Archives($nextRow['id']);
+			$arc->MakeHtml();
+		}
+	}
+	return $reurl;
+}
+
+//处理HTML文本、自动摘要、自动获取缩略图等
+function AnalyseHtmlBody($body,&$description,$dtype='')
+{
+	global $cfg_mb_rmdown,$cfg_basehost,$cfg_auot_description,$arcID;
+	$autolitpic = (empty($autolitpic) ? '' : $autolitpic);
+	$body = stripslashes($body);
+
+	//远程图片本地化
+	if($cfg_mb_rmdown=='Y')
+	{
+		$body = GetCurContent($body);
+	}
+
+	//自动摘要
+	if($description=='' && $cfg_auot_description>0)
+	{
+		$description = cn_substr(html2text($body),$cfg_auot_description);
+		$description = trim(preg_replace('/#p#|#e#/','',$description));
+		$description = addslashes($description);
+	}
+	$body = addslashes($body);
+	return $body;
+}
+
+//---------------------------
+//获得文章body里的外部资源
+//---------------------------
+function GetCurContent(&$body)
+{
+	global $cfg_multi_site,$cfg_basehost,$cfg_basedir,$cfg_user_dir,$title,$cfg_ml;
+	include_once(DEDEINC."/dedecollection.func.php");
+	$htd = new DedeHttpDown();
+	$basehost = "http://".$_SERVER["HTTP_HOST"];
+	$img_array = array();
+	preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/([^>]*)\.(gif|jpg|png))/isU",$body,$img_array);
+	$img_array = array_unique($img_array[2]);
+	$imgUrl = $cfg_user_dir."/".$cfg_ml->M_ID;
+	$imgPath = $cfg_basedir.$imgUrl;
+	if(!is_dir($imgPath."/"))
+	{
+		MkdirAll($imgPath,$GLOBALS['cfg_dir_purview']);
+		CloseFtp();
+	}
+	$milliSecond = MyDate("ymdHis",time());
+	foreach($img_array as $key=>$value)
+	{
+		if(eregi($basehost,$value))
+		{
+			continue;
+		}
+		if($cfg_basehost!=$basehost && eregi($cfg_basehost,$value))
+		{
+			continue;
+		}
+		if(!eregi("^http://",$value))
+		{
+			continue;
+		}
+		$htd->OpenUrl($value);
+		$itype = $htd->GetHead("content-type");
+		$itype = substr($value,-4,4);
+		if(!eregi("\.(jpg|gif|png)",$itype))
+		{
+			if($itype=='image/gif')
+			{
+				$itype = ".gif";
+			}
+			else if($itype=='image/png')
+			{
+				$itype = ".png";
+			}
+			else
+			{
+				$itype = '.jpg';
+			}
+		}
+		$milliSecondN = dd2char($milliSecond.'-'.mt_rand(1000,8000));
+		$value = trim($value);
+		$rndFileName = $imgPath."/".$milliSecondN.'-'.$key.$itype;
+		$fileurl = $imgUrl."/".$milliSecondN.'-'.$key.$itype;
+		$rs = $htd->SaveToBin($rndFileName);
+		if($rs)
+		{
+			$body = str_replace($value,$fileurl,$body);
+			@WaterImg($rndFileName,'down');
+		}
+		$info = '';
+		$imginfos = GetImageSize($rndFileName,$info);
+		SaveUploadInfo($title,$fileurl,1,$imginfos);
+	}
+	$htd->Close();
+	return $body;
+}
+
+//------------------------
+//上传一个未经处理的图片
+//------------------------
+/*
+//参数一 upname 上传框名称
+//参数二 handurl 手工填写的网址
+//参数三 ddisremote 是否下载远程图片 0 不下, 1 下载
+//参数四 ntitle 注解文字 如果表单有 title 字段可不管
+*/
+function UploadOneImage($upname,$handurl='',$isremote=1,$ntitle='')
+{
+	global $cfg_ml,$cfg_basedir,$cfg_image_dir,$dsql,$title, $dsql;
+	if($ntitle!='')
+	{
+		$title = $ntitle;
+	}
+	$ntime = time();
+	$filename = '';
+	$isrm_up = false;
+	$handurl = trim($handurl);
+	//如果用户自行上传了图片
+	if(!empty($_FILES[$upname]['tmp_name']) && is_uploaded_file($_FILES[$upname]['tmp_name']))
+	{
+		$istype = 0;
+		$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png");
+		$_FILES[$upname]['type'] = strtolower(trim($_FILES[$upname]['type']));
+		if(!in_array($_FILES[$upname]['type'],$sparr))
+		{
+			ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG格式的其中一种！","-1");
+			exit();
+		}
+		if(!empty($handurl) && !eregi("^http://",$handurl) && file_exists($cfg_basedir.$handurl) )
+		{
+			$dsql->ExecuteNoneQuery("Delete From #@__uploads where url like '$handurl' ");
+			$fullUrl = eregi_replace("\.([a-z]*)$","",$handurl);
+		}
+		else
+		{
+			$savepath = $cfg_image_dir."/".strftime("%Y-%m",$ntime);
+			CreateDir($savepath);
+			$fullUrl = $savepath."/".strftime("%d",$ntime).dd2char(strftime("%H%M%S",$ntime).'0'.$cfg_ml->M_ID.'0'.mt_rand(1000,9999));
+		}
+		if(strtolower($_FILES[$upname]['type'])=="image/gif")
+		{
+			$fullUrl = $fullUrl.".gif";
+		}
+		else if(strtolower($_FILES[$upname]['type'])=="image/png")
+		{
+			$fullUrl = $fullUrl.".png";
+		}
+		else
+		{
+			$fullUrl = $fullUrl.".jpg";
+		}
+
+		//保存
+		@move_uploaded_file($_FILES[$upname]['tmp_name'],$cfg_basedir.$fullUrl);
+		$filename = $fullUrl;
+
+		//水印
+		@WaterImg($imgfile,'up');
+		$isrm_up = true;
+	}
+
+	//远程或选择本地图片
+	else{
+		if($handurl=='')
+		{
+			return '';
+		}
+
+		//远程图片并要求本地化
+		if($isremote==1 && eregi("^http://",$handurl))
+		{
+			$ddinfos = GetRemoteImage($handurl,$cuserLogin->getUserID());
+			if(!is_array($ddinfos))
+			{
+				$litpic = "";
+			}
+			else
+			{
+				$filename = $ddinfos[0];
+			}
+			$isrm_up = true;
+
+			//本地图片或远程不要求本地化
+		}
+		else
+		{
+			$filename = $handurl;
+		}
+	}
+	$imgfile = $cfg_basedir.$filename;
+	if(is_file($imgfile) && $isrm_up && $filename!='')
+	{
+		$info = "";
+		$imginfos = GetImageSize($imgfile,$info);
+
+		//把新上传的图片信息保存到媒体文档管理档案中
+		$inquery = "
+        INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,mid)
+        VALUES ('$title','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','".$cfg_ml->M_ID."');
+    ";
+		$dsql->ExecuteNoneQuery($inquery);
+	}
+	return $filename;
 }
 ?>

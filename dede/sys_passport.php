@@ -1,42 +1,25 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-CheckPurview('sys_Passport');
-if(!function_exists('file_get_contents')){
-	ShowMsg("你的系统不支持函数：file_get_contents<br><br> 不能使用 Dede 通行证接口！","javascript:;");
-	exit();
+if(!isset($dopost))
+{
+	$dopost = "";
 }
-if(empty($action)) $action = '';
-if($action=='save'){
-	$dsql = new DedeSql(false);
-	$dsql->ExecuteNoneQuery("Delete From #@__syspassport ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_isopen','cfg_pp_isopen'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_regurl','cfg_pp_regurl'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_loginurl','cfg_pp_loginurl'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_exiturl','cfg_pp_exiturl'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_editsafeurl','cfg_pp_editsafeurl'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_name','cfg_pp_name'); ");
-	$dsql->ExecuteNoneQuery("Insert into #@__syspassport Values('$pp_indexurl','cfg_pp_indexurl'); ");
-	$dsql->Close();
-	$fp = fopen(dirname(__FILE__)."/../include/config_passport.php","w") or die("写入文件 ../include/config_passport.php 失败!");
-	fwrite($fp,'<'.'?php ');
-	fwrite($fp,"\r\n");
-	foreach($GLOBALS as $k=>$v){
-		if(ereg('^pp_',$k)){
-			$v = str_replace("'","`",stripslashes($v));
-			fwrite($fp,'$cfg_'.$k." = '".$v."';\r\n");
-		}
+if($dopost=='save')
+{
+	$ConfigFile = DEDEINC."/config_passport.php";
+	$vars = array('cfg_pp_need','cfg_pp_encode','cfg_pp_login','cfg_pp_exit','cfg_pp_reg');
+	$configstr = "";
+	foreach($vars as $v)
+	{
+		${$v} = str_replace("'","",${$v});
+		$configstr .= "\${$v} = '".str_replace("'","",stripslashes(${'edit___'.$v}))."';\r\n";
 	}
-	fwrite($fp,'?'.'>');
+	$configstr = '<'.'?'."\r\n".$configstr.'?'.'>';
+	$fp = fopen($ConfigFile,"w") or die("写入文件 $ConfigFile 失败，请检查权限！");
+	fwrite($fp,$configstr);
 	fclose($fp);
-	ShowMsg("成功更改通行证设置！","sys_passport.php");
-	exit();
+	echo "<script>alert('修改通行证配置成功！');window.location='sys_passport.php?".time()."';</script>\r\n";
 }
-$dsql = new DedeSql(false);
-$dsql->SetQuery("Select * From #@__syspassport ");
-$dsql->Execute();
-while($row = $dsql->GetArray()){ $$row['varname'] = $row['value']; }
+include DedeInclude('templets/sys_passport.htm');
 
-require_once(dirname(__FILE__)."/templets/sys_passport.htm");
-
-ClearAllLink();
 ?>

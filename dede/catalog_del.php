@@ -1,37 +1,37 @@
-<?php 
-require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
-$ID = trim(ereg_replace("[^0-9]","",$ID));
+<?php
+require_once(dirname(__FILE__).'/config.php');
 
 //检查权限许可
 CheckPurview('t_Del,t_AccDel');
+require_once(DEDEINC.'/typeunit.class.admin.php');
+require_once(DEDEINC.'/oxwindow.class.php');
+$id = trim(ereg_replace('[^0-9]','',$id));
+
 //检查栏目操作许可
-CheckCatalog($ID,"你无权删除本栏目！");
-
-if(empty($dopost)) $dopost="";
-if($dopost=="ok"){
-	 $ut = new TypeUnit();
-	 $ut->DelType($ID,$delfile);
-	 //更新缓存
-   UpDateCatCache($dsql);
-	 $ut->Close();
-	 //更新树形菜单
-   $rndtime = time();
-   $uptree = "<script language='javascript'>
-   if(window.navigator.userAgent.indexOf('MSIE')>=1){
-     if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
-     { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
-   }else{
-  	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
-     { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
-   }
-   </script>";
-   echo $uptree;
-	 ShowMsg("成功删除一个栏目！","catalog_main.php");
-	 exit();
+CheckCatalog($id,"你无权删除本栏目！");
+if(empty($dopost))
+{
+	$dopost='';
 }
+if($dopost=='ok')
+{
+	$ut = new TypeUnit();
+	$ut->DelType($id,$delfile);
+	ShowMsg("成功删除一个栏目！","catalog_main.php");
+	exit();
+}
+$dsql->SetQuery("Select typename,typedir From #@__arctype where id=".$id);
+$row = $dsql->GetOne();
+$wintitle = "删除栏目确认";
+$wecome_info = "<a href='catalog_main.php'>栏目管理</a> &gt;&gt; 删除栏目确认";
+$win = new OxWindow();
+$win->Init('catalog_del.php','js/blank.js','POST');
+$win->AddHidden('id',$id);
+$win->AddHidden('dopost','ok');
+$win->AddTitle("你要确实要删除栏目： [{$row['typename']}] 吗？");
+$win->AddItem('栏目的文件保存目录：',$row['typedir']);
+$win->AddItem('是否删除文件：',"<input type='radio' name='delfile' class='np' value='no' checked='1' />否 &nbsp;<input type='radio' name='delfile' class='np' value='yes' />是");
+$winform = $win->GetWindow('ok');
+$win->Display();
 
-require_once(dirname(__FILE__)."/templets/catalog_del.htm");
-
-ClearAllLink();
 ?>

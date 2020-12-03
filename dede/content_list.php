@@ -1,127 +1,182 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
 
-if(!isset($cid)) $cid = 0;
-if(!isset($keyword)) $keyword = "";
-if(!isset($channelid)) $channelid = 0;
-if(!isset($arcrank)) $arcrank = "";
-if(!isset($adminid)) $adminid = 0;
-if(!isset($ismember)) $ismember = 0;
-if(!isset($USEListStyle)) $USEListStyle = '';
-if(empty($defaultPageSize)) $defaultPageSize = 20;
+/**
+ *
+ * content_s_list.php、content_i_list.php、content_select_list.php
+ * 均使用本文件作为实际处理代码，只是使用的模板不同，如有相关变动，只需改本文件及相关模板即可
+ *
+ */
+ 
+require_once(dirname(__FILE__)."/config.php");
+$cid = isset($cid) ? intval($cid) : 0;
+$channelid = isset($channelid) ? intval($channelid) : 0;
+$mid = isset($mid) ? intval($mid) : 0;
+if(!isset($keyword))
+{
+	$keyword = '';
+}
+if(!isset($arcrank))
+{
+	$arcrank = '';
+}
+if(!isset($dopost))
+{
+	$dopost = '';
+}
+
 //检查权限许可，总权限
 CheckPurview('a_List,a_AccList,a_MyList');
 
-$cids = '';
 //栏目浏览许可
-if(TestPurview('a_List')){
-	;
+if(TestPurview('a_List'))
+{
+
 }
 else if(TestPurview('a_AccList'))
 {
-	 if($cid==0)
-	 {
-	 	 $cids = MyCatalogInArr();
-	 	 if(!empty($cids) && !ereg(',',$cids)){ $cid = $cids; $cids = ''; }
-	 }
-	 else{
-	 	 CheckCatalog($cid,"你无权浏览非指定栏目的内容！");
-	 }
-}else
-{
-	 $adminid = $cuserLogin->getUserID();
+	if($cid==0)
+	{
+		$cid = $cuserLogin->getUserChannel();
+	}
+	else
+	{
+		CheckCatalog($cid,"你无权浏览非指定栏目的内容！");
+	}
 }
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
-require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
-require_once(dirname(__FILE__)."/inc/inc_list_functions.php");
+$adminid = $cuserLogin->getUserID();
+$maintable = '#@__archives';
+require_once(DEDEINC."/typelink.class.php");
+require_once(DEDEINC."/datalistcp.class.php");
+require_once(DEDEADMIN."/inc/inc_list_functions.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
-
-//初始化频道信息
-//------------------------------------
-$seltypeids = 0;
-if(empty($cid) && empty($channelid)) $channelid = 1;
 $tl = new TypeLink($cid);
-if($cid>0) $channelid = $tl->TypeInfos['channeltype'];
-$tables = GetChannelTable($tl->dsql,$channelid,'channel');
-if($cid==0){
-	$row = $tl->dsql->GetOne(" Select typename From #@__channeltype where ID='$channelid' ");
-	$positionname = '所有'.$row[0]."&gt;";
-}else{
-	$positionname = str_replace($cfg_list_symbol,"&gt;",$tl->GetPositionName())."&gt;";
-	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ",MYSQL_ASSOC);
-}
-//---------------------------------------
 
-if($channelid<-1) $USEListStyle='infos';
+//
+//在不指定排序条件和关键字的情况下直接统计微表
+//
+if(empty($totalresult) && empty($keyword) && empty($orderby))
+{
+	$tinyQuerys = array();
+	
+	if(!empty($channelid) && empty($cid))
+	{
+		$tinyQuerys[] = " channel='$channelid' ";
+	}
+	else
+	{
+		$tinyQuerys[] = " channel>0 ";
+	}
+	
+	if(!empty($arcrank))
+	{
+		$tinyQuerys[] = " arcrank='$arcrank' ";
+	}
+	else
+	{
+		$tinyQuerys[] = " arcrank > -2 ";
+	}
+	
+	if(!empty($mid))
+	{
+		$tinyQuerys[] = " mid='$mid' ";
+	}
+	
+	if(!empty($cid))
+	{
+		$tinyQuerys[] = " typeid in(".GetSonIds($cid).") ";
+	}
+	
+	if(count($tinyQuerys)>0)
+	{
+		$tinyQuery = "where ".join(' And ',$tinyQuerys);
+	}
+	
+	$arr = $dsql->GetOne("Select count(*) as dd From `#@__arctiny` $tinyQuery ");
 
-$opall=1;
-if(is_array($seltypeids)){
-	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
-}else{
-	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'请选择栏目...');
-}
-
-
-if($channelid==0) $whereSql = " where a.channel > 0 ";
-else $whereSql = " where a.channel = '$channelid' ";
-
-if($ismember==1) $whereSql .= " And a.memberID > 0 ";
-
-if(!empty($memberid)) $whereSql .= " And a.memberID = '$memberid' ";
-else $memberid = 0;
-
-if(!empty($cids)){
-	$whereSql .= " And a.typeid in ($cids) ";
-}
-
-if($keyword!=""){
-	$whereSql .= " And a.title like '%$keyword%' ";
-}
-
-if($cid!=0){
-	$tlinkSql = $tl->GetSunID($cid,"a",0);
-	$whereSql .= " And $tlinkSql ";
-}
-
-if($adminid>0){ $whereSql .= " And a.adminID = '$adminid' "; }
-
-if($arcrank!=""){
-	$whereSql .= " And a.arcrank = '$arcrank' ";
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?channelid={$channelid}&cid={$cid}&dopost=listArchives&gurl=content_list.php';\" value='所有文档' class='inputbut'>";
-}
-else{
-	//$whereSql .= " And a.arcrank >-1 ";
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?channelid={$channelid}&cid={$cid}&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核' class='inputbut'>";
+	$totalresult = $arr['dd'];
 }
 
-if(empty($orderby)) $orderby = "ID";
+if($cid==0)
+{
+	if($channelid==0)
+	{
+		$positionname = '所有栏目&gt;';
+	}
+	else
+	{
+		$row = $tl->dsql->GetOne("Select id,typename,maintable From `#@__channeltype` where id='$channelid'");
+		$positionname = $row['typename']." &gt; ";
+		$maintable = $row['maintable'];
+		$channelid = $row['id'];
+	}
+}
+else
+{
+	$positionname = str_replace($cfg_list_symbol," &gt; ",$tl->GetPositionName())." &gt; ";
+}
 
-$query = "
-select a.ID,a.adminID,a.typeid,a.senddate,a.iscommend,a.ismake,a.channel,a.endtime,a.writer,
-a.arcrank,a.click,a.title,a.color,a.litpic,a.pubdate,a.adminID,a.memberID,
-t.typename,c.typename as channelname,adm.uname as adminname
-from `{$tables['maintable']}` a
-left join #@__arctype t on t.ID=a.typeid
-left join #@__channeltype c on c.ID=a.channel
-left join #@__admin adm on adm.ID=a.adminID
-$whereSql order by a.{$orderby} desc
-";
-$dsql = new DedeSql(false);
-$dlist = new DataList();
-$dlist->pageSize = $defaultPageSize;
+//当选择的是单表模型栏目时，直接跳转到单表模型管理区
+if(empty($channelid) 
+  && isset($tl->TypeInfos['channeltype']))
+{
+	$channelid = $tl->TypeInfos['channeltype'];
+}
+if($channelid < -1 )
+{
+	header("location:content_sg_list.php?cid=$cid&channelid=$channelid&keyword=$keyword");
+	exit();
+}
+
+$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$whereSql = empty($channelid) ? " where arc.channel > 0  And arc.arcrank > -2 " : " where arc.channel = '$channelid' And arc.arcrank > -2 ";
+if(!empty($mid))
+{
+	$whereSql .= " And arc.mid = '$mid' ";
+}
+if($keyword!='')
+{
+	$whereSql .= " And ( CONCAT(arc.title,arc.writer) like '%$keyword%') ";
+}
+if($cid!=0)
+{
+	$whereSql .= " And arc.typeid in (".GetSonIds($cid).")";
+}
+if($arcrank!='')
+{
+	$whereSql .= " And arc.arcrank = '$arcrank' ";
+	$CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档' />";
+}
+else
+{
+	$CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核' />";
+}
+
+$query = "Select arc.id,arc.typeid,arc.senddate,arc.flag,arc.ismake,
+arc.channel,arc.arcrank,arc.click,arc.title,arc.color,arc.litpic,arc.pubdate,arc.mid,
+tp.typename,ch.typename as channelname,mb.uname as adminname
+from `$maintable` arc
+left join `#@__arctype` tp on tp.id=arc.typeid
+left join `#@__channeltype` ch on ch.id=arc.channel
+left join `#@__member` mb on mb.mid=arc.mid
+$whereSql
+order by arc.id desc";
+
+if(empty($f) || !ereg('form', $f)) $f = 'form1.arcid1';
+$dlist = new DataListCP();
+$dlist->pageSize = 30;
 $dlist->SetParameter("dopost","listArchives");
 $dlist->SetParameter("keyword",$keyword);
-$dlist->SetParameter("adminid",$adminid);
-$dlist->SetParameter("memberid",$memberid);
 $dlist->SetParameter("cid",$cid);
 $dlist->SetParameter("arcrank",$arcrank);
 $dlist->SetParameter("channelid",$channelid);
-$dlist->SetParameter("ismember",$ismember);
-$dlist->SetParameter("orderby",$orderby);
+$dlist->SetParameter("f", $f);
+if(empty($s_tmplets))
+{
+	$s_tmplets = "templets/content_list.htm";
+}
+$dlist->SetTemplate(DEDEADMIN."/".$s_tmplets);
 $dlist->SetSource($query);
-if($USEListStyle=='pic') include_once(dirname(__FILE__)."/templets/content_i_list.htm");
-else if($USEListStyle=='infos') include_once(dirname(__FILE__)."/templets/info_list.htm");
-else include_once(dirname(__FILE__)."/templets/content_list.htm");
+$dlist->Display();
 $dlist->Close();
-ClearAllLink();
+
 ?>

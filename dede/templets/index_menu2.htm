@@ -1,0 +1,164 @@
+<html>
+<head>
+<title>DedeCms menu</title>
+<link rel="stylesheet" href="img/base.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script language="javascript" type="text/javascript" src="../include/dedeajax2.js"></script>
+<?php
+echo "<script language='javascript'>var curopenItem = '$openitem';</script>\r\n";
+?>
+<script language="javascript" type="text/javascript" src="js/leftmenu.js"></script>
+<style>
+
+div {
+	padding:0px;
+	margin:0px;
+}
+
+body {
+ padding:0px;
+ margin:auto;
+ text-align:center;
+ background-color:#eff5ed;
+ background:url(img/leftmenu_bg.gif);
+ padding-left:3px;
+ overflow:scroll;
+ overflow-x:hidden;
+}
+
+dl.bitem {
+	clear:both;
+	width:130px;
+	margin:0px 0px 5px 12px;
+}
+
+dl.bitem dt {
+  height:24px;
+  line-height:24px;
+  text-align:center;
+  border:1px dashed #ababab;
+  background:#f4ffec url(img/menu-ex.png) 5px 4px no-repeat;
+  cursor:pointer;
+}
+
+dl.bitem dd {
+  padding:3px 3px 3px 3px;
+  background-color:#fff;
+}
+
+div.items {
+	clear:both;
+	padding:0px;
+	height:0px;
+}
+
+.fllct {
+	float:left;
+	width:85px;
+}
+
+.flrct {
+	padding-top:3px;
+	float:left;
+}
+
+.sitemu li {
+	padding:0px 0px 0px 18px;
+	line-height:22px;
+	background:url(img/arr4.gif) no-repeat 5px 9px;
+}
+
+ul {
+  padding-top:3px;
+}
+
+li {
+  height:22px;
+}
+
+a.mmac div
+{
+	background:url(img/leftbg2.gif) no-repeat;
+	height:37px!important;height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#325304;
+}
+
+a.mm div
+{
+	background:url(img/leftmbg1.gif) no-repeat;
+	height:37px!important;height:47px;
+	padding:6px 4px 4px 10px;
+	word-wrap: break-word;
+	word-break : break-all;
+	font-weight:bold;
+	color:#475645;
+	cursor:pointer;
+}
+
+a.mm:hover div
+{
+	background:url(img/leftbg2.gif) no-repeat;
+	color:#4F7632;
+}
+
+.mmf
+{
+	height:1px;
+	padding:5px 7px 5px 7px;
+}
+
+#mainct
+{
+	padding-top:8px;background: url(img/idnbg1.gif) repeat-y;
+}
+</style>
+<base target="main" />
+</head>
+<body target="main" onload="CheckOpenMenu();">
+<table width="180" align="left" border='0' cellspacing='0' cellpadding='0'>
+	<tr>
+  <td valign='top' style='padding-top:10px' width='20'>
+  	<a id='link1' class='mmac'><div onclick="ShowMainMenu(1)">核心</div></a>
+  	<a id='link100' class='mm'><div onclick="ShowMainMenu(100)">模块</div></a>
+  	<a id='link5' class='mm'><div onclick="ShowMainMenu(5)">生成</div></a>
+  	<a id='link3' class='mm'><div onclick="ShowMainMenu(3)">采集</div></a>
+  	<a id='link6' class='mm'><div onclick="ShowMainMenu(6)">会员</div></a>
+  	<a id='link7' class='mm'><div onclick="ShowMainMenu(7)">模板</div></a>
+  	<a id='link10' class='mm'><div onclick="ShowMainMenu(10)">系统</div></a>
+  	<div class='mmf'></div>
+  </td>
+  <td width='160' id='mainct' valign="top">
+<div id='ct1'>
+<?php
+GetMenus($cuserLogin->getUserRank(),'main');
+?>
+</div>
+<div id='ct100'></div>
+<div id='ct3'></div>
+<div id='ct5'></div>
+<div id='ct6'></div>
+<div id='ct7'></div>
+<div id='ct10'></div>
+	</td>
+	</tr>
+	<tr>
+  <td width='26'></td>
+  <td width='160' valign='top'><img src='img/idnbgfoot.gif' /></td>
+	</tr>
+</table>
+<?php
+if(!empty($openitem) && $openitem!=1)
+{
+?>
+<script language='javascript'>
+	ShowMainMenu(100);
+</script>
+<?php
+}
+?>
+</body>
+</html>

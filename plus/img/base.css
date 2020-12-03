@@ -1,8 +1,9 @@
-td {font-size: 9pt;line-height: 1.5;}
-body {font-size: 9pt;line-height: 1.5;}
-a:link { font-size: 9pt; color: #000000; text-decoration: underline }
-a:visited{ font-size: 9pt; color: #000000; text-decoration: underline }
-a:hover {font-size: 9pt;color: red}
+* {font-size: 12px;line-height: 1.5;}
+body {font-size: 12px;line-height: 1.5;}
+a:link { font-size: 12px; color: #000000; text-decoration: underline }
+a:visited{ font-size: 12px; color: #000000; text-decoration: underline }
+a:hover {font-size: 12px;color: red}
+div,form,h1,h2,h3,h4,h5,h6{	margin: 0; padding:0;}
 .m1{border-left: 1px solid #DFDFDB; border-top: 1px solid #DFDFDB; border-bottom: 1px solid #808080}
 .m2{border-left: 1px solid #DFDFDB; border-bottom: 1px solid #808080; border-top: 1px solid #DFDFDB;border-right: 1px solid #DFDFDB;}
 .m3{border-left: 1px solid #DFDFDB; border-top: 1px solid #DFDFDB;border-right: 1px solid #DFDFDB;}

@@ -1,9 +1,8 @@
-{dede:page pagesize="10"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+{dede:config.pagesize value="20"/}
+<html>
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>采集节点管理</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript">
@@ -88,7 +87,7 @@ function CopyNote(nid)
 	location.href = "co_do.php?dopost=copy&nid="+nid;
 }
 //上下文菜单
-function ShowMenu(obj,nid)
+function ShowMenu(evt,obj,nid)
 {
   var eobj,popupoptions
   popupoptions = [
@@ -106,9 +105,10 @@ function ShowMenu(obj,nid)
     new ContextSeperator(),
     new ContextItem("复制当前节点",function(){ CopyNote(nid); }),
     new ContextSeperator(),
-    new ContextItem("导出配置规则",function(){ ExportRule(nid); })
+    new ContextItem("导出配置规则",function(){ ExportRule(nid); }),
+    new ContextItem("关闭菜单(<u>C</u>)",function(){})
   ]
-  ContextMenu.display(popupoptions)
+  ContextMenu.display(evt,popupoptions)
 }
 //获得选中其中一个的id
 function getOneItem()
@@ -126,83 +126,75 @@ function getOneItem()
 	return allSel;	
 }
 </script>
-<style type="text/css">
-<!--
-.STYLE1 {color: #FFFFFF}
-td{ padding-left:6px; }
--->
-</style>
+<link href="img/base.css" rel="stylesheet" type="text/css">
 </head>
-<body onLoad="ContextMenu.intializeContextMenu()">
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">采集管理</div>
-</div>
-
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<body background='img/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
   <tr> 
-    <td height="20" colspan="7" bgcolor="#EDF9D5"> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <td height="20" colspan="7" background='img/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
           <td width="20%" height="18"><strong>采集节点管理：</strong></td>
-          <td width="80%" align="right" style='padding-top:6px'>
-          	<input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="inputbut"> 
-            &nbsp;
+          <td width="80%" align="right">
+          	<input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="coolbg np" style="width:100px" /> 
           </td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#F8FBFB"> 
+  <tr align="center" bgcolor="#FAFAF1"> 
     <td width="8%">选择</td>
     <td width="32%">节点名称</td>
     <td width="18%">针对规则</td>
-    <td width="10%" bgcolor="#F8FBFB">最后采集日期</td>
+    <td width="10%" bgcolor="#FAFAF1">最后采集日期</td>
     <td width="10%">加入日期</td>
     <td width="10%">编码</td>
     <td width="10%">网址数</td>
   </tr>
   <form name="form1">
     {dede:datalist} 
-    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(this,[field:nid /]);"> 
-      <td><input type='checkbox' name='nids' value='[field:nid /]' class='np'></td>
-      <td><a href='co_url.php?nid=[field:nid /]'>[field:gathername /]</a></td>
-      <td>[field:typename /]</td>
-      <td>[field:lasttime function='GetDatePage("@me")' /]</td>
-      <td>[field:savetime function='GetDatePage("@me")' /]</td>
-      <td>[field:language /]</td>
-      <td>[field:nid function='GetTJ("@me")' /]</td>
+    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+    	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(event,this,{dede:field.nid /});"> 
+      <td><input type='checkbox' name='nids' value='{dede:field.nid /}' class='np'></td>
+      <td><a href='co_url.php?nid={dede:field.nid /}'>{dede:field.notename /}</a></td>
+      <td>{dede:field.typename /}</td>
+      <td>{dede:field.cotime function='GetDatePage(@me)' /}</td>
+      <td>{dede:field.uptime function='GetDatePage(@me)' /}</td>
+      <td>{dede:field.sourcelang /}</td>
+      <td>{dede:field.nid function='TjUrlNum(@me)' /}</td>
     </tr>
     {/dede:datalist} 
   </form>
-  <tr bgcolor="#ffffff"> 
-    <td colspan="7"> 
-      <table width="90%" border="0" cellspacing="2" cellpadding="0">
+  <tr bgcolor="#FAFAF1"> 
+    <td height="24" colspan="7"> 
+      <table width="90%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td valign="middle" style='padding-top:6px'>
+          <td>
           	&nbsp;
-          	<a href="#" onClick="location='co_add.php?action=select';" class="inputbutx">增加新节点</a>
-            <a href="javascript:GetRule();" class="inputbutx">导入配置</a>
-            <a href="javascript:ExportRule('');" class="inputbutx">导出配置</a> 
+          	<a href="#" onClick="location='co_add.php?action=select';" class='coolbg np'>增加新节点</a>
+            <a href="javascript:GetRule();" class='coolbg np'>导入配置</a>
+            <a href="javascript:ExportRule('');" class='coolbg np'>导出配置</a> 
              | 
-            <a href="javascript:GatherSel('');" class="inputbutx" style='color:red'>采集</a>
-            <a href="javascript:ExportDown('');" class="inputbutx">导出数据</a>
+            <a href="javascript:GatherSel('');" class='coolbg np' style='color:red'>采集</a>
+            <a href="javascript:ExportDown('');" class='coolbg np'>导出数据</a>
              |
-          	<a href="javascript:EditNote('');" class="inputbutx">更改</a>
-          	<a href="javascript:EditNoteText('');" class="inputbutx">更改配置</a>
-          	<a href="javascript:TestRule('');" class="inputbutx">测试</a>
+          	<a href="javascript:EditNote('');" class='coolbg np'>更改</a>
+          	<a href="javascript:EditNoteText('');" class='coolbg np'>更改配置</a>
+          	<a href="javascript:TestRule('');" class='coolbg np'>测试</a>
           	 | 
-          	<a href="javascript:ViewDown('');" class="inputbutx">查看已下载</a> 
+          	<a href="javascript:ViewDown('');" class='coolbg np'>查看已下载</a> 
              | 
-            <a href="javascript:CopyNote('');" class="inputbutx">复制</a>
-            <a href="javascript:ClearNote('');" class="inputbutx">清空</a> 
+            <a href="javascript:CopyNote('');" class='coolbg np'>复制</a>
+            <a href="javascript:ClearNote('');" class='coolbg np'>清空</a> 
              | 
-            <a href="javascript:DelNote('');" class="inputbutx">删除</a>
+            <a href="javascript:DelNote('');" class='coolbg np'>删除</a>
            </td>
         </tr>
       </table>
     </td>
   </tr>
-  <tr bgcolor="#F8FBFB"> 
-    <td height="24" colspan="7" align="center"> {dede:pagelist size='5' /} </td>
+  <tr bgcolor="#FAFAF1"> 
+    <td height="24" colspan="7" align="center">
+    	{dede:pagelist size='5' /}
+    </td>
   </tr>
 </table>
 </body>

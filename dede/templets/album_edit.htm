@@ -1,324 +1,276 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>修改图片集</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
-<script language='javascript' src='main.js'></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
-<script language='javascript' src='album.js'></script>
 <style type="text/css">
 <!--
-.STYLE1 {color: #FFFFFF}
+body { background-image: url(img/allbg.gif); }
 -->
 </style>
+<link href="img/base.css" rel="stylesheet" type="text/css">
+<script language='javascript' src='js/main.js'></script>
+<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language='javascript' src='js/album.js'></script>
+<script language="javascript" type="text/javascript"">
+var vcc = 0;
+function LoadTestDiv()
+{
+	var posLeft = 100; var posTop = 100;
+	var newobj = $Obj('_myhtml');
+	$Obj('imagebody').value = $Obj('copyhtml').innerHTML;
+	var dfstr = '粘贴到这里...';
+	if($Obj('imagebody').value.length <= dfstr.length)
+	{
+		alert('你还没有粘贴任何东西都编辑框哦！');
+		return;
+	}
+	if(!newobj){
+		newobj = document.createElement("DIV");
+		newobj.id = '_myhtml';
+		newobj.style.position='absolute';
+		newobj.className = "dlg2";
+		newobj.style.top = posTop;
+		newobj.style.left = posLeft;
+		document.body.appendChild(newobj);
+	}
+	else{
+		newobj.style.display = "block";
+	}
+	var myajax = new DedeAjax(newobj,false,true,'-','-','...');
+	var v = $Obj('imagebody').value;
+	vcc++;
+
+	<?php
+	if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
+		?>
+		//utf8
+		myajax.AddKeyUtf8('myhtml',v);
+		myajax.AddKeyUtf8('vcc',vcc);
+		myajax.SendPost2('album_testhtml.php');
+		<?php
+	}
+	elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
+		?>
+		//gbk
+		myajax.SendGet2("album_testhtml.php?vcc="+vcc+"&myhtml="+v);
+		<?php
+	}
+	?>
+	DedeXHTTP = null;
+}
+</script>
 </head>
 <body topmargin="8">
-<form name="form1" action="action/album_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
-<input type="hidden" name="channelid" value="<?php echo $channelid?>">
-<input type="hidden" name="ID" value="<?php echo $aid?>">
-<input type="hidden" name="edadminid" value="<?php echo $arcRow['adminID']; ?>">
-<input type="hidden" name="memberid" value="<?php echo $arcRow['memberID']; ?>">
-<input type="hidden" id="imagebody" name="imagebody" value="">
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
-    <tr> 
-      <td height="30">&nbsp;<a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;更改图集</td>
+<form name="form1" action="album_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>" />
+<input type="hidden" name="id" value="<?php echo $aid?>" />
+<input type="hidden" name="imagebody" value="" />
+<input type="hidden" name="dopost" value="save" />
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20>
+        &nbsp;</td>
+      <td width="85%"><a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;更改图集</td>
       <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
     <tr>
-      <td bgcolor="#FFFFFF">
-      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
-    <tr> 
-      <td colspan="2" bgcolor="#EDF9D5"> <table width="168" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" height="24" align="center" bgcolor="#FFFFFF">&nbsp;常规参数&nbsp;</td>
-            <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onClick="ShowItem2()"><u>图集内容</u></a>&nbsp;</td>
+      <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;常规内容&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级参数</u></a>&nbsp;</td>
           </tr>
         </table></td>
     </tr>
   </table>
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
-    <tr> 
-      <td colspan="2" bgcolor="#EDF9D5"> <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
-            <td width="84" align="center" bgcolor="#006600"><a href="#" class="STYLE1" onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
-            <td width="84" align="center" bgcolor="#FFFFFF">图集内容&nbsp;</td>
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
+    <tr>
+      <td colspan="2"> <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
+            <td width="84" align="center" background="img/itemnote1.gif">高级参数&nbsp;</td>
           </tr>
         </table></td>
     </tr>
   </table>
   <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
-    <tr>
-      <td height="2"></td>
-    </tr>
-  </table>
+  <tr><td height="2"></td></tr>
+</table>
   <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
     <tr>
-      <td width="400%" height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;图集标题：</td>
-            <td width="240"><input name="title" type="text" id="title" style="width:200px" value="<?php echo $arcRow["title"]?>" />            </td>
-            <td width="90">附加参数：</td>
-            <td><input name="iscommend" type="checkbox" id="iscommend" value="11" <?php  if($arcRow["iscommend"]>10) echo " checked";?> />
-              推荐
-              <input name="isbold" type="checkbox" id="isbold" value="5" <?php  if($arcRow["iscommend"]==5||$arcRow["iscommend"]==16) echo " checked";?> />
-              加粗
-              <input name="isjump" type="checkbox" onclick="ShowUrlTrEdit()" id="isjump" value="1" <?php  echo $arcRow["redirecturl"]=="" ? "" : " checked";?> />
-              跳转网址
-              <input name="shorttitle" type="hidden" value="<?php echo $arcRow["shorttitle"]?>" id="shorttitle" /></td>
-          </tr>
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;图集标题：</td>
+          <td width='408'><input name="title" type="text" id="title" value="<?php echo $arcRow['title']; ?>" style="width:388px"></td>
+          <td width="90">&nbsp;简略标题：</td>
+          <td><input name="shorttitle" type="text" id="shorttitle" style="width:150px" value="<?php echo $arcRow['shorttitle']; ?>">          </td>
+        </tr>
       </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:<?php  echo $arcRow["redirecturl"]=="" ? "none" : "block";?>"><table width="800" border="0" cellspacing="0" cellpadding="0">
+      <td width="400%" height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;自定义属性：</td>
+          <td><?php
+				$dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+        $dsql->Execute();
+        while($trow = $dsql->GetObject())
+        {
+            if($trow->att=='j') $jumpclick = " onclick='ShowUrlTr()'";
+					  else $jumpclick = '';
+					  if(ereg($trow->att,$arcRow['flag']))
+            		  echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' {$jumpclick} checked='checked' />{$trow->attname}[{$trow->att}]";
+            else
+            		  echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'{$jumpclick} />{$trow->attname}[{$trow->att}]";
+         }
+          ?>
+          </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:<?php echo $arcRow["redirecturl"]=="" ? "none" : "block";?>">
+	   <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;跳转网址：</td>
-            <td><input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="<?php echo $arcRow["redirecturl"]?>" />
-            </td>
-          </tr>
-      </table></td>
-    </tr>
-	 <tr>
-      <td height="24" colspan="4" class="bline">
-	   <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;Tag标签：</td>
             <td>
-			<input name="oldtag" type="hidden" id="oldtag" value="<?php echo $tags; ?>" /> 
-			<input name="tag" type="text" id="tag" style="width:300px" value="<?php echo $tags; ?>" /> 
-			(用空格或','分开)
-            </td>
+            	<input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="<?php echo $addRow["redirecturl"]?>" />            </td>
           </tr>
        </table>
-	    </td>
-        </tr>
+       </td>
+    </tr>
     <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;图片来源：</td>
-            <td width="240"><input name="source" type="text" id="source" style="width:200px" value="<?php echo $arcRow["source"]?>" /></td>
-            <td width="90">自定属性：</td>
-            <td><select name='arcatt' style='width:150px'>
-                <option value='0'>普通文档</option>
-                <?php 
-            	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
-            	$dsql->Execute();
-            	while($trow = $dsql->GetObject())
-            	{
-            		if($arcRow["arcatt"]==$trow->att) echo "<option value='{$trow->att}' selected>{$trow->attname}</option>";
-            		else echo "<option value='{$trow->att}'>{$trow->attname}</option>";
-            	}
-            	?>
-              </select> 
-              </td>
-          </tr>
-      </table></td>
+      <td width="400%" height="24" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;TAG标签：</td>
+          <td>
+          	<input name="tags" type="text" id="tags" value="<?php echo $tags; ?>" style="width:300px" />(','号分开，单个标签小于12字节)
+          </td>
+        </tr>
+      </table>
+      </td>
     </tr>
     <tr id="pictable">
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90" height="40">&nbsp;缩 略 图：<br/>
-              &nbsp;
-              <input type='checkbox' class='np' name='ddisremote' value='1' />
-              远程 </td>
-            <td><table width="98%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td width="56%" height="107"><input name="picname" type="text" id="picname" style="width:300px" value="<?php echo $arcRow["litpic"]?>" />
-                      <input type="button" name="Submit" value="浏览..." style="width:60" onclick="SelectImage('form1.picname','');" class="inputbut" /></td>
-                  <td width="44%"><img src="<?php echo $arcRow["litpic"]?>" width="120" height="100" id="picview" name="picview" /></td>
-                </tr>
-            </table></td>
+            <td width="90" height="81">
+            	&nbsp;缩 略 图：<br/>
+            	&nbsp;           </td>
+            <td width="500">
+             <input name="picname" type="text" id="picname" style="width:350px" value="<?php echo $arcRow["litpic"]?>"><input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');">
+             <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
+             <br />
+             <input type='checkbox' class='np' name='ddisremote' value='1'>
+             远程
+             </td>
+            <td align="center">
+            <img src="<?php if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "img/pview.gif";?>" width="150" height="100" id="picview" name="picview">
+            </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;图片来源：</td>
+            <td width="240"><input name="source" type="text" id="source" style="width:200" value="<?php echo $arcRow["source"]?>"></td>
+            <td width="90">作者：</td>
+            <td><input name="writer" type="text" id="writer" style="width:120" value="<?php echo $arcRow["writer"]?>"></td>
           </tr>
       </table></td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
+       <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;图集主栏目：</td>
+          <td><?php
+           	$typeOptions = GetOptionList($arcRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
+           	echo "<select name='typeid' style='width:280px'>\r\n";
+            if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择主分类...</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+			   ?></td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="24" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">&nbsp;主分类：</td>
-            <td width="400">
-           <?php 
-          $seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid"]."' ");
-			    if(is_array($seltypeids)){
-			      echo GetTypeidSel('form1','typeid','selbt1',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
-			    }
-			    ?>
-            </td>
-            <td> （只允许在白色选项的栏目中发布当前类型内容）</td>
+            <td width="90">&nbsp;图集副栏目：</td>
+            <td>
+            <?php
+            $typeOptions = GetOptionList($arcRow['typeid2'],$cuserLogin->getUserChannel(),$channelid);
+            echo "<select name='typeid2' style='width:280px'>\r\n";
+            echo "<option value='0' selected='selected'>请选择分类...</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+			     ?>
+			     </td>
           </tr>
-      </table>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <?php
+        PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
+      ?>
       </td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">&nbsp;内容排序：</td>
-            <td width="240"><select name="sortup" id="sortup" style="width:150px">
-                <?php 
-                $subday = SubDay($arcRow["sortrank"],$arcRow["senddate"]);
-                echo "<option value='0'>正常排序</option>\r\n";
-                if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>\r\n";
-                ?>
-                <option value="7">置顶一周</option>
-                <option value="30">置顶一个月</option>
-                <option value="90">置顶三个月</option>
-                <option value="180">置顶半年</option>
-                <option value="360">置顶一年</option>
-              </select>
-            </td>
-            <td width="90">标题颜色：</td>
-            <td width="159"><input name="color" type="text" id="color" style="width:120px" value="<?php echo $arcRow["color"]?>" />
-            </td>
-            <td><input name="modcolor" type="button" id="modcolor" value="选取" onclick="ShowColor()" class="inputbut" /></td>
+            <td width="90">&nbsp;表现方式：</td>
+            <td>
+              <input name="pagestyle" class="np" type="radio" id="pagestyle1" onClick="checkMuList()" value="1"<?php if($pagestyle==1) echo " checked='checked'"; ?> />
+            多页多图显示（适用于QQ表情等）
+            <input name="pagestyle" class="np" type="radio" id="pagestyle2" onClick="checkMuList()" value="2"<?php if($pagestyle==2) echo " checked='checked'"; ?> />
+            多页单图显示（幻灯）
+            <input name="pagestyle" class="np" type="radio" id="pagestyle3" onClick="checkMuList()" value="3"<?php if($pagestyle==3) echo " checked='checked'"; ?>/>
+            多行多列显示（缩略图）              </td>
           </tr>
-      </table></td>
+        </table></td>
     </tr>
-    <tr>
+    <tr id='cfgmulist' style='<?php if($pagestyle!=3) echo 'display:none'; ?>'>
+      <td height="24" colspan="4" class="bline">
+        <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="26">&nbsp;多列式参数：</td>
+            <td>行
+              <input name="row" type="text" id="row" value="<?php echo $irow; ?>" size="6">
+　列
+<input name="col" type="text" id="col" value="<?php echo $icol; ?>" size="6">
+　缩略图宽度限制：
+<input name="ddmaxwidth" type="text" id="ddmaxwidth" value="<?php echo $ddmaxwidth; ?>" size="6">
+像素</td>
+          </tr>
+          <tr>
+            <td width="80" height="26">&nbsp;</td>
+            <td><strong>(系统仅是每页输出&quot;行x列&quot;张图片，实现需自行控制样式表)</strong></td>
+          </tr>
+      </table>        </td>
+    </tr>
+    <tr id='spagelist' style='<?php if($pagestyle!=1) echo 'display:none'; ?>'>
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">&nbsp;阅读权限：</td>
-            <td width="240"><select name="arcrank" id="arcrank" style="width:150px">
-                <option value='<?php echo $arcRow["arcrank"]?>'> <?php echo $arcRow["rankname"]?> </option>
-                <?php 
-              $urank = $cuserLogin->getUserRank();
-              $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
-              $dsql->Execute();
-              while($row = $dsql->GetObject()){
-              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
-              }
-              ?>
-              </select>
-            </td>
-            <td width="90">发布选项：</td>
-            <td><input name="ishtml" type="radio"  value="1"<?php if($arcRow["ismake"]!=-1) echo " checked";?> />
-              生成HTML
-              <input type="radio" name="ishtml"  value="0"<?php if($arcRow["ismake"]==-1) echo " checked";?> />
-              仅动态浏览</td>
-          </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="75" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90" height="51">&nbsp;图集说明：</td>
-            <td width="240"><textarea name="description" rows="3" id="description" style="width:200px"><?php echo $arcRow["description"]?></textarea>
-            </td>
-            <td width="90">关 键 字：</td>
-            <td><textarea name="keywords" rows="3" id="keywords" style="width:200px"><?php echo $arcRow["keywords"]?></textarea></td>
-          </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;录入时间：</td>
-            <td><?php 
-			         $addtime = GetDateTimeMk($arcRow["senddate"]);
-			         echo "$addtime (标准排序和生成HTML名称的依据时间) <input type='hidden' name='senddate' value='".$arcRow["senddate"]."'>";
-			        ?>
-            </td>
-          </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;发布时间：</td>
-            <td width="240"><?php 
-			$nowtime = GetDateTimeMk($arcRow["pubdate"]);
-			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\">";
-			?>
-            </td>
-            <td width="90" align="center">消费点数：</td>
-            <td><input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10" />
-            </td>
-          </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" bgcolor="#FFFFFF" class="bline2"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;副分类：</td>
-            <td width="400">
-       <?php 
-			$seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid2"]."' ");
-			if(is_array($seltypeids)){
-			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
-			}else{
-			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],0,'请选择...');
-			}
-      ?>
-            </td>
-            <td>&nbsp;</td>
-          </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;相关文档：</td>
-            <td width="360"><textarea name="likeid" cols="50" rows="6" id="likeid" style="width:350px;height:45px;margin-right:10px"><?php echo $arcRow["likeid"]; ?></textarea>
-                </td>
+            <td width="95">&nbsp;每页图片数：</td>
             <td>
-			<span style="padding-top:10px;maring:0px;">
-              把文档ID，用逗号“,”分开<br />
-                <input name="lsel" type="button" id="lsel" class="inputbut" style="width:150px" onchange="" value="从已发布文档中选取..." onclick="SelectArcListB('form1.likeid','&channelid=<?php echo $channelid; ?>');" />
-            </span>
-			</td>
+              <input name='pagepicnum' id='pagpicnum' size='10' value='<?php echo $pagepicnum; ?>' />
+              单页多图显示需要设置此参数，这种模式下系统不会为每张图单独生成缩略图。            </td>
           </tr>
-      </table>
-	  </td>
+        </table>        </td>
     </tr>
-	<tr>
-         <td style="padding:0px">
-      	  <?php 
-            PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
-           ?>
-         </td>
-        </tr>
     <tr>
-      <td height="18" colspan="4" bgcolor="#FFFFFF" class="bline2"></td>
-    </tr>
-  </table>
-    <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
-    <tr> 
-      <td width="400%" height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;表现方式：</td>
-            <td>
-            	<?php  if($pagestyle==1){ ?>
-            	<input name="pagestyle" id='pagestyle1' type="radio" onclick="checkMuList('pagestyle3','cfgmulist')"  value="1" checked>
-            <?php } ?>
-              单页显示 
-              <input name="pagestyle" id='pagestyle2' type="radio" onclick="checkMuList('pagestyle3','cfgmulist')" value="2"<?php  if($pagestyle==2) echo " checked"; ?>>
-              幻灯显示
-              <input name="pagestyle" id='pagestyle3' type="radio" onclick="checkMuList('pagestyle3','cfgmulist')" value="3"<?php  if($pagestyle==3) echo " checked"; ?>>
-              多行多列（系统仅输出“行x列”个缩略图，实现需自行控制CSS）</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr id='cfgmulist' <?php if($pagestyle<>3) echo "style='display:none'"; ?>> 
       <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;多列式参数：</td>
-            <td>行 
-              <input name="row" type="text" id="row" size="6" value="<?php echo $irow?>">
-              　列 
-              <input name="col" type="text" id="col" size="6" value="<?php echo $icol?>">
-              　图片宽度限制： 
-              <input name="ddmaxwidth" type="text" id="ddmaxwidth" size="6" value="150">
-              像素			  </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;大图宽度：</td>
+          <tr>
+            <td width="90">&nbsp;限制宽度：</td>
             <td> <input name="maxwidth" type="text" id="maxwidth" size="10" value="<?php echo $maxwidth?>">
               (防止图片太宽在模板页中溢出) </td>
           </tr>
@@ -326,63 +278,65 @@
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td width="90">&nbsp;远程图片：</td>
-            
-            <td>
-			<input name="isrm" type="checkbox" id="isrm"  value="1"<?php if($isrm==1) echo " checked";?>>
-			下载远程图片
-              <input name="formzip" type="checkbox" id="formzip" value="1" onclick="ShowZipField(this,'zipff','upff');" />
-              从ZIP压缩包中解压图片
-              <input name="formhtml" type="checkbox" id="formhtml" value="1" onclick="ShowHtmlField(this,'htmlfield','upff');" />
-              网上复制图片			
-            			 </td>
-          </tr>
-
-        </table></td>
-    </tr>
+        <tr>
+          <td width="90">&nbsp;特殊选项：</td>
+          <td><input name="isrm" class="np" type="checkbox" id="isrm" value="1" checked='checked' />
+            下载远程图片
+            <input name="formzip" class="np" type="checkbox" id="formzip" value="1" onClick="ShowZipField(this,'zipff','htmlfield');" />
+            从ZIP压缩包中解压图片
+            <input name="formhtml" class="np" type="checkbox" id="formhtml" value="1" onClick="ShowHtmlField(this,'htmlfield','zipff');" />
+            网上复制图片 </td>
+        </tr>
+      </table></td>
     </tr>
     <tr id="zipff" style="display:none">
-      <td height="28" colspan="4" class="bline">
-	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0" height="100">
         <tr>
           <td width="90">&nbsp;压缩包文件：</td>
-          <td>
-		      <input type='text' name='zipfile' id='zipfile' style='width:300px'> <input name='addon_bt' type='button' class='inputbut' value='浏览...' onClick="SelectSoft('form1.zipfile')">
-		      <input name="delzip" type="checkbox" id="delzip" value="1" checked="checked" />
-          处理后删除压缩文件
-		      </td>
+          <td><input type='text' name='zipfile' id='zipfile' style='width:300px'>
+              <input name='addon_bt' type='button' class='inputbut' value='浏览...' onClick="SelectSoft('form1.zipfile')">
+              <input name="delzip" type="checkbox" id="delzip" value="1" checked="checked" />
+            处理后删除压缩文件 </td>
         </tr>
-      </table>
-     </td>
+      </table></td>
     </tr>
     <tr id="htmlfield" style="display:none">
-      <td height="28" colspan="4" class="bline">
-	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;网上复制：</td>
-          <td>
-		     复制的源网址：<input name='copysource' type='text' value='' style='width:250px'/>(防盗链网站需填写你复制图片的其中一个网页网址)
-		     <br />
-		     把图片从别的网页复制，在这里用Ctrl+V粘贴，提交后程序可直接获取这个区域的所有图片。<!--input type='button' name='testbt' value='测试' style='width:60px;height:24px' onClick='TestGet()' /-->
-		     <br />
-		     <span id='copyhtml' style='margin-top:6px;margin-bottom:6px;border:solid 1px #CCCCCC;width:96%;padding:6px;height:450px' contenteditable="true">粘贴到这里...</span>
-		      </td>
+          <td> 复制的源网址：
+            <input name='copysource' type='text' value='http://' style='width:250px'/>
+            (防盗链网站需填写您复制图片的其中一个网页网址) <br />
+            把图片从别的网页复制，在这里用Ctrl+V粘贴，提交后程序可直接获取这个区域的所有图片
+            <input type="button" name="button" id="button" value="预览" onClick="LoadTestDiv()">
+            <br />
+            <div id='copyhtml' style='margin-top:6px;margin-bottom:6px;border:solid 1px #CCCCCC;width:96%;padding:6px;height:250px;width:100%' contenteditable="true">粘贴到这里...</div></td>
         </tr>
-      </table>
-     </td>
+      </table></td>
     </tr>
-    <tr id='upff' style="display:block">
-      <td height="24" colspan="4"> 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-          <tr width="800"> 
+    <tr>
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
             <td width="90">&nbsp;图片：</td>
-            <td> <input name="picnum" type="text" id="picnum" size="8" value="10"> 
-              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);" class="inputbut">
-              注：最大120幅，图片链接允许填写远程网址 </td>
+            <td><input name="picnum" type="text" id="picnum" size="8" value="10">
+                <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);">
+              注：最大60幅，图片链接允许填写远程网址 </td>
           </tr>
-        </table>
-		<?php 
+        </table></td>
+    </tr>
+    <tr>
+      <td width="400%" height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="449">&nbsp;快速修改（如果不修改图集原来的图片内容，直接点击'确定'即可）：</td>
+          <td width="351">
+          <input name="imageField2" type="image" class="np" src="img/button_ok.gif" width="60" height="22" border="0"  style="cursor:ponter" />　
+          <img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:ponter" />          </td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+        <?php
        $j = 1;
        if($imgurls!=""){
        	 $dtp = new DedeTagParse();
@@ -391,29 +345,28 @@
        	 {
        	 	 foreach($dtp->CTags as $ctag)
        	 	 {
-       	 	 	 $imgurl = trim($ctag->GetInnerText());
        	 	 	 if($ctag->GetName()=="img"){
-                     $fhtml = "<input type='hidden' name='oldddimg$j' value='".$ctag->GetAtt("ddimg")."'>\r\n<input type='hidden' name='imgurlold$j' value='{$imgurl}'>";
-	   $fhtml .= "<table width='600'><tr><td><input type='checkbox' name='isokcheck$j' id='isokcheck$j' value='1' class='np' onClick='CheckSelTable($j)' checked='checked'>显示图片[$j]的选框</td></tr></table>";
-	   $fhtml .= "<table width=\"600\" border=\"0\" id=\"seltb$j\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;margin-left:10px\"><tobdy>";
+                     $fhtml = "";
+	   $fhtml .= "<table width='800'><tr><td><input type='checkbox' name='isokcheck$j' id='isokcheck$j' value='1' class='np' onClick='CheckSelTable($j)' checked='checked' />显示/隐藏图片[$j]的选框</td></tr></table>";
+	   $fhtml .= "<table width=\"800\" border=\"0\" id=\"seltb$j\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;margin-left:10px\"><tobdy>";
 	   $fhtml .= "<tr bgcolor=\"#F4F9DD\">\r\n";
 	   $fhtml .= "<td height=\"25\" colspan=\"2\">　<strong>图片{$j}：</strong></td>";
 	   $fhtml .= "</tr>";
 	   $fhtml .= "<tr bgcolor=\"#FFFFFF\"> ";
 	   $fhtml .= "<td width=\"429\" height=\"25\"> 　本地上传： ";
-	   $fhtml .= "<input type=\"file\" name='imgfile$j' style=\"width:330px\" onChange=\"SeePic(document.picview$j,document.form1.imgfile$j);\"></td>";
-	   $fhtml .= "<td width=\"164\" rowspan=\"3\" align=\"center\"><img src=\"{$imgurl}\" width=\"150\" id=\"picview$j\" name=\"picview$j\"></td>";
+	   $fhtml .= "<input type=\"file\" name='imgfile$j' style=\"width:330px\" onChange=\"SeePic('picview$j',this);\"></td>";
+	   $fhtml .= "<td width=\"164\" rowspan=\"3\" align=\"center\"><div id='divpicview{$j}' class='divpre'></div><img src=\"".trim($ctag->GetInnerText())."\" width=\"150\" id=\"picview$j\" name=\"picview$j\"></td>";
 	   $fhtml .= "</tr>";
 	   $fhtml .= "<tr bgcolor=\"#FFFFFF\"> ";
 	   $fhtml .= "<td height=\"25\"> 　指定网址： ";
-	   $fhtml .= "<input type=\"text\" name='imgurl$j' style=\"width:260px\" value=\"{$imgurl}\" > ";
-	   $fhtml .= "<input type=\"button\" name='selpic$j' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl$j','big','picview$j')\" class=\"inputbut\">";
+	   $fhtml .= "<input type=\"text\" name='imgurl$j' style=\"width:260px\" value=\"".trim($ctag->GetInnerText())."\" > ";
+	   $fhtml .= "<input type=\"button\" name='selpic$j' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl$j','big','picview$j')\">";
 	   $fhtml .= "</td></tr>";
 	   $fhtml .= "<tr bgcolor=\"#FFFFFF\"> ";
 	   $fhtml .= "<td height=\"56\">　图片简介： ";
 	   $fhtml .= "<textarea name='imgmsg$j' style=\"height:46px;width:330px\">".$ctag->GetAtt("text")."</textarea> </td>";
 	   $fhtml .= "</tr></tobdy></table>\r\n";
-       	 	 	 	 echo $fhtml; 
+       	 	 	 	 echo $fhtml;
        	 	 	 	 $j++;
        	 	 	 }
        	 	 }
@@ -427,27 +380,118 @@
 		</script>		</td>
     </tr>
   </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-      <tr>
-        <td height="56"><table width="100%" border="0" cellspacing="1" cellpadding="1">
-            <tr>
-              <td width="17%">&nbsp;</td>
-              <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="115"><input name="imageField" type="submit" class="inputbut" value="确定" /></td>
-                    <td width="99"><a href="catalog_main.php">
-                      <input name="button" type="reset" class="inputbut" id="button" value="重置"/>
-                    </a></td>
-                  </tr>
-              </table></td>
-            </tr>
-        </table></td>
-      </tr>
-    </table></td>
-    </tr>
-  </table>
-  </form>
-<script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
 
+  <!-- //高级参数 -->
+  <script language='javascript'>InitPage();</script>
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
+    <tr>
+    <td height="24" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;文档排序：</td>
+            <td width="250"> <select name="sortup" id="sortup" style="width:150">
+                <?php
+                $subday = SubDay($arcRow["sortrank"],$arcRow["pubdate"]);
+                echo "<option value='0'>正常排序</option>\r\n";
+                if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>\r\n";
+                ?>
+                <option value="7">置顶一周</option>
+                <option value="30">置顶一个月</option>
+                <option value="90">置顶三个月</option>
+                <option value="180">置顶半年</option>
+                <option value="360">置顶一年</option>
+              </select> </td>
+            <td width="90">标题颜色：</td>
+            <td><input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["color"]?>"><input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"></td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="24" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;阅读权限：</td>
+            <td width="250"> <select name="arcrank" id="arcrank" style="width:150">
+                <option value='<?php echo $arcRow["arcrank"]?>'>
+                <?php echo $arcRow["rankname"]?>                </option>
+                <?php
+              $urank = $cuserLogin->getUserRank();
+
+              $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
+              $dsql->Execute();
+              while($row = $dsql->GetObject()){
+              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
+              }
+              ?>
+              </select> </td>
+            <td width="90">发布选项：</td>
+            <td> <input name="ishtml" type="radio" class="np" value="1"<?php if($arcRow["ismake"]!=-1) echo " checked";?>>
+              生成HTML
+              <input type="radio" name="ishtml" class="np" value="0"<?php if($arcRow["ismake"]==-1) echo " checked";?>>
+              仅动态浏览 </td>
+          </tr>
+        </table></td>
+    </tr>
+    <tr>
+      <td height="75" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;发布时间：</td>
+          <td width="250"><?php
+			$nowtime = GetDateTimeMk($arcRow["pubdate"]);
+			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
+			?>
+          </td>
+          <td width="92">消费点数：</td>
+          <td width="368"><input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10"></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <tr>
+      <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="51">&nbsp;关键字：</td>
+          <td><input type="input"  name="keywords"  id="keywords" style="width:60%" value="<?php echo $arcRow["keywords"]?>" /></td>
+          </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="51">&nbsp;文档摘要：</td>
+          <td><textarea name="description" rows="3" id="description" style="width:60%"><?php echo $arcRow["description"]?></textarea></td>
+          </tr>
+      </table></td>
+    </tr>
+        <tr>
+      <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;自定义文件名：</td>
+          <td width="449"><input type="text" name="filename" id="filename" value="<?php echo $arcRow["filename"]?>"/>不包括后缀名如.html等</td>
+          <td width="261">&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+    <tr><td height="24"></td></tr>
+  </table>
+
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="56">
+	<table width="100%" border="0" cellspacing="1" cellpadding="1">
+          <tr>
+            <td width="17%">&nbsp;</td>
+            <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="115"><input name="imageField2" type="image" class="np" src="img/button_ok.gif" width="60" height="22" border="0"  style="cursor:ponter" /></td>
+                  <td width="99"><img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:ponter" /></td>
+                </tr>
+              </table></td>
+          </tr>
+        </table></td>
+  </tr>
+</table>
+</form>
+<script language='javascript'>//if($Nav()!="IE") ShowObj('adset');</script>
 </body>
 </html>

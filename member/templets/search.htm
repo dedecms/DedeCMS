@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>查找好友</title>
+
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+
+<script type="text/javascript" language="javascript">
+<?php echo GetEnumsJs('nativeplace'); ?>
+</script>
+<script type="text/javascript" language="javascript" src="../images/enums.js"></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">查找好友</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="myfriend.php?ftype=0">所有好友</a></li>
+            <li class="select"><a href="search.php">查找好友</a></li>
+            <li><a href="visit-history.php?dopost=viewme">关注我的人</a></li>
+            <li><a href="visit-history.php?dopost=meview">我最近访问</a></li>
+          </ul>
+        </div>
+        <div class="mTB10 mL10 mR10">
+          <div class="titleBar lineB mB10 textCenter">
+            <form action="search.php">
+              <input class="text" type='text' name='keyword' value='' />
+              <select name="province" id="province" onchange="javascript:selNext(document.getElementById('city'),this.value)">
+                <option value='0'>一级地区</option>
+             <?php
+              global $em_nativeplaces;
+              foreach($em_nativeplaces as $k=>$v)
+							{
+								if($k%500 == 0)
+								{
+									if($k==$province) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+									else echo "<option value='$k'>$v</option>\r\n";
+								}
+							}
+            ?>
+              </select>
+              <select id="city" name="city">
+                <option value='0'>具体地区</option>
+                <?php
+                if(!empty($province))
+                {
+                	foreach($em_nativeplaces as $k=>$v)
+									{
+										if($k > $province && $k < $province+500)
+										{
+											if($k==$city) echo "<option value='$k' selected='selected'>$v</option>\r\n";
+											else echo "<option value='$k'>$v</option>\r\n";
+										}
+									}
+                }
+                ?>
+              </select>
+              
+              <input class="text" name="minage" type="text" id="minage" value="18" style="width:20px" />
+              -
+              <input class="text" name="maxage" type="text" id="maxage" value="35" style="width:20px" />
+              岁
+              <input type="radio" name="sex" id="radio1" value="男" />
+              男
+              <input name="sex" type="radio" id="radio2" value="女" />
+              女
+              <input name="sex" type="radio" id="radio3" value="" checked="checked" />
+              不限
+              <button class="button2 mL10" type="submit">搜索</button>
+            </form>
+          </div>
+          {dede:datalist}
+          <?php
+    $face = ($fields['face']!='' ? $fields['face'] : 'images/nopic.gif');
+    $spaceurl = $cfg_basehost.'/member/index.php?uid='.$fields['userid'];
+    ?>
+          <div class="item search">
+            <div class="itemHead" >
+              <div class="fLeft"> <span class="itemHeadTitle yellow"> <a href='<?php echo $spaceurl; ?>' target='_blank'><img class="lineBorder mR10" align="top" src='<?php echo $face ?>' width='16' height='16'/></a> <a href='index.php?uid={dede:field.userid /}' target='_blank'>{dede:field.uname /}</a></span> <span class="itemTip mL10">(
+                <?php
+        if(trim($fields['lovemsg'])=='') echo '此人什么都不想说...';
+        else{
+        	$fields['lovemsg'] = trim($fields['lovemsg']);
+        	echo $fields['lovemsg'];
+        }
+        ?>
+                )</span></div>
+              <div class="fRight"><a href='index.php?uid={dede:field.userid /}&action=infos' target='_blank'>[资料]</a> <a href='index.php?uid={dede:field.userid /}&action=guestbook' target='_blank'>[留言]</a></div>
+            </div>
+            <div class="itemBody invisible" >
+              <div class="itemContent">
+                <ul class="mL10 mT10">
+                  <li>{dede:field.age/}岁&nbsp;{dede:field.sex/}</li>
+                  <li>最后登录:{dede:field.logintime function="MyDate('Y-m-d',@me)" /}</li>
+                </ul>
+              </div>
+              <div class="itemBodyFoot"></div>
+            </div>
+          </div>
+          <hr class="dotted" />
+          {/dede:datalist}
+          <div>
+            <div class="pages fRight">{dede:pagelist listsize=5 /}</div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

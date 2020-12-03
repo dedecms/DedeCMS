@@ -1,106 +1,127 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-if(empty($dopost)){
+if(empty($dopost))
+{
 	ShowMsg("对不起，请指定栏目参数！","catalog_main.php");
 	exit();
 }
-if(empty($cid)) $cid = 0;
-$cid = ereg_replace("[^0-9]","",$cid);
+$cid = empty($cid) ? 0 : intval($cid);
+$channelid = empty($channelid) ? 0 : intval($channelid);
+
 /*--------------------------
 //增加文档
 function addArchives();
 ---------------------------*/
 if($dopost=="addArchives")
 {
+	//默认文章调用发布表单
 	if(empty($cid) && empty($channelid))
 	{
-		require_once(_ADMIN."/public_guide.php");
+		header("location:article_add.php");
 		exit();
 	}
-	$dsql = new DedeSql(false);
-	if(!empty($channelid)) $row = $dsql->GetOne("Select ID,addcon from #@__channeltype where ID='$channelid'");
-	else $row = $dsql->GetOne("Select #@__channeltype.addcon,#@__channeltype.ID from #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID='$cid'");
-	$gurl = $row["addcon"];
-	$channelid = $row['ID'];
-	$dsql->Close();
-	if($gurl==""){
-		ShowMsg("对不起，你指的栏目可能有误！","catalog_main.php");
-	  exit();
+	if(!empty($channelid))
+	{
+		//根据模型调用发布表单
+		$row = $dsql->GetOne("Select addcon from #@__channeltype where id='$channelid'");
 	}
-	require_once(dirname(__FILE__)."/$gurl");
+	else
+	{
+		//根据栏目调用发布表单
+		$row = $dsql->GetOne("Select ch.addcon from `#@__arctype` tp left join `#@__channeltype` ch on ch.id=tp.channeltype where tp.id='$cid' ");
+	}
+	$gurl = $row["addcon"];
+	if($gurl=="")
+	{
+		ShowMsg("对不起，你指的栏目可能有误！","catalog_main.php");
+		exit();
+	}
+
+	//跳转并传递参数
+	header("location:{$gurl}?channelid={$channelid}&cid={$cid}");
 	exit();
 }
+
 /*--------------------------
 //管理文档
 function listArchives();
 ---------------------------*/
 else if($dopost=="listArchives")
 {
-	if(!isset($channelid)) $channelid = 0;
-	if(!empty($gurl)){
-		$gurl = str_replace("..","",$gurl);
-		require_once(dirname(__FILE__)."/$gurl");
-	  exit();
+	if(!empty($gurl))
+	{
+		if(empty($arcrank))
+		{
+			$arcrank = '';
+		}
+		$gurl = str_replace('..','',$gurl);
+		header("location:{$gurl}?arcrank={$arcrank}&cid={$cid}");
+		exit();
 	}
 	if($cid>0)
 	{
-	  $dsql = new DedeSql(-100);
-	  $row = $dsql->GetOne("Select t.typename,c.typename as channelname,c.ID,c.mancon from #@__arctype t left join #@__channeltype c on c.ID=t.channeltype where t.ID='$cid'");
-	  $gurl = $row["mancon"];
-	  $channelid = $row["ID"];
-	  $typename = $row["typename"];
-	  $channelname = $row["channelname"];
-	  $dsql->Close();
-	  if($gurl==""){
-		  ShowMsg("对不起，你指的栏目可能有误！","catalog_main.php");
-	    exit();
-	  }
-  }
-  else if($channelid>0)
-  {
-  	$dsql = new DedeSql(-100);
-	  $row = $dsql->GetOne("Select typename,ID,mancon from #@__channeltype where ID='$channelid'");
-	  $gurl = $row["mancon"];
-	  $channelid = $row["ID"];
-	  $typename = "";
-	  $channelname = $row["typename"];
-	  $dsql->Close();
-  }
-  if(empty($gurl)) $gurl = 'content_list.php';
+		$row = $dsql->GetOne("Select #@__arctype.typename,#@__channeltype.typename as channelname,#@__channeltype.id,#@__channeltype.mancon from #@__arctype left join #@__channeltype on #@__channeltype.id=#@__arctype.channeltype where #@__arctype.id='$cid'");
+		$gurl = $row["mancon"];
+		$channelid = $row["id"];
+		$typename = $row["typename"];
+		$channelname = $row["channelname"];
+		if($gurl=="")
+		{
+			ShowMsg("对不起，你指的栏目可能有误！","catalog_main.php");
+			exit();
+		}
+	}
+	else if($channelid>0)
+	{
+
+		$row = $dsql->GetOne("Select typename,id,mancon from #@__channeltype where id='$channelid'");
+		$gurl = $row["mancon"];
+		$channelid = $row["id"];
+		$typename = "";
+		$channelname = $row["typename"];
+	}
+	
+	if(empty($gurl))
+	{
+		$gurl = 'content_list.php';
+	}
 	header("location:{$gurl}?channelid={$channelid}&cid={$cid}");
 	exit();
 }
+
 /*--------------------------
 //浏览通用模板目录
 function viewTempletDir();
 ---------------------------*/
 else if($dopost=="viewTemplet")
 {
-	header("location:file_manage_main.php?activepath=".$cfg_templets_dir);
+	header("location:tpl.php?path=/".$cfg_df_style);
 	exit();
 }
+
 /*--------------------------
 //留言簿管理
 function GoGuestBook();
 ---------------------------*/
 else if($dopost=="guestbook")
 {
-	echo "<script language='javascript'>location='".$cfg_plus_dir."/guestbook/index.php?gotopagerank=admin';</script>";
+	header("location:{$cfg_phpurl}/guestbook.php?gotopagerank=admin");
 	exit();
 }
+
 /*------------------------
 浏览单个页面的栏目
 function ViewSgPage()
 ------------------------*/
 else if($dopost=="viewSgPage")
 {
-	require_once(dirname(__FILE__)."/../include/inc_arclist_view.php");
+	require_once(DEDEINC."/arc.listview.class.php");
 	$lv = new ListView($cid);
-  $pageurl = $lv->MakeHtml();
-  $lv->Close();
-  ShowMsg("更新缓冲，请稍后...",$pageurl);
+	$pageurl = $lv->MakeHtml();
+	ShowMsg("更新缓冲，请稍后...",$pageurl);
 	exit();
 }
+
 /*------------------------
 更改栏目排列顺序
 function upRank()
@@ -108,115 +129,92 @@ function upRank()
 else if($dopost=="upRank")
 {
 	//检查权限许可
-  CheckPurview('t_Edit,t_AccEdit');
-  //检查栏目操作许可
-  CheckCatalog($cid,"你无权更改本栏目！");
-	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select reID,sortrank From #@__arctype where ID='$cid'");
-	$reID = $row['reID'];
+	CheckPurview('t_Edit,t_AccEdit');
+
+	//检查栏目操作许可
+	CheckCatalog($cid,"你无权更改本栏目！");
+	$row = $dsql->GetOne("Select reid,sortrank From #@__arctype where id='$cid'");
+	$reid = $row['reid'];
 	$sortrank = $row['sortrank'];
-	$row = $dsql->GetOne("Select sortrank From #@__arctype where sortrank<=$sortrank And reID=$reID order by sortrank desc ");
-	if(is_array($row)){
+	$row = $dsql->GetOne("Select sortrank From #@__arctype where sortrank<=$sortrank And reid=$reid order by sortrank desc ");
+	if(is_array($row))
+	{
 		$sortrank = $row['sortrank']-1;
-		$dsql->SetQuery("update #@__arctype set sortrank='$sortrank' where ID='$cid'");
-		$dsql->ExecuteNoneQuery();
+		$dsql->ExecuteNoneQuery("update #@__arctype set sortrank='$sortrank' where id='$cid'");
 	}
-	$dsql->Close();
 	ShowMsg("操作成功，返回目录...","catalog_main.php");
 	exit();
 }
 else if($dopost=="upRankAll")
 {
 	//检查权限许可
-  CheckPurview('t_Edit');
-	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select ID From #@__arctype order by ID desc");
+	CheckPurview('t_Edit');
+	$row = $dsql->GetOne("Select id From #@__arctype order by id desc");
 	if(is_array($row))
 	{
-		$maxID = $row['ID'];
-		for($i=1;$i<=$maxID;$i++){
-			if(isset(${'sortrank'.$i})){
-				$dsql->ExecuteNoneQuery("Update #@__arctype set sortrank='".(${'sortrank'.$i})."' where ID='{$i}';");
+		$maxID = $row['id'];
+		for($i=1;$i<=$maxID;$i++)
+		{
+			if(isset(${'sortrank'.$i}))
+			{
+				$dsql->ExecuteNoneQuery("Update #@__arctype set sortrank='".(${'sortrank'.$i})."' where id='{$i}';");
 			}
 		}
 	}
-	$dsql->Close();
 	ShowMsg("操作成功，正在返回...","catalog_main.php");
 	exit();
 }
+
+/*--------------------------
+//更新栏目缓存
+function UpCatlogCache();
+---------------------------*/
+else if($dopost=="upcatcache")
+{
+	UpDateCatCache();
+	$sql = " TRUNCATE TABLE `#@__arctiny`";
+	$dsql->executenonequery($sql);
+	
+	//导入普通模型微数据
+	$sql = "insert into `#@__arctiny`(id, typeid, typeid2, arcrank, channel, senddate, sortrank, mid)  
+	        Select id, typeid, typeid2, arcrank, channel, senddate, sortrank, mid from `#@__archives` ";
+	$dsql->executenonequery($sql);
+	
+	//导入单表模型微数据
+	$dsql->SetQuery("Select id,addtable From `#@__channeltype` where id < -1 ");
+	$dsql->Execute();
+	$doarray = array();
+	while($row = $dsql->GetArray())
+	{
+		$tb = str_replace('#@__', $cfg_dbprefix, $row['addtable']);
+		if(empty($tb) || isset($doarray[$tb]) )
+		{
+			continue;
+		}
+		else
+		{
+		
+			$sql = "insert into `#@__arctiny`(id, typeid, typeid2, arcrank, channel, senddate, sortrank, mid)  
+			        Select aid, typeid, 0, arcrank, channel, senddate, 0, mid from `$tb` ";
+			$rs = $dsql->executenonequery($sql); 
+			$doarray[$tb]  = 1;
+		}
+	}
+	
+	ShowMsg("操作成功，正在返回...","catalog_main.php");
+	exit();
+}
+
 /*---------------------
 获取JS文件
 function GetJs
 ----------------------*/
 else if($dopost=="GetJs")
 {
-	require_once(dirname(__FILE__)."/makehtml_js.php");
+	header("location:makehtml_js.php");
 	exit();
 }
-/*-----------
-编辑单独页面
-function editSgPage();
------------*/
-else if($dopost=="editSgPage")
-{
-	//检查权限许可
-  CheckPurview('plus_文件管理器');
-	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select defaultname,typedir From #@__arctype where ID='$cid'");
-	$dsql->Close();
-	require_once(dirname(__FILE__)."/../include/inc_arclist_view.php");
-	$lv = new ListView($cid);
-	$lv->MakeHtml();
-	$lv->Close();
- 	$row['typedir'] = eregi_replace("\{cmspath\}",$cfg_cmspath,$row['typedir']);
- 	$editurl = "file_manage_view.php?backurl=catalog_main.php&fmdo=editview&ishead=yes&filename=".$row['defaultname']."&activepath=".urlencode($row['typedir'])."&job=edit";
- 	header("location:$editurl");
- 	exit();
-}
-/*-----------
-编辑模板页面
-function editSgTemplet();
------------*/
-else if($dopost=="editSgTemplet")
-{
-  //检查权限许可
-  CheckPurview('plus_文件管理器');
-	$dsql = new DedeSql(false);
-	$row = $dsql->GetOne("Select tempone From #@__arctype where ID='$cid'");
-	$dsql->Close();
-	$tempone = $row['tempone'];
-	$tempone = eregi_replace("\{style\}",$cfg_df_style,$tempone);
-	if(!is_file($cfg_basedir.$cfg_templets_dir."/".$tempone)){
-		ShowMsg("这个单独页面没有使用模板，现在转向直接编辑这个页面。","catalog_do.php?cid=$cid&dopost=editSgPage");
-		exit();
-	}
-	$tempones = explode('/',$tempone);
-	$filename = $tempones[count($tempones)-1];
-	$tmpdir = $cfg_templets_dir;
-	if(count($tempones)>1){
-	  foreach($tempones as $v){
-		  if($v!="") $tmpdir .= "/".$v;
-	  }
-  }
-	$editurl = "file_manage_view.php?backurl=catalog_main.php&fmdo=editview&ishead=yes&filename=".$filename."&activepath=".urlencode($tmpdir)."&job=edit";
- 	header("location:$editurl");
- 	exit();
-}
-/*-----------
-获得子类的内容
-function GetSunLists();
------------*/
-else if($dopost=="GetSunLists")
-{
-	$userChannel = $cuserLogin->getUserChannel();
-	require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
-	AjaxHead();
-	PutCookie('lastCid',$cid,3600*24,"/");
-	$tu = new TypeUnit($userChannel);
-	$tu->dsql = new DedeSql(false);
-  $tu->LogicListAllSunType($cid,"　");
-  $tu->Close();
-}
+
 /*-----------
 获得子类的内容
 function GetSunListsMenu();
@@ -224,32 +222,28 @@ function GetSunListsMenu();
 else if($dopost=="GetSunListsMenu")
 {
 	$userChannel = $cuserLogin->getUserChannel();
-	require_once(dirname(__FILE__)."/../include/inc_typeunit_menu.php");
+	require_once(DEDEINC."/typeunit.class.menu.php");
 	AjaxHead();
 	PutCookie('lastCidMenu',$cid,3600*24,"/");
 	$tu = new TypeUnit($userChannel);
-	$tu->dsql = new DedeSql(false);
 	$tu->LogicListAllSunType($cid,"　");
-  $tu->Close();
-}
-/*-----------
-获得子类的内容
-function GetSunListsTree();
------------*/
-else if($dopost=="GetSunListsTree")
-{
-	$userChannel = $cuserLogin->getUserChannel();
-	require_once(dirname(__FILE__)."/../include/inc_type_tree.php");
-	if(empty($opall)) $opall = 0;
-	if(empty($c)) $c = 0;
-	if(empty($cid)) $cid = 0;
-	AjaxHead();
-	PutCookie('lastCidTree',$cid,3600*24,"/");
-	$tu = new TypeTree($userChannel);
-	$tu->dsql = new DedeSql(false);
-	$tu->LogicListAllSunType($cid,"　",$opall,$c);
-  $tu->Close();
 }
 
-ClearAllLink();
+/*-----------
+获得子类的内容
+function GetSunLists();
+-----------*/
+else if($dopost=="GetSunLists")
+{
+	require_once(DEDEINC."/typeunit.class.admin.php");
+	AjaxHead();
+	PutCookie('lastCid',$cid,3600*24,"/");
+	$tu = new TypeUnit();
+	$tu->dsql = $dsql;
+	echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
+	$tu->LogicListAllSunType($cid,"　");
+	echo "    </table>\r\n";
+	$tu->Close();
+}
+
 ?>

@@ -1,51 +1,90 @@
-<!-- 头部开始 -->
-	<div id="manage_company_header">
-    	<div id="manage_company_top">
-        	<div class="manage_company_logo">
-            </div>
-            <div class="manage_company_welcome"><span class="manage_company_welcome_green"><?php echo $cfg_ml->M_UserName?></span> 你好，欢迎登录会员中心。<?php if($cfg_ml->M_Newpm > 0){ ?> <b>新消息</b>(<a href="pm.php?folder=inbox"><font color="red"><?php echo $cfg_ml->M_Newpm;?></a></font>) <?php }?>
-            </div>
-   
-            <div class="clear"></div>
-        </div>
-        <div id="manage_company_menubg">
-        	<div id="manage_company_menu">
-            	<div class="manage_company_topimg">
-            	</div>
-            	<div class="manage_company_text">
-                	<ul>
-                        <li><a href="index_do.php?fmdo=login&dopost=exit">退出登录</a></li>
-                        <li><a href="index.php">中心主页</a></li>
-                        <li><a href="<?php echo $cfg_indexurl?>">网站主页</a></li>
-                        <?php if($cfg_ml->M_utype==1){  ?>
-                        <li><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>">企业空间</a></li>
-                        <?php }else{ ?>
-                      	<li><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>">个人空间</a></li>
-                        <?php } ?>
-                        <li><a href="search_member.php">搜索会员</a></li>
-                        <li><a href="control.php">控制面板</a></li>
-                        <?php 
-  if($cfg_pp_isopen==1 && $cfg_pp_indexurl!=''){
-	  echo "  <li><a href='{$cfg_pp_indexurl}' target='_blank'>{$cfg_pp_name}</a></li>\n";
-  }
+<?php
+//未登录显示的head
+if(!$cfg_ml->IsLogin()) {
 ?>
-                    </ul>
-            	</div>
-            </div>
-        </div>        
-    </div>
-    <div class="clear">
-    </div>
-    <?php
-    if($cfg_ml->M_Newpm > 0){
-    ?>
-    <div style="display:none;">
+
+<div class="header mB10">
+  <div class="wrapper">
+    <div class="logo fLeft"><a href="<?php echo $cfg_indexurl?>"><img src="../member/images/member.gif" alt="会员中心" /></a> </div>
+    <div class="fRight">
+      <div class="topBar">
+        <ul class="userMenu green">
+          <li><a href="../" title="网站主页">网站主页</a></li>
+          <li><a href="../member/index_do.php?fmdo=user&dopost=regnew" title="注册">注册</a></li>
+          <li><a href="../member/login.php" title="登录">登录</a></li>
+          <li class="help"><a href="http://help.dedecms.com" title="DEDECMS 帮助中心">帮助</a></li>
+        </ul>
+        <span>
         <script type="text/javascript">
-            document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="0" height="0">');
-            document.write('<param name="movie" value="newpm.swf"><param name="quality" value="high">');
-            document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
-            document.write('<embed src="newpm.swf" wmode="opaque" menu="false" quality="high" width="0" height="0" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); 
-            document.write('</object>'); 
-        </script>
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+        <i>游客</i>你可以选择到</span> </div>
+      <div class="clear"></div>
     </div>
-    <?php } ?>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php
+}
+//登录后显示的head
+else {
+?>
+<div class="header mB10">
+  <div class="wrapper">
+    <div class="logo fLeft"><a href="<?php echo $cfg_indexurl?>"><img src="../member/images/member.gif" alt="会员中心" /></a> </div>
+    <div class="fRight">
+      <div class="topBar">
+        <ul class="userMenu green">
+        <li><a href="../" title="网站主页">网站主页</a></li>
+          <li><a href="../member/edit_baseinfo.php" title="我的资料">我的资料</a></li>
+          <li><a href="<?php echo $myurl; ?>" title="我的空间">我的空间</a></li>
+          <li><a href="../member/index_do.php?fmdo=login&dopost=exit" title="注销">注销</a></li>
+          <li class="help"><a href="http://help.dedecms.com" title="DEDECMS 帮助中心">帮助</a></li>
+        </ul>
+        <span>
+        <script type="text/javascript">
+           	var now=(new Date()).getHours();
+			if(now>0&&now<=6){
+				document.write("午夜好，");
+			}else if(now>6&&now<=11){
+				document.write("早上好，");
+			}else if(now>11&&now<=14){
+				document.write("中午好，");
+			}else if(now>14&&now<=18){
+				document.write("下午好，");
+			}else{
+				document.write("晚上好，");
+			}
+			</script>
+        <i><?php echo $cfg_ml->M_UserName?></i></span> </div>
+      <div class="clear"></div>
+      <div class="navMenu">
+        <ul class="heaNav white">
+          <li class="home"><a href="../member/index.php" title="会员中心首页">首页</a></li>
+          <li class="middle"><a href="../member/pm.php" title="短消息">短消息</a></li>
+          <li class="middle"><a href="../member/guestbook_admin.php" title="留言板">留言板</a></li>
+          <li class="middle"><a href="../member/mystow.php" title="收藏夹">收藏夹</a></li>
+          <li class="middle"><a href="../member/myfriend.php" title="好友">好友</a></li>
+          <li class="middle"><a href="../member/edit_space_info.php" title="设置">设置</a></li>
+          <li class="more"><a href="../member/caicai.php" title="随便踩踩">随便踩踩</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php
+}
+?>

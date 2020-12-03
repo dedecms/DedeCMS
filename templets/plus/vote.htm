@@ -2,44 +2,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>投票结果 - powered by dedecms</title>
-<link href="../templets/style/nspage.css" rel="stylesheet" type="text/css" />
+<title><?php echo $cfg_webname?>_投票结果</title>
+<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
+<body class="flinkpage">
 
-<body>
-
-<div class="main mceneter">
-	<div class="toplogo">
-		<div class="logo">
-				<a href="/"><img src="../templets/images/toplogo.gif" /></a>
-		</div>
+<div class="header">
+	<div class="top w960 center">
 		<div class="title">
-			投票调查
-		</div>
-	</div>
-	<div class="cmain">
-		<div class="ctitle">
-			<h1>投票结果</h1>
-			<span></span>
-		</div>
-		<div class="cbox mceneter">
-			<div class="votelist">
-				<div class="vtitle">
-					<h2>投票:<?php echo $voname?><?php echo $rsmsg?></h2>
-					<span>投票开始时间：<?php echo $starttime?>　 投票结束时间：<?php echo $endtime?>　参与这次投票的总人数：<?php echo $totalcount?></span>
-				</div>
-				<div class="vbox">
-				 	<?php echo $votelist?>
-				</div>
-			</div>
-		</div>
-		
-	</div>
-</div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
-</div>
+			<h1>
+				<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
+			</h1>
+		</div><!-- /title -->
 
+  </div><!-- /top -->
+</div><!-- /header -->
+<div class="w960 clear center mt1 cmt-box">
+  <div class="sp-title">
+    <h2><?php echo $voname?></h2>
+    <span class="more">
+    	投票开始时间：<?php echo $starttime?>　
+      	投票结束时间:<?php echo $endtime?>
+        投票人数：<?php echo $totalcount?>
+         </span> </div>
+  <div class="formbox">
+     <?php echo $rsmsg?>
+  </div>        
+  <div class="formbox">
+    <?php echo $votelist?>
+  </div>
+</div>
+<div class="footer">
+  <p class="link">
+    网站版权信息及免责声明
+  </p>
+<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+  
+</div>
 
 </body>
 </html>

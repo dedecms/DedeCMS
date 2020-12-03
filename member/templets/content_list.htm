@@ -1,153 +1,110 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>文档管理</title>
-<link href="company_style.css" rel="stylesheet" type="text/css">
-<script language="javascript">
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language="javascript" type="text/javascript">
 function viewArc(aid){
-	window.open("<?php echo $cfg_plus_dir?>/view.php?aid="+aid);
+	window.open("{dede:global.cfg_phpurl /}/view.php?aid="+aid);
 }
 function editArc(aid,channelid){
-	var arceditFile;
-	if(channelid==1) arceditFile = "article_edit.php?";
-	else if(channelid==2) arceditFile = "album_edit.php?";
-	else arceditFile = "archives_edit.php?channelid="+channelid+"&";
-	location = arceditFile + "aid="+aid+"&dopost=editArc";
+	location = "archives_do.php?dopost=edit&channelid="+channelid+"&aid="+aid;
 }
 function delArc(aid){
 	if(window.confirm('你确定要删除这篇文档吗?')) location="archives_do.php?aid="+aid+"&dopost=delArc";
 }
 </script>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="820" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/menu.php");?>
-    </td>
-<td width="10">&nbsp;</td>
-<td  valign="top">
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="checkbox">
-<tr> 
-<td height="183" valign="top">
-<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'>
- <tr> 
-<td align='center' valign='top'>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom:3px; margin-top:10px;">
-<tr bgcolor="#ffffff"> 
-          <div class="manage_company_right_title">
-                	<ul><li>
-<?php echo $positionname?>
-内容列表</li></ul>
-                </div>
-</tr>
-</table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-<form name="form2">
-<tr align="center" bgcolor="#FAFAF1" height="24"> 
-<td width="33%" bgcolor="#F0F8D6">文章标题</td>
-<td width="14%" bgcolor="#F0F8D6">发布时间</td>
-<td width="16%" bgcolor="#F0F8D6">类目</td>
-<td width="10%" bgcolor="#F0F8D6">点击</td>
-<td width="9%" bgcolor="#F0F8D6">状态</td>
-<td width="18%" bgcolor="#F0F8D6">操作</td>
-</tr>
-<?php 
-$mylist = $dlist->GetDataList();
-$exday = 3600 * 24 * $cfg_locked_day;
-$ntime = mytime();
-while($row = $mylist->GetArray('dm'))
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">已发布<?php echo $positionname; ?></span><span class="fRight mR10 titPublish icon"><a href='archives_do.php?dopost=addArc&channelid=<?php echo $channelid;  ?>'>发表新文档</a></span></div>
+        <div class="titleBar bgGreen lineTB">
+          <form name='form3' action='content_list.php' method='get'>
+            <div class="fLeft" style="margin-top:3px">
+              <input type='hidden' name='dopost' value='listArchives' />
+              <input type='hidden' name='channelid' value='<?php echo $channelid?>'>
+              关键字：
+              <input class="text" type='text' name='keyword' value='<?php echo $keyword?>' style='width:140px' />
+              <button class="button2" type="submit">提交</button>
+            </div>
+            <div class="fRight" style="margin-top:3px">
+              <?php
+            	echo "<select  name='mtypesid' onchange='location.href=this.value' size='1'>\r\n";
+            	echo "<option value='0'>请选择分类...</option>\r\n";
+                echo "<option value='content_list.php?channelid=$channelid'>所有文章</option>\r\n";
+				echo $classlist;
+				echo "</select>";
+            ?>
+            </div>
+          </form>
+        </div>
+        <form name="form2" class="mL10 mR10 mTB10">
+          <table cellspacing="1" class="list">
+            <thead>
+              <tr>
+                <th >文章标题</th>
+                <th width="10%">类目 </th>
+                <th width="10%">状态 </th>
+                <th width="5%">点击 </th>
+                <th width="10%">发布时间 </th>
+                <th width="10%">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+            {dede:datalist}
+            <tr>
+              <td><span class="titDot icon16 fLeft"></span><a href='<?php echo $cfg_phpurl; ?>/view.php?aid=<?php echo $fields['id']; ?>' target='_blank'><?php echo $fields['title']; ?><?php echo IsPicArchives($fields['litpic']); ?></a>
+                <!--<?php
+if(trim($fields['litpic'])!='')
+{
+	echo "<img class='' src='{$fields['litpic']}' width='90' />";
+}
+?> -->
+              </td>
+              <td align="center"><?php echo $fields['typename']; ?></td>
+              <td align="center"><?php
+if($fields['arcrank']>=0) echo "已审核";
+else echo "<font color='red'>未审核</font>";
+?></td>
+              <td align="center"><?php echo $fields['click']; ?></td>
+              <td><?php echo GetDateMk($fields['senddate']); ?></td>
+              <td align="center"><?php
+if($fields['arcrank']<0 || $arcsta!=-1)
 {
 ?>
-<tr align='center' bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFEE9';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="24"> 
-<td align='left'>
-·<a href='<?php echo $cfg_plus_dir?>/view.php?aid=<?php echo $row['aid']?>' target='_blank'><u><?php echo $row['title']?><?php echo IsPicArchives($row['litpic'])?></u></a>
-</td>
-<td> 
-<?php echo GetDateMk($row['uptime'])?>
-</td>
-<td> 
-<?php echo $row['typename']?>
-</td>
-<td> 
-<?php echo $row['click']?>
-</td>
-<td> 
-<?php 
-if($row['arcrank']>=0) echo "已审核";
-else echo "<font color='red'>未审核</font>";
-?>
-</td>
-<td>
-	<a href="javascript:editArc(<?php echo $row['aid']; ?>,<?php echo $row['channelid']; ?>);">改</a> | 
-  <a href="javascript:delArc(<?php echo $row['aid']; ?>);">删</a> |
-	<a href="javascript:viewArc(<?php echo $row['aid']; ?>);">预览</a> 
-</td>
-</tr>
-<?php 
+                <a href="javascript:editArc(<?php echo $fields['id']?>,<?php echo $fields['channel']?>);">修改</a> | <a href="javascript:delArc(<?php echo $fields['id']?>);">删除</a> |
+                <?php
+}
+else
+{
+	echo "<span class='gray'>改 | 删 | </span>";
 }
 ?>
-</form>
-<tr align="right" bgcolor="#EEF4EA"> 
-<td height="20" colspan="6" align="center" bgcolor="#F9FCEF"> 
-<?php echo $dlist->GetPageList(7);?></td>
-</tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="4"></td>
-</tr>
-<tr bgcolor="#FFFFFF"> 
-<td style="border: 1px solid #D9EDC0;" height="26">
-<table width='100%'border='0' cellpadding='1' cellspacing='1'>
-<tr bgcolor='#EEF4EA'> 
-<form name='form3' action='content_list.php' method='get'>
-<input type='hidden' name='dopost' value='listArchives'>
-<input type='hidden' name='channelid' value='<?php echo $channelid?>'>
-<td background="img/nnnbg.gif" bgcolor="#F3FADE"><table width='580' border='0' cellpadding='0' cellspacing='0'>
-<tr> 
-<td width='90' align='center'>请选择类目：</td>
-<td width='160'>
-<select name='mtype' style='width:150px'>
-<?php 
-$dsql->SetQuery("Select * From `#@__member_arctype` where memberid='".$cfg_ml->M_ID."' ;");
-$dsql->Execute('mylist');
-echo "<option value='0'>--请选择分类--</option>"; 
-while($arow = $dsql->GetObject('mylist')){
-  if($mtype==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
-  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
-}
-?>
-</select>
-</td>
-<td width='80'>　关键字： </td>
-<td width='150'> <input type='text' name='keyword' value='<?php echo $keyword?>' style='width:140'> 
-</td>
-<td> <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np"> 
-</td>
-</tr>
-</table></td>
-</form>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td colspan="2" height="4"></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="24" valign="top">&nbsp;</td>
-</tr>
-</table></td>
-</tr>
-</table>
-<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+                <a href="javascript:viewArc(<?php echo $fields['id']; ?>);">预览</a></td>
+            </tr>
+            {/dede:datalist}
+            </tbody>
+            
+            <tfoot>
+              <tr>
+                <td colspan="6"><div class="pages mTB10 fRight">{dede:pagelist listsize=5/}</div>
+                  <div class="clear"></div></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

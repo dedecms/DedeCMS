@@ -1,0 +1,120 @@
+{dede:include file='space-top.htm'/}
+		<!--c3b-->
+		<div class="c3">
+			<!--c3lb-->
+			<div class="c3l">
+				<!--ccb-->
+				<div class="cc">
+					<!--cctb-->
+					<div class="cct">
+						<div class="cctl">
+						</div>
+						<div class="cctm">
+							<h2>产品分类</h2>
+						</div>
+						<div class="cctr">
+						</div>
+					</div>
+					<!--ccte-->
+					<!--ccmb-->
+					<div class="ccm2">
+					<ul>
+					{dede:array.mtypearr}
+<li><p><a href="?uid=company&action=products&mtype={dede:value.mtypeid/}" target="_blank">{dede:value.mtypename/}</p></a></li>
+{/dede:array}
+					</ul>
+					</div>
+					<!--ccme-->
+					<!--cctb-->
+					<div class="cct">
+						<div class="cctl">
+						</div>
+						<div class="cctm">
+							<h2>联系方式</h2>
+						</div>
+						<div class="cctr">
+						</div>
+					</div>
+					<!--ccte-->
+					<!--ccmb-->
+					<div class="ccm2">
+					<ul>
+						<li>联系人：{dede:var.linkman/}</li>
+						<li>电话：{dede:var.tel/}</li>
+						<li>传真：{dede:var.fax/}</li>
+						<li>网址: {dede:var.url/}</li>
+						<li>Email: {dede:var.email/}</li>
+						<li>地址：{dede:var.address/}</li>
+					</ul>
+					</div>
+					<!--ccme-->
+				</div>
+				<!--cce-->
+			</div>
+		<!--c3le-->
+			<div class="c3r">
+				<img src="space/company/img/222.jpg" alt="dede" style="margin-bottom:5px;"/>
+				<!--c4b-->
+				<div class="c4">
+					<!--c4tb-->
+					<div class="c4t">
+						<div class="c4tl">
+						</div>
+						<div class="c4tm c4tm2">
+							<div class="pict">{dede:if global.action=='products'} 产品列表 {else} 新闻列表{/dede:if}</div>
+							<p>分类:<select onchange="jump(this.options[this.selectedIndex].value)">
+							<option value="0">不限</option>
+							{dede:array.mtypearr}
+							{dede:if global.mtype==value.mtypeid}
+							<option value="{dede:value.mtypeid/}" selected>{dede:value.mtypename/}</option>
+							{else}
+							<option value="{dede:value.mtypeid/}">{dede:value.mtypename/}</option>
+							{/dede:if}
+							{/dede:array}</select></p>
+							<script>
+							function jump(value)
+							{
+								window.location=('?uid={dede:global.uid/}&action={dede:global.action/}&mtype='+value);
+							}
+							</script>
+						</div>
+						<div class="c4tr">
+						</div>
+					</div>
+					<!--c4te-->
+					<!--c4bb-->
+					<div class="c4b2">
+					<!--内容块开始-->
+					{dede:datalist titlelen = '24'}
+					<div class="pl">
+						<div class="pll">
+							<p><a href="{dede:field.arcurl/}" target="_blank"><img src="{dede:field.litpic/}" alt="333.jpg"/></a></p>
+						</div>
+						<div class="plr">
+							<div class="p1">
+								<a href="{dede:field.arcurl/}" target="_blank">{dede:field.title/}</a><span>({dede:field.pubdate function=GetDateTimeMk(@me)/})</span>
+							</div>
+							<div class="p2">
+								{dede:field.description/}...
+							</div>
+							<div class="p3">
+								<p class="fav"><a href="{dede:field name='phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">加入收藏</a></p>
+								{dede:if global.action == 'products'}
+								<p class="fav buy"><a href="{dede:field name='phpurl'/}/posttocar.php?id={dede:field name='id'/}" target="_blank">加入购物车</a></p>
+								{/dede:if}
+							</div>
+						</div>
+					</div>
+					{/dede:datalist}
+					<!--内容块结束-->
+					</div>
+					<!--c4be-->
+					<div class="np">
+						{dede:pagelist/}
+					</div>
+				</div>
+				<!--c4e-->
+			</div>
+		</div>
+		<!--c3e-->
+{dede:include file='space-foot.htm'/}

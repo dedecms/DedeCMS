@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>会员权限管理</title>
+<link href="img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+    <tr height="28">
+      <td colspan="6" background='img/tbg.gif'>
+      	<strong><u>会员管理</u> &gt; 会员类别管理：</strong>
+      </td>
+    </tr>
+    <tr bgcolor="#F8FCF1" height="24">
+      <td colspan="6"><strong>会员类别管理牵涉数据库底层, 如果不了解mysql和php请不要修改<br>
+      自定义会员类别后请自行定义该类别会员对应的私有数据表, 可参考 #@__member_company 和 #@__member_person 表<br>
+      注册接口请自行修改 member/reg_new.php 文件
+      程序调用接口参见member/inc/config_space.php 文件<br>
+      </strong></td>
+    </tr>
+    <form action="?" method="post">
+     <input type="hidden" name="dopost" value="save" />
+    <tr bgcolor="#FDFEE9" height="24" align="center">
+    <td>继续使用</td>
+    <td>会员类别名称</td>
+    <td>类别属性</td>
+    </tr>
+    <?php
+    foreach($types as $type)
+    {
+    	echo '<tr bgcolor="#FFFFFF" align="center" height="24">';
+
+	if(in_array($type, array('个人', '企业')))
+	{
+
+		echo '<td><input type="checkbox" name="types[]" value="'.$type.'" checked disabled /></td>';
+		echo '<td>'.$type.'</td>';
+		echo '<td>系统自带</td>';
+	}
+	else
+	{
+		echo '<td><input type="checkbox" name="types[]" value="'.$type.'" checked /></td>';
+		echo '<td>'.$type.'</td>';
+		echo '<td>用户自定义</td>';
+	}
+	echo '</tr>';
+    }
+    ?>
+
+
+     <tr bgcolor="#FDFEE9" height="24" align="center">
+    <td colspan="3">增加会员类别</td>
+    </tr>
+    <tr bgcolor="#FFFFFF" align="center" height="24">
+    <td><input type="checkbox"  checked/></td>
+    <td><input type="text" name="name" /> </td>
+    <td></td>
+    </tr>
+    <tr bgcolor="#FDFEE9" height="24" align="center"><td colspan="3"><input type="submit" value="提交" class="np coolbg" /></td></tr>
+    </form>
+</table>
+</body>
+</html>

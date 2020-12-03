@@ -1,24 +1,20 @@
-{dede:page pagesize="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{dede:config.pagesize value="20"/}
+<html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>自定义标记</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
+<link href='img/base.css' rel='stylesheet' type='text/css'>
 </head>
-<body>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-  <div class="bodytitletxt">模板管理</div>
-</div>
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
   <tr>
-   <td height="19" colspan="7" bgcolor="#EDF9D5">
-     <b>&nbsp;&nbsp;自定义标记管理</b>
+   <td height="28" background="img/tbg.gif" colspan="7">
+     <b>自定义标记管理</b>
      &nbsp;[<a href="mytag_add.php"><u>增加一个标记</u></a>]
-     &nbsp;[<a href="mytag_tag_guide.php"><u>智能标记向导</u></a>]	</td>
+     &nbsp;[<a href="mytag_tag_guide.php"><u>智能标记向导</u></a>]
+	</td>
 </tr>
-  <tr align="center" bgcolor="#F8FBFB" height="24"> 
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
       <td width="10%">编号</td>
       <td width="20%">标记名称</td>
       <td width="15%">所属栏目</td>
@@ -27,22 +23,28 @@
       <td width="20%">管理</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-        <td>[field:aid /]</td>
-        <td>[field:tagname /]</td>
-        <td>[field:typename function='TestType("@me")'/]</td>
-        <td>[field:timeset function='TimeSetValue(@me)'/]</td>
-        <td>[field:endtime function='GetDateMk(@me)'/]</td>
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+    	 onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+        <td>{dede:field.aid /}</td>
+        <td>{dede:field.tagname /}</td>
+        <td>{dede:field.typename function='TestType(@me)'/}</td>
+        <td>{dede:field.timeset function='TimeSetValue(@me)'/}</td>
+        <td>{dede:field.endtime function='GetDateMk(@me)'/}</td>
         <td>
-          	<a href='mytag_edit.php?aid=[field:aid /]&dopost=edit'>更改</a> | 
-		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=delete'>删除</a> | 
-		        <a href='mytag_edit.php?aid=[field:aid /]&dopost=getjs'>JS调用</a>
+          	<a href='mytag_edit.php?aid={dede:field.aid /}&dopost=edit'>更改</a> | 
+		        <a href='mytag_edit.php?aid={dede:field.aid /}&dopost=delete'>删除</a> | 
+		        <a href='mytag_edit.php?aid={dede:field.aid /}&dopost=getjs'>JS调用</a>
 		    </td>
      </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F8FBFB" height="24"> 
-      <td colspan="7">{dede:pagelist listsize=6/}</td>
+     <tr align="center" bgcolor="#F9FCEF" height="36"> 
+      <td colspan="7">
+      	{dede:pagelist listsize=6/}
+      </td>
      </tr>
    </table>
-   </body>
+   </td>
+</tr>
+</table>
+</body>
 </html>

@@ -1,31 +1,33 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-
-if(empty($activepath)) $activepath = "";
-
-$cfg_txttype = "htm|html|tpl|txt|dtp";
-
-$activepath = str_replace("..","",$activepath);
-$activepath = ereg_replace("^/{1,}","/",$activepath);
-
+if(empty($activepath))
+{
+	$activepath = '';
+}
+$cfg_txttype = 'htm|html|tpl|txt|dtp';
+$activepath = str_replace('.','',$activepath);
+$activepath = ereg_replace("/{1,}",'/',$activepath);
 $templetdir  = $cfg_templets_dir;
-
-if(strlen($activepath)<strlen($templetdir)){
+if(strlen($activepath) < strlen($templetdir))
+{
 	$activepath = $templetdir;
 }
-
-$inpath = $cfg_basedir.$activepath; 
-$activeurl = "..".$activepath;
-if(empty($f)) $f="form1.enclosure";
-
-if(empty($comeback)) $comeback = "";
-
+$inpath = $cfg_basedir.$activepath;
+$activeurl = '..'.$activepath;
+if(empty($f))
+{
+	$f='form1.enclosure';
+}
+if(empty($comeback))
+{
+	$comeback = '';
+}
 ?>
 <html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>模板管理器</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<link href='../../plus/img/base.css' rel='stylesheet' type='text/css'>
 <style>
 .linerow {border-bottom: 1px solid #CBD8AC;}
 </style>
@@ -44,16 +46,16 @@ function ReturnValue(reimg)
 }
 </SCRIPT>
 <table width='100%' border='0' cellpadding='0' cellspacing='1' bgcolor='#CBD8AC' align="center">
-<tr bgcolor='#FFFFFF'> 
+<tr bgcolor='#FFFFFF'>
 <td colspan='3'>
 <!-- 开始文件列表  -->
 <table width='100%' border='0' cellspacing='0' cellpadding='2'>
-<tr bgcolor="#CCCCCC"> 
+<tr bgcolor="#CCCCCC">
 <td width="55%" align="center" background="img/wbg.gif" class='linerow'><strong>点击名称选择文件</strong></td>
 <td width="15%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>文件大小</strong></td>
 <td width="30%" align="center" background="img/wbg.gif" class='linerow'><strong>最后修改时间</strong></td>
 </tr>
-<?php 
+<?php
 $dh = dir($inpath);
 $ty1="";
 $ty2="";
@@ -73,9 +75,9 @@ if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
     $filesize=$ty1.".".substr($ty2,0,1);
   }
   $filetime = filemtime("$inpath/$file");
-  $filetime = strftime("%y-%m-%d %H:%M:%S",$filetime);
+  $filetime = MyDate("Y-m-d H:i:s",$filetime);
 }
- 
+
  //------判断文件类型并作处理
  if($file == ".") continue;
  else if($file == "..")
@@ -102,15 +104,15 @@ else if(is_dir("$inpath/$file"))
    echo "$line";
 }
 else if(eregi("\.(htm|html)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/htm.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -121,15 +123,15 @@ else if(eregi("\.(htm|html)",$file)){
     echo "$line";
 }
 else if(eregi("\.(css)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/css.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -140,15 +142,15 @@ else if(eregi("\.(css)",$file)){
     echo "$line";
 }
 else if(eregi("\.(js)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/js.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -159,15 +161,15 @@ else if(eregi("\.(js)",$file)){
     echo "$line";
 }
 else if(eregi("\.(jpg)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/jpg.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -178,15 +180,15 @@ else if(eregi("\.(jpg)",$file)){
     echo "$line";
 }
 else if(eregi("\.(gif|png)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/gif.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -197,15 +199,15 @@ else if(eregi("\.(gif|png)",$file)){
     echo "$line";
 }
 else if(eregi("\.(txt)",$file)){
-   
+
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
-   
+
    $reurl = "$activeurl/$file";
-   
+
    $reurl = ereg_replace("\.\.","",$reurl);
    $reurl = ereg_replace($templetdir."/","",$reurl);
-   
+
    $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
      <a href=\"javascript:ReturnValue('$reurl');\" $lstyle><img src=img/txt.gif border=0 width=16 height=16 align=absmiddle>$file</a>
@@ -219,7 +221,7 @@ else if(eregi("\.(txt)",$file)){
 $dh->close();
 ?>
 <!-- 文件列表完 -->
-<tr> 
+<tr>
 <td colspan='3' bgcolor='#E8F1DE'>
 
 <table width='100%'>
@@ -229,20 +231,9 @@ $dh->close();
 <input type='hidden' name='job' value='upload'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
-  &nbsp;上　传： <input type='file' name='uploadfile' style='width:200'>
-  改名：<input type='text' name='filename' value='' style='width:100'>
+  &nbsp;上　传： <input type='file' name='uploadfile' style='width:320px'>
+  改名：<input type='text' name='filename' value='' style='width:100px'>
   <input type='submit' name='sb1' value='确定'>
-</td>
-</tr>
-</form>
-<form action='select_templets_post.php' method='POST' name='myform2'>
-<input type='hidden' name='activepath' value='<?php echo $activepath?>' style='width:200'>
-<input type='hidden' name='f' value='<?php echo $f?>'>
-<input type='hidden' name='job' value='newdir'>
-<tr>
-  <td background="img/tbg.gif" bgcolor='#66CC00'> &nbsp;新目录： 
-  <input type='text' name='dirname' value='' style='width:150'>
-  <input type='submit' name='sb2' value='创建' style='width:40'>
 </td>
 </tr>
 </form>

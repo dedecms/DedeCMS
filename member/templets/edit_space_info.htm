@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>更改会员空间资料</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script type="text/javascript" language='javascript'src='js/main.js'></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location">设置个人资料</div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="mtypes.php">分类管理</a></li>
+            <li><a href="flink_main.php">书签管理</a></li>
+            <li class="select"><a href="">个人资料</a></li>
+          </ul>
+        </div>
+        <form class="mTB10 mL10 mR10" action="edit_space_info.php" method="post" enctype="multipart/form-data" name="form1">
+          <input type="hidden" name="dopost" value="save" />
+          <div class="titleBar bgGrass lineB">
+            <div class="fLeft"><strong>空间资料</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+          </div>
+          <table cellspacing="1" class="submit">
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top">空间名称：</td>
+                <td><input name="spacename" type="text" id="spacename" class="text" value="<?php echo $spacename; ?>" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">每页文档数：</td>
+                <td><input name="pagesize" type="text" id="pagesize" class="text" value="<?php echo $pagesize; ?>" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">空间风格：</td>
+                <td><?php
+     if($cfg_ml->M_MbType=='个人') {
+     ?>
+                  <input type='radio' name='spacestyle' value='<?php echo $spacestyle; ?>' checked='checked'/>
+                  <?php echo $spacestyle; ?>
+                  <?php
+     }else if($cfg_ml->M_MbType=='企业') {
+     ?>
+                  <input type='radio' name='spacestyle' value='<?php echo $spacestyle; ?>' checked='checked'/>
+                  <?php echo $spacestyle; ?>
+                  <?php
+     }
+     ?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">个人签名：</td>
+                <td><textarea name="sign" cols="50" id="sign" ><?php echo $sign; ?></textarea>
+                  少于50中文字</td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">空间Logo上传：</td>
+                <td><input name="oldspacelogo" type="hidden" value="<?php echo $spacelogo; ?>" />
+                  <input name="spacelogo" type="file" id="spacelogo" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">原有Logo：</td>
+                <td><?php
+      if($spacelogo!='') $logo = $spacelogo;
+      else $logo = 'images/mylogo.jpg';
+      echo "<div id='divpicview' class='divpre mTB10 litPic'><img src='$logo' /></div>\r\n";
+      ?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">空间公告：</td>
+                <td><?php GetEditor("spacenews",$spacenews,250,"MemberLit"); ?></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">更新</button>
+                  <button class="button2 mL10" type="reset">重设</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+</body>
+</html>

@@ -1,18 +1,30 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 CheckPurview('plus_文件管理器');
-
+require_once(DEDEINC."/oxwindow.class.php");
 $activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
-if($activepath == "/") $activepath = "";
-if($activepath == "") $inpath = $cfg_basedir;
-else $inpath = $cfg_basedir.$activepath;
+if($activepath == "/")
+{
+	$activepath = "";
+}
+if($activepath == "")
+{
+	$inpath = $cfg_basedir;
+}
+else
+{
+	$inpath = $cfg_basedir.$activepath;
+}
+
 //显示控制层
 //更改文件名
 if($fmdo=="rename")
 {
-	if($activepath=="") $ndirstring = "根目录";
+	if($activepath=="")
+	{
+		$ndirstring = "根目录";
+	}
 	$ndirstring = $activepath;
 	$wintitle = "文件管理";
 	$wecome_info = "文件管理::更改文件名 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
@@ -27,23 +39,30 @@ if($fmdo=="rename")
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
+
 //新建目录
 else if($fmdo=="newdir")
 {
-	if($activepath=="") $activepathname="根目录";
-	else $activepathname=$activepath;
+	if($activepath=="")
+	{
+		$activepathname="根目录";
+	}
+	else
+	{
+		$activepathname=$activepath;
+	}
 	$wintitle = "文件管理";
 	$wecome_info = "文件管理::新建目录 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
 	$win = new OxWindow();
 	$win->Init("file_manage_control.php","js/blank.js","POST");
 	$win->AddHidden("fmdo",$fmdo);
 	$win->AddHidden("activepath",$activepath);
-	//$win->AddHidden("filename",$filename);
 	$win->AddTitle("当前目录 $activepathname ");
 	$win->AddItem("新目录：","<input name='newpath' type='input' id='newpath'>");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
+
 //移动文件
 else if($fmdo=="move")
 {
@@ -61,6 +80,7 @@ else if($fmdo=="move")
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
+
 //删除文件
 else if($fmdo=="del")
 {
@@ -72,42 +92,55 @@ else if($fmdo=="del")
 	$win->AddHidden("activepath",$activepath);
 	$win->AddHidden("filename",$filename);
 	if(@is_dir($cfg_basedir.$activepath."/$filename"))
+	{
 		$wmsg = "你确信要删除目录：$filename 吗？";
+	}
 	else
+	{
 		$wmsg = "你确信要删除文件：$filename 吗？";
+	}
 	$win->AddTitle("删除文件确认");
 	$win->AddMsgItem($wmsg,"50");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
+
 //编辑文件
 else if($fmdo=="edit")
 {
-	if(!isset($backurl)) $backurl = "";
+	if(!isset($backurl))
+	{
+		$backurl = "";
+	}
+
 	$activepath = str_replace("..","",$activepath);
 	$filename = str_replace("..","",$filename);
 	$file = "$cfg_basedir$activepath/$filename";
 	$content = "";
-	if(is_file($file)){
-	  $fp = fopen($file,"r");
-	  $content = fread($fp,filesize($file));
-	  fclose($fp);
-	  $content = eregi_replace("<textarea","< textarea",$content);
-	  $content = eregi_replace("</textarea","< /textarea",$content);
-	  $content = eregi_replace("<form","< form",$content);
-	  $content = eregi_replace("</form","< /form",$content);
+	if(is_file($file))
+	{
+		$fp = fopen($file,"r");
+		$content = fread($fp,filesize($file));
+		fclose($fp);
+		$content = htmlspecialchars($content);
 	}
-	$contentView = "<textarea name='str' style='width:100%;height:400'>$content</textarea>\r\n";
+	$contentView = "<textarea name='str' style='width:100%;height:450px;background:#F3FCE2;'>$content</textarea>\r\n";
 	$GLOBALS['filename'] = $filename;
 	$ctp = new DedeTagParse();
-	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit.htm");
+	$ctp->LoadTemplate(DEDEADMIN."/templets/file_edit.htm");
 	$ctp->display();
 }
-//编辑文件，可视化模式
+/*编辑文件，可视化模式
 else if($fmdo=="editview")
 {
-	if(!isset($backurl)) $backurl = "";
-	if(!isset($ishead)) $ishead = "";
+	if(!isset($backurl))
+	{
+		$backurl = "";
+	}
+	if(!isset($ishead))
+	{
+		$ishead = "";
+	}
 	$activepath = str_replace("..","",$activepath);
 	$filename = str_replace("..","",$filename);
 	$file = "$cfg_basedir$activepath/$filename";
@@ -115,14 +148,19 @@ else if($fmdo=="editview")
 	@$content = fread($fp,filesize($file));
 	fclose($fp);
 	if((eregi("<html",$content) && eregi("<body",$content)) || $ishead == "yes")
-	{ $contentView = GetEditor("str",$content,"500","Default","string","true"); }
+	{
+		$contentView = GetEditor("str",$content,"500","Default","string","true");
+	}
 	else
-	{ $contentView = GetEditor("str",$content,"500","Default","string","false"); }
+	{
+		$contentView = GetEditor("str",$content,"500","Default","string","false");
+	}
 	$GLOBALS['filename'] = $filename;
 	$ctp = new DedeTagParse();
-	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit_view.htm");
+	$ctp->LoadTemplate(DEDEADMIN."/templets/file_edit_view.htm");
 	$ctp->display();
 }
+*/
 //新建文件
 else if($fmdo=="newfile")
 {
@@ -130,16 +168,15 @@ else if($fmdo=="newfile")
 	$GLOBALS['filename'] = "newfile.txt";
 	$contentView = "<textarea name='str' style='width:100%;height:400'></textarea>\r\n";
 	$ctp = new DedeTagParse();
-	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_edit.htm");
+	$ctp->LoadTemplate(DEDEADMIN."/templets/file_edit.htm");
 	$ctp->display();
 }
+
 //上传文件
 else if($fmdo=="upload")
 {
 	$ctp = new DedeTagParse();
-	$ctp->LoadTemplate(dirname(__FILE__)."/templets/file_upload.htm");
+	$ctp->LoadTemplate(DEDEADMIN."/templets/file_upload.htm");
 	$ctp->display();
 }
-
-ClearAllLink();
 ?>

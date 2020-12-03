@@ -1,8 +1,6 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/inc_typelink.php");
+require_once(DEDEINC."/typelink.class.php");
+include DedeInclude('templets/makehtml_archives.htm');
 
-require_once(dirname(__FILE__)."/templets/makehtml_archives.htm");
-
-ClearAllLink();
 ?>

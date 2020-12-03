@@ -1,55 +1,62 @@
 <?php
-require(dirname(__FILE__)."/../include/config_base.php");
-require(dirname(__FILE__)."/../include/inc_channel_unit.php");
-if(!isset($action)) $action = "";
-if(!empty($artID)) $arcID = $artID;
-if(!isset($arcID)) $arcID = "";
-$arcID = ereg_replace("[^0-9]","",$arcID);
-if(empty($arcID)){
-	  ShowMsg("文档ID不能为空!","-1");
-	  exit();
+require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once(DEDEINC."/channelunit.class.php");
+if(!isset($action)) $action = '';
+
+if(isset($arcID)) $aid = $arcID;
+$arcID = $aid = (isset($aid) && is_numeric($aid) ? $aid : 0);
+
+if(empty($aid)) {
+	ShowMsg("文档ID不能为空!","-1");
+	exit();
 }
-//////////////////////////////////////////////
-if($action=="")
+
+//读取文档信息
+if($action=='')
 {
-  $dsql = new DedeSql(false);
-  //读取文档信息
-  $arctitle = "";
-  $arcurl = "";
-  $arcRow = $dsql->GetOne("Select #@__archives.title,#@__archives.senddate,#@__archives.arcrank,#@__archives.ismake,#@__archives.money,#@__archives.typeid,#@__arctype.typedir,#@__arctype.namerule From #@__archives  left join #@__arctype on #@__arctype.ID=#@__archives.typeid where #@__archives.ID='$arcID'");
-  if(is_array($arcRow)){
-	  $arctitle = $arcRow['title'];
-	  $arcurl = GetFileUrl($arcID,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
-  }
-  else{
-	  $dsql->Close();
-	  ShowMsg("无法把未知文档推荐给好友!","-1");
-	  exit();
-  }
-  $dsql->Close();
+	//读取文档信息
+	$arcRow = GetOneArchive($aid);
+	if($arcRow['aid']=='') {
+		ShowMsg("无法把未知文档推荐给好友!","-1");
+		exit();
+	}
+	extract($arcRow, EXTR_SKIP);
 }
 //发送推荐信息
 //-----------------------------------
-else if($action=="send")
+else if($action=='send')
 {
-	if(!eregi("(.*)@(.*)\.(.*)",$email)){
-	  echo "<script>alert('Email不正确!');history.go(-1);</script>";
-	  exit();
-  }
-  $mailbody = "";
-  $msg = ereg_replace("[><]","",$msg);
-  $mailtitle = "你的好友 $name 给你推荐了一篇文章";
-  $mailbody .= "$msg \r\n\r\n";
-  $mailbody .= "Powered by http://www.dedecms.com 织梦内容管理系统！";
-  if(eregi("(.*)@(.*)\.(.*)",$email)){
+	if(!eregi("^[0-9a-z][a-z0-9\.-]{1,}@[a-z0-9-]{1,}[a-z]\.[a-z\.]{1,}[a-z]$",$email))
+	{
+		echo "<script>alert('Email格式不正确!');history.go(-1);</script>";
+		exit();
+	}
+	$mailbody = '';
+	$msg = htmlspecialchars($msg);
+	$mailtitle = "你的好友给你推荐了一篇文章";
+	$mailbody .= "$msg \r\n\r\n";
+	$mailbody .= "Power by http://www.dedecms.com 织梦内容管理系统！";
+
 	$headers = "From: ".$cfg_adminemail."\r\nReply-To: ".$cfg_adminemail;
-	sendmail($email, $mailtitle, $mailbody, $headers);
-  }
-  ShowMsg("成功推荐一篇文章!",$arcurl);
-  exit();
+
+	if($cfg_sendmail_bysmtp == 'Y' && !empty($cfg_smtp_server))
+	{
+		$mailtype = 'TXT';
+		require_once(DEDEINC.'/mail.class.php');
+		$smtp = new smtp($cfg_smtp_server,$cfg_smtp_port,true,$cfg_smtp_usermail,$cfg_smtp_password);
+		$smtp->debug = false;
+		$smtp->sendmail($email, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
+	}
+	else
+	{
+		@mail($email, $mailtitle, $mailbody, $headers);
+	}
+
+	ShowMsg("成功推荐一篇文章!","-1");
+	exit();
 }
 
 //显示模板(简单PHP文件)
-include_once($cfg_basedir.$cfg_templets_dir."/plus/recommend.htm");
+include(DEDEROOT.$cfg_templets_dir.'/plus/recommend.htm');
 
 ?>

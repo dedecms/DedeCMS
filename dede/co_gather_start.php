@@ -1,30 +1,27 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
-require_once(dirname(__FILE__)."/../include/pub_collection.php");
-if($nid=="") 
+require_once(DEDEINC."/dedecollection.class.php");
+if(!empty($nid))
 {
-	ShowMsg("参数无效!","-1");	
-	exit();
-}
-$co = new DedeCollection();
-$co->Init();
-$co->LoadFromDB($nid);
-$dsql = new DedeSql(false);
-$dsql->SetSql("Select count(aid) as dd From #@__courl where nid='$nid'");
-$dsql->Execute();
-$row = $dsql->GetObject();
-$dd = $row->dd;
-$dsql->Close();
-if($dd==0)
-{
-	$unum = "没有记录或从来没有采集过这个节点！";
+	$ntitle = '采集指定节点：';
+	$nid = intval($nid);
+	$co = new DedeCollection();
+	$co->LoadNote($nid);
+	$row = $dsql->GetOne("Select count(aid) as dd From `#@__co_htmls` where nid='$nid'; ");
+	if($row['dd']==0)
+	{
+		$unum = "没有记录或从来没有采集过这个节点！";
+	}
+	else
+	{
+		$unum = "共有 {$row['dd']} 个历史种子网址！<a href='javascript:SubmitNew();'>[<u>更新种子网址，并采集</u>]</a>";
+	}
 }
 else
 {
-	$unum = "共有 $dd 个历史种子网址！<a href='javascript:SubmitNew();'>[<u>更新种子网址，并采集</u>]</a>";
+	$ntitle = '监控式采集：';
+	$unum = "没指定采集节点，将使用检测新内容采集模式！";
 }
-require_once(dirname(__FILE__)."/templets/co_gather_start.htm");
-$co->Close();
+include DedeInclude('templets/co_gather_start.htm');
 
-ClearAllLink();
 ?>

@@ -2,130 +2,72 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>友情链接 - powered by dedecms</title>
-<link href="../templets/style/nspage.css" rel="stylesheet" type="text/css" />
+<title><?php echo $cfg_webname;?>_所有链接</title>
+<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
+<body class="flinkpage">
 
-<?php
-	$titlelen = 50;
-	$dsql = new DedeSql(false);
-	$dsql->SetQuery("Select * from #@__flink where ischeck>0 order by sortrank asc");
-	$dsql->Execute();
-	$txtlink ="";
-	$imglink ="";
-	$linkdata = "";
-	while($dbrow=$dsql->GetObject())
-	{
-		$wtitle = cn_substr($dbrow->webname,$titlelen);
-		
-		if($dbrow->logo==""){
-			$txtlink .= "<a href='".$dbrow->url."' target='_blank'>$wtitle</a>\n\t\t\t\t\t";
-		}else{
-			$imglink .= "<a href='".$dbrow->url."' target='_blank'><img src='".$dbrow->logo."' width='88' height='31' border='0' alt='$wtitle'></a>\n\t\t\t\t\t";
-		}
-	}
-	$dsql->Close();
-
-	if($dopost=="save"){
-	  ShowMsg("成功增加一个链接，但需要审核后才能显示!","",1);
-	}
-?>
-<body>
-
-<div class="main mceneter">
-	<div class="toplogo">
-		<div class="logo">
-				<a href="/"><img src="../templets/images/toplogo.gif" /></a>		</div>
+<div class="header">
+	<div class="top w960 center">
 		<div class="title">
-			友情链接
-		</div>
+			<h1>
+				<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
+			</h1>
+		</div><!-- /title -->
+
+	</div><!-- /top -->
+</div><!-- /header -->
+
+<div class="w960 clear center mt1 cmt-box">
+	<div class="sp-title">
+		<h2>友情链接</h2>
+		<span class="more">
+			<a href='flink_add.php'>申请链接</a> 
+		</span>
 	</div>
-	<div class="cmain">
-		<div class="ctitle">
-			<h1>所有链接</h1>
-			<span></span>
-		</div>
-		<div class="cbox mceneter">
-			<div class="linklist">
-				
-				<div class="txtlink">
-					<?php echo $txtlink; ?>
-				
-				</div>
-				<div class="imglink">
-					<?php echo $imglink; ?>
-					
-				</div>
-			</div>
-		</div>
-		
-		<div class="ctitle">
-			<h1>申请加入</h1>
-			<span></span>
-		</div>
-		<div class="cbox mceneter">
-			<div class="linkadd">
-			<form name="addlink" method="post" action="flink.php">
-			<input type='hidden' name='dopost' value='save' />
-				<dl>
-					<dt>网站名:</dt>
-					<dd><input name="webname" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网址:</dt>
-					<dd><input name="url" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站LOGO:</dt>
-					<dd><input name="logo" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>站长eMail:</dt>
-					<dd><input name="email" type="text" size="30" />
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站类型:</dt>
-					<dd>
-						<select name="typeid" id="typeid">
-							<?php 
-								$dsql = new DedeSql(false);
-								$dsql->SetQuery("select * from #@__flinktype");
-								$dsql->Execute();
-								while($row=$dsql->GetObject())
-								{
-								echo "	<option value='".$row->ID."'>".$row->typename."</option>\r\n";
-								}
-								$dsql->Close();
-							?>
-						</select>
-					</dd>
-				</dl>
-				<dl>
-					<dt>网站概况:</dt>
-					<dd><textarea name="msg" cols="30" rows="3"></textarea>
-					</dd>
-				</dl>
-				<dl>
-					<dt>验证码:</dt>
-					<dd><input name="validate" type="text" size="4" /><img src="../include/vdimgck.php" width="50" height="20" />
-					</dd>
-				</dl>
-				<div class="submit">
-					<input name="提交" type="submit" id="提交" value="提交" class="button" />
-				</div>
-			</form>
-			</div>
-		</div>
+	<div class="flinkbox">
+		<ul class="f5">
+		  <?php
+		  $row = 180;
+		  $titlelen = 50;
+		  $dsql->SetQuery("Select * from `#@__flink` where ischeck>0 order by sortrank asc");
+		  $dsql->Execute();
+		$revalue = "";
+		for($i=1;$i<=$row;$i++)
+		{
+
+				if($dbrow=$dsql->GetObject())
+				{
+					$wtitle = cn_substr($dbrow->webname,$titlelen);
+					if($dbrow->logo=="")
+						$revalue.= "<li><a href='".$dbrow->url."' target='_blank'>$wtitle</a></li>";
+					else
+						$revalue.= "<li><a href='".$dbrow->url."' target='_blank'><img src='".$dbrow->logo."' width='88' height='31' border='0' alt='$wtitle'></a></li>";
+				}
+			if(!$dbrow) break;
+		}
+		echo  $revalue;
+		  ?>
+		</ul>
 	</div>
-</div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+
+
 </div>
 
+
+<div class="footer">
+<p class="link">
+		网站版权信息及免责声明
+  </p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
+</div>
 
 </body>
 </html>

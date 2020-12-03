@@ -1,22 +1,26 @@
-<?php 
+<?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
-$nid = ereg_replace("[^0-9]","",$nid);
-if(empty($nid)){
-   ShowMsg("参数无效!","-1");
-   exit();
+require_once(DEDEINC."/oxwindow.class.php");
+$nid = ereg_replace('[^0-9]','',$nid);
+$row = $dsql->GetOne("Select * From `#@__co_note` where nid='$nid'");
+$noteconfig = "{dede:listconfig}\r\n".$row['listconfig']."\r\n{/dede:listconfig}\r\n\r\n";
+$noteconfig .= "{dede:itemconfig}\r\n".$row['itemconfig']."\r\n{/dede:itemconfig}";
+if(empty($extype) || $extype=='base64')
+{
+	$noteconfig = "BASE64:".base64_encode($noteconfig).":END";
+	$exmsg =  " &nbsp; <a href='co_export_corule.php?nid={$nid}&extype=text'>【导出为普通格式】</a> ";
 }
-$dsql = new DedeSql(false);
-$row = $dsql->GetOne("Select * From #@__conote where nid='$nid'");
-$dsql->Close();
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
+else
+{
+	$exmsg =  " &nbsp; <a href='co_export_corule.php?nid={$nid}&extype=base64'>【导出为Base64格式】</a> ";
+}
 $wintitle = "导出采集规则";
-$wecome_info = "<a href='co_main.php'><u>采集节点管理</u></a>::导出采集规则";
+$wecome_info = "<a href='co_main.php'><u>采集节点管理</u></a>::导出采集规则 $exmsg";
 $win = new OxWindow();
 $win->Init();
-$win->AddTitle("以下为规则 [{$row['gathername']}] 的文本配置，你可以共享给你的朋友：");
-$winform = $win->GetWindow("hand","<xmp style='color:#333333;background-color:#ffffff'>".$row['noteinfo']."</xmp>");
+$win->AddTitle("以下为规则 [{$row['notename']}] 的文本配置，你可以共享给你的朋友：");
+$winform = $win->GetWindow("hand","<textarea name='config' style='width:100%;height:450px;word-wrap: break-word;word-break:break-all;'>".$noteconfig."</textarea>");
 $win->Display();
 
-ClearAllLink();
 ?>

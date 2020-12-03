@@ -1,0 +1,489 @@
+@charset "gb2312";
+/*----------全局*/
+*{
+	padding:0px;
+	margin:0px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+body{
+	font-size:12px;
+}
+ul{
+	list-style:none;
+}
+img{
+	border:0px;
+}
+a{
+	color:#333333;
+}
+a:hover{
+	color:#FF3300;
+	text-decoration:none;
+}
+
+.cbody{
+	width:900px;
+	margin:0 auto;
+}
+.margintop{
+	margin-top:5px;
+}
+.floatclear{
+	clear:both;
+}
+input,select{
+	vertical-align:middle;
+}
+/*-----------头部*/
+.top{
+	height:88px;
+	overflow:hidden;
+}
+.toplogo{
+	float:left;
+	width:200px;
+	margin-top:14px;
+}
+.topbanner{
+	width:480px;
+	margin-top:14px;
+	margin-left:20px;
+	float:left;
+}
+.toplink{
+	float:left;
+	margin-top:14px;
+	margin-left:20px;
+	width:180px;
+}
+.toplink ul li{
+	width:90px;
+	float:left;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+}
+.submit{
+	margin-right:20px;
+	width:68px;
+	height:21px;
+	background:url(../images/userlogin_submit.gif) repeat-x;
+	border:1px solid #D4B06A;
+	font-weight:bold;
+	color:#753D00;
+	letter-spacing:3px;
+	line-height:20px;
+	font-size:12px;
+}
+/*----------栏目菜单*/
+.topmenu{
+	height:40px;
+	background:url(../images/topmenu_bg.gif) left top repeat-x;
+}
+.topmenu ul{
+	width:900px;
+	height:40px;
+	background:url(../images/topmenu_r.gif) top center no-repeat;
+	overflow:hidden;
+}
+.topmenu ul li{
+	float:left;
+	margin-left:-2px;
+	text-align:center;
+	background:url(../images/topmenu_bg.gif) left bottom no-repeat;
+}
+.topmenu ul li a{
+	float:left;
+	color:#FFFFFF;
+	display:block;
+	padding-left:17px;
+	padding-right:15px;
+	text-decoration:none;
+	height:40px;
+	line-height:37px;
+}
+.topmenu ul li a:hover{
+	color:#FFFF99;
+	background:url(../images/topmenu_o.gif) center bottom no-repeat;
+}
+.topmenu ul li a.thisclass{
+	color:#FFFF99;
+	background:url(../images/topmenu_o.gif) center bottom no-repeat;
+}
+.topmenu .rssbut{
+	position:relative;
+	float:right;
+	margin:-30px 8px auto;
+	display:inline;
+}
+/*----------搜索*/
+.topsearch{
+	height:37px;
+	width:899px;
+	margin-top:3px;
+	border-right:1px solid #EEE;
+	background:url(../images/topsearch_bg.gif) repeat-x;
+	overflow:hidden;
+}
+.topsearch .title{
+	height:37px;
+	width:83px;
+	float:left;
+	background:url(../images/topsearch_title.gif) left center no-repeat;
+}
+.topsearch .inpbox{
+	float:left;
+	margin-top:4px;
+	width:430px;
+}
+.topsearch .inpbox input{
+	margin-left:10px;
+	margin-right:10px;
+}
+.topsearch .inpbox select{
+	font-size:12px;
+	width:100px;
+}
+.topsearch .inpbox .searchtxt{
+	height:13px;
+	width:200px;
+	font-size:12px;
+	padding:6px 0 4px 5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#808080 #D4D0C8 #D4D0C8 #808080;
+}
+.topsearch .hots{
+	line-height:33px;
+	float:left;
+}
+/*----------内容*/
+.main{
+	clear:both;
+}
+
+
+/*-------------------------侧栏:用户登录*/
+.userlogin {
+	overflow:hidden;
+}
+.userlogin dl{
+	clear:both;
+	height:23px;
+	line-height:23px;
+	margin-top:7px;
+}
+.userlogin dl dt{
+	float:left;
+	display:block;
+	width:66px;
+	text-align:right;
+}
+.userlogin dl dd{
+	float:left;
+}
+.userlogin dl dd input{
+	height:13px;
+	width:126px;
+	font-size:12px;
+	padding:3px 0 3px 5px;
+	border-width:1px;
+	border-style:solid;
+	border-color:#808080 #D4D0C8 #D4D0C8 #808080;
+}
+.userlogin dl dd img{
+	vertical-align:middle;
+}
+.userlogin dl dd input.gdcode{
+	width:52px;
+}
+.userlogin .ulsubmit{
+	text-align:center;
+	margin-top:15px;
+	height:33px;
+}
+
+/*-------------------------底部:版权信息*/
+.footer{
+	clear:both;
+	border-top:1px solid #DDD;
+}
+
+.footer .copyright{
+
+	text-align:center;
+	margin:10px auto;
+	font-size:10px;
+	color:#999999;
+}
+.footer .copyright a{
+	font-weight:bold;
+	color:#999999;
+	text-decoration:none;
+}
+.footer .copyright a:hover{
+	color:#999999;
+}
+
+
+/*-------------------------分页*/
+.pages{
+
+	height:25px;
+	margin:12px auto 0px 10px;
+	background:#ffffff;
+}
+.pages .pcount{
+	display:inline;
+	padding-right:10px;
+	padding-left:10px;
+	float:left;
+	border-right:2px solid #CCC;
+	line-height:13px;
+	margin:6px 20px 0px 2px;
+	font-weight:bold;
+	color:#3366CC;
+	font-size:11px;
+}
+.pages .plist{
+	float:left;
+	padding-top:3px;
+	line-height:17px;
+}
+.pages .plist input {
+	float:left;
+	width: 30px;
+	border: 1px solid #DDDDDD;
+	height: 17px;
+}
+.pages .plist #button {
+	height: 18px;
+	width: 30px;
+	background-color: #FF6600;
+	border: 1px solid #CC3333;
+	color: #FFFFFF;
+	
+}
+.pages .plist span { 
+float:right
+}
+
+.pages .plist strong{
+	color:#FFF;
+	display:block;
+	float:left;
+	padding-left:8px;
+	padding-right:8px;
+	background:#F60;
+	border:1px solid #C33;
+	margin: 0px 3px 0px 0px;
+}
+.pages .plist a{
+	display:block;
+	height:17px;
+	float:left;
+	padding-left:8px;
+	padding-right:8px;
+	border:1px solid #DDD;
+	background:#FFF;
+	text-decoration:none;
+	margin-right:2px;
+	color:#000;
+}
+.pages .plist a:hover{
+	color:#FF0000;
+}
+
+
+/*---------------内容页:评论*/
+.comment{
+	width:668px;
+	border:1px solid #DDD;
+	margin-top:7px;
+}
+.comment .commenttitle{
+	width:666px;
+	height:26px;
+	margin:1px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-bottom:1px solid #DDD;
+}
+.comment .commenttitle .title{
+	float:left;
+	margin:5px 0px 0px 12px;
+	color:#999;
+	display:inline;
+}
+.comment .commenttitle .title strong{
+	letter-spacing:4px;
+	color:#444;
+	margin-right:10px;
+}
+.comment .commenttitle .gotopost{
+	float:right;
+	display:block;
+	width:100px;
+	height:23px;
+}
+.comment .commenttitle .gotopost a{
+	width:95px;
+	height:22px;
+	display:inline;
+	float:right;
+	text-align:center;
+	line-height:22px;
+	text-decoration:none;
+	background:url(../images/ico_gotopost.gif) no-repeat;
+	margin:1px 3px 0px 0px;
+}
+.comment .commentbox{
+	width:668px;
+}
+.comment .commentbox dl{
+	width:636px;
+	margin:10px auto 0px;
+	border:1px solid #D1DDCE;
+}
+.comment .commentbox dl dt{
+	width:636px;
+	background:#F4F9F2;
+	line-height:25px;
+	text-indent:10px;
+	color:#333;
+	border-bottom:1px solid #E6ECE3;
+}
+.comment .commentbox dl dt span{
+	color:#669933;
+	font-size:11px;
+}
+.comment .commentbox dl dd{
+	padding:10px;
+	font-size:14px;
+	line-height:25px;
+	color:#666;
+}
+/*---------------内容页:发表评论:标题*/
+.comment .posttitle{
+	width:666px;
+	height:26px;
+	margin:10px auto;
+	background:url(../images/title_bg_1.gif) repeat-x;
+	border-top:1px solid #DDD;
+	border-bottom:1px solid #DDD;
+}
+.comment .posttitle strong{
+	letter-spacing:4px;
+	color:#444;
+	display:block;
+	margin:7px 0px 0px 13px;
+}
+.comment .postbox{
+	width:636px;
+	margin:5px auto;
+	overflow:hidden;
+}
+
+.comment .postbox .userbox{
+	width:636px;
+	overflow:hidden;
+	margin-top:10px;
+}
+.comment .postbox .userbox dl{
+	width:636px;
+}
+.comment .postbox .userbox dl dd{
+	float:left;
+	display:block;
+	padding-bottom:2px;
+}
+.comment .postbox .userbox dl dd input.username,.comment .postbox .userbox dl dd input.password{
+	width:100px;
+	border:1px solid #CCC;
+	padding:3px 0px 2px 5px;
+	margin-right:10px;
+}
+.comment .postbox .userbox dl dd.mtop{
+	margin:7px 7px 0px 0px;
+}
+.comment .postbox .txtbox{
+	width:636px;
+	line-height:25px;
+}
+.comment .postbox .txtbox textarea{
+	border:1px solid #CCC;
+	width:600px;
+	height:80px;
+	padding:5px;
+}
+.comment .postbox  .sbut{
+	margin:10px;
+}
+.comment .postbox .userbox .submit{
+	width:100px;
+	height:25px;
+	padding-top:2px;
+}
+
+.classbox{
+	width:222px;
+	clear:both;
+	padding-bottom:5px;
+	background:url(../images/rcbox_title.gif) center bottom no-repeat;
+	
+}
+.classbox dl{
+	width:222px;
+}
+.classbox dl dt{
+	height:31px;
+	background:url(../images/rcbox_title.gif) center top no-repeat;
+	line-height:29px;
+	text-indent:10px;
+	color:#555;
+	letter-spacing:1px;
+	font-weight:bold;
+}
+.classbox dl dd{
+	width:220px;
+	border-left:1px solid #DDD;
+	border-right:1px solid #DDD;
+	background:#FAFAFA;
+	
+}
+.classbox dl dd ul{
+	list-style:none;
+	overflow:hidden;
+	width:220px;
+}
+.classbox dl dd ul li{
+	float:left;
+	width:102px;
+	margin-left:5px;
+	margin-bottom:5px;
+	height:27px;
+	line-height:25px;
+	text-indent:10px;
+	display:inline;
+	font-size:14px;
+}
+.classbox dl dd ul li a{
+	display:block;
+	width:100px;
+	height:25px;
+	border:1px solid #DDD;
+	text-decoration:none;
+	color:#0066CC;
+	background:#FFF;
+}
+.classbox dl dd ul li a:hover{
+	background:#FAFAFA;
+	border:1px solid #CCC;
+	color:#000;
+}
+.classbox dl dd ul li.this a{
+	background:#FFC;
+	color:#FF6600;
+	font-size:12px;
+	font-weight:bold;
+}

@@ -1,88 +1,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="css/style.css" rel="stylesheet" type="text/css" />
 <title>会员登录</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language="javascript" type="text/javascript">
+function changeAuthCode() {
+	var num = 	new Date().getTime();
+	var rand = Math.round(Math.random() * 10000);
+	num = num + rand;
+	if ($("#vdimgck")[0]) {
+		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+	}
+	return false;	
+}
+</script>
 </head>
-
 <body>
-<div id="container">
-	<!--头部开始-->
-	<div id="login_header">
-    	<div class="login_topbg">
-        	<div class="login_topleft">
-            </div>
-            <div class="login_topmiddle">
-            	<div class="login_topmiddle_left">
-                </div>
-                <div class="login_topmiddle_right">
-                </div>
-            </div>
-            <div class="login_topright">
-            </div>
-            <div class="clear">
-            </div>
-        </div>
-    </div>
-    <!--头部结束-->
-    <!--中间开始-->
-    <div id="login_main">
-    	<div class="login_main_border">
-        	<div class="login_main_white">
-            </div>
-            <div class="login_main_title">
-            </div>
-            <div class="login_main_text">
-            	<div class="login_main_foum">      
-                <form name='form1' method='POST' action='index_do.php'>
-        			<input type="hidden" name="fmdo" value="login">
-        			<input type="hidden" name="dopost" value="login">
-        			<input type="hidden" name="gourl" value="<?php if(!empty($gourl)) echo $gourl;?>">
-            		<div class="login_main_text_label">用户名：<input name="userid" type="text" class="login_label" />
-                	</div>
-                	<div class="login_main_text_label">登录密码：<input name="pwd" type="password" class="login_label" />
-                	</div>
-                	<div class="login_main_text_label">验证码：<input name="vdcode" type="text" class="login_label1" />
-                	</div>
-                	<div class="login_main_text_label1"><img src="../include/vdimgck.php" />
-                	</div>
-                	<div class="login_main_text_label2"><input type="submit" name="Submit2" value="登录" class="login_button01" />
-                	</div>
-                	<div class="login_main_text_label1"><a href="index_do.php?fmdo=user&dopost=regnew">注册新会员</a>
-                	</div>
-                	<div class="clear">
-                	</div></form>
-                </div>
-              	<div class="login_notice"><span>取回密码：</span>（验证码填写会员登录所显示的图片上的字母）
-              	</div>
-                <div class="login_main_foum1">
-                <form name='form2' action="index_do.php">
-        			<input type="hidden" name="fmdo" value="login">
-        			<input type="hidden" name="dopost" value="getpwd">
-            		<div class="login_main_text_label">我忘记了我的密码，请输入你的Email：<input name="email" type="text" class="login_label2" />
-                	</div>
-                	<div class="login_main_text_label">验证码：<input name="vdcode" type="text" class="login_label1" />
-                	</div>
-                	<div class="login_main_text_label1"><img src="../include/vdimgck.php" />
-                	</div>
-                	<div class="login_main_text_label2"><input type="submit" name="Submit2" value="取回密码" class="login_button" />
-                	</div>
-                	<div class="clear">
-                	</div></form>
-                </div>
-            </div>
-            <div class="login_main_bottom">
-            </div>
-            <div class="clear">
-            </div>
-        </div>
-    </div>
-    <!--中间结束-->
-    <!--底部开始-->
-    <div id="login_footer"><?php echo $cfg_powerby?>
-    </div>
-    <!--底部结束-->
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineBorder" id="login">
+  <div class="location">帐号登录</div>
+  <div class="theme fLeft">
+    <form name='form1' method='POST' action='index_do.php'>
+      <input type="hidden" name="fmdo" value="login">
+      <input type="hidden" name="dopost" value="login">
+      <input type="hidden" name="gourl" value="<?php if(!empty($gourl)) echo $gourl;?>">
+      <ul>
+        <li><span>用户名：</span>
+          <input name="userid" type="text" id="txtUsername" class="text" />
+        </li>
+        <li><span>密&nbsp;&nbsp;&nbsp;码：</span>
+          <input name="pwd" type="password" id="txtPassword" class="text" />
+        </li>
+        <li><span>验证码：</span>
+          <input name="vdcode" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
+          <img id="vdimgck" src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /> 看不清？<a onclick="changeAuthCode();" href="#">点击更换</a></li>
+        <li> <span>有效期：</span>
+          <input type='radio' name='keeptime' value='2592000' />
+          一个月
+          <input type='radio' name='keeptime' value='604800' checked='checked' />
+          一周
+          <input type='radio' name='keeptime' value='86400' />
+          一天
+          <input type='radio' name='keeptime' value='0' />
+          即时</li>
+        <li><span>&nbsp;</span>
+          <button class="button2" id="btnSignCheck" type="submit">登录</button>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="useNew fLeft textCenter">
+    <p class="signUp">
+      <button class="button6 mTB10" onclick="location='index_do.php?fmdo=user&dopost=regnew'">注册一个新帐号</button>
+    </p>
+    <p class="mTB10"><a href="resetpassword.php">找回密码&gt;&gt;</a></p>
+  </div>
+  <div class="clear"></div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

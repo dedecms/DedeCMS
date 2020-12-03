@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:var.spacename /}</title>
+<link href="space/company/img/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--topb-->
+<div id="tc">
+<h1><a href="index.php">控制面板</a></h1>
+<ul>
+<li><a href="{dede:global.cfg_indexurl /}">网站主页</a><span>|</span></li>
+<li><a href="../company">搜索企业</a><span>|</span></li>
+{dede:if $cfg_ml->IsLogin() }
+<li><a href="index.php?uid={dede:object.cfg_ml->M_LoginID /}">企业空间</a><span>|</span></li>
+<li><a href="index_do.php?fmdo=login&dopost=exit">退出登录</a></li>
+{else}
+<li><a href="login.php">登录</a><span>|</span></li>
+<li><a href="index_do.php?fmdo=user&dopost=regnew">注册</a></li>
+{/dede:if}
+</ul>
+</div>
+<div id="main">
+<!--c1b-->
+<div id="c1">
+<h1><a href="{dede:var.userurl /}" target="_blank">{dede:var.company /}</a></h1>
+</div>
+<!--c1e-->
+<!--c2b-->
+<div id="c2">
+<div id="c2l">
+</div>
+<div id="c2m">
+<ul>
+<li><a href="index.php?uid={dede:var.userid_e /}">首页</a></li>
+<li><a href="index.php?uid={dede:var.userid_e /}&action=news">公司新闻</a></li>
+<li><a href="index.php?uid={dede:var.userid_e /}&action=products">产品大全</a></li>
+<li><a href="index.php?uid={dede:var.userid_e /}&action=introduce">公司简介</a></li>
+<li><a href="index.php?uid={dede:var.userid_e /}&action=guestbook">留言板</a></li>
+<li><a href="index.php?uid={dede:var.userid_e /}&action=contact">联系我们</a></li>
+</ul>
+</div>
+<div id="c2r">
+</div>
+</div>
+<!--c2e-->

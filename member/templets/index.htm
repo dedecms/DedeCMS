@@ -1,315 +1,290 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>空间聚集</title>
-<link href="css/style-index.css" rel="stylesheet" type="text/css" />
-<script language="javascript" src="../include/dedeajax2.js"></script>
-<script type="text/javascript">
-function SetSubmit()
-{ 
-	 var _keyword = document.getElementById("keyword");
-	 var _tpye = document.getElementById("searchtype");
-	 if(_tpye.value=="info"){ _keyword.name = "q"; document.Searchpools.action = "../plus/infosearch.php"; }
-	 else if(_tpye.value=="book"){ _keyword.name = "keyword";document.Searchpools.action = "../book/search.php"; }
-	 else if(_tpye.value=="topic"){_keyword.name = "keyword"; document.Searchpools.action = "../group/search.php"; }
-	 else if(_tpye.value=="company"){ _keyword.name = "comname"; document.Searchpools.action = "../company/search.php"; }
-	 else if(_tpye.value=="ask"){ _keyword.name = "q"; document.Searchpools.action = "../ask/search.php"; }
-	 else if(_tpye.value=="art") { _keyword.name = "keyword";document.Searchpools.action = "../plus/search.php";}
-	 document.Searchpools.submit();
+<title>会员中心 -<?php echo $cfg_webname; ?></title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script type="text/javascript" src="js/box.js"></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeCenter" id="personal">
+        <!--个人信息 -->
+        <div class="message">
+          <div class="visualize fLeft">
+          	<img class="mB10" src="<?php echo (!empty($cfg_ml->fields['face']) ? $cfg_ml->fields['face'] : "images/nopic.gif"); ?>" width="150" height="150" alt="您的形象" />
+            <ul class="black">
+              <li><a class="icon upImage" href="edit_face.php" title="修改个人头像">上传头像</a></li>
+              <li><a class="icon mySetting" href="edit_baseinfo.php" title="设置个人资料">个人资料</a></li>
+            </ul>
+            <div class="clear"></div>
+          </div>
+          <div class="datum fLeft mT10">
+            <h3 class="userName"><?php echo $cfg_ml->M_LoginID;?><em class="mL10"><?php echo $cfg_ml->M_MbType; ?>用户</em></h3>
+            <div class="userState mTB10"><span class="fLeft"><?php echo $cfg_ml->GetSta($dsql); ?></span>
+              <div class="clear"></div>
+              <script type="text/javascript">
+function setTab(m,n){
+var tli=document.getElementById("menu"+m).getElementsByTagName("li");
+var mli=document.getElementById("main"+m).getElementsByTagName("dl");
+for(i=0;i<tli.length;i++){
+   tli[i].className=i==n?"select":"";
+   mli[i].className=i==n?"block":"none";
 }
-function CheckLogin()
-{
-  var taget_obj = document.getElementById('_loginform');
-  myajax = new DedeAjax(taget_obj,false,false,"","","");
-  myajax.SendGet2("loginsta.php");
-  DedeXHTTP = null;
 }
 </script>
-</head>
-
-<body onload="CheckLogin()">
-<div id="container">
-<!-- 头部开始 -->
-	<div id="header">
-    	<div id="dzh_header">
-        	<div id="dzh_logo">
-            </div>
-            <div id="dzh_toptext">
-            <?php
-            if(!$cfg_ml->IsLogin()){
-            ?>
-            您好，请先 <a href="login.php?gourl=<?php echo urlencode(GetCurUrl());?>">登录</a> 或 <a href="index_do.php?fmdo=user&dopost=regnew">注册</a>
-            <?php
-            }else{
-            ?>
-            您好，<?php echo $cfg_ml->M_UserName; ?> 欢迎登录，你的级别：<?php echo $Honor; ?> | <a href="control.php">控制面板</a> | <a href="index_do.php?fmdo=login&dopost=exit">退出登录</a>
-            <?php
-            }
-            ?>            
-          </div>
-            <div class="clear">
-            </div>
-        </div>
-        <div id="dzh_menu">
-        	<ul>
-            <li class="dzh_index"><a href="<?php echo $cfg_indexurl;?>">首页</a></li>
-            <li class="dzh_class"><a href="../plus/goinfos.php">分类信息</a></li>
-            <li class="dzh_group"><a href="../group/">圈子系统</a></li>
-            <li class="dzh_ask"><a href="../ask/">问答频道</a></li>
-            <li class="dzh_book"><a href="../book/">小说频道</a></li>
-            <li class="dzh_yp"><a href="../company/">企业黄页</a></li>
-            </ul>
-            <div class="clear">
-            </div>
-        </div>
-        <form action="" method="get" name="Searchpools" id="Searchpools" onSubmit="javascript:SetSubmit();">
-        <div class="dzh_search">
-        	<div class="dzh_search_left">
-            </div>
-            <div class="dzh_search_text">搜索：
-            
-            <input name="keyword" id="keyword" type="text" class="dzh_searchtxt" />
-            <select id="searchtype">
-            <option value="art" selected>文章内容</option>
-          	<option value="info">分类信息</option>
-          	<option value="book">小说</option>
-            <option value="topic">圈子贴子</option>
-            <option value="company">公司企业</option>
-            <option value="ask">帮助答案</option>
-        	</select>
-            <input type="submit" value="" class="search_button" />
-            
-            </div>
-            <div class="dzh_search_right">
-            </div>
-      </div>
-      </form>
-      <div class="clear">
-        </div>
-    </div>
-<!-- 头部结束 -->
-<!--中部开始-->
-	<div id="dzh_main">
-    	<div id="dzh_maincnter">
-        	<div id="dzh_left"><!--左边开始-->
-            	<div class="dzh_login"><!--登录开始-->
-                	<div class="dzh_login_title">
-                    	<ul>
-                        <li><?php if(!$cfg_ml->IsLogin()){ ?>会员登录 <?php }else{?><?php echo $cfg_ml->M_UserName;?>,您好！<?php } ?></li>
-                        </ul>
-                    </div>
-                    <div class="dzh_login_form">
-                    <span id='_loginform'>
-                    <form name='form1' method='POST' action='index_do.php'>
-                    <input type="hidden" name="fmdo" value="login">
-        			<input type="hidden" name="dopost" value="login">
-        			<input type="hidden" name="gourl" value="<?php if(!empty($gourl)) echo $gourl;?>">
-                    	<dl>
-                        <dd class="dzh_name">用户名：</dd>
-                        <dd class="dzh_formlabel"><input name="userid" type="text" class="dzh_label" /></dd>
-                        <dd class="dzh_name">密  码：</dd>
-                        <dd class="dzh_formlabel"><input name="pwd" type="password" class="dzh_label" /></dd>
-                        <dd class="dzh_name">验证码：</dd>
-                        <dd class="dzh_formlabel1"><input name="vdcode" type="text" class="dzh_label1" /></dd>
-                        <dd class="dzh_formlabel1"><img src="../include/vdimgck.php" /></dd>
-                        <dd class="dzh_name"><input type="submit" value="登 录" class="dzh_loginbutton" /></dd>
-                        </dl>
-                        <div class="clear">
-                        </div>
-                    </form>
-                    </span>
-                    </div>
-                    <div class="clear">
-                	</div>
-                </div><!--登录结束-->
-                <div class="dzh_memberlist"><!--会员排行-->
-                	<div class="dzh_membertitle">会员排行
-                    </div>
-                    <div class="rbox paihang">
-							<dl>
-                            <?php
-                            foreach($topmember as $k=>$rs){
-                            ?>
-							<dd><span class="name"><a href="?<?php echo $rs['userid'];?>/" target="_blank"><?php echo $rs['uname'];?></a></span></dd>
-                            <?php } ?>
-							</dl>
-					</div>
-                </div><!--会员排行结束-->
-                <div class="dzh_memberlist"><!--新加入企业-->
-                	<div class="dzh_companytitle">新加入企业
-                    </div>
-                    <div class="rbox paihang">
-							<dl>
-                            <?php foreach($newcompanys as $k=>$rs){ ?>
-							<dd><span class="name"><a href="?<?php echo $rs['userid'];?>/" target="_blank"><?php echo $rs['comname'];?></a></span></dd>
-                            <?php } ?>
-							</dl>
-					</div>
-                </div><!--新加入企业结束-->
-                <div class="dzh_grouplist"><!--圈子排行开始-->
-                	<div class="dzh_grouptitle">圈子排行
-                    </div>
-                    <div class="rbox1 paihang1">
-							<dl>
-                            <?php
-                            if(isset($topgroups) && is_array($topgroups)){
-                            foreach($topgroups as $k=>$rs){
-                            ?>
-							<dd><span class="name"><a href="../group/group.php?id=<?php echo $rs['groupid'];?>" target="_blank"><?php echo $rs['groupname'];?></a></span></dd>
-                          <?php }} ?>
-							</dl>
-					</div>
-                </div><!--圈子排行结束-->
-                <div class="clear">
-                </div>
-            </div><!--左边结束-->
-            
-            <div id="dzh_right"><!--右边开始-->
-            	<div class="dzh_rightform"><!--第一排外框开始-->
-                    <div class="dzh_hottopic"><!--热门帖子开始-->
-                        <ul>
-                        <li>热门帖子</li>
-                        </ul>
-                        <dl>
-                        <?php
-                        if(isset($topics) && is_array($topics)){
-                        if(!isset($titleleft)) $titleleft = '';
-                        foreach($topics as $k=>$rs){                        
-                        $title = $rs['subject'];                     
-                        if($rs['digest']) $titleleft .= " [<font color=\"red\">精华</font>]";
-                        if($rs['replies']>10) $titleleft .= "[<font color=\"red\">热门</font>]";
-                        $title = $titleleft.$title;
-                        $titleleft = "";
-                        ?>
-                        <dd><a href="../group/viewthread.php?id=<?php echo $rs['gid'];?>&tid=<?php echo $rs['tid'];?>" title="<?php echo $rs['subject'];?>" target="_blank"><?php echo $title;?></a></dd>
-                        <?php
-                         }}
-                        ?>
-                        </dl>
-                    </div><!--热门帖子结束-->
-                    <div class="dzh_asktopic"><!--最新问答开始-->
-                        <ul>
-                        <li>最新问答</li>
-                        </ul>
-                        <dl>
-                        <?php
-                        if(isset($newask) && is_array($books)){
-                        foreach($newask as $k=>$rs){
-                        $status = "<span>未解决</span>";
-                        if($rs['status']) $status = "已解决";                        
-                        ?>
-                        <dd class="dzh_asktp"><a href="../ask/question.php?id=<?php echo $rs['id'];?>" target="_blank"><?php echo $rs['title'];?></a></dd>
-                        <dd class="dzh_askaa"><?php echo $status;?></dd>
-                        <?php }} ?>
-                        </dl>
-                        <div class="clear">
-                        </div>
-                    </div><!--最新问答结束-->
-                    <div class="clear">
-                    </div>
-                </div><!--第一排外框结束-->
-                
-                
-                <div class="dzh_rightform"><!--第二排外框开始-->
-                    <div class="dzh_mainbook"><span>热门文章</span>
-                    	<ul>
-                        <?php
-                        foreach($hotarchives as $k=>$rs){                        	
-                            if(!empty($rs['color']))  $title = "<font color='".$rs['color']."'>".$rs['title']."</font>";
-                            else $title = $rs['title'];
-                        ?>
-                        <li><a href="../plus/view.php?aid=<?php echo $rs['ID'];?>&tid=<?php echo $rs['typeid'];?>" target="_blank"><?php echo $title;?></a></li>
-                        <?php } ?>
-                        </ul>
-                    </div>
-                    <div class="dzh_article"><span>最新文章</span><!--最新文章开始-->
-                    	<ul>
-                        <?php
-                        foreach($newarchives as $k=>$rs){                        	
-                            if(!empty($rs['color']))  $title = "<font color='".$rs['color']."'>".$rs['title']."</font>";
-                            else $title = $rs['title'];
-                        ?>
-                        <li><a href="../plus/view.php?aid=<?php echo $rs['ID'];?>&tid=<?php echo $rs['typeid'];?>" target="_blank"><?php echo $title;?></a></li>
-                        <?php } ?>
-
-                        </ul>
-                        <div class="clear">
-                        </div>
-                    </div><!--最新文章结束-->
-                </div><!--第二排外框结束-->
-                
-                
-                <div id="dzh_photo"><!--最新图集-->
-                	<ul>
-                    <li>最新图集</li>
+              <div id="Upbox" style="display:none;">
+                <div class="lineBorder mTB10">
+                  <div class="titleTabBar bgGreen lineB">
+                    <ul id="menuUp">
+                      <li class="select"><a onclick="setTab('Up',0)">我要升级</a></li>
+                      <li><a onclick="setTab('Up',1)">我要充值</a></li>
                     </ul>
-                    <?php
-                    foreach($pics as $k=>$rs){                        	
-                    ?>
-                    <div class="dzh_photoimg">
-                        <dl>
-                        <dd class="dzhright"><a href="../plus/view.php?aid=<?php echo $rs['ID'];?>&tid=<?php echo $rs['typeid'];?>" target="_blank"><img src="<?php echo $rs['litpic'];?>" width="100" height="70" border="0" /></a></dd>
-                        <dd class="dzhcenter"><a href="../plus/view.php?aid=<?php echo $rs['ID'];?>&tid=<?php echo $rs['typeid'];?>" target="_blank"><?php echo $rs['title'];?></a></dd>
-                        </dl>
-                    </div>
-                    <?php } ?>
-                    <div class="clear">
-                    </div>
-                </div><!--最新图集结束-->
-                <div class="dzh_rightform"><!--第四排外框开始-->
-                    <div class="dzh_mainbook"><span>分类信息</span><!--分类信息开始-->
-                    	<ul>
+                  </div>
+                  <div id="mainUp" class=" mTB10 mL10 mR10">
+                    <form name="formrank" action="index_do.php" method="post">
+                      <dl class="block">
+                        <dt><strong>帐号升级</strong></dt>
                         <?php
-                        foreach($infos as $k=>$rs){                        	
-                            if(!empty($rs['color']))  $title = "<font color='".$rs['color']."'>".$rs['title']."</font>";
-                            else $title = $rs['title'];
+                        $sRanks = array();
+                        $dsql->SetQuery("Select membername,rank From `#@__arcrank` where rank>-1 order by rank asc");
+                        $dsql->Execute();
+                        $maxrank = 0;
+                        while($row = $dsql->GetObject())
+                        {
+                            if($row->rank > $maxrank) $maxrank = $row->rank;
+                            $sRanks[$row->rank] = $row->membername;
+                        }
+                        $sRanks[0] = "限制会员";
                         ?>
-                        <li><a href="../plus/view.php?aid=<?php echo $rs['ID'];?>&tid=<?php echo $rs['typeid'];?>" target="_blank"><?php echo $title;?></a></li>
-                        <?php } ?>
-                        </ul>
-                        <div class="clear">
-                        </div>
-                    </div><!--分类信息结束-->
-                    <div class="dzh_article"><span>最新连载</span><!--分类信息开始-->
-                    	<ul>
+                        <dd class="mT10">你目前的级别：<?php echo $sRanks[$cfg_ml->M_Rank]; ?></dd>
                         <?php
-                        if(isset($books) && is_array($books)){
-                        foreach($books as $k=>$rs){ 
+                        if($cfg_ml->M_Rank >= $maxrank){
                         ?>
-                        <li><a href="<?php echo GetBookUrl2($rs['id'],$rs['bookname']);?>" target="_blank"><?php echo $rs['bookname'];?></a></li>
-                      <?php }} ?>
-                        </ul>
-                        <div class="clear">
-                        </div>
-                    </div><!--最新连载结束-->
-                    <div class="clear">
-                    </div>
-                </div><!--第四排外框结束-->
-                <div class="clear">
+                        <dd class="mTB10">你已经是最高级别的会员，不能再升级。
+                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">关闭</button>
+                        </dd>
+                        <?php }else{ ?>
+                        <input type="hidden" name="fmdo" value="user" />
+                        <input type="hidden" name="dopost" value="uprank" />
+                        <dd class="mT10">可以升级的级别：
+                          <select name="uptype" id="uptype">
+                            <?php foreach($sRanks as $k => $v){ ?>
+                            <?php if($k > $cfg_ml->M_Rank){?>
+                            <option value="<?php echo $k;?>"><?php echo $v;?></option>
+                            <?php }?>
+                            <?php }?>
+                          </select>
+                        </dd>
+                        <dd>
+                          <hr />
+                          <button class="button2" type="submit">提交</button>
+                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">取消</button>
+                        </dd>
+                        <?php }?>
+                      </dl>
+                    </form>
+                    <form name="formmoney" action="index_do.php" method="post">
+                      <dl class="none">
+                        <dt><strong>账户充值</strong></dt>
+                        <dd class="mT10">
+                          <input type="hidden" name="fmdo" value="user" />
+                          <input type="hidden" name="dopost" value="addmoney" />
+                          金币数：
+                          <input class="text" name="money" type="text" id="money" value="500" size="6" />
+                        </dd>
+                        <dd class="mTB10">验证码：
+                          <input class="text" name="vdcode" type="text" id="vdcode" size="4" style="width:160px;text-transform:uppercase;" />
+                          <img id="vdimgck" src="../include/vdimgck.php" width="50" height="20" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></dd>
+                        <dd>
+                          <hr />
+                          <button class="button2" type="submit">提交</button>
+                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">取消</button>
+                        </dd>
+                      </dl>
+                    </form>
+                    <div class="clear"></div>
+                  </div>
                 </div>
-            </div><!--右边结束-->
-            <div class="clear">
+              </div>
             </div>
-            
-            <div id="dzh_footer"><!--底部开始-->
-            	<div id="dzh_footer_form">
-                	<ul><li><?php echo $cfg_powerby?></li></ul>
-                </div>
-                <div class="clear">
-                </div>
-            </div><!--底部结束-->
-            <div class="clear">
-            </div>
+            <ul class="entry">
+              <li><a href="pm.php" title="短消息">消息</a>(<?php echo $pms['nums'];?>)</li>
+              <li><a href="caicai.php" title="发出的评论">评论</a>(<?php echo $minfos['feedback']; ?>)</li>
+              <li><a href="mystow.php" title="收藏夹">收藏</a>(<?php echo $minfos['stow']; ?>)</li>
+              <li><a href="javascript:;">其它</a>(<?php echo $minfos['archives']; ?>)</li>
+              <li><a href="content_list.php?channelid=1" title="已发布的文章">文章</a>(<?php echo $minfos['article']; ?>)</li>
+              <li><a href="content_list.php?channelid=2" title="管理图集">图集</a>(<?php echo $minfos['album']; ?>)</li>
+              <li><a href="content_list.php?channelid=3" title="已发布的软件">软件</a>(<?php echo $minfos['soft']; ?>)</li>
+              <li><a href="shops_products.php" title="购买的商品">商品</a>(<?php echo $minfos['shop']; ?>)</li>              
+            </ul>
+            <div> <span class="fRight" style='background-color:#F8FEDA;clear:both;padding:3px 5px 3px 5px;margin-top:12px;'> <a href="#" onclick="location='buy.php';return false;" class="thickbox">[购买服务]</a>&nbsp; <a href="#TB_inline?height=210&width=380&inlineId=Upbox&modal=true" title="升级与充值" class="thickbox">[申请升级/充值]</a> </span> </div>
+            <div class="clear"></div>
+            <script type="text/javascript">
+			$("document").ready(function(){
+				$(".tipClose").click(function(){
+					$(this).parent(".tip").animate({ height: 'toggle', opacity: 'toggle' }, "hide");
+					})
+			});
+			</script>
+            <!--提示 -->
+            <?php
+        switch($cfg_ml->M_Spacesta)
+        {
+        	case '-2':
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>已被禁用</div>
+            </div>";
+        		break;
+        	case '-1':
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>未通过审核！<a href='edit_space_info.php'>修改空间资料</a></div>
+            <div class='clear'></div>
+            </div>";
+        		break;
+        	case '0':
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>您的空间信息不完整！<a href='edit_space_info.php'>[填写空间资料]</a></div>
+            <div class='clear'></div>
+            </div>";
+        		break;
+        	case '1':
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>您还没有完善您的个人资料！<a href='edit_fullinfo.php'>[完善详细资料]</a></div>
+            <div class='clear'></div>
+            </div>";
+        		break;
+        	default:
+        		echo "";
+        		break;
+        }
+        ?>
+          </div>
         </div>
-        <div class="clear">
+        <div class="titleBar bgGreen lineT">
+          <h5 class="fLeft icon titFangle">新鲜事</h5>
+          <div class="fRight"><a href="search.php">其他人的事</a></div>
+          <div class="clear"></div>
         </div>
+        <div class="fangle">
+          <dl class="artList mL10 mR10">
+            <?php
+foreach ($archives as $archive)
+{
+?>
+            <dd> <em><a class="yellow" href="index.php?uid=<?php echo $archive['userid'];?>" target="_blank"><?php echo $archive['userid'];?></a> <?php echo MyDate('m-d H:i', $archive['senddate']);?></em> <span><a href="<?php echo $archive['htmlurl'];?>" title="<?php echo $archive['title'];?>" target="_blank"><?php echo $archive['title'];?></a></span> </dd>
+            <?php
+}
+?>
+            <dt><a class="titMore icon" href="caicai.php">更多</a></dt>
+          </dl>
+        </div>
+        <!--谁来看过我 -->
+        <div class="whoSeeMe">
+          <div class="titleBar bgGreen lineT">
+            <h5 class="fLeft icon titWhoSeeMe">谁来看过我</h5>
+          </div>
+          <ul class="picList textCenter">
+            {dede:newvisitor row=6}
+            <li>
+              <p><a target="_blank" href="{dede:field.url/}"><img src="{dede:field.face/}" width="45" height="50" alt="{dede:field.uname/}" /></a></p>
+              <span><a target="_blank" href="{dede:field.url/}">{dede:field.uname/}</a></span></li>
+            {/dede:newvisitor}
+          </ul>
+          <div class="clear"></div>
+          <div class="titleBar bgGreen lineT">
+            <h5 class="fLeft icon titStow">我的收藏</h5>
+            <div class="fRight"><a href="mystow.php">管理</a></div>
+            <div class="clear"></div>
+          </div>
+          <div class="Stow">
+            <dl class="artList mL10 mR10">
+              <?php
+foreach ($favorites as $favorite)
+{
+?>
+              <dd><em><?php echo MyDate('m-d H:i', $favorite['addtime']);?></em><span><a href="archives_do.php?dopost=viewArchives&aid=<?php echo $favorite['aid'];?>" title="<?php echo $favorite['title'];?>" target="_blank"><?php echo $favorite['title'];?></a></span> </dd>
+              <?php
+}
+?>
+              <dt>&nbsp;</dt>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
     </div>
-    <div class="clear">
+    <div class="dedeRight">
+      <!--信息统计 -->
+      <div class="titleBar bgGaryImg">
+        <h5 class="fLeft">信息统计</h5>
+      </div>
+      <dl class="statistics overflow mL10 mR10">
+        <dt>空间访问量：</dt>
+        <dd><?php echo $minfos['homecount']; ?></dd>
+        <dt>文档总点击：</dt>
+        <dd><?php echo $minfos['pagecount']; ?></dd>
+        <dt>好友数量：</dt>
+        <dd><?php echo $minfos['friend']; ?></dd>
+        <dt>空间版本：</dt>
+        <dd>
+          <?php
+        if($cfg_mb_lit=='Y') echo '精简版';
+        else echo '完全版';
+        ?>
+        </dd>
+        <dt>上传限制：</dt>
+        <dd><?php echo $cfg_mb_upload_size; ?> KB</dd>
+        <dt>空间大小：</dt>
+        <dd><?php echo $minfos['totaluse']."/".$cfg_mb_max; ?> MB</dd>
+      </dl>
+      <div class="clear"></div>
+      <!--好友列表 -->
+      <script type="text/javascript">
+		$("document").ready(function(){
+			$(".buddy dt").click(function(){$(this).toggleClass("close");$(this).next("dd").toggle();});
+			$(".buddy li").hover(function(){$(this).addClass("hover"); },function(){$(this).removeClass("hover"); });
+		});
+		</script>
+      <div class="titleBar bgGaryImg">
+        <h5 class="fLeft">好友列表</h5>
+        <span class="fRight"><a href="myfriend.php" title="好友管理">管理</a></span> </div>
+      <dl class="buddy overflow mL10 mR10">
+        <dt class="buddySort icon">所有好友</dt>
+        <dd class="buddyList">
+          <ul>
+            <?php
+foreach ($friends as $friend)
+{
+?>
+            <li class="thickbox"><span class="fLeft icon16 titOnline"></span><a href="index.php?uid=<?php echo $friend['floginid'];?>" target="_blank"><?php echo $friend['floginid'];?></a></li>
+            <?php
+}
+?>
+          </ul>
+        </dd>
+        <dt class="buddySort icon"><a href="myfriend.php?ftype=1">特别关注</a></dt>
+        <dt class="buddySort icon"><a href="myfriend.php?ftype=-1">黑名单</a></dt>
+      </dl>
+      <hr />
+      <!--好友搜索 -->
+      <div class="buddySearch textCenter">
+        <form action="search.php">
+          <input class="text" type="text" name="keyword" value="查找新好友" style="width:150px;" />
+          <button class="button1" type="submit">搜</button>
+        </form>
+      </div>
     </div>
-<!--中间结束-->
-
-
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

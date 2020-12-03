@@ -1,173 +1,128 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>更改文章</title>
-<link href="company_style.css" rel="stylesheet" type="text/css">
-<script language='javascript' src='main.js'></script>	
-<script language="javascript">
+<title>修改文章:<?php echo $row['title']?></title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script language="javascript" type="text/javascript" src='js/main.js'></script>
+<script language="javascript" type="text/javascript">
 <!--
 function checkSubmit()
 {
 
-if(document.form1.title.value==""){
-	 alert("文章标题不能为空！");
-	 document.form1.title.focus();
-	 return false;
-}
+	if(document.form1.title.value==""){
+		alert("文章标题不能为空！");
+		document.form1.title.focus();
+		return false;
+	}
 
-if(document.form1.typeid.value==0){
-	 alert("文章隶属栏目必须选择！");
-	 return false;
-}
+	if(document.form1.typeid.value==0){
+		alert("文章隶属栏目必须选择！");
+		return false;
+	}
 
-if(document.form1.vdcode.value==""){
- document.form1.vdcode.focus();
- alert("验证码不能为空！");
- return false;
-}
-
+	if(document.form1.typeid.options[document.form1.typeid.selectedIndex].className!='option3')
+	{
+		alert("文章隶属栏目必须选择白色背景的项目！");
+		return false;
+	}
 }
 -->
 </script>
 </head>
-<body leftmargin="0" topmargin="0">
-<div align="center">
-<?php  include(dirname(__FILE__)."/head.htm"); ?>
-<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td width="160" height="216" valign="top"> 
-      <?php include(dirname(__FILE__)."/menu.php");?>
-    </td>
-    <td width="10">&nbsp;</td>
-    <td  valign="top">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-        <tr> 
-          <div class="manage_company_right_title">
-                	<ul><li>更改文章：</li></ul>
-            </div>
-        </tr>
-        <tr>
-		<form name="form1" action="article_edit_action.php" method="post" enctype="multipart/form-data" onSubmit="return checkSubmit();">
-      <input type="hidden" name="ID" value="<?php echo $row['ID']; ?>" />
-      <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
-      <td height="183" valign="top" style="padding-top:3px">
-				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
-                  <tr>
-                    <td height="24" bgcolor="#F0FBE3"><strong>◆常规参数：</strong></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">文章标题：</td>
-                          <td align="left"><input name="title" type="text" id="title" size="30" class="nb" value="<?php echo $row['title']?>" />
-                            <font color="#FF0000">*</font></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">文章出处：</td>
-                          <td align="left"><input name="source" type="text" id="source" size="30" class="nb" value="<?php echo $row['source']?>" />
-作者：
-  <input name="writer" type="text" id="writer" size="15" class="nb" value="<?php echo $row['writer']?>" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">隶属栏目：</td>
-                          <td align="left"><?php 
-           	 echo GetTypeidSelMember('form1','typeid','selbt1',$row['channel'],$row['typeid'],$arow['typename'],false);
-			       ?></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">我的分类：</td>
-                          <td align="left"><select name="mtype" id="mtype" style="width:200">
-                            <?php 
-$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' ;");
-$dsql->Execute();
-if($row['mtype']==0) echo "<option value='0'>--请选择分类--</option>"; 
-while($arow = $dsql->GetObject()){
-  if($row['mtype']==$arow->aid) echo "<option value='".$arow->aid."' selected>".$arow->typename."</option>\r\n";
-  else echo "<option value='".$arow->aid."'>".$arow->typename."</option>\r\n";
-}
-?>
-                          </select></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">内容简介：</td>
-                          <td align="left"><textarea name="description" id="description" style="width:80%;height:50px"><?php echo $row['description']?>
-                          </textarea></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">标签（TAG）：</td>
-                          <td align="left"><input name="keywords" type="text" id="keywords" style="width:50%;" value="<?php echo $row['keywords']?>" />
-(多个标签（TAG）用空格分开)</td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <tr>
-                    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">
-                        <tr>
-                          <td width="20%" height="28">缩略图：</td>
-                          <td align="left"><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));" class="company_manage_form_label" /></td>
-                        </tr>
-                        <tr id="picarea" style='<?php echo ($row['litpic']!='' ? '' : 'display:none'); ?>'>
-                          <td height="28">预　览：</td>
-                          <td align="left"><img src="<?php echo ($row['litpic']!='' ? $row['litpic'] : "img/pview.gif"); ?>" id="picview" width="150" height="120" /></td>
-                        </tr>
-                    </table></td>
-                  </tr>
-                  <?php 
-                  PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
-                  //print_r($cInfos['fieldset']);
-                   ?>
-                </table>
-				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
-                  <tr>
-                    <td height="24" bgcolor="#F0FBE3"><strong>◆文章内容：<font color="#FF0000">*</font></strong></td>
-                  </tr>
-                  <tr>
-                    <td><?php 
-	GetEditor("body",$addRow['body'],350,"Member");
-?></td>
-                  </tr>
-                </table>
-				<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
-                
-                
-                <tr bgcolor="#F7FDF0"> 
-                  <td width="400%" height="45" colspan="4" align="center"> <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0"> 
-                    &nbsp;&nbsp;&nbsp; <img src="img/button_reset.gif" width="60" height="22" style="cursor:hand" onClick="location.reload();">                  </td>
-                </tr>
-              </table></td>
-			</form>
-        </tr>
-        <tr> 
-          <td height="10"></td>
-        </tr>
-      </table> </td>
-  </tr>
-</table>
-<?php 
-include(dirname(__FILE__)."/foot.htm");
-?>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="titEditChannel1 icon">修改文章</span></div>
+        <form class="mTB10 mL10 mR10" name="form1" id="form1" action="article_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+          <input type="hidden" name="dopost" value="save" />
+          <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
+          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
+          <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
+          <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
+          <table cellspacing="1" class="submit">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>常规参数</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="15%" align="right" valign="top">标题：</td>
+                <td><input name="title" type="text" id="title" value="<?php echo $row['title']?>" size="30" class="text" style="width:400px;"/></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">标签TAG：</td>
+                <td><input name="tags" type="text" id="tags" size="30" class="text" value="<?php echo $row['keywords']; ?>" style="width:400px;"/>
+                  (用逗号分开) </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">作者：</td>
+                <td><input type="text" name="writer" id="writer" size="30" class="text" value="<?php echo $cfg_ml->M_UserName?>" /></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">隶属栏目：</td>
+                <td><?php
+    $typeOptions = GetOptionList($row["typeid"],$row["channel"]);
+    echo "<select name='typeid' size='1'>\r\n";
+    echo $typeOptions;
+    echo "</select>";
+		?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">隶属分类：</td>
+                <td><?php
+                $typeOptions = classification("$cfg_ml->M_ID",$row['mtypeid']);
+                echo "<select name='mtypesid' size='1'>\r\n";
+                echo "<option value='0' selected>请选择分类...</option>\r\n";
+                echo $typeOptions;
+                echo "</select>";
+    		?></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">信息摘要：</td>
+                <td><textarea name="description" id="description" style="height:50px"><?php echo $row["description"]; ?></textarea>
+                  (内容的简要说明) </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">缩略图：</td>
+                <td><input class="file" name="litpic" type="file" id="litpic" style="width:408px" onchange="SeePicNew('divpicview',this);"  />
+                  <div id='divpicview' class='divpre'></div></td>
+              </tr>
+              <?php if($row['litpic']!=''){ ?>
+              <tr>
+                <td align="right" valign="top">原来的缩略图：</td>
+                <td><div id='divpicview' class='divpre mTB10 litPic'> <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>'  /></div></td>
+              </tr>
+              <?php
+      }
+      //自定义字段
+      PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
+      ?>
+              <tr>
+                <td align="left" valign="top"><strong>详细内容：</strong></td>
+                <td><?php GetEditor("body",$addRow['body'],350,"Member"); ?></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height="45" valign="top">&nbsp;</td>
+                <td height="45"><button class="button2" type="submit">提交</button>
+                  <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button></td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
 </div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

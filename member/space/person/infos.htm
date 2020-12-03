@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:var.spacename /}--详细资料</title>
+<link href="space/person/img/style.css" rel="stylesheet" type="text/css" />
+<link href="space/person/img/member.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--topb-->
+{dede:include file='space-top.htm'/}
+<!--c1c2e-->
+<!--c3b-->
+		<div id="c3">
+			<div class="c3c">
+				<div class="c3c1">
+ <div class="maintable" style="margin-left:6px;">
+  <?php
+  if(!is_array($row)) {
+  	echo "该用户没填写详细资料!";
+  }
+  else
+  {
+  ?>
+  <dl class='tr5'>
+    <dd class='tdl'>基本资料：</dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>性别： </dd>
+    <dd class='tdr'>
+      <?php echo $row['sex']; ?>
+    </dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>昵称：</dd>
+    <dd class='tdr'>
+      <?php echo $row['uname']; ?>
+    </dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>目前所在地：</dd>
+    <dd class='tdr'>
+    	省份：
+			<?php
+			$places = GetEnumsTypes($row['place']);
+			echo ( isset($em_nativeplaces[$places['top']]) ?  $em_nativeplaces[$places['top']] : '');
+		  ?>
+			&nbsp; 城市：
+		  <?php
+		  echo ( isset($em_nativeplaces[$places['son']]) ?  $em_nativeplaces[$places['son']] : '');
+		  ?>
+    </dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>家乡所在地：</dd>
+    <dd class='tdr'>
+    	省份：
+			<?php
+			$places = GetEnumsTypes($row['oldplace']);
+			echo ( isset($em_nativeplaces[$places['top']]) ?  $em_nativeplaces[$places['top']] : '');
+		  ?>
+			&nbsp; 城市：
+		  <?php
+		  echo ( isset($em_nativeplaces[$places['son']]) ?  $em_nativeplaces[$places['son']] : '');
+		  ?>
+    </dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>出生日期：</dd>
+    <dd class='tdr'>
+    	<?php echo $row['birthday']; ?>
+    </dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>交友目的：</dd>
+    <dd class='tdr2'><?php echo GetEnumsValue('datingtype',$row['datingtype']); ?></dd>
+    <dd class='tdr3'>婚姻状况：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('marital',$row['marital']); ?></dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>星座：</dd>
+    <dd class='tdr2'><?php echo GetEnumsValue('star',$row['star']); ?></dd>
+    <dd class='tdr3'>血型：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('blood',$row['blood']); ?></dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>身高：</dd>
+    <dd class='tdr2'><?php echo $row['height']; ?> 厘米</dd>
+    <dd class='tdr3'>体型：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('bodytype',$row['bodytype']); ?></dd>
+  </dl>
+  <dl class='tr5 tr52'>
+    <dd class='tdl'>经济状况：</dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>收入情况：</dd>
+    <dd class='tdr2'><?php echo GetEnumsValue('income',$row['income']); ?></dd>
+    <dd class='tdr3'>教育程度：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('education',$row['education']); ?></dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>住房情况：</dd>
+    <dd class='tdr2'><?php echo GetEnumsValue('house',$row['house']); ?></dd>
+    <dd class='tdr3'>所属行业：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('vocation',$row['vocation']); ?></dd>
+  </dl>
+  <dl class='tr1' style='height:60px'>
+    <dd class='tdl'>掌握语言：</dd>
+    <dd class='tdr5'>
+    <?php
+    $arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='language' ");
+    $sets = explode(',',$arr['items']);
+    foreach($sets as $v){
+    	if(ereg($v,$row['language'])) echo "  $v ";
+    }
+    ?>
+    </dd>
+  </dl>
+  <dl class='tr5 tr52'>
+    <dd class='tdl'>兴趣爱好：</dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>是否喝酒：</dd>
+    <dd class='tdr2'><?php echo GetEnumsValue('drink',$row['drink']); ?></dd>
+    <dd class='tdr3'>是否抽烟：</dd>
+    <dd class='tdr'><?php echo GetEnumsValue('smoke',$row['smoke']); ?></dd>
+  </dl>
+  <dl class='tr1' style='height:150px'>
+    <dd class='tdl'>兴趣爱好：</dd>
+    <dd class='tdr5'>
+    	<?php
+    	$arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='nature' ");
+    	$sets = explode(',',$arr['items']);
+    	foreach($sets as $v){
+    		if(ereg($v,$row['nature'])) echo " $v ";
+    	}
+    	?>
+    </dd>
+  </dl>
+  <dl class='tr2' style='height:53px;'>
+    <dd class='tdl' style='line-height:53px;'>交友宣言：</dd>
+    <dd class='tdr'>
+    <?php echo $row['lovemsg']; ?>
+    </dd>
+  </dl>
+  <dl class='tr5 tr52'>
+    <dd class='tdl'>联系方式：</dd>
+  </dl>
+  <?php
+  if($row['onlynet']!='2') {
+  ?>
+  <dl class='tr2'>
+    <dd class='tdl'>QQ帐号：</dd>
+    <dd class='tdr2'><?php echo $row['qq']; ?></dd>
+    <dd class='tdr3'>MSN帐号：</dd>
+    <dd class='tdr'><?php echo $row['msn']; ?></dd>
+  </dl>
+  <?php
+  }
+  if($row['onlynet']=='0') {
+  ?>
+  <dl class='tr1'>
+    <dd class='tdl'>电话：</dd>
+    <dd class='tdr'>
+     <?php echo $row['tel']; ?>
+    </dd>
+  </dl>
+  <dl class='tr2'>
+    <dd class='tdl'>手机：</dd>
+    <dd class='tdr'>
+      <?php echo $row['mobile']; ?>
+    </dd>
+  </dl>
+  <dl class='tr1'>
+    <dd class='tdl'>详细地址：</dd>
+    <dd class='tdr'>
+      <?php echo $row['address']; ?>
+    </dd>
+  </dl>
+ <?php }} ?>
+ </div>
+		    </div>
+				<div class="c3c2">
+					<!--photob-->
+					<div class="photo">
+						{dede:include file='space-userinfo.htm'/}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--c3e-->
+	{dede:include file='space-foot.htm'/}
+	</div>
+	<!--cone-->
+</body>
+</html>

@@ -1,63 +1,91 @@
-{dede:page pagesize="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{dede:config.pagesize value="20"/}
+<html>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>单独页面管理</title>
-<link href="css_body.css" rel="stylesheet" type="text/css" />
+<link href='img/base.css' rel='stylesheet' type='text/css'>
+<style>
+ul { padding:0px; margin:0px;}
+li { float:left; padding-right:8px; line-height:24px; }
+</style>
 </head>
-<body leftmargin='8' topmargin='8'>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">频道管理</div>
-</div>
-
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
-		<tr>
-				<td bgcolor="#EDF9D5" class="tbtitletxt">  <table width='100%' border="0" cellpadding='0' cellspacing='0'>
-                  <tr>
-                    <td width='30%' class="tbtitletxt"><strong>单独页面管理</strong></td>
-                    <td>&nbsp;</td>
-                    <td align='right'>&nbsp;</td>
-                  </tr>
-                </table></td>
-  </tr>
-</table>	
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
-		<tr align="center">
-          <td width="10%" class="tbsname">编号</td>
-		  <td class="tbsname">页面名称</td>
-		  <td width="20%" class="tbsname">是否编译</td>
-		  <td width="20%" class="tbsname">更改时间</td>
-		  <td width="20%" class="tbsname">管理</td>
-  </tr>
-
-{dede:datalist}<tr align="center"> 
-        <td>[field:aid /]</td>
-        <td><a href="[field:global name='cfg_cmspath'/]/[field:filename/]" target='_blank'>[field:title 
-    /]</a></td>
-        <td>[field:ismake function='GetIsMake("@me")'/]</td>
-        <td>[field:uptime function='GetDateTimeMk(@me)'/]</td>
-        <td><a href='templets_one_edit.php?aid=[field:aid /]&dopost=edit'>[更改]</a> 
-      <a href='templets_one_edit.php?aid=[field:aid /]&dopost=make' target='_blank'>[更新]</a> 
-    <a href='templets_one_edit.php?aid=[field:aid /]&dopost=delete'>[删除]</a> </td>
-     </tr>
-     {/dede:datalist}
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" style="margin-bottom:6px">
+  <tr>
+   <td background="img/wbg.gif" colspan="6">
+  <form action='templets_one.php' name='sss'>
+  <ul>
+  <li>关键字：</li>
+  <li><input type='text' name='keyword' value="<?php if(!empty($keyword)) $keyword = ''; ?>" style='width:160px' /></li>
+  <li>标识：</li>
+  <li><?php
+     $likeid = (!isset($likeid) ? '' : $likeid);
+     echo "<select name='likeid' id='likeid'>\r\n";
+     $dsql->Execute("s","Select likeid From `#@__sgpage` group by likeid ");
+     echo "<option value=''>不限</option>\r\n";
+     while($arr = $dsql->GetArray('s'))
+     {
+        if($likeid==$arr['likeid']) echo "<option value='{$arr['likeid']}' selected>{$arr['likeid']}</option>\r\n";
+        else echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
+     }
+     echo "</select>\r\n";
+  ?></li>
+  <li><input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np" /></li>
+  </ul>
+  </form>
+	 </td>
 </table>
-
-		
-<table width="96%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
-		<tr>
-		  <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
-     
-      <table width="100%" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td align="left"><input type="button" name="bt" value="增加一个页面" class="inputbut" style="width:100px" onclick="location='templets_one_add.php';" />
-              <input type="button" name="bt2" value="更新所有单独页HTML" class="inputbut" style="width:150px" onclick="location='templets_one_edit.php?dopost=makeall';" /></td>
-            <td width="200">{dede:pagelist listsize=6/}</td>
-          </tr>
-      </table></td>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+  <tr>
+   <td height="28" background="img/tbg.gif" colspan="7">
+    <div style="float:left">
+    <b>◆单独页面管理</b>
+    </div>
+    <div style="float:right">
+     [<a href="templets_one_add.php"><u>增加一个页面</u></a>]
+     &nbsp;[<a href="#" onclick="document.form1.submit();"><u>更新选中页面</u></a>]
+     &nbsp;[<a href="templets_one_edit.php?dopost=mkall"><u>更新所有页面</u></a>]
+     &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+	 </td>
   </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td width="6%">选择</td>
+      <td width="6%">编号</td>
+      <td width="30%">页面名称</td>
+      <td width="11%">需编译</td>
+      <td width="10%">标识</td>
+      <td width="12%">修改时间</td>
+      <td width="21%">管理</td>
+   </tr>
+   <form name='form1' action='templets_one_edit.php'>
+   	<input type='hidden' name='dopost' value='mksel' />
+   {dede:datalist}
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';" 
+    	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    	  <td><input type='checkbox' name='ids[]' value='{dede:field.aid /}' class='np' ></td>
+        <td>{dede:field.aid /}</td>
+        <td><a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>{dede:field.title /}</a></td>
+        <td>{dede:field.ismake function='GetIsMake(@me)'/}</td>
+        <td>{dede:field.likeid /}</td>
+        <td>{dede:field.uptime function='GetDateMk(@me)'/}</td>
+        <td>
+          	<a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>[更改]</a>
+		        <a href="{dede:global name='cfg_cmspath'/}/{dede:field.filename/}" target='_blank'>[预览]</a>
+		        &nbsp;|&nbsp;
+		        <a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=delete'>[删除]</a>
+		    </td>
+     </tr>
+		{/dede:datalist}
+	   </form>
+      <tr align="center" bgcolor="#F9FCEF" height="24"> 
+       <td colspan="7">
+      	{dede:pagelist listsize=6/}
+      </td>
+     </tr>
+   </table>
+   </td>
+</tr>
 </table>
 </body>
 </html>

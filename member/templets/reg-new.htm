@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><?php echo $cfg_webname; ?>- 会员注册</title>
+<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<script type="text/javascript" language="javascript">
+<!--
+var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>",pwdmin = <?php echo $cfg_mb_pwdmin; ?>;
+-->
+</script>
+<script type="text/javascript" language="javascript" src='js/reg_new.js'></script>
+</head>
+<body>
+<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineBorder" id="login">
+  <div class="location"><span class="fLeft">注册帐号</span><span class="fRight">
+    <button class="button5 mTB10 mR10" onclick="location='login.php'">帐号登录</button>
+    </span></div>
+  <div class="theme fLeft">
+    <form name="form2" id="regUser" action="reg_new.php" method="post">
+      <input type="hidden" name="dopost" value="regok" />
+      <input type="hidden" name="mtype" value="个人" />
+      <p class="mB10" style=" text-align:right"></p>
+      <ul>
+        <li><span>&nbsp;</span>(带<i class="red"> * </i>号的表示为必填项目，用户名必须大于<?php echo $cfg_mb_idmin; ?>位小于20位，密码必须大于<?php echo $cfg_mb_pwdmin; ?>位)</li>
+        <li><span>帐号类型：</span>
+        <?php
+        foreach ($types as $type)
+        {
+        if($type == '个人')
+        {
+            echo ' <label><input type="radio" name="mtype" value="'.$type.'" checked />';
+        }
+        else
+        {
+            echo ' <label><input type="radio" name="mtype" value="'.$type.'" />';
+        }
+        echo $type, '</label> &nbsp;';
+        }
+        ?>
+        </li>
+        <li><span>用户名：</span>
+          <input name="userid" type="text" id="txtUsername" class="text" />
+          <i class="red">*</i> <em id="_userid">(可以使用中文，但禁止除[@][.]以外的特殊符号)</em> </li>
+        <li><span>昵称/公司名称：</span>
+          <input name="uname" type="text" id="uname" size="20" class="text" />
+          <i class="red">*</i> <em id="_uname">(个人会员该项为昵称，企业会员填写公司名称)</em> </li>
+        <li><span>登陆密码：</span>
+          <input name="userpwd" type="password" id="txtPassword" class="text" />
+          <i class="red">*</i> </li>
+        <li><span>确认密码：</span>
+          <input name="userpwdok" type="password" id="userpwdok" value="" size="20" class="text" />
+          <i class="red">*</i> <em id="_userpwdok"></em> </li>
+        <li><span>电子邮箱：</span>
+          <input name="email" type="text" id="email" class="text" />
+          <i class="red">*</i> <em id="_email">(每个电子邮邮箱只能注册一个帐号)</em> </li>
+        <li><span>安全问题：</span>
+        <?php
+        require(DEDEDATA.'/safequestions.php');
+        echo GetSafequestion(0,'safequestion');
+        ?>
+          <em id="_safequestion">(忘记密码时重设密码用)</em> </li>
+        <li><span>问题答案：</span>
+          <input name="safeanswer" type="text" id="safeanswer" class="text" value="" />
+        </li>
+        <li><span>性别：</span>
+          <input type="radio" name="sex" value="男" />
+          男 &nbsp;
+          <input type="radio" name="sex" value="女" />
+          女 &nbsp;
+          <input name="sex" type="radio" value="" checked="checked" />
+          保密 </li>
+        <li><span>验证码：</span>
+          <input name="vdcode" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
+          <img src="../include/vdimgck.php" alt="看不清？点击更换" name="vdimgck" align="absmiddle" id="vdimgck" style="cursor:pointer"/> 看不清？<a href="#vdcode">点击更换</a></li>
+      </ul>
+      <div><span class="fLeft" style="height:110px; width:15%;">会员注册协议：</span>
+        <div class="contract"> 1、在本站注册的会员，必须遵守《互联网电子公告服务管理规定》，不得在本站发表诽谤他人，侵犯他人隐私，侵犯他人知识产权，传播病毒，政治言论，商业讯息等信息。<br />
+          2、在所有在本站发表的文章，本站都具有最终编辑权，并且保留用于印刷或向第三方发表的权利，如果你的资料不齐全，我们将有权不作任何通知使用你在本站发布的作品。<br />
+          3、在登记过程中，您将选择注册名和密码。注册名的选择应遵守法律法规及社会公德。您必须对您的密码保密，您将对您注册名和密码下发生的所有活动承担责任。</div>
+      </div>
+      <hr />
+      <ul>
+        <li><span>&nbsp;</span>
+          <input name="agree" type="checkbox" value="" checked />
+          同意协议 </li>
+        <li><span>&nbsp;</span>
+          <button class="buttonGreen142" id="btnSignCheck" type="submit">注 册</button>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="clear"></div>
+</div>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

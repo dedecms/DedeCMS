@@ -1,14 +1,21 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('pic_view');
-if(empty($activepath)) $activepath=$cfg_medias_dir;
+if(empty($activepath))
+{
+	$activepath=$cfg_medias_dir;
+}
 $activepath = ereg_replace("/{1,}","/",$activepath);
 $truePath = $cfg_basedir.$activepath;
 $listSize=5;
+include DedeInclude('templets/file_pic_view.htm');
+
 function GetPrePath($nowPath)
 {
 	if($nowPath==""||$nowPath=="/")
+	{
 		echo("当前为根目录\n");
+	}
 	else
 	{
 		$dirs = split("/",$nowPath);
@@ -20,87 +27,90 @@ function GetPrePath($nowPath)
 		echo("<a href=\"pic_view.php?activepath=".$nowPath."\">转到上级目录</a>\n");
 	}
 }
+
 function ListPic($truePath,$nowPath)
 {
-    global $listSize;
-    $col=0;
-    $rowdd=0;
-    $rowdd++;
-    $imgfile="";
-    $truePath = ereg_replace("/$","",ereg_replace("\\{1,}","/",trim($truePath)));
-    $nowPath = ereg_replace("/$","",ereg_replace("/{1,}","/",trim($nowPath)));
-    $dh = dir($truePath);
-    echo("<tr align='center'>\n");
-    while($filename=$dh->read())
-    {
-    	if(!ereg("\.$",$filename))
-    	{
-
-    		$fullName = $truePath."/".$filename;
-    		$fileUrl =  $nowPath."/".$filename;
-    		if(is_dir($fullName))
-    		{
-    		if($col%$listSize==0&&$col!=0)
+	global $listSize;
+	$col=0;
+	$rowdd=0;
+	$rowdd++;
+	$imgfile="";
+	$truePath = ereg_replace("/$","",ereg_replace("\\{1,}","/",trim($truePath)));
+	$nowPath = ereg_replace("/$","",ereg_replace("/{1,}","/",trim($nowPath)));
+	$dh = dir($truePath);
+	echo("<tr align='center'>\n");
+	while($filename=$dh->read())
+	{
+		if(!ereg("\.$",$filename))
+		{
+			$fullName = $truePath."/".$filename;
+			$fileUrl =  $nowPath."/".$filename;
+			if(is_dir($fullName))
 			{
-			echo("</tr>\n<tr align='center'>\n");
-			for($i=$rowdd-$listSize;$i<$rowdd;$i++)
+				if($col%$listSize==0&&$col!=0)
+				{
+					echo("</tr>\n<tr align='center'>\n");
+					for($i=$rowdd-$listSize;$i<$rowdd;$i++)
+					{
+						echo("<td>".$filelist[$i]."</td>\n");
+					}
+					echo("</tr>\n<tr align='center'>\n");
+				}
+				$line = "
+	    		<td>
+	    		<table width='106' height='106' border='0' cellpadding='0' cellspacing='1' bgcolor='#CCCCCC'>
+	    		<tr><td align='center' bgcolor='#FFFFFF'>
+	    		<a href='pic_view.php?activepath=".$fileUrl."'>
+	    		<img src='img/pic_dir.gif' width='44' height='42' border='0'>
+	    		</a></td></tr></table></td>";
+				$filelist[$rowdd] = $filename;
+				$col++;
+				$rowdd++;
+				echo $line;
+			}
+			else if(IsImg($filename))
 			{
-				echo("<td>".$filelist[$i]."</td>\n");
+				if($col%$listSize==0&&$col!=0)
+				{
+					echo("</tr>\n<tr align='center'>\n");
+					for($i=$rowdd-$listSize;$i<$rowdd;$i++)
+					{
+						echo("<td>".$filelist[$i]."</td>\n");
+					}
+					echo("</tr>\n<tr align='center'>\n");
+				}
+				$line = "
+	    		<td>
+	    		<table width='106' height='106' border='0' cellpadding='0' cellspacing='1' bgcolor='#CCCCCC'>
+	    		<tr>
+			    <td align='center' bgcolor='#FFFFFF'>
+			    ".GetImgFile($truePath,$nowPath,$filename)."
+			    </td>
+				</tr></table></td>";
+				$filelist[$rowdd] = $filename;
+				$col++;
+				$rowdd++;
+				echo $line;
 			}
-			echo("</tr>\n<tr align='center'>\n");
-			}
-    		$line = "
-    		<td>
-    		<table width='106' height='106' border='0' cellpadding='0' cellspacing='1' bgcolor='#CCCCCC'>
-    		<tr><td align='center' bgcolor='#FFFFFF'>
-    		<a href='pic_view.php?activepath=".$fileUrl."'>
-    		<img src='img/pic_dir.gif' width='44' height='42' border='0'>
-    		</a></td></tr></table></td>";
-    		$filelist[$rowdd] = $filename;
-			$col++;
-			$rowdd++;
-			echo $line;
-    		}
-    		else if(IsImg($filename))
-    		{
-    		if($col%$listSize==0&&$col!=0)
-			{
-			echo("</tr>\n<tr align='center'>\n");
-			for($i=$rowdd-$listSize;$i<$rowdd;$i++)
-			{
-				echo("<td>".$filelist[$i]."</td>\n");
-			}
-			echo("</tr>\n<tr align='center'>\n");
-			}
-    		$line = "
-    		<td>
-    		<table width='106' height='106' border='0' cellpadding='0' cellspacing='1' bgcolor='#CCCCCC'>
-    		<tr>
-		    <td align='center' bgcolor='#FFFFFF'>
-		    ".GetImgFile($truePath,$nowPath,$filename)."
-		    </td>
-			</tr></table></td>";
-			$filelist[$rowdd] = $filename;
-			$col++;
-			$rowdd++;
-			echo $line;
-    	    }
-    	}
-    }
-    echo("</tr>\n");
-    if(!empty($filelist))
-    {
-    	echo("<tr align='center'>\n");
-    	$t = ($rowdd-1)%$listSize;
-    	if($t==0) $t=$listSize;
+		}
+	}
+	echo("</tr>\n");
+	if(!empty($filelist))
+	{
+		echo("<tr align='center'>\n");
+		$t = ($rowdd-1)%$listSize;
+		if($t==0)
+		{
+			$t=$listSize;
+		}
 		for($i=$rowdd-$t;$i<$rowdd;$i++)
 		{
 			echo("<td>".$filelist[$i]."</td>\n");
 		}
 		echo("</tr>\n");
 	}
-        
 }
+
 function GetImgFile($truePath,$nowPath,$fileName)
 {
 	$toW=102;
@@ -118,27 +128,24 @@ function GetImgFile($truePath,$nowPath,$fileName)
 	else
 	{
 		$toWH=$toW/$toH;
-        $srcWH=$srcW/$srcH;
-        if($toWH<=$srcWH)
+		$srcWH=$srcW/$srcH;
+		if($toWH<=$srcWH)
 		{
-           $ftoW=$toW;
-           $ftoH=$ftoW*($srcH/$srcW);
+			$ftoW=$toW;
+			$ftoH=$ftoW*($srcH/$srcW);
 		}
 		else
 		{
-           $ftoH=$toH;
-           $ftoW=$ftoH*($srcW/$srcH);
+			$ftoH=$toH;
+			$ftoW=$ftoH*($srcW/$srcH);
 		}
-	} 
-	 return("<a href='".$nowPath."/".$fileName."' target='_blank'><img src='".$nowPath."/".$fileName."' width='".$ftoW."' height='".$ftoH."' border='0'></a>");
-} 
+	}
+	return("<a href='".$nowPath."/".$fileName."' target='_blank'><img src='".$nowPath."/".$fileName."' width='".$ftoW."' height='".$ftoH."' border='0'></a>");
+}
+
 function IsImg($fileName)
 {
 	if(ereg("\.(jpg|gif|png)$",$fileName)) return 1;
 	else return 0;
-}          
-
-require_once(dirname(__FILE__)."/templets/file_pic_view.htm");
-
-ClearAllLink();
+}
 ?>

@@ -1,131 +1,115 @@
 <?php
 require(dirname(__FILE__)."/config.php");
 CheckPurview('temp_One');
-if(empty($dopost)) $dopost = "";
-if(empty($aid)) $aid = "";
-$dsql = new DedeSql(false);
-//////////////////////////////////////////
-/*----------------------
-function __saveedit();
--------------------*/
+if(empty($dopost))
+{
+	$dopost = "";
+}
+$aid = isset($aid) && is_numeric($aid) ? $aid : 0;
 if($dopost=="saveedit")
 {
-  require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
+	include_once(DEDEINC."/arc.sgpage.class.php");
 	$uptime = time();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
+
 	//如果更改了文件名，删除旧文件
 	if($oldfilename!=$filename)
 	{
 		$oldfilename = $cfg_basedir.$cfg_cmspath."/".$oldfilename;
-		if(is_file($oldfilename)) unlink($oldfilename);
+		if(is_file($oldfilename))
+		{
+			unlink($oldfilename);
+		}
+	}
+	if($likeidsel!=$oldlikeid )
+	{
+		$likeid = $likeidsel;
 	}
 	$inQuery = "
-	 update #@__sgpage set
+	 update `#@__sgpage` set
 	 title='$title',
+	 keywords='$keywords',
+	 description='$description',
+	 likeid='$likeid',
 	 ismake='$ismake',
 	 filename='$filename',
+	 template='$template',
 	 uptime='$uptime',
 	 body='$body'
-	 where aid='$aid';
-	";
-	$dsql->SetQuery($inQuery);
-	if(!$dsql->ExecuteNoneQuery())
+	 where aid='$aid'; ";
+	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
-		$dsql->Close();
 		ShowMsg("更新页面数据时失败，请检查长相是否有问题！","-1");
-	  exit();
+		exit();
 	}
-	$dsql->Close();
-	$filename = $cfg_basedir.$cfg_cmspath."/".$filename;
-	if($ismake==1){
-	  $pv = new PartView();
-    $pv->SetTemplet(stripslashes($body),"string");
-    $pv->SaveToHtml($filename);
-    $pv->Close();
-  }
-  else{
-  	$fp = fopen($filename,"w") or die("创建：{$filename} 失败，可能是没有权限！");
-  	fwrite($fp,stripslashes($body));
-  	fclose($fp);
-  }
-	ShowMsg("成功更新一个页面！","templets_one.php");
+	$sg = new sgpage($aid);
+	$sg->SaveToHtml();
+	ShowMsg("成功修改一个页面！","templets_one.php");
 	exit();
 }
-/*----------------------
-function __delete();
--------------------*/
 else if($dopost=="delete")
 {
-   $row = $dsql->GetOne("Select filename From #@__sgpage where aid='$aid'");
-   $filename = $cfg_basedir.$cfg_cmspath."/".$row['filename'];
-   $dsql->SetQuery("Delete From #@__sgpage where aid='$aid'");
-   $dsql->ExecuteNoneQuery();
-   $dsql->Close();
-   if(is_file($filename)) unlink($filename);
-   ShowMsg("成功删除一个页面！","templets_one.php");
-   exit();
+	$row = $dsql->GetOne("Select filename From `#@__sgpage` where aid='$aid'");
+	$filename = ereg_replace("/{1,}","/",$cfg_basedir.$cfg_cmspath."/".$row['filename']);
+	$dsql->ExecuteNoneQuery(" Delete From `#@__sgpage` where aid='$aid' ");
+	if(is_file($filename))
+	{
+		unlink($filename);
+	}
+	ShowMsg("成功删除一个页面！","templets_one.php");
+	exit();
 }
-/*----------------------
-function __make();
--------------------*/
 else if($dopost=="make")
 {
-	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-	$dsql->SetQuery("update #@__sgpage set uptime='".time()."' where aid='$aid'");
-  $dsql->ExecuteNoneQuery();
-	$row = $dsql->GetOne("Select * From #@__sgpage where aid='$aid'");
-	$fileurl = $cfg_cmspath."/".$row['filename'];
-	$filename = $cfg_basedir.$cfg_cmspath."/".$row['filename'];
-	if($row['ismake']==1)
-	{
-	    $pv = new PartView();
-      $pv->SetTemplet($row['body'],"string");
-      $pv->SaveToHtml($filename);
-      $pv->Close();
-   }
-   else
-   {  
-    	$fp = fopen($filename,"w") or die("创建：{$filename} 失败，可能是没有权限！");
-  	  fwrite($fp,$row['body']);
-      fclose($fp);
-   }
-	$dsql->Close();
+	include_once(DEDEINC."/arc.sgpage.class.php");
+	$row = $dsql->GetOne("Select filename From `#@__sgpage` where aid='$aid'");
+	$fileurl = $cfg_cmsurl.'/'.ereg_replace("/{1,}","/",$row['filename']);
+	$sg = new sgpage($aid);
+	$sg->SaveToHtml();
 	ShowMsg("成功更新一个页面！",$fileurl);
 	exit();
 }
-/*----------------------
-function __makeAll();
--------------------*/
-else if($dopost=="makeall")
+else if($dopost=="mkall")
 {
-	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-  $dsql->ExecuteNoneQuery("update #@__sgpage set uptime='".time()."'");
-	$row = $dsql->Execute('meoutside',"Select * From #@__sgpage ");
-	while($row = $dsql->GetArray('meoutside'))
+	include_once(DEDEINC."/arc.sgpage.class.php");
+	$dsql->Execute("ex","Select aid From `#@__sgpage` ");
+	$i = 0;
+	while($row = $dsql->GetArray("ex"))
 	{
-	  $fileurl = $cfg_cmspath."/".$row['filename'];
-	  $filename = $cfg_basedir.$cfg_cmspath."/".$row['filename'];
-	  if($row['ismake']==1)
-	  {
-	    $pv = new PartView();
-      $pv->SetTemplet($row['body'],"string");
-      $pv->SaveToHtml($filename);
-     }
-     else
-     {  
-    	  $fp = fopen($filename,"w") or die("创建：{$filename} 失败，可能是没有权限！");
-  	    fwrite($fp,$row['body']);
-        fclose($fp);
-     }
-  }
-	$dsql->Close();
-	ShowMsg("成功更新所有页面！","templets_one.php");
+		$sg = new sgpage($row['aid']);
+		$sg->SaveToHtml();
+		$i++;
+	}
+	ShowMsg("成功更新 $i 个页面！",'-1');
 	exit();
 }
-$row = $dsql->GetOne("Select  * From #@__sgpage where aid='$aid'");
+else if($dopost=="mksel")
+{
+	if(empty($ids))
+	{
+		$ids = '';
+	}
+	include_once(DEDEINC."/arc.sgpage.class.php");
+	$i = 0;
+	if($ids == 0)
+	{
+		ShowMsg('您没有选择需要更新的文档！','-1');
+		exit();
+	}
+	elseif(is_array($ids))
+	{
+		foreach($ids as $aid)
+		{
+			$sg = new sgpage($aid);
+			$sg->SaveToHtml();
+			$i++;
+		}
+		ShowMsg("成功更新 $i 个页面！",'-1');
+		exit();
+	}
+}
+$row = $dsql->GetOne("Select  * From `#@__sgpage` where aid='$aid' ");
+include(DEDEADMIN."/templets/templets_one_edit.htm");
 
-require_once(dirname(__FILE__)."/templets/templets_one_edit.htm");
-
-ClearAllLink();
 ?>

@@ -1,3 +1,6 @@
+ a {
+ 	font-size:12px;
+ 	 }
  .WebFX-ContextMenu 		{
  	border: 0;/*2px outset;*/
  	width: 10px;
@@ -5,7 +8,7 @@
 
 .WebFX-ContextMenu-Body {
  	background-color: #EEFFEC;
- 	background-image:url('../img/mmenubg.gif?3');
+ 	background-image:url('../img/mmenubg.gif');
  	margins:	0px;
  	padding:	1px;
  	border: 1px solid #E0E7C9;

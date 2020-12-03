@@ -1,10 +1,10 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_module');
-require_once(dirname(__FILE__)."/../include/inc_modules.php");
-require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
+require_once(dirname(__FILE__)."/../include/dedemodule.class.php");
+require_once(dirname(__FILE__)."/../include/oxwindow.class.php");
 if(empty($action)) $action = '';
-$mdir = dirname(__FILE__).'/module';
+$mdir = DEDEROOT.'/data/module';
 if($action=='upload')
 {
 	if( !is_uploaded_file($upfile) )
@@ -14,20 +14,20 @@ if($action=='upload')
 	}
 	else
 	{
-		include_once(dirname(__FILE__)."/../include/zip.lib.php");
+		include_once(dirname(__FILE__)."/../include/zip.class.php");
 		$tmpfilename = $mdir.'/'.ExecTime().mt_rand(10000,50000).'.tmp';
 		move_uploaded_file($upfile,$tmpfilename) or die("把上传的文件移动到{$tmpfilename}时失败，请检查{$mdir}目录是否有写入权限！");
-		
+
 		//ZIP格式的文件
 		if($filetype==1){
 			$z = new zip();
 			$files = $z->get_List($tmpfilename);
 			$dedefileindex = -1;
-			//为了节省资源，系统仅以.dev作为扩展名识别ZIP包里了dede模块格式文件
+			//为了节省资源，系统仅以.xml作为扩展名识别ZIP包里了dede模块格式文件
 			if(is_array($files)){
 		  for($i=0;$i<count($files);$i++)
 		  {
-				if( eregi( "\.dev",$files[$i]['filename']) ){
+				if( eregi( "\.xml",$files[$i]['filename']) ){
 						$dedefile = $files[$i]['filename'];
 						$dedefileindex = $i;
 						break;
@@ -44,7 +44,7 @@ if($action=='upload')
 			unlink($tmpfilename);
 			$tmpfilename = $mdir."/ziptmp/".$dedefile;
 		}
-		
+
 		$dm = new DedeModule($mdir);
 	  $infos = $dm->GetModuleInfo($tmpfilename,'file');
 	  if(empty($infos['hash']))
@@ -54,7 +54,7 @@ if($action=='upload')
 	  	ShowMsg("对不起，你上传的文件可能不是织梦模块的标准格式文件！<br /><br /><a href='javascript:history.go(-1);'>&gt;&gt;返回重新上传&gt;&gt;</a>","javascript:;");
 	  	exit();
 	  }
-	  $okfile = $mdir.'/'.$infos['hash'].'.dev';
+	  $okfile = $mdir.'/'.$infos['hash'].'.xml';
 	  if($dm->HasModule($infos['hash']) && empty($delhas))
 	  {
 	  	unlink($tmpfilename);
@@ -73,9 +73,10 @@ if($action=='upload')
 else
 {
 	$win = new OxWindow();
-	$win->Init("module_upload.php","js/blank.js","data");
+	$win->Init("module_upload.php","js/blank.js","POST' enctype='multipart/form-data");
 	$win->mainTitle = "模块管理";
-	$win->AddTitle("<a href='module_main.php'>模块管理</a> &gt;&gt; 上传模块");
+	$wecome_info = "<a href='module_main.php'>模块管理</a> &gt;&gt; 上传模块";
+	$win->AddTitle('请选择要上传的文件:');
 	$win->AddHidden("action",'upload');
 	$msg = "
 	<table width='600' border='0' cellspacing='0' cellpadding='0'>
@@ -96,15 +97,15 @@ else
   <tr>
     <td width='96' height='60'>请选择文件：</td>
     <td width='504'>
-	<input name='upfile' type='file' id='upfile' style='width:300px' />	</td>
+	<input name='upfile' type='file' id='upfile' style='width:380px' />	</td>
   </tr>
  </table>
 	";
 	$win->AddMsgItem("<div style='padding-left:20px;line-height:150%'>$msg</div>");
-	$winform = $win->GetWindow("okonly","");
+	$winform = $win->GetWindow('ok','');
 	$win->Display();
 	exit();
 }
 
-ClearAllLink();
+//ClearAllLink();
 ?>

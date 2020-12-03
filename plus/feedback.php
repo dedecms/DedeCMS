@@ -1,247 +1,276 @@
 <?php
-$cfg_needFilter = true;
-require(dirname(__FILE__)."/../include/config_base.php");
-require(dirname(__FILE__)."/../include/inc_memberlogin.php");
-require(dirname(__FILE__)."/../include/inc_channel_unit.php");
-if(!isset($action)) $action = "";
-if(!empty($artID)) $arcID = $artID;
-if(!isset($arcID)) $arcID = 0;
-if(!isset($feedid)) $feedid = 0;
-if(!isset($arctitle)) $arctitle = '';
-if(!isset($arcurl)) $arcurl = '';
-if(!isset($urlindex)) $urlindex = 0;
-
-//每页显示评论记录数
-$feedbackPageSize = 15;
-
-if($cfg_feedbackcheck=='Y') $ischeck = 0;
-else $ischeck = 1;
-
-function trimMsg($msg)
+require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once(DEDEINC."/filter.inc.php");
+if(!isset($action))
 {
-	global $cfg_notallowstr;
-	$notallowstr = $cfg_notallowstr;
-	$msg = htmlEncode($msg);
-	$msg = str_replace("  ","&nbsp;&nbsp;",$msg);
-	$msg = eregi_replace($notallowstr,"***",$msg);
-	return $msg;
+	$action = '';
 }
-
-
-$ml = new MemberLogin();
-
-$dsql = new DedeSql(false);
-
-//扔鸡蛋鲜花
-//-----------------------------------
-if($action=="good")
+//兼容旧的JS代码
+if($action == 'good' || $action == 'bad')
 {
-	$fid = ereg_replace("[^0-9]","",$fid);
-	$dsql->ExecuteNoneQuery("Update #@__feedback set good = good+1 where ID='$fid' ");
-	$dsql->Close();
-	ShowMsg("评论成功！","-1");
-	exit();
-}
-else if($action=="bad")
-{
-	$fid = ereg_replace("[^0-9]","",$fid);
-	$dsql->ExecuteNoneQuery("Update #@__feedback set bad = bad+1 where ID='$fid' ");
-	$dsql->Close();
-	ShowMsg("评论成功！","-1");
+	if(!empty($aid)) $id = $aid;
+	require_once(dirname(__FILE__).'/digg_ajax.php');
 	exit();
 }
 
-//如果发送的网址和文档ID同时为空，禁止评论
-if(empty($arcurl) && empty($arcID) && empty($urlindex))
+
+$ischeck = $cfg_feedbackcheck=='Y' ? 0 : 1;
+$aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
+$fid = (isset($fid) && is_numeric($fid)) ? $fid : 0;
+if(empty($aid) && empty($fid))
 {
-	ShowMsg("无法对未知文档评论！","-1");
-	$dsql->Close();
+	ShowMsg('文档id不能为空!','-1');
 	exit();
 }
 
-$cts = array();
-$cts['maintable'] = '#@__archives';
-if(!empty($arcID)){
-	$cts = GetChannelTable($dsql,$arcID,'arc');
-}
+include_once(DEDEINC."/memberlogin.class.php");
+$cfg_ml = new MemberLogin();
 
-//如果没有评论文档的索引ID，先检测
-if(empty($urlindex))
-{
-  //读取文档信息
-  if(empty($arcurl))
-  {
-     $arcRow = $dsql->GetOne(" Select arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,t.topID,t.typedir,t.namerule From `{$cts['maintable']}` arc  left join `#@__arctype` t on t.ID=arc.typeid where arc.ID='$arcID'; ");
-     if(is_array($arcRow))
-     {
-	      $arctitle = addslashes($arcRow['title']);
-	      $arcurl = GetFileUrl($arcID,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money']);
-        $arcurl = addslashes($arcurl);
-        $feedid = $arcRow['typeid'];
-     }
-  }
-  //获取网址索引信息
-  $row = $dsql->GetOne("Select id,title From `#@__cache_feedbackurl` where url='$arcurl' ");
-  if(is_array($row))
-  {
-	  $urlindex = $row['id'];
-	  $arctitle = $row['title'];
-  }
-  else
-  {
-	   $iquery = " INSERT INTO `#@__cache_feedbackurl`(`url`,`title`,`postnum`,`posttime`,`feedid`) VALUES ('$arcurl', '$arctitle', '0', '0', '$feedid');";
-	   $rs = $dsql->ExecuteNoneQuery($iquery);
-     if($rs) $urlindex = $dsql->GetLastID();
-     else
-     {
-  	    ShowMsg("保存索引数据失败，无法评论！","javascript:;");
-	      $dsql->Close();
-	      exit();
-     }
-  }
-}
-//直接从索引中获取信息
-else
-{
-	$row = $dsql->GetOne("Select id,url,title From `#@__cache_feedbackurl` where id='{$urlindex}' ");
-  if(is_array($row)){
-	  $urlindex = $row['id'];
-	  $arctitle = $row['title'];
-	  $arcurl = $row['url'];
-  }else{
-  	ShowMsg("获取索引数据失败无法评论！","javascript:;");
-	  $dsql->Close();
-	  exit();
-  }
-}
 
+if($action=='goodfb')
+{
+	AjaxHead();
+	$fid = intval($fid);
+	$dsql->ExecuteNoneQuery("Update `#@__feedback` set good = good+1 where id='$fid' ");
+	$row = $dsql->GetOne("Select good From `#@__feedback` where id='$fid' ");
+	echo "<a onclick=\"postBadGood('goodfb',{$aid})\">支持</a>[{$row['good']}]";
+	exit();
+}
+else if($action=='badfb')
+{
+	AjaxHead();
+	$fid = intval($fid);
+	$dsql->ExecuteNoneQuery("Update `#@__feedback` set bad = bad+1 where id='$fid' ");
+	$row = $dsql->GetOne("Select bad From `#@__feedback` where id='$fid' ");
+	echo "<a onclick=\"postBadGood('badfb',{$aid})\">反对</a>[{$row['bad']}]";
+	exit();
+}
 //查看评论
-/*--------------------------
-function _ShowFeedback()
-----------------------------*/
-if($action==""||$action=="show")
+/*
+function __ViewFeedback(){ }
+*/
+//-----------------------------------
+else if($action=='' || $action=='show')
 {
+	//读取文档信息
+	$arcRow = GetOneArchive($aid);
+	if(empty($arcRow['aid']))
+	{
+		ShowMsg('无法查看未知文档的评论!','-1');
+		exit();
+	}
+	extract($arcRow, EXTR_SKIP);
+	include_once(DEDEINC.'/datalistcp.class.php');
+	$dlist = new DataListCP();
+	$dlist->pageSize = 20;
 
-	require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
+	if(empty($ftype) || ($ftype!='good' && $ftype!='bad' && $ftype!='feedback'))
+	{
+		$ftype = '';
+	}
+	$wquery = $ftype!='' ? " And ftype like '$ftype' " : '';
 
-	$row = $dsql->GetOne("Select AVG(rank) as dd From #@__feedback where urlindex = '$urlindex' Or aid='$arcID' ");
-	$agvrank = $row['dd'];
+	//评论内容列表
+	$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores from `#@__feedback` fb
+                 left join `#@__member` mb on mb.mid = fb.mid
+                 where fb.aid='$aid' and fb.ischeck='1' $wquery order by fb.id desc";
+	$dlist->SetParameter('aid',$aid);
+	$dlist->SetParameter('action','show');
+	$dlist->SetTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_templet.htm');
+	$dlist->SetSource($querystring);
+	$dlist->Display();
+	exit();
+}
 
-  $dlist = new DataList();
-  $dlist->Init();
-  $dlist->pageSize = $feedbackPageSize;
-
-  //最近热门评论
-  $feedback_hot = "";
-	$nearTime = 30;  //最近评论的文章的发布日期(表示多少天前)
-	$minTime = time() - (3600 * 24 * $nearTime);
-
-	if($feedid==0) $hotquery = "Select id,title From `#@__cache_feedbackurl` where  posttime>$minTime order by postnum desc limit 0,10";
-	else $hotquery = "Select id,title From `#@__cache_feedbackurl` where posttime>$minTime And feedid='$feedid' order by postnum desc limit 0,10";
-
-  $dlist->dsql->Execute("hotq",$hotquery);
-  while($myrow = $dlist->dsql->GetArray("hotq")){
-  	$feedback_hot .= "<div class='nndiv'>·<a href='feedback.php?urlindex={$myrow['id']}'>{$myrow['title']}</a></div>\r\n";
-  }
-  $dlist->dsql->FreeResult("hotq");
-
-  //评论内容列表
-  if(empty($arcID)) $wq = " urlindex = '$urlindex' ";
-  else $wq = " aid='$arcID' ";
-  $querystring = "select * from `#@__feedback` where $wq and ischeck='1' order by dtime desc";
-  $dlist->SetParameter("arcID",$arcID);
-  $dlist->SetParameter("urlindex",$urlindex);
-  $dlist->SetParameter("feedid",$feedid);
-  $dlist->SetParameter("action","show");
-  $dlist->SetSource($querystring);
-  require_once($cfg_basedir.$cfg_templets_dir."/plus/feedback_templet.htm");
-  $dlist->Close();
-  $dsql->Close();
+//引用评论
+//------------------------------------
+/*
+function __Quote(){ }
+*/
+else if($action=='quote')
+{
+	$row = $dsql->GetOne("Select * from `#@__feedback` where id ='$fid'");
+	require_once(DEDEINC.'/dedetemplate.class.php');
+	$dtp = new DedeTemplate();
+	$dtp->LoadTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_quote.htm');
+	$dtp->Display();
+	exit();
 }
 //发表评论
-/*-----------------------------
-function __send()
-------------------------------*/
-else if($action=="send")
+//------------------------------------
+/*
+function __SendFeedback(){ }
+*/
+else if($action=='send')
 {
-  //是否加验证码重确认
-  if(!isset($isconfirm)) $isconfirm = '';
-  if($cfg_feedback_ck=='Y' && empty($isconfirm)){
-  	require_once($cfg_basedir.$cfg_templets_dir."/plus/feedback_confirm.htm");
-  	$dsql->Close();
-  	exit();
-  }
-  //检查验证码
-  if($cfg_feedback_ck=='Y'){
-  	if(empty($validate)) $validate=="";
-    else $validate = strtolower($validate);
-    $svali = GetCkVdValue();
-    if(strtolower($validate)!=$svali || $svali=="")
-    {
-       $dsql->Close();
-       ShowMsg("验证码错误！","-1");
-       exit();
-    }
-  }
-  //其它检查
-  if(empty($notuser)) $notuser=0;
-  if($notuser==1){ //匿名发表评论
-	  if(empty($username)) $username = "guest";
-  }
-  else if($ml->M_ID > 0){ //已登录的用户
-	  $username = $ml->M_UserName;
-  }
-  else{
-  	//用户身份验证，考虑到整合的原因，验证后不支持保存用户的登录信息
-	  if(!TestStringSafe($username)||!TestStringSafe($pwd)){
-   	  $dsql->Close();
-   	  ShowMsg("用户名或密码不合法！","-1",0,2000);
-  	  exit();
-    }
- 	  $row = $dsql->GetOne("Select ID,pwd From `#@__member` where userid='$username' ");
- 	  $isok = false;
- 		if(is_array($row)){
- 			$pwd = GetEncodePwd($pwd);
- 			if($pwd == $row['pwd']) $isok = true;
- 	  }
-    if(!$isok) {
-  	  $dsql->Close();
-  	  ShowMsg("验证用户失败，请重新输入你的用户名和密码！","-1");
-  	  exit();
-    }
-  }
-  $msg = cn_substr(trimMsg($msg),1000);
-  $ip = GetIP();
-  $dtime = time();
-  if(empty($face)) $face = '0';
-  //保存评论内容
-  if($msg!="")
-  {
-	  if(empty($rank)) $rank = '0';
-	  $inquery = "
-	    Insert Into `#@__feedback`(aid,username,arctitle,urlindex,url,ip,msg,ischeck,dtime,rank,face)
-	    values('$arcID','$username','$arctitle','$urlindex','$arcurl','$ip','$msg','$ischeck','$dtime','$rank','$face')
-	  ";
-	  
-	  $dsql->ExecuteNoneQuery($inquery);
-	  
-	  $row = $dsql->GetOne("Select count(*) as dd From `#@__feedback` where urlindex='$urlindex' Or aid='$arcID' ");
-	  if(!empty($arcID))
-	  {
-	    $dsql->ExecuteNoneQuery("Update `{$cts['maintable']}` set postnum='".$row['dd']."',lastpost='".time()."' where ID='$arcID'");
-      //更新文档
-      if($cfg_feedback_make=='Y')
-      {
-    	  require(dirname(__FILE__)."/../include/inc_archives_view.php");
-  	    $arc = new Archives($arcID);
-        $arc->MakeHtml();
-      }
-    }
-    $dsql->ExecuteNoneQuery("Update `#@__cache_feedbackurl` set postnum='".$row['dd']."',posttime='".time()."' where id='$urlindex' ");
-  }
-  $dsql->Close();
-  if($ischeck==0) ShowMsg("成功发表评论，但需审核后才会显示你的评论!","feedback.php?arcID=$arcID&urlindex=$urlindex");
-  if($ischeck==1) ShowMsg("成功发表评论，现在转到评论页面!","feedback.php?arcID=$arcID&urlindex=$urlindex");
-  exit();
+	//读取文档信息
+	$arcRow = GetOneArchive($aid);
+	if((empty($arcRow['aid']) || $arcRow['notpost']=='1')&&empty($fid))
+	{
+		ShowMsg('无法对该文档发表评论!','-1');
+		exit();
+	}
+
+	//是否加验证码重确认
+	if(empty($isconfirm))
+	{
+		$isconfirm = '';
+	}
+	if($isconfirm!='yes' && $cfg_feedback_ck=='Y')
+	{
+		extract($arcRow, EXTR_SKIP);
+		require_once(DEDEINC.'/dedetemplate.class.php');
+		$dtp = new DedeTemplate();
+		$dtp->LoadTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_confirm.htm');
+		$dtp->Display();
+		exit();
+	}
+	//检查验证码
+	if($cfg_feedback_ck=='Y')
+	{
+		$validate = isset($validate) ? strtolower(trim($validate)) : '';
+		$svali = strtolower(trim(GetCkVdValue()));
+		if($validate != $svali || $svali=='')
+		{
+			ResetVdValue();
+			ShowMsg('验证码错误！','-1');
+			exit();
+		}
+	}
+
+	//检查用户登录
+	if(empty($notuser))
+	{
+		$notuser=0;
+	}
+
+	//匿名发表评论
+	if($notuser==1)
+	{
+		$username = $cfg_ml->M_ID > 0 ? '匿名' : '游客';
+	}
+
+	//已登录的用户
+	else if($cfg_ml->M_ID > 0)
+	{
+		$username = $cfg_ml->M_UserName;
+	}
+
+	//用户身份验证
+	else
+	{
+		if($username!='' && $pwd!='')
+		{
+			$rs = $cfg_ml->CheckUser($username,$pwd);
+			if($rs==1)
+			{
+				$dsql->ExecuteNoneQuery("Update `#@__member` set logintime='".time()."',loginip='".GetIP()."' where mid='{$cfg_ml->M_ID}'; ");
+			}
+			else
+			{
+				$username = '游客';
+			}
+		}
+		else
+		{
+			$username = '游客';
+		}
+	}
+	$ip = GetIP();
+	$dtime = time();
+	
+	//检查评论间隔时间；
+	if(!empty($cfg_feedback_time))
+	{
+		//检查最后发表评论时间，如果未登陆判断当前IP最后评论时间
+		if($cfg_ml->M_ID > 0)
+		{
+			$where = "WHERE `mid` = '$cfg_ml->M_ID'";
+		}
+		else
+		{
+			$where = "WHERE `ip` = '$ip'";
+		}
+		$row = $dsql->GetOne("SELECT dtime FROM `#@__feedback` $where ORDER BY `id` DESC ");
+		if($dtime - $row['dtime'] < $cfg_feedback_time)
+		{
+			ResetVdValue();
+			ShowMsg('管理员设置了评论间隔时间，请稍等休息一下！','-1');
+			exit();
+		}
+	}
+
+	if(empty($face))
+	{
+		$face = 0;
+	}
+	$face = intval($face);
+	extract($arcRow, EXTR_SKIP);
+	$msg = cn_substrR(TrimMsg($msg),1000);
+	$username = cn_substrR(HtmlReplace($username,2),20);
+	if($feedbacktype!='good' && $feedbacktype!='bad')
+	{
+		$feedbacktype = 'feedback';
+	}
+	//保存评论内容
+	if($comtype == 'comments')
+	{
+		$arctitle = addslashes($title);
+		if($msg!='')
+		{
+			$inquery = "INSERT INTO `#@__feedback`(`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`, `mid`,`bad`,`good`,`ftype`,`face`,`msg`)
+	               VALUES ('$aid','$typeid','$username','$arctitle','$ip','$ischeck','$dtime', '{$cfg_ml->M_ID}','0','0','$feedbacktype','$face','$msg'); ";
+			$rs = $dsql->ExecuteNoneQuery($inquery);
+			if(!$rs)
+			{
+				echo $dsql->GetError();
+				exit();
+			}
+		}
+	}
+	//引用回复
+	elseif ($comtype == 'reply')
+	{
+		$row = $dsql->GetOne("Select * from `#@__feedback` where id ='$fid'");
+		$arctitle = $row['arctitle'];
+		$aid =$row['aid'];
+		$msg = $quotemsg.$msg;
+		$msg = HtmlReplace($msg,2);
+		$inquery = "INSERT INTO `#@__feedback`(`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`,`mid`,`bad`,`good`,`ftype`,`face`,`msg`)
+				VALUES ('$aid','$typeid','$username','$arctitle','$ip','$ischeck','$dtime','{$cfg_ml->M_ID}','0','0','$feedbacktype','$face','$msg')";
+		$dsql->ExecuteNoneQuery($inquery);
+	}
+
+	if($feedbacktype=='bad')
+	{
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set scores=scores-{cfg_feedback_sub},badpost=badpost+1,lastpost='$dtime' where id='$aid' ");
+	}
+	else if($feedbacktype=='good')
+	{
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set scores=scores+{$cfg_feedback_add},goodpost=goodpost+1,lastpost='$dtime' where id='$aid' ");
+	}
+	else
+	{
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set scores=scores+1,lastpost='$dtime' where id='$aid' ");
+	}
+	if($cfg_ml->M_ID > 0)
+	{
+		$dsql->ExecuteNoneQuery("Update `#@__member` set scores=scores+{$cfg_sendfb_scores} where mid='{$cfg_ml->M_ID}' ");
+	}
+	//统计用户发出的评论
+	if($cfg_ml->M_ID > 0)
+	{
+		$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__feedback` WHERE `mid`='".$cfg_ml->M_ID."'");
+		$dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET `feedback`='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
+	}
+	$_SESSION['sedtime'] = time();
+	if($ischeck==0)
+	{
+		ShowMsg("成功发表评论，但需审核后才会显示你的评论!","feedback.php?aid=$aid");
+	}elseif($ischeck==1)
+	{
+		ShowMsg("成功发表评论，现在转到评论页面!","feedback.php?aid=$aid");
+	}
+	exit();
 }
 ?>

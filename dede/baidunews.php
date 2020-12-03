@@ -1,42 +1,52 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 
-if(empty($do)){
-
-	include './templets/baidunews.htm';
-}else{
-	$baidunews = "<?xml version=\"1.0\" encoding=\"gb18030\" ?>\n";
+if(empty($do))
+{
+	include DEDEADMIN.'/templets/baidunews.htm';
+}else
+{
+	$baidunews = "<?xml version=\"1.0\" encoding=\"".$cfg_soft_lang."\" ?>\n";
 	$baidunews .= "<document>\n";
 	$baidunews .= "<webSite>$cfg_webname </webSite>\n";
 	$baidunews .= "<webMaster>$cfg_adminemail </webMaster>\n";
 	$baidunews .= "<updatePeri>$cfg_updateperi </updatePeri>\n";
 
 	$limit = $cfg_baidunews_limit;
-	if($limit > 100 || $limit < 1) $limit = 100;
+	if($limit > 100 || $limit < 1)
+	{
+		$limit = 100;
+	}
 
-	$query = "select maintable.*, addtable.body, arctype.typename, arc.writer,arc.source
-	from #@__full_search maintable
-	left join #@__addonarticle addtable on addtable.aid=maintable.aid
+	$query = "select maintable.*, addtable.body, arctype.typename
+	from #@__archives maintable
+	left join #@__addonarticle addtable on addtable.aid=maintable.id
 	left join #@__arctype arctype on arctype.ID=maintable.typeid
-	left join #@__archives arc on arc.ID=maintable.aid
-	where maintable.channelid=1 order by maintable.uptime desc limit $limit
+	where maintable.channel=1 and maintable.arcrank!=-1 order by maintable.pubdate desc limit $limit
 	";
 	$dsql->SetQuery($query);
-	$dsql->execute();
-	while($row = $dsql->getarray()){
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
 		$title = htmlspecialchars($row['title']);
-		
-		if(strpos($row['url'],'http://') === false){
-		$link = $cfg_basehost.$row['url'];
-		}else{
-		$link = $row['url'];
+		$row1 = GetOneArchive($row['id']);
+		if(strpos($row1['arcurl'],'http://') === false)
+		{
+			$link = ($cfg_basehost=='' ? 'http://'.$_SERVER["HTTP_HOST"].$cfg_cmspath : $cfg_basehost).$row1['arcurl'];
+		}else
+		{
+			$link = $row1['arcurl'];
 		}
 		$link = htmlspecialchars($link);
-		
-		$description = htmlspecialchars($row['addinfos']);
-		$text = htmlspecialchars($row['body']);
-		$image = '';
-		$headlineimg = '';
+		$description = htmlspecialchars(strip_tags($row['description']));
+		$text = htmlspecialchars(strip_tags($row['body']));
+		$image = $row['litpic'] =='' ? '' :$row['litpic'];
+		if($image != '' && strpos($image, 'http://') === false)
+		{
+			$image = ($cfg_basehost=='' ? 'http://'.$_SERVER["HTTP_HOST"].$cfg_cmspath : $cfg_basehost).$image;
+
+		}
+		//$headlineimg = '';
 		$keywords = htmlspecialchars($row['keywords']);
 		$category = htmlspecialchars($row['typename']);
 		$author = htmlspecialchars($row['writer']);
@@ -49,21 +59,20 @@ if(empty($do)){
 		$baidunews .= "<description>$description </description>\n";
 		$baidunews .= "<text>$text </text>\n";
 		$baidunews .= "<image>$image </image>\n";
-		$baidunews .= "<headlineImg />\n";
+		//$baidunews .= "<headlineImg />\n";
 		$baidunews .= "<keywords>$keywords </keywords>\n";
 		$baidunews .= "<category>$category </category>\n";
 		$baidunews .= "<author>$author </author>\n";
 		$baidunews .= "<source>$source </source>\n";
 		$baidunews .= "<pubDate>$pubdate </pubDate>\n";
 		$baidunews .= "</item>\n";
-
-
-
 	}
 	$baidunews .= "</document>\n";
 
 	$fp = fopen(dirname(__FILE__).'/'.$filename,'w');
 	fwrite($fp,$baidunews);
 	fclose($fp);
-	showmsg("<a href='{$filename}' target=\"_blank\">{$filename}生成成功</a>",'javascript:;');
+	showmsg("<a href='{$filename}' target=\"_blank\">{$filename} make success</a>",'javascript:;');
 }
+
+?>

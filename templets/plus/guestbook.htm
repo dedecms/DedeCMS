@@ -1,139 +1,163 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>留言簿 - powered by dedecms</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel=stylesheet href="images/css.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $cfg_webname; ?>_留言本</title>
+<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
-<body topmargin="2" >
-<center>
+<body class="mapspage">
 
-<table width="720" height="68px;" border="0" cellspacing="0" cellpadding="0" style="border-bottom:2px solid #DDD;margin-bottom:5px;">
-		<tr>
-				<td align="left" valign="bottom" style="background:url(images/toplogo.gif) left 30px no-repeat;font-size:16px;	font-weight:bold;letter-spacing:2px;padding-left:200px;padding-bottom:8px;">	留言本	</td>
-				<td align="right" valign="bottom" style="padding-bottom:10px;padding-right:10px;">
-				<a href="#write">[签写留言]</a> 	</td>
-		</tr>
-</table>
-
-
-
-
-<?php 
-$mylist = $dlist->GetDataList();
-while($row = $mylist->GetArray('dm'))
-{
-?>
-<table width='720' border='0' cellpadding='3' cellspacing='1' bgcolor='#CCCCCC'>
-  <tr>
-    <td width='160' rowspan='3' valign='top' bgcolor='#FFFFFF'>
-    <table border='0' cellPadding='4' cellSpacing='0' width='100%'>
+<div class="header">
+<div class="top w960 center">
+		<div class="title">
+			<h1>
+				<h1><a href="<?php echo $cfg_basehost;?>/"><?php echo $cfg_webname;?></a></h1>
+			</h1>
+		</div><!-- /title -->
+	</div><!-- /top -->
+</div><!-- /header -->
+<div class="w960 clear center mt1">
+  <div class="sp-title">
+    <h2>留言板</h2>
+    <span class="more"> <a href="#write">签写留言</a> <a href="<?php echo $cfg_basehost;?>/">返回首页</a> </span> </div>
+  <div class="formbox"> {dede:datalist}
+    <table width='100%' border='0' align="center" cellpadding='3' cellspacing='1' bgcolor="#CCCCCC">
       <tr>
-        <td align=center width='17%'>
-        	<img src='images/<?php echo $row["face"]?>.gif' border=0>
-        	<?php echo GetIsCheck($row['ischeck'],$row['ID'])?>
-        </td>
+        <td width='160' rowspan='3' align="center" bgcolor='#FFFFFF'><table width='160' border='0' align="center" cellpadding='1' cellspacing='2'>
+          <tr>
+            <td height="120" align=center><img src='guestbook/images/<?php echo $fields['face']?>.gif' border=0 /> <?php echo GetIsCheck($fields['ischeck'],$fields['id'])?></td>
+          </tr>
+          <tr>
+            <td height="20" align=left>&nbsp;姓名：<?php echo $fields['uname']?></td>
+          </tr>
+          <tr>
+            <td height="20" align=left>&nbsp;来自：<?php echo $fields['ip']?></td>
+          </tr>
+          <tr>
+            <td height="20" align=left>&nbsp;QQ：<?php echo $fields['qq']?></td>
+          </tr>
+        </table></td>
+        <td height="20" bgcolor='#FFFFFF'><img height='16' src='guestbook/images/time.gif' width='16' /> 发表时间: <?php echo MyDate('Y-m-d H:i:s',$fields['dtime']); ?></td>
+      </tr>
+      <tr>
+        <td height="160" bgcolor="#FFFFFF"><?php echo $fields['msg']; ?></td>
+      </tr>
+      <tr>
+        <td height="20" bgcolor='#FFFFFF'><a href='mailto:<?php echo $row["email"]?>'><img src='guestbook/images/mail.gif' border=0 width='16' height='16' />[邮件]</a> <a href='http://<?php echo $fields['homepage']?>' target='_blank'><img src='guestbook/images/home.gif' border=0 width='16' height='16' />[主页]</a> <a href='guestbook.php?action=admin&id=<?php echo $fields['id']; ?>'><img src='guestbook/images/quote.gif' border=0 height=16 width=16 />[回复/编辑]</a> <a href='guestbook.php?action=admin&id=<?php echo $fields['id']; ?>&job=del'><img src='guestbook/images/del.gif' border=0 height=16 width=16 />[删除]</a></td>
       </tr>
     </table>
-   <P> 
-   &nbsp;姓名：<?php echo $row['uname']?><br>
-	 &nbsp;来自：<?php echo $row['ip']?><br>
-	 &nbsp;QQ：<?php echo $row['qq']?><br>
-	</P>
-	</td>
-    <td width='600' bgcolor='#FFFFFF'><img height='16' src='images/time.gif' width='16'> 发表时间: <?php echo $row['dtime']?> </td>
-  </tr>
-  <tr>
-    <td height='100' bgcolor='#FFFFFF' style='word-break: break-all'>
-    <?php echo $row['msg']?>
-    </td>
-  </tr>
-  <tr>
-    <td bgcolor='#FFFFFF'>
-    <a href='mailto:<?php echo $row["email"]?>'><img src='images/mail.gif' border=0 width='16' height='16'>[邮件]</a> 
-    <a href='http://<?php echo $row['homepage']?>' target='_blank'><img src='images/home.gif' border=0 width='16' height='16'>[主页]</a>  
-    <a href='edit.php?ID=<?php echo $row['ID']?>'><img src='images/quote.gif' border=0 height=16 width=16>[回复/编辑]</a>  
-    <a href='edit.php?ID=<?php echo $row['ID']?>&job=del'><img src='images/del.gif' border=0 height=16 width=16>[删除]</a> 
-    </td>
-  </tr>
-</table>
-<table width='720'><td height='2'></td></table>
-<?php  } ?>
-<table border='0' cellpadding='4' cellspacing='0' width='720' align='center'>
-  <tr>
-  <td align="right">
-  <?php echo $dlist->GetPageList(7);?>
-  </td>
-  </tr>
-  <tr><td></td></tr>
-</table>
-<a name="write"></a>
-  <table width="720" border="0" cellspacing="1" cellpadding="4" align="center" bgcolor="#CCCCCC">
-    <form method="post" action="savepost.php">
-      <tr bgcolor="#ffffff"> 
-        <td width="10%" align="center" nowrap><font color="#FF0000">*</font>你的姓名：</td>
-        <td width="40%"><input type="text" maxlength="10" name="uname" size="36" class="input"></td>
-        <td width="10%" align="center" nowrap>OICQ号码：</td>
-        <td width="40%"><input maxlength="20" type="text" name="qq" size="46" class="input"></td>
+    <br />
+    {/dede:datalist}
+    <table border='0' cellpadding='0' cellspacing='4' width='80%' align='center'>
+      <tr>
+        <td align="right"> {dede:pagelist listsize='5'/} </td>
       </tr>
-      <tr bgcolor="#ffffff"> 
-        <td align="center" nowrap>&nbsp;电子邮件：</td>
-        <td><input maxlength="80" type="text" name="email" size="36" class="input"></td>
-        <td align="center" nowrap height="12">个人主页：</td>
-        <td height="12"><input maxlength="80" type="text" name="homepage" size="46" class="input"></td>
+      <tr>
+        <td></td>
       </tr>
-      <tr bgcolor="#ffffff"> 
-        <td align="center" nowrap width="10%">验 证 码：</td>
-        <td height="12" colspan="3"> <table width="200" border="0" cellspacing="0" cellpadding="0">
-            <tr> 
-              <td width="84"><input name="validate" type="text" id="vdcode2" size="10"></td>
-              <td width="116"><img src='../../include/vdimgck.php' width='50' height='20'></td>
+    </table>
+    <table width="100%" border="0" cellspacing="1" cellpadding="4" align="center" bgcolor="#CCCCCC">
+      <form method="post" action="guestbook.php" name="form1">
+        <input type='hidden' name='action' value='save' />
+        <tr bgcolor="#ffffff">
+          <td width="10%" height="30" align="center" nowrap><font color="#FF0000">*</font>你的姓名：</td>
+          <td width="40%"><input type="text" maxlength="10" name="uname" size="30" class="ipt-txt"/></td>
+          <td width="10%" align="center" nowrap>OICQ号码：</td>
+          <td width="40%"><input maxlength="20" type="text" name="qq" size="20" class="ipt-txt" /></td>
+        </tr>
+        <tr bgcolor="#ffffff">
+          <td height="30" align="center" nowrap>&nbsp;电子邮件：</td>
+          <td><input maxlength="80" type="text" name="email" size="30" class="ipt-txt"/></td>
+          <td align="center" nowrap height="12">个人主页：</td>
+          <td height="12"><input maxlength="80" type="text" name="homepage" size="20" class="ipt-txt" /></td>
+        </tr>
+        <tr bgcolor="#ffffff">
+          <td width="10%" height="30" align="center" nowrap>验 证 码：</td>
+          <td height="12" colspan="3"><table width="200" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="84"><input name="validate" type="text" id="vdcode2" class="ipt-txt" /></td>
+              <td width="116"><img src='../include/vdimgck.php' width='50' height='20' /></td>
             </tr>
           </table></td>
-      </tr>
-      <tr bgcolor="#ffffff"> 
-        <td align="center" nowrap width="10%"> <font color="#FF0000">*</font>留言内容：<br>
-          (1000字内) </td>
-        <td align="left" width="40%"><textarea name="msg" cols="36" rows="8" class="textarea"></textarea></td>
-        <td align="center" nowrap height="2" width="10%">选择头像：</td>
-        <td nowrap height="2" width="40%"> 
-		<input type="radio" name="img" value="01" checked> 
-          <img src="images/01.gif" width="25" height="25"> <input type="radio" name="img" value="02"> 
-          <img src="images/02.gif" width="25" height="25"> <input type="radio" name="img" value="03"> 
-          <img src="images/03.gif" width="25" height="25"> <input type="radio" name="img" value="04"> 
-          <img src="images/04.gif" width="25" height="25"> <input type="radio" name="img" value="05"> 
-          <img src="images/05.gif" width="25" height="25"> <br> <input type="radio" name="img" value="06"> 
-          <img src="images/06.gif" width="25" height="25"> <input type="radio" name="img" value="07"> 
-          <img src="images/07.gif" width="25" height="25"> <input type="radio" name="img" value="08"> 
-          <img src="images/08.gif" width="25" height="25"> <input type="radio" name="img" value="09"> 
-          <img src="images/09.gif" width="25" height="25"> <input type="radio" name="img" value="10"> 
-          <img src="images/10.gif" width="25" height="25"> <br><input type="radio" name="img" value="11"> 
-          <img src="images/11.gif" width="25" height="25">  <input type="radio" name="img" value="12"> 
-          <img src="images/12.gif" width="25" height="25"> <input type="radio" name="img" value="13"> 
-          <img src="images/13.gif" width="25" height="25"> <input type="radio" name="img" value="14"> 
-          <img src="images/14.gif" width="25" height="25">   <input type="radio" name="img" value="15"> 
-          <img src="images/15.gif" width="25" height="25"> <br><input type="radio" name="img" value="16"> 
-          <img src="images/16.gif" width="25" height="25"> <input type="radio" name="img" value="17"> 
-          <img src="images/17.gif" width="25" height="25"><input type="radio" name="img" value="18"> 
-          <img src="images/18.gif" width="25" height="25"> <input type="radio" name="img" value="19"> 
-          <img src="images/19.gif" width="25" height="25"> <input type="radio" name="img" value="20"> 
-          <img src="images/20.gif" width="25" height="25"> <br><input type="radio" name="img" value="21"> 
-          <img src="images/21.gif" width="25" height="25"> <input type="radio" name="img" value="22"> 
-          <img src="images/22.gif" width="25" height="25">  <input type="radio" name="img" value="23"> 
-          <img src="images/23.gif" width="25" height="25"> <input type="radio" name="img" value="24"> 
-          <img src="images/24.gif" width="25" height="25"> </td>
-      </tr>
-      <tr bgcolor="#ffffff"> 
-        <td align="center" nowrap colspan="4"> <input maxlength="1000" type="submit" name="Submit" value="提 交" class="btn"> 
-          &nbsp;&nbsp; <input type="reset" name="Submit2" value="取 消" class="btn"> 
-        </td>
-      </tr>
-    </form>
-  </table>
-<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td height="40" align="center"><a href="http://www.dedecms.com" target="_blank">Power by DedeCms 织梦内容管理系统</a></td>
-  </tr>
-</table>
-</center>
+        </tr>
+        <tr bgcolor="#ffffff">
+          <td align="center" nowrap width="10%"><font color="#FF0000">*</font>留言内容：<br />
+            (1000字内) </td>
+          <td align="left" width="40%"><textarea name="msg" cols="38" rows="8" class="textarea" class="ipt-txt"></textarea></td>
+          <td align="center" nowrap height="2" width="10%">选择头像：</td>
+          <td nowrap height="2" width="40%"><input type="radio" name="img" value="01" checked />
+            <img src="guestbook/images/01.gif" width="25" height="25" />
+            <input type="radio" name="img" value="02" />
+            <img src="guestbook/images/02.gif" width="25" height="25" />
+            <input type="radio" name="img" value="03" />
+            <img src="guestbook/images/03.gif" width="25" height="25" />
+            <input type="radio" name="img" value="04" />
+            <img src="guestbook/images/04.gif" width="25" height="25" />
+            <input type="radio" name="img" value="05" />
+            <img src="guestbook/images/05.gif" width="25" height="25" />
+            <input type="radio" name="img" value="06" />
+            <img src="guestbook/images/06.gif" width="25" height="25" /> <br />
+            <input type="radio" name="img" value="07" />
+            <img src="guestbook/images/07.gif" width="25" height="25" />
+            <input type="radio" name="img" value="08" />
+            <img src="guestbook/images/08.gif" width="25" height="25" />
+            <input type="radio" name="img" value="09" />
+            <img src="guestbook/images/09.gif" width="25" height="25" />
+            <input type="radio" name="img" value="10" />
+            <img src="guestbook/images/10.gif" width="25" height="25" />
+            <input type="radio" name="img" value="11" />
+            <img src="guestbook/images/11.gif" width="25" height="25" />
+            <input type="radio" name="img" value="12" />
+            <img src="guestbook/images/12.gif" width="25" height="25" /> <br />
+            <input type="radio" name="img" value="13" />
+            <img src="guestbook/images/13.gif" width="25" height="25" />
+            <input type="radio" name="img" value="14" />
+            <img src="guestbook/images/14.gif" width="25" height="25" />
+            <input type="radio" name="img" value="15" />
+            <img src="guestbook/images/15.gif" width="25" height="25" />
+            <input type="radio" name="img" value="16" />
+            <img src="guestbook/images/16.gif" width="25" height="25" />
+            <input type="radio" name="img" value="17" />
+            <img src="guestbook/images/17.gif" width="25" height="25" />
+            <input type="radio" name="img" value="18" />
+            <img src="guestbook/images/18.gif" width="25" height="25" /> <br />
+            <input type="radio" name="img" value="19" />
+            <img src="guestbook/images/19.gif" width="25" height="25" />
+            <input type="radio" name="img" value="20" />
+            <img src="guestbook/images/20.gif" width="25" height="25" />
+            <input type="radio" name="img" value="21" />
+            <img src="guestbook/images/21.gif" width="25" height="25" />
+            <input type="radio" name="img" value="22" />
+            <img src="guestbook/images/22.gif" width="25" height="25" />
+            <input type="radio" name="img" value="23" />
+            <img src="guestbook/images/23.gif" width="25" height="25" />
+            <input type="radio" name="img" value="24" />
+            <img src="guestbook/images/24.gif" width="25" height="25" /></td>
+        </tr>
+        <tr bgcolor="#ffffff">
+          <td height="30" colspan="4" align="center" nowrap><input maxlength="1000" type="submit" name="Submit" value="提 交" class="btn-2" />
+            &nbsp;&nbsp;
+            <input type="reset" name="Submit2" value="取 消" class="btn-2" /></td>
+        </tr>
+      </form>
+    </table>
+    <br />
+  </div>
+</div>
+<div class="footer">
+<p class="link">
+		网站版权信息及免责声明
+  </p>
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)--国内最专业的PHP网站管理系统，轻松建站的首选利器。" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
+	</p><!-- /powered -->
+	
+</div>
+
 </body>
 </html>
