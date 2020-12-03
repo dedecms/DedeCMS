@@ -3,36 +3,34 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>修改圈子公告</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../member/templets/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-     <?php  include(DEDEMEMBER."./templets/menu.php");?>
-      <div class="dedeMain">
-        <div class="location">管理<i>|</i><a href="../group/group.php?id=<?php echo $id?>" target="_blank"><?php echo $_GROUPS['groupname'];?></a></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li class="select"><a href="mygroup.php">创建的圈子</a></li>
-            <!--<li><a href="myjoin.php">参与的圈子</a></li> -->
-            <li><a href="myjoin.php">我的发帖</a></li>
-          </ul>
-        </div>
-        <div class="mL10 mR10 mTB10">
-          <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>修改公告</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;">
-            <em class="mR10"><a href="mygroup_manage.php?id=<?php echo $id;?>">基本资料</a></em>
-            <em class="mR10"><a href="mygroup_cate.php?id=<?php echo $id;?>">话题分类</a></em>
-            <em class="mR10"><a href="mygroup_member.php?id=<?php echo $id;?>">成员管理</a></em>
-            <em class="mR10"><a href="mygroup_skin.php?id=<?php echo $id;?>">自定义风格</a></em>
-            <em><a href="mygroup_notice.php?id=<?php echo $id;?>">修改公告</a></em></div>
-          </div>
-          <form name="form1" action="" method="post" >
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mygroup.php"><span>创建的圈子</span></a></li>
+          <li><a href="myjoin.php"><span>我的发帖</span></a></li>
+          <li><a href="index.php"><span>圈子频道</span></a></li>
+          <li><a href="create.php" target="_blank"><span>创建圈子</span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li><a href="mygroup_manage.php?id=<?php echo $id;?>"><span>基本资料</span></a></li>
+        <li><a href="mygroup_cate.php?id=<?php echo $id;?>"><span>话题分类</span></a></li>
+        <li><a href="mygroup_member.php?id=<?php echo $id;?>"><span>成员管理</span></a></li>
+        <li><a href="mygroup_skin.php?id=<?php echo $id;?>"><span>自定义风格</span></a></li>
+        <li class="thisTab"><a href="mygroup_notice.php?id=<?php echo $id;?>"><span>修改公告</span></a></li>
+      </ul>
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>修改公告</strong></h3>   
+         <form name="form1" action="" method="post" >
             <input name="action" type="hidden" value="<?php echo $fromset;?>" />
             <input name="nid" type="hidden" value="<?php echo $nid;?>" />
             <table cellspacing="1" class="submit">
@@ -52,13 +50,12 @@
             <div style="margin-left:15%"><button class="button2" type="submit">保存</button></div>
           </form>
         </div>
+        <!--主操作区域 -->
       </div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-</div>
-<?php  include(DEDEMEMBER."./templets/foot.htm");?>
 </body>
 </html>

@@ -143,7 +143,7 @@ else if($dopost=='fetch')
 	          left join `#@__addonarticle` addon on addon.aid=arc.id where arc.channel='1' $limitSql ";
 		$dsql->SetQuery($fquery);
 		$dsql->Execute();
-		$sp = new SplitWord();
+		$sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
 		while($row=$dsql->GetObject())
 		{
 			if($row->keywords!='')
@@ -153,13 +153,10 @@ else if($dopost=='fetch')
 			$tjnum++;
 			$id = $row->id;
 			$keywords = "";
-			if($cfg_soft_lang == 'utf-8')
-			{
-				$row->title = utf82gb($row->title);
-				$row->body = utf82gb($row->body);
-			}
-			$titleindexs = explode(' ',trim($sp->GetIndexText($row->title)));
-			$allindexs = explode(' ',trim($sp->GetIndexText(Html2Text($row->body),500)));
+			$sp->SetSource($row->title, $cfg_soft_lang, $cfg_soft_lang);
+			$titleindexs = $sp->GetFinallyIndex();
+			$sp->SetSource(Html2Text($row->body), $cfg_soft_lang, $cfg_soft_lang);
+			$allindexs = $sp->GetFinallyIndex();
 			if(is_array($allindexs) && is_array($titleindexs))
 			{
 				foreach($titleindexs as $k)
@@ -192,7 +189,6 @@ else if($dopost=='fetch')
 			}
 			$dsql->ExecuteNoneQuery("update `#@__archives` set keywords='$keywords' where id='$id'");
 		}
-		$sp->Clear();
 		unset($sp);
 	}//end if limit
 

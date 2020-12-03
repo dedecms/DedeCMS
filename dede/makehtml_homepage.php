@@ -6,6 +6,7 @@ if(empty($dopost))
 {
 	$dopost = '';
 }
+
 if($dopost=="view")
 {
 	$pv = new PartView();
@@ -16,6 +17,9 @@ if($dopost=="view")
 }
 else if($dopost=="make")
 {
+	$remotepos = empty($remotepos)? '/index.html' : $remotepos;
+	$isremote = empty($isremote)? 0 : $isremote;
+	$serviterm = empty($serviterm)? "" : $serviterm;
 	$homeFile = DEDEADMIN."/".$position;
 	$homeFile = str_replace("\\","/",$homeFile);
 	$homeFile = str_replace("//","/",$homeFile);
@@ -31,8 +35,23 @@ else if($dopost=="make")
 	$GLOBALS['_arclistEnv'] = 'index';
 	$pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
 	$pv->SaveToHtml($homeFile);
-	echo "成功更新主页HTML：".$homeFile;
-	echo "<br/><br/><a href='$position' target='_blank'>浏览...</a>";
+	
+	echo "成功更新主页HTML：".$homeFile."<br />";
+	if($serviterm ==""){
+	  $config=array();
+	}else{
+		list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+		$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+	}
+	//如果启用远程站点则上传
+  if($cfg_remote_site=='Y')
+  {
+  	if($ftp->connect($config) && $isremote == 1)
+  	{
+   	  if($ftp->upload($position, $remotepos, 'ascii')) echo "远程发布成功!"."<br />";
+    }
+  }
+	echo "<a href='$position' target='_blank'>浏览...</a>";
 	exit();
 }
 $row  = $dsql->GetOne("Select * From #@__homepageset");

@@ -3,35 +3,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>新增书目</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
-<link href="../../../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 <script language="javascript" type="text/javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="js/story.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">新增书目</div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li class="select"><a href="mybooks.php">连载书目</a></li>
-            <li><a href="story_list_content.php">连载内容</a></li>
-          </ul>
-        </div>
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mybooks.php"><span>连载书目</span></a></li>
+          <li><a href="story_list_content.php"><span>连载内容</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+      <h3 class="meTitle"><strong>&nbsp;新增书目</strong></h3>  
         <form class="mL10 mR10 mTB10" name="form1" action="story_add_action.php" enctype="multipart/form-data" method="post" onsubmit="return checkSubmitAdd();">
           <table cellspacing="1" class="submit">
-            <thead>
-              <tr>
-                <th colspan="2" ><strong>新增书目</strong></th>
-              </tr>
-            </thead>
-            <tbody>
+             <tbody>
               <tr>
                 <td width="15%" align="right" valign="top">隶属栏目：</td>
                 <td><select name="catid" id="catid">
@@ -88,12 +82,14 @@
             </tfoot>
           </table>
         </form>
+        </div>
+        <!--主操作区域 -->
       </div>
-      <div class="clear"></div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>
+

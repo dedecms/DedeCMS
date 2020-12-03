@@ -1,4 +1,4 @@
-自定义宏标记调用标签
+﻿自定义宏标记调用标签
 >>dede>>
 {dede:mytag typeid='0' name=''/}
 >>dede>>

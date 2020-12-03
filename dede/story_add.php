@@ -16,7 +16,7 @@ if(!isset($action))
 {
 	$action = '';
 }
-
+$keywords = $writer = '';
 //读取所有栏目
 $dsql->SetQuery("Select id,classname,pid,rank,booktype From #@__story_catalog order by rank asc");
 $dsql->Execute();

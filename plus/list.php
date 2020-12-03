@@ -6,9 +6,10 @@ $t1 = ExecTime();
 $tid = (isset($tid) && is_numeric($tid) ? $tid : 0);
 
 $channelid = (isset($channelid) && is_numeric($channelid) ? $channelid : 0);
-if(isset($TotalResult)) $TotalResult = intval(preg_replace("/[^\d]/",'', $TotalResult));
 
 if($tid==0 && $channelid==0) die(" Request Error! ");
+if(isset($TotalResult)) $TotalResult = intval(preg_replace("/[^\d]/",'', $TotalResult));
+
 
 //如果指定了内容模型ID但没有指定栏目ID，那么自动获得为这个内容模型的第一个顶级栏目作为频道默认栏目
 if(!empty($channelid) && empty($tid))

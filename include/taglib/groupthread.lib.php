@@ -4,16 +4,16 @@ if(!defined('DEDEINC')) exit('Request Error!');
 
 function lib_groupthread(&$ctag,&$refObj)
 {
-	global $dsql, $envs, $cfg_dbprefix, $;
+	global $dsql, $envs, $cfg_dbprefix, $cfg_cmsurl;
 	//属性处理
 	$attlist="gid|0,orderby|dateline,orderway|desc,row|12,titlelen|30";
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 	
-	if( !$this->dsql->IsTable("{$cfg_dbprefix}groups") ) return '没安装圈子模块';
+	if( !$dsql->IsTable("{$cfg_dbprefix}groups") ) return '没安装圈子模块';
 
-	if(!ereg("/$", $)) $cfg_group_url = $."/group";
-	else $cfg_group_url = $."group";
+	if(!ereg("/$", $cfg_cmsurl)) $cfg_group_url = $cfg_cmsurl."/group";
+	else $cfg_group_url = $cfg_cmsurl."group";
 	
 	$innertext = $ctag->GetInnerText();
 	if(trim($innertext)=='') $innertext = GetSysTemplets('groupthreads.htm');
@@ -26,12 +26,12 @@ function lib_groupthread(&$ctag,&$refObj)
 	         left join `#@__groups` g on g.groupid=t.gid
 	         $WhereSql ORDER BY $orderby $orderway LIMIT 0,{$row}";
 	
-	$this->dsql->SetQuery($query);
-  $this->dsql->Execute();
+	$dsql->SetQuery($query);
+  $dsql->Execute();
   $ctp = new DedeTagParse();
   $ctp->SetNameSpace('field', '[', ']');
 	if(!isset($list)) $list = '';
-	while($rs = $this->dsql->GetArray())
+	while($rs = $dsql->GetArray())
 	{
   	  $ctp->LoadSource($innertext);
   	  $rs['subject'] = cn_substr($rs['subject'], $titlelen);

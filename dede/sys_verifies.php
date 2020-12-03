@@ -6,7 +6,7 @@ require(DEDEINC.'/dedehttpdown.class.php');
 
 //更新服务器，如果有变动，请到 http://bbs.dedecms.com 查询
 $officialUrl = 'http://service.dedecms.com';
-$updateHost = 'http://updatenew.dedecms.com/base-v55/';
+$updateHost = 'http://updatenew.dedecms.com/base-v56/';
 
 $action = isset($action) ? trim($action) : '';
 

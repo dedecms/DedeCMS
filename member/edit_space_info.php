@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'config';
 if(!isset($dopost))
 {
 	$dopost = '';
@@ -8,6 +9,12 @@ if(!isset($dopost))
 
 if($dopost=='save')
 {
+	$oldspacelogo=(empty($oldspacelogo))? "" : $oldspacelogo;
+	$spacelogo=(empty($spacelogo))? "" : $spacelogo;
+	$pagesize=(empty($pagesize))? "" : $pagesize;
+	$sign=(empty($sign))? "" : $sign;
+	$spacenews =(empty($spacenews))? "" : $spacenews;
+	$spacename =(empty($spacename))? "" : $spacename;
 	$maxlength = $cfg_max_face * 1024;
 	$userdir = $cfg_user_dir.'/'.$cfg_ml->M_ID;
 	if(!ereg('^'.$userdir, $oldspacelogo))
@@ -34,6 +41,11 @@ if($dopost=='save')
 			$spacelogo = $oldspacelogo;
 	}
 	$pagesize = intval($pagesize);
+	if($pagesize<=0)
+	{
+		ShowMsg('每页文档数不能小于0！','edit_space_info.php');
+	    exit();
+	}
 	$spacename = cn_substrR(HtmlReplace($spacename,2),50);
 	$sign = cn_substrR(HtmlReplace($sign),100);
 	$spacenews = HtmlReplace($spacenews,-1);

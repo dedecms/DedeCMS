@@ -13,6 +13,7 @@
 require_once(dirname(__FILE__)."/../member/config.php");
 require_once DEDEINC.'/datalistcp.class.php';
 CheckRank(0,0);
+$menutype = 'mydede';
 $timestamp = time();
 $myasks = array();
 $query = "select id, tid, tidname, tid2, tid2name, uid, title, digest, reward, dateline, expiredtime, solvetime, status, replies from `#@__ask` where uid='{$cfg_ml->M_ID}' ";

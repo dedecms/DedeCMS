@@ -60,10 +60,9 @@ if($dopost=="delmember")
 				$dsql->ExecuteNoneQuery("Delete From `#@__feedback` where mid='$id' ");
 				$dsql->ExecuteNoneQuery("update `#@__archives` set mid='0' where mid='$id'");
 				#api{{
-				if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')	
-        {
-            $infofromuc=uc_get_user($row['userid']);
-            uc_user_delete($infofromuc[0]);  
+				if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')	{
+	        $infofromuc=uc_get_user($row['userid']);
+          uc_user_delete($infofromuc[0]);
         }
 				#/aip}}
 			}
@@ -91,6 +90,63 @@ if($dopost=="delmember")
 	$win->AddMsgItem("安全验证串：<input name='safecode' type='text' id='safecode' size='16' style='width:200px' />&nbsp;(复制本代码： <font color='red'>$safecode</font> )","30");
 	$winform = $win->GetWindow("ok");
 	$win->Display();
+}else if($dopost=="delmembers"){
+    CheckPurview('member_Del');
+    if($fmdo=='yes')
+    {
+        $safecodeok = substr(md5($cfg_cookie_encode.$randcode),0,24);
+        if($safecodeok!=$safecode)
+        {
+            ShowMsg("请填写正确的安全验证串！","member_do.php?id={$id}&dopost=delmembers");
+            exit();
+        }
+        if(!empty($id))
+        {
+            //删除用户信息
+            
+            $rs = $dsql->ExecuteNoneQuery2("Delete From `#@__member` where mid in (".str_replace("`",",",$id).") And matt<>10 ");    
+            if($rs > 0)
+            {
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_tj` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_space` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_company` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_person` where mid in (".str_replace("`",",",$id).") ");
+
+                //删除用户相关数据
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_stow` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_flink` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_guestbook` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_operation` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_pms` where toid in (".str_replace("`",",",$id).") Or fromid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_friends` where mid in (".str_replace("`",",",$id).") Or fid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__member_vhistory` where mid in (".str_replace("`",",",$id).") Or vid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("Delete From `#@__feedback` where mid in (".str_replace("`",",",$id).") ");
+                $dsql->ExecuteNoneQuery("update `#@__archives` set mid='0' where mid in (".str_replace("`",",",$id).")");
+            }
+            else
+            {
+                ShowMsg("无法删除此会员，如果这个会员是管理员关连的ID，<br />必须先删除这个管理员才能删除此帐号！",$ENV_GOBACK_URL,0,3000);
+                exit();
+            }
+        }
+        ShowMsg("成功删除这些会员！",$ENV_GOBACK_URL);
+        exit();
+    }
+    $randcode = mt_rand(10000,99999);
+    $safecode = substr(md5($cfg_cookie_encode.$randcode),0,24);
+    $wintitle = "会员管理-删除会员";
+    $wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::删除会员";
+    $win = new OxWindow();
+    $win->Init("member_do.php","js/blank.js","POST");
+    $win->AddHidden("fmdo","yes");
+    $win->AddHidden("dopost",$dopost);
+    $win->AddHidden("id",$id);
+    $win->AddHidden("randcode",$randcode);
+    $win->AddHidden("safecode",$safecode);
+    $win->AddTitle("你确实要删除(ID:".$id.")这个会员?");
+    $win->AddMsgItem(" 安全验证串：<input name='safecode' type='text' id='safecode' size='16' style='width:200px' /> (复制本代码： <font color='red'>$safecode</font>)","30");
+    $winform = $win->GetWindow("ok");
+    $win->Display();
 }
 /*----------------
 function __Recommend()
@@ -123,6 +179,7 @@ else if($dopost=='edituser')
 	if(!isset($_POST['id'])) exit('Request Error!');
 	$pwdsql = empty($pwd) ? '' : ",pwd='".md5($pwd)."'";
 	if(empty($sex)) $sex = '男';
+	$uptime=GetMkTime($uptime);
 	
 	if($matt==10 && $oldmatt!=10)
 	{
@@ -137,7 +194,9 @@ else if($dopost=='edituser')
 			money = '$money',
 			scores = '$scores',
 			rank = '$rank',
-			spacesta='$spacesta'
+			spacesta='$spacesta',
+			uptime='$uptime',
+			exptime='$exptime'
 			$pwdsql
 			where mid='$id' And matt<>10 ";
 	$rs = $dsql->ExecuteNoneQuery2($query);
@@ -150,7 +209,9 @@ else if($dopost=='edituser')
 			money = '$money',
 			scores = '$scores',
 			rank = '$rank',
-			spacesta='$spacesta'
+			spacesta='$spacesta',
+			uptime='$uptime',
+			exptime='$exptime'
 			$pwdsql
 			where mid='$id' ";
 			$rs = $dsql->ExecuteNoneQuery2($query);
@@ -179,6 +240,21 @@ else if($dopost=="memberlogin")
 	PutCookie('DedeLoginTime',time(),1800);
 	if(empty($jumpurl)) header("location:../member/index.php");
 	else header("location:$jumpurl");
+}
+elseif($dopost == "deoperations")
+{
+	$nid = ereg_replace('[^0-9,]','',ereg_replace('`',',',$nid));
+	$nid = explode(',',$nid);
+	if(is_array($nid))
+	{
+		foreach ($nid as $var)
+		{
+			$query = "DELETE FROM `#@__member_operation` WHERE aid = '$var'";
+			$dsql->ExecuteNoneQuery($query);
+		}
+		ShowMsg("删除成功！","member_operations.php");
+		exit();
+	}
 }
 elseif($dopost == "upoperations")
 {

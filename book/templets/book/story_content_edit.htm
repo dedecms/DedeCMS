@@ -3,36 +3,31 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>修改连载内容</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="js/story.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location"><span class="fLeft">《<?php echo $contents['title'];?>》<i>|</i><a href='../book/book.php?id=<?php echo $bookid; ?>' target='_blank'>查看</a></span><span class="fRight mR10 titPublish icon"><a href='story_list_content.php?bookid=<?php echo $bookid; ?>'>内容列表</a></span></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li><a href="mybooks.php">连载书目</a></li>
-            <li class="select"><a href="story_list_content.php">连载内容</a></li>
-          </ul>
-        </div>
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mybooks.php"><span>连载书目</span></a></li>
+          <li><a href="story_list_content.php"><span>连载内容</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+      <h3 class="meTitle"><strong>&nbsp;修改连载</strong></h3>  
         <form class="mL10 mR10 mTB10" action='story_edit_content_action.php' method='post'>
           <input type='hidden' name='cid' value='<?php echo $cid; ?>' />
           <input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />
           <input type='hidden' name='catid' value='<?php echo $catid; ?>' />
           <input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
-          <table cellspacing="1" class="submit">
-            <thead>
-              <tr>
-                <th colspan="2" ><strong>修改连载</strong></th>
-              </tr>
-            </thead>
-            <tbody>
+          <table cellspacing="1" class="submit" width="100%">
+              <tbody>
               <tr>
                 <td width="15%" align="right" valign="top">隶属连载：</td>
                 <td><?php echo $bookname; ?></td>
@@ -76,12 +71,13 @@
             </tfoot>
           </table>
         </form>
+        </div>
+        <!--主操作区域 -->
       </div>
-      <div class="clear"></div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>

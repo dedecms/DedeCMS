@@ -1,581 +1,1176 @@
 <?php
-require_once(dirname(__FILE__).'/charset.func.php');
-/*******************************
-//Ö¯ÃÎ·Ö´ÊËã·¨ www.dedecms.com
-//´ø´ÊĞÔ±êÖ¾µÄËã·¨£¬Ê¹ÓÃ·½·¨£º
-//ÆÕÍ¨·Ö´Ê tryNumName£¬Ê¶±ğÊıÁ¿´Ê¼°ÈËÃû£¬$tryDiff áªÒå´¦Àí
-//$strok = $sp->SplitRMM(string $str,bool $tryNumName,bool $tryDiff)
-//±¾ÎÄ¼ş±ØĞë±£³ÖASCII±àÂë
-	********************************/
+/*
+ * Unicodeç¼–ç è¯å…¸çš„phpåˆ†è¯å™¨
+ *
+ */
+define('_SP_', chr(0xFF).chr(0xFE)); 
+define('_SP2_', ',');
+//è§£å†³æœ‰äº›ç³»ç»Ÿå†…å­˜æº¢å‡ºé—®é¢˜
+ini_set('memory_limit', '64M');
 class SplitWord
 {
-	var $RankDic = Array();
-	var $OneNameDic = Array();
-	var $TwoNameDic = Array();
-	var $NewWord = Array();
-	var $SourceString = '';
-	var $ResultString = '';
-	var $isChange = false;
-	var $SplitChar = ' '; //·Ö¸ô·û
-	var $SplitLen = 4; //±£Áô´Ê³¤¶È
-	var $EspecialChar = "ºÍ|µÄ|ÊÇ";
-	var $NewWordLimit = "ÔÚ|µÄ|Óë|»ò|¾Í|Äã|ÎÒ|Ëû|Ëı|ÓĞ|ÁË|ÊÇ|Æä|ÄÜ|¶Ô|µØ";
-
-	//ÕâÀï¿ÉÒÔ°´ĞèÒª¼ÓÈë³£ÓÃµÄÁ¿´Ê£¬
-	//³ÌĞò»á¼ì²â´ÊÓïµÚÒ»¸ö×ÖÊÇ·ñÎªÕâĞ©´ÊºÍÉÏÒ»¸ö´ÊÊÇ·ñÎªÊı´Ê£¬È»ºó½áºÏÎªµ¥´Ê
-	var $CommonUnit = "Äê|ÔÂ|ÈÕ|Ê±|·Ö|Ãë|µã|Ôª|°Ù|Ç§|Íò|ÒÚ|Î»|Á¾";
-
-	var $CnNumber = "£°|£±|£²|£³|£´|£µ|£¶|£·|£¸|£¹|£«|£­|£¥|£®|£á|£â|£ã|£ä|£å|£æ|£ç|£è|£é|£ê|£ë|£ì|£í|£î|£ï|£ğ|£ñ|£ò|£ó |£ô|£õ|£ö|£÷|£ø|£ù|£ú|£Á|£Ã|£Ä|£Å|£Æ|£Ç|£È|£É|£Ê|£Ë|£Ì|£Í|£Î|£Ï|£Ğ|£Ñ|£Ò|£Ó|£Ô|£Õ|£Ö|£×|£Ø|£Ù|£Ú";
-	var $CnSgNum = "Ò»|¶ş|Èı|ËÄ|Îå|Áù|Æß|°Ë|¾Å|Ê®|°Ù|Ç§|Íò|ÒÚ|Êı";
-	var $MaxLen = 13; //´Êµä×î´ó 7 ÖĞÎÄ×Ö£¬ÕâÀïµÄÊıÖµÎª×Ö½ÚÊı×éµÄ×î´óË÷Òı
-	var $MinLen = 3;  //×îĞ¡ 2 ÖĞÎÄ×Ö£¬ÕâÀïµÄÊıÖµÎª×Ö½ÚÊı×éµÄ×î´óË÷Òı
-	var $CnTwoName = "¶ËÄ¾ ÄÏ¹¬ ÚÛóÎ ĞùÔ¯ Áîºü ÖÓÀë ãÌÇğ ³¤Ëï ÏÊÓÚ ÓîÎÄ Ë¾Í½ Ë¾¿Õ ÉÏ¹Ù Å·Ñô ¹«Ëï Î÷ÃÅ ¶«ÃÅ ×óÇğ ¶«¹ù ºôÑÓ Ä½Èİ Ë¾Âí ÏÄºî Öî¸ğ ¶«·½ ºÕÁ¬ »Ê¸¦ Î¾³Ù ÉêÍÀ";
-	var $CnOneName = "ÕÔÇ®ËïÀîÖÜÎâÖ£Íõ·ë³ÂñÒÎÀ½¯Éòº«ÑîÖìÇØÓÈĞíºÎÂÀÊ©ÕÅ¿×²ÜÑÏ»ª½ğÎºÌÕ½ªÆİĞ»×ŞÓ÷°ØË®ñ¼ÕÂÔÆËÕÅË¸ğŞÉ·¶ÅíÀÉÂ³Î¤²ıÂíÃç·ï»¨·½ÓáÈÎÔ¬ÁøÛº±«Ê·ÌÆ·ÑÁ®á¯Ñ¦À×ºØÄßÌÀëøÒóÂŞ±ÏºÂÚù°²³£ÀÖÓÚÊ±¸µÆ¤¿¨Æë¿µÎéÓàÔª²·¹ËÃÏÆ½»ÆÄÂÏôÒüÒ¦ÉÛ¿°ÍôÆîÃ«ÓíµÒÃ×±´Ã÷ê°¼Æ·ü³É´÷Ì¸ËÎÃ©ÅÓĞÜ¼ÍÊæÇüÏî×£¶­Á»¶ÅÈîÀ¶ãÉÏ¯¼¾ÂéÇ¿¼ÖÂ·Â¦Î£½­Í¯ÑÕ¹ùÃ·Ê¢ÁÖµóÖÓĞìÇñÂæ¸ßÏÄ²ÌÌï·®ºúÁè»ôÓİÍòÖ§¿Â¾Ì¹ÜÂ¬Äª¾­·¿ôÃçÑ¸É½âÓ¦×ÚĞû¶¡êÚµËÓôµ¥º¼ºé°üÖî×óÊ¯´Ş¼ªÅ¥¹¨³ÌïúĞÏ»¬ÅáÂ½ÈÙÎÌÜ÷Ñòì¶»İÕçÎº¼Ó·âÜÇôà´¢½ù¼³ÚûÃÓËÉ¾®¶Î¸»Î×ÎÚ½¹°Í¹­ÄÁÚó¹È³µºîåµÅîÈ«Û­°àÑöÇïÖÙÒÁ¹¬Äş³ğèï±©¸Êî×À÷ÈÖ×æÎä·ûÁõ½ªÕ²ÊøÁúÒ¶ĞÒË¾ÉØÛ¬Àè¼»±¡Ó¡ËŞ°×»³ÆÑÌ¨´Ó¶õË÷ÏÌ¼®Àµ×¿İşÍÀÃÉ³ØÇÇÒõÓôñãÄÜ²ÔË«ÎÅİ·µ³µÔÌ·¹±ÀÍåÌ¼§Éê·ö¶ÂÈ½Ô×ÛªÓºàSè³É£¹ğå§Å£ÊÙÍ¨±ßìèÑà¼½Û£ÆÖÉĞÅ©ÎÂ±ğ×¯êÌ²ñµÔÑÖ³äÄ½Á¬ÈãÏ°»Â°¬ÓãÈİÏò¹ÅÒ×É÷¸êÁÎ¸ıÖÕôß¾Óºâ²½¶¼¹¢Âúºë¿ï¹úÎÄ¿Ü¹ãÂ»ãÚ¶«Å¹ì¯ÎÖÀûÎµÔ½ÙçÂ¡Ê¦¹®ØÇÄôêË¹´°½ÈÚÀäö¤ĞÁãÛÄÇ¼òÈÄ¿ÕÔøÉ³Ğë·á³²¹ØØáÏà²éºó½­ÓÎóÃ";
-  //------------------------------
-  //php4¹¹Ôìº¯Êı
-  //------------------------------
-  function SplitWord($loaddic=true){
-  	$this->__construct($loaddic);
-  }
-  //------------------------------
-  //php5¹¹Ôìº¯Êı
-  //------------------------------
-  function __construct($loaddic=true){
-  	if($loaddic)
-  	{
-  	  //ÔØÈëĞÕÊÏ´Êµä
-  	  for($i=0;$i<strlen($this->CnOneName);$i++){
-  		  $this->OneNameDic[$this->CnOneName[$i].$this->CnOneName[$i+1]] = 1;
-  		  $i++;
-  	  }
-  	  $twoname = explode(" ",$this->CnTwoName);
-  	  foreach($twoname as $n){ $this->TwoNameDic[$n] = 1; }
-  	  unset($twoname);
-  	  unset($this->CnTwoName);
-  	  unset($this->CnOneName);
-  	  //¸ß¼¶·Ö´Ê£¬Ô¤ÏÈÔØÈë´ÊµäÒÔÌá·Ö´Ê¸ßËÙ¶È
-  	  $dicfile = dirname(__FILE__)."/data/dede-wwwdic.dat";
-  	  $fp = fopen($dicfile,'r');
-  	  while($line = fgets($fp,64)){
-  		  $ws = explode(' ',$line);
-  		  $this->RankDic[strlen($ws[0])][$ws[0]] = $ws[1];
-  	  }
-  	  fclose($fp);
-    }//ÊÇ·ñÔØÈë´Êµä£¬Èç¹û²»ĞèÒªÓÃ·Ö´Ê¹¦ÄÜ£¬¿ÉÒÔ²»ÔØÈë¡£
-  }
-
-  //--------------------------
-  //Îö·Å×ÊÔ´
-  //--------------------------
-  function Clear()
-  {
-  	unset($this->RankDic);
-  }
-
-  //----------------------------
-  //ÉèÖÃÔ´×Ö·û´®
-  //----------------------------
-  function SetSource($str)
-  {
-  	$this->SourceString = $str;
-  	$this->ResultString = '';
-  }
-
-  //--------------------
-  //¼òµ¥·Ö´Ê
-  //½ö×÷´ÊµäÆ¥Åä
-  //--------------------
-  function SimpleSplit($str)
-  {
-  	//¶ÔÎÄ±¾½øĞĞ´Ö·Ö
-  	$this->SourceString = $this->ReviseString($str);
-
-  	return $this->SourceString;
-  }
-
-  //-----------------------------
-  //RMM·Ö´ÊËã·¨×îÖÕÔ­±àÂë·µ»Ø½á¹û
-  //-----------------------------
-  function GetSplitRMM($str='',$tryNumName=true,$tryDiff=true)
-  {
-  	global $cfg_soft_lang;
-  	$okstr = $this->SplitRMM($str, $tryNumName, $tryDiff);
-  	if($cfg_soft_lang=='utf-8') 
-  	{
-  		$okstr = gb2utf8($this->ResultString);
-  	}
-  	return $okstr;
-	}
-	//-----------------------------
-  //RMM·Ö´ÊËã·¨
-  //-----------------------------
-  function SplitRMM($str='',$tryNumName=true,$tryDiff=true)
-  {
-  	global $cfg_soft_lang;
-		
-		if($cfg_soft_lang=='utf-8' && !$this->isChange) 
-		{
-			$this->isChange = true;
-			$str = utf82gb($str);
-		}
-		
-  	$str = trim($str);
-
-  	//SetSourceÖĞ²»¶Ô$str×÷ÈÎºÎ´¦Àí
-  	if($str!='') $this->SetSource($str);
-  	else return '';
-
-  	//¶ÔÎÄ±¾½øĞĞ´Ö·Ö
-  	$this->SourceString = preg_replace('/ {1,}/',' ',$this->ReviseString($this->SourceString));
-
-  	//¶ÔÌØ¶¨ÎÄ±¾½øĞĞ·ÖÀë
-  	$spwords = explode(' ',$this->SourceString);
-  	$spLen = count($spwords) - 1;
-  	$spc = $this->SplitChar;
-  	for($i=$spLen;$i>=0;$i--)
-  	{
-  		//¿Õ°×·ûºÅ
-  		if(ord($spwords[$i][0])<33)
-  		{
-  			continue;
-  		}
-  		
-  		//Ğ¡ÓÚ×îĞ¡´Ê²»´¦Àí
-  		else if(!isset($spwords[$i][$this->MinLen])) 
-  		{
-  			$this->ResultString = $spwords[$i].$spc.$this->ResultString;
-  		}
-  		
-  		//ÅĞ¶Ï¿ªÍ·´óÓÚ0x80ÈÏÎªÊÇgbk´®£¬·ñÔòÎªÓ¢ÎÄ´®(´Ö·ÖÖĞÒÑ×÷´¦Àí)
-  		else if(ord($spwords[$i][0])<0x81)
-  		{
-  			$this->ResultString = $spwords[$i].$spc.$this->ResultString;
-  		}
-  		//Õı³£¶Ì¾ä½øĞĞ·Ö´Ê´¦Àí
-  		else
-  		{
-  		  $this->ResultString = $this->RunRMM($spwords[$i],$tryNumName,$tryDiff).$spc.$this->ResultString;
-  	  }
-  	}
-  	return $this->ResultString;
-  }
-  //------------------------
-  //¶Ô³£¹æÊıÁ¿´Ê½øĞĞÊ¶±ğ
-  //------------------------
-  function ParNumber($str)
-  {
-  	if($str == '') return '';
-  	$ws = explode(' ',$str);
-  	$wlen = count($ws);
-  	$spc = $this->SplitChar;
-  	$reStr = '';
-  	for($i=0;$i<$wlen;$i++){
-  		if($ws[$i]=='') continue;
-  		if($i>=$wlen-1) $reStr .= $spc.$ws[$i];
-  		else{ $reStr .= $spc.$ws[$i]; }
-    }
-    return $reStr;
-  }
-  //-------------------------------
-  //½øĞĞÃû×ÖÊ¶±ğºÍÆäËüÊı´ÊÊ¶±ğ
-  //--------------------------------
-  function ParOther($WordArray)
-  {
-  	$wlen = count($WordArray)-1;
-  	$rsStr = '';
-  	$spc = $this->SplitChar;
-  	for($i=$wlen;$i>=0;$i--)
-  	{
-  		//ÊıÁ¿´Ê
-  		if(preg_match('/'.$this->CnSgNum.'/',$WordArray[$i]))
-  		{
-  			$rsStr .= $spc.$WordArray[$i];
-  			if($i>0 && preg_match('/^'.$this->CommonUnit.'/',$WordArray[$i-1]) )
-  			{ $rsStr .= $WordArray[$i-1]; $i--; }
-  			else
-  			{
-  				while($i>0 && preg_match("/".$this->CnSgNum."/",$WordArray[$i-1]) ){ $rsStr .= $WordArray[$i-1]; $i--; }
-  			}
-  			continue;
-  		}
-  		//Ë«×ÖĞÕ
-  		if(strlen($WordArray[$i])==4 && isset($this->TwoNameDic[$WordArray[$i]]))
-  		{
-  			$rsStr .= $spc.$WordArray[$i];
-  			if($i>0&&strlen($WordArray[$i-1])==2){
-  				$rsStr .= $WordArray[$i-1];$i--;
-  				if($i>0&&strlen($WordArray[$i-1])==2){ $rsStr .= $WordArray[$i-1];$i--; }
-  			}
-  		}
-  		//µ¥×ÖĞÕ
-  		else if(strlen($WordArray[$i])==2 && isset($this->OneNameDic[$WordArray[$i]]))
-  		{
-  			$rsStr .= $spc.$WordArray[$i];
-  			if($i>0&&strlen($WordArray[$i-1])==2){
-  				 if(preg_match("/".$this->EspecialChar."/",$WordArray[$i-1])) continue;
-  				 $rsStr .= $WordArray[$i-1];$i--;
-  				 if($i>0 && strlen($WordArray[$i-1])==2 &&
-  				  !preg_match("/".$this->EspecialChar."/",$WordArray[$i-1]))
-  				 { $rsStr .= $WordArray[$i-1];$i--; }
-  			}
-  		}
-  		//ÆÕÍ¨´Ê»ã
-  		else{
-  			$rsStr .= $spc.$WordArray[$i];
-  		}
-  	}
-  	//·µ»Ø±¾¶Î·Ö´Ê½á¹û
-  	$rsStr = preg_replace("/^".$spc."/","",$rsStr);
-  	return $rsStr;
-  }
-   //¶ÔÈ«ÖĞÎÄ×Ö·û´®½øĞĞÄæÏòÆ¥Åä·½Ê½·Ö½â
-  function RunRMM($str,$tryNumName=true,$tryDiff=true)
-  {
-  	$spc = $this->SplitChar;
-  	$spLen = strlen($str);
-  	$rsStr = $okWord = $tmpWord = '';
-  	$WordArray = Array();
-  	//ÄæÏò×ÖµäÆ¥Åä
-  	for($i=($spLen-1);$i>=0;)
-  	{
-  		//µ±i´ïµ½×îĞ¡¿ÉÄÜ´ÊµÄÊ±ºò
-  		if($i<=$this->MinLen){
-  			if($i==1){
-  			  $WordArray[] = substr($str,0,2);
-  		  }else
-  			{
-  			   $w = substr($str,0,$this->MinLen+1);
-  			   if($this->IsWord($w)){
-  			   	$WordArray[] = $w;
-  			   }else{
-  				   $WordArray[] = substr($str,2,2);
-  				   $WordArray[] = substr($str,0,2);
-  			   }
-  		  }
-  			$i = -1; break;
-  		}
-  		//·ÖÎöÔÚ×îĞ¡´ÊÒÔÉÏÊ±µÄÇé¿ö
-  		if($i>=$this->MaxLen) $maxPos = $this->MaxLen;
-  		else $maxPos = $i;
-  		$isMatch = false;
-  		for($j=$maxPos;$j>=0;$j=$j-2){
-  			 $w = substr($str,$i-$j,$j+1);
-  			 if($this->IsWord($w)){
-  			 	$WordArray[] = $w;
-  			 	$i = $i-$j-1;
-  			 	$isMatch = true;
-  			 	break;
-  			 }
-  		}
-  		if(!$isMatch){
-  			if($i>1) {
-  				$WordArray[] = $str[$i-1].$str[$i];
-  				$i = $i-2;
-  			}
-  		}
-  	}//End For
-
-  	//Ãû×ÖºÍÊıÁ¿´ÊÊ¶±ğ
-  	if($tryNumName)
-  	{ $rsStr = $this->ParOther($WordArray); }
-  	else{
-  		$wlen = count($WordArray)-1;
-  		for($i=$wlen;$i>=0;$i--){
-  	  	$rsStr .= $spc.$WordArray[$i];
-  	  }
-  	}
-
-  	//Ïûáª´¦Àí
-  	if($tryDiff) $rsStr = $this->TestDiff(trim($rsStr));
-
-  	return $rsStr;
-  }
-
-  //----------------------------
-  //×Ô¶¯ÕªÒª¹¦ÄÜ
-  //$keywordÊÇÖ¸¶¨µÄ¹Ø¼ü×Ö»òGetIndexText·µ»ØµÄÄÚÈİ
-  //½¨Òé²»ÒªÓÃÌ«¶àµÄ¹Ø¼ü×Ö
-  //´Ë¹¦ÄÜÎ´ÊµÏÖ
-  //----------------------------
-  function AutoDescription($str,$keyword,$strlen)
-  {
-  	$this->SourceString = $this->ReviseString($this->SourceString);
-  	//¶ÔÌØ¶¨ÎÄ±¾½øĞĞ·ÖÀë
-  	$spwords = explode(" ",$this->SourceString);
-  	$keywords = explode(" ",$this->keywords);
-  	$regstr = "";
-  	foreach($keywords as $k=>$v)
-  	{
-  		if($v=="") continue;
-  		if(ord($v[0])>0x80 && strlen($v)<3) continue;
-  		if($regstr=="") $regstr .= "($v)";
-  		else $regstr .= "|($v)";
-  	}
-  }
-
-  //----------------------------------
-  //¶Ô·Ö´Ê½á¹û½øĞĞÏûáª´¦Àí
-  //----------------------------------
-  function TestDiff($str)
-  {
-  	$str = preg_replace("/ {1,}/"," ",$str);
-  	if($str == ""||$str == " ") return "";
-  	$ws = explode(' ',$str);
-  	$wlen = count($ws);
-  	$spc = $this->SplitChar;
-  	$reStr = "";
-  	for($i=0;$i<$wlen;$i++)
-  	{
-  		//Ñ­»·µ½×îºóÒ»¸ö´Ê²»´¦Àí
-  		if($i>=($wlen-1)) {
-  			$reStr .= $spc.$ws[$i];
-  		}
-  		//ÆäËü´ÊµÄ´¦Àí
-  		else
-  		{
-  			//µş´Ê¹æÔò
-  			if($ws[$i]==$ws[$i+1]){
-  				$reStr .= $spc.$ws[$i].$ws[$i+1];
-  				$i++; continue;
-  			}
-  			//µ¥×Ö´ÊºÍ¶şÈı×Ö´ÊÖ®¼äµÄáªÒå´¦Àí
-  			if(strlen($ws[$i])==2 && strlen($ws[$i+1])<8 && strlen($ws[$i+1])>2)
-  			{
-  				$addw = $ws[$i].$ws[$i+1];
-  				$t = 6;
-  				$testok = false;
-  				while($t>=4)
-  				{
-  				  $w = substr($addw,0,$t);
-  				  if($this->IsWord($w) && ($this->GetRank($w) > $this->GetRank($ws[$i+1])*2) )
-  				  {
-  					   $limitW = substr($ws[$i+1],strlen($ws[$i+1])-$t-2,strlen($ws[$i+1])-strlen($w)+2);
-  					   if($limitW!="") $reStr .= $spc.$w.$spc.$limitW;
-  					   else $reStr .= $spc.$w;
-  					   $testok = true;
-  					   break;
-  				  }
-  				  $t = $t-2;
-  			  }
-  			  if(!$testok) $reStr .= $spc.$ws[$i];
-  			  else $i++;
-  			}
-  			//Ç°ºó¾ùÎª¶ş×Öµ½Èı×ÖµÄ´Ê½øĞĞ½»²æáªÒå´¦Àí
-  			else if(strlen($ws[$i])>2 && strlen($ws[$i])<8 && strlen($ws[$i+1])>2 && strlen($ws[$i+1])<8)
-  			{
-  				$t21 = substr($ws[$i+1],0,2);
-  				$t22 = substr($ws[$i+1],0,4);
-  				//Èç¹ûÉÏÒ»¸ö´Ê½ÓÏÂÒ»¸ö´ÊµÄÊ××ÖÎª´Ê
-  				if($this->IsWord($ws[$i].$t21))
-  				{
-  					if(strlen($ws[$i])==6||strlen($ws[$i+1])==6){
-  						$reStr .= $spc.$ws[$i].$t21.$spc.substr($ws[$i+1],2,strlen($ws[$i+1])-2);
-  						$i++;
-  					}else{
-  						$reStr .= $spc.$ws[$i];
-  					}
-  				}
-  				//¶ÔÓÚÏÂÒ»¸ö´ÊÎª3×Ö´Ê»ò2×Ö´Ê½øĞĞ²»Í¬µÄ´¦Àí
-  				else if(strlen($ws[$i+1])==6)
-  				{
-  					if($this->IsWord($ws[$i].$t22))
-  					{
-  						$reStr .= $spc.$ws[$i].$t22.$spc.$ws[$i+1][4].$ws[$i+1][5];
-  						$i++;
-  					}else{ $reStr .= $spc.$ws[$i]; }
-  				}
-  				//
-  				//Á½×Ö´Ê½»²æÊ¶±ğ£¬ÊÓÇé¿öÑ¡Ôñ
-  				//
-  				else if(strlen($ws[$i+1])==4)
-  				{
-  					$addw = $ws[$i].$ws[$i+1];
-  					$t = strlen($ws[$i+1])-2;
-  					$testok = false;
-  					while($t>0)
-  					{
-  						$w = substr($addw,0,strlen($ws[$i])+$t);
-  						if($this->IsWord($w) && ($this->GetRank($w) > $this->GetRank($ws[$i+1])*2) )
-  				    {
-  				       $limitW = substr($ws[$i+1],$t,strlen($ws[$i+1])-$t);
-  					     if($limitW!="") $reStr .= $spc.$w.$spc.$limitW;
-  					     else $reStr .= $spc.$w;
-  					     $testok = true;
-  					     break;
-  				    }
-  				    $t = $t-2;
-  					}
-  					if(!$testok) $reStr .= $spc.$ws[$i];
-  			    else $i++;
-  				}else {
-  					$reStr .= $spc.$ws[$i];
-  				}
-  			}
-  			//³¬¹ıËÄ×Ö´Ê»òĞ¡ÓÚ¶ş×ÖµÄ´Ê²»×÷´¦Àí
-  			else
-  			{
-  				$reStr .= $spc.$ws[$i];
-  			}
-  		}
-    }//End For
-  	return $reStr;
-  }
-  //---------------------------------
-  //ÅĞ¶Ï´ÊµäÀïÊÇ·ñ´æÔÚÄ³¸ö´Ê
-  //---------------------------------
-  function IsWord($okWord){
-  	$slen = strlen($okWord);
-  	if($slen > $this->MaxLen) return false;
-  	else return isset($this->RankDic[$slen][$okWord]);
-  }
-  //------------------------------
-  //ÕûÀí×Ö·û´®£¨¶Ô±êµã·ûºÅ£¬ÖĞÓ¢ÎÄ»ìÅÅµÈ³õ²½´¦Àí£©
-  //------------------------------
-  function ReviseString($str)
-  {
-  	$spc = $this->SplitChar;
-    $slen = strlen($str);
-    if($slen==0) return '';
-    $okstr = '';
-    $prechar = 0; // 0-¿Õ°× 1-Ó¢ÎÄ 2-ÖĞÎÄ 3-·ûºÅ
-    for($i=0;$i<$slen;$i++){
-      if(ord($str[$i]) < 0x81)
-      {
-        //Ó¢ÎÄµÄ¿Õ°×·ûºÅ
-        if(ord($str[$i]) < 33){
-          //$str[$i]!="\r"&&$str[$i]!="\n"
-          if($prechar!=0) $okstr .= $spc;
-          $prechar=0;
-          continue;
-        }else if(preg_match("/[^0-9a-zA-Z@\.%#:\\/\\&_-]/",$str[$i]))
-        {
-          if($prechar==0)
-          {	$okstr .= $str[$i]; $prechar=3;}
-          else
-          { $okstr .= $spc.$str[$i]; $prechar=3;}
-        }else
-        {
-        	if($prechar==2||$prechar==3)
-        	{ $okstr .= $spc.$str[$i]; $prechar=1;}
-        	else
-        	{
-        	  if(preg_match("/@#%:/",$str[$i])){ $okstr .= $str[$i]; $prechar=3; }
-        	  else { $okstr .= $str[$i]; $prechar=1; }
-        	}
-        }
-      }
-      else{
-        //Èç¹ûÉÏÒ»¸ö×Ö·ûÎª·ÇÖĞÎÄºÍ·Ç¿Õ¸ñ£¬Ôò¼ÓÒ»¸ö¿Õ¸ñ
-        if($prechar!=0 && $prechar!=2) $okstr .= $spc;
-        //Èç¹ûÖĞÎÄ×Ö·û
-        if(isset($str[$i+1])){
-          $c = $str[$i].$str[$i+1];
-
-          if(preg_match("/".$this->CnNumber."/",$c))
-          { $okstr .= $this->GetAlabNum($c); $prechar = 2; $i++; continue; }
-
-          $n = hexdec(bin2hex($c));
-          if($n>0xA13F && $n < 0xAA40)
-          {
-            if($c=="¡¶"){
-            	if($prechar!=0) $okstr .= $spc." ¡¶";
-            	else $okstr .= " ¡¶";
-            	$prechar = 2;
-            }
-            else if($c=="¡·"){
-            	$okstr .= "¡· ";
-            	$prechar = 3;
-            }
-            else{
-            	if($prechar!=0) $okstr .= $spc.$c;
-            	else $okstr .= $c;
-            	$prechar = 3;
-            }
-          }
-          else{
-            $okstr .= $c;
-            $prechar = 2;
-          }
-          $i++;
-        }
-      }//ÖĞÎÄ×Ö·û
-    }//½áÊøÑ­»·
-    return $okstr;
-  }
-  //-----------------------------------------
-	//³¢ÊÔÊ¶±ğĞÂ´Ê£¬×Ö·û´®²ÎÊıÎªÒÑ¾­·Ö´Ê´¦ÀíµÄ´®
-	//----------------------------------------
-  function FindNewWord($str,$maxlen=6)
-  {
-    $okstr = "";
-    return $str;
-  }
-  //----------------------------------------------
-  //³ıÈ¥×Ö´®ÖĞµÄÖØ¸´´Ê£¬Éú³ÉË÷Òı×Ö·û´®£¬×Ö·û´®²ÎÊıÎªÒÑ¾­·Ö´Ê´¦ÀíµÄ´®
-  //--------------------------------------------------
-  function GetIndexText($str,$ilen=-1)
-  {
-    global $cfg_soft_lang;
-    if($str=='') return '';
-    $okstr  = $this->SplitRMM($str,true,true);
-    $ws = explode(' ',$okstr);
-    $okstr = $wks = '';
-    foreach($ws as $w)
+    
+    //è¾“å…¥å’Œè¾“å‡ºçš„å­—ç¬¦ç¼–ç ï¼ˆåªå…è®¸ utf-8ã€gbk/gb2312/gb18030ã€big5 ä¸‰ç§ç±»å‹ï¼‰  
+    public $sourceCharSet = 'utf-8';
+    public $targetCharSet = 'utf-8';
+	
+    //ç”Ÿæˆçš„åˆ†è¯ç»“æœæ•°æ®ç±»å‹ 1 ä¸ºå…¨éƒ¨ï¼Œ 2ä¸º è¯å…¸è¯æ±‡åŠå•ä¸ªä¸­æ—¥éŸ©ç®€ç¹å­—ç¬¦åŠè‹±æ–‡ï¼Œ 3 ä¸ºè¯å…¸è¯æ±‡åŠè‹±æ–‡
+    public $resultType = 2;
+    
+    //å¥å­é•¿åº¦å°äºè¿™ä¸ªæ•°å€¼æ—¶ä¸æ‹†åˆ†ï¼ŒnotSplitLen = n(ä¸ªæ±‰å­—) * 2 + 1
+    public $notSplitLen = 5;
+    
+    //æŠŠè‹±æ–‡å•è¯å…¨éƒ¨è½¬å°å†™
+    public $toLower = false;
+    
+    //ä½¿ç”¨æœ€å¤§åˆ‡åˆ†æ¨¡å¼å¯¹äºŒå…ƒè¯è¿›è¡Œæ¶ˆå²
+    public $differMax = false;
+    
+    //å°è¯•åˆå¹¶å•å­—
+    public $unitWord = true;
+    
+    //ä½¿ç”¨çƒ­é—¨è¯ä¼˜å…ˆæ¨¡å¼è¿›è¡Œæ¶ˆå²
+    public $differFreq = false;
+	
+    //è¢«è½¬æ¢ä¸ºunicodeçš„æºå­—ç¬¦ä¸²
+    private $sourceString = '';
+    
+    //é™„åŠ è¯å…¸
+    public $addonDic = array();
+    public $addonDicFile = 'data/words_addons.dic';
+    
+    //ä¸»è¯å…¸ 
+    public $dicStr = '';
+    public $mainDic = array();
+    public $mainDicInfos = array();
+    public $mainDicFile = 'data/base_dic_full.dic';
+    //æ˜¯å¦ç›´æ¥è½½å…¥è¯å…¸ï¼ˆé€‰æ˜¯è½½å…¥é€Ÿåº¦è¾ƒæ…¢ï¼Œä½†è§£æè¾ƒå¿«ï¼›é€‰å¦è½½å…¥è¾ƒå¿«ï¼Œä½†è§£æè¾ƒæ…¢ï¼Œéœ€è¦æ—¶æ‰ä¼šè½½å…¥ç‰¹å®šçš„è¯æ¡ï¼‰
+    private $isLoadAll = false;
+    
+    //ä¸»è¯å…¸è¯è¯­æœ€å¤§é•¿åº¦(å®é™…åŠ ä¸Šè¯æœ«ä¸º12+2)
+    private $dicWordMax = 12;
+    //ç²—åˆ†åçš„æ•°ç»„ï¼ˆé€šå¸¸æ˜¯æˆªå–å¥å­ç­‰ç”¨é€”ï¼‰
+    private $simpleResult = array();
+    //æœ€ç»ˆç»“æœ(ç”¨ç©ºæ ¼åˆ†å¼€çš„è¯æ±‡åˆ—è¡¨)
+    private $finallyResult = '';
+    
+    //æ˜¯å¦å·²ç»è½½å…¥è¯å…¸
+    public $isLoadDic = false;
+    //ç³»ç»Ÿè¯†åˆ«æˆ–åˆå¹¶çš„æ–°è¯
+    public $newWords = array();
+    public $foundWordStr = '';
+    //è¯åº“è½½å…¥æ—¶é—´
+    public $loadTime = 0;
+    
+    //php4æ„é€ å‡½æ•°
+	  function SplitWord($source_charset='utf-8', $target_charset='utf-8', $load_all=true, $source=''){
+	  	$this->__construct($source_charset, $target_charset, $load_all, $source);
+	  }	
+	
+    function __construct($source_charset='utf-8', $target_charset='utf-8', $load_all=true, $source='')
     {
-      $w = trim($w);
-      //ÅÅ³ıĞ¡ÓÚ2µÄ×Ö·û
-      if(strlen($w)<2) continue;
-      //ÅÅ³ıÊı×Ö»òÈÕÆÚ
-      if(!preg_match("/[^0-9:-]/",$w)) continue;
-      if(strlen($w)==2&&ord($w[0])>0x80) continue;
-      if(isset($wks[$w])) $wks[$w]++;
-      else $wks[$w] = 1;
+        $this->SetSource( $source, $source_charset, $target_charset );
+        $this->isLoadAll = $load_all;
+        $this->LoadDict();
     }
-    if(is_array($wks))
+    
+    function SetSource( $source, $source_charset='utf-8', $target_charset='utf-8' )
     {
-      arsort($wks);
-      if($ilen==-1)
-      { foreach($wks as $w=>$v)
-      	{
-      		if($this->GetRank($w)>500) $okstr .= $w." ";
+        $this->sourceCharSet = strtolower($source_charset);
+        $this->targetCharSet = strtolower($target_charset);
+        $this->simpleResult = array();
+        $this->finallyResult = array();
+        $this->finallyIndex = array();
+        if( $source != '' )
+        {
+            $rs = true;
+            if( preg_match("/^utf/", $source_charset) ) {
+                $this->sourceString = iconv('utf-8//ignore', 'ucs-2', $source);
+            }
+            else if( preg_match("/^gb/", $source_charset) ) {
+                $this->sourceString = iconv('utf-8', 'ucs-2', iconv('gb18030', 'utf-8//ignore', $source));
+            }
+            else if( preg_match("/^big/", $source_charset) ) {
+                $this->sourceString = iconv('utf-8', 'ucs-2', iconv('big5', 'utf-8', $source));
+            }
+            else {
+                $rs = false;
+            }
         }
-      }
-      else
-      {
-        foreach($wks as $w=>$v){
-          if((strlen($okstr)+strlen($w)+1)<$ilen) $okstr .= $w." ";
-          else break;
+        else
+        {
+           $rs = false;
         }
-      }
+        return $rs;
     }
-    if($cfg_soft_lang=='utf-8') 
-  	{
-  		$okstr = gb2utf8($this->ResultString);
+    
+    /**
+     * è®¾ç½®ç»“æœç±»å‹(åªåœ¨è·å–finallyResultæ‰æœ‰æ•ˆ)
+     * @param $rstype 1 ä¸ºå…¨éƒ¨ï¼Œ 2å»é™¤ç‰¹æ®Šç¬¦å·
+     *
+     * @return void
+     */
+    function SetResultType( $rstype )
+    {
+        $this->resultType = $rstype;
+    }
+    
+    /**
+     * è½½å…¥è¯å…¸
+     *
+     * @return void
+     */
+    function LoadDict( $maindic='' )
+    {
+        $dicAddon = dirname(__FILE__).'/'.$this->addonDicFile;
+        if($maindic=='' || !file_exists(dirname(__FILE__).'/'.$maindic) )
+        {
+            $dicWords = dirname(__FILE__).'/'.$this->mainDicFile ;
+        }
+        else
+        {
+            $dicWords = dirname(__FILE__).'/'.$maindic;
+            $this->mainDicFile = $maindic;
+        }
+        //è½½å…¥ä¸»è¯å…¸
+        $startt = microtime(true);
+        $aslen = filesize($dicWords);
+        $fp = fopen($dicWords, 'rb');
+        $this->dicStr = fread($fp, $aslen);
+        fclose($fp);
+        $ishead = 1;
+        $nc = '';
+        $i = 0;
+        while( $i < $aslen )
+        {
+            $nc = substr($this->dicStr, $i, 2);
+            $i = $i+2;
+            $slen = intval(hexdec(bin2hex( substr($this->dicStr, $i, 2) )));
+            $i = $i+2;
+            $this->mainDic[$nc][1] = '';
+            $this->mainDic[$nc][2][0] = $i;
+            $this->mainDic[$nc][2][1] = $slen;
+            if( $this->isLoadAll)
+            {
+                $strs = explode(_SP_, substr($this->dicStr, $i, $slen) );
+                $klen = count($strs);
+                for($k=0; $k < $klen; $k++)
+                {
+                    //å…ˆä¸å¯¹è¯é¢‘å’Œè¯æ€§è¿›è¡Œè§£é‡Šï¼Œä»¥æå‡è½½å…¥é€Ÿåº¦ï¼Œå¯ä»¥ç”¨($this->GetWordInfos($word)è·å¾—è¯çš„é™„åŠ ä¿¡æ¯)
+                    $this->mainDic[$nc][1][$strs[$k]] = $strs[$k+1];
+                    //$this->mainDic[$nc][1][$strs[$k]] = explode(',', $strs[$k+1]); //ç›´æ¥è§£æï¼ˆéœ€å¤šèŠ±è´¹0.1ç§’æ—¶é—´ï¼‰
+                    $k = $k+1;
+                }
+            }
+            $i = $i + $slen;
+        }
+        //ä¸å¿…ä¿ç•™è¯å…¸æ–‡ä»¶å­—ç¬¦ä¸²
+        if( $this->isLoadAll)
+        {
+            $this->dicStr = '';
+        }
+        //è½½å…¥å‰¯è¯å…¸
+        $ds = file($dicAddon);
+        foreach($ds as $d)
+        {
+            $d = trim($d);
+            if($d=='') continue;
+            $estr = substr($d, 1, strlen($d)-1);
+            $estr = iconv('utf-8', 'ucs-2', $estr);
+            $this->addonDic[substr($d, 0, 1)][$estr] = strlen($estr);
+        }
+        $this->loadTime = microtime(true) - $startt;
+        $this->isLoadDic = true;
+    }
+    
+   /**
+    * æ£€æµ‹æŸä¸ªå°¾è¯æ˜¯å¦å­˜åœ¨
+    */
+    function IsWordEnd($nc)
+    {
+         if( !isset( $this->mainDic[$nc] ) )
+         {
+            return false;
+         }
+         if( !is_array($this->mainDic[$nc][1]) )
+         {       
+              $strs = explode(_SP_, substr($this->dicStr, $this->mainDic[$nc][2][0], $this->mainDic[$nc][2][1]) );
+              $klen = count($strs);
+              for($k=0; $k < $klen; $k++)
+              {
+                  $this->mainDic[$nc][1][$strs[$k]] = $strs[$k+1];
+                  //$this->mainDic[$nc][1][$strs[$k]] = explode(',', $strs[$k+1]);
+                  $k = $k+1;
+              }
+         }
+         return true;
+    }
+    
+    /**
+     * è·å¾—æŸä¸ªè¯çš„è¯æ€§åŠè¯é¢‘ä¿¡æ¯
+     * @parem $word unicodeç¼–ç çš„è¯
+     * @return void
+     */
+     function GetWordProperty($word)
+     {
+        if( strlen($word)<4 )
+        {
+            return '/s';
+        }
+        $infos = $this->GetWordInfos($word);
+        return isset($infos['m']) ? "/{$infos['m']}{$infos['c']}" : "/s";
+     }
+    
+    /**
+     * æŒ‡å®šæŸè¯çš„è¯æ€§ä¿¡æ¯ï¼ˆé€šå¸¸æ˜¯æ–°è¯ï¼‰
+     * @parem $word unicodeç¼–ç çš„è¯
+     * @parem $infos array('c' => è¯é¢‘, 'm' => è¯æ€§);
+     * @return void;
+     */
+    function SetWordInfos($word, $infos)
+    {
+        if( strlen($word)<4 )
+        {
+            return ;
+        }
+        if( isset($this->mainDicInfos[$word]) )
+        {
+            $this->newWords[$word]++;
+            $this->mainDicInfos[$word]['c']++;
+        }
+        else
+        {
+            $this->newWords[$word] = 1;
+            $this->mainDicInfos[$word] = $infos;
+        }
+    }
+    
+    /**
+     * ä»è¯å…¸æ–‡ä»¶æ‰¾æŒ‡å®šè¯çš„ä¿¡æ¯
+     * @parem $word unicodeç¼–ç çš„è¯
+     * @return array('c' => è¯é¢‘, 'm' => è¯æ€§);
+     */
+    function GetWordInfos($word)
+    {
+        $rearr = '';
+        if( strlen($word) < 4 )
+        {
+            return $rearr;
+        }
+        //æ£€æŸ¥ç¼“å­˜æ•°ç»„
+        if( isset($this->mainDicInfos[$word]) )
+        {
+            return $this->mainDicInfos[$word];
+        }
+        //åˆ†æ
+        $wfoot = $this->GetWord($word);
+        $whead = substr($word, strlen($word)-2, 2);
+        if( !$this->IsWordEnd($whead) || !isset($this->mainDic[$whead][1][$wfoot]) )
+        {
+            return $rearr;
+        }
+        if( is_array($this->mainDic[$whead][1][$wfoot]) )
+        {
+            $rearr['c'] = $this->mainDic[$whead][1][$wfoot][0];
+            $rearr['m'] = $this->mainDic[$whead][1][$wfoot][1];
+        }
+        else
+        {
+            $strs = explode(_SP2_, $this->mainDic[$whead][1][$wfoot]);
+            $rearr['c'] = $strs[0];
+            $rearr['m'] = $strs[1];
+        }
+        //ä¿å­˜åˆ°ç¼“å­˜æ•°ç»„
+        $this->mainDicInfos[$word] = $rearr;
+        return $rearr;
+    }
+    
+    /**
+     * å¼€å§‹æ‰§è¡Œåˆ†æ
+     * @parem bool optimize æ˜¯å¦å¯¹ç»“æœè¿›è¡Œä¼˜åŒ–
+     * @return bool
+     */
+    function StartAnalysis($optimize=true)
+    {
+        if( !$this->isLoadDic )
+        {
+            $this->LoadDict();
+        }
+        $this->simpleResult = $this->finallyResult = array();
+        $this->sourceString .= chr(0).chr(32);
+        $slen = strlen($this->sourceString);
+        $sbcArr = array();
+        $j = 0;
+        //å…¨è§’ä¸åŠè§’å­—ç¬¦å¯¹ç…§è¡¨
+        for($i=0xFF00; $i < 0xFF5F; $i++)
+        {
+            $scb = 0x20 + $j;
+            $j++;
+            $sbcArr[$i] = $scb;
+        }
+        //å¯¹å­—ç¬¦ä¸²è¿›è¡Œç²—åˆ†
+        $onstr = '';
+        $lastc = 1; //1 ä¸­/éŸ©/æ—¥æ–‡, 2 è‹±æ–‡/æ•°å­—/ç¬¦å·('.', '@', '#', '+'), 3 ANSIç¬¦å· 4 çº¯æ•°å­— 5 éANSIç¬¦å·æˆ–ä¸æ”¯æŒå­—ç¬¦
+        $s = 0;
+        $ansiWordMatch = "[0-9a-z@#%\+\.-]";
+        $notNumberMatch = "[a-z@#%\+]";
+        $nameLink = 0xB7;
+        for($i=0; $i < $slen; $i++)
+        {
+            $c = $this->sourceString[$i].$this->sourceString[++$i];
+            $cn = hexdec(bin2hex($c));
+            $cn = isset($sbcArr[$cn]) ? $sbcArr[$cn] : $cn;
+            //ANSIå­—ç¬¦
+            if($cn < 0x80)
+            {
+                if( preg_match('/'.$ansiWordMatch.'/i', chr($cn)) )
+                {
+                    if( $lastc != 2 && $onstr != '') {
+                        $this->simpleResult[$s]['w'] = $onstr;
+                        $this->simpleResult[$s]['t'] = $lastc;
+                        $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        $s++;
+                        $onstr = '';
+                    }
+                    $lastc = 2;
+                    $onstr .= chr(0).chr($cn);
+                }
+                else
+                {
+                    if( $onstr != '' )
+                    {
+                        $this->simpleResult[$s]['w'] = $onstr;
+                        if( $lastc==2 )
+                        {
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                        }
+                        $this->simpleResult[$s]['t'] = $lastc;
+                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        $s++;
+                    }
+                    $onstr = '';
+                    $lastc = 3;
+                    if($cn < 31)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        $this->simpleResult[$s]['w'] = chr(0).chr($cn);
+                        $this->simpleResult[$s]['t'] = 3;
+                        $s++;
+                    }
+                }
+            }
+            //æ™®é€šå­—ç¬¦
+            else
+            {
+                //æ­£å¸¸æ–‡å­— $cn==$nameLink || 
+                if( ($cn>0x3FFF && $cn < 0x9FA6) || ($cn>0xF8FF && $cn < 0xFA2D)
+                    || ($cn>0xABFF && $cn < 0xD7A4) || ($cn>0x3040 && $cn < 0x312B) )
+                {
+                    if( $lastc != 1 && $onstr != '')
+                    {
+                        $this->simpleResult[$s]['w'] = $onstr;
+                        if( $lastc==2 )
+                        {
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                        }
+                        $this->simpleResult[$s]['t'] = $lastc;
+                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        $s++;
+                        $onstr = '';
+                    }
+                    $lastc = 1;
+                    $onstr .= $c;
+                }
+                //ç‰¹æ®Šç¬¦å·
+                else
+                {
+                    if( $onstr != '' )
+                    {
+                        $this->simpleResult[$s]['w'] = $onstr;
+                        if( $lastc==2 )
+                        {
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                        }
+                        $this->simpleResult[$s]['t'] = $lastc;
+                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        $s++;
+                    }
+                    
+                    //æ£€æµ‹ä¹¦å
+                    if( $cn == 0x300A )
+                    {
+                        $tmpw = '';
+                        $n = 1;
+                        $isok = false;
+                        $ew = chr(0x30).chr(0x0B);
+                        while(true)
+                        {
+                            $w = $this->sourceString[$i+$n].$this->sourceString[$i+$n+1];
+                            if( $w == $ew )
+                            {
+                                $this->simpleResult[$s]['w'] = $c;
+                                $this->simpleResult[$s]['t'] = 5;
+                                $s++;
+                        
+                                $this->simpleResult[$s]['w'] = $tmpw;
+                                $this->newWords[$tmpw] = 1;
+                                if( !isset($this->newWords[$tmpw]) )
+                                {
+                                    $this->foundWordStr .= $this->OutStringEncoding($tmpw).'/nb, ';
+                                    $this->SetWordInfos($tmpw, array('c'=>1, 'm'=>'nb'));
+                                }
+                                $this->simpleResult[$s]['t'] = 13;
+                                
+                                $s++;
+
+                                //æœ€å¤§åˆ‡åˆ†æ¨¡å¼å¯¹ä¹¦åç»§ç»­åˆ†è¯
+                                if( $this->differMax )
+                                {
+                                    $this->simpleResult[$s]['w'] = $tmpw;
+                                    $this->simpleResult[$s]['t'] = 21;
+                                    $this->DeepAnalysis($tmpw, $lastc, $s, $optimize);
+                                    $s++;
+                                }
+                                
+                                $this->simpleResult[$s]['w'] = $ew;
+                                $this->simpleResult[$s]['t'] =  5;
+                                $s++;
+                        
+                                $i = $i + $n + 1;
+                                $isok = true;
+                                $onstr = '';
+                                $lastc = 5;
+                                break;
+                            }
+                            else
+                            {
+                                $n = $n+2;
+                                $tmpw .= $w;
+                                if( strlen($tmpw) > 60 )
+                                {
+                                    break;
+                                }
+                            }
+                        }//while
+                        if( !$isok )
+                        {
+                            $this->simpleResult[$s]['w'] = $c;
+              	            $this->simpleResult[$s]['t'] = 5;
+              	            $s++;
+              	            $onstr = '';
+                            $lastc = 5;
+                        }
+                        continue;
+                    }
+                    
+                    $onstr = '';
+                    $lastc = 5;
+                    if( $cn==0x3000 )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        $this->simpleResult[$s]['w'] = $c;
+                        $this->simpleResult[$s]['t'] = 5;
+                        $s++;
+                    }
+                }//2byte symbol
+                
+            }//end 2byte char
+        
+        }//end for
+        
+        //å¤„ç†åˆ†è¯åçš„ç»“æœ
+        $this->SortFinallyResult();
+    }
+    
+    /**
+     * æ·±å…¥åˆ†è¯
+     * @parem $str
+     * @parem $ctype (2 è‹±æ–‡ç±»ï¼Œ 3 ä¸­/éŸ©/æ—¥æ–‡ç±»)
+     * @parem $spos   å½“å‰ç²—åˆ†ç»“æœæ¸¸æ ‡
+     * @return bool
+     */
+    function DeepAnalysis( &$str, $ctype, $spos, $optimize=true )
+    {
+
+        //ä¸­æ–‡å¥å­
+        if( $ctype==1 )
+        {
+            $slen = strlen($str);
+            //å°äºç³»ç»Ÿé…ç½®åˆ†è¯è¦æ±‚é•¿åº¦çš„å¥å­
+            if( $slen < $this->notSplitLen )
+            {
+                $tmpstr = '';
+                $lastType = 0;
+                if( $spos > 0 ) $lastType = $this->simpleResult[$spos-1]['t'];
+                if($slen < 5)
+                {
+                	  //echo iconv('ucs-2', 'utf-8', $str).'<br/>';
+                	  if( $lastType==4 && ( isset($this->addonDic['u'][$str]) || isset($this->addonDic['u'][substr($str, 0, 2)]) ) )
+        						{
+             					 $str2 = '';
+             					 if( !isset($this->addonDic['u'][$str]) && isset($this->addonDic['s'][substr($str, 2, 2)]) )
+             					 {
+             					    $str2 = substr($str, 2, 2);
+             					    $str  = substr($str, 0, 2);
+             					 }
+             					 $ww = $this->simpleResult[$spos - 1]['w'].$str;
+             					 $this->simpleResult[$spos - 1]['w'] = $ww;
+             					 $this->simpleResult[$spos - 1]['t'] = 4;
+             					 if( !isset($this->newWords[$this->simpleResult[$spos - 1]['w']]) )
+                       {
+             					    $this->foundWordStr .= $this->OutStringEncoding( $ww ).'/mu, ';
+             					    $this->SetWordInfos($ww, array('c'=>1, 'm'=>'mu'));
+             					 }
+             					 $this->simpleResult[$spos]['w'] = '';
+             					 if( $str2 != '' )
+             					 {
+             					    $this->finallyResult[$spos-1][] = $ww;
+             					    $this->finallyResult[$spos-1][] = $str2;
+             					 }
+       							}
+       							else {
+       								 $this->finallyResult[$spos][] = $str;
+       							}
+                }
+                else
+                {
+                	  $this->DeepAnalysisChinese( $str, $ctype, $spos, $slen, $optimize );
+                }
+            }
+            //æ­£å¸¸é•¿åº¦çš„å¥å­ï¼Œå¾ªç¯è¿›è¡Œåˆ†è¯å¤„ç†
+            else
+            {
+                $this->DeepAnalysisChinese( $str, $ctype, $spos, $slen, $optimize );
+            }
+        }
+        //è‹±æ–‡å¥å­ï¼Œè½¬ä¸ºå°å†™
+        else
+        {
+            if( $this->toLower ) {
+                $this->finallyResult[$spos][] = strtolower($str);
+            }
+            else {
+                $this->finallyResult[$spos][] = $str;
+            }
+        }
+    }
+    
+    /**
+     * ä¸­æ–‡çš„æ·±å…¥åˆ†è¯
+     * @parem $str
+     * @return void
+     */
+    function DeepAnalysisChinese( &$str, $lastec, $spos, $slen, $optimize=true )
+    {
+        $quote1 = chr(0x20).chr(0x1C);
+        $tmparr = array();
+        $hasw = 0;
+        //å¦‚æœå‰ä¸€ä¸ªè¯ä¸º â€œ ï¼Œ å¹¶ä¸”å­—ç¬¦ä¸²å°äº3ä¸ªå­—ç¬¦å½“æˆä¸€ä¸ªè¯å¤„ç†ã€‚
+        if( $spos > 0 && $slen < 11 && $this->simpleResult[$spos-1]['w']==$quote1 )
+        {
+            $tmparr[] = $str;
+            if( !isset($this->newWords[$str]) )
+            {
+                $this->foundWordStr .= $this->OutStringEncoding($str).'/nq, ';
+                $this->SetWordInfos($str, array('c'=>1, 'm'=>'nq'));
+            }
+            if( !$this->differMax )
+            {
+                $this->finallyResult[$spos][] = $str;
+                return ;
+            }
+        }
+        //è¿›è¡Œåˆ‡åˆ†
+        for($i=$slen-1; $i>0; $i--)
+        {
+            $nc = $str[$i-1].$str[$i];
+            if($i<2)
+            {
+                $tmparr[] = $nc;
+                $i = 0;
+                break;
+            }
+            if( $this->IsWordEnd($nc) )
+            {
+                $i = $i - 1;
+                $isok = false;
+                for($k=12; $k>1; $k=$k-2)
+                {
+                    //if($i < $k || $this->mainDic[$nc][0][$k]==0) continue;
+                    if($i < $k) continue;
+                    $w = substr($str, $i-$k, $k);
+                    if( isset($this->mainDic[$nc][1][$w]) )
+                    {
+                        $tmparr[] = $w.$nc;
+                        $i = $i - $k;
+                        $isok = true;
+                        break;
+                    }
+                }
+                if(!$isok)
+                {
+                   $tmparr[] = $nc;
+                }
+            }
+            else
+            {
+               $tmparr[] = $nc;
+               $i = $i - 1;
+            }
+        }
+        if(count($tmparr)==0) return ;
+        for($i=count($tmparr)-1; $i>=0; $i--)
+        {
+            $this->finallyResult[$spos][] = $tmparr[$i];
+        }
+        //ä¼˜åŒ–ç»“æœ(å²ä¹‰å¤„ç†ã€æ–°è¯ã€æ•°è¯ã€äººåè¯†åˆ«ç­‰)
+        if( $optimize )
+        {
+            $this->OptimizeResult( $this->finallyResult[$spos], $spos );
+        }
+    }
+    
+    /**
+    * å¯¹æœ€ç»ˆåˆ†è¯ç»“æœè¿›è¡Œä¼˜åŒ–ï¼ˆæŠŠsimpleresultç»“æœåˆå¹¶ï¼Œå¹¶å°è¯•æ–°è¯è¯†åˆ«ã€æ•°è¯åˆå¹¶ç­‰ï¼‰
+    * @parem $optimize æ˜¯å¦ä¼˜åŒ–åˆå¹¶çš„ç»“æœ
+    * @return bool
+    */
+    //t = 1 ä¸­/éŸ©/æ—¥æ–‡, 2 è‹±æ–‡/æ•°å­—/ç¬¦å·('.', '@', '#', '+'), 3 ANSIç¬¦å· 4 çº¯æ•°å­— 5 éANSIç¬¦å·æˆ–ä¸æ”¯æŒå­—ç¬¦
+    function OptimizeResult( &$smarr, $spos )
+    {
+        $newarr = array();
+        $prePos = $spos - 1;
+        $arlen = count($smarr);
+        $i = $j = 0;
+        //æ£€æµ‹æ•°é‡è¯
+        if( $prePos > -1 && !isset($this->finallyResult[$prePos]) )
+        {
+            $lastw = $this->simpleResult[$prePos]['w'];
+            $lastt = $this->simpleResult[$prePos]['t'];
+        	  if( ($lastt==4 || isset( $this->addonDic['c'][$lastw] )) && isset( $this->addonDic['u'][$smarr[0]] ) )
+        	  {
+               $this->simpleResult[$prePos]['w'] = $lastw.$smarr[0];
+               $this->simpleResult[$prePos]['t'] = 4;
+               if( !isset($this->newWords[ $this->simpleResult[$prePos]['w'] ]) )
+               {
+                    $this->foundWordStr .= $this->OutStringEncoding( $this->simpleResult[$prePos]['w'] ).'/mu, ';
+                    $this->SetWordInfos($this->simpleResult[$prePos]['w'], array('c'=>1, 'm'=>'mu'));
+               }
+               $smarr[0] = '';
+               $i++;
+       		  }
+       }
+       for(; $i < $arlen; $i++)
+       {
+            
+            if( !isset( $smarr[$i+1] ) )
+            {
+                $newarr[$j] = $smarr[$i];
+                break;
+            }
+            $cw = $smarr[$i];
+            $nw = $smarr[$i+1];
+            $ischeck = false;
+            //æ£€æµ‹æ•°é‡è¯
+            if( isset( $this->addonDic['c'][$cw] ) && isset( $this->addonDic['u'][$nw] ) )
+            {
+                //æœ€å¤§åˆ‡åˆ†æ—¶ä¿ç•™åˆå¹¶å‰çš„è¯
+                if($this->differMax)
+                {
+                        $newarr[$j] = chr(0).chr(0x28);
+                        $j++;
+                        $newarr[$j] = $cw;
+                        $j++;
+                        $newarr[$j] = $nw;
+                        $j++;
+                        $newarr[$j] = chr(0).chr(0x29);
+                        $j++;
+                }
+                $newarr[$j] = $cw.$nw;
+                if( !isset($this->newWords[$newarr[$j]]) )
+                {
+                    $this->foundWordStr .= $this->OutStringEncoding( $newarr[$j] ).'/mu, ';
+                    $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'mu'));
+                }
+                $j++; $i++; $ischeck = true;
+            }
+            //æ£€æµ‹å‰å¯¼è¯(é€šå¸¸æ˜¯å§“)
+            else if( isset( $this->addonDic['n'][ $smarr[$i] ] ) )
+            {
+                $is_rs = false;
+                //è¯è¯­æ˜¯å‰¯è¯æˆ–ä»‹è¯æˆ–é¢‘ç‡å¾ˆé«˜çš„è¯ä¸ä½œä¸ºäººå
+                if( strlen($nw)==4 )
+                {
+                    $winfos = $this->GetWordInfos($nw);
+                    if(isset($winfos['m']) && ($winfos['m']=='r' || $winfos['m']=='c' || $winfos['c']>500) )
+                    {
+                    	 $is_rs = true;
+                    }
+                }
+                if( !isset($this->addonDic['s'][$nw]) && strlen($nw)<5 && !$is_rs )
+                {
+                    //æœ€å¤§åˆ‡åˆ†æ—¶ä¿ç•™åˆå¹¶å‰çš„å§“å
+                    if($this->differMax)
+                    {
+                            $newarr[$j] = chr(0).chr(0x28);
+                            $j++;
+                            $newarr[$j] = $cw;
+                            $j++;
+                            $nj = $j;
+                            $newarr[$j] = $nw;
+                            $j++;
+                            $newarr[$j] = chr(0).chr(0x29);
+                            $j++;
+                    }
+                    $newarr[$j] = $cw.$nw;
+                    //echo iconv('ucs-2', 'utf-8', $newarr[$j])."<br />";
+                    //å°è¯•æ£€æµ‹ç¬¬ä¸‰ä¸ªè¯
+                    if( strlen($nw)==2 && isset($smarr[$i+2]) && strlen($smarr[$i+2])==2 && !isset( $this->addonDic['s'][$smarr[$i+2]] ) )
+                    {
+                        $newarr[$j] .= $smarr[$i+2];
+                        if($this->differMax)
+                        {
+                            $newarr[$nj] .= $smarr[$i+2];
+                        }
+                        $i++;
+                    }
+                    if( !isset($this->newWords[$newarr[$j]]) )
+                    {
+                        $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'nr'));
+                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/nr, ';
+                    }
+                    $j++; $i++; $ischeck = true;
+                }
+            }
+            //æ£€æµ‹åç¼€è¯(åœ°åç­‰)
+            else if( isset($this->addonDic['a'][$nw]) )
+            {
+                $is_rs = false;
+                //è¯è¯­æ˜¯å‰¯è¯æˆ–ä»‹è¯ä¸ä½œä¸ºå‰ç¼€
+                if( strlen($cw)>2 )
+                {
+                    $winfos = $this->GetWordInfos($cw);
+                    if(isset($winfos['m']) && ($winfos['m']=='a' || $winfos['m']=='r' || $winfos['m']=='c' || $winfos['c']>500) )
+                    {
+                    	 $is_rs = true;
+                    }
+                }
+                if( !isset($this->addonDic['s'][$cw]) && !$is_rs )
+                {
+                    //æœ€å¤§åˆ‡åˆ†æ—¶ä¿ç•™åˆå¹¶å‰çš„è¯
+                    if($this->differMax)
+                    {
+                        $newarr[$j] = chr(0).chr(0x28);
+                        $j++;
+                        $newarr[$j] = $cw;
+                        $j++;
+                        $newarr[$j] = $nw;
+                        $j++;
+                        $newarr[$j] = chr(0).chr(0x29);
+                        $j++;
+                    }
+                    $newarr[$j] = $cw.$nw;
+                    if( !isset($this->newWords[$newarr[$j]]) )
+                    {
+                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/na, ';
+                        $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'na'));
+                    }
+                    $i++; $j++; $ischeck = true;
+                }
+            }
+            //æ–°è¯è¯†åˆ«ï¼ˆæš‚æ— è§„åˆ™ï¼‰
+            else if($this->unitWord)
+            {
+                if(strlen($cw)==2 && strlen($nw)==2 
+                && !isset($this->addonDic['s'][$cw]) && !isset($this->addonDic['t'][$cw]) && !isset($this->addonDic['a'][$cw]) 
+                && !isset($this->addonDic['s'][$nw]) && !isset($this->addonDic['c'][$nw]))
+                {
+                    //æœ€å¤§åˆ‡åˆ†æ—¶ä¿ç•™åˆå¹¶å‰çš„è¯
+                    if($this->differMax)
+                    {
+                        $newarr[$j] = chr(0).chr(0x28);
+                        $j++;
+                        $newarr[$j] = $cw;
+                        $j++;
+                        $nj = $j;
+                        $newarr[$j] = $nw;
+                        $j++;
+                        $newarr[$j] = chr(0).chr(0x29);
+                        $j++;
+                    }
+                    $newarr[$j] = $cw.$nw;
+                    $wf = $nw;
+                    //å°è¯•æ£€æµ‹ç¬¬ä¸‰ä¸ªè¯
+                    if( isset($smarr[$i+2]) && strlen($smarr[$i+2])==2 && (isset( $this->addonDic['a'][$smarr[$i+2]] ) || isset( $this->addonDic['u'][$smarr[$i+2]] )) )
+                    {
+                        $newarr[$j] .= $smarr[$i+2];
+                        $newarr[$nj] .= $smarr[$i+2];
+                        $i++;
+                    }
+                    if( !isset($this->newWords[$newarr[$j]]) )
+                    {
+                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/ms, ';
+                        $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'ms'));
+                    }
+                    $i++; $j++; $ischeck = true;
+                }
+            }
+            
+            //ä¸ç¬¦åˆè§„åˆ™
+            if( !$ischeck )
+            {
+                $newarr[$j] = $cw;
+              	//äºŒå…ƒæ¶ˆå²å¤„ç†â€”â€”æœ€å¤§åˆ‡åˆ†æ¨¡å¼
+                if( $this->differMax && !isset($this->addonDic['s'][$cw]) && strlen($cw) < 5 && strlen($nw) < 7)
+                {
+                    $slen = strlen($nw);
+                    $hasDiff = false;
+                    for($y=2; $y <= $slen-2; $y=$y+2)
+                    {
+                        $nhead = substr($nw, $y-2, 2);
+                        $nfont = $cw.substr($nw, 0, $y-2);
+                        if( $this->IsWordEnd($nhead) && isset( $this->mainDic[$nhead][1][$nfont] ) )
+                        {
+                            if( strlen($cw) > 2 ) $j++;
+                            $hasDiff = true;
+                            $newarr[$j] = $nfont.$nhead;
+                        }
+                    }
+                }
+                $j++;
+            }
+            
+       }//end for
+       $smarr =  $newarr;
+    }
+    
+    /**
+    * è½¬æ¢æœ€ç»ˆåˆ†è¯ç»“æœåˆ° finallyResult æ•°ç»„
+    * @return void
+    */
+    function SortFinallyResult()
+    {
+    	  $newarr = array();
+        $i = 0;
+        foreach($this->simpleResult as $k=>$v)
+        {
+            if( empty($v['w']) ) continue;
+            if( isset($this->finallyResult[$k]) && count($this->finallyResult[$k]) > 0 )
+            {
+                foreach($this->finallyResult[$k] as $w)
+                {
+                    if(!empty($w))
+                    {
+                    	$newarr[$i]['w'] = $w;
+                    	$newarr[$i]['t'] = 20;
+                    	$i++;
+                    }
+                }
+            }
+            else if($v['t'] != 21)
+            {
+                $newarr[$i]['w'] = $v['w'];
+                $newarr[$i]['t'] = $v['t'];
+                $i++;
+            }
+        }
+        $this->finallyResult = $newarr;
+        $newarr = '';
   	}
-    return trim($okstr);
-  }
-  //---------------------
-  //»ñµÃ´ÊµÄ´ÊÆµ
-  //--------------------
-  function GetRank($w){
-  	if(isset($this->RankDic[strlen($w)][$w])) return $this->RankDic[strlen($w)][$w];
-  	else return 0;
-  }
-  //----------------------------
-  //°ÑÈ«½ÇÊı×Ö»òÓ¢ÎÄµ¥´Ê×ªÎª°ë½Ç
-  //---------------------------
-  function GetAlabNum($fnum)
-  {
-	  $nums = array("£°","£±","£²","£³","£´","£µ","£¶",
-	  "£·","£¸","£¹","£«","£­","£¥","£®",
-	  "£á","£â","£ã","£ä","£å","£æ","£ç","£è","£é","£ê","£ë","£ì","£í",
-	  "£î","£ï","£ğ","£ñ","£ò","£ó ","£ô","£õ","£ö","£÷","£ø","£ù","£ú",
-	  "£Á","£Â","£Ã","£Ä","£Å","£Æ","£Ç","£È","£É","£Ê","£Ë","£Ì","£Í",
-	  "£Î","£Ï","£Ğ","£Ñ","£Ò","£Ó","£Ô","£Õ","£Ö","£×","£Ø","£Ù","£Ú");
-	  $fnums = "0123456789+-%.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	  $fnum = str_replace($nums,$fnums,$fnum);
-	  return $fnum;
-  }
-}//End Class
+    
+    /**
+     * æŠŠuncodeå­—ç¬¦ä¸²è½¬æ¢ä¸ºè¾“å‡ºå­—ç¬¦ä¸²
+     * @parem str
+     * return string
+     */
+     function OutStringEncoding( &$str )
+     {
+        $rsc = $this->SourceResultCharset();
+        if( $rsc==1 ) {
+            $rsstr = iconv('ucs-2', 'utf-8', $str);
+        }
+        else if( $rsc==2 ) {
+            $rsstr = iconv('utf-8', 'gb18030', iconv('ucs-2', 'utf-8', $str) );
+        }
+        else{
+            $rsstr = iconv('utf-8', 'big5', iconv('ucs-2', 'utf-8', $str) );
+        }
+        return $rsstr;
+     }
+    
+    /**
+     * è·å–æœ€ç»ˆç»“æœå­—ç¬¦ä¸²ï¼ˆç”¨ç©ºæ ¼åˆ†å¼€åçš„åˆ†è¯ç»“æœï¼‰
+     * @return string
+     */
+     function GetFinallyResult($spword=' ', $word_meanings=false)
+     {
+        $rsstr = '';
+        foreach($this->finallyResult as $v)
+        {
+            if( $this->resultType==2 && ($v['t']==3 || $v['t']==5) )
+            {
+            	continue;
+            }
+            $m = '';
+            if( $word_meanings )
+            {
+                $m = $this->GetWordProperty($v['w']);
+            }
+            $w = $this->OutStringEncoding($v['w']);
+            if( $w != ' ' )
+            {
+                if($word_meanings) {
+                    $rsstr .= $spword.$w.$m;
+                }
+                else {
+                    $rsstr .= $spword.$w;
+                }
+            }
+        }
+        return $rsstr;
+     }
+     
+    /**
+     * è·å–ç²—åˆ†ç»“æœï¼Œä¸åŒ…å«ç²—åˆ†å±æ€§
+     * @return array()
+     */
+     function GetSimpleResult()
+     {
+        $rearr = array();
+        foreach($this->simpleResult as $k=>$v)
+        {
+            if( empty($v['w']) ) continue;
+            $w = $this->OutStringEncoding($v['w']);
+            if( $w != ' ' ) $rearr[] = $w;
+        }
+        return $rearr;
+     }
+     
+    /**
+     * è·å–ç²—åˆ†ç»“æœï¼ŒåŒ…å«ç²—åˆ†å±æ€§ï¼ˆ1ä¸­æ–‡è¯å¥ã€2 ANSIè¯æ±‡ï¼ˆåŒ…æ‹¬å…¨è§’ï¼‰ï¼Œ3 ANSIæ ‡ç‚¹ç¬¦å·ï¼ˆåŒ…æ‹¬å…¨è§’ï¼‰ï¼Œ4æ•°å­—ï¼ˆåŒ…æ‹¬å…¨è§’ï¼‰ï¼Œ5 ä¸­æ–‡æ ‡ç‚¹æˆ–æ— æ³•è¯†åˆ«å­—ç¬¦ï¼‰
+     * @return array()
+     */
+     function GetSimpleResultAll()
+     {
+        $rearr = array();
+        foreach($this->simpleResult as $k=>$v)
+        {
+            $w = $this->OutStringEncoding($v['w']);
+            if( $w != ' ' )
+            {
+                $rearr[$k]['w'] = $w;
+                $rearr[$k]['t'] = $v['t'];
+            }
+        }
+        return $rearr;
+     }
+     
+    /**
+     * è·å–ç´¢å¼•hashæ•°ç»„
+     * @return array('word'=>count,...)
+     */
+     function GetFinallyIndex()
+     {
+        $rearr = array();
+        foreach($this->finallyResult as $v)
+        {
+            if( $this->resultType==2 && ($v['t']==3 || $v['t']==5 || isset($this->addonDic['s'][$v['w']]) ) )
+            {
+            	continue;
+            }
+            $w = $this->OutStringEncoding($v['w']);
+            if( $w == ' ' || $w == '(' || $w == ')' )
+            {
+                continue;
+            }
+            if( isset($rearr[$w]) )
+            {
+            	 $rearr[$w]++;
+            }
+            else
+            {
+            	 $rearr[$w] = 1;
+            }
+        }
+        arsort($rearr);
+        return $rearr;
+     }
+     
+    /**
+     * è·å¾—ä¿å­˜ç›®æ ‡ç¼–ç 
+     * @return int
+     */
+     function SourceResultCharset()
+     {
+        if( preg_match("/^utf/", $this->targetCharSet) ) {
+           $rs = 1;
+        }
+        else if( preg_match("/^gb/", $this->targetCharSet) ) {
+           $rs = 2;
+        }
+        else if( preg_match("/^big/", $this->targetCharSet) ) {
+           $rs = 3;
+        }
+        else {
+            $rs = 4;
+        }
+        return $rs;
+     }
+     
+     /**
+     * å¯¼å‡ºè¯å…¸çš„è¯æ¡
+     * @parem $targetfile ä¿å­˜ä½ç½®
+     * @return void
+     */
+     function ExportDict( $targetfile )
+     {
+        $fp = fopen($targetfile, 'w');
+        foreach($this->mainDic as $k=>$v)
+        {
+            $ik = iconv('ucs-2', 'utf-8', $k);
+            foreach( $v[1] as $wk => $wv)
+            {
+                $arr = $this->GetWordInfos($wk.$k);
+                $wd = iconv('ucs-2', 'utf-8', $wk).$ik;
+                if($arr != '')
+                {
+                    fwrite($fp, $wd.','.$arr['c'].','.$arr['m']."\n");
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+        fclose($fp);
+     }
+     
+     /**
+     * è¿½åŠ æ–°è¯åˆ°å†…å­˜é‡Œçš„è¯å…¸
+     * @parem $word unicodeç¼–ç çš„è¯
+     * @return void
+     */
+     function AddNewWord( $word )
+     {
+        
+     }
+     
+     /**
+     * ç¼–è¯‘è¯å…¸
+     * @parem $sourcefile utf-8ç¼–ç çš„æ–‡æœ¬è¯å…¸æ•°æ®æ–‡ä»¶<å‚è§èŒƒä¾‹dict/not-build/base_dic_full.txt>
+     * @return void
+     */
+     function MakeDict( $sourcefile, $maxWordLen=16, $target='' )
+     {
+        if( $target=='' )
+        {
+            $dicWords = dirname(__FILE__).'/'.$this->mainDicFile;
+        }
+        else
+        {
+            $dicWords = dirname(__FILE__).'/'.$target;
+        }
+        $narr = $earr = array();
+        if( !file_exists($sourcefile) )
+        {
+            echo 'File: '.$sourcefile.' not found!';
+            return ;
+        }
+        $ds = file($sourcefile);
+        $i = 0;
+        $maxlen = 0;
+        foreach($ds as $d)
+        {
+            $d = trim($d);
+            if($d=='') continue;
+            list($d, $hot, $mtype) = explode(',', $d);
+            if( empty($hot) ) $hot = 0;
+            if( empty($mtype) ) $mtype = 'x';
+            if( $mtype=='@' ) continue;
+            $d = iconv('utf-8', 'ucs-2', $d);
+            /*è¿™é‡Œç”¨ANSIæ··ç¼–
+            if( strlen($mtype)==1 )
+            {
+                $mtype = chr(0).$mtype;
+            }*/
+            $nlength = strlen($d)-2;
+            if( $nlength >= $maxWordLen ) continue;
+            $maxlen = $nlength > $maxlen ? $nlength : $maxlen;
+            $endc = substr($d, $nlength, 2);
+            $n = hexdec(bin2hex($endc));
+            if( isset($narr[$endc]) )
+            {
+                $narr[$endc]['w'][$narr[$endc]['c']] = $this->GetWord($d);
+                $narr[$endc]['n'][$narr[$endc]['c']] = $hot;
+                $narr[$endc]['m'][$narr[$endc]['c']] = $mtype;
+                $narr[$endc]['l'] += $nlength;
+                $narr[$endc]['c']++;
+                $narr[$endc]['h'][$nlength] = isset($narr[$endc]['h'][$nlength]) ? $narr[$endc]['h'][$nlength]+1 : 1;
+            }
+            else
+            {
+                $narr[$endc]['w'][0] = $this->GetWord($d);
+                $narr[$endc]['n'][0] = $hot;
+                $narr[$endc]['m'][0] = $mtype;
+                $narr[$endc]['l'] = $nlength;
+                $narr[$endc]['c'] = 1;
+                $narr[$endc]['h'][$nlength] = 1;
+            }
+        }
+        $alllen = $n = $max = $bigw = $bigc = 0;
+        $fp = fopen($dicWords, 'wb');
+        foreach($narr as $k=>$v)
+        {
+            fwrite($fp, $k);
+            /* ä¿å­˜æŒ‡å®šé•¿åº¦çš„è¯æ¡ä¸ªæ•°ä¿¡æ¯ï¼ˆæ­¤é¡¹å¯¹æå‡åˆ†è¯é€Ÿåº¦ä¸æ˜æ˜¾ï¼Œä½†ä¼šå½±å“è½½å…¥æ—¶é—´ï¼‰
+            for($i=2; $i <= 12; $i = $i+2)
+            {
+                if( empty($v['h'][$i]) ) {
+                    fwrite($fp, chr(0).chr(0));
+                }
+                else {
+                    fwrite($fp, pack('n', $v['h'][$i]));
+                }
+            }*/
+            $allstr = '';
+            foreach($v['w']  as $n=>$w)
+            {
+                //$hot = pack('n', $narr[$k]['n'][$n]);
+                $hot = $narr[$k]['n'][$n];
+                $mtype = $narr[$k]['m'][$n];
+                $allstr .= ($allstr=='' ? $w._SP_.$hot._SP2_.$mtype : _SP_.$w._SP_.$hot._SP2_.$mtype);
+            }
+            $alLen = strlen($allstr);
+            $max = $alLen > $max ? $alLen : $max;
+            fwrite($fp, pack('n', $alLen) );
+            fwrite($fp, $allstr);
+        }
+        fclose($fp);
+     }
+     
+     /**
+     * è·å¾—è¯çš„å‰éƒ¨ä»½
+     * @parem $str å•è¯
+     * @return void
+     */
+     function GetWord($str)
+     {
+        $newstr = '';
+        for($i=0; $i < strlen($str)-3; $i++)
+        {
+            $newstr .= $str[$i];
+            $newstr .= $str[$i+1];
+            $i++;
+        }
+        return $newstr;
+     }
+    
+}
 
 ?>

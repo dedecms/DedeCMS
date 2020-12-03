@@ -185,7 +185,7 @@ function noSelAll()
 <td width="10%">操作</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
 <td>{dede:field.id/}</td>
 <td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.aid/}" class="np"></td>
 <td align='left'>
@@ -213,7 +213,7 @@ function noSelAll()
 <a href="javascript:updateArc(0)" class="coolbg">&nbsp;更新&nbsp;</a>
 <a href="javascript:checkArc(0)" class="coolbg">&nbsp;审核&nbsp;</a>
 <a href="javascript:adArc(0)" class="coolbg">&nbsp;推荐&nbsp;</a>
-<a href="javascript:;" onclick="moveArc(event,this,<?php echo (empty($channelid) ? 0 : $channelid); ?>)" class="coolbg">&nbsp;移动&nbsp;</a>
+<a href="javascript:;" onClick="moveArc(event,this,<?php echo (empty($channelid) ? 0 : $channelid); ?>)" class="coolbg">&nbsp;移动&nbsp;</a>
 <a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a>
 </td>
 </tr>

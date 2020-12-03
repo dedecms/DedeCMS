@@ -12,6 +12,7 @@
 
 require_once(dirname(__FILE__)."/../member/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -21,7 +22,7 @@ if(empty($bookid))
 	ShowMsg("参数错误！","-1");
 	exit();
 }
-$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where id='$bookid' and mid='$cfg_ml->M_ID' ");
+$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where bid='$bookid' and mid='$cfg_ml->M_ID' ");
 if(!is_array($bookinfos))
 {
 	ShowMsg("参数错误！","-1");

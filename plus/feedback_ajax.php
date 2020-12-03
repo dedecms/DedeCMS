@@ -199,31 +199,35 @@ else if($dopost=='send')
 		if($feedbacktype=='bad') $bgimg = 'cmt-bad.gif';
 		else if($feedbacktype=='good') $bgimg = 'cmt-good.gif';
 		else $bgimg = 'cmt-neu.gif';
+		global $dsql, $aid, $pagesize, $cfg_templeturl;
+		if($cfg_ml->M_ID==""){
+			 $mface=$cfg_cmspath."/member/templets/images/dfboy.png";
+		}else{
+		  $row = $dsql->GetOne("select face,sex from `#@__member` where mid={$cfg_ml->M_ID} ");
+			if(empty($row['face']))
+			{
+			  if($row['sex']=="女") $mface=$cfg_cmspath."/member/templets/images/dfgirl.png";
+			  else $mface=$cfg_cmspath."/member/templets/images/dfboy.png";
+			}
+		}
 ?>
-<div id="commetmsgs" class="dede_comment">
-		<div class='decmt-box'>
-		<div class='decmt-title'>
-			<span class='moodico'><img src='<?php echo $cfg_templeturl; ?>/images/mood/ico-mood-<?php echo $face; ?>.gif'/></span>
-			<span class='username'><a href='<?php echo $spaceurl; ?>'><?php echo $username; ?></a></span>
-			<span class='date'><?php echo GetDateMk($dtime); ?></span>
-			<span>发表</span>
-		</div>
-		<div class='decmt-act'>
-			<span id='goodfb<?php echo $id; ?>'>
+	<div class='decmt-box'> <ul>
+     <li>
+      <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a>
+      <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
+      <div class="comment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'>
 				<a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[0]
 			</span>
 			<span id='badfb<?php echo $id; ?>'>
 				<a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[0]
 			</span>
 			<span class='quote'>
-				<a href='#postform' onclick="quoteCommet('<?php echo $id; ?>');">[引用]</a>
-			</span>
-		</div>
-		<div class='decmt-content'>
-			<?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/images/<?php echo $bgimg; ?>' />
-		</div>
-		</div>
-	</div>
+				<a href='/plus/feedback.php?fid=<?php echo $id; ?>&action=quote'">[引用]</a>
+			</span></span><?php echo GetDateMk($dtime); ?>发表</div>			
+     <p><?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/default/images/mood/ico-mood-<?php echo $face; ?>.gif'/></p>
+  </li>
+ </ul>
+</div>
 	<br style='clear:both' />
 <?php
 	}
@@ -233,8 +237,8 @@ else if($dopost=='send')
 //读取列表内容
 function GetList($page=1)
 {
-	global $dsql, $aid, $pagesize, $cfg_templeturl;
-	$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores from `#@__feedback` fb
+	global $dsql, $aid, $pagesize, $cfg_templeturl,$cfg_cmspath;
+	$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores,mb.sex from `#@__feedback` fb
                  left join `#@__member` mb on mb.mid = fb.mid where fb.aid='$aid' and fb.ischeck='1' order by fb.id desc";
 	$row = $dsql->GetOne("select count(*) as dd from `#@__feedback` where aid='$aid' and ischeck='1' ");
 	$totalcount = (empty($row['dd']) ? 0 : $row['dd']);
@@ -262,36 +266,35 @@ function GetList($page=1)
 				$fields['bgimg'] = 'cmt-good.gif';
 				$fields['ftypetitle'] = '该用户表示好评';
 		}
+		if(empty($fields['mface']))
+		{
+		  if($fields['sex']=="女") $fields['mface']=$cfg_cmspath."/member/templets/images/dfgirl.png";
+		  else $fields['mface']=$cfg_cmspath."/member/templets/images/dfboy.png";
+		}
 		$fields['face'] = empty($fields['face']) ? 6 : $fields['face'];
 		$fields['msg'] = str_replace('<', '&lt;', $fields['msg']);
 		$fields['msg'] = str_replace('>', '&gt;', $fields['msg']);
 		$fields['msg'] = Quote_replace($fields['msg']);
 		extract($fields, EXTR_OVERWRITE);
 ?>
-	<div id="commetmsgs" class="dede_comment">
-		<div class='decmt-box'>
-		<div class='decmt-title'>
-			<span class='moodico'><img src='<?php echo $cfg_templeturl; ?>/images/mood/ico-mood-<?php echo $face; ?>.gif'/></span>
-			<span class='username'><a href='<?php echo $spaceurl; ?>'><?php echo $username; ?></a></span>
-			<span class='date'><?php echo GetDateMk($dtime); ?></span>
-			<span>发表</span>
-		</div>
-		<div class='decmt-act'>
-			<span id='goodfb<?php echo $id; ?>'>
+<div class="decmt-box">
+   <ul>
+     <li>
+      <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a>
+      <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
+      <div class="comment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'>
 				<a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[<?php echo $good; ?>]
 			</span>
 			<span id='badfb<?php echo $id; ?>'>
 				<a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[<?php echo $bad; ?>]
 			</span>
 			<span class='quote'>
-				<a href='#postform' onclick="quoteCommet('<?php echo $id; ?>');">[引用]</a>
-			</span>
-		</div>
-		<div class='decmt-content'>
-			<?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/images/<?php echo $bgimg; ?>' alt='<?php echo $ftypetitle; ?>' />
-		</div>
-		</div>
-	</div>
+				<a href='/plus/feedback.php?fid=<?php echo $id; ?>&action=quote'">[引用]</a>
+			</span></span><?php echo GetDateMk($dtime); ?>发表</div>			
+     <p><?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/default/images/mood/ico-mood-<?php echo $face; ?>.gif'/></p>
+  </li>
+ </ul>
+</div>
 <?php
 	}
 	return $totalcount;            

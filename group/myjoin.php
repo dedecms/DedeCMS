@@ -8,7 +8,7 @@
  */
 require_once(dirname(__FILE__)."/system/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
-
+$menutype = 'mydede';
 
 $sql = "SELECT t.gid, t.subject, t.lastpost,t.tid,g.groupname FROM #@__group_threads AS t LEFT JOIN  #@__groups AS g ON g.groupid=t.gid WHERE t.authorid='".$cfg_ml->M_ID."' AND t.closed='0' ORDER BY t.lastpost DESC";
 

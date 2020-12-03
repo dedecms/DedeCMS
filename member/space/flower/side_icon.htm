@@ -9,10 +9,11 @@
 			{dede:if $_vars['face']=='' }
 	<img src="images/nopic.gif" alt="nopic" />
 	{else}
-	<img src="{dede:var.face/}" width="200px" alt="{dede:var.uname/}" />
+	<img src="{dede:var.face/}" alt="{dede:var.uname/}" />
 	{/dede:if}
 			</div>
 		  </div>
+          <div style="height:30px;text-align:center">{dede:var.msg /}</div>
 		  <dl class="profile">
 			<dd class="tac" style="word-break:keep-all">
 			  <img src="space/person/images/talk.gif" align="absmiddle" /><a href="index.php?action=guestbook&uid={dede:var.userid/}">留言</a> |

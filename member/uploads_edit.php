@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
 require_once(DEDEMEMBER.'/inc/inc_archives_functions.php');
+$menutype = 'content';
 $aid = isset($aid) && is_numeric($aid) ? $aid : 0;
 if(empty($dopost)) $dopost = '';
 if($dopost=='')

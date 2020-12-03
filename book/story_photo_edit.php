@@ -12,6 +12,7 @@
 
 require_once(dirname(__FILE__)."/../member/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -42,7 +43,7 @@ while($row = $dsql->GetArray())
 }
 $lastid = $row['id'];
 $contents = $dsql->GetOne("Select * From #@__story_content where id='$cid' ");
-$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where id='{$contents['bookid']}' ");
+$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where bid='{$contents['bookid']}' ");
 if(!is_array($bookinfos))
 {
 	ShowMsg('图书ID错误，请返回','-1');

@@ -18,7 +18,7 @@ var payment_image = new Array(
 <?php 
 $mch_temp = array();
 foreach($cfg_pay_info['type'] as $k => $val){ 
-	$mch_temp[] = '"../member/images/pay/'.addslashes($cfg_pay_info['logo'][$k]).'"';
+	$mch_temp[] = '"../member/templets/images/pay/'.addslashes($cfg_pay_info['logo'][$k]).'"';
 }
 echo implode(",\n",$mch_temp);
 ?>
@@ -87,7 +87,7 @@ foreach($payment_arr as $value){
 <table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-bottom:8px;" >
 <tr>
 <td>
-<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#E2F5BC" class="sysinfo">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#cbd8ac" class="sysinfo">
 <tr align="center" height="28">
   <td height="30" colspan="2" align="left" bgcolor="#EDF9D5" background='img/tbg.gif'><b>&nbsp;支付接口配置参数</b>
 </td>
@@ -167,7 +167,7 @@ foreach($payment_arr as $value){
 <script type="text/javascript">
 ShowReg(0);
 </script>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#cbd8ac;">
       <tr>
         <td height="26" colspan="3" align="left" bgcolor="#EDF9D5"> <strong>&nbsp;如果该配置无效要手动更改,可打开/data/sys_pay.cache.php文件进行手工配置。<strong>
           </strong></strong></td>

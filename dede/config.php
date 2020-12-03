@@ -12,6 +12,7 @@ $isUrlOpen = @ini_get('allow_url_fopen');
 $dedeNowurl = GetCurUrl();
 $dedeNowurls = explode('?', $dedeNowurl);
 $s_scriptName = $dedeNowurls[0];
+$cfg_remote_site = empty($cfg_remote_site)? 'N' : $cfg_remote_site;
 
 //检验用户登录状态
 $cuserLogin = new userLogin();
@@ -37,6 +38,35 @@ if($cfg_dede_log=='Y')
 	}
 }
 
+//启用远程站点则创建FTP类
+if($cfg_remote_site=='Y')
+{
+	require_once(DEDEINC.'/ftp.class.php');
+	if(file_exists(DEDEDATA."/cache/inc_remote_config.php"))
+	{
+		require_once DEDEDATA."/cache/inc_remote_config.php";
+	}
+	if(empty($remoteuploads)) $remoteuploads = 0;
+	if(empty($remoteupUrl)) $remoteupUrl = '';
+	$config = array(
+	  'hostname' => $GLOBALS['cfg_ftp_host'],
+	  'username' => $GLOBALS['cfg_ftp_user'],
+	  'password' => $GLOBALS['cfg_ftp_pwd'],
+	  'debug' => 'TRUE'
+	);
+	$ftp = new FTP($config); 
+
+	//初始化FTP配置
+	if($remoteuploads==1){
+		$ftpconfig = array(
+			'hostname'=>$rmhost, 
+			'port'=>$rmport,
+			'username'=>$rmname,
+			'password'=>$rmpwd
+		);
+	}
+}
+
 //管理缓存、管理员频道缓存
 $cache1 = DEDEDATA.'/cache/inc_catalog_base.inc';
 if(!file_exists($cache1)) UpDateCatCache();
@@ -53,11 +83,11 @@ function UpDateCatCache()
 	$dsql->Execute();
 	$fp1 = fopen($cache1,'w');
 	$phph = '?';
-	$fp1Header = "<{$phph}php\r\nglobal \$_Cs;\r\n\$_Cs=array();\r\n";
+	$fp1Header = "<{$phph}php\r\nglobal \$cfg_Cs;\r\n\$cfg_Cs=array();\r\n";
 	fwrite($fp1,$fp1Header);
 	while($row=$dsql->GetObject())
 	{
-		fwrite($fp1,"\$_Cs[{$row->id}]=array({$row->reid},{$row->channeltype},{$row->issend});\r\n");
+		fwrite($fp1,"\$cfg_Cs[{$row->id}]=array({$row->reid},{$row->channeltype},{$row->issend});\r\n");
 	}
 	fwrite($fp1,"{$phph}>");
 	fclose($fp1);
@@ -66,9 +96,61 @@ function UpDateCatCache()
 	@unlink($cache3);
 }
 
+
+function UpDateMemberModCache()
+{
+	global $dsql;
+	$cachefile = DEDEDATA.'/cache/member_model.inc';
+
+	$dsql->SetQuery("SELECT * FROM `#@__member_model` WHERE state='1'");
+	$dsql->Execute();
+	$fp1 = fopen($cachefile,'w');
+	$phph = '?';
+	$fp1Header = "<{$phph}php\r\nglobal \$_MemberMod;\r\n\$_MemberMod=array();\r\n";
+	fwrite($fp1,$fp1Header);
+	while($row=$dsql->GetObject())
+	{
+		fwrite($fp1,"\$_MemberMod[{$row->id}]=array('{$row->name}','{$row->table}');\r\n");
+	}
+	fwrite($fp1,"{$phph}>");
+	fclose($fp1);
+}
+
+
 function DedeInclude($filename,$isabs=false)
 {
 	return $isabs ? $filename : DEDEADMIN.'/'.$filename;
 }
 
+//获取当前用户的ftp站点
+function GetFtp($current='', $formname='')
+{
+	global $dsql;
+	$formname = empty($formname)? 'serviterm' : $formname;
+	$cuserLogin = new userLogin();
+	$row=$dsql->GetOne("Select servinfo From `#@__multiserv_config`");
+	$row['servinfo']=trim($row['servinfo']);
+	if(!empty($row['servinfo'])){
+		$servinfos = explode("\n", $row['servinfo']);
+		$select="";
+		echo '<select name="'.$formname.'" size="1" id="serviterm">';
+		$i=0;
+		foreach($servinfos as $servinfo){
+			$servinfo = trim($servinfo);
+			list($servname,$servurl,$servport,$servuser,$servpwd,$userlist) = explode('|',$servinfo);
+			$servname = trim($servname);
+			$servurl = trim($servurl);
+			$servport = trim($servport);
+			$servuser = trim($servuser);
+			$servpwd = trim($servpwd);
+			$userlist = trim($userlist);   
+			$checked = ($current == $i)? '  selected="selected"' : '';
+			if(strstr($userlist,$cuserLogin->getUserName())){
+	       $select.="<option value='".$servurl.",".$servuser.",".$servpwd."'{$checked}>".$servname."</option>";  
+			}
+			$i++;
+		} 
+		echo  $select."</select>";
+	}
+}
 ?>

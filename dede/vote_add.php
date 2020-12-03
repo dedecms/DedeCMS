@@ -1,6 +1,6 @@
 <?php
 require(dirname(__FILE__)."/config.php");
-CheckPurview('plus_鎶曠エ妯″潡');
+CheckPurview('plus_投票模块');
 if(empty($dopost))
 {
 	$dopost = "";
@@ -24,10 +24,10 @@ if($dopost=="save")
 	Values('$votename','$starttime','$endtime','0','$ismore','$voteitems'); ";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
-		ShowMsg("澧炲姞鎶曠エ澶辫触锛岃妫�鏌ユ暟鎹槸鍚﹂潪娉曪紒","-1");
+		ShowMsg("增加投票失败，请检查数据是否非法！","-1");
 		exit();
 	}
-	ShowMsg("鎴愬姛澧炲姞涓�缁勬姇绁紒","vote_main.php");
+	ShowMsg("成功增加一组投票！","vote_main.php");
 	exit();
 }
 $startDay = time();

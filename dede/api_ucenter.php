@@ -76,6 +76,7 @@ class api_ucenter
 		}
 		
 		$ucinfo = api_fopen($uc_setings['ucapi'].'/index.php?m=app&a=ucinfo', 500, '', '', 1, $uc_setings['ucip']);
+		
 		list($status, $ucversion, $ucrelease, $uccharset, $ucdbcharset, $apptypes) = explode('|', $ucinfo);
 		
 		if($status != 'UC_STATUS_OK')
@@ -91,9 +92,9 @@ class api_ucenter
 				ShowMsg('uc服务端版本不一致,您当前的uc客服端版本为:'.UC_CLIENT_VERSION.',而服务端版本为:'.$ucversion.'!',-1);
 				exit();	
 			}
-			elseif($ucdbcharset != 'utf8')
+			elseif($ucdbcharset != 'gbk')
 			{
-				ShowMsg('uc服务端编码为:'.$ucdbcharset.'与DedeCMS编码不一致!要求您的uc服务端编码为:utf8编码.',-1);
+				ShowMsg('uc服务端编码与DedeCMS编码不一致!要求您的uc服务端编码为:gbk编码.',-1);
 				exit();	
 			}
 			//标签应用模板
@@ -103,7 +104,7 @@ class api_ucenter
 			'apptagtemplates[fields][pubdate]='.urlencode('时间').'&'.
 			'apptagtemplates[fields][url]='.urlencode('地址');
 			
-			$postdata = 'm=app&a=add&ucfounder=&ucfounderpw='.urlencode($uc_setings['authkey']).'&apptype=OTHER&appname='.urlencode($GLOBALS['cfg_webname']).'&appurl='.urlencode($GLOBALS['cfg_basehost']).'&appip=&appcharset=utf-8&appdbcharset=utf8&'.$app_tagtemplates.'&release='.UC_CLIENT_RELEASE;
+			$postdata = 'm=app&a=add&ucfounder=&ucfounderpw='.urlencode($uc_setings['authkey']).'&apptype=OTHER&appname='.urlencode($GLOBALS['cfg_webname']).'&appurl='.urlencode($GLOBALS['cfg_basehost']).'&appip=&appcharset=gbk&appdbcharset=gbk&'.$app_tagtemplates.'&release='.UC_CLIENT_RELEASE;
 		
 			$ucconfig = api_fopen($uc_setings['ucapi'].'/index.php', 500, $postdata, '', 1, $uc_setings['ucip']);
 			
@@ -243,7 +244,6 @@ function api_fopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE
 	$host = $matches['host'];
 	$path = $matches['path'] ? $matches['path'].($matches['query'] ? '?'.$matches['query'] : '') : '/';
 	$port = !empty($matches['port']) ? $matches['port'] : 80;
-
 	if($post)
 	{
 		$out = "POST $path HTTP/1.0\r\n";
@@ -268,6 +268,7 @@ function api_fopen($url, $limit = 0, $post = '', $cookie = '', $bysocket = FALSE
 		$out .= "Connection: Close\r\n";
 		$out .= "Cookie: $cookie\r\n\r\n";
 	}
+
 	$fp = @fsockopen(($host ? $host : $ip), $port, $errno, $errstr, $timeout);
 	if(!$fp)
 	{
@@ -363,4 +364,12 @@ function api_gpc($k, $var='R')
 	}
 	return isset($var[$k]) ? $var[$k] : NULL;
 }
+
+if(!function_exists('file_put_contents')){ function file_put_contents($filename, $s)
+{
+	$fp = @fopen($filename, 'w');
+	@fwrite($fp, $s);
+	@fclose($fp);
+	return TRUE;
+}}
 ?>

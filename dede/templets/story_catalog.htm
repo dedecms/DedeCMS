@@ -42,7 +42,7 @@
 			<td bgcolor="#EDF9D5" height="28" background='img/tbg.gif'>
 					<table width='96%' border="0" cellpadding='0' cellspacing='0'>
 						<tr background='img/tbg.gif'>
-						<td width='30%' class="tbtitletxt">&nbsp;<strong>连载栏目管理</strong></td>
+						<td width='30%' class="tbtitletxt"><strong> &nbsp;小说栏目管理</strong></td>
 						<td align='right'>
 					[<a href="javascript:ShowAddCatalog();"><u>增加新栏目</u></a>]
 					&nbsp;
@@ -69,7 +69,7 @@ $options = "";
 foreach($btypes as $k=>$v)
 {
 	  echo "<tr height='24' bgcolor='#FDFEF1'>\r\n";
-	  echo "<td>&nbsp;<input type='text' size='2' name='rank_{$k}' value='{$ranks[$k]}'></td>\r\n";
+	  echo "<td><input type='text' size='2' name='rank_{$k}' value='{$ranks[$k]}'></td>\r\n";
 	  echo "<td style='padding-left:3px'>·{$v} (ID：{$k} ，图书：".TjBookNum($k,$dsql).")</td>\r\n";
 	  echo "<td align='right' style='padding-right:8px;'>\r\n";
 	  echo "<a href='javascript:EditCatalog({$k});'>修改</a> | ";

@@ -36,7 +36,7 @@ foreach ($msgs as $msg)
 ?>
 <dl id="<?php echo $msg['id']; ?>">
 	<dd class="comment-pic left">
-		<img src="<?php echo $msg['mface']=='' ? 'images/dfboy.gif' : $msg['mface']; ?>" width="40" />
+		<img src="<?php echo $msg['mface']=='' ? 'images/dfboy.png' : $msg['mface']; ?>" width="40" />
 	</dd>
 	<dd>
 	<?php
@@ -57,7 +57,7 @@ foreach ($msgs as $msg)
 				<div id="r_content_<?php echo $msg['id']; ?>"></div>
 			</div>
 			<div>
-				<img src="{dede:global.cfg_templeturl/}/images/mood/<?php echo 'ico-mood-'.($msg['face']>0 ? $msg['face'] : 6).'.gif'; ?>" /><?php echo $msg['msg']; ?>
+				<img src="{dede:global.cfg_templets_skin/}/images/mood/<?php echo 'ico-mood-'.($msg['face']>0 ? $msg['face'] : 6).'.gif'; ?>" /><?php echo $msg['msg']; ?>
 			</div>
 		</div>
 	</dd>
@@ -84,13 +84,13 @@ foreach ($msgs as $msg)
 	<div class="feedbackface""> 
 		<strong style="FLOAT:left;">表情:</strong>
 			<ul>
-				<li><input type="radio" name='face' value='6' checked="1" /><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-6.gif" /></li>
-				<li><input type="radio" name='face' value='4'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-4.gif" /></li>
-				<li><input type="radio" name='face' value='3'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-3.gif" /></li>
-				<li><input type="radio" name='face' value='5'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-5.gif" /></li>
-				<li><input type="radio" name='face' value='2'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-2.gif" /></li>
-				<li><input type="radio" name='face' value='1'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-1.gif" /></li>
-				<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-7.gif" /></li>
+				<li><input type="radio" name='face' value='6' checked="1" /><img src="templets/images/smiley/6.gif" /></li>
+				<li><input type="radio" name='face' value='4'/><img src="templets/images/smiley/4.gif" /></li>
+				<li><input type="radio" name='face' value='3'/><img src="templets/images/smiley/3.gif" /></li>
+				<li><input type="radio" name='face' value='5'/><img src="templets/images/smiley/5.gif" /></li>
+				<li><input type="radio" name='face' value='2'/><img src="templets/images/smiley/2.gif" /></li>
+				<li><input type="radio" name='face' value='1'/><img src="templets/images/smiley/1.gif" /></li>
+				<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-7.gif" /></li>
 			</ul>
 		</div>
 		<div class="c"></div>

@@ -25,6 +25,11 @@ if(isset($arcID))
 	$aid = $arcID;
 }
 
+if(!isset($dopost))
+{
+	$dopost = '';
+}
+
 $arcID = $aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
 if($aid==0)
 {
@@ -74,14 +79,14 @@ if($needMoney>0 || $needRank>1)
 	}
 
 	//需要金币的情况
-	if( $needMoney > 0  && $arc->Fields['mid'] != $cfg_ml->M_ID)
+	if($needMoney > 0  && $arc->Fields['mid'] != $cfg_ml->M_ID)
 	{
 		$sql = "Select aid,money From `#@__member_operation` where buyid='ARCHIVE".$aid."' And mid='".$cfg_ml->M_ID."'";
 		$row = $dsql->GetOne($sql);
 		//未购买过此文章
 		if(!is_array($row))
 		{
-			if( $cfg_ml->M_Money=='' || $needMoney > $cfg_ml->M_Money)
+			if($cfg_ml->M_Money=='' || $needMoney > $cfg_ml->M_Money)
 	 		{
 					$msgtitle = "你没有权限浏览文档：{$arctitle} ！";
 					$moremsg = "这篇文档需要 <font color='red'>".$needMoney." 金币</font> 才能访问，你目前拥有金币：<font color='red'>".$cfg_ml->M_Money." 个</font> ！";
@@ -91,19 +96,47 @@ if($needMoney>0 || $needRank>1)
 			}
 			else
 			{
-					$inquery = "INSERT INTO `#@__member_operation`(mid,oldinfo,money,mtime,buyid,product,pname,sta)
-		              VALUES ('".$cfg_ml->M_ID."','$arctitle','$needMoney','".time()."', 'ARCHIVE".$aid."', 'archive','购买文章', 2); ";
-		 	 		if(!$dsql->ExecuteNoneQuery($inquery))
-		 	 		{
-							ShowMsg('保存购买记录失败， 请与管理员联系！', '-1');
+					if($dopost=='buy')
+					{
+						 $inquery = "INSERT INTO `#@__member_operation`(mid,oldinfo,money,mtime,buyid,product,pname)
+								  VALUES ('".$cfg_ml->M_ID."','$arctitle','$needMoney','".time()."', 'ARCHIVE".$aid."', 'archive',''); ";
+						 if($dsql->ExecuteNoneQuery($inquery))
+						 {
+							$inquery = "Update `#@__member` set money=money-$needMoney where mid='".$cfg_ml->M_ID."'";
+							if(!$dsql->ExecuteNoneQuery($inquery))
+							{
+								showmsg('购买失败, 请返回', -1);
+								exit;
+							}
+							#api{{
+							if(defined('UC_APPID'))
+							{
+								include_once DEDEROOT.'/api/uc.func.php';
+								$row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='".$cfg_ml->M_ID."'");
+								uc_credit_note($row['userid'],-$needMoney,'money');
+							}
+							#/aip}}
+		
+							showmsg('购买成功，购买扣点不会重扣金币，谢谢！', '/plus/view.php?aid='.$aid);
 							exit;
+		
+						 } else {
+							showmsg('购买失败, 请返回', -1);
+							exit;
+						 }
 					}
-					$dsql->ExecuteNoneQuery("Update `#@__member` set money=money-$needMoney where mid='".$cfg_ml->M_ID."'");
-			}
+					
+					$msgtitle = "扣金币购买阅读！";
+					$moremsg = "阅读该文档内容需要付费！<br>这篇文档需要 <font color='red'>".$needMoney." 金币</font> 才能访问，你目前拥有金币 <font color='red'>".$cfg_ml->M_Money." </font>个！<br>确认阅读请点 [<a href='/plus/view.php?aid=".$aid."&dopost=buy' target='_blank'>确认付点阅读</a>]" ;
+					include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
+					$arc->Close();
+					exit();
+					}
 		}
 	}//金币处理付处理
 	
 }
+
 $arc->Display();
 
 ?>

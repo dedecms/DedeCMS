@@ -76,7 +76,13 @@ function GetFormItem($ctag,$admintype='admin')
 			$v = trim($v);
 			if($v!='')
 			{
-				$myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='np' value='$v'>$v\r\n";
+				if($admintype == 'membermodel')
+				{
+					$myformItem .= "<label><input type='checkbox' name='{$fieldname}[]' class='np' value='$v'>$v</label>\r\n";
+				} else {
+          $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='np' value='$v'>$v\r\n";
+				}
+				
 			}
 		}
 		$innertext = $myformItem;
@@ -101,12 +107,12 @@ function GetFormItem($ctag,$admintype='admin')
 	}
 	else if($fieldType=="multitext")
 	{
-		$innertext = "<textarea name='$fieldname' id='$fieldname' style='width:100%;height:80'></textarea>\r\n";
+		$innertext = "<textarea name='$fieldname' id='$fieldname' style='width:90%;height:80'></textarea>\r\n";
 	}
 	else if($fieldType=="datetime")
 	{
 		$nowtime = GetDateTimeMk(time());
-		$innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" />";
+		$innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt\"  />";
 	}
 	else if($fieldType=='img'||$fieldType=='imgfile')
 	{
@@ -142,12 +148,12 @@ function GetFormItem($ctag,$admintype='admin')
 	else if($fieldType=='int'||$fieldType=='float')
 	{
 		$dfvalue = ($ctag->GetAtt('default')!='' ? $ctag->GetAtt('default') : '0');
-		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='text' value='$dfvalue' /> (填写数值)\r\n";
+		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='intxt' value='$dfvalue' /> (填写数值)\r\n";
 	}
 	else
 	{
 		$dfvalue = ($ctag->GetAtt('default')!='' ? $ctag->GetAtt('default') : '');
-		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='text' value='$dfvalue' />\r\n";
+		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='intxt' value='$dfvalue' />\r\n";
 	}
 	$formitem = str_replace("~name~",$ctag->GetAtt('itemname'),$formitem);
 	$formitem = str_replace("~form~",$innertext,$formitem);
@@ -221,7 +227,7 @@ function GetFieldValue($dvalue, $dtype, $aid=0, $job='add', $addvar='', $adminty
 	}
 	else if($dtype=="textdata")
 	{
-		  $ipath = $cfg_cmspath."/data/textdata";
+			$ipath = $cfg_cmspath."/data/textdata";
 			$tpath = ceil($aid/5000);
 			if(!is_dir($cfg_basedir.$ipath))
 			{
@@ -458,12 +464,12 @@ function GetFormItemValue($ctag, $fvalue, $admintype='admin', $fieldname='')
 	}
 	else if($ftype=="multitext")
 	{
-		$innertext = "<textarea name='$fieldname' id='$fieldname' style='width:100%;height:80px'>$fvalue</textarea>\r\n";
+		$innertext = "<textarea name='$fieldname' id='$fieldname' style='width:90%;height:80px'>$fvalue</textarea>\r\n";
 	}
 	else if($ftype=="datetime")
 	{
 		$nowtime = GetDateTimeMk($fvalue);
-		$innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" />";
+		$innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt\" />";
 	}
 	else if($ftype=="img")
 	{
@@ -495,11 +501,11 @@ function GetFormItemValue($ctag, $fvalue, $admintype='admin', $fieldname='')
 	}
 	else if($ftype=="int"||$ftype=="float")
 	{
-		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='text' value='$fvalue' /> (填写数值)\r\n";
+		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='intxt' value='$fvalue' /> (填写数值)\r\n";
 	}
 	else
 	{
-		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='text' value='$fvalue' />\r\n";
+		$innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='intxt' value='$fvalue' />\r\n";
 	}
 	$formitem = str_replace('~name~',$ctag->GetAtt('itemname'),$formitem);
 	$formitem = str_replace('~form~',$innertext,$formitem);

@@ -11,7 +11,7 @@ if($dopost == '')
 	include(DEDEADMIN."/templets/cards_make.htm");
 }
 
-//鐢熸垚鐐瑰崱
+//生成点卡
 elseif($dopost == 'make')
 {
 	$row = $dsql->GetOne("Select * From #@__moneycard_record order by aid desc");
@@ -60,9 +60,9 @@ elseif($dopost == 'make')
 		$inquery = "Insert into #@__moneycard_record(ctid,cardid,uid,isexp,mtime,utime,money,num)
               Values('$ctid','$cardid','0','0','$mtime','$utime','$money','$num'); ";
 		$dsql->ExecuteNoneQuery($inquery);
-		echo "鎴愬姛鐢熸垚鐐瑰崱锛歿$cardid}<br/>";
+		echo "成功生成点卡：{$cardid}<br/>";
 	}
-	echo "鎴愬姛鐢熸垚 {$mnum} 涓偣鍗★紒";
+	echo "成功生成 {$mnum} 个点卡！";
 }
 
 ?>

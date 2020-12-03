@@ -4,10 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang;?>" />
 <title>digg</title>
 <style>
-*{
-border:0px;
-padding:0px;
-}
 body {
 text-align:center;
 }
@@ -66,10 +62,10 @@ height:5px;
 overflow:hidden;
 }
 .digg_good {
-background:transparent url(../templets/images/newdigg-bg.png) no-repeat scroll left top;
+background:transparent url(../templets/default/images/newdigg-bg.png) no-repeat scroll left top;
 }
 .digg_bad {
-background:transparent url(../templets/images/newdigg-bg.png) no-repeat scroll right top;
+background:transparent url(../templets/default/images/newdigg-bg.png) no-repeat scroll right top;
 }
 .digg_good .digg_act {
 color:#CC3300;
@@ -143,7 +139,7 @@ function postDigg(ac, aid)
 		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return false; }
 		else saveid += ','+aid;
 		SetCookie('diggid',saveid,1);
-
+		
 	} else {
 		SetCookie('diggid',aid,1);
 	}

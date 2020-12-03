@@ -22,11 +22,11 @@ function checkSubmit()
 	}
 }
 
-var startNum = 2;
+var startNum = 0;
 function MakeUpload()
 {
 	var upfield = document.getElementById("uploadfield");
-	var endNum =  parseInt(document.form1.picnum.value) + startNum;
+	var endNum =  parseInt(document.form1.picnum.value) + startNum-1;
 	if(endNum > 30) endNum = 30;
 	for(startNum; startNum<=endNum; startNum++){
 		upfield.innerHTML += "<div style='line-height:36px'>软件地址"+startNum+"：<input type='text' name='softurl"+startNum+"' style='width:280px' value='http://' />  服务器名称：<input type='text' name='servermsg"+startNum+"' style='width:150px' /></div>\r\n";
@@ -137,9 +137,12 @@ body { background-image: url(img/allbg.gif); }
       <td width="400%" height="24" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;TAG标签：</td>
-          <td>
-          	<input name="tags" type="text" id="tags" value="" style="width:300px" />(','号分开，单个标签小于12字节)          </td>
+          <td width="89">&nbsp;TAG标签：</td>
+          <td width="516">
+          	<input name="tags" type="text" id="tags" value="" style="width:300px" />
+          	(','号分开，单个标签小于12字节</td>
+          <td width="37">权重：</td>
+            <td width="158"><input name="weight" type="text" id="weight" style="width:50px" value="<?php echo $maxWright['cc'];?>" />(越小越靠前)</td>
         </tr>
       </table>      </td>
     </tr>
@@ -199,7 +202,15 @@ body { background-image: url(img/allbg.gif); }
 			{
 				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
 			}
-			?>			     </td>
+			?>
+            <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  
+            </td>
           </tr>
         </table>
       </td>
@@ -516,7 +527,7 @@ body { background-image: url(img/allbg.gif); }
           $nowtime = GetDateTimeMk(time());
           echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>          </td>
-          <td width="90">消费点数：</td>
+          <td width="90">消费金币：</td>
           <td width="379">
           	<input name="money" type="hidden" id="money" value="0" />(此项已经独立分离)
           </td>

@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
 $dopost = isset($dopost) ? trim($dopost) : '';
+$menutype = 'config';
 if($dopost == '')
 {
 	if(empty($channelid)) $channelid = 0;

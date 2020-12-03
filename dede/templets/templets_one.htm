@@ -43,7 +43,7 @@ li { float:left; padding-right:8px; line-height:24px; }
     </div>
     <div style="float:right">
      [<a href="templets_one_add.php"><u>增加一个页面</u></a>]
-     &nbsp;[<a href="#" onclick="document.form1.submit();"><u>更新选中页面</u></a>]
+     &nbsp;[<a href="#" onClick="document.form1.submit();"><u>更新选中页面</u></a>]
      &nbsp;[<a href="templets_one_edit.php?dopost=mkall"><u>更新所有页面</u></a>]
      &nbsp;&nbsp;&nbsp;&nbsp;
     </div>
@@ -61,7 +61,7 @@ li { float:left; padding-right:8px; line-height:24px; }
    <form name='form1' action='templets_one_edit.php'>
    	<input type='hidden' name='dopost' value='mksel' />
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';" 
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';" 
     	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
     	  <td><input type='checkbox' name='ids[]' value='{dede:field.aid /}' class='np' ></td>
         <td>{dede:field.aid /}</td>

@@ -84,7 +84,7 @@ WriteBookText($arcID,addslashes($body));
 
 //更新图书的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' and mid='$cfg_ml->M_ID' ");
-$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='$addtime' where id='$bookid' and mid='$cfg_ml->M_ID' ");
+$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='$addtime' where bid='$bookid' and mid='$cfg_ml->M_ID' ");
 
 //更新章节的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' And chapterid='$chapterid' and mid='$cfg_ml->M_ID' ");

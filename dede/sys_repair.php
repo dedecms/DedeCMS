@@ -2,8 +2,8 @@
 require_once(dirname(__FILE__).'/config.php');
 CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__).'/../include/oxwindow.class.php');
-ShowMsg("目前暂不需要此工具，以后有需要系统会进行自动升级这个程序！<br /><a href='index_body.php'>&lt;&lt;点击此返回&gt;&gt;</a>", "javascript:;");
-exit();
+//ShowMsg("目前暂不需要此工具，以后有需要系统会进行自动升级这个程序！<br /><a href='index_body.php'>&lt;&lt;点击此返回&gt;&gt;</a>", "javascript:;");
+//exit();
 if(empty($dopost))
 {
 	$win = new OxWindow();
@@ -18,12 +18,13 @@ if(empty($dopost))
     <br />
     由于手动升级时用户没运行指定的SQL语句，或自动升级的遗漏处理或处理出错，可能会导致一些错误，使用本工具会自动检测并处理。<br /><br />
     <b>本工具目前主要执行下面动作：</b><br />
-    1、检测从DedeCms V5.3发布以来的数据结构的完整性；<br />
-    2、检测微表dede_arctiny的健康性；<br />
-    3、检测你的系统是否有因为非正常录入导致的文档id不正常问题。<br />
+    1、修复/优化数据表；<br />
+    2、更新系统缓存；<br />
+    3、检测系统变量一致性。<br />
+    4、检测微表与主表数据一致性。<br />
     <br />
     <br />
-    <a href='sys_repair.php?dopost=1' style='font-size:14px;color:red'><b>点击此开始进行常规检测&gt;&gt;</b></a>
+    <a href='sys_repair.php?dopost=1' style='font-size:18px;color:red'><b>点击此开始进行常规检测&gt;&gt;</b></a>
     <br /><br /><br />
     </td>
   </tr>
@@ -35,66 +36,11 @@ if(empty($dopost))
 	exit();
 }
 /*-------------------
-检测数据结构
+数据结构常规检测
 function 1_test_db() {  }
 --------------------*/
 else if($dopost==1)
 {
-	$msg = '';
-	$dsql->Execute('n',"Show Create Table `#@__arctiny` ");
-	$row = $dsql->GetArray('n', MYSQL_BOTH);
-	if(!eregi('typeid2', $row[1]))
-	{
-		$rs = $dsql->ExecuteNoneQuery(" ALTER TABLE `#@__arctiny`  ADD `typeid2` SMALLINT( 5 ) UNSIGNED DEFAULT '0' NOT NULL AFTER `typeid` ; ");
-		if($rs) $msg .= "◎微表 #@__arctiny 没有副栏目字段typeid2，修复成功！<br />";
-		else $msg .= "<font color='red'>◎微表 #@__arctiny 没有副栏目字段typeid2，修复无效！</font><br />";
-	}
-	else
-	{
-		$msg .= "◎表： #@__arctiny 结构完整，不需修复！<br />";
-	}
-	$dsql->Execute('n',"Show Create Table `#@__archives` ");
-	$row = $dsql->GetArray('n', MYSQL_BOTH);
-	if(!eregi('typeid2', $row[1]))
-	{
-		$rs = $dsql->ExecuteNoneQuery(" ALTER TABLE `#@__archives`  ADD `typeid2` SMALLINT( 5 ) UNSIGNED DEFAULT '0' NOT NULL AFTER `typeid` ; ");
-		if($rs) $msg .= "主表 #@__archives 没有副栏目字段typeid2，修复成功！<br />";
-		else $msg .= "<font color='red'>主表 #@__archives 没有副栏目字段typeid2，修复无效！</font><br />";
-	}
-	else
-	{
-		$msg .= "◎表： #@__archives 结构完整，不需修复！<br />";
-	}
-	
-	$upsqls[] = "ALTER TABLE `#@__tagindex` CHANGE `tag` `tag` VARCHAR( 20 ) NOT NULL default ''; ";
-	$upsqls[] = "ALTER TABLE `#@__taglist` CHANGE `tag` `tag` VARCHAR( 20 ) NOT NULL default ''; ";
-	$upsqls[] = "ALTER TABLE `#@__archives` CHANGE `litpic` `litpic` VARCHAR( 80 ) NOT NULL default ''; ";
-	$upsqls[] = "INSERT INTO `#@__sysconfig` (`aid` ,`varname` ,`info` ,`value` ,`type` ,`groupid`) VALUES (713, 'cfg_need_typeid2', '是否启用副栏目', 'N', 'bool', 6); ";
-  $upsqls[] = "INSERT INTO `#@__sysconfig` (`aid` ,`varname` ,`info` ,`value` ,`type` ,`groupid`) VALUES (715, 'cfg_mb_pwdtype', '前台密码验证类型：默认32 — 32位md5，可选：<br />l16 — 前16位， r16 — 后16位， m16 — 中间16位', '32', 'string', 4); ";
-  $upsqls[] = "Update `#@__sysconfig` set `groupid` = '8' where `varname` like 'cfg_group_%'; ";
-  $upsqls[] = "ALTER TABLE `#@__arccache` ADD `stylehash` CHAR(32) NOT NULL default '' AFTER `md5hash`; ";
-	
-	$msg .= "◎检测系统修改过的字段或增加的变量，这些SQL操作运行多次并不会影响系统正常运行...<br />";
-	foreach($upsqls as $upsql)
-	{
-		$rs = $dsql->ExecuteNoneQuery($upsql);
-		$msg .= "·执行 <font color='green'>".$upsql."</font> ok!<br />";
-	}
-	
-	$msg .= "◎检测 #@__advancedsearch 表是否存在...<br />";
-	
-	$createQuery = "CREATE TABLE IF NOT EXISTS `#@__advancedsearch` (
-  	`mid` int(11) NOT NULL,
-  	`maintable` varchar(255) NOT NULL default '',
-  	`mainfields` text,
-  	`addontable` varchar(255) default '',
-  	`addonfields` text,
-  	`forms` text,
-  	`template` varchar(255) NOT NULL default '',
-  	UNIQUE KEY `mid` (`mid`)
-  ) TYPE=MyISAM; ";
-	$dsql->ExecuteNoneQuery($createQuery);
-	
 	$win = new OxWindow();
 	$win->Init("sys_repair.php","js/blank.js","POST' enctype='multipart/form-data' ");
 	$win->mainTitle = "系统修复工具";
@@ -113,7 +59,7 @@ else if($dopost==1)
     2、更新数据库archives表时出错<br />
     3、列表显示数据目与实际文档数不一致<br />
     <br />
-    <a href='sys_repair.php?dopost=2' style='font-size:14px;'><b>点击此检测微表正确性&gt;&gt;</b></a>
+    <a href='sys_repair.php?dopost=2' style='font-size:18px;'><b>点击此检测微表正确性&gt;&gt;</b></a>
     <br /><br /><br />
     </td>
   </tr>

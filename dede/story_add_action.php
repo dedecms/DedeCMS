@@ -36,6 +36,8 @@ if($keywords!="")
 	$keywords = trim(cn_substr($keywords,60));
 }
 
+if(empty($author))$author=$cuserLogin->getUserName();
+
 //处理上传的缩略图
 if($litpic != ""){
 	$litpic = GetDDImage('litpic',$litpicname,0);
@@ -50,16 +52,7 @@ if($description=="" && $cfg_auot_description>0)
 }
 
 $inQuery = "
-INSERT INTO `#@__story_books`(`catid`,`bcatid`,`booktype`,`iscommend`,`click`,`freenum`,`bookname`,
-`author`,`mid`,`litpic`,`pubdate`,
-`lastpost`,`postnum`,`lastfeedback`,`feedbacknum`,`weekcc`,`monthcc`,`weekup`,`monthup`,
-`description`,`body`,`keywords`,`userip`,`senddate` )
-VALUES ('$catid','$bcatid','$booktype', '$iscommend', '$click', '$freenum', '$bookname',
- '$author', '0', '$litpic', '$pubdate',
- '0', '0', '0', '0', '0', '0', '0', '0',
-  '$description' , '$body' , '$keywords', '','".time()."');
-";
-
+INSERT INTO `#@__story_books`(`catid`,`bcatid`,`booktype`,`iscommend`,`click`,`freenum`,`bookname`,`author`,`mid`,`litpic`,`pubdate`,`lastpost`,`postnum`,`lastfeedback`,`feedbacknum`,`weekcc`,`monthcc`,`weekup`,`monthup`,`description`,`body`,`keywords`,`userip`,`senddate` ,`arcrank`,`goodpost`,`badpost`,`notpost`) VALUES ('$catid','$bcatid','$booktype', '$iscommend', '$click', '$freenum', '$bookname', '$author', '0', '$litpic', '$pubdate', '$pubdate', '0', '0', '0', '0', '0', '0', '0', '$description' , '$body' , '$keywords', '','".time()."','$arcrank','0','0','0')";
 if(!$dsql->ExecuteNoneQuery($inQuery))
 {
 	ShowMsg("把数据保存到数据库时出错，请检查！","-1");

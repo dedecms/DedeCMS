@@ -1,9 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>网址书签管理</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
-<script type="text/javascript" language='javascript'src='js/main.js'></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网址书签管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
 <script type="text/javascript" language="javascript">
 <!--
 var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>";
@@ -105,49 +109,48 @@ function ReLoadList(oby){
 </script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">空间设置 &gt; 网址书签管理</div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li><a href="mtypes.php">分类管理</a></li>
-            <li class="select"><a href="flink_main.php">书签管理</a></li>
-            <li><a href="edit_space_info.php">空间设置</a></li>
-            <li><a href="spaceskin.php">风格选择</a></li>
-            <li><a href="uploads.php">附件管理</a></li>
-            <li><a href="edit_baseinfo.php">会员资料</a></li>
-          </ul>
-        </div>
-        <script type="text/javascript" src="js/table_function.js"></script>
-        <div class="mTB10 mL10 mR10">
-          <table cellspacing="1" class="submit">
-            <tbody>
-              <tr>
-                <td width="15%" align="right" valign="top">链接名称：</td>
-                <td><input name="title" type="text" id="title" class="text" style="width:170px;" />
-                  <button class="button2" type="submit" onclick='AddnewLink()'>增加</button></td>
-              </tr>
-              <tr>
-                <td align="right" valign="top">链接网址：</td>
-                <td><input name="url" type="text" id="url" class="text" value="http://" /></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="titleBar bgGrass lineB mB10">
-          	<strong class="mL10">已有链接管理</strong>
-          </div>
-          <div id="linkList">
-            <?php GetLinkList($dsql); ?>
-          </div>
-        </div>
+<div id="main">
+   <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+   <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="mtypes.php">分类管理</a></li>
+          <li class="thisTab"><a href="flink_main.php">书签管理</a></li>
+          <li><a href="edit_space_info.php"><span>空间设置</span></a></li>
+          <li><a href="spaceskin.php">风格选择</a></li>
+        </ul>
       </div>
-      <div class="clear"></div>
+      <script type="text/javascript" src="js/table_function.js"></script>
+      <div id="mainCp" class="postForm">
+      <h3 class="meTitle"><strong>书签管理</strong></h3>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <td width="20%" align="right">链接名称:</td>
+              <td><input name="title" type="text" id="title" class="intxt" style="width:170px;" />
+              <button class="button2 ml5" type="submit" onclick='AddnewLink()'>增加</button></td>
+            </tr>
+          </thead>
+          <thead>
+            <tr>
+              <td height="10"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="20%" align="right">链接网址:</td>
+              <td><input name="url" type="text" id="url" class="intxt" value="http://" /></td>
+            </tr>
+          </tbody>
+        </table>
+         <h3 class="meTitle" style="padding-top: 10px;"><strong>已有链接管理</strong></h3>
+        <div id="linkList" class="postForm doPost">
+          <?php GetLinkList($dsql); ?>
+        </div>
+      <!--主操作区域 -->
     </div>
-    <div class="clear"></div>
   </div>
 </div>
 <?php include(DEDEMEMBER."/templets/foot.htm"); ?>

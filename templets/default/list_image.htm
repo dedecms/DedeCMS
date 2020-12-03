@@ -5,23 +5,26 @@
 <title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/style/dedecms_skins_0.css" type="text/css" id="cssfile" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.cookie.js"></script>
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/changeSkin.js"></script>
+<script language="javascript" type="text/javascript">
+<!--
+function check(){
+		if(document.formsearch.searchtype.value=="")
+		document.formsearch.action="http://www.google.cn/custom"
+		else
+		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
+	} 
+-->
+</script>
+</head>
 </head>
 <body class="picboxlist">
-
 {dede:include filename="head.htm"/}
 <!-- /header -->
-
-<div class="channel-nav w960 center clear">
-	<div class='sonnav'>
-	{dede:channel currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
-		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
-	</div>
-	<span class="back">
-		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
-	</span>
-</div><!-- /channel-nav -->
-
 <div class="w960 center clear mt1">
 	<div class="pleft">
 		<div class="place">
@@ -29,13 +32,13 @@
 		</div><!-- /place -->
 		<div class="listbox">
 			<ul class="e8">
-{dede:list pagesize='12'}
+           {dede:list pagesize='12'}
 				<li>
 					<a href="[field:arcurl/]" class="pic"><img src="[field:litpic/]" alt="[field:title function='html2text(@me)'/]"/></a>
 					<a href="[field:arcurl/]" class="title">[field:title/]</a>
 					<span class="date"><small>最后更新：</small>[field:pubdate function="GetDateMK(@me)"/]</span>
 				</li>
-{/dede:list}
+          {/dede:list}
 			</ul>
 		</div><!-- /listbox -->
 		<div class="dede_pages">
@@ -46,7 +49,17 @@
 	</div><!-- /pleft -->
 	
 	<div class="pright">
-	
+        <div>
+          <dl class="tbox">
+				<dt><strong>栏目列表</strong></dt>
+				<dd>
+					<ul class="d6">
+                      {dede:channel type='son' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a></li>"}
+		<li><a href='[field:typeurl/]'>[field:typename/]</a></li>{/dede:channel}
+					</ul>
+				</dd>
+			</dl>
+        </div>
     	<div class="">
 			<dl class="tbox">
 				<dt><strong>热点图集</strong></dt>

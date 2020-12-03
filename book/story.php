@@ -20,12 +20,13 @@ if(empty($id))
 $bv = new BookView($id,'content');
 
 //检测是否收费图书
+$arcrank = $bv->Fields['arcrank'];
 $freenum = $bv->Fields['freenum'];
 if($freenum > -1)
 {
 	require_once(DEDEINC."/memberlogin.class.php");
 	$ml = new MemberLogin();
-	if($ml->M_MbType < $cfg_book_freerank)
+	if($ml->M_Rank < $arcrank)
 	{
 		$row = $bv->dsql->GetOne("Select chapnum From #@__story_chapter where id='{$bv->Fields['chapterid']}' ");
 		$chapnum = $row['chapnum'];
@@ -50,7 +51,7 @@ if($freenum > -1)
 			//权限错误
 			if($member_err!='')
 			{
-				$row = $bv->dsql->GetOne("Select membername From #@__arcrank where rank = '$cfg_book_freerank' ");
+				$row = $bv->dsql->GetOne("Select membername From #@__arcrank where rank = '$arcrank' ");
 				if(!is_array($row))
 				{
 					$membername = '';
@@ -67,10 +68,14 @@ if($freenum > -1)
 			//扣点
 			else
 			{
-				$rs = $bv->dsql->ExecuteNoneQuery("Insert Into #@__story_viphistory(cid,uid) Values('{$id}','{$ml->M_ID}') ");
-				if($rs)
+				$row = $bv->dsql->GetOne("Select mid From #@__story_viphistory where cid = '$id' ");
+				if($row['mid']!=$ml->M_ID)
 				{
-					$bv->dsql->ExecuteNoneQuery("Update #@__member Set money=money-{$cfg_book_money} where id='{$ml->M_ID}' ");
+					$rs = $bv->dsql->ExecuteNoneQuery("Insert Into #@__story_viphistory(cid,mid) Values('{$id}','{$ml->M_ID}') ");
+					if($rs)
+					{
+				    	$bv->dsql->ExecuteNoneQuery("Update #@__member Set money=money-{$cfg_book_money} where mid='{$ml->M_ID}' ");
+					}
 				}
 			}
 		}

@@ -14,6 +14,7 @@ require_once(dirname(__FILE__)."/../member/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -48,7 +49,7 @@ if(empty($booktype))
 {
 	$booktype = '0';
 }
-$row = $dsql->GetOne("SELECT bookname,booktype FROM #@__story_books WHERE id = '$bookid'");
+$row = $dsql->GetOne("SELECT bookname,booktype FROM #@__story_books WHERE bid = '$bookid'");
 if(is_array($row)){
 $bookname = $row['bookname'];
 $booktype = $row['booktype'];

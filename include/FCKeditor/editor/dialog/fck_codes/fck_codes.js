@@ -1,4 +1,4 @@
-﻿var oEditor		= window.parent.InnerDialogLoaded() ;
+var oEditor		= window.parent.InnerDialogLoaded() ;
 var FCK			= oEditor.FCK ;
 
 window.onload = function()

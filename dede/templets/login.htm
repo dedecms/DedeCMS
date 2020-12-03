@@ -3,6 +3,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $cfg_softname." ".$cfg_version; ?></title>
 <link href="img/frame.css" rel="stylesheet" type="text/css" />
+<script src="/images/js/j.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+function changeAuthCode() {
+	var num = 	new Date().getTime();
+	var rand = Math.round(Math.random() * 10000);
+	num = num + rand;
+	$('#ver_code').css('visibility','visible');
+	if ($("#vdimgck")[0]) {
+		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+	}
+	return false;	
+}
+</script>
+<style type="text/css">
+<!--
+.vermenu{
+	background:#FFFFFF none repeat scroll 0 0;
+	border:1px solid #EEEEEE;
+	position:absolute;
+}
+-->
+</style>
 </head>
 <body bgcolor="#f4fbf4">
 <div class="head">
@@ -50,9 +72,18 @@
         <li><span>密&nbsp;&nbsp;&nbsp;码：</span>
           <input type="password" name="pwd" class="text" />
         </li>
+        <?php
+        	if(preg_match("/6/",$safe_gdopen))
+        	{
+        ?>
         <li><span>验证码：</span>
-          <input name="validate" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
-          <img id="vdimgck" src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></li>
+           <input id="vdcode" class="text login_from3" type="text" style="width: 50px; text-transform: uppercase;" name="validate"/>
+          <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
+           <a href="#" onClick="changeAuthCode();" style="color:#000">看不清？ </a>
+        </li>
+					<?php
+					}
+					?>
         <li style="padding-top:10px;"><span>&nbsp;</span>
           <input type="submit" name="sm1" value="登录" style='background:url(img/bt.gif);width:79px;height:24px;border:0px;cursor:pointer;font-size:12px'  onclick="this.form.submit();" />
         </li>

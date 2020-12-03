@@ -7,8 +7,18 @@ function lib_arclist(&$ctag,&$refObj)
 	global $envs;
 
 	$autopartid = 0;
+	$tagid = '';
 	$tagname = $ctag->GetTagName();
 	$channelid = $ctag->GetAtt('channelid');
+	
+	//增加对分页内容的处理
+	$pagesize = $ctag->GetAtt('pagesize');
+	if($pagesize == '')
+	{
+		$multi = 0;
+	} else {
+		$tagid = $ctag->GetAtt('tagid');
+	}
 
 	if($tagname=='imglist' || $tagname=='imginfolist') {
 		$listtype = 'image';
@@ -67,13 +77,14 @@ function lib_arclist(&$ctag,&$refObj)
 	         $refObj, $ctag, $typeid, $ctag->GetAtt('row'), $ctag->GetAtt('col'), $titlelen, $infolen,
 	         $ctag->GetAtt('imgwidth'), $ctag->GetAtt('imgheight'), $listtype, $orderby,
 	         $ctag->GetAtt('keyword'), $innertext, $envs['aid'], $ctag->GetAtt('idlist'), $channelid,
-	         $ctag->GetAtt('limit'), $flag,$ctag->GetAtt('orderway'), $ctag->GetAtt('subday'), $ctag->GetAtt('noflag')
+	         $ctag->GetAtt('limit'), $flag,$ctag->GetAtt('orderway'), $ctag->GetAtt('subday'), $ctag->GetAtt('noflag'),
+	         $tagid,$pagesize
 	       );
 }
 
 function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen=30, $infolen=160,
         $imgwidth=120, $imgheight=90, $listtype='all', $orderby='default', $keyword='',
-        $innertext='', $arcid=0, $idlist='', $channelid=0, $limit='', $att='', $order='desc', $subday=0, $noflag='')
+        $innertext='', $arcid=0, $idlist='', $channelid=0, $limit='', $att='', $order='desc', $subday=0, $noflag='',$tagid='', $pagesize=0)
 {
 	global $dsql,$PubFields,$cfg_keyword_like,$cfg_index_cache,$_arclistEnv,$envs,$cfg_cache_type;
 	$row = AttDef($row,10);
@@ -87,6 +98,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	$orderby = AttDef($orderby,'default');
 	$orderWay = AttDef($order,'desc');
 	$subday = AttDef($subday,0);
+	$pagesize = AttDef($pagesize,0);
 	$line = $row;
 	$orderby=strtolower($orderby);
 	$keyword = trim($keyword);
@@ -99,6 +111,11 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	$colWidth = ceil(100/$col);
 	$tablewidth = $tablewidth."%";
 	$colWidth = $colWidth."%";
+	
+	//记录属性,以便分页样式统一调用
+	$attarray = compact("row", "titlelen", 'infolen', 'imgwidth', 'imgheight', 'listtype',
+	 'arcid', 'channelid', 'orderby', 'orderWay', 'subday','pagesize',
+	  'orderby', 'keyword', 'tablewidth', 'col', 'colWidth');
 
 	if($innertext=='') $innertext = GetSysTemplets('part_arclist.htm');
 	if( @$ctag->GetAtt('getall') == 1 ) $getall = 1;
@@ -233,7 +250,8 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	else if($orderby == 'lastpost') $ordersql = "  order by arc.lastpost $orderWay";
 	else if($orderby == 'scores') $ordersql = "  order by arc.scores $orderWay";
 	else if($orderby == 'rand') $ordersql = "  order by rand()";
-	else $ordersql = " order by arc.sortrank $orderWay";
+	else if($orderby == 'weight') $ordersql = "  order by arc.weight asc";//如果没有特定设置排序则按照权重先排序
+	else $ordersql = " order by arc.sortrank $orderWay"; 
 
 	//limit条件
 	$limit = trim(eregi_replace('limit','',$limit));
@@ -272,9 +290,11 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 		$addfieldsSqlJoin
 		$orwhere $ordersql $limitsql";
 
-	$md5hash = md5($query);
-	$stylehash = ($cfg_cache_type=='content' ? md5($innertext) : '');
+	//统一hash
+	$taghash = md5(serialize($ctag).$typeid);
 	$needSaveCache = true;
+	//进行tagid的默认处理
+	if($pagesize > 0) $tagid = AttDef($tagid,'tag'.$taghash );
 	
 	if($idlist!='' || $GLOBALS['_arclistEnv']=='index' || $cfg_index_cache==0)
 	{
@@ -282,7 +302,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	}
 	else
 	{
-		$idlist = GetArclistCache($md5hash, $stylehash);
+		$idlist = GetArclistCache($taghash);
 		if($idlist != '') {
 			$needSaveCache = false;
 		}
@@ -304,10 +324,10 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 			 $addfieldsSqlJoin
 		  where arc.id in($idlist) $ordersql ";
 	}
-
 	$dsql->SetQuery($query);
 	$dsql->Execute('al');
   $artlist = '';
+  if($pagesize > 0)  $artlist .= "	<div id='{$tagid}'>\r\n";
 	if($col>1) $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
 	$dtp2 = new DedeTagParse();
 	$dtp2->SetNameSpace('field', '[', ']');
@@ -380,8 +400,18 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 					}
 					$GLOBALS['autoindex']++;
 				}
-
-				$artlist .= $dtp2->GetResult()."\r\n";
+				
+				if($pagesize > 0)
+				{
+					if($GLOBALS['autoindex'] <= $pagesize)
+					{
+						$artlist .= $dtp2->GetResult()."\r\n";
+					} else {
+						$artlist .= "";
+					}
+				} else {
+					$artlist .= $dtp2->GetResult()."\r\n";
+				}
 			}//if hasRow
 			else{
 				$artlist .= '';
@@ -393,34 +423,62 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	}//loop line
 	if($col>1) $artlist .= "	</table>\r\n";
 	$dsql->FreeResult("al");
-	//保存ID缓存
 	$idsstr = join(',',$ids);
+	
+	//分页特殊处理
+	if($pagesize > 0)
+	{
+		$artlist .= "	</div>\r\n";
+	  $row = $dsql->GetOne("SELECT tagid FROM #@__arcmulti WHERE tagid='$tagid'");
+	  $uptime = time();
+	  $attstr = addslashes(serialize($attarray));
+	  $innertext = addslashes($innertext);
+	  if(!is_array($row))
+	  {
+	    $query = "
+	      Insert Into #@__arcmulti(tagid,uptime,innertext,pagesize,arcids,ordersql,addfieldsSql,addfieldsSqlJoin,attstr)
+	      Values('$tagid','$uptime','$innertext','$pagesize','$idsstr','$ordersql','$addfieldsSql','$addfieldsSqlJoin','$attstr');
+	    ";
+	    $dsql->ExecuteNoneQuery($query);
+	  } else {
+	    $query = "UPDATE `#@__arcmulti`
+	       SET
+	       uptime='$uptime',
+	       innertext='$innertext',
+	       pagesize='$pagesize',
+	       arcids='$idsstr',
+	       ordersql='$ordersql',
+	       addfieldsSql='$addfieldsSql',
+	       addfieldsSqlJoin='$addfieldsSqlJoin',
+	       attstr='$attstr'
+	       WHERE tagid='$tagid'
+	    ";
+	    $dsql->ExecuteNoneQuery($query);
+	  }
+	}
+	
+	//保存ID缓存
 	if($needSaveCache)
 	{
 		if($idsstr=='') $idsstr = '0';
 		if($cfg_cache_type=='content' && $idsstr!='0') {
 			$idsstr = $artlist;
 		}
-		$inquery = "INSERT INTO `#@__arccache`(`md5hash`,`stylehash`,`uptime`,`cachedata`) VALUES ('".$md5hash."','$stylehash', '".time()."', '$idsstr'); ";
-		$dsql->ExecuteNoneQuery("Delete From `#@__arccache` where md5hash='".$md5hash."' ");
+		$inquery = "INSERT INTO `#@__arccache`(`md5hash`,`uptime`,`cachedata`) VALUES ('".$taghash."','".time()."', '$idsstr'); ";
+		$dsql->ExecuteNoneQuery("Delete From `#@__arccache` where md5hash='".$taghash."' ");
 		$dsql->ExecuteNoneQuery($inquery);
 	}
 	return $artlist;
 }
 
 //查询缓存
-function GetArclistCache($md5hash, $stylehash)
+function GetArclistCache($md5hash)
 {
 	global $dsql,$envs,$cfg_makesign_cache,$cfg_index_cache,$cfg_cache_type;
 	if($cfg_index_cache <= 0) return '';
 	if(isset($envs['makesign']) && $cfg_makesign_cache=='N') return '';
 	$mintime = time() - $cfg_index_cache;
-	if($cfg_cache_type=='id') {
-		$arr = $dsql->GetOne("Select cachedata,uptime From `#@__arccache` where md5hash = '$md5hash' ");
-	}
-	else {
-		$arr = $dsql->GetOne("Select cachedata,uptime From `#@__arccache` where md5hash = '$md5hash' And stylehash='$stylehash' ");
-	}
+	$arr = $dsql->GetOne("Select cachedata,uptime From `#@__arccache` where md5hash = '$md5hash' ");
 	if(!is_array($arr)) {
 		return '';
 	}

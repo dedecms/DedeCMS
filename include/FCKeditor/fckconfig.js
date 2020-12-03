@@ -1,4 +1,4 @@
-﻿FCKConfig.CustomConfigurationsPath = '' ;
+FCKConfig.CustomConfigurationsPath = '' ;
 
 FCKConfig.EditorAreaCSS = FCKConfig.BasePath + 'css/fck_editorarea.css' ;
 FCKConfig.EditorAreaStyles = '' ;

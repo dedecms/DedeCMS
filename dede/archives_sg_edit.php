@@ -71,6 +71,8 @@ else if($dopost=='save')
 	if(empty($flags)) $flag = '';
 	else $flag = join(',',$flags);
 	$title = cn_substrR($title,$cfg_title_maxlen);
+	$isremote  = (empty($isremote)? 0  : $isremote);
+	$serviterm=empty($serviterm)? "" : $serviterm;
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
 		$arcrank = -1;
@@ -137,7 +139,18 @@ else if($dopost=='save')
 
 	//生成HTML
 	UpIndexKey($id,$arcrank,$typeid,$sortrank,'');
-	$artUrl = MakeArt($id,true,true);
+	if($cfg_remote_site=='Y' && $isremote=="1")
+	{	
+		if($serviterm!=""){
+			list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+			$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+		}else{
+			$config=array();
+		}
+		if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+	}
+
+	$artUrl = MakeArt($id,true,true,$isremote);
 	if($artUrl=='')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$id";

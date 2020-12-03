@@ -4,19 +4,19 @@
 <title>文件编辑</title>
 <link rel="stylesheet" type="text/css" href="img/base.css">
 <style type="text/css">
-.selbt {
-	width:120px;
+.selbt {	
 	float:left;
+	width:120px;
 	margin:2px 0px 2px 3px;
 	text-align:center;
 }
 .helpdiv {
+	float:left;
  	display:none;
 	border: 1px dashed #749F4D;
   	background-color: #F0FAEB;
-	width:500px;
+	width:99%;
 	padding:5px;
-	position:absolute;
 }
 </style>
 <script  language="javascript">
@@ -68,7 +68,8 @@ function GETNAMES(name)
 </table>
 <form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
 <input type="hidden" name="action" value="saveedit" />
-<input type="hidden" name="acdir" value="<?php echo $acdir; ?>" /><table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC' align="center">
+<input type="hidden" name="acdir" value="<?php echo $acdir; ?>" />
+<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC' align="center">
 		<tr bgcolor='#EEF4EA'>
 			<td colspan='2' background='img/wbg.gif' height='26'>
 					<font color='#666600'><b>修改/新建模板：</b></font>
@@ -94,7 +95,17 @@ function GETNAMES(name)
 foreach ($helps as $key => $help)
 {
 	echo '<div class="coolbg np selbt" title="'.trim($help[0]).'"><a href="javascript:;" onclick="showdiv(\''.$key.'\');"> '.$key.' </a></div>'."\r\n";
-	echo '<div name="help111" id="'.$key.'" class="helpdiv" ><b>标签名称：</b>'.$key.'<br /><b>功能说明：</b><br />'.trim($help[0]).'<br /><b>使用实例：</b><br /><textarea rows="5" cols="50" style="width:90%">'.trim($help[1]).'</textarea><br /><b>参数说明：</b><br />'."\r\n";
+
+}
+?>
+	  </td>
+    </tr>
+    <tr>
+      <td colspan='2'  bgcolor='#FFFFFF' style="border-top:1px solid #fff;">
+      <?php
+foreach ($helps as $key => $help)
+{    
+	echo '<div name="help111" id="'.$key.'" class="helpdiv" ><div style=" float:right;"><a href="###" onclick="showdiv(\'\')" title="隐藏标签说明">关闭</a></div><b>标签名称：</b>'.$key.'<br /><b>功能说明：</b>'.trim($help[0]).'<br /><b>使用实例：</b><br /><textarea rows="5" cols="50" style="width:98%">'.trim($help[1]).'</textarea><br /><b>参数说明：</b><br />'."\r\n";
 	$parameters = explode("\n", $help[2]);
 	foreach($parameters as $parameter)
 	{
@@ -102,10 +113,10 @@ foreach ($helps as $key => $help)
 		if($parameter == '') continue;
 		else echo $parameter,'<br />';
 	}
-	echo '<div style="position:absolute; right:4px; top:4px;"><a href="###" onclick="showdiv(\'\')">关闭</a></div></div>'."\r\n";
+	echo '</div>'."\r\n";
 }
 ?>
-	  </td>
+      </td>
     </tr>
     <tr bgcolor='#FFFFFF'>
       <td colspan='2' >

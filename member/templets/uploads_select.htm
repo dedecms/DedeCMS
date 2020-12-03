@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>浏览我的附件</title>
+<title>浏览我的附件 - 会员中心 - <?php echo $cfg_webname; ?></title>
 <?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" language="javascript">
 var fname = '<?php echo $f; ?>';
 var mediatype = '<?php echo $mediatype; ?>';
@@ -23,13 +24,15 @@ function selOK(surl)
 </script>
 </head>
 <body>
-<div class="bgGreen mTB10">
-  <div class="fLeft">
+
+<table width="100%" style="margin-top:20px;">
+  <tr>
+    <td>
     <form name='forms' method='post' action='uploads_select.php'>
       <input type="hidden" name="f" value="<?php echo $f; ?>" />
       <input type="hidden" name="mediatype" value="<?php echo $mediatype; ?>" />
-      <input type="hidden" name="keyword" value="<?php echo $keyword; ?>" />
-      <input name="keyword" type="text" id="keyword" class="text" value="<?php echo $keyword?>" />
+      <input type="hidden"  name="keyword" value="<?php echo $keyword; ?>" />
+      <input name="keyword" type="text" id="keyword" class="intxt" style="width:200px;" value="<?php echo $keyword?>" />
       <select name='mediatype'>
         <option value='0'>文件类型</option>
         <option value='1'<?php if($mediatype==1) echo " selected='1' "; ?>>图片</option>
@@ -37,27 +40,23 @@ function selOK(surl)
         <option value='3'<?php if($mediatype==3) echo " selected='1' "; ?>>视频/音频</option>
         <option value='4'<?php if($mediatype==4) echo " selected='1' "; ?>>其它附件</option>
       </select>
-      <button class="button2 mL10" type="submit">搜索</button>
-    </form>
-  </div>
-  <div class="fRight">
-    <button class="buttonGary5 mR10" type="button" onclick="addNew();">上传新文件</button>
-  </div>
-  <div class="clear"></div>
-</div>
+      <button class="button2 ml10" type="submit">搜索</button>
+    </form></td>
+    <td style="text-align:right;"><button class="buttonGary5 mR10" type="button" onclick="addNew();">上传新文件</button></td>
+  </tr>
+</table>
 <form name="form1" class="mTB10">
   <table cellspacing="1" class="list">
     <thead>
       <tr>
         <th align="left" width="1%"><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
         <th >文件标题</th>
-        <th width="5%">大小 </th>
-        <th width="5%">类型 </th>
-        <th width="10%">上传时间 </th>
+        <th width="10%">大小 </th>
+        <th width="10%">类型 </th>
+        <th width="15%">上传时间 </th>
       </tr>
     </thead>
-    <tbody>
-    
+    <tbody>    
     {dede:datalist}
     <tr>
       <td><input type='checkbox' name='aids' id='aids<?php echo $fields['aid']?>' value="<?php echo $fields['url']; ?>" onclick="selOK('<?php echo $fields['url']; ?>');" /></td>
@@ -77,9 +76,9 @@ function selOK(surl)
       <tr>
         <td colspan="6"><div>
             <div class="fLeft">
-              <button class="buttonGary5" type="button" onclick="addNew();">上传新文件</button>
+              <button class="buttonGary5 mt10" type="button" onclick="addNew();">上传新文件</button>
             </div>
-            <div class="pages fRight">{dede:pagelist listsize=5/}</div>
+            <div class="pages fRight mt10">{dede:pagelist listsize=5/}</div>
           </div></td>
       </tr>
     </tfoot>

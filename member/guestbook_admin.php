@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
+$menutype_son = 'gu';
 $pagesize = isset($pagesize) && is_numeric($pagesize) ? $pagesize : 5;
 $pageno = isset($pageno) && is_numeric($pageno) ? max(1,$pageno) : 1;
 if(empty($dopost))
@@ -58,32 +60,30 @@ function GetList($dsql,$pageno,$pagesize)
 	while($row = $dsql->GetArray())
 	{
 
-		$line .= "<table cellspacing='1' class='list mB10'>
-  <thead>
-    <tr>
-      <th colspan='2' ><strong class='fLeft'>留言标题：".$row['title']."</strong><span class='fRight'>
-        <input name=\"ids\" type=\"checkbox\" id=\"ids\" value=\"".$row['aid']."\" />
-        <a href='#' onclick='DelNote(".$row['aid'].")'>删除</a></span></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td width='15%' align='left' valign='top'>用户称呼：".$row['uname']."</td>
-      <td>时间：".MyDate("Y-m-d H:i",$row['dtime'])."&nbsp;IP地址：".$row['ip']."&nbsp;";
+		$line .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' class='list'>
+          <thead>
+            <tr>
+              <th colspan='6'><strong class='fLeft' style='padding-left: 5px;'>留言标题：".$row['title']."</strong><span class='fRight'>
+              <input name=\"ids\" type=\"checkbox\" id=\"ids\" value=\"".$row['aid']."\" />
+              <a href='#' onclick='DelNote(".$row['aid'].")' style='color:#29A5C9;'>删除</a></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width='18%' style='padding-left: 10px;'>用户称呼：".$row['uname']."</td>
+              <td>时间：".MyDate("Y-m-d H:i",$row['dtime'])."&nbsp;IP地址：".$row['ip']."&nbsp;";
 
 		if(!empty($row['gid']))
 		{
 			$line .= " <a href='index.php?uid={$row['uname']}&action=infos' target='_blank'>资料</a> <a href='index.php?uid={$row['uname']}' target='_blank'>空间</a> <a href='index.php?uid={$row['uname']}&action=guestbook' target='_blank'>回复</a> ";
 		}
-		$line .= "
-		</td>
-    </tr>
-    <tr>
-      <td align='left' valign='top'><p>Email：".$row['email']."</p><p>联系电话：".$row['tel']."</p><p>其它：".$row['qq']."</p></td>
-      <td align='left' valign='top'>".Text2Html($row['msg'])."</td>
-    </tr>
-  </tbody>
-</table>";
+		$line .= "</td>
+            </tr>
+            <tr>
+              <td colspan='2' style='padding-left: 10px;'>".Text2Html($row['msg'])."</td>
+            </tr>
+          </tbody>
+        </table>";
 
 	}
 	$line = $line == '' ? '暂无留言' : $line;

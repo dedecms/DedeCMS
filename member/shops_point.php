@@ -6,7 +6,7 @@ if(isset($oid))
 	$rs = $dsql->GetOne("SELECT paytype,priceCount FROM #@__shops_orders WHERE userid='".$cfg_ml->M_ID."' AND oid='$oid'");
 	if($rs['paytype']!=5)
 	{
-		ShowMsg("è®¢å•ä¸æ”¯æŒè¯¥æ”¯ä»˜æ–¹å¼ï¼","javascript:;");
+		ShowMsg("¶©µ¥²»Ö§³Ö¸ÃÖ§¸¶·½Ê½£¡","javascript:;");
 		exit();
 	}
 	$priceCount = $row['priceCount'];
@@ -14,19 +14,19 @@ if(isset($oid))
 	$members = $dsql->GetOne("SELECT `money` FROM #@__member WHERE mid='".$cfg_ml->M_ID."'");
 	if($members['money'] < $priceCount)
 	{
-		ShowMsg("æ”¯ä»˜å¤±è´¥ç‚¹æ•°ä¸å¤Ÿï¼","-1");
+		ShowMsg("Ö§¸¶Ê§°ÜµãÊı²»¹»£¡","-1");
 		exit();
 	}
 
 	if($dsql->ExecuteNoneQuery("UPDATE `#@__shops_orders` SET `state`='1' WHERE `oid`='$oid' AND `userid`='".$cfg_ml->M_ID."' AND `state`<1"))
 	{
 		$res = $dsql->ExecuteNoneQuery("UPDATE #@__member SET money=money-$priceCount WHERE mid='{$cfg_ml->M_ID}'");
-		ShowMsg("ä¸‹å•,æ”¯ä»˜æˆåŠŸ,ç­‰å¾…å•†å®¶å‘è´§ï¼","../member/shops_products.php?oid=".$oid);
+		ShowMsg("ÏÂµ¥,Ö§¸¶³É¹¦,µÈ´ıÉÌ¼Ò·¢»õ£¡","../member/shops_products.php?oid=".$oid);
 		exit();
 	}
 	else
 	{
-		ShowMsg("æ”¯ä»˜å¤±è´¥,è¯·è”ç³»ç®¡ç†å‘˜ï¼","-1");
+		ShowMsg("Ö§¸¶Ê§°Ü,ÇëÁªÏµ¹ÜÀíÔ±£¡","-1");
 		exit();
 	}
 }

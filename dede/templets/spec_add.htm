@@ -192,7 +192,14 @@ function SelectTemplets(fname){
            echo $typeOptions;
            echo "</select>";
 					?>
-					<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, 0, 'typeid')" alt='快捷选择' title='快捷选择' />
+					<img src='img/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, 0, 'typeid')" alt='快捷选择' title='快捷选择' />
+             <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  
             </td>
           </tr>
         </table></td>

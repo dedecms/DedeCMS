@@ -3,29 +3,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>我的小说书目列表</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 <script language="javascript" type="text/javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="js/story.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."/templets/menu.php");?>
-      <div class="dedeMain">
-        <div class="location"><span class="fLeft">小说书目<i>|</i><a href='index.php'>小说频道</a></span><span class="fRight mR10 titPublish icon"><a href='story_add.php'>添加书目</a></span></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li><a href="mybooks.php">小说书目</a></li>
-            <li><a href="story_list_content.php">小说内容</a></li>
-            <li class="select"><a href="story_stow.php">我的收藏夹</a></li>
-          </ul>
-        </div>
-        <form name="form2" class="mL10 mR10 mTB10">
-          <table cellspacing="1" class="list">
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="mybooks.php"><span>小说书目</span></a></li>
+          <li><a href="story_list_content.php"><span>小说内容</span></a></li>
+          <li class="thisTab"><a href="story_stow.php"><span>我的收藏夹</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+       <form name="form2" class="mL10 mR10 mTB10">
+          <table cellspacing="1" class="list" width="100%">
             <thead>
               <tr>
                 <th >小说名称</th>
@@ -67,12 +66,13 @@
             </tfoot>
           </table>
         </form>
+        </div>
+        <!--主操作区域 -->
       </div>
-      <div class="clear"></div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-<?php  include(DEDEMEMBER."/templets/foot.htm");?>
 </body>
 </html>

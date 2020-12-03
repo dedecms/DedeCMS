@@ -29,11 +29,20 @@ function ReSel()
 		else document.form1.aids[i].checked = true;
 	}
 }
+function DelSel()
+{
+	var nid = getCheckboxItem();
+	if(nid==""){
+		alert("请选择要删除的业务记录!\r\n");
+		return ;
+	}
+	location.href = "member_do.php?dopost=deoperations&nid="+nid;
+}
 function UpSel()
 {
 	var nid = getCheckboxItem();
 	if(nid==""){
-		alert("请选择要更改诉业务记录!\r\n");
+		alert("请选择要更改的业务记录!\r\n");
 		return ;
 	}
 	location.href = "member_do.php?dopost=upoperations&nid="+nid;
@@ -42,7 +51,7 @@ function OkSel()
 {
 	var nid = getCheckboxItem();
 	if(nid==""){
-		alert("请选择要更改诉业务记录!\r\n");
+		alert("请选择要更改的业务记录!\r\n");
 		return ;
 	}
 	location.href = "member_do.php?dopost=okoperations&nid="+nid;
@@ -50,7 +59,7 @@ function OkSel()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;margin-bottom:5px;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;margin-bottom:5px;">
   <tr>
     <td height="30" align="center" bgcolor="#FAFCEF">
 	<form name="form2" method="get" action="member_operations.php">
@@ -66,7 +75,7 @@ function OkSel()
       </form></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;">
   <tr>
     <td height="28" colspan="8" bgcolor="#EDF9D5" background='img/tbg.gif'>
     	<table width="98%" border="0" cellspacing="0" cellpadding="0">
@@ -87,13 +96,13 @@ function OkSel()
   </tr>
   <tr bgcolor="#F8FBFB">
     <td width="8%" align="center">选择</td>
-    <td width="15%" align="center">订单号</td>
-    <td width="28%" align="center">产品名称</td>
+    <td width="20%" align="center">订单号</td>
+    <td align="center">产品名称</td>
     <td width="10%" align="center">产品类型</td>
-    <td width="10%" align="center">生成日期</td>
+    <td width="22%" align="center">生成日期</td>
     <td width="8%" align="center">金额</td>
     <td width="8%" align="center">状态</td>
-    <td width="13%" align="center">会员</td>
+    <td width="10%" align="center">会员</td>
   </tr>
   <form name="form1">
 {dede:datalist}
@@ -112,7 +121,8 @@ function OkSel()
         <?php echo GetPType($fields['product'])?>
       </td>
       <td align="center">
-        <?php echo GetDateMk($fields['mtime'])?>
+        <?php echo GetDateTimeMk($fields['mtime'])?>
+        (<font color="#FF0000">{dede:field.mtime function="floorTime(time()-@me,@me)"/}</font>)
       </td>
       <td align="center">
         <?php echo $fields['money']?>
@@ -130,9 +140,9 @@ function OkSel()
     <td height="28" colspan="8" bgcolor="#FCFDF7" style="padding-top:4px;">
     	&nbsp;
       <input type="button" name="b7" value="反选" style="width:40" onClick="ReSel();" class='np coolbg' />
+      <input type="button" name="b" value="删除" style="width:40" onClick="DelSel();" class='np coolbg' />
       <input type="button" name="b5" value="设为已付款状态" style="width:100" onClick="UpSel();" class='np coolbg' />
-      <input type="button" name="b9" value="设为已完成状态" style="width:100" onClick="OkSel();" class='np coolbg' />
-    </td>
+      <input type="button" name="b9" value="设为已完成状态" style="width:100" onClick="OkSel();" class='np coolbg' /></td>
   </tr>
   <tr>
     <td height="36" colspan="8" bgcolor="#FCFDF7" align="center">

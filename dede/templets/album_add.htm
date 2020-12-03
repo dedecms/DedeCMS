@@ -192,6 +192,8 @@ window.onload = function ()
           <td>
           	<input name="tags" type="text" id="tags" value="" style="width:300px" />(','号分开，单个标签小于12字节)
           </td>
+          <td width="47">权重：</td>
+            <td width="122"><input name="weight" type="text" id="weight" style="width:50px" value="<?php echo $maxWright['cc'];?>" />(越小越靠前)</td>
         </tr>
       </table>
       </td>
@@ -237,7 +239,7 @@ window.onload = function ()
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			<img src='img/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
 			&nbsp;
 			<?php
 			if($cfg_need_typeid2=='Y')
@@ -245,7 +247,13 @@ window.onload = function ()
 				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
 			}
 			?>
-			   </td>
+			<?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  </td>
         </tr>
       </table>
       </td>
@@ -257,12 +265,13 @@ window.onload = function ()
           <td width="90">&nbsp;图集副栏目：</td>
           <td>
           <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
-          <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
+          <img src='img/menusearch2.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
 			    </td>
         </tr>
         </table>
       </td>
     </tr>
+    
     <tr>
       <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
     </tr>
@@ -386,6 +395,16 @@ window.onload = function ()
 				</table>
       </td>
     </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;图集内容：</td>
+          <td> <?php GetEditor("body","",450,"Diy"); ?></td>
+        </tr>
+      </table>
+      </td>
+    </tr>
   </table>
   <!-- //高级参数 -->
   <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
@@ -478,7 +497,7 @@ window.onload = function ()
           $nowtime = GetDateTimeMk(time());
           echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>          </td>
-          <td width="90">消费点数：</td>
+          <td width="90">消费金币：</td>
           <td width="379"><input name="money" type="text" id="money" value="0" size="10">          </td>
         </tr>
       </table></td>
@@ -497,7 +516,7 @@ window.onload = function ()
       <td height="24" colspan="4" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;图集说明：</td>
+          <td width="90">&nbsp;图集内容摘要：</td>
           <td width="449"><textarea name="description" rows="3" id="description" style="width:80%"></textarea></td>
           <td width="261">&nbsp;</td>
         </tr>

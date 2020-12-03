@@ -3,9 +3,9 @@
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
 
-$verMsg = ' V5.5 UTF8';
+$verMsg = ' V5.6 UTF8';
 $s_lang = 'utf-8';
-$dfDbname = 'dedecmsv55utf8';
+$dfDbname = 'dedecmsv56utf';
 $errmsg = '';
 $insLockfile = dirname(__FILE__).'/install_lock.txt';
 $moduleCacheFile = dirname(__FILE__).'/modules.tmp.inc';
@@ -16,6 +16,7 @@ define('DEDEROOT',ereg_replace("[\\/]install",'',dirname(__FILE__)));
 header("Content-Type: text/html; charset={$s_lang}");
 
 require_once(DEDEROOT.'/install/install.inc.php');
+require_once(DEDEINC.'/zip.class.php');
 
 foreach(Array('_GET','_POST','_COOKIE') as $_request)
 {
@@ -111,6 +112,8 @@ else if($step==3)
   }
 
   $rnd_cookieEncode = chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).mt_rand(1000,9999).chr(mt_rand(ord('A'),ord('Z')));
+
+  if(file_exists('./dedev56demo.zip')) $isdemosign = 1;
 
   include('./templates/step-3.html');
 	exit();
@@ -279,6 +282,59 @@ else if($step==4)
  	mysql_query($adminquery,$conn);
 
   mysql_close($conn);
+  
+  if($installdemo == 1)
+  {
+  	if(file_exists('./dedev56demoutf8.xml'))
+  	{
+			require_once(DEDEINC.'/dedemodule.class.php');
+			//数据库配置文件
+      require_once(DEDEDATA.'/common.inc.php');
+			require_once(DEDEINC.'/dedesql.class.php');
+			require_once(dirname(__FILE__).'/install.inc.php');
+
+			$dm = new DedeModule(dirname(__FILE__));
+			$minfos = $dm->GetModuleInfo('./dedev56demoutf8.xml', 'file');
+			extract($minfos, EXTR_SKIP);
+			//写文件
+			$dm->WriteFiles('dedev56demoutf8',1);
+			$dm->WriteSystemFile('dedev56demoutf8','readme');
+			
+			$setupsql = $dm->GetSystemFile('dedev56demoutf8','setupsql40');
+			
+			//运行SQL
+			$mysql_version = $dsql->GetVersion(true);
+			$setupsql = eregi_replace('ENGINE=MyISAM','TYPE=MyISAM',$setupsql);
+			$sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET='.$cfg_db_language;
+			
+			if($mysql_version >= 4.1) {
+				$setupsql = eregi_replace('TYPE=MyISAM',$sql41tmp,$setupsql);
+			}		
+			
+			//_ROOTURL_
+			if($cfg_cmspath=='/') $cfg_cmspath = '';
+			
+			$rooturl = $cfg_basehost.$cfg_cmspath;
+			$setupsql = eregi_replace('_ROOTURL_',$rooturl,$setupsql);
+			$setupsql = ereg_replace("[\r\n]{1,}","\n",$setupsql);	
+			$sqls = split(";[ \t]{0,}\n", $setupsql);
+			
+			//体验数据安装先暂停安全SQL检测
+			$dsql->safeCheck = false;
+			foreach($sqls as $sql) {
+				if(trim($sql)!='') $dsql->ExecuteNoneQuery($sql);
+			}
+			//删除临时文件
+			unlink('./dedev56demoutf8.zip');
+      copy('./dedev56demoutf8.xml', DEDEDATA.'/module/dedev56demoutf8.xml');
+			unlink('./dedev56demoutf8.xml');
+			unlink('./dedev56demoutf8-readme.php');
+			$dm->Clear();
+			
+  	}	else {
+  		die("没有体验数据包文件,请检查是否下载.");
+  	}
+  }
 
 	//不安装任何可选模块
 	if(!isset($modules) || !is_array($modules))
@@ -359,6 +415,33 @@ else if($step==10)
 		echo "<font color='red'>数据库连接失败！</font>";
 	}
 	@mysql_close($conn);
+	exit();
+}
+/*------------------------
+远程获取体验包
+function _11_GetRemoteDemo()
+------------------------*/
+else if($step==11)
+{
+	header("Pragma:no-cache\r\n");
+  header("Cache-Control:no-cache\r\n");
+  header("Expires:0\r\n");
+  $rmurl = "http://www.dedecms.com/demodatautf8.txt";
+  
+	$infoString = file_get_contents($rmurl) or die("连接远程网址失败！");
+	$infos = split(',',$infoString);
+	$maxnum  =count($infos);
+  $rmurl = trim($infos[rand(0,$maxnum-1)]);
+  
+  $zipbin = file_get_contents($rmurl);
+	$fp = fopen(dirname(__FILE__).'/dedev56demoutf8.zip','w');
+	fwrite($fp,$zipbin);
+	unset($zipbin);
+	fclose($fp);
+
+	$z = new zip();
+  $z->ExtractAll ( dirname(__FILE__).'/dedev56demoutf8.zip', dirname(__FILE__));
+  echo '&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)';
 	exit();
 }
 ?>

@@ -75,6 +75,10 @@ function CheckNotAllow()
 	{
 		ShowMsg("你已经被禁言，请与管理员联系！", "-1");
 		exit();
+	}else if($cfg_ml->M_Spacesta == -10)
+	{
+		ShowMsg("系统开启了邮件审核机制，因此你的帐号需要审核后才能发信息！", "-1");
+		exit();
 	}
 	else if($cfg_ml->M_Spacesta < 0)
 	{
@@ -99,6 +103,9 @@ class MemberLogin
 	var $M_Spacesta;
 	var $fields;
 	var $isAdmin;
+	var $M_UpTime;
+ 	var $M_ExpTime;
+ 	var $M_HasDay;
 
 	var $M_Honor = '';
 
@@ -106,12 +113,9 @@ class MemberLogin
 	function __construct($kptime = -1)
 	{
 		global $dsql;
-		if($kptime==-1)
-		{
+		if($kptime==-1){
 			$this->M_KeepTime = 3600 * 24 * 7;
-		}
-		else
-		{
+		}else{
 			$this->M_KeepTime = $kptime;
 		}
 		$this->M_ID = $this->GetNum(GetCookie("DedeUserID"));
@@ -121,13 +125,10 @@ class MemberLogin
 		if(empty($this->M_ID))
 		{
 			$this->ResetUser();
-		}
-		else
-		{
+		}else{
 			$this->M_ID = intval($this->M_ID);
 			$this->fields = $dsql->GetOne("Select * From `#@__member` where mid='{$this->M_ID}' ");
-			if(is_array($this->fields))
-			{
+			if(is_array($this->fields)){
 				#api{{
 				if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
 				{
@@ -159,13 +160,13 @@ class MemberLogin
 				$scrow = $dsql->GetOne($sql);
 				$this->fields['honor'] = $scrow['titles'];
 				$this->M_Honor = $this->fields['honor'];
-				if($this->fields['matt']==10)
-				{
-					$this->isAdmin = true;
-				}
-			}
-			else
-			{
+				if($this->fields['matt']==10) $this->isAdmin = true;
+			  $this->M_UpTime = $this->fields['uptime'];
+			  $this->M_ExpTime = $this->fields['exptime'];
+			  if($this->M_Rank>10 && $this->M_UpTime>0){
+			  	$this->M_HasDay = $this->Judgemember();
+			  }
+			}else{
 				$this->ResetUser();
 			}
 		}
@@ -174,6 +175,17 @@ class MemberLogin
 	function MemberLogin($kptime = -1)
 	{
 		$this->__construct($kptime);
+	}
+	
+	//判断会员是否到期
+	function Judgemember(){
+	  global $dsql,$cfg_mb_rank;
+  	$nowtime = time();
+  	$mhasDay = $this->M_ExpTime - ceil(($nowtime - $this->M_UpTime)/3600/24) + 1;
+  	if($mhasDay <= 0){
+  	 $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET uptime='0',exptime='0',rank='$cfg_mb_rank' WHERE mid='".$this->fields['mid']."';");
+    }
+    return $mhasDay;
 	}
 
 	//退出cookie的会话
@@ -252,6 +264,9 @@ class MemberLogin
 		$this->M_MbType = '';
 		$this->M_Scores = 0;
 		$this->M_Spacesta = -2;
+		$this->M_UpTime = 0;
+ 		$this->M_ExpTime = 0;
+ 		$this->M_HasDay = 0;
 		DropCookie('DedeUserID');
 		DropCookie('DedeLoginTime');
 	}
@@ -378,14 +393,51 @@ class MemberLogin
 		if($this->M_Rank==0)
 		{
 			$sta .= "你目前的身份是：普通会员";
-		}
-		else
-		{
+		}else{
 			$row = $dsql->GetOne("Select membername From `#@__arcrank` where rank='".$this->M_Rank."'");
 			$sta .= "你目前的身份是：".$row['membername'];
+			$rs = $dsql->GetOne("Select id From `#@__admin` where userid='".$this->M_LoginID."'");
+			if(!is_array($rs)){
+				if($this->M_Rank>10 && $this->M_HasDay>0) $sta .= " 剩余天数: <font color='red'>".$this->M_HasDay."</font>  天 ";
+				elseif($this->M_Rank>10) $sta .= " <font color='red'>会员升级已经到期</font> ";
+	  	}
 		}
 		$sta .= " 拥有金币：{$this->M_Money} 个， 积分：{$this->M_Scores} 分。";
 		return $sta;
+	}
+	
+	//记录会员操作日志
+	// $type 记录类型, $title 记录标题, $note记录描述, $aid涉及到的内容的id
+	function RecordFeeds($type, $title, $note, $aid)
+	{
+		global $dsql,$cfg_mb_feedcheck;
+		//确定是否需要记录
+		if (in_array($type,array('add','addsoft','feedback','addfriends','stow'))){
+			$ntime = time();
+			$title = htmlspecialchars(cn_substrR($title,255));
+			if(in_array($type,array('add','addsoft','feedback','stow')))
+			{
+				$rcdtype = array('add'=>' 成功发布了', 'addsoft'=>' 成功发布了软件',
+				                 'feedback'=>' 评论了文章','stow'=>' 收藏了');
+				//内容发布处理
+				$arcrul = " <a href='/plus/view.php?aid=".$aid."'>".$title."</a>";
+				$title = htmlspecialchars($rcdtype[$type].$arcrul, ENT_QUOTES);
+			} else if ($type == 'addfriends')
+			{
+				//添加好友处理
+				$arcrul = " <a href='/member/index.php?uid=".$aid."'>".$aid."</a>";
+				$title = htmlspecialchars(' 与'. $arcrul."成为好友", ENT_QUOTES);
+			}
+			$note = Html2Text($note);
+			$aid = (isset($aid) && is_numeric($aid) ? $aid : 0);
+			$ischeck = ($cfg_mb_feedcheck == 'Y')? 0 : 1;
+			$query = "INSERT INTO `#@__member_feed` (`mid`, `userid`, `uname`, `type`, `aid`, `dtime`,`title`, `note`, `ischeck`) 
+						Values('$this->M_ID', '$this->M_LoginID', '$this->M_UserName', '$type', '$aid', '$ntime', '$title', '$note', '$ischeck'); ";
+			$rs = $dsql->ExecuteNoneQuery($query);
+			return $rs;
+		} else {
+			return false;
+		}
 	}
 }
 ?>

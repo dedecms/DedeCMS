@@ -3,10 +3,10 @@
 <head>
 <title>购物车 - 订单号:{dede:var.carts.orders_id/}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
-<meta name="generator" content="DedeCMS V5.3" />
+<meta name="generator" content="DedeCMS V5.6" />
 <meta name="author" content="desdev.cn" />
-<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<link href="{dede:global.cfg_templeturl/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
 <script type="text/javascript" language="javascript" src="../images/js/j.js"></script>
 </head>
 <body class="buycarpage">
@@ -14,7 +14,7 @@
 <div class="header">
 	<div class="top w960 center">
 		<div class="title">
-			<h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a></h1>
+			 <h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global.cfg_templets_skin/}/images/logo.gif" alt="{dede:global.cfg_webname/}"/></a> </h1>
 		</div><!-- /title -->
 		<div class="welcome">
             <?php
@@ -24,7 +24,10 @@
             <?php
             }else{
             ?>
-            <?php echo $cfg_ml->M_UserName; ?> 您好,欢迎来到本网站, <a href="../member/">会员中心</a> | <a href="../member/index_do.php?fmdo=login&dopost=exit">退出</a>
+            <b><?php echo $cfg_ml->M_UserName; ?></b>,欢迎您的登陆。 <a href="<?php echo $cfg_memberurl; ?>/index.php">会员中心</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/edit_fullinfo.php">我的资料</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/index.php?uid=<?php echo urlencode($cfg_ml->M_LoginID);?>">我的空间</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/index_do.php?fmdo=login&dopost=exit">退出登录</a>
             <?php
             }
             ?>
@@ -139,18 +142,7 @@ function printPage(oper)
 }
 </script>
 <!--购物车列表操作javascript结束-->
-<div class="footer w960 center mt1 clear">
-	<!-- 
-		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
-		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
-	-->
-	<p class="powered">
-		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>DedeCMS<span>{dede:global.cfg_version/}</span></strong></a> &copy; 2004-2008 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.	</p>
-<!-- /powered -->
-	<p class="copyright">
-		{dede:global.cfg_powerby/}<br />{dede:global.cfg_beian/}
-  </p>
-</div>
+{dede:include filename="../default/footer.htm"/}
 <script language="JavaScript" type="text/javascript">
 if(!navigator.cookieEnabled)
 {

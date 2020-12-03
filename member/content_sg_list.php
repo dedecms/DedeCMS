@@ -17,6 +17,7 @@ if(!isset($arcrank))
 	$arcrank = '';
 }
 $positionname = '';
+$menutype = 'content';
 $mid = $cfg_ml->M_ID;
 $tl = new TypeLink($cid);
 $cInfos = $tl->dsql->GetOne("Select arcsta,issend,issystem,usertype,typename,addtable From `#@__channeltype`  where id='$channelid'; ");

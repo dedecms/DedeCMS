@@ -32,8 +32,8 @@ if($action=='delbook')
 		{
 			continue;
 		}
-		$row = $dsql->GetOne("Select booktype From #@__story_books where id='$bid' ");
-		$dsql->ExecuteNoneQuery("Delete From #@__story_books where id='$bid' ");
+		$row = $dsql->GetOne("Select booktype From #@__story_books where bid='$bid' ");
+		$dsql->ExecuteNoneQuery("Delete From #@__story_books where bid='$bid' ");
 		$dsql->ExecuteNoneQuery("Delete From #@__story_chapter  where bookid='$bid' ");
 
 		//删除图片
@@ -85,7 +85,7 @@ else if($action=='delcontent')
 
 	//更新图书记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where bookid='$bookid' ");
-	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where id='$bookid' ");
+	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where bid='$bookid' ");
 
 	//更新章节记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where chapterid='$chapterid' ");
@@ -115,7 +115,7 @@ function DelChapter()
 -------------------*/
 else if($action=='delChapter')
 {
-	$row = $dsql->GetOne("Select c.bookid,b.booktype From #@__story_chapter c left join  #@__story_books b on b.id=c.bookid where c.id='$cid' ");
+	$row = $dsql->GetOne("Select c.bookid,b.booktype From #@__story_chapter c left join  #@__story_books b on b.bid=c.bookid where c.id='$cid' ");
 	$bookid = $row['bookid'];
 	$booktype = $row['booktype'];
 	$dsql->ExecuteNoneQuery("Delete From #@__story_chapter where id='$cid' ");
@@ -138,7 +138,7 @@ else if($action=='delChapter')
 
 	//更新图书记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where bookid='$bookid' ");
-	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where id='$bookid' ");
+	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where bid='$bookid' ");
 	ShowMsg("成功删除指定章节！",$ENV_GOBACK_URL);
 	exit();
 }

@@ -170,10 +170,14 @@ function ShowItem2() {
     <tr>
       <td bgcolor="#FFFFFF"><strong>许可投稿会员组</strong></td>
       <td bgcolor="#FFFFFF">
-        <input name="usertype" class="np" type="radio" value="个人"<?php if($row['usertype']=='个人') echo " checked='1' ";?> />
-        个人
-        <input name="usertype" class="np" type="radio" value="企业"<?php if($row['usertype']=='企业') echo " checked='1' ";?> />
-        企业
+       <?php
+        $dsql->SetQuery("Select * from `#@__member_model`");
+        $dsql->Execute();
+        while($row3 = $dsql->GetObject())
+        {
+          echo "<input name='usertype' class='np' type='radio' value=".$row3->name." />".$row3->name."\r\n";
+        }
+       ?>
         <input name="usertype" class="np" type="radio" value=""<?php if($row['usertype']=='') echo " checked='1' ";?> />
         不限      </td>
     </tr>
@@ -259,7 +263,7 @@ function ShowItem2() {
     </tr>
 </table>
 
-<table width="98%" id='adset' border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" id='' style='display:none'>
+<table width="98%" id='adset' border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" style='display:none'>
     <tr>
       <td height="28" bgcolor="#F8FCEF"><strong>模型字段配置(可视化模式)</strong></td>
       <td bgcolor="#F8FCEF">

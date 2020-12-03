@@ -14,7 +14,7 @@ function GetPrePath($nowPath)
 {
 	if($nowPath==""||$nowPath=="/")
 	{
-		echo("褰撳墠涓烘牴鐩綍\n");
+		echo("当前为根目录\n");
 	}
 	else
 	{
@@ -24,7 +24,7 @@ function GetPrePath($nowPath)
 		{
 			$nowPath .= "/".$dirs[$i];
 		}
-		echo("<a href=\"pic_view.php?activepath=".$nowPath."\">杞埌涓婄骇鐩綍</a>\n");
+		echo("<a href=\"pic_view.php?activepath=".$nowPath."\">转到上级目录</a>\n");
 	}
 }
 

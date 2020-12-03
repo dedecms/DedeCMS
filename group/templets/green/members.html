@@ -124,7 +124,7 @@
     {dede:datalist}
     <?php     
     $row = $fields;
-    $row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+    if(empty($row['face'])) $row['face'] = ($row['sex']=='Ů') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
     ?>
     <li> <img  class="seniorImg imgBorder" src="<?php echo $row['face'];?>" alt="<?php echo $row['uname'];?>"/> <span><a class="linkStrong" title="<?php echo $row['uname'];?>" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $row['userid'];?>" target="_blank" style="text-align:center;background:#F2F2F2;"><?php echo $row['uname'];?></a></span>
     </li>

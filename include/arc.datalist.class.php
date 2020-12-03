@@ -52,6 +52,7 @@ class DataList
 		$this->dtp->SetNameSpace('dede', '{', '}');
 		$this->dtp2 = new DedeTagParse();
 		$this->dtp2->SetNameSpace('field', '[', ']');
+		$this->TotalResult = is_numeric($this->TotalResult)? $this->TotalResult : "";
 		
 		//如果需要， 获得栏目信息
 		if( !empty($typeid) )

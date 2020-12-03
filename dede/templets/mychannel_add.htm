@@ -142,10 +142,14 @@ function PublicDefault()
       <b>许可投稿会员组</b>
       </td>
       <td bgcolor="#FFFFFF">
-        <input name="usertype" class="np" type="radio" value="个人" />
-        个人
-        <input name="usertype" class="np" type="radio" value="企业" />
-        企业
+      <?php
+        $dsql->SetQuery("Select * from `#@__member_model`");
+        $dsql->Execute();
+        while($row3 = $dsql->GetObject())
+        {
+          echo "<input name='usertype' class='np' type='radio' value=".$row3->name." />".$row3->name."\r\n";
+        }
+       ?>
         <input name="usertype" class="np" type="radio" value="" checked='1' />
         不限
       </td>

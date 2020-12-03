@@ -45,7 +45,7 @@ function GetMemberID($mid)
 	$row = $dsql->GetOne("Select userid From #@__member where mid='$mid' ");
 	if(is_array($row))
 	{
-		return "<a href='member_view.php?mid={$mid}'>".$row['userid']."</a>";
+		return "<a href='member_view.php?id={$mid}'>".$row['userid']."</a>";
 	}
 	else
 	{

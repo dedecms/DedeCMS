@@ -4,6 +4,7 @@ CheckRank(0,0);
 require_once(DEDEMEMBER.'/inc/inc_archives_functions.php');
 if(empty($dopost)) $dopost = '';
 if(empty($mediatype)) $mediatype = 1;
+$menutype = 'content';
 if($dopost=='')
 {
 	include(DEDEMEMBER."/templets/uploads_add.htm");

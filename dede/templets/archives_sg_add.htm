@@ -103,7 +103,7 @@ function checkSubmit()
                   <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
                   <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'archives_sg_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
-                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onclick="imageCut('picname');" class='np coolbg'/>
+                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
                   <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
                   </td>
                 </tr>
@@ -160,9 +160,17 @@ function checkSubmit()
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			<img src='img/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
 			&nbsp;<a href='catalog_main.php'>【<u>栏目管理</u>】</a>
-			&nbsp;<a href='catalog_add.php?listtype=all'>【<u>增加大栏目</u>】</a>			  </td>
+			&nbsp;<a href='catalog_add.php?listtype=all'>【<u>增加大栏目</u>】</a>	
+            <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  
+            </td>
         </tr>
       </table></td>
     </tr>

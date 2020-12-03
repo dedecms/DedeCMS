@@ -48,6 +48,10 @@ if($dopost!='save')
 
 	//获得频道模型信息
 	$cInfos = $dsql->GetOne(" Select * From  `#@__channeltype` where id='$channelid' ");
+	
+	//获取文章最大id以确定当前权重
+	$maxWright = $dsql->GetOne("SELECT COUNT(*) AS cc FROM #@__archives");
+	
 	include DedeInclude("templets/article_add.htm");
 	exit();
 }
@@ -106,6 +110,8 @@ else if($dopost=='save')
 	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	$userip = GetIP();
+	$isremote  = (empty($isremote)? 0  : $isremote);
+	$serviterm=empty($serviterm)? "" : $serviterm;
 
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
@@ -185,10 +191,10 @@ else if($dopost=='save')
 
 	//保存到主表
 	$query = "INSERT INTO `#@__archives`(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
-    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin)
+    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin,weight)
     VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money',
     '$title','$shorttitle','$color','$writer','$source','$litpic','$pubdate','$senddate',
-    '$adminid','$notpost','$description','$keywords','$filename','$adminid');";
+    '$adminid','$notpost','$description','$keywords','$filename','$adminid','$weight');";
 
 	if(!$dsql->ExecuteNoneQuery($query))
 	{
@@ -222,7 +228,17 @@ else if($dopost=='save')
 
 	//生成HTML
 	InsertTags($tags,$arcID);
-	$artUrl = MakeArt($arcID,true,true);
+	if($cfg_remote_site=='Y' && $isremote=="1")
+	{	
+		if($serviterm!=""){
+			list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+			$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+		}else{
+			$config=array();
+		}
+		if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+	}
+	$artUrl = MakeArt($arcID,true,true,$isremote);
 	if($artUrl=='')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";

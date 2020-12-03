@@ -14,7 +14,7 @@ function plus_newvisitor(&$atts,&$refObj,&$fields)
 	extract($atts, EXTR_OVERWRITE);
 	$mid = $_vars['mid'];
 
-	$query = "Select h.*,mb.face,mb.userid as loginid,mb.uname,s.sign From `#@__member_vhistory` h
+	$query = "Select h.*,mb.face,mb.sex,mb.userid as loginid,mb.uname,s.sign From `#@__member_vhistory` h
 	         left join `#@__member` mb on mb.mid = h.vid
 	         left join `#@__member_space` s on s.mid = h.vid
 	         where  h.mid='$mid' order by h.vtime desc limit 0,$row";
@@ -25,9 +25,9 @@ function plus_newvisitor(&$atts,&$refObj,&$fields)
 	while($row = $dsql->GetArray("al"))
 	{
 		$row['url'] = $cfg_memberurl."/index.php?uid=".$row['loginid'];
-		if(trim($row['face'])=='')
+		if(empty($row['face']))
 		{
-			$row['face'] = $cfg_memberurl.'/images/nopic.gif';
+			$row['face']=($row['sex']=='Ů')? $cfg_memberurl.'/templets/images/dfgirl.png' : $cfg_memberurl.'/templets/images/dfboy.png';
 		}
 		$rearr[] = $row;
 	}

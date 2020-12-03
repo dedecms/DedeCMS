@@ -11,7 +11,7 @@ if($do == 'add')
 	function addItem();				add a product to car
 	*/
 	$buynum = isset($buynum) && is_numeric($buynum) ? $buynum : 1;
-	$id = intval($id);
+	$id =empty($id)? "" : intval($id);
 	$buynum = ($buynum < 1) ? 1 : $buynum;
 	$rs = $dsql->GetOne("SELECT id,channel,title FROM #@__archives WHERE id='$id'");
 	if(!is_array($rs))

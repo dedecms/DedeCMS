@@ -295,10 +295,19 @@ class DedeTagParse
 	//载入模板字符串
 	function LoadSource($str)
 	{
+		/*
 		$this->SetDefault();
 		$this->SourceString = $str;
 		$this->IsCache = FALSE;
 		$this->ParseTemplet();
+		*/
+		//优化模板字符串存取读取方式
+		$filename = DEDEDATA.'/tplcache/'.md5($str).'.inc';
+		if( !is_file($filename) )
+		{
+		    file_put_contents($filename, $str);
+		}
+		$this->LoadTemplate($filename);
 	}
 
 	function LoadString($str)
@@ -420,7 +429,8 @@ class DedeTagParse
 				$str = $this->GetGlobals($CTag->GetAtt('name'));
 				if( $this->CTags[$i]->GetAtt('function')!='' )
 				{
-					$str = $this->EvalFunc( $this->CTags[$i]->TagValue, $this->CTags[$i]->GetAtt('function'),$this->CTags[$i] );
+					//$str = $this->EvalFunc( $this->CTags[$i]->TagValue, $this->CTags[$i]->GetAtt('function'),$this->CTags[$i] );
+					$str = $this->EvalFunc( $str, $this->CTags[$i]->GetAtt('function'),$this->CTags[$i] );
 				}
 				$this->CTags[$i]->IsReplace = true;
 				$this->CTags[$i]->TagValue = $str;

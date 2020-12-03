@@ -31,6 +31,8 @@ if($dopost != 'save')
 	//获得频道模型信息
 	$cInfos = $dsql->GetOne(" Select * From  `#@__channeltype` where id='$channelid' ");
 	$channelid = $cInfos['id'];
+	//获取文章最大id以确定当前权重
+	$maxWright = $dsql->GetOne("SELECT COUNT(*) AS cc FROM #@__archives");
 	include DedeInclude("templets/soft_add.htm");
 	exit();
 }
@@ -94,6 +96,8 @@ else if($dopost=='save')
 	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	$userip = GetIP();
+  $isremote  = (empty($isremote)? 0  : $isremote);
+	$serviterm=empty($serviterm)? "" : $serviterm;
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
 		$arcrank = -1;
@@ -169,9 +173,9 @@ else if($dopost=='save')
 	if(ereg('j', $flag)) $ismake = -1;
 	//保存到主表
 	$inQuery = "INSERT INTO `#@__archives`(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
-    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin)
+    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin,weight)
     VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money','$title','$shorttitle',
-    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$notpost','$description','$keywords','$filename','$adminid');";
+    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$notpost','$description','$keywords','$filename','$adminid','$weight');";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
 		$gerr = $dsql->GetError();
@@ -263,7 +267,18 @@ else if($dopost=='save')
 
 	//生成HTML
 	InsertTags($tags,$arcID);
-	$arcUrl = MakeArt($arcID,true,true);
+	if($cfg_remote_site=='Y' && $isremote=="1")
+	{	
+		if($serviterm!=""){
+			list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+			$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+		}else{
+			$config=array();
+		}
+		if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+	}
+
+	$arcUrl = MakeArt($arcID,true,true,$isremote);
 	if($arcUrl=='')
 	{
 		$arcUrl = $cfg_phpurl."/view.php?aid=$arcID";

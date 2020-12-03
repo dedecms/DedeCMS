@@ -4,33 +4,76 @@
 <title><?php echo $oid;?></title>
 <link href="img/base.css" rel="stylesheet" type="text/css" />
 <body>
-<table width="98%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+<table width="50%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
   <tr>
-    <td width="100" height="25" align="center" bgcolor="#F0F0F0">ID</td>
-    <td height="25" bgcolor="#F0F0F0">&nbsp;商品名称</td>
-    <td width="100" height="25" align="center" valign="middle" bgcolor="#F0F0F0">数量</td>
-    <td width="100" height="25" align="right" bgcolor="#F0F0F0">单价(元/单位)</td>
-    <td width="100" height="25" align="right" bgcolor="#F0F0F0">合计(元)</td>
+    <td height="25" colspan="2" align="center" bgcolor="#F0F0F0">订单信息</td>
   </tr>
-<?php $priceCount = 0;?>
 {dede:datalist}
-<?php $priceCount += $fields['price']*$fields['buynum'];?>
   <tr>
-    <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;{dede:field.aid/}</td>
+    <td width="29%" height="25" align="right" bgcolor="#FFFFFF">订单号:</td>
+    <td width="71%" bgcolor="#FFFFFF">&nbsp;{dede:field.oid/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">商品名称:</td>
     <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.title/}</td>
-    <td height="25" align="center" bgcolor="#FFFFFF">&nbsp;{dede:field.buynum/}</td>
-    <td height="25" align="right" bgcolor="#FFFFFF">&nbsp;{dede:field.price/}</td>
-    <td height="25" align="right" bgcolor="#FFFFFF">&nbsp;<?php echo sprintf("%01.2f", $fields['price']*$fields['buynum']);?></td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">单价(元/单位):</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.uprice/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">数量:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.cartcount/}</td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">支付方式:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo GetSta($fields['state'],$oid)?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">配送:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.dname/} 费用:{dede:field.dprice/}元</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">购买时间:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.stime function=GetDateTimeMk(@me)/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">收货人:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['consignee']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">地址:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['address']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">邮编:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['zip']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">联系电话:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['tel']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">邮箱:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['email']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">留言:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['des']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">合计(元):</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.priceCount/}元</td>
   </tr>
 {/dede:datalist}
   <tr>
-    <td height="25" colspan="5" align="right" bgcolor="#F0F0F0" style="padding-right:6px;padding-left:6px;">
+    <td height="25" colspan="2" align="right" bgcolor="#F0F0F0" style="padding-right:6px;padding-left:6px;">
       <div style="float:left;">
       <input type="button" name="ss12" value="关闭窗口" style="width:90px" onClick="window.close();" class='inputbut'>
       </div>
       
       <div style="float:right;">
-      <span style="font-weight:bold;">订单总计:</span> <span style="color:red;"><?php echo sprintf("%01.2f", $priceCount);?></span>元, {dede:pagelist listsize=3/}
+      <span style="font-weight:bold;">订单总计:</span> <span style="color:red;">{dede:field.priceCount/}</span>元, {dede:pagelist listsize=3/}
       <div>
     </td>
   </tr>

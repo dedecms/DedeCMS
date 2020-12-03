@@ -8,8 +8,7 @@ function check_email()
 *******************/
 if($fmdo=='sendMail')
 {
-	CheckRank(0,0);
-	if( !CheckEmail($cfg_ml->fields['email']) )
+	if(!CheckEmail($cfg_ml->fields['email']) )
 	{
 		ShowMsg('你的邮箱格式有错误！', '-1');
 		exit();
@@ -25,7 +24,7 @@ if($fmdo=='sendMail')
   $url = 'http://'.eregi_replace('//', '/', $url);
   $mailtitle = "{$cfg_webname}--会员邮件验证通知";
   $mailbody = '';
-  $mailbody .= "尊敬的用户，您好：\r\n";
+  $mailbody .= "尊敬的用户[{$cfg_ml->fields['uname']}]，您好：\r\n";
   $mailbody .= "欢迎注册成为[{$cfg_webname}]的会员。\r\n";
   $mailbody .= "要通过注册，还必须进行最后一步操作，请点击或复制下面链接到地址栏访问这地址：\r\n\r\n";
   $mailbody .= "{$url}\r\n\r\n";
@@ -38,14 +37,13 @@ if($fmdo=='sendMail')
 		require_once(DEDEINC.'/mail.class.php');
 		$smtp = new smtp($cfg_smtp_server,$cfg_smtp_port,true,$cfg_smtp_usermail,$cfg_smtp_password);
 		$smtp->debug = false;
-		$smtp->sendmail($cfg_ml->fields['email'], $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
+		$smtp->sendmail($cfg_ml->fields['email'],$cfg_webname ,$cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
 	}
 	else
 	{
 		@mail($cfg_ml->fields['email'], $mailtitle, $mailbody, $headers);
 	}
-	
-	ShowMsg('成功发送邮件，请稍后登录你的邮箱进行接收！', '-1');
+	ShowMsg('成功发送邮件，请稍后登录你的邮箱进行接收！', '/member');
 	exit();
 }
 else if($fmdo=='checkMail')
@@ -183,7 +181,7 @@ else if($fmdo=='user')
 	//引入注册页面
 	else if($dopost=="regnew")
 	{
-		
+		$step = empty($step)? 1 : intval(preg_replace("/[^\d]/",'', $step));
 		require_once(dirname(__FILE__)."/reg_new.php");
 		exit();
 	}
@@ -199,17 +197,17 @@ else if($fmdo=='user')
 			ShowMsg('系统禁用了积分与金币兑换功能！', '-1');
 			exit();
 		}
-		$money = empty($money) ? 0 : intval($money);
+		$money = empty($money) ? "" : abs(intval($money));
 		if(empty($money))
 		{
-			ShowMsg('你没指定要兑换多少金币！', '-1');
+			ShowMsg('您没指定要兑换多少金币！', '-1');
 			exit();
 		}
 		
 		$needscores = $money * $cfg_money_scores;
 		if($cfg_ml->fields['scores'] < $needscores )
 		{
-			ShowMsg('你你积分不足，不能换取这么多的金币！', '-1');
+			ShowMsg('您积分不足，不能换取这么多的金币！', '-1');
 			exit();
 		}
 		$litmitscores = $cfg_ml->fields['scores'] - $needscores;
@@ -242,11 +240,14 @@ else if($fmdo=='login')
 			$vdcode = '';
 		}
 		$svali = GetCkVdValue();
-		if(strtolower($vdcode)!=$svali || $svali=='')
-		{
-			ResetVdValue();
-			ShowMsg("验证码错误！","-1");
-			exit();
+		if(preg_match("/2/",$safe_gdopen)){
+			if(strtolower($vdcode)!=$svali || $svali=='')
+			{
+				ResetVdValue();
+				ShowMsg('验证码错误！', '-1');
+				exit();
+			}
+			
 		}
 		if(CheckUserID($userid,'',false)!='ok')
 		{
@@ -355,6 +356,46 @@ else if($fmdo=='login')
 		#/aip}}
 		ShowMsg("成功退出登录！","index.php",0,2000);
 		exit();
+	}
+}
+/*********************
+function moodmsg()
+*******************/
+else if($fmdo=='moodmsg')
+{
+	//用户登录
+	if($dopost=="sendmsg")
+	{
+		if(!empty($content))
+		{
+	    $ip = GetIP();
+	    $dtime = time();
+		  $ischeck = ($cfg_mb_msgischeck == 'Y')? 0 : 1;
+		  if($cfg_soft_lang == 'gb2312')
+		  {
+		  	$content = iconv('UTF-8','gb2312',nl2br($content));
+		  } 
+		  $content = cn_substrR(HtmlReplace($content,1),360);
+		  //对表情进行解析
+		  $content = addslashes(preg_replace("/\[face:(\d{1,2})\]/is","<img src='".$cfg_memberurl."/templets/images/smiley/\\1.gif' style='cursor: pointer; position: relative;'>",$content));
+		  
+			$inquery = "INSERT INTO `#@__member_msg`(`mid`,`userid`,`ip`,`ischeck`,`dtime`, `msg`)
+	               VALUES ('{$cfg_ml->M_ID}','{$cfg_ml->M_LoginID}','$ip','$ischeck','$dtime', '$content'); ";
+			$rs = $dsql->ExecuteNoneQuery($inquery);
+			if(!$rs)
+			{
+				$output['type'] = 'error';
+				$output['data'] = '更新失败,请重试.';
+				exit();
+			}
+			$output['type'] = 'success';
+		  if($cfg_soft_lang == 'gb2312')
+		  {
+		  	$content = iconv('gb2312','UTF-8',nl2br($content));
+		  } 
+			$output['data'] = stripslashes($content);
+			exit(json_encode($output));
+		}
 	}
 }
 else

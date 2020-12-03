@@ -2,6 +2,7 @@
 if(!defined('DEDEINC')) exit('Request Error!');
 require_once(DEDEINC.'/channelunit.class.php');
 require_once(DEDEINC.'/typelink.class.php');
+require_once(DEDEINC.'/ftp.class.php');
 
 class PartView
 {
@@ -12,16 +13,20 @@ class PartView
 	var $TypeLink;
 	var $pvCopy;
 	var $refObj;
+	var $ftp;
+	var $remoteDir;
 
 	//php5构造函数
 	function __construct($typeid=0,$needtypelink=true)
 	{
-		global $_sys_globals;
+		global $_sys_globals,$ftp;
 		$this->TypeID = $typeid;
 		$this->dsql = $GLOBALS['dsql'];
 		$this->dtp = new DedeTagParse();
 		$this->dtp->SetNameSpace("dede","{","}");
 		$this->dtp->SetRefObj($this);
+		$this->ftp = &$ftp;
+		$this->remoteDir = '';
 
 		if($needtypelink)
 		{
@@ -119,8 +124,20 @@ class PartView
 	 * 保存结果为文件
 	 * @param string $filename
 	 */
-	function SaveToHtml($filename)
+	function SaveToHtml($filename,$isremote=0)
 	{
+		global $cfg_remote_site;
+	  //如果启用远程发布则需要进行判断
+		if($cfg_remote_site=='Y' && $isremote == 1)
+		{
+  		//分析远程文件路径
+  		$remotefile = str_replace(DEDEROOT, '', $filename);
+      $localfile = '..'.$remotefile;
+      //创建远程文件夹
+      $remotedir = preg_replace('/[^\/]*\.js/', '', $remotefile);
+      $this->ftp->rmkdir($remotedir);
+   	  $this->ftp->upload($localfile, $remotefile, 'ascii');
+		}
 		$this->dtp->SaveTo($filename);
 	}
 

@@ -1,12 +1,14 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEINC."/dedetag.class.php");
+require_once(DEDEINC."/userlogin.class.php");
 require_once(DEDEINC."/customfields.func.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
 $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 1;
 $typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
 $mtypesid = isset($mtypesid) && is_numeric($mtypesid) ? $mtypesid : 0;
+$menutype = 'content';
 
 /*-------------
 function _ShowForm(){  }
@@ -48,13 +50,23 @@ else if($dopost=='save')
 {
 	include_once(DEDEINC."/image.func.php");
 	include_once(DEDEINC."/oxwindow.class.php");
-	if(!$cfg_ml->IsLogin() || $cfg_vdcode_member=='Y')
-	{
-		$svali = GetCkVdValue();
+	$svali = GetCkVdValue();
+	if(preg_match("/3/",$safe_gdopen)){
 		if(strtolower($vdcode)!=$svali || $svali=='')
 		{
 			ResetVdValue();
-			ShowMsg("验证码错误！","-1");
+			ShowMsg('验证码错误！', '-1');
+			exit();
+		}
+		
+	}
+	
+	$faqkey = isset($faqkey) && is_numeric($faqkey) ? $faqkey : 0;
+	if($safe_faq_send == '1')
+	{
+		if($safefaqs[$faqkey]['answer'] != $safeanswer || $safeanswer=='')
+		{
+			ShowMsg('验证问题答案错误', '-1');
 			exit();
 		}
 	}
@@ -112,6 +124,7 @@ else if($dopost=='save')
 	$sortrank = $senddate = $pubdate = time();
 	$title = cn_substrR(HtmlReplace($title,1),$cfg_title_maxlen);
 	$mid = $cfg_ml->M_ID;
+	$description=empty($description)? "" : $description;
 
 	//处理上传的缩略图
 	$litpic = MemberUploads('litpic','',$cfg_ml->M_ID,'image','',$cfg_ddimg_width,$cfg_ddimg_height,false);
@@ -134,6 +147,10 @@ else if($dopost=='save')
 				if($v=='')
 				{
 					continue;
+				}else if($v == 'templet')
+				{
+					ShowMsg("你保存的字段有误,请检查！","-1");
+					exit();	
 				}
 				$vs = explode(',',$v);
 				if(!isset(${$vs[0]}))
@@ -156,7 +173,7 @@ else if($dopost=='save')
 	}
 
 	//生成文档ID
-	$arcID = GetIndexKey(0,$typeid,$sortrank,$channelid,$senddate,$mid);
+	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$mid);
 	if(empty($arcID))
 	{
 		ShowMsg("无法获得主键，因此无法进行后续操作！","-1");
@@ -210,6 +227,11 @@ else if($dopost=='save')
 		uc_credit_note($row['userid'],$cfg_sendarc_scores);
 	}
 	#/aip}}
+	
+	//会员动态记录
+	$cfg_ml->RecordFeeds('add',$title,$description,$arcID);
+	
+	ClearMyAddon($arcID, $title);
 	
 	//返回成功信息
 	$msg = "

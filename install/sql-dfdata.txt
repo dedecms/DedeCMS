@@ -1,4 +1,3 @@
-
 INSERT INTO `#@__admintype` VALUES (1, '信息发布员', 1, 't_AccList a_AccNew a_AccList a_MyList a_MyEdit a_MyDel sys_MdPwd sys_Feedback sys_MyUpload plus_留言簿模块 '),
 (5, '频道管理员', 1, 't_AccList t_AccNew t_AccEdit t_AccDel a_AccNew a_AccList a_AccEdit a_AccDel a_AccCheck a_MyList a_MyEdit a_MyDel a_MyCheck co_AddNote co_EditNote co_PlayNote co_ListNote co_ViewNote spec_New spec_List spec_Edit sys_MdPwd sys_Log sys_ArcTj sys_Source sys_Writer sys_Keyword sys_MakeHtml sys_Feedback sys_Upload sys_MyUpload member_List member_Edit plus_站内新闻发布 plus_友情链接模块 plus_留言簿模块 plus_投票模块 plus_广告管理 '),
 (10, '超级管理员', 1, 'admin_AllowAll ');
@@ -11,6 +10,8 @@ INSERT INTO `#@__arcatt` VALUES (5, 's', '滚动'),
 (8, 'j', '跳转'),
 (4, 'a', '特荐'),
 (6, 'b', '加粗');
+
+INSERT INTO `dede_member_group` (`id`, `groupname`, `mid`) VALUES (1, '朋友', 0);
 
 INSERT INTO `#@__arcrank` VALUES (1, 0, '开放浏览', 5, 0, 0, ''),
 (2, -1, '待审核稿件', 0, 0, 0, ''),
@@ -502,7 +503,7 @@ INSERT INTO `#@__area` VALUES (1, '北京市', 0, 0),
 (35, '台湾省', 0, 0);
 
 INSERT INTO `#@__channeltype` VALUES (1, 'article', '普通文章', '#@__archives', '#@__addonarticle', 'article_add.php', 'content_list.php', 'article_edit.php', 'article_add.php', 'content_list.php', 'article_edit.php', '<field:body itemname="文章内容" autofield="0" notsend="0" type="htmltext" isnull="true" islist="1" default=""  maxlength="" page="split">\r\n</field:body>\r\n', '', '', 1, 1, 1, -1, '', 10, 0, 1, 1, '标题', 0, 0),
-(2, 'image', '图片集', '#@__archives', '#@__addonimages', 'album_add.php', 'content_i_list.php', 'album_edit.php', 'album_add.php', 'content_list.php', 'album_edit.php', '<field:pagestyle itemname=''页面风格'' type=''number'' isnull=''true'' default=''2'' rename='''' notsend=''1'' />\r\n<field:imgurls itemname=''图片集合'' type=''img'' isnull=''true'' default='''' rename='''' page=''split''/>\r\n', '', '', 1, 1, 1, -1, '', 10, 0, 1, 1, '标题', 0, 0),
+(2, 'image', '图片集', '#@__archives', '#@__addonimages', 'album_add.php', 'content_i_list.php', 'album_edit.php', 'album_add.php', 'content_list.php', 'album_edit.php', '<field:pagestyle itemname=''页面风格'' type=''number'' isnull=''true'' default=''2'' rename='''' notsend=''1'' />\r\n<field:imgurls itemname=''图片集合'' type=''img'' isnull=''true'' default='''' rename='''' page=''split''/>\r\n<field:body itemname=''图集内容'' autofield=''0'' notsend=''0'' type=''htmltext'' isnull=''true'' islist=''0'' default=''''  maxlength=''250'' page=''''></field:body>', '', '', 1, 1, 1, -1, '', 10, 0, 1, 1, '标题', 0, 0),
 (3, 'soft', '软件', '#@__archives', '#@__addonsoft', 'soft_add.php', 'content_i_list.php', 'soft_edit.php', '', '', '', '<field:filetype islist=''1'' itemname=''文件类型'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:language islist=''1'' itemname=''语言'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:softtype islist=''1'' itemname=''软件类型'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:accredit islist=''1'' itemname=''授权方式'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:os islist=''1'' itemname=''操作系统'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:softrank  islist=''1'' itemname=''软件等级'' type=''int'' isnull=''true'' default=''3'' rename='''' function=''GetRankStar(@me)'' notsend=''1''/>\r\n<field:officialUrl  itemname=''官方网址'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:officialDemo itemname=''演示网址'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:softsize  itemname=''软件大小'' type=''text'' isnull=''true'' default='''' rename='''' />\r\n<field:softlinks  itemname=''软件地址'' type=''softlinks'' isnull=''true'' default='''' rename='''' />\r\n<field:introduce  itemname=''详细介绍'' type=''htmltext'' isnull=''trnue'' default='''' rename='''' />\r\n<field:daccess islist=''1'' itemname=''下载级别'' type=''int'' isnull=''true'' default=''0'' rename='''' function='''' notsend=''1''/>\r\n<field:needmoney islist=\'1\' itemname=\'需要金币\' type=\'int\' isnull=\'true\' default=\'0\' rename=\'\' function=\'\' notsend=\'1\' />', 'filetype,language,softtype,os,accredit,softrank', '', 1, 1, 1, -1, '', 10, 0, 1, 1, '标题', 0, 0),
 (-1, 'spec', '专题', '#@__archives', '#@__addonspec', 'spec_add.php', 'content_s_list.php', 'spec_edit.php', '', '', '', '<field:note type=''specialtopic'' isnull=''true'' default='''' rename=''''/>', '', '', 1, 1, 0, -1, '', 10, 0, 1, 1, '标题', 0, 0),
 (6, 'shop', '商品', '#@__archives', '#@__addonshop', 'archives_add.php', 'content_list.php', 'archives_edit.php', 'archives_add.php', 'content_list.php', 'archives_edit.php', '<field:body itemname="详细介绍" autofield="1" notsend="0" type="htmltext" isnull="true" islist="0" default=""  maxlength="" page="split">\r\n</field:body>\r\n\r\n\r\n<field:price itemname="市场价" autofield="1" notsend="0" type="float" isnull="true" islist="1" default=""  maxlength="" page="">\r\n</field:price>\r\n\r\n\r\n<field:trueprice itemname="优惠价" autofield="1" notsend="0" type="float" isnull="true" islist="1" default=""  maxlength="" page="">\r\n</field:trueprice>\r\n\r\n\r\n<field:brand itemname="品牌" autofield="1" notsend="0" type="text" isnull="true" islist="1" default=""  maxlength="250" page="">\r\n</field:brand>\r\n\r\n\r\n<field:units itemname="计量单位" autofield="1" notsend="0" type="text" isnull="true" islist="1" default=""  maxlength="250" page="">\r\n</field:units>\r\n\r\n\n\r\n\n\r\n', 'price,trueprice,brand,units', '', 0, 1, 1, -1, '企业', 10, 0, 1, 1, '商品名称', 0, 0),
@@ -512,10 +513,9 @@ INSERT INTO `#@__co_onepage` VALUES (5, 'www.dedecms.com', '织梦网络', 1, 'g
 (4, 'www.techweb.com.cn', 'Techweb', 1, 'gb2312', '<div class="content_txt">{@body}</div>\r\n'),
 (6, 'tw.news.yahoo.com', '台湾雅虎', 1, 'big5', '<div id="ynwsartcontent">{@body}</div>\r\n');
 
-INSERT INTO `#@__flink` VALUES (2, 1, 'http://www.dedecms.com', '织梦CMS', '', '', '', 1226375403, 1, 2),
-(11, 1, 'http://www.desdev.cn', '织梦科技', '', '', '', 1227772766, 1, 2),
-(10, 1, 'http://service.dedecms.com', '织梦客服中心', '', '', '', 1227772755, 1, 2),
-(9, 1, 'http://help.dedecms.com', 'DedeCMS使用手册', '', '', '', 1227772717, 1, 2),
+INSERT INTO `#@__flink` VALUES (2, 1, 'http://www.dedecms.com', '织梦CMS官方', '', '', '', 1226375403, 1, 2),
+(12, 4, 'http://www.dadou.com', '大豆网', '', '', '', 1270709522, 1, 2),
+(9, 1, 'http://docs.dedecms.com/', 'DedeCMS维基手册', '', '', '', 1227772717, 1, 2),
 (8, 1, 'http://bbs.dedecms.com', '织梦技术论坛', '', '', '', 1227772703, 1, 2);
 
 INSERT INTO `#@__flinktype` VALUES (1, '综合网站'),
@@ -535,11 +535,19 @@ INSERT INTO `#@__moneycard_type` VALUES (1, 100, 30, '100点卡'),
 (2, 200, 55, '200点卡'),
 (3, 300, 75, '300点卡');
 
-INSERT INTO `#@__myad` VALUES (1, 0, 'topbanner', 'topbanner', 0, 1227775457, 1230367457, '<a href="http://www.dedecms.com/"><img src="/templets/images/banner-header.png" /></a>\r\n', '');
+INSERT INTO `#@__member_model` VALUES ('1', '个人', '#@__member_person', '个人会员模型', '1', '1', '\r\n<field:onlynet itemname=\"联系方式限制\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"1\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:onlynet>\r\n\r\n<field:sex itemname=\"性别\" autofield=\"1\" type=\"radio\" isnull=\"true\" default=\"男,女,保密\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:sex>\r\n\r\n<field:uname itemname=\"昵称/公司名称\" autofield=\"1\" type=\"textchar\" isnull=\"true\" default=\"\"  maxlength=\"30\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:uname>\r\n\r\n<field:qq itemname=\"QQ\" autofield=\"1\" type=\"textchar\" isnull=\"true\" default=\"\"  maxlength=\"12\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:qq>\r\n\r\n<field:msn itemname=\"MSN\" autofield=\"1\" type=\"textchar\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:msn>\r\n\r\n<field:tel itemname=\"电话号码\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"15\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:tel>\r\n\r\n<field:mobile itemname=\"手机\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"15\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:mobile>\r\n\r\n<field:place itemname=\"目前所在地\" autofield=\"1\" type=\"int\" default=\"0\"  maxlength=\"5\" issearch=\"0\" isshow=\"0\" state=\"1\">\r\n</field:place>\r\n\r\n\r\n<field:oldplace itemname=\"家乡所在地\" autofield=\"1\" type=\"int\" default=\"0\"  maxlength=\"5\" issearch=\"0\" isshow=\"0\" state=\"1\">\r\n</field:oldplace>\r\n\r\n\r\n<field:birthday itemname=\"生日\" autofield=\"1\" type=\"datetime\" isnull=\"true\" default=\"\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:birthday>\r\n\r\n<field:star itemname=\"星座\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"1\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:star>\r\n\r\n<field:income itemname=\"收入\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:income>\r\n\r\n<field:education itemname=\"学历\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:education>\r\n\r\n<field:height itemname=\"身高\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"160\"  maxlength=\"5\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:height>\r\n\r\n<field:bodytype itemname=\"体重\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:bodytype>\r\n\r\n<field:blood itemname=\"血型\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:blood>\r\n\r\n<field:vocation itemname=\"职业\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:vocation>\r\n\r\n<field:smoke itemname=\"吸烟\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:smoke>\r\n\r\n<field:marital itemname=\"婚姻状况\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:marital>\r\n\r\n<field:house itemname=\"住房\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:house>\r\n\r\n<field:drink itemname=\"饮酒\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:drink>\r\n\r\n<field:datingtype itemname=\"交友\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"6\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:datingtype>\r\n\r\n<field:language itemname=\"语言\" autofield=\"1\" type=\"checkbox\" isnull=\"true\" default=\"普通话,上海话,广东话,英语,日语,韩语,法语,意大利语,德语,西班牙语,俄语,阿拉伯语\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:language>\r\n\r\n\r\n<field:nature itemname=\"性格\" autofield=\"1\" type=\"checkbox\" isnull=\"true\" default=\"性格外向,性格内向,活泼开朗,豪放不羁,患得患失,冲动,幽默,稳重,轻浮,沉默寡言,多愁善感,时喜时悲,附庸风雅,能说会道,坚强,脆弱,幼稚,成熟,快言快语,损人利己,狡猾善变,交际广泛,优柔寡断,自私,真诚,独立,依赖,难以琢磨,悲观消极,郁郁寡欢,胆小怕事,乐观向上,任性,自负,自卑,拜金,温柔体贴,小心翼翼,暴力倾向,逆来顺受,不拘小节,暴躁,倔强,豪爽,害羞,婆婆妈妈,敢做敢当,助人为乐,耿直,虚伪,孤僻,老实,守旧,敏感,迟钝,婆婆妈妈,武断,果断,刻薄\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:nature>\r\n\r\n<field:lovemsg itemname=\"人生格言\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"100\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:lovemsg>\r\n\r\n<field:address itemname=\"家庭住址\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:address>\r\n\r\n<field:uptime itemname=\"更新时间\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"\"  maxlength=\"10\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:uptime>\r\n');
+INSERT INTO `#@__member_model` VALUES ('2', '企业', '#@__member_company', '公司企业会员模型', '1', '1', '\r\n<field:company itemname=\"公司名称\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"36\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:company>\r\n\r\n<field:product itemname=\"公司产品\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:product>\r\n\r\n<field:place itemname=\"所在地址\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"5\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:place>\r\n\r\n<field:vocation itemname=\"所属行业\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"5\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:vocation>\r\n\r\n<field:cosize itemname=\"公司规模\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"5\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:cosize>\r\n\r\n<field:tel itemname=\"电话号码\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"30\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:tel>\r\n\r\n<field:fax itemname=\"传真\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"30\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:fax>\r\n\r\n<field:linkman itemname=\"联系人\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"20\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:linkman>\r\n\r\n<field:address itemname=\"详细地址\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:address>\r\n\r\n<field:mobile itemname=\"手机\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"30\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:mobile>\r\n\r\n<field:email itemname=\"邮箱\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:email>\r\n\r\n<field:url itemname=\"地址\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"50\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:url>\r\n\r\n<field:uptime itemname=\"更新时间\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"10\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:uptime>\r\n\r\n<field:checked itemname=\"是否审核\" autofield=\"1\" type=\"int\" isnull=\"true\" default=\"0\"  maxlength=\"1\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:checked>\r\n\r\n<field:introduce itemname=\"公司简介\" autofield=\"1\" type=\"multitext\" isnull=\"true\" default=\"\"  maxlength=\"250\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:introduce>\r\n\r\n<field:comface itemname=\"公司标志\" autofield=\"1\" type=\"text\" isnull=\"true\" default=\"\"  maxlength=\"255\" issearch=\"\" isshow=\"\" state=\"1\">\r\n</field:comface>\r\n');
+
+
+INSERT INTO `dede_myad` (`aid`, `typeid`, `tagname`, `adname`, `timeset`, `starttime`, `endtime`, `normbody`, `expbody`) VALUES
+(1, 0, 'topbanner', 'topbanner', 0, 1227775457, 1230367457, '<script src=' http://www.dedecms.com/plus/ad_js.php?aid=4' language='javascript'></script>
+', ''),
+(2, 0, 'topbanner1', 'topbanner1', 0, 1269506943, 1272098943, '<script src=' http://www.dedecms.com/plus/ad_js.php?aid=5' language='javascript'></script>', '');
+
 
 INSERT INTO `#@__plus` VALUES (27, '友情链接模块', '<m:item name=''友情链接'' link=''friendlink_main.php'' rank=''plus_友情链接'' target=''main'' />', '', '织梦团队', 1, ''),
 (24, '文件管理器', '<m:item name=''文件管理器'' link=''file_manage_main.php'' rank=''plus_文件管理器'' target=''main'' />', '', '织梦团队', 1, ''),
-(23, '百度新闻', '<m:item name=''百度新闻'' link=''baidunews.php'' rank=''plus_starget=''main'' />', '', '织梦团队', 1, 'baidunews.php'),
+(23, '百度新闻', '<m:item name=''百度新闻'' link=''baidunews.php'' rank=''plus_百度新闻'' target=''main'' />', '', '织梦团队', 1, 'baidunews.php'),
 (28, '投票模块', '<m:item name=''投票模块'' link=''vote_main.php'' rank=''plus_投票模块'' target=''main'' />', '', '织梦团队', 1, ''),
 (25, '广告管理', '<m:item name=''广告管理'' link=''ad_main.php'' rank=''plus_广告管理'' target=''main'' />', '', '织梦官方', 1, ''),
 (10, '挑错管理', '<m:item name=''挑错管理'' link=''erraddsave.php'' rank=''plus_挑错管理'' target=''main'' />', '', '织梦团队', 1, '<m:item name=''挑错管理'' link=''catalog_do.php?dopost=erraddsave.php'' rank=''plus_挑错管理'' target=''main'' />');
@@ -557,28 +565,27 @@ INSERT INTO `#@__scores` VALUES (2, '列兵', 1, 0, 1),
 (12, '上将', 11, 24000, 1),
 (15, '大将', 12, 29000, 1);
 
-
-
 INSERT INTO `#@__shops_delivery` VALUES (1, '送货上门', 10.21, '送货上门,领取商品时付费.', 0),
 (2, '特快专递（EMS）', 25.00, '特快专递（EMS）,要另收手续费.', 0),
 (3, '普通邮递', 5.00, '普通邮递', 0),
 (4, '邮局快邮', 12.00, '邮局快邮', 0);
 
 
+INSERT INTO `#@__member_stowtype`  VALUES ('sys', '系统收藏', 'archives_do.php'),
+('book', '小说收藏', '/book/book.php?bid');
 
-INSERT INTO `#@__shops_paytype` VALUES (2, '货到付款', '货到后支付购物款项'),
-(1, '网银支付', '能过网上银行支付购物金额'),
-(3, '银行转帐', '账号:\r\n户名:dd\r\n开户行:'),
-(4, '邮政汇款', '地址:\r\n邮编:jj\r\n姓名:'),
-(5, '点数购买', '扣会员站内账上金币点数');
+INSERT INTO `dede_payment` (`id`, `code`, `name`, `fee`, `description`, `rank`, `config`, `enabled`, `cod`, `online`) VALUES
+('3', 'alipay', '支付宝', '', '支付宝网站(www.alipay.com) 是国内先进的网上支付平台。<br/>DedeCMS联合支付宝推出支付宝接口。<br/><a href=\"https://www.alipay.com/himalayas/practicality_customer.htm?customer_external_id=C4335994340215837114&market_type=from_agent_contract&pro_codes=6ACD133C5F350958F7F62F29651356BB \" target=\"_blank\"><font color=\"red\">立即在线申请</font></a>', 1, 'a:4:{s:14:\"alipay_account\";a:4:{s:5:\"title\";s:21:\"支付宝用户账号\";s:11:\"description\";s:0:\"\";s:4:\"type\";s:4:\"text\";s:5:\"value\";s:0:\"\";}s:10:\"alipay_key\";a:4:{s:5:\"title\";s:21:\"交易安全校验码\";s:11:\"description\";s:0:\"\";s:4:\"type\";s:4:\"text\";s:5:\"value\";s:0:\"\";}s:14:\"alipay_partner\";a:4:{s:5:\"title\";s:17:\"合作者身份ID\";s:11:\"description\";s:0:\"\";s:4:\"type\";s:4:\"text\";s:5:\"value\";s:0:\"\";}s:17:\"alipay_pay_method\";a:5:{s:5:\"title\";s:21:\"支付宝账号类型\";s:11:\"description\";s:78:\"请选择您最后一次跟支付宝签订的协议里面说明的接口类型\";s:4:\"type\";s:6:\"select\";s:5:\"iterm\";s:83:\"0:使用标准双接口,1:使用担保交易接口,2:使用即时到帐交易接口\";s:5:\"value\";s:0:\"\";}}', 0, 0, 1),
+('2', 'bank', '银行汇款/转帐', '0', '银行名称\r\n收款人信息：全称 ××× ；帐号或地址 ××× ；开户行 ×××。\r\n注意事项：办理电汇时，请在电汇单“汇款用途”一栏处注明您的订单号。', 4, 'a:0:{}', 1, 1, 0),
+('1', 'cod', '货到付款', '0', '开通城市：×××\r\n货到付款区域：×××', 3, 'a:0:{}', 1, 1, 0),
+('6', 'yeepay', 'YeePay易宝', '', 'YeePay易宝（北京通融通信息技术有限公司）是专业从事多元化电子支付业务一站式服务的领跑者。在立足于网上支付的同时，YeePay易宝不断创新，将互联网、手机、固定电话整合在一个平台上，继短信支付、手机充值之后，首家推出了YeePay易宝电话支付业务，真正实现了离线支付，为更多传统行业搭建了电子支付的高速公路。YeePay易宝融合世界先进的电子支付文化，聚合众多金融、电信、IT、互联网等领域内的巨擘，旨在通过创新的支付机制，推动中国电子商务新进程。YeePay易宝致力于成为世界一流的电子支付应用和服务提供商，专注于金融增值服务和移动增值服务两大领域，创新并推广多元化、低成本的、安全有效的支付服务。<input type=\"button\" name=\"Submit\" value=\"立即注册\" onclick=\"window.open(''https://www.yeepay.com/selfservice/requestRegister.action'')\" />', 2, 'a:2:{s:10:\"yp_account\";a:4:{s:5:\"title\";s:12:\"商户编号\";s:11:\"description\";s:0:\"\";s:4:\"type\";s:4:\"text\";s:5:\"value\";s:0:\"\";}s:6:\"yp_key\";a:4:{s:5:\"title\";s:12:\"商户密钥\";s:11:\"description\";s:0:\"\";s:4:\"type\";s:4:\"text\";s:5:\"value\";s:0:\"\";}}', 0, 0, 1);
 
-
-INSERT INTO `#@__softconfig` VALUES (0, 1, 1, 1, 'http://www.aaa.com | 镜像地址一\r\nhttp://www.bbb.com | 镜像地址二\r\nhttp://www.ccc.com | 镜像地址三\r\n', '<p>☉推荐使用网际快车下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br />\r\n☉如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br />\r\n☉下载本站资源，如果服务器暂不能下载请过一段时间重试！<br />\r\n☉如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br />\r\n☉本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。</p>', 0, 0, 0, 0);
+INSERT INTO `#@__softconfig` VALUES (0, 1, 1, 1, 'http://www.aaa.com | 镜像地址一\r\nhttp://www.bbb.com | 镜像地址二\r\nhttp://www.ccc.com | 镜像地址三\r\n', '<p>☉推荐使用第三方专业下载工具下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br />\r\n☉如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br />\r\n☉下载本站资源，如果服务器暂不能下载请过一段时间重试！<br />\r\n☉如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br />\r\n☉本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。</p>', 0, 0, 0, 0);
    
 INSERT INTO `#@__stepselect` VALUES (1, '血型', 'blood', 1, 1),
 (2, '体型', 'bodytype', 1, 1),
 (3, '公司规模', 'cosize', 1, 1),
-(4, '年龄段', 'datingtype', 1, 1),
+(4, '交友', 'datingtype', 1, 1),
 (5, '是否饮酒', 'drink', 1, 1),
 (6, '教育程度', 'education', 1, 1),
 (7, '住房', 'house', 1, 1),
@@ -705,7 +712,7 @@ INSERT INTO `#@__sys_set` VALUES (1, 'nature', '性格外向,性格内向,活泼
 (2, 'language', '普通话,上海话,广东话,英语,日语,韩语,法语,意大利语,德语,西班牙语,俄语,阿拉伯语');
 
 INSERT INTO `#@__sysconfig` VALUES (1, 'cfg_basehost', '站点根网址', 1, 'string', 'http://www.dedecms.com'),
-(2, 'cfg_cmspath', 'DedeCms安装目录', 2, 'string', ''),
+(2, 'cfg_cmspath', 'DedeCMS安装目录', 2, 'string', ''),
 (3, 'cfg_cookie_encode', 'cookie加密码', 2, 'string', 'GDFSGDF'),
 (4, 'cfg_indexurl', '网页主页链接', 1, 'string', '/'),
 (5, 'cfg_backup_dir', '数据备份目录（在data目录内）', 2, 'string', 'backupdata'),
@@ -837,7 +844,15 @@ INSERT INTO `#@__sysconfig` VALUES (1, 'cfg_basehost', '站点根网址', 1, 'st
 (740, 'cfg_login_adds', '登录会员中心获积分', 5, 'number', '2'),
 (741, 'cfg_userad_adds', '会员推广获积分', 5, 'number', '10'),
 (742, 'cfg_ddimg_full', '缩略图是否使用强制大小(对背景填充)', 3, 'bool', 'N'),
-(743, 'cfg_ddimg_bgcolor', '缩略图空白背景填充颜色(0-白,1-黑)', 3, 'number', '0');
+(743, 'cfg_ddimg_bgcolor', '缩略图空白背景填充颜色(0-白,1-黑)', 3, 'number', '0'),
+(744, 'cfg_replace_num', '文档内容同一关键词替换次数(0为全部替换)',  7, 'number', '2'),
+(745, 'cfg_uplitpic_cut', '上传缩略图后是否马上弹出裁剪框', 3, 'bool', 'Y'),
+(746, 'cfg_album_mark', '图集是否使用水印(小图也会受影响)', 3, 'bool', 'N'),
+(747, 'cfg_mb_feedcheck', '会员动态是否需要审核', '4', 'bool', 'N'),
+(748, 'cfg_mb_msgischeck', '会员状态是否需要审核', '4', 'bool', 'N'),
+(749, 'cfg_mb_reginfo', '注册是否需要完成详细资料的填写', '4', 'bool', 'Y'),
+(750, 'cfg_remote_site', '是否启用远程站点', '2', 'bool', 'N'),
+(751, 'cfg_title_site', '是否发布和编辑文档时远程发布(启用远程站点的前提下)', '2', 'bool', 'N');
+
 
 INSERT INTO `#@__vote` VALUES (1, '你是从哪儿得知本站的？', 1150646400, 1268928000, 8, 0, '<v:note id=''1'' count=''2''>朋友介绍</v:note>\r\n<v:note id=''2'' count=''0''>门户网站的搜索引擎</v:note>\r\n<v:note id=''3'' count=''2''>Google或百度搜索</v:note>\r\n<v:note id=''4'' count=''3''>别的网站上的链接</v:note>\r\n<v:note id=''5'' count=''1''>其它途径</v:note>\r\n');
-        

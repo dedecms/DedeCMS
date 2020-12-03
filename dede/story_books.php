@@ -41,8 +41,8 @@ if(!isset($cid))
 if($action == 'checked')
 {
 	$id = intval($id);
-	$dsql->setquery("update #@__story_books set ischeck=1 where id=$id");
-	if($dsql->executenonequery())
+	$query="UPDATE #@__story_books SET ischeck=1 WHERE bid='$id'";
+	if($dsql->ExecuteNoneQuery($query))
 	{
 		showmsg('审核成功','story_books.php');
 		exit();
@@ -77,7 +77,7 @@ if($ischeck == 1)
 {
 	$addquery .= " and ischeck=0 ";
 }
-$orderby = " order by b.id desc ";
+$orderby = " order by b.bid desc ";
 if($catid!=0)
 {
 	$addquery .= " And (b.bcatid='$catid' Or b.catid='$catid') ";
@@ -87,8 +87,8 @@ if($keyword!="")
 	$addquery .= " And (b.bookname like '%$keyword%' Or b.author like '%$keyword%') ";
 }
 $query = "
-   Select b.id,b.catid,b.bookname,b.booktype,b.litpic,b.ischeck,b.postnum,b.senddate,c.id as cid,c.classname From #@__story_books b
-   left join #@__story_catalog c on c.id = b.catid where b.id>0 $addquery $orderby
+   Select b.bid,b.catid,b.bookname,b.booktype,b.litpic,b.ischeck,b.postnum,b.senddate,c.id as cid,c.classname From #@__story_books b
+   left join #@__story_catalog c on c.id = b.catid where b.bid>0 $addquery $orderby
 ";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;

@@ -8,6 +8,7 @@
  */
 require_once(dirname(__FILE__)."/system/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
+$menutype = 'mydede';
 $sql = "SELECT * FROM #@__groups WHERE ishidden='0' AND uid='".$cfg_ml->M_ID."'  ORDER BY threads DESC,stime DESC";
 $dl = new DataListCP();
 $dl->pageSize = 20;

@@ -13,6 +13,7 @@
 require_once(dirname(__FILE__)."/../member/config.php");
 require_once "./include/story.func.php";
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -43,7 +44,7 @@ while($row = $dsql->GetArray())
 }
 $lastid = $row['id'];
 $contents = $dsql->GetOne("Select * From #@__story_content where id='$cid' and mid='$cfg_ml->M_ID' ");
-$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where id='{$contents['bookid']}' and mid='$cfg_ml->M_ID' ");
+$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where bid='{$contents['bookid']}' and mid='$cfg_ml->M_ID' ");
 if(!is_array($bookinfos))
 {
 	ShowMsg("参数错误！","-1");

@@ -6,6 +6,7 @@ if(!defined('DEDEINC'))
 require_once(DEDEINC."/dedetag.class.php");
 require_once(DEDEINC."/typelink.class.php");
 require_once(DEDEINC."/channelunit.func.php");
+require_once(DEDEINC.'/ftp.class.php');
 
 @set_time_limit(0);
 class RssView
@@ -16,9 +17,13 @@ class RssView
 	var $TypeFields;
 	var $MaxRow;
 	var $dtp;
+	var $ftp;
+	var $remoteDir;
+	
 	//php5构造函数
 	function __construct($typeid,$max_row=50)
 	{
+		global $ftp;
 		$this->TypeID = $typeid;
 		$this->dtp = new DedeTagParse();
 		$this->dtp->refObj = $this;
@@ -33,6 +38,8 @@ class RssView
 		$this->TypeFields['typelink'] = $GLOBALS['cfg_basehost'].$this->TypeLink->GetOneTypeUrl($this->TypeFields);
 		$this->TypeFields['powerby'] = $GLOBALS['cfg_powerby'];
 		$this->TypeFields['adminemail'] = $GLOBALS['cfg_adminemail'];
+		$this->ftp = &$ftp;
+		$this->remoteDir = '';
 		foreach($this->TypeFields as $k=>$v)
 		{
 			$this->TypeFields[$k] = htmlspecialchars($v);
@@ -58,11 +65,23 @@ class RssView
 	}
 
 	//开始创建列表
-	function MakeRss()
+	function MakeRss($isremote=0)
 	{
+		global $cfg_remote_site;
 		$murl = $GLOBALS['cfg_cmspath']."/data/rss/".$this->TypeID.".xml";
 		$mfile = $GLOBALS['cfg_basedir'].$murl;
 		$this->dtp->SaveTo($mfile);
+		//如果启用远程站点则上传
+    if($cfg_remote_site=='Y' && $isremote == 1)
+    {
+			//分析远程文件路径
+			$remotefile = $murl;
+			$localfile = '..'.$remotefile;
+			$remotedir = preg_replace('/[^\/]*\.xml/', '',$remotefile);
+			//不相等则说明已经切换目录则可以创建镜像
+			$this->ftp->rmkdir($remotedir);
+			$this->ftp->upload($localfile, $remotefile, 'acii');
+    }
 		return $murl;
 	}
 

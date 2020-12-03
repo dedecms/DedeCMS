@@ -7,6 +7,7 @@
  * @version  $Id: mygroup_skin.php,v 1.1 2009/08/04 04:07:30 blt Exp $
  */
 require_once(dirname(__FILE__)."/system/config.php");
+$menutype = 'mydede';
 $id = isset($id) && is_numeric($id) ? $id : 0;
 $action = isset($action) ? trim($action) : '';
 $skin = isset($skin) ? trim($skin) : 'default';

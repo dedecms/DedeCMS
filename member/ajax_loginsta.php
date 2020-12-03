@@ -6,12 +6,15 @@ if($myurl == '')
 	exit('');
 }
 $uid  = $cfg_ml->M_LoginID;
-$face = $cfg_ml->fields['face'] == '' ? $GLOBALS['cfg_memberurl'].'/images/nopic.gif' : $cfg_ml->fields['face'];
+
+!$cfg_ml->fields['face'] && $face = ($cfg_ml->fields['sex'] == '女')? 'dfgirl' : 'dfboy';
+$facepic = empty($face)? $cfg_ml->fields['face'] : $GLOBALS['cfg_memberurl'].'/templets/images/'.$face.'.png';
+
 ?>
 <div class="userinfo">
     <div class="welcome">你好：<strong><?php echo $cfg_ml->M_UserName; ?></strong>，欢迎登录 </div>
     <div class="userface">
-        <a href="<?php echo $cfg_memberurl; ?>/index.php"><img src="<?php echo $face;?>" width="52" height="52" /></a>
+        <a href="<?php echo $cfg_memberurl; ?>/index.php"><img src="<?php echo $facepic;?>" width="52" height="52" /></a>
     </div>
     <div class="mylink">
         <ul>

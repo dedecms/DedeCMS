@@ -25,6 +25,13 @@
     </tr>
     <tr> 
       <td height="20" bgcolor="#FAFAF1" align="center"> <input name="b112" type="button" class="coolbg np" value="开始生成HTML" onClick="document.form1.submit();" style="width:100"> 
+       <?php 
+          if($cfg_remote_site=='Y')
+          {
+       ?> 　
+             <input name="isremote" type="checkbox" id="isremote" value="1">是否同步远程发发布
+             <?php GetFtp();?>
+        <?php }?>
       </td>
     </tr>
   </form>

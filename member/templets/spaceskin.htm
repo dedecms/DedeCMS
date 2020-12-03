@@ -1,74 +1,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>空间样式设定</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
-<script type="text/javascript" language='javascript'src='js/main.js'></script>
-<style type="text/css">
-body{ padding:0; margin:0; background:url(image/default/user/bg.jpg) repeat-x #F4F4F4; } 
-*{ font-size: 12px; font-family:Tahoma,Arial,Verdana,simsun}
-td{ font:12px/160% Tahoma }
-
-a{ color:#1C6C9D; text-decoration:none}
-a:hover { text-decoration:underline}
-.c{ clear: both; height: 0px ; font:0px/0px Arial }
-.abtn{cursor:pointer;border:1px solid ;color:;padding:2px 8px;margin-right:2px;height:30px}
-/*h*/
-
-#header{ height: 49px; padding: 0 12px}
-/*old*/
-.b{border-bottom:1px solid #e0e0e0; height:20px;}
-.head { border-bottom: 1px solid #e0e0e0 }
-.head b{color: #000;}
-.head a{color: #BF3165;}
-.head_2 { border-bottom:1px solid #e0e0e0; height:20px;}
-.head_2 td{color: #000000;}
-
-
-/*a link 基本连接颜色*/
-a.active{background:#3D7DB3; color:#fff}
-
-.font-999 {color:#999;}
-.left {float:left;}
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>空间样式设定 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript'src='templets/js/main.js'></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">设置空间样式</div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li><a href="mtypes.php">分类管理</a></li>
-            <li><a href="flink_main.php">书签管理</a></li>
-            <li><a href="edit_space_info.php">空间设置</a></li>
-            <li class="select"><a href="spaceskin.php">风格选择</a></li>
-            <li><a href="uploads.php">附件管理</a></li>
-            <li><a href="edit_baseinfo.php">会员资料</a></li>
-          </ul>
-        </div>
-        <form class="mTB10 mL10 mR10" action="edit_space_info.php" method="post" enctype="multipart/form-data" name="form1">
-          <input type="hidden" name="dopost" value="save" />
-          <div class="titleBar bgGrass lineB">
-            <div class="fLeft"><strong>样式列表</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> </div>
-          </div>
-          <table cellspacing="1" class="submit">
-            <tbody>
-               <?php ListSkin(); ?>
-            </tbody>
-          
-          </table>
-        </form>
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="mtypes.php">分类管理</a></li>
+          <li><a href="flink_main.php">书签管理</a></li>
+          <li><a href="edit_space_info.php"><span>空间设置</span></a></li>
+          <li class="thisTab"><a href="spaceskin.php">风格选择</a></li>
+        </ul>
       </div>
-      <div class="clear"></div>
+      <form action="edit_space_info.php" method="post" enctype="multipart/form-data" name="form1">
+          <input type="hidden" name="dopost" value="save" />
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>样式列表</strong></h3>
+        <div style="margin-left:10px">
+          <table cellspacing="1" class="template">
+            <tbody>
+              <?php ListSkin(); ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </form>
+      <!--主操作区域 -->
     </div>
-    <div class="clear"></div>
   </div>
-</div>
 <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
 </div>
 </body>

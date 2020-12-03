@@ -3,16 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $msgtitle; ?></title>
-<link href="<?php echo $cfg_templeturl; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="<?php echo $cfg_templets_skin; ?>/style/dedecms.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body class="flinkpage">
-
 <div class="header">
 	<div class="top w960 center">
 		<div class="title">
-			<h1>
-				<h1><a href="<?php echo $cfg_basehost; ?>/"><?php echo $cfg_webname; ?></a></h1>
-			</h1>
+			<h1><a href="<?php echo $cfg_basehost;?>" title="<?php echo $cfg_webname;?>"><img src="<?php echo $cfg_templets_skin; ?>/images/logo.gif" height="40" width="233" alt=""/></a> </h1>
 		</div><!-- /title -->
 
 	</div><!-- /top -->
@@ -23,14 +20,14 @@
 		<h2>提示信息</h2>
 		<span class="more">
 			<a href="../member">[会员中心]</a>
-			&nbsp;
+			&#160;
 			<a href="../">[返回首页]</a>
 		</span>
 	</div>
   <div class="formbox" style="width:960px;">
 <table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#DDEAC8">
    <tr bgcolor="#EFF4EA">
-     <td height="28" colspan="2">&nbsp;<strong>错误具体提示信息：</strong></td>
+     <td height="28" colspan="2">&#160;<strong>错误具体提示信息：</strong></td>
    </tr>
    <tr bgcolor="#FFFFFF">
      <td height="60" colspan="2" align="center">
@@ -42,7 +39,7 @@
       	<strong>栏目名称：</strong>
       </td>
       <td width="83%" height="26">
-      	&nbsp;<?php echo $lv->Fields['typename']; ?>
+      	&#160;<?php echo $lv->Fields['typename']; ?>
       </td>
    </tr>
    <tr bgcolor="#FFFFFF">
@@ -50,7 +47,7 @@
        	<strong>栏目简介：</strong>
        </td>
        <td>
-       	&nbsp;<?php echo $lv->Fields['description']; ?>
+       	&#160;<?php echo $lv->Fields['description']; ?>
        </td>
     </tr>
  </table>
@@ -58,18 +55,20 @@
 </div>
 </div>
 
-<div class="footer">
-<p class="link">
-		网站版权信息及免责声明
-  </p>
+<!-- //底部模板 -->
+<div class="footer w960 center mt1 clear">
 	<!-- 
 		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
 		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
 	-->
-	<p class="powered">
-		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
-	</p><!-- /powered -->
+    <div class="footer_left"></div>
+    <div class="footer_body">
+    <span class="gotop"><a href="javascript:scroll(0,0)"><img src="<?php echo $cfg_templets_skin; ?>/images/top.gif" height="11" width="61" alt="返回顶部"/></a></span>
+	<p class="powered">    
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>DedeCMS<?php echo $cfg_version; ?></strong></a> &copy; 2004-2010 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.<br /><div class="copyright"><?php echo $cfg_powerby; ?>&nbsp;&nbsp;<?php echo $cfg_beian; ?></div></p>        
+<!-- /powered -->
+   </div>
+   <div class="footer_right"></div>
 </div>
-
 </body>
 </html>

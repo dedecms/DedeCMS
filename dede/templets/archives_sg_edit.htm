@@ -119,7 +119,7 @@ function checkSubmit()
             	&nbsp;           </td>
             <td width="500">
              <input name="picname" type="text" id="picname" style="width:280px" value="<?php echo $addRow["litpic"]; ?>"><input type="button" name="Submit" value="浏览..." style="width:60px" onClick="SelectImage('form1.picname','');" />
-             <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onclick="imageCut('picname');" class='np coolbg'/>
+             <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
              <input type='checkbox' class='np' name='ddisremote' value='1' />
              远程
              </td>
@@ -148,8 +148,14 @@ function checkSubmit()
             echo $typeOptions;
             echo "</select>";
 			     ?>
-			     <img src='img/menusearch.gif' style='cursor:pointer' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $addRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
-			     </td>
+			     <img src='img/menusearch.gif' style='cursor:pointer' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $addRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
+			     <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  </td>
           </tr>
       </table></td>
     </tr>

@@ -1,6 +1,8 @@
 <?php
-include_once(dirname(__FILE__).'/config.php');
-
+if(!isset($cfg_basedir))
+{
+	include_once(dirname(__FILE__).'/config.php');
+}
 if(empty($uploadfile)) $uploadfile = '';
 if(empty($uploadmbtype)) $uploadmbtype = '软件类型';
 if(empty($bkurl)) $bkurl = 'select_soft.php';
@@ -12,13 +14,13 @@ if(!is_uploaded_file($uploadfile))
 	exit();
 }
 
-//软件类型为所有支持的附件
-$cfg_softtype = $cfg_softtype.'|'.$cfg_imgtype.'|'.$cfg_mediatype;
+//软件类型所有支持的附件
+$cfg_softtype = $cfg_softtype;
 $cfg_softtype = str_replace('||', '|', $cfg_softtype);
 $uploadfile_name = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}",'',$uploadfile_name));
 if(!eregi("\.(".$cfg_softtype.")", $uploadfile_name))
 {
-	ShowMsg("你所上传的{$uploadmbtype}不在许可列表，请更改系统对扩展名限定的配置！","-1");
+	ShowMsg("你所上传的{$uploadmbtype}不在许可列表，请更改系统对扩展名限定的配置！","");
 	exit();
 }
 
@@ -46,9 +48,7 @@ if(!empty($newname))
 		exit();
 	}
 	if(!ereg("\.", $filename)) $filename = $filename.'.'.$fs[count($fs)-1];
-}
-else
-{
+}else{
 	$filename = $cuserLogin->getUserID().'-'.dd2char(MyDate('ymdHis',$nowtme));
 	$fs = explode('.', $uploadfile_name);
 	if(eregi($cfg_not_allowall, $fs[count($fs)-1]))
@@ -63,6 +63,16 @@ $fullfilename = $cfg_basedir.$activepath.'/'.$filename;
 $fullfileurl = $activepath.'/'.$filename;
 move_uploaded_file($uploadfile,$fullfilename) or die("上传文件到 $fullfilename 失败！");
 @unlink($uploadfile);
+if($cfg_remote_site=='Y' && $remoteuploads == 1)
+{
+	//分析远程文件路径
+	$remotefile = str_replace(DEDEROOT, '', $fullfilename);
+	$localfile = '../..'.$remotefile;
+	//创建远程文件夹
+	$remotedir = preg_replace('/[^\/]*\.('.$cfg_softtype.')/', '', $remotefile);
+	$ftp->rmkdir($remotedir);
+	$ftp->upload($localfile, $remotefile);
+}
 
 if($uploadfile_type == 'application/x-shockwave-flash')
 {

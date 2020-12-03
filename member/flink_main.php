@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'config';
 if($cfg_mb_lit=='Y')
 {
 	ShowMsg("由于系统开启了精简版会员空间，你访问的功能不可用！","-1");
@@ -95,11 +96,11 @@ function GetLinkList($dsql)
 <div class='item flink'>
   <div class='itemHead' >
     <div class='fRight'>
-    <span class='itemDigg'><a href='#' onclick='UpdateType({$row['aid']})'>[更新]</a></span>
-    <span class='itemManage'><a href='#' onclick='DelType({$row['aid']})'>[删除]</a></span>
+      <span class='itemDigg'><a href='#' onclick='UpdateType({$row['aid']})'>[更新]</a></span>
+      <span class='itemManage'><a href='#' onclick='DelType({$row['aid']})'>[删除]</a></span>
     </div>
-    <span class='itemTitle'>名称：<input name='title{$row['aid']}' type='text' id='title{$row['aid']}' value='{$row['title']}' class='text' /></span>
-    <div class=' mT10'>网址：<input name='url{$row['aid']}' type='text' id='url{$row['aid']}' value='{$row['url']}' class='text' /></div>
+    <span class='itemTitle'>名称：<input name='title{$row['aid']}' type='text' id='title{$row['aid']}' value='{$row['title']}' class='intxt' /></span>
+    <div class='mt5'>网址：<input name='url{$row['aid']}' type='text' id='url{$row['aid']}' value='{$row['url']}' class='intxt' /></div>
   </div>
 </div>
 <hr class='dotted' />";

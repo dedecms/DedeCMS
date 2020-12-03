@@ -194,10 +194,11 @@ class OxWindow
 function ShowMsgWin($msg,$title)
 {
 	$win = new OxWindow();
+	$win->Init();
+	$win->mainTitle = "DeDeCms系统提示：";
 	$win->AddTitle($title);
-	$win->AddMsgItem("<div style='padding-left:20px;line-height:150%'>{$msg}</div>");
-	$winform = $win->GetWindow("hand","&nbsp;",false);
+	$win->AddMsgItem("<div style='padding-left:20px;line-height:150%'>$msg</div>");
+	$winform = $win->GetWindow("hand");
 	$win->Display();
 }
-
 ?>

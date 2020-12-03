@@ -59,7 +59,6 @@ $dh = dir($inpath);
 $ty1="";
 $ty2="";
 while($file = $dh->read()) {
-
 	//-----计算文件大小和创建时间
 	if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
 		$filesize = filesize("$inpath/$file");
@@ -102,11 +101,16 @@ while($file = $dh->read()) {
    </tr>";
 		echo "$line";
 	}
-	else if(eregi("\.(swf|fly|fla)",$file)){
+	else if(eregi("\.(swf|fly|fla|flv)",$file)){
 
 		$reurl = "$activeurl/$file";
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		if($file==$comeback) $lstyle = " style='color:red' ";
 		else  $lstyle = "";
@@ -120,11 +124,16 @@ while($file = $dh->read()) {
    </tr>";
 		echo "$line";
 	}
-	else if(eregi("\.(wmv|api)",$file)){
+	else if(eregi("\.(wmv|avi)",$file)){
 
 		$reurl = "$activeurl/$file";
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		if($file==$comeback) $lstyle = " style='color:red' ";
 		else  $lstyle = "";
@@ -142,7 +151,12 @@ while($file = $dh->read()) {
 
 		$reurl = "$activeurl/$file";
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		if($file==$comeback) $lstyle = " style='color:red' ";
 		else  $lstyle = "";
@@ -160,7 +174,12 @@ while($file = $dh->read()) {
 
 		$reurl = "$activeurl/$file";
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		if($file==$comeback) $lstyle = " style='color:red' ";
 		else  $lstyle = "";

@@ -2,7 +2,8 @@
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 
 $action = isset($action) ? trim($action) : '';
-$id = (isset($id) && is_numeric($id)) ? $id : 0;
+$id = empty($id)? 0 : intval(preg_replace("/[^\d]/",'', $id));
+
 $maintable = '#@__archives';
 if($action == 'good')
 {

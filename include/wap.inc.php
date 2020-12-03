@@ -30,7 +30,7 @@ function html2wml($content)
      // 过滤掉剩下的 HTML 标签
      $content = strip_tags($content);
      // 将 HTML 中的实体（entity）转化为它所对应的字符
-     $content = html_entity_decode($content, ENT_QUOTES, "UTF-8");
+     $content = html_entity_decode($content, ENT_QUOTES, "GB2312");
      // 过滤掉不能转化的实体（entity）
      $content = preg_replace('/\&\#.*?\;/i', '', $content);
      // 上面是将 HTML 网页内容转化为带换行的纯文本，下面是将这些纯文本转化为 WML。

@@ -165,6 +165,7 @@ if($topid>0)
 		}
 	}
 }
+$myrow['content']=empty($myrow['content'])? "&nbsp;" : $myrow['content'];
 
 //读取频道模型信息
 $channelid = $myrow['channeltype'];

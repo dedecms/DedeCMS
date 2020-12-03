@@ -31,6 +31,16 @@ if($dopost=='del')
 		else
 		{
 			$rs = @unlink($truefile);
+			//如果开启远程附件则需要同步删除文件
+      if($cfg_remote_site=='Y')
+      {
+      	if($ftp->connect($ftpconfig) && $remoteuploads == 1)
+      	{
+      		$remotefile = str_replace(DEDEROOT, '', $truefile);
+      		$ftp->delete_file($remotefile);
+      	}
+      }
+			
 		}
 		if($rs==1)
 		{
@@ -57,6 +67,12 @@ if($dopost=='del')
 		}
 		$dsql->SetQuery("Select aid,url From #@__uploads $idquery ");
 		$dsql->Execute();
+		
+		//如果开启远程附件则需要同步删除文件
+    if($cfg_remote_site=='Y' && $remoteuploads == 1)
+    {
+    	$ftp->connect($ftpconfig);
+    }
 		while($myrow=$dsql->GetArray())
 		{
 			$truefile = $cfg_basedir.$myrow['url'];
@@ -68,6 +84,11 @@ if($dopost=='del')
 			else
 			{
 				$rs = @unlink($truefile);
+				if($cfg_remote_site=='Y' && $remoteuploads == 1)
+        {
+        	$remotefile = str_replace(DEDEROOT, '', $truefile);
+        	$ftp->delete_file($remotefile);
+        }
 			}
 			if($rs==1)
 			{

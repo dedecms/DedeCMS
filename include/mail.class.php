@@ -39,7 +39,7 @@ class smtp
 	}
 
 	/* Main Function */
-	function sendmail($to, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "")
+	function sendmail($to,$webname, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "")
 	{
 		$mail_from = $this->get_address($this->strip_comment($from));
 		$body = ereg_replace("(^|(\r\n))(\.)", "\1.\3", $body);
@@ -48,14 +48,13 @@ class smtp
 		{
 			$header .= "Content-Type:text/html\r\n";
 		}
-		$header .= "To: ".$to."\r\n";
 		if ($cc != "")
 		{
 			$header .= "Cc: ".$cc."\r\n";
 		}
 		
-		$header .= "From: $from<".$from.">\r\n";
-		$subject  = "=?".$GLOBALS['cfg_soft_lang']."?B?".base64_encode($subject)."?="; 
+		$header .= "From: $webname<".$from.">\r\n";
+		$subject  = "=?".$GLOBALS['cfg_soft_lang']."?B?".base64_encode($subject)."?=";
 		$header .= "Subject: ".$subject."\r\n";
 		$header .= $additional_headers;
 		$header .= "Date: ".date("r")."\r\n";
@@ -74,6 +73,8 @@ class smtp
 		$sent = TRUE;
 		foreach ($TO as $rcpt_to)
 		{
+			$headerto= "To: ".$rcpt_to."\r\n";
+			$headerall=$header.$headerto;
 			$rcpt_to = $this->get_address($rcpt_to);
 			if (!$this->smtp_sockopen($rcpt_to))
 			{
@@ -81,7 +82,7 @@ class smtp
 				$sent = FALSE;
 				continue;
 			}
-			if ($this->smtp_send($this->host_name, $mail_from, $rcpt_to, $header, $body))
+			if ($this->smtp_send($this->host_name, $mail_from, $rcpt_to, $headerall, $body))
 			{
 				$this->log_write("E-mail has been sent to <".$rcpt_to.">\n");
 			}

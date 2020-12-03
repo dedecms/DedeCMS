@@ -11,10 +11,11 @@
 function CheckLogin(){
   var taget_obj = document.getElementById('book_welcome');
   myajax = new DedeAjax(taget_obj,false,false,"","","");
-  myajax.SendGet2("{dede:global name="cfg_cmsurl"/}/book/loginsta.php");
+  myajax.SendGet2("{dede:global name='cfg_cmsurl'/}/book/loginsta.php");
   myajax = null;
 }
 </script>
+<link href="../../images/book_style.css" rel="stylesheet" type="text/css" />
 </head>
 <body onload="CheckLogin()">
 <div id="container">
@@ -60,7 +61,7 @@ function CheckLogin(){
     <div id="main">
    	  <div id="book_main">
         	<div id="book_index">
-            当前位置：<a href="{dede:global name='cfg_cmsurl'/}">主页</a> &gt; <a href="{dede:global name='cfg_cmsurl'/}/book">连载频道</a> &gt; {dede:position /}
+            当前位置：<a href="{dede:global name='cfg_cmspath'/}/book">主页</a> >
             </div>
     <div id="book_left"><!--左边开始-->
            	  <div class="book_left_main">
@@ -147,9 +148,9 @@ function CheckLogin(){
                         </ul>
                     </div>
                     <div class="book_news_style">
-                    	{dede:booklist row='4' titlelen='24' orderby='id'}
+                    	{dede:booklist row='4' titlelen='24' orderby='bid'}
 <div class="book_news_style_form">
-                        	<div class="book_news_style_img"><a href="[field:bookurl/]"><img src="[field:litpic/]" width="80" height="100" alt="[field:bookname/]"/></a>                      </div>
+                        	<div class="book_news_style_img"><a href="[field:bookurl/]">[field:litpic runphp='yes']@me = ((@me=="") ? "<img src='/images/defaultpic.gif' width='80' height='100'/>" : "<img src='@me' width='80' height='100'>"); [/field:litpic]</a></div>
                     <div class="book_news_style_text"><h1><a href='[field:bookurl/]'>[field:title/]</a></h1><h2>作者：<a href='search.php?author=[field:author/]'>[field:author/]</a></h2>
                             <h3>[field:description function="cn_substr(@me,60)"/]…</h3>
                             </div>
@@ -182,8 +183,7 @@ function CheckLogin(){
                         <dd class="news_book">[field:contentlink/]</dd>
                         <dd class="time_book">[field:lastpost function="GetDateMk(@me)"/]</dd>
                         </dl>
-                        <div class="clear">
-                        </div>
+                        <div class="clear"></div>
                   	</div>
                     {/dede:contentlist}
                   </div>
@@ -195,7 +195,7 @@ function CheckLogin(){
     </div>
 <!--中间结束-->
     <div class="book_footer">
-        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2010  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
     </div>
     <div class="clear">
     </div>

@@ -1,4 +1,4 @@
-﻿var dialog		= window.parent ;
+var dialog		= window.parent ;
 var oEditor		= dialog.InnerDialogLoaded() ;
 var FCK			= oEditor.FCK ;
 var FCKLang		= oEditor.FCKLang ;

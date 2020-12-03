@@ -125,9 +125,11 @@ function checkSubmit()
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;TAG标签：</td>
-          <td>
+          <td width="526">
           	<input name="tags" type="text" id="tags" value="" style="width:300px" />(','号分开，单个标签小于12字节)
           </td>
+          <td width="47">权重：</td>
+          <td width="122"><input name="weight" type="text" id="weight" style="width:50px" value="<?php echo $maxWright['cc'];?>" />(越小越靠前)</td>
         </tr>
       </table>
       </td>
@@ -145,7 +147,7 @@ function checkSubmit()
                   <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
                   <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'archives_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
-                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onclick="imageCut('picname');" class='np coolbg'/>
+                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
                   <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
                   </td>
                 </tr>
@@ -180,7 +182,7 @@ function checkSubmit()
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			<img src='img/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
 			&nbsp;
 			<?php
 			if($cfg_need_typeid2=='Y')
@@ -188,7 +190,13 @@ function checkSubmit()
 				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
 			}
 			?>
-			  </td>
+			  <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  </td>
         </tr>
       </table>
       </td>
@@ -200,7 +208,7 @@ function checkSubmit()
           <td width="90">&nbsp;文档副栏目：</td>
           <td>
           <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
-          <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
+          <img src='img/menusearch2.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
 			    </td>
         </tr>
         </table>
@@ -316,7 +324,7 @@ function checkSubmit()
 			$nowtime = GetDateTimeMk(time());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>          </td>
-          <td width="90">消费点数：</td>
+          <td width="90">消费金币：</td>
           <td width="379"><input name="money" type="text" id="money" value="0" size="10">          </td>
         </tr>
       </table></td>

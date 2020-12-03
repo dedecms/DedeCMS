@@ -17,6 +17,7 @@ require_once(DEDEMEMBER."/inc/inc_catalog_options.php");
 require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
 $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 2;
 $aid = isset($aid) && is_numeric($aid) ? $aid : 0;
+$menutype = 'content';
 if(empty($formhtml))
 {
 	$formhtml = 0;
@@ -60,6 +61,16 @@ function _Save(){  }
 ------------------------------*/
 else if($dopost=='save')
 {
+	$svali = GetCkVdValue();
+	if(preg_match("/1/",$safe_gdopen)){
+		if(strtolower($vdcode)!=$svali || $svali=='')
+		{
+			ResetVdValue();
+			ShowMsg('验证码错误！', '-1');
+			exit();
+		}
+		
+	}
 	$maxwidth = isset($maxwidth) && is_numeric($maxwidth) ? $maxwidth : 800;
 	$pagepicnum = isset($pagepicnum) && is_numeric($pagepicnum) ? $pagepicnum : 12;
 	$ddmaxwidth = isset($ddmaxwidth) && is_numeric($ddmaxwidth) ? $ddmaxwidth : 200;
@@ -180,6 +191,10 @@ else if($dopost=='save')
 				if($v=='')
 				{
 					continue;
+				}else if($v == 'templet')
+				{
+					ShowMsg("你保存的字段有误,请检查！","-1");
+					exit();	
 				}
 				$vs = explode(',',$v);
 				if(!isset(${$vs[0]}))

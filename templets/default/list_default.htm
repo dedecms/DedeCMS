@@ -5,7 +5,17 @@
 <title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript">
+<!--
+function check(){
+		if(document.formsearch.searchtype.value=="")
+		document.formsearch.action="http://www.google.cn/custom"
+		else
+		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
+	} 
+-->
+</script>
 </head>
 <body class="articlelist">
 {dede:include filename="head.htm"/}
@@ -16,9 +26,6 @@
 	{dede:channel currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
 		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
 	</div>
-	<span class="back">
-		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
-	</span>
 </div><!-- /channel-nav -->
 
 <div class="w960 center clear mt1">

@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>邮件列表文件管理</title>
+<link href="img/base.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.rb{ border-right:1px solid #98CAEF }
+.tb{ border-top:1px solid #98CAEF }
+.current {border:1px solid #dbe4cd;padding:5px;background:#FFFEF4;color:#FF0000;}
+</style>
+</head>
+<body>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#dbe4cd;">
+  <tr bgcolor="#CCCCCC" height="28" align="center">
+  <td width="28%" background="img/wbg.gif" class='linerow'><strong>文件名</strong></td>
+  <td width="16%" class='linerow' background="img/newlinebg3.gif"><strong>文件大小</strong></td>
+  <td width="22%" background="img/wbg.gif" class='linerow'><strong>创建时间</strong></td>
+  <td width="34%" class='linerow' background="img/newlinebg3.gif"><strong>操作</strong></td>
+</tr>
+<?php
+$dh = dir($inpath);
+$ty1="";
+$ty2="";
+$files = $dirs = array();
+while(($file = $dh->read()) !== false)
+{
+	if($file!="." && $file!=".." && !is_dir("$inpath/$file"))
+	{
+		@$filesize = filesize("$inpath/$file");
+		@$filesize=$filesize/1024;
+		@$filetime = filemtime("$inpath/$file");
+		@$filetime = MyDate("Y-m-d H:i:s",$filetime);
+		if($filesize<0.1)
+		{
+			@list($ty1,$ty2)=explode(".",$filesize);
+			$filesize=$ty1.".".substr($ty2,0,2);
+		}
+		else
+		{
+			@list($ty1,$ty2)=explode(".",$filesize);
+			$filesize=$ty1.".".substr($ty2,0,1);
+		}
+	}
+	
+	if(!is_dir("$inpath/$file"))
+	{
+        $line = "\n<tr bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+        <td align='center' class='linerow'>$file</td>
+        <td align='center' class='linerow'>$filesize KB</td>
+        <td align='center' class='linerow'>$filetime</td>
+        <td align='center' class='linerow'>
+        <a href='mail_file_manage.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath."/data/mail")."'>[删除]</a>
+        </td>
+        </tr>";
+		$files[] = $line;
+	}
+}
+$dh->close();
+foreach ($files as $file)
+{
+	echo $file;
+}
+?>
+</table>
+</body>
+</html>

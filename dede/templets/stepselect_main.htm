@@ -228,7 +228,7 @@ if(!empty($egroup))
 <INPUT TYPE="hidden" NAME="egroup" value="<?php echo $arr['egroup']; ?>" />
 <div style='float:left;'>
 <b>&nbsp;隶属分类：</b>
-<select name='topvalue' style='width:130px' onchange="ChangePage2(this)">
+<select name='topvalue' style='width:130px' onChange="ChangePage2(this)">
 <option value='0'><?php echo $selgroup; ?>...</option>
 <?php echo $options; ?>
 </select>
@@ -344,7 +344,7 @@ else
       <td>操作</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';" 
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';" 
     	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
     	  <td><input type='checkbox' name='ids[]' value='{dede:field.id /}' class='np' /></td>
         <td> {dede:field.id /} </td>

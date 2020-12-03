@@ -44,7 +44,7 @@ myajax = null;
             	<div id="book_go">
                 </div>
                 <ul>
-                    <li><a href='{dede:global name='cfg_cmsurl'/}'>主页</a></li>
+                    <li><a href='{dede:global name='cfg_cmspath'/}/book'>主页</a></li>
         			{dede:catalog}
                     <li><a href="{in:field name='url'}{/in:field}">{in:field name='classname'}{/in:field}</a></li>
         			{/dede:catalog}
@@ -61,8 +61,8 @@ myajax = null;
     <div id="main">
     	<div id="book_middle">
        	  <div class="book_middle_article">
-           	<div class="book_middle_title">当前位置：<a href="{dede:global name='cfg_cmsurl'/}">主页</a> &gt; <a href="{dede:global name='cfg_cmsurl'/}/book">连载频道</a> &gt;
-        <a href='{dede:field name='bookurl'/}'>{dede:field name='bookname'/}</a> &gt;
+           	<div class="book_middle_title">a href="">当前位置：<a href="{dede:global name='cfg_cmspath'/}/book">主页</a> > <a href="/book/list.php?id={dede:field name='id'/}">{dede:field name='classname'/}</a> >
+        <a href='{dede:field name='bookurl'/}'>{dede:field name='bookname'/}</a> >
         第 {dede:field name='chapnum'/} 章 {dede:field name='chaptername'/}
             </div>
                 <div class="book_middle_text">
@@ -92,7 +92,7 @@ myajax = null;
     </div>
 <!--中间结束-->
     <div class="book_footer">
-        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />    
+        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2010  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />    
     </div>
     <div class="clear">
     </div>

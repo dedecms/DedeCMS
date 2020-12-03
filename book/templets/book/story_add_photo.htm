@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>新增连载内容</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 <script language="javascript" type="text/javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript" type="text/javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="story.js"></script>
@@ -55,33 +55,33 @@ function MakeUpload(mnum)
 }
 </script>
 </head>
-<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
-
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location"><span class="fLeft">《<?php echo $bookname; ?>》<i>|</i><a href='../book/book.php?id=<?php echo $bookid; ?>' target='_blank'>查看</a></span><span class="fRight mR10 titPublish icon"><a href='story_list_content.php?bookid=<?php echo $bookid; ?>'>内容列表</a></span>
-          <div class="clear"></div>
-        </div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li class="select"><a href="mybooks.php">连载书目</a></li>
-            <li><a href="story_list_content.php">连载内容</a></li>
-          </ul>
-        </div>
+<body>
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mybooks.php"><span>连载书目</span></a></li>
+          <li><a href="story_list_content.php"><span>连载内容</span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li <?php echo ($arcrank=='')? "class='thisTab'" : "";?>><a href="story_add_content.php?bookid=<?php echo $bookid; ?>"><span>新增连载</span></a></li>
+        <li <?php echo ($arcrank=='1')? "class='thisTab'" : "";?>><a href="story_list_content.php?bookid=<?php echo $bookid; ?>"><span>连载内容</span></a></li>
+        <li <?php echo ($arcrank=='-1')? "class='thisTab'" : "";?>><a href="story_list_chapter.php?bookid=<?php echo $bookid; ?>"><span>书目章节</span></a></li>
+        <li <?php echo ($arcrank=='-2')? "class='thisTab'" : "";?>><a href="story_edit.php?bookid=<?php echo $bookid; ?>"><span>书目资料</span></a></li>
+      </ul>
+      <div id="mainCp">
+      <h3 class="meTitle"><strong>&nbsp;新增书目</strong></h3>        
         <form class="mL10 mR10 mTB10" action='story_add_photo_action.php' enctype="multipart/form-data" method='post' onsubmit="return checkSubmitAddPhoto();">
-          <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>新增连载</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em class="mR10"> <a href='story_add_photo.php?bookid=<?php echo $bookid; ?>'>新增连载</a> </em> <em class="mR10"> <a href="story_list_content.php?bookid=<?php echo $bookid; ?>">连载内容</a> </em> <em class="mR10"> <a href="story_list_chapter.php?bookid=<?php echo $bookid; ?>">书目章节</a> </em> <em class="mR10"> <a href="story_edit.php?bookid=<?php echo $bookid; ?>">书目资料</a> </em></div>
-          </div>
           <input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />
           <input type='hidden' name='catid' value='<?php echo $catid; ?>' />
           <input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
           <input type='hidden' name='booktype' value='<?php echo $booktype; ?>' />
           <input type='hidden' name='photonum' value='5' />
-          <table cellspacing="1" class="submit">
+          <table cellspacing="1" class="submit" width="100%">
             <thead>
               <tr>
                 <th colspan="2" ><strong>新增连载</strong></th>
@@ -142,11 +142,15 @@ function MakeUpload(mnum)
             <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button>
           </div>
         </form>
+        </div>
+        <!--主操作区域 -->
       </div>
-      <div class="clear"></div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
-</body></html>
+</body>
+</html>
+
+

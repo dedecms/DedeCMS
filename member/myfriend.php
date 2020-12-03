@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
+$menutype_son = 'mf';
 if($cfg_mb_lit=='Y')
 {
 	ShowMsg("由于系统开启了精简版会员空间，你访问的功能不可用！","-1");
@@ -78,26 +80,24 @@ else if($dopost=='del')
 }
 
 //浏览
-else
-{
+else{
 	$wsql = '';
 	if(empty($ftype))
 	{
-		$wsql = " mid='{$cfg_ml->M_ID}' And ftype <>  '-1' ";
+		$wsql = " F.mid='{$cfg_ml->M_ID}' And F.ftype <>  '-1' ";
 		$tname = "所有好友";
 	}
 	else if($ftype==1)
 	{
-		$wsql = " mid='{$cfg_ml->M_ID}' And ftype =  '1' ";
+		$wsql = " F.mid='{$cfg_ml->M_ID}' And F.ftype =  '1' ";
 		$tname = "特别关注";
 	}
 	else if($ftype==-1)
 	{
-		$wsql = " mid='{$cfg_ml->M_ID}' And ftype =  '-1' ";
+		$wsql = " F.mid='{$cfg_ml->M_ID}' And F.ftype =  '-1' ";
 		$tname = "黑名单";
 	}
-
-	$query = "Select * From `#@__member_friends` where  $wsql order by id desc";
+	$query = "Select F.*,G.groupname From `#@__member_group` AS G  LEFT JOIN #@__member_friends AS F ON F.groupid=G.id where $wsql order by F.id desc";
 	$dlist = new DataListCP();
 	$dlist->pageSize = 20;
 	$dlist->SetParameter("ftype",$ftype);
@@ -109,15 +109,20 @@ else
 function getUserInfo($uid,$_field = 'uname')
 {
 	global $dsql;
-	$row = $dsql->GetOne("SELECT M.*,S.spacename,S.sign FROM #@__member AS M LEFT JOIN #@__member_space AS S ON M.mid=M.mid WHERE M.mid='$uid'");
+	$row = $dsql->GetOne("SELECT M.*,YEAR(CURDATE())-YEAR(P.birthday) as age,DATE_FORMAT(P.birthday,'%e月%d日出生') as birthday,S.spacename,S.sign FROM #@__member AS M 
+						   LEFT JOIN #@__member_person AS P ON P.mid=M.mid
+						   LEFT JOIN #@__member_space AS S ON M.mid=M.mid WHERE M.mid='$uid'");
 	if(isset($row[$_field]))
 	{
 		if($_field == 'face')
 		{
-			$row[$_field] = empty($row[$_field]) ? 'images/dfboy.gif' : $row[$_field];
+			if(empty($row[$_field])){
+				$row[$_field]=($row['sex']=='女')? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
+		    }
 		}
 		return $row[$_field];
 	}
 	else return '';
 }
+
 ?>

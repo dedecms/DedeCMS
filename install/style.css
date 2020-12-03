@@ -8,6 +8,7 @@ body{
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:12px;
 	background:url(images/top-bg.png) left top repeat-x;
+	background-color:#FFF;
 }
 ul{
 	list-style:none;
@@ -242,6 +243,22 @@ input,button,select{
 	color:#333;
 	display:block;
 	float:left;
+	margin-right:20px;
+	text-decoration:none;
+}
+
+.olink a{
+	line-height:14px;
+	padding:2px 20px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#EEE #CCC #CCC #EEE;
+	background:#EAF4DD;
+	color:#333;
+	display:block;
+	margin-left:8px;
+	float:left;
+	width:55px;
 	margin-right:20px;
 	text-decoration:none;
 }

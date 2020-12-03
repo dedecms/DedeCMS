@@ -64,12 +64,10 @@ else
 	{
 		$sql .= " PRIMARY KEY  (`id`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language."; ";
 	}
-	$dsql->setquery($sql);
-	if($dsql->executenonequery())
+	if($dsql->executenonequery($sql))
 	{
 		$query = "insert into #@__diyforms (`diyid`, `name`, `table`, `info`, `listtemplate`, `viewtemplate`, `posttemplate`, `public` ) values ('$diyid', '$name', '$table', '', '$listtemplate', '$viewtemplate', '$posttemplate', '$public')";
-		$dsql->SetQuery($query);
-		$dsql->executenonequery();
+		$dsql->executenonequery($query);
 		showmsg('自定义表单创建成功，请自行添加字段', 'diy_main.php');
 	}
 	else

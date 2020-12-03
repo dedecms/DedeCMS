@@ -42,6 +42,7 @@ if($dopost!='save')
 	$irow = $addRow["row"];
 	$icol = $addRow["col"];
 	$isrm = $addRow["isrm"];
+	$body = $addRow["body"];
 	$ddmaxwidth = $addRow["ddmaxwidth"];
 	$pagepicnum = $addRow["pagepicnum"];
 	$tags = GetTags($aid);
@@ -105,9 +106,11 @@ else if($dopost=='save')
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,$cfg_auot_description);
+	$description = cn_substrR($description,250);
 	$keywords = trim(cn_substrR($keywords,60));
 	$filename = trim(cn_substrR($filename,40));
+	$isremote  = (empty($isremote)? 0  : $isremote);
+	$serviterm=empty($serviterm)? "" : $serviterm;
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
 		$arcrank = -1;
@@ -120,6 +123,9 @@ else if($dopost=='save')
 		$ddisremote = 0;
 	}
 	$litpic = GetDDImage('none',$picname,$ddisremote);
+	
+	//分析body里的内容
+	$body = AnalyseHtmlBody($body,$description,$litpic,$keywords,'htmltext');
 
 	//处理图片文档的自定义属性
 	if($litpic!='' && !ereg('p',$flag))
@@ -196,7 +202,7 @@ else if($dopost=='save')
 			$imginfos = @GetImageSize($imgfile, $info);
 			if($ddurl==$iurl)
 			{
-				$litpicname = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : '';
+				$litpicname = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : $iurl;
 				$litimgfile = $cfg_basedir.$litpicname;
 			}
 			else
@@ -215,7 +221,7 @@ else if($dopost=='save')
 			$ddurl = stripslashes(${'imgddurl'.$i});
 			if(preg_match("/swfupload/i", $ddurl))
 			{
-				$ddurl = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : '';
+				$ddurl = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : $iurl;
 			}
 			$imginfos = @GetImageSize($imgfile, $info);
 			$imgurls .= "{dede:img ddimg='$ddurl' text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
@@ -269,7 +275,7 @@ else if($dopost=='save')
 				unlink($imgold);
 				if(is_file($imgfile))
 				{
-					$litpicname = $pagestyle > 2 ? GetImageMapDD($iurl,$cfg_ddimg_width) : '';
+					$litpicname = $pagestyle > 2 ? GetImageMapDD($iurl,$cfg_ddimg_width) : $iurl;
 					$info = '';
 					$imginfos = GetImageSize($imgfile,$info);
 					$imgurls .= "{dede:img ddimg='$litpicname' text='' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
@@ -310,7 +316,7 @@ else if($dopost=='save')
 			if(strlen($v)<2 || !file_exists($truefile)) continue;
 			$info = '';
 			$imginfos = GetImageSize($truefile, $info);
-			$litpicname = $pagestyle > 2 ? GetImageMapDD($v, $cfg_ddimg_width) : '';
+			$litpicname = $pagestyle > 2 ? GetImageMapDD($v, $cfg_ddimg_width) : $v;
 			$imginfo =  !empty(${'picinfook'.$k}) ? ${'picinfook'.$k} : '';
 			$imgurls .= "{dede:img ddimg='$litpicname' text='$imginfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $v {/dede:img}\r\n";
 		}
@@ -359,6 +365,7 @@ else if($dopost=='save')
 		$query = "Update `$addtable`
       	set typeid='$typeid',
       	pagestyle='$pagestyle',
+		body='$body',
       	maxwidth = '$maxwidth',
       	ddmaxwidth = '$ddmaxwidth',
       	pagepicnum = '$pagepicnum',
@@ -378,7 +385,17 @@ else if($dopost=='save')
 
 	//生成HTML
 	UpIndexKey($id,$arcrank,$typeid,$sortrank,$tags);
-	$arcUrl = MakeArt($id,true,true);
+	if($cfg_remote_site=='Y' && $isremote=="1")
+	{	
+		if($serviterm!=""){
+			list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+			$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+		}else{
+			$config=array();
+		}
+		if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+	}
+	$arcUrl = MakeArt($id,true,true,$isremote);
 	if($arcUrl=='')
 	{
 		$arcUrl = $cfg_phpurl."/view.php?aid=$id";

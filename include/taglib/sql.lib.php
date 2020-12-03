@@ -48,7 +48,11 @@ function lib_sql(&$ctag,&$refObj)
 				}
 				else
 				{
-					if( !empty($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]); 
+					if( !empty($row[$ctag->GetName()])) { 
+						$ctp->Assign($tagid,$row[$ctag->GetName()]); 
+				  }else{ 
+				  	$ctp->Assign($tagid,""); 
+				  }
 				}
 		}
 		$revalue .= $ctp->GetResult();

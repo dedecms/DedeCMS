@@ -52,7 +52,9 @@ $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_On
   <m:item name='系统基本参数' link='sys_info.php' rank='sys_Edit' target='main' />
   <m:item name='系统用户管理' link='sys_admin_user.php' rank='sys_User' target='main' />
   <m:item name='用户组设定' link='sys_group.php' rank='sys_Group' target='main' />
+  <m:item name='服务器分布/远程' link='sys_multiserv.php' rank='sys_Group' target='main' />
   <m:item name='系统日志管理' link='log_list.php' rank='sys_Log' target='main' />
+  <m:item name='验证安全设置' link='sys_safe.php' rank='sys_verify' target='main' />
   <m:item name='图片水印设置' link='sys_info_mark.php' rank='sys_Edit' target='main' />
   <m:item name='自定义文档属性' link='content_att.php' rank='sys_Att' target='main' />
   <m:item name='软件频道设置' link='soft_config.php' rank='sys_SoftConfig' target='main' />
@@ -72,14 +74,13 @@ $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_On
   <m:item name='会员产品分类' link='member_type.php' rank='sys_Data' target='main' />
   <m:item name='会员消费记录' link='member_operations.php' rank='sys_Data' target='main' />
   <m:item name='商店订单记录' link='shops_operations.php' rank='sys_Data' target='main' />
-  <m:item name='支付接口设置' link='sys_info_pay.php' rank='sys_Data' target='main' />
+  <m:item name='支付接口设置' link='sys_payment.php' .php' rank='sys_Data' target='main' />
   <m:item name='配货方式设置' link='shops_delivery.php' rank='sys_Data' target='main' />
-  <m:item name='汇款账号设置' link='shops_bank.php' rank='sys_Data' target='main' />
 </m:top>
 
 	";
 }
-
+$remoteMenu = ($cfg_remote_site=='Y')? "<m:item name='远程服务器同步' link='makeremote_all.php' rank='sys_ArcBatch' target='main' />" : "";
 $menusMain = "
 -----------------------------------------------
 
@@ -127,6 +128,7 @@ $adminMenu1
 <m:top item='5_' name='自动任务' notshowall='1'  display='block' rank='sys_MakeHtml'>
   <m:item name='一键更新网站' link='makehtml_all.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新系统缓存' link='sys_cache_up.php' rank='sys_ArcBatch' target='main' />
+  {$remoteMenu}
 </m:top>
 
 <m:top item='5_' name='HTML更新' notshowall='1' display='none' rank='sys_MakeHtml'>
@@ -143,8 +145,11 @@ $adminMenu1
   <m:item name='注册会员列表' link='member_main.php' rank='member_List' target='main' />
   <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
+  <m:item name='会员模型管理' link='member_model_main.php' rank='member_Type' target='main' />
   <m:item name='会员短信管理' link='member_pm.php' rank='member_Type' target='main' />
-  <m:item name='会员类别管理' link='member_mtype.php' rank='member_Type' target='main' />
+  <m:item name='会员留言管理' link='member_guestbook.php' rank='member_Type' target='main' />
+  <m:item name='会员动态管理' link='member_info_main.php?type=feed' rank='member_Type' target='main' />
+  <m:item name='会员心情管理' link='member_info_main.php?type=mood' rank='member_Type' target='main' />
 </m:top>
 
 $adminMenu2

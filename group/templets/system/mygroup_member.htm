@@ -3,47 +3,51 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>成员管理</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../member/templets/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main"><?php  include(DEDEMEMBER."./templets/menu.php");?>
-      <div class="dedeMain">
-        <div class="location">管理<i>|</i><a href="../group/group.php?id=<?php echo $id?>" target="_blank"><?php echo $_GROUPS['groupname'];?></a></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li class="select"><a href="mygroup.php">创建的圈子</a></li>
-            <!--<li><a href="myjoin.php">参与的圈子</a></li> -->
-            <li><a href="myjoin.php">我的发帖</a></li>
-          </ul>
-        </div>
-        
-        <div class="mL10 mR10 mTB10">
-          <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>成员管理</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;">
-            <em class="mR10"><a href="mygroup_manage.php?id=<?php echo $id;?>">基本资料</a></em>
-            <em class="mR10"><a href="mygroup_cate.php?id=<?php echo $id;?>">话题分类</a></em>
-            <em class="mR10"><a href="mygroup_member.php?id=<?php echo $id;?>">成员管理</a></em>
-            <em class="mR10"><a href="mygroup_skin.php?id=<?php echo $id;?>">自定义风格</a></em>
-            <em><a href="mygroup_notice.php?id=<?php echo $id;?>">修改公告</a></em></div>
-          </div>
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mygroup.php"><span>创建的圈子</span></a></li>
+          <li><a href="myjoin.php"><span>我的发帖</span></a></li>
+          <li><a href="index.php"><span>圈子频道</span></a></li>
+          <li><a href="create.php" target="_blank"><span>创建圈子</span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li><a href="mygroup_manage.php?id=<?php echo $id;?>"><span>基本资料</span></a></li>
+        <li><a href="mygroup_cate.php?id=<?php echo $id;?>"><span>话题分类</span></a></li>
+        <li class="thisTab"><a href="mygroup_member.php?id=<?php echo $id;?>"><span>成员管理</span></a></li>
+        <li><a href="mygroup_skin.php?id=<?php echo $id;?>"><span>自定义风格</span></a></li>
+        <li><a href="mygroup_notice.php?id=<?php echo $id;?>"><span>修改公告</span></a></li>
+      </ul>
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>成员管理</strong></h3>   
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="70%">用户名</th>
+              <th width="30%">操作</th>
+            </tr>
+          </thead>
+          <tbody>
           {dede:datalist}
-          <?php
+           <?php
 							$rs = $fields;
 								$mastericon = GetMaster($rs['username']);
 								if(empty($mastericon)) $setmaster = "设为管理员";
 								else $setmaster = "辞去管理员";
                         ?>
-          <div class="item">
-            <div class="itemHead" >
-              <div class="fLeft"> <span class="itemHeadTitle yellow"><a href="index.php?id=<?php echo $rs['uid'];?>" target="_blank"><?php echo $rs['username']?></a></span></div>
-              <div class="fRight">
-                <?php
+            <tr>
+              <td class="tabTitle"><a href="index.php?id=<?php echo $rs['uid'];?>" target="_blank"><?php echo $rs['username']?></a></td>
+              <td align="center"><?php
 										if($cfg_group_click){
 										$isjoin = "<a  href='mygroup_member.php?action=join&uid={$rs['uid']}&id=$id'><span color='red'>[通过]</span></a>";
 										if($rs['isjoin']) $isjoin = "";
@@ -52,20 +56,24 @@
                 <?php
 										}
 									?>
-                <a href="mygroup_member.php?action=admin&uid=<?php echo $rs['uid']?>&id=<?php echo $id;?>">[<?php echo $setmaster;?>]</a> <a href="mygroup_member.php?action=del&uid=<?php echo $rs['uid']?>&id=<?php echo $id;?>">[删除该成员]</a> </div>
-            </div>
-          </div>
-          <hr class="dotted" />
-          {/dede:datalist}
-          <div class="pages mTB10 fRight">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</div>
+                <a href="mygroup_member.php?action=admin&uid=<?php echo $rs['uid']?>&id=<?php echo $id;?>">[<?php echo $setmaster;?>]</a> <a href="mygroup_member.php?action=del&uid=<?php echo $rs['uid']?>&id=<?php echo $id;?>">[删除该成员]</a></td>
+            </tr>
+         {/dede:datalist}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6"><div class="pageList">{dede:pagelist listsize=5/}</div></td>
+            </tr>
+          </tfoot>
+        </table>
         </div>
+        <!--主操作区域 -->
       </div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-</div>
-<?php  include(DEDEMEMBER."./templets/foot.htm");?>
+
 </body>
 </html>

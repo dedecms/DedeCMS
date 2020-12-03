@@ -9,6 +9,9 @@ $dedeNowurl = $s_scriptName = '';
 $dedeNowurl = GetCurUrl();
 $dedeNowurls = explode('?', $dedeNowurl);
 $s_scriptName = $dedeNowurls[0];
+$menutype = '';
+$menutype_son = '';
+$gourl=empty($gourl)? "" : RemoveXSS($gourl);
 
 //检查是否开放会员功能
 if($cfg_mb_open=='N')
@@ -33,7 +36,7 @@ if($cfg_ml->IsLogin())
 //检查用户是否有权限进行某个操作
 function CheckRank($rank=0, $money=0)
 {
-	global $cfg_ml,$cfg_memberurl;
+	global $cfg_ml,$cfg_memberurl,$cfg_mb_reginfo,$cfg_mb_spacesta;
 	if(!$cfg_ml->IsLogin())
 	{
 		header("Location:{$cfg_memberurl}/login.php?gourl=".urlencode(GetCurUrl()));
@@ -41,6 +44,25 @@ function CheckRank($rank=0, $money=0)
 	}
 	else
 	{
+		if($cfg_mb_reginfo == 'Y')
+    {
+        //如果启用注册详细信息
+        if($cfg_ml->fields['spacesta'] == 0 || $cfg_ml->fields['spacesta'] == 1)
+        {
+            ShowMsg("尚未完成详细资料，请完善...","index_do.php?fmdo=user&dopost=regnew&step=2",0,1000);
+             exit;
+        }
+    }
+    if($cfg_mb_spacesta == '-10')
+    {
+        //如果启用注册邮件验证
+        if($cfg_ml->fields['spacesta'] == '-10')
+        {
+        	  $msg="您尚未进行邮件验证，请到邮箱查阅...</br>重新发送邮件验证 <a href='/member/index_do.php?fmdo=sendMail'><font color='red'>点击此处</font></a>";
+            ShowMsg($msg,"-1",0,5000);
+            exit;
+        }
+    }
 		if($cfg_ml->M_Rank < $rank)
 		{
 			$needname = "";

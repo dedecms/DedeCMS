@@ -31,7 +31,7 @@ if($do=="del" && $ismaster)
 $pagesize = 5;
 $nowpage = isset($pageno) && is_numeric($pageno) ? max($pageno, 1) : 1;
 $topic = ($nowpage-1) * $pagesize;
-$sql = "SELECT G.stime,G.bid,G.message,G.title,M.uname,M.userid,M.face FROM #@__group_guestbook G LEFT JOIN #@__member M ON G.userid=M.mid WHERE G.gid='$id' ORDER BY G.stime ASC";
+$sql = "SELECT G.stime,G.bid,G.message,G.title,M.uname,M.userid,M.face,M.sex FROM #@__group_guestbook G LEFT JOIN #@__member M ON G.userid=M.mid WHERE G.gid='$id' ORDER BY G.stime ASC";
 
 $dl = new DataListCP();
 $dl->pageSize = $pagesize;    //设定每页显示记录数（默认5条）

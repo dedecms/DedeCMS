@@ -1,19 +1,9 @@
 <?php
-
-/**
- * Enter description here...
- *
- * @author Administrator
- * @package defaultPackage
- * @rcsfile 	$RCSfile: mybooks.php,v $
- * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:06:24 $
- */
-
 require_once(dirname(__FILE__)."/../member/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -54,7 +44,7 @@ while($row = $dsql->GetArray())
 	$ranks[$row['id']] = $row['rank'];
 }
 $addquery = "";
-$orderby = " order by b.id desc ";
+$orderby = " order by b.bid desc ";
 if($catid!=0)
 {
 	$addquery .= " And (b.bcatid='$catid' Or b.catid='$catid') ";
@@ -64,8 +54,8 @@ if($keyword!="")
 	$addquery .= " And (b.bookname like '%$keyword%' Or b.author like '%$keyword%') ";
 }
 $query = "
-   Select b.id,b.catid,b.bookname,b.booktype,b.litpic,b.postnum,b.senddate,b.ischeck, c.id as cid,c.classname From #@__story_books b
-   left join #@__story_catalog c on c.id = b.catid where mid={$cfg_ml->M_ID} and b.id>0 $addquery $orderby
+   Select b.bid,b.catid,b.bookname,b.booktype,b.litpic,b.postnum,b.senddate,b.ischeck, c.id as cid,c.classname From #@__story_books b
+   left join #@__story_catalog c on c.id = b.catid where mid={$cfg_ml->M_ID} and b.bid>0 $addquery $orderby
 ";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;

@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Group');
 if(empty($dopost))
 {
-	$dopost = '';
+	$dopost = "";
 }
 if($dopost=='save')
 {
@@ -21,13 +21,13 @@ if($dopost=='save')
 		}
 		$purview = trim($purview);
 	}
-	$dsql->ExecuteNoneQuery("Update #@__admintype set typename='$typename',purviews='$purview' where CONCAT(`rank`)='$rank'");
+	$dsql->ExecuteNoneQuery("Update `#@__admintype` set typename='$typename',purviews='$purview' where CONCAT(`rank`)='$rank'");
 	ShowMsg("成功更改用户组的权限!","sys_group.php");
 	exit();
 }
 else if($dopost=='del')
 {
-	$dsql->ExecuteNoneQuery("Delete From #@__admintype where CONCAT(`rank`)='$rank' And system='0';");
+	$dsql->ExecuteNoneQuery("Delete From `#@__admintype` where CONCAT(`rank`)='$rank' And system='0';");
 	ShowMsg("成功删除一个用户组!","sys_group.php");
 	exit();
 }

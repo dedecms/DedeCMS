@@ -14,9 +14,13 @@ else $orderby = eregi_replace('[^a-z]','',$orderby);
 if(!isset($searchtype)) $searchtype = 'titlekeyword';
 else $searchtype = eregi_replace('[^a-z]','',$searchtype);
 
-if(!isset($keyword)) $keyword = '';
+if(!isset($keyword)){
+	if(!isset($q)) $q = '';
+	$keyword=$q;
+}
 
 $oldkeyword = $keyword = FilterSearch(stripslashes($keyword));
+
 
 //查找栏目信息
 if(empty($typeid))
@@ -26,7 +30,7 @@ if(empty($typeid))
 	{
 		$fp = fopen(DEDEROOT.'/data/cache/typename.inc', 'w');
 		fwrite($fp, "<"."?php\r\n");
-		$dsql->SetQuery("Select id,typename From `#@__arctype`");
+		$dsql->SetQuery("Select id,typename,channeltype From `#@__arctype`");
 		$dsql->Execute();
 		while($row = $dsql->GetArray())
 		{

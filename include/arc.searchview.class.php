@@ -74,6 +74,12 @@ class SearchView
 		$this->Keywords = $this->GetKeywords($keyword);
 
 		//设置一些全局参数的值
+		if($this->TypeID=="0"){
+			$this->ChannelTypeid=1;
+		}else{
+			$row =$this->dsql->GetOne("Select channeltype From `#@__arctype` where id={$this->TypeID}");
+			$this->ChannelTypeid=$row['channeltype'];
+		}
 		foreach($GLOBALS['PubFields'] as $k=>$v)
 		{
 			$this->Fields[$k] = $v;
@@ -97,7 +103,7 @@ class SearchView
 		{
 			$this->dsql->ExecuteNoneQuery("Update `#@__search_keywords` set result='".$this->TotalResult."' where keyword='".addslashes($keyword)."'; ");
 		}
-
+	
 	}
 
 	//php4构造函数
@@ -115,15 +121,18 @@ class SearchView
 	//获得关键字的分词结果，并保存到数据库
 	function GetKeywords($keyword)
 	{
+		global $cfg_soft_lang;
 		$keyword = cn_substr($keyword,50);
 		$row = $this->dsql->GetOne("Select spwords From `#@__search_keywords` where keyword='".addslashes($keyword)."'; ");
 		if(!is_array($row))
 		{
 			if(strlen($keyword)>7)
 			{
-				$sp = new SplitWord();
-				$keywords = $sp->GetSplitRMM($keyword);
-				$sp->Clear();
+				//echo $keyword;
+				$sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
+				$sp->SetSource($keyword, $cfg_soft_lang, $cfg_soft_lang);
+				$sp->StartAnalysis();
+				$keywords = $sp->GetFinallyResult(' ');
 				$keywords = ereg_replace("[ ]{1,}"," ",trim($keywords));
 			}
 			else
@@ -160,13 +169,14 @@ class SearchView
 				continue;
 			}
 			$k = addslashes($k);
-			if($this->SearchType=="title")
-			{
+			if($this->ChannelType < 0 || $this->ChannelTypeid < 0){
 				$kwsqls[] = " arc.title like '%$k%' ";
-			}
-			else
-			{
-				$kwsqls[] = " CONCAT(arc.title,' ',arc.writer,' ',arc.keywords) like '%$k%' ";
+			}else{
+				if($this->SearchType=="title"){
+					$kwsqls[] = " arc.title like '%$k%' ";
+				}else{
+					$kwsqls[] = " CONCAT(arc.title,' ',arc.writer,' ',arc.keywords) like '%$k%' ";
+				}
 			}
 		}
 		if(!isset($kwsqls[0]))
@@ -199,17 +209,15 @@ class SearchView
 			{
 				continue;
 			}
-			if(ord($k[0])>0x80 && strlen($k)<3)
+			if(ord($k[0])>0x80 && strlen($k)<2)
 			{
 				continue;
 			}
 			$k = addslashes($k);
 			if($lsql=='')
 			{
-				$lsql = $lsql." CONCAT(spwords,' ') like '%$k %' ";
-			}
-			else
-			{
+				$lsql = $lsql." CONCAT(spwords,' ') like '%$k %' ";	
+			}else{
 				$lsql = $lsql." Or CONCAT(spwords,' ') like '%$k %' ";
 			}
 		}
@@ -246,8 +254,8 @@ class SearchView
 	//加粗关键字
 	function GetRedKeyWord($fstr)
 	{
+		//echo $fstr;
 		$ks = explode(' ',$this->Keywords);
-		$kwsql = '';
 		foreach($ks as $k)
 		{
 			$k = trim($k);
@@ -255,7 +263,7 @@ class SearchView
 			{
 				continue;
 			}
-			if(ord($k[0])>0x80 && strlen($k)<3)
+			if(ord($k[0])>0x80 && strlen($k)<2)
 			{
 				continue;
 			}
@@ -271,6 +279,7 @@ class SearchView
 		if(isset($GLOBALS['TotalResult']))
 		{
 			$this->TotalResult = $GLOBALS['TotalResult'];
+			$this->TotalResult = is_numeric($this->TotalResult)? $this->TotalResult : "";
 		}
 		if(isset($GLOBALS['PageNo']))
 		{
@@ -300,7 +309,16 @@ class SearchView
 		}
 		$ksqls[] = " arc.arcrank > -1 ";
 		$this->AddSql = ($ksql=='' ? join(' And ',$ksqls) : join(' And ',$ksqls)." And ($ksql)" );
-		$cquery = "Select * From `#@__archives` arc where ".$this->AddSql;
+		if($this->ChannelType < 0 || $this->ChannelTypeid< 0){
+			if($this->ChannelType=="0") $id=$this->ChannelTypeid;
+			else $id=$this->ChannelType;
+			$row =$this->dsql->GetOne("Select addtable From `#@__channeltype` Where id=$id");
+			$addtable = trim($row['addtable']);
+			$this->AddTable=$addtable;
+		}else{
+			$this->AddTable="#@__archives";
+		}
+    $cquery = "Select * From `{$this->AddTable}` arc where ".$this->AddSql;
 		$hascode = md5($cquery);
 		$row = $this->dsql->GetOne("Select * From `#@__arccache` where `md5hash`='".$hascode."' ");
 		$uptime = time();
@@ -320,7 +338,8 @@ class SearchView
 				$aidarr[] = 0;
 				while($row = $this->dsql->getarray())
 				{
-					$aidarr[] = $row['id'];
+					if($this->ChannelType< 0 ||$this->ChannelTypeid< 0) $aidarr[] = $row['aid'];
+					else $aidarr[] = $row['id'];
 				}
 				$nums = count($aidarr)-1;
 				$aids = implode(',', $aidarr);
@@ -446,27 +465,35 @@ class SearchView
 
 		//排序方式
 		$ordersql = '';
-		if($orderby=="senddate")
-		{
-			$ordersql=" order by arc.senddate desc";
-		}
-		else if($orderby=="pubdate")
-		{
-			$ordersql=" order by arc.pubdate desc";
-		}
-		else if($orderby=="id")
-		{
-			$ordersql="  order by arc.id desc";
-		}
-		else
-		{
-			$ordersql=" order by arc.sortrank desc";
+		if($this->ChannelType< 0 ||$this->ChannelTypeid< 0){
+			if($orderby=="id"){
+				$ordersql="order by arc.aid desc";
+			}else{
+				$ordersql="order by arc.senddate desc";
+			}
+		}else{
+			if($orderby=="senddate")
+			{
+				$ordersql=" order by arc.senddate desc";
+			}
+			else if($orderby=="pubdate")
+			{
+				$ordersql=" order by arc.pubdate desc";
+			}
+			else if($orderby=="id")
+			{
+				$ordersql="  order by arc.id desc";
+			}
+			else
+			{
+				$ordersql=" order by arc.sortrank desc";
+			}
 		}
 
 		//搜索
 		$query = "Select arc.*,act.typedir,act.typename,act.isdefault,act.defaultname,act.namerule,
 		act.namerule2,act.ispart,act.moresite,act.siteurl,act.sitepath
-		from `#@__archives` arc left join `#@__arctype` act on arc.typeid=act.id
+		from `{$this->AddTable}` arc left join `#@__arctype` act on arc.typeid=act.id
 		where {$this->AddSql} $ordersql limit $limitstart,$row";
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute("al");
@@ -490,6 +517,14 @@ class SearchView
 				}
 				if($row = $this->dsql->GetArray("al"))
 				{
+					if($this->ChannelType< 0 || $this->ChannelTypeid< 0) {
+							$row["id"]=$row["aid"];
+							$row["ismake"]=empty($row["ismake"])? "" : $row["ismake"];
+							$row["filename"]=empty($row["filename"])? "" : $row["filename"];
+							$row["money"]=empty($row["money"])? "" : $row["money"];
+							$row["description"]=empty($row["description "])? "" : $row["description"];
+							$row["pubdate"]=empty($row["pubdate  "])? $row["senddate"] : $row["pubdate"];
+					}
 					//处理一些特殊字段
 					$row["arcurl"] = GetFileUrl($row["id"],$row["typeid"],$row["senddate"],$row["title"],
 					$row["ismake"],$row["arcrank"],$row["namerule"],$row["typedir"],$row["money"],$row['filename'],$row["moresite"],$row["siteurl"],$row["sitepath"]);
@@ -594,7 +629,7 @@ class SearchView
 		}
 		$infos = "<td>共找到<b>".$this->TotalResult."</b>条记录/最大显示<b>{$totalpage}</b>页 </td>\r\n";
 		$geturl = "keyword=".urlencode($oldkeyword)."&searchtype=".$this->SearchType;
-		$hidenform = "<input type='hidden' name='keyword' value='".urlencode($oldkeyword)."'>\r\n";
+		$hidenform = "<input type='hidden' name='keyword' value='".rawurldecode($oldkeyword)."'>\r\n";
 		$geturl .= "&channeltype=".$this->ChannelType."&orderby=".$this->OrderBy;
 		$hidenform .= "<input type='hidden' name='channeltype' value='".$this->ChannelType."'>\r\n";
 		$hidenform .= "<input type='hidden' name='orderby' value='".$this->OrderBy."'>\r\n";
@@ -669,7 +704,7 @@ class SearchView
 		if($totalpage>$total_list)
 		{
 			$plist.="<td width='38'><input type='text' name='PageNo' style='width:28px;height:14px' value='".$this->PageNo."' /></td>\r\n";
-			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:24px;height:22px;font-size:9pt' /></td>\r\n";
+			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:30px;height:22px;font-size:9pt' /></td>\r\n";
 		}
 		$plist .= "</form>\r\n</tr>\r\n</table>\r\n";
 		return $plist;

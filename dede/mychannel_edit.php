@@ -160,41 +160,41 @@ else if($dopost=="exportinok")
 		$win->Display();
 		exit();
 	}
-	
+
 	$msg = "无信息";
 	$exconfig = stripslashes($exconfig);
-	
+
 	$dtp = new DedeTagParse();
 	$dtp->SetNameSpace('channel','<','>');
 	$dtp->LoadSource($exconfig);
-	
+
 	if(!is_array($dtp->CTags))
 	{
 		GotoStaMsg("模型规则不是合法的Dede模型规则！");
 	}
-	
+
 	$fields = array();
 	foreach($dtp->CTags as $ctag)
 	{
 		$fname = $ctag->GetName('name');
 		$fields[$fname] = trim($ctag->GetInnerText());
 	}
-	
+
 	if(!isset($fields['nid']) || !isset($fields['fieldset']))
 	{
 		GotoStaMsg("模型规则不是合法的Dede模型规则！");
 	}
-	
+
 	//正常的导入过程
-	
+
 	$mysql_version = $dsql->GetVersion(true);
-	
+
 	$row = $dsql->GetOne("Select * From `#@__channeltype` where nid='{$fields['nid']}' ");
 	if(is_array($row))
 	{
 		GotoStaMsg("系统中已经存在相同标识 {$fields['nid']} 的规则！");
 	}
-	
+
 	//创建表
 	if($fields['issystem'] != -1)
 	{
@@ -234,13 +234,13 @@ else if($dopost=="exportinok")
 		GotoStaMsg("创建表失败!".$dsql->GetError());
 		exit();
 	}
-	
+
 	if($fields['issystem']==1)
 	{
 		$fields['issystem'] = 0;
 	}
 
-	if($fields['issystem'] == 0) 
+	if($fields['issystem'] == 0)
 	{
 		$row = $dsql->GetOne("Select id From `#@__channeltype` order by id desc ");
 		$fields['newid'] = $row['id'] + 1;
@@ -250,10 +250,10 @@ else if($dopost=="exportinok")
 		$row = $dsql->GetOne("Select id From `#@__channeltype` order by id asc ");
 		$fields['newid'] = $row['id'] - 1;
 	}
-	
+
 	$fieldset = $fields['fieldset'];
 	$fields['fieldset'] = addslashes($fields['fieldset']);
-	
+
 	$inquery = " INSERT INTO `#@__channeltype`(`id` , `nid` , `typename` , `addtable` , `addcon` ,
 	 `mancon` , `editcon` , `useraddcon` , `usermancon` , `usereditcon` ,
 	  `fieldset` , `listfields` , `issystem` , `isshow` , `issend` ,
@@ -262,7 +262,7 @@ else if($dopost=="exportinok")
      '{$fields['mancon']}' , '{$fields['editcon']}' , '{$fields['useraddcon']}' , '{$fields['usermancon']}' , '{$fields['usereditcon']}' ,
       '{$fields['fieldset']}' , '{$fields['listfields']}' , '{$fields['issystem']}' , '{$fields['isshow']}' , '{$fields['issend']}' ,
        '{$fields['arcsta']}' , '{$fields['usertype']}' , '{$fields['sendrank']}' ); ";
-	
+
 	$rs = $dsql->ExecuteNoneQuery($inquery);
 
 	if(!$rs)
@@ -272,7 +272,7 @@ else if($dopost=="exportinok")
 
 	$dtp = new DedeTagParse();
 	$dtp->SetNameSpace("field","<",">");
-	$dtp->LoadSource($fieldset);	  	
+	$dtp->LoadSource($fieldset);
 	$allfields = '';
 	if(is_array($dtp->CTags))
 	{
@@ -301,7 +301,7 @@ else if($dopost=="exportinok")
 	}
 
 	GotoStaMsg("成功导入一个模型！");
-	
+
 }
 /*----------------
 function __SaveCopy()
@@ -334,7 +334,7 @@ else if($dopost=="copysave")
 	if($copytemplet==1)
 	{
 		$tmpletdir = $cfg_basedir.$cfg_templets_dir.'/'.$cfg_df_style;
-		copy("{$tmpletdir}/{$nid}_article.htm","{$tmpletdir}/{$newnid}_article.htm");
+		copy("{$tmpletdir}/article_{$nid}.htm","{$tmpletdir}/{$newnid}_article.htm");
 		copy("{$tmpletdir}/list_{$nid}.htm","{$tmpletdir}/{$newnid}_list.htm");
 		copy("{$tmpletdir}/index_{$nid}.htm","{$tmpletdir}/{$newnid}_index.htm");
 	}
@@ -356,9 +356,9 @@ function __SaveEdit()
 ------------*/
 else if($dopost=="save")
 {
-	
+
 	$fieldset = ereg_replace("[\r\n]{1,}","\r\n",$fieldset);
-	
+
 	$query = "Update `#@__channeltype` set
 	typename = '$typename',
 	addtable = '$addtable',
@@ -570,7 +570,7 @@ else if($dopost == 'modifysearch'){
 			$addonfields .= '<label><input type="checkbox" name="addonfields[]" '.$checked.' value="typeid" class="np" />栏目</label>';
 			$checked = in_array('senddate', $addonfieldsarr) ? 'checked' : '';
 			$addonfields .= '<label><input type="checkbox" name="addonfields[]" '.$checked.' value="senddate" class="np" />发布时间</label>';
-			
+
 		}
 		if(is_array($dtp->CTags) && !empty($dtp->CTags)){
 			foreach($dtp->CTags as $ctag){
@@ -584,7 +584,7 @@ else if($dopost == 'modifysearch'){
 						continue;
 					}
 				}
-				
+
 				$label = $ctag->GetAtt('itemname');
 				if(in_array($datatype, $searchtype)){
 					$checked = in_array($value, $addonfieldsarr) ? 'checked' : '';
@@ -628,6 +628,7 @@ else if($dopost == 'modifysearch'){
 					$forms .= "开始时间：<input type=\"text\" name=\"startdate\" value=\"\" /><br />";
 					$forms .= "结束时间：<input type=\"text\" name=\"enddate\" value=\"\" /><br />";
 				}
+
 			}
 		}
 
@@ -733,8 +734,7 @@ else if($dopost == 'modifysearch'){
 		$forms .= '<input type="submit" name="submit" value="开始搜索" /></form>';
 		$formssql = addslashes($forms);
 		$query = "replace into #@__advancedsearch(mid, maintable, mainfields, addontable, addonfields, forms, template) values('$mid','$maintable','$mainstring','$addontable','$addonstring','$formssql', '$template')";
-		$dsql->SetQuery($query);
-		$dsql->executenonequery();
+		$dsql->ExecuteNoneQuery($query);
 		$formshtml = htmlspecialchars($forms);
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=gb2312">';
 		echo "下面为生成的html表单，请自行复制，根据自己需求修改样式后粘贴到对应的模板中<br><br><textarea cols=\"100\"  rows=\"10\">".$forms."</textarea>";

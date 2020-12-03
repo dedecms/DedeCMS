@@ -10,7 +10,7 @@ require_once(dirname(__FILE__)."/../include/common.inc.php");
 require_once(DEDEINC."/datalistcp.class.php");
 
 $action = isset($action) ? trim($action) : '';
-$id = (isset($id) && is_numeric($id)) ? $id : 0;
+$id = empty($id)? 0 : intval(preg_replace("/[^\d]/",'', $id));
 
 if($id < 1)
 {
@@ -18,7 +18,7 @@ if($id < 1)
 }
 
 $siteurl = '';
-$sql ="select arctype.siteurl from #@__archives arc left join #@__arctype arctype on arctype.id=arc.typeid where arc.id='$id'";
+$sql ="select arctype.siteurl from #@__archives arc left join #@__arctype arctype on arctype.id=arc.typeid where arc.id=$id";
 $row = $dsql->GetOne($sql);
 if(is_array($row))
 {

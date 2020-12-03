@@ -8,9 +8,11 @@
  */
 require_once(dirname(__FILE__)."/system/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
+$menutype = 'mydede';
 
 $id = isset($id) && is_numeric($id) ? $id : 0;
-$uid = isset($id) && is_numeric($id) ? $uid : 0;
+$uid = isset($uid) && is_numeric($uid) ? $uid : 0;
+$gid = isset($gid) && is_numeric($gid) ? $gid : 0;
 
 $action = isset($action) ? trim($action) : '';
 

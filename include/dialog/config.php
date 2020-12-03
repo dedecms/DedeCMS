@@ -28,4 +28,26 @@ if($cuserLogin->getUserID() <=0 )
 	exit();
 }
 
+//启用远程站点则创建FTP类
+if($cfg_remote_site=='Y')
+{
+	require_once(DEDEINC.'/ftp.class.php');
+	if(file_exists(DEDEDATA."/cache/inc_remote_config.php"))
+	{
+		require_once DEDEDATA."/cache/inc_remote_config.php";
+	}
+	if(empty($remoteuploads)) $remoteuploads = 0;
+	if(empty($remoteupUrl)) $remoteupUrl = '';
+	//初始化FTP配置
+	$ftpconfig = array(
+	    'hostname'=>$rmhost, 
+	    'port'=>$rmport,
+	    'username'=>$rmname,
+	    'password'=>$rmpwd
+
+	);
+	$ftp = new FTP; 
+	$ftp->connect($ftpconfig);
+}
+
 ?>

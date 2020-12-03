@@ -14,11 +14,13 @@ if($cfg_mb_album=='N')
 	exit();
 }
 require_once(DEDEINC."/dedetag.class.php");
+require_once(DEDEINC."/userlogin.class.php");
 require_once(DEDEINC."/customfields.func.php");
 require_once(DEDEMEMBER."/inc/inc_catalog_options.php");
 require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
 $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 2;
 $typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
+$menutype = 'content';
 if(empty($formhtml))
 {
 	$formhtml = 0;
@@ -58,6 +60,16 @@ function _SaveArticle(){  }
 ------------------------------*/
 else if($dopost=='save')
 {
+	$svali = GetCkVdValue();
+	if(preg_match("/1/",$safe_gdopen)){
+		if(strtolower($vdcode)!=$svali || $svali=='')
+		{
+			ResetVdValue();
+			ShowMsg('验证码错误！', '-1');
+			exit();
+		}
+		
+	}
 	$maxwidth = isset($maxwidth) && is_numeric($maxwidth) ? $maxwidth : 800;
 	$pagepicnum = isset($pagepicnum) && is_numeric($pagepicnum) ? $pagepicnum : 12;
 	$ddmaxwidth = isset($ddmaxwidth) && is_numeric($ddmaxwidth) ? $ddmaxwidth : 200;
@@ -156,6 +168,10 @@ else if($dopost=='save')
 				if($v=='')
 				{
 					continue;
+				}else if($v == 'templet')
+				{
+					ShowMsg("你保存的字段有误,请检查！","-1");
+					exit();	
 				}
 				$vs = explode(',',$v);
 				if(!isset(${$vs[0]}))
@@ -250,6 +266,11 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 	}
 	#/aip}}
 
+    //会员动态记录
+	$cfg_ml->RecordFeeds('add',$title,$description,$arcID);
+	
+	ClearMyAddon($arcID, $title);
+	
 	//返回成功信息
 	$msg = "
 　　请选择你的后续操作：

@@ -1,4 +1,4 @@
-﻿// Automatically detect the correct document.domain (#123).
+// Automatically detect the correct document.domain (#123).
 (function()
 {
 	var d = document.domain ;

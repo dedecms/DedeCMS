@@ -13,6 +13,16 @@ if($ckhash!=$idhash)
 	ShowMsg('校对码错误，你没权限修改此文档或操作不合法！','-1');
 	exit();
 }
+$svali = GetCkVdValue();
+if(preg_match("/3/",$safe_gdopen)){
+	if(strtolower($vdcode)!=$svali || $svali=='')
+	{
+		ResetVdValue();
+		ShowMsg('验证码错误！', '-1');
+		exit();
+	}
+	
+}
 if($typeid==0)
 {
 	ShowMsg('请指定文档隶属的栏目！','-1');

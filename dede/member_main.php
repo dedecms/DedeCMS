@@ -74,6 +74,12 @@ if($whereSql!='')
 {
 	$whereSql = ' where '.$whereSql;
 }
+$dsql->SetQuery("Select name From `#@__member_model`");
+$dsql->Execute();
+while($row = $dsql->GetArray())
+{
+	$MemberModels[] = $row;
+}
 $sql  = "select * From `#@__member` $whereSql order by $sortkey desc ";
 $dlist = new DataListCP();
 $dlist->SetParameter('sex',$sex);

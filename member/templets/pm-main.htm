@@ -1,20 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>消息管理</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
-<script type="text/javascript" language="javascript">
-function folderSelAll()
-{
-	for(i=0;i<document.form1.deleteid.length;i++)
-	{
-		if(!document.form1.deleteid[i].checked)
-		{
-			document.form1.deleteid[i].checked=true;
-		}
-	}
-}
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>消息管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/table_function.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
 //获得选中文件的文件名
 function GetCheckfolderItem()
 {
@@ -32,47 +26,55 @@ function GetCheckfolderItem()
 	}
 	return allSel;
 }
-
-function DoSubmit(myfolder)
-{
-	var selid = GetCheckfolderItem();
-	if(selid=='') {
-		alert("你没选中任何信息！");
-		return false;
-	}
-	if(window.confirm("你确定要删除这些消息么？"))
+	
+	function DoSubmit(myfolder)
 	{
-		location = "pm.php?dopost=del&ids="+selid+"&folder="+myfolder;
+		var selid = GetCheckfolderItem();
+		if(selid=='') {
+			alert("你没选中任何信息！");
+			return false;
+		}
+		if(window.confirm("你确定要删除这些消息么？"))
+		{
+			location = "pm.php?dopost=del&ids="+selid+"&folder="+myfolder;
+		}
 	}
-}
 </script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">
-          <div class="fLeft"><?php echo $tname; ?></div>
-          <div class="fRight mR10"><a href="?" onclick="DoSubmit('<?php echo $folder; ?>')">删除</a></div>
-        </div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul id="pm">
-            <li><a href="pm.php?dopost=send">写新消息</a></li>
-            <li <?php if($folder == "inbox" || empty($folder)) echo 'class="select"'; ?>><a href="pm.php?folder=inbox">收件箱</a></li>
-            <li <?php if($folder == "outbox") echo 'class="select"'; ?>><a href="pm.php?folder=outbox">发件箱</a></li>
-            <li <?php if($folder == "track") echo 'class="select"'; ?>><a href="pm.php?folder=track">已发出信息</a></li>
-          </ul>
-          <div class="clear"></div>
-        </div>
-        <form class="mTB10 mL10 mR10" action="pm.php" method="post" name="form1">
-          <input type='hidden' name='dopost' value='del' />
-          <table cellspacing="1" class="list">
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+            <li><a href="pm.php?dopost=send"><span>写新消息</span></a></li>
+            <li <?php if($folder == "inbox" || empty($folder)) echo 'class="thisTab"'; ?>><a href="pm.php?folder=inbox"><span>收件箱</span></a></li>
+            <li <?php if($folder == "outbox") echo 'class="thisTab"'; ?>><a href="pm.php?folder=outbox"><span>发件箱</span></a></li>
+            <li <?php if($folder == "track") echo 'class="thisTab"'; ?>><a href="pm.php?folder=track"><span>已发出信息</span></a></li>
+        </ul>
+      </div>
+      <?php
+        if($folder == "inbox"){
+       ?>
+      <ul class="tabSub">
+        <li <?php if(empty($state)) echo 'class="thisTab"'; ?>><a href="pm.php?folder=<?php echo $folder;?>"><span>全部</span></a></li>
+        <li <?php if($state == "1") echo 'class="thisTab"'; ?>><a href="pm.php?folder=<?php echo $folder;?>&state=1"><span>已阅读</span></a></li>
+        <li <?php if($state == "-1") echo 'class="thisTab"'; ?>><a href="pm.php?folder=<?php echo $folder;?>&state=-1"><span>未阅读</span></a></li>
+      </ul>
+     <?php
+      }
+      ?>
+      <div id="mainCp">
+        <!--内容消息提示 -->
+        <h3 class="meTitle">短消息列表</h3>
+        <form action="pm.php" method="post" name="form1">
+        <input type='hidden' name='dopost' value='del' />
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
             <thead>
               <tr>
-                <th align="left" width="1%"><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
+                <th align="left" width="5%">&nbsp;</th>
                 <th >标题</th>
                 <th width="10%"><?php
           	if($folder == "inbox") echo "发件人";
@@ -82,13 +84,12 @@ function DoSubmit(myfolder)
                 <th width="15%">发布时间 </th>
               </tr>
             </thead>
-            <tbody>
-            
+         <tbody>
             {dede:datalist}
             <tr>
-              <td><input type="checkbox" name="deleteid" value="{dede:field.id/}" /></td>
-              <td><?php
-           if($fields['hasview']==0) echo "<a href='pm.php?dopost=read&id={$fields['id']}'><strong>{$fields['subject']}</strong></a>";
+              <td><input type="checkbox" name="deleteid" value="{dede:field.id/}" style=" margin-left:5px"/></td>
+              <td class="tabTitle"><?php
+           if($fields['hasview']==0) echo "<a href='pm.php?dopost=read&id={$fields['id']}'>{$fields['subject']}</a>";
            else echo "<a href='pm.php?dopost=read&id={$fields['id']}'>{$fields['subject']}</a>";
            ?></td>
               <td align="center"><?php  if($folder == "inbox") {  ?>
@@ -107,20 +108,21 @@ function DoSubmit(myfolder)
             </tr>
             {/dede:datalist}
             </tbody>
-            
-            <tfoot>
-              <tr>
-                <td colspan="5"><div class="pages fRight mTB10">{dede:pagelist listsize=5 /}</div></td>
-              </tr>
-            </tfoot>
-          </table>
-        </form>
+          <tfoot>
+            <tr>
+              <td colspan="6">
+              <div class="control fLeft doPost" style="margin-top:10px"><button type="button" onclick="DoSubmit('<?php echo $folder; ?>')" class="greenBtn3">删除选中</button></div>
+              <div class="pageList">{dede:pagelist listsize=5 /}</div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+         </form>
       </div>
-      <div class="clear"></div>
+      <!--主操作区域 -->
     </div>
-    <div class="clear"></div>
   </div>
-</div>
 <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
 </body>
 </html>

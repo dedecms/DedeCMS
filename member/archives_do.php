@@ -14,8 +14,9 @@ function delStow()
 if($dopost=="delStow")
 {
 	CheckRank(0,0);
+	$type=empty($type)? 'sys' : trim($type);
 	$ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? "mystow.php" : $_COOKIE['ENV_GOBACK_URL'];
-	$dsql->ExecuteNoneQuery("Delete From #@__member_stow where aid='$aid' And mid='".$cfg_ml->M_ID."'; ");
+	$dsql->ExecuteNoneQuery("Delete From #@__member_stow where aid='$aid' And mid='".$cfg_ml->M_ID."' AND type='$type';");
 	//更新用户统计
 	$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__member_stow` WHERE `mid`='".$cfg_ml->M_ID."' ");
 	$dsql->ExecuteNoneQuery("UPDATE #@__member_tj SET `stow`='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
@@ -188,7 +189,11 @@ function viewArchives()
 else if($dopost=="viewArchives")
 {
 	CheckRank(0,0);
-	header("location:".$cfg_phpurl."/view.php?aid=".$aid);
+	if($type==""){
+		header("location:".$cfg_phpurl."/view.php?aid=".$aid);
+	}else{
+		header("location:/book/book.php?bid=".$aid);
+	}
 }
 
 /*--------------

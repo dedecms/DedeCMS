@@ -92,7 +92,7 @@ class BookView
 		if($inittype=='catalog')
 		{
 			$this->CatalogID = $rsid;
-			$row = $this->dsql->GetOne("Select * From #@__story_catalog where id='$rsid' ");
+			$row = $this->dsql->GetOne("Select * From #@__story_catalog where id='$rsid'");
 			foreach($row as $k=>$v)
 			{
 				if(ereg('[^0-9]',$k))
@@ -112,7 +112,7 @@ class BookView
 		else if($inittype=='book')
 		{
 			$this->BookID = $rsid;
-			$row = $this->dsql->GetOne("Select c.classname,c.pid,bk.* From #@__story_books bk left join #@__story_catalog c on c.id=bk.catid where bk.id='$rsid' ");
+			$row = $this->dsql->GetOne("Select c.classname,c.pid,bk.* From #@__story_books bk left join #@__story_catalog c on c.id=bk.catid where bk.bid='$rsid'");
 			foreach($row as $k=>$v)
 			{
 				if(ereg('[^0-9]',$k))
@@ -169,8 +169,10 @@ class BookView
 				$this->dtp->LoadTemplet(DEDEROOT.'/book'.$PubFields['templetdef'].'/books_story.htm');
 			}
 			$this->Fields['position'] = $this->GetPosition($this->Fields['catid'],$this->Fields['bcatid']);
-			$row = $this->dsql->GetOne("Select freenum From #@__story_books where id='{$this->Fields['bookid']}' ");
+			$row = $this->dsql->GetOne("Select freenum From #@__story_books where bid='{$this->Fields['bookid']}' ");
 			$this->Fields['freenum'] = $row['freenum'];
+			$row = $this->dsql->GetOne("Select arcrank From #@__story_books where bid='{$this->Fields['bookid']}' ");
+			$this->Fields['arcrank'] = $row['arcrank'];
 			$this->Fields['body'] = GetBookText($this->Fields['id']);
 			$this->Fields['bookid'] = $this->BookID;
 		}
@@ -223,7 +225,7 @@ class BookView
 			//章节信息
 			else if($tagname=='chapter')
 			{
-				$this->dtp->Assign($tagid, $this->GetChapterList($this->BookID, $ctag->GetInnerText()) );
+				$this->dtp->Assign($tagid, $this->GetChapterList($this->BookID, $ctag->GetInnerText()) ); 
 			}
 
 			//栏目信息
@@ -234,7 +236,8 @@ class BookView
 				{
 					$pid = $this->Fields['catid'];
 				}
-				$this->dtp->Assign($tagid, $this->GetCatalogList($pid,$ctag->GetInnerText()));
+				$currentstyle = $ctag->GetAtt('currentstyle');
+				$this->dtp->Assign($tagid, $this->GetCatalogList($pid,$ctag->GetInnerText(),$currentstyle));//增加获取当前样式
 			}
 
 			//当前图书的最新章节
@@ -352,8 +355,8 @@ class BookView
 	function MakeHtml($isclose=true)
 	{
 		global $cfg_basedir;
-		$bookdir = GetBookUrl($this->Fields['id'],$this->Fields['bookname'],1);
-		$bookurl = GetBookUrl($this->Fields['id'],$this->Fields['bookname']);
+		$bookdir = GetBookUrl($this->Fields['bid'],$this->Fields['bookname'],1);
+		$bookurl = GetBookUrl($this->Fields['bid'],$this->Fields['bookname']);
 		if(!is_dir($cfg_basedir.$bookdir))
 		{
 			CreateDir($bookdir);
@@ -438,7 +441,7 @@ class BookView
 		}
 		if($bookid>0)
 		{
-			$addquery .= " And b.id<>'{$bookid}' ";
+			$addquery .= " And b.bid<>'{$bookid}' ";
 		}
 		if($orderby=='commend')
 		{
@@ -493,10 +496,10 @@ class BookView
 			$addquery .= ")";
 		}
 		$clist = '';
-		$query = "Select SQL_CALC_FOUND_ROWS b.id,b.catid,b.ischeck,b.booktype,b.iscommend,b.click,b.bookname,b.lastpost,
+		$query = "Select SQL_CALC_FOUND_ROWS b.bid,b.catid,b.ischeck,b.booktype,b.iscommend,b.click,b.bookname,b.lastpost,
  		b.author,b.mid,b.litpic,b.pubdate,b.weekcc,b.monthcc,b.description,c.classname,c.classname as typename,c.booktype as catalogtype
  		From #@__story_books b left join #@__story_catalog c on c.id=b.catid
- 		where b.postnum>0 And b.ischeck>0 $addquery order by b.{$orderby} desc limit $limitnum";
+ 		where b.ischeck>0 $addquery order by b.{$orderby} desc limit $limitnum";
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute();
 
@@ -513,6 +516,7 @@ class BookView
 		while($row = $this->dsql->GetArray())
 		{
 			$GLOBALS['autoindex']++;
+			$row['bookname']=cn_substr($row['bookname'],$titlelen);
 			$row['title'] = $row['bookname'];
 			$ndtp->LoadString($innertext);
 
@@ -521,9 +525,9 @@ class BookView
 			$row['contentid'] = '';
 			if($getcontent==1)
 			{
-				$nrow = $this->GetNewContent($row['id']);
-				$row['contenttitle'] = $nrow['title'];
-				$row['contentid'] = $nrow['id'];
+				$nrow = $this->GetNewContent($row['bid']);
+				$row['contenttitle'] =empty($nrow['title'])? "暂无" : $nrow['title'];
+			  $row['contentid'] = empty($nrow['id'])? "" :$nrow['id'];
 				//echo "{$row['contenttitle']} 0 {$row['contentid']}";
 			}
 			if($row['booktype']==1)
@@ -536,15 +540,19 @@ class BookView
 			}
 
 			//动态网址
-			$row['dmbookurl'] = $cfg_cmspath.'/book/book.php?id='.$row['id'];
+			$row['dmbookurl'] = $cfg_cmspath.'/book/book.php?bid='.$row['bid'];
 
 			//静态网址
-			$row['bookurl'] = $row['url'] = GetBookUrl($row['id'],$row['bookname']);
+			$row['bookurl'] = $row['url'] = GetBookUrl($row['bid'],$row['bookname']);
 			$row['catalogurl'] = $cfg_cmspath.'/book/list.php?id='.$row['catid'];
 			$row['cataloglink'] = "<a href='{$row['catalogurl']}'>{$row['classname']}</a>";
 			$row['booklink'] = "<a href='{$row['bookurl']}'>{$row['bookname']}</a>";
 			$row['contentlink'] = "<a href='{$row['contenturl']}'>{$row['contenttitle']}</a>";
+			if($row['litpic']!=""){
 			$row['imglink'] = "<a href='{$row['bookurl']}'><img src='{$row['litpic']}' width='$imgwidth' height='$imgheight' border='0' /></a>";
+			}else{
+			$row['imglink'] = "<a href='{$row['bookurl']}'><img src='/images/book/book_img.jpg' width='$imgwidth' height='$imgheight' border='0' /></a>";	
+			}
 			if($row['ischeck']==2)
 			{
 				$row['ischeck']='已完成连载';
@@ -604,11 +612,11 @@ class BookView
 		}
 		if($this->Fields['booktype']==1)
 		{
-			$burl = $cfg_cmspath.'/book/show-photo.php?id='.$row['id'];
+			$burl = $cfg_cmspath.'/book/show-photo.php?id='.$bid;
 		}
 		else
 		{
-			$burl = $cfg_cmspath.'/book/story.php?id='.$row['id'];
+			$burl = $cfg_cmspath.'/book/story.php?id='.$bid;
 		}
 		$rstr = preg_replace("/\[field:url([\s]{0,})\/\]/isU",$burl,$innertext);
 
@@ -687,7 +695,7 @@ class BookView
 
 
 	//获得栏目列表
-	function GetCatalogList($pid,$innertext)
+	function GetCatalogList($pid,$innertext,$currentstyle='')
 	{
 		global $cfg_cmspath;
 		$clist = '';
@@ -712,6 +720,15 @@ class BookView
 			$ch++;
 			$ndtp->LoadString($innertext);
 			$row['url'] = $cfg_cmspath.'/book/list.php?id='.$row['id'];
+
+		//如果为当前栏目样式
+		if($row['id'] == $this->Fields['id'] && $currentstyle!='')
+		{
+			$linkOkstr = $currentstyle;
+			$linkOkstr = str_replace("~url~",$row['url'],$linkOkstr);
+			$linkOkstr = str_replace("~classname~",$row['classname'],$linkOkstr);
+			$clist .= $linkOkstr;
+		}else{
 			if(is_array($ndtp->CTags))
 			{
 				foreach($ndtp->CTags as $tagid=>$ctag)
@@ -750,9 +767,9 @@ class BookView
 						$ndtp->Assign($tagid,$nlist);
 					}
 				}//End foreach
-
 				$clist .= $ndtp->GetResult();
 			}
+			}//End else
 		}
 		return $clist;
 	}

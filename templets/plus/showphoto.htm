@@ -3,19 +3,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $arctitle; ?></title>
-<link href="<?php echo $cfg_templeturl; ?>/style/search.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="<?php echo $cfg_templets_skin; ?>/style/search.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
 
 <div class="header">
-	<div class="toplogo">
-		<h1><a href="<?php echo $cfg_basehost;?>"><?php echo $cfg_webname;?></a></h1>
+	<div class="top"><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf" />
+<title><?php echo $arctitle; ?></title>
+<link href="<?php echo $cfg_templets_skin; ?>/style/search.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+
+<div class="header">
+	<div class="top">
+		<h1><a href="<?php echo $cfg_basehost;?>" title="<?php echo $cfg_webname;?>"><img src="<?php echo $cfg_templets_skin; ?>/images/logo.gif"  alt=""/></a> </h1>
 	</div>
 </div>
 
 <div class="msgbar">
 	<p>
-		<strong><b>图集详细页面 &gt;&gt; <a href='<?php echo $arcurl?>'><?php echo $arctitle; ?></a></b></strong>
+		<strong><b>图集详细页面 >> <a href='<?php echo $arcurl?>'><?php echo $arctitle; ?></a></b></strong>
 	</p>
 </div>
 
@@ -34,19 +44,37 @@
           		</td>
            </tr>
 </table>
-<div class="footer">
-<p class="link">
-		网站版权信息及免责声明
-  </p>
-	<!-- 
-		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
-		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
-	-->
-	<p class="powered">
-		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>Dede<span>CMS</span></strong></a> &copy; 2004-2008 DesDev Inc.
-	</p><!-- /powered -->
-	
+
+
+</body>
+</html>
+
+		<h1><a href="<?php echo $cfg_basehost;?>" title="<?php echo $cfg_webname;?>"><img src="<?php echo $cfg_templets_skin; ?>/images/logo.gif"  alt=""/></a> </h1>
+	</div>
 </div>
+
+<div class="msgbar">
+	<p>
+		<strong><b>ͼ¼¯ЪϸҳĦ >> <a href='<?php echo $arcurl?>'><?php echo $arctitle; ?></a></b></strong>
+	</p>
+</div>
+
+
+<table width='100%' border='0' cellpadding='2' cellspacing='1' >
+           <tr>
+             <td align='center' >
+             <a href='<?php echo $nextlink; ?>'><br />
+             <img src='<?php echo $src?>' border='0' /></a><br />
+             <div style='line-height:32px;'>
+             <a href="<?php echo $src; ?>" target='_blank'>[²鿴ԭͼ]</a>
+           	 </div>
+             <div style='line-height:32px;border-top:1px dashed #BED6A7'>
+				     <?php echo $pageGuide?>
+				   		</div>
+          		</td>
+           </tr>
+</table>
+
 
 </body>
 </html>

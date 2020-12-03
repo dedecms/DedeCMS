@@ -89,11 +89,11 @@ function UpDateCatCache()
 	$dsql->Execute();
 	$fp1 = fopen($cache1,'w');
 	$phph = '?';
-	$fp1Header = "<{$phph}php\r\nglobal \$_Cs;\r\n\$_Cs=array();\r\n";
+	$fp1Header = "<{$phph}php\r\nglobal \$cfg_Cs;\r\n\$cfg_Cs=array();\r\n";
 	fwrite($fp1,$fp1Header);
 	while($row=$dsql->GetObject())
 	{
-		fwrite($fp1,"\$_Cs[{$row->id}]=array({$row->reid},{$row->channeltype},{$row->issend});\r\n");
+		fwrite($fp1,"\$cfg_Cs[{$row->id}]=array({$row->reid},{$row->channeltype},{$row->issend});\r\n");
 	}
 	fwrite($fp1,"{$phph}>");
 	fclose($fp1);

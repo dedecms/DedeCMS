@@ -116,7 +116,7 @@
     {dede:datalist}
     <?php
     $row = $fields;
-    $row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+    if(empty($row['face'])) $row['face'] = ($row['sex']=='Ů') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
     $topic++;
     ?>
     <li>    

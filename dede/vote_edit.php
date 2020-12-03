@@ -1,6 +1,6 @@
 <?php
 require(dirname(__FILE__)."/config.php");
-CheckPurview('plus_æŠ•ç¥¨æ¨¡å—');
+CheckPurview('plus_Í¶Æ±Ä£¿é');
 require_once(DEDEINC."/dedetag.class.php");
 if(empty($dopost))
 {
@@ -12,11 +12,11 @@ if($dopost=="delete")
 {
 	if($dsql->ExecuteNoneQuery("Delete From #@__vote where aid='$aid'"))
 	{
-		ShowMsg('æˆåŠŸåˆ é™¤ä¸€ç»„æŠ•ç¥¨!',$ENV_GOBACK_URL);
+		ShowMsg('³É¹¦É¾³ıÒ»×éÍ¶Æ±!',$ENV_GOBACK_URL);
 	}
 	else
 	{
-		ShowMsg('æŒ‡å®šåˆ é™¤æŠ•ç¥¨ä¸å­˜åœ¨!',$ENV_GOBACK_URL);
+		ShowMsg('Ö¸¶¨É¾³ıÍ¶Æ±²»´æÔÚ!',$ENV_GOBACK_URL);
 	}
 }
 else if($dopost=="saveedit")
@@ -32,11 +32,11 @@ else if($dopost=="saveedit")
 		";
 	if($dsql->ExecuteNoneQuery($query))
 	{
-		ShowMsg('æˆåŠŸæ›´æ”¹ä¸€ç»„æŠ•ç¥¨!',$ENV_GOBACK_URL);
+		ShowMsg('³É¹¦¸ü¸ÄÒ»×éÍ¶Æ±!',$ENV_GOBACK_URL);
 	}
 	else
 	{
-		ShowMsg('æ›´æ”¹ä¸€ç»„æŠ•ç¥¨å¤±è´¥!',$ENV_GOBACK_URL);
+		ShowMsg('¸ü¸ÄÒ»×éÍ¶Æ±Ê§°Ü!',$ENV_GOBACK_URL);
 	}
 }
 else
@@ -44,7 +44,7 @@ else
 	$row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
 	if(!is_array($row))
 	{
-		ShowMsg('æŒ‡å®šæŠ•ç¥¨ä¸å­˜åœ¨ï¼','-1');
+		ShowMsg('Ö¸¶¨Í¶Æ±²»´æÔÚ£¡','-1');
 		exit();
 	}
 	include DedeInclude('templets/vote_edit.htm');

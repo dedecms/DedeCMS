@@ -14,6 +14,7 @@ require_once(dirname(__FILE__)."/../member/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -70,7 +71,7 @@ $query = "
    Select ct.id,ct.title,ct.bookid,ct.chapterid,ct.sortid,ct.bookname,ct.addtime,ct.booktype,c.chaptername,c.chapnum From #@__story_content  ct
    left join #@__story_chapter c on c.id = ct.chapterid where c.mid=$cfg_ml->M_ID and ct.id>0 $addquery $orderby
 ";
-$row = $dsql->GetOne("SELECT bookname,booktype FROM  #@__story_books WHERE id = '$bookid'");
+$row = $dsql->GetOne("SELECT bookname,booktype FROM  #@__story_books WHERE bid = '$bookid'");
 if(is_array($row)){
 $bookname = $row['bookname'];
 $booktype = $row['booktype'];

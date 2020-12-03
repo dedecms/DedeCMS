@@ -39,7 +39,7 @@ while($row = $dsql->GetArray())
 }
 $lastid = $row['id'];
 $contents = $dsql->GetOne("Select * From #@__story_content where id='$cid' ");
-$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where id='{$contents['bookid']}' ");
+$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where bid='{$contents['bookid']}' ");
 $catid = $bookinfos['catid'];
 $bcatid = $bookinfos['bcatid'];
 $bookname = $bookinfos['bookname'];

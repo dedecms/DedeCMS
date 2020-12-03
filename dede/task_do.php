@@ -105,6 +105,7 @@ if($dopost=='makeindex')
 		$tpl = $cfg_basedir.$cfg_templets_dir.'/default/index.htm';
 		if(!file_exists($tpl)) exit("无法找到主页模板：$tpl ");
 	}
+	$GLOBALS['_arclistEnv'] = 'index';
 	$pv->SetTemplet($tpl);
 	$pv->SaveToHtml($homeFile);
 	$pv->Close();
@@ -141,7 +142,7 @@ else if($dopost=='makeparenttype')
 	if(empty($curpage)) $curpage = 0;
 	$tid = $topids[$curpage];
 	
-	if(isset($_Cs[$tid]) && $_Cs[$tid][1]>0)
+	if(isset($cfg_Cs[$tid]) && $cfg_Cs[$tid][1]>0)
 	{
 		 require_once(DEDEINC."/arc.listview.class.php");
 		 $lv = new ListView($tid);

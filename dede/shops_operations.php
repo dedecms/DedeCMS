@@ -20,8 +20,8 @@ if(isset($dopost))
 				$wh .= " OR oid='$n' ";
 			}
 		}
-		$dsql->SetQuery("UPDATE #@__shops_orders SET `state`='1' $wh ");
-		$dsql->ExecuteNoneQuery();
+		$sql="UPDATE #@__shops_orders SET `state`='1' $wh ";
+		$dsql->ExecuteNoneQuery($sql);
 	}
 	elseif($dopost == 'push')
 	{
@@ -38,8 +38,8 @@ if(isset($dopost))
 				$wh .= " OR oid='$n' ";
 			}
 		}
-		$dsql->SetQuery("UPDATE #@__shops_orders SET `state`='2' $wh ");
-		$dsql->ExecuteNoneQuery();
+		$sql="UPDATE #@__shops_orders SET `state`='2' $wh ";
+		$dsql->ExecuteNoneQuery($sql);
 	}
 	elseif($dopost == 'ok')
 	{
@@ -56,8 +56,24 @@ if(isset($dopost))
 				$wh .= " OR oid='$n' ";
 			}
 		}
-		$dsql->SetQuery("UPDATE #@__shops_orders SET `state`='4' $wh ");
-		$dsql->ExecuteNoneQuery();
+		$sql="UPDATE #@__shops_orders SET `state`='4' $wh ";
+		$dsql->ExecuteNoneQuery($sql);
+	}
+	elseif($dopost == 'delete')
+	{
+		$nids = explode('`',$nid);
+		foreach($nids as $n)
+		{
+			$query = "DELETE FROM `#@__shops_products` WHERE oid='$n'";
+			$query2 = "DELETE FROM `#@__shops_orders` WHERE oid='$n'";
+			$query3 = "DELETE FROM `#@__shops_userinfo` WHERE oid='$n'";
+			$dsql->ExecuteNoneQuery($query);
+			$dsql->ExecuteNoneQuery($query2);
+			$dsql->ExecuteNoneQuery($query3);
+		}
+		ShowMsg("成功删除指定的订单记录！",$ENV_GOBACK_URL);
+		exit();
+
 	}
 	else
 	{
@@ -124,10 +140,10 @@ function GetsType($pid)
 {
 	global $dsql;
 	$pid = intval($pid);
-	$row = $dsql->GetOne("SELECT paytype FROM #@__shops_paytype WHERE pid='$pid'");
+	$row = $dsql->GetOne("SELECT name FROM #@__payment WHERE id='$pid'");
 	if(is_array($row))
 	{
-		return $row['paytype'];
+		return $row['name'];
 	}
 	else
 	{

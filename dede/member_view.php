@@ -19,6 +19,11 @@ if($row['matt']==10)
 {
 	CheckPurview('sys_User');
 }
+if($row['uptime']>0 && $row['exptime']>0){
+	$mhasDay = $row['exptime'] - ceil((time() - $row['uptime'])/3600/24)+1;
+}else{
+	$mhasDay = 0;
+}
 include DedeInclude('templets/member_view.htm');
 
 ?>

@@ -16,6 +16,9 @@ $etime    = (empty($etime)    ? '' : $etime);
 $sstime   = (empty($sstime)   ? 0  : $sstime); 
 $mkvalue  = (empty($mkvalue)  ? 0  : $mkvalue);
 
+$isremote  = (empty($isremote)? 0  : $isremote);
+$serviterm=empty($serviterm)? "" : $serviterm;
+
 //一键更新传递的参数
 if(!empty($uptype))
 {
@@ -88,13 +91,23 @@ if($totalnum > 500 && empty($typeid)) {
 else {
 	$dsql->Execute('out',"Select id From `#@__arctiny` $idsql $limitSql");
 }
+if($cfg_remote_site=='Y' && $isremote=="1")
+{	
+	if($serviterm!=""){
+		list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+		$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+	}else{
+		$config=array();
+	}
+	if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+}
 
 while($row=$dsql->GetObject('out'))
 {
 	$tjnum++;
 	$id = $row->id;
 	$ac = new Archives($id);
-	$rurl = $ac->MakeHtml();
+	$rurl = $ac->MakeHtml($isremote);
 }
 
 $t2 = ExecTime();
@@ -106,6 +119,7 @@ $ttime = number_format(($ttime / 60),2);
 $tjlen = $totalnum>0 ? ceil( ($tjnum/$totalnum) * 100 ) : 100;
 $dvlen = $tjlen * 2;
 $tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
+if($cfg_remote_site=='Y' && $isremote=="1") $tjsta .= "<br/><font color='red'>您已开启远程发布功能,生成速度会比较慢,请您耐心等待..</font>";
 $tjsta .= "<br/>本次用时：".number_format($t2,2)."，总用时：$ttime 分钟，到达位置：".($startdd+$pagesize)."<br/>完成创建文件总数的：$tjlen %，继续执行任务...";
 
 
@@ -122,7 +136,7 @@ if($tjnum < $totalnum)
 {
 	$nurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid&typeid=$typeid";
 	$nurl .= "&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize";
-	$nurl .= "&seltime=$seltime&sstime=$sstime&stime=".urlencode($stime)."&etime=".urlencode($etime)."&uptype=$uptype&mkvalue=$mkvalue";
+	$nurl .= "&seltime=$seltime&sstime=$sstime&stime=".urlencode($stime)."&etime=".urlencode($etime)."&uptype=$uptype&mkvalue=$mkvalue&isremote={$isremote}&serviterm={$serviterm}";
 	ShowMsg($tjsta,$nurl,0,100);
 	exit();
 }
@@ -130,7 +144,7 @@ else
 {
 	if($typeid!='')
 	{
-		  ShowMsg("生成文件：$totalnum 总用时：{$ttime} 分钟，现转向当前栏目更新&gt;&gt;","makehtml_list_action.php?typeid=$typeid&uptype=all&maxpagesize=50&upnext=1");
+		  ShowMsg("生成文件：$totalnum 总用时：{$ttime} 分钟，现转向当前栏目更新&gt;&gt;","makehtml_list_action.php?typeid=$typeid&uptype=all&maxpagesize=50&upnext=1&isremote={$isremote}&serviterm={$serviterm}");
 	}
 	else
 	{

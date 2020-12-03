@@ -30,6 +30,7 @@ $nrow = $dsql->GetOne("Select * From #@__story_catalog where id='$catid' ");
 $bcatid = $nrow['pid'];
 $booktype = $nrow['booktype'];
 $pubdate = GetMkTime($pubdate);
+$lastpost=time();
 $bookname = cn_substr($bookname,50);
 if($keywords!="")
 {
@@ -60,16 +61,18 @@ bcatid='$bcatid',
 iscommend='$iscommend',
 click='$click',
 freenum='$freenum',
+arcrank='$arcrank',
 bookname='$bookname',
 author='$author',
 litpic='$litpic',
 pubdate='$pubdate',
+lastpost='$lastpost',
 description='$description',
 body='$body',
 keywords='$keywords',
 status='$status',
 ischeck='$ischeck'
-where id='$bookid' ";
+where bid='$bookid' ";
 
 if(!$dsql->ExecuteNoneQuery($upQuery))
 {

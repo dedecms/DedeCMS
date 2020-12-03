@@ -3,6 +3,7 @@ require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
 require_once(DEDEINC.'/enums.func.php');
 require_once(DEDEINC.'/datalistcp.class.php');
+$menutype = 'mydede';
 
 //检查用户是否被禁言
 CheckNotAllow();
@@ -63,7 +64,7 @@ if($addsqls_str!='') {
 
 $addsql = " where mb.spacesta > -1  ".$addsqls_str;
 
-$query = "Select mb.*,mp.place,YEAR(CURDATE())-YEAR(mp.birthday) as age,mp.lovemsg From `#@__member` mb
+$query = "Select mb.*,mp.place,YEAR(CURDATE())-YEAR(mp.birthday) as age,mp.lovemsg,mp.birthday From `#@__member` mb
 left join `#@__member_person` mp on mp.mid=mb.mid
 {$addsql} order by mb.logintime desc";
 $dlist = new DataListCP();

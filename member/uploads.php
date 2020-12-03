@@ -3,6 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
+$menutype = 'content';
 $keyword = empty($keyword) ? '' : FilterSearch($keyword);
 $addsql = " where mid='".$cfg_ml->M_ID."' And title like '%$keyword%' ";
 if(empty($mediatype))

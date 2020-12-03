@@ -4,7 +4,7 @@ CheckPurview('sys_Data');
 $bkdir = DEDEDATA."/".$cfg_backup_dir;
 $filelists = Array();
 $dh = dir($bkdir);
-$structfile = "没找到数据结构文件";
+$structfile = "û�ҵ����ݽṹ�ļ�";
 while(($filename=$dh->read()) !== false)
 {
 	if(!ereg('txt$',$filename))

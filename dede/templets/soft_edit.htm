@@ -124,8 +124,11 @@ function ShowHideAddr()
           <td width="90">&nbsp;TAG标签：</td>
           <td>
           	<input name="tags" type="text" id="tags" value="<?php echo $tags; ?>" style="width:300px" />(','号分开，单个标签小于12字节)          </td>
+           <td width="40">权重：</td>
+          <td width="141"><input name="weight" type="text" id="weight" style="width:50px" value="<?php echo $arcRow['weight'];?>" /> 
+            (越小越靠前)</td>
         </tr>
-      </table>      </td>
+      </table> </td>
     </tr>
     <tr id="pictable">
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -170,7 +173,15 @@ function ShowHideAddr()
           echo $typeOptions;
           echo "</select>";
 			    ?> 
-			    <img src='img/menusearch.gif' style='cursor:pointer' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />			    </td>
+			    <img src='img/menusearch.gif' style='cursor:pointer' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
+                <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  
+                </td>
         </tr>
       </table>      </td>
     </tr>
@@ -448,7 +459,7 @@ if($cfg_need_typeid2=='Y') {
           echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			  ?>
           </td>
-          <td width="92">消费点数：</td>
+          <td width="92">消费金币：</td>
           <td width="368">
           	<input name="money" type="hidden" id="money" value="<?php echo $arcRow["money"]?>" />(此项已经独立分离)
           </td>

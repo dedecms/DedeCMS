@@ -14,11 +14,11 @@ $__ONLYDB = true;
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 $id = intval($aid);
 $id = ereg_replace("[^0-9]","",$id);
-$dsql->ExecuteNoneQuery("Update #@__story_books set click=click+1 where id='$id'");
+$dsql->ExecuteNoneQuery("Update #@__story_books set click=click+1 where bid='$id'");
 if(!empty($view))
 {
-	$row = $dsql->GetOne("Select click From #@__story_books  where id='$id'");
-	echo "document.write('".$row[0]."');\r\n";
+	$row = $dsql->GetOne("Select click From #@__story_books  where bid='$id'");
+	echo "document.write('".$row['click']."');\r\n";
 }
 exit();
 //如果想显示点击次数,请增加view参数,即把下面ＪＳ调用放到文档模板适当位置

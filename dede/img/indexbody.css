@@ -79,8 +79,6 @@ td {
 	width:23%;
 	float:right;
 	height:670px;
-	overflow-y: auto;
-  overflow: auto;
   scrollbar-face-color: #ffffff;
   scrollbar-highlight-color: #919192;
   scrollbar-shadow-color: #919192;
@@ -99,7 +97,7 @@ td {
 	height:28px;
 	line-height:28px;
 	font-weight:bold;
-	color:#666600;
+	color:#4D6C2F;
 }
 .dbox dt .l {
 	float:left;
@@ -127,15 +125,12 @@ td {
 #updatetest {
 	padding:6px;
 	padding-left: 110px;
-	height: 80px;
 	background:url(ico_spider.gif) 10px 0px no-repeat;
 }
 
 #quickmenu {
-	padding-left: 110px;
 	width:100%;
 	height: 46px;
-	background:url(qc.gif) 10px 5px no-repeat;
 	overflow:hidden;
 }
 
@@ -153,9 +148,18 @@ td {
 	border-bottom:1px dashed #CFD7C4;
 	height:26px;
 }
+.biz p{
+	padding:0 15px;
+	line-height:23px;
+	}
+.biz img{
+	float:right;
+	margin:40px 15px 0 15px;
+	}
 
 .footer {
 	border-top:1px solid #CFD7C4;
 	line-height:36px;
 	margin-top:8px;
+	font-family:Verdana, Geneva, sans-serif;
 }

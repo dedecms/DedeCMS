@@ -37,7 +37,7 @@ if($dopost=="upload")
 				$mediatype=3;
 				$savePath = $cfg_other_medias."/".$dpath;
 			}
-			else if(eregi("\.".$cfg_softtype."$",$upfile_name))
+			else if(eregi("\.".$cfg_softtype."+\.".$cfg_softtype."$",$upfile_name))
 			{
 				$mediatype=4;
 				$savePath = $cfg_soft_dir."/".$dpath;

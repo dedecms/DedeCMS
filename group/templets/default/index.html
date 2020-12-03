@@ -70,8 +70,8 @@
       <div id="host" class="content">
   <div id="p_w"> <img class="host_img imgBorder" alt="<?php echo $_GROUPS['uname'];?>" id="model9_img" src="<?php echo $_GROUPS['face'];?>"/>
     <ul>
-      <li><strong><a title="<?php echo $_GROUPS['uname'];?>" target="_blank" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $_GROUPS['userid'];?>" class="link_strong"><?php echo $_GROUPS['uname'];?></a></strong></li>
-      <li><a title="<?php echo $lang['group_index_friend'];?>" href="<?php echo $cfg_member_dir;?>/?action=newfriend&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_friend'];?></a><a style="margin: 0px;" title="<?php echo $lang['group_index_pm'];?>" href="<?php echo $cfg_member_dir;?>/pm.php?dopost=send&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_pm'];?></a></li>
+      <li><strong><a title="<?php echo $_GROUPS['uname'];?>" target="_blank" href="<?php echo $cfg_member_dir;?>/index.php?uid=<?php echo $_GROUPS['userid'];?>" class="link_strong"><?php echo $_GROUPS['uname'];?></a></strong></li>
+      <li><a title="<?php echo $lang['group_index_friend'];?>" href="<?php echo $cfg_member_dir;?>/index.php?action=newfriend&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_friend'];?></a><a style="margin: 0px;" title="<?php echo $lang['group_index_pm'];?>" href="<?php echo $cfg_member_dir;?>/pm.php?dopost=send&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_pm'];?></a></li>
       <li><a target="_blank" title="<?php echo $lang['group_topic_creaters'];?>BLOG" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $_GROUPS['userid'];?>">BLOG</a> | <a target="_blank" title="<?php echo $lang['group_topic_creaters'].$lang['group_index_album'];?>" href="<?php echo $cfg_member_dir;?>/?uid=admin&action=album"><?php echo $lang['group_index_album'];?></a></li>
     </ul>
   </div>
@@ -214,7 +214,7 @@
         <!--20 rows -->
         <dl style="display: block;" id="">
           <?php foreach($_GROUPS['groupArticle'] as $row) { ?>          
-          <dd> <em><?php echo $lang['group_article_view'];?><?php echo $row['click'];?><?php echo $lang['group_article_views'];?> <?php echo Mydate('y-m-d',$row['pubdate']);?></em> <span><a class="linkText" href="<?php echo $row['arcurl'];?>" target="_blank"><?php echo $row['title'];?></a></span> </dd>
+          <dd> <em><?php echo $lang['group_article_view'];?><?php echo $row['click'];?><?php echo $lang['group_article_views'];?> <?php echo Mydate('y-m-d',$row['pubdate']);?></em> <span><a class="linkText" href="<?php echo $row['arcurl'];?>" target="_blank"><?php echo substr($row['title'],0,40);?></a></span> </dd>
           <?php } ?>
         </dl>       
 	  </div>

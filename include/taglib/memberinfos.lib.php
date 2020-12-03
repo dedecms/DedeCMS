@@ -40,7 +40,7 @@ function lib_memberinfos(&$ctag,&$refObj)
 		if($row['matt']==10) return '';
 		$row['spaceurl'] = $GLOBALS['cfg_basehost'].'/member/index.php?uid='.$row['userid'];
 		if(empty($row['face'])) {
-			$row['face'] = $GLOBALS['cfg_memberurl'].'/images/nopic.gif';
+			$row['face']=($row['sex']=='女')?  $GLOBALS['cfg_memberurl'].'/templets/images/dfgirl.png' : $GLOBALS['cfg_memberurl'].'/templets/images/dfboy.png';
 		}
 		foreach($ctp->CTags as $tagid=>$ctag)
 		{

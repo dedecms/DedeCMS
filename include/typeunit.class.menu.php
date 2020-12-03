@@ -15,7 +15,7 @@ class TypeUnit
 	//php5构造函数
 	function __construct($catlogs='')
 	{
-		global $_Cs;
+		global $cfg_Cs;
 		$this->dsql = $GLOBALS['dsql'];
 		$this->aChannels = Array();
 		$this->isAdminAll = false;
@@ -24,7 +24,7 @@ class TypeUnit
 			$this->aChannels = explode(',',$catlogs);
 			foreach($this->aChannels as $cid)
 			{
-				if($_Cs[$cid][0]==0)
+				if($cfg_Cs[$cid][0]==0)
 				{
 					$this->dsql->SetQuery("Select id,ispart From `#@__arctype` where reid=$cid");
 					$this->dsql->Execute();

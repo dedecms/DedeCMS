@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `#@__addonarticle`;
+﻿DROP TABLE IF EXISTS `#@__addonarticle`;
 CREATE TABLE `#@__addonarticle` (
   `aid` mediumint(8) unsigned NOT NULL default '0',
   `typeid` smallint(5) unsigned NOT NULL default '0',
@@ -25,6 +25,7 @@ CREATE TABLE `#@__addonimages` (
   `templet` varchar(30) NOT NULL default '',
   `userip` char(15) NOT NULL default '',
   `redirecturl` varchar(255) NOT NULL default '',
+  `body` mediumtext,
   PRIMARY KEY  (`aid`),
   KEY `imagesMain` (`typeid`)
 ) TYPE=MyISAM;
@@ -114,7 +115,7 @@ CREATE TABLE `#@__addonspec` (
 DROP TABLE IF EXISTS `#@__admin`;
 CREATE TABLE `#@__admin` (
   `id` int(10) unsigned NOT NULL,
-  `usertype` int(10) unsigned NOT NULL default '0',
+  `usertype` float unsigned default '0',
   `userid` char(30) NOT NULL default '',
   `pwd` char(32) NOT NULL default '',
   `uname` char(20) NOT NULL default '',
@@ -128,7 +129,7 @@ CREATE TABLE `#@__admin` (
 
 DROP TABLE IF EXISTS `#@__admintype`;
 CREATE TABLE `#@__admintype` (
-  `rank` smallint(6) NOT NULL default '1',
+  `rank` float NOT NULL default '1',
   `typename` varchar(30) NOT NULL default '',
   `system` smallint(6) NOT NULL default '0',
   `purviews` text,
@@ -180,7 +181,7 @@ CREATE TABLE `#@__archives` (
   `color` char(7) NOT NULL default '',
   `writer` char(20) NOT NULL default '',
   `source` char(30) NOT NULL default '',
-  `litpic` char(60) NOT NULL default '',
+  `litpic` char(100) NOT NULL default '',
   `pubdate` int(10) unsigned NOT NULL default '0',
   `senddate` int(10) unsigned NOT NULL default '0',
   `mid` mediumint(8) unsigned NOT NULL default '0',
@@ -192,13 +193,29 @@ CREATE TABLE `#@__archives` (
   `notpost` tinyint(1) unsigned NOT NULL default '0',
   `description` varchar(255) NOT NULL default '',
   `filename` varchar(40) NOT NULL default '',
-  `dutyadmin` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0',
-	`tackid` INT( 10 ) NOT NULL DEFAULT '0',
-	`mtype` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0',
+  `dutyadmin` mediumint(8) unsigned NOT NULL default '0',
+  `tackid` int(10) NOT NULL default '0',
+  `mtype` mediumint(8) unsigned NOT NULL default '0',
+  `weight` int(10) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `sortrank` (`sortrank`),
   KEY `mainindex` (`arcrank`,`typeid`,`channel`,`flag`,`mid`),
   KEY `lastpost` (`lastpost`,`scores`,`goodpost`,`badpost`,`notpost`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__arcmulti`;
+CREATE TABLE `#@__arcmulti` (
+  `id` mediumint(8) unsigned NOT NULL auto_increment,
+  `tagid` char(60) NOT NULL default '',
+  `uptime` int(11) NOT NULL default '0',
+  `innertext` varchar(255) NOT NULL default '',
+  `pagesize` int(11) NOT NULL default '0',
+  `arcids` text NOT NULL,
+  `ordersql` varchar(255) default '',
+  `addfieldsSql` varchar(255) default '',
+  `addfieldsSqlJoin` varchar(255) default '',
+  `attstr` text,
+  PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__arcrank`;
@@ -249,7 +266,8 @@ CREATE TABLE `#@__arctype` (
   `namerule2` char(50) NOT NULL default '',
   `modname` char(20) NOT NULL default '',
   `description` char(150) NOT NULL default '',
-  `keywords` char(30) NOT NULL default '',
+  `keywords` varchar(60) NOT NULL default '',
+  `seotitle` varchar(80) NOT NULL default '',
   `moresite` tinyint(1) unsigned NOT NULL default '0',
   `sitepath` char(60) NOT NULL default '',
   `siteurl` char(50) NOT NULL default '',
@@ -492,12 +510,14 @@ CREATE TABLE `#@__log` (
 DROP TABLE IF EXISTS `#@__member`;
 CREATE TABLE `#@__member` (
   `mid` mediumint(8) unsigned NOT NULL auto_increment,
-  `mtype` enum('个人','企业') NOT NULL default '个人',
+  `mtype` varchar(20) NOT NULL default '个人',
   `userid` char(20) NOT NULL default '',
   `pwd` char(32) NOT NULL default '',
   `uname` char(36) NOT NULL default '',
   `sex` enum('男','女','保密') NOT NULL default '保密',
   `rank` smallint(5) unsigned NOT NULL default '0',
+  `uptime` int(11) NOT NULL default '0',
+  `exptime` smallint(6) NOT NULL default '0',
   `money` mediumint(8) unsigned NOT NULL default '0',
   `email` char(50) NOT NULL default '',
   `scores` mediumint(8) unsigned NOT NULL default '0',
@@ -537,6 +557,21 @@ CREATE TABLE `#@__member_company` (
   PRIMARY KEY  (`mid`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `#@__member_feed`;
+CREATE TABLE `#@__member_feed` (
+  `fid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `mid` smallint(8) unsigned NOT NULL DEFAULT '0',
+  `userid` char(20) NOT NULL DEFAULT '',
+  `uname` char(36) NOT NULL DEFAULT '',
+  `type` char(20) CHARACTER SET gb2312 NOT NULL DEFAULT '0',
+  `aid` mediumint(8) NOT NULL DEFAULT '0',
+  `dtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` char(253) NOT NULL,
+  `note` char(200) NOT NULL DEFAULT '',
+  `ischeck` smallint(6) NOT NULL,
+  PRIMARY KEY (`fid`)
+) TYPE=MyISAM;
+
 DROP TABLE IF EXISTS `#@__member_flink`;
 CREATE TABLE `#@__member_flink` (
   `aid` mediumint(8) unsigned NOT NULL auto_increment,
@@ -555,6 +590,8 @@ CREATE TABLE `#@__member_friends` (
   `mid` mediumint(8) NOT NULL default '0',
   `addtime` int(10) unsigned NOT NULL default '0',
   `ftype` tinyint(4) NOT NULL default '0',
+  `groupid` int(8) NOT NULL DEFAULT '1',
+  `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY  (`id`),
   KEY `fid` (`fid`,`mid`)
 ) TYPE=MyISAM;
@@ -574,6 +611,31 @@ CREATE TABLE `#@__member_guestbook` (
   `msg` text,
   PRIMARY KEY  (`aid`),
   KEY `mid` (`mid`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__member_model`;
+CREATE TABLE `#@__member_model` (
+  `id` int(10) NOT NULL auto_increment,
+  `name` varchar(20) NOT NULL,
+  `table` varchar(30) NOT NULL,
+  `description` varchar(50) NOT NULL,
+  `state` int(2) NOT NULL default '0',
+  `issystem` int(2) NOT NULL default '0',
+  `info` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__member_msg`;
+CREATE TABLE `#@__member_msg` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `mid` mediumint(8) unsigned NOT NULL default '0',
+  `userid` char(20) NOT NULL default '',
+  `ip` char(15) NOT NULL default '',
+  `ischeck` smallint(6) NOT NULL default '0',
+  `dtime` int(10) unsigned NOT NULL default '0',
+  `msg` text,
+  PRIMARY KEY  (`id`),
+  KEY `id` (`ischeck`,`mid`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__member_operation`;
@@ -619,7 +681,7 @@ CREATE TABLE `#@__member_person` (
   `drink` smallint(6) NOT NULL default '0',
   `datingtype` smallint(6) NOT NULL default '0',
   `language` set('普通话','上海话','广东话','英语','日语','韩语','法语','意大利语','德语','西班牙语','俄语','阿拉伯语') default NULL,
-  `nature` set('性格外向','性格内向','活泼开朗','沉默寡言','幽默','稳重','轻浮','冲动','坚强','脆弱','幼稚','成熟','能说会道','自私','真诚','独立','依赖','任性','自负','自卑','温柔体贴','神经质','拜金','小心翼翼','暴躁','倔强','逆来顺受','不拘小节','婆婆妈妈','交际广泛','豪爽','害羞','狡猾善变','耿直','虚伪','乐观向上','悲观消极','郁郁寡欢','孤僻','难以琢磨','胆小怕事','敢做敢当','助人为乐','老实','守旧','敏感','迟钝','武断','果断','优柔寡断','暴力倾向','刻薄','损人利己','附庸风雅','时喜时悲','患得患失','快言快语','豪放不羁','多愁善感','循规蹈矩') default NULL,
+  `nature` set('性格外向','性格内向','活泼开朗','豪放不羁','患得患失','冲动','幽默','稳重','轻浮','沉默寡言','多愁善感','时喜时悲','附庸风雅','能说会道','坚强','脆弱','幼稚','成熟','快言快语','损人利己','狡猾善变','交际广泛','优柔寡断','自私','真诚','独立','依赖','难以琢磨','悲观消极','郁郁寡欢','胆小怕事','乐观向上','任性','自负','自卑','拜金','温柔体贴','小心翼翼','暴力倾向','逆来顺受','不拘小节','暴躁','倔强','豪爽','害羞','婆婆妈妈','敢做敢当','助人为乐','耿直','虚伪','孤僻','老实','守旧','敏感','迟钝','婆婆妈妈','武断','果断','刻薄') default NULL,
   `lovemsg` varchar(100) NOT NULL default '',
   `address` varchar(50) NOT NULL default '',
   `uptime` int(10) unsigned NOT NULL default '0',
@@ -664,8 +726,17 @@ CREATE TABLE `#@__member_stow` (
   `aid` mediumint(8) unsigned NOT NULL default '0',
   `title` char(60) NOT NULL default '',
   `addtime` int(10) unsigned NOT NULL default '0',
+  `type` varchar(20) NOT NULL default 'sys',
   PRIMARY KEY  (`id`),
   KEY `uid` (`mid`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__member_stowtype`;
+CREATE TABLE IF NOT EXISTS `#@__member_stowtype` (
+  `stowname` varchar(30) NOT NULL,
+  `indexname` varchar(30) NOT NULL,
+  `indexurl` varchar(50) NOT NULL,
+  PRIMARY KEY  (`stowname`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__member_tj`;
@@ -743,6 +814,15 @@ CREATE TABLE `#@__mtypes` (
   `channelid` SMALLINT( 6 ) NOT NULL DEFAULT '1',
   `mid` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`mtypeid`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__multiserv_config`;
+CREATE TABLE `#@__multiserv_config` (
+  `remoteuploads` smallint(6) NOT NULL default '0',
+  `remoteupUrl` text NOT NULL,
+  `rminfo` text,
+  `servinfo` mediumtext,
+  PRIMARY KEY  (`remoteuploads`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__myad`;
@@ -883,12 +963,20 @@ CREATE TABLE `#@__shops_orders` (
   KEY `oid` (`oid`)
 ) TYPE=MyISAM;
 
-DROP TABLE IF EXISTS `#@__shops_paytype`;
-CREATE TABLE `#@__shops_paytype` (
-  `pid` int(10) NOT NULL auto_increment,
-  `paytype` varchar(20) NOT NULL,
-  `des` text,
-  PRIMARY KEY  (`pid`)
+DROP TABLE IF EXISTS `#@__payment`;
+CREATE TABLE `#@__payment` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) NOT NULL DEFAULT '',
+  `name` varchar(120) NOT NULL DEFAULT '',
+  `fee` varchar(10) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `rank` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `config` text NOT NULL,
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `cod` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `online` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code`  USING BTREE  (`code`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__shops_products`;
@@ -988,6 +1076,7 @@ DROP TABLE IF EXISTS `#@__tagindex`;
 CREATE TABLE `#@__tagindex` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `tag` char(12) NOT NULL default '',
+  `typeid` smallint(5) unsigned NOT NULL default '0',
   `count` int(10) unsigned NOT NULL default '0',
   `total` int(10) unsigned NOT NULL default '0',
   `weekcc` int(10) unsigned NOT NULL default '0',
@@ -1074,3 +1163,12 @@ CREATE TABLE `#@__member_snsmsg` (
 	`msg` VARCHAR( 250 ) NOT NULL ,
 	PRIMARY KEY ( `id` )
 ) TYPE = MYISAM;
+
+DROP TABLE IF EXISTS `#@__member_group`;
+CREATE TABLE `#@__member_group` (
+  `id` int(10) NOT NULL auto_increment,
+  `groupname` varchar(50) NOT NULL,
+  `mid` int(8) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `id` (`id`)
+) TYPE=MyISAM;

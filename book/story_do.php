@@ -25,10 +25,10 @@ function DelBook()
 -------------------*/
 if($action=='delbook')
 {
-	$row = $dsql->GetOne("Select booktype From #@__story_books where id='$bid' and mid='$cfg_ml->M_ID' ");
+	$row = $dsql->GetOne("Select booktype From #@__story_books where bid='$bid' and mid='$cfg_ml->M_ID' ");
 	if(is_array($row))
 	{
-		$dsql->ExecuteNoneQuery("Delete From #@__story_books where id='$bid' and mid='$cfg_ml->M_ID' ");
+		$dsql->ExecuteNoneQuery("Delete From #@__story_books where bid='$bid' and mid='$cfg_ml->M_ID' ");
 		$dsql->ExecuteNoneQuery("Delete From #@__story_chapter  where bookid='$bid' and mid='$cfg_ml->M_ID' ");
 		$dsql->ExecuteNoneQuery("Delete From #@__story_content where bookid='$bid' and mid='$cfg_ml->M_ID' ");
 		if(empty($ENV_GOBACK_URL))
@@ -63,7 +63,7 @@ else if($action=='delcontent')
 
 	//更新图书记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where bookid='$bookid' and mid='$cfg_ml->M_ID' ");
-	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where id='$bookid' and mid='$cfg_ml->M_ID' ");
+	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where bid='$bookid' and mid='$cfg_ml->M_ID' ");
 
 	//更新章节记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where chapterid='$chapterid' and mid='$cfg_ml->M_ID' ");
@@ -90,7 +90,7 @@ function DelChapter()
 -------------------*/
 else if($action=='delChapter')
 {
-	$row = $dsql->GetOne("Select c.bookid,b.booktype From #@__story_chapter c left join  #@__story_books b on b.id=c.bookid where c.id='$cid' and c.mid='$cfg_ml->M_ID' ");
+	$row = $dsql->GetOne("Select c.bookid,b.booktype From #@__story_chapter c left join  #@__story_books b on b.bid=c.bookid where c.id='$cid' and c.mid='$cfg_ml->M_ID' ");
 	if(!is_array($row))
 	{
 		ShowMsg("对不起，你没有权限！","-1");
@@ -103,7 +103,7 @@ else if($action=='delChapter')
 
 	//更新图书记录
 	$row = $dsql->GetOne("Select count(id) as dd From #@__story_content where bookid='$bookid' and mid='$cfg_ml->M_ID' ");
-	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where id='$bookid' and mid='$cfg_ml->M_ID' ");
+	$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}' where bid='$bookid' and mid='$cfg_ml->M_ID' ");
 	ShowMsg("成功删除指定章节！",$ENV_GOBACK_URL);
 	exit();
 }

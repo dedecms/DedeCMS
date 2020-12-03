@@ -3,27 +3,36 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>我的提问</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
 <script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."./templets/menu.php");?>
-      <div class="dedeMain">
-        <div class="location"><span class="fLeft">我的提问<i>|</i><a href="index.php">问答频道</a></span><span class="fRight mR10 titPublish icon"><a href='../ask/post.php'>发出提问</a></span></div>
-        <div class="mL10 mR10 mTB10">
-          <table cellspacing="1" class="list">
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php");?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="myask.php">我的提问</a></li>
+          <li><a href="index.php">问答频道</a></li>
+        </ul>
+        <div class="tabOther">
+          <span class="fRight mR10 titPublish icon"><a href='../ask/post.php'>发出提问</a></span>
+        </div>
+      </div>
+      <div id="mainCp">
+        <h3 class="meTitle">我的提问</h3>
+        <div class="postForm">
+           <table  width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
             <thead>
               <tr>
                 <th>标题</th>
-                <th width="5%">悬赏积分</th>
-                <th width="5%">回答数</th>
-                <th width="5%">状态</th>
-                <th width="15%">提问时间</th>
+                <th width="10%">悬赏积分</th>
+                <th width="10%">回答数</th>
+                <th width="10%">状态</th>
+                <th width="18%">提问时间</th>
               </tr>
             </thead>
             <tbody>
@@ -61,14 +70,15 @@
                   <div class="clear"></div></td>
               </tr>
             </tfoot>
-          </table>
-        </div>
-      </div>
-      <div class="clear"></div>
+          </table>    
+       </div>
+
+      <!--主操作区域 -->
     </div>
-    <div class="clear"></div>
   </div>
 </div>
-<?php  include(DEDEMEMBER."./templets/foot.htm");?>
+<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
+
 </body>
 </html>

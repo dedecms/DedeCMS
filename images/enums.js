@@ -135,7 +135,7 @@ function MakeTopSelect(emname, selvalue)
 			aOption = document.createElement('OPTION');
 			aOption.text = selarr[i];
 			aOption.value = i;
-			selObj.options.add(aOption);
+			selObj.options.add(aOption);			
 			aOption.selected = true;
 		}
 		else {

@@ -5,7 +5,7 @@ require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 if(empty($rank))
 {
-	$rank="";
+	$rank = '';
 }
 else
 {

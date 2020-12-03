@@ -2,7 +2,7 @@
 /**
  * 系统运行环境检测
  *
- * @version        $Id: testenv.php 2 12:56 2011/12/19 tianya $
+ * @version        $Id: testenv.php 13:57 2011/11/10 tianya $
  * @package        DedeCMS.Administrator
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
@@ -321,8 +321,8 @@ function setIntervals(){
 }
 function clearIntervals(){
 	clearInterval(timer);
-	alert('全部检测完毕，您可以按照检测结果进行系统权限调整！');
 	//document.getElementById('install').submit();
+	alert('全部检测完毕，您可以按照检测结果进行系统权限调整！');
 }
 //setTimeout(setIntervals, 100);
 

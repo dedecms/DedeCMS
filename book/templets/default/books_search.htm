@@ -45,7 +45,7 @@ function CheckLogin(){
             	<div id="book_go">
                 </div>
                 <ul>
-                    <li><a href='{dede:global name='cfg_cmsurl'/}'>主页</a></li>
+                    <li><a href='{dede:global name='cfg_cmspath'/}/book'>主页</a></li>
         			{dede:catalog}
                     <li><a href="{in:field name='url'}{/in:field}">{in:field name='classname'}{/in:field}</a></li>
         			{/dede:catalog}
@@ -59,7 +59,7 @@ function CheckLogin(){
     <!--中间开始-->
     <div id="main">
    	  <div id="book_main">
-        	<div id="book_index">当前位置：<a href="{dede:global name='cfg_cmspath'/}">主页</a> >  <a href="{dede:global name='cfg_cmspath'/}/book">连载频道</a> - 搜索</div>
+        	<div id="book_index">当前位置：<a href="{dede:global name='cfg_cmspath'/}/book">主页</a> >  搜索</div>
 <div id="book_left"><!--左边开始-->
            	  <div class="book_left_main">
                	  <div class="book_left_title">本月热门图书
@@ -129,7 +129,7 @@ function CheckLogin(){
                     <div class="book_news_style">
                     {dede:list imgwidth='80' imgheight='100' pagesize='10'}
 <div class="book_news_style_form1">
-                        	<div class="book_news_style_img"><a href="">[field:imglink/]</a>                      </div>
+                        	<div class="book_news_style_img">  <a href="[field:bookurl/]">[field:litpic runphp='yes']@me = (empty(@me['litpic']) ? "<img src='/images/defaultpic.gif' width='80' height='100' />" : "<img src='@me' width='80' height='100' />"); [/field:litpic]</a></div>
 <div class="book_news_style_text1">
                             	<h1>[[field:cataloglink/]] <a href='[field:bookurl/]'>[field:bookname/]</a> </h1><h2>作者：[field:author/]    【是否完成连载：[field:ischeck/]】</h2>
                             	<h3>[field:description/]…</h3>
@@ -149,7 +149,7 @@ function CheckLogin(){
     </div>
 <!--中间结束-->
     <div class="book_footer">
-        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+        Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2010  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
     </div>
   <div class="clear">
     </div>

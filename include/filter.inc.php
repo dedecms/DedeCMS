@@ -26,7 +26,7 @@ function _FilterAll($fk,&$svar)
 			$svar = eregi_replace($cfg_replacestr,"***",$svar);
 		}
 	}
-	return $svar;
+	return addslashes($svar);
 }
 
 foreach(Array('_GET','_POST','_COOKIE') as $_request)

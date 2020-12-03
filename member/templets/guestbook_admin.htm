@@ -1,12 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>我的留言本</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的留言本 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" language='javascript' src='templets/js/main.js'></script>
 <script type="text/javascript" language="javascript" src="../include/dedeajax2.js"></script>
-<script type="text/javascript" language='javascript' src='js/main.js'></script>
-<script type="text/javascript" language="JavaScript">
-<!--
+<script type="text/javascript" src="templets/js/table_function.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">
 var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>";
 var pageno = 1;
 var totalrow = <?php echo $totalRow; ?>;
@@ -103,7 +106,7 @@ function ReloadPageNum(startnum){
 		startloop = pagenum-(listsize*2);
 		if(startloop<1) startloop = 1;
 		for(i=startloop;i<=pagenum;i++){
-			if(i==pageno) ahtml += "<span style='background:#006600; color:#FFFFFF;'>"+i+"</span>";
+			if(i==pageno) ahtml += "<span style='color:#555;font-weight:bold;'>"+i+"</span>";
 			else ahtml += "<a href='#' onclick='LoadPage("+i+")'>"+i+"</a> ";
 		}
 	}
@@ -126,34 +129,39 @@ function ReloadPageNum(startnum){
 	if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>下页↓</a> ";
 	$('#pagelist').html(ahtml);
 }
--->
 </script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">
-        	<span class="fLeft">留言板</span><span class="fRight"><button id="checkedClick" class="button2 mTB10 mR10 textCenter " type="button">全选</button><button class="button5 mTB10 mR10" type="button" onclick="DelNotes()">删除选中</button></span>
-		</div>
-        <form name="form1" class="mL10 mR10 mTB10">
+<div id="main">
+  <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="#"><span>留言板</span></a></li>
+        </ul>
+        <div class="tabOther">
+        <button id="checkedClick" type="button" class="greenBtn1">全选</button>
+        <button type="button" onclick="DelNotes()" class="greenBtn3">删除选中</button>
+        </div>
+      </div>
+      <div id="mainCp">
+         <form name="form1">
           <span id='rslist'>
           <?php GetList($dsql,$pageno,$pagesize,'aid'); ?>
           </span>
         </form>
-        <div id="pagelist" class="pages mTB10 mR10 fRight"></div>
+        <div id="pagelist"></div>
+        <!--主操作区域 -->
+      <script type="text/javascript">
+		ReloadPageNum(1);
+	  </script>
       </div>
-      <div class="clear"></div>
+
     </div>
-    <div class="clear"></div>
   </div>
-</div>
 <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
-<script type="text/javascript">
-ReloadPageNum(1);
-</script>
+</div>
 </body>
 </html>

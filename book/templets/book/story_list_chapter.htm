@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>小说章节管理</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 <script language="javascript" type="text/javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="js/story.js"></script>
 <script language="javascript" type="text/javascript">
@@ -25,32 +25,32 @@
 </script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">《<?php echo $bookname;?>》<i>|</i><a href='../book/book.php?id=<?php echo $bookid; ?>' target='_blank'>查看</a></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li class="select"><a href="mybooks.php">小说书目</a></li>
-            <li><a href="story_list_content.php">小说内容</a></li>
-          </ul>
-        </div>
-        <form class="mL10 mR10 mTB10" name="form2" action="story_do.php" method="post">
-          <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>书目章节</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em class="mR10">
-              <?php if($booktype == '1'){?>
-              <a href='story_add_photo.php?bookid=<?php echo $bookid; ?>'>新增连载</a>
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="mybooks.php"><span>连载书目</span></a></li>
+          <li><a href="story_list_content.php"><span>连载内容</span></a></li>
+        </ul>
+      </div>
+      <ul class="tabSub">
+        <li <?php echo ($arcrank=='')? "class='thisTab'" : "";?>><?php if($booktype == '1'){?>
+              <a href='story_add_photo.php?bookid=<?php echo $bookid; ?>'><span>新增连载</span></a>
               <?php }else{?>
-              <a href='story_add_content.php?bookid=<?php echo $bookid; ?>'>新增连载</a>
-              <?php }?>
-              </em> <em class="mR10"> <a href="story_list_content.php?bookid=<?php echo $bookid; ?>">连载内容</a> </em> <em class="mR10"> <a href="story_list_chapter.php?bookid=<?php echo $bookid; ?>">书目章节</a> </em> <em class="mR10"> <a href="story_edit.php?bookid=<?php echo $bookid;?>">书目资料</a> </em></div>
-          </div>
+              <a href='story_add_content.php?bookid=<?php echo $bookid; ?>'><span>新增连载</span></a>
+              <?php }?></li>
+        <li <?php echo ($arcrank=='1')? "class='thisTab'" : "";?>><a href="story_list_content.php?bookid=<?php echo $bookid; ?>"><span>小说内容</span></a></li>
+        <li <?php echo ($arcrank=='-1')? "class='thisTab'" : "";?>><a href="story_list_chapter.php?bookid=<?php echo $bookid; ?>"><span>书目章节</span></a></li>
+        <li <?php echo ($arcrank=='-2')? "class='thisTab'" : "";?>><a href="story_edit.php?bookid=<?php echo $bookid; ?>"><span>书目资料</span></a></li>
+      </ul>
+      <div id="mainCp">
+      <h3 class="meTitle"><strong>&nbsp;书目章节</strong></h3>  
+        <form class="mL10 mR10 mTB10" name="form2" action="story_do.php" method="post">
           <input type="hidden" name="action" value="upChapterSort" />
-          <table cellspacing="1" class="list">
+          <table cellspacing="1" class="list" width="100%">
             <thead>
               <tr>
                 <th width="1%" ><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
@@ -88,12 +88,14 @@
             </tfoot>
           </table>
         </form>
+        </div>
+        <!--主操作区域 -->
       </div>
-      <div class="clear"></div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
 </body>
 </html>
+

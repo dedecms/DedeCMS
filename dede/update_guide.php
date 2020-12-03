@@ -74,7 +74,7 @@ if(empty($dopost)) {
 }
 
 //升级服务器，如果有变动，请到 http://bbs.dedecms.com 查询
-$updateHost = 'http://updatenew.dedecms.com/base-v55/';
+$updateHost = 'http://updatenew.dedecms.com/base-v56/';
 
 //当前软件版本锁定文件
 $verLockFile = DEDEROOT.'/data/admin/ver.txt';
@@ -408,11 +408,11 @@ else if($dopost=='apply')
 				$sql = eregi_replace('TYPE=MyISAM',$sql41tmp,$sql);
 			}
 			
-			$sqls = explode(";[\r\n]", $sql);
+			$sqls = explode(";\r\n", $sql);
 			foreach($sqls as $sql)
 			{
 				if(trim($sql)!='') {
-					$dsql->executenonequery(trim($sql));
+					$dsql->ExecuteNoneQuery(trim($sql));
 				}
 			}
 		}

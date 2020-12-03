@@ -20,7 +20,7 @@ else if($action=='save')
 	$svali = GetCkVdValue();
 	if($validate=='' || $validate!=$svali)
 	{
-	 	ShowMsg("验证码不正确!","-1");
+	 	ShowMsg("验证码不正确!","");
 	 	exit();
 	}
 	$ip = GetIP();

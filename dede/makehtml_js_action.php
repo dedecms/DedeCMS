@@ -6,6 +6,8 @@ if(empty($typeid))
 {
 	$typeid = 0;
 }
+$isremote = empty($isremote)? 0 : $isremote;
+$serviterm=empty($serviterm)? "" : $serviterm;
 if(empty($templet))
 {
 	$templet = "plus/js.htm";
@@ -13,6 +15,16 @@ if(empty($templet))
 if(empty($uptype))
 {
 	$uptype = "all";
+}
+if($cfg_remote_site=='Y' && $isremote=="1")
+{	
+	if($serviterm!=""){
+		list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+		$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+	}else{
+		$config=array();
+	}
+	if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
 }
 if($uptype == "all")
 {
@@ -26,17 +38,15 @@ if($uptype == "all")
 	{
 		$pv = new PartView($row['id']);
 		$pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
-		$pv->SaveToHtml($cfg_basedir.$cfg_cmspath."/data/js/".$row['id'].".js");
-		$typeid = $row['id'];
-		ShowMsg("成功更新".$cfg_cmspath."/data/js/".$row['id'].".js，继续进行操作！","makehtml_js_action.php?typeid=$typeid",0,100);
+		$pv->SaveToHtml($cfg_basedir.$cfg_cmspath."/data/js/".$row['id'].".js",$isremote);
+		$typeid = $row['id'];;
+		ShowMsg("成功更新".$cfg_cmspath."/data/js/".$row['id'].".js，继续进行操作！","makehtml_js_action.php?typeid=$typeid&isremote=$isremote&serviterm=$serviterm",0,100);
 		exit();
 	}
-}
-else
-{
+}else{
 	$pv = new PartView($typeid);
 	$pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
-	$pv->SaveToHtml($cfg_basedir.$cfg_cmspath."/data/js/".$typeid.".js");
+	$pv->SaveToHtml($cfg_basedir.$cfg_cmspath."/data/js/".$typeid.".js",$isremote);
 	echo "成功更新".$cfg_cmspath."/data/js/".$typeid.".js！";
 	echo "预览：";
 	echo "<hr>";

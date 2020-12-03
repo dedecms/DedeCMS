@@ -328,13 +328,13 @@ function SpLongBody($mybody,$spsize,$sptag)
 }
 
 //创建指定ID的文档
-function MakeArt($aid, $mkindex=false, $ismakesign=false)
+function MakeArt($aid, $mkindex=false, $ismakesign=false,$isremote=0)
 {
 	global $envs, $typeid;
 	require_once(DEDEINC.'/arc.archives.class.php');
 	if($ismakesign) $envs['makesign'] = 'yes';
 	$arc = new Archives($aid);
-	$reurl = $arc->MakeHtml();
+	$reurl = $arc->MakeHtml($isremote);
 	return $reurl;
 }
 
@@ -556,19 +556,17 @@ function AnalyseHtmlBody($body,&$description,&$litpic,&$keywords,$dtype='')
 	{
 		$subject = $title;
 		$message = $body;
-		if($cfg_soft_lang == 'utf-8')
-		{
-			$subject = utf82gb($title);
-			$message = utf82gb($message);
-		}
 		include_once(DEDEINC.'/splitword.class.php');
 		$keywords = '';
-		$sp = new SplitWord();
-		$titleindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText($subject)));
-		$allindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText(Html2Text($message),500)));
+		$sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
+		$sp->SetSource($subject, $cfg_soft_lang, $cfg_soft_lang);
+		$sp->StartAnalysis();
+		$titleindexs = preg_replace("/#p#|#e#/",'',$sp->GetFinallyIndex());
+		$sp->SetSource(Html2Text($message), $cfg_soft_lang, $cfg_soft_lang);
+		$allindexs = preg_replace("/#p#|#e#/",'',$sp->GetFinallyIndex());
 		if(is_array($allindexs) && is_array($titleindexs))
 		{
-			foreach($titleindexs as $k)
+			foreach($titleindexs as $k => $v)
 			{
 				if(strlen($keywords.$k)>=60)
 				{
@@ -579,7 +577,7 @@ function AnalyseHtmlBody($body,&$description,&$litpic,&$keywords,$dtype='')
 					$keywords .= $k.',';
 				}
 			}
-			foreach($allindexs as $k)
+			foreach($allindexs as $k => $v)
 			{
 				if(strlen($keywords.$k)>=60)
 				{
@@ -591,8 +589,8 @@ function AnalyseHtmlBody($body,&$description,&$litpic,&$keywords,$dtype='')
 				}
 			}
 		}
-		$sp->Clear();
 		$sp = null;
+		$keywords = addslashes($keywords);
 	}
 	$body = GetFieldValueA($body,$dtype,$id);
 	$body = addslashes($body);

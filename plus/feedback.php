@@ -73,7 +73,7 @@ else if($action=='' || $action=='show')
 	$wquery = $ftype!='' ? " And ftype like '$ftype' " : '';
 
 	//评论内容列表
-	$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores from `#@__feedback` fb
+	$querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores,mb.sex from `#@__feedback` fb
                  left join `#@__member` mb on mb.mid = fb.mid
                  where fb.aid='$aid' and fb.ischeck='1' $wquery order by fb.id desc";
 	$dlist->SetParameter('aid',$aid);
@@ -128,16 +128,16 @@ else if($action=='send')
 		exit();
 	}
 	//检查验证码
-	if($cfg_feedback_ck=='Y')
-	{
+	if(preg_match("/4/",$safe_gdopen)){
 		$validate = isset($validate) ? strtolower(trim($validate)) : '';
-		$svali = strtolower(trim(GetCkVdValue()));
-		if($validate != $svali || $svali=='')
+	    $svali = GetCkVdValue();
+		if(strtolower($validate)!=$svali || $svali=='')
 		{
 			ResetVdValue();
-			ShowMsg('验证码错误！','-1');
+			ShowMsg('验证码错误！', '-1');
 			exit();
 		}
+		
 	}
 
 	//检查用户登录
@@ -235,7 +235,7 @@ else if($action=='send')
 	elseif ($comtype == 'reply')
 	{
 		$row = $dsql->GetOne("Select * from `#@__feedback` where id ='$fid'");
-		$arctitle = $row['arctitle'];
+		$arctitle = addslashes($row['arctitle']);
 		$aid =$row['aid'];
 		$msg = $quotemsg.$msg;
 		$msg = HtmlReplace($msg,2);
@@ -285,6 +285,10 @@ else if($action=='send')
 		$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__feedback` WHERE `mid`='".$cfg_ml->M_ID."'");
 		$dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET `feedback`='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
 	}
+	
+	//会员动态记录
+	$cfg_ml->RecordFeeds('feedback',$arctitle,$msg,$aid);
+	
 	$_SESSION['sedtime'] = time();
 	if(empty($uid) && isset($cmtuser)) $uid = $cmtuser;
 	$backurl = $cfg_formmember ? "index.php?uid={$uid}&action=viewarchives&aid={$aid}" : "feedback.php?aid=$aid";

@@ -1,10 +1,12 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'config';
 if(!isset($dopost))
 {
 	$dopost = '';
 }
+$pwd2=(empty($pwd2))? "" : $pwd2;
 $row=$dsql->GetOne("select  * from `#@__member` where mid='".$cfg_ml->M_ID."'");
 $face = $row['face'];
 if($dopost=='save')

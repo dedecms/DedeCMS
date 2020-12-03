@@ -37,6 +37,16 @@ $filename = $filename.'.'.$fs[count($fs)-1];
 $filename_name = $filename_name.'.'.$fs[count($fs)-1];
 $fullfilename = $cfg_basedir.$activepath."/".$filename;
 move_uploaded_file($imgfile,$fullfilename) or die("上传文件到 $fullfilename 失败！");
+if($cfg_remote_site=='Y' && $remoteuploads == 1)
+{
+	//分析远程文件路径
+	$remotefile = str_replace(DEDEROOT, '', $fullfilename);
+  $localfile = '../..'.$remotefile;
+  //创建远程文件夹
+  $remotedir = preg_replace('/[^\/]*\.(jpg|gif|bmp|png)/', '', $remotefile);
+	$ftp->rmkdir($remotedir);
+	$ftp->upload($localfile, $remotefile);
+}
 @unlink($imgfile);
 if(empty($resize))
 {

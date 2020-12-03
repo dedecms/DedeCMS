@@ -12,6 +12,7 @@
 
 require_once(dirname(__FILE__)."/../member/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';

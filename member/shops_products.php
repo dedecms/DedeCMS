@@ -1,77 +1,84 @@
 <?php 
 require_once(dirname(__FILE__)."/config.php");
 include_once DEDEINC.'/datalistcp.class.php';
-$do = isset($do) ? trim($do) : '';
-$oid = isset($oid) ? eregi_replace("[^-0-9A-Z]","",$oid) : '';
-$addsql = '';
-if(!empty($oid))
+$menutype = 'mydede';
+$menutype_son = 'op';
+if(!isset($dopost))
 {
-	if($do=='ok')
+	$dopost = '';
+}
+if($dopost=='')
+{
+	$do = isset($do) ? trim($do) : '';
+	$oid = isset($oid) ? eregi_replace("[^-0-9A-Z]","",$oid) : '';
+	$addsql = '';
+	if(!empty($oid))
 	{
-		$dsql->ExecuteNoneQuery("UPDATE #@__shops_orders SET `state`='4' WHERE oid='$oid'");
-		ShowMsg("已确认订单！",'shops_products.php?oid='.$oid);
-		exit();
+		if($do=='ok')
+		{
+			$dsql->ExecuteNoneQuery("UPDATE #@__shops_orders SET `state`='4' WHERE oid='$oid'");
+			ShowMsg("已确认订单！",'shops_products.php?oid='.$oid);
+			exit();
+		}
+		
+		$row = $dsql->GetOne("SELECT * FROM #@__shops_userinfo WHERE userid='".$cfg_ml->M_ID."' AND oid='$oid'");
+		if(!isset($row['oid']))
+		{
+			ShowMsg("订单不存在！",-1);
+			exit();
+		}
+		$row['des'] = stripslashes($row['des']);
+		$rs = $dsql->GetOne("SELECT * FROM #@__shops_orders WHERE userid='".$cfg_ml->M_ID."' AND oid='$oid'");
+		$row['state'] = $rs['state'];
+		$row['stime'] = $rs['stime'];
+		$row['cartcount'] = $rs['cartcount'];
+		$row['price'] = $rs['price'];
+		$row['uprice'] = $rs['price']/$rs['cartcount'];
+		$row['dprice'] = $rs['dprice'];
+		$row['priceCount'] = $rs['priceCount'];
+		$rs = $dsql->GetOne("SELECT `dname` FROM #@__shops_delivery WHERE pid='$rs[pid]' LIMIT 0,1");
+		$row['dname'] = $rs['dname'];
+		unset($rs);
+		$addsql = " AND oid='".$oid."'";
 	}
 	
-	$row = $dsql->GetOne("SELECT * FROM #@__shops_userinfo WHERE userid='".$cfg_ml->M_ID."' AND oid='$oid'");
-	if(!isset($row['oid']))
-	{
-		ShowMsg("订单不存在！",-1);
-		exit();
-	}
-	$row['des'] = stripslashes($row['des']);
-	$rs = $dsql->GetOne("SELECT state,stime,price,dprice,priceCount,pid FROM #@__shops_orders WHERE userid='".$cfg_ml->M_ID."' AND oid='$oid'");
-	$row['state'] = $rs['state'];
-	$row['stime'] = $rs['stime'];
-	$row['price'] = $rs['price'];
-	$row['dprice'] = $rs['dprice'];
-	$row['priceCount'] = $rs['priceCount'];
-	$rs = $dsql->GetOne("SELECT `dname` FROM #@__shops_delivery WHERE pid='$rs[pid]' LIMIT 0,1");
-	$row['dname'] = $rs['dname'];
-	unset($rs);
-	$addsql = " AND oid='".$oid."'";
+	$sql = "SELECT * FROM #@__shops_products WHERE userid='".$cfg_ml->M_ID."' $addsql ORDER BY aid ASC";
+	$dl = new DataListCP();
+	$dl->pageSize = 20;
+	if(!empty($oid)) $dl->SetParameter('oid',$oid);
+	//这两句的顺序不能更换
+	$dl->SetTemplate(dirname(__FILE__)."/templets/shops_products.htm");      //载入模板
+	$dl->SetSource($sql);            //设定查询SQL
+	$dl->Display(); 
 }
-
-$sql = "SELECT * FROM #@__shops_products WHERE userid='".$cfg_ml->M_ID."' $addsql ORDER BY aid ASC";
-$dl = new DataListCP();
-$dl->pageSize = 20;
-if(!empty($oid)) $dl->SetParameter('oid',$oid);
-//这两句的顺序不能更换
-$dl->SetTemplate(dirname(__FILE__)."/templets/shops_products.htm");      //载入模板
-$dl->SetSource($sql);            //设定查询SQL
-$dl->Display();  
+elseif($dopost=='del')
+{
+	$ids = explode(',',$ids);
+	if(isset($ids) && is_array($ids))
+	{
+		foreach($ids as $id)
+		{
+			$id = preg_replace("/^[a-z][0-9]$/","",$id);
+			$query = "DELETE FROM `#@__shops_products` WHERE oid='$id' AND userid='{$cfg_ml->M_ID}'";
+			$query2 = "DELETE FROM `#@__shops_orders` WHERE oid='$id' AND userid='{$cfg_ml->M_ID}'";
+			$query3 = "DELETE FROM `#@__shops_userinfo` WHERE oid='$id' AND userid='{$cfg_ml->M_ID}'";
+			$dsql->ExecuteNoneQuery($query);
+			$dsql->ExecuteNoneQuery($query2);
+			$dsql->ExecuteNoneQuery($query3);
+		}
+		ShowMsg("成功删除指定的交易记录!","shops_products.php");
+	  exit();
+	}
+}
 
 function GetSta($sta,$oid)
 {
 	global $dsql;
 	$row = $dsql->GetOne("SELECT paytype FROM #@__shops_orders WHERE oid='$oid'");
+	$payname = $dsql->GetOne("SELECT name,fee FROM #@__payment WHERE id='{$row['paytype']}'");
 	if($sta==0)
 	{
-		if($row['paytype'] == 2)
-		{
-			//货到付款
-			return '货到付款';
-		}
-		elseif($row['paytype'] == 3)
-		{
-			//银行付款
-			return '未付款&gt;<a href="../plus/shops_bank.php?pid='.$row['paytype'].'" target="_blank">付款</a>';
-		}
-		elseif($row['paytype'] == 4)
-		{
-			//邮政汇款
-			return '未付款&gt;<a href="../plus/shops_bank.php?pid='.$row['paytype'].'" target="_blank">付款</a>';
-		}
-		elseif($row['paytype'] == 5)
-		{
-			//扣点时
-			return '未付款&gt;<a href="shops_point.php?oid='.$oid.'" target="_blank">付款</a>';
-		}
-		elseif($row['paytype'] == 1)
-		{
-			//网银在线支付
-			return '未付款&gt;<a href="../plus/shops_buyaction.php?oid='.$oid.'" target="_blank">付款</a>';
-		}
+		return $payname['name']." 手续费:".$payname['fee']."元";
 	}
 	elseif($sta==1)
 	{

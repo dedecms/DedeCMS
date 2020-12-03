@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
+$menutype_son = 'pm';
 if($cfg_mb_lit=='Y')
 {
 	ShowMsg('由于系统开启了精简版会员空间，你不能向其它会员发短信息，不过你可以向他留言！','-1');
@@ -20,7 +22,9 @@ if(!isset($dopost))
 }
 //检查用户是否被禁言
 CheckNotAllow();
-/*--------------------
+$state=(empty($state))? "" : $state;
+/*----------------
+----
 function __send(){  }
 ----------------------*/
 if($dopost=='send')
@@ -67,6 +71,25 @@ function __savesend(){  }
 ----------------------*/
 else if($dopost=='savesend')
 {
+	$svali = GetCkVdValue();
+	if(preg_match("/5/",$safe_gdopen)){
+		if(strtolower($vdcode)!=$svali || $svali=='')
+		{
+			ResetVdValue();
+			ShowMsg('验证码错误！', '-1');
+			exit();
+		}
+		
+	}
+	$faqkey = isset($faqkey) && is_numeric($faqkey) ? $faqkey : 0;
+	if($safe_faq_msg == 1)
+	{
+		if($safefaqs[$faqkey]['answer'] != $safeanswer || $safeanswer=='')
+		{
+			ShowMsg('验证问题答案错误', '-1');
+			exit();
+		}
+	}
 	if($subject=='')
 	{
 		ShowMsg("请填写信息标题!","-1");
@@ -171,8 +194,17 @@ else
 				$dsql->ExecuteNoneQuery($row3);
 			}
 		}
-		$wsql = " toid='{$cfg_ml->M_ID}' And folder='inbox' And writetime!=''";
-		$tname = "收件箱";
+		if($state=="1"){
+			$wsql= " toid='{$cfg_ml->M_ID}' And folder='inbox' And writetime!='' and hasview=1";
+			$tname = "收件箱";
+		}elseif($state=="-1")
+		{
+			$wsql = "toid='{$cfg_ml->M_ID}' And folder='inbox' And writetime!='' and hasview=0";
+			$tname = "收件箱";
+		}else{
+			$wsql = " toid='{$cfg_ml->M_ID}' And folder='inbox' And writetime!=''";
+			$tname = "收件箱";
+		}
 	}
 	else
 	{

@@ -2,6 +2,7 @@
 if(!defined('DEDEMEMBER')) exit('dedecms');
 require_once(DEDEINC.'/image.func.php');
 require_once(DEDEINC.'/archives.func.php');
+require_once(DEDEINC."/userlogin.class.php");
 
 //检查用户是否被禁言
 CheckNotAllow();
@@ -143,6 +144,8 @@ function SaveUploadInfo($title,$filename,$medaitype=1,$addinfos='')
            VALUES ('$title','$filename','$medaitype','".$addinfos[0]."','".$addinfos[1]."','0','".$addinfos[2]."','$uptime','".$cfg_ml->M_ID."'); ";
 		$dsql->ExecuteNoneQuery($inquery);
 	}
+	$fid = $dsql->GetLastID();
+	AddMyAddon($fid, $filename);
 	return true;
 }
 
@@ -441,6 +444,8 @@ function UploadOneImage($upname,$handurl='',$isremote=1,$ntitle='')
     ";
 		$dsql->ExecuteNoneQuery($inquery);
 	}
+	$fid = $dsql->GetLastID();
+  AddMyAddon($fid, $filename);
 	return $filename;
 }
 ?>

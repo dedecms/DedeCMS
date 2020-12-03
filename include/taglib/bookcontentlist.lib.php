@@ -11,7 +11,7 @@ function lib_bookcontentlist(&$ctag, &$refObj)
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 
-	if( !$dsql->IsTable("{$cfg_dbprefix}story_books") ) return 'æ²¡å®‰è£…è¿è½½æ¨¡å—';
+	if( !$dsql->IsTable("{$cfg_dbprefix}story_books") ) return 'Ã»°²×°Á¬ÔØÄ£¿é';
 	
 	return lib_booklist($ctag, $refObj, 1);
 	

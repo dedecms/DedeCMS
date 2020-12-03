@@ -72,7 +72,7 @@ function selAll()
 	 <form name='form3' action="article_keywords_main.php" method="post">
 		<input type='hidden' name='dopost' value='saveall' />
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EEFAAB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
       <td height="24">
       	<input name="aids[]" type="checkbox" value="{dede:field.aid/}" class="np" checked='1' />
       </td>
@@ -100,9 +100,9 @@ function selAll()
      <tr bgcolor="#F0FBBD">
       <td height="28" colspan="6">
 	    &nbsp;
-	    <input type="button" name="dl1" class="coolbg np" value="反选" onclick="selAll()" />
+	    <input type="button" name="dl1" class="coolbg np" value="反选" onClick="selAll()" />
 	    &nbsp;
-	    <input type="button" name="dl2" class="coolbg np" value="保存更改" onclick="this.form.submit();" />
+	    <input type="button" name="dl2" class="coolbg np" value="保存更改" onClick="this.form.submit();" />
 	  </td>
     </tr>
 	</form>

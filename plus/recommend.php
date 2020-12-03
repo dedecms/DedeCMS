@@ -5,6 +5,7 @@ if(!isset($action)) $action = '';
 
 if(isset($arcID)) $aid = $arcID;
 $arcID = $aid = (isset($aid) && is_numeric($aid) ? $aid : 0);
+$type = (!isset($type) ? "" : $type);
 
 if(empty($aid)) {
 	  ShowMsg("文档ID不能为空!","-1");
@@ -14,13 +15,23 @@ if(empty($aid)) {
 //读取文档信息
 if($action=='')
 {
+	if($type=='sys'){
   //读取文档信息
-  $arcRow = GetOneArchive($aid);
-  if($arcRow['aid']=='') {
-	   ShowMsg("无法把未知文档推荐给好友!","-1");
-	   exit();
-  }
-  extract($arcRow, EXTR_SKIP);
+	  $arcRow = GetOneArchive($aid);
+	  if($arcRow['aid']=='') {
+		   ShowMsg("无法把未知文档推荐给好友!","-1");
+		   exit();
+	  }
+	  extract($arcRow, EXTR_SKIP);
+	}else{
+		$arcRow=$dsql->GetOne("SELECT s.*,t.* FROM `#@__member_stow` AS s LEFT JOIN `#@__member_stowtype` AS t ON s.type=t.stowname WHERE s.aid='$aid' AND s.type='$type'");
+		if(!is_array($arcRow)){
+			 ShowMsg("无法把未知文档推荐给好友!","-1");
+		   exit();
+		}
+    $arcRow['arcurl']=$arcRow['indexurl']."=".$arcRow['aid'];
+    extract($arcRow, EXTR_SKIP);
+	}
 }
 //发送推荐信息
 //-----------------------------------
@@ -45,7 +56,7 @@ else if($action=='send')
 		require_once(DEDEINC.'/mail.class.php');
 		$smtp = new smtp($cfg_smtp_server,$cfg_smtp_port,true,$cfg_smtp_usermail,$cfg_smtp_password);
 		$smtp->debug = false;
-		$smtp->sendmail($email, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
+		$smtp->sendmail($email,$cfg_webname,$cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
 	}
 	else
 	{

@@ -24,7 +24,7 @@ if(!isset($stypes))
 //统计图书数量
 function TjBookNum($cid,&$dsql)
 {
-	$row = $dsql->GetOne("Select count(id) as dd From #@__story_books where catid='$cid' Or bcatid='$cid' ");
+	$row = $dsql->GetOne("Select count(bid) as dd From #@__story_books where catid='$cid' Or bcatid='$cid' ");
 	return $row['dd'];
 }
 

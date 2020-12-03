@@ -12,6 +12,7 @@
 
 require_once(dirname(__FILE__)."/../member/config.php");
 CheckRank(0,0);
+$menutype = 'mydede';
 if(!isset($action))
 {
 	$action = '';
@@ -38,7 +39,7 @@ if(empty($dopost))
 	}
 	$lastid = $row['id'];
 	$msg = '';
-	$books = $dsql->GetOne("Select * From #@__story_books where id='$bookid' and mid={$cfg_ml->M_ID} ");
+	$books = $dsql->GetOne("Select * From #@__story_books where bid='$bookid' and mid={$cfg_ml->M_ID} ");
 	if(!is_array($books))
 	{
 		ShowMsg('图书ID错误，请返回','-1');
@@ -100,11 +101,12 @@ bookname='$bookname',
 author='$author',
 $litpic
 pubdate='$pubdate',
+lastpost='$pubdate',
 description='$description',
 status = '$status',
 body='$body',
 keywords='$keywords'
-where id='$bookid' and mid='{$cfg_ml->M_ID}'
+where bid='$bookid' and mid='{$cfg_ml->M_ID}'
 ";
 	if(!$dsql->ExecuteNoneQuery($upQuery))
 	{

@@ -69,14 +69,13 @@ Copyright (c) 2008, dedecms All rights reserved.
 #userInfo .pic {
 	display: table-cell !important;
 	display:block;
-	height:190px;
-	font-size:125px;
-	width:190px;
+	font-size:25px;
 	overflow:hidden;
 	text-align:center;
 	vertical-align:middle;
 	margin-right: auto;
 	margin-left: auto;
+	width:190px;
 }
 #userInfo .pic img {
 	vertical-align:middle;

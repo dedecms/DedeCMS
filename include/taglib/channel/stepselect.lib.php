@@ -9,7 +9,7 @@ function ch_stepselect($fvalue,&$arcTag,&$refObj,$fname='')
 	return GetEnumsValue2($fname,$fvalue);
 }
 
-//è·å–äºŒçº§æšä¸¾çš„å€¼
+//»ñÈ¡¶ş¼¶Ã¶¾ÙµÄÖµ
 function GetEnumsValue2($egroup,$evalue=0)
 {
 	if( !isset($GLOBALS['em_'.$egroup.'s']) )

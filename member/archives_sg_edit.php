@@ -8,6 +8,7 @@ require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
 $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 1;
 $aid = isset($aid) && is_numeric($aid) ? $aid : 0;
 $mtypesid = isset($mtypesid) && is_numeric($mtypesid) ? $mtypesid : 0;
+$menutype = 'content';
 
 /*-------------
 function _ShowForm(){  }
@@ -50,6 +51,17 @@ else if($dopost=='save')
 	{
 		ShowMsg('校对码错误，你没权限修改此文档或操作不合法！','-1');
 		exit();
+	}
+	
+	$svali = GetCkVdValue();
+	if(preg_match("/3/",$safe_gdopen)){
+		if(strtolower($vdcode)!=$svali || $svali=='')
+		{
+			ResetVdValue();
+			ShowMsg('验证码错误！', '-1');
+			exit();
+		}
+		
 	}
 
 	if($typeid==0)
@@ -110,6 +122,10 @@ else if($dopost=='save')
 				if($v=='')
 				{
 					continue;
+				}else if($v == 'templet')
+				{
+					ShowMsg("你保存的字段有误,请检查！","-1");
+					exit();	
 				}
 				$vs = explode(',',$v);
 				if(!isset(${$vs[0]}))

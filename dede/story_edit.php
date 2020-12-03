@@ -37,6 +37,6 @@ while($row = $dsql->GetArray())
 }
 $lastid = $row['id'];
 $msg = '';
-$books = $dsql->GetOne("Select * From #@__story_books where id='$bookid' ");
+$books = $dsql->GetOne("Select S.*,A.membername From #@__arcrank as A left join #@__story_books as S on A.rank=S.arcrank where S.bid='$bookid' ");
 require_once(DEDEADMIN.'/templets/story_edit.htm');
 ?>

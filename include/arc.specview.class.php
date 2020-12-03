@@ -5,6 +5,7 @@ if(!defined('DEDEINC'))
 }
 require_once(DEDEINC."/typelink.class.php");
 require_once(DEDEINC."/channelunit.class.php");
+require_once(DEDEINC.'/ftp.class.php');
 
 @set_time_limit(0);
 class SpecView
@@ -23,10 +24,13 @@ class SpecView
 	var $TempInfos;
 	var $Fields;
 	var $StartTime;
+	var $ftp;
+	var $remoteDir;
 
 	//php5构造函数
 	function __construct($starttime=0)
 	{
+		global $ftp;
 		$this->TypeID = 0;
 		$this->dsql = $GLOBALS['dsql'];
 		$this->dtp = new DedeTagParse();
@@ -36,6 +40,8 @@ class SpecView
 		$this->dtp2->SetNameSpace("field","[","]");
 		$this->TypeLink = new TypeLink(0);
 		$this->ChannelUnit = new ChannelUnit(-1);
+		$this->ftp = &$ftp;
+		$this->remoteDir = '';
 
 		//设置一些全局参数的值
 		foreach($GLOBALS['PubFields'] as $k=>$v)
@@ -178,8 +184,9 @@ class SpecView
 	}
 
 	//开始创建列表
-	function MakeHtml()
+	function MakeHtml($isremote=0)
 	{
+		global $cfg_remote_site;
 		//初步给固定值的标记赋值
 		$this->ParseTempletsFirst();
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
@@ -233,6 +240,17 @@ class SpecView
 			$murl = $makeFile;
 			$makeFile = $GLOBALS['cfg_basedir'].$makeFile;
 			$this->dtp->SaveTo($makeFile);
+			//如果启用远程站点则上传
+      if($cfg_remote_site=='Y'&& $isremote == 1)
+      {
+  			//分析远程文件路径
+  			$remotefile = str_replace(DEDEROOT, '', $makeFile);
+  			$localfile = '..'.$remotefile;
+  			$remotedir = preg_replace('/[^\/]*\.html/', '',$remotefile);
+  			//不相等则说明已经切换目录则可以创建镜像
+  			$this->ftp->rmkdir($remotedir);
+  			$this->ftp->upload($localfile, $remotefile, 'acii');
+      }
 			echo "成功创建：$murl<br/>";
 		}
 		copy($GLOBALS['cfg_basedir'].$GLOBALS['cfg_special']."/spec_1".$GLOBALS['art_shortname'],$GLOBALS['cfg_basedir'].$GLOBALS['cfg_special']."/index.html");

@@ -1,4 +1,4 @@
-﻿友情链接
+友情链接
 >>dede>>
 {dede:flink row='24'/}
 >>dede>>

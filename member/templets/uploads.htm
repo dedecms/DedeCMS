@@ -1,10 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>附件数据管理</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
-<script type="text/javascript" language="javascript">
-function ChangeImage(surl){ document.getElementById('picview').src = surl; }
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>附件数据管理 - 会员中心 - <?php echo $cfg_webname; ?></title>
+<link href="templets/style/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="templets/js/load.js"></script>
+<script type="text/javascript" src="templets/js/leftmenu.js"></script>
+<script type="text/javascript">  
+  function ChangeImage(surl){ document.getElementById('picview').src = surl; }
 //获得选中文件的文件名
 function getCheckboxItem(){
 	var allSel="";
@@ -44,20 +48,17 @@ function DelSel(){
 </script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
-      <div class="dedeMain">
-        <div class="location">附件数据管理</div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul style='float:left;width:350px'>
-            <li><a href="edit_space_info.php">空间设置</a></li>
-            <li class="select"><a href="uploads.php">附件管理</a></li>
-            <li><a href="edit_baseinfo.php">会员资料</a></li>
-          </ul>
-          <form class="fRight" name='forms' method='post' action='uploads.php' style='margin-top:3px;padding-right:10px;width:400px'>
+<div id="main">
+    <?php include(DEDEMEMBER."/templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."/templets/menu.php");?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li class="thisTab"><a href="uploads.php">附件管理</a></li>
+        </ul>
+        <div class="tabOther">
+          <form name='forms' method='post' action='uploads_select.php'>
             <input name="keyword" type="text" id="keyword" class="text" value="<?php echo $keyword?>" />
             <select name='mediatype'>
               <option value='0'>文件类型</option>
@@ -69,50 +70,49 @@ function DelSel(){
             <button class="button2 mL10" type="submit">搜索</button>
           </form>
         </div>
-        <form name="form1" class="mL10 mR10 mTB10">
-          <table cellspacing="1" class="list">
-            <thead>
-              <tr>
-                <th align="left" width="1%"><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
-                <th >文件标题</th>
-                <th width="5%">大小 </th>
-                <th width="5%">类型 </th>
-                <th width="10%">上传时间 </th>
-                <th width="10%">操作</th>
+      </div>
+      <div id="mainCp">
+        <h3 class="meTitle">附件数据管理</h3>
+        <form name="form1">
+        <div class="postForm">
+         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+                <th width="5%"><input name="checkedClick" type="checkbox" value="" id="checkedClick"/></th>
+                <th>文件标题</th>
+                <th width="8%">大小 </th>
+                <th width="10%">类型 </th>
+                <th width="18%">上传时间 </th>
+                <th width="12%">操作</th>
               </tr>
-            </thead>
-            <tbody>
-            
+          </thead>
+          <tbody>
             {dede:datalist}
             <tr>
-              <td><input type='checkbox' name='aids' id='aids<?php echo $fields['aid']?>' value='<?php echo $fields['aid']; ?>' class='np' /></td>
-              <td><a href='<?php echo $fields['url']?>' target='_blank'><?php echo GetImageView($fields['url'],$fields['mediatype']); ?> <?php echo $fields['title']; ?> </a> </td>
+              <td><input type='checkbox' name='aids' id='aids<?php echo $fields['aid']?>' value='<?php echo $fields['aid']; ?>' class='np' style="width: 31px;"/></td>
+              <td valign="middle"><a href='<?php echo $fields['url']?>' target='_blank'><?php echo GetImageView($fields['url'],$fields['mediatype']); ?>&nbsp; <?php echo $fields['title']; ?> </a></td>
               <td align="center"><?php echo GetFileSize($fields['filesize']); ?></td>
               <td align="center"><?php echo MediaType($fields['mediatype'],$fields['url']); ?></td>
               <td align="center"><?php echo MyDate("Y-m-d H:i",$fields['uptime']); ?></td>
               <td align="center"><a href='uploads_edit.php?aid=<?php echo $fields['aid']; ?>'>更改</a> | <a href='archives_do.php?dopost=delUploads&amp;aid=<?php echo $fields['aid']; ?>'>删除</a> </td>
             </tr>
             {/dede:datalist}
-            </tbody>
-            
-            <tfoot>
-              <tr>
-                <td colspan="6"><div>
-                    <div class="fLeft">
-                      <button class="buttonGary2" onclick="DelSel();">删除</button>
-                    </div>
-                    <div class="pages fRight">{dede:pagelist listsize=5/}</div>
-                  </div></td>
-              </tr>
-            </tfoot>
-          </table>
-        </form>
-      </div>
-      <div class="clear"></div>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5"><button class="buttonGary2 mt10" onclick="DelSel();">删除</button>
+              <div class="pageList">{dede:pagelist listsize=10/}</div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+       </div>
+      </form>
+      <!--主操作区域 -->
     </div>
-    <div class="clear"></div>
   </div>
 </div>
 <?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+</div>
 </body>
 </html>

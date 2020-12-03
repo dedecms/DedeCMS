@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>哈利波特 - 我的网站</title>
+<meta name="keywords" content="">
+<meta name="description" content=" 哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特 ">
+<link href="/book/images/book_style.css" rel="stylesheet" type="text/css" />
+<link href="/book/images/boxy.css" rel="stylesheet" type="text/css" />
+<script language='javascript' src='/include/dedeajax2.js'></script>
+<script src="/book/js/j.js" type="text/javascript"></script>
+<script src="/book/js/stars.js" type="text/javascript"></script>
+<script src="/book/js/jquery.boxy.js" type="text/javascript"></script>
+<script language='javascript'>
+  $(document).ready(function(){ 
+	  $(".boxy").boxy();
+  })
+function ShowStarInfo(){
+  var taget_obj = document.getElementById('_starinfo');
+  myajax = new DedeAjax(taget_obj,false,false,'','','');
+  myajax.SendGet2("/book/bookstars.php?bid=1&ajaxtype=info");
+  DedeXHTTP = null;
+}
+function Showrating(){
+  var taget_obj = document.getElementById('_rating');
+  myajax = new DedeAjax(taget_obj,false,false,'','','');
+  myajax.SendGet2("/book/bookstars.php?bid=1");
+  DedeXHTTP = null;
+}
+function CheckLogin(){
+  var taget_obj = document.getElementById('book_welcome');
+  myajax = new DedeAjax(taget_obj,false,false,"","","");
+  myajax.SendGet2("/book/loginsta.php");
+  myajax = null;
+}
+function checkSubmit(){
+	if(document.feedback.msg.value!='') document.feedback.submit();
+	else alert("评论内容不能为空！");
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/bookfeedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+	DedeXHTTP = null;
+}
+</script>
+<link href="../../images/book_style.css" rel="stylesheet" type="text/css" />
+</head>
+<body onload="CheckLogin()">
+<div id="container">
+	<!--头部开始-->
+    <div id="book_header">
+    	<div id="book_top">
+        	<div id="book_toplogo">
+            </div>
+            <div id="book_welcome">您好，请 <span><a href="/member/login.php">登录</a></span> 或 <span><a href="/member/index_do.php?fmdo=user&dopost=regnew">注册</a></span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div id="book_topimg">
+        	<div id="book_topbg">
+        		<div id="book_logo">
+            	</div>
+            	<div id="book_banner">
+            	</div>
+            	<div class="clear">
+            	</div>
+        	</div>
+        </div>
+
+        <div id="book_menubg">
+        	<div id="book_menu">
+            	<div id="book_go">
+                </div>
+                <ul>
+                    <li><a href='/book'>主页</a></li>
+        			
+                    <li><a href="/book/list.php?id=1">科幻</a></li>
+        			
+                    <li><a href="/book/list.php?id=2">悬疑</a></li>
+        			
+        			<li><a href='/member'>会员中心</a></li>
+                </ul>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+
+    </div>
+	<!--头部结束-->
+    <!--中间开始-->
+    <div id="main">
+   	  <div id="book_main">
+        	<div id="book_index">当前位置：<a href="/book">主页</a> > <a href="/book/list.php?id=1">科幻</a> > 哈利波特
+            </div>
+            <div id="book_left"><!--左边开始-->
+           	  <div class="book_left_main">
+               	  <div class="book_left_title">本月热门图书
+                  </div>
+                    <div class="book_left_main_text">
+                    	<ul>
+                        	
+                        </ul>
+                    </div>
+                    <div class="clear">
+                    </div>
+              </div>
+           	  <div class="book_left_main">
+               	  <div class="book_left_title">推荐图书
+                  </div>
+                    <div class="book_left_main_text">
+                    	<ul>
+                        	
+                        </ul>
+                    </div>
+                    <div class="clear">
+                    </div>
+              </div>
+           	  <div class="book_left_main">
+               	  <div class="book_left_title">总点击排行
+                  </div>
+                    <div class="book_left_main_text">
+                    	<ul>
+		  					
+                        </ul>
+                    </div>
+                    <div class="clear">
+                    </div>
+              </div>
+            </div><!--左边结束-->
+
+          	<div id="book_right"><!--右边开始-->
+          	  <div class="book_news"><!--新书上架-->
+                	<div class="book_news_title title">
+                    	<ul>
+                        <li>文章信息：</li>
+                        </ul>
+                    </div>
+                    <div class="book_news_style">
+                    	<div class="book_news_style_form1">
+                        	<div class="book_news_style_img1"><img src="/images/defaultpic.gif" width="120" height="160" alt="哈利波特"/></div>
+                            <div class="book_news_style_text2">
+                                <div class="comment">
+                                <h1>哈利波特 </h1>
+                            	<h2>作者：admin</h2>
+                           	    <h2>浏览量：<script src="/book/countbook.php?view=yes&aid=1" language="javascript"></script></h2>
+                                 <h2>类型：<a href="/book/list.php?id=1">科幻</a></h2>
+                                <h2>连载完成：连载中...</h2>
+                                <h2>上架时间：2010-04-14</h2>
+                                <div class="star">
+                                <span><a href="/plus/stow.php?aid=1&type=book&title=哈利波特" target="_blank">收藏</a></span>
+                                <div class="rtext">评价这本书：</div>
+                                 <div style="float:left">
+              					   <div id="_rating" style="padding-top: 2px;"></div>
+			 					   <script language='javascript' type='text/javascript'>Showrating();</script>
+                                </div>
+                                 </div>
+                                </div>
+                                 <div id="_starinfo"></div>
+                              <script language='javascript' type='text/javascript'>ShowStarInfo();</script> 
+                                
+                              <h3>最新章节：<a href='/book/story.php?id=1'>哈利波特之一</a></h3>
+                          </div>
+                    	</div>
+                      <div class="book_article_title">图书介绍：</div>
+                        <div class="msgarea">
+                        <p>哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特哈利波特</p>
+                        </div>
+                        <div class="clear">
+                        </div>
+                    </div>
+
+                <div class="book_article_listtable">章节列表：
+                </div>
+                    
+                <div class="book_article_texttable">
+                    	<div class="book_article_texttitle">第1章 默认章节
+                        </div>
+                        <div class="book_article_listtext">
+                        	<dl id="chapterlist">
+                            <dd><a href="/book/story.php?id=1">第1节 哈利波特之一</a></dd>
+                            </dl>
+                            <div class="clear">
+                            </div>
+                        </div>
+                </div>
+                    
+                  <!-- comment-->
+			<div style="text-align:left; ">	
+				<dl class="tbox">
+					<dt>
+						<strong>最新评论</strong>
+						<span class="more"><a href="/plus/bookfeedback.php?aid=1">查看所有评论</a></span>
+                  </dt>
+					<dd>
+						<div class="dede_comment">
+						<script language='javascript' type='text/javascript' src="/plus/bookfeedback_js.php?aid=1"></script>
+						</div><!-- /dede_comment -->
+					</dd>
+					</dl>
+					<dl class="tbox">
+						<dt>
+							<strong>发表评论</strong>
+							<span class="more"><a href="/plus/bookfeedback.php?aid=1">查看所有评论</a></span>
+					  </dt>
+						<dd>
+							<div class="dede_comment_post">
+                                <form action="/plus/bookfeedback.php" method="post" name="feedback">
+                                <input type="hidden" name="action" value="send" />
+                                <input type="hidden" name="comtype" value="comments">
+                                <input type="hidden" name="aid" value="1" />
+                                <input type="hidden" name="isconfirm" value="yes" />
+								<div class="dcmp-title">
+									<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
+								</div><!-- /dcmp-title -->
+								<div class="dcmp-content">
+								  <textarea cols="60" name="msg" rows="5"></textarea>
+								</div>
+                                <div class="dcmp-stand">
+									<strong>评价:</strong>
+                                    <p>&nbsp;</p>
+                                    <span><input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="/templets/default/images/cmt-neu.gif" />中立</label>
+                                    <input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="/templets/default/images/cmt-good.gif" />好评</label>
+                                    <input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="/templets/default/images/cmt-bad.gif" />差评</label></span>
+								</div><!-- /dcmp-stand --><!-- /dcmp-content -->
+								<div class="dcmp-mood">
+									<strong>表情:</strong>
+									<ul>
+                                      <li><input type="radio" name='face' value='6' checked="1" /><img src="/templets/default/imagesimages/mood/ico-mood-6.gif" /></li>
+                                      <li><input type="radio" name='face' value='4'/><img src="/templets/default/images/mood/ico-mood-4.gif" /></li>
+                                      <li><input type="radio" name='face' value='3'/><img src="/templets/default/images/mood/ico-mood-3.gif" /></li>
+                                      <li><input type="radio" name='face' value='5'/><img src="/templets/default/images/mood/ico-mood-5.gif" /></li>
+                                      <li><input type="radio" name='face' value='2'/><img src="/templets/default/images/mood/ico-mood-2.gif" /></li>
+                                      <li><input type="radio" name='face' value='1'/><img src="/templets/default/images/mood/ico-mood-1.gif" /></li>
+                                      <li><input type="radio" name='face' value='7'/><img src="/templets/default/images/mood/ico-mood-7.gif" /></li>
+									</ul>
+								</div><!-- /dcmp-mood -->
+								<div class="dcmp-post"><!--未登陆-->
+									<div class="dcmp-userinfo" id="_ajax_feedback">
+                                        
+										验证码:<input type='text' name='validate' size='4' class='ipt-txt' /><img src="/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" />
+                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest" />匿名? </label>
+							</div>
+              							
+									<div class="dcmp-submit">
+										<button type="button" onClick='checkSubmit()'>发表评论</button>
+									</div>
+								</div>
+								</form>
+						</div><!-- /dede_comment_post -->
+					</dd>
+				</dl>
+		</div><!-- comment -->	      
+              </div>
+          	</div>
+            <div class="clear">
+            </div>
+      </div>
+    </div>
+<!--中间结束-->
+    <div class="book_footer">
+    	Powered by <a href="http://www.dedecms.com/">DedeCms V55_UTF8</a> &copy; 2004-2010  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
+    </div>
+    <div class="clear">
+    </div>
+
+</div>
+</body>
+</html>

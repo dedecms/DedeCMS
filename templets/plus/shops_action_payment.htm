@@ -5,15 +5,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
 <meta name="generator" content="DedeCMS V5.3" />
 <meta name="author" content="desdev.cn" />
-<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<link href="{dede:global.cfg_templeturl/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="{dede:global.cfg_templets_skin/}/style/table.css" rel="stylesheet" media="screen" type="text/css" />
 </head>
 <body class="buycarpage">
 
 <div class="header">
 	<div class="top w960 center">
 		<div class="title">
-			<h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a> </h1>
+			<h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global.cfg_templets_skin/}/images/logo.gif" width="216" height="54"  alt="{dede:global.cfg_webname/}"/></a> </h1>
 		</div><!-- /title -->
 		<div class="welcome">
             <?php
@@ -23,31 +23,21 @@
             <?php
             }else{
             ?>
-            <?php echo $cfg_ml->M_UserName; ?> 您好,欢迎来到本网站, <a href="../member/">会员中心</a> | <a href="../member/index_do.php?fmdo=login&dopost=exit">退出</a>
+            <b><?php echo $cfg_ml->M_UserName; ?></b>,欢迎您的登陆。 <a href="<?php echo $cfg_memberurl; ?>/index.php">会员中心</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/edit_fullinfo.php">我的资料</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/index.php?uid=<?php echo urlencode($cfg_ml->M_LoginID);?>">我的空间</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/index_do.php?fmdo=login&dopost=exit">退出登录</a>
             <?php
             }
             ?>
 		</div><!-- /banner -->
 	</div><!-- /top -->
-	<div class="nav mt1">
-		<div class="w960 center">
-			<ul>
-              <li class="r1"><a href="{dede:global.cfg_memberurl/}">会员中心</a></li>
-              <li class="r2"><a href="{dede:global.cfg_cmsurl/}/tags.php">TAG标签</a></li>
-              <li class="r3"><a href="{dede:global.cfg_dataurl/}/sitemap.html">网站地图</a></li>
-              <li class="r4"><a href="{dede:global.cfg_dataurl/}/rssmap.html">RSS订阅</a></li>
-			</ul>
-		</div>
-	</div><!-- /nav -->
 </div><!-- /header -->
 
 
 <div class="w960 clear center mt1 cmt-box">
 	<div class="sp-title"><h2>商品购买</h2></div>
 	<div class="buycar">
-		<form method="post" name="E_FORM" action="carbuyaction.php" target="_blank">
-        <input type="hidden" name="pd_encode" value="<?php echo $pr_encode;?>">
-        <input type="hidden" name="pd_verify" value="<?php echo $pr_verify;?>">
         <table cellpadding="0" cellspacing="0" class="flow">
 			<tr>
 				<td>下单购买</td>
@@ -64,98 +54,41 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td width="180" class="td1">订单编号</td>
+					<td width="180" class="td1">订单编号:</td>
 					<td><strong>{dede:var.carts.orders_id/}</strong></td>
 				</tr>
+                <tr>
+					<td width="180" class="td1">商品总数:</td>
+					<td><strong>{dede:var.carts.cart_count/}件</strong></td>
+				</tr>
 				<tr>
-					<td width="180" class="td1">订单价格</td>
+					<td width="180" class="td1">订单价格:</td>
 					<td><strong class="fc-f60" id="priceCount">{dede:var.carts.price_count/}</strong> 元</td>
 				</tr>
-				<tr>
-					<td width="180" class="td1">商品总数</td>
-					<td>{dede:var.carts.cart_count/}件</td>
+                <tr>
+					<td width="180" class="td1">配送方式:</td>
+					<td><strong>{dede:var.pay_name/}</strong></td>
 				</tr>
 				<tr>
-					<td width="180" class="td1">支付方式</td>
-					<td>                    
-                        {dede:array.payment_list}
-                        <label for="online_payment_{dede:value.value/}" onClick="onlinePayment('{dede:value.value/}');"> 
-                        <input class="radio" type="radio" name="online_payment"	id="online_payment_{dede:value.value/}" value="{dede:value.value/}" <?php if(!$key) {?> checked <?php }?> />
-                        {dede:value.name/} <span class="fc-f90">手续费:<em id="exp_price_{dede:value.value/}">{dede:value.exp/}</em>元</span>
-                        <br />
-                        <img src="{dede:value.logo/}" alt="{dede:value.name/}" />
-                        <br /> 
-                        <small>{dede:value.des/}</small>
-                        <br /> 
-                        </label>                 
-                        {/dede:array}
-					</td>
+					<td width="180" class="td1">支付方式:</td>
+					<td><strong>{dede:var.pay_way/}</strong></td>
 				</tr>
 				<tr>
-					<td width="180" class="td1">状态</td>
-					<td>付款</td>
+					<td width="180" class="td1">支付信息:</td>
+					<td><strong>{dede:var.description/}</strong></td>
 				</tr>                
 			</tbody>
 			<tfoot>
 				<tr>
 					<td colspan="2">
-					<button type="submit" class="btn-2">确认付款</button>
+					{dede:var.button/}
 					</td>
 				</tr>
 			</tfoot>
 		</table>        
-		</form>
 	</div>
 	
 </div>
-
-<script type="text/javascript">
-function onlinePayment(_id){
-	var _price = document.getElementById("exp_price_"+_id).innerHTML;
-	var _priceCount = parseFloat({dede:var.carts.price_count/})+parseFloat(_price);
-	document.getElementById("priceCount").innerHTML = number_format(_priceCount,2);
-	_priceCount = null;
-}
-function number_format(number)   {
-	if(number<0){
-		return '-'+outputDollars(Math.floor(Math.abs(number)-0)+'')+outputCents(Math.abs(number)-0);
-	}else{
-		return outputDollars(Math.floor(number-0)+'')   +   outputCents(number-0);
-	}
-}
-function outputDollars(number)   {
-	if(number.length <= 3){
-		return (number == '' ? '0' : number);
-	}else{
-		var mod = number.length%3;
-		var output = (mod == 0 ? '' : (number.substring(0,mod)));
-		for(i=0   ;   i<   Math.floor(number.length/3)   ;   i++)   {
-			if((mod == 0) && (i == 0))
-			output+= number.substring(mod+3*i,mod+3*i+3);
-			else
-			output+= ',' + number.substring(mod+3*i,mod+3*i+3);
-		}
-		return (output);
-	}
-}
-function outputCents(amount){
-	amount = Math.round(((amount)-Math.floor(amount))*100);
-	return (amount<10 ? '.0' + amount : '.' + amount);
-}
-</script>
-
-
-<div class="footer w960 center mt1 clear">
-	<!-- 
-		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
-		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
-	-->
-	<p class="powered">
-		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>DedeCMS<span>{dede:global.cfg_version/}</span></strong></a> &copy; 2004-2008 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.	</p>
-<!-- /powered -->
-	<p class="copyright">
-		{dede:global.cfg_powerby/}<br />{dede:global.cfg_beian/}
-  </p>
-</div>
+{dede:include filename="../default/footer.htm"/}
 </body>
 </html>

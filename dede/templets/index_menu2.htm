@@ -28,7 +28,7 @@ body {
 
 dl.bitem {
 	clear:both;
-	width:130px;
+	width:140px;
 	margin:0px 0px 5px 12px;
 	background:url(img/menunewbg.gif) repeat-x;
 }
@@ -121,20 +121,20 @@ a.mm:hover div
 </style>
 <base target="main" />
 </head>
-<body target="main" onload="CheckOpenMenu();">
+<body target="main" onLoad="CheckOpenMenu();">
 <table width="180" align="left" border='0' cellspacing='0' cellpadding='0'>
 	<tr>
   <td valign='top' style='padding-top:10px' width='20'>
-  	<a id='link1' class='mmac'><div onclick="ShowMainMenu(1)">核心</div></a>
-  	<a id='link100' class='mm'><div onclick="ShowMainMenu(100)">模块</div></a>
-  	<a id='link5' class='mm'><div onclick="ShowMainMenu(5)">生成</div></a>
-  	<a id='link3' class='mm'><div onclick="ShowMainMenu(3)">采集</div></a>
-  	<a id='link6' class='mm'><div onclick="ShowMainMenu(6)">会员</div></a>
+  	<a id='link1' class='mmac'><div onClick="ShowMainMenu(1)">核心</div></a>
+  	<a id='link100' class='mm'><div onClick="ShowMainMenu(100)">模块</div></a>
+  	<a id='link5' class='mm'><div onClick="ShowMainMenu(5)">生成</div></a>
+  	<a id='link3' class='mm'><div onClick="ShowMainMenu(3)">采集</div></a>
+  	<a id='link6' class='mm'><div onClick="ShowMainMenu(6)">会员</div></a>
   	<?php
   	if($cuserLogin->getUserType() >= 10) {
   	?>
-  	<a id='link7' class='mm'><div onclick="ShowMainMenu(7)">模板</div></a>
-  	<a id='link10' class='mm'><div onclick="ShowMainMenu(10)">系统</div></a>
+  	<a id='link7' class='mm'><div onClick="ShowMainMenu(7)">模板</div></a>
+  	<a id='link10' class='mm'><div onClick="ShowMainMenu(10)">系统</div></a>
   	<?php
   	}
   	?>

@@ -195,9 +195,12 @@ window.onload = function ()
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;TAG标签：</td>
-          <td>
+          <td width="536">
           	<input name="tags" type="text" id="tags" value="<?php echo $tags; ?>" style="width:300px" />(','号分开，单个标签小于12字节)
           </td>
+          <td width="40">权重：</td>
+          <td width="141"><input name="weight" type="text" id="weight" style="width:50px" value="<?php echo $arcRow['weight'];?>" /> 
+            (越小越靠前)</td>
         </tr>
       </table>
       </td>
@@ -242,8 +245,14 @@ window.onload = function ()
             echo $typeOptions;
             echo '</select>';
 			   	?>
-			   	<img src='img/menusearch.gif' style='cursor:pointer' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
-			   </td>
+			   	<img src='img/menusearch.gif' style='cursor:pointer' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
+			   <?php 
+     			 if($cfg_remote_site=='Y')
+     			 {
+   				 ?> 　 
+     				 <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布  <?php GetFtp();?>     <?php
+     			 }
+    		?>  </td>
         </tr>
       </table>
       </td>
@@ -259,7 +268,7 @@ if($cfg_need_typeid2=='Y') {
             <td>
             <span id='typeid2ct'></span>
            <input type='text' name='typeid2' id='typeid2' value='<?php echo ($arcRow['typeid2']=='0' ? '' : $arcRow['typeid2']); ?>' style='width:200px;' />
-           <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2', '<?php echo $arcRow['typeid2']; ?>')" alt='选择副栏目' title='选择副栏目' />
+           <img src='img/menusearch2.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2', '<?php echo $arcRow['typeid2']; ?>')" alt='选择副栏目' title='选择副栏目' />
 			     </td>
           </tr>
         </table>
@@ -271,6 +280,16 @@ if($cfg_need_typeid2=='Y') {
       <?php
         PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
       ?>
+      </td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;图集内容：</td>
+          <td> <?php GetEditor("body",$body,450,"Diy"); ?></td>
+        </tr>
+      </table>
       </td>
     </tr>
    <tr>
@@ -292,7 +311,6 @@ if($cfg_need_typeid2=='Y') {
           </td>
         </tr>
       </table>
-    </td>
    </tr>
     <tr>
     <td height="24" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -349,7 +367,7 @@ if($cfg_need_typeid2=='Y') {
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>
           </td>
-          <td width="92">消费点数：</td>
+          <td width="92">消费金币：</td>
           <td width="368"><input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10"></td>
         </tr>
       </table></td>
@@ -365,7 +383,7 @@ if($cfg_need_typeid2=='Y') {
     <tr>
       <td height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90" height="51">&nbsp;文档摘要：</td>
+          <td width="90" height="51">&nbsp;图集内容摘要：</td>
           <td><textarea name="description" rows="3" id="description" style="width:60%"><?php echo $arcRow["description"]?></textarea></td>
           </tr>
       </table></td>

@@ -1,4 +1,4 @@
-﻿文章列表调用标记
+文章列表调用标记
 >>dede>>
 {dede:arclist  flag='h' typeid='' row='' col='' titlelen='' infolen='' 
 imgwidth='' imgheight='' listtype='' orderby='' keyword='' limit='0,1'}
@@ -22,7 +22,7 @@ orderby='sortrank' 文档排序方式
 	§ orderby='id' 按文章ID排序
 	§ orderby='rand' 随机获得指定条件的文档列表
 keyword='' 含有指定关键字的文档列表，多个关键字用","分
-innertext = '' 单条记录样式(指标签中间的内容)
+innertext = '' 单条记录样式
 aid='' 指定文档ID
 idlist ='' 提取特定文档（文档ID） 
 channelid 频道ID

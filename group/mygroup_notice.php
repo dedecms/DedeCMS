@@ -8,6 +8,7 @@
  */
 require_once(dirname(__FILE__)."/system/config.php");
 require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
+$menutype = 'mydede';
 
 $gid = $id = isset($id) && is_numeric($id) ? $id : 0;
 $action = isset($action) ? trim($action) : '';

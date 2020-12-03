@@ -19,6 +19,13 @@
 		myajax.SendGet2('index.php?step=10&dbhost='+dbhost+'&dbuser='+dbuser+'&dbname='+dbname+'&dbpwd='+dbpwd);
     DedeXHTTP = null;
 	}
+	function GetRemoteDemo()
+	{
+		var myajax = new DedeAjax($o('_remotesta'),false,true,'-','-','远程获取中...');
+		myajax.SendGet2('index.php?step=11');
+    DedeXHTTP = null;
+	}
+	
 	function DoInstall()
 	{
 		//$o('postloader').style.display = 'block';
@@ -74,11 +81,13 @@
 					<b>可选安装：</b><br />
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='0a7bea5dbe571d35def883cbec796437' /> 留言簿模块</div>
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='59155be87ea60c5c65ec1f7a46a0fc9d' /> 手机WAP浏览</div>
-					<div class='modulesel'><input type='checkbox' name='modules[]' value='7badb72a3ff79af2a7112beee60cb970' /> 连载模块</div>
+					<div class='modulesel'><input type='checkbox' name='modules[]' value='7badb72a3ff79af2a7112beee60cb970' /> 小说模块</div>
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='867af26e9c1ccf22a1cf67e756cf5acc' /> 黄页模块</div>
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='8964eda9013d1df0afea08ed63243436' /> 站内新闻</div>
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='be722dbfa3cb3cb5628aab2d767ff62e' /> 问答模块</div>
 					<div class='modulesel'><input type='checkbox' name='modules[]' value='dfcb5cd4d7bc0e3f7eb655e62dd6bc64' /> 圈子模块</div>
+                    <div class='modulesel'><input type='checkbox' name='modules[]' value='c10bb6ac52082ab3e669b4814b44a6f1' /> 邮件订阅</div>
+					<div class='modulesel'><input type='checkbox' name='modules[]' value='8a4773468b800900dcfefbc5988833ed' /> UCenter模块</div>
 				</td>
 			</tr>
 		</table>	
@@ -174,11 +183,36 @@
 				<td><input name="cmspath" type="text" class="input-txt" value="<?php echo $basepath; ?>" /><small>在根目录安装时不必理会</small></td>
 			</tr>
 		</table>
+        
+	  <div class="pr-title"><h3>安装测试体验数据</h3></div>
+		<table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+			<tr>
+				<td width="168"><strong> 
+			      初始化数据体验包</strong>：</td>
+                 <?php
+                   if($isdemosign == 0)
+                   {
+                  ?>
+				<td width="558"><div class="olink" id="_remotesta"><div style="float:left">&nbsp; <font color="red">[×]</font> 不存在</div><a href="javascript:GetRemoteDemo()">远程获取</a></div></td>
+				<?php
+                   } else {
+                 ?>
+                <td width="558">&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)</td>   
+                 <?php
+                 }
+                 ?>
+          </tr>
+			<tr>
+				<td colspan="2"><strong> 
+				    <input name="installdemo" type="checkbox" id="installdemo" value="1" checked="checked" />
+				安装初始化数据进行体验</strong>(体验数据将含带DedeCMS大部分功能的应用操作示例)</td>
+		  </tr>
+		</table>
 
 		<div class="btn-box">
-			<input type="button" class="btn-back" value="后退" onclick="window.location.href='index.php?step=2';" />
+    <input type="button" class="btn-back" value="后退" onclick="window.location.href='index.php?step=2';" />
 			<input type="button" class="btn-next" value="开始安装" onclick="DoInstall();" />
-		</div>
+	  </div>
 	</div>
 </div>
 <div class="foot">

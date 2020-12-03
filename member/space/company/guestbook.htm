@@ -18,11 +18,12 @@
 		  <a name="1"></a>
 		  <dl id="dl_1">
 			<dd class="comment-pic left">
-				{dede:if field.face=='' }
-					<img src="images/nopic.gif" style="width:40px;"/>
-				{else}
-					<img src="{dede:field.face/}"  style="width:40px;" alt="{dede:field.uname/}" />
-				{/dede:if}
+				<?php if($fields['face']==''){ 
+                   $face=($fields['sex']=='女')? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
+                  echo  '<img src="'.$face.'" width="50" height="50"/>';
+                 }else{ 
+                     echo  '<img src="'.$fields['face'].'" width="50" height="50" alt="'.$fields['uname'].'的头像" />';
+                 } ?>
 			</dd>
 			<dd>
 			  <a href="index.php?uid={dede:field.userid/}" class="big b">{dede:field.uname/}</a>

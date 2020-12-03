@@ -11,8 +11,14 @@ function $Obj(objname){
 }
 
 function ShowColor(){
-if($Nav()=='IE'){ var posLeft = window.event.clientX; var posTop = window.event.clientY+120; }
-	else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
 	var fcolor=showModalDialog("img/color.htm?ok",false,"dialogWidth:106px;dialogHeight:110px;status:0;dialogTop:"+posTop+";dialogLeft:"+posLeft);
 	if(fcolor!=null && fcolor!="undefined") document.form1.color.value = fcolor;
 }
@@ -54,42 +60,78 @@ function SeePicNew(imgdid,f) {
 }
 
 function SelectFlash(){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-300; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
    window.open("uploads_select.php?mediatype=2&f=form1.flashurl", "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
 }
 
 function SelectMedia(fname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-200; var posTop = window.event.clientY; }
-   else{ var posLeft = 100;var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
    window.open("uploads_select.php?mediatype=3&f="+fname, "popUpFlashWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
 }
 
 function SelectSoft(fname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-200; var posTop = window.event.clientY-50; }
-   else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
    window.open("uploads_select.php?mediatype=4&f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
 function SelectImage(fname,stype){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
    if(!fname) fname = 'form1.picname';
    if(!stype) stype = '';
    window.open("uploads_select.php?mediatype=1&f="+fname+"&imgstick="+stype, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
 function SelectImageN(fname,stype,vname){
-   if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
-   else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
    if(!fname) fname = 'form1.picname';
    if(!stype) stype = '';
    window.open("uploads_select.php?mediatype=1&f="+fname+"&imgstick="+stype+"&v="+vname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
 function SelectKeywords(f){
-	if($Nav()=='IE'){ var posLeft = window.event.clientX-350; var posTop = window.event.clientY-200; }
-  else{ var posLeft = 100; var posTop = 100; }
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
   window.open("article_keywords_select.php?f="+f, "popUpkwWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=450,left="+posLeft+", top="+posTop);
 }
 

@@ -8,11 +8,13 @@ if($cfg_mb_lit=='Y')
 	exit();
 }
 require_once(DEDEINC."/dedetag.class.php");
+require_once(DEDEINC."/userlogin.class.php");
 require_once(DEDEINC."/customfields.func.php");
 require_once(DEDEMEMBER."/inc/inc_catalog_options.php");
 require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
 $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 3;
 $typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
+$menutype = 'content';
 
 /*-------------
 function _ShowForm(){  }
@@ -56,6 +58,14 @@ else if($dopost=='save')
 	$description = '';
 	include(DEDEMEMBER.'/inc/archives_check.php');
 
+	//生成文档ID
+	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$mid);
+	if(empty($arcID))
+	{
+		ShowMsg("无法获得主键，因此无法进行后续操作！","-1");
+		exit();
+	}
+	
 	//分析处理附加表数据
 	$inadd_f = '';
 	$inadd_v = '';
@@ -71,6 +81,10 @@ else if($dopost=='save')
 				if($v=='')
 				{
 					continue;
+				}else if($v == 'templet')
+				{
+					ShowMsg("你保存的字段有误,请检查！","-1");
+					exit();	
 				}
 				$vs = explode(',',$v);
 				if(!isset(${$vs[0]}))
@@ -104,14 +118,6 @@ else if($dopost=='save')
 	}
 	$body = HtmlReplace($body,-1);
 
-	//生成文档ID
-	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$mid);
-	if(empty($arcID))
-	{
-		ShowMsg("无法获得主键，因此无法进行后续操作！","-1");
-		exit();
-	}
-
 	//保存到主表
 	$inQuery = "INSERT INTO `#@__archives`(id,typeid,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
 color,writer,source,litpic,pubdate,senddate,mid,description,keywords)
@@ -127,6 +133,11 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 
 	//软件链接列表
 	$softurl1 = stripslashes($softurl1);
+	if(!preg_match("#[_=&///?\.a-zA-Z0-9-]+$#i", $softurl1))
+    {
+        ShowMsg("确定软件地址提交正确!", "-1");
+        exit;
+    }
 	$urls = '';
 	if($softurl1!='')
 	{
@@ -207,6 +218,11 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 		uc_credit_note($cfg_ml->M_LoginID, $cfg_sendarc_scores);
 	}
 	#/aip}}
+	
+	//会员动态记录
+	$cfg_ml->RecordFeeds('addsoft',$title,$description,$arcID);
+	
+	ClearMyAddon($arcID, $title);
 	
 	//返回成功信息
 	$msg = "

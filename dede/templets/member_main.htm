@@ -5,6 +5,7 @@
 <title>网站会员管理</title>
 <link href='../img/base.css' rel='stylesheet' type='text/css'>
 <link href='img/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript" src="js/member.js"></script>
 <style type="text/css">
 .rb{ border-right:1px solid #666666 }
 .tb{ border-top:1px solid #666666 }
@@ -41,8 +42,12 @@
           <td>
           	<select name="mtype" id="mtype" style="width:50px">
                {dede:global name='mtypeform'/}
-               <option value="个人">个人</option>
-               <option value="企业">企业</option>
+               <?php
+           		foreach($MemberModels as $row)
+           		{
+           			echo "<option value=".$row['name'].">".$row['name']."</option>\r\n";
+           		}
+           	   ?>
              </select>
           </td>
           <td>
@@ -54,7 +59,7 @@
            			if($spacesta==$k) echo "<option value='$k' selected>$v</option>\r\n";
            			else echo "<option value='$k'>$v</option>\r\n";
            		}
-           	?>
+           	  ?>
             </select></td>
          <td>
            <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0" />
@@ -65,9 +70,10 @@
     </td>
   </tr>
 </table>
+<form name="form2">
 <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA">
   <tr> 
-  <td height="28" colspan="7" background="img/tbg.gif">
+  <td height="28" colspan="9" background="img/tbg.gif">
    <table width="99%" border="0" cellspacing="0" cellpadding="0">
      <tr>
        <td width="29%">&nbsp;<strong>注册会员列表</strong></td>
@@ -82,10 +88,12 @@
  </td>
 </tr>
   <tr bgcolor="#FEFCEF" height="26" align="center"> 
-    <td width="17%">登录名</td>
+    <td width="3%">选择</td>
+    <td width="5%">mid</td>
+    <td width="11%">登录名</td>
     <td width="16%">email/昵称</td>
     <td width="5%">性别</td>
-    <td width="10%">会员等级</td>
+    <td width="8%">会员等级</td>
     <td width="20%">会员属性</td>
     <td width="14%">最后登录</td>
     <td>操作</td>
@@ -93,9 +101,10 @@
 {dede:datalist} 
 <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';"
   	 onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-  <td>
-  <a href="../member/index.php?uid={dede:field.userid/}" target='_blank'>
-	<?php
+  <td><input name="mid" type="checkbox" id="mid" value="{dede:field.mid/}" class="np" /></td>
+  <td>{dede:field.mid/}</td>
+  <td><a href="../member/index.php?uid={dede:field.userid/}" target='_blank'>
+    <?php
 	  echo '<u>'.$fields['userid'].'</u>';
 	if($fields['spacesta']==-2) echo "<font color='red'>(禁言)</font>";
 	if($fields['spacesta']==-1) echo "<font color='red'>(未审核)</font>";
@@ -103,8 +112,7 @@
        echo "<br /><img src='{$fields['face']}' width='60' alt='浏览会员空间' />";
 	  }
 	?>
-	</a>
-	</td>
+  </a></td>
 	<td>
 	  {dede:field.email/}
 	  <br />
@@ -114,7 +122,7 @@
   	{dede:field.sex /}
   </td>
   <td>
-  	{dede:field.rank function="GetMemberName(@me,'限制会员')"/}
+  	<a href="member_main.php?rank={dede:field.rank/}">{dede:field.rank function="GetMemberName(@me,'限制会员')"/}</a>
   </td>
   <td>
   	{dede:field.mtype /}用户 {dede:field.matt function="GetMAtt(@me)" /}
@@ -129,15 +137,25 @@
   <td align="center">
     <a href="member_view.php?id={dede:field.mid/}">修改</a> | 
     <a href="member_do.php?id={dede:field.mid/}&dopost=delmember">删除</a> |
-    <a href="content_list.php?mid={dede:field.mid/}" target="_blank">文档</a>
+    <a href="content_list.php?mid={dede:field.mid/}" target="_blank">文档</a> |
+    <a href="member_toadmin.php?id={dede:field.mid/}" target="_self">提升</a>
   </td>
 </tr>
 {/dede:datalist} 
+<tr bgcolor="#FAFAF1"> 
+ <td height="36" colspan="9">
+	&nbsp;
+	<a href="javascript:selAll()" class="coolbg">全选</a>
+	<a href="javascript:noSelAll()" class="coolbg">取消</a>
+	<a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a>
+ （如果已经整合了论坛的用户请不要使用批量删除功能）</td>
+</tr>
 <tr bgcolor="#F1FDE3"> 
- <td height="36" colspan="7" align="center">
+ <td height="36" colspan="9" align="center">
 	{dede:pagelist listsize='6' /}
  </td>
 </tr>
 </table>
+</form>
 </body>
 </html>

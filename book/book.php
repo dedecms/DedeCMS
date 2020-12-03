@@ -12,12 +12,12 @@
 
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 require_once(dirname(__FILE__).'/include/story.view.class.php');
-$id = (empty($id) ? 0 : intval($id));
-if($id==0)
+$bid = (empty($bid) ? 0 : intval($bid));
+if($bid==0)
 {
 	ParamError();
 }
-$bv = new BookView($id,'book');
+$bv = new BookView($bid,'book');
 $ischeck = $bv->Fields['ischeck'];
 if($ischeck == 0)
 {

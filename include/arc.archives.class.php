@@ -6,6 +6,7 @@ if(!defined('DEDEINC'))
 require_once(DEDEINC."/typelink.class.php");
 require_once(DEDEINC."/channelunit.class.php");
 require_once(DEDEINC."/downmix.inc.php");
+require_once(DEDEINC.'/ftp.class.php');
 
 @set_time_limit(0);
 class Archives
@@ -28,11 +29,13 @@ class Archives
 	var $SplitTitles;
 	var $PreNext;
 	var $addTableRow;
+	var $ftp;
+	var $remoteDir;
 
 	//php5构造函数
 	function __construct($aid)
 	{
-		global $dsql;
+		global $dsql,$ftp;
 		$this->IsError = false;
 		$this->ArcID = $aid;
 		$this->PreNext = array();
@@ -82,6 +85,8 @@ class Archives
 			$this->ShortName = 'html';
 			$this->FixedValues = '';
 			$this->TempSource = '';
+			$this->ftp = &$ftp;
+			$this->remoteDir = '';
 			if(empty($GLOBALS['pageno']))
 			{
 				$this->NowPage = 1;
@@ -292,8 +297,9 @@ class Archives
 	}
 
 	//生成静态HTML
-	function MakeHtml()
+	function MakeHtml($isremote=0)
 	{
+		global $cfg_remote_site,$fileFirst;
 		if($this->IsError)
 		{
 			return '';
@@ -357,6 +363,18 @@ class Archives
 				}
 				$this->ParseDMFields($i,1);
 				$this->dtp->SaveTo($truefilename);
+				//如果启用远程发布则需要进行判断
+				if($cfg_remote_site=='Y' && $isremote == 1)
+				{
+			
+		  		//分析远程文件路径
+		  		$remotefile = str_replace(DEDEROOT, '', $truefilename);
+          $localfile = '..'.$remotefile;
+          //创建远程文件夹
+          $remotedir = preg_replace('/[^\/]*\.html/', '', $remotefile);
+          $this->ftp->rmkdir($remotedir);
+		   	  $this->ftp->upload($localfile, $remotefile, 'ascii');
+				}
 			}
 		}
 		$this->dsql->ExecuteNoneQuery("Update `#@__archives` set ismake=1 where id='".$this->ArcID."'");
@@ -447,12 +465,15 @@ class Archives
 		{
 			$tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/".($cid=='spec' ? 'article_spec.htm' : 'article_default.htm');
 		}
+        // 仅允许DedeCMS允许的模板文件格式
+        if (!preg_match("#.htm$#", $tmpfile)) return FALSE;
 		return $tmpfile;
 	}
 
 	//动态输出结果
 	function display()
 	{
+                global $htmltype;
 		if($this->IsError)
 		{
 			return '';
@@ -466,6 +487,7 @@ class Archives
 		$this->ParseTempletsFirst();
 
 		//跳转网址
+		$this->Fields['flag']=empty($this->Fields['flag'])? "" : $this->Fields['flag'];
 		if(ereg('j', $this->Fields['flag']) && $this->Fields['redirecturl'] != '')
 		{
 			if($GLOBALS['cfg_jump_once']=='N')
@@ -658,7 +680,7 @@ class Archives
 			$nextR = $this->dsql->GetOne("Select id From `#@__arctiny` where id>$aid And arcrank>-1 And typeid='{$this->Fields['typeid']}' order by id asc");
 			$next = (is_array($nextR) ? " where arc.id={$nextR['id']} " : ' where 1>2 ');
 			$pre = (is_array($preR) ? " where arc.id={$preR['id']} " : ' where 1>2 ');
-			$query = "Select arc.id,arc.title,arc.shorttitle,arc.typeid,arc.ismake,arc.senddate,arc.arcrank,arc.money,arc.filename,
+			$query = "Select arc.id,arc.title,arc.shorttitle,arc.typeid,arc.ismake,arc.senddate,arc.arcrank,arc.money,arc.filename,arc.litpic,
 						t.typedir,t.typename,t.namerule,t.namerule2,t.ispart,t.moresite,t.siteurl,t.sitepath
 						from `#@__archives` arc left join #@__arctype t on arc.typeid=t.id  ";
 			$nextRow = $this->dsql->GetOne($query.$next);
@@ -668,29 +690,41 @@ class Archives
 				$mlink = GetFileUrl($preRow['id'],$preRow['typeid'],$preRow['senddate'],$preRow['title'],$preRow['ismake'],$preRow['arcrank'],
 				$preRow['namerule'],$preRow['typedir'],$preRow['money'],$preRow['filename'],$preRow['moresite'],$preRow['siteurl'],$preRow['sitepath']);
 				$this->PreNext['pre'] = "上一篇：<a href='$mlink'>{$preRow['title']}</a> ";
+				$this->PreNext['preimg'] = "<a href='$mlink'><img src=\"{$preRow['litpic']}\" alt=\"{$preRow['title']}\"/></a> "; 
 			}
 			else
 			{
 				$this->PreNext['pre'] = "上一篇：没有了 ";
+				$this->PreNext['preimg'] ="<img src=\"/templets/default/images/nophoto.jpg\" alt=\"对不起，没有上一图集了！\"/>";
 			}
 			if(is_array($nextRow))
 			{
 				$mlink = GetFileUrl($nextRow['id'],$nextRow['typeid'],$nextRow['senddate'],$nextRow['title'],$nextRow['ismake'],$nextRow['arcrank'],
 				$nextRow['namerule'],$nextRow['typedir'],$nextRow['money'],$nextRow['filename'],$nextRow['moresite'],$nextRow['siteurl'],$nextRow['sitepath']);
 				$this->PreNext['next'] = "下一篇：<a href='$mlink'>{$nextRow['title']}</a> ";
+				$this->PreNext['nextimg'] = "<a href='$mlink'><img src=\"{$nextRow['litpic']}\" alt=\"{$nextRow['title']}\"/></a> ";
 			}
 			else
 			{
 				$this->PreNext['next'] = "下一篇：没有了 ";
+				$this->PreNext['nextimg'] ="<a href='javascript:void(0)' alt=\"\"><img src=\"/templets/default/images/nophoto.jpg\" alt=\"对不起，没有下一图集了！\"/></a>";
 			}
 		}
 		if($gtype=='pre')
 		{
 			$rs =  $this->PreNext['pre'];
 		}
+		else if($gtype=='preimg'){
+			
+		    $rs =  $this->PreNext['preimg'];
+		}
 		else if($gtype=='next')
 		{
 			$rs =  $this->PreNext['next'];
+		}
+		else if($gtype=='nextimg'){
+			
+		    $rs =  $this->PreNext['nextimg'];
 		}
 		else
 		{

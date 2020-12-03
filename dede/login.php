@@ -25,7 +25,7 @@ if( is_dir(dirname(__FILE__).'/../install') )
 }
 //检测后台目录是否更名
 $cururl = GetCurUrl();
-if(eregi('/dede/login',$cururl))
+if(preg_match('/dede\/login/i',$cururl))
 {
 	$redmsg = '<br />&nbsp;&nbsp;&nbsp;&nbsp;<font color=\'red\'><b>您的管理目录使用默认名称dede，建议在FTP里把它修改为其它名称，那样会更安全！</b></font>';
 }
@@ -41,13 +41,10 @@ if($dopost=='login')
 {
 	$validate = empty($validate) ? '' : strtolower(trim($validate));
 	$svali = strtolower(GetCkVdValue());
-	if($validate=='' || $validate != $svali)
-	{
+	if(($validate=='' || $validate != $svali) && preg_match("/6/",$safe_gdopen)){
 		ResetVdValue();
 		ShowMsg('验证码不正确!','');
-	}
-	else
-	{
+	} else {
 		$cuserLogin = new userLogin($admindir);
 		if(!empty($userid) && !empty($pwd))
 		{

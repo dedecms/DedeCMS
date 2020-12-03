@@ -41,11 +41,12 @@ function lib_tag(&$ctag,&$refObj)
 		}
   }
   
-	if($ltype=='rand') $orderby = ' rand() ';
+	if($ltype=='rand') $orderby = 'rand() ';
 	else if($ltype=='week') $orderby=' weekcc desc ';
 	else if($ltype=='month') $orderby=' monthcc desc ';
 	else if($ltype=='hot') $orderby=' count desc ';
-	else $orderby = '  addtime desc  ';
+	else if($ltype=='total') $orderby=' total desc ';
+	else $orderby = 'addtime desc  ';
 
 	$dsql->SetQuery("Select * From `#@__tagindex` $addsql order by $orderby limit 0,$num");
 	$dsql->Execute();

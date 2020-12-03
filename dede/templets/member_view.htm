@@ -106,8 +106,11 @@ function checkSubmit()
             <td align="right" class='bline'>金币 ：</td>
             <td class='bline'>
            <input name="money" type="text" id="money" value="<?php echo $row['money']; ?>" style="width:80px;height:20px" />
-            积分：<input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" style="width:80px;height:20px" />
-            等级：<?php
+            积分：<input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" style="width:80px;height:20px" /></td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>等级：</td>
+            <td class='bline'><?php
              $MemberTypes = '';
              $dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");
              $dsql->Execute('n');
@@ -123,10 +126,26 @@ function checkSubmit()
              }
              $options .= "</select>\r\n";
 			 echo $options;
-			?>
-            </td>
+			?></td>
           </tr>
           <tr> 
+            <td align="right" class='bline'>升级时间：</td>
+            <td class='bline'>
+            <input type="text" style="width: 200px;" value="<?php echo $row['uptime']=($row['uptime']=="0")? GetDateTimeMk(time()) : GetDateTimeMk($row['uptime']);?>" id="uptime" name="uptime">
+            （如果你要升级会员，必须设置此时间为当前时间）</td>
+          </tr>
+          <tr> 
+            <td align="right" class='bline'>会员天数：</td>
+            <td class='bline'><input type="text" style="width: 200px;" value="<?php echo $row['exptime']?>" id="exptime" name="exptime">
+            （如果你要升级会员，会员天数必须大于0） </td>
+          </tr>
+          <?php if($mhasDay!=0){ $mhasDay=($mhasDay>0)? $mhasDay : '<font  color="red">该会员已经到期</font>';?>
+          <tr> 
+            <td align="right" class='bline'>会员剩余天数：</td>
+            <td class='bline'><?php echo $mhasDay; ?></td>
+          </tr>
+          <tr> 
+          <?php } ?>
             <td align="right" class='bline'>推荐级别：</td>
             <td class='bline'>
             <input name="oldmatt" type="hidden" id="oldmatt" value="<?php echo $row['matt']?>" />

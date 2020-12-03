@@ -250,10 +250,7 @@ else if($dopost=="checkArchives")
 		$aid = $row['id'];
 		//print_r($row);
 		$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
-		if($dsql->ExecuteNoneQuery("Update `#@__arctiny` set arcrank='0' where id='$aid' "))
-        {
-			$dsql->ExecuteNoneQuery("Update `#@__taglist` set arcrank='0' where aid='$aid' ");
-        }
+		$dsql->ExecuteNoneQuery("Update `#@__arctiny` set arcrank='0' where id='$aid' ");
 		if($row['issystem']==-1)
 		{
 			$dsql->ExecuteNoneQuery("Update `".trim($row['addtable'])."` set arcrank='0' where aid='$aid' ");
@@ -391,7 +388,8 @@ else if($dopost=='moveArchives')
 	else
 	{
 		$totype = ereg_replace('[^0-9]','',$totype);
-		$typeInfos = $dsql->GetOne("Select tp.channeltype,tp.ispart,tp.channeltype,ch.maintable,ch.addtable From `#@__arctype` tp left join `#@__channeltype` ch on ch.id=tp.channeltype where tp.id='$totype' ");
+		$typeInfos = $dsql->GetOne("Select tp.channeltype,tp.ispart,tp.channeltype,ch.maintable,ch.addtable,ch.issystem From `#@__arctype` tp left join `#@__channeltype` ch on ch.id=tp.channeltype where tp.id='$totype' ");
+		$idtype = "id";
 		if(!is_array($typeInfos))
 		{
 			ShowMsg('参数错误！','-1');
@@ -402,24 +400,30 @@ else if($dopost=='moveArchives')
 			ShowMsg('文档保存的栏目必须为最终列表栏目！','-1');
 			exit();
 		}
-		if(empty($typeInfos['maintable']))
+		if(empty($typeInfos['addtable']))
 		{
 			$typeInfos['maintable'] = '#@__archives';
+		}
+		//增加单表模型判断
+		if($typeInfos['issystem'] == -1)
+		{
+			$typeInfos['maintable'] = $typeInfos['addtable'];
+			$idtype = "aid";
 		}
 		$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
 		$arc = '';
 		$j = 0;
 		$okids = array();
-		$dsql->SetQuery("Select id,typeid From `{$typeInfos['maintable']}` where id in($arcids) And channel='{$typeInfos['channeltype']}' ");
+		$dsql->SetQuery("Select {$idtype},typeid From `{$typeInfos['maintable']}` where {$idtype} in($arcids) And channel='{$typeInfos['channeltype']}' ");
 		$dsql->Execute();
 		while($row = $dsql->GetArray())
 		{
 			if($row['typeid']!=$totype)
 			{
-				$dsql->ExecuteNoneQuery("Update `#@__arctiny`  Set typeid='$totype' where id='{$row['id']}' ");
-				$dsql->ExecuteNoneQuery("Update `{$typeInfos['maintable']}` Set typeid='$totype' where id='{$row['id']}' ");
-				$dsql->ExecuteNoneQuery("Update `{$typeInfos['addtable']}` Set typeid='$totype' where aid='{$row['id']}' ");
-				$okids[] = $row['id'];
+				$dsql->ExecuteNoneQuery("Update `#@__arctiny`  Set typeid='$totype' where id='{$row[$idtype]}' ");
+				$dsql->ExecuteNoneQuery("Update `{$typeInfos['maintable']}` Set typeid='$totype' where id='{$row[$idtype]}' ");
+				$dsql->ExecuteNoneQuery("Update `{$typeInfos['addtable']}` Set typeid='$totype' where aid='{$row[$idtype]}' ");
+				$okids[] = $row[$idtype];
 				$j++;
 			}
 		}
@@ -781,7 +785,7 @@ else if($dopost=="makekw")
 		ShowMsg("参数无效！", $ENV_GOBACK_URL);
 		exit();
 	}
-	$sp = new SplitWord();
+	$sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
 	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
 	$query = "Select arc.*, addt.* From `#@__archives` arc left join `#@__addonarticle` addt on addt.aid=arc.id  where arc.id in($arcids) And arc.channel=1 ";
 	$dsql->SetQuery($query);
@@ -796,8 +800,11 @@ else if($dopost=="makekw")
 		$title = $row['title'];
 		$description = $row['description'];
 		$body = cn_substr($row['body'], 5000);
-		$titleindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText($title)));
-		$allindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText(Html2Text($body),300)));
+		$sp->SetSource($title, $cfg_soft_lang, $cfg_soft_lang);
+		$sp->StartAnalysis();
+		$titleindexs = preg_replace("/#p#|#e#/",'',$sp->GetFinallyIndex());
+		$sp->SetSource(Html2Text($body), $cfg_soft_lang, $cfg_soft_lang);
+		$allindexs = preg_replace("/#p#|#e#/",'',$sp->GetFinallyIndex());
 		if(is_array($allindexs) && is_array($titleindexs))
 		{
 			foreach($titleindexs as $k)
@@ -821,7 +828,6 @@ else if($dopost=="makekw")
 		$description = addslashes($description);
 		$dsql->ExecuteNoneQuery(" Update `#@__archives` set `keywords`='$keywords',`description`='$description'  where id='{$aid}' ");
 	}
-	$sp->Clear();
 	$sp = null;
 	ShowMsg("成功分析指定文档的关键词！",$ENV_GOBACK_URL);
 	exit();

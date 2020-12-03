@@ -60,12 +60,15 @@ function JumpFrame(url1, url2)
 		</div>
 		<div class="nav" id="nav">
 		</div>
-		<div class="sysmsg">
+        
+  <div class="sysmsg">
 			<h3>滚动消息:</h3>
-			<div class="scroll">
-			  <a href='http://bbs.dedecms.com' target='_blank'>官方论坛</a>
-			  <a href='http://help.dedecms.com' target='_blank'>在线帮助</a>
-			</div>
+           
+	    <div class="scroll">
+             <form action="action_search.php" target="main" method="post"><input name="keyword" type="text" value="功能搜索" onfocus="if(this.value=='功能搜索'){this.value='';}"  onblur="if(this.value==''){this.value='功能搜索';}" class="allsearch" style="width:150px;"/><input name="" type="submit" value="搜索" class="np"/>
+		  <a href='http://bbs.dedecms.com' target='_blank'>官方论坛</a>
+		  <a href='http://help.dedecms.com' target='_blank'>在线帮助</a></form>
+		  </div>
 		</div>
 	</div>
 </div>

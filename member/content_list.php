@@ -17,6 +17,7 @@ if(!isset($arcrank))
 	$arcrank = '';
 }
 $positionname = '';
+$menutype = 'content';
 $mid = $cfg_ml->M_ID;
 $tl = new TypeLink($cid);
 $cInfos = $tl->dsql->GetOne("Select arcsta,issend,issystem,usertype From `#@__channeltype`  where id='$channelid'; ");
@@ -59,6 +60,16 @@ if($cid!=0)
 {
 	$whereSql .= " And arc.typeid in (".GetSonIds($cid).")";
 }
+
+//增加分类查询
+if($arcrank == '1'){
+	$whereSql .= " And arc.arcrank >= 0";
+}else if($arcrank == '-1'){
+	$whereSql .= " And arc.arcrank = -1";
+}else if($arcrank == '-2'){
+	$whereSql .= " And arc.arcrank = -2";
+}
+
 $classlist = '';
 $dsql->SetQuery("SELECT * FROM `#@__mtypes` WHERE `mid` = '$cfg_ml->M_ID';");
 $dsql->Execute();

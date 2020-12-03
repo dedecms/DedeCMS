@@ -46,7 +46,22 @@ function SelectTemplets(fname)
       <td height="20" valign="top" bgcolor="#FFFFFF"><input name="position" type="text" id="position" value="<?php echo $row['position']?>" size="30"> 
       </td>
     </tr>
+           <?php 
+      if($cfg_remote_site=='Y')
+      {
+    ?> 
     <tr> 
+      <td height="20" valign="top" bgcolor="#FFFFCC">远程发布：</td>
+      <td height="20" valign="top" bgcolor="#FFFFCC"><input name="remotepos" type="text" id="remotepos" value="/index.html" size="30"> 
+        (“/”相对远程站点根目录)&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="20" colspan="2" valign="top" bgcolor="#FFFFCC">您已经启用远程发布,请确保正确 [<a href="sys_info.php" style="color:red">配置FTP</a>]</td>
+    </tr>
+     <?php
+      }
+    ?>    
+<tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">相关选项：</td>
       <td height="20" valign="top" bgcolor="#FFFFFF">
 	  <input name="saveset" type="radio" value="0" class="np">
@@ -55,13 +70,25 @@ function SelectTemplets(fname)
       保存当前选项
 	</td>
     </tr>
+ 
+
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center">
+      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center">&nbsp;&nbsp;
 	    <input name="view" class='coolbg np' type="button" id="view" value="预览主页" onClick="window.open('makehtml_homepage.php?dopost=view&templet='+form1.templet.value);" />
-        　 
-      <input type="submit" class='coolbg np' name="Submit" value="更新主页HTML" /> 
-      </td>
+
+      <input type="submit" class='coolbg np' name="Submit" value="更新主页HTML" />
+      &nbsp;
+           <?php 
+      if($cfg_remote_site=='Y')
+      {
+    ?> 　 
+      <input name="isremote" type="checkbox" id="isremote" value="1">
+是否同步远程发布  <?php GetFtp();?>     <?php
+      }
+    ?>     
+</td>
     </tr>
+
   </form>
   <tr bgcolor="#E6F3CD"> 
     <td height="20" colspan="2"><table width="100%">

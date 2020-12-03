@@ -90,14 +90,14 @@ class ChannelUnit
 
 	//处理某个字段的值
 	function MakeField($fname, $fvalue, $addvalue='')
-	{
-		if($fvalue=='')
-		{
-			$fvalue = $this->ChannelFields[$fname]['default'];
-		}
-
+	{		
 		//处理各种数据类型
 		$ftype = $this->ChannelFields[$fname]['type'];
+		if($fvalue=='')
+		{
+			if($ftype != 'checkbox') $fvalue = $this->ChannelFields[$fname]['default'];
+		}
+
 		if($ftype=='text')
 		{
 			$fvalue = HtmlReplace($fvalue);
@@ -130,6 +130,74 @@ class ChannelUnit
 			$fvalue = $func($fvalue,$addvalue,$this,$fname);
 		}
 		return $fvalue;
+	}
+	
+	function GetlitImgLinks($fvalue){
+ 		
+		if($GLOBALS["htmltype"]=="dm"){
+			if(empty($GLOBALS["pageno"])) $NowPage = 1;
+			else $NowPage = intval($GLOBALS["pageno"]);
+		}else{
+			if(empty($GLOBALS["stNowPage"])) $NowPage = 1;
+			else $NowPage = intval($GLOBALS["stNowPage"]);
+		}
+		
+	  $revalue = "";
+	  $dtp = new DedeTagParse();
+    $dtp->LoadSource($fvalue);
+    if(!is_array($dtp->CTags)){
+    	$dtp->Clear();
+    	return "无图片信息！";
+    }
+    $ptag = $dtp->GetTag("pagestyle");
+    if(is_object($ptag)){
+    	$pagestyle = $ptag->GetAtt('value');
+    	$maxwidth = $ptag->GetAtt('maxwidth');
+    	$ddmaxwidth = $ptag->GetAtt('ddmaxwidth');
+    	$irow = $ptag->GetAtt('row');
+    	$icol = $ptag->GetAtt('col');
+    	if(empty($maxwidth)) $maxwidth = $GLOBALS['cfg_album_width'];
+    }else{
+    	$pagestyle = 2;
+    	$maxwidth = $GLOBALS['cfg_album_width'];
+    	$ddmaxwidth = 200;
+    }
+    if($pagestyle == 3){
+      if(empty($irow)) $irow = 4;
+      if(empty($icol)) $icol = 4;
+    }
+    $mrow = 0;
+    $mcol = 0;
+    $photoid = 1;
+    $images = array();
+	  $TotalPhoto = sizeof($dtp->CTags);
+	
+    foreach($dtp->CTags as $ctag){
+    	if($ctag->GetName()=="img"){
+    		$iw = $ctag->GetAtt('width');
+    		$ih = $ctag->GetAtt('heigth');
+    		$alt = str_replace("'","",$ctag->GetAtt('text'));
+    		$src = trim($ctag->GetInnerText());
+    		$ddimg = $ctag->GetAtt('ddimg');
+    		if($iw > $maxwidth) $iw = $maxwidth;
+    		$iw = (empty($iw) ? "" : "width='$iw'");
+			if($GLOBALS["htmltype"]=="dm") {
+				$imgurl = "view.php?aid=$this->ArcID&pageno=$photoid";
+			}else{
+				if($photoid==1){
+					$imgurl = $GLOBALS["fileFirst"].".html";
+				}else{
+					$imgurl = $GLOBALS["fileFirst"]."_".$photoid.".html";
+				}
+			}
+			$imgcls = "image".($photoid-1);
+		  $revalue .= "<dl><dt>$alt<dd>$ddimg<dd>$ddimg<dd>$ddimg<dd><dd><div></div><div></div><dd><dd>$photoid</dd></dl>\r\n";
+			$photoid++;
+		}		
+	}	
+      unset($dtp);
+      unset($images);
+      return $revalue;		
 	}
 
 	//关闭所占用的资源

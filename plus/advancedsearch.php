@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 require_once(DEDEINC."/datalistcp.class.php");
 $timestamp = time();
+@session_start();
 
 //限制同时搜索数量
 $timelock = '../data/time.lock';
@@ -19,11 +20,14 @@ if(file_exists($timelock))
 }
 @touch($timelock,$timestamp);
 $mid = isset($mid) && is_numeric($mid) ? $mid : 0;
+$sqlhash = isset($sqlhash) && preg_match("/^[A-Za-z0-9]+$/", $sqlhash) ? $sqlhash : '';
+
 if($mid == 0)
 {
 	showmsg('参数不正确，高级自定义搜索必须指定模型id', 'javascript');
 	exit();
 }
+
 $query = "select maintable, mainfields, addontable, addonfields, template from #@__advancedsearch where mid='$mid'";
 $searchinfo = $dsql->GetOne($query);
 if(!is_array($searchinfo))
@@ -32,6 +36,8 @@ if(!is_array($searchinfo))
 	exit();
 }
 $template = $searchinfo['template'] != '' ?  $searchinfo['template'] : 'advancedsearch.htm';
+$sql = empty($_SESSION[$sqlhash])? '' : $_SESSION[$sqlhash];
+
 if(empty($sql))
 {
 	//主表字段处理
@@ -236,9 +242,13 @@ else
 }
 
 $sql = urlencode($sql);
+//生成sql的唯一序列化字符串,并将sql语句记录到session中去
+$sqlhash = md5($sql);
+$_SESSION[$sqlhash] = $sql;
+
 $dlist = new DataListCP();
 $dlist->pageSize = 20;
-$dlist->SetParameter("sql", $sql);
+$dlist->SetParameter("hash", $sqlhash);
 $dlist->SetParameter("mid", $mid);
 if(file_exists(DEDEROOT."/templets/default/$template"))
 {

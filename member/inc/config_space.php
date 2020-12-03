@@ -8,6 +8,15 @@ if($cfg_mb_open=='N')
 	exit();
 }
 
+//对uid进行过滤
+if(preg_match("/'/",$uid)){
+   ShowMsg("您的用户名中含有非法字符！", "-1");
+   exit();
+}else{
+   $uid=RemoveXSS($uid);
+}
+
+
 $_vars = GetUserSpaceInfos();
 $_vars['bloglinks'] = $_vars['curtitle'] = '';
 
@@ -28,7 +37,7 @@ if($_vars['spacesta'] < 0)
 //是否禁止了管理员空间的访问
 if( !isset($_vars['matt']) ) $_vars['matt'] = 0;
 if($_vars['matt'] == 10 && $cfg_mb_adminlock=='Y' 
-&& !( isset($cfg_ml->fields) && $cfg_ml->fields['matt']==10 ))
+&& !(isset($cfg_ml->fields) && $cfg_ml->fields['matt']==10))
 {
 	ShowMsg('系统设置了禁止访问管理员的个人空间！', '-1');
 	exit();
@@ -104,12 +113,13 @@ function GetUserSpaceInfos()
 	$userid = ereg_replace("[\r\n\t \*%]",'',$uid);
 	$query = "Select m.mid,m.mtype,m.userid,m.uname,m.sex,m.rank,m.email,m.scores,
 							m.spacesta,m.face,m.logintime,
-							s.*,t.*,r.membername,m.matt
+							s.*,t.*,m.matt,r.membername,g.msg
 		          From `#@__member` m
 		          left join `#@__member_space` s on s.mid=m.mid
 		          left join `#@__member_tj` t on t.mid=m.mid
 		          left join `#@__arcrank` r on r.rank=m.rank
-		          where m.userid like '$uid' ";
+				  left join `#@__member_msg` g on g.mid=m.mid
+		          where m.userid like '$uid' ORDER BY g.dtime desc ";
 	$_vars = $dsql->GetOne($query);
 	if(!is_array($_vars))
 	{
@@ -118,14 +128,7 @@ function GetUserSpaceInfos()
 	}
 	if($_vars['face']=='')
 	{
-		if($_vars['sex']=='女')
-		{
-			$_vars['face'] = 'images/dfboy.gif';
-		}
-		else
-		{
-			$_vars['face'] = 'images/dfgril.gif';
-		}
+		$_vars['face']=($_vars['sex']=='女')? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
 	}
 	$_vars['userid_e'] = urlencode($_vars['userid']);
 	$_vars['userurl'] = $cfg_memberurl."/index.php?uid=".$_vars['userid_e'];

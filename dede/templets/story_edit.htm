@@ -64,8 +64,8 @@
 <td height="116" bgcolor="#FFFFFF" style="padding:7px 6px 6px 10px;" >
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td style="width:120px" class="bline">图书隶属栏目：</td>
-    <td class="bline">
+    <td width="120" class="bline" style="width:120px">图书隶属栏目：</td>
+    <td colspan="3" class="bline">
     <select name="catid" id="catid">
     <option value='0'>请选择栏目</option>
     <?php
@@ -82,7 +82,7 @@
   </tr>
   <tr>
     <td height="32" class="bline">连载图书名称：</td>
-    <td class="bline">
+    <td colspan="3" class="bline">
     	<input name="bookname" type="text" id="bookname" size="35" value="<?php echo $books['bookname'];  ?>" class='alltxt' />
       <input name="iscommend" type="checkbox" id="iscommend" value="1"<?php if($books['iscommend']==1) echo ' checked';  ?> class='np' />
       推荐
@@ -90,14 +90,30 @@
   </tr>
   <tr>
     <td height="32" class="bline">免费章节数：</td>
-    <td class="bline">
+    <td colspan="3" class="bline">
     	<input name="freenum" type="text" id="freenum" size="5" value="<?php echo $books['freenum']; ?>" class='alltxt' />
       (-1 表示全部免费，0 表示全部收费)
     </td>
   </tr>
+  <tr>
+    <td style="width:120px" class="bline">免费阅读所有<br />内容会员级别：</td>
+    <td colspan="3" class="bline">
+      <select name="arcrank" id="arcrank" style="width:150">
+      	<option value='<?php echo $books["arcrank"]?>'><?php echo $books["membername"]?></option>
+      	<?php
+      		$urank = $cuserLogin->getUserRank();
+ 	 		$dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
+      		$dsql->Execute();
+      		while($row = $dsql->GetObject()){
+      			echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n";
+      		}
+      	?>
+      </select>
+    </td>
+  </tr>
    <tr>
     <td height="32" class="bline">图书状态：</td>
-    <td class="bline">
+    <td colspan="3" class="bline">
     	<input type='radio' name='status' value='0'<?php if($books['status']==0) echo ' checked';  ?> class='np' />连载中
     	<input type='radio' name='status' value='1'<?php if($books['status']==1) echo ' checked';  ?> class='np' />已完成连载
     	<input type='radio' name='ischeck' value='0'<?php if($books['ischeck']==0) echo ' checked';  ?> class='np' />未审核
@@ -106,7 +122,7 @@
   </tr>
   <tr>
     <td height="114" class="bline">图书封面图片：</td>
-    <td class="bline">
+    <td colspan="3" class="bline">
     	<table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="75%" height="81">
@@ -130,32 +146,29 @@
   </tr>
   <tr>
     <td height="32" class="bline">初始化数据：</td>
-    <td class="bline">
-    	点击量：
-      <input name="click" type="text" id="click" size="5" value="<?php echo $books['click']; ?>" class='alltxt' />
-      作  者：
-      <input name="author" type="text" id="author" size="5"  value="<?php echo $books['author']; ?>" class='alltxt' />
-      上架时间：
-      <input name="pubdate" type="text" id="pubdate" size='30' value="<?php echo GetDateTimeMk($books['pubdate']); ?>" class='alltxt'  />
-     </td>
+    <td width="238" class="bline">作者：      
+      <input name="author" type="text" id="author" style="width:120px" class='alltxt' value="<?php echo $books['author']; ?>"/>
+      <input name="selwriter" type="button" id="selwriter" value="选择"/>
+    </td>
+    <td width="224" class="bline">上架时间：
+      <input name="pubdate" type="text" id="pubdate" value="<?php echo GetDateMk($books['pubdate']); ?>" class='alltxt' /></td>
+    <td width="510" class="bline">点击量：
+      <input name="click" type="text" id="click" size="5" value="<?php echo $books['click']; ?>" class='alltxt' /></td>
   </tr>
-  <tr height="90">
+  <tr height="32">
     <td class="bline">关键字：</td>
-    <td class="bline">
-    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="36%"><textarea name="keywords" cols="40" rows="4" id="keywords"><?php echo $books['keywords']; ?></textarea></td>
-          <td width="10%" align="center">摘　要：</td>
-          <td><textarea name="description" cols="40" rows="4" id="description"><?php echo $books['description']; ?></textarea></td>
-        </tr>
-      </table></td>
+    <td colspan="5" class="bline"><input name="keywords" type="text" id="keywords" value="<?php echo $books['keywords']; ?>" size="40" />      
+      手动填写用","分开
+      <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" /></td>
   </tr>
+  <td class="bline">摘　要：</td>
+    <td colspan="5" class="bline"><textarea name="description" cols="80" rows="3" id="description"><?php echo $books['description']; ?></textarea></td>
   <tr>
     <td height="32" class="bline">具体介绍：</td>
-    <td class="bline">&nbsp;</td>
+    <td colspan="3" class="bline">&nbsp;</td>
   </tr>
   <tr>
-    <td height="82" colspan="2">
+    <td height="82" colspan="4">
    <?php
 	GetEditor("body",$books['body'],300);
 	?>
@@ -163,7 +176,7 @@
     </tr>
   <tr>
     <td height="70">&nbsp;</td>
-    <td>
+    <td colspan="3">
     	<input type="submit" name="Submit" value="保 存"  class='np coolbg'/>　　
       <input type="reset" name="Submit2" value="重 置" class='np coolbg' />
     </td>

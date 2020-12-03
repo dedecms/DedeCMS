@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../../../dialog/config.php');
 require_once(dirname(__FILE__).'/../../../image.func.php');
+
 if(empty($dopost)) $dopost = '';
 if(empty($imgwidthValue)) $imgwidthValue = 400;
 if(empty($imgheightValue)) $imgheightValue = 300;
@@ -30,10 +31,10 @@ if($dopost=='upload')
 			$imgfile_type = ${'imgfile'.$i.'_type'};
 		}
 	
-		if(!eregi("\.(jpg|gif|png|bmp)$",$imgfile_name)) {
+		if(!eregi("\.(jpg|gif|png|bmp|pjpeg|jpeg|wbmp)$",$imgfile_name)) {
 			continue;
 		}
-	
+		
 		$sparr = Array('image/pjpeg','image/jpeg','image/gif','image/png','image/xpng','image/wbmp');
 		$imgfile_type = strtolower(trim($imgfile_type));
 		if(!in_array($imgfile_type,$sparr)) {
@@ -44,6 +45,7 @@ if($dopost=='upload')
 		$y = MyDate($cfg_addon_savetype, $nowtme);
 
 		$filename = $cuserLogin->getUserID().'_'.MyDate('ymdHis',$nowtme).'_'.$i;
+		
 		if(!is_dir($cfg_basedir.$cfg_image_dir."/$y"))
 		{
 			MkdirAll($cfg_basedir.$cfg_image_dir."/$y", $cfg_dir_purview);
@@ -68,6 +70,16 @@ if($dopost=='upload')
 		}
 	
 		@move_uploaded_file($imgfile,$fullfilename);
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+		{
+  		//分析远程文件路径
+  		$remotefile = str_replace(DEDEROOT, '', $fullfilename);
+      $localfile = '../../../..'.$remotefile;
+      //创建远程文件夹
+      $remotedir = preg_replace('/[^\/]*\.(jpg|gif|bmp|png)/', '', $remotefile);
+			$ftp->rmkdir($remotedir);
+			$ftp->upload($localfile, $remotefile);
+		}
 
 		if($dd=='yes')
 		{
@@ -79,6 +91,18 @@ if($dopost=='upload')
 			}
 			$urlValue = $bfilename;
 			$imgsrcValue = $litfilename;
+      
+			if($cfg_remote_site=='Y' && $remoteuploads == 1)
+			{
+	  		//分析远程文件路径
+	  		$remotefile = str_replace(DEDEROOT, '', $imgsrcValue);
+	      $localfile = '../../../..'.$remotefile;
+	      //创建远程文件夹
+	      $remotedir = preg_replace('/[^\/]*\.(jpg|gif|bmp|png)/', '', $remotefile);
+				$ftp->rmkdir($remotedir);
+				$ftp->upload($localfile, $remotefile);
+			}
+		
 			$info = '';
 			$sizes = getimagesize($full_litfilename,$info);
 			$imgwidthValue = $sizes[0];
@@ -114,23 +138,30 @@ if($dopost=='upload')
 		$fid = $dsql->GetLastID();
 		AddMyAddon($fid, $bfilename);
 
-    if ($needwatermark=="1" && in_array($imgfile_type,$cfg_photo_typenames))
-    {
-         WaterImg($fullfilename,'up');
-         WaterImg($full_litfilename,'up');
-    }
+		if(in_array($imgfile_type,$cfg_photo_typenames))
+		{
+			WaterImg($fullfilename,'up');
+		}
 		
 		$oknum++;
 		
-		if($cfg_multi_site=='N')
-		{
-			$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
-		}
-		else
-		{
-			if(empty($cfg_basehost)) $cfg_basehost = 'http://'.$_SERVER["HTTP_HOST"];
-			$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
-		}
+		
+	 if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 {
+	 	  $imgsrcValue = $remoteupUrl.$imgsrcValue;
+	 	  $urlValue = $remoteupUrl.$urlValue;
+	 	  $imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
+	 } else {
+			if($cfg_multi_site=='N')
+			{
+				$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
+			}
+			else
+			{
+				if(empty($cfg_basehost)) $cfg_basehost = 'http://'.$_SERVER["HTTP_HOST"];
+				$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
+			}
+	  }
 		
 		if($alttitle==1 && !empty($altname)) {
 			$imgHtml .= "$altname<br />\r\n";
@@ -164,33 +195,56 @@ function ImageOK()
 	ialt = document.form1.alt.value;
 	
 	<?php
-	if($cfg_multi_site=='N')
+	if($cfg_remote_site=='Y' && $remoteuploads == 1)
 	{
+		//如果开启远程并且设置了远程附件,则对远程地址进行更改
+		echo "var remotehost = '$remoteupUrl';\r\n";
 	?>
-	isrc = document.form1.imgsrc.value;
-	iurl = document.form1.url.value;
-	<?php
-  }
-  else
-  {
-  echo "var basehost = '$cfg_basehost';\r\n";
-	?>
-	if(document.form1.imgsrc.value.indexOf('ttp:') <= 0)
-	{
-		isrc = basehost + document.form1.imgsrc.value;
-	}
-	else
-	{
-		isrc = document.form1.imgsrc.value;
-	}
-	if(document.form1.imgsrc.value.indexOf('ttp:') <= 0 && document.form1.imgsrc.value != '') {
-		iurl = basehost + document.form1.url.value;
-	}
-	else
-	{
-		iurl = document.form1.url.value;
-	}
-	<?php
+		if(document.form1.imgsrc.value.indexOf('ttp:') <= 0)
+		{
+			isrc = remotehost + document.form1.imgsrc.value;
+		}
+		else
+		{
+			isrc = document.form1.imgsrc.value;
+		}
+		if(document.form1.imgsrc.value.indexOf('ttp:') <= 0 && document.form1.imgsrc.value != '') {
+			iurl = remotehost + document.form1.url.value;
+		}
+		else
+		{
+			iurl = document.form1.url.value;
+		}
+	<?php	
+	} else {
+		if($cfg_multi_site=='N')
+		{
+		?>
+			isrc = document.form1.imgsrc.value;
+			iurl = document.form1.url.value;
+		<?php
+	  }
+	  else
+	  {
+		  echo "var basehost = '$cfg_basehost';\r\n";
+			?>
+			if(document.form1.imgsrc.value.indexOf('ttp:') <= 0)
+			{
+				isrc = basehost + document.form1.imgsrc.value;
+			}
+			else
+			{
+				isrc = document.form1.imgsrc.value;
+			}
+			if(document.form1.imgsrc.value.indexOf('ttp:') <= 0 && document.form1.imgsrc.value != '') {
+				iurl = basehost + document.form1.url.value;
+			}
+			else
+			{
+				iurl = document.form1.url.value;
+			}
+		<?php
+		}
 	}
 	?>
 	
@@ -294,11 +348,10 @@ if($imgHtml != '')
 		<td nowrap='1'>
 		<fieldset>
 			<legend>上传后得到的图片HTML信息</legend>
+			<textarea name='imghtml' style='width:100%;height:250px;'><?php echo $imgHtml; ?></textarea>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
-					<td nowrap='1'>
-					<textarea name='imghtml' style='width:100%;height:250px;'><?php echo $imgHtml; ?></textarea>
-					</td>
+					<td nowrap='1'>&nbsp;</td>
 				</tr>
 				<tr height="28">
 					<td align='center'>

@@ -6,7 +6,7 @@
 <div class="header wrap">
     <div class="banner">
         <h1><?php echo $title;?></h1>
-        <h2><?php echo $cfg_basehost.'/group/group.php?id='.$id;?> >> <a href="javascript:try{window.external.AddFavorite('<?php echo $cfg_basehost.'/group/group.php?id='.$id;?>','<?php echo $title;?>');}catch(e) {}" title="<?php echo $title;?>" rel="sidebar"><?php echo $lang['group_main_fav'];?></a> </h2>
+        <h2><a href="<?php echo $cfg_basehost.'/group/group.php?id='.$id;?>">圈子首页</a>  >> <a href="javascript:try{window.external.AddFavorite('<?php echo $cfg_basehost.'/group/group.php?id='.$id;?>','<?php echo $title;?>');}catch(e) {}" title="<?php echo $title;?>" rel="sidebar"><?php echo $lang['group_main_fav'];?></a> </h2>
     </div>
     <div id="subNav">
         <div id="manage">

@@ -106,7 +106,7 @@ class TagList
 			$ntime = time();
 
 			//更新浏览量和记录数
-			$upquery = "Update `#@__tagindex` set result='{$row['dd']}',count=count+1,weekcc=weekcc+1,monthcc=monthcc+1 where tag like '{$this->Tag}' ";
+			$upquery = "Update `#@__tagindex` set total='{$row['dd']}',count=count+1,weekcc=weekcc+1,monthcc=monthcc+1 where tag like '{$this->Tag}' ";
 			$this->dsql->ExecuteNoneQuery($upquery);
 			$oneday = 24 * 3600;
 

@@ -72,6 +72,8 @@ else if($dopost=='save')
 	else $flag = join(',',$flags);
 	$senddate = time();
 	$title = cn_substrR($title,$cfg_title_maxlen);
+	$isremote  = (empty($isremote)? 0  : $isremote);
+	$serviterm=empty($serviterm)? "" : $serviterm;
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
 		$arcrank = -1;
@@ -86,7 +88,7 @@ else if($dopost=='save')
 	$litpic = GetDDImage('none',$picname,$ddisremote);
 
 	//生成文档ID
-	$arcID = GetIndexKey(0,$typeid,$senddate,$channelid,$senddate,$adminid);
+	$arcID = GetIndexKey($arcrank,$typeid,$senddate,$channelid,$senddate,$adminid);
 
 	if(empty($arcID))
 	{
@@ -152,7 +154,17 @@ else if($dopost=='save')
 	}
 
 	//生成HTML
-	$artUrl = MakeArt($arcID,true,true);
+	if($cfg_remote_site=='Y' && $isremote=="1")
+	{	
+		if($serviterm!=""){
+			list($servurl,$servuser,$servpwd) = explode(',',$serviterm);
+			$config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+		}else{
+			$config=array();
+		}
+		if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+	}
+	$artUrl = MakeArt($arcID,true,true,$isremote);
 	if($artUrl=='')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";

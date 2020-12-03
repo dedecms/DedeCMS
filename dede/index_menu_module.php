@@ -15,7 +15,7 @@ require(DEDEADMIN.'/inc/inc_menu_func.php');
 <title>DedeCms menu</title>
 <link rel="stylesheet" href="img/base.css" type="text/css" />
 <link rel="stylesheet" href="img/menuold.css" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <base target="main" />
 </head>
 <script language="javascript">

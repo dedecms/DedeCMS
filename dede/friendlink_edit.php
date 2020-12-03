@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-CheckPurview('plus_å‹æƒ…é“¾æŽ¥æ¨¡å—');
+CheckPurview('plus_ÓÑÇéÁ´½ÓÄ£¿é');
 $ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? 'friendlink_main.php' : $_COOKIE['ENV_GOBACK_URL'];
 if(empty($dopost))
 {
@@ -19,7 +19,7 @@ if($dopost=="delete")
 {
 	$id = ereg_replace("[^0-9]","",$id);
 	$dsql->ExecuteNoneQuery("Delete From `#@__flink` where id='$id'");
-	ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+	ShowMsg("³É¹¦É¾³ýÒ»¸öÁ´½Ó£¡",$ENV_GOBACK_URL);
 	exit();
 }
 else if($dopost=="delall")
@@ -32,12 +32,12 @@ else if($dopost=="delall")
 			$aid = ereg_replace("[^0-9]","",$aid);
 			$dsql->ExecuteNoneQuery("Delete From `#@__flink` where id='$aid'");
 		}
-		ShowMsg("æˆåŠŸåˆ é™¤æŒ‡å®šé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+		ShowMsg("³É¹¦É¾³ýÖ¸¶¨Á´½Ó£¡",$ENV_GOBACK_URL);
 		exit();
 	}
 	else
 	{
-		ShowMsg("ä½ æ²¡é€‰å®šä»»ä½•é“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+		ShowMsg("ÄãÃ»Ñ¡¶¨ÈÎºÎÁ´½Ó£¡",$ENV_GOBACK_URL);
 		exit();
 	}
 }
@@ -47,7 +47,7 @@ else if($dopost=="saveedit")
 	$query = "Update `#@__flink` set sortrank='$sortrank',url='$url',webname='$webname',logo='$logo',msg='$msg',
 	              email='$email',typeid='$typeid',ischeck='$ischeck' where id='$id' ";
 	$dsql->ExecuteNoneQuery($query);
-	ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+	ShowMsg("³É¹¦¸ü¸ÄÒ»¸öÁ´½Ó£¡",$ENV_GOBACK_URL);
 	exit();
 }
 $myLink = $dsql->GetOne("Select #@__flink.*,#@__flinktype.typename From #@__flink left join #@__flinktype on #@__flink.typeid=#@__flinktype.id where #@__flink.id=$id");

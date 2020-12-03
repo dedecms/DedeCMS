@@ -10,14 +10,19 @@ define('DEDETEMPLATE', DEDEROOT.'/templets');
 //开启register_globals会有诸多不安全可能性，因此强制要求关闭register_globals
 if ( ini_get('register_globals') )
 {
-    exit('php.ini register_globals must is Off! ');
+    exit('<a href="http://docs.dedecms.com/doku.php?id=register_globals">php.ini register_globals must is Off! </a>');
 }
 
 //禁止 session.auto_start
 if ( ini_get('session.auto_start') != 0 )
 {
-    exit('php.ini session.auto_start must is 0 ! ');
+    exit('<a href="http://docs.dedecms.com/doku.php?id=session_auto_start">php.ini session.auto_start must is 0 ! </a>');
 }
+
+//是否启用mb_substr替换cn_substr来提高效率
+$cfg_is_mb = $cfg_is_iconv = false;
+if(function_exists('mb_substr')) $cfg_is_mb = true;
+if(function_exists('iconv_substr')) $cfg_is_iconv = true;
 
 function _RunMagicQuotes(&$svar)
 {
@@ -88,13 +93,6 @@ if(is_writeable($sessSavePath) && is_readable($sessSavePath))
 	session_save_path($sessSavePath);
 }
 
-if ( ini_get('register_globals') )
-{
-    exit('php.ini register_globals must is Off! ');
-}
-
-
-
 //系统配置参数
 require_once(DEDEDATA."/config.cache.inc.php");
 
@@ -106,6 +104,14 @@ if($_FILES)
 
 //数据库配置文件
 require_once(DEDEDATA.'/common.inc.php');
+
+//载入系统验证安全配置
+if(file_exists(DEDEDATA.'/safe/inc_safe_config.php'))
+{
+	require_once(DEDEDATA.'/safe/inc_safe_config.php');
+	if(!empty($safe_faqs)) $safefaqs = unserialize($safe_faqs);
+}
+
 
 //php5.1版本以上时区设置
 //由于这个函数对于是php5.1以下版本并无意义，因此实际上的时间调用，应该用MyDate函数调用
@@ -133,6 +139,7 @@ else
 //模板的存放目录
 $cfg_templets_dir = $cfg_cmspath.'/templets';
 $cfg_templeturl = $cfg_mainsite.$cfg_templets_dir;
+$cfg_templets_skin = empty($cfg_df_style)? $cfg_mainsite.$cfg_templets_dir."/default" : $cfg_mainsite.$cfg_templets_dir."/$cfg_df_style";
 
 //cms安装目录的网址
 $cfg_cmsurl = $cfg_mainsite.$cfg_cmspath;
@@ -172,7 +179,7 @@ $cfg_soft_dir = $cfg_medias_dir.'/soft';
 $cfg_other_medias = $cfg_medias_dir.'/media';
 
 //软件摘要信息，****请不要删除本项**** 否则系统无法正确接收系统漏洞或升级信息
-$cfg_version = 'V55_UTF8';
+$cfg_version = 'V56_UTF8';
 $cfg_soft_lang = 'utf-8';
 $cfg_soft_public = 'base';
 
@@ -216,6 +223,7 @@ if($cfg_sendmail_bysmtp=='Y' && !empty($cfg_smtp_usermail))
 if(!isset($cfg_NotPrintHead)) {
 	header("Content-Type: text/html; charset={$cfg_soft_lang}");
 }
+
 
 //引入数据库类
 require_once(DEDEINC.'/dedesql.class.php');

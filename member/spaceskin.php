@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
+$menutype = 'config';
 if($cfg_mb_lit=='Y')
 {
 	ShowMsg("由于系统开启了精简版会员空间，你访问的功能不可用！","-1");

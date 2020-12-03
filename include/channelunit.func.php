@@ -220,19 +220,19 @@ function GetTopids($tid)
 //获取上级ID列表
 function GetParentIds($tid)
 {
-	global $_Cs;
+	global $cfg_Cs;
 	$GLOBALS['pTypeArrays'][] = $tid;
-	if(!is_array($_Cs))
+	if(!is_array($cfg_Cs))
 	{
 		require_once(DEDEROOT."/data/cache/inc_catalog_base.inc");
 	}
-	if(!isset($_Cs[$tid]) || $_Cs[$tid][0]==0)
+	if(!isset($cfg_Cs[$tid]) || $cfg_Cs[$tid][0]==0)
 	{
 		return $GLOBALS['pTypeArrays'];
 	}
 	else
 	{
-		return GetParentIds($_Cs[$tid][0]);
+		return GetParentIds($cfg_Cs[$tid][0]);
 	}
 }
 
@@ -246,31 +246,31 @@ function IsParent($sid, $pid)
 //获取一个类目的顶级类目id
 function GetTopid($tid)
 {
-	global $_Cs;
-	if(!is_array($_Cs))
+	global $cfg_Cs;
+	if(!is_array($cfg_Cs))
 	{
 		require_once(DEDEROOT."/data/cache/inc_catalog_base.inc");
 	}
-	if(!isset($_Cs[$tid][0]) || $_Cs[$tid][0]==0)
+	if(!isset($cfg_Cs[$tid][0]) || $cfg_Cs[$tid][0]==0)
 	{
 		return $tid;
 	}
 	else
 	{
-		return GetTopid($_Cs[$tid][0]);
+		return GetTopid($cfg_Cs[$tid][0]);
 	}
 }
 
 //获得某id的所有下级id
 function GetSonIds($id,$channel=0,$addthis=true)
 {
-	global $_Cs;
+	global $cfg_Cs;
 	$GLOBALS['idArray'] = array();
-	if( !is_array($_Cs) )
+	if( !is_array($cfg_Cs) )
 	{
 		require_once(DEDEROOT."/data/cache/inc_catalog_base.inc");
 	}
-	GetSonIdsLogic($id,$_Cs,$channel,$addthis);
+	GetSonIdsLogic($id,$cfg_Cs,$channel,$addthis);
 	$rquery = join(',',$GLOBALS['idArray']);
 	$rquery = preg_replace("/,$/", '', $rquery); 
 	return $rquery;
@@ -295,7 +295,7 @@ function GetSonIdsLogic($id,$sArr,$channel=0,$addthis=false)
 //栏目目录规则
 function MfTypedir($typedir)
 {
-	if(eregi("^http:",$typedir)) return $typedir;
+	if(eregi("^http:|^ftp:",$typedir)) return $typedir;
 	$typedir = str_replace("{cmspath}",$GLOBALS['cfg_cmspath'],$typedir);
 	$typedir = ereg_replace("/{1,}","/",$typedir);
 	return $typedir;

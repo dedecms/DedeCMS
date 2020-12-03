@@ -123,7 +123,12 @@ while($file = $dh->read())
 		$reurl = "$activeurl/$file";
 
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		$line = "\n<tr height='24'>
    <td class='linerow' bgcolor='#F9FBF0'>
@@ -142,7 +147,12 @@ while($file = $dh->read())
 		$reurl = "$activeurl/$file";
 
 		$reurl = ereg_replace("^\.\.","",$reurl);
-		$reurl = $reurl;
+		if($cfg_remote_site=='Y' && $remoteuploads == 1)
+	 	{
+	 	  $reurl  = $remoteupUrl.$reurl;
+		}else{
+			$reurl = $reurl;
+		}
 
 		$line = "\n<tr height='24'>
    <td class='linerow' bgcolor='#F9FBF0'>

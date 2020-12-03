@@ -185,11 +185,11 @@ else if($action=='guestbook')
 		$mtype = 0;
 	}
 	include_once(DEDEINC.'/datalistcp.class.php');
-	$query = "Select mg.*, mb.face, mb.userid From `#@__member_guestbook` mg 
-	left join `#@__member` mb on mb.mid=mg.mid 
+	$query = "Select mg.*,mb.face,mb.userid,mb.sex From `#@__member_guestbook` mg 
+	left join `#@__member` mb on mb.userid=mg.gid 
 	where mg.mid='{$_vars['mid']}' order by mg.aid desc";
 	$dlist = new DataListCP();
-	$dlist->pageSize = $_vars['pagesize'];
+	$dlist->pageSize = 10;
 	$dlist->SetParameter("uid",$_vars['userid']);
 	$dlist->SetParameter("action",$action);
 	$dlist->SetTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/guestbook.htm");
@@ -281,6 +281,62 @@ else if($action=='guestbooksave')
 }
 
 /*---------------------------------
+删除留言
+function guestbook_del(){ }
+-------------------------------------*/
+else if($action=='guestbookdel')
+{
+	CheckRank(0,0);
+	if($cfg_ml->M_LoginID!=$uid)
+	{
+		ShowMsg('这条留言不是给你的，你不能删除！', -1);
+		exit();
+	}
+	$inquery = "DELETE FROM `#@__member_guestbook` WHERE aid='$aid' AND mid='$mid'"; 
+	$dsql->ExecuteNoneQuery($inquery);
+	ShowMsg('成功删除！', "index.php?uid={$uid}&action=guestbook");
+	exit();
+}
+
+/*---------------------------------
+删除我的动态信息
+function feed_del(){ }
+-------------------------------------*/
+else if($action=='feeddel')
+{
+	CheckRank(0,0);
+	$fid=(empty($fid))? "" : $fid;
+	$row = $dsql->GetOne("SELECT mid FROM `#@__member_feed` WHERE fid='$fid'");
+	if($cfg_ml->M_ID!=$row['mid'])
+	{
+		ShowMsg('此动态信息不存在！', -1);
+		exit();
+	}
+	$inquery = "DELETE FROM `#@__member_feed` WHERE fid='$fid' AND mid='".$cfg_ml->M_ID."'"; 
+	$dsql->ExecuteNoneQuery($inquery);
+	ShowMsg('成功删除一条动态信息！', "index.php");
+	exit();
+}
+/*---------------------------------
+删除我的心情信息
+function mood_del(){ }
+-------------------------------------*/
+else if($action=='mooddel')
+{
+	CheckRank(0,0);
+	$id=(empty($id))? "" : $id;
+	$row = $dsql->GetOne("SELECT mid FROM `#@__member_msg` WHERE id='$id'");
+	if($cfg_ml->M_ID!=$row['mid'])
+	{
+		ShowMsg('此动态信息不存在！', -1);
+		exit();
+	}
+	$inquery = "DELETE FROM `#@__member_msg` WHERE id='$id' AND mid='".$cfg_ml->M_ID."'"; 
+	$dsql->ExecuteNoneQuery($inquery);
+	ShowMsg('成功删除一条心情！', "index.php");
+	exit();
+}
+/*---------------------------------
 加好友
 function newfriend(){ }
 -------------------------------------*/
@@ -314,12 +370,51 @@ else if($action=='newfriend')
 		//统计我的好友数量
 		$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__member_friends` WHERE `mid`='".$cfg_ml->M_ID."'");
 		$dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET friend='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
+
+		//会员动态记录
+	    $cfg_ml->RecordFeeds('addfriends',"","",$_vars['userid']);
 		
 		ShowMsg("成功添加好友！","index.php?uid=".$uid);
 		exit();
+	
 	}
 }
-
+/*---------------------------------
+解除好友关系
+function newfriend(){ }
+-------------------------------------*/
+else if($action=='delfriend')
+{
+	CheckRank(0,0);
+	if($_vars['mid']==$cfg_ml->M_ID)
+	{
+		ShowMsg("你不能和自己为解除关系！","index.php?uid=".$uid);
+		exit();
+	}
+	$addtime = time();
+	$row = $dsql->GetOne("Select * From `#@__member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ");
+	if(!is_array($row))
+	{
+		ShowMsg("该用户已经不是你的好友！","index.php?uid=".$uid);
+		exit();
+	}
+	else
+	{
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+		{
+			if($data = uc_get_user($cfg_ml->M_LoginID)) uc_friend_add($uid,$data[0]);
+		}
+		#/aip}}
+	    $inquery = "DELETE FROM `dede_member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ";
+		$dsql->ExecuteNoneQuery($inquery);
+		//统计我的好友数量
+		$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__member_friends` WHERE `mid`='".$cfg_ml->M_ID."'");
+		$dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET friend='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
+		ShowMsg("成功解除好友关系！","myfriend.php");
+		exit();
+	}
+}
 /*---------------------------------
 加黑名单
 function blackfriend(){ }

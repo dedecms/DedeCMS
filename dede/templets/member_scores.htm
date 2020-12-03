@@ -26,14 +26,14 @@ function CheckAll(form, prefix, checkall) {
 </div>
 <form action="member_scores.php" method="post" >
 <input name="action" type="hidden" value="save" />
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#dbe4cd;">
   <tr bgcolor="#EDF9D5">
     <td width="100%" height="24" background='img/tbg.gif'>
     	　<b><a href="member_main.php"><U>会员管理</U></a> &gt; 积分头衔设置：</b>
     </td>
   </tr>
   </table>  
-  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#E2F5BC" align="center">
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#dbe4cd" align="center">
         <tr>
           <td width="5%" height="30" align="center" valign="middle" bgcolor="#FEFCEF">
           	<input type="checkbox" name="chkall" id="chkall" onClick="CheckAll(this.form)" class='np' />
@@ -46,7 +46,7 @@ function CheckAll(form, prefix, checkall) {
         <?php
 		foreach($Scores as $v){	
 		?>
-        <tr height="28" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+        <tr height="28" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
           <td height="28" align="center" >
           	<input name="Ids-<?php echo $v['id']?>" type="checkbox" id="Ids-<?php echo $v['id']?>" value="1" class='np' />
           </td>

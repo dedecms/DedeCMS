@@ -86,7 +86,7 @@ class Caicai extends DataListCP
 			$arr['ispart'],$arr['namerule2'],$arr['moresite'],$arr['siteurl'],$arr['sitepath']);
 			if($arr['litpic'] == '-' || $arr['litpic'] == '')
 			{
-				$arr['litpic'] = 'images/dfpic.gif';
+				$arr['litpic'] = 'templets/images/dfpic.gif';
 			}
 			if(!eregi("^http://",$arr['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
 			{

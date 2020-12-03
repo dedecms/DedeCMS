@@ -22,7 +22,7 @@ function lib_memberlist(&$ctag,&$refObj)
 	$sql = "Select mb.*,ms.spacename,ms.sign From `#@__member` mb
 		left join `#@__member_space` ms on ms.mid = mb.mid
 		$wheresql order by mb.{$orderby} desc limit 0,$row ";
-
+	
 	$ctp = new DedeTagParse();
 	$ctp->SetNameSpace('field','[',']');
 	$ctp->LoadSource($innerText);
@@ -31,14 +31,15 @@ function lib_memberlist(&$ctag,&$refObj)
 	while($row = $dsql->GetArray('mb'))
 	{
 		$row['spaceurl'] = $GLOBALS['cfg_basehost'].'/member/index.php?uid='.$row['userid'];
-		if(empty($row['face'])) {
-			$row['face'] = $GLOBALS['cfg_memberurl'].'/images/nopic.gif';
+		if(empty($row['face'])){
+			$row['face']=($row['sex']=='女')? $GLOBALS['cfg_memberurl'].'/templets/images/dfgirl.png' : $GLOBALS['cfg_memberurl'].'/templets/images/dfboy.png';
 		}
 		foreach($ctp->CTags as $tagid=>$ctag){
 			if(isset($row[$ctag->GetName()])){ $ctp->Assign($tagid,$row[$ctag->GetName()]); }
 		}
 		$revalue .= $ctp->GetResult();
 	}
+	
 	return $revalue;
 }
 ?>

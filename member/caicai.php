@@ -9,7 +9,8 @@ if(!eregi("^(scores|badpost|goodpost)$",$sort))
 $tid = (isset($tid) ? intval($tid) : 0);
 $t1 = ExecTime();
 $typequery = '';
-
+$menutype = 'mydede';
+$menutype_son = 'cc';
 //获取栏目的子类、交叉分类
 if($tid!=0)
 {

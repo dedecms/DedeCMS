@@ -1,0 +1,168 @@
+.infiniteCarousel .forward {
+  background:url(../images/red_skin.png) 0 -256px no-repeat;
+  right: 0;
+}
+.infiniteCarousel .back {
+  background:url(../images/red_skin.png) 0 -222px no-repeat;
+  left: 0;
+}
+
+.blue .top {
+	background:url(../images/red_skin.png) 0 -72px repeat-x;
+
+}
+.blue .top .t_l {
+	background:url(../images/red_skin.png) 0 0 no-repeat;
+
+}
+.blue .top .t_r {
+	background:url(../images/red_skin.png) -6px 0 no-repeat;
+
+}
+
+#navMenu ul li.hover a {
+	background:url(../images/red_skin.png) 0 -152px no-repeat;
+}
+#navMenu ul li.hover span {
+	background: url(../images/red_skin.png) no-repeat right top;
+}
+.index .bignews{
+	border:1px solid #e8ceae;
+}
+.index .vote dl dd strong{
+	color:#c14966;
+	}
+#navMenu ul li a.hover, #navMenu ul li a:hover {
+	background: transparent url(../images/red_skin.png) 0 -152px no-repeat;
+}
+#navMenu ul li a.hover span, #navMenu ul li a:hover span {
+	background:url(../images/red_skin.png) no-repeat right top;
+}
+.w963 .tags a:hover{
+	color:#1c75a3;
+	}
+.search-keyword,.search-option{
+	border:1px solid #e8ceae;
+	}
+
+/*--------------------------------------------------
+ box base
+ ---------------------------------------------*/
+/* 自适应宽度的块(通用块) */
+
+.tbox{
+	background:url(../images/red_skin.png) 0 -294px repeat-x;
+	border-bottom:1px solid #e8ceae;	
+}
+.tbox dt{
+	border:1px solid #e8ceae;
+}
+.tbox dd{
+	border-left:1px solid #e8ceae;
+	border-right:1px solid #e8ceae;
+}
+.tbox dt strong{
+	color:#6c0800;
+}
+.tbox dt strong a{
+	color:#6c0800;
+}
+.tbox dt strong a:hover{
+	color:#6c0800;
+}
+.tbox dt strong a:visited{
+	color:#6c0800;
+	}
+.tbox dt span.more{
+	color:#596F37;
+}
+.tbox dt span.more a{
+	color:#6c0800;
+}
+.tbox dt span.more a:hover{
+	color:#ba2636;
+}
+.tbox dt span.label a{
+	border-left:1px solid #e8ceae;
+	color:#666;
+	}
+.tbox dt span.label a:hover{
+	color:#360;
+}
+.tbox dt span.label a.thisclass{
+	background:#FFF;
+	color:#333;
+	border-top:3px solid #e8ceae;
+}
+
+
+/* 较重颜色的Box */
+.light dt{
+	border:1px solid #e8ceae;
+	background:url(../images/red_skin.png) 0 -188px repeat-x;
+}
+.light dd{
+	border-left:1px solid #e8ceae;
+	border-right:1px solid #e8ceae;
+	border-bottom:none;
+}
+dt.light strong{
+	color:#6c0800;
+}
+
+
+/* 面包屑 */
+.pleft .place{
+	background:transparent url(../images/red_skin.png) repeat-x scroll 0 -188px;
+	border-top:1px solid #e8ceae;
+	border-bottom:1px solid #e8ceae;
+	color:#6C0800;
+}
+.place{
+	background:transparent url(../images/red_skin.png) repeat-x scroll 0 -188px;
+	border-top:1px solid #e8ceae;
+	border-bottom:1px solid #e8ceae;
+}
+.pleft .place strong{
+	color:#6C0800;
+	font-weight:normal;
+	letter-spacing:1px;
+}
+.pleft .place a{
+	color:#6C0800;
+	margin:0px 2px;
+}
+
+.viewbox .intro{
+	background:#fff8e3;
+}
+
+/*list_nav
+------------------*/
+.d6 li a{
+	width:87px;
+	padding-left:20px;
+	height:26px;
+	line-height:26px;
+	display:block;
+	background:url(../images/red_skin.png) -42px -222px no-repeat;
+	color:#690700;
+	}
+.d6 li a.thisclass{
+	background:url(../images/red_skin.png) -42px -249px no-repeat;
+	}
+/*----------dedeinfolink  ---------*/	
+#dedeinfolink tr td.iftitle {
+	color:#6C0800;
+}	
+/*----------picture  ---------*/
+a.c1{
+	border:1px solid #e8ceae;	
+	background:url(../images/but_bg_sr2.gif) 0 0 repeat-x;
+    color:#6C0800;
+}
+a.c1:hover{
+	color:#369;
+	border:1px solid #8CADCE;
+	background:url(../images/but_bg_sr2.gif) 0px -44px repeat-x;
+}

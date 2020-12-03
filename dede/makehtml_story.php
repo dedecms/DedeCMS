@@ -7,7 +7,7 @@
  * @package defaultPackage
  * @rcsfile 	$RCSfile: makehtml_story.php,v $
  * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:06:42 $
+ * @date 	$Date: 2008/12/11 02:09:55 $
  */
 
 require_once(dirname(__FILE__)."/config.php");
@@ -20,21 +20,21 @@ if(empty($startid)) $startid = 0;
 if($action=='make')
 {
 	if(empty($start)) $start = 0;
-	$addquery = " id>='$startid' ";
-	if(!empty($endid) && $endid>$startid ) $addquery .= " And id<='$endid' ";
+	$addquery = " bid>='$startid' ";
+	if(!empty($endid) && $endid>$startid ) $addquery .= " And bid<='$endid' ";
 	if(!empty($catid)) $addquery .= " And (catid='$catid' Or bcatid='$catid') ";
 	if(empty($makenum)) $makenum = 50;
-	$dsql->SetQuery("Select SQL_CALC_FOUND_ROWS id From #@__story_books where $addquery limit $start,$makenum ");
+	$dsql->SetQuery("Select SQL_CALC_FOUND_ROWS bid From #@__story_books where $addquery limit $start,$makenum ");
 	$dsql->Execute();
 	$n = 0;
 	$row = $dsql->GetOne("SELECT FOUND_ROWS() as dd ");
 	$limitrow = $row['dd'];
 	while($row = $dsql->GetObject()){
 		$start++;
-		$bv = new BookView($row->id,'book');
+		$bv = new BookView($row->bid,'book');
 		$artUrl = $bv->MakeHtml(false);
 		//echo "更新: <a href='$artUrl' target='_blank'>{$bv->Fields['bookname']}</a> OK！<br />\r\n";
-		//echo $row->id." - ";
+		//echo $row->bid." - ";
 	}
 	if($start>=$limitrow){
 		ShowMsg("完成所有HTML的更新！","javascript:;");

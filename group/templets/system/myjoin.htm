@@ -3,62 +3,59 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>全部发帖</title>
-<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
-<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<link href="../member/templets/style/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../member/templets/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/templets/js/table_function.js"></script>
 </head>
 <body>
-<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
-<div class="wrapper lineT">
-  <div class="mainBox">
-    <div class="main"><?php  include(DEDEMEMBER."./templets/menu.php");?>
-      <div class="dedeMain">
-        <div class="location"><span class="fLeft">圈子话题<i>|</i><a href="index.php">圈子频道</a></span><span class="fRight mR10 titPublish icon"><a href="create.php">创建圈子</a></span></div>
-        <div class="titleTabBar bgGreen lineTB">
-          <ul>
-            <li><a href="mygroup.php">创建的圈子</a></li>
-            <!--<li><a href="myjoin.php">参与的圈子</a></li> -->
-            <li class="select"><a href="myjoin.php">我的发帖</a></li>
-          </ul>
-        </div>
-        
-        <div class="mL10 mR10 mTB10">
-          <table cellspacing="1" class="list">
-            <thead>
-              <tr>
-                <th width="10%">圈子名称</th>
-                <th>话题</th>
-                <th width="10%">最后更新</th>
-              </tr>
-            </thead>
-            <tbody>
-
-            {dede:datalist}
-            <?php
+<div id="main">
+  <?php include(DEDEMEMBER."../templets/head.htm"); ?>
+  <div id="content" class="w960 clearfix">
+    <?php include(DEDEMEMBER."./templets/menu.php"); ?>
+    <div id="mcpmain">
+      <div id="appTab">
+        <ul>
+          <li><a href="mygroup.php"><span>创建的圈子</span></a></li>
+          <li class="thisTab"><a href="myjoin.php"><span>我的发帖</span></a></li>
+          <li><a href="index.php"><span>圈子频道</span></a></li>
+          <li><a href="create.php" target="_blank"><span>创建圈子</span></a></li>
+        </ul>
+      </div>
+      <div id="mainCp">
+        <h3 class="meTitle"><strong>&nbsp;全部发帖</strong><em>(<?php echo $dl->totalResult;?>)</em></h3>  
+         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+          <thead>
+            <tr>
+              <th width="40%">圈子名称</th>
+              <th width="50%">话题 </th>
+              <th width="10%">最后更新</th>
+            </tr>
+          </thead>
+          <tbody>
+          {dede:datalist}
+          <?php
 				$row = $fields;
 			?>
             <tr>
-              <td align="center"><a href="../group/group.php?id=<?php echo $row['gid'];?>" target="_blank"><?php echo $row['groupname'];?></a></td>
-              <td><a href="../group/viewthread.php?id=<?php echo $row['gid'];?>&tid=<?php echo $row['tid'];?>" title="<?php echo $row['subject'];?>" target="_blank"><?php echo cn_substr($row['subject'],30);?></a></td>
+              <td class="tabTitle"><a href="../group/group.php?id=<?php echo $row['gid'];?>" target="_blank"><?php echo $row['groupname'];?></a></td>
+              <td align="center"><a href="../group/viewthread.php?id=<?php echo $row['gid'];?>&tid=<?php echo $row['tid'];?>" title="<?php echo $row['subject'];?>" target="_blank"><?php echo cn_substr($row['subject'],30);?></a></td>
               <td align="center"><?php echo GetDateMk($row['lastpost'])?></td>
             </tr>
-            {/dede:datalist}
-            </tbody>
-
-            <tfoot>
-              <tr>
-                <td colspan="6"><div class="pages fRight">{dede:pagelist/}</div></td>
-              </tr>
-            </tfoot>
-          </table>
+         {/dede:datalist}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6"><div class="pageList">{dede:pagelist listsize=5/}</div></td>
+            </tr>
+          </tfoot>
+        </table>
         </div>
+        <!--主操作区域 -->
       </div>
+ <div class="clear"></div>
     </div>
-    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
+<?php include(DEDEMEMBER."./templets/foot.htm"); ?>
 </div>
-</div>
-<?php  include(DEDEMEMBER."./templets/foot.htm");?>
 </body>
 </html>

@@ -45,7 +45,7 @@ function getCheckboxItem(){
 				 allSel=allSel+","+myform.tables[i].value;
 		 }
 	 }
-	 return allSel;
+	 return allSel;	
 }
 
 //反选
@@ -84,13 +84,13 @@ function checkSubmit()
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
-  <tr>
+  <tr> 
     <td height="19" colspan="8" background="img/tbg.gif" bgcolor="#E7E7E7">
     	<table width="96%" border="0" cellspacing="1" cellpadding="1">
-        <tr>
+        <tr> 
           <td width="24%"><strong>数据库管理</strong></td>
           <td width="76%" align="right">
-          	<b><a href="sys_data_revert.php"><u>数据还原</u></a></b> |
+          	<b><a href="sys_data_revert.php"><u>数据还原</u></a></b> | 
           	<b><a href="sys_sql_query.php"><u>SQL命令行工具</u></a></b>
           </td>
         </tr>
@@ -99,10 +99,10 @@ function checkSubmit()
   </tr>
   <form name="form1" onSubmit="checkSubmit()" action="sys_data_done.php?dopost=bak" method="post" target="stafrm">
   <input type='hidden' name='tablearr' value='' />
-  <tr bgcolor="#F7F8ED">
+  <tr bgcolor="#F7F8ED"> 
     <td height="24" colspan="8"><strong>DedeCms默认系统表：</strong></td>
   </tr>
-  <tr bgcolor="#F2FFB5" align="center">
+  <tr bgcolor="#F2FFB5" align="center"> 
     <td height="24" width="5%">选择</td>
     <td width="20%">表名</td>
     <td width="8%">记录数</td>
@@ -112,19 +112,19 @@ function checkSubmit()
     <td width="8%">记录数</td>
     <td width="17%">操作</td>
   </tr>
-  <?php
+  <?php  
   for($i=0; isset($dedeSysTables[$i]); $i++)
-  {
+  { 
     $t = $dedeSysTables[$i];
     echo "<tr align='center'  bgcolor='#FFFFFF' height='24'>\r\n";
-  ?>
+  ?> 
     <td>
-    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" checked />
+    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" checked /> 
     </td>
-    <td>
+    <td> 
       <?php echo $t; ?>
     </td>
-    <td>
+    <td> 
       <?php echo TjCount($t,$dsql); ?>
     </td>
     <td>
@@ -138,12 +138,12 @@ function checkSubmit()
    	$t = $dedeSysTables[$i];
   ?>
     <td>
-    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" checked />
+    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" checked /> 
     </td>
-    <td>
+    <td> 
       <?php echo $t; ?>
     </td>
-    <td>
+    <td> 
       <?php echo TjCount($t,$dsql); ?>
     </td>
     <td>
@@ -160,10 +160,10 @@ function checkSubmit()
    echo "</tr>\r\n";
   }
   ?>
-  <tr bgcolor="#F7F8ED">
+  <tr bgcolor="#F7F8ED"> 
     <td height="24" colspan="8"><strong>其它数据表：</strong></td>
   </tr>
-  <tr bgcolor="#F9FEE2" align="center">
+  <tr bgcolor="#F9FEE2" align="center"> 
     <td height="24" width="5%">选择</td>
     <td width="20%">表名</td>
     <td width="8%">记录数</td>
@@ -173,19 +173,19 @@ function checkSubmit()
     <td width="8%">记录数</td>
     <td width="17%">操作</td>
   </tr>
- <?php
+ <?php  
   for($i=0; isset($otherTables[$i]); $i++)
-  {
+  { 
     $t = $otherTables[$i];
     echo "<tr align='center'  bgcolor='#FFFFFF' height='24'>\r\n";
-  ?>
+  ?> 
     <td>
-    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" />
+    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" /> 
     </td>
-    <td>
+    <td> 
       <?php echo $t; ?>
     </td>
-    <td>
+    <td> 
       <?php echo TjCount($t,$dsql); ?>
     </td>
     <td>
@@ -199,12 +199,12 @@ function checkSubmit()
    	$t = $otherTables[$i];
   ?>
    <td>
-    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" />
+    	<input type="checkbox" name="tables" value="<?php echo $t; ?>" class="np" /> 
     </td>
-    <td>
+    <td> 
       <?php echo $t; ?>
     </td>
-    <td>
+    <td> 
       <?php echo TjCount($t,$dsql); ?>
     </td>
     <td>
@@ -219,39 +219,39 @@ function checkSubmit()
    echo "</tr>\r\n";
   }
   ?>
-    <tr bgcolor="#FDFDEA">
+    <tr bgcolor="#FDFDEA"> 
       <td height="24" colspan="8">
-      	&nbsp;
-        <input name="b1" type="button" id="b1" class="coolbg np" onclick="SelAll()" value="全选" />
-        &nbsp;
-        <input name="b2" type="button" id="b2" class="coolbg np" onclick="ReSel()" value="反选" />
-        &nbsp;
-        <input name="b3" type="button" id="b3" class="coolbg np" onclick="NoneSel()" value="取消" />
+      	&nbsp; 
+        <input name="b1" type="button" id="b1" class="coolbg np" onClick="SelAll()" value="全选" />
+        &nbsp; 
+        <input name="b2" type="button" id="b2" class="coolbg np" onClick="ReSel()" value="反选" />
+        &nbsp; 
+        <input name="b3" type="button" id="b3" class="coolbg np" onClick="NoneSel()" value="取消" />
       </td>
   </tr>
-  <tr bgcolor="#F7F8ED">
+  <tr bgcolor="#F7F8ED"> 
     <td height="24" colspan="8"><strong>数据备份选项：</strong></td>
   </tr>
-  <tr align="center" bgcolor="#FFFFFF">
+  <tr align="center" bgcolor="#FFFFFF"> 
     <td height="50" colspan="8">
     	  <table width="90%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
+          <tr> 
             <td height="30">当前数据库版本： <?php echo $mysql_version?></td>
           </tr>
-          <tr>
+          <tr> 
             <td height="30">
-            	指定备份数据格式：
+            	指定备份数据格式： 
               <input name="datatype" type="radio" class="np" value="4.0"<?php if($mysql_version<4.1) echo " checked='1'";?> />
-              MySQL3.x/4.0.x 版本
+              MySQL3.x/4.0.x 版本 
               <input type="radio" name="datatype" value="4.1" class="np"<?php if($mysql_version>=4.1) echo " checked='1'";?> />
               MySQL4.1.x/5.x 版本
               </td>
           </tr>
-          <tr>
+          <tr> 
             <td height="30">
-            	分卷大小：
+            	分卷大小： 
               <input name="fsize" type="text" id="fsize" value="2048" size="6" />
-              K&nbsp;，
+              K&nbsp;， 
               <input name="isstruct" type="checkbox" class="np" id="isstruct" value="1" checked='1' />
               备份表结构信息
               <?php  if(@function_exists('gzcompress') && false) {  ?>
@@ -268,7 +268,7 @@ function checkSubmit()
   <tr bgcolor="#F7F8ED">
     <td height="24" colspan="8"><strong>进行状态：</strong></td>
   </tr>
-  <tr bgcolor="#FFFFFF">
+  <tr bgcolor="#FFFFFF"> 
     <td height="180" colspan="8">
 	<iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
 	</td>

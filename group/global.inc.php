@@ -25,10 +25,11 @@ $_GROUPS['time'] = MyDate('Y-m-d',$_GROUPS['stime']);
 $_GROUPS['topics'] = $_GROUPS['members'];
 $_GROUPS['views'] = $_GROUPS['albums'] = $_GROUPS['threads'] = $_GROUPS['groupArticle'] = $_GROUPS['members'] = $_GROUPS['guestbook'] = $_GROUPS['admins'] = array();
 
-$row = $db->GetOne("SELECT face,uname,userid FROM #@__member WHERE mid='$rs[uid]'");
+$row = $db->GetOne("SELECT face,uname,userid,sex FROM #@__member WHERE mid='$rs[uid]'");
 if(is_array($row))
 {
-	$_GROUPS['face'] = $row['face'];
+	if(empty($row['face'])) $_GROUPS['face']=($row['sex']=='女') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
+	else $_GROUPS['face'] = $row['face'];
 	$_GROUPS['uname'] = $row['uname'];
 	$_GROUPS['userid'] = $row['userid'];
 }
@@ -77,9 +78,10 @@ if($userid == $cfg_ml->M_ID)
 $_temps = array();
 foreach($masters as $k)
 {
-	$row = $db->GetOne("SELECT face,uname,userid,mid FROM #@__member WHERE userid='$k'");
+	$row = $db->GetOne("SELECT face,uname,userid,mid,sex FROM #@__member WHERE userid='$k'");
 	if(is_array($row))
 	{
+		if(empty($row['face'])) $row['face']=($row['sex']=='女') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
 		$_GROUPS['admins'][] = $row;
 		$_temps[] = $row['mid'];
 	}
@@ -88,23 +90,23 @@ $_GROUPS['admin_ids'] = !empty($_temps) ? implode(",", $_temps) : 0;
 
 //圈子成员
 $mids = array();
-$db->SetQuery("SELECT G.posts,G.replies,G.jointime,G.isjoin,M.face,M.uname,M.userid,M.mid FROM #@__group_user AS G LEFT JOIN #@__member AS M ON G.uid=M.mid WHERE G.gid='$id' AND G.isjoin=1 ORDER BY G.jointime DESC LIMIT 0,20");
+$db->SetQuery("SELECT G.posts,G.replies,G.jointime,G.isjoin,M.face,M.uname,M.userid,M.mid,M.sex FROM #@__group_user AS G LEFT JOIN #@__member AS M ON G.uid=M.mid WHERE G.gid='$id' AND G.isjoin=1 ORDER BY G.jointime DESC LIMIT 0,20");
 $db->Execute();
 while($row = $db->GetArray())
 {
 	$mids[] = $row['mid'];
-	$row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+	if(empty($row['face'])) $row['face'] = ($row['sex']=='女') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
 	$_GROUPS['members'][] = $row;
 }
 $_GROUPS['_vars']['mids'] = implode(",", $mids);
 $_GROUPS['_vars']['mids'] = empty($_GROUPS['_vars']['mids']) ? 0 : $_GROUPS['_vars']['mids'];
 
 //圈子留言
-$db->SetQuery("SELECT G.message,G.stime,G.title,M.userid,M.uname,M.face FROM #@__group_guestbook AS G LEFT JOIN #@__member AS M ON G.userid=M.mid WHERE G.gid='$id' ORDER BY G.stime DESC LIMIT 0,5");
+$db->SetQuery("SELECT G.message,G.stime,G.title,M.userid,M.uname,M.face,M.sex FROM #@__group_guestbook AS G LEFT JOIN #@__member AS M ON G.userid=M.mid WHERE G.gid='$id' ORDER BY G.stime DESC LIMIT 0,5");
 $db->Execute();
 while($row = $db->GetArray())
 {
-	$row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+	if(empty($row['face'])) $row['face'] = ($row['sex']=='女') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
 	$row['status'] = in_array($row['userid'],$masters) ? '<span style="color:red;">管理员</span>' : '普通成员';
 	$_GROUPS['guestbook'][] = $row;
 }
@@ -121,7 +123,7 @@ while($row = $db->GetArray())
 }
 //print_r ($_GROUPS['groupArticle']);die;
 //圈子主题
-$db->SetQuery("SELECT T.*,M.userid,M.uname FROM #@__group_threads AS T LEFT JOIN #@__member AS M ON T.authorid=M.mid WHERE T.gid='$id' AND T.closed=0 ORDER BY T.displayorder DESC, T.lastpost DESC LIMIT 0,15");
+$db->SetQuery("SELECT T.*,M.userid,M.uname,M.sex FROM #@__group_threads AS T LEFT JOIN #@__member AS M ON T.authorid=M.mid WHERE T.gid='$id' AND T.closed=0 ORDER BY T.displayorder DESC, T.lastpost DESC LIMIT 0,15");
 $db->Execute('threads');
 while($row = $db->GetArray('threads'))
 {
@@ -204,7 +206,7 @@ function _get_user_info($uid,$_field = 'uname')
 	{
 		if($_field == 'face')
 		{
-			$row[$_field] = empty($row[$_field]) ? 'images/common/noavatar.gif' : $row[$_field];
+			if(empty($row[$_field])) $row[$_field] = ($row['sex']=='女') ? 'images/common/dfgirl.png' : 'images/common/dfboy.png';
 		}
 		return $row[$_field];
 	}

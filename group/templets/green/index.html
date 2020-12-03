@@ -214,7 +214,7 @@
         <!--20 rows -->
         <dl style="display: block;" id="">
           <?php foreach($_GROUPS['groupArticle'] as $row) { ?>          
-          <dd> <em><?php echo $lang['group_article_view'];?><?php echo $row['click'];?><?php echo $lang['group_article_views'];?> <?php echo Mydate('y-m-d',$row['pubdate']);?></em> <span><a class="linkText" href="<?php echo $row['arcurl'];?>" target="_blank"><?php echo $row['title'];?></a></span> </dd>
+          <dd> <em><?php echo $lang['group_article_view'];?><?php echo $row['click'];?><?php echo $lang['group_article_views'];?> <?php echo Mydate('y-m-d',$row['pubdate']);?></em> <span><a class="linkText" href="<?php echo $row['arcurl'];?>" target="_blank"><?php echo substr($row['title'],0,40);?></a></span> </dd>
           <?php } ?>
         </dl>       
 	  </div>
