@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 
@@ -38,6 +38,7 @@ else if($dopost=="repair") //修复表
 	exit();
 }else if($dopost=="query") //执行SQL语句
 {
+	$t1 = ExecTime();
 	$sqlquery = trim(stripslashes($sqlquery));
 	if(eregi("drop(.*)table",$sqlquery) 
 	|| eregi("drop(.*)database",$sqlquery)){
@@ -64,6 +65,8 @@ else if($dopost=="repair") //修复表
 	  		  if(ereg("[^0-9]",$k)){ echo "<font color='red'>{$k}：</font>{$v}<br/>\r\n"; }
 	  	 }
 	  }
+	  $t2 = ExecTime();
+	  echo "<hr>执行时间：".($t2-$t1);
 	  exit();
 	}
 	if($querytype==2){
@@ -87,6 +90,8 @@ else if($dopost=="repair") //修复表
 	  echo $nerrCode;
 	}
 	$dsql->Close();
+	$t2 = ExecTime();
+	echo "<hr>执行时间：".($t2-$t1);
 	exit();
 }
 ?>
@@ -97,7 +102,7 @@ else if($dopost=="repair") //修复表
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
     <td height="19" background="img/tbg.gif"> 
       <table width="96%" border="0" cellspacing="1" cellpadding="1">
@@ -119,9 +124,9 @@ else if($dopost=="repair") //修复表
             <td> 
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr> 
-                  <td width="35%">
+                  <td width="45%">
                   	<select name="tablename" id="tablename" style="width:100%" size="6">
-                      <?
+                      <?php 
 $dsql->SetQuery("Show Tables");
 $dsql->Execute('t');
 while($row = $dsql->GetArray('t'))
@@ -135,7 +140,7 @@ while($row = $dsql->GetArray('t'))
 ?>
                     </select></td>
                   <td width="2%">&nbsp;</td>
-                  <td width="63%" valign="bottom">
+                  <td width="53%" valign="bottom">
                   	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr> 
                         <td height="30">
@@ -183,7 +188,7 @@ while($row = $dsql->GetArray('t'))
 	 </td>
 </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

@@ -29,6 +29,7 @@ DedeShowError = mShowError;
 DedeShowWait = mShowWait;
 if(mErrCon!="") DedeErrCon = mErrCon;
 if(mErrDisplay!="") DedeErrDisplay = mErrDisplay;
+if(mErrDisplay=="x") DedeErrDisplay = "";
 if(mWaitDisplay!="") DedeWaitDisplay = mWaitDisplay;
 
 

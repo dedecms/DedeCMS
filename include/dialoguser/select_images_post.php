@@ -5,9 +5,19 @@ if(empty($job)) $job = "";
 
 //检测用户文件存放路径是否合法
 $activepath = str_replace("\\","/",$activepath);
-$activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 $rootdir = $cfg_user_dir."/".$cfg_ml->M_ID;
+
+if(ereg("\.",$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
+if(!eregi($rootdir,$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
 if(strlen($activepath) < strlen($rootdir)){
 	$activepath = $rootdir;
 }
@@ -52,21 +62,42 @@ if($job=="upload")
 		ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG、WBMP格式的其中一种！","-1");
 		exit();
 	}
+	
 	$mdir = strftime("%y%m%d",$nowtme);
 	if(!is_dir($cfg_basedir.$activepath."/$mdir")){
 		 MkdirAll($cfg_basedir.$activepath."/$mdir",777);
 		 CloseFtp();
 	}
+	
+	$sname = '.jpg';
+	//图片的限定扩展名
+	if($imgfile_type=='image/pjpeg'||$imgfile_type=='image/jpeg'){
+		$sname = '.jpg';
+	}else if($imgfile_type=='image/gif'){
+		$sname = '.gif';
+	}else if($imgfile_type=='image/png'){
+		$sname = '.png';
+	}else if($imgfile_type=='image/wbmp'){
+		$sname = '.bmp';
+	}
+	
 	$filename_name = $cfg_ml->M_ID."_".dd2char(strftime("%H%M%S",$nowtme).mt_rand(100,999));
 	$filename = $mdir."/".$filename_name;
-	$fs = explode(".",$imgfile_name);
-	$filename = $filename.".".$fs[count($fs)-1];
-	$filename_name = $filename_name.".".$fs[count($fs)-1];
+	
+	$filename = $filename.$sname;
+	$filename_name = $filename_name.$sname;
   $fullfilename = $cfg_basedir.$activepath."/".$filename;
+  
   if(file_exists($fullfilename)){
   	ShowMsg("本目录已经存在同名的文件，请更改！","-1");
 		exit();
   }
+  
+  //严格检查最终的文件名
+  if(!eregi("\.(jpg|gif|png|bmp)$",$fullfilename)){
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传jpg、gif、png、bmp类型图片！","-1");
+		exit();
+	}
   
   @move_uploaded_file($imgfile,$fullfilename);
   

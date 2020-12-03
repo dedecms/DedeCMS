@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../../include/inc_channel_unit_functions.php");
 function DelArc($aid)
 {

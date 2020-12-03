@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 /*-----------------
@@ -132,7 +132,7 @@ else if($dopost=="editUpload")
   	 exit();
   }
   $aid = ereg_replace("[^0-9]","",$aid);
-  $title = addslashes(ereg_replace("[\"\.\r\n\t';_-]","",stripslashes($title)));
+  $title = addslashes(ereg_replace($cfg_egstr,"",stripslashes($title)));
   $dsql = new DedeSql(false);
 	$arow = $dsql->GetOne("Select url,memberid,mediatype From #@__uploads where aid='$aid'; ");
 	if(is_array($arow) && $arow['memberid']==$cfg_ml->M_ID)

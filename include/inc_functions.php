@@ -1,4 +1,4 @@
-<?
+<?php 
 //拼音的缓冲数组
 $pinyins = Array();
 $g_ftpLink = false;
@@ -182,8 +182,8 @@ function ShowMsg($msg,$gourl,$onlymsg=0,$limittime=0){
         if(pgo==0){ location='$gourl'; pgo=1; }
       }\r\n";
 			$rmsg = $func;
-			$rmsg .= "document.write(\"<br/><div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #cccccc;border-top:1px solid #cccccc;border-right:1px solid #cccccc;background-color:#DBEEBD;'>DEDECMS 提示信息！</div>\");\r\n";
-			$rmsg .= "document.write(\"<div style='width:400px;height:100;font-size:10pt;border:1px solid #cccccc;background-color:#F4FAEB'><br/><br/>\");\r\n";
+			$rmsg .= "document.write(\"<br/><div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #7ECDFB;border-top:1px solid #7ECDFB;border-right:1px solid #7ECDFB;background-color:#ACE4FF;'>DEDECMS 提示信息！</div>\");\r\n";
+			$rmsg .= "document.write(\"<div style='width:400px;height:100;font-size:10pt;border:1px solid #7ECDFB;background-color:#EEFAFE'><br/><br/>\");\r\n";
 			$rmsg .= "document.write(\"".str_replace("\"","“",$msg)."\");\r\n";
 			$rmsg .= "document.write(\"";
 			if($onlymsg==0){
@@ -239,21 +239,36 @@ function dd2char($dd){
 }
 //按默认参数设置一个Cookie
 function PutCookie($key,$value,$kptime,$pa="/"){
-	 global $cfg_cookie_encode;
-	 setcookie($key,$value,time()+$kptime,$pa);
-	 setcookie($key.'__ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa);
+	 global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
+	 if($cfg_pp_isopen=='0'||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost)){
+	   setcookie($key,$value,time()+$kptime,$pa);
+	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa);
+	 }else{
+	 	 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
+	 	 $dm = ereg_replace("/(.*)","",$dm);
+	 	 setcookie($key,$value,time()+$kptime,$pa,$dm);
+	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa,$dm);
+	 }
 }
 //使Cookie失效
 function DropCookie($key){
-  setcookie($key,"",time()-360000,"/");
-	setcookie($key.'__ckMd5',"",time()-360000,"/");
+  global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
+	if($cfg_pp_isopen=='0'||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost)){
+    setcookie($key,"",time()-3600000,"/");
+	  setcookie($key.'ckMd5',"",time()-3600000,"/");
+	}else{
+		 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
+		 $dm = ereg_replace("/(.*)","",$dm);
+	 	 setcookie($key,"",time(),"/",$dm);
+	   setcookie($key.'ckMd5',"",time(),"/",$dm);
+	}
 }
 //获得一个cookie值
 function GetCookie($key){
 	 global $cfg_cookie_encode;
-	 if( !isset($_COOKIE[$key]) || !isset($_COOKIE[$key.'__ckMd5']) ) return '';
+	 if( !isset($_COOKIE[$key]) || !isset($_COOKIE[$key.'ckMd5']) ) return '';
 	 else{
-	   if($_COOKIE[$key.'__ckMd5']!=substr(md5($cfg_cookie_encode.$_COOKIE[$key]),0,16)) return '';
+	   if($_COOKIE[$key.'ckMd5']!=substr(md5($cfg_cookie_encode.$_COOKIE[$key]),0,16)) return '';
 	   else return $_COOKIE[$key];
 	 }
 }
@@ -327,6 +342,90 @@ function CreateDir($spath,$siterefer="",$sitepath=""){
 //过滤用户输入用于查询的字符串
 function StringFilterSearch($str,$isint=0){
 	return $str;
+}
+
+//会员校对密码
+//把用户的密码经过此函数后与数据库的密码对比
+function GetEncodePwd($pwd){
+	global $cfg_pwdtype,$cfg_md5len,$cfg_ddsign;
+	$cfg_pwdtype = strtolower($cfg_pwdtype);
+	if($cfg_pwdtype=='md5'){
+		if(empty($cfg_md5len)) $cfg_md5len = 32;
+		if($cfg_md5len>=32) return md5($pwd);
+		else return substr(md5($pwd),0,$cfg_md5len);
+	}else if($cfg_pwdtype=='dd'){
+		return DdPwdEncode($pwd,$cfg_ddsign);
+	}else{
+		return $pwd;
+	}
+}
+
+//用户ID和密码或其它字符串安全性测试
+function TestStringSafe($uid){
+	//if(ereg("[><]",$uid)) return false;
+	if($uid!=addslashes($uid)) return false;
+	return true;
+}
+
+//Dede密码加密算法
+//加密程序
+function DdPwdEncode($pwd,$sign=''){
+	global $cfg_ddsign;
+	if($sign=='') $sign = $cfg_ddsign;
+	$rtstr = '';
+	$plen = strlen($pwd);
+	if($plen<10) $plenstr = '0'.$plen;
+	else $plenstr = "$plen";
+	$sign = substr(md5($sign),0,$plen);
+	$poshandle = mt_rand(65,90);
+	$rtstr .= chr($poshandle);
+	$pwd = base64_encode($pwd);
+	if($poshandle%2==0){
+		$rtstr .= chr(ord($plenstr[0])+18);
+		$rtstr .= chr(ord($plenstr[1])+36);
+	}
+	for($i=0;$i<strlen($pwd);$i++){
+		 if($i < $plen){
+		   if($poshandle%2==0) $rtstr .= $pwd[$i].$sign[$i];
+		   else $rtstr .= $sign[$i].$pwd[$i];
+		 }else{ $rtstr .= $pwd[$i]; }
+	}
+	if($poshandle%2!=0){
+		$rtstr .= chr(ord($plenstr[0])+20);
+		$rtstr .= chr(ord($plenstr[1])+25);
+	}
+	return $rtstr;
+}
+
+//解密程序
+function DdPwdDecode($epwd,$sign=''){
+	global $cfg_ddsign;
+	$n1=0;
+	$n2=0;
+	$pwstr='';
+	$restr='';
+	if($sign=='') $sign = $cfg_ddsign;
+	$rtstr = '';
+	$poshandle = ord($epwd[0]);
+	if($poshandle%2==0){
+		$n1 = chr(ord($epwd[1])-18);
+		$n2 = chr(ord($epwd[2])-36);
+		$pwstr = substr($epwd,3,strlen($epwd)-3);
+  }else{
+  	$n1 = chr(ord($epwd[strlen($epwd)-2])-20);
+		$n2 = chr(ord($epwd[strlen($epwd)-1])-25);
+		$pwstr = substr($epwd,1,strlen($epwd)-3);
+  }
+  $pwdlen = ($n1.$n2)*2;
+  $pwstrlen = strlen($pwstr);
+  for($i=0;$i<$pwstrlen;$i++){
+  	if($i<$pwdlen){
+  	  if($poshandle%2==0){ $restr .= $pwstr[$i]; $i++; }
+  	  else{ $i++; $restr .= $pwstr[$i]; }
+  	}else{ $restr .= $pwstr[$i]; }
+  }
+  $restr = base64_decode($restr);
+	return $restr;
 }
 
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 if(!isset($registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
 require_once(dirname(__FILE__)."/../../include/pub_httpdown.php");
 require_once(dirname(__FILE__)."/../../include/inc_archives_view.php");
@@ -263,12 +263,34 @@ function GetDDImage($litpic,$picname,$isremote)
 	    		$oldpic = $cfg_basedir.$picname;
 	    		$litpic = str_replace('.','_lit.',$picname);
 	    		@ImageResize($oldpic,$cfg_ddimg_width,$cfg_ddimg_height,$cfg_basedir.$litpic);
-	    		if(!is_file($cfg_basedir.$litpic)) $litpic = "";
 	    	}
 	    	else $litpic = $picname;
 	    }
   }
   if($litpic=='litpic'||$litpic=='ddfirst') $litpic = "";
   return $litpic;
+}
+
+//检测栏目是否设置了浏览权限
+function GetCoRank($arcrank,$typeid){
+	 $dsql = new DedeSql(false);	  
+	 $row = $dsql->GetOne("Select corank From #@__arctype where ID='$typeid' ");
+	 $dsql->Close();
+	 if($row['corank']!=0) return $row['corank'];
+	 else return $arcrank;
+}
+
+
+//图集里大图的小图
+function GetImageMapDD($filename,$ddm,$oldname=''){
+	 if($oldname!='' && !eregi("^http://",$oldname)){
+	 	 $ddpicok = $oldname;
+	 }else{
+	 	 $ddn = substr($filename,-3);
+	   $ddpicok = ereg_replace("\.".$ddn."$","-lp.".$ddn,$filename);
+	 }
+	 $toFile = $GLOBALS['cfg_basedir'].$ddpicok;
+	 ImageResize($GLOBALS['cfg_basedir'].$filename,$ddm,300,$toFile);
+	 return $ddpicok;
 }
 ?>

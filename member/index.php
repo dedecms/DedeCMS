@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_space.php");
 if(empty($uid)) $uid = "";
 if(empty($action)) $action = "";
@@ -21,8 +21,10 @@ else if($action=="memberinfo"){
 	require_once(dirname(__FILE__)."/config.php");
 	CheckRank(0,0);
 	$notarchives = "yes";
-	$uid = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($uid))),32);
-  $uid = addslashes($uid);
+	if(!TestStringSafe($uid)){
+		ShowMsg("用户ID不合法！","-1");
+		exit();
+	}
 	$dsql = new DedeSql(false);
 	$spaceInfos = $dsql->GetOne("Select * From #@__member where userid='$uid'; ");
 	if(!is_array($spaceInfos)){
@@ -36,15 +38,17 @@ else if($action=="memberinfo"){
 		if($sex=='女') $spaceimage = 'img/dfgril.gif';
 		else $spaceimage = 'img/dfboy.gif';
 	}
-	require_once(dirname(__FILE__)."/templets/member_info.htm");
+	require_once(dirname(__FILE__)."/templets/space/member_info.htm");
 }
 //给用户留言
 else if($action=="feedback"){
+	if(!TestStringSafe($uid)){
+		ShowMsg("用户ID不合法！","-1");
+		exit();
+	}
 	require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
   $cfg_ml = new MemberLogin(); 
 	$notarchives = "yes";
-	$uid = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($uid))),32);
-  $uid = addslashes($uid);
 	$dsql = new DedeSql(false);
 	$spaceInfos = $dsql->GetOne("Select ID,uname,spacename,spaceimage,sex,c1,c2,spaceshow,logintime,news From #@__member where userid='$uid'; ");
 	if(!is_array($spaceInfos)){
@@ -58,14 +62,16 @@ else if($action=="feedback"){
 		if($sex=='女') $spaceimage = 'img/dfgril.gif';
 		else $spaceimage = 'img/dfboy.gif';
 	}
-	require_once(dirname(__FILE__)."/templets/member_guestbook_form.htm");
+	require_once(dirname(__FILE__)."/templets/space/member_guestbook_form.htm");
 }
 //会员空间主页面
 else if($action==""){
 	require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
 	$notarchives = "yes";
-	$uid = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($uid))),32);
-  $uid = addslashes($uid);
+	if(!TestStringSafe($uid)){
+		ShowMsg("用户ID不合法！","-1");
+		exit();
+	}
 	$dsql = new DedeSql(false);
 	$spaceInfos = $dsql->GetOne("Select ID,uname,spacename,spaceimage,sex,c1,c2,spaceshow,logintime,news From #@__member where userid='$uid'; ");
 	if(!is_array($spaceInfos)){
@@ -79,6 +85,6 @@ else if($action==""){
 		if($sex=='女') $spaceimage = 'img/dfgril.gif';
 		else $spaceimage = 'img/dfboy.gif';
 	}
-	require_once(dirname(__FILE__)."/templets/member_index.htm");
+	require_once(dirname(__FILE__)."/templets/space/member_index.htm");
 }
 ?>

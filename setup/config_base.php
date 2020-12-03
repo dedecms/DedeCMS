@@ -1,4 +1,4 @@
-<?
+<?php 
 /*************************************************
 本文件的信息不建议用户自行更改，否则发生意外自行负责
 **************************************************/
@@ -11,7 +11,6 @@ foreach($ckvs as $ckv){
     	   if(eregi("^cfg_|globals",$key)) unset(${$ckv}[$key]);
     }
 }
-
 
 require_once(dirname(__FILE__)."/config_hand.php");
 if(!isset($needFilter)) $needFilter = false;
@@ -82,7 +81,7 @@ $cfg_other_medias = $cfg_medias_dir.'/media';
 $cfg_softname = "织梦内容管理系统";
 $cfg_soft_enname = "DedeCms OX";
 $cfg_soft_devteam = "IT柏拉图";
-$cfg_version = '3_1';
+$cfg_version = '4_0_1';
 
 //默认扩展名，仅在命名规则不含扩展名的时候调用
 $art_shortname = '.html';
@@ -94,12 +93,6 @@ $cfg_dir_purview = '0777';
 //引入数据库类和常用函数
 require_once(dirname(__FILE__).'/pub_db_mysql.php');
 require_once(dirname(__FILE__).'/config_passport.php');
-
-if($cfg_pp_need=='否'){
-	$cfg_pp_login = $cfg_cmspath.'/member/login.php';
-  $cfg_pp_exit = $cfg_cmspath.'/member/index_do.php?fmdo=login&dopost=exit';
-  $cfg_pp_reg = $cfg_cmspath.'/member/index_do.php?fmdo=user&dopost=regnew';
-}
 
 if(!$__ONLYDB){
 	require_once(dirname(__FILE__).'/inc_functions.php');

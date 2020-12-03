@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('temp_Other');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -69,7 +69,7 @@ $dsql->Close();
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
   <td height="19" background="img/tbg.gif"><b><a href="mytag_main.php"><u>自定义标记管理</u></a></b>&gt;&gt;更改标记</td>
 </tr>
@@ -77,12 +77,12 @@ $dsql->Close();
     <td height="200" bgcolor="#FFFFFF" valign="top">
 	<table width="100%" border="0" cellspacing="4" cellpadding="4">
         <form action="mytag_edit.php" method="post" enctype="multipart/form-data" name="form1">
-          <input type='hidden' name='aid' value='<?=$aid?>'>
+          <input type='hidden' name='aid' value='<?php echo $aid?>'>
           <input type='hidden' name='dopost' value='saveedit'>
           <tr> 
             <td width="15%" height="25" align="center">所属栏目：</td>
             <td colspan="2">
-			<?
+			<?php 
            	$tl = new TypeLink(0);
            	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
             echo "<select name='typeid' style='width:300'>\r\n";
@@ -95,34 +95,34 @@ $dsql->Close();
           </tr>
           <tr> 
             <td height="25" align="center">标记名称：</td>
-            <td colspan="2"><?=$row['tagname']?></td>
+            <td colspan="2"><?php echo $row['tagname']?></td>
           </tr>
           <tr> 
             <td height="25" align="center">时间限制：</td>
-            <td colspan="2"><input name="timeset" type="radio" value="0"<?if($row['timeset']==0) echo " checked"; ?>>
+            <td colspan="2"><input name="timeset" type="radio" value="0"<?php if($row['timeset']==0) echo " checked"; ?>>
               永不过期 
-              <input type="radio" name="timeset" value="1" <?if($row['timeset']==1) echo " checked"; ?>>
+              <input type="radio" name="timeset" value="1" <?php if($row['timeset']==1) echo " checked"; ?>>
               在设内时间内有效</td>
           </tr>
           <tr> 
             <td height="25" align="center">开始时间：</td>
-            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?=GetDateTimeMk($row['starttime'])?>"></td>
+            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>"></td>
           </tr>
           <tr> 
             <td height="25" align="center">结束时间：</td>
-            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?=GetDateTimeMk($row['endtime'])?>"></td>
+            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>"></td>
           </tr>
           <tr> 
             <td height="80" align="center">正常显示内容：</td>
             <td width="76%">
-			<textarea name="normbody" id="normbody" style="width:80%;height:100"><?=$row['normbody']?></textarea> 
+			<textarea name="normbody" id="normbody" style="width:80%;height:100"><?php echo $row['normbody']?></textarea> 
             </td>
             <td width="9%">&nbsp;</td>
           </tr>
           <tr> 
             <td height="80" align="center">过期显示内容：</td>
             <td>
-			<textarea name="expbody" id="expbody" style="width:80%;height:100"><?=$row['expbody']?></textarea> 
+			<textarea name="expbody" id="expbody" style="width:80%;height:100"><?php echo $row['expbody']?></textarea> 
             </td>
             <td>&nbsp;</td>
           </tr>

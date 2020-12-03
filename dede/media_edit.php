@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 isset($_COOKIE['ENV_GOBACK_URL']) ? $backurl=$_COOKIE['ENV_GOBACK_URL'] : $backurl="javascript:history.go(-1);";
@@ -163,7 +163,7 @@ function CheckSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr> 
 <td height="19" background='img/tbg.gif'>
 <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -185,24 +185,24 @@ function CheckSubmit()
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <form enctype="multipart/form-data" name='form1' action="media_edit.php" method="POST" onSubmit="return CheckSubmit();">
 <input type="hidden" name="dopost" value="save">
-<input type="hidden" name="aid" value="<?=$aid?>"> 
+<input type="hidden" name="aid" value="<?php echo $aid?>"> 
 <tr> 
 <td width="15%" height="30" align="center" bgcolor="#FFFFFF"class='bline'>媒体类型：</td>
 <td width="85%" height="25" bgcolor="#FFFFFF"class='bline'>
-	<input type="radio" name="mediatype" class="np" value="1"<? if($myrow['mediatype']==1) echo " checked"; ?>>
+	<input type="radio" name="mediatype" class="np" value="1"<?php  if($myrow['mediatype']==1) echo " checked"; ?>>
 图片 
-<input type="radio" name="mediatype" class="np" value="2"<? if($myrow['mediatype']==2) echo " checked"; ?>>
+<input type="radio" name="mediatype" class="np" value="2"<?php  if($myrow['mediatype']==2) echo " checked"; ?>>
 FLASH 
-<input type="radio" name="mediatype" class="np" value="3"<? if($myrow['mediatype']==3) echo " checked"; ?>>
+<input type="radio" name="mediatype" class="np" value="3"<?php  if($myrow['mediatype']==3) echo " checked"; ?>>
 视频/音频 
-<input type="radio" name="mediatype" class="np" value="4"<? if($myrow['mediatype']==4) echo " checked"; ?>>
+<input type="radio" name="mediatype" class="np" value="4"<?php  if($myrow['mediatype']==4) echo " checked"; ?>>
 附件/其它
 </td>
 </tr>
 <tr> 
 <td height="30" align="center" bgcolor="#FFFFFF"class='bline'>说明标题：</td>
 <td height="25" bgcolor="#FFFFFF"class='bline'>
-	<input name="title" type="text" id="title" size="30" value="<?=$myrow['title']?>">
+	<input name="title" type="text" id="title" size="30" value="<?php echo $myrow['title']?>">
 </td>
 </tr>
 <tr> 
@@ -213,22 +213,22 @@ FLASH
 <td height="30" align="center" bgcolor="#FFFFFF" class='bline'>附加参数：</td>
 <td height="25" bgcolor="#FFFFFF" class='bline'>
 	宽： 
-<input name="mediawidth" type="text" id="mediawidth" size="5" value="<?=$myrow['width']?>">
+<input name="mediawidth" type="text" id="mediawidth" size="5" value="<?php echo $myrow['width']?>">
 (像素)　高： 
-<input name="mediaheight" type="text" id="mediaheight" size="5" value="<?=$myrow['height']?>">
+<input name="mediaheight" type="text" id="mediaheight" size="5" value="<?php echo $myrow['height']?>">
 (像素)　播放时间： 
-<input name="playtime" type="text" id="playtime" size="5" value="<?=$myrow['playtime']?>">
+<input name="playtime" type="text" id="playtime" size="5" value="<?php echo $myrow['playtime']?>">
 (分钟)
 </td>
 </tr>
 <tr>
 <td height="30" align="center" bgcolor="#FFFFFF"class='bline'>原文件：</td>
 <td bgcolor="#FFFFFF"class='bline'>
-<input name="filename" type="text" id="filename" style='width:450' value="<?=$myrow['url']?>">
-<a href='<?=$myrow['url']?>' target='_blank'>[查看]</a>
+<input name="filename" type="text" id="filename" style='width:450' value="<?php echo $myrow['url']?>">
+<a href='<?php echo $myrow['url']?>' target='_blank'>[查看]</a>
 </td>
 </tr>
-<?
+<?php 
 if($myrow['mediatype']==1)
 {
  	$fullfilename = $cfg_basedir.$myrow['url'];
@@ -242,10 +242,10 @@ if($myrow['mediatype']==1)
 <tr>
 <td height="30" align="center" bgcolor="#FFFFFF"class='bline'>预览：</td>
 <td bgcolor="#FFFFFF"class='bline'>
-<a href='<?=$myrow['url']?>' target='_blank'><img src='<?=$myrow['url']."?q=".mytime()?>' width='<?=$w?>' border='0' id='picview'></a>
+<a href='<?php echo $myrow['url']?>' target='_blank'><img src='<?php echo $myrow['url']."?q=".mytime()?>' width='<?php echo $w?>' border='0' id='picview'></a>
 </td>
 </tr>
-<? } } } ?>
+<?php  } } } ?>
 <tr> 
 <td height="25" align="center" bgcolor="#FFFFFF"class='bline'>
 	更改文件：

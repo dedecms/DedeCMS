@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+<title><?php echo $spacename?>- 佑换档鞍</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">
+<link href="../base.css" rel="stylesheet" type="text/css">		
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/member_head.htm"); ?>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="170" height="216" valign="top"> 
+<?php include(dirname(__FILE__)."/member_menu.php");?>
+</td>
+<td width="10">&nbsp;</td>
+    <td width="590" valign="top"> 
+      <table width="100%"border="0" cellpadding="0" cellspacing="0" style="margin:0px">
+        <tr> 
+          <td width="2%" background="img/mtbg.gif"><img src="img/mc1.gif" width="6" height="27"></td>
+          <td width="96%" background="img/mtbg.gif"><font color="#666600"><b>【用户档案】</b></font></td>
+          <td width="2%" align="right" background="img/mtbg.gif"><img src="img/mc2.gif" width="6" height="27"></td>
+        </tr>
+      </table>
+      <table width="100%"border="0" cellpadding="4" cellspacing="1" bgcolor="#CBD8AC" style="margin-bottom:6px">
+        <tr bgcolor="#FFFFFF"> 
+          <td height="63" colspan="2"> <table width="100%"border="0" cellspacing="1" cellpadding="1">
+              <tr> 
+                <td height="247" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+                    <tr> 
+                      <td height="25" colspan="2" ><strong>&gt;&gt;基本资料：</strong></td>
+                    </tr>
+                    <tr> 
+                      <td width="17%" height="25" align="right" >昵　称：</td>
+                      <td width="83%"> 
+                        <?php echo $spaceInfos['uname']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >性　别：</td>
+                      <td> 
+                        <?php echo $spaceInfos['sex']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >生　日：</td>
+                      <td> 
+                        <?php echo $spaceInfos['birthday']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >体　型：</td>
+                      <td> 
+                        <?php echo $spaceInfos['weight']?>
+                        &nbsp; 身高： 
+                        <?php echo $spaceInfos['height']?>
+                        厘米 </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >职　业：</td>
+                      <td> 
+                        <?php echo $spaceInfos['job']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >地　区：</td>
+                      <td>
+                      	 省：<?php echo GetProvince($spaceInfos['province'],$dsql);?> 市区：<?php echo GetProvince($spaceInfos['city'],$dsql);?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >个人说明：</td>
+                      <td> 
+                        <?php echo str_replace("\n","<br />",html2text($spaceInfos['myinfo']))?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >详细介绍：</td>
+                      <td> 
+                        <?php echo str_replace("\n","<br />",html2text($spaceInfos['fullinfo']))?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" colspan="2" ><strong>&gt;&gt;空间信息：</strong></td>
+                    </tr>
+                    <tr> 
+                      <td height="25" colspan="2" > <table width="96%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC">
+                          <tr bgcolor="#FFFFFF"> 
+                            <td width="21%">　发表的文章：</td>
+                            <td width="27%">&nbsp; 
+                              <?php echo $spaceInfos['c1']?>
+                            </td>
+                            <td width="18%">　发表的图集：</td>
+                            <td width="34%">&nbsp; 
+                              <?php echo $spaceInfos['c2']?>
+                            </td>
+                          </tr>
+                          <tr bgcolor="#FFFFFF"> 
+                            <td>　发表的其它信息：</td>
+                            <td>&nbsp; 
+                              <?php echo $spaceInfos['c3']?>
+                            </td>
+                            <td>　空间访问量：</td>
+                            <td>&nbsp; 
+                              <?php echo $spaceInfos['spaceshow']?>
+                            </td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr> 
+                      <td height="25" colspan="2" ><strong>&gt;&gt;最新公告：</strong></td>
+                    </tr>
+                    <tr> 
+                      <td height="25" colspan="2" > 
+                        <?php echo $spaceInfos['news']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" colspan="2" ><strong>&gt;&gt;联系方法：</strong></td>
+                    </tr>
+                    <?php 
+if($spaceInfos['showaddr']==1){
+?>
+                    <tr> 
+                      <td height="25" align="right" >个人主页：</td>
+                      <td> 
+                        <?php echo $spaceInfos['homepage']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >电子邮箱： </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >OICQ号码：</td>
+                      <td> 
+                        <?php echo $spaceInfos['oicq']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >联系电话：</td>
+                      <td> 
+                        <?php echo $spaceInfos['tel']?>
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td height="25" align="right" >详细地址：</td>
+                      <td> 
+                        <?php echo $spaceInfos['address']?>
+                      </td>
+                    </tr>
+                    <?php 
+}
+else{
+?>
+                    <tr> 
+                      <td height="25" colspan="2"> <font color='red'>该用户隐藏了联系方式，请在线与她联系！</font> 
+                      </td>
+                    </tr>
+                    <?php 
+}
+?>
+                    <tr> 
+                      <td height="86" align="center" >&nbsp;</td>
+                      <td height="86" ><a href="index.php?uid=<?php echo $uid?>&action=feedback"><img src="img/feedback.gif" width="115" height="34" border="0"></a></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table></td>
+</tr>
+</table>
+<?php 
+$dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

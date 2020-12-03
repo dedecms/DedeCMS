@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>会员注册</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <script language='javascript' src='area.js'></script>
 <script>
 function popUpWindow(URLStr, left, top, width, height)
@@ -51,159 +51,80 @@ if(document.form2.vdcode.value=="")
 </script>	
 </head>
 <body leftmargin="0" topmargin="0">
-<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"> 
-<td height="50" colspan="3"><img src="img/reg.gif" width="320" height="46"></td>
-</tr>
-<tr> 
-<td width="17" rowspan="2" bordercolor="#FFFFFF" bgcolor="#808DB5">&nbsp;</td>
-<td width="168" bordercolor="#FFFFFF" bgcolor="#808DB5">&nbsp;</td>
-    <td width="575" align="right"><a href="index.php">会员主页</a> <a href="login.php">登录</a></td>
-</tr>
-<tr> 
-<td colspan="2" valign="top"> <table width="100%" height="300" border="0" cellpadding="1" cellspacing="1" bgcolor="#000000">
-<tr> 
-<td height="194" align="center" valign="top" bgcolor="#FFFFFF"> <table width="100%" border="0" cellspacing="2" cellpadding="0">
-              <tr> 
-                <td colspan="2"><strong>注册须知：<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;1、在本站注册的会员，必须遵守《互联网电子公告服务管理规定》，不得在本站发表诽谤他人，侵犯他人隐私，侵犯他人知识产权，传播病毒，政治言论，商业讯息等信息。<br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;2、在所有在本站发表的文章，本站都具有最终编辑权，并且保留用于印刷或向第三方发表的权利，如果你的资料不齐全，我们将有权不作任何通知使用你在本站发布的作品。</strong></td>
+<div align="center">
+  <table width="760" border="0" cellspacing="6" cellpadding="1">
+    <tr>
+      <td><a href="index.php"><img src="img/reg.gif" width="320" height="46" border="0"></a></td>
+    </tr>
+  </table>
+  <table width="760" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
+  <tr>
+    <td height="26" background="img/nnnbg.gif"><font color="#333333"><strong>　会员注册：</strong></font></td>
+  </tr>
+  <tr>
+    <td height="102" align="center" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+      <tr>
+        <td colspan="2"><strong>注册须知：<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;1、在本站注册的会员，必须遵守《互联网电子公告服务管理规定》，不得在本站发表诽谤他人，侵犯他人隐私，侵犯他人知识产权，传播病毒，政治言论，商业讯息等信息。<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;2、在所有在本站发表的文章，本站都具有最终编辑权，并且保留用于印刷或向第三方发表的权利，如果你的资料不齐全，我们将有权不作任何通知使用你在本站发布的作品。</strong></td>
+      </tr>
+      <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
+        <input type="hidden" name="fmdo" value="user">
+        <input type="hidden" name="dopost" value="regok">
+        <tr>
+          <td height="35" colspan="2"><strong>&nbsp;(带*号的表示为必填项目)</strong></td>
+        </tr>
+        <tr>
+          <td width="17%" height="25" align="right">登陆用户名：</td>
+          <td width="83%" height="25"><input name="userid" type="text" id="userid" size="20" style="width:150;height:20">
+            * &nbsp;&nbsp; <a href="#" onClick="popUpWindow('index_do.php?userid=' + form2.userid.value+'&fmdo=user&dopost=checkuser',200,200,300,60);">[检查是否已被占用]</a></td>
+        </tr>
+        <tr>
+          <td height="25" align="right">登陆密码：</td>
+          <td height="25"><input name="userpwd" type="password" id="userpwd" size="18" style="width:150;height:20">
+            &nbsp;*&nbsp;确认密码：
+            <input name="userpwdok" type="password" id="userpwdok" value="" size="18" style="width:150;height:20">
+            &nbsp;*</td>
+        </tr>
+        <tr>
+          <td height="25" align="right">你的Email：</td>
+          <td height="25"><input name="email" type="text" id="email" style="width:150;height:20">
+            &nbsp;*</td>
+        </tr>
+        <tr>
+          <td height="25" align="right">你的网上昵称：</td>
+          <td height="25"><input name="uname" type="text" id="uname" size="20" style="width:150;height:20">
+            &nbsp;* 性别：
+            <input type="radio" name="sex" value="男" checked>
+            男 &nbsp;
+            <input type="radio" name="sex" value="女">
+            女 </td>
+        </tr>
+        <tr>
+          <td height="25" align="right">验证码：</td>
+          <td height="25"><table width="200" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="84"><input name="vdcode" type="text" id="vdcode" size="10"></td>
+                <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
               </tr>
-              <form name="form2" action="index_do.php" method="post" onSubmit="return checkSubmit();">
-                <input type="hidden" name="fmdo" value="user">
-                <input type="hidden" name="dopost" value="regok">
-                <tr> 
-                  <td height="35" colspan="2"><strong>&nbsp;(带*号的表示为必填项目)</strong></td>
-                </tr>
-                <tr> 
-                  <td width="17%" height="25" align="right">登陆用户名：</td>
-                  <td width="83%" height="25"> <input name="userid" type="text" id="userid" size="20" style="width:150;height:20">
-                    * &nbsp;&nbsp; <a href="#" onClick="popUpWindow('index_do.php?userid=' + form2.userid.value+'&fmdo=user&dopost=checkuser',200,200,300,60);">[检查是否已被占用]</a></td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">登陆密码：</td>
-                  <td height="25"><input name="userpwd" type="password" id="userpwd" size="18" style="width:150;height:20"> 
-                    &nbsp;*&nbsp;确认密码： 
-                    <input name="userpwdok" type="password" id="userpwdok" value="" size="18" style="width:150;height:20"> 
-                    &nbsp;*</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你的Email：</td>
-                  <td height="25"><input name="email" type="text" id="email" style="width:150;height:20"> 
-                    &nbsp;*</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你的网上昵称：</td>
-                  <td height="25"> <input name="uname" type="text" id="uname" size="20" style="width:150;height:20"> 
-                    &nbsp;* 性别： 
-                    <input type="radio" name="sex" value="男" checked>
-                    男 &nbsp; <input type="radio" name="sex" value="女">
-                    女 </td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">验证码：</td>
-                  <td height="25"><table width="200" border="0" cellspacing="0" cellpadding="0">
-                      <tr> 
-                        <td width="84"><input name="vdcode" type="text" id="vdcode" size="10"></td>
-                        <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
-                      </tr>
-                    </table></td>
-                </tr>
-                <tr> 
-                  <td height="25" colspan="2"> <hr width="80%" size="1" noshade> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你的生日：</td>
-                  <td height="25"> <input name="birthday_y" type="text" id="birthday_y" size="6">
-                    年 
-                    <input name="birthday_m" type="text" id="birthday_m" size="4">
-                    月 
-                    <input name="birthday_d" type="text" id="birthday_d" size="4">
-                    日 </td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你的体型：</td>
-                  <td height="25"> <select name="weight">
-                      <option value='平均' selected>平均</option>
-                      <option value='苗条/纤细'>苗条/纤细</option>
-                      <option value='健壮'>健壮</option>
-                      <option value='略胖'>略胖</option>
-                      <option value='大型'>大型</option>
-                    </select> &nbsp;身高： 
-                    <input name="height" type="text" id="height" size="5">
-                    厘米</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你的职业：</td>
-                  <td height="25"><input type="radio" name="job" value="学生">
-                    学生&nbsp; <input name="job" type="radio" value="职员" checked>
-                    职员 
-                    <input type="radio" name="job" value="白领">
-                    白领 
-                    <input type="radio" name="job" value="失业中">
-                    失业中</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">你所在的地区：</td>
-                  <td height="25"> <select name="province" size="1" id="province"width="4" onChange="javascript:selNext(this.document.form2.city,this.value)" style="width:85">
-                      <option value="0" selected>--不限--</option>
-                    </select> 
-                    <script language='javascript'>
- selTop(this.document.form2.province);
- </script> &nbsp;城市： 
-                    <select id="city" name="city" width="4" style="width:85">
-                      <option value="0" selected>--不限--</option>
-                    </select> </td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">自我介绍：</td>
-                  <td height="25">[少于是125中文字]&nbsp;</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">&nbsp;</td>
-                  <td height="25"><textarea name="myinfo" cols="40" rows="3" id="myinfo"></textarea></td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">个人主页：</td>
-                  <td height="25"><input name="homepage" type="text" id="homepage2" size="25"></td>
-                </tr>
-                <tr> 
-                  <td height="25" colspan="2"> <hr width="80%" size="1" noshade></td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">联系方式： </td>
-                  <td height="25"> <input type="radio" name="showaddr" value="0" checked>
-                    不显示 
-                    <input type="radio" name="showaddr" value="1">
-                    显示</td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">OICQ号码：</td>
-                  <td height="25"><input name="oicq" type="text" id="oicq" size="20" style="width:150;height:20"></td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">联系电话：</td>
-                  <td height="25"><input name="tel" type="text" id="tel" size="20" style="width:150;height:20"> 
-                  </td>
-                </tr>
-                <tr> 
-                  <td height="25" align="right">详细地址：</td>
-                  <td height="25"><input name="address" type="text" id="address" size="25" ></td>
-                </tr>
-                <tr> 
-                  <td height="67" align="right">&nbsp;</td>
-                  <td height="67"> <input type="submit" name="Submit" value=" 确定注册 "> 
-                    &nbsp;&nbsp; <input type="reset" name="Submit22" value=" 重 置 "></td>
-                </tr>
-              </form>
-            </table></td>
-</tr>
-</table></td>
-</tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td height="25" colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="67" align="right">&nbsp;</td>
+          <td height="67"><input type="submit" name="Submit" value=" 确定注册 ">
+            &nbsp;&nbsp;
+            <input type="reset" name="Submit22" value=" 重 置 "></td>
+        </tr>
+      </form>
+    </table></td>
+  </tr>
 </table>
-<p align='center'>
-<?=$cfg_powerby?>
+  <p align='center'>
+<?php echo $cfg_powerby?>
 </p>
+</div>
 </body>
 </html>

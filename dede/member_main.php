@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('member_List');
 require_once(dirname(__FILE__)."/../include/pub_datalist.php");
@@ -33,22 +33,14 @@ if(!empty($att)){
 	if($att=="ad"){
 		$attform = "<option value='ad'>被推荐会员</option>\r\n";
 		$whereSql .= "  And matt=1 ";
-  }else if($att=="uptype"){
-  	$attform = "<option value='uptype'>待升级会员</option>\r\n";
-  	$whereSql .= "  And uptype>0 ";
-	}else if($att=="upmoney"){
-		$attform = "<option value='upmoney'>待充充值会员</option>\r\n";
-		$whereSql .= "  And upmoney>0 ";
-	}else if($att=="mb"){
-		$attform = "<option value='mb'>非普通会员</option>\r\n";
-		$whereSql .= "  And membertype>10 ";
-	}
+  }
 }
 
 
 $MemberTypes = "";
 $dsql->SetQuery("Select rank,membername From #@__arcrank where rank>0");
 $dsql->Execute();
+$MemberTypes[0] = '未审核会员';
 while($row = $dsql->GetObject()){
 	$MemberTypes[$row->rank] = $row->membername;
 }
@@ -57,15 +49,13 @@ $dsql->Execute();
 while($row = $dsql->GetObject()){
 	$Areas[$row->eid] = $row->name;
 }
-function GetMemberName($rank,$mt)
+function GetMemberName($rank)
 {
 	global $MemberTypes;
 	if(isset($MemberTypes[$rank])){
-	   if($mt=="ut") return " <font color='red'>待升级：".$MemberTypes[$rank]."</font>";
-	   else return $MemberTypes[$rank];
+	   return $MemberTypes[$rank];
   }else{
-		if($mt=="ut") return "";
-		else return $mt;
+		return "";
 	}
 }
 
@@ -76,19 +66,13 @@ function GetAreaName($e,$df)
 	else return $df;
 }
 
-function GetUpMoney($m)
-{
-	if($m>0) return " <font color='red'>申请：$m 金币</font> ";
-	else return "";
-}
-
 function GetMAtt($m){
 	if($m<1) return "";
 	else return "<img src='img/adminuserico.gif' width='16' height='15'><font color='red'>(荐)</font>";
 }
 
-$sql  = "select ID,userid,pwd,uname,email,sex,money,upmoney,c1,c2,c3,matt,
-logintime,loginip,membertype,uptype,province,city,spaceshow,pageshow
+$sql  = "select ID,userid,pwd,uname,email,sex,money,c1,c2,c3,matt,
+logintime,loginip,membertype,jf,province,city,spaceshow,pageshow
 From #@__member $whereSql order by $sortkey desc
 ";
 

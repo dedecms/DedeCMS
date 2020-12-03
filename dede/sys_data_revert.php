@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 $bkdir = dirname(__FILE__)."/".$cfg_backup_dir;
@@ -6,7 +6,7 @@ $filelists = Array();
 $dh = dir($bkdir);
 $structfile = "没找到数据结构文件";
 while($filename=$dh->read()){
-	if(!ereg('txt$',$filename)) continue;
+	if(!ereg('sql|txt$',$filename)) continue;
 	if(ereg('tables_struct',$filename)) $structfile = $filename;
 	else if( filesize("$bkdir/$filename") >0 ) $filelists[] = $filename;
 }
@@ -67,7 +67,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr> 
     <td height="19" colspan="4" background="img/tbg.gif" bgcolor="#E7E7E7"> <table width="96%" border="0" cellspacing="1" cellpadding="1">
         <tr> 
@@ -82,10 +82,10 @@ function checkSubmit()
     <tr bgcolor="#F7F8ED"> 
       <td height="24" colspan="4" valign="top">
       	<strong>发现的备份文件：</strong>
-        <? if(count($filelists)==0) echo " 没找到任何备份文件... "; ?>
+        <?php  if(count($filelists)==0) echo " 没找到任何备份文件... "; ?>
       </td>
     </tr>
-    <?
+    <?php 
     for($i=0;$i<count($filelists);$i++)
     {
     	echo "<tr  bgcolor='#FFFFFF' align='center' height='24'>\r\n";
@@ -109,9 +109,9 @@ function checkSubmit()
     ?>
     <tr align="center" bgcolor="#FDFDEA"> 
       <td height="24" colspan="4"> &nbsp; 
-        <input name="b1" type="button" id="b1" onclick="SelAll()" value="全选"> 
-        &nbsp; <input name="b2" type="button" id="b2" onclick="ReSel()" value="反选"> 
-        &nbsp; <input name="b3" type="button" id="b3" onclick="NoneSel()" value="取消">
+        <input name="b1" type="button" id="b1" onclick="SelAll()" value="全选" class='nbt'> 
+        &nbsp; <input name="b2" type="button" id="b2" onclick="ReSel()" value="反选" class='nbt'> 
+        &nbsp; <input name="b3" type="button" id="b3" onclick="NoneSel()" value="取消" class='nbt'>
         &nbsp; </td>
     </tr>
 	<tr bgcolor="#F7F8ED"> 
@@ -119,8 +119,8 @@ function checkSubmit()
     </tr>
     <tr  bgcolor="#FFFFFF"> 
       <td height="24" colspan="4"> 
-        <input name="structfile" type="checkbox" class="np" id="structfile" value="<?=$structfile?>" checked>
-        还原表结构信息(<?=$structfile?>) 
+        <input name="structfile" type="checkbox" class="np" id="structfile" value="<?php echo $structfile?>" checked>
+        还原表结构信息(<?php echo $structfile?>) 
         <input name="delfile" type="checkbox" class="np" id="delfile" value="1">
         还原后删除备份文件 </td>
     </tr>

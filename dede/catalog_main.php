@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
 $userChannel = $cuserLogin->getUserChannel();
@@ -38,7 +38,7 @@ function CommonMenu(obj,tid,tname)
     new ContextItem("增加内容",function(){location="catalog_do.php?cid="+tid+"&dopost=addArchives";}),
     new ContextItem("管理内容",function(){location="catalog_do.php?cid="+tid+"&dopost=listArchives";}),
     new ContextSeperator(),
-    new ContextItem("预览分类",function(){ window.open("<?=$cfg_plus_dir?>/list.php?tid="+tid); }),
+    new ContextItem("预览分类",function(){ window.open("<?php echo $cfg_plus_dir?>/list.php?tid="+tid); }),
     new ContextItem("更新HTML",function(){ location="makehtml_list.php?cid="+tid; }),
     new ContextItem("获取JS文件",function(){ location="catalog_do.php?cid="+tid+"&dopost=GetJs"; }),
     new ContextSeperator(),
@@ -57,9 +57,10 @@ function CommonMenuPart(obj,tid,tname)
 {
   var eobj,popupoptions
   popupoptions = [
+    new ContextItem("增加内容",function(){top.document.frames['main'].location="catalog_do.php?cid="+tid+"&dopost=addArchives";}),
     new ContextItem("管理内容",function(){location="catalog_do.php?cid="+tid+"&dopost=listArchives";}),
     new ContextSeperator(),
-    new ContextItem("预览分类",function(){ window.open("<?=$cfg_plus_dir?>/list.php?tid="+tid); }),
+    new ContextItem("预览分类",function(){ window.open("<?php echo $cfg_plus_dir?>/list.php?tid="+tid); }),
     new ContextItem("更新HTML",function(){ location="makehtml_list.php?cid="+tid; }),
     new ContextItem("获取JS文件",function(){ location="catalog_do.php?cid="+tid+"&dopost=GetJs"; }),
     new ContextSeperator(),
@@ -94,9 +95,9 @@ function SingleMenu(obj,tid,tname)
 </script>
 <style>
 .coolbg2 {
-border: 1px solid #000000;
-background-color: #F2F5E9;
-height:18px
+  border: 1px solid #000000;
+  background-color: #F2F5E9;
+  height:18px
 }
 .coolbt2 {
   border-left: 2px solid #EFEFEF;
@@ -105,26 +106,28 @@ height:18px
   border-bottom: 2px solid #ACACAC;
   background-color: #F7FCDA
 }
-.bline {border-bottom: 1px solid #BCBCBC;background-color:#F0F4F1;}
+.bline {border-bottom: 1px solid #BCBCBC;background-color:#F3F6FA;}
 .nbline {border-bottom: 1px solid #DEDEDE;background-color:#FFFFFF;}
 .bline2 {border-bottom: 1px solid #BCBCBC;background-color:#F8F8F8;}
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8' onload="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-<tr>
-    <td height="19" background='img/tbg.gif'><strong>网站栏目管理 </strong></td>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+  <tr>
+    <td height="19" background='img/tbg.gif'> 
+      <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="49%"><b><strong>网站栏目管理</strong></b></td>
+          <td width="51%" align="right"> <input type="button" name="bt" value="增加顶级栏目" class="nbt" style="width:100px;background-color:#1AAEF7;color:#ffffff" onclick="location='catalog_add.php?listtype=all';">
+          </td>
+        </tr>
+      </table></td>
 </tr>
 <tr>
     <td height="19" bgcolor="#ffffff">
     	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="51%">IE浏览器可使用右键菜单进行操作。</td>
-          <td width="49%" align="right">
-          	<a href='catalog_add.php?listtype=all'>[<u>增加顶级栏目</u>]</a> 
-            <a href="makehtml_list.php">[<u>更新所有栏目HTML</u>]</a>
-            <a href='catalog_do.php?dopost=viewTemplet'>[<u>管理通用模板</u>]</a>
-          </td>
+        <tr> 
+          <td>在IE浏览器中可使用右键菜单进行操作。 </td>
         </tr>
       </table>
    </td>
@@ -132,7 +135,7 @@ height:18px
 <form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
 <tr>
 <td height="120" bgcolor="#FFFFFF" valign="top">
-<?
+<?php 
 if(empty($opendir)) $opendir=-1;
 if($userChannel>0) $opendir=$userChannel;
 $tu = new TypeUnit();
@@ -147,11 +150,11 @@ $tu->Close();
  <td height="36" bgcolor="#FFFFFF" align="center">
  <table width="98%" border="0" cellspacing="0" cellpadding="0">
    <tr>
-    <td align="right">
-		  <input type="button" name="sb1" value="更新排序" style="width:70" class="coolbt" onclick="document.form1.submit();"> 
-      <input type="button" name="sb4" value="获取JS" style="width:70" class="coolbt2" onclick="location='makehtml_js.php';">
-		  <input type="button" name="sb2" value="更新栏目HTML" style="width:90" class="coolbt2" onclick="location='makehtml_list.php';"> 
-      <input type="button" name="sb3" value="更新文档HTML" style="width:90" class="coolbt2" onclick="location='makehtml_archives.php';">
+    <td align="right"><input type="button" name="bt3" value="增加顶级栏目" class="nbt" style="width:100px" onclick="location='catalog_add.php?listtype=all';"> 
+            <input type="button" name="sb1" value="更新排序" style="width:70"  class='nbt' onClick="document.form1.submit();"> 
+      <input type="button" name="sb4" value="获取JS" style="width:70"  class='nbt' onClick="location='makehtml_js.php';">
+            <input type="button" name="sb2" value="更新栏目HTML" style="width:90"  class='nbt' onClick="location='makehtml_list.php';"> 
+            <input type="button" name="sb3" value="更新文档HTML" style="width:90"  class='nbt' onClick="location='makehtml_archives.php';">
 		  </td>
     </tr>
    </table>

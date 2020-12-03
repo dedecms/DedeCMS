@@ -1,4 +1,4 @@
-<?
+<?php 
 /** 检查权限 ************************/
 $gotopagerank = "admin";
 require_once(dirname(__FILE__)."/config.php");
@@ -77,25 +77,25 @@ $row = $dsql->GetObject();
 </tr></table>
 <table width="760" border="0" cellspacing="1" cellpadding="4" align="center" bgcolor="#ABD82C">
 <form method="post" action="edit.php">
-<input type="hidden" name="ID" value="<?=$ID?>">
+<input type="hidden" name="ID" value="<?php echo $ID?>">
 <input type="hidden" name="job" value="editok">
 <tr bgcolor="#ffffff">
   <td width="10%" align="center" nowrap><font color="#FF0000">*</font>你的姓名：</td>
-  <td width="40%"><?=$row->uname?></td>
+  <td width="40%"><?php echo $row->uname?></td>
   <td width="9%" align="center" nowrap>OICQ号码：</td>
-  <td width="41%"><?=$row->qq?></td>
+  <td width="41%"><?php echo $row->qq?></td>
 </tr>
 <tr bgcolor="#ffffff">
   <td align="center" nowrap width="10%">&nbsp;电子邮件：</td>
-  <td width="40%"><?=$row->email?></td>
+  <td width="40%"><?php echo $row->email?></td>
   <td width="9%" align="center" nowrap height="12">个人主页：</td>
-  <td width="41%" height="12"><?=$row->homepage?></td>
+  <td width="41%" height="12"><?php echo $row->homepage?></td>
 </tr>
 <tr bgcolor="#ffffff">
   <td align="center" nowrap width="10%">
   <font color="#FF0000">*</font>留言内容：<br>(1000字内)
   </td>
-  <td height="2" colspan="3" align="left"><textarea name="msg" cols="80" rows="6" class="textarea"><?=$row->msg?></textarea></td>
+  <td height="2" colspan="3" align="left"><textarea name="msg" cols="80" rows="6" class="textarea"><?php echo $row->msg?></textarea></td>
   </tr>
 <tr bgcolor="#ffffff">
   <td align="center" nowrap>回复留言：<br>
@@ -117,7 +117,7 @@ $row = $dsql->GetObject();
   </tr>
 </table>
 </center>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

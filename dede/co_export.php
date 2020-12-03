@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_Export');
 require_once(dirname(__FILE__)."/../include/pub_collection.php");
@@ -16,39 +16,33 @@ $channelid = $rrow['channelid'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <link href="base.css" rel="stylesheet" type="text/css">
+<script language='javascript' src='main.js'></script>
 <title>采集内容导出</title>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="co_export_action.php" method="get" target="stafrm">
-    <input type="hidden" name="nid" value="<?=$nid?>">
-    <input type="hidden" name="totalcc" value="<?=$totalcc?>">
-    <input type="hidden" name="channelid" value="<?=$channelid?>">
-    <input type="hidden" name="ruleid" value="<?=$ruleid?>">
+    <input type="hidden" name="nid" value="<?php echo $nid?>">
+    <input type="hidden" name="totalcc" value="<?php echo $totalcc?>">
+    <input type="hidden" name="channelid" value="<?php echo $channelid?>">
+    <input type="hidden" name="ruleid" value="<?php echo $ruleid?>">
     <tr> 
       <td height="28" colspan="3" background='img/tbg.gif'><strong><a href="co_main.php"><u>采集管理</u></a> 
         &gt; 采集内容导出：</strong></td>
     </tr>
     <tr> 
       <td height="24" colspan="3" bgcolor="#F8FCF1">
-      	<strong>本节点共有 <?=$totalcc?>条数据：</strong>
+      	<strong>本节点共有 <?php echo $totalcc?>条数据：</strong>
       </td>
     </tr>
-    <?
+    <?php 
     if($channelid>0)
     {
     ?>
     <tr> 
       <td width="26%" height="24" align="center" valign="top" bgcolor="#FFFFFF">隶属栏目：</td>
       <td width="74%" colspan="2" bgcolor="#FFFFFF"> 
-        <?
-         $typeOptions = GetOptionList(0,$cuserLogin->getUserChannel(),$channelid);
-         echo "<select name='typeid' style='width:300'>\r\n";
-         echo "<option value='0' selected>请选择主分类...</option>\r\n";
-         echo $typeOptions;
-         echo "</select>";
-	    ?>
-	    （请选择白色的栏目）
+        <?php echo GetTypeidSel('form1','typeid','selbt2',$channelid)?>
       </td>
     </tr>
     <tr> 
@@ -60,7 +54,7 @@ $channelid = $rrow['channelid'];
         保存为草稿 
         </td>
     </tr>
-    <? } ?>
+    <?php  } ?>
     <tr> 
       <td height="24" align="center" valign="top" bgcolor="#FFFFFF">每批导入：</td>
       <td colspan="2" bgcolor="#FFFFFF">
@@ -88,7 +82,7 @@ $channelid = $rrow['channelid'];
     </tr>
   </form>
   <tr> 
-    <td height="34" colspan="3" align="center" bgcolor="#E6F3CD"> <table width="100%">
+    <td height="34" colspan="3" align="center" bgcolor="#E5F9FF"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>
           <td width="26%" align="right"> <script language='javascript'>
@@ -112,7 +106,7 @@ $channelid = $rrow['channelid'];
 	  </script> </td>
   </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 <p>&nbsp;</p></body>

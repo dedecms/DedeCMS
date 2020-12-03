@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
@@ -15,7 +15,7 @@ body {
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#666666">
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td width="100%" height="24" colspan="2" background="img/tbg.gif">
       <b>ก์ยÛฬณภฉีนด๚ย๋ก์</b>    </td>

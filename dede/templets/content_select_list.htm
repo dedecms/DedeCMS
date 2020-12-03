@@ -3,6 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>选择文章</title>
 <link rel="stylesheet" type="text/css" href="base.css">
+<script type="text/javascript" src="main.js"></script>
 <script language="javascript">
 //获得选中文件的文件名
 function getCheckboxItem()
@@ -43,11 +44,11 @@ function noSelAll()
 }
 function ReturnValue()
 {
-	if(window.opener.document.<?=$f?>.value==""){
-		window.opener.document.<?=$f?>.value = getCheckboxItem();
+	if(window.opener.document.<?php echo $f?>.value==""){
+		window.opener.document.<?php echo $f?>.value = getCheckboxItem();
 	}
 	else{
-		window.opener.document.<?=$f?>.value += ","+getCheckboxItem();
+		window.opener.document.<?php echo $f?>.value += ","+getCheckboxItem();
 	}
 	window.opener=true;
   window.close();
@@ -61,14 +62,14 @@ function ReturnValue()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr bgcolor="#FFFFFF"><td height="4"></td></tr>
 </table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
 <tr bgcolor="#E7E7E7"> 
 <td height="24" colspan="10" background="img/tbg.gif">
 <strong> §文章列表</strong>
 </td>
 </tr>
 <form name="form2">
-<tr align="center" bgcolor="#FAFAF1" height="22"> 
+<tr align="center" bgcolor="#F8FBFB" height="22"> 
 <td width="6%">ID</td>
 <td width="4%">选择</td>
 <td width="30%">文章标题</td>
@@ -80,31 +81,31 @@ function ReturnValue()
 <td width="10%">权限</td>
 <td width="8%">推荐</td>
 </tr>
-<?
+<?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
 <tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
-<td><?=$row['ID']?></td>
-<td><input name="arcID" type="checkbox" id="arcID" value="<?=$row['ID']?>" class="np"></td>
+<td><?php echo $row['ID']?></td>
+<td><input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" class="np"></td>
 <td align='left'>
-<a href='archives_do.php?aid=<?=$row['ID']?>&dopost=editArchives'>
-	<u><?=$row['title']?></u>
+<a href='archives_do.php?aid=<?php echo $row['ID']?>&dopost=editArchives'>
+	<u><?php echo $row['title']?></u>
 </a>
 </td>
-<td><?=GetDateMk($row['senddate'])?></td>
-<td><?=$row['typename']?></td>
-<td><?=$row['click']?></td>
-<td><?=IsPicArchives($row['litpic'])?></td>
-<td><?=IsHtmlArchives($row['ismake'])?></td>
-<td><?=GetRankName($row['arcrank'])?></td>
-<td><?=IsCommendArchives($row['iscommend'])?></td>
+<td><?php echo GetDateMk($row['senddate'])?></td>
+<td><?php echo $row['typename']?></td>
+<td><?php echo $row['click']?></td>
+<td><?php echo IsPicArchives($row['litpic'])?></td>
+<td><?php echo IsHtmlArchives($row['ismake'])?></td>
+<td><?php echo GetRankName($row['arcrank'])?></td>
+<td><?php echo IsCommendArchives($row['iscommend'])?></td>
 </tr>
-<?
+<?php 
 }
 ?>
-<tr bgcolor="#FAFAF1"> 
+<tr bgcolor="#F8FBFB"> 
 <td height="24" colspan="10">
 &nbsp;
 <a href="javascript:selAll()" class="coolbg">全选</a> 
@@ -115,9 +116,9 @@ while($row = $mylist->GetArray('dm'))
 </td>
 </tr>
 </form>
-<tr align="right" bgcolor="#EEF4EA"> 
+<tr align="right" bgcolor="#E5F9FF"> 
 <td height="20" colspan="10" align="center">
-	<?=$dlist->GetPageList(7);?>
+	<?php echo $dlist->GetPageList(7);?>
 </td>
 </tr>
 </table>
@@ -128,24 +129,21 @@ while($row = $mylist->GetArray('dm'))
 <tr bgcolor="#FFFFFF"> 
 <td style="border: 1px solid #525252;" height="26">
 <table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC'>
-   <tr bgcolor='#EEF4EA'> 
+   <tr bgcolor='#E5F9FF'> 
      <form name='form3' action='content_select_list.php' method='get'>
-        <input type='hidden' name='f' value='<?=$f?>'> 
+        <input type='hidden' name='f' value='<?php echo $f?>'> 
           <td background='img/wbg.gif'>
           	<table width='600' border='0' cellpadding='0' cellspacing='0'>
           	<tr>
           	<td width='90' align='center'>请选择类目：</td>
           	<td width='160'>
-          <select name='cid' style='width:150'>
-          <option value='0'>选择分类...</option>
-          	<?=$optionarr?>
-          </select>
+          	<?php echo $optionarr?>
         </td>
         <td width='70'>
           关键字：
         </td>
           <td width='160'>
-          	<input type='text' name='keyword' value='<?=$keyword?>' style='width:150'>
+          	<input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150'>
           </td>
           <td>
           <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">

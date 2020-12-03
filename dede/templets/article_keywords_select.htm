@@ -10,7 +10,7 @@ function SelKw(kw)
 }
 function ReturnValue()
 {
-	window.opener.document.<?=$f?>.value += document.form2.keywords.value;
+	window.opener.document.<?php echo $f?>.value += document.form2.keywords.value;
 	window.opener=true;
   window.close();
 }
@@ -54,21 +54,21 @@ function AddNewKw()
             <tr> 
               <td width="31%"><strong>选择关键字</strong></td>
               <td width="69%" align="right">
-                <input type="button" name="kwa" value="新增关键字" onClick="AddNewKw()">
-                <input type="button" name="kwm" value="关键字管理" onClick="location='article_keywords_main.php';">
+                <input type="button" name="kwa" value="新增关键字" onClick="AddNewKw()" class='nbt'>
+                <input type="button" name="kwm" value="关键字管理" onClick="location='article_keywords_main.php';" class='nbt'>
                 </td>
             </tr>
           </table></td>
       </tr>
       <tr> 
         <td bgcolor="#FFFFFF" style="line-height:180%">
-        	<?
+        	<?php 
           $mylist = $dlist->GetDataList();
           while($row = $mylist->GetArray('dm'))
            {
           ?>
-        	 <a href='javascript:SelKw("<?=$row['keyword']?>")'><u><?=$row['keyword']?></u></a> 
-          <?
+        	 <a href='javascript:SelKw("<?php echo $row['keyword']?>")'><u><?php echo $row['keyword']?></u></a> 
+          <?php 
             }
           ?>
           </td>
@@ -78,15 +78,15 @@ function AddNewKw()
         <table border="0" cellspacing="0" cellpadding="0">
             <tr> 
               <td width="120">已选的关键字：</td>
-              <td width="320"><input name="keywords" type="text" id="keywords" style="width:300" value="<?=$keywords?>"></td>
-              <td width="93"><input type="button" name="Submit" value="选用" onClick="ReturnValue()"></td>
+              <td width="320"><input name="keywords" type="text" id="keywords" style="width:300" value="<?php echo $keywords?>"></td>
+              <td width="93"><input type="button" name="Submit" value="选用" onClick="ReturnValue()" class='nbt'></td>
             </tr>
           </table>
         </td>
       </tr>
       <tr align="center"> 
         <td height="24" bgcolor="#F8FBF0">
-         <?=$dlist->GetPageList(5);?>
+         <?php echo $dlist->GetPageList(5);?>
          </td>
       </tr>
     </form>

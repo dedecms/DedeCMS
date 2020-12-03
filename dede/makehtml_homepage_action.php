@@ -1,5 +1,6 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
+$t1 = ExecTime();
 CheckPurview('sys_MakeHtml');
 require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
 if($dopost=="view")
@@ -32,4 +33,6 @@ else if($dopost=="make")
 	echo "成功更新主页HTML：".$homeFile;
 	echo "<br/><br/><a href='$position' target='_blank'>浏览...</a>";
 }
+$t2 = ExecTime();
+echo "<!-- ".($t2-$t1)." -->";
 ?>

@@ -1,10 +1,10 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($fmdo)) $fmdo = "";
 if(empty($dopost)) $dopost = "";
 if(empty($_POST) && empty($_GET))
 {
-	ShowMsg("本页面禁止返回!","index.php");
+	ShowMsg("本页面禁止返回!","control.php");
 	exit();
 }
 
@@ -21,8 +21,8 @@ switch($fmdo){
  {
  	 $msg = "";
  	 $userid = trim($userid);
- 	 if($userid==""||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)){
- 	 	 $msg = "你的用户名为空，或者含有非法字符！";
+ 	 if($userid==""||!TestStringSafe($userid)){
+ 	 	 $msg = "你的用户名含有非法字符！";
  	 }else{
  	   $dsql = new DedeSql(false);
  	   $dsql->SetQuery("Select ID From #@__member where userid='$userid'");
@@ -45,11 +45,19 @@ switch($fmdo){
  */
  else if($dopost=="regnew")
  {
+ 	 if($cfg_pp_isopen==1 && $cfg_pp_regurl!=''){
+	    header("Location:{$cfg_pp_regurl}");
+	    exit();
+   }
  	 require_once(dirname(__FILE__)."/reg_new.php");
  	 exit();
  }
  else if($dopost=="regok")
  {
+ 	 if($cfg_pp_isopen==1 && $cfg_pp_regurl!=''){
+	    header("Location:{$cfg_pp_regurl}");
+	    exit();
+   }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
@@ -58,14 +66,17 @@ switch($fmdo){
  	 $userid = trim($userid);
  	 $pwd = trim($userpwd);
  	 $pwdc = trim($userpwdok);
- 	 if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)
- 	 ||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd))
+ 	 if(!TestStringSafe($userid)||!TestStringSafe($pwd))
  	 {
  	 	  ShowMsg("你的用户名或密码不合法！","-1");
  	 	  exit();
  	 }
  	 if(strlen($userid)<3||strlen($pwd)<3){
  	 	  ShowMsg("你的用户名或密码小于三位，不允许注册！","-1");
+ 	 	  exit();
+ 	 }
+ 	 if(strlen($userid)>24||strlen($pwd)>24){
+ 	 	  ShowMsg("你的用户名或密码长度不能超过24位！","-1");
  	 	  exit();
  	 }
  	 if($pwdc!=$pwd){
@@ -87,21 +98,50 @@ switch($fmdo){
  	 	 ShowMsg("你指定的用户名已存在，请使用别的用户名！","-1");
  	 	 exit();
    }
-   $uname = ereg_replace("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",$uname);
-   if($uname==""){
+   if(!TestStringSafe($uname)){
    	 $dsql->Close();
    	 ShowMsg("用户昵称有非法字符！","-1");
  	 	 exit();
    }
+   $pwd = GetEncodePwd($pwd);
  	 $jointime = mytime();
  	 $logintime = mytime();
  	 $joinip = GetIP();
  	 $loginip = GetIP();
+ 	 
+ 	 //设置可选注册项目的默认值
+ 	 $dfregs['birthday_y'] = '0000';
+ 	 $dfregs['birthday_m'] = '00';
+ 	 $dfregs['birthday_d'] = '00';
+ 	 $dfregs['birthday'] = '0000-00-00';
+ 	 $dfregs['weight'] = '0';
+ 	 $dfregs['height'] = '0';
+ 	 $dfregs['job'] = '';
+ 	 $dfregs['province'] = '0';
+ 	 $dfregs['city'] = '0';
+ 	 $dfregs['myinfo'] = '';
+ 	 $dfregs['tel'] = '';
+ 	 $dfregs['oicq'] = '';
+ 	 $dfregs['homepage'] = '';
+ 	 $dfregs['address'] = '';
+ 	 $dfregs['showaddr'] = '0';
+ 	 foreach($dfregs as $k=>$v){
+ 	 	 if(!isset($$k)) $$k = $v;
+ 	 }
+ 	 
  	 $birthday = GetAlabNum($birthday_y)."-".GetAlabNum($birthday_m)."-".GetAlabNum($birthday_d);
+ 	 if($birthday=='0-0-0'){
+ 	 	 $birthday = '0000-00-00';
+ 	 }
  	 $height = GetAlabNum($height);
+
  	 $inQuery = "
- 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,uptype,money,weight,height,job,province,city,myinfo,tel,oicq,email,homepage,jointime,joinip,logintime,loginip,showaddr,address) 
-   VALUES ('$userid','$pwd','$uname','$sex','$birthday','10','0','$dfmoney','$weight','$height','$job','$province','$city','$myinfo','$tel','$oicq','$email','$homepage','$jointime','$joinip','$logintime','$loginip','0','$address');
+ 	 INSERT INTO #@__member(userid,pwd,uname,sex,birthday,membertype,money,
+ 	 weight,height,job,province,city,myinfo,tel,oicq,email,homepage,
+ 	 jointime,joinip,logintime,loginip,showaddr,address) 
+   VALUES ('$userid','$pwd','$uname','$sex','$birthday','10','$dfmoney',
+   '$weight','$height','$job','$province','$city','$myinfo','$tel','$oicq','$email','$homepage',
+   '$jointime','$joinip','$logintime','$loginip','$showaddr','$address');
  	 ";
  	 if($dsql->ExecuteNoneQuery($inQuery))
  	 {
@@ -109,7 +149,7 @@ switch($fmdo){
  	 	  $ml = new MemberLogin();
  	 	  $rs = $ml->CheckUser($userid,$pwd);
  	 	  if($rs==1){
- 	 	  	ShowMsg("注册成功，5秒钟后转向系统主页...","index.php",0,2000);
+ 	 	  	ShowMsg("注册成功，5秒钟后转向空间管理中心...","control.php",0,2000);
  	 	    exit();
  	 	  }
  	 	  else{
@@ -119,62 +159,64 @@ switch($fmdo){
  	 }
  	 else
  	 {
- 	 	 echo $inQuery;
  	 	 $dsql->Close();
- 	 	 //ShowMsg("注册失败，请检查资料是否有误或与管理员联系！","-1");
- 	 	 //exit();
- 	 }
- }
- /*
- 申请升级
- function AUserUpRank();
- */
- else if($dopost=="uprank")
- {
- 	 CheckRank(0,0);
- 	 if(empty($uptype)){
- 	 	 ShowMsg("数据无效！","-1");
+ 	 	 ShowMsg("注册失败，请检查资料是否有误或与管理员联系！","-1");
  	 	 exit();
  	 }
- 	 $uptype = GetAlabNum($uptype);
- 	 if($uptype < $cfg_ml->M_Type){
- 	 	 ShowMsg("类型不对，你的级别比你目前申请的级别还要高！","-1");
- 	 	 exit();
- 	 }
- 	 $dsql = new DedeSql();
- 	 $dsql->SetQuery("update #@__member set uptype='$uptype' where ID='".$cfg_ml->M_ID."' ");
- 	 $dsql->Execute();
- 	 $dsql->Close();
- 	 ShowMsg("成功申请升级，请等待管理员开通！","index.php?".time());
- 	 exit();
- }
- /*
- 增加金币
- function AddMoney();
- */
- else if($dopost=="addmoney")
- {
- 	 CheckRank(0,0);
- 	 $svali = GetCkVdValue();
-   if(strtolower($vdcode)!=$svali || $svali==""){
-  	 ShowMsg("验证码错误！","-1");
-  	 exit();
-   }
- 	 if(empty($money)){
- 	 	 ShowMsg("你没指定要申请多少金币！","-1");
- 	 	 exit();
- 	 }
- 	 $dsql = new DedeSql();
- 	 $dsql->SetQuery("update #@__member set upmoney='$money' where ID='".$cfg_ml->M_ID."'");
- 	 $dsql->Execute();
- 	 $dsql->Close();
- 	 ShowMsg("成功提交你的申请！","index.php?".time());
- 	 exit();
  }
   /*
  更改用户资料
  function AEditUser()
  */
+ else if($dopost=="editUserSafe")
+ {
+ 	  if($cfg_pp_isopen==1 && $cfg_pp_editsafeurl!=''){
+	    header("Location:{$cfg_pp_editsafeurl}");
+	    exit();
+    }
+ 	  CheckRank(0,0);
+ 	  $svali = GetCkVdValue();
+    if(strtolower($vdcode)!=$svali || $svali==""){
+  	  ShowMsg("验证码错误！","-1");
+  	  exit();
+    }
+ 	  if($oldpwd==""){
+ 	  	ShowMsg("你没有填写你的旧密码！","-1");
+ 	  	exit();
+ 	  }
+ 	  $pwd = trim($userpwd);
+ 	  $pwdc = trim($userpwdok);
+ 	  if($pwd!=""){
+ 	      if(strlen($pwd)>24){
+ 	 	       ShowMsg("密码长度不能超过24位！","-1");
+ 	 	       exit();
+ 	      }
+ 	      if(!TestStringSafe($pwd)){
+ 	 	      ShowMsg("你的新密码含有非法字符！","-1");
+ 	 	      exit();
+ 	      }
+ 	      if($pwdc!=$pwd){
+ 	 	      ShowMsg("你两次输入的密码不一致！","-1");
+ 	 	      exit();
+ 	      }
+ 	  }else{
+ 	  	ShowMsg("你没有设置要更改的密码！","-1");
+ 	 	  exit();
+ 	  }
+ 	  $dsql = new DedeSql(false);
+ 	  $row = $dsql->GetOne("Select pwd From #@__member where ID='".$cfg_ml->M_ID."'");
+ 	  $oldpwd = GetEncodePwd($oldpwd);
+ 	  if(!is_array($row)||$row['pwd']!=$oldpwd){
+ 	     $dsql->Close();
+ 	     ShowMsg("你输入的旧密码错误！","-1");
+ 	 	   exit();
+ 	  }
+ 	  $pwd = GetEncodePwd($pwd);
+ 	  $query = "update #@__member set pwd = '$pwd' where ID='".$cfg_ml->M_ID."'";
+ 	  $dsql->ExecuteNoneQuery($query);
+ 	  ShowMsg("成功更改你的密码！","-1");
+ 	 	exit();
+ }
  else if($dopost=="editUser")
  {
  	  CheckRank(0,0);
@@ -183,39 +225,22 @@ switch($fmdo){
   	  ShowMsg("验证码错误！","-1");
   	  exit();
     }
- 	  
+ 	  /*
  	  if($oldpwd==""){
- 	  	ShowMsg("你没有填写你的旧密码！","-1");
+ 	  	ShowMsg("你没有填写你的密码！","-1");
  	  	exit();
  	  }
  	  
- 	  $pwd = trim($userpwd);
- 	  $pwdc = trim($userpwdok);
- 	 
- 	  if($pwd!="")
- 	  {
- 	      if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd)){
- 	 	      ShowMsg("你的新密码含有非法字符！","-1");
- 	 	      exit();
- 	      }
- 	      if($pwdc!=$pwd){
- 	 	      ShowMsg("你两次输入的密码不一致！","-1");
- 	 	      exit();
- 	      }
- 	  }
- 	  else{
- 	  	$pwd = $oldpwd;
- 	  }
  	  $dsql = new DedeSql(false);
  	  $row = $dsql->GetOne("Select pwd From #@__member where ID='".$cfg_ml->M_ID."'");
+ 	  $oldpwd = GetEncodePwd($oldpwd);
  	  if(!is_array($row)||$row['pwd']!=$oldpwd){
  	     $dsql->Close();
- 	     ShowMsg("你输入的旧密码错误！","-1");
+ 	     ShowMsg("你输入的密码错误！","-1");
  	 	   exit();
- 	  }
+ 	  }*/
  	  $query = "
  	  update #@__member set 
- 	  pwd='$pwd',
  	  email = '$email',
     uname = '$uname',
     sex = '$sex',
@@ -300,12 +325,16 @@ switch($fmdo){
  */
  if($dopost=="login")
  {
+ 	 if($cfg_pp_isopen==1 && $cfg_pp_loginurl!=''){
+	    header("Location:{$cfg_pp_loginurl}");
+	    exit();
+   }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
-   if(ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$userid)||ereg("[\\\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]",$pwd))
+   if(!TestStringSafe($userid)||!TestStringSafe($pwd))
    {
    	 ShowMsg("用户名或密码不合法！","-1",0,2000);
   	 exit();
@@ -315,7 +344,7 @@ switch($fmdo){
   	 exit();
    }
    //检查帐号
-   $rs = $cfg_ml->CheckUser($userid,$pwd);
+   $rs = $cfg_ml->CheckUser($userid,GetEncodePwd($pwd));
    if($rs==0) {
    	 ShowMsg("用户名不存在！","-1",0,2000);
   	 exit();
@@ -330,7 +359,7 @@ switch($fmdo){
    	 $dsql->ExecuteNoneQuery();
    	 $dsql->Close();
    	 if(empty($gourl)||eregi("action|_do",$gourl)){
-   	 	  ShowMsg("成功登录，5秒钟后转向系统主页...","index.php",0,2000);
+   	 	  ShowMsg("成功登录，5秒钟后转向系统管理中心...","control.php",0,2000);
    	 }else{
    	 	  ShowMsg("成功登录，转到进入页面...",$gourl,0,2000);
    	 }
@@ -344,6 +373,11 @@ switch($fmdo){
  else if($dopost=="exit")
  {
  	 $cfg_ml->ExitCookie();
+ 	 if($cfg_pp_isopen==1 && $cfg_pp_exiturl!=''){
+	    echo "<script> location='{$cfg_pp_exiturl}'; </script>";
+	    exit();
+   }
+ 	 $cfg_ml->ExitCookie();
  	 ShowMsg("成功退出登录！","login.php",0,2000);
    exit();
  }
@@ -353,12 +387,16 @@ switch($fmdo){
 */
  else if($dopost=="getpwd")
  {
+ 	 if($cfg_pwdtype=='md5'){
+ 	 	 ShowMsg("系统的密码被设置为单向加密，无法取回，请与管理员联系。","javascript:;");
+ 	 	 exit();
+ 	 }
  	 $svali = GetCkVdValue();
    if(strtolower($vdcode)!=$svali || $svali==""){
   	 ShowMsg("验证码错误！","-1");
   	 exit();
    }
-   if(!ereg("(.*)@(.*)\.(.*)",$email)||ereg("[\\\|\"\r\n\t%\*\?\(\)\$ ;,'%]",$email)){
+   if(!ereg("(.*)@(.*)\.(.*)",$email)||!TestStringSafe($email)){
    	 ShowMsg("邮箱地址格式不正确！","-1");
   	 exit();
    }

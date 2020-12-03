@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 $dsql = new DedeSql(false);
@@ -7,6 +7,14 @@ if(empty($pagesize)) $pagesize = 18;
 if(empty($pageno)) $pageno = 1;
 if(empty($dopost)) $dopost = '';
 if(empty($orderby)) $orderby = 'aid';
+if(empty($keyword)){
+	$keyword = '';
+	$addget = '';
+	$addsql = '';
+}else{
+	$addget = '&keyword='.urlencode($keyword);
+	$addsql = " where CONCAT(keyword,spwords) like '%$keyword%' ";
+}
 
 //重载列表
 if($dopost=='getlist'){
@@ -42,7 +50,7 @@ else if($dopost=='del')
 
 //第一次进入这个页面
 if($dopost==''){
-	$row = $dsql->GetOne("Select count(*) as dd From #@__search_keywords");
+	$row = $dsql->GetOne("Select count(*) as dd From #@__search_keywords $addsql ");
 	$totalRow = $row['dd'];
 	include(dirname(__FILE__)."/templets/search_keywords_main.htm");
   $dsql->Close();
@@ -51,10 +59,10 @@ if($dopost==''){
 //获得特定的关键字列表
 //---------------------------------
 function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
-	global $cfg_phpurl;
+	global $cfg_phpurl,$addsql;
 	$start = ($pageno-1) * $pagesize;
 	$printhead ="<table width='99%' border='0' cellpadding='1' cellspacing='1' bgcolor='#333333' style='margin-bottom:3px'>
-    <tr align='center' bgcolor='#E9F4D5' height='24'> 
+    <tr align='center' bgcolor='#E5F9FF' height='24'> 
       <td width='6%' height='23'><a href='#' onclick=\"ReloadPage('aid')\"><u>ID</u></a></td>
       <td width='20%'>关键字</td>
       <td width='25%'>分词结果</td>
@@ -65,7 +73,7 @@ function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
       <td>管理</td>
     </tr>\r\n";
     echo $printhead;
-    $dsql->SetQuery("Select * From #@__search_keywords order by $orderby desc limit $start,$pagesize ");
+    $dsql->SetQuery("Select * From #@__search_keywords $addsql order by $orderby desc limit $start,$pagesize ");
 	  $dsql->Execute();
     while($row = $dsql->GetArray()){
     if($row['istag']){ 

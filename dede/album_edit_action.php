@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
@@ -26,6 +26,8 @@ if(!TestPurview('a_Edit')) {
 	if(TestPurview('a_AccEdit')) CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
 	else CheckArcAdmin($ID,$cuserLogin->getUserID());
 }
+
+$arcrank = GetCoRank($arcrank,$typeid);
 
 //对保存的内容进行处理
 //--------------------------------
@@ -55,6 +57,7 @@ $inQuery = "
 update #@__archives set
 typeid='$typeid',
 typeid2='$typeid2',
+redirecturl='$redirecturl',
 sortrank='$sortrank',
 iscommend='$iscommend',
 ismake='$ismake',
@@ -79,10 +82,12 @@ if(!$dsql->ExecuteNoneQuery()){
 	exit();
 }
 $adminID = $cuserLogin->getUserID();
+
 //处理并保存所指定的图片
 //------------------------------
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='$ddmaxwidth' row='$row' col='$col' value='$pagestyle'/}\r\n";
 for($i=1;$i<=120;$i++){
+	if(!isset(${'oldddimg'.$i})) ${'oldddimg'.$i} = '';
 	if(isset(${'imgurl'.$i})||(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name']))){
 		$iinfo = str_replace("'","`",stripslashes(${'imgmsg'.$i}));
 		//非上传图片
@@ -98,7 +103,8 @@ for($i=1;$i<=120;$i++){
 			    {
 				     $reimgs = GetRemoteImage($iurl,$adminID);
 			       if(is_array($reimgs)){
-				        $imgurls .= "{dede:img text='$iinfo' width='".$reimgs[1]."' height='".$reimgs[2]."'} ".$reimgs[0]." {/dede:img}\r\n";
+				        $litpicname = GetImageMapDD($reimgs[0],$ddmaxwidth,${'oldddimg'.$i});
+				        $imgurls .= "{dede:img ddimg='$litpicname' text='$iinfo' width='".$reimgs[1]."' height='".$reimgs[2]."'} ".$reimgs[0]." {/dede:img}\r\n";
 			       }else{
 			       	  echo "下载：".$iurl." 失败，可能图片有反采集功能或http头不正确！<br />\r\n";
 			       }
@@ -109,9 +115,10 @@ for($i=1;$i<=120;$i++){
 		    }else if($iurl!=""){
 			    $imgfile = $cfg_basedir.$iurl;
 			    if(is_file($imgfile)){
+			        $litpicname = GetImageMapDD($imgfile,$ddmaxwidth,${'oldddimg'.$i});
 				      $info = "";
 				      $imginfos = GetImageSize($imgfile,$info);
-				      $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
+				      $imgurls .= "{dede:img ddimg='$litpicname' text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			    }
 		   }
 	  //直接上传的图片
@@ -128,13 +135,19 @@ for($i=1;$i<=120;$i++){
 			 $fs = explode(".",$_FILES['imgfile'.$i]['name']);
 	     $filename = $filename.".".$fs[count($fs)-1];
 			 @move_uploaded_file($_FILES['imgfile'.$i]['tmp_name'],$cfg_basedir.$filename);
-			 @WaterImg($cfg_basedir.$filename,'up');
+			 
+			 //缩图
+			 $litpicname = GetImageMapDD($filename,$ddmaxwidth,${'oldddimg'.$i});
+			 
+			 //水印
 			 $imgfile = $cfg_basedir.$filename;
+			 @WaterImg($imgfile,'up');
+			 
 			 if(is_file($imgfile)){
 				    $iurl = $filename;
 				    $info = "";
 				    $imginfos = GetImageSize($imgfile,$info);
-				    $imgurls .= "{dede:img text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
+			      $imgurls .= "{dede:img ddimg='$litpicname' text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			      //把新上传的图片信息保存到媒体文档管理档案中
 			      $inquery = "
                INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
@@ -147,6 +160,8 @@ for($i=1;$i<=120;$i++){
 	}//含有图片的条件
 }//循环结束
 $imgurls = addslashes($imgurls);
+
+
 //更新加入附加表
 //----------------------------------
 $DbRow = $dsql->GetOne("Select aid,typeid From #@__addonimages where aid='$ID'");

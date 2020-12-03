@@ -1,12 +1,6 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
-
-$svali = GetCkVdValue();
-if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("验证码错误！","-1");
-  exit();
-}
 
 if($cfg_mb_sendall=='否'){
 	ShowMsg("对不起，系统禁用了自定义模型投稿，因此无法使用此功能！","-1");
@@ -114,7 +108,7 @@ foreach($addonfields as $v)
 	if($v=="") continue;
 	$vs = explode(",",$v);
 	if($vs[1]=="textdata"){
-		${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'edit',${$vs[1].'_file'});
+		${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$ID,'edit',${$vs[0].'_file'});
 	}else{
 		${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1]);
 	}

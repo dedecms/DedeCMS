@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_User');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -65,7 +65,7 @@ $dsql->Close();
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif" bgcolor="#E7E7E7"> 
       <table width="96%" border="0" cellspacing="1" cellpadding="1">
@@ -97,7 +97,7 @@ $dsql->Close();
             <td height="30">用户组：</td>
             <td>
 			    <select name='usertype' style='width:150'>
-			  	<?
+			  	<?php 
 			  	$dsql = new DedeSql(false);
 			  	$dsql->SetQuery("Select * from #@__admintype order by rank asc");
 			  	$dsql->Execute("ut");
@@ -115,7 +115,7 @@ $dsql->Close();
             <td>
 			<select name="typeid" style="width:160" id="typeid">
                 <option value="0" selected>--所有频道--</option>
-				<?=$typeOptions?>
+				<?php echo $typeOptions?>
              </select>
 			 </td>
           </tr>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 ?>
@@ -10,6 +10,7 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 <link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
 <script type="text/javascript" src="../include/calendar/calendar.js"></script>
 <script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<script src="main.js" language="javascript"></script>
 <script language='javascript'>
 	function ShowHideTime()
 	{
@@ -28,8 +29,8 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
-  <form name="form1" action="content_batchup_action.php" target="stafrm" method="post">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
+  <form name="form1" action="content_batchup_action.php" target="stafrm">
     <input type="hidden" name="dopost" value="go">
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -42,16 +43,11 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
     <tr> 
       <td width="177" align="center" bgcolor="#FFFFFF">选定栏目：</td>
       <td width="791" bgcolor="#FFFFFF"> 
-        <?
-       $tl = new TypeLink(0);
-       $typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0,1);
-       echo "<select name='typeid' style='width:300'>\r\n";
-       echo "<option value='0' selected>不限栏目...</option>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-	   $tl->Close();
-		?>
-      </td>
+        <?php 
+        $opall = 1;
+        echo GetTypeidSel('form1','typeid','selbt1',0);
+        ?>
+	  </td>
     </tr>
     <tr> 
       <td height="20" align="center" bgcolor="#FFFFFF">起始ID：</td>
@@ -70,14 +66,14 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
           </tr>
           <tr id='seltimeField' style='display:none' height='20'> 
             <td width="250">开始： 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime()-(24*3600*30));
 			echo "<input name=\"starttime\" value=\"$nowtime\" type=\"text\" id=\"starttime\" style=\"width:150\">";
 			echo "<input name=\"selstarttime\" type=\"button\" id=\"selkeyword\" value=\"选择\" onClick=\"showCalendar('starttime', '%Y-%m-%d %H:%M:00', '24');\">";
 			?>
             </td>
             <td width="250">结束： 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"endtime\" value=\"$nowtime\" type=\"text\" id=\"endtime\" style=\"width:150\">";
 			echo "<input name=\"selendtime\" type=\"button\" id=\"selkeyword\" value=\"选择\" onClick=\"showCalendar('endtime', '%Y-%m-%d %H:%M:00', '24');\">";
@@ -100,21 +96,20 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
     <tr height="20" bgcolor="#FFFFFF"> 
       <td height="20" align="center" bgcolor="#FFFFFF">移动选项：</td>
       <td height="20" bgcolor="#FFFFFF"> 
-        <?
-       echo "<span id='moveField' style='display:none'>新位置：";
-       echo "<select name='newtypeid' style='width:250;'>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-       echo "<br/>";
-       echo "标题关键字：<input id='movekeyword' type='text' name='keyword' value='' style='width:220;'></span>";
-	  ?>
+        <?php 
+        $opall = 1;
+        echo "<span id='moveField' style='display:none'>新位置：";
+		echo GetTypeidSel('form1','newtypeid','selbt3',0);
+		echo "<br/>";
+        echo "标题关键字：<input id='movekeyword' type='text' name='keyword' value='' style='width:220;'></span>";
+        ?>
       </td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center"><input name="b112" type="button" class="np2" value="开始操作" onClick="document.form1.submit();" style="width:100"></td>
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center"><input name="b112" type="button"  class='nbt' value="开始操作" onClick="document.form1.submit();" style="width:100"></td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>
@@ -156,7 +151,7 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
         更正缩图错误 </td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center"><input name="b112" type="button" class="np2" value="开始操作" onClick="document.form2.submit();" style="width:100"></td>
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center"><input name="b112" type="button"  class='nbt' value="开始操作" onClick="document.form2.submit();" style="width:100"></td>
     </tr>
   </form>
 </table>

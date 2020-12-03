@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/config_base.php");
 $aid = ereg_replace("[^0-9]","",$aid);
 $dsql = new DedeSql(false);

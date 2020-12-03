@@ -2,9 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:field name='title'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
 <link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
-<link href="../img/default.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <center>
@@ -74,7 +73,8 @@ name='position'/}列表 </td>
 </table>
 <table width="100%" height="412" border="0" cellpadding="0" cellspacing="0">
 <tr>
-<td height="220" valign="top"> {dede:list pagesize='15'} 
+<td height="220" valign="top">
+{dede:list pagesize='15'} 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbspan" style="margin-top:6px">
 <tr> 
 <td height="1" colspan="2" background="[field:templeturl/]/img/dot_hor.gif"></td>
@@ -97,7 +97,10 @@ name='position'/}列表 </td>
 				</td>
 </tr>
 <tr> 
-<td colspan="2" style="padding-left:3px">[field:description/]</td>
+<td colspan="2" style="padding-left:3px">
+  [field:litpic function="CkLitImageView(@me,80)"/]
+	[field:description/]
+</td>
 </tr>
 </table>
 {/dede:list} </td>
@@ -108,49 +111,46 @@ name='position'/}列表 </td>
 <td height="25" align="center" bgcolor="#F4FAE2">{dede:pagelist listsize='3'/}</td>
 </tr>
 </table></td>
-<td width="224" align="right" valign="top"> 
-<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr>
-<td class="guidet">
-		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月热点文章</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
-titlelen='28' row='12' subday='30'/}</td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月推荐文章</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
-titlelen='28' row='12' subday='30'/} </td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+      <td width="224" align="right" valign="top"> 
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>本栏热点文章</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
+              titlelen='30' row='12'/}</td>
+          </tr>
+        </table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>本栏随机推荐</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
+              titlelen='30' orderby='rand' row='12'/} </td>
+          </tr>
+        </table>
+		<table width="98%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
 <tr> 
 <td>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
@@ -167,27 +167,13 @@ titlelen='28' row='12' subday='30'/} </td>
 </tr>
 <tr> 
 <td height="50" valign="top">
-	<!-- cotalog templets-->
-{dede:channel type='self'} 
-<table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
-<tr> 
-<td width="10%" align="center" bgcolor="#E1EEDF" style="border:1px #E6EAE3 solid">&nbsp; 
-</td>
-<td align="center" bgcolor="#FAFDF2" style="border:1px #E6EAE3 solid"><a href="[field:typelink/]">[field:typename/]</a> 
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0">
-<tr> 
-<td height="2"></td>
-</tr>
-</table>
-{/dede:channel} 
+<!-- cotalog templets-->
 <table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
 <tr> 
 <td width="10%" bgcolor="#EEEEEE"></td>
-<td align="center" bgcolor="#FFFFFF" style="border:1px #DDDDDD solid"> 
-{dede:field name='typename'/} </td>
+<td align="center" bgcolor="#EEEEEE" style="border:1px #DDDDDD solid"> 
+ {dede:field name='typename'/}
+ </td>
 </tr>
 </table>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -207,6 +193,21 @@ titlelen='28' row='12' subday='30'/} </td>
 </tr>
 {/dede:channel} 
 </table>
+{dede:channel type='self'} 
+<table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+<tr> 
+<td width="10%" align="center" bgcolor="#E1EEDF" style="border:1px #E6EAE3 solid">&nbsp; 
+</td>
+<td align="center" bgcolor="#FAFDF2" style="border:1px #E6EAE3 solid"><a href="[field:typelink/]">[field:typename/]</a> 
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="2"></td>
+</tr>
+</table>
+{/dede:channel} 
 <!-- cotalog templets End -->
 </td>
 </tr>

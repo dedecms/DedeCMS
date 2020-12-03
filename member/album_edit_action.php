@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -7,11 +7,6 @@ if($cfg_mb_album=='·ñ'){
 	exit();
 }
 
-$svali = GetCkVdValue();
-if(strtolower($vdcode)!=$svali || $svali==""){
-  ShowMsg("ÑéÖ¤Âë´íÎó£¡","-1");
-  exit();
-}
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Source');
 if(empty($dopost)) $dopost = "";
@@ -28,7 +28,7 @@ if(empty($allsource)&&filesize($m_file)>0){
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="article_source_edit.php" method="post">
     <input type="hidden" name="dopost" value="save">
     <tr> 
@@ -43,11 +43,11 @@ if(empty($allsource)&&filesize($m_file)>0){
       <td colspan="2" valign="top" bgcolor="#FFFFFF"> 每行保存一个来源，更改结果后需重载档案发布页面。</td>
     </tr>
     <tr> 
-      <td height="62" colspan="2" bgcolor="#FFFFFF"> <textarea name="allsource" id="allsource" style="width:100%;height:300"><?=$allsource?></textarea> 
+      <td height="62" colspan="2" bgcolor="#FFFFFF"> <textarea name="allsource" id="allsource" style="width:100%;height:300"><?php echo $allsource?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center"> <input type="submit" name="Submit" value="保存数据"> 
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center"> <input type="submit" name="Submit" value="保存数据"> 
       </td>
     </tr>
   </form>

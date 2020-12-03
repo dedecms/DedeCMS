@@ -1,4 +1,4 @@
-<?
+<?php 
 //检测用户系统支持的图片格式
 $cfg_photo_type['gif'] = false;
 $cfg_photo_type['jpeg'] = false;
@@ -34,7 +34,8 @@ if(function_exists("imagecreatefromwbmp") && function_exists("imagewbmp")){
 //--------------------------------
 function ImageResize($srcFile,$toW,$toH,$toFile="") 
 {
-   global $cfg_photo_type;
+   global $cfg_photo_type,$cfg_jpeg_query;
+   if(empty($cfg_jpeg_query)) $cfg_jpeg_query = 85;
    if($toFile==""){ $toFile = $srcFile; }
    $info = "";
    $srcInfo = GetImageSize($srcFile,$info);
@@ -88,7 +89,7 @@ function ImageResize($srcFile,$toW,$toH,$toFile="")
          imagegif($ni,$toFile);
          break;
        case 2:
-         imagejpeg($ni,$toFile);   
+         imagejpeg($ni,$toFile,$cfg_jpeg_query);   
          break;
       case 3:
          imagepng($ni,$toFile);   
@@ -145,7 +146,7 @@ function WaterImg($srcFile,$fromGo='up')
 //------------------------------------------------
 function ImgWaterMark($srcFile,$w_pos=0,$w_img="",$w_text="",$w_font=5,$w_color="#FF0000",$w_pct)
 {
-    $font_type = dirname(__FILE__).'/data/mtcorsva.ttf';
+    $font_type = dirname(__FILE__).'/data/ant1.ttf';
     if(empty($srcFile) || !file_exists($srcFile)) return ;
      
     $srcInfo = getimagesize($srcFile);

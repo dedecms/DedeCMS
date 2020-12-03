@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 
 if(empty($activepath)) $activepath = "";
@@ -34,7 +34,7 @@ function nullLink()
 }
 function ReturnValue(reimg)
 {
-	window.opener.document.<?=$f?>.value=reimg;
+	window.opener.document.<?php echo $f?>.value=reimg;
 	if(document.all) window.opener=true;
   window.close();
 }
@@ -49,7 +49,7 @@ function ReturnValue(reimg)
 <td width="15%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>文件大小</strong></td>
 <td width="30%" align="center" background="img/wbg.gif" class='linerow'><strong>最后修改时间</strong></td>
 </tr>
-<?
+<?php 
 $dh = dir($inpath);
 $ty1="";
 $ty2="";
@@ -116,7 +116,7 @@ else if(eregi("\.(zip|rar|tgr.gz)",$file)){
    </tr>";
     echo "$line";
 }
-else if(eregi("\.(exe)",$file)){
+else{
    
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";
@@ -144,8 +144,8 @@ $dh->close();
 
 <table width='100%'>
 <form action='select_soft_post.php' method='POST' enctype="multipart/form-data" name='myform'>
-<input type='hidden' name='activepath' value='<?=$activepath?>'>
-<input type='hidden' name='f' value='<?=$f?>'>
+<input type='hidden' name='activepath' value='<?php echo $activepath?>'>
+<input type='hidden' name='f' value='<?php echo $f?>'>
 <input type='hidden' name='job' value='upload'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
@@ -156,8 +156,8 @@ $dh->close();
 </tr>
 </form>
 <form action='select_soft_post.php' method='POST' name='myform2'>
-<input type='hidden' name='activepath' value='<?=$activepath?>' style='width:200'>
-<input type='hidden' name='f' value='<?=$f?>'>
+<input type='hidden' name='activepath' value='<?php echo $activepath?>' style='width:200'>
+<input type='hidden' name='f' value='<?php echo $f?>'>
 <input type='hidden' name='job' value='newdir'>
 <tr>
   <td background="img/tbg.gif" bgcolor='#66CC00'> &nbsp;新目录： 

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
@@ -8,7 +8,7 @@ require_once(dirname(__FILE__)."/config.php");
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="makehtml_rss_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -25,12 +25,12 @@ require_once(dirname(__FILE__)."/config.php");
       </td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
-      	<input name="b112" type="button" class="np2" value="开始更新" onClick="document.form1.submit();" style="width:100"> 
+      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button" value="开始更新" onClick="document.form1.submit();" style="width:100" class='nbt'> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

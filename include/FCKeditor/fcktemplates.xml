@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?php xml version="1.0" encoding="utf-8" ?>
 <Templates imagesBasePath="fck_template/images/">
 	<Template title="Image and Title" image="template1.gif">
 		<Description>One main image with a title and text that surround the image.</Description>

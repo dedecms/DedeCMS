@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 //-------------------------------------
@@ -286,8 +286,9 @@ class TypeLink
          if($col>1) $likeType .= "	<td width='$colWidth'>\r\n";
          if($row=$this->dsql->GetArray())
          {
-			     //处理同级栏目中，当前栏目的样式
-			     if($typetype=="self" && $row['ID']=="$typeid"){
+			     $row['id'] = $row['ID'];
+			     //处理当前栏目的样式
+			     if($row['ID']=="$typeid"){
 			        if($myinnertext!=''){
 			        	 $linkOkstr = $myinnertext;
 			        	 $row['typelink'] = $this->GetOneTypeUrl($row);

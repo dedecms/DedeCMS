@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_广告管理');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -50,7 +50,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
     <td height="19" background="img/tbg.gif"><b><a href="ad_main.php"><u>广告管理</u></a></b>&gt;&gt;增加广告位置</td>
 </tr>
@@ -70,7 +70,7 @@ function checkSubmit()
           <tr> 
             <td width="15%" height="25" align="center">广告投放范围：</td>
             <td colspan="2"> 
-              <?
+              <?php 
            	$tl = new TypeLink(0);
            	$typeOptions = $tl->GetOptionArray(0,0,0);
             echo "<select name='typeid' style='width:300'>\r\n";
@@ -97,11 +97,11 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="25" align="center">开始时间：</td>
-            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?=$startDay?>"></td>
+            <td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>"></td>
           </tr>
           <tr> 
             <td height="25" align="center">结束时间：</td>
-            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?=$endDay?>"></td>
+            <td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>"></td>
           </tr>
           <tr> 
             <td height="80" align="center">正常显示内容：</td>

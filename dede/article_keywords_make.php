@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
@@ -8,12 +8,12 @@ require_once(dirname(__FILE__)."/config.php");
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
     <tr> 
       <td height="20" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="30%" height="18"><strong>关键字维护：</strong></td>
-            <td width="70%" align="right"><input name="kw" type="button" id="kw" value="返回关键字管理页" onClick="location='article_keywords_main.php';"></td>
+            <td width="70%" align="right"><input name="kw" type="button" id="kw" value="返回关键字管理页" onClick="location='article_keywords_main.php';" class='nbt'></td>
           </tr>
         </table></td>
     </tr>
@@ -24,12 +24,12 @@ require_once(dirname(__FILE__)."/config.php");
     </tr>
     <tr> 
       
-    <td height="31" bgcolor="#FAFAF1" align="center">
+    <td height="31" bgcolor="#F8FBFB" align="center">
 	[<a href="article_keywords_analyse.php" target="stafrm"><u>检测已有的关键字</u></a>]
 	&nbsp;&nbsp;
 	[<a href="article_keywords_fetch.php" target="stafrm"><u>自动获取关键字</u></a>]</td>
     </tr>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20"> <table width="100%">
         <tr> 
           <td width="74%"><strong>结果：</strong></td>

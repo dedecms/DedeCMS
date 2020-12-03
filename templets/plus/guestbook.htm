@@ -21,7 +21,7 @@
 <td width="35%" align='right'><img src='images/quote.gif' border=0 height=16 width=16></td>
 <td width="15%"> &nbsp;<a href="#write">[签写留言]</a></td>
 </tr></table>
-<?
+<?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
@@ -32,39 +32,39 @@ while($row = $mylist->GetArray('dm'))
     <table border='0' cellPadding='4' cellSpacing='0' width='100%'>
       <tr>
         <td align=center width='17%'>
-        	<img src='images/<?=$row["face"]?>.gif' border=0>
-        	<?=GetIsCheck($row['ischeck'],$row['ID'])?>
+        	<img src='images/<?php echo $row["face"]?>.gif' border=0>
+        	<?php echo GetIsCheck($row['ischeck'],$row['ID'])?>
         </td>
       </tr>
     </table>
    <P> 
-   &nbsp;姓名：<?=$row['uname']?><br>
-	 &nbsp;来自：<?=$row['ip']?><br>
-	 &nbsp;QQ：<?=$row['qq']?><br>
+   &nbsp;姓名：<?php echo $row['uname']?><br>
+	 &nbsp;来自：<?php echo $row['ip']?><br>
+	 &nbsp;QQ：<?php echo $row['qq']?><br>
 	</P>
 	</td>
-    <td width='600' bgcolor='#FFFFFF'><img height='16' src='images/time.gif' width='16'> 发表时间: <?=$row['dtime']?> </td>
+    <td width='600' bgcolor='#FFFFFF'><img height='16' src='images/time.gif' width='16'> 发表时间: <?php echo $row['dtime']?> </td>
   </tr>
   <tr>
     <td height='100' bgcolor='#FFFFFF'>
-    <?=$row['msg']?>
+    <?php echo $row['msg']?>
     </td>
   </tr>
   <tr>
     <td bgcolor='#FFFFFF'>
-    <a href='mailto:<?=$row["email"]?>'><img src='images/mail.gif' border=0 width='16' height='16'>[邮件]</a> 
-    <a href='http://<?=$row['homepage']?>' target='_blank'><img src='images/home.gif' border=0 width='16' height='16'>[主页]</a>  
-    <a href='edit.php?ID=<?=$row['ID']?>'><img src='images/quote.gif' border=0 height=16 width=16>[回复/编辑]</a>  
-    <a href='edit.php?ID=<?=$row['ID']?>&job=del'><img src='images/del.gif' border=0 height=16 width=16>[删除]</a> 
+    <a href='mailto:<?php echo $row["email"]?>'><img src='images/mail.gif' border=0 width='16' height='16'>[邮件]</a> 
+    <a href='http://<?php echo $row['homepage']?>' target='_blank'><img src='images/home.gif' border=0 width='16' height='16'>[主页]</a>  
+    <a href='edit.php?ID=<?php echo $row['ID']?>'><img src='images/quote.gif' border=0 height=16 width=16>[回复/编辑]</a>  
+    <a href='edit.php?ID=<?php echo $row['ID']?>&job=del'><img src='images/del.gif' border=0 height=16 width=16>[删除]</a> 
     </td>
   </tr>
 </table>
 <table width='760'><td height='2'></td></table>
-<? } ?>
+<?php  } ?>
 <table border='0' cellpadding='4' cellspacing='0' width='760' align='center'>
   <tr>
   <td align="right">
-  <?=$dlist->GetPageList(7);?>
+  <?php echo $dlist->GetPageList(7);?>
   </td>
   </tr>
   <tr><td></td></tr>

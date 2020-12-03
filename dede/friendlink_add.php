@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_友情链接模块');
 
@@ -62,7 +62,7 @@ function CheckSubmit()
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><b><a href="friendlink_main.php"><u>友情链接管理</u></a></b>&gt;&gt;增加链接</td>
 </tr>
@@ -107,7 +107,7 @@ function CheckSubmit()
         <td height="25">网站类型：</td>
         <td>
         <select name="typeid" id="typeid">
-        <?
+        <?php 
         $dsql->SetQuery("select * from #@__flinktype");
         $dsql->Execute();
         while($row=$dsql->GetObject())
@@ -137,7 +137,7 @@ function CheckSubmit()
     </td>
 </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

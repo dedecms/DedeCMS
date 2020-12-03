@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
@@ -44,10 +44,10 @@ $adminID = $cuserLogin->getUserID();
 $inQuery = "INSERT INTO #@__archives(
 typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,title,shorttitle,color,writer,source,litpic,
-pubdate,senddate,arcatt,adminID,memberID,description,keywords) 
+pubdate,senddate,arcatt,adminID,memberID,description,keywords,templet) 
 VALUES ('$typeid','$typeid2','$sortrank','$iscommend','$ismake','$channelid',
 '$arcrank','0','$title','$shorttitle','$color','$writer','$source','$litpic',
-'$pubdate','$senddate','$arcatt','$adminID','0','$description','$keywords');";
+'$pubdate','$senddate','$arcatt','$adminID','0','$description','$keywords','$templet');";
 $dsql = new DedeSql();
 $dsql->SetQuery($inQuery);
 if(!$dsql->ExecuteNoneQuery()){

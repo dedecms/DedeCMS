@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../../include/pub_datalist_dm.php");
 setcookie("GUEST_BOOK_MOVE",GetCurUrl(),time()+3600,"/");

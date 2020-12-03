@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 if(empty($ID)) $ID="0";
@@ -19,8 +19,8 @@ if($dopost=="save")
 	 $description = Html2Text($description);
    $keywords = Html2Text($keywords);
    
-   if($cfg_cmspath!="") $typedir = ereg_replace("^{$cfg_cmspath}","{cmspath}",$typedir);
-   else if(!eregi("{cmspath}",$typedir)) $typedir = "{cmspath}".$typedir;
+   if($cfg_cmspath!="") $typedir = ereg_replace("^".$cfg_cmspath,"{cmspath}",$typedir);
+   else if(!eregi("{cmspath}",$typedir) && $moresite==0) $typedir = "{cmspath}".$typedir;
    
    $upquery = "
      Update #@__arctype set
@@ -54,10 +54,28 @@ if($dopost=="save")
    	 exit();
    }
    
+   //更改本栏目文档的权限
+   
+   if($corank != $corank_old){
+      $dsql->ExecuteNoneQuery("Update #@__archives set arcrank='$corank' where typeid='$ID' ");
+   }
+   
    //如果选择子栏目可投稿，更新顶级栏目为可投稿
    if($topID>0 && $issend==1){
    	 $dsql->ExecuteNoneQuery("Update #@__arctype set issend='$issend' where ID='$topID'; ");
    }
+   
+   //更新树形菜单
+   $rndtime = time();
+   $rflwft = "<script language='javascript'>
+   if(window.navigator.userAgent.indexOf('MSIE')>=1){
+     if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
+     { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
+   }else{
+  	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
+     { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
+   }
+   </script>";
    
    //更改子栏目属性
    if(!empty($upnext))
@@ -69,7 +87,6 @@ if($dopost=="save")
    	 $upquery = "
        Update #@__arctype set
        issend='$issend',
-       sortrank='$sortrank',
        defaultname='$defaultname',
        channeltype='$channeltype',
        tempindex='$tempindex',
@@ -85,6 +102,7 @@ if($dopost=="save")
      where 1=1 And $slinks";
    
      if(!$dsql->ExecuteNoneQuery($upquery)){
+       echo $rflwft;
    	   ShowMsg("更改当前栏目成功，但更改下级栏目属性时失败！","-1");
    	   exit();
      }
@@ -93,6 +111,7 @@ if($dopost=="save")
    }
    //--------------------------
    $dsql->Close();
+   echo $rflwft;
    ShowMsg("成功更改一个分类！","catalog_main.php");
    exit();
 }//End Save Action
@@ -138,7 +157,7 @@ if($myrow['topID']==0){
 <link href='base.css' rel='stylesheet' type='text/css'>
 <script language="javascript">
 var channelArray = new Array();
-<?    
+<?php     
 $i = 0;
 foreach($channelArray as $k=>$arr){
   echo "channelArray[$k] = \"{$arr['nid']}\";\r\n";
@@ -214,7 +233,7 @@ function checkSubmit()
     <td width="100%" height="20" valign="top">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&gt;&gt;增加栏目</td>
+          <td height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&gt;&gt;修改栏目</td>
         </tr>
       </table></td>
   </tr>
@@ -227,10 +246,10 @@ function checkSubmit()
   <tr>
   <form name="form1" action="catalog_edit.php" method="post" onSubmit="return checkSubmit();">
   <input type="hidden" name="dopost" value="save">
-  <input type="hidden" name="ID" value="<?=$ID?>">
-  <input type="hidden" name="topID" value="<?=$myrow['topID']?>">
+  <input type="hidden" name="ID" value="<?php echo $ID?>">
+  <input type="hidden" name="topID" value="<?php echo $myrow['topID']?>">
   <td height="95" align="center" bgcolor="#FFFFFF">
-	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" style="border-bottom:1px solid #CCCCCC">
+	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" class="htable">
      <tr> 
        <td colspan="2" bgcolor="#FFFFFF">
 <table width="168" border="0" cellpadding="0" cellspacing="0">
@@ -257,29 +276,31 @@ function checkSubmit()
 	    <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="120" class='bline' height="26">是否支持投稿：</td>
-            <td class='bline'> <input type='radio' name='issend' value='0' class='np' <?if($myrow['issend']=="0") echo " checked";?>>
-              不支持&nbsp; <input type='radio' name='issend' value='1' class='np' <?if($myrow['issend']=="1") echo " checked";?>>
+            <td class='bline'> <input type='radio' name='issend' value='0' class='np' <?php if($myrow['issend']=="0") echo " checked";?>>
+              不支持&nbsp; <input type='radio' name='issend' value='1' class='np' <?php if($myrow['issend']=="1") echo " checked";?>>
               支持 </td>
           </tr>
           <tr> 
             <td width="120" class='bline' height="26">是否隐藏栏目：</td>
-            <td class='bline'> <input type='radio' name='ishidden' value='0' class='np'<?if($myrow['ishidden']=="0") echo " checked";?>>
-              显示　&nbsp; <input type='radio' name='ishidden' value='1' class='np'<?if($myrow['ishidden']=="1") echo " checked";?>>
+            <td class='bline'> <input type='radio' name='ishidden' value='0' class='np'<?php if($myrow['ishidden']=="0") echo " checked";?>>
+              显示　&nbsp; <input type='radio' name='ishidden' value='1' class='np'<?php if($myrow['ishidden']=="1") echo " checked";?>>
               隐藏 </td>
           </tr>
           <tr> 
             <td class='bline' height="26">栏目名称：</td>
-            <td class='bline'><input name="typename" type="text" id="typename" size="30" value="<?=$myrow['typename']?>"></td>
+            <td class='bline'><input name="typename" type="text" id="typename" size="30" value="<?php echo $myrow['typename']?>"></td>
           </tr>
           <tr> 
             <td class='bline' height="26"> 排列顺序： </td>
-            <td class='bline'> <input name="sortrank" size="6" type="text" value="<?=$myrow['sortrank']?>">
+            <td class='bline'> <input name="sortrank" size="6" type="text" value="<?php echo $myrow['sortrank']?>">
               （由低 -&gt; 高） </td>
           </tr>
           <tr> 
             <td class='bline' height="26">浏览权限：</td>
-            <td class='bline'> <select name="corank" id="corank" style="width:100">
-                <?
+            <td class='bline'>
+			<input type="hidden" name="corank_old" value="<?php echo $myrow['corank']?>">
+			<select name="corank" id="corank" style="width:100">
+                <?php 
               $dsql->SetQuery("Select * from #@__arcrank where rank >= 0");
               $dsql->Execute();
               while($row = $dsql->GetObject())
@@ -291,17 +312,18 @@ function checkSubmit()
               }
               ?>
               </select>
-              (仅限制栏目里的文档浏览权限) </td>
+              (本权限仅对<font color="#0000FF"><strong>最终列表栏目</strong></font>有效，设置后本栏目发布或审核后的所有文档将使用此权限) 
+            </td>
           </tr>
           <tr> 
             <td class='bline' height="26">文件保存目录：</td>
-            <td class='bline'> <input name="typedir" type="text" id="typedir" value="<?=$myrow['typedir']?>" style="width:300"> 
+            <td class='bline'> <input name="typedir" type="text" id="typedir" value="<?php echo $myrow['typedir']?>" style="width:300"> 
             </td>
           </tr>
           <tr> 
             <td class='bline' height="26">内容模型： &nbsp; </td>
             <td class='bline'> <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
-                <?    
+                <?php     
             foreach($channelArray as $k=>$arr)
             {
             	if($k==$channelid) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
@@ -312,31 +334,31 @@ function checkSubmit()
           </tr>
           <tr> 
             <td class='bline' height="26">栏目列表选项：</td>
-            <td class='bline'> <input type='radio' name='isdefault' value='1' class='np'<? if($myrow['isdefault']==1) echo" checked";?>>
+            <td class='bline'> <input type='radio' name='isdefault' value='1' class='np'<?php  if($myrow['isdefault']==1) echo" checked";?>>
               链接到默认页 
-              <input type='radio' name='isdefault' value='0' class='np'<? if($myrow['isdefault']==0) echo" checked";?>>
+              <input type='radio' name='isdefault' value='0' class='np'<?php  if($myrow['isdefault']==0) echo" checked";?>>
               链接到列表第一页 
-              <input type='radio' name='isdefault' value='-1' class='np'<? if($myrow['isdefault']==-1) echo" checked";?>>
+              <input type='radio' name='isdefault' value='-1' class='np'<?php  if($myrow['isdefault']==-1) echo" checked";?>>
               使用动态页 </td>
           </tr>
           <tr> 
             <td class='bline' height="26">默认页的名称： </td>
-            <td class='bline'><input name="defaultname" type="text" value="<?=$myrow['defaultname']?>"></td>
+            <td class='bline'><input name="defaultname" type="text" value="<?php echo $myrow['defaultname']?>"></td>
           </tr>
           <tr> 
             <td height="26" class='bline'>栏目属性：</td>
-            <td class='bline'> <input name="ispart" type="radio" id="radio" value="0" class='np'<? if($myrow['ispart']==0) echo" checked";?>>
-              最终列表栏目（允许在本栏目发布文档，并生成文档列表）<br> <input name="ispart" type="radio" id="radio2" value="1" class='np'<? if($myrow['ispart']==1) echo" checked";?>>
-              频道封面（栏目本身不允许发布文档）<br> <input name="ispart" type="radio" id="radio3" value="2" class='np'<? if($myrow['ispart']==2) echo" checked";?>>
+            <td class='bline'> <input name="ispart" type="radio" id="radio" value="0" class='np'<?php  if($myrow['ispart']==0) echo" checked";?>>
+              最终列表栏目（允许在本栏目发布文档，并生成文档列表）<br> <input name="ispart" type="radio" id="radio2" value="1" class='np'<?php  if($myrow['ispart']==1) echo" checked";?>>
+              频道封面（栏目本身不允许发布文档）<br> <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php  if($myrow['ispart']==2) echo" checked";?>>
               单独页面（栏目本身不允许发布文档） </td>
           </tr>
         </table>
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none" id="adset">
           <tr> 
             <td class='bline' width="120" height="24">多站点支持：</td>
-            <td class='bline'> <input name="moresite" type="radio"  class="np" value="0"<? if($myrow['moresite']==0) echo" checked";?>>
+            <td class='bline'> <input name="moresite" type="radio"  class="np" value="0"<?php  if($myrow['moresite']==0) echo" checked";?>>
               不启用 
-              <input type="radio" name="moresite" class="np" value="1"<? if($myrow['moresite']==1) echo" checked";?>>
+              <input type="radio" name="moresite" class="np" value="1"<?php  if($myrow['moresite']==1) echo" checked";?>>
               启用 </td>
           </tr>
           <tr> 
@@ -345,22 +367,22 @@ function checkSubmit()
           </tr>
           <tr> 
             <td class='bline' height="24">绑定域名：</td>
-            <td class='bline'> <input name="siteurl" type="text" id="siteurl" size="35" value="<?=$myrow['siteurl']?>">
+            <td class='bline'> <input name="siteurl" type="text" id="siteurl" size="35" value="<?php echo $myrow['siteurl']?>">
               (需加 http://，一级或二级域名的根网址) </td>
           </tr>
           <tr> 
             <td class='bline' height="24">站点根目录：</td>
-            <td class='bline'> <input name="sitepath" type="text" id="sitepath" size="35" value="<?=$myrow['sitepath']?>"> 
-              <input name="siterefer" type="radio" id="siterefer1" class="np" value="1"<? if($myrow['siterefer']==1) echo" checked";?>>
+            <td class='bline'> <input name="sitepath" type="text" id="sitepath" size="35" value="<?php echo $myrow['sitepath']?>"> 
+              <input name="siterefer" type="radio" id="siterefer1" class="np" value="1"<?php  if($myrow['siterefer']==1) echo" checked";?>>
               相对于当前站点根目录 
-              <input name="siterefer" type="radio" id="siterefer2" class="np" value="2"<? if($myrow['siterefer']==2) echo" checked";?>>
+              <input name="siterefer" type="radio" id="siterefer2" class="np" value="2"<?php  if($myrow['siterefer']==2) echo" checked";?>>
               绝对路径 </td>
           </tr>
           <tr id='helpvar1' style='display:none'> 
             <td height="24" bgcolor="#F3F7EA">支持变量： </td>
             <td bgcolor="#F3F7EA"> {tid}表示栏目ID，<br>
               {cid}表示频道模型的'名字ID' <font color='#888888'> （ 
-              <?
+              <?php 
               foreach($channelArray as $k=>$arr)
               {
             	   echo "{$arr['typename']}({$arr['nid']})、";
@@ -368,33 +390,33 @@ function checkSubmit()
              ?>
               ） </font> <br/>
               模板文件的默认位置是放在模板目录 "cms安装目录 
-              <?=$cfg_templets_dir ?>
+              <?php echo $cfg_templets_dir ?>
               " 内。 
               <input type='hidden' value='{style}' name='dfstyle'> </td>
           </tr>
           <tr> 
             <td height="26">封面模板：</td>
-            <td> <input name="tempindex" type="text" value="<?=$myrow['tempindex']?>" style="width:300"> 
-              <input type="button" name="set1" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempindex');"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar1')"> 
+            <td> <input name="tempindex" type="text" value="<?php echo $myrow['tempindex']?>" style="width:300"> 
+              <input type="button" name="set1" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempindex');" class='nbt'> 
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar1')"> 
             </td>
           </tr>
           <tr> 
             <td height="26">列表模板：</td>
-            <td> <input name="templist" type="text" value="<?=$myrow['templist']?>" style="width:300"> 
-              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templist');"> 
+            <td> <input name="templist" type="text" value="<?php echo $myrow['templist']?>" style="width:300"> 
+              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templist');" class='nbt'> 
             </td>
           </tr>
           <tr> 
             <td height="26">文章模板：</td>
-            <td><input name="temparticle" type="text" value="<?=$myrow['temparticle']?>" style="width:300"> 
-              <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.temparticle');"> 
+            <td><input name="temparticle" type="text" value="<?php echo $myrow['temparticle']?>" style="width:300"> 
+              <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.temparticle');" class='nbt'> 
             </td>
           </tr>
           <tr> 
             <td height="26">单独页面模板：</td>
-            <td><input name="tempone" type="text" value="<?=$myrow['tempone']?>" style="width:300"> 
-              <input type="button" name="set2" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempone');"> 
+            <td><input name="tempone" type="text" value="<?php echo $myrow['tempone']?>" style="width:300"> 
+              <input type="button" name="set2" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempone');" class='nbt'> 
             </td>
           </tr>
           <tr id='helpvar2' style='display:none'> 
@@ -410,8 +432,8 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="26">文章命名规则：</td>
-            <td> <input name="namerule" type="text" id="namerule" value="<?=$myrow['namerule']?>" size="40"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar2')"> 
+            <td> <input name="namerule" type="text" id="namerule" value="<?php echo $myrow['namerule']?>" size="40"> 
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar2')"> 
             </td>
           </tr>
           <tr id='helpvar3' style='display:none'> 
@@ -420,24 +442,23 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="26">列表命名规则：</td>
-            <td> <input name="namerule2" type="text" id="namerule2" value="<?=$myrow['namerule2']?>" size="40"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar3')"></td>
+            <td> <input name="namerule2" type="text" id="namerule2" value="<?php echo $myrow['namerule2']?>" size="40"> 
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar3')"></td>
           </tr>
           <tr> 
             <td height="65">关键字：</td>
-            <td> <textarea name="keywords" cols="40" rows="3" id="keywords"><?=$myrow['keywords']?></textarea> 
+            <td> <textarea name="keywords" cols="40" rows="3" id="keywords"><?php echo $myrow['keywords']?></textarea> 
             </td>
           </tr>
           <tr>
             <td height="65">栏目描述：</td>
-            <td height="65"><textarea name="description" cols="40" rows="3" id="textarea"><?=$myrow['description']?></textarea></td>
+            <td height="65"><textarea name="description" cols="40" rows="3" id="textarea"><?php echo $myrow['description']?></textarea></td>
           </tr>
           <tr> 
             <td height="45">继承选项：</td>
             <td> 
               <input name="upnext" type="checkbox" id="upnext" value="1" class="np">
-              同时更改下级栏目的浏览权限、内容类型、模板风格、命名规则等通用属性
-            </td>
+              同时更改下级栏目的内容类型、模板风格、命名规则等通用属性 </td>
           </tr>
         </table>
           <table width="98%" border="0" cellspacing="0" cellpadding="0">
@@ -453,7 +474,7 @@ function checkSubmit()
 	  </form>
   </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

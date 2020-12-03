@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -13,7 +13,7 @@ if($dopost=="addnew"){
 		PrintTypeList("<font color='red'>你不能定义超过十六个分类！</font>");
 		exit();
 	}else{
-		$typename = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($typename))),50);
+		$typename = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($typename))),50);
     $typename = trim(addslashes($typename));
 		if($typename==""){
 			PrintTypeList("<font color='red'>分类名称非法或为空！</font>");
@@ -57,7 +57,7 @@ else if($dopost=="update"){
   header("Expires:0\r\n");
 	header("Content-Type: text/html; charset=gb2312");
 	$dsql = new DedeSql(false);
-	$typename = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($typename))),50);
+	$typename = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($typename))),50);
   $typename = trim(addslashes($typename));
 	if($typename==""){
 		PrintTypeList("<font color='red'>分类名称不能为空！</font>");

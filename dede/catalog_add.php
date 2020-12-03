@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($ID)) $ID = 0;
 if(empty($listtype)) $listtype="";
@@ -13,30 +13,13 @@ else{
 }
 
 $dsql = new DedeSql(false);
-if(empty($myrow)) $myrow = "";
-$issend = 0;
-$corank = 0;
-//--------------------------
-//获取从父目录继承的默认参数
-//--------------------------
-if($dopost=="" && $ID>0)
-{
-  $myrow = $dsql->GetOne("Select #@__arctype.*,#@__channeltype.typename as ctypename From #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID=$ID");
-	$issennd = $myrow['issend'];
-	$corank = $myrow['corank'];
-	$topID = $myrow['topID'];
-	$issend = $myrow['issend'];
-	$corank = $myrow['corank'];
-	if($topID>0)
-	{
-	  	$toprow = $dsql->GetOne("Select moresite,siterefer,sitepath,siteurl From #@__arctype where ID=$topID");
-	  	foreach($toprow as $k=>$v){
-	  		if(!ereg("[0-9]",$k)) $myrow[$k] = $v;
-	  	}
-	}
-	$typedir = $myrow['typedir'];
-}
-else if($dopost=="save")
+
+
+//保存栏目
+/*------------------------
+function __SaveCatalog()
+--------------------------*/
+if($dopost=="save")
 {
    if(empty($reID)) $reID = 0;
    if(empty($upinyin)) $upinyin = 0;
@@ -51,7 +34,12 @@ else if($dopost=="save")
      else $nextdir = $nextdir;
    }
    //用拼音命名
-   if($upinyin==1 || ($typedir=="" && $sitepath=="")) $typedir = GetPinyin($typename);
+   if( $upinyin==1 || 
+     ( $typedir=="" && $sitepath=="" ) || 
+     ( $typedir=="" && $moresite==1 && $reID>0 ) )
+   {
+     	 $typedir = GetPinyin($typename);
+   }
    
    $typedir = $nextdir."/".$typedir;
    
@@ -64,12 +52,12 @@ else if($dopost=="save")
       $siteurl = ereg_replace("/$","",$siteurl);
       if(!eregi("http://",$siteurl)){
       	$dsql->Close();
-   	    ShowMsg("你绑定的二级域名无效，请用(http://host)的形式！","-1");
+   	    ShowMsg("你绑定的二级域名无效，请用(http://域名)的形式！","-1");
    	    exit();
       }
       if(eregi($cfg_basehost,$siteurl)){
       	$dsql->Close();
-   	    ShowMsg("你绑定的二级域名与当前站点是同一个域，不需要绑定！","-1");
+   	    ShowMsg("你绑定的二级域名与当前站点是同一个域名，不需要绑定！","-1");
    	    exit();
       }
    }
@@ -92,6 +80,7 @@ else if($dopost=="save")
     '$tempindex','$templist','$temparticle','$tempone','default','$namerule','$namerule2',
     '$ispart','$corank','$description','$keywords','$moresite','$siterefer','$sitepath','$siteurl','$ishidden')";
    
+   
    $dsql->SetQuery($in_query);
    if(!$dsql->ExecuteNoneQuery($in_query))
    {
@@ -100,11 +89,48 @@ else if($dopost=="save")
    	 exit();
    }
    $dsql->Close();
+   $rndtime = time();
+   $rflwft = "<script language='javascript'>
+   if(window.navigator.userAgent.indexOf('MSIE')>=1){
+     if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
+     { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
+   }else{
+  	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
+     { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
+   }
+   </script>";
+   echo $rflwft;
    ShowMsg("成功创建一个分类！","catalog_main.php");
    exit();
    
-}//End dopost==save
+}
+//End dopost==save
+//结束保存栏目事件
 
+//--------------------------
+//读取父类参数
+//----------------------------
+if(empty($myrow)) $myrow = "";
+$issend = 1;
+$corank = 0;
+
+if($ID>0)
+{
+  $myrow = $dsql->GetOne("Select #@__arctype.*,#@__channeltype.typename as ctypename From #@__arctype left join #@__channeltype on #@__channeltype.ID=#@__arctype.channeltype where #@__arctype.ID=$ID");
+	$issennd = $myrow['issend'];
+	$corank = $myrow['corank'];
+	$topID = $myrow['topID'];
+	$issend = $myrow['issend'];
+	$corank = $myrow['corank'];
+	if($topID>0)
+	{
+	  	$toprow = $dsql->GetOne("Select moresite,siterefer,sitepath,siteurl From #@__arctype where ID=$topID");
+	  	foreach($toprow as $k=>$v){
+	  		if(!ereg("[0-9]",$k)) $myrow[$k] = $v;
+	  	}
+	}
+	$typedir = $myrow['typedir'];
+}
 //读取频道模型信息
 if(is_array($myrow)) $channelid = $myrow['channeltype'];
 else $channelid = 1;
@@ -133,7 +159,7 @@ if(!empty($myrow['moresite'])){
 <link href='base.css' rel='stylesheet' type='text/css'>
 <script language="javascript">
 var channelArray = new Array();
-<?    
+<?php     
 $i = 0;
 foreach($channelArray as $k=>$arr)
 {
@@ -236,8 +262,8 @@ function CheckPathSet()
   <tr>
   <form name="form1" action="catalog_add.php" method="post" onSubmit="return checkSubmit();">
   <input type="hidden" name="dopost" value="save">
-  <input type="hidden" name="reID" id="reID" value="<?=$ID;?>">
-  <?
+  <input type="hidden" name="reID" id="reID" value="<?php echo $ID;?>">
+  <?php 
   if($listtype!="all")
   {
   	echo "<input type='hidden' name='moresite' value='{$myrow['moresite']}'>\r\n";
@@ -247,7 +273,7 @@ function CheckPathSet()
   }
   ?>
     <td height="95" align="center" bgcolor="#FFFFFF">
-	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" style="border-bottom:1px solid #CCCCCC">
+	<table width="100%" border="0" cellspacing="0" id="head1" cellpadding="0" class="htable">
           <tr> 
             <td colspan="2" bgcolor="#FFFFFF">
 <table width="168" border="0" cellpadding="0" cellspacing="0">
@@ -275,11 +301,10 @@ function CheckPathSet()
           <tr> 
             <td width="120" class='bline' height="26">是否支持投稿：</td>
             <td class='bline'>
-            	<input type='radio' name='issend' value='0' class='np' <?if($issend=="0") echo " checked";?>>
+            	<input type='radio' name='issend' value='0' class='np' <?php if($issend=="0") echo " checked";?>>
               不支持&nbsp;
-              <input type='radio' name='issend' value='1' class='np' <?if($issend=="1") echo " checked";?>>
-              支持
-             </td>
+              <input type='radio' name='issend' value='1' class='np' <?php if($issend=="1") echo " checked";?>>
+              支持             </td>
           </tr>
           <tr> 
             <td width="120" class='bline' height="26">是否隐藏栏目：</td>
@@ -287,8 +312,7 @@ function CheckPathSet()
             	<input type='radio' name='ishidden' value='0' class='np' checked>
               显示　&nbsp;
               <input type='radio' name='ishidden' value='1' class='np'>
-              隐藏
-             </td>
+              隐藏             </td>
           </tr>
           <tr> 
             <td class='bline' height="26">栏目名称：</td>
@@ -303,7 +327,7 @@ function CheckPathSet()
             <td class='bline' height="26">浏览权限：</td>
             <td class='bline'>
             	<select name="corank" id="corank" style="width:100">
-                <?
+                <?php 
               $dsql->SetQuery("Select * from #@__arcrank where rank >= 0");
               $dsql->Execute();
               while($row = $dsql->GetObject())
@@ -318,19 +342,18 @@ function CheckPathSet()
               }
               ?>
               </select>
-              (仅限制栏目里的文档浏览权限) </td>
+              (本权限仅对<strong><font color="#0000FF">最终列表栏目</font></strong>有效，设置后本栏目发布或审核后的所有文档将使用此权限)            </td>
           </tr>
           <tr> 
             <td class='bline' height="26">上级目录：</td>
             <td class='bline'> 
-              <?
+              <?php 
             $pardir = "{cmspath}".$cfg_arcdir;
-            if(!empty($typedir)) $pardir = $typedir."/";
+            if(!empty($typedir) || $moresite==1) $pardir = $typedir."/";
             $pardir = ereg_replace("/{1,}","/",$pardir);
             echo $pardir;
             ?>
-              <input name="nextdir" type="hidden" id="nextdir" value="<?=$pardir?>"> 
-            </td>
+              <input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>">            </td>
           </tr>
           <tr> 
             <td class='bline' height="26">文件保存目录：</td>
@@ -338,44 +361,39 @@ function CheckPathSet()
             	<table width="500" border="0" cellspacing="1" cellpadding="1">
                 <tr> 
                   <td width="200">
-                  	<input name="typedir" type="text" id="typedir" style="width:300">
-                  </td>
+                  	<input name="typedir" type="text" id="typedir" style="width:300">                  </td>
                   <td width="300">
                   <input name="upinyin" type="checkbox" id="upinyin" class="np" value="1" onClick="CheckTypeDir()">
-                  拼音
-                  </td>
+                  拼音                  </td>
                 </tr>
-              </table>
-              </td>
+              </table>              </td>
           </tr>
           <tr>
             <td class='bline' height="26">目录相对位置：</td>
             <td class='bline'>
 			        <input name="referpath" type="radio" id="truepath1" class="np" value="parent" checked>
               上级目录 
-              <?
+              <?php 
               if($moresite==0){
               ?>
               <input name="referpath" type="radio" id="truepath2" class="np" value="cmspath">
               CMS根目录 
-              <? } ?>
+              <?php  } ?>
               <input name="referpath" type="radio" id="truepath3" class="np" value="basepath">
-              站点根目录
-              </td>
+              站点根目录              </td>
           </tr>
           <tr> 
             <td class='bline' height="26">内容模型： &nbsp; </td>
             <td class='bline'> 
            <select name="channeltype" id="channeltype" style="width:200px" onChange="ParTemplet(this)">
-            <?    
+            <?php     
             foreach($channelArray as $k=>$arr)
             {
             	if($k==$channelid) echo "    <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
               else  echo "    <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
             }
             ?>
-              </select> 
-            </td>
+              </select>            </td>
           </tr>
           <tr> 
             <td class='bline' height="26">栏目列表选项：</td>
@@ -398,16 +416,15 @@ function CheckPathSet()
               <input name="ispart" type="radio" id="radio" value="1" class='np'>
               频道封面（栏目本身不允许发布文档） <br>
               <input name="ispart" type="radio" id="radio" value="2" class='np'>
-              单独页面（栏目本身不允许发布文档）
-             </td>
+              单独页面（栏目本身不允许发布文档）             </td>
           </tr>
         </table>
-	    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="display:none" id="adset">
-          <?
+	    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="adset" style="display:none">
+          <?php 
           if($listtype=="all")
           {
           ?>
-          <tr> 
+		  <tr> 
             <td class='bline' width="120" height="24">多站点支持：</td>
             <td class='bline'> <input name="moresite" type="radio"  class="np" value="0" checked>
               不启用 
@@ -415,8 +432,8 @@ function CheckPathSet()
               启用 </td>
           </tr>
           <tr> 
-            <td height="24" bgcolor="#F3F7EA">说明：</td>
-            <td bgcolor="#F3F7EA">绑名绑定仅需要在顶级栏目设定，下级栏目的目录和域名将相对于顶级栏目。</td>
+            <td height="24" bgcolor="#B9E9FF">说明：</td>
+            <td bgcolor="#B9E9FF">绑名绑定仅需要在顶级栏目设定，下级栏目的目录和域名将相对于顶级栏目。</td>
           </tr>
           <tr>
             <td class='bline' height="24">绑定域名：</td>
@@ -435,14 +452,14 @@ function CheckPathSet()
               绝对路径
             </td>
           </tr>
-          <?
+          <?php 
           }
           ?>
-          <tr id='helpvar1' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">支持变量： </td>
-            <td bgcolor="#F3F7EA"> {tid}表示栏目ID，<br>
+		  <tr id='helpvar1' style='display:none'> 
+            <td height="24" bgcolor="#B9E9FF">支持变量： </td>
+            <td bgcolor="#B9E9FF"> {tid}表示栏目ID，<br>
               {cid}表示频道模型的'名字ID' <font color='#888888'> （ 
-              <?
+              <?php 
               foreach($channelArray as $k=>$arr)
               {
             	   echo "{$arr['typename']}({$arr['nid']})、";
@@ -450,62 +467,66 @@ function CheckPathSet()
              ?>
               ） </font> <br/>
               模板文件的默认位置是放在模板目录 "cms安装目录 
-              <?=$cfg_templets_dir ?>
+              <?php echo $cfg_templets_dir ?>
               " 内。 
               <input type='hidden' value='{style}' name='dfstyle'> 
             </td>
           </tr>
           <tr> 
             <td height="26">封面模板：</td>
-            <td> <input name="tempindex" type="text" value="{style}/index_<?=$nid?>.htm" style="width:300"> 
-              <input type="button" name="set1" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempindex');"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar1')"> 
+            <td> <input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" style="width:300"> 
+              <input type="button" name="set1" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempindex');" class='nbt'> 
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar1')"> 
             </td>
           </tr>
           <tr> 
             <td height="26">列表模板：</td>
-            <td> <input name="templist" type="text" value="{style}/list_<?=$nid?>.htm" style="width:300"> 
-              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templist');"> 
+            <td> <input name="templist" type="text" value="{style}/list_<?php echo $nid?>.htm" style="width:300"> 
+              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templist');" class='nbt'> 
             </td>
           </tr>
           <tr> 
             <td height="26">文章模板：</td>
-            <td><input name="temparticle" type="text" value="{style}/article_<?=$nid?>.htm" style="width:300"> 
-              <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.temparticle');"> 
+            <td><input name="temparticle" type="text" value="{style}/article_<?php echo $nid?>.htm" style="width:300"> 
+              <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.temparticle');" class='nbt'> 
             </td>
           </tr>
           <tr> 
             <td height="26">单独页面模板：</td>
             <td><input name="tempone" type="text" value="" style="width:300"> 
-              <input type="button" name="set2" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempone');"> 
+              <input type="button" name="set2" value="浏览..." style="width:60" onClick="SelectTemplets('form1.tempone');" class='nbt'> 
             </td>
           </tr>
           <tr id='helpvar2' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">支持变量： </td>
-            <td height="24" bgcolor="#F3F7EA"> {Y}、{M}、{D} 年月日<br/>
+            <td height="24" bordercolor="#00CCFF" bgcolor="#B9E9FF">支持变量： </td>
+            <td height="24" bgcolor="#B9E9FF"> {Y}、{M}、{D} 年月日<br/>
               {timestamp} INT类型的UNIX时间戳<br/>
               {aid} 文章ID<br/>
               {pinyin} 拼音+文章ID<br/>
               {py} 拼音部首+文章ID<br/>
               {typedir} 栏目目录 <br/>
               {cc} 日期+ID混编后用转换为适合的字母 <br/>
-              </td>
+            </td>
           </tr>
           <tr> 
             <td height="26">文章命名规则：</td>
             <td> <input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" size="40"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar2')"> 
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar2')"> 
             </td>
           </tr>
           <tr id='helpvar3' style='display:none'> 
-            <td height="24" bgcolor="#F3F7EA">支持变量： </td>
-            <td bgcolor="#F3F7EA">{page} 列表的页码</td>
+            <td height="24" bgcolor="#B9E9FF">支持变量： </td>
+            <td bgcolor="#B9E9FF">{page} 列表的页码</td>
           </tr>
           <tr> 
             <td height="26">列表命名规则：</td>
             <td>
               <input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" size="40"> 
-              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide('helpvar3')"></td>
+              <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar3')"></td>
+          </tr>
+		  <tr>
+            <td class='bline' height="26">栏目缩略图：</td>
+            <td class='bline'>&nbsp;</td>
           </tr>
           <tr> 
             <td height="65">关键字：</td>
@@ -530,7 +551,7 @@ function CheckPathSet()
 	  </form>
   </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 CheckPurview('temp_One');
@@ -67,7 +67,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
     <td height="19" background="img/tbg.gif">
     	<b><a href="templets_one.php"><u>单独页面管理</u></a></b>&gt;&gt;增加新页面
@@ -100,7 +100,7 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="80" colspan="2" align="center"> 
-              <?
+              <?php 
 	GetEditor("body","","500","Default","print","true");
 	?>
             </td>

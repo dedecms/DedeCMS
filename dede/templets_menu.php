@@ -47,30 +47,14 @@ function showHide(objname)
 <body bgcolor="#B5D185" leftmargin="0" topmargin="0" target="main">
 <center>
 <div style='font-size:2pt'>&nbsp;</div>
-<table width='130' border='0' cellspacing='0' cellpadding='2'>
+<table width='130' border='0' cellspacing='0' cellpadding='2' style="margin-bottom:6px">
   <tr bgcolor='#FFFFFF'>
   <td width='2%'><img src='img/dedeexplode.gif' width='11' height='11'></td>
-      <td background='img/itemcomenu2.gif'> <a href='index_menu.php' target='_self'><u>全部管理项目</u></a> 
+      <td background='img/itemcomenu2.gif' bgcolor="#FFFFFF"><a href="index_menu.php?c=4" target="_self">返回主菜单</a> 
       </td>
   </tr>
 </table>
-<div style='font-size:2pt'>&nbsp;</div>
-<table width='130' border='0' cellspacing='0' cellpadding='2'>
-  <tr bgcolor='#FFFFFF'>
-  <td width='2%'><img src='img/dedeexplode.gif' width='11' height='11'></td>
-      <td background='img/itemcomenu2.gif'> <a href='catalog_do.php?dopost=viewTemplet'><u>浏览模板目录</u></a> 
-      </td>
-  </tr>
-</table>
-<div style='font-size:2pt'>&nbsp;</div>
-<table width='130' border='0' cellspacing='0' cellpadding='2'>
-  <tr bgcolor='#FFFFFF'> 
-    <td width='2%'><img src='img/dedeexplode.gif' width='11' height='11'></td>
-      <td background='img/itemcomenu2.gif'> <a href='help_templet.php'><u>模板标记参考</u></a> 
-      </td>
-  </tr>
-</table>
-<div style='font-size:2pt'>&nbsp;</div>
+  <div style='font-size:2pt'></div>
 <table width='130' border='0' cellspacing='0' cellpadding='2'>
   <tr bgcolor='#F5F5F5'>
   <td width='2%'><img style='cursor:hand' onClick="showHide('suns10');" src='img/dedeexplode.gif' width='11' height='11'></td>

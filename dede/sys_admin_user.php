@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_User');
 require_once(dirname(__FILE__)."/../include/pub_datalist.php");

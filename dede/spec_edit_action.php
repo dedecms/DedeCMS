@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
@@ -55,7 +55,8 @@ pubdate='$pubdate',
 description='$description',
 keywords='$keywords',
 shorttitle='$shorttitle',
-arcatt='$arcatt'
+arcatt='$arcatt',
+templet='$templet'
 where ID='$ID'; ";
 
 $dsql = new DedeSql();

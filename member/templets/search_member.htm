@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>查找会员</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
 .mbb { margin-bottom:3px; border:1px dashed #cdcdcd; }
@@ -13,8 +13,8 @@
 <script language='javascript' src='main.js'></script>
 <script language="JavaScript">
 var pageno = 1;
-var totalrow = <?=$totalRow?>;
-var pagesize = <?=$pagesize?>;
+var totalrow = <?php echo $totalRow?>;
+var pagesize = <?php echo $pagesize?>;
 var fkeyword,fsex,fage1,fage2,fprovince,fcity,fpic;
 //分析搜索表单
 function GetSearchQuery(){
@@ -54,6 +54,7 @@ var ahtml = "";
 var startloop = 1;
 var endnum = 0;
 ahtml += "共："+totalrow+" 条记录/"+pagenum+"页 ";
+if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>首页</a> ";
 if(pageno>1) ahtml += "<a href='javascript:LoadPage("+(pageno-1)+");'>↑上页</a> ";
 if(startnum >= pagenum-listsize){
 	startloop = pagenum-(listsize*2);
@@ -80,22 +81,24 @@ else{
 	}
 }
 if(pageno<pagenum) ahtml += "<a href='javascript:LoadPage("+(pageno+1)+");'>下页↓</a> ";
+if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>末页</a>";
 ListArea.innerHTML = ahtml;
 }
 </script>
 </head>
 <body leftmargin='0' topmargin='0'>
-<? include(dirname(__FILE__)."/head.htm"); ?>
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
 <table width="769" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr> 
 <td width="152" height="216" valign="top"> 
-<?include(dirname(__FILE__)."/menu.php");?>
+<?php include(dirname(__FILE__)."/menu.php");?>
 </td>
 <td width="9">&nbsp;</td>
 <td width="608" valign="top">
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
 <tr align="right" bgcolor="#ffffff"> 
-<td background="img/tbg.gif" class="gdt">
+<td background="img/nnnbg.gif" class="gdt">
 <table width='97%' cellpadding='0' cellspacing='0'>
 <tr>
 <td width='30%'><b>查找会员：</b></td>
@@ -111,50 +114,50 @@ ListArea.innerHTML = ahtml;
 <table width="585" border="0" cellspacing="2" cellpadding="2">
 <tr> 
 <td align="center">关键字：</td>
-<td><input name="keyword" type="text" id="keyword" style="width:90%" value="<?=$keyword?>"></td>
+<td><input name="keyword" type="text" id="keyword" style="width:90%" value="<?php echo $keyword?>"></td>
 <td>性　别：</td>
 <td>
-	<input type="radio" id="sex1" name="sex" value="男" class="np"<?if($sex=='男') echo ' checked';?>>
+	<input type="radio" id="sex1" name="sex" value="男" class="np"<?php if($sex=='男') echo ' checked';?>>
 男 
-<input type="radio" id="sex2" name="sex" value="女" class="np"<?if($sex=='女') echo ' checked';?>>
+<input type="radio" id="sex2" name="sex" value="女" class="np"<?php if($sex=='女') echo ' checked';?>>
 女 
-<input type="radio" id="sex3" name="sex" value="" class="np"<?if($sex=='') echo ' checked';?>>
+<input type="radio" id="sex3" name="sex" value="" class="np"<?php if($sex=='') echo ' checked';?>>
 不限
 </td>
 </tr>
 <tr> 
 <td align="center">年　龄：</td>
 <td width="181">
-<input name="age1" type="text" id="age1" style="width:50px" value="<?=$age1?>">
+<input name="age1" type="text" id="age1" style="width:50px" value="<?php echo $age1?>">
 到 
-<input name="age2" type="text" id="age2" style="width:50px" value="<?=$age2?>">
+<input name="age2" type="text" id="age2" style="width:50px" value="<?php echo $age2?>">
 岁
 </td>
 <td width="72">地　区：</td>
 <td width="236">
 <select name="province" size="1" id="province" width="4" onChange="javascript:selNext($Obj('city'),this.value)" style="width:85">
-<? if($province>0) echo "<option value='$province' selected>".GetProvince($province,$dsql)."</option>"; ?>
+<?php  if($province>0) echo "<option value='$province' selected>".GetProvince($province,$dsql)."</option>"; ?>
 <option value="0">--不限--</option>
 </select>
  &nbsp;城市： 
 <select id="city" name="city" width="4" style="width:85">
-<? if($city>0) echo "<option value='$city' selected>".GetProvince($city,$dsql)."</option>"; ?>
+<?php  if($city>0) echo "<option value='$city' selected>".GetProvince($city,$dsql)."</option>"; ?>
 <option value="0">--不限--</option>
 </select>
 <script language='javascript'>
 selTop($Obj('province'));
-<? if($province>0){ ?>
-selNextDf($Obj('city'),<?=$province?>,<?=$city?>,"<?=GetProvince($city,$dsql)?>");
-<? } ?>
+<?php  if($province>0){ ?>
+selNextDf($Obj('city'),<?php echo $province?>,<?php echo $city?>,"<?php echo GetProvince($city,$dsql)?>");
+<?php  } ?>
 </script>
 </td>
 </tr>
 <tr> 
 <td width="70" align="center">相　片：</td>
 <td>
-<input type="radio" id="pic1" name="pic" value="1"<?if($pic==1) echo " checked";?>>
+<input type="radio" id="pic1" name="pic" value="1"<?php if($pic==1) echo " checked";?>>
 有 
-<input name="pic" id="pic2" type="radio" value="0"<?if(empty($pic)) echo " checked";?>>
+<input name="pic" id="pic2" type="radio" value="0"<?php if(empty($pic)) echo " checked";?>>
 不限
 </td>
 <td>&nbsp;</td>
@@ -165,7 +168,7 @@ selNextDf($Obj('city'),<?=$province?>,<?=$city?>,"<?=GetProvince($city,$dsql)?>"
 </td>
 </tr>
 </table>
-<span id="memberlist"><? GetList($dsql,$pageno,$pagesize); ?></span> 
+<span id="memberlist"><?php  GetList($dsql,$pageno,$pagesize); ?></span> 
 <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cdcdcd" style="margin-top:6px">
 <tr bgcolor="#F9FCEF" height="24" align="center"> 
 <td height="35">
@@ -177,10 +180,9 @@ selNextDf($Obj('city'),<?=$province?>,<?=$city?>,"<?=GetProvince($city,$dsql)?>"
 </td>
 </tr>
 </table>
-<?
+<?php 
 include(dirname(__FILE__)."/foot.htm");
 ?>
+</div>
 </body>
 </html>
-</table>
-</table>

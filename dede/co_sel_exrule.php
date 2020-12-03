@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_AddNote');
 if(empty($dopost)) $dopost = "";
@@ -11,7 +11,7 @@ $dsql = new DedeSql(false);
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="co_add.php" method="get">
     <tr> 
       <td width="100%" height="28" colspan="3" background='img/tbg.gif'> <strong>选择数据规则模型</strong> 
@@ -20,7 +20,7 @@ $dsql = new DedeSql(false);
     <tr> 
       <td height="34" colspan="3" bgcolor="#FFFFFF">
 	  <select name="exrule" id="exrule" style="width:200px">
-      <?
+      <?php 
 	  $dsql->SetQuery("Select aid,rulename From #@__co_exrule order by aid asc");
 	  $dsql->Execute();
 	  while($row = $dsql->GetObject())
@@ -38,7 +38,7 @@ $dsql = new DedeSql(false);
     </tr>
   </form>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

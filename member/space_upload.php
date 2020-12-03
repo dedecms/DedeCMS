@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
@@ -27,7 +27,7 @@ function GetImageView($furl,$mtype){
 
 if(empty($keyword)) $keyword = "";
 else{
-	$keyword = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?;,' %-]","",stripslashes($keyword))),30);
+	$keyword = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($keyword))),30);
 	$keyword = addslashes($keyword);
 }
 

@@ -5,8 +5,12 @@ if(empty($activepath)) $activepath = "";
 if(empty($imgstick)) $imgstick = "";
 
 //检测用户文件存放路径是否合法
+if(ereg("\.",$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
 $activepath = str_replace("\\","/",$activepath);
-$activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 $rootdir = $cfg_user_dir."/".$cfg_ml->M_ID;
 
@@ -24,6 +28,11 @@ if(empty($f)) $f="form1.picname";
 if(empty($v)) $v="picview";
 
 if(empty($comeback)) $comeback = "";
+
+if(!eregi($cfg_user_dir.'/'.$cfg_ml->M_ID,$inpath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
 
 ?>
 <html>

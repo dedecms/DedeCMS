@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/inc_arcpart_view.php");
 require_once(dirname(__FILE__)."/inc_downclass.php");
 require_once(dirname(__FILE__)."/inc_channel_unit.php");
@@ -26,6 +26,7 @@ class Archives
 	var $TempSource;
 	var $IsError;
 	var $SplitTitles;
+	var $MemberInfos;
 	//-------------------------------
 	//php5构造函数
 	//-------------------------------
@@ -35,6 +36,7 @@ class Archives
  		$this->IsError = false;
  		$this->dsql = new DedeSql(false);
  		$this->ArcID = $aid;
+ 		$this->MemberInfos = array();
  		$query = "Select arc.*,tp.reID,tp.typedir from #@__archives arc 
  		left join #@__arctype tp on tp.ID=arc.typeid where arc.ID='$aid'";
  		$row = $this->dsql->GetOne($query);
@@ -175,11 +177,15 @@ class Archives
   	if($this->Fields['redirecturl']!="")
   	{
   		$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
-  		$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\">\n<title>转向：".$this->Fields['title']."</title>\n";
-  		$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
-      $pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:".$this->Fields['description']."\n</body>\n</html>\n";
+  		$tffp = fopen(dirname(__FILE__)."/../include/jump.html","r");
+  		$tmpfile = fread($tffp,filesize(dirname(__FILE__)."/../include/jump.html"));
+  		fclose($tffp);
+  		$tmpfile = str_replace('[title]',$this->Fields['title'],$tmpfile);
+  		$tmpfile = str_replace('[aid]',$this->Fields['ID'],$tmpfile);
+  		$tmpfile = str_replace('[description]',$this->Fields['description'],$tmpfile);
+  		$tmpfile = str_replace('[redirecturl]',$this->Fields['redirecturl'],$tmpfile);
   		$fp = @fopen($truefilename,"w") or die("Create File False：$filename");
-		  fwrite($fp,$pageHtml);
+		  fwrite($fp,$tmpfile);
 		  fclose($fp);
   	}else{ //循环生成HTML文件
   	  for($i=1;$i<=$this->TotalPage;$i++){
@@ -260,14 +266,18 @@ class Archives
  		//跳转网址
   	if($this->Fields['redirecturl']!="")
   	{
-  		$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
-  		$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\">\n<title>转向：".$this->Fields['title']."</title>\n";
-  		$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
-      $pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:\n".$this->Fields['description']."\n</body>\n</html>\n";
-  		echo $pageHtml;
+  		$tffp = fopen(dirname(__FILE__)."/../include/jump.html","r");
+  		$tmpfile = fread($tffp,filesize(dirname(__FILE__)."/../include/jump.html"));
+  		fclose($tffp);
+  		$tmpfile = str_replace('[title]',$this->Fields['title'],$tmpfile);
+  		$tmpfile = str_replace('[aid]',$this->Fields['ID'],$tmpfile);
+  		$tmpfile = str_replace('[description]',$this->Fields['description'],$tmpfile);
+  		$tmpfile = str_replace('[redirecturl]',$this->Fields['redirecturl'],$tmpfile);
+  		echo $tmpfile;
 		  $this->Close();
 		  exit();
   	}
+ 		$this->Fields['arcurl'] = $GLOBALS['cfg_phpurl']."/plus.php?aid=".$this->Fields['ID'];
  		$pageCount = $this->NowPage;
  		$this->ParseDMFields($pageCount,0);
  		$this->Close();
@@ -357,23 +367,13 @@ class Archives
  					
  				  $this->dtp->Assign($tagid,
  				       $this->PartView->GetArcList(
- 				         $typeid,
- 				         $ctag->GetAtt("row"),
- 				         $ctag->GetAtt("col"),
- 				         $titlelen,
- 				         $tagidnfolen,
- 				         $ctag->GetAtt("imgwidth"),
- 				         $ctag->GetAtt("imgheight"),
- 				         $listtype,
- 				         $orderby,
- 				         $keywords,
- 				         $tagidnnertext,
- 				         $ctag->GetAtt("tablewidth"),
- 				         $this->ArcID,
- 				         "",
- 				         $channelid,
- 				         $ctag->GetAtt("limit"),
- 				         $ctag->GetAtt("att")
+ 				         $typeid, $ctag->GetAtt("row"), $ctag->GetAtt("col"),
+ 				         $titlelen, $tagidnfolen, $ctag->GetAtt("imgwidth"), $ctag->GetAtt("imgheight"),
+ 				         $listtype, $orderby, $keywords,
+ 				         $tagidnnertext, $ctag->GetAtt("tablewidth"), $this->ArcID,
+ 				         "", $channelid, $ctag->GetAtt("limit"),
+ 				         $ctag->GetAtt("att"), $ctag->GetAtt("orderway"),
+ 				         $ctag->GetAtt("subday"), -1, $ctag->GetAtt("ismember")
  				        )
  				  );
  			  }
@@ -472,6 +472,10 @@ class Archives
  			      else
  			      { $this->dtp->Assign($i,$this->GetPageTitlesST($ctag->GetAtt("style"),$pageNo)); }
  		     }
+ 		     else if($ctag->GetName()=="memberinfo")
+ 		     {
+ 		     	 $this->dtp->Assign($i,$this->GetMemberInfo());
+ 		     }
  		     else if($ctag->GetName()=="fieldlist")
  		     {
  		     	 $innertext = trim($ctag->GetInnerText());
@@ -518,6 +522,24 @@ class Archives
  		if(is_object($this->ChannelUnit)) $this->ChannelUnit->Close();
  		if(is_object($this->TypeLink)) $this->TypeLink->Close();
  		if(is_object($this->PartView)) $this->PartView->Close();
+ 	}
+ 	//----------------------
+ 	//获得本文的投稿作者信息
+ 	//----------------------
+ 	function GetMemberInfo()
+ 	{
+ 		if(!isset($this->MemberInfos['ID'])){
+ 			if($this->Fields['memberID']==0) return '';
+ 			else{
+ 			  $this->MemberInfos = $this->dsql->GetOne("Select ID,userid,uname,spacename,spaceimage From #@__member where ID='{$this->Fields['memberID']}' ");
+ 			}
+ 		}
+ 		if(!isset($this->MemberInfos['ID'])) return "";
+ 		else{
+ 			$minfo  = "<a href='".$cfg_memberurl."/index.php?uid=".$this->MemberInfos['userid']."'>浏览 <font color='red'><b>";
+ 			$minfo .= $this->MemberInfos['uname']."</font></b> 的个人空间</a>\r\n";
+ 			return $minfo;
+ 		}
  	}
  	//--------------------------
  	//获取上一篇，下一篇链接
@@ -692,7 +714,7 @@ class Archives
   		$k = trim($k);
   		if($k!=""){
   			if($i > $maxkey) break;
-  			$myrow = $this->dsql->GetOne("select * from #@__keywords where keyword='$k' And rpurl<>'' ");
+  			$myrow = $this->dsql->GetOne("select * from #@__keywords where keyword='".addslashes($k)."' And rpurl<>'' ");
   			if(is_array($myrow)){
   				 $ka = "<a href='{$myrow['rpurl']}'><u>$k</u></a>";
   			   $body = str_replace($k,$ka,$body);

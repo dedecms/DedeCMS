@@ -2,9 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:field name='title'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
 <link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
-<link href="../img/default.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <center>
@@ -72,46 +71,44 @@ name='position'/}</td>
 </table>
 <table width="900" height="450" border="0" align="center" cellpadding="0" cellspacing="0">
 <tr> 
-<td width="219" valign="top" bgcolor="#F3F9FC">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月热点文章</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
-titlelen='28' row='12' subday='30'/}</td>
-</tr>
-</table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
-<tr> 
-<td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
-<tr> 
-<td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
-<td width="2%">&nbsp;</td>
-<td width="66%" class="guidetitle"><strong>本月推荐文章</strong></td>
-</tr>
-</table></td>
-</tr>
-</table></td>
-</tr>
-<tr> 
-<td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
-titlelen='28' row='12' subday='30'/} </td>
-</tr>
-</table> 
-</td>
+      <td width="219" valign="top" bgcolor="#F3F9FC"> <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>本栏随机推荐</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
+              titlelen='30' orderby='rand' row='16'/} </td>
+          </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>本栏热点文章</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
+              titlelen='30' row='12'/}</td>
+          </tr>
+        </table></td>
 <td width="6"></td>
       <td width="678" valign="top"> {dede:channelArtlist col=2 tablewidth='100%'} 
         <table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#E1EBD3" style="margin-bottom:3px">
@@ -130,7 +127,7 @@ titlelen='28' row='12' subday='30'/} </td>
           </tr>
           <tr> 
             <td height="50" valign="top" bgcolor="#FFFFFF"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                {dede:arclist row='5' titlelen='36'} 
+                {dede:arclist orderby='ID' row='5' titlelen='36'} 
                 <tr> 
                   <td width="75%" height="22" class="inddline"> ·<a href="[field:arcurl /]">[field:title 
                     /]</a> </td>

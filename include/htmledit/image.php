@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../dialog/config.php");
 require_once(dirname(__FILE__)."/../inc_photograph.php");
 if(empty($dopost)) $dopost="";
@@ -29,28 +29,52 @@ if($dopost=="upload")
 		ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG、WBMP格式的其中一种！","-1");
 		exit();
 	}
-	$nowtme = mytime();
-	$y = strftime("%y%m%d",$nowtme);
-	$filename = $cuserLogin->getUserID()."_".strftime("%H%M%S",$nowtme);
-	if(!is_dir($cfg_basedir.$cfg_medias_dir."/$y")){
-		 MkdirAll($cfg_basedir.$cfg_medias_dir."/$y",777);
-		 CloseFtp();
+	
+	$sname = '.jpg';
+	//上传后的图片的处理
+	if($imgfile_type=='image/pjpeg'||$imgfile_type=='image/jpeg'){
+		$sname = '.jpg';
+	}else if($imgfile_type=='image/gif'){
+		$sname = '.gif';
+	}else if($imgfile_type=='image/png'){
+		$sname = '.png';
+	}else if($imgfile_type=='image/wbmp'){
+		$sname = '.bmp';
 	}
-	$fs = explode(".",$imgfile_name);
-	if(eregi("php|asp|pl|shtml|jsp|cgi",$fs[count($fs)-1])){
-		exit();
-	}
-	$bfilename = $cfg_medias_dir."/$y/".$filename.".".$fs[count($fs)-1];
-	$litfilename = $cfg_medias_dir."/$y/".$filename."_lit.".$fs[count($fs)-1];
-	$dbbigfile = $filename.".".$fs[count($fs)-1];
-	$dblitfile = $filename."_lit.".$fs[count($fs)-1];
+	
+	$nowtime = mytime();
+	$savepath = $cfg_user_dir."/".$cfg_ml->M_ID."/".strftime("%y%m",$nowtime);
+  CreateDir($savepath);
+  CloseFtp();
+  $rndname = dd2char(strftime("%d%H%M%S",$nowtime).$cfg_ml->M_ID.mt_rand(1000,9999));
+	$filename = $savepath."/".$rndname;
+	$rndname  = $rndname.$sname; //仅作注解用
+  
+  //大小图URL
+  $bfilename = $filename.$sname;
+	$litfilename = $filename."_lit".$sname;
+	
+  //大小图真实地址
   $fullfilename = $cfg_basedir.$bfilename;
   $full_litfilename = $cfg_basedir.$litfilename;
+  
   if(file_exists($fullfilename)){
-  	ShowMsg("本目录已经存在同名的文件，请更改！","-1");
+  	ShowMsg("本目录已经存在同名的文件，请重试！","-1");
 		exit();
   }
+  
+  //严格检查最终的文件名
+  if(eregi("\.(php|asp|pl|shtml|jsp|cgi|aspx)",$fullfilename)){
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件！","-1");
+		exit();
+	}
+	if(eregi("\.(php|asp|pl|shtml|jsp|cgi|aspx)",$full_litfilename)){
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件！","-1");
+		exit();
+	}
+  
   @move_uploaded_file($imgfile,$fullfilename);
+  
 	$dsql = new DedeSql(false);
 	if($dd=="yes")
 	{
@@ -91,6 +115,10 @@ if($dopost=="upload")
 	$kkkimg = $urlValue;
 	$imgwidthValue = $sizes[0];
 	$imgheightValue = $sizes[1];
+}
+if(!eregi("^http:",$imgsrcValue)){
+  $imgsrcValue = ereg_replace("/{1,}",'/',$imgsrcValue);
+  $urlValue = ereg_replace("/{1,}",'/',$urlValue);
 }
 ?>
 <HTML>
@@ -170,8 +198,8 @@ function UpImgSizeW()
 <body bgcolor="#EBF6CD" leftmargin="4" topmargin="2">
 <form enctype="multipart/form-data" name="form1" id="form1" method="post">
 <input type="hidden" name="dopost" value="upload">
-<input type="hidden" name="himgheight" value="<?=$imgheightValue?>">
-<input type="hidden" name="himgwidth" value="<?=$imgwidthValue?>">
+<input type="hidden" name="himgheight" value="<?php echo $imgheightValue?>">
+<input type="hidden" name="himgwidth" value="<?php echo $imgwidthValue?>">
   <table width="100%" border="0">
     <tr height="20"> 
       <td colspan="3">
@@ -181,16 +209,16 @@ function UpImgSizeW()
           <tr> 
             <td width="65" height="25" align="right">网址：</td>
             <td colspan="2">
-            	<input name="imgsrc" type="text" id="imgsrc" size="30" onChange="SeePic(document.form1.picview,document.form1.imgsrc);" value="<?=$imgsrcValue?>">
+            	<input name="imgsrc" type="text" id="imgsrc" size="30" onChange="SeePic(document.form1.picview,document.form1.imgsrc);" value="<?php echo $imgsrcValue?>">
               <input onClick="SelectMedia('form1.imgsrc');" type="button" name="selimg" value=" 服务器... " class="binput" style="width:80"> 
             </td>
           </tr>
           <tr> 
             <td height="25" align="right">宽度：</td>
             <td colspan="2" nowrap>
-            	<input type="text"  id="imgwidth" name="imgwidth" size="8" value="<?=$imgwidthValue?>" onChange="UpImgSizeW()"> 
+            	<input type="text"  id="imgwidth" name="imgwidth" size="8" value="<?php echo $imgwidthValue?>" onChange="UpImgSizeW()"> 
               &nbsp;&nbsp; 高度: 
-              <input name="imgheight" type="text" id="imgheight" size="8" value="<?=$imgheightValue?>" onChange="UpImgSizeH()">
+              <input name="imgheight" type="text" id="imgheight" size="8" value="<?php echo $imgheightValue?>" onChange="UpImgSizeH()">
               <input type="button" name="Submit" value="原始" class="binput" style="width:40" onclick="UpdateImageInfo()">
               <input name="autoresize" type="checkbox" id="autoresize" value="1" checked>
               自适应
@@ -204,7 +232,7 @@ function UpImgSizeW()
           </tr>
           <tr> 
             <td height="25" align="right">链接：</td>
-            <td width="166" nowrap><input name="url" type="text" id="url" size="30"   value="<?=$urlValue?>"></td>
+            <td width="166" nowrap><input name="url" type="text" id="url" size="30"   value="<?php echo $urlValue?>"></td>
             <td width="155" align="center" nowrap>&nbsp;</td>
           </tr>
 		  <tr>

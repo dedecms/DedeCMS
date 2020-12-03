@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 class OxWindow
 {
@@ -34,7 +34,7 @@ class OxWindow
 	}
 	function StartWin()
 	{
-		$this->myWin .= "<table width='100%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC'>\r\n";
+		$this->myWin .= "<table width='100%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#A5D0F1'>\r\n";
 	}
 	//-----------------------------
 	//增加一个两列的行
@@ -66,7 +66,7 @@ class OxWindow
 	{
 		if($col!=""&&$col!="0") $colspan="colspan='$col'";
 		else $colspan="";
-		$this->myWinItem .= "<tr bgcolor='#EEF4EA'>\r\n";
+		$this->myWinItem .= "<tr bgcolor='#D2EFFD'>\r\n";
     $this->myWinItem .= "<td $colspan background='img/wbg.gif'><font color='#666600'><b>$title</b></font></td>\r\n";
     $this->myWinItem .= "</tr>\r\n";
 	}
@@ -101,7 +101,7 @@ class OxWindow
 			{
 			$this->myWin .= "
 <tr>
-<td colspan='2' bgcolor='#EEF4EA'>
+<td colspan='2' bgcolor='#D2EFFD'>
 <table width='270' border='0' cellpadding='0' cellspacing='0'>
 <tr align='center'>
 <td width='90'><input name='imageField1' type='image' class='np' src='img/button_".$wintype.".gif' width='60' height='22' border='0'></td>
@@ -116,7 +116,7 @@ class OxWindow
 			{
 			$this->myWin .= "
 <tr>
-<td bgcolor='#EEF4EA'>
+<td bgcolor='#CBE4FE'>
 $msg
 </td>
 </tr>";

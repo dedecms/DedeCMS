@@ -31,17 +31,36 @@ function checkSubmit(){
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
-  <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
+  <tr>
+<td height="19" background="img/tbg.gif" colspan="8">
+<form name='formsearch' method='post' action='friendlink_main.php'>
+<ul>
+<li class='fl'><b>友情链接管理</b>&nbsp;</li>
+<li class='fl'>[<a href="friendlink_add.php"><u>增加链接</u></a>]</li>
+<li class='fl'>[<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>外部申请表单</u></a>]</li>
+<li class='fl'><b>搜索：</b></li>
+<li class='fl'><input type='text' name='keyword' style='width:100px'></li>
+<li class='fl'>
+	<select name="ischeck">
+    {dede:global name='seloption'/}
+    <option value="1">内页</option>
+    <option value="2">首页</option>
+    <option value="3">已审核</option>
+    <option value="0">未审核</option>
+  </select>
+</li>
+<li class='fl'>
+<input type='submit' name='sss' value='搜索'>
+</li>
+</ul>
+ </form>
+  </td>
+</tr>
+ <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
   	<input type='hidden' name='dopost' value='delall'/>
   	<input type='hidden' name='allid' value=''/>
-  <tr>
-    <td height="19" background="img/tbg.gif" colspan="8">
-  <b>友情链接管理</b>&nbsp;
-	[<a href="friendlink_add.php"><u>增加链接</u></a>] 
-  [<a href='{dede:global name='cfg_plus_dir' ''/}/flink-add.php' target='_blank'><u>外部申请表单</u></a>]</td>
-</tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+ <tr align="center" bgcolor="#F8FBFB" height="24"> 
           <td width="6%">选择</td>
           <td width="23%">网站名称</td>
           <td width="12%">网站Logo</td>
@@ -77,7 +96,7 @@ function checkSubmit(){
       	
       </td>
      </tr>
-     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+     <tr align="center" bgcolor="#F8FBFB" height="24"> 
       <td colspan="8">{dede:pagelist listsize=6/}</td>
      </tr>
     </form>

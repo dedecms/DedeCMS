@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('spec_List');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -15,7 +15,16 @@ $typeid = $cid;
 if($cuserLogin->getUserRank()<5) $arcrank = -1;
 
 $tl = new TypeLink($cid);
-$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$seltypeids = 0;
+if(!empty($cid)){
+	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ");
+}
+$opall=1;
+if(is_array($seltypeids)){
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+}else{
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'请选择...');
+}
 
 $whereSql = " where #@__archives.channel = -1 ";
 
@@ -30,11 +39,11 @@ if($typeid!=0){
 
 if($arcrank!=""){
 	$whereSql .= " And arcrank=$arcrank ";
-	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."';\" value='所有专题'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."';\" value='所有专题' class='nbt'>";
 }
 else
 {
-	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."&arcrank=-1';\" value='待审核专题'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='content_s_list.php?cid=".$cid."&arcrank=-1';\" value='待审核专题' class='nbt'>";
 }
 
 $tl->Close();

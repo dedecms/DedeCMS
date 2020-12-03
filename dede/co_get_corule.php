@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_AddNote');
 if(empty($job)) $job="";

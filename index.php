@@ -1,8 +1,8 @@
-<?
-if(is_dir(dirname(__FILE__)."/setup"))
-{
-  echo "如果你还没安装本程序，请运行<a href='setup/index.php'> setup/index.php </a>,否则请重命名这个文件夹!";
-  echo "<br>Power by www.dedecms.com";
+<?php 
+if(is_file(dirname(__FILE__)."/setup/notinsall.txt")){
+  echo "·如果你还没安装本程序，请运行<a href='setup/index.php'> setup/index.php </a> 进入安装&gt;&gt;<br/><br/>";
+  echo "·如果你已经安装好程序，请删除 setup/notinsall.txt 这个文件!  <br/><br/>";
+  echo "&nbsp;&nbsp;<a href='http://www.dedecms.com' style='font-size:12px' target='_blank'>Power by DedeCms OX V4.0 &nbsp;织梦内容管理系统</a>";
   exit();
 }
 require_once(dirname(__FILE__)."/include/config_base.php");

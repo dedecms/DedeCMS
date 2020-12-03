@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=$cfg_webname?> - 高级搜索</title>
+<title><?php echo $cfg_webname?> - 高级搜索</title>
 <link href="img/base.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 <!--
@@ -29,8 +29,8 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td height="23" background="img/df_gbg.gif" bgcolor="#E9ECE1"> &nbsp; 
-              <a href='<?=$cfg_indexurl?>'> 
-              <?=$cfg_webname?>
+              <a href='<?php echo $cfg_indexurl?>'> 
+              <?php echo $cfg_webname?>
               </a> - 高级搜索： </td>
           </tr>
           <tr> 
@@ -43,7 +43,7 @@
                   <tr bgcolor="#FFFFFF"> 
                     <td height="25" align="center" width="20%">网站栏目：</td>
                     <td> 
-                      <?
+                      <?php 
               $tl = new TypeLink(0);
               $typeOptions = $tl->GetOptionArray(0,0,0);
               echo "<select name='typeid' style='width:200'>\r\n";
@@ -71,8 +71,8 @@
                   <tr bgcolor="#FFFFFF"> 
                     <td height="25" align="center">内容类型：</td>
                     <td> <select name="channeltype" id="channeltype" style="width:100">
-                        <option value="-1" selected>--不限--</option>
-                        <?
+                        <option value="0" selected>--不限--</option>
+                        <?php 
 					 $dsql = new DedeSql(false);
 					 $dsql->SetQuery("Select ID,typename From #@__channeltype order by ID desc");
 					 $dsql->Execute();
@@ -138,7 +138,7 @@
     </tr>
     <tr> 
       <td height="20" colspan="3" align="center">
-	  <?=$cfg_powerby?>
+	  <?php echo $cfg_powerby?>
 	  </td>
     </tr>
   </table>

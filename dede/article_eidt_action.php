@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
@@ -29,6 +29,8 @@ if(!TestPurview('a_Edit')) {
 	if(TestPurview('a_AccEdit')) CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
 	else CheckArcAdmin($ID,$cuserLogin->getUserID());
 }
+
+$arcrank = GetCoRank($arcrank,$typeid);
 
 //对保存的内容进行处理
 //--------------------------------
@@ -69,10 +71,13 @@ if($description=='' && $cfg_auot_description>0){
 }
 
 //自动获取缩略图
-if($autolitpic==1 && $litpic==''){
+if($autolitpic==1 && empty($litpic)){
   $cfg_medias_dir = str_replace('/','\/',$cfg_medias_dir);
   $picname = preg_replace("/.+?".$cfg_medias_dir."(.*)( |\"|').*$/isU",$cfg_medias_dir."$1",$body);
-  if(eregi("\.(jpg|gif|png)$",$picname)) $litpic = GetDDImage('ddfirst',$picname,0);
+  if(eregi("\.(jpg|gif|png)$",$picname)){
+  	 if(ereg("_lit\.",$picname)) $litpic = $picname;
+  	 else $litpic = GetDDImage('ddfirst',$picname,0);
+  }
 }
 
 $body = addslashes($body);
@@ -86,6 +91,7 @@ update #@__archives set
 typeid='$typeid',
 typeid2='$typeid2',
 sortrank='$sortrank',
+redirecturl='$redirecturl',
 iscommend='$iscommend',
 ismake='$ismake',
 arcrank='$arcrank',
@@ -98,6 +104,7 @@ litpic='$litpic',
 pubdate='$pubdate',
 description='$description',
 keywords='$keywords',
+templet='$templet',
 shorttitle='$shorttitle',
 arcatt='$arcatt'
 

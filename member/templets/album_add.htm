@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>发布图集</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <script language='javascript' src='main.js'></script>	
 <script language="javascript">
 <!--
@@ -53,7 +53,7 @@ function MakeUpload(mnum)
 	   fhtml += "</tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
 	   fhtml += "<td width=\"410\" height=\"25\"> 　本地上传： ";
-	   fhtml += "<?if($cfg_mb_upload=='是'){?><input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"><?}else{ echo "系统禁止了文件上传功能！";}?></td>";
+	   fhtml += "<?php if($cfg_mb_upload=='是'){?><input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"><?php }else{ echo "系统禁止了文件上传功能！";}?></td>";
 	   fhtml += "<td width=\"164\" rowspan=\"3\" align=\"center\"><img src=\"img/pview.gif\" width=\"150\" id=\"picview"+startNum+"\" name=\"picview"+startNum+"\"></td>";
 	   fhtml += "</tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
@@ -78,62 +78,70 @@ function CheckSelTable(nnum){
 </script>
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top">
+    <td valign="top">
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr> 
-          <td background="img/tbg.gif" height="25" class="gdt2">
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
 		  <font color="#333333"> 
-            <strong>　&nbsp;发布新图集：</strong>
-		  </font>
-		</td>
+            <strong>　&nbsp;发布新图集：</strong>		  </font>		</td>
         </tr>
         <tr>
 		  <form action="album_add_action.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit();">
             <input type="hidden" name="dopost" value="addArc"> 
             <input type="hidden" name="channelid" value="2">
           <td height="183" valign="top" style="padding-top:3px">
-		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693" style="margin-bottom:6px">
+		  <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0" style="margin-bottom:6px">
                 <tr bgcolor="#F0FBE3"> 
-                  <td height="24" colspan="4">　<strong>◆常规参数：</strong></td>
+                  <td height="24" colspan="4" bgcolor="#F0FBE3">　<strong>◆常规参数：</strong></td>
                 </tr>
                 <tr> 
-                  <td width="19%" height="28" align="center" bgcolor="#FFFFFF">图集标题：</td>
-                  <td width="81%" colspan="3" bgcolor="#FFFFFF"> <input name="title" type="text" id="title" size="30" class="nb"></td>
+                  <td width="19%" height="28" align="center" bgcolor="#FFFFFF">图集名称：</td>
+                  <td width="81%" colspan="3" bgcolor="#FFFFFF"> <input name="title" type="text" id="title" size="30" class="nb">
+                    <font color="#FF0000">*</font></td>
                 </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">图集来源：</td>
-                  <td colspan="3" bgcolor="#F7FDF0"> <input name="source" type="text" id="source" size="30" class="nb"></td>
+                <tr bgcolor="#F7FDF0">
+                  <td height="28" align="center" bgcolor="#F7FDF0">图片来源：</td>
+                  <td colspan="3" bgcolor="#F7FDF0"><input name="source" type="text" id="source" size="30" class="nb">
+　作者：
+  <input name="writer" type="text" id="writer" size="15" class="nb" value="<?php echo $cfg_ml->M_UserName?>"></td>
                 </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#FFFFFF">图集作者：</td>
-                  <td colspan="3" bgcolor="#FFFFFF"> <input name="writer" type="text" id="writer" size="30" class="nb" value="<?=$cfg_ml->M_UserName?>"></td>
+                <tr bgcolor="#F7FDF0">
+                  <td height="28" align="center" bgcolor="#FFFFFF">隶属栏目：</td>
+                  <td colspan="3" bgcolor="#FFFFFF"><?php 
+           	 $selname = '请选择...';
+           	 $delv = '0';
+           	 if(!empty($cid)){
+           	 	 $crow = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
+           	 	 $selname = $crow['typename'];
+           	 	 $selv = $crow['ID'];
+           	 }
+           	 echo GetTypeidSelMember('form1','typeid','selbt1',2,$selv,$selname,false);
+			       ?></td>
                 </tr>
-                <tr> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">隶属栏目：</td>
-                  <td colspan="3" bgcolor="#F7FDF0">
-                      <?
-           	 $typeOptions = GetOptionList(0,0,2);
-		         echo "<select name='typeid' style='width:300' size='6'>\r\n";
-             echo "<option value='0' selected>请选择栏目...</option>\r\n";
-             echo $typeOptions;
-             echo "</select>";
-			       ?>
-               <br />(只允许并且必须选择白色背景的项目) 
-               </td>
+                <tr bgcolor="#F7FDF0">
+                  <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
+                  <td colspan="3"><table width="200" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="84"><input name="vdcode" type="text" id="vdcode2" size="10"></td>
+                      <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
+                    </tr>
+                  </table></td>
                 </tr>
+                
                 <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center">我的分类：</td>
-                  <td height="28" colspan="3" bgcolor="#F7FDF0"> <select name="mtype" id="mtype" style="width:200">
-                      <option value='0'>请选择分类...</option>
-                      <?
-$dsql->SetQuery("Select * From #@__member_arctype where channelid=2 And memberid='".$cfg_ml->M_ID."';");
+                  <td height="28" align="center" bgcolor="#FFFFFF">我的分类：</td>
+                  <td height="28" colspan="3"> <select name="mtype" id="mtype" style="width:200">
+                      <option value='0'>--请选择分类--</option>
+                      <?php 
+$dsql->SetQuery("Select * From #@__member_arctype where  memberid='".$cfg_ml->M_ID."' And channelid='1';");
 $dsql->Execute();
 while($row = $dsql->GetObject()){
   echo "<option value='".$row->aid."'>".$row->typename."</option>\r\n";
@@ -141,38 +149,28 @@ while($row = $dsql->GetObject()){
 ?>
                     </select></td>
                 </tr>
-                <tr bgcolor="#F7FDF0"> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">验证码：</td>
-                  <td colspan="3" bgcolor="#F7FDF0">
-<table width="200" border="0" cellspacing="0" cellpadding="0">
-                      <tr> 
-                        <td width="84"><input name="vdcode" type="text" id="vdcode2" size="10"></td>
-                        <td width="116"><img src='../include/vdimgck.php' width='50' height='20'></td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
+                <tr bgcolor="#FFFFFF">
+                  <td height="60" align="center" bgcolor="#F7FDF0">图集简介：</td>
+                  <td  bgcolor="#F7FDF0">
+				  <textarea name="description" id="description" style="width:80%;height:50"></textarea>				  </td>
+                  </tr>
                 <tr bgcolor="#FFFFFF"> 
-                  <td height="28" align="center">图集简介：</td>
-                  <td><textarea name="description" id="textarea2" style="width:180;height:60"></textarea> 
-                    <br>
-                    (内容的简要说明) </td>
-                  <td width="15%" align="center">关键词：</td>
-                  <td width="33%"><textarea name="keywords" id="textarea" style="width:180;height:60"></textarea> 
-                    <br>
-                    (多个关键字时用空格分开)</td>
-                </tr>
+                  <td height="28" align="center" bgcolor="#FFFFFF">关键字：</td>
+                  <td bgcolor="#FFFFFF">
+				  <input name="keywords" type="text" id="keywords" style="width:50%;" value="">
+				  (多个关键字用空格分开)				  </td>
+                  </tr>
                 <tr> 
-                  <td height="28" align="center" bgcolor="#F7FDF0">缩略图片：</td>
+                  <td height="28" align="center" bgcolor="#F7FDF0">缩略图：</td>
                   <td colspan="3" bgcolor="#F7FDF0">
-<input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'));"></td>
+<input name="litpic" type="file" id="litpic" style="width:300" onChange="SeePic($Obj('picview'),$Obj('litpic'),$Obj('picarea'));"></td>
                 </tr>
-                <tr> 
+                <tr id="picarea" style="display:none"> 
                   <td colspan="4" align="center" bgcolor="#FFFFFF">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td width="18%" height="110">&nbsp;</td>
-                        <td width="82%"><img src="<? if($row['litpic']){ echo $row['litpic']; }else{ echo "img/pview.gif"; } ?>" id="picview" width="150" height="120"></td>
+                        <td width="82%"><img src="img/pview.gif" id="picview" width="150" height="120"></td>
                       </tr>
                     </table>
                   </td>
@@ -180,7 +178,7 @@ while($row = $dsql->GetObject()){
               </table>
 				
 				
-              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693">
+              <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
                 <tr bgcolor="#F0FBE3">
                   <td height="24" colspan="4">　<strong>◆图集内容：</strong></td>
                 </tr>
@@ -188,7 +186,7 @@ while($row = $dsql->GetObject()){
                   <td width="100%" height="24" colspan="4" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td height="24">宽度限制：</td>
-                        <td><input name="maxwidth" type="text" id="maxwidth" value="<?=$cfg_album_width?>" size="8">
+                        <td><input name="maxwidth" type="text" id="maxwidth" value="<?php echo $cfg_album_width?>" size="8">
                           像素（图片太大会撑坏版面美观，可以在此设定限制）</td>
                       </tr>
                       <tr> 
@@ -220,6 +218,7 @@ while($row = $dsql->GetObject()){
       </table> </td>
   </tr>
 </table>
-<? include(dirname(__FILE__)."/foot.htm"); ?>
+<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
 </body>
 </html>

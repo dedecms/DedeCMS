@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_MakeHtml');
 $t1 = ExecTime();
@@ -12,6 +12,7 @@ if(empty($typeid)) $typeid = 0;
 if(empty($seltime)) $seltime = 0;
 if(empty($stime)) $stime = "";
 if(empty($etime)) $etime = "";
+if(empty($sss)) $sss = time();
 
 $dsql = new DedeSql(false);
 //获取条件
@@ -66,12 +67,17 @@ $t2 = ($t2 - $t1);
 if($totalnum>0) $tjlen = ceil( ($tjnum/$totalnum) * 100 );
 else $tjlen=100;
 $dvlen = $tjlen * 2;
+$nntime = time();
+$utime = $nntime - $sss;
+if($utime>0){
+	$utime = number_format(($utime/60),2);
+}
 $tjsta = "<div style='width:200;height:15;border:1px solid #898989;text-align:left'><div style='width:$dvlen;height:15;background-color:#829D83'></div></div>";
-$tjsta .= "<br/>本次用时：".number_format($t2,2)." 到达位置：".($startdd+$pagesize)."<br/>完成创建文件总数的：$tjlen %，继续执行任务...";
+$tjsta .= "<br>本次用时：".number_format($t2,2)." 到达位置：".($startdd+$pagesize)."<br/>完成创建文件总数的：$tjlen %，<br> 总用时: {$utime} 分钟， 继续执行任务...";
 
 if($tjnum < $totalnum)
 {
-	$nurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid&typeid=$typeid";
+	$nurl  = "makehtml_archives_action.php?sss=$sss&endid=$endid&startid=$startid&typeid=$typeid";
 	$nurl .= "&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize";
 	$nurl .= "&seltime=$seltime&stime=".urlencode($stime)."&etime=".urlencode($etime);
 	$dsql->Close();
@@ -81,7 +87,7 @@ if($tjnum < $totalnum)
 else
 {
 	$dsql->Close();
-	echo "完成所有创建任务！";
+	echo "完成所有创建任务，总用时: {$utime} 分钟 。";
 	exit();
 }
 

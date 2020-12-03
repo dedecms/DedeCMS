@@ -6,7 +6,7 @@
 <link href="div.css" rel="stylesheet" type="text/css">
 <style>
 	.nnpp{
-	border-bottom:1px solid #666666;
+	border-bottom:1px solid #98CAEF;
 	border-top:1px solid #FFFFFF;
 	border-left:1px solid #FFFFFF;
 	border-right:1px solid #FFFFFF;
@@ -17,16 +17,17 @@
 <script language='javascript' src='main.js'></script>
 <script language="JavaScript">
 var pageno = 1;
-var totalrow = <?=$totalRow?>;
-var pagesize = <?=$pagesize?>;
-var orderby = '<?=$orderby?>';
+var totalrow = <?php echo $totalRow?>;
+var pagesize = <?php echo $pagesize?>;
+var orderby = '<?php echo $orderby?>';
+var addget = "<?php echo $addget?>";
 //加载列表
 function ReloadPage(ordertype){
 	orderby = ordertype;
 	var listArea = $Obj('rslist');
 	var errMsg = "网络通信出错！<br>[<a href=\"javascript:ReloadPage('"+ordertype+"')\"><u>点击此重新加载列表</u></a>]";
   var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在加载...");
-  myajax.SendGet("search_keywords_main.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype);
+  myajax.SendGet("search_keywords_main.php?dopost=getlist&pageno="+pageno+"&orderby="+ordertype+addget);
 }
 //载入指定页的列表
 function LoadPage(npage){
@@ -66,7 +67,8 @@ function ReloadPageNum(startnum){
   var ahtml = "";
   var startloop = 1;
   var endnum = 0;
-  ahtml += "共："+totalrow+" 条记录/"+pagenum+"页 ";
+  ahtml += "共："+totalrow+" 条记录/"+pagenum+"页";
+  if(pageno>1 && pageno!=1) ahtml += " <a href='#' onclick='LoadPage(1)'>首页</a> ";
   if(pageno>1) ahtml += "<a href='#' onclick='LoadPage("+(pageno-1)+")'>↑上页</a> ";
   if(startnum >= pagenum-listsize){
   	startloop = pagenum-(listsize*2);
@@ -93,6 +95,7 @@ function ReloadPageNum(startnum){
   	}
   }
   if(pageno<pagenum) ahtml += "<a href='#' onclick='LoadPage("+(pageno+1)+")'>下页↓</a> ";
+  if(pageno!=pagenum && pagenum>1) ahtml += " <a href='#' onclick='LoadPage("+pagenum+")'>末页</a>";
   ListArea.innerHTML = ahtml;
 }
 </script>
@@ -101,19 +104,28 @@ function ReloadPageNum(startnum){
 <div class="main"> 
   <table width="99%" border="0" cellpadding="1" cellspacing="1" bgcolor="#333333" style="margin-bottom:3px">
     <tr> 
-      <td height="26" colspan="8" background="img/tbg.gif"><table width="96%" border="0">
+      <td height="25" colspan="8" valign="bottom" background="img/tbg.gif"> 
+        <table width="96%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="31%"><strong>搜索关键词维护</strong></td>
-            <td width="69%" align="right">
-            	&nbsp;
-            	<input class="coolbt" name="n1" type="button" id="n1" value="文档关键字维护" onClick="location='article_keywords_main.php';" style="width:135"> 
-            </td>
+            <td width="29%"><strong>&nbsp;搜索关键词维护</strong></td>
+            <td width="42%"><table width="250" border="0" cellspacing="0" cellpadding="0">
+                <form action="search_keywords_main.php" name="form1">
+                  <tr> 
+                    <td width="179" align="center"> <input name="keyword" type="text" id="keyword" style="width:170px" value="<?php echo $keyword?>"> 
+                    </td>
+                    <td width="121"> <input type="submit" name="Submit" value="搜索" class="nbt"> 
+                    </td>
+                  </tr>
+                </form>
+              </table></td>
+            <td width="29%" align="right"><input class="nbt" name="n1" type="button" id="n1" value="文档关键字维护" onClick="location='article_keywords_main.php';" style="width:135"></td>
           </tr>
-        </table></td>
+        </table>
+      </td>
     </tr>
 	</table>
 	<span id='rslist'>
-	<?
+	<?php 
 		GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	?>
 	</span>

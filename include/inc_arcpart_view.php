@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/inc_channel_unit.php");
 require_once(dirname(__FILE__)."/inc_typelink.php");
 /******************************************************
@@ -125,7 +125,7 @@ class PartView
  				        $titlelen,$infolen,$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
  				        $ctag->GetAtt("type"),$orderby,$ctag->GetAtt("keyword"),$innertext,
                 $ctag->GetAtt("tablewidth"),0,"",$channelid,$ctag->GetAtt("limit"),$ctag->GetAtt("att"),
-                $ctag->GetAtt("orderway"),$ctag->GetAtt("subday"),$autopartid
+                $ctag->GetAtt("orderway"),$ctag->GetAtt("subday"),$autopartid,$ctag->GetAtt("ismember")
              )
  				  );
  			}else if($tagname=="channelartlist"){
@@ -136,7 +136,7 @@ class PartView
  			}else if($tagname=="hotwords"){
  				 //热门关键字
  				 $this->dtp->Assign($tagid,
- 				 GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength')));
+ 				 GetHotKeywords($this->dsql,$ctag->GetAtt('num'),$ctag->GetAtt('subday'),$ctag->GetAtt('maxlength'),$ctag->GetAtt('orderby')));
  			}
  			else if($tagname=="channel"){
  				//获得栏目连接列表
@@ -201,7 +201,8 @@ class PartView
   //---------------------------------
   function GetArcList($typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
   $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$keyword="",$innertext="",
-  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limit="",$att=0,$order='desc',$subday=0,$autopartid=-1)
+  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limit="",$att=0,$order='desc',$subday=0,
+  $autopartid=-1,$ismember=0)
   {
      if(empty($autopartid)) $autopartid = -1;
      if(empty($typeid)) $typeid=$this->TypeID;
@@ -211,7 +212,7 @@ class PartView
      }
      if(!isset($GLOBALS['__SpGetArcList'])) require_once(dirname(__FILE__)."/inc/inc_fun_SpGetArcList.php");
      return SpGetArcList($this->dsql,$typeid,$row,$col,$titlelen,$infolen,$imgwidth,$imgheight,$listtype,
-            $orderby,$keyword,$innertext,$tablewidth,$arcid,$idlist,$channelid,$limit,$att,$order,$subday);
+            $orderby,$keyword,$innertext,$tablewidth,$arcid,$idlist,$channelid,$limit,$att,$order,$subday,$ismember);
   }
   //GetChannelList($typeid=0,$col=2,$tablewidth=100,$innertext="")
   //获得一个包含下级类目文档列表信息列表

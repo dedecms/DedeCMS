@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/config_base.php");
 if(empty($dopost)) $dopost="";
 $dsql = new DedeSql(false);

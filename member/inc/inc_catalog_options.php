@@ -1,4 +1,4 @@
-<?
+<?php 
 function GetOptionList($selid=0,$userCatalog=0,$channeltype=0)
 {
     global $OptionArrayList,$channels,$dsql;

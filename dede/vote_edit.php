@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_投票模块');
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
@@ -48,7 +48,7 @@ $row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><b>投票管理</b>&gt;&gt;增加投票&nbsp;&nbsp;[<a href="vote_main.php"><u>管理以往投票内容记录</u></a>]</td>
 </tr>
@@ -56,36 +56,36 @@ $row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
     <td height="200" bgcolor="#FFFFFF" valign="top">
 	<form name="form1" method="post" action="vote_edit.php">
 	<input type="hidden" name="dopost" value="saveedit">
-	<input type="hidden" name="aid" value="<?=$aid?>">
+	<input type="hidden" name="aid" value="<?php echo $aid?>">
 	    <table width="100%" border="0" cellspacing="4" cellpadding="4">
           <tr> 
             <td width="15%" align="center">投票名称：</td>
-            <td width="85%"> <input name="votename" type="text" id="votename" value="<?=$row['votename']?>"> 
+            <td width="85%"> <input name="votename" type="text" id="votename" value="<?php echo $row['votename']?>"> 
             </td>
           </tr>
           <tr>
             <td align="center">投票总人数：</td>
-            <td><input name="totalcount" type="text" id="totalcount" value="<?=$row['totalcount']?>"></td>
+            <td><input name="totalcount" type="text" id="totalcount" value="<?php echo $row['totalcount']?>"></td>
           </tr>
           <tr> 
             <td align="center">开始时间：</td>
-            <td><input name="starttime" type="text" id="starttime" value="<?=GetDateMk($row['starttime'])?>"></td>
+            <td><input name="starttime" type="text" id="starttime" value="<?php echo GetDateMk($row['starttime'])?>"></td>
           </tr>
           <tr> 
             <td align="center">结束时间：</td>
-            <td><input name="endtime" type="text" id="endtime" value="<?=GetDateMk($row['endtime'])?>"></td>
+            <td><input name="endtime" type="text" id="endtime" value="<?php echo GetDateMk($row['endtime'])?>"></td>
           </tr>
           <tr> 
             <td align="center">是否多选：</td>
-            <td> <input name="ismore" type="radio" class="np" value="0"<?if($row['ismore']==0) echo " checked";?>>
+            <td> <input name="ismore" type="radio" class="np" value="0"<?php if($row['ismore']==0) echo " checked";?>>
               单选 　 
-              <input type="radio" name="ismore" class="np" value="1"<?if($row['ismore']==1) echo " checked";?>>
+              <input type="radio" name="ismore" class="np" value="1"<?php if($row['ismore']==1) echo " checked";?>>
               多选 </td>
           </tr>
           <tr> 
             <td align="center">投 票 项：<br/>
               (请按相同的形式来增加或修改节点，其中属性：id不能重复) </td>
-            <td><textarea name="votenote" rows="8" id="votenote" style="width:80%"><?=$row['votenote']?></textarea> 
+            <td><textarea name="votenote" rows="8" id="votenote" style="width:80%"><?php echo $row['votenote']?></textarea> 
             </td>
           </tr>
           <tr> 
@@ -100,7 +100,7 @@ $row = $dsql->GetOne("Select * From #@__vote where aid='$aid'");
 	  </td>
 </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

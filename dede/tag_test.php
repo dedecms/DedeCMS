@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('temp_Other');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -24,7 +24,7 @@ function SelectTemplets(fname)
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
     <input type="hidden" name="dopost" value="make">
     <tr> 
@@ -52,7 +52,7 @@ function SelectTemplets(fname)
     <tr> 
       <td width="103" height="20" valign="top" bgcolor="#FFFFFF">环境变量：</td>
       <td width="865" height="20" valign="top" bgcolor="#FFFFFF">&nbsp;
-      	<?
+      	<?php 
        if(empty($cid)) $cid="0";
        $tl = new TypeLink($cid);
        $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0);
@@ -65,12 +65,12 @@ function SelectTemplets(fname)
       </td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center">
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center">
       	<input type="submit" name="Submit" value="提交测试"> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"><table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/pub_charset.php");
 /*******************************
 //HTML½âÎöÆ÷

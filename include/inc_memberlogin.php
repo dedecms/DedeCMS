@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_base.php");
 
 //检测用户上传空间
@@ -54,14 +54,15 @@ class MemberLogin
 	var $M_ID;
 	var $M_LoginID;
 	var $M_Type;
-	var $M_UType;
 	var $M_Money;
 	var $M_UserName;
 	var $M_MySafeID;
 	var $M_LoginTime;
 	var $M_KeepTime;
 	var $M_UserPwd;
-	var $M_Upmoney;
+	var $M_UpTime;
+ 	var $M_ExpTime;
+ 	var $M_HasDay;
 	//php5构造函数
 	function __construct($kptime = 0)
  	{
@@ -69,23 +70,29 @@ class MemberLogin
  		else $this->M_KeepTime = $kptime;
  		$this->M_ID = $this->GetNum(GetCookie("DedeUserID"));
  		$this->M_LoginTime = GetCookie("DedeLoginTime");
+ 		if(empty($this->M_LoginTime)) $this->M_LoginTime = time();
  		if(empty($this->M_ID)){
  			$this->ResetUser();
  		}else{
  		  $this->M_ID = ereg_replace("[^0-9]","",$this->M_ID);
  		  $dsql = new DedeSql(false);
- 		  $row = $dsql->GetOne("Select ID,userid,pwd,uname,membertype,uptype,money,upmoney From #@__member where ID='{$this->M_ID}' ");
+ 		  $row = $dsql->GetOne("Select ID,userid,pwd,uname,membertype,money,uptime,exptime From #@__member where ID='{$this->M_ID}' ");
  		  if(is_array($row)) $dsql->ExecuteNoneQuery("update #@__member set logintime='".mytime()."' where ID='".$row['ID']."';");
  		  $dsql->Close();
  		  if(is_array($row)){
  		    $this->M_LoginID = $row['userid'];
  		    $this->M_UserPwd = $row['pwd'];
  		    $this->M_Type = $row['membertype'];
- 		    $this->M_UType = $row['uptype'];
  		    $this->M_Money = $row['money'];
  		    $this->M_UserName = $row['uname'];
- 		    $this->M_Upmoney = $row['upmoney'];
- 		    
+ 		    $this->M_UpTime = $row['uptime'];
+ 		    $this->M_ExpTime = $row['exptime'];
+ 		    $this->M_HasDay = 0;
+ 		    if($this->M_UpTime>0){
+ 		    	$nowtime = time();
+ 		    	$mhasDay = $this->M_ExpTime - ceil(($nowtime - $this->M_UpTime)/3600/24) + 1;
+ 		    	$this->M_HasDay = $mhasDay;
+ 		    }
  		  }else{
  		  	$this->ResetUser();
  		  }
@@ -107,11 +114,13 @@ class MemberLogin
   function ResetUser(){
   	$this->M_ID = 0;
  		$this->M_LoginID = "";
- 		$this->M_Type = 0;
- 		$this->M_UType = 0;
+ 		$this->M_Type = -1;
  		$this->M_Money = 0;
  		$this->M_UserName = "";
  		$this->M_LoginTime = 0;
+ 		$this->M_UpTime = 0;
+ 		$this->M_ExpTime = 0;
+ 		$this->M_HasDay = 0;
  		DropCookie("DedeUserID");
  		DropCookie("DedeLoginTime");
   }
@@ -122,7 +131,7 @@ class MemberLogin
   }
   //用户登录
   function CheckUser($loginuser,$loginpwd){
- 		$loginuser = ereg_replace("[;%' \\\?\*\$\r\n\t]","",$loginuser);
+ 		$loginuser = ereg_replace("[;%'\\\?\*\$]","",$loginuser);
  		$dsql = new DedeSql(false);
  		$row = $dsql->GetOne("Select ID,pwd From #@__member where userid='$loginuser' ");
  		$dsql->Close();
@@ -149,19 +158,15 @@ class MemberLogin
   function GetSta($dsql)
   {
   	$sta = "";
-  	if($this->M_Type==0) $sta .= "你目前的身份是：普通会员";
+  	if($this->M_Type==0) $sta .= "你目前的身份是：未审核会员 ";
   	else{
   		$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$this->M_Type."'");
   		$sta .= "你目前的身份是：".$row['membername'];
+  		if($this->M_Type>10){
+  			$sta .= " 剩余天数: ".$this->M_HasDay."  天 ";
+  		}
   	}
-  	if($this->M_UType>0){
-  		$row = $dsql->GetOne("Select membername From #@__arcrank where rank='".$this->M_UType."'");
-  	  $mname = $row['membername'];
-  	  $sta .= " 正在申请升级为：$mname ";
-  	}
-  	$sta .= " 你目前拥有金币：".$this->M_Money." 个";
-  	if($this->M_Upmoney>0) $sta .= "，正在申请 ".$this->M_Upmoney." 个金币";
-  	$sta .= "。";
+  	$sta .= " 你目前拥有金币：".$this->M_Money." 个。";
   	return $sta;
   }
 }

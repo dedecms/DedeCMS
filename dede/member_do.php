@@ -1,11 +1,11 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_oxwindow.php");
 
 if(empty($dopost)) $dopost = "";
 if(empty($fmdo)) $fmdo = "";
-if(!isset($_COOKIE['ENV_GOBACK_URL'])) $ENV_GOBACK_URL = "";
-else $ENV_GOBACK_URL="member_main.php";
+
+if(!isset($ENV_GOBACK_URL)) $ENV_GOBACK_URL = '';
 
 /*----------------
 function __DelMember()
@@ -19,12 +19,12 @@ if($dopost=="delmember")
 	{
 		$ID = ereg_replace("[^0-9]","",$ID);
 		$dsql = new DedeSql(false);
-		$dsql->SetQuery("Delete From #@__member where ID='$ID'");
-		$dsql->ExecuteNoneQuery();
-		$dsql->SetQuery("Delete From #@__memberstow where uid='$ID'");
-		$dsql->ExecuteNoneQuery();
-		$dsql->SetQuery("update #@__archives set memberID='0' where memberID='$ID'");
-		$dsql->ExecuteNoneQuery();
+		$dsql->ExecuteNoneQuery("Delete From #@__member where ID='$ID'");
+		$dsql->ExecuteNoneQuery("Delete From #@__memberstow where uid='$ID'");
+		$dsql->ExecuteNoneQuery("Delete From #@__member_guestbook where mid='$ID'");
+		$dsql->ExecuteNoneQuery("Delete From #@__member_arctype where memberid='$ID'");
+		$dsql->ExecuteNoneQuery("Delete From #@__member_flink where mid='$ID'");
+		$dsql->ExecuteNoneQuery("update #@__archives set memberID='0' where memberID='$ID'");
 		$dsql->Close();
 		ShowMsg("成功删除一个会员！",$ENV_GOBACK_URL);
 		exit();
@@ -41,6 +41,54 @@ if($dopost=="delmember")
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
+/*-----------------------------
+function __UpOperations()
+业务状态更改为已付款状态
+------------------------------*/
+else if($dopost=="upoperations")
+{
+	CheckPurview('member_Operations');
+	if($nid==''){
+		ShowMsg("没选定要更改的业务记录！","-1");
+		exit();
+	}
+	$nids = explode('`',$nid);
+  $wh = '';
+	foreach($nids as $n){
+		if($wh=='') $wh = " where aid='$n' ";
+		else $wh .= " Or aid='$n' ";
+	}
+	$dsql = new DedeSql(false);
+	$dsql->SetQuery("update #@__member_operation set sta=1 $wh ");
+	$dsql->ExecuteNoneQuery();
+	$dsql->Close();
+	ShowMsg("成功更改指定的业务记录！",$ENV_GOBACK_URL);
+	exit();
+}	
+/*----------------------------
+function __OkOperations()
+业务状态更改改完成状态
+-----------------------------*/
+else if($dopost=="okoperations")
+{
+	CheckPurview('member_Operations');
+	if($nid==''){
+		ShowMsg("没选定要更改的业务记录！","-1");
+		exit();
+	}
+	$nids = explode('`',$nid);
+  $wh = '';
+	foreach($nids as $n){
+		if($wh=='') $wh = " where aid='$n' ";
+		else $wh .= " Or aid='$n' ";
+	}
+	$dsql = new DedeSql(false);
+	$dsql->SetQuery("update #@__member_operation set sta=2 $wh ");
+	$dsql->ExecuteNoneQuery();
+	$dsql->Close();
+	ShowMsg("成功更改指定的业务记录！",$ENV_GOBACK_URL);
+	exit();
+}	
 /*----------------
 function __UpRank()
 会员升级
@@ -154,7 +202,12 @@ else if($dopost=="edituser")
 {
 	CheckPurview('member_Edit');
 	$dsql = new DedeSql(false);
+	$uptime =  GetMkTime($uptime);
 	$query = "update #@__member set 
+ 	  membertype = '$membertype',
+ 	  uptime = '$uptime',
+ 	  exptime = '$exptime',
+ 	  money = '$money',
  	  email = '$email',
     uname = '$uname',
     sex = '$sex',
@@ -175,7 +228,7 @@ else if($dopost=="edituser")
     address = '$address'
  	  where ID='$ID'";
 	$dsql->SetQuery($query);
-	$dsql->ExecuteNoneQuery();
+	$rs = $dsql->ExecuteNoneQuery();
   $dsql->Close();
   ShowMsg("成功更改会员资料！",$ENV_GOBACK_URL);
   exit();

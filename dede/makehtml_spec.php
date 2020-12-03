@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_MakeHtml');
 if(empty($dopost)) $dopost = "";
@@ -19,7 +19,7 @@ if($dopost=="ok")
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="makehtml_spec.php" method="get" target='stafrm'>
   <input type="hidden" name="dopost" value="ok">
     <tr> 
@@ -32,15 +32,16 @@ if($dopost=="ok")
     </tr>
     <tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">说明：默认的情况下，系统用动态程序“ 
-        <?=$cfg_cmspath.$cfg_special."/index.php"?>
+        <?php echo $cfg_cmspath.$cfg_special."/index.php"?>
         ”读取专题列表，更新HTML后，系统会自动识别静<strong>态</strong>文件。</td>
     </tr>
     <tr> 
-      <td height="20" bgcolor="#FAFAF1" align="center"> <input name="b112" type="button" class="np2" value="开始生成HTML" onClick="document.form1.submit();" style="width:100"> 
+      <td height="20" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button" class='nbt' value="开始生成HTML" onClick="document.form1.submit();" style="width:100"> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

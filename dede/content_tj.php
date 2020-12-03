@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_ArcTj');
 $dsql = new DedeSql(false);
@@ -33,7 +33,7 @@ function GetArchives($dsql,$ordertype)
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="100%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="100%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'>
       	<strong>文档信息统计：</strong>
@@ -51,15 +51,15 @@ function GetArchives($dsql,$ordertype)
           <td><table width="300" border="0" cellpadding="1" cellspacing="1" bgcolor="#996666">
               <tr bgcolor="#FFFFFF"> 
                 <td width="140" bgcolor="#F3ECDA">&nbsp;文档总数：</td>
-                <td width="152">　［<?=$row1['dd']?>］</td>
+                <td width="152">　［<?php echo $row1['dd']?>］</td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
                 <td bgcolor="#F3ECDA">&nbsp;评论总数：</td>
-                <td>　［<?=$row2['dd']?>］</td>
+                <td>　［<?php echo $row2['dd']?>］</td>
               </tr>
               <tr bgcolor="#FFFFFF"> 
                 <td bgcolor="#F3ECDA">&nbsp;会员总数：</td>
-                <td>　［<?=$row3['dd']?>］</td>
+                <td>　［<?php echo $row3['dd']?>］</td>
               </tr>
             </table></td>
         </tr>
@@ -75,21 +75,21 @@ function GetArchives($dsql,$ordertype)
                 <td width="140" bgcolor="#E8E6D7">频道名称</td>
                 <td>文档总数</td>
               </tr>
-              <?
+              <?php 
               $dsql->SetQuery("Select ID,typename From #@__channeltype");
               $dsql->Execute();
               while($row = $dsql->GetObject()){
               ?>
               <tr align="center" bgcolor="#FFFFFF"> 
-                <td><?=$row->typename?></td>
+                <td><?php echo $row->typename?></td>
                 <td>
-                ［<?
+                ［<?php 
                 $row1 = $dsql->GetOne("Select count(*) as dd From #@__archives where channel='{$row->ID}'");
                 echo $row1['dd'];
                 ?>］
                 </td>
               </tr>
-              <? } ?>
+              <?php  } ?>
             </table></td>
         </tr>
         <tr> 
@@ -111,7 +111,7 @@ function GetArchives($dsql,$ordertype)
                         <table width="98%" border="0" cellspacing="0" cellpadding="0">
                           <tr>
                             <td>
-                              <?GetArchives($dsql,'Hot')?>
+                              <?php GetArchives($dsql,'Hot')?>
                             </td>
                           </tr>
                         </table>
@@ -129,7 +129,7 @@ function GetArchives($dsql,$ordertype)
                         <table width="98%" border="0" cellspacing="0" cellpadding="0">
                           <tr> 
                             <td>
-                              <?GetArchives($dsql,'Feedback')?>
+                              <?php GetArchives($dsql,'Feedback')?>
                             </td>
                           </tr>
                         </table> </td>
@@ -153,7 +153,7 @@ function GetArchives($dsql,$ordertype)
                         <table width="98%" border="0" cellspacing="0" cellpadding="0">
                           <tr> 
                             <td>
-                              <?GetArchives($dsql,'monthHot')?>
+                              <?php GetArchives($dsql,'monthHot')?>
                             </td>
                           </tr>
                         </table> </td>
@@ -170,7 +170,7 @@ function GetArchives($dsql,$ordertype)
                         <table width="98%" border="0" cellspacing="0" cellpadding="0">
                           <tr> 
                             <td>
-                              <?GetArchives($dsql,'monthFeedback')?>
+                              <?php GetArchives($dsql,'monthFeedback')?>
                             </td>
                           </tr>
                         </table> </td>
@@ -192,7 +192,7 @@ function GetArchives($dsql,$ordertype)
     <td height="20" colspan="2" bgcolor="#DFE9C0"></td>
     </tr>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

@@ -1,6 +1,7 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
+require_once(dirname(__FILE__)."/../include/inc_imgbt.php");
 CheckRank(0,0);
 
 $aid = ereg_replace("[^0-9]","",$aid);

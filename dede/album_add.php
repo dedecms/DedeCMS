@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 $channelid="2";
@@ -65,7 +65,7 @@ function MakeUpload(mnum)
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
 	   fhtml += "<td height=\"25\"> 　指定网址： ";
 	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' style=\"width:260px\"> ";
-	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\">";
+	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" class='nbt' onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\">";
 	   fhtml += "</td></tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
 	   fhtml += "<td height=\"56\">　图片简介： ";
@@ -80,18 +80,18 @@ function MakeUpload(mnum)
 </head>
 <body topmargin="8">
 <form name="form1" action="album_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
-<input type="hidden" name="channelid" value="<?=$channelid?>">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
 <input type="hidden" name="imagebody" value="">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr> 
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
         &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;发布新图集</td>
+      <td width="85%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;发布新图集</td>
       <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
     <tr> 
       <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr> 
@@ -153,7 +153,7 @@ function MakeUpload(mnum)
             <td width="90">自定义属性：</td>
             <td> <select name='arcatt' style='width:150'>
                 <option value='0'>普通文档</option>
-                <?
+                <?php 
             	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
             	$dsql->Execute();
             	while($trow = $dsql->GetObject())
@@ -183,7 +183,7 @@ function MakeUpload(mnum)
                 </tr>
                 <tr> 
                   <td height="30"> <input name="picname" type="text" id="picname" style="width:250"> 
-                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');"> 
+                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" class='nbt' onClick="SelectImage('form1.picname','small');"> 
                   </td>
                 </tr>
               </table></td>
@@ -215,7 +215,7 @@ function MakeUpload(mnum)
             <td width="90">标题颜色：</td>
             <td width="159"> <input name="color" type="text" id="color" style="width:120"> 
             </td>
-            <td> <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"> 
+            <td> <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -225,7 +225,7 @@ function MakeUpload(mnum)
           <tr> 
             <td width="90">&nbsp;阅读权限：</td>
             <td width="240"> <select name="arcrank" id="arcrank" style="width:150">
-                <?
+                <?php 
               $urank = $cuserLogin->getUserRank();
               $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
               $dsql->Execute();
@@ -253,7 +253,7 @@ function MakeUpload(mnum)
             <td width="90">关键字：</td>
             <td width="234"> <textarea name="keywords" rows="3" id="keywords" style="width:200"></textarea> 
             </td>
-            <td width="146" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"> 
+            <td width="146" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -263,7 +263,7 @@ function MakeUpload(mnum)
           <tr> 
             <td width="90">&nbsp;发布时间：</td>
             <td width="240"> 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>
@@ -279,15 +279,16 @@ function MakeUpload(mnum)
       <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;图集主栏目：</td>
-            <td width="400"> 
-              <?
-           	 $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
-		         echo "<select name='typeid' style='width:300'>\r\n";
-             echo "<option value='0'>请选择主分类...</option>\r\n";
-             echo $typeOptions;
-             echo "</select>";
-			       ?>
-            </td>
+            <td width="400"><?php 
+           	if(empty($cid)) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		          echo "<select name='typeid' style='width:300'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?></td>
             <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
           </tr>
         </table></td>
@@ -297,12 +298,7 @@ function MakeUpload(mnum)
           <tr> 
             <td width="90">&nbsp;图集副栏目：</td>
             <td> 
-              <?
-            echo "<select name='typeid2' style='width:300'>\r\n";
-            echo "<option value='0' selected>请选择副分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-            ?>
+              <?php echo GetTypeidSel('form1','typeid2','selbt2',$channelid)?>
             </td>
           </tr>
         </table></td>
@@ -322,12 +318,14 @@ function MakeUpload(mnum)
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="80">&nbsp;表现方式：</td>
-            <td> <input name="pagestyle" type="radio" class="np" value="1">
+            <td>
+            	<input name="pagestyle" type="radio" class="np" value="1">
               单页显示 
-              <input name="pagestyle" class="np" type="radio" value="2" checked>
+              <input name="pagestyle" class="np" type="radio" value="2">
               分多页显示 
-              <input type="radio" name="pagestyle" value="3" class="np">
-              多行多列展示</td>
+              <input type="radio" name="pagestyle" value="3" class="np" checked>
+              多行多列展示
+             </td>
           </tr>
         </table></td>
     </tr>
@@ -338,8 +336,8 @@ function MakeUpload(mnum)
             <td>行 
               <input name="row" type="text" id="row" value="3" size="6">
               　列 
-              <input name="col" type="text" id="col" value="3" size="6">
-              　图片宽度限制： 
+              <input name="col" type="text" id="col" value="4" size="6">
+              　小图片宽度限制： 
               <input name="ddmaxwidth" type="text" id="ddmaxwidth" value="150" size="6">
               像素</td>
           </tr>
@@ -348,9 +346,9 @@ function MakeUpload(mnum)
     <tr> 
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="80">&nbsp;限制宽度：</td>
-            <td><input name="maxwidth" type="text" id="maxwidth" size="10" value="<?=$cfg_album_width?>">
-              (防止图片太宽在模板页中溢出) </td>
+            <td width="80">&nbsp;大图限制宽度：</td>
+            <td><input name="maxwidth" type="text" id="maxwidth" size="10" value="<?php echo $cfg_album_width?>">
+              像素(防止图片太宽在模板页中溢出) </td>
           </tr>
         </table></td>
     </tr>
@@ -369,7 +367,7 @@ function MakeUpload(mnum)
             <td width="80">&nbsp;图片：</td>
             <td> 
               <input name="picnum" type="text" id="picnum" size="8" value="10"> 
-              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);">
+              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);" class='nbt'>
               （ 注：最大60幅，手工指定的图片链接允许填写远程网址） </td>
           </tr>
         </table></td>
@@ -377,8 +375,9 @@ function MakeUpload(mnum)
     <tr> 
       <td height="24" colspan="4" class="bline"> <span id="uploadfield"></span> 
         <script language="JavaScript">
-	         MakeUpload(7);
-	      </script> </td>
+	         MakeUpload(13);
+	      </script>
+	     </td>
     </tr>
   </table>
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -400,7 +399,7 @@ function MakeUpload(mnum)
 </table>
 </form>
 <script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

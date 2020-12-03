@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('pic_view');
 if(empty($activepath)) $activepath=$cfg_medias_dir;
@@ -162,35 +162,35 @@ function getPic(str)
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <form name="form1">
   <tr> 
-    <td height="10" colspan="<?=$listSize?>"></td>
+    <td height="10" colspan="<?php echo $listSize?>"></td>
   </tr>
   <tr> 
-    <td colspan="<?=$listSize?>">
+    <td colspan="<?php echo $listSize?>">
 	<table width="98%" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
         <tr> 
           <td width="4%" align="center" bgcolor="#F9F9F7" height="24"><img src="img/file_dir.gif" width="16" height="16"></td>
-          <td width="55%" align="center" bgcolor="#F9F9F7"><input name="activepath" type="text" id="path" size="30"  style="height:15pt" value="<?=$activepath?>"></td>
+          <td width="55%" align="center" bgcolor="#F9F9F7"><input name="activepath" type="text" id="path" size="30"  style="height:15pt" value="<?php echo $activepath?>"></td>
           <td width="20%" bgcolor="#F9F9F7">
           <table width="100%" border="0" cellspacing="1" cellpadding="0">
                 <tr> 
                   <td width="6%">&nbsp;</td>
                   <td width="44%"><input name="imageField" type="image" src="img/next.gif" width="52" height="20" border="0" style="border:0;height:20"></td>
                   
-              <td width="50%"><a href="file_manage_main.php?activepath=<?=$activepath?>"><img src="img/file_view.gif" width="60" height="20" border="0"></a></td>
+              <td width="50%"><a href="file_manage_main.php?activepath=<?php echo $activepath?>"><img src="img/file_view.gif" width="60" height="20" border="0"></a></td>
                 </tr>
               </table></td>
           <td width="22%" bgcolor="#F9F9F7">
           <table width="100%" border="0" cellspacing="1" cellpadding="0">
               <tr> 
                 <td width="18%" align="right"><img src="img/file_topdir.gif" width="18" height="17"></td>
-                <td width="82%"><? GetPrePath($activepath); ?></td>
+                <td width="82%"><?php  GetPrePath($activepath); ?></td>
               </tr>
             </table></td>
         </tr>
       </table></td>
   </tr>
-  <tr><td height="4" colspan="<?=$listSize?>"></td></tr>
-  <? ListPic($truePath,$activepath); ?>
+  <tr><td height="4" colspan="<?php echo $listSize?>"></td></tr>
+  <?php  ListPic($truePath,$activepath); ?>
   </form>
 </table>
 </body>

@@ -1,14 +1,14 @@
-<?
+<?php 
 //获得一个附加表单
 //-----------------------------
 function GetFormItem($ctag)
 {
 	$fieldname = $ctag->GetName();
 	$formitem = "
-		<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-bottom:3px\">
        <tr> 
-        <td width=\"80\">~name~</td>
-        <td width=\"720\">~form~</td>
+        <td width=\"80\" class=\"bline\" height=24>&nbsp;~name~</td>
+        <td class=\"bline\" height=24>~form~</td>
        </tr>
     </table>\r\n";
 	$innertext = trim($ctag->GetInnerText());
@@ -50,7 +50,8 @@ function GetFormItem($ctag)
 	if($ctag->GetAtt("type")=="htmltext"||$ctag->GetAtt("type")=="textdata")
 	{
 		$formitem = "";
-		$formitem .= "<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"80\">".$ctag->GetAtt('itemname')."</td><td>";
+		$formitem .= "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-bottom:3px\">";
+		$formitem .= "<tr><td width=\"80\" class=\"bline\" height='360'>&nbsp;".$ctag->GetAtt('itemname')."</td><td class=\"bline\">";
 		$formitem .= GetEditor($fieldname,'',350,'Basic','string');
 		$formitem .= "</td></tr></table>\r\n";
 		return $formitem;
@@ -189,10 +190,10 @@ function GetFormItemValue($ctag,$fvalue)
 {
 	$fieldname = $ctag->GetName();
 	$formitem = "
-		<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-bottom:3px;\">
        <tr> 
-        <td width=\"80\">~name~</td>
-        <td width=\"720\">~form~</td>
+        <td width=\"80\" class=\"bline\" height='24'>&nbsp;~name~</td>
+        <td class=\"bline\">~form~</td>
        </tr>
     </table>\r\n";
   
@@ -243,16 +244,17 @@ function GetFormItemValue($ctag,$fvalue)
 		  while(!feof($fp)){ $okfvalue .= fgets($fp,1024); }
 		  fclose($fp);
 	  }else{ $okfvalue=""; }
-		$formitem  = "<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"80\">".$ctag->GetAtt('itemname')."</td>\r\n";
-		$formitem .= "<td>\r\n".GetEditor($fieldname,$okfvalue,350,'Basic','string')."</td>\r\n";
+		$formitem  = "<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-bottom:3px\">";
+		$formitem .= "<tr><td width=\"80\" class=\"bline\" height='24'>&nbsp;".$ctag->GetAtt('itemname')."</td>\r\n";
+		$formitem .= "<td class=\"bline\">\r\n".GetEditor($fieldname,$okfvalue,350,'Basic','string')."</td>\r\n";
 		$formitem .= "</tr></table>\r\n";
 		$formitem .= "<input type='hidden' name='{$fieldname}_file' value='{$fvalue}'>\r\n";
 		return $formitem;
   }  
 	else if($ctag->GetAtt("type")=="htmltext")
 	{
-		$formitem  = "<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td width=\"80\">".$ctag->GetAtt('itemname')."</td>\r\n";
-		$formitem .= "<td>\r\n".GetEditor($fieldname,$fvalue,350,'Basic','string')."</td>\r\n";
+		$formitem  = "<table width=\"800\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-bottom:3px\"><tr><td width=\"80\" class=\"bline\" height='360'>&nbsp;".$ctag->GetAtt('itemname')."</td>\r\n";
+		$formitem .= "<td class=\"bline\">\r\n".GetEditor($fieldname,$fvalue,350,'Basic','string')."</td>\r\n";
 		$formitem .= "</tr></table>\r\n";
 		return $formitem;
 	}

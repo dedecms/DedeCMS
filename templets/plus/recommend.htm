@@ -22,7 +22,7 @@
 </tr>
 <tr> 
 <td height="28">
-<span class="style2">&nbsp;文章名称：<a href="<? echo $arcurl ?>"><? echo $arctitle ?></a></span>
+<span class="style2">&nbsp;文章名称：<a href="<?php  echo $arcurl ?>"><?php  echo $arctitle ?></a></span>
 </td>
 </tr>
 <tr> 
@@ -36,9 +36,9 @@
 <tr> 
 <td height="100" align="center" valign="top">
 <form name="form1" method="post" action="recommend.php">
-<input type="hidden" name="arcurl" value="<? echo $arcurl ?>">
+<input type="hidden" name="arcurl" value="<?php  echo $arcurl ?>">
 <input type="hidden" name="action" value="send">
-<input type="hidden" name="arcID" value="<?=$arcID?>">
+<input type="hidden" name="arcID" value="<?php echo $arcID?>">
 <table width="98%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
 <td width="19%" height="30">你好友的Email：</td>
@@ -53,10 +53,10 @@
 <tr align="center"> 
 <td height="61" colspan="2">
 <textarea name="msg" cols="72" rows="6" id="msg" style="width:98%">
-你好，我在 [<?=$cfg_webname?>] 发现了一个很好的东东：
+你好，我在 [<?php echo $cfg_webname?>] 发现了一个很好的东东：
 你不妨去看看吧！
-文档的名称是：<?=$arctitle?>
-网址是：<?=$cfg_basehost.$arcurl?>
+文档的名称是：<?php echo $arctitle?>
+网址是：<?php echo $cfg_basehost.$arcurl?>
 </textarea>
 </td>
 </tr>
@@ -78,7 +78,7 @@
 </tr>
 <tr> 
 <td align="center">
-<?=$cfg_powerby?>
+<?php echo $cfg_powerby?>
 </td>
 </tr>
 </table>

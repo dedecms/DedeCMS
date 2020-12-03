@@ -1,24 +1,26 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_space.php");
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
 
 if(empty($keyword)) $keyword = "";
 else{
-	$keyword = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($keyword))),30);
+	$keyword = cn_substr(trim(ereg_replace($cfg_egstr,"",stripslashes($keyword))),30);
 	$keyword = addslashes($keyword);
 }
 if(empty($channelid)) $channelid = 0;
 if(empty($mtype)) $mtype = 0;
 
-$uid = cn_substr(trim(ereg_replace("[\|\"\r\n\t%\*\.\?\(\)\$ ;,'%-]","",stripslashes($uid))),32);
-$uid = addslashes($uid);
+if(!TestStringSafe($uid)){
+		ShowMsg("用户ID不合法！","-1");
+		exit();
+}
 
 if(empty($channelid)){
 	$listName = '　§所有文档';
 }
 else if($channelid==1){
-	$listName = "　§<a href=member_archives.php?uid=$uid' style='color:#666600'>所有文档</a>&gt;&gt;我的文章";
+	$listName = "　§<a href='member_archives.php?uid=$uid' style='color:#666600'>所有文档</a>&gt;&gt;我的文章";
 }
 else if($channelid==2){
 	$listName = "　§<a href='member_archives.php?uid=$uid' style='color:#666600'>所有文档</a>&gt;&gt;我的图集";
@@ -67,6 +69,6 @@ $dlist->SetParameter("mtype",$mtype);
 $dlist->SetParameter("channelid",$channelid);
 $dlist->SetSource($query);
 
-include(dirname(__FILE__)."/templets/member_archives.htm");
+include(dirname(__FILE__)."/templets/space/member_archives.htm");
 
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/inc_arcpart_view.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
@@ -340,7 +340,7 @@ class SpecView
 		//----------------------------
 		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.typeid,#@__archives.ismake,
 		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,
-		#@__archives.click,#@__archives.postnum,#@__archives.lastpost,
+		#@__archives.click,#@__archives.postnum,#@__archives.lastpost,#@__archives.money,
 		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
 		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
 		#@__arctype.moresite,#@__arctype.siteurl

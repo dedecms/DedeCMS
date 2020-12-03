@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 ?>
@@ -10,9 +10,10 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 <link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
 <script type="text/javascript" src="../include/calendar/calendar.js"></script>
 <script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<script type="text/javascript" src="main.js"></script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="makehtml_list_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -26,17 +27,21 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
     <tr> 
       <td width="108" valign="top" bgcolor="#FFFFFF">选择栏目：</td>
       <td width="377" valign="top" bgcolor="#FFFFFF"> 
-        <?
-       if(empty($cid)) $cid="0";
-       $tl = new TypeLink($cid);
-       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0,1);
-       echo "<select name='typeid' style='width:300'>\r\n";
-       if($cid=="0") echo "<option value='0' selected>更新所有栏目...</option>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-			 $tl->Close();
-		?>
-      </td>
+        <?php 
+			$seltypeids = 0;
+			if(!empty($cid)){
+			  $dsql = new DedeSql(false);
+			  $seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
+			  $dsql->Close();
+			}
+			$opall=1;
+			if(is_array($seltypeids)){
+			   echo GetTypeidSel('form1','typeid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+			}else{
+			   echo GetTypeidSel('form1','typeid','selbt1',0,0,'请选择...');
+			}
+        ?>
+		</td>
     </tr>
     <tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">更新选项：</td>
@@ -48,7 +53,7 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
     <tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">指定日期：</td>
       <td height="20" valign="top" bgcolor="#FFFFFF"> 
-        <?
+        <?php 
 		$dayst = GetMkTime("2006-1-2 0:0:0") - GetMkTime("2006-1-1 0:0:0");
 		$nowtime = GetDateTimeMk(mytime() - ($dayst * 365));
 		echo "<input name=\"starttime\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
@@ -70,11 +75,12 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
         仅更新所选栏目 </td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center"> <input name="b112" type="button" class="np2" value="开始生成HTML" onClick="document.form1.submit();" style="width:100"> 
+      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button" class="nbt" value="开始生成HTML" onClick="document.form1.submit();" style="width:100"> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

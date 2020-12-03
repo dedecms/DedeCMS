@@ -1,7 +1,8 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../../../config_base.php");
 ?>
 <HTML>
+	
 <HEAD>
 <title>插入附件</title>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
@@ -19,7 +20,7 @@ function TableOK(){
     rurl = encodeURI(form1.rurl.value);
     rvalue = "<table width='300'>";
     rvalue += "<tr><td height='30' width='20'>";
-    rvalue += "<a href='"+rurl+"' target='_blank'><img src='<?=$cfg_plus_dir?>/img/addon.gif' border='0' align='center'></a>";
+    rvalue += "<a href='"+rurl+"' target='_blank'><img src='<?php echo $cfg_plus_dir?>/img/addon.gif' border='0' align='center'></a>";
     rvalue += "</td><td>";
     rvalue += "<a href='"+ rurl +"' target='_blank'><u>"+ rurlname +"</u></a>";
     rvalue += "</td></tr></table>";
@@ -64,4 +65,3 @@ function SelectAddon(fname)
   </form>
 </body>
 </HTML>
-

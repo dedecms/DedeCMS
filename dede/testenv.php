@@ -1,4 +1,4 @@
-<?
+<?php 
 header("Content-Type: text/html; charset=gb2312");
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Edit');
@@ -19,6 +19,7 @@ $cfg_user_dir|
 $cfg_soft_dir|
 $cfg_other_medias|
 $cfg_cmspath/include|
+$cfg_cmspath/freelist|
 $cfg_cmspath/include/textdata|
 $cfg_cmspath/include/sessions|
 $cfg_special|

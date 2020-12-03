@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_plus');
 if(empty($dopost)) $dopost = "";
@@ -29,7 +29,7 @@ body {
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <form name="form1" action="plus_add.php" method="post">
    <input type='hidden' name='dopost' value='save'>
     <tr> 

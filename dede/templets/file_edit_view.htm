@@ -30,7 +30,7 @@ function Post() {
             <td width=16% height="25">文件名称：</td>
             <td> &nbsp;&nbsp;&nbsp; <input name=filename size=40 value="{dede:global name='filename'/}">
               （不允许用 “..” 形式的路径） 
-              <input type="button" name="Submit" value="使用普通模式" onClick="location='file_manage_view.php?fmdo=edit&activepath={dede:global name='activepath'/}&filename={dede:global name='filename'/}';"></td>
+              <input type="button" name="Submit" value="使用普通模式" onClick="location='file_manage_view.php?fmdo=edit&activepath={dede:global name='activepath'/}&filename={dede:global name='filename'/}';"  class='nbt'></td>
           </tr>
         </table> </td>
     </tr>
@@ -42,11 +42,11 @@ function Post() {
     <tr> 
       <td width=78% height="10%"> 
         <p align=center><br>
-          <input type=submit value="  保 存  " name=B1>
+          <input type=submit value="  保 存  " name=B1  class='nbt'>
           &nbsp; 
-          <input type=reset value="取消修改" name=B2>
+          <input type=reset value="取消修改" name=B2  class='nbt'>
           &nbsp; 
-          <input type=button value="不理返回" name=B4 onclick="javascript:history.go(-1);">
+          <input type=button value="不理返回" name=B4 onclick="javascript:history.go(-1);"  class='nbt'>
           <br>
           　</td>
     </tr>

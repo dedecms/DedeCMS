@@ -1,8 +1,8 @@
-<?
+<?php 
 @ob_start();
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
-CheckPurview('sys_Keyword');
+CheckPurview('sys_description');
 
 if(empty($startdd)) $startdd = 0;
 if(empty($pagesize)) $pagesize = 100;

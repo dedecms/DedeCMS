@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -61,7 +61,7 @@ function GetList($dsql,$pageno,$pagesize,$orderby='aid'){
     $row['msg'] = str_replace("  ","¡¡",$row['msg']);
     $row['msg'] = str_replace("\n","<br>\n",$row['msg']);
     $line = "";
-    $line .= "<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"3\" cellspacing=\"1\" bgcolor=\"#666666\" style=\"margin-bottom:6px\">";
+    $line .= "<table width=\"100%\" border=\"0\" align=\"center\" cellpadding=\"3\" cellspacing=\"1\" bgcolor=\"#D9EDC0\" style=\"margin-bottom:6px\">";
     $line .= "\r\n<tr bgcolor=\"#E2EBC0\" height=\"24\"> ";
     $line .= "\r\n<td height=\"24\" colspan=\"2\" background=\"img/gbookbg.gif\">";
     $line .= "\r\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr> ";

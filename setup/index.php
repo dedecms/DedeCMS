@@ -1,4 +1,4 @@
-<?
+<?php 
 //检测 Global 和 Magic 开关
 $needFilter = false;
 $registerGlobals = @ini_get("register_globals");
@@ -72,6 +72,13 @@ else if($step==2){ //安装程序
   fwrite($fp,$configstr2);
   fclose($fp);
   
+  //删除旧表
+  $droptbs = file(dirname(__FILE__)."/sql_drop.txt");
+  foreach($droptbs as $l){
+  	$l = trim($l);
+  	if($l!="") mysql_query(str_replace("#@__",$cfg_dbprefix,$l),$conn);
+  }
+  
   if($mysql_version < 4.1) $fp = fopen(dirname(__FILE__)."/sql_4_0.txt","r");
   else $fp = fopen(dirname(__FILE__)."/sql_4_1.txt","r");
   
@@ -104,6 +111,8 @@ else if($step==2){ //安装程序
 	
   @mysql_close($conn);
   
+  @unlink(dirname(__FILE__)."/notinsall.txt");
+  
   ShowMsg("完成设置，现转向登录面页...","../dede/login.php");
   exit();
 }
@@ -111,120 +120,177 @@ else if($step==2){ //安装程序
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>织梦内容管理系统 DedeCms V3.1 安装程序</title>
+<title>织梦内容管理系统 DedeCms OX V4.0.1 正式版安装程序</title>
 <link href="base.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+function ShowObj(objname){
+   var obj = document.getElementById(objname);
+	 obj.style.display = "block";
+}
+  
+function HideObj(objname){
+  var obj = document.getElementById(objname);
+	obj.style.display = "none";
+}
+  
+function ShowItem1(){
+  ShowObj('head1'); ShowObj('needset'); HideObj('head2'); HideObj('adset');
+}
+  
+function ShowItem2(){
+  var agg = document.getElementById("agreement");
+  if(!agg.checked){
+  	alert("你必须同意软件许可协议才能安装！");
+  	return ;
+  }
+  ShowObj('head2'); ShowObj('adset'); HideObj('head1'); HideObj('needset');
+}
+</script>
 </head>
 <body bgColor='#ffffff' leftMargin='0' topMargin='0'>
-<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
-  <tr> 
-    <td width="100%" height="64" background="img/indextitlebg.gif">
-    <a href="http://www.dedecms.com"><img src="img/df_dedetitle.gif" width="178" height="53" border="0"></a>
-    </td>
+<table width="80%" border="0" align="center" cellpadding="2" cellspacing="2">
+  <tr>
+    <td height="64" background="img/indextitlebg.gif"><a href="http://www.dedecms.com"><img src="img/df_dedetitle.gif" width="178" height="53" border="0"></a></td>
   </tr>
+</table>
+<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" class="htable" id="head1">
+          <tr> 
+            <td colspan="2" bgcolor="#FFFFFF">
+<table width="168" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;许可协议&nbsp;</td>
+                  <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>安装软件</u></a>&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+</table> 
+        <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0" class="htable" id="head2" style="display:none">
+          <tr> 
+            <td colspan="2" bgcolor="#FFFFFF">
+<table width="168" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="84" height="24" align="center" background="img/itemnote2.gif">&nbsp;<a href="#" onClick="ShowItem1()"><u>许可协议</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="img/itemnote1.gif">安装软件&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+</table>
+<table width="80%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#33CCFF" style="margin-bottom:3px">
   <tr> 
-    <td width="100%" height="20" valign="middle" bgcolor="#F9FDF2"> <table width="540" border="0" cellspacing="0" cellpadding="0">
+    <td width="100%" height="20" valign="middle" bgcolor="#DEF5FE"> <table width="540" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-          <td>
-          	<IMG height=14 src="img/book1.gif" width=20>&nbsp; 安装 DedeCms V3.1 版
-          </td>
+          <td width="48" height="24" align="center" valign="bottom">
+       	  <IMG height=14 src="img/book1.gif" width=20>&nbsp;</td>
+          <td width="492" valign="middle" style="padding-top:3px">你目前正在安装 DedeCms OX V4.0.1</td>
         </tr>
-      </table></td>
+    </table></td>
   </tr>
-  <tr> 
-    <td width="100%" height="1" background="img/sp_bg.gif"></td>
+</table>
+
+<table width="80%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#9BC1FB" id="needset">
+  <tr>
+    <td height="24" bgcolor="#DEF5FE">&nbsp;◆<strong>DedeCms Biz 使用许可协议：</strong></td>
   </tr>
-  <tr> 
-    <td width="100%" height="2"></td>
+  <tr>
+    <td align="center" valign="top" bgcolor="#FFFFFF"><table width="98%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td height="350" valign="top">
+		<iframe name="stafrm" frameborder="0" src="license.html" id="stafrm" width="100%" height="350"></iframe>
+		</td>
+      </tr>
+      <tr>
+        <td align="center"><input name="agreement" type="checkbox" id="agreement" value="1">
+          我已经阅读并同意此协议</td>
+      </tr>
+    </table></td>
   </tr>
+</table>
+<table width="80%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#9BC1FB" id="adset" style="display:none">
   <form name="form1" method="post" action="index.php">
-    <input type="hidden" name="step" value="2">
-    <tr> 
-      <td width="100%" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#EEF9D9">
-          <tr bgcolor="#FFFFFF"> 
-            <td width="19%" height="87">&nbsp;目录权限：</td>
-            <td width="81%">
-            	如果在linux或Unix平台，以下目录需手工在FTP中设为组用户可读写，或用全权限 0777 <br>
-              ../include<br>
-              ../dede/templets<br>
-              在安装完本程序后，请在后台进行一次DedeCms目录权限检测
-              </td>
-          </tr>
-          <tr bgcolor="#F9FDF2"> 
-            <td colspan="2">&nbsp;数据库设定：</td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库主机：</td>
-            <td><input name="cfg_dbhost" type="text" id="cfg_dbhost" value="localhost"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库名称：</td>
-            <td><input name="cfg_dbname" type="text" id="cfg_dbname" value="dedev3_1"> 
-              <input name="isnew" type="checkbox" id="isnew" value="1">
-              创建新数据库</td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库用户：</td>
-            <td><input name="cfg_dbuser" type="text" id="cfg_dbuser" value="root"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库密码：</td>
-            <td><input name="cfg_dbpwd" type="text" id="cfg_dbpwd"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库前缀：</td>
-            <td><input name="cfg_dbprefix" type="text" id="cfg_dbprefix" value="dede_"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;数据库编码：</td>
-            <td><input name="dblang" type="radio" value="gbk" checked>
-              GBK 
-              <input type="radio" name="dblang" value="latin1">
-              LATIN1 （仅对4.1+以上版本的MySql选择）</td>
-          </tr>
-          <tr bgcolor="#F9FDF2"> 
-            <td colspan="2">&nbsp;管理员初始密码：</td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;用户名：</td>
-            <td><input name="adminuser" type="text" id="adminuser" value="admin"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;密　码：</td>
-            <td><input name="adminpwd" type="text" id="adminpwd" value="admin"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;Cookie加密码：</td>
-            <td><input name="cookieEncode" type="text" id="cookieEncode" value="<?=$rnd_cookieEncode?>"></td>
-          </tr>
-          <tr bgcolor="#F9FDF2"> 
-            <td colspan="2">&nbsp;其它设定：</td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;网站网址：</td>
-            <td><input name="base_url" type="text" id="base_url" value="<?=$baseurl?>" size="35"></td>
-          </tr>
-          <tr bgcolor="#FFFFFF"> 
-            <td height="24">&nbsp;CMS安装目录：</td>
-            <td><input name="cfg_cmspath" type="text" id="cfg_cmspath" value="<?=$basepath?>">
-              （在根目录安装时不必理会） </td>
-          </tr>
-          <tr bgcolor="#F9FDF2"> 
-            <td height="30" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
-                  <td width="14%" height="35">&nbsp;</td>
-                  <td width="86%"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-                </tr>
-                <tr align="right" bgcolor="#FFFFFF"> 
-                  <td height="80" colspan="2"><img src="py/p5.gif" width="43" height="41"><img src="py/p4.gif" width="43" height="41"><img src="py/p3.gif" width="43" height="41"><img src="py/p2.gif" width="43" height="41"><img src="py/p1.gif" width="43" height="41"></td>
-                </tr>
-              </table></td>
-          </tr>
-        </table> </td>
-    </tr>
-  </form>
-  <tr> 
-    <td width="100%" height="2" valign="top"></td>
+<input type="hidden" name="step" value="2">
+<tr bgcolor="#FFFFFF">
+    <td height="24" colspan="2" bgcolor="#DEF5FE">&nbsp;◆<strong>安装参数：</strong></td>
   </tr>
+  <tr bgcolor="#FFFFFF">
+    <td width="19%" height="87">&nbsp;目录权限：</td>
+    <td width="81%"> 如果在linux或Unix平台，以下目录需手工在FTP中设为组用户可读写，或用全权限 0777 <br>
+      ../include<br>
+      ../dede/templets<br>
+      在安装完本程序后，请在后台进行一次DedeCms目录权限检测 </td>
+  </tr>
+  <tr bgcolor="#DEF5FE">
+    <td colspan="2" bgcolor="#DEF5FE">&nbsp;数据库设定：</td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库主机：</td>
+    <td><input name="cfg_dbhost" type="text" id="cfg_dbhost" value="localhost"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库名称：</td>
+    <td><input name="cfg_dbname" type="text" id="cfg_dbname" value="dedecmsv4">
+        <input name="isnew" type="checkbox" id="isnew" value="1">
+      创建新数据库</td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库用户：</td>
+    <td><input name="cfg_dbuser" type="text" id="cfg_dbuser" value="root"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库密码：</td>
+    <td><input name="cfg_dbpwd" type="text" id="cfg_dbpwd"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库前缀：</td>
+    <td><input name="cfg_dbprefix" type="text" id="cfg_dbprefix" value="dede_"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;数据库编码：</td>
+    <td><input name="dblang" type="radio" value="gbk" checked>
+      GBK
+      <input type="radio" name="dblang" value="latin1">
+      LATIN1 （仅对4.1+以上版本的MySql选择）</td>
+  </tr>
+  <tr bgcolor="#DEF5FE">
+    <td colspan="2">&nbsp;管理员初始密码：</td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;用户名：</td>
+    <td><input name="adminuser" type="text" id="adminuser" value="admin"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;密　码：</td>
+    <td><input name="adminpwd" type="text" id="adminpwd" value="admin"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;Cookie加密码：</td>
+    <td><input name="cookieEncode" type="text" id="cookieEncode" value="<?php echo $rnd_cookieEncode?>"></td>
+  </tr>
+  <tr bgcolor="#DEF5FE">
+    <td colspan="2">&nbsp;其它设定：</td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;网站网址：</td>
+    <td><input name="base_url" type="text" id="base_url" value="<?php echo $baseurl?>" size="35"></td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="24">&nbsp;CMS安装目录：</td>
+    <td><input name="cfg_cmspath" type="text" id="cfg_cmspath" value="<?php echo $basepath?>">
+      （在根目录安装时不必理会） </td>
+  </tr>
+  <tr bgcolor="#DEF5FE">
+    <td height="30" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="14%" height="35">&nbsp;</td>
+        <td width="86%"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
+      </tr>
+      <tr align="right" bgcolor="#FFFFFF">
+        <td height="80" colspan="2"><img src="py/p5.gif" width="43" height="41"><img src="py/p4.gif" width="43" height="41"><img src="py/p3.gif" width="43" height="41"><img src="py/p2.gif" width="43" height="41"><img src="py/p1.gif" width="43" height="41"></td>
+      </tr>
+    </table></td>
+  </tr>
+  </form>
 </table>
 <p align="center">
 <a href='http://www.dedecms.com' target='_blank'>Power by DedeCms 织梦内容管理系统</a><br><br>

@@ -1,13 +1,20 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
+
+if($linkareas!=""&&$linkareae!="") $linkarea = $linkareas.'[var:区域]'.$linkareae;
+else $linkarea = '';
+
+if($sppages!="" && $sppagee!="") $sppage = $sppages.'[var:分页区域]'.$sppagee;
+else $sppage = '';
+
 $itemconfig = "
 {!-- 节点基本信息 --}
 
 {dede:item name=\\'$notename\\'
 	imgurl=\\'$imgurl\\' imgdir=\\'$imgdir\\' language=\\'$language\\'
 	isref=\\'$isref\\' refurl=\\'$refurl\\' exptime=\\'$exptime\\'
-	typeid=\\'$exrule\\' macthtype=\\'$macthtype\\'}
+	typeid=\\'$exrule\\' matchtype=\\'$matchtype\\'}
 {/dede:item}
 
 {!-- 采集列表获取规则 --}
@@ -33,23 +40,29 @@ for($i=1;$i<=50;$i++)
 		else $GLOBALS["value".$i] = trim($GLOBALS["value".$i]);
 		if(!isset($GLOBALS["match".$i])) $GLOBALS["match".$i] = "";
 		
-		if(!isset($GLOBALS["comment".$i])) $GLOBALS["comment".$i] = "";	
+		if(!isset($GLOBALS["comment".$i])) $GLOBALS["comment".$i] = "";		
 		if(!isset($GLOBALS["isunit".$i])) $GLOBALS["isunit".$i] = "";
 		if(!isset($GLOBALS["isdown".$i])) $GLOBALS["isdown".$i] = "";
 		if(!isset($GLOBALS["trim".$i])) $GLOBALS["trim".$i] = "";
 		$trimstr = $GLOBALS["trim".$i];
+		$GLOBALS["comment".$i] = str_replace("'","",$GLOBALS["comment".$i]);
+		
 		if($trimstr!=""&&!eregi("{dede:trim",$trimstr)){
 			$trimstr = "    {dede:trim}$trimstr{/dede:trim}\r\n";
 		}
 		else{
 			$trimstr = str_replace("{dede:trim","    {dede:trim",$trimstr); 
 		}
+	$matchstr = '';
+	if( !empty($GLOBALS["matchs".$i]) && !empty($GLOBALS["matche".$i]) ){
+		$matchstr = $GLOBALS["matchs".$i]."[var:内容]".$GLOBALS["matche".$i];
+	}
 	$itemconfig .= "
   
-  {dede:note field=\\'".${"field".$i}."\\' value=\\'".$GLOBALS["value".$i]."\\' comment=\\'".$GLOBALS["comment".$i]."\\' 
+  {dede:note field=\\'".${"field".$i}."\\' value=\\'".$GLOBALS["value".$i]."\\' comment=\\'".$GLOBALS["comment".$i]."\\'
    isunit=\\'".$GLOBALS["isunit".$i]."\\' isdown=\\'".$GLOBALS["isdown".$i]."\\'}
     
-    {dede:match}".$GLOBALS["match".$i]."{/dede:match}
+    {dede:match}".$matchstr."{/dede:match}
     $trimstr
     {dede:function}".$GLOBALS["function".$i]."{/dede:function}
     

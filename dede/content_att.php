@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 CheckPurview('sys_Att');
@@ -42,7 +42,7 @@ if($dopost=="save")
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="content_att.php" method="post">
     <input type="hidden" name="dopost" value="save">
     <tr> 
@@ -62,7 +62,7 @@ if($dopost=="save")
       <td width="50%">属性名称</td>
       <td width="30%">处理</td>
     </tr>
-	<?
+	<?php 
 	$dsql->SetQuery("Select * From #@__arcatt");
 	$dsql->Execute();
 	$k=0;
@@ -70,23 +70,23 @@ if($dopost=="save")
 	{
 	  $k++;
 	?>
-	<input type="hidden" name="att_<?=$k?>" value="<?=$row->att?>">
+	<input type="hidden" name="att_<?php echo $k?>" value="<?php echo $row->att?>">
     <tr align="center" bgcolor="#FFFFFF"> 
     <td height="24">
-    	<?=$row->att?>
+    	<?php echo $row->att?>
 	  </td>
     <td height="24">
-	  <input name="attname_<?=$k?>" value="<?=$row->attname?>"  type="text" id="attname_<?=$k?>" size="30">
+	  <input name="attname_<?php echo $k?>" value="<?php echo $row->attname?>"  type="text" id="attname_<?php echo $k?>" size="30">
 	  </td>
       <td>
-	  <input name="check_<?=$k?>" type="checkbox" id="check_<?=$k?>" class="np" value="1" checked>
+	  <input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>" class="np" value="1" checked>
        继续使用
 	 </td>
     </tr>
-	<?
+	<?php 
 	}
 	?>
-	<input type="hidden" name="idend" value="<?=$k?>">
+	<input type="hidden" name="idend" value="<?php echo $k?>">
     <tr bgcolor="#F8FCF1"> 
       <td height="24" colspan="3" valign="top"><strong>新增一个属性类型：</strong></td>
     </tr>
@@ -106,12 +106,12 @@ if($dopost=="save")
       <td height="24" colspan="3" bgcolor="#F8FCF1">&nbsp;</td>
     </tr>
     <tr> 
-      <td height="34" colspan="3" align="center" bgcolor="#FFFFFF">
+      <td height="34" colspan="3" align="center" bgcolor="#CCEDFD">
       	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
     </tr>
   </form>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

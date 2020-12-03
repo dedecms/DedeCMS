@@ -6,7 +6,7 @@
 <link href="div.css" rel="stylesheet" type="text/css">
 <style>
 	.nnpp{
-	border-bottom:1px solid #666666;
+	border-bottom:1px solid #98CAEF;
 	border-top:1px solid #FFFFFF;
 	border-left:1px solid #FFFFFF;
 	border-right:1px solid #FFFFFF;
@@ -26,9 +26,9 @@
    	        搜索：<input type='text' name='keyword' size='10'> 
    	        <input type='submit' name='sb' value='确定' class='np'>
    	        &nbsp;
-            <input class="coolbt" name="n1" type="button" id="n1" value="分析系统内的关键字" onClick="location='article_keywords_make.php';" style="width:130"> 
+            <input class="nbt" name="n1" type="button" id="n1" value="分析系统内的关键字" onClick="location='article_keywords_make.php';" style="width:130"> 
             &nbsp;
-            <input class="coolbt" name="n11" type="button" id="n11" value="管理搜索的关键字" onClick="location='search_keywords_main.php';" style="width:125">
+            <input class="nbt" name="n11" type="button" id="n11" value="管理搜索的关键字" onClick="location='search_keywords_main.php';" style="width:125">
             </td></form>
           </tr>
         </table></td>
@@ -50,7 +50,7 @@
           </td>
       </tr>
     </form>
-    <tr align="center" bgcolor="#F9FCEF" height="24"> 
+    <tr align="center" bgcolor="#F8FBFB" height="24"> 
       <td width="8%">选择</td>
       <td width="25%">关键字</td>
       <td width="35%">链接网址</td>
@@ -58,47 +58,47 @@
       <td width="22%">管理</td>
     </tr>
 	<form name='form1' action="article_keywords_saveall.php" method="post">
-<?
+<?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
     <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EEFAAB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
       <td height="24">
-      	<input name="aids[]" type="checkbox" value="<?=$row['aid']?>" class="np" checked> 
+      	<input name="aids[]" type="checkbox" value="<?php echo $row['aid']?>" class="np" checked> 
       </td>
       <td>
-      	<input type='hidden' value='<?=$row['keyword']?>' name='keyword_<?=$row['aid']?>'>
-      	<?=$row['keyword']?>
+      	<input type='hidden' value='<?php echo $row['keyword']?>' name='keyword_<?php echo $row['aid']?>'>
+      	<?php echo $row['keyword']?>
       </td>
       <td>
-      	<input type='hidden' value='<?=$row['rpurl']?>' name='rpurlold_<?=$row['aid']?>'>
-      	<input type='text' style='width:90%' class='nnpp' value='<?=$row['rpurl']?>' name='rpurl_<?=$row['aid']?>'>
+      	<input type='hidden' value='<?php echo $row['rpurl']?>' name='rpurlold_<?php echo $row['aid']?>'>
+      	<input type='text' style='width:90%' class='nnpp' value='<?php echo $row['rpurl']?>' name='rpurl_<?php echo $row['aid']?>'>
       </td>
       <td>
-      	<input type='text' size='5' class='nnpp' value='<?=$row['rank']?>' name='rank_<?=$row['aid']?>'>
+      	<input type='text' size='5' class='nnpp' value='<?php echo $row['rank']?>' name='rank_<?php echo $row['aid']?>'>
       </td>
       <td>
-      	<input type='hidden' name='staold_<?=$row['aid']?>' value='<?=$row['sta']?>'>
-      	<input type='checkbox' name='isnouse_<?=$row['aid']?>' class='np' value='1'<?=GetSta($row['sta'])?>>
+      	<input type='hidden' name='staold_<?php echo $row['aid']?>' value='<?php echo $row['sta']?>'>
+      	<input type='checkbox' name='isnouse_<?php echo $row['aid']?>' class='np' value='1'<?php echo GetSta($row['sta'])?>>
       	禁用
       	&nbsp;
-      	<input type='checkbox' name='isdel_<?=$row['aid']?>' class='np' value='1'>
+      	<input type='checkbox' name='isdel_<?php echo $row['aid']?>' class='np' value='1'>
       	删除
       </td>
     </tr>
-<?
+<?php 
 }
 ?>
      <tr bgcolor="#F0FBBD"> 
       <td height="26" colspan="6">
-	    &nbsp; <input type="button" name="dl" value="保存更改" onclick="this.form.submit();">
+	    &nbsp; <input type="button" name="dl" value="保存更改" onclick="this.form.submit();" class='nbt'>
 	  </td>
     </tr>
 	</form>
     <tr align="center" bgcolor="#FAFDF0">
       <td height="24" colspan="6">
-      	<?=$dlist->GetPageList(5);?>
+      	<?php echo $dlist->GetPageList(5);?>
       </td>
     </tr>
   </table>

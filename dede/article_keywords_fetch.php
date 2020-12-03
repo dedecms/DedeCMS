@@ -1,4 +1,4 @@
-<?
+<?php 
 @ob_start();
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
@@ -6,7 +6,7 @@ CheckPurview('sys_Keyword');
 require_once(dirname(__FILE__)."/../include/pub_splitword_www.php");
 
 if(empty($startdd)) $startdd = 0;//结果集起始记录值
-if(empty($pagesize)) $pagesize = 20;
+if(empty($pagesize)) $pagesize = 50;
 if(empty($totalnum)) $totalnum = 0;
 
 $dsql = new DedeSql(false);
@@ -14,7 +14,7 @@ $dsql = new DedeSql(false);
 //------------------------
 if($totalnum==0)
 {
-	$row = $dsql->GetOne("Select count(*) as dd From #@__archives where keywords='' And channel='1';");
+	$row = $dsql->GetOne("Select count(*) as dd From #@__archives where trim(keywords)='' And channel='1';");
 	$totalnum = $row['dd'];
 }
 //获取记录，并分析关键字

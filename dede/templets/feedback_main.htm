@@ -2,6 +2,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>评论管理</title>
+<script type="text/javascript" src="main.js"></script>
 <script language='javascript'>
 //获得选中文件的文件名
 function getCheckboxItem()
@@ -67,18 +68,15 @@ function editFeedback()
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
 <form name='form1'>
 <tr>
 <td height="19" background='img/tbg.gif'>
 <b>评论管理</b>
 关键字：
 <input type='text' size='15' name='keyword' style='width:150'> 
- <select name="typeid" style="width:180">
- <option value="0">--请选择--</option>
- <?=$openarray?>
-</select>
-<input type='submit' name='sb' value=' 确定 '>
+ <?php echo $optionarr?>
+ <input type='submit' name='sb' value=' 确定 ' style="background-color: #00CCFF">
  </td>
 </tr>
 </form>
@@ -86,7 +84,7 @@ function editFeedback()
 <tr>
 <td height="215" bgcolor="#FFFFFF" valign="top">
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-<?
+<?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
@@ -96,28 +94,23 @@ while($row = $mylist->GetArray('dm'))
 <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
 <tr bgcolor="#F7F7F7"> 
 <td width="9%"> &nbsp;选择 
-<input name="fid" type="checkbox" class="np" id="fid" value="<?=$row['ID']?>"> 
-</td>
+<input name="fid" type="checkbox" class="np" id="fid" value="<?php echo $row['ID']?>"></td>
 <td width="37%">
-	&nbsp;用户： <?=$row['username']?>
-&nbsp;文档：<a href="<?=$cfg_plus_dir?>/view.php?aid=<?=$row['aid']?>" target="_blank"><?=$row['arctitle']?></a>
-</td>
-<td width="18%" align="center">IP地址： <?=$row['ip']?> </td>
+	&nbsp;用户： <?php echo $row['username']?>
+&nbsp;文档：<a href="<?php echo $cfg_plus_dir?>/view.php?aid=<?php echo $row['aid']?>" target="_blank"><?php echo $row['arctitle']?></a></td>
+<td width="18%" align="center">IP地址： <?php echo $row['ip']?> </td>
 <td width="26%">
-	&nbsp;时间： <?=GetDateTimeMK($row['dtime'])?>
-</td>
+	&nbsp;时间： <?php echo GetDateTimeMK($row['dtime'])?></td>
 <td width="10%" align="center">
-	<a href='feedback_edit.php?ID=<?=$row['ID']?>'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a>
-</td>
+	<a href='feedback_edit.php?ID=<?php echo $row['ID']?>'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a></td>
 </tr>
 <tr align="center" bgcolor="#FFFFFF"> 
 <td height="28" colspan="5">
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
 <td>
-<?=IsCheck($row['ischeck'])?>
-<?=$row['msg']?>
-</td>
+<?php echo IsCheck($row['ischeck'])?>
+<?php echo $row['msg']?></td>
 </tr>
 </table></td>
 </tr>
@@ -128,33 +121,28 @@ while($row = $mylist->GetArray('dm'))
 </tr>
 </table></td>
 </tr>
-<?
+<?php 
 }
 ?>
 <tr>
 <td height='20' align='center' bgcolor='#EAEEE1'>
-  <?=$dlist->GetPageList(7);?>
-</td>
+  <?php echo $dlist->GetPageList(7);?></td>
 </tr>
 <tr> 
 <td height='30'>
 <table width="98%">
 <tr>
 <td width="30%">
-<input type='button' name='kk1' value='全选' onClick="selAll()" class="ll"> 
-<input type='button' name='kk2' value='取消' onClick="selNone()" class="ll">
-<input type='button' name='kk3' value='反选' onClick="selNor()" class="ll">
-</td>
+<input type='button' name='kk1' value='全选' onClick="selAll()" class="nbt"> 
+<input type='button' name='kk2' value='取消' onClick="selNone()" class="nbt">
+<input type='button' name='kk3' value='反选' onClick="selNor()" class="nbt"></td>
 <td align="right">
-<input type='button' name='db' value=' 删除评论 ' onClick="delFeedback()">
-<input type='button' name='db2' value=' 审核评论 ' onClick="checkFeedback()">
-</td>
+<input type='button' name='db' value=' 删除评论 ' onClick="delFeedback()" class='nbt'>
+<input type='button' name='db2' value=' 审核评论 ' onClick="checkFeedback()" class='nbt'></td>
 </tr>
-</table>
- </td>
+</table> </td>
 </tr>
-</table>
-</td>
+</table></td>
 </tr>
 </form>
 </table>

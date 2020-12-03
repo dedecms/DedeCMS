@@ -2,11 +2,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:field name='title'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
-<link href="../img/default.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <center>
@@ -94,15 +93,18 @@ name='position'/}软件详细</td>
 </tr>
 <tr bgcolor="#F5F8F3"> 
 <td width="17%" height="22" align="center" bgcolor="#F5F8F3">官方网址：</td>
-<td colspan="2"> {dede:field name='officialurl'/} 作者：{dede:field 
-name='writer'/} </td>
+<td colspan="2">
+{dede:field name='officialurl'/} &nbsp;
+作者：{dede:field name='writer'/} &nbsp;
+演示网址：{dede:field name='officialdemo'/}
+</td>
 </tr>
 <tr bgcolor="#FFFFFF"> 
-<td width="17%" height="22" align="center" bgcolor="#FFFFFF">演示网址：</td>
-<td colspan="2"> {dede:field name='officialdemo'/} </td>
+<td width="17%" height="30" align="center">下载地址：</td>
+<td colspan="2"> {dede:field name='softlinks'/} </td>
 </tr>
 <tr bgcolor="#F5F8F3"> 
-<td width="17%" height="22" align="center" bgcolor="#F5F8F3">软件说明：</td>
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">使用说明：</td>
 <td colspan="2">&nbsp;</td>
 </tr>
 <tr bgcolor="#FFFFFF"> 
@@ -111,10 +113,6 @@ name='writer'/} </td>
 <td valign="top">{dede:field name='introduce'/}</td>
 </tr>
 </table></td>
-</tr>
-<tr bgcolor="#F5F8F3"> 
-<td width="17%" height="30" align="center" bgcolor="#F5F8F3">下载地址：</td>
-<td colspan="2"> {dede:field name='softlinks'/} </td>
 </tr>
 <tr bgcolor="#FFFFFF"> 
 <td width="17%" height="84" align="center" bgcolor="#FFFFFF">下载说明：</td>

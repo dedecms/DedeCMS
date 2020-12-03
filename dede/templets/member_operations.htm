@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>业务管理</title>
+<link href="base.css" rel="stylesheet" type="text/css">
+<script language="javascript">
+//获得选中项
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form1.aids.value) return document.form1.aids.value;
+	for(i=0;i<document.form1.aids.length;i++)
+	{
+		if(document.form1.aids[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.form1.aids[i].value;
+			else
+				allSel=allSel+"`"+document.form1.aids[i].value;
+		}
+	}
+	return allSel;	
+}
+function ReSel()
+{
+	for(i=0;i<document.form1.aids.length;i++)
+	{
+		if(document.form1.aids[i].checked) document.form1.aids[i].checked = false;
+		else document.form1.aids[i].checked = true;
+	}
+}
+function UpSel()
+{
+	var nid = getCheckboxItem();
+	if(nid==""){
+		alert("请选择要更改诉业务记录!\r\n");
+		return ;
+	}
+	location.href = "member_do.php?dopost=upoperations&nid="+nid;
+}
+function OkSel()
+{
+	var nid = getCheckboxItem();
+	if(nid==""){
+		alert("请选择要更改诉业务记录!\r\n");
+		return ;
+	}
+	location.href = "member_do.php?dopost=okoperations&nid="+nid;
+}
+</script>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" style="margin-bottom:6px">
+  <tr> 
+    <td height="30" align="center" bgcolor="#FAFCEF">
+	<form name="form2" method="get" action="member_operations.php">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td>输入订单号：</td>
+            <td> 
+              <input name="buyid" type="text" id="buyid"></td>
+            <td width="100" align="center"> <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0"> 
+            </td>
+          </tr>
+        </table>
+      </form></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#98CAEF" align="center">
+  <tr> 
+    <td height="20" colspan="8" background='img/tbg.gif'> <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td width="30%"> <strong><a href="co_main.php"><u>会员管理</u></a> &gt; 
+            会员业务管理：</strong> </td>
+          <td width="45%" align="right" >
+          	<input type="button" name="ss13" value="未付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='nbt'> 
+            <input type="button" name="ss14" value="已付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='nbt'>
+            <input type="button" name="ss142" value="已完成" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=2';" class='nbt'> 
+            <input type="button" name="ss16" value="全部" style="width:40px;margin-right:6px" onClick="location='member_operations.php';" class='nbt'> 
+          </td>
+          <td width="25%" align="right">
+          	<input type="button" name="ss12" value="会员管理" style="width:90px;margin-right:6px" onClick="location='member_main.php';" class='nbt'> 
+          </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#F8FBFB"> 
+    <td width="8%" align="center">选择</td>
+    <td width="30%" align="center">订单号</td>
+    <td width="13%" align="center">产品名称</td>
+    <td width="10%" align="center">产品类型</td>
+    <td width="10%" align="center">生成日期</td>
+    <td width="8%" align="center">金额</td>
+    <td width="8%" align="center">状态</td>
+    <td width="13%" align="center">会员</td>
+  </tr>
+  <form name="form1">
+    <?php 
+  $mylist = $dlist->GetDataList();
+  while($row = $mylist->GetArray('dm'))
+  {
+ ?>
+    <tr bgcolor="#FFFFFF"> 
+      <td align="center">
+<input type='checkbox' name='aids' value='<?php echo $row['aid']?>' class='np'></td>
+      <td align="center"> 
+        <?php echo $row['buyid']?>
+      </td>
+      <td align="center"> 
+        <?php echo $row['pname']?>
+      </td>
+      <td align="center"> 
+        <?php echo GetPType($row['product'])?>
+      </td>
+      <td align="center"> 
+        <?php echo GetDateMk($row['mtime'])?>
+      </td>
+      <td align="center"> 
+        <?php echo $row['money']?>
+      </td>
+      <td align="center"> 
+        <?php echo GetSta($row['sta'])?>
+      </td>
+      <td align="center"> 
+        <?php echo GetMemberID($dlist->dsql,$row['mid'])?>
+      </td>
+    </tr>
+    <?php  } ?>
+  </form>
+  <tr> 
+    <td height="28" colspan="8" bgcolor="#FCFDF7">&nbsp; 
+      <input type="button" name="b7" value="反选" class="nbt" style="width:40" onClick="ReSel();">
+      <input type="button" name="b5" value="设为已付款状态" class="nbt" style="width:100" onClick="UpSel();">
+      <input type="button" name="b9" value="设为已完成状态" class="nbt" style="width:100" onClick="OkSel();">
+    </td>
+  </tr>
+  <tr> 
+    <td height="24" colspan="8" bgcolor="#FCFDF7" align="center"> 
+      <?php  $dlist->GetPageList(7); ?>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

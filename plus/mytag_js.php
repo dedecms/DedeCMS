@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/inc_arcpart_view.php");
 $aid = ereg_replace("[^0-9]","",$aid);
 $pv = new PartView();

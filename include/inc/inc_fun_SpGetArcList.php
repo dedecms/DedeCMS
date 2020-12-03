@@ -1,10 +1,10 @@
-<?
+<?php 
 $GLOBALS['__SpGetArcList'] = 1;
 //获取一个文档列表
 //--------------------------------
 function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
   $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$keyword="",$innertext="",
-  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limit="",$att=0,$order="desc",$subday=0)
+  $tablewidth="100",$arcid=0,$idlist="",$channelid=0,$limit="",$att=0,$order="desc",$subday=0,$ismember=0)
   {
 		global $PubFields,$cfg_keyword_like;
 		$row = AttDef($row,10);
@@ -15,6 +15,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		$listtype = AttDef($listtype,"all");
     $arcid = AttDef($arcid,0);
     $channelid = AttDef($channelid,0);
+    $ismember = AttDef($ismember,0);
     $orderby = AttDef($orderby,"default");
     $orderWay = AttDef($order,"desc");
     $subday = AttDef($subday,0);
@@ -49,6 +50,9 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
     //是否指定相近ID
 		if($arcid!=0) $orwhere .= " And arc.ID<>'$arcid' ";
 		
+		//是否为会员文档
+		if($ismember==1) $orwhere .= " And arc.memberid>0  ";
+		
 		//文档排序的方式
 		$ordersql = "";
 		if($orderby=='hot'||$orderby=='click') $ordersql = " order by arc.click $orderWay";
@@ -72,15 +76,14 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		  if($ridnum>1){
 			  $tpsql = "";
 		    for($i=0;$i<$ridnum;$i++){
-				  if($tpsql=="") $tpsql .= " And (".TypeGetSunID($reids[$i],$dsql,'arc');
-				  else $tpsql .= " Or ".TypeGetSunID($reids[$i],$dsql,'arc');
+				  if($tpsql=="") $tpsql .= " And ( (".TypeGetSunID($reids[$i],$dsql,'arc')." Or arc.typeid2='".$reids[$i]."') ";
+				  else $tpsql .= " Or (".TypeGetSunID($reids[$i],$dsql,'arc')." Or arc.typeid2='".$reids[$i]."') ";
 		    }
 		    $tpsql .= ") ";
 		    $orwhere .= $tpsql;
 		    unset($tpsql);
-		  }
-		  else{
-			  $orwhere .= " And ".TypeGetSunID($typeid,$dsql,'arc');
+		  }else{
+			  $orwhere .= " And (".TypeGetSunID($typeid,$dsql,'arc')." Or arc.typeid2='$typeid' ) ";
 		  }
 		  unset($reids);
 	  }
@@ -115,19 +118,48 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		  if($rstr!="") $orwhere .= " And CONCAT(arc.title,arc.keywords) REGEXP '$rstr' ";
 		  unset($keywords);
 	  }
-	 
+	  $addField = "";
+		$addJoin = "";
+	  //获得附加表的相关信息
+		//-----------------------------
+		if($channelid>0){
+		  $mChannelUnit = new ChannelUnit($channelid);
+		  $addtable  = $mChannelUnit->ChannelInfos['addtable'];
+		  if($addtable!=""){
+			  $addJoin = " left join $addtable on arc.ID = ".$addtable.".aid ";
+			  $addField = "";
+			  $fields = explode(",",$mChannelUnit->ChannelInfos['listadd']);
+			  foreach($fields as $k=>$v){ $nfields[$v] = $k; }
+			  foreach($mChannelUnit->ChannelFields as $k=>$arr){
+				  if(isset($nfields[$k])){
+				    if($arr['rename']!="")
+				  	  $addField .= ",".$addtable.".".$k." as ".$arr['rename'];
+				    else
+				  	  $addField .= ",".$addtable.".".$k;
+				  }
+			  }
+		  }
+		}
+	  
 	  $limit = trim(eregi_replace("limit","",$limit));
 	  if($limit!="") $limitsql = " limit $limit ";
 	  else $limitsql = " limit 0,$line ";
 		//////////////
 		$query = "Select arc.ID,arc.title,arc.iscommend,arc.color,arc.typeid,
 		arc.ismake,arc.description,arc.pubdate,arc.senddate,arc.arcrank,arc.click,
-		arc.money,arc.litpic,arc.writer,arc.shorttitle,arc.memberid,
+		arc.money,arc.litpic,arc.writer,arc.shorttitle,arc.memberid,arc.postnum,arc.lastpost,
 		tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
 		tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
-		from #@__archives arc left join #@__arctype tp on arc.typeid=tp.ID
+		$addField
+		from #@__archives arc 
+		left join #@__arctype tp on arc.typeid=tp.ID
+		$addJoin
 		where $orwhere $ordersql $limitsql";
-		 
+		
+		$t1 = ExecTime();
+		//echo $query;
+		
+		
 		$dsql->SetQuery($query);
 		$dsql->Execute("al");
     $artlist = "";
@@ -177,6 +209,17 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
            
            $row['phpurl'] = $PubFields['phpurl'];
  		       $row['templeturl'] = $PubFields['templeturl'];
+ 		       
+ 		       //编译附加表里的数据
+ 		       if($channelid>0){
+             foreach($row as $k=>$v){
+ 		  	        if(ereg("[A-Z]",$k)) $row[strtolower($k)] = $v;
+ 		         }
+             foreach($mChannelUnit->ChannelFields as $k=>$arr){
+ 		  	        if(isset($row[$k])) $row[$k] = $mChannelUnit->MakeField($k,$row[$k]);
+ 		  	     }
+ 		  	   }
+ 		       
            if(is_array($dtp2->CTags)){
        	      foreach($dtp2->CTags as $k=>$ctag){
        		 	    if(isset($row[$ctag->GetName()])) $dtp2->Assign($k,$row[$ctag->GetName()]);
@@ -196,6 +239,10 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
      }//Loop Line
      if($col>1) $artlist .= "	</table>\r\n";
      $dsql->FreeResult("al");
+     
+     $t2 = ExecTime();
+     //echo "<hr>".($t2-$t1)." $query<hr>";
+     
      if($artlist=="") $artlist="&nbsp;";
      return $artlist;
 }

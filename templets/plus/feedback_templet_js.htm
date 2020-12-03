@@ -2,13 +2,15 @@
 {dede:datalist}
 document.write("<table width='100%' border='0' cellpadding='0' cellspacing='3'>");
 document.write("  <tr bgcolor='#F5FAED'> ");
-document.write("    <td height='20'>&nbsp;");
-document.write("    发言人： [field:username/] &nbsp;");
+document.write("    <td height='24'>&nbsp;");
+document.write("    <img src='[field:global name='cfg_phpurl'/]/img/fbico.gif' border='0'> 发言人： [field:username/] &nbsp;");
 document.write("    时间： [field:dtime function=GetDateMk('@me')/] ");
+document.write("    <a href='[field:global name='cfg_phpurl'/]/feedback.php?fid=[field:ID/]&action=good&arcID=[field:aid/]'><img src='[field:global name='cfg_phpurl'/]/img/good.gif' border='0'></a>鲜花([field:good/]) ");
+document.write("    <a href='[field:global name='cfg_phpurl'/]/feedback.php?fid=[field:ID/]&action=bad&arcID=[field:aid/]'><img src='[field:global name='cfg_phpurl'/]/img/bad.gif' border='0'></a>鸡蛋([field:bad/]) ");
 document.write("    </td>");
 document.write("  </tr>");
 document.write("  <tr> ");
-document.write("    <td height='28'>");
+document.write("    <td height='28' style='word-break: break-all'>");
 document.write("    [field:msg function='cnw_left_safe("@me",100)'/] ");
 document.write("    </td>");
 document.write("  </tr>");

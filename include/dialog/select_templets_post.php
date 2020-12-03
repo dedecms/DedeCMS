@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 $cfg_txttype = "htm|html|tpl|txt|dtp";
 if(empty($job)) $job = "";

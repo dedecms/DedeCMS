@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td width="190" height="68" align="center"><a href='http://www.dedecms.com' target='_blank'><img src="{dede:field name='templeturl'/}/img/df_dedetitle.gif" width="178" height="53" border='0' alt="dedecms织梦内容管理系统"></a></td>
+<td width="20" align="center">&nbsp;</td>
+<td width="486">&nbsp;</td>
+<td width="190">&nbsp;</td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td width="10" height="36" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c1.gif" width="9" height="36"></td>
+<td width="880" background="{dede:field name='templeturl'/}/img/31bg1.gif">
+	<a href='/'>首页</a>
+	{dede:channel type='top' row='8'}
+| <a href='[field:typelink/]'>[field:typename/]</a>
+{/dede:channel}
+	| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
+| <a href="{dede:field name='memberurl'/}">会员中心</a>
+| <a href="http://bbs.dedecms.com">支持论坛</a>
+</td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg1.gif"><img src="{dede:field name='templeturl'/}/img/31c2.gif" width="9" height="36"></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td width="10" height="32" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c3.gif" width="4" height="32"></td>
+<td width="508" background="{dede:field name='templeturl'/}/img/31bg2.gif"> 
+<div class="hotworddiv">热门关键字：{dede:hotwords num='5' subday='30'/}</div></td>
+<td width="372" align="center" background="{dede:field name='templeturl'/}/img/31bg2.gif"> 
+<form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
+<input type="hidden" name="kwtype" value="0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td width="47%"><input name="keyword" type="text" id="keyword2" class="kw1"></td>
+<td width="30%" align="center"> <select name="searchtype" id="searchtype" class="op1">
+<option value="titlekeyword" selected>智能模糊搜索</option>
+<option value="title">仅搜索标题</option>
+</select> </td>
+<td width="23%" align="center"> <input name="imageField" type="image" src="{dede:field name='templeturl'/}/img/v31s.gif" width="73" height="19" border="0"></td>
+</tr>
+</table>
+</form></td>
+<td width="10" align="right" background="{dede:field name='templeturl'/}/img/31bg2.gif"><img src="{dede:field name='templeturl'/}/img/31c4.gif" width="4" height="32"></td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr> 
+<td>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding-top:1px">
+<tr> 
+<td width="1%" height="27" align="center" bgcolor="#F0F5DA">&nbsp;</td>
+<td width="3%" align="center"><img src="{dede:field name='templeturl'/}/img/ldd.gif" width="5" height="14"></td>
+<td width="96%" bgcolor="#F4FAE2" style="padding-left:5px; padding-top:4px;">当前位置：{dede:field 
+name='position'/}</td>
+</tr>
+<tr> 
+<td height="3" colspan="3" bgcolor="#F0F1D1" style="padding:0px"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table width="900" height="450" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+      <td width="219" valign="top" bgcolor="#F3F9FC"> <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>随机推荐文章</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist type='commend' 
+              titlelen='30' orderby='rand' row='16'/} </td>
+          </tr>
+        </table>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tbspan">
+          <tr> 
+            <td class="guidet"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="gtb">
+                <tr> 
+                  <td height="29" background="{dede:field name='templeturl'/}/img/31bg3.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr> 
+                        <td width="32%" align="right"><img src="{dede:field name='templeturl'/}/img/i.gif" width="10" height="13"></td>
+                        <td width="2%">&nbsp;</td>
+                        <td width="66%" class="guidetitle"><strong>本栏热点文章</strong></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" class="guideb"> {dede:arclist orderby='click' 
+              titlelen='30' row='12'/}</td>
+          </tr>
+        </table></td>
+<td width="6"></td>
+      <td width="678" valign="top">
+	  <table border="0" cellspacing="6" cellpadding="1">
+     <tr>
+      {dede:arclist row='5' col='1' titlelen='60' orderby='pubdate' type='image'}
+			<td width='20%' style='border:1px solid #dedede;' align='center'>
+			  <a href='[field:arcurl/]'>
+			  	<img src='[field:litpic/]' width='124' height='93' border='0' alt="[field:title/]">
+			    [field:title function='cn_substr(@me,18)'/]
+			  </a>
+			</td>
+			{/dede:arclist}
+      </tr>
+     </table>
+     {dede:channelArtlist col=1 tablewidth='100%'} 
+        <table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#E1EBD3" style="margin-bottom:3px">
+          <tr> 
+            <td height="26" bgcolor="#E6F2CC" background="{dede:global name='cfg_templeturl'/}/img/indbg1i.gif"> 
+              {dede:type} 
+              <table border="0" cellpadding="0" cellspacing="0" width="98%">
+                <tr> 
+                  <td width='4%' align="center"><img src='[field:global name='cfg_templeturl'/]/img/channellist.gif' width='14' height='16'></td>
+                  <td width='66%'> <a href="[field:typelink /]">[field:typename 
+                    /]</a> </td>
+                  <td width='30%' align='right'><a href="[field:typelink /]"><img src="[field:global name='cfg_templeturl'/]/img/more.gif" width="43" height="14" border="0"></a></td>
+                </tr>
+              </table>
+              {/dede:type} </td>
+          </tr>
+          <tr> 
+            <td height="50" valign="top" bgcolor="#FFFFFF">
+{dede:arclist orderby='pubdate' row='20' col='2' titlelen='42'}
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr height="22"> 
+<td class="inddline">·<a href="[field:arcurl /]">[field:title/]</a>([field:pubdate function="strftime('%y-%m-%d',@me)"/])
+</td>
+</tr>
+</table>
+{/dede:arclist}
+			</td>
+          </tr>
+        </table>
+        <div style='font-size:2px'>&nbsp;</div>
+{/dede:channelArtlist} </td>
+</tr>
+</table>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
+<tr> 
+<td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="center">
+	{dede:global name='cfg_powerby'/}
+</td>
+
+<td background="{dede:field name='templeturl'/}/img/31bg5.gif" align="right" valign="top"><img src='{dede:field name='templeturl'/}/img/31c6.gif' width='4' height='49'></td>
+</tr>
+</table>
+
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan">
+<tr><td height="6"></td></tr>
+</table> 
+</center>
+</body>
+</html>

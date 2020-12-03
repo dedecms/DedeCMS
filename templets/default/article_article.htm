@@ -2,11 +2,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>{dede:field name='title'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/img/default.css" rel="stylesheet" type="text/css">
-<link href="../img/default.css" rel="stylesheet" type="text/css">
 </head>
 <body leftmargin="0" topmargin="0">
 <center>
@@ -67,12 +66,14 @@ name='position'/}文章内容</td>
 <tr> 
 <td width='6' height="52"></td>
 <td>
+	 <table width='100%'><td align='right'>{dede:pagetitle style='select'/}</td></tr></table>
 	 {dede:field name='body'/}<br>
+	 （阅读次数：<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberID'/}" language="javascript"></script>）
 	<center>{dede:pagebreak/}</center>
  </td>
 </tr>
 <tr align="center"> 
-<td colspan="2">&nbsp;</td>
+ <td height="40" colspan="2">{dede:prenext/}</td>
 </tr>
 </table></td>
 </tr>
@@ -112,10 +113,12 @@ name='position'/}文章内容</td>
 <tr> 
 <td valign="top"> <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#C5CDBE">
 <tr> 
-<td height="23" bgcolor="#F0F8D8">&nbsp;§最新评论：</td>
+<td height="23" bgcolor="#F0F8D8">&nbsp;<b>§<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name='ID'/}"><u>最新评论</u></a>：</b></td>
 </tr>
 <tr> 
-<td height="20" bgcolor="#FFFFFF"><script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script></td>
+<td height="20" bgcolor="#FFFFFF">
+	<script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script>
+</td>
 </tr>
 </table></td>
 </tr>
@@ -170,7 +173,7 @@ name='position'/}文章内容</td>
 </table></td>
 </tr>
 </table>
-<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberID'/}" language="javascript"></script>
+
 <table width="900" border="0" align="center" cellpadding="0" cellspacing="0" class="tbspan" style="margin-top:3px">
 <tr> 
 <td height="51" background="{dede:field name='templeturl'/}/img/31bg5.gif" valign="top"><img src='{dede:field name='templeturl'/}/img/31c5.gif' width='4' height='49'></td>

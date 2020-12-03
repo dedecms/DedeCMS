@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Feedback');
 $ID = ereg_replace("[^0-9]","",$ID);
@@ -30,7 +30,7 @@ if($dopost=="edit")
    exit();
 }
 
-$query = "select * from dede_feedback where ID=$ID";
+$query = "select * from #@__feedback where ID=$ID";
 $dsql->SetQuery($query);
 $dsql->Execute();
 $row = $dsql->GetObject();
@@ -52,38 +52,38 @@ body {
 
 <body>
 &nbsp;
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#666666">
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#98CAEF">
   <tr>
-    <td width="100%" height="24" colspan="2" background="img/tbg.gif"><strong><a href="<?=$ENV_GOBACK_URL?>"><u>评论管理</u></a>&gt;&gt;编辑评论：</strong></td>
+    <td width="100%" height="24" colspan="2" background="img/tbg.gif"><strong><a href="<?php echo $ENV_GOBACK_URL?>"><u>评论管理</u></a>&gt;&gt;编辑评论：</strong></td>
   </tr>
   <tr>
     <td height="187" colspan="2" align="center" bgcolor="#FFFFFF">
 	<form name="form1" method="post" action="feedback_edit.php">
 	<input type="hidden" name="dopost" value="edit">
-	<input type="hidden" name="ID" value="<?=$row->ID?>">
+	<input type="hidden" name="ID" value="<?php echo $row->ID?>">
         <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#ADA896">
           <tr bgcolor="#FFFFFF"> 
             <td width="21%" height="24">评论所属文章：</td>
             <td width="79%"> 
-              <?=$row->arctitle?>
+              <?php echo $row->arctitle?>
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
             <td height="24">评论人：</td>
             <td> 
-              <input name="username" type="text" id="username" size="20" value="<?=$row->username?>"> 
+              <input name="username" type="text" id="username" size="20" value="<?php echo $row->username?>"> 
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
             <td height="24">评论发布时间：</td>
             <td> 
-              <?=GetDateTimeMK($row->dtime)?>
+              <?php echo GetDateTimeMK($row->dtime)?>
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
             <td height="24">IP地址：</td>
             <td> 
-              <?=$row->ip?>
+              <?php echo $row->ip?>
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
@@ -93,7 +93,7 @@ body {
           <tr bgcolor="#FFFFFF"> 
             <td height="62" align="center">&nbsp; </td>
             <td height="62"> 
-              <textarea name="msg" cols="60" rows="5" id="textarea"><?=$row->msg?></textarea></td>
+              <textarea name="msg" cols="60" rows="5" id="textarea"><?php echo $row->msg?></textarea></td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
             <td height="24">管理员回复：</td>
@@ -108,7 +108,7 @@ body {
             <td height="40" colspan="2" align="center"> 
               <input type="submit" name="Submit" value="保存更改">
               　 
-              <input type="button" name="Submit2" value="不理返回" onClick="location='<?=$ENV_GOBACK_URL?>';"></td>
+              <input type="button" name="Submit2" value="不理返回" onClick="location='<?php echo $ENV_GOBACK_URL?>';" class='nbt'></td>
           </tr>
         </table>
 	  </form>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_SoftConfig');
 if(empty($dopost)) $dopost = "";
@@ -37,7 +37,7 @@ function AddServer()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="soft_config.php" method="post">
     <input type="hidden" name="dopost" value="save">
     <tr> 
@@ -51,27 +51,27 @@ function AddServer()
     <tr> 
       <td width="125" valign="top" bgcolor="#FFFFFF">链接显示方式：</td>
       <td width="827" valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="downtype" class="np" value="0"<?if($row['downtype']==0) echo " checked";?>>
+      	<input type="radio" name="downtype" class="np" value="0"<?php if($row['downtype']==0) echo " checked";?>>
         直接显示地址列表 
-        <input name="downtype" type="radio" value="1" class="np"<?if($row['downtype']==1) echo " checked";?>>
+        <input name="downtype" type="radio" value="1" class="np"<?php if($row['downtype']==1) echo " checked";?>>
         要求进入下载地址列表页
        </td>
     </tr>
     <tr> 
       <td valign="top" bgcolor="#FFFFFF">附件下载方式：</td>
       <td valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="gotojump" class="np" value="0"<?if($row['gotojump']==0) echo " checked";?>>
+      	<input type="radio" name="gotojump" class="np" value="0"<?php if($row['gotojump']==0) echo " checked";?>>
         链接到真实软件地址 
-        <input name="gotojump" type="radio" class="np" value="1"<?if($row['gotojump']==1) echo " checked";?>>
+        <input name="gotojump" type="radio" class="np" value="1"<?php if($row['gotojump']==1) echo " checked";?>>
         链接到跳转页面
        </td>
     </tr>
     <tr> 
       <td valign="top" bgcolor="#FFFFFF">是否启用镜像站点：</td>
       <td valign="top" bgcolor="#FFFFFF">
-      	<input type="radio" name="ismoresite" class="np" value="1"<?if($row['ismoresite']==1) echo " checked";?>>
+      	<input type="radio" name="ismoresite" class="np" value="1"<?php if($row['ismoresite']==1) echo " checked";?>>
         启用 
-        <input name="ismoresite" type="radio" class="np" value="0"<?if($row['ismoresite']==0) echo " checked";?>>
+        <input name="ismoresite" type="radio" class="np" value="0"<?php if($row['ismoresite']==0) echo " checked";?>>
         不启用
        </td>
     </tr>
@@ -90,15 +90,15 @@ function AddServer()
         <input name="serverurl" type="text" id="serverurl" value="http://">
         服务器名称： 
         <input name="servername" type="text" id="servername">
-		<input type="button" name="Submit" value="增加一项" onClick="AddServer()">
+		<input type="button" name="Submit" value="增加一项" onClick="AddServer()" class='nbt'>
 	  </td>
     </tr>
     <tr> 
-      <td height="62" colspan="2" bgcolor="#FFFFFF"> <textarea name="sites" id="sites" style="width:100%;height:300"><?=$row['sites']?></textarea> 
+      <td height="62" colspan="2" bgcolor="#FFFFFF"> <textarea name="sites" id="sites" style="width:100%;height:300"><?php echo $row['sites']?></textarea> 
       </td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center"> <input type="submit" name="Submit" value="保存数据"> 
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center"> <input type="submit" name="Submit" value="保存数据"> 
       </td>
     </tr>
   </form>

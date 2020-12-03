@@ -9,9 +9,19 @@ if($cfg_mb_upload=='否'){
 }
 //检测用户文件存放路径是否合法
 $activepath = str_replace("\\","/",$activepath);
-$activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 $rootdir = $cfg_user_dir."/".$cfg_ml->M_ID;
+
+if(ereg("\.",$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
+if(!eregi($rootdir,$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
 if(strlen($activepath) < strlen($rootdir)){
 	$activepath = $rootdir;
 }
@@ -57,19 +67,25 @@ if($job=="upload")
 	$filename = $cfg_ml->M_ID."_".$y.strftime("%m%d%H%M%S",$nowtme);
 	$fs = explode(".",$uploadfile_name);
 	$filename = $filename.".".$fs[count($fs)-1];
-	if(eregi("php|asp|pl|shtml|jsp|cgi",$fs[count($fs)-1])){
-		exit();
-	}
 
   $fullfilename = $cfg_basedir.$activepath."/".$filename;
   if(file_exists($fullfilename)){
   	ShowMsg("本目录已经存在同名的文件，请更改！","-1");
 		exit();
   }
+ 
+  //严格检查最终的文件名
+  if(!CheckAddonType($fullfilename) || eregi("\.(php|asp|pl|shtml|jsp|cgi|aspx)",$fullfilename)){
+		ShowMsg("你所上传的文件类型被禁止，系统只允许上传<br>".$cfg_mb_mediatype." 类型附件！","-1");
+		exit();
+	}
+ 
   @move_uploaded_file($uploadfile,$fullfilename);
+  
 	if($uploadfile_type == 'application/x-shockwave-flash') $mediatype=2;
 	else if(eregi('audio|media|video',$uploadfile_type)) $mediatype=3;
 	else $mediatype=4;
+	
 	$inquery = "
    INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
    VALUES ('$filename','".$activepath."/".$filename."','$mediatype','0','0','0','{$uploadfile_size}','{$nowtme}','0','".$cfg_ml->M_ID."');

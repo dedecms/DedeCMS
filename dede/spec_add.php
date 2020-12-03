@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('spec_New');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -27,6 +27,12 @@ function checkSubmit(){
    }
 }
 
+function SelectTemplets(fname){
+   var posLeft = window.event.clientY-200;
+   var posTop = window.event.clientX-300;
+   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+
 function SelectArcList(fname){
    var posLeft = 10;
    var posTop = 10;
@@ -44,7 +50,7 @@ function SelectImage(fname,vlist){
 </head>
 <body topmargin="8">
 <form name="form1" action="spec_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
-<input type="hidden" name="channelid" value="<?=$channelid?>">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
 <input type="hidden" name="arcrank" value="0">
 <input type="hidden" name="source" value="本站">
 <input type="hidden" name="typeid2" value="0">
@@ -52,12 +58,12 @@ function SelectImage(fname,vlist){
     <tr> 
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
         &nbsp;</td>
-      <td width="85%"><a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"></a>&gt;&gt;发布专题</td>
+      <td width="85%"><a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"></a>&gt;&gt;发布专题</td>
       <td width="10%">&nbsp; <a href="makehtml_spec.php">[<u>更新HTML</u>]</a></td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
     <tr> 
       <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr> 
@@ -105,7 +111,7 @@ function SelectImage(fname,vlist){
             <td> 
               <select name='arcatt' style='width:150'>
                 <option value='0'>普通文档</option>
-                <?
+                <?php 
             	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
             	$dsql->Execute();
             	while($trow = $dsql->GetObject())
@@ -135,7 +141,7 @@ function SelectImage(fname,vlist){
                 <tr> 
                   <td height="30">
 				    <input name="picname" type="text" id="picname" style="width:250" value="" onChange="SeePic(document.picview,this.value);"> 
-                    <input type="button" name="Submitss" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','');"> 
+                    <input type="button" name="Submitss" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','');" class='nbt'> 
                   </td>
                 </tr>
               </table>
@@ -150,8 +156,8 @@ function SelectImage(fname,vlist){
           <tr> 
             <td width="90">专题模板：</td>
             <td>
-			<input name="templet" type="text" id="templet" size="30" value="<?=$cfg_df_style?>/article_spec.htm">
-            <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');"> 
+			<input name="templet" type="text" id="templet" size="30" value="{style}/article_spec.htm">
+            <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -186,7 +192,7 @@ function SelectImage(fname,vlist){
             <td width="90">标题颜色：</td>
             <td width="159"> <input name="color" type="text" id="color" style="width:120"> 
             </td>
-            <td> <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"> 
+            <td> <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -210,7 +216,7 @@ function SelectImage(fname,vlist){
           <tr> 
             <td width="90">发布时间：</td>
             <td> 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			echo "<input name=\"selPubtime\" type=\"button\" id=\"selkeyword\" value=\"选择\" onClick=\"showCalendar('pubdate', '%Y-%m-%d %H:%M:00', '24');\">";
@@ -223,16 +229,7 @@ function SelectImage(fname,vlist){
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">主分类：</td>
-            <td> 
-              <?
-           	$tl = new TypeLink($cid);
-           	$typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0);
-			      echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0' selected>请选择主分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			 ?>
-            </td>
+            <td><?php echo GetTypeidSel('form1','typeid','selbt',0)?></td>
           </tr>
         </table></td>
     </tr>
@@ -253,70 +250,70 @@ function SelectImage(fname,vlist){
     <tr> 
       <td height="24" valign="top" class="bline">
         <table width="800" border="0" cellspacing="2" cellpadding="2">
-          <?
+          <?php 
 		  $speclisttmp = GetSysTemplets("spec_arclist.htm");
 		  for($i=1;$i<=$cfg_specnote;$i++)
 		  {
 		  ?>
           <tr bgcolor="#EEF8E0"> 
             <td width="113">节点 
-              <?=$i?>
+              <?php echo $i?>
               名称：</td>
             <td colspan="2"> <table width="600" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td width="310"><input name="notename<?=$i?>" type="text" id="notename<?=$i?>" style="width:300"> 
+                  <td width="310"><input name="notename<?php echo $i?>" type="text" id="notename<?php echo $i?>" style="width:300"> 
                   </td>
                   <td width="90" align="center">节点标识：</td>
-                  <td width="200"><input name="noteid<?=$i?>" type="text" id="noteid<?=$i?>" style="width:100"></td>
+                  <td width="200"><input name="noteid<?php echo $i?>" type="text" id="noteid<?php echo $i?>" style="width:100"></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
             <td>节点文章列表：</td>
-            <td width="479"><textarea name="arcid<?=$i?>" rows="3" id="arcid<?=$i?>" style="width:90%"></textarea></td>
+            <td width="479"><textarea name="arcid<?php echo $i?>" rows="3" id="arcid<?php echo $i?>" style="width:90%"></textarea></td>
             <td width="188"> 
-              <input name="selarc<?=$i?>" type="button" id="selarc<?=$i?>2" value="选择节点文章" style="width:100" onClick="SelectArcList('form1.arcid<?=$i?>');"></td>
+              <input name="selarc<?php echo $i?>" type="button" id="selarc<?php echo $i?>2" value="选择节点文章" style="width:100" onClick="SelectArcList('form1.arcid<?php echo $i?>');" class='nbt'></td>
           </tr>
           <tr> 
             <td>文档来源：</td>
             <td colspan="2">
-            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="0" class="np" checked>
+            	<input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="0" class="np" checked>
             	按文章列表
-            	<input name="isauto<?=$i?>" type="radio" id="isauto<?=$i?>" value="1" class="np">
+            	<input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="1" class="np">
             	自动获取文档
             	&nbsp;
             	关键字：
-            	<input name="keywords<?=$i?>" type="text" id="keywords<?=$i?>" value="" size="16">(逗号分开)
+            	<input name="keywords<?php echo $i?>" type="text" id="keywords<?php echo $i?>" value="" size="16">(逗号分开)
             	栏目ID：
-            	<input name="typeid<?=$i?>" type="text" id="typeid<?=$i?>" value="0" size="4">
+            	<input name="typeid<?php echo $i?>" type="text" id="typeid<?php echo $i?>" value="0" size="4">
             </td>
           </tr>
           <tr> 
             <td height="51" rowspan="2" valign="top">节点布局： </td>
             <td colspan="2">
             	列数： 
-              <input name="col<?=$i?>" type="text" id="col<?=$i?>" value="1" size="3">
+              <input name="col<?php echo $i?>" type="text" id="col<?php echo $i?>" value="1" size="3">
               图片高： 
-              <input name="imgheight<?=$i?>" type="text" id="imgheight<?=$i?>" value="90" size="3">
+              <input name="imgheight<?php echo $i?>" type="text" id="imgheight<?php echo $i?>" value="90" size="3">
               图片宽： 
-              <input name="imgwidth<?=$i?>" type="text" id="imgwidth<?=$i?>" value="120" size="3">
+              <input name="imgwidth<?php echo $i?>" type="text" id="imgwidth<?php echo $i?>" value="120" size="3">
               标题长： 
-              <input name="titlelen<?=$i?>" type="text" id="titlelen<?=$i?>" value="60" size="3">
+              <input name="titlelen<?php echo $i?>" type="text" id="titlelen<?php echo $i?>" value="60" size="3">
               简介长： 
-              <input name="infolen<?=$i?>" type="text" id="infolen<?=$i?>" value="160" size="3"> 
+              <input name="infolen<?php echo $i?>" type="text" id="infolen<?php echo $i?>" value="160" size="3"> 
               文档数： 
-              <input name="rownum<?=$i?>" type="text" id="rownum<?=$i?>" value="40" size="3">
+              <input name="rownum<?php echo $i?>" type="text" id="rownum<?php echo $i?>" value="40" size="3">
             </td>
           </tr>
           <tr> 
-            <td colspan="2">单条记录的模板：<br/> <textarea name="listtmp<?=$i?>" rows="3" id="listtmp<?=$i?>" style="width:60%"><?=$speclisttmp?></textarea></td>
+            <td colspan="2">单条记录的模板：<br/> <textarea name="listtmp<?php echo $i?>" rows="3" id="listtmp<?php echo $i?>" style="width:60%"><?php echo $speclisttmp?></textarea></td>
           </tr>
           <tr> 
             <td>节点容器模板：</td>
-            <td colspan="2"><input name="notetemplet<?=$i?>" type="text" id="notetemplet<?=$i?>" value="system/channel/channel_spec_note.htm" style="width:300"> 
-              <input type="button" name="selno<?=$i?>" value="浏览..." style="width:70" onClick="SelectTemplets('form1.notetemplet<?=$i?>');"></td>
+            <td colspan="2"><input name="notetemplet<?php echo $i?>" type="text" id="notetemplet<?php echo $i?>" value="system/channel/channel_spec_note.htm" style="width:300"> 
+              <input type="button" name="selno<?php echo $i?>" value="浏览..." style="width:70" onClick="SelectTemplets('form1.notetemplet<?php echo $i?>');" class='nbt'></td>
           </tr>
-          <?
+          <?php 
 		  }
 		  ?>
         </table>
@@ -343,9 +340,8 @@ function SelectImage(fname,vlist){
   </tr>
 </table>
 </form>
-<?
+<?php 
 $dsql->Close();
-$tl->Close();
 ?>
 </body>
 </html>

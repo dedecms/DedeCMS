@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/inc_typelink.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 require_once(dirname(__FILE__)."/pub_splitword_www.php");
@@ -34,7 +34,7 @@ class SearchView
 	//-------------------------------
 	//php5构造函数
 	//-------------------------------
-	function __construct($typeid,$keyword,$orderby,$achanneltype="all",
+	function __construct($typeid,$keyword,$orderby,$achanneltype="0",
 	                        $searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
  	{
  		if(empty($upagesize)) $upagesize = 10;
@@ -128,7 +128,7 @@ class SearchView
  		foreach($ks as $k){
  			$k = trim($k);
  			if(strlen($k)<2) continue;
- 			if(ord($k[0])>0x80 && strlen($k)<3) continue;
+ 			//if(ord($k[0])>0x80 && strlen($k)<3) continue;
  			$k = addslashes($k);
  			if($this->SearchType=="title"){
  				 if($this->KType==1) $kwsql .= " Or #@__archives.title like '%$k%' ";
@@ -205,7 +205,7 @@ class SearchView
  		  $addSql  = " arcrank > -1 $ksql";
  		  if($this->TypeID > 0) $addSql .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
  		  if($this->StartTime > 0) $addSql .= " And senddate>'".$this->StartTime."' ";
- 		  if($this->ChannelType > 0) $addSql .= " And channel='".$this->ChannelType."'";
+ 		  if($this->ChannelType != 0 ) $addSql .= " And channel='".$this->ChannelType."'";
  		
  	    $cquery = "Select count(*) as dd From #@__archives where $addSql";
       $row = $this->dsql->GetOne($cquery);
@@ -311,7 +311,7 @@ class SearchView
  		
  		if($this->StartTime > 0) $orwhere .= " And #@__archives.senddate > '".$this->StartTime."' ";
  		
- 		if($this->ChannelType>0) $orwhere .= " And #@__archives.channel='".$this->ChannelType."'";
+ 		if($this->ChannelType != 0) $orwhere .= " And #@__archives.channel='".$this->ChannelType."'";
  		if($this->TypeID>0) $orwhere .= " And (".$this->TypeLink->GetSunID($this->TypeID,"#@__archives",0)." Or #@__archives.typeid2='".$this->TypeID."') ";
 		
 		//排序方式
@@ -331,6 +331,8 @@ class SearchView
 		from #@__archives 
 		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
 		where $orwhere $ordersql limit $limitstart,$row";
+		
+		//echo $query;
 		
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute("al");

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 ?>
@@ -7,9 +7,10 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>生成HTML</title>
 <link href="base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="main.js"></script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name='form2' action='content_list.php' method="get" target='stafrm'>
    <input type='hidden' name='nullfield' value='ok'>
   </form>
@@ -25,18 +26,20 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
   </tr>
   <tr> 
     <td width="108" valign="top" bgcolor="#FFFFFF">选择栏目：</td>
-    <td width="377" valign="top" bgcolor="#FFFFFF">
-    <?
-       if(empty($cid)) $cid="0";
-       $tl = new TypeLink($cid);
-       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0);
-       echo "<select name='typeid' style='width:300'>\r\n";
-       if($cid=="0") echo "<option value='0' selected>更新所有文档...</option>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-			 $tl->Close();
-		?>
-   </td>
+    <td width="377" valign="top" bgcolor="#FFFFFF"><?php 
+			$seltypeids = 0;
+			if(!empty($cid)){
+			  $dsql = new DedeSql(false);
+			  $seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
+			  $dsql->Close();
+			}
+			$opall=1;
+			if(is_array($seltypeids)){
+			   echo GetTypeidSel('form1','typeid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+			}else{
+			   echo GetTypeidSel('form1','typeid','selbt1',0,0,'请选择...');
+			}
+        ?></td>
   </tr>
   <tr>
     <td height="20" valign="top" bgcolor="#FFFFFF">起始ID：</td>
@@ -54,14 +57,14 @@ require_once(dirname(__FILE__)."/../include/inc_typelink.php");
         个文件</td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
-      	<input name="b112" type="button" class="np2" value="开始生成HTML" onClick="document.form1.submit();" style="width:100">
+      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button" value="开始生成HTML" onClick="document.form1.submit();" style="width:100" class='nbt'>
         &nbsp;
-        <input type="button" name="b113" value="查看所有文档" class="np2" onClick="document.form2.submit();" style="width:100"> 
+        <input type="button" name="b113" value="查看所有文档" onClick="document.form2.submit();" style="width:100" class='nbt'> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

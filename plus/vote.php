@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/inc_vote.php");
 if(empty($dopost)) $dopost = "";
 if(empty($aid)) $aid="";

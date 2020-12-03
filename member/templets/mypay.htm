@@ -2,20 +2,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>消费记录</title>
-<link href="base.css" rel="stylesheet" type="text/css">	
+<link href="newskin.css" rel="stylesheet" type="text/css">	
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top">
+    <td  valign="top">
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
         <tr> 
-          <td background="img/tbg.gif" height="25" class="gdt2">
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
 		  <font color="#333333"> 
             <strong>　&nbsp;我的消费记录：</strong></font>
 		  </td>
@@ -23,39 +24,39 @@
     </table>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr> 
-          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693">
-              <tr bgcolor="#F1F5E9" align="center"> 
-                <td width="10%">ID</td>
-                <td width="40%">档案标题</td>
-                <td width="30%">收藏时间</td>
-                <td width="20%">消费点数</td>
+          <td height="183" valign="top">
+          	<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+              <tr bgcolor="E9FBC9" align="center"> 
+                <td width="10%" bgcolor="#F0F8D6">ID</td>
+                <td width="40%" bgcolor="#F0F8D6">档案标题</td>
+                <td width="30%" bgcolor="#F0F8D6">收藏时间</td>
+                <td width="20%" bgcolor="#F0F8D6">消费点数</td>
               </tr>
-              <?
+              <?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
               <tr bgcolor="#FFFFFF" align="center"> 
                 <td> 
-                  <?=$row['ID']?>
+                  <?php echo $row['ID']?>
                 </td>
-                <td><a href='archives_do.php?dopost=viewArchives&aid=<?=$row["aid"]?>' target='_blank'> 
-                  <?=$row['title']?>
+                <td><a href='archives_do.php?dopost=viewArchives&aid=<?php echo $row["aid"]?>' target='_blank'> 
+                  <?php echo $row['title']?>
                   </a></td>
                 <td> 
-                  <?=GetDateTimeMk($row['dtime'])?>
+                  <?php echo GetDateTimeMk($row['dtime'])?>
                 </td>
                 <td> 
-                  <?=$row['money']?>
+                  <?php echo $row['money']?>
                 </td>
               </tr>
-              <?
+              <?php 
 }
 ?>
-              <tr bgcolor="#F1F5E9"> 
-                <td colspan="4" align="center"> 
-                  <?=$dlist->GetPageList(7);?>
-                </td>
+              <tr bgcolor="E9FBC9"> 
+                <td colspan="4" align="center" bgcolor="#F9FCEF"> 
+                  <?php echo $dlist->GetPageList(7);?>                </td>
               </tr>
             </table></td>
         </tr>
@@ -65,9 +66,10 @@ while($row = $mylist->GetArray('dm'))
       </table></td>
   </tr>
 </table>
-<?
+<?php 
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
 include(dirname(__FILE__)."/foot.htm");
 ?>
+</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 $dsql = new DedeSql(false);
 $row  = $dsql->GetOne("Select * From #@__homepageset");
@@ -22,7 +22,7 @@ function SelectTemplets(fname)
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="makehtml_homepage_action.php" target="stafrm" method="post">
   <input type="hidden" name="dopost" value="make">
     <tr> 
@@ -38,8 +38,8 @@ function SelectTemplets(fname)
     <tr> 
       <td width="177" valign="top" bgcolor="#FFFFFF">选择主页模板：</td>
       <td width="791" valign="top" bgcolor="#FFFFFF">
-	    <input name="templet" type="text" id="templet" style="width:300" value="<?=$row['templet']?>"> 
-        <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');"> 
+	    <input name="templet" type="text" id="templet" style="width:300" value="<?php echo $row['templet']?>"> 
+        <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" class='nbt'> 
       </td>
     </tr>
     <tr> 
@@ -49,7 +49,7 @@ function SelectTemplets(fname)
     </tr>
     <tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">主页位置：</td>
-      <td height="20" valign="top" bgcolor="#FFFFFF"><input name="position" type="text" id="position" value="<?=$row['position']?>" size="30"> 
+      <td height="20" valign="top" bgcolor="#FFFFFF"><input name="position" type="text" id="position" value="<?php echo $row['position']?>" size="30"> 
       </td>
     </tr>
     <tr> 
@@ -62,14 +62,14 @@ function SelectTemplets(fname)
 	</td>
     </tr>
     <tr> 
-      <td height="31" colspan="2" bgcolor="#FAFAF1" align="center">
-	    <input name="view" type="button" id="view" value="预览主页" onclick="window.open('makehtml_homepage_action.php?dopost=view&templet='+form1.templet.value);">
+      <td height="31" colspan="2" bgcolor="#F8FBFB" align="center">
+	    <input name="view" type="button" id="view" value="预览主页" onclick="window.open('makehtml_homepage_action.php?dopost=view&templet='+form1.templet.value);" class='nbt'>
         　
-<input type="submit" name="Submit" value="更新主页HTML"> 
+      <input type="submit" name="Submit" value="更新主页HTML" class="nbt"> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"><table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

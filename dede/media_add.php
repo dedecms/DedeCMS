@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 
@@ -113,7 +113,7 @@ function ResetUpload()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr> 
     <td height="19" background='img/tbg.gif'>
     	<table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -170,9 +170,9 @@ function ResetUpload()
             <td height="30" align="center" bgcolor="#FFFFFF"  class='bline'>上传文件：</td>
             <td bgcolor="#FFFFFF"  class='bline'>数量：
               <input name="picnum" type="text" id="picnum" value="5" size="6">
-              <input type="button" name="Submit" value="增加" onClick="MakeUpload()">
+              <input type="button" name="Submit1" value="增加" onClick="MakeUpload()" class='nbt'>
 			  &nbsp;
-              <input type="button" name="Submit" value="恢复" onClick="ResetUpload()">
+              <input type="button" name="Submit2" value="恢复" onClick="ResetUpload()" class='nbt'>
 			 </td>
           </tr>
           <tr> 

@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('temp_One');
 if(empty($dopost)) $dopost = "";
@@ -112,7 +112,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
     <td height="19" background="img/tbg.gif"> <b><a href="templets_one.php"><u>单独页面管理</u></a></b>&gt;&gt;更新页面 
     </td>
@@ -122,26 +122,26 @@ function checkSubmit()
 	<table width="100%" border="0" cellspacing="4" cellpadding="2">
         <form action="templets_one_edit.php" method="post" name="form1" onSubmit="return checkSubmit()">
           <input type='hidden' name='dopost' value='saveedit'>
-		  <input type='hidden' name='aid' value='<?=$aid?>'>
+		  <input type='hidden' name='aid' value='<?php echo $aid?>'>
           <tr> 
             <td width="15%" height="24" align="center">页面名称：</td>
             <td> 
-              <input name="title" type="text" id="title" size="30" value="<?=$row['title']?>"></td>
+              <input name="title" type="text" id="title" size="30" value="<?php echo $row['title']?>"></td>
           </tr>
           <tr> 
             <td height="24" align="center" bgcolor="#F3FBEC">生成文件名：</td>
             <td bgcolor="#F3FBEC">
-			       <input name="oldfilename" type="hidden" id="oldfilename" value="<?=$row['filename']?>">
-			       <input name="nfilename" type="text" id="nfilename" size="30" value="<?=$row['filename']?>">
+			       <input name="oldfilename" type="hidden" id="oldfilename" value="<?php echo $row['filename']?>">
+			       <input name="nfilename" type="text" id="nfilename" size="30" value="<?php echo $row['filename']?>">
              （相对于CMS安装目录）
             </td>
           </tr>
           <tr> 
             <td height="24" align="center">是否编译：</td>
             <td>
-            	<input name="ismake" type="radio" value="1"<?if($row['ismake']==1) echo " checked";?>>
+            	<input name="ismake" type="radio" value="1"<?php if($row['ismake']==1) echo " checked";?>>
               含模板标记，要编译 
-              <input type="radio" name="ismake" value="0"<?if($row['ismake']==0) echo " checked";?>>
+              <input type="radio" name="ismake" value="0"<?php if($row['ismake']==0) echo " checked";?>>
               不含模板标记，不需要编译</td>
           </tr>
           <tr> 
@@ -149,7 +149,7 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="80" colspan="2" align="center"> 
-              <?
+              <?php 
 	GetEditor("body",$row['body'],"500","Default","print","true");
 	?>
             </td>

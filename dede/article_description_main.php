@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
@@ -8,7 +8,7 @@ require_once(dirname(__FILE__)."/config.php");
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form action="article_description_action.php" name="form1" target="stafrm">
   <tr> 
     <td height="20" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -28,12 +28,12 @@ require_once(dirname(__FILE__)."/config.php");
               <input name="channel" type="text" id="channel" value="1" size="10">
               （可在“<a href="mychannel_main.php"><u>频道模型管理</u></a>”处获得）</td>
             <td width="50%">摘要大小： 
-              <input name="dsize" type="text" id="dsize" size="15" value="<?=$cfg_auot_description?>">
+              <input name="dsize" type="text" id="dsize" size="15" value="<?php echo $cfg_auot_description?>">
               (最大250字节)</td>
           </tr>
           <tr> 
             <td>数据表： 
-              <input name="table" type="text" id="table2" value="<?=$cfg_dbprefix?>addonarticle" size="20"></td>
+              <input name="table" type="text" id="table2" value="<?php echo $cfg_dbprefix?>addonarticle" size="20"></td>
             <td>分析字段： 
               <input name="field" type="text" id="field2" value="body" size="15"></td>
           </tr>
@@ -59,18 +59,18 @@ require_once(dirname(__FILE__)."/config.php");
               <input type="radio" name="dojob" class="np" value="page">
               自动分页　</td>
             <td>（自动分页大小： 
-              <?=$cfg_arcautosp_size?>
+              <?php echo $cfg_arcautosp_size?>
               K，<a href='sys_info.php'><u>修改系统参数</u></a>）</td>
           </tr>
         </table></td>
   </tr>
   <tr> 
-    <td height="31" bgcolor="#FAFAF1" align="center">
-	<input type="submit" name="Submit" value="开始执行分析" class="np"> 
+    <td height="31" bgcolor="#F8FBFB" align="center">
+	<input type="submit" name="Submit" value="开始执行分析" class="nbt"> 
     </td>
   </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20"> <table width="100%">
         <tr> 
           <td width="74%"><strong>结果：</strong></td>

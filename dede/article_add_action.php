@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_New,a_AccNew');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
@@ -29,6 +29,9 @@ if(!TestPurview('a_New')) {
 	CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的权限！");
 	if($typeid2!=0) CheckCatalog($typeid2,"对不起，你没有操作栏目 {$typeid2} 的权限！");
 }
+
+$arcrank = GetCoRank($arcrank,$typeid);
+
 //对保存的内容进行处理
 //--------------------------------
 $iscommend = $iscommend + $isbold;
@@ -104,7 +107,10 @@ if($sptype=="auto"){
 if($autolitpic==1 && $litpic==''){
   $cfg_medias_dir = str_replace('/','\/',$cfg_medias_dir);
   $picname = preg_replace("/.+?".$cfg_medias_dir."(.*)( |\"|').*$/isU",$cfg_medias_dir."$1",$body);
-  if(eregi("\.(jpg|gif|png)$",$picname)) $litpic = GetDDImage('ddfirst',$picname,0);
+  if(eregi("\.(jpg|gif|png)$",$picname)){
+  	 if(ereg("_lit\.",$picname)) $litpic = $picname;
+  	 else $litpic = GetDDImage('ddfirst',$picname,0);
+  }
 }
 
 $body = addslashes($body);
@@ -116,10 +122,10 @@ $adminID = $cuserLogin->getUserID();
 $inQuery = "INSERT INTO #@__archives(
 typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
-pubdate,senddate,arcatt,adminID,memberID,description,keywords,redirecturl) 
+pubdate,senddate,arcatt,adminID,memberID,description,keywords,templet,redirecturl) 
 VALUES ('$typeid','$typeid2','$sortrank','$iscommend','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
-'$pubdate','$senddate','$arcatt','$adminID','0','$description','$keywords','$redirecturl');";
+'$pubdate','$senddate','$arcatt','$adminID','0','$description','$keywords','$templet','$redirecturl');";
 
 $dsql = new DedeSql();
 $dsql->SetQuery($inQuery);

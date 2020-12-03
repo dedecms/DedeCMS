@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 ?>
@@ -12,12 +12,13 @@ function SelectTemplets(fname)
 {
    var posLeft = window.event.clientY-200;
    var posTop = window.event.clientX-300;
-   window.open("../include/dialog/select_templets.php?&activepath=<?=urlencode($cfg_templets_dir.'/plus')?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("../include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir.'/plus')?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
+<script type="text/javascript" src="main.js"></script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form name="form1" action="makehtml_js_action.php" method="get" target='stafrm'>
     <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -30,31 +31,34 @@ function SelectTemplets(fname)
     </tr>
     <tr> 
       <td width="108" valign="top" bgcolor="#FFFFFF">选择栏目：</td>
-      <td width="377" valign="top" bgcolor="#FFFFFF"> 
-        <?
-       if(empty($cid)) $cid="0";
-       $tl = new TypeLink($cid);
-       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0,1);
-       echo "<select name='typeid' style='width:300'>\r\n";
-       if($cid=="0") echo "<option value='0' selected>所有栏目...</option>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-			 $tl->Close();
-		?>
-      </td>
+      <td width="377" valign="top" bgcolor="#FFFFFF"><?php 
+			$seltypeids = 0;
+			if(!empty($cid)){
+			  $dsql = new DedeSql(false);
+			  $seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='$cid' ");
+			  $dsql->Close();
+			}
+			$opall=1;
+			if(is_array($seltypeids)){
+			   echo GetTypeidSel('form1','typeid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+			}else{
+			   echo GetTypeidSel('form1','typeid','selbt1',0,0,'请选择...');
+			   $cid = 0;
+			}
+        ?></td>
     </tr>
     <tr> 
       <td height="40" bgcolor="#FFFFFF">JS文件：</td>
       <td height="40" bgcolor="#FFFFFF">
 	  <font color="#660000">
-	  <? echo "&lt;script src='".$cfg_plus_dir."/js/".$cid.".js' language='javascript'&gt;&lt;/script&gt;"; ?>
+	  <?php  echo "&lt;script src='".$cfg_plus_dir."/js/".$cid.".js' language='javascript'&gt;&lt;/script&gt;"; ?>
 	  </font>
 	  </td>
     </tr>
     <tr>
       <td height="20" valign="top" bgcolor="#FFFFFF">模板文件：</td>
       <td height="20" valign="top" bgcolor="#FFFFFF"><input name="templet" type="text" id="templet" style="width:300" value="plus/js.htm"> 
-        <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');"> 
+        <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" class='nbt'> 
       </td>
     </tr>
     <tr> 
@@ -67,11 +71,12 @@ function SelectTemplets(fname)
 	  </td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center"> <input name="b112" type="button" class="np2" value="生成/更新JS文件" onClick="document.form1.submit();" style="width:120"> 
+      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button" value="生成/更新JS文件" onClick="document.form1.submit();" style="width:120" class='nbt'> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#E5F9FF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

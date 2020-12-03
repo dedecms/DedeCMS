@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_NewRule');
 if(empty($action)) $action = "";
@@ -118,7 +118,7 @@ $noteinfos = $dtp->GetTagByName("note");
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>数据规则模型</title>
 <script language='javascript'>
-var fieldstart = <?=($noteid+1)?>;
+var fieldstart = <?php echo ($noteid+1)?>;
 function CheckSubmit()
 {
    if(document.form1.rulename.value==""){
@@ -152,7 +152,7 @@ function addMoreField()
 <link href='base.css' rel='stylesheet' type='text/css'>
 <style>
 	.nnpp{
-	border-bottom:1px solid #666666;
+	border-bottom:1px solid #98CAEF;
 	border-top:1px solid #FFFFFF;
 	border-left:1px solid #FFFFFF;
 	border-right:1px solid #FFFFFF;
@@ -162,7 +162,7 @@ function addMoreField()
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><b><a href="co_export_rule.php"><u>数据规则模型管理</u></a></b>&gt;&gt;修改导入规则</td>
 </tr>
@@ -170,7 +170,7 @@ function addMoreField()
     <td height="200" bgcolor="#FFFFFF" valign="top">
 	<form action="co_export_rule_edit.php" method="post" name="form1" onSubmit="return CheckSubmit();";>
         <input type='hidden' name='action' value='save'>
-        <input type='hidden' name='aid' value='<?=$aid?>'>
+        <input type='hidden' name='aid' value='<?php echo $aid?>'>
         <table width="800" border="0" cellspacing="1" cellpadding="1">
           <tr> 
             <td height="20" colspan="2" background="img/exbg.gif"><strong>&nbsp;§基本参数：</strong></td>
@@ -178,15 +178,15 @@ function addMoreField()
           <tr> 
             <td width="120" height="24" align="center">规则名称：</td>
             <td height="24"> 
-              <input name="rulename" type="text" id="rulename" size="36" value="<?=$noteinfos->GetAtt('rulename')?>">
+              <input name="rulename" type="text" id="rulename" size="36" value="<?php echo $noteinfos->GetAtt('rulename')?>">
             </td>
           </tr>
           <tr> 
             <td height="24" align="center">入库类型：</td>
             <td height="24">
-			<input name="etype" type="radio" class="np" value="当前系统"<? if($noteinfos->GetAtt('etype')=='当前系统') echo " checked";?>>
+			<input name="etype" type="radio" class="np" value="当前系统"<?php  if($noteinfos->GetAtt('etype')=='当前系统') echo " checked";?>>
              当前系统 
-            <input type="radio" name="etype" class="np" value="其它系统"<? if($noteinfos->GetAtt('etype')=='其它系统') echo " checked";?>>
+            <input type="radio" name="etype" class="np" value="其它系统"<?php  if($noteinfos->GetAtt('etype')=='其它系统') echo " checked";?>>
              其它系统
 			</td>
           </tr>
@@ -195,7 +195,7 @@ function addMoreField()
             <td height="24">
 			<select name="channelid" id="channelid" style="width:150">
                 <option value="0">--非系统频道模型--</option>
-				<?
+				<?php 
 				$dsql = new DedeSql(false);
 				$dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0 order by ID asc");
 				$dsql->Execute();
@@ -215,20 +215,20 @@ function addMoreField()
           </tr>
           <tr> 
             <td width="120" height="24" align="center">导入的数据表：</td>
-            <td><input name="tablename" type="text" id="tablename" size="30" value="<?=$noteinfos->GetAtt('tablename')?>">
+            <td><input name="tablename" type="text" id="tablename" size="30" value="<?php echo $noteinfos->GetAtt('tablename')?>">
               （多个表用“,”分开，最多支持两个表）</td>
           </tr>
           <tr> 
             <td height="24" align="center">自动编号字段：</td>
             <td>
-            	<input name="autofield" type="text" id="autofield" size="15" value="<?=$noteinfos->GetAtt('autofield')?>">
+            	<input name="autofield" type="text" id="autofield" size="15" value="<?php echo $noteinfos->GetAtt('autofield')?>">
               (表示两个表关连时，第一个表的自动编号字段)
             </td>
           </tr>
           <tr> 
             <td height="24" align="center">多表同步字段：</td>
             <td>
-            	<input name="synfield" type="text" id="synfield" size="15" value="<?=$noteinfos->GetAtt('synfield')?>">
+            	<input name="synfield" type="text" id="synfield" size="15" value="<?php echo $noteinfos->GetAtt('synfield')?>">
               （表示第二个表与第一个表的自动编号字段关连字段）
              </td>
           </tr>
@@ -242,13 +242,13 @@ function addMoreField()
                 <tr> 
                   <td width="10%" height="45" align="center">增加字段：</td>
                   <td width="90%"> <input name="fieldnum" type="text" id="fieldnum" value="5" size="8"> 
-                    <input type="button" name="Submit" value="增加" onClick="addMoreField();"> 
+                    <input type="button" name="Submit" value="增加" onClick="addMoreField();" class='nbt'> 
                   </td>
                 </tr>
                 <tr> 
                   <td height="60">&nbsp;</td>
                   <td width="90%" align="left">
-                  	<?
+                  	<?php 
                   	if(is_array($dtp->CTags))
                     {
 	                     $s = 0;

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once("config.php");
 CheckPurview('t_Move');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -29,6 +29,18 @@ if($job=="moveok")
 	$dsql->SetQuery("Update #@__arctype set reID='$movetype' where ID='$typeid'");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();
+	//更新树形菜单
+   $rndtime = time();
+   $rflwft = "<script language='javascript'>
+   if(window.navigator.userAgent.indexOf('MSIE')>=1){
+     if(top.document.frames.menu.location.href.indexOf('catalog_menu.php')>=1)
+     { top.document.frames.menu.location = 'catalog_menu.php?$rndtime'; }
+   }else{
+  	 if(top.document.getElementById('menu').src.indexOf('catalog_menu.php')>=1)
+     { top.document.getElementById('menu').src = 'catalog_menu.php?$rndtime'; }
+   }
+   </script>";
+   echo $rflwft;
 	ShowMsg("成功移动目录！","catalog_main.php");
 	exit();
 }
@@ -58,7 +70,7 @@ body {background-image: url(img/allbg.gif);}
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#666666">
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td width="100%" height="24" colspan="2" background="img/tbg.gif">
     &nbsp;<a href="catalog_main.php"><u>栏目管理</u></a>&gt;&gt;移动列表
@@ -67,7 +79,7 @@ body {background-image: url(img/allbg.gif);}
   <tr>
     <td height="200" colspan="2" valign="top" bgcolor="#FFFFFF"> 
       <form name="form1" method="get" action="catalog_move.php">
-      <input name="typeid" type="hidden" id="typeid" value="<?=$typeid?>">
+      <input name="typeid" type="hidden" id="typeid" value="<?php echo $typeid?>">
       <input name="job" type="hidden" id="job" value="moveok">
 	    <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr> 
@@ -81,7 +93,7 @@ body {background-image: url(img/allbg.gif);}
           <tr> 
             <td width="30%" height="25">你选择的栏目是：</td>
             <td width="70%">
-            <?
+            <?php 
 			echo "$typename($typeid)";
             ?>
             </td>
@@ -91,7 +103,7 @@ body {background-image: url(img/allbg.gif);}
             <td>
             <select name="movetype">
               <option value='0'>移动为顶级栏目</option>
-              <?=$typeOptions?>
+              <?php echo $typeOptions?>
              </select>
             </td>
           </tr>
@@ -103,8 +115,8 @@ body {background-image: url(img/allbg.gif);}
           <tr> 
             <td height="74">&nbsp;</td>
             <td>
-            <input type="submit" name="Submit" value="确定操作"> 　 
-            <input name="Submit11" type="button" id="Submit11" value="-不理返回-" onClick="history.go(-1);">
+            <input type="submit" name="Submit" value="确定操作" class='nbt'> 　 
+            <input name="Submit11" type="button" id="Submit11" value="-不理返回-" onClick="history.go(-1);" class='nbt'>
             </td>
           </tr>
         </table>

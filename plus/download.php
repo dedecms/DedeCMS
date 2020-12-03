@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_channel_unit.php");
 if(!isset($open)) $open = 0;

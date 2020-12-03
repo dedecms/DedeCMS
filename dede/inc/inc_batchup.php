@@ -1,4 +1,4 @@
-<?
+<?php 
 function DelArc($aid,$onlyfile=false)
 {
 	  global $dsql;

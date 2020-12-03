@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
@@ -96,7 +96,7 @@ function MakeUpload(mnum)
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
 	   fhtml += "<td height=\"25\"> 　指定网址： ";
 	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' style=\"width:260px\"> ";
-	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\">";
+	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\" class='nbt'>";
 	   fhtml += "</td></tr>";
 	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
 	   fhtml += "<td height=\"56\">　图片简介： ";
@@ -117,18 +117,18 @@ function CheckSelTable(nnum){
 </head>
 <body topmargin="8">
 <form name="form1" action="album_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
-<input type="hidden" name="channelid" value="<?=$channelid?>">
-<input type="hidden" name="ID" value="<?=$aid?>">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
+<input type="hidden" name="ID" value="<?php echo $aid?>">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr> 
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
         &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?=$arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;更改图集</td>
+      <td width="85%"><a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;更改图集</td>
       <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
     <tr> 
       <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr> 
@@ -157,26 +157,26 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">图集标题：</td>
             <td width="240">
-<input name="title" type="text" id="title" style="width:200" value="<?=$arcRow["title"]?>">
+<input name="title" type="text" id="title" style="width:200" value="<?php echo $arcRow["title"]?>">
             </td>
             <td width="90">附加参数：</td>
             <td> 
-              <input name="iscommend" type="checkbox" id="iscommend" value="11" class="np"<? if($arcRow["iscommend"]>10) echo " checked";?>>
+              <input name="iscommend" type="checkbox" id="iscommend" value="11" class="np"<?php  if($arcRow["iscommend"]>10) echo " checked";?>>
               推荐 
-              <input name="isbold" type="checkbox" id="isbold" value="5" class="np"<? if($arcRow["iscommend"]==5||$arcRow["iscommend"]==16) echo " checked";?>>
+              <input name="isbold" type="checkbox" id="isbold" value="5" class="np"<?php  if($arcRow["iscommend"]==5||$arcRow["iscommend"]==16) echo " checked";?>>
               加粗
-              <input name="isjump" type="checkbox" onClick="ShowUrlTrEdit()" id="isjump" value="1" class="np"<? echo $arcRow["redirecturl"]=="" ? "" : " checked";?>>
+              <input name="isjump" type="checkbox" onClick="ShowUrlTrEdit()" id="isjump" value="1" class="np"<?php  echo $arcRow["redirecturl"]=="" ? "" : " checked";?>>
               跳转网址
             </td>
           </tr>
         </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:<? echo $arcRow["redirecturl"]=="" ? "none" : "block";?>">
+      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:<?php  echo $arcRow["redirecturl"]=="" ? "none" : "block";?>">
 	   <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;跳转网址：</td>
-            <td> <input name="redirecturl" type="text" id="redirecturl" style="width:300" value="<?=$arcRow["redirecturl"]?>"> 
+            <td> <input name="redirecturl" type="text" id="redirecturl" style="width:300" value="<?php echo $arcRow["redirecturl"]?>"> 
             </td>
           </tr>
        </table>
@@ -187,13 +187,13 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">简略标题：</td>
             <td width="240">
-<input name="shorttitle" type="text" value="<?=$arcRow["shorttitle"]?>" id="shorttitle" style="width:200">
+<input name="shorttitle" type="text" value="<?php echo $arcRow["shorttitle"]?>" id="shorttitle" style="width:200">
             </td>
             <td width="90">自定属性：</td>
             <td> 
               <select name='arcatt' style='width:150'>
                 <option value='0'>普通文档</option>
-                <?
+                <?php 
             	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
             	$dsql->Execute();
             	while($trow = $dsql->GetObject())
@@ -215,9 +215,9 @@ function CheckSelTable(nnum){
             <td> <table width="98%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="56%" height="107"> 
-                    <input name="picname" type="text" id="picname" style="width:300" value="<?=$arcRow["litpic"]?>"> 
-                    <input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');"></td>
-                  <td width="44%"><img src="<?=$arcRow["litpic"]?>" width="150" id="picview" name="picview"></td>
+                    <input name="picname" type="text" id="picname" style="width:300" value="<?php echo $arcRow["litpic"]?>"> 
+                    <input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');" class='nbt'></td>
+                  <td width="44%"><img src="<?php echo $arcRow["litpic"]?>" width="150" id="picview" name="picview"></td>
                 </tr>
               </table></td>
           </tr>
@@ -228,7 +228,7 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">图片来源：</td>
             <td width="240"> 
-              <input name="source" type="text" id="source" style="width:200" value="<?=$arcRow["source"]?>">
+              <input name="source" type="text" id="source" style="width:200" value="<?php echo $arcRow["source"]?>">
             </td>
             <td width="90">&nbsp;</td>
             <td width="159">&nbsp; </td>
@@ -242,7 +242,7 @@ function CheckSelTable(nnum){
             <td width="90">内容排序：</td>
             <td width="240"> 
               <select name="sortup" id="sortup" style="width:150">
-                <?
+                <?php 
                 $subday = SubDay($arcRow["sortrank"],$arcRow["senddate"]);
                 echo "<option value='0'>正常排序</option>\r\n";
                 if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>\r\n";
@@ -255,10 +255,10 @@ function CheckSelTable(nnum){
               </select>
             </td>
             <td width="90">标题颜色：</td>
-            <td width="159"> <input name="color" type="text" id="color" style="width:120" value="<?=$arcRow["color"]?>"> 
+            <td width="159"> <input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["color"]?>"> 
             </td>
             <td> 
-              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"></td>
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class='nbt'></td>
           </tr>
         </table></td>
     </tr>
@@ -268,10 +268,10 @@ function CheckSelTable(nnum){
             <td width="90">阅读权限：</td>
             <td width="240"> 
               <select name="arcrank" id="arcrank" style="width:150">
-                <option value='<?=$arcRow["arcrank"]?>'>
-                <?=$arcRow["rankname"]?>
+                <option value='<?php echo $arcRow["arcrank"]?>'>
+                <?php echo $arcRow["rankname"]?>
                 </option>
-                <?
+                <?php 
               $urank = $cuserLogin->getUserRank();
               $dsql = new DedeSql(false);
               $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
@@ -283,9 +283,9 @@ function CheckSelTable(nnum){
               </select>
             </td>
             <td width="90">发布选项：</td>
-            <td><input name="ishtml" type="radio" class="np" value="1"<?if($arcRow["ismake"]!=-1) echo " checked";?>>
+            <td><input name="ishtml" type="radio" class="np" value="1"<?php if($arcRow["ismake"]!=-1) echo " checked";?>>
               生成HTML 
-              <input type="radio" name="ishtml" class="np" value="0"<?if($arcRow["ismake"]==-1) echo " checked";?>>
+              <input type="radio" name="ishtml" class="np" value="0"<?php if($arcRow["ismake"]==-1) echo " checked";?>>
               仅动态浏览</td>
           </tr>
         </table></td>
@@ -295,10 +295,10 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90" height="51">图集说明：</td>
             <td width="240"> 
-              <textarea name="description" rows="3" id="description" style="width:200"><?=$arcRow["description"]?></textarea>
+              <textarea name="description" rows="3" id="description" style="width:200"><?php echo $arcRow["description"]?></textarea>
             </td>
             <td width="90">关 键 字：</td>
-            <td> <textarea name="keywords" rows="3" id="keywords" style="width:200"><?=$arcRow["keywords"]?></textarea></td>
+            <td> <textarea name="keywords" rows="3" id="keywords" style="width:200"><?php echo $arcRow["keywords"]?></textarea></td>
           </tr>
         </table></td>
     </tr>
@@ -307,7 +307,7 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">录入时间：</td>
             <td> 
-              <?
+              <?php 
 			         $addtime = GetDateTimeMk($arcRow["senddate"]);
 			         echo "$addtime (标准排序和生成HTML名称的依据时间) <input type='hidden' name='senddate' value='".$arcRow["senddate"]."'>";
 			        ?>
@@ -320,14 +320,14 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">发布时间：</td>
             <td width="240"> 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk($arcRow["pubdate"]);
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>
             </td>
             <td width="90" align="center">消费点数：</td>
             <td>
-<input name="money" type="text" id="money" value="<?=$arcRow["money"]?>" size="10">
+<input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10">
             </td>
           </tr>
         </table></td>
@@ -337,12 +337,12 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">主分类：</td>
             <td width="400"> 
-          <?
-           	$typeOptions = GetOptionList($arcRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
-           	echo "<select name='typeid' style='width:300'>\r\n";
-            if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择主分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
+          <?php 
+           	$dsql = new DedeSql(false);
+           	$seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid"]."' ");
+			    if(is_array($seltypeids)){
+			         echo GetTypeidSel('form1','typeid','selbt1',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
+			    }
 			    ?>
             </td>
             <td> （只允许在白色选项的栏目中发布当前类型内容）</td>
@@ -354,15 +354,14 @@ function CheckSelTable(nnum){
 <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">副分类：</td>
-            <td width="400"> 
-           <?
-            $typeOptions = GetOptionList($arcRow["typeid2"],$cuserLogin->getUserChannel(),$channelid);
-            echo "<select name='typeid2' style='width:300'>\r\n";
-            echo "<option value='0' selected>请选择副分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-            ?>
-            </td>
+            <td width="400"><?php 
+			$seltypeids = $dsql->GetOne("Select ID,typename From #@__arctype where ID='".$arcRow["typeid2"]."' ");
+			if(is_array($seltypeids)){
+			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],$seltypeids['ID'],$seltypeids['typename']);
+			}else{
+			   echo GetTypeidSel('form1','typeid2','selbt2',$arcRow["channel"],0,'请选择...');
+			}
+            ?></td>
             <td>&nbsp; </td>
           </tr>
         </table>
@@ -377,11 +376,11 @@ function CheckSelTable(nnum){
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">表现方式：</td>
-            <td> <input name="pagestyle" type="radio" class="np" value="1"<? if($pagestyle==1) echo " checked"; ?>>
+            <td> <input name="pagestyle" type="radio" class="np" value="1"<?php  if($pagestyle==1) echo " checked"; ?>>
               单页显示 
-              <input name="pagestyle" class="np" type="radio" value="2"<? if($pagestyle==2) echo " checked"; ?>>
+              <input name="pagestyle" class="np" type="radio" value="2"<?php  if($pagestyle==2) echo " checked"; ?>>
               分多页显示 
-              <input name="pagestyle" class="np" type="radio" value="3"<? if($pagestyle==3) echo " checked"; ?>>
+              <input name="pagestyle" class="np" type="radio" value="3"<?php  if($pagestyle==3) echo " checked"; ?>>
               多行多列显示</td>
           </tr>
         </table></td>
@@ -391,9 +390,9 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">多列式参数：</td>
             <td>行 
-              <input name="row" type="text" id="row" size="6" value="<?=$irow?>">
+              <input name="row" type="text" id="row" size="6" value="<?php echo $irow?>">
               　列 
-              <input name="col" type="text" id="col" size="6" value="<?=$icol?>">
+              <input name="col" type="text" id="col" size="6" value="<?php echo $icol?>">
               　图片宽度限制： 
               <input name="ddmaxwidth" type="text" id="ddmaxwidth" size="6" value="150">
               像素
@@ -405,7 +404,7 @@ function CheckSelTable(nnum){
       <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">限制宽度：</td>
-            <td> <input name="maxwidth" type="text" id="maxwidth" size="10" value="<?=$maxwidth?>">
+            <td> <input name="maxwidth" type="text" id="maxwidth" size="10" value="<?php echo $maxwidth?>">
               (防止图片太宽在模板页中溢出) </td>
           </tr>
         </table></td>
@@ -415,7 +414,7 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">远程图片：</td>
             <td>
-			<input name="isrm" type="checkbox" id="isrm" class="np" value="1"<?if($isrm==1) echo " checked";?>>
+			<input name="isrm" type="checkbox" id="isrm" class="np" value="1"<?php if($isrm==1) echo " checked";?>>
             下载远程图片
 			 </td>
           </tr>
@@ -426,14 +425,14 @@ function CheckSelTable(nnum){
           <tr> 
             <td width="90">图片：</td>
             <td> <input name="picnum" type="text" id="picnum" size="8" value="10"> 
-              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);">
+              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);" class='nbt'>
               注：最大40幅，图片链接允许填写远程网址 </td>
           </tr>
         </table></td>
     </tr>
     <tr> 
       <td height="24" colspan="4" class="bline"> 
-        <?
+        <?php 
        $j = 1;
        if($imgurls!=""){
        	 $dtp = new DedeTagParse();
@@ -442,7 +441,7 @@ function CheckSelTable(nnum){
        	 {
        	 	 foreach($dtp->CTags as $ctag){
        	 	 	 if($ctag->GetName()=="img"){
-                     $fhtml = "";
+                     $fhtml = "<input type='hidden' name='oldddimg$j' value='".$ctag->GetAtt("ddimg")."'>";
 	   $fhtml .= "<table width='600'><tr><td><input type='checkbox' name='isokcheck$j' id='isokcheck$j' value='1' class='np' onClick='CheckSelTable($j)'>显示/隐藏图片[$j]的选框</td></tr></table>";
 	   $fhtml .= "<table width=\"600\" border=\"0\" id=\"seltb$j\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;margin-left:10px\"><tobdy>";
 	   $fhtml .= "<tr bgcolor=\"#F4F9DD\">\r\n";
@@ -456,7 +455,7 @@ function CheckSelTable(nnum){
 	   $fhtml .= "<tr bgcolor=\"#FFFFFF\"> ";
 	   $fhtml .= "<td height=\"25\"> 　指定网址： ";
 	   $fhtml .= "<input type=\"text\" name='imgurl$j' style=\"width:260px\" value=\"".trim($ctag->GetInnerText())."\" > ";
-	   $fhtml .= "<input type=\"button\" name='selpic$j' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl$j','big','picview$j')\">";
+	   $fhtml .= "<input type=\"button\" name='selpic$j' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl$j','big','picview$j')\" class='nbt'>";
 	   $fhtml .= "</td></tr>";
 	   $fhtml .= "<tr bgcolor=\"#FFFFFF\"> ";
 	   $fhtml .= "<td height=\"56\">　图片简介： ";
@@ -472,7 +471,7 @@ function CheckSelTable(nnum){
        ?>
         <span id="uploadfield"></span>
 		<script language="JavaScript">
-		startNum = <?=$j?>;
+		startNum = <?php echo $j?>;
 		</script>
 		</td>
     </tr>
@@ -496,7 +495,7 @@ function CheckSelTable(nnum){
 </table>
 </form>
 <script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

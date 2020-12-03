@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_collection.php");
 if($nid=="") 
@@ -38,20 +38,20 @@ else
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF" align="center">
   <tr> 
       <td height="20" colspan="2" background='img/tbg.gif'>
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
          <form name='form2' action='co_url.php' target='stafrm'>
          	<input type='hidden' name='small' value='1'>
-         	<input type='hidden' name='nid' value='<?=$nid?>'>
+         	<input type='hidden' name='nid' value='<?php echo $nid?>'>
          	</form>
           <tr> 
             <td width="30%" height="18"><strong>采集指定节点：</strong></td>
             <td width="70%" align="right">
-            	<input type="button" name="b11" value="查看已下载" class="np2" onClick="document.form2.submit();" style="width:90"> 
-              <input type="button" name="b12" value="采集节点管理" class="np3" style="width:90" onClick="location.href='co_main.php';">
-              <input type="button" name="b13" value="导出数据" class="np4" style="width:90" onClick="location.href='co_export.php?nid=<?=$nid?>';">
+            	<input type="button" name="b11" value="查看已下载"  class='nbt' onClick="document.form2.submit();" style="width:90"> 
+              <input type="button" name="b12" value="采集节点管理"  class='nbt' style="width:90" onClick="location.href='co_main.php';">
+              <input type="button" name="b13" value="导出数据"  class='nbt' style="width:90" onClick="location.href='co_export.php?nid=<?php echo $nid?>';">
               </td>
           </tr>
         </table></td>
@@ -59,18 +59,18 @@ else
     <tr> 
       <td width="108" valign="top" bgcolor="#FFFFFF">节点名称：</td>
       <td width="377" valign="top" bgcolor="#FFFFFF"> 
-        <?=$co->Item["name"]?>
+        <?php echo $co->Item["name"]?>
       </td>
     </tr>
     <tr> 
       <td height="20" valign="top" bgcolor="#FFFFFF">种子网址数：</td>
       <td height="20" valign="top" bgcolor="#FFFFFF"> 
-        <?=$unum?>
+        <?php echo $unum?>
       </td>
     </tr>
     <form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
-    <input type='hidden' name='nid' value='<?=$nid?>'>
-    <input type='hidden' name='totalnum' value='<?=$dd?>'>
+    <input type='hidden' name='nid' value='<?php echo $nid?>'>
+    <input type='hidden' name='totalnum' value='<?php echo $dd?>'>
     <input type='hidden' name='startdd' value='0'>
     <tr> 
       <td height="20" bgcolor="#FFFFFF">每页采集：</td>
@@ -94,13 +94,13 @@ else
       	</td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
-      	<input name="b112" type="button" class="np2" value="开始采集网页" onClick="document.form1.submit();" style="width:100">　
-      	<input type="button" name="b113" value="查看种子网址" class="np2" onClick="document.form2.submit();" style="width:100">
+      <td height="20" colspan="2" bgcolor="#F8FBFB" align="center">
+      	<input name="b112" type="button"  class='nbt' value="开始采集网页" onClick="document.form1.submit();" style="width:100">　
+      	<input type="button" name="b113" value="查看种子网址"  class='nbt' onClick="document.form2.submit();" style="width:100">
       </td>
     </tr>
   </form>
-    <tr bgcolor="#E6F3CD"> 
+    <tr bgcolor="#E5F9FF"> 
       <td height="20" colspan="2">
 <table width="100%">
           <tr> 
@@ -121,7 +121,7 @@ else
     <tr bgcolor="#FFFFFF"> 
       <td colspan="2" id="mtd">
 	  <div id='mdv' style='width:100%;height:100;'>
-	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?if($dd>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
+	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?php if($dd>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
 	  </div>
 	  <script language="JavaScript">
 	  document.all.mdv.style.pixelHeight = screen.height - 360;
@@ -131,6 +131,6 @@ else
 </table>
 </body>
 </html>
-<?
+<?php 
 $co->Close();
 ?>

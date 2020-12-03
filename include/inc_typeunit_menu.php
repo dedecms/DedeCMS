@@ -1,4 +1,4 @@
-<?
+<?php 
 //class TypeUnit
 //这个类主要是封装频道管理时的一些复杂操作 
 //--------------------------------
@@ -40,15 +40,17 @@ class TypeUnit
 	//
 	//----读出所有分类,在类目管理页(list_type)中使用----------
 	//
-	function ListAllType($chennel=0,$nowdir=0)
+	function ListAllType($channel=0,$nowdir=0)
 	{
 		if($this->dsql==0){ $this->dsql = new DedeSql(); }
 		
-		if($chennel>0)
-		{	$this->dsql->SetQuery("Select ID,typedir,typename,ispart From #@__arctype where ID='$chennel'");}
+		if($channel>0)
+		{	$this->dsql->SetQuery("Select ID,typedir,typename,ispart From #@__arctype where ID='$channel'");}
 		else
 		{	$this->dsql->SetQuery("Select ID,typedir,typename,ispart From #@__arctype where reID=0 order by sortrank"); }
 		$this->dsql->Execute(0);
+		
+		$lastID = GetCookie('lastCidMenu');
 		
 		while($row=$this->dsql->GetObject(0))
 		{	 
@@ -61,21 +63,22 @@ class TypeUnit
 				continue;
 			}
 			
-			echo "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\r\n";
+			//普通列表
+			if($ispart==0) $smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
+			//带封面的频道
+			else if($ispart==1) $smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
+			//独立页面
+			else if($ispart==2) $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
 			
-			echo "  <tr bgcolor='#F5F5F5'>\r\n";
-			echo "  <td width='2%'><img style='cursor:hand' onClick=\"showHide('suns".$ID."');\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
-			echo "  <td  background='img/itemcomenu.gif'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>".$typeName."</a>";
-			echo "  </td></tr>\r\n";
-			
-			echo "  <tr id='suns".$ID."'><td colspan='2'>\r\n";
-			echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
-			
-			if($nowdir == -1) $this->LogicListAllSunType($ID,"　");
-			else if($nowdir == $ID) $this->LogicListAllSunType($ID,"　");
-			
-			echo "    </table>\r\n</td></tr>\r\n";
-			echo "</table>\r\n";
+			echo "<dl class='topcc'>\r\n";
+			echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
+			echo "  <dd class='dlr'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></dd>\r\n";
+			echo "</dl>\r\n";
+			echo "<div id='suns".$ID."' class='sunct'>";
+			if($channel==$ID || $lastID==$ID || ($nowdir==-1 && $channel>0) ){
+				 $this->LogicListAllSunType($ID,"　");
+			}
+			echo "</div>\r\n";
 		}
 	}
 	//获得子类目的递归调用
@@ -96,11 +99,29 @@ class TypeUnit
 			  if($step=="　") $stepdd = 2;
 			  else $stepdd = 3;
 			  
-			  if($ispart==2) continue;
+			  //if($ispart==2) continue;
 			  
-			  echo "    <tr height='24'>\r\n";
-			  echo "    <td><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>$step ·".$typeName."</a>";
-			  echo "    </td></tr>\r\n";
+			  //普通列表
+			  if($ispart==0){
+			  	$smenu = " oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\"";
+			  	$timg = " <img src='img/tree_list.gif'> ";
+			  }
+			  //带封面的频道
+			  else if($ispart==1){
+			  	$timg = " <img src='img/tree_part.gif'> ";
+			  	$smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
+			  }
+			  //独立页面
+			  else if($ispart==2){
+			  	$timg = " <img src='img/tree_page.gif'> ";
+			  	$smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
+			  }
+			  
+			  echo "  <table class='sunlist'>\r\n";
+			  echo "   <tr>\r\n";
+			  echo "     <td>".$step.$timg."<a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
+			  echo "   </tr>\r\n";
+			  echo "  </table>\r\n";
 			  
 			  $this->LogicListAllSunType($ID,$step."　");
 		  }

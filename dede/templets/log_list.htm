@@ -44,7 +44,7 @@ function ClearLog(){
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
   <tr> 
     <td height="20" colspan="7" background='img/tbg.gif'> <table width="96%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
@@ -53,7 +53,7 @@ function ClearLog(){
         </tr>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#E3F7D2"> 
+  <tr align="center" bgcolor="#CCEDFD"> 
     <td colspan="7">
 	<table width="90%" border="0" cellspacing="0" cellpadding="0">
         <form name='formsearch'>
@@ -62,7 +62,7 @@ function ClearLog(){
 		  管理员：
 		  <select name="adminid" id="adminid" style="width:80">
 		  <option value="0" selected>--全部--</option>
-		  <?=$adminlist?>
+		  <?php echo $adminlist?>
 		  </select>
 		  IP地址：
             <input name="cip" type="text" id="cip" size="15" style="width:100">
@@ -80,7 +80,7 @@ function ClearLog(){
 		</form>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1"> 
+  <tr align="center" bgcolor="#FCFDF7"> 
     <td width="8%">选择</td>
     <td width="11%">管理员</td>
     <td width="15%">访问文件</td>
@@ -90,39 +90,40 @@ function ClearLog(){
     <td width="28%">Query参数</td>
   </tr>
   <form name="form1">
-    <?
+    <?php 
   $mylist = $dlist->GetDataList();
   while($row = $mylist->GetArray('dm'))
   {
  ?>
     <tr align="center" bgcolor="#FFFFFF"> 
-      <td><input name='logs' type='checkbox' class='np' id="logs" value='<?=$row['lid']?>'></td>
+      <td><input name='logs' type='checkbox' class='np' id="logs" value='<?php echo $row['lid']?>'></td>
       <td> 
-        <?=$row['userid']?>
+        <?php echo $row['userid']?>
       </td>
-      <td><input class="np" type="text" value="<?=$row['filename']?>" name="t0" style="width:100"></td>
+      <td><input class="np" type="text" value="<?php echo $row['filename']?>" name="t0" style="width:100"></td>
       <td> 
-        <?=$row['method']?>
-      </td>
-      <td> 
-        <?=$row['cip']?>
+        <?php echo $row['method']?>
       </td>
       <td> 
-        <?=strftime("%y/%m/%d %H:%M:%S",$row['dtime'])?>
+        <?php echo $row['cip']?>
       </td>
-      <td><input class="np" type="text" value="<?=$row['query']?>" name="t1" style="width:280"></td>
+      <td> 
+        <?php echo strftime("%y/%m/%d %H:%M:%S",$row['dtime'])?>
+      </td>
+      <td><input class="np" type="text" value="<?php echo $row['query']?>" name="t1" style="width:280"></td>
     </tr>
-    <? } ?>
+    <?php  } ?>
   </form>
   <tr> 
-    <td height="30" colspan="7" bgcolor="#FCFDF7">&nbsp; <input type="button" name="b5" value="反选" class="np2" style="width:40" onClick="ReSel();"> 
-      &nbsp; <input type="button" name="b6" value="删除所选" class="np2" style="width:80" onClick="DelSel();"> 
-      &nbsp; <input type="button" name="b7" value="清空所有日志" class="np2" style="width:100" onClick="ClearLog();"> 
+    <td height="30" colspan="7" bgcolor="#FCFDF7">
+    	&nbsp; <input type="button" name="b5" value="反选" class="nbt" style="width:40" onClick="ReSel();"> 
+      &nbsp; <input type="button" name="b6" value="删除所选" class="nbt" style="width:80" onClick="DelSel();"> 
+      &nbsp; <input type="button" name="b7" value="清空所有日志" class="nbt" style="width:100" onClick="ClearLog();"> 
     </td>
   </tr>
-  <tr bgcolor="#E3F7D2"> 
+  <tr bgcolor="#CCEDFD"> 
     <td height="24" colspan="7" align="center"> 
-      <?=$dlist->GetPageList(7);?>
+      <?php echo $dlist->GetPageList(7);?>
     </td>
   </tr>
 </table>

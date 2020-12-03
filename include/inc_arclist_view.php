@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/inc_arcpart_view.php");
 /******************************************************
 //Copyright 2004-2006 by DedeCms.com itprato
@@ -428,7 +428,7 @@ class ListView
  				         $listtype,$orderby,$ctag->GetAtt("keyword"),
  				         $innertext,$ctag->GetAtt("tablewidth"),
  				         0,"",$channelid,$ctag->GetAtt("limit"),
- 				         $ctag->GetAtt("att"),$ctag->GetAtt("orderway"),$ctag->GetAtt("subday")
+ 				         $ctag->GetAtt("att"),$ctag->GetAtt("orderway"),$ctag->GetAtt("subday"),-1,$ctag->GetAtt("ismember")
  				      )
  				  );
  			  }
@@ -466,7 +466,7 @@ class ListView
  			}
  			else if($ctag->GetName()=="pagelist"){
  				$list_len = trim($ctag->GetAtt("listsize"));
- 				$ctag->GetAtt("listitem")=="" ? $listitem="index,pre,pageno,next,end,option" : $listitem=$ctag->GetAtt("listitem");
+ 				$ctag->GetAtt("listitem")=="" ? $listitem="info,index,pre,pageno,next,end,option" : $listitem=$ctag->GetAtt("listitem");
  				if($list_len=="") $list_len = 3;
  				if($ismake==0) $this->dtp->Assign($tagid,$this->GetPageListDM($list_len,$listitem));
  				else $this->dtp->Assign($tagid,$this->GetPageListST($list_len,$listitem));
@@ -647,7 +647,7 @@ class ListView
   //---------------------------------
   //获取静态的分页列表
   //---------------------------------
-	function GetPageListST($list_len,$listitem="index,end,pre,next,pageno")
+	function GetPageListST($list_len,$listitem="info,index,end,pre,next,pageno")
 	{
 		$prepage="";
 		$nextpage="";
@@ -657,6 +657,7 @@ class ListView
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
 		if($totalpage<=1 && $this->TotalResult>0) return "共1页/".$this->TotalResult."条记录"; 
 		if($this->TotalResult == 0) return "共0页/".$this->TotalResult."条记录"; 
+		$maininfo = " 共{$totalpage}页/".$this->TotalResult."条记录 ";
 		$purl = $this->GetCurUrl();
 		
 		$tnamerule = $this->GetMakeFileRule($this->Fields['ID'],"list",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
@@ -699,6 +700,7 @@ class ListView
    		else $listdd.="<a href='".str_replace("{page}",$j,$tnamerule)."'>[".$j."]</a>\r\n";
 		}
 		$plist = "";
+		if(eregi('info',$listitem)) $plist .= $maininfo.' ';
 		if(eregi('index',$listitem)) $plist .= $indexpage.' ';
 		if(eregi('pre',$listitem)) $plist .= $prepage.' ';
 		if(eregi('pageno',$listitem)) $plist .= $listdd.' ';
@@ -720,6 +722,7 @@ class ListView
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
 		if($totalpage<=1 && $this->TotalResult>0) return "共1页/".$this->TotalResult."条记录"; 
 		if($this->TotalResult == 0) return "共0页/".$this->TotalResult."条记录"; 
+		$maininfo = "<td style='padding-right:6px'>共{$totalpage}页/".$this->TotalResult."条记录</td>";
 		
 		$purl = $this->GetCurUrl();
 		$geturl = "typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
@@ -762,7 +765,7 @@ class ListView
 		$plist  =  "<table border='0' cellpadding='0' cellspacing='0'>\r\n";
 		$plist .= "<tr align='center' style='font-size:10pt'>\r\n";
 		$plist .= "<form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
-		$plist .= $indexpage.$prepage.$listdd.$nextpage.$endpage;
+		$plist .= $maininfo.$indexpage.$prepage.$listdd.$nextpage.$endpage;
 		if($totalpage>$total_list){
 			$plist.="<td width='36'><input type='text' name='PageNo' style='width:30;height:18' value='".$this->PageNo."'></td>\r\n";
 			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='width:24;height:18;font-size:9pt'></td>\r\n";

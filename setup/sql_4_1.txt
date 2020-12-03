@@ -1,13 +1,11 @@
-DROP TABLE IF EXISTS `#@__addonarticle`;
 CREATE TABLE `#@__addonarticle` (
   `aid` int(11) NOT NULL default '0',
   `typeid` int(11) NOT NULL default '0',
-  `body` mediumtext NULL,
+  `body` mediumtext,
   PRIMARY KEY  (`aid`),
   KEY `typeid` (`typeid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__addonflash`;
 CREATE TABLE `#@__addonflash` (
   `aid` int(11) NOT NULL default '0',
   `typeid` int(11) NOT NULL default '0',
@@ -22,13 +20,13 @@ CREATE TABLE `#@__addonflash` (
   KEY `flashMain` (`typeid`,`filesize`,`flashrank`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__addonimages`;
+
 CREATE TABLE `#@__addonimages` (
   `aid` int(11) NOT NULL default '0',
   `typeid` int(11) NOT NULL default '0',
   `pagestyle` smallint(6) NOT NULL default '1',
   `maxwidth` smallint(6) NOT NULL default '600',
-  `imgurls` text NULL,
+  `imgurls` text,
   `row` smallint(6) NOT NULL default '0',
   `col` smallint(6) NOT NULL default '0',
   `isrm` smallint(6) NOT NULL default '0',
@@ -37,7 +35,6 @@ CREATE TABLE `#@__addonimages` (
   KEY `imagesMain` (`typeid`,`pagestyle`,`maxwidth`,`row`,`col`,`isrm`,`ddmaxwidth`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__addonsoft`;
 CREATE TABLE `#@__addonsoft` (
   `aid` int(11) NOT NULL default '0',
   `typeid` int(11) NOT NULL default '0',
@@ -50,22 +47,20 @@ CREATE TABLE `#@__addonsoft` (
   `officialUrl` varchar(30) NOT NULL default '',
   `officialDemo` varchar(50) NOT NULL default '',
   `softsize` varchar(10) NOT NULL default '',
-  `softlinks` text NULL,
-  `introduce` text NULL,
+  `softlinks` text,
+  `introduce` text,
   PRIMARY KEY  (`aid`),
   KEY `softMain` (`typeid`,`filetype`,`language`,`os`,`softrank`,`softsize`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__addonspec`;
 CREATE TABLE `#@__addonspec` (
   `aid` int(11) NOT NULL default '0',
   `typeid` int(11) NOT NULL default '0',
-  `note` text NULL,
+  `note` text,
   PRIMARY KEY  (`aid`),
   KEY `typeid` (`typeid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__admin`;
 CREATE TABLE `#@__admin` (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `usertype` int(10) unsigned NOT NULL default '0',
@@ -80,29 +75,26 @@ CREATE TABLE `#@__admin` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__admintype`;
 CREATE TABLE `#@__admintype` (
   `rank` smallint(6) NOT NULL default '1',
   `typename` varchar(30) NOT NULL default '',
   `system` smallint(6) NOT NULL default '0',
-  `purviews` text NULL
+  `purviews` text
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__admintype` (`rank`, `typename`, `system`, `purviews`) VALUES (1, '信息发布员', 1, 't_AccList a_AccNew a_AccList a_MyList a_MyEdit a_MyDel sys_MdPwd sys_Feedback sys_MyUpload plus_留言簿模块 '),
-(5, '频道管理员', 1, 't_AccList t_AccNew t_AccEdit t_AccDel a_AccNew a_AccList a_AccEdit a_AccDel a_AccCheck a_MyList a_MyEdit a_MyDel a_MyCheck co_AddNote co_EditNote co_PlayNote co_ListNote co_ViewNote spec_New spec_List spec_Edit sys_MdPwd sys_Log sys_ArcTj sys_Source sys_Writer sys_Keyword sys_MakeHtml sys_Feedback sys_Upload sys_MyUpload member_List member_Edit plus_站内新闻发布 plus_友情链接模块 plus_留言簿模块 plus_投票模块 plus_广告管理 '),
-(10, '超级管理员', 1, 'admin_AllowAll ');
+INSERT INTO `#@__admintype` (`rank`, `typename`, `system`, `purviews`) VALUES (1, '信息发布员', 1, 't_AccList a_AccNew a_AccList a_MyList a_MyEdit a_MyDel sys_MdPwd sys_Feedback sys_MyUpload plus_留言簿模块');
+INSERT INTO `#@__admintype` (`rank`, `typename`, `system`, `purviews`) VALUES (5, '频道管理员', 1, 't_AccList t_AccNew t_AccEdit t_AccDel a_AccNew a_AccList a_AccEdit a_AccDel a_AccCheck a_MyList a_MyEdit a_MyDel a_MyCheck co_AddNote co_EditNote co_PlayNote co_ListNote co_ViewNote spec_New spec_List spec_Edit sys_MdPwd sys_Log sys_ArcTj sys_Source sys_Writer sys_Keyword sys_MakeHtml sys_Feedback sys_Upload sys_MyUpload member_List member_Edit plus_站内新闻发布 plus_友情链接模块 plus_留言簿模块 plus_投票模块 plus_广告管理');
+INSERT INTO `#@__admintype` (`rank`, `typename`, `system`, `purviews`) VALUES (10, '超级管理员', 1, 'admin_AllowAll ');
 
-DROP TABLE IF EXISTS `#@__arcatt`;
 CREATE TABLE `#@__arcatt` (
   `att` smallint(6) NOT NULL default '0',
   `attname` varchar(30) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__arcatt` (`att`, `attname`) VALUES (1, '滚动显示'),
-(2, '头条推荐'),
-(3, '幻灯片显');
+INSERT INTO `#@__arcatt` (`att`, `attname`) VALUES (1, '滚动显示');
+INSERT INTO `#@__arcatt` (`att`, `attname`) VALUES (2, '头条推荐');
+INSERT INTO `#@__arcatt` (`att`, `attname`) VALUES (3, '幻灯片显');
 
-DROP TABLE IF EXISTS `#@__archives`;
 CREATE TABLE `#@__archives` (
   `ID` int(11) unsigned NOT NULL auto_increment,
   `typeid` int(11) unsigned NOT NULL default '0',
@@ -133,18 +125,19 @@ CREATE TABLE `#@__archives` (
   `redirecturl` varchar(150) NOT NULL default '',
   `mtype` int(11) NOT NULL default '0',
   `userip` varchar(20) NOT NULL default '',
-  PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
-ALTER TABLE `#@__archives` ADD INDEX  `click` (`click`);
-ALTER TABLE `#@__archives` ADD INDEX  `typeid` (`typeid`);
-ALTER TABLE `#@__archives` ADD INDEX  `arcrank` (`arcrank`);
-ALTER TABLE `#@__archives` ADD INDEX  `sortrank` (`sortrank`);
-ALTER TABLE `#@__archives` ADD INDEX  `senddate` (`senddate`);
-ALTER TABLE `#@__archives` ADD INDEX  `pubdate` (`pubdate`);
-ALTER TABLE `#@__archives` ADD INDEX  `litpic` (`litpic`);
-ALTER TABLE `#@__archives` ADD INDEX  `typeid2` (`typeid2`);
+  `locklikeid` smallint(6) NOT NULL default '0',
+  `likeid` varchar(240) default '',
+  PRIMARY KEY  (`ID`),
+  KEY `click` (`click`),
+  KEY `senddate` (`senddate`),
+  KEY `typeid` (`typeid`),
+  KEY `arcrank` (`arcrank`),
+  KEY `sortrank` (`sortrank`),
+  KEY `pubdate` (`pubdate`),
+  KEY `litpic` (`litpic`),
+  KEY `typeid2` (`typeid2`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#; 
 
-DROP TABLE IF EXISTS `#@__arcrank`;
 CREATE TABLE `#@__arcrank` (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `rank` smallint(10) NOT NULL default '0',
@@ -154,13 +147,12 @@ CREATE TABLE `#@__arcrank` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (1, 0, '开放浏览', 5, 0),
-(2, -1, '待审核稿件', 0, 0),
-(3, 10, '注册会员', 5, 0),
-(4, 50, '中级会员', 5, 2500),
-(5, 100, '高级会员', 5, 10000);
+INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (1, 0, '开放浏览', 5, 0);
+INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (2, -1, '待审核稿件', 0, 0);
+INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (3, 10, '注册会员', 5, 0);
+INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (4, 50, '中级会员', 5, 200);
+INSERT INTO `#@__arcrank` (`ID`, `rank`, `membername`, `adminrank`, `money`) VALUES (5, 100, '高级会员', 5, 400);
 
-DROP TABLE IF EXISTS `#@__arctype`;
 CREATE TABLE `#@__arctype` (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `reID` int(10) unsigned NOT NULL default '0',
@@ -190,500 +182,497 @@ CREATE TABLE `#@__arctype` (
   `siteurl` varchar(60) NOT NULL default '',
   `ishidden` smallint(6) NOT NULL default '0',
   PRIMARY KEY  (`ID`),
-  KEY `moresite` (`moresite`,`sitepath`,`siteurl`),
-  KEY `mainIndex` (`reID`,`sortrank`,`typename`,`typedir`,`isdefault`,`defaultname`,`channeltype`,`ispart`,`namerule`,`namerule2`,`corank`,`topID`,`ishidden`)
+  KEY `reID` (`reID`,`topID`,`sortrank`,`typename`,`issend`,`ishidden`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__area`;
 CREATE TABLE `#@__area` (
   `eid` int(11) NOT NULL default '0',
   `name` varchar(20) NOT NULL default '',
   `rid` int(11) NOT NULL default '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1, '北京市', 0),
-(101, '东城区', 1),
-(102, '西城区', 1),
-(103, '崇文区', 1),
-(104, '宣武区', 1),
-(105, '朝阳区', 1),
-(106, '海淀区', 1),
-(107, '丰台区', 1),
-(108, '石景山区', 1),
-(109, '门头沟区', 1),
-(110, '房山区', 1),
-(111, '通州区', 1),
-(112, '顺义区', 1),
-(113, '昌平区', 1),
-(114, '大兴区', 1),
-(115, '平谷县', 1),
-(116, '怀柔县', 1),
-(117, '密云县', 1),
-(118, '延庆县', 1),
-(2, '上海市', 0),
-(201, '黄浦区', 2),
-(202, '卢湾区', 2),
-(203, '徐汇区', 2),
-(204, '长宁区', 2),
-(205, '静安区', 2),
-(206, '普陀区', 2),
-(207, '闸北区', 2),
-(208, '虹口区', 2),
-(209, '杨浦区', 2),
-(210, '宝山区', 2),
-(211, '闵行区', 2),
-(212, '嘉定区', 2),
-(213, '浦东新区', 2),
-(214, '松江区', 2),
-(215, '金山区', 2),
-(216, '青浦区', 2),
-(217, '南汇区', 2),
-(218, '奉贤区', 2),
-(219, '崇明县', 2),
-(3, '天津市', 0),
-(301, '和平区', 3),
-(302, '河东区', 3),
-(303, '河西区', 3),
-(304, '南开区', 3),
-(305, '河北区', 3),
-(306, '红桥区', 3),
-(307, '塘沽区', 3),
-(308, '汉沽区', 3),
-(309, '大港区', 3),
-(310, '东丽区', 3),
-(311, '西青区', 3),
-(312, '北辰区', 3),
-(313, '津南区', 3),
-(314, '武清区', 3),
-(315, '宝坻区', 3),
-(316, '静海县', 3),
-(317, '宁河县', 3),
-(318, '蓟县', 3),
-(4, '重庆市', 0),
-(401, '渝中区', 4),
-(402, '大渡口区', 4),
-(403, '江北区', 4),
-(404, '沙坪坝区', 4),
-(405, '九龙坡区', 4),
-(406, '南岸区', 4),
-(407, '北碚区', 4),
-(408, '万盛区', 4),
-(409, '双桥区', 4),
-(410, '渝北区', 4),
-(411, '巴南区', 4),
-(412, '万州区', 4),
-(413, '涪陵区', 4),
-(414, '黔江区', 4),
-(415, '永川市', 4),
-(416, '合川市', 4),
-(417, '江津市', 4),
-(418, '南川市', 4),
-(419, '长寿县', 4),
-(420, '綦江县', 4),
-(421, '潼南县', 4),
-(422, '荣昌县', 4),
-(423, '璧山县', 4),
-(424, '大足县', 4),
-(425, '铜梁县', 4),
-(426, '梁平县', 4),
-(427, '城口县', 4),
-(428, '垫江县', 4),
-(429, '武隆县', 4),
-(430, '丰都县', 4),
-(431, '奉节县', 4),
-(432, '开县', 4),
-(433, '云阳县', 4),
-(434, '忠县', 4),
-(435, '巫溪县', 4),
-(436, '巫山县', 4),
-(437, '石柱县', 4),
-(438, '秀山县', 4),
-(439, '酉阳县', 4),
-(440, '彭水县', 4),
-(5, '广东省', 0),
-(501, '广州市', 5),
-(502, '深圳市', 5),
-(503, '珠海市', 5),
-(504, '汕头市', 5),
-(505, '韶关市', 5),
-(506, '河源市', 5),
-(507, '梅州市', 5),
-(508, '惠州市', 5),
-(509, '汕尾市', 5),
-(510, '东莞市', 5),
-(511, '中山市', 5),
-(512, '江门市', 5),
-(513, '佛山市', 5),
-(514, '阳江市', 5),
-(515, '湛江市', 5),
-(516, '茂名市', 5),
-(517, '肇庆市', 5),
-(518, '清远市', 5),
-(519, '潮州市', 5),
-(520, '揭阳市', 5),
-(521, '云浮市', 5),
-(6, '福建省', 0),
-(601, '福州市', 6),
-(602, '厦门市', 6),
-(603, '三明市', 6),
-(604, '莆田市', 6),
-(605, '泉州市', 6),
-(606, '漳州市', 6),
-(607, '南平市', 6),
-(608, '龙岩市', 6),
-(609, '宁德市', 6),
-(7, '浙江省', 0),
-(701, '杭州市', 7),
-(702, '宁波市', 7),
-(703, '温州市', 7),
-(704, '嘉兴市', 7),
-(705, '湖州市', 7),
-(706, '绍兴市', 7),
-(707, '金华市', 7),
-(708, '衢州市', 7),
-(709, '舟山市', 7),
-(710, '台州市', 7),
-(711, '丽水市', 7),
-(8, '江苏省', 0),
-(801, '南京市', 8),
-(802, '徐州市', 8),
-(803, '连云港市', 8),
-(804, '淮安市', 8),
-(805, '宿迁市', 8),
-(806, '盐城市', 8),
-(807, '扬州市', 8),
-(808, '泰州市', 8),
-(809, '南通市', 8),
-(810, '镇江市', 8),
-(811, '常州市', 8),
-(812, '无锡市', 8),
-(813, '苏州市', 8),
-(9, '山东省', 0),
-(901, '济南市', 9),
-(902, '青岛市', 9),
-(903, '淄博市', 9),
-(904, '枣庄市', 9),
-(905, '东营市', 9),
-(906, '潍坊市', 9),
-(907, '烟台市', 9),
-(908, '威海市', 9),
-(909, '济宁市', 9),
-(910, '泰安市', 9),
-(911, '日照市', 9),
-(912, '莱芜市', 9),
-(913, '德州市', 9),
-(914, '临沂市', 9),
-(915, '聊城市', 9),
-(916, '滨州市', 9),
-(917, '菏泽市', 9),
-(10, '辽宁省', 0),
-(1001, '沈阳市', 10),
-(1002, '大连市', 10),
-(1003, '鞍山市', 10),
-(1004, '抚顺市', 10),
-(1005, '本溪市', 10),
-(1006, '丹东市', 10),
-(1007, '锦州市', 10),
-(1008, '葫芦岛市', 10),
-(1009, '营口市', 10),
-(1010, '盘锦市', 10),
-(1011, '阜新市', 10),
-(1012, '辽阳市', 10),
-(1013, '铁岭市', 10),
-(1014, '朝阳市', 10),
-(11, '江西省', 0),
-(1101, '南昌市', 11),
-(1102, '景德镇市', 11),
-(1103, '萍乡市', 11),
-(1104, '新余市', 11),
-(1105, '九江市', 11),
-(1106, '鹰潭市', 11),
-(1107, '赣州市', 11),
-(1108, '吉安市', 11),
-(1109, '宜春市', 11),
-(1110, '抚州市', 11),
-(1111, '上饶市', 11),
-(12, '四川省', 0),
-(1201, '成都市', 12),
-(1202, '自贡市', 12),
-(1203, '攀枝花市', 12),
-(1204, '泸州市', 12),
-(1205, '德阳市', 12),
-(1206, '绵阳市', 12),
-(1207, '广元市', 12),
-(1208, '遂宁市', 12),
-(1209, '内江市', 12),
-(1210, '乐山市', 12),
-(1211, '南充市', 12),
-(1212, '宜宾市', 12),
-(1213, '广安市', 12),
-(1214, '达州市', 12),
-(1215, '巴中市', 12),
-(1216, '雅安市', 12),
-(1217, '眉山市', 12),
-(1218, '资阳市', 12),
-(1219, '阿坝州', 12),
-(1220, '甘孜州', 12),
-(1221, '凉山州', 12),
-(13, '陕西省', 0),
-(1301, '西安市', 13),
-(1302, '铜川市', 13),
-(1303, '宝鸡市', 13),
-(1304, '咸阳市', 13),
-(1305, '渭南市', 13),
-(1306, '延安市', 13),
-(1307, '汉中市', 13),
-(1308, '榆林市', 13),
-(1309, '安康市', 13),
-(1310, '商洛地区', 13),
-(14, '湖北省', 0),
-(1401, '武汉市', 14),
-(1402, '黄石市', 14),
-(1403, '襄樊市', 14),
-(1404, '十堰市', 14),
-(1405, '荆州市', 14),
-(1406, '宜昌市', 14),
-(1407, '荆门市', 14),
-(1408, '鄂州市', 14),
-(1409, '孝感市', 14),
-(1410, '黄冈市', 14),
-(1411, '咸宁市', 14),
-(1412, '随州市', 14),
-(1413, '仙桃市', 14),
-(1414, '天门市', 14),
-(1415, '潜江市', 14),
-(1416, '神农架', 14),
-(1417, '恩施州', 14),
-(15, '河南省', 0),
-(1501, '郑州市', 15),
-(1502, '开封市', 15),
-(1503, '洛阳市', 15),
-(1504, '平顶山市', 15),
-(1505, '焦作市', 15),
-(1506, '鹤壁市', 15),
-(1507, '新乡市', 15),
-(1508, '安阳市', 15),
-(1509, '濮阳市', 15),
-(1510, '许昌市', 15),
-(1511, '漯河市', 15),
-(1512, '三门峡市', 15),
-(1513, '南阳市', 15),
-(1514, '商丘市', 15),
-(1515, '信阳市', 15),
-(1516, '周口市', 15),
-(1517, '驻马店市', 15),
-(1518, '济源市', 15),
-(16, '河北省', 0),
-(1601, '石家庄市', 16),
-(1602, '唐山市', 16),
-(1603, '秦皇岛市', 16),
-(1604, '邯郸市', 16),
-(1605, '邢台市', 16),
-(1606, '保定市', 16),
-(1607, '张家口市', 16),
-(1608, '承德市', 16),
-(1609, '沧州市', 16),
-(1610, '廊坊市', 16),
-(1611, '衡水市', 16),
-(17, '山西省', 0),
-(1701, '太原市', 17),
-(1702, '大同市', 17),
-(1703, '阳泉市', 17),
-(1704, '长治市', 17),
-(1705, '晋城市', 17),
-(1706, '朔州市', 17),
-(1707, '晋中市', 17),
-(1708, '忻州市', 17),
-(1709, '临汾市', 17),
-(1710, '运城市', 17),
-(1711, '吕梁地区', 17),
-(18, '内蒙古', 0),
-(1801, '呼和浩特', 18),
-(1802, '包头市', 18),
-(1803, '乌海市', 18),
-(1804, '赤峰市', 18),
-(1805, '通辽市', 18),
-(1806, '鄂尔多斯', 18),
-(1807, '乌兰察布', 18),
-(1808, '锡林郭勒', 18),
-(1809, '呼伦贝尔', 18),
-(1810, '巴彦淖尔', 18),
-(1811, '阿拉善盟', 18),
-(1812, '兴安盟', 18),
-(19, '吉林省', 0),
-(1901, '长春市', 19),
-(1902, '吉林市', 19),
-(1903, '四平市', 19),
-(1904, '辽源市', 19),
-(1905, '通化市', 19),
-(1906, '白山市', 19),
-(1907, '松原市', 19),
-(1908, '白城市', 19),
-(1909, '延边州', 19),
-(20, '黑龙江', 0),
-(2001, '哈尔滨市', 20),
-(2002, '齐齐哈尔', 20),
-(2003, '鹤岗市', 20),
-(2004, '双鸭山市', 20),
-(2005, '鸡西市', 20),
-(2006, '大庆市', 20),
-(2007, '伊春市', 20),
-(2008, '牡丹江市', 20),
-(2009, '佳木斯市', 20),
-(2010, '七台河市', 20),
-(2011, '黑河市', 20),
-(2012, '绥化市', 20),
-(2013, '大兴安岭', 20),
-(21, '安徽省', 0),
-(2101, '合肥市', 21),
-(2102, '芜湖市', 21),
-(2103, '蚌埠市', 21),
-(2104, '淮南市', 21),
-(2105, '马鞍山市', 21),
-(2106, '淮北市', 21),
-(2107, '铜陵市', 21),
-(2108, '安庆市', 21),
-(2109, '黄山市', 21),
-(2110, '滁州市', 21),
-(2111, '阜阳市', 21),
-(2112, '宿州市', 21),
-(2113, '巢湖市', 21),
-(2114, '六安市', 21),
-(2115, '亳州市', 21),
-(2116, '宣城市', 21),
-(2117, '池州市', 21),
-(22, '湖南省', 0),
-(2201, '长沙市', 22),
-(2202, '株州市', 22),
-(2203, '湘潭市', 22),
-(2204, '衡阳市', 22),
-(2205, '邵阳市', 22),
-(2206, '岳阳市', 22),
-(2207, '常德市', 22),
-(2208, '张家界市', 22),
-(2209, '益阳市', 22),
-(2210, '郴州市', 22),
-(2211, '永州市', 22),
-(2212, '怀化市', 22),
-(2213, '娄底市', 22),
-(2214, '湘西州', 22),
-(23, '广西区', 0),
-(2301, '南宁市', 23),
-(2302, '柳州市', 23),
-(2303, '桂林市', 23),
-(2304, '梧州市', 23),
-(2305, '北海市', 23),
-(2306, '防城港市', 23),
-(2307, '钦州市', 23),
-(2308, '贵港市', 23),
-(2309, '玉林市', 23),
-(2310, '南宁地区', 23),
-(2311, '柳州地区', 23),
-(2312, '贺州地区', 23),
-(2313, '百色地区', 23),
-(2314, '河池地区', 23),
-(24, '海南省', 0),
-(2401, '海口市', 24),
-(2402, '三亚市', 24),
-(2403, '五指山市', 24),
-(2404, '琼海市', 24),
-(2405, '儋州市', 24),
-(2406, '琼山市', 24),
-(2407, '文昌市', 24),
-(2408, '万宁市', 24),
-(2409, '东方市', 24),
-(2410, '澄迈县', 24),
-(2411, '定安县', 24),
-(2412, '屯昌县', 24),
-(2413, '临高县', 24),
-(2414, '白沙县', 24),
-(2415, '昌江县', 24),
-(2416, '乐东县', 24),
-(2417, '陵水县', 24),
-(2418, '保亭县', 24),
-(2419, '琼中县', 24),
-(25, '云南省', 0),
-(2501, '昆明市', 25),
-(2502, '曲靖市', 25),
-(2503, '玉溪市', 25),
-(2504, '保山市', 25),
-(2505, '昭通市', 25),
-(2506, '思茅地区', 25),
-(2507, '临沧地区', 25),
-(2508, '丽江地区', 25),
-(2509, '文山州', 25),
-(2510, '红河州', 25),
-(2511, '西双版纳', 25),
-(2512, '楚雄州', 25),
-(2513, '大理州', 25),
-(2514, '德宏州', 25),
-(2515, '怒江州', 25),
-(2516, '迪庆州', 25),
-(26, '贵州省', 0),
-(2601, '贵阳市', 26),
-(2602, '六盘水市', 26),
-(2603, '遵义市', 26),
-(2604, '安顺市', 26),
-(2605, '铜仁地区', 26),
-(2606, '毕节地区', 26),
-(2607, '黔西南州', 26),
-(2608, '黔东南州', 26),
-(2609, '黔南州', 26),
-(27, '西藏区', 0),
-(2701, '拉萨市', 27),
-(2702, '那曲地区', 27),
-(2703, '昌都地区', 27),
-(2704, '山南地区', 27),
-(2705, '日喀则', 27),
-(2706, '阿里地区', 27),
-(2707, '林芝地区', 27),
-(28, '甘肃省', 0),
-(2801, '兰州市', 28),
-(2802, '金昌市', 28),
-(2803, '白银市', 28),
-(2804, '天水市', 28),
-(2805, '嘉峪关市', 28),
-(2806, '武威市', 28),
-(2807, '定西地区', 28),
-(2808, '平凉地区', 28),
-(2809, '庆阳地区', 28),
-(2810, '陇南地区', 28),
-(2811, '张掖地区', 28),
-(2812, '酒泉地区', 28),
-(2813, '甘南州', 28),
-(2814, '临夏州', 28),
-(29, '宁夏区', 0),
-(2901, '银川市', 29),
-(2902, '石嘴山市', 29),
-(2903, '吴忠市', 29),
-(2904, '固原市', 29),
-(30, '青海省', 0),
-(3001, '西宁市', 30),
-(3002, '海东地区', 30),
-(3003, '海北州', 30),
-(3004, '黄南州', 30),
-(3005, '海南州', 30),
-(3006, '果洛州', 30),
-(3007, '玉树州', 30),
-(3008, '海西州', 30),
-(31, '新疆区', 0),
-(3101, '乌鲁木齐', 31),
-(3102, '克拉玛依', 31),
-(3103, '石河子市', 31),
-(3104, '吐鲁番', 31),
-(3105, '哈密地区', 31),
-(3106, '和田地区', 31),
-(3107, '阿克苏', 31),
-(3108, '喀什地区', 31),
-(3109, '克孜勒苏', 31),
-(3110, '巴音郭楞', 31),
-(3111, '昌吉州', 31),
-(3112, '博尔塔拉', 31),
-(3113, '伊犁州', 31),
-(32, '香港区', 0),
-(33, '澳门区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1, '北京市', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (101, '东城区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (102, '西城区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (103, '崇文区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (104, '宣武区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (105, '朝阳区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (106, '海淀区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (107, '丰台区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (108, '石景山区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (109, '门头沟区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (110, '房山区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (111, '通州区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (112, '顺义区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (113, '昌平区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (114, '大兴区', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (115, '平谷县', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (116, '怀柔县', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (117, '密云县', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (118, '延庆县', 1);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2, '上海市', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (201, '黄浦区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (202, '卢湾区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (203, '徐汇区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (204, '长宁区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (205, '静安区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (206, '普陀区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (207, '闸北区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (208, '虹口区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (209, '杨浦区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (210, '宝山区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (211, '闵行区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (212, '嘉定区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (213, '浦东新区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (214, '松江区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (215, '金山区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (216, '青浦区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (217, '南汇区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (218, '奉贤区', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (219, '崇明县', 2);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3, '天津市', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (301, '和平区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (302, '河东区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (303, '河西区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (304, '南开区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (305, '河北区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (306, '红桥区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (307, '塘沽区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (308, '汉沽区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (309, '大港区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (310, '东丽区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (311, '西青区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (312, '北辰区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (313, '津南区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (314, '武清区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (315, '宝坻区', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (316, '静海县', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (317, '宁河县', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (318, '蓟县', 3);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (4, '重庆市', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (401, '渝中区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (402, '大渡口区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (403, '江北区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (404, '沙坪坝区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (405, '九龙坡区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (406, '南岸区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (407, '北碚区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (408, '万盛区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (409, '双桥区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (410, '渝北区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (411, '巴南区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (412, '万州区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (413, '涪陵区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (414, '黔江区', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (415, '永川市', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (416, '合川市', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (417, '江津市', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (418, '南川市', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (419, '长寿县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (420, '綦江县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (421, '潼南县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (422, '荣昌县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (423, '璧山县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (424, '大足县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (425, '铜梁县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (426, '梁平县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (427, '城口县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (428, '垫江县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (429, '武隆县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (430, '丰都县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (431, '奉节县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (432, '开县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (433, '云阳县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (434, '忠县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (435, '巫溪县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (436, '巫山县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (437, '石柱县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (438, '秀山县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (439, '酉阳县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (440, '彭水县', 4);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (5, '广东省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (501, '广州市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (502, '深圳市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (503, '珠海市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (504, '汕头市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (505, '韶关市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (506, '河源市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (507, '梅州市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (508, '惠州市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (509, '汕尾市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (510, '东莞市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (511, '中山市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (512, '江门市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (513, '佛山市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (514, '阳江市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (515, '湛江市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (516, '茂名市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (517, '肇庆市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (518, '清远市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (519, '潮州市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (520, '揭阳市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (521, '云浮市', 5);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (6, '福建省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (601, '福州市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (602, '厦门市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (603, '三明市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (604, '莆田市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (605, '泉州市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (606, '漳州市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (607, '南平市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (608, '龙岩市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (609, '宁德市', 6);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (7, '浙江省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (701, '杭州市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (702, '宁波市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (703, '温州市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (704, '嘉兴市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (705, '湖州市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (706, '绍兴市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (707, '金华市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (708, '衢州市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (709, '舟山市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (710, '台州市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (711, '丽水市', 7);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (8, '江苏省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (801, '南京市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (802, '徐州市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (803, '连云港市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (804, '淮安市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (805, '宿迁市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (806, '盐城市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (807, '扬州市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (808, '泰州市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (809, '南通市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (810, '镇江市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (811, '常州市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (812, '无锡市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (813, '苏州市', 8);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (9, '山东省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (901, '济南市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (902, '青岛市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (903, '淄博市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (904, '枣庄市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (905, '东营市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (906, '潍坊市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (907, '烟台市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (908, '威海市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (909, '济宁市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (910, '泰安市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (911, '日照市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (912, '莱芜市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (913, '德州市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (914, '临沂市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (915, '聊城市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (916, '滨州市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (917, '菏泽市', 9);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (10, '辽宁省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1001, '沈阳市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1002, '大连市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1003, '鞍山市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1004, '抚顺市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1005, '本溪市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1006, '丹东市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1007, '锦州市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1008, '葫芦岛市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1009, '营口市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1010, '盘锦市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1011, '阜新市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1012, '辽阳市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1013, '铁岭市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1014, '朝阳市', 10);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (11, '江西省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1101, '南昌市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1102, '景德镇市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1103, '萍乡市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1104, '新余市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1105, '九江市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1106, '鹰潭市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1107, '赣州市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1108, '吉安市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1109, '宜春市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1110, '抚州市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1111, '上饶市', 11);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (12, '四川省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1201, '成都市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1202, '自贡市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1203, '攀枝花市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1204, '泸州市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1205, '德阳市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1206, '绵阳市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1207, '广元市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1208, '遂宁市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1209, '内江市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1210, '乐山市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1211, '南充市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1212, '宜宾市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1213, '广安市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1214, '达州市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1215, '巴中市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1216, '雅安市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1217, '眉山市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1218, '资阳市', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1219, '阿坝州', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1220, '甘孜州', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1221, '凉山州', 12);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (13, '陕西省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1301, '西安市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1302, '铜川市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1303, '宝鸡市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1304, '咸阳市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1305, '渭南市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1306, '延安市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1307, '汉中市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1308, '榆林市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1309, '安康市', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1310, '商洛地区', 13);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (14, '湖北省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1401, '武汉市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1402, '黄石市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1403, '襄樊市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1404, '十堰市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1405, '荆州市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1406, '宜昌市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1407, '荆门市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1408, '鄂州市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1409, '孝感市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1410, '黄冈市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1411, '咸宁市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1412, '随州市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1413, '仙桃市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1414, '天门市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1415, '潜江市', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1416, '神农架', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1417, '恩施州', 14);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (15, '河南省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1501, '郑州市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1502, '开封市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1503, '洛阳市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1504, '平顶山市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1505, '焦作市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1506, '鹤壁市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1507, '新乡市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1508, '安阳市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1509, '濮阳市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1510, '许昌市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1511, '漯河市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1512, '三门峡市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1513, '南阳市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1514, '商丘市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1515, '信阳市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1516, '周口市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1517, '驻马店市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1518, '济源市', 15);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (16, '河北省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1601, '石家庄市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1602, '唐山市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1603, '秦皇岛市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1604, '邯郸市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1605, '邢台市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1606, '保定市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1607, '张家口市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1608, '承德市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1609, '沧州市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1610, '廊坊市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1611, '衡水市', 16);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (17, '山西省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1701, '太原市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1702, '大同市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1703, '阳泉市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1704, '长治市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1705, '晋城市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1706, '朔州市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1707, '晋中市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1708, '忻州市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1709, '临汾市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1710, '运城市', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1711, '吕梁地区', 17);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (18, '内蒙古', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1801, '呼和浩特', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1802, '包头市', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1803, '乌海市', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1804, '赤峰市', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1805, '通辽市', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1806, '鄂尔多斯', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1807, '乌兰察布', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1808, '锡林郭勒', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1809, '呼伦贝尔', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1810, '巴彦淖尔', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1811, '阿拉善盟', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1812, '兴安盟', 18);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (19, '吉林省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1901, '长春市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1902, '吉林市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1903, '四平市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1904, '辽源市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1905, '通化市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1906, '白山市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1907, '松原市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1908, '白城市', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (1909, '延边州', 19);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (20, '黑龙江', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2001, '哈尔滨市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2002, '齐齐哈尔', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2003, '鹤岗市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2004, '双鸭山市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2005, '鸡西市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2006, '大庆市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2007, '伊春市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2008, '牡丹江市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2009, '佳木斯市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2010, '七台河市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2011, '黑河市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2012, '绥化市', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2013, '大兴安岭', 20);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (21, '安徽省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2101, '合肥市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2102, '芜湖市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2103, '蚌埠市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2104, '淮南市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2105, '马鞍山市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2106, '淮北市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2107, '铜陵市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2108, '安庆市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2109, '黄山市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2110, '滁州市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2111, '阜阳市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2112, '宿州市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2113, '巢湖市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2114, '六安市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2115, '亳州市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2116, '宣城市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2117, '池州市', 21);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (22, '湖南省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2201, '长沙市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2202, '株州市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2203, '湘潭市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2204, '衡阳市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2205, '邵阳市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2206, '岳阳市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2207, '常德市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2208, '张家界市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2209, '益阳市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2210, '郴州市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2211, '永州市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2212, '怀化市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2213, '娄底市', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2214, '湘西州', 22);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (23, '广西区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2301, '南宁市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2302, '柳州市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2303, '桂林市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2304, '梧州市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2305, '北海市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2306, '防城港市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2307, '钦州市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2308, '贵港市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2309, '玉林市', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2310, '南宁地区', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2311, '柳州地区', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2312, '贺州地区', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2313, '百色地区', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2314, '河池地区', 23);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (24, '海南省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2401, '海口市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2402, '三亚市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2403, '五指山市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2404, '琼海市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2405, '儋州市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2406, '琼山市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2407, '文昌市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2408, '万宁市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2409, '东方市', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2410, '澄迈县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2411, '定安县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2412, '屯昌县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2413, '临高县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2414, '白沙县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2415, '昌江县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2416, '乐东县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2417, '陵水县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2418, '保亭县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2419, '琼中县', 24);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (25, '云南省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2501, '昆明市', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2502, '曲靖市', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2503, '玉溪市', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2504, '保山市', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2505, '昭通市', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2506, '思茅地区', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2507, '临沧地区', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2508, '丽江地区', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2509, '文山州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2510, '红河州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2511, '西双版纳', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2512, '楚雄州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2513, '大理州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2514, '德宏州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2515, '怒江州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2516, '迪庆州', 25);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (26, '贵州省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2601, '贵阳市', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2602, '六盘水市', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2603, '遵义市', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2604, '安顺市', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2605, '铜仁地区', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2606, '毕节地区', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2607, '黔西南州', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2608, '黔东南州', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2609, '黔南州', 26);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (27, '西藏区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2701, '拉萨市', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2702, '那曲地区', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2703, '昌都地区', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2704, '山南地区', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2705, '日喀则', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2706, '阿里地区', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2707, '林芝地区', 27);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (28, '甘肃省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2801, '兰州市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2802, '金昌市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2803, '白银市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2804, '天水市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2805, '嘉峪关市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2806, '武威市', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2807, '定西地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2808, '平凉地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2809, '庆阳地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2810, '陇南地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2811, '张掖地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2812, '酒泉地区', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2813, '甘南州', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2814, '临夏州', 28);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (29, '宁夏区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2901, '银川市', 29);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2902, '石嘴山市', 29);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2903, '吴忠市', 29);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (2904, '固原市', 29);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (30, '青海省', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3001, '西宁市', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3002, '海东地区', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3003, '海北州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3004, '黄南州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3005, '海南州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3006, '果洛州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3007, '玉树州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3008, '海西州', 30);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (31, '新疆区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3101, '乌鲁木齐', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3102, '克拉玛依', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3103, '石河子市', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3104, '吐鲁番', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3105, '哈密地区', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3106, '和田地区', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3107, '阿克苏', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3108, '喀什地区', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3109, '克孜勒苏', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3110, '巴音郭楞', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3111, '昌吉州', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3112, '博尔塔拉', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (3113, '伊犁州', 31);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (32, '香港区', 0);
+INSERT INTO `#@__area` (`eid`, `name`, `rid`) VALUES (33, '澳门区', 0); 
 
-DROP TABLE IF EXISTS `#@__channeltype`;
 CREATE TABLE `#@__channeltype` (
   `ID` smallint(6) NOT NULL default '0',
   `nid` varchar(10) NOT NULL default '',
@@ -692,7 +681,7 @@ CREATE TABLE `#@__channeltype` (
   `addcon` varchar(30) NOT NULL default '',
   `mancon` varchar(30) NOT NULL default '',
   `editcon` varchar(30) NOT NULL default '',
-  `fieldset` text NULL,
+  `fieldset` text,
   `listadd` varchar(250) NOT NULL default '',
   `issystem` smallint(6) NOT NULL default '0',
   `isshow` smallint(6) NOT NULL default '1',
@@ -703,53 +692,51 @@ CREATE TABLE `#@__channeltype` (
   KEY `channelIndex` (`nid`,`typename`,`addcon`,`mancon`,`editcon`,`addtable`,`isshow`,`arcsta`,`sendrank`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (1, 'article', '普通文章', '#@__addonarticle', 'article_add.php', 'content_list.php', 'article_edit.php', '<field:body type=''htmltext'' isnull=''true'' default='''' rename='''' page=''split''/>', '', 1, 1, 1, -1, 10),
-(2, 'image', '图片集', '#@__addonimages', 'album_add.php', 'content_i_list.php', 'album_edit.php', '<field:pagestyle type=''number'' isnull=''true'' default=''1'' rename='''' />\r\n\r\n<field:imgurls type=''img'' isnull=''true'' default='''' rename='''' page=''split''/>\r\n', '', 1, 1, 1, -1, 10),
-(3, 'soft', '软件', '#@__addonsoft', 'soft_add.php', 'content_i_list.php', 'soft_edit.php', '<field:filetype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:language type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softtype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:accredit type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:os type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softrank type=''int'' isnull=''true'' default=''3'' rename='''' function=''GetRankStar(@me)''/>\r\n\r\n<field:officialUrl type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:officialDemo type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softsize type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softlinks type=''softlinks'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:introduce type=''htmltext'' isnull=''tr\nnu\ne'' default='''' rename='''' />\r\n\n', 'filetype,language,softtype,os,accredit,softrank', 1, 1, 0, -1, 10),
-(4, 'flash', 'Flash', '#@__addonflash', 'flash_add.php', 'content_i_list.php', 'flash_edit.php', '<field:filesize type=''text'' isnull=''true'' default=''1 MB'' rename='''' />\r\n\r\n<field:playtime type=''text'' isnull=''true'' default=''3 分钟'' rename='''' />\r\n\r\n<field:flashtype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:flashrank type=''int'' isnull=''true'' default=''3'' rename='''' function=''GetRankStar(@me)''/>\r\n\r\n<field:width type=''int'' isnull=''true'' default=''500'' rename='''' />\r\n\r\n<field:height type=''int'' isnull=''true'' default=''400'' rename='''' />\r\n\r\n<field:flashurl type=''text'' isnull=''true'' default='''' rename='''' />\r\n', 'filesize,playtime,flashtype,flashrank', 1, 1, 0, -1, 10),
-(-1, 'spec', '专题', '#@__addonspec', 'spec_add.php', 'content_s_list.php', 'spec_edit.php', '<field:note type=''specialtopic'' isnull=''true'' default='''' rename=''''/>', '', 1, 1, 0, -1, 10);
+INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (1, 'article', '普通文章', '#@__addonarticle', 'article_add.php', 'content_list.php', 'article_edit.php', '<field:body type=''htmltext'' isnull=''true'' default='''' rename='''' page=''split''/>', '', 1, 1, 1, -1, 10);
+INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (2, 'image', '图片集', '#@__addonimages', 'album_add.php', 'content_i_list.php', 'album_edit.php', '<field:pagestyle type=''number'' isnull=''true'' default=''1'' rename='''' />\r\n\r\n<field:imgurls type=''img'' isnull=''true'' default='''' rename='''' page=''split''/>\r\n', '', 1, 1, 1, -1, 10);
+INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (3, 'soft', '软件', '#@__addonsoft', 'soft_add.php', 'content_i_list.php', 'soft_edit.php', '<field:filetype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:language type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softtype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:accredit type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:os type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softrank type=''int'' isnull=''true'' default=''3'' rename='''' function=''GetRankStar(@me)''/>\r\n\r\n<field:officialUrl type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:officialDemo type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softsize type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:softlinks type=''softlinks'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:introduce type=''htmltext'' isnull=''true'' default='''' rename='''' />\r\n\r\n\n', 'filetype,language,softtype,os,accredit,softrank', 1, 1, 0, -1, 10);
+INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (4, 'flash', 'Flash', '#@__addonflash', 'flash_add.php', 'content_i_list.php', 'flash_edit.php', '<field:filesize type=''text'' isnull=''true'' default=''1 MB'' rename='''' />\r\n\r\n<field:playtime type=''text'' isnull=''true'' default=''3 分钟'' rename='''' />\r\n\r\n<field:flashtype type=''text'' isnull=''true'' default='''' rename='''' />\r\n\r\n<field:flashrank type=''int'' isnull=''true'' default=''3'' rename='''' function=''GetRankStar(@me)''/>\r\n\r\n<field:width type=''int'' isnull=''true'' default=''500'' rename='''' />\r\n\r\n<field:height type=''int'' isnull=''true'' default=''400'' rename='''' />\r\n\r\n<field:flashurl type=''text'' isnull=''true'' default='''' rename='''' />\r\n', 'filesize,playtime,flashtype,flashrank', 1, 1, 0, -1, 10);
+INSERT INTO `#@__channeltype` (`ID`, `nid`, `typename`, `addtable`, `addcon`, `mancon`, `editcon`, `fieldset`, `listadd`, `issystem`, `isshow`, `issend`, `arcsta`, `sendrank`) VALUES (-1, 'spec', '专题', '#@__addonspec', 'spec_add.php', 'content_s_list.php', 'spec_edit.php', '<field:note type=''specialtopic'' isnull=''true'' default='''' rename=''''/>', '', 1, 1, 0, -1, 10);
 
-DROP TABLE IF EXISTS `#@__co_dataswitch`;
 CREATE TABLE `#@__co_dataswitch` (
   `aid` int(11) NOT NULL auto_increment,
   `notename` varchar(100) NOT NULL default '',
   `channelid` int(11) NOT NULL default '0',
   `description` varchar(250) NOT NULL default '',
   `addtime` int(11) NOT NULL default '0',
-  `notes` text NULL,
+  `notes` text,
   PRIMARY KEY  (`aid`),
   KEY `notename` (`notename`,`channelid`,`description`,`addtime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__co_exrule`;
 CREATE TABLE `#@__co_exrule` (
   `aid` int(11) NOT NULL auto_increment,
   `channelid` int(11) NOT NULL default '0',
   `rulename` varchar(100) NOT NULL default '',
   `etype` varchar(10) NOT NULL default '',
   `dtime` int(11) NOT NULL default '0',
-  `ruleset` text NULL,
+  `ruleset` text,
   PRIMARY KEY  (`aid`),
   KEY `rulename` (`rulename`,`etype`,`dtime`,`channelid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__co_exrule` (`aid`, `channelid`, `rulename`, `etype`, `dtime`, `ruleset`) VALUES (1, 1, 'Dede文章模型', '当前系统', 1164939755, '\r\n{dede:note \r\n  rulename=''Dede文章模型''\r\n  etype=''当前系统''\r\n  tablename=''#@__archives,#@__addonarticle''\r\n  autofield=''ID''\r\n  synfield=''aid''\r\n  channelid=''1''\r\n/}\r\n	{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__archives'' source=''value''}{tid}{/dede:field}\r\n{dede:field name=''title'' comment=''文章标题'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''sortrank'' comment=''排序级别'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''arcrank'' comment=''文档权限'' intable=''#@__archives'' source=''value''}{rank}{/dede:field}\r\n{dede:field name=''channel'' comment=''频道类型'' intable=''#@__archives'' source=''value''}{cid}{/dede:field}\r\n{dede:field name=''writer'' comment=''文章作者'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''litpic'' comment=''缩略图'' intable=''#@__archives'' source=''function''}@me = @litpic;{/dede:field}\r\n{dede:field name=''pubdate'' comment=''发布时间'' intable=''#@__archives'' source=''function''}if(@me!="") @me = GetMkTime(@me);\r\nelse @me = time();{/dede:field}\r\n{dede:field name=''senddate'' comment=''录入时间'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__addonarticle'' source=''value''}{tid}{/dede:field}\r\n{dede:field name=''body'' comment=''文章内容'' intable=''#@__addonarticle'' source=''export''}{/dede:field}\r\n{dede:field name=''adminID'' comment=''管理员ID'' intable=''#@__archives'' source=''value''}{admin}{/dede:field}\r\n{dede:field name=''source'' comment=''文章来源'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n');
+INSERT INTO `#@__co_exrule` VALUES (1, 1, 'Dede文章模型', '当前系统', 1176340865, '\r\n{dede:note \r\n  rulename=''Dede文章模型''\r\n  etype=''当前系统''\r\n  tablename=''#@__archives,#@__addonarticle''\r\n  autofield=''ID''\r\n  synfield=''aid''\r\n  channelid=''1''\r\n/}\r\n	{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__archives'' source=''value''}{tid}{/dede:field}\r\n{dede:field name=''arcrank'' comment=''文档权限'' intable=''#@__archives'' source=''value''}{rank}{/dede:field}\r\n{dede:field name=''channel'' comment=''频道类型'' intable=''#@__archives'' source=''value''}{cid}{/dede:field}\r\n{dede:field name=''title'' comment=''文章标题'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''body'' comment=''文章内容'' intable=''#@__addonarticle'' source=''export''}{/dede:field}\r\n{dede:field name=''writer'' comment=''文章作者'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''source'' comment=''文章来源'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''pubdate'' comment=''发布时间'' intable=''#@__archives'' source=''function''}if(@me!="") @me = GetMkTime(@me);\r\nelse @me = time();{/dede:field}\r\n{dede:field name=''sortrank'' comment=''排序级别'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''litpic'' comment=''缩略图'' intable=''#@__archives'' source=''function''}@me = @litpic;{/dede:field}\r\n{dede:field name=''senddate'' comment=''录入时间'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__addonarticle'' source=''value''}{tid}{/dede:field}\r\n{dede:field name=''adminID'' comment=''管理员ID'' intable=''#@__archives'' source=''value''}{admin}{/dede:field}\r\n'),
+(2, 2, 'Dede图片模型', '当前系统', 1175825602, '{dede:note \r\n  rulename=''Dede图片模型''\r\n  etype=''当前系统''\r\n  tablename=''#@__archives,#@__addonimages''\r\n  autofield=''ID''\r\n  synfield=''aid''\r\n  channelid=''2''\r\n/}\r\n{dede:field name=''title'' comment=''图片标题'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''imgurls'' comment=''图片内容'' intable=''#@__addonimages'' source=''export''}@me = TurnImageTag(@me);{/dede:field}\r\n{dede:field name=''writer'' comment=''图片作者'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''source'' comment=''图片来源'' intable=''#@__archives'' source=''export''}{/dede:field}\r\n{dede:field name=''litpic'' comment=''缩略图'' intable=''#@__archives'' source=''function''}@me = @litpic;{/dede:field}\r\n{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__archives'' source=''value''}{tid}{/dede:fi\neld}\r\n{dede:field name=''sortrank'' comment=''排序级别'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''arcrank'' comment=''文档权限'' intable=''#@__archives'' source=''value''}{rank}{/dede:field}\r\n{dede:field name=''channel'' comment=''频道类型'' intable=''#@__archives'' source=''value''}{cid}{/dede:field}\r\n{dede:field name=''pubdate'' comment=''发布时间'' intable=''#@__archives'' source=''function''}if(@me!="") @me = GetMkTime(@me);\r\nelse @me = time();{/dede:field}\r\n{dede:field name=''senddate'' comment=''录入时间'' intable=''#@__archives'' source=''function''}@me = time();{/dede:field}\r\n{dede:field name=''typeid'' comment=''栏目ID'' intable=''#@__addonimages'' source=''value''}{tid}{/dede:field}\r\n{dede:field name=''adminID'' comment=''管理员ID'' intable=''#@__archives'' source=''value''}{admin}{/dede:field}\r\n{dede:field name=''pagestyle'' comment=''显示方式1为单页显示2为分多页显示3为多行多列展示'' intable=''#@__addonimages'' source=''value''}3\n{/dede:field}\r\n{dede:field name=''row'' comment=''多行多列式-行数'' intable=''#@__addonimages'' source=''value''}3{/dede:field}\r\n{dede:field name=''col'' comment=''多行多列式-列数'' intable=''#@__addonimages'' source=''value''}3{/dede:field}\r\n{dede:field name=''isrm'' comment=''是否下载远程图片'' intable=''#@__addonimages'' source=''value''}1{/dede:field}\r\n{dede:field name=''ddmaxwidth'' comment=''多行多列显示宽度'' intable=''#@__addonimages'' source=''value''}150{/dede:field}\r\n');
 
-DROP TABLE IF EXISTS `#@__co_listenurl`;
 CREATE TABLE `#@__co_listenurl` (
   `nid` int(11) NOT NULL default '0',
   `url` varchar(150) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__co_mediaurl`;
 CREATE TABLE `#@__co_mediaurl` (
+  `aid` int(11) NOT NULL auto_increment,
   `nid` int(11) NOT NULL default '0',
   `rurl` varchar(150) NOT NULL default '',
   `nurl` varchar(80) NOT NULL default '',
+  PRIMARY KEY  (`aid`),
   KEY `nurl` (`nurl`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__conote`;
 CREATE TABLE `#@__conote` (
   `nid` int(11) NOT NULL auto_increment,
   `typeid` int(11) NOT NULL default '0',
@@ -757,12 +744,11 @@ CREATE TABLE `#@__conote` (
   `language` varchar(10) NOT NULL default 'gb2312',
   `savetime` int(11) NOT NULL default '0',
   `lasttime` int(11) NOT NULL default '0',
-  `noteinfo` text NULL,
+  `noteinfo` text,
   PRIMARY KEY  (`nid`),
   KEY `conote` (`typeid`,`gathername`,`lasttime`,`savetime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__courl`;
 CREATE TABLE `#@__courl` (
   `aid` int(11) NOT NULL auto_increment,
   `nid` int(11) NOT NULL default '0',
@@ -771,24 +757,22 @@ CREATE TABLE `#@__courl` (
   `dtime` int(11) NOT NULL default '0',
   `isdown` smallint(6) NOT NULL default '0',
   `isex` smallint(6) NOT NULL default '0',
-  `result` text NULL,
+  `result` mediumtext,
   PRIMARY KEY  (`aid`),
   KEY `nid` (`nid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__error`;
 CREATE TABLE `#@__error` (
   `aid` int(11) NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
   `ip` varchar(20) NOT NULL default '',
   `dtime` int(11) NOT NULL default '0',
   `url` varchar(100) NOT NULL default '',
-  `info` mediumtext NULL,
+  `info` mediumtext,
   PRIMARY KEY  (`aid`),
   KEY `errIndex` (`title`,`ip`,`dtime`,`url`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__feedback`;
 CREATE TABLE `#@__feedback` (
   `ID` int(11) unsigned NOT NULL auto_increment,
   `aid` int(11) unsigned NOT NULL default '0',
@@ -796,17 +780,19 @@ CREATE TABLE `#@__feedback` (
   `username` varchar(30) NOT NULL default '',
   `arctitle` varchar(60) NOT NULL default '',
   `ip` varchar(20) NOT NULL default '',
-  `msg` text NULL,
+  `msg` text,
   `ischeck` smallint(6) NOT NULL default '0',
   `dtime` int(11) NOT NULL default '0',
   `email` varchar(60) NOT NULL default '',
   `mid` int(11) NOT NULL default '0',
+  `rank` smallint(6) NOT NULL default '3',
+  `good` INT NOT NULL DEFAULT '0',
+  `bad` INT NOT NULL DEFAULT '0',
   PRIMARY KEY  (`ID`),
-  KEY `feedbackindex` (`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`,`email`),
+  KEY `feedbackindex` (`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`,`email`,`rank`),
   KEY `mid` (`mid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__flink`;
 CREATE TABLE `#@__flink` (
   `ID` int(11) NOT NULL auto_increment,
   `sortrank` int(11) NOT NULL default '0',
@@ -821,23 +807,40 @@ CREATE TABLE `#@__flink` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__flinktype`;
 CREATE TABLE `#@__flinktype` (
   `ID` int(11) NOT NULL auto_increment,
   `typename` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (1, '综合网站'),
-(2, '娱乐类'),
-(3, '教育类'),
-(4, '计算机类'),
-(5, '电子商务'),
-(6, '网上信息'),
-(7, '论坛类'),
-(8, '其它类型');
 
-DROP TABLE IF EXISTS `#@__guestbook`;
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (1, '综合网站');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (2, '娱乐类');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (3, '教育类');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (4, '计算机类');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (5, '电子商务');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (6, '网上信息');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (7, '论坛类');
+INSERT INTO `#@__flinktype` (`ID`, `typename`) VALUES (8, '其它类型');
+
+CREATE TABLE `#@__freelist` (
+  `aid` int(11) NOT NULL auto_increment,
+  `title` varchar(50) NOT NULL,
+  `namerule` varchar(50) NOT NULL,
+  `listdir` varchar(60) NOT NULL,
+  `defaultpage` varchar(20) NOT NULL,
+  `nodefault` smallint(6) NOT NULL default '0',
+  `templet` varchar(50) NOT NULL,
+  `edtime` int(11) NOT NULL default '0',
+  `click` int(11) NOT NULL default '1',
+  `listtag` mediumtext,
+  `keyword` varchar(100) default NULL,
+  `description` varchar(250) default NULL,
+  PRIMARY KEY  (`aid`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+INSERT INTO `#@__freelist` (`aid`, `title`, `namerule`, `listdir`, `defaultpage`, `nodefault`, `templet`, `edtime`, `click`, `listtag`, `keyword`, `description`) VALUES (1, 'Google SiteMap 生成器', '{listdir}/googlemap_{page}.xml', '{cmspath}/freelist/', 'index.html', 1, 'googlemap.htm', 1175910290, 0, '{dede:list  pagesize=''500'' col=''1'' titlelen=''60'' orderby=''senddate'' orderway=''desc'' \r\n keyword='''' }<url>\r\n  <loc>[field:arcurl function=''Gmapurl("@me")''/]</loc> \r\n  <lastmod>[field:senddate function="strftime(''%Y-%m-%d'',@me)"/]</lastmod> \r\n  </url>{/dede:list}', '', 'Google SiteMap文件生成');
+
 CREATE TABLE `#@__guestbook` (
   `ID` int(11) NOT NULL auto_increment,
   `uname` varchar(30) NOT NULL default '',
@@ -845,14 +848,13 @@ CREATE TABLE `#@__guestbook` (
   `homepage` varchar(80) NOT NULL default '',
   `qq` varchar(20) NOT NULL default '',
   `face` varchar(10) NOT NULL default '',
-  `msg` text NULL,
+  `msg` text,
   `ip` varchar(20) NOT NULL default '',
   `dtime` datetime NOT NULL default '0000-00-00 00:00:00',
   `ischeck` smallint(6) NOT NULL default '1',
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__homepageset`;
 CREATE TABLE `#@__homepageset` (
   `templet` varchar(100) NOT NULL default '',
   `position` varchar(50) NOT NULL default ''
@@ -860,7 +862,6 @@ CREATE TABLE `#@__homepageset` (
 
 INSERT INTO `#@__homepageset` (`templet`, `position`) VALUES ('{style}/index.htm', '../index.html');
 
-DROP TABLE IF EXISTS `#@__keywords`;
 CREATE TABLE `#@__keywords` (
   `aid` int(11) NOT NULL auto_increment,
   `keyword` varchar(20) NOT NULL default '',
@@ -871,7 +872,6 @@ CREATE TABLE `#@__keywords` (
   KEY `keyword` (`keyword`,`rank`,`sta`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__log`;
 CREATE TABLE `#@__log` (
   `lid` int(11) NOT NULL auto_increment,
   `adminid` int(11) NOT NULL default '0',
@@ -883,18 +883,18 @@ CREATE TABLE `#@__log` (
   PRIMARY KEY  (`lid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__member`;
 CREATE TABLE `#@__member` (
   `ID` int(10) unsigned NOT NULL auto_increment,
   `userid` varchar(32) NOT NULL default '',
-  `pwd` varchar(32) NOT NULL default '',
+  `pwd` varchar(64) NOT NULL,
   `uname` varchar(20) NOT NULL default '',
   `sex` char(2) NOT NULL default '1',
   `birthday` date NOT NULL default '0000-00-00',
   `membertype` int(11) NOT NULL default '0',
-  `uptype` int(11) NOT NULL default '0',
-  `upmoney` smallint(6) NOT NULL default '0',
+  `uptime` int(11) NOT NULL default '0',
+  `exptime` smallint(6) NOT NULL default '0',
   `money` int(11) NOT NULL default '0',
+  `jf` int(11) NOT NULL default '0',
   `weight` varchar(10) NOT NULL default '',
   `height` varchar(10) NOT NULL default '',
   `job` varchar(10) NOT NULL default '',
@@ -920,18 +920,20 @@ CREATE TABLE `#@__member` (
   `spacename` varchar(60) NOT NULL default '',
   `spaceimage` varchar(150) NOT NULL default '',
   `showaddr` smallint(6) NOT NULL default '0',
-  `news` text NULL,
+  `news` mediumtext,
   `address` varchar(100) NOT NULL default '',
   `spacestyle` varchar(20) NOT NULL default '',
   `listnum` smallint(6) NOT NULL default '20',
-  `fullinfo` text NULL,
+  `fullinfo` mediumtext,
   PRIMARY KEY  (`ID`),
-  KEY `searchWord` (`uname`,`myinfo`,`spacename`,`spaceimage`),
-  KEY `memberMain` (`userid`,`birthday`,`membertype`,`uptype`,`money`,`upmoney`,`province`,`city`,`sex`,`logintime`),
-  KEY `space` (`c1`,`c2`,`c3`,`guestbook`,`spaceshow`,`pageshow`,`matt`)
+  KEY `userid` (`userid`),
+  KEY `sex` (`sex`),
+  KEY `birthday` (`birthday`),
+  KEY `membertype` (`membertype`),
+  KEY `uptype` (`uptime`),
+  KEY `c1` (`c1`,`c2`,`c3`,`matt`,`guestbook`,`spaceshow`,`pageshow`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__member_arctype`;
 CREATE TABLE `#@__member_arctype` (
   `aid` int(11) NOT NULL auto_increment,
   `typename` varchar(50) NOT NULL default '',
@@ -941,7 +943,6 @@ CREATE TABLE `#@__member_arctype` (
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__member_flink`;
 CREATE TABLE `#@__member_flink` (
   `aid` int(11) NOT NULL auto_increment,
   `mid` int(11) NOT NULL default '0',
@@ -954,13 +955,12 @@ CREATE TABLE `#@__member_flink` (
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__member_guestbook`;
 CREATE TABLE `#@__member_guestbook` (
   `aid` int(11) NOT NULL auto_increment,
   `mid` int(11) NOT NULL default '0',
   `gid` varchar(20) NOT NULL default '0',
   `title` varchar(60) NOT NULL default '',
-  `msg` text NULL,
+  `msg` text,
   `uname` varchar(50) NOT NULL default '',
   `email` varchar(50) NOT NULL default '',
   `qq` varchar(50) NOT NULL default '',
@@ -970,7 +970,44 @@ CREATE TABLE `#@__member_guestbook` (
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__memberstow`;
+CREATE TABLE `#@__member_operation` (
+  `aid` int(11) NOT NULL auto_increment,
+  `buyid` varchar(30) NOT NULL,
+  `pname` varchar(50) NOT NULL,
+  `product` varchar(10) NOT NULL,
+  `money` int(11) NOT NULL,
+  `mtime` int(11) NOT NULL,
+  `pid` int(11) NOT NULL,
+  `mid` int(11) NOT NULL,
+  `sta` int(11) NOT NULL,
+  `oldinfo` varchar(200) NOT NULL,
+  PRIMARY KEY  (`aid`),
+  KEY `buyid` (`buyid`),
+  KEY `pid` (`pid`,`mid`,`sta`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+CREATE TABLE `#@__member_time` (
+  `mday` smallint(6) NOT NULL,
+  `tname` varchar(30) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+INSERT INTO `#@__member_time` (`mday`, `tname`) VALUES (30, '一个月会员');
+INSERT INTO `#@__member_time` (`mday`, `tname`) VALUES (90, '三个月会员');
+INSERT INTO `#@__member_time` (`mday`, `tname`) VALUES (182, '半年会员');
+INSERT INTO `#@__member_time` (`mday`, `tname`) VALUES (365, '一年会员');
+
+CREATE TABLE `#@__member_type` (
+  `aid` int(11) NOT NULL auto_increment,
+  `rank` int(11) NOT NULL default '0',
+  `pname` varchar(50) NOT NULL default '',
+  `money` int(11) NOT NULL default '0',
+  `exptime` int(11) NOT NULL default '30',
+  PRIMARY KEY  (`aid`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+INSERT INTO `#@__member_type` (`aid`, `rank`, `pname`, `money`, `exptime`) VALUES (1, 50, '半年中级会员', 100, 183);
+INSERT INTO `#@__member_type` (`aid`, `rank`, `pname`, `money`, `exptime`) VALUES (2, 50, '一年中级会员', 150, 366);
+
 CREATE TABLE `#@__memberstow` (
   `aid` int(11) NOT NULL auto_increment,
   `uid` int(11) NOT NULL default '0',
@@ -980,7 +1017,34 @@ CREATE TABLE `#@__memberstow` (
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__moneyrecord`;
+CREATE TABLE `#@__moneycard_record` (
+  `aid` int(11) NOT NULL auto_increment,
+  `ctid` int(11) NOT NULL default '0',
+  `cardid` varchar(50) NOT NULL,
+  `uid` int(11) NOT NULL default '0',
+  `isexp` smallint(6) NOT NULL default '0',
+  `mtime` int(11) NOT NULL default '0',
+  `utime` int(11) NOT NULL default '0',
+  `money` int(11) NOT NULL default '0',
+  `num` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`aid`),
+  KEY `ctid` (`ctid`),
+  KEY `cardid` (`cardid`),
+  KEY `uid` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+CREATE TABLE `#@__moneycard_type` (
+  `tid` int(11) NOT NULL auto_increment,
+  `num` int(11) NOT NULL default '500',
+  `money` int(11) NOT NULL default '50',
+  `pname` varchar(50) NOT NULL,
+  PRIMARY KEY  (`tid`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
+INSERT INTO `#@__moneycard_type` (`tid`, `num`, `money`, `pname`) VALUES (1, 100, 30, '100点点数卡');
+INSERT INTO `#@__moneycard_type` (`tid`, `num`, `money`, `pname`) VALUES (2, 200, 50, '200点点数卡');
+INSERT INTO `#@__moneycard_type` (`tid`, `num`, `money`, `pname`) VALUES (3, 300, 80, '300点点数卡');
+
 CREATE TABLE `#@__moneyrecord` (
   `ID` int(11) NOT NULL auto_increment,
   `aid` int(11) NOT NULL default '0',
@@ -991,7 +1055,6 @@ CREATE TABLE `#@__moneyrecord` (
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__myad`;
 CREATE TABLE `#@__myad` (
   `aid` int(11) NOT NULL auto_increment,
   `typeid` int(11) NOT NULL default '0',
@@ -1000,25 +1063,23 @@ CREATE TABLE `#@__myad` (
   `timeset` smallint(6) NOT NULL default '0',
   `starttime` int(11) NOT NULL default '0',
   `endtime` int(11) NOT NULL default '0',
-  `normbody` text NULL,
-  `expbody` text NULL,
+  `normbody` text,
+  `expbody` text,
   PRIMARY KEY  (`aid`),
   KEY `tagname` (`tagname`,`adname`,`typeid`,`timeset`,`endtime`,`starttime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__mynews`;
 CREATE TABLE `#@__mynews` (
   `aid` int(11) NOT NULL auto_increment,
   `typeid` int(11) NOT NULL default '0',
   `title` varchar(60) NOT NULL default '',
   `writer` varchar(50) NOT NULL default '',
   `senddate` int(11) NOT NULL default '0',
-  `body` text NULL,
+  `body` text,
   PRIMARY KEY  (`aid`),
   KEY `mynewsindex` (`typeid`,`title`,`writer`,`senddate`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__mytag`;
 CREATE TABLE `#@__mytag` (
   `aid` int(11) NOT NULL auto_increment,
   `typeid` int(11) NOT NULL default '0',
@@ -1026,33 +1087,33 @@ CREATE TABLE `#@__mytag` (
   `timeset` smallint(6) NOT NULL default '0',
   `starttime` int(11) NOT NULL default '0',
   `endtime` int(11) NOT NULL default '0',
-  `normbody` text NULL,
-  `expbody` text NULL,
+  `normbody` text,
+  `expbody` text,
   PRIMARY KEY  (`aid`),
   KEY `tagname` (`tagname`,`typeid`,`timeset`,`endtime`,`starttime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__plus`;
 CREATE TABLE `#@__plus` (
   `aid` int(11) NOT NULL auto_increment,
   `plusname` varchar(30) NOT NULL default '',
   `menustring` varchar(150) NOT NULL default '',
   `writer` varchar(60) NOT NULL default '',
   `isshow` smallint(6) NOT NULL default '1',
-  `filelist` text NULL,
+  `filelist` text,
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__plus` (`plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES ('文件管理器', '<m:item name=''文件管理器'' link=''file_manage_main.php'' rank=''plus_文件管理器'' target=''main'' />', 'IT柏拉图', 1, ''),
-('站内新闻发布', '<m:item name=''站内新闻发布'' link=''mynews_main.php'' rank=''plus_站内新闻发布'' target=''main'' />', 'IT柏拉图', 1, ''),
-('友情链接模块', '<m:item name=''友情链接模块'' link=''friendlink_main.php'' rank=''plus_友情链接模块'' target=''main'' />', 'IT柏拉图', 1, ''),
-('留言簿模块', '<m:item name=''留言簿模块'' link=''catalog_do.php?dopost=guestbook'' rank=''plus_留言簿模块'' target=''main'' />', 'IT柏拉图', 1, ''),
-('投票模块', '<m:item name=''投票模块'' link=''vote_main.php'' rank=''plus_投票模块'' target=''main'' />', 'IT柏拉图', 1, ''),
-('论坛扩展', '<m:item name=''论坛扩展'' link=''bbs_addons.php'' rank=''plus_论坛扩展'' target=''main'' />', 'IT柏拉图', 1, ''),
-('广告管理', '<m:item name=''广告管理'' link=''ad_main.php'' rank=''plus_广告管理'' target=''main'' />', 'IT柏拉图', 1, ''),
-('正则规则测试器', '<m:item name=''正则规则测试器'' link=''ruletest.php'' rank=''plus_正则规则测试器'' target=''main'' />', 'IT柏拉图', 1, 'ruletest.php');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (1, '文件管理器', '<m:item name=''文件管理器'' link=''file_manage_main.php'' rank=''plus_文件管理器'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (2, '站内新闻发布', '<m:item name=''站内新闻发布'' link=''mynews_main.php'' rank=''plus_站内新闻发布'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (3, '友情链接模块', '<m:item name=''友情链接模块'' link=''friendlink_main.php'' rank=''plus_友情链接模块'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (4, '留言簿模块', '<m:item name=''留言簿模块'' link=''catalog_do.php?dopost=guestbook'' rank=''plus_留言簿模块'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (5, '投票模块', '<m:item name=''投票模块'' link=''vote_main.php'' rank=''plus_投票模块'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (6, '论坛扩展', '<m:item name=''论坛扩展'' link=''bbs_addons.php'' rank=''plus_论坛扩展'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (7, '广告管理', '<m:item name=''广告管理'' link=''ad_main.php'' rank=''plus_广告管理'' target=''main'' />', 'IT柏拉图', 1, '');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (8, '正则规则测试器', '<m:item name=''正则规则测试器'' link=''ruletest.php'' rank=''plus_正则规则测试器'' target=''main'' />', 'IT柏拉图', 1, 'ruletest.php');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (9, '随机模板防采集', '<m:item name=''随机模板防采集'' link=''rnd_templets_main.php'' rank=''plus_随机模板防采集'' target=''main'' />', 'IT柏拉图', 1, 'rnd_templets_main.php');
+INSERT INTO `#@__plus` (`aid`, `plusname`, `menustring`, `writer`, `isshow`, `filelist`) VALUES (10, '木马扫描检测', '<m:item name=''木马扫描检测'' link=''virus_search.php'' rank=''plus_木马扫描检测'' target=''main'' />', 'IT柏拉图', 1, 'virus_search.php');
 
-DROP TABLE IF EXISTS `#@__search_keywords`;
 CREATE TABLE `#@__search_keywords` (
   `aid` int(11) NOT NULL auto_increment,
   `keyword` varchar(50) NOT NULL default '',
@@ -1068,93 +1129,104 @@ CREATE TABLE `#@__search_keywords` (
   KEY `count` (`count`,`result`,`lasttime`,`istag`,`mid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__sgpage`;
 CREATE TABLE `#@__sgpage` (
   `aid` int(11) NOT NULL auto_increment,
   `title` varchar(60) NOT NULL default '',
   `ismake` smallint(6) NOT NULL default '1',
   `filename` varchar(150) NOT NULL default '',
   `uptime` int(11) NOT NULL default '0',
-  `body` text NULL,
+  `body` text,
   PRIMARY KEY  (`aid`),
   KEY `title` (`title`,`ismake`,`filename`,`uptime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__softconfig`;
 CREATE TABLE `#@__softconfig` (
   `downtype` smallint(6) NOT NULL default '0',
   `ismoresite` smallint(6) NOT NULL default '0',
   `gotojump` smallint(6) NOT NULL default '0',
-  `sites` text NULL,
+  `sites` text,
   KEY `downtype` (`downtype`,`ismoresite`,`gotojump`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__softconfig` (`downtype`, `ismoresite`, `gotojump`, `sites`) VALUES (1, 0, 1, '');
+INSERT INTO `#@__softconfig` (`downtype`, `ismoresite`, `gotojump`, `sites`) VALUES (0, 0, 0, '');
 
-DROP TABLE IF EXISTS `#@__sysconfig`;
 CREATE TABLE `#@__sysconfig` (
   `aid` int(11) NOT NULL default '0',
   `varname` varchar(20) NOT NULL default '',
   `info` varchar(100) NOT NULL default '',
   `value` varchar(250) NOT NULL default '',
   `type` varchar(10) NOT NULL default 'string',
+  `group` smallint(6) NOT NULL default '5',
   PRIMARY KEY  (`varname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`) VALUES (1, 'cfg_basehost', '站点根网址', 'http://www.it.com', 'string'),
-(2, 'cfg_cmspath', 'DedeCms安装目录', '', 'string'),
-(3, 'cfg_cookie_encode', 'cookie加密码', 'AxGLl6519M', 'string'),
-(4, 'cfg_indexurl', '网页主页链接', '/', 'string'),
-(5, 'cfg_backup_dir', '数据备份目录（在管理目录内）', 'backup_data', 'string'),
-(6, 'cfg_indexname', '主页链接名', '主页', 'string'),
-(7, 'cfg_webname', '网站名称', '网站管理系统', 'string'),
-(8, 'cfg_adminemail', '网站发信EMAIL', 'admin@youremail.com', 'string'),
-(9, 'cfg_html_editor', 'Html编辑器选项（仅支持 dede 和 fck）', 'fck', 'string'),
-(10, 'cfg_arcdir', '文档HTML默认保存路径', '/html', 'string'),
-(11, 'cfg_medias_dir', '图片/上传文件默认路径', '/upimg', 'string'),
-(12, 'cfg_ddimg_width', '缩略图默认宽度', '200', 'string'),
-(13, 'cfg_ddimg_height', '缩略图默认高度', '150', 'string'),
-(14, 'cfg_album_width', '图集默认显示图片的大小', '800', 'string'),
-(15, 'cfg_imgtype', '图片浏览器文件类型', 'jpg|gif|png', 'string'),
-(16, 'cfg_softtype', '附件浏览器文件类型', 'exe|zip|gz|rar|iso|doc|xsl|ppt|wps', 'string'),
-(17, 'cfg_mediatype', '多媒体浏览器文件类型', 'swf|mpg|dat|avi|mp3|rm|rmvb|wmv|asf|vob|wma|wav|mid|mov', 'string'),
-(18, 'cfg_specnote', '专题的最大节点数', '6', 'string'),
-(19, 'cfg_list_symbol', '栏目位置的间隔符号', '>', 'string'),
-(20, 'cfg_notallowstr', '禁用词语（系统将直接停止用户动作）', '法轮|江泽民|走光|偷拍|色情|激情|sex|操B', 'string'),
-(21, 'cfg_feedbackcheck', '评论及留言(是/否)需审核', '否', 'bool'),
-(22, 'cfg_keyword_replace', '关键字替换(是/否)使用本功能会影响HTML生成速度', '是', 'bool'),
-(23, 'cfg_fck_xhtml', '编辑器(是/否)使用XHTML', '否', 'bool'),
-(24, 'cfg_df_style', '模板默认风格', 'default', 'string'),
-(25, 'cfg_multi_site', '(是/否)支持多站点，开启此项后附件、栏目连接、arclist内容启用绝对网址', '否', 'bool'),
-(26, 'cfg_dede_cache', '(是/否)开启Dede模块引擎的缓存功能', '否', 'bool'),
-(27, 'cfg_dede_log', '(是/否)开启管理日志', '否', 'bool'),
-(28, 'cfg_powerby', '网站版权信息', '<a href=''http://www.dedecms.com'' target=''_blank''>Power by DedeCms</a>', 'string'),
-(29, 'cfg_arcsptitle', '(是/否)开启分页标题，开启会影响HTML生成速度', '是', 'bool'),
-(30, 'cfg_arcautosp', '(是/否)开启长文章自动分页', '否', 'bool'),
-(31, 'cfg_arcautosp_size', '文章自动分页大小（单位: K）', '5', 'string'),
-(32, 'cfg_auot_description', '自动摘要长度（0-250，0表示不启用）', '250', 'string'),
-(33, 'cfg_ftp_host', 'FTP主机', '', 'string'),
-(34, 'cfg_ftp_port', 'FTP端口', '21', 'string'),
-(35, 'cfg_ftp_user', 'FTP用户名', '', 'string'),
-(36, 'cfg_ftp_pwd', 'FTP密码', '', 'string'),
-(37, 'cfg_ftp_root', '网站根在FTP中的目录', '/', 'string'),
-(38, 'cfg_ftp_mkdir', '是否强制用FTP创建目录', '否', 'bool'),
-(39, 'cfg_feedback_ck', '评论加验证码重确认', '是', 'bool'),
-(40, 'cfg_list_son', '上级列表是否包含子类内容', '是', 'bool'),
-(41, 'cfg_mb_open', '是否开启会员功能', '是', 'bool'),
-(42, 'cfg_mb_album', '是否开启会员图集功能', '是', 'bool'),
-(43, 'cfg_mb_upload', '是否允许会员上传非图片附件', '是', 'bool'),
-(44, 'cfg_mb_upload_size', '会员上传文件大小(K)', '1024', 'string'),
-(45, 'cfg_mb_sendall', '是否开放会员对自定义模型投稿', '是', 'bool'),
-(46, 'cfg_mb_rmdown', '是否把会员指定的远程文档下载到本地', '否', 'bool'),
-(47, 'cfg_cli_time', '客户端与服务器的时间差（正负值均可，如果相同时区不需要校正）', '0', 'string'),
-(48, 'cfg_mb_mediatype', '会员附件许可的类型', 'swf|mpg|mp3|rm|rmvb|wmv|asf|wma|zip|rar|doc|xsl|ppt|wps', 'string'),
-(49, 'cfg_mb_max', '会员附件总大小限制(MB)', '20', 'string'),
-(20, 'cfg_replacestr', '替换词语（词语会被替换成***）', '她妈|它妈|他妈|你妈|fuck|去死|贱人', 'string'),
-(50, 'cfg_makeindex', '发布文档后自动更新网站主页', '否', 'bool'),
-(51, 'cfg_keyword_like', '使用关键词关连文章', '否', 'bool');
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (1, 'cfg_basehost', '站点根网址', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (2, 'cfg_cmspath', 'DedeCms安装目录', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (3, 'cfg_cookie_encode', 'cookie加密码', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (4, 'cfg_indexurl', '网页主页链接', '/', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (5, 'cfg_backup_dir', '数据备份目录（在管理目录内）', 'backup_data', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (6, 'cfg_indexname', '主页链接名', '主页', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (7, 'cfg_webname', '网站名称', '网站管理系统', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (8, 'cfg_adminemail', '网站发信EMAIL', 'admin@youremail.com', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (9, 'cfg_html_editor', 'Html编辑器选项（仅支持 dede 和 fck）', 'fck', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (10, 'cfg_arcdir', '文档HTML默认保存路径', '/html', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (11, 'cfg_medias_dir', '图片/上传文件默认路径', '/upimg', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (12, 'cfg_ddimg_width', '缩略图默认宽度', '200', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (13, 'cfg_ddimg_height', '缩略图默认高度', '150', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (14, 'cfg_album_width', '图集默认显示图片的大小', '800', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (15, 'cfg_imgtype', '图片浏览器文件类型', 'jpg|gif|png', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (16, 'cfg_softtype', '附件浏览器文件类型', 'exe|zip|gz|rar|iso|doc|xsl|ppt|wps', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (17, 'cfg_mediatype', '多媒体浏览器文件类型', 'swf|mpg|dat|avi|mp3|rm|rmvb|wmv|asf|vob|wma|wav|mid|mov', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (18, 'cfg_specnote', '专题的最大节点数', '6', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (19, 'cfg_list_symbol', '栏目位置的间隔符号', '>', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (20, 'cfg_notallowstr', '禁用词语（系统将直接停止用户动作）', '法轮|江泽民|走光|偷拍|色情|激情|sex|操B', 'string', 4);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (21, 'cfg_feedbackcheck', '评论及留言(是/否)需审核', '否', 'bool', 4);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (22, 'cfg_keyword_replace', '关键字替换(是/否)使用本功能会影响HTML生成速度', '是', 'bool', 4);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (23, 'cfg_fck_xhtml', '编辑器(是/否)使用XHTML', '否', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (24, 'cfg_df_style', '模板默认风格', 'default', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (25, 'cfg_multi_site', '(是/否)支持多站点，开启此项后附件、栏目连接、arclist内容启用绝对网址', '否', 'bool', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (26, 'cfg_dede_cache', '(是/否)开启Dede模块引擎的缓存功能', '否', 'bool', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (27, 'cfg_dede_log', '(是/否)开启管理日志', '否', 'bool', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (28, 'cfg_powerby', '网站版权信息', '<a href=''http://www.dedecms.com'' target=''_blank''>Power by DedeCms</a>', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (29, 'cfg_arcsptitle', '(是/否)开启分页标题，开启会影响HTML生成速度', '是', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (30, 'cfg_arcautosp', '(是/否)开启长文章自动分页', '否', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (31, 'cfg_arcautosp_size', '文章自动分页大小（单位: K）', '5', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (32, 'cfg_auot_description', '自动摘要长度（0-250，0表示不启用）', '250', 'string', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (33, 'cfg_ftp_host', 'FTP主机', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (34, 'cfg_ftp_port', 'FTP端口', '21', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (35, 'cfg_ftp_user', 'FTP用户名', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (36, 'cfg_ftp_pwd', 'FTP密码', '', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (37, 'cfg_ftp_root', '网站根在FTP中的目录', '/', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (38, 'cfg_ftp_mkdir', '是否强制用FTP创建目录', '否', 'bool', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (39, 'cfg_feedback_ck', '评论加验证码重确认', '是', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (40, 'cfg_list_son', '上级列表是否包含子类内容', '是', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (41, 'cfg_mb_open', '是否开启会员功能', '是', 'bool', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (42, 'cfg_mb_album', '是否开启会员图集功能', '是', 'bool', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (43, 'cfg_mb_upload', '是否允许会员上传非图片附件', '是', 'bool', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (44, 'cfg_mb_upload_size', '会员上传文件大小(K)', '1024', 'string', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (45, 'cfg_mb_sendall', '是否开放会员对自定义模型投稿', '是', 'bool', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (46, 'cfg_mb_rmdown', '是否把会员指定的远程文档下载到本地', '否', 'bool', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (47, 'cfg_cli_time', '客户端与服务器的时间差（正负值均可，如果相同时区不需要校正）', '0', 'string', 1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (48, 'cfg_mb_mediatype', '会员附件许可的类型', 'swf|mpg|mp3|rm|rmvb|wmv|asf|wma|zip|rar|doc|xsl|ppt|wps', 'string', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (49, 'cfg_mb_max', '会员附件总大小限制(MB)', '20', 'string', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (20, 'cfg_replacestr', '替换词语（词语会被替换成***）', '她妈|它妈|他妈|你妈|fuck|去死|贱人', 'string', 4);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (50, 'cfg_makeindex', '发布文档后自动更新网站主页', '否', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (51, 'cfg_keyword_like', '使用关键词关连文章', '否', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (52, 'cfg_online_type', '在线支付网关类型', '', 'string', 3);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (53, 'cfg_jpeg_query', 'JPEG缩略图质量', '85', 'string', 2);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (54, 'cfg_pwdtype', '会员密码类型:none/md5/dd(织梦加密)', 'none', 'string', -1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (55, 'cfg_md5len', 'MD5密码位数', '', 'string', -1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (56, 'cfg_ddsign', '织梦加密算法密码(6-12位)', '', 'string', -1);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (57, 'cfg_feedback_make', '用户提交评论后更新文档', '否', 'bool', 5);
+INSERT INTO `#@__sysconfig` (`aid`, `varname`, `info`, `value`, `type`, `group`) VALUES (58, 'cfg_use_vdcode', '是否开启后台登录的验证码', '否', 'bool', 1);
 
-DROP TABLE IF EXISTS `#@__uploads`;
+
+CREATE TABLE `#@__syspassport` (
+  `varname` varchar(30) NOT NULL,
+  `value` varchar(100) NOT NULL,
+  PRIMARY KEY  (`varname`)
+) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
+
 CREATE TABLE `#@__uploads` (
   `aid` int(11) NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
@@ -1167,11 +1239,12 @@ CREATE TABLE `#@__uploads` (
   `uptime` int(11) NOT NULL default '0',
   `adminid` int(11) NOT NULL default '0',
   `memberid` int(11) NOT NULL default '0',
+  `arcids` mediumtext,
   PRIMARY KEY  (`aid`),
-  KEY `memberid` (`memberid`,`filesize`)
+  KEY `mediatype` (`mediatype`,`filesize`,`uptime`,`adminid`,`memberid`),
+  KEY `title` (`title`,`url`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-DROP TABLE IF EXISTS `#@__vote`;
 CREATE TABLE `#@__vote` (
   `aid` int(11) NOT NULL auto_increment,
   `votename` varchar(50) NOT NULL default '',
@@ -1179,8 +1252,8 @@ CREATE TABLE `#@__vote` (
   `endtime` int(11) NOT NULL default '0',
   `totalcount` int(11) NOT NULL default '0',
   `ismore` smallint(6) NOT NULL default '0',
-  `votenote` text NULL,
+  `votenote` text,
   PRIMARY KEY  (`aid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
-INSERT INTO `#@__vote` (`aid`, `votename`, `starttime`, `endtime`, `totalcount`, `ismore`, `votenote`) VALUES (1, '你是从哪儿得知本站的？', 1150675200, 1268956800, 1, 0, '<v:note id=''1'' count=''1''>朋友介绍</v:note>\r\n<v:note id=''2'' count=''0''>门户网站的搜索引擎</v:note>\r\n<v:note id=''3'' count=''0''>Google或百度搜索</v:note>\r\n<v:note id=''4'' count=''0''>别的网站上的链接</v:note>\r\n<v:note id=''5'' count=''0''>其它途径</v:note>\r\n');
+INSERT INTO `#@__vote` (`aid`, `votename`, `starttime`, `endtime`, `totalcount`, `ismore`, `votenote`) VALUES (1, '你是从哪儿得知本站的？', 1167609600, 1268956800, 67, 0, '<v:note id=''1'' count=''20''>朋友介绍</v:note>\r\n<v:note id=''2'' count=''2''>门户网站的搜索引擎</v:note>\r\n<v:note id=''3'' count=''13''>Google或百度搜索</v:note>\r\n<v:note id=''4'' count=''25''>别的网站上的链接</v:note>\r\n<v:note id=''5'' count=''7''>其它途径</v:note>\r\n');

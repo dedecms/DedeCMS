@@ -37,13 +37,13 @@ function DelSel()
 		alert("请选择节点!\r\n");
 		return ;
 	}
-	location.href = "co_clear.php?ids="+nid;
+	location.href = "co_do.php?dopost=clear&ids="+nid;
 }
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='0' topmargin='0'>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
-  <tr align="center" bgcolor="#FAFAF1"> 
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
+  <tr align="center" bgcolor="#F8FBFB"> 
     <td width="8%">选择</td>
     <td width="35%">内容标题</td>
     <td width="18%">所属节点</td>
@@ -52,30 +52,30 @@ function DelSel()
     <td width="8%">来源</td>
   </tr>
   <form name='form1'>
-  <?
+  <?php 
   $mylist = $dlist->GetDataList();
   while($row = $mylist->GetArray('dm'))
   {
  ?>
   <tr align="center" bgcolor="#FFFFFF"> 
-    <td><input type='checkbox' name='aids' value='<?=$row['aid']?>' class='np'></td>
-    <td><a href='co_view.php?aid=<?=$row['aid']?>''><?=$row['title']?></a></td>
-    <td><?=$row['gathername']?></td>
-    <td><?=GetDateMk($row['dtime'])?></td>
-    <td><?=IsDownLoad($row['isdown'])?></td>
-    <td><a href='<?=$row['url']?>' target='_blank'>[源网址]</a></td>
+    <td><input type='checkbox' name='aids' value='<?php echo $row['aid']?>' class='np'></td>
+    <td><a href='co_view.php?aid=<?php echo $row['aid']?>''><?php echo $row['title']?></a></td>
+    <td><?php echo $row['gathername']?></td>
+    <td><?php echo GetDateMk($row['dtime'])?></td>
+    <td><?php echo IsDownLoad($row['isdown'])?></td>
+    <td><a href='<?php echo $row['url']?>' target='_blank'>[源网址]</a></td>
   </tr>
- <? } ?>
+ <?php  } ?>
 </form>
   <tr> 
     <td height="24" colspan="6" bgcolor="#FCFDF7">&nbsp;
-<input type="button" name="b7" value="反选" class="np2" style="width:40" onClick="ReSel();">　　　　
-<input type="button" name="b5" value="删除所选网址" class="np2" style="width:100" onClick="DelSel();">　
+<input type="button" name="b7" value="反选" class="nbt" style="width:40" onClick="ReSel();">　　　　
+<input type="button" name="b5" value="删除所选网址" class="nbt" style="width:100" onClick="DelSel();">　
     </td>
   </tr>
   <tr> 
     <td height="24" colspan="6" bgcolor="#FCFDF7" align="center">
-    <?=$dlist->GetPageList(7);?>
+    <?php echo $dlist->GetPageList(7);?>
     </td>
   </tr>
 </table>

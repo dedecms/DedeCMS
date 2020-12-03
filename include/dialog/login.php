@@ -10,8 +10,7 @@ if($dopost=="login")
   if(empty($validate)) $validate=="";
   else $validate = strtolower($validate);
   
-  if( empty($_SESSION["s_validate"]) ) $svali = "";
-  else $svali = $_SESSION["s_validate"];
+  $svali = GetCkVdValue();
   
   if($validate=="" || $validate!=$svali){
 	  ShowMsg("验证码不正确!","");
@@ -54,7 +53,8 @@ if($dopost=="login")
 <body style='MARGIN: 0px' bgColor='#ffffff' leftMargin='0' topMargin='0' scroll='no'>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
   <tr> 
-    <td width="100%" height="64" background="img/indextitlebg.gif"><img src="img/indextitle.gif" width="250" height="64"> 
+    <td width="100%" height="64" background="img/indextitlebg.gif">
+    	<img src="img/indextitle.gif"> 
     </td>
   </tr>
   <tr> 

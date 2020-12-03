@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
@@ -194,10 +194,12 @@ class ChannelUnit
     	  $links = trim($ctag->GetInnerText());
     	  $serverName = trim($ctag->GetAtt("text"));
     	  if(!isset($firstLink)){ $firstLink = $links; }
-    	  if($row['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
-    	  $temp = str_replace("~link~",$links,$tempStr);
-    	  $temp = str_replace("~server~",$serverName,$temp);
-    	  $downlinks .= $temp;
+    	  if($row['ismoresite']!=1){
+    	     if($row['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
+    	     $temp = str_replace("~link~",$links,$tempStr);
+    	     $temp = str_replace("~server~",$serverName,$temp);
+    	     $downlinks .= $temp;
+    	  }
       }
     }
     $dtp->Clear();
@@ -209,7 +211,10 @@ class ChannelUnit
     	foreach($sites as $site){
     		if(trim($site)=='') continue;
     		list($link,$serverName) = explode('|',$site);
-    		$link = trim($link).$firstLink;
+    		
+    		if(!eregi("^(http|ftp)://",$firstLink)) $link = trim($link).$firstLink;
+    		else $link = $firstLink;
+    		
     		if($row['gotojump']==1) $link = $phppath."/download.php?open=1&link=".urlencode(base64_encode($link));
     	  $temp = str_replace("~link~",$link,$tempStr);
     	  $temp = str_replace("~server~",$serverName,$temp);
@@ -258,6 +263,7 @@ class ChannelUnit
     		$ih = $ctag->GetAtt('heigth');
     		$alt = str_replace("'","",$ctag->GetAtt('text'));
     		$src = trim($ctag->GetInnerText());
+    		$ddimg = $ctag->GetAtt('ddimg');
     		if($iw > $maxwidth) $iw = $maxwidth;
     		$iw = (empty($iw) ? "" : "width='$iw'");
     		//全部列出式或分页式图集
@@ -272,6 +278,7 @@ class ChannelUnit
     		}else if($pagestyle==3){
     			$images[$photoid][0] = $src;
     			$images[$photoid][1] = $alt;
+    			$images[$photoid][2] = $ddimg;
     			$photoid++;
     		}
       }
@@ -284,29 +291,32 @@ class ChannelUnit
     	if($icol==0) $icol = 1;
     	$tdwidth = ceil(100 / $icol);
     	while($sPos < $picnum){
-    		$revalue .= "<table width='90%' border='0' cellpadding='5' cellspacing='1'>\r\n";
-    		$revalue .= "<tr height='0'>\r\n";
-    		for($j=0;$j < $icol;$j++){ $revalue .= "<td width='{$tdwidth}%'></td>\r\n"; }
-    		$revalue .= "</tr>";
     		for($i=0;$i < $irow;$i++){
-    			$revalue .= "<tr align='center'>\r\n";
+    			$revalue .= "<ul class='imgline'>\r\n";
     			for($j=0;$j < $icol;$j++){
-    				if(!isset($images[$sPos])){ $revalue .= "<td></td>\r\n"; }
+    				if(!isset($images[$sPos])){ $revalue .= "<li class='imgitem'>&nbsp;</li>\r\n"; }
     				else{
     					$src = $images[$sPos][0];
     					$alt = $images[$sPos][1];
-    					$revalue .= "<td valign='top'><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'><img src='$src' alt='$alt' width='$ddmaxwidth' border='0'/></a><br/>$alt\r\n</td>\r\n";
+    					$litsrc = $images[$sPos][2];
+    					$tpwidth = $ddmaxwidth;
+    					if($litsrc==''){
+    						$litsrc = $src;
+    						$tpwidth = '';
+    					}else{
+    						$tpwidth = " width='$tpwidth'";
+    					}
+    					$revalue .= "<li class='imgitem'><a href='{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$this->ArcID}&src=".urlencode($src)."&npos=$sPos' target='_blank'><img src='$litsrc' alt='$alt'{$tpwidth} border='0'/></a><br/>$alt\r\n</li>\r\n";
     					$sPos++;
     				}
     			}
-    			$revalue .= "</tr>\r\n";
+    			$revalue .= "</ul>\r\n";
     			if(!isset($images[$sPos])) break;
     		}
     		if(!isset($images[$sPos])){
-    		  $revalue .= "</table>";
     			break;
     		}else{
-    			$revalue .= "</table>#p#分页标题#e#";
+    			$revalue .= "#p#分页标题#e#";
     		}
     	}
     }

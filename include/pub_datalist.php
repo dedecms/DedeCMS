@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 $lang_pre_page = "иорЁ";

@@ -1,5 +1,6 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__)."/../include/inc_imgbt.php");
 CheckRank(0,0);
 
 if($cfg_mb_sendall=='·ñ'){

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Group');
 $dsql = new DedeSql(false);
@@ -48,7 +48,7 @@ function CRank($n){
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <center>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
 <form name='form1' action='sys_group_edit.php' method='post'> 
 <input type='hidden' name='dopost' value='save'>
   <tr>
@@ -59,17 +59,17 @@ function CRank($n){
       <table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td width="9%" height="30">组名称：</td>
-          <td width="91%"> <input name="typename" type="text" id="typename" value="<?=$groupSet['typename']?>"> 
+          <td width="91%"> <input name="typename" type="text" id="typename" value="<?php echo $groupSet['typename']?>"> 
           </td>
         </tr>
         <tr> 
           <td width="9%" height="30">级别值：</td>
           <td width="91%">
-          	<input name="rank" type="hidden" id="rank" value="<?=$groupSet['rank']?>">
-          	<?=$groupSet['rank']?>
+          	<input name="rank" type="hidden" id="rank" value="<?php echo $groupSet['rank']?>">
+          	<?php echo $groupSet['rank']?>
           </td>
         </tr>
-        <?
+        <?php 
         $start = 0;
         $k = 0;
         $gouplists = file(dirname(__FILE__).'/inc/grouplist.txt');
@@ -102,11 +102,11 @@ function CRank($n){
         </td>
         </tr>
         <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'><?=$start?>、插件权限</td>
+           <td height='25' colspan='2' bgcolor='#F9FAF3'><?php echo $start?>、插件权限</td>
          </tr>
         <tr>
         <td height='25' colspan='2'>
-         <?
+         <?php 
          $l = 0;
          $dsql->SetQuery('Select plusname From #@__plus');
          $dsql->Execute();
@@ -130,7 +130,7 @@ function CRank($n){
 </form>
 </table>
 </center>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

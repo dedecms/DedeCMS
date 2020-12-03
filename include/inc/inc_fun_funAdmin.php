@@ -1,4 +1,4 @@
-<?
+<?php 
 $GLOBALS['__funAdmin'] = 1;
 
 function SpGetPinyin($str,$ishead=0,$isclose=1){

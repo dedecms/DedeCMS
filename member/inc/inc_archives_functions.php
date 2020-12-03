@@ -1,4 +1,4 @@
-<?
+<?php 
 if(!isset($registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
 require_once(dirname(__FILE__)."/../../include/pub_httpdown.php");
 require_once(dirname(__FILE__)."/../../include/inc_archives_view.php");

@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>空间管理中心</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center"> 
+  <?php  include(dirname(__FILE__)."/head.htm"); ?>
+  <table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php  include(dirname(__FILE__)."/menu.php"); ?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="100%" height="103" colspan="2"><img src="img/indbanner.jpg" width="580" height="100"></td>
+          </tr>
+          <tr> 
+            <td height="140" colspan="2">
+			<form name='f1' action='buy_action.php' method='post'>
+			<input type='hidden' name='product' value='card'>
+			<table width="98%" border="0" cellpadding="3" cellspacing="0" style="margin-top:3px; margin-bottom:8px; border-bottom:1px solid #ababab">
+                <tr bgcolor="#F2FCE0"> 
+                  <td width="264%" colspan="4" bgcolor="#D8EFBC"><strong>会员产品种类与价格：</strong></td>
+                </tr>
+              </table>
+              <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:8px">
+                <tr bgcolor="#F0FCDA"> 
+                  <td colspan="4"><strong>充值卡：</strong></td>
+                </tr>
+                <tr align="center" bgcolor="#F9FEE7"> 
+                  <td width="12%">选择</td>
+                  <td width="48%">产品名称</td>
+                  <td width="20%">点数</td>
+                  <td width="20%">价格</td>
+                </tr>
+                <?php echo $moneycards;?>
+                <tr align="center" bgcolor="#F0FCDA"> 
+                  <td height="27" colspan="4">
+				  <input name="imageField" type="image" src="img/buysb.gif" width="85" height="20" border="0" class="np">
+				  </td>
+                </tr>
+              </table>
+            </form>
+            <form name='f2' action='buy_action.php' method='post'>
+			      <input type='hidden' name='product' value='member'>
+              <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:8px">
+                <tr bgcolor="#F0FCDA"> 
+                  <td colspan="6"><strong>会员升级：（会员查看本等级的文档不扣金币，查看更高等级的文档才会扣金币） 
+                    </strong></td>
+                </tr>
+                <tr align="center" bgcolor="#F9FEE7"> 
+                  <td width="12%">选择</td>
+                  <td width="35%" bgcolor="#F9FEE7">产品名称</td>
+                  <td width="20%" bgcolor="#F9FEE7">会员类型</td>
+                  <td width="12%">时限</td>
+				  <td width="12%">金币</td>
+                  <td width="12%">价格</td>
+                </tr>
+                <?php echo $membertypes?>
+                <tr align="center" bgcolor="#F0FCDA"> 
+                  <td height="27" colspan="6">
+				  <input name="imageField2" type="image" src="img/buysb.gif" width="85" height="20" border="0" class="np">
+                  </td>
+                </tr>
+              </table>
+             </form>
+              <table width="98%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+              </table> </td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

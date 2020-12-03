@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 require_once(dirname(__FILE__)."/../include/inc_functions.php");
@@ -20,7 +20,7 @@ function IsExData($isex){
 }
 
 if($nid!=""){
-	$exportbt = "<input type='button' name='b0' value='导出采集内容' class='np2' style='width:100' onClick=\"location.href='co_export.php?nid=$nid';\">&nbsp;";
+	$exportbt = "<input type='button' name='b0' value='导出采集内容'  class='nbt' style='width:100' onClick=\"location.href='co_export.php?nid=$nid';\">&nbsp;";
 }
 else{
 	$exportbt = "";

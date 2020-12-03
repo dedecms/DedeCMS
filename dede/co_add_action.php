@@ -1,6 +1,12 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_AddNote');
+
+if($linkareas!=""&&$linkareae!="") $linkarea = $linkareas.'[var:区域]'.$linkareae;
+else $linkarea = '';
+
+if($sppages!="" && $sppagee!="") $sppage = $sppages.'[var:分页区域]'.$sppagee;
+else $sppage = '';
 
 $itemconfig = "
 {!-- 节点基本信息 --}
@@ -8,7 +14,7 @@ $itemconfig = "
 {dede:item name=\\'$notename\\'
 	imgurl=\\'$imgurl\\' imgdir=\\'$imgdir\\' language=\\'$language\\'
 	isref=\\'$isref\\' refurl=\\'$refurl\\' exptime=\\'$exptime\\'
-	typeid=\\'$exrule\\' macthtype=\\'$macthtype\\'}
+	typeid=\\'$exrule\\' matchtype=\\'$matchtype\\'}
 {/dede:item}
 
 {!-- 采集列表获取规则 --}
@@ -47,12 +53,16 @@ for($i=1;$i<=50;$i++)
 		else{
 			$trimstr = str_replace("{dede:trim","    {dede:trim",$trimstr); 
 		}
+	$matchstr = '';
+	if( !empty($GLOBALS["matchs".$i]) && !empty($GLOBALS["matche".$i]) ){
+		$matchstr = $GLOBALS["matchs".$i]."[var:内容]".$GLOBALS["matche".$i];
+	}
 	$itemconfig .= "
   
   {dede:note field=\\'".${"field".$i}."\\' value=\\'".$GLOBALS["value".$i]."\\' comment=\\'".$GLOBALS["comment".$i]."\\'
    isunit=\\'".$GLOBALS["isunit".$i]."\\' isdown=\\'".$GLOBALS["isdown".$i]."\\'}
     
-    {dede:match}".$GLOBALS["match".$i]."{/dede:match}
+    {dede:match}".$matchstr."{/dede:match}
     $trimstr
     {dede:function}".$GLOBALS["function".$i]."{/dede:function}
     
@@ -62,6 +72,7 @@ for($i=1;$i<=50;$i++)
 $itemconfig .= "
 {/dede:art}
 ";
+
 $inQuery = "
 INSERT INTO #@__conote(typeid,gathername,language,lasttime,savetime,noteinfo) 
 VALUES('$exrule', '$notename', '$language', '0','".mytime()."', '$itemconfig');

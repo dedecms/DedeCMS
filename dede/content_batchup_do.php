@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");

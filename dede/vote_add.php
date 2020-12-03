@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_投票模块');
 if(empty($dopost)) $dopost = "";
@@ -73,7 +73,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><b>投票管理</b>&gt;&gt;增加投票&nbsp;&nbsp;[<a href="vote_main.php"><u>管理以往投票内容记录</u></a>]</td>
 </tr>
@@ -88,11 +88,11 @@ function checkSubmit()
         </tr>
         <tr> 
           <td align="center">开始时间：</td>
-          <td><input name="starttime" type="text" id="starttime" value="<?=$startDay?>"></td>
+          <td><input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>"></td>
         </tr>
         <tr> 
           <td align="center">结束时间：</td>
-          <td><input name="endtime" type="text" id="endtime" value="<?=$endDay?>"></td>
+          <td><input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>"></td>
         </tr>
         <tr> 
           <td align="center">是否多选：</td>
@@ -103,9 +103,11 @@ function checkSubmit()
         </tr>
         <tr>
           <td align="center">投 票 项：</td>
-          <td><input type="button" value="增加投票选项" name="bbb" class="bt1" onClick="AddItem();">
+          <td>
+          	<input type="button" value="增加投票选项" name="bbb"  onClick="AddItem();" class='nbt'>
             　 
-            <input type="button" value="重置投票选项" name="bbb2" class="bt1" onClick="ResetItem();"></td>
+            <input type="button" value="重置投票选项" name="bbb2" onClick="ResetItem();" class='nbt'>
+          </td>
         </tr>
         <tr> 
           <td></td>

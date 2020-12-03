@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_PlayNote');
 require_once(dirname(__FILE__)."/../include/pub_collection.php");

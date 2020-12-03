@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 require_once(dirname(__FILE__)."/../include/inc_functions.php");
@@ -34,6 +34,11 @@ else if($membertype==2) $addsql .= " And u.memberID>0 ";
 if(empty($mediatype)) $mediatype = 0;
 if($mediatype>1) $addsql .= " And u.mediatype='$membertype' ";
 
+if(!empty($memberid)) $addsql .= " And u.memberID='$memberid' ";
+else $memberid = 0;
+
+if(!empty($memberid)) $addsql .= " And u.memberid='$memberid' ";
+
 $sql = "Select u.aid,u.title,u.url,u.mediatype,u.filesize,u.memberID,u.uptime
 ,a.userid as adminname,m.userid as membername
 From #@__uploads u
@@ -47,6 +52,7 @@ $dlist->Init();
 $dlist->SetParameter("mediatype",$mediatype);
 $dlist->SetParameter("keyword",$keyword);
 $dlist->SetParameter("membertype",$membertype);
+$dlist->SetParameter("memberid",$memberid);
 $dlist->SetSource($sql);
 include(dirname(__FILE__)."/templets/media_main.htm");
 $dlist->Close();

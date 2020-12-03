@@ -1,22 +1,30 @@
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0" class="topline">
-  <tr> 
-    <td width="280" height="24">
-    	<font color="red"> 
-	   &nbsp;
-      <?=$cfg_ml->M_UserName?>
-      </font> 你好，欢迎登录到管理中心</td>
-    <td align="right">
-	    <a href="<?=$cfg_indexurl?>"><u>网站主页</u></a> | 
-      <a href="index.php"><u>管理中心</u></a> | 
-      <a href="index.php?uid=<?=$cfg_ml->M_LoginID?>"><u>我的空间</u></a> | 
-      <a href="search_member.php"><u>搜索会员</u></a> | 
-      <a href="index_do.php?fmdo=login&dopost=exit"><u>退出登录</u></a>
-      &nbsp;
-	  </td>
-  </tr>
-</table>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td height="59"><a href="index.php"><img src="img/member.gif" width="320" height="46" border="0"></a></td>
-  </tr>
-</table>
+<div id="ntopline">
+<div id='topct'>
+<span id='titlelogo'><a href="index.php"><img src="img/member.gif" border="0"></a></span>
+<span id='topmenus'>
+  <dl>
+  <dd class='dd1'><img src="img/m.gif" width="16" height="16"></dd>
+  <dd class='dd2'>
+  	<font color="red"><?php echo $cfg_ml->M_UserName?></font> 你好，欢迎登录会员中心！
+  </dd>
+<?php 
+  if($cfg_pp_isopen==1 && $cfg_pp_indexurl!=''){
+	  echo "  <dd class='dd1'><img src='img/s.gif' width='16' height='16' border='0'></dd>\r\n";
+	  echo "  <dd class='dd2'><a href='{$cfg_pp_indexurl}' target='_blank'>{$cfg_pp_name}</a></dd>\r\n";
+  }
+?>
+  <dd class='dd1'><img src="img/se.gif" width="16" height="16" border="0"></dd>
+  <dd class='dd2'><a href="index.php"><u>中心主页</u></a></dd>
+  <dd class='dd1'><img src="img/b.gif" width="16" height="16" border="0"></dd>
+  <dd class='dd2'><a href="index.php?uid=<?php echo $cfg_ml->M_LoginID?>"><u>我的空间</u></a></dd>
+  <dd class='dd1'><img src="img/se.gif" width="16" height="16" border="0"></dd>
+  <dd class='dd2'><a href="search_member.php"><u>搜索会员</u></a></dd>
+  <dd class='dd1'><img src="img/e.gif" width="16" height="16" border="0"></dd>
+  <dd class='dd2'><a href="index_do.php?fmdo=login&dopost=exit"><u>退出登录</u></a></dd>
+  <dd class='dd1'><img src="img/s.gif" width="16" height="16" border="0"></dd>
+  <dd class='dd2'><a href="<?php echo $cfg_indexurl?>"><u>网站主页</u></a> </dd>
+  </dl>
+</span>
+</div>
+</div>
+<div style='clear:both'></div>

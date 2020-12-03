@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 
 if(empty($activepath)) $activepath = "";
@@ -45,9 +45,9 @@ function nullLink(){ return; }
 function ChangeImage(surl){ $('picview').src = surl; }
 function ReturnImg(reimg)
 {
-	window.opener.document.<?=$f?>.value=reimg;
-	if(window.opener.document.getElementById('<?=$v?>')){
-		window.opener.document.getElementById('<?=$v?>').src = reimg;
+	window.opener.document.<?php echo $f?>.value=reimg;
+	if(window.opener.document.getElementById('<?php echo $v?>')){
+		window.opener.document.getElementById('<?php echo $v?>').src = reimg;
 	}
 	if(document.all) window.opener=true;
   window.close();
@@ -71,7 +71,7 @@ function ReturnImg(reimg)
 点击“V”预览图片，点击图片名选择图片，显示图片后点击该图片关闭预览。
 </td>
 </tr>
-<?
+<?php 
 $dh = dir($inpath);
 $ty1="";
 $ty2="";
@@ -166,26 +166,26 @@ $dh->close();
 
 <table width='100%'>
 <form action='select_images_post.php' method='POST' enctype="multipart/form-data" name='myform'>
-<input type='hidden' name='activepath' value='<?=$activepath?>'>
-<input type='hidden' name='f' value='<?=$f?>'>
-<input type='hidden' name='v' value='<?=$v?>'>
-<input type='hidden' name='imgstick' value='<?=$imgstick?>'>
+<input type='hidden' name='activepath' value='<?php echo $activepath?>'>
+<input type='hidden' name='f' value='<?php echo $f?>'>
+<input type='hidden' name='v' value='<?php echo $v?>'>
+<input type='hidden' name='imgstick' value='<?php echo $imgstick?>'>
 <input type='hidden' name='job' value='upload'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
   &nbsp;上　传： <input type='file' name='imgfile' style='width:200'>
   <input type='checkbox' name='resize' value='1' class='np'>自动缩小
-  宽：<input type='text' style='width:30' name='iwidth' value='<?=$cfg_ddimg_width?>'>
-  高：<input type='text' style='width:30' name='iheight' value='<?=$cfg_ddimg_height?>'>
+  宽：<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>'>
+  高：<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>'>
   <input type='submit' name='sb1' value='确定'>
 </td>
 </tr>
 </form>
 <form action='select_images_post.php' method='POST' name='myform2'>
-<input type='hidden' name='activepath' value='<?=$activepath?>' style='width:200'>
-<input type='hidden' name='f' value='<?=$f?>'>
-<input type='hidden' name='v' value='<?=$v?>'>
-<input type='hidden' name='imgstick' value='<?=$imgstick?>'>
+<input type='hidden' name='activepath' value='<?php echo $activepath?>' style='width:200'>
+<input type='hidden' name='f' value='<?php echo $f?>'>
+<input type='hidden' name='v' value='<?php echo $v?>'>
+<input type='hidden' name='imgstick' value='<?php echo $imgstick?>'>
 <input type='hidden' name='job' value='newdir'>
 <tr>
   <td background="img/tbg.gif" bgcolor='#66CC00'> &nbsp;新目录： 

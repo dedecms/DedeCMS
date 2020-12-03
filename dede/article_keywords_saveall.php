@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Keyword');
 empty($_COOKIE['ENV_GOBACK_URL']) ? $ENV_GOBACK_URL = "article_keywords_main.php" : $ENV_GOBACK_URL=$_COOKIE['ENV_GOBACK_URL'];

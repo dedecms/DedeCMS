@@ -1,4 +1,4 @@
-<?
+<?php 
 @set_time_limit(0);
 /*=======================================
 //织梦Http下载类V1.1版，本版增加了POST发送数据的方式
@@ -216,7 +216,10 @@ class DedeHttpDown
 		//发送用户自定义的请求头
 		if(!isset($this->m_puthead["Accept"])) { $this->m_puthead["Accept"] = "*/*"; }
 		if(!isset($this->m_puthead["User-Agent"])) { $this->m_puthead["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2)"; }
-		if(!isset($this->m_puthead["Refer"])) { $this->m_puthead["Refer"] = "http://".$this->m_puthead["Host"]; }
+		
+		if(!empty($GLOBALS['RfUrl'])) $this->m_puthead["Refer"] = $GLOBALS['RfUrl'];
+		else if(!isset($this->m_puthead["Refer"])) { $this->m_puthead["Refer"] = "http://".$this->m_puthead["Host"]; }
+		
 		foreach($this->m_puthead as $k=>$v){
 			$k = trim($k);
 			$v = trim($v);

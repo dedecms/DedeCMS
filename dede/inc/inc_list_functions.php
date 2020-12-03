@@ -1,4 +1,4 @@
-<?
+<?php 
 if(!isset($registerGlobals)){ require_once(dirname(__FILE__)."/../../include/config_base.php"); }
 //获得是否推荐的表述
 //---------------------------------

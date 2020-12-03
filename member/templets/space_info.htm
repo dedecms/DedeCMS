@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=gb2312">
 <title>更改会员空间资料</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='main.js'></script>
 <script>
 function checkSubmit()
@@ -17,18 +17,19 @@ function checkSubmit()
 </script>	
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top"> 
+    <td  valign="top"> 
       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
           <tr> 
             
-          <td height="25" colspan="2" background="img/tbg.gif" class="gdt2">
+          <td height="25" colspan="2" background="img/nnnbg.gif" class="gdt2">
 		  <strong>　&nbsp;更改个人空间资料：</strong> 
           </td>
           </tr>
@@ -51,7 +52,7 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="35" colspan="2" > 　 
-              <input name="spacename" type="text" id="spacename" size="35" value="<?=$spacename?>"> 
+              <input name="spacename" type="text" id="spacename" size="35" value="<?php echo $spacename?>"> 
             </td>
           </tr>
           <tr> 
@@ -59,14 +60,14 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="84" colspan="2" align="left" > 　 
-              <textarea name="mybb" cols="50" rows="4" id="mybb"><?=$mybb?></textarea></td>
+              <textarea name="mybb" cols="50" rows="4" id="mybb"><?php echo $mybb?></textarea></td>
           </tr>
           <tr> 
             <td height="24" colspan="2" bgcolor="#FBFEEF" >　空间公告：</td>
           </tr>
           <tr> 
             <td height="150" colspan="2" style="padding-left:6px;padding-right:6px"> 
-              <?
+              <?php 
 	          GetEditor("news",$news,200,"MemberLit");
               ?>
             </td>
@@ -80,8 +81,8 @@ function checkSubmit()
           <tr> 
             <td width="22%" height="108" align="right" >&nbsp;</td>
             <td width="78%" height="108" >
-            	<img src="<?=$spaceimage."?".time().mt_rand(100,900)?>" width="150" height="110" id="picview" name="picview"> 
-              <input type="hidden" name="oldimg" value="<?=$spaceimage?>">
+            	<img src="<?php echo $spaceimage."?".time().mt_rand(100,900)?>" width="150" height="110" id="picview" name="picview"> 
+              <input type="hidden" name="oldimg" value="<?php echo $spaceimage?>">
             </td>
           </tr>
           <tr> 
@@ -101,9 +102,10 @@ function checkSubmit()
     </td>
   </tr>
 </table>
-<?
+<?php 
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
 include(dirname(__FILE__)."/foot.htm");
 ?>
+</div>
 </body>
 </html>

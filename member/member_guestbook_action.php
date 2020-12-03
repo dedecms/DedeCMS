@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_space.php");
 require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
 $cfg_ml = new MemberLogin(); 

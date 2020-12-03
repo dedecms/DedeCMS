@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('temp_Other');
 //根据条件生成标记
@@ -50,7 +50,7 @@ if($dopost=='savetag')
   <form action="tag_test_action.php" method="post" name="f1" target="_blank">
   <tr> 
     <td align="center"> 
-      <textarea name="partcode" cols="60" rows="6" id="partcode" style="width:90%;height:120"><?=$fulltag?></textarea> 
+      <textarea name="partcode" cols="60" rows="6" id="partcode" style="width:90%;height:120"><?php echo $fulltag?></textarea> 
       <input type="submit" name="Submit" value="预览" class="np">
     </td>
   </tr>

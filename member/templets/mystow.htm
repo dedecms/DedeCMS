@@ -2,20 +2,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>我的收藏夹</title>
-<link href="base.css" rel="stylesheet" type="text/css">	
+<link href="newskin.css" rel="stylesheet" type="text/css">	
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top">
+    <td  valign="top">
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
         <tr> 
-          <td background="img/tbg.gif" height="25" class="gdt2">
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
 		  <font color="#333333"> 
             <strong>　&nbsp;我的收藏夹：</strong></font>
 		  </td>
@@ -23,33 +24,32 @@
     </table>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr> 
-          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693">
-              <tr bgcolor="#F1F5E9"> 
-                <td width="47%" align="center">档案标题</td>
-                <td width="31%" align="center">收藏时间</td>
-                <td width="22%" align="center">管理</td>
+          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+              <tr bgcolor="E9FBC9"> 
+                <td width="47%" align="center" bgcolor="#F0F8D6">档案标题</td>
+                <td width="31%" align="center" bgcolor="#F0F8D6">收藏时间</td>
+                <td width="22%" align="center" bgcolor="#F0F8D6">管理</td>
               </tr>
-              <?
+              <?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
               <tr bgcolor="#FFFFFF" align="center"> 
-                <td> <a href='archives_do.php?dopost=viewArchives&aid=<?=$row["arcid"]?>' target='_blank'> 
-                  <?=$row["title"]?>
+                <td> <a href='archives_do.php?dopost=viewArchives&aid=<?php echo $row["arcid"]?>' target='_blank'> 
+                  <?php echo $row["title"]?>
                   </a> </td>
                 <td> 
-                  <?=GetDateTimeMk($row['addtime'])?>
+                  <?php echo GetDateTimeMk($row['addtime'])?>
                 </td>
-                <td><a href='archives_do.php?dopost=delStow&aid=<?=$row["aid"]?>' target='_blank'>[删除该项]</a></td>
+                <td><a href='archives_do.php?dopost=delStow&aid=<?php echo $row["aid"]?>' target='_blank'>[删除该项]</a></td>
               </tr>
-              <?
+              <?php 
 }
 ?>
-              <tr bgcolor="#F1F5E9"> 
-                <td colspan="3" align="center"> 
-                  <?=$dlist->GetPageList(7);?>
-                </td>
+              <tr bgcolor="E9FBC9"> 
+                <td colspan="3" align="center" bgcolor="#F9FCEF"> 
+                  <?php echo $dlist->GetPageList(7);?>                </td>
               </tr>
             </table></td>
         </tr>
@@ -59,9 +59,10 @@ while($row = $mylist->GetArray('dm'))
       </table></td>
   </tr>
 </table>
-<?
+<?php 
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
 include(dirname(__FILE__)."/foot.htm"); 
 ?>
+</div>
 </body>
 </html>

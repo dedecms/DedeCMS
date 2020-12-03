@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../config_base.php");
 if(empty($height)){ $height=250; }
 if(empty($edittype)) $edittype="html";
@@ -19,8 +19,8 @@ else $isediter=0;
 <title>DedeCms HtmlEditer</title>
 <script type="text/JavaScript" language="JavaScript">
 var _MyEDoc;
-var parentField	= window.parent.document.getElementsByName('<?=$InstanceName?>')[0];
-var isediter=<?=$isediter?>;
+var parentField	= window.parent.document.getElementsByName('<?php echo $InstanceName?>')[0];
+var isediter=<?php echo $isediter?>;
 var parentForm = parentField.form;
 </script>
 <script language="JavaScript" type="text/JavaScript" src="js/main.js?n"></script>
@@ -39,7 +39,7 @@ var parentForm = parentField.form;
     </tr>
     <tr id="menubar" style="display: block"> 
       <td width="100%"> 
-        <?
+        <?php 
         if($modetype=="small") echo "<script src='js/smallbar.js'></script>";
         else if(eregi("member",$modetype)) echo "<script src='js/memberbar.js'></script>";
         else echo "<script src='js/fullbar.js'></script>";
@@ -49,13 +49,13 @@ var parentForm = parentField.form;
     <tr> 
       <td height="2"></td>
     </tr>
-    <tr id="htmledit" style="display:block" height='<?=$height?>'>
-      <td height='<?=$height?>'> 
+    <tr id="htmledit" style="display:block" height='<?php echo $height?>'>
+      <td height='<?php echo $height?>'> 
           <iframe name="_MyEditor" id="_MyEditor" height="100%" width="100%" onLoad="GetParentValue()" scrolling="yes"></iframe>
       </td>
     </tr>
-    <tr id="textedit" style="display:none" height="<?=$trheight?>"> 
-      <td height="<?=$trheight?>"> 
+    <tr id="textedit" style="display:none" height="<?php echo $trheight?>"> 
+      <td height="<?php echo $trheight?>"> 
           <textarea name="artbody" id="artbody" style="width:100%;height:100%;"></textarea>
       </td>
     </tr>

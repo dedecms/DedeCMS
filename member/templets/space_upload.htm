@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>附件数据管理</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
 </style>
@@ -48,38 +48,39 @@ function DelSel(){
 </script>
 </head>
 <body leftmargin='0' topmargin='0'>
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600">
-	  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
+    <td  align="top" valign="top"> 
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
         <tr align="right" bgcolor="#ffffff"> 
-          <td background="img/tbg.gif" class="gdt"> 
+          <td background="img/nnnbg.gif" class="gdt"> 
             <table width='97%' cellpadding='0' cellspacing='0'>
               <tr><td width='30%'>&nbsp;<b>附件数据管理</b></td><td align='right'>&nbsp; </td></tr>
             </table>
           </td>
         </tr>
 		</table>
-		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+		<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D9EDC0">
         <tr bgcolor="#E2EBC0" height="24"> 
-          <td colspan="6"> 
+          <td colspan="6" bgcolor="#F0F8D6"> 
             <table width="500" border="0" cellspacing="0" cellpadding="0">
               <form name='forms' method='post' action='media_main.php'>
                 <tr> 
                   <td width="10">&nbsp;</td>
                   <td width="70" align="center">关键字：</td>
-                  <td width="100"><input name="keyword" type="text" id="keyword" style="width:100" value="<?=$keyword?>"></td>
+                  <td width="100"><input name="keyword" type="text" id="keyword" style="width:100" value="<?php echo $keyword?>"></td>
                   <td width="100" align="center"> <select name='mediatype' style='width:80'>
                       <option value='0'>文件类型</option>
-                      <option value='1'<?if($mediatype==1) echo " selected"?>>图片</option>
-                      <option value='2'<?if($mediatype==2) echo " selected"?>>FLASH</option>
-                      <option value='3'<?if($mediatype==3) echo " selected"?>>视频/音频</option>
-                      <option value='4'<?if($mediatype==4) echo " selected"?>>其它附件</option>
+                      <option value='1'<?php if($mediatype==1) echo " selected"?>>图片</option>
+                      <option value='2'<?php if($mediatype==2) echo " selected"?>>FLASH</option>
+                      <option value='3'<?php if($mediatype==3) echo " selected"?>>视频/音频</option>
+                      <option value='4'<?php if($mediatype==4) echo " selected"?>>其它附件</option>
                     </select> </td>
                   <td><input class="np" name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0"></td>
                 </tr>
@@ -96,48 +97,48 @@ function DelSel(){
           <td width="15%">管理</td>
         </tr>
         <form name='form1'>
-          <?
+          <?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
           <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-            <td> <input type='checkbox' name='aids' id='aids<?=$row['aid']?>' value='<?=$row['aid']?>' class='np'/> 
+            <td> <input type='checkbox' name='aids' id='aids<?php echo $row['aid']?>' value='<?php echo $row['aid']?>' class='np'/> 
             </td>
             <td>
-			<a href='<?=$row['url']?>' target='_blank'><?=GetImageView($row['url'],$row['mediatype'])?><u><?=$row['title']?></u></a>
+			<a href='<?php echo $row['url']?>' target='_blank'><?php echo GetImageView($row['url'],$row['mediatype'])?><u><?php echo $row['title']?></u></a>
 			</td>
             <td> 
-              <?=GetFileSize($row['filesize'])?>
+              <?php echo GetFileSize($row['filesize'])?>
             </td>
             <td> 
-              <?=strftime("%y-%m-%d %H:%M",$row['uptime'])?>
+              <?php echo strftime("%y-%m-%d %H:%M",$row['uptime'])?>
             </td>
             <td> 
-              <?=MediaType($row['mediatype'],$row['url'])?>
+              <?php echo MediaType($row['mediatype'],$row['url'])?>
             </td>
-            <td> <a href='space_upload_edit.php?aid=<?=$row['aid']?>&dopost=edit'>更改</a> 
-              | <a href='archives_do.php?dopost=delUploads&aid=<?=$row['aid']?>'>删除</a> 
+            <td> <a href='space_upload_edit.php?aid=<?php echo $row['aid']?>&dopost=edit'>更改</a> 
+              | <a href='archives_do.php?dopost=delUploads&aid=<?php echo $row['aid']?>'>删除</a> 
             </td>
           </tr>
-          <?
+          <?php 
 	}
 		?>
           <tr bgcolor="#F9FCEF" height="24"> 
-            <td colspan="6"> &nbsp; <input type="button" name="b4" value="全选" class="np2" style="width:40" onClick="AllSel();"> 
+            <td colspan="6" bgcolor="#F9FCEF"> &nbsp; <input type="button" name="b4" value="全选" class="np2" style="width:40" onClick="AllSel();"> 
               &nbsp; <input type="button" name="b5" value="取消" class="np2" style="width:40" onClick="NoneSel();"> 
-              &nbsp; <input type="button" name="b6" value="删除所选" class="np2" style="width:80" onClick="DelSel();"> 
-            </td>
+              &nbsp; <input type="button" name="b6" value="删除所选" class="np2" style="width:80" onClick="DelSel();">            </td>
           </tr>
           <tr bgcolor="#EEFAC9" height="24"> 
-            <td colspan="6" align="center"> 
-              <?=$dlist->GetPageList(7);?>
-            </td>
+            <td height="24" colspan="6" align="center"> 
+              <?php echo $dlist->GetPageList(7);?>            </td>
           </tr>
         </form>
-      </table> </td>
+      </table> 
+    </td>
   </tr>
 </table>
-<? include(dirname(__FILE__)."/foot.htm"); ?>
+<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
 </body>
 </html>

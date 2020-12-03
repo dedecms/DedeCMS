@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_New,a_AccNew');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
@@ -25,6 +25,9 @@ if(!TestPurview('a_New')) {
 	CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的权限！");
 	if($typeid2!=0) CheckCatalog($typeid2,"对不起，你没有操作栏目 {$typeid2} 的权限！");
 }
+
+$arcrank = GetCoRank($arcrank,$typeid);
+
 //对保存的内容进行处理
 //--------------------------------
 $iscommend = $iscommend + $isbold;

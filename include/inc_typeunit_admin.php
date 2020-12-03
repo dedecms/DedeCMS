@@ -1,4 +1,4 @@
-<?
+<?php 
 //class TypeUnit
 //这个类主要是封装频道管理时的一些复杂操作 
 //--------------------------------
@@ -49,6 +49,8 @@ class TypeUnit
 		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,sortrank,ishidden From #@__arctype where reID=0 order by sortrank");
 		$this->dsql->Execute(0);
 		
+		$lastID = GetCookie('lastCid');
+		
 		while($row=$this->dsql->GetObject(0))
 		{	 
 			$typeDir = $row->typedir;
@@ -70,7 +72,7 @@ class TypeUnit
 			     echo "    </td><td align='right'>";
 			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a>";
 			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>内容</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>增加子类</a>";
+			     echo "|<a href='catalog_add.php?ID={$ID}'>添子类</a>";
 			     echo "|<a href='catalog_edit.php?ID={$ID}'>更改</a>";
 			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>移动</a>";
 			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>";
@@ -85,7 +87,7 @@ class TypeUnit
 			     echo "    </td><td align='right'>";
 			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a>";
 			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>内容</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>增加子类</a>";
+			     echo "|<a href='catalog_add.php?ID={$ID}'>添子类</a>";
 			     echo "|<a href='catalog_edit.php?ID={$ID}'>更改</a>";
 			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>移动</a>";
 			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>";
@@ -145,12 +147,8 @@ class TypeUnit
 			  }
 		  }
 			echo "  <tr><td colspan='2' id='suns".$ID."'>";
-			$lastID = GetCookie('lastCid');
-			if($channel==$ID || $lastID==$ID)
-			{
-				echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";	
+			if($channel==$ID || $lastID==$ID){
 				$this->LogicListAllSunType($ID,"　");
-				echo "    </table>\r\n";
 			}
 			echo "</td></tr>\r\n</table>\r\n";
 			
@@ -176,6 +174,7 @@ class TypeUnit
 			  $rank = $row->sortrank;
 			  if($row->ishidden=='1') $nss = "<font color='red'>[隐]</font>";
 			  else  $nss = "";
+			  echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
 			  //普通列表
 			  if($ispart==0)
 			  {
@@ -187,7 +186,7 @@ class TypeUnit
 			     echo "</td><td align='right'>";
 			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a>";
 			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>内容</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>增加子类</a>";
+			     echo "|<a href='catalog_add.php?ID={$ID}'>添子类</a>";
 			     echo "|<a href='catalog_edit.php?ID={$ID}'>更改</a>";
 			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>移动</a>";
 			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>";
@@ -196,13 +195,13 @@ class TypeUnit
 			  //封面频道
 			  else if($ispart==1)
 			  {
-			     echo " <tr height='24' oncontextmenu=\"CommonMenu(this,$ID,'".urlencode($typeName)."')\">\r\n";
+			     echo " <tr height='24' oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\">\r\n";
 			     echo "<td class='nbline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr onMouseMove=\"javascript:this.bgColor='#EAEAEA';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
 			     echo "<input class='np' type='checkbox' name='tids[]' value='{$ID}'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'>$step ·{$nss}".$typeName."[ID:".$ID."]</a>";
 			     echo "</td><td align='right'>";
 			     echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a>";
 			     echo "|<a href='catalog_do.php?cid={$ID}&dopost=listArchives'>内容</a>";
-			     echo "|<a href='catalog_add.php?ID={$ID}'>增加子类</a>";
+			     echo "|<a href='catalog_add.php?ID={$ID}'>添子类</a>";
 			     echo "|<a href='catalog_edit.php?ID={$ID}'>更改</a>";
 			     echo "|<a href='catalog_move.php?job=movelist&typeid={$ID}'>移动</a>";
 			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>";
@@ -224,6 +223,7 @@ class TypeUnit
 			     echo "|<a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>";
 			     echo "&nbsp; <input type='text' name='sortrank{$ID}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
 			  }
+			  echo "    </table>\r\n";
 			  $this->LogicListAllSunType($ID,$step."　");
 		  }
 		}

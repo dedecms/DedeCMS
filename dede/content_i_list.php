@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(!isset($cid)) $cid = 0;
 if(!isset($keyword)) $keyword = "";
@@ -34,7 +34,17 @@ if($cid==0){
 	$positionname = str_replace($cfg_list_symbol,"&gt;",$tl->GetPositionName())."&gt;";
 }
 
-$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$seltypeids = 0;
+if(!empty($cid)){
+	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ");
+}
+$opall=1;
+if(is_array($seltypeids)){
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+}else{
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'请选择...');
+}
+
 
 if($channelid==0) $whereSql = " where #@__archives.channel > 0 ";
 else $whereSql = " where #@__archives.channel = '$channelid' ";
@@ -52,10 +62,10 @@ if($adminid>0){ $whereSql .= " And #@__archives.adminID = '$adminid' "; }
 
 if($arcrank!=""){
 	$whereSql .= " And arcrank=$arcrank ";
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档' class='nbt'>";
 }
 else{
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核' class='nbt'>";
 }
 
 $tl->Close();

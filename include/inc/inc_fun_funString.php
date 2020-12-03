@@ -1,4 +1,4 @@
-<?
+<?php 
 $GLOBALS['__funString'] = 1;
 
 function SpHtml2Text($str){

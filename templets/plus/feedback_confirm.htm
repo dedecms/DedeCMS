@@ -14,14 +14,14 @@
 <td bgcolor="#CCCC99" height="6"></td>
 </tr>
 <tr>
-    <td height="26" bgcolor="#D0E8D2"> <strong>&nbsp;<a href="feedback.php?arcID=<?=$arcID?>">&lt;&lt;返回&gt;&gt;</a>　确认你评论的内容：</strong></td>
+    <td height="26" bgcolor="#F0FADE"> <strong>&nbsp;<a href="feedback.php?arcID=<?=$arcID?>">&lt;&lt;返回&gt;&gt;</a>　确认你评论的内容：</strong></td>
 </tr>
 </table>
 
 <table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="12">&nbsp;</td>
-    <td width="688"><table width="600" border="0" cellspacing="0">
+    <td width="688"><table width="100%" border="0" cellspacing="0">
         <tr> 
           <td> <table width="100%" border="0" cellpadding="1" cellspacing="1">
               <form action="feedback.php" method="post" name="feedback">
@@ -36,8 +36,20 @@
                     <input name="pwd" type="password" id="pwd2" size="10"class="nb" value="<?=$pwd?>"> 
                     <input name="notuser" type="checkbox" id="notuser2" value="1"<?if(!empty($notuser)) echo " checked";?>>
                     匿名评论 
-                    <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'> 
-                  </td>
+                    <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'>                  </td>
+                </tr>
+                <tr>
+                  <td height="36">评　分：
+                    <input type="radio" name="rank" value="1"<?if($rank==1) echo " checked";?>>
+1
+<input type="radio" name="rank" value="2"<?if($rank==2) echo " checked";?>>
+2
+<input name="rank" type="radio" value="3"<?if($rank==3) echo " checked";?>>
+3
+<input type="radio" name="rank" value="4"<?if($rank==4) echo " checked";?>>
+4
+<input type="radio" name="rank" value="5"<?if($rank==5) echo " checked";?>>
+5</td>
                 </tr>
                 <tr> 
                   <td height="36"> <table width="300" border="0" cellspacing="1" cellpadding="1">

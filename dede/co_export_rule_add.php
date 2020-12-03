@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_NewRule');
 if(empty($action)) $action = "";
@@ -117,7 +117,7 @@ function addMoreField()
 <link href='base.css' rel='stylesheet' type='text/css'>
 <style>
 	.nnpp{
-	border-bottom:1px solid #666666;
+	border-bottom:1px solid #98CAEF;
 	border-top:1px solid #FFFFFF;
 	border-left:1px solid #FFFFFF;
 	border-right:1px solid #FFFFFF;
@@ -127,7 +127,7 @@ function addMoreField()
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><b><a href="co_export_rule.php"><u>数据导入规则管理</u></a></b>&gt;&gt;新建数据导入规则</td>
 </tr>
@@ -156,7 +156,7 @@ function addMoreField()
             <td height="24">
 			<select name="channelid" id="channelid" style="width:150">
                 <option value="0">--非系统频道模型--</option>
-				<?
+				<?php 
 				$dsql = new DedeSql(false);
 				$dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0 order by ID asc");
 				$dsql->Execute();
@@ -209,7 +209,7 @@ function addMoreField()
                 <tr> 
                   <td width="10%" height="45" align="center">增加字段：</td>
                   <td width="90%"> <input name="fieldnum" type="text" id="fieldnum" value="5" size="8"> 
-                    <input type="button" name="Submit" value="增加" onClick="addMoreField();"> 
+                    <input type="button" name="Submit" value="增加" onClick="addMoreField();" class='nbt'> 
                   </td>
                 </tr>
                 <tr> 

@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
 <title>我的留言本</title>
-<link href='base.css' rel='stylesheet' type='text/css'>
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <style>
 .napisdiv {left:10;top:0;width:150;height:100;position:absolute;z-index:3}
 </style>
@@ -10,9 +10,9 @@
 <script language='javascript' src='main.js'></script>
 <script language="JavaScript">
 var pageno = 1;
-var totalrow = <?=$totalRow?>;
-var pagesize = <?=$pagesize?>;
-var orderby = '<?=$orderby?>';
+var totalrow = <?php echo $totalRow?>;
+var pagesize = <?php echo $pagesize?>;
+var orderby = '<?php echo $orderby?>';
 var selitem = 0;
 //加载列表
 function ReloadPage(ordertype){
@@ -119,35 +119,36 @@ function ReloadPageNum(startnum){
 </script>
 </head>
 <body leftmargin='0' topmargin='0'>
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="216" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top">
+    <td  valign="top">
 	  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="1" style="margin-bottom:3px">
         <tr align="right" bgcolor="#ffffff"> 
-          <td height="25" colspan="6" background="img/tbg.gif" class="gdt"> 
+          <td height="25" colspan="6" background="img/nnnbg.gif" class="gdt"> 
             <table width='96%' align="center" cellpadding='0' cellspacing='0'>
               <tr> 
                 <td width='30%'><b>　我的留言本：</b></td>
                 <td align='right'>
-				<input type="button" name="Submit" value="删除选中项" class="coolbg" onclick="DelNotes()"> 
+				<input type="button" name="Submit" value="删除选中项" class="coolbg" onClick="DelNotes()"> 
                 </td>
               </tr>
             </table></td>
         </tr>
 		</table>
     <form name="form1">
-    <span id='rslist'><? GetList($dsql,$pageno,$pagesize,'aid'); ?></span>
+    <span id='rslist'><?php  GetList($dsql,$pageno,$pagesize,'aid'); ?></span>
     </form>
-      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#93A778">
+      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D9EDC0">
         <tr height="24"> 
-          <td height="32" bgcolor="#EFF5E9" align="center">
+          <td height="32" bgcolor="#F9FCEF" align="center">
           	<span id='pagelist'></span>
-           <script language='javascript'>
+            <script language='javascript'>
            	ReloadPageNum(1);
            	</script>
          </td>
@@ -155,6 +156,7 @@ function ReloadPageNum(startnum){
       </table></td>
   </tr>
 </table>
-<? include(dirname(__FILE__)."/foot.htm"); ?>
+<?php  include(dirname(__FILE__)."/foot.htm"); ?>
+</div>
 </body>
 </html>

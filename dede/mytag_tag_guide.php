@@ -1,6 +1,7 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
+$dsql = new DedeSql(false);
 ?>
 <html>
 <head>
@@ -23,6 +24,7 @@ function DoSubmit(j){
 	document.form1.submit();
 }
 </script>
+<script src="main.js" language="javascript"></script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <center>
@@ -47,7 +49,7 @@ function DoSubmit(j){
   <tr><td>[field:info/]</td></tr>
 </table>
 </span>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
   <form action="mytag_tag_guide_ok.php" method="post" target="stafrm" name="form1">
   <input type="hidden" name="dopost" value="gettag"/>
   <tr> 
@@ -62,48 +64,44 @@ function DoSubmit(j){
             <td height="72"><table width="99%" border="0" cellspacing="0" cellpadding="0">
                 <tr> 
                   <td width="25%" height="126"><img src="img/g_t2.gif" width="130" height="100"> 
-                    <input name="liststyle" class="np" type="radio" onclick="ChangeListStyle()" value="1" checked> 
+                    <input name="liststyle" class="np" type="radio" onClick="ChangeListStyle()" value="1" checked> 
                   </td>
                   <td width="25%"><img src="img/g_t1.gif" width="130" height="110"> 
-                    <input type="radio" class="np" onclick="ChangeListStyle()" name="liststyle" value="2"></td>
+                    <input type="radio" class="np" onClick="ChangeListStyle()" name="liststyle" value="2"></td>
                   <td width="25%"><img src="img/g_t3.gif" width="130" height="110"> 
-                    <input type="radio" class="np" onclick="ChangeListStyle()" name="liststyle" value="3"></td>
-                  <td><img src="img/g_t4.gif" width="130" height="110"> <input type="radio" class="np" onclick="ChangeListStyle()" name="liststyle" value="4"></td>
+                    <input type="radio" class="np" onClick="ChangeListStyle()" name="liststyle" value="3"></td>
+                  <td><img src="img/g_t4.gif" width="130" height="110"> <input type="radio" class="np" onClick="ChangeListStyle()" name="liststyle" value="4"></td>
                 </tr>
               </table></td>
           </tr>
           <tr> 
-            <td height="28">调用栏目： 
-              <?
-       $tl = new TypeLink(0);
-       $typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0,1);
-       echo "<select name='typeid' style='width:284'>\r\n";
-       echo "<option value='0' selected>不限栏目...</option>\r\n";
-       echo $typeOptions;
-       echo "</select>";
-		?>
-            </td>
+            <td height="28">调用栏目：              
+              <?php 
+              $opall = 1;
+              echo GetTypeidSel('form1','typeid','selbt1',0);
+              ?>
+             </td>
           </tr>
           <tr> 
             <td height="28"> 限定频道： 
-              <?
-       echo "<select name='channel' style='width:100'>\r\n";
+              <?php   
+	   echo "<select name='channel' style='width:100'>\r\n";
        echo "<option value='0' selected>不限频道...</option>\r\n";
-       $tl->dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0");
-	   $tl->dsql->Execute();
-	   while($row = $tl->dsql->GetObject())
+       $dsql->SetQuery("Select ID,typename From #@__channeltype where ID>0");
+	   $dsql->Execute();
+	   while($row = $dsql->GetObject())
 	   {
 	      echo "<option value='{$row->ID}'>{$row->typename}</option>\r\n";
 	   }
        echo "</select>";
 		?>
               　附加属性： 
-              <?
+              <?php 
        echo "<select name='att' style='width:100'>\r\n";
        echo "<option value='0' selected>不限...</option>\r\n";
-       $tl->dsql->SetQuery("Select * From #@__arcatt");
-	   $tl->dsql->Execute();
-	   while($row = $tl->dsql->GetObject())
+       $dsql->SetQuery("Select * From #@__arcatt");
+	   $dsql->Execute();
+	   while($row = $dsql->GetObject())
 	   {
 	      echo "<option value='{$row->att}'>{$row->attname}</option>\r\n";
 	   }
@@ -169,9 +167,9 @@ function DoSubmit(j){
           </tr>
           <tr> 
             <td height="39">
-            	<input name="Submit1" type="button" id="Submit1" onclick="DoSubmit('gettag')" value="生成模板调用标记">
+            	<input name="Submit1" type="button" id="Submit1" onClick="DoSubmit('gettag')" value="生成模板调用标记" class='nbt'>
             	&nbsp;
-              <input name="Submit2" type="button" id="Submit2" onclick="DoSubmit('savetag')" value="保存为自定义标记">
+              <input name="Submit2" type="button" id="Submit2" onClick="DoSubmit('savetag')" value="保存为自定义标记" class='nbt'>
               </td>
           </tr>
         </table></td>
@@ -189,8 +187,8 @@ function DoSubmit(j){
   </tr>
 </table>
 </center>
-<?
-$tl->Close();
+<?php 
+$dsql->Close();
 ?>
 </body>
 </html>

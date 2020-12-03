@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('plus_站内新闻发布');
 if(empty($dopost)) $dopost = "";
@@ -35,7 +35,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
   <form action="mynews_add.php" method="post" name="form1" onSubmit="return checkSubmit();">
   <input type="hidden" name="dopost" value="save">
   <tr>
@@ -68,7 +68,7 @@ function checkSubmit()
             <td>
 			  <select name="typeid" style="width:150">
                 <option value="0" selected>所有位置...</option>
-                <?
+                <?php 
 			  $dsql = new DedeSql();
 			  $dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 order by sortrank desc");
 			  $dsql->Execute();
@@ -83,14 +83,14 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="30">发言人：</td>
-            <td><input name="writer" type="text" id="writer" value="<?=$cuserLogin->getUserName()?>" size="16">
+            <td><input name="writer" type="text" id="writer" value="<?php echo $cuserLogin->getUserName()?>" size="16">
               　 日期： 
-              <input name="sdate" type="text" id="sdate" size="25" value="<?=GetDateTimeMk(mytime())?>"></td>
+              <input name="sdate" type="text" id="sdate" size="25" value="<?php echo GetDateTimeMk(mytime())?>"></td>
           </tr>
           <tr> 
             <td height="172" valign="top">信息内容：</td>
             <td height="172"> 
-              <?
+              <?php 
 	GetEditor("body","",250,"Small");
 	?>
             </td>

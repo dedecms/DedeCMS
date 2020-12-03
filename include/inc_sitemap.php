@@ -1,4 +1,4 @@
-<?
+<?php 
 //class SiteMap
 //--------------------------------
 require_once(dirname(__FILE__)."/config_base.php");

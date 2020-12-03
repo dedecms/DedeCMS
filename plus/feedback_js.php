@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/config_base.php");
 if(!empty($artID)) $arcID = $artID;
 if(!isset($arcID)) $arcID = "";

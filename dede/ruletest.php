@@ -1,5 +1,6 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
+CheckPurview('sys_ArcBatch');
 if($_POST){
 	$isMagic = @ini_get("magic_quotes_gpc");
 	if($isMagic) foreach($_POST AS $key => $value) $$key = stripslashes($value);

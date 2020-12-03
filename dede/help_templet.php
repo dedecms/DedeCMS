@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 $dsql = new DedeSql(false);
 $dsql->SetQuery("Select nid,typename From #@__channeltype");
@@ -29,7 +29,7 @@ $dsql->Close();
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
 <td height="19" background="img/tbg.gif">&nbsp;<b>织梦内容管理系统模板代码参考</b></td>
 </tr>
@@ -37,7 +37,7 @@ $dsql->Close();
 <td height="94" bgcolor="#FFFFFF" valign="top">
 <table width="98%" border="0" cellspacing="2">
 <tr>
-<td height="30" colspan="3" align="right"><input type="button" name="Submit" value=" 查看模板目录 " onClick="location='file_manage_main.php?activepath=<?=$cfg_templets_dir?>';"></td>
+<td height="30" colspan="3" align="right"><input type="button" name="Submit" value=" 查看模板目录 " onClick="location='file_manage_main.php?activepath=<?php echo $cfg_templets_dir?>';" class='nbt'></td>
 </tr>
 <tr> 
 <td height="30" colspan="3">
@@ -105,7 +105,7 @@ V3中需要严格用“{/dede:标记名称}”，否则会报错。</p>
               <font color="#330000">1、模板保存位置：</font><br>
               　　模板目录：｛cmspath/templets/样式名称（英文，默认为default，其中system为系统底层模板，plus为插件使用的模板）/具体功能模板文件｝<br>
               　　<font color="#CC0000">你的模板位置：“ 
-              <?=$cfg_templets_dir."/{风格名称}/功能模板文件"?>
+              <?php echo $cfg_templets_dir."/{风格名称}/功能模板文件"?>
               ”，</font><a href="catalog_do.php?dopost=viewTemplet"><u><font color="#6600FF">点击此浏览模板目录</font></u></a><br>
               <font color="#330000">2、 模板文件命名规范：</font><br>
               （１）index_<font color="#990000">识别ID</font>.htm：　表示板块（栏目封面）模板；<br>
@@ -115,7 +115,7 @@ V3中需要严格用“{/dede:标记名称}”，否则会报错。</p>
               （５）index.htm： 主页模板； <br>
               <font color="#990000"><strong>注解：</strong></font><font color="#990000"><br>
               你的系统各个内容频道的[识别ID]分别为： 
-              <?=$nids?>
+              <?php echo $nids?>
               </font><br>
               例：list_image.htm 表示是就是内容类型为图片集的栏目默认列表模板。</p>
 <p><font color="#990000"><strong>三、主要标记参考<a name="3"></a></strong></font></p>

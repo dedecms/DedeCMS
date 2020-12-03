@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 $channelid="1";
@@ -19,6 +19,12 @@ body { background-image: url(img/allbg.gif); }
 <script language='javascript' src='main.js'></script>
 <script language="javascript">
 <!--
+function SelectTemplets(fname){
+   var posLeft = window.event.clientY-200;
+   var posTop = window.event.clientX-300;
+   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+}
+
 function checkSubmit()
 {
   if(document.form1.title.value==""){
@@ -35,16 +41,16 @@ function checkSubmit()
 </head>
 <body topmargin="8">
 <form name="form1" action="article_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit()">
-  <input type="hidden" name="channelid" value="<?=$channelid?>">
+  <input type="hidden" name="channelid" value="<?php echo $channelid?>">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr> 
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"><u>文章列表</u></a>&gt;&gt;发布文章</td>
+      <td width="85%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a>&gt;&gt;发布文章</td>
       <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
     <tr> 
       <td colspan="2"> 
         <table width="168" border="0" cellpadding="0" cellspacing="0">
@@ -76,16 +82,15 @@ function checkSubmit()
           </tr>
         </table></td>
     </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:none">
-	   <table width="800" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:none"> 
+        <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;跳转网址：</td>
             <td> <input name="redirecturl" type="text" id="redirecturl" style="width:300" value=""> 
             </td>
           </tr>
-       </table>
-	 </td>
+        </table></td>
     </tr>
     <tr> 
       <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -96,7 +101,7 @@ function checkSubmit()
             <td width="90">自定义属性：</td>
             <td> <select name='arcatt' style='width:150'>
                 <option value='0'>普通文档</option>
-                <?
+                <?php 
             	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
             	$dsql->Execute();
             	while($trow = $dsql->GetObject())
@@ -121,7 +126,7 @@ function checkSubmit()
                 </tr>
                 <tr> 
                   <td height="30"> <input name="picname" type="text" id="picname" style="width:250"> 
-                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');"> 
+                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');" class='nbt'> 
                   </td>
                 </tr>
               </table></td>
@@ -134,14 +139,24 @@ function checkSubmit()
           <tr> 
             <td width="90">&nbsp;文章来源：</td>
             <td width="240"><input name="source" type="text" id="source" style="width:160" size="16"> 
-              <input name="selsource" type="button" id="selsource" value="选择"></td>
+              <input name="selsource" type="button" id="selsource" value="选择" class='nbt'></td>
             <td width="90">作　者：</td>
             <td> <input name="writer" type="text" id="writer" style="width:120"> 
-              <input name="selwriter" type="button" id="selwriter" value="选择"> 
+              <input name="selwriter" type="button" id="selwriter" value="选择" class='nbt'> 
             </td>
           </tr>
         </table>
         <script language='javascript'>InitPage();</script> </td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="90">&nbsp;文章模板：</td>
+            <td> <input name="templet" type="text" id="templet" size="30"> 
+              <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" class='nbt'>
+              　（如果模板为空，则使用文章所在栏目定义的模板） </td>
+          </tr>
+        </table></td>
     </tr>
     <tr> 
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -157,7 +172,7 @@ function checkSubmit()
               </select> </td>
             <td width="90">标题颜色：</td>
             <td> <input name="color" type="text" id="color" style="width:120"> 
-              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"> 
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -167,7 +182,7 @@ function checkSubmit()
           <tr> 
             <td width="90">&nbsp;阅读权限：</td>
             <td width="240"> <select name="arcrank" id="arcrank" style="width:150">
-                <?
+                <?php 
               $urank = $cuserLogin->getUserRank();
               $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
               $dsql->Execute();
@@ -196,7 +211,7 @@ function checkSubmit()
             </td>
             <td width="146" align="center"> <input name="autokey" type="checkbox" onClick="ShowHide('keywords');"; class="np" id="autokey" value="1">
               自动 <br/>
-              用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"> 
+              用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -206,7 +221,7 @@ function checkSubmit()
           <tr> 
             <td width="90">&nbsp;发布时间：</td>
             <td width="400"> 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>
@@ -222,13 +237,16 @@ function checkSubmit()
           <tr> 
             <td width="90">&nbsp;文章主栏目：</td>
             <td width="400"> 
-              <?
-           	$typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
-		        echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0'>请选择主分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			?>
+            <?php 
+           	if(empty($cid)) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		          echo "<select name='typeid' style='width:300'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?>
             </td>
             <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
           </tr>
@@ -239,13 +257,8 @@ function checkSubmit()
           <tr> 
             <td width="90">&nbsp;文章副栏目：</td>
             <td> 
-              <?
-            echo "<select name='typeid2' style='width:300'>\r\n";
-            echo "<option value='0' selected>请选择副分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-            ?>
-            </td>
+			  <?php echo GetTypeidSel('form1','typeid2','selbt2',$channelid)?>
+			  </td>
           </tr>
         </table></td>
     </tr>
@@ -289,11 +302,11 @@ function checkSubmit()
           <tr>
             <td>&nbsp;分页方式：</td>
             <td>
-            	<input name="sptype" type="radio" class="np" value="hand"<?if($cfg_arcautosp=='否') echo " checked"?>>
+            	<input name="sptype" type="radio" class="np" value="hand"<?php if($cfg_arcautosp=='否') echo " checked"?>>
               手动分页 
-              <input type="radio" name="sptype" value="auto" class="np"<?if($cfg_arcautosp=='是') echo " checked"?>>
+              <input type="radio" name="sptype" value="auto" class="np"<?php if($cfg_arcautosp=='是') echo " checked"?>>
               自动分页　自动分页大小： 
-              <input name="spsize" type="text" id="spsize" value="<?=$cfg_arcautosp_size?>" size="6">
+              <input name="spsize" type="text" id="spsize" value="<?php echo $cfg_arcautosp_size?>" size="6">
               (K)
               </td>
           </tr>
@@ -308,7 +321,7 @@ function checkSubmit()
     </tr>
     <tr> 
       <td> 
-        <?
+        <?php 
 	GetEditor("body","",450);
 	?>
       </td>
@@ -333,7 +346,7 @@ function checkSubmit()
   </tr>
 </table>
 </form>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

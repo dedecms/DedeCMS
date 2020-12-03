@@ -1,4 +1,4 @@
-<?
+<?php 
 //调用这个类前,请先设定这些外部变量
 //$cfg_dbhost="";
 //$cfg_dbname="";
@@ -20,14 +20,14 @@ class DedeSql
 	//
 	//用外部定义的变量初始类，并连接数据库
 	//
-	function __construct($pconnect=false)
+	function __construct($pconnect=false,$nconnect=true)
  	{
- 		if($this->linkID==0) $this->Init($pconnect);
+ 		if($this->linkID==0 && $nconnect) $this->Init($pconnect);
   }
 	
-	function DedeSql($pconnect=false)
+	function DedeSql($pconnect=false,$nconnect=true)
 	{
-		if($this->linkID==0) $this->Init($pconnect);
+		$this->__construct($pconnect,$nconnect);
 	}
 	
 	function Init($pconnect=false)
@@ -71,8 +71,12 @@ class DedeSql
 	function Open($pconnect=true)
 	{
 		//连接数据库
-		if($pconnect){ $this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd); }
-		else{ $this->linkID = @mysql_connect($this->dbHost,$this->dbUser,$this->dbPwd); }
+		//if($pconnect){ $this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd); }
+		//else{ $this->linkID = @mysql_connect($this->dbHost,$this->dbUser,$this->dbPwd); }
+		
+		//直接使用pconnect
+		$this->linkID = @mysql_pconnect($this->dbHost,$this->dbUser,$this->dbPwd);
+		
 		//处理错误，成功连接则选择数据库
 		if(!$this->linkID){
 			$this->DisplayError("Connect Database Server False!");

@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="base.css">
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
+<script type="text/javascript" src="main.js"></script>
 <script language="javascript">
 if(moz) {
 	extendEventObject();
@@ -126,23 +127,23 @@ function noSelAll()
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
 <tr> 
 <td width="100%" height="20" valign="top">
-	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#666666">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#98CAEF">
 		<tr> 
-<td height="26" background="img/newlinebg3.gif">
+<td height="26" background="img/wbg.gif">
 <table width="98%" border="0" cellspacing="0" cellpadding="0">
  <tr> 
  <td align="center">
-	<input type='button' onClick="location='catalog_do.php?channelid=<?=$channelid?>&cid=<?=$cid?>&dopost=addArchives';" value='添加文档'>
-	<? if($adminid>0){ ?>
-	<input type='button' onClick="location='content_i_list.php?cid=<?=$cid?>&adminid=0';" value='全部文档'>	
-	<? }else{ ?>
-	<input type='button' onClick="location='content_i_list.php?cid=<?=$cid?>&adminid=<?=$cuserLogin->getUserID()?>';" value='我的文档'>
-	<? } 
+	<input type='button' onClick="location='catalog_do.php?channelid=<?php echo $channelid?>&cid=<?php echo $cid?>&dopost=addArchives';" value='添加文档' class='nbt'>
+	<?php  if($adminid>0){ ?>
+	<input type='button' onClick="location='content_i_list.php?cid=<?php echo $cid?>&adminid=0';" value='全部文档' class='nbt'>	
+	<?php  }else{ ?>
+	<input type='button' onClick="location='content_i_list.php?cid=<?php echo $cid?>&adminid=<?php echo $cuserLogin->getUserID()?>';" value='我的文档' class='nbt'>
+	<?php  } 
 	echo $CheckUserSend
   ?>
- <input type='button' onClick="location='catalog_main.php';" value='栏目管理'>
- <input type='button' name='bb1' onClick="location='makehtml_list.php?cid=<?=$cid?>';" value='更新列表'>
-	<input type='button' name='bb2' onClick="location='makehtml_archives.php?cid=<?=$cid?>';" value='更新文档'>
+ <input type='button' onClick="location='catalog_main.php';" value='栏目管理' class='nbt'>
+ <input type='button' name='bb1' onClick="location='makehtml_list.php?cid=<?php echo $cid?>';" value='更新列表' class='nbt'>
+	<input type='button' name='bb2' onClick="location='makehtml_archives.php?cid=<?php echo $cid?>';" value='更新文档' class='nbt'>
  </td>
  </tr>
 </table>
@@ -157,13 +158,13 @@ function noSelAll()
 <tr><td width="100%" height="4"></td></tr>
 <tr> 
 <td width="100%" height="20" valign="top"> 
-	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
-<tr bgcolor='#EEF4EA' height='26'> 
+	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor="#98CAEF">
+<tr bgcolor='#E5F9FF' height='26'> 
 <td background='img/wbg.gif' colspan='7'>
-§<?=$positionname?>文档列表 &nbsp;(使用鼠标右键进行常用操作)
+§<?php echo $positionname?>文档列表 &nbsp;(使用鼠标右键进行常用操作)
 </td>
 </tr>
-<tr bgcolor="#F3F7EA" align="center"> 
+<tr bgcolor="#F8FBFB" align="center"> 
 <td width="13%">文档图片</td>
 <td width="35%">文档标题</td>
 <td width="12%">类目</td>
@@ -180,51 +181,51 @@ function noSelAll()
 	<tr>
 <td>
 <div style="font-size:2pt">&nbsp</div>
-<?
+<?php 
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 ?>
 <table width="100%" border="0" cellpadding="1" cellspacing="1" 
-	style="border-bottom:1px solid #BCBCBC" bgcolor="<? echo GetColor('#FAFAF1','#FFFFFF'); ?>">
+	style="border-bottom:1px solid #BCBCBC" bgcolor="<?php  echo GetColor('#F0FAFF','#FFFFFF'); ?>">
 <tr> 
 <td width="13%">
-	<img src="<? echo CheckPic($row['litpic']); ?>" width="80" height="60" alt="文档图片" border="0"> 
+	<img src="<?php  echo CheckPic($row['litpic']); ?>" width="80" height="60" alt="文档图片" border="0"> 
 </td>
 <td width="35%">
-<input name="arcID" type="checkbox" id="arcID" value="<?=$row['ID']?>" class="np"> 
+<input name="arcID" type="checkbox" id="arcID" value="<?php echo $row['ID']?>" class="np"> 
 <b>
-<a href="archives_do.php?aid=<?=$row['ID']?>&dopost=editArchives" oncontextmenu="ShowMenu(this,<?=$row['ID']?>,'<?=urlencode($row['title'])?>')">
-	<u><?/**/echo $row['title'];?></u>
+<a href="archives_do.php?aid=<?php echo $row['ID']?>&dopost=editArchives" oncontextmenu="ShowMenu(this,<?php echo $row['ID']?>,'<?php echo urlencode($row['title'])?>')">
+	<u><?php /**/echo $row['title'];?></u>
 </a>
 <br>
-　　发布时间：<?=GetDateTimeMk($row['senddate']);?>
+　　发布时间：<?php echo GetDateTimeMk($row['senddate']);?>
 </b>
 </td>
 <td width="12%" height="26" align="center">
-<?=$row['typename']?>
+<?php echo $row['typename']?>
 <br>
-ID: <?=$row['ID']?>
+ID: <?php echo $row['ID']?>
 </td>
-<td width="11%" align="center"><?=GetRankName($row['arcrank'])?></td>
-<td width="10%" align="center"><?=$row['adminname']?></td>
-<td width="10%" align="center"><?=IsHtmlArchives($row['ismake'])?></td>
-<td  width="9%" align="center"><?=$row['click']?></td>
+<td width="11%" align="center"><?php echo GetRankName($row['arcrank'])?></td>
+<td width="10%" align="center"><?php echo $row['adminname']?></td>
+<td width="10%" align="center"><?php echo IsHtmlArchives($row['ismake'])?></td>
+<td  width="9%" align="center"><?php echo $row['click']?></td>
 </tr>
 </table>
 <div style="font-size:2pt">&nbsp</div>
-<?
+<?php 
 }
 ?>
 	 </td></tr>
 	 </form>
 	 </table>
 	 
-	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
-<tr bgcolor='#FAFAF1'> 
+	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor="#98CAEF">
+<tr bgcolor='#F8FBFB'> 
 <td height="25">
 <table width="98%" border="0" cellspacing="1" cellpadding="1">
-<tr bgcolor="#FAFAF1"> 
+<tr bgcolor="#F8FBFB"> 
 <td height="24" colspan="10">
 &nbsp;
 <a href="javascript:selAll()" class="coolbg">全选</a> 
@@ -244,16 +245,16 @@ ID: <?=$row['ID']?>
 </table>
 	
 	<div style="font-size:2pt">&nbsp</div>
-<table width='100%'border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC'>
+<table width='100%'border='0' cellpadding='3' cellspacing='1' bgcolor="#98CAEF">
 <tr> 
-<td height="25" align="center" bgcolor='#EEF4EA'>
-	<?=$dlist->GetPageList(7);?>
+<td height="25" align="center" bgcolor='#E5F9FF'>
+	<?php echo $dlist->GetPageList(7);?>
 </td>
 </tr>
 </table>
 <div style="font-size:2pt">&nbsp</div>
-<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
-<tr bgcolor='#EEF4EA'> 
+<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor="#98CAEF">
+<tr bgcolor='#E5F9FF'> 
 <form name='form3' action='content_i_list.php' method='get'>
 <input type='hidden' name='dopost' value='listArchives'>
 <td background='img/wbg.gif'>
@@ -261,16 +262,13 @@ ID: <?=$row['ID']?>
 	<tr>
 	<td width='90' align='center'>请选择类目：</td>
 	<td width='160'>
-<select name='cid' style='width:150'>
- <option value='0'>选择分类...</option>
-	<?=$optionarr?>
-</select>
+	<?php echo $optionarr?>
 </td>
 <td width='70'>
 关键字：
 </td>
 <td width='160'>
-	<input type='text' name='keyword' value='<?=$keyword?>' style='width:150'>
+	<input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150'>
 </td>
 <td>
 <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">

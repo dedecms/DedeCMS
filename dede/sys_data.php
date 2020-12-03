@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 //获取系统存在的表信息
@@ -114,7 +114,7 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr> 
     <td height="19" colspan="4" background="img/tbg.gif" bgcolor="#E7E7E7">
     	<table width="96%" border="0" cellspacing="1" cellpadding="1">
@@ -137,25 +137,25 @@ function checkSubmit()
     <td align="center" valign="top">记录数</td>
     <td align="center" valign="top">操作</td>
   </tr>
-  <?  
+  <?php   
   foreach($dedeSysTables as $t){ 
   ?>
   <tr align="center"  bgcolor="#FFFFFF"> 
-    <td width="9%" height="24"> <input type="checkbox" name="tables" value="<?=$t?>" class="np" checked> 
+    <td width="9%" height="24"> <input type="checkbox" name="tables" value="<?php echo $t?>" class="np" checked> 
     </td>
     <td width="41%" > 
-      <?=$t?>
+      <?php echo $t?>
     </td>
     <td width="25%"> 
-      <?=TjCount($t,$dsql)?>
+      <?php echo TjCount($t,$dsql)?>
     </td>
     <td width="25%">
-    <a href="#" onClick="LoadUrl('dopost=opimize&tablename=<?=$t?>');">优化</a> |
-    <a href="#" onClick="LoadUrl('dopost=repair&tablename=<?=$t?>');">修复</a> |
-    <a href="#" onClick="LoadUrl('dopost=viewinfo&tablename=<?=$t?>');">结构</a>
+    <a href="#" onClick="LoadUrl('dopost=opimize&tablename=<?php echo $t?>');">优化</a> |
+    <a href="#" onClick="LoadUrl('dopost=repair&tablename=<?php echo $t?>');">修复</a> |
+    <a href="#" onClick="LoadUrl('dopost=viewinfo&tablename=<?php echo $t?>');">结构</a>
     </td>
   </tr>
-  <? } ?>
+  <?php  } ?>
   <tr bgcolor="#F7F8ED"> 
     <td height="24" colspan="4" valign="top"><strong>其它数据表：</strong></td>
   </tr>
@@ -165,32 +165,32 @@ function checkSubmit()
     <td>记录数</td>
     <td>操作</td>
   </tr>
-  <?  
+  <?php   
   foreach($otherTables as $t){ 
   ?>
   <tr align="center"  bgcolor="#FFFFFF"> 
-    <td width="9%" height="24"> <input type="checkbox" name="tables" value="<?=$t?>" class="np"> 
+    <td width="9%" height="24"> <input type="checkbox" name="tables" value="<?php echo $t?>" class="np"> 
     </td>
     <td width="41%" > 
-      <?=$t?>
+      <?php echo $t?>
     </td>
     <td width="25%"> 
-      <?=TjCount($t,$dsql)?>
+      <?php echo TjCount($t,$dsql)?>
     </td>
     <td width="25%">
-    <a href="#" onClick="LoadUrl('dopost=opimize&tablename=<?=$t?>');">优化</a> |
-    <a href="#" onClick="LoadUrl('dopost=repair&tablename=<?=$t?>');">修复</a> |
-    <a href="#" onClick="LoadUrl('dopost=viewinfo&tablename=<?=$t?>');">结构</a>
+    <a href="#" onClick="LoadUrl('dopost=opimize&tablename=<?php echo $t?>');">优化</a> |
+    <a href="#" onClick="LoadUrl('dopost=repair&tablename=<?php echo $t?>');">修复</a> |
+    <a href="#" onClick="LoadUrl('dopost=viewinfo&tablename=<?php echo $t?>');">结构</a>
     </td>
   </tr>
-  <? } ?>
+  <?php  } ?>
     <tr bgcolor="#FDFDEA"> 
       <td height="24" colspan="4">&nbsp; 
-        <input name="b1" type="button" id="b1" onclick="SelAll()" value="全选">
+        <input name="b1" type="button" id="b1" onclick="SelAll()" value="全选" class='nbt'>
         &nbsp; 
-        <input name="b2" type="button" id="b2" onclick="ReSel()" value="反选">
+        <input name="b2" type="button" id="b2" onclick="ReSel()" value="反选" class='nbt'>
         &nbsp; 
-        <input name="b3" type="button" id="b3" onclick="NoneSel()" value="取消">
+        <input name="b3" type="button" id="b3" onclick="NoneSel()" value="取消" class='nbt'>
       </td>
   </tr>
   <tr bgcolor="#F7F8ED"> 
@@ -199,14 +199,14 @@ function checkSubmit()
   <tr align="center" bgcolor="#FFFFFF"> 
     <td height="50" colspan="4"> <table width="90%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td height="30">当前数据库版本： <?=$mysql_version?></td>
+            <td height="30">当前数据库版本： <?php echo $mysql_version?></td>
           </tr>
           <tr> 
             <td height="30">
             	指定备份数据格式： 
-              <input name="datatype" type="radio" class="np" value="4.0"<?if($mysql_version<4.1) echo " checked";?>>
+              <input name="datatype" type="radio" class="np" value="4.0"<?php if($mysql_version<4.1) echo " checked";?>>
               MySQL3.x/4.0.x 版本 
-              <input type="radio" name="datatype" value="4.1" class="np"<?if($mysql_version>=4.1) echo " checked";?>>
+              <input type="radio" name="datatype" value="4.1" class="np"<?php if($mysql_version>=4.1) echo " checked";?>>
               MySQL4.1.x/5.x 版本
               </td>
           </tr>
@@ -229,6 +229,6 @@ function checkSubmit()
 	</td>
   </tr>
 </table>
-<? $dsql->Close(); ?>
+<?php  $dsql->Close(); ?>
 </body>
 </html>

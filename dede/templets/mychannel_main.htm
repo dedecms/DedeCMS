@@ -6,7 +6,7 @@
 <link href='base.css' rel='stylesheet' type='text/css'>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr> 
     <td height="19" colspan="7" background="img/tbg.gif">
     	<table width='96%' cellpadding='0' cellspacing='0'>
@@ -19,31 +19,33 @@
      </table>
     </td>
   </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
-      <td width="8%">ID号</td>
-      <td width="20%">频道名称</td>
+  <tr align="center" bgcolor="#F8FBFB" height="24"> 
+      <td width="6%">ID号</td>
+      <td width="18%">频道名称</td>
       <td width="15%">识别ID</td>
-      <td width="20%">附加表</td>
+      <td width="18%">附加表</td>
       <td width="12%">状态</td>
       <td width="9%">模型</td>
-      <td width="16%">管理</td>
+      <td width="22%">管理</td>
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-        <td>[field:ID /]</td>
-        <td>[field:typename /]</td>
-        <td>[field:nid /]</td>
+        <td>[field:ID/]</td>
+        <td>[field:typename/]</td>
+        <td>[field:nid/]</td>
         <td>[field:addtable function="str_replace('#@__',$GLOBALS{'cfg_dbprefix'},'@me')"/]</td>
         <td>[field:isshow function='GetSta(@me,$GLOBALS{"row"}{"ID"})'/]</td>
         <td>[field:issystem function='IsSystem(@me)'/]</td>
         <td>
-         <a href='mychannel_edit.php?ID=[field:ID /]&dopost=edit'>更改</a>|
-		     <a href='mychannel_edit.php?ID=[field:ID /]&dopost=delete'>删除</a>|
-		     <a href='mychannel_edit.php?ID=[field:ID /]&dopost=gettemplets'>模板</a>
+         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=edit'>更改</a> | 
+         <a href='mychannel_field.php?ID=[field:ID/]'>字段</a> | 
+         <a href='mychannel_edit.php?ID=[field:ID/]&dopost=gettemplets'>模板</a> | 
+		     <a href='mychannel_edit.php?ID=[field:ID/]&dopost=delete'>删除</a> | 
+		     
 		    </td>
      </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+     <tr align="center" bgcolor="#F8FBFB" height="24"> 
       <td colspan="7">{dede:pagelist listsize=6/}</td>
      </tr>
    </table>

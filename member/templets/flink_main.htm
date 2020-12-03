@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=gb2312">
 <title>友情链接管理</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='main.js'></script>
 <script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript">
@@ -96,21 +96,22 @@ function ReLoadList(oby){
 </style>	
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">	
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="299" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top"> 
+    <td  valign="top"> 
       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
           <tr> 
-          <td background="img/tbg.gif" height="25" class="gdt2"> <strong>　&nbsp;友情链接管理：</strong> 
+          <td background="img/nnnbg.gif" height="25" class="gdt2"> <strong>　&nbsp;友情链接管理：</strong> 
           </td>
           </tr>
 	 </table>
-      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
         <tr bgcolor="#F2F9E6"> 
           <td height="22" colspan="2" style="padding-left:6px;">增加新的链接：</td>
         </tr>
@@ -148,16 +149,17 @@ function ReLoadList(oby){
         <tr> 
         <td height="380" colspan="2" valign="top" bgcolor="#FFFFFF" style="padding-left:6px;padding-top:6px">
 		  
-		  <span id="linkList"><? GetLinkList($dsql); ?></span>
+		  <span id="linkList"><?php  GetLinkList($dsql); ?></span>
 			
 			</td>
         </tr>
       </table> </td>
   </tr>
 </table>
-<?
+<?php 
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
 include(dirname(__FILE__)."/foot.htm");
 ?>
+</div>
 </body>
 </html>

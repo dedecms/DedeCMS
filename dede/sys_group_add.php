@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Group');
 if(!empty($dopost)){
@@ -30,7 +30,7 @@ if(!empty($dopost)){
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <center>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
 <form name='form1' action='sys_group_add.php' method='post'> 
 <input type='hidden' name='dopost' value='save'>
   <tr>
@@ -48,7 +48,7 @@ if(!empty($dopost)){
           <td width="9%" height="30">级别值：</td>
           <td width="91%"> <input name="rankid" type="text" id="rankid" size="6">
             （数字，系统已占用的级别值：
-            <?
+            <?php 
           	$dsql = new DedeSql(false);
           	$dsql->SetQuery("Select rank From #@__admintype");
           	$dsql->Execute();
@@ -57,7 +57,7 @@ if(!empty($dopost)){
           	?>
             ） </td>
         </tr>
-        <?
+        <?php 
         $start = 0;
         $k = 0;
         $gouplists = file(dirname(__FILE__).'/inc/grouplist.txt');
@@ -90,11 +90,11 @@ if(!empty($dopost)){
         </td>
         </tr>
         <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'><?=$start?>、插件权限</td>
+           <td height='25' colspan='2' bgcolor='#F9FAF3'><?php echo $start?>、插件权限</td>
          </tr>
         <tr>
         <td height='25' colspan='2'>
-         <?
+         <?php 
          $l = 0;
          $dsql = new DedeSql(false);
          $dsql->SetQuery('Select plusname From #@__plus');

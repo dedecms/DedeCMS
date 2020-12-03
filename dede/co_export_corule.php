@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
 $nid = ereg_replace("[^0-9]","",$nid);

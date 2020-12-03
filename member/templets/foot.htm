@@ -1,13 +1,10 @@
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px">
-  <tr>
-    <td height="12" align="center" bgcolor="#F9F9F9"><hr size="1" style="color:#D6DACF"></td>
-  </tr>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+?>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px">
   <tr> 
-    <td height="30" align="center"> 
-      <?=$cfg_powerby?>
+    <td height="60" align="center" style='background-image:url(img/fbg.gif);border-top:1px solid #dedede'> 
+      <?php echo $cfg_powerby?>
     </td>
   </tr>
 </table>
-<?
-if(isset($dsql) && is_object($dsql)) $dsql->Close();
-?>

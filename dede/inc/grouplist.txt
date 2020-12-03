@@ -21,6 +21,8 @@
 >t_AccNew>新建授权子栏目　
 >t_AccEdit>修改授权子栏目　
 >t_AccDel>删除授权子栏目
+>c_Tag>Tag管理
+>c_FreeList>自由列表管理
 
 >>内容管理
 
@@ -74,28 +76,33 @@
 
 >sys_User>系统用户管理　
 >sys_Group>系统组管理
->sys_MdPwd>更改个人密码[br]
+>sys_MdPwd>更改个人密码
 >sys_Edit>修改系统参数　
+>sys_Passport>通行证设置
 >sys_Log>管理日志
->sys_plus>插件管理
->sys_Data>数据备份还原[br]
+>sys_plus>插件管理[br]
+>sys_Data>数据备份还原
 >sys_Att>自定义文档属性　
 >sys_ArcBatch>文档批量维护　
->sys_ArcTj>文档信息统计[br]
+>sys_ArcTj>文档信息统计
 >sys_Source>新闻来源
->sys_Writer>作者管理　
+>sys_Writer>作者管理[br]
 >sys_SoftConfig>软件频道参数　
->sys_Keyword>关键字管理[br]
+>sys_Keyword>关键字管理
 >sys_MakeHtml>更新HTML　
->sys_Feedback>评论管理
+>sys_Feedback>评论管理[br]
 >sys_Upload>管理任意上传
 >sys_MyUpload>管理我的上传
 >sys_DelUpload>删除附件
 >pic_view>图片浏览器
+>sys_description>自动摘要管理
 
 >>会员管理
 　
->member_Type>会员类型管理
+>member_Type>会员级别管理
 >member_List>列出会员
 >member_Edit>更改会员
 >member_Del>删除会员
+>member_Card>点卡管理
+>member_Operations>会员业务管理
+>member_Data>数据导入与转换

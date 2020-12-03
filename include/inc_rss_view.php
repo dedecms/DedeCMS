@@ -1,11 +1,12 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config_base.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
 require_once(dirname(__FILE__)."/inc_typelink.php");
 require_once(dirname(__FILE__)."/inc_channel_unit_functions.php");
 /******************************************************
-//Copyright 2004-2006 by DedeCms.com itprato
+//Copyright 2005-2007 by DedeCms.com itprato
 //本类的用途是用于浏览频道RSS或对RSS生成静态文件
+//最后修改日期 2007-3-27 By dedecms 用户 baijixing
 ******************************************************/
 @set_time_limit(0);
 class RssView
@@ -31,7 +32,7 @@ class RssView
  		$this->MaxRow = $max_row;
  		$this->TypeFields['title'] = $this->TypeLink->GetPositionLink(false);
  		$this->TypeFields['title'] = ereg_replace("[<>]"," / ",$this->TypeFields['title']);
- 		$this->TypeFields['typelink'] = $GLOBALS['cfg_basehost'].$this->TypeLink->GetOneTypeUrl($this->TypeFields);
+ 		$this->TypeFields['typelink'] = $this->TypeLink->GetOneTypeUrl($this->TypeFields);
  		$this->TypeFields['powerby'] = $GLOBALS['cfg_powerby'];
  		$this->TypeFields['adminemail'] = $GLOBALS['cfg_adminemail'];
  		foreach($this->TypeFields as $k=>$v){
@@ -100,7 +101,8 @@ class RssView
 		$query = "Select #@__archives.ID,#@__archives.title,#@__archives.source,#@__archives.writer,#@__archives.typeid,#@__archives.ismake,#@__archives.money,
 		#@__archives.description,#@__archives.pubdate,#@__archives.senddate,#@__archives.arcrank,#@__archives.click,
 		#@__archives.litpic,#@__arctype.typedir,#@__arctype.typename,#@__arctype.isdefault,
-		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart 
+		#@__arctype.defaultname,#@__arctype.namerule,#@__arctype.namerule2,#@__arctype.ispart,
+		#@__arctype.siteurl 
 		from #@__archives 
 		left join #@__arctype on #@__archives.typeid=#@__arctype.ID
 		where $orwhere $ordersql limit 0,".$this->MaxRow;
@@ -122,7 +124,7 @@ class RssView
       $row["filename"] = $row["arcurl"];
       $row["stime"] = GetDateMK($row["pubdate"]);
       $row["image"] = "<img src='".$row["picname"]."' border='0'>";
-      $row["fullurl"] = $GLOBALS["cfg_basehost"].$row["arcurl"];
+      $row["fullurl"] = $row['siteurl'].$row["arcurl"];
       $row["phpurl"] = $GLOBALS["cfg_plus_dir"];
  		  $row["templeturl"] = $GLOBALS["cfg_templets_dir"];
  		  if($row["source"]=="") $row["source"] = $GLOBALS['cfg_webname'];

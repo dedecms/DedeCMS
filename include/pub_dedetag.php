@@ -1,4 +1,4 @@
-<?
+<?php 
 /*----------------------------------------------
 Copyright 2004-2006 by DedeCms.com itprato
 Dede Tag模板解析引挚 V4.1 版
@@ -163,7 +163,7 @@ class DedeTagParse
 		fclose($fp);
 		$fp = fopen($this->CacheFile,"w");
 		flock($fp,3);
-		fwrite($fp,'<'.'?'."\n");
+		fwrite($fp,'<'.'?php'."\r\n");
 		if(is_array($this->CTags)){
 			foreach($this->CTags as $tid=>$ctag){
 				$arrayValue = 'Array("'.$ctag->TagName.'",';
@@ -317,6 +317,31 @@ class DedeTagParse
 			  $this->CTags[$i]->TagValue = $DedeMeValue;
 	    }
     }
+	}
+	//把分析模板输出到一个字符串中
+	//不替换没被处理的值
+	function GetResultNP()
+	{
+		$ResultString = "";
+		if($this->Count==-1){
+			return $this->SourceString;
+		}
+		$this->AssignSysTag();
+		$nextTagEnd = 0;
+		$strok = "";
+		for($i=0;$i<=$this->Count;$i++){
+			if($this->CTags[$i]->GetValue()!=""){
+			  if($this->CTags[$i]->GetValue()=='#@Delete@#') $this->CTags[$i]->TagValue = "";
+			  $ResultString .= substr($this->SourceString,$nextTagEnd,$this->CTags[$i]->StartPos-$nextTagEnd);
+			  $ResultString .= $this->CTags[$i]->GetValue();
+			  $nextTagEnd = $this->CTags[$i]->EndPos;
+		  }
+		}
+		$slen = strlen($this->SourceString);
+		if($slen>$nextTagEnd){
+		   $ResultString .= substr($this->SourceString,$nextTagEnd,$slen-$nextTagEnd);
+	  }
+		return $ResultString;
 	}
 	//把分析模板输出到一个字符串中,并返回
 	function GetResult()

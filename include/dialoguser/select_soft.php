@@ -4,8 +4,12 @@ require_once(dirname(__FILE__)."/config.php");
 if(empty($activepath)) $activepath = "";
 
 //检测用户文件存放路径是否合法
+if(ereg("\.",$activepath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
+
 $activepath = str_replace("\\","/",$activepath);
-$activepath = str_replace("..","",$activepath);
 $activepath = ereg_replace("^/{1,}","/",$activepath);
 $rootdir = $cfg_user_dir."/".$cfg_ml->M_ID;
 
@@ -22,6 +26,16 @@ $activeurl = "..".$activepath;
 if(empty($f)) $f="form1.enclosure";
 
 if(empty($comeback)) $comeback = "";
+
+if(empty($cfg_softtype)){
+	echo "由于没指定可浏览软件类型，此功能被禁止！";
+	exit();
+}
+
+if(!eregi($cfg_user_dir.'/'.$cfg_ml->M_ID,$inpath)){
+	echo "你访问的目录不合法！";
+	exit();
+}
 
 ?>
 <html>
@@ -123,7 +137,7 @@ else if(eregi("\.(zip|rar|tgr.gz)",$file)){
    </tr>";
     echo "$line";
 }
-else if(eregi("\.(exe)",$file)){
+else if(eregi("\.($cfg_softtype)",$file)){
    
    if($file==$comeback) $lstyle = " style='color:red' ";
    else  $lstyle = "";

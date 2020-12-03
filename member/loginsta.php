@@ -1,4 +1,4 @@
-<?
+<?php 
 header("Pragma:no-cache\r\n");
 header("Cache-Control:no-cache\r\n");
 header("Expires:0\r\n");
@@ -22,27 +22,27 @@ if($spaceimage==''){
 ?>
 <table width="212" border="0" cellspacing="0" cellpadding="0">
   <tr> 
-    <td height="27" colspan="2" align="center" style="border-bottom:1px solid $cdcdcd;background-color:#FAFAFA"><img src="<?=$cfg_templeturl?>/img/menumember.gif" width="16" height="15">你好：<font color='#2D78EA'>
-      <?=$cfg_ml->M_UserName?>
+    <td height="27" colspan="2" align="center" style="border-bottom:1px solid $cdcdcd;background-color:#FAFAFA"><img src="<?php echo $cfg_templeturl?>/img/menumember.gif" width="16" height="15">你好：<font color='#2D78EA'>
+      <?php echo $cfg_ml->M_UserName?>
       </font>，欢迎登录</td>
 </tr>
 <tr> 
 <td rowspan="3" align="center">
-	<img name="ok" src="<?=$spaceimage?>" width="100" height="75" alt="<?=$spacename?>" border="0"> 
+	<img name="ok" src="<?php echo $spaceimage?>" width="100" height="75" alt="<?php echo $spacename?>" border="0"> 
 </td>
-<td width="40%" height="29" align="center"><a href="<?=$cfg_memberurl?>/guestbook_admin.php" class="mbline">[我的留言]</a></td>
+<td width="40%" height="29" align="center"><a href="<?php echo $cfg_memberurl?>/guestbook_admin.php" class="mbline">[我的留言]</a></td>
 </tr>
 <tr> 
-<td height="29" align="center"><a href="<?=$cfg_memberurl?>/mystow.php" class="mbline">[我的收藏]</a></td>
+<td height="29" align="center"><a href="<?php echo $cfg_memberurl?>/mystow.php" class="mbline">[我的收藏]</a></td>
 </tr>
 <tr> 
-<td height="29" align="center"><a href="<?=$cfg_memberurl?>/article_add.php" class="mbline">[发表文章]</a></td>
+<td height="29" align="center"><a href="<?php echo $cfg_memberurl?>/article_add.php" class="mbline">[发表文章]</a></td>
 </tr>
 <tr align="center"> 
     <td height="30" colspan="2"> <table width="96%" height="26" border="0" cellpadding="1" cellspacing="1" bgcolor="#99ACB6">
         <tr>
-          <td align="center" bgcolor="#DBEAF2"><a href="<?=$cfg_memberurl?>/index.php?uid=<?=$uid?>">我的空间</a> 
-            | <a href="<?=$cfg_memberurl?>/index.php">控制面板</a> | <a href="<?=$cfg_memberurl?>/index_do.php?fmdo=login&dopost=exit">退出系统</a></td>
+          <td align="center" bgcolor="#DBEAF2"><a href="<?php echo $cfg_memberurl?>/index.php?uid=<?php echo $uid?>">我的空间</a> 
+            | <a href="<?php echo $cfg_memberurl?>/index.php">控制面板</a> | <a href="<?php echo $cfg_memberurl?>/index_do.php?fmdo=login&dopost=exit">退出系统</a></td>
         </tr>
       </table></td>
 </tr>

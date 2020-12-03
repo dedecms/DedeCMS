@@ -1,0 +1,13 @@
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-top:5px">
+  <tr>
+    <td height="12" align="center" bgcolor="#F9F9F9"><hr size="1" style="color:#D6DACF"></td>
+  </tr>
+  <tr> 
+    <td height="30" align="center"> 
+      <?php echo $cfg_powerby?>
+    </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+?>

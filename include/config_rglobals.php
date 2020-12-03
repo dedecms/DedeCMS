@@ -1,4 +1,4 @@
-<?
+<?php 
 if (is_array($_GET)){
 	foreach($_GET AS $key => $value) if(!isset(${$key})) ${$key} = $value;
 }

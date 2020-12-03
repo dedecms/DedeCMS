@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('plus_文件管理器');
 
@@ -24,7 +24,7 @@ else $istemplets = false;
 <title>文件管理器</title>
 <link href='base.css' rel='stylesheet' type='text/css'>
 <style>
-.linerow{border-bottom: 1px solid #CBD8AC;}
+.linerow{border-bottom: 1px solid #A5D0F1;}
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='0' topmargin='0'>
@@ -37,17 +37,17 @@ else $istemplets = false;
         </tr>
         <tr> 
           <td colspan='4' align='right'>
-          <table width='100%' border='0' cellpadding='0' cellspacing='1' bgcolor='#CBD8AC'>
+          <table width='100%' border='0' cellpadding='0' cellspacing='1' bgcolor='#A5D0F1'>
               <tr bgcolor='#FFFFFF'> 
                 <td colspan='4'>
-                <table width='100%' border='0' cellspacing='0' cellpadding='2'>
-                    <tr bgcolor="#CCCCCC"> 
-                      <td width="28%" align="center" background="img/wbg.gif" class='linerow'><strong>文件名</strong></td>
-                      <td width="16%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>文件大小</strong></td>
-                      <td width="22%" align="center" background="img/wbg.gif" class='linerow'><strong>最后修改时间</strong></td>
-                      <td width="34%" align="center" bgcolor='#EEF4EA' class='linerow'><strong>操作</strong></td>
+                <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+                    <tr height='24'> 
+                      <td width="28%" align="center" background="img/tbg.gif" class='linerow'><strong>文件名</strong></td>
+                      <td width="16%" align="center" bgcolor='#E5F9FF' class='linerow'><strong>文件大小</strong></td>
+                      <td width="22%" align="center" background="img/tbg.gif" class='linerow'><strong>最后修改时间</strong></td>
+                      <td width="34%" align="center" bgcolor='#E5F9FF' class='linerow'><strong>操作</strong></td>
                     </tr>
-                    <?
+                    <?php 
 $dh = dir($inpath);
 $ty1="";
 $ty2="";
@@ -74,7 +74,7 @@ while($file = $dh->read()) {
      else if($file == ".."){
             if($activepath == "") continue;
             $tmp = eregi_replace("[/][^/]*$","",$activepath);
-            $line = "\n<tr>
+            $line = "\n<tr height='22'>
             <td class='linerow'>
             <a href=file_manage_main.php?activepath=".urlencode($tmp)."><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a>
             </td>
@@ -88,7 +88,7 @@ while($file = $dh->read()) {
       else if(is_dir("$inpath/$file")){
              if(eregi("^_(.*)$",$file)) continue; #屏蔽FrontPage扩展目录和linux隐蔽目录
              if(eregi("^\.(.*)$",$file)) continue;
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
               <a href=file_manage_main.php?activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>　</td>
@@ -103,7 +103,7 @@ while($file = $dh->read()) {
              echo "$line";
       }
       else if(eregi("\.(gif|png)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/gif.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -119,7 +119,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
      else if(eregi("\.(jpg)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/jpg.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -135,7 +135,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(swf|fla|fly)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/flash.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -151,7 +151,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(zip|rar|tar.gz)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/zip.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -167,7 +167,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(exe)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/exe.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -183,7 +183,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(mp3|wma)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/mp3.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -199,7 +199,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(wmv|api)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/wmv.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -215,7 +215,7 @@ while($file = $dh->read()) {
              echo "$line";
      }
 	 else if(eregi("\.(rm|rmvb)",$file)){
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/rm.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -235,7 +235,7 @@ while($file = $dh->read()) {
              /*if($istemplets) $edurl = "file_manage_view.php?fmdo=editview&filename=".urlencode($file)."&activepath=".urlencode($activepath);
              else */
              $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/txt.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -257,7 +257,7 @@ while($file = $dh->read()) {
              /*if($istemplets) $edurl = "file_manage_view.php?fmdo=editview&filename=".urlencode($file)."&activepath=".urlencode($activepath);
              else */
              $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/htm.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -277,7 +277,7 @@ while($file = $dh->read()) {
 	 else if(eregi("\.(php)",$file))
      {
              $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/php.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -317,7 +317,7 @@ while($file = $dh->read()) {
 	 else if(eregi("\.(css)",$file))
      {
              $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
              <td class='linerow'>
              <a href=$activeurl/$file target=_blank><img src=img/css.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
              <td class='linerow'>$filesize KB</td>
@@ -336,7 +336,7 @@ while($file = $dh->read()) {
      }
      else
      {
-             $line = "\n<tr onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+             $line = "\n<tr height='22' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
               <td class='linerow'><a href=$activeurl/$file target=_blank>$file</td>
               <td class='linerow'>$filesize KB</td>
               <td align='center' class='linerow'>$filetime</td>
@@ -354,16 +354,16 @@ while($file = $dh->read()) {
 $dh->close();
 ?>
                     <tr> 
-                      <td colspan="4" bgcolor='#E8F1DE'>
+                      <td colspan="4" bgcolor='#BEE8FC' height='24'>
                       	<a href='file_manage_main.php'>[根目录]</a>
                       	&nbsp;
-                      	<a href='file_manage_view.php?fmdo=newfile&activepath=<?=urlencode($activepath)?>'>[新建文件]</a>
+                      	<a href='file_manage_view.php?fmdo=newfile&activepath=<?php echo urlencode($activepath)?>'>[新建文件]</a>
                       	&nbsp;
-                      	<a href='file_manage_view.php?fmdo=newdir&activepath=<?=urlencode($activepath)?>'>[新建目录]</a>
+                      	<a href='file_manage_view.php?fmdo=newdir&activepath=<?php echo urlencode($activepath)?>'>[新建目录]</a>
                       	&nbsp;
-                      	<a href='file_manage_view.php?fmdo=upload&activepath=<?=urlencode($activepath)?>'>[文件上传]</a>
+                      	<a href='file_manage_view.php?fmdo=upload&activepath=<?php echo urlencode($activepath)?>'>[文件上传]</a>
                       	&nbsp;
-                      	<a href='file_manage_control.php?fmdo=space&activepath=<?=urlencode($activepath)?>'>[空间检查]</a>
+                      	<a href='file_manage_control.php?fmdo=space&activepath=<?php echo urlencode($activepath)?>'>[空间检查]</a>
                       	&nbsp;&nbsp;</td>
                     </tr>
                   </table></td>

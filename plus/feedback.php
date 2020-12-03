@@ -7,6 +7,9 @@ if(!isset($action)) $action = "";
 if(!empty($artID)) $arcID = $artID;
 if(!isset($arcID)) $arcID = "";
 
+//每页显示评论记录数
+$feedbackPageSize = 15;
+
 if($cfg_feedbackcheck=='是') $ischeck = 0;
 else $ischeck = 1;
 
@@ -28,7 +31,28 @@ if(empty($arcID)){
 }
 
 $ml = new MemberLogin();
+
 $dsql = new DedeSql(false);
+
+//扔鸡蛋鲜花
+//-----------------------------------
+if($action=="good")
+{
+	$fid = ereg_replace("[^0-9]","",$fid);
+	$dsql->ExecuteNoneQuery("Update #@__feedback set good = good+1 where ID='$fid' ");
+	$dsql->Close();
+	ShowMsg("成功发出一束鲜花！","feedback.php?arcID=$arcID");
+	exit();
+}
+else if($action=="bad")
+{
+	$fid = ereg_replace("[^0-9]","",$fid);
+	$dsql->ExecuteNoneQuery("Update #@__feedback set bad = bad+1 where ID='$fid' ");
+	$dsql->Close();
+	ShowMsg("成功扔出一只鸡蛋！","feedback.php?arcID=$arcID");
+	exit();
+}
+
 //读取文档信息
 $arctitle = "";
 $arcurl = "";
@@ -44,14 +68,23 @@ else{
 	 ShowMsg("无法对未知文档发表评论!","-1");
 	 exit();
 }
+
 //查看评论
+/*
+function _ShowFeedback()
+*/
 //-----------------------------------
 if($action==""||$action=="show")
 {
+	
 	require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
+	
+	$row = $dsql->GetOne("Select AVG(rank) as dd From #@__feedback where aid='$arcID' ");
+	$agvrank = $row['dd'];
+	
   $dlist = new DataList();
   $dlist->Init();
-  $dlist->pageSize = 20;
+  $dlist->pageSize = $feedbackPageSize;
   
   //最近热门评论
   $feedback_hot = "";
@@ -107,16 +140,19 @@ else if($action=="send")
   else if($ml->M_ID > 0){ //已登录的用户
 	  $username = $ml->M_UserName;
   }
-  else{ //用户身份验证
-	  $username = ereg_replace("[ ;'\"\*\?\%]","",$username);
-	  $pwd = ereg_replace("[ ;'\"\*\?\%]","",$pwd);
- 	  $rs = $ml->CheckUser($username,$pwd);
-    if($rs==1) {
-   	  $dsql->SetQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
-   	  $dsql->ExecuteNoneQuery();
-   	  $username = $ml->M_UserName;
+  else{
+  	//用户身份验证，考虑到整合的原因，验证后不支持保存用户的登录信息
+	  if(!TestStringSafe($username)||!TestStringSafe($pwd)){
+   	  ShowMsg("用户名或密码不合法！","-1",0,2000);
+  	  exit();
     }
-    else{
+ 	  $row = $dsql->GetOne("Select ID,pwd From #@__member where userid='$username' ");
+ 	  $isok = false;
+ 		if(is_array($row)){
+ 			$pwd = GetEncodePwd($pwd);
+ 			if($pwd == $row['pwd']) $isok = true;
+ 	  }
+    if(!$isok) {
   	  ShowMsg("验证用户失败，请重新输入你的用户名和密码！","-1");
   	  exit();
     }
@@ -127,12 +163,21 @@ else if($action=="send")
   //保存评论内容
   if($msg!="")
   {
+	  if(empty($rank)) $rank = '0';
 	  $inquery = "
-	  Insert Into #@__feedback(aid,username,arctitle,ip,msg,ischeck,dtime) 
-	  values('$arcID','$username','$arctitle','$ip','$msg','$ischeck','$dtime')
+	  Insert Into #@__feedback(aid,username,arctitle,ip,msg,ischeck,dtime,rank) 
+	  values('$arcID','$username','$arctitle','$ip','$msg','$ischeck','$dtime','$rank')
 	  ";
 	  $dsql->ExecuteNoneQuery($inquery);
-	  $dsql->ExecuteNoneQuery("Update #@__archives set postnum=postnum+1,lastpost='".mytime()."' where ID='$arcID'");
+	  $row = $dsql->GetOne("Select count(*) as dd From #@__feedback where aid='$arcID' ");
+	  $dsql->ExecuteNoneQuery("Update #@__archives set postnum='".$row['dd']."',lastpost='".mytime()."' where ID='$arcID'");
+    //更新文档
+    if($cfg_feedback_make=='是'){
+    	require(dirname(__FILE__)."/../include/inc_archives_view.php");
+  	  $arc = new Archives($arcID);
+      $arc->MakeHtml();
+      $arc->Close();
+    }
   }
   $dsql->Close();
   if($ischeck==0) ShowMsg("成功发表评论，但需审核后才会显示你的评论!","feedback.php?arcID=$arcID");

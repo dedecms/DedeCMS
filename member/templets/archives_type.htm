@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=gb2312">
 <title>管理我的分类</title>
-<link href="base.css" rel="stylesheet" type="text/css">
+<link href="newskin.css" rel="stylesheet" type="text/css">
 <script language='javascript'src='main.js'></script>
 <script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript">
@@ -17,7 +17,9 @@ function AddnewType(){
     alert("类目名称不能为空！");
     return false;
   }
-  if($Obj('channelid02').checked) channelid = 2;
+  if($Obj('channelid02')){
+  	if($Obj('channelid02').checked) channelid = 2;
+  }
   var errMsg = "网络通信出错！<br>[<a href='javascript:ReLoadList(0)'><u>重新加载类目列表</u></a>]";
   var myajax = new DedeAjax(taget_obj,true,true,"",errMsg,"正在处理...");
   myajax.SendGet("archives_type_action.php?dopost=addnew&typename="+typename+"&channelid="+channelid+"&rank="+rank);
@@ -60,22 +62,22 @@ function ReLoadList(orderby){
 </script>	
 </head>
 <body leftmargin="0" topmargin="0">
-<? include(dirname(__FILE__)."/head.htm"); ?>
-<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
     <td width="160" height="299" valign="top"> 
-      <?include(dirname(__FILE__)."/menu.php");?>
+      <?php include(dirname(__FILE__)."/menu.php");?>
     </td>
     <td width="10">&nbsp;</td>
-    <td width="600" valign="top"> 
+    <td  valign="top"> 
       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:3px">
           <tr> 
-          <td background="img/tbg.gif" height="25" class="gdt2">
-		  <strong>　&nbsp;管理我的分类：</strong>
-		  </td>
+          <td background="img/nnnbg.gif" height="26" class="gdt2">
+		  <strong>　&nbsp;管理我的分类：</strong>		  </td>
           </tr>
 	 </table>
-      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+      <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D9EDC0">
         <tr bgcolor="#F2F9E6"> 
           <td height="22" colspan="2" style="padding-left:6px;">增加新的分类：</td>
         </tr>
@@ -90,16 +92,16 @@ function ReLoadList(orderby){
           <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
 		        <input name="channelid" id="channelid01" type="radio" value="1" checked>
             文章 
-            <? if($cfg_mb_album=='是'){ ?>
+            <?php  if($cfg_mb_album=='是'){ ?>
             <input type="radio" id="channelid02" name="channelid" value="2">
             图集
-            <? } ?>
+            <?php  } ?>
 		</td>
         </tr>
         <tr> 
           <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">排序级别：</td>
           <td height="22" bgcolor="#FFFFFF" style="padding-left:6px;">
-		  <input name="rank" type="text" id="rank" style="width:80px" value="<?=$nrank?>">
+		  <input name="rank" type="text" id="rank" style="width:80px" value="<?php echo $nrank?>">
           <input type="button" name="bt" value="增加" style="width:50px" onClick="AddnewType()">
 		  </td>
         </tr>
@@ -117,7 +119,7 @@ function ReLoadList(orderby){
              <td width="18%"><a href='javascript:ReLoadList(0)'><u>排序级别</u></a></td>
              <td>操作</td>
             </tr>
-		<?
+		<?php 
 	$dsql->SetQuery("Select * From #@__member_arctype where memberid='".$cfg_ml->M_ID."' order by rank desc");
   $dsql->Execute();
   while($row = $dsql->GetObject()){
@@ -138,9 +140,10 @@ function ReLoadList(orderby){
       </table> </td>
   </tr>
 </table>
-<?
+<?php 
 if(isset($dsql) && is_object($dsql)) $dsql->Close();
 include(dirname(__FILE__)."/foot.htm");
 ?>
+</div>
 </body>
 </html>

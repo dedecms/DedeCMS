@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/../include/config_base.php");
 require(dirname(__FILE__)."/../include/inc_channel_unit.php");
 if(!isset($action)) $action = "";

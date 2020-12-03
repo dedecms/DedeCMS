@@ -1,7 +1,9 @@
-<?
-$cfg_pp_need = '·ñ';
-$cfg_pp_encode = 'SzYGh6194N';
-$cfg_pp_login = '/dedecms31_lit/member/login.php';
-$cfg_pp_exit = '/dedecms31_lit/member/index_do.php?fmdo=login&dopost=exit';
-$cfg_pp_reg = '/dedecms31_lit/member/index_do.php?fmdo=user&dopost=regnew';
+<?php 
+$cfg_pp_isopen = '0';
+$cfg_pp_name = 'ÂÛÌ³';
+$cfg_pp_indexurl = 'http://www.cms.com/bbs';
+$cfg_pp_regurl = 'http://www.cms.com/bbs/register.php';
+$cfg_pp_loginurl = 'http://www.cms.com/bbs/login.php';
+$cfg_pp_exiturl = 'http://www.cms.com/bbs/login.php?action=quit';
+$cfg_pp_editsafeurl = 'http://www.cms.com/bbs/profile.php?action=modify';
 ?>

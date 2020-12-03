@@ -1,4 +1,4 @@
-<?
+<?php 
 
 //本验证采用加密的cookie验证
 //新文件的验证数据为 GetCookie("dd_ckstr")
@@ -29,23 +29,47 @@ if(function_exists("imagecreate"))
 	session_register('dd_ckstr');
 	$_SESSION['dd_ckstr'] = strtolower($rndstring);
 	$rndcodelen = strlen($rndstring);
+  //图片大小
   $im = imagecreate(50,20);
-  $bgcolor = ImageColorAllocate($im, 250,255,180);
-  $black = ImageColorAllocate($im, 0,0,0);
-  $fontColor = ImageColorAllocate($im, 50,110,0); 
-  $lineColor1 = ImageColorAllocate($im,190,220,170);
-  $lineColor2 = ImageColorAllocate($im,250,250,170);
+  //字体
+  $font_type = dirname(__FILE__)."/data/ant".mt_rand(1,2).".ttf";
+  //背景颜色
+  $bgcolor = ImageColorAllocate($im, 225,245,255);
+  //边框色
+  $iborder = ImageColorAllocate($im, 56,172,228);
+  //字体色
+  $fontColor = ImageColorAllocate($im, 6,110,240);
+  $fontColor1 = ImageColorAllocate($im, 166,213,248);
+  $fontColor2 = ImageColorAllocate($im, 8,160,246);
+  //杂点背景线
+  $lineColor1 = ImageColorAllocate($im, 130,220,245);
+  $lineColor2 = ImageColorAllocate($im, 225,245,255);
   
   //背景线
   for($j=3;$j<=16;$j=$j+3) imageline($im,2,$j,48,$j,$lineColor1);
   for($j=2;$j<52;$j=$j+(mt_rand(3,6))) imageline($im,$j,2,$j-6,18,$lineColor2);
   
   //边框
-  imagerectangle($im, 0, 0, 49, 19, $black);
+  imagerectangle($im, 0, 0, 49, 19, $iborder);
+  
+  $strposs = array();
+  //文字
+  for($i=0;$i<$rndcodelen;$i++){
+	  if(function_exists("imagettftext")){
+	  	$strposs[$i][0] = $i*10+6;
+	  	$strposs[$i][1] = mt_rand(15,18);
+	  	imagettftext($im, 11, 5, $strposs[$i][0]+1, $strposs[$i][1]+1, $fontColor1, $font_type, $rndstring[$i]);
+	  }
+	  else{
+	  	imagestring($im, 5, $i*10+6, mt_rand(2,4), $rndstring[$i], $fontColor);
+	  }
+  }
   
   //文字
   for($i=0;$i<$rndcodelen;$i++){
-	  imagestring($im, 5, $i*10+6, mt_rand(2,4), $rndstring[$i], $fontColor);
+	  if(function_exists("imagettftext")){
+	  	imagettftext($im, 11,5, $strposs[$i][0]-1, $strposs[$i][1]-1, $fontColor2, $font_type, $rndstring[$i]);
+	  }
   }
   
   header("Pragma:no-cache\r\n");

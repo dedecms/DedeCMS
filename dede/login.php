@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
 if(empty($dopost)) $dopost="";
@@ -7,11 +7,11 @@ if(empty($dopost)) $dopost="";
 //--------------------------------
 if($dopost=="login")
 {
-  if(empty($validate)) $validate=="";
+  if(empty($validate)) $validate="";
   else $validate = strtolower($validate);
   $svali = GetCkVdValue();
-  if($validate=="" || $validate!=$svali){
-	  ShowMsg("验证码不正确!".$validate.'---'.$svali,"");
+  if(($validate=="" || $validate!=$svali) && $cfg_use_vdcode=='是'){
+	  ShowMsg("验证码不正确!","");
   }else{
      $cuserLogin = new userLogin();
      if(!empty($userid)&&!empty($pwd))
@@ -46,7 +46,7 @@ if($dopost=="login")
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title><?=$cfg_softname." ".$cfg_version?></title>
+<title><?php echo $cfg_softname." ".$cfg_version?></title>
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body style='MARGIN: 0px' bgColor='#ffffff' leftMargin='0' topMargin='0' scroll='no'>
@@ -78,7 +78,7 @@ if($dopost=="login")
   <tr> 
     <td width="100%" height="136" valign="top">
     	<form name="form1" method="post" action="login.php">
-        <input type="hidden" name="gotopage" value="<?if(!empty($gotopage)) echo $gotopage;?>">
+        <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>">
         <input type="hidden" name="dopost" value="login">
         <table width="540" border="0" cellspacing="0" cellpadding="0">
           <tr> 
@@ -94,6 +94,9 @@ if($dopost=="login")
             <td> <input type="password" name="pwd" style="width:150;height:20"> 
             </td>
           </tr>
+          <?php 
+          if($cfg_use_vdcode=='是'){
+          ?>
           <tr> 
             <td height="30" align="center"> 验证码： </td>
             <td> <table width="90%"  border="0" cellspacing="0" cellpadding="0">
@@ -103,11 +106,16 @@ if($dopost=="login")
                 </tr>
               </table></td>
           </tr>
+          <?php 
+          }else{
+          	echo "<tr><td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;<font color='red'>为了使程序有更大程度的兼容，后台默认关闭了验证码，为了你的登录更安全，请确认你的系统支持GD后，在后台参数中开启。</font></td></tr>\r\n";
+          }
+          ?>
           <tr> 
             <td height="50" colspan="2" align="center">
-            	<input type="submit" name="sm1" value="登录" style="background-color:#BAE171;border:1px solid #666666" onClick="this.form.submit();"> 
+            	<input type="submit" name="sm1" value="登录" class="nbt" onClick="this.form.submit();"> 
               &nbsp;
-              <input type="button" name="sm2" value="Official site" onClick="window.open('http://www.dedecms.com');" style="background-color:#FFFFFF;border:1px solid #DDDDDD;color:#DDDDDD"> 
+              <input type="button" name="sm2" value="官方网站" onClick="window.open('http://www.dedecms.com');" class="nbt"> 
               &nbsp;
               </td>
           </tr>

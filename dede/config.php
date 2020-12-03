@@ -1,4 +1,4 @@
-<?
+<?php 
 //该页仅用于检测用户登录的情况，如要手工更改系统配置，请更改config_base.php
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
@@ -41,5 +41,13 @@ if($cfg_dede_log=='是'){
   }
 }
 
+
+function GetTypeidSel($fname,$f1,$f2,$cc,$selv='0',$selname='请选择...',$pos=''){
+  global $opall;
+  if(empty($opall)) $opall = 0;
+  $rstr = "<input type=\"hidden\" name=\"$f1\" value=\"$selv\">\r\n";
+	$rstr .= "<input type=\"button\" name=\"$f2\" value=\"$selname\" style=\"height:21px;width:150px;border:0px;background-image:url({$pos}img/ctbg.gif);padding-top:2px; background-color: transparent\" onClick=\"SelectCatalog('$fname','$f1','$f2',$cc,'$pos','$opall');\">\r\n";
+	return $rstr;
+}
 
 ?>

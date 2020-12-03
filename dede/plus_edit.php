@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_plus');
 $aid = ereg_replace("[^0-9]","",$aid);
@@ -75,10 +75,10 @@ body {
 <link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <form name="form1" action="plus_edit.php" method="post">
    <input type='hidden' name='dopost' value='saveedit'>
-   <input type='hidden' name='aid' value='<?=$aid?>'>
+   <input type='hidden' name='aid' value='<?php echo $aid?>'>
     <tr> 
       <td height="20" colspan="2" background="img/tbg.gif"> <b>&nbsp;<a href="plus_main.php"><u>插件管理</u></a> 
         &gt; 修改插件：</b> </td>
@@ -86,25 +86,25 @@ body {
     <tr> 
       <td width="19%" align="center" bgcolor="#FFFFFF">插件名称</td>
       <td width="81%" bgcolor="#FFFFFF">
-      	<input type='text' name='plusname' style='width:180px' value='<?=$row['plusname']?>'>
+      	<input type='text' name='plusname' style='width:180px' value='<?php echo $row['plusname']?>'>
       </td>
     </tr>
     <tr> 
       <td align="center" bgcolor="#FFFFFF">作者</td>
       <td bgcolor="#FFFFFF">
-      	<?=$row['writer']?>
+      	<?php echo $row['writer']?>
       </td>
     </tr>
      <tr> 
       <td align="center" bgcolor="#FFFFFF">菜单配置</td>
       <td bgcolor="#FFFFFF">
-      	<textarea name="menustring" rows="6" id="menustring" style="width:80%"><?=$row['menustring']?></textarea>
+      	<textarea name="menustring" rows="6" id="menustring" style="width:80%"><?php echo $row['menustring']?></textarea>
       </td>
     </tr>
     <tr> 
       <td align="center" bgcolor="#FFFFFF">文件列表</td>
       <td bgcolor="#FFFFFF">文件用&quot;,&quot;分开，路径相对于管理目录（当前目录）<br>
-        <textarea name="filelist" rows="8" id="filelist" style="width:80%"><?=$row['filelist']?></textarea></td>
+        <textarea name="filelist" rows="8" id="filelist" style="width:80%"><?php echo $row['filelist']?></textarea></td>
     </tr>
     <tr bgcolor="#F9FDF0"> 
       <td height="28" colspan="2">

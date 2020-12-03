@@ -69,6 +69,15 @@ function SelectImage(fname,stype){
    window.open("../include/dialog/select_images.php?f="+fname+"&imgstick="+stype, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
+function SelectCatalog(fname,vname,bt,channelid,pos,opall){
+   if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
+   else{ var posLeft = 100; var posTop = 100; }
+   if(!fname) fname = 'form1';
+   if(!vname) vname = 'typeid';
+   if(!bt) vname = 'selct';
+   window.open(pos+"catalog_tree.php?f="+fname+"&opall="+opall+"&v="+vname+"&bt="+bt+"&c="+channelid, "popUpSelCWin", "scrollbars=yes,resizable=yes,statebar=no,width=450,height=300,left="+posLeft+", top="+posTop);
+}
+
 function SelectImageN(fname,stype,vname){
    if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
    else{ var posLeft = 100; var posTop = 100; }
@@ -137,6 +146,13 @@ function ShowUrlTr(){
 	var jumpTest = $Obj('isjump');
 	var jtr = $Obj('redirecturltr');
 	if(jumpTest.checked) jtr.style.display = "block";
+	else jtr.style.display = "none";
+}
+
+function ShowPicTr(){
+	var picTest = $Obj('ispic');
+	var jtr = $Obj('pictable');
+	if(picTest.checked) jtr.style.display = "block";
 	else jtr.style.display = "none";
 }
 

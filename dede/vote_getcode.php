@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_vote.php");
 $aid = ereg_replace("[^0-9]","",$aid);
@@ -11,7 +11,7 @@ $aid = ereg_replace("[^0-9]","",$aid);
 
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
   <tr>
     <td height="19" background="img/tbg.gif"><strong><a href="vote_main.php"><u>投票管理</u></a>&gt;&gt;获取代码</strong></td>
 </tr>
@@ -27,7 +27,7 @@ $aid = ereg_replace("[^0-9]","",$aid);
          <input type="hidden" name="showsource" value="no">
 			  <tr> 
                   <td width="370" height="153" align="center"> 
-                    <textarea name="partcode" cols="45" rows="6" id="partcode">{dede:vote id='<?=$aid?>' lineheight='22'
+                    <textarea name="partcode" cols="45" rows="6" id="partcode">{dede:vote id='<?php echo $aid?>' lineheight='22'
 tablewidth='100%' titlebgcolor='#EDEDE2'
 titlebackground='' tablebgcolor='#FFFFFF'}
 {/dede:vote}</textarea>
@@ -50,7 +50,7 @@ titlebackground='' tablebgcolor='#FFFFFF'}
         </tr>
         <tr> 
           <td height="200" valign="top"> 
-            <textarea name="htmlf" cols="60" rows="10" id="htmlf"><?
+            <textarea name="htmlf" cols="60" rows="10" id="htmlf"><?php 
 			$vt = new DedeVote($aid);
 			echo $vt->GetVoteForm();
 			$vt->Close();

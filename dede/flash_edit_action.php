@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
@@ -25,6 +25,8 @@ if(!TestPurview('a_Edit')) {
 	if(TestPurview('a_AccEdit')) CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
 	else CheckArcAdmin($ID,$cuserLogin->getUserID());
 }
+
+$arcrank = GetCoRank($arcrank,$typeid);
 
 //对保存的内容进行处理
 //--------------------------------
@@ -79,6 +81,7 @@ update #@__archives set
 typeid='$typeid',
 typeid2='$typeid2',
 sortrank='$sortrank',
+redirecturl='$redirecturl',
 iscommend='$iscommend',
 ismake='$ismake',
 arcrank='$arcrank',

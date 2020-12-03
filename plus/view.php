@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_archives_view.php");
 function ParamError(){
@@ -16,15 +16,35 @@ if($arc->IsError) {
 	$arc->Close();
 	ParamError();
 }
+
+//扣点
+function PayMoney($ml,$arc,$money){
+	 global $aid;
+   $row = $arc->dsql->GetOne("Select aid,money From #@__moneyrecord where aid='$aid' And uid='".$ml->M_ID."'");
+   if(!is_array($row)){
+		   //金币消费记录
+		   $inquery = "INSERT INTO #@__moneyrecord(aid,uid,title,money,dtime) 
+               VALUES ('$aid','".$ml->M_ID."','{$arc->Fields['title']}','$money','".mytime()."');";
+		   if($arc->dsql->ExecuteNoneQuery($inquery)){
+		  	  $inquery = "Update #@__member set money=money-$money where ID='".$ml->M_ID."'";
+		      $arc->dsql->ExecuteNoneQuery($inquery);
+		   }
+		}
+}
 //检查阅读权限
 //--------------------
 $needMoney = $arc->Fields['money'];
 $needRank = $arc->Fields['arcrank'];
+$arcTitle = $arc->Fields['title'];
 //设置了权限限制的文章
+//会员权限说明:
+//1、对于设定了包时的中高级会员，浏览任何权限内的文档都不需要使用金币
+//2、对于权限不足，又有金币的用户，可以花1个金币浏览权限外的文档，或花设定的金币浏览某文档
 //arctitle msgtitle moremsg
 //------------------------------------
-if($needMoney>0 || $needRank>1)
+if($needMoney > 0 || $needRank > 0)
 {
+	if($needMoney<1 && $needRank > $ml->M_Type) $needMoney = 1;
 	require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
 	$ml = new MemberLogin();
 	$arctitle = $arc->Fields['title'];
@@ -33,55 +53,52 @@ if($needMoney>0 || $needRank>1)
 	                $arc->Fields["senddate"],
 	                $arc->Fields["title"],
 	                $arc->Fields["ismake"],
-	                $arc->Fields["arcrank"]
-	           );
+	                $arc->Fields["arcrank"]);
+	
+	$arc->dsql->SetQuery("Select * From #@__arcrank");
+	$arc->dsql->Execute();
+	while($nrow = $arc->dsql->GetObject()){
+			$memberTypes[$nrow->rank] = $nrow->membername;
+	}
+	$memberTypes[0] = '未审核会员';
+	$memberTypes[-1] = "<a href='{$cfg_memberurl}'>你尚未登陆</a>";
+	
 	$description =  $arc->Fields["description"]; 
 	$pubdate = GetDateTimeMk($arc->Fields["pubdate"]);
-	//会员级别不足
-	if(($needRank>1 && $ml->M_Type < $needRank && $arc->Fields['memberID']!=$ml->M_ID))
-	{
-		$dsql = new DedeSql(false);
-		$dsql->SetQuery("Select * From #@__arcrank");
-		$dsql->Execute();
-		while($row = $dsql->GetObject()){
-			$memberTypes[$row->rank] = $row->membername;
-		}
-		$memberTypes[0] = "普通会员";
-		$dsql->Close();
-		$msgtitle = "没有权限！";
-		$moremsg = "这篇文档需要<font color='red'>".$memberTypes[$needRank]."</font>才能访问，你目前是：<font color='red'>".$memberTypes[$ml->M_Type]."</font>";
-		include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
-		exit();
-	}
-	//没有足够的金币
-	if(($needMoney > $ml->M_Money  && $arc->Fields['memberID']!=$ml->M_ID) || $ml->M_Money=='')
-	{
-		$msgtitle = "没有权限！";
-		$moremsg = "这篇文档需要 <font color='red'>".$needMoney." 金币</font> 才能访问，你目前拥有金币：<font color='red'>".$ml->M_Money." 个</font>";
-		include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
-		$arc->Close();
-		exit();
-	}
-	//以下为正常情况，自动扣点数
-	if($needMoney > 0  && $arc->Fields['memberID']!=$ml->M_ID) //如果文章需要金币，检查用户是否浏览过本文档
-	{
-		$dsql = new DedeSql(false);
-		$row = $dsql->GetOne("Select aid,money From #@__moneyrecord where aid='$aid' And uid='".$ml->M_ID."'");
-		if(!is_array($row))
+	
+	//对于设定了包时的中高级会员，浏览任何权限内的文档都不需要使用金币
+	//----------------------------------------------------------------
+	if( ($ml->M_Type > 10) && ($ml->M_Type >= $needRank ) ){
+		 //会员已经过期
+		 if($ml->M_HasDay<1){
+			  //无足够金币
+			  if( $ml->M_Money < $needMoney )
+			  {
+			     $msgtitle = "阅读：{$arcTitle} 权限不足！";
+		       $moremsg = "这篇文档需要 [<font color='red'>".$memberTypes[$needRank]."</font>] ";
+		       $moremsg .= "或花费 {$needMoney} 个金币才能访问，你目前的会员身份已经过期，拥有金币 {$ml->M_Money} 个！";
+		       include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
+		       exit();
+		    //有足够金币
+		    }else{
+		    	 PayMoney($ml,$arc,$needMoney);
+		    }
+		 }
+	//非包时会员或级别不足的会员，使用金币阅读
+	//-------------------------------------------------------------------
+	}else{
+		//无足够金币
+		if( $ml->M_Money < $needMoney )
 		{
-		  $inquery = "
-		  INSERT INTO #@__moneyrecord(aid,uid,title,money,dtime) 
-      VALUES ('$aid','".$ml->M_ID."','$arctitle','$needMoney','".mytime()."');
-		  ";
-		  $dsql->SetQuery($inquery);
-		  if($dsql->ExecuteNoneQuery()){
-		  	$inquery = "Update #@__member set money=money-$needMoney where ID='".$ml->M_ID."'";
-		    $dsql->SetQuery($inquery);
-		    $dsql->ExecuteNoneQuery();
-		  }
-		  $ml->PutCookie("DedeUserMoney",$ml->M_Money - $needMoney);
-		}
-		$dsql->Close();
+			   $msgtitle = "阅读：{$arcTitle} 权限不足！";
+		     $moremsg = "这篇文档需要 [<font color='red'>".$memberTypes[$needRank]."</font>] ";
+		     $moremsg .= "或花费 {$needMoney} 个金币才能访问，你目前的会员身份为".$memberTypes[$ml->M_Type]."，拥有金币 {$ml->M_Money} 个！";
+		     include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
+		     exit();
+		 //有足够金币
+		 }else{
+		    PayMoney($ml,$arc,$needMoney);
+		 }
 	}
 }
 

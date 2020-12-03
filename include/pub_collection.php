@@ -1,8 +1,8 @@
-<?
+<?php 
 /*------------------------
 DedeCms在线采集程序V2
 作者：IT柏拉图  
-开发时间 2006年9月 最后更改时间 2006-9-12
+开发时间 2006年9月 最后更改时间 2007-1-17
 -----------------------*/
 require_once(dirname(__FILE__)."/pub_httpdown.php");
 require_once(dirname(__FILE__)."/pub_dedetag.php");
@@ -105,6 +105,9 @@ class DedeCollection
 				$this->Item["imgdir"] = $ctag->GetAtt("imgdir");
 				$this->Item["language"] = $ctag->GetAtt("language");
 				$this->Item["matchtype"] = $ctag->GetAtt("matchtype");
+				$this->Item["isref"] = $ctag->GetAtt("isref");
+				$this->Item["refurl"] = $ctag->GetAtt("refurl");
+				$this->Item["exptime"] = $ctag->GetAtt("exptime"); 
 				if($this->Item["matchtype"]=="") $this->Item["matchtype"]="string";
 				//创建图片保存目录
 				$updir = dirname(__FILE__)."/".$this->Item["imgdir"]."/";
@@ -127,14 +130,12 @@ class DedeCollection
 					$tname = $ctag2->GetName();
 					if($tname=="need"){
 						$this->List["need"] = trim($ctag2->GetInnerText());
-					}
-					else if($tname=="cannot"){
+					}else if($tname=="cannot"){
 						$this->List["cannot"] = trim($ctag2->GetInnerText());
 					}
 					else if($tname=="linkarea"){
 						$this->List["linkarea"] = trim($ctag2->GetInnerText());
-				  }
-					else if($tname=="url")
+				  }else if($tname=="url")
 					{
 						$gurl = trim($ctag2->GetAtt("value"));
 						//手工指定列表网址
@@ -219,6 +220,7 @@ class DedeCollection
 	  $this->tmpUnitValue = "";
 	  $this->tmpHtml = "";
 	  $this->breImage = "";
+		$GLOBALS['RfUrl'] = $dourl;
 		$html = $this->DownOnePage($dourl);
 		$this->tmpHtml = $html;
 		//检测是否有分页字段，并预先处理
@@ -331,23 +333,43 @@ class DedeCollection
 	//---------------------
 	function DownMedia($dourl,$mtype='img'){
 		//检测是否已经下载此文件
+		$isError = false;
+		$errfile = $GLOBALS['cfg_phpurl'].'/img/etag.gif';
 		$row = $this->dsql->GetOne("Select nurl from #@__co_mediaurl where rurl like '$dourl'");
 		$wi = false;
 		if(!empty($row['nurl'])){
 			$filename = $row['nurl'];
+			return $filename;
 		}else{
 		   //如果不存在，下载该文件
 		   $filename = $this->GetRndName($dourl,$mtype);
 		   if(!ereg("^/",$filename)) $filename = "/".$filename;
-		   $this->CHttpDown->OpenUrl($dourl);
-		   $this->CHttpDown->SaveToBin($GLOBALS['cfg_basedir'].$filename);
-		   $inquery = "INSERT INTO #@__co_mediaurl(nid,rurl,nurl) VALUES ('".$this->NoteId."', '".addslashes($dourl)."', '".addslashes($filename)."');";
-		   $this->dsql->ExecuteNoneQuery($inquery);
-		   if($mtype=='img'){ $wi = true; }
-	     $this->CHttpDown->Close();
+		   
+		   //反盗链模式
+		   if($this->Item["isref"]=='yes' && $this->Item["refurl"]!=''){
+		      if($this->Item["exptime"]=='') $this->Item["exptime"] = 10;
+		      $rs = DownImageKeep($dourl,$this->Item["refurl"],$GLOBALS['cfg_basedir'].$filename,"",0,$this->Item["exptime"]);
+		      if($rs){
+		         $inquery = "INSERT INTO #@__co_mediaurl(nid,rurl,nurl) VALUES ('".$this->NoteId."', '".addslashes($dourl)."', '".addslashes($filename)."');";
+		         $this->dsql->ExecuteNoneQuery($inquery);
+		      }else{
+		      	$inquery = "INSERT INTO #@__co_mediaurl(nid,rurl,nurl) VALUES ('".$this->NoteId."', '".addslashes($dourl)."', '".addslashes($errfile)."');";
+		        $this->dsql->ExecuteNoneQuery($inquery);
+		      	$isError = true;
+		      }
+		      if($mtype=='img'){ $wi = true; }
+	     //常规模式
+	     }else{
+		      $this->CHttpDown->OpenUrl($dourl);
+		      $this->CHttpDown->SaveToBin($GLOBALS['cfg_basedir'].$filename);
+		      $inquery = "INSERT INTO #@__co_mediaurl(nid,rurl,nurl) VALUES ('".$this->NoteId."', '".addslashes($dourl)."', '".addslashes($filename)."');";
+		      $this->dsql->ExecuteNoneQuery($inquery);
+		      if($mtype=='img'){ $wi = true; }
+	        $this->CHttpDown->Close();
+	     }
 	  }
 	  //生成缩略图
-	  if($mtype=='img' && $this->breImage==''){
+	  if($mtype=='img' && $this->breImage=='' && !$isError){
 	  	$this->breImage = $filename;
 	  	if(!eregi("^http://",$this->breImage) && file_exists($GLOBALS['cfg_basedir'].$filename)){
 	  		$filenames = explode('/',$filename);
@@ -362,8 +384,9 @@ class DedeCollection
 	  		}
 	    }
 	  }
-	  if($wi) @WaterImg($GLOBALS['cfg_basedir'].$filename,'up');
-		return $filename;
+	  if($wi && !$isError) @WaterImg($GLOBALS['cfg_basedir'].$filename,'up');
+		if(!$isError) return $filename;
+		else return $errfile;
 	}
 	//------------------------------
 	//获得下载媒体的随机名称
@@ -372,7 +395,7 @@ class DedeCollection
 	{
 		$this->MediaCount++;
 		$mnum = $this->MediaCount;
-		$timedir = strftime("%Y%m%d",mytime());
+		$timedir = strftime("%y%m%d",mytime());
 		//存放路径
 		$fullurl = preg_replace("/\/{1,}/","/",$this->Item["imgurl"]."/");
 		if(!is_dir($GLOBALS['cfg_basedir']."/$fullurl")) MkdirAll($GLOBALS['cfg_basedir']."/$fullurl",777);
@@ -389,8 +412,8 @@ class DedeCollection
 		$urls = explode(".",$url);
 		if($v=="img"){
 			$shortname = ".jpg";
-			if(eregi("\.gif\?(.*)$",$v) || eregi("\.gif$",$v)) $shortname = ".gif";
-			else if(eregi("\.png\?(.*)$",$v) || eregi("\.png$",$v)) $shortname = ".png";
+			if(eregi("\.gif\?(.*)$",$url) || eregi("\.gif$",$url)) $shortname = ".gif";
+			else if(eregi("\.png\?(.*)$",$url) || eregi("\.png$",$url)) $shortname = ".png";
 		}
 		else if($v=="embed") $shortname = ".swf";
 		else $shortname = "";
@@ -694,7 +717,7 @@ class DedeCollection
 			$DedeLitPicValue = $this->breImage;
 			$phpcode = preg_replace("/'@litpic'|\"@litpic\"|@litpic/isU",'$DedeLitPicValue',$phpcode);
 		}
-		eval($phpcode.";");
+		@eval($phpcode.";");
 		return $DedeMeValue;
 	}
 	//-----------------------

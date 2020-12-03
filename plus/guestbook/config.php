@@ -1,4 +1,4 @@
-<?
+<?php 
 $needFilter = true;
 require(dirname(__FILE__)."/../../include/config_base.php");
 

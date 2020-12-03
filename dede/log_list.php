@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Log');
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");

@@ -1,4 +1,4 @@
-<?
+<?php 
 //该页仅用于检测用户登录的情况，如要手工更改系统配置，请更改config_base.php
 require_once(dirname(__FILE__)."/../config_base.php");
 require_once(dirname(__FILE__)."/../inc_memberlogin.php");
@@ -10,12 +10,11 @@ $dedeNowurl = GetCurUrl();
 $dedeNowurls = explode("?",$dedeNowurl);
 $s_scriptName = $dedeNowurls[0];
 
-
 //检验用户登录状态
 $cfg_ml = new MemberLogin();
 if(!$cfg_ml->IsLogin())
 {
-	$gurl = $cfg_cmspath."/include/dialoguser/"."login.php?gotopage=".urlencode($dedeNowurl);
+	$gurl = $cfg_memberurl."/login.php?gourl=".urlencode($dedeNowurl);
 	echo "<script language='javascript'>location='$gurl';</script>";
 	exit();
 }

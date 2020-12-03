@@ -7,33 +7,44 @@ body {
   font-size: 9pt;
   line-height: 1.5;
   font-family: "宋体";
-  scrollbar-base-color:#C0D586;
+  scrollbar-base-color:#8CC1FE;
   scrollbar-arrow-color:#FFFFFF;
-  scrollbar-shadow-color:DEEFC6
+  scrollbar-shadow-color:#6994C2
 }
-form,h1,h2,h3,h4,h5,h6,ul,ol{	margin: 0; padding:0;}
+form,h1,h2,h3,h4,h5,h6,ul,ol,dl,li,dd{	margin: 0; padding:0;}
+ul {
+	list-style-type: none;
+}
+li {
+	list-style-type: none;
+}
 a:link { font-size: 9pt; color: #000000; text-decoration: none; font-family: "宋体"; }
 a:visited{ font-size: 9pt; color: #000000; text-decoration: none; font-family: "宋体"; }
 a:hover {color: red; font-family: "宋体";}
-input{border: 1px solid #000000;}
-.np{border:none}
+input{ border: 1px solid #38ACE4; font:12px 宋体; }
+input[type="button"]{ border: 1px solid #38ACE4; font:12px 宋体; background-color:#B5E8FB }
+input[type="image"]{ border:none }
+.nbt{
+  font:12px 宋体; padding: 1px 3px 0 3px ;
+  vertical-align:middle ; margin-bottom:1px;
+  border:3px double #5F93CD; background:#B5E8FB; height:21px ;
+}
+.htable{ border-bottom:1px solid #95D2F0 }
+.np{ border:none }
 .linerow{border-bottom: 1px solid #ACACAC;}
 .coolbg {
-  border-right: 2px solid #ACACAC;
-  border-bottom: 2px solid #ACACAC;
-  background-color: #E6E6E6
+  padding:1px;
+  border-right: 2px solid #548FCB;
+  border-bottom: 2px solid #548FCB;
+  background-color: #B5E8FB;
 }
 .coolbg2 {
   border: 1px solid #000000;
   background-color: #DFDDD2;
   height:18px
 }
-.ll {
-  border-right: 2px solid #ACACAC;
-  border-bottom: 2px solid #ACACAC;
-  background-color: #E6E6E6
-}
-.bline {border-bottom: 1px solid #BCBCBC;background-color: #FFFFFF}
+
+.bline {border-bottom: 1px solid #95D2F0;background-color: #FFFFFF}
 .bline2 {border-bottom: 1px solid #BCBCBC;}
 
 .coolbt {
@@ -87,3 +98,5 @@ width:96%;
 height:20px;
 border:1px solid #ffffff;
 }
+
+.fl{ float:left; margin-right:6px; }

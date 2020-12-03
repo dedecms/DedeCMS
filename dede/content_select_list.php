@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
@@ -12,7 +12,16 @@ if(!isset($arcrank)) $arcrank = "";
 $typeid = $cid;
 
 $tl = new TypeLink($cid);
-$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$seltypeids = 0;
+if(!empty($cid)){
+	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ");
+}
+$opall=1;
+if(is_array($seltypeids)){
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+}else{
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'ÇëÑ¡Ôñ...');
+}
 
 $whereSql = " where #@__archives.channel > 0 ";
 

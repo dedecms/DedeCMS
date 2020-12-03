@@ -1,4 +1,4 @@
-<?
+<?php 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
 if(empty($job)) $job="";
@@ -13,9 +13,9 @@ if($job=="")
 	   $win->AddHidden("nid",$nid);
 	   $win->AddTitle("文本配置专家更改模式：");
 	   $dsql = new DedeSql(false);
-	   $row = $dsql->GetOne("Select * From #@__ where nid='$nid' ");
+	   $row = $dsql->GetOne("Select * From #@__conote where nid='$nid' ");
 	   $dsql->Close();
-	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:500'>$notestring</textarea>");
+	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:500'>{$row['noteinfo']}</textarea>");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
      exit();
@@ -28,22 +28,26 @@ else
    	  $dbnotes = $notes;
    	  $notes = stripslashes($notes);
       $dtp->LoadString($notes);
-   	  if(!is_array($dtp->CTags))
-      {
+   	  if(!is_array($dtp->CTags)){
 	      ShowMsg("该规则不合法，无法保存!","-1");
 	      $dsql->Close();
 	      exit();
       }
       $ctag = $dtp->GetTagByName("item");
 	    $query = "
-	        INSERT INTO #@__conote(typeid,gathername,language,lasttime,savetime,noteinfo) 
-          VALUES('".$ctag->GetAtt('typeid')."', '".$ctag->GetAtt('name')."',
-          '".$ctag->GetAtt('language')."', '0','".mytime()."', '".$dbnotes."');
+	      Update #@__conote 
+	        set typeid='".$ctag->GetAtt('typeid')."',
+	        gathername='".$ctag->GetAtt('name')."',
+	        language='".$ctag->GetAtt('language')."',
+	        lasttime=0,
+	        savetime='".mytime()."',
+	        noteinfo='".$dbnotes."'
+	      where nid = $nid;
 	    ";
 	    $dsql = new DedeSql(false);
 	    $rs = $dsql->ExecuteNoneQuery($query);
 	    $dsql->Close();
-	    ShowMsg("成功导入一个规则!","co_main.php");
+	    ShowMsg("成功保存规则!","co_main.php");
 	    exit();
 }
 ?>

@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('plus_站内新闻发布');
 if(empty($dopost)) $dopost = "";
@@ -40,10 +40,10 @@ function checkSubmit()
 </script>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
+<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#98CAEF">
   <form action="mynews_edit.php" method="post" name="form1" onSubmit="return checkSubmit();">
   <input type="hidden" name="dopost" value="editsave">
-  <input type="hidden" name="aid" value="<?=$myNews['aid']?>">
+  <input type="hidden" name="aid" value="<?php echo $myNews['aid']?>">
   <tr>
       <td height="24" background="img/tbg.gif"> 
         <table width="90%" border="0" cellspacing="0" cellpadding="0">
@@ -66,14 +66,14 @@ function checkSubmit()
           </tr>
           <tr> 
             <td width="13%" height="30">标　题：</td>
-            <td width="87%"> <input name="title" type="text" id="title" value="<?=$myNews['title']?>" size="30" style="width:300"> 
+            <td width="87%"> <input name="title" type="text" id="title" value="<?php echo $myNews['title']?>" size="30" style="width:300"> 
             </td>
           </tr>
           <tr>
             <td height="30">显示频道：</td>
             <td>
 			  <select name="typeid" style="width:150">     
-        <?
+        <?php 
 			  $dsql->SetQuery("Select ID,typename From #@__arctype where reID=0 order by ABS(".$myNews['typeid']." - ID) asc");
 			  $dsql->Execute();
 			  while($row = $dsql->GetObject())
@@ -88,14 +88,14 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="30">发言人：</td>
-            <td><input name="writer" type="text" id="writer" value="<?=$myNews['writer']?>" size="16">
+            <td><input name="writer" type="text" id="writer" value="<?php echo $myNews['writer']?>" size="16">
               　 日期： 
-              <input name="sdate" type="text" id="sdate" size="25" value="<?=GetDateTimeMk($myNews['senddate'])?>"></td>
+              <input name="sdate" type="text" id="sdate" size="25" value="<?php echo GetDateTimeMk($myNews['senddate'])?>"></td>
           </tr>
           <tr> 
             <td height="172" valign="top">信息内容：</td>
             <td height="172"> 
-              <?
+              <?php 
 	GetEditor("body",$myNews['body'],250,"Small");
 	?>
             </td>
@@ -112,7 +112,7 @@ function checkSubmit()
 </tr>
 </form>
 </table>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

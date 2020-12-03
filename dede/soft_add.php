@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/inc/inc_catalog_options.php");
 $channelid="3";
@@ -49,18 +49,18 @@ function MakeUpload()
 </head>
 <body topmargin="8">
 <form name="form1" action="soft_add_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
-<input type="hidden" name="channelid" value="<?=$channelid?>">
+<input type="hidden" name="channelid" value="<?php echo $channelid?>">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr> 
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> 
         &nbsp;</td>
-      <td width="64%"><a href="catalog_do.php?cid=<?=$cid?>&channelid=<?=$channelid?>&dopost=listArchives"><u>软件列表</u></a>&gt;&gt;发布新软件</td>
+      <td width="64%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>软件列表</u></a>&gt;&gt;发布新软件</td>
       <td width="31%" align="right">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> 
         [<a href="soft_config.php"><u>下载频道参数设定</u></a>]</td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" class="htable">
     <tr> 
       <td colspan="2">
 	  <table border="0" cellpadding="0" cellspacing="0">
@@ -126,7 +126,7 @@ function MakeUpload()
             <td width="90">自定义属性：</td>
             <td> <select name='arcatt' style='width:150'>
                 <option value='0'>普通文档</option>
-                <?
+                <?php 
             	$dsql->SetQuery("Select * From #@__arcatt order by att asc");
             	$dsql->Execute();
             	while($trow = $dsql->GetObject())
@@ -150,8 +150,9 @@ function MakeUpload()
                   </td>
                 </tr>
                 <tr> 
-                  <td height="30"> <input name="picname" type="text" id="picname" style="width:250"> 
-                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');"> 
+                  <td height="30">
+                  	<input name="picname" type="text" id="picname" style="width:250"> 
+                    <input type="button" name="Submit2" value="在网站内选择" style="width:120" onClick="SelectImage('form1.picname','small');" class='nbt'> 
                   </td>
                 </tr>
               </table></td>
@@ -185,9 +186,11 @@ function MakeUpload()
                 <option value="360">置顶一年</option>
               </select> </td>
             <td width="90">标题颜色：</td>
-            <td width="159"> <input name="color" type="text" id="color" style="width:120"> 
+            <td width="159">
+            	<input name="color" type="text" id="color" style="width:120"> 
             </td>
-            <td> <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"> 
+            <td>
+            	<input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -197,7 +200,7 @@ function MakeUpload()
           <tr> 
             <td width="90">&nbsp;阅读权限：</td>
             <td width="240"> <select name="arcrank" id="arcrank" style="width:150">
-                <?
+                <?php 
               $urank = $cuserLogin->getUserRank();
               $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
               $dsql->Execute();
@@ -224,7 +227,7 @@ function MakeUpload()
             <td width="90">关键字：</td>
             <td width="234"> <textarea name="keywords" rows="3" id="keywords" style="width:200"></textarea> 
             </td>
-            <td width="146" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"> 
+            <td width="146" align="center"> 用空格分开<br/> <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -234,7 +237,7 @@ function MakeUpload()
           <tr> 
             <td width="90">&nbsp;&nbsp;发布时间：</td>
             <td width="400"> 
-              <?
+              <?php 
 			$nowtime = GetDateTimeMk(mytime());
 			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
 			?>
@@ -249,15 +252,16 @@ function MakeUpload()
       <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;软件主栏目：</td>
-            <td width="400"> 
-              <?
-           	$typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
-		        echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0'>请选择主分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			     ?>
-            </td>
+            <td width="400"><?php 
+           	if(empty($cid)) echo GetTypeidSel('form1','typeid','selbt1',$channelid);
+           	else{
+           	  $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
+		          echo "<select name='typeid' style='width:300'>\r\n";
+              echo "<option value='0'>请选择主分类...</option>\r\n";
+              echo $typeOptions;
+              echo "</select>";
+            }
+			      ?></td>
             <td>（只允许在白色选项的栏目中发布当前类型内容）</td>
           </tr>
         </table></td>
@@ -266,14 +270,7 @@ function MakeUpload()
       <td height="24" colspan="4" bgcolor="#FFFFFF" class="bline2"> <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;软件副栏目：</td>
-            <td> 
-              <?
-            echo "<select name='typeid2' style='width:300'>\r\n";
-            echo "<option value='0' selected>请选择副分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-            ?>
-            </td>
+            <td><?php echo GetTypeidSel('form1','typeid2','selbt2',$channelid)?></td>
           </tr>
         </table></td>
     </tr>
@@ -399,7 +396,7 @@ function MakeUpload()
             <td width="90">&nbsp;本地下载：</td>
             <td>
             	<input name="softurl1" type="text" id="softurl1" size="40">
-            	<input name="sel1" type="button" id="sel1" value="选取" onClick="SelectSoft('form1.softurl1')"> 
+            	<input name="sel1" type="button" id="sel1" value="选取" onClick="SelectSoft('form1.softurl1')" class='nbt'> 
             </td>
           </tr>
         </table></td>
@@ -410,7 +407,7 @@ function MakeUpload()
             <td width="90">&nbsp;其它地址：</td>
             <td>
             	<input name="picnum" type="text" id="picnum" size="8" value="5"> 
-              <input name='kkkup' type='button' id='kkkup2' value='生成表单' onClick="MakeUpload();">
+              <input name='kkkup' type='button' id='kkkup2' value='生成表单' onClick="MakeUpload();" class='nbt'>
               (最多为9个链接)
             </td>
           </tr>
@@ -418,7 +415,7 @@ function MakeUpload()
     </tr>
     <tr> 
       <td height="24" colspan="4" class="bline">
-        <?
+        <?php 
 	  echo "<span id='uploadfield'></span>";
 	  ?>
       </td>
@@ -428,7 +425,7 @@ function MakeUpload()
     </tr>
     <tr> 
       <td height="100" colspan="4" class="bline"> 
-        <?
+        <?php 
 	GetEditor("body","",250,"Small");
 	?>
       </td>
@@ -452,7 +449,7 @@ function MakeUpload()
 </table>
 </form>
 <script language='javascript'>if($Nav()!="IE") ShowObj('adset');</script>
-<?
+<?php 
 $dsql->Close();
 ?>
 </body>

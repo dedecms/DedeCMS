@@ -1,4 +1,4 @@
-<?
+<?php 
 $__ONLYDB = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 

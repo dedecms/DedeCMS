@@ -1,8 +1,9 @@
-{dede:page pagesize="20"/}
+{dede:page pagesize="10"/}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
 <title>采集节点管理</title>
+<link href="base.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript">
@@ -125,24 +126,23 @@ function getOneItem()
 	return allSel;	
 }
 </script>
-<link href="base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8' onload="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#98CAEF" align="center">
   <tr> 
     <td height="20" colspan="7" background='img/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
           <td width="20%" height="18"><strong>采集节点管理：</strong></td>
-          <td width="80%" align="right"> <input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="np2" style="width:100"> 
+          <td width="80%" align="right"> <input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="nbt" style="width:100"> 
           </td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1"> 
+  <tr align="center" bgcolor="#F8FBFB"> 
     <td width="8%">选择</td>
     <td width="32%">节点名称</td>
     <td width="18%">针对规则</td>
-    <td width="10%" bgcolor="#FAFAF1">最后采集日期</td>
+    <td width="10%" bgcolor="#F8FBFB">最后采集日期</td>
     <td width="10%">加入日期</td>
     <td width="10%">编码</td>
     <td width="10%">网址数</td>
@@ -160,35 +160,35 @@ function getOneItem()
     </tr>
     {/dede:datalist} 
   </form>
-  <tr bgcolor="#E4F7D7"> 
+  <tr bgcolor="#ffffff"> 
     <td height="24" colspan="7"> 
       <table width="90%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td>
           	&nbsp;
-          	<a href="#" onClick="location='co_add.php?action=select';" class='coolbt'>增加新节点</a>
-            <a href="javascript:GetRule();" class='coolbt'>导入配置</a>
-            <a href="javascript:ExportRule('');" class='coolbt'>导出配置</a> 
+          	<a href="#" onClick="location='co_add.php?action=select';" class="coolbg">增加新节点</a>
+            <a href="javascript:GetRule();" class="coolbg">导入配置</a>
+            <a href="javascript:ExportRule('');" class="coolbg">导出配置</a> 
              | 
-            <a href="javascript:GatherSel('');" class='coolbt' style='color:red'>采集</a>
-            <a href="javascript:ExportDown('');" class='coolbt'>导出数据</a>
+            <a href="javascript:GatherSel('');" class="coolbg" style='color:red'>采集</a>
+            <a href="javascript:ExportDown('');" class="coolbg">导出数据</a>
              |
-          	<a href="javascript:EditNote('');" class='coolbt'>更改</a>
-          	<a href="javascript:EditNoteText('');" class='coolbt'>更改配置</a>
-          	<a href="javascript:TestRule('');" class='coolbt'>测试</a>
+          	<a href="javascript:EditNote('');" class="coolbg">更改</a>
+          	<a href="javascript:EditNoteText('');" class="coolbg">更改配置</a>
+          	<a href="javascript:TestRule('');" class="coolbg">测试</a>
           	 | 
-          	<a href="javascript:ViewDown('');" class='coolbt'>查看已下载</a> 
+          	<a href="javascript:ViewDown('');" class="coolbg">查看已下载</a> 
              | 
-            <a href="javascript:CopyNote('');" class='coolbt'>复制</a>
-            <a href="javascript:ClearNote('');" class='coolbt'>清空</a> 
+            <a href="javascript:CopyNote('');" class="coolbg">复制</a>
+            <a href="javascript:ClearNote('');" class="coolbg">清空</a> 
              | 
-            <a href="javascript:DelNote('');" class='coolbt'>删除</a>
+            <a href="javascript:DelNote('');" class="coolbg">删除</a>
            </td>
         </tr>
       </table>
     </td>
   </tr>
-  <tr bgcolor="#FAFAF1"> 
+  <tr bgcolor="#F8FBFB"> 
     <td height="24" colspan="7" align="center"> {dede:pagelist size='5' /} </td>
   </tr>
 </table>

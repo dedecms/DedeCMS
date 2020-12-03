@@ -1,4 +1,4 @@
-<?
+<?php 
 //------------------------------------------------
 //该文件是所有涉及文档或列表读取必须引入的文件
 //------------------------------------------------
@@ -190,7 +190,7 @@ function MfTemplet($tmpdir)
   return $tmpdir;
 }
 //获取网站搜索的热门关键字
-function GetHotKeywords($dsql,$num=8,$nday=365,$klen=16){
+function GetHotKeywords($dsql,$num=8,$nday=365,$klen=16,$orderby='count'){
 	global $cfg_phpurl;
 	$nowtime = mytime();
 	$num = ereg_replace("[^0-9]","",$num);
@@ -201,11 +201,12 @@ function GetHotKeywords($dsql,$num=8,$nday=365,$klen=16){
 	if(empty($klen)) $klen = 16;
 	$klen = $klen+1;
 	$mintime = $nowtime - ($nday * 24 * 3600);
-	$dsql->SetQuery("Select keyword From #@__search_keywords where lasttime>$mintime And length(keyword)<$klen order by count desc limit 0,$num");
+	if(empty($orderby)) $orderby = 'count';
+	$dsql->SetQuery("Select keyword From #@__search_keywords where lasttime>$mintime And length(keyword)<$klen order by $orderby desc limit 0,$num");
   $dsql->Execute('hw');
   $hotword = "";
   while($row=$dsql->GetArray('hw')){
- 		 $hotword .= "　<a href='".$cfg_phpurl."/search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword'><u>".$row['keyword']."</u></a> ";
+ 		 $hotword .= "　<a href='".$cfg_phpurl."/search.php?keyword=".urlencode($row['keyword'])."&searchtype=titlekeyword' target='_self'><u>".$row['keyword']."</u></a> ";
  	}
  	return $hotword;
 }
@@ -213,5 +214,42 @@ function GetHotKeywords($dsql,$num=8,$nday=365,$klen=16){
 function FormatScript($atme){
 	if($atme=="&nbsp;") return "";
 	else return $atme;
+}
+//------------------------------
+//获得自由列表的网址
+//------------------------------
+function GetFreeListUrl($lid,$namerule,$listdir,$defaultpage,$nodefault){
+	$listdir = str_replace('{cmspath}',$GLOBALS['cfg_cmspath'],$listdir);
+	if($nodefault==1){
+	  $okfile = str_replace('{page}','1',$namerule);
+	  $okfile = str_replace('{listid}',$lid,$okfile);
+	  $okfile = str_replace('{listdir}',$listdir,$okfile);
+  }else{
+  	$okfile = $listdir.'/'.$defaultpage;
+  }
+	$okfile = str_replace("\\","/",$okfile);
+	$trueFile = $GLOBALS['cfg_basedir'].$okfile; 
+	if(!file_exists($trueFile)){
+		 $okfile = $GLOBALS['cfg_phpurl']."/freelist.php?lid=$lid";
+	}
+	return $okfile;
+}
+//----------
+//判断图片可用性
+function CkLitImageView($imgsrc,$imgwidth){
+	$imgsrc = trim($imgsrc);
+	if(!empty($imgsrc) && eregi('^http',$imgsrc)){
+		 $imgsrc = $cfg_mainsite.$imgsrc;
+	}
+	if(!empty($imgsrc) && !eregi("img/dfpic\.gif",$imgsrc)){
+		return "<img src='".$imgsrc."' width=80 align=left>";
+	}
+	return "";
+}
+//----------
+//使用绝对网址
+function Gmapurl($gurl){
+	if(!eregi("http://",$gurl)) return $GLOBALS['cfg_basehost'].$gurl;
+	else return $gurl;
 }
 ?>

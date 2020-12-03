@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>确认订单</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center"> 
+  <?php  include(dirname(__FILE__)."/head.htm"); ?>
+  <table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php  include(dirname(__FILE__)."/menu.php"); ?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="100%" height="103" colspan="2"><img src="img/indbanner.jpg" width="580" height="100"></td>
+          </tr>
+          <tr> 
+            <td height="140" colspan="2">
+			<form name='f1' action='buy_action_pay.php' method='post'>
+			<input type='hidden' name='buyid' value='<?php echo $buyid?>'>
+			<table width="98%" border="0" cellpadding="3" cellspacing="0" style="margin-top:3px; margin-bottom:8px; border-bottom:1px solid #ababab">
+                <tr bgcolor="#F2FCE0"> 
+                    <td width="264%" colspan="4" bgcolor="#D8EFBC"><strong>请确认你的订单：</strong></td>
+                </tr>
+              </table>
+                <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC" style="margin-bottom:8px">
+                  <tr> 
+                    <td bgcolor="#FFFFFF">
+                    	<div style="line-height:200%;border-bottom:1px solid #cdcdcd;margin-bottom:8px"> 
+                        <img src="img/okico.gif" width="30" height="30">你成功发送购买如下产品的申请，请等待管理员处理： 
+                      </div>
+                      <div style="line-height:250%;color:red;margin-left:24px;margin-bottom:8px"> 
+                        订单编号：<?php echo $buyid?><br>
+                        产品类型：<?php echo $ptype?><br>
+                        产品名称：<?php echo $pname?><br>
+                        产品价格：<?php echo $price?> 元<br>
+					 </div>
+					  <div style="height:30px;text-align:center;padding-top:10px;margin-bottom:8px;border-top:1px solid #cdcdcd"> 
+                        <a href="javascript:location='buy.php';"><img src="img/buysbbk.gif" width="85" height="20" border="0"></a> 
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+            </form>
+            <table width="98%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+              </table> </td>
+          </tr>
+        </table>
+    </td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

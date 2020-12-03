@@ -1,4 +1,4 @@
-<?
+<?php 
 header("Content-Type: text/html; charset=gb2312");
 header("Pragma:no-cache"); 
 header("Cache-Control:no-cache"); 

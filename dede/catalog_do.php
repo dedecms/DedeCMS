@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)){
 	ShowMsg("对不起，请指定栏目参数！","catalog_main.php");
@@ -210,9 +210,44 @@ else if($dopost=="GetSunLists")
 	PutCookie('lastCid',$cid,3600*24,"/");
 	$tu = new TypeUnit();
 	$tu->dsql = new DedeSql(false);
-  echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";	
+  $tu->LogicListAllSunType($cid,"　");
+  $tu->Close();
+}
+/*-----------
+获得子类的内容
+function GetSunListsMenu();
+-----------*/
+else if($dopost=="GetSunListsMenu")
+{
+	require_once(dirname(__FILE__)."/../include/inc_typeunit_menu.php");
+	header("Pragma:no-cache\r\n");
+  header("Cache-Control:no-cache\r\n");
+  header("Expires:0\r\n");
+	header("Content-Type: text/html; charset=gb2312");
+	PutCookie('lastCidMenu',$cid,3600*24,"/");
+	$tu = new TypeUnit();
+	$tu->dsql = new DedeSql(false);
 	$tu->LogicListAllSunType($cid,"　");
-	echo "    </table>\r\n";
+  $tu->Close();
+}
+/*-----------
+获得子类的内容
+function GetSunListsTree();
+-----------*/
+else if($dopost=="GetSunListsTree")
+{
+	require_once(dirname(__FILE__)."/../include/inc_type_tree.php");
+	if(empty($opall)) $opall = 0;
+	if(empty($c)) $c = 0;
+	if(empty($cid)) $cid = 0;
+	header("Pragma:no-cache\r\n");
+  header("Cache-Control:no-cache\r\n");
+  header("Expires:0\r\n");
+	header("Content-Type: text/html; charset=gb2312");
+	PutCookie('lastCidTree',$cid,3600*24,"/");
+	$tu = new TypeTree();
+	$tu->dsql = new DedeSql(false);
+	$tu->LogicListAllSunType($cid,"　",$opall,$c);
   $tu->Close();
 }
 ?>

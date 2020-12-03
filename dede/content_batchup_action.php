@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__)."/../include/inc_typelink.php");
@@ -22,7 +22,8 @@ if($action=="makehtml")
 	exit();
 }
 
-$gwhere = " where arcrank=0 ";
+//$gwhere = " where arcrank=0 ";
+$gwhere = " where 1=1 ";
 if($startid >0 ) $gwhere .= " And ID>= $startid ";
 if($endid > $startid) $gwhere .= " And ID<= $endid ";
 $dsql = new DedeSql(false);
@@ -134,14 +135,19 @@ else if($action=='move')
     ShowMsg("不能把数据移动到内容类型不同的栏目！","javascript:;");
 	  exit();
   }
+  
+  $nrow = $dsql->GetOne("Select addtable From #@__channeltype where ID='{$typenew['channeltype']}' ");
+  $addtable = $nrow['addtable'];
+  
   $gwhere .= " And channel='".$typenew['channeltype']."' And title like '%$keyword%'";
+  
   $dsql->SetQuery("Select ID From #@__archives $gwhere");
   $dsql->Execute('m');
   $tdd = 0;
   while($row = $dsql->GetObject('m')){
-	 	 $rs = $dsql->ExecuteNoneQuery("Update #@__archives set typeid='$newtypeid' where ID='{$row->ID}'");
+	 	 $rs = $dsql->ExecuteNoneQuery("Update #@__archives set typeid='$newtypeid' where ID='{$row->ID}' ");
+	 	 if($rs) $rs = $dsql->ExecuteNoneQuery("Update $addtable set typeid='$newtypeid' where aid='{$row->ID}' ");
 	   if($rs) $tdd++;
-	   DelArc($row->ID,true);
 	}
   $dsql->Close();
   if($tdd>0)

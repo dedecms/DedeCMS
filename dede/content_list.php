@@ -1,10 +1,11 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 if(!isset($cid)) $cid = 0;
 if(!isset($keyword)) $keyword = "";
 if(!isset($channelid)) $channelid = 0;
 if(!isset($arcrank)) $arcrank = "";
 if(!isset($adminid)) $adminid = 0;
+if(!isset($ismember)) $ismember = 0;
 
 //检查权限许可，总权限
 CheckPurview('a_List,a_AccList,a_MyList');
@@ -35,12 +36,25 @@ if($cid==0){
 	$positionname = str_replace($cfg_list_symbol,"&gt;",$tl->GetPositionName())."&gt;";
 }
 
-$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$seltypeids = 0;
+if(!empty($cid)){
+	$seltypeids = $tl->dsql->GetOne("Select ID,typename,channeltype From #@__arctype where ID='$cid' ");
+}
+$opall=1;
+if(is_array($seltypeids)){
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,$seltypeids['ID'],$seltypeids['typename']);
+}else{
+	$optionarr = GetTypeidSel('form3','cid','selbt1',0,0,'请选择...');
+}
+
 
 if($channelid==0) $whereSql = " where #@__archives.channel > 0 ";
 else $whereSql = " where #@__archives.channel = '$channelid' ";
 
+if($ismember==1) $whereSql .= " And #@__archives.memberID > 0 ";
+
 if(!empty($memberid)) $whereSql .= " And #@__archives.memberID = '$memberid' ";
+else $memberid = 0;
 
 if($keyword!=""){
 	$whereSql .= " And ( CONCAT(#@__archives.title,#@__archives.writer,#@__archives.source) like '%$keyword%') ";
@@ -55,13 +69,16 @@ if($adminid>0){ $whereSql .= " And #@__archives.adminID = '$adminid' "; }
 
 if($arcrank!=""){
 	$whereSql .= " And #@__archives.arcrank = '$arcrank' ";
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档'>";
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&gurl=content_list.php';\" value='所有文档' class='nbt'>";
 }
 else{
-	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核'>";
+	$whereSql .= " And #@__archives.arcrank >-1 ";
+	$CheckUserSend = "<input type='button' onClick=\"location='catalog_do.php?cid=".$cid."&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核' class='nbt'>";
 }
 
 $tl->Close();
+
+if(empty($orderby)) $orderby = "ID";
 
 $query = "
 select #@__archives.ID,#@__archives.adminID,#@__archives.typeid,#@__archives.senddate,
@@ -74,16 +91,20 @@ left join #@__arctype on #@__arctype.ID=#@__archives.typeid
 left join #@__channeltype on #@__channeltype.ID=#@__archives.channel
 left join #@__admin on #@__admin.ID=#@__archives.adminID
 $whereSql
-order by #@__archives.ID desc
+order by #@__archives.{$orderby} desc
 ";
 
 $dlist = new DataList();
 $dlist->pageSize = 20;
 $dlist->SetParameter("dopost","listArchives");
 $dlist->SetParameter("keyword",$keyword);
+$dlist->SetParameter("adminid",$adminid);
+$dlist->SetParameter("memberid",$memberid);
 $dlist->SetParameter("cid",$cid);
 $dlist->SetParameter("arcrank",$arcrank);
 $dlist->SetParameter("channelid",$channelid);
+$dlist->SetParameter("ismember",$ismember);
+$dlist->SetParameter("orderby",$orderby);
 $dlist->SetSource($query);
 include(dirname(__FILE__)."/templets/content_list.htm");
 $dlist->Close();

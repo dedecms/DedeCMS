@@ -415,7 +415,7 @@ function SetUrl( url )
 						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr>
 								<td noWrap><span fckLang="DlgDocCharSet">Character Set Encoding</span><br>
-									<select id="selCharSet" onchange="CheckOther( this, 'txtCustomCharSet' );">
+									<select id="selCharSet" onChange="CheckOther( this, 'txtCustomCharSet' );">
 										<option value="" selected></option>
 										<option value="us-ascii">ASCII</option>
 										<option value="iso-8859-2">Central European</option>
@@ -442,7 +442,7 @@ function SetUrl( url )
 							<tr>
 								<td nowrap>
 									<span fckLang="DlgDocDocType">Document Type Heading</span><br>
-									<select id="selDocType" name="selDocType" onchange="CheckOther( this, 'txtDocType' );">
+									<select id="selDocType" name="selDocType" onChange="CheckOther( this, 'txtDocType' );">
 										<option value="" selected></option>
 										<option value='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'>HTML
 											4.01 Transitional</option>
@@ -476,17 +476,17 @@ function SetUrl( url )
 					</div>
 					<div id="divBackground" style="DISPLAY: none">
 						<span fckLang="DlgDocBgColor">Background Color</span><br>
-						<input id="txtBackColor" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();">&nbsp;<input id="btnSelBackColor" onclick="SelectColor( 'Back' )" type="button" value="Select..."
+						<input id="txtBackColor" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();">&nbsp;<input id="btnSelBackColor" onClick="SelectColor( 'Back' )" type="button" value="Select..."
 							fckLang="DlgCellBtnSelect"><br>
 						<br>
 						<span fckLang="DlgDocBgImage">Background Image URL</span><br>
 						<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 							<tr>
-								<td width="100%"><input id="txtBackImage" style="WIDTH: 100%" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();"></td>
+								<td width="100%"><input id="txtBackImage" style="WIDTH: 100%" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();"></td>
 								<td id="tdBrowse" nowrap>&nbsp;<input id="btnBrowse" onclick="BrowseServerBack();" type="button" fckLang="DlgBtnBrowseServer" value="Browse Server" fckLang="DlgBtnBrowseServer"></td>
 							</tr>
 						</table>
-						<input id="chkBackNoScroll" type="checkbox" onclick="UpdatePreview();"> <label for="chkBackNoScroll" fckLang="DlgDocBgNoScroll">Nonscrolling
+						<input id="chkBackNoScroll" type="checkbox" onClick="UpdatePreview();"> <label for="chkBackNoScroll" fckLang="DlgDocBgNoScroll">Nonscrolling
 							Background</label>
 					</div>
 					<div id="divColors" style="DISPLAY: none">
@@ -494,16 +494,16 @@ function SetUrl( url )
 							<tr>
 								<td>
 									<span fckLang="DlgDocCText">Text</span><br>
-									<input id="txtColorText" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();"><input onclick="SelectColor( 'ColorText' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
+									<input id="txtColorText" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();"><input onClick="SelectColor( 'ColorText' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
 									<br>
 									<span fckLang="DlgDocCLink">Link</span><br>
-									<input id="txtColorLink" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();"><input onclick="SelectColor( 'ColorLink' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
+									<input id="txtColorLink" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();"><input onClick="SelectColor( 'ColorLink' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
 									<br>
 									<span fckLang="DlgDocCVisited">Visited Link</span><br>
-									<input id="txtColorVisited" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();"><input onclick="SelectColor( 'ColorVisited' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
+									<input id="txtColorVisited" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();"><input onClick="SelectColor( 'ColorVisited' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
 									<br>
 									<span fckLang="DlgDocCActive">Active Link</span><br>
-									<input id="txtColorActive" type="text" onchange="UpdatePreview();" onkeyup="UpdatePreview();"><input onclick="SelectColor( 'ColorActive' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
+									<input id="txtColorActive" type="text" onChange="UpdatePreview();" onKeyUp="UpdatePreview();"><input onClick="SelectColor( 'ColorActive' )" type="button" value="Select..." fckLang="DlgCellBtnSelect">
 								</td>
 								<td valign="middle" align="center">
 									<table cellspacing="2" cellpadding="0" border="0">

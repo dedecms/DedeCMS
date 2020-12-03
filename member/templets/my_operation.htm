@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>历史订单管理</title>
+<link href="newskin.css" rel="stylesheet" type="text/css">	
+</head>
+<body leftmargin="0" topmargin="0">
+<div align="center">
+<?php  include(dirname(__FILE__)."/head.htm"); ?>
+<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="160" height="216" valign="top"> 
+      <?php include(dirname(__FILE__)."/menu.php");?>
+    </td>
+    <td width="10">&nbsp;</td>
+    <td  valign="top">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="margin-bottom:3px">
+        <tr> 
+          <td background="img/nnnbg.gif" height="25" class="gdt2">
+		  <font color="#333333"> 
+            <strong>　&nbsp;历史订单管理：</strong></font>
+		  </td>
+        </tr>
+    </table>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D9EDC0">
+              <tr bgcolor="E9FBC9" align="center"> 
+                  <td width="25%" bgcolor="#F0F8D6">订单号</td>
+                <td width="20%" bgcolor="#F0F8D6">产品</td>
+                <td width="15%" bgcolor="#F0F8D6">时间</td>
+                <td width="10%" bgcolor="#F0F8D6">状态</td>
+                  <td width="30%" bgcolor="#F0F8D6">系统信息</td>
+              </tr>
+              <?php 
+$mylist = $dlist->GetDataList();
+while($row = $mylist->GetArray('dm'))
+{
+?>
+              <tr bgcolor="#FFFFFF" align="center"> 
+                <td> 
+                  <?php echo $row['buyid']?>
+                </td>
+                <td>
+                  <?php echo $row['pname']?>
+                </td>
+                <td> 
+                  <?php echo GetDateMk($row['mtime'])?>
+                </td>
+                <td> 
+                  <?php echo GetSta($row['sta'])?>
+                </td>
+                <td> 
+                  <?php echo $row['oldinfo']?>
+                </td>
+              </tr>
+              <?php 
+}
+?>
+              <tr bgcolor="E9FBC9"> 
+                <td colspan="5" align="center" bgcolor="#F9FCEF"> 
+                  <?php echo $dlist->GetPageList(7);?>                </td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr> 
+          <td height="24" valign="top">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<?php 
+if(isset($dsql) && is_object($dsql)) $dsql->Close();
+include(dirname(__FILE__)."/foot.htm");
+?>
+</div>
+</body>
+</html>

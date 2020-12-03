@@ -1,4 +1,4 @@
-<?
+<?php 
 require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
@@ -20,7 +20,7 @@ require_once(dirname(__FILE__)."/config.php");
 </style>
 </head>
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<table width="99%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#98CAEF">
 <tr>
     <td height="19" background="img/tbg.gif"><b>模板代码参考--列表模板标记</b></td>
 </tr>

@@ -39,8 +39,11 @@ function ShowItem2(){
   ShowObj('head2'); ShowObj('adset'); HideObj('head1'); HideObj('needset');
 }
 
-function SeePic(img,f){
-   if ( f.value != "" ) { img.src = f.value; }
+function SeePic(img,f,picarea){
+   if ( f.value != "" ) { 
+     picarea.style.display = 'block';
+	 img.src = f.value;
+   }
 }
 
 function SelectFlash(){

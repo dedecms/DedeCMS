@@ -19,8 +19,9 @@ a:hover {font-size: 9pt;color: red}
 .mmt{background-color:#EDF3DE; border-bottom:2px solid #C4CFB6;
 border-left:1px solid #DBDFDD;border-right:1px solid #DBDFDD;border-top:1px solid #DBDFDD;
 }
-.mmt1{background-color:#CFE8B5; border-bottom:2px solid #C4CFB6;
-border-left:1px solid #DBDFDD;border-right:1px solid #DBDFDD;border-top:1px solid #DBDFDD;
+.mmt1{background-color:#CFE8B5; 
+  border:1px solid #DBDFDD;
+  background-image:url('img/tbg2.gif')
 }
 .mmt1m{background-color:#CFE8B5; border-bottom:1px solid #C4CFB6;
 border-left:1px solid #DBDFDD;border-right:1px solid #DBDFDD;border-top:1px solid #DBDFDD;
