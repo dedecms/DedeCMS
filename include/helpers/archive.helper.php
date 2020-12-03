@@ -153,6 +153,8 @@ if ( ! function_exists('GetIndexKey'))
         if(empty($typeid2)) $typeid2 = 0;
         if(empty($senddate)) $senddate = time();
         if(empty($sortrank)) $sortrank = $senddate;
+		$typeid2 = intval($typeid2);
+		$senddate = intval($senddate);
         $iquery = "
           INSERT INTO `#@__arctiny` (`arcrank`,`typeid`,`typeid2`,`channel`,`senddate`, `sortrank`, `mid`)
           VALUES ('$arcrank','$typeid','$typeid2' , '$channelid','$senddate', '$sortrank', '$mid') ";

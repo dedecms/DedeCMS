@@ -737,8 +737,8 @@ else if($dopost == 'modifysearch')
         $formssql = addslashes($forms);
         $query = "REPLACE INTO #@__advancedsearch(mid, maintable, mainfields, addontable, addonfields, forms, template) VALUES('$mid','$maintable','$mainstring','$addontable','$addonstring','$formssql', '$template')";
         $dsql->ExecuteNoneQuery($query);
-        $formshtml = htmlspecialchars($forms);
-        echo '<meta http-equiv="Content-Type" content="text/html; charset=gb2312">';
+        $formshtml = dede_htmlspecialchars($forms);
+        echo '<meta http-equiv="Content-Type" content="text/html; charset='.$cfg_soft_lang.'">';
         echo "下面为生成的html表单，请自行复制，根据自己需求修改样式后粘贴到对应的模板中<br><br><textarea cols=\"100\"  rows=\"10\">".$forms."</textarea>";
         echo '<br />预览：<br /><hr>';
         echo $forms;

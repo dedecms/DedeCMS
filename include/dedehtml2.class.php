@@ -192,6 +192,7 @@ class DedeHtml2
                 {
                     continue;
                 }
+				$i--;
             }//End if char
 
         }//End for
@@ -485,13 +486,13 @@ class DedeAttribute2
     var $CharToLow = FALSE;  //属性值是否不分大小写(属性名统一为小写)
     var $IsTagName = TRUE; //是否解析标记名称
     var $Count = -1;
-    var $Items = ''; //属性元素的集合
+    var $Items = array(); //属性元素的集合
 
     //设置属性解析器源字符串
     function SetSource($str = '')
     {
         $this->Count = -1;
-        $this->Items = '';
+        $this->Items =array();
         $strLen = 0;
         $this->SourceString = trim(preg_replace("/[ \t\r\n]{1,}/"," ",$str));
         $strLen = strlen($this->SourceString);

@@ -75,7 +75,7 @@
           <input type='hidden' name='dopost' value='savesend' />
             <p>
               <label>发送到：</label>
-              <input name="msgtoid" type="text" class="intxt" value="<?php if(!empty($uid)) echo $uid; ?>" size="28" maxlength="100" style=" width:100px" />
+              <input name="msgtoid" type="text" class="intxt" value="<?php if(!empty($uid)) echo $uid; ?>" size="28" maxlength="100" style=" width:100px" id="msgtoid"/>
               <small> (填写用户的登录id(网址uid=后面跟的id)</small>
             </p>
             <p>
@@ -120,6 +120,11 @@
 		$(document).ready(function(){
 			$(".buddy dt").click(function(){$(this).toggleClass("close");$(this).next("dd").toggle();});
 			$(".buddy li").hover(function(){$(this).addClass("hover"); },function(){$(this).removeClass("hover"); });
+			$('.uname').click(function()
+		   {
+			   var uname = $(this).text();
+			   $('#msgtoid').val(uname);
+		   });
 		});
 		</script>
       <div class="titleBar">
@@ -133,7 +138,7 @@
            <?php
           	foreach ($friends as $friend)
          	{
-				echo '<li class="thickbox"><span class="fLeft icon16"></span>'.$friend['funame'].'</li>';
+				echo '<li class="thickbox"><span class="fLeft icon16"></span><span class="uname">'.$friend['funame'].'</span></li>';
           	}
           ?>
           </ul>

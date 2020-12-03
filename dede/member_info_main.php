@@ -76,6 +76,7 @@ $ischecknum=$rowss['dd'];
 $sql = "SELECT * FROM $table WHERE 1=1 $where ORDER BY dtime DESC";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;
+$dlist->SetParameter("type",$type);
 $dlist->SetParameter("totalnum",$totalnum);
 $dlist->SetParameter("checknum",$checknum);
 $dlist->SetParameter("ischecknum",$ischecknum);

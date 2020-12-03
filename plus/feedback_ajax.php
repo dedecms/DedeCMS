@@ -22,7 +22,7 @@ include_once(DEDEINC.'/memberlogin.class.php');
 $cfg_ml = new MemberLogin();
 
 if(empty($dopost)) $dopost = '';
-$page = empty($page) ? 1 : intval($page);
+$page = empty($page) || $page<1 ? 1 : intval($page);
 $pagesize = 10;
 
 /*----------------------
@@ -90,6 +90,11 @@ else if($dopost=='send')
         echo "<font color='red'>评论内容可能不合法或为空！</font>";
         exit();
     }
+	if($cfg_feedback_guest == 'N' && $cfg_ml->M_ID < 1)
+	{
+		echo "<font color='red'>管理员禁用了游客评论！<a href='{$cfg_cmspath}/member/login.php'>点击登录</a></font>";
+		exit();
+	}
     //检查用户
     $username = empty($username) ? '游客' : $username;
     if(empty($notuser)) $notuser = 0;
@@ -126,7 +131,7 @@ else if($dopost=='send')
             exit();
         }
     }
-    $face = intval($face);
+    $face = 1;
     extract($arcRow, EXTR_SKIP);
     $msg = cn_substrR(TrimMsg($msg), 500);
     $username = cn_substrR(HtmlReplace($username,2), 20);
@@ -138,11 +143,13 @@ else if($dopost=='send')
     if(!empty($fid))
     {
         $row = $dsql->GetOne("SELECT username,msg from `#@__feedback` WHERE id ='$fid' ");
-        $qmsg = '{quote}{title}'.$row['username'].' 的原帖：{/title}{content}'.$row['msg'].'{/content}{/quote}';
+        $qmsg = '{quote}{content}'.$row['msg'].'{/content}{title}'.$row['username'].' 的原帖：{/title}{/quote}';
         $msg = addslashes($qmsg).$msg;
     }
     $ischeck = ($cfg_feedbackcheck=='Y' ? 0 : 1);
-    $arctitle = addslashes($title);
+    $arctitle = addslashes(RemoveXSS($title));
+    $typeid = intval($typeid);
+    $feedbacktype = preg_replace("#[^0-9a-z]#i", "", $feedbacktype);
     $inquery = "INSERT INTO `#@__feedback`(`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`, `mid`,`bad`,`good`,`ftype`,`face`,`msg`)
                    VALUES ('$aid','$typeid','$username','$arctitle','$ip','$ischeck','$dtime', '{$cfg_ml->M_ID}','0','0','$feedbacktype','$face','$msg'); ";
     $rs = $dsql->ExecuteNoneQuery($inquery);
@@ -205,7 +212,9 @@ else if($dopost=='send')
         $msg = stripslashes($msg);
         $msg = str_replace('<', '&lt;', $msg);
         $msg = str_replace('>', '&gt;', $msg);
-        $msg = Quote_replace($msg);
+		helper('smiley');
+        $msg = RemoveXSS(Quote_replace(parseSmileys($msg, $cfg_cmspath.'/images/smiley')));
+        //$msg = RemoveXSS(Quote_replace($msg));
         if($feedbacktype=='bad') $bgimg = 'cmt-bad.gif';
         else if($feedbacktype=='good') $bgimg = 'cmt-good.gif';
         else $bgimg = 'cmt-neu.gif';
@@ -221,24 +230,20 @@ else if($dopost=='send')
             }
         }
 ?>
-	<div class='decmt-box2'> <ul>
-     <li>
-      <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a>
-      <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
-      <div class="comment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'>
-				<a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[0]
-			</span>
-			<span id='badfb<?php echo $id; ?>'>
-				<a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[0]
-			</span>
-			<span class='quote'>
-				<a href='/plus/feedback.php?aid=<?php echo $id; ?>&fid=<?php echo $id; ?>&action=quote'">[引用]</a>
-			</span></span><?php echo GetDateMk($dtime); ?>发表</div>			
-     <p><?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/default/images/mood/ico-mood-<?php echo $face; ?>.gif'/></p>
-  </li>
- </ul>
+
+<div class='decmt-box2'>
+  <ul>
+    <li> <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a> <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
+    <div class="comment_act"><span class="fl"><?php echo GetDateMk($dtime); ?>发表</span></div>
+      <div style="clear:both"><?php echo ubb($msg); ?></div>
+      <div class="newcomment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'> <a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[0] </span> <span id='badfb<?php echo $id; ?>'> <a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[0] </span> <span class='quote'>
+        <!--<a href='/plus/feedback.php?aid=<?php echo $id; ?>&fid=<?php echo $id; ?>&action=quote'>[引用]</a>-->
+        <a href='javascript:ajaxFeedback(<?php echo $id; ?>,<?php echo $id; ?>,"quote");'>[引用]</a> </span></span></div>
+    </li>
+    <div id="ajaxfeedback_<?php echo $id; ?>"></div>
+  </ul>
 </div>
-	<br style='clear:both' />
+<br style='clear:both' />
 <?php
     }
     exit();
@@ -289,26 +294,21 @@ function GetList($page=1)
         $fields['face'] = empty($fields['face']) ? 6 : $fields['face'];
         $fields['msg'] = str_replace('<', '&lt;', $fields['msg']);
         $fields['msg'] = str_replace('>', '&gt;', $fields['msg']);
-        $fields['msg'] = Quote_replace($fields['msg']);
+		helper('smiley');
+        $fields['msg'] = RemoveXSS(Quote_replace(parseSmileys($fields['msg'], $cfg_cmspath.'/images/smiley')));
         extract($fields, EXTR_OVERWRITE);
 ?>
 <div class="decmt-box2">
-   <ul>
-     <li>
-      <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a>
-      <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
-      <div class="comment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'>
-				<a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[<?php echo $good; ?>]
-			</span>
-			<span id='badfb<?php echo $id; ?>'>
-				<a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[<?php echo $bad; ?>]
-			</span>
-			<span class='quote'>
-				<a href='/plus/feedback.php?aid=<?php echo $id; ?>&fid=<?php echo $id; ?>&action=quote'">[引用]</a>
-			</span></span><?php echo GetDateMk($dtime); ?>发表</div>			
-     <p><?php echo $msg; ?><img src='<?php echo $cfg_templeturl; ?>/default/images/mood/ico-mood-<?php echo $face; ?>.gif'/></p>
-  </li>
- </ul>
+  <ul>
+    <li> <a href='<?php echo $spaceurl; ?>' class='plpic'><img src='<?php echo $mface;?>'  height='40' width='40'/></a> <span class="title"><a href="<?php echo $spaceurl; ?>"><?php echo $username; ?></a></span>
+      <div class="comment_act"><span class="fl"><?php echo GetDateMk($dtime); ?>发表</span></div>
+      <div style="clear:both"><?php echo ubb($msg); ?></div>
+      <div class="newcomment_act"><span class="fr"><span id='goodfb<?php echo $id; ?>'> <a href='#goodfb<?php echo $id; ?>' onclick="postBadGood('goodfb',<?php echo $id; ?>);">支持</a>[<?php echo $good; ?>] </span> <span id='badfb<?php echo $id; ?>'> <a href='#badfb<?php echo $id; ?>' onclick="postBadGood('badfb',<?php echo $id; ?>);">反对</a>[<?php echo $bad; ?>] </span> <span class='quote'>
+        <!--<a href='/plus/feedback.php?aid=<?php echo $id; ?>&fid=<?php echo $id; ?>&action=quote'>[引用]</a>-->
+        <a href='javascript:ajaxFeedback(<?php echo $id; ?>,<?php echo $id; ?>,"quote");'>[引用]</a> </span></span></div>
+    </li>
+  </ul>
+  <div id="ajaxfeedback_<?php echo $id; ?>"></div>
 </div>
 <?php
     }
@@ -332,37 +332,39 @@ function GetPageList($pagesize, $totalcount)
         echo '';
         return ;
     }
-    echo "<div id='commetpages'>";
-    echo "<span>总: {$allpage} 页/{$totalcount} 条评论</span> ";
-    $listsize = 5;
-    $total_list = $listsize * 2 + 1;
-    $totalpage = $allpage;
-    $listdd = '';
-    if($curpage-1 > 0 )
-    {
-        echo "<a href='#commettop' onclick='LoadCommets(".($curpage-1).");'>上一页</a> ";
-    }
-    if($curpage >= $total_list)
-    {
-        $j = $curpage - $listsize;
-        $total_list = $curpage + $listsize;
-        if($total_list > $totalpage)
-        {
-            $total_list = $totalpage;
-        }
-    }
-    else
-    {
-        $j = 1;
-        if($total_list > $totalpage) $total_list = $totalpage;
-    }
-    for($j; $j <= $total_list; $j++)
-    {
-        echo ($j==$curpage ? "<strong>$j</strong> " : "<a href='#commettop' onclick='LoadCommets($j);'>{$j}</a> ");
-    }
-    if($curpage+1 <= $totalpage )
-    {
-        echo "<a href='#commettop' onclick='LoadCommets(".($curpage+1).");'>下一页</a> ";
-    }
-    echo "</div>";
+    echo "
+<div id='commetpages'>";
+  echo "<span>总: {$allpage} 页/{$totalcount} 条评论</span> ";
+  $listsize = 5;
+  $total_list = $listsize * 2 + 1;
+  $totalpage = $allpage;
+  $listdd = '';
+  if($curpage-1 > 0 )
+  {
+  echo "<a href='#commettop' onclick='LoadCommets(".($curpage-1).");'>上一页</a> ";
+  }
+  if($curpage >= $total_list)
+  {
+  $j = $curpage - $listsize;
+  $total_list = $curpage + $listsize;
+  if($total_list > $totalpage)
+  {
+  $total_list = $totalpage;
+  }
+  }
+  else
+  {
+  $j = 1;
+  if($total_list > $totalpage) $total_list = $totalpage;
+  }
+  for($j; $j <= $total_list; $j++)
+  {
+  echo ($j==$curpage ? "<strong>$j</strong> " : "<a href='#commettop' onclick='LoadCommets($j);'>{$j}</a> ");
+  }
+  if($curpage+1 <= $totalpage )
+  {
+  echo "<a href='#commettop' onclick='LoadCommets(".($curpage+1).");'>下一页</a> ";
+  }
+  echo "</div>
+";
 }

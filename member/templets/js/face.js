@@ -31,4 +31,5 @@
 	  var facecode;
 	  facecode = '[face:' + faceid + ']';
 	  $('#share_textarea').val($('#share_textarea').val() + facecode); 
+	  hideFace();
   }

@@ -16,7 +16,7 @@ if(empty($dopost)) $dopost = "";
 
 if($dopost=='edit')
 {
-    $msg = cn_substrR($msg, 2500);
+    $msg = cn_substrR($msg, 3500);
     $adminmsg = trim($adminmsg);
     if($adminmsg!="")
     {

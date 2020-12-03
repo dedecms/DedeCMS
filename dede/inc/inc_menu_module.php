@@ -23,8 +23,8 @@ require_once(dirname(__FILE__)."/../config.php");
 //载入模块菜单
 $moduleset = '';
 $dsql->SetQuery("SELECT * FROM `#@__sys_module` ORDER BY id DESC");
-$dsql->Execute();
-while($row = $dsql->GetObject()) 
+$dsql->Execute('mm');
+while($row = $dsql->GetObject('mm')) 
 {
     $moduleset .= $row->menustring."\r\n";
 }

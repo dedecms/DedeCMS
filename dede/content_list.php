@@ -59,12 +59,12 @@ $tl = new TypeLink($cid);
 if(empty($totalresult) && empty($keyword) && empty($orderby) && empty($flag))
 {
     $tinyQuerys = array();
-    
+
     if(!empty($userCatalogSql))
     {
         $tinyQuerys[] = str_replace('arc.', '', $userCatalogSql);
     }
-    
+
     if(!empty($channelid) && empty($cid))
     {
         $tinyQuerys[] = " channel = '$channelid' ";
@@ -73,7 +73,7 @@ if(empty($totalresult) && empty($keyword) && empty($orderby) && empty($flag))
     {
         $tinyQuerys[] = " channel>0 ";
     }
-    
+
     if(!empty($arcrank))
     {
         $tinyQuerys[] = " arcrank='$arcrank' ";
@@ -82,17 +82,17 @@ if(empty($totalresult) && empty($keyword) && empty($orderby) && empty($flag))
     {
         $tinyQuerys[] = " arcrank > -2 ";
     }
-    
+
     if(!empty($mid))
     {
         $tinyQuerys[] = " mid='$mid' ";
     }
-    
+
     if(!empty($cid))
     {
         $tinyQuerys[] = " typeid in(".GetSonIds($cid).") ";
     }
-    
+
     if(count($tinyQuerys)>0)
     {
         $tinyQuery = "WHERE ".join(' AND ',$tinyQuerys);
@@ -129,7 +129,7 @@ else
 }
 
 //当选择的是单表模型栏目时，直接跳转到单表模型管理区
-if(empty($channelid) 
+if(empty($channelid)
   && isset($tl->TypeInfos['channeltype']))
 {
     $channelid = $tl->TypeInfos['channeltype'];
@@ -154,11 +154,11 @@ if ( $typeCount > 800)
     if (file_exists($optCache))
     {
         $optionarr = file_get_contents($optCache);
-    } else { 
+    } else {
         $optionarr = $tl->GetOptionArray($cid, $admin_catalogs, $channelid);
         file_put_contents($optCache, $optionarr);
     }
-} else { 
+} else {
     $optionarr = $tl->GetOptionArray($cid, $admin_catalogs, $channelid);
 }
 

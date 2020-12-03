@@ -113,6 +113,7 @@ a.mm:hover div {
 	background: url(images/idnbg1.gif) repeat-y;
 }
 </style>
+<link href="images/style<?php echo $cfg_admin_skin;?>/style.css" rel="stylesheet" type="text/css" />
 <base target="main" />
 </head>
 <body target="main" onLoad="CheckOpenMenu();">
@@ -170,25 +171,10 @@ if(!empty($openitem) && $openitem!=1)
 }
 ?>
 <script language="javascript">
-/*
-function bindClick()
+function myAlert()
 {
-	
-	jQuery("a").click(function()
-	{
-		if(jQuery(this).attr("target") == "main")
-		{
-			// 触发点击帮助教程窗体事件
-			var helpObj = jQuery(window.parent.document).find('#help');
-			//helpObj.html(jQuery(this).attr("href"));
-		}
-	});
+	alert('dede');	
 }
-
-(function($){
-	bindClick();
-})(jQuery);
-*/
 </script>
 </body>
 </html>

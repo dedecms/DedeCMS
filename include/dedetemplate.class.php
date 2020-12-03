@@ -192,7 +192,7 @@ class DedeTemplate
     var $cacheDir = '';
     var $templateFile = '';
     var $sourceString = '';
-    var $cTags = '';
+    var $cTags = array();
 
     //var $definedVars = array();
     var $count = -1;
@@ -205,7 +205,7 @@ class DedeTemplate
     var $tagEndWord = '}';
     var $tpCfgs = array();
 
-    
+
     /**
      *  析构函数
      *
@@ -285,7 +285,7 @@ class DedeTemplate
     {
         $GLOBALS['_vars'][$k] = $v;
     }
-    
+
     /**
      *  设定数组
      *
@@ -455,6 +455,40 @@ class DedeTemplate
         fclose($fp);
     }
 
+    // ------------------------------------------------------------------------
+
+    /**
+     * CheckDisabledFunctions
+     *
+     * COMMENT : CheckDisabledFunctions : 检查是否存在禁止的函数
+     *
+     * @access    public
+     * @param    string
+     * @return    bool
+     */
+    function CheckDisabledFunctions($str,&$errmsg='')
+    {
+        global $cfg_disable_funs;
+        $cfg_disable_funs = isset($cfg_disable_funs)? $cfg_disable_funs : 'phpinfo,eval,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents,fsockopen,fopen,fwrite';
+        // 模板引擎增加disable_functions
+        if (!defined('DEDEDISFUN')) {
+            $tokens = token_get_all_nl($str);
+            $disabled_functions = explode(',', $cfg_disable_funs);
+            foreach ($tokens as $token)
+            {
+                if (is_array($token))
+                {
+                    if ($token[0] = '306' && in_array($token[1], $disabled_functions))
+                    {
+                       $errmsg = 'DedeCMS Error:function disabled "'.$token[1].'" <a href="http://help.dedecms.com/install-use/apply/2013/0711/2324.html" target="_blank">more...</a>';
+                       return FALSE;
+                    }
+                }
+            }
+        }
+        return TRUE;
+    }
+
     /**
      *  解析模板并写缓存文件
      *
@@ -473,7 +507,16 @@ class DedeTemplate
                 }
                 $fp = fopen($this->cacheFile,'w') or dir("Write Cache File Error! ");
                 flock($fp,3);
-                fwrite($fp,trim($this->GetResult()));
+                $result = trim($this->GetResult());
+                $errmsg = '';
+                //var_dump($result);exit();
+                if (!$this->CheckDisabledFunctions($result, $errmsg))
+                {
+                    fclose($fp);
+                    @unlink($this->cacheFile);
+                    die($errmsg);
+                }
+                fwrite($fp,$result);
                 fclose($fp);
                 if(count($this->tpCfgs) > 0)
                 {
@@ -592,6 +635,7 @@ class DedeTemplate
         $t = 0;
         $preTag = '';
         $tswLen = strlen($tagStartWord);
+        $cAtt->cAttributes->items = array();
         for($i=0; $i<$sourceLen; $i++)
         {
             $ttagName = '';
@@ -1129,8 +1173,12 @@ class DedeTemplate
         {
             $cTag->tagValue=''; return '';
         }
-        $condition = preg_replace("/((var\.|field\.|cfg\.|global\.|key[0-9]{0,}\.|value[0-9]{0,}\.)[\._a-z0-9]+)/ies", "private_rt('\\1')", $condition);
-        $rsvalue = '<'.'?php if('.$condition.'){ ?'.'>';
+        if (version_compare(PHP_VERSION, '5.5.0', '>='))
+        {
+            $condition = preg_replace_callback("/((var\.|field\.|cfg\.|global\.|key[0-9]{0,}\.|value[0-9]{0,}\.)[\._a-z0-9]+)/is", "private_rt", $condition);
+        } else {
+            $condition = preg_replace("/((var\.|field\.|cfg\.|global\.|key[0-9]{0,}\.|value[0-9]{0,}\.)[\._a-z0-9]+)/ies", "private_rt('\\1')", $condition);
+        }        $rsvalue = '<'.'?php if('.$condition.'){ ?'.'>';
         $rsvalue .= $cTag->GetInnerText();
         $rsvalue .= '<'.'?php } ?'.'>';
         return $rsvalue;
@@ -1295,7 +1343,7 @@ class TagAttributeParse
 {
     var $sourceString = "";
     var $sourceMaxSize = 1024;
-    var $cAttributes = "";
+    var $cAttributes = array();
     var $charToLow = TRUE;
     function SetSource($str="")
     {
@@ -1324,6 +1372,7 @@ class TagAttributeParse
         $ddtag = '';
         $hasAttribute=FALSE;
         $strLen = strlen($this->sourceString);
+        $this->cAttributes->items = array();
 
         // 获得Tag的名称，解析到 cAtt->GetAtt('tagname') 中
         for($i=0; $i<$strLen; $i++)
@@ -1463,8 +1512,12 @@ class TagAttributeParse
  */
 function private_rt($str)
 {
-    $arr = explode('.', $str);
-
+    if (is_array($str)) {
+        $arr = explode('.', $str[0]);
+    } else {
+        $arr = explode('.', $str);
+    }
+    
     $rs = '$GLOBALS[\'';
     if($arr[0] == 'cfg')
     {
@@ -1494,4 +1547,3 @@ function private_rt($str)
         return $rs;
     }
 }
-

@@ -10,12 +10,13 @@
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
 
-$verMsg = ' V5.7 UTF-8';
+$verMsg = ' V5.7 UTF8SP2';
 $s_lang = 'utf-8';
-$dfDbname = 'dedecmsv57utf8';
+$dfDbname = 'dedecmsv57utf8sp2';
 $errmsg = '';
-$install_demo_name = 'dedev57demo.txt';
-$insLockfile = dirname(__FILE__).'/install_lock.txt';
+define('INSTALL_DEMO_NAME', 'dedev57demo.txt');
+define('INSLOCKFILE', dirname(__FILE__).'/install_lock.txt');
+
 $moduleCacheFile = dirname(__FILE__).'/modules.tmp.inc';
 
 define('DEDEINC',dirname(__FILE__).'/../include');
@@ -33,7 +34,7 @@ foreach(Array('_GET','_POST','_COOKIE') as $_request)
 
 require_once(DEDEINC.'/common.func.php');
 
-if(file_exists($insLockfile))
+if(file_exists(INSLOCKFILE))
 {
     exit(" 程序已运行安装，如果你确定要重新安装，请先从FTP中删除 install/install_lock.txt！");
 }
@@ -105,11 +106,17 @@ else if($step==3)
         $baseurl = 'http://'.$_SERVER['HTTP_HOST'];
     else
         $baseurl = "http://".$_SERVER['SERVER_NAME'];
-    
 
-    $rnd_cookieEncode = chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('A'),ord('Z'))).chr(mt_rand(ord('a'),ord('z'))).mt_rand(1000,9999).chr(mt_rand(ord('A'),ord('Z')));
 
-    if(file_get_contents($install_demo_name)) $isdemosign = 1;
+    $chars='abcdefghigklmnopqrstuvwxwyABCDEFGHIGKLMNOPQRSTUVWXWY0123456789';
+    $rnd_cookieEncode='';
+    $length = rand(28,32);
+    $max = strlen($chars) - 1;
+    for($i = 0; $i < $length; $i++) {
+        $rnd_cookieEncode .= $chars[mt_rand(0, $max)];
+    }
+    $isdemosign = 0;
+    if(file_exists(INSTALL_DEMO_NAME) && file_get_contents(INSTALL_DEMO_NAME)) $isdemosign = 1;
     $module_local = DEDEDATA.'/module/';
     include('./templates/step-3.html');
     exit();
@@ -120,19 +127,27 @@ function _4_Setup()
 ------------------------*/
 else if($step==4)
 {
-    $conn = mysql_connect($dbhost,$dbuser,$dbpwd) or die("<script>alert('数据库服务器或登录密码无效，\\n\\n无法连接数据库，请重新设定！');history.go(-1);</script>");
 
-    mysql_query("CREATE DATABASE IF NOT EXISTS `".$dbname."`;",$conn);
+    if ( $dbtype == 'sqlite' )
+    {
+        $db = new SQLite3(DEDEDATA.'/'.$dbname.'.db');
+    } else {
+        $dbtype = 'mysql';
+        $conn = mysql_connect($dbhost,$dbuser,$dbpwd) or die("<script>alert('数据库服务器或登录密码无效，\\n\\n无法连接数据库，请重新设定！');history.go(-1);</script>");
+
+        mysql_query("CREATE DATABASE IF NOT EXISTS `".$dbname."`;",$conn);
+
+        mysql_select_db($dbname, $conn) or die("<script>alert('选择数据库失败，可能是你没权限，请预先创建一个数据库！');history.go(-1);</script>");
+
+        //获得数据库版本信息
+        $rs = mysql_query("SELECT VERSION();",$conn);
+        $row = mysql_fetch_array($rs);
+        $mysqlVersions = explode('.',trim($row[0]));
+        $mysqlVersion = $mysqlVersions[0].".".$mysqlVersions[1];
+
+        mysql_query("SET NAMES '$dblang',character_set_client=binary,sql_mode='';",$conn);
+    }
     
-    mysql_select_db($dbname) or die("<script>alert('选择数据库失败，可能是你没权限，请预先创建一个数据库！');history.go(-1);</script>");
-
-    //获得数据库版本信息
-    $rs = mysql_query("SELECT VERSION();",$conn);
-    $row = mysql_fetch_array($rs);
-    $mysqlVersions = explode('.',trim($row[0]));
-    $mysqlVersion = $mysqlVersions[0].".".$mysqlVersions[1];
-
-    mysql_query("SET NAMES '$dblang',character_set_client=binary,sql_mode='';",$conn);
 
     $fp = fopen(dirname(__FILE__)."/common.inc.php","r");
     $configStr1 = fread($fp,filesize(dirname(__FILE__)."/common.inc.php"));
@@ -143,6 +158,7 @@ else if($step==4)
     fclose($fp);
 
     //common.inc.php
+    $configStr1 = str_replace("~dbtype~",$dbtype,$configStr1);
     $configStr1 = str_replace("~dbhost~",$dbhost,$configStr1);
     $configStr1 = str_replace("~dbname~",$dbname,$configStr1);
     $configStr1 = str_replace("~dbuser~",$dbuser,$configStr1);
@@ -150,8 +166,8 @@ else if($step==4)
     $configStr1 = str_replace("~dbprefix~",$dbprefix,$configStr1);
     $configStr1 = str_replace("~dblang~",$dblang,$configStr1);
 
-    @chmod(DEDEROOT.'/data',0777);
-    $fp = fopen(DEDEROOT."/data/common.inc.php","w") or die("<script>alert('写入配置失败，请检查../data目录是否可写入！');history.go(-1);</script>");
+    @chmod(DEDEDATA,0777);
+    $fp = fopen(DEDEDATA."/common.inc.php","w") or die("<script>alert('写入配置失败，请检查../data目录是否可写入！');history.go(-1);</script>");
     fwrite($fp,$configStr1);
     fclose($fp);
 
@@ -169,11 +185,11 @@ else if($step==4)
     $configStr2 = str_replace("~webname~",$webname,$configStr2);
     $configStr2 = str_replace("~adminmail~",$adminmail,$configStr2);
 
-    $fp = fopen(DEDEROOT.'/data/config.cache.inc.php','w');
+    $fp = fopen(DEDEDATA.'/config.cache.inc.php','w');
     fwrite($fp,$configStr2);
     fclose($fp);
 
-    $fp = fopen(DEDEROOT.'/data/config.cache.bak.php','w');
+    $fp = fopen(DEDEDATA.'/config.cache.bak.php','w');
     fwrite($fp,$configStr2);
     fclose($fp);
 
@@ -181,9 +197,9 @@ else if($step==4)
     {
         $sql4tmp = "ENGINE=MyISAM DEFAULT CHARSET=".$dblang;
     }
-  
+
     //创建数据表
-  
+
     $query = '';
     $fp = fopen(dirname(__FILE__).'/sql-dftables.txt','r');
     while(!feof($fp))
@@ -193,19 +209,44 @@ else if($step==4)
         {
             $query .= $line."\n";
             $query = str_replace('#@__',$dbprefix,$query);
-            if($mysqlVersion < 4.1)
+            if ( $dbtype == 'sqlite' )
             {
-                $rs = mysql_query($query,$conn);
-            } else {
-                if(preg_match('#CREATE#i', $query))
+                $query = preg_replace('/character set (.*?) /i','',$query);
+                $query = str_replace('unsigned','',$query);
+                $query = str_replace('TYPE=MyISAM','',$query);
+                
+                $query = preg_replace ('/TINYINT\(([\d]+)\)/i','INTEGER',$query);
+                $query = preg_replace ('/mediumint\(([\d]+)\)/i','INTEGER',$query);
+                $query = preg_replace ('/smallint\(([\d]+)\)/i','INTEGER',$query);
+                $query = preg_replace('/int\(([\d]+)\)/i','INTEGER',$query);
+                $query = preg_replace('/auto_increment/i','PRIMARY KEY AUTOINCREMENT',$query);
+                $query = preg_replace('/,  KEY(.*?)MyISAM;/','',$query);
+                $query = preg_replace('/,  KEY(.*?);/',');',$query);
+                $query = preg_replace('/,  UNIQUE KEY(.*?);/',');',$query);
+                $query = preg_replace('/set\(([^\)]*?)\)/','varchar',$query);
+                $query = preg_replace('/enum\(([^\)]*?)\)/','varchar',$query);
+                if ( preg_match("/PRIMARY KEY AUTOINCREMENT/",$query) )
                 {
-                    $rs = mysql_query(preg_replace("#TYPE=MyISAM#i",$sql4tmp,$query),$conn);
+                    $query = preg_replace('/,([\t\s ]+)PRIMARY KEY  \(`([0-9a-zA-Z]+)`\)/i','',$query);
+                    $query = str_replace(',	PRIMARY KEY (`id`)','',$query);
                 }
-                else
+                $db->exec($query);
+            } else {
+                if($mysqlVersion < 4.1)
                 {
                     $rs = mysql_query($query,$conn);
+                } else {
+                    if(preg_match('#CREATE#i', $query))
+                    {
+                        $rs = mysql_query(preg_replace("#TYPE=MyISAM#i",$sql4tmp,$query),$conn);
+                    }
+                    else
+                    {
+                        $rs = mysql_query($query,$conn);
+                    }
                 }
             }
+    
             $query='';
         } else if(!preg_match("#^(\/\/|--)#", $line))
         {
@@ -213,7 +254,7 @@ else if($step==4)
         }
     }
     fclose($fp);
-    
+
     //导入默认数据
     $query = '';
     $fp = fopen(dirname(__FILE__).'/sql-dfdata.txt','r');
@@ -222,10 +263,19 @@ else if($step==4)
         $line = rtrim(fgets($fp, 1024));
         if(preg_match("#;$#", $line))
         {
-            $query .= $line;
-            $query = str_replace('#@__',$dbprefix,$query);
-            if($mysqlVersion < 4.1) $rs = mysql_query($query,$conn);
-            else $rs = mysql_query(str_replace('#~lang~#',$dblang,$query),$conn);
+            if ( $dbtype == 'sqlite' )
+            {
+                $query .= $line;
+                $query = str_replace('#@__',$dbprefix,$query);
+                $query = str_replace("\'","\"",$query);
+                $db->exec($query);
+            } else {
+                $query .= $line;
+                $query = str_replace('#@__',$dbprefix,$query);
+                if($mysqlVersion < 4.1) $rs = mysql_query($query,$conn);
+                else $rs = mysql_query(str_replace('#~lang~#',$dblang,$query),$conn);
+            }
+    
             $query='';
         } else if(!preg_match("#^(\/\/|--)#", $line))
         {
@@ -236,45 +286,45 @@ else if($step==4)
 
     //更新配置
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$baseurl}' where varname='cfg_basehost';";
-    mysql_query($cquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$cmspath}' where varname='cfg_cmspath';";
-    mysql_query($cquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$indexUrl}' where varname='cfg_indexurl';";
-    mysql_query($cquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$cookieencode}' where varname='cfg_cookie_encode';";
-    mysql_query($cquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$webname}' where varname='cfg_webname';";
-    mysql_query($cquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
     $cquery = "Update `{$dbprefix}sysconfig` set value='{$adminmail}' where varname='cfg_adminemail';";
-    mysql_query($cquery,$conn);
-    
+    $dbtype == 'sqlite'?  $db->exec($cquery) : mysql_query($cquery,$conn);
+
     //增加管理员帐号
     $adminquery = "INSERT INTO `{$dbprefix}admin` VALUES (1, 10, '$adminuser', '".substr(md5($adminpwd),5,20)."', 'admin', '', '', 0, '".time()."', '127.0.0.1');";
-    mysql_query($adminquery,$conn);
-    
+    $dbtype == 'sqlite'?  $db->exec($adminquery) : mysql_query($adminquery,$conn);
+
     //关连前台会员帐号
     $adminquery = "INSERT INTO `{$dbprefix}member` (`mid`,`mtype`,`userid`,`pwd`,`uname`,`sex`,`rank`,`money`,`email`,
                    `scores` ,`matt` ,`face`,`safequestion`,`safeanswer` ,`jointime` ,`joinip` ,`logintime` ,`loginip` )
                VALUES ('1','个人','$adminuser','".md5($adminpwd)."','$adminuser','男','100','0','','10000','10','','0','','".time()."','','0',''); ";
-    mysql_query($adminquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($adminquery) : mysql_query($adminquery,$conn);
 
     $adminquery = "INSERT INTO `{$dbprefix}member_person` (`mid`,`onlynet`,`sex`,`uname`,`qq`,`msn`,`tel`,`mobile`,`place`,`oldplace`,`birthday`,`star`,
                    `income` , `education` , `height` , `bodytype` , `blood` , `vocation` , `smoke` , `marital` , `house` ,`drink` , `datingtype` , `language` , `nature` , `lovemsg` , `address`,`uptime`)
                 VALUES ('1', '1', '男', '{$adminuser}', '', '', '', '', '0', '0','1980-01-01', '1', '0', '0', '160', '0', '0', '0', '0', '0', '0','0', '0', '', '', '', '','0'); ";
-    mysql_query($adminquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($adminquery) : mysql_query($adminquery,$conn);
 
     $adminquery = "INSERT INTO `{$dbprefix}member_tj` (`mid`,`article`,`album`,`archives`,`homecount`,`pagecount`,`feedback`,`friend`,`stow`)
                      VALUES ('1','0','0','0','0','0','0','0','0'); ";
-    mysql_query($adminquery,$conn);
+    $dbtype == 'sqlite'?  $db->exec($adminquery): mysql_query($adminquery,$conn);
 
     $adminquery = "Insert Into `{$dbprefix}member_space`(`mid` ,`pagesize` ,`matt` ,`spacename` ,`spacelogo` ,`spacestyle`, `sign` ,`spacenews`)
                 Values('1','10','0','{$adminuser}的空间','','person','',''); ";
-    mysql_query($adminquery,$conn);
-	
+    $dbtype == 'sqlite'?  $db->exec($adminquery) : mysql_query($adminquery,$conn);
+
 	//安装体验数据
     if($installdemo == 1)
     {
-        if($setupsql = file_get_contents($install_demo_name))
+        if($setupsql = file_get_contents(INSTALL_DEMO_NAME))
 		{
 			$setupsql = preg_replace("#ENGINE=MyISAM#i", 'TYPE=MyISAM', $setupsql);
 			$sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET='.$cfg_db_language;
@@ -288,6 +338,8 @@ else if($step==4)
 			foreach($sqls as $sql) {
 				if(trim($sql)!='') mysql_query($sql,$conn);
 			}
+			// 更新栏目缓存
+			UpDateCatCache();
 		} else {
 			die("没有体验数据包文件,请检查是否下载.");
 		}
@@ -365,10 +417,9 @@ else if($step==10)
 else if($step==11)
 {
 	require_once('../data/admin/config_update.php');
-	$rmurl = $updateHost."dedecms/demodata.{$s_lang}.txt";
-	
+	$rmurl = UPDATEHOST."dedecms/demodata.{$s_lang}.txt";
 	$sql_content = file_get_contents($rmurl);
-	$fp = fopen($install_demo_name,'w');
+	$fp = fopen(INSTALL_DEMO_NAME,'w');
 	if(fwrite($fp,$sql_content))
 		echo '&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)';
 	else

@@ -21,7 +21,7 @@ class SplitWord
 {
     
     //hash算法选项
-    var $mask_value = 0x3ffd;
+    var $mask_value = 0xFFFF;
     
     //输入和输出的字符编码（只允许 utf-8、gbk/gb2312/gb18030、big5 三种类型）  
     var $sourceCharSet = 'utf-8';
@@ -449,6 +449,8 @@ class SplitWord
                         $ew = chr(0x30).chr(0x0B);
                         while(TRUE)
                         {
+							if(!isset($this->sourceString[$i+$n]) && !isset($this->sourceString[$i+$n+1]))
+							break;
                             $w = $this->sourceString[$i+$n].$this->sourceString[$i+$n+1];
                             if( $w == $ew )
                             {

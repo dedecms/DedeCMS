@@ -3,32 +3,73 @@
  *
  * 文档digg处理ajax文件
  *
- * @version        $Id: digg_ajax.php 1 21:17 2010年7月8日Z tianya $
+ * @version        $Id: digg_ajax.php 2 13:00 2011/11/25 tianya $
  * @package        DedeCMS.Plus
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/../include/common.inc.php");
-
 $action = isset($action) ? trim($action) : '';
 $id = empty($id)? 0 : intval(preg_replace("/[^\d]/",'', $id));
+
+helper('cache');
 
 if($id < 1)
 {
     exit();
 }
+
 $maintable = '#@__archives';
-if($action == 'good')
+
+$prefix = 'diggCache';
+$key = 'aid-'.$id;
+$row = GetCache($prefix, $key);
+
+if(!is_array($row) || $cfg_digg_update==0)
 {
-    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=".time()." WHERE id='$id'");
+  $row = $dsql->GetOne("SELECT goodpost,badpost,scores FROM `$maintable` WHERE id='$id' ");
+    if($cfg_digg_update == 0)
+    {
+		if($action == 'good')
+		{
+			$row['goodpost'] = $row['goodpost'] + 1;
+			$dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=".time()." WHERE id='$id'");
+		}
+		else if($action=='bad')
+		{
+			$row['badpost'] = $row['badpost'] + 1;
+			$dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=".time()." WHERE id='$id'");
+		}
+		DelCache($prefix, $key);
+    }
+  SetCache($prefix, $key, $row, 0);
+} else {
+	if($action == 'good')
+	{
+	    $row['goodpost'] = $row['goodpost'] + 1;
+	    $row['scores'] = $row['scores'] + $cfg_caicai_sub;
+	    if($row['goodpost'] % $cfg_digg_update == 0)
+	    {
+			$add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
+		    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$add_caicai_sub},goodpost=goodpost+{$cfg_digg_update} WHERE id='$id'");
+		    DelCache($prefix, $key);
+	    }
+	} else if($action == 'bad')
+	{
+	    $row['badpost'] = $row['badpost'] + 1;
+		$row['scores'] = $row['scores'] - $cfg_caicai_sub;
+	    if($row['badpost'] % $cfg_digg_update == 0)
+	    {
+			$add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
+		    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$add_caicai_sub},badpost=badpost+{$cfg_digg_update} WHERE id='$id'");
+		    DelCache($prefix, $key);
+	    }
+	}
+	SetCache($prefix, $key, $row, 0);
 }
-else if($action=='bad')
-{
-    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=".time()." WHERE id='$id'");
-}
+
 $digg = '';
-$row = $dsql->GetOne("SELECT goodpost,badpost,scores FROM `$maintable` WHERE id='$id' ");
 if(!is_array($row)) exit();
 
 if($row['goodpost'] + $row['badpost'] == 0)

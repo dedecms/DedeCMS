@@ -45,6 +45,7 @@ function CheckSubmit()
 	<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <form enctype="multipart/form-data" name='form1' action="media_edit.php" method="POST" onSubmit="return CheckSubmit();">
 <input type="hidden" name="dopost" value="save">
+<input type="hidden" name="token" value="<?php echo make_hash();?>" />
 <input type="hidden" name="aid" value="<?php echo $aid?>"> 
 <tr> 
 <td width="15%" height="30" align="left" bgcolor="#FFFFFF"class='bline'>媒体类型：</td>

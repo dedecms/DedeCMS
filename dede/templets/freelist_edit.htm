@@ -44,6 +44,12 @@ function CheckSubmit(){
 	return true;
 }
 </script>
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+<script type="text/javascript" src="js/codemirror.js"></script>
+<script type="text/javascript" src="js/mode/xml/xml.js"></script>
+<script type="text/javascript" src="js/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="js/mode/css/css.js"></script>
+<script type="text/javascript" src="js/mode/htmlmixed/htmlmixed.js"></script>
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
@@ -271,5 +277,12 @@ function CheckSubmit(){
     </tr>
   </table>
 </center>
+<script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById('myinnertext'), {
+        lineNumbers: true,
+        lineWrapping: true,
+        mode: 'text/html'
+    });
+</script>
 </body>
 </html>

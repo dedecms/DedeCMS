@@ -59,7 +59,7 @@ if (!empty($noeditor))
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
 <title>图片浏览器</title>
 <link href='../../plus/img/base.css' rel='stylesheet' type='text/css'>
 <style>
@@ -85,10 +85,6 @@ function TNav()
   else if(window.navigator.userAgent.indexOf("Firefox")>=1) return 'FF';
   else return "OT";
 }
-<?php
-if ($GLOBALS['cfg_html_editor']=='ckeditor' && $noeditor == '')
-{
-?>
 // 获取地址参数
 function getUrlParam(paramName)
 {
@@ -100,35 +96,33 @@ function getUrlParam(paramName)
 function ReturnImg(reimg)
 {
     var funcNum = getUrlParam('CKEditorFuncNum');
-    var fileUrl = reimg;
-    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+	if(funcNum > 1)
+	{
+		var fileUrl = reimg;
+		window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+	}
+	if(window.opener.document.<?php echo $f?> != null)
+	{
+		window.opener.document.<?php echo $f?>.value=reimg;
+		if(window.opener.document.getElementById('div<?php echo $v?>'))
+	    {
+		 if(TNav()=='IE'){
+			 //window.opener.document.getElementById('div<?php echo $v?>').filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = reimg;
+			 window.opener.document.getElementById('div<?php echo $v?>').src = reimg;
+			 window.opener.document.getElementById('div<?php echo $v?>').style.width = '150px';
+			 window.opener.document.getElementById('div<?php echo $v?>').style.height = '100px';
+		 }
+		 else
+			 window.opener.document.getElementById('div<?php echo $v?>').style.backgroundImage = "url("+reimg+")";
+	  }
+		else if(window.opener.document.getElementById('<?php echo $v?>')){
+			window.opener.document.getElementById('<?php echo $v?>').src = reimg;
+		}
+		if(document.all) window.opener=true;
+	}
+	
     window.close();
 }
-<?php
-} else {
-?>
-function ReturnImg(reimg)
-{
-	window.opener.document.<?php echo $f?>.value=reimg;
-	if(window.opener.document.getElementById('div<?php echo $v?>'))
-  {
-  	 if(TNav()=='IE'){
-  	 	 window.opener.document.getElementById('div<?php echo $v?>').filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = reimg;
-  	 	 window.opener.document.getElementById('div<?php echo $v?>').style.width = '150px';
-  	 	 window.opener.document.getElementById('div<?php echo $v?>').style.height = '100px';
-  	 }
-  	 else
-  	 	 window.opener.document.getElementById('div<?php echo $v?>').style.backgroundImage = "url("+reimg+")";
-  }
-	else if(window.opener.document.getElementById('<?php echo $v?>')){
-		window.opener.document.getElementById('<?php echo $v?>').src = reimg;
-	}
-	if(document.all) window.opener=true;
-  window.close();
-}
-<?php
-}
-?>
 </SCRIPT>
 <table width='100%' border='0' cellspacing='0' cellpadding='0' align="center">
 <tr>

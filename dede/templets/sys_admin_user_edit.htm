@@ -20,6 +20,7 @@
   <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
 	<form name="form1" action="sys_admin_user_edit.php" method="post">
 	<input type="hidden" name="dopost" value="saveedit" />
+  <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
 	<input type="hidden" name="id" value="<?php echo $row['id']?>" />
         <table width="98%" border="0" cellspacing="1" cellpadding="1">
           <tr> 

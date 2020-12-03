@@ -253,18 +253,20 @@ else if($fmdo=='login')
             if(strtolower($vdcode)!=$svali || $svali=='')
             {
                 ResetVdValue();
-                ShowMsg('验证码错误！', '-1');
+                ShowMsg('验证码错误！', 'index.php');
                 exit();
             }
             
         }
         if(CheckUserID($userid,'',false)!='ok')
         {
-            ShowMsg("你输入的用户名 {$userid} 不合法！","-1");
+            ResetVdValue();
+            ShowMsg("你输入的用户名 {$userid} 不合法！","index.php");
             exit();
         }
         if($pwd=='')
         {
+            ResetVdValue();
             ShowMsg("密码不能为空！","-1",0,2000);
             exit();
         }
@@ -328,15 +330,18 @@ else if($fmdo=='login')
         
         if($rs==0)
         {
-            ShowMsg("用户名不存在！", "-1", 0, 2000);
+            ResetVdValue();
+            ShowMsg("用户名不存在！", "index.php", 0, 2000);
             exit();
         }
         else if($rs==-1) {
-            ShowMsg("密码错误！", "-1", 0, 2000);
+            ResetVdValue();
+            ShowMsg("密码错误！", "index.php", 0, 2000);
             exit();
         }
         else if($rs==-2) {
-            ShowMsg("管理员帐号不允许从前台登录！", "-1", 0, 2000);
+            ResetVdValue();
+            ShowMsg("管理员帐号不允许从前台登录！", "index.php", 0, 2000);
             exit();
         }
         else
@@ -390,7 +395,7 @@ else if($fmdo=='moodmsg')
           $content = cn_substrR(HtmlReplace($content,1),360);
           //对表情进行解析
           $content = addslashes(preg_replace("/\[face:(\d{1,2})\]/is","<img src='".$cfg_memberurl."/templets/images/smiley/\\1.gif' style='cursor: pointer; position: relative;'>",$content));
-          
+          $content = RemoveXSS($content);
             $inquery = "INSERT INTO `#@__member_msg`(`mid`,`userid`,`ip`,`ischeck`,`dtime`, `msg`)
                    VALUES ('{$cfg_ml->M_ID}','{$cfg_ml->M_LoginID}','$ip','$ischeck','$dtime', '$content'); ";
             $rs = $dsql->ExecuteNoneQuery($inquery);

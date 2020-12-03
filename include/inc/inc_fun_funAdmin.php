@@ -124,6 +124,17 @@ function SpCreateDir($spath)
     return true;
 }
 
+function jsScript($js)
+{
+	$out = "<script type=\"text/javascript\">";
+	$out .= "//<![CDATA[\n";
+	$out .= $js;
+	$out .= "\n//]]>";
+	$out .= "</script>\n";
+
+	return $out;
+}
+
 /**
  *  获取编辑器
  *
@@ -136,8 +147,9 @@ function SpCreateDir($spath)
  * @param     string  $isfullpage 是否全屏
  * @return    string
  */
-function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print",$isfullpage="false")
+function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print",$isfullpage="false",$bbcode=false)
 {
+    global $cfg_ckeditor_initialized;
     if(!isset($GLOBALS['cfg_html_editor']))
     {
         $GLOBALS['cfg_html_editor']='fck';
@@ -176,7 +188,27 @@ function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print"
         $CKEditor = new CKEditor();
         $CKEditor->basePath = $GLOBALS['cfg_cmspath'].'/include/ckeditor/' ;
         $config = $events = array();
-        $config['extraPlugins'] = 'dedepage';
+        $config['extraPlugins'] = 'dedepage,multipic,addon';
+		if($bbcode)
+		{
+			$CKEditor->initialized = true;
+			$config['extraPlugins'] .= ',bbcode';
+			$config['fontSize_sizes'] = '30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%';
+			$config['disableObjectResizing'] = 'true';
+			$config['smiley_path'] = $GLOBALS['cfg_cmspath'].'/images/smiley/';
+			// 获取表情信息
+			require_once(DEDEDATA.'/smiley.data.php');
+			$jsscript = array();
+			foreach($GLOBALS['cfg_smileys'] as $key=>$val)
+			{
+				$config['smiley_images'][] = $val[0];
+				$config['smiley_descriptions'][] = $val[3];
+				$jsscript[] = '"'.$val[3].'":"'.$key.'"';
+			}
+			$jsscript = implode(',', $jsscript);
+			echo jsScript('CKEDITOR.config.ubb_smiley = {'.$jsscript.'}');
+		}
+
         $GLOBALS['tools'] = empty($toolbar[$etype])? $GLOBALS['tools'] : $toolbar[$etype] ;
         $config['toolbar'] = $GLOBALS['tools'];
         $config['height'] = $nheight;
@@ -234,7 +266,20 @@ function SpGetNewInfo()
     $phpv = phpversion();
     $sp_os = PHP_OS;
     $mysql_ver = $dsql->GetVersion();
-    $offUrl = "http://www.de"."decms.com/newinfov57.php?version={$cfg_version}&formurl={$nurl}&phpver={$phpv}&os={$sp_os}&mysqlver={$mysql_ver}";
+    $seo_info = $dsql->GetOne("SELECT * FROM `#@__plus_seoinfo` ORDER BY id DESC");
+    $add_query = '';
+    if ( $seo_info )
+    {
+        $add_query .= "&alexa_num={$seo_info['alexa_num']}&alexa_area_num={$seo_info['alexa_area_num']}&baidu_count={$seo_info['baidu_count']}&sogou_count={$seo_info['sogou_count']}&haosou360_count={$seo_info['haosou360_count']}";
+    }
+    $query = " SELECT COUNT(*) AS dd FROM `#@__member` ";
+    $row1 = $dsql->GetOne($query);
+    if ( $row1 ) $add_query .= "&mcount={$row1['dd']}";
+    $query = " SELECT COUNT(*) AS dd FROM `#@__arctiny` ";
+    $row2 = $dsql->GetOne($query);
+    if ( $row2 ) $add_query .= "&acount={$row2['dd']}";
+    
+    $offUrl = "http://new"."ver.a"."pi.de"."decms.com/index.php?c=info57&version={$cfg_version}&formurl={$nurl}&phpver={$phpv}&os={$sp_os}&mysqlver={$mysql_ver}{$add_query}";
     return $offUrl;
 }
 

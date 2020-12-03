@@ -155,6 +155,7 @@ else if($dopost=='makeparenttype')
     {
         require_once(DEDEINC."/arc.listview.class.php");
         $lv = new ListView($tid);
+        $lv->CountRecord();
         $lv->MakeHtml();
         $lv->Close();
     }
@@ -162,6 +163,7 @@ else if($dopost=='makeparenttype')
     {
         require_once(DEDEINC."/arc.sglistview.class.php");
         $lv = new SgListView($tid);
+        $lv->CountRecord();
         $lv->MakeHtml();
         $lv->Close();
     }

@@ -215,7 +215,7 @@ class TypeUnit
                     }
                     echo "  <table class='sunlist'>\r\n";
                     echo "   <tr>\r\n";
-                    echo "     <td>".$step.$timg."<a href='catalog_do.php?cid=".$id."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
+                    echo "     <td align='left'>".$step.$timg."<a href='catalog_do.php?cid=".$id."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
                     echo "   </tr>\r\n";
                     echo "  </table>\r\n";
                     $this->LogicListAllSunType($id,$step."　",false);

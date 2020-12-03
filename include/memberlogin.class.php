@@ -117,6 +117,17 @@ function CheckNotAllow()
     }
 }
 
+function FormatUsername($username)
+{
+    $username = str_replace("`","‘",$username);
+    $username = str_replace("'","‘",$username);
+    $username = str_replace("\"","“",$username);
+    $username = str_replace(",","，",$username);
+    $username = str_replace("(","（",$username);
+    $username = str_replace(")","）",$username);
+    return addslashes($username);
+}
+
 /**
  * 网站会员登录类
  *
@@ -203,7 +214,7 @@ class MemberLogin
                 $this->M_LoginID = $this->fields['userid'];
                 $this->M_MbType = $this->fields['mtype'];
                 $this->M_Money = $this->fields['money'];
-                $this->M_UserName = $this->fields['uname'];
+                $this->M_UserName = FormatUsername($this->fields['uname']);
                 $this->M_Scores = $this->fields['scores'];
                 $this->M_Face = $this->fields['face'];
                 $this->M_Rank = $this->fields['rank'];
@@ -570,19 +581,19 @@ class MemberLogin
         //确定是否需要记录
         if (in_array($type,array('add','addsoft','feedback','addfriends','stow'))){
             $ntime = time();
-            $title = htmlspecialchars(cn_substrR($title,255));
+            $title = dede_htmlspecialchars(cn_substrR($title,255));
             if(in_array($type,array('add','addsoft','feedback','stow')))
             {
                 $rcdtype = array('add'=>' 成功发布了', 'addsoft'=>' 成功发布了软件',
                                  'feedback'=>' 评论了文章','stow'=>' 收藏了');
                 //内容发布处理
                 $arcrul = " <a href='/plus/view.php?aid=".$aid."'>".$title."</a>";
-                $title = htmlspecialchars($rcdtype[$type].$arcrul, ENT_QUOTES);
+                $title = dede_htmlspecialchars($rcdtype[$type].$arcrul, ENT_QUOTES);
             } else if ($type == 'addfriends')
             {
                 //添加好友处理
                 $arcrul = " <a href='/member/index.php?uid=".$aid."'>".$aid."</a>";
-                $title = htmlspecialchars(' 与'. $arcrul."成为好友", ENT_QUOTES);
+                $title = dede_htmlspecialchars(' 与'. $arcrul."成为好友", ENT_QUOTES);
             }
             $note = Html2Text($note);
             $aid = (isset($aid) && is_numeric($aid) ? $aid : 0);

@@ -58,6 +58,7 @@ elseif ($dopost == 'save')
         $mtypeidarr = array_filter($mtypeidarr, 'is_numeric');
         foreach($mtypeidarr as $delid)
         {
+			$delid = HtmlReplace($delid);
             $delids .= ','.$delid;
             unset($mtypename[$delid]);
         }
@@ -67,6 +68,7 @@ elseif ($dopost == 'save')
     foreach ($mtypename as $id => $name)
     {
         $name = HtmlReplace($name);
+        $id = intval($id);
         $query = "UPDATE `#@__mtypes` SET mtypename='$name' WHERE mtypeid='$id' AND mid='$cfg_ml->M_ID'";
         $dsql->ExecuteNoneQuery($query);
     }

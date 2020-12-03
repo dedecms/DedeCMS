@@ -58,6 +58,7 @@ if(empty($dopost))
     $dtp = new DedeTagParse();
     $dtp->LoadSource($addRow['imgurls']);
     $abinfo = $dtp->GetTagByName('pagestyle');
+    $row=XSSClean($row);$addRow=XSSClean($addRow);
     include(DEDEMEMBER."/templets/album_edit.htm");
     exit();
 }

@@ -41,7 +41,7 @@ if($action == 'edit' || $action == 'newfile')
     }
 
     //读取文件内容
-    //$content = htmlspecialchars(trim(file_get_contents($truePath.$filename)));
+    //$content = dede_htmlspecialchars(trim(file_get_contents($truePath.$filename)));
     if($action == 'edit')
     {
         $fp = fopen($templetdird.'/'.$filename, 'r');
@@ -79,6 +79,7 @@ if($action == 'edit' || $action == 'newfile')
         $helps[$tag] = explode('>>dede>>', $helpContent);
     }
 
+    make_hash();
     include DEDEADMIN.'/templets/tpl_edit.htm';
     exit();
 }
@@ -88,6 +89,7 @@ function save_tpl() { }
 --------------------------*/
 else if($action == 'saveedit')
 {
+    csrf_check();
     if($filename == '')
     {
         ShowMsg('未指定要编辑的文件或文件名不合法', '-1');
@@ -137,6 +139,7 @@ else if ($action == 'upload')
     require_once(dirname(__FILE__).'/../include/oxwindow.class.php');
     $acdir = str_replace('.', '', $acdir);
     $win = new OxWindow();
+    make_hash();
     $win->Init("tpl.php","js/blank.js","POST' enctype='multipart/form-data' ");
     $win->mainTitle = "模块管理";
     $wecome_info = "<a href='templets_main.php'>模板管理</a> &gt;&gt; 上传模板";
@@ -148,6 +151,7 @@ else if ($action == 'upload')
     <td width='96' height='60'>请选择文件：</td>
     <td width='504'>
         <input name='acdir' type='hidden' value='$acdir'  />
+        <input name='token' type='hidden' value='{$_SESSION['token']}'  />
         <input name='upfile' type='file' id='upfile' style='width:380px' />
       </td>
   </tr>
@@ -164,6 +168,7 @@ function _upload() {}
 -----------------------*/
 else if ($action == 'uploadok')
 {
+    csrf_check();
     if( !is_uploaded_file($upfile) )
     {
         ShowMsg("貌似你什么都没有上传哦！","javascript:;");
@@ -235,6 +240,7 @@ function lib_demotag(&\$ctag,&\$refObj)
         fclose($fp);
         $title = "修改标签";
     }
+    make_hash();
     include DEDEADMIN.'/templets/tpl_edit_tag.htm';
     exit();
 }
@@ -244,6 +250,7 @@ function savetagfile() { }
 --------------------------*/
 else if($action=='savetagfile')
 {
+    csrf_check();
     if(!preg_match("#^[a-z0-9_-]{1,}\.lib\.php$#i", $filename))
     {
         ShowMsg('文件名不合法，不允许进行操作！', '-1');

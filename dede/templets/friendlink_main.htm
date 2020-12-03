@@ -94,8 +94,8 @@ function checkSubmit()
         <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';"
         	 onMouseOut="javascript:this.bgColor='#FFFFFF';">
           <td><input type='checkbox' name='aids' value='{dede:field.id/}' class='np'></td>
-          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.webname function='htmlspecialchars(@me)'/}</a></td>
-          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.logo function="GetPic(@me)"/}</a></td>
+          <td>{dede:field.webname function='dede_htmlspecialchars(@me)'/}<br><i>地址：{dede:field.url/}</i></td>
+          <td>{dede:field.logo function="GetPic(@me)"/}</td>
           <td>{dede:field.email/}</td>
           <td>{dede:field.dtime function="MyDate('Y-m-d',@me)"/}</td>
           <td>{dede:field.ischeck function="GetSta(@me)"/}</td>

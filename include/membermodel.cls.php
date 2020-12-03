@@ -142,19 +142,19 @@ class membermodel
                                     $formstring .='<p><label>'.$this->egroups[$tag->GetName()].'：</label> '. GetEnumsForm($tag->GetName(),$value[$tag->GetName()],$tag->GetName()).'</p>';
                                 } else if ($tag->GetAtt('type') == 'checkbox'){
                                     //对checkbox模型进行特殊处理
-                                    $formstring .=$func($tag,htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
+                                    $formstring .=$func($tag,dede_htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
                                 }
                                   else if ($tag->GetAtt('type') == 'img')
                                 {
                                     $fieldname = $tag->GetName();
                                     $labelname = $tag->GetAtt('itemname');
-                                    $fvalue = htmlspecialchars($value[$tag->GetName()],ENT_QUOTES);
-                                    $imgstrng = "<p><label>{$labelname}：</label><input type='text' name='$fieldname' value='$fvalue' id='$fieldname' style='width:300px'  class='text' /> <input name='".$fieldname."_bt' class='inputbut' type='button' value='浏览...' onClick=\"SelectImage('form1.$fieldname','big')\" />\r\n</p>";
+                                    $fvalue = dede_htmlspecialchars($value[$tag->GetName()],ENT_QUOTES);
+                                    $imgstrng = "<p><label>{$labelname}：</label><input type='text' name='$fieldname' value='$fvalue' id='$fieldname' style='width:300px'  class='text' /> <input name='".$fieldname."_bt' class='inputbut' type='button' value='浏览...' onClick=\"SelectImage('addcontent.$fieldname','big')\" />\r\n</p>";
                                     $formstring .=$imgstrng;
                                     
                                 }
                                 else {
-                                  $formstring .= $func($tag,htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
+                                  $formstring .= $func($tag,dede_htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
                                   //echo $formstring;
                               }                        
                         }

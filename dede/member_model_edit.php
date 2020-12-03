@@ -22,8 +22,8 @@ function __SaveEdit()
 if($dopost=="save")
 {
     $state = isset($state) && is_numeric($state) ? $state : 1;
-    $description = htmlspecialchars($description);
-    $name = htmlspecialchars($name);
+    $description = dede_htmlspecialchars($description);
+    $name = dede_htmlspecialchars($name);
     $query = "UPDATE `#@__member_model` SET name = '$name', description = '$description', state='$state' WHERE id='$id' ";
     $dsql->ExecuteNoneQuery($query);
     //更新会员模型缓存
@@ -128,7 +128,7 @@ else if($dopost=="copy")
             exit();
         }
         $state = isset($state) && is_numeric($state) ? $state : 0;
-        $newname = htmlspecialchars($newname);
+        $newname = dede_htmlspecialchars($newname);
         $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$newid' OR `table` LIKE '$newtable' OR name LIKE '$newname' ");
         if(is_array($row))
         {

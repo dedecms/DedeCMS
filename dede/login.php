@@ -92,12 +92,14 @@ if($dopost=='login')
             //error
             else if($res==-1)
             {
-				ShowMsg('你的用户名不存在!',-1,0,1000);
+                ResetVdValue();
+				ShowMsg('你的用户名不存在!','login.php',0,1000);
 				exit;
             }
             else
             {
-                ShowMsg('你的密码错误!',-1,0,1000);
+                ResetVdValue();
+                ShowMsg('你的密码错误!','login.php',0,1000);
 				exit;
             }
         }
@@ -105,7 +107,8 @@ if($dopost=='login')
         //password empty
         else
         {
-            ShowMsg('用户和密码没填写完整!',-1,0,1000);
+            ResetVdValue();
+            ShowMsg('用户和密码没填写完整!','login.php',0,1000);
 			exit;
         }
     }

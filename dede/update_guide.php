@@ -95,7 +95,7 @@ if($dopost=='test')
     AjaxHead();
     //下载远程数据
     $dhd = new DedeHttpDown();
-    $dhd->OpenUrl($updateHost.'/verinfo.txt');
+    $dhd->OpenUrl(UPDATEHOST.'/verinfo.txt');
     $verlist = trim($dhd->GetHtml());
     $dhd->Close();
     if($cfg_soft_lang=='utf-8') 
@@ -202,7 +202,7 @@ else if($dopost=='getlist')
     $f = 0;
     foreach($upitemsArr as $upitem)
     {
-        $durl = $updateHost.$cfg_soft_lang.'/'.$upitem.'.file.txt';
+        $durl = UPDATEHOST.$cfg_soft_lang.'/'.$upitem.'.file.txt';
         $dhd->OpenUrl($durl);
         $filelist = $dhd->GetHtml();
         $filelist = trim( preg_replace("#[\r\n]{1,}#", "\n", $filelist) );
@@ -358,7 +358,7 @@ else if($dopost=='down')
         //检查临时文件保存目录是否可用
         MkTmpDir($tmpdir, $files[$curfile]);
         
-        $downfile = $updateHost.$cfg_soft_lang.'/source/'.$files[$curfile];
+        $downfile = UPDATEHOST.$cfg_soft_lang.'/source/'.$files[$curfile];
         
         $dhd = new DedeHttpDown();
         $dhd->OpenUrl($downfile);
@@ -375,7 +375,7 @@ else if($dopost=='down')
         $ct = '';
         foreach($sqls as $sql)
         {
-            $downfile = $updateHost.$cfg_soft_lang.'/'.$sql;
+            $downfile = UPDATEHOST.$cfg_soft_lang.'/'.$sql;
             $dhd->OpenUrl($downfile);
             $ct .= $dhd->GetHtml();
         }

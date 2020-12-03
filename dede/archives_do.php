@@ -62,6 +62,8 @@ else if($dopost=="viewArchives")
                    FROM `{$trow['maintable']}` arc LEFT JOIN `#@__arctype` tp on arc.typeid=tp.id
                    LEFT JOIN `#@__channeltype` ch on ch.id=arc.channel WHERE arc.id='$aid' ";
         $arcRow = $dsql->GetOne($arcQuery);
+		PutCookie('DedeUserID',$arcRow['mid'],1800);
+		PutCookie('DedeLoginTime',time(),1800);
         if($arcRow['ismake']==-1 || $arcRow['corank']!=0 || $arcRow['arcrank']!=0 || ($arcRow['typeid']==0 && $arcRow['channel']!=-1) || $arcRow['money']>0)
         {
             echo "<script language='javascript'>location.href='{$cfg_phpurl}/view.php?aid={$aid}';</script>";
@@ -693,7 +695,7 @@ else if($dopost=='quickEditSave')
             CheckArcAdmin($aid, $cuserLogin->getUserID());
         }
     }
-    $title = htmlspecialchars(cn_substrR($title, $cfg_title_maxlen));
+    $title = dede_htmlspecialchars(cn_substrR($title, $cfg_title_maxlen));
     $shorttitle = cn_substrR($shorttitle, 36);
     $keywords = trim(cn_substrR($keywords, 60));
     if(!TestPurview('a_Check,a_AccCheck,a_MyCheck')) $arcrank = -1;
@@ -707,10 +709,12 @@ else if($dopost=='quickEditSave')
         if(preg_match("#p#", $oldflag)) $flag .= ',p';
         if(preg_match("#j#", $oldflag)) $flag .= ',j';
     }
+	/*
     else
     {
         $flag = $oldflag;
     }
+	*/
     
     $query = "UPDATE `#@__archives` SET
     typeid = '$typeid',
@@ -722,7 +726,6 @@ else if($dopost=='quickEditSave')
     keywords = '$keywords',
     dutyadmin = '$adminid'
     WHERE id = '$aid'; ";
-    
     //更新主表
     $dsql->ExecuteNoneQuery($query);
     //更新微表

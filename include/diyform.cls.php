@@ -90,7 +90,7 @@ class diyform
                     }
                     else
                     {
-                        $formstring .= $func($tag,htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
+                        $formstring .= $func($tag,dede_htmlspecialchars($value[$tag->GetName()],ENT_QUOTES),$admintype);
                     }
                     $formfields .= $formfields == '' ? $tag->GetName().','.$tag->GetAtt('type') : ';'.$tag->GetName().','.$tag->GetAtt('type');
                 }

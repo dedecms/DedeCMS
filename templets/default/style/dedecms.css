@@ -167,8 +167,6 @@ input,select,button{
 }
 .header .title{
 	float:left;
-	padding-left:10px;
-
 }
 .header .title h1 a{
 	width:216px;
@@ -177,27 +175,26 @@ input,select,button{
 	overflow:hidden;
 }
 .header .banner{
-	width:500px;
+	width:468px;
 	height:60px;
-	float:left;
-	margin-left:20px;
-	overflow:hidden;
-}
-.header .banner img{
-	width:500px;
-	height:60px;
-	display:block;
-}
-.header .banner2{
-	width:200px;
-	height:60px;
-	float:left;
+	float:right;
 	margin-left:10px;
 	overflow:hidden;
 }
-.header .banner2 img{
-	width:200px;
+.header .banner img{
+	width:468px;
 	height:60px;
+	display:block;
+}
+.banner2{
+	width:950px;
+	height:90px;
+	margin-top: 10px;
+	overflow:hidden;
+}
+.banner2 img{
+	width:950px;
+	height:90px;
 	display:block;
 }
 
@@ -735,3 +732,8 @@ input,select,button{
 .resultlist ul li span a{
   color:#008400;
  }
+#contentRtPicAD2.stick {
+  position:fixed;
+  top:0;
+  margin:60px 0 0
+}

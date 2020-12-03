@@ -47,6 +47,7 @@ else if($dopost=='save')
         $utype = 'addon';
     }
     $title = HtmlReplace($title, 2);
+    $oldurl = HtmlReplace($oldurl);
     $exname = preg_replace("#(.*)/#", "", $oldurl);
     $exname = preg_replace("#\.(.*)$#", "", $exname);
     $filename = MemberUploads('addonfile', $oldurl, $cfg_ml->M_ID, $utype,$exname, -1, -1, TRUE);

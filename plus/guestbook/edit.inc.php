@@ -44,7 +44,14 @@ else if($job=='editok')
             $remsg = trimMsg(cn_substrR($remsg, 1024), 1);
             $msg = $oldmsg.$remsg;
         }
+    } else {
+        if(!$g_isadmin)
+        {
+            ShowMsg("无权提交修改当前留言！", $GUEST_BOOK_POS);
+            exit();
+        }
     }
+	$msg = HtmlReplace($msg, -1);
     $dsql->ExecuteNoneQuery("UPDATE `#@__guestbook` SET `msg`='$msg', `posttime`='".time()."' WHERE id='$id' ");
     ShowMsg("成功更改或回复一条留言！", $GUEST_BOOK_POS);
     exit();

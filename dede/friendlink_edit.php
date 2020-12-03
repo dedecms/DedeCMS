@@ -50,7 +50,25 @@ else if($dopost=="delall")
 }
 else if($dopost=="saveedit")
 {
-    $id = preg_replace("#[^0-9]#", "", $id);
+	require_once DEDEINC.'/request.class.php';
+	$request = new Request();
+	$request->Init();
+    $id = preg_replace("#[^0-9]#", "", $request->Item('id', 0));
+	$logo = $request->Item('logo', '');
+	$logoimg = $request->Upfile('logoimg', '');
+	if(!empty($logoimg))
+	{
+		$request->MoveUploadFile('logoimg', DEDEROOT.'/uploads/flink/'.$request->GetFileInfo('logoimg', 'name'));
+		$logo = $cfg_cmspath.'/uploads/flink/'.$request->GetFileInfo('logoimg', 'name');
+	}
+	$sortrank = $request->Item('sortrank', 1);
+	$url = $request->Item('url', '');
+	$webname = $request->Item('webname', '');
+	$msg = $request->Item('msg', '');
+	$email = $request->Item('email', '');
+	$typeid = $request->Item('typeid', 0);
+	$ischeck = $request->Item('ischeck', 0);
+	
     $query = "UPDATE `#@__flink` SET sortrank='$sortrank',url='$url',webname='$webname',logo='$logo',msg='$msg',
                   email='$email',typeid='$typeid',ischeck='$ischeck' WHERE id='$id' ";
     $dsql->ExecuteNoneQuery($query);

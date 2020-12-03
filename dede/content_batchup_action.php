@@ -22,6 +22,7 @@ if(empty($startid)) $startid = 0;
 if(empty($endid)) $endid = 0;
 if(empty($seltime)) $seltime = 0;
 if(empty($typeid)) $typeid = 0;
+if(empty($userid)) $userid = '';
 
 //生成HTML操作由其它页面处理
 if($action=="makehtml")
@@ -48,6 +49,14 @@ if($seltime==1)
     $t1 = GetMkTime($starttime);
     $t2 = GetMkTime($endtime);
     $gwhere .= " AND (senddate >= $t1 AND senddate <= $t2) ";
+}
+if(!empty($userid))
+{
+	$row = $dsql->GetOne("SELECT `mid` FROM #@__member WHERE `userid` LIKE '$userid'");
+	if(is_array($row))
+	{
+		$gwhere .= " AND mid = {$row['mid']} ";
+	}
 }
 //特殊操作
 if(!empty($heightdone)) $action=$heightdone;

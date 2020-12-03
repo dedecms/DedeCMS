@@ -33,7 +33,7 @@
         <td>{dede:field.endtime function='GetDateMk(@me)'/}</td>
         <td>
           	<a href='mytag_edit.php?aid={dede:field.aid /}&dopost=edit'>更改</a> | 
-		        <a href='mytag_edit.php?aid={dede:field.aid /}&dopost=delete'>删除</a> | 
+		        <a href='mytag_edit.php?aid={dede:field.aid /}&dopost=delete&token=<?php echo $_SESSION['token'] ;?>'>删除</a> | 
 		        <a href='mytag_edit.php?aid={dede:field.aid /}&dopost=getjs'>JS调用</a>
 		    </td>
      </tr>

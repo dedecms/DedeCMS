@@ -130,9 +130,11 @@ class Alipay
             }
         }
         /* 引入配置文件 */
-        require_once DEDEDATA.'/payment/'.$_GET['code'].'.php';
+		$code = preg_replace( "#[^0-9a-z-]#i", "", $_GET['code'] );
+		require_once DEDEDATA.'/payment/'.$code.'.php';
+		
         /* 取得订单号 */
-        $order_sn = trim($_GET['out_trade_no']);
+        $order_sn = trim(addslashes($_GET['out_trade_no']));
         /*判断订单类型*/
         if(preg_match ("/S-P[0-9]+RN[0-9]/",$order_sn)) {
             //检查支付金额是否相符

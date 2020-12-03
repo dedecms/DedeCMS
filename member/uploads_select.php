@@ -9,7 +9,7 @@
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
-CheckRank(0,0);
+CheckRank(0,0,FALSE);
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 $menutype = 'content';

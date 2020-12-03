@@ -20,6 +20,7 @@ if($cfg_mb_open == 'N')
     ShowMsg("系统关闭了会员功能，因此你无法访问此页面！","javascript:;");
     exit();
 }
+$rs = array();
 
 $cfg_ml = new MemberLogin();
 
@@ -35,7 +36,7 @@ if(!isset($dopost) || empty($dopost)){
         exit();
     }
     
-    $OrdersId = $cart->OrdersId;        //本次记录的订单号
+    $OrdersId = preg_replace("#[^0-9a-z_\-]#i", "", $cart->OrdersId);        //本次记录的订单号
     $CartCount     = $cart->cartCount();    //商品总数
     $priceCount    = $cart->priceCount();//该订单总价格
     
@@ -107,12 +108,12 @@ if(!isset($dopost) || empty($dopost)){
             ShowMsg("请选择配送方式！","-1");
             exit();
         }
-        $address     = cn_substrR(trim($address),200);
-        $des             = cn_substrR($des,100);
-        $postname = cn_substrR(trim($postname),15);
+        $address     = cn_substrR(trim(RemoveXSS($address)),200);
+        $des             = cn_substrR(RemoveXSS($des),100);
+        $postname = cn_substrR(trim(RemoveXSS($postname)),15);
         $tel            = preg_replace("#[^-0-9,\/\| ]#", "", $tel);
         $zip            = preg_replace("#[^0-9]#", "", $zip);
-        $email        = cn_substrR($email,255);
+        $email        = cn_substrR(RemoveXSS($email),255);
         if(empty($tel))
         {
             ShowMsg("请填写正确的收货人联系电话！","-1");
@@ -251,6 +252,7 @@ if(!isset($dopost) || empty($dopost)){
 } else if ($dopost == 'memclickout')
 {
     $svali = GetCkVdValue();
+	$rs = array();
     if(preg_match ("/S-P[0-9]+RN[0-9]/",$oid))
     {
         $oid=trim($oid);
@@ -297,6 +299,11 @@ if(!isset($dopost) || empty($dopost)){
         $pid=$row['pid'];
         $rs = $dsql->GetOne("SELECT * FROM `#@__payment` WHERE id='{$row['paytype']}' ");
     }
+	$rs['code'] = isset($rs['code'])? preg_replace("#[^0-9a-z_\-]+#i", "", $rs['code']) : "";
+	if(empty($rs['code']) OR !file_exists(DEDEINC.'/payment/'.$rs['code'].'.php'))
+	{
+		exit("Error:payment is not exsits!");
+	}
     
     require_once DEDEINC.'/payment/'.$rs['code'].'.php';
     $pay = new $rs['code'];

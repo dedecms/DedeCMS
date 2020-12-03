@@ -6,6 +6,8 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}">
+<script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script>
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
@@ -141,6 +143,7 @@ function getDigg(aid)
                     {dede:pagebreak/}
 				</ul>
 			</div><!-- /pages -->
+			<center>{dede:qrcode/}</center>
 			<div class="newdigg" id="newdigg">
 				<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',{dede:field.id/})">
 					<div class="digg_act">顶一下</div>
@@ -227,7 +230,7 @@ function getDigg(aid)
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>
@@ -240,11 +243,11 @@ function getDigg(aid)
 				</dd>
 			</dl>
 		</div>
-		<div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
+		<div id="contentRtPicAD2" style="margin:10px auto">{dede:mda name='250x250'/}</div>
 	</div><!-- /pright -->
 	
 </div>
-<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

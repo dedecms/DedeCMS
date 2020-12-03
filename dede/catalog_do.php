@@ -15,6 +15,7 @@ if(empty($dopost))
     exit();
 }
 $cid = empty($cid) ? 0 : intval($cid);
+$unittype = empty($unittype) ? 0 : intval($unittype);
 $channelid = empty($channelid) ? 0 : intval($channelid);
 
 /*--------------------------

@@ -28,7 +28,8 @@ if($dopost == '')
     exit();
 }
 elseif ($dopost == 'add')
-{   $mtypename = HtmlReplace(trim($groupname));
+{   
+    $mtypename = HtmlReplace(trim($groupname));
     $row = $dsql->GetOne("SELECT * FROM `#@__member_group` WHERE groupname LIKE '$groupname' AND mid='{$cfg_ml->M_ID}'");
     if(is_array($row))
     {
@@ -51,12 +52,14 @@ elseif ($dopost == 'add')
     }
     exit();
 }elseif ($dopost == 'save'){
+    $groupname = HtmlReplace(trim($groupname));
     if(isset($mtypeidarr) && is_array($mtypeidarr))
     {
         $delids = '0';
         $mtypeidarr = array_filter($mtypeidarr, 'is_numeric');
         foreach($mtypeidarr as $delid)
         {
+		    $delid = HtmlReplace($delid);
             $delids .= ','.$delid;
             unset($groupname[$delid]);
         }
@@ -74,8 +77,10 @@ elseif ($dopost == 'add')
     foreach ($groupname as $id => $name)
     {
         $name = HtmlReplace($name);
+        $id = HtmlReplace($id);
         $query = "UPDATE `#@__member_group` SET groupname='$name' WHERE id='$id' AND mid='$cfg_ml->M_ID'";
         $dsql->ExecuteNoneQuery($query);
     }
     ShowMsg('分组修改完成(删除分组中的会员会转移到默认分组中)','myfriend_group.php');
+    exit();
 }

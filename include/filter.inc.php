@@ -17,9 +17,10 @@
  * @param     string  $svar 过滤值
  * @return    string
  */
+$magic_quotes_gpc = ini_get('magic_quotes_gpc');
 function _FilterAll($fk, &$svar)
 {
-    global $cfg_notallowstr,$cfg_replacestr;
+    global $cfg_notallowstr,$cfg_replacestr,$magic_quotes_gpc;
     if( is_array($svar) )
     {
         foreach($svar as $_k => $_v)
@@ -38,6 +39,9 @@ function _FilterAll($fk, &$svar)
         {
             $svar = preg_replace('/'.$cfg_replacestr.'/i', "***", $svar);
         }
+    }
+    if (!$magic_quotes_gpc) {
+        $svar = addslashes($svar);
     }
     return $svar;
 }

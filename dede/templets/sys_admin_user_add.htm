@@ -40,6 +40,7 @@
 <tr>
     <td height="215" align="center" valign="top" bgcolor="#FFFFFF">
 	<form name="form1" action="sys_admin_user_add.php" onSubmit="return checkSubmit();" method="post">
+  <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
 	<input type="hidden" name="dopost" value="add" />
   <table width="98%" border="0" cellspacing="1" cellpadding="1">
           <tr> 

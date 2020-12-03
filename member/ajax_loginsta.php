@@ -6,6 +6,8 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+define('AJAXLOGIN', TRUE);
+
 require_once(dirname(__FILE__)."/config.php");
 AjaxHead();
 if($myurl == '') exit('');

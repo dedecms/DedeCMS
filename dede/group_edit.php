@@ -31,7 +31,7 @@ $groupissystem = $row['issystem'];
 $groupcreater = $row['creater'];
 $groupimg     = $row['groupimg'];
 $ismaster     = $row['ismaster'];
-$groupdes     = htmlspecialchars($row['des']);
+$groupdes     = dede_htmlspecialchars($row['des']);
 $groupisindex = $row['isindex'];
 $groupsmalltype = $row['smalltype'];
 

@@ -4,6 +4,11 @@
  *  本类用于指定一个 MySQL 的数据表
  *  自动生成列出、修改、删除、增加等操作
  *
+ *   2011-11-08 [完善]对LURD类进行如下完善
+ *		1.增加单条记录管理功能,指定$lurd->singleManage=TRUE,增加单条记录的管理页面;
+ *		2.修改LURD默认管理页面的体验;
+ *		3.模板页面支持~self~指向当前页地址;
+ *		4.lurd支持get模式,便于单条记录的管理;
  *   2010-11-17 [修复]启用request类默认数据处理问题
  *   2010-11-17 [修复]如果存在UNIQUE表字段分析错误的问题
  *   2010-11-17 [增加]增加检索条件匹配方法
@@ -11,7 +16,7 @@
  *   2010-11-14 [修复]数据表存在前缀,模板名称解析问题,同时可以对Lurd单独设定模板
  *
  *
- * @version        $Id: lurd.class.php 6 11:19 2010-11-26 IT柏拉图,tianya $
+ * @version        $Id: lurd.class.php 7 14:07 2011/11/8 IT柏拉图,tianya $
  * @package        DedeCMS.Libraries
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
@@ -57,6 +62,9 @@ class Lurd extends DataListCP
     var $addFields = array();
     // 查询条件
     var $searchParameters = array();
+	
+	// 单条记录管理,修改/删除
+	var $singleManage = TRUE;
 
     //构造函数，指定要操作的表名
     function __construct($tablename, $templatedir='', $lurdtempdir='')
@@ -64,7 +72,7 @@ class Lurd extends DataListCP
         global $dsql;
         $prefix = "#@__";
         $this->tplName = str_replace($prefix, '', $tablename);
-        $this->tableName = str_replace($prefix, $dsql->dbPrefix, $tablename);
+        $this->tableName = str_replace($prefix, $GLOBALS['cfg_dbprefix'], $tablename);
         $this->templateDir = $templatedir;
         $this->lurdTempdir = empty($lurdtempdir) ? $this->templateDir.'/lurd' : $lurdtempdir;
         parent::__construct();
@@ -259,6 +267,7 @@ class Lurd extends DataListCP
         $tempItems['appname'] = empty($this->appName) ? "管理数据表： ".$this->tableName : $this->appName;
         //设置选择项
         $tempItems['totalitem'] = 1;
+        $tempItems['self'] = $_SERVER["PHP_SELF"];
         $titleitem = "    <td class='nowrap'>选择</td>\r\n";
         if( !preg_match("/,/", $this->primaryKey) )
         {
@@ -331,7 +340,8 @@ class Lurd extends DataListCP
                     continue;
                 }
                 $tempItems['totalitem']++;
-                $titleitem .= "    <td class='nowrap'>$k</td>\r\n";
+				$title = !empty($v['comment'])? $v['comment'] : $k;
+                $titleitem .= "    <td class='nowrap'>$title</td>\r\n";
                 $dofunc = $dtype = $fformat = '';
                 if(isset($v['format']))
                 {
@@ -350,6 +360,7 @@ class Lurd extends DataListCP
                 $fielditem .= "    <td class='nowrap'>{dede:field name='{$k}' $dofunc /}</td>\r\n";
             }
         }
+		
         //是否有联结其它的表
         $islink = count($this->linkTables) > 0 ? TRUE : FALSE;
         //附加表的字段
@@ -377,6 +388,17 @@ class Lurd extends DataListCP
                 $fielditem .= "    <td class='nowrap'>{dede:field name='{$k}' $dofunc /}</td>\r\n";
             }
         }
+		
+		if($this->singleManage)
+		{
+			$tempItems['totalitem']++;
+			$titleitem .= "    <td class='nowrap'>管理</td>\r\n";
+			$currentUrl = $this->GetCurUrl();
+			$fielditem .= "    <td class='nowrap'>  
+			<a href=\"{$currentUrl}?{$this->primaryKey}={dede:field name='{$this->primaryKey}' /}&ac=edit&get=yes\">修改</a> 
+			|  <a href=\"{$currentUrl}?{$this->primaryKey}={dede:field name='{$this->primaryKey}' /}&ac=del&get=yes\">删除</a> </td>\r\n";
+		}
+		
         $tempItems['titleitem'] = $titleitem;
         $tempItems['fielditem'] = $fielditem;
         foreach($tempItems as $k => $v)
@@ -400,6 +422,7 @@ class Lurd extends DataListCP
         $tempItems = array('appname'=>'', 'fields'=>'', 'primarykey'=>'');
         $tempItems['appname'] = empty($this->appName) ? "在 {$this->tableName} ".($getTemplets=='add' ? '添加数据' : '编辑数据' ) : $this->appName;
         $tempItems['fields'] = '';
+		$tempItems['self'] = $_SERVER["PHP_SELF"];
         if( !preg_match("/,/", $this->primaryKey) )
         {
             $tempItems['primarykey'] = "    <input type=\"hidden\" name=\"{$this->primaryKey}\" value=\"{dede:field name='{$this->primaryKey}' /}\" />\r\n";
@@ -419,6 +442,7 @@ class Lurd extends DataListCP
         foreach($this->fields as $k=>$v)
         {
             $aeform = $dtype = $defaultvalue = $fformat = '';
+			$title = !empty($v['comment'])? $v['comment'] : $k;
             //在指定了字段模板情况下不使用自动生成
             if(isset($this->fields[$k][$getTemplets.'template']))
             {
@@ -530,7 +554,7 @@ class Lurd extends DataListCP
             {
                 $aeform  = "<input type='input' name='{$k}' class='txt' value='$dfvalue' />";
             }
-            $fielditem .= "    <tr>\r\n<td height='28' align='center' bgcolor='#FFFFFF'>{$k}</td>\r\n<td bgcolor='#FFFFFF'>{$aeform}</td>\r\n</tr>\r\n";
+            $fielditem .= "    <tr>\r\n<td height='28' align='center' bgcolor='#FFFFFF'>{$title}</td>\r\n<td bgcolor='#FFFFFF'>{$aeform}</td>\r\n</tr>\r\n";
         }
         $tempItems['fields'] = $fielditem;
         foreach($tempItems as $k=>$v)
@@ -564,6 +588,7 @@ class Lurd extends DataListCP
         }
         else
         {
+			$pkey = (request('get') == 'yes')? request($this->primaryKey) : $GLOBALS[$this->primaryKey][0];
             $whereQuery = "WHERE `{$this->primaryKey}` = '".$GLOBALS[$this->primaryKey][0]."' ";
         }
 
@@ -679,6 +704,22 @@ class Lurd extends DataListCP
             ShowMsg('成功保存一组数据！', $gourl);
             exit();
         }
+    }
+	
+    //获得当前网址
+    function GetCurUrl()
+    {
+        if(!empty($_SERVER["REQUEST_URI"]))
+        {
+            $nowurl = $_SERVER["REQUEST_URI"];
+            $nowurls = explode("?",$nowurl);
+            $nowurl = $nowurls[0];
+        }
+        else
+        {
+            $nowurl = $_SERVER["PHP_SELF"];
+        }
+        return $nowurl;
     }
 
     // 删除数据
@@ -1040,7 +1081,7 @@ class Lurd extends DataListCP
         //并转换一些不安全字符串（如：eval(、union、CONCAT(、--、等）
         else if($this->stringSafe == 2)
         {
-            $str = addslashes(htmlspecialchars(stripslashes($str)));
+            $str = addslashes(dede_htmlspecialchars(stripslashes($str)));
             $str = preg_replace("#eval#i", 'ｅｖａｌ', $str);
             $str = preg_replace("#union#i", 'ｕｎｉｏｎ', $str);
             $str = preg_replace("#concat#i", 'ｃｏｎｃａｔ', $str);

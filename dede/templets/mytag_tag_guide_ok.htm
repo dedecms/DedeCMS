@@ -8,6 +8,7 @@
 <body leftmargin='0' topmargin='10'>
 <table width="99%" border="0" cellspacing="0" cellpadding="0">
   <form action="tag_test_action.php" method="post" name="f1" target="_blank">
+  <input type="hidden" name="token" value="<?php echo make_hash();?>" />
   <tr> 
     <td align="center"> 
       <textarea name="partcode" cols="60" rows="6" id="partcode" style="width:90%;height:120"><?php echo $fulltag?></textarea> 

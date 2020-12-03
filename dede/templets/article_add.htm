@@ -6,6 +6,17 @@
 <style type="text/css">
 <!--
 body { background-image: url(images/allbg.gif); }
+.multipic {
+	border: 1px dashed #FC6;
+}
+.albCt {
+	border-bottom: 1px dashed #FC0;
+	margin-bottom: 10px;
+	padding-bottom:10px;
+}
+.albCt img{
+	cursor:pointer;
+}
 -->
 </style>
 <link href="css/base.css" rel="stylesheet" type="text/css">
@@ -13,12 +24,16 @@ body { background-image: url(images/allbg.gif); }
 <script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script type="text/javascript" src="js/calendar/calendar.js"></script>
 <script language='javascript' src="js/main.js"></script>
+<script type="text/javascript"src="js/handlers.js"></script>
+<script type="text/javascript" src="../images/swfupload/swfupload.js"></script>
 <script language="javascript" src="../include/js/jquery/jquery.js"></script>
 <script language="javascript" src="../include/js/jquery/ui.core.js"></script>
 <script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
 <script lang='javascript' src='js/tb-box.js'></script>
 <script language="javascript">
 <!--
+var swfu = null;
+var arctype = 'article';
 function checkSubmit()
 {
 	if(document.form1.title.value=='')
@@ -51,6 +66,92 @@ function viewVote()
         alert('请选择一个投票');
         return false;
     }
+}
+window.onload = function ()
+{
+	swfu = new SWFUpload(
+	{
+		// Backend Settings
+		upload_url: "swfupload.php",
+		post_params: {"PHPSESSID": "<?php echo session_id(); ?>", "dopost" : "", "arctype" : arctype},
+
+		// File Upload Settings
+		file_size_limit : "2 MB",	// 2MB
+		file_types : "*.jpg; *.gif; *.png",
+		file_types_description : "选择 JPEG/GIF/PNG 格式图片",
+		file_upload_limit : "0",
+
+		file_queue_error_handler : fileQueueError,
+		file_dialog_complete_handler : fileDialogComplete,
+		upload_progress_handler : uploadProgress,
+		upload_error_handler : uploadError,
+		upload_success_handler : uploadSuccess,
+		upload_complete_handler : uploadComplete,
+
+		button_image_url : "../images/SmallSpyGlassWithTransperancy_17x18.png",
+		button_placeholder_id : "spanButtonPlaceholder",
+		button_width: '100%',
+		button_height: 26,
+		button_text : '<div class="button" style="background-color:#E5F1CF; height:26px; text-align:center; line-height:26px">上传图片(可多选)</div>',
+		button_text_style : '',
+		button_text_top_padding: 0,
+		button_text_left_padding: 10,
+		button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+		button_cursor: SWFUpload.CURSOR.HAND,
+		
+		// Flash Settings
+		flash_url : "../images/swfupload/swfupload.swf",
+
+		custom_settings : {
+			upload_target : "divFileProgressContainer"
+		},
+		
+		// Debug Settings
+		debug: false
+	});
+};
+
+function addtoEdit(pid)
+{
+	jQuery.get('swfupload.php?dopost=addtoedit&id=' + pid, function(data)
+	{
+		var picTitle = jQuery('input[name="picinfook'+pid+'"]').val();
+		var picHTML = '<img src="'+data+'" alt="'+picTitle+'"/>';
+		CKEDITOR.instances.body.insertHtml(picHTML);
+	});
+}
+
+//删除已经上传的图片
+function delAlbPic(pid){
+	// 同步删除编辑器中插入的图片
+	jQuery("#__tmpbody").html();
+	jQuery.get('swfupload.php?dopost=addtoedit&id=' + pid, function(data)
+	{
+		var iptbody = CKEDITOR.instances.body.getData();
+		jQuery("#__tmpbody").html(iptbody);
+		jQuery("#__tmpbody").find('img').each(function()
+		{
+			if(jQuery(this).attr('src') == data)
+			{
+				//alert(data);
+				jQuery(this).remove();
+			}
+		});
+		CKEDITOR.instances.body.setData(jQuery("#__tmpbody").html()); 
+		jQuery("#__tmpbody").html();
+		var tgobj = $Obj('albCtok'+pid);
+		var myajax = new DedeAjax(tgobj);
+		myajax.SendGet2('swfupload.php?dopost=del&id='+pid);
+		$Obj('thumbnails').removeChild(tgobj);
+	});
+}
+
+//删除已经上传的图片(编辑时用)
+function delAlbPicOld(picfile, pid){
+	var tgobj = $Obj('albold'+pid);
+	var myajax = new DedeAjax(tgobj);
+	myajax.SendGet2('swfupload.php?dopost=delold&picfile='+picfile);
+	$Obj('thumbnailsEdit').removeChild(tgobj);
 }
 -->
 </script>
@@ -102,23 +203,20 @@ function viewVote()
   <input type="hidden" name="dopost" value="save" />
   <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;文章标题：</td>
-            <td width='408'>
-            	<input name="title" type="text" id="title" value="<?php echo $title; ?>" style="width:388px" />
-            </td>
+            <td width='408'><input name="title" type="text" id="title" value="<?php echo $title; ?>" style="width:388px" /></td>
             <td width="90">&nbsp;简略标题：</td>
             <td>
             	<input name="shorttitle" type="text" id="shorttitle" style="width:150px" />
             </td>
           </tr>
-        </table>
-       </td>
+        </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td  width="90">&nbsp;自定义属性：</td>
@@ -140,7 +238,7 @@ function viewVote()
        </td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:none">
+      <td height="24" colspan="5" class="bline" id="redirecturltr" style="display:none">
 	   <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;跳转网址：</td>
@@ -152,7 +250,7 @@ function viewVote()
        </td>
     </tr>
     <tr>
-      <td width="400%" height="24" class="bline">
+      <td width="400%" height="24" colspan="2" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;TAG标签：</td>
@@ -164,7 +262,7 @@ function viewVote()
       </td>
     </tr>
     <tr id="pictable">
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90"> &nbsp;缩 略 图：</td>
@@ -190,7 +288,7 @@ function viewVote()
         </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;文章来源：</td>
@@ -207,7 +305,7 @@ function viewVote()
         </td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;文章主栏目：</td>
@@ -239,7 +337,7 @@ function viewVote()
       </table></td>
     </tr>
     <tr id='typeid2tr' style='display:none'>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;文章副栏目：</td>
@@ -252,7 +350,7 @@ function viewVote()
       </td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;关键字：</td>
@@ -264,7 +362,7 @@ function viewVote()
       </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="5" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;内容摘要：</td>
@@ -275,10 +373,10 @@ function viewVote()
       </td>
   </tr>
   <tr>
-     <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
+     <td colspan="2"><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
    </tr>
     <tr>
-      <td height="28" bgcolor="#F9FCEF" class="bline2">
+      <td height="28" colspan="2" bgcolor="#F9FCEF" class="bline2">
       	<div style='float:left;line-height:28px;'>&nbsp;<strong>文章内容：</strong></div>
       	<div style='float:right;;padding-right:8px'>
         	<img src="images/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer; "/>
@@ -289,7 +387,7 @@ function viewVote()
       </td>
     </tr>
     <tr>
-      <td width="100%" height="24" class="bline">
+      <td width="100%" height="24" colspan="2" class="bline">
 	  <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;附加选项：</td>
@@ -307,7 +405,7 @@ function viewVote()
         </table></td>
     </tr>
     <tr>
-      <td width="100%" height="24" class="bline">
+      <td width="100%" height="24" colspan="2" class="bline">
 	     <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;分页方式：</td>
@@ -324,11 +422,18 @@ function viewVote()
        </td>
     </tr>
     <tr>
-      <td>
+      <td width="100%" id="arcBody">
       <?php
         GetEditor("body",$body,450);
 	     ?>
 	    </td>
+      <td width="255" align="center" valign="top" bgcolor="#FFFFCC" id="mPic" style="display:none"><div class="multipic">
+      <div style="display: block;background-color:#E5F1CF; height:26px">
+								<span id="spanButtonPlaceholder"></span>
+	  </div>
+      <div id="divFileProgressContainer"></div>
+      <div id="thumbnails" style="width: 254px; height: 535px; background-color: rgb(255, 255, 255); overflow-y: scroll;"></div>
+      </div></td>
     </tr>
   </table>
   <!-- //插入投票 -->
@@ -518,6 +623,7 @@ function viewVote()
    </tr>
 </table>
 </form>
+<div id="__tmpbody" style="display:none"></div>
 <script language='javascript'>InitPage();</script>
 </body>
 </html>

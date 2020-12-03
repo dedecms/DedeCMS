@@ -249,9 +249,215 @@ exit;
 {
     include('templets/index_body_showad.htm');
     exit;
+} else if($dopost=='setskin')
+{
+	$cskin = empty($cskin)? 1 : $cskin;
+	$skin = !in_array($cskin, array(1,2,3,4))? 1 : $cskin;
+	$skinconfig = DEDEDATA.'/admin/skin.txt';
+	PutFile($skinconfig, $skin);
+} elseif ( $dopost=='get_seo' )
+{
+    if (!function_exists('fsocketopen') && !function_exists('curl_init')) {
+        echo '没有支持的curl或fsocketopen组件';
+        exit;
+    }
+    function dedeseo_http_send($url, $limit=0, $post='', $cookie='', $timeout=5)
+    {
+        $return = '';
+        $matches = parse_url($url);
+        $scheme = $matches['scheme'];
+        $host = $matches['host'];
+        $path = $matches['path'] ? $matches['path'].(@$matches['query'] ? '?'.$matches['query'] : '') : '/';
+        $port = !empty($matches['port']) ? $matches['port'] : 80;
+
+        if (function_exists('curl_init') && function_exists('curl_exec')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $scheme.'://'.$host.':'.$port.$path);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_USERAGENT, @$_SERVER['HTTP_USER_AGENT']); 
+            if ($post) {
+                curl_setopt($ch, CURLOPT_POST, 1);
+                $content = is_array($port) ? http_build_query($post) : $post;
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+            }
+            if ($cookie) {
+                curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+            }
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+            $data = curl_exec($ch);
+            $status = curl_getinfo($ch);
+            $errno = curl_errno($ch);
+            curl_close($ch);
+            if ($errno || $status['http_code'] != 200) {
+                return;
+            } else {
+                return !$limit ? $data : substr($data, 0, $limit);
+            }
+        }
+
+        if ($post) {
+            $content = is_array($port) ? http_build_query($post) : $post;
+            $out = "POST $path HTTP/1.0\r\n";
+            $header = "Accept: */*\r\n";
+            $header .= "Accept-Language: zh-cn\r\n";
+            $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+            $header .= "User-Agent: ".@$_SERVER['HTTP_USER_AGENT']."\r\n";
+            $header .= "Host: $host:$port\r\n";
+            $header .= 'Content-Length: '.strlen($content)."\r\n";
+            $header .= "Connection: Close\r\n";
+            $header .= "Cache-Control: no-cache\r\n";
+            $header .= "Cookie: $cookie\r\n\r\n";
+            $out .= $header.$content;
+        } else {
+            $out = "GET $path HTTP/1.0\r\n";
+            $header = "Accept: */*\r\n";
+            $header .= "Accept-Language: zh-cn\r\n";
+            $header .= "User-Agent: ".@$_SERVER['HTTP_USER_AGENT']."\r\n";
+            $header .= "Host: $host:$port\r\n";
+            $header .= "Connection: Close\r\n";
+            $header .= "Cookie: $cookie\r\n\r\n";
+            $out .= $header;
+        }
+
+        $fpflag = 0;
+        $fp = false;
+        if (function_exists('fsocketopen')) {
+            $fp = fsocketopen($host, $port, $errno, $errstr, $timeout);
+        }
+        if (!$fp) {
+            $context = stream_context_create(array(
+                'http' => array(
+                    'method' => $post ? 'POST' : 'GET',
+                    'header' => $header,
+                    'content' => $content,
+                    'timeout' => $timeout,
+                ),
+            ));
+            $fp = @fopen($scheme.'://'.$host.':'.$port.$path, 'b', false, $context);
+            $fpflag = 1;
+        }
+
+        if (!$fp) {
+            return '';
+        } else {
+            stream_set_blocking($fp, true);
+            stream_set_timeout($fp, $timeout);
+            @fwrite($fp, $out);
+            $status = stream_get_meta_data($fp);
+            if (!$status['timed_out']) {
+                while (!feof($fp) && !$fpflag) {
+                    if (($header = @fgets($fp)) && ($header == "\r\n" ||  $header == "\n")) {
+                        break;
+                    }
+                }
+                if ($limit) {
+                    $return = stream_get_contents($fp, $limit);
+                } else {
+                    $return = stream_get_contents($fp);
+                }
+            }
+            @fclose($fp);
+            return $return;
+        }
+    }
+    $seo_info = array();
+    $seo_info = $dsql->GetOne("SELECT * FROM `#@__plus_seoinfo` ORDER BY id DESC");
+    $now = time();
+    if ( empty($seo_info) OR $now - $seo_info['create_time'] > 60*60*6 )
+    {
+        $site = str_replace(array("http://",'/'),'',$cfg_basehost);
+
+        $url = "http://www.alexa.com/siteinfo/{$site}";
+    	$html = dedeseo_http_send($url);
+    	//var_dump($html);exit;
+    	if ( preg_match("#API at http://aws.amazon.com/awis -->(.*)</strong>#isU",$html,$matches) )
+        {
+            $seo_info['alexa_num'] = isset($matches[1])? trim($matches[1]) : 0;
+        }
+        $seo_info['alexa_num'] = empty($seo_info['alexa_num'])? 0 : $seo_info['alexa_num'];
+    	if ( preg_match("#Flag'><strong class=\"metrics-data align-vmiddle\">(.*)</strong>#isU",$html,$matches) )
+        {
+            $seo_info['alexa_area_num'] = isset($matches[1])? trim($matches[1]) : 0;
+        }
+        $seo_info['alexa_area_num'] = empty($seo_info['alexa_area_num'])? 0 : $seo_info['alexa_area_num'];
+        
+        $url = "http://www.baidu.com/s?wd=site:{$site}";
+    	$html = Html2Text(dedeseo_http_send($url));
+    	if ( preg_match("#结果数约([\d]+)个#",$html,$matches) )
+        {
+            $seo_info['baidu_count'] = isset($matches[1])? $matches[1] : 0;
+        }
+    	if (empty($seo_info['baidu_count']) AND preg_match("#网站共有([\d, ]+)个#",$html,$matches) )
+        {
+            $seo_info['baidu_count'] = isset($matches[1])? trim($matches[1]) : 0;
+        }
+        $seo_info['baidu_count'] = empty($seo_info['baidu_count'])? 0 : $seo_info['baidu_count'];
+
+        $url = "http://www.sogou.com/web?query=site:{$site}";
+    	$html = Html2Text(dedeseo_http_send($url));
+    	if ( preg_match("#结果数约([\d]+)个#",$html,$matches) )
+        {
+            $seo_info['sogou_count'] = isset($matches[1])? $matches[1] : 0;
+        }
+    	if (empty($seo_info['sogou_count']) AND preg_match("#找到约([\d, ]+)条结果#",$html,$matches) )
+        {
+            $seo_info['sogou_count'] = isset($matches[1])? trim($matches[1]) : 0;
+        }
+        $seo_info['sogou_count'] = empty($seo_info['sogou_count'])? 0 : $seo_info['sogou_count'];
+
+        $url = "http://www.haosou.com/s?q=site%3A{$site}";
+    	$html = Html2Text(dedeseo_http_send($url));
+    	if ( preg_match("#结果数约([\d]+)个#",$html,$matches) )
+        {
+            $seo_info['haosou360_count'] = isset($matches[1])? $matches[1] : 0;
+        }
+    	if (empty($seo_info['haosou360_count']) AND preg_match("#结果约([\d, ]+)个#",$html,$matches) )
+        {
+            $seo_info['haosou360_count'] = isset($matches[1])? trim($matches[1]) : 0;
+        }
+        $seo_info['haosou360_count'] = empty($seo_info['haosou360_count'])? 0 : $seo_info['haosou360_count'];
+        
+
+        $in_query = "INSERT INTO `#@__plus_seoinfo` (`create_time`, `alexa_num`, `alexa_area_num`, `baidu_count`, `sogou_count`, `haosou360_count`) VALUES ({$now}, '{$seo_info['alexa_num']}', '{$seo_info['alexa_area_num']}', '{$seo_info['baidu_count']}', '{$seo_info['sogou_count']}', '{$seo_info['haosou360_count']}');";
+        $dsql->ExecuteNoneQuery($in_query);
+    }
+    $inff=array(
+        'alexa_num'=>'Alexa全球排名',
+        'alexa_area_num'=>'Alexa地区排名',
+        'baidu_count'=>'百度收录',
+        'sogou_count'=>'搜狗收录',
+        'haosou360_count'=>'360收录',
+    );
+?>
+<table width="100%" class="dboxtable">
+    <tbody>
+<?php
+    foreach( $seo_info as $key => $value )
+    {
+        if ( $key=='id' OR $key=='create_time' ) continue;
+?>
+
+    <tr>
+        <td width="50%" class="nline" style="text-align:left"> <?php
+            echo $inff[$key];
+        ?>
+        ： </td>
+        <td class="nline" style="text-align:left"> <?php
+            echo $value;
+        ?>
+         </td>
+    </tr>
+<?php
 }
+?>
 
-
+    </tbody></table>
+<?php
+    
+	exit;
+}
 ?>
        
     

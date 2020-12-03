@@ -47,6 +47,15 @@ function ReWriteConfig()
 //保存配置的改动
 if($dopost=="save")
 {
+    if(!isset($token)){
+        echo 'No token found!';
+        exit;
+    }
+
+    if(strcasecmp($token, $_SESSION['token']) != 0){
+        echo 'Token mismatch!';
+        exit;
+    }
     foreach($_POST as $k=>$v)
     {
         if(preg_match("#^edit___#", $k))
@@ -67,6 +76,15 @@ if($dopost=="save")
 //增加新变量
 else if($dopost=='add')
 {
+    if(!isset($token)){
+        echo 'No token found!';
+        exit;
+    }
+
+    if(strcasecmp($token, $_SESSION['token']) != 0){
+        echo 'Token mismatch!';
+        exit;
+    }
     if($vartype=='bool' && ($nvarvalue!='Y' && $nvarvalue!='N'))
     {
         ShowMsg("布尔变量值必须为'Y'或'N'!","-1");
@@ -142,13 +160,13 @@ EOT;
         echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='N'$c2>否 ";
     }else if($row['type']=='bstring')
     {
-        echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' class='textarea_info' style='width:98%;height:50px'>".htmlspecialchars($row['value'])."</textarea>";
+        echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' class='textarea_info' style='width:98%;height:50px'>".dede_htmlspecialchars($row['value'])."</textarea>";
     }else if($row['type']=='number')
     {
         echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value='{$row['value']}' style='width:30%'>";
     }else
     {
-        echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value=\"".htmlspecialchars($row['value'])."\" style='width:80%'>";
+        echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value=\"".dede_htmlspecialchars($row['value'])."\" style='width:80%'>";
     }
     ?>
 </td>
@@ -168,6 +186,17 @@ EOT;
           </tr></table>';
     }
     exit;
+} else if ($dopost=='make_encode')
+{
+    $chars='abcdefghigklmnopqrstuvwxwyABCDEFGHIGKLMNOPQRSTUVWXWY0123456789';
+    $hash='';
+    $length = rand(28,32);
+    $max = strlen($chars) - 1;
+    for($i = 0; $i < $length; $i++) {
+        $hash .= $chars[mt_rand(0, $max)];
+    }
+    echo $hash;
+    exit();
 }
-
+make_hash();
 include DedeInclude('templets/sys_info.htm');

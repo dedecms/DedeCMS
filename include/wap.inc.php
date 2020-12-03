@@ -35,7 +35,7 @@ function html2wml($content)
      $content = preg_replace('/\&\#.*?\;/i', '', $content);
      // 上面是将 HTML 网页内容转化为带换行的纯文本，下面是将这些纯文本转化为 WML。
      $content = str_replace('$', '$$', $content);
-     $content = str_replace("\r\n", "\n", htmlspecialchars($content));
+     $content = str_replace("\r\n", "\n", dede_htmlspecialchars($content));
      $content = explode("\n", $content);
      for ($i = 0; $i < count($content); $i++)
      {
@@ -63,7 +63,7 @@ function html2wml($content)
 function text2wml($content)
 {
      $content = str_replace('$', '$$', $content);
-     $content = str_replace("\r\n", "\n", htmlspecialchars($content));
+     $content = str_replace("\r\n", "\n", dede_htmlspecialchars($content));
      $content = explode("\n", $content);
      for ($i = 0; $i < count($content); $i++)
      {

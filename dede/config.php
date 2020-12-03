@@ -14,6 +14,28 @@ require_once(DEDEINC.'/userlogin.class.php');
 header('Cache-Control:private');
 $dsql->safeCheck = FALSE;
 $dsql->SetLongLink();
+$cfg_admin_skin = 1; // 后台管理风格
+
+if(file_exists(DEDEDATA.'/admin/skin.txt'))
+{
+	$skin = file_get_contents(DEDEDATA.'/admin/skin.txt');
+	$cfg_admin_skin = !in_array($skin, array(1,2,3,4))? 1 : $skin;
+}
+$_csrf_name = '_csrf_name_'.substr(md5(md5($cfg_cookie_encode)),0,8);
+$_csrf_hash =  GetCookie($_csrf_name);
+if ( empty($_csrf_hash) )
+{
+    $_csrf_hash = md5(uniqid(mt_rand(), TRUE));
+    if (strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST')
+    {
+        PutCookie($_csrf_name, $_csrf_hash, 7200, '/');
+    }
+}
+
+$_csrf =  array(
+    'name'  =>'_dede'.$_csrf_name,
+    'hash'  => $_csrf_hash,
+);
 
 //获得当前脚本名称，如果你的系统被禁用了$_SERVER变量，请自行更改这个选项
 $dedeNowurl = $s_scriptName = '';
@@ -25,10 +47,42 @@ $cfg_remote_site = empty($cfg_remote_site)? 'N' : $cfg_remote_site;
 
 //检验用户登录状态
 $cuserLogin = new userLogin();
+
 if($cuserLogin->getUserID()==-1)
 {
-    header("location:login.php?gotopage=".urlencode($dedeNowurl));
+    if ( preg_match("#PHP (.*) Development Server#",$_SERVER['SERVER_SOFTWARE']) )
+    {
+        $dirname = dirname($_SERVER['SCRIPT_NAME']);
+        header("location:{$dirname}/login.php?gotopage=".urlencode($dedeNowurl));
+    } else {
+        header("location:login.php?gotopage=".urlencode($dedeNowurl));
+    }
     exit();
+}
+
+function csrf_check()
+{
+    global $token;
+
+    if(!isset($token) || strcasecmp($token, $_SESSION['token']) != 0){
+        echo '<a href="http://bbs.dedecms.com/907721.html">DedeCMS:CSRF Token Check Failed!</a>';
+        exit;
+    }
+}
+
+function XSSClean($val)
+{
+
+    if (is_array($val))
+    {
+        while (list($key) = each($val))
+        {
+            if(in_array($key,array('tags','body','dede_fields','dede_addonfields','dopost','introduce'))) continue;
+            $val[$key] = XSSClean($val[$key]);
+        }
+        return $val;
+    }
+    return RemoveXss($val);
 }
 
 if($cfg_dede_log=='Y')
@@ -85,6 +139,43 @@ if(file_exists($cacheFile)) require_once($cacheFile);
 
 //更新服务器
 require_once (DEDEDATA.'/admin/config_update.php');
+
+if(strlen($cfg_cookie_encode)<=10)
+{
+    $chars='abcdefghigklmnopqrstuvwxwyABCDEFGHIGKLMNOPQRSTUVWXWY0123456789';
+    $hash='';
+    $length = rand(28,32);
+    $max = strlen($chars) - 1;
+    for($i = 0; $i < $length; $i++) {
+        $hash .= $chars[mt_rand(0, $max)];
+    }
+	$dsql->ExecuteNoneQuery("UPDATE `#@__sysconfig` SET `value`='{$hash}' WHERE varname='cfg_cookie_encode' ");
+	$configfile = DEDEDATA.'/config.cache.inc.php';
+    if(!is_writeable($configfile))
+    {
+        echo "配置文件'{$configfile}'不支持写入，无法修改系统配置参数！";
+        exit();
+    }
+    $fp = fopen($configfile,'w');
+    flock($fp,3);
+    fwrite($fp,"<"."?php\r\n");
+    $dsql->SetQuery("SELECT `varname`,`type`,`value`,`groupid` FROM `#@__sysconfig` ORDER BY aid ASC ");
+    $dsql->Execute();
+    while($row = $dsql->GetArray())
+    {
+        if($row['type']=='number')
+        {
+            if($row['value']=='') $row['value'] = 0;
+            fwrite($fp,"\${$row['varname']} = ".$row['value'].";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\${$row['varname']} = '".str_replace("'",'',$row['value'])."';\r\n");
+        }
+    }
+    fwrite($fp,"?".">");
+    fclose($fp);
+}
 
 /**
  *  更新栏目缓存

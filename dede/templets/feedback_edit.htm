@@ -27,7 +27,7 @@ body {
           <tr bgcolor="#FFFFFF"> 
             <td width="120" height="24">评论所属文章：</td>
             <td> 
-              <?php echo $row['arctitle']; ?>
+              <?php echo RemoveXSS($row['arctitle']);?>
             </td>
           </tr>
           <tr bgcolor="#FFFFFF"> 

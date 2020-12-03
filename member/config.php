@@ -6,6 +6,73 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+
+//针对会员中心操作进行XSS过滤
+function XSSClean($val) {
+    global $cfg_soft_lang;
+    if($cfg_soft_lang=='gb2312') gb2utf8($val);
+    if (is_array($val))
+    {
+        // while (list($key) = each($val))
+        foreach ($val as $key => $value)
+        {
+            if(in_array($key,array('tags','body','dede_fields','dede_addonfields','dopost','introduce'))) continue;
+            $val[$key] = XSSClean($val[$key]);
+        }
+        return $val;
+    }
+    $val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
+    $search = 'abcdefghijklmnopqrstuvwxyz';
+    $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $search .= '1234567890!@#$%^&*()';
+    $search .= '~`";:?+/={}[]-_|\'\\';
+    for ($i = 0; $i < strlen($search); $i++) {
+      $val = preg_replace('/(&#[xX]0{0,8}'.dechex(ord($search[$i])).';?)/i', $search[$i], $val); // with a ;
+      $val = preg_replace('/(&#0{0,8}'.ord($search[$i]).';?)/', $search[$i], $val); // with a ;
+    }
+    
+    $val = str_replace("`","‘",$val);
+    $val = str_replace("'","‘",$val);
+    $val = str_replace("\"","“",$val);
+    $val = str_replace(",","，",$val);
+    $val = str_replace("(","（",$val);
+    $val = str_replace(")","）",$val);
+
+    $ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+    $ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+    $ra = array_merge($ra1, $ra2);
+
+    $found = true; 
+    while ($found == true) {
+      $val_before = $val;
+      for ($i = 0; $i < sizeof($ra); $i++) {
+         $pattern = '/';
+         for ($j = 0; $j < strlen($ra[$i]); $j++) {
+            if ($j > 0) {
+               $pattern .= '(';
+               $pattern .= '(&#[xX]0{0,8}([9ab]);)';
+               $pattern .= '|';
+               $pattern .= '|(&#0{0,8}([9|10|13]);)';
+               $pattern .= ')*';
+            }
+            $pattern .= $ra[$i][$j];
+         }
+         $pattern .= '/i';
+         $replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2);
+         $val = preg_replace($pattern, $replacement, $val); 
+         if ($val_before == $val) {
+            $found = false;
+         }
+      }
+    }
+    if($cfg_soft_lang=='gb2312') utf82gb($val);
+    return $val;
+}
+$_GET = XSSClean($_GET);
+$_POST = XSSClean($_POST);
+$_REQUEST = XSSClean($_REQUEST);
+$_COOKIE = XSSClean($_COOKIE);
+
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 require_once(DEDEINC.'/filter.inc.php');
 require_once(DEDEINC.'/memberlogin.class.php');
@@ -23,8 +90,14 @@ $gourl = empty($gourl)? "" : RemoveXSS($gourl);
 //检查是否开放会员功能
 if($cfg_mb_open=='N')
 {
-    ShowMsg("系统关闭了会员功能，因此你无法访问此页面！","javascript:;");
-    exit();
+    if ( defined( 'AJAXLOGIN' ) )
+    {
+        die('');
+    } else {
+        ShowMsg("系统关闭了会员功能，因此你无法访问此页面！","javascript:;");
+        exit();
+    }
+
 }
 $keeptime = isset($keeptime) && is_numeric($keeptime) ? $keeptime : -1;
 $cfg_ml = new MemberLogin($keeptime);
@@ -42,9 +115,10 @@ if($cfg_ml->IsLogin())
  *
  * @param     int  $rank  权限值
  * @param     int  $money  金币
+ * @param     bool  $needinfo  是否需要填写详细信息
  * @return    void
  */
-function CheckRank($rank=0, $money=0)
+function CheckRank($rank=0, $money=0, $needinfo=TRUE)
 {
     global $cfg_ml,$cfg_memberurl,$cfg_mb_reginfo,$cfg_mb_spacesta;
     if(!$cfg_ml->IsLogin())
@@ -54,7 +128,7 @@ function CheckRank($rank=0, $money=0)
     }
     else
     {
-        if($cfg_mb_reginfo == 'Y')
+        if($cfg_mb_reginfo == 'Y' && $needinfo)
         {
             //如果启用注册详细信息
             if($cfg_ml->fields['spacesta'] == 0 || $cfg_ml->fields['spacesta'] == 1)

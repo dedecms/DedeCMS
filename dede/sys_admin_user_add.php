@@ -15,6 +15,7 @@ if(empty($dopost)) $dopost='';
 
 if($dopost=='add')
 {
+    csrf_check();
     if(preg_match("#[^0-9a-zA-Z_@!\.-]#", $pwd) || preg_match("#[^0-9a-zA-Z_@!\.-]#", $userid))
     {
         ShowMsg('密码或或用户名不合法，<br />请使用[0-9a-zA-Z_@!.-]内的字符！', '-1', 0, 3000);
@@ -87,4 +88,5 @@ while($row = $dsql->GetObject('op'))
         $typeOptions .= "<option value='{$row->id}' class='stype'>—{$row->typename}</option>\r\n";
     }
 }
+make_hash();
 include DedeInclude('templets/sys_admin_user_add.htm');

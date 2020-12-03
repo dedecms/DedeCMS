@@ -1264,7 +1264,6 @@
 	margin-right:2px;
 }
 .dcmp-content{
-	width:450px;
 	padding-top:8px;
 }
 .dcmp-content textarea{
@@ -1273,7 +1272,7 @@
 	float:left;
 }
 .dcmp-content1{
-	width:700px;
+	/*width:700px;*/
 	padding-top:8px;
 }
 .dcmp-content1 textarea{

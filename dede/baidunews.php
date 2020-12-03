@@ -36,7 +36,7 @@ if(empty($do))
     $dsql->Execute();
     while($row = $dsql->GetArray())
     {
-        $title = htmlspecialchars($row['title']);
+        $title = dede_htmlspecialchars($row['title']);
         $row1 = GetOneArchive($row['id']);
         if(strpos($row1['arcurl'],'http://') === false)
         {
@@ -45,9 +45,9 @@ if(empty($do))
         {
             $link = $row1['arcurl'];
         }
-        $link = htmlspecialchars($link);
-        $description = htmlspecialchars(strip_tags($row['description']));
-        $text = htmlspecialchars(strip_tags($row['body']));
+        $link = dede_htmlspecialchars($link);
+        $description = dede_htmlspecialchars(strip_tags($row['description']));
+        $text = dede_htmlspecialchars(strip_tags($row['body']));
         $image = $row['litpic'] =='' ? '' :$row['litpic'];
         if($image != '' && strpos($image, 'http://') === false)
         {
@@ -55,11 +55,11 @@ if(empty($do))
 
         }
         //$headlineimg = '';
-        $keywords = htmlspecialchars($row['keywords']);
-        $category = htmlspecialchars($row['typename']);
-        $author = htmlspecialchars($row['writer']);
-        $source = htmlspecialchars($row['source']);
-        $pubdate = htmlspecialchars(gmdate('Y-m-d H:i',$row['pubdate'] + $cfg_cli_time * 3600));
+        $keywords = dede_htmlspecialchars($row['keywords']);
+        $category = dede_htmlspecialchars($row['typename']);
+        $author = dede_htmlspecialchars($row['writer']);
+        $source = dede_htmlspecialchars($row['source']);
+        $pubdate = dede_htmlspecialchars(gmdate('Y-m-d H:i',$row['pubdate'] + $cfg_cli_time * 3600));
 
         $baidunews .= "<item>\n";
         $baidunews .= "<title>$title </title>\n";

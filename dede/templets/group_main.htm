@@ -116,7 +116,7 @@ else
       </table></td>
     <td><?php echo $issystem?></td>
     <td><?php echo $row['creater']?></td>
-    <td title="title"><?php echo $row['des']?></td>
+    <td title="title"><?php echo HtmlReplace($row['des'],-1);?></td>
     <td><?php echo $row['ismaster']?></td>
     <td>
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">

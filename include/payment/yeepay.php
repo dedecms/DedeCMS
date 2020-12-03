@@ -142,7 +142,8 @@ class yeepay
     {
 
         /* 引入配置文件 */
-        require_once DEDEDATA.'/payment/'.$_REQUEST['code'].'.php';
+		$code = preg_replace( "#[^0-9a-z-]#i", "", $_REQUEST['code'] );
+		require_once DEDEDATA.'/payment/'.$code.'.php';
         
         $p1_MerId = trim($payment['yp_account']);
         $merchantKey = trim($payment['yp_key']);

@@ -72,7 +72,7 @@ li { float:left; padding-right:8px; line-height:24px; }
         <td>{dede:field.uptime function='GetDateMk(@me)'/}</td>
         <td>
           	<a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>[更改]</a>
-		        <a href="{dede:global name='cfg_cmspath'/}/{dede:field.filename/}" target='_blank'>[预览]</a>
+		        <a href="templets_one_edit.php?aid={dede:field.aid /}&dopost=view" target='_blank'>[预览]</a>
 		        &nbsp;|&nbsp;
 		        <a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=delete'>[删除]</a>
 		    </td>

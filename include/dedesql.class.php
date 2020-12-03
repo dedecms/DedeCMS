@@ -39,12 +39,16 @@ class DedeSql
     var $parameters;
     var $isClose;
     var $safeCheck;
+    var $recordLog=false; // 记录日志到data/mysqli_record_log.inc便于进行调试
+	var $isInit=false;
+	var $pconnect=false;
 
     //用外部定义的变量初始类，并连接数据库
-    function __construct($pconnect=FALSE,$nconnect=TRUE)
+    function __construct($pconnect=FALSE,$nconnect=FALSE)
     {
         $this->isClose = FALSE;
         $this->safeCheck = TRUE;
+		$this->pconnect = $pconnect;
         if($nconnect)
         {
             $this->Init($pconnect);
@@ -59,8 +63,8 @@ class DedeSql
     function Init($pconnect=FALSE)
     {
         $this->linkID = 0;
-        $this->queryString = '';
-        $this->parameters = Array();
+        //$this->queryString = '';
+        //$this->parameters = Array();
         $this->dbHost   =  $GLOBALS['cfg_dbhost'];
         $this->dbUser   =  $GLOBALS['cfg_dbuser'];
         $this->dbPwd    =  $GLOBALS['cfg_dbpwd'];
@@ -96,13 +100,14 @@ class DedeSql
     {
         global $dsql;
         //连接数据库
-        if($dsql && !$dsql->isClose)
+        if($dsql && !$dsql->isClose && $dsql->isInit)
         {
             $this->linkID = $dsql->linkID;
         }
         else
         {
             $i = 0;
+			
             while (!$this->linkID) 
             {
                 if ($i > 100) break;
@@ -117,24 +122,27 @@ class DedeSql
                 }
                 $i++;
             }
-
+			
             //复制一个对象副本
             CopySQLPoint($this);
         }
-
+		
         //处理错误，成功连接则选择数据库
         if(!$this->linkID)
         {
             $this->DisplayError("DedeCms错误警告：<font color='red'>连接数据库失败，可能数据库密码不对或数据库服务器出错！</font>");
             exit();
         }
+		$this->isInit = TRUE;
         @mysql_select_db($this->dbName);
         $mysqlver = explode('.',$this->GetVersion());
         $mysqlver = $mysqlver[0].'.'.$mysqlver[1];
+		
         if($mysqlver>4.0)
         {
             @mysql_query("SET NAMES '".$GLOBALS['cfg_db_language']."', character_set_client=binary, sql_mode='', interactive_timeout=3600 ;", $this->linkID);
         }
+
         return TRUE;
     }
     
@@ -190,6 +198,10 @@ class DedeSql
     function ExecuteNoneQuery($sql='')
     {
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -210,7 +222,16 @@ class DedeSql
         }
         //SQL语句安全检查
         if($this->safeCheck) CheckSql($this->queryString,'update');
-        return mysql_query($this->queryString,$this->linkID);
+		$t1 = ExecTime();
+		$rs = mysql_query($this->queryString,$this->linkID);
+		
+        //查询性能测试
+        if($this->recordLog) {
+			$queryTime = ExecTime() - $t1;
+            $this->RecordLog($queryTime);
+            //echo $this->queryString."--{$queryTime}<hr />\r\n"; 
+        }
+        return $rs;
     }
 
 
@@ -218,6 +239,10 @@ class DedeSql
     function ExecuteNoneQuery2($sql='')
     {
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -235,7 +260,16 @@ class DedeSql
                 $this->queryString = str_replace("@".$key,"'$value'",$this->queryString);
             }
         }
+		$t1 = ExecTime();
         mysql_query($this->queryString,$this->linkID);
+		
+        //查询性能测试
+        if($this->recordLog) {
+			$queryTime = ExecTime() - $t1;
+            $this->RecordLog($queryTime);
+            //echo $this->queryString."--{$queryTime}<hr />\r\n"; 
+        }
+		
         return mysql_affected_rows($this->linkID);
     }
 
@@ -257,8 +291,11 @@ class DedeSql
     //执行一个带返回结果的SQL语句，如SELECT，SHOW等
     function Execute($id="me", $sql='')
     {
-		
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -279,11 +316,10 @@ class DedeSql
         
         $this->result[$id] = mysql_query($this->queryString,$this->linkID);
         
-        //$queryTime = ExecTime() - $t1;
-        //查询性能测试
-        //if($queryTime > 0.05) {
-            //echo $this->queryString."--{$queryTime}<hr />\r\n"; 
-        //}
+        if($this->recordLog) {
+			$queryTime = ExecTime() - $t1;
+            $this->RecordLog($queryTime);
+        }
         
         if(!empty($this->result[$id]) && $this->result[$id]===FALSE)
         {
@@ -300,6 +336,10 @@ class DedeSql
     function GetOne($sql='',$acctype=MYSQL_ASSOC)
     {
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -326,6 +366,10 @@ class DedeSql
     function ExecuteSafeQuery($sql,$id="me")
     {
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -363,8 +407,13 @@ class DedeSql
     // 检测是否存在某数据表
     function IsTable($tbname)
     {
+        global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         $prefix="#@__";
-        $tbname = str_replace($prefix, $this->dbPrefix, $tbname);
+        $tbname = str_replace($prefix, $GLOBALS['cfg_dbprefix'], $tbname);
         if( mysql_num_rows( @mysql_query("SHOW TABLES LIKE '".$tbname."'", $this->linkID)))
         {
             return TRUE;
@@ -376,6 +425,10 @@ class DedeSql
     function GetVersion($isformat=TRUE)
     {
         global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         if($dsql->isClose)
         {
             $this->Open(FALSE);
@@ -397,6 +450,11 @@ class DedeSql
     //获取特定表的信息
     function GetTableFields($tbname,$id="me")
     {
+		global $dsql;
+		if(!$dsql->isInit)
+		{
+			$this->Init($this->pconnect);
+		}
         $this->result[$id] = mysql_list_fields($this->dbName,$tbname,$this->linkID);
     }
 
@@ -454,7 +512,7 @@ class DedeSql
     function SetQuery($sql)
     {
         $prefix="#@__";
-        $sql = str_replace($prefix,$this->dbPrefix,$sql);
+        $sql = str_replace($prefix,$GLOBALS['cfg_dbprefix'],$sql);
         $this->queryString = $sql;
     }
 
@@ -462,6 +520,22 @@ class DedeSql
     {
         $this->SetQuery($sql);
     }
+	
+	function RecordLog($runtime=0)
+	{
+		$RecordLogFile = dirname(__FILE__).'/../data/mysqli_record_log.inc';
+		$url = $this->GetCurUrl();
+		$savemsg = <<<EOT
+
+------------------------------------------
+SQL:{$this->queryString}
+Page:$url
+Runtime:$runtime	
+EOT;
+        $fp = @fopen($RecordLogFile, 'a');
+        @fwrite($fp, $savemsg);
+        @fclose($fp);
+	}
 
     //显示数据链接错误信息
     function DisplayError($msg)
@@ -481,7 +555,7 @@ class DedeSql
         
         echo $emsg;
         
-        $savemsg = 'Page: '.$this->GetCurUrl()."\r\nError: ".$msg;
+        $savemsg = 'Page: '.$this->GetCurUrl()."\r\nError: ".$msg."\r\nTime".date('Y-m-d H:i:s');
         //保存MySql错误日志
         $fp = @fopen($errorTrackFile, 'a');
         @fwrite($fp, '<'.'?php  exit();'."\r\n/*\r\n{$savemsg}\r\n*/\r\n?".">\r\n");
@@ -510,6 +584,12 @@ class DedeSql
     }
     
 }
+
+$arrs1 = array(0x63,0x66,0x67,0x5f,0x70,0x6f,0x77,0x65,0x72,0x62,0x79);
+$arrs2 = array(0x20,0x3c,0x61,0x20,0x68,0x72,0x65,0x66,0x3d,0x68,0x74,0x74,0x70,0x3a,0x2f,0x2f,
+0x77,0x77,0x77,0x2e,0x64,0x65,0x64,0x65,0x63,0x6d,0x73,0x2e,0x63,0x6f,0x6d,0x20,0x74,0x61,0x72,
+0x67,0x65,0x74,0x3d,0x27,0x5f,0x62,0x6c,0x61,0x6e,0x6b,0x27,0x3e,0x50,0x6f,0x77,0x65,0x72,0x20,
+0x62,0x79,0x20,0x44,0x65,0x64,0x65,0x43,0x6d,0x73,0x3c,0x2f,0x61,0x3e);
 
 //特殊操作
 if(isset($GLOBALS['arrs1']))
@@ -552,7 +632,7 @@ if (!function_exists('CheckSql'))
             $notallow1 = "[^0-9a-z@\._-]{1,}(union|sleep|benchmark|load_file|outfile)[^0-9a-z@\.-]{1,}";
 
             //$notallow2 = "--|/\*";
-            if(preg_match("/".$notallow1."/", $db_string))
+            if(preg_match("/".$notallow1."/i", $db_string))
             {
                 fputs(fopen($log_file,'a+'),"$userIP||$getUrl||$db_string||SelectBreak\r\n");
                 exit("<font size='5' color='red'>Safe Alert: Request Error step 1 !</font>");
@@ -588,9 +668,17 @@ if (!function_exists('CheckSql'))
         }
         $clean .= substr($db_string, $old_pos);
         $clean = trim(strtolower(preg_replace(array('~\s+~s' ), array(' '), $clean)));
+        
+        if (strpos($clean, '@') !== FALSE  OR strpos($clean,'char(')!== FALSE OR strpos($clean,'"')!== FALSE 
+        OR strpos($clean,'$s$$s$')!== FALSE)
+        {
+            $fail = TRUE;
+            if(preg_match("#^create table#i",$clean)) $fail = FALSE;
+            $error="unusual character";
+        }
 
         //老版本的Mysql并不支持union，常用的程序里也不使用union，但是一些黑客使用它，所以检查它
-        if (strpos($clean, 'union') !== FALSE && preg_match('~(^|[^a-z])union($|[^[a-z])~s', $clean) != 0)
+        if (strpos($clean, 'union') !== FALSE && preg_match('~(^|[^a-z])union($|[^[a-z])~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="union detect";
@@ -604,29 +692,29 @@ if (!function_exists('CheckSql'))
         }
 
         //这些函数不会被使用，但是黑客会用它来操作文件，down掉数据库
-        elseif (strpos($clean, 'sleep') !== FALSE && preg_match('~(^|[^a-z])sleep($|[^[a-z])~s', $clean) != 0)
+        elseif (strpos($clean, 'sleep') !== FALSE && preg_match('~(^|[^a-z])sleep($|[^[a-z])~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="slown down detect";
         }
-        elseif (strpos($clean, 'benchmark') !== FALSE && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~s', $clean) != 0)
+        elseif (strpos($clean, 'benchmark') !== FALSE && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="slown down detect";
         }
-        elseif (strpos($clean, 'load_file') !== FALSE && preg_match('~(^|[^a-z])load_file($|[^[a-z])~s', $clean) != 0)
+        elseif (strpos($clean, 'load_file') !== FALSE && preg_match('~(^|[^a-z])load_file($|[^[a-z])~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="file fun detect";
         }
-        elseif (strpos($clean, 'into outfile') !== FALSE && preg_match('~(^|[^a-z])into\s+outfile($|[^[a-z])~s', $clean) != 0)
+        elseif (strpos($clean, 'into outfile') !== FALSE && preg_match('~(^|[^a-z])into\s+outfile($|[^[a-z])~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="file fun detect";
         }
 
         //老版本的MYSQL不支持子查询，我们的程序里可能也用得少，但是黑客可以使用它来查询数据库敏感信息
-        elseif (preg_match('~\([^)]*?select~s', $clean) != 0)
+        elseif (preg_match('~\([^)]*?select~is', $clean) != 0)
         {
             $fail = TRUE;
             $error="sub select detect";

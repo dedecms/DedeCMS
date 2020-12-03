@@ -24,7 +24,7 @@ if($dopost == "clearcheck")
     $starttime = $nowtime - (24*3600);
     $endtime =$nowtime -($dellog*24*3600);
     $dsql->ExecuteNoneQuery("DELETE FROM #@__member_feed WHERE dtime BETWEEN $endtime AND $starttime ");
-    ShowMsg("成功清空过去".$dellog."天记录！","member_feed_main.php");
+    ShowMsg("成功清空过去".$dellog."天记录！","member_info_main.php?type=feed");
     exit();
 }
 //清空所有日志

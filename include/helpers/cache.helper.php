@@ -45,9 +45,9 @@ if ( ! function_exists('GetCache'))
         }
         $result = str_replace("<?php exit('dedecms');?>\n\r", "", $result);
         $result = @unserialize ( $result );
-        if (empty ( $result ['timeout'] ) || $result ['timeout'] < time ())
+        if($result ['timeout'] != 0 && $result ['timeout'] < time ())
         {
-            return false;
+              return false;
         }
         return $result ['data'];
     }
@@ -88,7 +88,7 @@ if ( ! function_exists('SetCache'))
         }
         $key = substr ( $key, 0, 2 ) . '/' . substr ( $key, 2, 2 ) . '/' . substr ( $key, 4, 2 ) . '/' . $key;
         $tmp ['data'] = $value;
-        $tmp ['timeout'] = time () + ( int ) $timeout;
+        $tmp ['timeout'] = $timeout != 0 ? time () + ( int ) $timeout : 0;
         $cache_data = "<?php exit('dedecms');?>\n\r".@serialize ( $tmp );
         return @PutFile ( DEDEDATA . "/cache/$prefix/$key.php",  $cache_data);
     }
@@ -125,6 +125,6 @@ if ( ! function_exists('DelCache'))
             return $GLOBALS ['mc_' . $mc_path ['host']]->delete ( $key );
         }
         $key = substr ( $key, 0, 2 ) . '/' . substr ( $key, 2, 2 ) . '/' . substr ( $key, 4, 2 ) . '/' . $key;
-        return unlink ( DEDEDATA . "/cache/$prefix/$key.php" );
+        return @unlink ( DEDEDATA . "/cache/$prefix/$key.php" );
     }
 }

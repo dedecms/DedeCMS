@@ -13,7 +13,14 @@ if(empty($action)) $action = '';
 if(empty($aid)) $aid = '';
 
 $menutype = 'mydede';
-
+if ( preg_match("#PHP (.*) Development Server#",$_SERVER['SERVER_SOFTWARE']) )
+{
+    if ( $_SERVER['REQUEST_URI'] == dirname($_SERVER['SCRIPT_NAME']) )
+    {
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location:'.$_SERVER['REQUEST_URI'].'/');
+    }
+}
 //会员后台
 if($uid=='')
 {

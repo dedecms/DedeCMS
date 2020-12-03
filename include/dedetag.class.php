@@ -8,7 +8,6 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-
 /**
  * class DedeTag 标记的数据结构描述
  * function c____DedeTag();
@@ -102,9 +101,10 @@ class DedeTagParse
     var $TempMkTime = 0;
     var $CacheFile = '';
     var $SourceString = '';    //模板字符串
-    var $CTags = '';           //标记集合
+    var $CTags = array();           //标记集合
     var $Count = -1;           //$Tags标记个数
     var $refObj = '';          //引用当前模板类的对象
+    var $taghashfile = '';
 
     function __construct()
     {
@@ -120,13 +120,17 @@ class DedeTagParse
         {
             $this->IsCache = FALSE;
         }
+        if ( DEDE_ENVIRONMENT == 'development' )
+        {
+            $this->IsCache = FALSE;
+        }
         $this->NameSpace = 'dede';
         $this->TagStartWord = '{';
         $this->TagEndWord = '}';
         $this->TagMaxLen = 64;
         $this->CharToLow = TRUE;
         $this->SourceString = '';
-        $this->CTags = Array();
+        $this->CTags = array();
         $this->Count = -1;
         $this->TempMkTime = 0;
         $this->CacheFile = '';
@@ -162,7 +166,7 @@ class DedeTagParse
     function SetDefault()
     {
         $this->SourceString = '';
-        $this->CTags = '';
+        $this->CTags = array();
         $this->Count=-1;
     }
     
@@ -186,6 +190,40 @@ class DedeTagParse
     function Clear()
     {
         $this->SetDefault();
+    }
+
+    // ------------------------------------------------------------------------
+    
+    /**
+     * CheckDisabledFunctions
+     *
+     * COMMENT : CheckDisabledFunctions : 检查是否存在禁止的函数
+     *
+     * @access    public
+     * @param    string
+     * @return    bool
+     */
+    function CheckDisabledFunctions($str,&$errmsg='')
+    {
+        global $cfg_disable_funs;
+        $cfg_disable_funs = isset($cfg_disable_funs)? $cfg_disable_funs : 'phpinfo,eval,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents,fsockopen,fopen,fwrite';
+        // 模板引擎增加disable_functions
+        if (defined('DEDEDISFUN')) {
+            $tokens = token_get_all_nl('<?php'.$str."\n\r?>");
+            $disabled_functions = explode(',', $cfg_disable_funs);
+            foreach ($tokens as $token)
+            {
+                if (is_array($token))
+                {
+                    if ($token[0] = '306' && in_array($token[1], $disabled_functions)) 
+                    {
+                       $errmsg = 'DedeCMS Error:function disabled "'.$token[1].'" <a href="http://help.dedecms.com/install-use/apply/2013/0711/2324.html" target="_blank">more...</a>';
+                       return FALSE;
+                    }
+                }
+            }
+        }
+        return TRUE;
     }
 
     /**
@@ -225,6 +263,7 @@ class DedeTagParse
 
         //引入缓冲数组
         include($this->CacheFile);
+        $errmsg = '';
 
         //把缓冲数组内容读入类
         if( isset($z) && is_array($z) )
@@ -244,6 +283,7 @@ class DedeTagParse
                 if(isset($v[4]) && is_array($v[4]))
                 {
                     $i = 0;
+                    $ctag->CAttribute->Items = array();
                     foreach($v[4] as $k=>$v)
                     {
                         $ctag->CAttribute->Count++;
@@ -277,16 +317,25 @@ class DedeTagParse
         $fp = fopen($this->CacheFile,"w");
         flock($fp,3);
         fwrite($fp,'<'.'?php'."\r\n");
+        $errmsg = '';
         if(is_array($this->CTags))
         {
             foreach($this->CTags as $tid=>$ctag)
             {
                 $arrayValue = 'Array("'.$ctag->TagName.'",';
+                if (!$this->CheckDisabledFunctions($ctag->InnerText, $errmsg)) {
+                    fclose($fp);
+                    @unlink($this->taghashfile);
+                    @unlink($this->CacheFile);
+                    @unlink($this->CacheFile.'.txt');
+                    die($errmsg);
+                }
                 $arrayValue .= '"'.str_replace('$','\$',str_replace("\r","\\r",str_replace("\n","\\n",str_replace('"','\"',str_replace("\\","\\\\",$ctag->InnerText))))).'"';
                 $arrayValue .= ",{$ctag->StartPos},{$ctag->EndPos});";
                 fwrite($fp,"\$z[$tid]={$arrayValue}\n");
                 if(is_array($ctag->CAttribute->Items))
                 {
+                    fwrite($fp,"\$z[$tid][4]=array();\n");
                     foreach($ctag->CAttribute->Items as $k=>$v)
                     {
                         $v = str_replace("\\","\\\\",$v);
@@ -310,35 +359,6 @@ class DedeTagParse
     }
     
     /**
-     *  检查支持的载入模板类型，禁止调用php文件
-     *
-     * @access    public
-     * @param     string   $path  文件名称
-     * @param     string   $ds  栏目分隔符
-     * @return    string
-     */
-    function Check($path, $ds = DIRECTORY_SEPARATOR) 
-    {
-        if (preg_match("#.php$#", $path)) 
-            die('Error:not allowed tpl type!');
-        $path = $this->clean($path);
-        if (strpos($path, $this->clean(DEDEROOT)) !== 0) {
-            die('Error:check Snooping out of bounds @ '.$path);
-        }
-        return $path;
-    }
-    
-    function Clean($path, $ds = DIRECTORY_SEPARATOR)
-    {
-        $path = trim($path);
-
-        if (empty($path)) $path = DEDEROOT;
-        else  $path = preg_replace('#[/\\\\]+#', $ds, $path);
-
-        return $path;
-    }
-
-    /**
      *  载入模板文件
      *
      * @access    public
@@ -347,7 +367,6 @@ class DedeTagParse
      */
     function LoadTemplate($filename)
     {
-        $filename = $this->Check($filename);
         $this->SetDefault();
         if(!file_exists($filename))
         {
@@ -401,7 +420,7 @@ class DedeTagParse
         $this->ParseTemplet();
         */
         //优化模板字符串存取读取方式
-        $filename = DEDEDATA.'/tplcache/'.md5($str).'.inc';
+        $this->taghashfile = $filename = DEDEDATA.'/tplcache/'.md5($str).'.inc';
         if( !is_file($filename) )
         {
             file_put_contents($filename, $str);
@@ -1132,6 +1151,7 @@ class DedeAttributeParse
         $ddtag = '';
         $hasAttribute=FALSE;
         $strLen = strlen($this->sourceString);
+        $this->cAttributes->Items = array();
 
         // 获得Tag的名称，解析到 cAtt->GetAtt('tagname') 中
         for($i=0; $i<$strLen; $i++)

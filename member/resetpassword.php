@@ -11,6 +11,7 @@
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEMEMBER."/inc/inc_pwd_functions.php");
 if(empty($dopost)) $dopost = "";
+$id = isset($id)? intval($id) : 0;
 
 if($dopost == "")
 {

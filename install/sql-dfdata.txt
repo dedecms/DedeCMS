@@ -245,6 +245,7 @@ INSERT INTO `#@__area` VALUES('1','北京市','0','0'),
 ('1221','凉山州','12','0'),
 ('13','陕西省','0','0'),
 ('3114','西安市','13','0'),
+
 ('1302','铜川市','13','0'),
 ('1303','宝鸡市','13','0'),
 ('1304','咸阳市','13','0'),
@@ -567,7 +568,7 @@ INSERT INTO `#@__payment` VALUES('3','alipay','支付宝','2','支付宝网站(w
 ('1','cod','货到付款','0','开通城市：×××\t\n货到付款区域：×××','3','a:0:{}','1','1','0'),
 ('6','yeepay','YeePay易宝','12','YeePay易宝（北京通融通信息技术有限公司）是专业从事多元化电子支付业务一站式服务的领跑者。在立足于网上支付的同时，YeePay易宝不断创新，将互联网、手机、固定电话整合在一个平台上，继短信支付、手机充值之后，首家推出了YeePay易宝电话支付业务，真正实现了离线支付，为更多传统行业搭建了电子支付的高速公路。YeePay易宝融合世界先进的电子支付文化，聚合众多金融、电信、IT、互联网等领域内的巨擘，旨在通过创新的支付机制，推动中国电子商务新进程。YeePay易宝致力于成为世界一流的电子支付应用和服务提供商，专注于金融增值服务和移动增值服务两大领域，创新并推广多元化、低成本的、安全有效的支付服务。<input type="button" name="Submit" value="立即注册" onclick="window.open("https://www.yeepay.com/selfservice/requestRegister.action")" />','2','a:2:{s:10:"yp_account";a:4:{s:5:"title";s:8:"商户编号";s:11:"description";s:0:"";s:4:"type";s:4:"text";s:5:"value";s:2:"aa";}s:6:"yp_key";a:4:{s:5:"title";s:8:"商户密钥";s:11:"description";s:0:"";s:4:"type";s:4:"text";s:5:"value";s:3:"dsa";}}','1','0','1');
 
-INSERT INTO `#@__softconfig` VALUES('0','1','1','1','http://www.aaa.com | 镜像地址一\t\nhttp://www.bbb.com | 镜像地址二\t\nhttp://www.ccc.com | 镜像地址三\t\n','<p>☉推荐使用第三方专业下载工具下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br />\t\n☉如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br />\t\n☉下载本站资源，如果服务器暂不能下载请过一段时间重试！<br />\t\n☉如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br />\t\n☉本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。</p>','0','0','0','0');
+INSERT INTO `#@__softconfig` VALUES('0','1','1','1','http://www.aaa.com | 镜像地址一\t\nhttp://www.bbb.com | 镜像地址二\t\nhttp://www.ccc.com | 镜像地址三\t\n','<p>?推荐使用第三方专业下载工具下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br />\t\n?如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br />\t\n?下载本站资源，如果服务器暂不能下载请过一段时间重试！<br />\t\n?如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br />\t\n?本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。</p>','0','0','0','0');
 
 INSERT INTO `#@__stepselect` VALUES('1','血型','blood','1','1'),
 ('2','体型','bodytype','1','1'),
@@ -595,27 +596,6 @@ INSERT INTO `#@__sys_set` VALUES('1','nature','性格外向,性格内向,活泼�
 INSERT INTO `#@__member_group` VALUES('1','朋友','0');
 
 INSERT INTO `#@__vote` VALUES('1','你是从哪儿得知本站的？','1266336000','1584547200','0','0','1','1','0','0','<v:note id="1" count="1">朋友介绍</v:note>rn<v:note id="2" count="0">门户网站的搜索引擎</v:note>rn<v:note id="3" count="2">Google或百度搜索</v:note>rn<v:note id="4" count="2">别的网站上的链接</v:note>rn<v:note id="5" count="1">其它途径</v:note>rn');
-
-INSERT INTO `#@__myad` VALUES('1','0','indexTopBanner1','首页顶部导航大图-500*60','0','1297933028','1300525028','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=fronttopbanner&charset=gbk"></script>',''),
-('2','0','indexTopBanner2','首页顶部导航小图-200*60','0','1297933605','1300525605','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=fronttopbanner2&charset=gbk"></script>',''),
-('3','0','innerTopBanner1','(频道/列表)顶部导航大图-500*60','0','1297934052','1300526052','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=innertopbanner1&charset=gbk"></script>',''),
-('4','0','innerTopBanner2','(频道/列表)顶部导航小图-200*60','0','1297934104','1300526104','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=innertopbanner2&charset=gbk"></script>',''),
-('5','0','indexLeftBanner','首页左侧大图广告-712*75','0','1297934791','1300526791','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=indexleftbanner&charset=gbk"></script>',''),
-('6','0','indexRightLitpic1','首页右侧小块图1-240*65','0','1297936106','1300528106','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=indexrtlitpic1&charset=gbk"></script>',''),
-('7','0','indexRightLitpic2','首页右侧小块图2-240*65','0','1297936768','1300528768','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=indexrtlitpic2&charset=gbk"></script>',''),
-('8','0','indexfooterAD','首页底部图片广告-726*91','0','1297937814','1300529814','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=indexfooterad&charset=gbk"></script>',''),
-('9','0','innerfooterAD','(频道/列表)底部图片广告-726*91','0','1297991183','1300583183','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=innerfooterad&charset=gbk"></script>',''),
-('10','0','innerfooterAD2','内容底部图片广告-726*91','0','1297991709','1300583709','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=innerfooterad2&charset=gbk"></script>',''),
-('11','0','listRtPicAD','(频道/列表)右侧图片广告-240*200','0','1297992254','1300584254','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=listrtpicad&charset=gbk"></script>',''),
-('12','0','contentRtPicAD','内容右侧图片广告-240*200','0','1297995082','1300587082','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=contentrtpicad&charset=gbk"></script>',''),
-('13','0','listRtPicAD2','(频道/列表)右侧图片广告2-240*200','0','1297996543','1300588543','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=listrtpicad2&charset=gbk"></script>',''),
-('14','0','contentRtPicAD2','内容右侧图片广告2-240*200','0','1297997106','1300589106','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=contentrtpicad2&charset=gbk"></script>',''),
-('15','0','contentMidPicAD','内容页内容中广告-300*250','0','1297997971','1300589971','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=contentmidpicad&charset=gbk"></script>',''),
-('16','0','searchPicAD','搜索页右侧广告-300*268','0','1297999720','1300591720','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=searchpicad&charset=gbk"></script>',''),
-('17','0','indexRtpicAd3','首页右侧图片广告-240*200','0','1298000077','1300592077','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=indexrtpicad3&charset=gbk"></script>',''),
-('18','0','searchTopBanner','搜索页面顶部banner广告-300*40','0','1298012954','1300604954','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=searchtopbanner&charset=gbk"></script>',''),
-('19','0','contentTopBanner1','内容顶部导航大图-500*60','0','1298017655','1300609655','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=ctenttpbanner1&charset=gbk"></script>',''),
-('20','0','contentTopBanner2','内容顶部导航小图-200*60','0','1298017688','1300609688','<script type="text/javascript" src="http://ad.dedecms.com/adsview/?action=single&key=ctenttpbanner2&charset=gbk"></script>','');
 
 INSERT INTO `#@__sys_enum` VALUES('139','cms制作','503','vocation','503','0'),
 ('39','租房','1','house','0','1'),
@@ -2231,7 +2211,7 @@ INSERT INTO `#@__sys_enum` VALUES('139','cms制作','503','vocation','503','0'),
 ('18529','兴山县','9004.7','nativeplace','9005','2'),
 ('18528','远安县','9004.6','nativeplace','9005','2'),
 ('18527','夷陵区','9004.5','nativeplace','9005','2'),
-('18526','猇亭区','9004.4','nativeplace','9004','2'),
+('18526','?亭区','9004.4','nativeplace','9004','2'),
 ('18525','点军区','9004.3','nativeplace','9004','2'),
 ('18524','伍家岗区','9004.2','nativeplace','9004','2'),
 ('18523','西陵区','9004.1','nativeplace','9004','2'),
@@ -3992,7 +3972,7 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('25','cfg_multi_site','(是/否)支持多站点，开启此项后附件、栏目连接、arclist内容启用绝对网址','2','bool','N'),
 ('58','cfg_rm_remote','远程图片本地化','7','bool','Y'),
 ('27','cfg_dede_log','(是/否)开启管理日志','2','bool','N'),
-('28','cfg_powerby','网站版权信息','1','bstring','Copyright &copy; 2002-2011 DEDECMS. 织梦科技 版权所有'),
+('28','cfg_powerby','网站版权信息','1','bstring','Copyright &copy; 2002-2017 DEDECMS. 织梦科技 版权所有'),
 ('722','cfg_jump_once','跳转网址是否直接跳转？（否则显示中转页）','7','bool','Y'),
 ('723','cfg_task_pwd','系统计划任务客户端许可密码<br/>(需要客户端，通常不会太重要)','7','string',''),
 ('29','cfg_arcsptitle','(是/否)开启分页标题，开启会影响HTML生成速度','6','bool','N'),
@@ -4007,7 +3987,7 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('38','cfg_ftp_mkdir','是否强制用FTP创建目录','2','bool','N'),
 ('39','cfg_feedback_ck','评论加验证码重确认','5','bool','Y'),
 ('40','cfg_list_son','上级列表是否包含子类内容','6','bool','Y'),
-('41','cfg_mb_open','是否开启会员功能','4','bool','Y'),
+('41','cfg_mb_open','是否开启会员功能','4','bool','N'),
 ('42','cfg_mb_album','是否开启会员图集功能','4','bool','Y'),
 ('43','cfg_mb_upload','是否允许会员上传非图片附件','4','bool','Y'),
 ('44','cfg_mb_upload_size','会员上传文件大小(K)','4','number','1024'),
@@ -4108,26 +4088,39 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('750','cfg_remote_site','是否启用远程站点','2','bool','N'),
 ('751','cfg_title_site','是否发布和编辑文档时远程发布(启用远程站点的前提下)','2','bool','N'),
 ('752','cfg_mysql_type','数据库类型（支持mysql和mysqli）','2','string','mysql'),
-('753','cfg_sphinx_article','是否启用文章全文检索功能（需配置sphinx服务器）','7','bool','Y'),
+('753','cfg_sphinx_article','是否启用文章全文检索功能（需配置sphinx服务器）','7','bool','N'),
 ('754','cfg_sphinx_host','Sphinx服务器主机地址','7','string','localhost'),
 ('755','cfg_sphinx_port','Sphinx服务器端口号','7','number','9312'),
 (14, 'cfg_domain_cookie', '跨域共享cookie的域名(例如: .dedecms.com)', 2, 'string', ''),
 ('756','cfg_memcache_enable','是否启用memcache缓存，如果为否(N)，默认使用文件缓存',6,'bool','N'),
 ('757','cfg_memcache_mc_defa','默认memcache缓存服务器地址',6,'string','memcache://127.0.0.1:11211/default127'),
-('758','cfg_memcache_mc_oth','附加memcache缓存服务器地址',6,'string','');
-
+('758','cfg_memcache_mc_oth','附加memcache缓存服务器地址',6,'string',''),
+('759', 'cfg_cross_sectypeid', '支持交叉栏目显示副栏目内容', '7', 'bool', 'N'),
+('760', 'cfg_digg_update', '顶踩缓存异步更新间隔（0为不缓存）', '6', 'number', '0'),
+('761', 'cfg_feedback_guest', '是否允许匿名评论', '5', 'bool', 'N')
+;
 
 INSERT INTO `#@__sys_module` VALUES (1, '0cce60bc0238aa03804682c801584991', '百度新闻', '', '', 0, ''),
 (2, '1f35620fb42d452fa2bdc1dee1690f92', '文件管理器', '', '', 0, ''),
-(3, '72ffa6fabe3c236f9238a2b281bc0f93', '广告管理', '', '', 0, ''),
 (4, 'b437d85a7a7bc778c9c79b5ec36ab9aa', '友情链接', '', '', 0, ''),
 (5, 'acb8b88eb4a6d4bfc375c18534f9439e', '投票模块', '', '', 0, ''),
 (6, '572606600345b1a4bb8c810bbae434cc', '挑错管理', '', '', 0, '');
 
-INSERT INTO `#@__plus` VALUES  (43, 'bShare分享插件', '<m:item name=''bShare分享插件'' link=''plus_bshare.php'' rank=''plus_bShare分享插件'' target=''main'' />', '', '织梦团队', 1, '<m:item name=''bShare分享插件'' link=''plus_bshare.php'' rank=''plus_bShare分享插件'' target=''main'' />'),
-(27, '友情链接模块', '<m:item name=''友情链接'' link=''friendlink_main.php'' rank=''plus_友情链接'' target=''main'' />', '', '织梦团队', 1, ''),
+INSERT INTO `#@__sys_module` (`hashcode`, `modname`, `indexname`, `indexurl`, `ismember`, `menustring`) VALUES ('533c5b843ded8752b9857cc7c8e5b455', '得德广告模块', '', '', 0, '<m:top name=\'德得广告\' display=\'block\'>\r\n<m:item name=\'德得模块\' link=\'mda_main.php\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'广告管理\' link=\'mda_main.php?dopost=place\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'查看报表\' link=\'mda_main.php?dopost=report\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'结算中心\' link=\'mda_main.php?dopost=account\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'德得设置\' link=\'mda_main.php?dopost=setting\' rank=\'plus_广告管理\' target=\'main\'/>\r\n</m:top>');
+
+
+INSERT INTO `#@__plus` VALUES (27, '友情链接模块', '<m:item name=''友情链接'' link=''friendlink_main.php'' rank=''plus_友情链接'' target=''main'' />', '', '织梦团队', 1, ''),
 (24, '文件管理器', '<m:item name=''文件管理器'' link=''file_manage_main.php'' rank=''plus_文件管理器'' target=''main'' />', '', '织梦团队', 1, ''),
 (23, '百度新闻', '<m:item name=''百度新闻'' link=''baidunews.php'' rank=''plus_百度新闻'' target=''main'' />', '', '织梦团队', 1, 'baidunews.php'),
 (28, '投票模块', '<m:item name=''投票模块'' link=''vote_main.php'' rank=''plus_投票模块'' target=''main'' />', '', '织梦团队', 1, ''),
 (25, '广告管理', '<m:item name=''广告管理'' link=''ad_main.php'' rank=''plus_广告管理'' target=''main'' />', '', '织梦官方', 1, ''),
 (10, '挑错管理', '<m:item name=''挑错管理'' link=''erraddsave.php'' rank=''plus_挑错管理'' target=''main'' />', '', '织梦团队', 1, '<m:item name=''挑错管理'' link=''catalog_do.php?dopost=erraddsave.php'' rank=''plus_挑错管理'' target=''main'' />');
+
+INSERT INTO `#@__sysconfig` (`varname`, `info`, `groupid`, `type`, `value`) VALUES ('cfg_disable_funs', '模板引擎禁用PHP函数', 7, 'bstring', 'phpinfo,eval,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents');
+INSERT INTO `#@__sysconfig` (`varname`, `info`, `groupid`, `type`, `value`) VALUES ('cfg_disable_tags', '模板引擎禁用标签', 7, 'bstring', 'php');
+ALTER TABLE `#@__arctiny` ADD INDEX `idx_typeid_arcrank_sortrank` (`typeid`, `arcrank`, `sortrank`);
+
+INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('version', '0.0.1', 0);
+INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('channel_uuid', '', 0);
+INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('channel_secret', '', 0);
+INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('email', '', 0);

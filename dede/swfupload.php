@@ -107,9 +107,16 @@ if(empty($dopost))
     }
     //WaterImg($cfg_basedir.$fileurl, 'up');
     $title = $filename.$sname;
+
     $inquery = "INSERT INTO `#@__uploads`(title,url,mediatype,width,height,playtime,filesize,uptime,mid)
         VALUES ('$title','$fileurl','$ftype','0','0','0','".filesize($cfg_basedir.$fileurl)."','".time()."','".$cuserLogin->getUserID()."'); ";
-    $dsql->ExecuteNoneQuery($inquery);
+	if(!empty($arcid))
+	{
+		$inquery = "INSERT INTO `#@__uploads`(arcid,title,url,mediatype,width,height,playtime,filesize,uptime,mid)
+        VALUES ('$arcid','$title','$fileurl','$ftype','0','0','0','".filesize($cfg_basedir.$fileurl)."','".time()."','".$cuserLogin->getUserID()."'); ";
+	}
+	
+	$dsql->ExecuteNoneQuery($inquery);
     $fid = $dsql->GetLastID();
     AddMyAddon($fid, $fileurl);
 
@@ -168,6 +175,19 @@ else if($dopost=='del')
     $_SESSION['bigfile_info'][$id] = '';
     echo "<b>已删除！</b>";
     exit();
+}
+/************************
+//获取图片地址
+*************************/
+else if($dopost=='addtoedit')
+{
+    if(!isset($_SESSION['bigfile_info'][$id]))
+    {
+        echo '';
+        exit();
+    }
+	echo $_SESSION['bigfile_info'][$id];
+	exit();
 }
 /************************
 //获取本地图片的缩略预览图

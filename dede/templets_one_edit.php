@@ -116,5 +116,17 @@ else if($dopost=="mksel")
         exit();
     }
 }
+else if($dopost=="view")
+{
+	if(empty($aid))
+	{
+		ShowMsg('错误的ID！','javascript:;');
+		exit();
+	}
+	include_once(DEDEINC."/arc.sgpage.class.php");
+	$sg = new sgpage($aid);
+	$sg->display();
+	exit();
+}
 $row = $dsql->GetOne("SELECT  * FROM `#@__sgpage` WHERE aid='$aid' ");
 include(DEDEADMIN."/templets/templets_one_edit.htm");

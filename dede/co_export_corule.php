@@ -12,7 +12,7 @@
 require(dirname(__FILE__)."/config.php");
 CheckPurview('co_EditNote');
 require_once(DEDEINC."/oxwindow.class.php");
-$nid = ereg_replace('[^0-9]','',$nid);
+$nid = preg_replace('/[^0-9]/','',$nid);
 $row = $dsql->GetOne("Select * From `#@__co_note` where nid='$nid'");
 $noteconfig = "{dede:listconfig}\r\n".$row['listconfig']."\r\n{/dede:listconfig}\r\n\r\n";
 $noteconfig .= "{dede:itemconfig}\r\n".$row['itemconfig']."\r\n{/dede:itemconfig}";

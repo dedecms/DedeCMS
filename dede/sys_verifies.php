@@ -219,7 +219,7 @@ else if($action=='down')
     //检查临时文件保存目录是否可用
     MkTmpDir($tmpdir, $files[$curfile]);
         
-    $downfile = $updateHost.$cfg_soft_lang.'/source/'.$files[$curfile];
+    $downfile = UPDATEHOST.$cfg_soft_lang.'/source/'.$files[$curfile];
         
     $dhd = new DedeHttpDown();
     $dhd->OpenUrl($downfile);
@@ -327,7 +327,7 @@ function _update()
 -----------------*/
 else if($action == 'update')
 {
-    $rmFile = $updateHost.$cfg_soft_lang.'/verifys.txt';
+    $rmFile = UPDATEHOST.$cfg_soft_lang.'/verifys.txt';
     $dhd = new DedeHttpDown();
     $dhd->OpenUrl($rmFile);
     $ct = $dhd->GetHtml();

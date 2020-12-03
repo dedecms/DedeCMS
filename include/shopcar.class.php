@@ -185,43 +185,40 @@ class MemberShops
     //加密接口字符
     function enCrypt($txt)
     {
-        srand((double)microtime() * 1000000);
-        $encrypt_key = md5(rand(0, 32000));
-        $ctr = 0;
-        $tmp = '';
-        for($i = 0; $i < strlen($txt); $i++)
-        {
-            $ctr = $ctr == strlen($encrypt_key) ? 0 : $ctr;
-            $tmp .= $encrypt_key[$ctr].($txt[$i] ^ $encrypt_key[$ctr++]);
-        }
-        return base64_encode($this->setKey($tmp));
+        return $this->mchStrCode($txt);
     }
 
     //解密接口字符串
     function deCrypt($txt)
     {
-        $txt = $this->setKey(base64_decode($txt));
-        $tmp = '';
-        for ($i = 0; $i < strlen($txt); $i++)
-        {
-            $tmp .= $txt[$i] ^ $txt[++$i];
-        }
-        return $tmp;
+        return $this->mchStrCode($txt,'DECODE');
     }
-
-    //处理加密数据
-    function setKey($txt)
+    
+    function mchStrCode($string, $operation = 'ENCODE') 
     {
-        global $cfg_cookie_encode;
-        $encrypt_key = md5(strtolower($cfg_cookie_encode));
-        $ctr = 0;
-        $tmp = '';
-        for($i = 0; $i < strlen($txt); $i++)
-        {
-            $ctr = $ctr == strlen($encrypt_key) ? 0 : $ctr;
-            $tmp .= $txt[$i] ^ $encrypt_key[$ctr++];
+        $key_length = 4;
+        $expiry = 0;
+        $key = md5($GLOBALS['cfg_cookie_encode']);
+        $fixedkey = md5($key);
+        $egiskeys = md5(substr($fixedkey, 16, 16));
+        $runtokey = $key_length ? ($operation == 'ENCODE' ? substr(md5(microtime(true)), -$key_length) : substr($string, 0, $key_length)) : '';
+        $keys = md5(substr($runtokey, 0, 16) . substr($fixedkey, 0, 16) . substr($runtokey, 16) . substr($fixedkey, 16));
+        $string = $operation == 'ENCODE' ? sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$egiskeys), 0, 16) . $string : base64_decode(substr($string, $key_length));
+
+        $i = 0; $result = '';
+        $string_length = strlen($string);
+        for ($i = 0; $i < $string_length; $i++){
+            $result .= chr(ord($string{$i}) ^ ord($keys{$i % 32}));
         }
-        return $tmp;
+        if($operation == 'ENCODE') {
+            return $runtokey . str_replace('=', '', base64_encode($result));
+        } else {
+            if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$egiskeys), 0, 16)) {
+                return substr($result, 26);
+            } else {
+                return '';
+            }
+        }
     }
 
     //串行化数组

@@ -98,7 +98,7 @@ else if($dopost=='save')
     $sortrank = AddDay($pubdate,$sortup);
     $ismake = $ishtml==0 ? -1 : 0;
     $title = preg_replace("#\"#", '＂', $title);
-    $title = htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
+    $title = dede_htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
     $shorttitle = cn_substrR($shorttitle,36);
     $color =  cn_substrR($color,7);
     $writer =  cn_substrR($writer,20);
@@ -222,7 +222,6 @@ else if($dopost=='save')
         ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
-
     //生成HTML
     InsertTags($tags,$arcID);
     if($cfg_remote_site=='Y' && $isremote=="1")
@@ -235,12 +234,32 @@ else if($dopost=='save')
         }
         if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
     }
+	$picTitle = false;
+	if(count($_SESSION['bigfile_info']) > 0)
+	{
+		foreach ($_SESSION['bigfile_info'] as $k => $v)
+		{
+			if(!empty($v))
+			{
+				$pictitle = ${'picinfook'.$k};
+				$titleSet = '';
+				if(!empty($pictitle))
+				{
+					$picTitle = TRUE;
+					$titleSet = ",title='{$pictitle}'";
+				}
+				$dsql->ExecuteNoneQuery("UPDATE `#@__uploads` SET arcid='{$arcID}'{$titleSet} WHERE url LIKE '{$v}'; ");
+			}
+		}
+	}
     $artUrl = MakeArt($arcID,true,true,$isremote);
     if($artUrl=='')
     {
         $artUrl = $cfg_phpurl."/view.php?aid=$arcID";
     }
     ClearMyAddon($arcID, $title);
+
+
     //返回成功信息
     $msg = "    　　请选择你的后续操作：
     <a href='article_add.php?cid=$typeid'><u>继续发布文章</u></a>

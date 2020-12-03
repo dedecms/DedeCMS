@@ -41,6 +41,9 @@ include/FCKeditor/fckeditor.php
 include/smtp.class.php
 include/zip.class.php
 install/common.inc.php
+include/json.class.php
+include/sphinxclient.class.php
+plus/bshare.php
 install/index.php";
 
 $adminDir = preg_replace("#(.*)[\/\\\\]#", "", dirname(__FILE__));

@@ -286,6 +286,7 @@ function GetFieldValue($dvalue, $dtype, $aid=0, $job='add', $addvar='', $adminty
     }
     else if($dtype=='img' || $dtype=='imgfile')
     {
+		if(preg_match("#[\\|/]uploads[\\|/]userup#", $dvalue)) return $dvalue;
         if($admintype=='diy')
         {
             $iurl = MemberUploads($fieldname, '', 0, 'image', '', -1, -1, false);
@@ -351,6 +352,7 @@ function GetFieldValue($dvalue, $dtype, $aid=0, $job='add', $addvar='', $adminty
     }
     else if($dtype=='addon' && $admintype=='diy') 
     {
+		if(preg_match("#[\\|/]uploads[\\|/]userup#", $dvalue)) return $dvalue;
         $dvalue = MemberUploads($fieldname,'', 0, 'addon', '', -1, -1, false);
         return $dvalue;
     }

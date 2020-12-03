@@ -15,6 +15,7 @@ require_once(DEDEINC."/taglib/hotwords.lib.php");
 require_once(DEDEINC."/taglib/channel.lib.php");
 
 @set_time_limit(0);
+@ini_set('memory_limit', '512M');
 
 /**
  * 搜索视图类
@@ -79,7 +80,7 @@ class SearchView
         $this->Keyword = $keyword;
         $this->OrderBy = $orderby;
         $this->KType = $kwtype;
-        $this->PageSize = $upagesize;
+        $this->PageSize = (int)$upagesize;
         $this->StartTime = $starttime;
         $this->ChannelType = $achanneltype;
         $this->SearchMax = $cfg_search_max;
@@ -128,6 +129,10 @@ class SearchView
         
         
         $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/search.htm";
+        if ( defined('DEDEMOB') )
+        {
+            $tempfile =str_replace('.htm','_m.htm',$tempfile);
+        }
         if(!file_exists($tempfile)||!is_file($tempfile))
         {
             echo "模板文件不存在，无法解析！";
@@ -176,14 +181,23 @@ class SearchView
         {
             if(strlen($keyword)>7)
             {
-                //echo $keyword;
                 $sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
                 $sp->SetSource($keyword, $cfg_soft_lang, $cfg_soft_lang);
                 $sp->SetResultType(2);
                 $sp->StartAnalysis(TRUE);
-                $keywords = $sp->GetFinallyResult(' ');
-                
-                $keywords = preg_replace("/[ ]{1,}/", " ", trim($keywords));
+                $keywords = $sp->GetFinallyResult();
+                $idx_keywords = $sp->GetFinallyIndex();
+                ksort($idx_keywords);
+                $keywords = $keyword.' ';
+                foreach ($idx_keywords as $key => $value) {
+                    if (strlen($key) <= 3) {
+                        continue;
+                    }
+                    $keywords .= ' '.$key;
+                }
+                $keywords = preg_replace("/[ ]{1,}/", " ", $keywords);
+                //var_dump($idx_keywords);exit();
+                unset($sp);
             }
             else
             {
@@ -335,9 +349,9 @@ class SearchView
                 continue;
             }
             // 这里不区分大小写进行关键词替换
-            // $fstr = str_ireplace($k, "<font color='red'>$k</font>", $fstr);
+            $fstr = str_ireplace($k, "<font color='red'>$k</font>", $fstr);
             // 速度更快,效率更高
-            $fstr = str_replace($k, "<font color='red'>$k</font>", $fstr);
+            //$fstr = str_replace($k, "<font color='red'>$k</font>", $fstr);
         }
         return $fstr;
     }
@@ -353,7 +367,7 @@ class SearchView
         }
         if(isset($GLOBALS['PageNo']))
         {
-            $this->PageNo = $GLOBALS['PageNo'];
+            $this->PageNo = intval($GLOBALS['PageNo']);
         }
         else
         {
@@ -397,7 +411,7 @@ class SearchView
         }
         if(isset($GLOBALS['PageNo']))
         {
-            $this->PageNo = $GLOBALS['PageNo'];
+            $this->PageNo = intval($GLOBALS['PageNo']);
         }
         else
         {
@@ -433,6 +447,7 @@ class SearchView
             $this->AddTable="#@__archives";
         }
         $cquery = "SELECT * FROM `{$this->AddTable}` arc WHERE ".$this->AddSql;
+        //var_dump($cquery);
         $hascode = md5($cquery);
         $row = $this->dsql->GetOne("SELECT * FROM `#@__arccache` WHERE `md5hash`='".$hascode."' ");
         $uptime = time();

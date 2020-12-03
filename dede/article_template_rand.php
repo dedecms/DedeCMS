@@ -20,6 +20,7 @@ $okmsg = '';
 //保存配置
 if($dopost=='save')
 {
+    csrf_check();
     $fp = fopen($m_file,'w');
     flock($fp,3);
     fwrite($fp,$templates);
@@ -29,6 +30,7 @@ if($dopost=='save')
 //对旧文档进行随机模板处理
 else if($dopost=='makeold')
 {
+    csrf_check();
     set_time_limit(3600);
     if(!file_exists($m_file))
     {
@@ -62,6 +64,7 @@ else if($dopost=='makeold')
 //清除全部的指定模板
 else if($dopost=='clearold')
 {
+    csrf_check();
     $dsql->ExecuteNoneQuery(" Update `#@__addonarticle` set templet='' ");
     $dsql->ExecuteNoneQuery(" OPTIMIZE TABLE `#@__addonarticle` ");
     AjaxHead();
@@ -79,7 +82,7 @@ if(empty($templates) && filesize($m_file)>0)
 }
 $wintitle = "随机模板防采集设置";
 $wecome_info = "随机模板防采集设置";
-
+make_hash();
 $msg = "
 <link href='images/base.css' rel='stylesheet' type='text/css' />
 <script language='javascript' src='js/main.js'></script>
@@ -90,7 +93,7 @@ function DoRand(jobname)
     ChangeFullDiv('show');
     \$DE('loading').style.display = 'block';
     var myajax = new DedeAjax(\$DE('tmpct'));
-    myajax.SendGet2('article_template_rand.php?dopost='+jobname);
+    myajax.SendGet2('article_template_rand.php?dopost='+jobname+'&token={$_SESSION['token']}');
     \$DE('loading').style.display = 'none';
     ChangeFullDiv('hide');
 }
@@ -118,6 +121,7 @@ function DoRand(jobname)
 $win = new OxWindow();
 $win->Init('article_template_rand.php','js/blank.js','POST');
 $win->AddHidden('dopost','save');
+$win->AddHidden('token',$_SESSION['token']);
 $win->AddTitle("本设置仅适用于系统默认的文章模型，设置后发布文章时会自动按指定的模板随机获取一个，如果不想使用此功能，把它设置为空即可！");
 $win->AddMsgItem($msg);
 $winform = $win->GetWindow('ok');

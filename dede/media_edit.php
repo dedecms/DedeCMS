@@ -106,7 +106,7 @@ function __save_edit() //保存更改
 else if($dopost=='save')
 {
     if($aid=="") exit();
-
+    csrf_check();
     //检查是否有修改权限
     $myrow = $dsql->GetOne("SELECT * FROM #@__uploads WHERE aid='".$aid."'");
     if($myrow['mid']!=$cuserLogin->getUserID())

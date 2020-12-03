@@ -109,12 +109,13 @@ function GetCurContentAlbum($body, $rfurl, &$firstdd)
  */
 function GetCurContent($body)
 {
-    global $cfg_multi_site,$cfg_basehost,$cfg_basedir,$cfg_image_dir;
+    global $cfg_multi_site,$cfg_basehost,$cfg_basedir,$cfg_image_dir,$arcID,$cuserLogin,$dsql;
     $cfg_uploaddir = $cfg_image_dir;
     $htd = new DedeHttpDown();
     $basehost = "http://".$_SERVER["HTTP_HOST"];
     $img_array = array();
-    preg_match_all("/src=[\"|'|\s]{0,}(http:\/\/([^>]*)\.(gif|jpg|png))/isU",$body,$img_array);
+    preg_match_all("/src=[\"|'|\s]([^\"|^\'|^\s]*?)/isU",$body,$img_array);
+    
     $img_array = array_unique($img_array[1]);
     $imgUrl = $cfg_uploaddir.'/'.MyDate("ymd", time());
     $imgPath = $cfg_basedir.$imgUrl;
@@ -134,11 +135,12 @@ function GetCurContent($body)
         {
             continue;
         }
-        if(!preg_match("#^http:\/\/#i", $value))
+        if(!preg_match("#^(http|https):\/\/#i", $value))
         {
             continue;
         }
         $htd->OpenUrl($value);
+
         $itype = $htd->GetHead("content-type");
         $itype = substr($value, -4, 4);
         if(!preg_match("#\.(jpg|gif|png)#i", $itype))
@@ -160,9 +162,19 @@ function GetCurContent($body)
         $value = trim($value);
         $rndFileName = $imgPath.'/'.$milliSecondN.'-'.$key.$itype;
         $fileurl = $imgUrl.'/'.$milliSecondN.'-'.$key.$itype;
+
         $rs = $htd->SaveToBin($rndFileName);
         if($rs)
         {
+			$info = '';
+			$imginfos = GetImageSize($rndFileName, $info);
+			$fsize = filesize($rndFileName);
+			//保存图片附件信息
+			$inquery = "INSERT INTO `#@__uploads`(arcid,title,url,mediatype,width,height,playtime,filesize,uptime,mid)
+			VALUES ('{$arcID}','$rndFileName','$fileurl','1','{$imginfos[0]}','$imginfos[1]','0','$fsize','".time()."','".$cuserLogin->getUserID()."'); ";
+			$dsql->ExecuteNoneQuery($inquery);
+			$fid = $dsql->GetLastID();
+			AddMyAddon($fid, $fileurl);
             if($cfg_multi_site == 'Y')
             {
                 $fileurl = $cfg_basehost.$fileurl;

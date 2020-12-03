@@ -53,6 +53,7 @@ else if($dopost=='testjs')
 }
 else if($dopost=='saveedit')
 {
+    csrf_check();
     $starttime = GetMkTime($starttime);
     $endtime = GetMkTime($endtime);
     $query = "UPDATE `#@__myad`

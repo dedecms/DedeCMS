@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>标签源码碎片管理</title>
 <link rel="stylesheet" type="text/css" href="css/base.css">
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
 <style type="text/css">
 .selbt {
 	width:80px;
@@ -31,6 +32,13 @@ function Post()
 	}
 }
 </script>
+<script type="text/javascript" src="js/codemirror.js"></script>
+<script type="text/javascript" src="js/mode/xml/xml.js"></script>
+<script type="text/javascript" src="js/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="js/mode/css/css.js"></script>
+<script type="text/javascript" src="js/mode/php/php.js"></script>
+<script type="text/javascript" src="js/mode/clike/clike.js"></script>
+<script type="text/javascript" src="js/mode/htmlmixed/htmlmixed.js"></script>
 </head>
 <body bgcolor="#F2F4F3" leftmargin="8" topmargin="8">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#ECFAD3" style="margin-bottom:8px;">
@@ -41,6 +49,7 @@ function Post()
 </table>
 <form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
 <input type="hidden" name="actiondo" value="<?php echo $action; ?>" />
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
 <input type="hidden" name="action" value="savetagfile" />
 	<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#cfcfcf' align="center">
 		<tr bgcolor='#EEF4EA'>
@@ -65,7 +74,7 @@ function Post()
 		</tr>
     <tr bgcolor='#FFFFFF'>
       <td colspan='2' >
-	  <textarea name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $democode; ?></textarea>
+	  <textarea id="content" name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $democode; ?></textarea>
 	  </td>
     </tr>
     <tr>
@@ -79,5 +88,12 @@ function Post()
     </tr>
 </table> 
  </form>
+ <script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById('content'), {
+        lineNumbers: true,
+        lineWrapping: true,
+        mode: 'text/x-php'
+    });
+</script>
 </body>
 </html>

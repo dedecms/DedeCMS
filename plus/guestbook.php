@@ -41,6 +41,8 @@ else if($action=='save')
     $msg = trimMsg(cn_substrR($msg, 1024), 1);
     $tid = empty($tid) ? 0 : intval($tid);
     $reid = empty($reid) ? 0 : intval($reid);
+	$img = HtmlReplace($img);
+	$needCheck=intval($needCheck);
 
     if($msg=='' || $uname=='') {
         showMsg('你的姓名和留言内容不能为空!','-1');
@@ -54,6 +56,7 @@ else if($action=='save')
         $row = $dsql->GetOne("SELECT msg FROM `#@__guestbook` WHERE id='$reid' ");
         $msg = "<div class=\\'rebox\\'>".addslashes($row['msg'])."</div>\n".$msg;
     }
+    $msg = addslashes($msg);
 
     $query = "INSERT INTO `#@__guestbook`(title,tid,mid,uname,email,homepage,qq,face,msg,ip,dtime,ischeck)
                   VALUES ('$title','$tid','{$g_mid}','$uname','$email','$homepage','$qq','$img','$msg','$ip','$dtime','$needCheck'); ";

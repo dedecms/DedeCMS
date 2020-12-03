@@ -16,6 +16,7 @@
         <form action="ad_edit.php" method="post" enctype="multipart/form-data" name="form1">
           <input type='hidden' name='aid' value='<?php echo $aid?>'>
           <input type='hidden' name='dopost' value='saveedit'>
+          <input type="hidden" name="token" value="<?php echo make_hash();?>" />
           <tr>
             <td height="25" align="center">广告位标识：</td>
             <td colspan="2"><?php echo $row['tagname']; ?></td>
@@ -76,12 +77,12 @@
           </tr>
           <tr>
             <td height="80" align="center">正常显示内容：</td>
-            <td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100"><?php echo htmlspecialchars($row['normbody'])?></textarea></td>
+            <td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100"><?php echo dede_htmlspecialchars(stripslashes($row['normbody']))?></textarea></td>
             <td width="9%">&nbsp;</td>
           </tr>
           <tr>
             <td height="80" align="center">过期显示内容：</td>
-            <td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100"><?php echo htmlspecialchars($row['expbody'])?></textarea></td>
+            <td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100"><?php echo dede_htmlspecialchars($row['expbody'])?></textarea></td>
             <td>&nbsp;</td>
           </tr>
           <tr>

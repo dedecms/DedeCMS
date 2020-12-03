@@ -228,9 +228,17 @@ class SgListView
         $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$this->TypeLink->TypeInfos['templist'];
         $tempfile = str_replace("{tid}",$this->TypeID,$tempfile);
         $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
+        if ( defined('DEDEMOB') )
+        {
+            $tempfile =str_replace('.htm','_m.htm',$tempfile);
+        }
         if(!file_exists($tempfile))
         {
             $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_default_sg.htm";
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
         }
         if(!file_exists($tempfile)||!is_file($tempfile))
         {
@@ -290,7 +298,7 @@ class SgListView
             return $reurl;
         }
 
-        $this->CountRecord();
+        if(empty($this->TotalResult)) $this->CountRecord();
         //初步给固定值的标记赋值
         $this->ParseTempletsFirst();
         $totalpage = ceil($this->TotalResult/$this->PageSize);
@@ -398,9 +406,17 @@ class SgListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default_sg.htm";
+                if ( defined('DEDEMOB') )
+                {
+                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
+                }
             }
             $this->PartView->SetTemplet($tempfile);
         }
@@ -445,9 +461,17 @@ class SgListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default_sg.htm";
+                if ( defined('DEDEMOB') )
+                {
+                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
+                }
             }
             $this->PartView->SetTemplet($tempfile);
         }

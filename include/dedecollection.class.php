@@ -725,8 +725,10 @@ class DedeCollection
         {
             $artitem .= "{dede:field name='keywords'}{/dede:field}\r\n";
         }
-        preg_match("#<meta[\s]+name=['\"]description['\"] content=['\"](.*)['\"]#isU", $this->tmpHtml, $inarr);
-        preg_match("#<meta[\s]+content=['\"](.*)['\"] name=['\"]description['\"]#isU", $this->tmpHtml, $inarr2);
+        // preg_match("#<meta[\s]+name=['\"]description['\"] content=['\"](.*)['\"]#isU", $this->tmpHtml, $inarr);
+        // preg_match("#<meta[\s]+content=['\"](.*)['\"] name=['\"]description['\"]#isU", $this->tmpHtml, $inarr2);
+        preg_match("#<meta[\s]+name=['\"]description['\"][\s]+content=['\"]([^>]*?)['\"]#iU", $this->tmpHtml, $inarr);
+        preg_match("#<meta[\s]+content=['\"]([^>]*?)['\"][\s]+name=['\"]description['\"]#iU", $this->tmpHtml, $inarr2);
         if(!isset($inarr[1]) && isset($inarr2[1]))
         {
             $inarr[1] = $inarr2[1];
@@ -948,9 +950,9 @@ class DedeCollection
         }
         $t1 = ExecTime();
         $dhtml->SetSource($html,$dourl,'link');
+		$this->lists['musthas'] = str_replace('/', '\/', $this->lists['musthas']);
         foreach($dhtml->Links as $s)
         {
-            $this->lists['musthas'] = str_replace('/', '\/', $this->lists['musthas']);
             if($this->lists['nothas']!='')
             {
                 if( preg_match("#".$this->lists['nothas']."#i", $s['link']) )
@@ -991,7 +993,7 @@ class DedeCollection
      * @param     int  $pagesize  分页尺寸
      * @return    string
      */
-    function GetSourceUrl($islisten=0, $glstart=0, $pagesize=10,$mytotal = 0)
+    function GetSourceUrl($islisten=0, $glstart=0, $pagesize=10)
     {
         //在第一页中进行预处理
         //“下载种子网址的未下载内容”的模式不需要经过采集种子网址的步骤
@@ -1045,13 +1047,15 @@ class DedeCollection
             $moviePostion = 0;
             $endpos = $glstart + $pagesize;
             $totallen = count($this->lists['url']);
+			//dump($this->lists['url']);exit;
             foreach($this->lists['url'] as $k=>$cururls)
             {
-                $status = FALSE;
+                //$status = FALSE;
                 $urlnum = 0;
                 $cururl = $cururls[0];
                 $typeid = (empty($cururls[1]) ? 0 : $cururls[1]);
                 $moviePostion++;
+				
                 if($moviePostion > $endpos)
                 {
                     break;
@@ -1070,7 +1074,7 @@ class DedeCollection
                     {
                         if($this->lists['nothas']!='')
                         {
-                            if( preg_match("/".$this->lists['nothas']."/", $v['link']) )
+                            if( preg_match("#".$this->lists['nothas']."#", $v['link']) )
                             {
                                 continue;
                             }
@@ -1086,16 +1090,8 @@ class DedeCollection
                         $tmplink[$arrStart][1] = $typeid;
                         $arrStart++;
                         $lk++;
-                        if($mytotal > 0 && $lk >= $mytotal)
-                        {
-                            $status = TRUE;
-                            break;
-                        }else{
-                            $urlnum = $lk;
-                        }
                     }
                     $this->cDedeHtml->Clear();
-                    if($status = TRUE || $urlnum >= $mytotal) break;
                 }
             }//foreach
             //if($this->noteInfos['cosort']!='asc')

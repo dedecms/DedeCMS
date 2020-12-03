@@ -81,6 +81,7 @@ if(empty($dopost))
         }
         $dtp->Clear();
     }
+    $row=XSSClean($row);$addRow=XSSClean($addRow);
     $channelid = $row['channel'];
     $tags = GetTags($aid);
     include(DEDEMEMBER."/templets/soft_edit.htm");
@@ -198,10 +199,7 @@ else if($dopost=='save')
         {
             $servermsg = str_replace("'",'',stripslashes(${'servermsg'.$i}));
             $softurl = stripslashes(${'softurl'.$i});
-            if(!preg_match("#(http:\/\/)?([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?#i",$softurl)){
-                ShowMsg("请使用标准的url格式", "-1");
-                exit();
-            }
+            $softurl = str_replace(array("{dede:","{/dede:","}"), "#", $softurl);
             if($servermsg=='')
             {
                 $servermsg = '下载地址'.$i;

@@ -31,6 +31,7 @@ elseif($action == 'post')
         echo "您还没有设置分组！";
         exit;
     }
+	$membergroup = preg_repalce("#[^0-9]#", "", $membergroup);
     $sql = "UPDATE `#@__member_friends` SET `groupid`='{$membergroup}' WHERE `fid`='{$mid}' AND `mid`='{$cfg_ml->M_ID}';";
     $dsql->ExecuteNoneQuery($sql);
     $row = $dsql->GetOne("SELECT groupname FROM #@__member_group WHERE mid = {$cfg_ml->M_ID} AND id={$membergroup}");

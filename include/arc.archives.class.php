@@ -276,7 +276,7 @@ class Archives
             $this->TotalPage = count($this->SplitFields);
             $this->Fields['totalpage'] = $this->TotalPage;
         }
-        
+
         //处理默认缩略图等
         if (isset($this->Fields['litpic']))
         {
@@ -289,7 +289,7 @@ class Archives
                 $this->Fields['litpic'] = $GLOBALS['cfg_mainsite'].$this->Fields['litpic'];
             }
             $this->Fields['picname'] = $this->Fields['litpic'];
-            
+
             //模板里直接使用{dede:field name='image'/}获取缩略图
             $this->Fields['image'] = (!preg_match('/jpg|gif|png/i', $this->Fields['picname']) ? '' : "<img src='{$this->Fields['picname']}' />");
         }
@@ -304,7 +304,7 @@ class Archives
                 $this->Fields['vote'] = "<script language='javascript' src='{$GLOBALS['cfg_mainsite']}/data/vote/vote_{$voteid}.js'></script>";
             }
         }
-        
+
         if (isset($this->Fields['goodpost']) && isset($this->Fields['badpost']))
         {
             //digg
@@ -396,7 +396,7 @@ class Archives
         $this->Fields['arcurl'] = $this->Fields['fullname'] = $filenameFull;
 
         //对于已设置不生成HTML的文章直接返回网址
-        if($this->Fields['ismake']==-1 || $this->Fields['arcrank']!=0 || $this->Fields['money']>0 
+        if($this->Fields['ismake']==-1 || $this->Fields['arcrank']!=0 || $this->Fields['money']>0
            || ($this->Fields['typeid']==0 && $this->Fields['channel'] != -1) )
         {
             return $this->GetTrueUrl($filename);
@@ -423,7 +423,7 @@ class Archives
                 //如果启用远程发布则需要进行判断
                 if($cfg_remote_site=='Y' && $isremote == 1)
                 {
-            
+
                     //分析远程文件路径
                     $remotefile = str_replace(DEDEROOT, '', $TRUEfilename);
                     $localfile = '..'.$remotefile;
@@ -549,9 +549,17 @@ class Archives
                 $tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/article_spec.htm";
             }
         }
+        if ( defined('DEDEMOB') )
+        {
+            $tmpfile =str_replace('.htm','_m.htm',$tmpfile);
+        }
         if(!file_exists($tmpfile))
         {
             $tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/".($cid=='spec' ? 'article_spec.htm' : 'article_default.htm');
+            if ( defined('DEDEMOB') )
+            {
+                $tmpfile =str_replace('.htm','_m.htm',$tmpfile);
+            }
         }
         if (!preg_match("#.htm$#", $tmpfile)) return FALSE;
         return $tmpfile;
@@ -787,7 +795,7 @@ class Archives
      *  获取上一篇，下一篇链接
      *
      * @access    public
-     * @param     string  $gtype  获取类型  
+     * @param     string  $gtype  获取类型
      *                    pre:上一篇  preimg:上一篇图片  next:下一篇  nextimg:下一篇图片
      * @return    string
      */
@@ -808,10 +816,16 @@ class Archives
             $preRow = $this->dsql->GetOne($query.$pre);
             if(is_array($preRow))
             {
-                $mlink = GetFileUrl($preRow['id'],$preRow['typeid'],$preRow['senddate'],$preRow['title'],$preRow['ismake'],$preRow['arcrank'],
+                if ( defined('DEDEMOB') )
+                {
+                    $mlink = 'view.php?aid='.$preRow['id'];
+                } else {
+                    $mlink = GetFileUrl($preRow['id'],$preRow['typeid'],$preRow['senddate'],$preRow['title'],$preRow['ismake'],$preRow['arcrank'],
                 $preRow['namerule'],$preRow['typedir'],$preRow['money'],$preRow['filename'],$preRow['moresite'],$preRow['siteurl'],$preRow['sitepath']);
+                }
+                
                 $this->PreNext['pre'] = "上一篇：<a href='$mlink'>{$preRow['title']}</a> ";
-                $this->PreNext['preimg'] = "<a href='$mlink'><img src=\"{$preRow['litpic']}\" alt=\"{$preRow['title']}\"/></a> "; 
+                $this->PreNext['preimg'] = "<a href='$mlink'><img src=\"{$preRow['litpic']}\" alt=\"{$preRow['title']}\"/></a> ";
             }
             else
             {
@@ -820,8 +834,14 @@ class Archives
             }
             if(is_array($nextRow))
             {
-                $mlink = GetFileUrl($nextRow['id'],$nextRow['typeid'],$nextRow['senddate'],$nextRow['title'],$nextRow['ismake'],$nextRow['arcrank'],
-                $nextRow['namerule'],$nextRow['typedir'],$nextRow['money'],$nextRow['filename'],$nextRow['moresite'],$nextRow['siteurl'],$nextRow['sitepath']);
+                if ( defined('DEDEMOB') )
+                {
+                    $mlink = 'view.php?aid='.$preRow['id'];
+                } else {
+                    $mlink = GetFileUrl($nextRow['id'],$nextRow['typeid'],$nextRow['senddate'],$nextRow['title'],$nextRow['ismake'],$nextRow['arcrank'],
+                    $nextRow['namerule'],$nextRow['typedir'],$nextRow['money'],$nextRow['filename'],$nextRow['moresite'],$nextRow['siteurl'],$nextRow['sitepath']);
+                }
+    
                 $this->PreNext['next'] = "下一篇：<a href='$mlink'>{$nextRow['title']}</a> ";
                 $this->PreNext['nextimg'] = "<a href='$mlink'><img src=\"{$nextRow['litpic']}\" alt=\"{$nextRow['title']}\"/></a> ";
             }
@@ -836,7 +856,7 @@ class Archives
             $rs =  $this->PreNext['pre'];
         }
         else if($gtype=='preimg'){
-            
+
             $rs =  $this->PreNext['preimg'];
         }
         else if($gtype=='next')
@@ -844,7 +864,7 @@ class Archives
             $rs =  $this->PreNext['next'];
         }
         else if($gtype=='nextimg'){
-            
+
             $rs =  $this->PreNext['nextimg'];
         }
         else
@@ -1196,7 +1216,7 @@ class Archives
             }
         }
         */
-        $query = "SELECT * FROM #@__keywords WHERE rpurl<>'' ORDER BY rank DESC"; 
+        $query = "SELECT * FROM #@__keywords WHERE rpurl<>'' ORDER BY rank DESC";
         $this->dsql->SetQuery($query);
         $this->dsql->Execute();
         while($row = $this->dsql->GetArray())
@@ -1208,7 +1228,12 @@ class Archives
         }
 
         // 这里可能会有错误
-        $body = @preg_replace("#(^|>)([^<]+)(?=<|$)#sUe", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
+        if (version_compare(PHP_VERSION, '5.5.0', '>='))
+        {
+            $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
+        } else {
+            $body = @preg_replace("#(^|>)([^<]+)(?=<|$)#sUe", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
+        }
 
         //恢复超链接
         $body = preg_replace("#(<a(.*))-\]-(.*)-\[-(\/a>)#isU", '\\1>\\3<\\4', $body);
@@ -1222,6 +1247,11 @@ class Archives
 function _highlight($string, $words, $result, $pre)
 {
     global $cfg_replace_num;
+    if (version_compare(PHP_VERSION, '5.5.0', '>='))
+    {
+        $string = $string[0];
+        $pre = $pre[0];
+    }
     $string = str_replace('\"', '"', $string);
     if($cfg_replace_num > 0)
     {

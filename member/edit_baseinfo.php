@@ -86,6 +86,8 @@ if($dopost=='save')
             }
             else
             {
+			    $newsafequestion = HtmlReplace($newsafequestion,1);
+			    $newsafeanswer = HtmlReplace($newsafeanswer,1);
                 $addupquery .= ",safequestion='$newsafequestion',safeanswer='$newsafeanswer'";
             }
         }

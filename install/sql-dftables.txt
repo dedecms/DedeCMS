@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `#@__addonarticle`;
+﻿DROP TABLE IF EXISTS `#@__addonarticle`;
 CREATE TABLE `#@__addonarticle` (
   `aid` mediumint(8) unsigned NOT NULL default '0',
   `typeid` smallint(5) unsigned NOT NULL default '0',
@@ -1231,3 +1231,23 @@ CREATE TABLE `#@__myadtype` (
   `typename` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__plus_seoinfo`;
+CREATE TABLE `#@__plus_seoinfo` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`create_time` INT(11) NULL DEFAULT NULL,
+	`alexa_num` VARCHAR(50) NULL DEFAULT NULL,
+	`alexa_area_num` VARCHAR(50) NULL DEFAULT NULL,
+	`baidu_count` VARCHAR(50) NULL DEFAULT NULL,
+	`sogou_count` VARCHAR(50) NULL DEFAULT NULL,
+	`haosou360_count` VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__plus_mda_setting`;
+CREATE TABLE `#@__plus_mda_setting` (
+	`skey` VARCHAR(255) NOT NULL DEFAULT '',
+	`svalue` TEXT NOT NULL,
+	`stime` INT(10) NOT NULL,
+	PRIMARY KEY (`skey`)
+)TYPE=MyISAM;

@@ -21,6 +21,7 @@ $m_file = DEDEDATA."/downmix.data.php";
 //保存
 if($dopost=="save")
 {
+	csrf_check();
     $fp = fopen($m_file,'w');
     flock($fp,3);
     fwrite($fp,$allsource);
@@ -35,11 +36,13 @@ if(empty($allsource) && filesize($m_file)>0)
     $allsource = fread($fp,filesize($m_file));
     fclose($fp);
 }
+make_hash();
 $wintitle = "防采集混淆字符串管理";
 $wecome_info = "防采集混淆字符串管理";
 $win = new OxWindow();
 $win->Init('article_string_mix.php','js/blank.js','POST');
 $win->AddHidden('dopost','save');
+$win->AddHidden('token',$_SESSION['token']);
 $win->AddTitle("如果你要启用字符串混淆来防采集，请在文档模板需要的字段加上 function='RndString(@me)' 属性，如：{dede:field name='body' function='RndString(@me)'/}。");
 $win->AddMsgItem("<textarea name='allsource' id='allsource' style='width:100%;height:300px'>$allsource</textarea>");
 $winform = $win->GetWindow('ok');

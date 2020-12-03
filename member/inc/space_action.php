@@ -265,6 +265,7 @@ else if($action=='guestbooksave')
     }
     $uname = HtmlReplace($uname, 1);
     $msg = cn_substrR(HtmlReplace($msg), 2048);
+    $title = cn_substrR(HtmlReplace($title), 255);
     if($cfg_ml->M_UserName != '' && $cfg_ml->M_ID != $uidnum)
     {
         $gid = $cfg_ml->M_UserName;
@@ -273,8 +274,8 @@ else if($action=='guestbooksave')
     {
         $gid = '';
     }
-    $inquery = "INSERT INTO `#@__member_guestbook`(mid,gid,msg,uname,ip,dtime)
-   VALUES ('$uidnum','$gid','$msg','$uname','".GetIP()."',".time()."); ";
+    $inquery = "INSERT INTO `#@__member_guestbook`(mid,gid,title,msg,uname,ip,dtime)
+   VALUES ('$uidnum','$gid','$title','$msg','$uname','".GetIP()."',".time()."); ";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功提交你的留言！', "index.php?uid={$uid}&action=guestbook");
     exit();
@@ -292,6 +293,7 @@ else if($action=='guestbookdel')
         ShowMsg('这条留言不是给你的，你不能删除！', -1);
         exit();
     }
+	$aid = intval($aid);
     $inquery = "DELETE FROM `#@__member_guestbook` WHERE aid='$aid' AND mid='$mid'"; 
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功删除！', "index.php?uid={$uid}&action=guestbook");
@@ -305,7 +307,7 @@ function feed_del(){ }
 else if($action=='feeddel')
 {
     CheckRank(0,0);
-    $fid=(empty($fid))? "" : $fid;
+    $fid=(empty($fid))? "" : intval($fid);
     $row = $dsql->GetOne("SELECT mid FROM `#@__member_feed` WHERE fid='$fid'");
     if($cfg_ml->M_ID!=$row['mid'])
     {
@@ -324,7 +326,7 @@ function mood_del(){ }
 else if($action=='mooddel')
 {
     CheckRank(0,0);
-    $id=(empty($id))? "" : $id;
+    $id=(empty($id))? "" : intval($id);
     $row = $dsql->GetOne("SELECT mid FROM `#@__member_msg` WHERE id='$id'");
     if($cfg_ml->M_ID!=$row['mid'])
     {

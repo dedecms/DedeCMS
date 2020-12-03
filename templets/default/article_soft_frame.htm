@@ -6,6 +6,8 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}">
+<script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script>
 </head>
 
 <body class="downlist">
@@ -51,7 +53,7 @@
 				<strong>软件介绍</strong>
 			</div>
 			<div class="content">
-            <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;">{dede:myad name='contentMidPicAD'/}</div>
+            <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;">{dede:mda name='250x250'/}</div>
 				{dede:field.introduce/}
 			</div>
 			<div class="labeltitle">
@@ -144,7 +146,7 @@ function timeCall()
 			</dl>
 			{/dede:memberinfos}
    	 	</div>
-        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
 		<div class="downrange mt1">
 			<dl class="tbox">
 				<dt><strong>推荐软件</strong></dt>
@@ -174,12 +176,29 @@ function timeCall()
 				</dd>
 			</dl>
 		</div>
-        <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
+        <div id="contentRtPicAD2" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
 	</div><!-- /pright -->
 </div>
-<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 <script src="{dede:global name='cfg_phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
+<script type="text/javascript">
+var contentRtPicAD2      = document.getElementById("contentRtPicAD2");
+var   stop      = contentRtPicAD2.offsetTop - 60,
+    docBody   = document.documentElement || document.body.parentNode || document.body,
+    hasOffset = window.pageYOffset !== undefined,
+    scrollTop;
+window.onscroll = function (e) {
+  // cross-browser compatible scrollTop.
+  scrollTop = hasOffset ? window.pageYOffset : docBody.scrollTop;
+
+  if (scrollTop >= stop) {
+    contentRtPicAD2.className = 'stick';
+  } else {
+    contentRtPicAD2.className = ''; 
+  }
+}
+</script>
 </body>
 </html>

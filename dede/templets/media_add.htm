@@ -68,6 +68,7 @@ function ResetUpload()
     	<table width="100%" border="0" cellpadding="0" cellspacing="0">
         <form enctype="multipart/form-data" name='form1' action="media_add.php" method="POST" onSubmit="return CheckSubmit();">
           <input type="hidden" name="dopost" value="upload" />
+          <input type="hidden" name="token" value="<?php echo make_hash();?>" />
           <tr> 
             <td width="15%" height="30" align="center" bgcolor="#FFFFFF"  class='bline'>媒体类型：</td>
             <td width="85%" height="25" bgcolor="#FFFFFF"  class='bline' style="text-align:left;">

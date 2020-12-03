@@ -92,7 +92,7 @@
             <tr>
                 <td style='line-height:180%'>
                     <b>默认已安装模块(不需要可在后台卸载)：</b><br />
-                    百度新闻、文件管理器、挑错管理、广告管理、投票模块、友情链接、bShare分享插件<br />
+                    百度新闻、文件管理器、挑错管理、德得广告管理、投票模块、友情链接<br />
                     <b>已下载并可选安装的：（不能选中的为未下载）</b><br />
                     <div class='modulesel'><input type='checkbox' name='modules[]' <?php if(!IsDownLoad($module_local.'0a7bea5dbe571d35def883cbec796437')){?>disabled = 'true'<?php }?> value='0a7bea5dbe571d35def883cbec796437' /> 留言簿模块</div>
                     <div class='modulesel'><input type='checkbox' name='modules[]' <?php if(!IsDownLoad($module_local.'59155be87ea60c5c65ec1f7a46a0fc9d')){?>disabled = 'true'<?php }?> value='59155be87ea60c5c65ec1f7a46a0fc9d' /> 手机WAP浏览</div>
@@ -108,6 +108,14 @@
         </table>    
         <div class="pr-title"><h3>数据库设定</h3></div>
         <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
+<tr>
+                <td class="onetd"><strong>数据库类型：</strong></td>
+                <td><select name="dbtype">
+                	<option value="mysql" selected>MySQL</option>
+                	<option value="sqlite">SQLite</option>
+                </select>
+                <small>一般为MySQL，SQLite仅用于开发调试不建议生产中使用</small></td>
+            </tr>
             <tr>
                 <td class="onetd"><strong>数据库主机：</strong></td>
                 <td><input name="dbhost" id="dbhost" type="text" value="localhost" class="input-txt" />

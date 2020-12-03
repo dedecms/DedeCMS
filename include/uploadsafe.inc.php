@@ -26,7 +26,7 @@ foreach($_FILES as $_key=>$_value)
     {
         exit('Request var not allow for uploadsafe!');
     }
-    $$_key = $_FILES[$_key]['tmp_name'] = str_replace("\\\\", "\\", $_FILES[$_key]['tmp_name']);
+    $$_key = $_FILES[$_key]['tmp_name'];
     ${$_key.'_name'} = $_FILES[$_key]['name'];
     ${$_key.'_type'} = $_FILES[$_key]['type'] = preg_replace('#[^0-9a-z\./]#i', '', $_FILES[$_key]['type']);
     ${$_key.'_size'} = $_FILES[$_key]['size'] = preg_replace('#[^0-9]#','',$_FILES[$_key]['size']);

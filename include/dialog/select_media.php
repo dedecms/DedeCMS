@@ -14,6 +14,7 @@ if(empty($activepath))
 {
     $activepath = '';
 }
+$noeditor = isset($noeditor)? $noeditor : '';
 $activepath = str_replace('.', '', $activepath);
 $activepath = preg_replace("#\/{1,}#", '/', $activepath);
 if(strlen($activepath) < strlen($cfg_other_medias))
@@ -22,6 +23,10 @@ if(strlen($activepath) < strlen($cfg_other_medias))
 }
 $inpath = $cfg_basedir.$activepath;
 $activeurl = '..'.$activepath;
+if (!is_dir($inpath) )
+{
+    die('No Exsits Path');
+}
 if(empty($f))
 {
     $f = 'form1.enclosure';
@@ -40,6 +45,10 @@ if (!empty($CKEditorFuncNum))
 {
     $addparm .= '&CKEditorFuncNum='.$CKEditorFuncNum;
 }
+if (!empty($noeditor))
+{
+    $addparm .= '&noeditor=yes';
+}
 ?>
 <html>
 <head>
@@ -56,28 +65,23 @@ function nullLink()
 {
 	return;
 }
-<?php
-if ($GLOBALS['cfg_html_editor']=='ckeditor')
-{
-?>
+
 function ReturnValue(reimg)
 {
+    if(window.opener.document.<?php echo $f?> != null)
+	{
+		 window.opener.document.<?php echo $f?>.value=reimg;
+	}
+	 
     var funcNum = <?php echo isset($CKEditorFuncNum)? $CKEditorFuncNum : 1;?>;
-    window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
-    window.close();
-}
-<?php
-} else {
-?>
-function ReturnValue(reimg)
-{
-	window.opener.document.<?php echo $f?>.value=reimg;
-	if(document.all) window.opener=true;
+	if(window.opener.CKEDITOR != null && funcNum != 1)
+	{
+		
+		window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
+		
+	}
 	window.close();
 }
-<?php
-}
-?>
 </SCRIPT>
 <table width='100%' border='0' cellpadding='0' cellspacing='1' bgcolor='#CBD8AC' align="center">
 <tr bgcolor='#FFFFFF'>

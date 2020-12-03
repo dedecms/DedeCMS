@@ -48,6 +48,7 @@ else if($fmdo=="newdir")
     $win->Init("file_manage_control.php","js/blank.js","POST");
     $win->AddHidden("fmdo",$fmdo);
     $win->AddHidden("activepath",$activepath);
+    $win->AddHidden("token",make_hash());
     $win->AddTitle("当前目录 $activepathname ");
     $win->AddItem("新目录：","<input name='newpath' type='input' class='alltxt' id='newpath'>");
     $winform = $win->GetWindow("ok");
@@ -113,10 +114,21 @@ else if($fmdo=="edit")
         $fp = fopen($file,"r");
         $content = fread($fp,filesize($file));
         fclose($fp);
-        $content = htmlspecialchars($content);
+        $content = dede_htmlspecialchars($content);
     }
-    $contentView = "<textarea name='str' style='width:99%;height:450px;background:#ffffff;'>$content</textarea>\r\n";
+    $contentView = "<textarea name='str' id='str' style='width:99%;height:450px;background:#ffffff;'>$content</textarea>\r\n";
     $GLOBALS['filename'] = $filename;
+    $path_parts  = pathinfo($filename);
+    if ( $path_parts['extension'] == 'php' )
+    {
+        $GLOBALS['extension'] = 'text/x-php';
+    } else if($path_parts['extension'] == 'js'){
+        $GLOBALS['extension'] = 'text/javascript';
+    } else if($path_parts['extension'] == 'css'){
+        $GLOBALS['extension'] = 'text/css';
+    } else {
+        $GLOBALS['extension'] = 'text/html';
+    }
     $ctp = new DedeTagParse();
     $ctp->LoadTemplate(DEDEADMIN."/templets/file_edit.htm");
     $ctp->display();
@@ -158,6 +170,7 @@ else if($fmdo=="newfile")
     $content = "";
     $GLOBALS['filename'] = "newfile.txt";
     $contentView = "<textarea name='str' style='width:99%;height:400'></textarea>\r\n";
+    $GLOBALS['token'] = make_hash();
     $ctp = new DedeTagParse();
     $ctp->LoadTemplate(DEDEADMIN."/templets/file_edit.htm");
     $ctp->display();

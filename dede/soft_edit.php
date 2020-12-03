@@ -78,6 +78,7 @@ if($dopost!='save')
     }
     $channelid = $arcRow['channel'];
     $tags = GetTags($aid);
+    $arcRow=XSSClean($arcRow);$addRow=XSSClean($addRow);
     include DedeInclude("templets/soft_edit.htm");
     exit();
 }

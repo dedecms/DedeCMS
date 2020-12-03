@@ -30,12 +30,8 @@ if(empty($step)) $step = 0;
 //完成安装
 if($step==9999)
 {
-    $fp = fopen($insLockfile,'w');
-    fwrite($fp,'ok');
-    fclose($fp);
     ReWriteConfigAuto();
     UpDateCatCache();
-    @unlink('./modules.tmp.inc');
     include('./templates/step-5.html');
     exit();
 }

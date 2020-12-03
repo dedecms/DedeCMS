@@ -3,7 +3,7 @@
  *
  * 评论
  *
- * @version        $Id: feedback.php 1 15:38 2010年7月8日Z tianya $
+ * @version        $Id: feedback.php 2 15:56 2012年10月30日Z tianya $
  * @package        DedeCMS.Site
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
@@ -79,6 +79,7 @@ else if($action=='' || $action=='show')
         $ftype = '';
     }
     $wquery = $ftype!='' ? " And ftype like '$ftype' " : '';
+	helper('smiley');
 
     //评论内容列表
     $querystring = "SELECT fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores,mb.sex FROM `#@__feedback` fb
@@ -99,10 +100,17 @@ function __Quote(){ }
 */
 else if($action=='quote')
 {
+	$type = empty($type)? '' : 'ajax';
+	if($type == 'ajax')
+	{
+		AjaxHead();
+	}
     $row = $dsql->GetOne("SELECT * FROM `#@__feedback` WHERE id ='$fid'");
     require_once(DEDEINC.'/dedetemplate.class.php');
     $dtp = new DedeTemplate();
-    $dtp->LoadTemplate(DEDETEMPLATE.'/plus/feedback_quote.htm');
+	$tplfile = $type == ''? DEDETEMPLATE.'/plus/feedback_quote.htm' : DEDETEMPLATE.'/plus/feedback_quote_ajax.htm';
+	
+    $dtp->LoadTemplate($tplfile);
     $dtp->Display();
     exit();
 }
@@ -153,6 +161,12 @@ else if($action=='send')
     {
         $notuser=0;
     }
+	
+	if($cfg_feedback_guest == 'N' && $cfg_ml->M_ID < 1)
+	{
+		ShowMsg('管理员禁用了游客评论！','-1');
+		exit();
+	}
 
     //匿名发表评论
     if($notuser==1)
@@ -215,6 +229,7 @@ else if($action=='send')
         $face = 0;
     }
     $face = intval($face);
+    $typeid = (isset($typeid) && is_numeric($typeid)) ? intval($typeid) : 0;
     extract($arcRow, EXTR_SKIP);
     $msg = cn_substrR(TrimMsg($msg), 1000);
     $username = cn_substrR(HtmlReplace($username, 2), 20);
@@ -226,6 +241,9 @@ else if($action=='send')
     if($comtype == 'comments')
     {
         $arctitle = addslashes($title);
+		$typeid = intval($typeid);
+		$ischeck = intval($ischeck);
+		$feedbacktype = preg_replace("#[^0-9a-z]#i", "", $feedbacktype);
         if($msg!='')
         {
             $inquery = "INSERT INTO `#@__feedback`(`aid`,`typeid`,`username`,`arctitle`,`ip`,`ischeck`,`dtime`, `mid`,`bad`,`good`,`ftype`,`face`,`msg`)
@@ -243,7 +261,7 @@ else if($action=='send')
     elseif ($comtype == 'reply')
     {
         $row = $dsql->GetOne("SELECT * FROM `#@__feedback` WHERE id ='$fid'");
-        $arctitle = $row['arctitle'];
+        $arctitle = addslashes($row['arctitle']);
         $aid =$row['aid'];
         $msg = $quotemsg.$msg;
         $msg = HtmlReplace($msg, 2);
@@ -299,7 +317,7 @@ else if($action=='send')
     
     $_SESSION['sedtime'] = time();
     if(empty($uid) && isset($cmtuser)) $uid = $cmtuser;
-    $backurl = $cfg_formmember ? "index.php?uid={$uid}&action=viewarchives&aid={$aid}" : "feedback.php?aid=$aid";
+    $backurl = $cfg_formmember ? "index.php?uid={$uid}&action=viewarchives&aid={$aid}" : "feedback.php?aid={$aid}";
     if($ischeck==0)
     {
         ShowMsg('成功发表评论，但需审核后才会显示你的评论!', $backurl);

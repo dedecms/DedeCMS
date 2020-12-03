@@ -12,6 +12,12 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 if(empty($dopost)) $dopost = '';
 
+if ( $cfg_dbtype == 'sqlite' )
+{
+    showMsg('备份系统根目录下/data/'.$cfg_dbname.'.db文件即可', 'javascript:;');
+    exit();
+}
+
 if($dopost=="viewinfo") //查看表结构
 {
     echo "[<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'><u>关闭</u></a>]\r\n<xmp>";

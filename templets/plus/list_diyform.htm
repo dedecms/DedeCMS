@@ -47,7 +47,7 @@ if(!empty($fields))
 			else
 			{
 				if($fielddata[1]=='htmltext') $fields[$field] = html2text($fields[$field]);
-				else $fields[$field] = htmlspecialchars($fields[$field]);
+				else $fields[$field] = dede_htmlspecialchars($fields[$field]);
 				if( strlen($fields[$field]) > 250 )
 				{
 					$fields[$field] = cn_substr( $fields[$field], 250).'...';

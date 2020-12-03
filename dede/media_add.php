@@ -16,6 +16,7 @@ if(empty($dopost)) $dopost = "";
 //上传
 if($dopost=="upload")
 {
+    csrf_check();
     require_once(DEDEINC."/image.func.php");
     $sparr_image = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
     $sparr_flash = Array("application/xshockwaveflash");

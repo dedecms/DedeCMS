@@ -223,8 +223,8 @@ function CheckCross()
             <td class='bline'> <select name="corank" id="corank" style="width:100">
                 <?php
               $dsql->SetQuery("Select * from #@__arcrank where rank >= 0");
-              $dsql->Execute();
-              while($row = $dsql->GetObject())
+              $dsql->Execute('cc');
+              while($row = $dsql->GetObject('cc'))
               {
                   if($myrow['corank']==$row->rank)
                     echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";

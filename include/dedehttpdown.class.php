@@ -12,6 +12,7 @@
 
 class DedeHttpDown
 {
+    var $m_ch = '';
     var $m_url = '';
     var $m_urlpath = '';
     var $m_scheme = 'http';
@@ -23,9 +24,10 @@ class DedeHttpDown
     var $m_query = '';
     var $m_fp = '';
     var $m_error = '';
-    var $m_httphead = '';
+    var $m_httphead = array();
     var $m_html = '';
-    var $m_puthead = '';
+    var $m_puthead = array();
+    var $m_cookies = '';
     var $BaseUrlPath = '';
     var $HomeUrl = '';
     var $reTry = 0;
@@ -90,6 +92,7 @@ class DedeHttpDown
      */
     function ResetAny()
     {
+        $this->m_ch = "";
         $this->m_url = "";
         $this->m_urlpath = "";
         $this->m_scheme = "http";
@@ -99,6 +102,7 @@ class DedeHttpDown
         $this->m_pass = "";
         $this->m_path = "/";
         $this->m_query = "";
+        $this->m_cookies = "";
         $this->m_error = "";
     }
 
@@ -227,6 +231,11 @@ class DedeHttpDown
         {
             return FALSE;
         }
+        if (function_exists('curl_init') && function_exists('curl_exec')) {
+            file_put_contents($savefilename, $this->m_html);
+            return TRUE;
+        }
+
         if(@feof($this->m_fp))
         {
             $this->m_error = "连接已经关闭！"; return FALSE;
@@ -268,13 +277,13 @@ class DedeHttpDown
      */
     function GetHtml()
     {
-        if(!$this->IsText())
-        {
-            return '';
-        }
         if($this->m_html!='')
         {
             return $this->m_html;
+        }
+        if(!$this->IsText())
+        {
+            return '';
         }
         if(!$this->m_fp||@feof($this->m_fp))
         {
@@ -297,6 +306,75 @@ class DedeHttpDown
      */
     function PrivateStartSession($requestType="GET")
     {
+        if ($this->m_scheme == "https") {
+            $this->m_port = "443";
+        }
+        if (function_exists('curl_init') && function_exists('curl_exec')) {
+            $this->m_ch = curl_init();
+            curl_setopt($this->m_ch, CURLOPT_URL, $this->m_scheme.'://'.$this->m_host.':'.$this->m_port.$this->m_path);
+            curl_setopt($this->m_ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($this->m_ch, CURLOPT_FOLLOWLOCATION, 1);
+            if ($requestType == "POST") {
+                curl_setopt($this->m_ch, CURLOPT_POST, 1);
+                // $content = is_array($post) ? http_build_query($post) : $post;
+                // curl_setopt($this->m_ch, CURLOPT_POSTFIELDS, urldecode($content));
+            }
+            if (!empty($this->m_cookies)) {
+                curl_setopt($this->m_ch, CURLOPT_COOKIE, $this->m_cookies);
+            }
+            if ($this->m_scheme == "https") {
+                curl_setopt($this->m_ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($this->m_ch, CURLOPT_SSL_VERIFYHOST, false);
+            }
+
+            $this->m_puthead = array();
+            $this->m_puthead["Host"] = $this->m_host;
+
+            //发送用户自定义的请求头
+            if(!isset($this->m_puthead["Accept"]))
+            {
+                $this->m_puthead["Accept"] = "*/*";
+            }
+            if(!isset($this->m_puthead["User-Agent"]))
+            {
+                $this->m_puthead["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2)";
+            }
+            if(!isset($this->m_puthead["Refer"]))
+            {
+                $this->m_puthead["Refer"] = "http://".$this->m_puthead["Host"];
+            }
+            $headers = array();
+            foreach($this->m_puthead as $k=>$v)
+            {
+                $k = trim($k);
+                $v = trim($v);
+                if($k!=""&&$v!="")
+                {
+                    $headers[] = "$k: $v";
+                }
+            }
+            if (count($headers) > 0) {
+                curl_setopt($this->m_ch, CURLOPT_HTTPHEADER, $headers);
+            }
+            
+            curl_setopt($this->m_ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($this->m_ch, CURLOPT_TIMEOUT, 900);
+
+            $this->m_html = curl_exec($this->m_ch);
+            $status = curl_getinfo($this->m_ch);
+            if (count($status) > 0) {
+                foreach ($status as $key => $value) {
+                    $key = str_replace("_", "-", $key);
+                    if ($key == "http-code") {
+                        $this->m_httphead["http-state"] = $value;
+                    }
+                    $this->m_httphead[$key] = $value;
+                }
+            }
+            $this->m_error = curl_errno($this->m_ch);
+
+            return TRUE;
+        }
         if(!$this->PrivateOpenHost())
         {
             $this->m_error .= "打开远程主机出错!";
@@ -477,6 +555,11 @@ class DedeHttpDown
         return isset($this->m_httphead[$headname]) ? $this->m_httphead[$headname] : '';
     }
 
+    function SetCookie($cookie)
+    {
+        $this->m_cookies = $cookie;
+    }
+
     /**
      *  设置Http头的值
      *
@@ -502,6 +585,7 @@ class DedeHttpDown
         {
             return FALSE;
         }
+
         $errno = "";
         $errstr = "";
         $this->m_fp = @fsockopen($this->m_host, $this->m_port, $errno, $errstr,10);
@@ -524,6 +608,9 @@ class DedeHttpDown
      */
     function Close()
     {
+        if (function_exists('curl_init') && function_exists('curl_exec')) {
+            curl_close($ch);
+        }
         @fclose($this->m_fp);
     }
 

@@ -57,6 +57,11 @@ else if($open==1)
     //更新下载次数
     $id = isset($id) && is_numeric($id) ? $id : 0;
     $link = base64_decode(urldecode($link));
+    if ( !$link )
+    {
+        ShowMsg('无效地址','javascript:;');
+        exit;
+    }
     $hash = md5($link);
     $rs = $dsql->ExecuteNoneQuery2("UPDATE `#@__downloads` SET downloads = downloads + 1 WHERE hash='$hash' ");
     if($rs <= 0)
@@ -64,6 +69,23 @@ else if($open==1)
         $query = " INSERT INTO `#@__downloads`(`hash`,`id`,`downloads`) VALUES('$hash','$id',1); ";
         $dsql->ExecNoneQuery($query);
     }
+
+    $row = $dsql->GetOne("SELECT * FROM `#@__softconfig` ");
+    $sites = explode("\n", $row['sites']);
+    $allowed = array();
+    foreach($sites as $site)
+    {
+        $site = explode('|', $site);
+        $domain = parse_url(trim($site[0]));
+        $allowed[] = $domain['host'];
+    }
+    
+    if ( !in_array($linkinfo['host'], $allowed) )
+    {
+        ShowMsg('非下载地址，禁止访问','javascript:;');
+        exit;
+    }
+    
     header("location:$link");
     exit();
 }

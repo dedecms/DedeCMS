@@ -9,7 +9,7 @@
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__).'/config.php');
-CheckRank(0,0);
+CheckRank(0,0,FALSE);
 require_once(DEDEMEMBER.'/inc/inc_archives_functions.php');
 if(empty($dopost)) $dopost = '';
 if(empty($mediatype)) $mediatype = 1;

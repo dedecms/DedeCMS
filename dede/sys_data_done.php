@@ -326,9 +326,9 @@ else if($dopost=='redat')
 
 function PutInfo($msg1,$msg2)
 {
-    global $cfg_dir_purview;
+    global $cfg_dir_purview,$cfg_soft_lang;
     $msginfo = "<html>\n<head>
-        <meta http-equiv='Content-Type' content='text/html; charset=gb2312' />
+        <meta http-equiv='Content-Type' content='text/html; charset={$cfg_soft_lang}' />
         <title>DEDECMS 提示信息</title>
         <base target='_self'/>\n</head>\n<body leftmargin='0' topmargin='0'>\n<center>
         <br/>

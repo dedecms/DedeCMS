@@ -185,6 +185,9 @@ if($step == 1)
         $joinip = GetIP();
         $loginip = GetIP();
         $pwd = md5($userpwd);
+		$mtype = RemoveXSS(HtmlReplace($mtype,1));
+		$safeanswer = HtmlReplace($safeanswer);
+		$safequestion = HtmlReplace($safequestion);
         
         $spaceSta = ($cfg_mb_spacesta < 0 ? $cfg_mb_spacesta : 0);
         
@@ -317,7 +320,6 @@ if($step == 1)
             showmsg('模型表单不存在', '-1');
             exit();
         }
-        
         $inadd_f = '';
         if(!empty($dede_fields))
         {
@@ -344,6 +346,7 @@ if($step == 1)
             }
 
         }
+		
   
         $query = "UPDATE `{$membermodel->table}` SET `mid`='{$cfg_ml->M_ID}' $inadd_f WHERE `mid`='{$cfg_ml->M_ID}'; ";
         if($dsql->executenonequery($query))

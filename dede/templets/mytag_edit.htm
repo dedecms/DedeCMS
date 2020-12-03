@@ -16,6 +16,7 @@
         <form action="mytag_edit.php" method="post" enctype="multipart/form-data" name="form1">
           <input type='hidden' name='aid' value='<?php echo $aid?>'>
           <input type='hidden' name='dopost' value='saveedit'>
+          <input type="hidden" name="token" value="<?php echo make_hash();?>" />
           <tr> 
             <td width="15%" height="25" align="center">所属栏目：</td>
             <td colspan="2">

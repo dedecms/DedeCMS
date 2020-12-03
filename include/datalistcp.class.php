@@ -63,12 +63,18 @@ class DataListCP
      */
     function __construct($tplfile='')
     {
-        if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init"))
+        if ( $GLOBALS['cfg_dbtype'] =='mysql' )
         {
-            $dsql = $GLOBALS['dsqli'];
+            if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init"))
+            {
+                $dsql = $GLOBALS['dsqli'];
+            } else {
+                $dsql = $GLOBALS['dsql'];
+            }
         } else {
-            $dsql = $GLOBALS['dsql'];
+            $dsql = $GLOBALS['dsqlitete'];
         }
+    
         $this->sourceSql='';
         $this->pageSize=25;
         $this->queryTime=0;
@@ -148,6 +154,7 @@ class DataListCP
         {
             $countQuery = preg_replace("#SELECT[ \r\n\t](.*)[ \r\n\t]FROM#is", 'SELECT COUNT(*) AS dd FROM', $this->sourceSql);
             $countQuery = preg_replace("#ORDER[ \r\n\t]{1,}BY(.*)#is", '', $countQuery);
+            
             $row = $this->dsql->GetOne($countQuery);
             if(!is_array($row)) $row['dd'] = 0;
             $this->totalResult = isset($row['dd'])? $row['dd'] : 0;
@@ -180,6 +187,70 @@ class DataListCP
         global $_vars;
         return isset($_vars[$k]) ? $_vars[$k] : '';
     }
+    
+    function XSSClean($val)
+    {
+        if (is_array($val))
+        {
+            while (list($key) = each($val))
+            {
+                $val[$key] = $this->XSSClean($val[$key]);
+            }
+            return $val;
+        }
+        return $this->RemoveXss($val);
+    }
+	
+	function RemoveXss($val) {
+		global $cfg_soft_lang;
+		if($cfg_soft_lang=='gb2312') $val = gb2utf8($val);
+		$val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
+		$search = 'abcdefghijklmnopqrstuvwxyz';
+		$search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$search .= '1234567890!@#$%^&*()';
+		$search .= '~`";:?+/={}[]-_|\'\\';
+		for ($i = 0; $i < strlen($search); $i++) {
+		  $val = preg_replace('/(&#[xX]0{0,8}'.dechex(ord($search[$i])).';?)/i', $search[$i], $val); // with a ;
+		  $val = preg_replace('/(&#0{0,8}'.ord($search[$i]).';?)/', $search[$i], $val); // with a ;
+		}
+		
+		$val = str_replace("`","‘",$val);
+		$val = str_replace("'","‘",$val);
+		$val = str_replace("\"","“",$val);
+		$val = str_replace(",","，",$val);
+		$val = str_replace("(","（",$val);
+		$val = str_replace(")","）",$val);
+
+		$ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+		$ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+		$ra = array_merge($ra1, $ra2);
+
+		$found = true; 
+		while ($found == true) {
+		  $val_before = $val;
+		  for ($i = 0; $i < sizeof($ra); $i++) {
+			 $pattern = '/';
+			 for ($j = 0; $j < strlen($ra[$i]); $j++) {
+				if ($j > 0) {
+				   $pattern .= '(';
+				   $pattern .= '(&#[xX]0{0,8}([9ab]);)';
+				   $pattern .= '|';
+				   $pattern .= '|(&#0{0,8}([9|10|13]);)';
+				   $pattern .= ')*';
+				}
+				$pattern .= $ra[$i][$j];
+			 }
+			 $pattern .= '/i';
+			 $replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2);
+			 $val = preg_replace($pattern, $replacement, $val); 
+			 if ($val_before == $val) {
+				$found = false;
+			 }
+		  }
+		}
+		if($cfg_soft_lang=='gb2312') $val = utf82gb($val);
+		return $val;
+	}
 
     //获取当前页数据列表
     function GetArcList($atts,$refObj='',$fields=array())
@@ -191,7 +262,7 @@ class DataListCP
         while($arr=$this->dsql->GetArray('dlist'))
         {
             $i++;
-            $rsArray[$i]  =  $arr;
+            $rsArray[$i]  =  $this->XSSClean($arr);
             if($i >= $this->pageSize)
             {
                 break;

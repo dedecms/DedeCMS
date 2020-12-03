@@ -33,7 +33,7 @@ else
         exit();
     }
     $public = isset($public) && is_numeric($public) ? $public : 0;
-    $name = htmlspecialchars($name);
+    $name = dede_htmlspecialchars($name);
     $row = $dsql->GetOne("SELECT * FROM #@__diyforms WHERE diyid='$diyid' OR `table` LIKE '$table' OR name LIKE '$name' ");
     if(is_array($row))
     {

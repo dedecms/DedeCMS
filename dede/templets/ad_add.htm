@@ -53,6 +53,7 @@ function checkSubmit()
     <td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4">
  
           <input name="normbody[style]" type="hidden" value="code" id="adstyle"/>
+          <input type="hidden" name="token" value="<?php echo make_hash();?>" />
           <input type='hidden' name='dopost' value='save'>
           <tr>
             <td height="25" colspan="3">广告代码的调用方法：{dede:myad name='广告位标识'/} </td>

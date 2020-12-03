@@ -90,17 +90,18 @@ function ReWriteConfigAuto()
 //更新栏目缓存
 function UpDateCatCache()
 {
-    global $dsql,$cfg_multi_site;
+    global $conn,$cfg_multi_site,$dbprefix;
     $cache1 = DEDEDATA."/cache/inc_catalog_base.inc";
-    $dsql->SetQuery("Select id,reid,channeltype,issend From `#@__arctype`");
-    $dsql->Execute();
+    $rs = mysql_query("Select id,reid,channeltype,issend,typename From `".$dbprefix."arctype`", $conn);
+    
     $fp1 = fopen($cache1,'w');
     $phph = '?';
     $fp1Header = "<{$phph}php\r\nglobal \$cfg_Cs;\r\n\$cfg_Cs=array();\r\n";
     fwrite($fp1,$fp1Header);
-    while($row=$dsql->GetObject())
+    while($row=mysql_fetch_array($rs))
     {
-        fwrite($fp1,"\$cfg_Cs[{$row->id}]=array({$row->reid},{$row->channeltype},{$row->issend});\r\n");
+        $row['typename'] = base64_encode($row['typename']);
+        fwrite($fp1,"\$cfg_Cs[{$row['id']}]=array({$row['reid']},{$row['channeltype']},{$row['issend']},'{$row['typename']}');\r\n");
     }
     fwrite($fp1,"{$phph}>");
     fclose($fp1);

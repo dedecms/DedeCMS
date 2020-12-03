@@ -27,6 +27,7 @@ function checkSubmit()
 	<table width="100%" border="0" cellspacing="4" cellpadding="4">
         <form action="mytag_add.php" method="post" enctype="multipart/form-data" name="form1" onSubmit="return checkSubmit()">
           <input type='hidden' name='dopost' value='save' />
+          <input type="hidden" name="token" value="<?php echo make_hash();?>" />
           <tr> 
             <td height="25" colspan="3">自定义标记的调用方法：<br/>
               {dede:mytag name='标记名称' ismake='是否含板块代码（yes 或 no）' typeid='栏目ID'/} 

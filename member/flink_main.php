@@ -29,6 +29,7 @@ if($dopost=="addnew")
     if(!preg_match("#^http:\/\/#",$url)) $url = "http://".HtmlReplace($url, 2);
 
     $title = HtmlReplace($title);
+    $url = HtmlReplace($url);
     $inquery = "INSERT INTO `#@__member_flink`(mid,title,url) VALUES(".$cfg_ml->M_ID.",'$title','$url'); ";
     $dsql->ExecuteNoneQuery($inquery);
     echo "<font color='red'>成功增加一链接！</font>";
@@ -50,8 +51,9 @@ else if($dopost=="update")
     AjaxHead();
     $aid = intval($aid);
     if(!preg_match("#^http:\/\/#", $url)) $url = "http://".HtmlReplace($url,2);
-
+	
     $title = HtmlReplace($title);
+	$url = HtmlReplace($url);
     $upquery = "UPDATE `#@__member_flink` SET title='$title',url='$url' WHERE aid='$aid' AND mid='".$cfg_ml->M_ID."'; ";
     $rs = $dsql->ExecuteNoneQuery($upquery);
     if($rs)

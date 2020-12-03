@@ -66,6 +66,8 @@ function _SaveArticle(){  }
 ------------------------------*/
 else if($dopost=='save')
 {
+    include(DEDEMEMBER.'/inc/archives_check.php');
+    
     $svali = GetCkVdValue();
     if(preg_match("/1/",$safe_gdopen)){
         if(strtolower($vdcode)!=$svali || $svali=='')

@@ -98,7 +98,8 @@ if(!empty($tid))
         require_once(DEDEINC."/arc.sglistview.class.php");
         $lv = new SgListView($tid);        
     }
-    //$lv->CountRecord();
+	// 这里统一统计
+    $lv->CountRecord();
     if($lv->TypeLink->TypeInfos['ispart']==0 && $lv->TypeLink->TypeInfos['isdefault']!=-1) $ntotalpage = $lv->TotalPage;
     else $ntotalpage = 1;
     if($cfg_remote_site=='Y' && $isremote=="1")

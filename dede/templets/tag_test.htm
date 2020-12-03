@@ -21,11 +21,18 @@ function SelectTemplets(fname)
    window.open("../include/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+<script type="text/javascript" src="js/codemirror.js"></script>
+<script type="text/javascript" src="js/mode/xml/xml.js"></script>
+<script type="text/javascript" src="js/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="js/mode/css/css.js"></script>
+<script type="text/javascript" src="js/mode/htmlmixed/htmlmixed.js"></script>
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" align="center">
   <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
     <input type="hidden" name="dopost" value="make" />
+    <input type="hidden" name="token" value="<?php echo make_hash();?>" />
     <tr> 
       <td height="28" colspan="2" background='images/tbg.gif'>
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
@@ -97,5 +104,12 @@ function SelectTemplets(fname)
     </td>
   </tr>
 </table>
+<script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById('partcode'), {
+        lineNumbers: true,
+        lineWrapping: true,
+        mode: 'text/html'
+    });
+</script>
 </body>
 </html>

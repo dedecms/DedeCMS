@@ -100,7 +100,7 @@ class Request
         //上传的文件处理
         if( isset($_FILES) && count($_FILES) > 0 )
         {
-            $this->filter_files($_FILES);
+            $this->FilterFiles($_FILES);
         }
         $this->isinit = TRUE;
         
@@ -139,7 +139,7 @@ class Request
     {
         foreach($files as $k=>$v)
         {
-            $this->$files[$k] = $v;
+            $this->files[$k] = $v;
         }
         unset($_FILES);
     }
@@ -149,7 +149,7 @@ class Request
     */
     function MoveUploadFile( $formname, $filename, $filetype = '' )
     {
-        if( $this->is_upload_file( $formname ) )
+        if( $this->IsUploadFile( $formname ) )
         {
             if( preg_match($this->filter_filename, $filename) )
             {
@@ -246,7 +246,7 @@ class Request
      */
      function CheckSubfix($formname, $subfix = 'csv')
     {
-        if( $this->get_shortname( $formname ) != $subfix)
+        if( $this->GetShortname( $formname ) != $subfix)
         {
             return FALSE;
         }

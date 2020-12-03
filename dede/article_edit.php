@@ -105,7 +105,7 @@ else if($dopost=='save')
     $sortrank = AddDay($pubdate,$sortup);
     $ismake = $ishtml==0 ? -1 : 0;
     $autokey = 1;
-    $title = htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
+    $title = dede_htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
     $shorttitle = cn_substrR($shorttitle,36);
     $color =  cn_substrR($color,7);
     $writer =  cn_substrR($writer,20);

@@ -42,7 +42,7 @@ if(!empty($fields))
 			else
 			{
 				if(!in_array($fielddata[1],$allowhtml)){
-					$fields[$field] = htmlspecialchars($fields[$field]);
+					$fields[$field] = dede_htmlspecialchars($fields[$field]);
 				}
 			}
 			echo '<tr><td bgcolor="#ffffff" >'.$fielddata[0].'</td><td bgcolor="#ffffff" colspan="2">'.$fields[$field].'</td></tr>';		

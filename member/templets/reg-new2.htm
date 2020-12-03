@@ -5,6 +5,8 @@
 <title><?php echo $cfg_webname; ?>- 完善详细资料</title>
 <link href="templets/style/login.css" rel="stylesheet" type="text/css" />
 <script src="templets/js/j.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="templets/js/main.js"></script>
+<script type="text/javascript" src="templets/js/calendar/calendar.js"></script>
 <script src="templets/js/base.js" language="javascript" type="text/javascript"></script>
 <script type="text/javascript" language="javascript">
 <!--
@@ -87,7 +89,7 @@ document.write("午夜好，");
 <div id="login" class="bor" >
   <div class="<?php echo ($cfg_mb_reginfo == 'Y')? '' : 's';?>tip2"></div>
   <div class="theme fLeft">
-    <form method="post" action="reg_new.php" id="regUser" name="form2">
+    <form method="post" action="reg_new.php" id="regUser" name="form1">
       <input type="hidden" value="reginfo" name="dopost"/>
       <input type="hidden" value="2" name="step"/>
       <input type="hidden" value="<?php echo $membermodel->modid;?>" name="modid"/>

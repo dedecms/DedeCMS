@@ -8,6 +8,17 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+
+if ( preg_match("#PHP (.*) Development Server#",$_SERVER['SERVER_SOFTWARE']) )
+{
+    if ( $_SERVER['REQUEST_URI'] == dirname($_SERVER['SCRIPT_NAME']) )
+    {
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location:'.$_SERVER['REQUEST_URI'].'/');
+    }
+}
+
+ 
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEINC.'/dedetag.class.php');
 $defaultIcoFile = DEDEDATA.'/admin/quickmenu.txt';

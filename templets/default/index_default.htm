@@ -6,6 +6,8 @@
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+<script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script>
 </head>
 <body class="channel">
 {dede:include filename="head.htm"/}
@@ -117,7 +119,7 @@ document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-        <div id="conrightAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
+        <div id="conrightAD" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>
@@ -130,10 +132,10 @@ document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"
 				</dd>
 			</dl>
 		</div>
-
+		{dede:qrcode/}
 	</div><!-- /pright -->
 </div>
-<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
+<div id="footAD" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

@@ -11,6 +11,21 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 $menutype = 'config';
+AjaxHead();
+
+function quoteReplace($quote)
+{
+    $quote = str_replace('{quote}','',$quote);
+    $quote = str_replace('{title}','',$quote);
+    $quote = str_replace('{/title}','',$quote);
+    $quote = str_replace('&lt;br/&gt;','',$quote);
+    $quote = str_replace('&lt;', '', $quote);
+    $quote = str_replace('&gt;', '', $quote);
+    $quote = str_replace('{content}','',$quote);
+    $quote = str_replace('{/content}','',$quote);
+    $quote = str_replace('{/quote}','',$quote);
+    return $quote;
+}
 
 //选择数据库
 $feeds = array();
@@ -24,7 +39,7 @@ if($type=="allfeed")
         if($cfg_soft_lang == 'gb2312') {
             $row['uname'] = gb2utf8($row['uname']);
             $row['title'] = gb2utf8(htmlspecialchars_decode($row['title'],ENT_QUOTES));
-            $row['note'] = gb2utf8($row['note']);
+            $row['note'] = gb2utf8(quoteReplace($row['note']));
             $row['dtime']= gb2utf8(FloorTime(time()- $row['dtime']));
         }else{
             $row['title'] = htmlspecialchars_decode($row['title'],ENT_QUOTES);
@@ -40,7 +55,7 @@ if($type=="allfeed")
         if($cfg_soft_lang == 'gb2312') {
             $row['uname'] = gb2utf8($row['uname']);
             $row['title'] = gb2utf8(htmlspecialchars_decode($row['title'],ENT_QUOTES));
-            $row['note'] = gb2utf8($row['note']);
+            $row['note'] = gb2utf8(quoteReplace($row['note']));
             $row['dtime']= gb2utf8(FloorTime(time()- $row['dtime']));
         }else{
             $row['title'] = htmlspecialchars_decode($row['title'],ENT_QUOTES);

@@ -7,6 +7,8 @@
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/images/photo/album.css" rel="stylesheet" media="screen" type="text/css">
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}">
+<script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{dede:global.cfg_mobileurl/}/view.php?aid={dede:field.id/}";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script>
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
 <SCRIPT language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/images/photo/sinaflash.js"></SCRIPT>
 <SCRIPT language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/images/photo/heiphoto.js"></SCRIPT>
@@ -342,7 +344,7 @@ onmouseout="this.className=''">
 				</dd>
 			</dl>
         </div>
-        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
     <div class="infos_userinfo"> {dede:memberinfos}
       <dl class="tbox">
         <dt><strong>发布者资料</strong></dt>
@@ -361,10 +363,10 @@ onmouseout="this.className=''">
         </dd>
       </dl>
     </div>
-    <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
+    <div id="contentRtPicAD2" style="margin:10px auto">{dede:mda name='250x250'/}</div>
   </div>
 </div>
-<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>
 {dede:include filename="footer.htm"/}<br />
 </body>
 </html>

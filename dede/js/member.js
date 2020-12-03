@@ -1,4 +1,9 @@
 <!--
+if(moz == null) 
+{
+	var ie = document.all != null;
+	var moz = !ie && document.getElementById != null && document.layers == null;
+}
 if(moz) {
 	extendEventObject();
 	extendElementModel();

@@ -25,12 +25,27 @@ if(empty($f))
 {
     $f='form1.enclosure';
 }
-
+if (!is_dir($inpath) )
+{
+    die('No Exsits Path');
+}
 if(empty($comeback))
 {
     $comeback = '';
 }
-
+$addparm = '';
+if (!empty($CKEditor))
+{
+    $addparm = '&CKEditor='.$CKEditor;
+}
+if (!empty($CKEditorFuncNum))
+{
+    $addparm .= '&CKEditorFuncNum='.$CKEditorFuncNum;
+}
+if (!empty($noeditor))
+{
+    $addparm .= '&noeditor=yes';
+}
 ?>
 <html>
 <head>
@@ -47,10 +62,21 @@ function nullLink()
 {
 	return;
 }
+
 function ReturnValue(reimg)
 {
-	window.opener.document.<?php echo $f?>.value=reimg;
-	if(document.all) window.opener=true;
+    if(window.opener.document.<?php echo $f?> != null)
+	{
+		 window.opener.document.<?php echo $f?>.value=reimg;
+	}
+	 
+    var funcNum = <?php echo isset($CKEditorFuncNum)? $CKEditorFuncNum : 1;?>;
+	if(window.opener.CKEDITOR != null && funcNum != 1)
+	{
+		
+		window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
+		
+	}
 	window.close();
 }
 </SCRIPT>
@@ -107,7 +133,7 @@ while($file = $dh->read())
         if($activepath == "") continue;
         $tmp = preg_replace("#[\/][^\/]*$#i", "", $activepath);
         $line = "\n<tr height='24'>
-    <td class='linerow'> <a href='select_soft.php?f=$f&activepath=".urlencode($tmp)."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
+    <td class='linerow'> <a href='select_soft.php?f=$f&activepath=".urlencode($tmp).$addparm."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
     <td colspan='2' class='linerow'> 当前目录:$activepath</td>
     </tr>\r\n";
         echo $line;
@@ -118,7 +144,7 @@ while($file = $dh->read())
         if(preg_match("#^\.(.*)$#i", $file)) continue;
         $line = "\n<tr height='24'>
    <td bgcolor='#F9FBF0' class='linerow'>
-    <a href=select_soft.php?f=$f&activepath=".urlencode("$activepath/$file")."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+    <a href=select_soft.php?f=$f&activepath=".urlencode("$activepath/$file").$addparm."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a>
    </td>
    <td class='linerow'>-</td>
    <td bgcolor='#F9FBF0' class='linerow'>-</td>

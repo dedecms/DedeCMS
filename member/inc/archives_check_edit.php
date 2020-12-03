@@ -66,6 +66,15 @@ if(empty($description)) $description = '';
 $description = cn_substrR(HtmlReplace($description,1),250);
 $keywords = cn_substrR(HtmlReplace($tags,1),30);
 $mid = $cfg_ml->M_ID;
+
+$midQuery = "SELECT mid FROM `#@__arctiny` WHERE id='$aid'";
+$midRow = $dsql->GetOne($midQuery);
+if($midRow['mid'] != $mid)
+{
+    ShowMsg('您暂无权限在这里进行修改文档！','javascript:;');
+    exit;
+}
+
 $isadmin = ($cfg_ml->fields['matt']==10 ? true : false);
 if (empty($oldlitpic))
 {

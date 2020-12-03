@@ -16,6 +16,7 @@ if(empty($dopost)) $dopost = "";
 
 if($dopost=="save")
 {
+    csrf_check();
     //timeset tagname typeid normbody expbody
     $tagname = trim($tagname);
     $row = $dsql->GetOne("SELECT typeid FROM #@__myad WHERE typeid='$typeid' AND tagname LIKE '$tagname'");

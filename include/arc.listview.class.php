@@ -11,6 +11,7 @@
 require_once(DEDEINC.'/arc.partview.class.php');
 require_once(DEDEINC.'/ftp.class.php');
 
+helper('cache');
 @set_time_limit(0);
 
 /**
@@ -141,7 +142,7 @@ class ListView
      */
     function CountRecord()
     {
-        global $cfg_list_son,$cfg_need_typeid2;
+        global $cfg_list_son,$cfg_need_typeid2,$cfg_cross_sectypeid;
         if(empty($cfg_need_typeid2)) $cfg_need_typeid2 = 'N';
         
         //统计数据库记录
@@ -162,8 +163,18 @@ class ListView
             }
             else
             {
-                if($this->CrossID=='') $this->addSql .= " AND ( (arc.typeid='".$this->TypeID."') OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like) ";
-                else $this->addSql .= " AND ( arc.typeid IN({$this->CrossID},{$this->TypeID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like) ";
+                if($this->CrossID=='') 
+				{
+					$this->addSql .= " AND ( (arc.typeid='".$this->TypeID."') OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like) ";
+				} else {
+					if($cfg_cross_sectypeid == 'Y')
+					{
+						$typeid2Clike = " '%,{$this->CrossID},%' ";
+						$this->addSql .= " AND ( arc.typeid IN({$this->CrossID},{$this->TypeID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2Clike)";
+					} else {
+						$this->addSql .= " AND ( arc.typeid IN({$this->CrossID},{$this->TypeID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like)";
+					}
+				}
             }
         }
         else
@@ -182,8 +193,19 @@ class ListView
             }
             else
             {
-                if($this->CrossID=='') $this->addSql .= " AND ( $sonidsCon OR CONCAT(',', arc.typeid2, ',') like $typeid2like  ) ";
-                else $this->addSql .= " AND ( arc.typeid IN ({$sonids},{$this->CrossID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like ) ";
+                if($this->CrossID=='') 
+				{
+					$this->addSql .= " AND ( $sonidsCon OR CONCAT(',', arc.typeid2, ',') like $typeid2like  ) ";
+				} else {
+					if($cfg_cross_sectypeid == 'Y')
+					{
+						$typeid2Clike = " '%,{$this->CrossID},%' ";
+						$this->addSql .= " AND ( arc.typeid IN ({$sonids},{$this->CrossID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2Clike) ";
+					} else {
+						$this->addSql .= " AND ( arc.typeid IN ({$sonids},{$this->CrossID}) OR CONCAT(',', arc.typeid2, ',') LIKE $typeid2like) ";
+					}
+					
+				}
             }
         }
         if($this->TotalResult==-1)
@@ -204,10 +226,19 @@ class ListView
         $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$this->TypeLink->TypeInfos['templist'];
         $tempfile = str_replace("{tid}", $this->TypeID, $tempfile);
         $tempfile = str_replace("{cid}", $this->ChannelUnit->ChannelInfos['nid'], $tempfile);
+        if ( defined('DEDEMOB') )
+        {
+            $tempfile =str_replace('.htm','_m.htm',$tempfile);
+        }
         if(!file_exists($tempfile))
         {
             $tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style']."/list_default.htm";
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
         }
+        
         if(!file_exists($tempfile)||!is_file($tempfile))
         {
             echo "模板文件不存在，无法解析文档！";
@@ -268,7 +299,7 @@ class ListView
             return $reurl;
         }
 
-        $this->CountRecord();
+        if(empty($this->TotalResult)) $this->CountRecord();
         //初步给固定值的标记赋值
         $this->ParseTempletsFirst();
         $totalpage = ceil($this->TotalResult/$this->PageSize);
@@ -369,9 +400,17 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+                if ( defined('DEDEMOB') )
+                {
+                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
+                }
             }
             $this->dtp->LoadTemplate($tempfile);
         }
@@ -397,9 +436,17 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+                if ( defined('DEDEMOB') )
+                {
+                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
+                }
             }
             $this->PartView->SetTemplet($tempfile);
         }
@@ -467,9 +514,17 @@ class ListView
             $tempfile = str_replace("{tid}",$this->TypeID,$this->Fields['tempindex']);
             $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
             $tempfile = $tmpdir."/".$tempfile;
+            if ( defined('DEDEMOB') )
+            {
+                $tempfile =str_replace('.htm','_m.htm',$tempfile);
+            }
             if(!file_exists($tempfile))
             {
                 $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
+                if ( defined('DEDEMOB') )
+                {
+                    $tempfile =str_replace('.htm','_m.htm',$tempfile);
+                }
             }
             $this->PartView->SetTemplet($tempfile);
         }
@@ -670,7 +725,7 @@ class ListView
     function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
     $imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$innertext="",$tablewidth="100",$ismake=1,$orderWay='desc')
     {
-        global $cfg_list_son;
+        global $cfg_list_son,$cfg_digg_update;
         
         $typeid=$this->TypeID;
         
@@ -815,6 +870,15 @@ class ListView
                     //处理一些特殊字段
                     $row['infos'] = cn_substr($row['description'],$infolen);
                     $row['id'] =  $row['id'];
+					if($cfg_digg_update > 0)
+					{
+						$prefix = 'diggCache';
+						$key = 'aid-'.$row['id'];
+						$cacherow = GetCache($prefix, $key);
+						$row['goodpost'] = $cacherow['goodpost'];
+						$row['badpost'] = $cacherow['badpost'];
+						$row['scores'] = $cacherow['scores'];
+					}
 
                     if($row['corank'] > 0 && $row['arcrank']==0)
                     {

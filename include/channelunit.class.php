@@ -27,7 +27,7 @@ class ChannelUnit
     function __construct($cid,$aid=0)
     {
         $this->ChannelInfos = '';
-        $this->ChannelFields = '';
+        $this->ChannelFields = array();
         $this->AllFieldNames = '';
         $this->SplitPageField = '';
         $this->ChannelID = $cid;

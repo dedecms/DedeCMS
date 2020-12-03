@@ -169,7 +169,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
         $imgwidth=120, $imgheight=90, $listtype='all', $orderby='default', $keyword='',
         $innertext='', $arcid=0, $idlist='', $channelid=0, $limit='', $att='', $order='desc', $subday=0, $noflag='',$tagid='', $pagesize=0, $isweight='N')
 {
-    global $dsql,$PubFields,$cfg_keyword_like,$cfg_index_cache,$_arclistEnv,$envs,$cfg_cache_type;
+    global $dsql,$PubFields,$cfg_keyword_like,$cfg_index_cache,$_arclistEnv,$envs,$cfg_cache_type,$cfg_digg_update;
     $row = AttDef($row,10);
     $titlelen = AttDef($titlelen,30);
     $infolen = AttDef($infolen,160);
@@ -182,13 +182,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
     $orderWay = AttDef($order,'desc');
     $subday = AttDef($subday,0);
     $pagesize = AttDef($pagesize,0);
-    $line;
-	if(!empty($limit)){
-		$limit_rs = explode(",",$limit);
-		$line = $limit_rs[1];
-	}else{
-		$line = $row;
-	}//2011.07.01 根据论坛反馈，修正limit调用时显示的条数问题(by：织梦的鱼)
+    $line = $row;
     $orderby = strtolower($orderby);
     $keyword = trim($keyword);
     $innertext = trim($innertext);
@@ -338,12 +332,20 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
     else if($orderby == 'near') $ordersql = " ORDER BY ABS(arc.id - ".$arcid.")";
     else if($orderby == 'lastpost') $ordersql = "  ORDER BY arc.lastpost $orderWay";
     else if($orderby == 'scores') $ordersql = "  ORDER BY arc.scores $orderWay";
+    //功能：增加按好评数和差评数调用
+    else if($orderby == 'goodpost') $ordersql = " order by arc.goodpost $orderWay";
+    else if($orderby == 'badpost') $ordersql = " order by arc.badpost $orderWay";
     else if($orderby == 'rand') $ordersql = "  ORDER BY rand()";
     else $ordersql = " ORDER BY arc.sortrank $orderWay"; 
 
     //limit条件
     $limit = trim(preg_replace('#limit#is', '', $limit));
-    if($limit!='') $limitsql = " LIMIT $limit ";
+    if($limit!='')
+    {    
+        $limitsql = " LIMIT $limit ";
+        $limitarr = explode(',', $limit);
+        $line = isset($limitarr[1])? $limitarr[1] : $line;
+    }
     else $limitsql = " LIMIT 0,$line ";
     
     $orwhere = '';
@@ -412,6 +414,53 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
              $addfieldsSqlJoin
           WHERE arc.id in($idlist) $ordersql ";
     }
+	
+	// 好评差评缓存更新
+	if($cfg_digg_update > 0)
+	{
+		if($orderby == 'goodpost' || $orderby == 'badpost')
+		{
+			$t1 = ExecTime();
+			$postsql = "SELECT arc.id,arc.goodpost,arc.badpost,arc.scores
+				FROM `$maintable` arc
+				$orwhere $ordersql $limitsql";
+				
+			if($idlist != '')
+			{
+				$postsql = "SELECT arc.id,arc.goodpost,arc.badpost,arc.scores
+					 FROM `$maintable` arc 
+				  WHERE arc.id in($idlist) $ordersql ";
+			}
+			$dsql->SetQuery($query);
+			$dsql->Execute('lit');
+			while ($row = $dsql->GetArray('lit')) {
+				$prefix = 'diggCache';
+				$key = 'aid-'.$row['id'];
+				$cacherow = GetCache($prefix, $key);
+				$setsql = array();
+				if(!empty($cacherow['scores']) && $cacherow['scores'] != $row['scores'])
+				{
+					$setsql[] = "scores = {$cacherow['scores']}";
+				}
+				if(!empty($cacherow['goodpost']) && $cacherow['goodpost'] != $row['goodpost'])
+				{
+					$setsql[] = "goodpost = {$cacherow['goodpost']}";
+				}
+				if(!empty($cacherow['badpost']) && $cacherow['badpost'] != $row['badpost'])
+				{
+					$setsql[] = "badpost = {$cacherow['badpost']}";
+				}
+				$setsql = implode(',', $setsql);
+				$sql = "UPDATE `$maintable` SET {$setsql} WHERE id='{$row['id']}'";
+				if(!empty($setsql))
+				{
+					$dsql->ExecuteNoneQuery($sql);
+				}
+			}
+			//echo ExecTime()-$t1;
+		}
+	}
+	
     $dsql->SetQuery($query);
     $dsql->Execute('al');
     //$row = $dsql->GetArray("al");

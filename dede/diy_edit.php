@@ -22,7 +22,7 @@ function __SaveEdit()
 if($dopost=="save")
 {
     $public = isset($public) && is_numeric($public) ? $public : 0;
-    $name = htmlspecialchars($name);
+    $name = dede_htmlspecialchars($name);
     $query = "UPDATE `#@__diyforms` SET name = '$name', listtemplate='$listtemplate', viewtemplate='$viewtemplate', posttemplate='$posttemplate', public='$public' WHERE diyid='$diyid' ";
     $dsql->ExecuteNoneQuery($query);
     ShowMsg("成功更改一个自定义表单！","diy_main.php");

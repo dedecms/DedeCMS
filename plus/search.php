@@ -15,7 +15,7 @@ require_once(DEDEINC."/arc.searchview.class.php");
 $pagesize = (isset($pagesize) && is_numeric($pagesize)) ? $pagesize : 10;
 $typeid = (isset($typeid) && is_numeric($typeid)) ? $typeid : 0;
 $channeltype = (isset($channeltype) && is_numeric($channeltype)) ? $channeltype : 0;
-$kwtype = (isset($kwtype) && is_numeric($kwtype)) ? $kwtype : 1;
+$kwtype = (isset($kwtype) && is_numeric($kwtype)) ? $kwtype : 0;
 $mid = (isset($mid) && is_numeric($mid)) ? $mid : 0;
 
 if(!isset($orderby)) $orderby='';
@@ -55,11 +55,12 @@ if(empty($typeid))
     {
         foreach($typeArr as $id=>$typename)
         {
-            $keywordn = str_replace($typename, ' ', $keyword);
+            //$keywordn = str_replace($typename, ' ', $keyword);
+            $keywordn = $keyword;
             if($keyword != $keywordn)
             {
-                $keyword = $keywordn;
-                $typeid = $id;
+                $keyword = HtmlReplace($keywordn);
+                $typeid = intval($id);
                 break;
             }
         }
@@ -67,6 +68,7 @@ if(empty($typeid))
 }
 
 $keyword = addslashes(cn_substr($keyword,30));
+$typeid = intval($typeid);
 
 if($cfg_notallowstr !='' && preg_match("#".$cfg_notallowstr."#i", $keyword))
 {
@@ -82,11 +84,11 @@ if(($keyword=='' || strlen($keyword)<2) && empty($typeid))
 
 //检查搜索间隔时间
 $lockfile = DEDEDATA.'/time.lock.inc';
-if(!file_exists($lockfile)) {
-    $fp = fopen($lockfile,'w');
-    flock($fp,1);
-    fwrite($fp,time());
-    fclose($fp);
+$lasttime = file_get_contents($lockfile);
+if(!empty($lasttime) && ($lasttime + $cfg_search_time) > time())
+{
+    ShowMsg('管理员设定搜索时间间隔为'.$cfg_search_time.'秒，请稍后再试！','-1');
+    exit();
 }
 
 //开始时间
@@ -106,5 +108,8 @@ $t1 = ExecTime();
 $sp = new SearchView($typeid,$keyword,$orderby,$channeltype,$searchtype,$starttime,$pagesize,$kwtype,$mid);
 $keyword = $oldkeyword;
 $sp->Display();
+
+
+PutFile($lockfile, time());
 
 //echo ExecTime() - $t1;

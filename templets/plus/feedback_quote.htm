@@ -91,7 +91,7 @@
 					</div><!-- /dcmp-mood -->
 					
 					<div class="dcmp-content1">
-                    	<input type="hidden" name="quotemsg" value="{quote}<?php echo '{title}'.$row['username'].' 的原帖：{/title}{content}'.$row['msg'].'{/content}';?>{/quote}" />
+                    	<input type="hidden" name="quotemsg" value="{quote}<?php echo '{content}'.$row['msg'].'{/content}'.'{title}'.$row['username'].' 的原帖：{/title}';?>{/quote}" />
 						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
 					</div><!-- /dcmp-content -->
                     

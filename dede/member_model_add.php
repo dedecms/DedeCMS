@@ -31,7 +31,7 @@ if(empty($action))
         exit();
     }
     $state = isset($state) && is_numeric($state) ? $state : 0;
-    $name = htmlspecialchars($name);
+    $name = dede_htmlspecialchars($name);
     $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$id' OR `table` LIKE '$table' OR name LIKE '$name' ");
     if(is_array($row))
     {

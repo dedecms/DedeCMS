@@ -147,11 +147,8 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 
     //软件链接列表
     $softurl1 = stripslashes($softurl1);
-    if(!preg_match("#[_=&///?\.a-zA-Z0-9-]+$#i", $softurl1))
-    {
-        ShowMsg("确定软件地址提交正确!", "-1");
-        exit;
-    }
+    $softurl1 = str_replace(array("{dede:","{/dede:","}"), "#", $softurl1);
+    $servermsg1 = str_replace(array("{dede:","{/dede:","}"), "#", $servermsg1);
     $urls = '';
     if($softurl1!='')
     {
@@ -163,6 +160,8 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
         {
             $servermsg = str_replace("'","",stripslashes(${'servermsg'.$i}));
             $softurl = stripslashes(${'softurl'.$i});
+			$softurl = str_replace(array("{dede:","{/dede:","}"), "#", $softurl);
+			$servermsg = str_replace(array("{dede:","{/dede:","}"), "#", $servermsg);
             if($servermsg=='')
             {
                 $servermsg = '下载地址'.$i;
@@ -204,6 +203,7 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
     }
 
     //增加积分
+    $cfg_sendarc_scores = intval($cfg_sendarc_scores);
     $dsql->ExecuteNoneQuery("UPDATE `#@__member` set scores=scores+{$cfg_sendarc_scores} WHERE mid='".$cfg_ml->M_ID."' ; ");
     //更新统计
     countArchives($channelid);

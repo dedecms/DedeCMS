@@ -52,13 +52,18 @@ else if($action=='make')
         include_once(DEDEINC."/arc.partview.class.php");
         $pv = new PartView();
         $row = $pv->dsql->GetOne("SELECT * FROM `#@__homepageset` ");
-        $templet = str_replace("{style}", $cfg_df_style,$row['templet']);
-        $homeFile = DEDEADMIN.'/'.$row['position'];
-        $homeFile = str_replace("\\", '/', $homeFile);
-        $homeFile = preg_replace("#\/{1,}#" ,'/', $homeFile);
-        $pv->SetTemplet($cfg_basedir.$cfg_templets_dir.'/'.$templet);
-        $pv->SaveToHtml($homeFile);
-        $pv->Close();
+		$templet = str_replace("{style}", $cfg_df_style,$row['templet']);
+		$homeFile = DEDEADMIN.'/'.$row['position'];
+		$homeFile = str_replace("\\", '/', $homeFile);
+		$homeFile = preg_replace("#\/{1,}#" ,'/', $homeFile);
+		if($row['showmod'] == 1)
+		{
+			$pv->SetTemplet($cfg_basedir.$cfg_templets_dir.'/'.$templet);
+			$pv->SaveToHtml($homeFile);
+			$pv->Close();
+		} else {
+			if (file_exists($homeFile)) @unlink($homeFile);
+		}
         ShowMsg("完成更新所有文档，现在开始更新栏目页！","makehtml_all.php?action=make&step=4&uptype=$uptype&mkvalue=$mkvalue");
         exit();
     }

@@ -15,7 +15,7 @@ require_once(dirname(__FILE__)."/../include/oxwindow.class.php");
 if(empty($action)) $action = '';
 require_once(DEDEDATA."/admin/config_update.php");
 $mdir = DEDEDATA.'/module';
-$mdurl = $updateHost.'dedecms/module_'.$cfg_soft_lang.'/modulelist.txt';
+$mdurl = UPDATEHOST.'dedecms/module_'.$cfg_soft_lang.'/modulelist.txt';
 
 function TestWriteAble($d)
 {
@@ -313,7 +313,7 @@ else if($action=='setupstart')
 
         $rflwft = "<script language='javascript' type='text/javascript'>\r\n";
         $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = 'index_menu_module.php';\r\n";
-        $rflwft .= "else top.document.getElementById('menu').src = 'index_menu_module.php';\r\n";
+        $rflwft .= "else top.document.getElementById('menufra').src = 'index_menu_module.php';\r\n";
         $rflwft .= "</script>";
         echo $rflwft;
 
@@ -521,7 +521,7 @@ else if($action=='uninstallok')
         
         $rflwft = "<script language='javascript' type='text/javascript'>\r\n";
         $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = 'index_menu_module.php';\r\n";
-        $rflwft .= "else top.document.getElementById('menu').src = 'index_menu_module.php';\r\n";
+        $rflwft .= "else top.document.getElementById('menufra').src = 'index_menu_module.php';\r\n";
         $rflwft .= "</script>";
         echo $rflwft;
         SendData($hash,2);
@@ -647,7 +647,7 @@ else if($action=='edit')
     if(!isset($moduletype)) $moduletype = 'soft';
 
     $menustring = $dm->GetSystemFile($hash, 'menustring');
-    $setupsql40 = htmlspecialchars($dm->GetSystemFile($hash, 'setupsql40'));
+    $setupsql40 = dede_htmlspecialchars($dm->GetSystemFile($hash, 'setupsql40'));
     $readmetxt = $dm->GetSystemFile($hash, 'readme');
     $delsql = $dm->GetSystemFile($hash, 'delsql');
     $filelist = $dm->GetSystemFile($hash,'oldfilelist',false);
@@ -662,7 +662,7 @@ function Download();
 --------------*/
 else if($action=='download')
 {
-	$model_remote_url = $updateHost.'dedecms/module_'.$cfg_soft_lang.'/'.$hash.'.xml';
+	$model_remote_url = UPDATEHOST.'dedecms/module_'.$cfg_soft_lang.'/'.$hash.'.xml';
 	$model_remote = file_get_contents($model_remote_url);
 	file_put_contents($mdir.'/'.$hash.'.xml',$model_remote);
 	echo "未安装 <a href='module_main.php?action=setup&hash={$hash}'><u>安装</u></a>";

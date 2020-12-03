@@ -4,6 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>SQL命令行工具</title>
 <link href='css/base.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+<script type="text/javascript" src="js/codemirror.js"></script>
+<script type="text/javascript" src="js/mode/sql/sql.js"></script>
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
@@ -25,6 +28,7 @@
 	<table width="100%" border="0" cellspacing="4" cellpadding="2">
         <form action="sys_sql_query.php" method="post" name="infoform" target="stafrm">
           <input type='hidden' name='dopost' value='viewinfo' />
+          <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
           <tr bgcolor="#ffffff"> 
             <td width="15%" height="24" align="center">系统的表信息：</td>
             <td> 
@@ -74,6 +78,7 @@ while($row = $dsql->GetArray('t',MYSQL_BOTH))
           </tr>
 		  </form>
 		  <form action="sys_sql_query.php" method="post" name="form1" target="stafrm">
+        <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
           <input type='hidden' name='dopost' value='query'>
           <tr> 
             <td height="24" colspan="2" bgcolor="#F9FCEF"><strong>运行SQL命令行： 
@@ -84,7 +89,7 @@ while($row = $dsql->GetArray('t',MYSQL_BOTH))
           </tr>
 		      <tr> 
             <td height="118" colspan="2">
-			<textarea name="sqlquery" cols="60" rows="10" id="sqlquery" style="width:90%"></textarea> 
+			<textarea id="sqlquery" name="sqlquery" cols="60" rows="10" id="sqlquery" style="width:90%"></textarea> 
             </td>
           </tr>
           <tr> 
@@ -98,5 +103,12 @@ while($row = $dsql->GetArray('t',MYSQL_BOTH))
 	 </td>
 </tr>
 </table>
+ <script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById('sqlquery'), {
+        lineNumbers: true,
+        lineWrapping: true,
+        mode: 'text/x-mysql'
+    });
+</script>
 </body>
 </html>

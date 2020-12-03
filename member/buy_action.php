@@ -12,7 +12,7 @@ $menutype = 'mydede';
 $menutype_son = 'op';
 require_once DEDEINC.'/dedetemplate.class.php';
 
-$product = isset($product) ? trim($product) : '';
+$product = isset($product) ? trim(HtmlReplace($product,1)) : '';
 $mid = $cfg_ml->M_ID;
 $ptype = '';
 $pname = '';
@@ -23,7 +23,9 @@ if(isset($pd_encode) && isset($pd_verify) && md5("payment".$pd_encode.$cfg_cooki
 {
 
     parse_str(mchStrCode($pd_encode,'DECODE'),$mch_Post);
-    foreach($mch_Post as $k => $v) $$k = $v;
+    $product = preg_replace("#[^0-9a-z]#i", "", $mch_Post['product']);
+    $pid = preg_replace("#[^0-9a-z]#i", "", $mch_Post['pid']);
+
     $row  = $dsql->GetOne("SELECT * FROM #@__member_operation WHERE mid='$mid' And sta=0 AND product='$product'");
     if(!isset($row['buyid']))
     {
@@ -112,6 +114,10 @@ if(!isset($paytype))
     $pr_encode = '';
     foreach($_REQUEST as $key => $val)
     {
+        if (!in_array($key, array('product','pid'))) {
+            continue;
+        }
+        $val = preg_replace("#[^0-9a-z]#i", "", $val);
         $pr_encode .= $pr_encode ? "&$key=$val" : "$key=$val";
     }
     
@@ -126,6 +132,13 @@ if(!isset($paytype))
 }else{
     
     $rs = $dsql->GetOne("SELECT * FROM `#@__payment` WHERE id='$paytype' ");
+
+    $rs['code'] = preg_replace("#[^0-9a-z]#i", "", $rs['code']);
+    if (!file_exists(DEDEINC.'/payment/'.$rs['code'].'.php')) {
+        ShowMsg("未发现支付接口文件，请到后台配置！",'javascript:;');
+        exit();
+    }
+
     require_once DEDEINC.'/payment/'.$rs['code'].'.php';
     $pay = new $rs['code'];
     $payment="";
@@ -162,20 +175,32 @@ if(!isset($paytype))
  *
  * @access    public
  * @param     string  $string  字符串
- * @param     string  $action  操作
+ * @param     string  $operation  操作
  * @return    string
  */
-function mchStrCode($string,$action='ENCODE')
+function mchStrCode($string, $operation = 'ENCODE') 
 {
-    $key    = substr(md5($_SERVER["HTTP_USER_AGENT"].$GLOBALS['cfg_cookie_encode']),8,18);
-    $string    = $action == 'ENCODE' ? $string : base64_decode($string);
-    $len    = strlen($key);
-    $code    = '';
-    for($i=0; $i<strlen($string); $i++)
-    {
-        $k        = $i % $len;
-        $code  .= $string[$i] ^ $key[$k];
+    $key_length = 4;
+    $expiry = 0;
+    $key = md5($GLOBALS['cfg_cookie_encode']);
+    $fixedkey = md5($key);
+    $egiskeys = md5(substr($fixedkey, 16, 16));
+    $runtokey = $key_length ? ($operation == 'ENCODE' ? substr(md5(microtime(true)), -$key_length) : substr($string, 0, $key_length)) : '';
+    $keys = md5(substr($runtokey, 0, 16) . substr($fixedkey, 0, 16) . substr($runtokey, 16) . substr($fixedkey, 16));
+    $string = $operation == 'ENCODE' ? sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$egiskeys), 0, 16) . $string : base64_decode(substr($string, $key_length));
+
+    $i = 0; $result = '';
+    $string_length = strlen($string);
+    for ($i = 0; $i < $string_length; $i++){
+        $result .= chr(ord($string{$i}) ^ ord($keys{$i % 32}));
     }
-    $code = $action == 'DECODE' ? $code : base64_encode($code);
-    return $code;
+    if($operation == 'ENCODE') {
+        return $runtokey . str_replace('=', '', base64_encode($result));
+    } else {
+        if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$egiskeys), 0, 16)) {
+            return substr($result, 26);
+        } else {
+            return '';
+        }
+    }
 }

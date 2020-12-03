@@ -374,6 +374,7 @@ function LoadNewDiv2(e,surl,oname,dlgcls)
 	myajax.SendGet2(surl);
 	if(newobj.innerHTML=='') newobj.style.display = 'none';
 	else newobj.style.display = 'block';
+	jQuery(newobj).css('top', '50px').css('left', '300px');
 	DedeXHTTP = null;
 }
 

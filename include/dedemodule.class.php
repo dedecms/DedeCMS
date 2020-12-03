@@ -10,6 +10,7 @@
  */
 require_once(DEDEINC.'/charset.func.php');
 require_once(DEDEINC.'/dedeatt.class.php');
+require_once(DEDEINC.'/dedehttpdown.class.php');
 
 class DedeModule
 {
@@ -82,7 +83,21 @@ class DedeModule
     {
 		$dh = dir($this->modulesPath) or die("没找到模块目录：({$this->modulesPath})！");
         $fp = @fopen($this->modulesPath.'/modulescache.php','w') or die('读取文件权限出错,目录文件'.$this->modulesPath.'/modulescache.php不可写!');
-        $modules = unserialize(file_get_contents($url));
+		$cachefile = DEDEDATA.'/module/moduleurllist.txt';
+		$remotelist = '';
+		if(file_exists($cachefile) && (filemtime($cachefile) + 60 * 30) > time())
+		{
+			// 30分钟本地缓存一次
+			$remotelist = file_get_contents($cachefile);
+		} else {
+			$del = new DedeHttpDown();
+			$del->OpenUrl($url);
+			$remotelist = $del->GetHtml();
+			PutFile($cachefile, $remotelist);
+		}
+		if(empty($remotelist)) return false;
+		
+        $modules = unserialize($remotelist);
 		if(empty($moduletype)){
 			return $modules;
 		}

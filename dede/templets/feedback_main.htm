@@ -109,7 +109,7 @@ function editFeedback()
 	用户：{dede:field.username/}
 </td>
 <td width="30%">
-	文档：<a href='feedback_main.php?aid={dede:field.aid/}'><u>{dede:field.arctitle/}</u></a> (<a href="{dede:global.cfg_phpurl /}/view.php?aid={dede:field.aid/}" target="_blank"><u>浏览</u></a>)
+	文档：<a href='feedback_main.php?aid={dede:field.aid/}'><u>{dede:field.arctitle function="RemoveXSS(@me)"/}</u></a> (<a href="{dede:global.cfg_phpurl /}/view.php?aid={dede:field.aid/}" target="_blank"><u>浏览</u></a>)
 </td>
 <td width="18%" align="center">
 	IP地址：<a href='feedback_main.php?ip={dede:field.ip/}'><u>{dede:field.ip/}</u></a>

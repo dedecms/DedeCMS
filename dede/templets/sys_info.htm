@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>系统配置参数</title>
 <script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
 <script language="javascript">
 var searchconfig = false;
 function Nav()
@@ -47,6 +48,12 @@ function getSearch()
 	$Obj('_mainsearch').innerHTML = '';
 	searchconfig = true;
 }
+function resetCookieEncode()
+{
+  jQuery.get("sys_info.php?dopost=make_encode", function(data){
+    jQuery("#edit___cfg_cookie_encode").val(data);
+  });
+}
 </script>
 <link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
@@ -78,6 +85,7 @@ foreach($ds as $dl)
   <tr id="addvar" style="display:none">
    <td height="24" bgcolor="#ffffff" align="center"><form name="fadd" action="sys_info.php" method="post">
      <input type='hidden' name='dopost' value='add'>
+     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
      <table width="98%" border="0" cellspacing="0" cellpadding="0">
       <tr>
        <td width="12%" height="26">变量名称：</td>
@@ -124,7 +132,9 @@ foreach($ds as $dl)
     &nbsp;<span id="_searchback"></span></td>
   </tr>
   <tr>
-   <td bgcolor="#FFFFFF" width="100%"><form action="sys_info.php" method="post" name="form1">
+   <td bgcolor="#FFFFFF" width="100%">
+    <form action="sys_info.php" method="post" name="form1">
+      <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
      <input type="hidden" name="dopost" value="save">
 <div id="_search"></div>
 <div id="_mainsearch">
@@ -172,13 +182,17 @@ if($row['type']=='bool')
 	echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='N'$c2>否 ";
 }else if($row['type']=='bstring')
 {
-	echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' class='textarea_info' style='width:98%;height:50px'>".htmlspecialchars($row['value'])."</textarea>";
+	echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' class='textarea_info' style='width:98%;height:50px'>".dede_htmlspecialchars($row['value'])."</textarea>";
 }else if($row['type']=='number')
 {
 	echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value='{$row['value']}' style='width:30%'>";
 }else
 {
-	echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value=\"".htmlspecialchars($row['value'])."\" style='width:80%'>";
+	$addstr='';
+	if ($row['varname']=='cfg_cookie_encode') {
+	  $addstr=' <a href="javascript:resetCookieEncode();" style="color:blue">[重新生成]</a>';
+	}
+	echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value=\"".dede_htmlspecialchars($row['value'])."\" style='width:80%'>{$addstr}";
 }
 ?></td>
        <td><?php echo $row['varname']?></td>

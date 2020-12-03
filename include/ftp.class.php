@@ -25,6 +25,11 @@ class FTP {
     var $debug        = FALSE;
     var $conn_id    = FALSE;
 
+    function __construct($config = array())
+    {
+        $this->FTP($config);
+    }
+
     /**
      * 析构函数 - 设置参数
      *
@@ -356,7 +361,7 @@ class FTP {
 
         return TRUE;
     }
-    
+
     /**
      * 删除一个文件夹，递归删除一切（包括子文件夹）中内容
      *
@@ -457,7 +462,7 @@ class FTP {
 
         return ftp_nlist($this->conn_id, $path);
     }
-    
+
     /**
      * 返回指定目录下文件的详细列表
      *
@@ -470,7 +475,7 @@ class FTP {
         {
             return FALSE;
         }
-        
+
         $ftp_rawlist = ftp_rawlist($this->conn_id, $path, TRUE);
       foreach ($ftp_rawlist as $v) {
         $info = array();
@@ -488,7 +493,7 @@ class FTP {
           $rawlist[$info['name']] = $info;
         }
       }
-      
+
       $dir = array();
       $file = array();
       foreach ($rawlist as $k => $v) {
@@ -617,7 +622,7 @@ class FTP {
 
         @ftp_close($this->conn_id);
     }
-    
+
     /**
      * 显示错误信息
      *
@@ -635,9 +640,9 @@ class FTP {
         $emsg .= "<div style='color:blue'><br />Error page: <font color='red'>".$this->GetCurUrl()."</font></div>\r\n";
         $emsg .= "<div>Error infos: {$msg}</div>\r\n";
         $emsg .= "<br /></div></div>\r\n";
-        
+
         echo $emsg;
-        
+
         $savemsg = 'Page: '.$this->GetCurUrl()."\r\nError: ".$msg;
         //保存错误日志
         $fp = @fopen($errorTrackFile, 'a');
