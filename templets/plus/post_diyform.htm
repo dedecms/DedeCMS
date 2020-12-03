@@ -11,9 +11,10 @@
 <div class="main mceneter">
 	<div class="toplogo">
 		<div class="logo">
-				<a href="/"><img src="img/toplogo.gif" /></a>		</div>
+				<a href="/"><img src="<?php echo $cfg_templeturl; ?>/images/top-logo.gif" /></a>
+		</div>
 		<div class="title">
-			<?php echo $diy->name;?>
+			<a href='diy.php?action=list&diyid=<?php echo $diy->diyid; ?>'><?php echo $diy->name; ?></a>	&gt; 发布信息
 		</div>
 	</div>
 	<div class="cmain">
@@ -24,7 +25,7 @@
 		<div class="cbox mceneter">
 			<div class="maplist">
 			<br />
-<form action="<?php echo $cfg_cmspath;?>/plus/diy.php" method="post" >
+<form action="<?php echo $cfg_cmspath;?>/plus/diy.php" enctype="multipart/form-data" method="post">
 <input type="hidden" name="action" value="post" />
 <input type="hidden" name="diyid" value="<?php echo $diyid;?>" />
 <input type="hidden" name="do" value="2" />
@@ -33,18 +34,20 @@
 	echo $postform;
 ?>
 </table>
-<center>
-<input type="submit" name="submit" value="提交" />
-</center>
+<div align='center' style='height:30px;padding-top:10px;'>
+<input type="submit" name="submit" value="提 交" class='coolbg' />
+&nbsp;
+<input type="reset" name="reset" value="重 置" class='coolbg' />
+</div>
 </form>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
-</div>
 
+<div class="copyright mceneter">
+Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms Ent</a> &copy; 2004-2009  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+</div>
 
 </body>
 </html>

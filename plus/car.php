@@ -19,7 +19,7 @@ $cfg_ml = new MemberLogin();
 $Items = $cart->getItems();
 if($cart->cartCount() < 1)
 {
-	ShowMsg("购物车中不存在商品！","javascript:window.close();");
+	ShowMsg("购物车中不存在任何商品！", "javascript:window.close();", false, 5000);
 	exit;
 }
 @sort($Items);

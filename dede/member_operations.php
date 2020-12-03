@@ -12,7 +12,7 @@ if(isset($sta))
 {
 	$addsql .= " And sta='$sta' ";
 }
-$sql = "Select * From #@__member_operation $addsql order by aid desc";
+$sql = "Select * From `#@__member_operation` $addsql order by aid desc";
 $dlist = new DataListCP();
 
 //设定每页显示记录数（默认25条）
@@ -55,7 +55,10 @@ function GetMemberID($mid)
 
 function GetPType($tname)
 {
-	return $tname=='card' ? '点数卡' : '会员升级';
+	if($tname=='card') return '点数卡';
+	else if($tname=='archive') return '购买文章';
+	else if($tname=='stc') return '兑换金币';
+	else return '会员升级';
 }
 
 function GetSta($sta)

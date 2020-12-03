@@ -92,7 +92,7 @@ function SpCreateDir($spath)
 			}
 			if(!$isok)
 			{
-				echo "åˆ›å»ºæˆ–ä¿®æ”¹ç›®å½•ï¼š".$truepath." å¤±è´¥ï¼<br>";
+				echo "´´½¨»òĞŞ¸ÄÄ¿Â¼£º".$truepath." Ê§°Ü£¡<br>";
 				CloseFtp();
 				return false;
 			}
@@ -166,7 +166,7 @@ function SpGetNewInfo()
 	else {
 		$nurl = "test";
 	}
-	$offUrl = "http://www.de"."decms.com/newinfov6.php?version={$cfg_version}&formurl={$nurl}";
+	$offUrl = "http://www.de"."decms.com/newinfov5x.php?version={$cfg_version}&formurl={$nurl}";
 	return $offUrl;
 }
 

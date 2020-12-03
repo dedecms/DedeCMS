@@ -1,0 +1,216 @@
+@charset "gb2312";
+@import "table.css";
+
+/*------------------------全局------------------------*/
+*{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	padding:0px;
+	margin:0px;
+	list-style:none;
+}
+html{
+	background:#FFF;
+}
+body{
+	font-size:12px;
+	width:960px;
+	margin:0px auto;
+}
+input{
+	vertical-align:middle;
+}
+ul{
+	list-style:none;
+}
+a{
+	color:#666666;
+	text-decoration:none;
+}
+a:hover{
+	color:#F00;
+	text-decoration:underline;
+}
+.center{
+	margin:0px auto;
+}
+
+/*通用样式*/
+.fs_11{
+	font-size:11px;
+}
+.fs_14{
+	font-size:14px;
+}
+.fc_red{
+	color:#F60;
+}
+.fc_green{
+	color:#693;
+}
+/*输入框*/
+input{
+	vertical-align:middle;
+	margin-right:3px;
+	font-size:12px;
+}
+textarea{
+	vertical-align:top;
+	font-size:12px;
+	line-height:156%;
+	border:1px solid #AAA;
+	padding:3px;
+	letter-spacing:1px;
+	overflow-y:auto;
+}
+.textipt{/*文本输入框*/
+	padding:3px;
+	border:1px solid #AAA;
+	font-size:12px;
+	color:#000;
+}
+
+.textipt_on{/*文本输入框鼠标悬停*/
+	border:1px solid #F90;
+}
+select{
+	font-size:14px;
+	vertical-align:middle;
+}
+
+
+
+/*页面(全站导航)*/
+.sitenav{
+	width:100%;
+	height:23px;
+	overflow:hidden;
+	display:none;
+}
+.sitenav ul{
+	float:right;
+}
+.sitenav ul li{
+	float:left;
+	line-height:31px;
+}
+.sitenav ul li a{
+	padding-left:5px;
+	padding-right:5px;
+	float:left;
+
+}
+
+/*头部*/
+
+.utop{
+	background:url(top_bg.gif) repeat-x;
+}
+.utop .ulogo{
+	background:url(toplogo_u.gif) 10px 14px no-repeat;
+}
+.utop .topnav .myinfo{
+	background:url(images/top_myinfo_bg.gif) right top no-repeat;
+}
+.ctop{
+	background:url(images/top_bg_c.gif) repeat-x;
+}
+.ctop .ulogo{
+	background:url(images/toplogo_c.gif) 10px 14px no-repeat;
+}
+.ctop .topnav .myinfo{
+	background:url(images/top_cpinfo_bg.gif) right top no-repeat;
+}
+.top{
+	width:100%;
+	height:68px;
+	clear:both;
+	margin-top:7px;
+}
+.top .ulogo{
+	width:100%;
+	height:68px;
+	float:left;
+	margin-right:-390px;
+}
+.top .topnav{
+	width:390px;
+	height:68px;
+	float:right;
+}
+.top .topnav .myinfo{
+	text-align:right;
+	line-height:31px;
+	line-height:31px;
+	margin-top:3px;
+	color:#EBFEB2;
+	padding-right:10px;
+}
+.top .topnav .mynav{
+	text-align:right;
+	margin-top:10px;
+	height:23px;
+	overflow:hidden;
+}
+.top .topnav .mynav ul{
+	float:right;
+}
+.top .topnav .mynav ul li{
+	float:left;
+}
+.top .topnav .mynav ul li a{
+	color:#FFF;
+	padding-left:10px;
+	padding-right:10px;
+	float:left;
+	white-space:nowrap;
+}
+.top .topnav .mynav ul li a:hover{
+	color:#FF9;
+	text-decoration:none;
+}
+
+/*正文*/
+.main{
+	width:100%;
+	margin-top:6px;
+	float:right;
+}
+
+/*右侧表格*/
+.box{
+	margin-left:156px;
+	overflow:visible;
+}
+* html .box{/*IE6下3px文本慢移hack*/
+	height:1em;
+	margin-left:153px;
+}
+.box .place{
+	height:24px;
+	line-height:22px;
+	text-indent:25px;
+	color:#888;
+	background: url(images/ico_4.gif) 5px 5px no-repeat;
+	border-bottom:1px solid #EEE;
+}
+.box .tbox{
+	width:98%;
+	margin:7px auto;
+}
+
+
+.footer{
+	clear:both;
+	height:50px;
+	line-height:19px;
+	text-align:center;
+	background:url(images/fbg.gif) 0px 1px repeat-x;
+	border-top:1px solid #EEE;
+	padding-top:10px;
+	color:#555;
+}
+.footer .copyright{
+	font-size:10px;
+	display:block;
+	color:#999;
+}

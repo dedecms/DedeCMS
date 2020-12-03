@@ -11,6 +11,7 @@ if($dopost!='save')
 {
 	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
 	require_once(DEDEINC."/dedetag.class.php");
+	ClearMyAddon();
 	$aid = ereg_replace("[^0-9]",'',$aid);
 	$channelid="3";
 
@@ -42,7 +43,9 @@ if($dopost!='save')
 	$addRow = $dsql->GetOne($addQuery);
 	$newRowStart = 1;
 	$nForm = '';
-	if($addRow['softlinks']!='')
+	$daccess = $addRow['daccess'];
+	$needmoney = $addRow['needmoney'];
+	if($addRow['softlinks'] != '')
 	{
 		$dtp = new DedeTagParse();
 		$dtp->LoadSource($addRow['softlinks']);
@@ -52,9 +55,14 @@ if($dopost!='save')
 			{
 				if($ctag->GetName()=='link')
 				{
-					$nForm .= "软件地址".$newRowStart."：<input type='text' name='softurl".$newRowStart."' style='width:280' value='".trim($ctag->GetInnerText())."' />
-            服务器名称：<input type='text' name='servermsg".$newRowStart."' value='".$ctag->GetAtt("text")."' style='width:150' />
-            <br />";
+					$islocal = $ctag->GetAtt('islocal');
+					if($islocal != 1) $needmsg = "<input type='checkbox' name='del{$newRowStart}' value='1' />删除";
+					else $needmsg = '<input name="sel1" type="button" id="sel1" value="选取" onClick="SelectSoft(\'form1.softurl'.$newRowStart.'\')" />';
+					$nForm .= "<div style='line-height:36px'>软件地址{$newRowStart}：<input type='text' name='softurl{$newRowStart}' style='width:280px' value='".trim($ctag->GetInnerText())."' />
+            服务器名称：<input type='text' name='servermsg{$newRowStart}' value='".$ctag->GetAtt("text")."' style='width:150px' />
+            <input type='hidden' name='islocal{$newRowStart}' value='{$islocal}' />
+            $needmsg
+            </div>\r\n";
 					$newRowStart++;
 				}
 			}
@@ -75,6 +83,8 @@ else if($dopost=='save')
 	require_once(DEDEINC.'/oxwindow.class.php');
 	
 	$flag = isset($flags) ? join(',',$flags) : '';
+	$notpost = isset($notpost) && $notpost == 1 ? 1: 0;
+	
   if(empty($typeid2)) $typeid2 = 0;
 	if(!isset($autokey)) $autokey = 0;
 	if(!isset($remote)) $remote = 0;
@@ -125,8 +135,8 @@ else if($dopost=='save')
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,250);
-	$keywords = cn_substrR($keywords,30);
+	$description = cn_substrR($description,$cfg_auot_description);
+	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
@@ -185,12 +195,15 @@ else if($dopost=='save')
 		$flag = ($flag=='' ? 'j' : $flag.',j');
 	}
 
+	//跳转网址的文档强制为动态
+	if(ereg('j', $flag)) $ismake = -1;
 	//更改主档案表
 	$inQuery = "Update `#@__archives` set
 	    typeid='$typeid',
 	    typeid2='$typeid2',
 	    sortrank='$sortrank',
 	    flag='$flag',
+	    click='$click',
 	    ismake='$ismake',
 	    arcrank='$arcrank',
 	    money='$money',
@@ -200,10 +213,12 @@ else if($dopost=='save')
 	    writer='$writer',
 	    litpic='$litpic',
 	    pubdate='$pubdate',
+	    notpost='$notpost',
 	    description='$description',
 	    keywords='$keywords',
 	    shorttitle='$shorttitle',
-	    filename='$filename'
+	    filename='$filename',
+	    dutyadmin='$adminid'
 	    where id='$id'; ";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
@@ -213,20 +228,25 @@ else if($dopost=='save')
 
 	//软件链接列表
 	$urls = '';
-	for($i=1;$i<=30;$i++)
+	
+	for($i=1; $i<=30; $i++)
 	{
 		if(!empty(${'softurl'.$i}))
 		{
+			$islocal = empty(${'islocal'.$i}) ? '' : 1;
+			$isneed = empty(${'del'.$i}) ? true : false;
 			$servermsg = str_replace("'",'',stripslashes(${'servermsg'.$i}));
 			$softurl = stripslashes(${'softurl'.$i});
+			
 			if($servermsg=='')
 			{
 				$servermsg = '下载地址'.$i;
 			}
-			if($softurl!='' && $softurl!='http://')
+			if($softurl != 'http://')
 			{
-				if($i==1) $urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n" ;
-				else $urls .= "{dede:link text='$servermsg'} $softurl {/dede:link}\r\n";
+				if($islocal==1) $urls .= "{dede:link islocal='$islocal' text='{$servermsg}'} $softurl {/dede:link}\r\n" ;
+				else if($isneed) $urls .= "{dede:link text='$servermsg'} $softurl {/dede:link}\r\n";
+				else continue;
 			}
 		}
 	}
@@ -250,9 +270,12 @@ else if($dopost=='save')
 	      officialDemo ='$officialDemo',
 	      softsize ='$softsize',
 	      softlinks ='$urls',
-	      introduce='$body'{$inadd_f},
 	      redirecturl='$redirecturl',
-	      userip = '$useip'
+	      userip = '$useip',
+	      daccess = '$daccess',
+	      needmoney = '$needmoney',
+	      introduce='$body'
+	      {$inadd_f}
 	      where aid='$id';";
 		if(!$dsql->ExecuteNoneQuery($inQuery))
 		{
@@ -268,7 +291,7 @@ else if($dopost=='save')
 	{
 		$arcUrl = $cfg_phpurl."/view.php?aid=$id";
 	}
-
+	ClearMyAddon($id, $title);
 	//返回成功信息
 	$msg = "
     　　请选择你的后续操作：

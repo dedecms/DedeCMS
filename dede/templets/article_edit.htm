@@ -14,8 +14,9 @@ body { background-image: url(img/allbg.gif); }
 <!--
 function checkSubmit()
 {
-	if(document.form1.title.value==""){
-		alert("文章标题不能为空！");
+	if(document.form1.title.value=='')
+	{
+		alert('文章标题不能为空！');
 		document.form1.title.focus();
 		return false;
 	}
@@ -28,8 +29,8 @@ function checkSubmit()
     <tr>
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20>
         &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?php echo $arcRow['typeid']?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a>&gt;&gt;更改文章</td>
-      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="60%"><a href="catalog_do.php?cid=<?php echo $arcRow['typeid']?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a> &gt;&gt; 更改文章</td>
+      <td width="30%" align='right'>&nbsp; <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
@@ -75,7 +76,7 @@ function checkSubmit()
           	<input name="title" type="text" id="title" value="<?php echo $arcRow['title']; ?>" style="width:388px">
           </td>
           <td width="90">&nbsp;简略标题：</td>
-          <td><input name="shorttitle" type="text" id="shorttitle" style="width:150px" value="<?php echo $arcRow['shorttitle']; ?>">          </td>
+          <td><input name="shorttitle" type="text" id="shorttitle" style="width:150px"  value="<?php echo $arcRow['shorttitle']; ?>">          </td>
         </tr>
       </table></td>
     </tr>
@@ -114,7 +115,7 @@ function checkSubmit()
       </table></td>
     </tr>
     <tr>
-      <td height="24" class="bline" id="redirecturltr" style="display:<?php echo $arcRow["redirecturl"]=="" ? "none" : "block";?>">
+      <td height="24" class="bline" id="redirecturltr" style="display:<?php echo (empty($addRow['redirecturl']) ? 'none' : 'block');?>">
 	    <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;跳转网址：</td>
@@ -142,10 +143,9 @@ function checkSubmit()
             	&nbsp;缩 略 图：<br/>
             	&nbsp;           </td>
             <td width="500">
-             <input name="picname" type="text" id="picname" style="width:350px" value="<?php echo $arcRow["litpic"]?>"><input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');">
+             <input name="picname" type="text" id="picname" style="width:300px" value="<?php echo $arcRow["litpic"]?>"><input type="button" name="Submit" value="浏览..." style="width:70px" onClick="SelectImage('form1.picname','');">
              <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
-             <br />
-             <input type='checkbox' class='np' name='ddisremote' value='1'>
+             <input type='checkbox' class='np' name='ddisremote' value='1' />
              远程
              </td>
             <td align="center">
@@ -159,13 +159,14 @@ function checkSubmit()
           <tr>
             <td width="90">&nbsp;文章来源：</td>
             <td width="250">
-              <input name="source" type="text" id="source" style="width:160" value="<?php echo $arcRow["source"]?>" size="16"><input name="selsource" type="button" id="selsource" value="选择">             </td>
+              <input name="source" type="text" id="source" style="width:160px" value="<?php echo $arcRow["source"]?>" size="16"><input name="selsource" type="button" id="selsource" value="选择" />             </td>
             <td width="90">作　者：</td>
             <td>
-            <input name="writer" type="text" id="writer" style="width:120" value="<?php echo $arcRow["writer"]?>"><input name="selwriter" type="button" id="selwriter" value="选择">             </td>
+            <input name="writer" type="text" id="writer" style="width:120px" value="<?php echo $arcRow["writer"]?>"><input name="selwriter" type="button" id="selwriter" value="选择" />
+            </td>
           </tr>
         </table>
-        <script language='javascript'>InitPage();</script> </td>
+        </td>
     </tr>
     <tr>
       <td height="24" class="bline">
@@ -175,34 +176,34 @@ function checkSubmit()
             <td>
             <?php
             $typeOptions = GetOptionList($arcRow['typeid'],$cuserLogin->getUserChannel(),$channelid);
-            echo "<select name='typeid' style='width:280px'>\r\n";
-            if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择分类...</option>\r\n";
+            echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
+            if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择栏目...</option>\r\n";
             echo $typeOptions;
             echo "</select>";
 			     ?>
+			     <img src='img/menusearch.gif' style='cursor:pointer' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
 			     </td>
           </tr>
-        </table>
-      </td>
+      </table></td>
     </tr>
+<?php
+if($cfg_need_typeid2=='Y') {
+?>
     <tr>
       <td height="24" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;文章副栏目：</td>
             <td>
-            <?php
-            $typeOptions = GetOptionList($arcRow['typeid2'],$cuserLogin->getUserChannel(),$channelid);
-            echo "<select name='typeid2' style='width:280px'>\r\n";
-            echo "<option value='0' selected='selected'>请选择分类...</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			     ?>
+           <span id='typeid2ct'></span>
+           <input type='text' name='typeid2' id='typeid2' value='<?php echo ($arcRow['typeid2']=='0' ? '' : $arcRow['typeid2']); ?>' style='width:200px;' />
+           <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2', '<?php echo $arcRow['typeid2']; ?>')" alt='选择副栏目' title='选择副栏目' />
 			     </td>
           </tr>
         </table>
       </td>
     </tr>
+<?php } ?>
     <tr>
      <td>
       <?php
@@ -222,7 +223,8 @@ function checkSubmit()
             	<input name="remote" type="checkbox" class="np" id="remote" value="1" checked>
               下载远程图片和资源
               <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1" checked>
-              提取第一个图片为缩略图            </td>
+              提取第一个图片为缩略图
+            </td>
           </tr>
         </table></td>
     </tr>
@@ -236,11 +238,15 @@ function checkSubmit()
    <td height="24" colspan="4" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90" height="22">&nbsp;评论选项：</td>
-          <td>
+          <td width="90" height="22" width="240">&nbsp;评论选项：</td>
+          <td width="250">
           <input type='radio' name='notpost' class='np' value='0'<?php if($arcRow['notpost']==0) echo " checked='1' "; ?>/>允许评论
           &nbsp;
           <input type='radio' name='notpost' class='np' value='1'<?php if($arcRow['notpost']==1) echo " checked='1' "; ?>/>禁止评论
+          </td>
+          <td width="90">浏览次数：</td>
+          <td>
+          	<input type='text' name='click' value='<?php echo $arcRow['click']; ?>' style='width:100px;' />
           </td>
         </tr>
       </table>
@@ -264,7 +270,7 @@ function checkSubmit()
                 <option value="360">置顶一年</option>
               </select> </td>
             <td width="90">标题颜色：</td>
-            <td><input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["color"]?>"><input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()"></td>
+            <td><input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["color"]?>"><input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)"></td>
           </tr>
         </table>
         </td>
@@ -279,7 +285,7 @@ function checkSubmit()
                 <?php
                 $urank = $cuserLogin->getUserRank();
 
-                $dsql->SetQuery("Select * from #@__arcrank where adminrank<='$urank'");
+                $dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank'");
                 $dsql->Execute();
                 while($row = $dsql->GetObject()){
                 	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
@@ -329,9 +335,30 @@ function checkSubmit()
       <td height="24" colspan="4" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;自定义文件名：</td>
-          <td width="449"><input type="text" name="filename" id="filename" value="<?php echo $arcRow["filename"]?>"/>不包括后缀名如.html等</td>
-          <td width="261">&nbsp;</td>
+          <td width="109">&nbsp;自定义文件名：</td>
+          <td width="351"><input type="text" name="filename" id="filename" value="<?php echo $arcRow["filename"]?>" />（不包括后缀名如.html等）</td>
+          <td>
+  <?php
+  if(isset($cfg_tamplate_rand) && $cfg_tamplate_rand==1)
+  {
+  ?>
+  模板选择：
+  <select name='templet' id='templet' style='width:200px' size='1'>
+  <?php
+     foreach($cfg_tamplate_arr as $k=>$v)
+     {
+         $v = trim($v);
+         echo ($v==$addRow['templet'] ? "<option value='$v' selected>$v</option>\r\n" : "<option value='$v'>$v</option>\r\n");
+     }
+ ?>
+ </select>
+ <?php
+	}
+	else{
+		echo "<input type='hidden' name='templet' value='{$addRow['templet']}' />";
+	}
+  ?>
+          </td>
         </tr>
       </table>
       </td>
@@ -359,6 +386,7 @@ function checkSubmit()
       </table></td>
   </tr>
 </table>
+<script language='javascript'>InitPage();</script>
 </form>
 </body>
 </html>

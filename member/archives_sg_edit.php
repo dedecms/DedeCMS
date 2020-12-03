@@ -138,7 +138,6 @@ else if($dopost=='save')
 			ShowMsg("更新附加表 `$addtable`  时出错，请联系管理员！","javascript:;");
 			exit();
 		}
-		$dsql->ExecuteNoneQuery("Update `#@__member_archives` set mtypeid = '$mtypesid' WHERE id = '$aid'");
 	}
 	
 	UpIndexKey($aid,0,$typeid,$sortrank,'');

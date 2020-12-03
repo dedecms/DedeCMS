@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的提问</title>
+<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+</head>
+<body>
+<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php  include(DEDEMEMBER."./templets/menu.php");?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">我的提问<i>|</i><a href="index.php">问答频道</a></span><span class="fRight mR10 titPublish icon"><a href='../ask/post.php'>发出提问</a></span></div>
+        <div class="mL10 mR10 mTB10">
+          <table cellspacing="1" class="list">
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th width="5%">悬赏积分</th>
+                <th width="5%">回答数</th>
+                <th width="5%">状态</th>
+                <th width="15%">提问时间</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+            {dede:datalist}
+            <?php
+				$fields['dateline'] = GetDateMk($fields['dateline']);
+				if($fields['status'] == 1){
+					$fields['dbstatus'] = 1;
+					$fields['status'] = '已解决';
+				}elseif($fields['expiredtime'] < $timestamp) {
+					$fields['dbstatus'] = 3;
+					$fields['status'] = '已过期';
+				}elseif($fields['status'] == 2) {
+					$fields['dbstatus'] = 2;
+					$fields['status'] = '已结束';
+				}else{
+					$fields['dbstatus'] = 0;
+					$fields['status'] = '未解决';
+				}
+		  ?>
+            <tr>
+              <td><span class="titDot icon16 fLeft"></span><a href="../ask/question.php?id=<?php echo $fields['id'];?>" target='_blank'><?php echo $fields['title'];?></a></td>
+              <td align="center"><?php echo $fields['reward'] ;?></td>
+              <td align="center"><?php echo $fields['replies'];?></td>
+              <td align="center"><?php echo $fields['status'] ;?></td>
+              <td align="center"><?php echo $fields['dateline'] ;?></td>
+            </tr>
+            {/dede:datalist}
+            </tbody>
+            
+            <tfoot>
+              <tr>
+                <td colspan="6"><div class="pages mTB10 fRight">{dede:pagelist /}</div>
+                  <div class="clear"></div></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php  include(DEDEMEMBER."./templets/foot.htm");?>
+</body>
+</html>

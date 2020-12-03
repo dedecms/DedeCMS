@@ -1,11 +1,10 @@
 <?php
-if(!defined('DEDEMEMBER'))
-{
-	exit("dedecms");
-}
-require_once(DEDEINC."/image.func.php");
+if(!defined('DEDEMEMBER')) exit('dedecms');
+require_once(DEDEINC.'/image.func.php');
 require_once(DEDEINC.'/archives.func.php');
 
+//检查用户是否被禁言
+CheckNotAllow();
 //---------------------------
 //获得HTML里的外部资源，针对图集
 //---------------------
@@ -93,7 +92,7 @@ function GetCurContentAlbum($body,$rfurl,&$firstdd)
 }
 
 //图集里大图的小图
-function GetImageMapDD($filename,$ddm,$oldname='')
+function GetImageMapDD($filename, $ddm, $oldname='')
 {
 	if($oldname!='' && !eregi("^http://",$oldname))
 	{
@@ -102,10 +101,10 @@ function GetImageMapDD($filename,$ddm,$oldname='')
 	else
 	{
 		$ddn = substr($filename,-3);
-		$ddpicok = ereg_replace("\.".$ddn."$","-lp.".$ddn,$filename);
+		$ddpicok = ereg_replace("\.".$ddn."$", "-lp.".$ddn, $filename);
 	}
 	$toFile = $GLOBALS['cfg_basedir'].$ddpicok;
-	ImageResize($GLOBALS['cfg_basedir'].$filename,$ddm,300,$toFile);
+	ImageResize($GLOBALS['cfg_basedir'].$filename, $ddm, 300, $toFile);
 	return $ddpicok;
 }
 

@@ -45,7 +45,7 @@ function CheckSubmit(){
 }
 </script>
 </head>
-<body>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt">频道管理</div>
@@ -80,15 +80,16 @@ function CheckSubmit(){
 </div>
   <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
     <tr>
-      <td align="left" bgcolor="#EDF9D5"><strong>＞自自由列表管理 &gt;&gt; 增加一个列表：</strong></td>
-      <td align="right" bgcolor="#EDF9D5"><input type="button" name="b113" value="管理自由列表" onclick="location='freelist_main.php';" class="inputbut"/>
-        &nbsp;
-        <input type="button" name="bt2" value="更新列表HTML" onclick="location='makehtml_freelist.php';" class="inputbut"/>      </td>
+      <td align="left" bgcolor="#EDF9D5">
+      	<a href="freelist_main.php"><strong>＞<u>自自由列表管理</u></strong></a> 
+      	<strong> &gt;&gt; 增加一个列表：</strong>
+      </td>
+      <td align="right" bgcolor="#EDF9D5"></td>
     </tr>
   </table>
   <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
-    <form action="freelist_action.php" method="post"  name="form1" onSubmit="return CheckSubmit();">
-      <input type="hidden" name="dopost" value="addnew">
+    <form action="freelist_add.php" method="post"  name="form1" onSubmit="return CheckSubmit();">
+      <input type="hidden" name="dopost" value="save">
       <tr>
         <td height="265" valign="top" bgcolor="#FFFFFF"><table width="99%" border="0" align="center" cellpadding="0" cellspacing="1">
             <tr>
@@ -118,8 +119,14 @@ function CheckSubmit(){
                   </tr>
                   <tr>
                     <td height="30" align="left">列表模板：</td>
-                    <td align="left"><input name="templet" type="text" id="templet" style="width:300" value="{style}/list_free.htm">
-                      <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" class="inputbut"/></td>
+                    <td align="left"><input name="templet" type="text" id="templet" style="width:300px" value="{style}/list_free.htm">
+                      <input type="button" name="set4" value="浏览..." style="width:60px" onClick="SelectTemplets('form1.templet');" class="inputbut"/></td>
+                  </tr>
+                  <tr>
+                    <td height="30" align="left">最大列出页数：</td>
+                    <td align="left">
+                    	<input name="maxpage" type="text" id="maxpage" style="width:100px" value="100">
+                    </td>
                   </tr>
                   <tr>
                     <td height="28" align="left">&nbsp;</td>
@@ -221,7 +228,7 @@ function CheckSubmit(){
                 推荐
                 <input name="types[]" type="checkbox" id="type3" value="spec" >
                 专题　关键字：
-                <input name="keyword" type="text" id="keyword">
+                <input name="keywordarc" type="text" id="keywordarc">
                 （&quot;,&quot;逗号分开）</td>
             </tr>
             <tr>
@@ -257,7 +264,7 @@ function CheckSubmit(){
               </td>
             </tr>
             <tr>
-              <td height="50" align="left"> &nbsp; <input name="Submit2" type="submit" id="Submit2" value="保存一个列表" class="inputbut"/>
+              <td height="50" align="left"> &nbsp; <input name="Submit2" type="submit" id="Submit2" value="保存一个列表" class="coolbg" />
               </td>
             </tr>
           </table></td>

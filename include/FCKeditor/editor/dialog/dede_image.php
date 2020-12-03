@@ -12,11 +12,14 @@ $imgHtml = '';
 
 if($dopost=='upload')
 {
-	$imgHtml = "<center>\r\n";
+	$imgHtml = '';
 	$oknum = 0;
+	$alttitle = empty($alttitle) ? 0 : 1;
 	for($i=1; $i <= $totalform; $i++)
 	{
 		$imgfile = ${'imgfile'.$i};
+		$altname = empty(${'alt'.$i}) ? '' : ${'alt'.$i};
+		$altname = ereg_replace("[\"']", '', $altname);
 		if(!is_uploaded_file($imgfile))
 		{
 			continue;
@@ -38,21 +41,22 @@ if($dopost=='upload')
 		}
 	
 		$nowtme = time();
-		$y = MyDate('ymd',$nowtme);
-		$filename = $cuserLogin->getUserID().'_'.MyDate('His',$nowtme).'_'.$i;
-		if(!is_dir($cfg_basedir.$cfg_medias_dir."/$y"))
+		$y = MyDate($cfg_addon_savetype, $nowtme);
+
+		$filename = $cuserLogin->getUserID().'_'.MyDate('ymdHis',$nowtme).'_'.$i;
+		if(!is_dir($cfg_basedir.$cfg_image_dir."/$y"))
 		{
-			MkdirAll($cfg_basedir.$cfg_medias_dir."/$y",0777);
+			MkdirAll($cfg_basedir.$cfg_image_dir."/$y", $cfg_dir_purview);
 			CloseFtp();
 		}
 	
-		$fs = explode('.',$imgfile_name);
-		if(eregi("php|asp|pl|shtml|jsp|cgi",$fs[count($fs)-1])) {
+		$fs = explode('.', $imgfile_name);
+		if(eregi("php|asp|pl|shtml|jsp|cgi", $fs[count($fs)-1])) {
 			continue;
 		}
 	
-		$bfilename = $cfg_medias_dir."/$y/".$filename.".".$fs[count($fs)-1];
-		$litfilename = $cfg_medias_dir."/$y/".$filename."_lit.".$fs[count($fs)-1];
+		$bfilename = $cfg_image_dir."/$y/".$filename.".".$fs[count($fs)-1];
+		$litfilename = $cfg_image_dir."/$y/".$filename."_lit.".$fs[count($fs)-1];
 		$dbbigfile = $filename.".".$fs[count($fs)-1];
 		$dblitfile = $filename."_lit.".$fs[count($fs)-1];
 		$fullfilename = $cfg_basedir.$bfilename;
@@ -68,8 +72,10 @@ if($dopost=='upload')
 		if($dd=='yes')
 		{
 			copy($fullfilename,$full_litfilename);
-			if(in_array($imgfile_type,$cfg_photo_typenames)) {
-				ImageResize($full_litfilename,$w,$h);
+			if(in_array($imgfile_type,$cfg_photo_typenames))
+			{
+				if($GLOBALS['cfg_ddimg_full']=='Y') @ImageResizeNew($full_litfilename,$w,$h);
+				else @ImageResize($full_litfilename,$w,$h);
 			}
 			$urlValue = $bfilename;
 			$imgsrcValue = $litfilename;
@@ -82,6 +88,8 @@ if($dopost=='upload')
        VALUES ('小图{$dblitfile}','$imgsrcValue','1','$imgwidthValue','$imgheightValue','0','{$imgsize}','{$nowtme}','".$cuserLogin->getUserID()."');
      	";
 			$dsql->ExecuteNoneQuery($inquery);
+			$fid = $dsql->GetLastID();
+		 	AddMyAddon($fid, $imgsrcValue);
 		}
 		else
 		{
@@ -103,25 +111,32 @@ if($dopost=='upload')
     	VALUES ('{$dbbigfile}','$bfilename','1','$bimgwidthValue','$bimgheightValue','0','{$bimgsize}','{$nowtme}','".$cuserLogin->getUserID()."');
   	";
 		$dsql->ExecuteNoneQuery($inquery);
+		$fid = $dsql->GetLastID();
+		AddMyAddon($fid, $bfilename);
 
-		if(in_array($imgfile_type,$cfg_photo_typenames))
-		{
-			WaterImg($fullfilename,'up');
-		}
+    if ($needwatermark=="1" && in_array($imgfile_type,$cfg_photo_typenames))
+    {
+         WaterImg($fullfilename,'up');
+         WaterImg($full_litfilename,'up');
+    }
 		
 		$oknum++;
 		
 		if($cfg_multi_site=='N')
 		{
-			$imgHtml .=  "<a href='$urlValue' target='_blank'><img src='$imgsrcValue' width='$imgwidthValue' border='0' height='$imgheightValue' alt='' /></a><br />图片{$i}<br />\r\n";
+			$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
 		}
 		else
 		{
 			if(empty($cfg_basehost)) $cfg_basehost = 'http://'.$_SERVER["HTTP_HOST"];
-			$imgHtml .=  "<a href='{$cfg_basehost}$urlValue' target='_blank'><img src='{$cfg_basehost}$imgsrcValue' width='$imgwidthValue' border='0' height='$imgheightValue' alt='' /></a><br />图片{$i}<br />\r\n";
+			$imgHtml .=  "<img src=\"$imgsrcValue\" width=\"$imgwidthValue\" border=\"0\" height=\"$imgheightValue\" alt=\"$altname\" style=\"cursor:pointer\" onclick=\"window.open('$urlValue')\" /><br />\r\n";
 		}
+		
+		if($alttitle==1 && !empty($altname)) {
+			$imgHtml .= "$altname<br />\r\n";
+		}
+		
 	}
-	$imgHtml .= "</center>\r\n";
 }
 ?>
 <HTML>
@@ -131,6 +146,7 @@ if($dopost=='upload')
 <style>
 td { font-size:12px; }
 input { font-size:12px; }
+.spdiv { height:3px; margin-top:3px; border-top:1px dashed #333; font-size:1px; }
 </style>
 <script language=javascript>
 var oEditor	= window.parent.InnerDialogLoaded() ;
@@ -178,10 +194,10 @@ function ImageOK()
 	}
 	?>
 	
-	if(ialign!=0) ialign = " align='"+ialign+"'";
-	inImg  = "<img src='"+ isrc +"' width='"+ imgwidth;
-	inImg += "' height='"+ imgheight +"' border='"+ iborder +"' alt='"+ ialt +"'"+ialign+"/>";
-	if(iurl!="") inImg = "<a href='"+ iurl +"' target='_blank'>"+ inImg +"</a>\r\n";
+	if(ialign!=0) ialign = " align=\""+ialign+"\"";
+	inImg  = "<img src=\""+ isrc +"\" width=\""+ imgwidth;
+	inImg += "\" height=\""+ imgheight +"\" border=\""+ iborder +"\" alt=\""+ ialt +"\""+ialign+" />";
+	if(iurl!="") inImg = "<a href=\""+ iurl +"\" target=\"_blank\">"+ inImg +"</a>\r\n";
 	//FCK.InsertHtml(inImg);
 	var newCode = FCK.CreateElement('DIV');
   newCode.innerHTML = inImg;
@@ -257,7 +273,8 @@ function UpImgSizeW()
 function AddForm()
 {
 	picnum++;
-	document.getElementById('moreupload').innerHTML += "图片"+picnum+"：<input name='imgfile"+picnum+"' type='file' id='imgfile"+picnum+"' class='binput' /><br />\r\n";
+	document.getElementById('moreupload').innerHTML += "<div class='spdiv'>&nbsp;</div>图片"+picnum+"：<input name='imgfile"+picnum+"' type='file' id='imgfile"+picnum+"' class='binput' />\r\n";
+	document.getElementById('moreupload').innerHTML += "<br />ALT信息：<input type='text' name='alt"+picnum+"' value='' style='width:60%' /><br />\r\n";
 	document.form1.totalform.value = picnum;
 }
 
@@ -300,6 +317,7 @@ if($imgHtml != '')
 <input type="hidden" name="dopost" value="upload" />
 <input type="hidden" name="himgheight" value="<?php echo $imgheightValue?>" />
 <input type="hidden" name="himgwidth" value="<?php echo $imgwidthValue?>" />
+<input type="hidden" name="arctitle" id="arctitle" value="" />
 <input type="hidden" name="totalform" value="1" />
 <table width="100%" border="0">
 	<tr>
@@ -308,20 +326,25 @@ if($imgHtml != '')
 			<legend>上传新图片</legend>
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr height="30">
-					<td align="right" valign='top' nowrap='1'>　图 片：</td>
+					<td align="right" valign='top' nowrap='1'>图 片：</td>
 					<td nowrap='1'>
 						图片1：<input name="imgfile1" type="file" id="imgfile1" class="binput" />
+						<br />
+						ALT信息：<input type='text' name='alt1' value='' style='width:60%' />
 					  <div id='moreupload'></div>
+					  <div style='height:3px;margin-top:3px;font-size:1px'>&nbsp;</div>
 					</td>
 				</tr>
 				<tr height="30">
-					<td align="right" nowrap='1'>　选　项：</td>
-					<td nowrap='1'>
+					<td align="right" nowrap='1' style='border-top:1px dashed #333;padding-top:3px'>选 项：</td>
+					<td nowrap='1' style='border-top:1px dashed #333;padding-top:3px'>
 						<input type="checkbox" name="dd" value="yes" />生成缩略图 &nbsp;
 						缩略图宽度
 						<input name="w" type="text" value="<?php echo $cfg_ddimg_width?>" size="3" />
 						缩略图高度
 						<input name="h" type="text" value="<?php echo $cfg_ddimg_height?>" size="3" />
+						<br />
+						<input type='checkbox' name='alttitle' value='1' />在图片下一行加上ALT描述作为说明文字
 					</td>
 				</tr>
 				<tr height="36">
@@ -330,6 +353,9 @@ if($imgHtml != '')
             <input type="button" name="addupload" id="addupload" onclick='AddForm()' value=" 增加上传框  " style="height:24px" class="binput" />
             &nbsp;
             <input type="submit" name="picSubmit" id="picSubmit" value=" 上 传  " style="height:24px" class="binput" />
+            &nbsp;
+            <input type='checkbox' name='needwatermark' value='1' class='np' <?php if($photo_markup=='1') echo "checked"; ?> />
+            图片是否加水印
             </td>
 				</tr>
 			</table>

@@ -15,9 +15,8 @@ function _ShowForm(){  }
 if(empty($dopost))
 {
 	//读取归档信息
-	$arcQuery = "Select arc.*,ch.addtable,ch.fieldset,m.mtypeid
+	$arcQuery = "Select arc.*,ch.addtable,ch.fieldset,arc.mtype as mtypeid,ch.arcsta
        From `#@__archives` arc left join `#@__channeltype` ch on ch.id=arc.channel
-       left join `#@__member_archives` as m on arc.id = m.id
        where arc.id='$aid' And arc.mid='".$cfg_ml->M_ID."'; ";
 	$row = $dsql->GetOne($arcQuery);
 	if(!is_array($row))
@@ -25,7 +24,7 @@ if(empty($dopost))
 		ShowMsg("读取文档信息出错!","-1");
 		exit();
 	}
-	else if($row['arcrank']>=0 && $row['arcsta']==-1)
+	else if($row['arcrank']>=0)
 	{
 		$dtime = time();
 		$maxtime = $cfg_mb_editday * 24 *3600;
@@ -94,7 +93,8 @@ else if($dopost=='save')
               title='$title',
               litpic='$litpic',
               description='$description',
-              keywords='$keywords',            
+              keywords='$keywords',  
+              mtype = '$mtypesid',        
               flag='$flag'
      where id='$aid' And mid='$mid'; ";
 	if(!$dsql->ExecuteNoneQuery($upQuery))
@@ -111,7 +111,6 @@ else if($dopost=='save')
 			ShowMsg("更新附加表 `$addtable`  时出错，请联系管理员！","javascript:;");
 			exit();
 		}
-		$dsql->ExecuteNoneQuery("Update `#@__member_archives` set mtypeid = '$mtypesid' WHERE id = '$aid'");
 	}
 	UpIndexKey($aid,$arcrank,$typeid,$sortrank,$tags);
 	$artUrl = MakeArt($aid,true);
@@ -122,7 +121,7 @@ else if($dopost=='save')
 
 	//返回成功信息
 	$msg = "　　请选择你的后续操作：
-		<a href='archives_add.php?cid=$typeid'><u>发布新内容</u></a>
+		<a href='archives_add.php?cid=$typeid&channelid=$channelid'><u>发布新内容</u></a>
 		&nbsp;&nbsp;
 		<a href='archives_do.php?channelid=$channelid&aid=".$aid."&dopost=edit'><u>查看更改</u></a>
 		&nbsp;&nbsp;

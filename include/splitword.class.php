@@ -15,6 +15,7 @@ class SplitWord
 	var $NewWord = Array();
 	var $SourceString = '';
 	var $ResultString = '';
+	var $isChange = false;
 	var $SplitChar = ' '; //分隔符
 	var $SplitLen = 4; //保留词长度
 	var $EspecialChar = "和|的|是";
@@ -76,8 +77,6 @@ class SplitWord
   //----------------------------
   function SetSource($str)
   {
-  	global $cfg_ver_lang;
-  	if($cfg_ver_lang=='utf-8') $str = utf82gb($str);
   	$this->SourceString = $str;
   	$this->ResultString = '';
   }
@@ -95,15 +94,29 @@ class SplitWord
   }
 
   //-----------------------------
+  //RMM分词算法最终原编码返回结果
+  //-----------------------------
+  function GetSplitRMM($str='',$tryNumName=true,$tryDiff=true)
+  {
+  	global $cfg_soft_lang;
+  	$okstr = $this->SplitRMM($str, $tryNumName, $tryDiff);
+  	if($cfg_soft_lang=='utf-8') 
+  	{
+  		$okstr = gb2utf8($this->ResultString);
+  	}
+  	return $okstr;
+	}
+	//-----------------------------
   //RMM分词算法
   //-----------------------------
   function SplitRMM($str='',$tryNumName=true,$tryDiff=true)
   {
   	global $cfg_soft_lang;
 		
-		if($cfg_soft_lang=='utf-8') 
+		if($cfg_soft_lang=='utf-8' && !$this->isChange) 
 		{
-			//$str = utf82gb($str);
+			$this->isChange = true;
+			$str = utf82gb($str);
 		}
 		
   	$str = trim($str);
@@ -138,24 +151,13 @@ class SplitWord
   		{
   			$this->ResultString = $spwords[$i].$spc.$this->ResultString;
   		}
-  		
   		//正常短句进行分词处理
   		else
   		{
   		  $this->ResultString = $this->RunRMM($spwords[$i],$tryNumName,$tryDiff).$spc.$this->ResultString;
   	  }
   	}
-	
-  	if($cfg_soft_lang=='utf-8') 
-  	{
-  		$okstr = gb2utf8($this->ResultString);
-  	}
-  	else 
-  	{
-  		$okstr = $this->ResultString;
-  	}
-
-  	return $okstr;
+  	return $this->ResultString;
   }
   //------------------------
   //对常规数量词进行识别
@@ -513,10 +515,9 @@ class SplitWord
   //--------------------------------------------------
   function GetIndexText($str,$ilen=-1)
   {
-    global $cfg_ver_lang;
+    global $cfg_soft_lang;
     if($str=='') return '';
-    else $this->SplitRMM($str,true,true);
-    $okstr = $this->ResultString;
+    $okstr  = $this->SplitRMM($str,true,true);
     $ws = explode(' ',$okstr);
     $okstr = $wks = '';
     foreach($ws as $w)
@@ -547,7 +548,10 @@ class SplitWord
         }
       }
     }
-    if($cfg_ver_lang=='utf-8') $okstr = gb2utf8($okstr);
+    if($cfg_soft_lang=='utf-8') 
+  	{
+  		$okstr = gb2utf8($this->ResultString);
+  	}
     return trim($okstr);
   }
   //---------------------

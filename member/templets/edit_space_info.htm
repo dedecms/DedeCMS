@@ -12,19 +12,22 @@
     <div class="main">
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
-        <div class="location">设置个人资料</div>
+        <div class="location">空间设置 &gt; 空间资料设置</div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
             <li><a href="mtypes.php">分类管理</a></li>
             <li><a href="flink_main.php">书签管理</a></li>
-            <li class="select"><a href="">个人资料</a></li>
+            <li class="select"><a href="edit_space_info.php">空间设置</a></li>
+            <li><a href="spaceskin.php">风格选择</a></li>
+            <li><a href="uploads.php">附件管理</a></li>
+            <li><a href="edit_baseinfo.php">会员资料</a></li>
           </ul>
         </div>
         <form class="mTB10 mL10 mR10" action="edit_space_info.php" method="post" enctype="multipart/form-data" name="form1">
           <input type="hidden" name="dopost" value="save" />
           <div class="titleBar bgGrass lineB">
-            <div class="fLeft"><strong>空间资料</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+            <div class="fLeftNoForm"><strong>空间设置</strong></div>
+            <div class="fRight titSecondary white"></div>
           </div>
           <table cellspacing="1" class="submit">
             <tbody>
@@ -37,37 +40,23 @@
                 <td><input name="pagesize" type="text" id="pagesize" class="text" value="<?php echo $pagesize; ?>" /></td>
               </tr>
               <tr>
-                <td align="right" valign="top">空间风格：</td>
-                <td><?php
-     if($cfg_ml->M_MbType=='个人') {
-     ?>
-                  <input type='radio' name='spacestyle' value='<?php echo $spacestyle; ?>' checked='checked'/>
-                  <?php echo $spacestyle; ?>
-                  <?php
-     }else if($cfg_ml->M_MbType=='企业') {
-     ?>
-                  <input type='radio' name='spacestyle' value='<?php echo $spacestyle; ?>' checked='checked'/>
-                  <?php echo $spacestyle; ?>
-                  <?php
-     }
-     ?></td>
-              </tr>
-              <tr>
                 <td align="right" valign="top">个人签名：</td>
                 <td><textarea name="sign" cols="50" id="sign" ><?php echo $sign; ?></textarea>
                   少于50中文字</td>
               </tr>
               <tr>
                 <td align="right" valign="top">空间Logo上传：</td>
-                <td><input name="oldspacelogo" type="hidden" value="<?php echo $spacelogo; ?>" />
-                  <input name="spacelogo" type="file" id="spacelogo" /></td>
+                <td>
+                	<input name="oldspacelogo" type="hidden" value="<?php echo $spacelogo; ?>" />
+                  <input name="spacelogo" type="file" id="spacelogo" size="45" />
+                </td>
               </tr>
               <tr>
-                <td align="right" valign="top">原有Logo：</td>
-                <td><?php
+                <td align="right">原有Logo：</td>
+                <td style="line-height:60px;"><?php
       if($spacelogo!='') $logo = $spacelogo;
       else $logo = 'images/mylogo.jpg';
-      echo "<div id='divpicview' class='divpre mTB10 litPic'><img src='$logo' /></div>\r\n";
+      echo "<div id='divpicview' class='divpre mTB10 litPic'><img src='$logo' /></div>(规格为：200x50像素)\r\n";
       ?></td>
               </tr>
               <tr>

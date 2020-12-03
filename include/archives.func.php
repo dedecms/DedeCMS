@@ -108,7 +108,7 @@ function InsertOneTag($tag,$aid)
 	$row = $dsql->GetOne("Select * From `#@__tagindex` where tag like '$tag' ");
 	if(!is_array($row))
 	{
-		$rs = $dsql->ExecuteNoneQuery(" Insert Into `#@__tagindex`(`tag`,`count`,`total`,`weekcc`,`monthcc`,`weekup`,`monthup`,`addtime`) values('$tag','0','1','0','0','$addtime','$addtime','$addtime'); ");
+		$rs = $dsql->ExecuteNoneQuery(" Insert Into `#@__tagindex`(`tag`,`typeid`,`count`,`total`,`weekcc`,`monthcc`,`weekup`,`monthup`,`addtime`) values('$tag','$typeid','0','1','0','0','$addtime','$addtime','$addtime'); ");
 		$tid = $dsql->GetLastID();
 	}
 	else

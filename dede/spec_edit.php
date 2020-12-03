@@ -11,6 +11,7 @@ if($dopost!='save')
 {
 	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
 	require_once(DEDEINC."/dedetag.class.php");
+	ClearMyAddon();
 	$aid = intval($aid);
 	$channelid = -1;
 
@@ -44,53 +45,17 @@ else if($dopost=='save')
 {
 	require_once(DEDEINC.'/image.func.php');
 	require_once(DEDEINC.'/oxwindow.class.php');
-	if(!isset($flags))
-	{
-		$flag = '';
-	}
-	else
-	{
-		$flag = join(',',$flags);
-	}
-	if(!isset($tags))
-	{
-		$tags = '';
-	}
+	$flag = isset($flags) ? join(',',$flags) : '';
+	$notpost = isset($notpost) && $notpost == 1 ? 1: 0;
+	
+	if(!isset($tags)) $tags = '';
 	$channelid= -1;
 
 	//处理自定义字段会用到这些变量
-	if(!isset($autokey))
-	{
-		$autokey = 0;
-	}
-	if(!isset($remote))
-	{
-		$remote = 0;
-	}
-	if(!isset($dellink))
-	{
-		$dellink = 0;
-	}
-	if(!isset($autolitpic))
-	{
-		$autolitpic = 0;
-	}
-	if($typeid==0)
-	{
-		ShowMsg("请指定文档的栏目！","-1");
-		exit();
-	}
-	if(!TestPurview('a_Edit'))
-	{
-		if(TestPurview('a_AccEdit'))
-		{
-			CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
-		}
-		else
-		{
-			CheckArcAdmin($id,$cuserLogin->getUserID());
-		}
-	}
+	if(!isset($autokey)) $autokey = 0;
+	if(!isset($remote)) $remote = 0;
+	if(!isset($dellink)) $dellink = 0;
+	if(!isset($autolitpic)) $autolitpic = 0;
 
 	//对保存的内容进行处理
 	$pubdate = GetMkTime($pubdate);
@@ -108,8 +73,8 @@ else if($dopost=='save')
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,250);
-	$keywords = trim(cn_substrR($keywords,30));
+	$description = cn_substrR($description,$cfg_auot_description);
+	$keywords = trim(cn_substrR($keywords,60));
 	$filename = trim(cn_substrR($filename,40));
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
@@ -167,12 +132,14 @@ else if($dopost=='save')
 		    flag='$flag',
 		    ismake='$ismake',
 		    arcrank='$arcrank',
+		    click='$click',
 		    title='$title',
 		    color='$color',
 		    writer='$writer',
 		    source='$source',
 		    litpic='$litpic',
 		    pubdate='$pubdate',
+		    notpost='$notpost',
 		    description='$description',
 		    keywords='$keywords',
 		    shorttitle='$shorttitle',
@@ -289,7 +256,7 @@ else if($dopost=='save')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$id";
 	}
-
+	ClearMyAddon($id, $title);
 	//返回成功信息
 	$msg = "　　请选择你的后续操作：
     <a href='spec_add.php?cid=$typeid'><u>发布新专题</u></a>

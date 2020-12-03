@@ -76,17 +76,17 @@ function lib_likearticle(&$ctag,&$refObj)
 			 $query = "Select arc.*,tp.typedir,tp.typename,tp.corank,tp.isdefault,tp.defaultname,tp.namerule,
 		          tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
 		          from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id
-		          where ($keyword)  $typeid $orderquery limit 0, $row";
+		          where arc.arcrank>-1 and ($keyword)  $typeid $orderquery limit 0, $row";
 	}
 	else
 	{
 			if(!empty($typeid)) {
-					$typeid = " where arc.typeid in($typeid) And arc.id<>$arcid ";
+					$typeid = " arc.typeid in($typeid) And arc.id<>$arcid ";
 			}
 			$query = "Select arc.*,tp.typedir,tp.typename,tp.corank,tp.isdefault,tp.defaultname,tp.namerule,
 		          tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
 		          from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id
-		          $typeid $orderquery limit 0, $row";
+		         where arc.arcrank>-1 and  $typeid $orderquery limit 0, $row";
 	}
 	
 	$innertext = trim( $ctag->GetInnerText() );

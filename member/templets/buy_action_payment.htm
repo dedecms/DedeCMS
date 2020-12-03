@@ -11,17 +11,19 @@
     <div class="main">
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
-        <div class="location"><span class="fLeft">订单确认</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="location"><span class="fLeft">订单确认</span><span class="fRight mR10"><a href="buy.php">购买点卡/会员服务</a></span></div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
-            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
-            <li><a href="shops_products.php">商品</a></li>
+            <li><a href="operation.php">点卡/会员定单</a></li>
+            <li><a href="mypay.php" id="buy">点卡消费记录</a></li>
+            <li><a href="shops_orders.php">商品定单</a></li>
+            <li><a href="shops_products.php" id="buy">我购买的商品</a></li>
           </ul>
         </div>
         <div class="mL10 mR10 mTB10">
           <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>购买系统服务</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em class="mR10"><a href="buy.php">购买服务</a></em> <em class="mR10"><a href="mypay.php">消费记录</a></em> <em class="mR10"><a href="operation.php">历史订单</a></em> </div>
+            <div class="fLeft"><strong>购买点卡/会员服务</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"></div>
           </div>
           <div class="titleBar lineBorder mB10"> &nbsp;&nbsp;* 你申请购买的产品如下，确认无误后请点击“购买并支付”按钮，进行网上支付，如果支付失败，请与管理员联系其它支付方式： </div>
           <form method="post" name="E_FORM" action="buy_action.php" target="_blank">

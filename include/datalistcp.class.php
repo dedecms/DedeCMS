@@ -1,16 +1,25 @@
 <?php
 if(!defined('DEDEINC'))
 {
-	exit("Request Error!");
+	exit('Request Error!');
 }
-require_once(DEDEINC."/dedetemplate.class.php");
-$lang_pre_page = '上页';
-$lang_next_page = '下页';
-$lang_index_page = '首页';
-$lang_end_page = '末页';
-$lang_record_number = '条记录';
-$lang_page = '页';
-$lang_total = '共';
+require_once(DEDEINC.'/dedetemplate.class.php');
+$codefile = (isset($needCode) ? $needCode : $cfg_soft_lang);
+$codefile = preg_replace("/[\w-]/", '', $codefile);
+if(file_exists(DEDEINC.'/code/datalist.'.$codefile.'.inc'))
+{
+	require_once(DEDEINC.'/code/datalist.'.$codefile.'.inc');
+}
+else
+{
+	$lang_pre_page = '上页';
+	$lang_next_page = '下页';
+	$lang_index_page = '首页';
+	$lang_end_page = '末页';
+	$lang_record_number = '条记录';
+	$lang_page = '页';
+	$lang_total = '共';
+}
 
 // 档案展示类
 class DataListCP
@@ -271,11 +280,11 @@ class DataListCP
 		}
 		if(eregi("form",$atts['listitem']))
 		{
-			$plist .=" <form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
+			$plist .=" <form name='pagelist' action='".$this->GetCurUrl()."' style='float:left;' class='pagelistform'>$hidenform";
 			if($totalpage>$total_list)
 			{
-				$plist.="<input type='text' name='pageno' style='padding:0px;width:30px;height:18px' />\n";
-				$plist.="<input type='submit' name='plistgo' value='GO' style='padding:0px;width:30px;height:18px;font-size:11px' />\n";
+				$plist.="<input type='text' name='pageno' style='padding:0px;width:30px;height:18px;font-size:11px' />\r\n";
+				$plist.="<input type='submit' name='plistgo' value='GO' style='padding:0px;width:30px;height:22px;font-size:11px' />\r\n";
 			}
 			$plist .= "</form>\n";
 		}

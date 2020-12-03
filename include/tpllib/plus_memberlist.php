@@ -14,7 +14,7 @@ function plus_memberlist(&$atts,&$refObj,&$fields)
 
     $rearray = array();
 
-    $wheresql = ' where mb.spacesta>-1 AND mb.matt!=10';
+    $wheresql = ' where mb.spacesta > -1 AND mb.matt != 10';
 
     if($iscommend > 0) $wheresql .= " And  mb.matt='$iscommend' ";
 

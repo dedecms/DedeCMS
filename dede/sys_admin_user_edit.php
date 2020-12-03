@@ -1,12 +1,10 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 CheckPurview('sys_User');
-require_once(DEDEINC."/typelink.class.php");
-if(empty($dopost))
-{
-	$dopost = '';
-}
+require_once(DEDEINC.'/typelink.class.php');
+if(empty($dopost)) $dopost = '';
 $id = ereg_replace('[^0-9]','',$id);
+
 if($dopost=='saveedit')
 {
 	$pwd = trim($pwd);
@@ -27,6 +25,8 @@ if($dopost=='saveedit')
 		$pwdm = ",pwd='".md5($pwd)."'";
 		$pwd = ",pwd='".substr(md5($pwd),5,20)."'";
 	}
+	$typeid = join(',', $typeids);
+	if($typeid=='0') $typeid = '';
 	if($id!=1)
 	{
 		$query = "Update `#@__admin` set uname='$uname',usertype='$usertype',tname='$tname',email='$email',typeid='$typeid' $pwd where id='$id'";
@@ -80,7 +80,7 @@ else if($dopost=='delete')
 	if($rs>0)
 	{
 		//更新前台用户信息
-		$dsql->ExecuteNoneQuery("Update From `#@__member` set matt='0' where mid='$id' limit 1");
+		$dsql->ExecuteNoneQuery("Update `#@__member` set matt='0' where mid='$id' limit 1");
 		ShowMsg("成功删除一个帐户！","sys_admin_user.php");
 	}
 	else
@@ -95,17 +95,17 @@ $randcode = mt_rand(10000,99999);
 $safecode = substr(md5($cfg_cookie_encode.$randcode),0,24);
 $typeOptions = '';
 $row = $dsql->GetOne("Select * From `#@__admin` where id='$id'");
+$typeids = explode(',', $row['typeid']);
 $dsql->SetQuery("Select id,typename From `#@__arctype` where reid=0 And (ispart=0 Or ispart=1)");
 $dsql->Execute('op');
 while($nrow = $dsql->GetObject('op'))
 {
-	if($row['typeid']==$nrow->id)
+	$typeOptions .= "<option value='{$nrow->id}' class='btype'".(in_array($nrow->id, $typeids) ? ' selected' : '').">{$nrow->typename}</option>\r\n";
+	$dsql->SetQuery("Select id,typename From #@__arctype where reid={$nrow->id} And (ispart=0 Or ispart=1)");
+	$dsql->Execute('s');
+	while($nrow = $dsql->GetObject('s'))
 	{
-		$typeOptions .= "<option value='{$nrow->id}' selected>{$nrow->typename}</option>\r\n";
-	}
-	else
-	{
-		$typeOptions .= "<option value='{$nrow->id}'>{$nrow->typename}</option>\r\n";
+		$typeOptions .= "<option value='{$nrow->id}' class='stype'".(in_array($nrow->id, $typeids) ? ' selected' : '').">—{$nrow->typename}</option>\r\n";
 	}
 }
 include DedeInclude('templets/sys_admin_user_edit.htm');

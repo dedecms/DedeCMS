@@ -14,12 +14,14 @@ body { background-image: url(img/allbg.gif); }
 <!--
 function checkSubmit()
 {
-	if(document.form1.title.value==""){
-		alert("文章标题不能为空！");
+	if(document.form1.title.value=='')
+	{
+		alert('文章标题不能为空！');
 		return false;
 	}
-	if(document.form1.typeid.value==0){
-		alert("请选择档案的主类别！");
+	if(document.form1.typeid.value==0)
+	{
+		alert('请选择档案的主类别！');
 		return false;
 	}
 }
@@ -30,8 +32,8 @@ function checkSubmit()
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20> &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a>&gt;&gt;发布文章</td>
-      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="60%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文章列表</u></a> &gt;&gt; 发布文章</td>
+      <td width="30%" align='right'>&nbsp; <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
@@ -58,11 +60,11 @@ function checkSubmit()
         <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#ECF9B7">
           <tr>
             <td width="150" height="31"><strong><a name="downurl"></a>&nbsp;采集单个网页-URL：</strong></td>
-            <td width="320" align="center"><input name="geturl" type="text" id="geturl" style="width:290px" value="<?php echo $geturl; ?>"></td>
+            <td width="320" align="center"><input name="geturl" type="text" id="geturl" style="width:290px" value="<?php echo $geturl; ?>" /></td>
             <td>
-            	<input type="submit" class='nbt' name="Submit3" value="抓取">
+            	<input type="submit" class='nbt' name="Submit3" value="抓取" />
             	&nbsp;
-           	<input type="button" class='nbt' name="setrule" value="规则管理" onClick="OpenMyWinCoOne('article_coonepage_rule.php')"></td>
+           	<input type="button" class='nbt' name="setrule" value="规则管理" onClick="OpenMyWinCoOne('article_coonepage_rule.php')" /></td>
           </tr>
         </table>
       </td>
@@ -84,12 +86,15 @@ function checkSubmit()
           <tr>
             <td width="90">&nbsp;文章标题：</td>
             <td width='408'>
-            	<input name="title" type="text" id="title" value="<?php echo $title; ?>" style="width:388px">            </td>
+            	<input name="title" type="text" id="title" value="<?php echo $title; ?>" style="width:388px" />
+            </td>
             <td width="90">&nbsp;简略标题：</td>
             <td>
-            	<input name="shorttitle" type="text" id="shorttitle" style="width:150px">            </td>
+            	<input name="shorttitle" type="text" id="shorttitle" style="width:150px" />
+            </td>
           </tr>
-        </table>       </td>
+        </table>
+       </td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
@@ -107,9 +112,11 @@ function checkSubmit()
             		else
             		echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'>{$trow->attname}[{$trow->att}]";
             	}
-            	?>            </td>
+            	?>
+            </td>
           </tr>
-        </table>       </td>
+        </table>
+       </td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline" id="redirecturltr" style="display:none">
@@ -128,7 +135,7 @@ function checkSubmit()
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;TAG标签：</td>
-          <td><input name="tags" type="text" id="tags" value="" style="width:300px" onchange="$Obj('keywords').value=this.value;" />(','号分开，单个标签小于12字节)</td>
+          <td><input name="tags" type="text" id="tags" value="" style="width:300px" onChange="$Obj('keywords').value=this.value;" />(','号分开，单个标签小于12字节)</td>
         </tr>
       </table>
       </td>
@@ -142,18 +149,13 @@ function checkSubmit()
             	<table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr>
                   <td height="30">
-                  <input name="picname" type="text" id="picname" style="width:200px"/>
-                  <input type="button"  value="上传" style="width:70px;" />
-                  <style>
-            	<!--
-.litpic_span{ width:77px;overflow:hidden; height:21px; *vertical-align:3px;margin-left:-60px;*margin-left:-75px;cursor:pointer; }
-#litpic{ width:85px; height:20px;margin-left: -20px;filter:alpha(opacity=00);-moz-opacity:.0;opacity:0.0; cursor:pointer;}
-            	-->
-            </style>
-                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew('divpicview',this);" size="1" class='np coolbg'/></span>
+                  <input name="picname" type="text" id="picname" style="width:240px" />
+                  <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
+                  <iframe name='uplitpicfra' id='uplitpicfra' src='' width='200' height='200' style='display:none'></iframe>
+                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'article_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
-                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onclick="imageCut('picname');" class='np coolbg'/>
-                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程图片
+                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
+                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
                   </td>
                 </tr>
               </table>
@@ -179,7 +181,7 @@ function checkSubmit()
             </td>
           </tr>
         </table>
-        <script language='javascript'>InitPage();</script> </td>
+        </td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
@@ -190,12 +192,19 @@ function checkSubmit()
        <span id='typeidct'>
        <?php
           $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
-          echo "<select name='typeid' style='width:280px'>\r\n";
+          echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
           echo "<option value='0'>请选择栏目...</option>\r\n";
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			&nbsp;<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>
+			<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			&nbsp;
+			<?php
+			if($cfg_need_typeid2=='Y')
+			{
+				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
+			}
+			?>
 			  </td>
         </tr>
       </table></td>
@@ -206,23 +215,47 @@ function checkSubmit()
         <tr>
           <td width="90">&nbsp;文章副栏目：</td>
           <td>
-          <span id='typeid2ct'></span>
+          <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
+          <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
 			    </td>
         </tr>
         </table>
       </td>
     </tr>
     <tr>
-     <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;关键字：</td>
+          <td width="448"><input type='text' name="keywords" id="keywords" style="width:80%" value="<?php echo $keywords; ?>" /></td>
+          <td width="262"><input name="autokey" type="checkbox" onClick="ShowHide('keywords');"; class="np" id="autokey" value="1"<?php if($cfg_arc_autokeyword=='Y') echo ' checked="1" '; ?>/>
+自动获取，手动填写用","分开<br/>
+<input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" /></td>
+        </tr>
+      </table></td>
     </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;内容摘要：</td>
+          <td width="449"><textarea name="description" rows="5" id="description" style="width:80%;height:50px"><?php echo $description; ?></textarea></td>
+          <td width="261">&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+  <tr>
+     <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
+   </tr>
     <tr>
       <td height="28" bgcolor="#F1F5F2" class="bline2">
       	<div style='float:left;line-height:28px;'>&nbsp;<strong>文章内容：</strong></div>
       	<div style='float:right;;padding-right:8px'>
-        	<img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer "/>
+        	<img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer; "/>
         </div>
         <div style='float:right;padding-right:8px'>
-      		<input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" class="np" border="0"  style="cursor:pointer"/>
+      		<input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" class="np" border="0"  style="cursor:pointer;"/>
         </div>
       </td>
     </tr>
@@ -232,12 +265,14 @@ function checkSubmit()
           <tr>
             <td width="90">&nbsp;附加选项：</td>
             <td>
-            	<input name="remote" type="checkbox" class="np" id="remote" value="1"<?php if($cfg_rm_remote=='Y') echo ' checked="1" '; ?>/>
+            	<input name="remote" type="checkbox" class="np" id="remote" value="1"<?php if($cfg_rm_remote=='Y') echo ' checked="1" '; ?> />
               下载远程图片和资源
-              <input name="dellink" type="checkbox" class="np" id="dellink" value="1"<?php if($cfg_arc_dellink=='Y') echo ' checked="1" '; ?>/>
+              <input name="dellink" type="checkbox" class="np" id="dellink" value="1"<?php if($cfg_arc_dellink=='Y') echo ' checked="1" '; ?> />
               删除非站内链接
-              <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1"<?php if($cfg_arc_autopic=='Y') echo ' checked="1" '; ?>/>
+              <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1"<?php if($cfg_arc_autopic=='Y') echo ' checked="1" '; ?> />
               提取第一个图片为缩略图
+              <input type='checkbox' name='needwatermark' value='1' class='np' <?php if($photo_markup=='1') echo "checked"; ?> />
+              图片是否加水印
             </td>
           </tr>
         </table></td>
@@ -285,10 +320,14 @@ function checkSubmit()
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90" height="22">&nbsp;评论选项：</td>
-          <td>
-          <input type='radio' name='notpost' class='np' value='0' checked='1' />允许评论
+          <td width="240">
+          <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
           &nbsp;
-          <input type='radio' name='notpost' class='np' value='1' />禁止评论
+          <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
+          </td>
+          <td width="90">浏览次数：</td>
+          <td>
+          	<input type='text' name='click' value='<?php echo ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click); ?>' style='width:100px;' />
           </td>
         </tr>
       </table>
@@ -311,7 +350,7 @@ function checkSubmit()
             <td width="90">标题颜色：</td>
             <td>
             	<input name="color" type="text" id="color" style="width:120px"/>
-              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" />
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)" />
             </td>
           </tr>
         </table></td>
@@ -332,16 +371,12 @@ function checkSubmit()
                 }
               ?>
               </select> </td>
-            <td width="90">发布选项：</td>
+            <td width="90">消费点数：</td>
             <td>
-            	<input name="ishtml" type="radio" class="np" value="1" checked="1" />
-              生成HTML
-              <input type="radio" name="ishtml" class="np" value="0"/>
-              仅动态浏览
-              </td>
+            	<input name="money" type="text" id="money" value="0" size="10"/>            	</td>
           </tr>
         </table>
-       </td>
+      </td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
@@ -352,24 +387,12 @@ function checkSubmit()
           	<?php
           $nowtime = GetDateTimeMk(time());
           echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\">";
-			     ?>
-			     </td>
-          <td width="90">消费点数：</td>
-          <td width="379">
-          	<input name="money" type="text" id="money" value="0" size="10"/>
-         </td>
-        </tr>
-      </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="90">&nbsp;关键字：</td>
-          <td width="448"><input type='text' name="keywords" id="keywords" style="width:80%" value="<?php echo $keywords; ?>" /></td>
-          <td width="262"><input name="autokey" type="checkbox" onClick="ShowHide('keywords');"; class="np" id="autokey" value="1"<?php if($cfg_arc_autokeyword=='Y') echo ' checked="1" '; ?>/>
-自动获取，手动填写用","分开<br/>
-<input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" /></td>
+			     ?>	        </td>
+          <td width="90">发布选项：</td>
+          <td width="379"><input name="ishtml" type="radio" class="np" value="1" checked="1" />
+生成HTML
+  <input type="radio" name="ishtml" class="np" value="0"/>
+仅动态浏览 </td>
         </tr>
       </table></td>
     </tr>
@@ -377,20 +400,31 @@ function checkSubmit()
       <td height="24" colspan="4" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;内容摘要：</td>
-          <td width="449"><textarea name="description" rows="5" id="description" style="width:80%;height:50px"><?php echo $description; ?></textarea></td>
-          <td width="261">&nbsp;</td>
-        </tr>
-      </table>
-      </td>
-  </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline">
-      <table width="800" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td width="90">&nbsp;自定义文件名：</td>
-          <td width="449"><input type="text" name="filename" id="filename" /> 不包括后缀名如.html等</td>
-          <td width="261">&nbsp;</td>
+          <td width="109">&nbsp;自定义文件名：</td>
+          <td width="351"><input type="text" name="filename" id="filename" />（不包括后缀名如.html等）</td>
+          <td width="340">
+          	<?php
+  if(isset($cfg_tamplate_rand) && $cfg_tamplate_rand==1)
+  {
+  ?>
+  随机选择模板：
+  <select name='templet' id='templet' style='width:200px' size='1'>
+  <?php
+          $rndsel = mt_rand(1, count($cfg_tamplate_arr)) - 1;
+          foreach($cfg_tamplate_arr as $k=>$v)
+          {
+          	$v = trim($v);
+          	echo ($k==$rndsel ? "<option value='$v' selected>$v</option>\r\n" : "<option value='$v'>$v</option>\r\n");
+          }
+ ?>
+ </select>
+ <?php
+	}
+	else{
+		echo "<input type='hidden' name='templet' value='' />";
+	}
+  ?>
+          </td>
         </tr>
       </table>
       </td>
@@ -399,14 +433,14 @@ function checkSubmit()
 <table width="214" border="0" cellspacing="0" cellpadding="0" align="center">
    <tr height="50">
     <td width="115">
-       <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" class="np" border="0"  style="cursor:pointer"/>
+       <input name="imageField" type="image" src="img/button_save.gif" width="60" height="22" class="np" border="0"  style="cursor:pointer;"/>
     </td>
     <td width="99">
-       <img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer "/>
+       <img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer; "/>
     </td>
    </tr>
 </table>
-
 </form>
+<script language='javascript'>InitPage();</script>
 </body>
 </html>

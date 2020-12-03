@@ -3,7 +3,7 @@ require_once(dirname(__FILE__)."/config.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 if(empty($pagesize))
 {
-	$pagesize = 18;
+	$pagesize = 30;
 }
 if(empty($pageno))
 {
@@ -73,7 +73,9 @@ function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid')
       <td>管理</td>
     </tr>\r\n";
 	echo $printhead;
-	$dsql->SetQuery("Select * From #@__search_keywords order by $orderby desc limit $start,$pagesize ");
+	if($orderby=='result') $orderby = $orderby." asc";
+	else $orderby = $orderby." desc";
+	$dsql->SetQuery("Select * From #@__search_keywords order by $orderby limit $start,$pagesize ");
 	$dsql->Execute();
 	while($row = $dsql->GetArray())
 	{

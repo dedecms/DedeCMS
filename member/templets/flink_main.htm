@@ -111,12 +111,15 @@ function ReLoadList(oby){
     <div class="main">
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
-        <div class="location">网址书签管理</div>
+        <div class="location">空间设置 &gt; 网址书签管理</div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
             <li><a href="mtypes.php">分类管理</a></li>
             <li class="select"><a href="flink_main.php">书签管理</a></li>
-            <li><a href="edit_baseinfo.php">个人资料</a></li>
+            <li><a href="edit_space_info.php">空间设置</a></li>
+            <li><a href="spaceskin.php">风格选择</a></li>
+            <li><a href="uploads.php">附件管理</a></li>
+            <li><a href="edit_baseinfo.php">会员资料</a></li>
           </ul>
         </div>
         <script type="text/javascript" src="js/table_function.js"></script>
@@ -134,7 +137,9 @@ function ReLoadList(oby){
               </tr>
             </tbody>
           </table>
-          <div class="titleBar bgGrass lineB mB10"><strong class="mL10">已有链接管理</strong></div>
+          <div class="titleBar bgGrass lineB mB10">
+          	<strong class="mL10">已有链接管理</strong>
+          </div>
           <div id="linkList">
             <?php GetLinkList($dsql); ?>
           </div>

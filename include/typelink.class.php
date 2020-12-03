@@ -200,6 +200,9 @@ class TypeLink
 
 	function GetOptionList($hid=0,$oper=0,$channeltype=0,$usersg=0)
 	{
+		global $cfg_admin_channel;
+		if(empty($cfg_admin_channel)) $cfg_admin_channel = 'all';
+		
 		if(!$this->dsql) $this->dsql = $GLOBALS['dsql'];
 		$this->OptionArrayList = '';
 		
@@ -218,8 +221,36 @@ class TypeLink
 		if($channeltype==0) $ctsql = '';
 		else $ctsql=" And channeltype='$channeltype' ";
 		
-		if($oper!=0) $query = "Select id,typename,ispart From #@__arctype where ispart<>2 And id='$oper' $ctsql";
-		else $query = "Select id,typename,ispart From #@__arctype where ispart<>2 And reid=0 $ctsql order by sortrank asc";
+		
+		if(is_array($oper) && $cfg_admin_channel != 'all')
+		{
+			if( count($oper) == 0 )
+			{
+				$query = "Select id,typename,ispart From `#@__arctype` where 1=2 ";
+			}
+			else
+			{
+				$admin_catalog_tmp = $admin_catalog = join(',', $oper);
+				$this->dsql->SetQuery("Select reid From `#@__arctype` where id in($admin_catalog) group by reid ");
+				$this->dsql->Execute();
+				$topidstr = '';
+				while($row = $this->dsql->GetObject())
+				{
+					if($row->reid==0) continue;
+					$topidstr .= ($topidstr=='' ? $row->reid : ','.$row->reid);
+				}
+				$admin_catalog .= ','.$topidstr;
+				$admin_catalogs = explode(',', $admin_catalog);
+				$admin_catalogs = array_unique($admin_catalogs);
+				$admin_catalog = join(',', $admin_catalogs);
+				$admin_catalog = preg_replace("/,$/", '', $admin_catalog);
+				$query = "Select id,typename,ispart From `#@__arctype` where ispart<>2 And id in({$admin_catalog}) And reid=0 $ctsql";
+			}
+		}
+		else
+		{
+			$query = "Select id,typename,ispart From `#@__arctype` where ispart<>2 And reid=0 $ctsql order by sortrank asc";
+		}
 
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute();
@@ -234,24 +265,31 @@ class TypeLink
 					$this->OptionArrayList .= "<option value='".$row->id."'>".$row->typename."</option>\r\n";
 				}
 			}
-			$this->LogicGetOptionArray($row->id,"─");
+			$this->LogicGetOptionArray($row->id, "─", $oper);
 		}
 		return $this->OptionArrayList;
 	}
 
-	function LogicGetOptionArray($id,$step)
+	function LogicGetOptionArray($id, $step, $oper=0)
 	{
+		global $cfg_admin_channel;
+		if(empty($cfg_admin_channel)) $cfg_admin_channel = 'all';
+		
 		$this->dsql->SetQuery("Select id,typename,ispart From #@__arctype where reid='".$id."' And ispart<>2 order by sortrank asc");
 		$this->dsql->Execute($id);
 		while($row=$this->dsql->GetObject($id))
 		{
+			if(is_array($oper) && $cfg_admin_channel != 'all')
+			{
+				if(!in_array($row->id, $oper)) continue;
+			}
 			if($row->ispart==1) {
 				$this->OptionArrayList .= "<option value='".$row->id."' style='background-color:#EFEFEF;color:#666666'>$step".$row->typename."</option>\r\n";
 			}
 			else {
 				$this->OptionArrayList .= "<option value='".$row->id."'>$step".$row->typename."</option>\r\n";
 			}
-			$this->LogicGetOptionArray($row->id,$step."─");
+			$this->LogicGetOptionArray($row->id, $step."─", $oper);
 		}
 	}
 
@@ -296,7 +334,7 @@ class TypeLink
 		{
 			$innertext = GetSysTemplets("channel_list.htm");
 		}
-		if($reID==0 && $typeid>0)
+		if($reid==0 && $typeid>0)
 		{
 			$dbrow = $this->dsql->GetOne("Select reid From #@__arctype where id='$typeid' ");
 			if(is_array($dbrow))
@@ -307,18 +345,18 @@ class TypeLink
 		$likeType = "";
 		if($typetype=="top")
 		{
-			$sql = "select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
-		  from #@__arctype where reid=0 and ishidden<>1 order by sortrank asc limit 0,$row";
+			$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
+		  From #@__arctype where reid=0 And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 		else if($typetype=="sun"||$typetype=="son")
 		{
-			$sql = "select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
-		  from #@__arctype where reid='$typeid' and ishidden<>1 order by sortrank asc limit 0,$row";
+			$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
+		  From #@__arctype where reid='$typeid' And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 		else if($typetype=="self")
 		{
-			$sql = "select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
-			from #@__arctype where reid='$reid' and ishidden<>1 order by sortrank asc limit 0,$row";
+			$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl
+			From #@__arctype where reid='$reid' And ishidden<>1 order by sortrank asc limit 0,$row";
 		}
 
 		//And ID<>'$typeid'
@@ -347,7 +385,6 @@ class TypeLink
 					//处理当前栏目的样式
 					if($row['id']=="$typeid" && $myinnertext != '')
 					{
-
 						$linkOkstr = $myinnertext;
 						$row['typelink'] = $this->GetOneTypeUrl($row);
 						$linkOkstr = str_replace("~typelink~",$row['typelink'],$linkOkstr);

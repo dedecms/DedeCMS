@@ -27,24 +27,22 @@ var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>",pwdm
         <?php
         foreach ($types as $type)
         {
-        if($type == '个人')
-        {
-            echo ' <label><input type="radio" name="mtype" value="'.$type.'" checked />';
-        }
-        else
-        {
-            echo ' <label><input type="radio" name="mtype" value="'.$type.'" />';
-        }
-        echo $type, '</label> &nbsp;';
+        	if($type == '个人') {
+            echo ' <label><input type="radio" name="mtype" class="usermtype" value="'.$type.'" checked />';
+        	}
+        	else {
+            echo ' <label><input type="radio" name="mtype" class="usermtype" value="'.$type.'" />';
+        	}
+        	echo $type, '</label> &nbsp;';
         }
         ?>
         </li>
         <li><span>用户名：</span>
           <input name="userid" type="text" id="txtUsername" class="text" />
           <i class="red">*</i> <em id="_userid">(可以使用中文，但禁止除[@][.]以外的特殊符号)</em> </li>
-        <li><span>昵称/公司名称：</span>
+        <li><span id='uwname'>用户笔名：</span>
           <input name="uname" type="text" id="uname" size="20" class="text" />
-          <i class="red">*</i> <em id="_uname">(个人会员该项为昵称，企业会员填写公司名称)</em> </li>
+          <i class="red">*</i> <em id="_uname"></em> </li>
         <li><span>登陆密码：</span>
           <input name="userpwd" type="password" id="txtPassword" class="text" />
           <i class="red">*</i> </li>
@@ -82,7 +80,7 @@ var reMethod = "<?php echo ($cfg_soft_lang == 'utf-8') ? 'POST' : 'GET';?>",pwdm
       <hr />
       <ul>
         <li><span>&nbsp;</span>
-          <input name="agree" type="checkbox" value="" checked />
+          <input name="agree" id='agree' type="checkbox" value="" checked />
           同意协议 </li>
         <li><span>&nbsp;</span>
           <button class="buttonGreen142" id="btnSignCheck" type="submit">注 册</button>

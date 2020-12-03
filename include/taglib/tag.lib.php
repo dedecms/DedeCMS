@@ -5,7 +5,7 @@ function lib_tag(&$ctag,&$refObj)
 {
 	global $dsql,$envs,$cfg_cmsurl;
 	//属性处理
-	$attlist="row|30,sort|new,getall|0";
+	$attlist="row|30,sort|new,getall|0,typeid|0";
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 
@@ -18,7 +18,7 @@ function lib_tag(&$ctag,&$refObj)
 
 	$addsql = '';
 
-	if($getall==0 && !empty($refObj->Fields['tags']) && !empty($refObj->Fields['aid']))
+	if($getall==0 && isset($refObj->Fields['tags']) && !empty($refObj->Fields['aid']))
 	{
 		$dsql->SetQuery("Select tid From `#@__taglist` where aid = '{$refObj->Fields['aid']}' ");
 		$dsql->Execute();
@@ -31,8 +31,16 @@ function lib_tag(&$ctag,&$refObj)
 		{
 			$addsql = " where id in($ids) ";
 		}
+		if($addsql=='') return '';
 	}
-
+	else
+	{
+		if(!empty($typeid))
+		{
+			$addsql = " where typeid='$typeid' ";
+		}
+  }
+  
 	if($ltype=='rand') $orderby = ' rand() ';
 	else if($ltype=='week') $orderby=' weekcc desc ';
 	else if($ltype=='month') $orderby=' monthcc desc ';

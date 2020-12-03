@@ -1,9 +1,17 @@
 <?php
-if(!defined('DEDEMEMBER'))
-{
-	exit('dedecms');
-}
+if(!defined('DEDEMEMBER')) exit('dedecms');
 
+//是否允许用户空间显示未审核文档
+$addqSql = '';
+if($cfg_mb_allowncarc=='N')
+{
+	$addqSql .= " And arc.arcrank > -1 ";
+}
+if(isset($mtype)) $mtype = intval($mtype);
+if(!empty($mtype))
+{
+	$addqSql .= " And arc.mtype = '$mtype' ";
+}
 /*---------------------------------
 文章列表
 function list_article(){ }
@@ -14,11 +22,15 @@ if($action=='article')
 		$mtype = 0;
 	}
 	include_once(DEDEINC.'/arc.memberlistview.class.php');
-	include_once(DEDEINC."/channelunit.func.php");
-	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
-		  from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id where arc.mid='{$_vars['mid']}' And arc.channel=1 order by arc.id desc";
+	include_once(DEDEINC.'/channelunit.func.php');
+	$query = "Select arc.*,mt.mtypename,addt.body,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+		  from `#@__archives` arc 
+		  left join `#@__addonarticle` addt on addt.aid=arc.id
+		  left join `#@__arctype` tp on tp.id=arc.typeid 
+		  left join `#@__mtypes` mt on mt.mtypeid=arc.mtype
+		  where arc.mid='{$_vars['mid']}' $addqSql And arc.channel=1 order by arc.id desc";
 	$dlist = new MemberListview();
-	$dlist->pageSize = 8;
+	$dlist->pageSize = $_vars['pagesize'];
 	$dlist->SetParameter("mtype",$mtype);
 	$dlist->SetParameter("uid",$_vars['userid']);
 	$dlist->SetParameter("action",$action);
@@ -27,33 +39,77 @@ if($action=='article')
 	$dlist->Display();
 	exit();
 }
-
+/*---------------------------------
+单篇文章显示
+function view_archives(){ }
+-------------------------------------*/
+else if($action=='viewarchives' && !empty($aid) && is_numeric($aid))
+{
+	if(empty($mtype)) {
+		$mtype = 0;
+	}
+	include_once(DEDEINC.'/arc.memberlistview.class.php');
+	include_once(DEDEINC.'/channelunit.func.php');
+	
+	//读取文章的评论
+	$sql = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores from `#@__feedback` fb
+        left join `#@__member` mb on mb.mid = fb.mid
+        where fb.aid='$aid' and fb.ischeck='1' order by fb.id desc limit 0, 50";
+  $msgs = array();
+  $dsql->Execute('fb', $sql);
+	while ($row = $dsql->GetArray('fb'))
+	{
+		$msgs[] = $row;
+	}
+	
+	//读取文章内容
+	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,
+			tp.ispart,tp.moresite,tp.siteurl,tp.sitepath,ar.body from `#@__archives` arc
+			left join `#@__arctype` tp on arc.typeid=tp.id
+			left join `#@__addonarticle` ar on ar.aid=arc.id 
+			where arc.mid='{$_vars['mid']}' And arc.channel=1 and ar.typeid=tp.id and ar.aid='$aid' ";
+	$arcrow = $dsql->GetOne($query);
+	if( !is_array($arcrow) )
+	{
+		ShowMsg(' 读取文档时发生未知错误! ', '-1');
+		exit();
+	}
+	
+	//解析模板
+	$dlist = new MemberListview();
+	$dlist->SetTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/blog.htm");
+	$dlist->Display();
+	exit();
+}
 /*---------------------------------
 所有文档列表
 function list_archives(){ }
 -------------------------------------*/
 else if($action=='archives')
 {
-	if(empty($mtype)) {
-		$mtype = 0;
-	}
+	if(empty($mtype)) $mtype = 0;
 	include_once(DEDEINC.'/arc.memberlistview.class.php');
-	include_once(DEDEINC."/channelunit.func.php");
+	include_once(DEDEINC.'/channelunit.func.php');
 	
 	//如果没指定频道ID的情况下，列出所有非单表模型文档
+	if($cfg_mb_spaceallarc > 0 && empty($channelid))
+	{
+		$channelid = intval($cfg_mb_spaceallarc);
+	}
 	if(empty($channelid))
 	{
 		$channelid = 0;
-		$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath            from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id
-		         where arc.mid='{$_vars['mid']}' order by arc.id desc";
+		$query = "Select arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+		         from `#@__archives` arc 
+		         left join `#@__arctype` tp on arc.typeid=tp.id
+		         left join `#@__mtypes` mt on mt.mtypeid=arc.mtype
+		         where arc.mid='{$_vars['mid']}' $addqSql order by arc.id desc";
 	}
 	else
 	{
 		$channelid = intval($channelid);
 		$chRow = $dsql->GetOne("Select issystem,addtable,listfields From `#@__channeltype` where id='$channelid' ");
-		if(!is_array($chRow)) {
-			die(" Channel Error! ");
-		}
+		if(!is_array($chRow)) die(' Channel Error! ');
 		if($chRow['issystem']==-1)
 		{
 			$addtable = trim($chRow['addtable']);
@@ -65,20 +121,23 @@ else if($action=='archives')
 			else {
 				$listfields_str = '';
 			}
-			
-			$query = "Select arc.aid,arc.aid as id,arc.typeid,1 as ismake,0 as money,'' as filename,{$listfields_str}
+			$query = "Select arc.aid,arc.aid as id,arc.typeid,'' as mtypename,1 as ismake,0 as money,'' as filename,{$listfields_str}
 			       tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
-			       from `{$addtable}` arc left join `#@__arctype` tp on arc.typeid=tp.id
-		         where arc.mid='{$_vars['mid']}' And arc.channel='$channelid' order by arc.aid desc";
+			       from `{$addtable}` arc 
+			       left join `#@__arctype` tp on arc.typeid=tp.id
+		         where arc.mid='{$_vars['mid']}' And arc.channel='$channelid' $addqSql order by arc.aid desc";
 		}
 		else
 		{
-			$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath            from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id
-		         where arc.mid='{$_vars['mid']}' And arc.channel='$channelid' order by arc.id desc";
+			$query = "Select arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+			        from `#@__archives` arc
+			        left join `#@__arctype` tp on arc.typeid=tp.id
+			        left join `#@__mtypes` mt on mt.mtypeid=arc.mtype
+		         where arc.mid='{$_vars['mid']}' And arc.channel='$channelid' $addqSql order by arc.id desc";
 		}
 	}
 	$dlist = new MemberListview();
-	$dlist->pageSize = 8;
+	$dlist->pageSize = $_vars['pagesize'];
 	$dlist->SetParameter("mtype",$mtype);
 	$dlist->SetParameter("uid",$_vars['userid']);
 	$dlist->SetParameter("channelid",$channelid);
@@ -99,11 +158,14 @@ else if($action=='album')
 		$mtype = 0;
 	}
 	include_once(DEDEINC.'/arc.memberlistview.class.php');
-	include_once(DEDEINC."/channelunit.func.php");
-	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
-		  from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id where arc.mid='{$_vars['mid']}' And arc.channel=2 order by arc.id desc";
+	include_once(DEDEINC.'/channelunit.func.php');
+	$query = "Select arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+		  from `#@__archives` arc 
+		  left join `#@__arctype` tp on arc.typeid=tp.id
+		  left join `#@__mtypes` mt on mt.mtypeid=arc.mtype
+		  where arc.mid='{$_vars['mid']}' And arc.channel=2 $addqSql order by arc.id desc";
 	$dlist = new MemberListview();
-	$dlist->pageSize = 8;
+	$dlist->pageSize = $_vars['pagesize'];
 	$dlist->SetParameter("mtype",$mtype);
 	$dlist->SetParameter("uid",$_vars['userid']);
 	$dlist->SetParameter("action",$action);
@@ -123,9 +185,11 @@ else if($action=='guestbook')
 		$mtype = 0;
 	}
 	include_once(DEDEINC.'/datalistcp.class.php');
-	$query = "Select * From `#@__member_guestbook` where mid='{$_vars['mid']}' order by aid desc";
+	$query = "Select mg.*, mb.face, mb.userid From `#@__member_guestbook` mg 
+	left join `#@__member` mb on mb.mid=mg.mid 
+	where mg.mid='{$_vars['mid']}' order by mg.aid desc";
 	$dlist = new DataListCP();
-	$dlist->pageSize = 8;
+	$dlist->pageSize = $_vars['pagesize'];
 	$dlist->SetParameter("uid",$_vars['userid']);
 	$dlist->SetParameter("action",$action);
 	$dlist->SetTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/guestbook.htm");
@@ -144,11 +208,11 @@ else if($action=='friend')
 		$mtype = 0;
 	}
 	include_once(DEDEINC.'/arc.memberlistview.class.php');
-	include_once(DEDEINC."/channelunit.func.php");
+	include_once(DEDEINC.'/channelunit.func.php');
 	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
 		  from `#@__archives` arc
 		  left join `#@__arctype` tp on arc.typeid=tp.id
-		  where arc.mid='{$_vars['mid']}' order by arc.id desc";
+		  where arc.mid='{$_vars['mid']}' $addqSql order by arc.id desc";
 	$dlist = new MemberListview();
 	$dlist->pageSize = 8;
 	$dlist->SetParameter("mtype",$mtype);
@@ -161,7 +225,7 @@ else if($action=='friend')
 }
 
 /*---------------------------------
-我的好友
+个人资料
 function infos(){ }
 -------------------------------------*/
 else if($action=='infos')
@@ -185,27 +249,23 @@ else if($action=='guestbooksave')
 	if(strtolower($vdcode)!=$svali || $svali=='')
 	{
 		ResetVdValue();
-		ShowMsg("验证码错误！","-1");
+		ShowMsg('验证码错误！', '-1');
 		exit();
 	}
 	$uidnum = intval($uidnum);
 	if(empty($uidnum))
 	{
-		ShowMsg("参数错误！","-1");
+		ShowMsg('参数错误！', '-1');
 		exit();
 	}
-	if(strlen($title)<2||strlen($msg)<10)
+	if(strlen($msg)<6)
 	{
-		ShowMsg("你的标题不合法或留言内容太短！","-1");
+		ShowMsg('你的留言内容太短！', '-1');
 		exit();
 	}
-	$uname = HtmlReplace($uname,1);
-	$email = HtmlReplace($email,1);
-	$qq = HtmlReplace($qq,1);
-	$tel = HtmlReplace($tel,1);
-	$title = cn_substrR(HtmlReplace($title,1),60);
-	$msg = cn_substrR(HtmlReplace($msg),2048);
-	if($cfg_ml->M_UserName!="" && $cfg_ml->M_ID!=$uidnum)
+	$uname = HtmlReplace($uname, 1);
+	$msg = cn_substrR(HtmlReplace($msg), 2048);
+	if($cfg_ml->M_UserName != '' && $cfg_ml->M_ID != $uidnum)
 	{
 		$gid = $cfg_ml->M_UserName;
 	}
@@ -213,10 +273,10 @@ else if($action=='guestbooksave')
 	{
 		$gid = '';
 	}
-	$inquery = "INSERT INTO `#@__member_guestbook`(mid,gid,title,msg,uname,email,qq,tel,ip,dtime)
-   VALUES ('$uidnum','$gid','$title','$msg','$uname','$email','$qq','$tel','".GetIP()."',".time()."); ";
+	$inquery = "INSERT INTO `#@__member_guestbook`(mid,gid,msg,uname,ip,dtime)
+   VALUES ('$uidnum','$gid','$msg','$uname','".GetIP()."',".time()."); ";
 	$dsql->ExecuteNoneQuery($inquery);
-	ShowMsg("成功提交你的留言！","-1");
+	ShowMsg('成功提交你的留言！', "index.php?uid={$uid}&action=guestbook");
 	exit();
 }
 
@@ -241,6 +301,13 @@ else if($action=='newfriend')
 	}
 	else
 	{
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+		{
+			if($data = uc_get_user($cfg_ml->M_LoginID)) uc_friend_add($uid,$data[0]);
+		}
+		#/aip}}
+	
 		$inquery = "INSERT INTO `#@__member_friends` (`fid` , `floginid` , `funame` , `mid` , `addtime` , `ftype`)
                 VALUES ('{$_vars['mid']}' , '{$_vars['userid']}' , '{$_vars['uname']}' , '{$cfg_ml->M_ID}' , '$addtime' , '0'); ";
 		$dsql->ExecuteNoneQuery($inquery);
@@ -287,18 +354,10 @@ function _contact_introduce() {}
 ---------------------*/
 elseif($action == 'introduce')
 {
-	/*
-	$query = "select *
-	from #@__member_company
-	where mid='".$_vars['mid']."'";
-	$row = $dsql->GetOne($query);
-	$_vars = array_merge($_vars, $row);
-	*/
 	$dpl = new DedeTemplate();
 	$dpl->LoadTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/introduce.htm");
 	$dpl->display();
 }
-
 //联系我们
 elseif ($action == 'contact')
 {
@@ -307,43 +366,29 @@ elseif ($action == 'contact')
 	$dpl->display();
 }
 /*-------------------------------
-function _products_news() { }
+function products() { }
 公司产品或新闻
 --------------------------------*/
-elseif($action == 'products' || $action == 'news')
+elseif($action == 'products')
 {
 	$mtype = isset($mtype) && is_numeric($mtype) ? $mtype : 0;
 	if($action == 'products') {
 		$channel = 6;
 	}
-	elseif ($action == 'news') {
-		$channel =1 ;
-	}
 	include_once(DEDEINC.'/arc.memberlistview.class.php');
-	include_once(DEDEINC."/channelunit.func.php");
+	include_once(DEDEINC.'/channelunit.func.php');
 
-
-	if($mtype == 0)
-	{
-		$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
+	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
 		tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath from `#@__archives` arc
 		left join `#@__arctype` tp on arc.typeid=tp.id
-		where arc.mid='{$_vars['mid']}' and arc.channel='$channel' order by arc.id desc";
-	}
-	else
-	{
-		$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
-		tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath from `#@__archives` arc
-		left join `#@__arctype` tp on tp.id=arc.typeid
-		left join #@__member_archives mt on mt.id=arc.id
-		where arc.mid='{$_vars['mid']}' and arc.channel='$channel' and mt.mtypeid='$mtype' order by arc.id desc";
-	}
+		where arc.mid='{$_vars['mid']}' and arc.channel='$channel' $addqSql order by arc.id desc";
+	
 	$dlist = new MemberListview();
-	$dlist->pageSize = 8;
-	$dlist->SetParameter("mtype",$mtype);
-	$dlist->SetParameter("uid",$_vars['userid']);
-	$dlist->SetParameter("action",$action);
-	$dlist->SetTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/listshop.htm");
+	$dlist->pageSize = 12;
+	$dlist->SetParameter('mtype', $mtype);
+	$dlist->SetParameter('uid', $_vars['userid']);
+	$dlist->SetParameter('action', $action);
+	$dlist->SetTemplate(DEDEMEMBER."/space/{$_vars['spacestyle']}/listproducts.htm");
 	$dlist->SetSource($query);
 	$dlist->Display();
 	exit();

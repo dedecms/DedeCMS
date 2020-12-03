@@ -30,7 +30,7 @@ else if(TestPurview('a_AccList'))
 {
 	if($cid==0)
 	{
-		$cid = $cuserLogin->getUserChannel();
+		$ucid = $cid = $cuserLogin->getUserChannel();
 	}
 	else
 	{
@@ -63,7 +63,7 @@ else
 	$positionname = str_replace($cfg_list_symbol," &gt; ",$tl->GetPositionName())." &gt; ";
 }
 
-$optionarr = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),$channelid);
+$optionarr = $tl->GetOptionArray($cid,$admin_catalogs,$channelid);
 
 $whereSql = $channelid==0 ? " where arc.channel < -1 " : " where arc.channel = '$channelid' ";
 
@@ -79,7 +79,7 @@ if($keyword!='')
 
 if($cid!=0)
 {
-	$whereSql .= " And arc.typeid in(".GetSonIds($cid).")";
+	$whereSql .= " And arc.typeid in (".GetSonIds($cid).")";
 }
 
 if($arcrank!='')
@@ -99,7 +99,6 @@ left join `#@__channeltype` ch on ch.id=arc.channel
 left join `#@__member` adm on adm.mid=arc.mid
 $whereSql
 order by arc.aid desc";
-
 $dlist = new DataListCP();
 $dlist->pageSize = 20;
 $dlist->SetParameter("dopost","listArchives");

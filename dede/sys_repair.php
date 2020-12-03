@@ -2,7 +2,8 @@
 require_once(dirname(__FILE__).'/config.php');
 CheckPurview('sys_ArcBatch');
 require_once(dirname(__FILE__).'/../include/oxwindow.class.php');
-
+ShowMsg("目前暂不需要此工具，以后有需要系统会进行自动升级这个程序！<br /><a href='index_body.php'>&lt;&lt;点击此返回&gt;&gt;</a>", "javascript:;");
+exit();
 if(empty($dopost))
 {
 	$win = new OxWindow();
@@ -70,12 +71,13 @@ else if($dopost==1)
 	$upsqls[] = "ALTER TABLE `#@__archives` CHANGE `litpic` `litpic` VARCHAR( 80 ) NOT NULL default ''; ";
 	$upsqls[] = "INSERT INTO `#@__sysconfig` (`aid` ,`varname` ,`info` ,`value` ,`type` ,`groupid`) VALUES (713, 'cfg_need_typeid2', '是否启用副栏目', 'N', 'bool', 6); ";
   $upsqls[] = "INSERT INTO `#@__sysconfig` (`aid` ,`varname` ,`info` ,`value` ,`type` ,`groupid`) VALUES (715, 'cfg_mb_pwdtype', '前台密码验证类型：默认32 — 32位md5，可选：<br />l16 — 前16位， r16 — 后16位， m16 — 中间16位', '32', 'string', 4); ";
-	$upsqls[] = "Update `#@__sysconfig` set `groupid` = '8' where `varname` like 'cfg_group_%'; ";
+  $upsqls[] = "Update `#@__sysconfig` set `groupid` = '8' where `varname` like 'cfg_group_%'; ";
+  $upsqls[] = "ALTER TABLE `#@__arccache` ADD `stylehash` CHAR(32) NOT NULL default '' AFTER `md5hash`; ";
 	
 	$msg .= "◎检测系统修改过的字段或增加的变量，这些SQL操作运行多次并不会影响系统正常运行...<br />";
 	foreach($upsqls as $upsql)
 	{
-		$dsql->ExecuteNoneQuery($upsql);
+		$rs = $dsql->ExecuteNoneQuery($upsql);
 		$msg .= "·执行 <font color='green'>".$upsql."</font> ok!<br />";
 	}
 	

@@ -15,13 +15,12 @@ if(empty($action))
 if($action=="save")
 {
 	$vars = array('photo_markup','photo_markdown','photo_marktype','photo_wwidth','photo_wheight','photo_waterpos','photo_watertext','photo_fontsize','photo_fontcolor','photo_marktrans','photo_diaphaneity');
-	$configstr = "";
+	$configstr = $shortname = "";
 	foreach($vars as $v)
 	{
-		${$v} = str_replace("'","",${$v});
+		${$v} = str_replace("'", "", ${'get_'.$v});
 		$configstr .= "\${$v} = '".${$v}."';\r\n";
 	}
-	$shortname = "";
 	if(is_uploaded_file($newimg))
 	{
 		$imgfile_type = strtolower(trim($newimg_type));

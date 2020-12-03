@@ -51,8 +51,13 @@ function DelSel(){
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
         <div class="location">附件数据管理</div>
-        <div class="titleBar bgGreen lineTB">
-          <form class="fRight" name='forms' method='post' action='uploads.php'>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul style='float:left;width:350px'>
+            <li><a href="edit_space_info.php">空间设置</a></li>
+            <li class="select"><a href="uploads.php">附件管理</a></li>
+            <li><a href="edit_baseinfo.php">会员资料</a></li>
+          </ul>
+          <form class="fRight" name='forms' method='post' action='uploads.php' style='margin-top:3px;padding-right:10px;width:400px'>
             <input name="keyword" type="text" id="keyword" class="text" value="<?php echo $keyword?>" />
             <select name='mediatype'>
               <option value='0'>文件类型</option>

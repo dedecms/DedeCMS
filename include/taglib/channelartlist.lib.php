@@ -8,10 +8,17 @@ function lib_channelartlist(&$ctag,&$refObj)
 	global $dsql,$envs,$_sys_globals;
 
 	//处理标记属性、innertext
-	$attlist = 'typeid|0,row|20';
+	$attlist = 'typeid|0,row|20,cacheid|';
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 	$innertext = trim($ctag->GetInnerText());
+	$artlist = '';
+	//读取固定的缓存块
+	$cacheid = trim($cacheid);
+	if($cacheid !='') {
+		$artlist = GetCacheBlock($cacheid);
+		if($artlist!='') return $artlist;
+	}
 	
 	if(empty($typeid))
 	{
@@ -24,7 +31,7 @@ function lib_channelartlist(&$ctag,&$refObj)
 
 	//获得类别ID总数的信息
 	$typeids = array();
-	if($typeid==0) {
+	if($typeid==0 || $typeid=='top') {
 		$tpsql = " reid=0 And ispart<>2 And ishidden<>1 And channeltype>0 ";
 	}
 	else
@@ -42,10 +49,9 @@ function lib_channelartlist(&$ctag,&$refObj)
 	while($row = $dsql->GetArray()) {
 		$typeids[] = $row;
 	}
-	$dsql->FreeResult('me');
+
 	if(!isset($typeids[0])) return '';
 
-	$artlist = '';
 	$GLOBALS['itemindex'] = 0;
 	$GLOBALS['itemparity'] = 1;
 	for($i=0;isset($typeids[$i]);$i++)
@@ -57,10 +63,12 @@ function lib_channelartlist(&$ctag,&$refObj)
 		$artlist .= $pv->GetResult();
 		$GLOBALS['itemparity'] = ($GLOBALS['itemparity']==1 ? 2 : 1);
 	}
-	unset($innertext);
 	//注销环境变量，以防止后续调用中被使用
 	$GLOBALS['envs']['typeid'] = $_sys_globals['typeid'];
 	$GLOBALS['envs']['reid'] = '';
+	if($cacheid !='') {
+		WriteCacheBlock($cacheid, $artlist);
+	}
 	return $artlist;
 }
 ?>

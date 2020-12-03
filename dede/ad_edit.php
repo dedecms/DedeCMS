@@ -32,7 +32,7 @@ else if($dopost=="getjs")
 }
 else if($dopost=='testjs')
 {
-	echo "<script src='{$cfg_phpurl}/ad_js.php?aid=$aid' language='javascript'></script>";
+	echo "<script src='{$cfg_phpurl}/ad_js.php?aid=$aid&nocache=1' language='javascript'></script>";
 	exit();
 }
 else if($dopost=='saveedit')

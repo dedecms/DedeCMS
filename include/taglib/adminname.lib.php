@@ -1,29 +1,19 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
+if(!defined('DEDEINC')) exit('Request Error!');
 
-function lib_adminname(&$ctag,&$refObj)
+function lib_adminname(&$ctag, &$refObj)
 {
 	global $dsql;
-	$row = '';
-	if(empty($GLOBALS['envs']['adminid']))
+	if(empty($refObj->Fields['dutyadmin']))
 	{
-		return '';
+		$dutyadmin = $GLOBALS['cfg_df_dutyadmin'];
 	}
 	else
 	{
-		$row = $dsql->GetOne("Select uname From `#@__admin` where id='{$GLOBALS['envs']['adminid']}' ");
+		$row = $dsql->GetOne("Select uname From `#@__admin` where id='{$refObj->Fields['dutyadmin']}' ");
+		$dutyadmin = isset($row['uname']) ? $row['uname'] : $GLOBALS['cfg_df_dutyadmin'];
 	}
-	if(is_array($row))
-	{
-		return $row['uname'];
-	}
-	else
-	{
-		return '';
-	}
+	return $dutyadmin;
 }
 
 ?>

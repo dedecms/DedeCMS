@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title><?php echo $title;?><?php echo $lang['group_main_quan'];?><?php echo $lang['group_topic_replythreads'];?></title>
+<?php include_once GROUP_TPL.'/header.meta.html';?>
+<style type="text/css">
+<!--
+.gLeft, .gRight {
+	display:none;
+}
+-->
+</style>
+</head>
+<body>
+<?php include_once GROUP_TPL.'/header.html';?>
+<div class="group wrap">
+  <!--group left S -->  
+  <div class="gLeft"></div>
+<!--group left E -->
+<!--group center S -->
+<div class="gCenter">
+<div class="module" id="">
+      <div class="top">
+        <div class="t_l"></div>
+      <div class="t_r"></div>
+    <em><a title="<?php echo $_GROUPS['groupname'];?>" href="group.php?id=<?php echo $_GROUPS['groupid'];?>"><?php echo $_GROUPS['groupname'];?></a> > <a href="groupdisplay.php?id=<?php echo $id;?>"><?php echo $lang['group_main_quanzi'].$lang['group_topic_bbs'];?></a> > <a href="viewthread.php?id=<?php echo $id;?>&tid=<?php echo $tid;?>"><?php echo $subjects;?></a></em>
+    </div>
+  <div class="mid">
+    <div class="m_l">
+      <div class="m_r">
+        <div id="post" class="content">
+        <form name="form1" action="reply.php?id=<?php echo $id;?>&tid=<?php echo $tid;?>&pid=<?php echo $pid;?>" method="post"> 
+        <input name="action" type="hidden" value="edit">      
+          <table cellspacing="0" cellpadding="0" class="formbox" id="newpost" summary="post" style="width:100%;">
+    <thead>
+      <tr>
+        <th><?php echo $lang['group_threads_titles'];?>:</th>
+        <td><select name="types">
+        	<option value="0"><?php echo $lang['group_threads_selectstore'];?></option>
+            <?php foreach($_COMMON['smalltypes'] as $row) { ?>
+            <option value="<?php echo $row['id'];?>"><?php echo $row['name'];?></option>
+            <?php }?>
+        </select>
+        <input type="text" tabindex="3" value="<?php echo $subjects;?>" size="45" id="subject" name="subject"/></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th valign="top"><?php echo $lang['group_main_texts'];?>:</th>
+        <td valign="top">
+        	<?php  GetEditor("threads",$message,260,"Member");?>          
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+        <th><?php echo $lang['group_main_vdcodes'];?>:</th>
+        <td><input name="vdcode" type="text" id="vdcode" style='height:18;width:50px;' size="13"> <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle"> <?php echo $lang['group_notice_8'];?></td>
+        </tr>
+      	<tr class="btns">
+        <th></th>
+        <td>
+        <button tabindex="300" value="true" id="postsubmit" name="topicsubmit" type="submit"><?php echo $lang['group_main_submit'];?></button>
+         <a href="group.php?id=<?php echo $id;?>"><?php echo $lang['group_main_returnindex'];?></a>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="b_l"></div>
+  <div class="b_r"></div>
+</div>
+</div>
+</div>
+<!--group center E -->
+<!--group right S -->
+<div class="gRight"></div>
+<!--group right E -->
+<div class="clear"></div>
+</div>
+<?php include_once GROUP_TPL.'/footer.html';?>
+</body>
+</html>

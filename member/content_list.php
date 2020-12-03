@@ -26,6 +26,8 @@ if(!is_array($cInfos))
 	exit();
 }
 $arcsta = $cInfos['arcsta'];
+$dtime = time();
+$maxtime = $cfg_mb_editday * 24 *3600;
 
 //禁止访问无权限的模型
 if($cInfos['usertype'] !='' && $cInfos['usertype']!=$cfg_ml->M_MbType)
@@ -39,7 +41,7 @@ if($cid==0)
 	$row = $tl->dsql->GetOne("Select typename From #@__channeltype where id='$channelid'");
 	if(is_array($row))
 	{
-		$positionname = $row['typename']."";
+		$positionname = $row['typename'];
 	}
 }
 else
@@ -57,25 +59,22 @@ if($cid!=0)
 {
 	$whereSql .= " And arc.typeid in (".GetSonIds($cid).")";
 }
-$classlist = "";
+$classlist = '';
 $dsql->SetQuery("SELECT * FROM `#@__mtypes` WHERE `mid` = '$cfg_ml->M_ID';");
 $dsql->Execute();
 while ($row = $dsql->GetArray())
 {
 	$classlist .= "<option value='content_list.php?channelid=".$channelid."&mtypesid=".$row['mtypeid']."'>".$row['mtypename']."</option>\r\n";
 }
-$joinsql = '';
 if($mtypesid != 0 )
 {
-	$joinsql = " left join `#@__member_archives` as m on arc.id = m.id";
-	$whereSql .= " And m.mtypeid = '$mtypesid'";
+	$whereSql .= " And arc.mtype = '$mtypesid'";
 }
-
 $query = "select arc.id,arc.typeid,arc.senddate,arc.flag,arc.ismake,arc.channel,arc.arcrank,
         arc.click,arc.title,arc.color,arc.litpic,arc.pubdate,arc.mid,tp.typename,ch.typename as channelname
         from `#@__archives` arc
         left join `#@__arctype` tp on tp.id=arc.typeid
-        left join `#@__channeltype` ch on ch.id=arc.channel$joinsql
+        left join `#@__channeltype` ch on ch.id=arc.channel
        $whereSql order by arc.senddate desc ";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;

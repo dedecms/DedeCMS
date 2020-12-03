@@ -30,7 +30,7 @@
           	$dsql->Execute();
           	while($row = $dsql->GetObject()) echo '<font color=red>'.$row->rank.'</font>、';
           	?>
-            ） </td>
+            ，级别值必须小于10，超过或等于10所有权限设置将无效(超级管理员)，如果10个组不能完全满足你的要求，允许使用小数） </td>
         </tr>
         <?php
         $start = 0;
@@ -55,7 +55,9 @@
         	{
         		$ls = explode('>',$line);
         		$tag = $ls[1];
-        		$tagname = str_replace('[br]','<br>',$ls[2]);
+        		$tagname = str_replace('[br]', '<br />', $ls[2]);
+        		if(!ereg('<br />', $tagname) ) $tagname .= "<font color='#888888'>($tag)</font>";
+        		else $tagname = str_replace('<br />', "<font color='#888888'>($tag)</font><br />", $tagname);
         		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'>$tagname\r\n";
         	  $k++;
         	}
@@ -77,7 +79,7 @@
          	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'>{$row->plusname}\r\n";
         	 $k++;
         	 $l++;
-        	 if($l%4==0) echo "<br>";
+        	 if($l%6==0) echo "<br />";
          }
          ?>  	
         </td>

@@ -1,10 +1,7 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
-require_once(DEDEINC."/channelunit.class.php");
-require_once(DEDEINC."/typelink.class.php");
+if(!defined('DEDEINC')) exit('Request Error!');
+require_once(DEDEINC.'/channelunit.class.php');
+require_once(DEDEINC.'/typelink.class.php');
 
 class PartView
 {
@@ -24,7 +21,7 @@ class PartView
 		$this->dsql = $GLOBALS['dsql'];
 		$this->dtp = new DedeTagParse();
 		$this->dtp->SetNameSpace("dede","{","}");
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 
 		if($needtypelink)
 		{
@@ -58,7 +55,7 @@ class PartView
 	//重新指定引入的对象
 	function SetRefObj(&$refObj)
 	{
-		$this->dtp->refObj = $refObj;
+		$this->dtp->SetRefObj($refObj);
 		if(isset($refObj->TypeID))
 		{
 			$this->__construct($refObj->TypeID);

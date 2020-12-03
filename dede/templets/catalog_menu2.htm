@@ -173,7 +173,7 @@ body
 	 <form name="form1" target="main" action="public_guide.php"><input type='hidden' name='action' value='edit' /></form>
 	 <form name="form2" target="main" action="catalog_main.php"></form>
 	 <form name="form3" target="menu" action="index_menu.php"></form>
-	 <form name="form5" target="main" action="catalog_add.php?listtype=all"></form>
+	 <form name="form5" target="main" action="catalog_add.php"><input type="hidden" name="dopost" value="quick" /></form>
 	 <form name="form6" target="main" action="content_list.php"></form>
    <input type="button" name="sb5" value="批量增加栏目" class="nbt" style="width:80px" onClick="document.form5.submit();" />
    <input type="button" name="sb2" value="栏目管理" class="nbt" style="width:71px" onClick="document.form2.submit();" />   

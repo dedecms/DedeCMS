@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
+include(DEDEDATA.'/mark/inc_photowatermark_config.php');
 if(empty($activepath))
 {
 	$activepath = '';
@@ -198,11 +199,12 @@ $dh->close();
 <input type='hidden' name='job' value='upload'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
-  &nbsp;上　传： <input type='file' name='imgfile' style='width:250px'>
-  <input type='checkbox' name='resize' value='1' class='np'>自动缩小
-  宽：<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>'>
-  高：<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>'>
-  <input type='submit' name='sb1' value='确定'>
+  &nbsp;上　传： <input type='file' name='imgfile' style='width:250px'/>
+  <input type='checkbox' name='needwatermark' value='1' class='np' <?php if($photo_markup=='1') echo "checked"; ?> />水印
+  <input type='checkbox' name='resize' value='1' class='np' />缩小
+  宽：<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>' />
+  高：<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>' />
+  <input type='submit' name='sb1' value='确定' />
 </td>
 </tr>
 </form>

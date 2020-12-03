@@ -65,34 +65,25 @@ else
 {
 	$bgcolor = '';
 	$typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
-	if(!isset($keyword))
-	{
-		$keyword = '';
-	}
+	$aid = isset($aid) && is_numeric($aid) ? $aid : 0;
+	$keyword = !isset($keyword) ? '' : $keyword;
+	$ip = !isset($ip) ? '' : $ip;
+	
 	$tl = new TypeLink($typeid);
-	$openarray = $tl->GetOptionArray($typeid,$cuserLogin->getUserChannel(),0);
-	if($cuserLogin->getUserChannel()<=0)
-	{
-		$typeCallLimit = "";
-	}
-	else
-	{
-		$typeCallLimit = "And typeid in (".GetSonIds($cuserLogin->getUserChannel()).")";
-	}
-	if($typeid!=0)
-	{
-		$arttypesql = " And typeid in (".GetSonIds($typeid).")";
-	}
-	else
-	{
-		$arttypesql = "";
-	}
-	$querystring = "select * from #@__feedback where #@__feedback.msg like '%$keyword%' $arttypesql $typeCallLimit order by dtime desc";
+	$openarray = $tl->GetOptionArray($typeid,$admin_catalogs,0);
+	
+	$addsql = ($typeid != 0  ? " And typeid in (".GetSonIds($typeid).")" : '');
+	$addsql .= ($aid != 0  ? " And aid=$aid " : '');
+	$addsql .= ($ip != ''  ? " And ip like '$ip' " : '');
+	$querystring = "select * from `#@__feedback` where msg like '%$keyword%' $addsql order by dtime desc";
+	
 	$dlist = new DataListCP();
-	$dlist->pageSize = 10;
-	$dlist->SetParameter("typeid",$typeid);
-	$dlist->SetParameter("keyword",$keyword);
-	$dlist->SetTemplate(DEDEADMIN."/templets/feedback_main.htm");
+	$dlist->pageSize = 15;
+	$dlist->SetParameter('aid', $aid);
+	$dlist->SetParameter('ip', $ip);
+	$dlist->SetParameter('typeid', $typeid);
+	$dlist->SetParameter('keyword', $keyword);
+	$dlist->SetTemplate(DEDEADMIN.'/templets/feedback_main.htm');
 	$dlist->SetSource($querystring);
 	$dlist->Display();
 }

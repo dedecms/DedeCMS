@@ -37,7 +37,7 @@ $wecome_info = "文章来源管理";
 $win = new OxWindow();
 $win->Init('article_source_edit.php','js/blank.js','POST');
 $win->AddHidden('dopost','save');
-$win->AddTitle("每行保存一个来源，更改结果后需重载档案发布页面。");
+$win->AddTitle("每行保存一个来源：");
 $win->AddMsgItem("<textarea name='allsource' id='allsource' style='width:100%;height:300px'>$allsource</textarea>");
 $winform = $win->GetWindow('ok');
 $win->Display();

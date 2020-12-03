@@ -2,16 +2,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>增加图片集</title>
-<style type="text/css">
-<!--
-body { background-image: url(img/allbg.gif); }
--->
-</style>
 <link href="img/base.css" rel="stylesheet" type="text/css">
-<script language='javascript' src='js/main.js'></script>
+<link href="img/swfupload.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../include/dedeajax2.js"></script>
+<script language='javascript' src='js/main.js'></script>
 <script language='javascript' src='js/album.js'></script>
-<script language="javascript" type="text/javascript"">
+<script type="text/javascript" src="../images/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="js/handlers.js"></script>
+<script language="javascript">
+var swfu = null;
 var vcc = 0;
 function LoadTestDiv()
 {
@@ -39,7 +38,6 @@ function LoadTestDiv()
 	var myajax = new DedeAjax(newobj,false,true,'-','-','...');
 	var v = $Obj('imagebody').value;
 	vcc++;
-
 	<?php
 	if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
 		?>
@@ -47,33 +45,75 @@ function LoadTestDiv()
 		myajax.AddKeyUtf8('myhtml',v);
 		myajax.AddKeyUtf8('vcc',vcc);
 		myajax.SendPost2('album_testhtml.php');
-		<?php
+	<?php
 	}
 	elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
-		?>
-
-		//gbk
-		myajax.SendGet2("album_testhtml.php?vcc="+vcc+"&myhtml="+v);
-		<?php
+	?>
+	//gbk
+	myajax.SendGet2("album_testhtml.php?vcc="+vcc+"&myhtml="+v);
+	<?php
 	}
 	?>
 	DedeXHTTP = null;
 }
-</script>
+window.onload = function ()
+{
+			swfu = new SWFUpload(
+			{
+				// Backend Settings
+				upload_url: "swfupload.php",
+				post_params: {"PHPSESSID": "<?php echo session_id(); ?>", "dopost" : ""},
 
+				// File Upload Settings
+				file_size_limit : "2 MB",	// 2MB
+				file_types : "*.jpg; *.gif; *.png",
+				file_types_description : "选择 JPEG/GIF/PNG 格式图片",
+				file_upload_limit : "0",
+
+				file_queue_error_handler : fileQueueError,
+				file_dialog_complete_handler : fileDialogComplete,
+				upload_progress_handler : uploadProgress,
+				upload_error_handler : uploadError,
+				upload_success_handler : uploadSuccess,
+				upload_complete_handler : uploadComplete,
+
+				button_image_url : "img/SmallSpyGlassWithTransperancy_17x18.png",
+				button_placeholder_id : "spanButtonPlaceholder",
+				button_width: 250,
+				button_height: 18,
+				button_text : '<span class="button">选择本地图片 <span class="buttonSmall">(单图最大为 2 MB，支持多选)</span></span>',
+				button_text_style : '.button { font-family: Helvetica, Arial, sans-serif; font-size: 12pt; } .buttonSmall { font-size: 10pt; }',
+				button_text_top_padding: 0,
+				button_text_left_padding: 18,
+				button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+				button_cursor: SWFUpload.CURSOR.HAND,
+				
+				// Flash Settings
+				flash_url : "../images/swfupload/swfupload.swf",
+
+				custom_settings : {
+					upload_target : "divFileProgressContainer"
+				},
+				
+				// Debug Settings
+				debug: false
+			});
+};
+</script>
 </head>
-<body topmargin="8">
+<body topmargin="8" background="img/allbg.gif">
 <form name="form1" action="album_add.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
 <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
 <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
 <input type="hidden" name="imagebody" value="" />
 <input type="hidden" name="dopost" value="save" />
+<input name="maxwidth" type="hidden" id="maxwidth" size="10" value="<?php echo $cfg_album_width; ?>" />
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20>
         &nbsp;</td>
-      <td width="85%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;发布新图集</td>
-      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="65%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a> &gt;&gt; 发布新图集</td>
+      <td width="30%" align='right'>&nbsp; <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
@@ -164,18 +204,13 @@ function LoadTestDiv()
             	<table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr>
                   <td height="30">
-                  <input name="picname" type="text" id="picname" style="width:200px"/>
-                  <input type="button"  value="上传" style="width:70px;" />
-                  <style>
-            	<!--
-.litpic_span{ width:77px;overflow:hidden; height:21px; *vertical-align:3px;margin-left:-60px;*margin-left:-75px;cursor:pointer; }
-#litpic{ width:85px; height:20px;margin-left: -20px;filter:alpha(opacity=00);-moz-opacity:.0;opacity:0.0; cursor:pointer;}
-            	-->
-            </style>
-                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew('divpicview',this);" size="1" class='np coolbg'/></span>
+                  <input name="picname" type="text" id="picname" style="width:240px" />
+                  <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
+                  <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
+                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNewAlb(this, 'divpicview', 'uplitpicfra', 165, 'album_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
                   <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
-                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程图片
+                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
                   <br />
                   <input type='checkbox' class='np' name='ddisfirst' value='1' />使用图集的第一幅图
                   </td>
@@ -192,34 +227,24 @@ function LoadTestDiv()
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;图集来源：</td>
-          <td width="240"><input name="source" type="text" id="source" style="width:160px" value="" size="16">
-              <input name="selsource" type="button" id="selsource" value="选择"></td>
-          <td width="90">作　者：</td>
-          <td>
-          	<input name="writer" type="text" id="writer" style="width:120px" value="">
-            <input name="selwriter" type="button" id="selwriter" value="选择">
-          </td>
-        </tr>
-      </table>
-      <script language='javascript'>InitPage();</script>
-      </td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-        <tr>
           <td width="90">&nbsp;图集主栏目：</td>
           <td>
         <span id='typeidct'>
        <?php
           $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),$channelid);
-          echo "<select name='typeid' style='width:280px'>\r\n";
+          echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
           echo "<option value='0'>请选择栏目...</option>\r\n";
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			&nbsp;<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>
+			<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			&nbsp;
+			<?php
+			if($cfg_need_typeid2=='Y')
+			{
+				echo "<a href='javascript:AddTypeid2();'>【<u>选择副栏目</u>】</a>";
+			}
+			?>
 			   </td>
         </tr>
       </table>
@@ -231,27 +256,33 @@ function LoadTestDiv()
         <tr>
           <td width="90">&nbsp;图集副栏目：</td>
           <td>
-          <span id='typeid2ct'></span>
+          <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
+          <img src='img/menusearch2.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
 			    </td>
         </tr>
         </table>
       </td>
     </tr>
     <tr>
-      <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?> </td>
+      <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24"  bgcolor="#F1F5F2" class="bline2">&nbsp;<strong>图集选项：</strong></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline" style="padding-top:6px">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="80">&nbsp;<b>表现方式：</b></td>
             <td>
             <input name="pagestyle" class="np" type="radio" id="pagestyle1" onClick="checkMuList()" value="1"<?php if($cfg_album_style==1) echo " checked='checked'"; ?> />
-            多页多图显示（适用于QQ表情等）
+            <img src='img/alb2.gif' alt='单页多图样式' title='单页多图样式' />
+            &nbsp;&nbsp;
             <input name="pagestyle" class="np" type="radio" id="pagestyle2" onClick="checkMuList()" value="2"<?php if($cfg_album_style==2) echo " checked='checked'"; ?> />
-            多页单图显示（幻灯）
+            <img src='img/alb1.gif' alt='幻灯片样式' title='幻灯片样式' />
+            &nbsp;&nbsp;
             <input name="pagestyle" class="np" type="radio" id="pagestyle3" onClick="checkMuList()" value="3"<?php if($cfg_album_style==3) echo " checked='checked'"; ?>/>
-            多行多列显示（缩略图）
+            <img src='img/alb3.gif' alt='多缩略图样式' title='多缩略图样式' />
             </td>
           </tr>
         </table></td>
@@ -281,7 +312,7 @@ function LoadTestDiv()
           <tr>
             <td width="95">&nbsp;每页图片数：</td>
             <td>
-              <input name='pagepicnum' id='pagpicnum' size='10' value='<?php echo $cfg_album_pagesize; ?>' />
+              <input name='pagepicnum' type='text' id='pagpicnum' size='10' value='<?php echo $cfg_album_pagesize; ?>' />
               单页多图显示需要设置此参数，这种模式下系统不会为每张图单独生成缩略图。
             </td>
           </tr>
@@ -290,25 +321,17 @@ function LoadTestDiv()
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="95">&nbsp;大图宽度限制：</td>
-            <td>
-            	<input name="maxwidth" type="text" id="maxwidth" size="10" value="<?php echo $cfg_album_width; ?>">
-              (防止图片太宽在模板页中溢出)&nbsp;
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="90">&nbsp;特殊选项：</td>
-          <td><input name="isrm" class="np" type="checkbox" id="isrm" value="1" checked='checked' />
-            下载远程图片
+          <td width="90">&nbsp;<b>上传方式：</b></td>
+          <td>
+          	<input name="isrm" class="np" type="hidden" id="isrm" value="1"  />
+          	<input name="byhand" class="np" type="checkbox" id="byhand" value="1" disabled="ture" checked />
+          	手工上传
             <input name="formzip" class="np" type="checkbox" id="formzip" value="1" onClick="ShowZipField(this,'zipff','htmlfield');" />
             从ZIP压缩包中解压图片
             <input name="formhtml" class="np" type="checkbox" id="formhtml" value="1" onClick="ShowHtmlField(this,'htmlfield','zipff');" />
-            网上复制图片 </td>
+            网上复制图片
+           </td>
         </tr>
       </table></td>
     </tr>
@@ -342,25 +365,64 @@ function LoadTestDiv()
       <td width="100%" height="24" colspan="4" class="bline">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="80">&nbsp;手工上传：</td>
+            <td width="80" height="40">&nbsp;<b>手工上传：</b></td>
             <td>
-              <input name="picnum" type="text" id="picnum" size="8" value="10">
-              <input name='kkkup' type='button' id='kkkup2' value='增加表单' onClick="MakeUpload(0);">
-              （ 注：最大60幅，手工指定的图片链接允许填写远程网址） </td>
+            <div style="display: inline; border: solid 1px #7FAAFF; background-color: #C5D9FF; padding: 2px;">
+								<span id="spanButtonPlaceholder"></span>
+						</div>
+            </td>
           </tr>
         </table></td>
     </tr>
     <tr id="handfield">
-      <td height="24" colspan="4" class="bline">
-       <span id="uploadfield"></span>
-        <script language="JavaScript">
-        MakeUpload(7);
-	      </script>
-       </td>
+      <td colspan="4" class="bline" style="background:#fff url(img/albviewbg.gif) 0 20px no-repeat;">
+       	<table width='100%' height='160' style="margin:0 0 20px 0">
+       		<tr>
+       			<td>
+       				<div id="divFileProgressContainer" style="height:75px;"></div>
+			 				<div id="thumbnails"></div>
+						</td>
+					</tr>
+				</table>
+      </td>
     </tr>
   </table>
   <!-- //高级参数 -->
   <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
+  <tr>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;图集来源：</td>
+          <td width="240"><input name="source" type="text" id="source" style="width:160px" value="" size="16">
+              <input name="selsource" type="button" id="selsource" value="选择"></td>
+          <td width="90">作　者：</td>
+          <td>
+          	<input name="writer" type="text" id="writer" style="width:120px" value="">
+            <input name="selwriter" type="button" id="selwriter" value="选择">
+          </td>
+        </tr>
+      </table>
+      </td>
+   </tr>
+  <tr>
+   <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="22" width="240">&nbsp;评论选项：</td>
+          <td width="250">
+          <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
+          &nbsp;
+          <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
+          </td>
+          <td width="90">浏览次数：</td>
+          <td>
+          	<input type='text' name='click' value='<?php echo ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click); ?>' style='width:100px;' />
+          </td>
+        </tr>
+      </table>
+    </td>
+   </tr>
   <tr>
   <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -377,7 +439,7 @@ function LoadTestDiv()
             <td width="90">标题颜色：</td>
             <td>
             	<input name="color" type="text" id="color" style="width:120px">
-              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()">            </td>
+              <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)">            </td>
           </tr>
         </table></td>
     </tr>
@@ -447,7 +509,7 @@ function LoadTestDiv()
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;自定义文件名：</td>
-          <td width="449"><input type="text" name="filename" id="filename"/>不包括后缀名如.html等</td>
+          <td width="449"><input type="text" name="filename" id="filename" />（不包括后缀名如.html等）</td>
           <td width="261">&nbsp;</td>
         </tr>
       </table>
@@ -467,8 +529,11 @@ function LoadTestDiv()
             <td width="17%">&nbsp;</td>
             <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td width="115"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-                  <td width="99"> <img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer">
+                  <td width="115">
+                  	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np" />
+                  </td>
+                  <td width="99">
+                  	<img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer;" />
                   </td>
                 </tr>
               </table></td>
@@ -477,6 +542,6 @@ function LoadTestDiv()
   </tr>
 </table>
 </form>
-<script language='javascript'>//if($Nav()!="IE") ShowObj('adset');</script>
+<script language='javascript'>InitPage();</script>
 </body>
 </html>

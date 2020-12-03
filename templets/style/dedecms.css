@@ -24,7 +24,7 @@ img{
 }
 
 a{
-	color:#3366CC;
+	color:#256EB1;
 	text-decoration:none;
 }
 a:hover{
@@ -44,10 +44,16 @@ input,select,button{
 }
 .w960{
 	width:960px;
-	position:relative;
+	/*position:relative;*/
+}
+.pright .infos_userinfo {
+	margin-bottom: 0px;
 }
 .mt1{/* ( margin-top * 1 ) */
 	margin-top:8px;
+}
+.pright .mt1{
+	margin-top:0px;
 }
 .mt2{/* ( margin-top * 2 ) */
 	margin-top:16px;
@@ -80,6 +86,7 @@ input,select,button{
 	background:url(../images/btn-bg1.gif) no-repeat;
 	line-height:25px;
 	letter-spacing:1px;
+	cursor:pointer;
 	overflow:hidden;
 	color:#2F592E;
 }
@@ -98,7 +105,12 @@ input,select,button{
 .header{
 	width:100%;
 	padding-top:16px;
+	width:960px;
+	margin:auto;
 	overflow:hidden;
+}
+.header .search {
+	margin-top:5px;
 }
 .header a{
 	color:#777;
@@ -185,152 +197,219 @@ input,select,button{
 .header .welcome a{
 	margin:0px 3px;	
 }
-.header .nav{
-	width:100%;
-	height:32px;
-	background:url(../images/nav-bg.gif) repeat-x;
-	clear:both;
+
+/*----- 新版导航菜单位置的样式 -------*/
+.header .nav { }
+/*-------- 圆角模型 ---------*/
+.module, .module .mid {
 	overflow:hidden;
 }
-.header .nav ul{
-	height:32px;
-	margin:0px auto;
-	overflow:hidden;
-}
-.header .nav ul li{
-	float:left;
-	line-height:31px;
-	background:url(../images/nav-bg.gif) 0px -32px no-repeat;
-	margin-left:-2px;
-}
-.header .nav ul li a{
-	height:32px;
-	padding:0px 16px 0px 17px;
-	display:block;
-	color:#FFF;
-	float:left;
-}
-.header .nav ul li a:hover{
-	color:#FF3;	
-}
-.header .search{
-	height:40px;
-	background:url(../images/search-bg.png) repeat-x;
-	clear:both;
-}
-.header .search .form{
-	padding-left:8px;
-	padding-top:5px;
-	float:left;
-}
-.header .search .form h4{
-	display:none;
-}
-.header .search .form input.search-keyword{
-	width:156px;
-	height:18px;
-	border:none;
-	background:url(../images/search-bg.gif) left top no-repeat;
-	line-height:15px;
-	font-size:12px;
-	padding:5px 3px 0px 58px;
-	overflow:hidden;
-}
-.header .search .form select.search-option{
-	margin-left:2px;
-}
-.header .search .form button.search-submit{
-	width:68px;
-	height:22px;
-	border:none;
-	background:#F00 url(../images/search-bg.gif) right top no-repeat;
-	font-size:0px;
-	line-height:100px;
-	margin-left:2px;
-	*margin-left:5px;
-	overflow:hidden;
-}
-.header .tags{
-	float:left;
-	margin-left:16px;
-	padding-top:8px;
-}
-.header .tags h4{
-	width:66px;
-	height:19px;
-	float:left;
-	font-size:0px;
-	line-height:100px;
-	overflow:hidden;
-	background:url(../images/search-tags-title.gif) no-repeat;
-}
-.header .tags ul{
-	height:21px;
+.module .top .t_l, .module .bottom .b_l {
 	float:left;
 	overflow:hidden;
 }
-.header .tags ul li{
+.module .top .t_r, .module .bottom .b_r {
+	float:right;
+	overflow:hidden;
+}
+.module .top em {
 	float:left;
-	line-height:19px;
-	padding:0px 5px;
+	font-size:13px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	margin-left: 5px;
+}
+.module .top em a:link, .module .top em a:visited {
+	font-size:13px;
+	font-weight:bold;
+}
+.module .top span {
+	float:right;
+}
+.module .top strong {
+	cursor:pointer;
+	float:right;
+	font-weight:normal;
+	margin-right:4px;
+}
+.module .mid .m_l, .module .mid .m_r {
+	overflow:hidden;
+}
+.module .mid .content {
+	overflow:hidden;
+	height:100%;
+	clear: both;
+	margin-right: 8px;
+	margin-left: 8px;
+	padding-top: 8px;/*padding-bottom: 10px;*/
+}
+.module .top, .module .top .t_l, .module .top .t_r, .module .bottom, .module .bottom .b_l, .module .bottom .b_r {
+	background-image: url("../images/header_bg.png");
+}
+/*------ 蓝色 -------*/
+.blue .top {
+	background-position: 0 -87px;
+	background-repeat: repeat-x;
+	height: 77px;
+}
+.blue .top .t_l {
+	background-position: -13px 0;
+	background-repeat: no-repeat;
+	height: 77px;
+	width: 7px;
+}
+.blue .top .t_r {
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	height: 77px;
+	width: 10px;
+}
+/* --------- 导航 ----------------*/
+.w963 {
+	width:963px;
+	margin-top:8px;
+	margin-bottom:0px;
+}
+#navMenu {
+	width:940px;
+	overflow:hidden;
+}
+#navMenu li {
+	float: left;
+	line-height: 34px;
+	height: 34px;
+	background-image: url(../images/header_interval.png);
+	background-repeat: no-repeat;
+	background-position: 0 center;
+	margin-left: -2px;
+}
+#navMenu li a {
+	font-size: 14px;
+	color: #FFF;
+	padding-right: 1em;
+	padding-left: 1em;
+	margin-left: 2px;
+	display: block;
+}
+#navMenu li a:hover, #navMenu li.hover a {
+	background-image: url(../images/header_hover.png);
+	background-repeat: no-repeat;
+	background-position: center top;
+	text-decoration: none;
+}
+/*-------- 下拉菜单 --------------*/
+.dropMenu {
+	position:absolute;
+	top: 0;
+	z-index:100;
+	width: 120px;
+	visibility: hidden;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#CACACA, direction=135, strength=4);
+	margin-top: -1px;
+	border: 1px solid #93E1EB;
+	border-top: 0px solid #3CA2DC;
+	background-color: #FFF;
+	background:url(../images/mmenubg.gif);
+	padding-top:6px;
+	padding-bottom:6px;
 }
 
-/*---------- frame : channel-nav ---------*/
-.channel-nav{
-	height:31px;
-	border-bottom:1px solid #E5EFD6;
+.dropMenu li {
+	margin-top:2px;
+	margin-bottom:4px;
+	padding-left:6px;
 }
-.channel-nav ul{
+.dropMenu a {
+	width: auto;
+	display: block;
+	color: black;
+	padding: 2px 0 2px 1.2em;
+}
+* html .dropMenu a {
+	width: 100%;
+}
+.dropMenu a:hover {
+	color:red;
+	text-decoration: underline;
+}
+/*------ //搜索框 ---------*/
+.search-keyword {
+	width:160px;
+	height:19px;
+	padding-top:5px;
+	padding-left:56px;
+	border:0px;
+	background:url(../images/search-bg.gif) no-repeat;
+}
+.search-submit {
+	cursor:pointer;
+	width:68px;
 	height:22px;
+	font-size:0px;
+	color:#fafafa;
+	border:0px;
+	background:url(../images/search-bt.gif) no-repeat;
+}
+.search-option {
+	margin-left:3px;
+	margin-right:3px;
+	height:22px;
+}
+.w963 .search{
 	padding-left:10px;
-	padding-top:3px;
-	overflow:hidden;
-	float:left;
+	line-height:32px;
 }
-.channel-nav ul li{
-	height:22px;
+.w963 .form h4 {
+	display:none;
+}
+.w963 .form {
 	float:left;
-	overflow:hidden;
 	margin-right:10px;
 }
-.channel-nav ul li a{
-	height:22px;
-	display:block;
-	padding-right:10px;
-	float:left;
-	background:url(../images/channel-nav-bg.gif) right 0px no-repeat;
+.w963 .tags {
+	width:500px;
 	overflow:hidden;
 }
-.channel-nav ul li a span{
-	display:block;
+.w963 .tags h4 {
 	float:left;
-	height:22px;
-	padding-left:10px;
-	background:url(../images/channel-nav-bg.gif) left 0px no-repeat;
-	cursor:pointer;
+	margin-right: 6px;
+	width:66px;
+	height:26px;
+	background:url(../images/search-tags-title.gif) 0px 6px no-repeat;
+	font-size:0px;
+	color:#fafafa;
+}
+.w963 .tags li {
+	float:left;
+	margin-right: 6px;
+}
+.header .nav .end { }
+/*-- //End 导航菜单 --*/
+
+/*---------- frame : channel-nav ---------*/
+.channel-nav {
+	margin-top:8px;
+	border:1px solid #D5ECFB;
+	background:url(../images/navbg.gif) repeat-x;
+	padding-left:6px;
+	width:950px;
 	overflow:hidden;
-	line-height:23px;
-	color:#666666;
 }
-.channel-nav ul li a:hover{
+.channel-nav .sonnav {
+	padding-top:2px;
+	width:830px;
+	line-height:26px;
+	float:left;
+}
+.channel-nav .sonnav span {
+	padding-left:14px;
+	margin-right:8px;
+	background:url(../../images/dd2.gif) 0 1px no-repeat;
+	overflow:hidden;
+}
+.channel-nav .sonnav a {
+	color:#333;
 	text-decoration:none;
-	background:url(../images/channel-nav-bg.gif) right -22px no-repeat;
-}
-.channel-nav ul li a:hover span{
-	color:#78A63C;
-	text-decoration:none;
-	background:url(../images/channel-nav-bg.gif) left -22px no-repeat;
-}
-.channel-nav ul li.thisclass{
-}
-.channel-nav ul li.thisclass a,.channel-nav ul li.thisclass a:hover{
-	background:url(../images/channel-nav-bg.gif) right -44px no-repeat;
-	cursor:default;
-}
-.channel-nav ul li.thisclass a span,.channel-nav ul li.thisclass a:hover span{
-	background:url(../images/channel-nav-bg.gif) left -44px no-repeat;
-	color:#FFF;
-	cursor:default;
 }
 .channel-nav .back{
 	display:block;
@@ -344,7 +423,7 @@ input,select,button{
 	background:url(../images/ico-home.gif) 4px 10px no-repeat;
 } 
 .channel-nav .back a{
-	color:#94B56A;
+	color:#397CBE;
 }
 .channel-nav .back a:hover{
 	text-decoration:none;
@@ -353,8 +432,11 @@ input,select,button{
 
 /*---------- frame : footer ---------*/
 .footer{
+	width:960px;
+	margin:auto;
 	color:#999;
 	text-align:center;
+	margin-top:8px;
 	padding-bottom:10px;
 	border-top:1px solid #E5EFD6;
 	padding-top:10px;
@@ -380,5 +462,4 @@ input,select,button{
 .footer .copyright{
 	color:#666666;
 	line-height:23px;
-
 }

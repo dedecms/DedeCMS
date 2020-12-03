@@ -1,12 +1,22 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 if(empty($uid))
 {
 	$uid = '';
 }
+else
+{
+	$tmpstr = @gb2utf8($uid);
+	$tmpstr2 = @utf82gb($tmpstr);
+	if($tmpstr2==$uid) $uid = $tmpstr;
+}
 if(empty($action))
 {
 	$action = '';
+}
+if(empty($aid))
+{
+	$aid = '';
 }
 
 //会员后台
@@ -16,18 +26,17 @@ if($uid=='')
 	if(!$cfg_ml->IsLogin())
 	{
 		include_once(dirname(__FILE__)."/templets/index-notlogin.htm");
+		exit();
 	}
 	else
 	{
 		$minfos = $dsql->GetOne("Select * From `#@__member_tj` where mid='".$cfg_ml->M_ID."'; ");
 		$minfos['totaluse'] = $cfg_ml->GetUserSpace();
 		$minfos['totaluse'] = number_format($minfos['totaluse']/1024/1024,2);
-		if($cfg_mb_max>0)
-		{
+		if($cfg_mb_max > 0) {
 			$ddsize = ceil( ($minfos['totaluse']/$cfg_mb_max) * 100 );
 		}
-		else
-		{
+		else {
 			$ddsize = 0;
 		}
 
@@ -86,7 +95,7 @@ function space_index(){  }
 ------------------------------*/
 else
 {
-	require_once(DEDEMEMBER."/inc/config_space.php");
+	require_once(DEDEMEMBER.'/inc/config_space.php');
 	if($action == '')
 	{
 		include_once(DEDEINC."/channelunit.func.php");
@@ -125,9 +134,9 @@ else
 			{
 				$last_vid = $uid;
 			}
-			PutCookie('last_vtime',$vtime,3600*24,"/");
-			PutCookie('last_vid',$last_vid,3600*24,"/");
-			if($cfg_ml->IsLogin() && $cfg_ml->M_LoginID!=$uid)
+			PutCookie('last_vtime', $vtime, 3600*24, '/');
+			PutCookie('last_vid', $last_vid, 3600*24, '/');
+			if($cfg_ml->IsLogin() && $cfg_ml->M_LoginID != $uid)
 			{
 				$vip = GetIP();
 				$arr = $dsql->GetOne("Select * From `#@__member_vhistory` where mid='{$_vars['mid']}' And vid='{$cfg_ml->M_ID}' ");
@@ -146,10 +155,12 @@ else
 		}
 		$dpl->LoadTemplate($tplfile);
 		$dpl->display();
+		exit();
 	}
 	else
 	{
-		require_once(DEDEMEMBER."/inc/space_action.php");
+		require_once(DEDEMEMBER.'/inc/space_action.php');
+		exit();
 	}
 }
 

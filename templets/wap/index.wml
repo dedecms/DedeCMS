@@ -1,0 +1,38 @@
+<?php
+$varlist = "cfg_webname,channellist,cfg_templeturl,newartlist";
+ConvertCharset($varlist);
+$pageBody = '<'.'?xml version="1.0" encoding="UTF-8" ?'.">\r\n";
+$pageBody .= "<!DOCTYPE wml PUBLIC '-//WAPFORUM//DTD WML 1.1//EN' 'http://www.wapforum.org/DTD/wml_1.1.xml'>
+<wml>
+  <card id='start' ontimer='#main'>
+		<timer value='10' />
+		<p align='center'>
+		    DedeCms Wap Load...
+		</p>
+  </card> 
+
+  <card id='main' title='{$cfg_webname}'>
+		
+		<p><img src='{$cfg_templeturl}/wap/logo.gif' alt='{$cfg_webname}' /></p>
+		
+		<p>
+                <a href='{$cfg_cmspath}/wap.php'>主页</a>
+                {$channellist}
+                </p>
+		
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		
+		<p>{$newartlist}</p>
+		
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		
+		<p>
+		<a href='http://www.dedecms.com'>Power by DedeCms</a>
+	  Now Time: {$curtime}
+	  </p>
+		
+  </card>
+  
+</wml>
+";
+?>

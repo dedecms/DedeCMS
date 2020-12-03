@@ -3,10 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $cfg_softname." ".$cfg_version; ?></title>
+<title><?php echo $cfg_webname; ?> - <?php echo $cfg_softname." ".$cfg_version; ?></title>
 <link href="img/frame.css" rel="stylesheet" type="text/css" />
 <script src="img/jquery.js" language="javascript" type="text/javascript"></script>
 <script src="img/frame.js" language="javascript" type="text/javascript"></script>
+<script language="javascript">
+function JumpFrame(url1, url2)
+{
+	$('#menufra').get(0).src = url1;
+	$('#main').get(0).src = url2;
+}
+</script>
 </head>
 <body class="showmenu">
 
@@ -30,8 +37,9 @@
 			<ul>
 				<li class="welcome">您好：<?php echo $cuserLogin->getUserName(); ?> ，欢迎使用DEDECMS！</li>
 				<li><a href="index_menu.php" target="menu">主菜单</a></li>
-     		<li><a href="catalog_menu.php" target="menu">内容发布</a></li>
-     		<li><a href="index_body.php" target="main">系统主页</a></li>
+     		<li><a href="#" onclick="JumpFrame('catalog_menu.php','public_guide.php');">内容发布</a></li>
+     		<li><a href="#" onclick="JumpFrame('index_menu.php','content_list.php');">内容维护</a></li>
+     		<li><a href="#" onclick="JumpFrame('index_menu.php','index_body.php');">系统主页</a></li>
      		<li><a href="../index.php?upcache=1" target="_blank">网站主页</a></li>
      		<li><a href="../member" target="_blank">会员中心</a></li>
       	<li><a href="exit.php" target="_top">注销</a></li>
@@ -46,7 +54,9 @@
 	<div class="topnav">
 		<div class="menuact">
 			<a href="#" id="togglemenu">隐藏菜单</a>
-			<a href="#" id="allmenu">功能地图</a>
+			<?php
+			if($cuserLogin->getUserType() >= 10) echo '<a href="#" id="allmenu">功能地图</a>';
+			?>
 		</div>
 		<div class="nav" id="nav">
 		</div>

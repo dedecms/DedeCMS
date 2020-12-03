@@ -1,0 +1,469 @@
+@import url(global.css);
+
+.nminput {
+	width:200px;
+}
+
+#memberhead {
+	width:100%;
+}
+
+#memberhead div {
+	line-height:46px;
+}
+
+#memberfoot{
+	width:100%;
+	text-align:center;
+	margin-top:8px;
+	padding:6px 0px 6px 0px;
+	border-top:1px solid #E7F0C8;
+	border-bottom:2px solid #EDF3D6;
+	font-size:12px;
+	line-height:150%;
+}
+
+#endline {
+	font-size:12px;
+	color:#404134;
+	height:20px;
+	border-bottom:8px solid #EDF3D6;
+	text-align:right;
+	padding:5px 6px 0px 0px;
+}
+
+#memberquick {
+	width:100%;
+	height:32px;
+	border:1px solid #D1DDAA;
+	margin:6px 0px 8px 0px;
+}
+
+#memberquick dl{
+	background:url(nav2bg.gif);
+	height:30px;
+	margin:1px;
+	padding-left:10px;
+}
+
+#memberquick dd{
+	line-height:30px;
+	font-weight:bold;
+	float:left;
+	margin-right:8px;
+}
+
+#memberquick span{
+	padding:3px;
+}
+
+#memberquick span.home{
+	padding-left:16px;
+	background:url(home.gif) no-repeat 0px 1px;
+}
+
+#memberquick span.search{
+	padding-left:16px;
+	background:url(search1.gif) no-repeat 0px 2px;
+}
+
+#memberquick span.caicai{
+	padding-left:16px;
+	background:url(member2.gif) no-repeat 0px 1px;
+}
+
+#memberquick span.dir{
+	padding-left:16px;
+	background:url(dir.gif) no-repeat 0px 1px;
+}
+
+#memberquick span.exit{
+	padding-left:16px;
+	background:url(exit.gif) no-repeat 0px 1px;
+}
+
+#leftmenu {
+	width:21%;
+	float:left;
+}
+
+#rightct
+{
+	width:78%;
+	float:right;
+}
+
+#rightmenu {
+	width:21%;
+	float:right;
+}
+
+#leftct
+{
+	width:78%;
+	float:left;
+}
+
+#leftmenulit {
+	width:16%;
+	float:left;
+}
+
+#rightctlit
+{
+	width:83%;
+	float:right;
+}
+
+
+.tablect{
+	padding:1px;
+}
+
+.maintable {
+	border:1px solid #D1DDAA;
+	width:100%;
+}
+/*-------------------------
+以下是用dl模拟行列关系CSS，用于填写内容的表单
+--------------------------*/
+dl.mt {
+	border-bottom:1px solid #D1DDAA;
+	background:url(tbgnew.gif);
+	height:28px;
+	font-weight:bold;
+	width:100%;
+	line-height:28px;
+	font-size:13px;
+	color:#0D570D;
+}
+dd.mt1 {
+	float:left;
+	width:30%;
+	padding-left:3px;
+}
+dd.mt2 {
+	float:right;
+	padding-right:6px;
+}
+
+dl.tr0 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #D1DDAA;
+}
+
+dl.tr1 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #D1DDAA;
+	height:28px;
+	line-height:28px;
+}
+
+dl.tr2 {
+	width:100%;
+	background:#F5FBE1;
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #D1DDAA;
+	height:28px;
+	line-height:28px;
+}
+
+dl.tr5 {
+	width:100%;
+	background: #E1F3A3;
+	border-bottom:1px solid #D1DDAA;
+	height:28px;
+	line-height:28px;
+}
+dl.tr5 dd{
+	font-weight:bold;
+}
+
+dl.tr31 {
+	width:100%;
+	background:#ffffff;
+	border-top:1px solid #ffffff;
+	height:35px;
+	padding-top:12px;
+}
+
+dl.tr32 {
+	width:100%;
+	background:#F3FFDD;
+	border-top:1px solid #ffffff;
+	height:35px;
+	padding-top:12px;
+}
+
+dd.tdl {
+  color:#264215;
+  float:left;
+  width:20%;
+  padding-left:3px;
+}
+
+dd.tdl2 {
+  font-weight:bold;
+  color:#666666;
+  float:left;
+  width:30%;
+  padding-left:3px;
+}
+
+dd.tdr {
+  float:left;
+}
+
+dd.tdr2 {
+  float:left;
+  width:20%;
+}
+
+dd.tdr3 {
+  float:left;
+  width:10%;
+}
+
+dd.tdr5 {
+  float:left;
+  width:78%;
+}
+
+/*------------
+其它css
+-------------*/
+.enumselect {
+	width:90px;
+}
+
+div.trckbox
+{
+	width:15%;
+	float:left;
+}
+
+dd.title
+{
+	color:#666666;
+	padding:3px;
+	font-size:13px;
+	font-weight:bold;
+}
+
+dd.textinfo
+{
+	padding:3px;
+	line-height:150%;
+	font-size:12px;
+}
+
+.upbox {
+	margin:0px 0px 8px 0px;
+	width:100%;
+}
+
+.mpagebg {
+	background:url(yybg.gif) #EEF7D2;
+	text-align:center;
+	font-weight:bold;
+	padding:3px;
+}
+
+.mpagelistbg {
+	background:url(yybg.gif) #EEF7D2;
+	text-align:center;
+	padding:3px;
+}
+
+.gdt2 {
+  background:url(tbg.gif) no-repeat;
+  padding-left:20px;
+  line-height:26px;
+  font-weight:bold;
+  margin-bottom:3px;
+  width:98%;
+}
+
+.upbox dt {
+	border:1px solid #D1DDAA;
+	padding:5px 0px 5px 6px;
+	font-weight:bold;
+	background:url(yybg.gif) #EEF7D2;
+}
+
+.upbox dd {
+	border-right:1px solid #D1DDAA;
+	border-bottom:1px solid #D1DDAA;
+	border-left:1px solid #D1DDAA;
+	padding:6px;
+}
+
+#usersta {
+	margin:8px 0px 8px 0px;
+	padding:3px 0px 3px 20px;
+	background:url(menumember.gif) no-repeat #F8FCC5 3px 4px;
+	font-weight:bold;
+}
+
+dl.menubox {
+	border:1px solid #D1DDAA;
+	background:url(tbgnew24.gif) repeat-x;
+	width:100%;
+	margin-bottom:8px;
+}
+
+dl.menubox dt {
+	border-left:1px solid #ffffff;
+	border-right:1px solid #ffffff;
+	border-top:1px solid #ffffff;
+	height:26px;
+	line-height:26px;
+	font-size:13px;
+	padding-left:3px;
+	font-weight:bold;
+}
+
+dl.menubox dt span
+{
+	background:url(dd.gif) no-repeat 0px 0px;
+	padding-left:16px;
+}
+
+dl.menubox dd
+{
+	border-left:1px solid #ffffff;
+	border-right:1px solid #ffffff;
+	overflow:auto;
+}
+dl.menubox p
+{
+  line-height:180%;
+  margin:0px;
+  padding:8px 0px 6px 6px;
+}
+dl.menubox dd.p2
+{
+  margin:0px;
+  padding:6px 0px 6px 6px;
+}
+
+.menubox div.fdiv
+{
+	margin:0px;
+	padding:0px;
+	float:left;
+	padding:3px 0px 3px 18px;
+	background:url(fdir.gif) no-repeat 0px 2px;
+}
+
+.menubox div.fdivlit
+{
+	margin:0px;
+	padding:0px;
+	padding:3px 0px 3px 18px;
+	background:url(fdir.gif) no-repeat 0px 2px;
+}
+
+.menubox div.fdiv3
+{
+	margin:0px;
+	padding:0px;
+	float:left;
+	padding:3px 0px 3px 18px;
+	background:url(pmdir.gif) no-repeat 0px 2px;
+}
+
+.menubox div.fdiv4
+{
+	margin:0px;
+	padding:0px;
+	float:left;
+	padding:3px 0px 3px 18px;
+	background:url(fdirm.gif) no-repeat 0px 2px;
+}
+
+.menubox div.fdiv2
+{
+	float:left;
+	padding:3px 0px 3px 18px;
+	background:url(dir2.gif) no-repeat 0px 2px;
+}
+
+.menubox div.s1
+{
+	width:42%;
+}
+
+.menubox div.ediv
+{
+	padding:3px 0px 3px 20px;
+	background:url(dir2.gif) no-repeat 0px 2px;
+}
+
+.menubox div.adiv
+{
+	padding:3px 0px 3px 20px;
+	background:url(dir3.gif) no-repeat 0px 2px;
+}
+
+.option2
+{
+	background-color:#DEE1D9;
+	color:#8B9777;
+}
+
+th {
+ text-align:center;
+ font-weight:bold;
+ color:#2F591A;
+ font-size:12px;
+}
+
+.tcenter {
+	text-align:center;
+}
+
+.tdline {
+	border-bottom:1px dashed #99C46A;
+}
+
+.waitpage {
+  top:0;
+  left:0;
+  filter:Alpha(opacity=70);
+  -moz-opacity:0.7;
+  position:absolute;
+  z-index:10000;
+  background:url(./loading1.gif) #ababab no-repeat center 200px;
+  width:100%;
+  height:2500px;
+  display:none;
+}
+
+.divpre {
+	filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);
+}
+
+.searchitem {
+  border-bottom:1px solid #C7CF63;
+  background:#FDFEF5;
+  padding:3px;
+  margin-top:6px;
+  clear:both;
+	height:60px
+}
+
+.searchitem li{
+	float:left;
+	padding-right:6px;
+}
+
+.searchitem li.pic{
+	width:60px;
+	padding-left:6px;
+}
+

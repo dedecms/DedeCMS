@@ -1,8 +1,5 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
+if(!defined('DEDEINC')) exit('Request Error!');
 
 function plus_spacenewart(&$atts,&$refObj,&$fields)
 {
@@ -13,9 +10,11 @@ function plus_spacenewart(&$atts,&$refObj,&$fields)
 	FillFields($atts,$fields,$refObj);
 	extract($atts, EXTR_OVERWRITE);
 
-	$query = "Select arc.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
+	$query = "Select arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
 		tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
-		from `#@__archives` arc left join `#@__arctype` tp on arc.typeid=tp.id
+		from `#@__archives` arc
+		left join `#@__arctype` tp on arc.typeid=tp.id
+		left join `#@__mtypes` mt on mt.mtypeid=arc.mtype
 		where arc.mid='{$_vars['mid']}' and arc.channel=$channel
 		order by id desc limit 0,$row";
 

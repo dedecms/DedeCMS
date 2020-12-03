@@ -71,59 +71,62 @@ function checkSubmit()
                 <td align="right" valign="top">作者：</td>
                 <td><input type="text" name="writer" id="writer" size="30" class="text" value="<?php echo $row['writer']; ?>" /></td>
               </tr>
-              <?php if($cInfos['dfcid']>0)
-      {
-      	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
-      }
-      else
-      {
-      ?>
+              <?php
+              if($cInfos['dfcid']>0) {
+              	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
+              }else{
+              ?>
               <tr>
                 <td align="right" valign="top">隶属栏目：</td>
                 <td><?php
     $typeOptions = GetOptionList($row["typeid"],$row["channel"]);
-    echo "<select name='typeid' style='width:350px' size='1'>\r\n";
+    echo "<select name='typeid' size='1'>\r\n";
     echo $typeOptions;
     echo "</select>";
 		?>
-                  (只允许并且必须选择白色背景的项目<font color="#FF0000">*</font>) </td>
+                  <font color="#FF0000">*</font>(不能选择带颜色的分类) </td>
               </tr>
+              <?php
+            	}
+              ?>
               <tr>
-                <td align="right" valign="top">隶属分类：</td>
-                <td><?php
-                $typeOptions = classification("$cfg_ml->M_ID",$row['mtypeid']);
-                echo "<select name='mtypesid' style='width:350px' size='1'>\r\n";
+                <td align="right" valign="top">我的分类：</td>
+                <td>
+              <?php
+                $typeOptions = classification($cfg_ml->M_ID, $row['mtypeid'], $channelid);
+                echo "<select name='mtypesid' size='1'>\r\n";
                 echo "<option value='0' selected>请选择分类...</option>\r\n";
                 echo $typeOptions;
                 echo "</select>";
-    		?></td>
-              </tr>
-              <?php
-      }
-      ?>
-              <tr>
+    		    ?>
+    		    </td>
+            </tr>
+             <?php
+              if($cInfos['needdes']==1) {
+              ?>
+             <tr>
                 <td align="right" valign="top">内容摘要：</td>
                 <td><textarea name="description" id="description" style="height:50px"><?php echo $row["description"]; ?></textarea>
                   (内容的简要说明) </td>
               </tr>
+              <?php
+            	}
+              if($cInfos['needpic']==1) {
+              ?>
               <tr>
                 <td align="right" valign="top">缩略图：</td>
                 <td><input class="file" name="litpic" type="file" id="litpic" style="width:408px" onchange="SeePicNew('divpicview',this);"  />
                   <div id='divpicview' class='divpre'></div></td>
               </tr>
-              <?php if($row['litpic']!=''){ ?>
+              <?php
+              if($row['litpic']!=''){
+              ?>
               <tr>
                 <td align="right" valign="top">原来的缩略图：</td>
                 <td><div id='divpicview' class='divpre mTB10 litPic'> <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>'  /></div></td>
               </tr>
               <?php
-      }
-      ?>
-              <tr>
-                <td align="left" valign="top"><strong>详细内容：</strong></td>
-                <td><?php GetEditor("body",$addRow['body'],350,"Member"); ?></td>
-              </tr>
-              <?php
+            	}}
       //自定义字段
       PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
       ?>

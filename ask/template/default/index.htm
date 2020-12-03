@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:global.nav /} - powered by dedecms</title>
+<link href="template/default/style/ask_base.css" rel="stylesheet" type="text/css" />
+<link href="template/default/style/ask_index.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--顶部全站导航-->
+<div class="headTop">{dede:include file='headmenu.htm' /}</div>
+<div class="toplogo cbody margintop">
+  <div class="logobox"><img src="template/default/images/toplogo.gif" width="279" height="43" alt="问答系统" /></div>
+</div>
+<div class="topbox cbody margintop">
+  <div class="menu">
+    <ul>
+      <li><a href="./">问答首页</a></li>
+      <li><a href="type.php">全部分类</a></li>
+      <li><a href="browser.php?lm=1">精彩问题</a></li>
+      <li class="menuright"></li>
+    </ul>
+  </div>
+  <div class="search">
+    <form action="search.php?action=search" method="post">
+      <input type="text" name="q" value="" class="searchinput" />
+      <input name="" type="submit" value="搜索答案" class="submit" />
+      <input onclick="location.href='post.php'" name="按钮" type="button" class="postqa" value="我要提问" />
+    </form>
+  </div>
+</div>
+<div class="main cbody margintop">
+  <!--左侧分类-->
+  <div class="leftclass">
+    <div class="title">问题分类</div>
+    <div class="classbox">
+      <?php
+$temp = 0;
+foreach($asktypes as $asktype)
+{
+	if($asktype['reid'] == 0) {
+		if($temp > 0) echo "</dd></dl>\n";
+		echo "<dl><dt>\n<a href=\"browser.php?tid=".$asktype['id'].'">'.$asktype['name']."</a></dt>\n<dd>";
+		$temp++;
+	} else {
+		echo ' <a href="browser.php?tid2='.$asktype['id'].'">'.$asktype['name']."</a>\n";
+	}
+}
+echo "</dd></dl>\n";
+?>
+    </div>
+  </div>
+  <!--中间列表-->
+  <div class="mlist">
+    <!--推荐问题-->
+    <div class="tjbox">
+      <div class="title"><a href="browser.php?lm=1">推荐问题</a></div>
+      <div class="tlist">
+        <dl>
+          {dede:ask row='8' titlelen='40' sort='expiredtime'}
+          <dd> <span class="tclass">[{dede:field.typedata /}]</span> <span class="tlink"><a href="question.php?id={dede:field.id /}">{dede:field.title /}</a></span> </dd>
+          {/dede:ask}
+        </dl>
+      </div>
+    </div>
+    <!--待解决问题-->
+    <div class="qalist margintop">
+      <dl>
+        <dt><a href="browser.php?lm=2">待解决的问题</a></dt>
+        {dede:ask row='8' titlelen='40' sort='notok'}
+        <dd> <span class="tclass">[{dede:field.typedata /}]</span> <span class="tlink"><a href="question.php?id={dede:field.id /}">{dede:field.title /}</a></span> </dd>
+        {/dede:ask}
+      </dl>
+    </div>
+    <!--新解决问题-->
+    <div class="qalist margintop">
+      <dl>
+        <dt><a href="browser.php?lm=3">新解决的问题</a></dt>
+        {dede:ask row='8' titlelen='40' sort='ok'}
+        <dd> <span class="tclass">[{dede:field.typedata /}]</span> <span class="tlink"><a href="question.php?id={dede:field.id /}">{dede:field.title /}</a></span> </dd>
+        {/dede:ask}
+      </dl>
+    </div>
+    <!--高分悬赏问题-->
+    <div class="qalist margintop">
+      <dl>
+        <dt><a href="browser.php?lm=4">高分悬赏问题</a></dt>
+        {dede:ask row='8' titlelen='40' sort='reward'}
+        <dd> <span class="tclass">[{dede:field.typedata /}]</span> <span class="tlink"><a href="question.php?id={dede:field.id /}">{dede:field.title /}</a></span> </dd>
+        {/dede:ask}
+      </dl>
+    </div>
+  </div>
+  <!--右侧列表-->
+  <div class="pright">
+    <!--统计信息-->
+    <div class="rlist">
+      <dl class="askcount">
+        <dd><span>全部的问题：</span><?php echo $solvingnum+$solvednum; ?> 条</dd>
+        <dd><span>已解决问题：</span><?php echo $solvednum; ?> 条</dd>
+        <dd><span>未解决问题：</span><?php echo $solvingnum; ?> 条</dd>
+      </dl>
+    </div>
+    <!--总积分排行-->
+    <div class="rlist margintop">
+      <div class="rtitle">总积分排行</div>
+      <div class="rbox paihang">
+        <dl>
+          {dede:memberlist orderby='scores' row='20'}
+          <dd> <span class="name"><a href="../member/index.php?uid={dede:field.userid /}">{dede:field.userid /}</a></span> <span class="jifen"><img src="template/default/images/ico_23.gif" />{dede:field.scores /}</span> </dd>
+          {/dede:memberlist}
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="floatclear">
+    <!--清除浮动-->
+  </div>
+</div>
+{dede:include file='foot.htm' /}
+</body>
+</html>

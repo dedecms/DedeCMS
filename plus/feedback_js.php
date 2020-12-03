@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/../include/common.inc.php");
+if($cfg_feedback_forbid=='Y') exit("document.write('系统已经禁止评论功能！');\r\n");
 require_once(DEDEINC."/datalistcp.class.php");
-
 if(isset($arcID))
 {
 	$aid = $arcID;
@@ -17,7 +17,7 @@ $querystring = "select fb.*,mb.userid,mb.face as mface,mb.spacesta,mb.scores fro
                  where fb.aid='$aid' and fb.ischeck='1' order by fb.id desc";
 $dlist = new DataListCP();
 $dlist->pageSize = 6;
-$dlist->SetTemplet($cfg_basedir.$cfg_templets_dir."/plus/feedback_templet_js.htm");
+$dlist->SetTemplet(DEDETEMPLATE.'/plus/feedback_templet_js.htm');
 $dlist->SetSource($querystring);
 $dlist->display();
 

@@ -12,6 +12,7 @@ if($dopost!='save')
 {
 	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
 	require_once(DEDEINC."/dedetag.class.php");
+	ClearMyAddon();
 	$aid = intval($aid);
 
 	//读取归档信息
@@ -141,7 +142,7 @@ else if($dopost=='save')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$id";
 	}
-
+	ClearMyAddon($id, $title);
 	//返回成功信息
 	$msg = "
     　　请选择你的后续操作：

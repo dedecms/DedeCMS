@@ -44,7 +44,7 @@ if($dopost=="save")
 	{
 		if(ereg("^edit___",$k))
 		{
-			$v = cn_substrR(${$k},500);
+			$v = cn_substrR(${$k}, 1024);
 		}
 		else
 		{
@@ -64,6 +64,11 @@ else if($dopost=='add')
 	if($vartype=='bool' && ($nvarvalue!='Y' && $nvarvalue!='N'))
 	{
 		ShowMsg("布尔变量值必须为'Y'或'N'!","-1");
+		exit();
+	}
+	if(trim($nvarname)=='' || eregi('[^a-z_]', $nvarname) )
+	{
+		ShowMsg("变量名不能为空并且必须为[a-z_]组成!","-1");
 		exit();
 	}
 	$row = $dsql->GetOne("Select varname From `#@__sysconfig` where varname like '$nvarname' ");

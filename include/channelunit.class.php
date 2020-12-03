@@ -29,7 +29,8 @@ class ChannelUnit
 		$this->ChannelID = $cid;
 		$this->ArcID = $aid;
 		$this->dsql = $GLOBALS['dsql'];
-		$this->ChannelInfos = $this->dsql->GetOne(" Select * from `#@__channeltype` where id='$cid' ");
+		$sql = " Select * from `#@__channeltype` where id='$cid' ";
+		$this->ChannelInfos = $this->dsql->GetOne($sql);
 		if(!is_array($this->ChannelInfos))
 		{
 			echo '读取频道信息失败，无法进行后续操作！';
@@ -88,7 +89,7 @@ class ChannelUnit
 	}
 
 	//处理某个字段的值
-	function MakeField($fname,$fvalue,$addvalue='')
+	function MakeField($fname, $fvalue, $addvalue='')
 	{
 		if($fvalue=='')
 		{

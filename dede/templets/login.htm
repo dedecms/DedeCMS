@@ -42,6 +42,7 @@
     <form name="form1" method="post" action="login.php">
       <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>" />
       <input type="hidden" name="dopost" value="login" />
+      <input name='adminstyle' type='hidden' value='newdedecms' />
       <ul>
         <li><span>用户名：</span>
           <input type="text" name="userid" class="text" />
@@ -49,11 +50,6 @@
         <li><span>密&nbsp;&nbsp;&nbsp;码：</span>
           <input type="password" name="pwd" class="text" />
         </li>
-        <li><span>后台风格：</span>
-          <input name='adminstyle' type='radio' value='newdedecms' class='radio' checked='1' />
-          宽屏
-          <input name='adminstyle' type='radio' value='dedecms' class='radio' />
-          传统</li>
         <li><span>验证码：</span>
           <input name="validate" type="text" id="vdcode" style='width:50px;text-transform:uppercase;' class="text" />
           <img id="vdimgck" src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></li>

@@ -92,7 +92,8 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	$keyword = trim($keyword);
 	$innertext = trim($innertext);
 
-	$tablewidth=$ctag->GetAtt("tablewidth");
+	$tablewidth=$ctag->GetAtt('tablewidth');
+	$writer=$ctag->GetAtt('writer');
 	if($tablewidth=="") $tablewidth = 100;
 	if(empty($col)) $col = 1;
 	$colWidth = ceil(100/$col);
@@ -114,6 +115,11 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 	{
 		if($orderby=='near' && $cfg_keyword_like=='N') { $keyword=''; }
 
+		if($writer=='this') {
+			$wmid =  isset($refObj->Fields['mid']) ? $refObj->Fields['mid'] : 0;
+			$orwheres[] = " arc.mid = '$wmid' ";
+		}
+		
 		//时间限制(用于调用最近热门文章、热门评论之类)，这里的时间只能计算到天，否则缓存功能将无效
 		if($subday > 0)
 		{
@@ -135,7 +141,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 			for($i=0; isset($flags[$i]); $i++) $orwheres[] = " FIND_IN_SET('{$flags[$i]}', arc.flag)>0 ";
 		}
 
-		if(!empty($typeid))
+		if(!empty($typeid) && $typeid != 'top')
 		{
 			//指定了多个栏目时，不再获取子类的id
 			if( ereg(',', $typeid) )
@@ -196,7 +202,21 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 
 		if(!empty($channelid)) $orwheres[] = " And arc.channel = '$channelid' ";
 
-		if(!empty($noflag)) $orwheres[] = " FIND_IN_SET('$noflag', arc.flag)<1 ";
+		if(!empty($noflag))
+		{
+			if(!ereg(',', $noflag))
+			{
+				$orwheres[] = " FIND_IN_SET('$noflag', arc.flag)<1 ";
+			}
+			else
+			{
+				$noflags = explode(',', $noflag);
+				foreach($noflags as $noflag) {
+					if(trim($noflag)=='') continue;
+					$orwheres[] = " FIND_IN_SET('$noflag', arc.flag)<1 ";
+				}
+			}
+		}
 
 		$orwheres[] = ' arc.arcrank > -1 ';
 
@@ -347,11 +367,13 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid=0, $row=10, $col=1, $titlelen
 				{
 					foreach($dtp2->CTags as $k=>$ctag)
 					{
-						if($ctag->GetName()=='array') {
+						if($ctag->GetName()=='array')
+						{
 							//传递整个数组，在runphp模式中有特殊作用
 							$dtp2->Assign($k,$row);
 						}
-						else {
+						else
+						{
 							if(isset($row[$ctag->GetName()])) $dtp2->Assign($k,$row[$ctag->GetName()]);
 							else $dtp2->Assign($k,'');
 						}

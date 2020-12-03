@@ -27,7 +27,7 @@ function MakeUpload()
    var endNum =  Number(document.form1.picnum.value)+startNum;
    if(endNum>40) endNum = 40;
    for(startNum;startNum<=endNum;startNum++){
-	   upfield.innerHTML += "<input type='file' name='upfile"+startNum+"' style='width:300'/><br/>";
+	   upfield.innerHTML += "<input type='file' name='upfile"+startNum+"' style='width:300px' size='30' class='pubinputs' /><br/>";
    }
 }
 function ResetUpload()
@@ -109,11 +109,11 @@ function ResetUpload()
           <tr> 
             <td align="center" bgcolor="#FFFFFF">&nbsp;</td>
             <td bgcolor="#FFFFFF">
-			<input name="upfile1" type="file" id="upfile1" style='width:300px' /><br/>
-			<input name="upfile2" type="file" id="upfile2" style='width:300px' /><br/>
-			<input name="upfile3" type="file" id="upfile3" style='width:300px' /><br/>
-			<input name="upfile4" type="file" id="upfile4" style='width:300px' /><br/>
-			<input name="upfile5" type="file" id="upfile5" style='width:300px' /><br/>
+			<input name="upfile1" type="file" id="upfile1" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile2" type="file" id="upfile2" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile3" type="file" id="upfile3" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile4" type="file" id="upfile4" style='width:300px' size='30' class='pubinputs' /><br/>
+			<input name="upfile5" type="file" id="upfile5" style='width:300px' size='30' class='pubinputs' /><br/>
             <span id='uploadfield'></span>
 			 </td>
           </tr>

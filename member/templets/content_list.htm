@@ -32,8 +32,7 @@ function delArc(aid){
               <input class="text" type='text' name='keyword' value='<?php echo $keyword?>' style='width:140px' />
               <button class="button2" type="submit">提交</button>
             </div>
-            <div class="fRight" style="margin-top:3px">
-              <?php
+            <div class="fRight" style="padding-right:10px"><?php
             	echo "<select  name='mtypesid' onchange='location.href=this.value' size='1'>\r\n";
             	echo "<option value='0'>请选择分类...</option>\r\n";
                 echo "<option value='content_list.php?channelid=$channelid'>所有文章</option>\r\n";
@@ -70,12 +69,14 @@ if(trim($fields['litpic'])!='')
               <td align="center"><?php echo $fields['typename']; ?></td>
               <td align="center"><?php
 if($fields['arcrank']>=0) echo "已审核";
+else if($fields['arcrank']==-2) echo "<font color='blue'>被退回</font>";
 else echo "<font color='red'>未审核</font>";
 ?></td>
               <td align="center"><?php echo $fields['click']; ?></td>
               <td><?php echo GetDateMk($fields['senddate']); ?></td>
-              <td align="center"><?php
-if($fields['arcrank']<0 || $arcsta!=-1)
+              <td align="center">
+<?php
+if($fields['arcrank']<0 || $dtime - $fields['senddate'] < $maxtime)
 {
 ?>
                 <a href="javascript:editArc(<?php echo $fields['id']?>,<?php echo $fields['channel']?>);">修改</a> | <a href="javascript:delArc(<?php echo $fields['id']?>);">删除</a> |

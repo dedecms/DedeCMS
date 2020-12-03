@@ -12,10 +12,10 @@
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-              {dede:channel type='son' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='son' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -55,7 +55,7 @@ document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" cod
 document.write('<param name="movie" value="{dede:global.cfg_templeturl/}/images/bcastr3.swf"><param name="quality" value="high">');
 document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
 document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'">');
-document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'& menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>'); 
+document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'& menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>');
 </script>
 		</div><!-- /flashnews -->
 		<div class="topcommand">
@@ -76,7 +76,7 @@ document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wm
 				</dd>
 			</dl>
 		</div><!-- /topcommand -->
-		
+
 		<div class="picnews mt1">
 			<dl class="tbox">
 				<dt><strong>图文资讯</strong></dt>
@@ -88,7 +88,7 @@ document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wm
 				</dd>
 			</dl>
 		</div><!-- /picnews -->
-		
+
 		<div class="listbox">
 	{dede:channelartlist}
       <dl class="tbox">
@@ -104,7 +104,7 @@ document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wm
 	{/dede:channelartlist}
 		</div><!-- /listbox -->
 	</div><!-- /pleft -->
-	
+
 	<div class="pright">
 		<div class="commend">
 			<dl class="tbox">
@@ -120,7 +120,7 @@ document.write('<embed src="{dede:global.cfg_templeturl/}/images/bcastr3.swf" wm
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-		
+
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>

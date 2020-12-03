@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset;?>" />
+<title><?php echo $navtitle;?>- powered by dedecms</title>
+<link href="template/default/style/ask_base.css" rel="stylesheet" type="text/css" />
+<link href="template/default/style/ask_view.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="<?php echo $cfg_cmspath?>/include/dedeajax2.js"></script>
+<script language="JavaScript">
+function quickSubmit(event) {
+	if (event.ctrlKey && event.keyCode == 13) {
+		answer.submit()
+	}
+}
+function checkform(f,des) {
+	if(f.content.value=="") {
+		alert("请输入您的"+des);
+		f.content.focus();
+		return false;
+	}
+}
+function creply(flag){ if (flag=="yes") {document.getElementById('replytb').style.display=""; }if(flag=="no"){document.getElementById('replytb').style.display="none"; }location.hash="here";}
+function fixreply(flag){ setTimeout("creply('"+flag+"')",300);}
+
+function rate(divid,id,type){
+	var taget_obj = document.getElementById(divid);
+	var myajax = new DedeAjax(taget_obj,false,false,"","","");
+	myajax.SendGet2("<?php echo $cfg_cmspath?>/ask/post.php?action=rate&id="+id+"&type="+type);
+	DedeXHTTP = null;
+}
+</script>
+</head>
+<body>
+<!--顶部全站导航-->
+<div class="headTop">{dede:include file='headmenu.htm' /}</div>
+<div class="toplogo cbody margintop">
+  <div class="logobox"><img src="template/default/images/toplogo.gif" width="279" height="43" alt="问答系统" /></div>
+</div>
+<div class="topbox cbody margintop">
+  <div class="menu">
+    <ul>
+      <li><a href="./">问答首页</a></li>
+      <li><a href="type.php">全部分类</a></li>
+      <li><a href="browser.php?lm=1">精彩问题</a></li>
+      <li class="menuright"></li>
+    </ul>
+  </div>
+  <div class="search">
+    <form action="search.php?action=search" method="post">
+      <input type="text" name="q" value="" class="searchinput"/>
+      <input name="" type="submit" value="搜索答案" class="submit"/>
+      <input onclick="location.href='post.php'" name="按钮" type="button" class="postqa" value="我要提问"/>
+    </form>
+  </div>
+</div>
+<div class="main cbody margintop">
+  <!--左侧-->
+  <div class="pleft">
+    <!--位置导航-->
+    <div class="thisplace"> <?php echo $nav?> </div>
+    <!--问题-->
+    <div class="question margintop">
+      <!--问题标题-->
+      <div class="title">
+        <h3><img src="template/default/images/<?php echo $question['status']?>" width="23" height="23" /><?php echo $question['title']; ?></h3>
+      </div>
+      <!--问题内容-->
+      <div class="content">
+        <?php
+echo $question['content'].'<br />';
+if($question['extra'] != ''){
+	echo '<b>问题补充：</b>'.$question['extra'].'<br /><br />';
+}
+?>
+        <?php
+if($question['dbstatus'] == 0 && $publisher != 1 && $myanswer != 1)
+{
+?>
+        <a onclick="location.hash='reply';" href="#" class="answerbutton">回答这个问题</a>
+        <?php
+}elseif($question['dbstatus'] == 0 && $uid == $question['uid'])
+{
+?>
+        <a href='javascript:void(0)'  onclick=window.open('post.php?action=extra&amp;id=<?php echo $id; ?>','_new','width=450,height=300,scrollbars=1');>问题补充</a>：可以对您的提问补充细节，以得到更准确的答案；<br />
+        <a href='javascript:void(0)'  onclick=window.open('post.php?action=upreward&amp;id=<?php echo $id; ?>','_new','width=450,height=300,scrollbars=1');>提高悬赏</a>：提高悬赏分，以提高问题的关注度；<br />
+        <a href='javascript:void(0)'  onclick=window.open('post.php?action=toend&amp;id=<?php echo $id; ?>','_new','width=1,height=1,scrollbars=0');>无满意答案</a>：没有满意的回答，还可直接结束提问，关闭问题。<br />
+        <?php
+}
+?>
+      </div>
+      <!--相关信息-->
+      <div class="questioninfo">
+        <dl>
+          <dd>提问者：
+            <?php
+		if($question['anonymous'] == 1) {
+			echo '匿名';
+		}else {
+			echo $question['username'];
+		}
+		?>
+          </dd>
+          <dd>等级：<span><?php echo $question['honor'];?></span></dd>
+          <dd>时间：<span><?php echo $question['dateline'];?></span></dd>
+          <dd>悬赏：<span><?php echo $question['reward']; ?></span></dd>
+          <?php
+if($question['dbstatus'] == 0){
+	echo '<dd>离问题结束还有 '.$question['toendday'].' 天 '.$question['toendhour'].' 小时</dd>';
+}else{
+	echo '<dd>解决时间：'.$question['solvetime'].'</dd>';
+}
+?>
+        </dl>
+      </div>
+    </div>
+    <!--最佳答案-->
+    <?php
+if(!empty($digestanswer)) {
+	echo '<div class="better margintop">';
+	echo '<div class="boxtitle">最佳答案</div>';
+	echo '<div class="answer">';
+	echo $digestanswer['content'].'<br />';
+	if($digestanswer['brief']){
+		echo '参考资料：'.$digestanswer['brief'];
+	}
+	echo '</div>';
+	echo '<div class="answerinfo"><dl>';
+	echo '<dd>回答者：';
+	if($digestanswer['anonymous'] == 1) {
+		echo '匿名';
+	}else {
+		echo $digestanswer['username'];
+	}
+	echo '</dd>';
+	echo '<dd>等级：<span>'.$digestanswer['honor'].'</span></dd>';
+	echo '<dd>时间：<span>'.$digestanswer['dateline'].'</span></dd>';
+	echo '</dl></div>';
+?>
+    <!--评分-->
+    <div class="mark" id="mark">
+      <dl>
+        <dt><strong>您觉得最佳答案好不好？ </strong><br>
+          目前有 <?php echo $ratenum; ?> 个人评价</dt>
+        <dd> <a href="#"  onclick="rate('mark',<?php echo $digestanswer['id']; ?>,'good')"><img src="template/default/images/mark_g.gif" width="14" height="16" />好</a> <span><?php echo $goodrateper; ?>% (<?php echo $goodrate; ?>)</span> </dd>
+        <dd> <a href="#"  onclick="rate('mark',<?php echo $digestanswer['id']; ?>,'bad')"><img src="template/default/images/mark_b.gif" width="14" height="16" />不好</a> <span><?php echo $badrateper; ?>% (<?php echo $badrate; ?>)</span> </dd>
+      </dl>
+    </div>
+    <?php
+if($publishercomment){
+?>
+    <div class="rebetter">
+      <dl>
+        <dt>提问者对最佳回答的评论：</dt>
+        <dd> <?php echo $publishercomment['content']?> </dd>
+      </dl>
+    </div>
+    <?php
+}
+echo '</div>';
+
+if($comments){
+	echo '<div class="replyto margintop">';
+	echo '<div class="boxtitle">对最佳答案的评论    共 '.$commentnum.' 条</div>';
+
+	foreach($comments as $comment)
+	{//评论循环 start
+		echo '<div class="answer">';
+		echo $comment['content'].'<br />';
+		echo '</div>';
+		echo '<div class="answerinfo"><dl><dd>评论者：';
+		echo $comment['username'];
+		echo '</dd></dl></div>';
+	}//评论循环 end
+	echo '</div>';
+}
+
+}
+
+if($answers){
+	echo '<div class="replyto margintop">';
+	if(!empty($digestanswer)){
+		echo '<div class="boxtitle">其它回答 ';
+	}else{
+		echo '<div class="boxtitle">回答 ';
+	}
+	echo ' 共 '.$answernum.' 条</div>';
+
+	foreach($answers as $answer)
+	{//回答循环 start
+		echo '<div class="answer">';
+		if($answer['uid'] == $uid && $question['dbstatus'] == 0){
+			echo "<a name=\"here\" /><input class=\"psub\" type=\"button\" value=\"修改答复\" onClick=\"fixreply('yes');\" /><br />";
+		}
+		echo $answer['content'].'<br />';
+		if($answer['brief']){
+			echo '参考资料：'.$answer['brief'].'<br />';
+		}
+		if($publisher && $question['dbstatus'] == 0){
+
+			echo "<a name=\"here\" /><input class=\"psub\" type=\"button\" value=\"采纳为答案\" onClick=\"window.open('post.php?action=adopt&amp;id=".$answer['id']."','_new','width=650,height=450,scrollbars=1')\" />";
+		}
+		echo '</div>';
+		echo '<div class="answerinfo"><dl><dd>回答者：';
+		if($answer['anonymous'] == 1) {
+			echo '匿名';
+		}else {
+			echo $answer['username'];
+		}
+		echo '</dd><dd>等级：'.$answer['honor'].'</span></dd><dd>时间：'.$answer['dateline'].'</span></dd></dl></div>';
+		if($answer['uid'] == $uid && $question['dbstatus'] == 0){
+?>
+    <div id="replytb" style="display:none;" style="margin-left:20px">
+    <form name="myform" method="post" action="post.php?action=modifyanswer&amp;id=<?php echo $answer['id']; ?>" onsubmit="return checkform(this,'回答');">
+      <input type="hidden" name="step" value="2" />
+      <input type="hidden" name="backurl" value="question.php?id=<?php echo $id; ?>" />
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr valign="top">
+          <td width="90" nowrap class="f14">修改答复：</td>
+          <td><table width="100%" border=0 cellspacing=0 cellpadding=0>
+              <tr>
+                <td nowrap><span class="f14"><?php echo $username; ?>，您要修改的答复如下:</span> </td>
+                <td align=right nowrap></td>
+              </tr>
+            </table>
+            <textarea name="content" cols="45" rows="10" style="margin-top:10px;"><?php echo $answer['dbcontent']; ?></textarea>
+            <br>
+            回答字数10000字以内<br>
+            <br>
+          </td>
+        </tr>
+        <tr valign="top">
+          <td nowrap class="f14">参考资料：</td>
+          <td><input name="brief" type="text" size="50" value="<?php echo $answer['brief']; ?>">
+            <br>
+            如果您的回答是从其他地方引用，请表明出处。</td>
+        </tr>
+        <tr valign="top">
+          <td>&nbsp;</td>
+          <td><br>
+            <input type="submit"  class="psub" name="d" value="提交修改" >
+            <a href="javascript:fixreply('no');" ><font color=#777777>关闭</font></a></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <?php
+		}
+	}//回答循环 end
+	echo '</div>';
+}
+
+if(!empty($digestanswer)){//对最佳答案的评论 start
+?>
+  <form action="post.php?action=comment&id=<?php echo $digestanswer['id'];?>" method="post" onsubmit = "return checkform(this,'评论内容');">
+    <div class="refer margintop">
+      <div class="referbox">
+        <dl>
+          <dt>对最佳答案的评论:</dt>
+          <dd>
+            <textarea name="content" cols="50" rows="6" style="width:88%"></textarea>
+            <br>
+            评论字数200字以内 </dd>
+        </dl>
+        <div class="psubmit">
+          <input type="submit"  value="提交评论" class="bnsrh">
+        </div>
+      </div>
+    </div>
+  </form>
+  <?php
+}//对最佳答案的评论 end
+
+if($question['dbstatus'] == 0 && $publisher == 0 && $myanswer == 0)
+{//我来回答 start
+?>
+  <form method="post" name="answer" action="post.php?action=answer&amp;id=<?php echo $question['id']; ?>" onsubmit="return checkform(this,'回答');">
+    <div class="refer margintop">
+      <div class="referbox">
+        <dl>
+          <dt><a name="reply"></a>我也来回答：</dt>
+          <dd>
+            <textarea name="content" cols="50" rows="10" onkeydown="quickSubmit(event);"  style="width:97%;" tabindex="4"></textarea>
+          </dd>
+          <dd>回答即可得2分，回答被采纳则获得悬赏分以及奖励20分。</dd>
+        </dl>
+        <dl>
+          <dt>参考资料：</dt>
+          <dd>
+            <input name="brief" type="text" size="50"  onkeydown="quickSubmit(event);" tabindex="5">
+          </dd>
+          <dd>如果您的回答是从其他地方引用，请表明出处。 </dd>
+        </dl>
+        <div class="psubmit">
+          <input type="submit"  value="提交回答" class="bnsrh" tabindex="6">
+          <input type="checkbox" name="anonymous" value="1" style="margin-left:40px;" tabindex="7">
+          匿名回答 </div>
+      </div>
+    </div>
+  </form>
+  <?php
+}//我来回答 end
+
+?>
+</div>
+<!--右侧列表-->
+<div class="pright">
+  <!--快到期问题-->
+  <div class="rlist">
+    <div class="rtitle">快到期问题</div>
+    <div class="rbox wtlist">
+      <ul>
+        <?php
+foreach($expiredasks as $expiredask)
+{
+	echo '<li><a href="question.php?id='.$expiredask['id'].'">'.$expiredask['title'].'</a></li>';
+}
+?>
+      </ul>
+    </div>
+  </div>
+  <!--总积分排行-->
+  <div class="rlist margintop">
+    <div class="rtitle">总积分排行</div>
+    <div class="rbox paihang">
+      <dl>
+        <?php
+foreach($topmembers as $topmember)
+{
+	$typedata = ' <a href="../member/index.php?uid='.$topmember['userid'].'">'.$topmember['userid'].'</a>';
+
+	echo '<dd><span class="name">'.$typedata.'</span><span class="jifen"><img src="template/default/images/ico_23.gif" /> '.$topmember['scores'].'</span></dd>';
+}
+?>
+      </dl>
+    </div>
+  </div>
+</div>
+<div class="floatclear">
+  <!--清除浮动-->
+</div>
+</div>
+{dede:include file='foot.htm' /}
+</body>
+</html>

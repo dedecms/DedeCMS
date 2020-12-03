@@ -3,9 +3,9 @@
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
 
-$verMsg = ' V5.3.1 UTF8';
+$verMsg = ' V5.5 UTF8';
 $s_lang = 'utf-8';
-$dfDbname = 'dedecmsv53utf8';
+$dfDbname = 'dedecmsv55utf8';
 $errmsg = '';
 $insLockfile = dirname(__FILE__).'/install_lock.txt';
 $moduleCacheFile = dirname(__FILE__).'/modules.tmp.inc';
@@ -24,7 +24,7 @@ foreach(Array('_GET','_POST','_COOKIE') as $_request)
 
 require_once(DEDEINC.'/common.func.php');
 
-if( file_exists(dirname(__FILE__).'/install_lock.txt') )
+if(file_exists($insLockfile))
 {
 	exit(" 程序已运行安装，如果你确定要重新安装，请先从FTP中删除 install/install_lock.txt！");
 }
@@ -75,7 +75,7 @@ else if($step==2)
         '/plus/*',
         '/dede/*',
         '/data/*',
-        '/html/*',
+        '/a/*',
         '/install',
         '/special',
         '/uploads/*'
@@ -260,9 +260,9 @@ else if($step==4)
 	mysql_query($adminquery,$conn);
 	
 	//关连前台会员帐号
-	$adminquery = "INSERT INTO `{$dbprefix}member` (`mid`,`mtype`,`userid`,`pwd`,`uname`,`sex`,`rank`,`uprank`,`money`,`upmoney`,`email`,
+	$adminquery = "INSERT INTO `{$dbprefix}member` (`mid`,`mtype`,`userid`,`pwd`,`uname`,`sex`,`rank`,`money`,`email`,
 	               `scores` ,`matt` ,`face`,`safequestion`,`safeanswer` ,`jointime` ,`joinip` ,`logintime` ,`loginip` )
-               VALUES ('1','个人','$adminuser','".md5($adminpwd)."','$adminuser','男','100','0','0','0','','10000','10','','0','','".time()."','','".time()."',''); ";
+               VALUES ('1','个人','$adminuser','".md5($adminpwd)."','$adminuser','男','100','0','','10000','10','','0','','".time()."','','0',''); ";
  	mysql_query($adminquery,$conn);
 
  	$adminquery = "INSERT INTO `{$dbprefix}member_person` (`mid`,`onlynet`,`sex`,`uname`,`qq`,`msn`,`tel`,`mobile`,`place`,`oldplace`,`birthday`,`star`,

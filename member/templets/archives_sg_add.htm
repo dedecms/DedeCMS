@@ -59,13 +59,11 @@ function checkSubmit()
                 <td width="81%" colspan="3" bgcolor="#FFFFFF"><input name="title" type="text" id="title" size="30" class="nb" style='width:250px' />
                   <font color="#FF0000">*</font> </td>
               </tr>
-              <?php if($cInfos['dfcid']>0)
-      {
-      	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
-      }
-      else
-      {
-      ?>
+              <?php
+              if($cInfos['dfcid']>0) {
+              	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
+              }else{
+              ?>
               <tr>
                 <td height="28" align="center" bgcolor="#F7FDF0">隶属栏目：</td>
                 <td colspan="3" bgcolor="#F7FDF0"><?php
@@ -82,7 +80,7 @@ function checkSubmit()
                 <td colspan="3"  class='tdline'><input name="litpic" type="file" id="litpic" style="width:300px" onchange="SeePicNew('divpicview',this);"  />
                   <div id='divpicview' class='divpre'></div></td>
               </tr>
-              <?php
+     <?php
       }
       //自定义字段
       PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
@@ -93,7 +91,7 @@ function checkSubmit()
               <tr>
                 <td align="right" valign="top">验证码：</td>
                 <td><input class="text" name="vdcode" type="text" id="vdcode" size="10" style='width:50px;text-transform:uppercase;' />
-                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" /></td>
+                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></td>
               </tr>
               <?php
       }

@@ -1,18 +1,81 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-if(empty($dopost))
-{
-	$dopost = '';
-}
-if(empty($fmdo))
-{
-	$fmdo = '';
-}
+if(empty($dopost)) $dopost = '';
+if(empty($fmdo)) $fmdo = '';
 
+/*********************
+function check_email()
+*******************/
+if($fmdo=='sendMail')
+{
+	CheckRank(0,0);
+	if( !CheckEmail($cfg_ml->fields['email']) )
+	{
+		ShowMsg('你的邮箱格式有错误！', '-1');
+		exit();
+	}
+	if($cfg_ml->fields['spacesta'] != -10)
+	{
+		ShowMsg('你的帐号不在邮件验证状态，本操作无效！', '-1');
+		exit();
+	}
+	$userhash = md5($cfg_cookie_encode.'--'.$cfg_ml->fields['mid'].'--'.$cfg_ml->fields['email']);
+  $url = $cfg_basehost.(empty($cfg_cmspath) ? '/' : $cfg_cmspath)."/member/index_do.php?fmdo=checkMail&mid={$cfg_ml->fields['mid']}&userhash={$userhash}&do=1";
+  $url = eregi_replace('http://', '', $url);
+  $url = 'http://'.eregi_replace('//', '/', $url);
+  $mailtitle = "{$cfg_webname}--会员邮件验证通知";
+  $mailbody = '';
+  $mailbody .= "尊敬的用户，您好：\r\n";
+  $mailbody .= "欢迎注册成为[{$cfg_webname}]的会员。\r\n";
+  $mailbody .= "要通过注册，还必须进行最后一步操作，请点击或复制下面链接到地址栏访问这地址：\r\n\r\n";
+  $mailbody .= "{$url}\r\n\r\n";
+  $mailbody .= "Power by http://www.dedecms.com 织梦内容管理系统！\r\n";
+  
+	$headers = "From: ".$cfg_adminemail."\r\nReply-To: ".$cfg_adminemail;
+	if($cfg_sendmail_bysmtp == 'Y' && !empty($cfg_smtp_server))
+	{		
+		$mailtype = 'TXT';
+		require_once(DEDEINC.'/mail.class.php');
+		$smtp = new smtp($cfg_smtp_server,$cfg_smtp_port,true,$cfg_smtp_usermail,$cfg_smtp_password);
+		$smtp->debug = false;
+		$smtp->sendmail($cfg_ml->fields['email'], $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
+	}
+	else
+	{
+		@mail($cfg_ml->fields['email'], $mailtitle, $mailbody, $headers);
+	}
+	
+	ShowMsg('成功发送邮件，请稍后登录你的邮箱进行接收！', '-1');
+	exit();
+}
+else if($fmdo=='checkMail')
+{
+	$mid = intval($mid);
+	if(empty($mid))
+	{
+		ShowMsg('你的效验串不合法！', '-1');
+		exit();
+	}
+	$row = $dsql->GetOne("Select * From `#@__member` where mid='{$mid}' ");
+	$needUserhash = md5($cfg_cookie_encode.'--'.$mid.'--'.$row['email']);
+	if($needUserhash != $userhash)
+	{
+		ShowMsg('你的效验串不合法！', '-1');
+		exit();
+	}
+	if($row['spacesta'] != -10)
+	{
+		ShowMsg('你的帐号不在邮件验证状态，本操作无效！', '-1');
+		exit();
+	}
+	$dsql->ExecuteNoneQuery("Update `#@__member` set spacesta=0 where mid='{$mid}' ");
+	ShowMsg('操作成功，请重新登录系统！', 'login.php');
+	exit();
+}
 /*********************
 function Case_user()
 *******************/
-if($fmdo=='user')
+else if($fmdo=='user')
 {
 
 	//检查用户名是否存在
@@ -23,13 +86,41 @@ if($fmdo=='user')
 		$uid = trim($uid);
 		if($cktype==0)
 		{
-			$msgtitle='用户昵称';
+			$msgtitle='用户笔名';
 		}
 		else
 		{
+			#api{{
+			if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+			{
+				$ucresult = uc_user_checkname($uid);
+				if($ucresult > 0)
+				{
+					echo "<font color='#4E7504'><b>√用户名可用</b></font>";
+				}
+				elseif($ucresult == -1)
+				{
+					echo "<font color='red'><b>×用户名不合法</b></font>";
+				}
+				elseif($ucresult == -2)
+				{
+					echo "<font color='red'><b>×包含要允许注册的词语</b></font>";
+				}
+				elseif($ucresult == -3)
+				{
+					echo "<font color='red'><b>×用户名已经存在</b></font>";
+				}
+				exit();
+			}
+			#/aip}}			
 			$msgtitle='用户名';
 		}
-		$msg = CheckUserID($uid,$msgtitle);
+		if($cktype!=0 || $cfg_mb_wnameone=='N') {
+			$msg = CheckUserID($uid, $msgtitle);
+		}
+		else {
+			$msg = CheckUserID($uid, $msgtitle, false);
+		}
 		if($msg=='ok')
 		{
 			$msg = "<font color='#4E7504'><b>√{$msgtitle}可以使用</b></font>";
@@ -46,13 +137,31 @@ if($fmdo=='user')
 	else  if($dopost=="checkmail")
 	{
 		AjaxHead();
+		
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+		{
+			$ucresult = uc_user_checkemail($email);
+			if($ucresult > 0) {
+				echo "<font color='#4E7504'><b>√可以使用</b></font>";
+			} elseif($ucresult == -4) {
+				echo "<font color='red'><b>×Email 格式有误！</b></font>";
+			} elseif($ucresult == -5) {
+				echo "<font color='red'><b>×Email 不允许注册！</b></font>";
+			} elseif($ucresult == -6) {
+				echo "<font color='red'><b>×该 Email 已经被注册！</b></font>";
+			}
+			exit();
+		}
+		#/aip}}	
+		
 		if($cfg_md_mailtest=='N')
 		{
 			$msg = "<font color='#4E7504'><b>√可以使用</b></font>";
 		}
 		else
 		{
-			if(!eregi("^[0-9a-z][a-z0-9\.-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$",$email))
+			if(!CheckEmail($email))
 			{
 				$msg = "<font color='#4E7504'><b>×Email格式有误</b></font>";
 			}
@@ -74,51 +183,45 @@ if($fmdo=='user')
 	//引入注册页面
 	else if($dopost=="regnew")
 	{
-
+		
 		require_once(dirname(__FILE__)."/reg_new.php");
 		exit();
 	}
-
-	//申请升级
-	else if($dopost=="uprank")
+  /***************************
+  //积分换金币
+  function money2s() {  }
+  ***************************/
+	else if($dopost=="money2s")
 	{
 		CheckRank(0,0);
-		if(empty($uptype))
+		if($cfg_money_scores==0)
 		{
-			ShowMsg("数据无效！","-1");
+			ShowMsg('系统禁用了积分与金币兑换功能！', '-1');
 			exit();
 		}
-		$uptype = GetAlabNum($uptype);
-		if($uptype < $cfg_ml->M_Rank)
-		{
-			ShowMsg("类型不对，你的级别比你目前申请的级别还要高！","-1");
-			exit();
-		}
-		$dsql->SetQuery("update `#@__member` set `uprank`='$uptype' where mid='".$cfg_ml->M_ID."' ");
-		$dsql->Execute();
-		ShowMsg("成功申请升级，请等待管理员开通！","index.php?".time());
-		exit();
-	}
-
-	//升级金币
-	else if($dopost=="addmoney")
-	{
-		CheckRank(0,0);
-		$svali = GetCkVdValue();
-		if(strtolower($vdcode)!=$svali || $svali=="")
-		{
-			ResetVdValue();
-			ShowMsg("验证码错误！","-1");
-			exit();
-		}
+		$money = empty($money) ? 0 : intval($money);
 		if(empty($money))
 		{
-			ShowMsg("你没指定要申请多少金币！","-1");
+			ShowMsg('你没指定要兑换多少金币！', '-1');
 			exit();
 		}
-		$dsql->SetQuery("update #@__member set upmoney='$money' where mid='".$cfg_ml->M_ID."'");
-		$dsql->Execute();
-		ShowMsg("成功提交你的申请！","index.php?".time());
+		
+		$needscores = $money * $cfg_money_scores;
+		if($cfg_ml->fields['scores'] < $needscores )
+		{
+			ShowMsg('你你积分不足，不能换取这么多的金币！', '-1');
+			exit();
+		}
+		$litmitscores = $cfg_ml->fields['scores'] - $needscores;
+		
+		//保存记录
+		$mtime = time();
+		$inquery = "INSERT INTO `#@__member_operation`(`buyid` , `pname` , `product` , `money` , `mtime` , `pid` , `mid` , `sta` ,`oldinfo`)
+   		VALUES ('ScoresToMoney', '积分换金币操作', 'stc' , '0' , '$mtime' , '0' , '{$cfg_ml->M_ID}' , '0' , '用 {$needscores} 积分兑了换金币：{$money} 个'); ";
+		$dsql->ExecuteNoneQuery($inquery);
+		//修改积分与金币值
+		$dsql->ExecuteNoneQuery("update `#@__member` set `scores`=$litmitscores, money= money + $money  where mid='".$cfg_ml->M_ID."' ");
+		ShowMsg('成功兑换指定量的金币！', 'operation.php');
 		exit();
 	}
 
@@ -157,7 +260,62 @@ else if($fmdo=='login')
 		}
 
 		//检查帐号
-		$rs = $cfg_ml->CheckUser($userid,$pwd);
+		$rs = $cfg_ml->CheckUser($userid,$pwd);		
+		
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+		{
+			//检查帐号
+			list($uid, $username, $password, $email) = uc_user_login($userid, $pwd);
+			if($uid > 0) {
+				$password = md5($password);
+				//当UC存在用户,而CMS不存在时,就注册一个	
+				if(!$rs) {
+					//会员的默认金币
+					$row = $dsql->GetOne("SELECT `money`,`scores` FROM `#@__arcrank` WHERE `rank`='10' ");
+					$scores = is_array($row) ? $row['scores'] : 0;
+					$money = is_array($row) ? $row['money'] : 0;
+					$logintime = $jointime = time();
+					$loginip = $joinip = GetIP();
+					$res = $dsql->ExecuteNoneQuery("INSERT INTO #@__member SET `mtype`='个人',`userid`='$username',`pwd`='$password',`uname`='$username',`sex`='男' ,`rank`='10',`money`='$money', `email`='$email', `scores`='$scores', `matt`='0', `face`='',`safequestion`='0',`safeanswer`='', `jointime`='$jointime',`joinip`='$joinip',`logintime`='$logintime',`loginip`='$loginip';");
+					if($res) {
+						$mid = $dsql->GetLastID();
+						$data = array
+						(
+						0 => "INSERT INTO `#@__member_person` SET `mid`='$mid', `onlynet`='1', `sex`='男', `uname`='$username', `qq`='', `msn`='', `tel`='', `mobile`='', `place`='', `oldplace`='0' ,
+								 `birthday`='1980-01-01', `star`='1', `income`='0', `education`='0', `height`='160', `bodytype`='0', `blood`='0', `vocation`='0', `smoke`='0', `marital`='0', `house`='0',
+			           `drink`='0', `datingtype`='0', `language`='', `nature`='', `lovemsg`='', `address`='',`uptime`='0';",
+						1 => "INSERT INTO `#@__member_tj` SET `mid`='$mid',`article`='0',`album`='0',`archives`='0',`homecount`='0',`pagecount`='0',`feedback`='0',`friend`='0',`stow`='0';",
+						2 => "INSERT INTO `#@__member_space` SET `mid`='$mid',`pagesize`='10',`matt`='0',`spacename`='{$uname}的空间',`spacelogo`='',`spacestyle`='person', `sign`='',`spacenews`='';",
+						3 => "INSERT INTO `#@__member_flink` SET `mid`='$mid', `title`='织梦内容管理系统', `url`='http://www.dedecms.com';"
+						);						
+						foreach($data as $val) $dsql->ExecuteNoneQuery($val);
+					}
+				}
+				$rs = 1;
+				$row = $dsql->GetOne("SELECT `mid`, `pwd` FROM #@__member WHERE `userid`='$username'");
+				if(isset($row['mid']))
+				{
+					$cfg_ml->PutLoginInfo($row['mid']);
+					if($password!=$row['pwd']) $dsql->ExecuteNoneQuery("UPDATE #@__member SET `pwd`='$password' WHERE mid='$row[mid]'");
+				}
+				//生成同步登录的代码
+				$ucsynlogin = uc_user_synlogin($uid);
+			} elseif($uid == -1) {
+				//当UC不存在该用而CMS存在,就注册一个.
+				if($rs) {
+					$row = $dsql->GetOne("SELECT `email` FROM #@__member WHERE userid='$userid'");					
+					$uid = uc_user_register($userid, $pwd, $row['email']);
+					if($uid > 0) $ucsynlogin = uc_user_synlogin($uid);
+				} else {
+					$rs = -1;
+				}
+			} else {
+				$rs = -1;
+			}
+		}
+		#/aip}}		
+		
 		if($rs==0)
 		{
 			ShowMsg("用户名不存在！","-1",0,2000);
@@ -189,6 +347,12 @@ else if($fmdo=='login')
 	else if($dopost=="exit")
 	{
 		$cfg_ml->ExitCookie();
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+		{
+			$ucsynlogin = uc_user_synlogout();
+		}
+		#/aip}}
 		ShowMsg("成功退出登录！","index.php",0,2000);
 		exit();
 	}

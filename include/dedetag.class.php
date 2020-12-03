@@ -128,6 +128,12 @@ class DedeTagParse
 		$this->CTags = '';
 		$this->Count=-1;
 	}
+	
+	//强制引用
+	function SetRefObj(&$refObj)
+	{
+		$this->refObj = $refObj;
+	}
 
 	function GetCount()
 	{
@@ -252,19 +258,27 @@ class DedeTagParse
 	function LoadTemplate($filename)
 	{
 		$this->SetDefault();
-		$fp = @fopen($filename,"r") or die(" Template Not Found! ".$filename."<br />");
-		while($line = fgets($fp,1024))
+		if(!file_exists($filename))
 		{
-			$this->SourceString .= $line;
-		}
-		fclose($fp);
-		if($this->LoadCache($filename))
-		{
-			return '';
+			$this->SourceString = " $filename Not Found! ";
+			$this->ParseTemplet();
 		}
 		else
 		{
-			$this->ParseTemplet();
+			$fp = @fopen($filename, "r");
+			while($line = fgets($fp,1024))
+			{
+				$this->SourceString .= $line;
+			}
+			fclose($fp);
+			if($this->LoadCache($filename))
+			{
+				return '';
+			}
+			else
+			{
+				$this->ParseTemplet();
+			}
 		}
 	}
 

@@ -1,12 +1,9 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
-require_once(DEDEINC."/enums.func.php");
+require_once(DEDEINC.'/enums.func.php');
+if(!isset($dopost)) $dopost = '';
 
-if(!isset($dopost))
-{
-	$dopost = '';
-}
 if($dopost=='')
 {
 	if($cfg_ml->M_MbType=='个人')
@@ -26,7 +23,7 @@ if($dopost=='')
 				ShowMsg("系统出错，请联系管理员！","-1");
 				exit();
 			}
-			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' ");
+			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' And spacesta > -1 ");
 		}
 		include(DEDEMEMBER."/templets/edit_info_person.htm");
 	}
@@ -45,9 +42,15 @@ if($dopost=='')
 				ShowMsg("系统出错，请联系管理员！","-1");
 				exit();
 			}
-			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' ");
+			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' And spacesta > -1 ");
 		}
 		include(DEDEMEMBER."/templets/edit_info_company.htm");
+		exit();
+	}
+	else
+	{
+		header('location:edit_baseinfo.php');
+		exit();
 	}
 }
 
@@ -58,42 +61,19 @@ if($dopost=='save')
 {
 	if($cfg_ml->M_MbType=='个人')
 	{
-		if(empty($city))
-		{
-			$place = $province;
-		}
-		else
-		{
-			$place = $city;
-		}
-		if(empty($oldcity))
-		{
-			$oldplace = $oldprovince;
-		}
-		else
-		{
-			$oldplace = $oldcity;
-		}
-		if(!isset($nature))
-		{
-			$tnature = '';
-		}
-		else
-		{
-			$tnature = join(',',$nature);
-		}
-		if(!isset($language))
-		{
-			$tlanguage = '';
-		}
-		else
-		{
-			$tlanguage = join(',',$language);
-		}
-		if($birthday=='')
-		{
-			$birthday = '1980-01-01';
-		}
+		if(empty($city)) $place = $province;
+		else $place = $city;
+		
+		if(empty($oldcity)) $oldplace = $oldprovince;
+		else $oldplace = $oldcity;
+		
+		if(!isset($nature)) $tnature = '';
+		else $tnature = join(',',$nature);
+
+		if(!isset($language)) $tlanguage = '';
+		else $tlanguage = join(',',$language);
+		
+		if($birthday=='') $birthday = '1980-01-01';
 		
 		$uname = HtmlReplace($uname,2);
 		$uname = HtmlReplace($uname,2);
@@ -121,7 +101,9 @@ if($dopost=='save')
 			ShowMsg("保存信息时发生错误，请联系管理员！".$dsql->GetError(),'javascript:;');
 			exit();
 		}
-		$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' ");
+		if($cfg_ml->M_Spacesta >= 0) {
+			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' And spacesta < 2 ");
+		}
 		ShowMsg("成功修改你的资料！",'edit_fullinfo.php');
 		exit();
 	}
@@ -140,14 +122,12 @@ if($dopost=='save')
 				@unlink($cfg_basedir.$oldcomface);
 			}
 			//上传新工图片
-			$comface = MemberUploads('comface','',$cfg_ml->M_ID,'image','comface',200,80);
+			$comface = MemberUploads('comface', '', $cfg_ml->M_ID, 'image', 'comface', 600, 450);
 		}
 		else
 		{
 			$comface = $oldcomface;
 		}
-
-
 
 		if(empty($city))
 		{
@@ -177,8 +157,15 @@ if($dopost=='save')
 			ShowMsg("保存信息时发生错误，请联系管理员！".$dsql->GetError(),'javascript:;');
 			exit();
 		}
-		$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' ");
+		if($cfg_ml->M_Spacesta >= 0) {
+			$dsql->ExecuteNoneQuery("update `#@__member` set spacesta=2 where mid='{$cfg_ml->M_ID}' And spacesta < 2 ");
+		}
 		ShowMsg("成功修改你的企业资料！",'edit_fullinfo.php');
+	}
+	else
+	{
+		ShowMsg('系统没提供 '.$cfg_ml->M_MbType.' 用户的详细信息数据接口！', '-1');
+		exit();
 	}
 }
 ?>

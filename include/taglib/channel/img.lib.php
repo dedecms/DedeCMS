@@ -95,10 +95,10 @@ function ch_img($fvalue,&$arcTag,&$refObj,$fname='')
 			{
 				$fields['width'] = $maxwidth;
 			}
-			if($fields['text']=='')
-			{
-				$fields['text'] = '图片'.($GLOBAL['photoid']+1);
-			}
+			//if($fields['text']=='')
+			//{
+				//$fields['text'] = '图片'.($GLOBAL['photoid']+1);
+			//}
 			$fields['alttext'] = str_replace("'",'',$fields['text']);
 			$fields['pagestyle'] = $pagestyle;
 			$dtp2 = new DedeTagParse();
@@ -123,15 +123,19 @@ function ch_img($fvalue,&$arcTag,&$refObj,$fname='')
 					$fields['imgwidth'] = " width='{$fields['width']}' ";
 				}
 				$fields['linkurl'] = $fields['imgsrc'];
-				$fields['textlink'] = "<br /><a href='{$fields['linkurl']}' target='_blank'>{$fields['text']}</a>";
+				if($fields['text']!='') {
+					$fields['textlink'] = "<br /><a href='{$fields['linkurl']}' target='_blank'>{$fields['text']}</a>\r\n";
+				}
+				else {
+					$fields['textlink'] = '';
+				}
 			}
 			else if($pagestyle==3)
 			{
-				$fields['text'] = '';
+				$fields['text'] = $fields['textlink'] = '';
 				$fields['imgsrc'] = $fields['ddimg'];
 				$fields['imgwidth'] = " width='$ddmaxwidth' ";
 				$fields['linkurl'] = "{$GLOBALS['cfg_phpurl']}/showphoto.php?aid={$refObj->ArcID}&src=".urlencode($fields['imgsrctrue'])."&npos={$GLOBAL['photoid']}";
-				$fields['textlink'] = "";
 			}
 			if(is_array($dtp2->CTags))
 			{

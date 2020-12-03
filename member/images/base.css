@@ -338,7 +338,7 @@ a.buttonGary2,
 /* 常用样式
 -------------------------------------------------------------------*/
 .wrapper {
-	max-width: 1270px;
+	max-width: 1060px;
 	min-width: 960px;
 	/*width:960px;*/
 	clear: both;
@@ -346,7 +346,7 @@ a.buttonGary2,
 	margin-left: auto;
 }
 *html .wrapper {
-	width:expression(document.body.clientWidth < 1024? "960px": "1220px" );
+	width:expression(document.body.clientWidth < 1280? "960px": "1060px" );
 }/**/
 
 .clear {
@@ -411,38 +411,24 @@ a.buttonGary2,
 	border: 1px solid #acd98c;
 }
 .lineTB {
-	border-top-width: 1px;
-	border-bottom-width: 1px;
-	border-top-style: solid;
-	border-bottom-style: solid;
-	border-top-color: #acd98c;
-	border-bottom-color: #acd98c;
+	border-top: 1px solid #acd98c;
+	border-bottom: 1px solid #acd98c;
 }
 .lineLR {
-	border-right-width: 1px;
-	border-left-width: 1px;
-	border-right-style: solid;
-	border-left-style: solid;
-	border-right-color: #acd98c;
-	border-left-color: #acd98c;
-}
-.lineT {
-	border-top-width: 1px;
-	border-top-style: solid;
-	border-top-color: #acd98c;
+	border-right: 1px solid #acd98c;
+	border-left: 1px solid #acd98c;
 }
 .lineB {
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #acd98c;
+	border-bottom: 1px solid #acd98c;
 }
 .lineL {
-	border-left-width: 1px;
-	border-left-style: solid;
-	border-left-color: #acd98c;
+	border-left: 1px solid #acd98c;
 }
 .lineR {
-	border-right-width: 1px;
-	border-right-style: solid;
-	border-right-color: #acd98c;
+	border-right: 1px solid #acd98c;
+}
+.indexTitle {
+	height:56px;
+	line-height:56px;
+	border-bottom: 1px dashed #acd98c;
 }

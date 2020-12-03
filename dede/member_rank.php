@@ -38,7 +38,7 @@ if($dopost=='save')
 	}
 	if(isset($check_new))
 	{
-		if($rank_new>0 && $name_new!='' && $money_new!='')
+		if($rank_new > 0 && $name_new != '' && $rank_new > 10)
 		{
 			$inquery = "Insert Into `#@__arcrank`(`rank`,`membername`,`adminrank`,`money`,`scores`,`purviews`) Values('$rank_new','$name_new','5','$money_new','$scores',''); ";
 			$dsql->ExecuteNoneQuery($inquery);
@@ -52,18 +52,9 @@ if($dopost == 'del')
 	ShowMsg("删除成功！","member_rank.php");
 	exit();
 }
-if($dopost == 'concrete')
-{
-	$row = $dsql->GetOne("Select * From `#@__arcrank` where id = '$id'");
-	$k = '1';
-	include DedeInclude('templets/member_rank_concrete.htm');
-	exit();
-}
-else 
-{
-	$dsql->SetQuery("Select * From `#@__arcrank` where rank>0 order by rank");
+
+$dsql->SetQuery("Select * From `#@__arcrank` where rank>0 order by rank");
 $dsql->Execute();
-	include DedeInclude('templets/member_rank.htm');
-}
+include DedeInclude('templets/member_rank.htm');
 
 ?>

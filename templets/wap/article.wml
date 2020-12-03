@@ -1,0 +1,32 @@
+<?php
+$varlist = "cfg_webname,title,channellist,cfg_templeturl,newartlist,writer,typename,body";
+ConvertCharset($varlist);
+$pageBody = '<'.'?xml version="1.0" encoding="UTF-8" ?'.">\n";
+$pageBody .= "
+<!DOCTYPE wml PUBLIC '-//WAPFORUM//DTD WML 1.1//EN' 'http://www.wapforum.org/DTD/wml_1.1.xml'>
+<wml>
+  <card id='index' title='{$title}'>
+		<p><img src='{$cfg_templeturl}/wap/logo.gif' alt='{$cfg_webname}' /></p>
+		<p>
+		<a href='{$cfg_cmspath}/wap.php'>主页</a> &gt;&gt;
+		<a href='wap.php?id={$typeid}&amp;action=list'>{$typename}</a>
+		</p>
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		{$title}
+		<br />
+		时间：{$pubdate} 点击：{$click} 
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		<p>{$body}</p>
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		<p>
+		分类： <a href='{$cfg_cmspath}/wap.php'>主页</a> &gt;&gt; <a href='wap.php?id={$typeid}&amp;action=list'>{$typename}</a>
+		</p>
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		<p>
+		 <a href='http://www.dedecms.com'>Power by DedeCms</a>
+	   Now Time: {$curtime}
+		</p>
+  </card>
+</wml>
+";
+?>

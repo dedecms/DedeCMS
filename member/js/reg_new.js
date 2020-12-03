@@ -1,7 +1,19 @@
 <!--
-$(document).ready(function(){
+$(document).ready(function()
+{
+	//用户类型
+	$('.usermtype').click(function()
+	{
+		if(this.value=='企业') $('#uwname').text('公司名称：');
+		else $('#uwname').text('用户笔名：');
+	});
 	//checkSubmit
-	$('#regUser').submit(function () {
+	$('#regUser').submit(function ()
+	{
+		if(!$('#agree').get(0).checked) {
+			alert("你必须同意注册协议！");
+			return false;
+		}
 		if($('#txtUsername').val()==""){
 			$('#txtUsername').focus();
 			alert("用户名不能为空！");
@@ -41,12 +53,14 @@ $(document).ready(function(){
 		success: function(result){$("#_userid").html(result);}}); 
 	});
 	
+	/*
 	$("#uname").change( function() {
 		$.ajax({type: reMethod,url: "index_do.php",
 		data: "dopost=checkuser&fmdo=user&cktype=0&uid="+$("#uname").val(),
 		dataType: 'html',
 		success: function(result){$("#_uname").html(result);}}); 
 	});
+	*/
 	
 	$("#email").change( function() {
 		var sEmail = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;

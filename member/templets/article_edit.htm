@@ -71,12 +71,13 @@ function checkSubmit()
     echo "<select name='typeid' size='1'>\r\n";
     echo $typeOptions;
     echo "</select>";
-		?></td>
+		?><font color="#FF0000">*</font>(不能选择带颜色的分类) 
+			</td>
               </tr>
               <tr>
-                <td align="right" valign="top">隶属分类：</td>
+                <td align="right" valign="top">我的分类：</td>
                 <td><?php
-                $typeOptions = classification("$cfg_ml->M_ID",$row['mtypeid']);
+                $typeOptions = classification($cfg_ml->M_ID, $row['mtypeid'], $channelid);
                 echo "<select name='mtypesid' size='1'>\r\n";
                 echo "<option value='0' selected>请选择分类...</option>\r\n";
                 echo $typeOptions;

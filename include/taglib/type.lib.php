@@ -32,8 +32,7 @@ function lib_type(&$ctag,&$refObj)
 	}
 	else
 	{
-		$row['typelink'] = GetTypeUrl($row['id'],MfTypedir($row['typedir']),$row['isdefault'],
-		                    $row['defaultname'],$row['ispart'],$row['namerule2'],$row['siteurl'],$row['sitepath']);
+		$row['typelink'] = $row['typeurl'] = GetOneTypeUrlA($row);
 		foreach($dtp->CTags as $tagid=>$ctag)
 		{
 			if(isset($row[$ctag->GetName()])) $dtp->Assign($tagid,$row[$ctag->GetName()]);

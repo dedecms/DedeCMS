@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>VIP会员提示- powered by dedecms</title>
+<style type="text/css">
+<!--
+body{
+	background-color: #F0FCD6; font-size:12px;
+}
+td {
+	font-size:12px;
+}
+.STYLE1 {color: #FF0000}
+-->
+</style></head>
+
+<body>
+<table width="60%" border="0" align="center" cellpadding="6" cellspacing="1" bgcolor="#9BB67E">
+  <tr>
+    <td height="25" bgcolor="#E8F8CF"><strong>书库提示：<span class="STYLE1">当看到此提示表示你正在浏览VIP章节，可能你没有权限。</span></strong></td>
+  </tr>
+  <tr>
+    <td height="150" valign="top" bgcolor="#F8FBE6">
+	<?php
+	if($member_err=='NoLogin'){
+	?>
+	<table width="96%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+        <td height="45">对不起，你尚未登录，请先登录：</td>
+      </tr>
+      <tr>
+        <td height="36">
+		<form name='form1' method='POST' action='../member/index_do.php' style='padding:0px;margin:0px;'>
+        <input type="hidden" name="fmdo" value="login">
+        <input type="hidden" name="dopost" value="login">
+        <input type="hidden" name="gourl" value="<?php  echo GetCurUrl();  ?>">
+		<table width="96%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="26">
+用户名：<input name="userid" type="text" class="login_label" size="16" />
+登录密码：<input name="pwd" type="password" class="login_label" size="16" />
+验证码：<input name="vdcode" type="text" class="login_label1" size="16" />
+<img src="../include/vdimgck.php" />
+<input type="submit" name="Submit2" value="登录" class="login_button01" />
+<a href="../member/index_do.php?fmdo=user&dopost=regnew">注册新会员</a>
+            </td>
+          </tr>
+        </table>
+		</form>
+	</td>
+      </tr>
+    </table>
+	<?php
+	}
+	if($member_err=='NoEnoughMoney')
+	{
+		if($membername!='') $membername = ' <font color=red>'.$membername.'</font> 或';
+	?>
+<table width="96%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+        <td height="45">对不起，阅读本书需要<?php echo $membername; ?>花费 <font color="#CC0000"><?php echo $cfg_book_money; ?></font> 金币，你目前的金币不够：</td>
+      </tr>
+      <tr>
+        <td height="36"><a href="../member/buy.php">◇◆购买金币或升级会员请从这里进入&gt;&gt;</a></td>
+      </tr>
+      <tr>
+        <td height="25">&nbsp;</td>
+      </tr>
+</table>
+	<?php
+	}
+	?>
+   </td>
+  </tr>
+</table>
+</body>
+</html>

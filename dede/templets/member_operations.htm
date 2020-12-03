@@ -87,8 +87,8 @@ function OkSel()
   </tr>
   <tr bgcolor="#F8FBFB">
     <td width="8%" align="center">选择</td>
-    <td width="30%" align="center">订单号</td>
-    <td width="13%" align="center">产品名称</td>
+    <td width="15%" align="center">订单号</td>
+    <td width="28%" align="center">产品名称</td>
     <td width="10%" align="center">产品类型</td>
     <td width="10%" align="center">生成日期</td>
     <td width="8%" align="center">金额</td>
@@ -104,7 +104,9 @@ function OkSel()
         <?php echo $fields['buyid']?>
       </td>
       <td align="center">
-        <?php echo $fields['pname']?>
+        <?php
+        echo $fields['pname'].'('.$fields['oldinfo'].')';
+        ?>
       </td>
       <td align="center">
         <?php echo GetPType($fields['product'])?>

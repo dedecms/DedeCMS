@@ -17,6 +17,7 @@ if($dopost=='ok')
 {
 	$ut = new TypeUnit();
 	$ut->DelType($id,$delfile);
+	UpDateCatCache();
 	ShowMsg("成功删除一个栏目！","catalog_main.php");
 	exit();
 }

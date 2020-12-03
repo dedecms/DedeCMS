@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title><?php echo $title;?><?php echo $lang['group_main_quan'].$lang['group_guestbook_all'];?></title>
+<?php include_once GROUP_TPL.'/header.meta.html';?>
+<style type="text/css">
+<!--
+.gLeft {
+	float:left;
+	width:24.9%;
+}
+.gCenter {
+	display:none;
+}
+.gRight {
+	float:left;
+	width:75%;
+}
+-->
+</style>
+</head>
+<body>
+<?php include_once GROUP_TPL.'/header.html';?>
+<div class="group wrap">
+  <!--group left S -->
+  <div class="gLeft">
+    <div class="module" id="">
+      <div class="top">
+        <div class="t_l"></div>
+      <div class="t_r"></div>
+    <em><?php echo $lang['group_main_quanzi'].$lang['group_main_profile'];?></em>    </div>
+  <div class="mid">
+    <div class="m_l">
+      <div class="m_r">
+        <div id="gInfo" class="content">
+          <h1><a  title="<?php echo $lang['group_main_quanzi'].$lang['group_main_profile'];?>" target="_blank"><?php echo $title;?></a><em>[<?php echo $_GROUPS['hidden'];?>]</em></h1>
+          <img width="80" height="80" class="imgBorder" alt="" id="headPhoto" src="<?php echo $icon;?>"/>
+          <ul>
+            <li id="gSort"><?php echo $lang['group_store'];?>:<?php echo $_GROUPS['store_name'];?></li>
+            <li id="gDistrict"><?php echo $lang['group_topic_creaters'];?>:<?php echo $creater;?></li>
+            <li id="gHost"><?php echo $lang['group_topic_members'];?>:<?php echo $members.$lang['group_topic_people'];?></li>
+            <li id="gTime"><?php echo $lang['group_index_create'];?>:<em><?php echo $_GROUPS['time'];?></em></li>
+          </ul>
+          <dl>
+            <dt><?php echo $lang['group_topic_hits'];?>:</dt>
+            <dd><?php echo $_GROUPS['hits'];?></dd>
+            <dt><?php echo $lang['group_topic_topic'];?>:</dt>
+            <dd><?php echo $_GROUPS['topics'];?></dd>
+            <dt><?php echo $lang['group_main_join'];?>:</dt>
+            <dd><a href="reg.php?id=<?php echo $id;?>" title="<?php echo $lang['group_main_jointhis'];?>"><?php echo $lang['group_index_need_verify'];?></a></dd>
+            <dt><?php echo $lang['group_main_deses'];?>:</dt>
+            <dd><?php echo $des;?></dd>  
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="b_l"></div>
+  <div class="b_r"></div>
+</div>
+</div>
+<div class="module" id="">
+  <div class="top">
+    <div class="t_l">
+  </div>
+  <div class="t_r">
+</div>
+<em><?php echo $lang['group_member_list'];?></em>
+</div>
+<div class="mid">
+  <div class="m_l">
+    <div class="m_r">
+      <div id="member" class="content">
+        <ul>
+          <?php foreach($_GROUPS['members'] as $row) { ?>
+          <li><img alt="<?php echo $row['uname'];?>" class="seniorImg imgBorder" src="<?php echo $row['face'];?>"/><a title="<?php echo $row['uname'];?>" target="_blank" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $row['userid'];?>"><?php echo $row['uname'];?></a></li>
+          <?php } ?>
+        </ul>  
+  <div class="clear"/>
+  <p class="more" title="<?php echo $lang['group_main_more'];?>"><?php echo $lang['group_main_more'];?></p>
+</div></div>
+    </div>
+  </div>
+</div>
+<div class="bottom">
+  <div class="b_l">
+</div>
+<div class="b_r">
+</div>
+</div>
+</div>
+</div>
+<!--group left E -->
+<!--group center S -->
+<div class="gCenter">
+</div>
+<!--group center E -->
+<!--group right S -->
+<div class="gRight">
+<div class="module" id="">
+  <div class="top">
+    <div class="t_l">
+  </div>
+  <div class="t_r">
+</div>
+<em><?php $lang['group_guestbook_message'];?></em>
+</div>
+<div class="mid">
+  <div class="m_l">
+    <div class="m_r">
+<div class="content">
+  <div class="writeTitle"><span style="color:red;"><?php echo $lang['group_notice_13'];?></span></div>
+  <ul class="writeList">
+    {dede:datalist}
+    <?php
+    $row = $fields;
+    $row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+    $topic++;
+    ?>
+    <li>    
+      <div> <span style="padding-right: 5px;"></span> <span> <img alt="<?php echo $row['uname'];?>"  src="<?php echo $row['face'];?>" class="imgBorder" /> </span> <span id="topic_<?php echo $topic;?>"><?php echo $row['title'];?></span> <span class="colorWeak"><a class="linkName" target="_blank" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $row['userid'];?>"><?php echo $row['uname'];?></a></span> <span class="colorWeak"><?php echo Mydate('Y-m-d h:i:s',$row['stime']);?></span>    
+      <span><?php echo $topic.$lang['group_topic_floor'];?></span>      
+      </div>
+      <div class="clear"></div>
+      <div class="box_1"><?php echo $row['message'];?></div>
+      <div class="box_2"><span class="linkFunc">[<a href="javascript:replies(<?php echo $topic;?>);"><?php echo $lang['group_topic_reply'];?></a>] </span>
+      <?php if($ismaster) { ?><span><a href="guestbook.php?id=<?php echo $id;?>&do=del&bid=<?php echo $row['bid'];?>" onClick="return(confirm('<?php echo $lang['group_notice_7'];?>'))">[<?php echo $lang['group_main_del'];?>]</a></span><?php }?>
+      </div>
+      <div class="clear"></div>
+    </li>
+    {/dede:datalist}
+  </ul>
+  <div id="writePag">
+  	{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+  </div>
+  <div id="apply">
+	<script type="text/javascript">
+    function replies(_id)
+	{
+		var _string;
+		_string = document.getElementById("topic_"+_id).innerHTML;
+		document.getElementById("reply_title").value = "[<?php echo $lang['group_topic_reply'];?>"+_id+"<?php echo $lang['group_topic_floor'];?>]"+_string;
+		document.getElementById("group_fast_reply_label").focus();
+	}
+    </script>
+    <form name="form1" action="guestbookform.php?id=<?php echo $id;?>" method="post">
+    <input name="action" type="hidden" value="save">
+      <table cellspacing="0" cellpadding="0" style="border: 0pt none;" id="forum_fast">
+        <thead>
+          <tr>
+            <th><?php echo $lang['group_topic_titles'];?>:</th>
+            <td><input type="text" value="" id="reply_title" maxlength="60" name="subject"/>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th><?php echo $lang['group_main_texts'];?>:</th>
+            <td>
+              <textarea class="group_fast_reply_label" id="group_fast_reply_label" name="text"></textarea>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th><?php echo $lang['group_main_vdcodes'];?>:</th>
+            <td><input name="vdcode" type="text" id="vdcode" style='height:18;width:50px;' size="13"> <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle"> <?php echo $lang['group_notice_8'];?></td>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th/>
+            <td><input type="submit" value="<?php echo $lang['group_main_submit'];?>" /></td>
+          </tr>
+        </tfoot>
+      </table>
+    </form>
+  </div>
+</div>
+	</div>
+  </div>
+</div>
+<div class="bottom">
+  <div class="b_l">
+</div>
+<div class="b_r">
+</div>
+</div>
+</div>
+</div>
+<!--group right E -->
+<div class="clear"></div>
+</div>
+<?php include_once GROUP_TPL.'/footer.html';?>
+</body>
+</html>

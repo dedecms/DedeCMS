@@ -1,11 +1,8 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
+if(!defined('DEDEINC')) exit('Request Error!');
 
 //检查用户名的合法性
-function CheckUserID($uid,$msgtitle='用户名',$ckhas=true)
+function CheckUserID($uid, $msgtitle='用户名', $ckhas=true)
 {
 	global $cfg_mb_notallow,$cfg_mb_idmin,$cfg_md_idurl,$cfg_soft_lang,$dsql;
 	if($cfg_mb_notallow != '')
@@ -59,6 +56,33 @@ function CheckUserID($uid,$msgtitle='用户名',$ckhas=true)
 	return 'ok';
 }
 
+//保存一则消息记录
+function PutSnsMsg($mid, $userid, $msg)
+{
+	global $dsql;
+	$msg = addslashes($msg);
+	$query = "Insert Into `#@__member_snsmsg`(`mid`, `userid`, `sendtime`, `msg`) Values('$mid', '$userid', '".time()."', '$msg'); ";
+	$rs = $dsql->ExecuteNoneQuery($query);
+	return $rs;
+}
+
+//检查用户是否被禁言
+function CheckNotAllow()
+{
+	global $dsql, $cfg_ml, $cfg_mb_spacesta;
+	if(empty($cfg_ml->M_ID)) return ;
+	if($cfg_ml->M_Spacesta == -2)
+	{
+		ShowMsg("你已经被禁言，请与管理员联系！", "-1");
+		exit();
+	}
+	else if($cfg_ml->M_Spacesta < 0)
+	{
+		ShowMsg('系统开启了审核机制，因此你的帐号需要管理员审核后才能发信息！', '-1');
+		exit();
+	}
+}
+
 
 //网站会员登录类
 class MemberLogin
@@ -66,14 +90,12 @@ class MemberLogin
 	var $M_ID;
 	var $M_LoginID;
 	var $M_MbType;
-	var $M_Uprank;
 	var $M_Money;
 	var $M_Scores;
 	var $M_UserName;
 	var $M_Rank;
 	var $M_LoginTime;
 	var $M_KeepTime;
-	var $M_Upmoney;
 	var $M_Spacesta;
 	var $fields;
 	var $isAdmin;
@@ -106,6 +128,20 @@ class MemberLogin
 			$this->fields = $dsql->GetOne("Select * From `#@__member` where mid='{$this->M_ID}' ");
 			if(is_array($this->fields))
 			{
+				#api{{
+				if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+				{
+					if($data = uc_get_user($this->fields['userid']))
+					{
+						if(uc_check_avatar($data[0]) && !strstr($this->fields['face'],UC_API))
+						{
+							$this->fields['face'] = UC_API.'/avatar.php?uid='.$data[0].'&size=middle';
+							$dsql->ExecuteNoneQuery("UPDATE `#@__member` SET `face`='".$this->fields['face']."' WHERE `mid`='{$this->M_ID}'");
+						}
+					}
+				}
+				#/aip}}
+			
 				//间隔一小时更新一次用户登录时间
 				if(time() - $this->M_LoginTime > 3600)
 				{
@@ -114,10 +150,8 @@ class MemberLogin
 				}
 				$this->M_LoginID = $this->fields['userid'];
 				$this->M_MbType = $this->fields['mtype'];
-				$this->M_Uprank = $this->fields['uprank'];
 				$this->M_Money = $this->fields['money'];
 				$this->M_UserName = $this->fields['uname'];
-				$this->M_Upmoney = $this->fields['upmoney'];
 				$this->M_Scores = $this->fields['scores'];
 				$this->M_Rank = $this->fields['rank'];
 				$this->M_Spacesta = $this->fields['spacesta'];
@@ -212,7 +246,6 @@ class MemberLogin
 		$this->M_ID = 0;
 		$this->M_LoginID = '';
 		$this->M_Rank = 0;
-		$this->M_Uprank = 0;
 		$this->M_Money = 0;
 		$this->M_UserName = "";
 		$this->M_LoginTime = 0;
@@ -290,7 +323,7 @@ class MemberLogin
 		}
 
 		//matt=10 是管理员关连的前台帐号，为了安全起见，这个帐号只能从后台登录，不能直接从前台登录
-		$row = $dsql->GetOne("Select mid,matt,pwd From `#@__member` where userid like '$loginuser' ");
+		$row = $dsql->GetOne("Select mid,matt,pwd,logintime From `#@__member` where userid like '$loginuser' ");
 		if(is_array($row))
 		{
 			if($this->GetShortPwd($row['pwd']) != $this->GetEncodePwd($loginpwd))
@@ -304,7 +337,7 @@ class MemberLogin
 					return -2;
 				}
 				else {
-					$this->PutLoginInfo($row['mid']);
+					$this->PutLoginInfo($row['mid'], $row['logintime']);
 					return 1;
 				}
 			}
@@ -316,8 +349,14 @@ class MemberLogin
 	}
 
 	//保存用户cookie
-	function PutLoginInfo($uid)
+	function PutLoginInfo($uid, $logintime=0)
 	{
+		global $cfg_login_adds, $dsql;
+		//登录增加积分(上一次登录时间必须大于两小时)
+		if(time() - $logintime > 7200 && $cfg_login_adds > 0)
+		{
+			$dsql->ExecuteNoneQuery("Update `#@__member` set `scores`=`scores`+{$cfg_login_adds} where mid='$uid' ");
+		}
 		$this->M_ID = $uid;
 		$this->M_LoginTime = time();
 		if($this->M_KeepTime > 0)
@@ -345,18 +384,7 @@ class MemberLogin
 			$row = $dsql->GetOne("Select membername From `#@__arcrank` where rank='".$this->M_Rank."'");
 			$sta .= "你目前的身份是：".$row['membername'];
 		}
-		if($this->M_Uprank>0)
-		{
-			$row = $dsql->GetOne("Select membername From `#@__arcrank` where rank='".$this->M_Uprank."'");
-			$mname = $row['membername'];
-			$sta .= " 正在申请升级为：$mname ";
-		}
-		$sta .= " 拥有金币：{$this->M_Money} 个，积分：{$this->M_Scores} 分";
-		if($this->M_Upmoney>0)
-		{
-			$sta .= "，正在申请 ".$this->M_Upmoney." 个金币";
-		}
-		$sta .= "。";
+		$sta .= " 拥有金币：{$this->M_Money} 个， 积分：{$this->M_Scores} 分。";
 		return $sta;
 	}
 }

@@ -1,0 +1,27 @@
+<?php
+$varlist = "cfg_webname,channellist,cfg_templeturl,newartlist";
+ConvertCharset($varlist);
+$pageBody = '<'.'?xml version="1.0" encoding="UTF-8" ?'.">\n";
+$pageBody .= "
+<!DOCTYPE wml PUBLIC '-//WAPFORUM//DTD WML 1.1//EN' 'http://www.wapforum.org/DTD/wml_1.1.xml'>
+<wml>
+
+  <card id='index' title='{$cfg_webname}'>
+		
+		<p><img src='{$cfg_templeturl}/wap/logo.gif' alt='{$cfg_webname}' /></p>
+		
+		<p><a href='{$cfg_cmspath}/wap.php'>&gt;&gt;返回主页&gt;&gt;</a></p>
+		
+		<p><img src='{$cfg_templeturl}/wap/hr.gif' alt='sp line' /></p>
+		
+		<p>
+		对不起，你访问的参数不正确！
+		<br />
+		<a href='http://www.dedecms.com/wap.php'>Power by DedeCms</a>
+		</p>
+		
+  </card>
+  
+</wml>
+";
+?>

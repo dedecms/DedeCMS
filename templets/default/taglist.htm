@@ -19,7 +19,7 @@
 		</div><!-- /place -->
 		<div class="listbox">
 			<ul class="e2">
-{dede:list pagesize='10'}
+{dede:list orderby='sortrank' pagesize='10'}
 				<li>
       				[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' class='preview'><img src='{@me['litpic']}'/></a>"); [/field:array]
 					<a href="[field:arcurl/]" class="title">[field:title/]</a>

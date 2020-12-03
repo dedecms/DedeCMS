@@ -2,14 +2,14 @@
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 @set_time_limit(0);
 
-$verMsg = ' V5.3 UTF8';
+$verMsg = ' V5.5 UTF8';
 $errmsg = '';
 $insLockfile = dirname(__FILE__).'/install_lock.txt';
 $moduleCacheFile = dirname(__FILE__).'/modules.tmp.inc';
 $moduleDir = DEDEROOT.'/data/module';
 $AdminBaseDir = DEDEROOT.'/dede/';
 
-if( file_exists(dirname(__FILE__).'/install_lock.txt') )
+if(file_exists($insLockfile))
 {
 	exit(" 程序已运行安装，如果你确定要重新安装，请先从FTP中删除 install/install_lock.txt！");
 }

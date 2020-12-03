@@ -54,7 +54,7 @@
 		</script>
       <div class="titleBar bgGaryImg">
         <h5 class="fLeft">好友列表</h5>
-        <span class="fRight"><a href="myfriend.php" title="好友管理">管理</a></span> </div>
+        <span class="fRight" style='margin-top:0px;padding-top:0px;'><a href="myfriend.php" title="好友管理">管理</a></span> </div>
       <dl class="buddy overflow mL10 mR10">
         <dt class="buddySort icon">所有好友</dt>
         <dd class="buddyList">
@@ -67,19 +67,12 @@
             ?>
           </ul>
         </dd>
-        <dt class="buddySort icon">特别关注(0/1)</dt>
-        <dd class="buddyList">
-          <ul>
-            <li class="thickbox"><span class="fLeft icon16 titOffline" title="不在线"></span>刘德华</li>
-          </ul>
-        </dd>
-        <dt class="buddySort icon">黑名单</dt>
       </dl>
       <hr />
       <!--好友搜索 -->
       <div class="buddySearch textCenter">
         <form action="search.php">
-          <input class="text" type="text" name="keyword" value="查找新好友" style="width:150px;" />
+          <input class="text" type="text" name="keyword" value="" style="width:150px;" />
           <button class="button1" type="submit">搜</button>
         </form>
       </div>

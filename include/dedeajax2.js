@@ -39,11 +39,7 @@ function DedeAjax(gcontainer,mShowError,mShowWait,mErrCon,mErrDisplay,mWaitDispl
 	this.keys = Array();
 	this.values = Array();
 	this.keyCount = -1;
-
-	//http请求头
-	this.rkeys = Array();
-	this.rvalues = Array();
-	this.rkeyCount = -1;
+	this.sendlang = 'gb2312';
 
 	//请求头类型
 	this.rtype = 'text';
@@ -59,10 +55,16 @@ function DedeAjax(gcontainer,mShowError,mShowWait,mErrCon,mErrDisplay,mWaitDispl
 	}
 
 	//增加一个POST或GET键值对
+	this.AddKeyN = function(skey,svalue) {
+		if(this.sendlang=='utf-8') this.AddKeyUtf8(skey, svalue);
+		else this.AddKey(skey, svalue);
+	};
+	
 	this.AddKey = function(skey,svalue) {
 		this.keyCount++;
 		this.keys[this.keyCount] = skey;
-		svalue = svalue.replace(/\+/g,'$#$');
+		svalue = svalue+'';
+		if(svalue != '') svalue = svalue.replace(/\+/g,'$#$');
 		this.values[this.keyCount] = escape(svalue);
 	};
 
@@ -70,7 +72,8 @@ function DedeAjax(gcontainer,mShowError,mShowWait,mErrCon,mErrDisplay,mWaitDispl
 	this.AddKeyUtf8 = function(skey,svalue) {
 		this.keyCount++;
 		this.keys[this.keyCount] = skey;
-		svalue = svalue.replace(/\+/g,'$#$');
+		svalue = svalue+'';
+		if(svalue != '') svalue = svalue.replace(/\+/g,'$#$');
 		this.values[this.keyCount] = encodeURI(svalue);
 	};
 
@@ -127,19 +130,19 @@ function DedeAjax(gcontainer,mShowError,mShowWait,mErrCon,mErrDisplay,mWaitDispl
 	//发送http请求头
 	this.SendHead = function()
 	{
+		//发送用户自行设定的请求头
 		if(this.rkeyCount!=-1)
 		{ 
-			for(;i<=this.rkeyCount;i++)
+			for(var i = 0;i<=this.rkeyCount;i++)
 			{
 				DedeXHTTP.setRequestHeader(this.rkeys[i],this.rvalues[i]);
 			}
 		}
-		if(this.rtype=='binary') {
-			DedeXHTTP.setRequestHeader("Content-Type","multipart/form-data");
-		}
-		else {
-			DedeXHTTP.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-		}
+		　if(this.rtype=='binary'){
+		　DedeXHTTP.setRequestHeader("Content-Type","multipart/form-data");
+	}else{
+		DedeXHTTP.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	}
 };
 
 //用Post方式发送数据

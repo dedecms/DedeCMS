@@ -12,10 +12,10 @@
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-              {dede:channel type='son' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>

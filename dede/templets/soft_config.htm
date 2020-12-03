@@ -25,47 +25,88 @@ function AddServer()
         </table></td>
     </tr>
     <tr> 
-      <td valign="top" bgcolor="#FFFFFF">链接显示方式：</td>
-      <td valign="top" bgcolor="#FFFFFF">
+      <td bgcolor="#FFFFFF" width="30%">链接显示方式：</td>
+      <td bgcolor="#FFFFFF">
       	<input type="radio" name="downtype" class="np" value="0"<?php if($row['downtype']==0) echo " checked='checked' ";?>/>
         直接显示地址列表 
         <input name="downtype" type="radio" value="1" class="np"<?php if($row['downtype']==1) echo " checked='checked' ";?>/>
-        要求进入下载地址列表页       </td>
+        要求进入下载地址列表页
+      </td>
     </tr>
     <tr> 
-      <td valign="top" bgcolor="#FFFFFF">附件下载方式：</td>
-      <td valign="top" bgcolor="#FFFFFF">
+      <td bgcolor="#FFFFFF">附件下载方式：</td>
+      <td bgcolor="#FFFFFF">
       	<input type="radio" name="gotojump" class="np" value="0"<?php if($row['gotojump']==0) echo " checked='checked' ";?>/>
         链接到真实软件地址 
         <input name="gotojump" type="radio" class="np" value="1"<?php if($row['gotojump']==1) echo " checked='checked' ";?>/>
-        链接到跳转页面       </td>
+        链接到跳转页面
+      </td>
     </tr>
     <tr> 
-      <td valign="top" bgcolor="#FFFFFF">是否启用镜像站点：</td>
-      <td valign="top" bgcolor="#FFFFFF">
+      <td bgcolor="#FFFFFF">是否启用镜像站点：</td>
+      <td bgcolor="#FFFFFF">
       	<input type="radio" name="ismoresite" class="np" value="1"<?php if($row['ismoresite']==1) echo " checked='checked' ";?>/>
         启用 
         <input name="ismoresite" type="radio" class="np" value="0"<?php if($row['ismoresite']==0) echo " checked='checked' ";?>/>
         不启用       </td>
     </tr>
     <tr> 
-      <td valign="top" bgcolor="#FFFFFF">启用镜像站点后是否保留本地下载：</td>
-      <td valign="top" bgcolor="#FFFFFF">
+      <td bgcolor="#FFFFFF">启用镜像站点后是否保留本地下载：</td>
+      <td bgcolor="#FFFFFF">
       	<input type="radio" name="islocal" class="np" value="1"<?php if($row['islocal']==1) echo " checked='checked' ";?>/>
         保留
         <input name="islocal" type="radio" class="np" value="0"<?php if($row['islocal']==0) echo " checked='checked' ";?>/>
         不保留       </td>
     </tr>
-    <tr bgcolor="#FFFFFF"> 
-      <td colspan="2" valign="top">
-      	如果启用了服务器镜像功能，增加下载地址时，只需要填写本地链接的地址，系统会自动生成镜像服务器的地址。      </td>
+    <tr> 
+      <td bgcolor="#FFFFFF">镜像处理方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="moresitedo" class="np" value="1"<?php if($row['moresitedo']==1) echo " checked='checked' ";?>/>
+        根据本地地址和服务器列表自动生成
+        <input name="moresitedo" type="radio" class="np" value="0"<?php if($row['moresitedo']==0) echo " checked='checked' ";?>/>
+        发布时按服务器生成列表由我手工填写
+      </td>
     </tr>
-    <tr bgcolor="#F1FCEF"> 
-      <td height="26" colspan="2" valign="top" bgcolor="#F7FCE0">
+    <tr> 
+      <td bgcolor="#F1FCEF" colspan='2'><b>不管是全局，还是具体某软件设置了下面的参数，附件下载方式都必须链接到中转页，否则无效！</b></td>
+    </td>
+    <tr> 
+      <td bgcolor="#FFFFFF">下载默认等级：</td>
+      <td bgcolor="#FFFFFF">
+      	<select name="dfrank" id="dfrank" style="width:150px">
+         <?php
+              $urank = $cuserLogin->getUserRank();
+              $dsql->SetQuery("Select * from `#@__arcrank` where `rank`>=0 ");
+              $dsql->Execute();
+              while($nrow = $dsql->GetArray())
+              {
+                	if($nrow['rank']==0) $nrow['membername'] = "开放下载";
+                	if($nrow['rank']==$row['dfrank']) echo "     <option value='{$nrow['rank']}' selected>{$nrow['membername']}</option>\r\n";
+                	else echo "     <option value='{$nrow['rank']}'>{$nrow['membername']}</option>\r\n";
+              }
+         ?>
+        </select>
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">下载默认金币：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="text" name="dfywboy" class="np" value="<?php echo $row['dfywboy']; ?>" style='width:80px;' />
+      </td>
+    </tr>
+    <tr> 
+      <td bgcolor="#FFFFFF">参数限制方式：</td>
+      <td bgcolor="#FFFFFF">
+      	<input type="radio" name="argrange" class="np" value="0"<?php if($row['argrange']==0) echo " checked='checked' ";?>/>允许发布时重新选择权限
+      	<input type="radio" name="argrange" class="np" value="2"<?php if($row['argrange']==1) echo " checked='checked' ";?>/>所有软件均使用此权限
+      </td>
+    </tr>
+    <tr> 
+      <td height="26" colspan="2" bgcolor="#F1FCEF">
       	<strong>镜像服务器列表：      </strong></td>
     </tr>
     <tr> 
-      <td colspan="2" valign="top" bgcolor="#FFFFFF">服务器网址： 
+      <td colspan="2" bgcolor="#FFFFFF">服务器网址： 
         <input name="serverurl" type="text" id="serverurl" value="http://" />
         服务器名称： 
         <input name="servername" type="text" id="servername" />
@@ -76,7 +117,7 @@ function AddServer()
       <td height="62" colspan="2" bgcolor="#FFFFFF"><textarea name="sites" id="sites" style="width:100%;height:150px"><?php echo $row['sites']; ?></textarea></td>
     </tr>
     <tr>
-      <td height="26" colspan="2" bgcolor="#F7FCE0"><strong>下载说明：</strong></td>
+      <td height="26" colspan="2" bgcolor="#F1FCEF"><strong>下载说明：</strong></td>
     </tr>
     <tr> 
       <td height="62" colspan="2" bgcolor="#FFFFFF"><?php GetEditor('downmsg',$row['downmsg'],250); ?></td>

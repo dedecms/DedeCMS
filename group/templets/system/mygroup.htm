@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title>我创建的圈子</title>
+<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+</head>
+<body>
+<?php  include(DEDEMEMBER."./templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main"><?php  include(DEDEMEMBER."./templets/menu.php");?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">我创建的圈子<i>|</i><a href="index.php">圈子频道</a></span><span class="fRight mR10 titPublish icon"><a href="create.php">创建圈子</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mygroup.php">创建的圈子</a></li>
+            <!--<li><a href="myjoin.php">参与的圈子</a></li> -->
+            <li><a href="myjoin.php">我的发帖</a></li>
+          </ul>
+        </div>
+        
+        <div class="mTB10 mL10 mR10">
+          <div class="titleBar bgGrass lineB mB10"><strong>&nbsp;全部圈子</strong><em>(<?php echo $dl->totalResult;?>)</em></div>
+          </div>
+          {dede:datalist}
+          <?php
+				$row = $fields;
+			?>
+            <div class="item">
+            <div class="itemHead" > <div class="fRight">
+            成员<strong class="yellow"><?php echo $row['members'];?></strong>
+            <a class="mL10 mR10" href="mygroup_manage.php?id=<?php echo $row['groupid']?>">[管理]</a>
+            </div>
+             <span class="itemHeadTitle"><strong><a href="../group/group.php?id=<?php echo $row['groupid']?>" target="_blank"><?php echo $row["groupname"]?></a></strong> </span>
+              <div class="itemTip">创建时间:<?php echo GetDateMk($row['stime'])?></div>
+            </div>
+            </div>
+              <hr class="dotted" />
+            {/dede:datalist}
+            <div class="pages fRight mTB10">{dede:pagelist listsize=5 /}</div>
+            <div class="clear"></div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+   <div class="clear"></div>
+  </div>
+</div>
+<?php  include(DEDEMEMBER."./templets/foot.htm");?>
+</body>
+</html>

@@ -27,6 +27,7 @@ if($dopost=='moveok')
 		exit();
 	}
 	$dsql->ExecuteNoneQuery("Update `#@__arctype` set reid='$movetype' where id='$typeid'");
+	UpDateCatCache();
 	ShowMsg('成功移动目录！','catalog_main.php');
 	exit();
 }

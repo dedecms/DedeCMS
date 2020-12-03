@@ -12,10 +12,10 @@
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-              {dede:channel type='son' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='son' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -31,6 +31,7 @@
 {dede:list pagesize='10'}
 				<li>
       				[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' class='preview'><img src='{@me['litpic']}'/></a>"); [/field:array]
+					[<b>[field:typelink/]</b>]
 					<a href="[field:arcurl/]" class="title">[field:title/]</a>
 					<span class="info">
 						<small>日期：</small>[field:pubdate function="GetDateTimeMK(@me)"/]
@@ -46,16 +47,16 @@
 		</div><!-- /listbox -->
 		<div class="dede_pages">
 			<ul class="pagelist">
-             {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+             {dede:pagelist listitem="info,index,end,pre,next,pageno,option" listsize="5"/}
 			</ul>
 		</div><!-- /pages -->
 	</div><!-- /pleft -->
 	
 	<div class="pright">
 		<div class="commend">
-			<dl class="tbox">
-				<dt><strong>推荐内容</strong></dt>
-				<dd>
+			<dl class="tbox light">
+				<dt class='light'><strong>推荐内容</strong></dt>
+				<dd class='light'>
 					<ul class="d4">
            {dede:arclist flag='c' titlelen=42 row=6}
           	<li><a href="[field:arcurl/]">[field:title/]</a>
@@ -66,10 +67,10 @@
 			</dl>
 		</div><!-- /commend -->
 		
-		<div class="hot mt1">
+		<div class="hot mt1 light">
 			<dl class="tbox">
-				<dt><strong>热点内容</strong></dt>
-				<dd>
+				<dt class='light'><strong>热点内容</strong></dt>
+				<dd class='light'>
 					<ul class="c1 ico2">
                     {dede:arclist row=10 orderby=click}
                     	<li><a href="[field:arcurl/]">[field:title/]</a></li>

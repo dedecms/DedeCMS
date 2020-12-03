@@ -6,45 +6,54 @@
 /*--------------------------------------------------
  box base
  ---------------------------------------------*/
+/* 自适应宽度的块(通用块) */
 
-.tbox{/* 自适应宽度的块(通用块) */
-	width:100%;
-	border-bottom:1px solid #C5DDBC;
+.tbox{
+	margin:0 0 8px 0;
+	border-bottom:1px solid #DFF2F5;
 	overflow:hidden;
+	background:url(../images/fl-bg.gif) 0 0 repeat-x;
 }
 .tbox dt{
 	height:25px;
-	background:url(../images/mbox-tbg.png) right top no-repeat;
+	border:1px solid #DFF2F5;
 	overflow:hidden;
 	clear:both;
 }
+.tbox dd{
+	border-left:1px solid #DFF2F5;
+	border-right:1px solid #DFF2F5;
+	padding:4px 4px 0px;
+	overflow:hidden;
+}
+
 .tbox dt strong{
-	height:25px;
-	line-height:25px;
-	padding-left:10px;
+	height:26px;
+	line-height:26px; !important;line-height:25px;
+	padding-left:22px;
 	padding-right:4px;
 	display:block;
 	float:left;
-	color:#4A7749;
-	background:url(../images/mbox-tbg.png) left top no-repeat;
+	color:#397CBE;
+	background:url(../images/fbico.gif) 5px 6px no-repeat;
 	letter-spacing:1px;
 }
 .tbox dt strong a{
-	color:#4A7749;
+	color:#397CBE;
 }
 .tbox dt strong a:hover{
-	color:#444;
+	color:#4C94F6;
 	text-decoration:none;
 }
 .tbox dt span.more{
 	float:right;
 	position:relative;
-	line-height:25px;
+	line-height:26px;
 	padding-right:8px;
-	color:#85A484;
+	color:#397CBE;
 }
 .tbox dt span.more a{
-	color:#7B9D79;
+	color:#397CBE;
 	text-decoration:none;
 }
 .tbox dt span.more a:hover{
@@ -62,7 +71,7 @@
 	display:block;
 	padding:0px 7px 0px 8px;
 	line-height:23px;
-	border-left:1px solid #C5DDBC;
+	border-left:1px solid #BFE0F9;
 	float:left;
 	color:#666;
 	text-decoration:none;
@@ -75,13 +84,31 @@
 .tbox dt span.label a.thisclass{
 	background:#FFF;
 	color:#333;
-	border-top:3px solid #F1F7EE;
+	border-top:3px solid #BFE0F9;
 }
-.tbox dd{
-	border-left:1px solid #C5DDBC;
-	border-right:1px solid #C5DDBC;
+
+
+/* 较重颜色的Box */
+.light {
+	border:none;
+	background:none;
+}
+.light dt{
+	height:25px;
+	border:1px solid #BFE0F9;
+	overflow:hidden;
+	background:url(../images/fr-bg2.gif) 0 0 repeat-x;
+	clear:both;
+}
+.light dd{
+	border-left:1px solid #BFE0F9;
+	border-right:1px solid #BFE0F9;
+	border-bottom:1px solid #BFE0F9;
 	padding:4px 4px 0px;
 	overflow:hidden;
+}
+dt.light strong{
+	background:url(../images/fbico2.gif) 5px 5px no-repeat;
 }
 /*--------------------------------------------------
  box layout (prefix space:a,b)
@@ -138,11 +165,12 @@
 	overflow:hidden;
 }
 .d1 li span{
-	color:#999;
+	color:#777;
 	margin-right:5px;
 	float:left;
 }
 .d1 li a{
+	
 }
 .d2{/* 后置时间日期的小列表 */
 	padding:4px 0px;
@@ -153,7 +181,7 @@
 	overflow:hidden;
 }
 .d2 li span{
-	color:#999;
+	color:#777;
 	float:right;
 	padding-right:10px;
 	margin-left:10px;
@@ -198,7 +226,7 @@
 }
 .d5 li span{
 	margin-left:10px;
-	color:#999;
+	color:#777;
 }
 /*---------- e : 图文混排列表 ---------*/
 .e1{/* 横向浮动的图片列表 120*90  */
@@ -428,6 +456,7 @@
 	display:block;
 	margin-left:3px;
 	margin-top:3px;
+	border:none;
 }
 .e8 li .title{
 	height:31px;
@@ -609,5 +638,11 @@
 .ico3 li{
 	padding-left:16px;
 	background:url(../images/ico-3.gif) 7px 11px no-repeat;
+}
+
+li.dotline {
+	border-bottom:1px dashed #CDE0FA;
+	height:26px;
+	line-height:26px;
 }
 

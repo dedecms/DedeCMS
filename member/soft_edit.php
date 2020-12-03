@@ -17,6 +17,7 @@ if(empty($dopost))
 	$arcQuery = "Select
     #@__channeltype.typename as channelname,
     #@__arcrank.membername as rankname,
+    #@__channeltype.arcsta,
     #@__archives.*
     From #@__archives
     left join #@__channeltype on #@__channeltype.id=#@__archives.channel
@@ -28,6 +29,16 @@ if(empty($dopost))
 	{
 		ShowMsg("读取档案基本信息出错!","-1");
 		exit();
+	}
+	else if($row['arcrank']>=0)
+	{
+		$dtime = time();
+		$maxtime = $cfg_mb_editday * 24 *3600;
+		if($dtime - $row['senddate'] > $maxtime)
+		{
+			ShowMsg("这篇文档已经锁定，你不能再修改它！","-1");
+			exit();
+		}
 	}
 	$query = "Select * From `#@__channeltype` where id='".$row['channel']."'";
 	$cInfos = $dsql->GetOne($query);
@@ -180,6 +191,8 @@ else if($dopost=='save')
 	$urls = addslashes($urls);
 
 	//更新附加表
+	$needmoney = @intval($needmoney);
+	if($needmoney > 100) $needmoney = 100;
 	$cts = $dsql->GetOne("Select addtable From `#@__channeltype` where id='$channelid' ");
 	$addtable = trim($cts['addtable']);
 	if($addtable!='')
@@ -196,10 +209,10 @@ else if($dopost=='save')
 			officialDemo ='$officialDemo',
 			softsize ='$softsize',
 			softlinks ='$urls',
-			 userip='$userip',
+			userip='$userip',
+			needmoney='$needmoney',
 			introduce='$body'{$inadd_f}
-			where aid='$aid';
-			";
+			where aid='$aid'; ";
 		if(!$dsql->ExecuteNoneQuery($inQuery))
 		{
 			ShowMsg("更新数据库附加表 addonsoft 时出错，请检查原因！","-1");

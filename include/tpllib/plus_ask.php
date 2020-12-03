@@ -1,8 +1,6 @@
 <?php
-if(!defined('DEDEINC'))
-{
-   exit("Request Error!");
-}
+if(!defined('DEDEINC')) exit('Request Error!');
+
 function plus_ask(&$atts,&$refObj,&$fields)
 {
 	global $dsql,$_vars;

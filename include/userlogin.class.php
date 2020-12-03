@@ -1,9 +1,5 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
-
+if(!defined('DEDEINC')) exit('Request Error!');
 session_start();
 
 //检验用户是否有权使用某功能
@@ -27,7 +23,7 @@ function TestPurview($n)
 	foreach($ns as $n)
 	{
 		//只要找到一个匹配的权限，即可认为用户有权访问此页面
-		if($n=="")
+		if($n=='')
 		{
 			continue;
 		}
@@ -64,36 +60,15 @@ function TestAdmin()
 
 $DedeUserCatalogs = Array();
 
-//获得用户授权的所有栏目ID
-function GetMyCatalogs($dsql,$cid)
-{
-	$GLOBALS['DedeUserCatalogs'][] = $cid;
-	$dsql->SetQuery("Select id From #@__arctype where reid='$cid'");
-	$dsql->Execute($cid);
-	while($row = $dsql->GetObject($cid))
-	{
-		GetMyCatalogs($dsql,$row->id);
-	}
-}
-
-function MyCatalogs()
-{
-	global $dsql;
-	if(count($GLOBALS['DedeUserCatalogs'])==0)
-	{
-		GetMyCatalogs($dsql,$GLOBALS['cuserLogin']->getUserChannel());
-	}
-	return $GLOBALS['DedeUserCatalogs'];
-}
-
 //检测用户是否有权限操作某栏目
-function CheckCatalog($cid,$msg)
+function CheckCatalog($cid, $msg)
 {
-	if($GLOBALS['cuserLogin']->getUserChannel()=="0"||TestAdmin())
+	global $cfg_admin_channel, $admin_catalogs;
+	if($cfg_admin_channel=='all' || TestAdmin())
 	{
 		return true;
 	}
-	if(!in_array($cid,MyCatalogs()))
+	if( !in_array($cid, $admin_catalogs) )
 	{
 		ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>",'javascript:;');
 		exit();
@@ -101,14 +76,56 @@ function CheckCatalog($cid,$msg)
 	return true;
 }
 
-$admincachefile = DEDEDATA.'/admin_'.cn_substr(md5($cfg_cookie_encode),24).'.php';
-if(!file_exists($admincachefile))
+/*****************************************
+发布文档临时附件信息缓存、发文档前先清空附件信息
+发布文档时涉及的附件保存到缓存里，完成后把它与文档关连
+******************************************/
+function AddMyAddon($fid, $filename)
 {
-	$fp = fopen($admincachefile,'w');
-	fwrite($fp,'<'.'?php $admin_path ='." ''; ?".'>');
+	$cacheFile = DEDEDATA.'/cache/addon-'.session_id().'.inc';
+	if(!file_exists($cacheFile))
+	{
+		$fp = fopen($cacheFile, 'w');
+		fwrite($fp, '<'.'?php'."\r\n");
+		fwrite($fp, "\$myaddons = array();\r\n");
+		fwrite($fp, "\$maNum = 0;\r\n");
+		fclose($fp);
+	}
+	include($cacheFile);
+	$fp = fopen($cacheFile, 'a');
+	$arrPos = $maNum;
+	$maNum++;
+	fwrite($fp, "\$myaddons[\$maNum] = array('$fid', '$filename');\r\n");
+	fwrite($fp, "\$maNum = $maNum;\r\n");
 	fclose($fp);
 }
-require_once($admincachefile);
+//清理附件，如果关连的文档ID，先把上一批附件传给这个文档ID
+function ClearMyAddon($aid=0, $title='')
+{
+	global $dsql;
+	$cacheFile = DEDEDATA.'/cache/addon-'.session_id().'.inc';
+	$_SESSION['bigfile_info'] = array();
+	$_SESSION['file_info'] = array();
+	if(!file_exists($cacheFile))
+	{
+		return ;
+	}
+	//把附件与文档关连
+	if(!empty($aid))
+	{
+		include($cacheFile);
+		foreach($myaddons as $addons)
+		{
+			if(!empty($title)) {
+				$dsql->ExecuteNoneQuery("Update `#@__uploads` set arcid='$aid',title='$title' where aid='{$addons[0]}'");
+			}
+			else {
+				$dsql->ExecuteNoneQuery("Update `#@__uploads` set arcid='$aid' where aid='{$addons[0]}' ");
+			}
+		}
+	}
+	@unlink($cacheFile);
+}
 
 //登录类
 class userLogin
@@ -120,13 +137,13 @@ class userLogin
 	var $userType = '';
 	var $userChannel = '';
 	var $userPurview = '';
-	var $keepUserIDTag = "dede_admin_id";
-	var $keepUserTypeTag = "dede_admin_type";
-	var $keepUserChannelTag = "dede_admin_channel";
-	var $keepUserNameTag = "dede_admin_name";
-	var $keepUserPurviewTag = "dede_admin_purview";
-	var $keepAdminStyleTag = "dede_admin_style";
-	var $adminStyle = "dedecms";
+	var $keepUserIDTag = 'dede_admin_id';
+	var $keepUserTypeTag = 'dede_admin_type';
+	var $keepUserChannelTag = 'dede_admin_channel';
+	var $keepUserNameTag = 'dede_admin_name';
+	var $keepUserPurviewTag = 'dede_admin_purview';
+	var $keepAdminStyleTag = 'dede_admin_style';
+	var $adminStyle = 'dedecms';
 
 	//php5构造函数
 	function __construct($admindir='')
@@ -197,38 +214,34 @@ class userLogin
 	//成功返回 1 ，失败返回 -1
 	function keepUser()
 	{
-		if($this->userID!=""&&$this->userType!="")
+		if($this->userID != '' && $this->userType != '')
 		{
 			global $admincachefile,$adminstyle;
-			if(empty($adminstyle))
-			{
-				$adminstyle = 'dedecms';
-			}
+			if(empty($adminstyle)) $adminstyle = 'dedecms';
 
-			//session_register($this->keepUserIDTag);
+			@session_register($this->keepUserIDTag);
 			$_SESSION[$this->keepUserIDTag] = $this->userID;
 
-			//session_register($this->keepUserTypeTag);
+			@session_register($this->keepUserTypeTag);
 			$_SESSION[$this->keepUserTypeTag] = $this->userType;
 
-			//session_register($this->keepUserChannelTag);
+			@session_register($this->keepUserChannelTag);
 			$_SESSION[$this->keepUserChannelTag] = $this->userChannel;
 
-			//session_register($this->keepUserNameTag);
+			@session_register($this->keepUserNameTag);
 			$_SESSION[$this->keepUserNameTag] = $this->userName;
 
-			//session_register($this->keepUserPurviewTag);
+			@session_register($this->keepUserPurviewTag);
 			$_SESSION[$this->keepUserPurviewTag] = $this->userPurview;
 
-			//session_register($this->keepAdminStyleTag);
+			@session_register($this->keepAdminStyleTag);
 			$_SESSION[$this->keepAdminStyleTag] = $adminstyle;
 
-			//PutCookie('dedeAdmindir',$this->adminDir,3600 * 24,'/');
-			PutCookie('DedeUserID',$this->userID,3600 * 24,'/');
-			PutCookie('DedeLoginTime',time(),3600 * 24,'/');
-			$fp = fopen($admincachefile,'w');
-			fwrite($fp,'<'.'?php $admin_path ='." '{$this->adminDir}'; ?".'>');
-			fclose($fp);
+			PutCookie('DedeUserID', $this->userID, 3600 * 24, '/');
+			PutCookie('DedeLoginTime', time(), 3600 * 24, '/');
+			
+			$this->ReWriteAdminChannel();
+			
 			return 1;
 		}
 		else
@@ -236,17 +249,49 @@ class userLogin
 			return -1;
 		}
 	}
+	
+	//重写用户权限频道
+	function ReWriteAdminChannel()
+	{
+		//$this->userChannel
+		$cacheFile = DEDEDATA.'/cache/admincat_'.$this->userID.'.inc';
+		//管理员管理的频道列表
+		$typeid = trim($this->userChannel);
+		if( empty($typeid) || $this->getUserType() >= 10 ) {
+				$firstConfig = "\$cfg_admin_channel = 'all';\r\n\$admin_catalogs = array();\r\n";
+		}
+		else {
+				$firstConfig = "\$cfg_admin_channel = 'array';\r\n";
+		}
+		$fp = fopen($cacheFile, 'w');
+		fwrite($fp, '<'.'?php'."\r\n");
+		fwrite($fp, $firstConfig);
+		if( !empty($typeid) )
+		{
+			 $typeids = explode(',', $typeid);
+			 $typeid = '';
+			 foreach($typeids as $tid)
+			 {
+			 		$typeid .= ( $typeid=='' ? GetSonIdsUL($tid) : ','.GetSonIdsUL($tid) );
+			 }
+			 $typeids = explode(',', $typeid);
+			 $typeidsnew = array_unique($typeids);
+			 $typeid = join(',', $typeidsnew);
+			 fwrite($fp, "\$admin_catalogs = array($typeid);\r\n");
+		}
+		fwrite($fp, '?'.'>');
+		fclose($fp);
+	}
 
 	//结束用户的会话状态
 	function exitUser()
 	{
-		/*
+		ClearMyAddon();
 		@session_unregister($this->keepUserIDTag);
 		@session_unregister($this->keepUserTypeTag);
 		@session_unregister($this->keepUserChannelTag);
 		@session_unregister($this->keepUserNameTag);
 		@session_unregister($this->keepUserPurviewTag);
-		*/
 		DropCookie('dedeAdmindir');
 		DropCookie('DedeUserID');
 		DropCookie('DedeLoginTime');
@@ -256,20 +301,20 @@ class userLogin
 	//获得用户管理频道的值
 	function getUserChannel()
 	{
-		if($this->userChannel!='')
+		if($this->userChannel != '')
 		{
 			return $this->userChannel;
 		}
 		else
 		{
-			return -1;
+			return '';
 		}
 	}
 
 	//获得用户的权限值
 	function getUserType()
 	{
-		if($this->userType!='')
+		if($this->userType != '')
 		{
 			return $this->userType;
 		}
@@ -287,7 +332,7 @@ class userLogin
 	//获得用户的ID
 	function getUserID()
 	{
-		if($this->userID!='')
+		if($this->userID != '')
 		{
 			return $this->userID;
 		}
@@ -300,7 +345,7 @@ class userLogin
 	//获得用户的笔名
 	function getUserName()
 	{
-		if($this->userName!='')
+		if($this->userName != '')
 		{
 			return $this->userName;
 		}
@@ -314,6 +359,36 @@ class userLogin
 	function getPurview()
 	{
 		return $this->userPurview;
+	}
+}
+
+//获得某id的所有下级id
+function GetSonIdsUL($id, $channel=0, $addthis=true)
+{
+	global $_Cs;
+	$GLOBALS['idArray'] = array();
+	if( !is_array($_Cs) )
+	{
+		require_once(DEDEROOT."/data/cache/inc_catalog_base.inc");
+	}
+	GetSonIdsLogicUL($id,$_Cs,$channel,$addthis);
+	$rquery = join(',', $GLOBALS['idArray']);
+	return $rquery;
+}
+
+//递归逻辑
+function GetSonIdsLogicUL($id,$sArr,$channel=0,$addthis=false)
+{
+	if($id!=0 && $addthis)
+	{
+		$GLOBALS['idArray'][$id] = $id;
+	}
+	foreach($sArr as $k=>$v)
+	{
+		if( $v[0]==$id && ($channel==0 || $v[1]==$channel ))
+		{
+			GetSonIdsLogicUL($k,$sArr,$channel,true);
+		}
 	}
 }
 

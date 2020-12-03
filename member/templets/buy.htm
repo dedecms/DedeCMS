@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>服务购买</title>
+<title>点卡/会员服务购买</title>
 <?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
 </head>
 <body>
@@ -11,17 +11,48 @@
     <div class="main">
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
-        <div class="location"><span class="fLeft">服务购买</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="location"><span class="fLeft">点卡/会员服务购买</span><span class="fRight mR10"></span></div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
-            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
-            <li><a href="shops_products.php">商品</a></li>
+            <li><a href="operation.php">点卡/会员定单</a></li>
+            <li><a href="mypay.php" id="buy">我购买的文章</a></li>
+            <li><a href="shops_orders.php">商品定单</a></li>
+            <li><a href="shops_products.php" id="buy">我购买的商品</a></li>
           </ul>
         </div>
         <div class="mL10 mR10 mTB10">
+        	<div class='userSta'>
+        		<b><?php echo $cfg_ml->GetSta($dsql); ?></b>
+        	</div>
+          <?php
+          if($cfg_money_scores > 0) {
+          ?>
           <div class="item rechargeable">
             <div class="itemHead bgGrass titleBar" >
-              <div class="fLeft"><strong>充值</strong></div>
+              <div class="fLeft">
+              	<?php
+              	$canCav = floor($cfg_ml->fields['scores'] / $cfg_money_scores);
+              	?>
+              	<strong>用积分兑换金币</strong> &nbsp;(<?php echo "兑换价格：{$cfg_money_scores} 积分/个，你目前可兑换金币数量：{$canCav} 个"; ?>)
+              </div>
+              <div class="fRight titShow icon16" style="margin-top:5px;"></div>
+            </div>
+            <div class="itemBody" >
+              <form name="formrank" action="index_do.php?dopost=money2s&fmdo=user" method="post">
+                <table cellspacing="1" class="submit">
+                  <tbody>
+                    <tr>
+                      <td width="15%" align="right" valign="top">兑换数量：</td>
+                      <td width="35%"><input name="money" type="text" id="money" size="38" class="text" value="<?php echo $canCav; ?>" /></td>
+                      <td align='left'><button class="button2" type="submit">兑换</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+            <?php } ?>
+            <div class="itemHead bgGrass titleBar" >
+              <div class="fLeft"><strong>用点卡充值</strong></div>
               <div class="fRight titShow icon16" style="margin-top:5px;"></div>
             </div>
             <div class="itemBody" >
@@ -29,7 +60,7 @@
                 <table cellspacing="1" class="submit">
                   <tbody>
                     <tr>
-                      <td width="15%" align="right" valign="top">充值密码：</td>
+                      <td width="15%" align="right" valign="top">点卡密码：</td>
                       <td><input name="cardid" type="text" id="cardid" size="38" class="text" /></td>
                     </tr>
                     <tr>
@@ -57,13 +88,16 @@
               <input type="hidden" name="product" value="card" />
               <table cellspacing="1" class="list mT10">
                 <thead>
-                  <tr>
+                <tr>
+                    <th colspan='4' style='text-align:left;padding-left:10px;height:24px;line-height:24px;'>购买新点卡:</th>
+                 </tr>
+                 </thead>
+                 <tr style='height:28px;background:#F9FEE9;'>
                     <th width="1%">选择</th>
-                    <th >产品名称</th>
-                    <th width="5%">金币</th>
-                    <th width="5%">价格</th>
-                  </tr>
-                </thead>
+                    <th >点卡类型</th>
+                    <th width="10%">金币数量</th>
+                    <th width="10%">购买价格</th>
+                 </tr>
                 <tbody>
                   <?php echo $moneycards;?>
                 </tbody>
@@ -80,14 +114,17 @@
               <input type="hidden" name="product" value="member" />
               <table cellspacing="1" class="list mT10">
                 <thead>
-                  <tr>
+                <tr>
+                    <th colspan='5' style='text-align:left;padding-left:10px;height:24px;line-height:24px;'>会员升级:</th>
+                 </tr>
+                </thead>
+                <tr style='height:28px;background:#F9FEE9;'>
                     <th width="1%">选择</th>
                     <th >产品名称</th>
-                    <th width="10%">会员类型</th>
-                    <th width="10%">时限(天)</th>
-                    <th width="5%">价格</th>
-                  </tr>
-                </thead>
+                    <th width="12%">会员类型</th>
+                    <th width="12%">时限(天)</th>
+                    <th width="10%">价格</th>
+                 </tr>
                 <tbody>
                   <?php echo $membertypes?>
                 </tbody>

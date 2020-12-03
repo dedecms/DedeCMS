@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset;?>" />
+<link href="template/default/style/ask_base.css" rel="stylesheet" type="text/css" />
+<title><?php echo $cfg_ask_sitename;?>-处理问题-采纳为答案 - powered by dedecms</title>
+<script type="text/javascript">
+function checkform(theform,own) {
+	if(theform.extrareward.value > own) {
+		alert("奖励的积分不能大于你拥有的积分，请重新设置悬赏积分");
+		return false;
+	}
+}
+</script>
+<body>
+<div style="padding-top:20px">
+  <form method="post" name="answer" action="post.php?action=adopt&amp;id=<?php echo $id; ?>" onsubmit="return checkform(this,<?php echo $scores; ?>);">
+    <input type="hidden" name="step" value="2" />
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr valign="top">
+        <td width="22%" nowrap><span class="f14">感谢语或评论：</span>
+          <div class="gray">(选填)</div></td>
+        <td width="78%" height="40"><textarea name="content" cols="50" rows="6"></textarea></td>
+      </tr>
+    </table>
+    <br>
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr valign="top">
+        <td width="22%" nowrap><span class="f14">如果您对这一回答非常满意,您可以选择给回答者额外的积分奖励：</span>
+          <div class="gray">(选填)</div></td>
+        <td width="78%" height="30" class="f14"><select name="extrareward">
+            <option value="0">0</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+          分 你的积分：<?php echo $scores; ?> </td>
+      </tr>
+    </table>
+    <br>
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center">
+      <tr>
+        <td width="22%">&nbsp;</td>
+        <td width="78%" valign="top"><input type="submit" name="Submit22" value="确 认" class="bnsrh" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

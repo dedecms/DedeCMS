@@ -26,7 +26,7 @@
     <?php
        if(empty($cid)) $cid=0;
        $tl = new TypeLink($cid);
-       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0,1);
+       $typeOptions = $tl->GetOptionArray($cid,$admin_catalogs,0,1);
        echo "<select name='typeid' style='width:300px'>\r\n";
        if($cid=='0') echo "<option value='0' selected='1'>更新所有栏目...</option>\r\n";
        echo $typeOptions;

@@ -37,6 +37,7 @@ function lib_memberinfos(&$ctag,&$refObj)
 	$dsql->Execute('mb',$sql);
 	while($row = $dsql->GetArray('mb'))
 	{
+		if($row['matt']==10) return '';
 		$row['spaceurl'] = $GLOBALS['cfg_basehost'].'/member/index.php?uid='.$row['userid'];
 		if(empty($row['face'])) {
 			$row['face'] = $GLOBALS['cfg_memberurl'].'/images/nopic.gif';

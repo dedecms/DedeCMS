@@ -34,7 +34,7 @@ select{
 }
 
 .main{
-	width:720px;
+	width:800px;
 	border:4px solid #F0F0F0;
 	background:#FFF;
 	padding:10px 20px 10px 20px;
@@ -42,7 +42,7 @@ select{
 }
 .main .toplogo{
 	clear:both;
-	width:720px;
+	width:800px;
 	height:60px;
 
 }
@@ -69,7 +69,7 @@ select{
 }
 
 .main .cmain .ctitle{
-	width:720px;
+	width:800px;
 	height:25px;
 	margin-top:10px;
 }
@@ -93,7 +93,7 @@ select{
 	border-bottom:1px solid #EEE;
 }
 .main .cbox{
-	width:700px;
+	width:780px;
 	padding-bottom:10px;
 }
 .copyright{
@@ -264,4 +264,34 @@ select{
 	display:block;
 	font-size:14px;
 	margin-top:16px;
+}
+
+.coolbg {
+  border:0px;
+  border-right: 1px solid #ACACAC;
+  border-bottom: 1px solid #ACACAC;
+  background-color: #F1F8B4;
+  padding:2px;
+  padding-right:5px;
+  padding-left:5px;
+  background: url(wbg.gif) #EFF7D0;
+  cursor:pointer;
+}
+
+.listtable {
+	width:100%;
+	background:#dedede;
+	margin-bottom:8px;
+}
+
+.listtable td {
+	padding-left: 5px;
+}
+
+.left {
+	float:left;
+}
+
+.right {
+	float:right;
 }

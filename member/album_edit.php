@@ -28,7 +28,7 @@ function _ShowForm(){  }
 if(empty($dopost))
 {
 	//读取归档信息
-	$arcQuery = "Select arc.*,ch.addtable,ch.fieldset
+	$arcQuery = "Select arc.*,ch.addtable,ch.fieldset,ch.arcsta
        From `#@__archives` arc left join `#@__channeltype` ch on ch.id=arc.channel
        where arc.id='$aid' And arc.mid='".$cfg_ml->M_ID."'; ";
 	$row = $dsql->GetOne($arcQuery);
@@ -37,7 +37,7 @@ if(empty($dopost))
 		ShowMsg("读取文档信息出错!","-1");
 		exit();
 	}
-	else if($row['arcrank']>=0 && $row['arcsta']==-1)
+	else if($row['arcrank']>=0)
 	{
 		$dtime = time();
 		$maxtime = $cfg_mb_editday * 24 *3600;
@@ -207,7 +207,8 @@ else if($dopost=='save')
              title='$title',
              litpic='$litpic',
              description='$description',
-             keywords='$keywords',            
+             keywords='$keywords',
+             mtype='$mtypesid',            
              flag='$flag'
         where id='$aid' And mid='$mid'; ";
 	if(!$dsql->ExecuteNoneQuery($upQuery))

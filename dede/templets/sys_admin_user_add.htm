@@ -75,10 +75,10 @@
           <tr> 
             <td height="30">授权栏目：</td>
             <td>
-			<select name="typeid" style="width:160px" id="typeid">
-                <option value="0" selected>--所有频道--</option>
+			<select name="typeids[]" id="typeid" size='10' style="width:200px" multiple="true">
+                <option value="0" class='alltype' selected>--所有频道--</option>
 				<?php echo $typeOptions?>
-             </select>
+             </select>(按 Ctrl 可以进行多选)
 			 </td>
           </tr>
           <tr> 

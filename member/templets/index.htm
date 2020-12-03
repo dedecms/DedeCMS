@@ -23,96 +23,12 @@
             <div class="clear"></div>
           </div>
           <div class="datum fLeft mT10">
-            <h3 class="userName"><?php echo $cfg_ml->M_LoginID;?><em class="mL10"><?php echo $cfg_ml->M_MbType; ?>用户</em></h3>
+            <h3 class="userName"><?php echo $cfg_ml->M_LoginID; ?><em class="mL10"><?php echo $cfg_ml->M_MbType; ?>用户</em></h3>
             <div class="userState mTB10"><span class="fLeft"><?php echo $cfg_ml->GetSta($dsql); ?></span>
               <div class="clear"></div>
-              <script type="text/javascript">
-function setTab(m,n){
-var tli=document.getElementById("menu"+m).getElementsByTagName("li");
-var mli=document.getElementById("main"+m).getElementsByTagName("dl");
-for(i=0;i<tli.length;i++){
-   tli[i].className=i==n?"select":"";
-   mli[i].className=i==n?"block":"none";
-}
-}
-</script>
-              <div id="Upbox" style="display:none;">
-                <div class="lineBorder mTB10">
-                  <div class="titleTabBar bgGreen lineB">
-                    <ul id="menuUp">
-                      <li class="select"><a onclick="setTab('Up',0)">我要升级</a></li>
-                      <li><a onclick="setTab('Up',1)">我要充值</a></li>
-                    </ul>
-                  </div>
-                  <div id="mainUp" class=" mTB10 mL10 mR10">
-                    <form name="formrank" action="index_do.php" method="post">
-                      <dl class="block">
-                        <dt><strong>帐号升级</strong></dt>
-                        <?php
-                        $sRanks = array();
-                        $dsql->SetQuery("Select membername,rank From `#@__arcrank` where rank>-1 order by rank asc");
-                        $dsql->Execute();
-                        $maxrank = 0;
-                        while($row = $dsql->GetObject())
-                        {
-                            if($row->rank > $maxrank) $maxrank = $row->rank;
-                            $sRanks[$row->rank] = $row->membername;
-                        }
-                        $sRanks[0] = "限制会员";
-                        ?>
-                        <dd class="mT10">你目前的级别：<?php echo $sRanks[$cfg_ml->M_Rank]; ?></dd>
-                        <?php
-                        if($cfg_ml->M_Rank >= $maxrank){
-                        ?>
-                        <dd class="mTB10">你已经是最高级别的会员，不能再升级。
-                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">关闭</button>
-                        </dd>
-                        <?php }else{ ?>
-                        <input type="hidden" name="fmdo" value="user" />
-                        <input type="hidden" name="dopost" value="uprank" />
-                        <dd class="mT10">可以升级的级别：
-                          <select name="uptype" id="uptype">
-                            <?php foreach($sRanks as $k => $v){ ?>
-                            <?php if($k > $cfg_ml->M_Rank){?>
-                            <option value="<?php echo $k;?>"><?php echo $v;?></option>
-                            <?php }?>
-                            <?php }?>
-                          </select>
-                        </dd>
-                        <dd>
-                          <hr />
-                          <button class="button2" type="submit">提交</button>
-                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">取消</button>
-                        </dd>
-                        <?php }?>
-                      </dl>
-                    </form>
-                    <form name="formmoney" action="index_do.php" method="post">
-                      <dl class="none">
-                        <dt><strong>账户充值</strong></dt>
-                        <dd class="mT10">
-                          <input type="hidden" name="fmdo" value="user" />
-                          <input type="hidden" name="dopost" value="addmoney" />
-                          金币数：
-                          <input class="text" name="money" type="text" id="money" value="500" size="6" />
-                        </dd>
-                        <dd class="mTB10">验证码：
-                          <input class="text" name="vdcode" type="text" id="vdcode" size="4" style="width:160px;text-transform:uppercase;" />
-                          <img id="vdimgck" src="../include/vdimgck.php" width="50" height="20" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></dd>
-                        <dd>
-                          <hr />
-                          <button class="button2" type="submit">提交</button>
-                          <button class="mL10 buttonGary2" type="button" onclick="tb_remove()">取消</button>
-                        </dd>
-                      </dl>
-                    </form>
-                    <div class="clear"></div>
-                  </div>
-                </div>
-              </div>
             </div>
             <ul class="entry">
-              <li><a href="pm.php" title="短消息">消息</a>(<?php echo $pms['nums'];?>)</li>
+              <li><a href="pm.php?TB_iframe=true&height=600&width=700" title="我的短信息" class="thickbox" target="_blank">短消息</a>(<?php echo $pms['nums'];?>)</li>
               <li><a href="caicai.php" title="发出的评论">评论</a>(<?php echo $minfos['feedback']; ?>)</li>
               <li><a href="mystow.php" title="收藏夹">收藏</a>(<?php echo $minfos['stow']; ?>)</li>
               <li><a href="javascript:;">其它</a>(<?php echo $minfos['archives']; ?>)</li>
@@ -121,56 +37,72 @@ for(i=0;i<tli.length;i++){
               <li><a href="content_list.php?channelid=3" title="已发布的软件">软件</a>(<?php echo $minfos['soft']; ?>)</li>
               <li><a href="shops_products.php" title="购买的商品">商品</a>(<?php echo $minfos['shop']; ?>)</li>              
             </ul>
-            <div> <span class="fRight" style='background-color:#F8FEDA;clear:both;padding:3px 5px 3px 5px;margin-top:12px;'> <a href="#" onclick="location='buy.php';return false;" class="thickbox">[购买服务]</a>&nbsp; <a href="#TB_inline?height=210&width=380&inlineId=Upbox&modal=true" title="升级与充值" class="thickbox">[申请升级/充值]</a> </span> </div>
+            <div>
+            	<span class="fRight" style='clear:both;padding:3px 5px 0px 5px;margin-top:8px;'>
+            		<a href="#" onclick="location='buy.php';return false;" class="thickbox">
+            			<img src='images/buybt.gif' border='0' alt='申请升级/点卡充值' title='申请升级/点卡充值' />
+            		</a>
+            	</span>
+            </div>
             <div class="clear"></div>
-            <script type="text/javascript">
+    <!-- //系统提示 -->
+      <script type="text/javascript">
 			$("document").ready(function(){
-				$(".tipClose").click(function(){
-					$(this).parent(".tip").animate({ height: 'toggle', opacity: 'toggle' }, "hide");
-					})
+				$(".tipClose").click(function(){$(this).parent(".tip").animate({ height: 'toggle', opacity: 'toggle' }, "hide");})
 			});
 			</script>
-            <!--提示 -->
             <?php
         switch($cfg_ml->M_Spacesta)
         {
+        	case '-10':
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>等待进行邮件验证！[<a href='index_do.php?fmdo=sendMail'><u>重新发送验证邮件</u></a>]</div>
+            <br class='clear' />
+            </div>";
+        		break;
         	case '-2':
         		echo "<div class='tip'>
             <div class='tipClose fRight'>隐藏提示</div>
-            <div class='tipContent fLeft icon titTip'>已被禁用</div>
+            <div class='tipContent fLeft icon titTip'>帐号已经被强制禁用！</div>
+            <br class='clear' />
             </div>";
         		break;
         	case '-1':
         		echo "<div class='tip'>
             <div class='tipClose fRight'>隐藏提示</div>
-            <div class='tipContent fLeft icon titTip'>未通过审核！<a href='edit_space_info.php'>修改空间资料</a></div>
-            <div class='clear'></div>
+            <div class='tipContent fLeft icon titTip'>未审核的会员！<a href='edit_space_info.php'>[修改空间资料]</a> &nbsp; <a href='edit_fullinfo.php'>[修改详细资料]</a></div>
+            <br class='clear' />
             </div>";
         		break;
         	case '0':
         		echo "<div class='tip'>
             <div class='tipClose fRight'>隐藏提示</div>
             <div class='tipContent fLeft icon titTip'>您的空间信息不完整！<a href='edit_space_info.php'>[填写空间资料]</a></div>
-            <div class='clear'></div>
+            <br class='clear' />
             </div>";
         		break;
         	case '1':
         		echo "<div class='tip'>
             <div class='tipClose fRight'>隐藏提示</div>
-            <div class='tipContent fLeft icon titTip'>您还没有完善您的个人资料！<a href='edit_fullinfo.php'>[完善详细资料]</a></div>
-            <div class='clear'></div>
+            <div class='tipContent fLeft icon titTip'>您还没有填写您的详细资料：<a href='edit_fullinfo.php'>[完善详细资料]</a></div>
+            <br class='clear' />
             </div>";
         		break;
         	default:
-        		echo "";
+        		echo "<div class='tip'>
+            <div class='tipClose fRight'>隐藏提示</div>
+            <div class='tipContent fLeft icon titTip'>资料状况正常： <a href='edit_fullinfo.php'>[修改空间资料]</a> &nbsp; <a href='edit_fullinfo.php'>[修改详细资料]</a></div>
+            <br class='clear' />
+            </div>";
         		break;
         }
         ?>
           </div>
         </div>
-        <div class="titleBar bgGreen lineT">
-          <h5 class="fLeft icon titFangle">新鲜事</h5>
-          <div class="fRight"><a href="search.php">其他人的事</a></div>
+        <div class="titleBar bgGreen lineB">
+          <h5 class="fLeft icon titFangle">最新文档</h5>
+          <div class="fRight"></div>
           <div class="clear"></div>
         </div>
         <div class="fangle">
@@ -183,12 +115,12 @@ foreach ($archives as $archive)
             <?php
 }
 ?>
-            <dt><a class="titMore icon" href="caicai.php">更多</a></dt>
+            <dt><a class="titMore icon" href="caicai.php">随便踩踩...</a></dt>
           </dl>
         </div>
-        <!--谁来看过我 -->
+        <!-- //谁来看过我 -->
         <div class="whoSeeMe">
-          <div class="titleBar bgGreen lineT">
+          <div class="titleBar bgGreen lineB">
             <h5 class="fLeft icon titWhoSeeMe">谁来看过我</h5>
           </div>
           <ul class="picList textCenter">
@@ -199,7 +131,8 @@ foreach ($archives as $archive)
             {/dede:newvisitor}
           </ul>
           <div class="clear"></div>
-          <div class="titleBar bgGreen lineT">
+          <!-- //我的收藏夹 -->
+          <div class="titleBar bgGreen lineB">
             <h5 class="fLeft icon titStow">我的收藏</h5>
             <div class="fRight"><a href="mystow.php">管理</a></div>
             <div class="clear"></div>
@@ -257,7 +190,7 @@ foreach ($favorites as $favorite)
         <h5 class="fLeft">好友列表</h5>
         <span class="fRight"><a href="myfriend.php" title="好友管理">管理</a></span> </div>
       <dl class="buddy overflow mL10 mR10">
-        <dt class="buddySort icon">所有好友</dt>
+        <dt class="buddySort icon"><a href="myfriend.php?ftype=0">所有好友</a></dt>
         <dd class="buddyList">
           <ul>
             <?php
@@ -277,8 +210,8 @@ foreach ($friends as $friend)
       <!--好友搜索 -->
       <div class="buddySearch textCenter">
         <form action="search.php">
-          <input class="text" type="text" name="keyword" value="查找新好友" style="width:150px;" />
-          <button class="button1" type="submit">搜</button>
+          <input class="text" type="text" name="keyword" value="" style="width:100px;" />
+          <button class="button5" type="submit">搜索会员</button>
         </form>
       </div>
     </div>

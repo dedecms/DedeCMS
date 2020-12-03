@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('DEDEINC')) exit('Request Error!');
-require_once(DEDEINC."/arc.partview.class.php");
+require_once(DEDEINC.'/arc.partview.class.php');
 
 @set_time_limit(0);
 class ListView
@@ -34,8 +34,8 @@ class ListView
 		$this->IsReplace = false;
 		$this->IsError = false;
 		$this->dtp = new DedeTagParse();
-		$this->dtp->refObj = $this;
-		$this->dtp->SetNameSpace("dede","{","}");
+		$this->dtp->SetRefObj($this);
+		$this->dtp->SetNameSpace("dede", "{", "}");
 		$this->dtp2 = new DedeTagParse();
 		$this->dtp2->SetNameSpace("field","[","]");
 		$this->TypeLink = new TypeLink($typeid);
@@ -114,8 +114,10 @@ class ListView
 		else $this->PageNo = 1;
 		$this->addSql  = " arc.arcrank > -1 ";
 		
+		$typeid2like = " '%,{$this->TypeID},%' ";
 		if($cfg_list_son=='N')
 		{
+			
 			if($cfg_need_typeid2=='N')
 			{
 				if($this->CrossID=='') $this->addSql .= " And (arc.typeid='".$this->TypeID."') ";
@@ -123,24 +125,30 @@ class ListView
 			}
 			else
 			{
-				if($this->CrossID=='') $this->addSql .= " And ( (arc.typeid='".$this->TypeID."') OR typeid2='{$this->TypeID}' ) ";
-				else $this->addSql .= " And ( arc.typeid in({$this->CrossID},{$this->TypeID}) OR typeid2='{$this->TypeID}' ) ";
+				if($this->CrossID=='') $this->addSql .= " And ( (arc.typeid='".$this->TypeID."') OR CONCAT(',', arc.typeid2, ',') like $typeid2like) ";
+				else $this->addSql .= " And ( arc.typeid in({$this->CrossID},{$this->TypeID}) OR CONCAT(',', arc.typeid2, ',') like $typeid2like) ";
 			}
 		}
 		else
 		{
+			$sonids = GetSonIds($this->TypeID,$this->Fields['channeltype']);
+			if(!preg_match("/,/", $sonids)) {
+				$sonidsCon = " arc.typeid = '$sonids' ";
+			}
+			else {
+				$sonidsCon = " arc.typeid in($sonids) ";
+			}
 			if($cfg_need_typeid2=='N')
 			{
-				if($this->CrossID=='') $this->addSql .= " And ( arc.typeid in (".GetSonIds($this->TypeID,$this->Fields['channeltype']).") ) ";
-				else $this->addSql .= " And ( arc.typeid in (".GetSonIds($this->TypeID,$this->Fields['channeltype']).",{$this->CrossID}) ) ";
+				if($this->CrossID=='') $this->addSql .= " And ( $sonidsCon ) ";
+				else $this->addSql .= " And ( arc.typeid in ({$sonids},{$this->CrossID}) ) ";
 			}
 			else
 			{
-				if($this->CrossID=='') $this->addSql .= " And ( arc.typeid in (".GetSonIds($this->TypeID,$this->Fields['channeltype']).") OR typeid2='{$this->TypeID}'  ) ";
-				else $this->addSql .= " And ( arc.typeid in (".GetSonIds($this->TypeID,$this->Fields['channeltype']).",{$this->CrossID}) OR typeid2='{$this->TypeID}' ) ";
+				if($this->CrossID=='') $this->addSql .= " And ( $sonidsCon OR CONCAT(',', arc.typeid2, ',') like $typeid2like  ) ";
+				else $this->addSql .= " And ( arc.typeid in ({$sonids},{$this->CrossID}) OR CONCAT(',', arc.typeid2, ',') like $typeid2like ) ";
 			}
 		}
-		
 		if($this->TotalResult==-1)
 		{
 			$cquery = "Select count(*) as dd From `#@__arctiny` arc where ".$this->addSql;
@@ -655,6 +663,7 @@ class ListView
 					{
 						$row['arcrank'] = $row['corank'];
 					}
+
 					$row['filename'] = $row['arcurl'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],
 					$row['arcrank'],$row['namerule'],$row['typedir'],$row['money'],$row['filename'],$row['moresite'],$row['siteurl'],$row['sitepath']);
 					$row['typeurl'] = GetTypeUrl($row['typeid'],MfTypedir($row['typedir']),$row['isdefault'],$row['defaultname'],
@@ -743,11 +752,10 @@ class ListView
 	//获取静态的分页列表
 	function GetPageListST($list_len,$listitem="index,end,pre,next,pageno")
 	{
-		$prepage="";
-		$nextpage="";
+		$prepage = $nextpage = '';
 		$prepagenum = $this->PageNo-1;
 		$nextpagenum = $this->PageNo+1;
-		if($list_len==""||ereg("[^0-9]",$list_len))
+		if($list_len=='' || ereg("[^0-9]",$list_len))
 		{
 			$list_len=3;
 		}
@@ -755,14 +763,14 @@ class ListView
 		if($totalpage<=1 && $this->TotalResult>0)
 		{
 
-			return "<span class=\"pageinfo\">共 <strong>1</strong>页<strong>".$this->TotalResult."</strong>条记录</span>";
+			return "<li><span class=\"pageinfo\">共 <strong>1</strong>页<strong>".$this->TotalResult."</strong>条记录</span></li>\r\n";
 		}
 		if($this->TotalResult == 0)
 		{
-			return "<span class=\"pageinfo\">共 <strong>0</strong>页<strong>".$this->TotalResult."</strong>条记录</span>";
+			return "<li><span class=\"pageinfo\">共 <strong>0</strong>页<strong>".$this->TotalResult."</strong>条记录</span></li>\r\n";
 		}
 		$purl = $this->GetCurUrl();
-		$maininfo = "<span class=\"pageinfo\">共 <strong>{$totalpage}</strong>页<strong>".$this->TotalResult."</strong>条</span>";
+		$maininfo = "<li><span class=\"pageinfo\">共 <strong>{$totalpage}</strong>页<strong>".$this->TotalResult."</strong>条</span></li>\r\n";
 		$tnamerule = $this->GetMakeFileRule($this->Fields['id'],"list",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
 		$tnamerule = ereg_replace('^(.*)/','',$tnamerule);
 
@@ -785,14 +793,16 @@ class ListView
 		}
 		else
 		{
-			$endpage="<li>末页</li>";
+			$endpage="<li>末页</li>\r\n";
 		}
 
 		//option链接
-		$optionlist = "";
-		/*
+		$optionlist = '';
+
 		$optionlen = strlen($totalpage);
-		$optionlen = $optionlen*10+18;
+		$optionlen = $optionlen*12 + 18;
+		if($optionlen < 36) $optionlen = 36;
+		if($optionlen > 100) $optionlen = 100;
 		$optionlist = "<li><select name='sldd' style='width:{$optionlen}px' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
 		for($mjj=1;$mjj<=$totalpage;$mjj++)
 		{
@@ -805,8 +815,7 @@ class ListView
 				$optionlist .= "<option value='".str_replace("{page}",$mjj,$tnamerule)."'>$mjj</option>\r\n";
 			}
 		}
-		$optionlist .= "</select><li>";
-		*/
+		$optionlist .= "</select></li>\r\n";
 
 		//获得数字链接
 		$listdd="";
@@ -839,35 +848,15 @@ class ListView
 				$listdd.="<li><a href='".str_replace("{page}",$j,$tnamerule)."'>".$j."</a></li>\r\n";
 			}
 		}
-		$plist = "";
-		if(eregi('info',$listitem))
-		{
-			$plist .= $maininfo.' ';
-		}
-		if(eregi('index',$listitem))
-		{
-			$plist .= $indexpage.' ';
-		}
-		if(eregi('pre',$listitem))
-		{
-			$plist .= $prepage.' ';
-		}
-		if(eregi('pageno',$listitem))
-		{
-			$plist .= $listdd.' ';
-		}
-		if(eregi('next',$listitem))
-		{
-			$plist .= $nextpage.' ';
-		}
-		if(eregi('end',$listitem))
-		{
-			$plist .= $endpage.' ';
-		}
-		if(eregi('option',$listitem))
-		{
-			$plist .= $optionlist;
-		}
+		$plist = '';
+		if(eregi('index',$listitem)) $plist .= $indexpage;
+		if(eregi('pre',$listitem)) $plist .= $prepage;
+		if(eregi('pageno',$listitem)) $plist .= $listdd;
+		if(eregi('next',$listitem)) $plist .= $nextpage;
+		if(eregi('end',$listitem)) $plist .= $endpage;
+		if(eregi('option',$listitem)) $plist .= $optionlist;
+		if(eregi('info',$listitem)) $plist .= $maininfo;
+		
 		return $plist;
 	}
 
@@ -875,36 +864,38 @@ class ListView
 	function GetPageListDM($list_len,$listitem="index,end,pre,next,pageno")
 	{
 		global $cfg_rewrite;
-		$prepage="";
-		$nextpage="";
+		$prepage = $nextpage = '';
 		$prepagenum = $this->PageNo-1;
 		$nextpagenum = $this->PageNo+1;
-		if($list_len==""||ereg("[^0-9]",$list_len))
+		if($list_len=='' || ereg("[^0-9]",$list_len))
 		{
 			$list_len=3;
 		}
 		$totalpage = ceil($this->TotalResult/$this->PageSize);
 		if($totalpage<=1 && $this->TotalResult>0)
 		{
-			return "<span class=\"pageinfo\">共1页/".$this->TotalResult."条记录</span>";
+			return "<li><span class=\"pageinfo\">共 1 页/".$this->TotalResult." 条记录</span></li>\r\n";
 		}
 		if($this->TotalResult == 0)
 		{
-			return "<span class=\"pageinfo\">共0页/".$this->TotalResult."条记录</span>";
+			return "<li><span class=\"pageinfo\">共 0 页/".$this->TotalResult." 条记录</span></li>\r\n";
 		}
-
+		$maininfo = "<li><span class=\"pageinfo\">共 <strong>{$totalpage}</strong>页<strong>".$this->TotalResult."</strong>条</span></li>\r\n";
+		
 		$purl = $this->GetCurUrl();
 		if($cfg_rewrite == 'Y')
 		{
-			$nowurls = ereg_replace("\-",".php?",$purl);
-			$nowurls = explode("?",$nowurls);
+			$nowurls = ereg_replace("\-", ".php?", $purl);
+			$nowurls = explode("?", $nowurls);
 			$purl = $nowurls[0];
 		}
 
 		$geturl = "tid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
-		$hidenform = "<input type='hidden' name='tid' value='".$this->TypeID."'>\r\n";
-		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
-		$purl .= "?".$geturl;
+		$purl .= '?'.$geturl;
+		
+		$optionlist = '';
+		//$hidenform = "<input type='hidden' name='tid' value='".$this->TypeID."'>\r\n";
+		//$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
 
 		//获得上一页和下一页的链接
 		if($this->PageNo != 1)
@@ -923,7 +914,7 @@ class ListView
 		}
 		else
 		{
-			$endpage="<li><a>末页</a></li>";
+			$endpage="<li><a>末页</a></li>\r\n";
 		}
 
 
@@ -959,8 +950,15 @@ class ListView
 			}
 		}
 
-
-		$plist = $indexpage.$prepage.$listdd.$nextpage.$endpage;
+		$plist = '';
+		if(eregi('index',$listitem)) $plist .= $indexpage;
+		if(eregi('pre',$listitem)) $plist .= $prepage;
+		if(eregi('pageno',$listitem)) $plist .= $listdd;
+		if(eregi('next',$listitem)) $plist .= $nextpage;
+		if(eregi('end',$listitem)) $plist .= $endpage;
+		if(eregi('option',$listitem)) $plist .= $optionlist;
+		if(eregi('info',$listitem)) $plist .= $maininfo;
+		
 		if($cfg_rewrite == 'Y')
 		{
 			$plist = str_replace('.php?tid=', '-', $plist);
@@ -973,15 +971,15 @@ class ListView
 	//获得当前的页面文件的url
 	function GetCurUrl()
 	{
-		if(!empty($_SERVER["REQUEST_URI"]))
+		if(!empty($_SERVER['REQUEST_URI']))
 		{
-			$nowurl = $_SERVER["REQUEST_URI"];
-			$nowurls = explode("?",$nowurl);
+			$nowurl = $_SERVER['REQUEST_URI'];
+			$nowurls = explode('?', $nowurl);
 			$nowurl = $nowurls[0];
 		}
 		else
 		{
-			$nowurl = $_SERVER["PHP_SELF"];
+			$nowurl = $_SERVER['PHP_SELF'];
 		}
 		return $nowurl;
 	}

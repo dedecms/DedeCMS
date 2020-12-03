@@ -12,7 +12,7 @@ if($dopost!='save')
 {
 	require_once(DEDEINC."/dedetag.class.php");
 	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
-
+	ClearMyAddon();
 	$channelid = empty($channelid) ? 0 : intval($channelid);
 	$cid = empty($cid) ? 0 : intval($cid);
 
@@ -83,7 +83,7 @@ else if($dopost=='save')
 	{
 		$ddisremote = 0;
 	}
-	$litpic = GetDDImage('litpic',$picname,$ddisremote);
+	$litpic = GetDDImage('none',$picname,$ddisremote);
 
 	//生成文档ID
 	$arcID = GetIndexKey(0,$typeid,$senddate,$channelid,$senddate,$adminid);
@@ -157,7 +157,7 @@ else if($dopost=='save')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";
 	}
-
+	ClearMyAddon($arcID, $title);
 	//返回成功信息
 	$msg = "
     　　请选择你的后续操作：

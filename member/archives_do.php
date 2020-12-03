@@ -135,7 +135,7 @@ else if($dopost=="delArc")
 		exit();
 	}
 
-	if($row['arcrank']>=0 && $row['arcsta']==-1)
+	if($row['arcrank']>=0)
 	{
 		$dtime = time();
 		$maxtime = $cfg_mb_editday * 24 *3600;
@@ -210,8 +210,7 @@ else if($dopost=="delUploads")
 		if(is_array($arow) && $arow['mid']==$cfg_ml->M_ID)
 		{
 			$dsql->ExecuteNoneQuery("Delete From `#@__uploads` where aid='$aid'; ");
-			if(file_exists($cfg_basedir.$arow['url']) 
-			&& eregi("^".$cfg_user_dir."/".$cfg_ml->M_ID."/", $arow['url']) )
+			if(file_exists($cfg_basedir.$arow['url']))
 			{
 				@unlink($cfg_basedir.$arow['url']);
 			}
@@ -229,8 +228,7 @@ else if($dopost=="delUploads")
 			{
 				$dsql->ExecuteNoneQuery("Delete From `#@__uploads` where aid='$aid'; ");
 				$tj++;
-				if( file_exists($cfg_basedir.$arow['url']) 
-				  && eregi("^".$cfg_user_dir."/".$cfg_ml->M_ID."/", $arow['url']) )
+				if(file_exists($cfg_basedir.$arow['url']))
 				{
 					@unlink($cfg_basedir.$arow['url']);
 				}

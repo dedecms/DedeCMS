@@ -2,15 +2,13 @@
 
 if(!defined('DEDEINC')) exit('Request Error!');
 
-function ch_specialtopic($noteinfo,&$arcTag,&$refObj,$fname='')
+function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname='')
 {
 	require_once(DEDEINC.'/taglib/arclist.lib.php');
-	if($noteinfo=='') {
-		return '';
-	}
+	if($noteinfo=='') return '';
 	$noteid = $arcTag->GetAtt('noteid');
 	$rvalue = '';
-	$tempStr = GetSysTemplets("channel_spec_note.htm");
+	$tempStr = GetSysTemplets('channel_spec_note.htm');
 	$dtp = new DedeTagParse();
 	$dtp->LoadSource($noteinfo);
 	if(is_array($dtp->CTags))
@@ -18,9 +16,8 @@ function ch_specialtopic($noteinfo,&$arcTag,&$refObj,$fname='')
 		foreach($dtp->CTags as $k=>$ctag)
 		{
 			$notename = $ctag->GetAtt('name');
-
-			//æŒ‡å®šåç§°çš„ä¸“é¢˜èŠ‚ç‚¹
-			if($noteid!='' && $ctag->GetAtt('noteid')!=$noteid)
+			//Ö¸¶¨Ãû³ÆµÄ×¨Ìâ½Úµã
+			if($noteid != '' && $ctag->GetAtt('noteid') != $noteid)
 			{
 				continue;
 			}
@@ -31,7 +28,7 @@ function ch_specialtopic($noteinfo,&$arcTag,&$refObj,$fname='')
 			$stypeid = 0;
 			if(empty($rownum)) $rownum = 40;
 
-			//é€šè¿‡å…³é”®å­—å’Œæ ç›®IDè‡ªåŠ¨èŽ·å–æ¨¡å¼
+			//Í¨¹ý¹Ø¼ü×ÖºÍÀ¸Ä¿ID×Ô¶¯»ñÈ¡Ä£Ê½
 			if($isauto==1)
 			{
 				$idlist = '';
@@ -39,12 +36,8 @@ function ch_specialtopic($noteinfo,&$arcTag,&$refObj,$fname='')
 				$stypeid = $ctag->GetAtt('typeid');
 			}
 
-			if(trim($ctag->GetInnerText())!='') {
-				$listTemplet = $ctag->GetInnerText();
-			}
-			else {
-				$listTemplet = GetSysTemplets('spec_arclist.htm');
-			}
+			$listTemplet = trim($ctag->GetInnerText())!='' ? $ctag->GetInnerText() : GetSysTemplets('spec_arclist.htm');
+			
 			$idvalue = lib_arclistDone
 			          (
 			            $refObj, $ctag, $stypeid, $rownum, $ctag->GetAtt('col'), $ctag->GetAtt('titlelen'),$ctag->GetAtt('infolen'),
@@ -54,11 +47,7 @@ function ch_specialtopic($noteinfo,&$arcTag,&$refObj,$fname='')
 			$notestr = str_replace('~notename~', $notename, $tempStr);
 			$notestr = str_replace('~spec_arclist~', $idvalue, $notestr);
 			$rvalue .= $notestr;
-			if($noteid!='' 
-			&& $ctag->GetAtt('noteid')==$noteid)
-			{
-				break;
-			}
+			if($noteid != '' && $ctag->GetAtt('noteid')==$noteid) break;
 		}
 	}
 	$dtp->Clear();

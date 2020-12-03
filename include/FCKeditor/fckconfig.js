@@ -48,7 +48,7 @@ FCKConfig.HtmlEncodeOutput = false ;
 
 FCKConfig.ToolbarSets["Default"] = [
 	['Source','Preview','-','PasteText','PasteWord','-','RemoveFormat','-','Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','Outdent','Indent'],
-	['JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','Anchor','-','TextColor','BGColor','-','About'],
+	['JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','Anchor','-','TextColor','BGColor','-','MyCode','About'],
 	'/',
 	['FontFormat','FontName','FontSize'],
 	['Image','Flash','Media','Addon','-','DedePage','Quote','Br','-','Rule','Codes','Table','Smiley']
@@ -56,7 +56,7 @@ FCKConfig.ToolbarSets["Default"] = [
 
 FCKConfig.ToolbarSets["Basic"] = [
 	['Source','Preview','-','PasteText','PasteWord','-','RemoveFormat','-','Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','Outdent','Indent'],
-	['JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','Anchor','-','TextColor','BGColor','-','About'],
+	['JustifyLeft','JustifyCenter','JustifyRight','-','Link','Unlink','Anchor','-','TextColor','BGColor','-','MyCode','About'],
 	'/',
 	['FontFormat','FontName','FontSize'],
 	['Image','Flash','Media','Addon','-','DedePage','Quote','Br','-','Rule','Codes','Table','Smiley']
@@ -71,6 +71,11 @@ FCKConfig.ToolbarSets["Small"] = [
 FCKConfig.ToolbarSets["Member"] = [
 	['Source','Preview','-','PasteText','PasteWord','-','Bold','Italic','Underline','StrikeThrough'],
 	['ImageUser','FlashUser','-','Link','Unlink','-','Table','Rule','Codes','Quote','Br','-','TextColor','FontSize']
+] ;
+
+FCKConfig.ToolbarSets["Diy"] = [
+	['Source','Preview','-','PasteText','-','Bold','Italic','Underline','StrikeThrough'],
+	['Link','Unlink','-','Table','Rule','Codes','Quote','Br','-','TextColor','FontSize']
 ] ;
 
 FCKConfig.ToolbarSets["MemberLit"] = [

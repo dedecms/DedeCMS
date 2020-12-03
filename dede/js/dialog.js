@@ -65,7 +65,7 @@ function AlertMsg(title,id){
 	thObj.style.color = titlecolor;
 	thObj.style.fontWeight = 'bold';
 	thObj.style.background = titlebg;
-	var titleStr = "<a class='close' title='关闭' onclick='CloseMsg()'>关闭</a>"+"<span>"+ title +"</span>";
+	var titleStr = "<a class='close' title='关闭' style='cursor:pointer' onclick='CloseMsg()'>关闭</a>"+"<span>"+ title +"</span>";
 	thObj.innerHTML = titleStr;
 	//创建内容
 	var bodyObj = document.createElement("div");

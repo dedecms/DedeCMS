@@ -74,7 +74,7 @@ if(empty($dopost)) {
 }
 
 //升级服务器，如果有变动，请到 http://bbs.dedecms.com 查询
-$updateHost = 'http://updatenew.dedecms.com/base/';
+$updateHost = 'http://updatenew.dedecms.com/base-v55/';
 
 //当前软件版本锁定文件
 $verLockFile = DEDEROOT.'/data/admin/ver.txt';
@@ -234,7 +234,6 @@ else if($dopost=='getlist')
 		$allFileList .= "<input type='hidden' name='dopost' value='getfiles' />\r\n";
 		$allFileList .= "<input type='hidden' name='upitems' value='$upitems' />\r\n";
 		$allFileList .= "<div class='upinfotitle'>以下是需要下载的更新文件（路径相对于DedeCMS的根目录）：</div>\r\n";
-		$allFileList .= "<div style='color:red'>整合了UC的用户，请不要下载更新 memberlogin.class.php 、 common.inc.php</div>\r\n";
 		$filelists = explode("\n",$filelist);
 		foreach($fileArr as $k=>$v) {
 			$allFileList .= "<div class='verline'><input type='checkbox' name='files[]' value='{$k}'  checked='checked' /> $k({$v})</div>\r\n";
@@ -264,7 +263,7 @@ else if($dopost=='getfilesstart')
 }
 else if($dopost=='getfiles')
 {
-	$cacheFiles = DEDEROOT.'/data/updatetmp.inc';
+	$cacheFiles = DEDEROOT.'/data/cache/updatetmp.inc';
 	$skipnodir = (isset($skipnodir) ? 1 : 0);
 	$adminDir = ereg_replace("(.*)[/\\]","",dirname(__FILE__));
 	
@@ -335,7 +334,7 @@ function _Down() {  }
 */
 else if($dopost=='down')
 {
-	$cacheFiles = DEDEROOT.'/data/updatetmp.inc';
+	$cacheFiles = DEDEROOT.'/data/cache/updatetmp.inc';
 	require_once($cacheFiles);
 	
 	if(empty($startup))
@@ -390,7 +389,7 @@ function _ApplyUpdate() {  }
 */
 else if($dopost=='apply')
 {
-	$cacheFiles = DEDEROOT.'/data/updatetmp.inc';
+	$cacheFiles = DEDEROOT.'/data/cache/updatetmp.inc';
 	require_once($cacheFiles);
 	
 	if(empty($step))

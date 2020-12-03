@@ -52,11 +52,12 @@ function UpdateNote(nid){
    myajax.AddKeyUtf8('spwords',kws);
    myajax.AddKeyUtf8('count',ct);
    myajax.AddKeyUtf8('pageno',pageno);
+   myajax.AddKeyUtf8('orderby',orderby);
    myajax.SendPost2('search_keywords_main.php');
    <?php
    }
    elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
-   	 echo 'myajax.SendGet2("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);';
+   	 echo 'myajax.SendGet2("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno+"&orderby="+orderby);';
    }
    ?>
    //myajax.SendGet("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);
@@ -69,7 +70,7 @@ function DelNote(nid){
   if(pagenum<=pageno) pageno = pagenum;
   var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
 	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
-  myajax.SendGet("search_keywords_main.php?dopost=del&aid="+nid+"&pageno="+pageno);
+  myajax.SendGet("search_keywords_main.php?dopost=del&aid="+nid+"&pageno="+pageno+"&orderby="+orderby);
   ReloadPageNum(pageno);
 }
 //重新加载分页列表

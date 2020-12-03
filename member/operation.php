@@ -10,11 +10,10 @@ function GetSta($sta){
 	else return '已完成';
 }
 
-$sql = "Select * From #@__member_operation where mid='".$cfg_ml->M_ID."' order by aid desc";
+$sql = "Select * From `#@__member_operation` where mid='".$cfg_ml->M_ID."' And product<>'archive' order by aid desc";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;
 $dlist->SetTemplate(DEDEMEMBER."/templets/operation.htm");    
 $dlist->SetSource($sql);
 $dlist->Display();  
-
 ?>

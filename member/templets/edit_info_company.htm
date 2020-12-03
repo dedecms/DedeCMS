@@ -21,16 +21,17 @@
         <div class="location">设置公司资料</div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
-            <li><a href="mtypes.php">分类管理</a></li>
-            <li><a href="flink_main.php">书签管理</a></li>
-            <li class="select"><a href="">公司资料</a></li>
+            <li><a href="edit_baseinfo.php">基本资料</a></li>
+            <li class="select"><a href="edit_fullinfo.php">公司资料</a></li>
+            <li><a href="edit_face.php">头像设置</a></li>
+            <li><a href="edit_space_info.php">空间设置</a></li>
           </ul>
         </div>
         <form class="mTB10 mL10 mR10" name="form2" action="edit_fullinfo.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>详细资料</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+            <div class="fLeftNoForm"><strong>公司详细资料</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"></div>
           </div>
           <div class="item info">
             <div class="itemHead bgGrass titleBar" >
@@ -135,8 +136,12 @@
                   </tr>
                   <tr>
                     <td align="right" valign="top">原有形象图片：</td>
-                    <td><div id='logoview' class='divpre mTB10 litPic'> <img src='<?php echo $row['comface'];?>' width="200" height="145" /> </div>
-                      (建议大小200 x 145)</td>
+                    <td>
+                    <div id='logoview' class='divpre mTB10 litPic'>
+                    	<img src='<?php echo (empty($row['comface']) ? 'images/comface.png' : $row['comface']);?>' width="200" height="150" />
+                    </div>
+                      (建议大小400 x 300 像素)
+                    </td>
                   </tr>
                   <tr>
                     <td align="right" valign="top">公司简介：</td>

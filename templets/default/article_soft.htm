@@ -9,15 +9,12 @@
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
-function CheckLogin(){
+function CheckLogin()
+{
 	var taget_obj = document.getElementById('_ajax_feedback');
 	myajax = new DedeAjax(taget_obj,false,false,'','','');
 	myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
 	DedeXHTTP = null;
-}
-function checkSubmit(){
-	if(document.feedback.msg.value!='') document.feedback.submit();
-	else alert("评论内容不能为空！");
 }
 function postBadGood(ftype,fid)
 {
@@ -49,7 +46,7 @@ function postBadGood(ftype,fid)
 		SetCookie('badgoodid',fid,1);
 	}
 	myajax = new DedeAjax(taget_obj,false,false,'','','');
-	myajax.SendGet2("{dede:field name='phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+	myajax.SendGet2("{dede:global name='cfg_phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
 	DedeXHTTP = null;
 }
 function postDigg(ftype,aid)
@@ -102,10 +99,10 @@ function getDigg(aid)
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-		{dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='self' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -130,8 +127,8 @@ function getDigg(aid)
 				<small>软件等级：</small><span>{dede:field.softrank function='GetRankStar(@me)'/}</span>
 				<small>发布时间：</small><span>{dede:field.pubdate function="GetDateMk('@me')"/}</span>
 				<small>官方网址：</small><span>{dede:field.officialurl/}</span>
-                <small>演示网址：</small><span>{dede:field.officialdemo/}</span>
-                <small>下载次数：</small><span><script src="{dede:field.phpurl/}/disdls.php?aid={dede:field.id/}" language="javascript"></script></span>
+        <small>演示网址：</small><span>{dede:field.officialdemo/}</span>
+        <small>下载次数：</small><span><script src="{dede:field.phpurl/}/disdls.php?aid={dede:field.id/}" language="javascript"></script></span>
 			</div><!-- /info -->
 			<div class="picview">
 				{dede:field name='image'/}
@@ -187,83 +184,18 @@ function getDigg(aid)
 				</div><!-- /context -->
 				<div class="actbox">
 					<ul>
-						<li id="act-fav"><a href="{dede:field name='phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
-						<li id="act-err"><a href="{dede:field name='phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
-						<li id="act-pus"><a href="{dede:field name='phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
+						<li id="act-fav"><a href="{dede:global name='cfg_phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
+						<li id="act-err"><a href="{dede:global name='cfg_phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
+						<li id="act-pus"><a href="{dede:global name='cfg_phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
 						<li id="act-pnt"><a href="#" onClick="window.print();">打印</a></li>
 					</ul>
 				</div><!-- /actbox -->
 			</div><!-- /handle -->
 		</div><!-- /viewbox -->
 
-		<div class="mt1">
-			<dl class="tbox">
-				<dt>
-					<strong>最新评论</strong>
-					<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
-				</dt>
-				<dd>
-					<div class="dede_comment">
-                    <script language='javascript' type='text/javascript' src="{dede:field name='phpurl'/}/feedback_js.php?aid={dede:field name='id'/}"></script>
-					</div><!-- /dede_comment -->
-				</dd>
-			</dl>
-		</div><!-- /comment -->
-		<div class="mt1">
-		<dl class="tbox">
-			<dt>
-				<strong>发表评论</strong>
-				<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
-			</dt>
-			<dd>
-				<div class="dede_comment_post">
-          <form action="{dede:field name='phpurl'/}/feedback.php" method="post" name="feedback">
-          <input type="hidden" name="action" value="send" />
-          <input type="hidden" name="comtype" value="comments">
-          <input type="hidden" name="aid" value="{dede:field name="id"/}" />
-          <input type="hidden" name="isconfirm" value="yes" />
-                    <div class="dcmp-title">
-						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
-					</div><!-- /dcmp-title -->
-					<div class="dcmp-stand">
-						<strong>评价:</strong>
-							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="{dede:global.cfg_templeturl/}/images/cmt-neu.gif" />中立</label>
-							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="{dede:global.cfg_templeturl/}/images/cmt-good.gif" />好评</label>
-							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="{dede:global.cfg_templeturl/}/images/cmt-bad.gif" />差评</label>
-					</div><!-- /dcmp-stand -->
-					<div class="dcmp-content">
-						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
-					</div><!-- /dcmp-content -->
-
-					<div class="dcmp-mood">
-						<strong>表情:</strong>
-						<ul>
-								<li><input type="radio" name='face' value='6' checked="1" /><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-6.gif" /></li>
-								<li><input type="radio" name='face' value='4'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-4.gif" /></li>
-								<li><input type="radio" name='face' value='3'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-3.gif" /></li>
-								<li><input type="radio" name='face' value='5'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-5.gif" /></li>
-								<li><input type="radio" name='face' value='2'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-2.gif" /></li>
-								<li><input type="radio" name='face' value='1'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-1.gif" /></li>
-								<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-7.gif" /></li>
-						</ul>
-					</div><!-- /dcmp-mood -->
-					<div class="dcmp-post"><!--未登陆-->
-							<div class="dcmp-userinfo" id="_ajax_feedback">
-								用户名:<input type="text" name="username" size="16" class="ipt-txt" />
-								密码:<input name="pwd" type="password" size="16" class="ipt-txt" />
-								验证码:<input type="text" name="validate" size="4" class="ipt-txt" /><img src="{dede:global.cfg_cmsurl/}/include/vdimgck.php" />
-                                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest"> 匿名? </label>
-							</div>
-                             <script language="javascript" type="text/javascript">CheckLogin();</script>
-							<div class="dcmp-submit">
-								<button type="button" onClick='checkSubmit()'>发表评论</button>
-							</div>
-						</div>
-                    </form>
-				</div><!-- /dede_comment_post -->
-			</dd>
-		</dl>
-	</div>
+<!-- //AJAX评论区 -->
+{dede:include file='ajaxfeedback.htm' /}
+	
 	</div><!-- /pleft -->
 
 	<div class="pright">
@@ -322,6 +254,6 @@ function getDigg(aid)
 
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
-<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
+<script src="{dede:global name='cfg_phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
 </body>
 </html>

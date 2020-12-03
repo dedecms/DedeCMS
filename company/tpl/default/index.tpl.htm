@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>企业黄页 -- {dede:global.cfg_webname/}</title>
+<meta name="description" content="{dede:global.cfg_description/}" />
+<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script src="../data/enums/nativeplace.js" type="text/javascript"></script>
+<script src="../data/enums/vocation.js" type="text/javascript"></script>
+<script src="../images/enums.js" type="text/javascript"></script>
+</head>
+<body class="companylist">
+
+  <div class="header">
+    <div class="top w960 center">
+      <div class="title">
+        <h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a> </h1>
+      </div>
+      <!-- /title -->
+      <div class="banner">{dede:myad name='topbanner'/}</div>
+      <!-- /banner -->
+      <div class="rlink">
+        <ul>
+          <li class="r1"><a href="{dede:global.cfg_memberurl/}">会员中心</a></li>
+          <li class="r2"><a href="{dede:global.cfg_cmsurl/}/tags.php">TAG标签</a></li>
+          <li class="r3"><a href="{dede:global.cfg_dataurl/}/sitemap.html">网站地图</a></li>
+          <li class="r4"><a href="{dede:global.cfg_dataurl/}/rssmap.html">RSS订阅</a></li>
+        </ul>
+      </div>
+      <!-- /banner -->
+    </div>
+    <!-- /top --> 
+  <div class="module blue mT10 wrapper w963" style="height:34px;overflow:hidden;">
+  	<div class="top">
+    	<div class="t_l"></div>
+    	<div class="t_r"></div>
+    	<ul id="navMenu">
+      	<li><a href='{dede:global.cfg_cmsurl/}/'>主页</a></li>
+      	{dede:channel type='top' currentstyle="class='thisclass'"}
+          <li><a href='{dede:field name='typeurl'/}'{dede:field name='currentstyle'/}>{dede:field name='typename'/}</a></li>
+        {/dede:channel}
+    	</ul>
+		</div>
+	</div>
+ <!-- /nav -->
+	<div class="search" style="background:url(../templets/images/search-bg.png) repeat-x;height:36px;line-height:30px;padding-left:5px;">
+		<div class="w960 center">
+			<div class="form">
+<form action="index.php" method="POST">
+	<input type="text" class="search-keyword" id="search-keyword" name="cname" value="<?php echo $cname; ?>" />
+	行业：
+	<input type="hidden" id="hidden_vocation" name="vocation" value="<?php echo $vocation; ?>" />
+	<span id='span_vocation'></span>
+	<span id='span_vocation_son'></span>
+	<script language='javascript'>
+		MakeTopSelect('vocation', <?php echo $vocation; ?>);
+	</script>
+	&nbsp;地区：
+	<input type="hidden" id="hidden_nativeplace" name="nativeplace" value="<?php echo $nativeplace; ?>" />
+	<span id='span_nativeplace'></span>
+	<span id='span_nativeplace_son'></span>
+	<script language='javascript'>
+		MakeTopSelect('nativeplace', <?php echo $nativeplace; ?>);
+	</script>
+	<input type="submit" name="submit" value="搜索" class="search-submit" />
+</form>
+			</div><!-- /form -->
+		</div>
+	</div><!-- /search -->
+</div><!-- /header -->
+
+
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="place">
+			<strong>当前位置:</strong> <a href="{dede:global.cfg_cmsurl/}">首页</a> <small>&gt;</small> 企业库
+		</div><!-- /place -->
+		<div class="listbox">
+			<ul class="e2">
+				{dede:datalist}
+				<li>
+					<a href="{dede:global.cfg_cmsurl/}/member/index.php?uid={dede:field.userid /}" class="preview"><img src="{dede:field.comface/}" /></a>
+					<a href="{dede:global.cfg_cmsurl/}/member/index.php?uid={dede:field.userid /}" class="title">{dede:field.company/}</a>
+					<span class="info">
+						<small>联系人:</small>{dede:field.linkman/}
+                        <small>联系电话:</small>{dede:field.tel/}
+                        <small>Email:</small>{dede:field.email/}						
+					</span>
+					<span class="info">
+						<small>公司地址:</small>{dede:field.address/}
+						<small>公司网站:</small>{dede:field.url/}
+					</span>
+					<p class="intro">{dede:field.introduce function='html2text(@me)'/}</p>
+				</li>
+				{/dede:datalist}
+
+			</ul>
+		</div><!-- /listbox -->
+		<div class="dede_pages">
+			{dede:pagelist/}
+		</div><!-- /pages -->
+	</div><!-- /pleft -->
+	
+	<div class="pright">
+		<div>
+			<dl class="tbox">
+				<dt><strong>行业分类</strong></dt>
+				<dd>
+					<ul class="f6">
+<?php
+foreach($topVocation as $id => $vocation)
+{
+?>
+<li><a href="index.php?vocation=<?php echo $id;?>"><?php echo $vocation;?></a></li>
+<?php
+}
+?>
+					</ul>
+				</dd>
+			</dl>
+		</div>
+		
+		<div class="mt1">
+			<dl class="tbox">
+				<dt><strong>地区分类</strong></dt>
+				<dd>
+					<ul class="f6">
+<?php
+foreach($em_nativeplaces as $id => $area)
+{
+	if($id%500 != 0) continue;
+?>
+<li><a href="index.php?province=<?php echo $id;?>"><?php echo $area;?></a></li>
+<?php
+}
+?>
+
+					</ul>
+				</dd>
+			</dl>
+		</div>
+
+		
+
+	</div><!-- /pright -->
+</div>
+
+<div class="footer w960 center mt1 clear">
+	<!-- 
+		为了支持织梦团队的发展,请您保留织梦内容管理系统的链接信息.
+		我们对支持织梦团队发展的朋友表示真心的感谢!织梦因您更精彩!
+	-->
+	<p class="powered">
+		Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCms)" target="_blank"><strong>DedeCMS<span>{dede:global.cfg_version/}</span></strong></a> &copy; 2004-2008 <a href="http://www.desdev.cn/" target="_blank">DesDev</a> Inc.	</p>
+<!-- /powered -->
+	<p class="copyright">
+		{dede:global.cfg_powerby/}<br />{dede:global.cfg_beian/}
+  </p>
+</div>
+
+</body>
+</html>

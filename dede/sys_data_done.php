@@ -315,7 +315,7 @@ else if($dopost=='redat')
 		}
 		if($bakfilesTmp=="")
 		{
-			ShowMsg('成功还原所的文件的数据!','javascript:;');
+			ShowMsg('成功还原所有的文件的数据!','javascript:;');
 			exit();
 		}
 		$tmsg = "成功还原{$nowfile}的{$oknum}条记录<br/><br/>正在准备还原其它数据...";

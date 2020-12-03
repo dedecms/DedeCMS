@@ -18,7 +18,7 @@ if($id < 1)
 }
 
 $siteurl = '';
-$sql ="select arctype.siteurl from #@__archives arc left join #@__arctype arctype on arctype.id=arc.typeid where arc.id=$id";
+$sql ="select arctype.siteurl from #@__archives arc left join #@__arctype arctype on arctype.id=arc.typeid where arc.id='$id'";
 $row = $dsql->GetOne($sql);
 if(is_array($row))
 {
@@ -34,6 +34,6 @@ ORDER BY fb.id DESC";
 $dlist = new DataListCP();
 $dlist->pageSize = 6;
 $dlist->SetParameter('id', $id);
-$dlist->SetTemplet($cfg_basedir.$cfg_templets_dir."/plus/comments_frame.htm");
+$dlist->SetTemplet(DEDETEMPLATE.'/plus/comments_frame.htm');
 $dlist->SetSource($sql);
 $dlist->display();

@@ -65,7 +65,7 @@ function postBadGood(ftype,fid)
         <?php echo $cfg_ml->M_LoginID; ?>,欢迎您的登陆。
                 <a href="<?php echo $cfg_memberurl; ?>/index.php">会员中心</a> |
                 <a href="<?php echo $cfg_memberurl; ?>/edit_fullinfo.php">我的资料</a> |
-                <a href="<?php echo $myurl;?>">我的空间</a> |
+                <a href="<?php echo $cfg_memberurl; ?>/index.php?uid=<?php echo urlencode($cfg_ml->M_LoginID);?>">我的空间</a> |
                 <a href="<?php echo $cfg_memberurl; ?>/index_do.php?fmdo=login&dopost=exit">退出登录</a>
         <?php
         }
@@ -146,7 +146,7 @@ function postBadGood(ftype,fid)
                     <input name="username" type="text" id="username" size="10" class="nb" />
                     （<a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>注册新用户</u></a>）
                     密码：
-                    <input name="pwd" type="text" id="pwd" size="10"class="nb" />
+                    <input name="pwd" type="password" id="pwd" size="10"class="nb" />
                    <?php
                     }else{  echo $cfg_ml->M_LoginID."&nbsp;"; }
                    ?>

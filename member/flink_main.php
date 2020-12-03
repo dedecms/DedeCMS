@@ -14,16 +14,17 @@ if($dopost=="addnew")
 {
 	AjaxHead();
 	$row = $dsql->GetOne("Select count(*) as dd From `#@__member_flink` where mid='".$cfg_ml->M_ID."' ");
-	if($row['dd']>=20)
+	if($row['dd']>=50)
 	{
-		echo "<font color='red'>增加网址失败，因为已经达到二十个网址的上限！</font>";
+		echo "<font color='red'>增加网址失败，因为已经达到五十个网址的上限！</font>";
 		GetLinkList($dsql);
 		exit();
 	}
 	if(!eregi("^http://",$url))
 	{
-		$url = "http://".HtmlReplace($url,2);
+		$url = "http://".HtmlReplace($url, 2);
 	}
+	$title = HtmlReplace($title);
 	$inquery = "INSERT INTO `#@__member_flink`(mid,title,url) VALUES(".$cfg_ml->M_ID.",'$title','$url'); ";
 	$dsql->ExecuteNoneQuery($inquery);
 	echo "<font color='red'>成功增加一链接！</font>";
@@ -34,7 +35,7 @@ else if($dopost=="del")
 {
 	AjaxHead();
 	$aid = intval($aid);
-	if($aid=='' || $aid==0)
+	if(empty($aid))
 	{
 		exit("<font color='red'>参数错误！</font>");
 	}
@@ -50,6 +51,7 @@ else if($dopost=="update")
 	{
 		$url = "http://".HtmlReplace($url,2);
 	}
+	$title = HtmlReplace($title);
 	$upquery = "Update `#@__member_flink` set title='$title',url='$url' where aid='$aid' And mid='".$cfg_ml->M_ID."'; ";
 	$rs = $dsql->ExecuteNoneQuery($upquery);
 	if($rs)

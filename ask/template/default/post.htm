@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+<?php if(isset($cfg_ask_sitename)) echo $cfg_ask_sitename;?>
+- powered by dedecms</title>
+<link href="template/default/style/ask_base.css" rel="stylesheet" type="text/css" />
+<link href="template/default/style/ask_post.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">var charset = '<?php if(isset($charset)) echo $charset;?>';</script>
+<script type="text/javascript" src="include/js/common.js"></script>
+<script type="text/javascript">
+function checkform(theform,own) {
+	if(theform.ClassLevel1.selectedIndex<0) {
+		alert("请选择问题分类");
+		return false;
+	} else if(theform.title.value == "") {
+		alert("问题不能为空");
+		theform.title.focus();
+		return false;
+	} else if(mb_strlen(theform.title.value) > 80) {
+		alert("问题太长，请修改，并使用问题补充");
+		theform.title.focus();
+		return false;
+	} else if(theform.reward.value > own) {
+		alert("悬赏的积分不能大于你拥有的积分，请重新设置悬赏积分");
+		return false;
+	}
+}
+</script>
+</head>
+<body>
+<!--顶部全站导航-->
+<div class="headTop">{dede:include file='headmenu.htm' /}</div>
+<div class="toplogo cbody margintop">
+  <div class="logobox"><img src="template/default/images/toplogo.gif" width="279" height="43" alt="问答系统" /></div>
+</div>
+<div class="topbox cbody margintop">
+  <div class="menu">
+    <ul>
+      <li><a href="./">问答首页</a></li>
+      <li><a href="type.php">全部分类</a></li>
+      <li><a href="browser.php?lm=1">精彩问题</a></li>
+      <li class="menuright"></li>
+    </ul>
+  </div>
+  <div class="search">
+    <form action="search.php?action=search" method="post">
+      <input type="text" name="q" value="" class="searchinput"/>
+      <input name="" type="submit" value="搜索答案" class="submit"/>
+      <input onclick="location.href='post.php'" name="按钮" type="button" class="postqa" value="我要提问"/>
+    </form>
+  </div>
+</div>
+<!--当前位置-->
+<div class="thisplace cbody margintop"> <?php echo $nav?> </div>
+<form action="post.php?action=ask" method="post" name="ask" onsubmit="return checkform(this,<?php echo $scores; ?>);">
+<input type="hidden" name="scores" value="<?php echo $scores; ?>" />
+<div class="main cbody margintop">
+  <div class="postbox">
+    <dl>
+      <dt>问题：</dt>
+      <dd>
+        <input name="title" type="text" />
+      </dd>
+      <dd>控制在6到30个字之间。(提出问题后请关注答案，并在有效期<?php echo $cfg_ask_expiredtime;?>天内结束问题)</dd>
+    </dl>
+    <dl>
+      <dt>补充说明：</dt>
+      <dd>
+        <textarea name="content" cols="66" rows="8"></textarea>
+      </dd>
+      <dd>问题说明越详细，回答也会越准确！</dd>
+    </dl>
+    <dl>
+      <dt>问题分类：</dt>
+      <dd>
+        <select id=ClassLevel1 style="WIDTH: 125px"  size=8 name=ClassLevel1>
+        </select>
+        <strong class="jiantou">→</strong>
+        <select id=ClassLevel2 style="WIDTH: 90px" size=8  name=ClassLevel2>
+        </select>
+      </dd>
+      <script language=javascript>
+var g_ClassLevel1;
+var g_ClassLevel2;
+
+<?php
+echo $tids."\n".$tid2s;
+?>
+
+function FillClassLevel1(ClassLevel1)
+{
+    for(i=0; i<class_level_1.length; i++) {
+        ClassLevel1.options[i] = new Option(class_level_1[i][1], class_level_1[i][0]);
+    }
+    ClassLevel1.length = i;
+}
+
+function FillClassLevel2(ClassLevel2, class_level_1_id)
+{
+    ClassLevel2.options[0] = new Option("不选", "");
+     count = 1;
+    for(i=0; i<class_level_2.length; i++) {
+        if(class_level_2[i][0].toString() == class_level_1_id) {
+            ClassLevel2.options[count] = new Option(class_level_2[i][2], class_level_2[i][1]);
+            count = count+1;
+        }
+    }
+    ClassLevel2.options[0].selected = true;
+    ClassLevel2.length = count;
+}
+
+function ClassLevel1_onchange()
+{
+	FillClassLevel2(g_ClassLevel2, g_ClassLevel1.value);
+}
+
+function InitClassLevelList(ClassLevel1, ClassLevel2)
+{
+	g_ClassLevel1=ClassLevel1;
+    g_ClassLevel2=ClassLevel2;
+
+    g_ClassLevel1.onchange = Function("ClassLevel1_onchange();");
+    FillClassLevel1(g_ClassLevel1);
+
+	var height = (g_ClassLevel1.options.length * 15 + (!(window.attachEvent && !window.opera) ? 60 : 40)) + 'px';
+	g_ClassLevel1.style.height=height;
+	g_ClassLevel2.style.height=height;
+    ClassLevel1_onchange();
+}
+
+InitClassLevelList(document.ask.ClassLevel1, document.ask.ClassLevel2);
+
+</script>
+      <dd>如果您的问题无法归入任何子分类，您可以只选择一级分类 。<br />
+        请选择正确的分类，以使问题尽快得到解答。 </dd>
+    </dl>
+    <dl>
+      <dt>悬赏分：</dt>
+      <dd>
+        <select name="reward">
+          <option value=0>0</option>
+          <option value=5>5</option>
+          <option value=10>10</option>
+          <option value=15>15</option>
+          <option value=20>20</option>
+          <option value=30>30</option>
+          <option value=50>50</option>
+          <option value=80>80</option>
+          <option value=100>100</option>
+        </select>
+      </dd>
+      <dd class=""><span class="jifen2">您当前的积分是 <strong><?php echo $scores; ?></strong> 分</span></dd>
+    </dl>
+    <dl>
+      <dt>匿名设定：</dt>
+      <dd>
+        <input name="anonymous" type="checkbox" value="1" class="nmsd" />
+        您可以对问题设定匿名，但您需要付出积分10分。 </dd>
+    </dl>
+    <div class="psubmit">
+      <input name="submit" type="submit" class="psub" value="提交问题" />
+    </div>
+  </div>
+  <div class="floatclear">
+    <!--清除浮动-->
+  </div>
+</div>
+{dede:include file='foot.htm' /}
+</body>
+</html>

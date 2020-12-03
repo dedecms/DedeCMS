@@ -44,7 +44,7 @@ function checkSubmit()
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
         <div class="location"><span class="titAddChannel1 icon">发表</span><?php echo $cInfos['typename']; ?></div>
-        <form class="mTB10 mL10 mR10" name="form1" action="archives_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+        <form class="mTB10 mL10 mR10" name="form1" action="article_add.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
           <table cellspacing="1" class="submit">
@@ -77,12 +77,12 @@ function checkSubmit()
 		echo $typeOptions;
 		echo "</select>";
 		?>
-                  <span style="color:#F00">*</span></td>
+                  <span style="color:#F00">*</span>(不能选择带颜色的分类)</td>
               </tr>
               <tr>
-                <td align="right" valign="top">隶属分类：</td>
+                <td align="right" valign="top">我的分类：</td>
                 <td><?php
-            	$classlist = classification("$cfg_ml->M_ID");
+            	$classlist = classification($cfg_ml->M_ID, 0, $channelid);
             	echo "<select name='mtypesid' size='1'>\r\n";
             	echo "<option value='0' selected>请选择分类...</option>\r\n";
 				echo $classlist;
@@ -114,7 +114,7 @@ function checkSubmit()
               <tr>
                 <td align="right" valign="top">验证码：</td>
                 <td><input class="text" name="vdcode" type="text" id="vdcode" size="10" style='width:50px;text-transform:uppercase;' />
-                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" /></td>
+                  <img src='../include/vdimgck.php' alt="验证码" width='50' height='20' align="absmiddle" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></td>
               </tr>
               <?php
       }else {

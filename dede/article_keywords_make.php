@@ -153,8 +153,13 @@ else if($dopost=='fetch')
 			$tjnum++;
 			$id = $row->id;
 			$keywords = "";
+			if($cfg_soft_lang == 'utf-8')
+			{
+				$row->title = utf82gb($row->title);
+				$row->body = utf82gb($row->body);
+			}
 			$titleindexs = explode(' ',trim($sp->GetIndexText($row->title)));
-			$allindexs = explode(' ',trim($sp->GetIndexText(Html2Text($row->body),200)));
+			$allindexs = explode(' ',trim($sp->GetIndexText(Html2Text($row->body),500)));
 			if(is_array($allindexs) && is_array($titleindexs))
 			{
 				foreach($titleindexs as $k)

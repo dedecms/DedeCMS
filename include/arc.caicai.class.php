@@ -8,7 +8,8 @@ require_once(DEDEINC."/channelunit.func.php");
 
 class Caicai extends DataListCP
 {
-	var $maxPageSize;
+	var $maxPageSize = 100;
+	var $arcCacheTime = 3600;
 
 	/**
 	 * 对config参数及get参数等进行预处理
@@ -36,6 +37,12 @@ class Caicai extends DataListCP
 		{
 			$this->totalPage = $this->maxPageSize;
 		}
+		//限制最大页数
+		if($this->pageNO > $this->totalPage)
+		{
+			$this->pageNO = $this->totalPage;
+			$this->totalResult = $this->totalPage * $this->pageSize;
+		}
 		$this->sourceSql = ereg_replace("limit [0-9,]{1,}",'',$this->sourceSql);
 		if($this->totalResult==0)
 		{
@@ -56,10 +63,10 @@ class Caicai extends DataListCP
 	/**
 	 * 获取当前页数据列表
 	 *
-	 * @param unknown_type $atts
-	 * @param unknown_type $refObj
-	 * @param unknown_type $fields
-	 * @return unknown
+	 * @param array $atts
+	 * @param object $refObj
+	 * @param array $fields
+	 * @return array
 	 */
 	function GetArcList($atts,$refObj='',$fields=array())
 	{
@@ -79,7 +86,7 @@ class Caicai extends DataListCP
 			$arr['ispart'],$arr['namerule2'],$arr['moresite'],$arr['siteurl'],$arr['sitepath']);
 			if($arr['litpic'] == '-' || $arr['litpic'] == '')
 			{
-				$arr['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+				$arr['litpic'] = 'images/dfpic.gif';
 			}
 			if(!eregi("^http://",$arr['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
 			{
@@ -121,10 +128,10 @@ class Caicai extends DataListCP
 	/**
 	 * 获得最差或最好的踩踩文章
 	 *
-	 * @param unknown_type $atts
-	 * @param unknown_type $refObj
-	 * @param unknown_type $fields
-	 * @return unknown
+	 * @param array $atts
+	 * @param object $refObj
+	 * @param array $fields
+	 * @return array
 	 */
 	function GetSortArc($atts,$refObj='',$fields=array())
 	{
@@ -142,11 +149,34 @@ class Caicai extends DataListCP
           where arc.arcrank>-1 order by arc.{$order} $orderway limit 0,$arcrow ";
 
 		$rsArray = array();
-		$this->dsql->Execute('cai',$query);
+		
+		$cacheFile = DEDEDATA.'/cache/caicai_'.md5($query).'.inc';
+		$needCache = false;
+		if(file_exists($cacheFile) && filemtime($cacheFile)-time() < $this->arcCacheTime)
+		{
+			$fp = fopen($cacheFile, 'r');
+			$ids = fread($fp, filesize($cacheFile));
+			fclose($fp);
+			$ids = trim($ids);
+			if( !empty($ids) )
+			{
+				$query = "Select arc.*,tp.typedir,tp.typename,
+		      tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
+          From `#@__archives` arc left join `#@__arctype` tp on tp.id=arc.typeid
+          where arc.id in($ids) order by arc.{$order} $orderway ";
+      }
+		}
+		else
+		{
+			$needCache = true;
+		}
+		$ids = array();
 		$i = 0;
+		$this->dsql->Execute('cai',$query);
 		while($arr=$this->dsql->GetArray('cai'))
 		{
 			$i++;
+			$ids[] = $arr['id'];
 			$arr['filename'] = $arr['arcurl'] = GetFileUrl($arr['id'],$arr['typeid'],$arr['senddate'],$arr['title'],$arr['ismake'],
 			$arr['arcrank'],$arr['namerule'],$arr['typedir'],$arr['money'],$arr['filename'],$arr['moresite'],$arr['siteurl'],$arr['sitepath']);
 
@@ -170,6 +200,16 @@ class Caicai extends DataListCP
 			$rsArray[$i]  =  $arr;
 		}
 		$this->dsql->FreeResult('cai');
+		
+		//写入缓存
+		if($needCache && count($ids) > 0)
+		{
+			$idsstr = join(',', $ids);
+			$fp = fopen($cacheFile, 'w');
+			fwrite($fp, $idsstr);
+			fclose($fp);
+		}
+		
 		return $rsArray;
 
 	}
@@ -177,10 +217,10 @@ class Caicai extends DataListCP
 	/**
 	 * 获取顶级栏目列表
 	 *
-	 * @param unknown_type $atts
-	 * @param unknown_type $refObj
-	 * @param unknown_type $fields
-	 * @return unknown
+	 * @param array $atts
+	 * @param object $refObj
+	 * @param array $fields
+	 * @return array
 	 */
 	function GetCatalog($atts,$refObj='',$fields=array())
 	{

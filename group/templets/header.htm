@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $title;?></title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="headTop">
+  <div class="logo" onclick="location='/'" title="网站首页"> </div>
+  <div class="welcome">
+    <?php
+            if(!$cfg_ml->IsLogin()){
+            ?>
+    <?php echo $lang['group_main_hello'].$lang['group_main_first'];?> <a href="../member/login.php?gourl=<?php echo urlencode(GetCurUrl());?>"><?php echo $lang['group_main_login'];?></a> <?php echo $lang['group_main_or'];?> <a href="../member/index_do.php?fmdo=user&dopost=regnew"><?php echo $lang['group_main_reg'];?></a>
+    <?php
+            }else{
+            ?>
+    <?php echo $lang['group_main_hello'].$cfg_ml->M_UserName; ?> <?php echo $lang['group_main_welcome'].$Honor; ?> | <a href="../group/mygroup.php"><?php echo $lang['group_main_control'];?></a> | <a href="../member/index_do.php?fmdo=login&dopost=exit"><?php echo $lang['group_main_exit'];?></a>
+    <?php
+            }
+            ?>
+  </div>
+</div>
+<div id="group_header">
+  <div id="group_top">
+    <div class="group_logo" onclick="location='../group'" title="圈子首页"></div>
+  </div>
+  <div class="topbox cbody margintop">
+    <div class="menu">
+      <ul>
+        <li><a href="../group"><?php echo $lang['group_main_index'];?></a></li>
+        <li><a href="directry.php"><?php echo $lang['group_store_all'];?></a></li>
+        <li><a href="create.php"><?php echo $lang['group_main_create'];?></a></li>
+        <li><a href="../member/login.php?gourl=<?php echo urlencode(GetCurUrl());?>"><?php echo $lang['group_main_logins'];?></a></li>
+        <li class="menuright"></li>
+      </ul>
+    </div>
+    <div class="search">
+      <form action="search.php" method="get">
+        <input type="text" name="keyword" value="<?php if(isset($keyword)) echo $keyword;if(!isset($sad)) $sad = 'g';?>" class="searchinput" />
+        <input name='sad' type='radio' id="sad" value="g" <?php if($sad=="g"||!isset($sad)) echo 'checked="checked"';?> />
+        <?php echo $lang['group_search_groups'];?>
+        <input name='sad' type='radio' id="sad" value="t" <?php if($sad=="t") echo 'checked="checked"';?>/>
+        <?php echo $lang['group_search_threads'];?>
+        <input type="submit" value="<?php echo $lang['group_search'];?>" class="postqa" />
+      </form>
+    </div>
+  </div>
+</div>

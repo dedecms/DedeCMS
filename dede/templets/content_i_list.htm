@@ -3,124 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>文档管理</title>
 <link rel="stylesheet" type="text/css" href="img/base.css">
-<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
-<script language="javascript">
-if(moz) {
-	extendEventObject();
-	extendElementModel();
-	emulateAttachEvent();
-}
-function viewArc(aid){
-	if(aid==0) aid = getOneItem();
-	window.open("archives_do.php?aid="+aid+"&dopost=viewArchives");
-}
-function editArc(aid){
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?aid="+aid+"&dopost=editArchives";
-}
-function updateArc(aid){
-	var qstr=getCheckboxItem();
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?aid="+aid+"&dopost=makeArchives&qstr="+qstr;
-}
-function checkArc(aid){
-	var qstr=getCheckboxItem();
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?aid="+aid+"&dopost=checkArchives&qstr="+qstr;
-}
-function moveArc(aid){
-	var qstr=getCheckboxItem();
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?aid="+aid+"&dopost=moveArchives&qstr="+qstr;
-}
-function adArc(aid){
-	var qstr=getCheckboxItem();
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?aid="+aid+"&dopost=commendArchives&qstr="+qstr;
-}
-function delArc(aid){
-	var qstr=getCheckboxItem();
-	if(aid==0) aid = getOneItem();
-	location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=delArchives";
-}
-//上下文菜单
-function ShowMenu(evt,obj,aid,atitle)
-{
-  var eobj,popupoptions
-  popupoptions = [
-    new ContextItem("浏览文档",function(){ viewArc(aid); }),
-    new ContextItem("编辑文档",function(){ editArc(aid); }),
-    new ContextSeperator(),
-    new ContextItem("更新HTML",function(){ updateArc(aid); }),
-    new ContextItem("审核文档",function(){ checkArc(aid); }),
-    new ContextItem("推荐文档",function(){ adArc(aid); }),
-    new ContextSeperator(),
-    new ContextItem("删除文档",function(){ delArc(aid); }),
-    new ContextSeperator(),
-    new ContextItem("全部选择",function(){ selAll(); }),
-    new ContextItem("取消选择",function(){ noSelAll(); }),
-    new ContextSeperator(),
-    new ContextItem("关闭菜单",function(){})
-  ]
-  ContextMenu.display(evt,popupoptions)
-}
-
-//获得选中文件的文件名
-function getCheckboxItem()
-{
-	var allSel="";
-	if(document.form2.arcID.value) return document.form2.arcID.value;
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(document.form2.arcID[i].checked)
-		{
-			if(allSel=="")
-				allSel=document.form2.arcID[i].value;
-			else
-				allSel=allSel+"`"+document.form2.arcID[i].value;
-		}
-	}
-	return allSel;
-}
-
-//获得选中其中一个的id
-function getOneItem()
-{
-	var allSel="";
-	if(document.form2.arcID.value) return document.form2.arcID.value;
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(document.form2.arcID[i].checked)
-		{
-				allSel = document.form2.arcID[i].value;
-				break;
-		}
-	}
-	return allSel;
-}
-
-function selAll()
-{
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(!document.form2.arcID[i].checked)
-		{
-			document.form2.arcID[i].checked=true;
-		}
-	}
-}
-function noSelAll()
-{
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(document.form2.arcID[i].checked)
-		{
-			document.form2.arcID[i].checked=false;
-		}
-	}
-}
-</script>
+<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/main.js"></script>
+<script language="javascript" src="js/list.js"></script>
 </head>
 <body leftmargin="8" topmargin="8" background='img/allbg.gif' onLoad="ContextMenu.intializeContextMenu()">
 
@@ -148,7 +35,7 @@ function noSelAll()
 		§{dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
 	</td>
 </tr>
-<tr bgcolor="#FAFAF1" align="center">
+<tr bgcolor="#ffffff" align="center">
 	<td width="13%">文档图片</td>
 	<td width="35%">文档标题</td>
 	<td width="12%">类目</td>
@@ -162,21 +49,21 @@ function noSelAll()
 <form name="form2">
 {dede:datalist}
 <table width="98%" border="0" cellpadding="1" cellspacing="1"
-	style="border-bottom:1px solid #BCBCBC" bgcolor="{dede:label bind="GetColor('#FAFAF1','#FFFFFF')" /}"  align='center' style="margin-top:8px;">
+	class='ilist'
+	bgcolor="{dede:label bind="GetColor('#FAFAF1','#FFFFFF')" /}"  align='center' style="margin-top:8px;">
 	<tr>
-	<td width="13%">
+	<td width="13%" align='center'>
 		<img src="{dede:field.litpic function='CheckPic(@me)' /}" width="80" height="60" alt="文档图片" border="0">
 	</td>
 	<td width="35%">
 		<input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="np" />
-		<b>
+		<img src='img/trun.gif' title="编辑属性" alt="编辑属性" onclick="QuickEdit({dede:field.id/}, event, this);" style='cursor:pointer' border='0' width='16' height='16' />
 		<a href="archives_do.php?aid={dede:field.id/}&dopost=editArchives"
-			oncontextmenu="ShowMenu(event,this,{dede:field.id/},'{dede:field.title function="urlencode(@me)"/}')">
-		<u>{dede:field.title/}{dede:field.flag function='IsCommendArchives(@me)'/}</u>
+			oncontextmenu="ShowMenu(event,this,{dede:field.id/},'{dede:field.title function="str_replace('\'', '', @me)" /}')">
+		<b>{dede:field.title/}{dede:field.flag function='IsCommendArchives(@me)'/}</b>
 		</a>
 		<br/>
 　　发布时间：{dede:field.senddate function='GetDateTimeMk(@me)' /}
-		</b>
 	</td>
 	<td width="12%" height="26" align="center">
 		{dede:field.typename/}
@@ -194,7 +81,7 @@ function noSelAll()
 
 <table width="98%" border="0" cellspacing="1" cellpadding="1" bgcolor='#CBD8AC' align='center' style="margin-top:8px;">
 	<tr bgcolor="#FAFAF1">
-	<td height="28" colspan="10">
+	<td height="36" colspan="10">
 		&nbsp;
 		<a href="javascript:selAll()" class="coolbg">全选</a>
 		<a href="javascript:noSelAll()" class="coolbg">取消</a>
@@ -203,8 +90,10 @@ function noSelAll()
 		<a href="javascript:updateArc(0)" class="coolbg">&nbsp;更新&nbsp;</a>
 		<a href="javascript:checkArc(0)" class="coolbg">&nbsp;审核&nbsp;</a>
 		<a href="javascript:adArc(0)" class="coolbg">&nbsp;推荐&nbsp;</a>
-		<a href="javascript:moveArc(0)" class="coolbg">&nbsp;移动&nbsp;</a>
+		<a href="javascript:;" onclick="moveArc(event,this,<?php echo (empty($channelid) ? 0 : $channelid); ?>)" class="coolbg">&nbsp;移动&nbsp;</a>
 		<a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a>
+		<a href="javascript:;" onclick="cAtts('attsAdd',event,this)" class="coolbg">&nbsp;增加属性&nbsp;</a>
+		<a href="javascript:;" onclick="cAtts('attsDel',event,this)" class="coolbg">&nbsp;删除属性&nbsp;</a>
 	</td>
 	</tr>
 	<tr>
@@ -236,7 +125,7 @@ function noSelAll()
             <option value='pubdate'>发布时间</option>
             <option value='sortrank'>置顶权值</option>
             <option value='click'>点击量</option>
-            <option value='postnum'>评论积分</option>
+            <option value='scores'>评论积分</option>
             <option value='lastpost'>最后评论</option>
       	</select>
    </td>

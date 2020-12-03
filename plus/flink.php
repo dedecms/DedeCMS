@@ -28,6 +28,6 @@ if($dopost=='save')
 }
 
 //显示模板(简单PHP文件)
-include_once($cfg_basedir.$cfg_templets_dir."/plus/flink-list.htm");
+include_once(DEDETEMPLATE.'/plus/flink-list.htm');
 
 ?>

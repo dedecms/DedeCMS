@@ -90,7 +90,7 @@ function MediaType($tid,$nurl)
 function GetFileSize($fs)
 {
 	$fs = $fs/1024;
-	return sprintf("%10.1f",$fs)." K";
+	return trim(sprintf("%10.1f",$fs)." K");
 }
 
 function UploadAdmin($adminid,$mid)

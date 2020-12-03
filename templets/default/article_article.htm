@@ -10,14 +10,10 @@
 <script language="javascript" type="text/javascript">
 <!--
 function CheckLogin(){
-	var taget_obj = document.getElementById('_ajax_feedback');
-	myajax = new DedeAjax(taget_obj,false,false,'','','');
-	myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
-	DedeXHTTP = null;
-}
-function checkSubmit(){
-	if(document.feedback.msg.value!='') document.feedback.submit();
-	else alert("评论内容不能为空！");
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("{dede:global.cfg_cmsurl/}/member/ajax_feedback.php");
+	  DedeXHTTP = null;
 }
 function postBadGood(ftype,fid)
 {
@@ -50,7 +46,6 @@ function postBadGood(ftype,fid)
 	}
 	myajax = new DedeAjax(taget_obj,false,false,'','','');
 	myajax.SendGet2("{dede:field name='phpurl'/}/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
-	DedeXHTTP = null;
 }
 function postDigg(ftype,aid)
 {
@@ -84,7 +79,6 @@ function postDigg(ftype,aid)
 	myajax = new DedeAjax(taget_obj,false,false,'','','');
 	var url = "{dede:global.cfg_phpurl/}/digg_ajax.php?action="+ftype+"&id="+aid;
 	myajax.SendGet2(url);
-	DedeXHTTP = null;
 }
 function getDigg(aid)
 {
@@ -93,7 +87,6 @@ function getDigg(aid)
 	myajax.SendGet2("{dede:global.cfg_phpurl/}/digg_ajax.php?id="+aid);
 	DedeXHTTP = null;
 }
-
 -->
 </script>
 </head>
@@ -102,10 +95,10 @@ function getDigg(aid)
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-              {dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='self' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -127,13 +120,17 @@ function getDigg(aid)
                 if(@me<>'' )@me = '<div class="intro">'.@me.'</div>';
                 {/dede:field.description}
 			<div class="content">
-			　　{dede:field.body/}
+			<table width='100%'>
+				<tr><td>{dede:field.body/}(责任编辑：{dede:adminname/})</td></tr>
+			</table>
 			</div><!-- /content -->
 			<div class="dede_pages">
 				<ul class="pagelist">
-                    {dede:pagebreak/}
+          {dede:pagebreak/}
 				</ul>
 			</div><!-- /pages -->
+			
+			<!-- //顶踩 -->
 			<div class="newdigg" id="newdigg">
 				<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',{dede:field.id/})">
 					<div class="digg_act">顶一下</div>
@@ -152,7 +149,9 @@ function getDigg(aid)
 					</div>
 				</div>
 			</div>
-			 <script language="javascript" type="text/javascript">getDigg({dede:field.id/});</script>
+			<script language="javascript" type="text/javascript">getDigg({dede:field.id/});</script>
+			<!-- //顶踩部份的源码结束 -->
+			
 			<div class="boxoff">
 				<strong>------分隔线----------------------------</strong>
 			</div>
@@ -174,83 +173,18 @@ function getDigg(aid)
 			</div><!-- /handle -->
 		</div><!-- /viewbox -->
 
-		<div class="mt1">
-			<dl class="tbox">
-				<dt>
-					<strong>最新评论</strong>
-					<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
-				</dt>
-				<dd>
-					<div class="dede_comment">
-                    <script language='javascript' type='text/javascript' src="{dede:field name='phpurl'/}/feedback_js.php?aid={dede:field name='id'/}"></script>
-					</div><!-- /dede_comment -->
-				</dd>
-			</dl>
-		</div><!-- /comment -->
-<div class="mt1">
-		<dl class="tbox">
-			<dt>
-				<strong>发表评论</strong>
-				<span class="more"><a href="{dede:field name='phpurl'/}/feedback.php?aid={dede:field.id/}">查看所有评论</a></span>
-			</dt>
-			<dd>
-				<div class="dede_comment_post">
-          <form action="{dede:field name='phpurl'/}/feedback.php" method="post" name="feedback">
-          <input type="hidden" name="action" value="send" />
-          <input type="hidden" name="comtype" value="comments">
-          <input type="hidden" name="aid" value="{dede:field name="id"/}" />
-          <input type="hidden" name="isconfirm" value="yes" />
-                    <div class="dcmp-title">
-						<small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small>
-					</div><!-- /dcmp-title -->
-					<div class="dcmp-stand">
-						<strong>评价:</strong>
-							<input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /><label for="dcmp-stand-neu"><img src="{dede:global.cfg_templeturl/}/images/cmt-neu.gif" />中立</label>
-							<input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /><label for="dcmp-stand-good"><img src="{dede:global.cfg_templeturl/}/images/cmt-good.gif" />好评</label>
-							<input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /><label for="dcmp-stand-bad"><img src="{dede:global.cfg_templeturl/}/images/cmt-bad.gif" />差评</label>
-					</div><!-- /dcmp-stand -->
-					<div class="dcmp-content">
-						<textarea cols="60" name="msg" rows="5" class="ipt-txt"></textarea>
-					</div><!-- /dcmp-content -->
+<!-- //AJAX评论区 -->
+{dede:include file='ajaxfeedback.htm' /}
 
-					<div class="dcmp-mood">
-						<strong>表情:</strong>
-						<ul>
-								<li><input type="radio" name='face' value='6' checked="1" /><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-6.gif" /></li>
-								<li><input type="radio" name='face' value='4'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-4.gif" /></li>
-								<li><input type="radio" name='face' value='3'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-3.gif" /></li>
-								<li><input type="radio" name='face' value='5'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-5.gif" /></li>
-								<li><input type="radio" name='face' value='2'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-2.gif" /></li>
-								<li><input type="radio" name='face' value='1'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-1.gif" /></li>
-								<li><input type="radio" name='face' value='7'/><img src="{dede:global.cfg_templeturl/}/images/mood/ico-mood-7.gif" /></li>
-						</ul>
-					</div><!-- /dcmp-mood -->
-					<div class="dcmp-post"><!--未登陆-->
-							<div class="dcmp-userinfo" id="_ajax_feedback">
-								用户名:<input type="text" name="username" size="16" class="ipt-txt" />
-								密码:<input name="pwd" type="password" size="16" class="ipt-txt" />
-								验证码:<input type="text" name="validate" size="4" class="ipt-txt" /><img src="{dede:global.cfg_cmsurl/}/include/vdimgck.php" />
-                                <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest"> 匿名? </label>
-							</div>
-                             <script language="javascript" type="text/javascript">CheckLogin();</script>
-							<div class="dcmp-submit">
-								<button type="button" onClick='checkSubmit()'>发表评论</button>
-							</div>
-						</div>
-                    </form>
-				</div><!-- /dede_comment_post -->
-			</dd>
-		</dl>
-	</div>
+</div><!-- //左边内容结束 -->
 
-	</div><!-- /pleft -->
-
-	<div class="pright">
-    	<div class="infos_userinfo">
- 			{dede:memberinfos}
-			<dl class="tbox">
-				<dt><strong>发布者资料</strong></dt>
-				<dd>
+<!-- //右边内容开始 -->
+<div class="pright">
+ 		{dede:memberinfos}
+ 			<div class="infos_userinfo">
+			<dl class="tbox light">
+				<dt class='light'><strong>发布者资料</strong></dt>
+				<dd class='light'>
 					<a href="[field:spaceurl /]" class="userface"><img src="[field:face/]" width="52" height="52" /></a>
 					<a href='[field:spaceurl /]' class="username">[field:uname/]</a>
 					<span class="useract">
@@ -263,13 +197,12 @@ function getDigg(aid)
 					<span class="userinfo-sp"><small>最后登录:</small>[field:logintime function="MyDate('Y-m-d H:m',@me)"/]</span>
 				</dd>
 			</dl>
-			{/dede:memberinfos}
-   	 	</div>
-
+			</div>
+		{/dede:memberinfos}
 		<div class="commend mt1">
-			<dl class="tbox">
-				<dt><strong>推荐内容</strong></dt>
-				<dd>
+			<dl class="tbox light">
+				<dt class='light'><strong>推荐内容</strong></dt>
+				<dd class='light'>
 					<ul class="d4">
            {dede:arclist flag='c' titlelen=42 row=6}
           	<li><a href="[field:arcurl/]">[field:title/]</a>
@@ -281,13 +214,13 @@ function getDigg(aid)
 		</div><!-- /commend -->
 
 		<div class="hot mt1">
-			<dl class="tbox">
-				<dt><strong>热点内容</strong></dt>
-				<dd>
+			<dl class="tbox light">
+				<dt class='light'><strong>热点内容</strong></dt>
+				<dd class='light'>
 					<ul class="c1 ico2">
-                    {dede:arclist row=10 orderby=click}
-                    	<li><a href="[field:arcurl/]">[field:title/]</a></li>
-                    {/dede:arclist}
+             {dede:arclist row=10 orderby=click}
+               <li><a href="[field:arcurl/]">[field:title/]</a></li>
+             {/dede:arclist}
 					</ul>
 				</dd>
 			</dl>

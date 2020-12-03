@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS `#@__addonarticle`;
 CREATE TABLE `#@__addonarticle` (
   `aid` mediumint(8) unsigned NOT NULL default '0',
@@ -92,6 +91,7 @@ CREATE TABLE `#@__addonsoft` (
   `softlinks` text,
   `introduce` text,
   `daccess` smallint(5) NOT NULL default '0',
+  `needmoney` smallint(5) NOT NULL default '0',
   `templet` varchar(30) NOT NULL default '',
   `userip` char(15) NOT NULL default '',
   `redirecturl` varchar(255) NOT NULL default '',
@@ -120,7 +120,7 @@ CREATE TABLE `#@__admin` (
   `uname` char(20) NOT NULL default '',
   `tname` char(30) NOT NULL default '',
   `email` char(30) NOT NULL default '',
-  `typeid` smallint(5) unsigned NOT NULL default '0',
+  `typeid` text,
   `logintime` int(10) unsigned NOT NULL default '0',
   `loginip` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`id`)
@@ -138,12 +138,12 @@ CREATE TABLE `#@__admintype` (
 DROP TABLE IF EXISTS `#@__advancedsearch`;
 CREATE TABLE `#@__advancedsearch` (
   `mid` int(11) NOT NULL,
-  `maintable` varchar(255) NOT NULL default '',
+  `maintable` varchar(256) NOT NULL default '',
   `mainfields` text,
-  `addontable` varchar(255) default '',
+  `addontable` varchar(256) default '',
   `addonfields` text,
   `forms` text,
-  `template` varchar(255) NOT NULL default '',
+  `template` varchar(256) NOT NULL default '',
   UNIQUE KEY `mid` (`mid`)
 ) TYPE=MyISAM;
 
@@ -158,18 +158,16 @@ CREATE TABLE `#@__arcatt` (
 DROP TABLE IF EXISTS `#@__arccache`;
 CREATE TABLE `#@__arccache` (
   `md5hash` char(32) NOT NULL default '',
-  `stylehash` CHAR(32) NOT NULL default '',
   `uptime` int(11) NOT NULL default '0',
   `cachedata` mediumtext,
-  PRIMARY KEY  (`md5hash`),
-  KEY  `stylehash` (`stylehash`)
+  PRIMARY KEY  (`md5hash`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__archives`;
 CREATE TABLE `#@__archives` (
   `id` mediumint(8) unsigned NOT NULL default '0',
-  `typeid` smallint(8) unsigned NOT NULL default '0',
-  `typeid2` smallint(5) unsigned NOT NULL default '0',
+  `typeid` smallint(5) unsigned NOT NULL default '0',
+  `typeid2` varchar(90) NOT NULL default '0',
   `sortrank` int(10) unsigned NOT NULL default '0',
   `flag` set('c','h','p','f','s','j','a','b') default NULL,
   `ismake` smallint(6) NOT NULL default '0',
@@ -182,7 +180,7 @@ CREATE TABLE `#@__archives` (
   `color` char(7) NOT NULL default '',
   `writer` char(20) NOT NULL default '',
   `source` char(30) NOT NULL default '',
-  `litpic` char(80) NOT NULL default '',
+  `litpic` char(60) NOT NULL default '',
   `pubdate` int(10) unsigned NOT NULL default '0',
   `senddate` int(10) unsigned NOT NULL default '0',
   `mid` mediumint(8) unsigned NOT NULL default '0',
@@ -194,8 +192,13 @@ CREATE TABLE `#@__archives` (
   `notpost` tinyint(1) unsigned NOT NULL default '0',
   `description` varchar(255) NOT NULL default '',
   `filename` varchar(40) NOT NULL default '',
+  `dutyadmin` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0',
+	`tackid` INT( 10 ) NOT NULL DEFAULT '0',
+	`mtype` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`),
-  KEY `sortrank` (`sortrank`)
+  KEY `sortrank` (`sortrank`),
+  KEY `mainindex` (`arcrank`,`typeid`,`channel`,`flag`,`mid`),
+  KEY `lastpost` (`lastpost`,`scores`,`goodpost`,`badpost`,`notpost`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__arcrank`;
@@ -214,7 +217,7 @@ DROP TABLE IF EXISTS `#@__arctiny`;
 CREATE TABLE `#@__arctiny` (
   `id` mediumint(8) unsigned NOT NULL auto_increment,
   `typeid` smallint(5) unsigned NOT NULL default '0',
-  `typeid2` smallint(5) unsigned NOT NULL default '0',
+  `typeid2` varchar(90) NOT NULL default '0',
   `arcrank` smallint(6) NOT NULL default '0',
   `channel` smallint(5) NOT NULL default '1',
   `senddate` int(10) unsigned NOT NULL default '0',
@@ -449,9 +452,10 @@ CREATE TABLE `#@__freelist` (
   `nodefault` smallint(6) NOT NULL default '0',
   `templet` varchar(50) NOT NULL default '',
   `edtime` int(11) NOT NULL default '0',
+  `maxpage` SMALLINT( 5 ) UNSIGNED DEFAULT '100' NOT NULL,
   `click` int(11) NOT NULL default '1',
   `listtag` mediumtext,
-  `keyword` varchar(100) NOT NULL default '',
+  `keywords` varchar(100) NOT NULL default '',
   `description` varchar(250) NOT NULL default '',
   PRIMARY KEY  (`aid`)
 ) TYPE=MyISAM;
@@ -494,9 +498,7 @@ CREATE TABLE `#@__member` (
   `uname` char(36) NOT NULL default '',
   `sex` enum('男','女','保密') NOT NULL default '保密',
   `rank` smallint(5) unsigned NOT NULL default '0',
-  `uprank` smallint(5) unsigned NOT NULL default '0',
   `money` mediumint(8) unsigned NOT NULL default '0',
-  `upmoney` smallint(5) unsigned NOT NULL default '0',
   `email` char(50) NOT NULL default '',
   `scores` mediumint(8) unsigned NOT NULL default '0',
   `matt` smallint(5) unsigned NOT NULL default '0',
@@ -511,14 +513,6 @@ CREATE TABLE `#@__member` (
   PRIMARY KEY  (`mid`),
   KEY `userid` (`userid`,`sex`),
   KEY `logintime` (`logintime`)
-) TYPE=MyISAM;
-
-DROP TABLE IF EXISTS `#@__member_archives`;
-CREATE TABLE `#@__member_archives` (
-  `id` mediumint(8) unsigned NOT NULL,
-  `mid` mediumint(8) unsigned NOT NULL default '0',
-  `mtypeid` mediumint(8) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__member_company`;
@@ -674,13 +668,6 @@ CREATE TABLE `#@__member_stow` (
   KEY `uid` (`mid`)
 ) TYPE=MyISAM;
 
-DROP TABLE IF EXISTS `#@__member_time`;
-CREATE TABLE `#@__member_time` (
-  `mday` smallint(6) NOT NULL default '0',
-  `tname` varchar(30) NOT NULL default '',
-  PRIMARY KEY  (`mday`)
-) TYPE=MyISAM;
-
 DROP TABLE IF EXISTS `#@__member_tj`;
 CREATE TABLE `#@__member_tj` (
   `mid` mediumint(8) NOT NULL auto_increment,
@@ -753,6 +740,7 @@ DROP TABLE IF EXISTS `#@__mtypes`;
 CREATE TABLE `#@__mtypes` (
   `mtypeid` mediumint(8) unsigned NOT NULL auto_increment,
   `mtypename` char(40) NOT NULL,
+  `channelid` SMALLINT( 6 ) NOT NULL DEFAULT '1',
   `mid` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`mtypeid`)
 ) TYPE=MyISAM;
@@ -937,6 +925,10 @@ CREATE TABLE `#@__softconfig` (
   `islocal` smallint(5) unsigned NOT NULL default '1',
   `sites` text,
   `downmsg` text,
+  `moresitedo` SMALLINT( 5 ) UNSIGNED NOT NULL DEFAULT '1',
+	`dfrank` SMALLINT( 5 ) UNSIGNED NOT NULL DEFAULT '0',
+	`dfywboy` SMALLINT( 5 ) UNSIGNED NOT NULL DEFAULT '0',
+	`argrange` SMALLINT( 5 ) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY  (`downtype`)
 ) TYPE=MyISAM;
 
@@ -995,7 +987,7 @@ CREATE TABLE `#@__sysconfig` (
 DROP TABLE IF EXISTS `#@__tagindex`;
 CREATE TABLE `#@__tagindex` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `tag` char(20) NOT NULL default '',
+  `tag` char(12) NOT NULL default '',
   `count` int(10) unsigned NOT NULL default '0',
   `total` int(10) unsigned NOT NULL default '0',
   `weekcc` int(10) unsigned NOT NULL default '0',
@@ -1012,9 +1004,8 @@ CREATE TABLE `#@__taglist` (
   `aid` int(10) unsigned NOT NULL default '0',
   `arcrank` smallint(6) NOT NULL default '0',
   `typeid` smallint(5) unsigned NOT NULL default '0',
-  `tag` varchar(20) NOT NULL default '',
-  PRIMARY KEY  (`tid`,`aid`),
-  KEY `aid` (`aid`)
+  `tag` varchar(12) NOT NULL default '',
+  PRIMARY KEY  (`tid`,`aid`)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS `#@__uploads`;
@@ -1047,6 +1038,7 @@ CREATE TABLE `#@__vote` (
   PRIMARY KEY  (`aid`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `#@__verifies`;
 CREATE TABLE `#@__verifies` (
 	`nameid` char( 32 ) NOT NULL default '',
 	`cthash` varchar( 32 ) NOT NULL default '',
@@ -1054,3 +1046,31 @@ CREATE TABLE `#@__verifies` (
 	`filename` varchar( 254 ) NOT NULL default '',
 	PRIMARY KEY ( `nameid` )
 ) TYPE=MYISAM;
+
+DROP TABLE IF EXISTS `#@__sys_task`;
+CREATE TABLE `#@__sys_task` (
+	`id` int(10) unsigned NOT NULL auto_increment,
+	`taskname` varchar(50) NOT NULL, `dourl` varchar(100) NOT NULL,
+	`islock` tinyint(1) unsigned NOT NULL default '0',
+	`runtype` tinyint(1) unsigned NOT NULL default '0',
+	`runtime` varchar(10) default '0000',
+	`starttime` int(10) unsigned NOT NULL default '0',
+	`endtime` int(10) unsigned NOT NULL default '0',
+	`freq` tinyint(2) unsigned NOT NULL default '0',
+	`lastrun` int(10) unsigned NOT NULL default '0',
+	`description` varchar(250) NOT NULL,
+	`parameter` text,
+	`settime` int(10) unsigned NOT NULL default '0',
+	`sta` enum('运行','成功','失败') default NULL,
+	PRIMARY KEY (`id`)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS `#@__member_snsmsg`;
+CREATE TABLE `#@__member_snsmsg` (
+	`id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+	`mid` MEDIUMINT( 8 ) UNSIGNED DEFAULT '0' NOT NULL ,
+	`userid` VARCHAR( 20 ) NOT NULL ,
+	`sendtime` INT( 10 ) UNSIGNED DEFAULT '0' NOT NULL ,
+	`msg` VARCHAR( 250 ) NOT NULL ,
+	PRIMARY KEY ( `id` )
+) TYPE = MYISAM;

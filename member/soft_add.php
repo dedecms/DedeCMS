@@ -152,6 +152,8 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 	$softsize = $softsize.$unit;
 
 	//保存到附加表
+	$needmoney = @intval($needmoney);
+	if($needmoney > 100) $needmoney = 100;
 	$cts = $dsql->GetOne("Select addtable From `#@__channeltype` where id='$channelid' ");
 	$addtable = trim($cts['addtable']);
 	if(empty($addtable))
@@ -162,14 +164,16 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 		exit();
 	}
 	$inQuery = "INSERT INTO `$addtable`(aid,typeid,filetype,language,softtype,accredit,
-    os,softrank,officialUrl,officialDemo,softsize,softlinks,introduce{$inadd_f},userip,templet,redirecturl)
+    os,softrank,officialUrl,officialDemo,softsize,softlinks,introduce,userip,templet,redirecturl,daccess,needmoney{$inadd_f})
     VALUES ('$arcID','$typeid','$filetype','$language','$softtype','$accredit',
-    '$os','$softrank','$officialUrl','$officialDemo','$softsize','$urls','$body'{$inadd_v},'$userip','','');";
+    '$os','$softrank','$officialUrl','$officialDemo','$softsize','$urls','$body','$userip','','','0','$needmoney'{$inadd_v});";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
 		$gerr = $dsql->GetError();
 		$dsql->ExecuteNoneQuery("Delete From `#@__archives` where id='$arcID'");
 		$dsql->ExecuteNoneQuery("Delete From `#@__arctiny` where id='$arcID'");
+		echo $inQuery;
+		exit();
 		ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
 		exit();
 	}
@@ -187,17 +191,33 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";
 	}
 
-
+	#api{{
+	if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
+	{
+		//推送事件
+		$feed['icon'] = 'thread';
+		$feed['title_template'] = '<b>{username} 在网站共享了一软件</b>';
+		$feed['title_data'] = array('username' => $cfg_ml->M_UserName);
+		$feed['body_template'] = '<b>{subject}</b><br>{message}';
+		$url = !strstr($artUrl,'http://') ? ($cfg_basehost.$artUrl) : $artUrl;
+		$feed['body_data'] = array('subject' => "<a href=\"".$url."\">$title</a>", 'message' => cn_substr(strip_tags(preg_replace("/\[.+?\]/is", '', $description)), 150));		
+		$feed['images'][] = array('url' => $cfg_basehost.'/images/scores.gif', 'link'=> $cfg_basehost);
+		uc_feed_note($cfg_ml->M_LoginID,$feed);
+		//同步积分
+		uc_credit_note($cfg_ml->M_LoginID, $cfg_sendarc_scores);
+	}
+	#/aip}}
+	
 	//返回成功信息
 	$msg = "
 		请选择你的后续操作：
-		<a href='soft_add.php?cid=$typeid'><u>继续发布文章</u></a>
+		<a href='soft_add.php?cid=$typeid'><u>继续发布软件</u></a>
 		&nbsp;&nbsp;
-		<a href='$artUrl' target='_blank'><u>查看文章</u></a>
+		<a href='$artUrl' target='_blank'><u>查看软件</u></a>
 		&nbsp;&nbsp;
-		<a href='soft_edit.php?channelid=$channelid&aid=$arcID'><u>更改文章</u></a>
+		<a href='soft_edit.php?channelid=$channelid&aid=$arcID'><u>更改软件</u></a>
 		&nbsp;&nbsp;
-		<a href='content_list.php?channelid={$channelid}'><u>已发布文章管理</u></a>
+		<a href='content_list.php?channelid={$channelid}'><u>已发布软件管理</u></a>
 		";
 	$wintitle = "成功发布文章！";
 	$wecome_info = "文章管理::发布文章";

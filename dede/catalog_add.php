@@ -23,15 +23,20 @@ if(isset($channeltype))
 	$channelid = $channeltype;
 }
 $id = empty($id) ? 0 :intval($id);
+$reid = empty($reid) ? 0 :intval($reid);
 $nid = 'article';
-if($id==0)
+
+if($id==0 && $reid==0)
 {
 	CheckPurview('t_New');
-}else
-{
-	CheckPurview('t_AccNew');
-	CheckCatalog($id,"你无权在本栏目下创建子类！");
 }
+else
+{
+	$checkID = empty($id) ? $reid : $id;
+	CheckPurview('t_AccNew');
+	CheckCatalog($checkID, '你无权在本栏目下创建子类！');
+}
+
 if(empty($myrow))
 {
 	$myrow = array();
@@ -61,9 +66,9 @@ else if($dopost=='savequick')
 	$templist = "{style}/list_{$nid}.htm";
 	$temparticle = "{style}/article_{$nid}.htm";
 	$queryTemplate = "insert into `#@__arctype`(reid,topid,sortrank,typename,typedir,isdefault,defaultname,issend,channeltype,
-    tempindex,templist,temparticle,modname,namerule,namerule2,ispart,corank,description,keywords,moresite,siteurl,sitepath,ishidden,`cross`,`crossid`,`content`,`smalltypes`)
+    tempindex,templist,temparticle,modname,namerule,namerule2,ispart,corank,description,keywords,seotitle,moresite,siteurl,sitepath,ishidden,`cross`,`crossid`,`content`,`smalltypes`)
     Values('~reid~','~topid~','~rank~','~typename~','~typedir~','$isdefault','$defaultname','$issend','$channeltype',
-    '$tempindex','$templist','$temparticle','default','$namerule','$namerule2','0','0','','','0','','','0','0','0','','')";
+    '$tempindex','$templist','$temparticle','default','$namerule','$namerule2','0','0','','','~typename~','0','','','0','0','0','','')";
 	foreach($_POST as $k=>$v)
 	{
 		if(ereg('^posttype',$k))
@@ -121,41 +126,30 @@ else if($dopost=='save')
 {
 	$smalltypes = '';
 	if(empty($smalltype)) $smalltype = '';
-	if(is_array($smalltype))
-	{
-		$smalltypes = join(',',$smalltype);
-	}
-
-	if(!isset($sitepath))
-	{
-		$sitepath = '';
-	}
-	if($topid==0 && $reid>0)
-	{
-		$topid = $reid;
-	}
+	if(is_array($smalltype)) $smalltypes = join(',',$smalltype);
+	
+	if(!isset($sitepath)) $sitepath = '';
+	
+	if($topid==0 && $reid>0) $topid = $reid;
+	
+	if($ispart!=0) $cross = 0;
+	
 	$description = Html2Text($description,1);
 	$keywords = Html2Text($keywords,1);
-
-	//栏目的参照目录
-	if($referpath=='cmspath')
+	
+	if($ispart != 2 )
 	{
-		$nextdir = '{cmspath}';
+		//栏目的参照目录
+		if($referpath=='cmspath') $nextdir = '{cmspath}';
+		if($referpath=='basepath') $nextdir = '';
+		//用拼音命名
+		if($upinyin==1 || $typedir=='')
+		{
+			$typedir = GetPinyin(stripslashes($typename));
+		}
+		$typedir = $nextdir.'/'.$typedir;
+		$typedir = ereg_replace("/{1,}", "/", $typedir);
 	}
-	if($referpath=='basepath')
-	{
-		$nextdir = '';
-	}
-
-	//用拼音命名
-	if($upinyin==1 || $typedir=='')
-	{
-		$typedir = GetPinyin(stripslashes($typename));
-	}
-
-	$typedir = $nextdir.'/'.$typedir;
-
-	$typedir = ereg_replace("/{1,}","/",$typedir);
 
 	//开启多站点时的设置(仅针对顶级栏目)
 	if($reid==0 && $moresite==1)
@@ -179,26 +173,24 @@ else if($dopost=='save')
 		}
 	}
 
-	if($ispart!=0)
-	{
-		$cross = 0;
-	}
-
 	//创建目录
-	$true_typedir = str_replace("{cmspath}",$cfg_cmspath,$typedir);
-	$true_typedir = ereg_replace("/{1,}","/",$true_typedir);
-	if(!CreateDir($true_typedir))
+	if($ispart != 2)
 	{
-		ShowMsg("创建目录 {$true_typedir} 失败，请检查你的路径是否存在问题！","-1");
-		exit();
+		$true_typedir = str_replace("{cmspath}",$cfg_cmspath,$typedir);
+		$true_typedir = ereg_replace("/{1,}","/",$true_typedir);
+		if(!CreateDir($true_typedir))
+		{
+			ShowMsg("创建目录 {$true_typedir} 失败，请检查你的路径是否存在问题！","-1");
+			exit();
+		}
 	}
-
+	
 	$in_query = "insert into `#@__arctype`(reid,topid,sortrank,typename,typedir,isdefault,defaultname,issend,channeltype,
     tempindex,templist,temparticle,modname,namerule,namerule2,
-    ispart,corank,description,keywords,moresite,siteurl,sitepath,ishidden,`cross`,`crossid`,`content`,`smalltypes`)
+    ispart,corank,description,keywords,seotitle,moresite,siteurl,sitepath,ishidden,`cross`,`crossid`,`content`,`smalltypes`)
     Values('$reid','$topid','$sortrank','$typename','$typedir','$isdefault','$defaultname','$issend','$channeltype',
     '$tempindex','$templist','$temparticle','default','$namerule','$namerule2',
-    '$ispart','$corank','$description','$keywords','$moresite','$siteurl','$sitepath','$ishidden','$cross','$crossid','$content','$smalltypes')";
+    '$ispart','$corank','$description','$keywords','$seotitle','$moresite','$siteurl','$sitepath','$ishidden','$cross','$crossid','$content','$smalltypes')";
 
 	if(!$dsql->ExecuteNoneQuery($in_query))
 	{

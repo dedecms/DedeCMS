@@ -1,47 +1,71 @@
 <?php
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
-define('DEDEINC', ereg_replace("[/\\]{1,}",'/',dirname(__FILE__) ) );
-define('DEDEROOT', ereg_replace("[/\\]{1,}",'/',substr(DEDEINC,0,-8) ) );
+define('DEDEINC', ereg_replace("[/\\]{1,}", '/', dirname(__FILE__) ) );
+define('DEDEROOT', ereg_replace("[/\\]{1,}", '/', substr(DEDEINC,0,-8) ) );
 define('DEDEDATA', DEDEROOT.'/data');
 define('DEDEMEMBER', DEDEROOT.'/member');
+define('DEDETEMPLATE', DEDEROOT.'/templets');
 
-//检查和注册外部提交的变量
+//开启register_globals会有诸多不安全可能性，因此强制要求关闭register_globals
+if ( ini_get('register_globals') )
+{
+    exit('php.ini register_globals must is Off! ');
+}
+
+//禁止 session.auto_start
+if ( ini_get('session.auto_start') != 0 )
+{
+    exit('php.ini session.auto_start must is 0 ! ');
+}
+
+function _RunMagicQuotes(&$svar)
+{
+    if(!get_magic_quotes_gpc())
+    {
+        if( is_array($svar) )
+        {
+            foreach($svar as $_k => $_v) $svar[$_k] = _RunMagicQuotes($_v);
+        }
+        else
+        {
+            if( strlen($svar)>0 && preg_match('#^(cfg_|GLOBALS|_GET|_POST|_COOKIE)#',$svar) )
+            {
+              exit('Request var not allow!');
+            }
+            $svar = addslashes($svar);
+        }
+    }
+    return $svar;
+}
+
+//检查和注册外部提交的变量   (2011.8.10 修改登录时相关过滤)
 function CheckRequest(&$val) {
 	if (is_array($val)) {
 		foreach ($val as $_k=>$_v) {
+			if($_k == 'nvarname') continue;
 			CheckRequest($_k); 
 			CheckRequest($val[$_k]);
 		}
 	} else
 	{
-		if( strlen($val)>0 && preg_match('#^(cfg_|GLOBALS)#',$val) )
+		if( strlen($val)>0 && preg_match('#^(cfg_|GLOBALS|_GET|_POST|_COOKIE)#',$val)  )
 		{
 			exit('Request var not allow!');
 		}
 	}
 }
-CheckRequest($_REQUEST);
 
-function _RunMagicQuotes(&$svar)
-{
-	if(!get_magic_quotes_gpc())
-	{
-		if( is_array($svar) )
-		{
-			foreach($svar as $_k => $_v) $svar[$_k] = _RunMagicQuotes($_v);
-		}
-		else
-		{
-			$svar = addslashes($svar);
-		}
-	}
-	return $svar;
-}
+//var_dump($_REQUEST);exit;
+CheckRequest($_REQUEST);
 
 foreach(Array('_GET','_POST','_COOKIE') as $_request)
 {
-	foreach($$_request as $_k => $_v) ${$_k} = _RunMagicQuotes($_v);
+	foreach($$_request as $_k => $_v) 
+	{
+		if($_k == 'nvarname') ${$_k} = $_v;
+		else ${$_k} = _RunMagicQuotes($_v);
+	}
 }
 
 //系统相关变量检测
@@ -63,6 +87,13 @@ if(is_writeable($sessSavePath) && is_readable($sessSavePath))
 {
 	session_save_path($sessSavePath);
 }
+
+if ( ini_get('register_globals') )
+{
+    exit('php.ini register_globals must is Off! ');
+}
+
+
 
 //系统配置参数
 require_once(DEDEDATA."/config.cache.inc.php");
@@ -141,7 +172,7 @@ $cfg_soft_dir = $cfg_medias_dir.'/soft';
 $cfg_other_medias = $cfg_medias_dir.'/media';
 
 //软件摘要信息，****请不要删除本项**** 否则系统无法正确接收系统漏洞或升级信息
-$cfg_version = 'V53_1_UTF8';
+$cfg_version = 'V55_UTF8';
 $cfg_soft_lang = 'utf-8';
 $cfg_soft_public = 'base';
 
@@ -154,13 +185,33 @@ $art_shortname = $cfg_df_ext = '.html';
 $cfg_df_namerule = '{typedir}/{Y}/{M}{D}/{aid}'.$cfg_df_ext;
 
 //新建目录的权限，如果你使用别的属性，本程不保证程序能顺利在Linux或Unix系统运行
-$cfg_dir_purview = 0755;
+if(isset($cfg_ftp_mkdir) && $cfg_ftp_mkdir=='Y')
+{
+	$cfg_dir_purview = '0755';
+}
+else
+{
+	$cfg_dir_purview = 0755;
+}
+
+
+//会员是否使用精简模式（已禁用）
+$cfg_mb_lit = 'N';
 
 //特殊全局变量
 $_sys_globals['curfile'] = '';
 $_sys_globals['typeid'] = 0;
 $_sys_globals['typename'] = '';
 $_sys_globals['aid'] = 0;
+
+if(empty($cfg_addon_savetype))
+{
+	$cfg_addon_savetype = 'Ymd';
+}
+if($cfg_sendmail_bysmtp=='Y' && !empty($cfg_smtp_usermail))
+{
+	$cfg_adminemail = $cfg_smtp_usermail;
+}
 
 if(!isset($cfg_NotPrintHead)) {
 	header("Content-Type: text/html; charset={$cfg_soft_lang}");

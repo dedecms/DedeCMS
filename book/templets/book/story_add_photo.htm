@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>新增连载内容</title>
+<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript" src="js/main.js"></script>
+<script language="javascript" type="text/javascript" src="story.js"></script>
+<script language="javascript">
+function CheckSelTable(nnum){
+	var cbox = $Obj('isokcheck'+nnum);
+	var seltb = $Obj('seltb'+nnum);
+	if(cbox.checked) seltb.style.display = 'none';
+	else seltb.style.display = 'block';
+}
+
+var startNum = 1;
+function MakeUpload(mnum)
+{
+   var endNum = 0;
+   var upfield = document.getElementById("uploadfield");
+   var pnumObj = document.getElementById("picnum");
+   var fhtml = "";
+ 
+   if(mnum==0) endNum = startNum + Number(pnumObj.value);
+   else endNum = mnum;
+   if(endNum>120) endNum = 120;
+   
+   for(startNum;startNum < endNum;startNum++){
+	   fhtml = "";
+	   fhtml += "<table width='90%'><tr><td><input type='checkbox' name='isokcheck"+startNum+"' id='isokcheck"+startNum+"' value='1' class='mT10' onClick='CheckSelTable("+startNum+")'>显示/隐藏图片["+startNum+"]的选框</td></tr></table>";
+	   fhtml += "<table width=\"90%\" border=\"0\" id=\"seltb"+startNum+"\" cellpadding=\"1\" cellspacing=\"1\" bgcolor=\"#E8F5D6\" style=\"margin-bottom:6px;margin-left:10px\"><tobdy>";
+	   fhtml += "<tr bgcolor=\"#F4F9DD\">\r\n";
+	   fhtml += "<td height=\"25\" colspan=\"2\">　<strong>图片"+startNum+"：</strong></td>";
+	   fhtml += "</tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td width=\"70%\" height=\"25\"> 　本地上传： ";
+	   fhtml += "<input type=\"file\" name='imgfile"+startNum+"' style=\"width:330px\"  onChange=\"SeePic(document.picview"+startNum+",document.form1.imgfile"+startNum+");\"></td>";
+	   fhtml += "<td rowspan=\"3\" align=\"center\"><img src=\"images/pview.gif\" width=\"150\" id=\"picview"+startNum+"\" name=\"picview"+startNum+"\"></td>";
+	   fhtml += "</tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td height=\"25\"> 　指定网址： ";
+	   fhtml += "<input type=\"text\" name='imgurl"+startNum+"' style=\"width:260px\"> ";
+	   fhtml += "<input type=\"button\" name='selpic"+startNum+"' value=\"选取\" style=\"width:65px\" onClick=\"SelectImageN('form1.imgurl"+startNum+"','big','picview"+startNum+"')\">";
+	   fhtml += "</td></tr>";
+	   fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
+	   fhtml += "<td height=\"25\">　漫画标题： ";
+	   fhtml += "<input class='text' type='text' name='title"+startNum+"' style=\"width:253px\"/> </td>";
+	   fhtml += "</tr></tobdy></table>\r\n";
+	   upfield.innerHTML += fhtml;
+  }
+}
+</script>
+</head>
+<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
+
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">《<?php echo $bookname; ?>》<i>|</i><a href='../book/book.php?id=<?php echo $bookid; ?>' target='_blank'>查看</a></span><span class="fRight mR10 titPublish icon"><a href='story_list_content.php?bookid=<?php echo $bookid; ?>'>内容列表</a></span>
+          <div class="clear"></div>
+        </div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li class="select"><a href="mybooks.php">连载书目</a></li>
+            <li><a href="story_list_content.php">连载内容</a></li>
+          </ul>
+        </div>
+        <form class="mL10 mR10 mTB10" action='story_add_photo_action.php' enctype="multipart/form-data" method='post' onsubmit="return checkSubmitAddPhoto();">
+          <div class="titleBar bgGrass lineB mB10">
+            <div class="fLeft"><strong>新增连载</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"> <em class="mR10"> <a href='story_add_photo.php?bookid=<?php echo $bookid; ?>'>新增连载</a> </em> <em class="mR10"> <a href="story_list_content.php?bookid=<?php echo $bookid; ?>">连载内容</a> </em> <em class="mR10"> <a href="story_list_chapter.php?bookid=<?php echo $bookid; ?>">书目章节</a> </em> <em class="mR10"> <a href="story_edit.php?bookid=<?php echo $bookid; ?>">书目资料</a> </em></div>
+          </div>
+          <input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />
+          <input type='hidden' name='catid' value='<?php echo $catid; ?>' />
+          <input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
+          <input type='hidden' name='booktype' value='<?php echo $booktype; ?>' />
+          <input type='hidden' name='photonum' value='5' />
+          <table cellspacing="1" class="submit">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>新增连载</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" valign="top">隶属图书名称：</td>
+                <td><?php echo $bookname; ?></td>
+              </tr>
+              <tr>
+                <td width="15%" align="right" valign="top">默认标题：</td>
+                <td><input name="title" type="text" class="text" id="title" size="35" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"> 隶属章节： </td>
+                <td><span id='selchap' style="<?php echo(count($chapters)>0 ? "display:block" : "display:none"); ?>">
+                  <select name="chapterid" size="5" id="chapterid" style="width:250px">
+                    <?php
+    	$ok = false;
+    	foreach($chapters as $k=>$v){
+    		if(!$ok){ $ok=true; echo "    <option value='$k' selected>第{$chapnums[$k]}章 $v</option>\r\n"; }
+    		else echo "    <option value='$k'>第{$chapnums[$k]}章 $v</option>\r\n";
+    	}
+    	?>
+                  </select>
+                  </span>
+                  <p>
+                    <input name="addchapter" type="checkbox" onclick="ShowHideSelChapter('selchap','newchap')" id="addchapter" value="1"
+	  <?php echo(count($chapters)>0 ? "" : " checked"); ?> />
+                    添加新章节</p>
+                  <span id="newchap" style="<?php echo(count($chapters)>0 ? "display:none" : "display:block"); ?>"> 新章节名称：
+                  <input name="chapternew" type="text" class="text" id="chapternew" value="默认章节" size="30" />
+                  (如果没有可选章节或已有章节已经结束，请填写新章节名称，名称上不需加“第X章”这样的字样)</span></td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">图片数量：</td>
+                <td><input name="picnum" type="text" class="text" id="picnum" value="10" size="8" />
+                  <button class="buttonGary2" name='kkkup' type='button' id='kkkup2'onclick="MakeUpload(0);">增加</button>
+                  (最大60幅，手工指定的图片链接允许填写远程网址)</td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">远程图片：</td>
+                <td><input name="isremote" type="checkbox" id="isremote"  value="1" />
+                  下载到本地</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr class="mT10" />
+          <span id="uploadfield"></span>
+          <script language="JavaScript">
+	     MakeUpload(6);
+	</script>
+          <hr />
+          <div style="margin-left:15%" class="mTB10">
+            <button class="button2" type="submit">提交</button>
+            <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button>
+          </div>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body></html>

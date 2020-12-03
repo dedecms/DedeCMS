@@ -9,7 +9,12 @@ if(!empty($dopost))
 		ShowMsg("你所创建的组别的级别值已存在，不允许重复!","-1");
 		exit();
 	}
-	$AllPurviews = "";
+	if($rankid > 10)
+	{
+		ShowMsg('组级别值不能大于10， 否则一切权限设置均无效!', '-1');
+		exit();
+	}
+	$AllPurviews = '';
 	if(is_array($purviews))
 	{
 		foreach($purviews as $pur)

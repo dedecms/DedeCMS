@@ -44,17 +44,18 @@ function AddNewKw()
 <body background='img/allbg.gif' leftmargin='1' topmargin='1'>
 <div class="main">
   <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D1DDAA">
-   <form name='form1' action="article_keywords_add.php">
+   <form name='form1' action="article_keywords_main.php">
+   <input type='hidden' name='dopost' value='add' />
     <tr id="addnew" style="display:none">
         <td width="100%" height="24" colspan="2" align="center" bgcolor="#009900">
           <table border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="60" align="center">关键字：</td>
-              <td width="140"><input name="keyword" type="text" id="keyword" style="width:130"></td>
+              <td width="140"><input name="keyword" type="text" id="keyword" style="width:130px" /></td>
               <td width="40">链接：</td>
-              <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130"></td>
+              <td width="140"><input name="rpurl" type="text" id="rpurl" style="width:130px" /></td>
               <td width="40">频率：</td>
-              <td width="50"><input name="rank" type="text" id="rank" style="width:30" value="30"></td>
+              <td width="50"><input name="rank" type="text" id="rank" style="width:30px" value="30" /></td>
               <td width="80"><input type="submit" name="Submit" value="保存" class="np"></td>
             </tr>
           </table>

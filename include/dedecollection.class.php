@@ -362,10 +362,12 @@ class DedeCollection
 			{
 				return '';
 			}
+			$posstart = $posstart + strlen($areaRules[0]);
 			$posend = @strpos($html,$areaRules[1],$posstart);
 			if($posend > $posstart && $posend!==false)
 			{
-				return substr($html,$posstart+strlen($areaRules[0]),$posend-$posstart-strlen($areaRules[0]));
+				//return substr($html,$posstart+strlen($areaRules[0]),$posend-$posstart-strlen($areaRules[0]));
+				return substr($html,$posstart,$posend-$posstart);
 			}
 			else
 			{
@@ -472,7 +474,7 @@ class DedeCollection
 		}
 		if($mtype=='img' && !$islitpic)
 		{
-			@WaterImg($GLOBALS['cfg_basedir'].$filename,'up');
+			@WaterImg($GLOBALS['cfg_basedir'].$filename,'collect');
 		}
 		return $filename;
 	}
@@ -511,11 +513,11 @@ class DedeCollection
 		if($v=='img')
 		{
 			$shortname = '.jpg';
-			if(eregi("\.gif",$v))
+			if(eregi("\.gif$",$url))
 			{
 				$shortname = '.gif';
 			}
-			else if(eregi("\.png",$v))
+			else if(eregi("\.png$",$url))
 			{
 				$shortname = '.png';
 			}

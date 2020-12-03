@@ -28,8 +28,8 @@ function checkSubmit()
     <tr>
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width='20' />
         &nbsp;</td>
-      <td width="85%"><a href="content_sg_list.php?cid=<?php echo $addRow['typeid']?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文档列表</u></a>&gt;&gt;更改文档</td>
-      <td width="10%">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
+      <td width="65%"><a href="content_sg_list.php?cid=<?php echo $addRow['typeid']?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>文档列表</u></a> &gt;&gt; 更改文档</td>
+      <td width="30%" align='right'>&nbsp; <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
       <td width="1%">&nbsp;</td>
     </tr>
   </table>
@@ -118,9 +118,8 @@ function checkSubmit()
             	&nbsp;缩 略 图：<br/>
             	&nbsp;           </td>
             <td width="500">
-             <input name="picname" type="text" id="picname" style="width:350px" value="<?php echo $addRow["litpic"]; ?>"><input type="button" name="Submit" value="浏览..." style="width:60px" onClick="SelectImage('form1.picname','');" />
+             <input name="picname" type="text" id="picname" style="width:280px" value="<?php echo $addRow["litpic"]; ?>"><input type="button" name="Submit" value="浏览..." style="width:60px" onClick="SelectImage('form1.picname','');" />
              <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onclick="imageCut('picname');" class='np coolbg'/>
-             <br />
              <input type='checkbox' class='np' name='ddisremote' value='1' />
              远程
              </td>
@@ -142,13 +141,15 @@ function checkSubmit()
           <tr>
             <td width="90">&nbsp;文档主栏目：</td>
             <td>
-              <?php
-           	$typeOptions = GetOptionList($addRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
-           	echo "<select name='typeid' style='width:300'>\r\n";
-            if($addRow["typeid"]=="0") echo "<option value='0' selected>请选择主分类...</option>\r\n";
+            <?php
+            $typeOptions = GetOptionList($addRow['typeid'],$cuserLogin->getUserChannel(),$channelid);
+            echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
+            if($addRow["typeid"]=="0") echo "<option value='0' selected>请选择栏目...</option>\r\n";
             echo $typeOptions;
             echo "</select>";
-			    ?></td>
+			     ?>
+			     <img src='img/menusearch.gif' style='cursor:pointer' onclick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $addRow['typeid']; ?>')" alt='快捷选择' title='快捷选择' />
+			     </td>
           </tr>
       </table></td>
     </tr>

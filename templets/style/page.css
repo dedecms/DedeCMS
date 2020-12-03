@@ -10,26 +10,26 @@
 }
 .pleft .place{
 	width:712px;
-	height:22px;
-	line-height:22px;
-	background:#F4F8EE;
-	border-top:1px solid #EAF2DE;
-	border-bottom:1px solid #EAF2DE;
+	height:24px;
+	line-height:24px;
+	background:#F2FCFE;
+	border-top:1px solid #E0ECF3;
+	border-bottom:1px solid #E0ECF3;
 	text-indent:12px;
 	color:#CCC;
 	overflow:hidden;
 }
 .pleft .place strong{
-	color:#709C5A;
+	color:#397CBE;
 	font-weight:normal;
 	letter-spacing:1px;
 }
 .pleft .place a{
-	color:#666;
+	color:#397CBE;
 	margin:0px 2px;
 }
 .pleft .place a:hover{
-	color:#333;
+	color:#469CF2;
 	text-decoration:none;
 }
 .pleft .place small{
@@ -62,7 +62,7 @@
 .dede_pages ul li a{
 	float:left;
 	padding:2px 4px 2px;
-	color:#666;
+	color:#555;
 	border-bottom:1px solid #EEE;
 }
 .dede_pages ul li a:hover{
@@ -78,13 +78,12 @@
 	font-weight:bold;
 }
 .dede_pages .pageinfo{
-	float:right;
 	line-height:21px;
 	padding:12px 10px 12px 16px;
 	color:#999;
 }
 .dede_pages .pageinfo strong{
-	color:#666;
+	color:#555;
 	font-weight:normal;
 	margin:0px 2px;
 }
@@ -93,39 +92,64 @@
 	width:424px;
 	height:400px;
 	float:right;
+	border:1px solid #DFF2F5;
+	background:url(../images/headbg-top.gif) repeat-x;
 	overflow:hidden;
 }
 .index .bignews a{
-	color:#666666;
+	color:#555;
 }
 .index .bignews .onenews{
-	padding:8px 12px;
-	border-bottom:1px solid #EBEBEB;
+	margin:0 3px 0 3px;
+	padding:7px 6px;
+	border-bottom:1px dashed #EBEBEB;
 }
 .index .bignews .onenews h2{
+	text-align:center;
 	display:block;
-	height:28px;
-	line-height:25px;
+	height:32px;
+	line-height:28px;
 }
 .index .bignews .onenews h2 a{
 	font-size:16px;
 }
 .index .bignews .onenews p{
 	line-height:19px;
-	color:#777;
+	color:#666;
 }
-.index .bignews ul.d1{
-	padding:6px 14px;
-	border-bottom:1px solid #EBEBEB;
+
+.index .bignews div.newarticle{
+	height:24px;
+	background:url(../images/new-article.gif) 8px 3px no-repeat;
+	font-size:0px;
+	color:#fff;
+}
+
+.index .bignews div.d1{
+	padding:6px 10px;
 	clear:both;
+	width:406px;
 	overflow:hidden;
+}
+.index .bignews div.d1arc{
+	margin-right:12px;
+	width:190px;
+	float:left;
+	height:24px;
+	line-height:24px;
+	overflow:hidden;
+}
+.index .bignews div.d1arc a {
+	
 }
 .index .bignews ul.c2{
 	width:416px;
-	padding:6px 4px 0px;
-	border-top:2px solid #FAFAFA;
+	padding:0px 4px 0px;
 	clear:both;
 	overflow:hidden;
+}
+.index .bignews ul.c2 a {
+	font-size:13px;
 }
 .index .flashnews{
 	width:280px;
@@ -143,14 +167,14 @@
 	padding:2px 5px;
 }
 .index .latestnews ul a{
-	color:#666666;
+	color:#555;
 }
 .index .picnews{
 	width:712px;
 	float:left;
 	clear:both;
 	overflow:hidden;
-	margin-top:8px;
+	margin-top:10px;
 }
 .index .listbox{
 	width:720px;
@@ -166,7 +190,7 @@
 	float:left;
 }
 .index .listbox ul a{
-	color:#777;
+	color:#666;
 }
 .index .usercenter .tbox dd{
 	height:370px;
@@ -216,7 +240,7 @@
 	border-bottom:1px solid #EEE;
 	line-height:23px;
 	text-indent:10px;
-	color:#777;
+	color:#666;
 }
 .index .userinfo .welcome strong{
 	color:#F60;
@@ -257,7 +281,7 @@
 	text-indent:12px;
 }
 .index .userinfo .mylink ul li a{
-	color:#666;	
+	color:#555;	
 }
 .index .userinfo .uclink{
 	height:31px;
@@ -278,7 +302,7 @@
 	width:102px;
 	padding-left:6px;
 	letter-spacing:1px;
-	color:#666;
+	color:#555;
 	display:block;
 	line-height:21px;
 	background:#FFF;
@@ -307,15 +331,15 @@
 	line-height:27px;
 	padding-left:8px;
 	letter-spacing:1px;
-	color:#696;
-	border-bottom:1px solid #C5DDBC;
+	color:#397CBE;
+	border-bottom:1px solid #DAEDF8;
 	margin:0px 4px;
 }
 .index .vote dl dd .fb{
 	padding-top:10px;
 	height:21px;
 	padding-left:10px;
-	color:#666;
+	color:#555;
 }
 .index .vote dl dd .fb input{
 	margin-right:4px;
@@ -348,7 +372,7 @@
 	height:162px;
 }
 .channel .topcommand a{
-	color:#777;
+	color:#666;
 }
 .channel .topcommand .onenews{
 	padding:3px 12px;
@@ -364,7 +388,7 @@
 }
 .channel .topcommand .onenews p{
 	line-height:19px;
-	color:#777;
+	color:#666;
 }
 .channel .picnews{
 	width:712px;
@@ -387,7 +411,7 @@
 	float:left;
 }
 .channel .listbox ul a{
-	color:#777;
+	color:#666;
 }
 
 
@@ -413,7 +437,7 @@
 	line-height:17px;
 	text-align:center;
 	overflow:hidden;
-	color:#777;
+	color:#666;
 }
 .viewbox .info small{
 	margin-left:8px;
@@ -430,7 +454,7 @@
 	background:#FAFDFE;
 	border:1px solid #DDD;
 	font-size:14px;
-	color:#666;
+	color:#555;
 	margin-top:8px;
 }
 .viewbox .infolist{
@@ -637,7 +661,7 @@
 }
 .viewbox .handle .digg .digg_act a{
 	margin-left:11px;
-	color:#777;
+	color:#666;
 	float:left;
 }
 .viewbox .handle .context{
@@ -662,7 +686,7 @@
 	margin-right:10px;
 }
 .viewbox .actbox ul li a{
-	color:#777;
+	color:#666;
 }
 .viewbox .actbox ul li#act-fav{
 	background-position:4px 0px;
@@ -729,7 +753,7 @@
 }
 .viewbox .picbox ul.e8 img{
 	margin:3px;
-	border:1px solid #CCC;
+	border:none;
 }
 .viewbox .picbox ul.e8 li .title{
 	padding-top:0px;
@@ -818,7 +842,7 @@
 	line-height:19px;
 	height:19px;
 	overflow:hidden;
-	color:#777;
+	color:#666;
 }
 .infos_userinfo dd .userinfo-sp{
 	height:25px;
@@ -852,12 +876,12 @@
 }
 .tagc1{
 	font-size:12px;
-	color:#777;
+	color:#666;
 }
 .tagc2{
 	font-size:14px;
 	font-weight:bold;
-	color:#666;
+	color:#555;
 }
 .sp-title{
 	color:#888;
@@ -944,7 +968,7 @@
 	padding-right:10px;
 	line-height:31px;
 	font-size:14px;
-	color:#777;
+	color:#666;
 	display:block;
 }
 .formbox .fb .value{
@@ -993,7 +1017,7 @@
 	font-size:11px;
 }
 .dede_comment .decmt-box .decmt-title .date{
-	color:#666;
+	color:#555;
 	font-size:11px;
 }
 .dede_comment .decmt-box .decmt-act{
@@ -1031,11 +1055,11 @@
 	text-indent:4px;
 }
 .dede_comment .decmt-box .decmt-box .decmt-content{
-	color:#666;
+	color:#555;
 }
 .nocomment{
 	padding:10px;
-	color:#777;
+	color:#666;
 }
 .dede_comment_post{
 	padding:5px;
@@ -1142,8 +1166,47 @@
 
 }
 
+/* 代码高亮 */
+pre{font-family:'Courier New' , Monospace; font-size:12px; width:99%; overflow:auto; margin:0 0 1em 0; background:#F7F7F7; }
+pre ol, pre ol li, pre ol li span{margin:0 0; padding:0; border:none}
+pre a, pre a:hover{background:none; border:none; padding:0; margin:0}
+pre ol{list-style:decimal; background:#F7F7F7; margin:0px 0px 1px 3em !important; padding:5px 0; color:#5C5C5C; border-left:3px solid #146B00;}
+pre ol li{list-style:decimal-leading-zero; list-style-position:outside !important; color:#5C5C5C; padding:0 3px 0 10px !important; margin:0 !important; line-height:1.3em}
+pre ol li.alt{color:inherit}
+pre ol li span{color:black; background-color:inherit}
+pre .comment, pre .comments{color:#008200; background-color:inherit}
+pre .string{color:blue; background-color:inherit}
+pre .keyword{color:#069; font-weight:bold; background-color:inherit}
+pre .preprocessor{color:gray; background-color:inherit}
+pre .dp-xml .cdata{color:#ff1493}
+pre .dp-xml .tag, pre .dp-xml .tag-name{color:#069; font-weight:bold}
+pre .dp-xml .attribute{color:red}
+pre .dp-xml .attribute-value{color:blue}
+pre .dp-sql .func{color:#ff1493}
+pre .dp-sql .op{color:#808080}
+pre .dp-rb .symbol{color:#a70}
+pre .dp-rb .variable{color:#a70; font-weight:bold}
+pre .dp-py .builtins{color:#ff1493}
+pre .dp-py .magicmethods{color:#808080}
+pre .dp-py .exceptions{color:brown}
+pre .dp-py .types{color:brown; font-style:italic}
+pre .dp-py .commonlibs{color:#8A2BE2; font-style:italic}
+pre .dp-j .annotation{color:#646464}
+pre .dp-j .number{color:#C00000}
+pre .dp-delphi .number{color:blue}
+pre .dp-delphi .directive{color:#008284}
+pre .dp-delphi .vars{color:#000}
+pre .dp-css .value{color:black}
+pre .dp-css .important{color:red}
+pre .dp-c .vars{color:#d00}
+pre .dp-cpp .datatypes{color:#2E8B57; font-weight:bold}
 
+#commetpages {
+	text-align:center;
+	line-height:28px;
+}
 
-
-
-
+#commetpages a {
+	border:1px solid #64B1DF;
+	padding:0 3px 0 3px;
+}

@@ -1,0 +1,71 @@
+<?php
+require_once(dirname(__FILE__)."/header.htm");
+?>
+<script type="text/javascript">
+function checkSubmit(){
+   if(document.form1.groupname.value==""){
+	    alert("<?php echo $lang['group_notice_1'];?>");
+	    return false;
+   }else if(document.form1.store.value==0){
+   		alert("<?php echo $lang['group_notice_2'];?>");
+	    return false;
+   }
+}
+function SeePic(img,f){
+   if ( f.value != "" ) { img.src = f.value; }
+}
+</script>
+    <div id="group_main">
+    	<div id="group_main_middle">
+        <div class="group_main_title"><?php echo $lang['group_main_create'];?></div>
+            <div id="cate_info_1">
+            <form name="form1" action="" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+            <input name="action" type="hidden" value="save">
+            <table width="100%" border="0" cellpadding="0" cellspacing="6" bgcolor="#FFFFFF">
+              <tr bgcolor="#FDFEE9" height="26">
+                <td width="13%" height="30" align="right" bgcolor="#FFFFFF" ><?php echo $lang['group_main_names'];?></td>
+                <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" >
+                  <input name="groupname" type="text" id="groupname" size="30" maxlength="10" />
+                  <?php echo $lang['group_notice_3'];?></td>
+              </tr>
+              <tr bgcolor="#FDFEE9" height="26">
+                <td height="30" align="right" bgcolor="#FFFFFF" ><?php echo $lang['group_store_selects'];?></td>
+                <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" >
+                  <select name="store" id="store">
+                    <option value="0"><?php echo $lang['group_store_select'];?></option>
+                    <?php echo $option?>
+                  </select>
+                  <?php echo $lang['group_notice_4'];?></td>
+              </tr>
+             
+              <tr bgcolor="#FDFEE9" height="26">
+                <td height="12" align="right" bgcolor="#FFFFFF" ><?php echo $lang['group_main_seticons'];?></td>
+                <td width="39%" height="12" align="left" bgcolor="#FFFFFF" >
+                <table width="100%" border="0" cellspacing="1" cellpadding="1">
+                <tr> 
+                          <td height="30"><input name="litpic" type="file" id="litpic" style="width:200" onChange="SeePic(document.picview,document.form1.litpic);"></td>
+                  </tr>
+                </table>        </td>
+                <td width="48%" align="left" bgcolor="#FFFFFF" >&nbsp;<img src="/group/images/group_mainlist00.gif" name="picview" width="100" height="70" id="picview"></td>
+              </tr>
+              
+              <tr bgcolor="#FDFEE9" height="26">
+                <td height="30" align="right" bgcolor="#FFFFFF" ><?php echo $lang['group_main_deses'];?></td>
+                <td height="30" colspan="2" align="left" bgcolor="#FFFFFF" ><textarea name="des" cols="60" rows="5" id="des"></textarea> 
+                  <?php echo $lang['group_notice_5'];?></td>
+              </tr>
+              <tr>
+                <td width="13%" height="33">&nbsp;</td>
+                <td width="39%"><input type="submit" name="button" id="button" value="<?php echo $lang['group_main_createnow'];?>" class="inputbut"/></td>
+                <td >&nbsp;</td>
+              </tr>
+            </table>
+            </form>
+            </div>
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+<?php
+require_once(dirname(__FILE__)."/footer.htm");
+?>

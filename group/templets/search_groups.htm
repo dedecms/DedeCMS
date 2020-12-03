@@ -1,0 +1,35 @@
+{dede:include file='header.htm'/}
+    <div id="group_main">
+    	<div id="group_main_middle">
+        	<div class="group_main_title"><?php echo $lang['group_search'];?><?php echo $lang['group_main_quanzi'];?>
+            </div>
+        	<div class="group_list_text">
+                    <div class="group_list_title"><?php echo $lang['group_search'];?><?php echo $lang['group_main_quanzis'];?><?php echo $keyword;?></div>
+                <div class="clear">
+                </div>
+        	</div>
+        	{dede:datalist}
+            <?php
+             $row = $fields;
+              $icon = $row['groupimg'];
+  			  if(!$icon) $icon = "/group/images/group_mainlist00.gif";
+            ?>
+            <div class="group_list_class">
+            	<div class="group_list_class_img"><img src="<?php echo $icon;?>" /></div>
+                <div class="group_list_class_text">
+                	<ul>
+                    <li><a href="group.php?id=<?php echo $row['groupid'];?>"><?php echo $row['groupname'];?></a></li>
+                    <li><?php echo $lang['group_member_creaters'];?><?php echo $row['creater'];?></li>
+                    <li><span><?php echo $row['des'];?></span></li>
+                    </ul>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+{/dede:datalist}
+            <div class="group_more">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+{dede:include file='footer.htm'/}

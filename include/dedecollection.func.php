@@ -207,15 +207,21 @@ function TurnImageTag(&$body)
 	{
 		$cfg_ddimg_width = 150;
 	}
-	preg_match_all('/src=[\'"](.+?)[\'"]/is',$body,$match);
-	$ttx = '';
-	if(is_array($match[1]) && count($match[1])>0)
-	{
-		for($i=0;isset($match[1][$i]);$i++)
-		{
-			$ttx .= "{dede:img text='' }".$match[1][$i]." {/dede:img}"."\r\n";
-		}
-	}
+	$patten = "/<\\s*img\\s.*?src\\s*=\\s*([\"\\'])?(?(1)(.*?)\\1|([^\\s\\>\"\\']+))/isx";
+  preg_match_all($patten,$body,$images);
+  $returnArray1 = $images[2];
+  $returnArray2 = $images[3];
+  foreach ( $returnArray1 as $key => $value )
+  {
+      if ($value)
+      {
+        $ttx .= "{dede:img ddimg='$litpicname' text='图 ".($key+1)."'}".$value."{/dede:img}"."\r\n";
+      }
+      else
+      {
+        $ttx .= "{dede:img ddimg='$litpicname' text='图 ".($key+1)."'}".$returnArray2[$key]."{/dede:img}"."\r\n";
+      }
+  }
 	$ttx = "\r\n{dede:pagestyle maxwidth='{$cfg_album_width}' ddmaxwidth='{$cfg_ddimg_width}' row='3' col='3' value='2'/}\r\n{dede:comments}图集类型会采集时生成此配置是正常的，不过如果后面没有跟着img标记则表示规则无效{/dede:comments}\r\n".$ttx;
 	return $ttx;
 }

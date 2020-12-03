@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><?php echo $navtitle?>- powered by dedecms</title>
+<link href="template/default/style/ask_base.css" rel="stylesheet" type="text/css" />
+<link href="template/default/style/ask_list.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<!--顶部全站导航-->
+<div class="headTop">{dede:include file='headmenu.htm' /}</div>
+<div class="toplogo cbody margintop">
+  <div class="logobox"><img src="template/default/images/toplogo.gif" width="279" height="43" alt="问答系统" /></div>
+</div>
+<div class="topbox cbody margintop">
+  <div class="menu">
+    <ul>
+      <li><a href="./">问答首页</a></li>
+      <li><a href="type.php">全部分类</a></li>
+      <li><a href="browser.php?lm=1">精彩问题</a></li>
+      <li class="menuright"></li>
+    </ul>
+  </div>
+  <div class="search">
+    <form action="search.php?action=search" method="post">
+      <input type="text" name="q" value="" class="searchinput"/>
+      <input name="" type="submit" value="搜索答案" class="submit"/>
+      <input onclick="location.href='post.php'" name="按钮" type="button" class="postqa" value="我要提问"/>
+    </form>
+  </div>
+</div>
+<div class="main cbody margintop">
+  <!--左侧列表-->
+  <div class="pleft">
+    <!--位置导航-->
+    <div class="thisplace"> <?php echo $nav?> </div>
+    <!--分类信息-->
+    <?php
+if($tid || $tid2)
+{
+?>
+    <div class="classbox">
+      <dl>
+        <dt><?php echo $toptypeinfo['name']?></dt>
+        <dd>
+          <ul>
+            <?php
+		foreach($subtypeinfos as $subtypeinfo)
+		{
+			if($tid2 == $subtypeinfo['id'])
+			{
+				echo '<li>'.$subtypeinfo['name'].'<span>'.$subtypeinfo['asknum'].'</span></li>';
+			}else
+			{
+				echo '<li><a href="browser.php?tid2='.$subtypeinfo['id'].'">'.$subtypeinfo['name'].'</a><span>'.$subtypeinfo['asknum'].'</span></li>';
+			}
+		}
+	?>
+          </ul>
+          <div class="floatclear">
+            <!--清除浮动-->
+          </div>
+        </dd>
+      </dl>
+    </div>
+    <!--列表-->
+    <div class="leftask">
+      <div class="asknav">
+        <ul>
+          <li><a href="browser.php?<?php echo $tidstr;?>" <?php echo $all[0];?>>全部问题</a></li>
+          <li><a href="browser.php?<?php echo $tidstr;?>&amp;lm=3" <?php echo $all[3];?>>已解决</a></li>
+          <li><a href="browser.php?<?php echo $tidstr;?>&amp;lm=2" <?php echo $all[2];?>>待解决</a></li>
+          <li><a href="browser.php?<?php echo $tidstr;?>&amp;lm=5" <?php echo $all[5];?>>零回答</a></li>
+          <li><a href="browser.php?<?php echo $tidstr;?>&amp;lm=6" <?php echo $all[6];?>>快到期</a></li>
+          <li><a href="browser.php?<?php echo $tidstr;?>&amp;lm=4" <?php echo $all[4];?>>高分</a></li>
+        </ul>
+      </div>
+      <?php
+}else
+{
+	echo '<div class="leftask">';
+
+}
+?>
+      <div class="askbox">
+        <dl class="asktitle">
+          <dd class="biaoti">标题</dd>
+          <dd class="jifen">悬赏</dd>
+          <dd class="zhuangtai">状态</dd>
+          <dd class="huida">回答数</dd>
+          <dd class="shijian">时间</dd>
+        </dl>
+        <?php
+foreach($asks as $ask)
+{
+	$typedata = ' <a href="browser.php?tid='.$ask['tid'].'">'.$ask['tidname'].'</a>';
+	if($ask['tid2'] != 0)
+	{
+		$typedata = '<a href="browser.php?tid2='.$ask['tid2'].'">'.$ask['tid2name']."</a>";
+	}
+?>
+        <dl class="asklist">
+          <dd class="biaoti"><a href="question.php?id=<?php echo $ask['id']?>"><?php echo $ask['title']?></a><span>[<?php echo $typedata?>]</span></dd>
+          <dd class="jifen"><img src="template/default/images/ico_23.gif" width="12" height="13" /> <?php echo $ask['reward']?></dd>
+          <dd class="zhuangtai"><img src="template/default/images/<?php echo $ask['status']?>" width="44" height="19" /></dd>
+          <dd class="huida"><?php echo $ask['replies']?></dd>
+          <dd class="shijian"><?php echo $ask['dateline']?></dd>
+        </dl>
+        <?php
+}
+echo $multipage;
+?>
+      </div>
+    </div>
+  </div>
+  <!--右侧列表-->
+  <div class="pright">
+    <!--快到期问题-->
+    <div class="rlist">
+      <div class="rtitle">快到期问题</div>
+      <div class="rbox wtlist">
+        <ul>
+          <?php
+foreach($expiredasks as $expiredask)
+{
+	echo '<li><a href="question.php?id='.$expiredask['id'].'">'.$expiredask['title'].'</a></li>';
+}
+?>
+        </ul>
+      </div>
+    </div>
+    <!--总积分排行-->
+    <div class="rlist margintop">
+      <div class="rtitle">总积分排行</div>
+      <div class="rbox paihang">
+        <dl>
+          <?php
+foreach($topmembers as $topmember)
+{
+	$typedata = ' <a href="../member/index.php?uid='.$topmember['userid'].'">'.$topmember['userid'].'</a>';
+	echo '<dd><span class="name">'.$typedata.'</span><span class="jifen"><img src="template/default/images/ico_23.gif" /> '.$topmember['scores'].'</span></dd>';
+}
+?>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="floatclear">
+    <!--清除浮动-->
+  </div>
+</div>
+{dede:include file='foot.htm' /}
+</body>
+</html>

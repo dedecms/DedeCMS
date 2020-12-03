@@ -14,8 +14,7 @@ function DelArc($aid)
 	$arctitle = '';
 	$arcurl = '';
 
-	$arcQuery = "Select arc.id,arc.title,arc.typeid,arc.ismake,arc.senddate,arc.arcrank,ch.addtable,
- 		  arc.money,tp.typedir,tp.typename,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath,ch.nid
+	$arcQuery = "Select arc.*,ch.addtable,tp.typedir,tp.typename,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath,ch.nid
 		  from `#@__archives` arc
 		  left join `#@__arctype` tp on tp.id=arc.typeid
 		  left join `#@__channeltype` ch on ch.id=arc.channel

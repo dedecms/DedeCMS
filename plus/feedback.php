@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/../include/common.inc.php");
+if($cfg_feedback_forbid=='Y') exit('系统已经禁止评论功能！');
 require_once(DEDEINC."/filter.inc.php");
 if(!isset($action))
 {
@@ -14,6 +15,7 @@ if($action == 'good' || $action == 'bad')
 }
 
 
+$cfg_formmember = isset($cfg_formmember) ? true : false;
 $ischeck = $cfg_feedbackcheck=='Y' ? 0 : 1;
 $aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
 $fid = (isset($fid) && is_numeric($fid)) ? $fid : 0;
@@ -76,7 +78,7 @@ else if($action=='' || $action=='show')
                  where fb.aid='$aid' and fb.ischeck='1' $wquery order by fb.id desc";
 	$dlist->SetParameter('aid',$aid);
 	$dlist->SetParameter('action','show');
-	$dlist->SetTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_templet.htm');
+	$dlist->SetTemplate(DEDETEMPLATE.'/plus/feedback_templet.htm');
 	$dlist->SetSource($querystring);
 	$dlist->Display();
 	exit();
@@ -92,7 +94,7 @@ else if($action=='quote')
 	$row = $dsql->GetOne("Select * from `#@__feedback` where id ='$fid'");
 	require_once(DEDEINC.'/dedetemplate.class.php');
 	$dtp = new DedeTemplate();
-	$dtp->LoadTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_quote.htm');
+	$dtp->LoadTemplate(DEDETEMPLATE.'/plus/feedback_quote.htm');
 	$dtp->Display();
 	exit();
 }
@@ -121,7 +123,7 @@ else if($action=='send')
 		extract($arcRow, EXTR_SKIP);
 		require_once(DEDEINC.'/dedetemplate.class.php');
 		$dtp = new DedeTemplate();
-		$dtp->LoadTemplate($cfg_basedir.$cfg_templets_dir.'/plus/feedback_confirm.htm');
+		$dtp->LoadTemplate(DEDETEMPLATE.'/plus/feedback_confirm.htm');
 		$dtp->Display();
 		exit();
 	}
@@ -192,7 +194,7 @@ else if($action=='send')
 			$where = "WHERE `ip` = '$ip'";
 		}
 		$row = $dsql->GetOne("SELECT dtime FROM `#@__feedback` $where ORDER BY `id` DESC ");
-		if($dtime - $row['dtime'] < $cfg_feedback_time)
+		if(is_array($row) && $dtime - $row['dtime'] < $cfg_feedback_time)
 		{
 			ResetVdValue();
 			ShowMsg('管理员设置了评论间隔时间，请稍等休息一下！','-1');
@@ -208,7 +210,7 @@ else if($action=='send')
 	extract($arcRow, EXTR_SKIP);
 	$msg = cn_substrR(TrimMsg($msg),1000);
 	$username = cn_substrR(HtmlReplace($username,2),20);
-	if($feedbacktype!='good' && $feedbacktype!='bad')
+	if(empty($feedbacktype) || ($feedbacktype!='good' && $feedbacktype!='bad'))
 	{
 		$feedbacktype = 'feedback';
 	}
@@ -223,7 +225,8 @@ else if($action=='send')
 			$rs = $dsql->ExecuteNoneQuery($inquery);
 			if(!$rs)
 			{
-				echo $dsql->GetError();
+				ShowMsg(' 发表评论错误! ', '-1');
+				//echo $dsql->GetError();
 				exit();
 			}
 		}
@@ -260,16 +263,38 @@ else if($action=='send')
 	//统计用户发出的评论
 	if($cfg_ml->M_ID > 0)
 	{
+		#api{{
+		if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
+		{
+			//同步积分
+			uc_credit_note($cfg_ml->M_LoginID, $cfg_sendfb_scores);
+			
+			//推送事件
+			$arcRow = GetOneArchive($aid);
+			$feed['icon'] = 'thread';
+			$feed['title_template'] = '<b>{username} 在网站发表了评论</b>';
+			$feed['title_data'] = array('username' => $cfg_ml->M_UserName);
+			$feed['body_template'] = '<b>{subject}</b><br>{message}';
+			$url = !strstr($arcRow['arcurl'],'http://') ? ($cfg_basehost.$arcRow['arcurl']) : $arcRow['arcurl'];		
+			$feed['body_data'] = array('subject' => "<a href=\"".$url."\">$arcRow[arctitle]</a>", 'message' => cn_substr(strip_tags(preg_replace("/\[.+?\]/is", '', $msg)), 150));
+			$feed['images'][] = array('url' => $cfg_basehost.'/images/scores.gif', 'link'=> $cfg_basehost);
+			uc_feed_note($cfg_ml->M_LoginID,$feed); unset($arcRow);
+		}
+		#/aip}}
+	
 		$row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__feedback` WHERE `mid`='".$cfg_ml->M_ID."'");
 		$dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET `feedback`='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");
 	}
 	$_SESSION['sedtime'] = time();
+	if(empty($uid) && isset($cmtuser)) $uid = $cmtuser;
+	$backurl = $cfg_formmember ? "index.php?uid={$uid}&action=viewarchives&aid={$aid}" : "feedback.php?aid=$aid";
 	if($ischeck==0)
 	{
-		ShowMsg("成功发表评论，但需审核后才会显示你的评论!","feedback.php?aid=$aid");
-	}elseif($ischeck==1)
+		ShowMsg('成功发表评论，但需审核后才会显示你的评论!', $backurl);
+	}
+	else
 	{
-		ShowMsg("成功发表评论，现在转到评论页面!","feedback.php?aid=$aid");
+		ShowMsg('成功发表评论，现在转到评论页面!', $backurl);
 	}
 	exit();
 }

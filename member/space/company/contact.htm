@@ -1,76 +1,34 @@
-{dede:include file='space-top.htm'/}
-		<!--c3b-->
-		<div class="c3">
-			<!--c3lb-->
-			<div class="c3l">
-				<!--ccb-->
-				<div class="cc">
-					<!--cctb-->
-					<div class="cct">
-						<div class="cctl">
-						</div>
-						<div class="cctm">
-							<h2>产品分类</h2>
-						</div>
-						<div class="cctr">
-						</div>
-					</div>
-					<!--ccte-->
-					<!--ccmb-->
-					<div class="ccm2">
-					<ul>
-					{dede:array.mtypearr}
-<li><p><a href="?uid=company&action=products&mtype={dede:value.mtypeid/}" target="_blank">{dede:value.mtypename/}</p></a></li>
-{/dede:array}
-					</ul>
-					</div>
-					<!--ccme-->
-				</div>
-				<!--cce-->
-			</div>
-		<!--c3le-->
-			<div class="c3r">
-				<img src="space/company/img/222.jpg" alt="dede" style="margin-bottom:5px;"/>
-				<!--c4b-->
-				<div class="c4">
+{dede:include file='header.htm'/}
 
-					<!--c4tb-->
-					<div class="c4t">
-						<div class="c4tl">
-						</div>
-						<div class="c4tm">
-							<h2>公司信息</h2>
-						</div>
-						<div class="c4tr">
-						</div>
-					</div>
-					<!--c4te-->
-					<!--c4bb-->
-						<div class="c4bc">
-							<div class="c4bct">
-							</div>
-							<div class="c4bcm">
-								<ul>
-									<li><span>公司名字:</span>{dede:var.company/}</li>
-									<li><span>贸易种类:</span>{dede:var.vocation/}</li>
-									<li><span>主营产品:</span>{dede:var.product/}</li>
-									<li><span>公司规模:</span>{dede:var.cosize/}</li>
-									<li><span>所在地:</span>{dede:var.place/}</li>
-									<li><span>联系人:</span>{dede:var.linkman/}</li>
-									<li><span>电话:</span>{dede:var.tel/}</li>
-									<li><span>传真:</span>{dede:var.fax/}</li>
-									<li><span>网址:</span>{dede:var.url/}</li>
-									<li><span>Email:</span>{dede:var.email/}</li>
-									<li><span>地址:</span>{dede:var.address/}</li>
-								</ul>
-							</div>
-							<div class="c4bcb">
-							</div>
-						</div>
-					<!--c4be-->
-				</div>
-				<!--c4e-->
-			</div>
-		</div>
-		<!--c3e-->
-{dede:include file='space-foot.htm'/}
+<div id="side" class="left">
+	{dede:include file='side_search.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_news.htm'/}
+</div>
+
+<!--begin main-->
+<div id="main" class="right">
+
+<div class="box">
+	<h2>联系我们</h2>
+</div>
+<div class="infobox">
+<ul>
+	<li><span>公司名称：</span>{dede:var.company/}</li>
+	<li><span>贸易种类：</span>{dede:var.vocation/}</li>
+	<li><span>主营产品：</span>{dede:var.product/}</li>
+	<li><span>公司规模：</span>{dede:var.cosize/}</li>
+	<li><span>所在地：</span>{dede:var.place/}</li>
+	<li><span>联系人：</span>{dede:var.linkman/}</li>
+	<li><span>电话：</span>{dede:var.tel/}</li>
+	<li><span>传真：</span>{dede:var.fax/}</li>
+	<li><span>网址：</span>{dede:var.url/}</li>
+	<li><span>Email：</span><a href="mailto:{dede:var.email/}">{dede:var.email/}</a></li>
+	<li><span>地址：</span>{dede:var.address/}</li>
+</ul>
+</div>	
+
+</div>
+<!--end main-->
+
+{dede:include file='footer.htm'/}

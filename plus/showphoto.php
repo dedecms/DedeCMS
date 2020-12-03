@@ -65,6 +65,6 @@ else
 {
 	$pageGuide .= " | 没有了";
 }
-require_once($cfg_basedir.$cfg_templets_dir."/plus/showphoto.htm");
+require_once(DEDETEMPLATE.'/plus/showphoto.htm');
 exit();
 ?>

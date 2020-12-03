@@ -1,8 +1,11 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
-require_once(DEDEINC."/enums.func.php");
-require_once(DEDEINC."/datalistcp.class.php");
+require_once(DEDEINC.'/enums.func.php');
+require_once(DEDEINC.'/datalistcp.class.php');
+
+//检查用户是否被禁言
+CheckNotAllow();
 
 $addsqls = array();
 $province = empty($province) ? 0 : intval($province);
@@ -58,7 +61,7 @@ if($addsqls_str!='') {
 	$addsqls_str = ' And '.$addsqls_str;
 }
 
-$addsql = " where mb.spacesta>-1 And mb.mtype = '个人'  ".$addsqls_str;
+$addsql = " where mb.spacesta > -1  ".$addsqls_str;
 
 $query = "Select mb.*,mp.place,YEAR(CURDATE())-YEAR(mp.birthday) as age,mp.lovemsg From `#@__member` mb
 left join `#@__member_person` mp on mp.mid=mb.mid

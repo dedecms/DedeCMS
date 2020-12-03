@@ -25,10 +25,20 @@ function lib_loop(&$ctag,&$refObj)
 	$ctp = new DedeTagParse();
 	$ctp->SetNameSpace("field","[","]");
 	$ctp->LoadSource($innertext);
+	$GLOBALS['autoindex'] = 0;
 	while($row = $dsql->GetArray())
 	{
-		foreach($ctp->CTags as $tagid=>$ctag){
-			if(!empty($row[$ctag->GetName()])){ $ctp->Assign($tagid,$row[$ctag->GetName()]); }
+		$GLOBALS['autoindex']++;
+		foreach($ctp->CTags as $tagid=>$ctag)
+		{
+				if($ctag->GetName()=='array')
+				{
+						$ctp->Assign($tagid, $row);
+				}
+				else
+				{
+					if( !empty($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]); 
+				}
 		}
 		$revalue .= $ctp->GetResult();
 	}

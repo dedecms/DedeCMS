@@ -51,6 +51,8 @@
         		$ls = explode('>',$line);
         		$tag = $ls[1];
         		$tagname = str_replace('[br]','<br>',$ls[2]);
+        		if(!ereg('<br />', $tagname) ) $tagname .= "<font color='#888888'>($tag)</font>";
+        		else $tagname = str_replace('<br />', "<font color='#888888'>($tag)</font><br />", $tagname);
         		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'".CRank($tag).">$tagname\r\n";
         	  $k++;
         	}
@@ -72,7 +74,7 @@
          	 echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='plus_{$row->plusname}'".CRank("plus_{$row->plusname}").">{$row->plusname}\r\n";
         	 $k++;
         	 $l++;
-        	 if($l%4==0) echo "<br>";
+        	 if($l%6==0) echo "<br>";
          }
          ?>  	
         </td>

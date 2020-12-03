@@ -19,7 +19,7 @@ Copyright (c) 2008, dedecms All rights reserved.
 	height: 71px;
 }
 .header .wrapper {
-	background-image: url(head.jpg);
+	background-image: url(head.gif);
 	background-repeat: no-repeat;
 }
 .header .wrapper .fLeft {
@@ -116,46 +116,28 @@ Copyright (c) 2008, dedecms All rights reserved.
 .mainBox {
 	background-color: #fff;
 	width: 100%;
+	border:1px solid #ACD98C;
 	clear: both;
 }
 .main {
 	width: 100%;
-	background-image: url(bg_main_right.gif);
-	background-repeat: repeat-y;
-	background-position: right center;
 	float: left;
 }
 .dedeLeft {
 	text-align: center;
-	width: 140px;
+	width: 160px;
 	float: left;
-	background-image: url(bg_main_left.gif);
-	background-repeat: repeat-y;
 }
 .dedeCenter {
 	margin-right: 220px;
-	margin-left: 140px;
-	border-right-width: 1px;
-	border-left-width: 1px;
-	border-right-style: solid;
-	border-left-style: solid;
-	border-right-color: #acd98c;
-	border-left-color: #acd98c;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #acd98c;
+	margin-left: 160px;
+	border-right: 1px solid #acd98c;
+	border-left: 1px solid #acd98c;
 	height: 100%;
 }
 .dedeMain {
-	border-right-width: 1px;
-	border-left-width: 1px;
-	border-right-style: solid;
-	border-left-style: solid;
-	border-right-color: #acd98c;
-	border-left-color: #acd98c;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #acd98c;
+	border-left: 1px solid #acd98c;
+	border-bottom: 1px solid #acd98c;
 	height: 100%;
 	overflow:hidden;
 	_float:left;
@@ -168,15 +150,39 @@ Copyright (c) 2008, dedecms All rights reserved.
 }
 /* 左侧导航（模块）
 -------------------------------------------------------------------*/
-.leftNav {
+.allmenu {
 	background-image: url(bg_head.jpg);
 	background-repeat: repeat-x;
 	background-position: center -160px;
-	width: 139px;
-	text-align: left;
 	padding-top: 8px;
-	float: right;
 }
+.leftNav {
+	width: 159px;
+	text-align: left;
+}
+
+.menuTitle {
+	height:25px;
+	margin:6px 0 6px 16px;
+	cursor:pointer;
+}
+
+.mbccontent {
+	background:url(mbc_content.gif) no-repeat;
+}
+
+.mbcmoney {
+	background:url(mbc_money.gif) no-repeat;
+}
+
+.mbcapp {
+	background:url(mbc_app.gif) no-repeat;
+}
+
+.mbcconfig {
+	background:url(mbc_config.gif) no-repeat;
+}
+
 .leftNav li {
 	height: 27px;
 	font-size: 14px;
@@ -185,6 +191,7 @@ Copyright (c) 2008, dedecms All rights reserved.
 	background-repeat: no-repeat;
 }
 .leftNav em a {
+	margin-left:6px;
 	font-size: 12px;
 	padding-left: 4px;
 }
@@ -205,19 +212,28 @@ Copyright (c) 2008, dedecms All rights reserved.
 	background-position: 0 -875px;
 }
 .titleBar {
-	height:27px;
-	line-height:27px;
+	height:32px;
 	margin-top: 5px;
+	line-height:32px;
 	overflow: hidden;
 }
 .titleBar .fLeft {
-	margin-left: 5px;
+	margin-left: 8px;
 	color: #000;
 	display: inline;
 	line-height: 27px;
 }
+.titleBar .fLeftNoForm {
+	margin-left: 8px;
+	color: #000;
+	display: inline;
+	line-height: 32px;
+}
 .titleBar .fRight {
 	margin-right: 5px;
+	margin-top:6px;
+	height: 26px;
+	line-height: 22px;
 }
 /*分页*/
 .titleTabBar {
@@ -242,9 +258,9 @@ Copyright (c) 2008, dedecms All rights reserved.
 	float:left;
 	cursor:pointer;
 	padding-top: 0;
-	padding-right: 21px;
+	padding-right: 15px;
 	padding-bottom: 0;
-	padding-left: 21px;
+	padding-left: 15px;
 }
 .titleTabBar li a:hover {
 	text-decoration: none;
@@ -273,23 +289,28 @@ Copyright (c) 2008, dedecms All rights reserved.
 	height: 17px;
 }
 .titSecondary em {
-	background-image: url(bg_button.gif);
-	background-repeat: no-repeat;
-	background-position: right -230px;
+	text-align:center;
+	background: url(bg_button_n.gif) repeat-x;
 	float: left;
 }
 .titSecondary em a {
-	background-image: url(bg_button.gif);
-	background-repeat: no-repeat;
-	background-position: 0px -213px;
 	display: block;
 	padding-right: 3px;
 	padding-left: 3px;
+	font-size:12px;
 	color: #FFFFFF;
 	cursor:pointer;
 }
 .titSecondary em a:hover {
 	text-decoration: none;
+}
+em.icobg {
+	margin-right:10px;
+	height:22px;
+	line-height:22px;
+}
+em.icobg a {
+	background:url(/images/dd2.gif) 3px 5px no-repeat;
 }
 /* 列表
 -------------------------------------------------------------------*/
@@ -390,10 +411,11 @@ Copyright (c) 2008, dedecms All rights reserved.
 	background-color: #fffbf5;
 	width: 75px;
 	height: 75px;
-	border: solid 1px #ccc;
+	padding:1px;
+	border: solid 1px #eee;
 }
 .allList .nametxt {
-
+  width:520px;
 	float: left;
 	padding-top: 10px;
 }
@@ -425,7 +447,7 @@ Copyright (c) 2008, dedecms All rights reserved.
 	cursor:pointer;
 	padding-left: 20px;
 	line-height: 32px;
-	width: 60px;
+	width: 45px;
 }
 .allList .caicai .good {
 	background:url(../../images/dig.gif) no-repeat 0px 7px;
@@ -460,7 +482,8 @@ Copyright (c) 2008, dedecms All rights reserved.
 -------------------------------------------------------------------*/
 .message {
 	height: 190px;
-	padding: 30px;
+	padding: 20px!important;
+	padding: 10px;
 }
 .message .visualize {
 	width: 160px;
@@ -481,7 +504,7 @@ Copyright (c) 2008, dedecms All rights reserved.
 }
 .message .datum {
 	width: 66%;
-	margin-left: 3%;
+	margin-left: 4%;
 }
 .message .datum .userName em {
 	font-size: 12px;
@@ -625,7 +648,9 @@ Copyright (c) 2008, dedecms All rights reserved.
 	margin-left: 3px;
 }
 .location a {
-	font-weight: normal;
+	font-weight: bold;
+	color: #397A0E;
+	font-size: 14px;
 }
 /* 分页
 -------------------------------------------------------------------*/
@@ -686,12 +711,8 @@ table.list thead th {
 	line-height: 25px;
 	height: 25px;
 	background-color: #F0FBDD;
-	border-bottom-width: 1px;
-	border-left-width: 1px;
-	border-bottom-style: solid;
-	border-left-style: solid;
-	border-bottom-color: #acd98c;
-	border-left-color: #fff;
+	border-bottom: 1px solid #acd98c;
+	border-left: 1px solid #fff;
 }
 table.list thead a:hover {
 	text-decoration: none;
@@ -732,9 +753,7 @@ table.list tfoot tr {
 }
 table.list tfoot td, table.list tfoot th {
 	background-color: #FBFBFB;
-	border-top-width: 1px;
-	border-top-style: solid;
-	border-top-color: #acd98c;
+	border-top: 1px solid #acd98c;
 }
 /* 表格-提交
 -------------------------------------------------------------------*/
@@ -1167,6 +1186,10 @@ table.submit tfoot td, table.submit tfoot th {
 	background-repeat: no-repeat;
 	padding-left: 20px;
 }
+/* 评论 */
+.feedback {
+	background-position: 25px -1713px;
+}
 /*连载*/
 .book {
 	background-position: 25px -3185px;
@@ -1178,7 +1201,20 @@ table.submit tfoot td, table.submit tfoot th {
 .group {
 	background-position: 25px -1984px;
 }
+/*资料*/
+.myinfo {
+	background-position: 25px -69px;
+	background-repeat: no-repeat;
+}
+.myconfig {
+	background-position: 25px -1204px;
+	background-repeat: no-repeat;
+}
 /*消费*/
+.consume1 {
+	background-position: 25px -251px;
+	background-repeat: no-repeat;
+}
 .consume {
 	background-position: 25px -731px;
 	background-repeat: no-repeat;
@@ -1221,3 +1257,82 @@ table.submit tfoot td, table.submit tfoot th {
 .option1{ background-color: #DCECA6; }
 .option2{ background-color: #F7FBD2; }
 .option3{ background-color: #FFFFFF; }
+
+.userSta {
+	margin-bottom:6px;
+	line-height:26px;
+	background:#E9FCAF;
+	padding-left:10px;
+	border-bottom:1px dashed #688409;
+}
+
+.caicaiLeft {
+	width: 75%;
+	background:#fff;
+	padding-right:10px;
+	border-right:1px dashed #ACD98C;
+	float:left;
+}
+
+.caicaiRight {
+	width: 23%;
+	float:left;
+	text-align:left;
+}
+
+.caicaiArcBox {
+	margin-top:1px;
+	margin-left:1px;
+	margin-bottom:10px;
+}
+
+.arc dd {
+	padding-top:3px;
+	height:296px;
+	line-height:24px;
+}
+
+.caicaiArcBox dt{
+	height:28px;
+	font-size:0px;
+	color:#88C46D;
+}
+
+.caicaiArcBox dt.good{
+	background:url(goodart.gif) no-repeat;
+}
+
+.caicaiArcBox dt.bad{
+	background:url(badart.gif) no-repeat;
+}
+.caicaiArcBox dt.hot{
+	background:url(hotarticle.gif) no-repeat;
+}
+.caicaiArcBox dt.memberlist{
+	background:url(memberlist.gif) no-repeat;
+}
+
+dd div.boxtxt {
+	width:200px;
+	height:24px;
+	line-height:24px;
+	padding-left:20px;
+	background:url(arcdd.gif) 5px 7px no-repeat;
+	overflow:hidden;
+}
+
+dd div.boximg {
+	float:left;
+	margin-left:10px;
+	margin-top:10px;
+	width:32px;
+	height:32px;
+	border:1px solid #eee;
+	padding:1px;
+	overflow:hidden;
+}
+
+dd div.boximg img {
+	width:32px;
+	height:32px;
+}

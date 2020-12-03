@@ -30,7 +30,7 @@ class SpecView
 		$this->TypeID = 0;
 		$this->dsql = $GLOBALS['dsql'];
 		$this->dtp = new DedeTagParse();
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 		$this->dtp->SetNameSpace("dede","{","}");
 		$this->dtp2 = new DedeTagParse();
 		$this->dtp2->SetNameSpace("field","[","]");

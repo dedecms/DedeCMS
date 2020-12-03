@@ -37,7 +37,7 @@ class SgListView
 		$this->IsReplace = false;
 		$this->IsError = false;
 		$this->dtp = new DedeTagParse();
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 		$this->sAddTable = false;
 		$this->dtp->SetNameSpace("dede","{","}");
 		$this->dtp2 = new DedeTagParse();

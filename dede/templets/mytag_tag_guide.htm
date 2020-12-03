@@ -83,8 +83,8 @@ function SelectArcList(fname){
             <td height="28">调用栏目： 
     <?php
        $tl = new TypeLink(0);
-       $typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0,1);
-       echo "<select name='typeid' style='width:284'>\r\n";
+       $typeOptions = $tl->GetOptionArray(0,$admin_catalogs,0,1);
+       echo "<select name='typeid' style='width:284px'>\r\n";
        echo "<option value='0' selected>不限栏目...</option>\r\n";
        echo $typeOptions;
        echo "</select>";

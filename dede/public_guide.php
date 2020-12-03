@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-CheckPurview('sys_Edit');
 require_once(DEDEINC."/oxwindow.class.php");
 if(empty($action))
 {
@@ -13,6 +12,7 @@ function __SetDefault();
 ----------------------*/
 if($action=='setdefault')
 {
+	CheckPurview('sys_Edit');
 	$dsql->ExecuteNoneQuery("Update `#@__channeltype` set isdefault=0 where id<>'$cid'");
 	if($cid!=0)
 	{

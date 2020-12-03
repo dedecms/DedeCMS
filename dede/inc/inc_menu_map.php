@@ -34,7 +34,7 @@ $menusMain = "
   <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />
-  <m:item name='自由列表管理' link='freemenu_main.php' rank='c_List' target='main' />
+  <m:item name='自由列表管理' link='freelist_main.php' rank='c_List' target='main' />
   <m:item name='自定义表单' link='diy_main.php' rank='c_List' target='main' />
 </m:top>
 
@@ -80,7 +80,7 @@ $menusMain = "
 <m:top mapitem='5' item='6_' name='会员管理' display='none' rank='member_List,member_Type'>
 <m:item name='会员类别管理' link='member_mtype.php' rank='member_Type' target='main' />
   <m:item name='注册会员列表' link='member_main.php' rank='member_List' target='main' />
-  <m:item name='会员权限管理' link='member_rank.php' rank='member_Type' target='main' />
+  <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
   <m:item name='会员短信管理' link='member_pm.php' rank='member_Type' target='main' />
 </m:top>
@@ -96,6 +96,8 @@ $menusMain = "
   <m:item name='防采集串混淆' link='article_string_mix.php' rank='sys_StringMix' target='main' />
   <m:item name='来源管理' link='article_source_edit.php' rank='sys_Source' target='main' />
   <m:item name='作者管理' link='article_writer_edit.php' rank='sys_Writer' target='main' />
+  <m:item name='随机模板设置' link='article_template_rand.php' rank='sys_StringMix' target='main' />
+  <m:item name='计划任务管理' link='sys_task.php' rank='sys_Task' target='main' />
   <m:item name='数据库备份/还原' link='sys_data.php' rank='sys_Data' target='main' />
   <m:item name='SQL命令行工具' link='sys_sql_query.php' rank='sys_Data' target='main' />
   <m:item name='文件校验[S]' link='sys_verifies.php' rank='sys_verify' target='main' />
@@ -121,11 +123,6 @@ $menusMain = "
   <m:item name='全局标记测试' link='tag_test.php' rank='temp_Test' target='main'/>
 </m:top>
 
-<m:top mapitem='2' item='1_10_7_' name='系统帮助' display='none'>
-  <m:item name='参考文档' link='http://help.dedecms.com' rank='' target='_blank' />
-  <m:item name='推荐主机商' link='http://help.dedecms.com/archives/idc/index.html' rank='' target='_blank' />
-  <m:item name='官方交流论坛' link='http://bbs.dedecms.com' rank='' target='_blank' />
-</m:top>
 ";
 
 //载入插件菜单

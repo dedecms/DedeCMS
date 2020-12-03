@@ -16,8 +16,13 @@ $rsmsg = '';
 
 if($dopost=='send')
 {
-  if(!empty($voteitem)){
-  	$rsmsg = "<br>&nbsp;你方才的投票状态：".$vo->SaveVote($voteitem)."<br>";
+  if(!empty($voteitem))
+  {
+  	$rsmsg = "<br />&nbsp;你方才的投票状态：".$vo->SaveVote($voteitem)."<br />";
+  }
+  else
+  {
+  	$rsmsg = "<br />&nbsp;你刚才没选择任何投票项目！<br />";
   }
 }
 
@@ -28,6 +33,6 @@ $endtime = GetDateMk($vo->VoteInfos['endtime']);
 $votelist = $vo->GetVoteResult("98%",30,"30%");
 
 //显示模板(简单PHP文件)
-include($cfg_basedir.$cfg_templets_dir.'/plus/vote.htm');
+include(DEDETEMPLATE.'/plus/vote.htm');
 
 ?>

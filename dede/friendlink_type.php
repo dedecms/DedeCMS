@@ -18,20 +18,20 @@ if($dopost=="save")
 		{
 			if($pname!='')
 			{
-				$query = "update #@__flinktype set typenamd='$pname_new'";
+				$query = "update `#@__flinktype` set typename='$pname' where id='$tid' ";
 				$dsql->ExecuteNoneQuery($query);
 			}
 		}
 		else
 		{
-			$query = "Delete From #@__flinktype where id='$tid' ";
+			$query = "Delete From `#@__flinktype` where id='$tid' ";
 			$dsql->ExecuteNoneQuery($query);
 		}
 	}
 	//增加新记录
 	if(isset($check_new) && $pname_new!='')
 	{
-		$query = "Insert Into #@__flinktype(typename) Values('{$pname_new}');";
+		$query = "Insert Into `#@__flinktype`(typename) Values('{$pname_new}');";
 		$dsql->ExecuteNoneQuery($query);
 	}
 	header("Content-Type: text/html; charset={$cfg_soft_lang}");

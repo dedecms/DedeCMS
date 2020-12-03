@@ -29,11 +29,11 @@ class MemberListview
 	//用指定的文档ID进行初始化
 	function __construct($tplfile='')
 	{
-		$this->sourceSql="";
-		$this->pageSize=25;
-		$this->queryTime=0;
-		$this->getValues=Array();
-		$this->randts=time();
+		$this->sourceSql = '';
+		$this->pageSize = 25;
+		$this->queryTime = 0;
+		$this->getValues = Array();
+		$this->randts = time();
 		$this->dsql = $GLOBALS['dsql'];
 		$this->SetVar('ParseEnv','datalist');
 		$this->tpl = new DedeTemplate();
@@ -355,7 +355,8 @@ class MemberListview
 	//显示数据
 	function Display()
 	{
-		$this->PreLoad();
+		
+		if($this->sourceSql != '') $this->PreLoad();
 
 		//在PHP4中，对象引用必须放在display之前，放在其它位置中无效
 		$this->tpl->SetObject($this);

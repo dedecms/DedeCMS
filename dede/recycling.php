@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__).'/config.php');
-CheckPurview('a_Recycling');
+CheckPurview('a_List,a_AccList,a_MyList');
 require_once(DEDEINC.'/datalistcp.class.php');
 if(empty($cid))
 {
@@ -14,7 +14,7 @@ if($cid!=0)
 }
 $query = "SELECT arc.*,tp.typename FROM `#@__archives` AS arc
 LEFT JOIN #@__arctype AS tp ON arc.typeid = tp.id
-WHERE arc.arcrank = '-2' $whereSql";
+WHERE arc.arcrank = '-2' $whereSql order by arc.id desc";
 $dlist = new DataListCP();
 $dlist->SetTemplet(DEDEADMIN."/templets/recycling.htm");
 $dlist->SetSource($query);

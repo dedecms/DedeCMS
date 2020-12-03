@@ -91,11 +91,14 @@ else if($dopost=="repairAll")
 else if($dopost=="query")
 {
 	$sqlquery = trim(stripslashes($sqlquery));
+	/*
 	if(eregi("drop(.*)table",$sqlquery) || eregi("drop(.*)database",$sqlquery))
 	{
 		echo "<span style='font-size:10pt'>删除'数据表'或'数据库'的语句不允许在这里执行。</span>";
 		exit();
 	}
+	*/
+	
 	//运行查询语句
 	if(eregi("^select ",$sqlquery))
 	{

@@ -2,28 +2,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>已有分类管理</title>
-<?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
+<?php include(DEDEMEMBER.'/templets/head_inc.htm'); ?>
 <script language="javascript" type="text/javascript" src="{dede:cfg.cmspath/}/js/j.js"></script>
 </head>
 <body>
-<?php include(DEDEMEMBER."/templets/head.htm"); ?>
+<?php include(DEDEMEMBER.'/templets/head.htm'); ?>
 <div class="wrapper lineT">
   <div class="mainBox">
     <div class="main">
-      <?php include(DEDEMEMBER."/templets/menu.php"); ?>
+      <?php
+      include(DEDEMEMBER.'/templets/menu.php');
+      $channels = array();
+      foreach($channelInfos as $mrow)
+      {
+      	if($mrow['id'] < 0) continue;
+      	if($mrow['isshow'] == 0 || $mrow['issend'] == 0) continue;
+      	if($cfg_mb_album=='N' && $mrow['nid']=='image') continue;
+      	if(trim($mrow['usertype']) != '' && $mrow['usertype'] != $cfg_ml->fields['mtype']) continue;
+      	$channels[$mrow['id']] = $mrow;
+      }
+      ?>
       <div class="dedeMain">
-        <div class="location">已有分类管理</div>
+        <div class="location">空间设置 &gt; <a href='mtypes.php'>我的分类管理</a></div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
             <li class="select"><a href="mtypes.php">分类管理</a></li>
             <li><a href="flink_main.php">书签管理</a></li>
-            <li><a href="edit_baseinfo.php">个人资料</a></li>
+            <li><a href="edit_space_info.php">空间设置</a></li>
+            <li><a href="spaceskin.php">风格选择</a></li>
+            <li><a href="uploads.php">附件管理</a></li>
+            <li><a href="edit_baseinfo.php">会员资料</a></li>
           </ul>
         </div>
         <div class="mTB10 mL10 mR10">
-          <form class="mTB10 fRight" action="mtypes.php?dopost=add" method="post">
-            添加分类：
+          <form class="mTB10" action="mtypes.php?dopost=add" method="post">
+          	<strong>添加分类：</strong>
             <input type="text" name="mtypename" class="text" />
+          	<select name='channelid' style='width:100px'>
+          		<?php 
+          		foreach($channels as $nrow) echo "		<option value='{$nrow['id']}'>{$nrow['typename']}</option>\r\n";
+          		?>
+          	</select> &nbsp;
             <button class="button2" type="submit">添加</button>
           </form>
           <div class="clear"></div>
@@ -32,16 +51,19 @@
               <thead>
                 <tr>
                   <th width="1%">删?</th>
-                  <th width="10%">分类ID</th>
+                  <th width="20%">分类ID</th>
+                  <th width="30%">内容类型</th>
                   <th>分类名称</th>
                 </tr>
               </thead>
               <tbody>
-              
               {dede:array.mtypearr}
               <tr>
                 <td><input type="checkbox" name="mtypeidarr[]" value="{dede:value.mtypeid/}"/></td>
                 <td align="center">{dede:value.mtypeid/}</td>
+                <td align="center">
+                	<a href='mtypes.php?channelid={dede:value.channelid/}'><?php echo $channels[$value['channelid']]['typename']; ?></a>
+                </td>
                 <td><input type="text" name="mtypename[{dede:value.mtypeid/}]" value="{dede:value.mtypename/}" class="text" /></td>
               </tr>
               {/dede:array}
@@ -49,9 +71,11 @@
               
               <tfoot>
                 <tr>
-                  <td colspan="6"><div class="fLeft">
+                  <td colspan="4">
+                  	<div class="fLeft">
                       <button class="button2" type="submit">提交</button>
-                    </div></td>
+                    </div>
+                   </td>
                 </tr>
               </tfoot>
             </table>
@@ -63,7 +87,7 @@
     <div class="clear"></div>
   </div>
 </div>
-<?php include(DEDEMEMBER."/templets/foot.htm"); ?>
+<?php include(DEDEMEMBER.'/templets/foot.htm'); ?>
 </div>
 </body>
 </html>

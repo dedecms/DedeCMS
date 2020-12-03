@@ -1,19 +1,25 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 CheckPurview('a_New,a_AccNew');
-require_once(DEDEINC."/customfields.func.php");
-require_once(DEDEADMIN."/inc/inc_archives_functions.php");
+require_once(DEDEINC.'/customfields.func.php');
+require_once(DEDEADMIN.'/inc/inc_archives_functions.php');
+if(file_exists(DEDEDATA.'/template.rand.php'))
+{
+	require_once(DEDEDATA.'/template.rand.php');
+}
 if(empty($dopost))
 {
 	$dopost = '';
 }
+
 if($dopost!='save')
 {
 	require_once(DEDEINC."/dedetag.class.php");
 	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
+	ClearMyAddon();
 	$channelid = empty($channelid) ? 0 : intval($channelid);
 	$cid = empty($cid) ? 0 : intval($cid);
-	
+
 	if(empty($geturl)) $geturl = '';
 	
 	$keywords = $writer = $source = $body = $description = $title = '';
@@ -56,12 +62,13 @@ else if($dopost=='save')
 	$flag = isset($flags) ? join(',',$flags) : '';
 	$notpost = isset($notpost) && $notpost == 1 ? 1: 0;
 	
-	if(empty($typeid2)) $typeid2 = 0;
+	if(empty($typeid2)) $typeid2 = '';
 	if(!isset($autokey)) $autokey = 0;
 	if(!isset($remote)) $remote = 0;
 	if(!isset($dellink)) $dellink = 0;
 	if(!isset($autolitpic)) $autolitpic = 0;
-
+	if(empty($click)) $click = ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click);
+	
 	if(empty($typeid))
 	{
 		ShowMsg("请指定文档的栏目！","-1");
@@ -89,13 +96,14 @@ else if($dopost=='save')
 	$senddate = time();
 	$sortrank = AddDay($pubdate,$sortup);
 	$ismake = $ishtml==0 ? -1 : 0;
+	$title = ereg_replace('"', '＂', $title);
 	$title = htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
 	$shorttitle = cn_substrR($shorttitle,36);
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,250);
-	$keywords = cn_substrR($keywords,30);
+	$description = cn_substrR($description,$cfg_auot_description);
+	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	$userip = GetIP();
 
@@ -110,10 +118,12 @@ else if($dopost=='save')
 	{
 		$ddisremote = 0;
 	}
-	$litpic = GetDDImage('litpic',$picname,$ddisremote);
+	
+	$litpic = GetDDImage('none', $picname, $ddisremote);
 
 	//生成文档ID
 	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$adminid);
+    
 	if(empty($arcID))
 	{
 		ShowMsg("无法获得主键，因此无法进行后续操作！","-1");
@@ -135,31 +145,23 @@ else if($dopost=='save')
 	}
 
 	//分析处理附加表数据
-	$inadd_f = '';
-	$inadd_v = '';
+	$inadd_f = $inadd_v = '';
 	if(!empty($dede_addonfields))
 	{
 		$addonfields = explode(';',$dede_addonfields);
-		$inadd_f = '';
-		$inadd_v = '';
 		if(is_array($addonfields))
 		{
 			foreach($addonfields as $v)
 			{
-				if($v=='')
-				{
-					continue;
-				}
+				if($v=='') continue;
 				$vs = explode(',',$v);
-				if($vs[1]=='htmltext'||$vs[1]=='textdata') //HTML文本特殊处理
+				if($vs[1]=='htmltext'||$vs[1]=='textdata')
 				{
 					${$vs[0]} = AnalyseHtmlBody(${$vs[0]},$description,$litpic,$keywords,$vs[1]);
-				}else
+				}
+				else
 				{
-					if(!isset(${$vs[0]}))
-					{
-						${$vs[0]} = '';
-					}
+					if(!isset(${$vs[0]})) ${$vs[0]} = '';
 					${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$arcID);
 				}
 				$inadd_f .= ','.$vs[0];
@@ -177,13 +179,17 @@ else if($dopost=='save')
 	{
 		$flag = ($flag=='' ? 'j' : $flag.',j');
 	}
+	
+	//跳转网址的文档强制为动态
+	if(ereg('j', $flag)) $ismake = -1;
 
 	//保存到主表
 	$query = "INSERT INTO `#@__archives`(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
-    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename)
-    VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','0','$money',
+    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin)
+    VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money',
     '$title','$shorttitle','$color','$writer','$source','$litpic','$pubdate','$senddate',
-    '$adminid','$notpost','$description','$keywords','$filename');";
+    '$adminid','$notpost','$description','$keywords','$filename','$adminid');";
+
 	if(!$dsql->ExecuteNoneQuery($query))
 	{
 		$gerr = $dsql->GetError();
@@ -203,7 +209,8 @@ else if($dopost=='save')
 		exit();
 	}
 	$useip = GetIP();
-	$query = "INSERT INTO `{$addtable}`(aid,typeid,redirecturl,userip,body{$inadd_f}) Values('$arcID','$typeid','$redirecturl','$useip','$body'{$inadd_v})";
+	$templet = empty($templet) ? '' : $templet;
+	$query = "INSERT INTO `{$addtable}`(aid,typeid,redirecturl,templet,userip,body{$inadd_f}) Values('$arcID','$typeid','$redirecturl','$templet','$useip','$body'{$inadd_v})";
 	if(!$dsql->ExecuteNoneQuery($query))
 	{
 		$gerr = $dsql->GetError();
@@ -220,10 +227,9 @@ else if($dopost=='save')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";
 	}
-
+	ClearMyAddon($arcID, $title);
 	//返回成功信息
-	$msg = "
-    　　请选择你的后续操作：
+	$msg = "    　　请选择你的后续操作：
     <a href='article_add.php?cid=$typeid'><u>继续发布文章</u></a>
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文章</u></a>
@@ -232,8 +238,9 @@ else if($dopost=='save')
     &nbsp;&nbsp;
     <a href='catalog_do.php?cid=$typeid&dopost=listArchives'><u>已发布文章管理</u></a>
     &nbsp;&nbsp;
-    <a href='catalog_main.php'><u>网站栏目管理</u></a>
-    ";
+    $backurl
+  ";
+  $msg = "<div style=\"line-height:36px;height:36px\">{$msg}</div>".GetUpdateTest();
 	$wintitle = "成功发布文章！";
 	$wecome_info = "文章管理::发布文章";
 	$win = new OxWindow();

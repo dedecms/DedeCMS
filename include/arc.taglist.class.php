@@ -1,10 +1,8 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
-require_once(DEDEINC."/channelunit.class.php");
-require_once(DEDEINC."/typelink.class.php");
+if(!defined('DEDEINC')) exit('Request Error!');
+
+require_once(DEDEINC.'/channelunit.class.php');
+require_once(DEDEINC.'/typelink.class.php');
 
 @set_time_limit(0);
 class TagList
@@ -31,7 +29,7 @@ class TagList
 		$this->Tag = $keyword;
 		$this->dsql = new DedeSql(false);
 		$this->dtp = new DedeTagParse();
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 		$this->dtp->SetNameSpace("dede","{","}");
 		$this->dtp2 = new DedeTagParse();
 		$this->dtp2->SetNameSpace("field","[","]");
@@ -231,61 +229,24 @@ class TagList
 	function GetArcList($limitstart=0,$row=10,$col=1,$titlelen=30,$infolen=250,
 	$imgwidth=120,$imgheight=90,$listtype="all",$orderby="default",$innertext="",$tablewidth="100",$ismake=1,$orderWay='desc')
 	{
-		$getrow = ($row=="" ? 10 : $row);
-		if($limitstart=="")
-		{
-			$limitstart = 0;
-		}
-		if($titlelen=="")
-		{
-			$titlelen = 100;
-		}
-		if($infolen=="")
-		{
-			$infolen = 250;
-		}
-		if($imgwidth=="")
-		{
-			$imgwidth = 120;
-		}
-		if($imgheight=="")
-		{
-			$imgheight = 120;
-		}
-		if($listtype=="")
-		{
-			$listtype = "all";
-		}
-		if($orderby=="")
-		{
-			$orderby="default";
-		}
-		else
-		{
-			$orderby=strtolower($orderby);
-		}
-		if($orderWay=='')
-		{
-			$orderWay = 'desc';
-		}
-		$tablewidth = str_replace("%","",$tablewidth);
-		if($tablewidth=="")
-		{
-			$tablewidth=100;
-		}
-		if($col=="")
-		{
-			$col=1;
-		}
+		$getrow = ($row=='' ? 10 : $row);
+		if($limitstart=='') $limitstart = 0;
+		if($titlelen=='') $titlelen = 100;
+		if($infolen=='') $infolen = 250;
+		if($imgwidth=='') $imgwidth = 120;
+		if($imgheight=='') $imgheight = 120;
+		if($listtype=='') $listtype = 'all';
+		$orderby = ($orderby=='' ? 'default' : strtolower($orderby) );
+		if($orderWay=='') $orderWay = 'desc';
+		$tablewidth = str_replace("%", "", $tablewidth);
+		if($tablewidth=='') $tablewidth=100;
+		if($col=='') $col=1;
 		$colWidth = ceil(100/$col);
 		$tablewidth = $tablewidth."%";
 		$colWidth = $colWidth."%";
 		$innertext = trim($innertext);
-		if($innertext=="")
-		{
-			$innertext = GetSysTemplets("list_fulllist.htm");
-		}
-		$idlists = '';
+		if($innertext=='') $innertext = GetSysTemplets("list_fulllist.htm");
+		$idlists = $ordersql = '';
 		$this->dsql->SetQuery("Select aid From `#@__taglist` where tid = '{$this->TagInfos['id']}' And arcrank>-1 limit $limitstart,$getrow");
 		$this->dsql->Execute();
 		while($row=$this->dsql->GetArray())
@@ -298,7 +259,6 @@ class TagList
 		$orwhere = " se.id in($idlists) ";
 
 		//排序方式
-		$ordersql = "";
 		if($orderby=="sortrank")
 		{
 			$ordersql = "  order by se.sortrank $orderWay";
@@ -309,6 +269,7 @@ class TagList
 		}
 		$query = "Select se.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
 			from `#@__archives` se left join `#@__arctype` tp on se.typeid=tp.id where $orwhere $ordersql ";
+
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute('al');
 		$row = $this->PageSize / $col;

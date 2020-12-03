@@ -498,6 +498,13 @@ function CheckCross()
               <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')"/></td>
           </tr>
           <tr>
+            <td height="65">SEO标题：</td>
+            <td>
+            	<input name="seotitle" type="text" style="width:250px" id="seotitle" class="alltxt" value="" />
+            	(栏目模板里用{dede:field.seotitle /}调用)
+            </td>
+          </tr>
+          <tr>
             <td height="65">关键字：</td>
             <td>
             	<textarea name="keywords" cols="70" rows="4" id="keywords" class="alltxt"></textarea>
@@ -505,7 +512,7 @@ function CheckCross()
           </tr>
           <tr>
             <td height="65">栏目描述：</td>
-            <td height="65"> <textarea name="description" cols="70" rows="4" id="description" class="alltxt"></textarea></td>
+            <td height="65"> <textarea name="description" cols="70" style="height:50px" rows="4" id="description" class="alltxt"></textarea></td>
           </tr>
         </table>
 

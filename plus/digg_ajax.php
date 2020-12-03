@@ -15,14 +15,14 @@ if($id < 1)
 $maintable = '#@__archives';
 if($action == 'good')
 {
-	$dsql->ExecuteNoneQuery("Update `$maintable` set scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=".time()." where id=$id");
+	$dsql->ExecuteNoneQuery("Update `$maintable` set scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=".time()." where id='$id'");
 }
 else if($action=='bad')
 {
-	$dsql->ExecuteNoneQuery("Update `$maintable` set scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=".time()." where id=$id");
+	$dsql->ExecuteNoneQuery("Update `$maintable` set scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=".time()." where id='$id'");
 }
 $digg = '';
-$row = $dsql->GetOne("Select goodpost,badpost,scores From `$maintable` where id=$id ");
+$row = $dsql->GetOne("Select goodpost,badpost,scores From `$maintable` where id='$id' ");
 if(!is_array($row))
 {
 	exit();
@@ -37,7 +37,17 @@ else
 	$row['badper'] = 100-$row['goodper'];
 }
 
-$digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition=\'left bottom\';" onmouseout="this.style.backgroundPosition=\'left top\';" onclick="postDigg(\'good\','.$id.')">
+if(empty($formurl)) $formurl = '';
+if($formurl=='caicai')
+{
+	if($action == 'good') $digg = $row['goodpost'];
+	if($action == 'bad') $digg  = $row['badpost'];
+}
+else
+{
+	$row['goodper'] = trim(sprintf("%4.2f", $row['goodper']));
+	$row['badper'] = trim(sprintf("%4.2f", $row['badper']));
+	$digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition=\'left bottom\';" onmouseout="this.style.backgroundPosition=\'left top\';" onclick="postDigg(\'good\','.$id.')">
 			<div class="digg_act">顶一下</div>
 			<div class="digg_num">('.$row['goodpost'].')</div>
 			<div class="digg_percent">
@@ -53,6 +63,7 @@ $digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPositi
 				<div class="digg_percent_num">'.$row['badper'].'%</div>
 			</div>
 		</div>';
+}
 AjaxHead();
 echo $digg;
 exit();

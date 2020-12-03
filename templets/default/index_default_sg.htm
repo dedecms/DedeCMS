@@ -10,6 +10,17 @@
 <body class="channel">
 {dede:include filename="head.htm"/}
 <!-- /header -->
+
+<div class="channel-nav w960 center clear">
+	<div class='sonnav'>
+	{dede:channel type='son' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
+	<span class="back">
+		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
+	</span>
+</div><!-- /channel-nav -->
+
 <div class="w960 center clear mt1">
 	<div class="pleft">
     

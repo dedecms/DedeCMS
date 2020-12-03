@@ -6,7 +6,7 @@ if(!defined('DEDEINC'))
 function lib_sql(&$ctag,&$refObj)
 {
 	global $dsql,$sqlCt;
-	$attlist="sql|,";
+	$attlist="sql|";
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 
@@ -35,11 +35,21 @@ function lib_sql(&$ctag,&$refObj)
 
 	$thisrs = 'sq'.$sqlCt;
 	$dsql->Execute($thisrs,$sql);
+	$GLOBALS['autoindex'] = 0;
 	while($row = $dsql->GetArray($thisrs))
 	{
 		$sqlCt++;
-		foreach($ctp->CTags as $tagid=>$ctag){
-			if(!empty($row[$ctag->GetName()])){ $ctp->Assign($tagid,$row[$ctag->GetName()]); }
+		$GLOBALS['autoindex']++;
+		foreach($ctp->CTags as $tagid=>$ctag)
+		{
+			  if($ctag->GetName()=='array')
+				{
+						$ctp->Assign($tagid,$row);
+				}
+				else
+				{
+					if( !empty($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]); 
+				}
 		}
 		$revalue .= $ctp->GetResult();
 	}

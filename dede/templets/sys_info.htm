@@ -147,11 +147,7 @@ while($row = $dsql->GetArray())
 ?>
 <tr align="center" height="25" bgcolor="<?php echo $bgcolor?>">
 <td>
-<?php
-if($row['varname']=='cfg_mb_spacesta') echo "审核状态(已作废变量)";
-else if($row['varname']=='cfg_mb_lit') echo "空间模式(已作废变量)";
-else echo $row['info'];
-?>：
+<?php echo $row['info']; ?>：
 </td>
 <td align="left">
 <?php

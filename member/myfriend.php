@@ -34,6 +34,14 @@ if($dopost=='upsta')
 		$upsta = " ftype=0 ";
 	}
 	$dsql->ExecuteNoneQuery("Update `#@__member_friends` set $upsta where id in($ids) And mid='{$cfg_ml->M_ID}' ");
+	
+	#api{{
+	if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php' && $sta!='bad')
+	{
+		if($data = uc_get_user($cfg_ml->M_LoginID)) uc_friend_add($uid, $data[0]);
+	}
+	#/aip}}
+	
 	if($sta=='good')
 	{
 		ShowMsg("成功把指定好友设为关注好友！","myfriend.php?ftype=1");
@@ -53,6 +61,17 @@ if($dopost=='upsta')
 else if($dopost=='del')
 {
 	$ids = ereg_replace("[^0-9,]","",$ids);
+	#api{{
+	if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+	{
+		if($data = uc_get_user($cfg_ml->M_LoginID))
+  		{
+			list($uid, $username, $email) = $data;  		
+			$friendids = @explode(",", $ids);
+			if(!empty($friendids)) uc_friend_delete($uid , $friendids);
+		}
+	}
+	#/aip}}
 	$dsql->ExecuteNoneQuery("Delete From `#@__member_friends` where id in($ids) And mid='{$cfg_ml->M_ID}' ");
 	ShowMsg("成功删除所选的好友！","myfriend.php?ftype=".$ftype);
 	exit();

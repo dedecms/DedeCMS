@@ -12,10 +12,10 @@
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-		{dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='self' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -79,16 +79,16 @@
 				</div><!-- /context -->
 				<div class="actbox">
 					<ul>
-						<li id="act-fav"><a href="{dede:field name='phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
-						<li id="act-err"><a href="{dede:field name='phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
-						<li id="act-pus"><a href="{dede:field name='phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
+						<li id="act-fav"><a href="{dede:global name='cfg_phpurl'/}/stow.php?aid={dede:field.id/}" target="_blank">收藏</a></li>
+						<li id="act-err"><a href="{dede:global name='cfg_phpurl'/}/erraddsave.php?aid={dede:field.id/}&title={dede:field.title/}" target="_blank">挑错</a></li>
+						<li id="act-pus"><a href="{dede:global name='cfg_phpurl'/}/recommend.php?aid={dede:field.id/}" target="_blank">推荐</a></li>
 						<li id="act-pnt"><a href="#" onClick="window.print();">打印</a></li>
 					</ul>
 				</div><!-- /actbox -->
 			</div><!-- /handle -->
 		</div><!-- /viewbox -->
 
-<iframe id="frame_content" name="frame_content" src="{dede:field name='phpurl'/}/comments_frame.php?id={dede:field.id/}"
+<iframe id="frame_content" name="frame_content" src="{dede:global name='cfg_phpurl'/}/comments_frame.php?id={dede:field.id/}"
  width="100%" height="0" scrolling="auto" onload="resizeFrame()" frameborder="0"></iframe>
 
 <script language='javascript'>
@@ -178,6 +178,6 @@ function timeCall()
 
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
-<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
+<script src="{dede:global name='cfg_phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>
 </body>
 </html>

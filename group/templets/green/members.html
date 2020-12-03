@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<title><?php echo $title;?></title>
+<?php include_once GROUP_TPL.'/header.meta.html';?>
+<style type="text/css">
+<!--
+.gLeft {
+	float:left;
+	width:24.9%;
+}
+.gCenter {
+	display:none;
+}
+.gRight {
+	float:left;
+	width:75%;
+}
+-->
+</style>
+</head>
+<body>
+<?php include_once GROUP_TPL.'/header.html';?>
+<div class="group wrap">
+  <!--group left S -->
+  <div class="gLeft">
+<div class="module" id="">
+      <div class="top">
+        <div class="t_l"></div>
+      <div class="t_r"></div>
+    <em><?php echo $lang['group_main_quanzi'].$lang['group_main_profile'];?></em>
+    </div>
+  <div class="mid">
+    <div class="m_l">
+      <div class="m_r">
+        <div id="gInfo" class="content">
+          <h1><a  title="<?php echo $lang['group_main_quanzi'].$lang['group_main_profile'];?>" target="_blank"><?php echo $title;?></a><em>[<?php echo $_GROUPS['hidden'];?>]</em></h1>
+          <img width="80" height="80" class="imgBorder" alt="" id="headPhoto" src="<?php echo $icon;?>"/>
+          <ul>
+            <li id="gSort"><?php echo $lang['group_store'];?>:<?php echo $_GROUPS['store_name'];?></li>
+            <li id="gDistrict"><?php echo $lang['group_topic_creaters'];?>:<?php echo $creater;?></li>
+            <li id="gHost"><?php echo $lang['group_topic_members'];?>:<?php echo $members.$lang['group_topic_people'];?></li>
+            <li id="gTime"><?php echo $lang['group_index_create'];?>:<em><?php echo $_GROUPS['time'];?></em></li>
+          </ul>
+          <dl>
+            <dt><?php echo $lang['group_topic_hits'];?>:</dt>
+            <dd><?php echo $_GROUPS['hits'];?></dd>
+            <dt><?php echo $lang['group_topic_topic'];?>:</dt>
+            <dd><?php echo $_GROUPS['topics'];?></dd>
+            <dt><?php echo $lang['group_main_join'];?>:</dt>
+            <dd><a href="reg.php?id=<?php echo $id;?>" title="<?php echo $lang['group_main_jointhis'];?>"><?php echo $lang['group_index_need_verify'];?></a></dd>
+            <dt><?php echo $lang['group_main_deses'];?>:</dt>
+            <dd><?php echo $des;?></dd>  
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="b_l"></div>
+  <div class="b_r"></div>
+</div>
+</div>
+<div class="module" id="">
+  <div class="top">
+    <div class="t_l">
+  </div>
+  <div class="t_r">
+</div>
+<em><?php echo $lang['group_topic_creaters'];?></em>
+</div>
+<div class="mid">
+  <div class="m_l">
+    <div class="m_r">
+        <div id="host" class="content"><div id="p_w">
+            <img class="host_img imgBorder" alt="<?php echo $_GROUPS['uname'];?>" id="model9_img" src="<?php echo $_GROUPS['face'];?>"/>
+            <ul>
+            <li><strong><a title="<?php echo $_GROUPS['uname'];?>" target="_blank" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $_GROUPS['userid'];?>" class="link_strong"><?php echo $_GROUPS['uname'];?></a></strong></li>
+            <li><a title="<?php echo $lang['group_index_friend'];?>" href="<?php echo $cfg_member_dir;?>/?action=newfriend&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_friend'];?></a><a style="margin: 0px;" title="<?php echo $lang['group_index_pm'];?>" href="<?php echo $cfg_member_dir;?>/pm.php?dopost=send&uid=<?php echo $_GROUPS['userid'];?>"><?php echo $lang['group_index_pm'];?></a></li>
+            <li><a target="_blank" title="<?php echo $lang['group_topic_creaters'];?>BLOG" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $_GROUPS['userid'];?>">BLOG</a> | <a target="_blank" title="<?php echo $lang['group_topic_creaters'].$lang['group_index_album'];?>" href="<?php echo $cfg_member_dir;?>/?uid=admin&action=album"><?php echo $lang['group_index_album'];?></a></li>
+            </ul>            
+        </div></div>
+    </div>
+  </div>
+</div>
+<div class="bottom">
+  <div class="b_l">
+</div>
+<div class="b_r">
+</div>
+</div>
+</div>
+</div>
+<!--group left E -->
+<!--group center S -->
+<div class="gCenter">
+</div>
+<!--group center E -->
+<!--group right S -->
+<div class="gRight">
+<div class="module" id="">
+  <div class="top">
+    <div class="t_l">
+  </div>
+  <div class="t_r">
+</div>
+<em><?php echo $lang['group_topic_members'];?></em>
+</div>
+<div class="mid">
+  <div class="m_l">
+    <div class="m_r">
+<div id="senior" class="content">
+  <h6><?php echo $lang['group_topic_masters'];?>(<?php echo count($_GROUPS['admins']).$lang['group_topic_people'];?>)</h6>
+  <ul id="role_manager">
+    <?php foreach($_GROUPS['admins'] as $row) { ?>
+    <li> <img  class="seniorImg imgBorder" src="<?php echo $row['face'];?>" alt="<?php echo $row['uname'];?>"/> <span><a class="linkStrong" title="<?php echo $row['uname'];?>" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $row['userid'];?>" target="_blank" style="text-align:center;background:#FEEDE2;"><?php echo $row['uname'];?></a></span>
+    </li>
+    <?php }?>
+    <div class="clear"></div>
+  </ul>
+  <h6>{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}<?php echo $lang['group_topic_users'];?>(<?php echo $dl->totalResult.$lang['group_topic_people'];?>)</h6>
+  <ul id="role_member">    
+    {dede:datalist}
+    <?php     
+    $row = $fields;
+    $row['face'] = empty($row['face']) ? 'images/common/noavatar.gif' : $row['face'];
+    ?>
+    <li> <img  class="seniorImg imgBorder" src="<?php echo $row['face'];?>" alt="<?php echo $row['uname'];?>"/> <span><a class="linkStrong" title="<?php echo $row['uname'];?>" href="<?php echo $cfg_member_dir;?>/?uid=<?php echo $row['userid'];?>" target="_blank" style="text-align:center;background:#F2F2F2;"><?php echo $row['uname'];?></a></span>
+    </li>
+    {/dede:datalist}    
+    <div class="clear"></div>
+  </ul>
+</div>
+	</div>
+  </div>
+</div>
+<div class="bottom">
+  <div class="b_l">
+</div>
+<div class="b_r">
+</div>
+</div>
+</div>
+</div>
+<!--group right E -->
+<div class="clear"></div>
+</div>
+<?php include_once GROUP_TPL.'/footer.html';?>
+</body>
+</html>

@@ -37,7 +37,15 @@ if($dopost=='save')
 		$pwd2 = substr(md5($userpwd),5,20);
 	}
 	$addupquery = '';
-
+	
+	#api{{
+	if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+	{
+		$emailnew = $email != $row['email'] ? $email : '';
+		$ucresult = uc_user_edit($cfg_ml->M_LoginID, $oldpwd, $userpwd, $emailnew);		
+	}
+	#/aip}}
+	
 	//修改安全问题或Email
 	if($email != $row['email'] || ($newsafequestion != 0 && $newsafeanswer != ''))
 	{
@@ -50,7 +58,7 @@ if($dopost=='save')
 		//修改Email
 		if($email != $row['email'])
 		{
-			if(!eregi("^[0-9a-z][a-z0-9\.-]{1,}@[a-z0-9-]{1,}[a-z]\.[a-z\.]{1,}[a-z]$",$email))
+			if(!CheckEmail($email))
 			{
 				ShowMsg('Email格式不正确！','-1');
 				exit();
@@ -79,7 +87,7 @@ if($dopost=='save')
 	//修改uname
 	if($uname != $row['uname'])
 	{
-		$rs = CheckUserID($uname,'昵称或公司名称');
+		$rs = CheckUserID($uname,'昵称或公司名称',false);
 		if($rs!='ok')
 		{
 			ShowMsg($rs,'-1');

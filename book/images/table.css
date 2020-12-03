@@ -1,0 +1,257 @@
+@charset "gb2312";
+
+/*------------------------JS控制------------------------*/
+tr.linecolor td{/*表格内容:列表:隔行换色*/
+	background:#FAFAFA;
+}
+
+tr.oncolor td{/*表格内容:列表:鼠标悬停*/
+	background:#FFFFEB url(images/tr_on_bg.jpg) left bottom repeat-x;
+}
+/*------------------------表格------------------------*/
+.uctable{
+	width:100%;
+	margin:0px auto 7px;
+	font-size:12px;
+	overflow:hidden;
+	border:1px solid #EEE;
+/*	border-collapse:collapse;*/
+}
+.uctable tbody * a{
+	color:#0066CC;
+}
+.uctable * a:hover{
+	color:#FF0000;
+	text-decoration:underline;
+}
+/*表格标题*/
+.uctable caption{
+	text-align:left;
+	height:24px;
+	line-height:24px;
+	font-size:14px;
+	text-indent:6px;
+	color:#000;
+	letter-spacing:2px;
+}
+/*Opera Hack @media all and (min-width: 0px){.uctable caption{min-height:25px;}}*/
+
+/*表格头*/
+.uctable thead tr td{
+	height:27px;
+	line-height:27px;
+	text-indent:12px;
+	border-bottom:1px solid #E3E3E3;
+	background:url(images/table_tbg.gif) 1px 1px repeat-x;
+	letter-spacing:2px;
+	color:#999;
+}
+
+.uctable thead tr td strong{/*表格头:标题*/
+	letter-spacing:1px;
+	font-size:12px;
+	color:#333;
+}
+.uctable thead tr td span{/*表格头:介绍*/
+	color:#999;
+}
+.uctable thead tr td  p{/*表格头:链接区域*/
+	height:22px;
+	display:inline;
+	float:right;
+	margin:-24px 10px 0 0;
+	overflow:hidden;
+	line-height:21px;
+}
+.uctable thead tr td  p *{/*表格头:全部向右浮动*/
+	float:right;
+}
+.uctable thead tr td a.thlink{/*表格头:链接样式*/
+	text-decoration:underline;
+}
+.uctable thead tr td a.thlink:hover{
+	text-decoration:none;
+}
+
+.uctable thead tr th{/*表格内容:分类*/
+	height:25px;
+	font-weight:normal;
+	text-indent:10px;
+	text-align:left;
+	line-height:15px;
+}
+/*表格内容*/
+.uctable tbody {
+	overflow:hidden;
+	text-align:left;
+}
+.uctable tbody tr th{/*表格内容:分类*/
+	background:#FFE;
+	padding-top:3px;
+	line-height:15px;
+	text-indent:10px;
+	letter-spacing:1px;
+	font-weight:normal;
+	border-bottom:1px solid #DBDFE1;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+.uctable tbody tr th .toggle{
+	width:15px;
+	height:13px;
+	border:none;
+	cursor:pointer;
+	vertical-align:middle;
+}
+
+.uctable tbody tr th small{
+	font-size:12px;
+	color:#999;
+}
+.uctable tbody tr td{/*表格内容:列表*/
+	padding:8px;
+	color:#333;
+	vertical-align:top;
+	border-bottom:1px solid #F0F0F0;
+}
+.uctable tbody tr td.td1{
+	border-right:1px solid #F7F7F7;
+	background:#FCFCFC;
+	text-align:right;
+	color:#675;
+	vertical-align:middle;
+}
+.uctable tbody tr td.tdbig{
+	font-size:14px;
+	vertical-align:middle;
+	text-align:center;
+}
+.uctable tbody tr td p{/*表格内容:列表:段落*/
+	line-height:21px;
+}
+.uctable tbody tr td p strong img{/*表格内容:列表:标题图标垂直居中对齐*/
+	vertical-align:middle;
+}
+.uctable tbody tr td img{ /*表格内容:列表:常规图片垂直顶部对齐*/
+	vertical-align:top;
+	margin:0px 10px 5px 0px;
+
+}
+.uctable tbody tr td small{ /*表格内容:列表:注释性文字*/
+	color:#888;
+	font-size:12px;
+	overflow:hidden;
+}
+.uctable tbody tr td big{ /*表格内容:列表:强调性文字*/
+	font-size:14px;
+	overflow:hidden;
+	letter-spacing:1px;
+}
+
+/*表格底*/
+.uctable tfoot{
+	background:url(images/table_fbg.jpg) left bottom repeat-x;
+}
+.uctable tfoot tr td{
+	padding:10px;
+	line-height:25px;
+	text-align:center;
+}
+.uctable tfoot * a{
+    color:#666;
+}
+.uctable tfoot tr td p{
+	line-height:21px;
+	margin-bottom:10px;
+}
+
+/*其他*/
+.trlist tbody tr td{/*列表类型的表格使行居中对齐*/
+	vertical-align:middle;
+}
+
+/*按钮*/
+input.thbut{
+	height:21px;
+	line-height:20px;
+	letter-spacing:2px;
+	color:#000;
+	border-style:solid;
+	border-width:1px;
+	background-image:url(images/butipt_bg.jpg);
+	background-repeat:repeat-x;
+	background-color:#FFF;
+}
+input.buts{
+	height:25px;
+	padding-left:6px;
+	padding-right:6px;
+	line-height:24px;
+	font-weight:bold;
+	letter-spacing:1px;
+	color:#FFF;
+	border-style:solid;
+	border-width:1px;
+	background-image:url(images/butipt_bg.jpg);
+	background-repeat:repeat-x;
+}
+input.d2{
+	border-color:#FB5;
+	background-position:0px -332px;
+}
+input.d4{
+	border-color:#9B6;
+	background-position:0px -392px;
+}
+input.s10{
+	border-color:#060;
+	background-color:#693;
+	background-position:0px -272px;
+}
+
+
+/*选项卡*/
+ul.label{
+	height:25px;
+	background:#EEF5E0;
+	border-bottom:1px solid #DDD;
+	text-indent:0px;
+	letter-spacing:1px;
+}
+ul.label li{
+	height:25px;
+	line-height:25px;
+    float:left;
+	display:block;
+	background:#F4F9EC;
+	border-right:1px solid #D6D6D6;
+}
+ul.label li.this{
+	background:#FFF;
+	font-weight:bold;
+	position:relative;
+	bottom:-1px;
+}
+ul.label li.this a{
+	color:#FF6600;
+}
+ul.label li a{
+	float:left;
+	padding-left:16px;
+	padding-right:16px;
+	display:block;
+	color:#333;
+}
+
+/*分割线*/
+hr{
+	height:1px;
+	line-height:1px;
+	overflow:hidden;
+	border-width:1px 0px 0px 0px ;
+	border-top:1px solid #E6E6E6;/*兼容Opera*/
+ }
+hr:empty {/*兼容Firefox*/
+	margin:8px 0px 7px 0px !important;
+	margin:0px;
+}

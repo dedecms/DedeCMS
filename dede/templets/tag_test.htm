@@ -55,7 +55,7 @@ function SelectTemplets(fname)
    <?php
        if(empty($cid)) $cid="0";
        $tl = new TypeLink($cid);
-       $typeOptions = $tl->GetOptionArray($cid,$cuserLogin->getUserChannel(),0);
+       $typeOptions = $tl->GetOptionArray($cid,$admin_catalogs,0);
        echo "<select name='typeid' style='width:300'>\r\n";
        if($cid=="0") echo "<option value='0' selected>不使用环境ID...</option>\r\n";
        echo $typeOptions;

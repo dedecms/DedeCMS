@@ -8,6 +8,7 @@ body { background-image: url(img/allbg.gif); }
 -->
 </style>
 <link href="img/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../include/dedeajax2.js"></script>
 <script language='javascript' src='js/main.js'></script>
 <script language="javascript">
 <!--
@@ -49,7 +50,7 @@ function SelectTemplets(fname){
     <tr>
       <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20>
         &nbsp;</td>
-      <td width="85%"><a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"></a>&gt;&gt;发布专题</td>
+      <td width="85%"><a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"></a> &gt;&gt; 发布专题</td>
       <td width="10%">&nbsp; <a href="makehtml_spec.php">[<u>更新HTML</u>]</a></td>
       <td width="1%">&nbsp;</td>
     </tr>
@@ -111,22 +112,18 @@ function SelectTemplets(fname){
         </td>
     </tr>
     <tr id="pictable">
-      <td height="24" colspan="4" class="bline"> <table width="800" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90"> &nbsp;缩 略 图：</td>
             <td width="560">
             	<table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr>
                   <td height="30">
-                  <input name="picname" type="text" id="picname" style="width:200px"/>
-                  <input type="button"  value="上传" style="width:70px;" />
-                  <style>
-            	<!--
-.litpic_span{ width:77px;overflow:hidden; height:21px; *vertical-align:3px;margin-left:-60px;*margin-left:-75px;cursor:pointer; }
-#litpic{ width:85px; height:20px;margin-left: -20px;filter:alpha(opacity=00);-moz-opacity:.0;opacity:0.0; cursor:pointer;}
-            	-->
-            </style>
-                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew('divpicview',this);" size="1" class='np coolbg'/></span>
+                  <input name="picname" type="text" id="picname" style="width:240px" />
+                  <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
+                  <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
+                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'spec_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
                   <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
                   <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程图片
@@ -135,21 +132,7 @@ function SelectTemplets(fname){
               </table>
              </td>
             <td width="150" align="center">
-            <div id='divpicview' class='divpre'></div>
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-
-    <tr>
-      <td height="24" colspan="4" class="bline">
-	  <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">专题模板：</td>
-            <td>
-			      <input name="templet" type="text" id="templet" size="30" value="<?php echo $cfg_df_style?>/article_spec.htm" />
-            <input type="button" name="set3" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');" />
-            </td>
+            <div id='divpicview' class='divpre'></div>            </td>
           </tr>
         </table></td>
     </tr>
@@ -157,7 +140,7 @@ function SelectTemplets(fname){
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">责任编辑：</td>
+            <td width="90">&nbsp;责任编辑：</td>
             <td width="240">
               <input name="writer" type="text" id="writer">
             </td>
@@ -167,7 +150,7 @@ function SelectTemplets(fname){
               生成HTML
               <input type="radio" name="ishtml" class="np" value="0" />
               仅动态浏览
-             </td>
+            </td>
           </tr>
         </table></td>
     </tr>
@@ -175,9 +158,9 @@ function SelectTemplets(fname){
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90" height="22">内容排序：</td>
+            <td width="90" height="22">&nbsp;内容排序：</td>
             <td width="240">
-            	<select name="sortup" id="sortup" style="width:150">
+            	<select name="sortup" id="sortup" style="width:150px">
                 <option value="0" selected>默认排序</option>
                 <option value="7">置顶一周</option>
                 <option value="30">置顶一个月</option>
@@ -185,13 +168,13 @@ function SelectTemplets(fname){
                 <option value="180">置顶半年</option>
                 <option value="360">置顶一年</option>
               </select>
-              </td>
+            </td>
             <td width="90">标题颜色：</td>
             <td width="159">
             	<input name="color" type="text" id="color" style="width:120px" />
             </td>
             <td>
-            	<input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor()" />
+            	<input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)" />
             </td>
           </tr>
         </table></td>
@@ -200,13 +183,16 @@ function SelectTemplets(fname){
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90" height="78">专题说明：</td>
-            <td> <textarea name="description" rows="4" id="textarea" style="width:350"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td width="90" height="51">关键字：</td>
-            <td> <textarea name="keywords" rows="3" id="textarea2" style="width:180"></textarea>
+            <td width="90">&nbsp;主分类：</td>
+            <td>
+           <?php
+           $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),0);
+           echo "<select name='typeid' style='width:240px'>\r\n";
+           echo "<option value='0'>请选择主分类...</option>\r\n";
+           echo $typeOptions;
+           echo "</select>";
+					?>
+					<img src='img/menusearch.gif' style='cursor:pointer;' onclick="ShowCatMap(event, this, 0, 'typeid')" alt='快捷选择' title='快捷选择' />
             </td>
           </tr>
         </table></td>
@@ -214,8 +200,31 @@ function SelectTemplets(fname){
     <tr>
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;关键字：</td>
+          <td width="500"><input type='text' name="keywords" id="keywords" style="width:80%" value="" /></td>
+          <td width="202"><input name="autokey" type="checkbox" onClick="ShowHide('keywords');"; class="np" id="autokey" value="1"<?php if($cfg_arc_autokeyword=='Y') echo ' checked="1" '; ?>/>
+自动获取，手动填写用","分开<br/>
+<input type="button" name="Submit" value="浏览..." style="width:56px;height:20px" onClick="SelectKeywords('form1.keywords');" /></td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;专题简介：</td>
+          <td width="520"><textarea name="description" rows="5" id="description" style="width:80%;height:60px"></textarea></td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+  </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+      	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">发布时间：</td>
+            <td width="90">&nbsp;发布时间：</td>
             <td>
               <?php
               $nowtime = GetDateTimeMk(time());
@@ -225,35 +234,49 @@ function SelectTemplets(fname){
           </tr>
         </table></td>
     </tr>
+    </tr>
+   <tr>
+   <td height="24" colspan="4" class="bline">
+      <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90" height="22" width="240">&nbsp;评论选项：</td>
+          <td width="250">
+          <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
+          &nbsp;
+          <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
+          </td>
+          <td width="90">浏览次数：</td>
+          <td>
+          	<input type='text' name='click' value='<?php echo ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click); ?>' style='width:100px;' />
+          </td>
+        </tr>
+      </table>
+    </td>
+   </tr>
+    <tr>
+      <td height="24" colspan="4" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="90">&nbsp;专题模板：</td>
+            <td>
+			      <input name="templet" type="text" id="templet" style="width:250px" value="<?php echo $cfg_df_style?>/article_spec.htm" />
+            <input type="button" name="set3" value="浏览..." style="width:60px" onClick="SelectTemplets('form1.templet');" />
+            </td>
+          </tr>
+        </table></td>
+    </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="90">主分类：</td>
-            <td>
-           <?php
-           $typeOptions = GetOptionList($cid,$cuserLogin->getUserChannel(),0);
-           echo "<select name='typeid' style='width:280px'>\r\n";
-           echo "<option value='0'>请选择主分类...</option>\r\n";
-           echo $typeOptions;
-           echo "</select>";
-			      ?>
-            </td>
+            <td width="105">&nbsp;自定义文件名：</td>
+            <td width="695">
+           		<input type="text" name="filename" id="filename" />（不包括后缀名如.html等）
+						</td>
           </tr>
-        </table></td>
+        </table>
+		</td>
     </tr>
-        <tr>
-      <td height="24" colspan="4" class="bline">
-      	<table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">自定义文件名：</td>
-            <td>
-           <input type="text" name="filename" id="filename" /> 不包括后缀名如.html等
-            </td>
-          </tr>
-        </table></td>
-    </tr>
-
     <tr>
      <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
     </tr>
@@ -276,19 +299,29 @@ function SelectTemplets(fname){
         <table width="800" border="0" cellspacing="2" cellpadding="2">
           <?php
           $speclisttmp = GetSysTemplets("spec_arclist.htm");
+          $nodename = $nodeid = '';
           for($i=1;$i<=$cfg_specnote;$i++)
           {
-		  ?>
+		  				if($i==1)
+		  				{
+		  					$nodename = '默认节点';
+		  					$nodeid = 'default';
+		  				}
+		  				else
+		  				{
+		  					$nodename = $nodeid = '';
+		  				}
+		     ?>
           <tr bgcolor="#EEF8E0">
             <td width="113">节点
               <?php echo $i?>
               名称：</td>
             <td colspan="2"> <table width="600" border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                  <td width="310"><input name="notename<?php echo $i?>" type="text" id="notename<?php echo $i?>" style="width:300">
+                  <td width="310"><input name="notename<?php echo $i?>" type="text" value="<?php echo $nodename; ?>" id="notename<?php echo $i?>" style="width:300px">
                   </td>
                   <td width="90" align="center">节点标识：</td>
-                  <td width="200"><input name="noteid<?php echo $i?>" type="text" id="noteid<?php echo $i?>" style="width:100"></td>
+                  <td width="200"><input name="noteid<?php echo $i?>" type="text" value="<?php echo $nodeid; ?>" id="noteid<?php echo $i?>" style="width:100"></td>
                 </tr>
               </table></td>
           </tr>
@@ -354,8 +387,8 @@ function SelectTemplets(fname){
           <td width="17%">&nbsp;</td>
           <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td width="115"><input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0"></td>
-                <td width="99"><img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer"></td>
+                <td width="115"><input name="imageField" type="image" src="img/button_ok.gif" class='np' width="60" height="22" border="0"></td>
+                <td width="99"><img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer;"></td>
               </tr>
             </table></td>
         </tr>
@@ -363,5 +396,6 @@ function SelectTemplets(fname){
   </tr>
 </table>
 </form>
+<script language='javascript'>InitPage();</script>
 </body>
 </html>

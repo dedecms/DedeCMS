@@ -10,43 +10,55 @@
 <div class="main mceneter">
 	<div class="toplogo">
 		<div class="logo">
-				<a href="/"><img src="./img/toplogo.gif" /></a>		</div>
+				<a href="/"><img src="<?php echo $cfg_templeturl; ?>/images/top-logo.gif" /></a>		</div>
 		<div class="title">
-			<?php echo $diy->name;?>
+			<a href='diy.php?action=list&diyid=<?php echo $diy->diyid; ?>'><?php echo $diy->name; ?></a>	&gt; 详细内容
 		</div>
 	</div>
 	<div class="cmain">
 		<div class="ctitle">
-			<h1><?php echo $diy->name;?>内容</h1>
+			<h1><?php echo $diy->name;?>详细内容</h1>
 			<span></span>
 		</div>
 		<div class="cbox mceneter">
 			<div class="maplist">
 			<br />
-<table style="width:97%;background:#000000" cellpadding="0" cellspacing="1">
+<table class='listtable' cellspacing="1">
 <?php
-
 echo '<tbody>';
-echo '<tr><td bgcolor="#eeeeee" width="20%">id</td><td bgcolor="#eeeeee"><a href="diy.php?action=view&diyid='.$diy->diyid.'&id='.$row['id'].'">'.$row['id'].'</a></td></tr>';
-foreach($fieldlist as $field=>$fielddata){
-	$allowhtml = array('htmltext');
-	if(!in_array($fielddata[1],$allowhtml)){
-		$row[$field] = htmlspecialchars($row[$field]);
+echo '<tr><td bgcolor="#eeeeee" width="20%">id</td><td bgcolor="#eeeeee">'.$row['id'].'</td></tr>';
+$allowhtml = array('htmltext');
+foreach($fieldlist as $field=>$fielddata)
+{
+	if($row[$field]=='') continue;
+	if($fielddata[1]=='img')
+	{
+			$row[$field] = "<a href='{$row[$field]}' target='_blank'><img src='{$row[$field]}'/></a>\r\n";
+	}
+	else if($fielddata[1]=='addon')
+	{
+			$row[$field] = "<a href='{$row[$field]}' target='_blank'><img src='img/addon.gif' border='0' /> 相关附件</a>";
+	}
+	else
+	{
+		if(!in_array($fielddata[1], $allowhtml))
+		{
+			$row[$field] = htmlspecialchars($row[$field]);
+		}
 	}
 	echo '<tr><td bgcolor="#ffffff">'.$fielddata[0].'</td><td bgcolor="#ffffff">'.$row[$field].'</td></tr>';
 }
 echo '</tbody>';
-
 ?>
 </table>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="copyright mceneter">
-Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms <?php echo $cfg_version ?></a> &copy; 2004-2008  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
-</div>
 
+<div class="copyright mceneter">
+Powered by <a href="http://www.dedecms.com" target="_blank">DedeCms Ent</a> &copy; 2004-2009  <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.
+</div>
 
 </body>
 </html>

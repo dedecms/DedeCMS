@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<title>修改小说内容</title>
+<link href="../member/images/member.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="../images/js/j.js"></script>
+<script language="javascript" type="text/javascript" src="../member/js/table_function.js"></script>
+<script language="javascript" type="text/javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript" src="js/main.js"></script>
+<script language="javascript" type="text/javascript" src="js/story.js"></script>
+</head>
+<body>
+<?php  include(DEDEMEMBER."/templets/head.htm"); ?>
+<div class="wrapper lineT">
+  <div class="mainBox">
+    <div class="main">
+      <?php  include(DEDEMEMBER."/templets/menu.php"); ?>
+      <div class="dedeMain">
+        <div class="location"><span class="fLeft">《<?php echo $contents['title']; ?>》<i>|</i><a href='../book/book.php?id=<?php echo $bookid; ?>' target='_blank'>查看</a></span><span class="fRight mR10 titPublish icon"><a href='story_list_content.php?bookid=<?php echo $bookid; ?>'>内容列表</a></span></div>
+        <div class="titleTabBar bgGreen lineTB">
+          <ul>
+            <li><a href="mybooks.php">小说书目</a></li>
+            <li class="select"><a href="story_list_content.php">小说内容</a></li>
+          </ul>
+        </div>
+        <form class="mL10 mR10 mTB10" name='form1' action='story_edit_photo_action.php' enctype="multipart/form-data" method='post'>
+          <input type='hidden' name='cid' value='<?php echo $cid; ?>' />
+          <input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />
+          <input type='hidden' name='catid' value='<?php echo $catid; ?>' />
+          <input type='hidden' name='bookname' value='<?php echo str_replace("'","`",$bookname); ?>' />
+          <input type='hidden' name='booktype' value='<?php echo $booktype; ?>' />
+          <table cellspacing="1" class="submit">
+            <thead>
+              <tr>
+                <th colspan="2" ><strong>修改小说内容</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" valign="top">隶属小说名称：</td>
+                <td><?php echo $bookname; ?></td>
+              </tr>
+              <tr>
+                <td width="15%" align="right" valign="top">默认标题：</td>
+                <td><input name="title" type="text" class="text" id="title" value="<?php echo $contents['title'];  ?>" size="35" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top">在章节中的顺序：</td>
+                <td><input name="sortid" type="text" class="text" id="sortid" value="<?php echo $contents['sortid'];  ?>" size="5" />
+                </td>
+              </tr>
+              <tr>
+                <td align="right" valign="top"> 隶属章节： </td>
+                <td><select name="chapterid" size="5" id="chapterid" style="width:250px">
+                    <?php
+    	foreach($chapters as $k=>$v){
+    		if($k==$contents['chapterid']){ echo "    <option value='$k' selected>第{$chapnums[$k]}章 $v</option>\r\n"; }
+    		else echo "    <option value='$k'>第{$chapnums[$k]}章 $v</option>\r\n";
+    	}
+    	?>
+                  </select>
+                  <div class="clear"></div>
+                  <input name="addchapter" type="checkbox" onclick="ShowHideSelChapter('selchap','newchap')" id="addchapter" value="1" />
+                  添加新章节</td>
+              </tr>
+            </tbody>
+          </table>
+          <table cellspacing="1" class="submit mT10">
+            <thead>
+              <tr>
+                <th colspan="3" ><strong>图片</strong></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" valign="middle">本地上传：</td>
+                <td><input type="file" name='imgfile' style="width:330px" onchange="SeePic(document.picview,document.form1.imgfile);" /></td>
+                <td rowspan="2" align="center" valign="middle"><span style="padding-top:10px;padding-bottom:10px"><img src="<?php if($contents['bigpic']=='') echo 'images/pview.gif'; else echo $contents['bigpic']; ?>" alt="" name="picview" width="150" hspace="10" vspace="10" id="picview" /></span></td>
+              </tr>
+              <tr>
+                <td width="15%" align="right" valign="middle">指定网址： </td>
+                <td><input name='imgurl' type="text" class="text" style="width:260px" value="<?php echo $contents['bigpic']; ?>" />
+                  <button class="buttonGary2" onclick="SelectImageN('form1.imgurl','big','picview')" type="button">选取</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
+          <div style="margin-left:15%" class="mTB10">
+            <button class="button2" type="submit">提交</button>
+            <button class="button2 mL10" type="reset" onclick="location.reload();">重置</button>
+          </div>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<?php  include(DEDEMEMBER."/templets/foot.htm"); ?>
+</body>
+</html>

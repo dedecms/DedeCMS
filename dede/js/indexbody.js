@@ -40,4 +40,10 @@ function ShowWaitDiv()
 	return true;
 }
 
+window.onload = function()
+{
+	var myajax = new DedeAjax($DE('rightajax'));
+	myajax.SendGet('index_body.php?dopost=getRightSide');
+};
+
 -->

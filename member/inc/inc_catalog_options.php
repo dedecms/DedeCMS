@@ -70,12 +70,11 @@ function LogicGetOptionArray($id,$step,$channeltype,$selid=0)
 	}
 }
 
-function classification($mid, $mtypeid = 0)
+function classification($mid, $mtypeid = 0, $channelid=1)
 {
 	global $dsql;
-	$list = "";
-	$selected = '';
-	$quey = "SELECT * FROM `#@__mtypes` WHERE mid = '$mid';";
+	$list = $selected = '';
+	$quey = "SELECT * FROM `#@__mtypes` WHERE mid = '$mid' And channelid='$channelid' ;";
 	$dsql->SetQuery($quey);
 	$dsql->Execute();
 	while ($row = $dsql->GetArray())

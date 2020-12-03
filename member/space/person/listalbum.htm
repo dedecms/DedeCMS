@@ -1,79 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:var.spacename /}--我的相册</title>
-<link href="space/person/img/style.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<!--topb-->
-{dede:include file='space-top.htm'/}
-<!--c1c2e-->
-<!--c3b-->
-		<div id="c3">
-			<div class="c3c">
-				<div class="c3c1">
-					<div class="ck">
-						<h1><a href="#">我的相册</a></h1>
-						<div class="cc  cc2">
-						<ul>
-					<!--内容块开始-->
-					{dede:datalist titlelen = '24'}
-					<li>
-						<a href="{dede:field.arcurl/}"><img src='{dede:field.litpic/}' /></a>
-						<h2><a href="{dede:field.arcurl/}">{dede:field.title/}</a></h2>
-					</li>
-					{/dede:datalist}
-				  </ul>
-			    </div>
-			  </div>
-					<!--内容块结束-->
-					<div class="plcb plcb2">
-						{dede:pagelist/}
-					</div>
-				</div>
-				<div class="c3c2">
-					<!--photob-->
-					<div class="photo">
-						{dede:include file='space-userinfo.htm'/}
-					</div>
-					<!--photoe-->
-					<!--conkb-->
-					<div class="c3r noli">
-						<h1>我的网址书签</h1>
-						<ul>
-							<?php
-							$dsql->Execute('fl',"Select * From `#@__member_flink` where mid='{$_vars['mid']}' ");
-							while($arr = $dsql->GetArray('fl'))
-							{
-								echo "    <li>·<a href='{$arr['url']}' target='_blank'>{$arr['title']}</a></li>\r\n";
-							}
-						  ?>
-						</ul>
-					</div>
-					<div class="c3r noli fir">
-						<h1>最近访问</h1>
-						<ul>
-							{dede:newvisitor row=6}
-							<li>
-							  <div class='lside'>
-							  	<a href="{dede:field.url/}" target="_blank"><img src="{dede:field.face/}" /></a>
-							  </div>
-								<div class='rside'>
-									<h2><a href="{dede:field.url/}" target="_blank">{dede:field.uname/}</a></h2>
-									<div class='msg'>{dede:field.sign function="cn_substr(@me,60)" /}</div>
-								</div>
-							</li>
-							{/dede:newvisitor}
-						</ul>
-					</div>
-					<!--conke-->
-				</div>
-			</div>
-		</div>
-		<!--c3e-->
-	{dede:include file='space-foot.htm'/}
-	</div>
-	<!--cone-->
+{dede:include file='header.htm'/}
+<div class="wrapper mT10">
+  <div class="west">
+  {dede:include file='side_icon.htm'/}
+	{dede:include file='side_class.htm'/}
+	{dede:include file='side_search.htm'/}
+  </div>
+  <div class="east">
+    <dl class="border">
+      <dt class="caption"><strong>相册</strong></dt>
+      <dd class="body">
+        <ul id="album">
+        {dede:datalist titlelen='20'}
+          <li>
+            <dl>
+              <dt><a href="{dede:field.arcurl/}"><img src='{dede:field.litpic/}' /></a></dt>
+              <dd class="textCenter" ><strong><a href="{dede:field.arcurl/}">{dede:field.title/}</a></strong></dd>
+            </dl>
+          </li>
+          {/dede:datalist}
+        </ul>
+        <div class="fRight mTB10 pd10">{dede:pagelist/}</div>
+        <div class="clearfix"></div>
+      </dd>
+    </dl>
+  </div>
+</div>
+{dede:include file='footer.htm'/}
 </body>
 </html>

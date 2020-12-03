@@ -6,16 +6,24 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templeturl/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+<script language="javascript" type="text/javascript">
+<!--
+function checkSubmit(){
+	if(document.feedback.msg.value!='') document.feedback.submit();
+	else alert("评论内容不能为空！");
+}
+-->
+</script>
 </head>
 <body class="articleview">
 {dede:include filename="head.htm"/}
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
-	<ul>
-              {dede:channel type='self' currentstyle="<li class='thisclass'><a href='~typelink~'><span>~typename~</span></a> </li>"}
-          <li><a href='[field:typeurl/]'><span>[field:typename/]</span></a></li>{/dede:channel}
-	</ul>
+	<div class='sonnav'>
+	{dede:channel type='self' currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
 	<span class="back">
 		<a href="{dede:global.cfg_cmsurl/}/">返回首页</a>
 	</span>
@@ -86,15 +94,15 @@ function timeCall()
 {
 	if(h > -1)
 	{
-		_frame.style.height = h + 'px';
-		clearTimeout(t);
+    _frame.style.height = h + 'px';
+    clearTimeout(t);
 	}
 	else
 	{
-		try{
-			h = window.frames[frameName].frames['xclient'].location.hash.substring(1);
-		}catch(e){}
-		setTimeout(timeCall, 20);
+	  try{
+      h = window.frames[frameName].frames['xclient'].location.hash.substring(1);
+    }catch(e){}
+	  setTimeout(timeCall, 20);
 	}
 }
 </script>

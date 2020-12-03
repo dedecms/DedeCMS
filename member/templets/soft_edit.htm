@@ -172,13 +172,17 @@ function ShowHideAddr()
               </tr>
               <tr>
                 <td align="right" valign="top">隶属栏目：</td>
-                <td colspan="3"><?php
+                <td>
+    <?php
     $typeOptions = GetOptionList($row["typeid"],$row["channel"]);
     echo "<select name='typeid' size='1'>\r\n";
     echo $typeOptions;
     echo "</select>";
 		?>
-                  <span style="color:#F00">*</span></td>
+                  <span style="color:#F00">*</span>
+                 </td>
+                 <td align="right">需要金币：</td>
+                 <td><input class="text" name="needmoney" type="text" value="<?php echo $addRow["needmoney"]; ?>" id="needmoney" style="width:95px" />(最大允许100个)</td>
               </tr>
               <tr>
                 <td align="right" valign="top">缩略图：</td>

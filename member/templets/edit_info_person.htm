@@ -21,16 +21,17 @@
         <div class="location">设置个人资料</div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
-            <li><a href="mtypes.php">分类管理</a></li>
-            <li><a href="flink_main.php">书签管理</a></li>
-            <li class="select"><a href="">个人资料</a></li>
+            <li><a href="edit_baseinfo.php">基本资料</a></li>
+            <li class="select"><a href="edit_fullinfo.php">个人资料</a></li>
+            <li><a href="edit_face.php">头像设置</a></li>
+            <li><a href="edit_space_info.php">空间设置</a></li>
           </ul>
         </div>
         <form class="mTB10 mL10 mR10" name="form2" action="edit_fullinfo.php" method="post" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>详细资料</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> <em><a href="edit_baseinfo.php">基本资料</a></em> <em class="mL10 mR10"><a href="edit_space_info.php">空间资料</a></em> <em class="mR10"><a href="edit_fullinfo.php">详细资料</a></em> <em><a href="edit_face.php">用户头像</a></em> </div>
+            <div class="fLeftNoForm"><strong>个人详细资料</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"></div>
           </div>
           <div class="item info">
             <div class="itemHead bgGrass titleBar" >

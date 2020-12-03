@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>我购买的服务</title>
+<title>我购买的文章</title>
 <?php include(DEDEMEMBER."/templets/head_inc.htm"); ?>
 </head>
 <body>
@@ -11,49 +11,43 @@
     <div class="main">
       <?php include(DEDEMEMBER."/templets/menu.php"); ?>
       <div class="dedeMain">
-        <div class="location"><span class="fLeft">我购买的服务</span><span class="fRight mR10"><a href="buy.php">购买服务</a></span></div>
+        <div class="location"><span class="fLeft">我购买的文章</span><span class="fRight mR10 titPublish icon"><a href="buy.php">会员升级/点卡充值</a></span></div>
         <div class="titleTabBar bgGreen lineTB">
           <ul>
-            <li class="select"><a href="mypay.php" id="buy">服务</a></li>
-            <li><a href="shops_products.php">商品</a></li>
+            <li><a href="operation.php">点卡/会员定单</a></li>
+            <li class="select"><a href="mypay.php" id="buy">我购买的文章</a></li>
+            <li><a href="shops_orders.php">商品定单</a></li>
+            <li><a href="shops_products.php" id="buy">我购买的商品</a></li>
           </ul>
         </div>
         <div class="mL10 mR10 mTB10">
           <div class="titleBar bgGrass lineB mB10">
-            <div class="fLeft"><strong>购买的服务</strong></div>
-            <div class="fRight titSecondary white" style="margin-top:5px;"> 
-            <em class="mR10"><a href="mypay.php">购买的服务</a></em> 
-            <em class="mR10"><a href="operation.php">历史订单</a></em> </div>
+            <div class="fLeft"><strong>我购买的文章</strong></div>
+            <div class="fRight titSecondary white" style="margin-top:5px;"></div>
           </div>
           <table cellspacing="1" class="list">
             <thead>
               <tr>
-                <th align="left" width="1%">ID</th>
+                <th align="left" width="10%">ID</th>
                 <th >标题</th>
-                <th width="5%">消费点数</th>
-                <th width="5%">消费时间</th>
+                <th width="10%">消费点数</th>
+                <th width="20%">消费时间</th>
               </tr>
             </thead>
             <tbody>
-            
             {dede:datalist}
             <tr>
-              <td><?php echo $fields['aid']; ?></td>
+              <td align="center"><?php echo $fields['aid']; ?></td>
               <td>
-<?php if(strpos($fields['buyid'], 'ARCHIVE') === 0)
-{
-	echo '<a href="../plus/view.php?aid='.str_replace('ARCHIVE', '', $fields['buyid']).'" target="_blank">'.$fields['oldinfo'].'</a>'; 
-} else {
-	echo $fields['oldinfo'];
-}
-?>
-</td>
+						 <?php
+								echo '<a href="../plus/view.php?aid='.str_replace('ARCHIVE', '', $fields['buyid']).'" target="_blank">'.$fields['oldinfo'].'</a>';
+					   ?>
+						</td>
               <td align="center"><?php echo $fields['money']; ?></td>
               <td align="center"><?php echo GetDateTimeMk($fields['mtime']); ?></td>
             </tr>
             {/dede:datalist}
             </tbody>
-            
             <tfoot>
               <tr>
                 <td colspan="6"><div class="pages fRight">{dede:pagelist listsize=5/}</div></td>

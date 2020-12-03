@@ -1,11 +1,9 @@
 <div class="header">
-    <div class="top w960 center">
+	<div class="top w960 center">
       <div class="title">
         <h1> <a href="{dede:global.cfg_basehost/}">{dede:global.cfg_webname/}</a> </h1>
       </div>
-      <!-- /title -->
-      <div class="banner">{dede:myad name='topbanner'/}</div>
-      <!-- /banner -->
+      <div class="banner"><script src='{dede:global.cfg_cmsurl/}/plus/ad_js.php?aid=1' language='javascript'></script></div>
       <div class="rlink">
         <ul>
           <li class="r1"><a href="{dede:global.cfg_memberurl/}">会员中心</a></li>
@@ -14,21 +12,22 @@
           <li class="r4"><a href="{dede:global.cfg_dataurl/}/rssmap.html">RSS订阅</a></li>
         </ul>
       </div>
-      <!-- /banner -->
-    </div>
-    <!-- /top -->
-    <div class="nav mt1">
-      <div class="w960 center">
-        <ul>
-          <li><a href='{dede:global.cfg_cmsurl/}/'>主页</a></li>
-          {dede:channel type='top' currentstyle="<li class='thisclass'><a href='~typelink~'>~typename~</a> </li>"}
-          <li><a href='[field:typeurl/]'>[field:typename/]</a></li>{/dede:channel}
-        </ul>
-      </div>
-    </div>
-    <!-- /nav -->
+	</div><!-- //top -->
+	<!-- //菜单 -->
+	<div class="module blue mT10 wrapper w963">
+  	<div class="top">
+    	<div class="t_l"></div>
+    	<div class="t_r"></div>
+    	<!-- //如果不使用currentstyle，可以在channel标签加入 cacheid='channeltoplist' 属性提升性能 -->
+    <div id="navMenu">
+    	<ul>
+      	<li><a href='{dede:global.cfg_cmsurl/}/'>主页</a></li>
+      	{dede:channel type='top' row='10' currentstyle="<li class='hover'><a href='~typelink~' ~rel~>~typename~</a></li>"}
+      	<li><a href='[field:typeurl/]' [field:rel/]>[field:typename/]</a></li>
+      	{/dede:channel}
+    	</ul>
+    </div>	
     <div class="search">
-      <div class="w960 center">
       <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
         <div class="form">
           <h4>搜索</h4>
@@ -41,7 +40,6 @@
           <button type="submit" class="search-submit">搜索</button>
         </div>
         </form>
-        <!-- /form -->
         <div class="tags">
           <h4>热门标签</h4>
           <ul>
@@ -49,9 +47,7 @@
           {/dede:tag}
           </ul>
         </div>
-        <!-- /tags -->
-      </div>
-    </div>
-    <!-- /search -->
-  </div>
-<!-- /header -->
+    </div><!-- //search -->
+		</div>
+	</div>
+</div><!-- //header -->

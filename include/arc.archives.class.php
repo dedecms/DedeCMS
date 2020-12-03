@@ -46,10 +46,7 @@ class Archives
 		}
 		else
 		{
-			if($arr['channel']==0)
-			{
-				$arr['channel']=1;
-			}
+			if($arr['channel']==0) { $arr['channel']=1; }
 			$this->ChannelUnit = new ChannelUnit($arr['channel'],$aid);
 			$this->TypeLink = new TypeLink($arr['typeid']);
 			if($this->ChannelUnit->ChannelInfos['issystem']!=-1)
@@ -77,7 +74,7 @@ class Archives
 
 			$this->Fields['tags'] = GetTags($aid);
 			$this->dtp = new DedeTagParse();
-			$this->dtp->refObj = $this;
+			$this->dtp->SetRefObj($this);
 			$this->SplitPageField = $this->ChannelUnit->SplitPageField;
 			$this->SplitFields = '';
 			$this->TotalPage = 1;
@@ -85,13 +82,13 @@ class Archives
 			$this->ShortName = 'html';
 			$this->FixedValues = '';
 			$this->TempSource = '';
-			if(empty($GLOBALS["pageno"]))
+			if(empty($GLOBALS['pageno']))
 			{
 				$this->NowPage = 1;
 			}
 			else
 			{
-				$this->NowPage = $GLOBALS["pageno"];
+				$this->NowPage = $GLOBALS['pageno'];
 			}
 
 			//特殊的字段数据处理
@@ -109,7 +106,7 @@ class Archives
 			//为了减少重复查询，这里直接把附加表查询记录放在 $this->addTableRow 中，在 ParAddTable() 不再查询
 			if($this->ChannelUnit->ChannelInfos['addtable']!='')
 			{
-				$query = "SELECT * FROM `{$this->ChannelUnit->ChannelInfos['addtable']}`WHERE `aid` = '$aid'";
+				$query = "SELECT * FROM `{$this->ChannelUnit->ChannelInfos['addtable']}` WHERE `aid` = '$aid'";
 				$this->addTableRow = $this->dsql->GetOne($query);
 			}
 
@@ -178,7 +175,20 @@ class Archives
 						$cobj = $this->GetCurTag($k);
 						if(is_object($cobj))
 						{
-							$this->Fields[$nk] = $this->ChannelUnit->MakeField($k,$row[$k],$this->GetCurTag($k));
+								foreach($this->dtp->CTags as $ctag)
+								{
+										if($ctag->GetTagName()=='field' && $ctag->GetAtt('name')==$k)
+										{
+											//带标识的专题节点
+											if($ctag->GetAtt('noteid') != '') {
+												$this->Fields[$k.'_'.$ctag->GetAtt('noteid')] = $this->ChannelUnit->MakeField($k, $row[$k], $ctag);
+											}
+											//其它字段
+											else {
+												$this->Fields[$nk] = $this->ChannelUnit->MakeField($k, $row[$k], $ctag);
+											}
+										}
+								}
 						}
 						else
 						{
@@ -193,7 +203,7 @@ class Archives
 			}
 			//设置全局环境变量
 			$this->Fields['typename'] = $this->TypeLink->TypeInfos['typename'];
-			SetSysEnv($this->Fields['typeid'],$this->Fields['typename'],$this->Fields['aid'],$this->Fields['title'],'archives');
+			@SetSysEnv($this->Fields['typeid'],$this->Fields['typename'],$this->Fields['id'],$this->Fields['title'],'archives');
 		}
 		//完成附加表信息读取
 		unset($row);
@@ -296,59 +306,47 @@ class Archives
 
 		//分析要创建的文件名称
 		$filename = GetFileNewName(
-		$this->ArcID,$this->Fields['typeid'],$this->Fields['senddate'],
-		$this->Fields['title'],$this->Fields['ismake'],$this->Fields['arcrank'],
-		$this->TypeLink->TypeInfos['namerule'],$this->TypeLink->TypeInfos['typedir'],$this->Fields['money'],$this->Fields['filename']
+			$this->ArcID,$this->Fields['typeid'],$this->Fields['senddate'],
+			$this->Fields['title'],$this->Fields['ismake'],$this->Fields['arcrank'],
+			$this->TypeLink->TypeInfos['namerule'],$this->TypeLink->TypeInfos['typedir'],$this->Fields['money'],$this->Fields['filename']
 		);
 
-		$filenames  = explode(".",$filename);
+		$filenames  = explode(".", $filename);
 		$this->ShortName = $filenames[count($filenames)-1];
-		if($this->ShortName=="")
-		{
-			$this->ShortName = "html";
-		}
-		$fileFirst = eregi_replace("\.".$this->ShortName."$","",$filename);
+		if($this->ShortName=='') $this->ShortName = 'html';
+		$fileFirst = eregi_replace("\.".$this->ShortName."$", "", $filename);
 		$this->Fields['namehand'] = basename($fileFirst);
 		$filenames  = explode("/",$filename);
 		$this->NameFirst = eregi_replace("\.".$this->ShortName."$","",$filenames[count($filenames)-1]);
-		if($this->NameFirst=="")
+		if($this->NameFirst=='')
 		{
 			$this->NameFirst = $this->arcID;
 		}
 
 		//获得当前文档的全名
 		$filenameFull = GetFileUrl(
-		$this->ArcID,$this->Fields["typeid"],$this->Fields["senddate"],
-		$this->Fields["title"],$this->Fields["ismake"],
-		$this->Fields["arcrank"],$this->TypeLink->TypeInfos['namerule'],$this->TypeLink->TypeInfos['typedir'],$this->Fields["money"],$this->Fields['filename'],
-		$this->TypeLink->TypeInfos['moresite'],$this->TypeLink->TypeInfos['siteurl'],$this->TypeLink->TypeInfos['sitepath']
+			$this->ArcID,$this->Fields['typeid'],$this->Fields["senddate"],
+			$this->Fields["title"],$this->Fields["ismake"],
+			$this->Fields["arcrank"],$this->TypeLink->TypeInfos['namerule'],$this->TypeLink->TypeInfos['typedir'],$this->Fields["money"],$this->Fields['filename'],
+			$this->TypeLink->TypeInfos['moresite'],$this->TypeLink->TypeInfos['siteurl'],$this->TypeLink->TypeInfos['sitepath']
 		);
 		$this->Fields['arcurl'] = $this->Fields['fullname'] = $filenameFull;
 
 		//对于已设置不生成HTML的文章直接返回网址
-		if($this->Fields['ismake']==-1||$this->Fields['arcrank']!=0||
-		$this->Fields['typeid']==0||$this->Fields['money']>0)
+		if($this->Fields['ismake']==-1 || $this->Fields['arcrank']!=0 || $this->Fields['money']>0 
+		   || ($this->Fields['typeid']==0 && $this->Fields['channel'] != -1) )
 		{
 			return $this->GetTrueUrl($filename);
 		}
-
-		//跳转网址
-		if($this->Fields['redirecturl']!='')
-		{
-			$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
-			$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$GLOBALS['cfg_soft_lang']."\">\n<title>转向：".$this->Fields['title']."</title>\n";
-			$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
-			$pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:".$this->Fields['description']."\n</body>\n</html>\n";
-			$fp = @fopen($truefilename,"w") or die("Create File False：$filename");
-			fwrite($fp,$pageHtml);
-			fclose($fp);
-		}
-
 		//循环生成HTML文件
 		else
 		{
 			for($i=1;$i<=$this->TotalPage;$i++)
 			{
+				if($this->TotalPage > 1) {
+					$this->Fields['tmptitle'] = (empty($this->Fields['tmptitle']) ? $this->Fields['title'] : $this->Fields['tmptitle']);
+					if($i>1) $this->Fields['title'] = $this->Fields['tmptitle']."($i)";
+				}
 				if($i>1)
 				{
 					$truefilename = $this->GetTruePath().$fileFirst."_".$i.".".$this->ShortName;
@@ -394,40 +392,51 @@ class Archives
 	}
 
 	//获得指定键值的字段
-	function GetField($fname)
+	function GetField($fname, $ctag)
 	{
-		if(isset($this->Fields[$fname]))
+		//所有Field数组 OR 普通Field
+		if($fname=='array')
 		{
-			return $this->Fields[$fname];
+			return $this->Fields;
 		}
-		else
+		//指定了ID的节点
+		else if($ctag->GetAtt('noteid') != '')
 		{
-			return '';
+				if( isset($this->Fields[$fname.'_'.$ctag->GetAtt('noteid')]) )
+				{
+					return $this->Fields[$fname.'_'.$ctag->GetAtt('noteid')];
+				}
 		}
+		else if( isset($this->Fields[$fname]) )
+		{
+				return $this->Fields[$fname];
+		}
+		return '';
 	}
 
 	//获得模板文件位置
 	function GetTempletFile()
 	{
 		global $cfg_basedir,$cfg_templets_dir,$cfg_df_style;
-		$cid = $this->ChannelUnit->ChannelInfos["nid"];
+		$cid = $this->ChannelUnit->ChannelInfos['nid'];
 		if(!empty($this->Fields['templet']))
 		{
 			$filetag = MfTemplet($this->Fields['templet']);
+			if( !ereg('/', $filetag) ) $filetag = $GLOBALS['cfg_df_style'].'/'.$filetag;
 		}
 		else
 		{
 			$filetag = MfTemplet($this->TypeLink->TypeInfos["temparticle"]);
 		}
-		$tid = $this->Fields["typeid"];
-		$filetag = str_replace("{cid}",$cid,$filetag);
-		$filetag = str_replace("{tid}",$tid,$filetag);
-		$tmpfile = $cfg_basedir.$cfg_templets_dir."/".$filetag;
+		$tid = $this->Fields['typeid'];
+		$filetag = str_replace('{cid}', $cid,$filetag);
+		$filetag = str_replace('{tid}', $tid,$filetag);
+		$tmpfile = $cfg_basedir.$cfg_templets_dir.'/'.$filetag;
 		if($cid=='spec')
 		{
-			if($this->Fields['templet']!='')
+			if( !empty($this->Fields['templet']) )
 			{
-				$tmpfile = $cfg_basedir.$cfg_templets_dir."/".MfTemplet($this->Fields['templet']);
+				$tmpfile = $cfg_basedir.$cfg_templets_dir.'/'.$filetag;
 			}
 			else
 			{
@@ -436,7 +445,7 @@ class Archives
 		}
 		if(!file_exists($tmpfile))
 		{
-			$tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/article_default.htm";
+			$tmpfile = $cfg_basedir.$cfg_templets_dir."/{$cfg_df_style}/".($cid=='spec' ? 'article_spec.htm' : 'article_default.htm');
 		}
 		return $tmpfile;
 	}
@@ -449,6 +458,7 @@ class Archives
 			return '';
 		}
 		$this->Fields["displaytype"] = "dm";
+		if($this->NowPage > 1) $this->Fields["title"] = $this->Fields["title"]."({$this->NowPage})";
 		//预编译
 		$this->LoadTemplet();
 		$this->ParAddTable();
@@ -456,14 +466,19 @@ class Archives
 		$this->ParseTempletsFirst();
 
 		//跳转网址
-		if($this->Fields['redirecturl']!="")
+		if(ereg('j', $this->Fields['flag']) && $this->Fields['redirecturl'] != '')
 		{
-			global $fileFirst;
-			$truefilename = $this->GetTruePath().$fileFirst.".".$this->ShortName;
-			$pageHtml = "<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$GLOBALS['cfg_soft_lang']."\">\n<title>转向：".$this->Fields['title']."</title>\n";
-			$pageHtml .= "<meta http-equiv=\"refresh\" content=\"1;URL=".$this->Fields['redirecturl']."\">\n</head>\n<body>\n";
-			$pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\n转向内容简介:\n".$this->Fields['description']."\n</body>\n</html>\n";
-			echo $pageHtml;
+			if($GLOBALS['cfg_jump_once']=='N')
+			{
+				$pageHtml = "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$GLOBALS['cfg_soft_lang']."\">\r\n<title>".$this->Fields['title']."</title>\r\n";
+				$pageHtml .= "<meta http-equiv=\"refresh\" content=\"3;URL=".$this->Fields['redirecturl']."\">\r\n</head>\r\n<body>\r\n";
+				$pageHtml .= "现在正在转向：".$this->Fields['title']."，请稍候...<br/><br/>\r\n转向内容简介:".$this->Fields['description']."\r\n</body>\r\n</html>\r\n";
+				echo $pageHtml;
+			}
+			else
+			{
+				header("location:{$this->Fields['redirecturl']}");
+			}
 			exit();
 		}
 		$pageCount = $this->NowPage;
@@ -479,6 +494,7 @@ class Archives
 			$tempfile = $this->GetTempletFile();
 			if(!file_exists($tempfile) || !is_file($tempfile))
 			{
+				echo "文档ID：{$this->Fields['id']} - {$this->TypeLink->TypeInfos['typename']} - {$this->Fields['title']}<br />";
 				echo "模板文件不存在，无法解析文档！";
 				exit();
 			}
@@ -528,7 +544,7 @@ class Archives
 			$GLOBALS['envs']['typeid'] = $this->Fields['reid'];
 		}
 
-		MakeOneTag($this->dtp,$this);
+		MakeOneTag($this->dtp, $this, 'N');
 	}
 
 	//解析模板，对内容里的变动进行赋值
@@ -536,9 +552,10 @@ class Archives
 	{
 		$this->NowPage = $pageNo;
 		$this->Fields['nowpage'] = $this->NowPage;
-		if($this->SplitPageField!="" && isset($this->Fields[$this->SplitPageField]))
+		if($this->SplitPageField!='' && isset($this->Fields[$this->SplitPageField]))
 		{
 			$this->Fields[$this->SplitPageField] = $this->SplitFields[$pageNo - 1];
+			if($pageNo>1) $this->Fields['description'] = trim(ereg_replace("[\r\n\t]", ' ', cn_substr(html2text($this->Fields[$this->SplitPageField]), 200)));
 		}
 
 		//解析模板
@@ -548,7 +565,7 @@ class Archives
 			{
 				if($ctag->GetName()=='field')
 				{
-					$this->dtp->Assign($i,$this->GetField($ctag->GetAtt('name')));
+					$this->dtp->Assign($i, $this->GetField($ctag->GetAtt('name'), $ctag) );
 				}
 				else if($ctag->GetName()=='pagebreak')
 				{

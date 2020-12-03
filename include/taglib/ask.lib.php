@@ -19,7 +19,7 @@ function lib_ask(&$ctag,&$refObj)
   if(trim($innertext)=='') $innertext = GetSysTemplets("asks.htm");
 	
 	$qtypeQuery = '';
-	if($tid>0) $tid = " (tid=$tid Or $tid2='$tid') And ";
+	if($tid>0) $tid = " (tid=$tid Or tid2='$tid') And ";
 	else $tid = '';
 	//推荐问题
 	if($qtype=='commend') $qtypeQuery = " $tid digest=1 order by dateline desc ";

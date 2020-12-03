@@ -1,0 +1,37 @@
+<?php
+require_once(dirname(__FILE__)."/header.htm");
+?>
+    <div id="group_main">
+    	<div id="group_main_middle">
+        	<div class="group_main_title"><?php echo $lang['group_store_list'];?>
+            </div>
+            <?php
+            foreach($stores as $v){
+            ?>
+        	<div class="group_class_text">
+            	<ul>
+                <li><span><a href="store.php?id=<?php echo $v['storeid'];?>"><?php echo $v['storename'];?></a></span></li>
+                <?php
+                $db->SetQuery("SELECT * FROM #@__store_groups WHERE tops='".$v['storeid']."' ORDER BY orders ASC");
+                $db->Execute();
+                while($rs = $db->GetObject()){
+                ?>
+                <li><a href="store.php?id=<?php echo $rs->storeid;?>"><?php echo $rs->storename;?></a></li>
+                <?php
+                }?>
+                </ul>
+                <div class="clear">
+                </div>
+        	</div>
+            <?php
+            }
+            ?>
+            <div class="group_more" style="height:20px; line-height:20px;">
+            </div>                 
+        </div>   
+    </div>       
+    <div class="clear">
+    </div>
+<?php
+require_once(dirname(__FILE__)."/footer.htm");
+?>

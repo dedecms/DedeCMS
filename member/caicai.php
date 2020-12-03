@@ -51,7 +51,7 @@ if($tid!=0)
 }
 $dlist = new Caicai();
 $dlist->pageSize = 15;
-$dlist->maxPageSize = 30;
+$dlist->maxPageSize = 100;
 $maxrc = $dlist->pageSize * $dlist->maxPageSize;
 $query = "Select arc.*,m.userid,m.face,
           tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath

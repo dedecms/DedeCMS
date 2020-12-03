@@ -33,6 +33,7 @@ class SearchView
 	var $Keywords;
 	var $OrderBy;
 	var $SearchType;
+	var $mid;
 	var $KType;
 	var $Keyword;
 	var $SearchMax;
@@ -43,7 +44,7 @@ class SearchView
 
 	//php5构造函数
 	function __construct($typeid,$keyword,$orderby,$achanneltype="all",
-	$searchtype='',$starttime=0,$upagesize=20,$kwtype=1)
+	$searchtype='',$starttime=0,$upagesize=20,$kwtype=1,$mid=0)
 	{
 		global $cfg_search_max,$cfg_search_maxrc,$cfg_search_time;
 		if(empty($upagesize))
@@ -60,18 +61,12 @@ class SearchView
 		$this->SearchMax = $cfg_search_max;
 		$this->SearchMaxRc = $cfg_search_maxrc;
 		$this->SearchTime = $cfg_search_time;
+		$this->mid = $mid;
 		$this->RsFields = '';
-		if($searchtype=="")
-		{
-			$this->SearchType = "titlekeyword";
-		}
-		else
-		{
-			$this->SearchType = $searchtype;
-		}
+		$this->SearchType = $searchtype=='' ? 'titlekeyword' : $searchtype;
 		$this->dsql = $GLOBALS['dsql'];
 		$this->dtp = new DedeTagParse();
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 		$this->dtp->SetNameSpace("dede","{","}");
 		$this->dtp2 = new DedeTagParse();
 		$this->dtp2->SetNameSpace("field","[","]");
@@ -107,9 +102,9 @@ class SearchView
 
 	//php4构造函数
 	function SearchView($typeid,$keyword,$orderby,$achanneltype="all",
-	$searchtype="",$starttime=0,$upagesize=20,$kwtype=1)
+	$searchtype="",$starttime=0,$upagesize=20,$kwtype=1,$mid=0)
 	{
-		$this->__construct($typeid,$keyword,$orderby,$achanneltype,$searchtype,$starttime,$upagesize,$kwtype);
+		$this->__construct($typeid,$keyword,$orderby,$achanneltype,$searchtype,$starttime,$upagesize,$kwtype,$mid);
 	}
 
 	//关闭相关资源
@@ -121,14 +116,13 @@ class SearchView
 	function GetKeywords($keyword)
 	{
 		$keyword = cn_substr($keyword,50);
-
 		$row = $this->dsql->GetOne("Select spwords From `#@__search_keywords` where keyword='".addslashes($keyword)."'; ");
 		if(!is_array($row))
 		{
 			if(strlen($keyword)>7)
 			{
 				$sp = new SplitWord();
-				$keywords = $sp->SplitRMM($keyword);
+				$keywords = $sp->GetSplitRMM($keyword);
 				$sp->Clear();
 				$keywords = ereg_replace("[ ]{1,}"," ",trim($keywords));
 			}
@@ -157,16 +151,15 @@ class SearchView
 		foreach($ks as $k)
 		{
 			$k = trim($k);
-			if(strlen($k)<2)
+			if(strlen($k)<1)
 			{
 				continue;
 			}
-			if(ord($k[0])>0x80 && strlen($k)<3)
+			if(ord($k[0])>0x80 && strlen($k)<2)
 			{
 				continue;
 			}
 			$k = addslashes($k);
-
 			if($this->SearchType=="title")
 			{
 				$kwsqls[] = " arc.title like '%$k%' ";
@@ -291,7 +284,7 @@ class SearchView
 		$ksqls = array();
 		if($this->StartTime > 0)
 		{
-			$ksqls = " arc.senddate>'".$this->StartTime."' ";
+			$ksqls[] = " arc.senddate>'".$this->StartTime."' ";
 		}
 		if($this->TypeID > 0)
 		{
@@ -300,6 +293,10 @@ class SearchView
 		if($this->ChannelType > 0)
 		{
 			$ksqls[] = " arc.channel='".$this->ChannelType."'";
+		}
+		if($this->mid > 0)
+		{
+			$ksqls[] = " arc.mid = '".$this->mid."'";
 		}
 		$ksqls[] = " arc.arcrank > -1 ";
 		$this->AddSql = ($ksql=='' ? join(' And ',$ksqls) : join(' And ',$ksqls)." And ($ksql)" );
@@ -417,6 +414,8 @@ class SearchView
 			}//End if
 
 		}
+		global $keyword,  $oldkeyword;
+		if(!empty($oldkeyword)) $keyword = $oldkeyword;
 		$this->dtp->Display();
 	}
 
@@ -425,62 +424,28 @@ class SearchView
 	$imgwidth=120,$imgheight=90,$achanneltype="all",$orderby="default",$innertext="",$tablewidth="100")
 	{
 		$typeid=$this->TypeID;
-		if($row=="")
-		{
-			$row = 10;
-		}
-		if($limitstart=="")
-		{
-			$limitstart = 0;
-		}
-		if($titlelen=="")
-		{
-			$titlelen = 30;
-		}
-		if($infolen=="")
-		{
-			$infolen = 250;
-		}
-		if($imgwidth=="")
-		{
-			$imgwidth = 120;
-		}
-		if($imgheight=="")
-		{
-			$imgheight = 120;
-		}
-		if($achanneltype=="")
-		{
-			$achanneltype = "0";
-		}
-		if($orderby=="")
-		{
-			$orderby="default";
-		}
-		else
-		{
-			$orderby=strtolower($orderby);
-		}
+		if($row=='') $row = 10;
+		if($limitstart=='') $limitstart = 0;
+		if($titlelen=='') $titlelen = 30;
+		if($infolen=='') $infolen = 250;
+		if($imgwidth=='') $imgwidth = 120;
+		if($imgheight='') $imgheight = 120;
+		if($achanneltype=='') $achanneltype = '0';
+		$orderby = $orderby=='' ? 'default' : strtolower($orderby);
 		$tablewidth = str_replace("%","",$tablewidth);
-		if($tablewidth=="")
-		{
-			$tablewidth=100;
-		}
-		if($col=="")
-		{
-			$col=1;
-		}
+		if($tablewidth=='') $tablewidth=100;
+		if($col=='') $col=1;
 		$colWidth = ceil(100/$col);
 		$tablewidth = $tablewidth."%";
 		$colWidth = $colWidth."%";
 		$innertext = trim($innertext);
-		if($innertext=="")
+		if($innertext=='')
 		{
 			$innertext = GetSysTemplets("search_list.htm");
 		}
 
 		//排序方式
-		$ordersql = "";
+		$ordersql = '';
 		if($orderby=="senddate")
 		{
 			$ordersql=" order by arc.senddate desc";
@@ -600,6 +565,7 @@ class SearchView
 	//获取动态的分页列表
 	function GetPageListDM($list_len)
 	{
+		global $oldkeyword;
 		$prepage="";
 		$nextpage="";
 		$prepagenum = $this->PageNo-1;
@@ -618,6 +584,8 @@ class SearchView
 			return "共0页/".$this->TotalResult."条记录";
 		}
 		$purl = $this->GetCurUrl();
+		
+		$oldkeyword = (empty($oldkeyword) ? $this->Keyword : $oldkeyword);
 
 		//当结果超过限制时，重设结果页数
 		if($this->TotalResult > $this->SearchMaxRc)
@@ -625,11 +593,16 @@ class SearchView
 			$totalpage = ceil($this->SearchMaxRc/$this->PageSize);
 		}
 		$infos = "<td>共找到<b>".$this->TotalResult."</b>条记录/最大显示<b>{$totalpage}</b>页 </td>\r\n";
-		$geturl = "keyword=".urlencode($this->Keyword)."&searchtype=".$this->SearchType;
+		$geturl = "keyword=".urlencode($oldkeyword)."&searchtype=".$this->SearchType;
+		$hidenform = "<input type='hidden' name='keyword' value='".urlencode($oldkeyword)."'>\r\n";
 		$geturl .= "&channeltype=".$this->ChannelType."&orderby=".$this->OrderBy;
+		$hidenform .= "<input type='hidden' name='channeltype' value='".$this->ChannelType."'>\r\n";
+		$hidenform .= "<input type='hidden' name='orderby' value='".$this->OrderBy."'>\r\n";
 		$geturl .= "&kwtype=".$this->KType."&pagesize=".$this->PageSize;
+		$hidenform .= "<input type='hidden' name='kwtype' value='".$this->KType."'>\r\n";
+		$hidenform .= "<input type='hidden' name='pagesize' value='".$this->PageSize."'>\r\n";
 		$geturl .= "&typeid=".$this->TypeID."&TotalResult=".$this->TotalResult."&";
-		$hidenform = "<input type='hidden' name='typeid' value='".$this->TypeID."'>\r\n";
+		$hidenform .= "<input type='hidden' name='typeid' value='".$this->TypeID."'>\r\n";
 		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
 		$purl .= "?".$geturl;
 

@@ -5,44 +5,36 @@ if(!isset($registerGlobals))
 }
 
 //获得是否推荐的表述
+$arcatts = array();
+$dsql->Execute('n', 'Select * from `#@__arcatt` ');
+while($arr = $dsql->GetArray('n'))
+{
+	$arcatts[$arr['att']] = $arr['attname'];
+}
 function IsCommendArchives($iscommend)
 {
+	global $arcatts;
 	$sn = '';
-	if(ereg('c',$iscommend))
+	foreach($arcatts as $k=>$v)
 	{
-		$sn .= ' 荐';
-	}
-	if(ereg('h',$iscommend))
-	{
-		$sn .= ' 头';
-	}
-	if(ereg('p',$iscommend))
-	{
-		$sn .= ' 图';
-	}
-	if(ereg('j',$iscommend))
-	{
-		$sn .= ' 跳';
+		$v = cn_substr($v, 2);
+		$sn .= (ereg($k, $iscommend) ? ' '.$v : '');
 	}
 	$sn = trim($sn);
 	if($sn=='')
-	{
 		return '';
-	}
 	else
-	{
 		return "[<font color='red'>$sn</font>]";
-	}
 }
 
 //获得推荐的标题
 function GetCommendTitle($title,$iscommend)
 {
-	if(ereg('c',$iscommend))
+	/*if(ereg('c',$iscommend))
 	{
 		$title = "$title<font color='red'>(推荐)</font>";
-	}
-	return "$title";
+	}*/
+	return $title;
 }
 
 //更换颜色

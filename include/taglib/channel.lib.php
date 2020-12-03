@@ -3,10 +3,19 @@ function lib_channel(&$ctag,&$refObj)
 {
 	global $dsql;
 
-	$attlist = "typeid|0,reid|0,row|100,col|1,type|son,currentstyle|";
+	$attlist = "typeid|0,reid|0,row|100,col|1,type|son,currentstyle|,cacheid|";
 	FillAttsDefault($ctag->CAttribute->Items,$attlist);
 	extract($ctag->CAttribute->Items, EXTR_SKIP);
 	$innertext = $ctag->GetInnerText();
+	$line = empty($row) ? 100 : $row;
+	
+	$likeType = '';
+	//读取固定的缓存块
+	$cacheid = trim($cacheid);
+	if($cacheid !='') {
+		$likeType = GetCacheBlock($cacheid);
+		if($likeType != '') return $likeType;
+	}
 
 	$reid = 0;
 	$topid = 0;
@@ -36,43 +45,44 @@ function lib_channel(&$ctag,&$refObj)
 	if($type=='' || $type=='sun') $type='son';
 	if($innertext=='') $innertext = GetSysTemplets("channel_list.htm");
 
-	$likeType = '';
 	if($type=='top')
 	{
 		$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-		  From `#@__arctype` where reid=0 And ishidden<>1 order by sortrank asc limit 0,$row";
+		  From `#@__arctype` where reid=0 And ishidden<>1 order by sortrank asc limit 0, $line ";
 	}
 	else if($type=='son')
 	{
 		if($typeid==0) return '';
 		$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-		  From `#@__arctype` where reid='$typeid' And ishidden<>1 order by sortrank asc limit 0,$row";
+		  From `#@__arctype` where reid='$typeid' And ishidden<>1 order by sortrank asc limit 0, $line ";
 	}
 	else if($type=='self')
 	{
 		if($reid==0) return '';
 		$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-			From `#@__arctype` where reid='$reid' And ishidden<>1 order by sortrank asc limit 0,$row";
+			From `#@__arctype` where reid='$reid' And ishidden<>1 order by sortrank asc limit 0, $line ";
 	}
 	//And id<>'$typeid'
+	$needRel = false;
 	$dtp2 = new DedeTagParse();
 	$dtp2->SetNameSpace('field','[',']');
 	$dtp2->LoadSource($innertext);
+	//检查是否有子栏目，并返回rel提示（用于二级菜单）
+	if(ereg(':rel', $innertext)) $needRel = true;
 	
+	if(empty($sql)) return '';
 	$dsql->SetQuery($sql);
 	$dsql->Execute();
-	$line = $row;
 	
 	$totalRow = $dsql->GetTotalRow();
 	//如果用子栏目模式，当没有子栏目时显示同级栏目
 	if($type=='son' && $reid!=0 && $totalRow==0)
 	{
 		$sql = "Select id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-			From `#@__arctype` where reid='$reid' And ishidden<>1 order by sortrank asc limit 0,$row";
+			From `#@__arctype` where reid='$reid' And ishidden<>1 order by sortrank asc limit 0, $line ";
 		$dsql->SetQuery($sql);
 	  $dsql->Execute();
 	}
-	
 	$GLOBALS['autoindex'] = 0;
 	for($i=0;$i < $line;$i++)
 	{
@@ -82,11 +92,20 @@ function lib_channel(&$ctag,&$refObj)
 			if($col>1) $likeType .= "<dd>\r\n";
 			if($row=$dsql->GetArray())
 			{
+				$row['sonids'] = $row['rel'] = '';
+				if($needRel)
+				{
+					$row['sonids'] = GetSonIds($row['id'], 0, false);
+					if($row['sonids']=='') $row['rel'] = '';
+					else $row['rel'] = " rel='dropmenu{$row['id']}'";
+				}
 				//处理同级栏目中，当前栏目的样式
 				if( ($row['id']==$typeid || ($topid==$row['id'] && $type=='top') ) && $currentstyle!='' )
 				{
 					$linkOkstr = $currentstyle;
 					$row['typelink'] = GetOneTypeUrlA($row);
+					$linkOkstr = str_replace("~rel~",$row['rel'],$linkOkstr);
+					$linkOkstr = str_replace("~id~",$row['id'],$linkOkstr);
 					$linkOkstr = str_replace("~typelink~",$row['typelink'],$linkOkstr);
 					$linkOkstr = str_replace("~typename~",$row['typename'],$linkOkstr);
 					$likeType .= $linkOkstr;
@@ -116,6 +135,9 @@ function lib_channel(&$ctag,&$refObj)
 	}
 	//Loop for $i
 	$dsql->FreeResult();
+	if($cacheid !='') {
+		WriteCacheBlock($cacheid, $likeType);
+	}
 	return $likeType;
 }
 ?>

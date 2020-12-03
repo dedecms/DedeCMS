@@ -79,21 +79,21 @@ function ShowHideAddr()
             </thead>
             <tbody>
               <tr>
-                <td width="15%" align="right" valign="top"><?php echo $cInfos['typename']; ?>名称：</td>
+                <td width="15%" align="right"><?php echo $cInfos['typename']; ?>名称：</td>
                 <td colspan="3"><input name="title" type="text" id="title" class="text" size="30" style="width:400px;" />
                   <span style="color:#F00">*</span></td>
               </tr>
               <tr>
-                <td align="right" valign="top">标签TAG：</td>
+                <td align="right">标签TAG：</td>
                 <td colspan="3"><input name="tags" type="text" id="tags" size="30" class="text" style='width:400px' />
                   (用逗号分开)</td>
               </tr>
               <tr>
-                <td align="right" valign="top">作者：</td>
+                <td align="right">作者：</td>
                 <td colspan="3"><input name="writer" type="text" id="writer" size="30" style="width:95px;" class="text" value="<?php echo $cfg_ml->M_UserName?>" /></td>
               </tr>
               <tr>
-                <td align="right" valign="top">文件类型：</td>
+                <td align="right">文件类型：</td>
                 <td><select name="filetype" id="filetype" style="width:100px">
                     <option value=".exe" selected="selected">.exe</option>
                     <option value=".zip">.zip</option>
@@ -102,7 +102,7 @@ function ShowHideAddr()
                     <option value=".gz">.gz</option>
                     <option value="其它">其它</option>
                   </select></td>
-                <td width="15%" align="right" valign="top">界面语言：</td>
+                <td width="15%" align="right">界面语言：</td>
                 <td><select name="language" id="language" style="width:100px">
                     <option value="简体中文" selected="selected">简体中文</option>
                     <option value="英文软件">英文软件</option>
@@ -111,13 +111,13 @@ function ShowHideAddr()
                   </select></td>
               </tr>
               <tr>
-                <td align="right" valign="top">软件类型：</td>
+                <td align="right">软件类型：</td>
                 <td><select name="softtype" id="softtype" style="width:100px">
                     <option value="国产软件" selected="selected">国产软件</option>
                     <option value="国外软件">国外软件</option>
                     <option value="汉化补丁">汉化补丁</option>
                   </select></td>
-                <td align="right" valign="top">授权方式：</td>
+                <td align="right">授权方式：</td>
                 <td><select name="accredit" id="accredit" style="width:100px">
                     <option value="共享软件" selected="selected">共享软件</option>
                     <option value="免费软件">免费软件</option>
@@ -128,9 +128,9 @@ function ShowHideAddr()
                   </select></td>
               </tr>
               <tr>
-                <td align="right" valign="top">运行环境：</td>
+                <td align="right">运行环境：</td>
                 <td><input class="text" type='text' name='os' value='Win2003,WinXP,Win2000,Win9X' /></td>
-                <td align="right" valign="top">软件等级：</td>
+                <td align="right">软件等级：</td>
                 <td><select name="softrank" id="softrank" style="width:100px">
                     <option value="1">一星</option>
                     <option value="2">二星</option>
@@ -140,35 +140,39 @@ function ShowHideAddr()
                   </select></td>
               </tr>
               <tr>
-                <td align="right" valign="top">官方网址：</td>
+                <td align="right">官方网址：</td>
                 <td><input class="text" name="officialUrl" type="text" id="officialUrl" value="http://" /></td>
-                <td align="right" valign="top">程序演示：</td>
+                <td align="right">程序演示：</td>
                 <td><input class="text" name="officialDemo" type="text" id="officialDemo" /></td>
               </tr>
               <tr>
-                <td align="right" valign="top">软件大小：</td>
+                <td align="right">软件大小：</td>
                 <td><input class="text" name="softsize" type="text" id="softsize" style="width:95px" />
                   <select name="unit" id="unit">
                     <option value="MB" selected="selected">MB</option>
                     <option value="KB">KB</option>
                     <option value="GB">GB</option>
                   </select></td>
-                <td align="right" valign="top">软件来源：</td>
+                <td align="right">软件来源：</td>
                 <td><input class="text" name="source" type="text" id="source" /></td>
               </tr>
               <tr>
-                <td align="right" valign="top">隶属栏目：</td>
-                <td colspan="3"><?php
+                <td align="right">隶属栏目：</td>
+                <td>
+   <?php
     $typeOptions = GetOptionList(0,$channelid);
     echo "<select name='typeid' size='1'>\r\n";
     echo "<option value='0' selected>请选择栏目...</option>\r\n";
     echo $typeOptions;
     echo "</select>";
 	?>
-                  <span style="color:#F00">*</span></td>
+                  <span style="color:#F00">*</span>
+                 </td>
+                 <td align="right">需要金币：</td>
+                 <td><input class="text" name="needmoney" type="text" value="0" id="needmoney" style="width:95px" />(最大允许100个)</td>
               </tr>
               <tr>
-                <td align="right" valign="top">缩略图：</td>
+                <td align="right">缩略图：</td>
                 <td colspan="3"><input name="litpic" type="file" id="litpic" style="width:408px" onchange="SeePicNew('divpicview',this);"  />
                   <div id='divpicview' class='divpre'></div></td>
               </tr>
@@ -186,18 +190,18 @@ function ShowHideAddr()
             </thead>
             <tbody>
               <tr>
-                <td width="15%" align="right" valign="top">文字介绍：</td>
+                <td width="15%" align="right">文字介绍：</td>
                 <td><?php GetEditor("body","",200,"Member"); ?></td>
               </tr>
               <tr>
-                <td align="right" valign="top">本地地址：</td>
+                <td align="right">本地地址：</td>
                 <td><input class="text" name="softurl1" type="text" id="softurl1" size="35" />
                   <button class="buttonGary2" name="sel1" type="button" id="sel1" onclick="SelectSoft('form1.softurl1')">选取</button>
                   服务器名称：
                   <input class="text" name="servermsg1" type="text" id="servermsg1" value="本地下载" style="width:150px" /></td>
               </tr>
               <tr>
-                <td align="right" valign="top">其它地址：</td>
+                <td align="right">其它地址：</td>
                 <td><input class="text" name="picnum" type="text" id="picnum" size="8" value="5" />
                   <button class="buttonGary4" name='kkkup' type='button' id='kkkup2' onclick="MakeUpload();">增加地址</button>
                   <button class="buttonGary4 mL10" type="button" name="Submit3" id="btsh3" onclick="ShowHideAddr();">隐藏地址</button>
@@ -210,9 +214,9 @@ function ShowHideAddr()
      {
       ?>
               <tr>
-                <td align="right" valign="top">验证码：</td>
+                <td align="right">验证码：</td>
                 <td><input name="vdcode" type="text" id="vdcode" size="10" class="text" style='width:50px;text-transform:uppercase;' />
-                  <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle" /></td>
+                  <img src='../include/vdimgck.php' width='50' height='20' align="absmiddle" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></td>
               </tr>
               <?php
      }

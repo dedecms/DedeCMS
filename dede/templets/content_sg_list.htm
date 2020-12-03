@@ -3,8 +3,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>文档管理</title>
 <link rel="stylesheet" type="text/css" href="img/base.css">
+<script language="javascript" src="../include/dedeajax2.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/main.js"></script>
 <script language="javascript">
 if(moz) {
 	extendEventObject();
@@ -44,6 +46,16 @@ function adArc(aid){
 	if(aid==0) aid = getOneItem();
 	location="archives_do.php?aid="+aid+"&dopost=commendArchives&qstr="+qstr;
 }
+function moveArc(e, obj, cid){
+	var qstr=getCheckboxItem();
+	if(qstr=='')
+	{
+		alert('必须选择一个或多个文档！');
+		return;
+	}
+	LoadQuickDiv(e, 'archives_do.php?dopost=moveArchives&qstr='+qstr+'&channelid='+cid+'&rnd='+Math.random(), 'moveArchives', '450px', '180px');
+	ChangeFullDiv('show');
+}
 //上下文菜单
 function ShowMenu(evt,obj,aid,atitle)
 {
@@ -51,11 +63,14 @@ function ShowMenu(evt,obj,aid,atitle)
   popupoptions = [
     new ContextItem("浏览文档",function(){ viewArc(aid); }),
     new ContextItem("编辑文档",function(){ editArc(aid); }),
+    new ContextSeperator(),
     new ContextItem("更新HTML",function(){ updateArc(aid); }),
     new ContextItem("审核文档",function(){ checkArc(aid); }),
     new ContextItem("推荐文档",function(){ adArc(aid); }),
-    new ContextSeperator(),
     new ContextItem("删除文档",function(){ delArc(aid); }),
+    new ContextSeperator(),
+    new ContextItem("复制(<u>C</u>)",function(){ copyToClipboard(atitle); }),
+    new ContextItem("重载页面",function(){ location.reload(); }),
     new ContextSeperator(),
     new ContextItem("全部选择",function(){ selAll(); }),
     new ContextItem("取消选择",function(){ noSelAll(); }),
@@ -170,13 +185,12 @@ function noSelAll()
 <td width="10%">操作</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"
-	height="22" oncontextmenu="ShowMenu(event,this,{dede:field.aid/},'{dede:field.title function='urlencode(@me)'/}')">
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
 <td>{dede:field.id/}</td>
 <td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.aid/}" class="np"></td>
 <td align='left'>
 <a href='archives_do.php?aid={dede:field.aid/}&dopost=editArchives'
-	oncontextmenu="ShowMenu(event,this,{dede:field.aid/},'{dede:field.title function="urlencode(@me)"/}')">
+	oncontextmenu="ShowMenu(event,this,{dede:field.aid/},'{dede:field.title function="str_replace('\'', '', @me)" /}')">
 	<u>{dede:field.title/}{dede:field.flag function='IsCommendArchives(@me)'/}</u>
 </a>
 </td>
@@ -199,7 +213,7 @@ function noSelAll()
 <a href="javascript:updateArc(0)" class="coolbg">&nbsp;更新&nbsp;</a>
 <a href="javascript:checkArc(0)" class="coolbg">&nbsp;审核&nbsp;</a>
 <a href="javascript:adArc(0)" class="coolbg">&nbsp;推荐&nbsp;</a>
-<a href="javascript:moveArc(0)" class="coolbg">&nbsp;移动&nbsp;</a>
+<a href="javascript:;" onclick="moveArc(event,this,<?php echo (empty($channelid) ? 0 : $channelid); ?>)" class="coolbg">&nbsp;移动&nbsp;</a>
 <a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a>
 </td>
 </tr>

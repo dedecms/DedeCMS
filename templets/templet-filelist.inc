@@ -2,12 +2,16 @@ start,系统默认模板文件说明
 head.htm,列表页头部模板
 head_nocatalog.htm,内容页\主页等无子栏目页面头部模板
 index.htm,主页模板
+ajaxfeedback.htm,Ajax评论模板
 article_article.htm,文章内容页模板
+article_article_frame.htm,文章内容页模板框架版
 article_default.htm,自定义文档内容模板
 article_default_sg.htm,自定义单表文档内容模板
 article_image.htm,图片集内容页模板
+article_image_frame.htm,图片集内容页模板框架版
 article_shop.htm,商品模型内容页模板
 article_soft.htm,软件内容页模板
+article_soft_frame.htm,软件内容页模板框架版
 article_infos.htm,分类信息内容模板
 article_spec.htm,专题内容页模板
 index_article.htm,文章频道封面

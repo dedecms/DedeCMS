@@ -1,0 +1,100 @@
+body {
+	background: #ffffff;
+	margin: 0; 
+	padding: 0;
+	text-align: center; 
+	color: #333333;
+	font: 13px 宋体,Arial,sans-serif;
+	line-height: 150%;
+	padding-top:6px;
+}
+
+ul,dl,ol,form,div {
+  margin:0px; padding:0px;
+}
+li,dd {
+  list-style-type:none; margin:0px; padding:0px; 
+}
+
+a {
+  color:#0D570D; text-decoration:none;
+}
+a:hover, a:active{
+  color:#7E9F0F;
+}
+
+a img { border-style:none; }
+h1 { color:#171B16; font-size:130%; font-weight:bold; }
+h2 { color:#171B16; font-size:115%; font-weight:bold; }
+h3 { color:#171B16; font-size:100%; font-weight:bold;}
+
+td {
+	text-align:left;
+	font: 13px 宋体,Arial,sans-serif;
+	line-height:160%;
+}
+td.r {
+	text-align:right;
+	padding-right:3px;
+}
+
+td.c {
+	text-align:center;
+}
+
+td.i {
+	padding-left:3px;
+}
+
+/* 要重用的各种类 */
+.flr { 
+	float: right;
+	margin-left: 8px;
+}
+.fll { 
+	float: left;
+	margin-right: 8px;
+}
+.right { 
+	float: right;
+}
+.left { 
+	float: left;
+}
+.clearfloat { 
+	clear:both;
+  height:0;
+  font-size: 1px;
+  line-height: 0px;
+}
+
+#container { 
+	width: 1000px; 
+	background: #FFFFFF;
+	margin: 0 auto; 
+	text-align: left;
+} 
+
+#header { 
+	background: #fff; 
+	padding: 0px;  
+}
+
+.debug{
+	color:#000000;
+	font-size:12px;
+	text-align:center;
+}
+
+#header h1 {
+	margin: 0; 
+	padding-top: 10px; 
+}
+
+.bntnew {
+	background:#CFED92;
+	color:#35490C;
+	border-width:1px;
+	padding:2px 12px 2px 12px;
+	vertical-align:middle;
+}

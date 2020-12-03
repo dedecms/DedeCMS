@@ -16,22 +16,36 @@
 <tr>
 	<td colspan="2" height="28" background='img/tbg.gif'>
 	<div style='float:left'>&nbsp;<a href='diy_main.php'><b>自定义表单管理</b></a> &gt; <b>内容列表</b></div>
-	<div style='float:right'><a href="diy_list.php?action=post&diyid=<?php echo $diy->diyid;?>"><u>[发布新内容]</u></a>&nbsp;</div>
+	<div style='float:right;padding-right:8px;'>
+		<a href="../plus/diy.php?action=list&diyid=<?php echo $diy->diyid; ?>" target="_blank"><img src='img/gtk-tmp.png' align='left' title='预览' alt='预览' /><u>前台预览</u></a>
+	</div>
 	</td>
 </tr>
 {dede:datalist}
 <?php 
 if(!empty($fields))
 {
-	$fields['sta'] = $fields['ifcheck'] == 1 ? '已审核' : '未审核';    
+		$allowhtml = array('htmltext');
+		$fields['sta'] = $fields['ifcheck'] == 1 ? '已审核' : '未审核';    
 		echo '<tr bgcolor="#F8FDE3"><td width="20%"><input type="checkbox" name="id[]" value="'.$fields['id'].'" class="np" />id</td><td><a href="diy_list.php?action=edit&diyid='.$diy->diyid.'&id='.$fields['id'].'">'.$fields['id'].'</a> &nbsp; 状态: '.$fields['sta'].'</td></tr>';
 		foreach($fieldlist as $field=>$fielddata)
 		{
-			$allowhtml = array('htmltext');
-			if(!in_array($fielddata[1],$allowhtml)){
-				$fields[$field] = htmlspecialchars($fields[$field]);
+			if($fields[$field]=='') continue;
+			if($fielddata[1]=='img')
+			{
+				$fields[$field] = "<a href='{$fields[$field]}' target='_blank'><img src='img/channeladd.gif' border='0' /> 图片附件</a>\r\n";
 			}
-			echo '<tr><td bgcolor="#ffffff">'.$fielddata[0].'</td><td bgcolor="#ffffff">'.$fields[$field].'</td></tr>';
+			else if($fielddata[1]=='addon')
+			{
+				$fields[$field] = "<a href='{$fields[$field]}' target='_blank'><img src='img/channeladd.gif' border='0' /> 其它附件</a>";
+			}
+			else
+			{
+				if(!in_array($fielddata[1],$allowhtml)){
+					$fields[$field] = htmlspecialchars($fields[$field]);
+				}
+			}
+			echo '<tr><td bgcolor="#ffffff">'.$fielddata[0].'</td><td bgcolor="#ffffff">'.$fields[$field].'</td></tr>';		
 		}
 } else {
 	echo "<tr><td bgcolor=\"#ffffff\">暂无记录</td></tr>";

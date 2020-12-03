@@ -63,13 +63,11 @@ function checkSubmit()
                 <td width="81%" colspan="3" bgcolor="#FFFFFF"><input name="title" type="text" id="title" size="30" class="nb" style='width:250px' value="<?php echo $addRow['title']?>" />
                   <font color="#FF0000">*</font> </td>
               </tr>
-              <?php if($cInfos['dfcid']>0)
-      {
-      	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
-      }
-      else
-      {
-      ?>
+              <?php
+              if($cInfos['dfcid']>0) {
+              	echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />";
+              }else{
+              ?>
               <tr>
                 <td height="28" align="center" bgcolor="#F7FDF0">隶属栏目：</td>
                 <td colspan="3" bgcolor="#F7FDF0"><?php

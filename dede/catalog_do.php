@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 if(empty($dopost))
 {
 	ShowMsg("对不起，请指定栏目参数！","catalog_main.php");
@@ -105,7 +105,7 @@ function GoGuestBook();
 ---------------------------*/
 else if($dopost=="guestbook")
 {
-	header("location:{$cfg_phpurl}/guestbook.php?gotopagerank=admin");
+	ShowMsg("正在跳转到留言本&gt;&gt;", "{$cfg_phpurl}/guestbook.php?gotopagerank=admin");
 	exit();
 }
 
@@ -142,6 +142,7 @@ else if($dopost=="upRank")
 		$sortrank = $row['sortrank']-1;
 		$dsql->ExecuteNoneQuery("update #@__arctype set sortrank='$sortrank' where id='$cid'");
 	}
+	UpDateCatCache();
 	ShowMsg("操作成功，返回目录...","catalog_main.php");
 	exit();
 }
@@ -161,6 +162,7 @@ else if($dopost=="upRankAll")
 			}
 		}
 	}
+	UpDateCatCache();
 	ShowMsg("操作成功，正在返回...","catalog_main.php");
 	exit();
 }
@@ -193,7 +195,6 @@ else if($dopost=="upcatcache")
 		}
 		else
 		{
-		
 			$sql = "insert into `#@__arctiny`(id, typeid, typeid2, arcrank, channel, senddate, sortrank, mid)  
 			        Select aid, typeid, 0, arcrank, channel, senddate, 0, mid from `$tb` ";
 			$rs = $dsql->executenonequery($sql); 
@@ -245,5 +246,121 @@ else if($dopost=="GetSunLists")
 	echo "    </table>\r\n";
 	$tu->Close();
 }
-
+/*----------------
+合并栏目
+function unitCatalog() { }
+-----------------*/
+else if($dopost == 'unitCatalog')
+{
+	CheckPurview('t_Move');
+	require_once(DEDEINC.'/oxwindow.class.php');
+	require_once(DEDEINC.'/typelink.class.php');
+	require_once(DEDEINC.'/channelunit.func.php');
+	if(empty($nextjob))
+	{
+		$typeid = isset($typeid) ? intval($typeid) : 0;
+		$row = $dsql->GetOne("Select count(*) as dd From `#@__arctype` where reid='$typeid' ");
+		$tl = new TypeLink($typeid);
+		$typename = $tl->TypeInfos['typename'];
+		$reid = $tl->TypeInfos['reid'];
+		$channelid = $tl->TypeInfos['channeltype'];
+		if(!empty($row['dd']))
+		{
+			ShowMsg("栏目： $typename($typeid) 有子栏目，不能进行合并操作！", '-1');
+			exit();
+		}
+		$typeOptions = $tl->GetOptionArray(0, 0, $channelid);
+		$wintitle = '合并栏目';
+		$wecome_info = "<a href='catalog_main.php'>栏目管理</a> &gt;&gt; 合并栏目";
+		$win = new OxWindow();
+		$win->Init('catalog_do.php', 'js/blank.js', 'POST');
+		$win->AddHidden('dopost', 'unitCatalog');
+		$win->AddHidden('typeid', $typeid);
+		$win->AddHidden('channelid', $channelid);
+		$win->AddHidden('nextjob', 'unitok');
+		$win->AddTitle("合并目录时不会删除原来的栏目目录，合并后需手动更新目标栏目的文档HTML和列表HTML。");
+		$win->AddItem('你选择的栏目是：', "<font color='red'>$typename($typeid)</font>");
+		$win->AddItem('你希望合并到那个栏目？', "<select name='unittype'>\r\n{$typeOptions}\r\n</select>");
+		$win->AddItem('注意事项：', '栏目不能有下级子栏目，只允许子级到更高级或同级或不同父级的情况。');
+		$winform = $win->GetWindow('ok');
+		$win->Display();
+		exit();
+	}
+	else
+	{
+		if($typeid==$unittype)
+		{
+			ShowMsg("天哪，同一栏目如何合并，不是欺负人嘛！", '-1');
+			exit();
+		}
+		if(IsParent($unittype, $typeid))
+		{
+			ShowMsg('不能从父类合并到子类！', 'catalog_main.php');
+			exit();
+		}
+		$row = $dsql->GetOne("Select addtable From `#@__channeltype` where id='$channelid' ");
+		$addtable = (empty($row['addtable']) ? '#@__addonarticle' : $row['addtable'] );
+		$dsql->ExecuteNoneQuery("Update `#@__arctiny` set typeid='$unittype' where typeid='$typeid' ");
+		$dsql->ExecuteNoneQuery("Update `#@__feedback` set typeid='$unittype' where typeid='$typeid' ");
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set typeid='$unittype' where typeid='$typeid' ");
+		$dsql->ExecuteNoneQuery("Update `#@__archives` set typeid2='$unittype' where typeid2='$typeid' ");
+		$dsql->ExecuteNoneQuery("Update `#@__addonspec` set typeid='$unittype' where typeid='$typeid' ");
+		$dsql->ExecuteNoneQuery("Update `$addtable` set typeid='$unittype' where typeid='$typeid' ");
+		$dsql->ExecuteNoneQuery("Delete From `#@__arctype` where id='$typeid' ");
+		UpDateCatCache();
+		ShowMsg('成功合并指定栏目！', 'catalog_main.php');
+		exit();
+	}
+}
+/*----------------
+移动栏目
+function moveCatalog() { }
+-----------------*/
+else if($dopost == 'moveCatalog')
+{
+	CheckPurview('t_Move');
+	require_once(DEDEINC.'/oxwindow.class.php');
+	require_once(DEDEINC.'/typelink.class.php');
+	require_once(DEDEINC.'/channelunit.func.php');
+	if(empty($nextjob))
+	{
+		$tl = new TypeLink($typeid);
+		$typename = $tl->TypeInfos['typename'];
+		$reid = $tl->TypeInfos['reid'];
+		$channelid = $tl->TypeInfos['channeltype'];
+		$typeOptions = $tl->GetOptionArray(0,0,$channelid);
+		$wintitle = "移动栏目";
+		$wecome_info = "<a href='catalog_main.php'>栏目管理</a> &gt;&gt; 移动栏目";
+		$win = new OxWindow();
+		$win->Init('catalog_do.php', 'js/blank.js', 'POST');
+		$win->AddHidden('dopost', 'moveCatalog');
+		$win->AddHidden('typeid', $typeid);
+		$win->AddHidden('channelid', $channelid);
+		$win->AddHidden('nextjob', 'unitok');
+		$win->AddTitle("移动目录时不会删除原来已创建的列表，移动后需重新对栏目创建HTML。");
+		$win->AddItem('你选择的栏目是：',"$typename($typeid)");
+		$win->AddItem('你希望移动到那个栏目？',"<select name='movetype'>\r\n<option value='0'>移动为顶级栏目</option>\r\n$typeOptions\r\n</select>");
+		$win->AddItem('注意事项：','不允许从父级移动到子级目录，只允许子级到更高级或同级或不同父级的情况。');
+		$winform = $win->GetWindow('ok');
+		$win->Display();
+		exit();
+	}
+	else
+	{
+		if($typeid==$movetype)
+		{
+			ShowMsg('移对对象和目标位置相同！', 'catalog_main.php');
+			exit();
+		}
+		if(IsParent($movetype, $typeid))
+		{
+			ShowMsg('不能从父类移动到子类！', 'catalog_main.php');
+			exit();
+		}
+		$dsql->ExecuteNoneQuery(" Update `#@__arctype` set reid='$movetype' where id='$typeid' ");
+		UpDateCatCache();
+		ShowMsg('成功移动目录！', 'catalog_main.php');
+		exit();
+	}
+}
 ?>

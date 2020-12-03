@@ -4,7 +4,7 @@ CheckRank(0,0);
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",GetCurUrl(),time()+3600,"/");
 $type = isset($type) ? trim($type) : '';
-
+$tpl = '';
 if($type == '')
 {
 	$sql = "Select * From `#@__member_stow` where mid='".$cfg_ml->M_ID."' order by id desc";

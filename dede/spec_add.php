@@ -9,8 +9,9 @@ if(empty($dopost))
 }
 if($dopost!='save')
 {
-	require_once(DEDEINC."/dedetag.class.php");
-	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
+	require_once(DEDEINC.'/dedetag.class.php');
+	require_once(DEDEADMIN.'/inc/inc_catalog_options.php');
+	ClearMyAddon();
 	$channelid = -1;
 	$cid = isset($cid) && is_numeric($cid) ? $cid : 0;
 
@@ -27,48 +28,19 @@ else if($dopost=='save')
 {
 	require_once(DEDEINC.'/image.func.php');
 	require_once(DEDEINC.'/oxwindow.class.php');
-	if(!isset($flags))
-	{
-		$flag = '';
-	}
-	else
-	{
-		$flag = join(',',$flags);
-	}
+	$flag = isset($flags) ? join(',',$flags) : '';
+	$notpost = isset($notpost) && $notpost == 1 ? 1: 0;
+	if(empty($click)) $click = ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click);
+	
 	$channelid= -1;
 	$money = 0;
-	if(!isset($tags))
-	{
-		$tags = '';
-	}
+	if(!isset($tags))	$tags = '';
 
 	//处理自定义字段会用到这些变量
-	if(!isset($autokey))
-	{
-		$autokey = 0;
-	}
-	if(!isset($remote))
-	{
-		$remote = 0;
-	}
-	if(!isset($dellink))
-	{
-		$dellink = 0;
-	}
-	if(!isset($autolitpic))
-	{
-		$autolitpic = 0;
-	}
-	if($typeid==0)
-	{
-		ShowMsg('请指定文档的栏目！','-1');
-		exit();
-	}
-	if(!TestPurview('a_New'))
-	{
-		CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的权限！");
-		exit();
-	}
+	if(!isset($autokey))	$autokey = 0;
+	if(!isset($remote))	$remote = 0;
+	if(!isset($dellink))	$dellink = 0;
+	if(!isset($autolitpic))	$autolitpic = 0;
 
 	//对保存的内容进行处理
 	if(empty($writer))$writer=$cuserLogin->getUserName();
@@ -84,14 +56,14 @@ else if($dopost=='save')
 	{
 		$ismake = 0;
 	}
-
+	$title = ereg_replace('"', '＂', $title);
 	$title = cn_substrR($title,$cfg_title_maxlen);
 	$shorttitle = cn_substrR($shorttitle,36);
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,250);
-	$keywords = cn_substrR($keywords,30);
+	$description = cn_substrR($description,$cfg_auot_description);
+	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
 	{
@@ -104,7 +76,7 @@ else if($dopost=='save')
 	{
 		$ddisremote = 0;
 	}
-	$litpic = GetDDImage('litpic',$picname,$ddisremote);
+	$litpic = GetDDImage('none',$picname,$ddisremote);
 
 	//生成文档ID
 	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$adminid);
@@ -116,9 +88,9 @@ else if($dopost=='save')
 
 	//保存到主表
 	$inQuery = "INSERT INTO `#@__archives`(id,typeid,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
-    color,writer,source,litpic,pubdate,senddate,mid,description,keywords,filename)
-    VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank','0','$money','$title','$shorttitle',
-    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$description','$keywords','$filename');";
+    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename)
+    VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money','$title','$shorttitle',
+    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$notpost','$description','$keywords','$filename');";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
 		echo $inQuery;
@@ -248,7 +220,7 @@ else if($dopost=='save')
 	{
 		$artUrl = $cfg_phpurl."/view.php?aid=$arcID";
 	}
-
+	ClearMyAddon($arcID, $title);
 	//返回成功信息
 	$msg = "
     　　请选择你的后续操作：

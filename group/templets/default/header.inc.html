@@ -1,0 +1,16 @@
+<div class="headTop">
+  <div class="logo" onclick="location='/'" title="<?php echo $lang['group_main_siteindex'];?>"> </div>
+  <div class="welcome">
+    <?php
+                if(!$cfg_ml->IsLogin()){
+                ?>
+    <?php echo $lang['group_main_hello'].$lang['group_main_first'];?> <a href="../member/login.php?gourl=<?php echo urlencode(GetCurUrl());?>"><?php echo $lang['group_main_login'];?></a> <?php echo $lang['group_main_or'];?> <a href="../member/index_do.php?fmdo=user&dopost=regnew"><?php echo $lang['group_main_reg'];?></a>
+    <?php
+                }else{
+                ?>
+    <?php echo $lang['group_main_hello'].$cfg_ml->M_UserName; ?> <?php echo $lang['group_main_welcome'].$Honor; ?> | <a href="../group"><?php echo $lang['group_main_index'];?></a> | <a href="../member/index_do.php?fmdo=login&dopost=exit"><?php echo $lang['group_main_exit'];?></a>
+    <?php
+                }
+                ?>
+  </div>
+</div>

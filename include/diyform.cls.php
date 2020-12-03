@@ -40,7 +40,7 @@ class diyform
 		$this->postTemplate = $diyinfo['posttemplate'] != '' && file_exists(DEDEINC.'/../templets/plus/'.$diyinfo['posttemplate']) ? $diyinfo['posttemplate'] : 'post_diyform.htm';;
 	}//end func __construct()
 
-	function getForm($type = 'post', $value = '', $admintype='member')
+	function getForm($type = 'post', $value = '', $admintype='diy')
 	{
 		global $cfg_cookie_encode;
 		$dtp = new DedeTagParse();

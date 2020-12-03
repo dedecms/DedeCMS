@@ -35,6 +35,7 @@ class FreeList
 		$this->TempletsFile = '';
 		$this->FLInfos = $this->dsql->GetOne("Select * From `#@__freelist` where aid='$fid' ");
 		$liststr = $this->FLInfos['listtag'];
+		$this->FLInfos['maxpage'] = (empty($this->FLInfos['maxpage']) ? 100 : $this->FLInfos['maxpage']);
 
 		//载入数据里保存的列表属性信息
 		$ndtp = new DedeTagParse();
@@ -47,7 +48,7 @@ class FreeList
 			$this->PageSize = 30;
 		}
 		$channelid = $this->ListObj->GetAtt('channel');
-
+		
 		/*
 		if(empty($channelid))
 		{
@@ -62,17 +63,17 @@ class FreeList
 		*/
 		$channelid = intval($channelid);
 		$this->maintable = '#@__archives';
-
+		
 		//全局模板解析器
 		$this->dtp = new DedeTagParse();
 		$this->dtp->SetNameSpace("dede","{","}");
-		$this->dtp->refObj = $this;
+		$this->dtp->SetRefObj($this);
 
 		//设置一些全局参数的值
 		$this->Fields['aid'] = $this->FLInfos['aid'];
 		$this->Fields['title'] = $this->FLInfos['title'];
 		$this->Fields['position'] = $this->FLInfos['title'];
-		$this->Fields['keywords'] = $this->FLInfos['keyword'];
+		$this->Fields['keywords'] = $this->FLInfos['keywords'];
 		$this->Fields['description'] = $this->FLInfos['description'];
 		$channelid = $this->ListObj->GetAtt('channel');
 		if(!empty($channelid))
@@ -185,7 +186,7 @@ class FreeList
 			{
 				$addSql .= " And CONCAT(title,keywords) REGEXP '$keyword' ";
 			}
-			$cquery = "Select count(*) as dd From {$this->maintable} where $addSql";
+			$cquery = "Select count(*) as dd From `{$this->maintable}` where $addSql";
 			$row = $this->dsql->GetOne($cquery);
 			if(is_array($row))
 			{
@@ -197,6 +198,11 @@ class FreeList
 			}
 		}
 		$this->TotalPage = ceil($this->TotalResult/$this->PageSize);
+		if($this->TotalPage > $this->FLInfos['maxpage'])
+		{
+			$this->TotalPage = $this->FLInfos['maxpage'];
+			$this->TotalResult = $this->TotalPage * $this->PageSize;
+		}
 	}
 
 	//载入模板
@@ -348,7 +354,8 @@ class FreeList
 			if($ctag->GetName()=="freelist")
 			{
 				$limitstart = ($this->PageNo-1) * $this->PageSize;
-				$this->dtp->Assign($tagid,$this->GetList($limitstart,$ismake));
+				if($this->PageNo > $this->FLInfos['maxpage']) $this->dtp->Assign($tagid, '已经超过了最大允许列出的页面！');
+				else $this->dtp->Assign($tagid,$this->GetList($limitstart,$ismake));
 			}
 			else if($ctag->GetName()=="pagelist")
 			{
@@ -604,7 +611,9 @@ class FreeList
 							$row["siteurl"] = $GLOBALS['cfg_mainsite'];
 						}
 					}
+
 					$row['description'] = cn_substr($row['description'],$infolen);
+
 					if($row['litpic'] == '-' || $row['litpic'] == '')
 					{
 						$row['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
@@ -756,7 +765,9 @@ class FreeList
 
 		//option链接
 		$optionlen = strlen($totalpage);
-		$optionlen = $optionlen*20+18;
+		$optionlen = $optionlen*12 + 18;
+		if($optionlen < 36) $optionlen = 36;
+		if($optionlen > 100) $optionlen = 100;
 		$optionlist = "<select name='sldd' style='width:$optionlen' onchange='location.href=this.options[this.selectedIndex].value;'>\r\n";
 		for($mjj=1;$mjj<=$totalpage;$mjj++)
 		{
@@ -857,8 +868,8 @@ class FreeList
 		$maininfo = "共{$totalpage}页/".$this->TotalResult."条记录";
 		$purl = $this->GetCurUrl();
 		$geturl = "lid=".$this->FreeID."&TotalResult=".$this->TotalResult."&";
-		$hidenform = "<input type='hidden' name='lid' value='".$this->FreeID."'>\r\n";
-		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."'>\r\n";
+		$hidenform = "<input type='hidden' name='lid' value='".$this->FreeID."' />\r\n";
+		$hidenform .= "<input type='hidden' name='TotalResult' value='".$this->TotalResult."' />\r\n";
 		$purl .= "?".$geturl;
 
 		//获得上一页和下一页的链接
@@ -910,8 +921,8 @@ class FreeList
 		$plist .= $maininfo.$indexpage.$prepage.$listdd.$nextpage.$endpage;
 		if($totalpage>$total_list)
 		{
-			$plist.="<input type='text' name='PageNo'  value='".$this->PageNo."'>\r\n";
-			$plist.="<input type='submit' name='plistgo' value='GO' >\r\n";
+			$plist.="<input type='text' name='PageNo'  value='".$this->PageNo."' style='width:30px' />\r\n";
+			$plist.="<input type='submit' name='plistgo' value='GO' />\r\n";
 		}
 		$plist .= "</form>\r\n";
 		return $plist;

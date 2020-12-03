@@ -46,65 +46,63 @@ $needRank = $arc->Fields['arcrank'];
 if($needMoney>0 || $needRank>1)
 {
 	require_once(DEDEINC.'/memberlogin.class.php');
-	$ml = new MemberLogin();
-	
+	$cfg_ml = new MemberLogin();
 	$arctitle = $arc->Fields['title'];
-	
+	/*
 	$arclink = GetFileUrl($arc->ArcID,$arc->Fields["typeid"],$arc->Fields["senddate"],
 	                         $arc->Fields["title"],$arc->Fields["ismake"],$arc->Fields["arcrank"]);
+	*/                        
+	$arclink = $cfg_phpurl.'/view.php?aid='.$arc->ArcID;                         
+	$arcLinktitle = "<a href=\"{$arclink}\"><u>".$arctitle."</u></a>";
 	
 	$description =  $arc->Fields["description"];
-	
 	$pubdate = GetDateTimeMk($arc->Fields["pubdate"]);
 	
 	//会员级别不足
-	if(($needRank>1 && $ml->M_Rank < $needRank && $arc->Fields['mid']!=$ml->M_ID))
+	if(($needRank>1 && $cfg_ml->M_Rank < $needRank && $arc->Fields['mid']!=$cfg_ml->M_ID))
 	{
 		$dsql->Execute('me' , "Select * From `#@__arcrank` ");
 		while($row = $dsql->GetObject('me'))
 		{
 			$memberTypes[$row->rank] = $row->membername;
 		}
-		$memberTypes[0] = "注册会员";
-		$msgtitle = "没有权限！";
-		$moremsg = "这篇文档需要<font color='red'>".$memberTypes[$needRank]."</font>才能访问，你目前是：<font color='red'>".$memberTypes[$ml->M_Rank]."</font>";
-		include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
+		$memberTypes[0] = "游客或没权限会员";
+		$msgtitle = "你没有权限浏览文档：{$arctitle} ！";
+		$moremsg = "这篇文档需要 <font color='red'>".$memberTypes[$needRank]."</font> 才能访问，你目前是：<font color='red'>".$memberTypes[$cfg_ml->M_Rank]."</font> ！";
+		include_once(DEDETEMPLATE.'/plus/view_msg.htm');
 		exit();
 	}
 
-	//没有足够的金币
-	if(($needMoney > $ml->M_Money  && $arc->Fields['mid']!=$ml->M_ID) || $ml->M_Money=='')
+	//需要金币的情况
+	if( $needMoney > 0  && $arc->Fields['mid'] != $cfg_ml->M_ID)
 	{
-		$msgtitle = "没有权限！";
-		$moremsg = "这篇文档需要 <font color='red'>".$needMoney." 金币</font> 才能访问，你目前拥有金币：<font color='red'>".$ml->M_Money." 个</font>";
-		include_once($cfg_basedir.$cfg_templets_dir."/plus/view_msg.htm");
-		$arc->Close();
-		exit();
-	}
-
-	//以下为正常情况，自动扣点数
-	if($needMoney > 0  && $arc->Fields['mid']!=$ml->M_ID) //如果文章需要金币，检查用户是否浏览过本文档
-	{
-		$sql = "Select aid,money From `#@__member_operation` where buyid='ARCHIVE".$aid."' And mid='".$ml->M_ID."'";
+		$sql = "Select aid,money From `#@__member_operation` where buyid='ARCHIVE".$aid."' And mid='".$cfg_ml->M_ID."'";
 		$row = $dsql->GetOne($sql);
+		//未购买过此文章
 		if(!is_array($row))
 		{
-		 	 $inquery = "INSERT INTO `#@__member_operation`(mid,oldinfo,money,mtime,buyid,product,pname)
-		              VALUES ('".$ml->M_ID."','$arctitle','$needMoney','".time()."', 'ARCHIVE".$aid."', 'archive',''); ";
-		 	 if($dsql->ExecuteNoneQuery($inquery))
-		 	 {
-		  		$inquery = "Update `#@__member` set money=money-$needMoney where mid='".$ml->M_ID."'";
-		    		if(!$dsql->ExecuteNoneQuery($inquery))
-				{
-					showmsg('购买失败, 请返回', -1);
-					exit;
-				}
-			} else {
-				showmsg('购买失败, 请返回', -1);
-				exit;
+			if( $cfg_ml->M_Money=='' || $needMoney > $cfg_ml->M_Money)
+	 		{
+					$msgtitle = "你没有权限浏览文档：{$arctitle} ！";
+					$moremsg = "这篇文档需要 <font color='red'>".$needMoney." 金币</font> 才能访问，你目前拥有金币：<font color='red'>".$cfg_ml->M_Money." 个</font> ！";
+					include_once(DEDETEMPLATE.'/plus/view_msg.htm');
+					$arc->Close();
+					exit();
+			}
+			else
+			{
+					$inquery = "INSERT INTO `#@__member_operation`(mid,oldinfo,money,mtime,buyid,product,pname,sta)
+		              VALUES ('".$cfg_ml->M_ID."','$arctitle','$needMoney','".time()."', 'ARCHIVE".$aid."', 'archive','购买文章', 2); ";
+		 	 		if(!$dsql->ExecuteNoneQuery($inquery))
+		 	 		{
+							ShowMsg('保存购买记录失败， 请与管理员联系！', '-1');
+							exit;
+					}
+					$dsql->ExecuteNoneQuery("Update `#@__member` set money=money-$needMoney where mid='".$cfg_ml->M_ID."'");
 			}
 		}
-	}
+	}//金币处理付处理
+	
 }
 $arc->Display();
 

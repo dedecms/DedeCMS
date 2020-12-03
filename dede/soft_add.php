@@ -1,17 +1,15 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('a_New,a_AccNew');
-require_once(DEDEINC."/customfields.func.php");
-require_once(DEDEADMIN."/inc/inc_archives_functions.php");
+require_once(DEDEINC.'/customfields.func.php');
+require_once(DEDEADMIN.'/inc/inc_archives_functions.php');
+if(empty($dopost)) $dopost = '';
 
-if(empty($dopost))
+if($dopost != 'save')
 {
-	$dopost = '';
-}
-if($dopost!='save')
-{
-	require_once(DEDEINC."/dedetag.class.php");
-	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
+	require_once(DEDEINC.'/dedetag.class.php');
+	require_once(DEDEADMIN.'/inc/inc_catalog_options.php');
+	ClearMyAddon();
 	$channelid = empty($channelid) ? 0 : intval($channelid);
 	$cid = empty($cid) ? 0 : intval($cid);
 
@@ -25,10 +23,11 @@ if($dopost!='save')
 	{
 		if($channelid==0)
 		{
-			$channelid = 3;
+			$channelid = 1;
 		}
 	}
 
+	$softconfig = $dsql->GetOne("select * From `#@__softconfig` ");
 	//获得频道模型信息
 	$cInfos = $dsql->GetOne(" Select * From  `#@__channeltype` where id='$channelid' ");
 	$channelid = $cInfos['id'];
@@ -42,8 +41,11 @@ else if($dopost=='save')
 {
 	require_once(DEDEINC.'/image.func.php');
 	require_once(DEDEINC.'/oxwindow.class.php');
-
+	
 	$flag = isset($flags) ? join(',',$flags) : '';
+	$notpost = isset($notpost) && $notpost == 1 ? 1: 0;
+	if(empty($click)) $click = ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click);
+	
 	if(!isset($typeid2)) $typeid2 = 0;
 	if(!isset($autokey)) $autokey = 0;
 	if(!isset($remote)) $remote = 0;
@@ -76,21 +78,20 @@ else if($dopost=='save')
 	$pubdate = GetMkTime($pubdate);
 	$senddate = time();
 	$sortrank = AddDay($pubdate,$sortup);
-	if($ishtml==0)
-	{
-		$ismake = -1;
-	}
-	else
-	{
-		$ismake = 0;
-	}
+	
+	if($ishtml==0) $ismake = -1;
+	else $ismake = 0;
+	
+	if(empty($click)) $click = ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click);
+
+	$title = ereg_replace('"', '＂', $title);
 	$title = cn_substrR($title,$cfg_title_maxlen);
 	$shorttitle = cn_substrR($shorttitle,36);
 	$color =  cn_substrR($color,7);
 	$writer =  cn_substrR($writer,20);
 	$source = cn_substrR($source,30);
-	$description = cn_substrR($description,250);
-	$keywords = cn_substrR($keywords,30);
+	$description = cn_substrR($description,$cfg_auot_description);
+	$keywords = cn_substrR($keywords,60);
 	$filename = trim(cn_substrR($filename,40));
 	$userip = GetIP();
 	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
@@ -100,11 +101,9 @@ else if($dopost=='save')
 	$adminid = $cuserLogin->getUserID();
 
 	//处理上传的缩略图
-	if(empty($ddisremote))
-	{
-		$ddisremote = 0;
-	}
-	$litpic = GetDDImage('litpic',$picname,$ddisremote);
+	if(empty($ddisremote)) $ddisremote = 0;
+
+	$litpic = GetDDImage('none',$picname,$ddisremote);
 
 	//生成文档ID
 	$arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$adminid);
@@ -115,14 +114,14 @@ else if($dopost=='save')
 	}
 
 	//处理body字段自动摘要、自动提取缩略图等
-	$body = AnalyseHtmlBody($body,$description,$litpic,$keywords,'htmltext');
+	$body = AnalyseHtmlBody($body, $description, $litpic, $keywords, 'htmltext');
 
 	//分析处理附加表数据
 	$inadd_f = '';
 	$inadd_v = '';
 	if(!empty($dede_addonfields))
 	{
-		$addonfields = explode(';',$dede_addonfields);
+		$addonfields = explode(';', $dede_addonfields);
 		$inadd_f = '';
 		$inadd_v = '';
 		if(is_array($addonfields))
@@ -166,11 +165,13 @@ else if($dopost=='save')
 		$flag = ($flag=='' ? 'j' : $flag.',j');
 	}
 
+	//跳转网址的文档强制为动态
+	if(ereg('j', $flag)) $ismake = -1;
 	//保存到主表
 	$inQuery = "INSERT INTO `#@__archives`(id,typeid,typeid2,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
-    color,writer,source,litpic,pubdate,senddate,mid,description,keywords,filename)
-    VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','0','$money','$title','$shorttitle',
-    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$description','$keywords','$filename');";
+    color,writer,source,litpic,pubdate,senddate,mid,notpost,description,keywords,filename,dutyadmin)
+    VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money','$title','$shorttitle',
+    '$color','$writer','$source','$litpic','$pubdate','$senddate','$adminid','$notpost','$description','$keywords','$filename','$adminid');";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
 		$gerr = $dsql->GetError();
@@ -180,27 +181,60 @@ else if($dopost=='save')
 	}
 
 	//软件链接列表
-	$softurl1 = stripslashes($softurl1);
 	$urls = '';
-	if($softurl1!='') $urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n";
-	for($i=2;$i<=30;$i++)
+	
+	//本地链接处理
+	$softurl1 = stripslashes($softurl1);
+	$nsoftsize = '';
+	if($softurl1 != '')
+	{
+		$urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n";
+		$autosize = empty($autosize) ? false : true;
+		if($autosize && empty($softsize))
+		{
+			$nsoftsize = @filesize($cfg_basedir.$softurl1);
+			if(empty($nsoftsize)) $nsoftsize = '未知';
+			else
+			{
+				$nsoftsize = trim(sprintf("%0.2f", $nsoftsize / 1024 / 1024));
+				$nsoftsize = $nsoftsize." MB";
+			}
+		}
+	}
+	
+	//软件大小
+	if(!empty($nsoftsize)) $softsize = $nsoftsize;
+	else if(empty($softsize)) $softsize = '未知';
+	else $softsize = $softsize.' '.$unit;
+	
+	//其它链接处理
+	for($i=2; $i<=30; $i++)
 	{
 		if(!empty(${'softurl'.$i}))
 		{
-			$servermsg = str_replace("'","",stripslashes(${'servermsg'.$i}));
-			$softurl = stripslashes(${'softurl'.$i});
-			if($servermsg=='')
+			$forconfig = empty(${'forconfig'.$i}) ? false : true;
+			if($forconfig)
 			{
-				$servermsg = '下载地址'.$i;
+				if(empty(${'need'.$i})) continue;
+				$serverUrl = stripslashes(${'softurlfirst'.$i});
+				$serverUrl = ereg_replace("/$", "", $serverUrl);
+				$softurl = stripslashes(${'softurl'.$i});
+				if( cn_substr($softurl, 1) != '/' ) $softurl = '/'.$softurl;
+				$softurl = $serverUrl.$softurl;
 			}
-			if($softurl!='' && $softurl!='http://')
+			else
+			{
+				$softurl = stripslashes(${'softurl'.$i});
+			}
+			$servermsg = str_replace("'", "", stripslashes(${'servermsg'.$i}));
+			if($servermsg=='') $servermsg = '下载地址'.$i;
+			if($softurl != 'http://')
 			{
 				$urls .= "{dede:link text='$servermsg'} $softurl {/dede:link}\r\n";
 			}
 		}
 	}
 	$urls = addslashes($urls);
-	$softsize = $softsize.$unit;
 
 	//保存到附加表
 	$cts = $dsql->GetOne("Select addtable From `#@__channeltype` where id='$channelid' ");
@@ -215,9 +249,9 @@ else if($dopost=='save')
 	$daccess = isset($daccess) && is_numeric($daccess) ? $daccess : 0;
 	$useip = GetIP();
 	$inQuery = "INSERT INTO `$addtable`(aid,typeid,redirecturl,userip,filetype,language,softtype,accredit,
-    os,softrank,officialUrl,officialDemo,softsize,softlinks,introduce,daccess{$inadd_f})
+    os,softrank,officialUrl,officialDemo,softsize,softlinks,introduce,daccess,needmoney{$inadd_f})
     VALUES ('$arcID','$typeid','$redirecturl','$useip','$filetype','$language','$softtype','$accredit',
-    '$os','$softrank','$officialUrl','$officialDemo','$softsize','$urls','$body','$daccess'{$inadd_v});";
+    '$os','$softrank','$officialUrl','$officialDemo','$softsize','$urls','$body','$daccess','$needmoney'{$inadd_v});";
 	if(!$dsql->ExecuteNoneQuery($inQuery))
 	{
 		$gerr = $dsql->GetError();
@@ -230,11 +264,11 @@ else if($dopost=='save')
 	//生成HTML
 	InsertTags($tags,$arcID);
 	$arcUrl = MakeArt($arcID,true,true);
-	if($arcUrl=="")
+	if($arcUrl=='')
 	{
 		$arcUrl = $cfg_phpurl."/view.php?aid=$arcID";
 	}
-
+	ClearMyAddon($arcID, $title);
 	//返回成功信息
 	$msg = "
     　　请选择你的后续操作：
@@ -247,7 +281,8 @@ else if($dopost=='save')
     <a href='catalog_do.php?cid=$typeid&dopost=listArchives'><u>已发布软件管理</u></a>
     &nbsp;&nbsp;
     <a href='catalog_main.php'><u>网站栏目管理</u></a>
-    ";
+   ";
+  $msg = "<div style=\"line-height:36px;height:36px\">{$msg}</div>".GetUpdateTest();
 
 	$wintitle = "成功发布一个软件！";
 	$wecome_info = "文章管理::发布软件";

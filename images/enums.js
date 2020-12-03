@@ -135,8 +135,8 @@ function MakeTopSelect(emname, selvalue)
 			aOption = document.createElement('OPTION');
 			aOption.text = selarr[i];
 			aOption.value = i;
-			aOption.selected = true;
 			selObj.options.add(aOption);
+			aOption.selected = true;
 		}
 		else {
 			aOption = document.createElement('OPTION');
@@ -170,8 +170,8 @@ function MakeTopSelect(emname, selvalue)
 					aOption = document.createElement('OPTION');
 					aOption.text = selarr[i];
 					aOption.value = i;
-					aOption.selected = true;
 					selObj.options.add(aOption);
+					aOption.selected = true;
 				}
 				else {
 					aOption = document.createElement('OPTION');

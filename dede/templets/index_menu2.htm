@@ -30,15 +30,18 @@ dl.bitem {
 	clear:both;
 	width:130px;
 	margin:0px 0px 5px 12px;
+	background:url(img/menunewbg.gif) repeat-x;
 }
 
 dl.bitem dt {
-  height:24px;
-  line-height:24px;
-  text-align:center;
-  border:1px dashed #ababab;
-  background:#f4ffec url(img/menu-ex.png) 5px 4px no-repeat;
+  height:25px;
+  line-height:25px;
+  padding-left:35px;
   cursor:pointer;
+}
+
+dl.bitem dt b {
+	color:#4D6C2F;
 }
 
 dl.bitem dd {
@@ -127,14 +130,20 @@ a.mm:hover div
   	<a id='link5' class='mm'><div onclick="ShowMainMenu(5)">生成</div></a>
   	<a id='link3' class='mm'><div onclick="ShowMainMenu(3)">采集</div></a>
   	<a id='link6' class='mm'><div onclick="ShowMainMenu(6)">会员</div></a>
+  	<?php
+  	if($cuserLogin->getUserType() >= 10) {
+  	?>
   	<a id='link7' class='mm'><div onclick="ShowMainMenu(7)">模板</div></a>
   	<a id='link10' class='mm'><div onclick="ShowMainMenu(10)">系统</div></a>
+  	<?php
+  	}
+  	?>
   	<div class='mmf'></div>
   </td>
   <td width='160' id='mainct' valign="top">
 <div id='ct1'>
 <?php
-GetMenus($cuserLogin->getUserRank(),'main');
+GetMenus($cuserLogin->getUserRank(), 'main');
 ?>
 </div>
 <div id='ct100'></div>

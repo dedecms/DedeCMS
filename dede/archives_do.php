@@ -6,12 +6,12 @@ require_once(DEDEINC.'/typelink.class.php');
 require_once(DEDEINC.'/arc.archives.class.php');
 $ENV_GOBACK_URL = (empty($_COOKIE['ENV_GOBACK_URL']) ? 'content_list.php' : $_COOKIE['ENV_GOBACK_URL']);
 
-if(empty($dopost) || empty($aid))
+if(empty($dopost))
 {
 	ShowMsg('对不起，你没指定运行参数！','-1');
 	exit();
 }
-$aid = ereg_replace('[^0-9]','',$aid);
+$aid = isset($aid) ? ereg_replace('[^0-9]','',$aid) : '';
 
 /*--------------------------
 //编辑文档
@@ -57,7 +57,7 @@ else if($dopost=="viewArchives")
 		           from `{$trow['maintable']}` arc left join `#@__arctype` tp on arc.typeid=tp.id
 		           left join `#@__channeltype` ch on ch.id=arc.channel where arc.id='$aid' ";
 		$arcRow = $dsql->GetOne($arcQuery);
-		if($arcRow['ismake']==-1 || $arcRow['corank']!=0 || $arcRow['arcrank']!=0 || $arcRow['typeid']==0 || $arcRow['money']>0)
+		if($arcRow['ismake']==-1 || $arcRow['corank']!=0 || $arcRow['arcrank']!=0 || ($arcRow['typeid']==0 && $arcRow['channel']!=-1) || $arcRow['money']>0)
 		{
 			echo "<script language='javascript'>location.href='{$cfg_phpurl}/view.php?aid={$aid}';</script>";
 			exit();
@@ -95,7 +95,59 @@ else if($dopost=="viewArchives")
 	echo "<script language='javascript'>location.href='$arcurl"."?".time()."';</script>";
 	exit();
 }
-
+/*--------------------------
+//异步上传缩略图
+function uploadLitpic(){ }
+---------------------------*/
+else if($dopost=="uploadLitpic")
+{
+	$upfile = AdminUpload('litpic', 'imagelit', 0, false );
+	if($upfile=='-1')
+	{
+		$msg = "<script language='javascript'>
+				parent.document.getElementById('uploadwait').style.display = 'none';
+				alert('你没指定要上传的文件或文件大小超过限制！');
+			</script>";
+	}
+	else if($upfile=='-2')
+	{
+		$msg = "<script language='javascript'>
+				parent.document.getElementById('uploadwait').style.display = 'none';
+				alert('上传文件失败，请检查原因！');
+			</script>";
+	}
+	else if($upfile=='0')
+	{
+		$msg = "<script language='javascript'>
+				parent.document.getElementById('uploadwait').style.display = 'none';
+				alert('文件类型不正确！');
+			</script>";
+	}
+	else
+	{
+		 if(!empty($cfg_uplitpic_cut) && $cfg_uplitpic_cut=='N')
+		 {
+		 		$msg = "<script language='javascript'>
+					parent.document.getElementById('uploadwait').style.display = 'none';
+					parent.document.getElementById('picname').value = '{$upfile}';
+					if(parent.document.getElementById('divpicview'))
+					{
+						parent.document.getElementById('divpicview').style.width = '150px';
+						parent.document.getElementById('divpicview').innerHTML = \"<img src='{$upfile}?n' width='150' />\";
+					}
+				</script>";
+		 }
+		 else
+		 {
+		 	  $msg = "<script language='javascript'>
+					parent.document.getElementById('uploadwait').style.display = 'none';
+					window.open('imagecut.php?f=picname&isupload=yes&file={$upfile}', 'popUpImagesWin', 'scrollbars=yes,resizable=yes,statebar=no,width=800,height=600,left=150, top=50');
+				</script>";
+		 }
+	}
+	echo $msg;
+	exit();
+}
 /*--------------------------
 //推荐文档
 function commendArchives(){ }
@@ -198,14 +250,17 @@ else if($dopost=="checkArchives")
 		$aid = $row['id'];
 		//print_r($row);
 		$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
-		$dsql->ExecuteNoneQuery("Update `#@__arctiny` set arcrank='0' where id='$aid' ");
+		if($dsql->ExecuteNoneQuery("Update `#@__arctiny` set arcrank='0' where id='$aid' "))
+        {
+			$dsql->ExecuteNoneQuery("Update `#@__taglist` set arcrank='0' where aid='$aid' ");
+        }
 		if($row['issystem']==-1)
 		{
 			$dsql->ExecuteNoneQuery("Update `".trim($row['addtable'])."` set arcrank='0' where aid='$aid' ");
 		}
 		else
 		{
-			$dsql->ExecuteNoneQuery("Update `$maintable` set arcrank='0' where id='$aid' ");
+			$dsql->ExecuteNoneQuery("Update `$maintable` set arcrank='0', dutyadmin='".$cuserLogin->getUserID()."' where id='$aid' ");
 		}
 		$pageurl = MakeArt($aid,false);
 	}
@@ -281,27 +336,57 @@ else if($dopost=='moveArchives')
 	CheckPurview('sys_ArcBatch');
 	if(empty($totype))
 	{
-		require_once(DEDEINC."/oxwindow.class.php");
-		require_once(DEDEINC."/typelink.class.php");
+		require_once(DEDEINC.'/typelink.class.php');
+		if( !empty($aid) && empty($qstr) )
+		{
+			$qstr = $aid;
+		}
+		AjaxHead();
+		$channelid = empty($channelid) ? 0 : $channelid;
 		$tl = new TypeLink($aid);
-		$typeOptions = $tl->GetOptionArray(0,$cuserLogin->getUserChannel(),0);
-		$typeOptions = "<select name='totype' style='width:350px'>
+		$typeOptions = $tl->GetOptionArray(0, $admin_catalogs, $channelid);
+		$typeOptions = "<select name='totype' style='width:90%'>
 		<option value='0'>请选择移动到的位置...</option>\r\n
 		$typeOptions
 		</select>";
-		$wintitle = "文档管理-移动文档";
-		$wecome_info = "<a href='".$ENV_GOBACK_URL."'>文档管理</a>::移动文档";
-		$win = new OxWindow();
-		$win->Init("archives_do.php","js/blank.js","POST");
-		$win->AddHidden("fmdo","yes");
-		$win->AddHidden("dopost",$dopost);
-		$win->AddHidden("qstr",$qstr);
-		$win->AddHidden("aid",$aid);
-		$win->AddTitle("你目前的操作是移动文档，请选择目标栏目：");
-		$win->AddMsgItem($typeOptions,"30","1");
-		$win->AddMsgItem("你选中的文档ID是： $qstr <br>移动的栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。","30","1");
-		$winform = $win->GetWindow("ok");
-		$win->Display();
+		
+		//输出AJAX可移动窗体
+		$divname = 'moveArchives';
+		echo "<div class='title' onmousemove=\"DropMoveHand('{$divname}', 225);\" onmousedown=\"DropStartHand();\" onmouseup=\"DropStopHand();\">\r\n";
+		echo "	<div class='titLeft'>移动文档</div>\r\n";
+		echo "	<div class='titRight'><img src='img/ico-close.gif' style='cursor:pointer;' onclick='HideObj(\"{$divname}\");ChangeFullDiv(\"hide\");' alt='关闭' title='关闭' /></div>\r\n";
+		echo "</div>\r\n";
+		echo "<form name='quickeditform' action='archives_do.php' method='post'>\r\n";
+		echo "<input type='hidden' name='dopost' value='{$dopost}' />\r\n";
+		echo "<input type='hidden' name='qstr' value='{$qstr}' />\r\n";
+		echo "<table width='100%' style='margin-top:6px;z-index:9000;'>\r\n";
+?>
+<tr height='28'>
+	<td width="80" class='bline'>&nbsp;目标栏目：</td>
+	<td class='bline'>
+	<?php echo $typeOptions; ?>
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;文档ID：</td>
+	<td class='bline'>
+		<input type='text' name='tmpids' value="<?php echo $qstr; ?>" style='width:310px;overflow:hidden;' />
+		<br />
+		移动到的目标栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。
+	</td>
+</tr>
+<tr height='32'>
+	<td colspan='2' align='center' style='padding-top:12px'>
+		<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" class="np" border="0" style="cursor:pointer" />
+		&nbsp;&nbsp;
+		<img src="img/button_back.gif" width="60" height="22" border="0" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' style="cursor:pointer" />
+	</td>
+</td>
+</tr>
+</table>
+</form>
+<?php
+	//AJAX窗体结束
 	}
 	else
 	{
@@ -344,12 +429,14 @@ else if($dopost=='moveArchives')
 			$arc = new Archives($aid);
 			$arc->MakeHtml();
 		}
-		ShowMsg("成功移动 $j 个文档！",$ENV_GOBACK_URL);
+		ShowMsg("成功移动 $j 个文档！", $ENV_GOBACK_URL);
 		exit();
 	}
 }
-
-//还原文档；
+/*-----------------------------
+//还原文档
+function RbReturnArchives(){ }
+------------------------------*/
 else if($dopost=='return')
 {
 	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
@@ -373,8 +460,10 @@ else if($dopost=='return')
 	ShowMsg("成功还原指定的文档！","recycling.php");
 	exit();
 }
-
-//清空文档；
+/*-----------------------------
+//清空文档
+function RbClearArchives(){ }
+------------------------------*/
 else if($dopost=='clear')
 {
 	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
@@ -442,8 +531,10 @@ else if($dopost=='clear')
 	}
 
 }
-
-//清除文档；
+/*-----------------------------
+//清除文档
+function RbDelArchives(){ }
+------------------------------*/
 else if($dopost=='del')
 {
 	CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
@@ -498,5 +589,438 @@ else if($dopost=='del')
 		$winform = $win->GetWindow("ok");
 		$win->Display();
 	}
+}
+/*-----------------------------
+//快速编辑
+function quickEdit(){ }
+------------------------------*/
+else if($dopost=='quickEdit')
+{
+	require_once(DEDEADMIN."/inc/inc_catalog_options.php");
+	AjaxHead();
+	$query = "Select ch.typename as channelname,ch.addtable,ar.membername as rankname,arc.*
+    From `#@__archives` arc
+    left join `#@__channeltype` ch on ch.id=arc.channel
+    left join `#@__arcrank` ar on ar.rank=arc.arcrank where arc.id='$aid' ";
+	$arcRow = $dsql->GetOne($query);
+	//输出AJAX可移动窗体
+	$divname = 'quickEdit';
+	echo "<div class='title' onmousemove=\"DropMoveHand('{$divname}', 225);\" onmousedown=\"DropStartHand();\" onmouseup=\"DropStopHand();\">\r\n";
+	echo "	<div class='titLeft'>快速属性编辑</div>\r\n";
+	echo "	<div class='titRight'><img src='img/ico-close.gif' style='cursor:pointer;' onclick='HideObj(\"{$divname}\");ChangeFullDiv(\"hide\");' alt='关闭' title='关闭' /></div>\r\n";
+	echo "</div>\r\n";
+	echo "<form name='quickeditform' action='archives_do.php?dopost=quickEditSave&aid={$aid}' method='post'>\r\n";
+	echo "<input type='hidden' name='addtable' value='{$arcRow['addtable']}' />\r\n";
+	echo "<input type='hidden' name='oldtypeid' value='{$arcRow['typeid']}' />\r\n";
+	echo "<table width='100%' style='margin-top:6px;z-index:9000;'>\r\n";
+?>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;所属栏目：</td>
+	<td class='bline'>
+		<?php
+            $typeOptions = GetOptionList($arcRow['typeid'],$cuserLogin->getUserChannel(), $arcRow['channel']);
+            echo "<select name='typeid' style='width:70%'>\r\n";
+            if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择栏目...</option>\r\n";
+            echo $typeOptions;
+            echo "</select>";
+		?>
+	</td>
+</tr>
+<tr height='28'>
+	<td width="80" class='bline'>&nbsp;属 性：</td>
+	<td class='bline'>
+	<input type='hidden' name='oldflag' value='<?php echo $arcRow['flag']; ?>' />
+	<?php
+				$dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+        $dsql->Execute();
+        while($trow = $dsql->GetObject())
+        {
+            if($trow->att=='j' || $trow->att=='p') continue;
+					  if(ereg($trow->att,$arcRow['flag']))
+            		  echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' checked='checked' />{$trow->attname}.{$trow->att}";
+            else
+            		  echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' />{$trow->attname}.{$trow->att}";
+         }
+	?>
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;标 题：</td>
+	<td class='bline'>
+		<input name="title" type="text" id="title" value="<?php echo $arcRow['title']; ?>" style="width:90%" />
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;简略标题：</td>
+	<td class='bline'>
+		<input name="shorttitle" type="text" id="shorttitle" value="<?php echo $arcRow['shorttitle']; ?>" style="width:60%" />
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;阅读权限：</td>
+	<td class='bline'>
+		<select name="arcrank" id="arcrank" style="width:120px">
+    <option value='<?php echo $arcRow["arcrank"]?>'>
+    <?php echo $arcRow["rankname"]?>                </option>
+    <?php
+              $urank = $cuserLogin->getUserRank();
+
+              $dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank'");
+              $dsql->Execute();
+              while($row = $dsql->GetObject()){
+              	echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
+              }
+    ?>
+    </select>
+    需要金币：<input name="money" type="text" id="money" value="<?php echo $arcRow["money"]; ?>" style="width:80px" />
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;关键字：</td>
+	<td class='bline'>
+		<input name="keywords" type="text" id="keywords" value="<?php echo $arcRow['keywords']; ?>" style="width:70%" />
+	</td>
+</tr>
+<tr height='32'>
+	<td colspan='2' align='center' style='padding-top:12px'>
+		<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" class="np" border="0" style="cursor:pointer" />
+		&nbsp;&nbsp;
+		<img src="img/button_back.gif" width="60" height="22" border="0" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' style="cursor:pointer" />
+	</td>
+</td>
+</tr>
+</table>
+</form>
+<?php
+//AJAX窗体结束
+}
+/*-----------------------------
+//保存快速编辑的内容
+function quickEditSave(){ }
+------------------------------*/
+else if($dopost=='quickEditSave')
+{
+	require_once(DEDEADMIN.'/inc/inc_archives_functions.php');
+	//权限检测
+	if(!TestPurview('a_Edit'))
+	{
+		if(TestPurview('a_AccEdit'))
+		{
+			CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
+		}
+		else
+		{
+			CheckArcAdmin($aid,$cuserLogin->getUserID());
+		}
+	}
+	$title = htmlspecialchars(cn_substrR($title,$cfg_title_maxlen));
+	$shorttitle = cn_substrR($shorttitle,36);
+	$keywords = trim(cn_substrR($keywords,60));
+	if(!TestPurview('a_Check,a_AccCheck,a_MyCheck'))
+	{
+		$arcrank = -1;
+	}
+	$adminid = $cuserLogin->getUserID();
+	
+	//属性处理
+	$flag = isset($flags) ? join(',', $flags) : '';
+	if(!empty($flag))
+	{
+		if(ereg('p', $oldflag)) $flag .= ',p';
+		if(ereg('j', $oldflag)) $flag .= ',j';
+	}
+	else
+	{
+		$flag = $oldflag;
+	}
+	
+	$query = "update `#@__archives` set
+    typeid = '$typeid',
+    flag = '$flag',
+    arcrank = '$arcrank',
+    money = '$money',
+    title = '$title', 
+    shorttitle = '$shorttitle',
+    keywords = '$keywords',
+    dutyadmin = '$adminid'
+    where id = '$aid'; ";
+    
+    //更新主表
+    $dsql->ExecuteNoneQuery($query);
+    //更新微表
+    $dsql->ExecuteNoneQuery(" Update `#@__arctiny` set typeid='$typeid',arcrank='$arcrank' where id='$aid' ");
+    //更新附加表
+    if($typeid != $oldtypeid)
+    {
+    	$addtable = trim($addtable);
+    	if(empty($addtable)) $addtable = '#@__addonarticle';
+    	else $addtable = eregi_replace("[^a-z0-9__#@-]", "", $addtable);
+			$dsql->ExecuteNoneQuery(" Update `$addtable` set typeid='$typeid' where aid='$aid' ");
+  	}
+    //更新HTML
+    $artUrl = MakeArt($aid, true, true);
+
+		$backurl = !empty($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : '-1';
+		ShowMsg('成功更新一篇文档的基本信息！', $backurl);
+		exit();
+}
+/*--------------------------
+分析并自动获取文档关键词
+function makekw(){ }
+--------------------------*/
+else if($dopost=="makekw")
+{
+	include_once(DEDEINC.'/splitword.class.php');
+	CheckPurview('a_Commend,sys_ArcBatch');
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！", $ENV_GOBACK_URL);
+		exit();
+	}
+	$sp = new SplitWord();
+	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`',',',$qstr));
+	$query = "Select arc.*, addt.* From `#@__archives` arc left join `#@__addonarticle` addt on addt.aid=arc.id  where arc.id in($arcids) And arc.channel=1 ";
+	$dsql->SetQuery($query);
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
+		//跳过已经有关键字的内容
+		if(trim($row['keywords']) !='' ) continue;
+		
+		$aid = $row['id'];
+		$keywords = '';
+		$title = $row['title'];
+		$description = $row['description'];
+		$body = cn_substr($row['body'], 5000);
+		$titleindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText($title)));
+		$allindexs = explode(' ',preg_replace("/#p#|#e#/",'',$sp->GetIndexText(Html2Text($body),300)));
+		if(is_array($allindexs) && is_array($titleindexs))
+		{
+			foreach($titleindexs as $k)
+			{
+				if(strlen($keywords.$k)>=30) break;
+				else $keywords .= $k.',';
+			}
+			foreach($allindexs as $k)
+			{
+				if(strlen($keywords.$k)>=30) break;
+				else if(!in_array($k,$titleindexs)) $keywords .= $k.',';
+			}
+		}
+		$keywords = addslashes($keywords);
+		$description = str_replace('　', ' ', trim($description));
+		$description = str_replace('［', ' ', $description);
+		$description = str_replace('］', ' ', $description);
+		$description = ereg_replace("[ \r\n\t]{1,}", ' ', $description);
+		$description = str_replace('关键字', '', $description);
+		$description = str_replace('关键词', '', $description);
+		$description = addslashes($description);
+		$dsql->ExecuteNoneQuery(" Update `#@__archives` set `keywords`='$keywords',`description`='$description'  where id='{$aid}' ");
+	}
+	$sp->Clear();
+	$sp = null;
+	ShowMsg("成功分析指定文档的关键词！",$ENV_GOBACK_URL);
+	exit();
+}
+/*--------------------------
+//批量增加属性
+function attsAdd(){ }
+---------------------------*/
+else if($dopost=='attsAdd')
+{
+	CheckPurview('a_Commend,sys_ArcBatch');
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！",$ENV_GOBACK_URL);
+		exit();
+	}
+	if(empty($flagname))
+	{
+		ShowMsg("必须指定要添加的属性！",$ENV_GOBACK_URL);
+		exit();
+	}
+	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`', ',', $qstr));
+	$query = "Select arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable From `#@__arctiny` arc
+           left join `#@__arctype` tp on tp.id=arc.typeid
+           left join `#@__channeltype` ch on ch.id=tp.channeltype
+          where arc.id in($arcids) ";
+	$dsql->SetQuery($query);
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
+		$aid = $row['id'];
+		if($row['issystem'] != -1)
+		{
+			$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where id='$aid' ");
+			$flag = ($arr['flag']=='' ? $flagname : $arr['flag'].','.$flagname);
+			$dsql->ExecuteNoneQuery(" Update `{$maintable}` set `flag`='$flag' where id='{$aid}' ");
+		}
+		else
+		{
+			$maintable = trim($row['addtable']);
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where aid='$aid' ");
+			$flag = ($arr['flag']=='' ? $flagname : $arr['flag'].','.$flagname);
+			$dsql->ExecuteNoneQuery(" Update `{$maintable}` set `flag`='$flag' where aid='{$aid}' ");
+		}
+	}
+	ShowMsg("成功对选中文档增加指定的属性！",$ENV_GOBACK_URL);
+	exit();
+}
+/*--------------------------
+//批量删除属性
+function attsDel(){ }
+---------------------------*/
+else if($dopost=='attsDel')
+{
+	CheckPurview('a_Commend,sys_ArcBatch');
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	if($qstr=='')
+	{
+		ShowMsg("参数无效！", $ENV_GOBACK_URL);
+		exit();
+	}
+	if(empty($flagname))
+	{
+		ShowMsg("必须指定要删除的属性！", $ENV_GOBACK_URL);
+		exit();
+	}
+	$arcids = ereg_replace('[^0-9,]','',ereg_replace('`', ',', $qstr));
+	$query = "Select arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable From `#@__arctiny` arc
+           left join `#@__arctype` tp on tp.id=arc.typeid
+           left join `#@__channeltype` ch on ch.id=tp.channeltype
+          where arc.id in($arcids) ";
+	$dsql->SetQuery($query);
+	$dsql->Execute();
+	while($row = $dsql->GetArray())
+	{
+		$aid = $row['id'];
+		if($row['issystem'] != -1)
+		{
+			$idname = 'id';
+			$maintable = ( trim($row['maintable'])=='' ? '#@__archives' : trim($row['maintable']) );
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where id='$aid' ");
+		}
+		else
+		{
+			$idname = 'aid';
+			$maintable = trim($row['addtable']);
+			$arr = $dsql->GetOne("Select flag From `{$maintable}` where aid='$aid' ");
+		}
+		$flag = $arr['flag'];
+		if(trim($flag)=='' || !ereg($flagname, $flag) )
+		{
+				continue;
+		}
+		else
+		{
+				$flags  = explode(',', $flag);
+				$okflags = array();
+				foreach($flags as $f)
+				{
+					if($f != $flagname) $okflags[] = $f;
+				}
+		}
+		$flag = trim(join(',', $okflags));
+		$dsql->ExecuteNoneQuery(" Update `{$maintable}` set `flag`='$flag' where {$idname}='{$aid}' ");
+	}
+	ShowMsg("成功对选中文档删除指定的属性！", $ENV_GOBACK_URL);
+	exit();
+}
+/*--------------------------
+//获得批量属性处理的AJAX窗体
+function attsDlg(){ }
+---------------------------*/
+else if($dopost=='attsDlg')
+{
+	if( !empty($aid) && empty($qstr) )
+	{
+		$qstr = $aid;
+	}
+	$dojobname = ($dojob=='attsDel' ? '批量删除属性' : '批量增加属性');
+	AjaxHead();
+	//输出AJAX可移动窗体
+	$divname = 'attsDlg';
+	echo "<div class='title' onmousemove=\"DropMoveHand('{$divname}', 225);\" onmousedown=\"DropStartHand();\" onmouseup=\"DropStopHand();\">\r\n";
+	echo "	<div class='titLeft'>{$dojobname}</div>\r\n";
+	echo "	<div class='titRight'><img src='img/ico-close.gif' style='cursor:pointer;' onclick='HideObj(\"{$divname}\");ChangeFullDiv(\"hide\");' alt='关闭' title='关闭' /></div>\r\n";
+	echo "</div>\r\n";
+	echo "<form name='quickeditform' action='archives_do.php' method='post'>\r\n";
+	echo "<input type='hidden' name='dopost' value='{$dojob}' />\r\n";
+	echo "<input type='hidden' name='qstr' value='{$qstr}' />\r\n";
+	echo "<table width='100%' style='margin-top:6px;z-index:9000;'>\r\n";
+?>
+<tr height='28'>
+	<td width="80" class='bline'>&nbsp;属 性：</td>
+	<td class='bline'>
+	<input type='hidden' name='oldflag' value='<?php echo $arcRow['flag']; ?>' />
+	<?php
+				$dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+        $dsql->Execute();
+        while($trow = $dsql->GetObject())
+        {
+            if($trow->att=='j' || $trow->att=='p') continue;
+					  echo "<input class='np' type='radio' name='flagname' id='flags{$trow->att}' value='{$trow->att}' />{$trow->attname}.{$trow->att}";
+         }
+	?>
+	</td>
+</tr>
+<tr height='32'>
+	<td width="80" class='bline'>&nbsp;文档ID：</td>
+	<td class='bline'>
+		<input type='text' name='tmpids' value="<?php echo $qstr; ?>" style='width:310px;overflow:hidden;' />
+	</td>
+</tr>
+<tr height='32'>
+	<td colspan='2' align='center' style='padding-top:12px'>
+		<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" class="np" border="0" style="cursor:pointer" />
+		&nbsp;&nbsp;
+		<img src="img/button_back.gif" width="60" height="22" border="0" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' style="cursor:pointer" />
+	</td>
+</td>
+</tr>
+</table>
+</form>
+<?php
+//AJAX窗体结束
+}
+/*------------------------
+function getCatMap() {  }
+-------------------------*/
+else if($dopost=='getCatMap')
+{
+	require_once(DEDEINC.'/typeunit.class.selector.php');
+	AjaxHead();
+	//输出AJAX可移动窗体
+	$divname = 'getCatMap';
+	echo "<div class='title' style='cursor:default;'>\r\n";
+	echo "	<div class='titLeft'>栏目快速选择器</div>\r\n";
+	echo "	<div class='titRight'><img src='img/ico-close.gif' style='cursor:pointer;' onclick='HideObj(\"{$divname}\");ChangeFullDiv(\"hide\");' alt='关闭' title='关闭' /></div>\r\n";
+	echo "</div>\r\n";
+	$tus = new TypeUnitSelector();
+?>
+<form name='quicksel' action='javascript:;' method='get'>
+<div class='quicksel'>
+	<?php $tus->ListAllType($channelid); ?>
+</div>
+<div align='center' class='quickselfoot'>
+	<img src="img/button_ok.gif" onclick="getSelCat('<?php echo $targetid; ?>');" width="60" height="22" class="np" border="0" style="cursor:pointer" />
+		&nbsp;&nbsp;
+	<img src="img/button_back.gif" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' width="60" height="22" border="0"  style="cursor:pointer" />
+</div>
+</form>
+<?php
+//AJAX窗体结束
 }
 ?>

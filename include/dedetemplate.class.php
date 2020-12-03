@@ -646,20 +646,20 @@ class DedeTemplate
 
 		//用于在模板中设置一个变量以提供作扩展用途
 		//此变量直接提交到 this->tpCfgs 中，并会生成与模板对应的缓存文件 ***_config.php 文件
-		if( $tagname == "config" )
+		if( $tagname == 'config' )
 		{
 			$this->tpCfgs[$varname] = $cTag->GetAtt('value');
 		}
-		else if( $tagname == "global" )
+		else if( $tagname == 'global' )
 		{
 			$cTag->tagValue = $this->CompilerArrayVar('global',$varname);
-			if( $cTag->GetAtt('function')!='' )
+			if( $cTag->GetAtt('function') != '' )
 			{
 				$cTag->tagValue = $this->CompilerFunction($cTag->GetAtt('function'), $cTag->tagValue);
 			}
 			$cTag->tagValue = '<'.'?php echo '.$cTag->tagValue.'; ?'.'>';
 		}
-		else if( $tagname == "cfg" )
+		else if( $tagname == 'cfg' )
 		{
 			$cTag->tagValue = '$GLOBALS[\'cfg_'.$varname.'\']'; //处理函数
 			if( $cTag->GetAtt('function')!='' )
@@ -668,7 +668,7 @@ class DedeTemplate
 			}
 			$cTag->tagValue = '<'.'?php echo '.$cTag->tagValue.'; ?'.'>';
 		}
-		else if( $tagname == "object" )
+		else if( $tagname == 'object' )
 		{
 			list($_obs,$_em) = explode('->',$varname);
 			$cTag->tagValue = "\$GLOBALS['{$_obs}']->{$_em}"; //处理函数
@@ -678,9 +678,9 @@ class DedeTemplate
 			}
 			$cTag->tagValue = '<'.'?php echo '.$cTag->tagValue.'; ?'.'>';
 		}
-		else if($tagname == "var")
+		else if($tagname == 'var')
 		{
-			$cTag->tagValue = $this->CompilerArrayVar('var',$varname);
+			$cTag->tagValue = $this->CompilerArrayVar('var', $varname);
 
 			if( $cTag->GetAtt('function')!='' )
 			{
@@ -751,22 +751,16 @@ class DedeTemplate
 		}
 
 		//include 文件
-		else if($tagname == "include")
+		else if($tagname == 'include')
 		{
 			$filename = $cTag->GetAtt('file');
 			if($filename=='')
 			{
 				$filename = $cTag->GetAtt('filename');
 			}
-			$cTag->tagValue = $this->CompilerInclude($filename,false);
-			if($cTag->tagValue=='')
-			{
-				$cTag->tagValue = "File Not Find: $filename ";
-			}
-			else
-			{
-				$cTag->tagValue = '<'.'?php include $this->CompilerInclude("'.$filename.'"); ?'.'>';
-			}
+			$cTag->tagValue = $this->CompilerInclude($filename, false);
+			if($cTag->tagValue==0) $cTag->tagValue = '';
+			$cTag->tagValue = '<'.'?php include $this->CompilerInclude("'.$filename.'");'."\r\n".' ?'.'>';
 		}
 		else if( $tagname=='label' )
 		{
@@ -881,6 +875,11 @@ class DedeTemplate
 			{
 				$arrend .= '['.$varnames[$i];
 			}
+			if(!ereg("[\"']", $arrend)) {
+				$arrend = str_replace('[', '', $arrend);
+				$arrend = str_replace(']', '', $arrend);
+				$arrend = "['{$arrend}']";
+			}
 			if($vartype=='var')
 			{
 				$okvalue = '$GLOBALS[\'_vars\'][\''.$varnames[0].'\']'.$arrend;
@@ -952,29 +951,23 @@ class DedeTemplate
 	}
 
 	//引入文件 include 语法处理
-	function CompilerInclude($filename,$isload=true)
+	function CompilerInclude($filename, $isload=true)
 	{
 		$okfile = '';
 		if( @file_exists($filename) )
 		{
 			$okfile = $filename;
 		}
-		else if( @file_exists($this->refDir."/".$filename) )
+		else if( @file_exists($this->refDir.$filename) )
 		{
-			$okfile = $this->refDir."/".$filename;
+			$okfile = $this->refDir.$filename;
 		}
-		else if( @file_exists($this->refDir."/../".$filename) )
+		else if( @file_exists($this->refDir."../".$filename) )
 		{
-			$okfile = $this->refDir."/../".$filename;
+			$okfile = $this->refDir."../".$filename;
 		}
-		else
-		{
-			return '';
-		}
-		if(!$isload)
-		{
-			return 'ok';
-		}
+		if($okfile=='') return 0;
+		if( !$isload ) return 1;
 		$itpl = new DedeTemplate($this->templateDir);
 		$itpl->isCache = $this->isCache;
 		$itpl->SetObject($this->refObj);

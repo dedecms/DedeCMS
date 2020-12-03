@@ -25,14 +25,14 @@ function checkSubmit()
 <body background='img/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
   <tr>
-    <td height="19" background="img/tbg.gif"><a href='<?php echo $ENV_GOBACK_URL; ?>'><b>会员管理</b></a>&gt;&gt;查看会员</td>
+    <td height="19" background="img/tbg.gif"><a href='<?php echo $ENV_GOBACK_URL; ?>'><b>会员管理</b></a> &gt;&gt; 查看会员</td>
 </tr>
 <tr>
-<td height="200" bgcolor="#FFFFFF" valign="top">
+<td height="200" bgcolor="#FFFFFF" align='center'>
 	<?php
-	if($row['matt']==10) echo "<font color='red'>当前用户是网站管理员关连的帐号，无法在本页修改其资料，请登录到该用户后台进行操作！</font>";
+	if($row['matt']==10) echo "<font color='red'>当前用户是网站管理员关连的帐号，请小心操作！</font>";
 	?>
-	<table width="98%" border="0" cellspacing="0" cellpadding="0" >
+	<table width="98%" border="0" cellspacing="0" cellpadding="6" >
         <tr> 
           <td colspan="2" height="10" ></td>
         </tr>
@@ -40,8 +40,8 @@ function checkSubmit()
           <input type="hidden" name="dopost" value="edituser" />
           <input type="hidden" name="id" value="<?php echo $id?>" />
           <tr> 
-            <td width="17%" height="28" align="right" >用户名：</td>
-            <td width="83%" height="28" > 
+            <td width="17%" align="right" class='bline'>用户名：</td>
+            <td width="83%" class='bline'> 
               <?php
 			  echo "<b>".$row['userid']."</b>";
               if($row['face']!='') {
@@ -51,49 +51,49 @@ function checkSubmit()
              </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >密　码：</td>
-            <td height="28" >
+            <td align="right" class='bline'>密　码：</td>
+            <td class='bline'>
             <input type="text" name="pwd" id="pwd" />
             (不修改留空)
             </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >注册时间：</td>
-            <td height="28" > 
+            <td align="right" class='bline'>注册时间：</td>
+            <td class='bline'> 
               <?php echo GetDateTimeMk($row['jointime'])?>
               　ＩＰ： 
               <?php echo $row['joinip']?>
              </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >最近登录时间：</td>
-            <td height="28" > 
+            <td align="right" class='bline'>最近登录时间：</td>
+            <td class='bline'> 
               <?php echo GetDateTimeMk($row['logintime'])?>
               　ＩＰ： 
               <?php echo $row['loginip']?>
              </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >用户类型：</td>
-            <td height="28" >
+            <td align="right" class='bline'>用户类型：</td>
+            <td class='bline'>
             <?php echo $row['mtype']; ?>
             </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >电子邮箱：</td>
-            <td height="28" >
+            <td align="right" class='bline'>电子邮箱：</td>
+            <td class='bline'>
             <input name="email" type="text" id="email" value="<?php echo $row['email']?>" style="width:150px;height:20px" />
             </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >昵　称：</td>
-            <td height="28" >
+            <td align="right" class='bline'>昵　称：</td>
+            <td class='bline'>
             <input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" size="20" style="width:150px;height:20px" />
            </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >性　别：</td>
-            <td height="28" >
+            <td align="right" class='bline'>性　别：</td>
+            <td class='bline'>
             <input type="radio" name="sex" class="np" value="男"<?php if($row['sex']=="男" ) echo" checked='1'" ;?> />
               男 &nbsp; 
              <input type="radio" name="sex" class="np" value="女"<?php if($row['sex']=="女" ) echo" checked='1'" ;?> />
@@ -103,8 +103,8 @@ function checkSubmit()
              </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >金币 ：</td>
-            <td height="28" >
+            <td align="right" class='bline'>金币 ：</td>
+            <td class='bline'>
            <input name="money" type="text" id="money" value="<?php echo $row['money']; ?>" style="width:80px;height:20px" />
             积分：<input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" style="width:80px;height:20px" />
             等级：<?php
@@ -127,43 +127,31 @@ function checkSubmit()
             </td>
           </tr>
           <tr> 
-            <td height="28" align="right" >推荐级别：</td>
-            <td height="28" >
+            <td align="right" class='bline'>推荐级别：</td>
+            <td class='bline'>
+            <input name="oldmatt" type="hidden" id="oldmatt" value="<?php echo $row['matt']?>" />
             <input name="matt" type="text" id="matt" value="<?php echo $row['matt']?>" size="3" />
-            (0为普通，1为推荐)
+          (0为普通，1为推荐，10为管理员[不能在前台登录]
+          <font color='red'>{非管理员ID是严格使用10属性的，要新建管理在 <a href='sys_admin_user_add.php' target='_blank'><u>系统帐号</u></a> 的地方增加}</font>)
             </td>
           </tr>
           <tr>
-            <td height="28" align="right" >资料状况：</td>
-            <td height="28" >
-             <input name="spacesta" type="text" id="spacesta" value="<?php echo $row['spacesta']?>" size="3" />
-             状态描述：
-            <?php
-        switch($row['spacesta'])
-        {
-        	case '-2':
-        	  echo "<font color='red'>已被禁用！</font>";
-        	  break;
-        	case '-1':
-        	  echo "<font color='red'>未通过审核！</font>";
-        	  break;
-        	case '0':
-        	  echo "<font color='red'>空间信息不完整！</font>";
-        	  break;
-        	case '1':
-        	  echo "<font color='red'>没填写详细资料！</font>";
-        	  break;
-        	default:
-        	  echo "<font color='#3C6721'>状态正常</font>";
-        	  break;
-        }
-        ?>  
-          (-2 禁用、-1 未审核、0 空间资料没填写、1 详细资料没填写、2 状态正常)
+            <td align="right" class='bline'>资料状况：</td>
+            <td class='bline'>
+           	<select name='spacesta'>
+           		<?php
+           		foreach($staArr as $k=>$v)
+           		{
+           			if($row['spacesta']==$k) echo "<option value='$k' selected>$v</option>\r\n";
+           			else echo "<option value='$k'>$v</option>\r\n";
+           		}
+           		?>
+           	</select>
             </td>
           </tr>
           <tr> 
-            <td height="60" align="right" >空间信息：</td>
-            <td>
+            <td height="60" align="right" class='bline'>空间信息：</td>
+            <td class='bline'>
             <?php
             $nrow = $dsql->GetOne("Select * From `#@__member_tj` where mid='{$row['mid']}' ");
             echo "文章：{$nrow['article']} 图集：{$nrow['album']} 文档：{$nrow['archives']} 收藏：{$nrow['stow']}";
@@ -172,19 +160,21 @@ function checkSubmit()
             </td>
           </tr>
           <tr> 
-            <td width="17%" height="28" align="right">特殊操作：</td>
-            <td width="83%">
+            <td width="17%" align="right" class='bline'>特殊操作：</td>
+            <td width="83%" class='bline'>
+            <a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>&jumpurl=../member/edit_fullinfo.php' target='_blank'><u>查看/修改详细资料</u></a>
+            &nbsp;|&nbsp;
             <a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>' target='_blank'><u>登陆到此用户控制面板</u></a>
-            &nbsp;
+            &nbsp;|&nbsp;
             <a href='../member/index.php?uid=<?php echo $row['userid']; ?>' target='_blank'><u>浏览此用户的空间</u></a>
             </td> 
           </tr>
           <tr> 
             <td height="67" align="right" >&nbsp;</td>
             <td height="67" >
-            <input type="submit" name="Submit" value="确定修改" /> 
+            <input type="submit" name="Submit" value="确定修改" class='coolbg' /> 
               &nbsp;&nbsp;
-            <input type="reset" name="Submit22" value="重置表单" />
+            <input type="reset" name="Submit22" value="重置表单" class='coolbg' />
             </td>
           </tr>
         </form>

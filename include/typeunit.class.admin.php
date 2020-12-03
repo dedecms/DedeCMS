@@ -1,8 +1,6 @@
 <?php
-if(!defined('DEDEINC'))
-{
-	exit("Request Error!");
-}
+if(!defined('DEDEINC')) exit('Request Error!');
+
 require_once(DEDEINC."/channelunit.func.php");
 
 class TypeUnit
@@ -22,7 +20,7 @@ class TypeUnit
 		$this->artDir = $GLOBALS['cfg_cmspath'].$GLOBALS['cfg_arcdir'];
 		$this->baseDir = $GLOBALS['cfg_basedir'];
 		$this->shortName = $GLOBALS['art_shortname'];
-		$this->idArrary = "";
+		$this->idArrary = '';
 		$this->dsql = 0;
 	}
 
@@ -75,12 +73,34 @@ class TypeUnit
 	//----读出所有分类,在类目管理页(list_type)中使用----------
 	function ListAllType($channel=0,$nowdir=0)
 	{
+		global $cfg_admin_channel, $admin_catalogs;
 		$this->dsql = $GLOBALS['dsql'];
+		
+		//检测用户有权限的顶级栏目
+		if($cfg_admin_channel=='array')
+		{
+			$admin_catalog = join(',', $admin_catalogs);
+			$this->dsql->SetQuery("Select reid From `#@__arctype` where id in($admin_catalog) group by reid ");
+			$this->dsql->Execute();
+			$topidstr = '';
+			while($row = $this->dsql->GetObject())
+			{
+				if($row->reid==0) continue;
+				$topidstr .= ($topidstr=='' ? $row->reid : ','.$row->reid);
+			}
+			$admin_catalog .= ','.$topidstr;
+			$admin_catalogs = explode(',', $admin_catalog);
+			$admin_catalogs = array_unique($admin_catalogs);
+		}
 
 		$this->dsql->SetQuery("Select id,typedir,typename,ispart,sortrank,ishidden From `#@__arctype` where reid=0 order by sortrank");
 		$this->dsql->Execute(0);
-		while($row=$this->dsql->GetObject(0))
+		while($row = $this->dsql->GetObject(0))
 		{
+			if( $cfg_admin_channel=='array' && !in_array($row->id, $admin_catalogs) )
+			{
+				continue;
+			}
 			$typeDir = $row->typedir;
 			$typeName = $row->typename;
 			$ispart = $row->ispart;
@@ -92,14 +112,12 @@ class TypeUnit
 			}
 			else
 			{
-				$nss = "";
+				$nss = '';
 			}
 			echo "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\r\n";
-			if($channel==0||$channel==$id)
+			//普通列表
+			if($ispart==0)
 			{
-				//普通列表
-				if($ispart==0)
-				{
 					echo "  <tr bgcolor='#F5FAE4'>\r\n";
 					echo "  <td width='2%' class='bline'><img style='cursor:pointer' onClick=\"LoadSuns('suns".$id."',$id);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
 					echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_do.php?cid=".$id."&dopost=listArchives' oncontextmenu=\"CommonMenu(event,this,$id,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$id."]</a>(文档：".$this->GetTotalArc($id).")  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='img/write2.gif'/></a>";
@@ -108,14 +126,13 @@ class TypeUnit
 					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
 					echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-				}
-
-				//带封面的频道
-				else if($ispart==1)
-				{
+			}
+			//带封面的频道
+			else if($ispart==1)
+			{
 					echo "  <tr bgcolor='#F5FAE4'>\r\n";
 					echo "  <td width='2%' class='bline'><img style='cursor:pointer' onClick=\"LoadSuns('suns".$id."',$id);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
 					echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_do.php?cid=".$id."&dopost=listArchives' oncontextmenu=\"CommonMenuPart(event,this,$id,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$id."]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"> <img src='img/write2.gif'/> </a>";
@@ -124,65 +141,26 @@ class TypeUnit
 					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
 					echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-				}
-
-				//独立页面
-				else if($ispart==2)
-				{
+			}
+			//独立页面
+			else if($ispart==2)
+			{
 					echo "  <tr height='24' bgcolor='#F5FAE4'>\r\n";
 					echo "  <td width='2%' class='bline2'><img style='cursor:pointer' onClick=\"LoadSuns('suns".$id."',$id);\" src='img/dedeexplode.gif' width='11' height='11'></td>\r\n";
 					echo "  <td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_edit.php?id=".$id."' oncontextmenu=\"SingleMenu(event,this,$id,'".urlencode($typeName)."')\">{$nss}".$typeName."[ID:".$id."]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='img/write2.gif'/></a>";
 					echo "    </td><td align='right'>";
 					echo "<a href='{$typeDir}' target='_blank'>预览</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
-				}
-			}
-			else
-			{
-				//普通列表
-				if($ispart==0)
-				{
-					echo "  <tr bgcolor='#F5FAE4'>\r\n";
-					echo "  <td width='2%' class='bline'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-					echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_do.php?cid=".$id."&dopost=listArchives'>{$nss}".$typeName."[ID:".$id."]</a>(文档：".$this->GetTotalArc($id).")";
-					echo "    </td><td align='right'>";
-					echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-					echo "&nbsp; </td></tr></table></td></tr>\r\n";
-				}
-
-				//带封面的频道
-				else if($ispart==1)
-				{
-					echo "  <tr bgcolor='#F5FAE4'>\r\n";
-					echo "  <td width='2%' class='bline'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-					echo "  <td class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_do.php?cid=".$id."&dopost=listArchives'>{$nss}".$typeName."[ID:".$id."]</a>";
-					echo "    </td><td align='right'>";
-					echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-					echo "&nbsp; </td></tr></table></td></tr>\r\n";
-				}
-
-				//独立页面
-				else if($ispart==2)
-				{
-					echo "  <tr height='24' bgcolor='#F5FAE4'>\r\n";
-					echo "  <td width='2%' class='bline2'><img src='img/dedeexplode2.gif' width='11' height='11'></td>\r\n";
-					echo "  <td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><a href='catalog_edit.php?id=".$id."'>{$nss}".$typeName."[ID:".$id."]</a>";
-					echo "    </td><td align='right'>";
-					echo "<a href='{$typeDir}' target='_blank'>预览</a>";
-					echo "&nbsp; </td></tr></table></td></tr>\r\n";
-				}
 			}
 			echo "  <tr><td colspan='2' id='suns".$id."'>";
 			$lastid = GetCookie('lastCid');
-			if($channel==$id || $lastid==$id || isset($GLOBALS['exallct']))
+			if($channel==$id || $lastid==$id || isset($GLOBALS['exallct']) || $cfg_admin_channel=='array')
 			{
 				echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
 				$this->LogicListAllSunType($id,"　");
@@ -195,13 +173,18 @@ class TypeUnit
 	//获得子类目的递归调用
 	function LogicListAllSunType($id,$step)
 	{
+		global $cfg_admin_channel, $admin_catalogs;
 		$fid = $id;
 		$this->dsql->SetQuery("Select id,reid,typedir,typename,ispart,sortrank,ishidden From `#@__arctype` where reid='".$id."' order by sortrank");
 		$this->dsql->Execute($fid);
 		if($this->dsql->GetTotalRow($fid)>0)
 		{
-			while($row=$this->dsql->GetObject($fid))
+			while($row = $this->dsql->GetObject($fid))
 			{
+				if($cfg_admin_channel=='array' && !in_array($row->id, $admin_catalogs) )
+				{
+					continue;
+				}
 				$typeDir = $row->typedir;
 				$typeName = $row->typename;
 				$reid = $row->reid;
@@ -222,7 +205,7 @@ class TypeUnit
 				}
 				else
 				{
-					$nss = "";
+					$nss = '';
 				}
 
 				//普通列表
@@ -238,7 +221,7 @@ class TypeUnit
 					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
 					echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
 				}
@@ -254,7 +237,7 @@ class TypeUnit
 					echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
 					echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
 				}
@@ -269,7 +252,7 @@ class TypeUnit
 					echo "</td><td align='right'>";
 					echo "<a href='{$typeDir}' target='_blank'>预览</a>";
 					echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-					echo "|<a href='catalog_move.php?job=movelist&typeid={$id}'>移动</a>";
+					echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
 					echo "|<a href='catalog_del.php?id={$id}&typeoldname=".urlencode($typeName)."'>删除</a>";
 					echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25;height:16'></td></tr></table></td></tr>\r\n";
 				}

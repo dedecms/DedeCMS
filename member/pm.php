@@ -6,11 +6,20 @@ if($cfg_mb_lit=='Y')
 	ShowMsg('由于系统开启了精简版会员空间，你不能向其它会员发短信息，不过你可以向他留言！','-1');
 	exit();
 }
+
+#api{{
+if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
+{
+	if($data = uc_get_user($cfg_ml->M_LoginID)) uc_pm_location($data[0]);
+}
+#/aip}}
+
 if(!isset($dopost))
 {
 	$dopost = '';
 }
-
+//检查用户是否被禁言
+CheckNotAllow();
 /*--------------------
 function __send(){  }
 ----------------------*/
@@ -34,6 +43,13 @@ function __read(){  }
 ----------------------*/
 else if($dopost=='read')
 {
+	$sql = "Select * From `#@__member_friends` where  mid='{$cfg_ml->M_ID}' And ftype!='-1'  order by addtime desc limit 20";
+	$friends = array();
+	$dsql->SetQuery($sql);
+	$dsql->Execute();
+	while ($row = $dsql->GetArray()) {
+		$friends[] = $row;
+	}
 	$row = $dsql->GetOne("Select * From `#@__member_pms` where id='$id' And (fromid='{$cfg_ml->M_ID}' Or toid='{$cfg_ml->M_ID}')");
 	if(!is_array($row))
 	{

@@ -30,7 +30,18 @@ if($dopost=="delmember")
 		if(!empty($id))
 		{
 			//删除用户信息
-			$rs = $dsql->ExecuteNoneQuery2("Delete From `#@__member` where mid='$id' And matt<>10 limit 1");
+			$row = $dsql->GetOne("Select * From `#@__member` where mid='$id' limit 1 ");
+			$rs = 0;
+			if($row['matt'] == 10)
+			{
+				$nrow = $dsql->GetOne("Select * From `#@__admin` where id='$id' limit 1 ");
+				//已经删除关连的管理员帐号
+				if(!is_array($nrow)) $rs = $dsql->ExecuteNoneQuery2("Delete From `#@__member` where mid='$id' limit 1");
+			}
+			else
+			{
+				$rs = $dsql->ExecuteNoneQuery2("Delete From `#@__member` where mid='$id' limit 1");
+			}
 			if($rs > 0)
 			{
 				$dsql->ExecuteNoneQuery("Delete From `#@__member_tj` where mid='$id' limit 1");
@@ -48,10 +59,17 @@ if($dopost=="delmember")
 				$dsql->ExecuteNoneQuery("Delete From `#@__member_vhistory` where mid='$id' Or vid='$id' ");
 				$dsql->ExecuteNoneQuery("Delete From `#@__feedback` where mid='$id' ");
 				$dsql->ExecuteNoneQuery("update `#@__archives` set mid='0' where mid='$id'");
+				#api{{
+				if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')	
+        {
+            $infofromuc=uc_get_user($row['userid']);
+            uc_user_delete($infofromuc[0]);  
+        }
+				#/aip}}
 			}
 			else
 			{
-				ShowMsg("无法删除此会员，如果这个会员是管理员关连的ID，<br />必须先删除这个管理员才能删除此帐号！",$ENV_GOBACK_URL,0,3000);
+				ShowMsg("无法删除此会员，如果这个会员是<b>[管理员]</b>，<br />必须先删除这个<b>[管理员]</b>才能删除此帐号！", $ENV_GOBACK_URL, 0, 5000);
 				exit();
 			}
 		}
@@ -71,56 +89,6 @@ if($dopost=="delmember")
 	$win->AddHidden("safecode",$safecode);
 	$win->AddTitle("你确实要删除(ID:".$id.")这个会员?");
 	$win->AddMsgItem("安全验证串：<input name='safecode' type='text' id='safecode' size='16' style='width:200px' />&nbsp;(复制本代码： <font color='red'>$safecode</font> )","30");
-	$winform = $win->GetWindow("ok");
-	$win->Display();
-}
-/*----------------
-function __UpRank()
-会员升级
-----------------*/
-else if($dopost=="uprank")
-{
-	CheckPurview('member_Edit');
-	if($fmdo=="yes")
-	{
-		$id = ereg_replace('[^0-9]','',$id);
-		$membertype = ereg_replace('[^0-9]','',$membertype);
-		$dsql->ExecuteNoneQuery("update `#@__member` set rank='$membertype',uprank='0' where mid='$id'");
-		ShowMsg("成功更改一个会员等级！",$ENV_GOBACK_URL);
-		exit();
-	}
-	$MemberTypes = '';
-	$dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");
-	$dsql->Execute();
-	$MemberTypes[0] = "限制会员";
-	while($row = $dsql->GetObject())
-	{
-		$MemberTypes[$row->rank] = $row->membername;
-	}
-	$options = "<select name='membertype' style='width:100px'>\r\n";
-	foreach($MemberTypes as $k=>$v)
-	{
-		if($k!=$uptype)
-		{
-			$options .= "<option value='$k'>$v</option>\r\n";
-		}
-		else
-		{
-			$options .= "<option value='$k' selected>$v</option>\r\n";
-		}
-	}
-	$options .= "</select>\r\n";
-	$wintitle = "会员管理-会员升级";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::会员升级";
-	$win = new OxWindow();
-	$win->Init("member_do.php","js/blank.js","POST");
-	$win->AddHidden("fmdo","yes");
-	$win->AddHidden("dopost",$dopost);
-	$win->AddHidden("id",$id);
-	$win->AddTitle("会员升级：");
-	$win->AddItem("会员目前的等级：",$MemberTypes[$mtype]);
-	$win->AddItem("会员申请的等级：",$MemberTypes[$uptype]);
-	$win->AddItem("开通等级：",$options);
 	$winform = $win->GetWindow("ok");
 	$win->Display();
 }
@@ -146,63 +114,21 @@ else if($dopost=="recommend")
 	}
 }
 /*----------------
-function __AddMoney()
-会员充值
-----------------*/
-else if($dopost=="addmoney")
-{
-	CheckPurview('member_Edit');
-	if($fmdo=="yes")
-	{
-		$id = ereg_replace('[^0-9]','',$id);
-		$money = ereg_replace('[^0-9]','',$money);
-		$dsql->ExecuteNoneQuery("update `#@__member` set money=money+$money,upmoney = 0 where mid='$id'");
-		ShowMsg('成功给一个会员充值！',$ENV_GOBACK_URL);
-		exit();
-	}
-	if(empty($upmoney))
-	{
-		$upmoney = 500;
-	}
-	$wintitle = "会员管理-会员充值";
-	$wecome_info = "<a href='".$ENV_GOBACK_URL."'>会员管理</a>::会员充值";
-	$win = new OxWindow();
-	$win->Init("member_do.php","js/blank.js","POST");
-	$win->AddHidden("fmdo","yes");
-	$win->AddHidden("dopost",$dopost);
-	$win->AddHidden("id",$id);
-	$win->AddTitle("会员充值：");
-	$win->AddMsgItem("请输入充值点数：<input type='text' name='money' size='10' value='$upmoney' />",60);
-	$winform = $win->GetWindow("ok");
-	$win->Display();
-}
-/*----------------
 function __EditUser()
 更改会员
 ----------------*/
-else if($dopost=="edituser")
+else if($dopost=='edituser')
 {
 	CheckPurview('member_Edit');
-	if(!isset($_POST['id']))
+	if(!isset($_POST['id'])) exit('Request Error!');
+	$pwdsql = empty($pwd) ? '' : ",pwd='".md5($pwd)."'";
+	if(empty($sex)) $sex = '男';
+	
+	if($matt==10 && $oldmatt!=10)
 	{
-		exit("Request Error!");
-	}
-	if($spacesta>0)
-	{
-		$spacesta = '';
-	}
-	else
-	{
-		$spacesta = ",spacesta='$spacesta'";
-	}
-	if($pwd=='')
-	{
-		$spacesta = '';
-	}
-	else
-	{
-		$pwd = ",pwd='".md5($pwd)."'";
-	}
+		ShowMsg("对不起，为安全起见，不支持直接把前台会员转为管理的操作！", "-1");
+		exit();
+	}	
 	$query = "update `#@__member` set
 			email = '$email',
 			uname = '$uname',
@@ -210,12 +136,36 @@ else if($dopost=="edituser")
 			matt = '$matt',
 			money = '$money',
 			scores = '$scores',
-			rank = '$rank'
-			$pwd
-			$spacesta
+			rank = '$rank',
+			spacesta='$spacesta'
+			$pwdsql
 			where mid='$id' And matt<>10 ";
-	$dsql->ExecuteNoneQuery($query);
-	ShowMsg("成功更改会员资料！",$ENV_GOBACK_URL);
+	$rs = $dsql->ExecuteNoneQuery2($query);
+	if($rs==0)
+	{
+		$query = "update `#@__member` set
+			email = '$email',
+			uname = '$uname',
+			sex = '$sex',
+			money = '$money',
+			scores = '$scores',
+			rank = '$rank',
+			spacesta='$spacesta'
+			$pwdsql
+			where mid='$id' ";
+			$rs = $dsql->ExecuteNoneQuery2($query);
+	}
+	
+	#api{{
+	if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
+	{
+		$row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='$id' AND `matt`<>10");
+		$amount = $scores-$row['scores'];
+		uc_credit_note($row['userid'],$amount);
+	}
+	#/aip}}
+	
+	ShowMsg('成功更改会员资料！', 'member_view.php?id='.$id);
 	exit();
 }
 /*--------------
@@ -227,7 +177,8 @@ else if($dopost=="memberlogin")
 	CheckPurview('member_Edit');
 	PutCookie('DedeUserID',$id,1800);
 	PutCookie('DedeLoginTime',time(),1800);
-	header("location:../member/index.php");
+	if(empty($jumpurl)) header("location:../member/index.php");
+	else header("location:$jumpurl");
 }
 elseif($dopost == "upoperations")
 {

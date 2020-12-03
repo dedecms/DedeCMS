@@ -12,13 +12,13 @@ if($action=='save')
 		$integral = ereg_replace("[^0-9]","",$add_integral);
 		$add_icon = ereg_replace("[^0-9]","",$add_icon);
 		$add_titles = cn_substr($add_titles,15);
-		$dsql->ExecuteNoneQuery("INSERT INTO #@__scores(integral,icon,titles,isdefault) VALUES('$integral','$add_icon','$add_titles','$add_isdefault')");
+		$dsql->ExecuteNoneQuery("INSERT INTO `#@__scores`(integral,icon,titles,isdefault) VALUES('$integral','$add_icon','$add_titles','$add_isdefault')");
 	}
 	foreach($_POST as $rk=>$rv)
 	{
 		if(ereg('-',$rk))
 		{
-			$ID = ereg_replace("[^1-9]","",$rk);
+			$ID = ereg_replace("[^0-9]","",$rk);
 			$fildes = ereg_replace("[^a-z]","",$rk);
 			$k = $$rk;
 			if(empty($k))

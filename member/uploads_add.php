@@ -1,15 +1,9 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__).'/config.php');
 CheckRank(0,0);
-require_once(DEDEMEMBER."/inc/inc_archives_functions.php");
-if(empty($dopost))
-{
-	$dopost = '';
-}
-if(empty($mediatype))
-{
-	$mediatype = 1;
-}
+require_once(DEDEMEMBER.'/inc/inc_archives_functions.php');
+if(empty($dopost)) $dopost = '';
+if(empty($mediatype)) $mediatype = 1;
 if($dopost=='')
 {
 	include(DEDEMEMBER."/templets/uploads_add.htm");
@@ -39,11 +33,11 @@ else if($dopost=='save')
 	$bkurl = "uploads_select.php?f=".$f."&mediatype=".$mediatype."&keyword=".urlencode($keyword)."&filename=".$filename;
 	if($filename=='')
 	{
-		ShowMsg("ä¸Šä¼ æ–‡ä»¶å¤±è´¥ï¼","-1");
+		ShowMsg("ÉÏ´«ÎÄ¼þÊ§°Ü£¡","-1");
 	}
 	else
 	{
-		ShowMsg("æˆåŠŸä¸Šä¼ ä¸€ä¸ªæ–‡ä»¶ï¼",$bkurl);
+		ShowMsg("³É¹¦ÉÏ´«Ò»¸öÎÄ¼þ£¡",$bkurl);
 	}
 }
 ?>
