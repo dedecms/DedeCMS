@@ -1,0 +1,159 @@
+{dede:page pagesize="15"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>有间网站{dede:field name='title'/}文章列表</title>
+<meta content="{dede:field name='description'/}" name=description>
+<meta content="{dede:field name='description'/}" name=keywords>
+<link href="/php/modpage/img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+  <table width="770" border="0" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td height="71"><a href='http://www.dedecms.com'><img src="/php/modpage/img/dedebanner.gif" width="640" height="70" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td height="28" background="/php/modpage/img/2-mbg.gif" bgcolor="#E8E8E8"> 
+        <table width="100%" border="0">
+          <tr> 
+            <td height="25" valign="bottom">&nbsp;<a href='/'>首页</a> | {dede:channel 
+              type='top' row='8'} <a href="~typelink~">~typename~</a> |{/dede} 
+              <a href="/member/login.php">会员登录</a> | <a href="/member/artsend.php">会员投稿</a></td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="770" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td colspan="5" height="4"></td>
+    </tr>
+    <tr> 
+      <td width="177" height="200" valign="top">
+	  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+          <TBODY>
+            <TR> 
+              <TD height=24 align=center background="/php/modpage/img/2-mbg4.gif"  bgColor="#E0E0E0">+ 
+                相关分类 +</TD>
+            </TR>
+            <TR> 
+              <TD bgColor=#cccccc height=2></TD>
+            </TR>
+            <TR> 
+              <TD height=3></TD>
+            </TR>
+            <TR> 
+              <TD align="center" vAlign=top> <table style="BORDER-COLLAPSE: collapse" cellPadding=0 width="96%" 
+            border=0>
+                  <tbody>
+                    <tr> 
+                      <td> {dede:channel type='self'} 
+                        <table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+                          <tr> 
+                            <td style="border:1px #DDDDDD solid" align="center"> 
+                              <a href="~typelink~">~typename~</a> </td>
+                          </tr>
+                        </table>
+                        <table border="0" cellpadding="0" cellspacing="0">
+                          <tr> 
+                            <td height="2"></td>
+                          </tr>
+                        </table>
+                        {/dede} 
+                        <table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+                          <tr> 
+                            <td align="center" bgcolor="#FFFFFF" style="border:1px #DDDDDD solid"> 
+                              {dede:field name='typename'/}</td>
+                          </tr>
+                        </table>
+                        <table border="0" cellpadding="0" cellspacing="0">
+                          <tr> 
+                            <td height="2"></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr> 
+                      <td> {dede:channel type='sun'} 
+                        <table width="100%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+                          <tr> 
+                            <td style="border:1px #DDDDDD solid" align="center"> 
+                              <a href="~typelink~">~typename~</a> </td>
+                          </tr>
+                        </table>
+                        <table border="0" cellpadding="0" cellspacing="0">
+                          <tr> 
+                            <td height="2"></td>
+                          </tr>
+                        </table>
+                        {/dede} </td>
+                    </tr>
+                  </tbody>
+                </table></TD>
+            </TR>
+            <TR> 
+              <TD height=3></TD>
+            </TR>
+          </TBODY>
+        </TABLE>
+        <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+          <TBODY>
+            <TR> 
+              <TD height=22 align=center background="/php/modpage/img/2-mbg4.gif" bgColor=#E0E0E0>+ 
+                热门点击 +</TD>
+            </TR>
+            <TR> 
+              <TD bgColor=#efefef height=3></TD>
+            </TR>
+            <TR> 
+              <TD height=3></TD>
+            </TR>
+            <TR> 
+              <TD vAlign=center align=center bgColor=#ffffff height=79>
+			  <TABLE style="BORDER-COLLAPSE: collapse" cellPadding=0 width="96%" 
+            border=0>
+                  <TBODY>
+                    <TR> 
+                      <TD height="100" valign="top">
+                      {dede:hotart titlelength='24' line='10'/}
+                      </TD>
+                    </TR>
+                  </TBODY>
+                </TABLE></TD>
+            </TR>
+          </TBODY>
+        </TABLE></td>
+      <td width="2"></td>
+	  <td width="1" bgcolor="#DCDCDC"></td>
+      <td width="2"></td>
+      <td valign="top"><table width="99%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td height="24" background="/php/modpage/img/2-mbg2.gif" bgcolor="#E9ECE1">当前位置：{dede:field 
+              name='position'/}文章列表</td>
+          </tr>
+          <tr> 
+            <td height="4"></td>
+          </tr>
+          <tr> 
+            <td height="346" valign="top">{dede:list type='full'/}</td>
+          </tr>
+          <tr> 
+            <td bgcolor="#F0F0F0" height="4"></td>
+          </tr>
+          <tr> 
+            <td height="30" align="right">{dede:list type='pagelist'/}&nbsp;&nbsp;</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td colspan="3" height="3"></td>
+    </tr>
+    <tr align="center"> 
+      <td height="10" colspan="3" bgcolor="#F5F5F5"></td>
+    </tr>
+    <tr> 
+      <td height="20" colspan="3" align="center"><a href='http://www.dedecms.com'target='_blank'>Power by DedeCms 织梦内容管理系统</a></td>
+    </tr>
+  </table>
+</center></body></html>

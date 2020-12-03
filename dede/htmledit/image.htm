@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<title>插入图片</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style>
+td{font-size:10pt;}
+</style>
+<script language=javascript>
+function TableOK(){
+var url,widthdd,heightdd,doflash;
+url = theform.url.value;
+widthdd = theform.width.value;
+heightdd = theform.height.value;
+doflash = "<embed src='"+ url +"' quality='hight' wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='"+ widthdd +"' height='"+ heightdd +"'></embed>\r\n";
+window.returnValue = doflash;
+window.close();
+}
+function showPicList()
+{
+	var doimg=showModalDialog("../file_pic2.aspx",false,"dialogWidth:520px;dialogHeight:400px;status:0;");
+	if (doimg!=undefined){
+		theform.url.value=doimg;
+	}
+}
+</script>
+</HEAD>
+<body bgColor=menu leftmargin="4" topmargin="4">
+<form enctype="multipart/form-data" name="theform" action="../picInsert.aspx" target="_parent">
+  <table width="400" border="0">
+    <tr> 
+      <td width="65" align="right">网址:</td>
+      <td colspan="2"><input name="url" type="text" id="url" size="30"> &nbsp; 
+        <input onclick="showPicList();" type="button" name="Submit22" value="浏览文件"></td>
+    </tr>
+    <tr> 
+      <td align="right">宽度:</td>
+      <td colspan="2" nowrap> <input type="text" name="width" size="8" value="400" > 
+        &nbsp;&nbsp; 高度: 
+        <input name="height" type="text" id="height" value="300" size="8" ></td>
+    </tr>
+    <tr height="50"> 
+      <td align="right">边框:</td>
+      <td colspan="2" nowrap><input name="border" type="text" id="border" value="0" size="4" > 
+        &nbsp;替代文字: 
+        <input name="alt" type="text" id="alt" size="10" ></td>
+    </tr>
+    <tr height="50"> 
+      <td align="right">对齐:</td>
+      <td width="166" nowrap><select name="align" id="align">
+          <option value="0" selected>默认</option>
+          <option value="right">右对齐</option>
+          <option value="align">中间</option>
+          <option value="left">左对齐</option>
+          <option value="top">顶端</option>
+          <option value="bottom">底部</option>
+        </select></td>
+      <td width="155" align="center" nowrap> <input onClick="TableOK();" type="button" name="Submit2" value=" 确定 "> 
+        <input type="button" name="Submit" onClick="window.close();" value=" 取消 "> 
+      </td>
+    </tr>
+    <tr height="50"> 
+      <td height="20" colspan="3" align="right"><hr size="1"></td>
+    </tr>
+    <tr height="50"> 
+      <td height="33" align="right" nowrap>新图片:</td>
+      <td colspan="2" nowrap><input name="pic" type="file" id="pic"> &nbsp; <input type="submit" name="Submit23" value=" 上 传  "></td>
+    </tr>
+  </table>
+</form>
+</body>
+</HTML>

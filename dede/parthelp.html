@@ -1,0 +1,35 @@
+完美版新增功能说明：<br>
+[1]
+增加了按spec排序参数,即:sort=&quot;new&quot;为最新文章,sort=&quot;spec&quot;为专题,sort=&quot;hot&quot;为热点,sort=&quot;command&quot;为推荐，所有支持sort属性的标记均可使用；<br>
+[2]&nbsp;增加了容器的功能，对于列表模板而言它是以指定的列表ID为容器的，所有标记均参照这个类目ID，本版的板块代码在作为类目板块时，同样具有这样的功能，例如：对于<font color="#FF6600">{dede:artlist typeid=12 row=6}{/dede}</font>这个标记，在作为普通板块模板(如首页)时，必须指定类目ID，0为所有内容，但作为类目的板块时，你不指定这个ID，它的值则等于这个类目的ID。<br>
+1、<font color="#0000FF">{dede:imglist typeid=0 
+            row=1 col=4 imgwidth=100 imgheight=100 tablewidth=&quot;100%&quot; 
+            sort=&quot;new&quot; titlelength=20}{/dede}</font><br>
+            用途：显示一个图片列表<br>
+            支持的二重模板(Innertext)字段：ID、title、filename、img、imglink(带链接的图片)、textlink,info(文章简介)<br>
+            2、<font color="#3300FF">{dede:artlist typeid=0 row=6 sort=&quot;new&quot; 
+            titlelength=10}{/dede}<br>
+            </font>用途：显示一个文章列表<br>
+            支持的二重模板(Innertext)字段：ID、title、filename、stime、click、typelink(文章所属类目链接)、<br>
+            textlink(文章标题链接，即&lt;a href='~filename~'&gt;~title~&lt;/a&gt;)<br>
+            3、<font color="#3300FF">{dede:imginfolist typeid=0 row=3 col=1 infolength=30 
+            imgwidth=60 imgheight=60 sort=hot titlelength=10 tablewidth='200'}{/dede}<br>
+            </font> 用途：返回一列带简介的图文信息<br>
+            这个标记与{dede:imglist/}是同一解析函数的，主要默认的低层模板不同，如果你调整适当的属性和低层模板，用{dede:imglist}innertext{/dede}也能达到同样的目的。<br>
+            支持的二重模板(Innertext)字段：ID、title、filename、img、imglink(带链接的图片)、textlink,info(文章简介)<br>
+            4、<font color="#3300FF">{dede:vote name=&quot;&quot;}{/dede}</font><br>
+            用途：返回一个投票用的表单，name是创建投票时所用的名字<br>
+            5、<font color="#3300FF">{dede:link row=3 col=6 type=&quot;text&quot; 
+            titlelength=&quot;20&quot;}{/dede}</font> <br>
+            用途：返回友情链接的表格<br>
+            属性type可选为：text和img 其中img为标准的：88*31格式。<br>
+            6、<font color="#3300FF">{dede:channel typeid=0}{/dede} </font><br>
+            用途：获得一个频道链接列表<br>
+            7、<font color="#3300FF">{dede:channelArtlist typeid=0 bgcolor='' background=''}{/dede} </font><br>
+            用途：用于获取某类目的下级类目的指定条数的文章列表，它具有 artlist 的所有属性，但是多了 bgcolor、background 它们是表示类目标题的背景颜色或背景图片（如果有了后者，则前者无效）。 <br>
+            8、<font color="#3300FF">{dede:mynews row='条数'}{/dede}</font><br>
+ 站内新闻获取，Innertext支持的字段为：title,writer,senddate(时间),msg 。<br>
+ 9、<font color="#3300FF">{dede:field name=''/}</font><br>
+ 获取某类目的信息，仅在类目块板中有效。<br>
+ 10、<font color="#3300FF">{dede:extern name=''/}</font><br>
+ 获得系统变量。

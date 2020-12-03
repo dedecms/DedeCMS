@@ -1,0 +1,216 @@
+CREATE TABLE dede_admin (
+  ID int(10) unsigned NOT NULL auto_increment,
+  usertype int(10) unsigned NOT NULL default '0',
+  userid varchar(30) NOT NULL default '',
+  pwd varchar(50) NOT NULL default '',
+  uname varchar(20) NOT NULL default '',
+  typeid int(10) unsigned NOT NULL default '0',
+  logintime datetime NOT NULL default '0000-00-00 00:00:00',
+  loginip varchar(20) NOT NULL default '',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_aera (
+  ID int(10) unsigned NOT NULL default '0',
+  name varchar(10) NOT NULL default ''
+);
+CREATE TABLE dede_art (
+  ID int(10) unsigned NOT NULL auto_increment,
+  typeid int(10) unsigned NOT NULL default '0',
+  isdd smallint(5) unsigned NOT NULL default '0',
+  redtitle smallint(5) unsigned NOT NULL default '0',
+  ismake smallint(5) unsigned NOT NULL default '0',
+  rank smallint(5) NOT NULL default '0',
+  click int(10) unsigned NOT NULL default '0',
+  picname varchar(200) NOT NULL default '',
+  title varchar(100) NOT NULL default '',
+  writer varchar(50) NOT NULL default '',
+  source varchar(50) NOT NULL default '',
+  msg text NOT NULL,
+  stime date NOT NULL default '0000-00-00',
+  likeid varchar(250) NOT NULL default '',
+  body mediumtext NOT NULL,
+  userid int(10) unsigned NOT NULL default '0',
+  spec int(10) unsigned NOT NULL default '0',
+  dtime datetime NOT NULL default '0000-00-00 00:00:00',
+  memberID int(11) NOT NULL default '0',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_arttype (
+  ID int(10) unsigned NOT NULL auto_increment,
+  reID int(10) unsigned NOT NULL default '0',
+  typename varchar(30) NOT NULL default '',
+  typedir varchar(100) NOT NULL default '',
+  isdefault smallint(6) NOT NULL default '0',
+  defaultname varchar(30) NOT NULL default 'index.html',
+  issend smallint(6) NOT NULL default '0',
+  channeltype smallint(6) NOT NULL default '1',
+  modname varchar(50) NOT NULL default '默认模板',
+  maxpage int(11) NOT NULL default '-1',
+  ispart smallint(6) NOT NULL default '0',
+  description varchar(250) NOT NULL DEFAULT '',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_channeltype (
+  ID smallint(6) NOT NULL default '0',
+  typename varchar(50) NOT NULL default ''
+);
+CREATE TABLE dede_feedback (
+  ID int(10) unsigned NOT NULL auto_increment,
+  artID int(10) unsigned NOT NULL default '0',
+  userid int(10) unsigned NOT NULL default '0',
+  username varchar(20) NOT NULL default '',
+  ip varchar(20) NOT NULL default '',
+  msg text NOT NULL,
+  ischeck smallint(6) NOT NULL default '0',
+  dtime datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_flink (
+  ID int(11) NOT NULL auto_increment,
+  url varchar(100) NOT NULL default '',
+  webname varchar(30) NOT NULL default '',
+  msg varchar(250) NOT NULL default '',
+  email varchar(100) NOT NULL default '',
+  logo varchar(100) NOT NULL default '',
+  dtime datetime NOT NULL default '0000-00-00 00:00:00',
+  typeid int(11) NOT NULL default '0',
+  ischeck smallint(6) NOT NULL default '1',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_flinktype (
+  ID int(11) NOT NULL auto_increment,
+  typename varchar(50) NOT NULL default '',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_member (
+  ID int(10) unsigned NOT NULL auto_increment,
+  userid varchar(32) NOT NULL default '',
+  pwd varchar(32) NOT NULL default '',
+  uname varchar(20) NOT NULL default '',
+  sex smallint(5) unsigned NOT NULL default '1',
+  age varchar(5) NOT NULL default '',
+  birthday varchar(20) NOT NULL default '0000-00-00',
+  weight varchar(10) NOT NULL default '',
+  height varchar(10) NOT NULL default '',
+  job varchar(10) NOT NULL default '',
+  aera smallint(5) unsigned NOT NULL default '1',
+  city varchar(20) NOT NULL default '',
+  myinfo varchar(250) default NULL,
+  mybb varchar(250) NOT NULL default '',
+  tel varchar(30) default NULL,
+  oicq varchar(15) default NULL,
+  email varchar(50) NOT NULL default '',
+  homepage varchar(50) default NULL,
+  jointime datetime NOT NULL default '0000-00-00 00:00:00',
+  joinip varchar(20) NOT NULL default '',
+  logintime datetime NOT NULL default '0000-00-00 00:00:00',
+  loginip varchar(20) NOT NULL default '',
+  rank smallint(5) unsigned NOT NULL default '0',
+  isup smallint(6) NOT NULL default '0',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_membertype (
+  ID int(10) unsigned NOT NULL auto_increment,
+  rank smallint(10) NOT NULL default '0',
+  membername varchar(20) NOT NULL default '',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_partmode (
+  ID int(10) unsigned NOT NULL auto_increment,
+  typeid int(10) unsigned NOT NULL default '0',
+  pname varchar(50) NOT NULL default '',
+  fname varchar(50) NOT NULL default '',
+  body text NOT NULL,
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_spec (
+  ID int(10) unsigned NOT NULL auto_increment,
+  AID int(10) unsigned NOT NULL default '0',
+  typeid int(10) unsigned NOT NULL default '0',
+  spectitle varchar(100) NOT NULL default '',
+  imgtitle varchar(50) NOT NULL default '',
+  imglink varchar(100) NOT NULL default '',
+  specimg varchar(100) NOT NULL default '',
+  specmsg text NOT NULL,
+  specartid text NOT NULL,
+  speclikeid text NOT NULL,
+  stime date NOT NULL default '0000-00-00',
+  dtime datetime NOT NULL default '0000-00-00 00:00:00',
+  userid int(11) NOT NULL default '0',
+  PRIMARY KEY  (ID),
+  KEY AID (AID)
+);
+CREATE TABLE dede_weburl (
+  ID int(10) unsigned NOT NULL auto_increment,
+  title varchar(80) NOT NULL default '',
+  url varchar(80) NOT NULL default '',
+  msg varchar(250) NOT NULL default '',
+  PRIMARY KEY  (ID)
+);
+CREATE TABLE dede_guestbook (
+	ID INT NOT NULL AUTO_INCREMENT ,
+	uname VARCHAR(30) NOT NULL ,
+	email VARCHAR(80) NOT NULL ,
+	homepage VARCHAR(80) NOT NULL ,
+	qq VARCHAR(20) NOT NULL ,
+	face VARCHAR(10) NOT NULL ,
+	msg TEXT NOT NULL ,
+	ip VARCHAR(20) NOT NULL ,
+	dtime DATETIME NOT NULL ,
+	ischeck SMALLINT DEFAULT '1' NOT NULL ,
+	PRIMARY KEY (ID) 
+);
+INSERT INTO dede_aera VALUES (1, '广东');
+INSERT INTO dede_aera VALUES (2, '北京');
+INSERT INTO dede_aera VALUES (3, '上海');
+INSERT INTO dede_aera VALUES (4, '重庆');
+INSERT INTO dede_aera VALUES (5, '天津');
+INSERT INTO dede_aera VALUES (6, '江苏');
+INSERT INTO dede_aera VALUES (7, '浙江');
+INSERT INTO dede_aera VALUES (8, '山东');
+INSERT INTO dede_aera VALUES (9, '辽宁');
+INSERT INTO dede_aera VALUES (10, '河北');
+INSERT INTO dede_aera VALUES (11, '河南');
+INSERT INTO dede_aera VALUES (12, '湖北');
+INSERT INTO dede_aera VALUES (13, '湖南');
+INSERT INTO dede_aera VALUES (14, '江西');
+INSERT INTO dede_aera VALUES (15, '安徽');
+INSERT INTO dede_aera VALUES (16, '内蒙古');
+INSERT INTO dede_aera VALUES (17, '吉林');
+INSERT INTO dede_aera VALUES (18, '黑龙江');
+INSERT INTO dede_aera VALUES (19, '山西');
+INSERT INTO dede_aera VALUES (20, '陕西');
+INSERT INTO dede_aera VALUES (21, '四川');
+INSERT INTO dede_aera VALUES (22, '云南');
+INSERT INTO dede_aera VALUES (23, '广西');
+INSERT INTO dede_aera VALUES (24, '青海');
+INSERT INTO dede_aera VALUES (25, '宁夏');
+INSERT INTO dede_aera VALUES (26, '福建');
+INSERT INTO dede_aera VALUES (27, '海南');
+INSERT INTO dede_aera VALUES (28, '贵州');
+INSERT INTO dede_aera VALUES (29, '西藏');
+INSERT INTO dede_aera VALUES (30, '新疆');
+INSERT INTO dede_aera VALUES (31, '甘肃');
+INSERT INTO dede_aera VALUES (32, '香港');
+INSERT INTO dede_aera VALUES (33, '澳门');
+INSERT INTO dede_aera VALUES (34, '台湾');
+//频道类型
+INSERT INTO dede_channeltype VALUES (1, '普通文章');
+INSERT INTO dede_channeltype VALUES (2, '图片集');
+INSERT INTO dede_channeltype VALUES (3, '软件下载');
+INSERT INTO dede_channeltype VALUES (4, 'Flash');
+//友情站点类型
+INSERT INTO dede_flinktype VALUES (1, '综合网站');
+INSERT INTO dede_flinktype VALUES (2, '娱乐类');
+INSERT INTO dede_flinktype VALUES (3, '教育类');
+INSERT INTO dede_flinktype VALUES (4, '计算机类');
+INSERT INTO dede_flinktype VALUES (5, '电子商务');
+INSERT INTO dede_flinktype VALUES (6, '网上信息');
+INSERT INTO dede_flinktype VALUES (7, '论坛类');
+INSERT INTO dede_flinktype VALUES (8, '其它类型');
+//文章权限
+INSERT INTO dede_membertype VALUES (1, 0, '普通会员');
+INSERT INTO dede_membertype VALUES (2, -1, '文章稿件');
+INSERT INTO dede_membertype VALUES (3, 1, '动态内容');
+INSERT INTO dede_membertype VALUES (4, 50, '中级会员');
+INSERT INTO dede_membertype VALUES (5, 100, '高级会员');

@@ -1,0 +1,188 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:webinfo name='webname'/}</title>
+<link href="/php/modpage/img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body topmargin="2">
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><a href="http://www.dedecms.com" target="_blank"><img src="/php/modpage/img/dedebanner.gif" width="640" height="70" border="0"></a></td>
+  </tr>
+  <tr>
+    <td height="27" background="/php/modpage/img/2-mbg.gif" valign="bottom">
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="22">　首页 | {dede:channel typeid=0 row=6/} <a href="/member">会员登录</a> | <a href="/member/artsend.php">会员投稿</a> | <a href="/php/guestbook">留言簿</a></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td height="1" bgcolor="#999999"></td>
+  </tr>
+  <tr>
+    <td height="4"></td>
+  </tr>
+</table>
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td width="180" valign="top" bgcolor="#F3F3F3" style="border-left:1px solid #999999;border-right:1px solid #999999;border-bottom:1px solid #999999">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td valign="top" bgcolor="#F3F3F3">
+		  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <form name="searchform" action="/php/search.php">
+                <tr> 
+                  <td height="24" colspan="2" align="center" style="border-bottom:1px solid #9A8F70;" background="/php/modpage/img/2-mbg4.gif"><b>↑文章搜索</b></td>
+                </tr>
+                <tr> 
+                  <td height="4" colspan="2"></td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td width="37%" height="28">&nbsp;关键字：</td>
+                  <td width="63%"><input name="keyword" type="text" id="keyword" size="12"></td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="32">&nbsp;范 &nbsp;围：</td>
+                  <td><select name="tag" id="tag">
+                      <option value="0" selected>默认搜索</option>
+                      <option value="1">仅搜索标题</option>
+                  </select></td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="30" colspan="2" align="center"><a href="javascript:document.searchform.submit();" style="width:80;height:20;border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #CCCC33">开始搜索</a> 
+                  </td>
+                </tr>
+              </form>
+          </table></td>
+        </tr>
+        <tr>
+          <td height="24" align="center" background="/php/modpage/img/2-mbg4.gif" bgcolor="#CCCCCC"><strong>热点文章</strong></td>
+        </tr>
+        <tr>
+          <td height="1" align="center" bgcolor="#999999"></td>
+        </tr>
+        <tr>
+          <td height="55" align="center" bgcolor="#F3F3F3">
+		  <table width="96%"  border="0" cellspacing="0" cellpadding="0">
+              <tr><td height="4"></td></tr>
+            </table>
+		  <table width="96%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC">
+              <tr>
+                <td height="126" bgcolor="#FFFFFF">{dede:artlist typeid=0 row=10 sort=hot titlelength=20}{/dede}</td>
+              </tr>
+            </table>
+			<table width="96%"  border="0" cellspacing="0" cellpadding="0">
+              <tr><td height="4"></td></tr>
+            </table>		  </td>
+        </tr>
+        <tr>
+          <td height="24" align="center" background="/php/modpage/img/2-mbg4.gif" bgcolor="#CCCCCC"><strong>推荐文章</strong></td>
+        </tr>
+        <tr>
+          <td height="1" align="center" bgcolor="#999999"></td>
+        </tr>
+        <tr>
+          <td height="125" align="center" valign="top" bgcolor="#F3F3F3">
+		    <table width="96%"  border="0" cellspacing="0" cellpadding="0">
+              <tr><td height="4"></td></tr>
+            </table>
+			<table width="96%"  border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC">
+            <tr>
+              <td height="126" bgcolor="#FFFFFF">{dede:artlist typeid=0 row=10 sort=commend titlelength=20}{/dede}</td>
+            </tr>
+          </table>
+		  <table width="96%"  border="0" cellspacing="0" cellpadding="0">
+              <tr><td height="4"></td></tr>
+          </table>		  </td>
+        </tr>
+        <tr>
+          <td height="125" align="center" valign="top" bgcolor="#F3F3F3"><table width='96%' border='0' cellpadding='1' cellspacing='1' bgcolor="#CCCCCC">
+            <form name='voteform' method='get' action='/php/vote.php' target='_blank'>
+              <input type='hidden' name='id' value='你是从哪儿得知本站的？'>
+              <tr>
+                <td height='24' bgcolor='#EDEDE2' > &nbsp;你是从哪儿得知本站的？</td>
+              </tr>
+              <tr>
+                <td height=24 bgcolor="#FFFFFF"><input type=radio name=voteitem value=1>
+        朋友介绍</td>
+              </tr>
+              <tr>
+                <td height=24 bgcolor="#FFFFFF"><input type=radio name=voteitem value=2>
+        门户网站的搜索引擎</td>
+              </tr>
+              <tr>
+                <td height=24 bgcolor="#FFFFFF"><input type=radio name=voteitem value=3>
+        Google或百度搜索</td>
+              </tr>
+              <tr>
+                <td height=24 bgcolor="#FFFFFF"><input type=radio name=voteitem value=4>
+        别的网站上的链接</td>
+              </tr>
+              <tr>
+                <td height=24 bgcolor="#FFFFFF"><input type=radio name=voteitem value=5>
+        其它途径</td>
+              </tr>
+              <tr>
+                <td height='24' align="center" bgcolor="#FFFFFF"><input type='submit' style='width:40;background-color:#EDEDE2;border:1px soild #818279' name='aaa1' value='投票'>
+&nbsp;
+        <input type='button' style='width:80;background-color:#EDEDE2;border:1px soild #818279' name='aaa2' value='查看结果' onClick="javascript:window.open('/php/vote.php?job=view&id=%C4%E3%CA%C7%B4%D3%C4%C4%B6%F9%B5%C3%D6%AA%B1%BE%D5%BE%B5%C4%A3%BF');"></td>
+              </tr>
+            </form>
+          </table></td>
+        </tr>
+        <tr>
+          <td height="20" align="center" valign="top" bgcolor="#F3F3F3">&nbsp;</td>
+        </tr>
+      </table></td>
+    <td width="4" valign="top"></td>
+    <td width="574" valign="top"> <table width="100%"  border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td height="22" background="/php/modpage/img/2-mbg2.gif"><b>◎站内新闻◎</b></td>
+      </tr>
+      <tr>
+        <td>{dede:mynews row=2}
+          <table width="100%"  border="0" cellspacing="1" cellpadding="1">
+           <tr>
+              <td bgcolor="#F9F9F9"><b>~title~</b></td>
+            </tr>
+		    <tr>
+              <td><font color="#666666">发布人：~writer~ 时间：~senddate~</font></td>
+            </tr>
+			<tr>
+              <td>~msg~</td>
+            </tr>
+			<tr>
+              <td height="2"></td>
+            </tr>
+          </table>
+          {/dede}</td>
+      </tr>
+      <tr>
+        <td height="22" background="/php/modpage/img/2-mbg2.gif"><b>※图片新闻※</b></td>
+      </tr>
+      <tr>
+        <td height="120"> {dede:imginfolist typeid=0 row=2 col=3 infolength=30 imgwidth=60 imgheight=60 sort=new titlelength=20 tablewidth='100%'}{/dede} </td>
+      </tr>
+      <tr>
+        <td background="../img/writerbg.gif" height="4"></td>
+      </tr>
+      <tr>
+        <td height="76" bgcolor="#F9FBFB">{dede:channelArtlist typeid=0 col=2 row=8  background='/php/modpage/img/2-mbg2.gif' titleheight='22' titleimg='/php/modpage/img/file.gif' tablewidth='98%'/}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="4"></td>
+  </tr>
+  <tr>
+    <td height="22" align="center" bgcolor="#F6F6F6">{dede:webinfo name='powerby'/}</td>
+  </tr>
+</table>
+</body>
+</html>

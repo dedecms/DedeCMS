@@ -1,0 +1,50 @@
+index.htm 是主页创建向导使用的文件
+img、images、dedeimg的名称均不作为模板文件夹名称使用
+
+1、“低层模板”为系统内定的二重模板
+
+    Dede内容管理系统使用先进的双重模板技术，但低层模板是并不需要从文件中更改的,只需要把低层模板放在标记的innertext中即可.
+例如:
+{dede:list type="small"}{/dede}
+表示一个普通的文章列表,它的默认低层模板为 “低层模板/list_smalllist.htm”
+你可这以这样定义这个标记：
+{dede:list type="small"}
+	<table border='0' width='100%'>
+    	<tr height='24'>
+    	   <td width='2%'><img src='/php/modpage/img/file.gif' width='18' height='17'></td>
+		   <td width='83%'>~fulltitle~<font color='#8F8C89'>(~stime~)</font></td>
+		   <td width='15%'>点击:~click~</td></tr>
+    	<tr><td height='2' colspan='3' background='/php/modpage/img/writerbg.gif'></td></tr>
+   	</table>
+{/dede}
+这样同样达到了更改低层模板的目的，而且不用担心错误更改低层模板文件导致系统无法使用。
+
+2、普通模板名称以文件夹的名称命名，增加或更改频道时可以选择
+
+   对应的存放名称为：
+
+   模板名称/类型ID/列表.htm
+   模板名称/类型ID/文章.htm
+   模板名称/类型ID/专题.htm
+
+其中类型ID用数字表示
+
+1 为普通文章栏目模板；
+2 为软件下载栏目模板；
+3 为图片集栏目模板；
+4 为Flash模板；
+
+  你可以不定义软件下载和图片集模板，但普通文章栏目模板是必须的。
+
+模板名称/info.gif 为模板的缩略图，可在选择模板时预览。
+
+如果系统创建文章或列表时找不到指定的模板，会用“默认模板”代替。
+
+
+官方网站： http://www.dedecms.com 
+
+
+
+
+
+

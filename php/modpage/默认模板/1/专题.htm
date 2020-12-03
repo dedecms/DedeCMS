@@ -1,0 +1,159 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:field name=title/}</title>
+<link href="/php/modpage/img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+  <table width="770" border="0" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td height="71"><a href='http://www.dedecms.com'><img src="/php/modpage/img/dedebanner1.gif" width="770" height="70" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td height="20" bgcolor="#AFB95B"> &nbsp;<a href='/'>首页</a> | {dede:channel type='top'} <a href="~typelink~">~typename~</a> |{/dede} <a href="/member/login.php">会员登录</a> | <a href="/member/artsend.php">会员投稿</a></td>
+    </tr>
+  </table>
+  <table width="770" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td colspan="2" height="4"></td>
+    </tr>
+    <tr> 
+      <td valign="top" width="588"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td height="22" bgcolor="#E8E8BD">&nbsp;<a name="top"></a>当前位置：{dede:field name=position/}</td>
+          </tr>
+          <tr> 
+            <td width="98%" height="365" valign="top"> <table width="100%" border="0" cellspacing="1" cellpadding="0">
+                <tr> 
+                  <td colspan="3" height="2"></td>
+                </tr>
+                <tr> 
+                  <td width="26%" height="108" align="center">{dede:field name="specimg"/}</td>
+                  <td width="1%"></td>
+                  <td width="73%" valign="top">{dede:field name="specmsg"/}</td>
+                </tr>
+                <tr> 
+                  <td colspan="3" height="2" bgcolor="#EFF2F5"></td>
+                </tr>
+                <tr valign="top"> 
+                  <td colspan="3"> <table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
+                      <tr> 
+                        <td height="20" bgcolor="#CCCC99"><strong>&nbsp;◎专题文章列表：</strong></td>
+                      </tr>
+                      <tr> 
+                        <td height="150" valign="top" bgcolor="#F9F9F7">{dede:speclist/}</td>
+                      </tr>
+                      <tr> 
+                        <td height="20" bgcolor="#CCCC99"><strong>&nbsp;◆相关文章：</strong></td>
+                      </tr>
+                      <tr> 
+                        <td height="100" valign="top" bgcolor="#F9F9F7">{dede:speclike/}</td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+          <tr> 
+            <td height="6" bgcolor="#E8E8BD"></td>
+          </tr>
+          <tr> 
+            <td height="2"></td>
+          </tr>
+        </table></td>
+      <td width="4">&nbsp;</td>
+      <td width="178" valign="top" bgcolor="#F9FAF5"> <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #9A8F70;">
+          <tr> 
+            <td valign="top" bgcolor="#FFFFFF"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <form name="searchform" action="/php/search.php">
+                  <tr bgcolor="#CCCC33"> 
+                    <td height="23" colspan="4" align="center" style="border-bottom:1px solid #9A8F70;">↑文章搜索</td>
+                  </tr>
+                  <tr> 
+                    <td height="4" colspan="4"></td>
+                  </tr>
+                  <tr> 
+                    <td height="28">&nbsp;</td>
+                    <td width="30%">关键字：</td>
+                    <td width="63%"><input name="keyword" type="text" id="keyword" size="12"></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr> 
+                    <td height="32">&nbsp;</td>
+                    <td>范 &nbsp;围：</td>
+                    <td><select name="tag" id="tag">
+                        <option value="0" selected>默认搜索</option>
+                        <option value="1">仅搜索标题</option>
+                      </select></td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr> 
+                    <td width="4%" height="26">&nbsp; </td>
+                    <td height="30" colspan="2" align="center"><a href="javascript:document.searchform.submit();" style="width:80;height:20;border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #CCCC33">开始搜索</a> 
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                  </tr>
+                </form>
+              </table></td>
+          </tr>
+        </table>
+        <table width="100%" bgcolor="#FFFFFF">
+          <tr> 
+            <td height="4"></td>
+          </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #9A8F70;">
+          <tr> 
+            <td valign="top"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center" bgcolor="#CCCC33"> 
+                  <td height="23" colspan="3"style="border-bottom:1px solid #9A8F70;">※热点文章※</td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td height="4" colspan="3"></td>
+                </tr>
+                <tr bgcolor="#FFFFFF"> 
+                  <td width="4%" height="100" bgcolor="#FFFFFF">&nbsp;</td>
+                  <td width="93%" valign="top">{dede:hotart titlelength="24" line="6"}{/dede}</td>
+                  <td width="3%">&nbsp;</td>
+                </tr>
+              </table></td>
+          </tr>
+        </table>
+        <table width="100%" bgcolor="#FFFFFF">
+          <tr> 
+            <td height="4"></td>
+          </tr>
+        </table>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #9A8F70;">
+          <tr> 
+            <td valign="top"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr align="center" bgcolor="#CCCC33"> 
+                  <td height="23" colspan="3"style="border-bottom:1px solid #9A8F70;">※推荐文章※</td>
+                </tr>
+                <tr> 
+                  <td height="4" colspan="3" bgcolor="#FFFFFF"></td>
+                </tr>
+                <tr> 
+                  <td width="4%" height="100" bgcolor="#FFFFFF">&nbsp;</td>
+                  <td width="93%" valign="top" bgcolor="#FFFFFF">{dede:coolart 
+                    titlelength="24" line="6"}{/dede}</td>
+                  <td width="3%" bgcolor="#FFFFFF">&nbsp;</td>
+                </tr>
+              </table></td>
+          </tr>
+        </table>
+        </td>
+    </tr>
+  </table>
+  <table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="3"></td>
+</tr>
+<tr align="center"> 
+      <td height="8" bgcolor="#F5F5F5"></td>
+</tr>
+<tr> 
+<td height="20" align="center"><a href='http://www.dedecms.com'target='_blank'>Power by DedeCms 织梦内容管理系统</a><script src="/php/count.php?artID={dede:field name=id/}" language="javascript"></script></td>
+</tr>
+</table>
+</center></body></html>

@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<title>插入表格</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style>
+.td{font-size:10pt;}
+</style>
+<script language=javascript>
+function TableOK(){
+var dotable,row,col,cp,cs,border,width,widthdd
+row = theform.rows.value;
+col = theform.cols.value;
+cp = theform.cellpad.value;
+cs = theform.cellspace.value;
+border = theform.border.value;
+width = theform.width.value;
+widthdd = theform.units.value;
+width = width + widthdd;
+dotable = "<table width=\""+width+"\" border=\""+border+"\" cellspacing=\""+cs+"\" cellpadding=\""+cp+"\">\r\n";
+for(i=0;i<row;i++)
+{
+	dotable+="<tr>";
+	for(j=0;j<col;j++)
+		dotable+="<td></td>\r\n";
+	dotable+="</tr>";	
+}
+dotable+="</table>"
+window.returnValue = dotable;
+window.close();
+}
+</script>
+</HEAD>
+<body bgColor=menu leftmargin="8" topmargin="8">
+<form name="theform">
+  <table border="0">
+    <tr> 
+      <td align="right">行数:</td>
+      <td>
+      <input type="text" name="rows" size="8" value="3"> 
+      </td>
+      <td align="right" nowrap>单元格填充:</td>
+      <td>
+      <input name="cellpad" type="text" value="0" size="8"> 
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">列数:</td>
+      <td>
+      <input type="text" name="cols" size="8" value="3"> 
+      </td>
+      <td align="right" nowrap>单元格间距:</td>
+      <td>
+      <input name="cellspace" type="text" value="0" size="8"> 
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">宽度:</td>
+      <td nowrap colspan="3">
+      <input type="text" name="width" size="8" value="75" > 
+        <select name="units">
+          <option value="%" selected>百分比</option>
+          <option value="">像素</option>
+        </select> </td>
+    </tr>
+    <tr> 
+      <td align="right">边框:</td>
+      <td nowrap> <input type="text" name="border" size="8" value="1"> 
+      </td>
+      <td colspan="2" align="right" nowrap><input onclick="TableOK();" type="button" name="Submit2" value="确定"> 
+        <input type="button" name="Submit" onclick="window.close();" value="取消">
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</HTML>
+
