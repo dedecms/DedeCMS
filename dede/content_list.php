@@ -75,7 +75,7 @@ if(!empty($cids)){
 }
 
 if($keyword!=""){
-	$whereSql .= " And ( CONCAT(a.title,a.writer,a.source) like '%$keyword%') ";
+	$whereSql .= " And a.title like '%$keyword%' ";
 }
 
 if($cid!=0){

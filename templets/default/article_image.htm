@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/}</title>
+<title>{dede:field name='title'/} - powered by dedecms</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
@@ -70,7 +70,7 @@
 
 <!--头部开始-->
 <div class="top cbody">
-	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
 	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
 	<div class="toplink">		<ul>
 			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
@@ -86,7 +86,6 @@
         {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
         {/dede:channel}
 		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
-		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
 	</ul>
 	<div class="rssbut">		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
 	</div>
@@ -95,7 +94,7 @@
 <div class="topsearch cbody">
 	<div class="title"></div>
 	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="0">
+		<input type="hidden" name="kwtype" value="1">
 		<input name="keyword" id="keyword" type="text" class="searchtxt" />
 		<select name="searchtype" id="searchtype">
 			<option value="titlekeyword" selected>智能模糊搜索</option>
@@ -107,7 +106,6 @@
 	<div class="hots">		<strong>热门关键字：</strong>
 		{dede:hotwords num='5' subday='30'/}</div>
 </div>
-
 <!--内容-->
 <div class="main cbody margintop">
 	<!--左侧-->
@@ -147,10 +145,11 @@
 				  <dd><span>浏览数：</span><script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberid'/}&view=yes" language="javascript"></script></dd>
 					<dd><span>说明：</span>{dede:field name='description'/}</dd>
 					<dd><span>更新日期：</span>{dede:field name='pubdate' function='GetDateMk(@me)'/}</dd>
-                 	<dd>【<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}">收藏</a>】&nbsp;【<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}">推荐</a>】&nbsp;【<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name='id'/}">评论</a>】</dd>
+					<dd><span>Tag：</span>{dede:tag type='current'/}</dd>                 	
+                    <dd>【<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}">收藏</a>】&nbsp;【<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}">推荐</a>】&nbsp;【<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name='id'/}">评论</a>】</dd>
 				</dl>
 			</div>
-		</div>
+		</div> 
 
 		<!--热门图片-->
 		<div class="hotlist margintop">
@@ -171,14 +170,13 @@
 
 
 <div class="footer cbody margintop">
-	<div class="copyright">
-  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        {dede:global name='cfg_powerby'/}
+		<div class="copyright"> 
+                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+  		Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
         </div>
-	<div class="slogo">
-		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
-	</div>
-	<div class="floatclear"></div>
+	
 </div>
 
 

@@ -6,6 +6,7 @@ $cfg_add_dftable = '#@__addonarticle';
 require_once(dirname(__FILE__)."/archives_editcheck.php");
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);

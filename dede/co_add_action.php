@@ -75,7 +75,7 @@ $itemconfig .= "
 
 $inQuery = "
 INSERT INTO #@__conote(typeid,gathername,language,arcsource,lasttime,savetime,noteinfo) 
-VALUES('$exrule', '$notename', '$language','$arcsource', '0','".mytime()."', '$itemconfig');
+VALUES('$exrule', '$notename', '$language','$arcsource', '0','".time()."', '$itemconfig');
 ";
 $dsql = new DedeSql(false);
 if($dsql->ExecuteNoneQuery($inQuery))
@@ -88,6 +88,7 @@ else
 {
 	$gerr = $dsql->GetError();
 	$dsql->Close();
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	echo "SQL语句：<xmp>$inQuery</xmp>";
 	echo "<hr>错误提示：".$gerr."<hr>";
 	ShowMsg("增加节点失败,请检查原因!","javascript:;");

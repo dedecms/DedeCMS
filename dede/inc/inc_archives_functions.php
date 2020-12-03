@@ -29,13 +29,13 @@ function GetCurContentAlbum($body,$rfurl,&$firstdd)
 	preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/(.*)\.(gif|jpg|jpeg|png))/isU",$body,$img_array);
 	$img_array = array_unique($img_array[2]);
 	
-	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",mytime());
+	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",time());
 	$imgPath = $cfg_basedir.$imgUrl;
 	if(!is_dir($imgPath."/")){
 		MkdirAll($imgPath,$GLOBALS['cfg_dir_purview']);
 		CloseFtp();
 	}
-	$milliSecond = strftime("%H%M%S",mytime());
+	$milliSecond = strftime("%H%M%S",time());
 	
 	foreach($img_array as $key=>$value)
 	{
@@ -78,26 +78,31 @@ function GetCurContent($body)
 	$htd = new DedeHttpDown();
 	
 	$basehost = "http://".$_SERVER["HTTP_HOST"];
-  if($cfg_multi_site == 'N'){
-    $body = str_replace(strtolower($basehost),"",$body);
-    $body = str_replace(strtoupper($basehost),"",$body);
-  }else{
-  	if($cfg_basehost!=$basehost){
-  		$body = str_replace(strtolower($basehost),$cfg_basehost,$body);
-  		$body = str_replace(strtoupper($basehost),$cfg_basehost,$body);
-  	}
-  }
+	
+	/*
+	//避免删除本地链接
+	if($cfg_multi_site == 'N'){
+		$body = str_replace(strtolower($basehost),"",$body);
+		$body = str_replace(strtoupper($basehost),"",$body);
+	}else{
+		if($cfg_basehost!=$basehost){
+			$body = str_replace(strtolower($basehost),$cfg_basehost,$body);
+			$body = str_replace(strtoupper($basehost),$cfg_basehost,$body);
+		}
+	}
+	*/
+  
 	$img_array = array();
 	preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/(.*)\.(gif|jpg|jpeg|bmp|png))/isU",$body,$img_array);
 	$img_array = array_unique($img_array[2]);
 	
-	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",mytime());
+	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",time());
 	$imgPath = $cfg_basedir.$imgUrl;
 	if(!is_dir($imgPath."/")){
 		MkdirAll($imgPath,$GLOBALS['cfg_dir_purview']);
 		CloseFtp();
 	}
-	$milliSecond = strftime("%H%M%S",mytime());
+	$milliSecond = strftime("%H%M%S",time());
 	
 	foreach($img_array as $key=>$value)
 	{
@@ -142,7 +147,7 @@ function GetRemoteImage($url,$uid=0)
 	if(!in_array($htd->GetHead("content-type"),$sparr)){
 		return "";
 	}else{  	
-  	$imgUrl = $cfg_uploaddir."/".strftime("%Y%m",mytime());
+  	$imgUrl = $cfg_uploaddir."/".strftime("%Y%m",time());
 	  $imgPath = $cfg_basedir.$imgUrl;
 	  CreateDir($imgUrl);
   	$itype = $htd->GetHead("content-type");
@@ -151,7 +156,7 @@ function GetRemoteImage($url,$uid=0)
 		else if($itype=="image/wbmp") $itype = ".bmp";
 		else $itype = ".jpg";
 		
-		//$rndname = dd2char($uid."_".strftime("%H%M%S",mytime()).mt_rand(1000,9999));
+		//$rndname = dd2char($uid."_".strftime("%H%M%S",time()).mt_rand(1000,9999));
 		$rndname = strftime("%d",$ntime).dd2char(strftime("%H%M%S",$ntime).'0'.$uid.'0'.mt_rand(1000,9999)).'-'.$_i;
 		
 		$rndtrueName = $imgPath."/".$rndname.$itype;
@@ -189,11 +194,11 @@ function GetRemoteFlash($url,$uid=0)
 	if($htd->GetHead("content-type")!=$sparr){
 		return "";
 	}else{  	
-  	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",mytime());
+  	$imgUrl = $cfg_uploaddir."/".strftime("%y%m%d",time());
 	  $imgPath = $cfg_basedir.$imgUrl;
 	  CreateDir($imgUrl);
   	$itype = ".swf";
-		$milliSecond = $uid."_".strftime("%H%M%S",mytime());
+		$milliSecond = $uid."_".strftime("%H%M%S",time());
 		$rndFileName = $imgPath."/".$milliSecond.$itype;
 		$fileurl = $imgUrl."/".$milliSecond.$itype;
   	$ok = $htd->SaveToBin($rndFileName);
@@ -261,6 +266,7 @@ function SpLongBody(&$mybody,$spsize,$sptag)
 //-----------------------
 function MakeArt($aid,$checkLike=false)
 {
+	
 	global $cfg_makeindex,$cfg_basedir,$cfg_templets_dir,$cfg_df_style,$cfg_up_prenext,$typeid;
 	include_once(DEDEADMIN."/../include/inc_archives_view.php");
 	$arc = new Archives($aid);
@@ -312,7 +318,7 @@ function GetDDImage($litpic,$picname,$isremote,$ntitle='')
 {
 	global $cuserLogin,$cfg_ddimg_width,$cfg_ddimg_height;
 	global $cfg_basedir,$ddcfg_image_dir,$title,$dsql;
-	$ntime = mytime();
+	$ntime = time();
 	$saveinfo = false;
 	if($ntitle!='') $title = $ntitle;
 	$picname = trim($picname);
@@ -387,7 +393,7 @@ function GetDDImage($litpic,$picname,$isremote,$ntitle='')
 		//把新上传的图片信息保存到媒体文档管理档案中
 		$inquery = "
         INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
-        VALUES ('{$title} 缩略图','$litpic','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".mytime()."','".$cuserLogin->getUserID()."','0');
+        VALUES ('{$title} 缩略图','$litpic','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','".$cuserLogin->getUserID()."','0');
     ";
      $dsql = new DedeSql();
      $dsql->ExecuteNoneQuery($inquery);
@@ -433,7 +439,7 @@ function UploadOneImage($upname,$handurl='',$ddisremote=1,$ntitle='')
 	
 	global $cuserLogin,$cfg_basedir,$cfg_image_dir,$dsql,$title;
 	if($ntitle!='') $title = $ntitle; 
-	$ntime = mytime();
+	$ntime = time();
 	$filename = '';
 	$isrm_up = false;
 	$handurl = trim($handurl);
@@ -493,7 +499,7 @@ function UploadOneImage($upname,$handurl='',$ddisremote=1,$ntitle='')
 		//把新上传的图片信息保存到媒体文档管理档案中
 		$inquery = "
         INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
-        VALUES ('$title','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".mytime()."','".$cuserLogin->getUserID()."','0');
+        VALUES ('$title','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','".$cuserLogin->getUserID()."','0');
     ";
      $dsql = new DedeSql(false);
      $dsql->ExecuteNoneQuery($inquery);
@@ -579,6 +585,25 @@ function PrintAutoFieldsEdit(&$fieldset,&$fieldValues,$loadtype='all')
       }
   }
   echo "<input type='hidden' name='dede_addonfields' value=\"".$dede_addonfields."\">\r\n";
+}
+
+function getfilenameonly($arcid, $typeid, $senddate, $title, $ismake, $arcrank, $money)
+{
+	global $dsql;
+	require_once DEDEINC.'/inc_channel_unit_functions.php';
+ 
+	$row = $dsql->getone("select namerule, typedir, siterefer, sitepath ,channeltype from #@__arctype where ID='$typeid'");
+
+	if(is_array($row)){
+		if($row['channeltype'] == -2) return $GLOBALS['cfg_plus_dir']."/view.php?aid=$arcid";
+		$filename = GetFileNewName($arcid, $typeid, $senddate, $title, $ismake, $arcrank, $row['namerule'],
+												$row['typedir'],$money,$row['siterefer'], $row['sitepath']);
+	}else{
+		showmsg('栏目id错误','-1');
+		exit;
+	}
+	if($filename=="") $filename = $GLOBALS['cfg_plus_dir']."/view.php?aid=$arcid";
+	return $filename;
 }
 
 ?>

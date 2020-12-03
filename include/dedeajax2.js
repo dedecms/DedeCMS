@@ -10,9 +10,9 @@ var DedeErrDisplay = "下载数据失败";
 var DedeWaitDisplay = "正在下载数据...";
 
 //获取指定ID的元素
-function $(eid){
-	return document.getElementById(eid);
-}
+//function $(eid){
+//	return document.getElementById(eid);
+//}
 
 function $DE(id) {
 	return document.getElementById(id);

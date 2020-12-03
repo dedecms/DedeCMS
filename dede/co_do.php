@@ -82,7 +82,7 @@ else if($dopost=="copy")
 	$inQuery = "
    INSERT INTO #@__conote(typeid,gathername,arcsource,language,lasttime,savetime,noteinfo) 
    VALUES('".$row['typeid']."', '$notename','".addslashes($row['arcsource'])."', '".addslashes($row['language'])."',
-    '0','".mytime()."', '".addslashes($row['noteinfo'])."');
+    '0','".time()."', '".addslashes($row['noteinfo'])."');
   ";
   $rs = $dsql->ExecuteNoneQuery($inQuery);
   $dsql->Close();

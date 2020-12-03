@@ -39,7 +39,6 @@ class SearchView
 	//-------------------------------
 	function __construct($typeid, $keyword, $achanneltype=0, $searchtype="title",$kwtype=0, $cacheid=0)
  	{
-
 		$this->TypeID = $typeid;
 		$this->Keyword = $keyword;
 		$this->OrderBy = '#@__full_search.aid desc';
@@ -104,7 +103,7 @@ class SearchView
 	   $keyword = cn_substr($keyword,50);
 	   $row = $this->dsql->GetOne("Select spwords From #@__search_keywords where keyword='".addslashes($keyword)."'; ");
 	   if(!is_array($row)){
-		   if(strlen($keyword)>7){
+		   if(strlen($keyword) > 16){
 		      $sp = new SplitWord();
 	        $keywords = $sp->SplitRMM($keyword);
 	        $sp->Clear();
@@ -113,11 +112,11 @@ class SearchView
 	        $keywords = $keyword;
 	     }
 	     $inquery = "INSERT INTO `#@__search_keywords`(`keyword`,`spwords`,`count`,`result`,`lasttime`)
-          VALUES ('".addslashes($keyword)."', '".addslashes($keywords)."', '1', '0', '".mytime()."');
+          VALUES ('".addslashes($keyword)."', '".addslashes($keywords)."', '1', '0', '".time()."');
        ";
 	     $this->dsql->ExecuteNoneQuery($inquery);
 	  }else{
-		   $this->dsql->ExecuteNoneQuery("Update #@__search_keywords set count=count+1,lasttime='".mytime()."' where keyword='".addslashes($keyword)."'; ");
+		   $this->dsql->ExecuteNoneQuery("Update #@__search_keywords set count=count+1,lasttime='".time()."' where keyword='".addslashes($keyword)."'; ");
 		   $keywords = $row['spwords'];
 	  }
 	  return $keywords;
@@ -127,24 +126,28 @@ class SearchView
  	//----------------
   function GetKeywordSql()
  	{
- 		$where = array();
+ 		$where = $where1 = array();
 
  		if($this->TypeID > 0){
  			$where[] = "#@__full_search.typeid={$this->TypeID}";
  		}
  		if(!empty($this->ChannelType)){
- 			$where[] = "#@__full_search.typeid={$this->ChannelType}";
+ 			$where[] = "#@__full_search.channelid={$this->ChannelType}";
  		}
 
- 		$ks = explode(" ",$this->Keywords);
+ 		$ks = explode(' ',$this->Keywords);
  		sort($ks);
 		reset ($ks);
- 		$kwsqlarr = array();
-
+		$wherearr = array();
  		foreach($ks as $k)
  		{
+ 			$kwsqlarr = array();
  			$k = trim($k);
- 			if(strlen($k)<2) continue;
+ 			if(strlen($k) < 3){
+ 				 continue;
+ 				 //echo '关键词过短，搜索程序终止程序执行';
+ 				 //exit;
+ 			}
  			$k = addslashes($k);
 
  			if($this->SearchType != "titlekeyword"){
@@ -154,16 +157,16 @@ class SearchView
 			 	$kwsqlarr[] = " #@__full_search.addinfos like '%$k%' ";
 			 	$kwsqlarr[] = " #@__full_search.keywords like '%$k%' ";
 			}
-
+			$wherearr[] = '('.implode(' OR ',$kwsqlarr).')';
  		}
 		if($this->KType==1){
-			$where[] = implode(' AND ',$kwsqlarr);
+			$where[] = '('.implode(' AND ',$wherearr).')';
 		}else{
-			$where[] = implode(' OR ',$kwsqlarr);
+			$where[] = '('.implode(' OR ',$wherearr).')';
 		}
+		$wheresql = implode(' AND ',$where);
 
-
- 		$wheresql = implode(' AND ',$where);
+		$wheresql = 'arcrank > -1 and '.$wheresql;
 
  		return $wheresql;
  	}
@@ -204,12 +207,15 @@ class SearchView
  	{
  		$ks = explode(" ",$this->Keywords);
  		$kwsql = "";
+ 		$words = array();
  		foreach($ks as $k){
  			$k = trim($k);
  			if($k=="") continue;
  			if(ord($k[0])>0x80 && strlen($k)<3) continue;
- 			$fstr = str_replace($k,"<font color='red'>$k</font>",$fstr);
+ 			//$fstr = str_replace($k,"<font color='red'>$k</font>",$fstr);
+ 			$words[] = $k;
  		}
+ 		$fstr = highlight($fstr, $words);
  		return $fstr;
  	}
  	//------------------
@@ -362,6 +368,7 @@ class SearchView
 		$this->dsql->Execute("al");
 	    $artlist = "";
 	    $this->dtp2->LoadSource($innertext);
+		$tt = 0;
 	    for($i=0;$i<$perpage;$i++)
 		{
          if($row = $this->dsql->GetArray("al"))
@@ -392,9 +399,17 @@ class SearchView
        	    }
            }
            $artlist .= $this->dtp2->GetResult();
+           $tt = 1;
          }//if hasRow
          else{
-         	 $artlist .= "";
+         	if($tt == 0 && $this->KType == 1){
+						$sp1 = new SearchView($this->TypeID,$this->Keyword,$this->ChannelType,$this->SearchType,0,$this->cacheid);
+						$sp1->Display();
+						$sp1->Close();
+						exit;
+	        }else{
+	        	$artlist .= '';
+	        }
          }
      }//Loop Line
      $this->dsql->FreeResult("al");

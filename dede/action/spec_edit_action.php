@@ -95,11 +95,11 @@ for($i=1;$i<=$cfg_specnote;$i++)
 		if(isset(${'isauto'.$i})) $isauto = trim(${'isauto'.$i});
 		else $isauto = 0;
 		
-		if(isset(${'keywords'.$i})) $keywords = str_replace("'","",trim(${'keywords'.$i}));
-		else $keywords = "";
+		if(isset(${'keywords'.$i})) $keywordsn = str_replace("'","",trim(${'keywords'.$i}));
+		else $keywordsn = "";
 		
-		if(!empty(${'typeid'.$i})) $typeid = trim(${'typeid'.$i});
-		else $typeid = 0;
+		if(!empty(${'typeid'.$i})) $typeidn = trim(${'typeid'.$i});
+		else $typeidn = 0;
 		
 		if(!empty(${'rownum'.$i})) $rownum = trim(${'rownum'.$i});
 		else $rownum = 0;
@@ -121,7 +121,7 @@ for($i=1;$i<=$cfg_specnote;$i++)
 		$notelist .= "{dede:specnote imgheight=\\'$imgheight\\' imgwidth=\\'$imgwidth\\' 
 infolen=\\'$infolen\\' titlelen=\\'$titlelen\\' col=\\'$col\\' idlist=\\'$okids\\' 
 name=\\'$notename\\' noteid=\\'$noteid\\' isauto=\'$isauto\' rownum=\\'$rownum\\' 
-keywords=\\'$keywords\\' typeid=\\'$typeid\\'} 
+keywords=\\'$keywordsn\\' typeid=\\'$typeidn\\'} 
 	$listtmp
 {/dede:specnote}\r\n";
 	}
@@ -165,18 +165,17 @@ if(!$dsql->ExecuteNoneQuery($addQuery)){
 
 //生成HTML
 //---------------------------------
-$artUrl = MakeArt($ID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$ID";
+$artUrl = getfilenameonly($ID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //更新全站搜索索引
 $datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
-               'addinfos'=>$description,'uptime'=>mytime(),'arcrank'=>$arcrank);
+               'addinfos'=>$description,'uptime'=>time(),'arcrank'=>$arcrank);
 UpSearchIndex($dsql,$datas);
 unset($datas);
 //更新Tag索引
 UpTags($dsql,$tag,$ID,0,$typeid,$arcrank);
-
+MakeArt($ID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

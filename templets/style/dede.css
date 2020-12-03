@@ -209,33 +209,30 @@ input,select{
 	clear:both;
 	border-top:1px solid #DDD;
 }
-.footer .copyright{
-	width:800px;
-	float:left;
-	text-align:right;
-	color:#666666;
-	line-height:21px;
-	letter-spacing:1px;
-}
-.footer .copyright span{
-	color:#669933;
-}
 
-.footer .slogo{
-	float:right;
-	margin:7px;
+.footer .copyright{
+
+	text-align:center;
+	margin:10px auto;
+	font-size:10px;
+	color:#999999;
+}
+.footer .copyright a{
+	font-weight:bold;
+	color:#999999;
+	text-decoration:none;
+}
+.footer .copyright a:hover{
+	color:#999999;
 }
 
 
 /*-------------------------分页*/
 .pages{
-	width:650px;
-	height:25px;
-	margin:12px auto 0px;
-	clear:both;
-	background:#F7F7F7;
-	border-bottom:1px solid #FFF;
 
+	height:25px;
+	margin:12px auto 0px 10px;
+	background:#ffffff;
 }
 .pages .pcount{
 	display:inline;

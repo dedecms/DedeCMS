@@ -13,13 +13,15 @@ $dsql = new DedeSql(false);
 
 $tables = GetChannelTable($dsql,$aid,'arc');
 
-$arcQuery = "Select c.typename as channelname,r.membername as rankname,a.* 
+$arcQuery = "Select c.typename as channelname,r.membername as rankname,a.* ,full.keywords as words
 From `{$tables['maintable']}` a 
 left join #@__channeltype c on c.ID=a.channel  
 left join #@__arcrank r on r.rank=a.arcrank
+left join #@__full_search full on full.aid=a.ID 
 where a.ID='$aid'";
 
 $arcRow = $dsql->GetOne($arcQuery);
+$arcRow['keywords'] = $arcRow['words'];
 if(!is_array($arcRow)){
 	$dsql->Close();
 	ShowMsg("读取档案基本信息出错!","javascript:;");

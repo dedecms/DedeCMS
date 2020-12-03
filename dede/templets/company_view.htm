@@ -77,12 +77,7 @@ function ShowItem2(){
               新密码：<input name="newpwd" type="text" id="newpwd" value="" style="width:150px" />
             </td>
           </tr>
-          <tr>
-            <td height="25" align="right" >用户昵称：</td>
-            <td height="25" >
-              <input name="uname" type="text" id="uname" value="<?php echo $row['uname']; ?>" style="width:150px" />
-            </td>
-          </tr>
+
           <tr>
             <td height="25" align="right" >会员等级：</td>
             <td height="25" >
@@ -212,11 +207,7 @@ function ShowItem2(){
     <td><input type="text" size=4 maxlength=4 name="regyear" value="<?php echo $row['regyear']; ?>" />
       (年份，如：2007) *</td>
   </tr>
-  <tr>
-    <td>公司注册地：</td>
-    <td><input type="text" name="regaddr" value="<?php if(!empty($row['regaddr'])) echo $row['regaddr']; ?>" size="30" maxlength=64 />
-(省份/城市) *</td>
-  </tr>
+
   <tr>
     <td>主要产品或服务：</td>
     <td><input type="text" name="service" value="<?php echo $row['service']; ?>" />

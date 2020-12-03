@@ -8,9 +8,7 @@ if(!isset($aid)) $aid = "";
 $aid = ereg_replace("[^0-9]","",$aid);
 //读取链接列表
 //------------------
-if($open==0)
-{
-	$dsql = new DedeSql(false);
+$dsql = new DedeSql(false);
   //读取文档基本信息
   $arctitle = "";
   $arcurl = "";
@@ -38,6 +36,11 @@ if($open==0)
 	  ShowMsg("获取文档链接信息失败！","-1");
 	  exit();
 	}
+
+
+if($open==0)
+{
+
 	$vname = "";
 	foreach($cu->ChannelFields as $k=>$v){
 		if($v['type']=="softlinks"){ $vname=$k; break; }
@@ -49,7 +52,7 @@ if($open==0)
 	  exit();
 	}
 	$row = $dsql->GetOne("Select $vname From ".$cu->ChannelInfos['addtable']." where aid='$aid'");
-	$downlinks = $cu->GetAddLinks($row[$vname]);
+	$downlinks = $cu->GetAddLinks($row[$vname],$aid,$cid);
 	$dsql->Close();
 	$cu->Close();
 	require_once($cfg_basedir.$cfg_templets_dir."/plus/download_links_templet.htm");
@@ -58,6 +61,11 @@ if($open==0)
 //提供软件给用户下载
 //------------------------
 else if($open==1){
+	$query = "update {$cu->ChannelInfos['addtable']} set downloads=downloads+1 where aid='$aid'";
+	$dsql->setQuery($query);
+	$dsql->executenonequery();
+	$dsql->Close();
+	$cu->Close();
 	$link = base64_decode($link);
 	echo "<script language='javascript'>location=\"$link\";</script>";
 	exit();

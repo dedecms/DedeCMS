@@ -12,6 +12,8 @@ $dsql->Execute();
 while($row = $dsql->GetArray()){
    $aid = $row['aid'];
    DelArc($aid);
+   header("Content-Type: text/html; charset={$cfg_ver_lang}");
+   echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
    echo "删除 $aid OK<br>";
 }
 

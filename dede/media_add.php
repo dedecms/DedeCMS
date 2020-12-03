@@ -8,7 +8,7 @@ require_once(dirname(__FILE__)."/../include/inc_photograph.php");
 $sparr_image = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
 $sparr_flash = Array("application/x-shockwave-flash");
 $okdd = 0;
-$uptime = mytime();
+$uptime = time();
 $adminid = $cuserLogin->getUserID();
 $dsql = new DedeSql(false);
 for($i=0;$i<=40;$i++)

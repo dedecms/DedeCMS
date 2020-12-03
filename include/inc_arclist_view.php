@@ -77,7 +77,11 @@ class ListView
  		if($starttime==0) $this->StartTime = 0;
  		else $this->StartTime = GetMkTime($starttime);
 
- 		$this->PartView = new PartView($typeid);
+    if($this->TypeLink->TypeInfos['ispart']<=2)
+    {
+ 		    $this->PartView = new PartView($typeid);
+ 		    $this->CountRecord();
+ 		}
   }
   //php4构造函数
  	//---------------------------
@@ -127,10 +131,10 @@ class ListView
  	//---------------------------
  	function Close()
  	{
- 		@$this->dsql->Close();
- 		@$this->TypeLink->Close();
- 		@$this->ChannelUnit->Close();
- 		@$this->PartView->Close();
+ 		$this->dsql->Close();
+ 		$this->TypeLink->Close();
+ 		$this->ChannelUnit->Close();
+ 		if(is_object($this->PartView)) $this->PartView->Close();
  	}
  	//------------------
  	//统计列表里的记录
@@ -214,17 +218,22 @@ class ListView
  		if(empty($startpage)) $startpage = 1;
  		//创建封面模板文件
  		if($this->TypeLink->TypeInfos['isdefault']==-1){
- 			echo "这个类目是动态类目！";
- 			return "";
+ 			echo '这个类目是动态类目！';
+ 			return '';
  	  }
  	  //单独页面
- 		else if($this->TypeLink->TypeInfos['ispart']>0){
+ 		else if($this->TypeLink->TypeInfos['ispart']>0)
+ 		{
  			$reurl = $this->MakePartTemplets();
- 			$this->Close();
  			return $reurl;
  		}
+ 		//跳转网址
+ 		else if($this->TypeLink->TypeInfos['ispart']>2){
+ 			echo "这个类目是跳转网址！";
+ 			return $this->TypeLink->TypeInfos['typedir'];
+ 		}
 
- 		$this->CountRecord();
+ 		//$this->CountRecord();
  		//初步给固定值的标记赋值
  		$this->ParseTempletsFirst();
  		$totalpage = ceil($this->totalresult/$this->PageSize);
@@ -241,6 +250,7 @@ class ListView
  		if($endpage>($totalpage+1)) $endpage = $totalpage;
 
  		$ttmk = 0;
+ 		$rs = '';
  		for($this->pageno=$startpage;$this->pageno<$endpage;$this->pageno++)
  		{
  		  $ttmk++;
@@ -253,9 +263,9 @@ class ListView
  	    $makeFile = ereg_replace("/{1,}","/",$makeFile);
  	    $murl = $this->GetTrueUrl($murl);
  	    $this->dtp->SaveTo($makeFile);
- 	    //echo "成功创建：<a href='$murl' target='_blank'>$murl</a><br/>";
+ 	    $rs .= "<br/><a href='$murl' target='_blank'>$murl</a>";
  	  }
- 	  echo "共创建：($ttmk) 文件 <a href='$murl' target='_blank'>$murl</a><br/>";
+ 	  echo "共创建：($ttmk) 文件 $rs";
  	  if($startpage==1)
  	  {
  	    //如果列表启用封面文件，复制这个文件第一页
@@ -267,8 +277,8 @@ class ListView
  	  	  $list_1 = $this->GetTruePath().$onlyrule;
  	  	  $murl = $this->Fields['typedir']."/".$this->Fields['defaultname'];
  	  	  $indexname = $this->GetTruePath().$murl;
- 	  	  echo "复制：$onlyrule 为 ".$this->Fields['defaultname']." <br />";
  	  	  copy($list_1,$indexname);
+ 	  	  echo "<br>复制：$onlyrule 为 ".$this->Fields['defaultname'];
  	    }
  	  }
  		$this->Close();
@@ -279,11 +289,21 @@ class ListView
  	//------------------
  	function Display()
  	{
- 		if($this->TypeLink->TypeInfos['ispart']>0){
- 			$this->DisplayPartTemplets();
- 			return ;
+ 		//ispart = 3 跳转网址
+ 		if($this->TypeLink->TypeInfos['ispart']>2)
+ 		{
+ 			$this->Close();
+ 			header("location:".$this->TypeLink->TypeInfos['typedir']);
+ 			exit();
  		}
- 		$this->CountRecord();
+ 		//ispart = 1 板块或 2 单独页面
+ 		else if($this->TypeLink->TypeInfos['ispart']>0)
+ 		{
+ 			$this->DisplayPartTemplets();
+ 			return '';
+ 		}
+ 		
+ 		//ispart = 0 正常列表
  		if((empty($this->pageno) || $this->pageno==1)
  		 && $this->TypeLink->TypeInfos['ispart']==1)
  		{
@@ -323,6 +343,8 @@ class ListView
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			if(is_file($tmpdir."/".$tempfile)) $this->PartView->SetTemplet($tmpdir."/".$tempfile);
  			else{ $this->PartView->SetTemplet("这是没有使用模板的单独页！","string"); $nmfa = "1";}
+ 		}else if($this->Fields['ispart']==3){
+ 			return '';
  		}
  		CreateDir($this->Fields['typedir']);
  		$makeUrl = $this->GetMakeFileRule($this->Fields['ID'],"index",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
@@ -332,7 +354,7 @@ class ListView
  		else{
  			if(!file_exists($makeFile)) $this->PartView->SaveToHtml($makeFile);
  		}
- 		$this->Close();
+ 		//$this->Close();
  		return $this->GetTrueUrl($makeUrl);
  	}
  	//------------------
@@ -575,8 +597,6 @@ function getarea($areaid, $areaid2,$sub=0)
 			$orwhere = $this->addSql;
 
 			//排序方式
-			//为了确保系统稳定性，本版在 list 标记中禁用 orderby 属性
-			/*-----------------------------------------
 			if($orderby=="senddate") $ordersql=" order by arc.senddate $orderWay";
 			elseif($orderby=="pubdate") $ordersql=" order by arc.pubdate $orderWay";
 			elseif($orderby=="id") $ordersql="  order by arc.ID $orderWay";
@@ -585,9 +605,7 @@ function getarea($areaid, $areaid2,$sub=0)
 			elseif($orderby=="postnum") $ordersql = "  order by arc.postnum $orderWay";
 			elseif($orderby=="digg") $ordersql = "  order by arc.digg $orderWay";
 		  elseif($orderby=="diggtime") $ordersql = "  order by arc.diggtime $orderWay";
-			else
-			-----------------------------------------*/
-			$ordersql=" order by arc.sortrank $orderWay";
+			else $ordersql=" order by arc.sortrank $orderWay";
 
 			//获得附加表的相关信息
 			//-----------------------------
@@ -636,6 +654,7 @@ function getarea($areaid, $areaid2,$sub=0)
 					{
 						$GLOBALS['autoindex']++;
 						//处理一些特殊字段
+						//if()
 						$row['id'] =  $row['ID'];
 						$row['arcurl'] = $this->GetArcUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],$row['typedir'],$row['money']);
 						$row['typeurl'] = $this->GetListUrl($row['typeid'],$row['typedir'],$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],"abc");
@@ -649,7 +668,7 @@ function getarea($areaid, $areaid2,$sub=0)
 							}
 						}
 
-						$row['description'] = cnw_left($row['description'],$infolen);
+						$row['description'] = cn_substr($row['description'],$infolen);
 						if($row['litpic']=="") $row['litpic'] = $GLOBALS['cfg_plus_dir']."/img/dfpic.gif";
 						$row['picname'] = $row['litpic'];
 						$row['info'] = $row['description'];

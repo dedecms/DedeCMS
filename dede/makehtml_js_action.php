@@ -7,11 +7,12 @@ if(empty($templet)) $templet = "plus/js.htm";
 if(empty($uptype)) $uptype = "all";
 if($uptype == "all")
 {
+  header("Content-Type: text/html; charset={$cfg_ver_lang}");
   $dsql = new DedeSql(false);
-  $row = $dsql->GetOne("Select ID From #@__arctype where ID>'$typeid' And ispart<>2 order by ID asc limit 0,1;");
+  $row = $dsql->GetOne("Select ID From #@__arctype where ID>'$typeid' And ispart<2 order by ID asc limit 0,1;");
   $dsql->Close();
   if(!is_array($row)){
-	  ShowMsg("完成所有文件更新！","javascript:;");
+	  echo "完成所有文件更新！";
 	  exit();
   }
   else{
@@ -30,11 +31,10 @@ else
   $pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
   $pv->SaveToHtml($cfg_basedir."/data/js/".$typeid.".js");
   $pv->Close();
-  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
-  echo "成功更新"."/data/js/".$typeid.".js！";
-  echo "预览：";
-  echo "<hr>";
-  echo "<script src='../data/js/".$typeid.".js'></script>";
+	echo "成功更新"."/data/js/".$typeid.".js！";
+	echo "预览：";
+	echo "<hr>";
+	echo "<script src='../data/js/".$typeid.".js'></script>";
   exit();
 }
 

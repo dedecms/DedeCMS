@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
@@ -11,7 +11,7 @@
 <body>
 <!--头部开始-->
 <div class="top cbody">
-	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
   <div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
 	<div class="toplink">
 		<ul>
@@ -30,7 +30,6 @@
         <li><a href='[field:typelink/]'>[field:typename/]</a> </li>
         {/dede:channel}
 		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
-		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
 	</ul>
 	<div class="rssbut">
 		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>	
@@ -41,7 +40,7 @@
 	<div class="title"></div>
 	<div class="inpbox">
     <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="0">
+		<input type="hidden" name="kwtype" value="1">
 		<input name="keyword" id="keyword" type="text" class="searchtxt" />
 		<select name="searchtype" id="searchtype">
 			<option value="titlekeyword" selected>智能模糊搜索</option>
@@ -82,6 +81,7 @@
 					<li><strong>产品品牌：</strong> {dede:field name='brand'/}</li>
 					<li><strong>产品规格：</strong> {dede:field name='size'/}</li>
 					<li><strong>产品材质：</strong> {dede:field name='stuff'/}</li>
+                    <li><strong>产品Tag：</strong>{dede:tag type='current'/}</li>
 				</ul>
 				<!--缩略图-->
 				<div class="spic">
@@ -144,14 +144,14 @@
 				<dt>栏目列表</dt>
 				<dd>
 					<ul>
-                    {dede:channel type='sun'}
+                    {dede:channel type='self'}
                     <li><a href='[field:typelink/]'>[field:typename/]</a></li>
                     {/dede:channel}
 					</ul>
 				</dd>
 			</dl>
-		</div>
-		<div class="rlist margintop">
+	  </div>
+  <div class="rlist margintop">
 			<div class="title">热门产品</div>
 			<div class="rbox">
 				<ul>
@@ -180,14 +180,14 @@
 
 
 <div class="footer cbody margintop">
-	<div class="copyright">
-  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        {dede:global name='cfg_powerby'/}
+		<div class="copyright"> 
+                <div style="font-size:12px">
+{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+  		Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
 	</div>
-	<div class="slogo">
-		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="dedecms" /></a>
-	</div>
-  <div class="floatclear"></div>
+	
 </div>
 
 

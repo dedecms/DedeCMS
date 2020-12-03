@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
@@ -12,7 +12,7 @@
 
 <!--头部开始-->
 <div class="top cbody">
-	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
 	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
 	<div class="toplink">		<ul>
 			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
@@ -28,7 +28,6 @@
         {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
         {/dede:channel}
 		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
-		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
 	</ul>
 	<div class="rssbut">
 		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
@@ -38,7 +37,7 @@
 <div class="topsearch cbody">
 	<div class="title"></div>
 	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="0">
+		<input type="hidden" name="kwtype" value="1">
 		<input name="keyword" id="keyword" type="text" class="searchtxt" />
 		<select name="searchtype" id="searchtype">
 			<option value="titlekeyword" selected>智能模糊搜索</option>
@@ -113,12 +112,14 @@
 				<ul>
 					<li><strong>文件类型：</strong>	{dede:field name='filetype'/}</li>
 					<li><strong>软件大小：</strong>	{dede:field name='softsize'/}</li>
+					<li><strong>下载次数：</strong> <script src="{dede:field name='phpurl'/}/countdownloads.php?aid={dede:field name='aid'/}&cid={dede:field name='channel'/}" language="javascript"></script></li>
 					<li><strong>软件类别：</strong>	{dede:field name='softtype'/}</li>
 					<li><strong>软件语言：</strong>	{dede:field name='language'/}</li>
 					<li><strong>授权方式：</strong>	{dede:field name='accredit'/}</li>
 					<li><strong>运行环境：</strong>	{dede:field name='os'/}</li>
 					<li><strong>更新时间：</strong>	{dede:field name='pubdate' function="GetDateMk('@me')"/}</li>
 					<li><strong>官方网址：</strong>	<a href="{dede:field name='officialurl'/}">{dede:field name='officialurl'/}</a></li>
+                    <li><strong>软件Tag：</strong>{dede:tag type='current'/}</li>
 				</ul>
     <!--缩略图-->
 				<div class="spic"> <img src="{dede:field name='litpic'/}" width="282" height="206" /></div>
@@ -132,7 +133,6 @@
 			<div class="vtitle">下载地址：</div>
 			<div class="sdown">
 				<strong>下载地址：</strong>
-				<br />
 				{dede:field name='softlinks'/}
 			</div>
 			<div class="downdoc">
@@ -187,10 +187,11 @@ name='postnum'/} 位网友发表了评论 </div>
 
 
 <div class="footer cbody margintop">
-	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        {dede:global name='cfg_powerby'/}	</div>
-	<div class="slogo">
-		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+		<div class="copyright"> 
+                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+		Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms {dede:global name='cfg_version'/}</a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.</a><br />
 	</div>
 	<div class="floatclear"></div>
 </div>

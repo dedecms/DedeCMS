@@ -1,4 +1,5 @@
-<?php 
+<?php
+$cfg_IsCanView=true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
 if(empty($dopost)) $dopost="";
@@ -150,6 +151,9 @@ a:hover{
 }
 -->
 </style>
+<?php 
+if($dopost!="login"){
+?>
 <script type="text/javascript" language="javascript">
 <!--
 	window.onload = function (){
@@ -158,6 +162,9 @@ a:hover{
 	}
 -->
 </script>
+<?php
+}
+?>
 </head>
 <body>
 
@@ -207,7 +214,7 @@ if($dopost=="login")
 		<div class="title">
 			管理登陆
 		</div>
-		
+
 		<div class="login">
 		<form action="login.php" method="post">
             <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>">
@@ -251,7 +258,7 @@ if($dopost=="login")
 	</div>
 	
 	<div class="copyright">
-		Power by <a href="http://www.dedecms.com">DEDECMS <?php echo $cfg_version?></a> Copyright 2004-2007 
+		Powered by <a href="http://www.dedecms.com">DEDECMS <?php echo $cfg_version?></a> Copyright &copy;2004-2008 
 	</div>
 
 </body>

@@ -209,6 +209,7 @@ else if($dopost=="edituser")
 		$newpwd = GetEncodePwd($newpwd);
 		$edpwd = "pwd='$newpwd',";
 	}
+
 	$query = "update #@__member set
  	  {$edpwd}
  	  membertype = '$membertype',
@@ -222,6 +223,7 @@ else if($dopost=="edituser")
     spacename = '$spacename',
     news = '$news'
  	  where ID='$ID' ";
+
 	$rs = $dsql->ExecuteNoneQuery($query);
 
 	$truename = filterscript(trim($truename));
@@ -241,15 +243,14 @@ else if($dopost=="edituser")
 	$culture = filterscript(trim($culture));
 	$sql = "update #@__member_cominfo set truename='$truename', business='$business',
 	phone='$phone', fax='$fax', mobi='$mobi', comname='$comname',
-	regyear='$regyear', regaddr='$regaddr', service='$service', typeid1='$typeid1',
+	regyear='$regyear', service='$service', typeid1='$typeid1',
 	typeid2='$typeid2', comaddr='$comaddr', cominfo='$cominfo',
 	postid='$postid', website='$website', culture='$culture' where id='$ID'";
-
+  //echo $sql;
 	$row = $dsql->GetOne("select id from #@__member_cominfo where id='$ID'");
-	if($row['id'] < 1 ){
+	if(empty($row)){
 		$dsql->ExecuteNoneQuery("insert into #@__member_cominfo(id) values('$ID')");
 	}
-
 	$dsql->ExecuteNoneQuery($sql);
   $dsql->Close();
   ShowMsg("成功更改企业资料！",$ENV_GOBACK_URL);

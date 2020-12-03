@@ -27,7 +27,7 @@ if($dopost=="save")
 	ShowMsg("成功增加一个广告！","ad_main.php");
 	exit();
 }
-$startDay = mytime();
+$startDay = time();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);

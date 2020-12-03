@@ -33,7 +33,7 @@ if($dopost=="save")
 	ShowMsg("成功增加一组投票！","vote_main.php");
 	exit();
 }
-$startDay = mytime();
+$startDay = time();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);

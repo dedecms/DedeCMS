@@ -1,8 +1,16 @@
 <?php
-require_once(dirname(__FILE__).'/pub_charset.php');
 //拼音的缓冲数组
 $pinyins = Array();
 $g_ftpLink = false;
+
+//判断软件语言
+if( !isset($cfg_ver_lang) ){
+	if(eregi('utf',$cfg_version)) $cfg_ver_lang = 'utf-8';
+	else $cfg_ver_lang = 'utf-8';
+}
+
+if($cfg_ver_lang=='utf-8') require_once(dirname(__FILE__).'/pub_charset.php');
+
 //客户端与服务时间差校正
 function mytime()
 {
@@ -22,7 +30,7 @@ function GetCurUrl(){
 }
 //把全角数字转为半角数字
 function GetAlabNum($fnum){
-	$fnum = utf82gb($fnum);
+	if($GLOBALS['cfg_ver_lang']=='utf-8') $fnum = utf82gb($fnum);
 	$nums = array('０','１','２','３','４','５','６','７','８','９','．','－','＋','：');
 	$fnums = array('0','1',  '2','3',  '4','5',  '6', '7','8',  '9','.',  '-', '+',':');
 	$fnlen = count($fnums);
@@ -46,8 +54,10 @@ function Text2Html($txt){
 }
 //获得HTML里的文本
 function Html2Text($str){
-  if(!isset($GLOBALS['__funString'])) require_once(dirname(__FILE__)."/inc/inc_fun_funString.php");
-  return SpHtml2Text($str);
+	$str = preg_replace("/<sty(.*)\\/style>|<scr(.*)\\/script>|<!--(.*)-->/isU",'',$str);
+	$str = str_replace(array('<br />','<br>','<br/>'), "\n", $str);
+	$str = strip_tags($str);
+	return $str;
 }
 //清除HTML标记
 function ClearHtml($str){
@@ -58,19 +68,18 @@ function ClearHtml($str){
 }
 //中文截取把双字节字符也看作一个字符
 function cnw_left($str,$len){
-   $str =  utf82gb($str);
-	return gb2utf8(cnw_mid($str,0,$len));
+  if($GLOBALS['cfg_ver_lang']=='utf-8'){
+    $str =  utf82gb($str);
+    return gb2utf8(cn_substrGb($str,$slen,$startdd));
+  }else{
+    return cnw_mid($str,0,$len);
+  }
 }
-//此函数在UTF8版中不能直接调用
 function cnw_mid($str,$start,$slen){
   if(!isset($GLOBALS['__funString'])) require_once(dirname(__FILE__)."/inc/inc_fun_funString.php");
   return Spcnw_mid($str,$start,$slen);
 }
-//中文截取2，单字节截取模式
-function cn_substr($str,$slen,$startdd=0){
-  $str =  utf82gb($str);
-  return gb2utf8(cn_substrGb($str,$slen,$startdd));
-}
+
 //此函数在UTF8版中不能直接调用
 function cn_substrGb($str,$slen,$startdd=0){
 	$restr = "";
@@ -84,7 +93,7 @@ function cn_substrGb($str,$slen,$startdd=0){
 		if($startdd==0) $restr .= $c;
 		else if($i > $startdd) $restr .= $c;
 
-		if(ord($str[$i])>0x80){
+		if(ord($str[$i])>127){
 			if($str_len>$i+1) $c = $str[$i].$str[$i+1];
 			$i++;
 		}
@@ -96,6 +105,25 @@ function cn_substrGb($str,$slen,$startdd=0){
 		}
 	}
 	return $restr;
+}
+
+//中文截取2，单字节截取模式
+function cn_substr($str,$slen,$startdd=0){
+	if($GLOBALS['cfg_ver_lang']=='utf-8'){
+	  $str =  utf82gb($str);
+    return gb2utf8(cn_substrGb($str,$slen,$startdd));
+  }else{
+  	return cn_substrGb($str,$slen,$startdd);
+  }
+}
+
+function cn_midstr($str,$start,$len){
+	if($GLOBALS['cfg_ver_lang']=='utf-8'){
+	  $str =  utf82gb($str);
+    return gb2utf8(cn_substrGb($str,$slen,$startdd));
+  }else{
+  	return cn_substrGb($str,$slen,$startdd);
+  }
 }
 
 function GetMkTime($dtime)
@@ -126,7 +154,7 @@ function GetMkTime($dtime)
   }
 	$mt = @mktime($dt[3],$dt[4],$dt[5],$dt[1],$dt[2],$dt[0]);
 	if($mt>0) return $mt;
-	else return mytime();
+	else return time();
 }
 
 function SubDay($ntime,$ctime){
@@ -142,25 +170,31 @@ function AddDay($ntime,$aday){
 }
 
 function GetDateTimeMk($mktime){
+	global $cfg_cli_time;
 	if($mktime==""||ereg("[^0-9]",$mktime)) return "";
-	return strftime("%Y-%m-%d %H:%M:%S",$mktime);
+	return gmdate("Y-m-d H:i:s",$mktime + 3600 * $cfg_cli_time);
 }
 
 function GetDateMk($mktime){
+	global $cfg_cli_time;
 	if($mktime==""||ereg("[^0-9]",$mktime)) return "";
-	return strftime("%Y-%m-%d",$mktime);
+	return gmdate("Y-m-d",$mktime + 3600 * $cfg_cli_time);
 }
 
 function GetIP(){
 	if(!empty($_SERVER["HTTP_CLIENT_IP"])) $cip = $_SERVER["HTTP_CLIENT_IP"];
 	else if(!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) $cip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 	else if(!empty($_SERVER["REMOTE_ADDR"])) $cip = $_SERVER["REMOTE_ADDR"];
-	else $cip = "无法获取！";
+	else $cip = "";
+	preg_match("/[\d\.]{7,15}/", $cip, $cips);
+	$cip = $cips[0] ? $cips[0] : 'unknown';
+	unset($cips);
 	return $cip;
 }
+
 //获取一串中文字符的拼音 ishead=0 时，输出全拼音 ishead=1时，输出拼音首字母
 function GetPinyin($str,$ishead=0,$isclose=1){
-	$str = utf82gb($str);
+	if($GLOBALS['cfg_ver_lang']=='utf-8') $str = utf82gb($str);
 	if(!isset($GLOBALS['__funAdmin'])) require_once(dirname(__FILE__)."/inc/inc_fun_funAdmin.php");
   return SpGetPinyin($str,$ishead,$isclose);
 }
@@ -172,12 +206,13 @@ function GetNewInfo(){
 
 function ShowMsg($msg,$gourl,$onlymsg=0,$limittime=0)
 {
-	  global $dsql;
-		$htmlhead  = "<html>\r\n<head>\r\n<title>DedeCms 系统提示</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n";
+	  global $dsql,$cfg_ver_lang;
+	  if( eregi("^gb",$cfg_ver_lang) ) $cfg_ver_lang = 'utf-8';
+		$htmlhead  = "<html>\r\n<head>\r\n<title>DedeCms 系统提示</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\" />\r\n";
 		$htmlhead .= "<base target='_self'/>\r\n</head>\r\n<body leftmargin='0' topmargin='0'>\r\n<center>\r\n<script>\r\n";
 		$htmlfoot  = "</script>\r\n</center>\r\n</body>\r\n</html>\r\n";
 
-		if($limittime==0) $litime = 1000;
+		if($limittime==0) $litime = 5000;
 		else $litime = $limittime;
 
 		if($gourl=="-1"){
@@ -238,32 +273,35 @@ function AttDef($oldvar,$nv){
 }
 //把符合规则的数字转为字符
 function dd2char($dd){
-  $slen = strlen($dd);
-  $okdd = "";
-  for($i=0;$i<$slen;$i++){
-  	if(isset($dd[$i+1])){
-  		$n = $dd[$i].$dd[$i+1];
-  		if(($n>96 && $n<123)||($n>64 && $n<91)){ $okdd .= chr($n); $i++; }
-  		else $okdd .= $dd[$i];
-    }else $okdd .= $dd[$i];
-  }
-  return $okdd;
+	if($GLOBALS['cfg_ver_lang']=='utf-8') $dd = utf82gb($dd);
+	$slen = strlen($dd);
+	$okdd = "";
+	for($i=0;$i<$slen;$i++){
+		if(isset($dd[$i+1]))
+		{
+			$n = $dd[$i].$dd[$i+1];
+			if(($n>96 && $n<123)||($n>64 && $n<91)){
+				$okdd .= chr($n); $i++;
+			}
+			else $okdd .= $dd[$i];
+		}else $okdd .= $dd[$i];
+	}
+	return $okdd;
 }
 //按默认参数设置一个Cookie
 function PutCookie($key,$value,$kptime,$pa="/"){
-	 global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
-	 if(empty($cfg_pp_isopen)
-	  ||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost))
-	 {
-	   setcookie($key,$value,mytime()+$kptime,$pa);
-	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),mytime()+$kptime,$pa);
-	 }else
-	 {
-	 	 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
-	 	 $dm = ereg_replace("/(.*)","",$dm);
-	 	 setcookie($key,$value,mytime()+$kptime,$pa,$dm);
-	   setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),mytime()+$kptime,$pa,$dm);
-	 }
+	global $cfg_cookie_encode,$cfg_pp_isopen,$cfg_basehost;
+	if(empty($cfg_pp_isopen)
+	||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost))
+	{
+		setcookie($key,$value,time()+$kptime,$pa);
+		setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa);
+	}else{
+		$dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
+		$dm = ereg_replace("/(.*)","",$dm);
+		setcookie($key,$value,time()+$kptime,$pa,$dm);
+		setcookie($key.'ckMd5',substr(md5($cfg_cookie_encode.$value),0,16),time()+$kptime,$pa,$dm);
+	}
 }
 //使Cookie失效
 function DropCookie($key){
@@ -271,14 +309,14 @@ function DropCookie($key){
 	if(empty($cfg_pp_isopen)
 	||!ereg("\.",$cfg_basehost)||!ereg("[a-zA-Z]",$cfg_basehost))
 	{
-	  setcookie($key,"",mytime()-3600000,"/");
-	  setcookie($key.'ckMd5',"",mytime()-3600000,"/");
+	  setcookie($key,"",time()-3600000,"/");
+	  setcookie($key.'ckMd5',"",time()-3600000,"/");
 	}else
 	{
-		 $dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
-		 $dm = ereg_replace("/(.*)","",$dm);
-	 	 setcookie($key,"",mytime(),"/",$dm);
-	   setcookie($key.'ckMd5',"",mytime(),"/",$dm);
+		$dm = eregi_replace("http://([^\.]*)\.","",$cfg_basehost);
+		$dm = ereg_replace("/(.*)","",$dm);
+		setcookie($key,"",time(),"/",$dm);
+		setcookie($key.'ckMd5',"",time(),"/",$dm);
 	}
 }
 //获得一个cookie值
@@ -295,7 +333,6 @@ function GetCkVdValue(){
 	@session_start();
 	if(isset($_SESSION["dd_ckstr"])) $ckvalue = $_SESSION["dd_ckstr"];
 	else $ckvalue = '';
-	//DropCookie("dd_ckstr");
 	return $ckvalue;
 }
 //用FTP创建一个目录
@@ -427,24 +464,30 @@ function DdPwdDecode($epwd,$sign=''){
 	if($sign=='') $sign = $cfg_ddsign;
 	$rtstr = '';
 	$poshandle = ord($epwd[0]);
-	if($poshandle%2==0){
+	if($poshandle%2==0)
+	{
 		$n1 = chr(ord($epwd[1])-18);
 		$n2 = chr(ord($epwd[2])-36);
 		$pwstr = substr($epwd,3,strlen($epwd)-3);
-  }else{
-  	$n1 = chr(ord($epwd[strlen($epwd)-2])-20);
+	}else{
+		$n1 = chr(ord($epwd[strlen($epwd)-2])-20);
 		$n2 = chr(ord($epwd[strlen($epwd)-1])-25);
 		$pwstr = substr($epwd,1,strlen($epwd)-3);
-  }
-  $pwdlen = ($n1.$n2)*2;
-  $pwstrlen = strlen($pwstr);
-  for($i=0;$i<$pwstrlen;$i++){
-  	if($i<$pwdlen){
-  	  if($poshandle%2==0){ $restr .= $pwstr[$i]; $i++; }
-  	  else{ $i++; $restr .= $pwstr[$i]; }
-  	}else{ $restr .= $pwstr[$i]; }
-  }
-  $restr = base64_decode($restr);
+	}
+	$pwdlen = ($n1.$n2)*2;
+	$pwstrlen = strlen($pwstr);
+	for($i=0;$i < $pwstrlen;$i++)
+	{
+		if($i < $pwdlen){
+			if($poshandle%2==0){
+				$restr .= $pwstr[$i]; $i++;
+			}else{
+				$i++; 
+				$restr .= $pwstr[$i]; 
+			}
+		}else{ $restr .= $pwstr[$i]; }
+	}
+	$restr = base64_decode($restr);
 	return $restr;
 }
 
@@ -475,10 +518,11 @@ function filterscript($str) {
 
 function AjaxHead()
 {
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	global $cfg_ver_lang;
+	@header("Pragma:no-cache\r\n");
+	@header("Cache-Control:no-cache\r\n");
+	@header("Expires:0\r\n");
+	@header("Content-Type: text/html; charset={$cfg_ver_lang}");
 }
 
 function getarea($areaid)
@@ -554,12 +598,16 @@ function WriteSearchIndex($dsql,&$datas)
 
 function UpSearchIndex($dsql,&$datas)
 {
+	
 	$addf = '';
 	foreach($datas as $k=>$v){
 		if($k!='aid') $addf .= ($addf=='' ? "`$k`='$v'" : ",`$k`='$v'");
 	}
-	$uquery = "update `#@__full_search` set $addf where aid = '{$datas['aid']}';";
+
+	$uquery = "update `#@__full_search` set $addf where aid = '".$datas['aid']."';";
+
 	$rs = $dsql->ExecuteNoneQuery($uquery);
+
 	if(!$rs){
 		$gerr = $dsql->GetError();
 		//$tbs = GetChannelTable($dsql,$datas['channelid'],'channel');
@@ -571,6 +619,7 @@ function UpSearchIndex($dsql,&$datas)
 		$dsql->Close();
 		exit();
 	}
+
 	return $rs;
 }
 
@@ -632,6 +681,36 @@ function sendmail($email, $mailtitle, $mailbody, $headers)
 	}else{
 		@mail($email, $mailtitle, $mailbody, $headers);
 	}
+}
+
+function highlight($string, $words, $hrefs='',$pretext='', $step='')
+{
+	//后两个变量为系统继承变量，不可指定
+	if($step != 'me'){
+		return preg_replace('/(^|>)([^<]+)(?=<|$)/sUe', "highlight('\\2',\$words, \$hrefs, '\\1', 'me')", $string);
+	}
+	
+	if(is_array($words)){
+			$string = str_replace('\"', '"', $string);
+			foreach($words as $k => $word){
+				if(empty($hrefs[$k])){
+					$string = preg_replace('/(^|>)([^<]+)(?=<|$)/sUe', "highlight('\\2',\$word, '', '\\1', 'me')", $string);
+				}else{
+					$string = preg_replace('/(^|>)([^<]+)(?=<|$)/sUe', "highlight('\\2',\$word, \$hrefs[\$k], '\\1', 'me')", $string);
+				}
+			}
+		return $pretext.$string;
+	}else{
+		if($hrefs == ''){
+			$string = str_replace($words,'<strong><font color="#ff0000">'.$words.'</font></strong>',$string);
+		}else{
+			if(strpos($string, $words) !== false){
+				$string = str_replace($words, '<a href="'.$hrefs.'" style="color:#ff0000;font-weight:bold;">'.$words.'</a>', $string);
+			}
+		}
+		return $pretext.$string;
+	}
+	
 }
 
 $startRunMe = ExecTime();

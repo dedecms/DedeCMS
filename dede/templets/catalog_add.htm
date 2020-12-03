@@ -210,6 +210,7 @@ function CheckPathSet()
             ?>
             <input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>">            </td>
           </tr>
+
           <tr>
             <td height="26" align="left" class='bline'>文件保存目录：</td>
           <td align="left" class='bline'>
@@ -270,7 +271,10 @@ function CheckPathSet()
 <input name="ispart" type="radio" id="radio" value="1" class='np'>
 频道封面（栏目本身不允许发布文档） <br>
 <input name="ispart" type="radio" id="radio" value="2" class='np'>
-单独页面（栏目本身不允许发布文档） </td>
+单独页面（栏目本身不允许发布文档） <br>
+<input name="ispart" type="radio" id="radio" value="3" class='np'>
+跳转网址（在文件保存目录处填写完整网址）
+</td>
           </tr>
           <tr>
             <td height="26" align="left" class='bline'>启用小分类：</td>
@@ -386,7 +390,7 @@ function CheckPathSet()
           </tr>
           <tr>
             <td height="26" align="left">文章命名规则：</td>
-            <td align="left"> <input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" size="40">
+            <td align="left"> <input name="namerule" type="text" id="namerule" value="<?php echo $cfg_df_namerule;?>" size="40">
               <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar2')">
             </td>
           </tr>
@@ -397,7 +401,7 @@ function CheckPathSet()
           <tr>
             <td height="26" align="left">列表命名规则：</td>
             <td align="left">
-              <input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" size="40">
+              <input name="namerule2" type="text" id="namerule2" value="<?php echo $cfg_df_listnamerule;?>" size="40">
             <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onClick="ShowHide('helpvar3')"></td>
           </tr>
 		  <tr>

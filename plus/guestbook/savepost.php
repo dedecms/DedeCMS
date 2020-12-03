@@ -13,7 +13,7 @@ if($validate=="" || $validate!=$svali){
 
 $dsql = new DedeSql(false);
 $ip = GetIP();
-$dtime = strftime("%Y-%m-%d %H:%M:%S",mytime());
+$dtime = strftime("%Y-%m-%d %H:%M:%S",time());
 $uname = trimMsg($uname);
 $email = trimMsg($email);
 $homepage = trimMsg($homepage);

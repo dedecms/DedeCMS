@@ -22,6 +22,8 @@ if(empty($starttime)) $starttime = '';
 if(empty($maxpagesize)) $maxpagesize = 50;
 $adminID = $cuserLogin->getUserID();
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 $dsql = new DedeSql(false);
 //普通生成
 if($gotype=='')
@@ -47,7 +49,6 @@ if(isset($idArray[$pageno])){
 	$tid = $idArray[$pageno];
 }else{
 	if($gotype==''){
-	  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 	  echo "完成所有文件创建！";
 	  ClearAllLink();
 	  exit();
@@ -70,6 +71,7 @@ if(!empty($tid))
   {
   	$ntotalpage = $lv->TotalPage;
   }else{
+
   	$ntotalpage = 1;
   }
 
@@ -77,11 +79,13 @@ if(!empty($tid))
   if($ntotalpage<=$maxpagesize || $lv->TypeLink->TypeInfos['ispart']!=0 
   || $lv->TypeLink->TypeInfos['isdefault']==-1)
   {
+ 	
 	  $lv->MakeHtml();
 	  $finishType = true;
   }
   else
   {
+
 	   $lv->MakeHtml($mkpage,$maxpagesize);
 	   $finishType = false;
 	   $mkpage = $mkpage + $maxpagesize;
@@ -92,12 +96,11 @@ if(!empty($tid))
 
 $nextpage = $pageno+1;
 
-if($nextpage >= $totalpage)
+if($nextpage >= $totalpage && $finishType)
 {
 	if($gotype=='')
 	{
-	   echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
-	   echo "完成所有文件创建！";
+	   echo "<br>完成所有文件创建！";
 	   ClearAllLink();
 	   exit();
 	}else if($gotype=='mkall')

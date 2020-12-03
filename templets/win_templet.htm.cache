@@ -1,0 +1,16 @@
+<?php
+$z[0]=Array("maintitle","",254,271);
+$z[1]=Array("global","",293,329);
+$z[1][4]['name']="cfg_templeturl";
+$z[2]=Array("global","",454,486);
+$z[2][4]['name']="cfg_phpurl";
+$z[3]=Array("global","",682,714);
+$z[3][4]['name']="cfg_phpurl";
+$z[4]=Array("global","",973,1005);
+$z[4][4]['name']="cfg_phpurl";
+$z[5]=Array("maintitle","",1195,1212);
+$z[6]=Array("wecome_info","",1394,1413);
+$z[7]=Array("winform","",1626,1641);
+$z[8]=Array("lang_cms_powerby","",1687,1711);
+
+?>

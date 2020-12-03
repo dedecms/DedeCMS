@@ -73,7 +73,7 @@ function SpGetFullList(&$dsql,$typeid=0,$channelid=0,$row=10,$titlelen=30,$infol
 		    $ridnum = count($keywords);
 		    $rstr = trim($keywords[0]);
 		    if($ridnum>4) $ridnum = 4;
-		    for($i=0;$i<$ridnum;$i++){
+		    for($i=1;$i < $ridnum;$i++){
 			    $keywords[$i] = trim($keywords[$i]);
 			    if($keywords[$i]!="") $rstr .= "|".$keywords[$i];
 			  }
@@ -105,6 +105,8 @@ function SpGetFullList(&$dsql,$typeid=0,$channelid=0,$row=10,$titlelen=30,$infol
 		from `#@__full_search` arcf left join `#@__arctype` tp on arcf.typeid=tp.ID
 		where $orwhere $ordersql $limitsql ";
 		
+		//echo $query;
+		
 		$t1 = ExecTime();
 		$dsql->SetQuery($query);
 		$dsql->Execute("alf");
@@ -119,6 +121,7 @@ function SpGetFullList(&$dsql,$typeid=0,$channelid=0,$row=10,$titlelen=30,$infol
        $row['filename'] = $row['arcurl'] = $row['url'];
        $row['typeurl'] = GetTypeUrl($row['typeid'],MfTypedir($row['typedir']),$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],$row['siteurl']);
        if($row['litpic']=="") $row['litpic'] = $GLOBALS['PubFields']['templeturl']."/img/default.gif";
+       $row['picname'] = $row['litpic'];
        if($GLOBALS['cfg_multi_site']=='Y')
        {
            if($row['siteurl']=="") $row['siteurl'] = $GLOBALS['cfg_mainsite'];

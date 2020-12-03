@@ -25,40 +25,37 @@ if($dopost=="save")
    $description = Html2Text($description);
    $keywords = Html2Text($keywords);
 
+   
+   $tmpdir = $typedir;
+   if($ispart==3 && $typedir==''){
+     ShowMsg("你设置的栏目属性是跳转网址，请指定要跳转的网址！","-1");
+     exit();
+   }
+
+ if($ispart!=3) //非跳转网址处理栏目目录
+ {
    //栏目的参照目录
-   if($reID==0 && $moresite==1) $nextdir = "/";
+   if($reID==0 && $moresite==1) $nextdir = '/';
    else{
-     if($referpath=="cmspath") $nextdir = "{cmspath}";
-     else if($referpath=="basepath") $nextdir = "";
+     if($referpath=='cmspath') $nextdir = '{cmspath}';
+     else if($referpath=='basepath') $nextdir = '';
      else $nextdir = $nextdir;
    }
    //用拼音命名
-   if( $upinyin==1 ||
-     ( $typedir=="" && $sitepath=="" ) ||
-     ( $typedir=="" && $moresite==1 && $reID>0 ) )
+   if( $upinyin==1 || ( $typedir=='' && $sitepath=='' ) || ( $typedir=='' && $moresite==1 && $reID>0 ) )
    {
      	 $typedir = GetPinyin($typename);
-   }
-
-   //子分类
-   $sonlists = (empty($sonlists) ? '' : $sonlists);
-   $smalltypes = '';
-   if(is_array($sonlists) && isset($needson)){
-   	 $n = count($sonlists);
-   	 for($i=0;$i<$n;$i++){
-   	 	 if($i==($n-1)) $smalltypes .= $sonlists[$i];
-   	 	 else $smalltypes .= $sonlists[$i].",";
-   	 }
    }
 
    $typedir = $nextdir."/".$typedir;
 
    $typedir = ereg_replace("/{1,}","/",$typedir);
 
-   if($referpath=="basepath" && $siteurl!="") $typedir = "";
+   if($referpath=='basepath' && $siteurl!='') $typedir = '';
 
    //检测二级网址
-   if($siteurl!=""){
+   if($siteurl!="")
+   {
       $siteurl = ereg_replace("/$","",$siteurl);
       if(!eregi("http://",$siteurl)){
       	$dsql->Close();
@@ -81,12 +78,20 @@ if($dopost=="save")
    	  ShowMsg("创建目录 {$true_typedir} 失败，请检查你的路径是否存在问题！","-1");
    	  exit();
    }
+ }//非跳转网址处理栏目目录
 
-   if($channeltype == '-2'){
-   		$isdefault = '-1';
+   if($channeltype == '-2') $isdefault = '-1';
 
-
-	}
+	 //子分类
+   $sonlists = (empty($sonlists) ? '' : $sonlists);
+   $smalltypes = '';
+   if(is_array($sonlists) && isset($needson)){
+   	 $n = count($sonlists);
+   	 for($i=0;$i<$n;$i++){
+   	 	 if($i==($n-1)) $smalltypes .= $sonlists[$i];
+   	 	 else $smalltypes .= $sonlists[$i].",";
+   	 }
+   }
 
 
    $in_query = "insert into #@__arctype(

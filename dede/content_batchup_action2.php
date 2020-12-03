@@ -30,7 +30,6 @@ if($action=='modddpic')
 			}
 		}
 	}
-	$dsql->executenonequery("OPTIMIZE TABLE `$maintable`");
 	$dsql->Close();
 	ShowMsg("成功修正缩略图错误！","javascript:;");
 	exit();
@@ -51,8 +50,9 @@ if($action=='modddpic')
 	$tidarr = array();
 	while($row = $dsql->getarray())
 	{
-		$tidarr[]= $row;
+		$tidarr[]= $row['ID'];
 	}
+	//print_r($tidarr);exit;
 	$tids = implode(',', $tidarr);
 	$dsql->executenonequery("delete from #@__full_search where NOT(typeid in($tids))");
 	$dsql->executenonequery("delete from #@__full_search where NOT(channelid in($channelids))");

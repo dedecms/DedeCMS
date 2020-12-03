@@ -3,12 +3,28 @@ require_once(dirname(__FILE__)."/config.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
 $dsql = new DedeSql(false);
 
-if(empty($pagesize)) $pagesize = 18;
+if(empty($pagesize)) $pagesize = 20;
 if(empty($pageno)) $pageno = 1;
 if(empty($dopost)) $dopost = '';
 if(empty($orderby)) $orderby = 'aid';
 if(empty($showtag)) $showtag = 0;
 if(empty($showkw)) $showkw = 0;
+if(!isset($action)) $action = '';
+
+
+if($action == 'delete'){
+	if(is_array($kids)){
+		$kids = implode(',', $kids);
+		$query = "delete from #@__search_keywords where aid in ($kids)";
+		if($dsql->executenonequery($query)){
+			showmsg('批量删除关键词成功', 'search_keywords_main.php');
+			exit;
+		}else{
+			showmsg('批量删除关键词失败', 'search_keywords_main.php');
+			exit;
+		}
+	}
+}
 
 //初处化处理
 $addget = '';
@@ -16,12 +32,26 @@ $addsql = '';
 if(empty($keyword)){
 	$keyword = '';
 }
-$addget = '&keyword='.urlencode($keyword);
-$addsql = " where CONCAT(keyword,spwords) like '%$keyword%' ";
-
+if(!empty($type)){
+	$addget = '&keyword='.urlencode($keyword);
+	$addsql = " where CONCAT(keyword,spwords) like '%$keyword%' ";
+}
 //重载列表
 if($dopost=='getlist'){
-	PrintAjaxHead();
+	AjaxHead();
+	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
+	$dsql->Close();
+	exit();
+}
+elseif($dopost == 'add'){
+	$count = ereg_replace("[^0-9]","",$count);
+	$keyword = trim($keyword);
+	$spwords = trim($spwords);
+	$timestamp = time();
+	$dsql->executeNoneQuery("insert into #@__search_keywords(keyword, spwords, count, lasttime)
+	values('$keyword', '$spwords','$count', '$timestamp');
+	");
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -34,7 +64,7 @@ else if($dopost=='update')
 	$keyword = trim($keyword);
 	$spwords = trim($spwords);
 	$dsql->ExecuteNoneQuery("Update `#@__search_keywords` set keyword='$keyword',spwords='$spwords',count='$count' where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -44,7 +74,7 @@ else if($dopost=='del')
 {
 	$aid = ereg_replace("[^0-9]","",$aid);
 	$dsql->ExecuteNoneQuery("Delete From `#@__search_keywords` where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -60,7 +90,7 @@ if($dopost==''){
 
 //获得特定的关键字列表
 //---------------------------------
-function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
+function GetKeywordList(&$dsql,$pageno,$pagesize,$orderby='aid'){
 	global $cfg_phpurl,$addsql;
 	$start = ($pageno-1) * $pagesize;
 	$printhead ="<table width='96%' border='0' cellpadding='1' cellspacing='1' bgcolor='#E2F5BC' style='margin-bottom:3px' align='center'>
@@ -76,6 +106,7 @@ function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
     </tr>
     ";
     echo $printhead;
+    //echo "Select * From #@__search_keywords $addsql order by $orderby desc limit $start,$pagesize ";
     $dsql->SetQuery("Select * From #@__search_keywords $addsql order by $orderby desc limit $start,$pagesize ");
 	  $dsql->Execute();
 	  $i = 0;
@@ -102,11 +133,5 @@ function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
 	 echo "</table>\r\n";
 }
 
-function PrintAjaxHead(){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
-}
 ?>
 

@@ -233,7 +233,7 @@ class DedeCollection
 		}
 		//分析所有内容，并保存
 		$body = addslashes($this->GetPageFields($dourl,true));
-		$query = "Update #@__courl set dtime='".mytime()."',result='$body',isdown='1' where aid='$aid'";
+		$query = "Update #@__courl set dtime='".time()."',result='$body',isdown='1' where aid='$aid'";
 		$this->dsql->SetSql($query);
 		if(!$this->dsql->ExecuteNoneQuery()){
 			echo $this->dsql->GetError();
@@ -396,7 +396,7 @@ class DedeCollection
 		global $threadnum;
 		$this->MediaCount++;
 		$mnum = $this->MediaCount;
-		$timedir = strftime("%y%m%d",mytime());
+		$timedir = strftime("%y%m%d",time());
 		//存放路径
 		$fullurl = preg_replace("/\/{1,}/","/",$this->Item["imgurl"]."/");
 		if(!is_dir($GLOBALS['cfg_basedir']."/$fullurl")) MkdirAll($GLOBALS['cfg_basedir']."/$fullurl",$GLOBALS['cfg_dir_purview']);
@@ -551,6 +551,9 @@ class DedeCollection
 		}
 		$dhtml = new DedeHtml2();
 		$html = $this->DownOnePage($dourl);
+
+	//$html = str_replace('" class="tool comments">','?999" class="tool comments">',$html);
+
 		if($html==""){
 			echo "读取其中的一个网址： $dourl 时失败！\r\n";
 			return ;
@@ -622,7 +625,7 @@ class DedeCollection
 	        if(is_array($lrow)) continue;
 				}
 				$inquery = "INSERT INTO #@__courl(nid,title,url,dtime,isdown,result) 
-         VALUES ('".$this->NoteId."','用户手工指定的网址','$v','".mytime()."','0','');";
+         VALUES ('".$this->NoteId."','用户手工指定的网址','$v','".time()."','0','');";
 				$this->dsql->ExecuteNoneQuery($inquery);
 			}
 			echo "完成种子网址的处理！<br/>\r\n";
@@ -640,6 +643,7 @@ class DedeCollection
 	   if($moviePostion > $glstart)
 	   {
 			  $html = $this->DownOnePage($v);
+				//$html = str_replace('" class="tool comments">','?999" class="tool comments">',$html);
 			
 			  if(trim($this->List["linkarea"])!=""&&trim($this->List["linkarea"])!="[var:区域]"){
 			     $html = $this->GetHtmlArea("[var:区域]",$this->List["linkarea"],$html);
@@ -689,7 +693,7 @@ class DedeCollection
 				if($v=="") $v="无标题，可能是图片链接";
 				$inquery = "
 				INSERT INTO #@__courl(nid,title,url,dtime,isdown,result) 
-         VALUES ('".$this->NoteId."','$v','$k','".mytime()."','0','');
+         VALUES ('".$this->NoteId."','$v','$k','".time()."','0','');
 				";
 				$this->dsql->ExecuteNoneQuery($inquery);
 			}
@@ -709,13 +713,11 @@ class DedeCollection
 	{
 		$DedeMeValue = $fvalue;
 		$phpcode = preg_replace("/'@me'|\"@me\"|@me/isU",'$DedeMeValue',$phpcode);
+		$DedeLitPicValue = $this->breImage;
+		$phpcode = preg_replace("/'@litpic'|\"@litpic\"|@litpic/isU",'$DedeLitPicValue',$phpcode);
 		if(eregi('@body',$phpcode)){
 			$DedeBodyValue = $this->tmpHtml;
 			$phpcode = preg_replace("/'@body'|\"@body\"|@body/isU",'$DedeBodyValue',$phpcode);
-		}
-		if(eregi('@litpic',$phpcode)){
-			$DedeLitPicValue = $this->breImage;
-			$phpcode = preg_replace("/'@litpic'|\"@litpic\"|@litpic/isU",'$DedeLitPicValue',$phpcode);
 		}
 		eval($phpcode.";");// or die($phpcode."[$DedeMeValue]");
 		return $DedeMeValue;
@@ -725,8 +727,13 @@ class DedeCollection
 	//-----------------------
 	function ChangeCode(&$str)
 	{
-		if($this->Item["language"]=="gb2312") $str = gb2utf8($str);
-		if($this->Item["language"]=="big5") $str = gb2utf8(big52gb($str));
+		if($GLOBALS['cfg_ver_lang']=='utf-8'){
+		  if($this->Item["language"]=="gb2312") $str = gb2utf8($str);
+		  if($this->Item["language"]=="big5") $str = gb2utf8(big52gb($str));
+		}else{
+			if($this->Item["language"]=="utf-8") $str = utf82gb($str);
+		  if($this->Item["language"]=="big5") $str = big52gb($str);
+		}
 	}
 }
 ?>

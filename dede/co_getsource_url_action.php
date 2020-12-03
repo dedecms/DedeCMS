@@ -43,6 +43,8 @@ if($limitList==0)
 	ShowMsg("采集列表剩余：{$limitList} 个页面，继续采集...",$gurlList."&glstart=".($glstart+$pagesize),0,100);
 	exit();
 }else{
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
+  echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
 	echo "获取列表网址失败，无法完成采集！";
 }
 

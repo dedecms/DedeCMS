@@ -94,8 +94,7 @@ if($cfg_ml->M_utype == 0){
             </div>
 
             <!-- add -->
-	
-	
+
             <div class="manage_company_title">
                 <div class="manage_company_title_bg">文章管理</div>
                 <div class="manage_company_main_text">

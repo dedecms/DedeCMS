@@ -3,6 +3,8 @@ require_once(dirname(__FILE__)."/config.php");
 @set_time_limit(3600);
 if(empty($dopost)) $dopost = '';
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 //逻辑函数
 //-------------------------------------
 function GoSearchVir($fdir){
@@ -69,7 +71,7 @@ function GoReplaceFile($fdir){
 if($dopost=='search'){
    $tcc = 0;
    $scc = 0;
-   $ddfile = "album_edit.php,catalog_add.php,file_manage_main.php,soft_edit.php,spec_edit.php,inc_archives_view.php,inc_arclist_view.php,inc_arcmember_view.php,inc_freelist_view.php,pub_collection.php,config_passport.php,downmix.php,inc_photowatermark_config.php";
+   $ddfile = "album_edit.php,catalog_add.php,file_manage_main.php,soft_edit.php,spec_edit.php,inc_archives_view.php,inc_arclist_view.php,inc_arcmember_view.php,inc_freelist_view.php,pub_collection.php,config_passport.php,downmix.php,inc_photowatermark_config.php,inc_arcpart_view.php,inc_typeunit_admin.php";
    $ddfiles = explode(',',$ddfile);
    if(empty($crday)) $crday = 365;
 	 $minsize = $minsize * 1024;

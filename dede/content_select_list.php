@@ -29,7 +29,7 @@ if(empty($channelid)) $whereSql = " where arc.channelid != -1 ";
 else $whereSql = " where arc.channelid = '$channelid' ";
 
 if($keyword!=""){
-	$whereSql .= " And (arc.title like '%$keyword%' Or arc.writer like '%$keyword%' Or arc.source like '%$keyword%') ";
+	$whereSql .= " And (arc.title like '%$keyword%' Or arc.keywords like '%$keyword%' Or arc.addinfos like '%$keyword%') ";
 }
 
 if($typeid!=0){

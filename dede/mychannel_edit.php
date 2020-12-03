@@ -191,7 +191,7 @@ else if($dopost=="savecopy")
   $rs = $dsql->ExecuteNoneQuery($inquery);
   if($rs)
   {
-  	 ShowMsg("成功复制模型，现转到详细参数页... ","mychannel_edit.php?ID={$cid}&dopost=edit");
+  	 ShowMsg("成功复制模型，现转到详细参数页... ","mychannel_edit.php?ID={$newid}&dopost=edit");
   	 $dsql->Close();
      exit();
   }

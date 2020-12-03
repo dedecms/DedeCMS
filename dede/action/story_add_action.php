@@ -44,7 +44,7 @@ INSERT INTO `#@__story_books`(`catid`,`bcatid`,`booktype`,`iscommend`,`click`,`f
 VALUES ('$catid','$bcatid','$booktype', '$iscommend', '$click', '$freenum', '$bookname',
  '$author', '0', '$litpic', '$pubdate', 
  '0', '0', '0', '0', '0', '0', '0', '0',
-  '$description' , '$body' , '$keywords', '','".mytime()."');
+  '$description' , '$body' , '$keywords', '','".time()."');
 ";
 
 

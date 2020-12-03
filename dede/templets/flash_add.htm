@@ -296,10 +296,7 @@ function checkSubmit()
 
         <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" style="display:none" id="adset">
 
-          <!-- 自定义字段 -->
-          <tr>
-            <td style="padding:0px;"><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield','90'); ?></td>
-          </tr>
+
 
           <tr>
             <td width="100%" height="28" class="bline">
@@ -388,9 +385,23 @@ function checkSubmit()
             </table></td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;把Flash从别的网页复制(选中内容然后用Ctrl+C，到这里用Ctrl+V)，粘贴到这里后程序可直接获取网址或上传到服务器（需选择&quot;远程文件本地化&quot;）。 <br/>
-              &nbsp;&nbsp;粘贴位置： <br/>
-              <span id='myflash' style='border:solid 1px #CCCCCC;width:98%;height:220px' contenteditable="true"></span> </td>
+            <td>&nbsp;&nbsp;把Flash从别的网页复制(选中内容然后用Ctrl+C，到这里用Ctrl+V)，粘贴到这里后程序可直接获取网址或上传到服务器（需选择&quot;远程文件本地化&quot;）。<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="90">粘贴位置：</td>
+    <td><span id='myflash' style='border:solid 1px #CCCCCC;width:600px;height:220px' contenteditable="true"></span></td>
+  </tr>
+</table>
+
+              </td>              
+          </tr>
+            <td style="padding:0px;"> 
+            <table width="700" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td><!-- 自定义字段 --><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield','90'); ?></td>
+              </tr>
+            </table>
+		</td>
           </tr>
         </table>
         <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">

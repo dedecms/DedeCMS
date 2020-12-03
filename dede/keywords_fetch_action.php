@@ -11,10 +11,7 @@ function __getfields()
 --------------------------------*/
 if($action=='getfields')
 {
-	header("Pragma:no-cache\r\n");
-	header("Cache-Control:no-cache\r\n");
-	header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	$dsql = new DedeSql(false);
 	if(!$dsql->linkID){
 		echo "<font color='red'>连接数据源的数据库失败！</font><br>";
@@ -35,7 +32,7 @@ if($action=='getfields')
 	exit();
 }elseif($action == 'fetch')
 {
-
+  header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	$dsql = new DedeSql(false);
 	if(empty($startdd)) $startdd = 0;//结果集起始记录值
 	if(empty($pagesize)) $pagesize = 50;

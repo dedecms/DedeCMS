@@ -32,8 +32,8 @@ if($job=="upload")
 	}
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
 	if($filename==""){
-		$y = substr(strftime("%Y",mytime()),2,2);
-		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",mytime());
+		$y = substr(strftime("%Y",time()),2,2);
+		$filename = $cuserLogin->getUserID()."_".$y.strftime("%m%d%H%M%S",time());
 		$fs = explode(".",$uploadfile_name);
 		$filename = $filename.".".$fs[count($fs)-1];
 	}
@@ -45,7 +45,7 @@ if($job=="upload")
   }
   @move_uploaded_file($uploadfile,$fullfilename);
 	@unlink($uploadfile);
-	ShowMsg("成功上传文件！","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
+	ShowMsg("成功上传文件！","select_templets.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".time());
 	exit();
 }
 ?>

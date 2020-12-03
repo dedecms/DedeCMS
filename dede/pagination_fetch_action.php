@@ -8,10 +8,7 @@ if(empty($action)) $action = '';
 $tjnum = 0;
 if($action=='getfields')
 {
-	header("Pragma:no-cache\r\n");
-	header("Cache-Control:no-cache\r\n");
-	header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	$dsql = new DedeSql(false);
 	if(!$dsql->linkID){
 		echo "<font color='red'>连接数据源的数据库失败！</font><br>";
@@ -47,12 +44,13 @@ if($action=='getfields')
 	require_once(dirname(__FILE__)."/inc/inc_archives_functions.php");
 	//统计记录总数
 	if($totalnum==0){
-		$addquery  = " where ID>0 ";
-		if($sid!=0) $addquery  = " And ID>='$sid' ";
-		if($eid!=0) $addquery  = " And ID<='$eid' ";
-		$row = $dsql->GetOne("Select count(*) as dd From $maintable $addquery");
+		$addquery = " where channel='$channel' ";
+		if($sid!=0) $addquery  .= " and ID>='$sid' ";
+		if($eid!=0) $addquery .= " and ID<='$eid' ";
+		$row = $dsql->GetOne("Select count(*) as dd From $maintable $addquery;");
 		$totalnum = $row['dd'];
 	}
+
 	//获取记录，并分析
 	if($totalnum > $startdd+$pagesize){
 		$limitSql = " limit $startdd,$pagesize";
@@ -62,10 +60,16 @@ if($action=='getfields')
 
 	$tjnum = $startdd;
 	if($limitSql!=""){
-		$addquery  = " where aid>0 ";
-		if($sid!=0) $addquery  = " And aid>='$sid' ";
-		if($eid!=0) $addquery  = " And aid<='$eid' ";
+		$where = array();
+		if($sid!=0) $where[] = "aid>='$sid'";
+		if($eid!=0) $where[] = "aid<='$eid'";
+		if(!empty($where)){
+			$addquery = ' where '.implode(' and ', $where);
+		}else{
+			$addquery = '';
+		}
 		$fquery = "Select aid,$rpfield From $addtable $addquery $limitSql ;";
+
 		$dsql->SetQuery($fquery);
 		$dsql->Execute();
 		while($row=$dsql->GetArray())
@@ -94,14 +98,13 @@ if($action=='getfields')
 	if($tjnum < $totalnum)
 	{
 		$addtable = urlencode($addtable);
-		$nurl = "pagination_fetch_action.php?totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize&addtable={$addtable}&rpfield={$rpfield}&channel={$channel}&sid={$sid}&eid={$eid}";
+		$nurl = "pagination_fetch_action.php?action=fetch&totalnum=$totalnum&startdd=".($startdd+$pagesize)."&pagesize=$pagesize&addtable={$addtable}&rpfield={$rpfield}&channel={$channel}&sid={$sid}&eid={$eid}";
 		$dsql->Close();
 		ShowMsg($tjsta,$nurl,0,500);
 	}else{
 		$dsql->executenonequery("OPTIMIZE TABLE `$addtable`");
 		$dsql->Close();
-		echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
-		echo "完成所有任务！";
+		ShowMsg('完成所有任务','javascript:;');
   }
 }
 ClearAllLink();

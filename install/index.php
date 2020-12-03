@@ -27,6 +27,10 @@ $gototime = 2000;
 function _1_ShowReadMe()
 ------------------------*/
 if($step==1){
+	if(file_exists('install.txt')) {
+		echo '你已经安装过该系统，如果想重新安装，请先删除install目录的 install.txt 文件，然后再次运行该程序';
+		exit;
+	}
 	include_once("./templets/s1.html");
 	exit();
 }
@@ -48,10 +52,10 @@ else if($step==2)
   $sp_safe_mode = (ini_get('safe_mode') ? '<font color=red>[×]On</font>' : '<font color=green>[√]Off</font>');
   $sp_gd = ($sp_gd>0 ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
   $sp_mysql = (function_exists('mysql_connect') ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
-  
+
   if($sp_mysql=='<font color=red>[×]Off</font>') $sp_mysql_err = true;
   else $sp_mysql_err = false;
-  
+
   $sp_testdirs = array(
         '/',
         '/include',
@@ -101,7 +105,7 @@ else if($step==5)
   		echo GetBackAlert("管理员用户名或密码含有非法字符！");
   		exit();
   	}
-  	
+
   	//检测数据库权限
   	$conn = @mysql_connect($dbhost,$dbuser,$dbpwd);
   	if(!$conn){
@@ -124,29 +128,29 @@ else if($step==5)
   		  }
   		}
   	}
-  	
+
   	//读取配置模板，并替换真实配置
-  	$errstr = GetBackAlert("读取配置 config_base.tmp 失败，请检查install/config_base.tmp是否可读取！");
-  	$fp = fopen(DEDEROOT."/install/config_base.tmp","r") or die($errstr);
-    $configstr1 = fread($fp,filesize(DEDEROOT."/install/config_base.tmp"));
+  	$errstr = GetBackAlert("读取配置 config_base.php 失败，请检查install/config_base.php是否可读取！");
+  	$fp = fopen(DEDEROOT."/install/config_base.php","r") or die($errstr);
+    $configstr1 = fread($fp,filesize(DEDEROOT."/install/config_base.php"));
     fclose($fp);
-    $errstr = GetBackAlert("读取配置 config_hand.tmp 失败，请检查install/config_hand.tmp是否可读取！");
-    $fp = fopen(DEDEROOT."/install/config_hand.tmp","r") or die($errstr);
-    $configstr2 = fread($fp,filesize(DEDEROOT."/install/config_hand.tmp"));
+    $errstr = GetBackAlert("读取配置 config_hand.php 失败，请检查install/config_hand.php是否可读取！");
+    $fp = fopen(DEDEROOT."/install/config_hand.php","r") or die($errstr);
+    $configstr2 = fread($fp,filesize(DEDEROOT."/install/config_hand.php"));
     fclose($fp);
-    
+
     $configstr1 = str_replace('~dbhost~',$dbhost,$configstr1);
     $configstr1 = str_replace('~dbname~',$dbname,$configstr1);
     $configstr1 = str_replace('~dbuser~',$dbuser,$configstr1);
     $configstr1 = str_replace('~dbpwd~',$dbpwd,$configstr1);
     $configstr1 = str_replace('~dbprefix~',$dbprefix,$configstr1);
     $configstr1 = str_replace('~db_language~',$db_language,$configstr1);
-    
+
     $errstr = GetBackAlert("写入配置 include/config_base.php 失败，请检查 include文件夹 是否可读写！");
   	$fp = fopen(DEDEROOT."/include/config_base.php","w") or die($errstr);
   	fwrite($fp,$configstr1);
   	fclose($fp);
-  	
+
   	$indexurl = (empty($cmspath) ? '/' : $cmspath);
   	$configstr2 = str_replace('~cmspath~',$cmspath,$configstr2);
   	$configstr2 = str_replace('~cookiepwd~',$cookiepwd,$configstr2);
@@ -154,14 +158,14 @@ else if($step==5)
   	$configstr2 = str_replace('~weburl~',$weburl,$configstr2);
   	$configstr2 = str_replace('~indexurl~',$indexurl,$configstr2);
   	$configstr2 = str_replace('~adminmail~',$adminmail,$configstr2);
-  	
+
   	$fp = fopen(DEDEROOT."/include/config_hand.php","w") or die($errstr);
   	fwrite($fp,$configstr2);
   	fclose($fp);
   	$fp = fopen(DEDEROOT."/include/config_hand_bak.php","w");
   	fwrite($fp,$configstr2);
   	fclose($fp);
-  	
+
   	 //检测数据库信息并创建基本数据表
   	 mysql_query("SET NAMES '{$db_language}';",$conn);
      $rs = mysql_query("SELECT VERSION();",$conn);
@@ -169,17 +173,17 @@ else if($step==5)
      $mysql_version = $row[0];
      $mysql_versions = explode(".",trim($mysql_version));
      $mysql_version = $mysql_versions[0].".".$mysql_versions[1];
-    
+
      $adminpwd = substr(md5($adminpwd),0,24);
-  	
+
      $admindatas = "
           INSERT INTO `#@__admin` VALUES (1, 10, '{$adminuser}', '{$adminpwd}', 'admin', '', '', '', '2008-01-18 20:35:28', '127.0.0.1');
-          INSERT INTO `#@__sysconfig` VALUES (1, 'cfg_basehost', '站点根网址', '{$weburl}', 'string', 1);
-          INSERT INTO `#@__sysconfig` VALUES (2, 'cfg_cmspath', 'DedeCms安装目录', '{$cmspath}', 'string', 1);
-          INSERT INTO `#@__sysconfig` VALUES (3, 'cfg_cookie_encode', 'cookie加密码', '{$cookiepwd}', 'string', 1);
-          INSERT INTO `#@__sysconfig` VALUES (4, 'cfg_indexurl', '网页主页链接', '{$indexurl}', 'string', 1);
-          INSERT INTO `#@__sysconfig` VALUES (7, 'cfg_webname', '网站名称', '{$webname}', 'string', 1);
-          INSERT INTO `#@__sysconfig` VALUES (8, 'cfg_adminemail', '网站发信EMAIL', '{$adminmail}', 'string', 1);
+          INSERT INTO `#@__sysconfig` VALUES (2, 'cfg_basehost', '站点根网址', '{$weburl}', 'string', 8);
+          INSERT INTO `#@__sysconfig` VALUES (3, 'cfg_cmspath', 'DedeCms安装目录', '{$cmspath}', 'string', 8);
+          INSERT INTO `#@__sysconfig` VALUES (5, 'cfg_cookie_encode', 'cookie加密码', '{$cookiepwd}', 'string', 8);
+          INSERT INTO `#@__sysconfig` VALUES (4, 'cfg_indexurl', '网页主页链接', '{$indexurl}', 'string',8);
+          INSERT INTO `#@__sysconfig` VALUES (1, 'cfg_webname', '网站名称', '{$webname}', 'string', 8);
+          INSERT INTO `#@__sysconfig` VALUES (8, 'cfg_adminemail', '站长EMAIL', '{$adminmail}', 'string', 8);
      ";
      if($mysql_version < 4.1) $fp = fopen(DEDEROOT."/install/setup40.sql","r");
      else $fp = fopen(DEDEROOT."/install/setup41.sql","r");
@@ -192,19 +196,22 @@ else if($step==5)
 			   $query .= $line;
 			   $query = str_replace('#@__',$dbprefix,$query);
 			   if($mysql_version < 4.1) mysql_query($query,$conn);
-			   else mysql_query(str_replace('#~lang~#',$db_language,$query),$conn);
+			   else{
+			   	 mysql_query(str_replace('#~lang~#',$db_language,$query),$conn);
+			   }
+
 			   $query='';
 		   }else if(!ereg("^(//|--)",$line)){
 			   $query .= $line;
 		   }
 	  }
 	  fclose($fp);
-	  
+
 	  $sysquerys = explode(';',$admindatas);
 	  foreach($sysquerys as $query){
 	  	if(trim($query)!='') mysql_query(str_replace('#@__',$dbprefix,$query),$conn);
 	  }
-	  
+
 	  mysql_close($conn);
 	  $setupmodules = '';
 	  if(is_array($moduls)){
@@ -212,7 +219,7 @@ else if($step==5)
 	  		if(trim($m)!='') $setupmodules .= ($setupmodules=='' ? $m : ",$m" );
 	  	}
 	  }
-	  
+
 	  $gotourl = 'index.php?step=5&setupsta=1&moduls='.$setupmodules;
 	  $setupinfo = "
 	    成功安装系统基本数据，现在开始安装必要的基本数据<br />
@@ -277,19 +284,22 @@ else if($step==5)
   	 	$moduledir = DEDEROOT."/dede/module";
   	 	$modulefile = $moduledir.$_moduls[$modul][1];
   	 	$AdminBaseDir = DEDEROOT."/dede/";
-  	 	  
+
   	 	$dm = new DedeModule($moduledir);
   	 	$hash = $_moduls[$modul][3];
 	    $dm->WriteFiles($hash,2);
 	    $filename = $dm->WriteSystemFile($hash,'setup');
 	    $dm->WriteSystemFile($hash,'uninstall');
 	    $dm->WriteSystemFile($hash,'readme');
-	    $dm->Clear();  	 	  
-	    
+	    $dm->Clear();
+
   	 	include_once("./moduls/".$_moduls[$modul][2]);
-  	 	  
+
   	 	if($moduls=='')
   	  {
+  	    fopen('install.txt', 'w');
+  	  	fwrite($fp,'ok');
+  	  	fclose($fp);
   	    $gototime = 2000;
   	    $gotourl = '../dede';
   	    $setupinfo = "

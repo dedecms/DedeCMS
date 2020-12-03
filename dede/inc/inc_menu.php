@@ -96,7 +96,7 @@ $menus = "
   <m:item name='数据库内容替换' link='sys_data_replace.php' rank='sys_ArcBatch' target='main' />
 </m:top>
 
-<m:top name='模块管理' c='5,6,' display='block'>
+<m:top name='模块管理' c='6,' display='block'>
   <m:item name='模块管理' link='module_main.php' rank='sys_module' target='main' />
   <m:item name='上传新模块' link='module_upload.php' rank='sys_module' target='main' />
   <m:item name='模块生成向导' link='module_make.php' rank='sys_module' target='main' />
@@ -139,7 +139,7 @@ $menus = "
   $plusset
 </m:top>
 
-<m:top name='模板管理' display='block' c='7,' rank=''>
+<m:top name='模板管理' display='block' c='9,10,' rank=''>
   <m:item name='智能标记向导' link='mytag_tag_guide.php' rank='temp_Other' target='main'/>
   <m:item name='自定义宏标记' link='mytag_main.php' rank='temp_MyTag' target='main'/>
   <m:item name='全局标记测试' link='tag_test.php' rank='temp_Test' target='main'/>
@@ -147,10 +147,7 @@ $menus = "
 </m:top>
 
 ~~addmenu~~
-	
-	
-	
-	
+
 <m:top name='会员资料管理' c='4,' display='block'>
   <m:item name='个人会员列表' link='member_main.php' rank='member_List' target='main' />
   <m:item name='企业会员列表' link='company_main.php' rank='member_List' target='main' />
@@ -192,7 +189,7 @@ $menus = "
   <m:item name='系统日志管理' link='log_list.php' rank='sys_Log' target='main' />
 </m:top>
 
-<m:top name='PW营销模块' display='block' c='7,' rank=''>
+<m:top name='PW营销模块' display='block' c='5,' rank=''>
   <m:item name='营销模块设置' link='code_main.php' rank='sys_Edit' target='main' />
 </m:top>
 
@@ -203,7 +200,7 @@ $menus = "
   <m:item name='通行证设置' link='sys_passport.php' rank='sys_Passport' target='main' />
 </m:top>
 
-<m:top name='频道设置' c='7,1,' display='block' rank=''>
+<m:top name='频道设置' c='1,' display='block' rank=''>
   <m:item name='自定义文档属性' link='content_att.php' rank='sys_Att' target='main' />
   <m:item name='软件频道设置' link='soft_config.php' rank='sys_SoftConfig' target='main' />
   <m:item name='防采集串混淆' link='article_string_mix.php' rank='sys_StringMix' target='main' />
@@ -217,7 +214,7 @@ $menus = "
   <m:item name='数据库还原' link='sys_data_revert.php' rank='sys_Data' target='main' />
 </m:top>
 
-<m:top name='系统帮助' c='7,9,' display='block'>
+<m:top name='系统帮助' c='7,9,10,' display='block'>
   <m:item name='模板代码参考' link='http://www.dedecms.com/archives/templethelp/help/index.htm' rank='' target='_blank' />
   <m:item name='官方论坛' link='http://bbs.dedecms.com/' rank='' target='_blank' />
 </m:top>
@@ -230,7 +227,7 @@ $catalog =(isset($c) ? $c : 2);
 $headTemplet = "
 <dl>
     <dt><a href=\"###\" onclick=\"showHide('items~cc~');\" target=\"_self\">~channelname~</a></dt>
-    <dd id=\"items~cc~\" style=\"display:~display~;\">
+    <dd id=\"items~cc~\" style=\"display:block;\">
 			<ul>
 ";
 $footTemplet = "  			</ul>
@@ -252,9 +249,7 @@ foreach($dtp->CTags as $i=>$ctag)
 	{
 		echo "<!-- Item ".($i+1)." Strat -->\r\n";
 		$htmp = str_replace("~channelname~",$ctag->GetAtt("name"),$headTemplet);
-		if($catalog==0) $dpy = 'none';
-		else $dpy = $ctag->GetAtt("display");
-		$htmp = str_replace("~display~",$dpy,$htmp);
+		$htmp = str_replace("~display~",$ctag->GetAtt("display"),$htmp);
 		$htmp = str_replace("~cc~",$i,$htmp);
 		echo $htmp;
 		$dtp2->LoadSource($ctag->InnerText);

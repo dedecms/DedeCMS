@@ -34,13 +34,13 @@ $arcrank = GetCoRank($arcrank,$typeid);
 //--------------------------------
 $iscommend = $iscommend + $isbold;
 
-$uptime = $senddate = mytime();
+$uptime = $senddate = time();
 $pubdate = GetMkTime($pubdate);
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
 else $ismake = 0;
-
+$title =  cn_substr($title,80);
 $shorttitle = cn_substr($shorttitle,36);
 $color =  cn_substr($color,10);
 $writer =  cn_substr($writer,30);
@@ -61,11 +61,13 @@ if($description=="" && $cfg_auot_description>0){
 	$description = trim(preg_replace("/#p#|#e#/","",$description));
 	$description = addslashes($description);
 }
+
 //把内容中远程的图片资源本地化
 //------------------------------------
 if($cfg_isUrlOpen && $remote==1){
 	$body = GetCurContent($body);
 }
+
 //去除内容中的站外链接
 //------------------------------------
 if($dellink==1){
@@ -79,8 +81,8 @@ if($autokey==1){
 	require_once(DEDEADMIN."/../include/pub_splitword_www.php");
 	$keywords = "";
 	$sp = new SplitWord();
-	$titleindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(utf82gb($title)))));
-	$allindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(Html2Text(utf82gb($body))),200)));
+	$titleindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM($title))));
+	$allindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(Html2Text($body)),200)));
 	if(is_array($allindexs) && is_array($titleindexs)){
 		foreach($titleindexs as $k){	
 			if(strlen($keywords)>=50) break;
@@ -94,7 +96,7 @@ if($autokey==1){
 	$sp->Clear();
 	unset($sp);
 	$keywords = preg_replace("/#p#|#e#/","",$keywords);
-	$keywords = addslashes(gb2utf8($keywords));
+	$keywords = addslashes($keywords);
 }
 
 //自动分页
@@ -128,7 +130,10 @@ VALUES ('$arcID','$typeid','$typeid2','$sortrank','$iscommend','$ismake','$chann
 '$pubdate','$senddate','$arcatt','$adminID','0','$description','$keywords','$templet','$redirecturl','$likeid');";
 
 if(!$dsql->ExecuteNoneQuery($inQuery)){
+	
 	$gerr = $dsql->GetError();
+	$query = "delete from #@__full_search where aid='$arcID' limit 1;";
+	$dsql->ExecuteNoneQuery($query);
 	$dsql->Close();
 	ShowMsg("把数据保存到数据库主表 `{$cts['maintable']}` 时出错，请把相关信息提交给DedeCms官方。".$gerr,"javascript:;");
 	exit();
@@ -163,31 +168,32 @@ if(!empty($dede_addonfields))
   }
 }
 
-
 $dsql->SetQuery("INSERT INTO `{$cts['addtable']}`(aid,typeid,body{$inadd_f}) Values('$arcID','$typeid','$body'{$inadd_v})");
 if(!$dsql->ExecuteNoneQuery()){
 	$gerr = $dsql->GetError();
-	$dsql->ExecuteNoneQuery("Delete From {$cts['maintable']} where ID='$arcID'");
-	$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID'");
+	$dsql->ExecuteNoneQuery("Delete From {$cts['maintable']} where ID='$arcID' limit 1");
+	$dsql->ExecuteNoneQuery("Delete From `#@__full_search` where aid='$arcID' limit 1");
 	$dsql->Close();
 	ShowMsg("把数据保存到数据库附加表 `{$cts['addtable']}` 时出错，请把相关信息提交给DedeCms官方。".$gerr,"javascript:;");
 	exit();
 }
-
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
                'addinfos'=>$description,'uptime'=>$senddate,'arcrank'=>$arcrank);
+               
 WriteSearchIndex($dsql,$datas);
+
 unset($datas);
 //写入Tag索引
-InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
 
+InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
+//生成HTML
+//---------------------------------
+
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

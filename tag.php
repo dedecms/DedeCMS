@@ -10,7 +10,7 @@ if(isset($_SERVER["QUERY_STRING"])){
 }else{ 
 	$tag = "";
 }
-
+$tag = urldecode($tag);
 //如果没有Tag或Tag不合法，显示所有Tag
 if($tag=="" || $tag!=addslashes($tag) ){
 	$dlist = new TagList($tag,'tag.htm');

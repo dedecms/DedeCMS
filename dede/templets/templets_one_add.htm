@@ -4,6 +4,7 @@
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>增加自定义页面</title>
 <link href="css_body.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="base.css">
 <script language="javascript">
 function checkSubmit()
 {
@@ -59,10 +60,8 @@ function checkSubmit()
             <td height="24" colspan="2" bgcolor="#F3FBEC">文件内容：</td>
           </tr>
           <tr> 
-            <td height="80" colspan="2" align="center"> 
-              <?php 
-	GetEditor("body","","500","Default","print","true");
-	?>            </td>
+            <td colspan="2" align="center" valign="top"> 
+            <textarea name='body' rows="20" style='width:100%;height:400xp'></textarea></td>
           </tr>
           <tr> 
             <td height="53" colspan="2" align="center"><input type="submit" name="button" id="button" value="确定"  class="inputbut"/> 

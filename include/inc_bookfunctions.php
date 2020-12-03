@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function GetBookText($cid)
 {
@@ -10,9 +10,13 @@ function GetBookText($cid)
 	else{
 		$alldata = '';
 		$fp = fopen($bookfile,'r');
-		$alldata = fread($fp,filesize($bookfile));
+		$line = fgets($fp,64);
+		$alldata = '';
+		while(!feof($fp)){
+			$alldata .= fread($fp,1024);
+		}
 		fclose($fp);
-		return trim(substr($alldata,7,strlen($alldata)-9));
+		return trim(substr($alldata,0,strlen($alldata)-2));
 	}
 }
 
@@ -24,7 +28,7 @@ function WriteBookText($cid,$body)
 	if(!is_dir($cfg_basedir.$ipath)) MkdirAll($cfg_basedir.$ipath,$GLOBALS['cfg_dir_purview']);
 	if(!is_dir($cfg_basedir.$ipath.'/'.$tpath)) MkdirAll($cfg_basedir.$ipath.'/'.$tpath,$GLOBALS['cfg_dir_purview']);
 	$bookfile = $cfg_basedir.$ipath."/{$tpath}/bk{$cid}.php";
-	$body = "<"."?php\r\n".$body."\r\n?".">";
+	$body = "<"."?php exit();\r\n".$body."\r\n?".">";
 	@$fp = fopen($bookfile,'w');
   @flock($fp);
   @fwrite($fp,$body);

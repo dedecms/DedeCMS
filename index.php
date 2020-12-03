@@ -3,7 +3,7 @@
 if(!is_file(dirname(__FILE__)."/include/config_base.php")){
   echo "<meta http-equiv=content-type content='text/html; charset=utf-8'>\r\n";
   echo "·如果你还没安装本程序，请运行<a href='install/index.php'> install/index.php 进入安装&gt;&gt; </a><br/><br/>";
-  echo "&nbsp;&nbsp;<a href='http://www.dedecms.com' style='font-size:12px' target='_blank'>Power by DedeCms OX V5.0 2008版 &nbsp;织梦内容管理系统</a>";
+  echo "&nbsp;&nbsp;<a href='http://www.dedecms.com' style='font-size:12px' target='_blank'>Power by DedeCms OX V5.1 UTF-8版 &nbsp;织梦内容管理系统</a>";
   exit();
 }
 

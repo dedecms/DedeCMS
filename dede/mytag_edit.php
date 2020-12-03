@@ -55,6 +55,7 @@ else if($dopost=="getjs")
 }
 else if($dopost=="testjs")
 {
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	echo "<script src='{$cfg_plus_dir}/mytag_js.php?aid=$aid' language='javascript'></script>";
 	exit();
 }

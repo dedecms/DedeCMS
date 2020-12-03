@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -29,6 +29,7 @@ $arcatt = $money = $typeid2 = 0;
 
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
@@ -48,7 +49,7 @@ $body = eregi_replace("<(iframe|script)","",$body);
 $inQuery = "INSERT INTO `$maintable`(
 ID,typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
-pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip) 
+pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip)
 VALUES ('$arcID','$typeid','$typeid2','$sortrank','0','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
 '$pubdate','$senddate','$arcatt','$adminID','$memberID','$description','$keywords','$mtype','$userip');";

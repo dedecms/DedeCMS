@@ -34,12 +34,12 @@ $arcrank = GetCoRank($arcrank,$typeid);
 $iscommend = $iscommend + $isbold;
 
 $pubdate = GetMkTime($pubdate);
-$senddate = mytime();
+$senddate = time();
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
 else $ismake = 0;
-
+$title =  cn_substr($title,80);
 $shorttitle = cn_substr($shorttitle,36);
 $color =  cn_substr($color,10);
 $writer =  cn_substr($writer,30);
@@ -118,13 +118,7 @@ if(!empty($dede_addonfields) && !empty($dede_addtablename))
 	  exit();
   }
 }
-
-
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
-
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
@@ -133,7 +127,9 @@ WriteSearchIndex($dsql,$datas);
 unset($datas);
 //写入Tag索引
 InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
-
+//生成HTML
+//---------------------------------
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

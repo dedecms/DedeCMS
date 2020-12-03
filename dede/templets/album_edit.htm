@@ -14,11 +14,12 @@
 </style>
 </head>
 <body topmargin="8">
-<form name="form1" action="action/album_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<form name="form1" action="action/album_edit_action.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
 <input type="hidden" name="channelid" value="<?php echo $channelid?>">
 <input type="hidden" name="ID" value="<?php echo $aid?>">
 <input type="hidden" name="edadminid" value="<?php echo $arcRow['adminID']; ?>">
 <input type="hidden" name="memberid" value="<?php echo $arcRow['memberID']; ?>">
+<input type="hidden" id="imagebody" name="imagebody" value="">
 <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
     <tr> 
       <td height="30">&nbsp;<a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a>&gt;&gt;更改图集</td>
@@ -327,13 +328,50 @@
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="90">&nbsp;远程图片：</td>
+            
             <td>
 			<input name="isrm" type="checkbox" id="isrm"  value="1"<?php if($isrm==1) echo " checked";?>>
-            下载远程图片			 </td>
+			下载远程图片
+              <input name="formzip" type="checkbox" id="formzip" value="1" onclick="ShowZipField(this,'zipff','upff');" />
+              从ZIP压缩包中解压图片
+              <input name="formhtml" type="checkbox" id="formhtml" value="1" onclick="ShowHtmlField(this,'htmlfield','upff');" />
+              网上复制图片			
+            			 </td>
           </tr>
+
         </table></td>
     </tr>
-    
+    </tr>
+    <tr id="zipff" style="display:none">
+      <td height="28" colspan="4" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;压缩包文件：</td>
+          <td>
+		      <input type='text' name='zipfile' id='zipfile' style='width:300px'> <input name='addon_bt' type='button' class='inputbut' value='浏览...' onClick="SelectSoft('form1.zipfile')">
+		      <input name="delzip" type="checkbox" id="delzip" value="1" checked="checked" />
+          处理后删除压缩文件
+		      </td>
+        </tr>
+      </table>
+     </td>
+    </tr>
+    <tr id="htmlfield" style="display:none">
+      <td height="28" colspan="4" class="bline">
+	  <table width="800" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="90">&nbsp;网上复制：</td>
+          <td>
+		     复制的源网址：<input name='copysource' type='text' value='' style='width:250px'/>(防盗链网站需填写你复制图片的其中一个网页网址)
+		     <br />
+		     把图片从别的网页复制，在这里用Ctrl+V粘贴，提交后程序可直接获取这个区域的所有图片。<!--input type='button' name='testbt' value='测试' style='width:60px;height:24px' onClick='TestGet()' /-->
+		     <br />
+		     <span id='copyhtml' style='margin-top:6px;margin-bottom:6px;border:solid 1px #CCCCCC;width:96%;padding:6px;height:450px' contenteditable="true">粘贴到这里...</span>
+		      </td>
+        </tr>
+      </table>
+     </td>
+    </tr>
     <tr id='upff' style="display:block">
       <td height="24" colspan="4"> 
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="bline">

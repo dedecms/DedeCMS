@@ -12,6 +12,8 @@ if($dopost=="save")
    flock($fp,3);
    fwrite($fp,$allsource);
    fclose($fp);
+   header("Content-Type: text/html; charset={$cfg_ver_lang}");
+   echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
    echo "<script>alert('Save OK!');</script>";
 }
 //读出

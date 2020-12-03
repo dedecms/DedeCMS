@@ -67,7 +67,7 @@ foreach($ds as $dl)
               <td width="23%"> <input name="varvalue" type="text" id="varvalue" class="npvar"> 
               </td>
               <td width="10%" align="center">变量类型：</td>
-              <td><input name="vartype" type="radio"  value="string" checked>
+              <td><input name="vartype" type="radio" class='np'  value="string" checked>
                 字串/数字 
                 <input type="radio" name="vartype" value="bool" >
                 布尔(Y/N)</td>
@@ -95,6 +95,7 @@ foreach($ds as $dl)
 		  </td>
       </tr>
     </table>
+<br />
 <form action="sys_info.php" method="post" name="form1">
 <input type="hidden" name="dopost" value="save">
 <?php 
@@ -108,20 +109,20 @@ foreach($ds as $dl)
 	$n++;
 ?>
 <a name='#<?php echo $dls[1]?>'></a>
-<table width="96%" border="0" cellpadding="2" cellspacing="1" 
-	align="center" style="background:#E2F5BC; margin-bottom:8px;<?php  if($n==$gp) echo "display:block"; else echo "display:none"; ?>" id="td<?php echo $n?>" class="tbtitle">
-<tr>
-<td height="24" align="left" bgcolor="#EDF9D5">
-&nbsp;<b><?php echo $dls[1]?></b>
-<?php  if($dls[0]==-1) echo "（本组参数不支持在此更改）"; ?></td>
-</tr>
+<table width="96%" border="0" cellpadding="0" cellspacing="0" 
+	align="center" style="margin-bottom:8px;<?php  if($n==$gp) echo "display:block"; else echo "display:none"; ?>" id="td<?php echo $n?>" >
+
 <tr> 
 <td>
-<table width="100%" border="0" cellpadding="1" cellspacing="1" class="tblist">
-<tr align="center" height="24"> 
-<td width="35%">参数说明</td>
-<td>参数值</td>
-<td width="20%">变量名</td>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#E2F5BC" class="sysinfo">
+<tr align="center" height="24">
+  <td height="30" colspan="3" align="left" bgcolor="#EDF9D5"><b>&nbsp;<?php echo $dls[1]?></b><?php  if($dls[0]==-1) echo "（本组参数不支持在此更改）"; ?>
+    &nbsp;&nbsp;[此处的所有变量都可以在模板中使用“{dede:global name='变量名'/}”的方式调用!]</td>
+  </tr>
+<tr align="center"> 
+<td width="35%" height="25" bgcolor="#FFFFFF">参数说明</td>
+<td bgcolor="#FFFFFF">参数值</td>
+<td width="20%" bgcolor="#FFFFFF"><a title="此处的所有变量都额可以在模板中使用“{dede:global name='变量名'/}”的方式调用!">变量名?</a>  </td>
 </tr>
 <?php 
 $dsql->SetQuery("Select * From #@__sysconfig where `group`='".$dls[0]."' order by aid asc");
@@ -136,22 +137,22 @@ while($row = $dsql->GetArray())
 <tr align="center" height="24" bgcolor="<?php echo $bgcolor?>" 
 	onMouseMove="javascript:this.bgColor='#D0EEFD';" 
 	onMouseOut="javascript:this.bgColor='<?php echo $bgcolor?>';"> 
-<td> 
-<?php echo $row['info']?>：</td>
-<td align="left">
+<td height="30" align="left" bgcolor="#FFFFFF"> 
+&nbsp;&nbsp;<?php echo $row['info']?>：</td>
+<td align="left" bgcolor="#FFFFFF">
 <?php 
 if($row['type']=='bool'){
 	$c1=""; $c2 = "";
 	$row['value']=='Y' ? $c1=" checked" : $c2=" checked";
 	echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='Y'$c1>是 ";
 	echo "<input type='radio' class='np' name='edit___{$row['varname']}' value='N'$c2>否 ";
-}else if(strlen($row['value'])>30){
-  echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' style='width:98%;height:50px'>{$row['value']}</textarea>";
+}else if(strlen($row['value'])>50){
+  echo "<textarea name='edit___{$row['varname']}' row='4' id='edit___{$row['varname']}' style='width:300px;height:80px'>{$row['value']}</textarea>";
 }else{
   echo "<input type='text' name='edit___{$row['varname']}' id='edit___{$row['varname']}' value='{$row['value']}' style='width:80%'>";
 }
 ?></td>
-<td><?php echo $row['varname']?></td>
+<td align="left" bgcolor="#FFFFFF">&nbsp;&nbsp;<?php echo $row['varname']?></td>
 </tr>
 <?php 
 }
@@ -171,13 +172,12 @@ $dsql->Close();
           </strong></strong></td>
       </tr>
       <tr bgcolor="#F3FFDD"> 
-        <td height="50" colspan="3" bgcolor="#FFFFFF"> <table width="98%" border="0" cellspacing="1" cellpadding="1">
+        <td height="50" colspan="3" align="center" bgcolor="#FFFFFF"> <table width="200" border="0" cellspacing="1" cellpadding="1">
             <tr> 
-              <td align="center"><input name="imageField" type="submit" class="inputbut" value="确认" />
-              &nbsp;
-              <input type="reset" name="button" id="button" value="重置" class="inputbut" /></td>
+              <td align="center" valign="middle"><input name="imageField" type="submit" class="inputbut" value="确认" /></td>
+              <td align="center" valign="middle"><input type="reset" name="button"  value="重置" class="inputbut" /></td>
             </tr>
-          </table></td>
+        </table></td>
       </tr>
     </table>
   </form>

@@ -76,10 +76,10 @@ if(empty($extype))
     }
     $row['ruleset'] = $exRule;
 	 $exRule = addslashes($exRule);
-	 $ntime = mytime();
+	 $ntime = time();
 	 $query = "
 	Insert Into `#@__co_exrule`(channelid,rulename,etype,dtime,ruleset)
-	Values('$channelid','{$cinfos['typename']}模型','当前系统','".mytime()."','$exRule')
+	Values('$channelid','{$cinfos['typename']}模型','当前系统','".time()."','$exRule')
 	";
 	 $dsql->ExecuteNoneQuery($query);
 	 $gerr = $dsql->GetError();

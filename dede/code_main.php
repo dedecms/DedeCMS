@@ -3,9 +3,9 @@ error_reporting(0);
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/inc_typeunit_admin.php");
 $userChannel = $cuserLogin->getUserChannel();
-
+if(!isset($action)) $action = false;
 if(!$action || $action=='info' || $action=='prompt'){
-	if(!$_POST['step']){
+	if(!isset($_POST['step'])){
 		include('./templets/code_main.htm');exit;
 	}else{
 		$lgpwd=md5($lgpwd);
@@ -13,7 +13,7 @@ if(!$action || $action=='info' || $action=='prompt'){
 		ObHeader("http://union.phpwind.com/index.php?action=login&lguser=$lguser&lgpwd=$lgpwd&verify=$verify");
 	}
 }elseif($action=='key'){
-	if(!$cfg_siteid){
+	if(!isset($cfg_siteid)||!$cfg_siteid){
 		$dsql = new DedeSql(false);
 		$rt = $dsql->GetOne("Select value From #@__sysconfig where varname='cfg_siteid'");
 		if(!$rt['value']){
@@ -30,10 +30,10 @@ if(!$action || $action=='info' || $action=='prompt'){
 		$dsql->Execute();
 		$configfile = dirname(__FILE__)."/../include/config_hand.php";
 		$configfile_bak = dirname(__FILE__)."/../include/config_hand_bak.php";
-		copy($configfile,$configfile_bak);
-		$fp = fopen($configfile,'w');
-		flock($fp,3);
-		fwrite($fp,"<"."?php\r\n");
+		@copy($configfile,$configfile_bak) or die('读取文件权限出错,目录文件'.$configfile.'不可写!<a href="code_main.php">返回</a>');
+		$fp = @fopen($configfile,'w');
+		@flock($fp,3);
+		fwrite($fp,"<"."?php\r\n") or die('读取文件权限出错,目录文件'.$configfile.'不可写!<a href="code_main.php">返回</a>');
 		while($row = $dsql->GetArray()){
 			fwrite($fp,"\${$row['varname']} = '".str_replace("'","\\'",$row['value'])."';\r\n");
 		}

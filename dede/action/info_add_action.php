@@ -36,7 +36,7 @@ if(!TestPurview('a_Edit')) {
 //对保存的内容进行处理
 //--------------------------------
 
-$senddate = mytime();
+$senddate = time();
 $endtime = $senddate + 3600 * 24 * $endtime;
 $pubdate = GetMkTime($pubdate);
 $sortrank = AddDay($senddate,$sortup);
@@ -77,8 +77,8 @@ if($autokey==1){
 	require_once(DEDEADMIN."/../include/pub_splitword_www.php");
 	$keywords = "";
 	$sp = new SplitWord();
-	$titleindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(utf82gb($title)))));
-	$allindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(Html2Text(utf82gb($body))),200)));
+	$titleindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM($title))));
+	$allindexs = explode(" ",trim($sp->GetIndexText($sp->SplitRMM(Html2Text($body)),200)));
 	if(is_array($allindexs) && is_array($titleindexs)){
 		foreach($titleindexs as $k){	
 			if(strlen($keywords)>=50) break;
@@ -92,7 +92,7 @@ if($autokey==1){
 	$sp->Clear();
 	unset($sp);
 	$keywords = preg_replace("/#p#|#e#/","",$keywords);
-	$keywords = addslashes(gb2utf8($keywords));
+	$keywords = addslashes($keywords);
 }
 
 //自动获取缩略图
@@ -177,10 +177,7 @@ if(!$dsql->ExecuteNoneQuery($sql)){
 	exit();
 }
 
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
@@ -190,7 +187,9 @@ WriteSearchIndex($dsql,$datas);
 unset($datas);
 //写入Tag索引
 InsertTags($dsql,$tag,$arcID,0,$typeid,0);
-
+//生成HTML
+//---------------------------------
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

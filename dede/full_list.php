@@ -75,12 +75,14 @@ if(!empty($cids)){
 }
 
 if($keyword!=""){
-	$whereSql .= " And ( CONCAT(a.title,a.keywords) like '%$keyword%') ";
+	$whereSql .= " And a.title like '%$keyword%' ";
 }
 
 if($cid!=0){
-	$tlinkids = $tl->GetSunID($cid,'',0);
-	$whereSql .= " And a.typeid in($tlinkids) ";
+	$tlinkids = $tl->GetSunID($cid,'',0,true);
+	if($tlinkids != -1){
+		$whereSql .= " And a.typeid in($tlinkids) ";
+	}
 }
 
 if($adminid>0){ $whereSql .= " And a.adminid = '$adminid' "; }

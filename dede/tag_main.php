@@ -18,7 +18,7 @@ if(empty($keyword)){
 
 //重载列表
 if($dopost=='getlist'){
-	PrintAjaxHead();
+	AjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -31,7 +31,7 @@ else if($dopost=='update')
 	$cc = ereg_replace("[^0-9]","",$cc);
 	$tagname = trim($tagname);
 	$dsql->ExecuteNoneQuery("Update #@__tags set tagname='$tagname',tagcc='$tagcc',cc='$cc' where tid='$tid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -43,7 +43,7 @@ else if($dopost=='del')
 	$dsql->ExecuteNoneQuery("Delete From #@__tags_archives where tid='$tid'; ");
 	//$dsql->ExecuteNoneQuery("Delete From #@__tags_user where tid='$tid'; ");
 	$dsql->ExecuteNoneQuery("Delete From #@__tags where tid='$tid'; ");
-	PrintAjaxHead();
+	AjaxHead();
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -94,11 +94,5 @@ function GetTagList($dsql,$pageno,$pagesize,$orderby='aid'){
 	 echo "</table>\r\n";
 }
 
-function PrintAjaxHead(){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
-}
 ?>
 

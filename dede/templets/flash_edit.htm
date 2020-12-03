@@ -278,11 +278,7 @@ function checkSubmit()
           </tr>
         </table>
         <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" style="display:none" id="adset">
-          <!-- 自定义字段 -->
-          <tr>
-            <td style="padding:0px;"><?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?></td>
-          </tr>
-		  
+         
 		  <tr>
             <td width="100%" height="28" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -341,11 +337,19 @@ function checkSubmit()
             <td height="28"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90">FLASH地址：</td>
-                  <td width="341"><input name="flashurl" type="text" id="flashurl" size="40" value="<?php echo $addRow["flashurl"]?>" />
+                  <td width="341" align="left"><input name="flashurl" type="text" id="flashurl" size="40" value="<?php echo $addRow["flashurl"]?>" />
                   <input name="selflash" type="button" id="modcolor3" value="选取" onclick="SelectFlash()" class="inputbut" /></td>
                   <td width="369"><input name="downremote" type="checkbox" id="downremote" value="1"  />
                   远程文件本地化</td>
                 </tr>
+        </table>
+         <table width="700" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td><!-- 自定义字段 --><?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?></td>
+              </tr>
+            </table>
+            </td>
+          </tr>
             </table></td>
           </tr>
           <tr>

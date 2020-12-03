@@ -14,8 +14,8 @@ if(empty($seltime)){
 	$seltime = 0;
 }else{
 	$seltime = 1;
-	$t1 = min(GetMkTime($starttime),GetMkTime($endtime));
-	$t2 = max(GetMkTime($starttime),GetMkTime($endtime));
+	$t1 = GetMkTime($starttime);
+	$t2 = GetMkTime($endtime);
 }
 if(empty($typeid)) $typeid = 0;
 if(empty($newtypeid)) $newtypeid = 0;
@@ -23,14 +23,14 @@ if(empty($keyword)) $keyword = '';
 $keyword = trim($keyword);
 
 $start = $startid;
-$startid = min(abs(intval($startid)),abs(intval($endid)));
-$endid = max(abs(intval($start)), abs(intval($endid)));
+$startid = abs(intval($startid));
+$endid = abs(intval($endid));
 $typeid = intval($typeid);
 $newtypeid = intval($newtypeid);
 
 $gwhere = array();
 if($startid > 0 ) $gwhere[] = "ID>=$startid";
-if($startid > 0 && $endid >= $startid) $gwhere[] = "ID<=$endid";
+if($endid > 0) $gwhere[] = "ID<=$endid";
 if($typeid != 0){
 	$idArray = TypeGetSunID($typeid,$dsql,'',0,true);
 	$gwhere[] = "typeid in ($idArray)";
@@ -43,12 +43,13 @@ if($action == 'check' || $action == 'del'){
 	}
 
 	$channelids = 0;
-	$query = "select DISTINCT channelid from `#@__full_search` $where";
+	$full_search_where = str_replace('ID','aid',$where);
+	$query = "select DISTINCT channelid from `#@__full_search` $full_search_where";
 	$dsql->setquery($query);
 	$dsql->execute();
 	while($row = $dsql->getarray())
 	{
-		$channelids .= ','.$row[0];
+		$channelids .= ','.$row['channelid'];
 	}
 
 	if($seltime == 1){
@@ -72,6 +73,9 @@ if($action == 'check' || $action == 'del'){
 	$nums = 0;
 	while( $row = $dsql->getarray('channel'))
 	{
+/*
+function check()
+*/
 		if($action == 'check')
 		{
 			$rs = $dsql->getone("select ID from ".$row['maintable'].$where." order by ID asc limit 1");
@@ -91,15 +95,21 @@ if($action == 'check' || $action == 'del'){
 			$query = "OPTIMIZE TABLE ".$row['maintable'];
 			$dsql->executenonequery($query);
 			$dsql->close();
+/*
+function delete()
+*/
 		}elseif($action == 'del')
 		{
 			if($where == ''){
 				ShowMsg('该操作必须指定条件！','javascript:;');
 				exit();
 			}
-			$dsql->SetQuery("Select ID From ".$row['maintable'].$where);
+			$query ="Select ID From ".$row['maintable'].$where;
+
+			$dsql->SetQuery($query);
 			$dsql->Execute('x');
 			$tdd = 0;
+
 			while($row = $dsql->GetObject('x')){ if(DelArc($row->ID)) $tdd++; }
 			$query = "OPTIMIZE TABLE ".$row['maintable'];
 			$dsql->executenonequery($query);
@@ -110,6 +120,10 @@ if($action == 'check' || $action == 'del'){
 			exit();
 		}
 	}// while end
+	if($nums < 1){
+			showmsg('未找到符合条件的记录', 'javascript:;');
+			exit();
+		}
 	$msg = "共审核 $nums 条记录<br>";
 	if($minid > 0){
 		$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$minid";
@@ -119,6 +133,9 @@ if($action == 'check' || $action == 'del'){
 	}
 	showmsg($msg,'javascript:;');
 	exit();
+/*
+function move()
+*/
 }elseif($action == 'move')
 {
 	if($keyword != ''){
@@ -183,6 +200,9 @@ if($action == 'check' || $action == 'del'){
 		ShowMsg("完成操作，没移动任何数据...","javascript:;");
 		exit();
 	}
+/*
+function makehtml()
+*/
 }elseif($action == 'makehtml')
 {
 	$jumpurl  = "makehtml_archives_action.php?endid=$endid&startid=$startid";

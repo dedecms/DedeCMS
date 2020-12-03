@@ -39,7 +39,6 @@ if($isdown==0)
 	$co->Init();
 	$co->LoadFromDB($nid);
 	$co->DownUrl($aid,$url);
-	$co->dsql->Init(false);
 	$co->dsql->SetSql("Select * from #@__courl where aid='$aid'");
 	$co->dsql->Execute();
 	$row = $co->dsql->GetObject();

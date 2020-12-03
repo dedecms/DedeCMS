@@ -120,17 +120,24 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
 			    );
  			 }
  			 else if($tagname=="tag"){
- 				 //数据表操作
- 				 $tagObj->Assign($tagid,
-				    $partObj->GetTags($ctag->GetAtt("row"),$ctag->GetAtt("sort"),$ctag->GetInnerText())
-			   );
+ 			 	if($ctag->GetAtt('type') == 'current'){
+					$arcid = $thisObj->ArcID;
+	 				 $tagObj->Assign($tagid,
+	 				 	GetCurrentTags($thisObj->dsql,$arcid, $ctag->GetInnerText())
+				   );
+ 			 	}else{
+	 				 //数据表操作
+	 				 $tagObj->Assign($tagid,
+					    $partObj->GetTags($ctag->GetAtt("row"),$ctag->GetAtt("sort"),$ctag->GetInnerText())
+				   );
+				}
  			 }
  			 else if($tagname=="toparea"){
  				 //数据表操作
  				 $tagObj->Assign($tagid,
 				    $partObj->gettoparea($ctag->GetInnerText())
 			   );
- 			 } 
+ 			 }
  			 //特定条件的文档调用
  			 else if($tagname=="arclist"||$tagname=="artlist"||$tagname=="hotart"
  			 ||$tagname=="imglist"||$tagname=="imginfolist"||$tagname=="coolart")
@@ -152,16 +159,16 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
 
  				  $typeid = trim($ctag->GetAtt("typeid"));
  				  if(empty($typeid)) $typeid = $envTypeid;
- 				  
+
  				  if(!empty($thisObj->TempletsFile)) $tmpfile = $thisObj->TempletsFile;
  				  else $tmpfile = '';
- 				  
+
  				  if(!empty($thisObj->maintable)) $maintable = $thisObj->TempletsFile;
  				  else $maintable = '';
 
          if(!isset($titlelen)) $titlelen = 0;
          if(!isset($infolen)) $infolen = 0;
-         
+
          $idlist = '';
  				  if($tagname=="likeart"){
  				  	if(!empty($thisObj->Fields['likeid'])) $idlist = $thisObj->Fields['likeid'];
@@ -203,7 +210,7 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
 				      $partObj->GetThreads($ctag->GetAtt("gid"),$ctag->GetAtt("row"),
 				              $ctag->GetAtt("orderby"),$ctag->GetAtt("orderway"),$ctag->GetInnerText())
 			    );
- 		  } 
+ 		  }
  		  else if($tagname=="group")
  		  {
  				 //圈子
@@ -214,10 +221,18 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
  		 else if($tagname=="ask")
  		 {
  				 //问答
- 				 $tagObj->dtp->Assign($tagid,
+ 				 $tagObj->Assign($tagid,
 				    $partObj->GetAsk($ctag->GetAtt("row"),$ctag->GetAtt("qtype"),$ctag->GetInnerText()),$ctag->GetAtt("typeid")
 			   );
- 		 } 
+ 		 }
+ 		 else if($tagname=="spnote")
+ 		 {
+ 		 	$noteid = $ctag->GetAtt('noteid');
+ 				 //专题节点
+ 				 $tagObj->Assign($tagid,
+				    getNote($noteid, $thisObj)
+			   );
+ 		 }
  		 //特定条件的文档调用
  		 else if($tagname=="arcfulllist"||$tagname=="fulllist"||$tagname=="likeart"||$tagname=="specart")
  		 {
@@ -226,7 +241,7 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
 
  				  $typeid = trim($ctag->GetAtt("typeid"));
  				  if(empty($typeid)) $typeid = $envTypeid;
- 				  
+
  				  $idlist = '';
  				  if($tagname=="likeart"){
  				  	if(!empty($thisObj->Fields['likeid'])) $idlist = $thisObj->Fields['likeid'];
@@ -234,7 +249,7 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
  				  	$idlist = $ctag->GetAtt("idlist");
  				  }
  				  if($idlist!=''){ $typeid = '0'; $channelid = '0';}
- 				  
+
  				  $tagObj->Assign($tagid,
  				      $partObj->GetFullList(
  				         $typeid,$channelid,$ctag->GetAtt("row"),$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
@@ -247,5 +262,35 @@ function MakePublicTag(&$thisObj,&$tagObj,&$partObj,&$typeLink,$envTypeid=0,$env
  	}
 }
 
+//
+function getNote($noteid, &$thisObj)
+{
+	$addtable = $thisObj->ChannelUnit->ChannelInfos['addtable'];
+	global $dsql;
+	$row = $dsql->getone("select note from {$addtable} where aid={$thisObj->ArcID}");
+	$rs = $thisObj->ChannelUnit->MakeField('note',$row['note'], $noteid);
+	return $rs;
+}
+
+//获得当前页面的tag
+function GetCurrentTags(&$dsql,$aid, $innerText='')
+{
+	global $cfg_cmspath;
+	$tags = '';
+	$innerText = trim($innerText);
+	if($innerText == '') $innerText = GetSysTemplets('tag_current.htm');
+	$ctp = new DedeTagParse();
+	$ctp->SetNameSpace("field","[","]");
+	$ctp->LoadSource($innerText);
+	$dsql->Execute('t',"Select i.tagname From #@__tag_list t left join #@__tag_index i on i.id=t.tid where t.aid='$aid' ");
+	while($row = $dsql->GetArray('t',MYSQL_ASSOC)){
+		$row['link'] = $cfg_cmspath."/tag.php?/".urlencode($row['tagname'])."/";
+		  foreach($ctp->CTags as $tagid=>$ctag){
+		    if(isset($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]);
+		  }
+		  $tags .= $ctp->GetResult();
+	}
+	return $tags;
+}
 
 ?>

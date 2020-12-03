@@ -39,7 +39,7 @@ if(empty($type))
 		showmsg('您已经收藏过该网页', '-1');
 		exit();
 	}
-	$addtime = mytime();
+	$addtime = time();
 	$dsql->SetQuery("INSERT INTO #@__memberstow(uid,arcid,title,url,addtime)
 		VALUES ('".$ml->M_ID."','$arcID','$arctitle','','$addtime');");
 	$dsql->ExecuteNoneQuery();
@@ -65,7 +65,7 @@ if(empty($type))
 		showmsg('您已经收藏过该网页', '-1');
 		exit();
 	}
-	$addtime = mytime();
+	$addtime = time();
 	$dsql->SetQuery("INSERT INTO #@__memberstow(uid,arcid,title,addtime,url) VALUES ('".$ml->M_ID."','$arcID','$arctitle','$addtime','$arcurl');");
 	$dsql->ExecuteNoneQuery();
 	$dsql->Close();

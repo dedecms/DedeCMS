@@ -40,7 +40,7 @@ else
 	        gathername='".$ctag->GetAtt('name')."',
 	        language='".$ctag->GetAtt('language')."',
 	        lasttime=0,
-	        savetime='".mytime()."',
+	        savetime='".time()."',
 	        noteinfo='".$dbnotes."'
 	      where nid = $nid;
 	    ";

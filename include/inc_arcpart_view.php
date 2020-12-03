@@ -90,6 +90,8 @@ class PartView
  	//------------------------
  	function ParseTemplet()
  	{
+ 		//global $envTypeid;
+    //if(!isset($envTypeid)) $envTypeid = 0;
  		if(!is_array($this->dtp->CTags)) return "";
  		foreach($this->dtp->CTags as $tagid=>$ctag)
  		{
@@ -253,8 +255,8 @@ class PartView
  				  if($tagname=="specart"){ $channelid = -1; }
 
  				  $typeid = trim($ctag->GetAtt("typeid"));
- 				  if(empty($typeid)) $typeid = $envTypeid;
- 				  
+ 				  if(empty($typeid)) $typeid = $this->TypeID;
+
  				  $this->dtp->Assign($tagid,
  				      $this->GetFullList(
  				         $typeid,$channelid,$ctag->GetAtt("row"),$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
@@ -320,12 +322,12 @@ class PartView
     //----------------------------
     $typeids = "";
     if($typeid==0){
-    	$this->dsql->SetQuery("Select ID from #@__arctype where reID='0' And ispart<>2 And ishidden<>'1' order by sortrank asc");
+    	$this->dsql->SetQuery("Select ID from #@__arctype where reID='0' And ispart<2 And ishidden<>'1' order by sortrank asc");
     	$this->dsql->Execute();
     	while($row = $this->dsql->GetObject()){ $typeids[] = $row->ID; }
     }else{
     	if(!ereg(",",$typeid)){
-    	    $this->dsql->SetQuery("Select ID from #@__arctype where reID='".$typeid."' And ispart<>2 And ishidden<>'1' order by sortrank asc");
+    	    $this->dsql->SetQuery("Select ID from #@__arctype where reID='".$typeid."' And ispart<2 And ishidden<>'1' order by sortrank asc");
     	    $this->dsql->Execute();
     	    while($row = $this->dsql->GetObject()){ $typeids[] = $row->ID; }
        }else{
@@ -429,7 +431,7 @@ class PartView
     $row = $this->dsql->GetOne(" Select * From $tablename where tagname like '$tagname' And ($idsql) order by typeid desc ");
   	if(!is_array($row)){ return ""; }
   	else{
-  		$nowtime = mytime();
+  		$nowtime = time();
   		if($row['timeset']==1 && ($nowtime<$row['starttime'] || $nowtime>$row['endtime']) )
   		{ $body = $row['expbody']; }
   		else{ $body = $row['normbody']; }
@@ -439,7 +441,7 @@ class PartView
   	function GetTopArea($innertext)
   	{
   		$str = '<option value="0">-不限-</option>';
-  		$this->dsql->SetQuery("select * from #@__area where reid=0 order by id");
+  		$this->dsql->SetQuery("select * from #@__area where reid=0 order by disorder asc, id asc");
   		$this->dsql->Execute();
   		if(!$innertext){
   			$innertext = '<option value="[field:id/]">[field:name/]</option>';
@@ -561,6 +563,7 @@ class PartView
 		else if($ltype=='month') $orderby=' monthcc desc ';
 		else if($ltype=='hot') $orderby=' count desc ';
 		else $orderby = '  id desc  ';
+		if(empty($num)) $num = 10;
 		$this->dsql->SetQuery("Select tagname,count,monthcc,result From #@__tag_index order by $orderby limit 0,$num");
     $this->dsql->Execute();
 		$ctp = new DedeTagParse();
@@ -569,7 +572,7 @@ class PartView
 		while($row = $this->dsql->GetArray())
     {
 		  $row['keyword'] = $row['tagname'];
-		  $row['link'] = $cfg_cmspath."/tag.php?/{$row['keyword']}/";
+		  $row['link'] = $cfg_cmspath."/tag.php?/".urlencode($row['keyword'])."/";
 		  $row['highlight'] = $row['keyword'];
 		  $row['result'] = trim($row['result']);
 		  if(empty($row['result'])) $row['result'] = 0;
@@ -660,8 +663,8 @@ class PartView
  {
     global $cfg_ask_url,$cfg_dbprefix;
 
-    if( !$this->dsql->IsTable("{$cfg_dbprefix}ask") ) return '没安装问答模块'; 
-    
+    if( !$this->dsql->IsTable("{$cfg_dbprefix}ask") ) return '没安装问答模块';
+
     $nums = AttDef($nums,6);
     $qtype = AttDef($qtype,'new');
     $tid = AttDef($tid,0);
@@ -714,7 +717,7 @@ class PartView
 		}
 		require_once(dirname(__FILE__)."/inc_vote.php");
 		$vt = new DedeVote($id);
-		$vt->Close();
+		//$vt->Close();
 		return $vt->GetVoteForm($lineheight,$tablewidth,$titlebgcolor,$titlebackgroup,$tablebg);
 	}
 	//获取友情链接列表
@@ -754,7 +757,7 @@ class PartView
 				else
 					$row['link'] = "&nbsp;<a href='".$row['url']."' target='_blank'><img alt='".str_replace("'","`",$row['webname'])."' src='".$row['logo']."' border='0'></a>";
 			}
-			$rbtext = preg_replace("/\[field:url([\s]{0,})\/\]/isU",$row['url'],$innertext);			
+			$rbtext = preg_replace("/\[field:url([\s]{0,})\/\]/isU",$row['url'],$innertext);
  			$rbtext = preg_replace("/\[field:webname([\s]{0,})\/\]/isU",$row['ID'],$rbtext);
  			$rbtext = preg_replace("/\[field:logo([\s]{0,})\/\]/isU",$row['logo'],$rbtext);
  			$rbtext = preg_replace("/\[field:link([\s]{0,})\/\]/isU",$row['link'],$rbtext);

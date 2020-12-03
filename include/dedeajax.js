@@ -5,9 +5,9 @@ DedeXDOM = null;
 DedeContainer = null;
 
 //获取指定ID的元素
-function $(eid){
-	return document.getElementById(eid);
-}
+//function $(eid){
+//	return document.getElementById(eid);
+//}
 
 function $DE(id) {
 	return document.getElementById(id);

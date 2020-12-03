@@ -24,7 +24,7 @@ function GetOptionList($selid=0,$userCatalog=0,$channeltype=0)
 
     if($selid==0)
     {	
-        $query = "Select ID,typename,ispart,channeltype From #@__arctype where ispart<>2 And reID=0 order by sortrank asc ";
+        $query = "Select ID,typename,ispart,channeltype From #@__arctype where ispart<2 And reID=0 order by sortrank asc ";
         $dsql->SetQuery($query);
         $dsql->Execute();
        while($row=$dsql->GetObject())
@@ -49,7 +49,7 @@ function GetOptionList($selid=0,$userCatalog=0,$channeltype=0)
              }else
              {
              	 $haspurcat = false;
-             	 $query = "Select ID From #@__arctype where ispart<>2 And reID={$row->ID} order by sortrank asc ";
+             	 $query = "Select ID From #@__arctype where ispart<2 And reID={$row->ID} order by sortrank asc ";
                $dsql->Execute('sel'.$row->ID,$query);
                while($nrow = $dsql->GetObject('sel'.$row->ID)){
           	      if(in_array($nrow->ID,$adminCats)){ $haspurcat=true; break; }
@@ -76,7 +76,7 @@ function GetOptionList($selid=0,$userCatalog=0,$channeltype=0)
 	function LogicGetOptionArray($ID,$step,$channeltype,$dsql,$testpur=true)
 	{
 		global $OptionArrayList,$channels,$adminCats,$suserCatalog;
-		$dsql->SetQuery("Select ID,typename,ispart,channeltype From #@__arctype where reID='".$ID."' And ispart<>2 order by sortrank asc");
+		$dsql->SetQuery("Select ID,typename,ispart,channeltype From #@__arctype where reID='".$ID."' And ispart<2 order by sortrank asc");
 		$dsql->Execute($ID);
 		while($row=$dsql->GetObject($ID))
 		{

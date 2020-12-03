@@ -73,7 +73,7 @@ function SelectTemplets(fname){
             <td width="400%" height="24" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90">&nbsp;文章标题：</td>
-                  <td width="250"><input name="title" type="text" id="title" style="width:230px" value="<?php echo $arcRow["title"]?>" size="40" />
+                  <td width="250"><input name="title" type="text" id="title" style="width:230px" value='<?php echo htmlspecialchars($arcRow['title']);?>' size="40" />
                   </td>
                   <td width="90">附加参数：</td>
                   <td><input name="iscommend" type="checkbox" id="iscommend" class="np" value="11" <?php  if($arcRow["iscommend"]>10) echo " checked";?> />
@@ -194,6 +194,7 @@ function SelectTemplets(fname){
 			 <?php 
 	      GetEditor("body",$body,450);
 	     ?>
+
           </td>
           </tr>
         </table>

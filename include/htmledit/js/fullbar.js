@@ -27,7 +27,7 @@ document.write("<select name=\"selectFont\" id=\"selectFont\" style=\"width:80px
 document.write("<option value=\"0\">--默认--</option>");
 document.write("<option value=\"宋体\">宋体</option>");
 document.write("<option value=\"黑体\">黑体</option>");
-document.write("<option value=\"楷体_GB2312\">楷体_GB2312</option>");
+document.write("<option value=\"楷体_utf-8\">楷体_utf-8</option>");
 document.write("<option value=\"Arial\">Arial</option>");
 document.write("<option value=\"Arial Black\">Arial Black</option>");
 document.write("</select>");

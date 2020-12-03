@@ -134,7 +134,10 @@ while($arow = $dsql->GetObject()){
                         </tr>
                     </table></td>
                   </tr>
-                  <?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?>
+                  <?php 
+                  PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
+                  //print_r($cInfos['fieldset']);
+                   ?>
                 </table>
 				<table width="100%" border="0" cellspacing="2" cellpadding="2" class="sendtable">
                   <tr>

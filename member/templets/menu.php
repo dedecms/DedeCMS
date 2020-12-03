@@ -84,10 +84,7 @@ if($cfg_ml->M_utype == 1){
             </div>
 
              <!-- add -->
-	
-	
-	
-	
+
             <div class="manage_company_title">
                 <div class="manage_company_title_bg">我的文档</div>
                 <div class="manage_company_main_text">

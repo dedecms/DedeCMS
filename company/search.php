@@ -17,7 +17,7 @@ $sectorid2 = intval($sectorid2);
 $page = intval($page);
 
 isset($comname) || $comname = '';
-
+$comname = trim($comname);
 $allsectors = $areas = array();
 $dsql->setquery("select id, name from #@__sectors order by disorder desc,id asc");
 $dsql->Execute();

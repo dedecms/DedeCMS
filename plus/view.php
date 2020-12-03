@@ -43,7 +43,7 @@ function PayMoney($ml,$arc,$money){
    if(!is_array($row)){
 		   //金币消费记录
 		   $inquery = "INSERT INTO #@__moneyrecord(aid,uid,title,money,dtime)
-               VALUES ('$aid','".$ml->M_ID."','{$arc->Fields['title']}','$money','".mytime()."');";
+               VALUES ('$aid','".$ml->M_ID."','{$arc->Fields['title']}','$money','".time()."');";
 		   if($arc->dsql->ExecuteNoneQuery($inquery)){
 		  	  $inquery = "Update #@__member set money=money-$money where ID='".$ml->M_ID."'";
 		      $arc->dsql->ExecuteNoneQuery($inquery);

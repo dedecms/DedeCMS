@@ -49,7 +49,7 @@ if($totalnum - $startdd < 1){
 $co = new DedeCollection();
 $co->Init();
 $co->LoadFromDB($nid);
-$co->dsql->SetQuery("Update #@__conote set lasttime='".mytime()."' where nid=$nid");
+$co->dsql->SetQuery("Update #@__conote set lasttime='".time()."' where nid=$nid");
 $co->dsql->ExecuteNoneQuery();
 $co->dsql->SetQuery("Select aid,url From #@__courl where nid=$nid $limitSql");
 $co->dsql->Execute(99);

@@ -3,10 +3,7 @@ $__ONLYDB = true;
 $__ONLYCONFIG = true;
 require_once(dirname(__FILE__)."/../include/config_base.php");
 require_once(dirname(__FILE__)."/../include/pub_charset.php");
-header("Content-Type: text/html; charset=utf-8");
-header("Pragma:no-cache"); 
-header("Cache-Control:no-cache"); 
-header("Expires:0"); 
+AjaxHead(); 
 
 $myhtml = UnicodeUrl2Gbk(stripslashes($myhtml));
 

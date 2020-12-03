@@ -134,7 +134,7 @@ if($action==""||$action=="show")
   //最近热门评论
   $feedback_hot = "";
 	$nearTime = 30;  //最近评论的文章的发布日期(表示多少天前)
-	$minTime = mytime() - (3600 * 24 * $nearTime);
+	$minTime = time() - (3600 * 24 * $nearTime);
 
 	if($feedid==0) $hotquery = "Select id,title From `#@__cache_feedbackurl` where  posttime>$minTime order by postnum desc limit 0,10";
 	else $hotquery = "Select id,title From `#@__cache_feedbackurl` where posttime>$minTime And feedid='$feedid' order by postnum desc limit 0,10";
@@ -212,7 +212,7 @@ else if($action=="send")
   }
   $msg = cn_substr(trimMsg($msg),1000);
   $ip = GetIP();
-  $dtime = mytime();
+  $dtime = time();
   if(empty($face)) $face = '0';
   //保存评论内容
   if($msg!="")
@@ -228,7 +228,7 @@ else if($action=="send")
 	  $row = $dsql->GetOne("Select count(*) as dd From `#@__feedback` where urlindex='$urlindex' Or aid='$arcID' ");
 	  if(!empty($arcID))
 	  {
-	    $dsql->ExecuteNoneQuery("Update `{$cts['maintable']}` set postnum='".$row['dd']."',lastpost='".mytime()."' where ID='$arcID'");
+	    $dsql->ExecuteNoneQuery("Update `{$cts['maintable']}` set postnum='".$row['dd']."',lastpost='".time()."' where ID='$arcID'");
       //更新文档
       if($cfg_feedback_make=='Y')
       {
@@ -237,7 +237,7 @@ else if($action=="send")
         $arc->MakeHtml();
       }
     }
-    $dsql->ExecuteNoneQuery("Update `#@__cache_feedbackurl` set postnum='".$row['dd']."',posttime='".mytime()."' where id='$urlindex' ");
+    $dsql->ExecuteNoneQuery("Update `#@__cache_feedbackurl` set postnum='".$row['dd']."',posttime='".time()."' where id='$urlindex' ");
   }
   $dsql->Close();
   if($ischeck==0) ShowMsg("成功发表评论，但需审核后才会显示你的评论!","feedback.php?arcID=$arcID&urlindex=$urlindex");

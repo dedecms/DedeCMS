@@ -9,6 +9,8 @@ if(!empty($endid) && $endid>=$startid){
 	$ci .= " And aid <= $endid ";
 }
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 $dsql = new DedeSql(false);
 $dsql->SetQuery("Select aid From #@__freelist where $ci");
 $dsql->Execute();
@@ -17,9 +19,10 @@ $dsql->Close();
 
 if(!isset($pageno)) $pageno=0;
 $totalpage=count($idArray);
-if(isset($idArray[$pageno])) $lid = $idArray[$pageno];
-else{
-	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+
+if(isset($idArray[$pageno])){
+	$lid = $idArray[$pageno];
+}else{
 	echo "完成所有文件创建！";
 	exit();
 }
@@ -34,24 +37,23 @@ if(empty($maxpagesize)) $maxpagesize = 50;
 //如果栏目的文档太多，分多批次更新
 if($ntotalpage<=$maxpagesize){
 	$lv->MakeHtml();
+	//echo 'dd';
 	$finishType = true;
-}
-else{
+}else{
 	$lv->MakeHtml($mkpage,$maxpagesize);
+	//echo 'ee';
 	$finishType = false;
 	$mkpage = $mkpage + $maxpagesize;
 	if( $mkpage >= ($ntotalpage+1) ) $finishType = true;
 }
 
-
 $lv->Close();
 
 $nextpage = $pageno+1;
+
 if($nextpage==$totalpage){
-	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 	echo "完成所有文件创建！";
-}
-else{
+}else{
 	if($finishType){
 	  $gourl = "makehtml_freelist_action.php?maxpagesize=$maxpagesize&startid=$startid&endid=$endid&pageno=$nextpage";
 	  ShowMsg("成功创建列表：".$tid."，继续进行操作！",$gourl,0,100);

@@ -30,8 +30,8 @@ function OpenMenu(cid,lurl,rurl,bid){
      if(rurl!='') top.document.getElementById("main").src = rurl;
      if(cid > -1) top.document.getElementById("menu").src = 'index_menu.php?c='+cid;
      else if(lurl!='') top.document.getElementById("menu").src = lurl;
-     if(bid>0) document.getElementById("d"+bid).className = 'thisclass';
-     if(preID>0 && preID!=bid) document.getElementById("d"+preID).className = '';
+     if(bid>0 && bid!=9) document.getElementById("d"+bid).className = 'thisclass';
+     if(preID>0) document.getElementById("d"+preID).className = '';
      preID = bid;
    }
 }
@@ -80,7 +80,7 @@ function resetBT(){
     </div>
 		<div class="sitelink">
 			<a href="javascript:OpenMenu(9,'','index_body.php',0)">管理主页</a> | 
-			<a href="javascript:OpenMenu(0,'index_menu.php','',9)">功能菜单</a> | 
+			<a href="javascript:OpenMenu(0,'index_menu.php','',0)">功能菜单</a> | 
 			<a href="http://www.dedecms.com/archives/templethelp/help/index.htm" target="_blank">帮助</a> | 
 			<a href="../" target="_blank">网站主页</a> | 
 			<a href="exit.php" target="_parent">注销登录</a>
@@ -93,6 +93,7 @@ function resetBT(){
 			<li id='d2'><a href="javascript:OpenMenu(-1,'catalog_menu.php','public_guide.php',2)">内容发布</a></li>
 			<li id='d3'><a href="javascript:OpenMenu(2,'','content_list.php',3)">内容维护</a></li>
 			<li id='d4'><a href="javascript:OpenMenu(3,'','makehtml_homepage.php',4)">HTML更新</a></li>
+            <li id='d10'><a href="javascript:OpenMenu(10,'','file_manage_main.php',10)">模板管理</a></li>
 			<li id='d5'><a href="javascript:OpenMenu(4,'','member_main.php',5)">核心模块</a></li>
 			<li id='d7'><a href="javascript:OpenMenu(6,'','module_main.php',7)">扩展模块</a></li>
 			<li id='d6'><a href="javascript:OpenMenu(5,'','plus_main.php',6)">辅助插件</a></li>

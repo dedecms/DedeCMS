@@ -26,7 +26,7 @@ if($dopost=="save")
 	ShowMsg("成功增加一个自定义标记！","mytag_main.php");
 	exit();
 }
-$startDay = mytime();
+$startDay = time();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);

@@ -1,8 +1,6 @@
 <?php 
-header("Content-Type: text/html; charset=utf-8");
-header("Pragma:no-cache"); 
-header("Cache-Control:no-cache"); 
-header("Expires:0"); 
+require(dirname(__FILE__)."/config.php");
+AjaxHead(); 
 $t = $_GET['t'];
 if($t=='source') //来源列表
 {

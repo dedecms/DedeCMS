@@ -6,7 +6,7 @@ $row = $dsql->GetOne("Select * From #@__myad where aid='$aid'");
 $dsql->Close();
 if($row['timeset']==0) $adbody = $row['normbody'];
 else{
-	$ntime = mytime();
+	$ntime = time();
 	if($ntime>$row['endtime']||$ntime<$row['starttime']){ $adbody = $row['expbody']; }
 	else{ $adbody = $row['normbody']; }
 }

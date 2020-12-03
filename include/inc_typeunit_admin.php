@@ -206,6 +206,25 @@ class TypeUnit
 				 echo "</label></td>\r\n</tr>\r\n";
 			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
 				 }
+				 //跳转网址
+			  else if($ispart==3)
+			  {
+			   	 echo "<table width='96%' border='0' cellpadding='1' cellspacing='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center'>\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>\r\n";
+				 echo "<td width='6%'>[ID:".$ID."]</td>\r\n";
+				 echo "<td width='27%' align='left'><img style='cursor:hand' onClick=\"LoadSuns('suns".$ID."',$ID);\" src='images/class_sopen.gif' width='11' height='15' border='0' align='absmiddle' />  <a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."<font color='red'>[跳转]</font></a></td>\r\n";
+				 echo "<td width='10%'>(文档：0)</td>\r\n";
+				 echo "<td width='8%'>跳转</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>\r\n";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a>\r\n";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>修改</a>\r\n";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a>\r\n";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td>\r\n</tr>\r\n";
+			     echo "</table>\r\n <div id='suns".$ID."'>\r\n";
+				 }
 
 			  if($lastID==$ID){
 				   $this->LogicListAllSunType($ID,"　",false);
@@ -397,6 +416,25 @@ class TypeUnit
 				 echo "| <a href='catalog_add.php?ID={$ID}'>添加</a> ";
 				 echo "| <a href='catalog_edit.php?ID={$ID}'>修改</a> ";
 				 echo "| <a href='catalog_move.php?job=movelist&typeid={$ID}'>移动</a> ";
+				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a> ";
+				 echo "</td><td width='8%'><label>";
+				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";
+				 echo "</label></td></tr>";
+			     echo "    </table>\r\n";
+				}
+				//跳转网址
+			    else if($ispart==3)
+			    {
+				 echo "<table width='96%' border='0' cellspacing='1' cellpadding='0' align='center' style='margin:0px auto' class='tblist2'>\r\n";
+				 echo "<tr align='center' class='trlbg'>\r\n";
+				 echo "<td width='7%'><input class='np' type='checkbox' name='tids[]' value='{$ID}'></td>";
+				 echo "<td width='6%'>[ID:".$ID."]</td>";
+				 echo "<td width='27%' align='left'>$step   ├  <a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank' style='font-size:14px; text-decoration:none;'>{$nss}".$typeName."</a><font color='red'>[跳转]</font></td>";
+				 echo "<td width='10%'>(文档：0)</td>";
+				 echo "<td width='8%'>跳转</td>\r\n";
+				 echo "<td width='34%' align='right' style='letter-spacing:1px;'>";
+				 echo "<a href='{$GLOBALS['cfg_plus_dir']}/list.php?tid={$ID}' target='_blank'>预览</a> ";
+				 echo "| <a href='catalog_edit.php?ID={$ID}'>修改</a> ";
 				 echo "| <a href='catalog_del.php?ID={$ID}&typeoldname=".urlencode($typeName)."'>删除</a> ";
 				 echo "</td><td width='8%'><label>";
 				 echo "<input name='sortrank{$ID}' type='text' id='textfield2' value='{$rank}' size='2' maxlength='4' style='text-align:center;' />";

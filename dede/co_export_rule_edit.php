@@ -37,7 +37,7 @@ if($action=="save")
 	channelid = '$channelid',
 	rulename='$rulename',
 	etype='$etype',
-	dtime='".mytime()."',
+	dtime='".time()."',
 	ruleset='$notes'
 	where aid='$aid'
 	";

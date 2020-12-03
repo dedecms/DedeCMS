@@ -6,7 +6,7 @@ CheckPurview('temp_One');
 if($dopost=="save")
 {
 	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-	$uptime = mytime();
+	$uptime = time();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
 	

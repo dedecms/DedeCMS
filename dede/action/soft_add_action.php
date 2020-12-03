@@ -33,7 +33,7 @@ $arcrank = GetCoRank($arcrank,$typeid);
 $iscommend = $iscommend + $isbold;
 
 $pubdate = GetMkTime($pubdate);
-$senddate = mytime();
+$senddate = time();
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
@@ -149,11 +149,9 @@ if(!$dsql->ExecuteNoneQuery($query))
 	ShowMsg("把数据保存到数据库附加表 `{$cts['addtable']}` 时出错，请把相关信息提交给DedeCms官方。".$gerr,"javascript:;");
 	exit();
 }
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
+
 
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
@@ -163,7 +161,9 @@ WriteSearchIndex($dsql,$datas);
 unset($datas);
 //写入Tag索引
 InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
-
+//生成HTML
+//---------------------------------
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

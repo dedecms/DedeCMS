@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
 <link href="{dede:field name='templeturl'/}/info/style/cls_base.css" rel="stylesheet" type="text/css" />
 <link href="{dede:field name='templeturl'/}/info/style/cls_page.css" rel="stylesheet" type="text/css" />
 </head>
@@ -85,7 +85,10 @@
 
 			<!--相关信息-->
 			<div class="cinfo">
-				<strong>分类：</strong>{dede:field name="smalltypeid"/} <strong>地区：</strong>{dede:field name="areaid" function=getarea(@me)/} - {dede:field name="areaid2" function=getarea(@me)/} <strong>发布者：</strong><a href="../member/index.php?id={dede:field name="memberID"/}">{dede:field name="writer"/}</a>
+				<strong>分类：</strong>{dede:field name="smalltypename"/} 
+                <strong>地区：</strong>{dede:field name="areaid" function=getarea(@me)/} - {dede:field name="areaid2" function=getarea(@me)/} 
+                <strong>发布者：</strong><a href="../member/index.php?id={dede:field name="memberID"/}">{dede:field name="writer"/}</a><br />
+                <strong>Tag：</strong>{dede:tag type='current'/}
 			</div>
 		<!--内容正文-->
 			<div class="content">
@@ -180,14 +183,14 @@
 
 <!--页面底部-->
 <div class="footer cbody margintop">
-	<div class="copyright">
-		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        {dede:global name='cfg_powerby'/}
+		<div class="copyright"> 
+                <div style="font-size:12px">
+{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+		Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
 	</div>
-	<div class="slogo">
-		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/info/images/s_logo.gif" width="66" height="33" alt="" /></a>
-	</div>
-	<div class="floatclear"></div>
+	
 </div>
 
 </body>

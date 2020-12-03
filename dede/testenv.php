@@ -26,6 +26,9 @@ $cfg_cmspath/data/cache/user|
 $cfg_special|
 $cfg_member_dir/templets|
 $cfg_cmspath$cfg_arcdir";
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 if(($cfg_isSafeMode || $cfg_ftp_mkdir=='Y') && $cfg_ftp_host==""){
 	echo "由于你的站点的PHP配置存在限制，程序只能通过FTP形式进行目录操作，因此你必须在后台指定FTP相关的变量！<br>";
 	echo "<a href='sys_info.php'>&lt;&lt;修改系统参数&gt;&gt;</a>";
@@ -47,7 +50,7 @@ if($action==""){
 		if(CreateDir($needDir)) echo "成功更改或创建：{$needDir} <br>";
 		else echo "更改或创建目录：{$needDir} <font color='red'>失败！</font> <br>";
 	}
-	echo "<br>如果发现更改或创建错误的项目，请<a href='testenv.php?action=ok&play=".mytime()."'><u>重试</u></a>或手动登陆到FTP更改相关目录的权限为777或666<br>";
+	echo "<br>如果发现更改或创建错误的项目，请<a href='testenv.php?action=ok&play=".time()."'><u>重试</u></a>或手动登陆到FTP更改相关目录的权限为777或666<br>";
 	echo "<br><a href='index_body.php'>&lt;&lt;返回主页&gt;&gt;</a>";
 	CloseFtp();
 }

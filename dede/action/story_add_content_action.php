@@ -41,7 +41,7 @@ if(empty($bcatid)) $bcatid = 0;
 if(empty($booktype)) $booktype = 0;
 
 
-$addtime = mytime();
+$addtime = time();
 
 //处理上传的缩略图
 //$litpic = GetDDImage('litpic',$litpicname,0);
@@ -72,7 +72,7 @@ WriteBookText($arcID,addslashes($body));
 
 //更新图书的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' ");
-$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='".mytime()."' where id='$bookid' ");
+$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='".time()."' where id='$bookid' ");
 //更新章节的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' And chapterid='$chapterid' ");
 $dsql->ExecuteNoneQuery("Update #@__story_chapter set postnum='{$row['dd']}' where id='$chapterid' ");

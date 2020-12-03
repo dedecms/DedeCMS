@@ -35,6 +35,7 @@ if($dopost=="save")
    	   $dsql->ExecuteNoneQuery();
    	 }
    }
+   header("Content-Type: text/html; charset={$cfg_ver_lang}");
    echo "<script> alert('成功更新会员等级表！'); </script>";
 }
 

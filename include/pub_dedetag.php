@@ -394,7 +394,9 @@ class DedeTagParse
 		for($i=0;$i<$sourceLen;$i++)
 		{
 			$tTagName = "";
-			$sPos = strpos($this->SourceString,$FullTagStartWord,$i);
+			$t = 0;
+			if($i>0) $t = $i - 1;
+			$sPos = strpos($this->SourceString,$FullTagStartWord,$t);
 			$isTag = $sPos;
 			if($i==0){
 				$headerTag = substr($this->SourceString,0,strlen($FullTagStartWord));
@@ -655,13 +657,13 @@ class DedeAttributeParse
 				else
 					$tmpvalue.=$d;
 			}
-		}
+		}//for
 		if($tmpatt!=""){
 			$this->CAttribute->Count++;
 			$this->CAttribute->Items[$tmpatt]=trim($tmpvalue);//strtolower(trim($tmpvalue));
 		}
-		//完成属性解析
-	}//for
-	}//has Attribute
+		
+	}//完成属性解析//has Attribute
+	}// end func
 }
 ?>

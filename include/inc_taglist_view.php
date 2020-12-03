@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(DEDEINC."/pub_oxwindow.php");
 
 //打开所有标记，开启此项允许你使用封面模板的所有标记，但会对性能造成一定的影响
@@ -49,7 +49,7 @@ class TagList
  		//设置一些全局参数的值
  		foreach($GLOBALS['PubFields'] as $k=>$v) $this->Fields[$k] = $v;
  		$this->PartView = new PartView(0);
- 		
+
  		//读取Tag信息
  		if($this->Tag!='')
  	  {
@@ -64,7 +64,7 @@ class TagList
  		   }
  		   $this->TagID = $this->TagInfos['id'];
  		}
- 		
+
  		//初始化模板
  		$tempfile = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir']."/".$GLOBALS['cfg_df_style'].'/'.$this->Templet;
  		if(!file_exists($tempfile)||!is_file($tempfile)){
@@ -73,7 +73,7 @@ class TagList
  	  }
  	  $this->dtp->LoadTemplate($tempfile);
  	  $this->TempletsFile = ereg_replace("^".$GLOBALS['cfg_basedir'],'',$tempfile);
- 		
+
   }
   //php4构造函数
  	//---------------------------
@@ -107,11 +107,11 @@ class TagList
 			  $row = $this->dsql->GetOne($cquery);
 			  $this->TotalResult = $row['dd'];
 			  //更新Tag信息
-			  $ntime = mytime();
+			  $ntime = time();
 			  //更新浏览量和记录数
 			  $upquery = "Update #@__tag_index set result='{$row['dd']}',count=count+1,weekcc=weekcc+1,monthcc=monthcc+1 where id='{$this->TagID}' ";
 			  $this->dsql->ExecuteNoneQuery($upquery);
-			  $oneday = 24 * 3600; 
+			  $oneday = 24 * 3600;
 			  //周统计
 			  if(ceil( ($ntime - $this->TagInfos['weekup'])/$oneday )>7){
 			  	 $this->dsql->ExecuteNoneQuery("Update #@__search_keywords set weekcc=0,weekup='{$ntime}' where id='{$this->TagID}' ");
@@ -141,7 +141,7 @@ class TagList
  	  $this->Close();
  		$this->dtp->Display();
  	}
- 	
+
  	//--------------------------------
  	//解析模板，对固定的标记进行初始给值
  	//--------------------------------
@@ -218,18 +218,19 @@ class TagList
 		$colWidth = $colWidth."%";
 		$innertext = trim($innertext);
 		if($innertext=="") $innertext = GetSysTemplets("list_fulllist.htm");
-		
+
 		$idlists = '';
 		$this->dsql->SetQuery("Select aid From #@__tag_list where tid='{$this->TagID}' And arcrank>-1 limit $limitstart,$getrow");
+		//echo "Select aid From #@__tag_list where tid='{$this->TagID}' And arcrank>-1 limit $limitstart,$getrow";
 		$this->dsql->Execute();
 		while($row=$this->dsql->GetArray()){
 			$idlists .= ($idlists=='' ? $row['aid'] : ','.$row['aid']);
 		}
 		if($idlists=='') return '';
-		
+
 		//按不同情况设定SQL条件
 		$orwhere = " se.aid in($idlists) ";
-    
+
 		//排序方式
 		$ordersql = "";
 		if($orderby=="uptime") $ordersql = "  order by se.uptime $orderWay";
@@ -238,8 +239,9 @@ class TagList
 		//----------------------------
 		$query = "Select se.*,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl
 			from `#@__full_search` se left join `#@__arctype` tp on se.typeid=tp.ID
-			where $orwhere $ordersql limit $limitstart,$getrow
+			where $orwhere $ordersql
 		";
+
 		$this->dsql->SetQuery($query);
 		$this->dsql->Execute('al');
 		echo $this->dsql->GetError();
@@ -292,7 +294,7 @@ class TagList
 							if(isset($row[$ctag->GetName()])) $this->dtp2->Assign($k,$row[$ctag->GetName()]);
 							else $this->dtp2->Assign($k,"");
 						}
-						
+
 						$artlist .= $this->dtp2->GetResult();
 					//if hasRow
 					}else
@@ -308,11 +310,12 @@ class TagList
 		$this->dsql->FreeResult("al");
 		return $artlist;
 	}
-	
+
 	//----------------------------------------
 	//获得标签
 	//----------------------------------------
 	function GetTags($num,$ltype='new',$InnerText=""){
+
 		$InnerText = trim($InnerText);
 		if($InnerText=="") $InnerText = GetSysTemplets("tag_one.htm");
 		$revalue = "";
@@ -329,11 +332,12 @@ class TagList
 		while($row = $this->dsql->GetArray())
     {
 		  $row['keyword'] = $row['tagname'];
-		  $row['link'] = $cfg_cmspath."/tag.php?/{$row['keyword']}/";
+		  $row['link'] = $cfg_cmspath."/tag.php?/".urlencode($row['keyword'])."/";
+
 		  $row['highlight'] = $row['keyword'];
 		  $row['result'] = trim($row['result']);
 		  if(empty($row['result'])) $row['result'] = 0;
-		  
+
 		  if($ltype=='view'||$ltype=='rand'||$ltype=='new'){
 		  	 if($row['monthcc']>1000 || $row['weekcc']>300 ){
 		  	 	  $row['highlight'] = "<span style='font-size:".mt_rand(12,16)."px;color:red'><b>{$row['highlight']}</b></span>";
@@ -347,16 +351,16 @@ class TagList
 		  }else{
 		  	$row['highlight'] = "<span style='font-size:".mt_rand(12,16)."px;'>{$row['highlight']}</span>";
 		  }
-		  
+
 		  foreach($ctp->CTags as $tagid=>$ctag){
 		    if(isset($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]);
 		  }
 		  $revalue .= $ctp->GetResult();
 		}
-		
+
 		return $revalue;
 	}
-	
+
   //---------------------------------
   //获取动态的分页列表
   //---------------------------------
@@ -367,13 +371,13 @@ class TagList
 		$prepagenum = $this->PageNo-1;
 		$nextpagenum = $this->PageNo+1;
 		if($list_len==""||ereg("[^0-9]",$list_len)) $list_len=3;
-		
+
 		$totalpage = $this->TotalPage;
-		
+
 		if($totalpage<=1 && $this->TotalResult>0) return "<a>共1页/".$this->TotalResult."条</a>";
-		
+
 		if($this->TotalResult == 0) return "<a>共0页/".$this->TotalResult."条</a>";
-		
+
 		$maininfo = "<a>共{$totalpage}页/".$this->TotalResult."条</a>\r\n";
 
 		$purl = $this->GetCurUrl();

@@ -26,7 +26,7 @@ foreach($topsectors as $topsector){
 }
 
 //////////////////////地区数据处理s/////////////////////////////
-$sql = "select * from #@__area order by disorder desc,id asc";
+$sql = "select * from #@__area order by disorder asc,id asc";
 $dsql->SetQuery($sql);
 $dsql->Execute();
 $toparea = $subarea = array();

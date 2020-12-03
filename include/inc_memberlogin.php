@@ -76,7 +76,7 @@ function WriteUserInfos($uid,$row)
    }
    $userfile = $ndir.$uid.'.php';
    $infos = "<"."?php\r\n";
-   $infos .= "\$cfg_userinfos['wtime'] = '".mytime()."';\r\n";
+   $infos .= "\$cfg_userinfos['wtime'] = '".time()."';\r\n";
    foreach($row as $k=>$v){
    	 if(ereg('[^0-9]',$k)){
 		$v = str_replace("'","\\'",$v);
@@ -243,7 +243,7 @@ class MemberLogin
  		    //密码错误
  		   if($row['pwd'] != $loginpwd){ return -1; }
  		   else{ //成功登录
- 		   	 $dsql->ExecuteNoneQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='{$row['ID']}';");
+ 		   	 $dsql->ExecuteNoneQuery("update #@__member set logintime='".time()."',loginip='".GetIP()."' where ID='{$row['ID']}';");
  		   	 $dsql->Close();
  		   	 $this->PutLoginInfo($row['ID']);
  		   	 $this->FushCache();
@@ -256,7 +256,7 @@ class MemberLogin
   //保存用户cookie
   function PutLoginInfo($uid){
   	$this->M_ID = $uid;
- 		$this->M_LoginTime = mytime();
+ 		$this->M_LoginTime = time();
  		PutCookie("DedeUserID",$uid,$this->M_KeepTime);
  		PutCookie("DedeLoginTime",$this->M_LoginTime,$this->M_KeepTime);
 

@@ -1,9 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-header("Content-Type: text/html; charset=utf-8");
-header("Pragma:no-cache"); 
-header("Cache-Control:no-cache"); 
-header("Expires:0");
+AjaxHead();
 if(empty($t)) echo '';
 $dsql = new DedeSql(false);
 $row = $dsql->GetOne("Select aid From #@__full_search where title like '$t' ");

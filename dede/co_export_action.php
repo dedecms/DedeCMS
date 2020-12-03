@@ -3,6 +3,9 @@ require_once(dirname(__FILE__)."/config.php");
 CheckPurview('co_Export');
 require_once(dirname(__FILE__)."/../include/pub_dedetag.php");
 require_once(dirname(__FILE__)."/../include/inc_channel_unit_functions.php");
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 if(!isset($channelid)) $channelid = 0;
 if(!isset($typeid)) $typeid = 0;
 if(!isset($pageno)) $pageno = 1;
@@ -26,7 +29,7 @@ if(!is_array($row)){
 $channelid = $row['channelid'];
 $etype = $row['etype'];
 $arcsource = $row['arcsource'];
-$senddate = mytime();
+$senddate = time();
 
 $typeinfos = $dsql->GetOne("Select * From `#@__arctype` where ID='$typeid'",MYSQL_ASSOC);
 //分析规则，并生成临时的SQL语句
@@ -98,7 +101,7 @@ if($tablename2!="")
   $tb2SqlValue = str_replace("(,","(",$tb2SqlValue).");";
   $tb2Sql = $tb2SqlKey.$tb2SqlValue;
 }
-echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+
 //导出数据的SQL操作
 //---------------------------------
 $totalpage = $totalcc/$pagesize;

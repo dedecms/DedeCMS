@@ -29,7 +29,7 @@ if($job=="upload")
 		ShowMsg("你所上传的文件类型不能被识别，请更改系统对扩展名限定的配置！","-1");
 		exit();
 	}
-	$nowtme = mytime();
+	$nowtme = time();
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
 	if($filename==""){
 		$y = substr(strftime("%Y",$nowtme),2,2);
@@ -53,7 +53,7 @@ if($job=="upload")
   $dsql = new DedeSql(false);
   $dsql->ExecuteNoneQuery($inquery);
   $dsql->Close();
-	ShowMsg("成功上传文件！","select_soft.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
+	ShowMsg("成功上传文件！","select_soft.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".time());
 	exit();
 }
 ?>

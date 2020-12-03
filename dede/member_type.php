@@ -31,6 +31,7 @@ if($dopost=="save")
    	 	$query = "Insert Into #@__member_type(rank,pname,money,exptime) Values('{$rank_new}','{$pname_new}','{$money_new}','{$exptime_new}');";
    	  $dsql->ExecuteNoneQuery($query);
    }
+   header("Content-Type: text/html; charset={$cfg_ver_lang}");
    echo "<script> alert('成功更新会员产品分类表！'); </script>";
 }
 $arcranks = array();

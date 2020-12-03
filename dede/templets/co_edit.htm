@@ -34,6 +34,17 @@ function TSourceType()
   }
 }
 
+function ShowHideRfurl()
+{
+  var r1 = document.getElementById('isref1');
+  var r2 = document.getElementById('isref2');
+  if(r2.checked){
+     document.getElementById('rfurlct').style.display = 'block';
+  }else{
+     document.getElementById('rfurlct').style.display = 'none';
+  }
+}
+
 </script>
 <style type="text/css">
 <!--
@@ -99,13 +110,12 @@ function TSourceType()
             <td width="26%"><input name="notename" type="text" id="notename" value="<?php echo $notename?>" style="width:150px"></td>
             <td width="17%">页面编码：</td>
             <td width="41%">
-            	<input type="radio" name="language"  value="gb2312"<?php if($language=='gb2312') echo " checked";?>>
-              GB2312 
-              <input type="radio" name="language"  value="utf-8"<?php if($language=='utf-8') echo " checked";?>>
-              UTF8 
+            	<input type="radio" name="language"  value="utf-8"<?php if($language=='utf-8') echo " checked";?>>
+              utf-8 
+              <input type="radio" name="language"  value="gb2312"<?php if($language=='gb2312') echo " checked";?>>
+              gb2312 
               <input type="radio" name="language"  value="big5"<?php if($language=='big5') echo " checked";?>>
-              BIG5
-            </td>
+              BIG5 </td>
           </tr>
           <tr> 
             <td height="24">图片相对网址： </td>
@@ -127,15 +137,15 @@ function TSourceType()
           </tr>
           <tr> 
             <td height="24">防盗链模式：</td>
-            <td><input name="isref" type="radio"  value="no"<?php if($isref=="no"||$isref=="") echo " checked";?>>
+            <td><input name="isref" id='isref1' onclick="ShowHideRfurl()" type="radio" value="no"<?php if($isref=="no"||$isref=="") echo " checked";?>>
               不开启 
-              <input name="isref" type="radio"  value="yes"<?php if($isref=="yes") echo " checked";?>>
+              <input name="isref" type="radio" id='isref2' onclick="ShowHideRfurl()" value="yes"<?php if($isref=="yes") echo " checked";?>>
               开启</td>
             <td>资源下载超时时间：</td>
             <td><input name="exptime" type="text" id="exptime" value="<?php echo $exptime?>" size="8">
               秒</td>
           </tr>
-          <tr> 
+          <tr <?php if($isref!="yes") echo "style='display:none'";  ?>> 
             <td height="24">引用网址：</td>
             <td colspan="3"><input name="refurl" type="text" id="refurl" size="45" value="<?php echo $refurl?>">
               （需加http://）</td>
@@ -160,9 +170,10 @@ function TSourceType()
 		  <td height="24">来源网址获取方式：</td>
             <td colspan="2">
             	<input name="source" type="radio" id="source1" value="var"  onClick="TSourceType()" <?php if($source=="var") echo " checked";?>>
-符合特定序列的网址
+符合特定序列的列表网址
   <input name="source" type="radio" id="source" value="source2" onClick="TSourceType()"<?php if($source=="app") echo " checked";?>> 
-  我自己手工指定这些网址            </td>
+  手工指定列表网址 
+        </td>
           </tr>
 		  <tr id="st1">
             <td height="24">分页变量起始值：</td>

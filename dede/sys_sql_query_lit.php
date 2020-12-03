@@ -1,11 +1,8 @@
 <?php 
-header("Content-Type: text/html; charset=utf-8");
-header("Pragma:no-cache"); 
-header("Cache-Control:no-cache"); 
-header("Expires:0"); 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 if(empty($dopost)) $dopost = "";
+AjaxHead();
 $dsql = new DedeSql(false);
 echo "<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'>[<u>关闭</u>]</a>\r\n<xmp>";
 if($dopost=="viewinfo") //查看表结构

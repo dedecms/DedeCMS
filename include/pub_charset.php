@@ -1,15 +1,15 @@
-<?php 
+<?php
 /******************************
-//UTF-8 转GB编码
+//UTF-8 - GB
 *******************************/
 function utf82gb($utfstr)
 {
-	if(function_exists('iconv')){ return iconv('utf-8','gbk',$utfstr); }
+	if(function_exists('iconv')){ return iconv('utf-8','gbk//ignore',$utfstr); }
 	global $UC2GBTABLE;
 	$okstr = "";
 	if(trim($utfstr)=="") return $utfstr;
 	if(empty($UC2GBTABLE)){
-		$filename = dirname(__FILE__)."/data/gb2312-utf8.table";
+		$filename = dirname(__FILE__)."/data/gb-utf8.table";
 		$fp = fopen($filename,"r");
 		while($l = fgets($fp,15))
 		{	$UC2GBTABLE[hexdec(substr($l, 5, 4))] = hexdec(substr($l, 0, 4));}
@@ -21,7 +21,7 @@ function utf82gb($utfstr)
 	{
 		$c = $utfstr[$i];
 		$cb = decbin(ord($utfstr[$i]));
-		if(strlen($cb)==8){ 
+		if(strlen($cb)==8){
 			$csize = strpos(decbin(ord($cb)),"0");
 			for($j=0;$j < $csize;$j++){
 				$i++; $c .= $utfstr[$i];
@@ -40,14 +40,14 @@ function utf82gb($utfstr)
 	return $okstr;
 }
 /*******************************
-//GB转UTF-8编码
+//GB 2 UTF-8
 *******************************/
 function gb2utf8($gbstr) {
 	if(function_exists('iconv')){ return iconv('gbk','utf-8',$gbstr); }
 	global $CODETABLE;
 	if(trim($gbstr)=="") return $gbstr;
 	if(empty($CODETABLE)){
-		$filename = dirname(__FILE__)."/data/gb2312-utf8.table";
+		$filename = dirname(__FILE__)."/data/gb-utf8.table";
 		$fp = fopen($filename,"r");
 		while ($l = fgets($fp,15))
 		{ $CODETABLE[hexdec(substr($l, 0, 4))] = substr($l, 5, 4); }
@@ -55,7 +55,7 @@ function gb2utf8($gbstr) {
 	}
 	$ret = "";
 	$utf8 = "";
-	while ($gbstr) {
+	while ($gbstr!='') {
 		if (ord(substr($gbstr, 0, 1)) > 0x80) {
 			$thisW = substr($gbstr, 0, 2);
 			$gbstr = substr($gbstr, 2, strlen($gbstr));
@@ -74,7 +74,7 @@ function gb2utf8($gbstr) {
 	}
 	return $ret;
 }
-//Unicode转utf8
+//Unicode - utf8
 function u2utf8($c) {
 	//for ($i = 0;$i < count($c);$i++)
 	$str = '';
@@ -95,7 +95,7 @@ function u2utf8($c) {
 	}
 	return $str;
 }
-//utf8转Unicode
+//utf8 - Unicode
 function utf82u($c)
 {
   switch(strlen($c)) {
@@ -119,7 +119,7 @@ function utf82u($c)
   }
 }
 /**********************************
-//Big5码转换成GB码
+//Big5-GB
 **********************************/
 function big52gb($Text) {
 	if(function_exists('iconv')){ return iconv('big5','gbk',$Text); }
@@ -136,7 +136,7 @@ function big52gb($Text) {
 		if($h>=0x80) {
 			$l = ord($Text[$i+1]);
 			if($h==161 && $l==64) {
-					$gbstr = "　";
+					$gbstr = "~{!!~}";
 			}else{
 					$p = ($h-160)*510+($l-1)*2;
 					$gbstr = $BIG5_DATA[$p].$BIG5_DATA[$p+1];
@@ -149,7 +149,7 @@ function big52gb($Text) {
 	return $Text;
 }
 /********************************
-//GB码转换成Big5码
+//GB-Big5
 *********************************/
 function gb2big5($Text) {
 	if(function_exists('iconv')){ return iconv('gbk','big5',$Text); }
@@ -166,7 +166,7 @@ function gb2big5($Text) {
 		if($h>=0x80) {
 			$l = ord($Text[$i+1]);
 			if($h==161 && $l==64) {
-			$big = "　";
+			$big = "~{!!~}";
 			}else{
 				$p = ($h-160)*510+($l-1)*2;
 				$big = $GB_DATA[$p].$GB_DATA[$p+1];
@@ -180,19 +180,17 @@ function gb2big5($Text) {
 }
 
 /********************************
-//unicode url编码转gbk编码函数
+//unicode url-gbk
 //Dic and Code by it prato
 *********************************/
 function UnicodeUrl2Gbk($str)
 {
-   //载入对照词典
    if(!isset($GLOBALS['GbkUniDic']))
    {
      $fp = fopen(dirname(__FILE__).'/data/gbk_unicode.dic','rb');
      while(!feof($fp)) $GLOBALS['GbkUniDic'][bin2hex(fread($fp,2))] = fread($fp,2);
      fclose($fp);
   }
-  //处理字符串
   $str = str_replace('$#$','+',$str);
   $glen = strlen($str);
   $okstr = "";

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>	
 <link href="css_body.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
@@ -76,18 +76,17 @@ foreach($sectors as $sector)
 {
 	if($sector['reid'] == 0)
 	{
-		echo "<tr  bgcolor='#f8f8f7'><td>$sector[id]</td><td><input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
+		echo "<tr  bgcolor='#f8f8f7'><td>$sector[id]</td><td><input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>\n";
 	}else
 	{
-		echo "<tr  bgcolor='#FFFFFF'><td>$sector[id]</td><td>|--<input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
-
+		echo "<tr  bgcolor='#FFFFFF'><td>$sector[id]</td><td>|--<input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"sectors.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"sectors.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>\n";
 	}
 }
 ?>
         </table></td>
     </tr>
       <tr>
-        <td height="35" align="center" bgcolor="#FFFFFF"><input name="submit3" type="submit" value="提交" class="inputbut"/></td>
+        <td height="35" align="center" bgcolor="#FFFFFF"><input name="submit3" type="submit" value="全部更新" class="inputbut"/></td>
     </tr>
     </table>
 </form>

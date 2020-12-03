@@ -12,7 +12,7 @@ if($vartype=='bool' && ($varvalue!='Y' && $varvalue!='N')){
 	ShowMsg("布尔变量值必须为'Y'或'N'!","-1");
 	exit();
 }
-
+$varvalue = htmlspecialchars($varvalue);
 $dsql = new DedeSql(false);
 
 $row = $dsql->GetOne("Select * From #@__sysconfig where varname like '$varname' ");

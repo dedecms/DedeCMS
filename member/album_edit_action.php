@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -13,6 +13,7 @@ require_once(dirname(__FILE__)."/archives_editcheck.php");
 CheckUserSpace($cfg_ml->M_ID);
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
@@ -89,7 +90,7 @@ $pagestyle = 2;
 
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='' row='0' col='0' value='$pagestyle'/}\r\n";
 for($i=1;$i<=120;$i++){
-	if(isset(${'imgurl'.$i})|| 
+	if(isset(${'imgurl'.$i})||
 	(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name']))){
 		$iinfo = str_replace("'","`",stripslashes(${'imgmsg'.$i}));
 		//非上传图片
@@ -140,7 +141,7 @@ CloseFtp();
 
 //更新附加表
 //----------------------------------
-$addQuery = "Update `{$addtable}` set 
+$addQuery = "Update `{$addtable}` set
 typeid = '$typeid',
 maxwidth = '$maxwidth',
 imgurls = '$imgurls'{$inadd_f}

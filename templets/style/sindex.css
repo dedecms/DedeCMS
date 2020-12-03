@@ -484,8 +484,8 @@
 }
 .gplist dl dd ul li{
 	width:200px;
-	height:33px;
-	line-height:33px;
+	height:25px;
+	line-height:25px;
 	overflow:hidden;
 }
 .gplist dl dd ul li span.gpclass{

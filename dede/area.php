@@ -10,7 +10,6 @@ if(empty($action)){
 	$db->Execute();
 	while($row = $db->GetArray())
 	{
-		//print_r($row);
 		if($row['reid'] == 0)
 		{
 			$topsectors[] = $row;
@@ -32,8 +31,18 @@ if(empty($action)){
 		}
 	}
 	include(dirname(__FILE__)."/templets/area.htm");
+/*
+function add()
+*/
 }elseif($action == 'add')
 {
+	$name = trim($name);
+	if($name == '' ) {
+		ShowMsg('地区名称不能为空，将返回地区管理页面','area.php');
+		exit;
+	}
+	$reid = intval($reid);
+	$reid = max(0, $reid);
 	$sql = "insert into #@__area (name, reid) values ('$name', $reid);";
 	$db->SetQuery($sql);
 	if($db->ExecuteNoneQuery())
@@ -43,7 +52,9 @@ if(empty($action)){
 	{
 		ShowMsg('更新地区失败，将返回地区管理页面','area.php');
 	}
-
+/*
+function edit()
+*/
 }elseif($action == 'edit')
 {
 	if(empty($step)){
@@ -66,6 +77,15 @@ if(empty($action)){
 		include(dirname(__FILE__)."/templets/area.htm");
 
 	}elseif($step == 2){
+		$name = trim($name);
+		if($name == '' ){
+			ShowMsg('地区名称不能为空，将返回地区管理页面','area.php');
+			exit;
+		}
+		$reid = intval($reid);
+		$disorder = intval($disorder);
+		$reid = max(0, $reid);
+		$disorder = max(0, $disorder);
 		$sql = "update #@__area set name='$name', reid=$reid, disorder=$disorder where id=$id";
 		$db->SetQuery($sql);
 		if($db->ExecuteNoneQuery())
@@ -76,13 +96,20 @@ if(empty($action)){
 			ShowMsg('编辑地区成功，将返回地区管理页面','area.php');
 		}
 	}
-
+/*
+function update()
+*/
 }elseif($action == 'update')
 {
 	//print_r($names);exit;
 	$errinfo = '';
 	foreach($disorders as $key => $disorder)
 	{
+		$names[$key] = trim($names[$key]);
+		if($names[$key] == '' ){
+			$errinfo .= "id为 $key 的地区名称为空，未更新该条记录<br>";
+			continue;
+		}
 		$sql = "update #@__area set disorder=$disorder, name='$names[$key]' where id=$key";
 		$db->SetQuery($sql);
 		if(!$db->ExecuteNoneQuery())
@@ -97,7 +124,9 @@ if(empty($action)){
 	{
 		ShowMsg('更新地区成功，将返回地区管理页面','area.php');
 	}
-
+/*
+function delete()
+*/
 }elseif($action == 'delete')
 {
 	if(empty($step))
@@ -123,10 +152,6 @@ if(empty($action)){
 		}
 	}
 
-}else{
-
 }
-
-
 ClearAllLink();
 ?>

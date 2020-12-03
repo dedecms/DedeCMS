@@ -23,7 +23,7 @@ if(empty($arcID) && empty($urlindex)) exit();
 //Javascript内容屏蔽函数
 function cnw_left_safe($str,$len)
 {
-  $str = cnw_left($str,$len);
+  $str = cnw_mid($str,0,$len);
   $str = ereg_replace("['\"\r\n]","",$str);
   return $str;
 }

@@ -32,6 +32,7 @@ class Archives
 	var $AddTable;
 	var $PreNext;
 	var $TempletsFile;
+	var $fullurl;
 	//-------------------------------
 	//php5构造函数
 	//-------------------------------
@@ -46,9 +47,10 @@ class Archives
  		$this->PreNext = array();
  		$this->TempletsFile = '';
  		$this->MainTable = '';
+ 		$this->fullurl = '';
  		
     //获取文档表信息
-    $fullsearchs = $this->dsql->GetOne("select c.ID as channelid,c.maintable,c.addtable,a.keywords from `#@__full_search` a left join  #@__channeltype c on  c.ID = a.channelid where a.aid='$aid'",MYSQL_ASSOC);
+    $fullsearchs = $this->dsql->GetOne("select c.ID as channelid,c.maintable,c.addtable,a.keywords,a.url from `#@__full_search` a left join  #@__channeltype c on  c.ID = a.channelid where a.aid='$aid'",MYSQL_ASSOC);
     if($fullsearchs['channelid']==-1)
     {
        $this->MainTable = '#@__archivesspec';
@@ -60,8 +62,9 @@ class Archives
  		   $this->AddTable = $fullsearchs['addtable'];
  		}
 
- 		$query = "Select arc.*,tp.reID,tp.typedir,tp.typename,am.uname from `{$this->MainTable}` arc
+ 		$query = "Select arc.*,sm.name as smalltypename,tp.reID,tp.typedir,tp.typename,am.uname from `{$this->MainTable}` arc
  		          left join #@__arctype tp on tp.ID=arc.typeid
+ 		          left join #@__smalltypes sm on sm.id=arc.smalltypeid
  		          left join #@__admin am on arc.adminID = am.ID 
  		          where arc.ID='$aid'";
  		$row = $this->dsql->GetOne($query,MYSQL_ASSOC);
@@ -74,6 +77,7 @@ class Archives
  		//把主表记录转换为Field
  		foreach($row as $k=>$v) $this->Fields[$k] = $v;
  		$this->Fields['keywords'] = $fullsearchs['keywords'];
+ 		$this->fullurl = $fullsearchs['url'];
  		unset($row);
  		unset($fullsearchs);
  		if($this->Fields['redirecturl']!="") return;
@@ -207,7 +211,7 @@ class Archives
 		  fclose($fp);
 		  return $this->GetTrueUrl($filename);
   	}
-  	
+
   	$filenames  = explode("/",$filename);
   	$this->NameFirst = eregi_replace("\.".$this->ShortName."$","",$filenames[count($filenames)-1]);
   	if($this->NameFirst=="") $this->NameFirst = $this->arcID;
@@ -216,7 +220,6 @@ class Archives
   	if(!eregi('http://',$filenameFull)) $filenameFull = $GLOBALS['cfg_basehost'].$filenameFull;
   	$this->Fields['arcurl'] = $filenameFull;
   	$this->Fields['fullname'] = $this->Fields['arcurl'];
-  	
   	//载入模板
   	$this->LoadTemplet();
   	
@@ -237,10 +240,15 @@ class Archives
  	//----------------------------
  	function GetTrueUrl($nurl)
  	{
+ 		
  		if($GLOBALS['cfg_multi_site']=='Y' && !eregi('php\?',$nurl)){
  			if($this->TypeLink->TypeInfos['siteurl']=="") $nsite = $GLOBALS["cfg_mainsite"];
  			else $nsite = $this->TypeLink->TypeInfos['siteurl'];
  			$nurl = ereg_replace("/$","",$nsite).$nurl;
+ 		}
+ 		if($nurl != $this->fullurl){
+ 			$this->dsql->SetQuery("update #@__full_search set url='$nurl' where aid='$this->ArcID'");
+ 			$this->dsql->ExecuteNoneQuery();
  		}
  		return $nurl;
  	}
@@ -291,6 +299,7 @@ class Archives
  	//----------------------------
  	function display()
  	{
+
  		//读取模型信息错误
  		if($this->IsError) return '';
  		$this->LoadTemplet();
@@ -464,7 +473,7 @@ class Archives
  		  $aid = $this->ArcID;
  		  $next = " arc.ID>'$aid' And arc.arcrank>-1 And typeid='{$this->Fields['typeid']}' order by arc.ID asc ";
  		  $pre = " arc.ID<'$aid' And arc.arcrank>-1 And typeid='{$this->Fields['typeid']}' order by arc.ID desc ";
- 		  $query = "Select arc.ID,arc.title,
+ 		  $query = "Select arc.ID,arc.title,arc.shorttitle,
  		arc.typeid,arc.ismake,arc.senddate,arc.arcrank,arc.money,
 		t.typedir,t.typename,t.namerule,t.namerule2,t.ispart,
 		t.moresite,t.siteurl
@@ -638,19 +647,31 @@ class Archives
   	$maxkey = 5;
   	$kws = explode(" ",trim($kw));
   	$i=0;
+$words = array();
+$hrefs = array();
   	foreach($kws as $k){
   		$k = trim($k);
   		if($k!=""){
   			if($i > $maxkey) break;
   			$myrow = $this->dsql->GetOne("select * from #@__keywords where keyword='".addslashes($k)."' And rpurl<>'' ");
   			if(is_array($myrow)){
-  				 $ka = "<a href='{$myrow['rpurl']}'><u>$k</u></a>";
-  			   $body = str_replace($k,$ka,$body);
+  				 //$ka = "<a href='{$myrow['rpurl']}'>$k</a>";
+  			   //$body = str_replace($k,$ka,$body);
+  			   $words[] = $k;
+  			   $hrefs[] = $myrow['rpurl'];
   		  }
   			$i++;
   		}
   	}
+  	
+  	$body = highlight($body, $words, $hrefs);
+
   	return $body;
   }
+  
+  
+  
+  
+  
 }//End Archives
 ?>

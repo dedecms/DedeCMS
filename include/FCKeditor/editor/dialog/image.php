@@ -42,7 +42,7 @@ if($dopost=="upload")
 		$sname = '.bmp';
 	}
 
-	$nowtime = mytime();
+	$nowtime = time();
 	$savepath = $cfg_user_dir."/".$cfg_ml->M_ID."/".strftime("%y%m",$nowtime);
   CreateDir($savepath);
   CloseFtp();

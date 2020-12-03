@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/../config.php");
 CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
 require_once(dirname(__FILE__)."/../../include/inc_photograph.php");
@@ -55,6 +55,19 @@ $adminID = $cuserLogin->getUserID();
 //------------------------------
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='$ddmaxwidth' row='$row' col='$col' value='$pagestyle'/}\r\n";
 
+if($formhtml==1)
+{
+
+	$imagebody = stripslashes($imagebody);
+	$imgurls .= GetCurContentAlbum($imagebody,$copysource,$litpicname);
+
+	if($ddisfirst==1 && $litpic=="" && !empty($litpicname))
+	{
+	  $litpic = $litpicname;
+	  $hasone = true;
+	}
+}
+
 for($i=1;$i<=120;$i++)
 {
 	if(isset(${'imgurl'.$i})||(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name'])))
@@ -105,7 +118,7 @@ for($i=1;$i<=120;$i++)
 			 if(!in_array($_FILES['imgfile'.$i]['type'],$sparr)){
 			 	  continue;
 			 }
-			 $uptime = mytime();
+			 $uptime = time();
 			 $imgPath = $cfg_image_dir."/".strftime("%y%m%d",$uptime);
 	  	 MkdirAll($cfg_basedir.$imgPath,$GLOBALS['cfg_dir_purview']);
 			 CloseFtp();
@@ -113,14 +126,14 @@ for($i=1;$i<=120;$i++)
 			 $fs = explode(".",$_FILES['imgfile'.$i]['name']);
 	     $filename = $filename.".".$fs[count($fs)-1];
 			 @move_uploaded_file($_FILES['imgfile'.$i]['tmp_name'],$cfg_basedir.$filename);
-			 
+
 			 //缩图
 			 $litpicname = GetImageMapDD($filename,$ddmaxwidth);
-			 
+
 			 //水印
 			 $imgfile = $cfg_basedir.$filename;
 			 @WaterImg($imgfile,'up');
-			 
+
 			 if(is_file($imgfile))
 			 {
 				    $iurl = $filename;
@@ -129,14 +142,85 @@ for($i=1;$i<=120;$i++)
 			      $imgurls .= "{dede:img ddimg='$litpicname' text='$iinfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
 			      //把新上传的图片信息保存到媒体文档管理档案中
 			      $inquery = "
-               INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
-                VALUES ('$title".$i."','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".mytime()."','$adminID','0');
+               INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid)
+                VALUES ('$title".$i."','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','$adminID','0');
              ";
             $dsql->ExecuteNoneQuery($inquery);
 			 }
 	  }
 	}//含有图片的条件
 }//循环结束
+
+if($formhtml==1)
+{
+	$imagebody = stripslashes($imagebody);
+	$imgurls .= GetCurContentAlbum($imagebody,$copysource,$litpicname);
+	if($ddisfirst==1 && $litpic=="" && !empty($litpicname))
+	{
+	  $litpic = $litpicname;
+	  $hasone = true;
+	}
+}
+
+if($formzip==1)
+{
+
+	include_once(DEDEADMIN."/../include/zip.lib.php");
+	include_once(DEDEADMIN."/file_class.php");
+	$zipfile = $cfg_basedir.str_replace($cfg_mainsite,'',$zipfile);
+	$tmpzipdir = DEDEADMIN.'/module/ziptmp/'.cn_substr(md5(ExecTime()),16);
+	$ntime = time();
+	if(file_exists($zipfile))
+	{
+
+		 @mkdir($tmpzipdir,$GLOBALS['cfg_dir_purview']);
+		 @chmod($tmpzipdir,$GLOBALS['cfg_dir_purview']);
+		 $z = new zip();
+		 $z->ExtractAll($zipfile,$tmpzipdir);
+		 $fm = new FileManagement();
+		 $imgs = array();
+		 $fm->GetMatchFiles($tmpzipdir,"jpg|png|gif",$imgs);
+		 $i = 0;
+
+		 foreach($imgs as $imgold)
+		 {
+			   $i++;
+			   $savepath = $cfg_image_dir."/".strftime("%Y-%m",$ntime);
+         CreateDir($savepath);
+         $iurl = $savepath."/".strftime("%d",$ntime).dd2char(strftime("%H%M%S",$ntime).'-'.$adminID."-{$i}".mt_rand(1000,9999));
+         $iurl = $iurl.substr($imgold,-4,4);
+			   $imgfile = $cfg_basedir.$iurl;
+			   copy($imgold,$imgfile);
+			   unlink($imgold);
+			   if(is_file($imgfile))
+			   {
+			      $litpicname = GetImageMapDD($iurl,$ddmaxwidth);
+				    $info = '';
+				    $imginfos = GetImageSize($imgfile,$info);
+				    $imgurls .= "{dede:img ddimg='$litpicname' text='' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}\r\n";
+			      //把图片信息保存到媒体文档管理档案中
+			      $inquery = "
+               INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid)
+                VALUES ('{$title}','{$iurl}','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".$ntime."','$adminID','0');
+             ";
+            $dsql->ExecuteNoneQuery($inquery);
+            if(!$hasone && $ddisfirst==1
+            && $litpic=="" && !empty($litpicname))
+            {
+	  	         if( file_exists($cfg_basedir.$litpicname) )
+	  	         {
+	  		          $litpic = $litpicname;
+	  		          $hasone = true;
+	  	         }
+	          }
+			   }
+		 }
+		 if($delzip==1) $fm->RmDirFiles($tmpzipdir);
+	}
+}
+
+
+
 
 $imgurls = addslashes($imgurls);
 
@@ -217,17 +301,17 @@ if(!$dsql->ExecuteNoneQuery($addQuery)){
 
 //生成HTML
 //---------------------------------
-$artUrl = MakeArt($ID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$ID";
+$artUrl = getfilenameonly($ID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //更新全站搜索索引
-$datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$edadminid,'mid'=>$memberid,'att'=>$arcatt,
+$datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
-               'addinfos'=>$description,'uptime'=>mytime(),'arcrank'=>$arcrank);
+               'addinfos'=>$description,'uptime'=>time(),'arcrank'=>$arcrank);
 UpSearchIndex($dsql,$datas);
 unset($datas);
 //更新Tag索引
 UpTags($dsql,$tag,$ID,0,$typeid,$arcrank);
+MakeArt($ID,true);
 
 //---------------------------------
 //返回成功信息

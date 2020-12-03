@@ -1069,13 +1069,17 @@ CREATE TABLE `#@__tag_list` (
 
 DROP TABLE IF EXISTS `#@__task`;
 CREATE TABLE `#@__task` (
-  `id` int(11) NOT NULL auto_increment,
-  `taskname` varchar(50) NOT NULL,
-  `starttime` int(11) NOT NULL default '0',
-  `cycle` smallint(6) NOT NULL default '0',
-  `sta` smallint(11) default '0',
-  `jobs` text,
-  PRIMARY KEY  (`id`)
+  `id` smallint(6) NOT NULL default '1',
+  `usermtools` smallint(6) NOT NULL default '1',
+  `rmpwd` varchar(32) NOT NULL,
+  `tasks` varchar(100) NOT NULL,
+  `typeid` int(11) NOT NULL default '0',
+  `startid` int(11) NOT NULL default '0',
+  `endid` int(11) NOT NULL default '0',
+  `nodes` varchar(250) NOT NULL,
+  `dotime` varchar(10) default '00:00:00',
+  `degree` varchar(10) NOT NULL,
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=#~lang~#;
 
 DROP TABLE IF EXISTS `#@__uploads`;

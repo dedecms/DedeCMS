@@ -46,7 +46,14 @@ function GetFileUrl(
           $namerule="",$artdir="",$money=0,$aburl=false,$siteurl="")
 {
 	if($rank!=0||$ismake==-1||$typeid==0||$money>0) //动态文章
-	{ return $GLOBALS['cfg_plus_dir']."/view.php?aid=$aid";}
+	{
+		if($GLOBALS['cfg_multi_site']=='Y')
+		{
+			$siteurl = $GLOBALS['cfg_basehost'];
+		}
+
+		return $siteurl.$GLOBALS['cfg_plus_dir']."/view.php?aid=$aid";
+	}
 	else
 	{
 		$articleRule = $namerule;
@@ -110,26 +117,43 @@ function GetFileNewName(
 //-------------------------
 function GetTypeUrl($typeid,$typedir,$isdefault,$defaultname,$ispart,$namerule2,$siteurl="")
 {
+
+	//跳转网址
+	if($ispart>2){
+		return $typedir;
+	}
+	
+	if($defaultname == 'index.html'){
+		$defaultname = '';
+	}
 	if($isdefault==-1)
-	{ $reurl = $GLOBALS["cfg_plus_dir"]."/list.php?tid=".$typeid; }
-	else if($ispart>0)
-	{ $reurl = "$typedir/".$defaultname; }
-	else
+	{
+		$reurl = $GLOBALS["cfg_plus_dir"]."/list.php?tid=".$typeid; 
+	}else if($ispart>0)
+	{
+		$reurl = "$typedir/".$defaultname; 
+	}else
 	{
 		if($isdefault==0)
 		{
 			$reurl = str_replace("{page}","1",$namerule2);
 			$reurl = str_replace("{tid}",$typeid,$reurl);
 			$reurl = str_replace("{typedir}",$typedir,$reurl);
+		}else
+		{
+			$reurl = "$typedir/".$defaultname;
 		}
-		else $reurl = "$typedir/".$defaultname;
 	}
+	
 	$reurl = ereg_replace("/{1,}","/",$reurl);
+	
 	if($GLOBALS['cfg_multi_site']=='Y'){
-		if($siteurl=="") $siteurl = $GLOBALS["cfg_basehost"];
+		if($siteurl=="" || $isdefault==-1) $siteurl = $GLOBALS['cfg_basehost'];
 		if($siteurl!="abc") $reurl = $siteurl.$reurl;
 	}
-  $reurl = eregi_replace("{cmspath}",$GLOBALS['cfg_cmspath'],$reurl);
+
+	$reurl = eregi_replace("{cmspath}",$GLOBALS['cfg_cmspath'],$reurl);
+	
 	return $reurl;
 }
 
@@ -230,6 +254,7 @@ function TypeGetSunID($ID,&$dsql,$tb="#@__archives",$channel=0,$onlydd=false)
 function MfTypedir($typedir)
 {
   global $cfg_cmspath;
+  if(eregi("^http://",$typedir)) return $typedir;
   $typedir = eregi_replace("{cmspath}",$cfg_cmspath,$typedir);
   $typedir = ereg_replace("/{1,}","/",$typedir);
   return $typedir;
@@ -245,7 +270,7 @@ function MfTemplet($tmpdir)
 //获取网站搜索的热门关键字
 function GetHotKeywords(&$dsql,$num=8,$nday=365,$klen=16,$orderby='count'){
 	global $cfg_phpurl,$cfg_cmspath;
-	$nowtime = mytime();
+	$nowtime = time();
 	$num = @intval($num);
 	$nday = @intval($nday);
 	$klen = @intval($klen);

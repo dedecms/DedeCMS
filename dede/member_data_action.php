@@ -8,10 +8,7 @@ if(empty($action)) $action = '';
 function __gettables()
 --------------------------------*/
 if($action=='gettables'){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	$qbutton = "<input type='button' name='seldbtable' value='选择数据表' class='inputbut' onclick='SelectedTable()'>\r\n";
 	if($dbptype==2 && $dbname==""){
 		echo "<font color='red'>你没指定数据库名称！</font><br>";
@@ -62,10 +59,7 @@ if($action=='gettables'){
 function __getfields()
 --------------------------------*/
 if($action=='getfields'){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	if($dbptype==1){
 		$dsql = new DedeSql(false);
 	}

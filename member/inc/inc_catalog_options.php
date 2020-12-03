@@ -91,10 +91,10 @@ function PrintAutoFieldsAdd(&$fieldset,$loadtype='autofield')
    if(is_array($dtp->CTags))
    {
       foreach($dtp->CTags as $tid=>$ctag)
-			{
+	  {
         	if($ctag->GetAtt('notsend') !='1' && ($loadtype!='autofield' || ($loadtype=='autofield' && $ctag->GetAtt('autofield')==1)) )
         	{
-        			$dede_addonfields .= ( $dede_addonfields=='' ? $dede_addonfields = $ctag->GetName().",".$ctag->GetAtt('type') : ";".$ctag->GetName().",".$ctag->GetAtt('type') );
+        			$dede_addonfields .= ( $dede_addonfields=='' ? $ctag->GetName().",".$ctag->GetAtt('type') : ";".$ctag->GetName().",".$ctag->GetAtt('type') );
               echo  GetFormItemA($ctag);
         	}
       }

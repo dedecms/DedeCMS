@@ -25,7 +25,7 @@ if($job=="upload")
 		ShowMsg("不允许文本类型附件!","-1");
 		exit();
 	}
-	$nowtme = mytime();
+	$nowtme = time();
 	$sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png","image/x-png","image/wbmp");
   $imgfile_type = strtolower(trim($imgfile_type));
   if(!in_array($imgfile_type,$sparr)){
@@ -96,7 +96,7 @@ if($job=="upload")
   $dsql->Close();
   
 	@unlink($imgfile);
-	ShowMsg("成功上传一幅图片！","select_images.php?imgstick=$imgstick&comeback=".urlencode($filename_name)."&v=$v&f=$f&activepath=".urlencode($activepath)."/$mdir&d=".mytime());
+	ShowMsg("成功上传一幅图片！","select_images.php?imgstick=$imgstick&comeback=".urlencode($filename_name)."&v=$v&f=$f&activepath=".urlencode($activepath)."/$mdir&d=".time());
 	exit();
 }
 ?>

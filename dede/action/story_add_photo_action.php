@@ -38,7 +38,7 @@ $nrow = $dsql->GetOne("Select * From #@__story_catalog where id='$catid' ");
 $bcatid = $nrow['pid'];
 $booktype = $nrow['booktype'];
 
-$addtime = mytime();
+$addtime = time();
 
 
 //本章最后一个漫画的排列顺次序
@@ -78,7 +78,7 @@ $arcID = $dsql->GetLastID();
 
 //更新图书的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' ");
-$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='".mytime()."' where id='$bookid' ");
+$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='".time()."' where id='$bookid' ");
 //更新章节的内容数
 $row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' And chapterid='$chapterid' ");
 $dsql->ExecuteNoneQuery("Update #@__story_chapter set postnum='{$row['dd']}' where id='$chapterid' ");

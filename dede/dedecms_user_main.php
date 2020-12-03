@@ -12,7 +12,7 @@ if(empty($aid)) $aid = '0';
 $aid = ereg_replace("[^0-9]","",$aid);
 //重载列表
 if($dopost=='getlist'){
-	PrintAjaxHead();
+	AjaxHead();
 	GetUserList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -21,7 +21,7 @@ if($dopost=='getlist'){
 else if($dopost=='update')
 {
 	$dsql->ExecuteNoneQuery("Update dedecms_users set url='$url',version='$version',rank='$rank',isok='$isok',ismember='$ismember' where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetUserList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -30,7 +30,7 @@ else if($dopost=='update')
 else if($dopost=='del')
 {
 	$dsql->ExecuteNoneQuery("Delete From dedecms_users where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetUserList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -84,12 +84,6 @@ function GetUserList($dsql,$pageno,$pagesize,$orderby='aid'){
 	 echo "</table>\r\n";
 }
 
-function PrintAjaxHead(){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
-}
 
 ClearAllLink();
 ?>

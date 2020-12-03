@@ -19,7 +19,7 @@ $channelid = -1;
 $iscommend = $iscommend + $isbold;
 
 $pubdate = GetMkTime($pubdate);
-$senddate = mytime();
+$senddate = time();
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
@@ -81,8 +81,8 @@ for($i=1;$i<=$cfg_specnote;$i++)
 		
 		$noteid = trim(${'noteid'.$i});
 		$isauto = trim(${'isauto'.$i});
-		$keywords = str_replace("'","",trim(${'keywords'.$i}));
-		$typeid = trim(${'typeid'.$i});
+		$keywordsn = str_replace("'","",trim(${'keywords'.$i}));
+		$typeidn = trim(${'typeid'.$i});
 		if(!empty(${'rownum'.$i})) $rownum = trim(${'rownum'.$i});
 		else $rownum = 0;
 
@@ -103,7 +103,7 @@ for($i=1;$i<=$cfg_specnote;$i++)
 		$notelist .= "{dede:specnote imgheight=\\'$imgheight\\' imgwidth=\\'$imgwidth\\' 
 infolen=\\'$infolen\\' titlelen=\\'$titlelen\\' col=\\'$col\\' idlist=\\'$okids\\' 
 name=\\'$notename\\' noteid=\\'$noteid\\' isauto=\'$isauto\' rownum=\\'$rownum\\' 
-keywords=\\'$keywords\\' typeid=\\'$typeid\\'}
+keywords=\\'$keywordsn\\' typeid=\\'$typeidn\\'}
 	$listtmp
 {/dede:specnote}\r\n";
 	}
@@ -151,11 +151,7 @@ if(!$dsql->ExecuteNoneQuery($inQuery)){
 	ShowMsg("把数据保存到数据库附加表 `{$cts['addtable']}` 时出错，请把相关信息提交给DedeCms官方。".$gerr,"javascript:;");
 	exit();
 }
-
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, 0);
 
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
@@ -165,7 +161,9 @@ WriteSearchIndex($dsql,$datas);
 unset($datas);
 //写入Tag索引
 InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
-
+//生成HTML
+//---------------------------------
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

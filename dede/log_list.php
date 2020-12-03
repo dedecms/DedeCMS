@@ -15,7 +15,7 @@ if(empty($dtime)) $dtime = 0;
 if($adminid>0) $where .= " And #@__log.adminid='$adminid' ";
 if($cip!="") $where .= " And #@__log.cip like '%$cip%' ";
 if($dtime>0){
-	$nowtime = mytime();
+	$nowtime = time();
 	$starttime = $nowtime - ($dtime*24*3600);
 	$where .= " And #@__log.dtime>'$starttime' ";
 }

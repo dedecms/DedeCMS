@@ -58,7 +58,7 @@ class TypeTreeMember
 			$ID = $row->ID;
 			$dcid = $row->channeltype;
 			$dissend = $row->issend;
-			if($ispart==2||TestHasChannel($ID,$channelid,$issend)==0) continue;
+			if($ispart>=2||TestHasChannel($ID,$channelid,$issend)==0) continue;
 			if($ispart==0 || ($ispart==1 && $opall))
 			{//普通列表
 				if(($channelid==0 || $channelid==$dcid) 
@@ -105,7 +105,7 @@ class TypeTreeMember
 			  $dcid = $row->channeltype;
         $dissend = $row->issend;
 
-			  if($ispart==2||TestHasChannel($ID,$channelid,$issend)==0) continue;
+			  if($ispart>=2||TestHasChannel($ID,$channelid,$issend)==0) continue;
 
 			  //普通列表
 			  if(($ispart==0 || ($ispart==1 && $opall)) 

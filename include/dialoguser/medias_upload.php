@@ -39,7 +39,7 @@ if($sname==''){
 	exit();
 }
 	
-$nowtme = mytime();
+$nowtme = time();
 	
 	
 $filename_name = dd2char($cfg_ml->M_ID."0".strftime("%y%m%d%H%M%S",$nowtme)."0".mt_rand(1000,9999));

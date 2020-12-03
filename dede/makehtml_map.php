@@ -24,7 +24,8 @@ $dtp = new DedeTagParse();
 $dtp->LoadTemplet($tmpfile);
 $dtp->SaveTo($cfg_basedir.$murl);
 $dtp->Clear();
-echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
 echo "<a href='$murl' target='_blank'>成功更新文件: $murl 浏览...</a>";
 ClearAllLink();
 ?>

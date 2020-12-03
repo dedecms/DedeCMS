@@ -32,7 +32,11 @@ if(!TestPurview('a_New')) {
 	CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的权限！");
 	if($typeid2!=0) CheckCatalog($typeid2,"对不起，你没有操作栏目 {$typeid2} 的权限！");
 }
-
+$title = trim($title);
+if(empty($title)){
+        ShowMsg("请输入标题","-1");
+        exit();
+}
 $arcrank = GetCoRank($arcrank,$typeid);
 
 //对保存的内容进行处理
@@ -40,7 +44,7 @@ $arcrank = GetCoRank($arcrank,$typeid);
 $iscommend = $iscommend + $isbold;
 
 $pubdate = GetMkTime($pubdate);
-$senddate = mytime();
+$senddate = time();
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
@@ -68,7 +72,7 @@ $hasone = false;
 if($formhtml==1)
 {
 	$imagebody = stripslashes($imagebody);
-	$imgurls = GetCurContentAlbum($imagebody,$copysource,$litpicname);
+	$imgurls .= GetCurContentAlbum($imagebody,$copysource,$litpicname);
 	if($ddisfirst==1 && $litpic=="" && !empty($litpicname))
 	{
 	  $litpic = $litpicname;
@@ -83,7 +87,7 @@ else if($formzip==1)
 	include_once(DEDEADMIN."/file_class.php");
 	$zipfile = $cfg_basedir.str_replace($cfg_mainsite,'',$zipfile);
 	$tmpzipdir = DEDEADMIN.'/module/ziptmp/'.cn_substr(md5(ExecTime()),16);
-	$ntime = mytime();
+	$ntime = time();
 	if(file_exists($zipfile))
 	{
 		 @mkdir($tmpzipdir,$GLOBALS['cfg_dir_purview']);
@@ -94,6 +98,7 @@ else if($formzip==1)
 		 $imgs = array();
 		 $fm->GetMatchFiles($tmpzipdir,"jpg|png|gif",$imgs);
 		 $i = 0;
+
 		 foreach($imgs as $imgold)
 		 {
 			   $i++;
@@ -177,7 +182,7 @@ for($i=1;$i<=120;$i++)
 			 if(!in_array($_FILES['imgfile'.$i]['type'],$sparr)){
 			 	  continue;
 			 }
-			 $uptime = mytime();
+			 $uptime = time();
 			 $imgPath = $cfg_image_dir."/".strftime("%y%m%d",$uptime);
 	  	 MkdirAll($cfg_basedir.$imgPath,$GLOBALS['cfg_dir_purview']);
 			 CloseFtp();
@@ -201,7 +206,7 @@ for($i=1;$i<=120;$i++)
 			      //把新上传的图片信息保存到媒体文档管理档案中
 			      $inquery = "
                INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,adminid,memberid) 
-                VALUES ('$title".$i."','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".mytime()."','$adminID','0');
+                VALUES ('$title".$i."','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','$adminID','0');
              ";
             $dsql->ExecuteNoneQuery($inquery);
 			 }
@@ -287,10 +292,7 @@ if(!$dsql->ExecuteNoneQuery($query))
 	exit();
 }
 
-//生成HTML
-//---------------------------------
-$artUrl = MakeArt($arcID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$arcID";
+$artUrl = getfilenameonly($arcID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //写入全站搜索索引
 $datas = array('aid'=>$arcID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$adminID,'mid'=>0,'att'=>$arcatt,
@@ -300,7 +302,9 @@ WriteSearchIndex($dsql,$datas);
 unset($datas);
 //写入Tag索引
 InsertTags($dsql,$tag,$arcID,0,$typeid,$arcrank);
-
+//生成HTML
+//---------------------------------
+MakeArt($arcID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

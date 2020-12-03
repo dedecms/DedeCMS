@@ -35,6 +35,7 @@ if($dopost=="save")
    	 	$query = "Insert Into #@__moneycard_type(num,pname,money) Values('{$num_new}','{$pname_new}','{$money_new}');";
 		  $dsql->ExecuteNoneQuery($query);
    }
+   header("Content-Type: text/html; charset={$cfg_ver_lang}");
    echo "<script> alert('成功更新点卡产品分类表！'); </script>";
 }
 

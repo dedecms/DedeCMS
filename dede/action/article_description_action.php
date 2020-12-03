@@ -15,6 +15,8 @@ $field = ereg_replace("[^a-zA-Z_\[\]]","",$field);
 $channel = ereg_replace("[^0-9]","",$channel);
 if($dsize>250) $dsize = 250;
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 $dsql = new DedeSql(false);
 $tjnum = 0;
 

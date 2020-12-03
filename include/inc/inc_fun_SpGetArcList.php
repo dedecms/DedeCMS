@@ -79,7 +79,7 @@ else
 {
 		//时间限制(用于调用最近热门文章、热门评论之类)
 		if($subday>0){
-			 $limitvday = mytime() - ($subday * 24 * 3600);
+			 $limitvday = time() - ($subday * 24 * 3600);
 			 $orwhere .= " And arc.senddate > $limitvday ";
 		}
 		//文档的自定义属性
@@ -168,7 +168,7 @@ else
 	  if(!empty($limitv)) $limitvsql = " limit $limitv ";
 	  else $limitvsql = " limit 0,$line ";
 		//////////////
-		$query = "Select arc.ID,arc.title,arc.iscommend,arc.color,arc.typeid,
+		$query = "Select arc.ID,arc.title,arc.iscommend,arc.color,arc.typeid,arc.channel,
 		    arc.ismake,arc.description,arc.pubdate,arc.senddate,arc.arcrank,arc.click,arc.digg,arc.diggtime,
 		    arc.money,arc.litpic,arc.writer,arc.shorttitle,arc.memberid,arc.postnum,arc.lastpost,
 		    tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
@@ -204,11 +204,15 @@ else
            //处理一些特殊字段
            $row['description'] = cn_substr($row['description'],$infolen);
            $row['id'] =  $row['ID'];
+           
 
-           $row['arcurl'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],
-                            $row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
-                            $row['typedir'],$row['money'],true,$row['siteurl']);
-           $row['typeurl'] = GetTypeUrl($row['typeid'],MfTypedir($row['typedir']),$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],$row['siteurl']);
+			$row['arcurl'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],
+		                $row['title'],$row['ismake'],$row['arcrank'],$row['namerule'],
+		                $row['typedir'],$row['money'],true,$row['siteurl']);
+			$row['typeurl'] = GetTypeUrl($row['typeid'],MfTypedir($row['typedir']),$row['isdefault'],$row['defaultname'],$row['ispart'],$row['namerule2'],$row['siteurl']);
+
+			
+           
 
            if($row['litpic']=="") $row['litpic'] = $PubFields['templeturl']."/img/default.gif";
            $row['picname'] = $row['litpic'];

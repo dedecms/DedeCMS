@@ -34,18 +34,21 @@ if(function_exists("imagecreatefromwbmp") && function_exists("imagewbmp")){
 //--------------------------------
 function ImageResize($srcFile,$toW,$toH,$toFile="") 
 {
+
    global $cfg_photo_type,$cfg_jpeg_query;
    if(empty($cfg_jpeg_query)) $cfg_jpeg_query = 85;
    if($toFile==""){ $toFile = $srcFile; }
    $info = "";
    $srcInfo = GetImageSize($srcFile,$info);
+
    switch ($srcInfo[2])
    {
     case 1:
       if(!$cfg_photo_type['gif']) return false;
       $im = imagecreatefromgif($srcFile);
       break;
-    case 2:
+    case 2:	
+
       if(!$cfg_photo_type['jpeg']) return false;
       $im = imagecreatefromjpeg($srcFile);    
       break;
@@ -73,7 +76,7 @@ function ImageResize($srcFile,$toW,$toH,$toFile="")
   if($srcW>$toW||$srcH>$toH)
   {
      if(function_exists("imagecreatetruecolor")){
-        @$ni = imagecreatetruecolor($ftoW,$ftoH);
+        $ni = imagecreatetruecolor($ftoW,$ftoH);
         if($ni) imagecopyresampled($ni,$im,0,0,0,0,$ftoW,$ftoH,$srcW,$srcH);
         else{
          $ni=imagecreate($ftoW,$ftoH);
@@ -83,8 +86,10 @@ function ImageResize($srcFile,$toW,$toH,$toFile="")
         $ni=imagecreate($ftoW,$ftoH);
         imagecopyresized($ni,$im,0,0,0,0,$ftoW,$ftoH,$srcW,$srcH);
      }
+
      switch ($srcInfo[2])
      {
+     
        case 1:
          imagegif($ni,$toFile);
          break;
@@ -101,6 +106,8 @@ function ImageResize($srcFile,$toW,$toH,$toFile="")
          return false;
      }
      imagedestroy($ni);
+  }else{
+  	copy($srcFile,$toFile);
   }
   imagedestroy($im);
   return true;

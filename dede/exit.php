@@ -1,4 +1,5 @@
-<?php 
+<?php
+$cfg_IsCanView=true;
 require_once(dirname(__FILE__)."/../include/inc_userlogin.php");
 require_once(dirname(__FILE__)."/../include/config_base.php");
 $cuserLogin = new userLogin();

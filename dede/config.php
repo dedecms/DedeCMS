@@ -40,7 +40,7 @@ if($cfg_dede_log=='Y')
   {
      $dsql = new DedeSql(false);
      $inquery = "INSERT INTO `#@__log`(adminid,filename,method,query,cip,dtime)
-             VALUES ('".$cuserLogin->getUserID()."','{$s_scriptNames}','{$s_method}','".addslashes($s_query)."','{$s_userip}','".mytime()."');";
+             VALUES ('".$cuserLogin->getUserID()."','{$s_scriptNames}','{$s_method}','".addslashes($s_query)."','{$s_userip}','".time()."');";
      $dsql->ExecuteNoneQuery($inquery);
   }
 }

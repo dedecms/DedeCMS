@@ -13,6 +13,9 @@ $utime = 0;
 $ctid = $cardtype;
 $startid++;
 $endid = $startid+$mnum;
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 for(;$startid<$endid;$startid++){
 	$cardid = $snprefix.$startid.'-';
 	for($p=0;$p<$pwdgr;$p++){

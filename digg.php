@@ -20,8 +20,8 @@ else if($action=='digg')
 	
 	$dsql = new DedeSql(false);
 	$tbs = GetChannelTable($dsql,$aid,'arc');
-	$dsql->ExecuteNoneQuery("Update `#@__full_search` set digg=digg+1,diggtime=".mytime()." where aid='$aid' ");
-	$dsql->ExecuteNoneQuery("Update `{$tbs['maintable']}` set digg=digg+1,diggtime=".mytime()." where ID='$aid' ");
+	$dsql->ExecuteNoneQuery("Update `#@__full_search` set digg=digg+1,diggtime=".time()." where aid='$aid' ");
+	$dsql->ExecuteNoneQuery("Update `{$tbs['maintable']}` set digg=digg+1,diggtime=".time()." where ID='$aid' ");
 	$row = $dsql->GetOne("Select digg From `{$tbs['maintable']}` where ID='$aid' ");
 	
   echo "<div class='diggNum'>{$row['digg']}</div>\r\n";

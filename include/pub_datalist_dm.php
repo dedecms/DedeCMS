@@ -105,21 +105,21 @@ class DataList
 		//获得上一页和下一页的链接
 		if($this->nowPage!=1)
 		{
-			$prepage.="<td width='40'><a href='".$purl."nowpage=$prepagenum'>$lang_pre_page</a></td>\r\n";
-			$indexpage="<td width='30'><a href='".$purl."nowpage=1'>$lang_index_page</a></td>\r\n";
+			$prepage.="<a href='".$purl."nowpage=$prepagenum'>$lang_pre_page</a> \r\n";
+			$indexpage="<a href='".$purl."nowpage=1'>$lang_index_page</a> \r\n";
 		}
 		else
 		{
-			$indexpage="<td width='30'>$lang_index_page</td>\r\n";
+			$indexpage="$lang_index_page \r\n";
 		}	
 		if($this->nowPage!=$totalpage&&$totalpage>1)
 		{
-			$nextpage.="<td width='40'><a href='".$purl."nowpage=$nextpagenum'>$lang_next_page</a></td>\r\n";
-			$endpage="<td width='30'><a href='".$purl."nowpage=$totalpage'>$lang_end_page</a></td>\r\n";
+			$nextpage.="<a href='".$purl."nowpage=$nextpagenum'>$lang_next_page</a> \r\n";
+			$endpage="<a href='".$purl."nowpage=$totalpage'>$lang_end_page</a> \r\n";
 		}
 		else
 		{
-			$endpage="<td width='30'>$lang_end_page</td>\r\n";
+			$endpage=" $lang_end_page \r\n";
 		}
 		//获得数字链接
 		$listdd="";
@@ -137,12 +137,11 @@ class DataList
 		}
 		for($j;$j<=$total_list;$j++)
 		{
-   			if($j==$this->nowPage) $listdd.= "<td width='20'>$j</td>\r\n";
-   			else $listdd.="<td style='padding-left:3px;'><a href='".$purl."nowpage=$j'>[".$j."]</a></td>\r\n";
+   			if($j==$this->nowPage) $listdd.= "<strong>$j</strong> \r\n";
+   			else $listdd.="<a href='".$purl."nowpage=$j'>".$j."</a> \r\n";
 		}
 	
-		$plist = "<table border='0' cellpadding='0' cellspacing='0'>\r\n";
-		$plist.="<tr align='center' style='font-size:10pt'>\r\n";
+		$plist = "<div class=\"pagelistbox\">\r\n";
 		$plist.="<form name='pagelist' action='".$this->GetCurUrl()."'>$hidenform";
 		$plist.=$indexpage;
 		$plist.=$prepage;
@@ -151,10 +150,10 @@ class DataList
 		$plist.=$endpage;
 		if($totalpage>$total_list)
 		{
-			$plist.="<td width='36'><input type='text' name='nowpage' style='padding:0px;width:30px;height:18px'></td>\r\n";
-			$plist.="<td width='30'><input type='submit' name='plistgo' value='GO' style='padding:0px;width:30px;height:18px;font-size:9pt'></td>\r\n";
+			$plist.="<input type='text' name='nowpage' style='padding:0px;width:30px;height:18px'>\r\n";
+			$plist.="<input type='submit' name='plistgo' value='GO' style='padding:0px;width:30px;height:18px;font-size:9pt'>\r\n";
 		}
-		$plist.="</form>\r\n</tr>\r\n</table>\r\n";
+		$plist.="</form>\r\n</div>\r\n";
 		return $plist;
 	}
 	//清除系统所占用资源

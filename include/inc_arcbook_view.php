@@ -430,12 +430,13 @@ class BookView
  		global $cfg_cmspath;
  		$rstr = '';
  		$row = $this->GetNewContent($bid);
+
  		if(!is_array($row)) return '';
  		if(empty($innertext)) $innertext = "<a href='[field:url/]'>[field:title/]</a>";
  		if($this->Fields['booktype']==1){
  			$burl = $cfg_cmspath.'/book/show-photo.php?id='.$row['id'];
  		}else{
- 				$burl = $cfg_cmspath.'/book/story.php?id='.$rowch['id'];
+ 				$burl = $cfg_cmspath.'/book/story.php?id='.$row['id'];
  		}
  		$rstr = preg_replace("/\[field:url([\s]{0,})\/\]/isU",$burl,$innertext);
  		//$rstr = preg_replace("/\[field:ch([\s]{0,})\/\]/isU",$row['chapterid'],$rstr);

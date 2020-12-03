@@ -12,9 +12,9 @@ function addArchives();
 ---------------------------*/
 if($dopost=="addArchives")
 {
-	if(empty($cid) && empty($channelid)){
-		$channelid = 1;
-		require_once(dirname(__FILE__)."/article_add.php");
+	if(empty($cid) && empty($channelid))
+	{
+		require_once(_ADMIN."/public_guide.php");
 		exit();
 	}
 	$dsql = new DedeSql(false);

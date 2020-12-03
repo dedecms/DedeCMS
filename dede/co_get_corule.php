@@ -34,7 +34,7 @@ else
 	    $query = "
 	        INSERT INTO #@__conote(typeid,gathername,language,lasttime,savetime,noteinfo) 
           VALUES('".$ctag->GetAtt('typeid')."', '".$ctag->GetAtt('name')."',
-          '".$ctag->GetAtt('language')."', '0','".mytime()."', '".$dbnotes."');
+          '".$ctag->GetAtt('language')."', '0','".time()."', '".$dbnotes."');
 	    ";
 	    $dsql = new DedeSql(false);
 	    $rs = $dsql->ExecuteNoneQuery($query);

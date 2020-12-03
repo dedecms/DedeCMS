@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>会员注册</title>
+<title>会员注册 - powered by dedecms</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script language='javascript' src='<?php echo $cfg_cmspath; ?>/include/dedeajax2.js'></script>
 <script>
@@ -60,6 +60,15 @@ function ShowObj(objname){
 function HideObj(objname){
    var obj = $Obj(objname);
    obj.style.display = "none";
+}
+
+function tabit(divName,btn){
+	if (btn ==1){
+		document.getElementById(divName).style.display = "block";
+	}
+	else{
+		document.getElementById(divName).style.display = "none";
+	}
 }
 </script>
 </head>
@@ -126,9 +135,9 @@ function HideObj(objname){
        		  		  <input type="radio" name="sex" value="男" checked>男 <input type="radio" name="sex" value="女">女
    		    		</div>
                     <div class="reg_main_text_label2">会员类型：
-       		  		  <input type="radio" name="type" value="0" checked>个人会员 <input type="radio" name="type" value="1">企业会员
+       		  		  <input type="radio" name="type" value="0" checked onmousedown="tabit('com',0)">个人会员 <input type="radio" name="type" value="1" onmousedown="tabit('com',1)">企业会员
    		    		</div>
-                    <div class="reg_main_text_label2">公司名称：
+                    <div class="reg_main_text_label2" id="com" style="display:none;">公司名称：
        		  		  <input name="comname" type="text" class="reg_label" />（公司用户填写）  
    		    		</div>
                     <div class="reg_main_text_label3">验证码：<input name="vdcode" type="text" class="login_label1" />
@@ -159,7 +168,9 @@ function HideObj(objname){
     </div>
     <!--中间结束-->
     <!--底部开始-->
-    <div id="login_footer"><?php echo $cfg_powerby?>
+    <div id="login_footer">
+    Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms <?php echo $cfg_version?></a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.
+
     </div>
     <!--底部结束-->
 </div>

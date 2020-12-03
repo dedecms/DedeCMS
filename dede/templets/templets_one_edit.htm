@@ -5,6 +5,7 @@
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <title>更改自定义页面</title>
 <link href="css_body.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="base.css">
 <script language="javascript">
 function checkSubmit()
 {
@@ -63,9 +64,8 @@ function checkSubmit()
           </tr>
           <tr> 
             <td height="80" colspan="2" align="center"> 
-              <?php 
-	GetEditor("body",$row['body'],"500","Default","print","true");
-	?>            </td>
+           <textarea name='body' rows="20" style='width:100%;height:400xp'><?php echo $row['body']?></textarea>
+    </td>
           </tr>
           <tr> 
             <td height="53" colspan="2" align="center"><input type="submit" name="button" id="button" value="确定"  class="inputbut"/></td>

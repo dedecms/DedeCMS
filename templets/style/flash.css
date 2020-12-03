@@ -24,6 +24,14 @@
 	background:url(../images/place_left.gif) right top no-repeat;
 	float:left;
 }
+.flashinfo {
+	width: 500px;
+	margin-top: 10px;
+	margin-right: auto;
+	margin-bottom: 5px;
+	margin-left: auto;
+	text-align: left;
+}
 .thisplace .placenav{
 	float:right;
 	margin-right:10px;

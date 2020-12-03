@@ -41,7 +41,7 @@ if(empty($bcatid)) $bcatid = 0;
 if(empty($booktype)) $booktype = 0;
 
 
-$addtime = mytime();
+$addtime = time();
 
 //处理上传的缩略图
 //$litpic = GetDDImage('litpic',$litpicname,0);

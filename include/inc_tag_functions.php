@@ -5,7 +5,7 @@ function InsertTags(&$dsql,$tagname,$aid,$mid=0,$typeid=0,$arcrank=0)
 {
 	$tagname = trim(ereg_replace("[,;'%><\"\*\?\r\n\t ]{1,}",',',$tagname));
 	if(strlen($tagname)<2) return false;
-	$ntime = mytime();
+	$ntime = time();
 	$tags = explode(',',$tagname);
 	$hasTags = array();
 	$hasTagsM = array();
@@ -16,14 +16,6 @@ function InsertTags(&$dsql,$tagname,$aid,$mid=0,$typeid=0,$arcrank=0)
 	//获取已经存在的tag的id
 	$dsql->Execute('0',"Select id,tagname From #@__tag_index where $likequery ");
 	while($row = $dsql->GetArray('0',MYSQL_ASSOC)) $hasTags[strtolower($row['tagname'])] = $row['id'];
-	
-	/*
-	//获取会员已经存在的tag的id
-	if($mid>0){
-		$dsql->Execute('0',"Select aid,tagname From #@__tags_user where mid='$mid' And ( $likequery ) ");
-	  while($row = $dsql->GetArray('0',MYSQL_ASSOC)) $hasTagsM[strtolower($row['tagname'])] = $row['aid'];
-	}
-	*/
 	
 	//遍历tag，并依情况是否增加tag，并获得每个tag的索引id
 	$tids = array();
@@ -46,14 +38,24 @@ function InsertTags(&$dsql,$tagname,$aid,$mid=0,$typeid=0,$arcrank=0)
 		$tidstr .= ($tidstr=='' ? $tid : ",{$tid}");
 	}
 	$hastids = array();
-	if($tidstr!=''){
-		$dsql->Execute('0',"Select tid From #@__tag_list where tid in($tidstr) ");
-		while($row = $dsql->GetArray('0',MYSQL_ASSOC)) $hastids[] = $row['tid'];
+	if($tidstr!='')
+	{
+		$dsql->Execute('0',"Select tid,aid From #@__tag_list where tid in($tidstr) ");
+		while($row = $dsql->GetArray('0',MYSQL_ASSOC)){
+			$hastids[$row['tid']][] = $row['aid'];
+		}
 	}
-	foreach($tids as $t){
-	  if(!in_array($t,$hastids)){
-	  	$dsql->ExecuteNoneQuery("INSERT INTO `#@__tag_list`(`tid`,`aid`,`typeid`,`arcrank`) VALUES('$t','$aid','$typeid','$arcrank');");
-	  }
+	
+	foreach($tids as $t)
+	{
+		if(!isset($hastids[$t])){
+		  $dsql->ExecuteNoneQuery("INSERT INTO `#@__tag_list`(`tid`,`aid`,`typeid`,`arcrank`) VALUES('$t','$aid','$typeid','$arcrank');");
+		}else
+		{
+			if(!in_array($aid,$hastids[$t])){
+				$dsql->ExecuteNoneQuery("INSERT INTO `#@__tag_list`(`tid`,`aid`,`typeid`,`arcrank`) VALUES('$t','$aid','$typeid','$arcrank');");
+			}
+		}
 	}
 	
 	return true;

@@ -18,13 +18,19 @@ if(!empty($uptype)){
 	$uptype = '';
 }
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 $dsql = new DedeSql(false);
 //获取条件
 //------------------------
 $gwhere = " where arcrank=0 ";
 if($startid>0) $gwhere .= " And aid >= $startid ";
 if($endid > $startid) $gwhere .= " And aid <= $endid ";
-
+/*
+if(!empty($onlymake)){
+	$gwhere .= " and ismake=0 ";
+}
+*/
 if($typeid!=0){
 	$typeids = TypeGetSunID($typeid,$dsql,"",0,true);
   $gwhere .= " And typeid in ($typeids)";
@@ -95,8 +101,7 @@ if($tjnum < $totalnum)
 }else
 {
 	 if($uptype==''){
-		  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
-	 	  echo "完成所有创建任务，总用时: {$utime} 分钟 。";
+		  echo "完成所有创建任务，总用时: {$utime} 分钟 。";
 		  ClearAllLink();
 	    exit();
 	 }else{

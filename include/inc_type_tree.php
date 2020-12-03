@@ -80,7 +80,7 @@ class TypeTree
 			$ID = $row->ID;
 			$dcid = $row->channeltype;
 			
-			if($ispart==2||TestHasChannel($ID,$channelid)==0) continue;
+			if($ispart>=2||TestHasChannel($ID,$channelid)==0) continue;
 			
 			//有权限栏目
 			if(in_array($ID,$this->aChannels) || $this->isAdminAll)
@@ -94,6 +94,8 @@ class TypeTree
 			    else if($ispart==1) $smenu = "[封面]";
 			    //单独页面
 			    else if($ispart==2) $smenu = "[单页]";
+			    //跳转
+			    else if($ispart==3) $smenu = "[跳转]";
 			
 			    if($channelid>0) $dcid = $channelid;
 			    else $dcid = 0;
@@ -176,6 +178,12 @@ class TypeTree
 			     {
 			  	    $timg = " <img src='img/tree_part.gif'> ";
 			  	    $smenu = "[单页]";
+			     }
+			     //跳转
+			     else if($ispart==3)
+			     {
+			  	    $timg = " <img src='img/tree_part.gif'> ";
+			  	    $smenu = "[跳转]";
 			     }
 			  
 			     echo "  <table class='sunlist'>\r\n";

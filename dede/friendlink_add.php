@@ -7,12 +7,12 @@ $dsql = new DedeSql(false);
 if(empty($dopost)) $dopost="";
 if($dopost=="add")
 {
-   $dtime = strftime("%Y-%m-%d %H:%M:%S",mytime());
+   $dtime = strftime("%Y-%m-%d %H:%M:%S",time());
    if(is_uploaded_file($logoimg))
    {
 	   $names = split("\.",$logoimg_name);
 	   $shortname = ".".$names[count($names)-1];
-	   $filename = strftime("%Y%m%d%H%M%S",mytime()).mt_rand(1000,9999).$shortname;
+	   $filename = strftime("%Y%m%d%H%M%S",time()).mt_rand(1000,9999).$shortname;
 	   $imgurl = $cfg_medias_dir."/flink";
 	   if(!is_dir($cfg_basedir.$imgurl)){
 	   	  MkdirAll($cfg_basedir.$imgurl,$GLOBALS['cfg_dir_purview']);

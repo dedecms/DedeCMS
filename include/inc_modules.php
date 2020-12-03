@@ -26,8 +26,8 @@ class DedeModule
 	{
 		if(is_array($this->modules)) return $this->modules;
 		$dh = dir($this->modulesPath) or die("没找到模块目录：({$this->modulesPath})！");
-		$fp = fopen($this->modulesPath.'/modulescache.php','w');
-		fwrite($fp,"<"."?php\r\n");
+		$fp = @fopen($this->modulesPath.'/modulescache.php','w');
+		@fwrite($fp,"<"."?php\r\n") or die('读取文件权限出错,目录文件'.$this->modulesPath.'/modulescache.php不可写!');
 		fwrite($fp,"global \$allmodules;\r\n");
 		while($filename = $dh->read())
 		{

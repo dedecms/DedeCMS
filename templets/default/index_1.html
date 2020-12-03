@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{dede:global name='cfg_webname'/} - powered by dedecms</title>
+<meta name="keywords" content="{dede:global name='cfg_keywords'/},dedecms">
+<meta name="description" content="{dede:global name='cfg_description'/}dedecms">
+<link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
+<link href="{dede:field name='templeturl'/}/style/sindex.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="{dede:global name='cfg_cmspath'/}/include/dedeajax2.js"></script>
+<script language="javascript">
+function CheckLogin(){
+  var taget_obj = document.getElementById('_loginform');
+  myajax = new DedeAjax(taget_obj,false,false,"","","");
+  myajax.SendGet2("{dede:global name="cfg_memberurl"/}/loginsta.php");
+  DedeXHTTP = null;
+}
+</script>
+</head>
+<body>
+
+<!--头部开始-->
+<div class="top cbody">
+	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+  <div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
+	<div class="toplink">
+		<ul>
+			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
+			<li><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></li>
+			<li><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a> </li>
+		    <li><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></li>
+		</ul>
+	</div>
+</div>
+<!--导航栏-->
+<div class="topmenu cbody">
+	<ul>
+		<li><a href="/">首页</a></li>
+        {dede:channel type='top' row='8' currentstyle="<li class='thisclass'><a href='~typelink~'>~typename~</a> </li>"}
+		<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
+        {/dede:channel}
+   	  <li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
+	</ul>
+	<div class="rssbut">
+		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
+	</div>
+</div>
+<!--搜索条-->
+<div class="topsearch cbody">
+  <div class="title"></div>
+  <div class="inpbox">
+    <form action="{dede:global name='cfg_phpurl'/}/search.php" name="formsearch">
+      <input type="hidden" name="kwtype" value="0" />
+      <input name="keyword" id="keyword" type="text" class="searchtxt" />
+      <select name="searchtype" id="searchtype">
+        <option value="titlekeyword" selected>智能模糊搜索</option>
+        <option value="title">仅搜索标题</option>
+      </select>
+      <input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
+    </form>
+  </div>
+  <div class="hots"> 		<strong>热门关键字：</strong>
+		{dede:hotwords num='5' subday='30'/} </div>
+</div>
+<!--内容-->
+<div class="main cbody margintop">
+	<!--左侧-->
+	<div class="ileft">
+		<div class="leftop">
+			<!--Flash资讯-->
+			<div class="swfnews">
+			<script language='javascript'>
+linkarr = new Array();
+picarr = new Array();
+textarr = new Array();
+var focus_width=280;
+var focus_height=220;
+var text_height=0;
+var pics = "";
+var links = "";
+var texts = "";
+var swf_height = focus_height+text_height;
+var defJpeg = "{dede:field name='templeturl'/}/images/jpg.jpg";
+
+{dede:arcfulllist row='5' att='3'}
+linkarr[[field:global name=autoindex/]] = "[field:arcurl/]";
+picarr[[field:global name=autoindex/]] = "[field:litpic/]";
+textarr[[field:global name=autoindex/]] = "[field:title/]";
+{/dede:arcfulllist}
+
+for(i=1;i<picarr.length;i++){
+  if(picarr[i].indexOf("jpg")==-1 && picarr[i].indexOf("JPG")==-1) picarr[i] = defJpeg;
+  if(pics=="") pics = picarr[i];
+  else pics += "|"+picarr[i];
+}
+
+for(i=1;i<linkarr.length;i++){
+  if(links=="") links = linkarr[i];
+  else links += "|"+linkarr[i];
+}
+
+for(i=1;i<textarr.length;i++){
+  if(texts=="") texts = textarr[i];
+  else texts += "|"+textarr[i];
+}
+document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="{dede:global name='cfg_templeturl'/}/images/slide.swf">');
+document.write('<param name="quality" value="high"><param name="bgcolor" value="#ffffff">');
+document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
+document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'">');
+document.write('<embed src="{dede:global name='cfg_templeturl'/}/images/slide.swf" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'" menu="false" bgcolor="#ffffff" quality="high" width="'+ focus_width +'" height="'+ focus_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+document.write('</object>');
+</script>			</div>
+			<div class="topnews">
+			<dl>
+            				{dede:arclist row=1 titlelen=38 orderby=pubdate att=2}
+				<dt><!--头条-->
+					 [field:textlink/]
+					<span>[field:description/]……</span>
+				</dt>
+				{/dede:arclist}
+				<dd>
+					<ul>
+                    	{dede:arclist row=8 titlelen=24 orderby=pubdate}
+						  <li>[field:textlink/]</li>
+                        {/dede:arclist}
+					</ul>
+			  </dd>
+			</dl>
+			</div>
+		</div>
+        
+<!--分类信息-->
+		<div class="leftlist margintop">
+			<div class="ptitle">
+				<a href="#">分类信息</a>
+			</div>
+			<div class="ptlink">
+				<a href="/plus/list.php?tid=61">房屋信息</a>   <a href="/plus/list.php?tid=72">同城交友</a>   <a href="/plus/list.php?tid=64">招聘求职</a>   <a href="/plus/list.php?tid=71">跳蚤市场</a>   <a href="#">学习与培训</a>
+			</div>
+			<div class="pleft clsbox">
+					<ul>
+                        {dede:arclist titlelen='40' row='16' typeid='2' }
+<li><span>[field:typelink/]</span> <a href="[field:arcurl/]">[field:title/]</a></li>
+{/dede:arclist}
+					</ul>
+			</div>
+		</div>
+
+
+
+		<!--图文资讯-->
+		<div class="leftlist margintop">
+			<div class="ptitle"><a href="#">图文资讯</a></div>
+			<div class="pleft picnews">
+				<dl>
+                		{dede:arclist row=4 titlelen=20 orderby=pubdate type='image.' imgwidth='152' imgheight='98'}
+						  <dd><a href="[field:arcurl/]" class="pimg">[field:image/]</a> <span>[field:textlink/]</span> </dd>
+						{/dede:arclist}
+				</dl>
+		  </div>
+		</div>
+        <!--图文资讯结束-->
+
+		<!--资讯列表-->
+		<div class="newsbox">
+            {dede:channelArtlist col=1}
+			<dl class="margintop">
+				{dede:type}<dt><a href="[field:typelink /]">[field:typename /]</a></dt>{/dede:type}
+				<dd>
+					<ul>
+                	{dede:arclist orderby='ID' row='8' titlelen='36'}
+					<li><a href="[field:arcurl /]">[field:title /]</a></li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+            {/dede:channelArtlist}
+		</div>
+
+
+
+
+	</div>
+	<!-- /左侧-->
+
+	<!--右侧-->
+	<div class="iright">
+				<!--会员登录-->
+            <!--
+			本模板使用Ajax技术判断用户是否登录，如果你改动了模板，
+			必须指定id=loginform 的区域作为返回内容
+			-->
+        <span id="_loginform">
+		<div class="rlist">
+        	<form name='form1' method='POST' action='{dede:field name='memberurl'/}/index_do.php'>
+			<input type="hidden" name="fmdo" value="login">
+			<input type="hidden" name="dopost" value="login">
+			<input type="hidden" name="gourl" value="">
+			<div class="title">会员登陆</div>
+			<div class="rbox userlogin">
+				<dl>
+					<dt>用户名：</dt>
+					<dd><input name="userid" class="username" type="text" maxlength="20" /></dd>
+				</dl>
+				<dl>
+					<dt>密码：</dt>
+					<dd><input name="pwd" class="password" type="password" maxlength="20" /></dd>
+				</dl>
+				<dl>
+					<dt>验证码：</dt>
+					<dd>
+						<input name="vdcode" class="gdcode" type="text" size="4" maxlength="4" />
+						<img src="{dede:global name='cfg_cmspath'/}/include/validateimg.php" alt="gdcode" />
+					</dd>
+				</dl>
+				<div class="ulsubmit">
+					<input type="submit" value="登陆" class="submit" />
+					<a href="{dede:field name='memberurl'/}/index_do.php?fmdo=user&dopost=regnew">注册帐号</a>
+				</div>
+			</div>
+            </form>
+		</div>
+		     </span>
+		<script language="JavaScript">CheckLogin();</script>
+      <!--最新企业-->
+		<div class="jftop margintop">
+			<div class="jftitle">最新企业</div>
+			<dl>
+			  {dede:sql sql="SELECT m.ID, m.type, m.userid,c.id, c.comname
+				FROM #@__member m
+				LEFT JOIN #@__member_cominfo c ON m.ID = c.id
+				WHERE m.type =1
+				ORDER BY `m`.`ID` DESC 
+				LIMIT 0 , 10 "}
+				<dd><span class="name"><a href='[field:global name='cfg_cmspath'/]/member/?[field:userid/]/'>[field:comname/]</a></span></dd>
+               {/dede:sql}
+		  </dl>
+		</div>
+        <!--最新企业结束-->
+
+		<!--推荐企业-->
+		<div class="rlist margintop">
+			<div class="title">推荐企业</div>
+			<div class="rbox group">
+				<!--推荐企业-->
+				<div class="gpbox">
+					<ul>
+
+					{dede:sql sql="SELECT m.ID,m.type,m.userid,m.matt,m.spaceimage,c.id,c.comname
+					FROM #@__member m left join #@__member_cominfo c on m.ID = c.id
+					where m.type = 1 and m.matt = 1
+					LIMIT 0 , 10"}
+						<li>
+						<span class="gpimg"><a href="[field:global name='cfg_cmspath'/]/member/?[field:userid/]">
+						<img src="[field:spaceimage runphp='yes']
+					if(!@me)@me = '/member/img/dfboy.gif';
+					[/field:spaceimage]" width="96" height="56" /></a></span>
+						<span class="gpname"><a href='[field:global name='cfg_cmspath'/]/member/?[field:userid/]'>[field:comname/]</a></span>
+						</li>
+					{/dede:sql}
+
+					</ul>
+				</div>
+			
+			</div>
+		</div>
+
+		<!--投票调查-->
+		<div class="rlist margintop">
+        <form name='voteform' method='post' action='{dede:field name='phpurl'/}/vote.php' target='_blank'>
+			<input type='hidden' name='dopost' value='send'>
+			<input type='hidden' name='aid' value='1'>
+			<input type='hidden' name='ismore' value='0'>
+			<div class="title">你是从哪儿得知本站的？</div>
+			<div class="rbox vote">
+				<span><input name="voteitem" type="radio" value="1" />朋友介绍</span>
+				<span><input name="voteitem" type="radio" value="2" />门户网站的搜索引擎</span>
+				<span><input name="voteitem" type="radio" value="3" />Google或百度搜索 </span>
+				<span><input name="voteitem" type="radio" value="4" />别的网站上的链接 </span>
+				<span><input name="voteitem" type="radio" value="5" />其它途径 </span>
+				<div class="votesubmit">
+					<input type="submit" value="投票" class="submit" />
+					<a href="{dede:field name='phpurl'/}/vote.php?dopost=view&aid=1">查看结果</a>
+				</div>
+			</div>
+        </form>
+		</div>
+
+
+	</div>
+	<div class="floatclear"><!--清除浮动--></div>
+</div>
+
+<!--友情链接-->
+<div class="flink">
+	<div class="title">
+		<dl>
+			<dt>友情链接 &amp; 合作伙伴</dt>
+			<dd><a href="{dede:field name='phpurl'/}/flink.php">所有链接</a> | <a href="{dede:field name='phpurl'/}/flink-add.php">申请加入</a></dd>
+		</dl>
+	</div>
+	<div class="flinkcon">
+		{dede:flink linktype='2' row='24'}[field:link /]{/dede:flink}
+	</div>
+</div>
+
+<!--页面底部-->
+<div class="footer cbody margintop">
+		<div class="copyright"> 
+                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div>  
+    		Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms {dede:global name='cfg_version'/}</a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.</a> 
+      
+	</div>
+   
+</div>
+
+
+</body>
+</html>

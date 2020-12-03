@@ -5,6 +5,8 @@ require_once(dirname(__FILE__)."/config.php");
 if(empty($dopost)) $dopost = "";
 if(empty($reset)) $reset = "";
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 //用户Action
 if($dopost=="yes"){
   if($reset=='yes'){

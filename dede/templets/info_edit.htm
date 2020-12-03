@@ -61,7 +61,7 @@ function checkSubmit()
             <td width="400%" height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">标题：</td>
-                  <td><input name=title type=text value="<?=$info['title']?>" size="50" />　
+                  <td><input name=title type=text value="<?php echo $info['title']?>" size="50" />　
                     推荐
                     <input name="iscommend" type="checkbox" id="iscommend" value="11" <?php  if($info["iscommend"]>10) echo " checked";?> />
 加粗
@@ -96,7 +96,7 @@ if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>
                     <option value="360">置顶一年</option>
                   </select></td>
                   <td width="90">有效期：</td>
-                  <td><input type=text name=endtime value="<?=$info['endtime']?>" style="width:100px" />
+                  <td><input type=text name=endtime value="<?php echo $info['endtime']?>" style="width:100px" />
 天</td>
                 </tr>
             </table></td>
@@ -116,7 +116,7 @@ if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>
             <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">关键词：</td>
-                  <td width="240"><input type=text name=keywords value="<?=$info['keywords']?>" style="width:200px" /></td>
+                  <td width="240"><input type=text name=keywords value="<?php echo $info['keywords']?>" style="width:200px" /></td>
                   <td width="90">文章摘要：</td>
                   <td><textarea name="description" rows="3" id="description" style="width:200px"><?php echo $info['description']; ?></textarea></td>
                 </tr>
@@ -220,9 +220,9 @@ echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" st
             <td height="28" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">联系人：</td>
-                  <td width="240"><input type=text name=contact value="<?=$info['contact']?>" style="width:200px" /></td>
+                  <td width="240"><input type=text name=contact value="<?php echo $info['contact']?>" style="width:200px" /></td>
                   <td width="90">传真：</td>
-                  <td><input type=text name=fax value="<?=$info['fax']?>" style="width:200px" /></td>
+                  <td><input type=text name=fax value="<?php echo $info['fax']?>" style="width:200px" /></td>
                 </tr>
             </table></td>
           </tr>
@@ -230,9 +230,9 @@ echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" st
             <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">电话：</td>
-                  <td width="240"><input type=text name=phone value="<?=$info['phone']?>" style="width:200px" /></td>
+                  <td width="240"><input type=text name=phone value="<?php echo $info['phone']?>" style="width:200px" /></td>
                   <td width="90">地址：</td>
-                  <td><input type=text name=address value="<?=$info['address']?>" style="width:200px" /></td>
+                  <td><input type=text name=address value="<?php echo $info['address']?>" style="width:200px" /></td>
                 </tr>
             </table>
             </td>
@@ -241,9 +241,9 @@ echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" st
             <td height="28" colspan="4" bgcolor="#FFFFFF" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">Email：</td>
-                  <td width="240"><input type=text name=email value="<?=$info['email']?>" style="width:200px" /></td>
+                  <td width="240"><input type=text name=email value="<?php echo $info['email']?>" style="width:200px" /></td>
                   <td width="90">QQ：</td>
-                  <td><input type=text name=qq value="<?=$info['qq']?>" /></td>
+                  <td><input type=text name=qq value="<?php echo $info['qq']?>" /></td>
                 </tr>
             </table></td>
           </tr>
@@ -251,7 +251,7 @@ echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" st
             <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90" height="22">MSN：</td>
-                  <td width="240"><input type=text name=msn value="<?=$info['msn']?>" style="width:200px" /></td>
+                  <td width="240"><input type=text name=msn value="<?php echo $info['msn']?>" style="width:200px" /></td>
                   <td width="90">&nbsp;</td>
                   <td>&nbsp;</td>
                 </tr>

@@ -18,7 +18,7 @@ if(empty($keyword)){
 
 //重载列表
 if($dopost=='getlist'){
-	PrintAjaxHead();
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -32,7 +32,7 @@ else if($dopost=='update')
 	$keyword = trim($keyword);
 	$spwords = trim($spwords);
 	$dsql->ExecuteNoneQuery("Update #@__search_keywords set keyword='$keyword',spwords='$spwords',count='$count',istag='$istag' where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -42,7 +42,7 @@ else if($dopost=='del')
 {
 	$aid = ereg_replace("[^0-9]","",$aid);
 	$dsql->ExecuteNoneQuery("Delete From #@__search_keywords where aid='$aid';");
-	PrintAjaxHead();
+	AjaxHead();
 	GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	$dsql->Close();
 	exit();
@@ -98,13 +98,6 @@ function GetKeywordList($dsql,$pageno,$pagesize,$orderby='aid'){
     echo $line;
    }
 	 echo "</table>\r\n";
-}
-
-function PrintAjaxHead(){
-	header("Pragma:no-cache\r\n");
-  header("Cache-Control:no-cache\r\n");
-  header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
 }
 
 ?>

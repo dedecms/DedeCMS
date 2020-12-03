@@ -35,7 +35,7 @@ $arcrank = GetCoRank($arcrank,$typeid);
 $iscommend = $iscommend + $isbold;
 
 $pubdate = GetMkTime($pubdate);
-$uptime = mytime();
+$uptime = time();
 $sortrank = AddDay($senddate,$sortup);
 
 if($ishtml==0) $ismake = -1;
@@ -48,7 +48,7 @@ $writer =  cn_substr($writer,30);
 $source = cn_substr($source,50);
 $description = cn_substr($description,250);
 if($keywords!="") $keywords = trim(cn_substr($keywords,60))." ";
-if(!TestPurview('spec_Edit')){ $arcrank = -1; }
+if(!TestPurview('a_Check,a_AccCheck,a_MyCheck')){ $arcrank = -1; }
 
 //处理上传的缩略图
 if(empty($ddisremote)) $ddisremote = 0;
@@ -152,20 +152,21 @@ if(!$dsql->ExecuteNoneQuery($addQuery)){
 }
 
 
-//生成HTML
+
 //---------------------------------
-$artUrl = MakeArt($ID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$ID";
+$artUrl = getfilenameonly($ID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //更新全站搜索索引
 $datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$edadminid,'mid'=>$memberid,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
-               'addinfos'=>$description,'uptime'=>mytime(),'arcrank'=>$arcrank);
+               'addinfos'=>$description,'uptime'=>time(),'arcrank'=>$arcrank);
 UpSearchIndex($dsql,$datas);
 unset($datas);
 //更新Tag索引
 UpTags($dsql,$tag,$ID,0,$typeid,$arcrank);
-
+//生成HTML
+//---------------------------------
+MakeArt($ID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

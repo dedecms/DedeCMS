@@ -126,7 +126,7 @@ if(empty($action))
 	$areaid2 = intval($areaid2);
 	$comaddr = filterscript(trim($comaddr));
 	$cominfo = filterscript(trim($cominfo));
-	$postid = filterscript($postid);
+	$postid = max(filterscript($postid),18);
 	$website = filterscript(trim($website));
 	if($comname == '' || $regyear < 1000){
 		ShowMsg("公司名称或注册年份为空，请填写完整！","-1");
@@ -147,6 +147,7 @@ if(empty($action))
 	}
 	$db->SetQuery($sql);//exit;
 	if(!$db->ExecuteNoneQuery()) {
+		echo $db->GetError();
 		$db->Close();
 		ShowMsg("更改企业资料出错，请检查输入是否合法！","-1");
 		exit();

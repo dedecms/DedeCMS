@@ -37,7 +37,7 @@ class SiteMap
 	function GetSiteMap($maptype="site")
 	{
 		$mapString = "<style>.mdiv{ margin:0px;margin-bottom:10px;padding:3px; }</style><div>";
-		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where ishidden<>1 And reID=0 And ispart<>2 order by sortrank");
+		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where ishidden<>1 And reID=0 And ispart<2 order by sortrank");
 		else $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID=0 And ishidden<>1 order by sortrank");
 		$this->dsql->Execute(0);
 		while($row=$this->dsql->GetObject(0))
@@ -56,7 +56,7 @@ class SiteMap
 		$fid = $ID;
 		$mapString = "";
 		$pd = $pd + 15;
-		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID='".$ID."' And ishidden<>1 And ispart<>2 order by sortrank");
+		if($maptype=="rss") $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID='".$ID."' And ishidden<>1 And ispart<2 order by sortrank");
 		else $this->dsql->SetQuery("Select ID,typedir,isdefault,defaultname,typename,ispart,namerule2 From #@__arctype where reID='".$ID."' And ishidden<>1 order by sortrank");
 		$this->dsql->Execute($fid);
 		$mapString .= "<div style='margin-left:{$pd}px'>";

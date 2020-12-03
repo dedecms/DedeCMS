@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>&quot;{dede:global name='keyword'/}&quot;的搜索结果 - {dede:global name='cfg_webname'/}</title>
+<title>&quot;{dede:global name='keyword'/}&quot;的搜索结果 - {dede:global name='cfg_webname'/} - powered by dedecms</title>
 <style type="text/css">
 <!--
 *{
@@ -28,7 +28,7 @@ a:hover{
 
 .top{
 	height:60px;
-	background:url(/templets/images/toplogo.gif) 6px center no-repeat;
+	background:url({dede:global name='cfg_cmspath'/}/templets/images/toplogo.gif) 6px center no-repeat;
 }
 .searchbox{
 	margin:20px 0px 0px 240px;	
@@ -139,13 +139,13 @@ input,select,textarea{
 	<div class="searchbox">
 	<form action="{dede:field name='phpurl'/}/search.php" name="formsearch" target="_self">
 		<input name="keyword" type="text" id="keyword2" class="keyword" value="{dede:global name='keyword'/}" />
-		<input type="hidden" name="kwtype" value="0" />
+		<input type="hidden" name="kwtype" value="1" />
 		<select name="searchtype" id="searchtype" class="op1">
 				<option value="titlekeyword">智能模糊搜索</option>
 				<option value="title">仅搜索标题</option>
 		</select>
 		<input type="submit" name="button" class="searchbut" value="搜索" />
-		<span class="adslink"><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a> &nbsp; <a href="/">返回主页</a></span>
+		<span class="adslink"><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a> &nbsp; <a href="{dede:global name='cfg_indexurl'/}">返回主页</a></span>
 	</form>
 	</div>
 </div>

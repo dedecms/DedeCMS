@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -38,6 +38,7 @@ $arcatt = 0;
 $pagestyle = 2;
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = '';
 $description = cn_substr(trim(ClearHtml($description)),250);
@@ -54,7 +55,7 @@ $memberID = $cfg_ml->M_ID;
 $inQuery = "INSERT INTO `$maintable`(
 ID,typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
-pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip) 
+pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip)
 VALUES ('$arcID','$typeid','$typeid2','$sortrank','0','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
 '$pubdate','$senddate','$arcatt','$adminID','$memberID','$description','$keywords','0','$userip');";

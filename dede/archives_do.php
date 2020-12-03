@@ -57,7 +57,7 @@ else if($dopost=="viewArchives")
 	$truefile = GetTruePath($arcRow['siterefer'],$arcRow['sitepath']).$arcfile;
   MakeArt($aid,true);
   $dsql->Close();
-  echo "<script language='javascript'>location.href='$arcurl"."?".mytime()."';</script>";
+  echo "<script language='javascript'>location.href='$arcurl"."?".time()."';</script>";
 	exit();
 }
 /*--------------------------
@@ -164,6 +164,7 @@ else if($dopost=="delArchives")
 	  $okaids = Array();
 	  $dsql = new DedeSql(false);
 	  foreach($qstrs as $aid){
+	  	echo $channelid;
 	    if(!isset($okaids[$aid])) DelArc($aid,false,$channelid);
 	    else $okaids[$aid] = 1;
     }

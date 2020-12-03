@@ -38,7 +38,7 @@ function SpGetArcList($dsql,$typeid=0,$row=10,$col=1,$titlelen=30,$infolen=160,
 		$orwhere = " arc.arcrank > -1 ";
 		//时间限制(用于调用最近热门文章、热门评论之类)
 		if($subday>0){
-			 $limitday = mytime() - ($oneday * 24 * 3600);
+			 $limitday = time() - ($oneday * 24 * 3600);
 			 $orwhere .= " And arc.senddate > $limitday ";
 		}
 		//文档的自定义属性

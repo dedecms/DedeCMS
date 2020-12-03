@@ -28,7 +28,8 @@ if($dopost=='analyse'){
 	require_once(dirname(__FILE__)."/inc/inc_batchup.php");
 	if(empty($titles)){
 		$dsql->close();
-		header("Content-Type: text/html; charset=utf-8");
+		header("Content-Type: text/html; charset={$cfg_ver_lang}");
+    echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
 		echo "没有指定删除的文档！";
 		exit();
 	}

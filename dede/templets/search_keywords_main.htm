@@ -45,10 +45,25 @@ function UpdateNote(nid){
 	var kw = $Obj('keyword'+nid).value;
 	var kws = $Obj('spwords'+nid).value;
 	var ct = $Obj('count'+nid).value;
+
 	var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
 	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
-  myajax.SendGet("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);
+  	myajax.SendGet("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);
 }
+
+function AddNewNote(){
+	var listArea = $Obj('rslist');
+	var kw = $Obj('keywords').value;
+	var kws = $Obj('spwords').value;
+	var ct = $Obj('count').value;
+
+	var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('"+pageno+"')\"><u>点击此重新加载列表</u></a>]";
+	var myajax = new DedeAjax(listArea,true,true,"",errMsg,"正在处理...");
+  	myajax.SendGet("search_keywords_main.php?dopost=add&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno);
+}
+
+
+
 //删除关键词
 function DelNote(nid){
 	var listArea = $Obj('rslist');
@@ -106,17 +121,18 @@ function ReloadPageNum(startnum){
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt">批量管理</div>
 </div>
-<div class="main"> 
+<div class="main">
 <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
-    <tr> 
-      <td height="35" colspan="8" valign="bottom" bgcolor="#EDF9D5"> 
+    <tr>
+      <td height="35" colspan="8" valign="bottom" bgcolor="#EDF9D5">
         <table width="96%" border="0" cellpadding="0" cellspacing="0">
-          <tr> 
+          <tr>
             <td width="20%" style="padding-top:6px"><strong>&nbsp;搜索关键词维护</strong></td>
             <td width="60%" style="padding-top:6px">
 			<table width="400" border="0" cellspacing="0" cellpadding="0">
                 <form action="search_keywords_main.php" name="form1">
-                  <tr> 
+                	<input type="hidden" name="type" value="search" />
+                  <tr>
                     <td align="center" width="61%">
                    	关键字：<input name="keyword" type="text" id="keywordse" style="width:150px" value="<?php echo $keyword; ?>"></td>
                     <td width="39%"> <input type="submit" name="Submit" value="搜索" class="inputbut" />                    </td>
@@ -135,30 +151,35 @@ function ReloadPageNum(startnum){
 	    <table border='0' cellpadding='1' cellspacing='1'>
         <tr align='center' bgcolor='#ffffff'>
           <td width="66" height='28' bgcolor="#EFFAC9">关键词：</td>
-          <td width="180" bgcolor="#EFFAC9"><input name='keyword' style="width:160px" type='text' id='keyword' value='' class='ininput' /></td>
+          <td width="180" bgcolor="#EFFAC9"><input name='keywords' style="width:160px" type='text' id='keywords' value='' class='ininput' /></td>
           <td width="72" bgcolor="#EFFAC9">分词结果：</td>
           <td width="180" bgcolor="#EFFAC9"><input name='spwords' style="width:160px" type='text' id='spwords' value='' class='ininput' /></td>
           <td width="72" bgcolor="#EFFAC9">搜索频率：</td>
           <td width="80" bgcolor="#EFFAC9"><input name='count' style="width:60px" type='text' id='count' value='10' class='ininput' /></td>
-          <td bgcolor="#EFFAC9"><a href='#' onclick='AddNewNote()'>〖新增一条〗</a></td>
+          <td bgcolor="#EFFAC9"><a href='###' onclick='AddNewNote()'>〖新增一条〗</a></td>
         </tr>
       </table></td>
     </tr>
 	</table>
+<form action="?action=delete" method="post">
 	<span id='rslist'>
-    <?php 
+    <?php
 		GetKeywordList($dsql,$pageno,$pagesize,$orderby);
 	?>
     </span>
+  <center>
+  <input type="submit" name="submit" value="删除选中的关键词" />
+</center>    
 <table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
-    <tr align="center"> 
+    <tr align="center">
       <td height="35" colspan="8" bgcolor="#F9FCF1">
       <span id='pagelist'></span>
       <script language='javascript'>ReloadPageNum(1);</script>
       </td>
     </tr>
   </table>
-  
+
+</form>
 </div>
 </body>
 </html>

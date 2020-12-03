@@ -8,6 +8,9 @@ if(empty($showsource)) $showsource = "";
 if($typeid>0) $pv = new PartView($typeid);
 else $pv = new PartView();
 $pv->SetTemplet($partcode,"string");
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 if($showsource==""||$showsource=="yes"){
   echo "模板代码:";
   echo "<span style='color:red;'><pre>".htmlspecialchars($partcode)."</pre></span>";

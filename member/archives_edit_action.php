@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -11,6 +11,7 @@ $cfg_add_dftable = '';
 require_once(dirname(__FILE__)."/archives_editcheck.php");
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = '';
 $description = cn_substr(trim(ClearHtml($description)),250);
@@ -64,8 +65,7 @@ if(!empty($dede_addonfields))
 
 $inQuery = "
 update `$maintable` set
-ismake='$ismake',arcrank='$arcrank',typeid='$typeid',title='$title',
-$litpic
+ismake='$ismake',arcrank='$arcrank',typeid='$typeid',title='$title',litpic='$litpic',
 description='$description',keywords='$keywords',userip='$userip'
 where ID='$ID' And memberID='$memberID';
 ";

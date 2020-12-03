@@ -92,7 +92,10 @@ function editFeedback()
 $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
-	if(!empty($row['aid'])) $arcurl = $cfg_plus_dir.'/view.php?aid='.$row['aid'];
+	if(!empty($row['aid'])){
+		//$arcurl = $cfg_plus_dir.'/view.php?aid='.$row['aid'];
+		$arcurl = "archives_do.php?aid={$row['aid']}&dopost=editArchives";
+	}
 	else $arcurl = $row['url'];
 	if(empty($row['arctitle'])) $row['arctitle'] = "无法取得文档标题";
 ?>

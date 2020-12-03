@@ -88,7 +88,7 @@ else if($dopost=='save'){
      	  } 
      }
      //保存文件
-     $nowtime = mytime();
+     $nowtime = time();
      $oldfile = $myrow['url'];
      $oldfiles = explode('/',$oldfile);
      $fullfilename = $cfg_basedir.$oldfile;

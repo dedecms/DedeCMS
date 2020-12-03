@@ -13,6 +13,7 @@ if($dopost=="view")
 }
 else if($dopost=="make")
 {
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	$homeFile = dirname(__FILE__)."/".$position;
 	$homeFile = str_replace("\\","/",$homeFile);
 	$homeFile = str_replace("//","/",$homeFile);
@@ -30,7 +31,6 @@ else if($dopost=="make")
 	$pv->SetTemplet($cfg_basedir.$cfg_templets_dir."/".$templet);
 	$pv->SaveToHtml($homeFile);
 	$pv->Close();
-	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 	echo "成功更新主页HTML：".$homeFile;
 	echo "<br/><br/><a href='$position' target='_blank'>浏览...</a>";
 }

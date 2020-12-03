@@ -96,8 +96,8 @@ switch($fmdo){
    }
 	$uname = eregi_replace("['\"\$ \r\n\t;<>\*%\?]", '', $uname);
    $pwd = GetEncodePwd($pwd);
- 	 $jointime = mytime();
- 	 $logintime = mytime();
+ 	 $jointime = time();
+ 	 $logintime = time();
  	 $joinip = GetIP();
  	 $loginip = GetIP();
 
@@ -148,11 +148,11 @@ if($cfg_member_regsta == 'Y'){
  	 $height = GetAlabNum($height);
 
  	 $inQuery = "
- 	  INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` , `membertype` , `uptime` , `exptime` ,
+ 	  INSERT INTO `#@__member` (`userid` , `pwd` , `type` , `uname` ,`sex` , `membertype` , `uptime` , `exptime` ,
  	   `money` , `email` , `jointime` , `joinip` , `logintime` , `loginip` ,
  	    `c1` , `c2` , `c3` , `matt` , `guestbook` , `spaceshow` , `pageshow` , `spacestyle` ,
- 	     `spacename` , `spaceimage` , `news` , `mybb` , `listnum` , `scores` )
-    VALUES ('$userid', '$pwd', '$type', '$uname', '$membertype', '0', '0',
+ 	     `spacename` , `spaceimage` , `news` ,`mybb` , `listnum` , `scores` )
+    VALUES ('$userid', '$pwd', '$type', '$uname','$sex', '$membertype', '0', '0',
      '0', '$email', '$jointime', '$joinip', '$jointime', '$joinip',
       '0', '0', '0', '0', '0', '0', '0', '',
        '$spacename', '', '', '', '20', '{$cfg_df_score}')
@@ -373,7 +373,7 @@ if($cfg_member_regsta == 'Y'){
   	 exit();
    }
    else{
-   	 $dsql->SetQuery("update #@__member set logintime='".mytime()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
+   	 $dsql->SetQuery("update #@__member set logintime='".time()."',loginip='".GetIP()."' where ID='".$cfg_ml->M_ID."'");
    	 $dsql->ExecuteNoneQuery();
    	 $dsql->Close();
    	 if(empty($gourl)||eregi("action|_do",$gourl)){

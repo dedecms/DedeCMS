@@ -68,7 +68,7 @@ class TypeUnit
 	function ListAllType($channel=0,$nowdir=0)
 	{
 		
-		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,channeltype From #@__arctype where reID=0 order by sortrank");
+		$this->dsql->SetQuery("Select ID,typedir,typename,ispart,channeltype From #@__arctype where reID=0 And ispart<>3 order by sortrank");
 		$this->dsql->Execute(0);
 		
 		$lastID = GetCookie('lastCidMenu');
@@ -96,7 +96,9 @@ class TypeUnit
 			   else if($ispart==1) $smenu = " oncontextmenu=\"CommonMenuPart(this,$ID,'".urlencode($typeName)."')\"";
 			   //独立页面
 			   else if($ispart==2) $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
-			
+			   //跳转
+			   else if($ispart==3) $smenu = " ";
+			   
 			   echo "<dl class='topcc'>\r\n";
 			   echo "  <dd class='dlf'><img style='cursor:hand' onClick=\"LoadSuns('suns{$ID}',{$ID});\" src='img/tree_explode.gif' width='11' height='11'></dd>\r\n";
 			   echo "  <dd class='dlr'><a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></dd>\r\n";
@@ -131,7 +133,7 @@ class TypeUnit
 	function LogicListAllSunType($ID,$step,$needcheck=true)
 	{
 		$fid = $ID;
-		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,channeltype From #@__arctype where reID='".$ID."' order by sortrank");
+		$this->dsql->SetQuery("Select ID,reID,typedir,typename,ispart,channeltype From #@__arctype where reID='".$ID."' And ispart<>3 order by sortrank");
 		$this->dsql->Execute($fid);
 		if($this->dsql->GetTotalRow($fid)>0)
 		{
@@ -172,7 +174,12 @@ class TypeUnit
 			  	   $timg = " <img src='img/tree_page.gif'> ";
 			  	   $smenu = " oncontextmenu=\"SingleMenu(this,$ID,'".urlencode($typeName)."')\"";
 			     }
-			  
+			     //跳转
+			     else if($ispart==3){
+			  	   $timg = " <img src='img/tree_page.gif'> ";
+			  	   $smenu = " ";
+			     }
+			     
 			     echo "  <table class='sunlist'>\r\n";
 			     echo "   <tr>\r\n";
 			     echo "     <td>".$step.$timg."<a href='catalog_do.php?cid=".$ID."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";

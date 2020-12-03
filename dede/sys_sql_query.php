@@ -1,11 +1,8 @@
 <?php 
-header("Content-Type: text/html; charset=utf-8");
-header("Pragma:no-cache"); 
-header("Cache-Control:no-cache"); 
-header("Expires:0"); 
 require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
 if(empty($dopost)) $dopost = "";
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
 $dsql = new DedeSql(false);
 if($dopost=="viewinfo") //查看表结构
 {

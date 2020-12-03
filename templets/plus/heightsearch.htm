@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $cfg_webname?> - 高级搜索</title>
+<title><?php echo $cfg_webname?> - 高级搜索 - powered by dedecms</title>
 <link href="../templets/style/dede.css" rel="stylesheet" type="text/css" />
 <link href="../templets/style/spage.css" rel="stylesheet" type="text/css" />
 </head>
@@ -11,12 +11,12 @@
 
 <div class="stop">
 	<span class="toptitle">高级搜索</span>
-	<span class="toplink"><a href="/">返回主页</a></span></div>
+	<span class="toplink"><a href="<?php echo $cfg_indexurl?>">返回主页</a></span></div>
 
 <div class="smain">
 	<div class="mtitle">
 		<div class="mtname"><strong><a href='<?php echo $cfg_indexurl?>'> 
-              <?php echo $cfg_webname?></a>- 高级搜索：</strong></div>
+              <?php echo $cfg_webname?></a> - 高级搜索：</strong></div>
 		</div>
 	<div class="mbox">
 		<div class="flbox"><br />
@@ -58,20 +58,13 @@
               </tr>
               <tr bgcolor="#FFFFFF">
                 <td height="30" align="center">关键字模式：</td>
-                <td height="30">&nbsp;
-<input name="kwtype" type="radio" value="0" checked="checked" />
-                  或
-                  <input type="radio" name="kwtype" value="1" />
-                  与</td>
+                <td height="30"><input type="radio" name="kwtype" value="1" checked="checked" />
+                  逻辑与&nbsp;
+<input name="kwtype" type="radio" value="0" />
+                  逻辑或
+                  </td>
               </tr>
-              <tr bgcolor="#FFFFFF">
-                <td height="30" align="center">搜索内容：</td>
-                <td height="30">&nbsp;
-<select name="searchtype" id="searchtype" class="op1">
-                    <option value="titlekeyword" selected="selected">默认搜索</option>
-                    <option value="title">仅搜索标题</option>
-                  </select>                </td>
-              </tr>
+
               <tr bgcolor="#F4FCE4">
                 <td height="31" colspan="2" align="center" bgcolor="#F4F9F2"><input type="submit" name="button" id="button" value="搜索" class="submit"/>                </td>
               </tr>

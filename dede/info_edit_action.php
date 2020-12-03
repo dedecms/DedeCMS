@@ -178,7 +178,7 @@ if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$ID";
 //更新全站搜索索引
 $datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$edadminid,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
-               'addinfos'=>$description,'uptime'=>mytime(),'arcrank'=>0);
+               'addinfos'=>$description,'uptime'=>time(),'arcrank'=>0);
 UpSearchIndex($dsql,$datas);
 unset($datas);
 //更新Tag索引

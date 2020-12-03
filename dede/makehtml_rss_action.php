@@ -4,11 +4,13 @@ CheckPurview('sys_MakeHtml');
 require_once(dirname(__FILE__)."/../include/inc_rss_view.php");
 if(empty($tid)) $tid = 0;
 if(empty($maxrecord)) $maxrecord = 50;
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
+
 $dsql = new DedeSql(false);
-$row = $dsql->GetOne("Select ID From #@__arctype where ID>'$tid' And ispart<>2 order by ID asc limit 0,1;");
+$row = $dsql->GetOne("Select ID From #@__arctype where ID>'$tid' And ispart<2 order by ID asc limit 0,1;");
 $dsql->Close();
 if(!is_array($row)){
-	echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 	echo "完成所有文件更新！";
 	exit();
 }

@@ -3,7 +3,8 @@
 @set_time_limit(3600);
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Keyword');
-echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
+
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
 echo "正在读取关键字数据库...<br/>\r\n";
 flush();
 

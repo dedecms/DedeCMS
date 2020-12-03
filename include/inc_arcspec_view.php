@@ -29,6 +29,7 @@ class SpecView
 	//-------------------------------
 	function __construct($starttime=0)
  	{
+
  		$this->TypeID = 0;
  		$this->dsql = new DedeSql(false);
  		$this->dtp = new DedeTagParse();

@@ -26,7 +26,7 @@ if($action=="save")
 	}
 	$query = "
 	Insert Into #@__co_exrule(channelid,rulename,etype,dtime,ruleset)
-	Values('$channelid','$rulename','$etype','".mytime()."','$notes')
+	Values('$channelid','$rulename','$etype','".time()."','$notes')
 	";
 	$dsql = new DedeSql(false);
 	$dsql->ExecuteNoneQuery($query);
@@ -47,7 +47,7 @@ else if($action=="hand")
 	   $win->AddHidden("job","yes");
 	   $win->AddHidden("action",$action);
 	   $win->AddTitle("请在下面输入你要导入的文本配置：");
-	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px'></textarea>");
+	   $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300'></textarea>");
 	   $winform = $win->GetWindow("ok");
 	   $win->Display();
      exit();
@@ -68,7 +68,7 @@ else if($action=="hand")
       $noteinfos = $dtp->GetTagByName("note");
 	    $query = "
 	        Insert Into #@__co_exrule(channelid,rulename,etype,dtime,ruleset)
-	        Values('".$noteinfos->GetAtt('channelid')."','".$noteinfos->GetAtt('rulename')."','".$noteinfos->GetAtt('etype')."','".mytime()."','$dbnotes')
+	        Values('".$noteinfos->GetAtt('channelid')."','".$noteinfos->GetAtt('rulename')."','".$noteinfos->GetAtt('etype')."','".time()."','$dbnotes')
 	    ";
 	    $dsql = new DedeSql(false);
 	    $dsql->ExecuteNoneQuery($query);

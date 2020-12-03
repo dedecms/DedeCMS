@@ -165,18 +165,17 @@ if(!$dsql->ExecuteNoneQuery($addQuery)){
 
 //生成HTML
 //---------------------------------
-$artUrl = MakeArt($ID,true);
-if($artUrl=="") $artUrl = $cfg_plus_dir."/view.php?aid=$ID";
+$artUrl = getfilenameonly($ID, $typeid, $senddate, $title, $ismake, $arcrank, $money);
 
 //更新全站搜索索引
 $datas = array('aid'=>$ID,'typeid'=>$typeid,'channelid'=>$channelid,'adminid'=>$edadminid,'mid'=>$memberid,'att'=>$arcatt,
                'title'=>$title,'url'=>$artUrl,'litpic'=>$litpic,'keywords'=>$keywords,'pubdate'=>$pubdate,
-               'addinfos'=>$description,'uptime'=>mytime(),'arcrank'=>$arcrank);
+               'addinfos'=>$description,'uptime'=>time(),'arcrank'=>$arcrank);
 UpSearchIndex($dsql,$datas);
 unset($datas);
 //更新Tag索引
 UpTags($dsql,$tag,$ID,0,$typeid,$arcrank);
-
+MakeArt($ID,true);
 //---------------------------------
 //返回成功信息
 //----------------------------------

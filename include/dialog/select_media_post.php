@@ -25,7 +25,7 @@ if($job=="upload")
 		exit();
 	}
 	
-	$nowtme = mytime();
+	$nowtme = time();
 	if($filename!="") $filename = trim(ereg_replace("[ \r\n\t\*\%\\/\?><\|\":]{1,}","",$filename));
 	if($filename==""){
 		$y = substr(strftime("%Y",$nowtme),2,2);
@@ -49,7 +49,7 @@ if($job=="upload")
   $dsql = new DedeSql(false);
   $dsql->ExecuteNoneQuery($inquery);
   $dsql->Close();
-	ShowMsg("成功上传文件！","select_media.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".mytime());
+	ShowMsg("成功上传文件！","select_media.php?comeback=".urlencode($filename)."&f=$f&activepath=".urlencode($activepath)."&d=".time());
 	exit();
 }
 ?>

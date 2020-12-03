@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 
@@ -35,6 +35,7 @@ $money = $arcatt = $typeid2 = 0;
 $pagestyle = 2;
 
 $title = ClearHtml($title);
+$title = cn_substr($title,80);
 $writer =  cn_substr(trim(ClearHtml($writer)),30);
 $source = cn_substr(trim(ClearHtml($source)),50);
 $description = cn_substr(trim(ClearHtml($description)),250);
@@ -51,7 +52,7 @@ $memberID = $cfg_ml->M_ID;
 $inQuery = "INSERT INTO `$maintable`(
 ID,typeid,typeid2,sortrank,iscommend,ismake,channel,
 arcrank,click,money,title,shorttitle,color,writer,source,litpic,
-pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip) 
+pubdate,senddate,arcatt,adminID,memberID,description,keywords,mtype,userip)
 VALUES ('$arcID','$typeid','$typeid2','$sortrank','0','$ismake','$channelid',
 '$arcrank','0','$money','$title','$shorttitle','$color','$writer','$source','$litpic',
 '$pubdate','$senddate','$arcatt','$adminID','$memberID','$description','$keywords','$mtype','$userip');";
@@ -68,7 +69,7 @@ if(!$dsql->ExecuteNoneQuery($inQuery)){
 //------------------------------
 $imgurls = "{dede:pagestyle maxwidth='$maxwidth' ddmaxwidth='' row='0' col='0' value='$pagestyle'/}\r\n";
 for($i=1;$i<=120;$i++){
-	if(isset(${'imgurl'.$i})|| 
+	if(isset(${'imgurl'.$i})||
 	(isset($_FILES['imgfile'.$i]['tmp_name']) && is_uploaded_file($_FILES['imgfile'.$i]['tmp_name']))){
 		$iinfo = str_replace("'","`",stripslashes(${'imgmsg'.$i}));
 		//非上传图片

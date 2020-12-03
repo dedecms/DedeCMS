@@ -173,6 +173,7 @@ function ShowSonList(){
               (本权限仅对<font color="#0000FF"><strong>最终列表栏目</strong></font>有效，设置后本栏目发布或审核后的所有文档将使用此权限)
             </td>
           </tr>
+
           <tr>
             <td height="26" align="left" class='bline'>文件保存目录：</td>
             <td align="left" class='bline'> <input name="typedir" type="text" id="typedir" value="<?php echo $myrow['typedir']?>" style="width:300px">
@@ -207,8 +208,13 @@ function ShowSonList(){
             <td height="26" align="left" class='bline'>栏目属性：</td>
             <td align="left" class='bline'> <input name="ispart" type="radio" id="radio" value="0" class='np'<?php  if($myrow['ispart']==0) echo" checked";?>>
               最终列表栏目（允许在本栏目发布文档，并生成文档列表）<br> <input name="ispart" type="radio" id="radio2" value="1" class='np'<?php  if($myrow['ispart']==1) echo" checked";?>>
-              频道封面（栏目本身不允许发布文档）<br> <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php  if($myrow['ispart']==2) echo" checked";?>>
-              单独页面（栏目本身不允许发布文档） </td>
+              频道封面（栏目本身不允许发布文档）<br> 
+              <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php  if($myrow['ispart']==2) echo" checked";?>>
+              单独页面（栏目本身不允许发布文档） 
+              <br>
+              <input name="ispart" type="radio" id="radio" value="3" class='np'<?php  if($myrow['ispart']==3) echo" checked";?>>
+           跳转网址（在文件保存目录处填写完整网址）
+              </td>
           </tr>
 		  <?php
 		  $needcheckS = "";

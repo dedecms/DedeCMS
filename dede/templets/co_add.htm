@@ -33,6 +33,17 @@ function TSourceType()
   }
 }
 
+function ShowHideRfurl()
+{
+  var r1 = document.getElementById('isref1');
+  var r2 = document.getElementById('isref2');
+  if(r2.checked){
+     document.getElementById('rfurlct').style.display = 'block';
+  }else{
+     document.getElementById('rfurlct').style.display = 'none';
+  }
+}
+
 </script>
 <title>新增采集节点</title>
 <link href="css_body.css" rel="stylesheet" type="text/css" />
@@ -100,13 +111,13 @@ td{ padding-left:6px; }
                   <td width="32%"><input name="notename" type="text" id="notename" style="width:200px" /></td>
                   <td width="18%">页面编码：</td>
                   <td width="32%">
-                  	<input type="radio" name="language"  value="utf-8" />
-                    UTF8
-                    <input type="radio" name="language"  value="gb2312" checked="checked" />
-                    GB2312
+                  	<input type="radio" name="language"  value="utf-8" checked="checked" />
+                    utf-8
+                    <input type="radio" name="language"  value="gb2312" />
+                    gb2312
                     <input type="radio" name="language"  value="big5" />
-                    Big5
-                   </td>
+                    BIG5 
+                    </td>
                 </tr>
                 <tr>
                   <td height="24">图片相对网址： </td>
@@ -137,20 +148,21 @@ td{ padding-left:6px; }
                 </tr>
                 <tr>
                   <td height="24">防盗链模式：</td>
-                  <td><input name="isref" type="radio"  value="no" checked="checked" />
+                  <td><input name="isref" type="radio" id='isref1' onclick="ShowHideRfurl()" value="no" checked="checked" />
                     不开启
-                    <input name="isref" type="radio"  value="yes" />
+                    <input name="isref" id='isref2' type="radio" onclick="ShowHideRfurl()" value="yes" />
                     开启</td>
                   <td>资源下载超时时间：</td>
                   <td><input name="exptime" type="text" id="exptime" value="10" size="8" />
                     秒</td>
                 </tr>
-                <tr>
+                <tr id='rfurlct' style='display:none'>
                   <td height="24">引用网址：</td>
                   <td colspan="3"><input name="refurl" type="text" id="refurl" size="30" />
                     （一般为目标网站其中一个文章页的网址，需加http://）</td>
                 </tr>
-            </table></td>
+            </table>
+            </td>
           </tr>
           <tr>
             <td bgcolor="#F2F6E5"><table width="400" border="0" cellspacing="0" cellpadding="0">
@@ -167,9 +179,9 @@ td{ padding-left:6px; }
                   <td height="24">来源网址获取方式：</td>
                   <td colspan="2">
 				   <input name="source" type="radio" id="source1" value="var" onClick="TSourceType()" checked="checked" />
-                    符合特定序列的网址
+                    符合特定序列的列表网址
                     <input name="source" type="radio" id="source2" value="app" onClick="TSourceType()" />
-                    我自己手工指定这些网址
+                    手工指定列表网址
 				</td>
                 </tr>
                 
@@ -209,10 +221,10 @@ td{ padding-left:6px; }
                       <textarea name="linkareae" style="width:90%" rows="5" id="linkareae"></textarea>                  </td>
                 </tr>
                 <tr id="mt1">
-                  <td height="24" colspan="3" bgcolor="#FBFDF2"><strong>如果你想手工指定要采集的网址或除了规则网址外，还有其它网址，请在下面指定：</strong></td>
+                  <td height="24" colspan="3" bgcolor="#FBFDF2"><strong>如果你想手工指定要采集的列表网址或除了合符规则的列表网址外，还含有其它列表网址，请在下面指定：</strong></td>
                 </tr>
                 <tr id="mt2">
-                  <td height="110" valign="top"><strong>手工指定网址：</strong><a href="javascript:ShowHide('handurlhelp');"><img src="img/help.gif " width="16" height="16" border="0" /></a><br />
+                  <td height="110" valign="top"><strong>手工指定列表网址：</strong><a href="javascript:ShowHide('handurlhelp');"><img src="img/help.gif " width="16" height="16" border="0" /></a><br />
                     (每行一条网址，<br />
                     不支持使用变量)</td>
                   <td colspan="2"><span id='handurlhelp' style='display:none;background-color:#efefef'> 对于部份符合规则，部份不符合规则的网址，可以把不符合规则的放在这里，例：像<br />
@@ -224,10 +236,10 @@ td{ padding-left:6px; }
                     http://xx.com/aaa/index.html(该网址不符分页规则) 填写在下面。 </span>
                       <textarea name="sourceurls" id="sourceurls" style="width:95%;height:100px"></textarea></td>
                 </tr>
-           <tr align="center"> 
+           <!--tr align="center"> 
             <td height="49" colspan="3">
             	<input name="test1" type="button" class="nbt" id="test1" value="测试列表获取规则">            </td>
-          </tr>
+          </tr-->
             </table>
             </td>
           </tr>

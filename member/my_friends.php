@@ -36,7 +36,7 @@ if($action=="add"){
 			$message .= "已通过你的好友邀请!";
 		}
 		$db->ExecuteNoneQuery("INSERT INTO #@__pms(msgfrom,msgfromid,msgtoid,folder,new,subject,dateline,message) VALUES('".$cfg_ml->M_UserName."','".$cfg_ml->M_ID."','".$uid."','inbox',1,'{$subject}','".time()."','".$message."');");
-		echo $db->GetError();
+		$cfg_ml->FushCache($uid);
 		$db->ExecuteNoneQuery("INSERT INTO #@__friends(friend_from,friend_to) VALUES('".$uid."','".$cfg_ml->M_ID."');");
 		$db->Close();
 		ShowMsg("<font color=green>成功加".$members['uname']."为好友!</font>","-1");

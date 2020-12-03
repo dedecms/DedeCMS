@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Edit');
 require_once(dirname(__FILE__)."/../include/inc_photograph.php");
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
 if($cfg_photo_support==""){ echo "你的系统没安装GD库，不允许使用本功能！"; }
 $ImageWaterConfigFile = dirname(__FILE__)."/../include/inc_photowatermark_config.php";
 if(empty($action)) $action = "";

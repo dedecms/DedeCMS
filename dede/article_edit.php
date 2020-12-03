@@ -12,15 +12,19 @@ $tables = GetChannelTable($dsql,$aid,'arc');
 
 //读取归档信息
 //------------------------------
-$arcQuery = "Select c.typename as channelname,ar.membername as rankname,a.* 
+$arcQuery = "Select c.typename as channelname,full.keywords as words,ar.membername as rankname,a.* 
 From `{$tables['maintable']}` a 
 left join #@__channeltype c on c.ID=a.channel 
 left join #@__arcrank ar on ar.rank=a.arcrank 
+left join #@__full_search full on full.aid=a.ID 
 where a.ID='$aid'";
 
 $addQuery = "Select * From `{$tables['addtable']}` where aid='$aid'";
 
 $arcRow = $dsql->GetOne($arcQuery);
+
+$arcRow['keywords'] = $arcRow['words'];
+
 if(!is_array($arcRow)){
 	$dsql->Close();
 	ShowMsg("读取档案基本信息出错!","javascript:;");
@@ -28,6 +32,7 @@ if(!is_array($arcRow)){
 }
 
 $query = "Select * From #@__channeltype where ID='".$arcRow['channel']."'";
+
 $cInfos = $dsql->GetOne($query);
 if(!is_array($cInfos)){
 	$dsql->Close();

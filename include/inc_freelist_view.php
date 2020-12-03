@@ -87,13 +87,13 @@ class FreeList
  	//---------------------------
  	//关闭相关资源
  	//---------------------------
+
  	function Close()
  	{
  		@$this->dsql->Close();
- 		@$this->dsql = '';
- 		$this->TypeLink->Close();
- 		$this->PartView->Close();
- 		if(is_object($this->ChannelUnit)) $this->ChannelUnit->Close();
+ 		@$this->TypeLink->Close();
+ 		@$this->ChannelUnit->Close();
+ 		@$this->PartView->Close();
  	}
  	//------------------
  	//统计列表里的记录
@@ -137,7 +137,7 @@ class FreeList
 		  if(eregi("spec",$listtype) || $channelid==-1) $addSql .= " And channel = -1  ";
 
  		  if(!empty($subday)){
- 		  	 $starttime = mytime() - $subday * 86400;
+ 		  	 $starttime = time() - $subday * 86400;
  		  	 $addSql .= " And senddate > $starttime  ";
  		  }
 
@@ -225,7 +225,8 @@ class FreeList
  	{
  		$nmfa = 0;
  		$tmpdir = $GLOBALS['cfg_basedir'].$GLOBALS['cfg_templets_dir'];
- 		if($this->Fields['ispart']==1){
+ 		if($this->Fields['ispart']==1)
+ 		{
  			$tempfile = str_replace("{tid}",$this->FreeID,$this->Fields['tempindex']);
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			$tempfile = $tmpdir."/".$tempfile;
@@ -233,7 +234,8 @@ class FreeList
  	  	  $tempfile = $tmpdir."/".$GLOBALS['cfg_df_style']."/index_default.htm";
  	    }
  			$this->PartView->SetTemplet($tempfile);
- 		}else if($this->Fields['ispart']==2){
+ 		}else if($this->Fields['ispart']==2)
+ 		{
  			$tempfile = str_replace("{tid}",$this->FreeID,$this->Fields['tempone']);
  		  $tempfile = str_replace("{cid}",$this->ChannelUnit->ChannelInfos['nid'],$tempfile);
  			if(is_file($tmpdir."/".$tempfile)) $this->PartView->SetTemplet($tmpdir."/".$tempfile);
@@ -242,8 +244,9 @@ class FreeList
 	  CreateDir($this->Fields['typedir']);
  		$makeUrl = $this->GetMakeFileRule($this->Fields['ID'],"index",$this->Fields['typedir'],$this->Fields['defaultname'],$this->Fields['namerule2']);
  		$makeFile = $this->GetTruePath().$makeUrl;
-	  if($nmfa==0) $this->PartView->Display();
- 		else{
+	  if($nmfa==0){
+	  	$this->PartView->Display();
+	  }else{
  			if(!file_exists($makeFile)) $this->PartView->Display();
  			else include($makeFile);
  		}

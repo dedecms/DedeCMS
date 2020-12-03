@@ -47,7 +47,7 @@ class TypeLink
 		if($typeid > 0){
 		  $this->TypeInfos = $this->dsql->GetOne($query,MYSQL_ASSOC);
 		  //模板和路径变量处理
- 		  $this->TypeInfos['typedir'] = MfTypedir($this->TypeInfos['typedir']);
+ 		  if($this->TypeInfos['ispart']<=2) $this->TypeInfos['typedir'] = MfTypedir($this->TypeInfos['typedir']);
  		  $this->TypeInfos['tempindex'] = MfTemplet($this->TypeInfos['tempindex']);
  		  $this->TypeInfos['templist'] = MfTemplet($this->TypeInfos['templist']);
  		  $this->TypeInfos['temparticle'] = MfTemplet($this->TypeInfos['temparticle']);
@@ -204,8 +204,8 @@ class TypeLink
     if($channeltype==0) $ctsql="";
     else $ctsql=" And channeltype='$channeltype' ";
 
-    if($oper!=0){ $query = "Select ID,typename,ispart From #@__arctype where ispart<>2 And ID='$oper' $ctsql"; }
-    else{ $query = "Select ID,typename,ispart From #@__arctype where ispart<>2 And reID=0 $ctsql order by sortrank asc"; }
+    if($oper!=0){ $query = "Select ID,typename,ispart From #@__arctype where ispart<2 And ID='$oper' $ctsql"; }
+    else{ $query = "Select ID,typename,ispart From #@__arctype where ispart<2 And reID=0 $ctsql order by sortrank asc"; }
 
     $this->dsql->SetQuery($query);
     $this->dsql->Execute();
@@ -220,7 +220,7 @@ class TypeLink
      return $this->OptionArrayList;
 	}
 	function LogicGetOptionArray($ID,$step){
-		$this->dsql->SetQuery("Select ID,typename,ispart From #@__arctype where reID='".$ID."' And ispart<>2 order by sortrank asc");
+		$this->dsql->SetQuery("Select ID,typename,ispart From #@__arctype where reID='".$ID."' And ispart<2 order by sortrank asc");
 		$this->dsql->Execute($ID);
 		while($row=$this->dsql->GetObject($ID)){
       if($row->ispart==1) $this->OptionArrayList .= "<option value='".$row->ID."' style='background-color:#EFEFEF;color:#666666'>$step".$row->typename."</option>\r\n";

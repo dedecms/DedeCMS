@@ -11,7 +11,7 @@ function __saveedit();
 if($dopost=="saveedit")
 {
   require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-	$uptime = mytime();
+	$uptime = time();
 	$body = str_replace('&quot;','\\"',$body);
 	$filename = ereg_replace("^/","",$nfilename);
 	//如果更改了文件名，删除旧文件
@@ -72,7 +72,7 @@ function __make();
 else if($dopost=="make")
 {
 	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-	$dsql->SetQuery("update #@__sgpage set uptime='".mytime()."' where aid='$aid'");
+	$dsql->SetQuery("update #@__sgpage set uptime='".time()."' where aid='$aid'");
   $dsql->ExecuteNoneQuery();
 	$row = $dsql->GetOne("Select * From #@__sgpage where aid='$aid'");
 	$fileurl = $cfg_cmspath."/".$row['filename'];
@@ -100,7 +100,7 @@ function __makeAll();
 else if($dopost=="makeall")
 {
 	require_once(dirname(__FILE__)."/../include/inc_arcpart_view.php");
-  $dsql->ExecuteNoneQuery("update #@__sgpage set uptime='".mytime()."'");
+  $dsql->ExecuteNoneQuery("update #@__sgpage set uptime='".time()."'");
 	$row = $dsql->Execute('meoutside',"Select * From #@__sgpage ");
 	while($row = $dsql->GetArray('meoutside'))
 	{

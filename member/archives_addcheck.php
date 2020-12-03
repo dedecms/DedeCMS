@@ -77,14 +77,14 @@ if(!empty($dede_addonfields))
 	     if($vs[1]=="htmltext"||$vs[1]=="textdata")
 	     {
 		     ${$vs[0]} = filterscript(stripslashes(${$vs[0]}));
-         //自动摘要
-         if(empty($description)){
-    	      $description = cn_substr(html2text(${$vs[0]}),$cfg_auot_description);
-	          $description = trim(preg_replace("/#p#|#e#/","",$description));
-	          $description = addslashes($description);
-         }
-         ${$vs[0]} = addslashes(${$vs[0]});
-         ${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$arcID,'add','','member');
+             //自动摘要
+             if(empty($description)){
+    	        $description = cn_substr(html2text(${$vs[0]}),$cfg_auot_description);
+	            $description = trim(preg_replace("/#p#|#e#/","",$description));
+	            $description = addslashes($description);
+            }
+           ${$vs[0]} = addslashes(${$vs[0]});
+           ${$vs[0]} = GetFieldValue(${$vs[0]},$vs[1],$arcID,'add','','member');
 	     }else{
 		     ${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$arcID);
 	     }

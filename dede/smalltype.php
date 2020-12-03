@@ -15,9 +15,7 @@ if(empty($action)){
 			$typesinfo[$smalltypeid][] = $row['typename'];
 			$types[$smalltypeid][] = $row['ID'];
 		}
-
 	}
-
 	$sql = "select * from #@__smalltypes order by disorder asc, id asc";
 	$db->SetQuery($sql);
 	$db->Execute();
@@ -32,11 +30,14 @@ if(empty($action)){
 		$smalltypes[] = $smalltype;
 	}
 	include(dirname(__FILE__)."/templets/smalltype.htm");
+/*
+function add()
+*/
 }elseif($action == 'add')
 {
 	$name = trim($name);
 	if($name == '' ) {
-		ShowMsg('小分类名称不能为空，将返回小分类管理页面','sectors.php');
+		ShowMsg('小分类名称不能为空，将返回小分类管理页面','smalltype.php');
 		exit();
 	}
 	$disorder = intval($disorder);
@@ -53,12 +54,19 @@ if(empty($action)){
 		ShowMsg('更新小分类失败，将返回小分类管理页面','smalltype.php');
 		exit();
 	}
-
+/*
+function update()
+*/
 }elseif($action == 'update')
 {
 	$errinfo = '';
 	foreach($disorders as $key => $disorder)
 	{
+		$names[$key] = trim($names[$key]);
+		if($names[$key] == '' ){
+			$errinfo .= "id为 $key 的小分类名称为空，未更新该条记录<br>";
+			continue;
+		}
 		$sql = "update #@__smalltypes set disorder=$disorder, name='$names[$key]', description='$descriptions[$key]' where id=$key";
 		$db->SetQuery($sql);
 		if(!$db->ExecuteNoneQuery())
@@ -73,8 +81,11 @@ if(empty($action)){
 	}else
 	{
 		ShowMsg('更新小分类成功，将返回小分类管理页面','smalltype.php');
+		exit;
 	}
-
+/*
+function delete()
+*/
 }elseif($action == 'delete')
 {
 		$id = intval($id);
@@ -114,10 +125,6 @@ if(empty($action)){
 				exit();
 			}
 		}
-}else{
-
 }
-
-
 ClearAllLink();
 ?>

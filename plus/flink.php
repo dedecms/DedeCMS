@@ -12,7 +12,7 @@ if($dopost=="save")
 	  ShowMsg("验证码不正确!","");
 	  exit();
   }
-  $dtime = strftime("%Y-%m-%d %H:%M:%S",mytime());
+  $dtime = strftime("%Y-%m-%d %H:%M:%S",time());
   $query = "Insert Into #@__flink(sortrank,url,webname,logo,msg,email,typeid,dtime,ischeck) 
   Values('50','$url','$webname','$logo','$msg','$email','$typeid','$dtime','0')";
   $dsql->SetQuery($query);

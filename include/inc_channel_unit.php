@@ -83,9 +83,10 @@ class ChannelUnit
 	//----------------------
 	function MakeField($fname,$fvalue,$addvalue="")
 	{
+
 		if($fvalue==""){ $fvalue = $this->ChannelFields[$fname]["default"]; }
 		$ftype = $this->ChannelFields[$fname]["type"];
-		
+
 		//执行函数
 		if($this->ChannelFields[$fname]["function"]!=""){
 			$fvalue = $this->EvalFunc($fvalue,$this->ChannelFields[$fname]["function"]);
@@ -120,7 +121,9 @@ class ChannelUnit
 			$fvalue = $this->GetAddLinkPage($fvalue);
 		}
 		else if($ftype=="specialtopic"){
-			$fvalue = $this->GetSpecList($fname,$fvalue);
+			
+			$fvalue = $this->GetSpecList($fname,$fvalue,$addvalue);
+			
 		}
 		return $fvalue;
 	}
@@ -151,25 +154,17 @@ class ChannelUnit
 				  $keywords = trim($ctag->GetAtt("keywords"));
 				  $stypeid = $ctag->GetAtt("typeid");
 			  }
-			  
-			  //echo "hgdshgdhgdg".$idlist."|";
-				
 				if(trim($ctag->GetInnerText())!="") $listTemplet = $ctag->GetInnerText();
 				else $listTemplet = GetSysTemplets("spec_arclist.htm");
-				$idvalue = SpGetFullList($this->dsql,0,-1,$rownum,$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
+				$idvalue = SpGetFullList($this->dsql,$stypeid,0,$rownum,$ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),
    $keywords,$listTemplet,$idlist,'',0,'',$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"));
-				/*
-				SpGetArcList(
-				        $this->dsql,'spec',$stypeid,$rownum,$ctag->GetAtt("col"),
-				        $ctag->GetAtt("titlelen"),$ctag->GetAtt("infolen"),$ctag->GetAtt("imgwidth"),$ctag->GetAtt("imgheight"),
-				"all","default",$keywords,$listTemplet,100,0,$idlist,0,"",0,"desc",0,0,'#@__archives',false);
-				*/
 				$notestr = str_replace("~notename~",$notename,$tempStr);
 				$notestr = str_replace("~spec_arclist~",$idvalue,$notestr);
 				$rvalue .= $notestr;
 				if($noteid!="" && $ctag->GetAtt("noteid")==$noteid){ break; }
 			}
 		}
+
 		$dtp->Clear();
 		return $rvalue;
 	}
@@ -182,7 +177,7 @@ class ChannelUnit
 		$phppath = $GLOBALS["cfg_plus_dir"];
 		$downlinkpage = "";
 		if($row['downtype']=='0'){
-		   return $this->GetAddLinks($fvalue);
+		   return $this->GetAddLinks($fvalue,$this->ArcID,$this->ChannelID);
 	  }else{
 	  	 $tempStr = GetSysTemplets("channel/channel_downlinkpage.htm");
 		   $links = $phppath."/download.php?open=0&aid=".$this->ArcID."&cid=".$this->ChannelID;
@@ -193,7 +188,7 @@ class ChannelUnit
 	
 	//获得附件的下载所有链接地址
 	//-----------------------------------
-	function GetAddLinks($fvalue)
+	function GetAddLinks($fvalue,$aid,$cid)
 	{
 		global $cfg_softinfos;
 		if(!is_array($cfg_softinfos)){
@@ -217,7 +212,7 @@ class ChannelUnit
     	  if(!isset($firstLink)){ $firstLink = $links; }
     	  if($cfg_softinfos['showlocal']==0 || $cfg_softinfos['ismoresite']!=1)
     	  {
-    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
+    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&aid=$aid&cid=$cid&link=".urlencode(base64_encode($links));
     	     $temp = str_replace("~link~",$links,$tempStr);
     	     $temp = str_replace("~server~",$serverName,$temp);
     	     $downlinks .= $temp;
@@ -240,7 +235,7 @@ class ChannelUnit
     		if(!eregi("^(http|ftp)://",$firstLink)) $flink = trim($link).$firstLink;
     		else $flink = $firstLink;
     		
-    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&link=".urlencode(base64_encode($flink));
+    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&aid=$aid&cid=$cid&link=".urlencode(base64_encode($flink));
     	  $temp = str_replace("~link~",$flink,$tempStr);
     	  $temp = str_replace("~server~",$serverName,$temp);
     	  $downlinks .= $temp;
@@ -268,7 +263,7 @@ class ChannelUnit
     	  if(!isset($firstLink)){ $firstLink = $links; }
     	  if($cfg_softinfos['showlocal']==0 || $cfg_softinfos['ismoresite']!=1)
     	  {
-    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&link=".urlencode(base64_encode($links));
+    	     if($cfg_softinfos['gotojump']==1) $links = $phppath."/download.php?open=1&aid=$aid&cid=$cid&link=".urlencode(base64_encode($links));
     	     $temp = str_replace("~link~",$links,$tempStr);
     	     $temp = str_replace("~server~",$serverName,$temp);
     	     $downlinks .= $temp;
@@ -291,7 +286,7 @@ class ChannelUnit
     		if(!eregi("^(http|ftp)://",$firstLink)) $flink = trim($link).$firstLink;
     		else $flink = $firstLink;
     		
-    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&link=".urlencode(base64_encode($flink));
+    		if($cfg_softinfos['gotojump']==1) $flink = $phppath."/download.php?open=1&aid=$aid&cid=$cid&link=".urlencode(base64_encode($flink));
     	  $temp = str_replace("~link~",$flink,$tempStr);
     	  $temp = str_replace("~server~",$serverName,$temp);
     	  $downlinks .= $temp;

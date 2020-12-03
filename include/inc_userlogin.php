@@ -132,7 +132,7 @@ class userLogin
 		$this->userPwd = ereg_replace("[^0-9a-zA-Z_@\!\.-]","",$userpwd);
 		$pwd = substr(md5($this->userPwd),0,24);
 		$dsql = new DedeSql(false);
-		$dsql->SetQuery("Select * From #@__admin where userid like '".$this->userName."' limit 0,1");
+		$dsql->SetQuery("Select * From #@__admin where userid='".$this->userName."' limit 0,1");
 		$dsql->Execute();
 		$row = $dsql->GetObject();
 		if(!isset($row->pwd)){
@@ -151,7 +151,7 @@ class userLogin
 			$this->userName = $row->uname;
 			$groupSet = $dsql->GetOne("Select * From #@__admintype where rank='".$row->usertype."'");
 			$this->userPurview = $groupSet['purviews'];
-			$dsql->SetQuery("update #@__admin set loginip='$loginip',logintime='".strftime("%Y-%m-%d %H:%M:%S",mytime())."' where ID='".$row->ID."'");
+			$dsql->SetQuery("update #@__admin set loginip='$loginip',logintime='".strftime("%Y-%m-%d %H:%M:%S",time())."' where ID='".$row->ID."'");
 			$dsql->ExecuteNoneQuery();
 			$dsql->Close();
 			return 1;

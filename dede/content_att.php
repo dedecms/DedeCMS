@@ -31,6 +31,8 @@ if($dopost=="save")
    	   $dsql->ExecuteNoneQuery();
    	 }
    }
+   //header("Content-Type: text/html; charset={$cfg_ver_lang}");
+   echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_ver_lang}\">\r\n";
    echo "<script> alert('成功更新自定文档义属性表！'); </script>";
 }
 

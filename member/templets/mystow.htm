@@ -36,7 +36,7 @@ $mylist = $dlist->GetDataList();
 while($row = $mylist->GetArray('dm'))
 {
 	if($row['url'] == ''){
-		$row['url'] = $cfg_cmspath.'/plus/view.php?aid='.$row['aid'];
+		$row['url'] = $cfg_cmspath.'/plus/view.php?aid='.$row['arcid'];
 	}
 ?>
               <tr bgcolor="#FFFFFF" align="center" height='24'>

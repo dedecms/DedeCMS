@@ -19,8 +19,8 @@ if($dopost=="save")
 	 $description = Html2Text($description);
    $keywords = Html2Text($keywords);
    
-   if($cfg_cmspath!="") $typedir = ereg_replace("^".$cfg_cmspath,"{cmspath}",$typedir);
-   else if(!eregi("{cmspath}",$typedir) && $moresite==0) $typedir = "{cmspath}".$typedir;
+   if($cfg_cmspath!='') $typedir = ereg_replace("^".$cfg_cmspath,"{cmspath}",$typedir);
+   //else if(!eregi("{cmspath}",$typedir) && $moresite==0) $typedir = "{cmspath}".$typedir;
    
    //子分类
    $sonlists = (empty($sonlists) ? '' : $sonlists);

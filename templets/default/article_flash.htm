@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/}</title>
+<title>{dede:field name='title'/} - {dede:global name='cfg_webname'/} - powered by dedecms</title>
 <meta name="keywords" content="{dede:field name='keywords'/}">
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}">
 <link href="{dede:field name='templeturl'/}/style/dede.css" rel="stylesheet" type="text/css" />
@@ -29,7 +29,7 @@ function Digg(divId,aid){
 
 <!--头部开始-->
 <div class="top cbody">
-	<div class="toplogo"><a href="http://www.dedecms.com/"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="DEDE CMS" /></a></div>
+	<div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
 	<div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
 	<div class="toplink">		<ul>
 			<li><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></li>
@@ -45,7 +45,6 @@ function Digg(divId,aid){
         {dede:channel type='top' row='8' currentstyle="<li><a href='~typelink~' class='thisclass'>~typename~</a> </li>"}<li><a href='[field:typelink/]'>[field:typename/]</a> </li>
         {/dede:channel}
 		<li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
-		<li><a href="http://bbs.dedecms.com">支持论坛</a></li>
 	</ul>
 	<div class="rssbut">		<a href="{dede:field name='phpurl'/}/rssmap.html"><img src="{dede:field name='templeturl'/}/images/rss_button.gif" alt="RSS" /></a>
 	</div>
@@ -54,7 +53,7 @@ function Digg(divId,aid){
 <div class="topsearch cbody">
 	<div class="title"></div>
 	<div class="inpbox">    <form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-		<input type="hidden" name="kwtype" value="0">
+		<input type="hidden" name="kwtype" value="1">
 		<input name="keyword" id="keyword" type="text" class="searchtxt" />
 		<select name="searchtype" id="searchtype">
 			<option value="titlekeyword" selected>智能模糊搜索</option>
@@ -81,7 +80,14 @@ function Digg(divId,aid){
 		<!--列表-->
 		<div class="fview margintop">
 			<div class="ftitle">{dede:field name='title'/}</div>
-			<div class="finfo"><strong>作者：</strong>{dede:field name="writer"/} <strong>大小：</strong>{dede:field name='filesize'/}<strong>人气：</strong><script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberid'/}&view=yes" language="javascript"></script> <strong>发布时间：</strong>{dede:field name='pubdate' function="GetDateMk('@me')"/}</div>
+			<div class="finfo">
+            	<strong>作者：</strong>{dede:field name="writer"/} 
+                <strong>大小：</strong>{dede:field name='filesize'/}
+                <strong>发布时间：</strong>{dede:field name='pubdate' function="GetDateMk('@me')"/}
+                <strong>Tag：</strong>{dede:tag type='current'/}
+                <strong>人气：</strong><script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}&mid={dede:field name='memberid'/}&view=yes" language="javascript"></script> 
+
+             </div>
 
 			<div class="flashbox">
 				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="{dede:field name='width'/}" height="{dede:field name='height'/}">
@@ -91,9 +97,10 @@ function Digg(divId,aid){
 				  <embed src="{dede:field name='flashurl'/}" width="{dede:field name='width'/}" height="{dede:field name='height'/}" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
 				</object>
             
-
+			<div class="flashinfo"><strong>{dede:field name='title'/}的介绍:</strong><br />
+			{dede:field name='flashinfo'/}</div>
 		</div>
-                        <div class="actbar">
+            <div class="actbar">
 				<span>[<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}">收藏</a>]</span>
 				<span>[<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}">推荐</a>]</span>
 				<span>[<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}">评论</a>]</span>
@@ -166,15 +173,15 @@ function Digg(divId,aid){
 				<dt>FLASH分类</dt>
 				<dd>
 					<ul>
-						{dede:channel type='sun'}
+						{dede:channel type='self'}
 						  <li><a href="[field:typelink/]">[field:typename/]</a></li>
 						{/dede:channel}
 					</ul>
 				</dd>
 			</dl>
-		</div>
+	  </div>
 
-		<!--分类-->
+    <!--分类-->
 		<div class="ftop margintop">
 			<dl>
 				<dt>热门排行</dt>
@@ -194,11 +201,11 @@ function Digg(divId,aid){
 
 
 <div class="footer cbody margintop">
-	<div class="copyright">  		Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        {dede:global name='cfg_powerby'/}
-	</div>
-	<div class="slogo">
-		<a href="http://www.dedecms.com" target="_blank"><img src="{dede:field name='templeturl'/}/images/s_logo.gif" width="66" height="33" alt="" /></a>
+		<div class="copyright"> 
+                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+		Powered by <a href="http://www.dedecms.com/" target="_blank">DedeCms {dede:global name='cfg_version'/}</a> &copy;2004-2008  <a href="http://www.desdev.cn/" target="_blank">DesDev Inc.</a><br />
 	</div>
 	<div class="floatclear"></div>
 </div>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css_body.css" rel="stylesheet" type="text/css" />
+<title>生成JS调用</title>
+</head>
+<body>
+<TABLE  width="96%" class="tbtitle" align="center" cellSpacing="0" cellPadding="0" border="0">
+  <TBODY>
+    <TR bgcolor="#EDF9D5">
+      <TD colSpan="2"><b>问答调用说明</b></TD>
+    </TR>
+  </TBODY>
+  <TBODY>
+    <TR>
+      <TD class="altbg1"><TEXTAREA style="WIDTH: 100%; WORD-BREAK: break-all" rows="3">&lt;script language="JavaScript" src="<?php echo $cfg_basehost;?>/plus/javascript.php?key=ask"&gt;&lt;/script&gt;</TEXTAREA>
+        <DIV style="padding:6px;background:#E8E8E8;color:#FF0000;">
+        <b>key:</b>ask表示调用问签,<b>t:</b> 调用问答下的分类(多个用数字逗号分开), <b>n:</b>要调用的条数(0到50) <b>s:</b>表示状态,digest推荐;ok已解决;over过期;bad无满意答案;new最新</DIV>        
+        <DIV class="jswizard">
+        <b>例子：</b> <span> http://www.dede.com/plus/javascript.php?key=ask&t=1,3,5,6&n=3&s=new </span>
+          <SCRIPT language="JavaScript" src="../plus/javascript.php?key=ask"> </SCRIPT>          
+        </DIV>
+        <BR /></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+</TD>
+</TR>
+</TBODY>
+</TABLE>
+<TABLE  width="96%" class="tbtitle" align="center" cellSpacing="0" cellPadding="0" border="0">
+  <TBODY>
+    <TR bgcolor="#EDF9D5">
+      <TD colSpan="2"><b>圈子调用说明</b></TD>
+    </TR>
+  </TBODY>
+  <TBODY>
+    <TR>
+      <TD class="altbg1"><TEXTAREA style="WIDTH: 100%; WORD-BREAK: break-all" rows="3">&lt;script language="JavaScript" src="<?php echo $cfg_basehost;?>/plus/javascript.php?key=group"&gt;&lt;/script&gt;</TEXTAREA>
+      <DIV style="padding:6px;background:#E8E8E8;color:#FF0000;">
+        <b>key:</b>group表示调用圈子,<b>t:</b> 调用指定的圈子(多个用数字逗号分开), <b>n:</b>要调用的条数(0到50) <b>s:</b>表示状态,digest精华;hot热帖;new最新</DIV>
+        <b>例子：</b> <span> http://www.dede.com/plus/javascript.php?key=group&t=1,3,5,6&n=3&s=new </span>
+        <div class="jswizard">
+          <script language="JavaScript" src="../plus/javascript.php?key=group"> </script>
+        </div>
+        <DIV style="border: 1px solid gray;	padding:6px;background:#E8E8E8;color:#FF0000;">
+      	<font color="red">*</font>为安全，调用时在 <a href="sys_info.php">系统设置->过滤设置</a> 中把信任的域名添加上去.</font>
+      	</DIV>
+      </TD>
+    </TR>
+  </TBODY>
+</TABLE>
+</TD>
+</TR>
+</TBODY>
+</TABLE>
+</body>
+</html>

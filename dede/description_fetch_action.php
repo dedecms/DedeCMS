@@ -6,10 +6,7 @@ CheckPurview('sys_description');
 $tjnum = 0;
 if($action=='getfields')
 {
-	header("Pragma:no-cache\r\n");
-	header("Cache-Control:no-cache\r\n");
-	header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	$dsql = new DedeSql(false);
 	if(!$dsql->linkID){
 		echo "<font color='red'>连接数据源的数据库失败！</font><br>";
@@ -30,6 +27,7 @@ if($action=='getfields')
 	exit();
 }elseif($action == 'fetch')
 {
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	$dsql = new DedeSql(false);
 	if(empty($startdd)) $startdd = 0;
 	if(empty($pagesize)) $pagesize = 100;
@@ -48,8 +46,8 @@ if($action=='getfields')
 	$maintable = $channelinfo['maintable'];
 	if(empty($totalnum)){
 		$addquery  = "";
-		if($sid!=0) $addquery  = " And ID>='$sid' ";
-		if($eid!=0) $addquery  = " And ID<='$eid' ";
+		if($sid!=0) $addquery  = " And aid>='$sid' ";
+		if($eid!=0) $addquery  = " And aid<='$eid' ";
 		$tjQuery = "Select count(*) as dd From #@__full_search where channelid='{$channel}' $addquery";
 		$row = $dsql->GetOne($tjQuery);
 		$totalnum = $row['dd'];
@@ -94,13 +92,11 @@ if($action=='getfields')
 	    	$dsql->executenonequery("OPTIMIZE TABLE `#@__full_search`");
 	    	$dsql->executenonequery("OPTIMIZE TABLE `$maintable`");
 	    	$dsql->Close();
-		    echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 		    echo "完成所有任务！";
 		    exit();
 	    }
   }else{
   	$dsql->Close();
-	  echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\r\n";
 	  echo "完成所有任务！";
 	  exit();
   }

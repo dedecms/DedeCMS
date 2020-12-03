@@ -71,7 +71,7 @@ function GetFormItem($ctag,$admintype='admin')
 	}
 	else if($fieldType=="datetime")
 	{
-		$nowtime = GetDateTimeMk(mytime());
+		$nowtime = GetDateTimeMk(time());
 		$innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\">";
 		$formitem = str_replace("~name~",$ctag->GetAtt('itemname'),$formitem);
 		$formitem = str_replace("~form~",$innertext,$formitem);
@@ -168,6 +168,7 @@ function GetFieldValue($dvalue,$dtype,$aid=0,$job='add',$addvar='',$admintype='a
 		  if(!is_dir($cfg_basedir.$ipath.'/'.$tpath)) MkdirAll($cfg_basedir.$ipath.'/'.$tpath,$GLOBALS['cfg_dir_purview']);
 		  $ipath = $ipath.'/'.$tpath;
 		  $filename = "{$ipath}/{$aid}.txt";
+		  
 		  $fp = fopen($cfg_basedir.$filename,"w");
 		  fwrite($fp,stripslashes($dvalue));
 		  fclose($fp);
@@ -331,7 +332,8 @@ function GetFormItemValue($ctag,$fvalue,$admintype='admin')
     }else
     {
       $ntag = $ndtp->GetTag("img");
-      $fvalue = trim($ntag->GetInnerText());
+      //$fvalue = trim($ntag->GetInnerText());
+	  $fvalue = trim($ndtp->InnerText);
     }
 		$innertext = "<input type='text' name='$fieldname' value='$fvalue' id='$fieldname' style='width:300px'> <input name='".$fieldname."_bt' class='inputbut' type='button' value='浏览...' onClick=\"SelectImage('form1.$fieldname','big')\">\r\n";
 		$formitem = str_replace("~name~",$ctag->GetAtt('itemname'),$formitem);

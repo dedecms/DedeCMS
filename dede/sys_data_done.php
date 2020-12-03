@@ -66,7 +66,7 @@ if($dopost=="bak")
 	  $dh->close();
 	  $tmsg .= "清除备份目录旧数据完成...<br>";
 	  if($isstruct==1){
-		    $bkfile = $bkdir."/tables_struct_".substr(md5(mytime().mt_rand(1000,5000)),0,16).".txt";
+		    $bkfile = $bkdir."/tables_struct_".substr(md5(time().mt_rand(1000,5000)),0,16).".txt";
 		    $dsql = new DedeSql(false);
 		    $mysql_version = $dsql->GetVersion();
         $mysql_versions = explode(".",trim($mysql_version));
@@ -135,7 +135,7 @@ if($dopost=="bak")
 	   $dsql->SetQuery("Select * From $nowtable");
 	   $dsql->Execute();
 	   $m = 0;
-	   $bakfilename = "$bkdir/{$nowtable}_{$startpos}_".substr(md5(mytime().mt_rand(1000,5000)),0,16).".txt";
+	   $bakfilename = "$bkdir/{$nowtable}_{$startpos}_".substr(md5(time().mt_rand(1000,5000)),0,16).".txt";
 	   while($row2 = $dsql->GetArray())
 	   {
 		    if($m < $startpos){ $m++; continue; }

@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn">
-        <title>{dede:global name='cfg_webname'/}--免费的PHP网站管理系统</title>
+        <title>{dede:global name='cfg_webname'/} - powered by dedecms</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta content="织梦内容管理系统、PHP+MySQL网站新闻发布系统、免费网站管理系统、免费CMS系统、网站设计、搜索引擎排名研究、网站经营理念" name="description" />
         <meta content="网站管理系统,cms,新闻发布系统,内容管理系统,免费网站管理系统,免费CMS系统,php网站开发,网站优化,php网站管理系统" name="keywords" />
@@ -34,7 +34,7 @@ myajax.SendGet("{dede:global name="cfg_memberurl"/}/loginsta.php");
     <body xmlns="">
         <!--头部开始-->
         <div class="top cbody">
-        <div class="toplogo"><a href="http://www.dedecms.com/"><img height="60" alt="DEDE CMS" width="200" src="{dede:field name='templeturl'/}/images/toplogo.gif" /></a></div>
+        <div class="toplogo"><a href="{dede:global name='cfg_basehost'/}"><img src="{dede:field name='templeturl'/}/images/toplogo.gif" width="200" height="60" alt="{dede:global name='cfg_webname'/}" /></a></div>
         <div class="topbanner"><script language="javascript" type="text/javascript" src="{dede:global name='cfg_cmspath'/}/top.js"></script></div>
         <div class="toplink">
         <ul>
@@ -51,7 +51,6 @@ myajax.SendGet("{dede:global name="cfg_memberurl"/}/loginsta.php");
             <li><a href="/">首页</a> {dede:channel type='top' row='8'} </li>
             <li><a href="[field:typelink/]">[field:typename/]</a> {/dede:channel} </li>
             <li><a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a></li>
-            <li><a href="http://bbs.dedecms.com">支持论坛</a> </li>
         </ul>
         <div class="rssbut"><a href="{dede:field name='phpurl'/}/rssmap.html"><img alt="RSS" src="{dede:field name='templeturl'/}/images/rss_button.gif" /></a> </div>
         </div>
@@ -60,7 +59,7 @@ myajax.SendGet("{dede:global name="cfg_memberurl"/}/loginsta.php");
         <div class="title"></div>
         <div class="inpbox">
 			<form action="{dede:field name='phpurl'/}/search.php" name="formsearch">
-				<input type="hidden" name="kwtype" value="0" /> <input class="searchtxt" id="keyword" name="keyword" /> <select id="searchtype" name="select">
+				<input type="hidden" name="kwtype" value="1" /> <input class="searchtxt" id="keyword" name="keyword" /> <select id="searchtype" name="select">
 				<option value="titlekeyword" selected="selected">智能模糊搜索</option>
 				<option value="title">仅搜索标题</option>
 				</select> <input type="image" src="{dede:field name='templeturl'/}/images/topsearch_submit.gif" />
@@ -300,9 +299,11 @@ document.write('</object>');
             </div>
             </div>
             <div class="footer cbody margintop">
-            <div class="copyright">
-                Powered by <a href="http://www.dedecms.com/">DedeCms v5.0</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
-        		{dede:global name='cfg_powerby'/}
+            	<div class="copyright"> 
+                <div style="font-size:12px">{dede:global name='cfg_powerby'/}
+                <a href="http://www.miibeian.gov.cn/">{dede:global name='cfg_beian'/}</a>              
+            </div> 
+                Powered by <a href="http://www.dedecms.com/">DedeCms {dede:global name='cfg_version'/}</a> &copy; 2004-2008  <a href="http://www.desdev.cn/">DesDev Inc.</a><br />
             </div>
             <div class="slogo"><a target="_blank" href="http://www.dedecms.com"><img height="33" alt="" width="66" src="{dede:field name='templeturl'/}/images/s_logo.gif" /></a> </div>
             <div class="floatclear"></div>

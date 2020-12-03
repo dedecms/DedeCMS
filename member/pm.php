@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__)."/config.php");
 require_once(dirname(__FILE__)."/../include/pub_datalist_dm.php");
 CheckRank(0,0);
+$cfg_ml->FushCache();
 $db = new DedeSql(false);
 if(!isset($pmsend)) $pmsend = false;
 if($pmsend==true&&!empty($delete)){

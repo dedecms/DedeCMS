@@ -13,7 +13,7 @@
 	    myajax.SendGet(queryUrl);
 	}
 	function CheckSubmit(){
-	   if($DE('qfs1').checked && $DE('rpfield').value==""){
+	   if($DE('rpfield').value==""){
 	      alert("你选择的操作为手工指定字段，但你并没指定！");
 		  return false;
 	   }
@@ -26,13 +26,7 @@
 	function pf(v){
 	   $DE('rpfield').value = v;
 	}
-	function ShowHideFromItem(){
-	   if($DE('qfs1').checked){
-	     $DE('datasel').style.display = 'block';
-	   }else{
-	     $DE('datasel').style.display = 'none';
-	   }
-	}
+
 </script>
 <link href="css_body.css" rel="stylesheet" type="text/css" />
 </head>

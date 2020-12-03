@@ -17,6 +17,7 @@ $body = "";
 $litpic = "";
 $fieldear = array();
 
+header("Content-Type: text/html; charset={$cfg_ver_lang}");
 
 $dsql = new DedeSql(false);
 $mkimg=new CreatMiniature();

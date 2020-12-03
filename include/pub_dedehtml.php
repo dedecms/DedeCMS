@@ -441,7 +441,7 @@ class DedeHtml
             {  $okstr .= " ";  }
           }
           else{
-            //F7 - FE 是GB2312的终结编码
+            //F7 - FE 是utf-8的终结编码
             if($n < 0xF8FF) $okstr .= $c;
           }
           $i++;

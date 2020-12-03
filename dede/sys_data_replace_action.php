@@ -8,10 +8,7 @@ if(empty($action)) $action = '';
 function __getfields()
 --------------------------------*/
 if($action=='getfields'){
-	header("Pragma:no-cache\r\n");
-	header("Cache-Control:no-cache\r\n");
-	header("Expires:0\r\n");
-	header("Content-Type: text/html; charset=utf-8");
+	AjaxHead();
 	$dsql = new DedeSql(false);
 	if(!$dsql->linkID){
 		echo "<font color='red'>连接数据源的数据库失败！</font><br>";

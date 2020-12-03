@@ -88,6 +88,7 @@ else
 {
 	$gerr = $dsql->GetError();
 	$dsql->Close();
+	header("Content-Type: text/html; charset={$cfg_ver_lang}");
 	echo "SQL语句：<xmp>$inQuery</xmp>";
 	echo "<hr>错误提示：".$gerr."<hr>";
 	$dsql->Close();
