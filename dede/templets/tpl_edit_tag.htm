@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>标签源码碎片管理</title>
-<link rel="stylesheet" type="text/css" href="img/base.css">
+<link rel="stylesheet" type="text/css" href="css/base.css">
 <style type="text/css">
 .selbt {
 	width:80px;
@@ -34,24 +35,23 @@ function Post()
 <body bgcolor="#F2F4F3" leftmargin="8" topmargin="8">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#ECFAD3" style="margin-bottom:8px;">
   <tr> 
-    <td height="28" style="border:1px dotted #BFD67C" background='img/wbg.gif'>
-		&nbsp;◇<a href='templets_tagsource.php'><b>标签源码碎片管理</b></a> &gt;&gt; <b><?php echo $title; ?></b>
+    <td height="28" style="border:1px dotted #BFD67C" background="images/wbg.gif" >&nbsp;&nbsp;◇<a href='templets_tagsource.php'><b>标签源码碎片管理</b></a> &gt;&gt; <b><?php echo $title; ?></b>
 	  </td>
   </tr>
 </table>
 <form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
 <input type="hidden" name="actiondo" value="<?php echo $action; ?>" />
 <input type="hidden" name="action" value="savetagfile" />
-	<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC' align="center">
+	<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#cfcfcf' align="center">
 		<tr bgcolor='#EEF4EA'>
-			<td colspan='2' background='img/wbg.gif' height='26'>
+			<td colspan='2' background='images/wbg.gif' height='26' style="padding-left:10px;">
 					<font color='#666600'><b><?php echo $title; ?></b>(修改源码如果出现语法错误，可能导致标签无法使用，请修改前先作好数据备份)</font>
 			</td>
 		</tr>
 		<tr bgcolor='#FFFFFF'>
   		<td>文件名称</td>
   		<td>
-  			<input name=filename size=40 value="<?php echo $filename; ?>" />
+  			<input name=filename size=40 value="<?php echo $filename; ?>" class="alltxt"/>
     		（不允许用 “..” 形式的路径）
   		</td>
 		</tr>
@@ -65,11 +65,11 @@ function Post()
 		</tr>
     <tr bgcolor='#FFFFFF'>
       <td colspan='2' >
-	  <textarea name="content" cols="150" rows="24" style="width:100%;height:450px"><?php echo $democode; ?></textarea>
+	  <textarea name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $democode; ?></textarea>
 	  </td>
     </tr>
     <tr>
-      <td height="42" colspan='2'  bgcolor='#f7ffdb'>
+      <td height="42" colspan='2'  bgcolor="#F9FCEF">
           <input type="submit" value="  保 存  " name='B1' class="coolbg np" />
           &nbsp;
           <input type="reset" value="取消修改" name='B2' class="coolbg np" />

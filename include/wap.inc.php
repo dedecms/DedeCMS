@@ -12,7 +12,7 @@ function html2wml($content)
      preg_match_all("/<img([^>]*)>/isU", $content, $imgarr);
      if(isset($imgarr[0]) && count($imgarr[0])>0 )
      {
-     	foreach($imgarr[0] as $k=>$v) $content = str_replace($v, "WAP-IMG::{$k}", $content);
+         foreach($imgarr[0] as $k=>$v) $content = str_replace($v, "WAP-IMG::{$k}", $content);
      }
      // 过滤掉样式表和脚本
      $content = preg_replace("/<style .*?<\/style>/is", "", $content);
@@ -48,11 +48,11 @@ function html2wml($content)
      //还原图片
      if(isset($imgarr[0]) && count($imgarr[0])>0 )
      {
-				foreach($imgarr[0] as $k=>$v)
-				{
-					$attstr = (ereg('/$', $imgarr[1][$k])) ? '<img '.$imgarr[1][$k].'>' : '<img '.$imgarr[1][$k].' />';
-					$content = str_replace("WAP-IMG::{$k}", $attstr, $content);
-				}
+                foreach($imgarr[0] as $k=>$v)
+                {
+                    $attstr = (preg_match('#/$#', $imgarr[1][$k])) ? '<img '.$imgarr[1][$k].'>' : '<img '.$imgarr[1][$k].' />';
+                    $content = str_replace("WAP-IMG::{$k}", $attstr, $content);
+                }
      }
      
      $content = preg_replace("/&amp;[a-z]{3,10};/isU", ' ', $content);
@@ -82,18 +82,18 @@ function text2wml($content)
 //----------------------
 function ConvertCharset($varlist)
 {
-	global $cfg_soft_lang;
-	if(eregi('utf',$cfg_soft_lang)) return 0;
-	$varlists = explode(',',$varlist);
-	$numargs=count($varlists);
-	for($i = 0; $i < $numargs; $i++)
-	{   
-		if(isset($GLOBALS[$varlists[$i]]))
-		{
-			$GLOBALS[$varlists[$i]] = gb2utf8($GLOBALS[$varlists[$i]]);
-		}
-	} 
-	return 1;
+    global $cfg_soft_lang;
+    if(preg_match('#utf#i',$cfg_soft_lang)) return 0;
+    $varlists = explode(',',$varlist);
+    $numargs=count($varlists);
+    for($i = 0; $i < $numargs; $i++)
+    {   
+        if(isset($GLOBALS[$varlists[$i]]))
+        {
+            $GLOBALS[$varlists[$i]] = gb2utf8($GLOBALS[$varlists[$i]]);
+        }
+    } 
+    return 1;
 }
 
 //----------------------
@@ -101,11 +101,11 @@ function ConvertCharset($varlist)
 //----------------------
 function ConvertStr($str)
 {
-	$str = str_replace("&amp;","##amp;",$str);
-	$str = str_replace("&","&amp;",$str);
-	$str = ereg_replace("[\"><']","",$str);
-	$str = str_replace("##amp;","&amp;",$str);
-  return $str;
+    $str = str_replace("&amp;","##amp;",$str);
+    $str = str_replace("&","&amp;",$str);
+    $str = preg_replace("#[\"><']#","",$str);
+    $str = str_replace("##amp;","&amp;",$str);
+    return $str;
 }
 
 ?>

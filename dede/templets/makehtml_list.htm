@@ -1,17 +1,18 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更新栏目HTML</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <form name="form1" action="makehtml_list_action.php" method="get" target='stafrm'>
     <tr> 
-      <td height="28" colspan="2" background='img/tbg.gif'>
+      <td height="28" colspan="2" background='images/tbg.gif'>
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="30%" height="18"><strong>更新栏目HTML：</strong></td>
+            <td width="30%" height="18" style="padding-left:10px;"><strong>更新栏目HTML：</strong></td>
             <td width="70%" align="right">
             	<a href="makehtml_archives.php?typeid=<?php echo (isset($typeid) ? $typeid : 0); ?>" class="np coolbg">更新文档HTML</a>
             	<a href="catalog_main.php" class="np coolbg">栏目管理</a>
@@ -49,7 +50,7 @@
     </td>
     </tr>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#FAFAF1" align="center">
+      <td height="20" colspan="2" bgcolor="#ffffff" align="center">
       	<input name="b112" type="button" class="coolbg np" value="开始生成HTML" onClick="document.form1.submit();" style="width:100px">
            <?php 
       if($cfg_remote_site=='Y')
@@ -63,7 +64,7 @@
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

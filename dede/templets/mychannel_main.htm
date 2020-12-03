@@ -1,17 +1,18 @@
 {dede:config name='pagesize' value='30' /}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>内容模型管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr> 
-    <td height="28" colspan="7" background="img/tbg.gif">
+    <td height="28" colspan="7" background="images/tbg.gif">
     	<table width='96%' cellpadding='0' cellspacing='0'>
     		<tr>
-    		<td width='20%'><b>内容模型管理</b></td>
+    		<td width='20%' style="padding-left:10px;"><b>内容模型管理</b></td>
         <td align='right'>
     	  <a href="mychannel_add.php" class='np coolbg'>增加新模型</a>
     	  <a href="mychannel_edit.php?dopost=exportin" class='np coolbg'>导入模型</a>
@@ -21,7 +22,7 @@
      </table>
     </td>
   </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="28"> 
+  <tr align="center" bgcolor="#FBFCE2" height="28"> 
       <td width="6%">id号</td>
       <td width="16%">频道名称</td>
       <td width="12%">识别id</td>
@@ -32,7 +33,7 @@
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" 
-    	onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    	onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.id /}</td>
         <td>
         	<a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><u>{dede:field.typename /}</u></a>
@@ -42,12 +43,12 @@
         <td>{dede:field.isshow function="GetSta(@me,$fields['id'])" /}</td>
         <td>{dede:field.issystem function='IsSystem(@me)'/}</td>
         <td>
-         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=copystart'><img src='img/gtk-copy.png' title='复制' alt='复制' /></a> 
-         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=gettemplets'><img src='img/gtk-tmp.png' title='模板' alt='模板' /></a> 
-         <a href='mychannel_edit.php?id={dede:field.id /}&dopost=export'><img src='img/gtk-ex.png' title='导出' alt='导出' /></a>  
-         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><img src='img/gtk-edit.png' alt='更改' title='更改' /></a>  
-         <a href='mychannel_edit.php?mid={dede:field.id/}&dopost=modifysearch'><img src='img/gtk-search.png' alt='自定义搜索' title='自定义搜索' /></a> 
-         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=delete'><img src='img/gtk-del.png' alt='删除' title='删除' /></a>
+         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=copystart'><img src='images/gtk-copy.png' title='复制' alt='复制' /></a> 
+         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=gettemplets'><img src='images/gtk-tmp.png' title='模板' alt='模板' /></a> 
+         <a href='mychannel_edit.php?id={dede:field.id /}&dopost=export'><img src='images/gtk-ex.png' title='导出' alt='导出' /></a>  
+         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><img src='images/gtk-edit.png' alt='更改' title='更改' /></a>  
+         <a href='mychannel_edit.php?mid={dede:field.id/}&dopost=modifysearch'><img src='images/gtk-search.png' alt='自定义搜索' title='自定义搜索' /></a> 
+         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=delete'><img src='images/gtk-del.png' alt='删除' title='删除' /></a>
 		    </td>
      </tr>
 		{/dede:datalist}
@@ -56,15 +57,15 @@
       	{dede:pagelist listsize="5"/}
       </td>
      </tr>
-     <tr align="center" bgcolor="#F2F7D7" height="32"> 
+     <tr align="center" bgcolor="#ffffff" height="32"> 
       <td colspan="7">
       	图标说明：
-      	<img src='img/gtk-copy.png' title='复制' alt='复制' /> 复制
-        <img src='img/gtk-tmp.png' title='模板' alt='模板' /> 模板
-        <img src='img/gtk-ex.png' title='导出' alt='导出' /> 导出
-        <img src='img/gtk-edit.png' alt='更改' title='更改' /> 修改
-        <img src='img/gtk-search.png' alt='自定义搜索' title='自定义搜索' /> 自定义搜索
-        <img src='img/gtk-del.png' alt='删除' title='删除' /> 删除
+      	<img src='images/gtk-copy.png' title='复制' alt='复制' /> 复制
+        <img src='images/gtk-tmp.png' title='模板' alt='模板' /> 模板
+        <img src='images/gtk-ex.png' title='导出' alt='导出' /> 导出
+        <img src='images/gtk-edit.png' alt='更改' title='更改' /> 修改
+        <img src='images/gtk-search.png' alt='自定义搜索' title='自定义搜索' /> 自定义搜索
+        <img src='images/gtk-del.png' alt='删除' title='删除' /> 删除
       </td>
      </tr>
    </table>

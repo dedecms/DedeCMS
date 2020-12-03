@@ -1,4 +1,13 @@
 <?php
+/**
+ * 后台管理菜单项
+ *
+ * @version        $Id: inc_menu.php 1 10:32 2010年7月21日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/../config.php");
 
 //载入可发布频道
@@ -7,32 +16,32 @@ $addset = '';
 //检测可用的内容模型
 if($cfg_admin_channel = 'array' && count($admin_catalogs) > 0)
 {
-	$admin_catalog = join(',', $admin_catalogs);
-	$dsql->SetQuery(" Select channeltype From `#@__arctype` where id in({$admin_catalog}) group by channeltype ");
+    $admin_catalog = join(',', $admin_catalogs);
+    $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` WHERE id IN({$admin_catalog}) GROUP BY channeltype ");
 }
 else
 {
-	$dsql->SetQuery(" Select channeltype From `#@__arctype` group by channeltype ");
+    $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` GROUP BY channeltype ");
 }
 $dsql->Execute();
 $candoChannel = '';
 while($row = $dsql->GetObject())
 {
-	$candoChannel .= ($candoChannel=='' ? $row->channeltype : ','.$row->channeltype);
+    $candoChannel .= ($candoChannel=='' ? $row->channeltype : ','.$row->channeltype);
 }
 if(empty($candoChannel)) $candoChannel = 1;
-$dsql->SetQuery("Select id,typename,addcon,mancon From `#@__channeltype` where id in({$candoChannel}) And id<>-1 And isshow=1 order by id asc");
+$dsql->SetQuery("SELECT id,typename,addcon,mancon FROM `#@__channeltype` WHERE id IN({$candoChannel}) AND id<>-1 AND isshow=1 ORDER BY id ASC");
 $dsql->Execute();
 while($row = $dsql->GetObject())
 {
-	$addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
+    $addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
 }
 //////////////////////////
 
 $adminMenu1 = $adminMenu2 = '';
 if($cuserLogin->getUserType() >= 10)
 {
-	$adminMenu1 = "<m:top item='1_' name='频道模型' display='block' rank='t_List,t_AccList,c_List,temp_One'>
+    $adminMenu1 = "<m:top item='1_' name='频道模型' display='block' rank='t_List,t_AccList,c_List,temp_One'>
   <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />
@@ -77,8 +86,7 @@ $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_On
   <m:item name='支付接口设置' link='sys_payment.php' .php' rank='sys_Data' target='main' />
   <m:item name='配货方式设置' link='shops_delivery.php' rank='sys_Data' target='main' />
 </m:top>
-
-	";
+    ";
 }
 $remoteMenu = ($cfg_remote_site=='Y')? "<m:item name='远程服务器同步' link='makeremote_all.php' rank='sys_ArcBatch' target='main' />" : "";
 $menusMain = "
@@ -90,7 +98,7 @@ $menusMain = "
   <m:item name='等审核的档案' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
   <m:item name='我发布的文档' link='content_list.php?mid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
   <m:item name='评论管理' link='feedback_main.php' rank='sys_Feedback' target='main' />
-  <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='img/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no' rank='a_List,a_AccList,a_MyList' target='main' />
+  <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='images/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no&recycle=1' rank='a_List,a_AccList,a_MyList' target='main' />
 </m:top>
 
 <m:top item='1_' name='内容管理' display='block'>
@@ -156,11 +164,9 @@ $adminMenu2
 
 <m:top item='1_10_7_' name='系统帮助' display='none'>
   <m:item name='参考文档' link='http://help.dedecms.com' rank='' target='_blank' />
-  <m:item name='推荐主机商' link='http://www.dedecms.com/idc/' rank='' target='_blank' />
+  <m:item name='意见建议反馈' link='http://site.desdev.cn/suggest/' rank='' target='_blank' />
   <m:item name='官方交流论坛' link='http://bbs.dedecms.com' rank='' target='_blank' />
 </m:top>
 
 -----------------------------------------------
 ";
-
-?>

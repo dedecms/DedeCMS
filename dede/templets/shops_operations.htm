@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>订单管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 //获得选中项
 function getCheckboxItem()
@@ -69,7 +70,7 @@ function OpenMyWinN(surl,w,h){
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;margin-bottom:5px">
   <tr>
     <td height="30" align="center" bgcolor="#FAFCEF">
@@ -86,12 +87,12 @@ function OpenMyWinN(surl,w,h){
       </form></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
   <tr>
-    <td height="28" colspan="11" bgcolor="#EDF9D5" background='img/tbg.gif'>
+    <td height="28" colspan="11" bgcolor="#EDF9D5" background='images/tbg.gif'>
     	<table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="30%"><strong>&nbsp;&gt; 订单列表：</strong> </td>
+          <td width="30%"  style="padding-left:10px;"><strong>订单列表：</strong> </td>
           <td width="45%" align="right" style="padding-top:4px">
           	<input type="button" name="ss13" value="未付款" style="width:50px;margin-right:6px" onClick="location='shops_operations.php?sta=0';"  class='np coolbg'/>
             <input type="button" name="ss14" value="已付款" style="width:50px;margin-right:6px" onClick="location='shops_operations.php?sta=1';"  class='np coolbg'/>
@@ -105,7 +106,7 @@ function OpenMyWinN(surl,w,h){
         </tr>
       </table></td>
   </tr>
-  <tr bgcolor="#F8FBFB">
+  <tr bgcolor="#FBFCE2">
     <td width="8%" align="center">选择</td>
     <td width="25%" align="center">订单号</td>
     <td align="center">收货人</td>
@@ -120,7 +121,7 @@ function OpenMyWinN(surl,w,h){
   </tr>
   <form name="form1">
 {dede:datalist}
-    <tr bgcolor="#FFFFFF">
+    <tr bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
       <td align="center">
 <input type='checkbox' name='aids' value='<?php echo $fields['oid']?>' class='np'></td>
       <td align="center">
@@ -169,7 +170,7 @@ function OpenMyWinN(surl,w,h){
     </td>
   </tr>
   <tr>
-    <td height="36" colspan="11" bgcolor="#FCFDF7" align="center">
+    <td height="36" colspan="11" bgcolor="#F9FCEF" align="center">
      {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
     </td>
   </tr>

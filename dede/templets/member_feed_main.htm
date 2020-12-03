@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>会员动态信息</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 //获得选中文件的文件名
 function getCheckboxItem(){
@@ -68,12 +69,12 @@ function ClearcheckLog(){
 .current {border:1px solid #98CAEF;padding:5px;background:#FFFEF4;color:#FF0000;}
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr>
-    <td height="28" colspan="4" background='img/tbg.gif'><table width="96%" border="0" cellpadding="0" cellspacing="0">
+    <td height="28" colspan="4" background='images/tbg.gif'><table width="96%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="20%" height="18"><strong>会员动态记录：</strong></td>
+        <td width="20%" height="18" style="padding-left:10px;"><strong>会员动态记录：</strong></td>
         <td width="80%" align="right"><table width="88%" border="0" cellspacing="0" cellpadding="0">
       <form name='formsearch'>
       <input type="hidden" value="<?php echo $ischeck;?>" name="ischeck">
@@ -96,10 +97,10 @@ function ClearcheckLog(){
       </tr>
     </table></td>
   </tr>
-  <tr align="center" bgcolor="#E3F7D2">
+  <tr align="center" bgcolor="#ffffff">
     <td height="32" colspan="4" align="left" bgcolor="#FAFAF1"><span <?php if(empty($ischeck)) echo "class='current'";?>><a href='member_info_main.php?type=feed'>全部(<?php echo $totalnum;?>)</a></span> | <span <?php if($ischeck=='1') echo "class='current'";?>><a href='member_info_main.php?type=feed&ischeck=1'>已审核(<?php echo $checknum;?>)</a></span>| <span <?php if($ischeck=='-1') echo "class='current'";?>><a href='member_info_main.php?type=feed&ischeck=-1'>未审核(<?php echo $ischecknum;?>)</a></span></td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1">
+  <tr align="center" height="26" bgcolor="#FBFCE2">
     <td width="8%">选择</td>
     <td width="11%">ID</td>
     <td>内容</td>
@@ -107,7 +108,7 @@ function ClearcheckLog(){
   </tr>
   <form name="form1">
     {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF">
+    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
       <td><input name='logs' type='checkbox' class='np' id="logs" value='{dede:field.fid/}' /></td>
       <td width="11%">{dede:field.fid /} </td>
       <td align="left"><a href="/member/index.php?uid={dede:field.uname /}">{dede:field.uname /}</a> {dede:field.title function='jstrimjajxlog(@me,200)'/} [{dede:field.ischeck function=IsChecklog(@me)/}]</td>
@@ -116,7 +117,7 @@ function ClearcheckLog(){
     {/dede:datalist}
   </form>
   <tr>
-    <td height="30" colspan="4" bgcolor="#FCFDF7">&nbsp;
+    <td height="30" colspan="4" bgcolor="#ffffff">&nbsp;
       <input type="button" name="b5" value="反选"  style="width:40px" class="coolbg np" onClick="ReSel();" />
       &nbsp;
       <input type="button" name="b5" value="审核"  style="width:40px" class="coolbg np" onClick="CheckSel();" />
@@ -126,7 +127,7 @@ function ClearcheckLog(){
   </tr>
     <tr id="type" >
     <form action="" method="post" name="doform">
-      <td height="30" colspan="4" bgcolor="#FCFDF7" >&nbsp;<strong>特别提醒：</strong> &nbsp;当网站运行一段时间后,网站的会员动态记录表可能存放着大量的记录,为使系统的运行性能更佳,建议一段时间后清理一次。</br>
+      <td height="30" colspan="4" bgcolor="#ffffff" >&nbsp;<strong>特别提醒：</strong> &nbsp;当网站运行一段时间后,网站的会员动态记录表可能存放着大量的记录,为使系统的运行性能更佳,建议一段时间后清理一次。</br>
         &nbsp;<strong>删除范围：</strong> &nbsp;
         <input name="dellog" type="radio" value="7" id="dellog1" checked>
         <label for="dellog1">过去7天</label>
@@ -151,8 +152,8 @@ function ClearcheckLog(){
         <input type="button" name="b8" value="清空所有记录(慎用)"  style="width:140px" class="coolbg np" onClick="ClearLog();" />
     </form>
   </tr>
-  <tr bgcolor="#E3F7D2">
-    <td height="24" colspan="4" align="center" bgcolor="#FAFAF1"> {dede:pagelist listsize='5' /} </td>
+  <tr bgcolor="#F9FCEF">
+    <td height="24" colspan="4" align="center"> {dede:pagelist listsize='5' /} </td>
   </tr>
 </table>
 </body>

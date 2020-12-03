@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript">
 function LoadHashCode()
 {
@@ -55,23 +55,21 @@ function ShowHideMb(rbox1,nid)
 }
 </script>
 <title>模块打包</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style>
 td{padding-left:8px}
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">模块管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">模块管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form action="module_make.php" method="post" enctype="multipart/form-data" name="form1">
    <input type='hidden' name='action' value='edit'>
     <tr>
-      <td height="20" colspan="2" bgcolor="#EDF9D5" background='img/wbg.gif'>
-      	 &nbsp;
-      	 <b>
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background='images/wbg.gif' style="padding-left:10px;"><b>
       	 	<a href="module_main.php"><u>模块管理</u></a>
           &gt; 模块修改：
         </b>
@@ -163,7 +161,7 @@ td{padding-left:8px}
           </tr>
           <tr>
             <td bgcolor="#FFFFFF" align="center">
-            	<textarea name="readmetxt" rows="10" id="readmetxt" style="width:100%"><?php echo $readmetxt; ?></textarea>
+            	<textarea name="readmetxt" rows="10" id="readmetxt" style="width:99%"><?php echo $readmetxt; ?></textarea>
             </td>
           </tr>
         </table>
@@ -192,7 +190,7 @@ td{padding-left:8px}
           </tr>
           <tr>
             <td bgcolor="#FFFFFF" align="center">
-            	<textarea name="setupsql40" rows="10" id="setupsql40" style="width:100%"><?php echo $setupsql40; ?></textarea>
+            	<textarea name="setupsql40" rows="10" id="setupsql40" style="width:99%"><?php echo $setupsql40; ?></textarea>
             </td>
           </tr>
         </table>
@@ -221,7 +219,7 @@ td{padding-left:8px}
           </tr>
           <tr>
             <td bgcolor="#FFFFFF" align="center">
-            <textarea name="delsql" rows="10" id="delsql" style="width:100%"><?php echo $delsql; ?></textarea>
+            <textarea name="delsql" rows="10" id="delsql" style="width:99%"><?php echo $delsql; ?></textarea>
             </td>
           </tr>
         </table>

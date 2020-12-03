@@ -1,21 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>模块打包</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script src="../include/dedeajax2.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function getmodule(action,hash)
+    {
+		$DE('status_'+hash).innerHTML='<img src=\'images/loadinglit.gif\'>';
+		var myajax = new DedeAjax($DE('status_'+hash),false,true,'-','-','...');
+        myajax.SendGet2('module_main.php?action=download&hash='+hash);
+		$DE('manager_'+hash).style.display = 'block';
+		DedeXHTTP = null;
+    }
+</script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">模块管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">模块管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form name="form1" action="plus_add.php" method="post">
    <input type='hidden' name='dopost' value='save'>
     <tr> 
-      <td height="20" colspan="7" bgcolor="#EDF9D5" background="img/tbg.gif"> 
-      	<div style='float:left'>&nbsp;<a href='module_main.php'><b>模块管理</b></a> &gt; <b>模块列表：</b></div>
+      <td height="25" colspan="7" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;"> 
+      	<div style='float:left'><a href='module_main.php'><b>模块管理</b></a> &gt; <b>模块列表：</b></div>
 		<div style='float:right;padding-right:8px;'>
 	<a href='module_main.php'>全部</a> |
 	<a href='module_main.php?moduletype=soft'>模块</a> | 
@@ -49,17 +60,26 @@ foreach($modules as $k=>$v)
       	else  echo $v['lang'];
       ?>
       </td>
-      <td><?php echo $types[$v['moduletype']]; ?></td>
+      <td><?php echo $types[$v['moduletype']];?></td>
       <td>
+	  
       	<?php
-      	if(file_exists(DEDEROOT."/data/module/{$v['hash']}-readme.php")){
-      		echo "已安装 <a href='module_main.php?action=uninstall&hash={$v['hash']}'><u>卸载</u></a>";
-      	}else{
-      		echo "未安装 <a href='module_main.php?action=setup&hash={$v['hash']}'><u>安装</u></a>";
-      	}
+		$file = DEDEDATA."/module/{$v['hash']}.xml";
+		if(file_exists($file)) {
+			if(file_exists(DEDEDATA."/module/{$v['hash']}-readme.php")){
+				echo "<font color='green'>已安装</font> <a style='color:green' href='module_main.php?action=uninstall&hash={$v['hash']}'><u>卸载</u></a>";
+			}else{
+				echo "未安装 <a href='module_main.php?action=setup&hash={$v['hash']}'><u>安装</u></a>";
+			}
+		}else{
+			echo "<div id=\"status_{$v['hash']}\"><font color='red'>未下载</font> <a style='color:red' href=\"javascript:getmodule('download','{$v['hash']}')\"><u>下载</u></a></div>";
+		}
       	?>
+		
       </td>
       <td>
+	  
+	  <div id = 'manager_<?php echo $v['hash']; ?>' <?php if(!file_exists(DEDEDATA."/module/{$v['hash']}.xml")) echo 'style="display:none;"'?>>
       <a href='module_main.php?action=showreadme&hash=<?php echo $v['hash']; ?>'>使用说明</a>
        |
       <a href='module_main.php?action=view&hash=<?php echo $v['hash']; ?>'>详细</a>
@@ -67,6 +87,7 @@ foreach($modules as $k=>$v)
       <a href='module_main.php?action=edit&hash=<?php echo $v['hash']; ?>'>修改</a>
        | 
       <a href='module_main.php?action=del&hash=<?php echo $v['hash']; ?>'>删除</a>
+	  </div>
       </td>
     </tr>
 <?php

@@ -1,79 +1,185 @@
 <?php
-/*
+/**
  * Unicode编码词典的php分词器
  *
+ *  1、只适用于php5，必要函数 iconv
+ *  2、本程序是使用RMM逆向匹配算法进行分词的，词库需要特别编译，本类里提供了 MakeDict() 方法
+ *  3、简单操作流程： SetSource -> StartAnalysis -> Get***Result
+ *  4、对主词典使用特殊格式进行编码, 不需要载入词典到内存操作
+ *
+ * @version        $Id: splitword.class.php 2 11:45 2011-2-14 itplato $
+ * @package        DedeCMS.Libraries
+ * @copyright      Copyright (c) 2007 - 2010, itplato.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
+
+//常量定义
 define('_SP_', chr(0xFF).chr(0xFE)); 
-define('_SP2_', ',');
-//解决有些系统内存溢出问题
-ini_set('memory_limit', '64M');
+define('UCS2', 'ucs-2be');
 class SplitWord
 {
     
+    //hash算法选项
+    var $mask_value = 0x3ffd;
+    
     //输入和输出的字符编码（只允许 utf-8、gbk/gb2312/gb18030、big5 三种类型）  
-    public $sourceCharSet = 'utf-8';
-    public $targetCharSet = 'utf-8';
-	
+    var $sourceCharSet = 'utf-8';
+    var $targetCharSet = 'utf-8';
+    
     //生成的分词结果数据类型 1 为全部， 2为 词典词汇及单个中日韩简繁字符及英文， 3 为词典词汇及英文
-    public $resultType = 2;
+    var $resultType = 1;
     
     //句子长度小于这个数值时不拆分，notSplitLen = n(个汉字) * 2 + 1
-    public $notSplitLen = 5;
+    var $notSplitLen = 5;
     
     //把英文单词全部转小写
-    public $toLower = false;
+    var $toLower = FALSE;
     
     //使用最大切分模式对二元词进行消岐
-    public $differMax = false;
+    var $differMax = FALSE;
     
     //尝试合并单字
-    public $unitWord = true;
+    var $unitWord = TRUE;
+    
+    //初始化类时直接加载词典
+    var $loadInit = TRUE;
     
     //使用热门词优先模式进行消岐
-    public $differFreq = false;
-	
+    var $differFreq = FALSE;
+    
     //被转换为unicode的源字符串
-    private $sourceString = '';
+    var $sourceString = '';
     
     //附加词典
-    public $addonDic = array();
-    public $addonDicFile = 'data/words_addons.dic';
+    var $addonDic = array();
+    var $addonDicFile = 'data/words_addons.dic';
     
     //主词典 
-    public $dicStr = '';
-    public $mainDic = array();
-    public $mainDicInfos = array();
-    public $mainDicFile = 'data/base_dic_full.dic';
+    var $dicStr = '';
+    var $mainDic = array();
+    var $mainDicHand = FALSE;
+    var $mainDicInfos = array();
+    var $mainDicFile = 'data/base_dic_full.dic';
     //是否直接载入词典（选是载入速度较慢，但解析较快；选否载入较快，但解析较慢，需要时才会载入特定的词条）
-    private $isLoadAll = false;
+    var $mainDicFileZip = 'data/base_dic_full.zip';
+    var $isLoadAll = FALSE;
+    var $isUnpacked = FALSE;
     
-    //主词典词语最大长度(实际加上词末为12+2)
-    private $dicWordMax = 12;
+    //主词典词语最大长度 x / 2
+    var $dicWordMax = 14;
     //粗分后的数组（通常是截取句子等用途）
-    private $simpleResult = array();
+    var $simpleResult = array();
     //最终结果(用空格分开的词汇列表)
-    private $finallyResult = '';
+    var $finallyResult = '';
     
     //是否已经载入词典
-    public $isLoadDic = false;
+    var $isLoadDic = FALSE;
     //系统识别或合并的新词
-    public $newWords = array();
-    public $foundWordStr = '';
+    var $newWords = array();
+    var $foundWordStr = '';
     //词库载入时间
-    public $loadTime = 0;
+    var $loadTime = 0;
     
-    //php4构造函数
-	  function SplitWord($source_charset='utf-8', $target_charset='utf-8', $load_all=true, $source=''){
-	  	$this->__construct($source_charset, $target_charset, $load_all, $source);
-	  }	
-	
-    function __construct($source_charset='utf-8', $target_charset='utf-8', $load_all=true, $source='')
+    /**
+     * 构造函数
+     * @param $source_charset
+     * @param $target_charset
+     * @param $load_alldic 
+     * @param $source
+     *
+     * @return void
+     */
+    function __construct($source_charset='utf-8', $target_charset='utf-8', $load_all=TRUE, $source='')
     {
         $this->SetSource( $source, $source_charset, $target_charset );
         $this->isLoadAll = $load_all;
-        $this->LoadDict();
+        if(file_exists(DEDEINC.'/'.$this->mainDicFile)) $this->isUnpacked = TRUE;
+        if($this->loadInit) $this->LoadDict();
     }
     
+    function SplitWord($source_charset='utf-8', $target_charset='utf-8', $load_all=TRUE, $source='')
+    {
+        $this->__construct($source_charset, $target_charset, $load_all, $source);
+    }
+    
+   /**
+    * 析构函数
+    */
+    function __destruct()
+    {
+        if( $this->mainDicHand !== FALSE )
+        {
+            @fclose( $this->mainDicHand );
+        }
+    }
+    
+    /**
+     * 根据字符串计算key索引
+     * @param $key
+     * @return short int
+     */
+    function _get_index( $key )
+    {
+        $l = strlen($key);
+        $h = 0x238f13af;
+        while ($l--)
+        {
+            $h += ($h << 5);
+            $h ^= ord($key[$l]);
+            $h &= 0x7fffffff;
+        }
+        return ($h % $this->mask_value);
+    }
+    
+    /**
+     * 从文件获得词
+     * @param $key
+     * @param $type (类型 word 或 key_groups)
+     * @return short int
+     */
+    function GetWordInfos( $key, $type='word' )
+    {
+        if( !$this->mainDicHand )
+        {
+            $this->mainDicHand = fopen($this->mainDicFile, 'r');
+        }
+        $p = 0;
+        $keynum = $this->_get_index( $key );
+        if( isset($this->mainDicInfos[ $keynum ]) )
+        {
+            $data = $this->mainDicInfos[ $keynum ];
+        }
+        else
+        {
+            //rewind( $this->mainDicHand );
+            $move_pos = $keynum * 8;
+            fseek($this->mainDicHand, $move_pos, SEEK_SET);
+            $dat = fread($this->mainDicHand, 8);
+            $arr = unpack('I1s/n1l/n1c', $dat);
+            if( $arr['l'] == 0 )
+            {
+                return FALSE;
+            }
+            fseek($this->mainDicHand, $arr['s'], SEEK_SET);
+            $data = @unserialize(fread($this->mainDicHand, $arr['l']));
+            $this->mainDicInfos[ $keynum ] = $data;
+       }
+       if( !is_array($data) || !isset($data[$key]) ) 
+       {
+           return FALSE;
+       }
+       return ($type=='word' ? $data[$key] : $data);
+    }
+    
+    /**
+     * 设置源字符串
+     * @param $source
+     * @param $source_charset
+     * @param $target_charset
+     *
+     * @return bool
+     */
     function SetSource( $source, $source_charset='utf-8', $target_charset='utf-8' )
     {
         $this->sourceCharSet = strtolower($source_charset);
@@ -83,23 +189,23 @@ class SplitWord
         $this->finallyIndex = array();
         if( $source != '' )
         {
-            $rs = true;
+            $rs = TRUE;
             if( preg_match("/^utf/", $source_charset) ) {
-                $this->sourceString = iconv('utf-8//ignore', 'ucs-2', $source);
+                $this->sourceString = @iconv('utf-8', UCS2, $source);
             }
             else if( preg_match("/^gb/", $source_charset) ) {
-                $this->sourceString = iconv('utf-8', 'ucs-2', iconv('gb18030', 'utf-8//ignore', $source));
+                $this->sourceString = @iconv('utf-8', UCS2, iconv('gb18030', 'utf-8', $source));
             }
             else if( preg_match("/^big/", $source_charset) ) {
-                $this->sourceString = iconv('utf-8', 'ucs-2', iconv('big5', 'utf-8', $source));
+                $this->sourceString = @iconv('utf-8', UCS2, iconv('big5', 'utf-8', $source));
             }
             else {
-                $rs = false;
+                $rs = FALSE;
             }
         }
         else
         {
-           $rs = false;
+           $rs = FALSE;
         }
         return $rs;
     }
@@ -122,88 +228,64 @@ class SplitWord
      */
     function LoadDict( $maindic='' )
     {
-        $dicAddon = dirname(__FILE__).'/'.$this->addonDicFile;
-        if($maindic=='' || !file_exists(dirname(__FILE__).'/'.$maindic) )
+		$this->addonDicFile = DEDEINC.'/'.$this->addonDicFile;
+		$this->mainDicFile = DEDEINC.'/'.$this->mainDicFile;
+		$this->mainDicFileZip = DEDEINC.'/'.$this->mainDicFileZip;
+        $startt = microtime(TRUE);
+        //正常读取文件
+        $dicAddon = $this->addonDicFile;
+        if($maindic=='' || !file_exists($maindic) )
         {
-            $dicWords = dirname(__FILE__).'/'.$this->mainDicFile ;
+            $dicWords = $this->mainDicFile ;
         }
         else
         {
-            $dicWords = dirname(__FILE__).'/'.$maindic;
+            $dicWords = $maindic;
             $this->mainDicFile = $maindic;
         }
-        //载入主词典
-        $startt = microtime(true);
-        $aslen = filesize($dicWords);
-        $fp = fopen($dicWords, 'rb');
-        $this->dicStr = fread($fp, $aslen);
-        fclose($fp);
-        $ishead = 1;
-        $nc = '';
-        $i = 0;
-        while( $i < $aslen )
-        {
-            $nc = substr($this->dicStr, $i, 2);
-            $i = $i+2;
-            $slen = intval(hexdec(bin2hex( substr($this->dicStr, $i, 2) )));
-            $i = $i+2;
-            $this->mainDic[$nc][1] = '';
-            $this->mainDic[$nc][2][0] = $i;
-            $this->mainDic[$nc][2][1] = $slen;
-            if( $this->isLoadAll)
-            {
-                $strs = explode(_SP_, substr($this->dicStr, $i, $slen) );
-                $klen = count($strs);
-                for($k=0; $k < $klen; $k++)
-                {
-                    //先不对词频和词性进行解释，以提升载入速度，可以用($this->GetWordInfos($word)获得词的附加信息)
-                    $this->mainDic[$nc][1][$strs[$k]] = $strs[$k+1];
-                    //$this->mainDic[$nc][1][$strs[$k]] = explode(',', $strs[$k+1]); //直接解析（需多花费0.1秒时间）
-                    $k = $k+1;
-                }
-            }
-            $i = $i + $slen;
+        
+        //加载主词典（只打开）
+        if($this->isUnpacked){
+        	$this->mainDicHand = fopen($dicWords, 'r');
+        }else{
+        	$this->InportDict($this->mainDicFileZip);
         }
-        //不必保留词典文件字符串
-        if( $this->isLoadAll)
-        {
-            $this->dicStr = '';
-        }
+        
         //载入副词典
+        $hw = '';
         $ds = file($dicAddon);
         foreach($ds as $d)
         {
             $d = trim($d);
             if($d=='') continue;
-            $estr = substr($d, 1, strlen($d)-1);
-            $estr = iconv('utf-8', 'ucs-2', $estr);
-            $this->addonDic[substr($d, 0, 1)][$estr] = strlen($estr);
+            $estr = substr($d, 1, 1);
+            if( $estr==':' ) {
+                $hw = substr($d, 0, 1);
+            }
+            else
+            {
+                $spstr = _SP_;
+                $spstr = iconv(UCS2, 'utf-8', $spstr);
+                $ws = explode(',', $d);
+                $wall = iconv('utf-8', UCS2, join($spstr, $ws));
+                $ws = explode(_SP_, $wall);
+                foreach($ws as $estr)
+                {
+                    $this->addonDic[$hw][$estr] = strlen($estr);
+                }
+            }
         }
-        $this->loadTime = microtime(true) - $startt;
-        $this->isLoadDic = true;
+        $this->loadTime = microtime(TRUE) - $startt;
+        $this->isLoadDic = TRUE;
     }
     
    /**
-    * 检测某个尾词是否存在
+    * 检测某个词是否存在
     */
-    function IsWordEnd($nc)
+    function IsWord( $word )
     {
-         if( !isset( $this->mainDic[$nc] ) )
-         {
-            return false;
-         }
-         if( !is_array($this->mainDic[$nc][1]) )
-         {       
-              $strs = explode(_SP_, substr($this->dicStr, $this->mainDic[$nc][2][0], $this->mainDic[$nc][2][1]) );
-              $klen = count($strs);
-              for($k=0; $k < $klen; $k++)
-              {
-                  $this->mainDic[$nc][1][$strs[$k]] = $strs[$k+1];
-                  //$this->mainDic[$nc][1][$strs[$k]] = explode(',', $strs[$k+1]);
-                  $k = $k+1;
-              }
-         }
-         return true;
+         $winfos = $this->GetWordInfos( $word );
+         return ($winfos !== FALSE);
     }
     
     /**
@@ -218,7 +300,7 @@ class SplitWord
             return '/s';
         }
         $infos = $this->GetWordInfos($word);
-        return isset($infos['m']) ? "/{$infos['m']}{$infos['c']}" : "/s";
+        return isset($infos[1]) ? "/{$infos[1]}{$infos[0]}" : "/s";
      }
     
     /**
@@ -246,51 +328,11 @@ class SplitWord
     }
     
     /**
-     * 从词典文件找指定词的信息
-     * @parem $word unicode编码的词
-     * @return array('c' => 词频, 'm' => 词性);
-     */
-    function GetWordInfos($word)
-    {
-        $rearr = '';
-        if( strlen($word) < 4 )
-        {
-            return $rearr;
-        }
-        //检查缓存数组
-        if( isset($this->mainDicInfos[$word]) )
-        {
-            return $this->mainDicInfos[$word];
-        }
-        //分析
-        $wfoot = $this->GetWord($word);
-        $whead = substr($word, strlen($word)-2, 2);
-        if( !$this->IsWordEnd($whead) || !isset($this->mainDic[$whead][1][$wfoot]) )
-        {
-            return $rearr;
-        }
-        if( is_array($this->mainDic[$whead][1][$wfoot]) )
-        {
-            $rearr['c'] = $this->mainDic[$whead][1][$wfoot][0];
-            $rearr['m'] = $this->mainDic[$whead][1][$wfoot][1];
-        }
-        else
-        {
-            $strs = explode(_SP2_, $this->mainDic[$whead][1][$wfoot]);
-            $rearr['c'] = $strs[0];
-            $rearr['m'] = $strs[1];
-        }
-        //保存到缓存数组
-        $this->mainDicInfos[$word] = $rearr;
-        return $rearr;
-    }
-    
-    /**
      * 开始执行分析
      * @parem bool optimize 是否对结果进行优化
      * @return bool
      */
-    function StartAnalysis($optimize=true)
+    function StartAnalysis($optimize=TRUE)
     {
         if( !$this->isLoadDic )
         {
@@ -314,7 +356,6 @@ class SplitWord
         $s = 0;
         $ansiWordMatch = "[0-9a-z@#%\+\.-]";
         $notNumberMatch = "[a-z@#%\+]";
-        $nameLink = 0xB7;
         for($i=0; $i < $slen; $i++)
         {
             $c = $this->sourceString[$i].$this->sourceString[++$i];
@@ -328,7 +369,7 @@ class SplitWord
                     if( $lastc != 2 && $onstr != '') {
                         $this->simpleResult[$s]['w'] = $onstr;
                         $this->simpleResult[$s]['t'] = $lastc;
-                        $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        $this->_deep_analysis($onstr, $lastc, $s, $optimize);
                         $s++;
                         $onstr = '';
                     }
@@ -342,10 +383,10 @@ class SplitWord
                         $this->simpleResult[$s]['w'] = $onstr;
                         if( $lastc==2 )
                         {
-                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv(UCS2, 'utf-8', $onstr)) ) $lastc = 4;
                         }
                         $this->simpleResult[$s]['t'] = $lastc;
-                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        if( $lastc != 4 ) $this->_deep_analysis($onstr, $lastc, $s, $optimize);
                         $s++;
                     }
                     $onstr = '';
@@ -365,7 +406,7 @@ class SplitWord
             //普通字符
             else
             {
-                //正常文字 $cn==$nameLink || 
+                //正常文字
                 if( ($cn>0x3FFF && $cn < 0x9FA6) || ($cn>0xF8FF && $cn < 0xFA2D)
                     || ($cn>0xABFF && $cn < 0xD7A4) || ($cn>0x3040 && $cn < 0x312B) )
                 {
@@ -374,10 +415,10 @@ class SplitWord
                         $this->simpleResult[$s]['w'] = $onstr;
                         if( $lastc==2 )
                         {
-                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv(UCS2, 'utf-8', $onstr)) ) $lastc = 4;
                         }
                         $this->simpleResult[$s]['t'] = $lastc;
-                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        if( $lastc != 4 ) $this->_deep_analysis($onstr, $lastc, $s, $optimize);
                         $s++;
                         $onstr = '';
                     }
@@ -392,10 +433,10 @@ class SplitWord
                         $this->simpleResult[$s]['w'] = $onstr;
                         if( $lastc==2 )
                         {
-                            if( !preg_match('/'.$notNumberMatch.'/i', iconv('ucs-2', 'utf-8', $onstr)) ) $lastc = 4;
+                            if( !preg_match('/'.$notNumberMatch.'/i', iconv(UCS2, 'utf-8', $onstr)) ) $lastc = 4;
                         }
                         $this->simpleResult[$s]['t'] = $lastc;
-                        if( $lastc != 4 ) $this->DeepAnalysis($onstr, $lastc, $s, $optimize);
+                        if( $lastc != 4 ) $this->_deep_analysis($onstr, $lastc, $s, $optimize);
                         $s++;
                     }
                     
@@ -404,9 +445,9 @@ class SplitWord
                     {
                         $tmpw = '';
                         $n = 1;
-                        $isok = false;
+                        $isok = FALSE;
                         $ew = chr(0x30).chr(0x0B);
-                        while(true)
+                        while(TRUE)
                         {
                             $w = $this->sourceString[$i+$n].$this->sourceString[$i+$n+1];
                             if( $w == $ew )
@@ -419,7 +460,7 @@ class SplitWord
                                 $this->newWords[$tmpw] = 1;
                                 if( !isset($this->newWords[$tmpw]) )
                                 {
-                                    $this->foundWordStr .= $this->OutStringEncoding($tmpw).'/nb, ';
+                                    $this->foundWordStr .= $this->_out_string_encoding($tmpw).'/nb, ';
                                     $this->SetWordInfos($tmpw, array('c'=>1, 'm'=>'nb'));
                                 }
                                 $this->simpleResult[$s]['t'] = 13;
@@ -431,7 +472,7 @@ class SplitWord
                                 {
                                     $this->simpleResult[$s]['w'] = $tmpw;
                                     $this->simpleResult[$s]['t'] = 21;
-                                    $this->DeepAnalysis($tmpw, $lastc, $s, $optimize);
+                                    $this->_deep_analysis($tmpw, $lastc, $s, $optimize);
                                     $s++;
                                 }
                                 
@@ -440,7 +481,7 @@ class SplitWord
                                 $s++;
                         
                                 $i = $i + $n + 1;
-                                $isok = true;
+                                $isok = TRUE;
                                 $onstr = '';
                                 $lastc = 5;
                                 break;
@@ -458,9 +499,9 @@ class SplitWord
                         if( !$isok )
                         {
                             $this->simpleResult[$s]['w'] = $c;
-              	            $this->simpleResult[$s]['t'] = 5;
-              	            $s++;
-              	            $onstr = '';
+                              $this->simpleResult[$s]['t'] = 5;
+                              $s++;
+                              $onstr = '';
                             $lastc = 5;
                         }
                         continue;
@@ -485,7 +526,7 @@ class SplitWord
         }//end for
         
         //处理分词后的结果
-        $this->SortFinallyResult();
+        $this->_sort_finally_result();
     }
     
     /**
@@ -495,7 +536,7 @@ class SplitWord
      * @parem $spos   当前粗分结果游标
      * @return bool
      */
-    function DeepAnalysis( &$str, $ctype, $spos, $optimize=true )
+    function _deep_analysis( &$str, $ctype, $spos, $optimize=TRUE )
     {
 
         //中文句子
@@ -510,43 +551,43 @@ class SplitWord
                 if( $spos > 0 ) $lastType = $this->simpleResult[$spos-1]['t'];
                 if($slen < 5)
                 {
-                	  //echo iconv('ucs-2', 'utf-8', $str).'<br/>';
-                	  if( $lastType==4 && ( isset($this->addonDic['u'][$str]) || isset($this->addonDic['u'][substr($str, 0, 2)]) ) )
-        						{
-             					 $str2 = '';
-             					 if( !isset($this->addonDic['u'][$str]) && isset($this->addonDic['s'][substr($str, 2, 2)]) )
-             					 {
-             					    $str2 = substr($str, 2, 2);
-             					    $str  = substr($str, 0, 2);
-             					 }
-             					 $ww = $this->simpleResult[$spos - 1]['w'].$str;
-             					 $this->simpleResult[$spos - 1]['w'] = $ww;
-             					 $this->simpleResult[$spos - 1]['t'] = 4;
-             					 if( !isset($this->newWords[$this->simpleResult[$spos - 1]['w']]) )
-                       {
-             					    $this->foundWordStr .= $this->OutStringEncoding( $ww ).'/mu, ';
-             					    $this->SetWordInfos($ww, array('c'=>1, 'm'=>'mu'));
-             					 }
-             					 $this->simpleResult[$spos]['w'] = '';
-             					 if( $str2 != '' )
-             					 {
-             					    $this->finallyResult[$spos-1][] = $ww;
-             					    $this->finallyResult[$spos-1][] = $str2;
-             					 }
-       							}
-       							else {
-       								 $this->finallyResult[$spos][] = $str;
-       							}
+                      //echo iconv(UCS2, 'utf-8', $str).'<br/>';
+                      if( $lastType==4 && ( isset($this->addonDic['u'][$str]) || isset($this->addonDic['u'][substr($str, 0, 2)]) ) )
+                      {
+                              $str2 = '';
+                              if( !isset($this->addonDic['u'][$str]) && isset($this->addonDic['s'][substr($str, 2, 2)]) )
+                              {
+                                     $str2 = substr($str, 2, 2);
+                                     $str  = substr($str, 0, 2);
+                              }
+                              $ww = $this->simpleResult[$spos - 1]['w'].$str;
+                              $this->simpleResult[$spos - 1]['w'] = $ww;
+                              $this->simpleResult[$spos - 1]['t'] = 4;
+                              if( !isset($this->newWords[$this->simpleResult[$spos - 1]['w']]) )
+                              {
+                                     $this->foundWordStr .= $this->_out_string_encoding( $ww ).'/mu, ';
+                                     $this->SetWordInfos($ww, array('c'=>1, 'm'=>'mu'));
+                              }
+                              $this->simpleResult[$spos]['w'] = '';
+                              if( $str2 != '' )
+                              {
+                                     $this->finallyResult[$spos-1][] = $ww;
+                                     $this->finallyResult[$spos-1][] = $str2;
+                              }
+                       }
+                       else {
+                              $this->finallyResult[$spos][] = $str;
+                       }
                 }
                 else
                 {
-                	  $this->DeepAnalysisChinese( $str, $ctype, $spos, $slen, $optimize );
+                      $this->_deep_analysis_cn( $str, $ctype, $spos, $slen, $optimize );
                 }
             }
             //正常长度的句子，循环进行分词处理
             else
             {
-                $this->DeepAnalysisChinese( $str, $ctype, $spos, $slen, $optimize );
+                $this->_deep_analysis_cn( $str, $ctype, $spos, $slen, $optimize );
             }
         }
         //英文句子，转为小写
@@ -566,7 +607,7 @@ class SplitWord
      * @parem $str
      * @return void
      */
-    function DeepAnalysisChinese( &$str, $lastec, $spos, $slen, $optimize=true )
+    function _deep_analysis_cn( &$str, $lastec, $spos, $slen, $optimize=TRUE )
     {
         $quote1 = chr(0x20).chr(0x1C);
         $tmparr = array();
@@ -577,7 +618,7 @@ class SplitWord
             $tmparr[] = $str;
             if( !isset($this->newWords[$str]) )
             {
-                $this->foundWordStr .= $this->OutStringEncoding($str).'/nq, ';
+                $this->foundWordStr .= $this->_out_string_encoding($str).'/nq, ';
                 $this->SetWordInfos($str, array('c'=>1, 'm'=>'nq'));
             }
             if( !$this->differMax )
@@ -587,52 +628,47 @@ class SplitWord
             }
         }
         //进行切分
-        for($i=$slen-1; $i>0; $i--)
+        for($i=$slen-1; $i > 0; $i -= 2)
         {
+            //单个词
             $nc = $str[$i-1].$str[$i];
-            if($i<2)
+            //是否已经到最后两个字
+            if( $i <= 2 )
             {
                 $tmparr[] = $nc;
                 $i = 0;
                 break;
             }
-            if( $this->IsWordEnd($nc) )
+            $isok = FALSE;
+            $i = $i + 1;
+            for($k=$this->dicWordMax; $k>1; $k=$k-2)
             {
-                $i = $i - 1;
-                $isok = false;
-                for($k=12; $k>1; $k=$k-2)
+                if($i < $k) continue;
+                $w = substr($str, $i-$k, $k);
+                if( strlen($w) <= 2 )
                 {
-                    //if($i < $k || $this->mainDic[$nc][0][$k]==0) continue;
-                    if($i < $k) continue;
-                    $w = substr($str, $i-$k, $k);
-                    if( isset($this->mainDic[$nc][1][$w]) )
-                    {
-                        $tmparr[] = $w.$nc;
-                        $i = $i - $k;
-                        $isok = true;
-                        break;
-                    }
+                    $i = $i - 1;
+                    break;
                 }
-                if(!$isok)
+                if( $this->IsWord( $w ) )
                 {
-                   $tmparr[] = $nc;
+                    $tmparr[] = $w;
+                    $i = $i - $k + 1;
+                    $isok = TRUE;
+                    break;
                 }
             }
-            else
-            {
-               $tmparr[] = $nc;
-               $i = $i - 1;
-            }
+            //echo '<hr />';
+            //没适合词
+            if(!$isok) $tmparr[] = $nc;
         }
-        if(count($tmparr)==0) return ;
-        for($i=count($tmparr)-1; $i>=0; $i--)
-        {
-            $this->finallyResult[$spos][] = $tmparr[$i];
-        }
+        $wcount = count($tmparr);
+        if( $wcount==0 ) return ;
+        $this->finallyResult[$spos] = array_reverse($tmparr);
         //优化结果(岐义处理、新词、数词、人名识别等)
         if( $optimize )
         {
-            $this->OptimizeResult( $this->finallyResult[$spos], $spos );
+            $this->_optimize_result( $this->finallyResult[$spos], $spos );
         }
     }
     
@@ -642,7 +678,7 @@ class SplitWord
     * @return bool
     */
     //t = 1 中/韩/日文, 2 英文/数字/符号('.', '@', '#', '+'), 3 ANSI符号 4 纯数字 5 非ANSI符号或不支持字符
-    function OptimizeResult( &$smarr, $spos )
+    function _optimize_result( &$smarr, $spos )
     {
         $newarr = array();
         $prePos = $spos - 1;
@@ -653,18 +689,18 @@ class SplitWord
         {
             $lastw = $this->simpleResult[$prePos]['w'];
             $lastt = $this->simpleResult[$prePos]['t'];
-        	  if( ($lastt==4 || isset( $this->addonDic['c'][$lastw] )) && isset( $this->addonDic['u'][$smarr[0]] ) )
-        	  {
-               $this->simpleResult[$prePos]['w'] = $lastw.$smarr[0];
-               $this->simpleResult[$prePos]['t'] = 4;
-               if( !isset($this->newWords[ $this->simpleResult[$prePos]['w'] ]) )
-               {
-                    $this->foundWordStr .= $this->OutStringEncoding( $this->simpleResult[$prePos]['w'] ).'/mu, ';
-                    $this->SetWordInfos($this->simpleResult[$prePos]['w'], array('c'=>1, 'm'=>'mu'));
-               }
-               $smarr[0] = '';
-               $i++;
-       		  }
+              if( ($lastt==4 || isset( $this->addonDic['c'][$lastw] )) && isset( $this->addonDic['u'][$smarr[0]] ) )
+              {
+                 $this->simpleResult[$prePos]['w'] = $lastw.$smarr[0];
+                 $this->simpleResult[$prePos]['t'] = 4;
+                 if( !isset($this->newWords[ $this->simpleResult[$prePos]['w'] ]) )
+                 {
+                     $this->foundWordStr .= $this->_out_string_encoding( $this->simpleResult[$prePos]['w'] ).'/mu, ';
+                     $this->SetWordInfos($this->simpleResult[$prePos]['w'], array('c'=>1, 'm'=>'mu'));
+                 }
+                 $smarr[0] = '';
+                 $i++;
+              }
        }
        for(; $i < $arlen; $i++)
        {
@@ -676,7 +712,7 @@ class SplitWord
             }
             $cw = $smarr[$i];
             $nw = $smarr[$i+1];
-            $ischeck = false;
+            $ischeck = FALSE;
             //检测数量词
             if( isset( $this->addonDic['c'][$cw] ) && isset( $this->addonDic['u'][$nw] ) )
             {
@@ -695,77 +731,43 @@ class SplitWord
                 $newarr[$j] = $cw.$nw;
                 if( !isset($this->newWords[$newarr[$j]]) )
                 {
-                    $this->foundWordStr .= $this->OutStringEncoding( $newarr[$j] ).'/mu, ';
+                    $this->foundWordStr .= $this->_out_string_encoding( $newarr[$j] ).'/mu, ';
                     $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'mu'));
                 }
-                $j++; $i++; $ischeck = true;
+                $j++; $i++; $ischeck = TRUE;
             }
             //检测前导词(通常是姓)
             else if( isset( $this->addonDic['n'][ $smarr[$i] ] ) )
             {
-                $is_rs = false;
+                $is_rs = FALSE;
                 //词语是副词或介词或频率很高的词不作为人名
                 if( strlen($nw)==4 )
                 {
                     $winfos = $this->GetWordInfos($nw);
                     if(isset($winfos['m']) && ($winfos['m']=='r' || $winfos['m']=='c' || $winfos['c']>500) )
                     {
-                    	 $is_rs = true;
+                         $is_rs = TRUE;
                     }
                 }
                 if( !isset($this->addonDic['s'][$nw]) && strlen($nw)<5 && !$is_rs )
                 {
-                    //最大切分时保留合并前的姓名
-                    if($this->differMax)
-                    {
-                            $newarr[$j] = chr(0).chr(0x28);
-                            $j++;
-                            $newarr[$j] = $cw;
-                            $j++;
-                            $nj = $j;
-                            $newarr[$j] = $nw;
-                            $j++;
-                            $newarr[$j] = chr(0).chr(0x29);
-                            $j++;
-                    }
                     $newarr[$j] = $cw.$nw;
-                    //echo iconv('ucs-2', 'utf-8', $newarr[$j])."<br />";
+                    //echo iconv(UCS2, 'utf-8', $newarr[$j])."<br />";
                     //尝试检测第三个词
                     if( strlen($nw)==2 && isset($smarr[$i+2]) && strlen($smarr[$i+2])==2 && !isset( $this->addonDic['s'][$smarr[$i+2]] ) )
                     {
                         $newarr[$j] .= $smarr[$i+2];
-                        if($this->differMax)
-                        {
-                            $newarr[$nj] .= $smarr[$i+2];
-                        }
                         $i++;
                     }
                     if( !isset($this->newWords[$newarr[$j]]) )
                     {
                         $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'nr'));
-                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/nr, ';
+                        $this->foundWordStr .= $this->_out_string_encoding($newarr[$j]).'/nr, ';
                     }
-                    $j++; $i++; $ischeck = true;
-                }
-            }
-            //检测后缀词(地名等)
-            else if( isset($this->addonDic['a'][$nw]) )
-            {
-                $is_rs = false;
-                //词语是副词或介词不作为前缀
-                if( strlen($cw)>2 )
-                {
-                    $winfos = $this->GetWordInfos($cw);
-                    if(isset($winfos['m']) && ($winfos['m']=='a' || $winfos['m']=='r' || $winfos['m']=='c' || $winfos['c']>500) )
+                    //为了防止错误，保留合并前的姓名
+                    if(strlen($nw)==4)
                     {
-                    	 $is_rs = true;
-                    }
-                }
-                if( !isset($this->addonDic['s'][$cw]) && !$is_rs )
-                {
-                    //最大切分时保留合并前的词
-                    if($this->differMax)
-                    {
+                        $j++;
                         $newarr[$j] = chr(0).chr(0x28);
                         $j++;
                         $newarr[$j] = $cw;
@@ -773,15 +775,33 @@ class SplitWord
                         $newarr[$j] = $nw;
                         $j++;
                         $newarr[$j] = chr(0).chr(0x29);
-                        $j++;
                     }
+                    
+                    $j++; $i++; $ischeck = TRUE;
+                }
+            }
+            //检测后缀词(地名等)
+            else if( isset($this->addonDic['a'][$nw]) )
+            {
+                $is_rs = FALSE;
+                //词语是副词或介词不作为前缀
+                if( strlen($cw)>2 )
+                {
+                    $winfos = $this->GetWordInfos($cw);
+                    if(isset($winfos['m']) && ($winfos['m']=='a' || $winfos['m']=='r' || $winfos['m']=='c' || $winfos['c']>500) )
+                    {
+                         $is_rs = TRUE;
+                    }
+                }
+                if( !isset($this->addonDic['s'][$cw]) && !$is_rs )
+                {
                     $newarr[$j] = $cw.$nw;
                     if( !isset($this->newWords[$newarr[$j]]) )
                     {
-                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/na, ';
+                        $this->foundWordStr .= $this->_out_string_encoding($newarr[$j]).'/na, ';
                         $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'na'));
                     }
-                    $i++; $j++; $ischeck = true;
+                    $i++; $j++; $ischeck = TRUE;
                 }
             }
             //新词识别（暂无规则）
@@ -791,34 +811,19 @@ class SplitWord
                 && !isset($this->addonDic['s'][$cw]) && !isset($this->addonDic['t'][$cw]) && !isset($this->addonDic['a'][$cw]) 
                 && !isset($this->addonDic['s'][$nw]) && !isset($this->addonDic['c'][$nw]))
                 {
-                    //最大切分时保留合并前的词
-                    if($this->differMax)
-                    {
-                        $newarr[$j] = chr(0).chr(0x28);
-                        $j++;
-                        $newarr[$j] = $cw;
-                        $j++;
-                        $nj = $j;
-                        $newarr[$j] = $nw;
-                        $j++;
-                        $newarr[$j] = chr(0).chr(0x29);
-                        $j++;
-                    }
                     $newarr[$j] = $cw.$nw;
-                    $wf = $nw;
                     //尝试检测第三个词
                     if( isset($smarr[$i+2]) && strlen($smarr[$i+2])==2 && (isset( $this->addonDic['a'][$smarr[$i+2]] ) || isset( $this->addonDic['u'][$smarr[$i+2]] )) )
                     {
                         $newarr[$j] .= $smarr[$i+2];
-                        $newarr[$nj] .= $smarr[$i+2];
                         $i++;
                     }
                     if( !isset($this->newWords[$newarr[$j]]) )
                     {
-                        $this->foundWordStr .= $this->OutStringEncoding($newarr[$j]).'/ms, ';
+                        $this->foundWordStr .= $this->_out_string_encoding($newarr[$j]).'/ms, ';
                         $this->SetWordInfos($newarr[$j], array('c'=>1, 'm'=>'ms'));
                     }
-                    $i++; $j++; $ischeck = true;
+                    $i++; $j++; $ischeck = TRUE;
                 }
             }
             
@@ -826,19 +831,19 @@ class SplitWord
             if( !$ischeck )
             {
                 $newarr[$j] = $cw;
-              	//二元消岐处理——最大切分模式
+                  //二元消岐处理——最大切分模式
                 if( $this->differMax && !isset($this->addonDic['s'][$cw]) && strlen($cw) < 5 && strlen($nw) < 7)
                 {
                     $slen = strlen($nw);
-                    $hasDiff = false;
+                    $hasDiff = FALSE;
                     for($y=2; $y <= $slen-2; $y=$y+2)
                     {
                         $nhead = substr($nw, $y-2, 2);
                         $nfont = $cw.substr($nw, 0, $y-2);
-                        if( $this->IsWordEnd($nhead) && isset( $this->mainDic[$nhead][1][$nfont] ) )
+                        if( $this->IsWord( $nfont.$nhead ) )
                         {
                             if( strlen($cw) > 2 ) $j++;
-                            $hasDiff = true;
+                            $hasDiff = TRUE;
                             $newarr[$j] = $nfont.$nhead;
                         }
                     }
@@ -854,9 +859,9 @@ class SplitWord
     * 转换最终分词结果到 finallyResult 数组
     * @return void
     */
-    function SortFinallyResult()
+    function _sort_finally_result()
     {
-    	  $newarr = array();
+          $newarr = array();
         $i = 0;
         foreach($this->simpleResult as $k=>$v)
         {
@@ -867,9 +872,9 @@ class SplitWord
                 {
                     if(!empty($w))
                     {
-                    	$newarr[$i]['w'] = $w;
-                    	$newarr[$i]['t'] = 20;
-                    	$i++;
+                        $newarr[$i]['w'] = $w;
+                        $newarr[$i]['t'] = 20;
+                        $i++;
                     }
                 }
             }
@@ -882,24 +887,24 @@ class SplitWord
         }
         $this->finallyResult = $newarr;
         $newarr = '';
-  	}
+      }
     
     /**
      * 把uncode字符串转换为输出字符串
      * @parem str
      * return string
      */
-     function OutStringEncoding( &$str )
+     function _out_string_encoding( &$str )
      {
-        $rsc = $this->SourceResultCharset();
+        $rsc = $this->_source_result_charset();
         if( $rsc==1 ) {
-            $rsstr = iconv('ucs-2', 'utf-8', $str);
+            $rsstr = iconv(UCS2, 'utf-8', $str);
         }
         else if( $rsc==2 ) {
-            $rsstr = iconv('utf-8', 'gb18030', iconv('ucs-2', 'utf-8', $str) );
+            $rsstr = iconv('utf-8', 'gb18030', iconv(UCS2, 'utf-8', $str) );
         }
         else{
-            $rsstr = iconv('utf-8', 'big5', iconv('ucs-2', 'utf-8', $str) );
+            $rsstr = iconv('utf-8', 'big5', iconv(UCS2, 'utf-8', $str) );
         }
         return $rsstr;
      }
@@ -908,21 +913,21 @@ class SplitWord
      * 获取最终结果字符串（用空格分开后的分词结果）
      * @return string
      */
-     function GetFinallyResult($spword=' ', $word_meanings=false)
+     function GetFinallyResult($spword=' ', $word_meanings=FALSE)
      {
         $rsstr = '';
         foreach($this->finallyResult as $v)
         {
             if( $this->resultType==2 && ($v['t']==3 || $v['t']==5) )
             {
-            	continue;
+                continue;
             }
             $m = '';
             if( $word_meanings )
             {
                 $m = $this->GetWordProperty($v['w']);
             }
-            $w = $this->OutStringEncoding($v['w']);
+            $w = $this->_out_string_encoding($v['w']);
             if( $w != ' ' )
             {
                 if($word_meanings) {
@@ -946,7 +951,7 @@ class SplitWord
         foreach($this->simpleResult as $k=>$v)
         {
             if( empty($v['w']) ) continue;
-            $w = $this->OutStringEncoding($v['w']);
+            $w = $this->_out_string_encoding($v['w']);
             if( $w != ' ' ) $rearr[] = $w;
         }
         return $rearr;
@@ -961,7 +966,7 @@ class SplitWord
         $rearr = array();
         foreach($this->simpleResult as $k=>$v)
         {
-            $w = $this->OutStringEncoding($v['w']);
+            $w = $this->_out_string_encoding($v['w']);
             if( $w != ' ' )
             {
                 $rearr[$k]['w'] = $w;
@@ -980,25 +985,24 @@ class SplitWord
         $rearr = array();
         foreach($this->finallyResult as $v)
         {
-            if( $this->resultType==2 && ($v['t']==3 || $v['t']==5 || isset($this->addonDic['s'][$v['w']]) ) )
+            if( $this->resultType==2 && ($v['t']==3 || $v['t']==5) )
             {
-            	continue;
+                continue;
             }
-            $w = $this->OutStringEncoding($v['w']);
-            if( $w == ' ' || $w == '(' || $w == ')' )
+            $w = $this->_out_string_encoding($v['w']);
+            if( $w == ' ' )
             {
                 continue;
             }
             if( isset($rearr[$w]) )
             {
-            	 $rearr[$w]++;
+                 $rearr[$w]++;
             }
             else
             {
-            	 $rearr[$w] = 1;
+                 $rearr[$w] = 1;
             }
         }
-        arsort($rearr);
         return $rearr;
      }
      
@@ -1006,7 +1010,7 @@ class SplitWord
      * 获得保存目标编码
      * @return int
      */
-     function SourceResultCharset()
+     function _source_result_charset()
      {
         if( preg_match("/^utf/", $this->targetCharSet) ) {
            $rs = 1;
@@ -1024,153 +1028,106 @@ class SplitWord
      }
      
      /**
+     * 编译词典
+     * @parem $sourcefile utf-8编码的文本词典数据文件<参见范例dict/not-build/base_dic_full.txt>
+     * 注意, 需要PHP开放足够的内存才能完成操作
+     * @return void
+     */
+     function MakeDict( $source_file, $target_file='' )
+     {
+        $target_file = ($target_file=='' ? $this->mainDicFile : $target_file);
+        $allk = array();
+        $fp = fopen($source_file, 'r');
+        while( $line = fgets($fp, 512) )
+        {
+            if( $line[0]=='@' ) continue;
+            list($w, $r, $a) = explode(',', $line);
+            $a = trim( $a );
+            $w = iconv('utf-8', UCS2, $w);
+            $k = $this->_get_index( $w );
+            if( isset($allk[ $k ]) )
+                $allk[ $k ][ $w ] = array($r, $a);
+            else
+                $allk[ $k ][ $w ] = array($r, $a);
+        }
+        fclose( $fp );
+        $fp = fopen($target_file, 'w');
+        $heade_rarr = array();
+        $alldat = '';
+        $start_pos = $this->mask_value * 8;
+        foreach( $allk as $k => $v )
+        {
+            $dat  = serialize( $v );
+            $dlen = strlen($dat);
+            $alldat .= $dat;
+        
+            $heade_rarr[ $k ][0] = $start_pos;
+            $heade_rarr[ $k ][1] = $dlen;
+            $heade_rarr[ $k ][2] = count( $v );
+        
+            $start_pos += $dlen;
+        }
+        unset( $allk );
+        for($i=0; $i < $this->mask_value; $i++)
+        {
+            if( !isset($heade_rarr[$i]) )
+            {
+                $heade_rarr[$i] = array(0, 0, 0);
+            }
+            fwrite($fp, pack("Inn", $heade_rarr[$i][0], $heade_rarr[$i][1], $heade_rarr[$i][2]));
+        }
+        fwrite( $fp, $alldat);
+        fclose( $fp );
+     }
+     
+     /**
      * 导出词典的词条
      * @parem $targetfile 保存位置
      * @return void
      */
      function ExportDict( $targetfile )
      {
+        if( !$this->mainDicHand )
+        {
+            $this->mainDicHand = fopen($this->mainDicFile, 'rw');
+        }
         $fp = fopen($targetfile, 'w');
-        foreach($this->mainDic as $k=>$v)
+        for($i=0; $i <= $this->mask_value; $i++)
         {
-            $ik = iconv('ucs-2', 'utf-8', $k);
-            foreach( $v[1] as $wk => $wv)
+            $move_pos = $i * 8;
+            fseek($this->mainDicHand, $move_pos, SEEK_SET);
+            $dat = fread($this->mainDicHand, 8);
+            $arr = unpack('I1s/n1l/n1c', $dat);
+            if( $arr['l'] == 0 )
             {
-                $arr = $this->GetWordInfos($wk.$k);
-                $wd = iconv('ucs-2', 'utf-8', $wk).$ik;
-                if($arr != '')
-                {
-                    fwrite($fp, $wd.','.$arr['c'].','.$arr['m']."\n");
-                }
-                else
-                {
-                    continue;
-                }
+                continue;
+            }
+            fseek($this->mainDicHand, $arr['s'], SEEK_SET);
+            $data = @unserialize(fread($this->mainDicHand, $arr['l']));
+            if( !is_array($data) ) continue;
+            foreach($data as $k => $v)
+            {
+                $w = iconv(UCS2, 'utf-8', $k);
+                fwrite($fp, "{$w},{$v[0]},{$v[1]}\n");
             }
         }
-        fclose($fp);
+        fclose( $fp );
+        return TRUE;
      }
      
-     /**
-     * 追加新词到内存里的词典
-     * @parem $word unicode编码的词
-     * @return void
-     */
-     function AddNewWord( $word )
+	function InportDict( $targetfile )
      {
-        
+     	if(!ini_set('memory_limit', '128M'))
+			exit('设置内存错误，请到dede官网下载解压版的base_dic_full.dic!');
+     	require_once(DEDEINC.'/zip.class.php');
+     	$zip = new zip();
+     	//echo $targetfile;
+     	$unpackagefile = array_keys($zip->Extract($targetfile,DEDEINC.'/data/'));
+     	//exit();
+     	$this->MakeDict(DEDEINC.'/data/'.$unpackagefile[0]);
+     	unlink(DEDEINC.'/data/'.$unpackagefile[0]);
+     	return true;
      }
-     
-     /**
-     * 编译词典
-     * @parem $sourcefile utf-8编码的文本词典数据文件<参见范例dict/not-build/base_dic_full.txt>
-     * @return void
-     */
-     function MakeDict( $sourcefile, $maxWordLen=16, $target='' )
-     {
-        if( $target=='' )
-        {
-            $dicWords = dirname(__FILE__).'/'.$this->mainDicFile;
-        }
-        else
-        {
-            $dicWords = dirname(__FILE__).'/'.$target;
-        }
-        $narr = $earr = array();
-        if( !file_exists($sourcefile) )
-        {
-            echo 'File: '.$sourcefile.' not found!';
-            return ;
-        }
-        $ds = file($sourcefile);
-        $i = 0;
-        $maxlen = 0;
-        foreach($ds as $d)
-        {
-            $d = trim($d);
-            if($d=='') continue;
-            list($d, $hot, $mtype) = explode(',', $d);
-            if( empty($hot) ) $hot = 0;
-            if( empty($mtype) ) $mtype = 'x';
-            if( $mtype=='@' ) continue;
-            $d = iconv('utf-8', 'ucs-2', $d);
-            /*这里用ANSI混编
-            if( strlen($mtype)==1 )
-            {
-                $mtype = chr(0).$mtype;
-            }*/
-            $nlength = strlen($d)-2;
-            if( $nlength >= $maxWordLen ) continue;
-            $maxlen = $nlength > $maxlen ? $nlength : $maxlen;
-            $endc = substr($d, $nlength, 2);
-            $n = hexdec(bin2hex($endc));
-            if( isset($narr[$endc]) )
-            {
-                $narr[$endc]['w'][$narr[$endc]['c']] = $this->GetWord($d);
-                $narr[$endc]['n'][$narr[$endc]['c']] = $hot;
-                $narr[$endc]['m'][$narr[$endc]['c']] = $mtype;
-                $narr[$endc]['l'] += $nlength;
-                $narr[$endc]['c']++;
-                $narr[$endc]['h'][$nlength] = isset($narr[$endc]['h'][$nlength]) ? $narr[$endc]['h'][$nlength]+1 : 1;
-            }
-            else
-            {
-                $narr[$endc]['w'][0] = $this->GetWord($d);
-                $narr[$endc]['n'][0] = $hot;
-                $narr[$endc]['m'][0] = $mtype;
-                $narr[$endc]['l'] = $nlength;
-                $narr[$endc]['c'] = 1;
-                $narr[$endc]['h'][$nlength] = 1;
-            }
-        }
-        $alllen = $n = $max = $bigw = $bigc = 0;
-        $fp = fopen($dicWords, 'wb');
-        foreach($narr as $k=>$v)
-        {
-            fwrite($fp, $k);
-            /* 保存指定长度的词条个数信息（此项对提升分词速度不明显，但会影响载入时间）
-            for($i=2; $i <= 12; $i = $i+2)
-            {
-                if( empty($v['h'][$i]) ) {
-                    fwrite($fp, chr(0).chr(0));
-                }
-                else {
-                    fwrite($fp, pack('n', $v['h'][$i]));
-                }
-            }*/
-            $allstr = '';
-            foreach($v['w']  as $n=>$w)
-            {
-                //$hot = pack('n', $narr[$k]['n'][$n]);
-                $hot = $narr[$k]['n'][$n];
-                $mtype = $narr[$k]['m'][$n];
-                $allstr .= ($allstr=='' ? $w._SP_.$hot._SP2_.$mtype : _SP_.$w._SP_.$hot._SP2_.$mtype);
-            }
-            $alLen = strlen($allstr);
-            $max = $alLen > $max ? $alLen : $max;
-            fwrite($fp, pack('n', $alLen) );
-            fwrite($fp, $allstr);
-        }
-        fclose($fp);
-     }
-     
-     /**
-     * 获得词的前部份
-     * @parem $str 单词
-     * @return void
-     */
-     function GetWord($str)
-     {
-        $newstr = '';
-        for($i=0; $i < strlen($str)-3; $i++)
-        {
-            $newstr .= $str[$i];
-            $newstr .= $str[$i+1];
-            $i++;
-        }
-        return $newstr;
-     }
-    
 }
 
-?>
+?> 

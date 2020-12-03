@@ -1,23 +1,24 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更新系统缓存</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <form name="form1" action="sys_cache_up.php" method="get" target='stafrm'>
   <input type="hidden" name="dopost" value="ok">
     <tr> 
-      <td height="20" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+      <td height="20" background='images/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="30%" height="18"><strong>更新系统缓存：</strong></td>
+            <td width="30%" height="18" style="padding-left:10px;"><strong>更新系统缓存：</strong></td>
             <td width="70%" align="right">&nbsp; </td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td height="20" valign="top" bgcolor="#FFFFFF">
+      <td height="20" valign="top" bgcolor="#FFFFFF" style="line-height:20px;">
       	本程序作默认会执行下面的操作：
       	<br />
       	1、更新栏目缓存
@@ -32,12 +33,12 @@
       </td>
     </tr>
     <tr> 
-      <td height="20" bgcolor="#FAFAF1" align="center">
+      <td height="20" bgcolor="#ffffff" align="center">
       	<input name="b112" type="button" class="coolbg np" value="开始执行" onClick="document.form1.submit();" style="width:100px" /> 
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="20"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

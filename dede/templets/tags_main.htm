@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>tags管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 function checkall(form, prefix, checkall)
 {
@@ -30,16 +30,16 @@ function DeleteOne(tid)
 <body>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">Tags标签管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">Tags标签管理</div>
 </div>
 <div class="main">
 <form name='form1' action="tags_main.php?action=fetch" method="post" style="margin-bottom:6px;">
-<table width="98%" border="0" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
 <tr>
-  <td height="20" align="left" bgcolor="#F0FBBD" background="img/wbg.gif">&nbsp;<strong>提取TAG</strong></td>
+  <td height="20" align="left" bgcolor="#F0FBBD" background="images/wbg.gif" style="padding-left:10px;"><strong>提取TAG</strong></td>
 </tr>
 <tr>
-  <td height="30" align="center" bgcolor="#FAFDF0">
+  <td height="30" align="center" bgcolor="#Ffffff">
 开始id:
     <input type="text" name="startaid" />
 结束id:
@@ -51,12 +51,12 @@ function DeleteOne(tid)
 </tr>
 </table>
 </form>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#dbe4cd;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
     <tr>
-      <td height="20" colspan="6" bgcolor="#F0FBBD" background="img/wbg.gif">
+      <td height="20" colspan="6" bgcolor="#F0FBBD" background="images/wbg.gif">
       	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
           <tr>
-            <td align="left"><strong>&nbsp;TAG维护</strong></td>
+            <td align="left" style="padding-left:10px;"><strong>TAG维护</strong></td>
                         <form name='form2' action="tags_main.php">
             <td width="40%" align="right">
    	        搜索：
@@ -67,7 +67,7 @@ function DeleteOne(tid)
           </tr>
       </table></td>
     </tr>
-    <tr align="center" bgcolor="#F8FEE0" height="24">
+    <tr align="center" bgcolor="#FBFCE2" height="26">
       <td width="5%">删</td>
       <td width="30%">标签</td>
 	  <td width="15%"><a href="tags_main.php?tag=<?php echo $tag;?>&orderby=count&orderway=<?php echo $neworderway;?>"><u>点击</u></a></td>
@@ -81,7 +81,7 @@ function DeleteOne(tid)
 	$fields['addtime'] = GetDateMk($fields['addtime']);
 	$fields['tag'] = htmlspecialchars($fields['tag']);
 ?>
-	<tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+	<tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 		<td height="24">
 			<input type="checkbox" name="ids[]" value="<?php echo $fields['id']; ?>" class='np' />
 		</td>

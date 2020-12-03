@@ -1,10 +1,11 @@
 <?php
-/**
- * Enter description here...
+/**圈子留言管理
  *
- * @author Administrator
- * @package defaultPackage
- * @version  $Id: group_guestbook.php,v 1.1 2009/08/04 04:06:40 blt Exp $
+ * @version        $Id: group_guestbook.php 1 15:34 2011-1-21 tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEINC.'/datalistcp.class.php');
@@ -16,48 +17,48 @@ $action = isset($action) ? trim($action) : '';
 
 $keyword = isset($keyword) ? trim($keyword) : '';
 $keyword = stripslashes($keyword);
-$keyword = ereg_replace("[\"\r\n\t\*\?\(\)\$%']"," ",trim($keyword));
+$keyword = preg_replace("#[\"\r\n\t\*\?\(\)\$%']#", " ", trim($keyword));
 $keyword = addslashes($keyword);
 
 $username = isset($username) ? trim($username) : '';
 $username = stripslashes($username);
-$username = ereg_replace("[\"\r\n\t\*\?\(\)\$%']"," ",trim($username));
+$username = preg_replace("#[\"\r\n\t\*\?\(\)\$%']#", " ", trim($username));
 $username = addslashes($username);
 
 if($gid < 1)
 {
-	ShowMsg("含有非法操作!.","-1");
-	exit();
+    ShowMsg("含有非法操作!.","-1");
+    exit();
 }
 
 if($action=="del")
 {
-	if($id > 0)
-	{
-		$db->ExecuteNoneQuery("DELETE FROM #@__group_guestbook WHERE bid='$id'");
-	}
+    if($id > 0)
+    {
+        $db->ExecuteNoneQuery("DELETE FROM #@__group_guestbook WHERE bid='$id'");
+    }
 }
 else if($action=="save")
 {
-	if($id > 0)
-	{
-		$row = $db->GetOne("SELECT * FROM #@__group_guestbook WHERE bid='$id'");
-		if(empty($message))
-		{
-			$message = $row['message'];
-		}
-		if(empty($title))
-		{
-			$title = $row['title'];
-		}
-		$db->ExecuteNoneQuery("UPDATE #@__group_guestbook SET message='".$message."',title='".$title."' WHERE bid='$id'");
-	}
+    if($id > 0)
+    {
+        $row = $db->GetOne("SELECT * FROM #@__group_guestbook WHERE bid='$id'");
+        if(empty($message))
+        {
+            $message = $row['message'];
+        }
+        if(empty($title))
+        {
+            $title = $row['title'];
+        }
+        $db->ExecuteNoneQuery("UPDATE #@__group_guestbook SET message='".$message."',title='".$title."' WHERE bid='$id'");
+    }
 }
 else if($action=="edit")
 {
-	$row = $db->GetOne("SELECT * FROM #@__group_guestbook WHERE bid='$id'");
-	$title = $row['title'];
-	$message = $row['message'];
+    $row = $db->GetOne("SELECT * FROM #@__group_guestbook WHERE bid='$id'");
+    $title = $row['title'];
+    $message = $row['message'];
 }
 
 
@@ -65,11 +66,11 @@ else if($action=="edit")
 $wheresql = "WHERE gid='{$gid}'";
 if(!empty($keyword))
 {
-	$wheresql .= " AND	(title like '%".$keyword."%' OR message like '%".$keyword."%')";
+    $wheresql .= " AND    (title like '%".$keyword."%' OR message like '%".$keyword."%')";
 }
 if(!empty($username))
 {
-	$wheresql .= " AND uname like '%".$username."%'";
+    $wheresql .= " AND uname like '%".$username."%'";
 }
 $sql = "SELECT * FROM #@__group_guestbook $wheresql ORDER BY stime DESC";
 

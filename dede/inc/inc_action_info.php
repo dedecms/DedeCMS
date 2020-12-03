@@ -1,4 +1,13 @@
 <?php
+/**
+ * 后台操作记录信息
+ *
+ * @version        $Id: inc_action_info.php 2 14:55 2010-11-11 tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/../config.php");
 $cuserLogin = new userLogin();
 //后台功能操作配置项
@@ -263,7 +272,7 @@ $actionSearch[6] = array(
             'title' =>'支付接口设置',
             'description' =>'商店以及会员产品付款用到的在线付款方式需要设置的支付接口，这里含有常用的接口，例如：支付宝，易宝等',
             'purview' =>'sys_Data',
-            'linkurl' =>'sys_info_pay.php'
+            'linkurl' =>'sys_payment.php'
         ),
         6  =>  array(
             'title' =>'配货方式设置',
@@ -530,4 +539,3 @@ $actionSearch[11] = array(
         ),
     )
 );
-?>

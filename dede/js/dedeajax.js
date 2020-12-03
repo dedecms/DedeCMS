@@ -1,4 +1,12 @@
-<!--
+/**
+ * 
+ * @version        $Id: dedeajax.js 1 22:28 2010年7月20日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+
 //xmlhttp和xmldom对象
 DedeXHTTP = null;
 DedeXDOM = null;
@@ -6,7 +14,7 @@ DedeContainer = null;
 
 //获取指定ID的元素
 function $(eid){
-	return document.getElementById(eid);
+    return document.getElementById(eid);
 }
 
 function $DE(id) {
@@ -17,38 +25,36 @@ function $DE(id) {
 
 function DedeAjax(gcontainer){
 
-DedeContainer = gcontainer;
+    DedeContainer = gcontainer;
 
-//post或get发送数据的键值对
-this.keys = Array();
-this.values = Array();
-this.keyCount = -1;
+    //post或get发送数据的键值对
+    this.keys = Array();
+    this.values = Array();
+    this.keyCount = -1;
 
-//http请求头
-this.rkeys = Array();
-this.rvalues = Array();
-this.rkeyCount = -1;
-//请求头类型
-this.rtype = 'text';
+    //http请求头
+    this.rkeys = Array();
+    this.rvalues = Array();
+    this.rkeyCount = -1;
+    //请求头类型
+    this.rtype = 'text';
 
-//初始化xmlhttp
-if(window.ActiveXObject){//IE6、IE5
-   try { DedeXHTTP = new ActiveXObject("Msxml2.XMLHTTP");} catch (e) { }
-   if (DedeXHTTP == null) try { DedeXHTTP = new ActiveXObject("Microsoft.XMLHTTP");} catch (e) { }
-}
-else{
-	 DedeXHTTP = new XMLHttpRequest();
-}
+    //初始化xmlhttp
+    if(window.ActiveXObject){//IE6、IE5
+        try { DedeXHTTP = new ActiveXObject("Msxml2.XMLHTTP");} catch (e) { }
+    if (DedeXHTTP == null) try { DedeXHTTP = new ActiveXObject("Microsoft.XMLHTTP");} catch (e) { }
+    }
+    else{
+        DedeXHTTP = new XMLHttpRequest();
+    }
 
-DedeXHTTP.onreadystatechange = function(){
+    DedeXHTTP.onreadystatechange = function(){
 	if(DedeXHTTP.readyState == 4){
     if(DedeXHTTP.status == 200){
        DedeContainer.innerHTML = DedeXHTTP.responseText;
        DedeXHTTP = null;
-    }
-    else DedeContainer.innerHTML = "下载数据失败";
-  }
-  else DedeContainer.innerHTML = "正在下载数据...";
+    }else DedeContainer.innerHTML = "下载数据失败";
+  }else DedeContainer.innerHTML = "正在下载数据...";
 };
 
 //增加一个POST或GET键值对
@@ -138,6 +144,4 @@ function InitXDom(){
   }
   DedeXDOM = obj;
 };
-
--->
  

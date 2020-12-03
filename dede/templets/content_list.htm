@@ -1,20 +1,21 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>文档管理</title>
-<link rel="stylesheet" type="text/css" href="img/base.css">
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/main.js"></script>
 <script language="javascript" src="js/list.js"></script>
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif' onLoad="ContextMenu.intializeContextMenu()">
+<body leftmargin="8" topmargin="8" background='images/allbg.gif' onLoad="ContextMenu.intializeContextMenu()">
 
 <!--  快速转换位置按钮  -->
 <table width="98%" border="0" cellpadding="0" cellspacing="1" bgcolor="#ccd9b9" align="center">
 <tr>
- <td height="26" background="img/newlinebg3.gif">
+ <td height="26" background="images/newlinebg3.gif">
   <table width="98%" border="0" cellspacing="0" cellpadding="0">
   <tr>
   <td align="center">
@@ -38,17 +39,17 @@
   
 <!--  内容列表   -->
 <form name="form2">
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#dbe4cd" align="center" style="margin-top:8px">
-<tr bgcolor="#E7E7E7">
-	<td height="28" colspan="10" background="img/tbg.gif">
-		◆ {dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键弹出菜单)
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
+<tr bgcolor="#E7E7E7" >
+	<td height="28" colspan="10" background="images/tbg.gif" style="padding-left:10px;">
+	◆ {dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键弹出菜单)
 	</td>
 </tr>
-<tr align="center" bgcolor="#FAFAF1" height="22">
+<tr align="center" bgcolor="#FBFCE2" height="25">
 	<td width="6%">ID</td>
 	<td width="4%">选择</td>
 	<td width="28%">文章标题</td>
-	<td width="10%">录入时间</td>
+	<td width="10%">更新时间</td>
 	<td width="10%">类目</td>
 	<td width="8%">点击</td>
 	<td width="6%">HTML</td>
@@ -57,7 +58,7 @@
 	<td width="10%">操作</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF" 	height="22" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+<tr align='center' bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 	<td nowrap>
 		{dede:field.id/}
 	</td>
@@ -74,19 +75,19 @@
 		{dede:field.flag function='IsCommendArchives(@me)'/}
 	</td>
 	<td>{dede:field.senddate function='GetDateMk(@me)'/}</td>
-	<td><a href='content_list.php?cid={dede:field.typeid/}'>{dede:field.typename/}</a></td>
+	<td><a href='content_list.php?cid={dede:field.typeid/}'>{dede:field.typeid function='GetTypename(@me)'/}</a></td>
 	<td>{dede:field.click/}</td>
 	<td>{dede:field.ismake function="IsHtmlArchives(@me)"/}</td>
 	<td>{dede:field.arcrank function="GetRankName(@me)"/}</td>
-	<td>{dede:field.adminname/}</td>
+	<td>{dede:field.mid function=GetMemberName(@me)/}</td>
 	<td>
-		<img src='img/trun.gif' title="编辑属性" alt="编辑属性" onClick="QuickEdit({dede:field.id/}, event, this);" style='cursor:pointer' border='0' width='16' height='16' />
-		<img src='img/gtk-edit.png' title="编辑" alt="编辑" onClick="editArc({dede:field.id/});" style='cursor:pointer' border='0' width='16' height='16' />
-		<img src='img/part-list.gif' title="预览" alt="预览" onClick="viewArc({dede:field.id/});" style='cursor:pointer' border='0' width='16' height='16' />
+		<img src='images/trun.gif' title="编辑属性" alt="编辑属性" onClick="QuickEdit({dede:field.id/}, event, this);" style='cursor:pointer' border='0' width='16' height='16' />
+		<img src='images/gtk-edit.png' title="编辑" alt="编辑" onClick="editArc({dede:field.id/});" style='cursor:pointer' border='0' width='16' height='16' />
+		<img src='images/part-list.gif' title="预览" alt="预览" onClick="viewArc({dede:field.id/});" style='cursor:pointer' border='0' width='16' height='16' />
 	</td>
 </tr>
 {/dede:datalist}
-<tr bgcolor="#FAFAF1">
+<tr bgcolor="#ffffff">
 <td height="36" colspan="10">
 	&nbsp;
 	<a href="javascript:selAll()" class="coolbg">全选</a>
@@ -102,7 +103,7 @@
 </td>
 </tr>
 </form>
-<tr align="right" bgcolor="#EEF4EA">
+<tr align="right" bgcolor="#F9FCEF">
 	<td height="36" colspan="10" align="center">
 		{dede:pagelist listsize=3/}
 	</td>
@@ -112,9 +113,9 @@
 <!--  搜索表单  -->
 <form name='form3' action='content_list.php' method='get'>
 <input type='hidden' name='dopost' value='listArchives' />
-<table width='98%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC' align="center" style="margin-top:8px">
+<table width='98%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#cfcfcf' align="center" style="margin-top:8px">
   <tr bgcolor='#EEF4EA'>
-    <td background='img/wbg.gif' align='center'>
+    <td background='images/wbg.gif' align='center'>
       <table border='0' cellpadding='0' cellspacing='0' height="32">
         <tr>
           <td width='160'>
@@ -122,7 +123,7 @@
           <option value='0'>选择栏目...</option>
           	{dede:global.optionarr /}
           </select>
-        </td>
+        </td >
         <td nowrap>
           关键字：
         </td>
@@ -132,7 +133,7 @@
         <td width='90'>
     		<select name='orderby' style='width:80px'>
             <option value='id'>排序...</option>
-            <option value='pubdate'>发布时间</option>
+            <option value='pubdate'>更新时间</option>
             <option value='sortrank'>置顶权值</option>
             <option value='click'>点击量</option>
             <option value='scores'>评论积分</option>
@@ -146,7 +147,7 @@
       	</select>
       </td>
        <td>
-          <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np" />
+          <input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np" />
        </td>
       </tr>
      </table>

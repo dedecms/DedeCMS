@@ -1,3 +1,12 @@
+/**
+ * 
+ * @version        $Id: ieemu.js 1 22:28 2010年7月20日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+
 var ie = document.all != null;
 var moz = !ie && document.getElementById != null && document.layers == null;
 
@@ -6,7 +15,7 @@ var moz = !ie && document.getElementById != null && document.layers == null;
  * fromElement and toElement
  */
 function extendEventObject() {
-	Event.prototype.__defineSetter__("returnValue", function (b) {
+    Event.prototype.__defineSetter__("returnValue", function (b) {
 		if (!b) this.preventDefault();
 	});
 	

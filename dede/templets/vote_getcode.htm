@@ -1,13 +1,14 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>获取代码</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr>
-    <td height="19" background="img/tbg.gif"><strong><a href="vote_main.php"><u>投票管理</u></a>&gt;&gt;获取代码</strong></td>
+    <td height="19" background="images/tbg.gif"><strong><a href="vote_main.php"><u>投票管理</u></a>&gt;&gt;获取代码</strong></td>
 </tr>
 <tr>
     <td height="200" bgcolor="#FFFFFF" valign="top"><table width="80%" border="0" cellspacing="2" cellpadding="2">
@@ -39,6 +40,14 @@ titlebackground='' tablebgcolor='#FFFFFF'}
             </table> 
           </td>
         </tr>
+		<tr bgcolor="#EBF2DB">
+		<td bgcolor="#EBF2DB">在封面或主页模板中使用的JS：</td>
+		</tr>
+		<tr>
+		<td height="200" valign="top">
+            <textarea name="htmlf" cols="60" rows="5" id="htmlf"><script language="javascript" src="<?php echo $cfg_basehost.'/data/vote/vote_'.$aid.'.js' ?>"></script></textarea>
+		</td>
+		</tr>
         <tr bgcolor="#EBF2DB"> 
           <td bgcolor="#EBF2DB">默认生成的表单HTML：</td>
         </tr>

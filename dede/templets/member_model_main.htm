@@ -2,28 +2,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>会员模型管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
 <div class="bodytitle">
   <div class="bodytitleleft"></div>
-  <div class="bodytitletxt">会员模型管理</div>
+  <div class="bodytitletxt" style="padding-left:10px;">会员模型管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
   <tr>
-    <td bgcolor="#EDF9D5" class="tbtitletxt" background="img/tbg.gif"><table width='96%' border="0" cellpadding='0' cellspacing='0'>
+    <td bgcolor="#EDF9D5" class="tbtitletxt" background="images/tbg.gif"><table width='96%' border="0" cellpadding='0' cellspacing='0'>
         <tr>
-          <td width='30%' class="tbtitletxt">[<a href="member_model_add.php"><u>增加会员模型</u></a>]</td>
-          <td align='right'> [图片说明：
-            暂无] </td>
+          <td width='30%' class="tbtitletxt"  style="padding-left:10px;">[<a href="member_model_add.php"><u>增加会员模型</u></a>]</td>
+          <td align='right'> [图片说明:暂无] </td>
         </tr>
       </table></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#E2F5BC;margin-bottom:5px;'>
-  <tr align="center" bgcolor='#FBFCE2'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#CFCFCF;margin-bottom:5px;'>
+  <tr align="center" bgcolor="#FBFCE2">
     <td>ID号</td>
     <td>模型名称</td>
     <td>表名</td>
@@ -32,7 +31,7 @@
     <td>管理</td>
   </tr>
   {dede:datalist}
-  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFEDA';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td>{dede:field.id/}</td>
     <td><a href="member_main.php?mtype={dede:field.name/}" title="{dede:field.description/}"><u>{dede:field.name/}</u></a>{dede:if field.issystem==1 }<font color=red>[*]</font>{/dede:if}</td>
     <td>{dede:field.table/}</td>
@@ -42,9 +41,9 @@
   </tr>
   {/dede:datalist}
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
   <tr>
-    <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
+    <td height="35" align="center" style="background:#F9FCEF;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
   </tr>
 </table>
 </body>

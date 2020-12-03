@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>上传<?php echo $cInfos['typename']; ?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templets/js/j.js"></script>
@@ -174,7 +174,7 @@ function ShowHideAddr()
             <label>缩略图：</label>
             <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
           </p>
-                   <?php
+      <?php
       //自定义字段
       PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
       ?>
@@ -197,7 +197,7 @@ function ShowHideAddr()
                 <button name='kkkup' type='button' id='kkkup2' onclick="MakeUpload();" class="bt2">增加地址</button>
                 <button type="button" name="Submit3" id="btsh3" onclick="ShowHideAddr();" class="bt2">隐藏地址</button>
                   (最多为12个链接)</p>
-                  <div id="morelink" style="display:none"><p><?php echo "<span id='uploadfield'></span>"; ?></p></div>
+                  <div id="morelink" style="display:none"><p><?php echo "<span id='uploadfield' style='line-height: 32px;'></span>"; ?></p></div>
           
       <?php
       if($safe_faq_send == '1'){

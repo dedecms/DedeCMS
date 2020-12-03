@@ -1,31 +1,33 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>软件频道设置</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="JavaScript">
 function AddServer()
 {
    if(document.form1.serverurl.value==""||document.form1.serverurl.value=="http://"){ alert('服务器网址不能为空！'); return ;}
    if(document.form1.servername.value==""){ alert('服务器名称不能为空！'); return ;}
-   document.form1.sites.value += document.form1.serverurl.value+" | "+document.form1.servername.value+"\r\n";
+   if(document.form1.servertype.value==""){ alert('服务器类型不能为空！'); return ;}
+   document.form1.sites.value += document.form1.serverurl.value+" | "+document.form1.servername.value+" | "+document.form1.servertype.value+"\r\n";
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <form name="form1" action="soft_config.php" method="post">
     <input type="hidden" name="dopost" value="save" />
     <tr> 
-      <td height="28" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+      <td height="28" colspan="2" background='images/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="30%" height="18"><strong>软件频道设置：</strong></td>
+            <td width="30%" height="18" style="padding-left:10px;"><strong>软件频道设置：</strong></td>
             <td width="70%" align="right">&nbsp;</td>
           </tr>
         </table></td>
     </tr>
     <tr> 
-      <td bgcolor="#FFFFFF" width="30%">链接显示方式：</td>
+      <td bgcolor="#FFFFFF" width="200">链接显示方式：</td>
       <td bgcolor="#FFFFFF">
       	<input type="radio" name="downtype" class="np" value="0"<?php if($row['downtype']==0) echo " checked='checked' ";?>/>
         直接显示地址列表 
@@ -68,7 +70,7 @@ function AddServer()
       </td>
     </tr>
     <tr> 
-      <td bgcolor="#F1FCEF" colspan='2'><b>不管是全局，还是具体某软件设置了下面的参数，附件下载方式都必须链接到中转页，否则无效！</b></td>
+      <td bgcolor="#F9FCEF" colspan='2' style="padding-left:10px;"><b>不管是全局，还是具体某软件设置了下面的参数，附件下载方式都必须链接到中转页，否则无效！</b></td>
     </td>
     <tr> 
       <td bgcolor="#FFFFFF">下载默认等级：</td>
@@ -102,7 +104,7 @@ function AddServer()
       </td>
     </tr>
     <tr> 
-      <td height="26" colspan="2" bgcolor="#F1FCEF">
+      <td height="26" colspan="2" bgcolor="#F9FCEF" style="padding-left:10px;">
       	<strong>镜像服务器列表：      </strong></td>
     </tr>
     <tr> 
@@ -110,20 +112,22 @@ function AddServer()
         <input name="serverurl" type="text" id="serverurl" value="http://" />
         服务器名称： 
         <input name="servername" type="text" id="servername" />
+        服务器类型： 
+        <input name="servertype" type="text" id="servertype" value="默认" />
 		<input type="button" name="Submit" value="增加一项" onClick="AddServer()"  class="coolbg np" />
        </td>
     </tr>
     <tr>
-      <td height="62" colspan="2" bgcolor="#FFFFFF"><textarea name="sites" id="sites" style="width:100%;height:150px"><?php echo $row['sites']; ?></textarea></td>
+      <td height="62" colspan="2" bgcolor="#FFFFFF"><textarea name="sites" id="sites" style="width:99%;height:150px"><?php echo $row['sites']; ?></textarea></td>
     </tr>
     <tr>
-      <td height="26" colspan="2" bgcolor="#F1FCEF"><strong>下载说明：</strong></td>
+      <td height="26" colspan="2" bgcolor="#F9FCEF" style="padding-left:10px;"><strong>下载说明：</strong></td>
     </tr>
     <tr> 
       <td height="62" colspan="2" bgcolor="#FFFFFF"><?php GetEditor('downmsg',$row['downmsg'],250); ?></td>
     </tr>
     <tr> 
-      <td height="41" colspan="2" bgcolor="#FAFAF1" align="center">
+      <td height="41" colspan="2" bgcolor="#F9FCEF" align="center">
       <input type="submit" name="Submit" value="保存设置" class="coolbg np" />　　　　        
         <input type="reset" name="rset" id="rset" value="重置" class="coolbg np" />
       </td>

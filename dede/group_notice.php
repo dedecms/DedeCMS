@@ -1,10 +1,12 @@
 <?php
 /**
- * Enter description here...
+ * 圈子公告管理
  *
- * @author Administrator
- * @package defaultPackage
- * @version  $Id: group_notice.php,v 1.1 2009/08/04 04:06:40 blt Exp $
+ * @version        $Id: group_notice.php 1 15:34 2011-1-21 tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEINC.'/datalistcp.class.php');
@@ -16,45 +18,45 @@ $action = isset($action) ? trim($action) : '';
 
 $keyword = isset($keyword) ? trim($keyword) : '';
 $keyword = stripslashes($keyword);
-$keyword = ereg_replace("[\"\r\n\t\*\?\(\)\$%']"," ",trim($keyword));
+$keyword = preg_replace("#[\"\r\n\t\*\?\(\)\$%']#", " ", trim($keyword));
 $keyword = addslashes($keyword);
 
 $username = isset($username) ? trim($username) : '';
 $username = stripslashes($username);
-$username = ereg_replace("[\"\r\n\t\*\?\(\)\$%']"," ",trim($username));
+$username = preg_replace("#[\"\r\n\t\*\?\(\)\$%']#", " ", trim($username));
 $username = addslashes($username);
 
 if($gid < 1)
 {
-	ShowMsg("含有非法操作!.","-1");
-	exit();
+    ShowMsg("含有非法操作!.","-1");
+    exit();
 }
 
 if($action=="del")
 {
-	if($id > 0)
-	{
-		$db->ExecuteNoneQuery("DELETE FROM #@__group_notice WHERE id='$id'");
-	}
+    if($id > 0)
+    {
+        $db->ExecuteNoneQuery("DELETE FROM #@__group_notice WHERE id='$id'");
+    }
 }
 else if($action=="edit")
 {
-	$row = $db->GetOne("SELECT * FROM #@__group_notice WHERE id='$id'");
-	$title = $row['title'];
-	$notice = $row['notice'];
+    $row = $db->GetOne("SELECT * FROM #@__group_notice WHERE id='$id'");
+    $title = $row['title'];
+    $notice = $row['notice'];
 }
 else if($action=="save")
 {
-	$row = $db->GetOne("SELECT * FROM #@__group_notice WHERE id='$id'");
-	if(empty($title))
-	{
-		$title = $row['title'];
-	}
-	if(empty($notice))
-	{
-		$notice = $row['notice'];
-	}
-	$db->ExecuteNoneQuery("UPDATE #@__group_notice SET notice='".$notice."',title='".$title."' WHERE id='$id'");
+    $row = $db->GetOne("SELECT * FROM #@__group_notice WHERE id='$id'");
+    if(empty($title))
+    {
+        $title = $row['title'];
+    }
+    if(empty($notice))
+    {
+        $notice = $row['notice'];
+    }
+    $db->ExecuteNoneQuery("UPDATE #@__group_notice SET notice='".$notice."',title='".$title."' WHERE id='$id'");
 }
 unset($row);
 
@@ -62,11 +64,11 @@ unset($row);
 $wheresql = "WHERE gid='{$gid}'";
 if(!empty($keyword))
 {
-	$wheresql .= " AND	(title like '%".$keyword."%' OR notice like '%".$keyword."%')";
+    $wheresql .= " AND    (title like '%".$keyword."%' OR notice like '%".$keyword."%')";
 }
 if(!empty($username))
 {
-	$wheresql .= " AND uname like '%".$username."%'";
+    $wheresql .= " AND uname like '%".$username."%'";
 }
 $sql = "SELECT * FROM #@__group_notice $wheresql ORDER BY stime DESC";
 

@@ -1,69 +1,61 @@
 <?php
-
 /**
- * Enter description here...
- *
- * @author Administrator
- * @package defaultPackage
- * @rcsfile 	$RCSfile: story_add_content.php,v $
- * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:06:44 $
+ * @version        $Id: story_add_content.php 1 9:02 2010年9月25日Z 蓝色随想 $
+ * @package        DedeCMS.Module.Book
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__). "/config.php");
 CheckPurview('story_New');
-if(!isset($action))
-{
-	$action = '';
-}
+if(!isset($action)) $action = '';
+
 if(empty($bookid))
 {
-	ShowMsg("参数错误！","-1");
-	exit();
+    ShowMsg("参数错误！","-1");
+    exit();
 }
-$bookinfos = $dsql->GetOne("Select catid,bcatid,bookname,booktype From #@__story_books where bid='$bookid' ");
-if(empty($bookinfos['booktype']))
-{
-	$bookinfos['booktype'] = '';
-}
+$bookinfos = $dsql->GetOne("SELECT catid,bcatid,bookname,booktype FROM #@__story_books WHERE bid='$bookid' ");
+if(empty($bookinfos['booktype'])) $bookinfos['booktype'] = '';
+
 if($bookinfos['booktype']==1)
 {
-	header("location:story_add_photo.php?bookid={$bookid}");
-	exit();
+    header("location:story_add_photo.php?bookid={$bookid}");
+    exit();
 }
 
 //读取所有栏目
-$dsql->SetQuery("Select id,classname,pid,rank From #@__story_catalog order by rank asc");
+$dsql->SetQuery("SELECT id,classname,pid,rank FROM #@__story_catalog ORDER BY rank ASC");
 $dsql->Execute();
 $ranks = Array();
 $btypes = Array();
 $stypes = Array();
 while($row = $dsql->GetArray())
 {
-	if($row['pid']==0)
-	{
-		$btypes[$row['id']] = $row['classname'];
-	}
-	else
-	{
-		$stypes[$row['pid']][$row['id']] = $row['classname'];
-	}
-	$ranks[$row['id']] = $row['rank'];
+    if($row['pid']==0)
+    {
+        $btypes[$row['id']] = $row['classname'];
+    }
+    else
+    {
+        $stypes[$row['pid']][$row['id']] = $row['classname'];
+    }
+    $ranks[$row['id']] = $row['rank'];
 }
 $lastid = $row['id'];
 $msg = '';
-$dsql->SetQuery("Select id,chapnum,chaptername From #@__story_chapter where bookid='$bookid' order by chapnum desc");
+$dsql->SetQuery("SELECT id,chapnum,chaptername FROM #@__story_chapter WHERE bookid='$bookid' ORDER BY chapnum DESC");
 $dsql->Execute();
 $chapters = Array();
 $chapnums = Array();
 while($row = $dsql->GetArray())
 {
-	$chapters[$row['id']] = $row['chaptername'];
-	$chapnums[$row['id']] = $row['chapnum'];
+    $chapters[$row['id']] = $row['chaptername'];
+    $chapnums[$row['id']] = $row['chapnum'];
 }
 $catid = $bookinfos['catid'];
 $bcatid = $bookinfos['bcatid'];
 $bookname = $bookinfos['bookname'];
 $booktype = $bookinfos['booktype'];
-require_once(DEDEADMIN.'/templets/story_add_content.htm');
-?>
+require_once(DEDEADMIN. '/templets/story_add_content.htm');

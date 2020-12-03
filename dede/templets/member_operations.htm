@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>业务管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 //获得选中项
 function getCheckboxItem()
@@ -58,7 +59,7 @@ function OkSel()
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
 <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;margin-bottom:5px;">
   <tr>
     <td height="30" align="center" bgcolor="#FAFCEF">
@@ -75,13 +76,12 @@ function OkSel()
       </form></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
   <tr>
-    <td height="28" colspan="8" bgcolor="#EDF9D5" background='img/tbg.gif'>
+    <td height="28" colspan="8" bgcolor="#EDF9D5" background='images/tbg.gif'>
     	<table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td width="30%">&nbsp;<strong>&gt;
-            会员消费管理：</strong> </td>
+          <td width="30%" style="padding-left:10px;"><strong>会员消费管理：</strong> </td>
           <td width="45%" align="right" style="padding-top:4px;">
           	<input type="button" name="ss13" value="未付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=0';" class='np coolbg' />
             <input type="button" name="ss14" value="已付款" style="width:50px;margin-right:6px" onClick="location='member_operations.php?sta=1';" class='np coolbg' />
@@ -94,7 +94,7 @@ function OkSel()
         </tr>
       </table></td>
   </tr>
-  <tr bgcolor="#F8FBFB">
+  <tr bgcolor="#FBFCE2">
     <td width="8%" align="center">选择</td>
     <td width="20%" align="center">订单号</td>
     <td align="center">产品名称</td>
@@ -106,7 +106,7 @@ function OkSel()
   </tr>
   <form name="form1">
 {dede:datalist}
-    <tr bgcolor="#FFFFFF">
+    <tr bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
       <td align="center">
 <input type='checkbox' name='aids' value='<?php echo $fields['aid']?>' class='np'></td>
       <td align="center">
@@ -145,7 +145,7 @@ function OkSel()
       <input type="button" name="b9" value="设为已完成状态" style="width:100" onClick="OkSel();" class='np coolbg' /></td>
   </tr>
   <tr>
-    <td height="36" colspan="8" bgcolor="#FCFDF7" align="center">
+    <td height="36" colspan="8" bgcolor="#F9FCEF" align="center">
      {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
     </td>
   </tr>

@@ -85,16 +85,19 @@
 $(document).ready(function () {
     // THIS IS NEW CODE FOR THE AUTOMATIC INFINITE CAROUSEL
     var autoscrolling = true;
-    
-    $('.infiniteCarousel').infiniteCarousel().mouseover(function () {
-        autoscrolling = false;
-    }).mouseout(function () {
-        autoscrolling = true;
-    });
-	setInterval(function () {
-        if (autoscrolling) {
-            $('.infiniteCarousel').trigger('next');
-        }
-    }, 5000);
+    if($('#imgscroll > li').length>0)
+    {
+        $('.infiniteCarousel').infiniteCarousel().mouseover(function () {
+            autoscrolling = false;
+        }).mouseout(function () {
+            autoscrolling = true;
+        });
+        setInterval(function () {
+            if (autoscrolling) {
+                $('.infiniteCarousel').trigger('next');
+            }
+        }, 5000);
+
+    }
     
 });

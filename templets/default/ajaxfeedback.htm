@@ -25,19 +25,14 @@
                     <div class="clr"></div>
                     <div class="dcmp-mood">
 						<strong>表情:</strong>
-						<ul>                               
-                                <li><input type="radio" name="face" value="1" checked="1" /><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-1.gif" /></li>
-                                <li><input type="radio" name="face" value="2"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-2.gif" /></li>
-                                <li><input type="radio" name="face" value="3"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-3.gif" /></li>
-                                <li><input type="radio" name="face" value="4"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-4.gif" /></li>
-                                <li><input type="radio" name="face" value="5"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-5.gif" /></li>
-                                <li><input type="radio" name="face" value="6"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-6.gif" /></li>
-                                <li><input type="radio" name="face" value="7"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-7.gif" /></li>
-                                <li><input type="radio" name="face" value="8"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-8.gif" /></li> 
-                                <li><input type="radio" name="face" value="9"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-9.gif" /></li>
-                                <li><input type="radio" name="face" value="10"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-10.gif" /></li>
-                                <li><input type="radio" name="face" value="11"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-11.gif" /></li> 
-                                <li><input type="radio" name="face" value="12"/><img src="{dede:global.cfg_templets_skin/}/images/mood/ico-mood-12.gif" /></li>
+						<ul>            
+								{dede:php}
+								for ($i = 1; $i < 12; $i++)
+								{
+                                    $isecheck = ($i == 1) ? 'checked="1" ' : '';
+								    echo '<li><input type="radio" name="face" value="'.$i.'" '.$isecheck.'/><img src="'.$cfg_templets_skin.'/images/mood/ico-mood-'.$i.'.gif" /></li>';
+								}
+								{/dede:php}                   
 						</ul>
 					</div><!-- /dcmp-mood -->
 					<div class="dcmp-content">
@@ -47,12 +42,12 @@
 							<div class="dcmp-userinfo" id="_ajax_feedback">
 								{dede:php}
 								if($cfg_mb_open=='Y') {
-									echo '用户名:<input type="text" name="username" size="16" class="ipt-txt" />';
+									echo '用户名:<input type="text" name="username" size="16" class="ipt-txt" style="text-transform: uppercase;"/>';
 								}
 								{/dede:php}
                                 {dede:php}
 								if(preg_match("/4/",$safe_gdopen)){
-								echo '验证码:<input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;"/><img src= "'.$cfg_cmspath.'/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+\'?\'" width="60" height="24"  title="点击我更换图片" alt="点击我更换图片" />';
+								echo '验证码:<input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;"/><img src= "'.$cfg_cmspath.'/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+\'?\'" title="点击我更换图片" alt="点击我更换图片" />';
 								 }
                                 {/dede:php}
                 <input type="checkbox" name="notuser" id="dcmp-submit-guest" /><label for="dcmp-submit-guest" />匿名? </label>

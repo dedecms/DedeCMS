@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>服务器分布/远程</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="JavaScript">
 function AddServer()
 {
@@ -23,14 +24,14 @@ function AddServer()
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <form name="form1" action="sys_multiserv.php" method="post">
     <input type="hidden" name="dopost" value="save" />
     <tr> 
-      <td height="28" colspan="2" background='img/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+      <td height="28" colspan="2" background='images/tbg.gif'> <table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="30%" height="18"><strong>服务器分布/远程设置：</strong></td>
+            <td width="30%" height="18" style="padding-left:10px;"><strong>服务器分布/远程设置：</strong></td>
             <td width="70%" align="right">&nbsp;</td>
           </tr>
         </table></td>
@@ -39,7 +40,7 @@ function AddServer()
       <td colspan="2" bgcolor="#FFFFFF">在开启分布/远程设置后需要在栏目中对相关的站点进行设置，例如子域名、后台栏目生成</td>
     </tr>
 <tr> 
-      <td height="26" colspan="2" bgcolor="#F1FCEF">
+      <td height="26" colspan="2" bgcolor="#F9FCEF">
       	<strong>附件服务器设置：      </strong></td>
     </tr>
     
@@ -63,24 +64,24 @@ function AddServer()
       <td align="center" bgcolor="#FFFFFF"><table width="98%" border="0" cellspacing="5" cellpadding="0">
         <tr>
           <td width="14%">主机IP：</td>
-          <td width="86%"><input name="c_rmhost" type="text" id="c_rmhost" value="<?php echo empty($row['rminfo']['rmhost'])? '' : $row['rminfo']['rmhost'];?>" size="35"></td>
+          <td width="86%" style="text-align:left;"><input name="c_rmhost" type="text" id="c_rmhost" value="<?php echo empty($row['rminfo']['rmhost'])? '' : $row['rminfo']['rmhost'];?>" size="35"></td>
         </tr>
         <tr>
           <td>FTP端口：</td>
-          <td><input name="c_rmport" type="text" id="c_rmport" value="<?php echo empty($row['rminfo']['rmport'])? '' :$row['rminfo']['rmport'];?>" size="35"></td>
+          <td style="text-align:left;"><input name="c_rmport" type="text" id="c_rmport" value="<?php echo empty($row['rminfo']['rmport'])? '' :$row['rminfo']['rmport'];?>" size="35"></td>
         </tr>
         <tr>
           <td>FTP用户名</td>
-          <td><input name="c_rmname" type="text" id="c_rmname" value="<?php echo empty($row['rminfo']['rmname'])? '': $row['rminfo']['rmname'];?>" size="35"></td>
+          <td style="text-align:left;"><input name="c_rmname" type="text" id="c_rmname" value="<?php echo empty($row['rminfo']['rmname'])? '': $row['rminfo']['rmname'];?>" size="35"></td>
         </tr>
         <tr>
           <td>FTP密码</td>
-          <td><input name="c_rmpwd" type="text" id="c_rmpwd" value="<?php echo empty($row['rminfo']['rmpwd'])? '': $row['rminfo']['rmpwd'];?>" size="35"></td>
+          <td style="text-align:left;"><input name="c_rmpwd" type="text" id="c_rmpwd" value="<?php echo empty($row['rminfo']['rmpwd'])? '': $row['rminfo']['rmpwd'];?>" size="35"></td>
         </tr>
       </table></td>
     </tr>
     <tr> 
-      <td height="26" colspan="2" bgcolor="#F1FCEF">
+      <td height="26" colspan="2" bgcolor="#F9FCEF">
       	<strong>远程服务器列表：</strong>(FTP镜像) <small style="color:#999">添加的服务器配置将在前台远程发布中可选</small></td>
     </tr>
     <tr> 

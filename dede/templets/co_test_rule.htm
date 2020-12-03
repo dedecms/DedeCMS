@@ -1,16 +1,17 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>测试节点</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr> 
-    <td height="20" background='img/tbg.gif'>
+    <td height="20" background='images/tbg.gif'>
     	<table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="30%" height="18"><strong>测试节点：</strong></td>
+          <td width="30%" height="18" style="padding-left:10px;"><strong>测试节点：</strong></td>
           <td width="70%" align="right">
           	<input type="button" name="b115" value="开始采集" class="coolbg np" style="width:120px" onClick="location='co_gather_start.php?nid=<?php echo $nid; ?>';" />
           	<input type="button" name="b11" value="返回采集节点管理页" class="coolbg np" style="width:160" onClick="location.href='co_main.php';" />
@@ -22,9 +23,9 @@
   <tr>
     <td height="94" bgcolor="#FFFFFF" align="center">
     	<table width="98%" border="0">
-        <tr bgcolor="#F9FCF3"> 
+        <tr bgcolor="#FBFCE2"> 
           <td width="13%" height="24" align="center"><b>节点名称：</b></td>
-          <td width="87%">&nbsp;<?php echo($co->noteInfos['notename']); ?></td>
+          <td width="87%" align="left">&nbsp;<?php echo($co->noteInfos['notename']); ?></td>
         </tr>
         <tr> 
           <td height="24" align="center">列表测试信息：</td>
@@ -32,7 +33,7 @@
         </tr>
         <tr> 
           <td height="24" colspan="2">
-            <textarea name="r1" id="r1" style="width:100%;height:250px"><?php
+            <textarea name="r1" id="r1" style="width:99%;height:250px"><?php
             	$testurl = '';
             	$turls = $co->Testlists($testurl);
             	echo "测试的列表网址： $testurl\r\n";
@@ -49,13 +50,13 @@
         </tr>
         <tr> 
           <td height="24">网页规则测试：</td>
-          <td>(Dedecms里时间日期字段一般是整数类型，如果您看到pubdate、senddate是整数，那种属正常的情况)</td>
+          <td align="left">(DedeCMS里时间日期字段一般是整数类型，如果您看到pubdate、senddate是整数，那种属正常的情况)</td>
         </tr>
         <tr> 
-          <td height="24" colspan="2">
+          <td height="24" colspan="2" align="left">
          单个网页测试网址: <?php echo "$turl \r\n"; ?>
          <br />
-         <textarea name="r2" id="r2" style="width:100%;height:250px"><?php
+         <textarea name="r2" id="r2" style="width:99%;height:250px"><?php
          	if($turl!=''){
          		echo $co->TestArt($turl);
          	}
@@ -77,7 +78,7 @@
       </td>
   </tr>
   <tr> 
-    <td height="28" bgcolor="#FAFAF1">&nbsp;</td>
+    <td height="28" bgcolor="#F9FCEF">&nbsp;</td>
   </tr>
 </table>
 </body>

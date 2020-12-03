@@ -15,7 +15,7 @@ if($fmdo=="del")
 	}
 	$inpath = "";
 	$activepath = str_replace("..","",$activepath);
-	$activepath = ereg_replace("^/{1,}","/",$activepath);
+	$activepath = preg_replace("#^/{1,}#","/",$activepath);
 	if($activepath == "/"){
 		$activepath = "";
 	}
@@ -25,7 +25,7 @@ if($fmdo=="del")
 		$inpath = $cfg_basedir.$activepath."/data/mail";
 	}
 	$activeurl = $activepath;
-	if(eregi($cfg_templets_dir,$activepath)){
+	if(preg_match("#".$cfg_templets_dir."#i", $activepath)){
 		$istemplets = true;
 	}else{
 		$istemplets = false;

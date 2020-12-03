@@ -1,14 +1,15 @@
 {dede:config.pagesize value="50"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>插件管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr> 
-    <td height="28" colspan="5" background="img/tbg.gif">
+    <td height="25" colspan="5" background="images/tbg.gif" style="padding-left:10px;">
     	<table width='96%' cellpadding='0' cellspacing='0'>
     		<tr>
     		<td width='30%'><b>插件管理</b></td>
@@ -19,15 +20,14 @@
      </table>
     </td>
   </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+  <tr align="center" bgcolor="#FBFCE2" height="24"> 
       <td width="10%">ID号</td>
       <td width="40%">插件名称</td>
       <td width="20%">插件作者</td>
       <td width="30%">管理</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';" 
-    	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.aid /}</td>
         <td>{dede:field.plusname /}</td>
         <td>{dede:field.writer /}</td>

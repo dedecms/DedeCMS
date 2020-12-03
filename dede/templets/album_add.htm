@@ -1,14 +1,16 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>增加图片集</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<link href="img/swfupload.css" rel="stylesheet" type="text/css" />
-<script language="javascript" src="../include/dedeajax2.js"></script>
-<script language='javascript' src='js/main.js'></script>
-<script language='javascript' src='js/album.js'></script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link href="css/swfupload.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../include/js/dedeajax2.js"></script>
+<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/album.js"></script>
+<script type="text/javascript"src="js/handlers.js"></script>
 <script type="text/javascript" src="../images/swfupload/swfupload.js"></script>
-<script type="text/javascript" src="js/handlers.js"></script>
 <script language="javascript">
 var swfu = null;
 var vcc = 0;
@@ -20,7 +22,7 @@ function LoadTestDiv()
 	var dfstr = '粘贴到这里...';
 	if($Obj('imagebody').value.length <= dfstr.length)
 	{
-		alert('你还没有粘贴任何东西都编辑框哦！');
+		alert('您还没有粘贴任何东西都编辑框哦！');
 		return;
 	}
 	if(!newobj){
@@ -77,7 +79,7 @@ window.onload = function ()
 				upload_success_handler : uploadSuccess,
 				upload_complete_handler : uploadComplete,
 
-				button_image_url : "img/SmallSpyGlassWithTransperancy_17x18.png",
+				button_image_url : "../images/SmallSpyGlassWithTransperancy_17x18.png",
 				button_placeholder_id : "spanButtonPlaceholder",
 				button_width: 250,
 				button_height: 18,
@@ -101,7 +103,7 @@ window.onload = function ()
 };
 </script>
 </head>
-<body topmargin="8" background="img/allbg.gif">
+<body topmargin="8" background="images/allbg.gif">
 <form name="form1" action="album_add.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
 <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
 <input type="hidden" name="cid" value="<?php echo $cid; ?>" />
@@ -110,37 +112,33 @@ window.onload = function ()
 <input name="maxwidth" type="hidden" id="maxwidth" size="10" value="<?php echo $cfg_album_width; ?>" />
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-      <td width="4%" height="30"><IMG height=14 src="img/book1.gif" width=20>
-        &nbsp;</td>
-      <td width="65%"><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a> &gt;&gt; 发布新图集</td>
-      <td width="30%" align='right'>&nbsp; <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a> </td>
-      <td width="1%">&nbsp;</td>
+      <td width="65%" height="30"><img height=14 src="images/book1.gif" width="20"/>&nbsp;<a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a> &gt;&gt; 发布新图集</td>
+      <td width="30%" align='right'><?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a>&nbsp;</td>
     </tr>
   </table>
-  <table width="97%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1" style="border-bottom:1px solid #CCCCCC">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
     <tr>
-      <td colspan="2"> <table width="168" border="0" cellpadding="0" cellspacing="0">
+      <td colspan="2"> 
+	    <table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="84" height="24" align="center" background="img/itemnote1.gif">&nbsp;常规内容&nbsp;</td>
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级参数</u></a>&nbsp;</td>
+            <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规内容&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级参数</u></a>&nbsp;</td>
           </tr>
         </table></td>
     </tr>
   </table>
-  <table width="97%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="border-bottom:1px solid #CCCCCC;display:none">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
     <tr>
-      <td colspan="2"> <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
+      <td colspan="2"> 
+	  <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="84" align="center" background="img/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
-            <td width="84" align="center" background="img/itemnote1.gif">高级参数&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote1.gif">高级参数&nbsp;</td>
           </tr>
         </table></td>
     </tr>
   </table>
-  <table width="98%" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr><td height="2"></td></tr>
-</table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -209,7 +207,7 @@ window.onload = function ()
                   <input name="picname" type="text" id="picname" style="width:240px" />
                   <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
                   <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
-                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNewAlb(this, 'divpicview', 'uplitpicfra', 165, 'album_add.php');" size="1" class='np coolbg'/></span>
+                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="seePicNewAlb(this, 'divpicview', 'uplitpicfra', 165, 'album_add.php');" size="1" class='np coolbg'/></span>
                   <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
                   <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
                   <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
@@ -239,7 +237,7 @@ window.onload = function ()
           echo $typeOptions;
           echo "</select>";
 			?></span>
-			<img src='img/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
+			<img src='images/menusearch.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
 			&nbsp;
 			<?php
 			if($cfg_need_typeid2=='Y')
@@ -265,7 +263,7 @@ window.onload = function ()
           <td width="90">&nbsp;图集副栏目：</td>
           <td>
           <span id='typeid2ct'></span><input type='text' name='typeid2' id='typeid2' value='' style='width:200px;' />
-          <img src='img/menusearch2.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
+          <img src='images/menusearch2.gif' style='cursor:pointer;' onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2')" alt='选择副栏目' title='选择副栏目' />
 			    </td>
         </tr>
         </table>
@@ -276,7 +274,7 @@ window.onload = function ()
       <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
     </tr>
     <tr>
-      <td height="24"  bgcolor="#F1F5F2" class="bline2">&nbsp;<strong>图集选项：</strong></td>
+      <td height="24"  bgcolor="#F9FCEF" class="bline2">&nbsp;<strong>图集选项：</strong></td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline" style="padding-top:6px">
@@ -285,13 +283,13 @@ window.onload = function ()
             <td width="80">&nbsp;<b>表现方式：</b></td>
             <td>
             <input name="pagestyle" class="np" type="radio" id="pagestyle1" onClick="checkMuList()" value="1"<?php if($cfg_album_style==1) echo " checked='checked'"; ?> />
-            <img src='img/alb2.gif' alt='单页多图样式' title='单页多图样式' />
+            <img src='images/alb2.gif' alt='单页多图样式' title='单页多图样式' />
             &nbsp;&nbsp;
             <input name="pagestyle" class="np" type="radio" id="pagestyle2" onClick="checkMuList()" value="2"<?php if($cfg_album_style==2) echo " checked='checked'"; ?> />
-            <img src='img/alb1.gif' alt='幻灯片样式' title='幻灯片样式' />
+            <img src='images/alb1.gif' alt='幻灯片样式' title='幻灯片样式' />
             &nbsp;&nbsp;
             <input name="pagestyle" class="np" type="radio" id="pagestyle3" onClick="checkMuList()" value="3"<?php if($cfg_album_style==3) echo " checked='checked'"; ?>/>
-            <img src='img/alb3.gif' alt='多缩略图样式' title='多缩略图样式' />
+            <img src='images/alb3.gif' alt='多缩略图样式' title='多缩略图样式' />
             </td>
           </tr>
         </table></td>
@@ -336,9 +334,9 @@ window.onload = function ()
           	<input name="isrm" class="np" type="hidden" id="isrm" value="1"  />
           	<input name="byhand" class="np" type="checkbox" id="byhand" value="1" disabled="ture" checked />
           	手工上传
-            <input name="formzip" class="np" type="checkbox" id="formzip" value="1" onClick="ShowZipField(this,'zipff','htmlfield');" />
+            <input name="formzip" class="np" type="checkbox" id="formzip" value="1" onClick="showZipField(this,'zipff','htmlfield');" />
             从ZIP压缩包中解压图片
-            <input name="formhtml" class="np" type="checkbox" id="formhtml" value="1" onClick="ShowHtmlField(this,'htmlfield','zipff');" />
+            <input name="formhtml" class="np" type="checkbox" id="formhtml" value="1" onClick="showHtmlField(this,'htmlfield','zipff');" />
             网上复制图片
            </td>
         </tr>
@@ -384,7 +382,7 @@ window.onload = function ()
         </table></td>
     </tr>
     <tr id="handfield">
-      <td colspan="4" class="bline" style="background:#fff url(img/albviewbg.gif) 0 20px no-repeat;">
+      <td colspan="4" class="bline" style="background:url(images/albviewbg.gif) #fff 0 20px no-repeat;">
        	<table width='100%' height='160' style="margin:0 0 20px 0">
        		<tr>
        			<td>
@@ -396,7 +394,7 @@ window.onload = function ()
       </td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="4">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;图集内容：</td>
@@ -407,7 +405,7 @@ window.onload = function ()
     </tr>
   </table>
   <!-- //高级参数 -->
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="display:none">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="border:1px solid #cfcfcf;background:#ffffff;display:none">
   <tr>
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -429,7 +427,7 @@ window.onload = function ()
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90" height="22" width="240">&nbsp;评论选项：</td>
-          <td width="250">
+          <td width="240">
           <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
           &nbsp;
           <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
@@ -495,8 +493,15 @@ window.onload = function ()
           <td width="90">&nbsp;发布时间：</td>
           <td width="241"><?php
           $nowtime = GetDateTimeMk(time());
-          echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
-			?>          </td>
+          echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:120;\">";
+			?>       				 <script language="javascript" type="text/javascript">
+					Calendar.setup({
+						inputField     :    "pubdate",
+						ifFormat       :    "%Y-%m-%d %H:%M:%S",
+						showsTime      :    true,
+						timeFormat     :    "24"
+					});
+				 </script>     </td>
           <td width="90">消费金币：</td>
           <td width="379"><input name="money" type="text" id="money" value="0" size="10">          </td>
         </tr>
@@ -506,8 +511,7 @@ window.onload = function ()
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;关键字：</td>
-          <td width="448"><input type='text' name="keywords" id="keywords" style="width:80%" value="" /></td>
-          <td width="262"><input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"></td>
+          <td colspan="2"><input type='text' name="keywords" id="keywords" style="width:290px;" value="" /><input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');"></td>
         </tr>
       </table>
       </td>
@@ -524,7 +528,7 @@ window.onload = function ()
       </td>
   </tr>
       <tr>
-      <td height="24" colspan="4" class="bline">
+      <td height="24" colspan="4">
       <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="90">&nbsp;自定义文件名：</td>
@@ -534,25 +538,22 @@ window.onload = function ()
       </table>
       </td>
   </tr>
-  <tr>
-     <td colspan="4">&nbsp;</td>
-  </tr>
   </table>
 
 
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
   <tr>
-    <td height="56">
+    <td height="35">
 	<table width="100%" border="0" cellspacing="1" cellpadding="1">
           <tr>
             <td width="17%">&nbsp;</td>
             <td width="83%"><table width="214" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="115">
-                  	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np" />
+                  	<input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />
                   </td>
                   <td width="99">
-                  	<img src="img/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer;" />
+                  	<img src="images/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();" style="cursor:pointer;" />
                   </td>
                 </tr>
               </table></td>

@@ -1,60 +1,60 @@
 <?php
+/**
+ * ä¼šå‘˜æƒé™ç®¡ç†
+ *
+ * @version        $Id: member_rank.php 1 12:37 2010å¹´7æœˆ20æ—¥Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('member_Type');
-if(empty($dopost))
-{
-	$dopost = '';
-}
+if(empty($dopost)) $dopost = '';
 
-//±£´æ¸ü¸Ä
+//ä¿å­˜æ›´æ”¹
 if($dopost=='save')
 {
-	$startID = 1;
-	$endID = $idend;
-	for(;$startID <= $endID;$startID++)
-	{
-		
-		$query = '';
-		$id = ${"ID_".$startID};
-		$name = ${"name_".$startID};
-		$rank = ${"rank_".$startID};
-		$money = ${"money_".$startID};
-		$scores = ${"scores_".$startID};
-		if(isset(${"check_".$startID}))
-		{
-			if($rank>0)
-			{
-				$query = "update `#@__arcrank` set membername='$name',money='$money',rank='$rank',scores='$scores' where id='$id' ";			
-			}
-		}
-		else
-		{
-			$query = "Delete From `#@__arcrank` where id='$id' And rank<>10";
-		}
-		if($query!='')
-		{
-			$dsql->ExecuteNoneQuery($query);
-		}
-	}
-	if(isset($check_new))
-	{
-		if($rank_new > 0 && $name_new != '' && $rank_new > 10)
-		{
-			$inquery = "Insert Into `#@__arcrank`(`rank`,`membername`,`adminrank`,`money`,`scores`,`purviews`) Values('$rank_new','$name_new','5','$money_new','$scores',''); ";
-			$dsql->ExecuteNoneQuery($inquery);
-		}
-	}
-	echo "<script> alert('³É¹¦¸üĞÂ»áÔ±µÈ¼¶±í£¡'); </script>";
+    $startID = 1;
+    $endID = $idend;
+    for(;$startID <= $endID;$startID++)
+    {
+        $query = '';
+        $id = ${"ID_".$startID};
+        $name = ${"name_".$startID};
+        $rank = ${"rank_".$startID};
+        $money = ${"money_".$startID};
+        $scores = ${"scores_".$startID};
+        if(isset(${"check_".$startID}))
+        {
+            if($rank>0)
+            {
+                $query = "UPDATE `#@__arcrank` SET membername='$name',money='$money',rank='$rank',scores='$scores' WHERE id='$id' ";            
+            }
+        }
+        else
+        {
+            $query = "DELETE FROM `#@__arcrank` WHERE id='$id' AND rank<>10";
+        }
+        if($query!='') $dsql->ExecuteNoneQuery($query);
+    }
+    if(isset($check_new))
+    {
+        if($rank_new > 0 && $name_new != '' && $rank_new > 10)
+        {
+            $inquery = "INSERT INTO `#@__arcrank`(`rank`,`membername`,`adminrank`,`money`,`scores`,`purviews`) VALUES('$rank_new','$name_new','5','$money_new','$scores',''); ";
+            $dsql->ExecuteNoneQuery($inquery);
+        }
+    }
+    echo "<script> alert('æˆåŠŸæ›´æ–°ä¼šå‘˜ç­‰çº§è¡¨ï¼'); </script>";
 }
 if($dopost == 'del')
 {
-	$dsql->ExecuteNoneQuery("Delete From `#@__arcrank` where id='$id' And rank<>10");
-	ShowMsg("É¾³ı³É¹¦£¡","member_rank.php");
-	exit();
+    $dsql->ExecuteNoneQuery("DELETE FROM `#@__arcrank` WHERE id='$id' AND rank<>10");
+    ShowMsg("åˆ é™¤æˆåŠŸï¼","member_rank.php");
+    exit();
 }
 
-$dsql->SetQuery("Select * From `#@__arcrank` where rank>0 order by rank");
+$dsql->SetQuery("SELECT * FROM `#@__arcrank` WHERE rank>0 ORDER BY rank");
 $dsql->Execute();
 include DedeInclude('templets/member_rank.htm');
-
-?>

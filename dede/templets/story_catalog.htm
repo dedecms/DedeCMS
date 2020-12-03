@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>连载栏目管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="js/main.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/story.js"></script>
 <style type="text/css">
 <!--
@@ -15,8 +15,8 @@
 	top:64px;
 	width:325px;
 	height:238px;
-	z-index:2;
-	background-color: #F2FDDB;
+	z-index:1;
+	background-color: #F9FCEF;
 	border:1px solid #889D8F;
 	padding:6px;
 	display:none
@@ -28,7 +28,7 @@
 	width:325px;
 	height:238px;
 	z-index:1;
-	background-color: #F2FDDB;
+	background-color: #F9FCEF;
 	border:1px solid #889D8F;
 	padding:6px;
 	display:none
@@ -36,13 +36,13 @@
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" align="center" border="0" cellpadding="0" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" align="center" border="0" cellpadding="0" cellspacing="1" bgcolor="#D6D6D6">
 	<tr>
-			<td bgcolor="#EDF9D5" height="28" background='img/tbg.gif'>
+			<td bgcolor="#EDF9D5" height="28" background='images/tbg.gif'>
 					<table width='96%' border="0" cellpadding='0' cellspacing='0'>
-						<tr background='img/tbg.gif'>
-						<td width='30%' class="tbtitletxt"><strong> &nbsp;小说栏目管理</strong></td>
+						<tr background='images/tbg.gif'>
+						<td width='30%' class="tbtitletxt" style="padding-left:10px;"><strong>小说栏目管理</strong> <a href="../book" target="_blank">[查看首页]</a></td>
 						<td align='right'>
 					[<a href="javascript:ShowAddCatalog();"><u>增加新栏目</u></a>]
 					&nbsp;
@@ -53,7 +53,7 @@
 		</td>
   </tr>
 	<tr>
-		  <td style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+		  <td style="background:#ffffff;padding:7px 6px 6px 10px;" >
 		  <font color='red'><?php echo $msg; ?></font>
 		  </td>
   </tr>
@@ -113,7 +113,7 @@ echo "</form>\r\n";
    <tr>
      <td width="90" height="28">栏目名称：</td>
      <td width="101"><input name="classname" type="text" id="classname" /></td>
-     <td width="20" align="right" valign="top"><a href="javascript:CloseAddCatalog()"><img src="img/close.gif" width="12" height="12" border="0" /></a></td>
+     <td width="20" align="right" valign="top"><a href="javascript:CloseAddCatalog()"><img src="images/close.gif" width="12" height="12" border="0" /></a></td>
    </tr>
    <tr>
      <td height="28">隶属栏目：</td>

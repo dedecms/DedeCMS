@@ -1,36 +1,61 @@
 {dede:config.pagesize value='20' /}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>广告管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background="images/allbg.gif" leftmargin="8" topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr>
-   <td height="28" background="img/tbg.gif" colspan="7">
-     <b>广告管理</b>&nbsp;[<a href="ad_add.php"><u>增加一个新广告</u></a>]
-	</td>
+    <td height="28" background="images/tbg.gif" colspan="7" style="padding-left:10px;">
+      <b><a href="ad_main.php">广告管理</a></b>&nbsp;[<a href="ad_add.php"><u>增加一个新广告</u></a>]
+    [<a href="adtype_main.php"><u>广告分类管理</u></a>]</td>
 </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+  <tr>
+    <td height="28" colspan="7" style="padding-left:10px;" bgcolor="#FFFFFF"><table>
+      <tr>
+        <form action='ad_main.php' method='get' name='form3' id="form3">
+          <input type='hidden' name='dopost' value='listArchives' />
+          <td><table width='600' border='0' cellpadding='0' cellspacing='0'>
+            <tr>
+              <td width='90' align='center'>请选择分类：</td>
+              <td width='124'><select name='clsid' style='width:150' id="clsid">
+                <option value='0'>默认分类...</option>
+                
+          	<?php echo $option;?>
+          
+              </select></td>
+              <td width='71'> 关键字： </td>
+              <td width='185'><input type='text' name='keyword' style='width:150' /></td>
+              <td width="130"><input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np" /></td>
+            </tr>
+          </table></td>
+        </form>
+      </tr>
+    </table></td>
+  </tr>
+  <tr align="center"  bgcolor="#FBFCE2"" height="24"> 
       <td width="8%">编号</td>
+      <td width="20%">分类</td>
       <td width="20%">广告名称</td>
       <td width="12%">投放范围</td>
       <td width="11%">是否限时</td>
       <td width="11%">结束时间</td>
-      <td width="20%">广告代码</td>
       <td width="18%">管理</td>
    </tr>
+   
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.aid /}</td>
+        <td>{dede:field.clsname function='TestType(@me,1)'/}</td>
         <td>{dede:field.adname /}</td>
         <td>{dede:field.typename function='TestType(@me)'/}</td>
         <td>{dede:field.timeset function='TimeSetValue(@me)'/}</td>
         <td>{dede:field.endtime function='GetDateMk(@me)'/}</td>
-        <td><?php echo '{'; ?>dede:myad name='{dede:field.tagname /}'/<?php echo '}'; ?></td>
         <td>
-         <a href='ad_edit.php?aid={dede:field.aid /}&dopost=getjs'>[JS]</a>
+         <a href='ad_edit.php?aid={dede:field.aid /}&dopost=gettag'>[代码]</a>
          <a href='ad_edit.php?aid={dede:field.aid /}&dopost=edit'>[更改]</a>
 		     <a href='ad_edit.php?aid={dede:field.aid /}&dopost=delete'>[删除]</a>
 		    </td>

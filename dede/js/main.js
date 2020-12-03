@@ -22,11 +22,13 @@ function $Obj(objname)
 }
 
 //旧的颜色选择框（已经过期）
+/*
 function ShowColor()
 {
-	var fcolor=showModalDialog("img/color.htm?ok",false,"dialogWidth:106px;dialogHeight:110px;status:0;dialogTop:"+(+120)+";dialogLeft:"+(+120));
+	var fcolor=showModalDialog("images/color.htm?ok",false,"dialogWidth:106px;dialogHeight:110px;status:0;dialogTop:"+(+120)+";dialogLeft:"+(+120));
 	if(fcolor!=null && fcolor!="undefined") document.form1.color.value = fcolor;
 }
+*/
 
 function ColorSel(c, oname)
 {
@@ -47,7 +49,7 @@ function ColorSel(c, oname)
 
 function ShowColor(e, o)
 {
-	LoadNewDiv(e, 'img/colornew.htm', 'colordlg');
+	LoadNewDiv(e, 'images/colornew.htm', 'colordlg');
 }
 
 function ShowHide(objname)
@@ -67,6 +69,7 @@ function ShowHideT(objname)
 function ShowObj(objname)
 {
 	var obj = $Obj(objname);
+	if(obj == null) return false;
 	obj.style.display = ($Nav()=="IE" ? "block" : "table");
 }
 
@@ -85,17 +88,18 @@ function AddTypeid2()
 function HideObj(objname)
 {
 	var obj = $Obj(objname);
+	if(obj == null) return false;
 	obj.style.display = "none";
 }
 
 function ShowItem1()
 {
-	ShowObj('head1'); ShowObj('needset'); HideObj('head2'); HideObj('adset');
+	ShowObj('needset'); ShowObj('head1'); HideObj('head2'); HideObj('adset');ShowObj('votehead'); 
 }
 
 function ShowItem2()
 {
-	ShowObj('head2'); ShowObj('adset'); HideObj('head1'); HideObj('needset');
+	ShowObj('head2'); ShowObj('adset'); HideObj('voteset');HideObj('head1'); HideObj('needset');HideObj('votehead'); 
 }
 
 function SeePic(img,f)
@@ -133,7 +137,7 @@ function SeePicNew(f, imgdid, frname, hpos, acname)
 		newobj.style.left = 100;
 		newobj.style.display = 'block';
 		document.body.appendChild(newobj);
-		newobj.innerHTML = '<img src="img/loadinglit.gif" width="16" height="16" alit="" />上传中...';
+		newobj.innerHTML = '<img src="images/loadinglit.gif" width="16" height="16" alit="" />上传中...';
 	}
 	newobj.style.display = 'block';
 	//提交后还原form的action等参数
@@ -167,13 +171,14 @@ function SelectSoft(fname)
 	window.open("../include/dialog/select_soft.php?f="+fname, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
-function SelectImage(fname,stype)
+function SelectImage(fname,stype,imgsel)
 {
 	if($Nav()=='IE'){ var posLeft = window.event.clientX-100; var posTop = window.event.clientY; }
 	else{ var posLeft = 100; var posTop = 100; }
 	if(!fname) fname = 'form1.picname';
+	if(imgsel) imgsel = '&noeditor=yes';
 	if(!stype) stype = '';
-	window.open("../include/dialog/select_images.php?f="+fname+"&imgstick="+stype, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=650,height=400,left="+posLeft+", top="+posTop);
+	window.open("../include/dialog/select_images.php?f="+fname+"&noeditor=yes&imgstick="+stype+imgsel, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=650,height=400,left="+posLeft+", top="+posTop);
 }
 
 function imageCut(fname)
@@ -243,6 +248,21 @@ function PutWriter(str)
 	ChangeFullDiv('hide');
 }
 
+// 增加选择投票内容
+function PutVote(str)
+{
+    var ovote =  $Obj('voteid');
+    if(ovote)
+    {
+        ovote.value = str;
+        tb_remove(false);
+    } else {
+        parent.document.form1.voteid.value=str; 
+        tb_remove(true);
+    }
+    
+}
+
 function ClearDivCt(objname)
 {
 	if(!$Obj(objname)) return;
@@ -251,7 +271,7 @@ function ClearDivCt(objname)
 	ChangeFullDiv("hide");
 }
 
-function ChangeFullDiv(showhide)
+function ChangeFullDiv(showhide,screenheigt)
 {
 	var newobj = $Obj('fullpagediv');
 	if(showhide=='show')
@@ -262,6 +282,7 @@ function ChangeFullDiv(showhide)
 			newobj.id = 'fullpagediv';
 			newobj.style.position='absolute';
 			newobj.className = 'fullpagediv';
+            newobj.style.height=screenheigt + 'px';
 			document.body.appendChild(newobj);
 		}
 		else
@@ -289,16 +310,22 @@ function SelectWriter(e)
 
 function LoadNewDiv(e,surl,oname)
 {
+    var pxStr = '';
 	if($Nav()=='IE')
 	{ 
 		var posLeft = window.event.clientX-20;
 		var posTop = window.event.clientY-30;
-		posTop += document.body.scrollTop;
+        // IE下scrollTop的兼容性问题
+        var scrollTop = document.documentElement.scrollTop || window.pageYOffset;
+        if(typeof(scrollTop) == 'undefined') scrollTop = document.body.scrollTop;
+		posTop += scrollTop;
+        
 	}
 	else
 	{
 		var posLeft = e.pageX-20;
 		var posTop = e.pageY-30;
+        pxStr = 'px';
 	}
 	posLeft = posLeft - 100;
 	var newobj = $Obj(oname);
@@ -308,8 +335,8 @@ function LoadNewDiv(e,surl,oname)
 		newobj.style.position = 'absolute';
 		newobj.className = oname;
 		newobj.className += ' dlgws';
-		newobj.style.top = posTop;
-		newobj.style.left = posLeft;
+		newobj.style.top = posTop + pxStr;
+		newobj.style.left = posLeft + pxStr;
 		document.body.appendChild(newobj);
 	}
 	else{
@@ -414,11 +441,11 @@ function LoadQuickDiv(e, surl, oname, w, h)
 		newobj.style.height = h;
 		document.body.appendChild(newobj);
 	}
-  if(posTop > 500) posTop = 500;
-  if(posLeft < 50) posLeft = 50;
-  newobj.style.top = posTop;
-	newobj.style.left = posLeft;
-	newobj.innerHTML = '<div style="margin-top:10px;margin-left:10px;"><img src="img/loadinglit.gif" /> Loading...</div>';
+	if(posTop > 500) posTop = 500;
+	if(posLeft < 50) posLeft = 50;
+	newobj.style.top = posTop+"px";
+	newobj.style.left = posLeft+"px";
+	newobj.innerHTML = '<div style="margin-top:10px;margin-left:10px;"><img src="images/loadinglit.gif" /> Loading...</div>';
 	newobj.style.display = 'block';
 	var myajax = new DedeAjax(newobj);
 	myajax.SendGet(surl);
@@ -512,15 +539,15 @@ function DropMoveHand(objid, mleftLeaning)
 	{ 
 		var posLeft = event.clientX-20;
 		var posTop = event.clientY-20;
-		posTop += document.body.scrollTop;
+		posTop += window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop;
 	}
 	else
 	{
 		var posLeft = event.pageX-20;
 		var posTop = event.pageY-20;
 	}
-	obj.style.top = posTop;
-	obj.style.left = posLeft - mleftLeaning;
+	obj.style.top = posTop+"px";
+	obj.style.left = posLeft - mleftLeaning+"px";
 }
 
 //复制内容到剪切板
@@ -630,5 +657,29 @@ function getSelCat(targetId)
 	HideObj("getCatMap");
 	ChangeFullDiv("hide");
 }
+
+　　function getElementLeft(element){
+　　　　var actualLeft = element.offsetLeft;
+　　　　var current = element.offsetParent;
+
+　　　　while (current !== null){
+　　　　　　actualLeft += current.offsetLeft;
+　　　　　　current = current.offsetParent;
+　　　　}
+
+　　　　return actualLeft;
+　　}
+
+　　function getElementTop(element){
+　　　　var actualTop = element.offsetTop;
+　　　　var current = element.offsetParent;
+
+　　　　while (current !== null){
+　　　　　　actualTop += current.offsetTop;
+　　　　　　current = current.offsetParent;
+　　　　}
+
+　　　　return actualTop;
+　　}
 
 -->

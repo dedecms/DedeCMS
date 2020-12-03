@@ -1,6 +1,7 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>评论管理</title>
 <script language='javascript'>
 //获得选中文件的文件名
@@ -60,22 +61,22 @@ function delFeedbackIP()
 function checkFeedback()
 {
 	var qstr=getCheckboxItem();
-	if(qstr=="") alert("你没选中任何内容！");
+	if(qstr=="") alert("您没选中任何内容！");
 	else location.href="feedback_main.php?job=check&fid="+qstr;
 }
 function editFeedback()
 {
 	var qstr=getCheckboxItem();
-	if(qstr=="") alert("你没选中任何内容！");
+	if(qstr=="") alert("您没选中任何内容！");
 	else location.href="feedback_edit.php?job=edit&fid="+qstr;
 }
 </script>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" align="center" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" align="center" cellspacing="1" bgcolor="#D6D6D6">
 <tr>
-<td height="28" background='img/tbg.gif'>
+<td height="28" background='images/tbg.gif' style="padding-left:10px;">
 <div style="float:left;">
 	<a href='feedback_main.php'><u><b>评论管理</b></u></a>
 </div>
@@ -117,16 +118,16 @@ function editFeedback()
 	时间：{dede:field.dtime function="GetDateTimeMK(@me)" /}
 </td>
 <td width="10%" align="center">
-	<a href='feedback_edit.php?id={dede:field.id/}'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a>
+	<a href='feedback_edit.php?id={dede:field.id/}'><img src="images/feedback-edit.gif" border="0" width="45" height="18"></a>
 </td>
 </tr>
 <tr align="center" bgcolor="#FFFFFF"> 
 <td height="28" colspan="6">
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
 <tr> 
-<td>
+<td align="left">
 {dede:field.ischeck function="IsCheck(@me)" /}
-{dede:field.msg function='jstrimjajx(@me,100)'/}
+{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}
 </td>
 </tr>
 </table></td>
@@ -140,7 +141,7 @@ function editFeedback()
 </tr>
 {/dede:datalist}
 <tr>
-<td height='20' align='center' bgcolor='#EAEEE1'>
+<td height='20' align='center' bgcolor="#F9FCEF">
   {dede:pagelist listsize='5' /}
 </td>
 </tr>

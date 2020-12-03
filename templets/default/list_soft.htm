@@ -6,20 +6,6 @@
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/style/dedecms_skins_0.css" type="text/css" id="cssfile" />
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.cookie.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/changeSkin.js"></script>
-<script language="javascript" type="text/javascript">
-<!--
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
--->
-</script>
 </head>
 <body class="downlist">
 {dede:include filename="head.htm"/}
@@ -69,6 +55,7 @@ function check(){
 				</dd>
 			</dl>
         </div>
+        <div id="listRtPicAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
 		<div class="downrange">
 			<dl class="tbox">
 				<dt><strong>推荐软件</strong></dt>
@@ -85,9 +72,8 @@ function check(){
 				</dd>
 			</dl>
 		</div><!-- /downrange -->
-		
 		<div class="hot mt1">
-			<dl class="tbox">
+		 <dl class="tbox">
 				<dt><strong>热门软件</strong></dt>
 				<dd>
 					<ul class="c1 ico2">
@@ -98,9 +84,10 @@ function check(){
 				</dd>
 			</dl>
 		</div>	
+        <div id="listRtPicAD2" style="margin:10px auto">{dede:myad name='listRtPicAD2'/}</div>
 	</div><!-- /pright -->
 </div>
-
+<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

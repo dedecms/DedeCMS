@@ -1,6 +1,7 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集节点</title>
 <script language='javascript'>
 function SubmitNew()
@@ -9,19 +10,19 @@ function SubmitNew()
 	document.form1.submit();
 }
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr>
-      <td height="20" colspan="2" background='img/tbg.gif'>
+      <td height="20" colspan="2" background='images/tbg.gif'>
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
          <form name='form2' action='co_url.php' target='stafrm'>
          	<input type='hidden' name='small' value='1'>
          	<input type='hidden' name='nid' value='<?php echo $nid; ?>'>
          	</form>
           <tr>
-            <td width="30%" height="18">
+            <td width="30%" height="18" style="padding-left:10px;">
             	<strong><?php echo $ntitle; ?></strong>
             </td>
             <td width="70%" align="right">
@@ -89,13 +90,13 @@ function SubmitNew()
      </td>
     </tr>
     <tr>
-      <td height="28" colspan="2" bgcolor="#FAFAF1" align="center">
+      <td height="28" colspan="2" bgcolor="#ffffff" align="center">
       	<input name="b112" type="button" class="coolbg np" value="开始采集网页" onClick="document.form1.submit();" style="width:100px" />　
       	<input name="b113" type="button" class="coolbg np" value="查看种子网址" onClick="document.form2.submit();" style="width:100px" />
       </td>
     </tr>
   </form>
-    <tr bgcolor="#E6F3CD">
+    <tr bgcolor="#F9FCEF">
       <td height="20" colspan="2">
 <table width="100%">
           <tr>
@@ -116,7 +117,7 @@ function SubmitNew()
     <tr bgcolor="#FFFFFF">
       <td colspan="2" id="mtd">
 	  <div id='mdv' style='width:100%;height:350px;'>
-	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?php if($dd>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
+	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?php if($row['dd']>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
 	  </div>
 	  <script language="JavaScript">
 	  document.all.mdv.style.pixelHeight = screen.height - 360;

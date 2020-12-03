@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>数据库维护--数据还原</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 //获得选中文件的数据表
 function getCheckboxItem(){
@@ -52,10 +53,10 @@ function checkSubmit()
 
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr> 
-    <td height="19" colspan="4" background="img/tbg.gif" bgcolor="#E7E7E7">
+    <td height="19" colspan="4" background="images/tbg.gif" bgcolor="#E7E7E7">
     	<table width="96%" border="0" cellspacing="1" cellpadding="1">
         <tr> 
           <td width="24%"><strong>数据还原</strong></td>
@@ -103,11 +104,11 @@ function checkSubmit()
     <tr align="center" bgcolor="#FDFDEA"> 
       <td height="24" colspan="4">
       	&nbsp; 
-        <input name="b1" type="button" id="b1" onclick="SelAll()" value="全选" /> 
+        <input name="b1" type="button" id="b1" onClick="SelAll()" value="全选" /> 
         &nbsp;
-        <input name="b2" type="button" id="b2" onclick="ReSel()" value="反选" /> 
+        <input name="b2" type="button" id="b2" onClick="ReSel()" value="反选" /> 
         &nbsp;
-        <input name="b3" type="button" id="b3" onclick="NoneSel()" value="取消" />
+        <input name="b3" type="button" id="b3" onClick="NoneSel()" value="取消" />
      </td>
     </tr>
 	  <tr bgcolor="#F7F8ED"> 

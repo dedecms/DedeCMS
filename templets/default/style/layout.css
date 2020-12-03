@@ -10,19 +10,19 @@
 
 .tbox{
 	margin:0 0 8px 0;
-	border-bottom:1px solid #BADAA1;
+	border-bottom:1px solid #DADADA;
 	overflow:hidden;
 	background:url(../images/green_skin.png) 0 -294px repeat-x;
 }
 .tbox dt{
 	height:24px;
-	border:1px solid #BADAA1;
+	border:1px solid #DADADA;
 	overflow:hidden;
 	clear:both;
 }
 .tbox dd{
-	border-left:1px solid #BADAA1;
-	border-right:1px solid #BADAA1;
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
 	/*padding:4px 4px 0px;*/
 	overflow:hidden;
 }
@@ -71,7 +71,7 @@
 	display:block;
 	padding:0px 7px 0px 8px;
 	line-height:26px;
-	border-left:1px solid #BADAA1;
+	border-left:1px solid #DADADA;
 	float:left;
 	color:#666;
 	text-decoration:none;
@@ -84,9 +84,38 @@
 .tbox dt span.label a.thisclass{
 	background:#FFF;
 	color:#333;
-	border-top:3px solid #BADAA1;
+	border-top:3px solid #DADADA;
 }
 
+.tbox dt span.linklabel{
+	float:left;
+	margin-left:10px;
+	overflow:hidden;
+	padding-right:1px;
+	padding-top:2px;
+}
+.tbox dt span.linklabel a{
+	height:20px;
+	display:block;
+	padding:0px 7px 0px 8px;
+	margin:0 5px;
+	line-height:20px;
+	border-left:1px solid #DADADA;
+	border-top:1px solid #DADADA;
+	border-right:1px solid #DADADA;
+	float:left;
+	color:#666;
+	text-decoration:none;
+	overflow:hidden;
+	letter-spacing:1px;
+}
+.tbox dt span.linklabel a:hover{
+	color:#360;
+}
+.tbox dt span.linklabel a.thisclass{
+	background:#FFF;
+	color:#333;
+}
 
 /* 较重颜色的Box */
 .light {
@@ -94,14 +123,14 @@
 }
 .light dt{
 	height:24px;
-	border:1px solid #badaa1;
+	border:1px solid #DADADA;
 	overflow:hidden;
 	background:url(../images/green_skin.png) 0 -188px repeat-x;
 	clear:both;
 }
 .light dd{
-	border-left:1px solid #badaa1;
-	border-right:1px solid #badaa1;
+	border-left:1px solid #DADADA;
+	border-right:1px solid #DADADA;
 	/*padding:4px 4px 0px;*/
 	overflow:hidden;
 }
@@ -599,6 +628,7 @@ dt.light strong{
 	overflow:hidden;
 	clear:both;
 	padding-bottom:10px;
+	height:40px;
 }
 .f5 li{
 	float:left;
@@ -609,6 +639,9 @@ dt.light strong{
 .f5 li a{
 	color:#666666;
 	float:left;
+}
+.f5 li a img{
+	border:3px solid #EEE;
 }
 
 .f6{/* 链接横排自适应列表 */

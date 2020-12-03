@@ -9,36 +9,43 @@ if(!defined('DEDEINC')) exit('Request Error!');
  */
 class Cod
 {
-  /**
-   * 构造函数
-   *
-   * @access  public
-   * @param
-   *
-   * @return void
-   */
-  function Cod()
-  {
-  }
+    /**
+    * 构造函数
+    *
+    * @access  public
+    * @param
+    *
+    * @return void
+    */
+    function Cod()
+    {
+    }
 
-  function __construct()
-  {
-      $this->Cod();
-  }
+    function __construct()
+    {
+        $this->Cod();
+    }
 
-  /**
-   * 获取代码
-   */
-  function GetCode($order)
-  {
-  	require_once DEDEINC.'/shopcar.class.php';
-  	$cart 	= new MemberShops();
-  	$cart->clearItem();
-		$cart->MakeOrders();
-    $button="您可以 <a href='/'>返回首页</a> 或去 <a href='../member/shops_products.php?oid=".$order."'>查看订单</a>";
-    return $button;
-  }
+    /**
+    * 设置回送地址
+    */
+    
+    function SetReturnUrl($returnurl='')
+    {
+        return "";
+    }
+    
+    /**
+    * 获取代码
+    */
+    function GetCode($order)
+    {
+        require_once DEDEINC.'/shopcar.class.php';
+        $cart = new MemberShops();
+        $cart->clearItem();
+        $cart->MakeOrders();
+        $button="您可以 <a href='/'>返回首页</a> 或去 <a href='../member/shops_products.php?oid=".$order."'>查看订单</a>";
+       return $button;
+    }
 
-}
-
-?>
+}//End API

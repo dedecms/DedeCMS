@@ -1,10 +1,12 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>系统配置参数 - 验证安全设置</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="img/jquery.js"></script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
 <script type="text/javascript">
+var $ = jQuery;
 $(document).ready(function(){
 	addIterm("qiterm","qbox");
 })
@@ -25,13 +27,13 @@ function delIterm(obj)
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>  
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>  
 <form action="sys_safe.php" method="post" name="form1">
 <input type="hidden" name="dopost" value="save">
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
 
     <tr>
-      <td height="26" colspan="2" bgcolor="#FFFFFF" background="img/tbg.gif"><b>验证码参数设置</b></td>
+      <td height="26" colspan="2" bgcolor="#FFFFFF" background="images/tbg.gif" style="padding-left:10px;"><b>验证码参数设置</b></td>
     </tr>
     <tr bgcolor="#FFFFFF">
       <td width="26%" height="24">开启系统验证码：<br></td>
@@ -46,7 +48,9 @@ function delIterm(obj)
         <input name="gdopen[]" type="checkbox" id="gdopen5" value="5" <?php echo (preg_match("/5/",$safe_gdopen))? "checked" : ""; ?>>
         <label for='gdopen5'>会员短消息 </label>
         <input name="gdopen[]" type="checkbox" id="gdopen6" value="6" <?php echo (preg_match("/6/",$safe_gdopen))? "checked" : ""; ?>>
-        <label for='gdopen6'>后台登陆 </label></td>
+        <label for='gdopen6'>后台登陆 </label>
+        <input name="gdopen[]" type="checkbox" id="gdopen7" value="7" <?php echo (preg_match("/7/",$safe_gdopen))? "checked" : ""; ?>>
+        <label for='gdopen7'>问答 </label></td>
     </tr>
     <tr bgcolor="#FFFFFF">
       <td height="24">验证码生成类型：</td>
@@ -95,7 +99,7 @@ function delIterm(obj)
       <td height="24" colspan="2">&nbsp;</td>
     </tr>
     <tr>
-      <td height="26" colspan="2" bgcolor="#FFFFFF" background="img/tbg.gif"><b>验证问题设置</b></td>
+      <td height="26" colspan="2" bgcolor="#FFFFFF" background="images/tbg.gif"><b>验证问题设置</b></td>
     </tr>
     <tr bgcolor="#FFFFFF">
       <td height="24"> 1、使用简单的文字问题(例如:11+5=?，请输入中文答案)<BR>
@@ -158,12 +162,12 @@ function delIterm(obj)
         <input class="np" type="radio" value="0" name="gdfaq_msg" <?php echo ($safe_faq_msg == 0)? "checked" : ""; ?>>
         关闭</td>
     </tr>
-    <tr bgcolor="#F3FCE4">
+    <tr bgcolor="#F9FCEF">
       <td height="37" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="7%">&nbsp;</td>
-            <td width="93%"><input name="imageField" class="np" type="image" src="img/button_ok.gif" width="60" height="22" border="0">
-              &nbsp; <img src="img/button_reset.gif" width="60" height="22"></td>
+            <td width="93%" align="center"><input name="imageField" class="np" type="image" src="images/button_ok.gif" width="60" height="22" border="0">
+              &nbsp; <img src="images/button_reset.gif" width="60" height="22"></td>
           </tr>
         </table></td>
     </tr>

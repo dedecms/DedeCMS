@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>dedecms</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language='javascript'>
 var preFrameW = '206,*';
 var FrameHide = 0;
@@ -98,7 +98,7 @@ a:link,a:visited {
 	margin:0px;
 	padding:0px;
 	margin-left:5px;
-	background:url(img/style2tbgr.gif);
+	background:url(../images/style2tbgr.gif);
 }
 #tpa {
 	color: #009933;
@@ -122,15 +122,15 @@ a:link,a:visited {
 </style>
 </head>
 <body bgColor='#ffffff'>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" background="img/topbg2.gif">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" background="../images/topbg2.gif">
   <tr>
-    <td width='20%'><img src="img/df_dedetitle2.gif" alt="dedecms logo" title="dedecms logo" /></td>
+    <td width='20%'><img src="images/df_dedetitle2.gif" alt="dedecms logo" title="dedecms logo" /></td>
     <td width='80%'>
      <div id='rpart'>
      	<dl id="tpa">
-				<dd class='img'><a href="javascript:ChangeMenu(-1);"><img vspace="5" src="img/arrl.gif" border="0" width="5" height="8" alt="缩小左框架"  title="缩小左框架" /></a></dd>
-				<dd class='img'><a href="javascript:ChangeMenu(0);"><img vspace="3" src="img/arrfc.gif" border="0" width="12" height="12" alt="显示/隐藏左框架" title="显示/隐藏左框架" /></a></dd>
-				<dd class='img' style="margin-right:10px;"><a href="javascript:ChangeMenu(1);"><img vspace="5" src="img/arrr.gif" border="0" width="5" height="8" alt="增大左框架" title="增大左框架" /></a></dd>
+				<dd class='img'><a href="javascript:ChangeMenu(-1);"><img vspace="5" src="../images/arrl.gif" border="0" width="5" height="8" alt="缩小左框架"  title="缩小左框架" /></a></dd>
+				<dd class='img'><a href="javascript:ChangeMenu(0);"><img vspace="3" src="../images/arrfc.gif" border="0" width="12" height="12" alt="显示/隐藏左框架" title="显示/隐藏左框架" /></a></dd>
+				<dd class='img' style="margin-right:10px;"><a href="javascript:ChangeMenu(1);"><img vspace="5" src="images/arrr.gif" border="0" width="5" height="8" alt="增大左框架" title="增大左框架" /></a></dd>
 				<dd class='txt'>
 					<a href="index_menu.php" target="menu">主菜单</a> | 
      			<a href="catalog_menu.php" target="menu">内容发布</a> |
@@ -142,7 +142,7 @@ a:link,a:visited {
 			</dl>
      </div>
      <div id='lpart'>
-     	您好：<span class="username"><?php echo $cuserLogin->getUserName(); ?> </span>，欢迎使用DEDECMS！
+     	您好：<span class="username"><?php echo $cuserLogin->getUserName(); ?> </span>，欢迎使用DedeCMS！
      </div>
     </td>
   </tr>

@@ -1,56 +1,61 @@
 <?php
+/**
+ * å‹æƒ…é“¾æŽ¥ç¼–è¾‘
+ *
+ * @version        $Id: friendlink_edit.php 1 10:59 2010å¹´7æœˆ13æ—¥Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/config.php");
-CheckPurview('plus_ÓÑÇéÁ´½ÓÄ£¿é');
+CheckPurview('plus_å‹æƒ…é“¾æŽ¥æ¨¡å—');
 $ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? 'friendlink_main.php' : $_COOKIE['ENV_GOBACK_URL'];
-if(empty($dopost))
-{
-	$dopost = "";
-}
+if(empty($dopost)) $dopost = "";
+
 if(isset($allid))
 {
-	$aids = explode(',',$allid);
-	if(count($aids)==1)
-	{
-		$id = $aids[0];
-		$dopost = "delete";
-	}
+    $aids = explode(',',$allid);
+    if(count($aids)==1)
+    {
+        $id = $aids[0];
+        $dopost = "delete";
+    }
 }
 if($dopost=="delete")
 {
-	$id = ereg_replace("[^0-9]","",$id);
-	$dsql->ExecuteNoneQuery("Delete From `#@__flink` where id='$id'");
-	ShowMsg("³É¹¦É¾³ýÒ»¸öÁ´½Ó£¡",$ENV_GOBACK_URL);
-	exit();
+    $id = preg_replace("#[^0-9]#", "", $id);
+    $dsql->ExecuteNoneQuery("DELETE FROM `#@__flink` WHERE id='$id'");
+    ShowMsg("æˆåŠŸåˆ é™¤ä¸€ä¸ªé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+    exit();
 }
 else if($dopost=="delall")
 {
-	$aids = explode(',',$aids);
-	if(isset($aids) && is_array($aids))
-	{
-		foreach($aids as $aid)
-		{
-			$aid = ereg_replace("[^0-9]","",$aid);
-			$dsql->ExecuteNoneQuery("Delete From `#@__flink` where id='$aid'");
-		}
-		ShowMsg("³É¹¦É¾³ýÖ¸¶¨Á´½Ó£¡",$ENV_GOBACK_URL);
-		exit();
-	}
-	else
-	{
-		ShowMsg("ÄãÃ»Ñ¡¶¨ÈÎºÎÁ´½Ó£¡",$ENV_GOBACK_URL);
-		exit();
-	}
+    $aids = explode(',',$aids);
+    if(isset($aids) && is_array($aids))
+    {
+        foreach($aids as $aid)
+        {
+            $aid = preg_replace("#[^0-9]#", "", $aid);
+            $dsql->ExecuteNoneQuery("DELETE FROM `#@__flink` WHERE id='$aid'");
+        }
+        ShowMsg("æˆåŠŸåˆ é™¤æŒ‡å®šé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+        exit();
+    }
+    else
+    {
+        ShowMsg("ä½ æ²¡é€‰å®šä»»ä½•é“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+        exit();
+    }
 }
 else if($dopost=="saveedit")
 {
-	$id = ereg_replace("[^0-9]","",$id);
-	$query = "Update `#@__flink` set sortrank='$sortrank',url='$url',webname='$webname',logo='$logo',msg='$msg',
-	              email='$email',typeid='$typeid',ischeck='$ischeck' where id='$id' ";
-	$dsql->ExecuteNoneQuery($query);
-	ShowMsg("³É¹¦¸ü¸ÄÒ»¸öÁ´½Ó£¡",$ENV_GOBACK_URL);
-	exit();
+    $id = preg_replace("#[^0-9]#", "", $id);
+    $query = "UPDATE `#@__flink` SET sortrank='$sortrank',url='$url',webname='$webname',logo='$logo',msg='$msg',
+                  email='$email',typeid='$typeid',ischeck='$ischeck' WHERE id='$id' ";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("æˆåŠŸæ›´æ”¹ä¸€ä¸ªé“¾æŽ¥ï¼",$ENV_GOBACK_URL);
+    exit();
 }
-$myLink = $dsql->GetOne("Select #@__flink.*,#@__flinktype.typename From #@__flink left join #@__flinktype on #@__flink.typeid=#@__flinktype.id where #@__flink.id=$id");
+$myLink = $dsql->GetOne("SELECT #@__flink.*,#@__flinktype.typename FROM #@__flink LEFT JOIN #@__flinktype ON #@__flink.typeid=#@__flinktype.id WHERE #@__flink.id=$id");
 include DedeInclude('templets/friendlink_edit.htm');
-
-?>

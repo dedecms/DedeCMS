@@ -1,10 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title><?php echo $cfg_softname." ".$cfg_version; ?></title>
-<link href="img/frame.css" rel="stylesheet" type="text/css" />
-<script src="/images/js/j.js" language="javascript" type="text/javascript"></script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<link href="css/login.css" rel="stylesheet" type="text/css" />
+<script src="../include/js/jquery/jquery.js" language="javascript" type="text/javascript"></script>
 <script type="text/javascript">
+$ = jQuery;
 function changeAuthCode() {
 	var num = 	new Date().getTime();
 	var rand = Math.round(Math.random() * 10000);
@@ -16,80 +19,38 @@ function changeAuthCode() {
 	return false;	
 }
 </script>
-<style type="text/css">
-<!--
-.vermenu{
-	background:#FFFFFF none repeat scroll 0 0;
-	border:1px solid #EEEEEE;
-	position:absolute;
-}
--->
-</style>
 </head>
-<body bgcolor="#f4fbf4">
-<div class="head">
-  <div class="top">
-    <div class="top_logo"> <img src="img/admin_top_logo.gif" width="170" height="37" alt="DedeCms Logo" title="Welcome use DedeCms" /> </div>
-    <div class="top_link">
-      <ul>
-        <li class="welcome">
-          <script type="text/javascript">
-           	var now=(new Date()).getHours();
-			if(now>0&&now<=6){
-				document.write("午夜好，");
-			}else if(now>6&&now<=11){
-				document.write("早上好，");
-			}else if(now>11&&now<=14){
-				document.write("中午好，");
-			}else if(now>14&&now<=18){
-				document.write("下午好，");
-			}else{
-				document.write("晚上好，");
-			}
-			</script>
-          您可以访问您的</li>
-        <li><a href="../index.php" target="_blank">网站主页</a></li>
-        <li><a href="../member" target="_blank">会员中心</a></li>
-        <li><a href="http://www.dedecms.com" target="_blank" title="织梦官方论坛">或者登录官方网站</a>或<a href="http://bbs.dedecms.com" target="_blank" title="织梦交流论坛">论坛</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="topnav">
-    <div class="menuact" style="width:220px; float:right"><a href="http://www.dedecms.com" target="_blank">版本号：DEDECMS <?php echo $cfg_version; ?></a></div>
-  </div>
-</div>
-<?php echo $redmsg; ?>
-<div id="login">
-  <div class="theme fLeft">
+<body>
+<div id="login-box">
+   <div class="login-top"><a href="../index.php" target="_blank" title="返回网站主页">返回网站主页</a></div>
+   <?php echo $redmsg; ?>
+   <div class="login-main">
     <form name="form1" method="post" action="login.php">
-      <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo $gotopage;?>" />
+      <input type="hidden" name="gotopage" value="<?php if(!empty($gotopage)) echo RemoveXSS($gotopage);?>" />
       <input type="hidden" name="dopost" value="login" />
       <input name='adminstyle' type='hidden' value='newdedecms' />
-      <ul>
-        <li><span>用户名：</span>
-          <input type="text" name="userid" class="text" />
-        </li>
-        <li><span>密&nbsp;&nbsp;&nbsp;码：</span>
-          <input type="password" name="pwd" class="text" />
-        </li>
-        <?php
+      <dl>
+	   <dt>用户名：</dt>
+	   <dd><input type="text" name="userid"/></dd>
+	   <dt>密&nbsp;&nbsp;码：</dt>
+	   <dd><input type="password" class="alltxt" name="pwd"/></dd>
+	   <?php
         	if(preg_match("/6/",$safe_gdopen))
         	{
         ?>
-        <li><span>验证码：</span>
-           <input id="vdcode" class="text login_from3" type="text" style="width: 50px; text-transform: uppercase;" name="validate"/>
-          <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
-           <a href="#" onClick="changeAuthCode();" style="color:#000">看不清？ </a>
-        </li>
-					<?php
-					}
-					?>
-        <li style="padding-top:10px;"><span>&nbsp;</span>
-          <input type="submit" name="sm1" value="登录" style='background:url(img/bt.gif);width:79px;height:24px;border:0px;cursor:pointer;font-size:12px'  onclick="this.form.submit();" />
-        </li>
-      </ul>
-    </form>
-  </div>
+	   <dt>验证码：</dt>
+	   <dd><input id="vdcode" type="text" name="validate" style="text-transform:uppercase;"/><img id="vdimgck" align="absmiddle" onClick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
+           <a href="#" onClick="changeAuthCode();">看不清？ </a></dd>
+		<?php
+       		}
+		?>
+		<dt>&nbsp;</dt>
+		<dd><button type="submit" name="sm1" class="login-btn" onclick="this.form.submit();">登录</button></dd>
+	 </dl>
+	</form>
+   </div>
+   <div class="login-power">Powered by<a href="http://www.dedecms.com" title="DedeCMS官网"><strong>DedeCMS<?php echo $cfg_version; ?></strong></a>&copy; 2004-2011 <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.</div>
 </div>
+<div class="dede-iframe"><iframe name="loginad" src="login.php?dopost=showad" frameborder="0" id="loginad" scrolling="no" marginwidth="0" marginheight="0" width="100%"></iframe></div>
 </body>
 </html>

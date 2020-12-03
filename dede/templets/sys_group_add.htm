@@ -1,28 +1,29 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>组权限设置</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <center>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
 <form name='form1' action='sys_group_add.php' method='post'> 
 <input type='hidden' name='dopost' value='save'>
   <tr>
-    <td height="23" background="img/tbg.gif"><b><a href='sys_group.php'>系统用户组管理</a>&gt;&gt;增加用户组：</b></td>
+    <td height="23" background="images/tbg.gif" align="left" style="padding-left:10px;"><b><a href='sys_group.php'>系统用户组管理</a>&gt;&gt;增加用户组：</b></td>
 </tr>
   <tr> 
     <td valign="top" bgcolor="#FFFFFF" align="center"> 
       <table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr> 
           <td width="9%" height="30">组名称：</td>
-          <td width="91%"> <input name="groupname" type="text" id="groupname"> 
+          <td width="91%" style="text-align:left;"> <input name="groupname" type="text" id="groupname"> 
           </td>
         </tr>
         <tr> 
           <td width="9%" height="30">级别值：</td>
-          <td width="91%"> <input name="rankid" type="text" id="rankid" size="6">
+          <td width="91%" style="text-align:left;"> <input name="rankid" type="text" id="rankid" size="6">
             （数字，系统已占用的级别值：
             <?php
           	
@@ -40,23 +41,23 @@
         {
         	$line = trim($line);
         	if($line=="") continue;
-        	if(ereg("^>>",$line))
+        	if(preg_match("#^>>#", $line))
         	{
         		if($start>0) echo "        	 </td></tr>\r\n";
         		$start++;
         		$lhead = "
         	 <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'>{$start}、".str_replace('>>','',$line)."</td></tr>
-           <tr><td height='25' colspan='2'>
+           <td height='25' colspan='2' bgcolor='#F9FAF3' style='text-align:left;'>{$start}、".str_replace('>>','',$line)."</td></tr>
+           <tr><td height='25' colspan='2' style='text-align:left;'>
         		"; 
         		echo $lhead;
         	}
-        	else if(ereg("^>",$line))
+        	else if(preg_match("#^>#", $line))
         	{
         		$ls = explode('>',$line);
         		$tag = $ls[1];
         		$tagname = str_replace('[br]', '<br />', $ls[2]);
-        		if(!ereg('<br />', $tagname) ) $tagname .= "<font color='#888888'>($tag)</font>";
+        		if(!preg_match("#<br \/>#", $tagname) ) $tagname .= "<font color='#888888'>($tag)</font>";
         		else $tagname = str_replace('<br />', "<font color='#888888'>($tag)</font><br />", $tagname);
         		echo "          	<input name='purviews[]' type='checkbox' class='np' id='purviews$k' value='$tag'>$tagname\r\n";
         	  $k++;
@@ -67,10 +68,10 @@
         </td>
         </tr>
         <tr> 
-           <td height='25' colspan='2' bgcolor='#F9FAF3'><?php echo $start?>、插件权限</td>
+           <td height='25' colspan='2' bgcolor='#F9FAF3' style="text-align:left;"><?php echo $start?>、插件权限</td>
          </tr>
         <tr>
-        <td height='25' colspan='2'>
+        <td height='25' colspan='2' style='text-align:left;'>
          <?php
          $l = 0;
          $dsql->SetQuery('Select plusname From #@__plus');
@@ -86,7 +87,7 @@
         </tr>
         <tr> 
           <td height="50" align="center">&nbsp;</td>
-          <td height="50"><input  class="np" name="imageField" type="image" src="img/button_save.gif" width="60" height="22" border="0">
+          <td height="50"  style="text-align:left;"><input  class="np" name="imageField" type="image" src="images/button_save.gif" width="60" height="22" border="0">
           </td>
         </tr>
       </table>

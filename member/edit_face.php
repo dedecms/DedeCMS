@@ -1,4 +1,11 @@
 <?php
+/**
+ * @version        $Id: edit_face.php 1 8:38 2010年7月9日Z tianya $
+ * @package        DedeCMS.Member
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/config.php");
 CheckRank(0,0);
 $menutype = 'config';
@@ -39,6 +46,8 @@ if($dopost=='save')
     }
     $query = "UPDATE `#@__member` SET `face` = '$face' WHERE mid='{$cfg_ml->M_ID}' ";
     $dsql->ExecuteNoneQuery($query);
+    // 清除缓存
+    $cfg_ml->DelCache($cfg_ml->M_ID);
     ShowMsg('成功更新头像信息！', $backurl);
     exit();
 }
@@ -60,6 +69,8 @@ else if($dopost=='delold')
     }
     $query = "UPDATE `#@__member` SET `face` = '' WHERE mid='{$cfg_ml->M_ID}' ";
     $dsql->ExecuteNoneQuery($query);
+    // 清除缓存
+    $cfg_ml->DelCache($cfg_ml->M_ID);
     ShowMsg('成功删除原来的头像！', $backurl);
     exit();
 }

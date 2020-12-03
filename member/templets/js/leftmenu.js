@@ -1,4 +1,4 @@
-//×ó²à²Ëµ¥Ğ§¹û
+//å·¦ä¾§èœå•æ•ˆæœ
   function menuShow(mid)
   {
 	  if($("#"+mid).css("display") == 'block') {

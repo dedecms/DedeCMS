@@ -1,10 +1,11 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>新增频道</title>
 <style type="text/css">
 <!--
-body { background-image: url(img/allbg.gif); }
+body { background-image: url(images/allbg.gif); }
 .STYLE2 { color: #666666;  }
 -->
 </style>
@@ -43,14 +44,14 @@ function PublicDefault()
 }
 -->
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="8">
-<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%"  border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <form name="form1" action="mychannel_add.php" method="post">
     <input type='hidden' name='action' value='add'>
     <tr> 
-      <td height="28" colspan="2" background="img/tbg.gif"> 
+      <td height="28" colspan="2" background="images/tbg.gif" style="padding-left:10px;"> 
        <a href="mychannel_main.php"><b>内容模型管理</b></a> 
        <b> &gt; 新增内容模型：</b>
       </td>
@@ -266,16 +267,16 @@ function PublicDefault()
       	<input name="usermancon" type="text" id="usermancon" value="content_list.php" class="pubinputs" />
       </td>
     </tr>
-    <tr bgcolor="#F9FDF0"> 
+    <tr bgcolor="#F9FCEF"> 
       <td height="32" colspan="2">
       	<table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="26%">&nbsp;</td>
             <td width="15%">
-            <input name="imageField" class="np" type="image" src="img/button_ok.gif" width="60" height="22" border="0" />
+            <input name="imageField" class="np" type="image" src="images/button_ok.gif" width="60" height="22" border="0" />
             </td>
             <td width="59%">
-            <img src="img/button_back.gif" width="60" height="22" onClick="location='mychannel_main.php';" style="cursor:pointer" />
+            <img src="images/button_back.gif" width="60" height="22" onClick="location='mychannel_main.php';" style="cursor:pointer" />
             </td>
           </tr>
         </table>

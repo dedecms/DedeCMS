@@ -25,6 +25,7 @@ keyword='' 含有指定关键字的文档列表，多个关键字用","分
 innertext = '' 单条记录样式
 aid='' 指定文档ID
 idlist ='' 提取特定文档（文档ID） 
+isweight = 'n' 开启按照权重排序,默认为n/N,如果设为y/Y,则内容会按照weight字段排序,数值越小越靠前
 channelid 频道ID
 limit='' 起始,结束 表示限定的记录范围（如：limit='1,2'）
 flag = 'h' 自定义属性值：头条[h]推荐[c]图片[p]幻灯[f]滚动[s]跳转[j]图文[a]加粗[b] 

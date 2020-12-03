@@ -1,58 +1,47 @@
 <?php
-
 /**
- * Enter description here...
- *
- * @author Administrator
- * @package defaultPackage
- * @rcsfile 	$RCSfile: story_edit_action.php,v $
- * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:07:17 $
+ * @version        $Id: story_edit_action.php 1 9:02 2010年9月25日Z 蓝色随想 $
+ * @package        DedeCMS.Module.Book
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__). "/config.php");
 CheckPurview('story_New');
-require_once(DEDEINC."/image.func.php");
-require_once(DEDEINC."/oxwindow.class.php");
-require_once(DEDEADMIN."/inc/inc_archives_functions.php");
-if(!isset($iscommend))
-{
-	$iscommend = 0;
-}
+require_once(DEDEINC. "/image.func.php");
+require_once(DEDEINC. "/oxwindow.class.php");
+require_once(DEDEADMIN. "/inc/inc_archives_functions.php");
+if(!isset($iscommend)) $iscommend = 0;
+
 if($catid==0)
 {
-	ShowMsg("请指定图书所属栏目！","-1");
-	exit();
+    ShowMsg("请指定图书所属栏目！","-1");
+    exit();
 }
 
 //获得父栏目
-$nrow = $dsql->GetOne("Select * From #@__story_catalog where id='$catid' ");
+$nrow = $dsql->GetOne("SELECT * FROM #@__story_catalog WHERE id='$catid' ");
 $bcatid = $nrow['pid'];
 $booktype = $nrow['booktype'];
 $pubdate = GetMkTime($pubdate);
 $lastpost=time();
 $bookname = cn_substr($bookname,50);
-if($keywords!="")
-{
-	$keywords = trim(cn_substr($keywords,60));
-}
+if($keywords!="") $keywords = trim(cn_substr($keywords, 60));
+
 
 //处理上传的缩略图
-if($litpic !="")
-{
-	$litpic = GetDDImage('litpic',$litpic,0);
-}
-if($litpicname !="" && $litpic == "")
-{
-	$litpic = GetDDImage('litpic',$litpicname,0);
-}
+if($litpic !="") $litpic = GetDDImage('litpic', $litpic, 0);
+
+if($litpicname !="" && $litpic == "") $litpic = GetDDImage('litpic', $litpicname, 0);
+
 $adminID = $cuserLogin->getUserID();
 
 //自动摘要
 if($description=="" && $cfg_auot_description>0)
 {
-	$description = stripslashes(cn_substr(html2text($body),$cfg_auot_description));
-	$description = addslashes($description);
+    $description = stripslashes(cn_substr(html2text($body), $cfg_auot_description));
+    $description = addslashes($description);
 }
 $upQuery = "
 Update `#@__story_books`
@@ -76,14 +65,14 @@ where bid='$bookid' ";
 
 if(!$dsql->ExecuteNoneQuery($upQuery))
 {
-	ShowMsg("更新数据库时出错，请检查！".$dsql->GetError(),"-1");
-	$dsql->Close();
-	exit();
+    ShowMsg("更新数据库时出错，请检查！".$dsql->GetError(),"-1");
+    $dsql->Close();
+    exit();
 }
 
 //生成HTML
-require_once(DEDEROOT.'/book/include/story.view.class.php');
-$bv = new BookView($bookid,'book');
+require_once(DEDEROOT. '/book/include/story.view.class.php');
+$bv = new BookView($bookid, 'book');
 $artUrl = $bv->MakeHtml();
 $bv->Close();
 
@@ -105,6 +94,5 @@ $wecome_info = "连载管理::修改图书";
 $win = new OxWindow();
 $win->AddTitle("成功修改一本图书：");
 $win->AddMsgItem($msg);
-$winform = $win->GetWindow("hand","&nbsp;",false);
+$winform = $win->GetWindow("hand", "&nbsp;", false);
 $win->Display();
-?>

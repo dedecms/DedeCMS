@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集内容管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 //获得选中文件的文件名
 function getCheckboxItem()
@@ -46,13 +47,13 @@ function ClearCt()
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr> 
-    <td height="28" colspan="8" background='img/tbg.gif'>
+    <td height="28" colspan="8" background='images/tbg.gif'>
     	<table width="96%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18">&nbsp;<strong>临时内容管理：</strong></td>
+          <td width="20%" height="18" style="padding-left:10px;"><strong>临时内容管理：</strong></td>
           <td width="80%" align="right">
           	<?php echo $exportbt; ?>
           	<input type="button" name="ba2" value="节点管理" class="coolbg np" style="width:80px" onClick="location.href='co_main.php';" />
@@ -62,7 +63,7 @@ function ClearCt()
       </table>
      </td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1"> 
+  <tr align="center" height="26" bgcolor="#FBFCE2"> 
     <td width="6%">选择</td>
     <td width="30%">内容标题</td>
     <td width="15%">所属节点</td>
@@ -74,7 +75,7 @@ function ClearCt()
   </tr>
   <form name="form1">
   {dede:datalist}
-  <tr align="center" bgcolor="#FFFFFF"> 
+  <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
     <td><input type='checkbox' name='aids' value='{dede:field.aid/}' class='np'></td>
     <td><a href='co_view.php?aid={dede:field.aid/}'>{dede:field.title/}</a></td>
     <td><a href='co_edit.php?nid={dede:field.nid/}'>{dede:field.notename/}</a></td>
@@ -95,7 +96,7 @@ function ClearCt()
     </td>
   </tr>
   <tr> 
-    <td height="36" colspan="8" bgcolor="#FCFDF7" align="center">
+    <td height="36" colspan="8" bgcolor="#F9FCEF" align="center">
     {dede:pagelist listsize=5/}
     </td>
   </tr>

@@ -1,9 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>会员空间留言管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" language="javascript" src="js/jquery.js"></script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
 <script language="javascript">
 //获得选中文件的文件名
 function getCheckboxItem(){
@@ -51,12 +52,12 @@ function delUname()
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr>
-    <td height="28" colspan="7" background='img/tbg.gif'><table width="96%" border="0" cellpadding="0" cellspacing="0">
+    <td height="28" colspan="7" background='images/tbg.gif'><table width="96%" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="20%" height="18"><strong>会员空间留言管理：</strong></td>
+        <td width="20%" height="18" style="padding-left:10px;"><strong>会员空间留言管理：</strong></td>
         <td width="80%" align="right">&nbsp;</td>
       </tr>
     </table></td>
@@ -80,7 +81,7 @@ function delUname()
     </table></td>
 
   </tr>
-  <tr align="center" bgcolor="#FAFAF1">
+  <tr align="center" height="26" bgcolor="#FBFCE2">
     <td width="8%">选择</td>
     <td width="11%">ID</td>
     <td width="11%">空间UID</td>
@@ -103,7 +104,7 @@ function delUname()
     {/dede:datalist}
   </form>
   <tr>
-    <td height="30" colspan="7" bgcolor="#FCFDF7">&nbsp;
+    <td height="30" colspan="7" bgcolor="#ffffff">&nbsp;
       <input type="button" name="b5" value="反选"  style="width:40px" class="coolbg np" onClick="ReSel();" />
       &nbsp;
       <input type="button" name="b6" value="删除所选"  style="width:80px" class="coolbg np" onClick="DelSel();" />
@@ -111,8 +112,8 @@ function delUname()
       <input type='button' name='db' value=' 删除相同留言者的所有留言 ' onClick="delUname()" class="coolbg np" />
     </td>
   </tr>
-  <tr bgcolor="#E3F7D2">
-    <td height="24" colspan="7" align="center" bgcolor="#FFFFFF"> {dede:pagelist listsize='5' /} </td>
+  <tr bgcolor="#F9FCEF">
+    <td height="24" colspan="7" align="center"> {dede:pagelist listsize='5' /} </td>
   </tr>
 </table>
 </body>

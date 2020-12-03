@@ -1,16 +1,42 @@
 <?php
+/**
+ * 菜单地图
+ *
+ * @version        $Id: inc_menu_map.php 1 10:32 2010年7月21日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/../config.php");
-
 
 $maparray = array(1=>'文档相关',2=>'系统设置',3=>'必须辅助功能',4=>'网站更新操作',5=>'会员相关',6=>'基本模块插件');
 
 //载入可发布频道
 $addset = '';
-$dsql->SetQuery("Select id,typename,addcon,mancon From `#@__channeltype` where id<>-1 And isshow=1 order by id asc");
+
+//检测可用的内容模型
+if($cfg_admin_channel = 'array' && count($admin_catalogs) > 0)
+{
+    $admin_catalog = join(',', $admin_catalogs);
+    $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` WHERE id IN({$admin_catalog}) GROUP BY channeltype ");
+}
+else
+{
+    $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` GROUP BY channeltype ");
+}
+$dsql->Execute();
+$candoChannel = '';
+while($row = $dsql->GetObject())
+{
+    $candoChannel .= ($candoChannel=='' ? $row->channeltype : ','.$row->channeltype);
+}
+if(empty($candoChannel)) $candoChannel = 1;
+$dsql->SetQuery("SELECT id,typename,addcon,mancon FROM `#@__channeltype` WHERE id IN({$candoChannel}) AND id<>-1 AND isshow=1 ORDER BY id ASC");
 $dsql->Execute();
 while($row = $dsql->GetObject())
 {
-	$addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
+    $addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
 }
 //////////////////////////
 $menusMain = "
@@ -78,30 +104,34 @@ $menusMain = "
 </m:top>
 
 <m:top mapitem='5' item='6_' name='会员管理' display='none' rank='member_List,member_Type'>
-<m:item name='会员类别管理' link='member_mtype.php' rank='member_Type' target='main' />
   <m:item name='注册会员列表' link='member_main.php' rank='member_List' target='main' />
   <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
+  <m:item name='会员模型管理' link='member_model_main.php' rank='member_Type' target='main' />
   <m:item name='会员短信管理' link='member_pm.php' rank='member_Type' target='main' />
+  <m:item name='会员留言管理' link='member_guestbook.php' rank='member_Type' target='main' />
+  <m:item name='会员动态管理' link='member_info_main.php?type=feed' rank='member_Type' target='main' />
+  <m:item name='会员心情管理' link='member_info_main.php?type=mood' rank='member_Type' target='main' />
 </m:top>
 
 <m:top mapitem='2' item='10_' name='系统设置' display='none' rank='sys_User,sys_Group,sys_Edit,sys_Log,sys_Data'>
   <m:item name='系统基本参数' link='sys_info.php' rank='sys_Edit' target='main' />
   <m:item name='系统用户管理' link='sys_admin_user.php' rank='sys_User' target='main' />
   <m:item name='用户组设定' link='sys_group.php' rank='sys_Group' target='main' />
+  <m:item name='服务器分布/远程' link='sys_multiserv.php' rank='sys_Group' target='main' />
   <m:item name='系统日志管理' link='log_list.php' rank='sys_Log' target='main' />
+  <m:item name='验证安全设置' link='sys_safe.php' rank='sys_verify' target='main' />
   <m:item name='图片水印设置' link='sys_info_mark.php' rank='sys_Edit' target='main' />
   <m:item name='自定义文档属性' link='content_att.php' rank='sys_Att' target='main' />
   <m:item name='软件频道设置' link='soft_config.php' rank='sys_SoftConfig' target='main' />
   <m:item name='防采集串混淆' link='article_string_mix.php' rank='sys_StringMix' target='main' />
-  <m:item name='来源管理' link='article_source_edit.php' rank='sys_Source' target='main' />
-  <m:item name='作者管理' link='article_writer_edit.php' rank='sys_Writer' target='main' />
   <m:item name='随机模板设置' link='article_template_rand.php' rank='sys_StringMix' target='main' />
   <m:item name='计划任务管理' link='sys_task.php' rank='sys_Task' target='main' />
   <m:item name='数据库备份/还原' link='sys_data.php' rank='sys_Data' target='main' />
   <m:item name='SQL命令行工具' link='sys_sql_query.php' rank='sys_Data' target='main' />
   <m:item name='文件校验[S]' link='sys_verifies.php' rank='sys_verify' target='main' />
   <m:item name='病毒扫描[S]' link='sys_safetest.php' rank='sys_verify' target='main' />
+  <m:item name='系统错误修复[S]' link='sys_repair.php' rank='sys_verify' target='main' />
 </m:top>
 
 <m:top mapitem='5' item='10_6_' name='支付工具' display='none' rank='sys_Data'>
@@ -110,9 +140,8 @@ $menusMain = "
   <m:item name='会员产品分类' link='member_type.php' rank='sys_Data' target='main' />
   <m:item name='会员消费记录' link='member_operations.php' rank='sys_Data' target='main' />
   <m:item name='商店订单记录' link='shops_operations.php' rank='sys_Data' target='main' />
-  <m:item name='支付接口设置' link='sys_info_pay.php' rank='sys_Data' target='main' />
+  <m:item name='支付接口设置' link='sys_payment.php' .php' rank='sys_Data' target='main' />
   <m:item name='配货方式设置' link='shops_delivery.php' rank='sys_Data' target='main' />
-  <m:item name='汇款账号设置' link='shops_bank.php' rank='sys_Data' target='main' />
 </m:top>
 
 <m:top mapitem='2' item='10_7_' name='模板管理' display='none' rank='temp_One,temp_Other,temp_MyTag,temp_test,temp_All'>
@@ -127,10 +156,11 @@ $menusMain = "
 
 //载入插件菜单
 $plusset = '';
-$dsql->SetQuery("Select * From `#@__plus` where isshow=1 order by aid asc");
+$dsql->SetQuery("SELECT * FROM `#@__plus` WHERE isshow=1 ORDER BY aid ASC");
 $dsql->Execute();
-while($row = $dsql->GetObject()) {
-	$plusset .= $row->menustring."\r\n";
+while($row = $dsql->GetObject()) 
+{
+    $plusset .= $row->menustring."\r\n";
 }
 
 $menusMain .= "
@@ -150,29 +180,28 @@ $mapstring = '';
 $dtp = new DedeTagparse();
 $dtp->SetNameSpace('m','<','>');
 $dtp->LoadString($menusMain);
+
 foreach($maparray as $k=>$bigname)
 {
-  $mapstring .= "<dl class='maptop'>\r\n";
-  $mapstring .= "<dt class='bigitem'>$bigname</dt>\r\n";
-  $mapstring .= "<dd>\r\n";
-  foreach($dtp->CTags as $ctag)
-  {
-  	if($ctag->GetAtt('mapitem')==$k)
-  	{
-  		$mapstring .= "<dl class='mapitem'>\r\n";
-  		$mapstring .= "<dt>".$ctag->GetAtt('name')."</dt>\r\n";
- 			$mapstring .= "<dd>\r\n<ul class='item'>\r\n";
- 			$dtp2 = new DedeTagParse();
-			$dtp2->SetNameSpace('m','<','>');
-			$dtp2->LoadSource($ctag->InnerText);
-			foreach($dtp2->CTags as $j=>$ctag2)
-			{
-				$mapstring .= "<li><a href='".$ctag2->GetAtt('link')."' target='".$ctag2->GetAtt('target')."'>".$ctag2->GetAtt('name')."</a></li>\r\n";
-			}
- 			$mapstring .= "</ul>\r\n</dd>\r\n</dl>\r\n";
-  	}
-	}
-	$mapstring .= "</dd>\r\n</dl>\r\n";
+    $mapstring .= "<dl class='maptop'>\r\n";
+    $mapstring .= "<dt class='bigitem'>$bigname</dt>\r\n";
+    $mapstring .= "<dd>\r\n";
+    foreach($dtp->CTags as $ctag)
+    {
+        if($ctag->GetAtt('mapitem') == $k)
+        {
+            $mapstring .= "<dl class='mapitem'>\r\n";
+            $mapstring .= "<dt>".$ctag->GetAtt('name')."</dt>\r\n";
+            $mapstring .= "<dd>\r\n<ul class='item'>\r\n";
+            $dtp2 = new DedeTagParse();
+            $dtp2->SetNameSpace('m', '<', '>');
+            $dtp2->LoadSource($ctag->InnerText);
+            foreach($dtp2->CTags as $j=>$ctag2)
+            {
+                $mapstring .= "<li><a href='".$ctag2->GetAtt('link')."' target='".$ctag2->GetAtt('target')."'>".$ctag2->GetAtt('name')."</a></li>\r\n";
+            }
+            $mapstring .= "</ul>\r\n</dd>\r\n</dl>\r\n";
+        }
+    }
+    $mapstring .= "</dd>\r\n</dl>\r\n";
 }
-
-?>

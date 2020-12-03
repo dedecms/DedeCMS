@@ -18,7 +18,7 @@ if($action == 'good' || $action == 'bad')
 function GetOnebook($aid)
 {
 	global $dsql,$title;
-	$aid = trim(ereg_replace('[^0-9]','',$aid));
+	$aid = trim(preg_replace('#[^0-9]#i','',$aid));
 	$reArr = array();
 
 	$nquery = "Select * From `#@__story_books` where bid='$aid' ";

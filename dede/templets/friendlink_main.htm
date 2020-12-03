@@ -1,9 +1,10 @@
 {dede:config.pagesize value="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>友情链接管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type='text/css'>
 <script language='javascript'>
 function Sel(stype)
 {
@@ -35,11 +36,11 @@ function checkSubmit()
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr>
-    <td height="28" background="img/tbg.gif" colspan="8">
+    <td height="28" background="images/tbg.gif" colspan="8" style="padding-left:10px;">
   <div style="float:left">
   	<b>友情链接管理</b>
 	</div>
@@ -51,7 +52,7 @@ function checkSubmit()
   </td>
 </tr>
 <tr>
-   <td height="30" align="center" bgcolor="#FBFEEF"  colspan="8"> 
+   <td height="30" align="center" bgcolor="#F9FCEF"  colspan="8"> 
    <form action="friendlink_main.php" name="form1" method="get">
 	  <table border="0" cellspacing="0" cellpadding="3">
       <tr>
@@ -69,7 +70,7 @@ function checkSubmit()
 						</select>
           </td>
           <td>
-           <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0" />
+           <input name="imageField" class="np" type="image" src="images/button_search.gif" width="60" height="22" border="0" />
           </td>
         </tr>
       </table>
@@ -79,7 +80,7 @@ function checkSubmit()
 <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
 <input type='hidden' name='dopost' value='delall'/>
 <input type='hidden' name='allid' value=''/>
-<tr align="center" bgcolor="#F9FCEF" height="26">
+<tr align="center" bgcolor="#FBFCE2" height="26">
           <td width="6%">选择</td>
           <td width="23%">网站名称</td>
           <td width="12%">网站Logo</td>
@@ -90,10 +91,10 @@ function checkSubmit()
           <td width="15%">管理</td>
         </tr>
         {dede:datalist}
-        <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#f4fbf4';"
+        <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';"
         	 onMouseOut="javascript:this.bgColor='#FFFFFF';">
           <td><input type='checkbox' name='aids' value='{dede:field.id/}' class='np'></td>
-          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.webname/}</a></td>
+          <td><a href="{dede:field.url/}" target='_blank'>{dede:field.webname function='htmlspecialchars(@me)'/}</a></td>
           <td><a href="{dede:field.url/}" target='_blank'>{dede:field.logo function="GetPic(@me)"/}</a></td>
           <td>{dede:field.email/}</td>
           <td>{dede:field.dtime function="MyDate('Y-m-d',@me)"/}</td>
@@ -106,7 +107,7 @@ function checkSubmit()
         </tr>
 		{/dede:datalist}
     </form>
-     <tr bgcolor="#FDFEEF" height="28">
+     <tr bgcolor="#ffffff" height="28">
       <td colspan="8">
       	　
         <a href='#' onclick='Sel("all")' class='np coolbg'>[全选]</a>

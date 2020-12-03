@@ -1,7 +1,8 @@
 {dede:config.pagesize value="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集节点管理</title>
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
@@ -126,32 +127,32 @@ function getOneItem()
 	return allSel;	
 }
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr> 
-    <td height="20" colspan="7" background='img/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <td height="20" colspan="7" background='images/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18"><strong>采集节点管理：</strong></td>
+          <td width="20%" height="18" style="padding-left:10px;"><strong>采集节点管理：</strong></td>
           <td width="80%" align="right">
           	<input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="coolbg np" style="width:100px" /> 
           </td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1"> 
+  <tr align="center" height="26" bgcolor="#FBFCE2"> 
     <td width="8%">选择</td>
     <td width="32%">节点名称</td>
     <td width="18%">针对规则</td>
-    <td width="10%" bgcolor="#FAFAF1">最后采集日期</td>
+    <td width="10%">最后采集日期</td>
     <td width="10%">加入日期</td>
     <td width="10%">编码</td>
     <td width="10%">网址数</td>
   </tr>
   <form name="form1">
     {dede:datalist} 
-    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#f4fbf4';"
+    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';"
     	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(event,this,{dede:field.nid /});"> 
       <td><input type='checkbox' name='nids' value='{dede:field.nid /}' class='np'></td>
       <td><a href='co_url.php?nid={dede:field.nid /}'>{dede:field.notename /}</a></td>
@@ -163,7 +164,7 @@ function getOneItem()
     </tr>
     {/dede:datalist} 
   </form>
-  <tr bgcolor="#FAFAF1"> 
+  <tr bgcolor="#ffffff"> 
     <td height="24" colspan="7"> 
       <table width="90%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -191,7 +192,7 @@ function getOneItem()
       </table>
     </td>
   </tr>
-  <tr bgcolor="#FAFAF1"> 
+  <tr  bgcolor="#F9FCEF"> 
     <td height="24" colspan="7" align="center">
     	{dede:pagelist size='5' /}
     </td>

@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>问题管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script>
 function selAll()
 {
@@ -76,31 +76,27 @@ function deleteask(aid){
 </script>
 </head>
 <body>
-	<div class="bodytitle">
+<div class="bodytitle">
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt"><a href='../ask' target='_blank'><b>问答模块</b></a> -- 用户提问管理</div>
 </div>
-    <tr>
-<td align='center' valign='top'><table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"><td height="4"></td></tr>
-</table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
 <tr>
-<td height="24" colspan="10" align="left" background="img/tbg.gif">
+<td height="24" colspan="9" align="left" bgcolor="#EDF9D5" background="images/tbg.gif">
 &nbsp;§<b>问题列表 &nbsp; <a href="ask_admin.php">全部问题</a> | <a href="ask_admin.php?status=-1">未审核的问题</a></b>
 </td>
 </tr>
-<form name="form2" action="ask_admin.php>
-<tr height="22" align="center">
-<td  width="6%" bgcolor="#EDF9D5">id</td>
-<td width="4%" bgcolor="#EDF9D5">选择</td>
-<td width="28%" bgcolor="#EDF9D5">问题</td>
-<td width="6%" bgcolor="#EDF9D5">推荐</td>
-<td width="10%" bgcolor="#EDF9D5">提问时间</td>
-<td width="10%" bgcolor="#EDF9D5">所属大分类</td>
-<td width="10%" bgcolor="#EDF9D5">所属小分类</td>
-<td width="8%" bgcolor="#EDF9D5">回答数</td>
-<td width="6%" bgcolor="#EDF9D5">问题状态</td>
+<form name="form2" action="ask_admin.php">
+<tr align="center" height="25" bgcolor="#FBFCE2">
+  <td width="6%">id</td>
+  <td width="4%">选择</td>
+  <td width="28%">问题</td>
+  <td width="6%">推荐</td>
+  <td width="10%">提问时间</td>
+  <td width="10%">所属大分类</td>
+  <td width="10%">所属小分类</td>
+  <td width="8%">回答数</td>
+  <td width="6%">问题状态</td>
 </tr>
 {dede:datalist}
 <?php
@@ -129,7 +125,7 @@ function deleteask(aid){
 <td><?php echo $fields['status']; ?></td>
 </tr>
 {/dede:datalist}
-<tr bgcolor="#F8FBFB">
+<tr bgcolor="#ffffff">
 <td height="24" colspan="10" align="left">
 &nbsp;
 <a href="javascript:selAll()" class="coolbg">全选</a>
@@ -139,13 +135,11 @@ function deleteask(aid){
 <a href="javascript:deleteask(0)" class="coolbg">删除</a></td>
 </tr>
 </form>
-<tr align="right" bgcolor="#E5F9FF">
-<td height="20" colspan="10" align="center" bgcolor="#EDF9D5">
+<tr align="right">
+<td height="20" colspan="9" align="center" bgcolor="#F9FCEF">
 {dede:pagelist /}
 </td>
 </tr>
 </table>
-</td>
-</tr>
 </body>
 </html>

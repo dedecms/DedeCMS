@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改连载图书</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="js/main.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/story.js"></script>
 <style type="text/css">
 <!--
@@ -36,14 +36,14 @@
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt">连载管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
 	<tr>
-		<td bgcolor="#EDF9D5" background='img/tbg.gif'>
+		<td bgcolor="#EDF9D5" background='images/tbg.gif'>
 		  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
         <tr>
           <td width='30%' class="tbtitletxt"><strong>修改连载图书</strong></td>
@@ -59,7 +59,7 @@
 </table>
 <form name='form1' action='story_edit_action.php' enctype="multipart/form-data" method='post' onSubmit="return checkSubmitEdit();">
 <input type='hidden' name='bookid' value='<?php echo $bookid; ?>' />
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
 <tr>
 <td height="116" bgcolor="#FFFFFF" style="padding:7px 6px 6px 10px;" >
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
@@ -139,7 +139,7 @@
           </tr>
         </table></td>
         <td align="center">
-        	<img src="<?php if($books['litpic']=='') echo 'img/pview.gif'; else echo $books['litpic']; ?>" width="150" id="picview" name="picview" />
+        	<img src="<?php if($books['litpic']=='') echo 'images/pview.gif'; else echo $books['litpic']; ?>" width="150" id="picview" name="picview" />
         </td>
       </tr>
     </table></td>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改会员模型管理</title>
 <script language="javascript" src="js/main.js"></script>
 <script language="javascript" src="js/diy.js"></script>
@@ -23,7 +23,7 @@ function DelNote(gourl){
 }
 -->
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 .STYLE1 {
@@ -41,45 +41,45 @@ td {
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
   <div class="bodytitleleft"></div>
-  <div class="bodytitletxt">会员模型管理</div>
+  <div class="bodytitletxt" style="padding-left:10px;">会员模型管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form name="form1" action="member_model_edit.php" method="post" onSubmit="return CheckSubmit();">
     <input type='hidden' name='id' value='<?php echo $id;?>'>
      <input type='hidden' name='name' value='<?php echo $row['name'];?>'>
     <input type='hidden' name='dopost' value='save'>
-    <tr bgcolor="#E2F5BC">
-      <td height="28" colspan="2" bgcolor="#EDF9D5" background='img/tbg.gif'><b>&nbsp;<a href="member_model_main.php"><u>会员模型管理</u></a> &gt; 修改<?php echo $row['name']?>会员模型：</b> (修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改) </td>
+    <tr bgcolor="#CFCFCF">
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;"><b><a href="member_model_main.php"><u>会员模型管理</u></a> &gt; 修改<?php echo $row['name']?>会员模型：</b> (修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改) </td>
     </tr>
     <tr>
       <td width="35%" height="28" align="left" bgcolor="#FFFFFF">会员模型ID：<br />
         <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span></td>
-      <td width="65%" bgcolor="#FFFFFF"><?php echo $id;?> * <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help1')" /> <?php if($row['issystem']) echo "<font color='red'>系统模型,我们不建议您去修改基本配置信息!</font>";?></td>
+      <td width="65%" bgcolor="#FFFFFF"><?php echo $id;?> * <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help1')" /> <?php if($row['issystem']) echo "<font color='red'>系统模型,我们不建议您去修改基本配置信息!</font>";?></td>
     </tr>
     <tr>
-      <td height="28" align="left" bgcolor="#F8FCEF">模型名称：<br />
+      <td height="28" align="left" bgcolor="#F9FCEF">模型名称：<br />
         <span class="STYLE2" id="help3">　　会员模型类型统一使用中文,前台后台都保持一致。</span></td>
       <td bgcolor="#F8FCEF"><input name="name" type="text" id="name" value="<?php echo $row['name']?>" style="width:180px" class='alltxt' <?php if($row['issystem']) echo "disabled='1'";?>/>
-        *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help3')" /></td>
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help3')" /></td>
     </tr>
     <tr>
       <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
         <span class="STYLE2" id="help5">　　模型表一旦创建不可修改</span></td>
       <td bgcolor="#FFFFFF"><input name="table" type="text" id="table"  style="width:180px" value="<?php echo $row['table']; ?>" class='alltxt' disabled='1' />
-        *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help5')" /></td>
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help5')" /></td>
     </tr>
     <tr>
-      <td height="28" align="left" bgcolor="#F8FCEF">模型字段配置：<br />
+      <td height="28" align="left" bgcolor="#F9FCEF">模型字段配置：<br />
         信息索引类字段系统已经加入，<br />
         您只需要增加其它个性化字段即可。</td>
       <td bgcolor="#F8FCEF"><input name="fset" type="button" id="fset" value="添加新字段" onClick="location.href='member_model_field_add.php?id=<?php echo $id; ?>'" class="np coolbg" style="margin-top:5px"/></td>
     </tr>
     <tr>
-      <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px"><table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#ABC094;">
-          <tr align="center" bgcolor="#EEFAA9" height="24">
+      <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px"><table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#cfcfcf;">
+          <tr align="center" bgcolor="#FBFCE2" height="24">
             <td width="12%">提示文字</td>
             <td width="12%">数据字段名</td>
             <td width="12%">数据类型</td>
@@ -104,7 +104,9 @@ if(is_array($dtp->CTags)){
 foreach($dtp->CTags as $ctag)
 {
 ?>
-          <tr align="center" bgcolor="#FFFFFF" height="24">
+          <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+
+onMouseOut="javascript:this.bgColor='#FFFFFF';">
             <td><?php 
 			$itname = $ctag->GetAtt('itemname');
 			if($itname=='') echo "没指定";
@@ -154,7 +156,7 @@ foreach($dtp->CTags as $ctag)
         <input name="state" type="radio"  value="0" class='np' <?php if($row['state']=='0') echo " checked='1' "; ?>/>
       禁用</td>
     </tr>
-    <tr bgcolor="#F9FDF0">
+    <tr bgcolor="#F9FCEF">
       <td height="28" colspan="2"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="26%" height="45">&nbsp;</td>

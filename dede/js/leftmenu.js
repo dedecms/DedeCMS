@@ -4,6 +4,7 @@ function showHide(objname)
 {
 	//只对主菜单设置cookie
 	var obj = document.getElementById(objname);
+	var objsun = document.getElementById('sun'+objname);
 	if(objname.indexOf('_1')<0 || objname.indexOf('_10')>0)
 	{
 		if(obj.style.display == 'block' || obj.style.display =='')
@@ -30,6 +31,7 @@ function showHide(objname)
 			else okstr += (okstr=='' ? ckstrs[i] : ','+ckstrs[i] );
 		}
 		if(ischange) setCookie('menuitems',okstr,7);
+        objsun.className = 'bitem2';
 	}
 	else
 	{
@@ -44,6 +46,7 @@ function showHide(objname)
 			ckstr = (ckstr==null ? objname : ckstr+','+objname);
 			setCookie('menuitems',ckstr,7);
 		}
+        objsun.className = 'bitem';
 	}
 }
 //读写cookie函数
@@ -134,6 +137,7 @@ function ShowMainMenu(n)
 		}
 		DedeXHTTP = null;
 	}
+	// bindClick();
 }
 
 -->

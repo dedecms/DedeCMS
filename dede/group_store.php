@@ -1,10 +1,12 @@
 <?php
 /**
- * Enter description here...
+ *  圈子分类设置
  *
- * @author Administrator
- * @package defaultPackage
- * @version  $Id: group_store.php,v 1.1 2009/08/04 04:06:40 blt Exp $
+ * @version        $Id: group_store.php 1 15:34 2011-1-21 tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('group_Store');
@@ -16,31 +18,31 @@ $action = isset($action) ? trim($action) : '';
 
 if($action=="add")
 {
-	$storename = cn_substrR(HtmlReplace($storename, 2),20);
-	$tops = ereg_replace("[^0-9]","",$tops);
-	$orders = ereg_replace("[^0-9]","",$orders);
-	if($tops < 1)
-	{
-		$tops = 0;
-	}
-	if($orders < 1)
-	{
-		$orders = 0;
-	}
-	if(empty($storename))
-	{
-		$msg = "错误,分类名不能为空!";
-	}
-	else
-	{
-		$db->ExecuteNoneQuery("INSERT INTO #@__store_groups(storename,tops,orders) VALUES('".$storename."','".$tops."','".$orders."');");
-		$msg = "成功添加分类";
-	}
+    $storename = cn_substrR(HtmlReplace($storename, 2),20);
+    $tops = preg_replace("#[^0-9]#","",$tops);
+    $orders = preg_replace("#[^0-9]#","",$orders);
+    if($tops < 1)
+    {
+        $tops = 0;
+    }
+    if($orders < 1)
+    {
+        $orders = 0;
+    }
+    if(empty($storename))
+    {
+        $msg = "错误,分类名不能为空!";
+    }
+    else
+    {
+        $db->ExecuteNoneQuery("INSERT INTO #@__store_groups(storename,tops,orders) VALUES('".$storename."','".$tops."','".$orders."');");
+        $msg = "成功添加分类";
+    }
 }
 else if($action=="del"&&isset($id))
 {
-	$db->ExecuteNoneQuery("DELETE FROM #@__store_groups WHERE storeid='$id'");
-	$msg = "删除分类：{$id} ！";
+    $db->ExecuteNoneQuery("DELETE FROM #@__store_groups WHERE storeid='$id'");
+    $msg = "删除分类：{$id} ！";
 }
 $btypes = array();
 $db->SetQuery("SELECT * FROM #@__store_groups WHERE tops=0");
@@ -48,11 +50,11 @@ $db->Execute();
 $options = '';
 while($rs = $db->GetArray())
 {
-	array_push ($btypes,$rs);
+    array_push ($btypes,$rs);
 }
 foreach($btypes as $k=>$v)
 {
-	$options .= "<option value='".$v['storeid']."'>".$v['storename']."</option>\r\n";
+    $options .= "<option value='".$v['storeid']."'>".$v['storename']."</option>\r\n";
 }
 
 /*
@@ -61,8 +63,8 @@ function LoadEdit();
 
 if($action=='editload')
 {
-	$row = $db->GetOne("Select * From #@__store_groups where storeid='$catid'");
-	AjaxHead();
+    $row = $db->GetOne("Select * From #@__store_groups where storeid='$catid'");
+    AjaxHead();
 ?>
 <form name='editform' action='group_store.php' method='get'>
 <input type='hidden' name='action' value='editsave' />
@@ -71,7 +73,7 @@ if($action=='editload')
 <tr>
 <td width="90" height="28">栏目名称：</td>
 <td width="101"><input name="storename" type="text" id="storename" value="<?php echo $row['storename']; ?>" /></td>
-<td width="20" align="right" valign="top"><a href="javascript:CloseEditCatalog()"><img src="img/close.gif" width="12" height="12" border="0" /></a></td>
+<td width="20" align="right" valign="top"></td>
 </tr>
 <tr>
 <td height="28">隶属栏目：</td>
@@ -81,14 +83,14 @@ if($action=='editload')
 <?php
 foreach($btypes as $k=>$v)
 {
-	if($row['tops']==$v['storeid'])
-	{
-		echo "<option value='".$v['storeid']."' selected>".$v['storename']."</option>\r\n";
-	}
-	else
-	{
-		echo "<option value='".$v['storeid']."'>".$v['storename']."</option>\r\n";
-	}
+    if($row['tops']==$v['storeid'])
+    {
+        echo "<option value='".$v['storeid']."' selected>".$v['storename']."</option>\r\n";
+    }
+    else
+    {
+        echo "<option value='".$v['storeid']."'>".$v['storename']."</option>\r\n";
+    }
 }
 ?>
 </select>
@@ -111,20 +113,20 @@ exit();
 }
 else if($action=='editsave')
 {
-	$db->ExecuteNoneQuery("UPDATE #@__store_groups SET storename='$storename',tops='$tops',orders='$orders' WHERE storeid='$catid'");
-	$msg = "成功修改栏目：{$catid} = {$storename} ！";
+    $db->ExecuteNoneQuery("UPDATE #@__store_groups SET storename='$storename',tops='$tops',orders='$orders' WHERE storeid='$catid'");
+    $msg = "成功修改栏目：{$catid} = {$storename} ！";
 }
 else if($action=='uprank')
 {
-	foreach($_POST as $rk=>$rv)
-	{
-		if(ereg('rank',$rk))
-		{
-			$catid = str_replace('rank_','',$rk);
-			$db->ExecuteNoneQuery("UPDATE #@__store_groups SET orders='{$rv}' WHERE storeid='{$catid}'");
-		}
-	}
-	$msg = "成功更改排序 ！";
+    foreach($_POST as $rk=>$rv)
+    {
+        if(preg_match('#rank#i',$rk))
+        {
+            $catid = str_replace('rank_','',$rk);
+            $db->ExecuteNoneQuery("UPDATE #@__store_groups SET orders='{$rv}' WHERE storeid='{$catid}'");
+        }
+    }
+    $msg = "成功更改排序 ！";
 }
 
 $sql = "SELECT storeid,storename,tops,orders FROM #@__store_groups WHERE tops=0 ORDER BY orders ASC";

@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>连载章节列表</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="js/main.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/story.js"></script>
 <script language="javascript">
 function EditChapter(cid){
@@ -45,17 +45,17 @@ function EditChapter(cid){
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">小说管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">小说管理 <a href="../book" target="_blank">[查看首页]</a></div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
 	<tr>
-		<td bgcolor="#EDF9D5" class="tbtitletxt">
+		<td bgcolor="#EDF9D5" background="images/tbg.gif" class="tbtitletxt">
 		  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
         <tr>
-          <td width='30%' class="tbtitletxt"><strong>连载章节列表</strong></td>
+          <td width='30%' class="tbtitletxt" style="padding-left:10px;"><strong>连载章节列表</strong></td>
           <td align='right'>
 			[<a href="story_books.php"><u>图书管理</u></a>]
 			&nbsp;
@@ -66,9 +66,9 @@ function EditChapter(cid){
    </td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;border-top:none;">
   <tr>
-    <td style="background:#F8FCF1;padding:2px 2px 2px 2px;" >
+    <td style="background:#ffffff;padding:3px;" >
    <table border="0" cellspacing="0" cellpadding="0" width="98%">
        <tr>
          <td width='50%'>
@@ -100,8 +100,8 @@ function EditChapter(cid){
 </table>
 <form name='form2' action='story_do.php' method='post'>
 <input type='hidden' name='action' value='upChapterSort' />
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style=" margin-top:3px; margin-bottom:3px; border:1px solid #E2F5BC;line-height:31px;background:#F9FFE6;">
-  <tr align="center" style="background:#F9FFE6;height:24px">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style=" margin-top:3px; margin-bottom:3px; border:1px solid #CFCFCF;line-height:31px;background:#F9FFE6;">
+  <tr align="center" style="background:#FBFCE2;height:26px">
     <td width="10%">选择</td>
     <td width="10%">章节序号</td>
     <td width="28%">章节名称</td>
@@ -113,7 +113,7 @@ function EditChapter(cid){
     <td>
     	<input type='checkbox' name='ids[]' id='ids{dede:field.id/}' value='{dede:field.id/}' class='np'/>
     </td>
-    <td>
+    <td style="padding:5px 0;">
     	第<input type='text' id="chapnum_{dede:field.id/}" name='chapnum_{dede:field.id/}' value='{dede:field.chapnum/}' size='3' class='alltxt' />章
     </td>
     <td><input type='text' id="chaptername_{dede:field.id/}" name='chaptername_{dede:field.id/}' value='{dede:field.chaptername/}' style='width:96%' class='alltxt' /></td>
@@ -128,9 +128,9 @@ function EditChapter(cid){
   </tr>
 {/dede:datalist}
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="3" align="center" style="border:1px solid #E2F5BC;line-height:30px;margin-bottom:3px;">
+<table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" style="border:1px solid #CFCFCF;line-height:35px;height:35px;margin-bottom:3px;">
 	<tr>
-		 <td>
+		 <td bgcolor="#ffffff" style="padding-left:10px;" >
 		 	<input type='button' name='sbt102' value='反选' onClick='ReSelChapter()' class='np coolbg' />
 		 	&nbsp;
 		 	<input type='submit' name='sbt1' value='批量修改' class='np coolbg' />
@@ -139,9 +139,9 @@ function EditChapter(cid){
   </tr>
 </table>
 </form>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:30px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:30px;margin:auto;">
 		<tr>
-		  <td style="background:#F9FFE6;" >
+		  <td style="background:#F9FCEF;" >
 			 {dede:pagelist listsize=5 /}
 		  </td>
   </tr>

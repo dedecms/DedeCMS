@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更改字段</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 function GetFields()
 {
@@ -51,8 +52,8 @@ td{ padding:2px; padding-left:6px; }
 -->
 </style>
 </head>
-<body topmargin=8>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<body topmargin=8 background='images/allbg.gif'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
   <form name="form1" action="diy_field_edit.php" method="post" onSubmit="return GetFields();">
   	<input type='hidden' name='action' value='save'>
   	<input type='hidden' name='diyid' value='<?php echo $diyid?>'>
@@ -60,10 +61,10 @@ td{ padding:2px; padding-left:6px; }
 	  <input type='hidden' name='issystem' value='<?php echo $issystem?>'>
 	  <input type='hidden' name='fieldstring' value=''>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#EDF9D5" background="img/tbg.gif"> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"> 
         <table width="98%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="30%">&nbsp;<b><a href="diy_main.php">自定义表单管理</a> &gt;&gt; 修改字段：</b>            </td>
+            <td width="30%" style="padding-left:10px;"><b><a href="diy_main.php">自定义表单管理</a> &gt;&gt; 修改字段：</b>            </td>
             <td align="right" style="padding-top:6px;">
 			        <input type="button" name="ss1" value="当前表单信息" onClick="location='diy_edit.php?diyid=<?php echo $diyid; ?>&dopost=edit';" class="nbt"/>
             </td>
@@ -145,10 +146,10 @@ td{ padding:2px; padding-left:6px; }
       <td bgcolor="#FFFFFF"><strong>最大长度：</strong><br>
         <span class="STYLE2"> 文本数据必须填写，大于255为text类型 </span></td>
       <td bgcolor="#FFFFFF">
-      	<input name="maxlength" type="text" id="maxlength" value="<?php echo $ctag->GetAtt('maxlength')?>" style="width:80px;height:24px;padding-top:3px;"></td>
+      	<input name="maxlength" type="text" id="maxlength" value="<?php echo $ctag->GetAtt('maxlength')?>" style="width:80px;padding-top:3px;"></td>
     </tr>
     <tr>
-      <td bgcolor="#FFFFFF"><strong>自定义表单HTML：</strong></td>
+      <td bgcolor="#FFFFFF" style="padding-left:10px;"><strong>自定义表单HTML：</strong></td>
       <td bgcolor="#FFFFFF">
       	◆自定义表单HTML用~name~表示提示文字，~form~表示表单元素<br>      </td>
     </tr>
@@ -157,7 +158,7 @@ td{ padding:2px; padding-left:6px; }
       <td bgcolor="#FFFFFF"><textarea name="vinnertext" cols="45" rows="5" id="vinnertext" style="width:70%; height:120px;"><?php echo $ctag->GetInnerText(); ?></textarea></td>
     </tr>
     <tr>
-      <td height="28" colspan="2" bgcolor="#F9FDF0"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <td height="28" colspan="2" bgcolor="#F9FCEF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="26%" height="45">&nbsp;</td>
             <td width="10%"><input type="submit" name="button1" id="button1" value="确定" class="coolbg np" />

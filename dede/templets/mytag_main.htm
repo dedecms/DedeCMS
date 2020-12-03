@@ -1,20 +1,21 @@
 {dede:config.pagesize value="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>自定义标记</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
   <tr>
-   <td height="28" background="img/tbg.gif" colspan="7">
+   <td height="28" background="images/tbg.gif" colspan="7"  style="padding-left:10px;">
      <b>自定义标记管理</b>
      &nbsp;[<a href="mytag_add.php"><u>增加一个标记</u></a>]
      &nbsp;[<a href="mytag_tag_guide.php"><u>智能标记向导</u></a>]
 	</td>
 </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+  <tr align="center" bgcolor="#FBFCE2" height="24"> 
       <td width="10%">编号</td>
       <td width="20%">标记名称</td>
       <td width="15%">所属栏目</td>
@@ -23,7 +24,7 @@
       <td width="20%">管理</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';"
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';"
     	 onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.aid /}</td>
         <td>{dede:field.tagname /}</td>

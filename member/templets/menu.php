@@ -15,7 +15,7 @@
                 }
                 //其它情况
                 if($menurow['issend']!=1 || $menurow['issystem']==1 
-                || ( !ereg($cfg_ml->M_MbType, $menurow['usertype']) && trim($menurow['usertype'])!='' ) )
+                || ( !preg_match("#".$cfg_ml->M_MbType."#", $menurow['usertype']) && trim($menurow['usertype'])!='' ) )
                 {
                     continue;
                 }
@@ -45,7 +45,7 @@
       	}
         //是否启用图集投稿
         if($channelInfos['image']['issend']==1 && $cfg_mb_album=='Y'  && $channelInfos['image']['isshow']==1 
-        && ($channelInfos['image']['usertype']=='' || ereg($cfg_ml->fields['mtype'], $channelInfos['image']['usertype'])) )
+        && ($channelInfos['image']['usertype']=='' || preg_match("#".$cfg_ml->fields['mtype']."#", $channelInfos['image']['usertype'])) )
         {
         ?>
           
@@ -55,7 +55,7 @@
 	      	}
 	      	//是否启用软件投稿
 	        if($channelInfos['soft']['issend']==1 && $channelInfos['soft']['isshow']==1
-	        && ($channelInfos['image']['usertype']=='' || ereg($cfg_ml->fields['mtype'], $channelInfos['image']['usertype']))
+	        && ($channelInfos['image']['usertype']=='' || preg_match("#".$cfg_ml->fields['mtype']."#", $channelInfos['image']['usertype']))
 	        )
 	        {
 	        ?>
@@ -106,6 +106,7 @@
         {
         	@preg_match("/\/(.+?)\//is", $nnarr['indexurl'],$matches);
         	$nnarr['class'] = isset($matches[1]) ? $matches[1] : 'channel';
+        	$nnarr['indexurl'] = str_replace("**","=",$nnarr['indexurl']);
         ?>
         <li class="<?php echo $nnarr['class'];?>"><a href="<?php echo $nnarr['indexurl']; ?>"><b></b><?php echo $nnarr['indexname']; ?>模块</a></li>
         <?php

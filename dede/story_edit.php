@@ -1,42 +1,37 @@
 <?php
-
 /**
- * Enter description here...
- *
- * @author Administrator
- * @package defaultPackage
- * @rcsfile 	$RCSfile: story_edit.php,v $
- * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:07:17 $
+ * @version        $Id: story_edit.php 1 9:02 2010年9月25日Z 蓝色随想 $
+ * @package        DedeCMS.Module.Book
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 
-require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__). "/config.php");
 CheckPurview('story_Edit');
-if(!isset($action))
-{
-	$action = '';
-}
+if(!isset($action)) $action = '';
+
 
 //读取所有栏目
-$dsql->SetQuery("Select id,classname,pid,rank From #@__story_catalog order by rank asc");
+$dsql->SetQuery("SELECT id,classname,pid,rank FROM #@__story_catalog ORDER BY rank ASC");
 $dsql->Execute();
 $ranks = Array();
 $btypes = Array();
 $stypes = Array();
 while($row = $dsql->GetArray())
 {
-	if($row['pid']==0)
-	{
-		$btypes[$row['id']] = $row['classname'];
-	}
-	else
-	{
-		$stypes[$row['pid']][$row['id']] = $row['classname'];
-	}
-	$ranks[$row['id']] = $row['rank'];
+    if($row['pid']==0)
+    {
+        $btypes[$row['id']] = $row['classname'];
+    }
+    else
+    {
+        $stypes[$row['pid']][$row['id']] = $row['classname'];
+    }
+    $ranks[$row['id']] = $row['rank'];
 }
 $lastid = $row['id'];
 $msg = '';
-$books = $dsql->GetOne("Select S.*,A.membername From #@__arcrank as A left join #@__story_books as S on A.rank=S.arcrank where S.bid='$bookid' ");
-require_once(DEDEADMIN.'/templets/story_edit.htm');
+$books = $dsql->GetOne("SELECT S.*,A.membername FROM #@__arcrank AS A LEFT JOIN #@__story_books AS S ON A.rank=S.arcrank WHERE S.bid='$bookid' ");
+require_once(DEDEADMIN. '/templets/story_edit.htm');
 ?>

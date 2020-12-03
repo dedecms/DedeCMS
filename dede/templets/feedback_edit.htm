@@ -1,21 +1,21 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>编辑评论</title>
 <style type="text/css">
 <!--
 body {
-	background-image: url(img/allbg.gif);
+	background-image: url(images/allbg.gif);
 }
 -->
 </style>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%"  border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#cfcfcf">
   <tr>
-    <td width="100%" height="24" colspan="2" background="img/tbg.gif">
-    	&nbsp;<strong><a href="<?php echo $ENV_GOBACK_URL; ?>"><u>评论管理</u></a> &gt;&gt; 编辑评论：</strong>
+    <td width="100%" height="24" colspan="2" background="images/tbg.gif" style="padding-left:10px;"><strong><a href="<?php echo $ENV_GOBACK_URL; ?>"><u>评论管理</u></a> &gt;&gt; 编辑评论：</strong>
     </td>
   </tr>
   <tr>
@@ -23,10 +23,10 @@ body {
 	<form name="form1" method="post" action="feedback_edit.php">
 	<input type="hidden" name="dopost" value="edit" />
 	<input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
-        <table width="100%" border="0" cellpadding="3" cellspacing="1">
+        <table width="100%" border="0" cellpadding="3" cellspacing="1" style="text-align:left;">
           <tr bgcolor="#FFFFFF"> 
-            <td width="18%" height="24">评论所属文章：</td>
-            <td width="82%"> 
+            <td width="120" height="24">评论所属文章：</td>
+            <td> 
               <?php echo $row['arctitle']; ?>
             </td>
           </tr>
@@ -55,7 +55,7 @@ body {
           <tr bgcolor="#FFFFFF"> 
             <td height="62" align="center">&nbsp; </td>
             <td height="62"> 
-              <textarea name="msg" cols="60" rows="5" id="msg"><?php echo jstrim($row['msg'],500); ?></textarea></td>
+              <textarea name="msg" cols="60" rows="5" id="msg"><?php echo cn_substr(Text2Html($row['msg']), 250); ?></textarea></td>
           </tr>
           <tr bgcolor="#FFFFFF"> 
             <td height="24">管理员回复：</td>

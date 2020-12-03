@@ -25,7 +25,7 @@ function selOK(surl)
 </head>
 <body>
 
-<table width="100%" style="margin-top:20px;">
+<table width="96%" style="margin-top:20px;" align="center">
   <tr>
     <td>
     <form name='forms' method='post' action='uploads_select.php'>
@@ -46,11 +46,11 @@ function selOK(surl)
   </tr>
 </table>
 <form name="form1" class="mTB10">
-  <table cellspacing="1" class="list">
+  <table cellspacing="1" class="list" width="96%" align="center">
     <thead>
       <tr>
-        <th align="left" width="1%"><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
-        <th >文件标题</th>
+        <th align="left" width="35" align="cener"><input name="checkedClick" type="checkbox" value="" id="checkedClick"></th>
+        <th>文件标题</th>
         <th width="10%">大小 </th>
         <th width="10%">类型 </th>
         <th width="15%">上传时间 </th>
@@ -59,7 +59,7 @@ function selOK(surl)
     <tbody>    
     {dede:datalist}
     <tr>
-      <td><input type='checkbox' name='aids' id='aids<?php echo $fields['aid']?>' value="<?php echo $fields['url']; ?>" onclick="selOK('<?php echo $fields['url']; ?>');" /></td>
+      <td width="35" align="cener"><input type='checkbox' name='aids' id='aids<?php echo $fields['aid']?>' value="<?php echo $fields['url']; ?>" onclick="selOK('<?php echo $fields['url']; ?>');" /></td>
       <td><?php
 			$color = '';
 			if($filename==$fields['url']) $color=" style='color:red' ";

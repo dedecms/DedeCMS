@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>问答分类</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 .STYLE1 {
@@ -23,9 +23,9 @@ if(empty($action))
 {
 ?>
 <form name="form2" action="ask_type.php" method="post">
-	<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;margin-bottom:6px;">
+	<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;margin-bottom:6px;">
       <tr>
-        <td colspan="2" bgcolor="#EDF9D5" background="img/wbg.gif"><strong>&nbsp;添加分类</strong>
+        <td colspan="2"  bgcolor="#EDF9D5" background="images/tbg.gif"><strong>&nbsp;添加分类</strong>
         <input type="hidden" name="action" value="add" /></td>
       </tr>
       <tr>
@@ -52,9 +52,9 @@ if(empty($action))
 </form>
 <form name="merge" action="ask_type.php" method="post">
 <input type="hidden" name="action" value="merge" />
-<table width="98%" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="background:#E2F5BC;margin-bottom:6px;">
+<table width="98%" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="background:#CFCFCF;margin-bottom:6px;">
 	<tr>
-        <td colspan="2" bgcolor="#EDF9D5" background="img/wbg.gif"><strong>&nbsp;问答分类合并</strong></td>
+        <td colspan="2"  bgcolor="#EDF9D5" background="images/tbg.gif"><strong>&nbsp;问答分类合并</strong></td>
       </tr>
       <tr>
         <td width="150" height="20" align="right" bgcolor="#FFFFFF">源分类：</td>
@@ -100,39 +100,32 @@ foreach($sectors as $sector)
 </table>
 </form>
 <form name="form3" action="ask_type.php" method="post">
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
       <tr>
-        <td bgcolor="#EDF9D5" background="img/wbg.gif"><strong>&nbsp;编辑分类</strong>
+        <td colspan="4"  bgcolor="#EDF9D5" background="images/tbg.gif"><strong>&nbsp;编辑分类</strong>
 <input type="hidden" name="action" value="update" /></td>
     </tr>
-      <tr>
-        <td bgcolor="#FFFFFF">
-<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center" style="margin:0px auto" class="tblist">
-
-          <tr>
-            <td>id</td>
+      <tr  height="25" bgcolor="#FBFCE2">
+            <td align="center">id</td>
             <td>分类名称</td>
             <td>排序</td>
-            <td>管理操作</td>
+            <td align="center">管理操作</td>
           </tr>
 <?php
 foreach($sectors as $sector)
 {
 	if($sector['reid'] == 0)
 	{
-		echo "<tr><td>$sector[id]</td><td><input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"ask_type.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"ask_type.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
+		echo "<tr bgcolor='#ffffff'><td align='center'>$sector[id]</td><td><input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td align='center'><a href=\"ask_type.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"ask_type.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
 	}else
 	{
-		echo "<tr><td>$sector[id]</td><td>|- <input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td><a href=\"ask_type.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"ask_type.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
+		echo "<tr bgcolor='#ffffff'><td align='center'>$sector[id]</td><td>|- <input type=\"text\" name=\"names[$sector[id]]\" value=\"$sector[name]\" /></td><td><input type=\"text\" name=\"disorders[$sector[id]]\" value=\"$sector[disorder]\" /></td><td align='center'><a href=\"ask_type.php?action=edit&amp;id=$sector[id]\">修改</a> <a href=\"ask_type.php?action=delete&amp;id=$sector[id]\">删除</a></td></tr>";
 
 	}
 }
 ?>
-        </table> 
-       </td>
-      </tr>
       <tr>
-        <td height="35" align="center" bgcolor="#F8FCF1"><input name="submit3" type="submit" value="提交" class="np coolbg"/></td>
+        <td height="35" align="center" bgcolor="#F9FCEF" colspan="4"><input name="submit3" type="submit" value="提交" class="np coolbg"/></td>
       </tr>
     </table>
 </form>
@@ -141,9 +134,9 @@ foreach($sectors as $sector)
 {
 ?>
 <form name="form4" action="ask_type.php" method="post">
-<table width="96%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
     <tr>
-        <td colspan="2" bgcolor="#EDF9D5" background="img/wbg.gif"><strong>&nbsp;修改</strong>
+        <td colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"><strong>&nbsp;修改</strong>
         <input type=hidden name=action value=edit />
         <input type=hidden name=step value=2 />
         <input type=hidden name=id value=<?php echo $id; ?> /></td>
@@ -164,7 +157,7 @@ foreach($sectors as $sector)
     </tr>
       <tr>
         <td height="35" bgcolor="#FFFFFF">&nbsp;</td>
-        <td bgcolor="#F8FCF1"><input name="submit4" type="submit" value="提交" class="np coolbg"/></td>
+        <td bgcolor="#FFFFFF"><input name="submit4" type="submit" value="提交" class="np coolbg"/></td>
     </tr>
     </table>
 

@@ -6,10 +6,6 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/style/dedecms_skins_0.css" type="text/css" id="cssfile" />
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.cookie.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/changeSkin.js"></script>
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
@@ -95,18 +91,11 @@ function getDigg(aid)
 	myajax.SendGet2("{dede:global.cfg_phpurl/}/digg_ajax.php?id="+aid);
 	DedeXHTTP = null;
 }
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
-
 -->
 </script>
 </head>
 <body class="articleview">
-{dede:include filename="head.htm"/}
+{dede:include filename="head.htm2"/}
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
@@ -238,7 +227,7 @@ function check(){
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>
@@ -251,9 +240,11 @@ function check(){
 				</dd>
 			</dl>
 		</div>
+		<div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
 	</div><!-- /pright -->
+	
 </div>
-
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

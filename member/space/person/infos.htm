@@ -98,7 +98,7 @@
     $arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='language' ");
     $sets = explode(',',$arr['items']);
     foreach($sets as $v){
-    	if(ereg($v,$row['language'])) echo "  $v ";
+    	if(preg_match("#".$v."#", $row['language'])) echo "  $v ";
     }
     ?></td>
           </tr>
@@ -123,7 +123,7 @@
     	$arr = $dsql->GetOne("Select * From `#@__sys_set` where sname='nature' ");
     	$sets = explode(',',$arr['items']);
     	foreach($sets as $v){
-    		if(ereg($v,$row['nature'])) echo " $v ";
+    		if(preg_match("#".$v."#",$row['nature'])) echo " $v ";
     	}
     	?></td>
           </tr>

@@ -1,64 +1,62 @@
 <?php
+/**
+ * ä¼šå‘˜çŸ­æ¶ˆæ¯ç®¡ç†
+ *
+ * @version        $Id: member_msg_edit.php 1 11:24 2010å¹´7æœˆ20æ—¥Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Log');
 if(empty($dopost))
 {
-	ShowMsg("ÄãÃ»Ö¸¶¨ÈÎºÎ²ÎÊý£¡","javascript:;");
-	exit();
+    ShowMsg("ä½ æ²¡æŒ‡å®šä»»ä½•å‚æ•°ï¼","javascript:;");
+    exit();
 }
-if(empty($dellog))
-{
-	$dellog = 0;
-}
+if(empty($dellog)) $dellog = 0;
 
-//É¾³ýÑ¡¶¨×´Ì¬
+//åˆ é™¤é€‰å®šçŠ¶æ€
 if($dopost=="del")
 {
-	$bkurl = isset($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : "member_msg_main.php";
-	$ids = explode('`',$ids);
-	$dquery = "";
-	foreach($ids as $id)
-	{
-		if($dquery=="")
-		{
-			$dquery .= "id='$id' ";
-		}
-		else
-		{
-			$dquery .= " Or id='$id' ";
-		}
-	}
-	if($dquery!="") $dquery = " where ".$dquery;
-	$dsql->ExecuteNoneQuery("DELETE FROM #@__member_msg $dquery");
-	ShowMsg("³É¹¦É¾³ýÖ¸¶¨µÄ¼ÇÂ¼£¡",$bkurl);
-	exit();
+    $bkurl = isset($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : "member_msg_main.php";
+    $ids = explode('`',$ids);
+    $dquery = "";
+    foreach($ids as $id)
+    {
+        if($dquery=="")
+        {
+            $dquery .= "id='$id' ";
+        }
+        else
+        {
+            $dquery .= " OR id='$id' ";
+        }
+    }
+    if($dquery!="") $dquery = " WHERE ".$dquery;
+    $dsql->ExecuteNoneQuery("DELETE FROM #@__member_msg $dquery");
+    ShowMsg("æˆåŠŸåˆ é™¤æŒ‡å®šçš„è®°å½•ï¼",$bkurl);
+    exit();
 }
-//ÉóºËÑ¡¶¨×´Ì¬
+//å®¡æ ¸é€‰å®šçŠ¶æ€
 else if($dopost=="check")
 {
-	$bkurl = isset($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : "member_msg_main.php";
-	$ids = explode('`',$ids);
-	$dquery = "";
-	foreach($ids as $id)
-	{
-		if($dquery=="")
-		{
-			$dquery .= " id='$id' ";
-		}
-		else
-		{
-			$dquery .= " Or id='$id' ";
-		}
-	}
-	if($dquery!="") $dquery = " where ".$dquery;
-	$dsql->ExecuteNoneQuery("UPDATE #@__member_msg SET ischeck=1 $dquery");
-	ShowMsg("³É¹¦ÉóºËÖ¸¶¨µÄ¼ÇÂ¼£¡",$bkurl);
-	exit();
+    $bkurl = isset($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : "member_msg_main.php";
+    $ids = explode('`',$ids);
+    $dquery = "";
+    foreach($ids as $id)
+    {
+        if($dquery=="") $dquery .= " id='$id' ";
+        else $dquery .= " Or id='$id' ";
+    }
+    if($dquery!="") $dquery = " where ".$dquery;
+    $dsql->ExecuteNoneQuery("UPDATE #@__member_msg SET ischeck=1 $dquery");
+    ShowMsg("æˆåŠŸå®¡æ ¸æŒ‡å®šçš„è®°å½•ï¼",$bkurl);
+    exit();
 }
 else
 {
-	ShowMsg("ÎÞ·¨Ê¶±ðÄãµÄÇëÇó£¡","javascript:;");
-	exit();
+    ShowMsg("æ— æ³•è¯†åˆ«ä½ çš„è¯·æ±‚ï¼","javascript:;");
+    exit();
 }
-
-?>

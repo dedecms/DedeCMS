@@ -1,20 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>重复文档检测</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-  <div class="bodytitletxt">批量管理</div>
+  <div class="bodytitletxt" style="padding-left:10px;">批量管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#dbe4cd;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
   <form action="article_test_same.php" name="form1" target="stafrm">
     <input type='hidden' name='dopost' value='analyse'>
     <tr>
-      <td height="20" bgcolor="#EDF9D5" background="img/tbg.gif">
+      <td height="20" bgcolor="#EDF9D5" background="images/tbg.gif">
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td width="30%" height="18"><strong>&nbsp;重复文档检测：</strong></td>
@@ -59,13 +59,13 @@
 	  </td>
     </tr>
     <tr>
-      <td height="31" bgcolor="#F8FBFB" align="center" style="padding-top:6px">
+      <td height="31" bgcolor="#ffffff" align="center" style="padding-top:6px">
       <input type="submit" name="Submit" value="分析标题重复的文档" class="np coolbg"/>
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E5F9FF">
-    <td height="20" bgcolor="#f4fbf4">
+  <tr bgcolor="#F9FCEF">
+    <td height="30">
     	&nbsp; <strong>结果：</strong>
     </td>
   </tr>

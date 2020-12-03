@@ -1,9 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>数据库维护</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript">
 var myajax;
 var newobj;
@@ -82,13 +83,13 @@ function checkSubmit()
 
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr> 
-    <td height="19" colspan="8" background="img/tbg.gif" bgcolor="#E7E7E7">
+    <td height="19" colspan="8" background="images/tbg.gif" bgcolor="#E7E7E7">
     	<table width="96%" border="0" cellspacing="1" cellpadding="1">
         <tr> 
-          <td width="24%"><strong>数据库管理</strong></td>
+          <td width="24%" style="padding-left:10px;"><strong>数据库管理</strong></td>
           <td width="76%" align="right">
           	<b><a href="sys_data_revert.php"><u>数据还原</u></a></b> | 
           	<b><a href="sys_sql_query.php"><u>SQL命令行工具</u></a></b>
@@ -100,9 +101,9 @@ function checkSubmit()
   <form name="form1" onSubmit="checkSubmit()" action="sys_data_done.php?dopost=bak" method="post" target="stafrm">
   <input type='hidden' name='tablearr' value='' />
   <tr bgcolor="#F7F8ED"> 
-    <td height="24" colspan="8"><strong>DedeCms默认系统表：</strong></td>
+    <td height="24" colspan="8"><strong>DedeCMS默认系统表：</strong></td>
   </tr>
-  <tr bgcolor="#F2FFB5" align="center"> 
+  <tr bgcolor="#FBFCE2" align="center"> 
     <td height="24" width="5%">选择</td>
     <td width="20%">表名</td>
     <td width="8%">记录数</td>
@@ -160,10 +161,10 @@ function checkSubmit()
    echo "</tr>\r\n";
   }
   ?>
-  <tr bgcolor="#F7F8ED"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="24" colspan="8"><strong>其它数据表：</strong></td>
   </tr>
-  <tr bgcolor="#F9FEE2" align="center"> 
+  <tr bgcolor="#FBFCE2" align="center"> 
     <td height="24" width="5%">选择</td>
     <td width="20%">表名</td>
     <td width="8%">记录数</td>
@@ -219,7 +220,7 @@ function checkSubmit()
    echo "</tr>\r\n";
   }
   ?>
-    <tr bgcolor="#FDFDEA"> 
+    <tr bgcolor="#ffffff"> 
       <td height="24" colspan="8">
       	&nbsp; 
         <input name="b1" type="button" id="b1" class="coolbg np" onClick="SelAll()" value="全选" />
@@ -229,7 +230,7 @@ function checkSubmit()
         <input name="b3" type="button" id="b3" class="coolbg np" onClick="NoneSel()" value="取消" />
       </td>
   </tr>
-  <tr bgcolor="#F7F8ED"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="24" colspan="8"><strong>数据备份选项：</strong></td>
   </tr>
   <tr align="center" bgcolor="#FFFFFF"> 
@@ -265,7 +266,7 @@ function checkSubmit()
       </td>
    </tr>
    </form>
-  <tr bgcolor="#F7F8ED">
+  <tr bgcolor="#F9FCEF">
     <td height="24" colspan="8"><strong>进行状态：</strong></td>
   </tr>
   <tr bgcolor="#FFFFFF"> 

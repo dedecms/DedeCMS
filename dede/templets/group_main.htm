@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
 <title>圈子管理-&gt;圈子列表</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 .rb{ border-right:1px solid #98CAEF }
 .tb{ border-top:1px solid #98CAEF }
@@ -33,19 +33,19 @@ function MyImage(Img){
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">圈子管理</div>
+	<div class="bodytitletxt">圈子管理 <a href="../group" target="_blank">[查看首页]</a></div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <tr>
-    <td height="30" align="center" bgcolor="#FAFCEF">
+    <td height="30" align="center" bgcolor="#ffffff">
       <form action="group_main.php" name="form1" method="get">
 	    <table width="600" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="69">&nbsp;关键字：</td>
+            <td width="70">&nbsp;关键字：</td>
             <td width="83" align="left">
            	  <input name="keyword" type="text" id="keyword" size="12" style="width:100" value="<?php echo $keyword?>">            </td>
             <td width="80">&nbsp;创建人：</td>
@@ -63,9 +63,10 @@ function MyImage(Img){
   </tr>
 </table>
 
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="margin-top:10px;background:#CFCFCF;">
   <tr>
-    <td height="24" colspan="9" bgcolor="#EDF9D5"><table width="99%" border="0" cellspacing="0" cellpadding="0">
+    <td height="24" colspan="7" bgcolor="#EDF9D5" background="images/tbg.gif">
+	<table width="99%" border="0" cellspacing="0" cellpadding="0">
         <tr>
           <td width="29%">&nbsp;&nbsp;<strong>圈子管理>>圈子列表</strong></td>
           <td width="71%" align="right">&nbsp;</td>
@@ -86,7 +87,7 @@ function MyImage(Img){
 <?php
 $row = $fields;
 $icon = $row['groupimg'];
-if(!$icon) $icon = "img/dfpic.gif";
+if(!$icon) $icon = "images/dfpic.gif";
 $issystem = $row['issystem'];
 if($issystem) $issystem = "<font color='red'>官方</font>";
 else $issystem = "普通";
@@ -98,12 +99,12 @@ if($row['ishidden'])
 }
 else
 {
-	$ishidden = "<font color='#66CC00'>开放</font>";
+	$ishidden = "<font color='green'>开放</font>";
 	$opstauts = "关闭";
 	$opstautsdo = "close";
 }
 ?>
-  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#EDF7D0';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td><img src="<?php echo $icon?>" align="absmiddle" onload='javascript:MyImage(this);'/></td>
     <td align="left" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -120,14 +121,14 @@ else
     <td>
 	<table width="98%" border="0" cellspacing="0" cellpadding="0">
         <tr>
-          <td align="center" height="25"><a href="group_main.php?action=<?php echo $opstautsdo?>&id=<?php echo $row['groupid']?>"><?php echo $opstauts?></a> | <a href="group_edit.php?id=<?php echo $row['groupid']?>">编辑</a> | <a href="group_main.php?action=del&id=<?php echo $row['groupid']?>" onClick="return(confirm('删除后无法恢复,您确定删除吗?'))">删除</a> | <a href="group_guestbook.php?gid=<?php echo $row['groupid']?>">留言</a></td>
+          <td align="left" height="25"><a href="group_main.php?action=<?php echo $opstautsdo?>&id=<?php echo $row['groupid']?>"><?php echo $opstauts?></a> | <a href="group_edit.php?id=<?php echo $row['groupid']?>">编辑</a> | <a href="group_main.php?action=del&id=<?php echo $row['groupid']?>" onClick="return(confirm('删除后无法恢复,您确定删除吗?'))">删除</a> |<br /><a href="group_guestbook.php?gid=<?php echo $row['groupid']?>">留言</a> | <a href="group_threads.php?gid=<?php echo $row['groupid']?>">列表</a></td>
         </tr>
       </table></td>
   </tr>
 {/dede:datalist}
   <!--分页-->
   <tr>
-     <td height="28" colspan="9" bgcolor="#EDF9D5">&nbsp;&nbsp;{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</td>
+     <td height="28" colspan="7" bgcolor="#F9FCEF">&nbsp;&nbsp;{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</td>
   </tr>
 </table>
 

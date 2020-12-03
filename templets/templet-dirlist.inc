@@ -1,4 +1,4 @@
-start,默认模板目录说明
-default,默认模板文件目录
-plus,附加插件模板目录
-system,默认底层模板目录
+start,榛樿妯℃澘鐩綍璇存槑
+default,榛樿妯℃澘鏂囦欢鐩綍
+plus,闄勫姞鎻掍欢妯℃澘鐩綍
+system,榛樿搴曞眰妯℃澘鐩綍

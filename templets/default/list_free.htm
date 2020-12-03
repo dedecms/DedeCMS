@@ -6,16 +6,6 @@
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<script language="javascript" type="text/javascript">
-<!--
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
--->
-</script>
 </head>
 <body class="articlelist">
 {dede:include filename="head.htm"/}
@@ -52,7 +42,7 @@ function check(){
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-		
+		<div id="listRtPicAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>
@@ -65,11 +55,10 @@ function check(){
 				</dd>
 			</dl>
 		</div>
-
-
+        <div id="listRtPicAD2" style="margin:10px auto">{dede:myad name='listRtPicAD2'/}</div>
 	</div><!-- /pright -->
 </div>
-
+<div id="listRtPicAD2" style="margin:10px auto; width:726px">{dede:myad name='listRtPicAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

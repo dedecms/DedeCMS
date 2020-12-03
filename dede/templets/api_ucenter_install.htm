@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>ucenter1.5.0安装向导</title>
 <style rel="stylesheet" type="text/css">
 <!--
@@ -61,7 +61,7 @@ h3{ font-size:14px; }
         <td>该值在您安装完 UCenter 后会被初始化，在您 UCenter   地址或者目录改变的情况下，修改此项，一般情况请不要改动<br />
 				  例如: http://www.site.com/uc_server (最后不要加'/')。</td>
     </tr>
-    
+
     <tr>
         <th colspan="2">创始人密码:</th>
     </tr>
@@ -69,7 +69,7 @@ h3{ font-size:14px; }
         <td><input type="text" class="txt" name="uc_setings[authkey]" value="" /></td>
         <td>该值在您安装完 UCenter 后会被初始化一个登录密码,UCenter称之为“创始人密码”</td>
     </tr>
-    
+
     <tr>
         <th colspan="2">服务端IP地址:</th>
     </tr>
@@ -77,8 +77,8 @@ h3{ font-size:14px; }
         <td><input type="text" class="txt" name="uc_setings[ucip]" value="127.0.0.1" /></td>
         <td>如果您的服务器无法通过域名访问 UCenter，可以输入 UCenter 服务器的 IP 地址</td>
     </tr>
-    
-    
+
+
     </table>
     <div class="opt"><input type="submit" name="submit" value=" 确认安装 " class="btn" tabindex="3" /></div>
     </form>

@@ -1,6 +1,6 @@
  function FeedDel()
  {
-	if(confirm("ÄãÈ·¶¨É¾³ı¸Ã¶¯Ì¬ĞÅÏ¢?"))
+	if(confirm("ä½ ç¡®å®šåˆ é™¤è¯¥åŠ¨æ€ä¿¡æ¯?"))
     	return true;
    	else
 		return false;
@@ -61,7 +61,7 @@
 			         $('#FeedText').empty();
 					  var html = '';
 					  $.each( data  , function(commentIndex, comment) {
-						  html += '<div class="feeds_title ico' + comment['type'] + '"><span><a href="index.php?uid='+ comment['uname'] +'&action=feeddel&fid=' + comment['fid'] + '" onclick="return FeedDel()" class="act">É¾³ı</a><a href="/member/index.php?uid='+ comment['uname'] +'">'+ comment['uname'] +'</a>' + comment['title'] + ' <em>' + comment['dtime'] + '</em></span><p>' + comment['note'] + '</p></div>';
+						  html += '<div class="feeds_title ico' + comment['type'] + '"><span><a href="index.php?uid='+ comment['uname'] +'&action=feeddel&fid=' + comment['fid'] + '" onclick="return FeedDel()" class="act">åˆ é™¤</a><a href="/member/index.php?uid='+ comment['uname'] +'">'+ comment['uname'] +'</a>' + comment['title'] + ' <em>' + comment['dtime'] + '</em></span><p>' + comment['note'] + '</p></div>';
 					  })
 					 $('#FeedText').html(html);
 					 $("#myfeed").addClass("thisTab");
@@ -73,7 +73,7 @@
 			}); 
         });
    })
-   //ÎÒµÄ¶¯Ì¬
+   //æˆ‘çš„åŠ¨æ€
   $(function(){
             $.ajax({
 			  type: "GET",
@@ -83,7 +83,7 @@
 			         $('#FeedText').empty();
 					  var html = '';
 					  $.each( data  , function(commentIndex, comment) {
-						 html += '<div class="feeds_title ico' + comment['type'] + '"><span><a href="index.php?uid='+ comment['uname'] +'&action=feeddel&fid=' + comment['fid'] + '" onclick="return FeedDel()" class="act">É¾³ı</a><a href="/member/index.php?uid='+ comment['uname'] +'">'+ comment['uname'] +'</a>' + comment['title'] + ' <em>' + comment['dtime'] + '</em></span><p>' + comment['note'] + '</p></div>';
+						 html += '<div class="feeds_title ico' + comment['type'] + '"><span><a href="index.php?uid='+ comment['uname'] +'&action=feeddel&fid=' + comment['fid'] + '" onclick="return FeedDel()" class="act">åˆ é™¤</a><a href="/member/index.php?uid='+ comment['uname'] +'">'+ comment['uname'] +'</a>' + comment['title'] + ' <em>' + comment['dtime'] + '</em></span><p>' + comment['note'] + '</p></div>';
 					  })
 					 $('#FeedText').html(html);
 			  }

@@ -1,18 +1,19 @@
 {dede:config.pagesize value="20"/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>单独页面管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 <style>
 ul { padding:0px; margin:0px;}
 li { float:left; padding-right:8px; line-height:24px; }
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" style="margin-bottom:6px">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px">
   <tr>
-   <td background="img/wbg.gif" colspan="6">
+   <td background="images/wbg.gif" colspan="6" style="padding-left:10px;">
   <form action='templets_one.php' name='sss'>
   <ul>
   <li>关键字：</li>
@@ -30,14 +31,14 @@ li { float:left; padding-right:8px; line-height:24px; }
      }
      echo "</select>\r\n";
   ?></li>
-  <li><input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np" /></li>
+  <li><input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np" /></li>
   </ul>
   </form>
 	 </td>
 </table>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
   <tr>
-   <td height="28" background="img/tbg.gif" colspan="7">
+   <td height="28" background="images/tbg.gif" colspan="7" style="padding-left:10px;">
     <div style="float:left">
     <b>◆单独页面管理</b>
     </div>
@@ -49,7 +50,7 @@ li { float:left; padding-right:8px; line-height:24px; }
     </div>
 	 </td>
   </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+  <tr align="center" bgcolor="#FBFCE2" height="24"> 
       <td width="6%">选择</td>
       <td width="6%">编号</td>
       <td width="30%">页面名称</td>
@@ -61,7 +62,7 @@ li { float:left; padding-right:8px; line-height:24px; }
    <form name='form1' action='templets_one_edit.php'>
    	<input type='hidden' name='dopost' value='mksel' />
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';" 
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';" 
     	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
     	  <td><input type='checkbox' name='ids[]' value='{dede:field.aid /}' class='np' ></td>
         <td>{dede:field.aid /}</td>

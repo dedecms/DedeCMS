@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>主页更新向导</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
 <script type="text/javascript" src="../include/calendar/calendar.js"></script>
 <script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
@@ -21,15 +22,15 @@ function SelectTemplets(fname)
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" align="center">
   <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
     <input type="hidden" name="dopost" value="make" />
     <tr> 
-      <td height="28" colspan="2" background='img/tbg.gif'>
+      <td height="28" colspan="2" background='images/tbg.gif'>
       	<table width="98%" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="30%" height="18"><strong>全局标记测试：</strong></td>
+            <td width="30%" height="18"  style="padding-left:10px;"><strong>全局标记测试：</strong></td>
             <td width="70%" align="right">&nbsp;</td>
           </tr>
         </table>
@@ -46,7 +47,7 @@ function SelectTemplets(fname)
     </tr>
     <tr> 
       <td height="62" colspan="2" bgcolor="#FFFFFF">
-	  <textarea name="partcode" id="partcode" style="width:100%;height:120px"></textarea>
+	  <textarea name="partcode" id="partcode" style="width:99%;height:120px"></textarea>
 	  </td>
     </tr>
     <tr> 
@@ -69,7 +70,7 @@ function SelectTemplets(fname)
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E6F3CD"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="20" colspan="2">
     	<table width="100%">
         <tr> 

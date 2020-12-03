@@ -1,8 +1,16 @@
+/**
+ * 
+ * @version        $Id: handlers.js 1 22:28 2010年7月20日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+
 //---事件句并------------------------------
-function fileQueueError(file, errorCode, message)
-{
-	try {
-		var imageName = "error.gif";
+function fileQueueError(file, errorCode, message){
+    try {
+        var imageName = "error.gif";
 		var errorName = "";
 		if (errorCode === SWFUpload.errorCode_QUEUE_LIMIT_EXCEEDED) {
 			errorName = "你添加的文件超过了限制！";
@@ -26,9 +34,7 @@ function fileQueueError(file, errorCode, message)
 			alert(message);
 			break;
 		}
-
-		addImage("img/" + imageName, 0);
-
+		addImage("images/" + imageName, 0);
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -46,10 +52,8 @@ function fileDialogComplete(numFilesSelected, numFilesQueued) {
 }
 
 function uploadProgress(file, bytesLoaded) {
-
 	try {
 		var percent = Math.ceil((bytesLoaded / file.size) * 100);
-
 		var progress = new FileProgress(file,  this.customSettings.upload_target);
 		progress.setProgress(percent);
 		if (percent === 100) {
@@ -74,14 +78,12 @@ function uploadSuccess(file, serverData) {
 			progress.setStatus("获取缩略图...");
 			progress.toggleCancel(false);
 		} else {
-			addImage("img/error.gif", 0);
+			addImage("images/error.gif", 0);
 			progress.setStatus("有错误！");
 			progress.toggleCancel(false);
 			alert(serverData);
 
 		}
-
-
 	} catch (ex) {
 		this.debug(ex);
 	}
@@ -137,7 +139,7 @@ function uploadError(file, errorCode, message) {
 			break;
 		}
 
-		addImage("img/" + imageName, 0);
+		addImage("images/" + imageName, 0);
 
 	} catch (ex3) {
 		this.debug(ex3);
@@ -146,18 +148,14 @@ function uploadError(file, errorCode, message) {
 }
 
 var albImg = 0;
-function addImage(src, pid)
-{
+function addImage(src, pid){
 	var newImgDiv = document.createElement("div");
 	var delstr = '';
 	albImg++;
-	if(pid != 0)
-	{
+	if(pid != 0) {
 		albImg = 'ok' + pid;
-		delstr = '<a href="javascript:DelAlbPic('+pid+')">[删除]</a>';
-	}
-	else
-	{
+		delstr = '<a href="javascript:delAlbPic('+pid+')">[删除]</a>';
+	} else {
 		albImg = 'err' + albImg;
 	}
 	newImgDiv.className = 'albCt';

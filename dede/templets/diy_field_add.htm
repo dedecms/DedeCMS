@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>增加字段</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 var notAllow = " <?php echo $f; ?> ";
 function GetFields()
@@ -69,14 +70,14 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form name="form1" action="diy_field_add.php" method="post" onSubmit="return GetFields();">
   <input type='hidden' name='action' value='save'>
   <input type='hidden' name='diyid' value='<?php echo $diyid?>'>
 	<input type='hidden' name='fieldstring' value=''>
     <tr> 
-      <td height="20" colspan="2" bgcolor="#EDF9D5" background="img/tbg.gif"> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"> 
         <table width="98%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
             <td width="30%">&nbsp;<b><a href="diy_main.php">自定义表单管理</a> &gt;&gt; 增加新字段：</b>            </td>

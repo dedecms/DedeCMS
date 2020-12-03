@@ -7,10 +7,6 @@
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
 <link href="{dede:global.cfg_templets_skin/}/style/picture.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/style/dedecms_skins_0.css" type="text/css" id="cssfile" />
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.cookie.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/changeSkin.js"></script>
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
@@ -156,18 +152,12 @@ function getDigg(aid)
 			else location.href = "view.php?aid={dede:field name='id'/}&pageno="+(npage+1);
 		}
 	}
-	function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
 -->
 </script>
 </head>
 <body class="picboxview">
 
-{dede:include filename="head.htm"/}
+{dede:include filename="head2.htm"/}
 <!-- /header -->
 <div class="w960 center clear mt1">
 	<div class="pleft">
@@ -208,7 +198,7 @@ function getDigg(aid)
                   <img src='[field:imgsrc/]' id='bigimg' [field:imgwidth /] alt='[field:alttext /]' border='0' />
                 </a>
                 <a href='[field:linkurl/]' [field:pagestyle runphp='yes']@me = (@me==3 ? 'class="title"' : '');[/field:pagestyle]>
-                	[field:alttext /]
+                	[field:title /]
                 </a>
                 [field:pagestyle runphp='yes'] @me = (@me==3 ? '</li>' : ''); [/field:pagestyle]
              {/dede:field}
@@ -225,7 +215,9 @@ function getDigg(aid)
                 }
              {/dede:field}
 			</div>
-           	<div class="intro">{dede:field.body/}</div>
+           	<div class="intro"><div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top; display:block">{dede:myad name='contentMidPicAD'/}</div>{dede:field.body/}
+            <div style="clear:both"></div>
+            </div>
 			<div class="newdigg" id="newdigg">
 				<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',{dede:field.id/})">
 					<div class="digg_act">顶一下</div>
@@ -310,7 +302,7 @@ function getDigg(aid)
 				</dd>
 			</dl>
 		</div>
-
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
 		<div class="mt1">
 			<dl class="tbox">
 				<dt><strong>推荐图集</strong></dt>
@@ -323,11 +315,11 @@ function getDigg(aid)
 				</dd>
 			</dl>
 		</div>
-
+      <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
 
 	</div><!-- /pright -->
 </div>
-
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

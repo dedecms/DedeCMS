@@ -1,24 +1,25 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集内容预览</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <form name='form1' action='co_view.php' method='post'>
 <input type='hidden' name='action' value='save' />
 <input type='hidden' name='nid' value='<?php echo $nid; ?>' />
 <input type='hidden' name='aid' value='<?php echo $aid; ?>' />
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr> 
-    <td height="28" colspan="2" background='img/tbg.gif'>
+    <td height="28" colspan="2" background='images/tbg.gif' style="padding-left:10px;">
     	<a href='co_url.php'><b>采集内容管理</b></a><b> &gt; 采集内容预览：</b>(系统会自动下载并处理未下载过的内容)
    </td>
   </tr>
-  <tr bgcolor="#F8FCF1"> 
-    <td height="24" colspan="2" bgcolor="#F8FCF1">如果发布时间（pubdate）为空，系统将采用导入时的实际时间，‘#p#副标题#e#’字样是系统分页符号，请不要替换。</td>
+  <tr bgcolor="#ffffff"> 
+    <td height="24" colspan="2">如果发布时间（pubdate）为空，系统将采用导入时的实际时间，‘#p#副标题#e#’字样是系统分页符号，请不要替换。</td>
   </tr>
-  <tr bgcolor="#F8FCF1"> 
+  <tr height="26" bgcolor="#FBFCE2"> 
     <td width="17%" height="24" align="center" bgcolor="#F8FCF1"><strong>字段名称</strong></td>
     <td width="83%" align="center" bgcolor="#F8FCF1"><strong>内　容</strong></td>
   </tr>
@@ -49,11 +50,11 @@ for($i=0;$i<=$dtp->Count;$i++)
 $dtp->Clear();
 ?>
 <input type='hidden' name='endid' value='<?php echo $i?>' />
-  <tr bgcolor="#F8FCF1"> 
+  <tr  bgcolor="#F9FCEF"> 
     <td height="24" colspan="2" align="center">
-    <input name="imageField" type="image" src="img/button_save.gif" class="np" width="60" height="22" border="0" />
+    <input name="imageField" type="image" src="images/button_save.gif" class="np" width="60" height="22" border="0" />
     	&nbsp;
-     <a href="<?php echo $backurl?>"><img src="img/button_back.gif" class="np" width="60" height="22" border="0" /></a>
+     <a href="<?php echo $backurl?>"><img src="images/button_back.gif" class="np" width="60" height="22" border="0" /></a>
     </td>
   </tr>
 </table>
@@ -63,9 +64,9 @@ $dtp->Clear();
 <input type='hidden' name='dopost' value='replace' />
 <input type='hidden' name='nid' value='<?php echo $nid; ?>' />
 <input type='hidden' name='aid' value='<?php echo $aid; ?>' />
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center" style="margin-top:6px">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center" style="margin-top:6px">
 <tr>
- <td colspan='4' height="28" colspan="2" background='img/tbg.gif'>
+ <td colspan='4' height="28" colspan="2" background='images/tbg.gif' style="padding-left:10px;">
  	<b>内容替换：</b>
  </td>
 </tr>
@@ -98,11 +99,11 @@ $dtp->Clear();
   <textarea name="rpstring" style="width:90%;height:60px"></textarea>
  </td>
 </tr>
-<tr bgcolor="#F8FCF1"> 
+<tr bgcolor="#F9FCEF"> 
   <td height="24" colspan="4" align="center">
-   <input name="imageField" type="image" src="img/button_ok.gif" class="np" width="60" height="22" border="0" />
+   <input name="imageField" type="image" src="images/button_ok.gif" class="np" width="60" height="22" border="0" />
    &nbsp;
-   <a href="<?php echo $backurl?>"><img src="img/button_back.gif" class="np" width="60" height="22" border="0" /></a>
+   <a href="<?php echo $backurl?>"><img src="images/button_back.gif" class="np" width="60" height="22" border="0" /></a>
   </td>
 </tr>
 </table>

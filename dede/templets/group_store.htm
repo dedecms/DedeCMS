@@ -3,18 +3,21 @@
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
 <title>圈子分类管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<link href='css/tb-box.css' rel='stylesheet' type='text/css' />
 <script language="javascript" src="js/main.js"></script>
 <script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/jquery/jquery.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.core.js"></script>
+<script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
+<script lang='javascript' src='js/tb-box.js'></script>
 <script type="text/javascript">
 <!--
 
 function ShowAddCatalog(){
-	$Obj('addCatalog').style.display='block';
-}
-
-function CloseAddCatalog(){
-	$Obj('addCatalog').style.display='none';
+	var msgtxt = $("#addCatalog").html();
+	tb_showmsg(msgtxt, "增加一个分类");
+	// $Obj('addCatalog').style.display='block';
 }
 
 function CloseEditCatalog(){
@@ -30,10 +33,7 @@ function DelCatalog(cid){
 
 
 function EditCatalog(cid){
-	$Obj('editCatalog').style.display='block';
-	var myajax = new DedeAjax($Obj('editCatalogBody'),false,true,"","","请稍候，正在载入...");
-	myajax.SendGet2('group_store.php?catid='+cid+'&action=editload');
-	DedeXHTTP = null;
+	tb_show("编辑圈子", 'group_store.php?catid='+cid+'&action=editload&width=400&height=200', true);
 }
 
 -->
@@ -67,33 +67,35 @@ function EditCatalog(cid){
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">圈子管理</div>
+	<div class="bodytitletxt">圈子管理 <a href="../group" target="_blank">[查看首页]</a></div>
 </div>
 
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
-		<tr>
-				<td bgcolor="#EDF9D5" class="tbtitletxt">  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
-                  <tr>
-                    <td width='30%' class="tbtitletxt"><strong>分类列表</strong></td>
-                    <td align='right'> [<a href="javascript:ShowAddCatalog();"><u>新增分类</u></a>] </td>
-                  </tr>
-                </table></td>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+	<tr>
+		<td bgcolor="#EDF9D5" background="images/tbg.gif"> 
+		<table width='96%' border="0" cellpadding='0' cellspacing='0'>
+            <tr>
+                <td width='30%' class="tbtitletxt"><strong>分类列表</strong> </td>
+                <td align='right'> [<a href="javascript:ShowAddCatalog();"><u>新增分类</u></a>] </td>
+            </tr>
+        </table>
+		</td>
   </tr>
 </table>
 
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;border-top:none;">
 <tr>
-	<td style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+	<td style="background:#ffffff;padding:7px 6px 6px 10px;" >
 	<font color='red'><?php if(isset($msg)) echo $msg;?></font>
 	</td>
  </tr>
 <tr>
 <td height="116" bgcolor="#FFFFFF" style="padding:7px 6px 6px 10px;" >
-<table width='98%' border='0' cellpadding='0' cellspacing='0'>
+<table width='98%' border='0' cellpadding='0' cellspacing='2'>
 <tr><td width='1%' height='1'></td><td width='70%'></td><td></td></tr>
 <form name='frank' id='frank' action='group_store.php' method='post'>
 <input type='hidden' name='action' value='uprank' />
@@ -122,8 +124,8 @@ while($rs = $db->GetArray()){
 <input type='Submit' name='Submit' value='更新排序' style='width:80px' class="np coolbg"/></td>
 </tr>
 </form>
-<tr bgcolor="#F8FBFB">
-    <td height="26" colspan="3" align="center" bgcolor="#F9FFE6"> {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/} </td>
+<tr bgcolor="#F9FCEF">
+    <td height="26" colspan="3" align="center" bgcolor="#F9FCEF"> {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/} </td>
 </tr>
 </table>
 
@@ -139,12 +141,12 @@ while($rs = $db->GetArray()){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90" height="28">分类名称：</td>
-              <td width="101"><input name="storename" type="text" id="storename" /></td>
-              <td width="20" align="right" valign="top"><a href="javascript:CloseAddCatalog()"><img src="img/close.gif" width="12" height="12" border="0" /></a></td>
+              <td width="101" align="left"><input name="storename" type="text" id="storename" /></td>
+              <td width="20" align="right" valign="top"></td>
             </tr>
             <tr>
               <td height="28">隶属分类：</td>
-              <td colspan="2">
+              <td colspan="2"  align="left">
               <select name="tops" id="tops">
                 <option value="0">新建顶级分类</option>
                 <?php echo $options?>
@@ -153,12 +155,12 @@ while($rs = $db->GetArray()){
             </tr>
             <tr>
               <td height="28">排序级别：</td>
-              <td colspan="2"><input name="orders" type="text" id="orders" size="5" value="0" />
+              <td colspan="2"  align="left"><input name="orders" type="text" id="orders" size="5" value="0" />
                 （数值小靠前）</td>
             </tr>
             <tr>
               <td height="43">&nbsp;</td>
-              <td colspan="2"><input type="submit" name="Submit" value="增加分类" class="np coolbg" style="width:80px"/></td>
+              <td colspan="2"  align="left"><input type="submit" name="Submit" value="增加分类" class="np coolbg" style="width:80px"/></td>
             </tr>
   </table>
  </form>

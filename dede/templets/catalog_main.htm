@@ -1,25 +1,38 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>栏目管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="js/global.js"></script>
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript" src="js/dialog.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript">
 function LoadSuns(ctid,tid)
 {
+    
 	if($DE(ctid).innerHTML.length < 10){
+      $DE('img'+tid).src = 'images/dedecontract.gif';
 	  var myajax = new DedeAjax($DE(ctid));
 	  myajax.SendGet('catalog_do.php?dopost=GetSunLists&cid='+tid);
   }
-  else{ if(document.all) showHide(ctid); }
+  else{ 
+  showHide(ctid,tid); 
+  }
 }
-function showHide(objname)
+function showHide(objname,tid)
 {
-   if($DE(objname).style.display=="none") $DE(objname).style.display = "block";
-	 else $DE(objname).style.display="none";
+    
+    if($DE(objname).style.display=="none")
+    {
+        $DE('img'+tid).src = 'images/dedecontract.gif';
+        $DE(objname).style.display = BROWSER.firefox? "" : "block";
+    } else {
+        $DE('img'+tid).src = 'images/dedeexplode.gif';
+        $DE(objname).style.display="none";
+    }
 }
 if(moz) {
 	extendEventObject();
@@ -101,15 +114,14 @@ height:18px
   border-bottom: 2px solid #ACACAC;
   background-color: #F7FCDA
 }
-.bline {border-bottom: 1px solid #d6d6d6; background-color: #FAFEE0; }
 .nbline {border-bottom: 1px solid #d6d6d6; background-color:#FFFFFF; }
-.bline2 {border-bottom: 1px solid #d6d6d6; background-color: #F8FCEB; }
+.bline2 {border-bottom: 1px solid #d6d6d6; background-color:#F9FCEF; }
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#ccd9b9" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" align="center">
 <tr>
-   <td height="28" background='img/tbg.gif'>
+   <td height="28" background='images/tbg.gif' style="padding-left:10px;">
    <div style="float:left">
     	<strong>网站栏目管理 </strong>
    </div>

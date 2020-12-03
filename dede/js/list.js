@@ -51,13 +51,14 @@ function adArc(aid){
 function cAtts(jname, e, obj)
 {
 	var qstr=getCheckboxItem();
+    var screeheight = document.body.clientHeight + 20;
 	if(qstr=='')
 	{
 		alert('必须选择一个或多个文档！');
 		return;
 	}
 	LoadQuickDiv(e, 'archives_do.php?dopost=attsDlg&qstr='+qstr+'&dojob='+jname+'&rnd='+Math.random(), 'attsDlg', '450px', '160px');
-	ChangeFullDiv('show');
+	ChangeFullDiv('show', screeheight);
 }
 
 function delArc(aid){

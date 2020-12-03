@@ -1,24 +1,25 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>配送方式配置</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
 <style>
 .fontOrange { COLOR: #ff4e00}
 .npvar { width:90% }
 </style>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <center>
 <form action="shops_delivery.php" method="post" name="form1">
 <input type="hidden" name="do" value="add">
 <table width="98%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-bottom:8px;" >
 <tr>
 <td>
-<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#cbd8ac" class="sysinfo">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#cfcfcf" class="sysinfo">
 <tr align="center" height="24">
-  <td height="30" colspan="2" align="left" bgcolor="#EDF9D5" background='img/tbg.gif'>
-  	<strong>&nbsp;&gt; 增加一个配送方式</strong>
+  <td height="30" colspan="2" align="left" bgcolor="#EDF9D5" background='images/tbg.gif'  style="padding-left:10px;">
+  	<strong>增加一个配送方式</strong>
   </td>
 </tr>
 <tr align="center" height="24" bgcolor="#FFFFFF">
@@ -68,9 +69,9 @@
 </form>
 <form action="shops_delivery.php" method="post" name="form2">
 <input type="hidden" name="do" value="edit" />
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
       <tr>
-        <td height="28" colspan="3" align="left" bgcolor="#EDF9D5" background='img/tbg.gif'>
+        <td height="28" colspan="3" align="left" bgcolor="#EDF9D5" background='images/tbg.gif'>
         	<strong>&nbsp;已有配送方式列表<strong></strong></strong>
         </td>
       </tr>

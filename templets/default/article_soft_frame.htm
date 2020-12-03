@@ -6,20 +6,10 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<script language="javascript" type="text/javascript">
-<!--
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
--->
-</script>
 </head>
 
 <body class="downlist">
-{dede:include filename="head.htm"/}
+{dede:include filename="head2.htm"/}
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
@@ -61,6 +51,7 @@ function check(){
 				<strong>软件介绍</strong>
 			</div>
 			<div class="content">
+            <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;">{dede:myad name='contentMidPicAD'/}</div>
 				{dede:field.introduce/}
 			</div>
 			<div class="labeltitle">
@@ -153,7 +144,7 @@ function timeCall()
 			</dl>
 			{/dede:memberinfos}
    	 	</div>
-
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
 		<div class="downrange mt1">
 			<dl class="tbox">
 				<dt><strong>推荐软件</strong></dt>
@@ -183,10 +174,10 @@ function timeCall()
 				</dd>
 			</dl>
 		</div>
-
+        <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
 	</div><!-- /pright -->
 </div>
-
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 <script src="{dede:global name='cfg_phpurl'/}/count.php?aid={dede:field name='id'/}&mid={dede:field name='mid'/}" language="javascript"></script>

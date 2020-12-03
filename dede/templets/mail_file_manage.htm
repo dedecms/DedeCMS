@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>邮件列表文件管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 .rb{ border-right:1px solid #98CAEF }
 .tb{ border-top:1px solid #98CAEF }
@@ -10,13 +11,18 @@
 </style>
 </head>
 <body>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#dbe4cd;">
-  <tr bgcolor="#CCCCCC" height="28" align="center">
-  <td width="28%" background="img/wbg.gif" class='linerow'><strong>文件名</strong></td>
-  <td width="16%" class='linerow' background="img/newlinebg3.gif"><strong>文件大小</strong></td>
-  <td width="22%" background="img/wbg.gif" class='linerow'><strong>创建时间</strong></td>
-  <td width="34%" class='linerow' background="img/newlinebg3.gif"><strong>操作</strong></td>
-</tr>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+  <tr>
+    <td height="24" colspan="4" bgcolor="#EDF9D5" background="images/tbg.gif">
+	  <div style="float:left;padding-right:5px;padding-left:10px;"><b>邮件列表管理</b></div>
+    </td>
+  </tr>
+  <tr bgcolor="#FBFCE2" height="28" align="center">
+    <td width="28%"><strong>文件名</strong></td>
+    <td width="16%" background="img/newlinebg3.gif"><strong>文件大小</strong></td>
+    <td width="22%" background="img/wbg.gif"><strong>创建时间</strong></td>
+    <td width="34%" background="img/newlinebg3.gif"><strong>操作</strong></td>
+  </tr>
 <?php
 $dh = dir($inpath);
 $ty1="";
@@ -44,11 +50,11 @@ while(($file = $dh->read()) !== false)
 	
 	if(!is_dir("$inpath/$file"))
 	{
-        $line = "\n<tr bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#F9FBF0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
-        <td align='center' class='linerow'>$file</td>
-        <td align='center' class='linerow'>$filesize KB</td>
-        <td align='center' class='linerow'>$filetime</td>
-        <td align='center' class='linerow'>
+        $line = "\n<tr bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#FCFDEE';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+        <td align='center'>$file</td>
+        <td align='center'>$filesize KB</td>
+        <td align='center'>$filetime</td>
+        <td align='center'>
         <a href='mail_file_manage.php?fmdo=del&filename=".urlencode($file)."&activepath=".urlencode($activepath."/data/mail")."'>[删除]</a>
         </td>
         </tr>";
@@ -61,6 +67,9 @@ foreach ($files as $file)
 	echo $file;
 }
 ?>
+  <tr>
+    <td height="8" colspan="4" bgcolor="#F9FCEF">&nbsp;</td>
+  </tr>
 </table>
 </body>
 </html>

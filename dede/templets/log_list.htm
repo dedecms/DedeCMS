@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集内容管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript">
 
 //获得选中文件的文件名
@@ -43,25 +44,25 @@ function ClearLog(){
 
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <tr> 
-    <td height="28" colspan="7" background='img/tbg.gif'>
+    <td height="28" colspan="7" background='images/tbg.gif'>
     	<table width="96%" border="0" cellpadding="0" cellspacing="0">
         <tr> 
-          <td width="20%" height="18"><strong>管理系统日志：</strong></td>
+          <td width="20%" height="18" style="padding-left:10px;"><strong>管理系统日志：</strong></td>
           <td width="80%" align="right">&nbsp; </td>
         </tr>
       </table></td>
   </tr>
-  <tr align="center" bgcolor="#E3F7D2"> 
+  <tr align="center" bgcolor="#ffffff"> 
     <td colspan="7">
 	  <table width="90%" border="0" cellspacing="0" cellpadding="0">
      <form name='formsearch'>
 		  <tr>
        <td>
 		  管理员：
-		  <select name="adminid" id="adminid" style="width:80px">
+		  <select name="adminid" id="adminid" style="width:90px">
 		  <option value="0" selected>--全部--</option>
 		  <?php echo $adminlist?>
 		  </select>
@@ -83,7 +84,7 @@ function ClearLog(){
     </table>
    </td>
   </tr>
-  <tr align="center" bgcolor="#FAFAF1"> 
+  <tr align="center" bgcolor="#FBFCE2"> 
     <td width="8%">选择</td>
     <td width="11%">管理员</td>
     <td width="15%">访问文件</td>
@@ -94,7 +95,7 @@ function ClearLog(){
   </tr>
   <form name="form1">
 {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF"> 
+    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
       <td>
       	<input name='logs' type='checkbox' class='np' id="logs" value='{dede:field.lid/}' />
       </td>
@@ -126,7 +127,7 @@ function ClearLog(){
       &nbsp; <input type="button" name="b7" value="清空所有日志"  style="width:100px" class="coolbg np" onClick="ClearLog();" /> 
     </td>
   </tr>
-  <tr bgcolor="#E3F7D2"> 
+  <tr bgcolor="#F9FCEF"> 
     <td height="24" colspan="7" align="center"> 
       {dede:pagelist listsize='5' /}
     </td>

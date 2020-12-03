@@ -1,12 +1,11 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>搜索关键字管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css">
-<link href="div.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script language="javascript" src="js/key.js"></script>
-
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language='javascript' src='js/main.js'></script>
 <script language="JavaScript">
 var pageno = 1;
@@ -114,14 +113,14 @@ function ReloadPageNum(startnum){
  }
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="main" align='center'>
-  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D1DDAA" style="margin-bottom:3px">
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:3px">
     <tr>
-      <td height="26" colspan="8" background="img/tbg.gif"><table width="96%" border="0">
+      <td height="26" colspan="8" background="images/tbg.gif"><table width="100%" border="0">
           <tr>
-            <td width="31%"><strong>搜索关键词维护</strong></td>
-            <td width="69%" align="right">
+            <td width="31%" align="left" style="padding-left:10px;"><strong>搜索关键词维护</strong></td>
+            <td align="right">
             	&nbsp;
             	<input class="np coolbg" name="n1" type="button" id="n1" value="文档关键字维护" onClick="location='article_keywords_main.php';" style="width:135">
             </td>
@@ -135,9 +134,9 @@ function ReloadPageNum(startnum){
 	?>
 	</span>
 
-  <table width="98%" border="0" cellpadding="1" cellspacing="1" bgcolor="#D1DDAA" style="margin-bottom:3px">
+  <table width="98%" border="0" cellpadding="1" cellspacing="1"  bgcolor="#cfcfcf" style="margin-bottom:3px">
     <tr align="center">
-      <td height="35" colspan="8" bgcolor="#F9FCF1">
+      <td height="35" colspan="8"  bgcolor="#F9FCEF">
       <span id='pagelist'></span>
       <script language='javascript'>ReloadPageNum(1);</script>
       </td>

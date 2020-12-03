@@ -31,7 +31,7 @@
 		  <tr>
 			<td>
 			  <p>
-			  	{dede:if !ereg('defaultpic',$fields['litpic']) }
+			  	{dede:if !preg_match("#defaultpic#",$fields['litpic']) }
 							<img src='{dede:field.litpic/}' />
 					{/dede:if}
 				  {dede:field.description/}

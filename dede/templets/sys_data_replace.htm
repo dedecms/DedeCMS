@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>数据批量替换</title>
-<script language='javascript' src='main.js'></script>
-<script language='javascript' src='../include/dedeajax2.js'></script>
+<script language='javascript' src='js/main.js'></script>
+<script language='javascript' src='../include/js/dedeajax2.js'></script>
 <script language='javascript'>
 	function ShowFields(){
 		var exptable = $DE('exptable').options[$DE('exptable').selectedIndex].value;
@@ -28,19 +28,19 @@
 	}
 
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-  <div class="bodytitletxt">批量管理</div>
+  <div class="bodytitletxt" style="padding-left:10px;">批量管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#dbe4cd;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
   <form action="sys_data_replace.php" name="form1" method="post" target="stafrm" onSubmit="return CheckSubmit()">
   	<input type='hidden' name='action' value='apply'>
     <tr>
-      <td height="28" bgcolor="#EDF9D5" background="img/tbg.gif">
-        <strong>&nbsp;数据库内容替换：</strong>
+      <td height="28" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">
+        <strong>数据库内容替换：</strong>
       </td>
     </tr>
     <tr>
@@ -48,7 +48,7 @@
 <table width="100%" border="0" cellpadding="2" cellspacing="2">
           <tr bgcolor="#FFFFFF">
             <td colspan="2" style="line-height:180%">
-            	<img src="img/help.gif" width="16" height="16" /> 程序用于批量替换数据库中某字段的内容，此操作极为危险，请小心使用。
+            	<img src="images/help.gif" width="16" height="16" /> 程序用于批量替换数据库中某字段的内容，此操作极为危险，请小心使用。
             </td>
           </tr>
 
@@ -82,9 +82,9 @@
                 </tr>
               </table></td>
           </tr>
-          <tr bgcolor="#EFFAFE">
-            <td bgcolor="#EFFAFE">&nbsp;替换方式：</td>
-            <td bgcolor="#EFFAFE">
+          <tr bgcolor="#FBFCE2">
+            <td>&nbsp;替换方式：</td>
+            <td>
             	<input name="rptype" type="radio"  id="ot1" value="replace" checked='1' class='np' />
               普通替换
               <input type="radio" name="rptype"  id="ot2"  value="regex" class='np' />
@@ -112,7 +112,7 @@
             	<table width="300"  border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="90">
-                  	<input type="text" name="validate" class="alltxt" style="width:80px;" />
+                  	<input type="text" name="validate" class="alltxt" style="width:80px;text-transform: uppercase;" />
                   </td>
                   <td>
                   	<img src='../include/vdimgck.php' />
@@ -125,13 +125,13 @@
        </td>
     </tr>
     <tr>
-      <td height="31" bgcolor="#F8FBFB" align="center">
+      <td height="31" bgcolor="#ffffff" align="center">
       	<input type="submit" name="Submit" value="开始替换数据" class="np coolbg" />
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E5F9FF">
-    <td height="20" bgcolor="#EDF9D5"> <table width="100%">
+  <tr bgcolor="#F9FCEF">
+    <td height="20" > <table width="100%">
         <tr>
           <td width="74%"><strong>结果：</strong></td>
           <td width="26%" align="right">

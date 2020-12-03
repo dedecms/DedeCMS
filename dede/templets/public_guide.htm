@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>内容发布向导</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <style>
 .np { border:0px }
 </style>
@@ -34,13 +35,13 @@
 	}
 </script>
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif'>
-<table width="98%" height="31" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="background:#E2F5BC;margin-top:6px;">
+<body leftmargin="8" topmargin="8" background='images/allbg.gif'>
+<table width="98%" height="31" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="border:1px solid #CFCFCF;margin-top:6px;border-bottom:none;">
   <tr>
-    <td class="tbtitletxt" background='img/tbg.gif'><strong>&nbsp;内容发布向导：</strong></td>
+    <td class="tbtitletxt" background='images/tbg.gif'><strong>&nbsp;内容发布向导：</strong></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style="border:1px solid #e2f5bc;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style="border:1px solid #CFCFCF;">
   <tr align="center">
     <td height="120" align="left" valign="top" bgcolor="#FFFFFF" style="padding:6px;padding-bottom:20px">
 	<table width="100%" border="0" cellspacing="0" cellpadding="6">
@@ -50,14 +51,14 @@
           2、如果您设置了某频道为默认发布表单，以后将不再显示此向导，而是直接显示您所选的频道的发布表单，如果想要发布其它频道的内容，可以从左边的目录树中选择，如果以后您想要修改默认发布表单，请点击目录树上方的“发布向导”图标；</td>
       </tr>
     </table>
-	<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CAE886">
-    <tr height="20" align="center" bgcolor="#DCF4BD">
-        <td width="8%"  bgcolor="#DCF4BD"><strong>选择</strong></td>
-		<td width="8%" bgcolor="#DCF4BD"><strong>频道ID</strong></td>
-        <td width="20%" bgcolor="#DCF4BD"><strong>频道内容模型</strong></td>
-        <td width="23%" bgcolor="#DCF4BD"><strong>附加表</strong></td>
-        <td width="10%" bgcolor="#DCF4BD"><strong>栏目数</strong></td>
-        <td bgcolor="#DCF4BD"><strong>操作选项</strong></td>
+	<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" >
+    <tr height="22" align="center" bgcolor="#FBFCE2">
+        <td width="8%" ><strong>选择</strong></td>
+		<td width="8%"><strong>频道ID</strong></td>
+        <td width="20%"><strong>频道内容模型</strong></td>
+        <td width="23%"><strong>附加表</strong></td>
+        <td width="10%"><strong>栏目数</strong></td>
+        <td><strong>操作选项</strong></td>
       </tr>
    <?php 
    $i=0;

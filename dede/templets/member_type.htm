@@ -1,20 +1,19 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>会员类型管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cbd8ac;">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
   <form name="form1" action="member_type.php" method="post">
     <input type="hidden" name="dopost" value="save" />
     <tr>
-      <td height="24" colspan="5" bgcolor="#EDF9D5" background='img/tbg.gif'>
+      <td height="24" colspan="5" bgcolor="#EDF9D5" background='images/tbg.gif'>
       	<table width="98%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="30%">
-            	<strong>会员产品分类：</strong>
-            </td>
+            <td width="30%"  style="padding-left:10px;"><strong>会员产品分类：</strong></td>
             <td align="right" style="padding-top:4px;">
             	<input type="button" name="ss1" value="会员级别管理" style="width:90px;margin-right:6px" onClick="location='member_rank.php';" class='np coolbg' />
               <input type="button" name="ss2" value="会员业务记录" style="width:90px" onClick="location='member_operations.php';" class='np coolbg' />
@@ -23,7 +22,7 @@
         </table>
       </td>
     </tr>
-    <tr bgcolor="#FDFEE9">
+    <tr bgcolor="#FBFCE2">
       <td width="22%" height="24" align="center" valign="top">产品名称</td>
       <td width="23%" align="center" valign="top">会员级别</td>
       <td width="21%" align="center">产品价格</td>
@@ -78,7 +77,7 @@
     }
 	?>
     <input type="hidden" name="idend" value="<?php echo $k?>">
-    <tr bgcolor="#F8FCF1">
+    <tr bgcolor="#F9FCEF">
       <td height="24" colspan="5" valign="top">&nbsp;<strong>新增一个会员产品类型：</strong></td>
     </tr>
     <tr height="24" align="center" bgcolor="#FFFFFF">
@@ -113,10 +112,10 @@
        </td>
     </tr>
     <tr>
-      <td height="24" colspan="5" bgcolor="#F8FCF1">&nbsp;</td>
+      <td height="24" colspan="5" bgcolor="#ffffff">&nbsp;</td>
     </tr>
     <tr>
-      <td height="34" colspan="5" align="center" bgcolor="#F8FCF1">
+      <td height="34" colspan="5" align="center" bgcolor="#F9FCEF">
       	<input name="imageField"  type="submit" class="np coolbg" value="确定" class='np coolbg /' />
       </td>
     </tr>

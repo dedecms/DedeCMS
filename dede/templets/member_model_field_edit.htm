@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更改字段</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 function GetFields()
 {
@@ -64,14 +65,14 @@ td {
 </style>
 </head>
 <body topmargin=8>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form name="form1" action="member_model_field_edit.php" method="post" onSubmit="return GetFields();">
     <input type='hidden' name='action' value='save'>
     <input type='hidden' name='id' value='<?php echo $id?>'>
     <input type='hidden' name='fname' value='<?php echo $fname?>'>
     <input type='hidden' name='fieldstring' value=''>
     <tr>
-      <td height="20" colspan="2" bgcolor="#EDF9D5" background="img/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"><table width="98%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="30%">&nbsp;<b><a href="member_model_main.php">会员模型管理</a> &gt;&gt; 修改字段：</b></td>
             <td align="right" style="padding-top:6px;"><input type="button" name="ss1" value="当前会员模型" onClick="location='member_model_edit.php?id=<?php echo $id; ?>&dopost=edit';" class="nbt"/></td>

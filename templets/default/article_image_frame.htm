@@ -64,18 +64,12 @@ function dPlayNext()
 		else location.href = "view.php?aid={dede:field name='id'/}&pageno="+(npage+1);
 	}
 }
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
 -->
 </script>
 </head>
 <body class="picboxview">
 
-{dede:include filename="head.htm"/}
+{dede:include filename="head2.htm"/}
 <!-- /header -->
 
 <div class="channel-nav w960 center clear">
@@ -142,6 +136,9 @@ function check(){
                 }
              {/dede:field}
 			</div>
+            <div class="intro"><div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top; display:block">{dede:myad name='contentMidPicAD'/}</div>{dede:field.body/}
+            <div style="clear:both"></div>
+            </div>
 			<div class="dede_pages">
 				<ul class="pagelist">
 					{dede:pagebreak/}
@@ -241,7 +238,7 @@ function timeCall()
 				</dd>
 			</dl>
 		</div>
-
+        <div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
 		<div class="mt1">
 			<dl class="tbox">
 				<dt><strong>推荐图集</strong></dt>
@@ -254,11 +251,10 @@ function timeCall()
 				</dd>
 			</dl>
 		</div>
-
-
+        <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
 	</div><!-- /pright -->
 </div>
-
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

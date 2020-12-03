@@ -1,3 +1,12 @@
+/**
+ * 
+ * @version        $Id: float.js 1 22:28 2010年7月20日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+ 
 <!--
 self.onError=null; 
 currentX = currentY = 0; 
@@ -5,21 +14,17 @@ whichIt = null;
 lastScrollX = 0; lastScrollY = 0; 
 NS = (document.layers) ? 1 : 0; 
 IE = (document.all) ? 1: 0; 
-function heartBeat()
-{ 
-	if(IE) { diffY = document.body.scrollTop; diffX = document.body.scrollLeft; } 
-	if(NS) { diffY = self.pageYOffset; diffX = self.pageXOffset; } 
-	if(diffY != lastScrollY)
-	{ 
+function heartBeat(){ 
+    if(IE) { diffY = document.body.scrollTop; diffX = document.body.scrollLeft; } 
+    if(NS) { diffY = self.pageYOffset; diffX = self.pageXOffset; } 
+	if(diffY != lastScrollY)	{ 
 		percent = .1 * (diffY - lastScrollY); 
 		if(percent > 0) percent = Math.ceil(percent); 
 		else percent = Math.floor(percent); 
 		if(IE) document.all.floater.style.pixelTop += percent; 
 		if(NS) document.floater.top += percent;  
 		lastScrollY = lastScrollY + percent; 
-	} 
-	if(diffX != lastScrollX)
-	{ 
+	} if(diffX != lastScrollX){ 
 		percent = .1 * (diffX - lastScrollX); 
 		if(percent > 0) percent = Math.ceil(percent); 
 		else percent = Math.floor(percent); 
@@ -30,24 +35,19 @@ function heartBeat()
 
 }                            
 
-function checkFocus(x,y)
-{  
-
+function checkFocus(x,y){  
 	stalkerx = document.floater.pageX; 
 	stalkery = document.floater.pageY; 
 	stalkerwidth = document.floater.clip.width; 
 	stalkerheight = document.floater.clip.height; 
 	if( (x > stalkerx && x < (stalkerx+stalkerwidth)) && (y > stalkery && y < (stalkery+stalkerheight))) return true; 
 	else return false; 
-
 } 
 
 function grabIt(e) { 
-	if(IE)
-	{ 
+	if(IE)	{ 
 		whichIt = event.srcElement; 
-		while (whichIt.id.indexOf("floater") == -1)
-		{ 
+		while (whichIt.id.indexOf("floater") == -1){ 
 			whichIt = whichIt.parentElement; 
 			if (whichIt == null) { return true; } 
 		} 
@@ -55,26 +55,21 @@ function grabIt(e) {
 		whichIt.style.pixelTop = whichIt.offsetTop; 
 		currentX = (event.clientX + document.body.scrollLeft); 
 		currentY = (event.clientY + document.body.scrollTop);    
-	}
-	else
-	{  
+	} else	{  
 		window.captureEvents(Event.MOUSEMOVE); 
-		if(checkFocus (e.pageX,e.pageY))
-		{  
+		if(checkFocus (e.pageX,e.pageY)) {  
 			whichIt = document.floater; 
 			StalkerTouchedX = e.pageX-document.floater.pageX; 
 			StalkerTouchedY = e.pageY-document.floater.pageY; 
 		}  
-
-	} 
-	return true; 
+	} return true; 
 	} 
 
 function moveIt(e) { 
 
-	if (whichIt == null) { return false; } 
+    if (whichIt == null) { return false; } 
 	if(IE) { 
-		newX = (event.clientX + document.body.scrollLeft); 
+        newX = (event.clientX + document.body.scrollLeft); 
 		newY = (event.clientY + document.body.scrollTop); 
 		distanceX = (newX - currentX);    distanceY = (newY - currentY); 
 		currentX = newX;    currentY = newY; 
@@ -85,9 +80,7 @@ function moveIt(e) {
 		if(whichIt.style.pixelLeft > document.body.offsetWidth - document.body.scrollLeft - whichIt.style.pixelWidth - 20) whichIt.style.pixelLeft = document.body.offsetWidth - whichIt.style.pixelWidth - 20; 
 		if(whichIt.style.pixelTop > document.body.offsetHeight + document.body.scrollTop - whichIt.style.pixelHeight - 5) whichIt.style.pixelTop = document.body.offsetHeight + document.body.scrollTop - whichIt.style.pixelHeight - 5; 
 		event.returnValue = false; 
-	}
-	else
-	{  
+	} else	{  
 		whichIt.moveTo(e.pageX-StalkerTouchedX,e.pageY-StalkerTouchedY); 
 		if(whichIt.left < 0+self.pageXOffset) whichIt.left = 0+self.pageXOffset; 
 		if(whichIt.top < 0+self.pageYOffset) whichIt.top = 0+self.pageYOffset; 

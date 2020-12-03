@@ -1,18 +1,19 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <title>采集内容导出</title>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<body background="images/allbg.gif" leftmargin="8" topmargin="8">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
   <form name="form1" action="co_export.php" method="get" target="stafrm">
     <input type="hidden" name="nid" value="<?php echo $nid?>" />
     <input type="hidden" name="totalcc" value="<?php echo $totalcc?>" />
     <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
     <input type="hidden" name="dopost" value="done" />
     <tr> 
-      <td height="28" colspan="3" background='img/tbg.gif'><strong><a href="co_main.php"><u>采集管理</u></a> 
+      <td height="28" colspan="3" background='images/tbg.gif' style="padding-left:10px;"><strong><a href="co_main.php"><u>采集管理</u></a> 
         &gt; 采集内容导出：</strong></td>
     </tr>
     <tr> 
@@ -89,17 +90,17 @@
     </tr>
     <tr> 
       <td height="34" colspan="3" align="center" bgcolor="#FFFFFF">
-      	<input name="imageField" type="image" src="img/button_ok.gif" width="60" height="22" border="0" class="np" />
+      	<input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />
 		&nbsp;
-        <a href="co_main.php"><img src="img/button_back.gif" width="60" height="22" border="0" /></a> 
+        <a href="co_main.php"><img src="images/button_back.gif" width="60" height="22" border="0" /></a> 
       </td>
     </tr>
   </form>
   <tr> 
-    <td height="34" colspan="3" align="center" bgcolor="#E6F3CD">
+    <td height="34" colspan="3" align="center" bgcolor="#F9FCEF">
     	<table width="100%">
         <tr> 
-          <td width="74%">进行状态： </td>
+          <td width="74%" align="left">进行状态： </td>
           <td width="26%" align="right"></td>
         </tr>
       </table>

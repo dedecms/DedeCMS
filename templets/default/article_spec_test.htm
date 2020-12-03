@@ -6,19 +6,9 @@
 <meta name="keywords" content="{dede:field.keywords/}" />
 <meta name="description" content="{dede:field.description function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<script language="javascript" type="text/javascript">
-<!--
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
--->
-</script>
 </head>
 <body >
-{dede:include filename="head.htm"/}
+{dede:include filename="head2.htm"/}
 <!-- /header -->
 <div class="w960 center clear mt1">
 	<div class="pleft">
@@ -69,7 +59,7 @@ function check(){
 				</dd>
 			</dl>
 		</div><!-- /commend -->
-		
+		<div id="contentRtPicAD" style="margin:10px auto">{dede:myad name='contentRtPicAD'/}</div>
 		<div class="hot mt1">
 			<dl class="tbox">
 				<dt><strong>热点内容</strong></dt>
@@ -82,10 +72,10 @@ function check(){
 				</dd>
 			</dl>
 		</div>
-
+        <div id="contentRtPicAD2" style="margin:10px auto">{dede:myad name='contentRtPicAD2'/}</div>
 	</div><!-- /pright -->
 </div>
-
+<div id="innerfooterAD2" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD2'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

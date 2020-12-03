@@ -1,5 +1,6 @@
 * {font-size: 12px;line-height: 1.5;}
 body {font-size: 12px;line-height: 1.5;}
+select,textarea{vertical-align:middle;background: url(input.png) repeat-x scroll 0px 0px;}
 a:link { font-size: 12px; color: #000000; text-decoration: underline }
 a:visited{ font-size: 12px; color: #000000; text-decoration: underline }
 a:hover {font-size: 12px;color: red}
@@ -14,3 +15,12 @@ div,form,h1,h2,h3,h4,h5,h6{	margin: 0; padding:0;}
 .coolbg {border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #E6E6E6}
 .ctfield{ padding: 3px; line-height: 150%}
 .nndiv{ width: 175px; height:20px; margin: 0px;padding: 0px;word-break: break-all;overflow: hidden; }
+.alltxt {
+	border-width:1px;
+	border-style:solid;
+	border-color:#707070 #CECECE #CECECE #707070;
+	padding:2px 4px;
+	height:18px;
+	line-height:18px;
+	vertical-align:middle;
+}

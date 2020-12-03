@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>采集节点测试</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
-<script language='javascript' type="text/javascript" src="js/co.js"></script>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="js/co.js"></script>
 <style type="text/css">
 <!--
 .STYLE2 {color: #666666}
@@ -14,7 +14,7 @@
 <body>
 <div class="bodytitle" style="width:98%">
 	<div class="bodytitleleft"></div>
-  <div class="bodytitletxt"><b>新增采集节点：测试基本信息及网址索引页规则设置</b></div>
+  <div class="bodytitletxt" style="padding-left:10px;"><b>新增采集节点：测试基本信息及网址索引页规则设置</b></div>
 <div style='float:right;padding-right:6px;padding-top:3px'>
       <input type="button" name="b" value="返回节点管理页" class="coolbg np" style="width:110px;height:20px;" onclick="location.href='co_main.php';" />
     </div>
@@ -31,9 +31,9 @@
 <input type='hidden' name='freq' value="<?php echo $freq; ?>" />
 <input type='hidden' name='extypeid' value="<?php echo $extypeid; ?>" />
 <input type='hidden' name='listconfig' value="<?php echo urlencode($listconfig); ?>" />
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
     <tr> 
-      <td height="25" background="img/tbg.gif" bgcolor="#F2F6E5"><strong>网址获取规则测试：</strong></td>
+      <td height="25" background="images/tbg.gif" bgcolor="#F2F6E5" style="padding-left:10px;"><strong>网址获取规则测试：</strong></td>
     </tr>
     <tr>
       <td height="26" bgcolor="#FFFFFF">

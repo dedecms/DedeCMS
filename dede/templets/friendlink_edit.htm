@@ -1,13 +1,14 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>友情链接更改</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr>
-    <td height="28" background="img/tbg.gif">
+    <td height="28" background="images/tbg.gif" style="padding-left:10px;">
     	<b><a href="friendlink_main.php"><u>友情链接管理</u></a></b> &gt;&gt; 链接更改</td>
 </tr>
 <tr>
@@ -46,7 +47,7 @@
       </tr>
       <tr>
         <td height="25">网站简况：</td>
-        <td><textarea name="msg" cols="50" rows="4" id="msg"><?php echo $myLink['msg']?></textarea></td>
+        <td><textarea name="msg" cols="50" rows="4" id="msg"><?php echo htmlspecialchars($myLink['msg'])?></textarea></td>
       </tr>
       <tr>
         <td height="25">站长Email：</td>
@@ -79,7 +80,7 @@
         <td height="51">&nbsp;</td>
         <td>
         	<input type="submit" name="Submit" value=" 提 交 " class="np coolbg" />　 　
-          <input type="reset" name="Submit" value=" 返 回 " onclick="location.href='<?php echo $ENV_GOBACK_URL?>';" class="np coolbg" />
+          <input type="reset" name="Submit" value=" 返 回 " onClick="location.href='<?php echo $ENV_GOBACK_URL?>';" class="np coolbg" />
          </td>
       </tr>
     </table>

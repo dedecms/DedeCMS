@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>新增连载图书</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="js/main.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/story.js"></script>
 <style type="text/css">
 <!--
@@ -36,10 +36,11 @@
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
 		<tr>
-				<td bgcolor="#EDF9D5" class="tbtitletxt">  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
+				<td bgcolor="#EDF9D5" background="images/tbg.gif" class="tbtitletxt"> 
+				<table width='96%' border="0" cellpadding='0' cellspacing='0'>
                   <tr>
                     <td width='30%' class="tbtitletxt"><strong>新增图书</strong></td>
                     <td align='right'>
@@ -53,9 +54,9 @@
   </tr>
 </table>
 <form name='form1' action='story_add_action.php' enctype="multipart/form-data" method='post' onSubmit="return checkSubmitAdd();">			
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;border-top:none;">
 		<tr>
-		  <td style="background:#F9FFE6;padding:7px 6px 6px 10px;" >
+		  <td style="background:#ffffff;padding:7px 6px 6px 10px;" >
 		  <font color='red'><?php echo $msg; ?></font>
 		  </td>
   </tr>
@@ -64,7 +65,7 @@
 <table width="98%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="100" class="bline" style="width:100px">图书隶属栏目：</td>
-    <td colspan="3" class="bline">
+    <td class="bline">
     <select name="catid" id="catid" style="width:200px">
     <option value='0'>请选择栏目</option>
     <?php
@@ -82,21 +83,21 @@
   </tr>
   <tr>
     <td height="32" class="bline">图书名称：</td>
-    <td colspan="3" class="bline"><input name="bookname" type="text" id="bookname" size="35" class='alltxt' />
+    <td class="bline"><input name="bookname" type="text" id="bookname" size="35" class='alltxt' />
       　
       <input name="iscommend" type="checkbox" id="iscommend" value="1" class='np' />
       推荐</td>
   </tr>
   <tr>
     <td height="32" class="bline">免费章节数：</td>
-    <td colspan="3" class="bline">
+    <td class="bline">
     	<input name="freenum" type="text" id="freenum" size="5" value="<?php echo $cfg_book_freenum; ?>" class='alltxt' />
       (-1 表示全部免费，0 表示全部收费) 
     </td>
   </tr>
   <tr>
     <td style="width:100px" class="bline">免费阅读所有<br/>内容会员级别：</td>
-    <td colspan="3" class="bline">
+    <td class="bline">
     <select name="arcrank" id="arcrank" style="width:150px">
       <?php
     	$urank = $cuserLogin->getUserRank();
@@ -112,7 +113,7 @@
   </tr>
   <tr>
     <td height="114" class="bline">图书封面图片：</td>
-    <td colspan="3" class="bline"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td class="bline"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="75%" height="81"><table width="100%" border="0" cellspacing="1" cellpadding="1">
           <tr>
@@ -124,36 +125,39 @@
               <input type="button" name="Submit22" value="在网站内选择" style="width:120px" class='np coolbg' onclick="SelectImage('form1.litpicname','small');" /></td>
           </tr>
         </table></td>
-        <td align="center"><img src="img/pview.gif" width="150" id="picview" name="picview" /></td>
+        <td align="center"><img src="images/pview.gif" width="150" id="picview" name="picview" /></td>
       </tr>
     </table></td>
   </tr>
   <tr>
     <td height="32" class="bline">初始化数据：</td>
-    <td width="238" class="bline">作者：      
-      <input name="author" type="text" id="author" style="width:120px" class='alltxt' value="<?php echo $writer; ?>"/>
-      <input name="selwriter" type="button" id="selwriter" value="选择"/>
-    </td>
-    <td width="224" class="bline">上架时间：
-      <input name="pubdate" type="text" id="pubdate" value="<?php echo GetDateTimeMk(time()); ?>" class='alltxt'/></td>
-    <td width="510" class="bline">点击量：
-      <input name="click" type="text" id="click" size="5" value="0" class='alltxt' /></td>
-  </tr>
+    <td class="bline"><table width="85%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>作者：
+          <input name="author" type="text" id="author" style="width:120px" class='alltxt' value="<?php echo $writer; ?>"/>
+          <input name="selwriter" type="button" id="selwriter" value="选择"/></td>
+        <td>上架时间：
+          <input name="pubdate" type="text" id="pubdate" value="<?php echo GetDateTimeMk(time()); ?>" class='alltxt'/></td>
+        <td>点击量：
+          <input name="click" type="text" id="click" size="5" value="0" class='alltxt' /></td>
+      </tr>
+    </table></td>
+    </tr>
   <tr height="32">
     <td class="bline">关键字：</td>
-    <td colspan="3" class="bline"><input name="keywords" type="text" id="keywords" value="<?php echo $keywords; ?>" size="40" /> 手动填写用","分开
+    <td class="bline"><input name="keywords" type="text" id="keywords" value="<?php echo $keywords; ?>" size="40" /> 手动填写用","分开
       <input type="button" name="Submit" value="浏览..." style="width:56;height:20" onClick="SelectKeywords('form1.keywords');" /></td>
     </tr>
   <tr height="80">
     <td class="bline">摘　要：</td>
-    <td colspan="3" class="bline"><textarea name="description" cols="80" rows="3" id="description"></textarea></td>
+    <td class="bline"><textarea name="description" cols="80" rows="3" id="description"></textarea></td>
     </tr>
   <tr>
     <td height="32" class="bline">具体介绍：</td>
-    <td colspan="3" class="bline">&nbsp;</td>
+    <td class="bline">&nbsp;</td>
   </tr>
   <tr>
-    <td height="82" colspan="4">
+    <td height="82" colspan="2">
   <?php 
 	GetEditor("body","",300);
 	?>
@@ -161,7 +165,7 @@
     </tr>
   <tr>
     <td height="70">&nbsp;</td>
-    <td colspan="3">
+    <td>
     	<input type="submit" name="Submit" value="保 存" class='np coolbg' />　　
       <input type="reset" name="Submit2" value="重 置" class='np coolbg' />
     </td>

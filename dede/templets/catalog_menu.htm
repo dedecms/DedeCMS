@@ -1,12 +1,12 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>类别管理</title>
-<link href="css_menu.css" rel="stylesheet" type="text/css" />
-<link href='img/base.css' rel='stylesheet' type='text/css' />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript">
 function LoadSuns(ctid,tid)
 {
@@ -183,13 +183,13 @@ body
   </td>
  </tr>
  <tr> 
-   <td width="23%" align='center' background='img/mtbg1.gif'  style='border-left: 1px solid #74c63f;'>
-    	<a href="#" onClick="showHide('items1')" target="_self"><img src="img/mtimg1.gif" width="21" height="24" border="0" /></a>
+   <td width="23%" align='center' background='images/mtbg1.gif'  style='border-left: 1px solid #74c63f;'>
+    	<a href="#" onClick="showHide('items1')" target="_self"><img src="images/mtimg1.gif" width="21" height="24" border="0" /></a>
    </td>
-   <td width="77%" background='img/mtbg1.gif'  style='border-right: 1px solid #74c63f;'>站点目录树</td>
+   <td width="77%" background='images/mtbg1.gif'  style='border-right: 1px solid #74c63f;'>站点目录树</td>
  </tr>
  <tr> 
-  <td colspan='2' id='items1' align='center' style="background:#ffffff url(img/mmenubg2.gif) no-repeat;padding-left:8px;"> 
+  <td colspan='2' id='items1' align='center' style="background:#ffffff url(images/mmenubg2.gif) no-repeat;padding-left:8px;"> 
 <?php 
 $tu = new TypeUnit($userChannel);
 $tu->ListAllType($userChannel,$opendir);

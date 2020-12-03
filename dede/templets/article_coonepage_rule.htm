@@ -1,9 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>单页采集规则管理</title>
-<link rel="stylesheet" type="text/css" href="img/base.css">
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript">
 function ShowAddNode(){
 	$DE('addNode').style.display='block';
@@ -100,11 +101,11 @@ function DelNode(selid)
 -->
 </style>
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif'>
+<body leftmargin="8" topmargin="8" background='images/allbg.gif'>
 <table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
 <tr> 
 <td align='center' valign='top'>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6">
 <tr bgcolor="#F3FAD3"> 
 <td height="26" colspan="6">
 <div style="float:left;padding-left:6px"><b>单页采集规则管理：</b></div>
@@ -167,7 +168,7 @@ function DelNode(selid)
   <tr>
     <td width="102" height="30">网站名称：</td>
     <td width="302"><input name="title" type="text" id="title" style="width:200px" /></td>
-    <td width="26" align="center"><a href="javascript:CloseAddNode()"><img src="img/close.gif" width="12" height="12" border="0" /></a></td>
+    <td width="26" align="center"><a href="javascript:CloseAddNode()"><img src="images/close.gif" width="12" height="12" border="0" /></a></td>
   </tr>
   <tr>
     <td height="30">原内容编码：</td>

@@ -1,4 +1,14 @@
 <?php
+/**
+ *
+ * 显示图片
+ *
+ * @version        $Id: showphoto.php 1 15:38 2010年7月8日Z tianya $
+ * @package        DedeCMS.Site
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 require_once(DEDEINC."/channelunit.class.php");
 
@@ -10,24 +20,24 @@ if($aid==0) die(" Request Error! ");
 $arctitle = '';
 $arcurl = '';
 $topid = 0;
-$arcRow = $dsql->GetOne("Select arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,tp.topid,tp.typedir,tp.namerule,
-                 tp.moresite,tp.siteurl,tp.sitepath From `#@__archives` arc  left join `#@__arctype` tp on tp.id=arc.typeid where arc.id='$aid'");
+$arcRow = $dsql->GetOne("SELECT arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,tp.topid,tp.typedir,tp.namerule,
+                 tp.moresite,tp.siteurl,tp.sitepath FROM `#@__archives` arc  LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid WHERE arc.id='$aid'");
 if(is_array($arcRow))
 {
-	$arctitle = $arcRow['title'];
-	$topid = $arcRow['topid'];
-	$arcurl = @GetFileUrl($aid,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],
-	                    $arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename'],$arcRow['moresite'],$arcRow['siteurl'],$arcRow['sitepath']);
+    $arctitle = $arcRow['title'];
+    $topid = $arcRow['topid'];
+    $arcurl = @GetFileUrl($aid,$arcRow['typeid'],$arcRow['senddate'],$arctitle,$arcRow['ismake'],$arcRow['arcrank'],
+                        $arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename'],$arcRow['moresite'],$arcRow['siteurl'],$arcRow['sitepath']);
 }
 else
 {
-	ShowMsg('无法浏览未知文档!','-1');
-	exit();
+    ShowMsg('无法浏览未知文档!','-1');
+    exit();
 }
-if(empty($mx)){ $mx=$cfg_album_width; }
+if(empty($mx)) $mx = $cfg_album_width;
 $pageGuide = "";
 //获取上下幅图片链接
-$row = $dsql->GetOne("Select imgurls From `#@__addonimages` where aid='{$aid}'");
+$row = $dsql->GetOne("SELECT imgurls FROM `#@__addonimages` WHERE aid='{$aid}'");
 $i = 0;
 $nextSrc = '';
 $preSrc = '';
@@ -35,24 +45,25 @@ $dtp = new DedeTagParse();
 $dtp->LoadSource($row['imgurls']);
 foreach($dtp->CTags as $ctag)
 {
-  if($ctag->GetName()=="img"){
-    if($i==($npos-1)){ $preSrc = trim($ctag->GetInnerText()); }
-    if($i==($npos+1)){ $nextSrc = trim($ctag->GetInnerText()); }
-    $i++;
-  }
+    if($ctag->GetName()=="img")
+    {
+        if($i==($npos-1)) $preSrc = trim($ctag->GetInnerText());
+        if($i==($npos+1)) $nextSrc = trim($ctag->GetInnerText());
+        $i++;
+    }
 }
 unset($dtp);
-if($cfg_multi_site=='Y'){
-	if(!preg_match("/^http:/i",$preSrc) && !empty( $preSrc)) $preSrc = $cfg_basehost.$preSrc;
-	if(!preg_match("/^http:/i",$nextSrc) && !empty($nextSrc)) $nextSrc = $cfg_basehost.$nextSrc;
+if($cfg_multi_site == 'Y'){
+    if(!preg_match("/^http:/i",$preSrc) && !empty( $preSrc)) $preSrc = $cfg_basehost.$preSrc;
+    if(!preg_match("/^http:/i",$nextSrc) && !empty($nextSrc)) $nextSrc = $cfg_basehost.$nextSrc;
 }
 if($preSrc!='')
 {
-	$pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($preSrc)."&npos=".($npos-1)."'>&lt;&lt;上一幅图片</a> ";
+    $pageGuide .= "<a href='showphoto.php?aid={$aid}&src=".urlencode($preSrc)."&npos=".($npos-1)."'>&lt;&lt;上一幅图片</a> ";
 }
 else
 {
-	$pageGuide .= "这是开始";
+    $pageGuide .= "这是开始";
 }
 $nextlink = 'javascript:;';
 if($nextSrc!='')
@@ -63,8 +74,7 @@ if($nextSrc!='')
 }
 else
 {
-	$pageGuide .= " | 没有了";
+    $pageGuide .= " | 没有了";
 }
 require_once(DEDETEMPLATE.'/plus/showphoto.htm');
 exit();
-?>

@@ -1,9 +1,10 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>文档管理</title>
-<link rel="stylesheet" type="text/css" href="img/base.css">
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<link rel="stylesheet" type="text/css" href="css/base.css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/ieemu.js"></script>
 <script language="javascript" src="js/context_menu.js"></script>
 <script language="javascript" src="js/main.js"></script>
@@ -137,13 +138,13 @@ function noSelAll()
 }
 </script>
 </head>
-<body leftmargin="8" topmargin="8" background='img/allbg.gif' onLoad="ContextMenu.intializeContextMenu()">
+<body leftmargin="8" topmargin="8" background='images/allbg.gif' onLoad="ContextMenu.intializeContextMenu()">
 <table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
 <tr>
 <td align='center' valign='top'>
-	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#D1DDAA">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#D6D6D6">
 		<tr>
-    <td height="26" background="img/newlinebg3.gif">
+    <td height="26" background="images/newlinebg3.gif">
     <table width="98%" border="0" cellspacing="0" cellpadding="0">
      <tr>
      <td align="center">
@@ -166,18 +167,17 @@ function noSelAll()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr bgcolor="#FFFFFF"><td height="4"></td></tr>
 </table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D1DDAA">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#cfcfcf">
 <tr bgcolor="#E7E7E7">
-<td height="24" colspan="9" background="img/tbg.gif">
-	§{dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
+<td height="24" colspan="9" background="images/tbg.gif" style="padding-left:10px;">{dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
 </td>
 </tr>
 <form name="form2">
-<tr align="center" bgcolor="#FAFAF1" height="22">
+<tr align="center" bgcolor="#FBFCE2" height="25">
 <td width="6%">ID</td>
 <td width="6%">选择</td>
 <td width="26%">文章标题</td>
-<td width="11%">录入时间</td>
+<td width="11%">更新时间</td>
 <td width="11%">类目</td>
 <td width="10%">权限</td>
 <td width="8%">点击</td>
@@ -185,7 +185,7 @@ function noSelAll()
 <td width="10%">操作</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
 <td>{dede:field.id/}</td>
 <td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.aid/}" class="np"></td>
 <td align='left'>
@@ -198,14 +198,14 @@ function noSelAll()
 <td>{dede:field.typename/}</td>
 <td>{dede:field.arcrank function="GetRankName(@me)"/}</td>
 <td>{dede:field.click/}</td>
-<td>{dede:field.adminname/}</td>
+<td>{dede:field.mid function=GetMemberName(@me)/}</td>
 <td>
 <a href="javascript:editArc({dede:field.aid/})">编辑</a> |
 <a href="javascript:viewArc({dede:field.aid/})">预览</a>
 </td>
 </tr>
 {/dede:datalist}
-<tr bgcolor="#FAFAF1">
+<tr bgcolor="#ffffff">
 <td height="24" colspan="9">
 &nbsp;
 <a href="javascript:selAll()" class="coolbg">全选</a>
@@ -218,7 +218,7 @@ function noSelAll()
 </td>
 </tr>
 </form>
-<tr align="right" bgcolor="#EEF4EA">
+<tr align="right" bgcolor="#F9FCEF">
 <td height="20" colspan="9" align="center">
 	{dede:pagelist listsize=3/}
 </td>
@@ -230,11 +230,11 @@ function noSelAll()
 </tr>
 <tr bgcolor="#FFFFFF">
 <td height="26">
-<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC'>
+<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#cfcfcf'>
    <tr bgcolor='#EEF4EA'>
           <form name='form3' action='content_sg_list.php' method='get'>
           <input type='hidden' name='dopost' value='listArchives'>
-          <td background='img/wbg.gif'>
+          <td background='images/wbg.gif'>
           	<table width='600' border='0' cellpadding='0' cellspacing='0'>
           	<tr>
           	<td width='90' align='center'>请选择类目：</td>
@@ -251,7 +251,7 @@ function noSelAll()
           	<input type='text' name='keyword' value='{dede:global.keyword/}' style='width:150'>
           </td>
           <td>
-          <input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">
+          <input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np">
          </td>
         </tr>
         </table>

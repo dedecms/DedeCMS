@@ -1,11 +1,12 @@
 {dede:config.pagesize value='20'/}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>挑错管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel='stylesheet' type='text/css'>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <script type="text/javascript">
 function getOneItem()
 {
@@ -63,12 +64,12 @@ function delArc(id){
 }
 </script>
 	<form name="form2">
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D1DDAA">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
   <tr>
-   <td height="28" background="img/tbg.gif" colspan="8">
+   <td height="28" background="images/tbg.gif" colspan="8" style="padding-left:10px;">
      <b>文章错误管理</b>&nbsp;</td>
 </tr>
-  <tr align="center" bgcolor="#F9FCEF" height="26">
+  <tr align="center" bgcolor="#FBFCE2" height="26">
       <td width="5%">选择</td> 
       <td width="7%">编号</td>
       <td width="12%">挑错人</td>
@@ -79,7 +80,9 @@ function delArc(id){
       <td width="15%">修改建议</td>
       </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#f4fbf4';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" 
+
+onMouseOut="javascript:this.bgColor='#FFFFFF';">
         <td><input name="id" type="checkbox" id="id" value="{dede:field.id/}" class="np"></td> 
         <td>{dede:field.id /}</td>
         <td>{dede:field.mid function='username(@me)'/}</td>
@@ -90,7 +93,7 @@ function delArc(id){
         <td>{dede:field.oktxt /}</td>
         </tr>
 		{/dede:datalist}
-        <tr align="left" bgcolor="#F9FCEF" height="28">
+        <tr align="left" bgcolor="#ffffff" height="28">
             <td colspan="8">
             <a href="javascript:selAll()" class="coolbg">全选</a>
             <a href="javascript:noSelAll()" class="coolbg">取消</a>

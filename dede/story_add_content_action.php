@@ -1,60 +1,57 @@
 <?php
-
 /**
- * Enter description here...
- *
- * @author Administrator
- * @package defaultPackage
- * @rcsfile 	$RCSfile: story_add_content_action.php,v $
- * @revision 	$Revision: 1.1 $
- * @date 	$Date: 2009/08/04 04:06:44 $
+ * @version        $Id: story_add_content_action.php 1 9:02 2010年9月25日Z 蓝色随想 $
+ * @package        DedeCMS.Module.Book
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 
-require_once(dirname(__FILE__)."/config.php");
-require_once(DEDEINC."/oxwindow.class.php");
-require_once(DEDEROOT.'/book/include/story.func.php');
+require_once(dirname(__FILE__). "/config.php");
+require_once(DEDEINC. "/oxwindow.class.php");
+require_once(DEDEROOT. '/book/include/story.func.php');
 if( empty($chapterid)
 || (!empty($addchapter) && !empty($chapternew)) )
 {
-	if(empty($chapternew))
-	{
-		ShowMsg("由于你发布的内容没选择章节，系统拒绝发布！","-1");
-		exit();
-	}
-	$row = $dsql->GetOne("Select * From #@__story_chapter where bookid='$bookid' order by chapnum desc");
-	if(is_array($row))
-	{
-		$nchapnum = $row['chapnum']+1;
-	}
-	else
-	{
-		$nchapnum = 1;
-	}
-	$query = "INSERT INTO `#@__story_chapter`(`bookid`,`catid`,`chapnum`,`mid`,`chaptername`,`bookname`)
+    if(empty($chapternew))
+    {
+        ShowMsg("由于你发布的内容没选择章节，系统拒绝发布！", "-1");
+        exit();
+    }
+    $row = $dsql->GetOne("SELECT * FROM #@__story_chapter WHERE bookid='$bookid' ORDER BY chapnum desc");
+    if(is_array($row))
+    {
+        $nchapnum = $row['chapnum']+1;
+    }
+    else
+    {
+        $nchapnum = 1;
+    }
+    $query = "INSERT INTO `#@__story_chapter`(`bookid`,`catid`,`chapnum`,`mid`,`chaptername`,`bookname`)
             VALUES ('$bookid', '$catid', '$nchapnum', '0', '$chapternew','$bookname');";
-	$rs = $dsql->ExecuteNoneQuery($query);
-	if($rs)
-	{
-		$chapterid = $dsql->GetLastID();
-	}
-	else
-	{
-		ShowMsg("增加章节失败，请检查原因！","-1");
-		exit();
-	}
+    $rs = $dsql->ExecuteNoneQuery($query);
+    if($rs)
+    {
+        $chapterid = $dsql->GetLastID();
+    }
+    else
+    {
+        ShowMsg("增加章节失败，请检查原因！","-1");
+        exit();
+    }
 }
 
 //获得父栏目
-$nrow = $dsql->GetOne("Select * From #@__story_catalog where id='$catid' ");
+$nrow = $dsql->GetOne("SELECT * FROM #@__story_catalog WHERE id='$catid' ");
 $bcatid = $nrow['pid'];
 $booktype = $nrow['booktype'];
 if(empty($bcatid))
 {
-	$bcatid = 0;
+    $bcatid = 0;
 }
 if(empty($booktype))
 {
-	$booktype = 0;
+    $booktype = 0;
 }
 $addtime = time();
 
@@ -63,14 +60,14 @@ $addtime = time();
 $adminID = $cuserLogin->getUserID();
 
 //本章最后一个小说的排列顺次序
-$lrow = $dsql->GetOne("Select sortid From #@__story_content where bookid='$bookid' And chapterid='$chapterid' order by sortid desc");
+$lrow = $dsql->GetOne("SELECT sortid From #@__story_content WHERE bookid='$bookid' AND chapterid='$chapterid' ORDER BY sortid DESC");
 if(empty($lrow))
 {
-	$sortid = 1;
+    $sortid = 1;
 }
 else
 {
-	$sortid = $lrow['sortid']+1;
+    $sortid = $lrow['sortid']+1;
 }
 $inQuery = "
 INSERT INTO `#@__story_content`(`title`,`bookname`,`chapterid`,`catid`,`bcatid`,`bookid`,`booktype`,`sortid`,
@@ -78,33 +75,29 @@ INSERT INTO `#@__story_content`(`title`,`bookname`,`chapterid`,`catid`,`bcatid`,
 VALUES ('$title','$bookname', '$chapterid', '$catid','$bcatid', '$bookid','$booktype','$sortid', '0', '' , '', '$addtime');";
 if(!$dsql->ExecuteNoneQuery($inQuery))
 {
-	ShowMsg("把数据保存到数据库时出错，请检查！".$dsql->GetError().$inQuery,"-1");
-	$dsql->Close();
-	exit();
+    ShowMsg("把数据保存到数据库时出错，请检查！".$dsql->GetError().$inQuery,"-1");
+    $dsql->Close();
+    exit();
 }
 $arcID = $dsql->GetLastID();
 WriteBookText($arcID,$body);
 
 //更新图书的内容数
-$row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' ");
-$dsql->ExecuteNoneQuery("Update #@__story_books set postnum='{$row['dd']}',lastpost='".time()."' where bid='$bookid' ");
+$row = $dsql->GetOne("Select count(id) AS dd FROM #@__story_content  WHERE bookid = '$bookid' ");
+$dsql->ExecuteNoneQuery("UPDATE #@__story_books SET postnum='{$row['dd']}',lastpost='".time()."' WHERE bid='$bookid' ");
 
 //更新章节的内容数
-$row = $dsql->GetOne("Select count(id) as dd From #@__story_content  where bookid = '$bookid' And chapterid='$chapterid' ");
-$dsql->ExecuteNoneQuery("Update #@__story_chapter set postnum='{$row['dd']}' where id='$chapterid' ");
+$row = $dsql->GetOne("SELECT count(id) AS dd FROM #@__story_content  WHERE bookid = '$bookid' AND chapterid='$chapterid' ");
+$dsql->ExecuteNoneQuery("UPDATE #@__story_chapter SET postnum='{$row['dd']}' WHERE id='$chapterid' ");
 
 //生成HTML
 //$artUrl = MakeArt($arcID,true);
-if(empty($artcontentUrl))
-{
-	$artcontentUrl = '';
-}
-if($artcontentUrl=="")
-{
-	$artcontentUrl = $cfg_cmspath."/book/story.php?id=$arcID";
-}
+if(empty($artcontentUrl)) $artcontentUrl = '';
+
+if($artcontentUrl=="") $artcontentUrl = $cfg_cmspath."/book/story.php?id=$arcID";
+
 require_once(DEDEROOT.'/book/include/story.view.class.php');
-$bv = new BookView($bookid,'book');
+$bv = new BookView($bookid, 'book');
 $artUrl = $bv->MakeHtml();
 $bv->Close();
 
@@ -129,4 +122,3 @@ $win->AddMsgItem($msg);
 $winform = $win->GetWindow("hand","&nbsp;",false);
 $win->Display();
 //ClearAllLink();
-?>

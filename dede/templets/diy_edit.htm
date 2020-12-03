@@ -1,17 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改自定义表单</title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="js/main.js"></script>
 <script language="javascript" src="js/diy.js"></script>
 <script language="javascript">
 <!--
-function CheckSubmit()
-{
+function checkSubmit(){
 	if(document.form1.typename.value=='')
 	{
-		alert("自定义表单名称不能为空！");
+        alert("自定义表单名称不能为空！");
 		return false;
 	}
 	return true;
@@ -23,7 +23,6 @@ function DelNote(gourl){
 }
 -->
 </script>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 <!--
 .STYLE1 {color: #FF0000}
@@ -32,34 +31,34 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">自定义表单管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">自定义表单管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
-  <form name="form1" action="diy_edit.php" method="post" onSubmit="return CheckSubmit();">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
+  <form name="form1" action="diy_edit.php" method="post" onSubmit="return checkSubmit();">
     <input type='hidden' name='diyid' value='<?php echo $diyid;?>'>
     <input type='hidden' name='dopost' value='save'>
-    <tr bgcolor="#E2F5BC"> 
-      <td height="28" colspan="2" bgcolor="#EDF9D5" background='img/tbg.gif'>
-      	<b>&nbsp;<a href="diy_main.php"><u>自定义表单管理</u></a> &gt; 修改自定义表单：</b>
+    <tr bgcolor="#CFCFCF"> 
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
+      	<b><a href="diy_main.php"><u>自定义表单管理</u></a> &gt; 修改自定义表单：</b>
       	(修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改)
       </td>
     </tr>
     <tr> 
-      <td width="35%" height="28" align="left" bgcolor="#FFFFFF">自定义表单 diyid：<br />
+      <td width="170" height="28" align="left" bgcolor="#FFFFFF">自定义表单 diyid：<br />
         <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span> </td>
-      <td width="65%" bgcolor="#FFFFFF">
+      <td bgcolor="#FFFFFF">
        <?php echo $diyid;?>
-      * <img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help1')" /></td>
+      * <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help1')" /></td>
     </tr>
     <tr> 
-      <td height="28" align="left" bgcolor="#F8FCEF">自定义表单名称：<br />
+      <td height="28" align="left" bgcolor="#F9FCEF">自定义表单名称：<br />
       <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span></td>
-      <td bgcolor="#F8FCEF">
+      <td bgcolor="#F9FCEF">
 	    <input name="name" type="text" id="name" value="<?php echo $row['name']?>" style="width:180px" class='alltxt' />
-      *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help3')" />
+      *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help3')" />
      </td>
     </tr>
     <tr> 
@@ -67,21 +66,21 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
         <span class="STYLE2" id="help5">　　自定义表单数据表创建后不可修改表名</span></td>
       <td bgcolor="#FFFFFF">
 	    <input name="table" type="text" id="table"  style="width:180px" value="<?php echo $row['table']; ?>" class='alltxt' disabled='1' />
-        *<img src="img/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="ShowHide2('help5')" />
+        *<img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:hand" onclick="showHide2('help5')" />
       </td>
     </tr>
     <tr>
-      <td height="28" align="left" bgcolor="#F8FCEF">模型字段配置：<br />
+      <td height="28" align="left" bgcolor="#F9FCEF">模型字段配置：<br />
       信息索引类字段系统已经加入，<br />
       您只需要增加其它个性化字段即可。</td>
-      <td bgcolor="#F8FCEF">
+      <td bgcolor="#F9FCEF">
       	<input name="fset" type="button" id="fset" value="添加新字段" onClick="location.href='diy_field_add.php?diyid=<?php echo $diyid; ?>'" class="np coolbg" style="margin-top:5px"/>
       </td>
     </tr>
      <tr>
       <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px">
-<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#ABC094;">
-   <tr align="center" bgcolor="#EEFAA9" height="24">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#cfcfcf;">
+   <tr align="center" bgcolor="#FBFCE2" height="26">
       <td width="28%">表单提示文字</td>
       <td width="18%">数据字段名</td>
       <td width="20%">数据类型</td>
@@ -165,7 +164,7 @@ foreach($dtp->CTags as $ctag)
       <label><input name="public" type="radio" value="0" <?php echo $row['public'] == 0 ? 'checked' : '';?> class='np' />不公开</label>
       </td>
     </tr>
-    <tr bgcolor="#F9FDF0"> 
+    <tr bgcolor="#F9FCEF"> 
       <td height="28" colspan="2">
       	<table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr> 

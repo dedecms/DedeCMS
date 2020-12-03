@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>编辑软件:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="templets/js/j.js"></script>
@@ -47,7 +47,7 @@ function ShowHideAddr()
           <li class="thisTab"><a href="#"><span>编辑软件</span></a></li>
         </ul>
       </div>
-     <form class="mTB10 mR10 mL10" name="addcontent" action="soft_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
+     <form class="mTB10 mR10 mL10" name="form1" action="soft_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
           <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
@@ -127,7 +127,7 @@ function ShowHideAddr()
           <p>
             <span class="colLeft">
               <label>运行环境：</label>
-              <input type='text' name='os'  value="<?php echo $addRow['os'] ?>"  maxlength="100" class="intxt" style="width:160px"/>
+              <input type='text' name='os'  value="<?php echo isset($addRow['os'])? $addRow['os'] : ''; ?>"  maxlength="100" class="intxt" style="width:160px"/>
             </span>
             <span class="colRight">
               <label>软件等级：</label>
@@ -146,17 +146,17 @@ function ShowHideAddr()
           <p  class="cellBg">
             <span class="colLeft">
               <label>官方网址：</label>
-              <input type="text" name="officialDemo" id="officialDemo" value="<?php echo $addRow['officialUrl'] ?>"  maxlength="100"  class="intxt" style="width:160px"/>
+              <input type="text" name="officialDemo" id="officialDemo" value="<?php echo isset($addRow['officialUrl'])? $addRow['officialUrl'] : ''; ?>"  maxlength="100"  class="intxt" style="width:160px"/>
             </span>
             <span class="colRight">
               <label>程序演示：</label>
-              <input type="text" name="officialUrl" id="officialUrl" value="<?php echo $addRow['officialDemo'] ?>"  maxlength="100"  class="intxt" style="width:160px"/>
+              <input type="text" name="officialUrl" id="officialUrl" value="<?php echo isset($addRow['officialDemo'])? $addRow['officialDemo'] : ''; ?>"  maxlength="100"  class="intxt" style="width:160px"/>
             </span>
           </p>
           <p>
             <span class="colLeft">
               <label>软件大小：</label>
-              <input name="softsize" type="text" id="softsize" value="<?php echo $addRow['softsize'] ?>" maxlength="100" class="intxt" style="width:95px"/>
+              <input name="softsize" type="text" id="softsize" value="<?php echo isset($addRow['softsize'])? $addRow['softsize'] : ''; ?>" maxlength="100" class="intxt" style="width:95px"/>
             </span>
             <span class="colRight">
               <label>软件来源：</label>
@@ -176,7 +176,7 @@ function ShowHideAddr()
             </span>
             <span class="colRight">
               <label>需要金币：</label>
-              <input name="needmoney" type="text" value="<?php echo $addRow["needmoney"]; ?>" id="needmoney" maxlength="100" class="intxt" style="width:80px"/>(最大允许100个)
+              <input name="needmoney" type="text" value="<?php echo isset($addRow["needmoney"])? $addRow["needmoney"] : ''; ?>" id="needmoney" maxlength="100" class="intxt" style="width:80px" />(最大允许100个)
             </span>
           </p>
           <p>
@@ -185,7 +185,10 @@ function ShowHideAddr()
           </p>
           <p class="cellBg">
             <label style="width: 85px;">原来的缩略图：</label>
-            <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>' style="width: 200px; height:150px"/>
+            <img name="nlitpic"  id="nlitpic" src='
+            <?php  
+            echo !empty($row['litpic'])? $row['litpic'] : 'templets/images/dfpic.gif';  
+            ?>' style="width: 200px; height:150px"/>
           </p>
            <?php
             //自定义字段
@@ -195,7 +198,10 @@ function ShowHideAddr()
         <h3 class="meTitle"><strong>软件详情</strong></h3>
         <div class="contentShow postForm">
           <p>
-            <label>文字介绍：</label><?php GetEditor("body",$addRow["introduce"],250,"Small");?>
+            <label>文字介绍：</label><?php 
+            $addRow["introduce"] = isset($addRow["introduce"])? $addRow["introduce"] : '';
+            GetEditor("body",$addRow["introduce"],250,"Small");
+            ?>
           </p>
           <p class="cellBg">
             <label>本地地址：</label>

@@ -1,17 +1,18 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>点卡产品分类</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#cbd8ac;">
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#cfcfcf;">
   <form name="form1" action="cards_type.php" method="post">
     <input type="hidden" name="dopost" value="save">
     <tr>
-      <td height="28" colspan="4" bgcolor="#EDF9D5" background="img/tbg.gif"> &nbsp;<strong>点卡产品分类： </strong></td>
+      <td height="28" colspan="4" bgcolor="#EDF9D5" background="images/tbg.gif"> &nbsp;<strong>点卡产品分类： </strong></td>
     </tr>
-    <tr bgcolor="#FDFEE9">
+    <tr bgcolor="#FBFCE2">
       <td width="26%" height="24" align="center" valign="top">产品名称</td>
       <td width="27%" align="center" valign="top">点数(金币数)</td>
       <td width="30%" align="center">价格</td>
@@ -47,7 +48,7 @@
 	?>
     <input type="hidden" name="idend" value="<?php echo $k?>">
     <tr bgcolor="#F8FCF1">
-      <td height="24" colspan="4" valign="top" bgcolor="#EDF9D5"><strong>新增一个点卡产品类型：</strong></td>
+      <td height="24" colspan="4" valign="top" bgcolor="#F9FCEF" style="padding-left:10px;"><strong>新增一个点卡产品类型：</strong></td>
     </tr>
     <tr height="24" align="center" bgcolor="#FFFFFF">
       <td valign="top">
@@ -65,7 +66,7 @@
         新增 </td>
     </tr>
     <tr>
-      <td height="34" colspan="4" align="center" bgcolor="#F8FCF1">
+      <td height="34" colspan="4" align="center" bgcolor="#F9FCEF">
       	<input name="imageField"  type="submit" class="np coolbg" value="确定" />
       </td>
     </tr>

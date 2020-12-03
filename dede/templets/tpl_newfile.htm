@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>文件编辑</title>
-<link rel="stylesheet" type="text/css" href="img/base.css">
+<link rel="stylesheet" type="text/css" href="css/base.css">
 <script>
 function Post()
 {
@@ -37,7 +38,7 @@ function Post()
           <tr>
             <td width=16% height="25">文件内容：</td>
             <td>&nbsp;&nbsp;&nbsp;
-<textarea name="content" cols="150" rows="20"></textarea>
+<textarea name="content" cols="150" rows="20" style="width:99%;"></textarea>
              </td>
           </tr>
         </table>
@@ -50,7 +51,7 @@ function Post()
           &nbsp;
           <input type="reset" value="取消修改" name='B2' class="coolbg np" />
           &nbsp;
-          <input type="button" value="不理返回" name='B4' class="coolbg np" onclick="javascript:history.go(-1);" />
+          <input type="button" value="不理返回" name='B4' class="coolbg np" onClick="javascript:history.go(-1);" />
           <br />  <br />
       </td>
     </tr>

@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>自由列表管理</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
-<script language="javascript" src="../include/dedeajax2.js"></script>
-<script language='javascript' src='js/main.js'></script>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="js/main.js"></script>
 <script language="JavaScript">
 var pageno = 1;
 var totalrow = <?php echo $totalRow?>;
@@ -87,20 +87,20 @@ function ReloadPageNum(startnum){
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">频道管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">频道管理</div>
 </div>
 
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#dbe4cd;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
 <tr>
-<td bgcolor="#dbe4cd" class="tbtitletxt" background="img/tbg.gif">
+<td bgcolor="#CFCFCF" class="tbtitletxt" background="images/tbg.gif">
 	<table width='100%' border="0" cellpadding='0' cellspacing='0'>
     <tr>
-     <td width='30%' class="tbtitletxt"><strong>自由列表管理</strong></td>
-     <td>&nbsp;</td>
-     <td align='right'>&nbsp;</td>
+     <td width='36%' class="tbtitletxt" style="padding-left:10px;"><strong>自由列表管理</strong>&nbsp;[<a href="freelist_add.php"><u>增加列表</u></a>]</td>
+     <td width="29%">&nbsp;</td>
+     <td width="35%" align='right'>&nbsp;</td>
     </tr>
   </table>
   </td>
@@ -111,9 +111,9 @@ function ReloadPageNum(startnum){
 	GetTagList($dsql,$pageno,$pagesize,$orderby);
 	?>
 	</span>
-	<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+	<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
 		<tr>
-		  <td height="35" align="center" style="background:#F9FFE6;padding:7px 6px 3px 6px;" >
+		  <td height="35" align="center" style="background:#F9FCEF;padding:7px 6px 3px 6px;" >
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <form action="freelist_main.php" name="form1" id="form1">
           <tr>

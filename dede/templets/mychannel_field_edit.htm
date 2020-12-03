@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更改字段</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
 function GetFields()
 {
@@ -55,7 +56,7 @@ td{ padding:2px; padding-left:6px; }
 </style>
 </head>
 <body topmargin=8>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
   <form name="form1" action="mychannel_field_edit.php" method="post" onSubmit="return GetFields();">
   	<input type='hidden' name='action' value='save' />
   	<input type='hidden' name='id' value='<?php echo $id?>' />
@@ -63,10 +64,10 @@ td{ padding:2px; padding-left:6px; }
 	<input type='hidden' name='issystem' value='<?php echo $issystem?>' />
 	<input type='hidden' name='fieldstring' value='' />
     <tr> 
-      <td height="20" colspan="2" bgcolor="#EDF9D5" background="img/tbg.gif"> 
+      <td height="20" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif"> 
         <table width="98%" border="0" cellspacing="0" cellpadding="0">
           <tr> 
-            <td width="30%">
+            <td width="30%" style="padding-left:10px;">
             	<a href="mychannel_main.php"><b>频道管理</b></a> <b>&gt;&gt; 查看/修改字段：</b>
             </td>
             <td align="right" style="padding-top:6px;">
@@ -182,7 +183,7 @@ td{ padding:2px; padding-left:6px; }
       <td bgcolor="#FFFFFF"><textarea name="vinnertext" cols="45" rows="5" id="vinnertext" style="width:70%; height:120px;"><?php echo $ctag->GetInnerText(); ?></textarea></td>
     </tr>
     <tr>
-      <td height="28" colspan="2" bgcolor="#F9FDF0"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <td height="28" colspan="2" bgcolor="#F9FCEF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="26%" height="45">&nbsp;</td>
             <td width="10%"><input type="submit" name="button1" id="button1" value="确定" class="coolbg np" />

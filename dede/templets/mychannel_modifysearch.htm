@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改频道</title>
 <script language="javascript" src="js/main.js"></script>
-<link href="img/base.css" rel="stylesheet" type="text/css">
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 <!--
 .STYLE1 {color: #FF0000}
@@ -13,22 +13,22 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">自定义搜索管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">自定义搜索管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
   <form name="form1" action="mychannel_edit.php" method="post" target="stafrm">
     <input type='hidden' name='mid' value='<?php echo $mid?>'>
     <input type='hidden' name='maintable' value='<?php echo $channel['maintable']?>'>
     <input type='hidden' name='addontable' value='<?php echo $channel['addtable'];?>'>
     <input type='hidden' name='step' value='<?php echo $step?>'>
     <input type='hidden' name='dopost' value='modifysearch'>
-    <tr bgcolor="#E2F5BC">
-      <td height="28" colspan="2" bgcolor="#EDF9D5" background='img/tbg.gif'>
+    <tr bgcolor="#CFCFCF">
+      <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
       	<div style="width:100px; float:right"><a href="mychannel_edit.php?dopost=del&mid=<?php echo $mid;?>">删除自定义搜索</a></div>
-      	<b>&nbsp;<a href="mychannel_main.php"><u>内容模型管理</u></a> &gt; 自定义搜索管理：</b>
+      	<b><a href="mychannel_main.php"><u>内容模型管理</u></a> &gt; 自定义搜索管理：</b>
       	(自定义搜索再方便搜索的同时在一定程度上降低了效率，请根据需求定义搜索)
       </td>
     </tr>
@@ -39,8 +39,8 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
 </td>
     </tr>
     <tr>
-      <td height="28" align="left" bgcolor="#F8FCEF">频道名称：<br /></td>
-      <td bgcolor="#F8FCEF">
+      <td height="28" align="left" bgcolor="#ffffff">频道名称：<br /></td>
+      <td bgcolor="#ffffff">
 	    <?php echo $channel['typename']?>
       </td>
     </tr>
@@ -58,9 +58,9 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
     }    
     ?>
     <tr>
-      <td height="28" align="left" bgcolor="#F8FCEF">附件表可供自定义搜索的字段：<br />
+      <td height="28" align="left" bgcolor="#ffffff">附件表可供自定义搜索的字段：<br />
       <span class="STYLE2" id="help4">这里的字段是程序依据字段类型自动选择生成的。</span></td>
-      <td bgcolor="#F8FCEF">
+      <td bgcolor="#ffffff">
 	    <?php echo $addonfields;?>
      </td>
     </tr>
@@ -71,7 +71,7 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
 		    <input type="text" name="template" value="<?php echo $template;?>" style="width:200px" />
       </td>
     </tr>
-    <tr bgcolor="#F9FDF0">
+    <tr bgcolor="#ffffff">
       <td height="28" colspan="2">
       	<table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -87,8 +87,8 @@ td{ padding:2px; padding-left:6px; line-height:150%; }
       </td>
     </tr>
   </form>
-  <tr bgcolor="#E5F9FF">
-    <td height="20" colspan="2" bgcolor="#EDF9D5"> <table width="100%">
+  <tr bgcolor="bgcolor="#F9FCEF">
+    <td height="20" colspan="2" bgcolor="#F9FCEF"> <table width="100%">
         <tr>
           <td width="74%"><strong>&nbsp;&nbsp;</strong>进行状态： </td>
           <td width="26%" align="right">

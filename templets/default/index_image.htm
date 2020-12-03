@@ -6,20 +6,6 @@
 <meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<link rel="stylesheet" href="{dede:global.cfg_templets_skin/}/style/dedecms_skins_0.css" type="text/css" id="cssfile" />
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.cookie.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/changeSkin.js"></script>
-<script language="javascript" type="text/javascript">
-<!--
-function check(){
-		if(document.formsearch.searchtype.value=="")
-		document.formsearch.action="http://www.google.cn/custom"
-		else
-		document.formsearch.action="{dede:field name='phpurl'/}/search.php"
-	} 
--->
-</script>
 </head>
 <body class="channel">
 {dede:include filename="head.htm"/}
@@ -134,7 +120,7 @@ document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"
 				</dd>
 			</dl>
 		</div>
-
+        <div id="conrightAD" style="margin:10px auto">{dede:myad name='listRtPicAD'/}</div>
 		<div class="mt1">
 			<dl class="tbox">
 				<dt><strong>推荐图集</strong></dt>
@@ -153,7 +139,7 @@ document.write('<embed src="{dede:global.cfg_templets_skin/}/images/bcastr3.swf"
 
 	</div><!-- /pright -->
 </div>
-
+<div id="footAD" style="margin:10px auto; width:726px">{dede:myad name='innerfooterAD'/}</div>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 

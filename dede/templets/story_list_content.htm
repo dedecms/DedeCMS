@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>连载内容列表</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href='css/base.css' rel='stylesheet' type='text/css'>
 <script language="javascript" src="js/main.js"></script>
-<script language="javascript" src="../include/dedeajax2.js"></script>
+<script language="javascript" src="../include/js/dedeajax2.js"></script>
 <script language="javascript" src="js/story.js"></script>
 <style type="text/css">
 <!--
@@ -36,17 +36,17 @@
 -->
 </style>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">小说管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">小说管理 <a href="../book" target="_blank">[查看首页]</a></div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
 	<tr>
-		<td bgcolor="#EDF9D5" background='img/tbg.gif'>
+		<td bgcolor="#EDF9D5" background='images/tbg.gif'>
 		  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
         <tr>
-          <td width='30%' class="tbtitletxt"><strong>连载内容列表</strong></td>
+          <td width='30%' class="tbtitletxt" style="padding-left:10px;"><strong>连载内容列表</strong></td>
           <td align='right'>
 			[<a href="story_books.php"><u>图书管理</u></a>]
 			&nbsp;
@@ -59,9 +59,9 @@
    </td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;border-top:none;">
   <tr>
-    <td style="background:#F8FCF1;padding:2px 2px 2px 2px;" >
+    <td style="background:#ffffff;padding:3px;" >
     <table border="0" cellspacing="0" cellpadding="0" width="98%">
        <tr>
          <td width='50%'>
@@ -98,17 +98,17 @@
    </td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style=" margin-top:3px; margin-bottom:3px; border:1px solid #E2F5BC;line-height:31px;background:#F9FFE6;">
-  <tr align="center" style="background:#F9FFE6;height:24px">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style=" margin-top:3px; margin-bottom:3px; line-height:31px;background:#CFCFCF;">
+  <tr align="center" style="background:#FBFCE2;height:26px">
     <td width="24%">文章标题</td>
-    <td width="32%" align='left'>图书名称/章节名称/章节内序号</td>
+    <td width="32%" align='left' style="padding-left:8px;">图书名称/章节名称/章节内序号</td>
     <td width="12%">添加时间</td>
     <td>管理项目</td>
   </tr>
 {dede:datalist}
-  <tr style="background:#ffffff;" align="center" height='24'>
+  <tr align="center" height='26' bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td align="center">{dede:field.title/}</td>
-    <td align='left'>
+    <td align='left'  style="padding-left:8px;">
 	<a href='story_list_content.php?bookid={dede:field.bookid/}'>{dede:field.bookname/}</a>
 	<a href='story_list_content.php?bookid={dede:field.bookid/}&chapid={dede:field.chapterid/}'>{dede:field.chaptername/}</a>{dede:field.sortid/}    </td>
     <td> {dede:field.addtime function=GetDateMK(@me)/}</td>
@@ -123,9 +123,9 @@
   </tr>
 {/dede:datalist}
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #E2F5BC;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
 		<tr>
-		  <td style="background:#F9FFE6;" >
+		  <td style="background:#F9FCEF;" >
 		  {dede:pagelist listsize=5 /}
 		  </td>
   </tr>

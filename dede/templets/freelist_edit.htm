@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>更改自由列表</title>
-<link href='img/base.css' rel='stylesheet' type='text/css'>
+<link href="css/base.css" rel="stylesheet" type="text/css">
 <script src="js/main.js" language="javascript"></script>
 <script language="JavaScript">
 function ChangeListStyle(){
@@ -45,20 +45,20 @@ function CheckSubmit(){
 }
 </script>
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
 <div class="bodytitle">
 	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt">频道管理</div>
+	<div class="bodytitletxt" style="padding-left:10px;">频道管理</div>
 </div>
 <center>
-  <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#E2F5BC;">
+  <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;">
     <form action="freelist_edit.php" method="post"  name="form1" onSubmit="return CheckSubmit();">
       <input type="hidden" name="dopost" value="save">
       <input type="hidden" name="aid" value="<?php echo $row['aid']?>">
       <tr>
-        <td height="28" bgcolor="#EDF9D5"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
+        <td height="28" bgcolor="#EDF9D5" background="images/tbg.gif"> <table width="98%" border="0" cellpadding="0" cellspacing="0">
             <tr>
-              <td width="35%" height="18" align="left">
+              <td width="35%" height="18" align="left" style="padding-left:10px;">
               	<a href="freelist_main.php"><strong>＞<u>自自由列表管理</u></strong></a>
                 <strong> &gt;&gt; 更改自由列表：</strong>
               </td>
@@ -71,7 +71,7 @@ function CheckSubmit(){
             <tr>
               <td height="56"> <table width="100%" border="0" cellspacing="1" cellpadding="0">
                   <tr>
-                    <td height="28" colspan="2" align="left"><img src="img/help.gif" width="16" height="16">自由列表标记的说明：自由列表标记(freelist)的功能基本等同于arclist标记，区别是freelist标记支持分页，这让生成Google
+                    <td height="28" colspan="2" align="left"><img src="images/help.gif" width="16" height="16">自由列表标记的说明：自由列表标记(freelist)的功能基本等同于arclist标记，区别是freelist标记支持分页，这让生成Google
                       Map、生成按自定义排序规则的文章列表（如按标题拼音部首排序等）等轻松的实现统一化管理，并且自由列是独立编译的，不与其它模板混在一起，这样不会影响系统生成HTML或访问速度。</td>
                   </tr>
                   <tr>
@@ -121,8 +121,8 @@ function CheckSubmit(){
                 </table></td>
             </tr>
             <tr>
-              <td height="26" align="left" style="background:#E2F5BC;" ><img src="img/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">
-              	列表样式：（这里是定义自由列表模板里的{dede:freelist/}标记的样式和属性）              </td>
+              <td height="26" align="left" style="background:#FBFCE2;" ><img src="images/file_tt.gif" width="7" height="8" style="margin-left:6px;margin-right:6px;">
+              	列表样式：（这里是定义自由列表模板里的{dede:freelist/}标记的样式和属性）</td>
             </tr>
             <tr>
               <td height="28" align="left">
@@ -202,11 +202,11 @@ function CheckSubmit(){
               	if($setype=='') $setype = 'X';
               	?>
               	高级筛选：
-                <input name="types[]" type="checkbox" id="type1" value="image" <?php if(eregi('image',$setype)) echo ' checked';?>>
+                <input name="types[]" type="checkbox" id="type1" value="image" <?php if(preg_match("#image#i",$setype)) echo ' checked';?>>
                 带缩略图
-                <input name="types[]" type="checkbox" id="type2" value="commend" <?php if(eregi('commend',$setype)) echo ' checked';?>>
+                <input name="types[]" type="checkbox" id="type2" value="commend" <?php if(preg_match("#commend#i", $setype)) echo ' checked';?>>
                 推荐
-                <input name="types[]" type="checkbox" id="type3" value="spec" class="inputbut"<?php if(eregi('spec',$setype)) echo ' checked';?>>
+                <input name="types[]" type="checkbox" id="type3" value="spec" class="inputbut"<?php if(preg_match("#spec#i", $setype)) echo ' checked';?>>
                 专题　关键字：
                 <input name="keywordarc" type="text" id="keywordarc" value="<?php echo $ctag->GetAtt('keyword')?>">
                 （&quot;,&quot;逗号分开）
@@ -244,7 +244,7 @@ function CheckSubmit(){
                 由低到高</td>
             </tr>
             <tr>
-              <td height="28" align="left">循环内的单行记录样式(InnerText)：[<img src="img/help.gif" width="16" height="16"><a href='javascript:ShowHide("innervar");'>底层变量field参考</a>]</td>
+              <td height="28" align="left">循环内的单行记录样式(InnerText)：[<img src="images/help.gif" width="16" height="16"><a href='javascript:ShowHide("innervar");'>底层变量field参考</a>]</td>
             </tr>
             <tr>
               <td height="80" align="left">
@@ -252,7 +252,7 @@ function CheckSubmit(){
               </td>
             </tr>
             <tr>
-              <td height="80" align="left" id='innervar' style="display:none"><font color="#CC6600"><img src="img/help.gif" width="16" height="16">支持字段(底层变量[field:varname/])：id,title,color,typeid,ismake,description,pubdate,senddate,arcrank,click,litpic,typedir,typename,arcurl,typeurl,<br>
+              <td height="80" align="left" id='innervar' style="display:none"><font color="#CC6600"><img src="images/help.gif" width="16" height="16">支持字段(底层变量[field:varname/])：id,title,color,typeid,ismake,description,pubdate,senddate,arcrank,click,litpic,typedir,typename,arcurl,typeurl,<br>
                 stime(pubdate 的&quot;0000-00-00&quot;格式),textlink,typelink,imglink,image
                 普通字段直接用[field:字段名/]表示。<br>
                 ·Pubdate发布时间的调用参数 [field:pubdate function=MyDate('Y--%d H:i:s',@me)/]</font>
@@ -267,7 +267,7 @@ function CheckSubmit(){
       </tr>
     </form>
     <tr>
-      <td valign="top" bgcolor="#EFF7E6">&nbsp;</td>
+      <td valign="top" bgcolor="#F9FCEF">&nbsp;</td>
     </tr>
   </table>
 </center>

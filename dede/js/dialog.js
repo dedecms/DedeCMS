@@ -1,16 +1,24 @@
-document.write("<style type=\"text/css\">.close{float:right;cursor:default}</style>")
+/**
+ * 
+ * @version        $Id: dialog.js 1 22:28 2010年7月20日Z tianya $
+ * @package        DedeCMS.Administrator
+ * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+ 
+document.write("<style type=\"text/css\">.close{float:right;cursor:default;}</style>")
 
-function editTitle(aid)
-{
-   var show = document.getElementById("show_news");
-   var myajax = new DedeAjax(show,false,false,"","","");
-   myajax.SendGet2("catalog_edit.php?dopost=time&id="+aid);
-   DedeXHTTP = null;
+function editTitle(aid){
+    var show = document.getElementById("show_news");
+    var myajax = new DedeAjax(show,false,false,"","","");
+    myajax.SendGet2("catalog_edit.php?dopost=time&id="+aid);
+    DedeXHTTP = null;
 }
 
-function $(id){ return document.getElementById(id)}
+function $Dede(id){ return document.getElementById(id)}
 function AlertMsg(title,id){
-	var msgw,msgh,msgbg,msgcolor,bordercolor,titlecolor,titlebg,content; 
+    var msgw,msgh,msgbg,msgcolor,bordercolor,titlecolor,titlebg,content; 
 	//弹出窗口设置
 	msgw = 600;		//窗口宽度 
 	msgh = 400;		//窗口高度 
@@ -18,7 +26,7 @@ function AlertMsg(title,id){
 	msgcolor = "#000";		//内容颜色
 	bordercolor = "#5A6D58"; 	//边框颜色 
 	titlecolor = "#254015";	//标题颜色
-	titlebg = "#369 url(img/tbg.gif)";		//标题背景
+	titlebg = "#369 url(images/tbg.gif)";		//标题背景
 	//遮罩背景设置  	
 	content = "<div id=show_news>对不起，载入失败</div>";	
 	var sWidth,sHeight; 
@@ -77,16 +85,16 @@ function AlertMsg(title,id){
 	bodyObj.innerHTML = content;
 	//生成窗口
 	document.body.appendChild(msgObj);
-	$("msgdiv").appendChild(thObj);
-	$("msgdiv").appendChild(bodyObj);
+	$Dede("msgdiv").appendChild(thObj);
+	$Dede("msgdiv").appendChild(bodyObj);
 	editTitle(id);
 }
 function CloseMsg(){
 	//移除对象
-	document.body.removeChild($("maskdiv")); 
-	$("msgdiv").removeChild($("msgth")); 
-	$("msgdiv").removeChild($("msgbody")); 
-	document.body.removeChild($("msgdiv")); 
+	document.body.removeChild($Dede("maskdiv")); 
+	$Dede("msgdiv").removeChild($Dede("msgth")); 
+	$Dede("msgdiv").removeChild($Dede("msgbody")); 
+	document.body.removeChild($Dede("msgdiv")); 
 }
 //拖动窗口
 var ie = document.all;   

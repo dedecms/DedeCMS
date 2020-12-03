@@ -1,21 +1,22 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>网站类型管理</title>
-<link href="img/base.css" rel="stylesheet" type="text/css" />
+<link href="css/base.css" rel="stylesheet" type="text/css" />
 </head>
-<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#E2F5BC;">
+<body background="images/allbg.gif" leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
   <form name="form1" action="friendlink_type.php" method="post">
     <input type="hidden" name="dopost" value="save">
    <tr>
-    <td height="19" background="img/tbg.gif" colspan="9">
+    <td height="19" background="images/tbg.gif" colspan="9" style="padding-left:10px;">
   <b><a href="friendlink_main.php">友情链接管理</a></b>&nbsp;
 	[<a href="friendlink_add.php"><u>增加链接</u></a>]
     [<a href="friendlink_type.php"><u>网站类型管理</u></a>]
   [<a href='../plus/flink_add.php' target='_blank'><u>外部申请表单</u></a>]</td>
 </tr>
-    <tr bgcolor="#FDFEE9">
+    <tr bgcolor="#FBFCE2">
       <td width="4%" height="24" align="center" valign="top">类型ID</td>
       <td width="60%" align="center" valign="top">网站名称</td>
       <td width="36%" align="center">状态</td>
@@ -43,7 +44,7 @@
 	?>
     <input type="hidden" name="idend" value="<?php echo $k?>">
     <tr bgcolor="#F8FCF1">
-      <td height="24" colspan="5" valign="top" bgcolor="#EDF9D5"><strong>新增一个网站类型：</strong></td>
+      <td height="24" colspan="5" valign="top" bgcolor="#F9FCEF"><strong>新增一个网站类型：</strong></td>
     </tr>
     <tr height="24" align="center" bgcolor="#FFFFFF">
       <td colspan="2" valign="top">
@@ -54,7 +55,7 @@
         新增 </td>
     </tr>
     <tr>
-      <td height="34" colspan="5" align="center" bgcolor="#F8FCF1">
+      <td height="34" colspan="5" align="center" bgcolor="#F9FCEF">
       	<input name="imageField"  type="submit" class="np coolbg" value="确定" />      </td>
     </tr>
   </form>
