@@ -1,0 +1,14 @@
+
+如果在linux平台
+
+以下目录需设为让PHP可读写，一般设为 0777
+
+./ 根目录可写入
+./html
+./upimg/*
+./templets/*
+./special/*
+./plus/*
+./include/sessions
+
+./include (仅安装时需要设置为0777)

@@ -1,0 +1,217 @@
+{dede:page pagesize="10"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>栏目管理::{dede:global name='typename' /}</title>
+<link rel="stylesheet" type="text/css" href="base.css">
+<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/ieemu.js"></script>
+<script language="javascript">
+if(moz) {
+	extendEventObject();
+	extendElementModel();
+	emulateAttachEvent();
+}
+//上下文菜单
+function ShowMenu(obj,aid,atitle)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("浏览文档",function(){ window.open("archives_do.php?aid="+aid+"&dopost=viewArchives"); }),
+    new ContextItem("编辑文档",function(){ location="archives_do.php?aid="+aid+"&dopost=editArchives"; }),
+    new ContextSeperator(),
+    new ContextItem("更新HTML",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=makeArchives&qstr="+qstr; }),
+    new ContextItem("审核文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=checkArchives&qstr="+qstr; }),
+    new ContextItem("推荐文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?aid="+aid+"&dopost=commendArchives&qstr="+qstr; }),
+    new ContextSeperator(),
+    new ContextItem("删除文档",function(){ var qstr=getCheckboxItem(); location="archives_do.php?qstr="+qstr+"&aid="+aid+"&dopost=delArchives"; }),
+    new ContextSeperator(),
+    new ContextItem("全部选择",function(){ selAll(); }),
+    new ContextItem("取消选择",function(){ noSelAll(); }),
+    new ContextSeperator(),
+    new ContextItem("频道管理",function(){ location="catalog_main.php"; })
+  ]
+  ContextMenu.display(popupoptions)
+}
+	
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.form2.arcID.value) return document.form2.arcID.value;
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.form2.arcID[i].value;
+			else
+				allSel=allSel+"`"+document.form2.arcID[i].value;
+		}
+	}
+	return allSel;	
+}
+function selAll()
+{
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(!document.form2.arcID[i].checked)
+		{
+			document.form2.arcID[i].checked=true;
+		}
+	}
+}
+function noSelAll()
+{
+	for(i=0;i<document.form2.arcID.length;i++)
+	{
+		if(document.form2.arcID[i].checked)
+		{
+			document.form2.arcID[i].checked=false;
+		}
+	}
+}
+</script>
+</head>
+<body leftmargin="8"topmargin="8" onload="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#111111" style="BORDER-COLLAPSE: collapse">
+<tr> 
+<td width="100%" height="20" valign="top">
+	<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#666666">
+		<tr> 
+<td height="26" background="img/newlinebg3.gif">
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+ <tr> 
+ <td align="center">
+	<input type='button' onClick="location='catalog_do.php?cid={dede:global name='cid' /}&dopost=addArchives';" value='添加文档'>
+	{dede:global name='CheckUserSend'/}
+ <input type='button' onClick="location='catalog_main.php';" value='栏目管理'>
+ <input type='button' style='width:100' name='bb1' onClick="location='makehtml_list.php?cid={dede:global name='cid' /}';" value='更新栏目HTML'>
+	<input type='button' style='width:100' name='bb2' onClick="location='makehtml_archives.php?cid={dede:global name='cid' /}';" value='更新文档HTML'>
+ </td>
+ </tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr> 
+<td width="100%" height="1" background="img/sp_bg.gif"></td>
+</tr>
+<tr><td width="100%" height="4"></td></tr>
+<tr> 
+<td width="100%" height="20" valign="top"> 
+	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
+<tr bgcolor='#EEF4EA' height='26'> 
+<td background='img/wbg.gif' colspan='7'>
+§{dede:global name='positionname'/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
+</td>
+</tr>
+<tr bgcolor="#F3F7EA" align="center"> 
+<td width="13%">文档图片</td>
+<td width="35%">文档标题</td>
+<td width="12%">类目</td>
+<td width="11%">权限</td>
+<td width="10%">推荐</td>
+<td width="10%">HTML</td>
+<td  width="9%">点击</td>
+ </tr>
+</table>
+	<div style="font-size:2pt">&nbsp</div>
+	
+	<table width='100%' border='0' cellpadding='0' cellspacing='0'>
+	<form name="form2">
+	<tr>
+<td>
+<div style="font-size:2pt">&nbsp</div>
+{dede:datalist} 
+<table width="100%" border="0" cellpadding="1" cellspacing="1" style="border-bottom:1px solid #BCBCBC" bgcolor="[field:ID function="GetColor('#FAFAF1','#FFFFFF');"/]">
+<tr> 
+<td width="13%">
+	<img src="[field:litpic function="CheckPic('@me');"/]" width="80" height="60" alt="文档图片" border="0"> 
+</td>
+<td width="35%">
+<input name="arcID" type="checkbox" id="arcID" value="[field:ID/]" class="np"> 
+<b><a href="archives_do.php?aid=[field:ID/]&dopost=editArchives" oncontextmenu="ShowMenu(this,[field:ID/],'[field:title function=urlencode('@me')/]')"><u>[field:title/]</u></a>
+<br>
+　　发布时间：[field:senddate function="GetDateTimeMk('@me')"/]
+</b>
+</td>
+<td width="12%" height="26" align="center">
+[field:typename/]
+<br>
+ID: [field:ID/]
+</td>
+<td width="11%" align="center">[field:arcrank function="GetRankName('@me')"/]</td>
+<td width="10%" align="center">[field:iscommend function="IsCommendArchives('@me')"/]</td>
+<td width="10%" align="center">[field:ismake function="IsHtmlArchives('@me')"/]</td>
+<td  width="9%" align="center">[field:click/]</td>
+</tr>
+</table>
+<div style="font-size:2pt">&nbsp</div>
+	{/dede:datalist}
+	 </td></tr>
+	 </form>
+	 </table>
+	 
+	<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
+<tr bgcolor='#FAFAF1'> 
+<td height="25"> <table width="98%" border="0" cellspacing="1" cellpadding="1">
+<tr> 
+<td width="14%"> &nbsp; <a href="javascript:selAll()" class="coolbg">全选</a> 
+&nbsp; <a href="javascript:noSelAll()" class="coolbg">取消</a> 
+</td>
+<td width="86%" align="center">
+</td>
+</tr>
+</table> </td>
+</tr>
+</table>
+	
+	<div style="font-size:2pt">&nbsp</div>
+<table width='100%'border='0' cellpadding='3' cellspacing='1' bgcolor='#CBD8AC'>
+<tr> 
+<td height="25" align="center" bgcolor='#EEF4EA'>
+	{dede:pagelist listsize='7' /} 
+</td>
+</tr>
+</table>
+<div style="font-size:2pt">&nbsp</div>
+<table width='100%'border='0' cellpadding='2' cellspacing='1' bgcolor='#CBD8AC'>
+<tr bgcolor='#EEF4EA'> 
+<form name='form3' action='content_i_list.php' method='get'>
+<input type='hidden' name='dopost' value='listArchives'>
+<td background='img/wbg.gif'>
+	<table width='600' border='0' cellpadding='0' cellspacing='0'>
+	<tr>
+	<td width='90' align='center'>请选择类目：</td>
+	<td width='160'>
+<select name='cid' style='width:150'>
+ <option value='0'>选择分类...</option>
+	{dede:global name='optionarr' /}
+</select>
+</td>
+<td width='70'>
+关键字：
+</td>
+<td width='160'>
+	<input type='text' name='keyword' value='{dede:global name='keyword' ''''''''''/}' style='width:150'>
+</td>
+<td>
+<input name="imageField" type="image" src="img/button_search.gif" width="60" height="22" border="0" class="np">
+ </td>
+</tr>
+</table>
+</td>
+</form>
+</tr>
+</table>
+</td>
+</tr>
+<tr> 
+<td width="100%" height="2" valign="top"></td>
+</tr>
+</table>
+</body>
+</html>

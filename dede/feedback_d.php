@@ -1,13 +1,14 @@
 <?
-require("config.php");
+require_once(dirname(__FILE__)."/config.php");
 if($fid=="")
 {
-	ShowMsg("你没选中任何选项！",$ENV_GOBACK_URL);
+	ShowMsg("你没选中任何选项！",$_COOKIE['ENV_GOBACK_URL'],0,500);
 	exit;
 }
-$conn = @connectMySql();
+$dsql = new DedeSql(false);
 $fids=ereg_replace("[^0-9`]","",$fid);
 $ids = split("`",$fids);
+$msg = "";
 if($job=="del")
 {
 	$wherestr = "(";
@@ -18,16 +19,27 @@ if($job=="del")
 		else $wherestr.=" Or ID=".$ids[$i];
 	}
 	$wherestr .= ")";
-	mysql_query("Delete From dede_feedback where $wherestr",$conn);
+	$query = "Delete From #@__feedback where $wherestr";
+	$dsql->SetQuery($query);
+	$dsql->ExecuteNoneQuery();
+	$msg = "成功删除指定的评论!";
 }
 else
 {
+	$wherestr = "(";
 	$j=count($ids);
 	for($i=0;$i<$j;$i++)
 	{
-		mysql_query("update dede_feedback set ischeck=1 where ID=".$ids[$i],$conn);
+		if($i==0) $wherestr.="ID=".$ids[$i];
+		else $wherestr.=" Or ID=".$ids[$i];
 	}
+	$wherestr .= ")";
+	$query = "update #@__feedback set ischeck=1 where $wherestr";
+	$dsql->SetQuery($query);
+	$dsql->ExecuteNoneQuery();
+	$msg = "成功审核指定评论!";
 }
-ShowMsg("成功执行指定操作！",$ENV_GOBACK_URL);
+$dsql->Close();
+ShowMsg($msg,$_COOKIE['ENV_GOBACK_URL'],0,500);
 exit;
 ?>

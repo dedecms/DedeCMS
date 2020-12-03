@@ -1,0 +1,248 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:global name='cfg_webname'/}</title>
+<link href="{dede:global name='cfg_basehost'/}/templet/img/base.css" rel="stylesheet" type="text/css">
+<link href="{dede:field name='phpurl' /}/img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+<table width="770" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+      <td height="60"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td width="81%"><img src="{dede:field name='phpurl'/}/img/df_dedetitle.gif" width="250" height="53"></td>
+            <td colspan="2" align="center" valign="bottom"> <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr  align="center" height="20"> 
+                  <td height="24"><a href="{dede:field name='phpurl'/}/sitemap.html">网站地图</a></td>
+                  <td><a href="{dede:field name='phpurl'/}/rssmap.html">RSS订阅</a></td>
+                </tr>
+                <tr align="center" height="20"> 
+                  <td><a href="{dede:field name='phpurl'/}/heightsearch.php">高级搜索</a></td>
+                  <td><a href='#' onClick="javascript:window.external.AddFavorite('{dede:global name="cfg_basehost"/}','{dede:global name="cfg_webname"/}');">收藏本站</a></td>
+                </tr>
+              </table></td>
+          </tr>
+        </table></td>
+</tr>
+<tr> 
+      <td height="28" valign="bottom" background="{dede:field name='phpurl'/}/img/l_mbg.gif" bgcolor="#AFB95B"> 
+        &nbsp;<a href='/'>首页</a> {dede:channel typeid=0 row=6} | <a href='[field:typelink/]'>[field:typename/]</a> 
+        {/dede:channel}| <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
+        | <a href="{dede:field name='memberurl' /}/login.php">会员投稿</a> | <a href='{dede:field name='phpurl'/}/guestbook/index.php'>留言簿</a> 
+      </td>
+</tr>
+</table>
+<table width="770" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td colspan="2" height="4"></td>
+</tr>
+<tr>
+      <td width="190" valign="top" bgcolor="#EAF2E5">
+        <!--Split-->
+        <table width="100%" align="center" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td height="24"><img src="{dede:field name='templeturl'/}/img//1-se.gif" width="190" height="23"></td>
+          </tr>
+		  <tr> 
+            <td height="4"></td>
+          </tr>
+        </table>
+        <!--Split-->
+        <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
+          <tr> 
+            <td valign="top" bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <form name="searchform" action="{dede:field name='phpurl'/}/search.php">
+                  <tr> 
+                    <td height="28">&nbsp;</td>
+                    <td width="30%">关键字：</td>
+                    <td width="63%"><input name="keyword" type="text" id="keyword" size="12"></td>
+                  </tr>
+                  <tr> 
+                    <td height="32">&nbsp;</td>
+                    <td>范 &nbsp;围：</td>
+                    <td><select name="searchtype" id="tag">
+                        <option value="titlekeyword" selected>默认搜索</option>
+                        <option value="title">仅搜索标题</option>
+                      </select></td>
+                  </tr>
+                  <tr> 
+                    <td width="4%" height="30">&nbsp; </td>
+                    <td height="30" colspan="2" align="center"><input name="imageField" type="image" src="{dede:field name='phpurl'/}/img/button_search.gif" width="60" height="22" border="0"></td>
+                  </tr>
+                </form>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!--Split-->
+        <table width="96%" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="4"></td>
+          </tr>
+		  <tr>
+            <td height="24" align="center" background="{dede:field name='phpurl'/}/img/hitembg.gif">§推荐文档§</td>
+          </tr>
+		  <tr>
+            <td height="2"></td>
+          </tr>
+        </table>
+        <!--Split-->
+        <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
+          <tr> 
+            <td valign="top" bgcolor="#FFFFFF">
+            	<p>{dede:artlist typeid=0 row=6 type=commend titlelength=24/}</p>
+              </td>
+</tr>
+</table>
+        <!--Split-->
+        <table width="96%" align="center" cellpadding="2" cellspacing="1">
+          <tr> 
+            <td height="4"></td>
+          </tr>
+          <tr> 
+            <td height="24" align="center" background="{dede:field name='phpurl'/}/img/hitembg.gif">↑热点文档↓</td>
+          </tr>
+          <tr> 
+            <td height="2"></td>
+          </tr>
+        </table>
+        <!--Split-->
+<table width="96%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#BCC1B3">
+                <tr> 
+                  <td valign="top" bgcolor="#FFFFFF"><p>{dede:artlist typeid=0 
+                      row=6 sort=hot titlelength=24/}</p></td>
+                </tr>
+              </table>
+        <!--Split-->
+        <table width="100%">
+          <tr>
+            <td height="4"></td>
+          </tr>
+        </table>
+        <!--Split-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+            <td align="center"> {dede:vote id='4' lineheight='24' tablewidth='96%' 
+              titlebgcolor='#EDEDE2' titlebackground='' tablebgcolor='#9A8F70'} 
+              {/dede:vote} </td>
+</tr>
+</table>
+      </td> 
+<td width="4">&nbsp;</td>
+<td valign="top" width="576">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td height="24" bgcolor="#E8E8BD" background="{dede:field name='templeturl'/}/img/1-nlinebg.gif">
+<table width="300" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="6" height="24" align="center" background="{dede:field name='templeturl'/}/img/1-cor.gif">&nbsp;</td>
+                  <td width="26" align="center"><img src="{dede:field name='templeturl'/}/img/note1.gif" width="13" height="14"></td>
+                  <td width="259" valign="bottom"><b>最新文档</b></td>
+                </tr>
+              </table>
+</td>
+</tr>
+<tr> 
+<td width="98%" height="365" valign="top">
+<table width="100%" border="0" cellspacing="1" cellpadding="0">
+<tr> 
+<td colspan="3" height="2"></td>
+</tr>
+<tr> 
+<td width="26%" height="108" align="center" valign="top">
+{dede:arclist row='1'  typeid='0'  imgwidth='120'  imgheight='100' 
+ tablewidth='98%'  type='commend'  titlelen='20'}
+<table width='98%' border='0' cellspacing='2' cellpadding='0'>
+        <tr>
+          <td align='center'>[field:imglink/]</td>
+        </tr>
+        <tr>
+          <td align='center'><a href='[field:arcurl/]'>[field:title/]</a></td>
+        </tr>
+</table>
+{/dede:arclist}
+</td>
+<td width="1%"></td>
+<td width="73%" valign="top">
+{dede:artlist typeid=0 row=7 titlelen=50 }
+[[field:typelink /]]<a href="[field:filename /]">[field:title/]</a>([field:pubdate function='strftime("%m-%d",@me)'/])<br>
+{/dede:artlist}
+</td>
+</tr>
+<tr> 
+<td colspan="3" height="2" bgcolor="#EFF2F5"></td>
+</tr>
+<tr valign="top"> 
+<td colspan="3">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
+<tr> 
+                        <td height="24" background="{dede:field name='templeturl'/}/img/1-nlinebg2.gif"><strong>&nbsp;§图片文档§</strong></td>
+</tr>
+<tr> 
+<td height="100" valign="top" bgcolor="#F9F9F7">
+<!--img infolist-->
+{dede:imginfolist 
+typeid=0 row='6' col='3' infolength='30' imgwidth='60' imgheight='45' 
+titlelength='20' tablewidth='100%' /}
+<!--img infolist-->
+</td>
+</tr>
+<tr> 
+<td height="100" valign="top" bgcolor="#F9F9F7">
+{dede:channelArtlist typeid=0 col=2 tablewidth='100%'}
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#BFCFA9">
+  <tr>
+    <td bgcolor="#E6F2CC">
+    	{dede:type}
+		<table border="0" cellpadding="0" cellspacing="0" width="98%">
+    		<tr>
+    		<td width='10%' align="center"><img src='[field:global name='cfg_plus_dir'/]/img/channellist.gif' width='14' height='16'></td>
+    	 <td width='60%'>
+    	<a href="[field:typelink /]">[field:typename /]</a>
+        </td>
+      <td width='30%' align='right'>
+      <a href="[field:typelink /]">更多...</a>
+      </td>
+    </tr>
+   </table>
+   {/dede:type}
+   </td>
+  </tr>
+  <tr>
+    <td height="150" valign="top" bgcolor="#FFFFFF">
+	{dede:arclist row="8"}
+	·<a href="[field:arcurl /]">[field:title /]</a><br>
+  {/dede:arclist}
+	</td>
+  </tr>
+</table>
+<div style='font-size:2px'>&nbsp;</div>
+{/dede:channelArtlist}
+</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr> 
+<td height="6" bgcolor="#E8E8BD"></td>
+</tr>
+<tr> 
+<td height="2"></td>
+</tr>
+</table></td> 
+</tr>
+</table>
+<table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr> 
+<td height="3"></td>
+</tr>
+<tr align="center"> 
+<td height="8" bgcolor="#F5F5F5"></td>
+</tr>
+<tr> 
+<td height="20" align="center">{dede:field name='powerby'/}</td>
+</tr>
+</table>
+</center></body></html>

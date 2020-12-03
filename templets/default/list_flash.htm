@@ -1,0 +1,183 @@
+{dede:page pagesize="15"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:field name='title'/}</title>
+<link href="{dede:field name='phpurl' /}/img/base.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!--
+.style2 {color: #666666}
+-->
+</style>
+</head>
+<body leftmargin="0" topmargin="0">
+<center>
+  <table width="770" border="0" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td height="71"><a href='http://www.dedecms.com'><img src="{dede:field name='phpurl' /}/img/df_dedetitle.gif" width="250" height="53" border="0"></a> 
+      </td>
+    </tr>
+    <tr> 
+      <td height="28" valign="bottom" background="{dede:field name='phpurl' /}/img/l_mbg.gif" bgcolor="#AFB95B"> 
+        &nbsp;
+        <a href='{dede:field name='indexurl'/}'>{dede:field name='indexname'/}</a> 
+        {dede:channel row='8' type='top'}
+         | <a href='[field:typelink /]'>[field:typename/]</a>
+        {/dede:channel} 
+        | <a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a> 
+        | <a href='{dede:field name='memberurl'/}/index.php'>会员中心</a>
+      </td>
+    </tr>
+  </table>
+  <table width="770" border="0" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td colspan="3" height="4"></td>
+    </tr>
+    <tr> 
+      <td width="177" height="200" valign="top" bgColor="#f6f6f6"> <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl' /}/img/l_dd1.gif" width="29" height="24"></td>
+            <td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">推荐FLASH</font></strong></td>
+          </tr>
+          <tr valign="top" bgcolor="#F4FEE3"> 
+            <td height="20" colspan="2" align="center" class="ctfield" style="border-top:1px solid #bcbcbc"> 
+              {dede:arclist type='commend' titlelen='30' row='3' imgwidth='120' imgheight='90'}
+			           [field:imglink/]
+		             <br>
+		             [field:textlink/]
+			         {/dede:arclist}
+			     </td>
+          </tr>
+        </table>
+        <div style="font-size:2pt">&nbsp;</div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl' /}/img/l_dd1.gif" width="29" height="24"></td>
+            <td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">热门FLASH</font></strong></td>
+          </tr>
+          <tr valign="top" bgcolor="#F4FEE3"> 
+            <td height="20" colspan="2" class="ctfield" style="border-top:1px solid #bcbcbc"> 
+              {dede:arclist orderby='click' titlelen='30' row='8'/} </td>
+          </tr>
+        </table>
+        <table cellSpacing=0 cellPadding=0 width="100%" border=0>
+          <tbody>
+            <tr> 
+              <td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl' /}/img/l_dd1.gif" width="29" height="24"></td>
+              <td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">相关分类</font></strong></td>
+            </tr>
+            <tr> 
+              <td height=3 colspan="2" bgColor=#efefef></td>
+            </tr>
+            <tr> 
+              <td height=3 colspan="2"></td>
+            </tr>
+            <tr> 
+              <td height=79 colspan="2" align=center vAlign=center bgColor=#ffffff> 
+                <!-- cotalog templets-->
+                {dede:channel type='self'} 
+                <table width="98%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+                  <tr> 
+                    <td width="10%" align="center" bgcolor="#E1EEDF" style="border:1px #E6EAE3 solid">&nbsp; 
+                    </td>
+                    <td align="center" bgcolor="#FAFDF2" style="border:1px #E6EAE3 solid"><a href="[field:typelink/]">[field:typename/]</a> 
+                    </td>
+                  </tr>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0">
+                  <tr> 
+                    <td height="2"></td>
+                  </tr>
+                </table>
+                {/dede:channel} 
+                <table width="98%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F6F6F6">
+                  <tr> 
+                    <td width="10%" bgcolor="#EEEEEE"></td>
+                    <td align="center" bgcolor="#FFFFFF" style="border:1px #DDDDDD solid"> 
+                      {dede:field name='typename'/} </td>
+                  </tr>
+                </table>
+                <table  width="98%" border="0" cellpadding="0" cellspacing="0">
+                  {dede:channel type='sun'} 
+                  <tr> 
+                    <td height="2"></td>
+                  </tr>
+                  <tr> 
+                    <td align="right"> <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                        <tr> 
+                          <td width="10%" bgcolor="#EEEEEE"></td>
+                          <td style="border:1px #DDDDDD solid" bgcolor="#FFFFFF" align="center"> 
+                            ·<a href="[field:typelink/]">[field:typename/]</a> 
+                          </td>
+                        </tr>
+                      </table></td>
+                  </tr>
+                  {/dede:channel} 
+                </table>
+                <!-- cotalog templets End -->
+              </td>
+            </tr>
+          </tbody>
+        </table> </td>
+      <td width="4">&nbsp;</td>
+      <td valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="23" background="{dede:field name='phpurl' /}/img/df_gbg.gif" bgcolor="#E9ECE1">
+			&nbsp;当前位置：{dede:field name='position'/}Flash列表
+			</td>
+          </tr>
+          <tr> 
+            <td height="4"></td>
+          </tr>
+          <tr> 
+            <td height="346" valign="top">
+			{dede:list imgwidth='100' imgheight='75' col='2'}
+		      <table width='98%'  border='0' cellspacing='0' cellpadding='4'>
+                <tr> 
+                  <td width='16%' rowspan='3' align='center'>
+				  <table border='0' cellpadding='1' cellspacing='1' bgcolor="#E6EAE3">
+                      <tr> 
+                        <td bgcolor="#FFFFFF">[field:imglink/]</td>
+                      </tr>
+                    </table>
+				</td>
+                  <td width='84%' height='25'> &nbsp;<a href='[field:filename/]'>[field:title/]</a></td>
+                </tr>
+                <tr> 
+                  <td height='25' valign="top">作品等级：[field:flashrank/]</td>
+                </tr>
+                <tr>
+                  <td height='25' valign="top">浏览次数：[field:click/]</td>
+                </tr>
+                <tr> 
+                  <td colspan='2' height='3' background='[field:global name='cfg_plus_dir'/]/img/writerbg.gif'></td>
+                </tr>
+              </table>
+			{/dede:list}
+			</td>
+          </tr>
+          <tr> 
+            <td bgcolor="#E9ECE1" height="4"></td>
+          </tr>
+          <tr> 
+            <td height="30" align="right">
+			{dede:pagelist listsize="3"/}
+			&nbsp;&nbsp;
+			</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table>
+  <table width="770" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr> 
+      <td colspan="3" height="3"></td>
+    </tr>
+    <tr align="center"> 
+      <td height="10" colspan="3" bgcolor="#F5F5F5"></td>
+    </tr>
+    <tr> 
+      <td height="30" colspan="3" align="center"> {dede:field name='powerby' /} 
+      </td>
+    </tr>
+  </table>
+</center></body></html>

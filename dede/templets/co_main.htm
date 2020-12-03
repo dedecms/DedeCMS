@@ -1,0 +1,122 @@
+{dede:page pagesize="25"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>采集节点管理</title>
+<script language="javascript" src="js/context_menu.js"></script>
+<script language="javascript" src="js/ieemu.js"></script>
+<script language="javascript">
+if(moz) {
+	extendEventObject();
+	extendElementModel();
+	emulateAttachEvent();
+}
+//编辑节点
+function EditNote(nid)
+{
+	location.href = "co_edit.php?nid="+nid;
+}
+//清空节点
+function ClearNote(nid)
+{
+	location.href = "action_co_clear.php?nid="+nid;
+}
+//删除节点
+function DelNote(nid)
+{
+	if(window.confirm('你确定要删除这个节点吗?'))
+	{ location.href = "action_co_do.php?dopost=delete&nid="+nid; }
+}
+//查看已下载的内容
+function ViewDown(nid)
+{
+	location.href = "co_url.php?nid="+nid;
+}
+//测试规则
+function TestRule(nid)
+{
+	location.href = "co_test_rule.php?nid="+nid;
+}
+//导出采集
+function ExportDown(nid)
+{
+	location.href = "co_export.php?nid="+nid;;
+}
+//采集所选节点
+function GatherSel(nid)
+{
+	location.href = "co_gather_start.php?nid="+nid;
+}
+//复制所选节点
+function CopyNote(nid)
+{
+	location.href = "action_co_do.php?dopost=copy&nid="+nid;
+}
+//上下文菜单
+function ShowMenu(obj,nid)
+{
+  var eobj,popupoptions
+  popupoptions = [
+    new ContextItem("更改当前节点",function(){ EditNote(nid); }),
+    new ContextSeperator(),
+    new ContextItem("测试当前节点",function(){ TestRule(nid); }),
+    new ContextItem("采集当前节点",function(){ GatherSel(nid); }),
+    new ContextSeperator(),
+    new ContextItem("查看采集内容",function(){ ViewDown(nid); }),
+    new ContextItem("导出采集",function(){ ExportDown(nid); }),
+    new ContextSeperator(),
+    new ContextItem("清空已下载信息",function(){ ClearNote(nid); }),
+    new ContextItem("删除当前节点",function(){ DelNote(nid); }),
+    new ContextSeperator(),
+    new ContextItem("复制当前节点",function(){ CopyNote(nid); }),
+    new ContextSeperator()
+  ]
+  ContextMenu.display(popupoptions)
+}
+</script>
+<link href="base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8' onload="ContextMenu.intializeContextMenu()">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+  <tr> 
+    <td height="20" colspan="7" background='img/tbg.gif'>
+    	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="20%" height="18"><strong>采集节点管理：</strong></td>
+          <td width="80%" align="right"> 
+         <input type="button" name="ba" value="添加新节点" onClick="location='co_add.php';" class="np2" style="width:100">
+       </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr align="center" bgcolor="#FAFAF1"> 
+	<td width="8%">选择</td>
+    <td width="32%">节点名称</td>
+    <td width="18%">隶属类目</td>
+    <td width="10%">最后采集日期</td>
+    <td width="10%">加入日期</td>
+    <td width="10%">编码</td>
+    <td width="10%">网址数</td>
+  </tr>
+  <form name="form1">
+  {dede:datalist}
+  <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(this,[field:nid /]);"> 
+    <td><input type='checkbox' name='nids' value='[field:nid /]' class='np'></td>
+    <td><a href='co_url.php?nid=[field:nid /]'>[field:gathername /]</a></td>
+    <td>[field:typename /]</td>
+    <td>[field:lasttime function='GetDatePage("@me")' /]</td>
+    <td>[field:savetime function='GetDatePage("@me")' /]</td>
+    <td>[field:language /]</td>
+    <td>[field:nid function='GetTJ("@me")' /]</td>
+  </tr>
+  {/dede:datalist}
+</form>
+  <tr> 
+    <td height="24" colspan="7" bgcolor="#FCFDF7" align="center">
+    {dede:pagelist size='5' /}
+    </td>
+  </tr>
+</table>
+</body>
+</html>

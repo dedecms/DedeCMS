@@ -1,8 +1,8 @@
 <?
-require("config.php");
-if(empty($activepath)) $activepath=$imgview_dir;
+require_once(dirname(__FILE__)."/config.php");
+if(empty($activepath)) $activepath=$cfg_medias_dir;
 $activepath = ereg_replace("/{1,}","/",$activepath);
-$truePath = $base_dir.$activepath;
+$truePath = $cfg_basedir.$activepath;
 $listSize=5;
 function GetPrePath($nowPath)
 {
@@ -105,7 +105,8 @@ function GetImgFile($truePath,$nowPath,$fileName)
 	$toW=102;
 	$toH=102;
 	$srcFile = $truePath."/".$fileName;
-	$data = GetImageSize($srcFile,&$info);
+	$info = "";
+	$data = GetImageSize($srcFile,$info);
 	$srcW=$data[0];
 	$srcH=$data[1];
 	if($toW>=$srcW&&$toH>=$srcH)
@@ -173,7 +174,8 @@ function getPic(str)
                 <tr> 
                   <td width="6%">&nbsp;</td>
                   <td width="44%"><input name="imageField" type="image" src="img/next.gif" width="52" height="20" border="0" style="border:0;height:20"></td>
-                  <td width="50%"></td>
+                  
+              <td width="50%"><a href="file_manage_main.php?activepath=<?=$activepath?>"><img src="img/file_view.gif" width="60" height="20" border="0"></a></td>
                 </tr>
               </table></td>
           <td width="22%" bgcolor="#F9F9F7">

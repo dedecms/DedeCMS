@@ -1,0 +1,31 @@
+<?
+require_once(dirname(__FILE__)."/config.php");
+require_once(dirname(__FILE__)."/../include/pub_datalist.php");
+require_once(dirname(__FILE__)."/../include/inc_functions.php");
+setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
+
+function GetSta($sta,$ID)
+{
+	if($sta==1)
+	{
+		if($ID>0) return "启用  &gt; <a href='mychannel_edit.php?dopost=hide&ID=$ID'><u>禁用</u></a>";
+		else return "固定项目";
+	}
+	else return "禁用 &gt; <a href='mychannel_edit.php?dopost=show&ID=$ID'><u>启用</u></a>";
+}
+
+function IsSystem($s)
+{
+	if($s==1) return "系统模型";
+	else return "自动模型";
+}
+
+$sql = "Select ID,nid,typename,addtable,isshow,issystem From #@__channeltype order by ID desc";
+
+$dlist = new DataList();
+$dlist->Init();
+$dlist->SetSource($sql);
+$dlist->SetTemplet(dirname(__FILE__)."/templets/mychannel_main.htm");
+$dlist->display();
+$dlist->Close();
+?>

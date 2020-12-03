@@ -1,0 +1,43 @@
+{dede:page pagesize="20"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>下载地址列表</title>
+<link href="img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="700" border="0" align="center" cellspacing="2">
+  <tr> 
+    <td><img src="img/softlinks.gif" width="320" height="46"></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCC99" height="6"></td>
+  </tr>
+  <tr>
+    <td bgcolor="#F2F7E6">软件名称：</td>
+  </tr>
+  <tr> 
+    <td>
+    	<a href='{dede:global name='arcurl'/}' style='font-size:11pt'>
+    	{dede:global name='arctitle'/}
+    	</a>
+    </td>
+  </tr>
+  <tr> 
+    <td height="23" bgcolor="#F2F7E6">下载地址列表： </td>
+  </tr>
+  <tr> 
+    <td height="78">{dede:global name='downlinks'/}</td>
+  </tr>
+</table>
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="28" align="center">
+<hr size="1"></td>
+  </tr>
+  <tr> 
+    <td height="40" align="center">{dede:global name='cfg_powerby'/}</td>
+  </tr>
+</table>
+</body>
+</html>

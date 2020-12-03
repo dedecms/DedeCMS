@@ -1,149 +1,128 @@
 <?
-//不一定要求你用手工更改配置,但看一下这个文件对你更好的使用本系统是有帮助的
+/*-----------------------------------------
+// DedeCms 主配置文件
+// 如果你需要改动某些选项，请先备份本文件
+-----------------------------------------*/
 
-$registerGlobals = @ini_get("register_globals");
-$isUrlOpen = @ini_get("allow_url_fopen");
+require_once(dirname(__FILE__)."/config_start.php");
 
-if(!$registerGlobals) require_once("register_extern.php");
+//站点根网址
+$cfg_basehost = "~baseurl~";
 
-//网站根目录的绝对路径和站点网址
+//DedeCms安装目录
+$cfg_cmspath = "~basepath~";
 
-$base_dir="~basedir~";
-$base_url = "~baseurl~";
+//站点根目录
+$ndir = str_replace("\\","/",dirname(__FILE__));
+$cfg_basedir = eregi_replace($cfg_cmspath."/include[/]{0,1}$","",$ndir);
 
 //数据库连接信息
-$dbname = "~dbname~";
-$dbhost = "~dbhost~";
-$dbusername = "~dbuser~";
-$dbuserpwd = "~dbpwd~";
+$cfg_dbname = "~dbname~";
+$cfg_dbhost = "~dbhost~";
+$cfg_dbuser = "~dbuser~";
+$cfg_dbpwd = "~dbpwd~";
+$cfg_dbprefix = "~dbprefix~";
+
+//cookie加密码
+$cfg_cookie_encode = "feWQRETREWteyt4rWETR";
 
 //网页首页链接和名称
-$index_url="~indexurl~";
-$index_name="首页";
+$cfg_indexurl = "~indexurl~";
+$cfg_indexname = "首页";
 
 //网站名称，RSS列表中,将以这个名称作为网站的描述
-$webname = "~webname~"; 
+$cfg_webname = "~cfg_webname~"; 
 
 //统管理员的Email,网站与发信有关的程序会用这个Email
-$admin_email = "~adminemail~";
+$cfg_adminemail = "~email~";
 
-//文章的路径，建议按默认，如果要更改，必须为与管理目录同级深度的目录
-$art_dir = "~artdir~";
+//DedeCms 版本信息
+
+$cfg_powerby = "<a href='http://www.dedecms.com' target='_blank'>Power by DedeCms 织梦内容管理系统</a>";
+
+$cfg_version = "3_0_1"; //请不要删除本项，否则系统无法正确接收最新漏洞或升级信息
+
+//可视化编辑器选项
+//目前支持的编辑器 fck
+//考虑在线完整网页编辑原因，暂不开放对其它编辑器的支持
+
+$cfg_html_editor = "fck";
+
+//文档默认保存路径
+//对于没有归类的文章也会保存在这个目录
+//---------------------------------------------------
+$cfg_arcdir = $cfg_cmspath."/html";
+
+//模板的存放目录
+$cfg_templets_dir = $cfg_cmspath."/templets";
 
 //图片浏览器的默认路径
-$imgview_dir = "~imgviewdir~";
+$cfg_medias_dir = $cfg_cmspath."/upimg";
 
-//动态文件的目录，这个目录是用于存放计数器、投票、评论等程序的必要动态程序
-$art_php_dir = "~phpdir~";
+//插件目录，这个目录是用于存放计数器、投票、评论等程序的必要动态程序
+$cfg_plus_dir = $cfg_cmspath."/plus";
+
+//扩展目录，保存RSS、网站地图、RSS地图、JS文件等扩展内容
+//为了不弄太多系统目录,把这些东东都放到 $cfg_plus_dir 中
+$cfg_extend_dir = $cfg_plus_dir;
+
+//会员目录
+$cfg_member_dir = $cfg_cmspath."/member";
 
 //数据备份目录
-$bak_dir = $art_php_dir."~bakdir~";
+$cfg_backup_dir = $cfg_plus_dir."/~bakdir~";
 
-//生成文件的扩展名，建议用 .htm 或 .html ,如有需要,你也可以用 .php 或 .shtml
-$art_shortname = "~artshortname~";
+//上传的普通图片的路径,建议按默认
+$cfg_image_dir = $cfg_medias_dir."/allimg";
 
-//HTML的保存路径，选项为:
-//[1] listdir 表示在类目的目录下以 ID.htm 的形式生成文件
-//[2] maketime 表示以 $artdir/year/monthday/ID 来生成文件
-//如果你是第一次使用，推荐用这种文件形式，如果是V0.8升级版本，请用listdir形式
-$art_nametag = "~artnametag~";
+//上传的缩略图
+$ddcfg_image_dir = $cfg_medias_dir."/litimg";
+//缩略图的大小限制
+$cfg_ddimg_width = 200;
+$cfg_ddimg_height = 150;
+//图集默认显示图片的大小
+$cfg_album_width = 600;
+
+//专题列表的存放路径
+$cfg_special = $cfg_cmspath."/special";
+
+//用户投稿图片存放目录
+$cfg_user_dir = $cfg_medias_dir."/userup";
+
+//上传的软件目录
+$cfg_soft_dir = $cfg_medias_dir."/soft";
+
+//上传的多媒体文件目录
+$cfg_other_medias = $cfg_medias_dir."/media";
+
+//文件选择器可浏览的文件类型
+$cfg_imgtype = "jpg|gif|png";
+
+$cfg_softtype = "exe|zip|gz|rar|iso|doc|xsl|ppt|wps";
+
+$cfg_mediatype = "swf|mpg|dat|avi|mp3|rm|rmvb|wmv|asf|vob|wma|wav|mid|mov";
+
+//检测目录，如果你确保所有目录都已经创建，可以屏蔽这个语句
+require_once(dirname(__FILE__)."/config_makenewdir.php");
+
+//附加选项：
+//-------------------------------
+
+$cfg_specnote = 6; //专题的最大节点数
+
+$art_shortname = ".html"; //默认扩展名，仅在命名规则不含扩展名的时候调用
+
+//文档的默认命名规则
+$cfg_df_namerule = "{Y}/{M}{D}/{aid}.html";
+
+//类目位置的间隔符号,类目>>类目二>>类目三
+$cfg_list_symbol = " &gt; ";
 
 //新建目录的权限
 //如果你使用别的属性，本程不保证程序能顺利在Linux或Unix系统运行
-$dir_purview = 0755;
+$cfg_dir_purview = 0777;
 
-//是否允许用户投稿, -1 表示所有会员允许投稿
-//如果大于-1，表示允许投稿的会员级别代码，如果你不想用户可以投稿，请改为 10000 之类的数字
-$userSendArt = -1;
+require_once(dirname(__FILE__)."/pub_db_mysql.php");
+require_once(dirname(__FILE__)."/inc_functions.php");
 
-//--------------------------------
-//以下选项如无必要，不建议更改//
-
-//标记风格
-$tag_start_char = "{";
-$tag_end_char = "}";
-
-//默认的名字空间，不建议更改
-$tag_namespace = "dede";
-
-//上传的图片的路径,建议按默认
-$img_dir = $imgview_dir."/uploadimg";
-
-//缩略图
-$ddimg_dir = $imgview_dir."/artlit";
-
-//用户投稿图片存放目录
-$userimg_dir = $imgview_dir."/user";
-
-//上传的软件目录
-$soft_dir = $imgview_dir."/uploadsoft";
-
-//友情链接图标的目录
-$flink_dir = $imgview_dir."/flink";
-
-//模板的存放目录
-$mod_dir = $art_php_dir."/modpage";
-
-if(!is_dir($art_dir)) require("start_newdir.php");
-
-/////////////////////////////////////////////////////////////
-//相关的配置选项结束
-//以下为常用函数
-/////////////////////////////////////////////////////////////
-//-----连接MySql数据库----------------
-function connectMySql()
-{
-	global $dbname,$dbhost,$dbusername,$dbuserpwd;
-	$openconn = mysql_pconnect($dbhost,$dbusername,$dbuserpwd) or die("无法连接MySQL数据库!");
-	mysql_select_db($dbname,$openconn);
-	return $openconn;
-}
-//-----中文字符截取--------
-function cn_substr($str,$len)
-{
-  return cn_midstr($str,0,$len);
-}
-function cn_midstr($str,$start,$len){
-  $i=0;
-  $dd=0;
-  while($i<$start)
-  {
-  		$ch=substr($str,$i,1);
-  		if(ord($ch)>127) $dd++;
-  		else $dd=$dd+2;
-  		$i++;
-  }
-  if($dd%2!=0) $start++;
-  $i=$start;
-  $endnum = $start+$len;
-  while($i<$endnum)
-  {
-    $ch=substr($str,$i,1);
-    if(ord($ch)>127) $i++;
-      $i++;
-  }
-  $restr=substr($str,$start,$i-$start);
-  return $restr;
-}
-//-------返提示信息----------
-function ShowMsg($msg,$gotoPage)
-{
-	$msg = str_replace("'","`",trim($msg));
-	$gotoPage = str_replace("'","`",trim($gotoPage));
-	echo "<script language='javascript'>\n";
-	echo "alert('$msg');";
-	if($gotoPage=="back")
-	{
-		echo "history.go(-1);\r\n";
-	}
-	else if(ereg("^-",$gotoPage))
-	{
-		echo "history.go($gotoPage);\r\n";
-	}
-	else if($gotoPage!="")
-	{
-		echo "location.href='$gotoPage';\r\n";
-	}
-	echo "</script>";
-}
 ?>

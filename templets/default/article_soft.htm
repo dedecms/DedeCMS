@@ -1,0 +1,200 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:field name='title' /}</title>
+<link href="{dede:field name='phpurl' /}/img/base.css" rel="stylesheet" type="text/css">
+<script language='javascript'>
+	function FontZoom(fsize){
+		var ctext = document.getElementById("content");
+		ctext.style.fontSize = fsize +"pt";
+	}
+</script>
+</head>
+<body bgcolor="#008000" leftmargin="0" topmargin="0">
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr> 
+<td height="56" valign="bottom"> <a href='http://www.dedecms.com'><img src="{dede:field name='phpurl' /}/img/df_dedetitle.gif" width="250" height="53" border="0"></a> 
+</td>
+</tr>
+<tr> 
+<td height="28" valign="bottom" background="{dede:field name='phpurl' /}/img/l_mbg.gif"> 
+&nbsp; <a href='{dede:field name='indexurl'/}'>{dede:field name='indexname'/}</a> 
+{dede:channel row='8' type='top'} | <a href='[field:typelink /]'>[field:typename 
+/]</a> {/dede:channel} | <a href='{dede:field name='memberurl'/}/index.php'>会员中心</a> 
+</td>
+</tr>
+</table>
+<center>
+<div style='font-size:2pt;width:760;background-color:#FFFFFF;'>&nbsp;</div>
+</center>
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="0" bgcolor="#FFFFFF">
+<tr> 
+<td width="580" valign="top">
+<a name="top"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td width="99%" height="26" background="{dede:field name='phpurl' /}/img/df_gbg.gif"> 
+&nbsp;当前位置：{dede:field name='position' /}详细</td>
+<td width="1%" rowspan="5">&nbsp;</td>
+</tr>
+<tr> 
+<td height="419" valign="top"> <div style="font-size:2pt">&nbsp; 
+<table width="99%" border="0" align="right" cellpadding="1" cellspacing="1" bgcolor="#BBC7AD">
+<tr bgcolor="#F5FBE1"> 
+<td width="17%" height="28" align="center">软件名称：</td>
+<td height="27" colspan="2">　{dede:field name='title'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">文件类型：</td>
+<td width="38%" bgcolor="#F5F8F3">　{dede:field name='filetype'/}</td>
+<td width="45%" rowspan="8" align="center" bgcolor="#FFFFFF"> 
+<img src='{dede:field name='litpic'/}' width="160" height="120"/> 
+</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#FFFFFF">界面语言：</td>
+<td>　{dede:field name='language'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">软件类型：</td>
+<td bgcolor="#F5F8F3">　{dede:field name='softtype'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#FFFFFF">运行环境：</td>
+<td>　{dede:field name='os'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">授权方式：</td>
+<td bgcolor="#F5F8F3">　{dede:field name='accredit'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#FFFFFF">软件大小：</td>
+<td>　{dede:field name='softsize'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">软件等级：</td>
+<td bgcolor="#F5F8F3">　{dede:field name='softrank'/}</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#FFFFFF">发布时间：</td>
+<td>　{dede:field name='pubdate' function="GetDateMk('@me')"/}</td>
+</tr>
+<tr bgcolor="#F5F8F3"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">官方网址：</td>
+<td colspan="2"> 
+	{dede:field name='officialurl'/} 作者：{dede:field name='writer'/}
+</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="22" align="center" bgcolor="#FFFFFF">演示网址：</td>
+<td colspan="2">
+	{dede:field name='officialdemo'/}
+</td>
+</tr>
+<tr bgcolor="#F5F8F3"> 
+<td width="17%" height="22" align="center" bgcolor="#F5F8F3">软件说明：</td>
+<td colspan="2">&nbsp;</td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td height="96" colspan="3" align="center" bgcolor="#FFFFFF"><table width="98%" height="75" border="0" cellpadding="1" cellspacing="1">
+<tr> 
+<td valign="top">{dede:field name='introduce'/}</td>
+</tr>
+</table></td>
+</tr>
+<tr bgcolor="#F5F8F3"> 
+<td width="17%" height="30" align="center" bgcolor="#F5F8F3">下载地址：</td>
+<td colspan="2"> 　{dede:field name='softlinks'/} </td>
+</tr>
+<tr bgcolor="#FFFFFF"> 
+<td width="17%" height="84" align="center" bgcolor="#FFFFFF">下载说明：</td>
+<td colspan="2">☉推荐使用网际快车下载本站软件，使用 WinRAR v3.10 以上版本解压本站软件。<br>
+☉如果这个软件总是不能下载的请点击报告错误,谢谢合作!!<br>
+☉下载本站资源，如果服务器暂不能下载请过一段时间重试！<br>
+☉如果遇到什么问题，请到本站论坛去咨寻，我们将在那里提供更多 、更好的资源！<br>
+☉本站提供的一些商业软件是供学习研究之用，如用于商业用途，请购买正版。 </td>
+</tr>
+</table>
+</div></td>
+</tr>
+		<tr><td height="6"></td></tr>
+<tr>
+<td height="26" align="center" style="border-top:1px solid #cccccc">[<a href="{dede:field name='phpurl'/}/stow.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/file_move.gif" width="17" height="18" border="0">收藏</a>] 
+&nbsp; [<a href="{dede:field name='phpurl'/}/recommend.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menuarrow.gif" width="16" height="15" border="0">推荐</a>] 
+&nbsp; [<a href="{dede:field name='phpurl'/}/feedback.php?arcID={dede:field name=ID/}"><img src="{dede:field name='phpurl'/}/img/menumember.gif" width="16" height="15" border="0">评论</a>] 
+</td>
+</tr>
+<tr> 
+<td height="26" align="center" style="border-top:1px solid #cccccc"><table width="98%" border="0" align="center" cellpadding="1" cellspacing="1">
+<form action="{dede:field name='phpurl' /}/feedback.php?action=send" method="post" name="feedback">
+<input type="hidden" name="arcID" value="{dede:field name="id"/}">
+<tr> 
+<td>用户名： 
+<input name="username" type="text" id="username" size="10" class="nb">
+（<a href="{dede:field name='memberurl' /}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>） 
+密码： 
+<input name="pwd" type="text" id="pwd" size="10"class="nb"> 
+<input name="notuser" type="checkbox" id="notuser" value="1">
+匿名评论 [<a href="{dede:field name='phpurl' /}/feedback.php?arcID={dede:field name="id"/}">所有评论</a>] 
+<input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'> 
+</td>
+</tr>
+<tr> 
+<td>评论内容：(不能超过250字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
+</tr>
+<tr> 
+<td><textarea name="msg" cols="75" rows="4" id="msg" style="width:98%"></textarea></td>
+</tr>
+</form>
+</table></td>
+</tr>
+<tr> 
+<td height="86" valign="top" bgcolor="#FAFEF1"> <table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#C5CDBE">
+<tr> 
+<td height="23" bgcolor="#F0F8D8">&nbsp;§最新评论：</td>
+</tr>
+<tr> 
+<td height="69" bgcolor="#FFFFFF"><script src="{dede:field name='phpurl'/}/feedback_js.php?arcID={dede:field name='ID'/}"></script></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+<td width="180" valign="top" bgcolor="#E7FBD2"> 
+<div style="font-size:2pt">&nbsp;</div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl' /}/img/l_dd1.gif" width="29" height="24"></td>
+<td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">热门软件</font></strong></td>
+</tr>
+<tr valign="top" bgcolor="#F4FEE3"> 
+<td height="120" colspan="2" style="border-top:1px solid #bcbcbc" class="ctfield">
+	{dede:arclist orderby='click' titlelen='24' row='8'/}
+</td>
+</tr>
+</table>
+<div style="font-size:2pt">&nbsp;</div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="18%" height="24" align="center" bgcolor="#D3E4B6"><img src="{dede:field name='phpurl' /}/img/l_dd2.gif" width="29" height="24"></td>
+<td width="82%" bgcolor="#F0F8D8"><strong>&nbsp;<font color="#7D845E">相关软件</font></strong></td>
+</tr>
+<tr valign="top" bgcolor="#F4FEE3"> 
+<td height="120" colspan="2" style="border-top:1px solid #bcbcbc" class="ctfield">
+	{dede:likeart titlelen='30' row='8'/}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}" language="javascript"></script>
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr> 
+<td height="20" bgcolor="#EFF1EC">&nbsp;</td>
+</tr>
+<tr> 
+<td height="50" align="center">{dede:field name='powerby'/}</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,157 @@
+{dede:page pagesize="8"/}
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
+<title>评论管理</title>
+<script language='javascript'>
+//获得选中文件的文件名
+function getCheckboxItem()
+{
+	var allSel="";
+	if(document.feedback.fid.value) return document.feedback.fid.value;
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		if(document.feedback.fid[i].checked)
+		{
+			if(allSel=="")
+				allSel=document.feedback.fid[i].value;
+			else
+				allSel=allSel+"`"+document.feedback.fid[i].value;
+		}
+	}
+	return allSel;	
+}
+function selAll()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		document.feedback.fid[i].checked=true;
+	}
+}
+function selNone()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		document.feedback.fid[i].checked=false;
+	}
+}
+function selNor()
+{
+	for(i=0;i<document.feedback.fid.length;i++)
+	{
+		if(document.feedback.fid[i].checked==false)
+			document.feedback.fid[i].checked=true;
+		else
+			document.feedback.fid[i].checked=false;
+		
+	}
+}
+function delFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else if(window.confirm('你确定要删除这些评论吗?')) location.href="feedback_d.php?job=del&fid="+qstr;
+}
+function checkFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else location.href="feedback_d.php?job=check&fid="+qstr;
+}
+function editFeedback()
+{
+	var qstr=getCheckboxItem();
+	if(qstr=="") alert("你没选中任何内容！");
+	else location.href="feedback_edit.php?job=edit&fid="+qstr;
+}
+</script>
+<link href='base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="99%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666">
+<form name='form1'>
+<tr>
+<td height="19" background='img/tbg.gif'>
+<b>评论管理</b>
+关键字：
+<input type='text' size='15' name='keyword' style='width:150'> 
+ <select name="typeid" style="width:180">
+ <option value="0">--请选择--</option>
+ {dede:global name='openarray' /}
+</select>
+<input type='submit' name='sb' value=' 确定 '>
+ </td>
+</tr>
+</form>
+<form name='feedback'>
+<tr>
+<td height="215" bgcolor="#FFFFFF" valign="top">
+<table width='100%' border='0' cellpadding='0' cellspacing='0'>
+{dede:datalist}
+<tr height='25'> 
+<td>
+<table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
+<tr bgcolor="#F7F7F7"> 
+<td width="9%"> &nbsp;选择 
+<input name="fid" type="checkbox" class="np" id="fid" value="[field:ID /]"> 
+</td>
+<td width="37%">
+	&nbsp;用户： [field:username /]
+&nbsp;文档：<a href="[field:global name='cfg_plus_dir'/]/view.php?aid=[field:aid/]" target="_blank">[field:arctitle /]</a>
+</td>
+<td width="18%" align="center">IP地址： [field:ip /] </td>
+<td width="26%">
+	&nbsp;时间： [field:dtime function="GetDateTimeMK('@me')" /]
+</td>
+<td width="10%" align="center">
+	<a href='feedback_edit.php?ID=[field:ID /]'><img src="img/feedback-edit.gif" border="0" width="45" height="18"></a>
+</td>
+</tr>
+<tr align="center" bgcolor="#FFFFFF"> 
+<td height="28" colspan="5">
+	<table width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td>
+[field:ischeck function="IsCheck('@me')" /]
+[field:msg /]
+</td>
+</tr>
+</table></td>
+</tr>
+</table>
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td height="3"></td>
+</tr>
+</table></td>
+</tr>
+{/dede:datalist}
+<tr>
+<td height='20' align='center' bgcolor='#EAEEE1'>
+{dede:pagelist listsize='7' /}
+</td>
+</tr>
+<tr> 
+<td height='30'>
+<table width="98%">
+<tr>
+<td width="30%">
+<input type='button' name='kk1' value='全选' onClick="selAll()" class="ll"> 
+<input type='button' name='kk2' value='取消' onClick="selNone()" class="ll">
+<input type='button' name='kk3' value='反选' onClick="selNor()" class="ll">
+</td>
+<td align="right">
+<input type='button' name='db' value=' 删除评论 ' onClick="delFeedback()">
+<input type='button' name='db2' value=' 审核评论 ' onClick="checkFeedback()">
+</td>
+</tr>
+</table>
+ </td>
+</tr>
+</table>
+</td>
+</tr>
+</form>
+</table>
+</body>
+</html>

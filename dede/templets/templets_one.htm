@@ -1,0 +1,44 @@
+{dede:page pagesize="20"/}
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
+<title>单独页面管理</title>
+<link href='base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+  <tr>
+   <td height="19" background="img/tbg.gif" colspan="5">
+     <b>单独页面管理</b>
+     &nbsp;[<a href="templets_one_add.php"><u>增加一个页面</u></a>]
+	 </td>
+  </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td width="10%">编号</td>
+      <td width="30%">页面名称</td>
+      <td width="20%">是否编译</td>
+      <td width="20%">更改时间</td>
+      <td width="20%">管理</td>
+   </tr>
+   {dede:datalist}
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+        <td>[field:aid /]</td>
+        <td><a href="[field:global name='cfg_cmspath'/]/[field:filename/]" target='_blank'>[field:title /]</a></td>
+        <td>[field:ismake function='GetIsMake("@me")'/]</td>
+        <td>[field:uptime function='GetDateTimeMk(@me)'/]</td>
+        <td>
+          	<a href='templets_one_edit.php?aid=[field:aid /]&dopost=edit'>[更改]</a>
+		        <a href='templets_one_edit.php?aid=[field:aid /]&dopost=make' target='_blank'>[更新]</a>
+		        <a href='templets_one_edit.php?aid=[field:aid /]&dopost=delete'>[删除]</a>
+		    </td>
+     </tr>
+		{/dede:datalist}
+     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td colspan="5">{dede:pagelist listsize=6/}</td>
+     </tr>
+   </table>
+   </td>
+</tr>
+</table>
+</body>
+</html>

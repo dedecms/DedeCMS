@@ -1,5 +1,5 @@
 <?
-require("config.php");
+require_once(dirname(__FILE__)."/config.php");
 ?>
 <html>
 <head>
@@ -21,74 +21,77 @@ body {
       <b>§论坛扩展代码§</b>    </td>
   </tr>
   <tr>
-    <td height="250" colspan="2" bgcolor="#FFFFFF"><table width="90%"  border="0" align="center" cellpadding="2" cellspacing="2">
+    <td height="250" colspan="2" bgcolor="#FFFFFF">
+    	<table width="90%"  border="0" align="center" cellpadding="2" cellspacing="2">
       <tr>
-        <td colspan="2">　　由于PHP论坛种类繁多，织梦平台不可能花很大心思一一整合这些东西，本版本通过直接操作表的模板标记Loop，提供了直接调用这些论坛最新主题的代码，你只要把这些板块代码复制到主页模板或板块模板中即可使用(论坛与Dedecms必须在同一数据库)。<br>
-          　　Loop标记是DedeCms未来版本新为结构预备的标签，在V2.X版本版本中，由于文章的基本信息和文章内容混合在一起，如果使用动态列表，性能会比较低，在未来版本中会将文章的基本信息和实际内容分离，但在文章模板中，你可以通过loop标记来连接两个表，这样大大的增强系统的灵活性和提高整个系统的性能，并且对于图片、Flash、电影、软件等信息也将被分离，请密切留意DedeCms的3.0版本。<br>
-          　　在此不妨讨论一下这几个论坛：Discuz的结构和Phpwind的结构惊人的相近，不排除谁仿了谁的可能，但两者都是比较优秀的，至于VBB，则感觉有点混乱，PHPBB功能相对而言过于简单，我相信大家都知道应该选择那种论坛的了，在DedeCms的以后版本中，不排除自带论坛的可能性。</td>
+        <td colspan="2">
+        以下的代码提供在封面模板中调用论坛的主题贴子数据.
+        </td>
       </tr>
-	  <form name="mycode1" action="make_part_test.php" target="_blank" method="post">
+	  <form name="mycode1" action="action_tag_test.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">Discuz论坛：          </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b1" type="submit" id="b1" value=" 预览 "></td>
       </tr>
       <tr>
-        <td colspan="2"><textarea name="testcode" style="width:600" rows="8" id="testcode">论坛最新主题：<br>
+        <td colspan="2">
+<textarea name="partcode" style="width:600" rows="8" id="partcode">论坛最新主题：<br/>
 {dede:loop table="cdb_threads" sort="tid" row="10"}
-<a href="/dz/viewthread.php?tid=[loop:field name='tid'/]">
-·[loop:field name="subject" function="substr" parameter="0,30"/]
-([loop:field name="lastpost" function="date" parameter="m-d H:M"/])
+<a href="/dz/viewthread.php?tid=[field:tid /]">
+·[field:subject function="cn_substr('@me',30)" /]([field:lastpost function="date('m-d H:M','@me')" /])
 </a>
-<br>
-{/dede}</textarea></td>
+<br/>
+{/dede:loop}</textarea>
+    </td>
       </tr>
 	  </form>
-	  <form name="mycode2" action="make_part_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">PHPWIND论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b2" type="submit" id="b2" value=" 预览 "></td>
       </tr>
       <tr>
-        <td colspan="2"><textarea name="testcode" style="width:600" rows="8" id="testcode">论坛最新主题：<br>
+        <td colspan="2">
+        	<textarea name="partcode" style="width:600" rows="8" id="partcode">论坛最新主题：<br/>
 {dede:loop table="pw_threads" sort="tid" row="10"}
-<a href='/phpwind/read.php?tid=[loop:field name="tid"/]'>
-·[loop:field name="subject" function="substr" parameter="0,30"/]
-([loop:field name="lastpost" function="date" parameter="m-d H:M"/])
+<a href='/phpwind/read.php?tid=[field:tid /]'>
+·[field:subject function="cn_substr('@me',30)" /]([field:lastpost function="date('m-d H:M','@me')" /])
 </a>
-<br>
-{/dede}</textarea></td>
+<br/>
+{/dede:loop}</textarea>
+</td>
       </tr>
 	   </form>
-	  <form name="mycode2" action="make_part_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">VBB论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b3" type="submit" id="b3" value=" 预览 "></td>
       </tr>
       <tr>
-        <td colspan="2"><textarea name="testcode" style="width:600" rows="8" id="testcode">论坛最新讨论：<br>
+        <td colspan="2"><textarea name="partcode" style="width:600" rows="8" id="partcode">论坛最新讨论：<br/>
 {dede:loop table="thread" sort="threadid" row="10"}
 <a href='/vbb/showthread.php?threadid=[loop:field name="threadid"/]'>
-·[loop:field name="title" function="substr" parameter="0,30"/]
-([loop:field name="lastpost" function="date" parameter="m-d H:M"/])
+·[field:title function="cn_substr('@me',30)" /]([field:lastpost function="date('m-d H:M','@me')" /])
 </a>
-<br>
-{/dede}</textarea></td>
+<br/>
+{/dede:loop}</textarea></td>
       </tr>
 	   </form>
-	  <form name="mycode2" action="make_part_test.php" target="_blank" method="post">
+	  <form name="mycode2" action="action_tag_test.php" target="_blank" method="post">
       <tr>
         <td bgcolor="#F3F3F3">PHPBB论坛： </td>
         <td align="right" bgcolor="#F3F3F3"><input name="b4" type="submit" id="b4" value=" 预览 "></td>
       </tr>
       <tr>
         <td colspan="2"><b>
-          <textarea name="testcode" style="width:600" rows="7" id="testcode">{dede:loop table="phpbb_topics" sort="topic_id" row="10"}
+          <textarea name="partcode" style="width:600" rows="7" id="partcode">论坛最新讨论：<br/>
+{dede:loop table="phpbb_topics" sort="topic_id" row="10"}
 <a href='/phpbb/viewtopic.php?t=[loop:field name="topic_id"/]'>
-·[loop:field name="topic_title" function="substr" parameter="0,30"/]
+·[field:topic_title" function="cn_substr('@me',30)" /]
 </a>
-([loop:field name="topic_time" function="date" parameter="m-d H:M"/])
-<br>
-{/dede}</textarea>
+([field:topic_time" function="date('m-d H:M','@me')" /])
+<br/>
+{/dede:loop}</textarea>
         </b></td>
       </tr>
 	  </form>

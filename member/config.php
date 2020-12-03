@@ -1,60 +1,56 @@
 <?
-require("../dede/config_base.php");
-/////////////////////////////////
-if(empty($page)) $page="";
-if($page!="login"&&$page!="reg")
+require_once(dirname(__FILE__)."/../include/config_base.php");
+require_once(dirname(__FILE__)."/../include/inc_memberlogin.php");
+
+$cfg_ml = new MemberLogin(); 
+
+$cfg_member_menu = "
+<a href=\"index.php\"><u>会员主页</u></a>&nbsp;
+<a href=\"mystow.php\"><u>我的收藏夹</u></a>&nbsp;
+<a href=\"mypay.php\"><u>消费记录</u></a>&nbsp;
+<a href=\"artsend.php\"><u>投稿</u></a>&nbsp;
+<a href=\"artlist.php\"><u>管理稿件</u></a>&nbsp;
+<a href=\"edit_info.php\"><u>更改个人资料</u></a>&nbsp;
+<a href=\"index_do.php?fmdo=login&dopost=exit\"><u>退出登录</u></a>
+";
+
+//------------------------------
+//检查用户是否有权限进行某个操作
+//------------------------------
+function CheckRank($rank=0,$money=0)
 {
-	if(empty($_COOKIE["cookie_user"]))
-	{
-		echo "<script>//alert('你未登录或已经超时，请重新登录!');\r\nlocation.href='login.php';</script>";
+	global $cfg_ml,$cfg_member_dir;
+	if(!$cfg_ml->IsLogin()){
+		ShowMsg("你尚未登录或已经超时！",$cfg_member_dir."/login.php?gourl=".urlencode(GetCurUrl()));
 		exit();
 	}
-}
-//---获得会员等级-----------
-function getRank($conn,$rank)
-{
-	if($_COOKIE["cookie_isup"]=="0")
-	{
-	 $rs = mysql_query("select * From dede_membertype where rank=$rank",$conn);
-	 $row = mysql_fetch_object($rs);
-	 $member = $row->membername;
-	 echo "<table width='80%'><form name='form1' action='sendrank.php' method='post'><tr></td>\r\n";
-	 echo "你目前的级别是：".$member;
-	 $rs = mysql_query("select * From dede_membertype where rank>$rank And rank>1",$conn);
-	 if(mysql_num_rows($rs)>0)
-	 {
-		echo "，我要升级：<select name='rank' style='font-size:9pt;height:18'>";
-		while($row = mysql_fetch_object($rs))
+	else{
+		if($cfg_ml->M_Type < $rank)
 		{
-			echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n";
+		  $dsql = new DedeSql(false);
+		  $needname = "";
+		  if($cfg_ml->M_Type==0){
+		  	$row = $dsql->GetOne("Select membername From #@__arcrank where rank='$rank'");
+		  	$myname = "普通会员";
+		  	$needname = $row['membername'];
+		  }else
+		  {
+		  	$dsql->SetQuery("Select membername From #@__arcrank where rank='$rank' Or rank='".$cfg_ml->M_Type."' order by rank desc");
+		  	$dsql->Execute();
+		  	$row = $dsql->GetObject();
+		  	$needname = $row->membername;
+		  	if($row = $dsql->GetObject()){ $myname = $row->membername; }
+		  	else{ $myname = "普通会员"; }
+		  }
+		  $dsql->Close();
+		  ShowMsg("对不起，需要：<span style='font-size:11pt;color:red'>$needname</span> 才能访问本页面。<br>你目前的等级是：<span style='font-size:11pt;color:red'>$myname</span> 。","-1",0,5000);
+		  exit();
 		}
-		echo "</select> &nbsp;";
-		echo "<input type='submit' name='ss' value='确定申请' style='font-size:9pt;height:22'>\r\n";
-		echo "</td></tr></form></table>";
-	 }
+		else if($cfg_ml->M_Money < $money)
+		{
+			ShowMsg("对不起，需要花费金币：<span style='font-size:11pt;color:red'>$money</span> 才能访问本页面。<br>你目前拥有的金币是：<span style='font-size:11pt;color:red'>".$cfg_ml->M_Money."</span>  。","-1",0,5000);
+		  exit();
+		}
 	}
-	else
-	{
-		$rs = mysql_query("select * From dede_membertype where rank=".$_COOKIE["cookie_isup"],$conn);
-	 	$row = mysql_fetch_object($rs);
-	 	$member = $row->membername;
-	 	echo "你目前的状态是：申请升级至——".$member;
-	}
-}
-//获得文章链接
-function GetFileName($ID,$typedir,$stime,$rank=0)
-{
-	global $art_php_dir;
-	global $art_dir;
-	global $art_shortname;
-	global $art_nametag;
-	if($rank>0||$rank==-1) return $art_php_dir."/viewart.php?ID=$ID";
-	if($art_nametag=="maketime")
-	{
-		$ds = split("-",$stime);
-		return $art_dir."/".$ds[0]."/".$ds[1].$ds[2]."/".$ID.$art_shortname;			
-	}
-	else
-	return $art_dir."/".$typedir."/".$ID.$art_shortname;
 }
 ?>

@@ -1,9 +1,0 @@
-<?
-@mkdir($base_dir.$art_dir,0755);
-@mkdir($base_dir.$imgview_dir,0755);
-@mkdir($base_dir.$img_dir,0755);
-@mkdir($base_dir.$ddimg_dir,0755);
-@mkdir($base_dir.$userimg_dir,0755);
-@mkdir($base_dir.$soft_dir,0755);
-@mkdir($base_dir.$flink_dir,0755);
-?>

@@ -1,0 +1,85 @@
+{dede:page pagesize="20"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>用户评论：{dede:global name='arctitle'/}</title>
+<link href="img/base.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table width="700" border="0" align="center" cellspacing="2">
+  <tr> 
+    <td><img src="img/feedback.gif" width="320" height="46"></td>
+  </tr>
+  <tr> 
+    <td bgcolor="#CCCC99" height="6"></td>
+  </tr>
+  <tr>
+    <td height="26" bgcolor="#D0E8D2"> &nbsp;评论：<a href='{dede:global name='arcurl'/}' style='font-size:11pt'>{dede:global 
+      name='arctitle'/}</a> </td>
+  </tr>
+  <tr> 
+    <td> 
+      {dede:datalist}
+      <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#C9D0AC">
+        <tr bgcolor="#F5FAED"> 
+          <td width="25%">&nbsp;发言人： [field:username/] </td>
+          <td width="40%"> &nbsp;IP地址： [field:ip/] </td>
+          <td width="35%">&nbsp;时间： [field:dtime function='GetDateTimeMk("@me")'/] 
+          </td>
+        </tr>
+        <tr align="center" bgcolor="#FFFFFF"> 
+          <td height="28" colspan="3"> <table width="98%" border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td>
+                  [field:msg/]
+                </td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      <table width="98%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td height="3"></td>
+        </tr>
+      </table>
+      {/dede:datalist}
+    </td>
+  </tr>
+  <tr> 
+    <td align="center" bgcolor="#F2F7E6"> {dede:pagelist listsize='7'/} </td>
+  </tr>
+  <tr> 
+    <td> <table width="100%" border="0" cellpadding="1" cellspacing="1">
+        <form action="feedback.php" method="post" name="feedback">
+          <input type="hidden" name="action" value="send">
+          <input type="hidden" name="arcID" value="{dede:global name='arcID'/}">
+          <tr> 
+            <td>用户名： 
+              <input name="username" type="text" id="username" size="10" class="nb">
+              （<a href="../member/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>） 
+              密码： 
+              <input name="pwd" type="text" id="pwd" size="10"class="nb"> <input name="notuser" type="checkbox" id="notuser" value="1">
+              匿名评论 
+              <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'></td>
+          </tr>
+          <tr> 
+            <td>评论内容：(不能超过500字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
+          </tr>
+          <tr> 
+            <td><textarea name="msg" cols="75" rows="4" id="msg" style="width:98%"></textarea></td>
+          </tr>
+        </form>
+      </table></td>
+  </tr>
+</table>
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="28" align="center">
+<hr size="1"></td>
+  </tr>
+  <tr> 
+    <td height="40" align="center">{dede:global name='cfg_powerby'/}</td>
+  </tr>
+</table>
+</body>
+</html>

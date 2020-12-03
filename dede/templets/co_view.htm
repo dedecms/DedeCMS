@@ -1,0 +1,31 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>采集内容预览</title>
+<link href="base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#666666" align="center">
+  <tr> 
+    <td height="28" colspan="2" background='img/tbg.gif'><strong>采集内容预览：</strong>(系统会自动下载并处理未下载过的内容)</td>
+  </tr>
+  <tr bgcolor="#F8FCF1"> 
+    <td width="17%" height="24" align="center" bgcolor="#F8FCF1"><strong>字段名称</strong></td>
+    <td width="83%" align="center" bgcolor="#F8FCF1"><strong>内　容</strong></td>
+  </tr>
+ {dede:foreach array='fields'}
+  <tr> 
+    <td height="24" align="center" valign="top" bgcolor="#FFFFFF">
+	[field:key/]
+	</td>
+    <td bgcolor="#FFFFFF">
+	[field:value/]
+	</td>
+  </tr>
+ {/dede:foreach}
+  <tr bgcolor="#F8FCF1"> 
+    <td height="24" colspan="2">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,98 @@
+{dede:page pagesize="20"/}
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
+<title>网站会员管理</title>
+<link href='base.css' rel='stylesheet' type='text/css'>
+<style type="text/css">
+.rb{ border-right:1px solid #666666 }
+.tb{ border-top:1px solid #666666 }
+</style>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#666666">
+<tr> 
+<td height="24" colspan="8" background="img/tbg.gif"> <table width="620" border="0" cellspacing="0" cellpadding="0">
+<form action="member_main.php" name="form1" method="get">
+<tr> 
+<td width="160"><strong>&nbsp;网站会员管理</strong></td>
+<td width="60" align="center">关键字：</td>
+<td width="120" align="center"><input name="keyword" type="text" id="keyword" size="12" style="width:100"></td>
+<td width="60">
+<select name="sex" id="sex">
+{dede:global name='sexform'/}
+<option value="男">男</option>
+<option value="女">女</option>
+<option value="0">不限</option>
+</select>
+</td>
+<td width="40">排序：</td>
+<td width="100">
+<select name="sortkey" id="sortkey">
+{dede:global name='sortform'/}
+<option value="ID">ID/注册时间</option>
+<option value="logintime">登录时间</option>
+</select>
+</td>
+<td align="center"> <input name="imageField" class="np" type="image" src="img/button_search.gif" width="60" height="22" border="0"> 
+</td>
+</tr>
+</form>
+</table></td>
+</tr>
+<tr bgcolor="#EDF7D0"> 
+<td width="8%" height="26" align="center">ID</td>
+<td width="11%" align="center">登录名</td>
+<td width="11%" align="center">密码</td>
+<td width="11%" align="center">昵称</td>
+<td width="19%" align="center">Email</td>
+<td width="13%" align="center">地区</td>
+<td width="12%" align="center">最后登录</td>
+<td align="center">操作</td>
+</tr>
+{dede:datalist} 
+<tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#F3F7EA';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+<td>[field:ID/]</td>
+<td height="26">[field:userid/]</td>
+<td height="26">[field:pwd/]</td>
+<td height="26">[field:uname/]</td>
+<td height="26" colspan="3" align="center"> 
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="center"> 
+<td width="43%" height="20" class="rb">
+		[field:email/]
+		</td>
+<td width="30%" class="rb">
+		[field:province function="GetAreaName('@me','空')"/]&nbsp;[field:city function="GetAreaName('@me','')"/]
+		</td>
+<td>
+	[field:logintime function="GetDateMk('@me')"/]
+</td>
+</tr>
+<tr bgcolor="#F3F7EA"> 
+<td height="20" colspan="3" class="tb">
+	性别：[field:sex /]
+	<img src="img/adminuserico.gif" width="16" height="15">
+	[field:membertype function="GetMemberName('@me','普通会员')"/]
+	[field:uptype function="GetMemberName('@me','ut')"/]
+	金币：
+	[field:money/]
+	[field:upmoney function="GetUpMoney(@me)"/]
+</td>
+ </tr>
+</table></td>
+<td height="26" align="center">
+<a href="member_view.php?ID=[field:ID/]">[查看]</a>
+<a href="member_do.php?ID=[field:ID/]&dopost=delmember">[删除]</a>
+<br>
+<a href="member_do.php?ID=[field:ID/]&dopost=uprank&mtype=[field:membertype/]&uptype=[field:uptype/]">[升级]</a>
+<a href="member_do.php?ID=[field:ID/]&dopost=addmoney&upmoney=[field:upmoney/]">[充值]</a>
+</td>
+</tr>
+{/dede:datalist} 
+<tr bgcolor="#F1FDE3"> 
+<td height="26" colspan="8" align="center"> {dede:pagelist listsize=6/} </td>
+</tr>
+</table>
+</body>
+</html>

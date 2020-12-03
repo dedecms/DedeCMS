@@ -1,3 +1,0 @@
-ALTER TABLE `dede_art` CHANGE `body` `body` MEDIUMTEXT NOT NULL;
-ALTER TABLE `dede_arttype` ADD `ispart` SMALLINT DEFAULT '0' NOT NULL;
-ALTER TABLE `dede_arttype`ADD `description` VARCHAR(250) DEFAULT '' NOT NULL;

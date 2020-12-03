@@ -1,0 +1,52 @@
+{dede:page pagesize="20"/}
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>我的收藏夹</title>
+<link href="base.css" rel="stylesheet" type="text/css">	
+</head>
+<body leftmargin="0" topmargin="0">
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #666666">
+  <tr bgcolor="#FFFFFF"> 
+    <td height="50" colspan="2"><img src="img/member.gif" width="320" height="46"></td>
+  </tr>
+  <tr> 
+    <td width="168" bordercolor="#FFFFFF" bgcolor="#808DB5">&nbsp;</td>
+    <td width="575" align="right">{dede:global name='cfg_member_menu' /}</td>
+  </tr>
+</table>
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td height="6"></td>
+  </tr>
+  <tr> 
+    <td height="21" valign="bottom" background="img/tbg.gif"><font color="#333333"> 
+      <strong>　&nbsp;我的收藏夹：</strong></font></td>
+  </tr>
+  <tr> 
+    <td height="183" valign="top"> <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#B0C693">
+        <tr bgcolor="#F1F5E9"> 
+          <td width="47%" align="center">档案标题</td>
+          <td width="31%" align="center">收藏时间</td>
+          <td width="22%" align="center">管理</td>
+        </tr>
+        {dede:datalist} 
+        <tr bgcolor="#FFFFFF" align="center"> 
+          <td><a href='archives_do.php?dopost=viewArchives&aid=[field:arcid/]' target='_blank'>[field:title 
+            /]</a></td>
+          <td>[field:addtime function='GetDateTimeMk("@me")'/]</td>
+          <td><a href='archives_do.php?dopost=delStow&aid=[field:aid/]' target='_blank'>[删除该项]</a></td>
+        </tr>
+        {/dede:datalist} 
+        <tr bgcolor="#F1F5E9"> 
+          <td colspan="3" align="center"> {dede:pagelist listsize='7' /} </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td height="24" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<p align='center'>{dede:global name='cfg_powerby' /} </p>
+</body>
+</html>

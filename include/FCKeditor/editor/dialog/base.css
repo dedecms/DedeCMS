@@ -1,0 +1,28 @@
+td {font-size: 9pt;line-height: 1.5;}
+a:link { font-size: 9pt; color: #000000; text-decoration: none }
+a:visited{ font-size: 9pt; color: #000000; text-decoration: none }
+a:hover {color: red;background-color:#C5E8A1}
+.linerow{border-bottom: 1px solid #ACACAC;}
+.coolbg {border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #E6E6E6}
+.ll {border-right: 2px solid #ACACAC; border-bottom: 2px solid #ACACAC; background-color: #E6E6E6}
+.pageborder{border-left: 1px solid #ACACAC;border-right: 1px solid #ACACAC;}
+.bottomline{border-bottom: 1px solid #ACACAC;}.unnamed1 {
+	border: thin solid #000000;
+}
+.inputborder{border: 1px solid #000000;}
+.lfborder{border: 1px solid #DDDDDD;}
+.aaa{font-size:1pt;color:#EFEFEF;line-height:1%}
+body {
+  font-size: 9pt;
+  line-height: 1.5;
+  scrollbar-base-color:#C0D586;
+  scrollbar-arrow-color:#FFFFFF;
+  scrollbar-shadow-color:DEEFC6
+}
+.bline {border-bottom: 1px solid #BCBCBC;background-color: #FFFFFF}
+.bline2 {border-bottom: 1px solid #BCBCBC;}
+.binput{
+  background-color:#E0FAAF;
+  border-bottom: 1px solid #C5CCB2;
+  border-right: 1px solid #C5CCB2;
+}

@@ -1,0 +1,149 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>{dede:field name='title' /}</title>
+<link href="{dede:field name='phpurl' /}/img/base.css" rel="stylesheet" type="text/css">
+<script language='javascript'>
+	function FontZoom(fsize){
+		var ctext = document.getElementById("content");
+		ctext.style.fontSize = fsize +"pt";
+	}
+</script>
+</head>
+<body bgcolor="#008000" leftmargin="0" topmargin="0">
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr> 
+<td height="56" valign="bottom">
+<a href='http://www.dedecms.com'><img src="{dede:field name='phpurl' /}/img/df_dedetitle.gif" width="250" height="53" border="0"></a>
+</td>
+</tr>
+<tr> 
+<td height="28" valign="bottom" background="{dede:field name='phpurl' /}/img/l_mbg.gif">
+&nbsp;
+<a href='{dede:field name='indexurl'/}'>{dede:field name='indexname'/}</a>
+{dede:channel row='8' type='top'}
+| <a href='[field:typelink /]'>[field:typename /]</a>
+{/dede:channel}
+| <a href='{dede:field name='memberurl' ''/}/index.php'>会员中心</a>
+</td>
+</tr>
+</table>
+<center>
+<div style='font-size:2pt;width:760;background-color:#FFFFFF;'>&nbsp;</div>
+</center>
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="0" bgcolor="#FFFFFF">
+<tr> 
+<td width="580" valign="top">
+<a name="top"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr> 
+<td height="26" colspan="2" background="{dede:field name='phpurl' /}/img/df_gbg.gif"> 
+&nbsp;当前位置：{dede:field name='position' /}<a href='{dede:field name='specurl'}{/dede:field}/index.php'>专题</a>
+</td>
+<td width="0" rowspan="7">&nbsp;</td>
+</tr>
+<tr> 
+<td width="32%" rowspan="3" align="center" style="border-bottom:1px solid #cccccc"> 
+<img name="i1" src="{dede:field name="litpic" ""/}" width="160" height="120"> 
+</td>
+<td width="68%" height="26"> <b>{dede:field name="title" /}</b> </td>
+</tr>
+<tr> 
+<td height="80" valign="top"> {dede:field name="description" /} </td>
+</tr>
+<tr> 
+<td height="24" style="border-bottom:1px solid #cccccc">
+责任编辑：{dede:field name="writer" /}
+&nbsp;
+发布时间：{dede:field name="pubdate" function="GetDateMk('@me')"/} 
+</td>
+</tr>
+<tr> 
+<td height="419" colspan="2" valign="top">
+<div style="font-size:2pt">&nbsp;</div>
+{dede:field name="note"/}
+</td>
+</tr>
+<tr> 
+          <td height="26" colspan="2" align="center" style="border-top:1px solid #cccccc"> 
+            <table width="100%" border="0" cellpadding="1" cellspacing="1">
+              <form action="{dede:field name='phpurl' /}/feedback.php?action=send" method="post" name="feedback">
+                <input type="hidden" name="arcID" value="{dede:field name="id"/}">
+                <tr> 
+                  <td>用户名： 
+                    <input name="username" type="text" id="username" size="10" class="nb">
+                    （<a href="{dede:field name='memberurl' /}/index_do.php?fmdo=user&dopost=regnew" target="_blank"><u>新注册</u></a>） 
+                    密码： 
+                    <input name="pwd" type="text" id="pwd" size="10"class="nb"> 
+                    <input name="notuser" type="checkbox" id="notuser" value="1">
+                    匿名评论 [<a href="{dede:field name='phpurl' /}/feedback.php?arcID={dede:field name="id"/}">所有评论</a>] 
+                    <input type='button' value='发表评论' name='sb' onClick='javascript:if(document.feedback.msg.value!="") document.feedback.submit(); else alert("评论内容不能为空！");' style='width:60;height:20'> 
+                  </td>
+                </tr>
+                <tr> 
+                  <td>评论内容：(不能超过250字，需审核后才会公布，请自觉遵守互联网相关政策法规。</td>
+                </tr>
+                <tr> 
+                  <td><textarea name="msg" cols="75" rows="4" id="msg" style="width:98%"></textarea></td>
+                </tr>
+              </form>
+            </table></td>
+</tr>
+<tr> 
+<td height="86" colspan="2" valign="top" bgcolor="#FAFEF1">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#C5CDBE">
+<tr> 
+<td height="23" bgcolor="#F0F8D8">&nbsp;§最新评论：</td>
+</tr>
+<tr> 
+<td height="69" bgcolor="#FFFFFF">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+<td width="180" valign="top" bgcolor="#E7FBD2"> 
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="18%" height="24" align="center" bgcolor="#C2E489"><img src="{dede:field name='phpurl' /}/img/l_dd1.gif" width="29" height="24"></td>
+<td width="82%" bgcolor="#D8EEA8"><strong>&nbsp;<font color="#666600">最近专题</font></strong></td>
+</tr>
+<tr valign="top" bgcolor="#F4FEE3"> 
+<td height="105" align="center" colspan="2" class="ctfield" style="border-top:1px solid #bcbcbc">
+{dede:specart row='4' titlelen='30'}
+<a href="[field:arcurl /]">
+<img src="[field:picname /]" width="120" height="90" border="0">
+<br>
+[field:title /]
+</a>
+<br>
+{/dede:specart}
+</td>
+</tr>
+</table>
+	<div style="font-size:2pt">&nbsp;</div>
+<div style="font-size:2pt">&nbsp;</div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr> 
+<td width="18%" height="24" align="center" bgcolor="#D3E4B6"><img src="{dede:field name='phpurl' /}/img/l_dd2.gif" width="29" height="24"></td>
+<td width="82%" bgcolor="#F0F8D8"><strong>&nbsp;<font color="#7D845E">相关文章</font></strong></td>
+</tr>
+<tr valign="top" bgcolor="#F4FEE3"> 
+<td colspan="2" style="border-top:1px solid #bcbcbc" class="ctfield">
+{dede:likeart titlelen='30' row='8'/}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<script src="{dede:field name='phpurl'/}/count.php?aid={dede:field name='ID'/}" language="javascript"></script>
+<table width="760" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#FFFFFF">
+<tr> 
+<td height="20" bgcolor="#EFF1EC">&nbsp;</td>
+</tr>
+<tr> 
+<td height="50" align="center">{dede:field name='powerby' /}</td>
+</tr>
+</table>
+</body>
+</html>

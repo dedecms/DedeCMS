@@ -1,0 +1,16 @@
+{dede:page pagesize='5'/}
+{dede:datalist}
+document.write("<table width='100%' border='0' cellpadding='0' cellspacing='1'>");
+document.write("  <tr bgcolor='#F5FAED'> ");
+document.write("    <td height='20'>&nbsp;");
+document.write("    发言人： [field:username/] &nbsp;");
+document.write("    时间： [field:dtime function=GetDateMk('@me')/] ");
+document.write("    </td>");
+document.write("  </tr>");
+document.write("  <tr> ");
+document.write("    <td height='28'>");
+document.write("    [field:msg function=cnw_left_safe('@me',100)/] ");
+document.write("    </td>");
+document.write("  </tr>");
+document.write("</table>");
+{/dede:datalist}

@@ -1,0 +1,6 @@
+<!--
+function CheckSubmit()
+{
+	return true; 
+}
+-->

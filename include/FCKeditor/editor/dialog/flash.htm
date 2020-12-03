@@ -1,0 +1,66 @@
+<HTML>
+<HEAD>
+<title>插入Flash</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style>
+.td{font-size:10pt;}
+</style>
+<script language=javascript>
+var oEditor	= window.parent.InnerDialogLoaded() ;
+var oDOM		= oEditor.FCK.EditorDocument ;
+var FCK = oEditor.FCK;
+function TableOK(){
+    var furl,widthdd,heightdd,doflash;
+    furl = document.form1.furl.value;
+    widthdd = document.form1.fwidth.value;
+    heightdd = document.form1.fheight.value;
+    doflash = "<embed src='"+ furl +"' document.document.form1.='hight' wmode='transparent' pluginspage='http://www.macromedia.com/go/getflashplayer' type='application/x-shockwave-flash' width='"+ widthdd +"' height='"+ heightdd +"'></embed>\r\n";
+    //window.returnValue = doflash;
+    if(document.all) oDOM.selection.createRange().pasteHTML(doflash);
+    else FCK.InsertHtml(doflash);
+    window.close();
+}
+function SelectMedia(fname)
+{
+   if(document.all){
+     var posLeft = window.event.clientY-100;
+     var posTop = window.event.clientX-400;
+   }
+   else{
+     var posLeft = 100;
+     var posTop = 100;
+   }
+   window.open("../../../dialog/select_media.php?f="+fname, "popUpMediaWin", "scrollbars=yes,resizable=yes,statebar=no,width=500,height=350,left="+posLeft+", top="+posTop);
+}
+</script>
+<link href="base.css" rel="stylesheet" type="text/css">
+<base target="_self">
+</HEAD>
+<body bgcolor="#EBF6CD" topmargin="8">
+  <form name="form1" id="form1">
+  	<table border="0" width="98%" align="center">
+    <tr> 
+      <td align="right">网　址:</td>
+      <td colspan="3">
+      	<input name="furl" type="text" id="furl" style="width:200px" value="http://">
+      	<input type="button" name="selmedia" class="binput" style="width:60px" value="浏览..." onClick="SelectMedia('form1.furl')">
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">宽　度:</td>
+      <td nowrap colspan="3"> <input type="text" name="fwidth" id="fwidth" size="8" value="400" >
+        &nbsp;&nbsp; 高　度:
+        <input name="fheight" type="text" id="fheight" value="300" size="8" ></td>
+    </tr>
+    <tr height="50"> 
+      <td align="right">&nbsp;</td>
+      <td nowrap>&nbsp; </td>
+      <td colspan="2" align="right" nowrap>
+      	<input onclick="TableOK();" type="button" name="Submit2" value=" 确定 " class="binput"> 
+      </td>
+    </tr>
+  </table>
+  </form>
+</body>
+</HTML>
+

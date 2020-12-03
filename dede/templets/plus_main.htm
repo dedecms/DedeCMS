@@ -1,0 +1,44 @@
+{dede:page pagesize="50"/}
+<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gb2312'>
+<title>插件管理</title>
+<link href='base.css' rel='stylesheet' type='text/css'>
+</head>
+<body background='img/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#666666">
+  <tr> 
+    <td height="19" colspan="5" background="img/tbg.gif">
+    	<table width='96%' cellpadding='0' cellspacing='0'>
+    		<tr>
+    		<td width='30%'><b>插件管理</b></td>
+        <td align='right'>
+    	  [<a href="plus_add.php"><u>安装新插件</u></a>]
+        </td>
+      </tr>
+     </table>
+    </td>
+  </tr>
+  <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td width="10%">ID号</td>
+      <td width="50%">插件名称</td>
+      <td width="20%">插件作者</td>
+      <td width="20%">状态</td>
+   </tr>
+   {dede:datalist}
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+        <td>[field:aid /]</td>
+        <td>[field:plusname /]</td>
+        <td>[field:writer /]</td>
+        <td>[field:isshow function='GetSta(@me,$GLOBALS{"row"}{"aid"},$GLOBALS{"row"}{"plusname"})'/]</td>
+     </tr>
+		{/dede:datalist}
+     <tr align="center" bgcolor="#F9FCEF" height="24"> 
+      <td colspan="5">{dede:pagelist listsize=6/}</td>
+     </tr>
+   </table>
+   </td>
+</tr>
+</table>
+</body>
+</html>
