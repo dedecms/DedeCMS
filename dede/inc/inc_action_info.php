@@ -2,9 +2,9 @@
 /**
  * 后台操作记录信息
  *
- * @version        $Id: inc_action_info.php 2 14:55 2010-11-11 tianya $
+ * @version        $Id: inc_action_info.php 2 14:55 2010-11-11  $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -484,7 +484,7 @@ $actionSearch[10] = array(
         ),
         14  =>  array(
             'title' =>'病毒扫描[S]',
-            'description' =>'以DedeCms开发模式为标准对现有的文件进行扫描并进行判断',
+            'description' =>'以DedeCMS开发模式为标准对现有的文件进行扫描并进行判断',
             'purview' =>'sys_verifies',
             'linkurl' =>'sys_safetest.php'
         ),

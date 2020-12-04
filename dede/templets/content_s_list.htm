@@ -141,15 +141,15 @@ function noSelAll()
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr bgcolor="#FFFFFF"><td height="4"></td></tr>
 </table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#cfcfcf">
-<tr bgcolor="#E7E7E7"> 
+<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#EAECEF">
+<tr bgcolor="#FAFBFC"> 
 <td height="24" colspan="9" background="images/tbg.gif" style="padding-left:10px;">
 	<strong>文章列表</strong>
 	(在文章标题处使用鼠标右键进行常用操作)
 	</td>
 </tr>
 <form name="form2">
-<tr align="center" bgcolor="#FBFCE2" height="25"> 
+<tr align="center" bgcolor="#FBFBFB" height="25"> 
 <td width="6%">ID</td>
 <td width="4%">选择</td>
 <td width="30%">文章标题</td>
@@ -161,7 +161,7 @@ function noSelAll()
 <td width="12%">属性</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="25" oncontextmenu="ShowMenu(event,this,{dede:field.id/},'<?php echo urlencode($fields['title'])?>')"> 
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="25" oncontextmenu="ShowMenu(event,this,{dede:field.id/},'<?php echo urlencode($fields['title'])?>')"> 
 <td>{dede:field.id/}</td>
 <td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="np"></td>
 <td align='left'>
@@ -191,7 +191,7 @@ function noSelAll()
 </td>
 </tr>
 </form>
-<tr align="right" bgcolor="#F9FCEF"> 
+<tr align="right" bgcolor="#FAFBFC"> 
 <td height="20" colspan="9" align="center">
 	{dede:pagelist listsize=5/}
 </td>
@@ -203,7 +203,7 @@ function noSelAll()
 </tr>
 <tr bgcolor="#FFFFFF"> 
 <td height="28">
-<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#cfcfcf'>
+<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#EAECEF'>
    <tr bgcolor='#EEF4EA'> 
           <form name='form3' action='content_s_list.php' method='get'>
           <input type='hidden' name='dopost' value='listArchives'>

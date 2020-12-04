@@ -2,9 +2,9 @@
 /**
  * 系统配置
  *
- * @version        $Id: sys_info.php 1 22:28 2010年7月20日Z tianya $
+ * @version        $Id: sys_info.php 1 22:28 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -128,9 +128,9 @@ else if ($dopost=='search')
     $keywords = isset($keywords)? strip_tags($keywords) : '';
     $i = 1;
     $configstr = <<<EOT
- <table width="100%" cellspacing="1" cellpadding="1" border="0" bgcolor="#cfcfcf" id="tdSearch" style="">
+ <table width="100%" cellspacing="1" cellpadding="1" border="0" bgcolor="#EAECEF" id="tdSearch" style="">
   <tbody>
-   <tr height="25" bgcolor="#fbfce2" align="center">
+   <tr height="25" bgcolor="#FBFBFB" align="center">
     <td width="300">参数说明</td>
     <td>参数值</td>
     <td width="220">变量名</td>
@@ -144,7 +144,7 @@ EOT;
         $dsql->Execute();
        
         while ($row = $dsql->GetArray()) {
-            $bgcolor = ($i++%2==0)? "#F9FCEF" : "#ffffff";
+            $bgcolor = ($i++%2==0)? "#FAFBFC" : "#ffffff";
             $row['info'] = preg_replace("#{$keywords}#", '<font color="red">'.$keywords.'</font>', $row['info']);
 ?>
       <tr align="center" height="25" bgcolor="<?php echo $bgcolor?>">
@@ -181,7 +181,7 @@ EOT;
     }
     if ($i == 1)
     {
-        echo '      <tr align="center" bgcolor="#F9FCEF" height="25">
+        echo '      <tr align="center" bgcolor="#FAFBFC" height="25">
            <td colspan="3">没有找到搜索的内容</td>
           </tr></table>';
     }

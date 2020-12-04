@@ -1,4 +1,4 @@
-<!-- //主模板必须要引入{dede:global.cfg_cmsurl/}/include/dedeajax2.js -->
+<!-- //主模板必须要引入{dede:global.cfg_cmsurl/}/resources/pkg/dede/dedeajax2.js -->
 <a name='postform'></a>
 <div class="mt1">
   <dl class="tbox">
@@ -25,10 +25,10 @@
           <div class="dcmp-content">
             <script type="text/javascript">
 					//<![CDATA[
-					window.CKEDITOR_BASEPATH='{dede:global.cfg_cmsurl/}/include/ckeditor/';
+					window.CKEDITOR_BASEPATH='{dede:global.cfg_cmsurl/}/resources/pkg/ckeditor/';
 					//]]>
                     </script>
-            <script type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/ckeditor/ckeditor.js?t=B8DJ5M3"></script>
+            <script type="text/javascript" src="{dede:global.cfg_cmsurl/}/resources/pkg/ckeditor/ckeditor.js?t=B8DJ5M3"></script>
             {dede:php}
             GetEditor('msg','',100,'Feedback','print','false',true);
             {/dede:php} </div>
@@ -46,7 +46,7 @@
               if(preg_match("/4/",$safe_gdopen)){
               echo '验证码:
               <input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;"/>
-              <img src= "'.$cfg_cmspath.'/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+\'?\'" title="点击我更换图片" alt="点击我更换图片"  class="vdimg"/>';
+              <img src= "'.$cfg_cmspath.'/plus/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+\'?\'" title="点击我更换图片" alt="点击我更换图片"  class="vdimg"/>';
               }
               {/dede:php}
               <input type="checkbox" name="notuser" id="dcmp-submit-guest" />
@@ -159,7 +159,7 @@ function PostComment()
 		f.fid.value = 0;
 		if(f.validate)
 		{
-			if($DE('validateimg')) $DE('validateimg').src = "{dede:global.cfg_cmsurl/}/include/vdimgck.php?"+f.validate.value;
+			if($DE('validateimg')) $DE('validateimg').src = "{dede:global.cfg_cmsurl/}/plus/vdimgck.php?"+f.validate.value;
 			f.validate.value = '';
 		}
 		
@@ -190,7 +190,7 @@ function ajaxFeedback(aid, fid, type)
 		eval(formname);
 		if(f.validate)
 		{
-			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "{dede:global.cfg_cmsurl/}/include/vdimgck.php?"+f.validate.value;
+			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "{dede:global.cfg_cmsurl/}/plus/vdimgck.php?"+f.validate.value;
 			f.validate.value = '';
 		}
 		

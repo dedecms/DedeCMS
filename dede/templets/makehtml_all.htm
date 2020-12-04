@@ -3,8 +3,44 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>一键更新</title>
+<!-- <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css"> -->
 <link href="css/base.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+<script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
+<script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+<script language="javascript">
+  $(document).ready(function () {
+    $('.datepicker').daterangepicker({
+      "singleDatePicker": true,
+      "autoApply": true,
+      "showDropdowns": true,
+      "linkedCalendars": false,
+      "timePicker": true,
+      "timePicker24Hour": true,
+      // "timePickerSeconds": true,
+      "showCustomRangeLabel": false,
+      ranges: {
+        '今日': [moment(), moment()],
+        '昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        '本月': [moment().startOf('month'), moment().startOf('month')],
+        '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
+      },
+      "locale": {
+        format: 'YYYY-MM-DD HH:mm',
+        applyLabel: '确定',
+        cancelLabel: '取消',
+        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+          '七月', '八月', '九月', '十月', '十一月', '十二月'],
+        firstDay: 1
+      }
+    }, function (start) {
+      $(this).val(start.format("YYYY-MM-DD HH:mm"));
+    });
+
+  })
+</script>
 <script language='javascript'>
 function SelUp(){
    var ob1 = document.getElementById("uptype1");
@@ -46,15 +82,7 @@ function SelUp(){
     <tr id='seltime'>
       <td height="20"  bgcolor="#FFFFFF">&nbsp;&nbsp;起始时间：</td>
       <td height="20"  bgcolor="#FFFFFF">
-      	<input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(time()); ?>" style="width:200px" />
-                            <script language="javascript" type="text/javascript">
-					Calendar.setup({
-						inputField     :    "starttime",
-						ifFormat       :    "%Y-%m-%d",
-						showsTime      :    false,
-						timeFormat     :    "24"
-					});
-				 </script>
+      	<input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(time()); ?>" style="width:200px" class="datepicker"/>
       </td>
     </tr>
     <tr bgcolor="#FFFFFF" id="selid" style="display:none;">
@@ -69,7 +97,7 @@ function SelUp(){
       </td>
     </tr>
   </form>
-  <tr bgcolor="#F9FCEF">
+  <tr bgcolor="#FAFBFC">
     <td height="20" colspan="2">
     <table width="100%">
      <tr>

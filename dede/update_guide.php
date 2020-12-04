@@ -3,9 +3,9 @@
  * 本文件用于从镜像服务器获取升级信息与文件
  * 并由用户自行控制升级
  *
- * @version        $Id: vote_main.php 1 23:54 2010年7月20日Z tianya $
+ * @version        $Id: vote_main.php 1 23:54 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

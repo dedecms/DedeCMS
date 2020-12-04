@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: common.inc.php 3 17:44 2010-11-23 tianya $
+ * @version        $Id: common.inc.php 3 17:44 2010-11-23  $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -11,7 +11,6 @@
 
 // 生产环境使用production
 define('DEDE_ENVIRONMENT', 'production');
-
 
 if ( DEDE_ENVIRONMENT == 'production' )
 {
@@ -65,7 +64,7 @@ if(function_exists('iconv_substr')) $cfg_is_iconv = TRUE;
 
 function _RunMagicQuotes(&$svar)
 {
-    if(!get_magic_quotes_gpc())
+    if(!@get_magic_quotes_gpc())
     {
         if( is_array($svar) )
         {
@@ -133,6 +132,11 @@ if( preg_match('/windows/i', @getenv('OS')) )
 require_once(DEDEDATA."/config.cache.inc.php");
 
 //Session保存路径
+$sessSaveHandler = @ini_get("session.save_handler");
+if ($sessSaveHandler !== "files") {
+    @ini_set("session.save_handler", "files");
+}
+
 $enkey = substr(md5(substr($cfg_cookie_encode,0,5)),0,10);
 $sessSavePath = DEDEDATA."/sessions_{$enkey}";
 if ( !is_dir($sessSavePath) ) mkdir($sessSavePath);
@@ -204,6 +208,10 @@ $cfg_cmsurl = $cfg_mainsite.$cfg_cmspath;
 $cfg_plus_dir = $cfg_cmspath.'/plus';
 $cfg_phpurl = $cfg_mainsite.$cfg_plus_dir;
 
+// 资源目录，用于存放js包、静态图片、图标等
+$cfg_static_dir = $cfg_cmspath.'/resources';
+$cfg_staticurl = $cfg_mainsite.$cfg_static_dir;
+
 $cfg_mobile_dir = $cfg_cmspath.'/m';
 $cfg_mobileurl = $cfg_mainsite.$cfg_mobile_dir;
 
@@ -238,7 +246,7 @@ $cfg_soft_dir = $cfg_medias_dir.'/soft';
 $cfg_other_medias = $cfg_medias_dir.'/media';
 
 //软件摘要信息，****请不要删除本项**** 否则系统无法正确接收系统漏洞或升级信息
-$cfg_version = 'V57_UTF8_SP2';
+$cfg_version = 'V5.8.1 BATE UTF8';
 $cfg_soft_lang = 'utf-8';
 $cfg_soft_public = 'base';
 

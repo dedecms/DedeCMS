@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: config.php 1 8:38 2010年7月9日Z tianya $
+ * @version        $Id: config.php 1 8:38 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -77,6 +77,39 @@ require_once(dirname(__FILE__).'/../include/common.inc.php');
 require_once(DEDEINC.'/filter.inc.php');
 require_once(DEDEINC.'/memberlogin.class.php');
 require_once(DEDEINC.'/dedetemplate.class.php');
+
+// 检查CSRF
+function CheckCSRF()
+{
+    $cc_csrf_token_check = GetCookie("dede_csrf_token");
+    if (
+        !(isset($_POST['_csrf_token'], $cc_csrf_token_check)
+    && is_string($_POST['_csrf_token']) && is_string($cc_csrf_token_check)
+    && hash_equals($_POST['_csrf_token'], $cc_csrf_token_check))
+    ) {
+        ShowMsg('CSRF校验失败，请刷新页面重新提交', '-1');
+        exit();
+    }
+    
+    DropCookie("dede_csrf_token");
+}
+
+// 生成CSRF校验token，在比较重要的表单中应该要加上这个token校验
+$cc_csrf_token = GetCookie("dede_csrf_token");
+if (!isset($GLOBALS['csrf_token']) || $GLOBALS['csrf_token'] === null) {
+    if (isset($cc_csrf_token) && is_string($cc_csrf_token)
+    && preg_match('#^[0-9a-f]{32}$#iS',$cc_csrf_token) === 1
+    ) {
+        $GLOBALS['csrf_token'] = $cc_csrf_token;
+    } else {
+        $GLOBALS['csrf_token'] = md5(uniqid(mt_rand(), TRUE));
+    }
+}
+
+if (strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST') {
+    PutCookie('dede_csrf_token', $GLOBALS['csrf_token'], 7200, '/');
+}
+
 
 //获得当前脚本名称，如果你的系统被禁用了$_SERVER变量，请自行更改这个选项
 $dedeNowurl = $s_scriptName = '';

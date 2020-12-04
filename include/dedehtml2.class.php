@@ -5,7 +5,7 @@
  * 这个类针对于采集程序，主要是获取某区域内的图片、超链接等信息
  * 
  *
- * @version        $Id: dedehtml2.class.php 1 14:44 2010年7月6日Z tianya $
+ * @version        $Id: dedehtml2.class.php 1 14:44 2010年7月6日 $
  * @package        DedeCMS.Libraries
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
@@ -619,7 +619,7 @@ class DedeAttribute2
                 switch($d)
                 {
                     case ' ':
-                        continue;
+                        // continue;
                         break;
                     case '\'':
                         $ddtag='\'';

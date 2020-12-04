@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>编辑软件:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script type="text/javascript" language='javascript' src="templets/js/main.js"></script>
 <script type="text/javascript" src="templets/js/load.js"></script>
 <script type="text/javascript" src="templets/js/leftmenu.js"></script>
@@ -50,7 +50,7 @@ function ShowHideAddr()
      <form class="mTB10 mR10 mL10" name="form1" action="soft_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
-          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="idhash" value="<?php echo hash('sha256', $row['id'].$cfg_cookie_encode); ?>" />
           <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
           <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
           <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
@@ -179,17 +179,6 @@ function ShowHideAddr()
               <input name="needmoney" type="text" value="<?php echo isset($addRow["needmoney"])? $addRow["needmoney"] : ''; ?>" id="needmoney" maxlength="100" class="intxt" style="width:80px" />(最大允许100个)
             </span>
           </p>
-          <p>
-            <label>缩略图：</label>
-            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
-          </p>
-          <p class="cellBg">
-            <label style="width: 85px;">原来的缩略图：</label>
-            <img name="nlitpic"  id="nlitpic" src='
-            <?php  
-            echo !empty($row['litpic'])? $row['litpic'] : 'templets/images/dfpic.gif';  
-            ?>' style="width: 200px; height:150px"/>
-          </p>
            <?php
             //自定义字段
      		   PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');
@@ -206,7 +195,6 @@ function ShowHideAddr()
           <p class="cellBg">
             <label>本地地址：</label>
             	<input name="softurl1" type="text" id="softurl1" class="intxt" style="width:230px" />
-                <button  name="sel1" type="button" id="sel1" onclick="SelectSoft('form1.softurl1')" class="bt3">选取</button>
                   服务器名称：
                 <input name="servermsg1" type="text" id="servermsg1" value="本地下载" class="intxt" style="width:150px" />
           </p>
@@ -230,7 +218,7 @@ function ShowHideAddr()
           <p class="cellBg">
             <label>验证码：</label>
             <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
-            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></p>
+            <img src="../plus/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></p>
       <?php }?>
       <p>
              <button class="button2" type="submit">提交</button>

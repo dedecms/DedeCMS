@@ -1,4 +1,13 @@
 <?php
+/**
+ * 软件添加
+ * 
+ * @version        $Id: soft_add.php 2 14:16 2010-11-11  $
+ * @package        DedeCMS.Member
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
 require_once(dirname(__FILE__)."/config.php");
 //考虑安全原因不管是否开启游客投稿功能，都不允许用户投稿
 CheckRank(0, 0);
@@ -148,11 +157,10 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
     //软件链接列表
     $softurl1 = stripslashes($softurl1);
     $softurl1 = str_replace(array("{dede:","{/dede:","}"), "#", $softurl1);
-    $servermsg1 = str_replace(array("{dede:","{/dede:","}"), "#", $servermsg1);
     $urls = '';
     if($softurl1!='')
     {
-        $urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n";
+         if (preg_match("#}(.*?){/dede:link}{dede:#sim", $servermsg1) != 1) { $urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n"; }
     }
     for($i=2; $i<=12; $i++)
     {
@@ -161,7 +169,6 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
             $servermsg = str_replace("'","",stripslashes(${'servermsg'.$i}));
             $softurl = stripslashes(${'softurl'.$i});
 			$softurl = str_replace(array("{dede:","{/dede:","}"), "#", $softurl);
-			$servermsg = str_replace(array("{dede:","{/dede:","}"), "#", $servermsg);
             if($servermsg=='')
             {
                 $servermsg = '下载地址'.$i;
@@ -198,7 +205,7 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` WHERE id='$arcID'");
         echo $inQuery;
         exit();
-        ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+        ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
 
@@ -215,23 +222,6 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
     {
         $artUrl = $cfg_phpurl."/view.php?aid=$arcID";
     }
-
-    #api{{
-    if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
-    {
-        //推送事件
-        $feed['icon'] = 'thread';
-        $feed['title_template'] = '<b>{username} 在网站共享了一软件</b>';
-        $feed['title_data'] = array('username' => $cfg_ml->M_UserName);
-        $feed['body_template'] = '<b>{subject}</b><br>{message}';
-        $url = !strstr($artUrl,'http://') ? ($cfg_basehost.$artUrl) : $artUrl;
-        $feed['body_data'] = array('subject' => "<a href=\"".$url."\">$title</a>", 'message' => cn_substr(strip_tags(preg_replace("/\[.+?\]/is", '', $description)), 150));        
-        $feed['images'][] = array('url' => $cfg_basehost.'/images/scores.gif', 'link'=> $cfg_basehost);
-        uc_feed_note($cfg_ml->M_LoginID,$feed);
-        //同步积分
-        uc_credit_note($cfg_ml->M_LoginID, $cfg_sendarc_scores);
-    }
-    #/aip}}
     
     //会员动态记录
     $cfg_ml->RecordFeeds('addsoft',$title,$description,$arcID);

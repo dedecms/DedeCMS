@@ -80,14 +80,14 @@ function deleteask(aid){
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt"><a href='../ask' target='_blank'><b>问答模块</b></a> -- 用户提问管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;">
 <tr>
 <td height="24" colspan="9" align="left" bgcolor="#EDF9D5" background="images/tbg.gif">
 &nbsp;§<b>问题列表 &nbsp; <a href="ask_admin.php">全部问题</a> | <a href="ask_admin.php?status=-1">未审核的问题</a></b>
 </td>
 </tr>
 <form name="form2" action="ask_admin.php">
-<tr align="center" height="25" bgcolor="#FBFCE2">
+<tr align="center" height="25" bgcolor="#FBFBFB">
   <td width="6%">id</td>
   <td width="4%">选择</td>
   <td width="28%">问题</td>
@@ -113,7 +113,7 @@ function deleteask(aid){
 	}
 	$fields['dateline'] = gmdate('Y-m-d' , $fields['dateline'] + 3600*8);
 ?>
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" >
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" >
 <td><?php echo $fields['id']; ?></td>
 <td><input name="askid" type="checkbox" id="id" value="<?php echo $fields['id']; ?>" class='np' /></td>
 <td align='left'><a href="../ask/question.php?id=<?php echo $fields['id']; ?>" target="_blank"><?php echo $fields['title']; ?></a></td>
@@ -136,7 +136,7 @@ function deleteask(aid){
 </tr>
 </form>
 <tr align="right">
-<td height="20" colspan="9" align="center" bgcolor="#F9FCEF">
+<td height="20" colspan="9" align="center" bgcolor="#FAFBFC">
 {dede:pagelist /}
 </td>
 </tr>

@@ -2,9 +2,9 @@
 /**
  * 生成列表栏目操作
  *
- * @version        $Id: makehtml_list_action.php 1 11:09 2010年7月19日Z tianya $
+ * @version        $Id: makehtml_list_action.php 1 11:09 2010年7月19日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -84,7 +84,7 @@ if(!empty($tid))
 {
     if(!isset($cfg_Cs[$tid]))
     {
-        showmsg('没有该栏目数据, 可能缓存文件(/data/cache/inc_catalog_base.inc)没有更新, 请检查是否有写入权限');
+        ShowMsg('没有该栏目数据, 可能缓存文件(/data/cache/inc_catalog_base.inc)没有更新, 请检查是否有写入权限','javascript:;');
         exit();
     }
     if($cfg_Cs[$tid][1]>0)

@@ -66,8 +66,8 @@ function MakeUpload(mnum)
 		fhtml += "<td height=\"25\" colspan=\"2\">　<strong>图片"+startNum+"：</strong></td>";
 		fhtml += "</tr>";
 		fhtml += "<tr bgcolor=\"#FFFFFF\"> ";
-		fhtml += "<td width=\"510\" height=\"25\"> 　本地上传： ";
-		fhtml += "<input type=\"file\" name='imgfile"+startNum+"' style=\"width:200px\" class=\"intxt\" onChange=\"SeePicNew('divpicview"+startNum+"',this);\" /> <nobr>可填远程网址</nobr></td>";
+		fhtml += "<td width=\"510\" height=\"25\"> 　图片地址： ";
+		fhtml += "<input type=\"text\" name='imgfile"+startNum+"' style=\"width:330px\" class=\"intxt\"/> <nobr>填写远程网址</nobr></td>";
 		fhtml += "<td width=\"100\" rowspan=\"2\" align=\"center\"><div id='divpicview"+startNum+"' class='divpre'></div></td>";
 		fhtml += "</tr>";
 		fhtml += "<tr bgcolor=\"#FFFFFF\"> ";

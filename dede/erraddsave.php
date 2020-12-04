@@ -2,9 +2,9 @@
 /**
  * 纠错管理
  *
- * @version        $Id: erraddsave.php 1 19:09 2010年7月12日Z tianya $
+ * @version        $Id: erraddsave.php 1 19:09 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -102,7 +102,7 @@ if($dopost == "delete")
     exit();
 }
 
-$sql = "SELECT * FROM `#@__erradd`";
+$sql = "SELECT * FROM `#@__erradd` ORDER BY id desc";
 $dlist = new DataListCP();
 $dlist->SetTemplet(DEDEADMIN."/templets/erradd.htm");
 $dlist->SetSource($sql);

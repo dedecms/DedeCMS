@@ -9,9 +9,9 @@
  *      $GLOBALS['cfg_dbname'];
  *      $GLOBALS['cfg_dbprefix'];
  *
- * @version        $Id: dedesqli.class.php 1 15:00 2011-1-21 tianya $
+ * @version        $Id: dedesqli.class.php 1 15:00 2011-1-21  $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -117,7 +117,7 @@ class DedeSqlite
         //处理错误，成功连接则选择数据库
         if(!$this->linkID)
         {
-            $this->DisplayError("DedeCms错误警告：<font color='red'>连接数据库失败，可能数据库密码不对或数据库服务器出错！</font>");
+            $this->DisplayError("DedeCMS错误警告：<font color='red'>连接数据库失败，可能数据库密码不对或数据库服务器出错！</font>");
             exit();
         }
 		$this->isInit = TRUE;

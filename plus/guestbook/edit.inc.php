@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: edit.inc.php 1 10:06 2010-11-10 tianya $
+ * @version        $Id: edit.inc.php 1 10:06 2010-11-10  $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -52,6 +52,10 @@ else if($job=='editok')
         }
     }
 	$msg = HtmlReplace($msg, -1);
+	/*
+	漏洞描述：dedecms留言板注入漏洞。
+	*/
+	$msg = addslashes($msg);
     $dsql->ExecuteNoneQuery("UPDATE `#@__guestbook` SET `msg`='$msg', `posttime`='".time()."' WHERE id='$id' ");
     ShowMsg("成功更改或回复一条留言！", $GUEST_BOOK_POS);
     exit();

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $s_lang?>" />
 <title>安装程序 - 织梦内容管理系统<?php echo $verMsg; ?></title>
-<script src="../include/dedeajax2.js" language="javascript" type="text/javascript"></script>
+<script src="../resources/pkg/dede/dedeajax2.js" language="javascript" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 <!--
     function $o(tid){
@@ -31,20 +31,16 @@
         myajax.SendGet2('index.php?step=10&dbhost='+dbhost+'&dbuser='+dbuser+'&dbpwd='+dbpwd+'&dbname='+dbname);
 		DedeXHTTP = null;
     }
-    
-	function GetRemoteDemo()
-	{
-		
-		$o('_remotesta').innerHTML='<img src=\'images/ajax-loader.gif\'>';
-		var myajax = new DedeAjax($o('_remotesta'),false,true,'-','-','...');
-		myajax.SendGet2('index.php?step=11');
-		DedeXHTTP = null;
-	}
 	
     function DoInstall()
     {
         //$o('postloader').style.display = 'block';
         document.form1.submit();
+    }
+
+    function randpwd() {
+        // >= IE8
+        document.querySelector("input[name='adminpwd']").value = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
     }
 -->
 </script>
@@ -62,6 +58,7 @@
         <ul>
             <li><a href="http://www.dedecms.com" target="_blank">官方网站</a></li>
             <li><a href="http://bbs.dedecms.com" target="_blank">技术论坛</a></li>
+            <li><a href="https://github.com/dedecms" target="_blank">代码</a></li>
             <li><a href="http://help.dedecms.com" target="_blank">帮助</a></li>
         </ul>
     </div>
@@ -92,7 +89,7 @@
             <tr>
                 <td style='line-height:180%'>
                     <b>默认已安装模块(不需要可在后台卸载)：</b><br />
-                    百度新闻、文件管理器、挑错管理、德得广告管理、投票模块、友情链接<br />
+                    百度新闻、文件管理器、挑错管理、投票模块、友情链接<br />
                     <b>已下载并可选安装的：（不能选中的为未下载）</b><br />
                     <div class='modulesel'><input type='checkbox' name='modules[]' <?php if(!IsDownLoad($module_local.'0a7bea5dbe571d35def883cbec796437')){?>disabled = 'true'<?php }?> value='0a7bea5dbe571d35def883cbec796437' /> 留言簿模块</div>
                     <div class='modulesel'><input type='checkbox' name='modules[]' <?php if(!IsDownLoad($module_local.'59155be87ea60c5c65ec1f7a46a0fc9d')){?>disabled = 'true'<?php }?> value='59155be87ea60c5c65ec1f7a46a0fc9d' /> 手机WAP浏览</div>
@@ -147,22 +144,7 @@
             <tr>
                 <td class="onetd"><strong>数据库编码：</strong></td>
                 <td>
-                        <?php
-                        if($s_lang=='utf-8')
-                        {
-                        ?>
                         <input type="radio" name="dblang" id="dblang_utf8" value="utf8" checked="checked" /><label for="dblang_latin1">UTF8</label>
-                        <?php
-                        }
-                        else
-                        {
-                        ?>
-                        <input type="radio" name="dblang" id="dblang_gbk" value="gbk" checked="checked" /><label for="dblang_gbk">GBK</label>
-                        <input type="radio" name="dblang" id="dblang_latin1" value="latin1" /><label for="dblang_latin1">LATIN1</label>
-                        <?php
-                        }
-                        ?>
-                        <small>仅对4.1+以上版本的MySql选择</small>
                 </td>
             </tr>
         </table>
@@ -178,7 +160,7 @@
             </tr>
             <tr>
                 <td class="onetd"><strong>密　码：</strong></td>
-                <td><input name="adminpwd" type="text" value="admin" class="input-txt" /></td>
+                <td><input name="adminpwd" type="text" value="admin" class="input-txt" /><small>默认密码：admin，建议 <a href="javascript:randpwd();">手动生成</a></small></td>
             </tr>
             <tr>
                 <td class="onetd"><strong>Cookie加密码：</strong></td>
@@ -208,31 +190,6 @@
             </tr>
         </table>
         
-      <div class="pr-title"><h3>安装测试体验数据</h3></div>
-        <table width="726" border="0" align="center" cellpadding="0" cellspacing="0" class="twbox">
-			<tr>
-				<td width="168"><strong> 
-			      初始化数据体验包</strong>：</td>
-                 <?php
-                   if($isdemosign == 0)
-                   {
-                  ?>
-				<td width="558"><div class="olink" id="_remotesta"><div style="float:left">&nbsp; <font color="red">[×]</font> 不存在</div><a href="javascript:GetRemoteDemo()">远程获取</a></div></td>
-				<?php
-                   } else {
-                 ?>
-                <td width="558">&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)</td>   
-                 <?php
-                 }
-                 ?>
-          </tr>
-            <tr>
-                <td colspan="2"><label for="installdemo"><strong> 
-                    <input name="installdemo" type="checkbox" id="installdemo" value="1" />
-                安装初始化数据进行体验</strong>(体验数据将含带DedeCMS大部分功能的应用操作示例)</label></td>
-          </tr>
-        </table>
-
         <div class="btn-box">
     <input type="button" class="btn-back" value="后退" onclick="window.location.href='index.php?step=2';" />
             <input type="button" class="btn-next" value="开始安装" onclick="DoInstall();" />

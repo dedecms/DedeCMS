@@ -3,8 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>数据批量替换</title>
+<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script language='javascript' src='js/main.js'></script>
-<script language='javascript' src='../include/js/dedeajax2.js'></script>
+<script language='javascript' src='../resources/pkg/dede/dedeajax2.js'></script>
 <script language='javascript'>
 	function ShowFields(){
 		var exptable = $DE('exptable').options[$DE('exptable').selectedIndex].value;
@@ -35,7 +36,7 @@
 	<div class="bodytitleleft"></div>
   <div class="bodytitletxt" style="padding-left:10px;">批量管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#EAECEF;">
   <form action="sys_data_replace.php" name="form1" method="post" target="stafrm" onSubmit="return CheckSubmit()">
   	<input type='hidden' name='action' value='apply'>
     <tr>
@@ -48,7 +49,7 @@
 <table width="100%" border="0" cellpadding="2" cellspacing="2">
           <tr bgcolor="#FFFFFF">
             <td colspan="2" style="line-height:180%">
-            	<img src="images/help.gif" width="16" height="16" /> 程序用于批量替换数据库中某字段的内容，此操作极为危险，请小心使用。
+            	<img src="images/help.png" width="16" height="16" /> 程序用于批量替换数据库中某字段的内容，此操作极为危险，请小心使用。
             </td>
           </tr>
 
@@ -82,7 +83,7 @@
                 </tr>
               </table></td>
           </tr>
-          <tr bgcolor="#FBFCE2">
+          <tr bgcolor="#FBFBFB">
             <td>&nbsp;替换方式：</td>
             <td>
             	<input name="rptype" type="radio"  id="ot1" value="replace" checked='1' class='np' />
@@ -115,7 +116,7 @@
                   	<input type="text" name="validate" class="alltxt" style="width:80px;text-transform: uppercase;" />
                   </td>
                   <td>
-                  	<img src='../include/vdimgck.php' />
+                  	<img src='../plus/vdimgck.php' />
                   </td>
                 </tr>
               </table>
@@ -130,7 +131,7 @@
       </td>
     </tr>
   </form>
-  <tr bgcolor="#F9FCEF">
+  <tr bgcolor="#FAFBFC">
     <td height="20" > <table width="100%">
         <tr>
           <td width="74%"><strong>结果：</strong></td>

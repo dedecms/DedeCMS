@@ -2,9 +2,9 @@
 /**
  * 编辑文章
  * 
- * @version        $Id: article_edit.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: article_edit.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -79,12 +79,6 @@ else if($dopost=='save')
             }
         }
         
-        if (empty($dede_fieldshash) || $dede_fieldshash != md5($dede_addonfields.$cfg_cookie_encode))
-        {
-            showMsg('数据校验不对，程序返回', '-1');
-            exit();
-        }
-        
         // 这里对前台提交的附加数据进行一次校验
         $fontiterm = PrintAutoFieldsAdd($cInfos['fieldset'],'autofield', FALSE);
         if ($fontiterm != $inadd_f)
@@ -97,16 +91,12 @@ else if($dopost=='save')
     $body = AnalyseHtmlBody($body,$description);
     $body = HtmlReplace($body,-1);
 
-    //处理图片文档的自定义属性
-    if($litpic!='') $flag = 'p';
-
     //更新数据库的SQL语句
     $upQuery = "UPDATE `#@__archives` SET
              ismake='$ismake',
              arcrank='$arcrank',
              typeid='$typeid',
              title='$title',
-             litpic='$litpic',
              description='$description',
              mtype = '$mtypesid',
              keywords='$keywords',            

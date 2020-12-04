@@ -11,9 +11,9 @@
  *     $dl->SetSource($sql);            //设定查询SQL
  *     $dl->Display();                  //显示
  *
- * @version        $Id: datalistcp.class.php 3 17:02 2010年7月9日Z tianya $
+ * @version        $Id: datalistcp.class.php 3 17:02 2010年7月9日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -192,9 +192,8 @@ class DataListCP
     {
         if (is_array($val))
         {
-            while (list($key) = each($val))
-            {
-                $val[$key] = $this->XSSClean($val[$key]);
+            foreach ($val as $key => $v) {
+                $val[$key] = $this->XSSClean($v);
             }
             return $val;
         }

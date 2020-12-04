@@ -6,9 +6,9 @@ if(!defined('DEDEINC'))
 /**
  * 调用任意表的数据标签
  *
- * @version        $Id: loop.lib.php 1 9:29 2010年7月6日Z tianya $
+ * @version        $Id: loop.lib.php 1 9:29 2010年7月6日 $
  * @package        DedeCMS.Taglib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -35,7 +35,7 @@ require_once(DEDEINC.'/dedevote.class.php');
 function lib_loop(&$ctag,&$refObj)
 {
     global $dsql;
-    $attlist="table|,tablename|,row|8,sort|,if|,ifcase|,orderway|desc";//(2011.7.22 增加loop标签orderway属性 by:织梦的鱼)
+    $attlist="table|,tablename|,row|8,sort|,if|,ifcase|,orderway|desc";
     FillAttsDefault($ctag->CAttribute->Items,$attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
 

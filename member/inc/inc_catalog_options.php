@@ -2,9 +2,9 @@
 /**
  * 单表模型发布器
  * 
- * @version        $Id: archives_sg_add.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: archives_sg_add.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

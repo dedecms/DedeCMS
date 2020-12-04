@@ -2,9 +2,9 @@
 /**
  * 专题添加
  *
- * @version        $Id: spec_add.php 1 16:22 2010年7月20日Z tianya $
+ * @version        $Id: spec_add.php 1 16:22 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -74,6 +74,21 @@ else if($dopost=='save')
     //处理上传的缩略图
     if(empty($ddisremote)) $ddisremote = 0;
     $litpic = GetDDImage('none', $picname, $ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
 
     //生成文档ID
     $arcID = GetIndexKey($arcrank, $typeid, $sortrank, $channelid, $senddate, $adminid);
@@ -93,12 +108,12 @@ else if($dopost=='save')
         echo $inQuery;
         $gerr = $dsql->GetError();
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` WHERE id='$arcID'");
-        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
 
     //专题节点列表
-    $arcids = '';
+    $arcids = array();
     $notelist = '';
     for($i=1; $i<=$cfg_specnote; $i++)
     {

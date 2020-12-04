@@ -1,5 +1,5 @@
 
-![dedecms](/resources/dedecms.png)
+![dedecms](/resources/img/dedecms_logo.png)
 
 
 

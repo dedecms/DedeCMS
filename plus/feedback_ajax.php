@@ -3,9 +3,9 @@
  *
  * Ajax评论
  *
- * @version        $Id: feedback_ajax.php 1 15:38 2010年7月8日Z tianya $
+ * @version        $Id: feedback_ajax.php 1 15:38 2010年7月8日 $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -176,24 +176,6 @@ else if($dopost=='send')
     //给用户增加积分
     if($cfg_ml->M_ID > 0)
     {
-        #api{{
-        if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
-        {
-            //同步积分
-            uc_credit_note($cfg_ml->M_LoginID, $cfg_sendfb_scores);
-            
-            //推送事件
-            $arcRow = GetOneArchive($aid);
-            $feed['icon'] = 'thread';
-            $feed['title_template'] = '<b>{username} 在网站发表了评论</b>';
-            $feed['title_data'] = array('username' => $cfg_ml->M_UserName);
-            $feed['body_template'] = '<b>{subject}</b><br>{message}';
-            $url = !strstr($arcRow['arcurl'],'http://') ? ($cfg_basehost.$arcRow['arcurl']) : $arcRow['arcurl'];        
-            $feed['body_data'] = array('subject' => "<a href=\"".$url."\">$arcRow[arctitle]</a>", 'message' => cn_substr(strip_tags(preg_replace("/\[.+?\]/is", '', $msg)), 150));
-            $feed['images'][] = array('url' => $cfg_basehost.'/images/scores.gif', 'link'=> $cfg_basehost);
-            uc_feed_note($cfg_ml->M_LoginID,$feed); unset($arcRow);
-        }
-        #/aip}}
         $dsql->ExecuteNoneQuery("UPDATE `#@__member` set scores=scores+{$cfg_sendfb_scores} WHERE mid='{$cfg_ml->M_ID}' ");
         $row = $dsql->GetOne("SELECT COUNT(*) AS nums FROM `#@__feedback` WHERE `mid`='".$cfg_ml->M_ID."'");
         $dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET `feedback`='$row[nums]' WHERE `mid`='".$cfg_ml->M_ID."'");

@@ -3972,7 +3972,7 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('25','cfg_multi_site','(是/否)支持多站点，开启此项后附件、栏目连接、arclist内容启用绝对网址','2','bool','N'),
 ('58','cfg_rm_remote','远程图片本地化','7','bool','Y'),
 ('27','cfg_dede_log','(是/否)开启管理日志','2','bool','N'),
-('28','cfg_powerby','网站版权信息','1','bstring','Copyright &copy; 2002-2017 DEDECMS. 织梦科技 版权所有'),
+('28','cfg_powerby','网站版权信息','1','bstring','Copyright &copy; 2002-2020 DedeCMS. 织梦科技 版权所有'),
 ('722','cfg_jump_once','跳转网址是否直接跳转？（否则显示中转页）','7','bool','Y'),
 ('723','cfg_task_pwd','系统计划任务客户端许可密码<br/>(需要客户端，通常不会太重要)','7','string',''),
 ('29','cfg_arcsptitle','(是/否)开启分页标题，开启会影响HTML生成速度','6','bool','N'),

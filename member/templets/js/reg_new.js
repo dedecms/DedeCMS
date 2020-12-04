@@ -119,7 +119,7 @@ $(document).ready(function()
 	});
 	
 	$("a[href*='#vdcode'],#vdimgck").bind("click", function(){
-		$("#vdimgck").attr("src","../include/vdimgck.php?tag="+Math.random());
+		$("#vdimgck").attr("src","../plus/vdimgck.php?tag="+Math.random());
 		return false;
 	});
 });

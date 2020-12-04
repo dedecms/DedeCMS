@@ -2,9 +2,9 @@
 /**
  * 文档管理
  * 
- * @version        $Id: archives_do.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: archives_do.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -201,52 +201,4 @@ else if($dopost=="viewArchives")
     }else{
         header("location:/book/book.php?bid=".$aid);
     }
-}
-
-/*--------------
-function DelUploads()
-删除上传的附件
-----------------*/
-else if($dopost=="delUploads")
-{
-    CheckRank(0,0);
-    if(empty($ids))
-    {
-        $ids = '';
-    }
-
-    $tj = 0;
-    if($ids=='')
-    {
-        $arow = $dsql->GetOne("SELECT url,mid FROM `#@__uploads` WHERE aid='$aid'; ");
-        if(is_array($arow) && $arow['mid']==$cfg_ml->M_ID)
-        {
-            $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE aid='$aid'; ");
-            if(file_exists($cfg_basedir.$arow['url']))
-            {
-                @unlink($cfg_basedir.$arow['url']);
-            }
-        }
-        $tj++;
-    }
-    else
-    {
-        $ids = explode(',',$ids);
-        foreach($ids as $aid)
-        {
-            $aid = preg_replace("#[^0-9]#", "", $aid);
-            $arow = $dsql->GetOne("SELECT url,mid From #@__uploads WHERE aid='$aid'; ");
-            if(is_array($arow) && $arow['mid']==$cfg_ml->M_ID)
-            {
-                $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE aid='$aid'; ");
-                $tj++;
-                if(file_exists($cfg_basedir.$arow['url']))
-                {
-                    @unlink($cfg_basedir.$arow['url']);
-                }
-            }
-        }
-    }
-    ShowMsg("成功删除 $tj 个附件！",$ENV_GOBACK_URL);
-    exit();
 }

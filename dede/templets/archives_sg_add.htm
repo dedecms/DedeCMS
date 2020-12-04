@@ -4,16 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>发布文档</title>
 <style type="text/css">
-<!--
 body { background-image: url(images/allbg.gif); }
--->
 </style>
+<link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
+
 <link href="css/base.css" rel="stylesheet" type="text/css">
-<script language="javascript" src="../include/js/dedeajax2.js"></script>
+<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+<script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
 <script language='javascript' src="js/main.js"></script>
-<script type="text/javascript" src="js/calendar/calendar.js"></script>
+<link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+<script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
+<script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+<script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
+<link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
+<script src="../resources/pkg/cropper/cropper.min.js"></script>
 <script language="javascript">
-<!--
 function checkSubmit()
 {
   if(document.form1.title.value==""){
@@ -25,8 +31,17 @@ function checkSubmit()
 	   return false;
   }
 }
--->
 </script>
+<style>
+  img {
+    vertical-align: baseline;
+  }
+
+  input,
+  select {
+    height: auto !important;
+  }
+</style>
 </head>
 <body topmargin="8">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -55,7 +70,8 @@ function checkSubmit()
   <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
   <input type="hidden" name="cid" value="<?php echo $cid?>" />
   <input type="hidden" name="dopost" value="save" />
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
+  <input type="hidden" id="litpic_b64" name="litpic_b64" value="">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #EAECEF;background:#ffffff;">
     <tr>
       <td height="24" colspan="4" class="bline">
       	<table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -95,19 +111,25 @@ function checkSubmit()
             	<table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr>
                   <td height="30">
-                  <input name="picname" type="text" id="picname" style="width:240px" />
-                  <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
-                  <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
-                  <span class="litpic_span"><input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'archives_sg_add.php');" size="1" class='np coolbg'/></span>
-                  <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
-                  <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
-                  <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>远程
+                    <input name="picname" type="text" id="picname" style="width:240px" />
+                    <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;"
+                      onClick="SelectImage('form1.picname','small');" class='np coolbg' />
+                    <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote' />远程
+                    <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      选择图片
+                      <input type="file" name="files[]" id="iptAddImages">
+                    </span>
+                    <button id="btnClearAll" type="button" class="btn btn-danger delete">
+                      <i class="fa fa-trash-o"></i>
+                      <span>清空</span>
+                    </button>
                   </td>
                 </tr>
               </table>
              </td>
             <td width="150" align="center">
-            <div id='divpicview' class='divpre'></div>
+              <img id="litPic" src="../resources/img/defaultpic.gif" style="height: 80px">
             </td>
           </tr>
         </table></td>
@@ -177,7 +199,7 @@ function checkSubmit()
     </tr>
   </table>
 
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FAFBFC" style="border:1px solid #EAECEF;border-top:none;">
   <tr>
     <td height="35">
 	<table width="98%" border="0" cellspacing="1" cellpadding="1">

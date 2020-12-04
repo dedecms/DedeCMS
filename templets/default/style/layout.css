@@ -10,19 +10,19 @@
 
 .tbox{
 	margin:0 0 8px 0;
-	border-bottom:1px solid #DADADA;
+	border-bottom:1px solid #F4F5F7;
 	overflow:hidden;
 	background:url(../images/green_skin.png) 0 -294px repeat-x;
 }
 .tbox dt{
 	height:24px;
-	border:1px solid #DADADA;
+	border:1px solid #F4F5F7;
 	overflow:hidden;
 	clear:both;
 }
 .tbox dd{
-	border-left:1px solid #DADADA;
-	border-right:1px solid #DADADA;
+	border-left:1px solid #F4F5F7;
+	border-right:1px solid #F4F5F7;
 	/*padding:4px 4px 0px;*/
 	overflow:hidden;
 }
@@ -71,7 +71,7 @@
 	display:block;
 	padding:0px 7px 0px 8px;
 	line-height:26px;
-	border-left:1px solid #DADADA;
+	border-left:1px solid #F4F5F7;
 	float:left;
 	color:#666;
 	text-decoration:none;
@@ -84,7 +84,7 @@
 .tbox dt span.label a.thisclass{
 	background:#FFF;
 	color:#333;
-	border-top:3px solid #DADADA;
+	border-top:3px solid #F4F5F7;
 }
 
 .tbox dt span.linklabel{
@@ -100,9 +100,9 @@
 	padding:0px 7px 0px 8px;
 	margin:0 5px;
 	line-height:20px;
-	border-left:1px solid #DADADA;
-	border-top:1px solid #DADADA;
-	border-right:1px solid #DADADA;
+	border-left:1px solid #F4F5F7;
+	border-top:1px solid #F4F5F7;
+	border-right:1px solid #F4F5F7;
 	float:left;
 	color:#666;
 	text-decoration:none;
@@ -123,14 +123,14 @@
 }
 .light dt{
 	height:24px;
-	border:1px solid #DADADA;
+	border:1px solid #F4F5F7;
 	overflow:hidden;
 	background:url(../images/green_skin.png) 0 -188px repeat-x;
 	clear:both;
 }
 .light dd{
-	border-left:1px solid #DADADA;
-	border-right:1px solid #DADADA;
+	border-left:1px solid #F4F5F7;
+	border-right:1px solid #F4F5F7;
 	/*padding:4px 4px 0px;*/
 	overflow:hidden;
 }

@@ -2,9 +2,9 @@
 /**
  * 踩踩文档类
  *
- * @version        $Id: arc.caicai.class.php 1 8:59 2010年7月7日Z tianya $
+ * @version        $Id: arc.caicai.class.php 1 8:59 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -190,7 +190,7 @@ class Caicai extends DataListCP
             $arr['typeurl'] = GetTypeUrl($arr['typeid'], MfTypedir($arr['typedir']), $arr['isdefault'], $arr['defaultname'],
             $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
 
-            if($arr['litpic']=='') $arr['litpic'] = '/images/defaultpic.gif';
+            if($arr['litpic']=='') $arr['litpic'] = '/resources/img/defaultpic.gif';
 
             if(!preg_match("#^http:\/\/#", $arr['litpic']))
             {

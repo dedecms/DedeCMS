@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>修改图集:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="templets/js/main.js"></script>
 <script type="text/javascript" src="templets/js/album.js"></script>
 <script type="text/javascript" src="templets/js/load.js"></script>
@@ -25,7 +25,7 @@
    <form  name="addcontent" action="album_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
-          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="idhash" value="<?php echo hash('sha256', $row['id'].$cfg_cookie_encode); ?>" />
           <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
           <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
           <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
@@ -69,17 +69,7 @@
             <label>图集简介：</label>
             	<textarea name="description" id="description"><?php echo $row["description"]; ?></textarea>(内容的简要说明)
           </p>
-          <p class="cellBg">
-            <label>缩略图：</label>
-            	<input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
-          </p>
-        <?php if($row['litpic']!=''){ ?>
-           <p>
-            <label style="width: 85px;">原来的缩略图：</label>
-            <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>'  style="width: 200px; height:150px"/>
-          </p>
         <?php
-          }
            //自定义字段
             PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
          ?>
@@ -126,7 +116,7 @@
                     </tr>
                     <tr>
                       <td width="310" height="25">　本地上传：
-                        <input type="file" name='imgfile<?php echo $j; ?>' style="width:200px;" maxlength="100" class="intxt"  onchange="SeePicNew('divpicview<?php echo $j; ?>',this);" />
+                        <input type="text" name='imgfile<?php echo $j; ?>' style="width:200px;" maxlength="100" class="intxt"/>
                       </td>
                       <td width="322" rowspan="3" align="center"><div id='divpicview<?php echo $j; ?>' class='divpre' style="height:5px"></div>
                       <img src="<?php echo trim($ctag->GetInnerText()); ?>" id="picview<?php echo $j; ?>" name="picview<?php echo $j; ?>" style="width: 128px; height: 128px;"/></td>
@@ -156,7 +146,7 @@ startNum = <?php echo $j; ?>;
           <p  class="cellBg">
             <label>验证码：</label>
             <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
-            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+            <img src="../plus/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" />
           </p>
       <?php
       }

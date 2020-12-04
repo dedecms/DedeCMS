@@ -52,7 +52,7 @@ function checkSubmit()
   </td>
 </tr>
 <tr>
-   <td height="30" align="center" bgcolor="#F9FCEF"  colspan="8"> 
+   <td height="30" align="center" bgcolor="#FAFBFC"  colspan="8"> 
    <form action="friendlink_main.php" name="form1" method="get">
 	  <table border="0" cellspacing="0" cellpadding="3">
       <tr>
@@ -80,7 +80,7 @@ function checkSubmit()
 <form name='form1' method='post' action='friendlink_edit.php' onSubmit='return checkSubmit();'>
 <input type='hidden' name='dopost' value='delall'/>
 <input type='hidden' name='allid' value=''/>
-<tr align="center" bgcolor="#FBFCE2" height="26">
+<tr align="center" bgcolor="#FBFBFB" height="26">
           <td width="6%">选择</td>
           <td width="23%">网站名称</td>
           <td width="12%">网站Logo</td>
@@ -91,7 +91,7 @@ function checkSubmit()
           <td width="15%">管理</td>
         </tr>
         {dede:datalist}
-        <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+        <tr align="center" bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FBFBFB';"
         	 onMouseOut="javascript:this.bgColor='#FFFFFF';">
           <td><input type='checkbox' name='aids' value='{dede:field.id/}' class='np'></td>
           <td>{dede:field.webname function='dede_htmlspecialchars(@me)'/}<br><i>地址：{dede:field.url/}</i></td>
@@ -116,7 +116,7 @@ function checkSubmit()
 
       </td>
      </tr>
-     <tr align="center" bgcolor="#F9FCEF" height="28">
+     <tr align="center" bgcolor="#FAFBFC" height="28">
       <td colspan="8">
       	{dede:pagelist listsize=6/}
       </td>

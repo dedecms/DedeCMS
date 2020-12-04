@@ -4,19 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>专题发布向导</title>
 <style type="text/css">
-<!--
 body {
 	background-image: url(images/allbg.gif);
 }
--->
 </style>
-<link href="css/base.css" rel="stylesheet" type="text/css">
-<script language="javascript" src="../include/js/dedeajax2.js"></script>
-<script type="text/javascript" src="js/calendar/calendar.js"></script>
-<script language='javascript' src='js/main.js'></script>
-<script language="javascript">
-<!--
+<link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
 
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+<script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
+<link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
+<link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+<script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
+<script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+<script language='javascript' src='js/main.js'></script>
+<link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
+<script src="../resources/pkg/cropper/cropper.min.js"></script>
+<script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+<script language="javascript">
 function checkSubmit(){
 	if(document.form1.title.value==""){
 		alert("专题名称不能为空！");
@@ -40,13 +45,13 @@ function SelectArcList(fname){
 function SelectImage(fname,vlist){
 	var posLeft = 10;
 	var posTop = 10;
-	window.open("../include/dialog/select_images.php?f="+fname+"&imgstick="+vlist, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+	window.open("./dialog/select_images.php?f="+fname+"&imgstick="+vlist, "popUpImagesWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
 function SelectTemplets(fname){
    var posLeft = 10;
    var posTop = 10;
-   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("./dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 function CheckVal(id){
    var notename = $DE('notename'+id);
@@ -61,8 +66,17 @@ function CheckVal(id){
        }
    }
 }
--->
 </script>
+<style>
+  img {
+    vertical-align: baseline;
+  }
+
+  input,
+  select {
+    height: auto !important;
+  }
+</style>
 </head>
 <body topmargin="8">
 <form name="form1" action="spec_add.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
@@ -70,6 +84,7 @@ function CheckVal(id){
   <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
   <input type="hidden" name="arcrank" value="0" />
   <input type="hidden" name="source" value="本站" />
+  <input type="hidden" id="litpic_b64" name="litpic_b64" value="">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td width="85%" height="30"><IMG height=14 src="images/book1.gif" width=20>&nbsp;<a href="content_s_list.php"><u>专题列表</u></a><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"></a> &gt;&gt; 发布专题</td>
@@ -81,7 +96,7 @@ function CheckVal(id){
       <td colspan="2"><table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规参数&nbsp;</td>
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>专题文档</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem2()"><u>专题文档</u></a>&nbsp;</td>
           </tr>
         </table></td>
     </tr>
@@ -90,13 +105,13 @@ function CheckVal(id){
     <tr>
       <td colspan="2"><table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
             <td width="84" align="center" background="images/itemnote1.gif">专题文档</td>
           </tr>
         </table></td>
     </tr>
   </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #EAECEF;background:#ffffff;">
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -132,18 +147,22 @@ function CheckVal(id){
             <td width="560"><table width="100%" border="0" cellspacing="1" cellpadding="1">
                 <tr>
                   <td height="30"><input name="picname" type="text" id="picname" style="width:240px" />
-                    <input type="button"  value="本地上传" style="width:70px;cursor:pointer;" />
-                    <iframe name='uplitpicfra' id='uplitpicfra' src='' style='display:none'></iframe>
-                    <span class="litpic_span">
-                    <input name="litpic" type="file" id="litpic"  onChange="SeePicNew(this, 'divpicview', 'uplitpicfra', 165, 'spec_add.php');" size="1" class='np coolbg'/>
+                    <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;"
+                      onClick="SelectImage('form1.picname','small');" class='np coolbg' />
+                    <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote' />远程
+                    <span class="btn btn-success fileinput-button">
+                      <i class="glyphicon glyphicon-plus"></i>
+                      选择图片
+                      <input type="file" name="files[]" id="iptAddImages">
                     </span>
-                    <input type="button" name="Submit2" value="站内选择" style="margin-left:8px;" onClick="SelectImage('form1.picname','small');" class='np coolbg'/>
-                    <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
-                    <input type='checkbox' class='np' name='ddisremote' value='1' id='ddisremote'/>
-                    远程图片 </td>
+                    <button id="btnClearAll" type="button" class="btn btn-danger delete">
+                      <i class="fa fa-trash-o"></i>
+                      <span>清空</span>
+                    </button>
+                  </td>
                 </tr>
               </table></td>
-            <td width="150" align="center"><div id='divpicview' class='divpre'></div></td>
+            <td width="150" align="center"><img id="litPic" src="../resources/img/defaultpic.gif" style="height: 80px"></td>
           </tr>
         </table></td>
     </tr>
@@ -229,16 +248,9 @@ function CheckVal(id){
             <td width="90">&nbsp;发布时间：</td>
             <td><?php
               $nowtime = GetDateTimeMk(time());
-              echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\" />";
+              echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\" class='datepicker'/>";
 			        ?>
-              <script language="javascript" type="text/javascript">
-					Calendar.setup({
-						inputField     :    "pubdate",
-						ifFormat       :    "%Y-%m-%d %H:%M:%S",
-						showsTime      :    true,
-						timeFormat     :    "24"
-					});
-				 </script></td>
+              </td>
           </tr>
         </table></td>
     </tr>
@@ -285,7 +297,7 @@ function CheckVal(id){
       <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
     </tr>
   </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" style="border:1px solid #cfcfcf;background:#ffffff;display:none;" cellspacing="2" id="adset">
+  <table width="98%"  border="0" align="center" cellpadding="2" style="border:1px solid #EAECEF;background:#ffffff;display:none;" cellspacing="2" id="adset">
     <tr>
       <td height="24" class="bline2"><strong>专题节点列表：</strong> <br>
         1、文章列表用ID1,ID2,ID3这样形式分开，系统会自动排除不同节点的相同文章；<br/>
@@ -310,7 +322,7 @@ function CheckVal(id){
 		  					$nodename = $nodeid = '';
 		  				}
 		     ?>
-          <tr bgcolor="#FBFCE2">
+          <tr bgcolor="#FBFBFB">
             <td width="113">节点 <?php echo $i?> 名称：</td>
             <td colspan="2"><table width="600" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -368,7 +380,7 @@ function CheckVal(id){
         </table></td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FAFBFC" style="border:1px solid #EAECEF;border-top:none;">
     <tr>
       <td height="35"><table width="100%" border="0" cellspacing="1" cellpadding="1">
           <tr>

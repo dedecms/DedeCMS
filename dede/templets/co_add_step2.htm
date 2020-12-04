@@ -58,7 +58,7 @@
       <td>&nbsp;</td>
      </tr>
      <tr> 
-      <td width="18%" height="60"><a href="#" onclick="showHide('achelp')"><img src="images/help.gif" width="16" height="16" /></a>内容分页导航所在的区域匹配规则：<br/></td>
+      <td width="18%" height="60"><a href="#" onclick="showHide('achelp')"><img src="images/help.png" width="16" height="16" /></a>内容分页导航所在的区域匹配规则：<br/></td>
       <td><textarea name="sppage" rows="3" id="sppage" style="width:90%"></textarea></td>
       <td width="37%">
       	<input name="sptype" type="radio" value="full" class="np" checked='1' />
@@ -74,11 +74,11 @@
       </td>
      </tr>
      <tr>
-      <td height="35" colspan="3" bgcolor="#FBFCE2" id="dyrule">如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br />
+      <td height="35" colspan="3" bgcolor="#FBFBFB" id="dyrule">如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br />
        <strong>规则说明：{path}</strong>地址+目录 <strong>{file}</strong>文件 <strong>{ext}</strong>文件扩展名<strong>{p}</strong>分页列表数</td>
      </tr>
      <tr> 
-      <td height="24" colspan="3" bgcolor="#F9FCEF">
+      <td height="24" colspan="3" bgcolor="#FAFBFC">
       	&nbsp;<strong>以下为固定的采集项目：</strong>(项目点击可展开/隐藏，内容摘要、关键字、缩略图系统会用正则进行自动匹配)
       </td>
      </tr>
@@ -120,7 +120,7 @@
        <tr>
          <td width="50%" valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('ttitle')"><b><u>文章标题</u></b></a></td>
            </tr>
            <tr>
@@ -144,7 +144,7 @@
          </td>
          <td valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('twriter')"><b><u>文章作者</u></b></a> </td>
            </tr>
            <tr id="twriter">
@@ -197,7 +197,7 @@
          </td>
          <td valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('tpubdate')"><b><u>发布时间</u></b></a> </td>
            </tr>
            <tr id="tpubdate">
@@ -227,7 +227,7 @@
      <!-- 固定项目结束，下面为自动项目 -->
      <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-       <td width="55%" height="24" colspan="3" bgcolor="#FBFCE2">
+       <td width="55%" height="24" colspan="3" bgcolor="#FBFBFB">
        	&nbsp;<strong>以下是针对模型设置的采集项目：</strong>
        </td>
       </tr>
@@ -269,7 +269,7 @@
      ?>
     <input type='checkbox' name='fields[]' checked='1'  value='<?php echo $tname; ?>' style='display:none' />
     <table width="99%" border="0" cellspacing="0" cellpadding="0" class='autotb' style="margin-top:2px">
-     <tr bgcolor="#F9FCEF"> 
+     <tr bgcolor="#FAFBFC"> 
       <td width="18%" height="24"  class="adline">
          &nbsp;<a href="#" onclick="showHide('t<?php echo $tname; ?>')"><b><u><?php echo $iname; ?></u></b></a>
       </td>

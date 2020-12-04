@@ -4,9 +4,9 @@
  * content_s_list.php、content_i_list.php、content_select_list.php
  * 均使用本文件作为实际处理代码，只是使用的模板不同，如有相关变动，只需改本文件及相关模板即可
  *
- * @version        $Id: content_list.php 1 14:31 2010年7月12日Z tianya $
+ * @version        $Id: content_list.php 1 14:31 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -23,6 +23,8 @@ if(!isset($keyword)) $keyword = '';
 if(!isset($flag)) $flag = '';
 if(!isset($arcrank)) $arcrank = '';
 if(!isset($dopost)) $dopost = '';
+
+$arcrank = RemoveXSS($arcrank);
 
 //检查权限许可，总权限
 CheckPurview('a_List,a_AccList,a_MyList');
@@ -99,13 +101,7 @@ if(empty($totalresult) && empty($keyword) && empty($orderby) && empty($flag))
     }
     // 缓存处理
     $sql = "SELECT COUNT(*) AS dd FROM `#@__arctiny` $tinyQuery ";
-    $cachekey = md5($sql);
-    $arr = GetCache('listcache', $cachekey);
-    if (empty($arr))
-    {
-        $arr = $dsql->GetOne($sql);
-        SetCache('listcache', $cachekey, $arr);
-    }
+    $arr = $dsql->GetOne($sql);
     $totalresult = $arr['dd'];
 }
 
@@ -142,7 +138,7 @@ if($channelid < -1 )
 
 
 // 栏目大于800则需要缓存数据
-$optHash = md5($cid.$admin_catalogs.$channelid);
+$optHash = md5($cid. serialize($admin_catalogs).$channelid);
 $optCache = DEDEDATA."/tplcache/inc_option_$optHash.inc";
 
 $typeCount = 0;

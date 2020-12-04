@@ -2,9 +2,9 @@
 /**
  * 单表模型视图类
  *
- * @version        $Id: arc.sgpage.class.php 1 15:48 2010年7月7日Z tianya $
+ * @version        $Id: arc.sgpage.class.php 1 15:48 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

@@ -2,9 +2,9 @@
 /**
  * 获取网站搜索的热门关键字
  *
- * @version        $Id: hotwords.lib.php 1 9:29 2010年7月6日Z tianya $
+ * @version        $Id: hotwords.lib.php 1 9:29 2010年7月6日 $
  * @package        DedeCMS.Taglib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -38,7 +38,6 @@ function lib_hotwords(&$ctag,&$refObj)
     if(empty($maxlength)) $maxlength = 20;
     $maxlength = $maxlength+1;
     $mintime = $nowtime - ($subday * 24 * 3600);
-	// 2011-6-28 根据论坛反馈(http://bbs.dedecms.com/371416.html)，修正SQL大小写问题(by:织梦的鱼)
     $dsql->SetQuery("SELECT keyword FROM `#@__search_keywords` WHERE lasttime>$mintime AND length(keyword)<$maxlength ORDER BY count DESC LIMIT 0,$num");
     $dsql->Execute('hw');
     $hotword = '';

@@ -2,9 +2,9 @@
 /**
  * 单表模型文档发布
  *
- * @version        $Id: archives_sg_add.php 1 8:26 2010年7月12日Z tianya $
+ * @version        $Id: archives_sg_add.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -77,6 +77,7 @@ else if($dopost=='save')
     if(empty($flags)) $flag = '';
     else $flag = join(',', $flags);
     $senddate = time();
+    if(empty($litpic_b64)) $litpic_b64 = '';
     $title = cn_substrR($title,$cfg_title_maxlen);
     $isremote  = (empty($isremote)? 0  : $isremote);
     $serviterm=empty($serviterm)? "" : $serviterm;
@@ -88,7 +89,21 @@ else if($dopost=='save')
     if(empty($ddisremote)) $ddisremote = 0;
 
     $litpic = GetDDImage('none', $picname, $ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
 
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
     //生成文档ID
     $arcID = GetIndexKey($arcrank, $typeid, $senddate, $channelid, $senddate, $adminid);
 
@@ -150,7 +165,7 @@ else if($dopost=='save')
         {
             $gerr = $dsql->GetError();
             $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` WHERE id='$arcID'");
-            ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+            ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
             exit();
         }
     }

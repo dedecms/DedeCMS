@@ -3,9 +3,9 @@
  *
  * 搜索页
  *
- * @version        $Id: search.php 1 15:38 2010年7月8日Z tianya $
+ * @version        $Id: search.php 1 15:38 2010年7月8日 $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -17,6 +17,7 @@ $typeid = (isset($typeid) && is_numeric($typeid)) ? $typeid : 0;
 $channeltype = (isset($channeltype) && is_numeric($channeltype)) ? $channeltype : 0;
 $kwtype = (isset($kwtype) && is_numeric($kwtype)) ? $kwtype : 0;
 $mid = (isset($mid) && is_numeric($mid)) ? $mid : 0;
+unset($typeArr);
 
 if(!isset($orderby)) $orderby='';
 else $orderby = preg_replace("#[^a-z]#i", '', $orderby);

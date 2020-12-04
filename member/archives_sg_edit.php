@@ -2,9 +2,9 @@
 /**
  * 单表模型编辑器
  * 
- * @version        $Id: archives_sg_add.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: archives_sg_add.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -49,7 +49,6 @@ function _SaveArticle(){  }
 ------------------------------*/
 else if($dopost=='save')
 {
-
     require_once(DEDEINC."/image.func.php");
     require_once(DEDEINC."/oxwindow.class.php");
     $flag = '';
@@ -83,6 +82,9 @@ else if($dopost=='save')
         exit();
     }
 
+    // 校验CSRF
+    CheckCSRF();
+
     //文档的默认状态
     if($cInfos['arcsta']==0)
     {
@@ -100,11 +102,6 @@ else if($dopost=='save')
     //对保存的内容进行处理
     $title = cn_substrR(HtmlReplace($title, 1), $cfg_title_maxlen);
     $mid = $cfg_ml->M_ID;
-
-    //处理上传的缩略图
-    $litpic = MemberUploads('litpic', $oldlitpic, $mid, 'image', '', $cfg_ddimg_width, $cfg_ddimg_height, FALSE);
-    if($litpic!='') SaveUploadInfo($title, $litpic, 1);
-    else $litpic =$oldlitpic;
 
     //分析处理附加表数据
     $inadd_f = $inadd_m = '';
@@ -137,11 +134,6 @@ else if($dopost=='save')
                 $inadd_m .= ','.$vs[0];
             }
         }
-        if (empty($idhash) || $idhash != md5($aid.$cfg_cookie_encode))
-        {
-            showMsg('数据校验不对，程序返回', '-1');
-            exit();
-        }
         
         // 这里对前台提交的附加数据进行一次校验
         $fontiterm = PrintAutoFieldsAdd($cInfos['fieldset'],'autofield', FALSE);
@@ -154,7 +146,7 @@ else if($dopost=='save')
 
     if($addtable!='')
     {
-        $upQuery = "UPDATE `$addtable` SET `title`='$title',`typeid`='$typeid',`arcrank`='$arcrank',litpic='$litpic',userip='$userip'{$inadd_f} WHERE aid='$aid' ";
+        $upQuery = "UPDATE `$addtable` SET `title`='$title',`typeid`='$typeid',`arcrank`='$arcrank',userip='$userip'{$inadd_f} WHERE aid='$aid' ";
         if(!$dsql->ExecuteNoneQuery($upQuery))
         {
             ShowMsg("更新附加表 `$addtable`  时出错，请联系管理员！","javascript:;");

@@ -2,9 +2,9 @@
 /**
  * 发布文章
  * 
- * @version        $Id: article_add.php 1 8:38 2010年7月9日Z tianya $
+ * @version        $Id: article_add.php 1 8:38 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -79,13 +79,6 @@ else if($dopost=='save')
             }
         }
     }
-
-    if (empty($dede_fieldshash) || $dede_fieldshash != md5($dede_addonfields.$cfg_cookie_encode))
-    {
-        showMsg('数据校验不对，程序返回', '-1');
-        exit();
-    }
-    
     
     // 这里对前台提交的附加数据进行一次校验
     $fontiterm = PrintAutoFieldsAdd($cInfos['fieldset'],'autofield', FALSE);
@@ -95,11 +88,6 @@ else if($dopost=='save')
         exit();
     }
 
-    //处理图片文档的自定义属性
-    if($litpic!='')
-    {
-        $flag = 'p';
-    }
     $body = AnalyseHtmlBody($body, $description);
     $body = HtmlReplace($body, -1);
 
@@ -115,7 +103,7 @@ else if($dopost=='save')
     $inQuery = "INSERT INTO `#@__archives`(id,typeid,sortrank,flag,ismake,channel,arcrank,click,money,title,shorttitle,
 color,writer,source,litpic,pubdate,senddate,mid,description,keywords,mtype)
 VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank','0','$money','$title','$shorttitle',
-'$color','$writer','$source','$litpic','$pubdate','$senddate','$mid','$description','$keywords','$mtypesid'); ";
+'$color','$writer','$source','','$pubdate','$senddate','$mid','$description','$keywords','$mtypesid'); ";
     if(!$dsql->ExecuteNoneQuery($inQuery))
     {
         $gerr = $dsql->GetError();
@@ -155,25 +143,6 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
     InsertTags($tags, $arcID);
     $artUrl = MakeArt($arcID, TRUE);
     if($artUrl=='') $artUrl = $cfg_phpurl."/view.php?aid=$arcID";
-
-    
-    #api{{
-    if(defined('UC_API') && @include_once DEDEROOT.'/api/uc.func.php')
-    {
-        //推送事件
-        $feed['icon'] = 'thread';
-        $feed['title_template'] = '<b>{username} 在网站发布了一篇文章</b>';
-        $feed['title_data'] = array('username' => $cfg_ml->M_UserName);
-        $feed['body_template'] = '<b>{subject}</b><br>{message}';
-        $url = !strstr($artUrl,'http://') ? ($cfg_basehost.$artUrl) : $artUrl;
-        $feed['body_data'] = array('subject' => "<a href=\"".$url."\">$title</a>", 'message' => cn_substr(strip_tags(preg_replace("/\[.+?\]/is", '', $description)), 150));        
-        $feed['images'][] = array('url' => $cfg_basehost.'/images/scores.gif', 'link'=> $cfg_basehost);
-        uc_feed_note($cfg_ml->M_LoginID,$feed);
-
-        $row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='".$cfg_ml->M_ID."' AND `matt`<>10");
-        uc_credit_note($row['userid'], $cfg_sendarc_scores);
-    }
-    #/aip}}
     
     //会员动态记录
     $cfg_ml->RecordFeeds('add', $title, $description, $arcID);

@@ -36,12 +36,12 @@
 </script>
 </head>
 <body leftmargin="8" topmargin="8" background='images/allbg.gif'>
-<table width="98%" height="31" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="border:1px solid #CFCFCF;margin-top:6px;border-bottom:none;">
+<table width="98%" height="31" border="0" align="center" cellpadding="1" cellspacing="1" class="tbtitle" style="border:1px solid #EAECEF;margin-top:6px;border-bottom:none;">
   <tr>
     <td class="tbtitletxt" background='images/tbg.gif'><strong>&nbsp;内容发布向导：</strong></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style="border:1px solid #CFCFCF;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" style="border:1px solid #EAECEF;">
   <tr align="center">
     <td height="120" align="left" valign="top" bgcolor="#FFFFFF" style="padding:6px;padding-bottom:20px">
 	<table width="100%" border="0" cellspacing="0" cellpadding="6">
@@ -51,8 +51,8 @@
           2、如果您设置了某频道为默认发布表单，以后将不再显示此向导，而是直接显示您所选的频道的发布表单，如果想要发布其它频道的内容，可以从左边的目录树中选择，如果以后您想要修改默认发布表单，请点击目录树上方的“发布向导”图标；</td>
       </tr>
     </table>
-	<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" >
-    <tr height="22" align="center" bgcolor="#FBFCE2">
+	<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#EAECEF" >
+    <tr height="22" align="center" bgcolor="#FBFBFB">
         <td width="8%" ><strong>选择</strong></td>
 		<td width="8%"><strong>频道ID</strong></td>
         <td width="20%"><strong>频道内容模型</strong></td>
@@ -71,7 +71,7 @@
    }
    $catnum = GetCatalogs($dsql,$row['id']);
    ?>   
-     <tr align="center" bgcolor="#FFFFFF" height="20" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+     <tr align="center" bgcolor="#FFFFFF" height="20" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
         <td><input type="checkbox" name="cid<?php echo $i; ?>" id="cid<?php echo $i; ?>" onClick="ResetBox('cid<?php echo $i; ?>')" value="<?php echo $row['id']; ?>" class="np" <?php echo $checkbox; ?>/></td>
 		    <td><?php echo $row['id']; ?></td>
         <td><?php echo $row['typename']; ?></td>

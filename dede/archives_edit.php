@@ -2,9 +2,9 @@
 /**
  * 文档编辑
  *
- * @version        $Id: archives_edit.php 1 8:26 2010年7月12日Z tianya $
+ * @version        $Id: archives_edit.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -59,6 +59,7 @@ else if($dopost=='save')
     require_once(DEDEINC.'/oxwindow.class.php');
     $flag = isset($flags) ? join(',',$flags) : '';
     $notpost = isset($notpost) && $notpost == 1 ? 1: 0;
+    if(empty($litpic_b64)) $litpic_b64 = '';
     
     if(empty($typeid2)) $typeid2 = 0;
     if(!isset($autokey)) $autokey = 0;
@@ -116,6 +117,22 @@ else if($dopost=='save')
     if(empty($ddisremote)) $ddisremote = 0;
 
     $litpic = GetDDImage('none', $picname, $ddisremote);
+
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
 
     //分析处理附加表数据
     $inadd_f = '';

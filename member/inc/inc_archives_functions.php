@@ -2,7 +2,7 @@
 /**
  * 文档处理函数
  * 
- * @version        $Id: inc_archives_functions.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: inc_archives_functions.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
@@ -217,7 +217,6 @@ function GetFormItemValueA($ctag,$fvalue)
  */
 function PrintAutoFieldsAdd(&$fieldset, $loadtype='all', $isprint=TRUE)
 {
-    global $cfg_cookie_encode;
     $dtp = new DedeTagParse();
     $dtp->SetNameSpace('field','<','>');
     $dtp->LoadSource($fieldset);
@@ -235,8 +234,8 @@ function PrintAutoFieldsAdd(&$fieldset, $loadtype='all', $isprint=TRUE)
             }
         }
     }
-    if ($isprint) echo "<input type='hidden' name='dede_addonfields' value=\"".$dede_addonfields."\">\r\n";
-    echo "<input type=\"hidden\" name=\"dede_fieldshash\" value=\"".md5($dede_addonfields.$cfg_cookie_encode)."\" />";
+
+	echo "<input type=\"hidden\" name=\"_csrf_token\" value=\"".$GLOBALS['csrf_token']."\" />";
     // 增加一个返回
     return $addonfieldsname;
 }
@@ -267,7 +266,7 @@ function PrintAutoFieldsEdit(&$fieldset, &$fieldValues, $loadtype='all')
             }
         }
     }
-    echo "<input type='hidden' name='dede_addonfields' value=\"".$dede_addonfields."\">\r\n";
+    echo "<input type=\"hidden\" name=\"_csrf_token\" value=\"".$GLOBALS['csrf_token']."\" />";
 }
 
 /**
@@ -279,7 +278,6 @@ function PrintAutoFieldsEdit(&$fieldset, &$fieldValues, $loadtype='all')
  */
 function MakeArt($aid, $ismakesign=FALSE)
 {
-    global $cfg_makeindex,$cfg_basedir,$cfg_templets_dir,$cfg_df_style;
     include_once(DEDEINC.'/arc.archives.class.php');
     if($ismakesign)
     {
@@ -409,120 +407,4 @@ function GetCurContent(&$body)
     }
     $htd->Close();
     return $body;
-}
-
-/**
- * 上传一个未经处理的图片
- *
- * 参数一 upname 上传框名称
- * 参数二 handurl 手工填写的网址
- * 参数三 ddisremote 是否下载远程图片 0 不下, 1 下载
- * 参数四 ntitle 注解文字 如果表单有 title 字段可不管
- *
- * @access    public
- * @param     string  $upname  上传名称
- * @param     string  $handurl  操作地址
- * @param     int  $isremote  是否远程
- * @param     string  $ntitle  注释文字
- * @return    string
- */
-function UploadOneImage($upname,$handurl='',$isremote=1,$ntitle='')
-{
-    global $cfg_ml,$cfg_basedir,$cfg_image_dir,$dsql,$title, $dsql;
-    if($ntitle!='')
-    {
-        $title = $ntitle;
-    }
-    $ntime = time();
-    $filename = '';
-    $isrm_up = false;
-    $handurl = trim($handurl);
-    //如果用户自行上传了图片
-    if(!empty($_FILES[$upname]['tmp_name']) && is_uploaded_file($_FILES[$upname]['tmp_name']))
-    {
-        $istype = 0;
-        $sparr = Array("image/pjpeg","image/jpeg","image/gif","image/png");
-        $_FILES[$upname]['type'] = strtolower(trim($_FILES[$upname]['type']));
-        if(!in_array($_FILES[$upname]['type'],$sparr))
-        {
-            ShowMsg("上传的图片格式错误，请使用JPEG、GIF、PNG格式的其中一种！","-1");
-            exit();
-        }
-        if(!empty($handurl) && !preg_match("#^http:\/\/#", $handurl) && file_exists($cfg_basedir.$handurl) )
-        {
-            $dsql->ExecuteNoneQuery("Delete From #@__uploads where url like '$handurl' ");
-            $fullUrl = preg_replace("#\.([a-z]*)$#i", "", $handurl);
-        }
-        else
-        {
-            $savepath = $cfg_image_dir."/".strftime("%Y-%m",$ntime);
-            CreateDir($savepath);
-            $fullUrl = $savepath."/".strftime("%d",$ntime).dd2char(strftime("%H%M%S",$ntime).'0'.$cfg_ml->M_ID.'0'.mt_rand(1000,9999));
-        }
-        if(strtolower($_FILES[$upname]['type'])=="image/gif")
-        {
-            $fullUrl = $fullUrl.".gif";
-        }
-        else if(strtolower($_FILES[$upname]['type'])=="image/png")
-        {
-            $fullUrl = $fullUrl.".png";
-        }
-        else
-        {
-            $fullUrl = $fullUrl.".jpg";
-        }
-
-        //保存
-        @move_uploaded_file($_FILES[$upname]['tmp_name'],$cfg_basedir.$fullUrl);
-        $filename = $fullUrl;
-
-        //水印
-        @WaterImg($imgfile,'up');
-        $isrm_up = TRUE;
-    }
-
-    //远程或选择本地图片
-    else{
-        if($handurl=='')
-        {
-            return '';
-        }
-
-        //远程图片并要求本地化
-        if($isremote==1 && preg_match("#^http:\/\/#", $handurl))
-        {
-            $ddinfos = GetRemoteImage($handurl,$cuserLogin->getUserID());
-            if(!is_array($ddinfos))
-            {
-                $litpic = "";
-            }
-            else
-            {
-                $filename = $ddinfos[0];
-            }
-            $isrm_up = TRUE;
-
-            //本地图片或远程不要求本地化
-        }
-        else
-        {
-            $filename = $handurl;
-        }
-    }
-    $imgfile = $cfg_basedir.$filename;
-    if(is_file($imgfile) && $isrm_up && $filename!='')
-    {
-        $info = "";
-        $imginfos = GetImageSize($imgfile,$info);
-
-        //把新上传的图片信息保存到媒体文档管理档案中
-        $inquery = "
-        INSERT INTO #@__uploads(title,url,mediatype,width,height,playtime,filesize,uptime,mid)
-        VALUES ('$title','$filename','1','".$imginfos[0]."','".$imginfos[1]."','0','".filesize($imgfile)."','".time()."','".$cfg_ml->M_ID."');
-    ";
-        $dsql->ExecuteNoneQuery($inquery);
-    }
-    $fid = $dsql->GetLastID();
-    AddMyAddon($fid, $filename);
-    return $filename;
 }

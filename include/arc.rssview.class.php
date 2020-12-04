@@ -2,9 +2,9 @@
 /**
  * RSS视图类
  *
- * @version        $Id: arc.rssview.class.php 1 15:21 2010年7月7日Z tianya $
+ * @version        $Id: arc.rssview.class.php 1 15:21 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -171,7 +171,7 @@ class RssView
             //处理一些特殊字段
             if($row['litpic'] == '-' || $row['litpic'] == '')
             {
-                $row['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+                $row['litpic'] = $GLOBALS['cfg_cmspath'].'/resources/img/defaultpic.gif';
             }
             if(!preg_match("/^http:\/\//", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
             {
@@ -187,7 +187,6 @@ class RssView
             $row["stime"] = GetDateMK($row["pubdate"]);
             $row["image"] = "<img src='".$row["picname"]."' border='0'>";
             $row["fullurl"] = $GLOBALS["cfg_basehost"].$row["arcurl"];
-            // 2011-6-20 启用多站点RSS输出存在的路径问题(by:织梦的鱼)
             if($GLOBALS['cfg_multi_site'] == 'Y') $row["fullurl"] = $row["arcurl"];
             $row["phpurl"] = $GLOBALS["cfg_plus_dir"];
             $row["templeturl"] = $GLOBALS["cfg_templets_dir"];

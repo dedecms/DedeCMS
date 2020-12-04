@@ -2,9 +2,9 @@
 /**
  * 分类信息地区与类型快捷链接
  *
- * @version        $Id: infolink.lib.php 1 9:29 2010年7月6日Z tianya $
+ * @version        $Id: infolink.lib.php 1 9:29 2010年7月6日 $
  * @package        DedeCMS.Taglib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -81,7 +81,7 @@ function lib_infolink(&$ctag,&$refObj)
     {
         $sontype = ( ($nativeplace % 500 != 0) ? $nativeplace : 0 );
         $toptype = ( ($nativeplace % 500 == 0) ? $nativeplace : ( $nativeplace-($nativeplace%500) ) );
-		//2011-6-21 修改地区列表的一个小空格 论坛http://bbs.dedecms.com/371492.html(by：织梦的鱼)
+		
         $fields['nativeplace'] = "<a href='{$baseurl}plus/list.php?channelid={$channelid}&tid={$typeid}&nativeplace={$toptype}&infotype={$infotype}'> <b>{$em_nativeplaces[$toptype]}</b></a> &gt;&gt; ";
         foreach($em_nativeplaces as $eid=>$em)
         {

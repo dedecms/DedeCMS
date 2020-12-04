@@ -22,7 +22,7 @@
      </table>
     </td>
   </tr>
-  <tr align="center" bgcolor="#FBFCE2" height="28"> 
+  <tr align="center" bgcolor="#FBFBFB" height="28"> 
       <td width="6%">id号</td>
       <td width="16%">频道名称</td>
       <td width="12%">识别id</td>
@@ -33,7 +33,7 @@
    </tr>
    {dede:datalist}
     <tr align="center" bgcolor="#FFFFFF" height="24" 
-    	onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    	onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.id /}</td>
         <td>
         	<a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><u>{dede:field.typename /}</u></a>
@@ -46,13 +46,13 @@
          <a href='mychannel_edit.php?id={dede:field.id/}&dopost=copystart'><img src='images/gtk-copy.png' title='复制' alt='复制' /></a> 
          <a href='mychannel_edit.php?id={dede:field.id/}&dopost=gettemplets'><img src='images/gtk-tmp.png' title='模板' alt='模板' /></a> 
          <a href='mychannel_edit.php?id={dede:field.id /}&dopost=export'><img src='images/gtk-ex.png' title='导出' alt='导出' /></a>  
-         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><img src='images/gtk-edit.png' alt='更改' title='更改' /></a>  
+         <a href='mychannel_edit.php?id={dede:field.id/}&dopost=edit'><img src='images/report_edit.png' alt='更改' title='更改' /></a>  
          <a href='mychannel_edit.php?mid={dede:field.id/}&dopost=modifysearch'><img src='images/gtk-search.png' alt='自定义搜索' title='自定义搜索' /></a> 
          <a href='mychannel_edit.php?id={dede:field.id/}&dopost=delete'><img src='images/gtk-del.png' alt='删除' title='删除' /></a>
 		    </td>
      </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="28"> 
+     <tr align="center" bgcolor="#FAFBFC" height="28"> 
       <td colspan="7">
       	{dede:pagelist listsize="5"/}
       </td>
@@ -63,7 +63,7 @@
       	<img src='images/gtk-copy.png' title='复制' alt='复制' /> 复制
         <img src='images/gtk-tmp.png' title='模板' alt='模板' /> 模板
         <img src='images/gtk-ex.png' title='导出' alt='导出' /> 导出
-        <img src='images/gtk-edit.png' alt='更改' title='更改' /> 修改
+        <img src='images/report_edit.png' alt='更改' title='更改' /> 修改
         <img src='images/gtk-search.png' alt='自定义搜索' title='自定义搜索' /> 自定义搜索
         <img src='images/gtk-del.png' alt='删除' title='删除' /> 删除
       </td>

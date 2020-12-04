@@ -4,15 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>主页更新向导</title>
 <link href="css/base.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
-<script type="text/javascript" src="../include/calendar/calendar.js"></script>
-<script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="../resources/pkg/calendar/calendar-win2k-1.css" title="win2k-1" />
+<script type="text/javascript" src="../resources/pkg/calendar/calendar.js"></script>
+<script type="text/javascript" src="../resources/pkg/calendar/calendar-cn.js"></script>
 <script language="javascript">
 function SelectTemplets(fname)
 {
    var posLeft = 200;
    var posTop = 300;
-   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("./dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
 </head>
@@ -99,7 +99,7 @@ function SelectTemplets(fname)
     </tr>
 
   </form>
-  <tr bgcolor="#F9FCEF"> 
+  <tr bgcolor="#FAFBFC"> 
     <td height="20" colspan="2"><table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

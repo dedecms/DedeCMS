@@ -51,7 +51,7 @@ function lib_mda(&$ctag,&$refObj)
         
         if (!isset($place['data']['place_code']) )
         {
-            return '广告位API接口通信错误，查看<a href="'.MDA_APIHOST.'/help/apicode/'.$place['code'].'" target="_blank">德得广告</a>获取帮助';
+            return '';
         }
     
         $row['reval'] = htmlspecialchars($place['data']['place_code']);

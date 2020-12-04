@@ -9,15 +9,20 @@
  *      $GLOBALS['cfg_dbname'];
  *      $GLOBALS['cfg_dbprefix'];
  *
- * @version        $Id: dedesqli.class.php 1 15:00 2011-1-21 tianya $
+ * @version        $Id: dedesqli.class.php 1 15:00 2011-1-21  $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 @set_time_limit(0);
 // 在工程所有文件中均不需要单独初始化这个类，可直接用 $dsql 或 $db 进行操作
 // 为了防止错误，操作完后不必关闭数据库
+if (!function_exists("mysqli_init") ) {
+    echo "DedeCMS提示：尚未发现开启mysqli模块，请在php.ini中启用`extension=mysqli`。";
+    exit;
+}
+
 $dsql = $dsqli = $db = new DedeSqli(FALSE);
 /**
  * Dede MySQLi数据库类
@@ -28,6 +33,10 @@ $dsql = $dsqli = $db = new DedeSqli(FALSE);
  */
 if (!defined('MYSQL_BOTH')) {
      define('MYSQL_BOTH',MYSQLI_BOTH);
+}
+
+if (!defined('MYSQL_ASSOC')) {
+    define('MYSQL_ASSOC', MYSQLI_ASSOC);
 }
 class DedeSqli
 {
@@ -90,7 +99,7 @@ class DedeSqli
     }
     function SelectDB($dbname)
     {
-        mysql_select_db($dbname);
+        mysqli_select_db($this->linkID, $dbname);
     }
 
     //设置SQL里的参数
@@ -116,7 +125,7 @@ class DedeSqli
 
             $this->linkID = mysqli_init();
             mysqli_real_connect($this->linkID, $dbhost, $this->dbUser, $this->dbPwd, false, $dbport);
-            mysqli_errno($this->linkID) != 0 && $this->DisplayError('DedeCms错误警告： 链接('.$this->pconnect.') 到MySQL发生错误');
+            mysqli_errno($this->linkID) != 0 && $this->DisplayError('DedeCMS错误警告： 链接('.$this->pconnect.') 到MySQL发生错误');
 
 
             //复制一个对象副本
@@ -126,7 +135,7 @@ class DedeSqli
         //处理错误，成功连接则选择数据库
         if(!$this->linkID)
         {
-            $this->DisplayError("DedeCms错误警告：<font color='red'>连接数据库失败，可能数据库密码不对或数据库服务器出错！</font>");
+            $this->DisplayError("DedeCMS错误警告：<font color='red'>连接数据库失败，可能数据库密码不对或数据库服务器出错！</font>");
             exit();
         }
 		$this->isInit = TRUE;
@@ -147,7 +156,10 @@ class DedeSqli
     //为了防止采集等需要较长运行时间的程序超时，在运行这类程序时设置系统等待和交互时间
     function SetLongLink()
     {
-        @mysqli_query("SET interactive_timeout=3600, wait_timeout=3600 ;", $this->linkID);
+        if ($this->linkID) {
+            @mysqli_query($this->linkID, "SET interactive_timeout=3600, wait_timeout=3600 ;");
+        }
+        
     }
 
     //获得错误描述
@@ -512,11 +524,30 @@ class DedeSqli
         }
     }
 
+    // 获取SQL语句类型
+    function getSQLType($sql){
+        if (strpos($sql,'UPDATE') !== false) {
+            return "update";
+        } else if (strpos($sql,'INSERT') !== false) {
+            return "insert";
+        } else if (strpos($sql,'DELETE') !== false) {
+            return "delete";
+        } else if (strpos($sql,'SELECT') !== false) {
+            return "select";
+        }
+    }
+
+
     //设置SQL语句，会自动把SQL语句里的#@__替换为$this->dbPrefix(在配置文件中为$cfg_dbprefix)
     function SetQuery($sql)
     {
         $prefix="#@__";
+        $sql = trim($sql);
+        if (substr($sql,-1) !== ";") {
+            $sql .= ";";
+        }
         $sql = str_replace($prefix,$GLOBALS['cfg_dbprefix'],$sql);
+        CheckSql($sql,$this->getSQLType($sql)); // 5.7前版本仅做了SELECT的过滤，对UPDATE、INSERT、DELETE等语句并未过滤。
         $this->queryString = $sql;
     }
 

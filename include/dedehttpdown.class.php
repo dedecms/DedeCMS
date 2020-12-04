@@ -1,10 +1,10 @@
-<?php   if(!defined('DEDEINC')) exit("Request Error!");
+<?php if (!defined('DEDEINC')) exit("Request Error!");
 /**
  * 织梦HTTP下载类
  *
- * @version        $Id: dedehttpdown.class.php 1 11:42 2010年7月6日Z tianya $
+ * @version        $Id: dedehttpdown.class.php 1 11:42 2010年7月6日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -42,45 +42,38 @@ class DedeHttpDown
      */
     function PrivateInit($url)
     {
-        if($url=='') {
-            return ;
+        if ($url == '') {
+            return;
         }
         $urls = '';
         $urls = @parse_url($url);
         $this->m_url = $url;
-        if(is_array($urls))
-        {
+        if (is_array($urls)) {
             $this->m_host = $urls["host"];
-            if(!empty($urls["scheme"]))
-            {
+            if (!empty($urls["scheme"])) {
                 $this->m_scheme = $urls["scheme"];
             }
-            if(!empty($urls["user"]))
-            {
+            if (!empty($urls["user"])) {
                 $this->m_user = $urls["user"];
             }
-            if(!empty($urls["pass"]))
-            {
+            if (!empty($urls["pass"])) {
                 $this->m_pass = $urls["pass"];
             }
-            if(!empty($urls["port"]))
-            {
+            if (!empty($urls["port"])) {
                 $this->m_port = $urls["port"];
             }
-            if(!empty($urls["path"]))
-            {
+            if (!empty($urls["path"])) {
                 $this->m_path = $urls["path"];
             }
             $this->m_urlpath = $this->m_path;
-            if(!empty($urls["query"]))
-            {
+            if (!empty($urls["query"])) {
                 $this->m_query = $urls["query"];
-                $this->m_urlpath .= "?".$this->m_query;
+                $this->m_urlpath .= "?" . $this->m_query;
             }
             $this->HomeUrl = $urls["host"];
-            $this->BaseUrlPath = $this->HomeUrl.$urls["path"];
-            $this->BaseUrlPath = preg_replace("/\/([^\/]*)\.(.*)$/","/",$this->BaseUrlPath);
-            $this->BaseUrlPath = preg_replace("/\/$/","",$this->BaseUrlPath);
+            $this->BaseUrlPath = $this->HomeUrl . $urls["path"];
+            $this->BaseUrlPath = preg_replace("/\/([^\/]*)\.(.*)$/", "/", $this->BaseUrlPath);
+            $this->BaseUrlPath = preg_replace("/\/$/", "", $this->BaseUrlPath);
         }
     }
 
@@ -114,11 +107,11 @@ class DedeHttpDown
      * @param     string    $requestType   请求类型
      * @return    string
      */
-    function OpenUrl($url,$requestType="GET")
+    function OpenUrl($url, $requestType = "GET")
     {
         $this->ResetAny();
         $this->JumpCount = 0;
-        $this->m_httphead = Array() ;
+        $this->m_httphead = array();
         $this->m_html = '';
         $this->reTry = 0;
         $this->Close();
@@ -139,7 +132,7 @@ class DedeHttpDown
     {
         $this->ResetAny();
         $this->JumpCount++;
-        $this->m_httphead = Array() ;
+        $this->m_httphead = array();
         $this->m_html = "";
         $this->Close();
 
@@ -156,9 +149,11 @@ class DedeHttpDown
      */
     function printError()
     {
-        echo "错误信息：".$this->m_error;
+        echo "错误信息：" . $this->m_error;
         echo "<br/>具体返回头：<br/>";
-        foreach($this->m_httphead as $k=>$v){ echo "$k => $v <br/>\r\n"; }
+        foreach ($this->m_httphead as $k => $v) {
+            echo "$k => $v <br/>\r\n";
+        }
     }
 
     /**
@@ -169,13 +164,10 @@ class DedeHttpDown
      */
     function IsGetOK()
     {
-        if( preg_match("/^2/",$this->GetHead("http-state")) )
-        {
+        if (preg_match("/^2/", $this->GetHead("http-state"))) {
             return TRUE;
-        }
-        else
-        {
-            $this->m_error .= $this->GetHead("http-state")." - ".$this->GetHead("http-describe")."<br/>";
+        } else {
+            $this->m_error .= $this->GetHead("http-state") . " - " . $this->GetHead("http-describe") . "<br/>";
             return FALSE;
         }
     }
@@ -188,12 +180,9 @@ class DedeHttpDown
      */
     function IsText()
     {
-        if( preg_match("/^2/",$this->GetHead("http-state")) && preg_match("/text|xml/i",$this->GetHead("content-type")) )
-        {
+        if (preg_match("/^2/", $this->GetHead("http-state")) && preg_match("/text|xml/i", $this->GetHead("content-type"))) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             $this->m_error .= "内容为非文本类型或网址重定向<br/>";
             return FALSE;
         }
@@ -208,12 +197,13 @@ class DedeHttpDown
      */
     function IsContentType($ctype)
     {
-        if(preg_match("/^2/",$this->GetHead("http-state"))
-        && $this->GetHead("content-type")==strtolower($ctype))
-        {    return TRUE; }
-        else
-        {
-            $this->m_error .= "类型不对 ".$this->GetHead("content-type")."<br/>";
+        if (
+            preg_match("/^2/", $this->GetHead("http-state"))
+            && $this->GetHead("content-type") == strtolower($ctype)
+        ) {
+            return TRUE;
+        } else {
+            $this->m_error .= "类型不对 " . $this->GetHead("content-type") . "<br/>";
             return FALSE;
         }
     }
@@ -227,8 +217,7 @@ class DedeHttpDown
      */
     function SaveToBin($savefilename)
     {
-        if(!$this->IsGetOK())
-        {
+        if (!$this->IsGetOK()) {
             return FALSE;
         }
         if (function_exists('curl_init') && function_exists('curl_exec')) {
@@ -236,13 +225,12 @@ class DedeHttpDown
             return TRUE;
         }
 
-        if(@feof($this->m_fp))
-        {
-            $this->m_error = "连接已经关闭！"; return FALSE;
+        if (@feof($this->m_fp)) {
+            $this->m_error = "连接已经关闭！";
+            return FALSE;
         }
-        $fp = fopen($savefilename,"w");
-        while(!feof($this->m_fp))
-        {
+        $fp = fopen($savefilename, "w");
+        while (!feof($this->m_fp)) {
             fwrite($fp, fread($this->m_fp, 1024));
         }
         fclose($this->m_fp);
@@ -259,14 +247,16 @@ class DedeHttpDown
      */
     function SaveToText($savefilename)
     {
-        if($this->IsText())
-        {
+        if ($this->IsText()) {
             $this->SaveBinFile($savefilename);
-        }
-        else
-        {
+        } else {
             return "";
         }
+    }
+
+    function SaveBinFile($filename)
+    {
+        return $this->SaveBinFile($filename);
     }
 
     /**
@@ -277,21 +267,17 @@ class DedeHttpDown
      */
     function GetHtml()
     {
-        if($this->m_html!='')
-        {
+        if ($this->m_html != '') {
             return $this->m_html;
         }
-        if(!$this->IsText())
-        {
+        if (!$this->IsText()) {
             return '';
         }
-        if(!$this->m_fp||@feof($this->m_fp))
-        {
+        if (!$this->m_fp || @feof($this->m_fp)) {
             return '';
         }
-        while(!feof($this->m_fp))
-        {
-            $this->m_html .= fgets($this->m_fp,256);
+        while (!feof($this->m_fp)) {
+            $this->m_html .= fgets($this->m_fp, 256);
         }
         @fclose($this->m_fp);
         return $this->m_html;
@@ -304,14 +290,14 @@ class DedeHttpDown
      * @param     string    $requestType    请求类型
      * @return    string
      */
-    function PrivateStartSession($requestType="GET")
+    function PrivateStartSession($requestType = "GET")
     {
         if ($this->m_scheme == "https") {
             $this->m_port = "443";
         }
         if (function_exists('curl_init') && function_exists('curl_exec')) {
             $this->m_ch = curl_init();
-            curl_setopt($this->m_ch, CURLOPT_URL, $this->m_scheme.'://'.$this->m_host.':'.$this->m_port.$this->m_path);
+            curl_setopt($this->m_ch, CURLOPT_URL, $this->m_scheme . '://' . $this->m_host . ':' . $this->m_port . $this->m_path);
             curl_setopt($this->m_ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($this->m_ch, CURLOPT_FOLLOWLOCATION, 1);
             if ($requestType == "POST") {
@@ -331,32 +317,27 @@ class DedeHttpDown
             $this->m_puthead["Host"] = $this->m_host;
 
             //发送用户自定义的请求头
-            if(!isset($this->m_puthead["Accept"]))
-            {
+            if (!isset($this->m_puthead["Accept"])) {
                 $this->m_puthead["Accept"] = "*/*";
             }
-            if(!isset($this->m_puthead["User-Agent"]))
-            {
+            if (!isset($this->m_puthead["User-Agent"])) {
                 $this->m_puthead["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2)";
             }
-            if(!isset($this->m_puthead["Refer"]))
-            {
-                $this->m_puthead["Refer"] = "http://".$this->m_puthead["Host"];
+            if (!isset($this->m_puthead["Refer"])) {
+                $this->m_puthead["Refer"] = "http://" . $this->m_puthead["Host"];
             }
             $headers = array();
-            foreach($this->m_puthead as $k=>$v)
-            {
+            foreach ($this->m_puthead as $k => $v) {
                 $k = trim($k);
                 $v = trim($v);
-                if($k!=""&&$v!="")
-                {
+                if ($k != "" && $v != "") {
                     $headers[] = "$k: $v";
                 }
             }
             if (count($headers) > 0) {
                 curl_setopt($this->m_ch, CURLOPT_HTTPHEADER, $headers);
             }
-            
+
             curl_setopt($this->m_ch, CURLOPT_CONNECTTIMEOUT, 20);
             curl_setopt($this->m_ch, CURLOPT_TIMEOUT, 900);
 
@@ -375,168 +356,129 @@ class DedeHttpDown
 
             return TRUE;
         }
-        if(!$this->PrivateOpenHost())
-        {
+        if (!$this->PrivateOpenHost()) {
             $this->m_error .= "打开远程主机出错!";
             return FALSE;
         }
         $this->reTry++;
-        if($this->GetHead("http-edition")=="HTTP/1.1")
-        {
+        if ($this->GetHead("http-edition") == "HTTP/1.1") {
             $httpv = "HTTP/1.1";
-        }
-        else
-        {
+        } else {
             $httpv = "HTTP/1.0";
         }
-        $ps = explode('?',$this->m_urlpath);
+        $ps = explode('?', $this->m_urlpath);
 
         $headString = '';
 
         //发送固定的起始请求头GET、Host信息
-        if($requestType=="GET")
-        {
-            $headString .= "GET ".$this->m_urlpath." $httpv\r\n";
-        }
-        else
-        {
-            $headString .= "POST ".$ps[0]." $httpv\r\n";
+        if ($requestType == "GET") {
+            $headString .= "GET " . $this->m_urlpath . " $httpv\r\n";
+        } else {
+            $headString .= "POST " . $ps[0] . " $httpv\r\n";
         }
         $this->m_puthead["Host"] = $this->m_host;
 
         //发送用户自定义的请求头
-        if(!isset($this->m_puthead["Accept"]))
-        {
+        if (!isset($this->m_puthead["Accept"])) {
             $this->m_puthead["Accept"] = "*/*";
         }
-        if(!isset($this->m_puthead["User-Agent"]))
-        {
+        if (!isset($this->m_puthead["User-Agent"])) {
             $this->m_puthead["User-Agent"] = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2)";
         }
-        if(!isset($this->m_puthead["Refer"]))
-        {
-            $this->m_puthead["Refer"] = "http://".$this->m_puthead["Host"];
+        if (!isset($this->m_puthead["Refer"])) {
+            $this->m_puthead["Refer"] = "http://" . $this->m_puthead["Host"];
         }
 
-        foreach($this->m_puthead as $k=>$v)
-        {
+        foreach ($this->m_puthead as $k => $v) {
             $k = trim($k);
             $v = trim($v);
-            if($k!=""&&$v!="")
-            {
+            if ($k != "" && $v != "") {
                 $headString .= "$k: $v\r\n";
             }
         }
         fputs($this->m_fp, $headString);
-        if($requestType=="POST")
-        {
+        if ($requestType == "POST") {
             $postdata = "";
-            if(count($ps)>1)
-            {
-                for($i=1;$i<count($ps);$i++)
-                {
+            if (count($ps) > 1) {
+                for ($i = 1; $i < count($ps); $i++) {
                     $postdata .= $ps[$i];
                 }
-            }
-            else
-            {
+            } else {
                 $postdata = "OK";
             }
             $plen = strlen($postdata);
-            fputs($this->m_fp,"Content-Type: application/x-www-form-urlencoded\r\n");
-            fputs($this->m_fp,"Content-Length: $plen\r\n");
+            fputs($this->m_fp, "Content-Type: application/x-www-form-urlencoded\r\n");
+            fputs($this->m_fp, "Content-Length: $plen\r\n");
         }
 
         //发送固定的结束请求头
         //HTTP1.1协议必须指定文档结束后关闭链接,否则读取文档时无法使用feof判断结束
-        if($httpv=="HTTP/1.1")
-        {
-            fputs($this->m_fp,"Connection: Close\r\n\r\n");
+        if ($httpv == "HTTP/1.1") {
+            fputs($this->m_fp, "Connection: Close\r\n\r\n");
+        } else {
+            fputs($this->m_fp, "\r\n");
         }
-        else
-        {
-            fputs($this->m_fp,"\r\n");
-        }
-        if($requestType=="POST")
-        {
-            fputs($this->m_fp,$postdata);
+        if ($requestType == "POST") {
+            fputs($this->m_fp, $postdata);
         }
 
         //获取应答头状态信息
-        $httpstas = explode(" ",fgets($this->m_fp,256));
+        $httpstas = explode(" ", fgets($this->m_fp, 256));
         $this->m_httphead["http-edition"] = trim($httpstas[0]);
         $this->m_httphead["http-state"] = trim($httpstas[1]);
         $this->m_httphead["http-describe"] = "";
-        for($i=2;$i<count($httpstas);$i++)
-        {
-            $this->m_httphead["http-describe"] .= " ".trim($httpstas[$i]);
+        for ($i = 2; $i < count($httpstas); $i++) {
+            $this->m_httphead["http-describe"] .= " " . trim($httpstas[$i]);
         }
 
         //获取详细应答头
-        while(!feof($this->m_fp))
-        {
-            $line = trim(fgets($this->m_fp,256));
-            if($line == "")
-            {
+        while (!feof($this->m_fp)) {
+            $line = trim(fgets($this->m_fp, 256));
+            if ($line == "") {
                 break;
             }
             $hkey = "";
             $hvalue = "";
             $v = 0;
-            for($i=0;$i<strlen($line);$i++)
-            {
-                if($v==1)
-                {
+            for ($i = 0; $i < strlen($line); $i++) {
+                if ($v == 1) {
                     $hvalue .= $line[$i];
                 }
-                if($line[$i]==":")
-                {
+                if ($line[$i] == ":") {
                     $v = 1;
                 }
-                if($v==0)
-                {
+                if ($v == 0) {
                     $hkey .= $line[$i];
                 }
             }
             $hkey = trim($hkey);
-            if($hkey!="")
-            {
+            if ($hkey != "") {
                 $this->m_httphead[strtolower($hkey)] = trim($hvalue);
             }
         }
 
         //如果连接被不正常关闭，重试
-        if(feof($this->m_fp))
-        {
-            if($this->reTry > 10)
-            {
+        if (feof($this->m_fp)) {
+            if ($this->reTry > 10) {
                 return FALSE;
             }
             $this->PrivateStartSession($requestType);
         }
 
         //判断是否是3xx开头的应答
-        if(preg_match("/^3/",$this->m_httphead["http-state"]))
-        {
-            if($this->JumpCount > 3)
-            {
+        if (preg_match("/^3/", $this->m_httphead["http-state"])) {
+            if ($this->JumpCount > 3) {
                 return;
             }
-            if(isset($this->m_httphead["location"]))
-            {
+            if (isset($this->m_httphead["location"])) {
                 $newurl = $this->m_httphead["location"];
-                if(preg_match("/^http/i",$newurl))
-                {
+                if (preg_match("/^http/i", $newurl)) {
                     $this->JumpOpenUrl($newurl);
-                }
-                else
-                {
+                } else {
                     $newurl = $this->FillUrl($newurl);
                     $this->JumpOpenUrl($newurl);
                 }
-            }
-            else
-            {
+            } else {
                 $this->m_error = "无法识别的答复！";
             }
         }
@@ -568,7 +510,7 @@ class DedeHttpDown
      * @param     string   $svalue  值
      * @return    string
      */
-    function SetHead($skey,$svalue)
+    function SetHead($skey, $svalue)
     {
         $this->m_puthead[$skey] = $svalue;
     }
@@ -581,21 +523,17 @@ class DedeHttpDown
      */
     function PrivateOpenHost()
     {
-        if($this->m_host=="")
-        {
+        if ($this->m_host == "") {
             return FALSE;
         }
 
         $errno = "";
         $errstr = "";
-        $this->m_fp = @fsockopen($this->m_host, $this->m_port, $errno, $errstr,10);
-        if(!$this->m_fp)
-        {
+        $this->m_fp = @fsockopen($this->m_host, $this->m_port, $errno, $errstr, 10);
+        if (!$this->m_fp) {
             $this->m_error = $errstr;
             return FALSE;
-        }
-        else
-        {
+        } else {
             return TRUE;
         }
     }
@@ -608,10 +546,13 @@ class DedeHttpDown
      */
     function Close()
     {
-        if (function_exists('curl_init') && function_exists('curl_exec')) {
-            curl_close($ch);
+        if (function_exists('curl_init') && function_exists('curl_exec') && $this->m_ch) {
+            @curl_close($this->m_ch);
         }
-        @fclose($this->m_fp);
+        if ($this->m_fp) {
+            @fclose($this->m_fp);
+        }
+        
     }
 
     /**
@@ -629,81 +570,54 @@ class DedeHttpDown
         $okurl = "";
         $pathStep = 0;
         $surl = trim($surl);
-        if($surl=="")
-        {
+        if ($surl == "") {
             return "";
         }
-        $pos = strpos($surl,"#");
-        if($pos>0)
-        {
-            $surl = substr($surl,0,$pos);
+        $pos = strpos($surl, "#");
+        if ($pos > 0) {
+            $surl = substr($surl, 0, $pos);
         }
-        if($surl[0]=="/")
-        {
-            $okurl = "http://".$this->HomeUrl.$surl;
-        }
-        else if($surl[0]==".")
-        {
-            if(strlen($surl)<=1)
-            {
+        if ($surl[0] == "/") {
+            $okurl = "http://" . $this->HomeUrl . $surl;
+        } else if ($surl[0] == ".") {
+            if (strlen($surl) <= 1) {
                 return "";
-            }
-            else if($surl[1]=="/")
-            {
-                $okurl = "http://".$this->BaseUrlPath."/".substr($surl,2,strlen($surl)-2);
-            }
-            else
-            {
-                $urls = explode("/",$surl);
-                foreach($urls as $u)
-                {
-                    if($u=="..")
-                    {
+            } else if ($surl[1] == "/") {
+                $okurl = "http://" . $this->BaseUrlPath . "/" . substr($surl, 2, strlen($surl) - 2);
+            } else {
+                $urls = explode("/", $surl);
+                foreach ($urls as $u) {
+                    if ($u == "..") {
                         $pathStep++;
-                    }
-                    else if($i<count($urls)-1)
-                    {
-                        $dstr .= $urls[$i]."/";
-                    }
-                    else
-                    {
+                    } else if ($i < count($urls) - 1) {
+                        $dstr .= $urls[$i] . "/";
+                    } else {
                         $dstr .= $urls[$i];
                     }
                     $i++;
                 }
-                $urls = explode("/",$this->BaseUrlPath);
-                if(count($urls) <= $pathStep)
-                {
+                $urls = explode("/", $this->BaseUrlPath);
+                if (count($urls) <= $pathStep) {
                     return "";
-                }
-                else
-                {
+                } else {
                     $pstr = "http://";
-                    for($i=0;$i<count($urls)-$pathStep;$i++)
-                    {
-                        $pstr .= $urls[$i]."/";
+                    for ($i = 0; $i < count($urls) - $pathStep; $i++) {
+                        $pstr .= $urls[$i] . "/";
                     }
-                    $okurl = $pstr.$dstr;
+                    $okurl = $pstr . $dstr;
                 }
             }
-        }
-        else
-        {
-            if(strlen($surl)<7)
-            {
-                $okurl = "http://".$this->BaseUrlPath."/".$surl;
-            }
-            else if(strtolower(substr($surl,0,7))=="http://")
-            {
+        } else {
+            if (strlen($surl) < 7) {
+                $okurl = "http://" . $this->BaseUrlPath . "/" . $surl;
+            } else if (strtolower(substr($surl, 0, 7)) == "http://") {
                 $okurl = $surl;
-            }
-            else
-            {
-                $okurl = "http://".$this->BaseUrlPath."/".$surl;
+            } else {
+                $okurl = "http://" . $this->BaseUrlPath . "/" . $surl;
             }
         }
-        $okurl = preg_replace("/^(http:\/\/)/i","",$okurl);
+        $okurl = preg_replace("/^(http:\/\/)/i", "", $okurl);
         $okurl = preg_replace("/\/{1,}/", "/", $okurl);
-        return "http://".$okurl;
+        return "http://" . $okurl;
     }
 }//End Class

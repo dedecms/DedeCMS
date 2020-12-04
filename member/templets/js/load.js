@@ -7,7 +7,7 @@
 	  $(".submit tbody tr:odd").addClass("row1");//奇行
 	  
 	   //修正IE6下hover Bug
-	  if ( $.browser.msie ){
+	  if (typeof $.browser !== "undefined"){
 	  	if($.browser.version == '6.0'){
 	  		$("#menuBody li").hover(
 	  			function(){

@@ -2,15 +2,17 @@
 /**
  * 文档关键词选择
  *
- * @version        $Id: article_keywords_select.php 1 8:26 2010年7月12日Z tianya $
+ * @version        $Id: article_keywords_select.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
 require_once(DEDEINC."/datalistcp.class.php");
 setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
+
+$f = RemoveXSS($f);
 
 if(empty($keywords)) $keywords = "";
 

@@ -2,9 +2,9 @@
 /**
  * 投票类
  *
- * @version        $Id: dedevote.class.php 1 10:31 2010年7月6日Z tianya $
+ * @version        $Id: dedevote.class.php 1 10:31 2010年7月6日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -293,7 +293,7 @@ class DedeVote
             $res .= "<tr height='$lineheight'><td style='border-bottom:1px solid'>".$i."、".$arr['name']."</td>";
             $c = $arr['count'];
             $res .= "<td style='border-bottom:1px solid'>
-            <table border='0' cellspacing='0' cellpadding='2' width='".(($c/$totalcount)*100)."%'><tr><td height='16' background='img/votebg.gif' style='border:1px solid #666666;font-size:9pt;line-height:110%'>".$arr['count']."</td></tr></table>
+            <table border='0' cellspacing='0' cellpadding='2' width='".(($c/$totalcount)*100)."%'><tr><td height='16' background='/resources/img/votebg.gif' style='border:1px solid #666666;font-size:9pt;line-height:110%'>".$arr['count']."</td></tr></table>
             </td></tr>\r\n";
             $i++;
         }

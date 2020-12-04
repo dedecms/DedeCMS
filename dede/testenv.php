@@ -3,9 +3,9 @@
 /**
  * 系统运行环境检测
  *
- * @version        $Id: testenv.php 13:57 2011/11/10 tianya $
+ * @version        $Id: testenv.php 13:57 2011/11/10  $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -20,7 +20,7 @@ $action = isset($action)? $action : '';
 <title>系统运行目录权限检测</title>
 <link rel="stylesheet" type="text/css" href="css/base.css" />
 <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js" ></script>
 </head>
 <body leftmargin="8" topmargin='8' bgcolor="#FFFFFF" style="min-width:840px">
 <?php

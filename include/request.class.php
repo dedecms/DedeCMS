@@ -5,9 +5,9 @@
  * 禁止此文件以外的文件出现 $_POST、$_GET、$_FILES变量及eval函数(用request::myeval )
  * 以便于对主要黑客攻击进行防范
  *
- * @version        $Id: request.class.php 1 12:03 2010-10-28 tianya $
+ * @version        $Id: request.class.php 1 12:03 2010-10-28  $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

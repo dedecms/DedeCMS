@@ -2,9 +2,9 @@
 /**
  * 后台管理菜单项
  *
- * @version        $Id: inc_menu.php 1 10:32 2010年7月21日Z tianya $
+ * @version        $Id: inc_menu.php 1 10:32 2010年7月21日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -147,6 +147,7 @@ $adminMenu1
   <m:item name='更新RSS文件' link='makehtml_rss.php' rank='sys_MakeHtml' target='main' />
   <m:item name='获取JS文件' link='makehtml_js.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新专题HTML' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
+  <m:item name='更新TAG HTML' link='makehtml_taglist.php' rank='sys_MakeHtml' target='main' />
 </m:top>
 
 <m:top item='6_' name='会员管理' display='none' rank='member_List,member_Type'>
@@ -164,8 +165,8 @@ $adminMenu2
 
 <m:top item='1_10_7_' name='系统帮助' display='none'>
   <m:item name='参考文档' link='http://help.dedecms.com' rank='' target='_blank' />
-  <m:item name='意见建议反馈' link='http://site.desdev.cn/suggest/' rank='' target='_blank' />
   <m:item name='官方交流论坛' link='http://bbs.dedecms.com' rank='' target='_blank' />
+  <m:item name='Github' link='https://github.com/dedecms/' rank='' target='_blank' />
 </m:top>
 
 -----------------------------------------------

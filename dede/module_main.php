@@ -2,9 +2,9 @@
 /**
  * 模块管理
  *
- * @version        $Id: module_main.php 1 14:17 2010年7月20日Z tianya $
+ * @version        $Id: module_main.php 1 14:17 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -146,8 +146,8 @@ else if($action=='setup')
             $prvdirs[$prvdir][1] = TestWriteAble($prvdir);
         }
     }
-    $prvdir = "<table cellpadding='1' cellspacing='1' width='350' bgcolor='#cfcfcf' style='margin-top:5px;'>\r\n";
-    $prvdir .= "<tr style='background:#FBFCE2'><th width='270'>目录</td><th align='center'>可写</td></tr>\r\n";
+    $prvdir = "<table cellpadding='1' cellspacing='1' width='350' bgcolor='#EAECEF' style='margin-top:5px;'>\r\n";
+    $prvdir .= "<tr style='background:#FBFBFB'><th width='270'>目录</td><th align='center'>可写</td></tr>\r\n";
     foreach($prvdirs as $k=>$v)
     {
         if($v) $cw = '√';
@@ -199,7 +199,7 @@ else if($action=='setup')
     <td class='dtb'><a href='module_main.php?action=showreadme&hash={$hash}' target='_blank'>点击浏览...</a></td>
   </tr>
   <tr>
-    <td height='30' class='dtb' bgcolor='#F9FCEF' colspan='2'>
+    <td height='30' class='dtb' bgcolor='#FAFBFC' colspan='2'>
     <b>注意事项：</b>
     安装时请确保文件列表中涉及的目录前可写入权限，此外“后台管理目录”、“后台管理目录/templets”目录也必须暂时设置可写入权限。
     </td>

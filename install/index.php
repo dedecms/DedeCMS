@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: index.php 1 13:41 2010年7月26日Z tianya $
+ * @version        $Id: index.php 1 13:41 2010年7月26日 $
  * @package        DedeCMS.Install
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -10,9 +10,9 @@
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
 
-$verMsg = ' V5.7 UTF8SP2';
+$verMsg = ' V5.8 UTF8';
 $s_lang = 'utf-8';
-$dfDbname = 'dedecmsv57utf8sp2';
+$dfDbname = 'dedecmsv58utf8';
 $errmsg = '';
 define('INSTALL_DEMO_NAME', 'dedev57demo.txt');
 define('INSLOCKFILE', dirname(__FILE__).'/install_lock.txt');
@@ -413,18 +413,4 @@ else if($step==10)
     }
     @mysql_close($conn);
     exit();
-}
-else if($step==11)
-{
-	require_once('../data/admin/config_update.php');
-	$rmurl = UPDATEHOST."dedecms/demodata.{$s_lang}.txt";
-	$sql_content = file_get_contents($rmurl);
-	$fp = fopen(INSTALL_DEMO_NAME,'w');
-	if(fwrite($fp,$sql_content))
-		echo '&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)';
-	else
-		echo '&nbsp; <font color="red">[×]</font> 远程获取失败';
-	unset($sql_content);
-	fclose($fp);
-	exit();
 }

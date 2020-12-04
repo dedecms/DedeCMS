@@ -2,9 +2,9 @@
 /**
  * 软件编辑
  *
- * @version        $Id: soft_edit.php 1 16:09 2010年7月20日Z tianya $
+ * @version        $Id: soft_edit.php 1 16:09 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -160,6 +160,21 @@ else if($dopost=='save')
         $ddisremote = 0;
     }
     $litpic = GetDDImage('litpic',$picname,$ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
 
     //分析处理附加表数据
     $inadd_f = '';

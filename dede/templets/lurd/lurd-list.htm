@@ -2,7 +2,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>~appname~</title>
-<link href='../images/lurd/base.css' rel='stylesheet' type='text/css'>
+<link href='../resources/css/lurd.css' rel='stylesheet' type='text/css'>
 <script language='javascript'>
 	function Addnew()
 	{
@@ -43,24 +43,24 @@
 </td>
 </tr>
 </table>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#CFCFCF">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
 <tr> 
-	<td height="28" colspan="~totalitem~" background="../images/lurd/tr-bg.gif">
+	<td height="28" colspan="~totalitem~" background="../resources/img/lurd/tr-bg.gif">
 		<table width='96%' cellpadding='0' cellspacing='0'>
 		<tr>
 			<td width='30%'><strong>~appname~</strong></td>
-			<td align='right'><input type="image" name="imageField2" class="np" title="增加数据" alt="增加数据" src="../images/lurd/ico-sadd.png" onClick="Addnew();" /></td>
+			<td align='right'><input type="image" name="imageField2" class="np" title="增加数据" alt="增加数据" src="../resources/img/lurd/ico-sadd.png" onClick="Addnew();" /></td>
 		</tr>
 		</table>
 	</td>
 </tr>
-<tr align="center" bgcolor="#F9FCEF" height="28">
+<tr align="center" bgcolor="#FAFBFC" height="28">
 ~titleitem~</tr>
 <form name="lurdform" action="{dede:server name='PHP_SELF' /}" method="post">
 <input type='hidden' name='ac' value='' />
 <input type='hidden' name='pageno' value='{dede:global.pageno /}' />
 {dede:datalist}
-<tr align="center" bgcolor="#FFFFFF" height="28" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+<tr align="center" bgcolor="#FFFFFF" height="28" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
 ~fielditem~</tr>
 {/dede:datalist}
 </form>
@@ -74,7 +74,7 @@
 	</td>
 </tr>
 <tr> 
-	<td colspan="~totalitem~" align="center" bgcolor="#F9FCEF" height="36">
+	<td colspan="~totalitem~" align="center" bgcolor="#FAFBFC" height="36">
 	{dede:pagelist listsize='5' listitem='info,index,end,pre,next,pageno,form' /}
 	</td>
 </tr>

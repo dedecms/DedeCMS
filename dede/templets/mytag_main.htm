@@ -7,7 +7,7 @@
 <link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
+<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
   <tr>
    <td height="28" background="images/tbg.gif" colspan="7"  style="padding-left:10px;">
      <b>自定义标记管理</b>
@@ -15,7 +15,7 @@
      &nbsp;[<a href="mytag_tag_guide.php"><u>智能标记向导</u></a>]
 	</td>
 </tr>
-  <tr align="center" bgcolor="#FBFCE2" height="24"> 
+  <tr align="center" bgcolor="#FBFBFB" height="24"> 
       <td width="10%">编号</td>
       <td width="20%">标记名称</td>
       <td width="15%">所属栏目</td>
@@ -24,7 +24,7 @@
       <td width="20%">管理</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FCFDEE';"
+    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FBFBFB';"
     	 onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.aid /}</td>
         <td>{dede:field.tagname /}</td>
@@ -38,7 +38,7 @@
 		    </td>
      </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="36"> 
+     <tr align="center" bgcolor="#FAFBFC" height="36"> 
       <td colspan="7">
       	{dede:pagelist listsize=6/}
       </td>

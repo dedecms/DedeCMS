@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>栏目管理--快速创建栏目</title>
-<script type="text/javascript" src="../include/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script type="text/javascript">
 var $ = jQuery;
 $(document).ready(function(){
@@ -108,10 +108,10 @@ function showSeltype(objname)
               </table></td>
           </tr>
         </table>
-        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;text-align:left;">
+        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="border:1px solid #EAECEF;background:#ffffff;text-align:left;">
           <tr>
-            <td height="24"  bgcolor="#F9FCEF" style="padding-left:10px;"><strong>公用参数：</strong></td>
-            <td  bgcolor="#F9FCEF"></td>
+            <td height="24"  bgcolor="#FAFBFC" style="padding-left:10px;"><strong>公用参数：</strong></td>
+            <td  bgcolor="#FAFBFC"></td>
           </tr>
           <tr>
             <td width="150" class='bline' height="26" style="padding-left:10px;">是否支持投稿：</td>
@@ -188,7 +188,7 @@ function showSeltype(objname)
           <tr>
             <td height="26" class='bline' style="padding-left:10px;">文章命名规则：</td>
             <td class='bline'><input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" size="40" class="pubinputs" />
-              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" /> </td>
+              <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" /> </td>
           </tr>
           <tr id='helpvar3' style='display:none'>
             <td height="24" bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
@@ -197,17 +197,17 @@ function showSeltype(objname)
           <tr>
             <td height="26" style="padding-left:10px;">列表命名规则：</td>
             <td><input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" size="40" class="pubinputs" />
-              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')" /></td>
+              <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')" /></td>
           </tr>
           <tr>
-            <td height="24"  bgcolor="#F9FCEF" style="padding-left:10px;"><strong>栏目填写：</strong></td>
-            <td  bgcolor="#F9FCEF"></td>
+            <td height="24"  bgcolor="#FAFBFC" style="padding-left:10px;"><strong>栏目填写：</strong></td>
+            <td  bgcolor="#FAFBFC"></td>
           </tr>
           <tr>
             <td colspan='2' style="padding:5px 0px 8px 10px">
-			<table id="addQuick" width="800"  border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf">
+			<table id="addQuick" width="800"  border="0" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
                 <tbody>
-                  <tr bgcolor="#FBFCE2" align="center">
+                  <tr bgcolor="#FBFBFB" align="center">
                     <td width="60" height="28">排序</td>
                     <td width="170">顶级栏目名称</td>
                     <td width="520">子栏目(用&quot;目录名称1,目录名称2...&quot;这样表示多个栏目)</td>
@@ -233,9 +233,9 @@ function showSeltype(objname)
               </table>
               
               
-              <table id="addQuickRel" width="302"  border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" style="display:none">
+              <table id="addQuickRel" width="302"  border="0" cellpadding="3" cellspacing="1" bgcolor="#EAECEF" style="display:none">
                 <tbody>
-                  <tr bgcolor="#FBFCE2" align="center">
+                  <tr bgcolor="#FBFBFB" align="center">
                     <td width="60" height="28">排序</td>
                     <td width="170">栏目名称</td>
                     <td width="50" align="center"><input name="" type="button" value="添加" id="addrel" class="coolbt"></td>
@@ -259,7 +259,7 @@ function showSeltype(objname)
               </td>
           </tr>
         </table>
-        <table width="98%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+        <table width="98%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FAFBFC" style="border:1px solid #EAECEF;border-top:none;">
          <tr>
             <td width="1%" height="36"></td>
             <td width="99%" valign="bottom"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />

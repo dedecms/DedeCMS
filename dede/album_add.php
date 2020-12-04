@@ -2,9 +2,9 @@
 /**
  * 图集发布
  *
- * @version        $Id: album_add.php 1 8:26 2010年7月12日Z tianya $
+ * @version        $Id: album_add.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -63,6 +63,7 @@ else if($dopost=='save')
     if(!isset($formhtml)) $formhtml = 0;
     if(!isset($formzip)) $formzip = 0;
     if(!isset($ddisfirst)) $ddisfirst = 0;
+    if(!isset($albums)) $albums = "";
     if(!isset($delzip)) $delzip = 0;
     if(empty($click)) $click = ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click);
 
@@ -117,7 +118,21 @@ else if($dopost=='save')
         $ddisremote = 0;
     }
     $litpic = GetDDImage('none',$picname,$ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
 
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
     //使用第一张图作为缩略图
     if($ddisfirst==1 && $litpic=='')
     {
@@ -126,7 +141,21 @@ else if($dopost=='save')
             $litpic = GetDDImage('ddfirst', $imgurl1, $isrm);
         }
     }
-    
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
 
     //生成文档ID
     $arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$adminid);
@@ -227,27 +256,27 @@ else if($dopost=='save')
             $fm->RmDirFiles($tmpzipdir);
         }
     }
-    /*---------------------
-    function _getformupload()
-    通过swfupload正常上传的图片
-    ---------------------*/
-    if(is_array($_SESSION['bigfile_info']))
-    {
-        foreach($_SESSION['bigfile_info'] as $k=>$v)
-        {
-            $truefile = $cfg_basedir.$v;
-            if(strlen($v)<2 || !file_exists($truefile)) continue;
+
+    if ($albums !== "") {
+        $albumsArr  = json_decode(stripslashes( $albums), true);
+
+        for ($i=0; $i <= count($albumsArr) - 1; $i++) { 
+            $album = $albumsArr[$i];
+            $data = explode( ',', $album['img'] );
+            $ntime = time();
+            $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+            CreateDir($savepath);
+            $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+            $fullUrl = $fullUrl.".png";
+            
+            file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
             $info = '';
-            $imginfos = GetImageSize($truefile, $info);
-            $litpicname = $pagestyle > 2 ? GetImageMapDD($v, $cfg_ddimg_width) : '';
-            if(!$hasone && $ddisfirst==1 && $litpic=='')
-            {
-                 $litpic = empty($litpicname) ? GetImageMapDD($v, $cfg_ddimg_width) : $litpicname;
-                 $hasone = TRUE;
-            }
-            $imginfo =  !empty(${'picinfook'.$k}) ? ${'picinfook'.$k} : '';
+            $imginfos = GetImageSize($cfg_basedir.$fullUrl, $info);
+            $v = $fullUrl;
+            $imginfo =  !empty($album['txt']) ? $album['txt'] : '';
             $imgurls .= "{dede:img ddimg='$v' text='$imginfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $v {/dede:img}\r\n";
         }
+
     }
 
     $imgurls = addslashes($imgurls);
@@ -315,7 +344,7 @@ else if($dopost=='save')
     {
         $gerr = $dsql->GetError();
         $dsql->ExecuteNoneQuery(" DELETE FROM `#@__arctiny` WHERE id='$arcID' ");
-        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
 
@@ -330,7 +359,7 @@ else if($dopost=='save')
         exit();
     }
     $useip = GetIP();
-    $query = "INSERT INTO `$addtable`(aid,typeid,redirecturl,userip,pagestyle,maxwidth,imgurls,row,col,isrm,ddmaxwidth,pagepicnum,body{$inadd_f})
+    $query = "INSERT INTO `$addtable`(aid,typeid,redirecturl,userip,pagestyle,maxwidth,imgurls,`row`,col,isrm,ddmaxwidth,pagepicnum,body{$inadd_f})
          Values('$arcID','$typeid','$redirecturl','$useip','$pagestyle','$maxwidth','$imgurls','$row','$col','$isrm','$ddmaxwidth','$pagepicnum','$body'{$inadd_v}); ";
     if(!$dsql->ExecuteNoneQuery($query))
     {

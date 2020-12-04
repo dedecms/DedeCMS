@@ -2,9 +2,9 @@
 /**
  * 过滤小助手
  *
- * @version        $Id: time.filter.php 1 2010-07-05 11:43:09Z tianya $
+ * @version        $Id: time.filter.php 1 2010-07-05 11:43:09 $
  * @package        DedeCMS.Helpers
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -27,7 +27,7 @@ if ( ! function_exists('HtmlReplace'))
     function HtmlReplace($str,$rptype=0)
     {
         $str = stripslashes($str);
-		$str = preg_replace("/<[\/]{0,1}style([^>]*)>(.*)<\/style>/i", '', $str);//2011-06-30 禁止会员投稿添加css样式 (by:织梦的鱼)
+        $str = preg_replace("/<[\/]{0,1}style([^>]*)>(.*)<\/style>/i", '', $str);
         if($rptype==0)
         {
             $str = dede_htmlspecialchars($str);

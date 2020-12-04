@@ -5,7 +5,7 @@
 <title><?php echo $cfg_softname." ".$cfg_version; ?></title>
 <link href="css/base.css" rel="stylesheet" type="text/css" />
 <link href="css/login.css" rel="stylesheet" type="text/css" />
-<script src="../include/js/jquery/jquery.js" language="javascript" type="text/javascript"></script>
+<script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
 <script type="text/javascript">
 $ = jQuery;
 function changeAuthCode() {
@@ -14,7 +14,7 @@ function changeAuthCode() {
 	num = num + rand;
 	$('#ver_code').css('visibility','visible');
 	if ($("#vdimgck")[0]) {
-		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+		$("#vdimgck")[0].src = "../plus/vdimgck.php?tag=" + num;
 	}
 	return false;	
 }
@@ -39,7 +39,7 @@ function changeAuthCode() {
         	{
         ?>
 	   <dt>验证码：</dt>
-	   <dd><input id="vdcode" type="text" name="validate" style="text-transform:uppercase;"/><img id="vdimgck" align="absmiddle" onClick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../include/vdimgck.php"/>
+	   <dd><input id="vdcode" type="text" name="validate" style="text-transform:uppercase;"/><img id="vdimgck" align="absmiddle" onClick="this.src=this.src+'?'" style="cursor: pointer;" alt="看不清？点击更换" src="../plus/vdimgck.php"/>
            <a href="#" onClick="changeAuthCode();">看不清？ </a></dd>
 		<?php
        		}
@@ -49,7 +49,7 @@ function changeAuthCode() {
 	 </dl>
 	</form>
    </div>
-   <div class="login-power">Powered by<a href="http://www.dedecms.com" title="DedeCMS官网"><strong>DedeCMS<?php echo $cfg_version; ?></strong></a>&copy; 2004-2011 <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.</div>
+   <div class="login-power">Powered by<a href="http://www.dedecms.com" title="DedeCMS官网"><strong>DedeCMS<?php echo $cfg_version; ?></strong></a>&copy; 2007-2020 <a href="http://www.desdev.cn" target="_blank">DesDev</a> Inc.</div>
 </div>
 <div class="dede-iframe"><iframe name="loginad" src="login.php?dopost=showad" frameborder="0" id="loginad" scrolling="no" marginwidth="0" marginheight="0" width="100%"></iframe></div>
 </body>

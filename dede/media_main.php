@@ -2,9 +2,9 @@
 /**
  * 附件管理
  *
- * @version        $Id: media_main.php 1 11:17 2010年7月19日Z tianya $
+ * @version        $Id: media_main.php 1 11:17 2010年7月19日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -72,7 +72,7 @@ function MediaType($tid,$nurl)
 {
     if($tid==1)
     {
-        return "图片<a href=\"javascript:;\" onClick=\"ChangeImage('$nurl');\"><img src='../include/dialog/img/picviewnone.gif' name='picview' border='0' alt='预览'></a>";
+        return "图片<a href=\"javascript:;\" onClick=\"ChangeImage('$nurl');\"><img src='./images/eye.png' name='picview' border='0' alt='预览'></a>";
     }
     else if($tid==2)
     {

@@ -1146,6 +1146,8 @@ CREATE TABLE `#@__tagindex` (
   `weekup` int(10) unsigned NOT NULL default '0',
   `monthup` int(10) unsigned NOT NULL default '0',
   `addtime` int(10) unsigned NOT NULL default '0',
+	`uptime` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+	`mktime` INT(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 

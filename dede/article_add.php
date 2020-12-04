@@ -16,6 +16,7 @@ if($dopost!='save')
     ClearMyAddon();
     $channelid = empty($channelid) ? 0 : intval($channelid);
     $cid = empty($cid) ? 0 : intval($cid);
+    if(empty($litpic_b64)) $litpic_b64 = '';
 
     if(empty($geturl)) $geturl = '';
     
@@ -123,6 +124,21 @@ else if($dopost=='save')
     }
     
     $litpic = GetDDImage('none', $picname, $ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
 
     //生成文档ID
     $arcID = GetIndexKey($arcrank,$typeid,$sortrank,$channelid,$senddate,$adminid);
@@ -191,13 +207,13 @@ else if($dopost=='save')
     color,writer,source,litpic,pubdate,senddate,mid,voteid,notpost,description,keywords,filename,dutyadmin,weight)
     VALUES ('$arcID','$typeid','$typeid2','$sortrank','$flag','$ismake','$channelid','$arcrank','$click','$money',
     '$title','$shorttitle','$color','$writer','$source','$litpic','$pubdate','$senddate',
-    '$adminid','$voteid','$notpost','$description','$keywords','$filename','$adminid','$weight');";
+    '$adminid','0','$notpost','$description','$keywords','$filename','$adminid','$weight');";
 
     if(!$dsql->ExecuteNoneQuery($query))
     {
         $gerr = $dsql->GetError();
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` WHERE id='$arcID'");
-        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+        ShowMsg("把数据保存到数据库主表 `#@__archives` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
 
@@ -219,7 +235,7 @@ else if($dopost=='save')
         $gerr = $dsql->GetError();
         $dsql->ExecuteNoneQuery("Delete From `#@__archives` where id='$arcID'");
         $dsql->ExecuteNoneQuery("Delete From `#@__arctiny` where id='$arcID'");
-        ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCms官方。".str_replace('"','',$gerr),"javascript:;");
+        ShowMsg("把数据保存到数据库附加表 `{$addtable}` 时出错，请把相关信息提交给DedeCMS官方。".str_replace('"','',$gerr),"javascript:;");
         exit();
     }
     //生成HTML

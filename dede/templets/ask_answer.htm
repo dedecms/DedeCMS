@@ -75,14 +75,14 @@ function deleteanswer(aid){
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt"><a href='../ask' target='_blank'><b>问答模块</b></a> -- 用户答案管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#cfcfcf;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;">
 <tr>
 <td height="24" colspan="6" align="left" bgcolor="#EDF9D5" background="images/tbg.gif">
 &nbsp;§<b>答案列表 &nbsp; <a href="ask_answer.php">全部答案</a> | <a href="ask_answer.php?check=1">未审核的答案</a></b>
 </td>
 </tr>
 <form name="form2" action="ask_answer.php">
-<tr align="center" height="25" bgcolor="#FBFCE2">
+<tr align="center" height="25" bgcolor="#FBFBFB">
   <td  width="6%">id</td>
   <td width="4%">选择</td>
   <td width="62%">答案</td>
@@ -99,7 +99,7 @@ function deleteanswer(aid){
 	}
 	$fields['dateline'] = gmdate('Y-m-d H:i:s' , $fields['dateline'] + 3600*$cfg_ask_timeoffset);
 ?>
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" >
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" >
 <td><?php echo $fields['id']; ?></td>
 <td><input name="answerid" type="checkbox" id="id" value="<?php echo $fields['id']; ?>" class='np' /></td>
 <td align='left'><a title="点击查看问题页面" href="../ask/question.php?id=<?php echo $fields['askid']; ?>" target="_blank"><?php echo $fields['content']; ?></a></td>
@@ -118,7 +118,7 @@ function deleteanswer(aid){
 </tr>
 </form>
 <tr align="right" bgcolor="#E5F9FF">
-<td height="20" colspan="10" align="center" bgcolor="#F9FCEF">
+<td height="20" colspan="10" align="center" bgcolor="#FAFBFC">
 	{dede:pagelist /}
 </td>
 </tr>

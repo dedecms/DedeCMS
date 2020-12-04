@@ -2,9 +2,9 @@
 /**
  * 图集编辑
  *
- * @version        $Id: album_edit.php 1 8:26 2010年7月12日Z tianya $
+ * @version        $Id: album_edit.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -73,6 +73,7 @@ else if($dopost=='save')
     if(!isset($dellink)) $dellink = 0;
     if(!isset($autolitpic)) $autolitpic = 0;
     if(!isset($formhtml)) $formhtml = 0;
+    if(!isset($albums)) $albums = "";
     if(!isset($formzip)) $formzip = 0;
     if(!isset($ddisfirst)) $ddisfirst = 0;
     if(!isset($delzip)) $delzip = 0;
@@ -130,6 +131,21 @@ else if($dopost=='save')
         $ddisremote = 0;
     }
     $litpic = GetDDImage('none', $picname, $ddisremote);
+    // 处理新的缩略图上传
+    if ($litpic_b64 != "") {
+        $data = explode( ',', $litpic_b64 );
+        $ntime = time();
+        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        CreateDir($savepath);
+        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+        $fullUrl = $fullUrl.".png";
+        
+        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+
+        // 加水印
+        WaterImg($cfg_basedir.$fullUrl, 'up');
+        $litpic = $fullUrl;
+    }
     
     //分析body里的内容
     $body = AnalyseHtmlBody($body, $description, $litpic, $keywords, 'htmltext');
@@ -312,22 +328,29 @@ else if($dopost=='save')
             $fm->RmDirFiles($tmpzipdir);
         }
     }
-    /*---------------------
-    function _swfupload()
-    通过swfupload上传的新图片
-    ---------------------*/
-    if(is_array($_SESSION['bigfile_info']))
-    {
-        foreach($_SESSION['bigfile_info'] as $k=>$v)
-        {
-            $truefile = $cfg_basedir.$v;
-            if(strlen($v)<2 || !file_exists($truefile)) continue;
+
+    if ($albums !== "") {
+        $albumsArr  = json_decode(stripslashes( $albums), true);
+
+        // var_dump($albumsArr);exit;
+
+        for ($i=0; $i <= count($albumsArr) - 1; $i++) { 
+            $album = $albumsArr[$i];
+            $data = explode( ',', $album['img'] );
+            $ntime = time();
+            $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+            CreateDir($savepath);
+            $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
+            $fullUrl = $fullUrl.".png";
+            
+            file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
             $info = '';
-            $imginfos = GetImageSize($truefile, $info);
-            $litpicname = $pagestyle > 2 ? GetImageMapDD($v, $cfg_ddimg_width) : $v;
-            $imginfo =  !empty(${'picinfook'.$k}) ? ${'picinfook'.$k} : '';
-            $imgurls .= "{dede:img ddimg='$litpicname' text='$imginfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $v {/dede:img}\r\n";
+            $imginfos = GetImageSize($cfg_basedir.$fullUrl, $info);
+            $v = $fullUrl;
+            $imginfo =  !empty($album['txt']) ? $album['txt'] : '';
+            $imgurls .= "{dede:img ddimg='$v' text='$imginfo' width='".$imginfos[0]."' height='".$imginfos[1]."'} $v {/dede:img}\r\n";
         }
+
     }
     
     $imgurls = addslashes($imgurls);
@@ -378,7 +401,7 @@ else if($dopost=='save')
           ddmaxwidth = '$ddmaxwidth',
           pagepicnum = '$pagepicnum',
           imgurls='$imgurls',
-          row='$row',
+          `row`='$row',
           col='$col',
           isrm='$isrm'{$inadd_f},
           redirecturl='$redirecturl',

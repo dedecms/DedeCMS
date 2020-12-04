@@ -2,9 +2,9 @@
 /**
  * 自由列表管理
  *
- * @version        $Id: freelist_main.php 1 8:48 2010年7月13日Z tianya $
+ * @version        $Id: freelist_main.php 1 8:48 2010年7月13日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -66,8 +66,8 @@ function GetTagList($dsql,$pageno,$pagesize,$orderby='aid')
 {
     global $cfg_phpurl,$addsql;
     $start = ($pageno-1) * $pagesize;
-    $printhead ="<table width='98%' border='0' cellpadding='1' cellspacing='1' align='center'  class='tbtitle' style='background:#cfcfcf;margin-bottom:5px;'>
-        <tr align='center' bgcolor='#FBFCE2'>
+    $printhead ="<table width='98%' border='0' cellpadding='1' cellspacing='1' align='center'  class='tbtitle' style='background:#EAECEF;margin-bottom:5px;'>
+        <tr align='center' bgcolor='#FBFBFB'>
           <td width='5%' class='tbsname'><a href='#' onclick=\"ReloadPage('aid')\"><u>ID</u></a></td>
           <td width='20%' class='tbsname'>列表名称</td>
           <td width='20%' class='tbsname'>模板文件</td>
@@ -82,7 +82,7 @@ function GetTagList($dsql,$pageno,$pagesize,$orderby='aid')
     {
         $listurl = GetFreeListUrl($row['aid'],$row['namerule'],$row['listdir'],$row['defaultpage'],$row['nodefault']);
         $line = "
-    <tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#FCFDEE';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
+    <tr align='center' bgcolor='#FFFFFF' onMouseMove=\"javascript:this.bgColor='#FBFBFB';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\">
         <td>{$row['aid']}</td>
         <td> <a href='$listurl' target='_blank'>{$row['title']}</a> </td>
         <td> {$row['templet']} </td>

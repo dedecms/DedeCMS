@@ -78,7 +78,7 @@ function ShowItem2() {
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 				<td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;基本设置&nbsp;</td>
-				<td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>字段管理</u></a>&nbsp;</td>
+				<td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem2()"><u>字段管理</u></a>&nbsp;</td>
 				</tr>
 			</table>
 		</td>
@@ -90,7 +90,7 @@ function ShowItem2() {
 		<td colspan="2">
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-				<td width="84"  height="24"  align="center" background="images/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>基本设置</u></a>&nbsp;</td>
+				<td width="84"  height="24"  align="center" background="images/itemnote2.png" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>基本设置</u></a>&nbsp;</td>
 				<td width="84" align="center" background="images/itemnote1.gif">字段管理&nbsp;</td>
 				</tr>
 			</table>
@@ -98,7 +98,7 @@ function ShowItem2() {
 	</tr>
 </table>
     
-<table width="98%" id='needset' border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" style="display:block">
+<table width="98%" id='needset' border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF" style="display:block">
     <?php
 	if($row['issystem'] == 1)
 	{
@@ -272,8 +272,8 @@ function ShowItem2() {
      </tr>
      <tr>
       <td colspan='2'  bgcolor="#FFFFFF" style="padding:6px">
-<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#cfcfcf;">
-   <tr align="center" bgcolor="#FBFCE2" height="24">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" align="center"  style="background:#EAECEF;">
+   <tr align="center" bgcolor="#FBFBFB" height="24">
       <td width="28%">表单提示文字</td>
       <td width="18%">数据字段名</td>
       <td width="20%">数据类型</td>
@@ -309,7 +309,7 @@ $dtp->LoadSource($fieldset);
 if(is_array($dtp->CTags)){
 foreach($dtp->CTags as $ctag)
 {
-?>  <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="24">
+?>  <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="24">
       <td>
       <?php
 			$itname = $ctag->GetAtt('itemname');
@@ -340,7 +340,7 @@ foreach($dtp->CTags as $ctag)
 if($ft==1)
 {
 ?>
-      	<a href='mychannel_field_edit.php?id=<?php echo $id; ?>&fname=<?php echo $ctag->GetTagName(); ?>&issystem=<?php echo $row['issystem']; ?>'><img src='images/gtk-edit.png' alt='更改' title='更改' /></a>
+      	<a href='mychannel_field_edit.php?id=<?php echo $id; ?>&fname=<?php echo $ctag->GetTagName(); ?>&issystem=<?php echo $row['issystem']; ?>'><img src='images/report_edit.png' alt='更改' title='更改' /></a>
        <?php if($row['issystem']!=1){ ?>
       | <a href='#' onClick='javascript:DelNote("mychannel_field_edit.php?id=<?php echo $id; ?>&fname=<?php echo $ctag->GetTagName(); ?>&action=delete");'><img src='images/gtk-del.png' alt='删除' title='删除' /></a>
        <?php } ?>
@@ -370,7 +370,7 @@ else
 </tr>
 </table>
 <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" id='' style='margin-top:6px'>
-    <tr bgcolor="#F9FCEF">
+    <tr bgcolor="#FAFBFC">
       <td height="36" colspan="2">
       	<table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>

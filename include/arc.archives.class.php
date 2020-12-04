@@ -3,9 +3,9 @@ if(!defined('DEDEINC')) exit("Request Error!");
 /**
  * 文档类
  *
- * @version        $Id: arc.archives.class.php 4 15:13 2010年7月7日Z tianya $
+ * @version        $Id: arc.archives.class.php 4 15:13 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -282,7 +282,7 @@ class Archives
         {
             if($this->Fields['litpic'] == '-' || $this->Fields['litpic'] == '')
             {
-                $this->Fields['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+                $this->Fields['litpic'] = $GLOBALS['cfg_cmspath'].'/resources/img/defaultpic.gif';
             }
             if(!preg_match("#^http:\/\/#i", $this->Fields['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
             {
@@ -1230,7 +1230,12 @@ class Archives
         // 这里可能会有错误
         if (version_compare(PHP_VERSION, '5.5.0', '>='))
         {
-            $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
+            if (version_compare(PHP_VERSION, '8', '>=')) {
+                $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight8", $body);
+            } else {
+                $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
+            }
+            
         } else {
             $body = @preg_replace("#(^|>)([^<]+)(?=<|$)#sUe", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
         }
@@ -1242,6 +1247,10 @@ class Archives
 
 
 }//End Archives
+
+function _highlight8($matches) {
+    // TODO
+}
 
 //高亮专用, 替换多次是可能不能达到最多次
 function _highlight($string, $words, $result, $pre)

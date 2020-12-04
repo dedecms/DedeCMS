@@ -1,15 +1,15 @@
 <?php
 /**
- * @version        $Id: module-install.php 1 13:41 2010年7月26日Z tianya $
+ * @version        $Id: module-install.php 1 13:41 2010年7月26日 $
  * @package        DedeCMS.Install
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 @set_time_limit(0);
 
-$verMsg = ' V5.7 GBK';
+$verMsg = ' V5.8 UTF-8';
 $errmsg = '';
 $insLockfile = dirname(__FILE__).'/install_lock.txt';
 $moduleCacheFile = dirname(__FILE__).'/modules.tmp.inc';

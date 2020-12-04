@@ -15,7 +15,7 @@
 	float:left;
  	display:none;
 	border: 1px dashed #749F4D;
-  	background-color: #F9FCEF;
+  	background-color: #FAFBFC;
 	width:99%;
 	padding:5px;
 }
@@ -77,7 +77,7 @@ function GETNAMES(name)
 <input type="hidden" name="action" value="saveedit" />
 <input type="hidden" name="acdir" value="<?php echo $acdir; ?>" />
 <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#cfcfcf' align="center">
+<table width='98%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#EAECEF' align="center">
 		<tr bgcolor='#EEF4EA'>
 			<td colspan='2' background='images/wbg.gif' height='26'  style="padding-left:10px;">
 					<font color='#666600'><b>修改/新建模板：</b></font>
@@ -90,7 +90,7 @@ function GETNAMES(name)
     		（不允许用 “..” 形式的路径）
   		</td>
 		</tr>
-	<tr  bgcolor="#F9FCEF">
+	<tr  bgcolor="#FAFBFC">
   		<td colspan='2' hieght="30" style="padding-left:10px;"><b>参考标签：</b></td>
 	</tr>   <tr  bgcolor='#FFFFFF'>
       <td colspan='2' >
@@ -132,7 +132,7 @@ foreach ($helps as $key => $help)
 	  </td>
     </tr>
     <tr>
-      <td height="42" colspan='2' bgcolor="#F9FCEF">
+      <td height="42" colspan='2' bgcolor="#FAFBFC">
           <input type="submit" value="  保 存  " name='B1' class="coolbg np" />
           &nbsp;
           <input type="reset" value="取消修改" name='B2' class="coolbg np" />

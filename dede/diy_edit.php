@@ -2,9 +2,9 @@
 /**
  * 编辑自定义表单
  *
- * @version        $Id: diy_add.php 1 14:31 2010年7月12日Z tianya $
+ * @version        $Id: diy_add.php 1 14:31 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

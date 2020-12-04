@@ -2,9 +2,9 @@
 /**
  * 单表模型的文章列表调用标记
  *
- * @version        $Id: arclistsg.lib.php 1 9:29 2010年7月6日Z tianya $
+ * @version        $Id: arclistsg.lib.php 1 9:29 2010年7月6日 $
  * @package        DedeCMS.Taglib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -228,7 +228,7 @@ function lib_arclistsg(&$ctag,&$refObj)
 
                 if($row['litpic'] == '-' || $row['litpic'] == '')
                 {
-                    $row['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+                    $row['litpic'] = $GLOBALS['cfg_cmspath'].'/resources/img/defaultpic.gif';
                 }
                 if(!preg_match("#^http:\/\/#i", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
                 {

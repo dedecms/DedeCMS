@@ -3,9 +3,9 @@
 /**
  * 动态模板spacenewart标签
  *
- * @version        $Id: plus_spacenewart.php 1 13:58 2010年7月5日Z tianya $
+ * @version        $Id: plus_spacenewart.php 1 13:58 2010年7月5日 $
  * @package        DedeCMS.Tpllib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -44,7 +44,7 @@ function plus_spacenewart(&$atts,&$refObj,&$fields)
 
         if($row['litpic']=='')
         {
-            $row['litpic'] = '/images/defaultpic.gif';
+            $row['litpic'] = '/resources/img/defaultpic.gif';
         }
         if(!preg_match("#^http:\/\/#i", $row['litpic']))
         {

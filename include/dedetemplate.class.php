@@ -2,9 +2,9 @@
 /**
  * 模板引擎文件
  *
- * @version        $Id: dedetemplate.class.php 3 15:44 2010年7月6日Z tianya $
+ * @version        $Id: dedetemplate.class.php 3 15:44 2010年7月6日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -635,7 +635,7 @@ class DedeTemplate
         $t = 0;
         $preTag = '';
         $tswLen = strlen($tagStartWord);
-        $cAtt->cAttributes->items = array();
+        @$cAtt->cAttributes->items = array();
         for($i=0; $i<$sourceLen; $i++)
         {
             $ttagName = '';
@@ -1258,7 +1258,7 @@ class DedeTemplate
 class TagAttribute
 {
     var $count = -1;
-    var $items = ""; //属性元素的集合
+    var $items = array(); //属性元素的集合
 
     /**
      *  获得某个属性

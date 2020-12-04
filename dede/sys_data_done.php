@@ -2,9 +2,9 @@
 /**
  * 数据库操作
  *
- * @version        $Id: sys_data_done.php 1 17:19 2010年7月20日Z tianya $
+ * @version        $Id: sys_data_done.php 1 17:19 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -138,13 +138,15 @@ if($dopost=='bak')
     else
     {
         $j = 0;
-        $fs = $bakStr = '';
+        $fs = array();
+        $bakStr = '';
 
         //分析表里的字段信息
         $dsql->GetTableFields($nowtable);
         $intable = "INSERT INTO `$nowtable` VALUES(";
         while($r = $dsql->GetFieldObject())
         {
+            
             $fs[$j] = trim($r->name);
             $j++;
         }
@@ -184,6 +186,7 @@ if($dopost=='bak')
 
             //正常情况
             $line = $intable;
+            
             for($j=0; $j<=$fsd; $j++)
             {
                 if($j < $fsd)

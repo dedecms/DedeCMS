@@ -3,16 +3,16 @@
  *
  * 信息推荐
  *
- * @version        $Id: recommend.php 1 15:38 2010年7月8日Z tianya $
+ * @version        $Id: recommend.php 1 15:38 2010年7月8日 $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/../include/common.inc.php");
 require_once(DEDEINC."/channelunit.class.php");
 if(!isset($action)) $action = '';
-
+unset($_FILES);
 if(isset($arcID)) $aid = $arcID;
 $arcID = $aid = (isset($aid) && is_numeric($aid) ? $aid : 0);
 $type = (!isset($type) ? "" : $type);

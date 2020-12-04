@@ -16,9 +16,9 @@
  *   2010-11-14 [修复]数据表存在前缀,模板名称解析问题,同时可以对Lurd单独设定模板
  *
  *
- * @version        $Id: lurd.class.php 7 14:07 2011/11/8 IT柏拉图,tianya $
+ * @version        $Id: lurd.class.php 7 14:07 2011/11/8 IT柏拉图, $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

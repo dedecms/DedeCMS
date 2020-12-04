@@ -1,9 +1,9 @@
 <?php
 /**
  * 系统核心函数存放文件
- * @version        $Id: common.func.php 4 16:39 2010年7月6日Z tianya $
+ * @version        $Id: common.func.php 4 16:39 2010年7月6日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -42,7 +42,7 @@ if (version_compare(PHP_VERSION, '7.0.0', '>='))
     if (!function_exists('mysql_close') AND function_exists('mysqli_close')) {
         function mysql_close($link)
         {
-            return mysqli_close($result);
+            return mysqli_close($link);
         }
     }
     if (!function_exists('split')) {
@@ -67,6 +67,12 @@ function dede_random_bytes($length)
     {
         return FALSE;
     }
+
+    if (function_exists('openssl_random_pseudo_bytes'))
+    {
+        return openssl_random_pseudo_bytes($length);
+    }
+
     if (function_exists('random_bytes'))
     {
         try
@@ -84,18 +90,13 @@ function dede_random_bytes($length)
     }
     if (is_readable('/dev/urandom') && ($fp = fopen('/dev/urandom', 'rb')) !== FALSE)
     {
-        is_php('5.4') && stream_set_chunk_size($fp, $length);
+        version_compare(PHP_VERSION, '5.4.0', '>=') && stream_set_chunk_size($fp, $length);
         $output = fread($fp, $length);
         fclose($fp);
         if ($output !== FALSE)
         {
             return $output;
         }
-    }
-
-    if (function_exists('openssl_random_pseudo_bytes'))
-    {
-        return openssl_random_pseudo_bytes($length);
     }
 
     return FALSE;
@@ -312,7 +313,7 @@ function ShowMsg($msg, $gourl, $onlymsg=0, $limittime=0)
       }\r\n";
         $rmsg = $func;
         $rmsg .= "document.write(\"<br /><div style='width:450px;padding:0px;border:1px solid #DADADA;'>";
-        $rmsg .= "<div style='padding:6px;font-size:12px;border-bottom:1px solid #DADADA;background:#DBEEBD url({$GLOBALS['cfg_plus_dir']}/img/wbg.gif)';'><b>DedeCMS 提示信息！</b></div>\");\r\n";
+        $rmsg .= "<div style='padding:6px;font-size:12px;border-bottom:1px solid #DADADA;background-color:#FFF;'><b>DedeCMS 提示信息！</b></div>\");\r\n";
         $rmsg .= "document.write(\"<div style='height:130px;font-size:10pt;background:#ffffff'><br />\");\r\n";
         $rmsg .= "document.write(\"".str_replace("\"","“",$msg)."\");\r\n";
         $rmsg .= "document.write(\"";

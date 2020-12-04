@@ -12,7 +12,7 @@
 <div class="header">
   <div class="top w960 center">
     <div class="title">
-      <h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global.cfg_templets_skin/}/images/logo.gif" alt="{dede:global.cfg_webname/}"/></a> </h1>
+      <h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global name='cfg_static_dir'/}/img/dedecms_logo.png" alt="{dede:global.cfg_webname/}"/></a> </h1>
     </div>
     <!-- /title -->
     <div class="welcome">
@@ -168,7 +168,7 @@
             <td width="180" class="td1">验证码</td>
             <td><a name="mate_vdimgck" />
               <input name="vdcode" id="vdcode" type="text" class="ipt-txt" size="10" style="text-transform:uppercase;" />
-              <a href="#mate_vdimgck"><img id="vdimgck_img" src="../include/vdimgck.php" hspace="6" align="absmiddle" onClick="vdimgck();" title="看不清换一张" /></a> <a href="#mate_vdimgck" onClick="vdimgck();">看不清换一张</a></td>
+              <a href="#mate_vdimgck"><img id="vdimgck_img" src="../plus/vdimgck.php" hspace="6" align="absmiddle" onClick="vdimgck();" title="看不清换一张" /></a> <a href="#mate_vdimgck" onClick="vdimgck();">看不清换一张</a></td>
           </tr>
         </tbody>
         <tfoot>
@@ -183,7 +183,7 @@
 <script language="JavaScript" type="text/javascript">
 function vdimgck()
 {
-	document.getElementById("vdimgck_img").src = '../include/vdimgck.php?'+Math.random();
+	document.getElementById("vdimgck_img").src = '../plus/vdimgck.php?'+Math.random();
 }
 </script>
 {dede:include filename="../default/footer.htm"/}

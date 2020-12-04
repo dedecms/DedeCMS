@@ -2,9 +2,9 @@
 /**
  * 文档编辑器
  * 
- * @version        $Id: archives_edit.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: archives_edit.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -88,7 +88,7 @@ else if($dopost=='save')
             }
         }
 
-        if (empty($idhash) || $idhash != md5($aid.$cfg_cookie_encode))
+        if (empty($idhash) || $idhash != hash("sha256", $aid.$cfg_cookie_encode))
         {
             showMsg('数据校验不对，程序返回', '-1');
             exit();

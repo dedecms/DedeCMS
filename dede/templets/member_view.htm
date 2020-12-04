@@ -112,7 +112,7 @@ function checkSubmit()
           <tr> 
             <td align="right" class='bline'>等级：</td>
             <td class='bline' style="text-align:left;"><?php
-             $MemberTypes = '';
+             $MemberTypes = array();
              $dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");
              $dsql->Execute('n');
              $MemberTypes[0] = "限制会员";

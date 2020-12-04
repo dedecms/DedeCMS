@@ -2,15 +2,18 @@
 /**
  * 后台登陆
  *
- * @version        $Id: login.php 1 8:48 2010年7月13日Z tianya $
+ * @version        $Id: login.php 1 8:48 2010年7月13日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 require_once(DEDEINC.'/userlogin.class.php');
 if(empty($dopost)) $dopost = '';
+if(empty($gotopage)) $gotopage = '';
+
+$gotopage = RemoveXSS($gotopage);
 
 //检测安装目录安全性
 if( is_dir(dirname(__FILE__).'/../install') )

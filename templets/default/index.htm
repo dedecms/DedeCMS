@@ -5,11 +5,11 @@
 <title>{dede:global.cfg_webname/}</title>
 <meta name="description" content="{dede:global.cfg_description/}" />
 <meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/index.php">
-<script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{dede:global.cfg_mobileurl/}/index.php";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/images/js/j.js" ></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/resources/pkg/dede/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmspath/}/resources/pkg/jquery/jquery.min.js" ></script>
 <script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/pic_scroll.js"></script>
 <script language="javascript" type="text/javascript">
 <!--
@@ -58,45 +58,7 @@
    </ul>
   </div>
   <!-- /bignews -->
-  <div class="flashnews">
-   <!-- size: 280px * 192px -->
-   <script language='javascript'>
-linkarr = new Array();
-picarr = new Array();
-textarr = new Array();
-var swf_width=280;
-var swf_height=192;
-//文字颜色|文字位置|文字背景颜色|文字背景透明度|按键文字颜色|按键默认颜色|按键当前颜色|自动播放时间|图片过渡效果|是否显示按钮|打开方式
-var configtg='0xffffff|0|0x3FA61F|5|0xffffff|0xC5DDBC|0x000033|2|3|1|_blank';
-var files = "";
-var links = "";
-var texts = "";
-//这里设置调用标记
-{dede:arclist flag='f' row='5'}
-linkarr[[field:global.autoindex/]] = "[field:arcurl/]";
-picarr[[field:global.autoindex/]]  = "[field:litpic/]";
-textarr[[field:global.autoindex/]] = "[field:title function='html2text(@me)'/]";
-{/dede:arclist}
-for(i=1;i<picarr.length;i++){
-if(files=="") files = picarr[i];
-else files += "|"+picarr[i];
-}
-for(i=1;i<linkarr.length;i++){
-if(links=="") links = linkarr[i];
-else links += "|"+linkarr[i];
-}
-for(i=1;i<textarr.length;i++){
-if(texts=="") texts = textarr[i];
-else texts += "|"+textarr[i];
-}
-document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ swf_width +'" height="'+ swf_height +'">');
-document.write('<param name="movie" value="{dede:global.cfg_templeturl /}/default/images/bcastr3.swf"><param name="quality" value="high">');
-document.write('<param name="menu" value="false"><param name=wmode value="opaque">');
-document.write('<param name="FlashVars" value="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'&bcastr_config='+configtg+'">');
-document.write('<embed src="{dede:global.cfg_templeturl /}/default/images/bcastr3.swf" wmode="opaque" FlashVars="bcastr_file='+files+'&bcastr_link='+links+'&bcastr_title='+texts+'&bcastr_config='+configtg+'&menu="false" quality="high" width="'+ swf_width +'" height="'+ swf_height +'" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'); document.write('</object>');
-</script>
-  </div>
-  <!-- /flashnews -->
+ 
   <div class="latestnews">
    <dl class="tbox light">
     <dt class="light"><strong>特别推荐</strong></dt>
@@ -126,7 +88,6 @@ document.write('<embed src="{dede:global.cfg_templeturl /}/default/images/bcastr
     </dd>
    </dl>
   </div>
-  <div id="leftAD1" style="margin:10px auto">{dede:mda name='700x90'/}</div>
   <!-- /picnews -->
   <div class="listbox"> {dede:channelartlist}
    <dl class="tbox">
@@ -185,7 +146,7 @@ document.write('<embed src="{dede:global.cfg_templeturl /}/default/images/bcastr
         echo '
         <div class="fb"><span>验证码:</span>
          <input type="text" name="vdcode" size="8" class="ipt-txt" />
-         <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'" style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换" src="'.$cfg_cmspath.'/include/vdimgck.php"/></div>
+         <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'" style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换" src="'.$cfg_cmspath.'/plus/vdimgck.php"/></div>
         ';
         }
         {/dede:php}
@@ -210,7 +171,6 @@ document.write('<embed src="{dede:global.cfg_templeturl /}/default/images/bcastr
    </dl>
   </div>
   <!-- /usercenter -->
-  <div id="rightAD1" style="margin:10px auto">{dede:mda name='250x250_SSP'/}</div>
   <div class="commend mt1">
    <dl class="tbox light">
     <dt class='light'><strong>推荐内容</strong></dt>
@@ -224,7 +184,6 @@ document.write('<embed src="{dede:global.cfg_templeturl /}/default/images/bcastr
    </dl>
   </div>
   <!-- /commend -->
-  <div id="rightAD1" style="margin:10px auto">{dede:mda name='250x250'/}</div>
   <div class="hot mt1">
    <dl class="tbox light">
     <dt class='light'><strong>本月热点</strong></dt>

@@ -15,7 +15,7 @@ function SelectTemplets(fname)
      var posLeft = 100;
      var posTop = 100;
    }
-   window.open("../include/dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir.'/plus')?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("./dialog/select_templets.php?&activepath=<?php echo urlencode($cfg_templets_dir.'/plus')?>&f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
 </head>
@@ -81,7 +81,7 @@ function SelectTemplets(fname)
       </td>
     </tr>
   </form>
-  <tr bgcolor="#F9FCEF"> 
+  <tr bgcolor="#FAFBFC"> 
     <td height="20" colspan="2"> <table width="100%">
         <tr> 
           <td width="74%">进行状态： </td>

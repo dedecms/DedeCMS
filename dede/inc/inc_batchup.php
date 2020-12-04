@@ -2,9 +2,9 @@
 /**
  * 文档操作相关函数
  *
- * @version        $Id: inc_batchup.php 1 10:32 2010年7月21日Z tianya $
+ * @version        $Id: inc_batchup.php 1 10:32 2010年7月21日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -100,7 +100,7 @@ function DelArc($aid, $type='ON', $onlyfile=FALSE,$recycle=0)
                 $dsql->ExecuteNoneQuery("Delete From `#@__erradd` where aid='$aid' ");
                 if($addtable != '')
                 {
-                    $dsql->ExecuteNoneQuery("Delete From `$addtable` where aid='$aid'");//2011.7.3 根据论坛反馈，修复删除文章时无法清除附加表中对应的数据 (by：织梦的鱼)
+                    $dsql->ExecuteNoneQuery("Delete From `$addtable` where aid='$aid'");
                 }
                 if($issystem != -1)
                 {

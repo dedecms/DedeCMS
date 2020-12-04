@@ -20,21 +20,21 @@
      </table>
     </td>
   </tr>
-  <tr align="center" bgcolor="#FBFCE2" height="24"> 
+  <tr align="center" bgcolor="#FBFBFB" height="24"> 
       <td width="10%">ID号</td>
       <td width="40%">插件名称</td>
       <td width="20%">插件作者</td>
       <td width="30%">管理</td>
    </tr>
    {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
         <td>{dede:field.aid /}</td>
         <td>{dede:field.plusname /}</td>
         <td>{dede:field.writer /}</td>
         <td>{dede:field.isshow function="GetSta(@me,$fields['aid'],$fields['plusname'])"/}</td>
      </tr>
 		{/dede:datalist}
-     <tr align="center" bgcolor="#F9FCEF" height="36"> 
+     <tr align="center" bgcolor="#FAFBFC" height="36"> 
       <td colspan="5">
       	{dede:pagelist listsize=6/}
       </td>

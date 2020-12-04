@@ -5,7 +5,7 @@
 <title>修改文章:<?php echo $row['title']?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript" src="templets/js/main.js"></script>
-<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="templets/js/load.js"></script>
 <script type="text/javascript" src="templets/js/leftmenu.js"></script>
 <script type="text/javascript" src="templets/js/checkSubmit.js"></script>
@@ -24,7 +24,7 @@
       <form class="mTB10 mL10 mR10" name="addcontent" id="addcontent" action="article_edit.php" method="post" enctype="multipart/form-data" onsubmit="return checkSubmit();">
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="aid" value="<?php echo $row['id']; ?>" />
-          <input type="hidden" name="idhash" value="<?php echo md5($row['id'].$cfg_cookie_encode); ?>" />
+          <input type="hidden" name="idhash" value="<?php echo hash('sha256', $row['id'].$cfg_cookie_encode); ?>" />
           <input type="hidden" name="channelid" value="<?php echo $row['channel']; ?>" />
           <input type="hidden" name="oldlitpic" value="<?php echo $row['litpic']; ?>" />
           <input type="hidden" name="sortrank" value="<?php echo $row['sortrank']; ?>" />
@@ -67,19 +67,7 @@
             <label>信息摘要：</label>
             <textarea name="description" id="description"><?php echo $row["description"]; ?></textarea>
             (内容的简要说明) </p>
-          <p class="cellBg">
-            <label>缩略图：</label>
-            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
-          </p>
-          <?php if($row['litpic']!='')
-          { 
-          ?>
-          <p>
-            <label style="width: 85px;">原来的缩略图：</label>
-            <img name="nlitpic"  id="nlitpic" src='<?php  echo $row['litpic'];  ?>' style="width: 200px; height:150px" />
-          </p>
           <?php
-          }
      	  //自定义字段
       	  	PrintAutoFieldsEdit($row['fieldset'],$addRow,'autofield');
       	  ?>
@@ -97,7 +85,7 @@
           <p class="cellBg">
             <label>验证码：</label>
             <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
-            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+            <img src="../plus/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" />
           </p>
       <?php }?>
       <p>

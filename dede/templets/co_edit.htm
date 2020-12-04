@@ -4,17 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改采集节点</title>
 <link href="css/base.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script language="javascript" src="js/main.js"></script>
 <script language="javascript" type="text/javascript" src="js/co.js"></script>
 <style type="text/css">
-<!--
 .STYLE2 {color: #666666}
 tr{display:compact}
 /*chrome调整*/
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 	tr{display:table-row}
 } 
--->
 </style>
 </head>
 <body>
@@ -37,7 +36,7 @@ tr{display:compact}
       	<table height="24" border="0" cellpadding="0" cellspacing="0">
           <tr> 
             <td width="84" align="center" background="images/itemnote1.gif">网址索引</td>
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="showItem2()"><u>内容配置</u></a></td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="showItem2()"><u>内容配置</u></a></td>
           </tr>
         </table>
        </td>
@@ -49,7 +48,7 @@ tr{display:compact}
       <td colspan="2">
       	<table height="24" border="0" cellpadding="0" cellspacing="0">
           <tr> 
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="showItem1()"><u>网址索引</u></a></td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="showItem1()"><u>网址索引</u></a></td>
             <td width="84" align="center" background="images/itemnote1.gif">内容配置</td>
           </tr>
         </table>
@@ -103,7 +102,7 @@ tr{display:compact}
              </td>
           </tr>
           <tr> 
-            <td height="24" colspan="4" bgcolor="#F9FCEF"><img src="images/file_tt.gif" width="7" height="8" />以下选项仅在开启防盗链模式才需设定，如果目标网站没有防盗链功能请不要开启，否则会降低采集速度。</td>
+            <td height="24" colspan="4" bgcolor="#FAFBFC"><img src="images/file_tt.gif" width="7" height="8" />以下选项仅在开启防盗链模式才需设定，如果目标网站没有防盗链功能请不要开启，否则会降低采集速度。</td>
           </tr>
           <tr> 
             <td height="24">防盗链模式：</td>
@@ -151,14 +150,14 @@ tr{display:compact}
             从RSS中获取
          </td>
         </tr>
-        <tr bgcolor="#F9FCEF" id="rssset" style="display:none">
+        <tr bgcolor="#FAFBFC" id="rssset" style="display:none">
           <td height="24">RSS网址：</td>
           <td>
           	<input type="text" name="rssurl" id="rssurl" style="width:350px" value="<?php echo $listrule->GetAtt('rssurl'); ?>" />
             <input type="button" name="btv2" id="btv2" value="测试" onclick="testRss()" />
           </td>
         </tr>
-        <tr bgcolor="#F9FCEF" id="batchset">
+        <tr bgcolor="#FAFBFC" id="batchset">
           <td height="77">批量生成地址设置：</td>
           <td>
           	<table width="90%">
@@ -321,7 +320,7 @@ tr{display:compact}
      </td>
      </tr>
      <tr>
-      <td height="35"><a href="#" onclick="showHide('achelp')"><img src="images/help.gif" width="16" height="16" /></a>预览网址：</td>
+      <td height="35"><a href="#" onclick="showHide('achelp')"><img src="images/help.png" width="16" height="16" /></a>预览网址：</td>
       <td>
       	<input type="text" name="previewurl" id="previewurl" style="width:90%" value="<?php echo $previewurl; ?>" />
       </td>
@@ -343,11 +342,11 @@ tr{display:compact}
       <input name="erul" type="text" value="5" size="4" /></td>
      </tr>
      <tr>
-      <td height="35" colspan="3" bgcolor="#FBFCE2" id="dyrule">如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br />
+      <td height="35" colspan="3" bgcolor="#FBFBFB" id="dyrule">如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br />
        <strong>规则说明：{path}</strong>地址+目录 <strong>{file}</strong>文件 <strong>{ext}</strong>文件扩展名 <strong>{p}</strong>分页列表数</td>
      </tr>
      <tr> 
-      <td height="24" colspan="3" bgcolor="#F9FCEF">
+      <td height="24" colspan="3" bgcolor="#FAFBFC">
       	&nbsp;<strong>以下为固定的采集项目：</strong>(项目点击可展开/隐藏，内容摘要、关键字、缩略图系统会用正则进行自动匹配)
       </td>
      </tr>
@@ -389,7 +388,7 @@ tr{display:compact}
        <tr>
          <td width="50%" valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('ttitle')"><b><u>文章标题</u></b></a></td>
            </tr>
            <tr>
@@ -417,7 +416,7 @@ tr{display:compact}
          </td>
          <td valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('twriter')"><b><u>文章作者</u></b></a> </td>
            </tr>
            <tr id="twriter">
@@ -447,7 +446,7 @@ tr{display:compact}
        <tr>
          <td valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('tsource')"><b><u>文章来源</u></b></a> </td>
            </tr>
            <tr id="tsource">
@@ -476,7 +475,7 @@ tr{display:compact}
          </td>
          <td valign="top">
          	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-           <tr bgcolor="#F9FCEF">
+           <tr bgcolor="#FAFBFC">
              <td height="24" class="adline">&nbsp;<a href="#" onclick="showHide('tpubdate')"><b><u>发布时间</u></b></a> </td>
            </tr>
            <tr id="tpubdate">
@@ -507,7 +506,7 @@ tr{display:compact}
      <!-- 固定项目结束，下面为自动项目 -->
      <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-       <td width="55%" height="24" colspan="3"  bgcolor="#FBFCE2">
+       <td width="55%" height="24" colspan="3"  bgcolor="#FBFBFB">
        	&nbsp;<strong>以下是针对模型设置的采集项目：</strong>
        </td>
       </tr>

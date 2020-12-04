@@ -6,21 +6,16 @@
 <base target="_self">
 <link rel="stylesheet" type="text/css" href="css/base.css" />
 <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-<script language="javascript" src="../include/js/dedeajax2.js"></script>
-<script type="text/javascript" src="../include/js/jquery/jquery.js" ></script>
-<script language="javascript" src="../include/js/jquery/ui.core.js"></script>
-<script language="javascript" src="../include/js/jquery/ui.draggable.js"></script>
-<script language="javascript" src="../include/js/jquery/ui.sortable.js"></script>
+<script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
 <script language="javascript" src="js/jquery.json-2.2.min.js"></script>
 <script language="javascript" src="js/indexbody.js"></script>
-<script language="javascript" src="js/drag.js"></script>
 </head>
 <body leftmargin="8" topmargin='8' bgcolor="#FFFFFF">
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td>
      <div style='float:left'>
-       欢迎使用专业的PHP网站管理系统，轻松建站的首选利器 -- <?php echo $cfg_softname; ?>
+       欢迎使用专业的PHP网站管理系统，轻松建站的利器 -- <?php echo $cfg_softname; ?>
      </div>
      <div id='' style='float:right;padding-right:8px;'>
          <!--  //保留位置（顶右）  -->
@@ -56,7 +51,7 @@ if($cuserLogin->getUserType()==10) {
 }
 //
 if($isSafeMode) {
-    $safe = '<br><font color="blue">由于您的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href="sys_info.php"><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href="testenv.php" style="color:red"><u>点击此进行一次DedeCms目录权限检测&gt;&gt;</u></a></font>';
+    $safe = '<br><font color="blue">由于您的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href="sys_info.php"><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href="testenv.php" style="color:red"><u>点击此进行一次DedeCMS目录权限检测&gt;&gt;</u></a></font>';
 } else {
     $safe =  '<a href="testenv.php" style="color:blue"><u>DedeCMS目录权限检测&gt;&gt;</u></a></font>';
 }
@@ -238,7 +233,7 @@ $drgonIterm = array(
 <br style='clear:both'/>
 <!-- //底部 -->
 <div align="center" class="footer">
-Copyright &copy; 2004-2011 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>. 织梦科技 版权所有
+Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 </div>
 
 <!--  下面是隐藏的项目  -->

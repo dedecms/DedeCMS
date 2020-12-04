@@ -2,9 +2,9 @@
 /**
  * 模型解析相关函数
  *
- * @version        $Id: inc_archives_all.php 1 9:56 2010年7月21日Z tianya $
+ * @version        $Id: inc_archives_all.php 1 9:56 2010年7月21日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -155,7 +155,7 @@ function GetFormItem($ctag)
  */
 function GetFieldValue($dvalue,$dtype,$aid=0,$job='add',$addvar='')
 {
-    global $cfg_cookie_encode,$cfg_dir_purview;
+    global $cfg_cookie_encode,$cfg_dir_purview,$isUrlOpen;
     if($dtype=="int")
     {
         $dvalue = trim(preg_replace("#[^0-9]#", "", $dvalue));
@@ -242,7 +242,7 @@ function GetFieldValue($dvalue,$dtype,$aid=0,$job='add',$addvar='')
             $imgfile = $GLOBALS['cfg_basedir'].$iurl;
             if(is_file($imgfile))
             {
-                $imginfos = GetImageSize($imgfile,&$info);
+                $imginfos = GetImageSize($imgfile);
                 $imgurl = "{dede:img text='' width='".$imginfos[0]."' height='".$imginfos[1]."'} $iurl {/dede:img}";
             }
         }

@@ -2,9 +2,9 @@
 /**
  * 图像查看
  *
- * @version        $Id: pic_view.php 1 15:26 2010年7月20日Z tianya $
+ * @version        $Id: pic_view.php 1 15:26 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -13,6 +13,7 @@ CheckPurview('pic_view');
 if(empty($activepath)) $activepath = $cfg_medias_dir;
 
 $activepath = preg_replace("#\/{1,}#", "/", $activepath);
+$activepath = RemoveXSS($activepath);
 $truePath = $cfg_basedir.$activepath;
 $listSize=5;
 include DedeInclude('templets/pic_view.htm');

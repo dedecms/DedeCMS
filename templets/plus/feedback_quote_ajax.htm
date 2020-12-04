@@ -44,7 +44,7 @@
                 <?php if(preg_match("/4/",$safe_gdopen)){ ?>
                 验证码：
                 <input name="validate" type="text" id="validate" size="10" style="height:18px;width:36px;margin-right:6px;text-transform: uppercase;" class="nb" />
-                <img src='{dede:global.cfg_cmsurl/}/include/vdimgck.php' width='60' height='24' style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" id="vdimg_<?php echo $row['id']; ?>"/>
+                <img src='{dede:global.cfg_cmsurl/}/plus/vdimgck.php' width='60' height='24' style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" id="vdimg_<?php echo $row['id']; ?>"/>
                 <?php } ?>
                 <button type="button" class="btn-2" onClick='javascript:if(CKEDITOR.instances.msg_<?php echo $row['id']; ?>.getData()!="") ajaxQuotePost(<?php echo $row['id']; ?>); else alert("评论内容不能为空！");'>发表评论</button>
               </div>

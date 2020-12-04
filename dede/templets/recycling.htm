@@ -70,14 +70,14 @@ function noSelAll()
 </script>
 </head>
 <body leftmargin="8" topmargin="8" background='images/allbg.gif'>
-<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#cfcfcf" align="center">
-<tr bgcolor="#E7E7E7">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#EAECEF" align="center">
+<tr bgcolor="#FAFBFC">
 <td height="28" colspan="7" background="images/tbg.gif" style="padding-left:10px;">
 	<b>文档回收站</b> &nbsp;
 </td>
 </tr>
 <form name="form2">
-<tr align="center" bgcolor="#FBFCE2" height="25">
+<tr align="center" bgcolor="#FBFBFB" height="25">
 <td width="6%">ID</td>
 <td width="4%">选择</td>
 <td width="28%">文章标题</td>
@@ -87,7 +87,7 @@ function noSelAll()
 <td width="10%">操作</td>
 </tr>
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"
+<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"
 	height="25" oncontextmenu="ShowMenu(event,this,{dede:field.id/},'{dede:field.title function='urlencode(@me)'/}')">
 <td>{dede:field.id/}</td>
 <td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="np"></td>
@@ -109,7 +109,7 @@ function noSelAll()
 <a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a></td>
 </tr>
 </form>
-<tr align="right" bgcolor="#F9FCEF">
+<tr align="right" bgcolor="#FAFBFC">
 <td height="30" colspan="7" align="center">
 	{dede:pagelist listsize=3/}</td>
 </tr>

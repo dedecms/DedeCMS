@@ -42,7 +42,7 @@ function DelSel()
 </script>
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#cfcfcf;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#EAECEF;">
   <tr>
     <td height="20" colspan="7" bgcolor="#EDF9D5" background='images/tbg.gif'>
     	<table width="98%" border="0" cellspacing="0" cellpadding="0">
@@ -59,7 +59,7 @@ function DelSel()
         </tr>
     </table></td>
   </tr>
-  <tr align="center"  bgcolor="#FBFCE2">
+  <tr align="center"  bgcolor="#FBFBFB">
     <td width="8%">选择</td>
     <td width="28%">卡号</td>
     <td width="18%">点卡类型</td>
@@ -70,7 +70,7 @@ function DelSel()
   </tr>
   <form name="form1">
  {dede:datalist}
-  <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+  <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td><input type='checkbox' name='aids' value='{dede:field.aid/}' class='np'></td>
       <td>{dede:field.cardid/}</td>
       <td><?php echo $TypeNames[$fields['ctid']]?></td>
@@ -88,7 +88,7 @@ function DelSel()
       　　　　 </td>
   </tr>
   <tr>
-    <td height="36" colspan="7" align="center" bgcolor="#F9FCEF">
+    <td height="36" colspan="7" align="center" bgcolor="#FAFBFC">
     {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
     </td>
   </tr>

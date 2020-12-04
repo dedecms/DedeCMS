@@ -9,9 +9,9 @@
  * ·JS触发方式：在所有文档页面中用JS调用/plus/task.php?client=js（必须禁用计划任务的密码，系统配置参数->其它选项）；
  * ·自行定制客户端：直接访问“http://网址/plus/task.php?clientpwd=管理密码”，会返回其中一个可执行任务的网址（没有可用任务则返回串：notask)，然后客户端运行这个网址即可。 
  *
- * @version        $Id: task.php 1 21:40 2010年7月8日Z tianya $
+ * @version        $Id: task.php 1 21:40 2010年7月8日 $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -43,7 +43,7 @@ while($arr = $dsql->GetArray())
 {
     $starttime = $arr['starttime'];
     $endtime = $arr['endtime'];
-	$ntime = strtotime("now");//(计划任务时间比较修正，2011.6.24 by：织梦的鱼)
+	$ntime = strtotime("now");
     //跳过一次性运行，并且已经运行的任务
     if($arr['lastrun'] > $starttime && $arr['runtype']==1) continue;
     //超过了设定的任务结束时间

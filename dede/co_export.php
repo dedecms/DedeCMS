@@ -2,9 +2,9 @@
 /**
  * 导出采集规则
  *
- * @version        $Id: co_edit_text.php 1 14:31 2010年7月12日Z tianya $
+ * @version        $Id: co_edit_text.php 1 14:31 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -217,7 +217,8 @@ else
         $mainSql = str_replace('@sortrank@', $sortrank, $mainSql);
         $mainSql = str_replace('@pubdate@', $pubdate, $mainSql);
         $mainSql = str_replace('@senddate@', $senddate, $mainSql);
-        $mainSql = str_replace('@title@', cn_substr($title, 60), $mainSql);
+        $mainSql = str_replace('@title@', cn_substr($title, $cfg_title_maxlen), $mainSql);
+		//$mainSql = str_replace('@title@', cn_substr($title, 60), $mainSql);	原来的语句，采集的文章导出到栏目后标题不全
         $addSql = str_replace('@sortrank@', $sortrank, $addSql);
         $addSql = str_replace('@senddate@', $senddate, $addSql);
 

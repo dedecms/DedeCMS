@@ -29,7 +29,7 @@ function SelectTemplets(fname){
      var posLeft = 100;
      var posTop = 100;
    }
-   window.open("../include/dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("./dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 
 function ShowHide(objname)
@@ -171,8 +171,8 @@ function CheckCross()
            <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规选项&nbsp;</td>
-                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级选项</u></a>&nbsp;</td>
-                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem2()"><u>高级选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
                 </tr>
               </table>
             </td>
@@ -184,9 +184,9 @@ function CheckCross()
             <td colspan="2" bgcolor="#FFFFFF"  style="text-align:left;">
           <table height="24" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td width="84" align="center" background="images/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
                   <td width="84" align="center" background="images/itemnote1.gif">高级选项&nbsp;</td>
-                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem3()"><u>栏目内容</u></a>&nbsp;</td>
                 </tr>
               </table>
             </td>
@@ -198,15 +198,15 @@ function CheckCross()
             <td colspan="2" bgcolor="#FFFFFF" style="text-align:left;">
              <table height="24" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td width="84" align="center" background="images/itemnote2.gif" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
-                  <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>高级选项</u>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png" bgcolor="#F2F7DF"><a href="#" onClick="ShowItem1()"><u>常规选项</u></a>&nbsp;</td>
+                  <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem2()"><u>高级选项</u>&nbsp;</td>
                   <td width="84" align="center" background="images/itemnote1.gif">栏目内容&nbsp;</td>
                 </tr>
               </table>
             </td>
           </tr>
        </table>
-        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="text-align:left;border:1px solid #cfcfcf;background:#ffffff;">
+        <table width="100%" border="0"  id="needset" cellspacing="0" cellpadding="0" style="text-align:left;border:1px solid #EAECEF;background:#ffffff;">
           <tr>
             <td width="150" class='bline' height="26" style="padding-left:10px;">是否支持投稿：</td>
             <td class='bline'>
@@ -357,7 +357,7 @@ function CheckCross()
             </td>
           </tr>
           <tr>
-            <td style="padding-left:10px;">栏目交叉： <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvarco')" /> <br />仅适用[最终列表栏目]</td>
+            <td style="padding-left:10px;">栏目交叉： <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvarco')" /> <br />仅适用[最终列表栏目]</td>
             <td style="padding:3px 0px 3px 0px">
                 <input name="cross" type="radio" id="cross0" value="0" class='np' onClick="CheckCross()" checked='1' />
                 不交叉
@@ -396,7 +396,7 @@ function CheckCross()
           </tr>
         </table>
 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;display:none;text-align:left;" id="adset">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #EAECEF;background:#ffffff;display:none;text-align:left;" id="adset">
           <?php
           if($id==0)
           {
@@ -455,7 +455,7 @@ function CheckCross()
             <td height="26" style="padding-left:10px;">封面模板：</td>
             <td> <input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" class="pubinputs" style="width:300px"/>
               <input type="button" name="set1" value="浏览..." class="coolbg np" style="width:60px" onClick="SelectTemplets('form1.tempindex');" />
-              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar1')"/>
+              <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar1')"/>
             </td>
           </tr>
           <tr>
@@ -484,7 +484,7 @@ function CheckCross()
           <tr>
             <td height="26" style="padding-left:10px;">文章命名规则：</td>
             <td> <input name="namerule" type="text" id="namerule" value="<?php echo $cfg_df_namerule;?>" class="pubinputs"  style="width:250px" />
-              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" />
+              <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar2')" />
             </td>
           </tr>
           <tr id='helpvar3' style='display:none'>
@@ -495,7 +495,7 @@ function CheckCross()
             <td height="26" style="padding-left:10px;">列表命名规则：</td>
             <td>
               <input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html"  class="pubinputs"  style="width:250px" />
-              <img src="images/help.gif" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')"/></td>
+              <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:pointer" onClick="ShowHide('helpvar3')"/></td>
           </tr>
           <tr>
             <td height="65" style="padding-left:10px;">SEO标题：</td>
@@ -516,7 +516,7 @@ function CheckCross()
           </tr>
         </table>
 
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #cfcfcf;background:#ffffff;display:none;text-align:left;" id="ctset">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #EAECEF;background:#ffffff;display:none;text-align:left;" id="ctset">
           <tr>
             <td height="28" style="padding-left:10px;">说明：栏目内容是替代原来栏目单独页的更灵活的一种方式，可在栏目模板中用{dede:field.content/}调用，通常用于企业简介之类的用途。</td>
           </tr>
@@ -529,7 +529,7 @@ function CheckCross()
           </tr>
       </table>
 
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FAFBFC" style="border:1px solid #EAECEF;border-top:none;">
           <tr>
             <td width="1%" height="35"></td>
             <td width="99%" valign="bottom">

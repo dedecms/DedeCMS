@@ -2,9 +2,9 @@
 /**
  * 内容处理函数
  *
- * @version        $Id: content_batch_up.php 1 14:31 2010年7月12日Z tianya $
+ * @version        $Id: content_batch_up.php 1 14:31 2010年7月12日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -178,7 +178,7 @@ else if($action=='move')
             $dsql->ExecuteNoneQuery("UPDATE `$addtable` SET typeid='$newtypeid' WHERE aid='{$row->id}' ");
         }
         if($rs) $tdd++;
-        //DelArc($row->id,true); //2011.07.06根据论坛反馈，修正使用批量文档维护后文档被移动到回收站(by:织梦的鱼)
+        //DelArc($row->id,true);
     }
 
     if($tdd>0)

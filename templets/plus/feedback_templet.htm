@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
 <title>用户评论：{dede:global.title/}</title>
 <link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/dedeajax2.js"></script>
+<script language="javascript" type="text/javascript" src="{dede:global.cfg_cmsurl/}/resources/pkg/dede/dedeajax2.js"></script>
 <script language="javascript">
 function postBadGood(ftype,fid)
 {
@@ -63,7 +63,7 @@ function ajaxFeedback(aid, fid, type)
 		eval(formname);
 		if(f.validate)
 		{
-			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "{dede:global.cfg_cmsurl/}/include/vdimgck.php?"+f.validate.value;
+			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "{dede:global.cfg_cmsurl/}/plus/vdimgck.php?"+f.validate.value;
 			f.validate.value = '';
 		}
 		
@@ -131,7 +131,7 @@ function ajaxQuotePost(fid)
 <div class="header">
   <div class="top w960 center">
     <div class="title">
-      <h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global.cfg_templets_skin/}/images/logo.gif" height="54" width="216" alt="{dede:global.cfg_webname/}"/></a> </h1>
+      <h1><a href="{dede:global.cfg_basehost/}" title="{dede:global.cfg_webname/}"><img src="{dede:global name='cfg_static_dir'/}/img/dedecms_logo.png" height="54" width="216" alt="{dede:global.cfg_webname/}"/></a> </h1>
     </div>
     <!-- /title -->
     <div class="welcome">
@@ -227,10 +227,9 @@ function ajaxQuotePost(fid)
             <div class="dcmp-content1">
             <script type="text/javascript">
 					//<![CDATA[
-					window.CKEDITOR_BASEPATH='{dede:global.cfg_cmsurl/}/include/ckeditor/';
+					window.CKEDITOR_BASEPATH='{dede:global.cfg_cmsurl/}/resources/pkg/ckeditor/';
 					//]]>
                     </script>
-            <script type="text/javascript" src="{dede:global.cfg_cmsurl/}/include/ckeditor/ckeditor.js?t=B8DJ5M3"></script>
             {dede:php}
             GetEditor('msg','',100,'Feedback','print','false',true);
             {/dede:php}
@@ -250,7 +249,7 @@ function ajaxQuotePost(fid)
                 <?php if(preg_match("/4/",$safe_gdopen)){ ?>
                 验证码：
                 <input name="validate" type="text" id="validate" size="10" style="height:18px;width:60px;margin-right:6px;text-transform:uppercase;" class="nb" />
-                <img src='../include/vdimgck.php' width='60' height='24' style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" />
+                <img src='../plus/vdimgck.php' width='60' height='24' style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" />
                 <?php } ?>
                 <button type="submit" class="btn-2">发表评论</button>
               </div>

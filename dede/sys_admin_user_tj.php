@@ -2,9 +2,9 @@
 /**
  * 获取用户的统计信息
  *
- * @version        $Id: sys_admin_user_edit.php 1 16:22 2010年7月20日Z tianya $
+ * @version        $Id: sys_admin_user_edit.php 1 16:22 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -106,8 +106,8 @@ if(isset($dopost) && $dopost=='getone')
     $ddd = $row['dd'] + $ddd;
     $ccd = $row['cc'] + $ccd;
     
-    $msg = "<table width='96%' border='0' align='center' cellpadding='3' cellspacing='1' bgcolor='#cfcfcf'>
-    <tr align='center' bgcolor='#FBFCE2'>
+    $msg = "<table width='96%' border='0' align='center' cellpadding='3' cellspacing='1' bgcolor='#EAECEF'>
+    <tr align='center' bgcolor='#FBFBFB'>
       <td width='18%' height='26'><strong>管理员↓|统计信息→</strong></td>
       <td width='18%'><strong>全部(文档|点击)</strong></td>
       <td width='16%'><strong>季度</strong></td>

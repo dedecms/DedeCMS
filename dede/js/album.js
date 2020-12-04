@@ -1,23 +1,37 @@
 /**
  * 图集
  *
- * @version        $Id: album.js 1 22:28 2010年7月20日Z tianya $
+ * @version        $Id: album.js 1 22:28 2010年7月20日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 
-function checkSubmitAlb(){
-	if(document.form1.title.value==''){
-	    alert("档案标题不能为空！");
+
+function checkSubmitAlb() {
+	if (document.form1.title.value == '') {
+		alert("档案标题不能为空！");
 		return false;
 	}
-	if(document.form1.typeid.value==0){
+	if (document.form1.typeid.value == 0) {
 		alert("请选择档案的主类别！");
 		return false;
 	}
 	document.form1.imagebody.value = $Obj('copyhtml').innerHTML;
+
+	if ($("#thumbnails .albCt").length > 0) {
+		// 这里从thumbnails中取出图片元素信息
+		$("#thumbnails .albCt").each(function(){
+			albums.push({
+			"img" : $(this).find("img").attr("src"),
+			"txt" : $(this).find("input").val()
+			})
+		})
+	}
+
+	$("#albums").val(JSON.stringify(albums));
+
 	return true;
 }
 
@@ -44,7 +58,7 @@ function showZipField(formitem,zipid,upid){
 	    $Obj(zipid).style.display = 'block';
 		$Obj(upid).style.display = 'none';
 		//$Obj('handfield').style.display = 'none';
-		$Obj('formhtml').checked = false;
+		// $Obj('formhtml').checked = false;
 		$Obj('copyhtml').innerHTML = '';
 	} else {
 		$Obj(zipid).style.display = 'none';

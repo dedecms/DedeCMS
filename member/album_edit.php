@@ -2,9 +2,9 @@
 /**
  * 图集编辑
  * 
- * @version        $Id: album_edit.php 1 13:52 2010年7月9日Z tianya $
+ * @version        $Id: album_edit.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -221,7 +221,7 @@ else if($dopost=='save')
             exit();
         }
     }
-	$description = HtmlReplace($description, -1);//2011.06.30 增加html过滤 （by:织梦的鱼）
+	$description = HtmlReplace($description, -1);
     //处理图片文档的自定义属性
     if($litpic!='') $flag = 'p';
 

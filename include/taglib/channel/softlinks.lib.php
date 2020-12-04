@@ -3,9 +3,9 @@ if(!defined('DEDEINC')) exit('Request Error!');
 /**
  * 软件相关标签
  *
- * @version        $Id:softlinks.lib.php 1 9:33 2010年7月8日Z tianya $
+ * @version        $Id:softlinks.lib.php 1 9:33 2010年7月8日 $
  * @package        DedeCMS.Taglib
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -45,7 +45,6 @@ function ch_softlinks_all($fvalue, &$ctag, &$refObj, &$row)
     global $dsql, $cfg_phpurl;
     $phppath = $cfg_phpurl;
     $islinktype = false;
-    //$link_type = trim($ctag->GetAtt('type')); (2011.6.29 修正下载链接列表 by：织梦的鱼)
     if(!empty($link_type)) $islinktype = true;
     $dtp = new DedeTagParse();
     $dtp->LoadSource($fvalue);

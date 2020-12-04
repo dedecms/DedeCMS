@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>发表<?php echo $cInfos['typename']; ?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script language='javascript' src="templets/js/main.js"></script>
 <script type="text/javascript" src="templets/js/inputAutoClear.js"></script>
 <script type="text/javascript" src="templets/js/load.js"></script>
@@ -51,10 +51,6 @@
 		?>
             (只允许并且必须选择白色背景的项目<span style="color:#F00">*</span>) 
           </p>
-          <p class="cellBg" style='<?php if($cInfos['needpic']==0) echo 'display:none'; ?>'>
-            <label>缩略图：</label>
-            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
-          </p>
       <?php
         if($safe_faq_send == '1'){
       	$faqkey = array_rand($safefaqs);
@@ -75,7 +71,7 @@
           <p class="cellBg" style='<?php if($cInfos['needpic']==0) echo 'display:none'; ?>'>
             <label>验证码：</label>
             <input name="vdcode" type="text" id="vdcode"   maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />  
-            <img src="../include/vdimgck.php" align="absmiddle" alt="看不清？点击更换" style="cursor:pointer" onclick="this.src=this.src+'?'" />
+            <img src="../plus/vdimgck.php" align="absmiddle" alt="看不清？点击更换" style="cursor:pointer" onclick="this.src=this.src+'?'" />
          </p>
       	<?php }?>
         <p>

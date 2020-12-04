@@ -11,7 +11,7 @@
   <div class="bodytitleleft"></div>
   <div class="bodytitletxt" style="padding-left:10px;">会员模型管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #CFCFCF;border-bottom:none;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #EAECEF;border-bottom:none;">
   <tr>
     <td bgcolor="#EDF9D5" class="tbtitletxt" background="images/tbg.gif"><table width='96%' border="0" cellpadding='0' cellspacing='0'>
         <tr>
@@ -21,8 +21,8 @@
       </table></td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#CFCFCF;margin-bottom:5px;'>
-  <tr align="center" bgcolor="#FBFCE2">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#EAECEF;margin-bottom:5px;'>
+  <tr align="center" bgcolor="#FBFBFB">
     <td>ID号</td>
     <td>模型名称</td>
     <td>表名</td>
@@ -31,7 +31,7 @@
     <td>管理</td>
   </tr>
   {dede:datalist}
-  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td>{dede:field.id/}</td>
     <td><a href="member_main.php?mtype={dede:field.name/}" title="{dede:field.description/}"><u>{dede:field.name/}</u></a>{dede:if field.issystem==1 }<font color=red>[*]</font>{/dede:if}</td>
     <td>{dede:field.table/}</td>
@@ -41,9 +41,9 @@
   </tr>
   {/dede:datalist}
 </table>
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #CFCFCF;line-height:31px;margin:auto;">
+<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #EAECEF;line-height:31px;margin:auto;">
   <tr>
-    <td height="35" align="center" style="background:#F9FCEF;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
+    <td height="35" align="center" style="background:#FAFBFC;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
   </tr>
 </table>
 </body>

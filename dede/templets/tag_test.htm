@@ -4,9 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>主页更新向导</title>
 <link href="css/base.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" media="all" href="../include/calendar/calendar-win2k-1.css" title="win2k-1" />
-<script type="text/javascript" src="../include/calendar/calendar.js"></script>
-<script type="text/javascript" src="../include/calendar/calendar-cn.js"></script>
+<link rel="stylesheet" type="text/css" media="all" href="../resources/pkg/calendar/calendar-win2k-1.css" title="win2k-1" />
+<script type="text/javascript" src="../resources/pkg/calendar/calendar.js"></script>
+<script type="text/javascript" src="../resources/pkg/calendar/calendar-cn.js"></script>
 <script language="javascript">
 function SelectTemplets(fname)
 {
@@ -18,7 +18,7 @@ function SelectTemplets(fname)
      var posLeft = 100;
      var posTop = 100;
    }
-   window.open("../include/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
+   window.open("./dialog/select_templets.php?f="+fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left="+posLeft+", top="+posTop);
 }
 </script>
 <link rel="stylesheet" type="text/css" href="css/codemirror.css">
@@ -29,7 +29,7 @@ function SelectTemplets(fname)
 <script type="text/javascript" src="js/mode/htmlmixed/htmlmixed.js"></script>
 </head>
 <body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#cfcfcf" align="center">
+<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#EAECEF" align="center">
   <form name="form1" action="tag_test_action.php" target="stafrm" method="post">
     <input type="hidden" name="dopost" value="make" />
     <input type="hidden" name="token" value="<?php echo make_hash();?>" />
@@ -77,7 +77,7 @@ function SelectTemplets(fname)
       </td>
     </tr>
   </form>
-  <tr bgcolor="#F9FCEF"> 
+  <tr bgcolor="#FAFBFC"> 
     <td height="20" colspan="2">
     	<table width="100%">
         <tr> 

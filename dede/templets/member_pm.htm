@@ -8,7 +8,7 @@
 <style type="text/css">
 .rb{ border-right:1px solid #98CAEF }
 .tb{ border-top:1px solid #98CAEF }
-.current {border:1px solid #CFCFCF;padding:5px;background:#FFFEF4;color:#FF0000;}
+.current {border:1px solid #EAECEF;padding:5px;background:#FFFEF4;color:#FF0000;}
 </style>
 </head>
 <body background="images/allbg.gif">
@@ -16,9 +16,9 @@
 	<div class="bodytitleleft"></div>
 	<div class="bodytitletxt" style="padding-left:10px;">短信管理</div>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#CFCFCF;margin-bottom:5px;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;margin-bottom:5px;">
   <tr>
-    <td height="30" align="center" bgcolor="#F9FCEF">
+    <td height="30" align="center" bgcolor="#FAFBFC">
       <form action="member_pm.php" name="form1" method="get">
 	    <table width="484" border="0" cellpadding="0" cellspacing="0">
           <tr>
@@ -43,7 +43,7 @@
     </td>
   </tr>
 </table>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#CFCFCF;">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#EAECEF;">
   <tr>
     <td height="24" colspan="9" bgcolor="#EDF9D5" background='images/tbg.gif'>
     	<table width="99%" border="0" cellspacing="0" cellpadding="0">
@@ -54,7 +54,7 @@
         </tr>
     </table></td>
   </tr>
-  <tr bgcolor="#FBFCE2" height="26">
+  <tr bgcolor="#FBFBFB" height="26">
     <td width="10%" align="center">发送时间</td>
     <td width="20%" align="center">标题</td>
     <td width="5%" align="center">已读?</td>
@@ -64,7 +64,7 @@
     <td width="10%" align="center">操作</td>
   </tr>
  {dede:datalist}
-  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+  <tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
     <td>{dede:field.sendtime function='GetDateMk(@me)'/}</td>
     <td>{dede:field.subject function='dede_htmlspecialchars(@me)'/}<br></td>
     <td>{dede:field.hasview function='IsReader(@me)'/}</td>
@@ -79,7 +79,7 @@
       </table></td>
   </tr>
 {/dede:datalist}
-  <tr bgcolor="#F9FCEF">
+  <tr bgcolor="#FAFBFC">
     <td height="26" colspan="9" align="center"> {dede:pagelist listsize=6/} </td>
   </tr>
 </table>

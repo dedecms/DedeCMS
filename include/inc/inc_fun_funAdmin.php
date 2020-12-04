@@ -2,9 +2,9 @@
 /**
  * 管理员后台基本函数
  *
- * @version        $Id:inc_fun_funAdmin.php 1 13:58 2010年7月5日Z tianya $
+ * @version        $Id:inc_fun_funAdmin.php 1 13:58 2010年7月5日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -28,7 +28,7 @@ function SpGetPinyin($str, $ishead=0, $isclose=1)
     {
         return $str;
     }
-    if(count($pinyins) == 0)
+    if(@count($pinyins) == 0)
     {
         $fp = fopen(DEDEINC.'/data/pinyin.dat', 'r');
         while(!feof($fp))
@@ -184,37 +184,17 @@ function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print"
     }
     else if($GLOBALS['cfg_html_editor']=='ckeditor')
     {
-        require_once(DEDEINC.'/ckeditor/ckeditor.php');
-        $CKEditor = new CKEditor();
-        $CKEditor->basePath = $GLOBALS['cfg_cmspath'].'/include/ckeditor/' ;
-        $config = $events = array();
-        $config['extraPlugins'] = 'dedepage,multipic,addon';
-		if($bbcode)
-		{
-			$CKEditor->initialized = true;
-			$config['extraPlugins'] .= ',bbcode';
-			$config['fontSize_sizes'] = '30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%';
-			$config['disableObjectResizing'] = 'true';
-			$config['smiley_path'] = $GLOBALS['cfg_cmspath'].'/images/smiley/';
-			// 获取表情信息
-			require_once(DEDEDATA.'/smiley.data.php');
-			$jsscript = array();
-			foreach($GLOBALS['cfg_smileys'] as $key=>$val)
-			{
-				$config['smiley_images'][] = $val[0];
-				$config['smiley_descriptions'][] = $val[3];
-				$jsscript[] = '"'.$val[3].'":"'.$key.'"';
-			}
-			$jsscript = implode(',', $jsscript);
-			echo jsScript('CKEDITOR.config.ubb_smiley = {'.$jsscript.'}');
-		}
-
-        $GLOBALS['tools'] = empty($toolbar[$etype])? $GLOBALS['tools'] : $toolbar[$etype] ;
-        $config['toolbar'] = $GLOBALS['tools'];
-        $config['height'] = $nheight;
-        $config['skin'] = 'kama';
-        $CKEditor->returnOutput = TRUE;
-        $code = $CKEditor->editor($fname, $fvalue, $config, $events);
+        $addConfig = "";
+        if (defined("DEDEADMIN")) {
+            $addConfig = ",{filebrowserImageUploadUrl:'./dialog/select_images_post.php'}";
+        }
+        $code = <<<EOT
+<script src="{$GLOBALS['cfg_static_dir']}/pkg/ckeditor/ckeditor.js"></script>
+<textarea id="{$fname}" name="{$fname}" rows="8" cols="60">{$fvalue}</textarea>
+<script>
+var editor = CKEDITOR.replace('{$fname}'{$addConfig});
+</script>
+EOT;
         if($gtype=="print")
         {
             echo $code;
@@ -223,8 +203,7 @@ function SpGetEditor($fname,$fvalue,$nheight="350",$etype="Basic",$gtype="print"
         {
             return $code;
         }
-    }
-    else { 
+    } else { 
         /*
         // ------------------------------------------------------------------------
         // 当前版本,暂时取消dedehtml编辑器的支持

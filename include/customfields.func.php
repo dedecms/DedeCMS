@@ -1,9 +1,9 @@
 <?php   if(!defined('DEDEINC')) exit('dedecms');
 /**
  * 系统核心函数存放文件
- * @version        $Id: customfields.func.php 2 20:50 2010年7月7日Z tianya $
+ * @version        $Id: customfields.func.php 2 20:50 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -46,7 +46,7 @@ function GetFormItem($ctag, $admintype='admin')
     else if($fieldType=='stepselect')
     {
             global $hasSetEnumJs,$cfg_cmspath;
-            $cmspath = ( (empty($cfg_cmspath) || !preg_match('/[/$]/', $cfg_cmspath)) ? $cfg_cmspath.'/' : $cfg_cmspath );//2011.08.04 根据论坛反馈修正联动模型 （by：织梦的鱼）
+            $cmspath = ( (empty($cfg_cmspath) || !preg_match('/[/$]/', $cfg_cmspath)) ? $cfg_cmspath.'/' : $cfg_cmspath );
             $myformItem = '';
             $myformItem .= "<input type='hidden' id='hidden_{$fieldname}' name='{$fieldname}' value='0' />\r\n";
             $myformItem .= "<span id='span_{$fieldname}'></span>\r\n";
@@ -54,7 +54,7 @@ function GetFormItem($ctag, $admintype='admin')
             $myformItem .= "<span id='span_{$fieldname}_sec'></span>\r\n";
             if($hasSetEnumJs != 'hasset')
             {
-                $myformItem .= '<script language="javascript" type="text/javascript" src="'.$cmspath.'images/enums.js"></script>'."\r\n";
+                $myformItem .= '<script language="javascript" type="text/javascript" src="'.$cmspath.'resources/pkg/other/enums.js"></script>'."\r\n";
                 $GLOBALS['hasSetEnumJs'] = 'hasset';
             }
             $myformItem .= "<script language='javascript' type='text/javascript' src='{$cmspath}data/enums/{$fieldname}.js'></script>\r\n";
@@ -124,15 +124,7 @@ function GetFormItem($ctag, $admintype='admin')
     else if($fieldType=="datetime")
     {
         $nowtime = GetDateTimeMk(time());
-        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt\"  />";
-        $innertext .= "   <script language=\"javascript\" type=\"text/javascript\">
-                    Calendar.setup({
-                        inputField     :    \"$fieldname\",
-                        ifFormat       :    \"%Y-%m-%d %H:%M\",
-                        showsTime      :    true,
-                        timeFormat     :    \"24\"
-                    });
-                 </script>";
+        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt datepicker\"/>";
     }
     else if($fieldType=='img'||$fieldType=='imgfile')
     {
@@ -421,7 +413,7 @@ function GetFormItemValue($ctag, $fvalue, $admintype='admin', $fieldname='')
         $myformItem .= "<span id='span_{$fieldname}_sec'></span>\r\n";
         if($hasSetEnumJs != 'hasset')
         {
-            $myformItem .= '<script language="javascript" type="text/javascript" src="'.$cmspath.'images/enums.js"></script>'."\r\n";
+            $myformItem .= '<script language="javascript" type="text/javascript" src="'.$cmspath.'resources/pkg/other/enums.js"></script>'."\r\n";
             $GLOBALS['hasSetEnumJs'] = 'hasset';
         }
         $myformItem .= "<script language='javascript' type='text/javascript' src='{$cmspath}data/enums/{$fieldname}.js'></script>\r\n";
@@ -514,15 +506,7 @@ function GetFormItemValue($ctag, $fvalue, $admintype='admin', $fieldname='')
     else if($ftype=="datetime")
     {
         $nowtime = GetDateTimeMk($fvalue);
-        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt\" />";
-        $innertext .= "   <script language=\"javascript\" type=\"text/javascript\">
-                    Calendar.setup({
-                        inputField     :    \"$fieldname\",
-                        ifFormat       :    \"%Y-%m-%d %H:%M\",
-                        showsTime      :    true,
-                        timeFormat     :    \"24\"
-                    });
-                 </script>";
+        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt datepicker\" />";
     }
     else if($ftype=="img")
     {

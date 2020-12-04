@@ -4,112 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
 <title>修改图片集</title>
 <style type="text/css">
-<!--
 body {
 	background-image: url(images/allbg.gif);
 }
--->
 </style>
+<link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
+
 <link href="css/base.css" rel="stylesheet" type="text/css">
-<link href="css/swfupload.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../images/swfupload/swfupload.js"></script>
-<script type="text/javascript" src="js/calendar/calendar.js"></script>
-<script type="text/javascript" src="../include/js/dedeajax2.js"></script>
+<link href="css/albumupload.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
+<link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+<script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
+<script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/album.js"></script>
 <script type="text/javascript" src="js/handlers.js"></script>
+<link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
+<script src="../resources/pkg/cropper/cropper.min.js"></script>
+<script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
 <script language="javascript" type="text/javascript">
-var swfu = null;
-var vcc = 0;
-function LoadTestDiv()
-{
-	var posLeft = 100; var posTop = 100;
-	var newobj = $Obj('_myhtml');
-	$Obj('imagebody').value = $Obj('copyhtml').innerHTML;
-	var dfstr = '粘贴到这里...';
-	if($Obj('imagebody').value.length <= dfstr.length)
-	{
-		alert('您还没有粘贴任何东西到编辑框哦！');
-		return;
-	}
-	if(!newobj){
-		newobj = document.createElement("DIV");
-		newobj.id = '_myhtml';
-		newobj.style.position='absolute';
-		newobj.className = "dlg2";
-		newobj.style.top = posTop;
-		newobj.style.left = posLeft;
-		document.body.appendChild(newobj);
-	}
-	else{
-		newobj.style.display = "block";
-	}
-	var myajax = new DedeAjax(newobj,false,true,'-','-','...');
-	var v = $Obj('imagebody').value;
-	vcc++;
+    var swfu = null;
+    var vcc = 0;
+    var albums = [];
 
-	<?php
-	if(strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
-		?>
-		//utf8
-		myajax.AddKeyUtf8('myhtml',v);
-		myajax.AddKeyUtf8('vcc',vcc);
-		myajax.SendPost2('album_testhtml.php');
-		<?php
-	}
-	elseif (strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
-		?>
-		//gbk
-		myajax.SendGet2("album_testhtml.php?vcc="+vcc+"&myhtml="+v);
-		<?php
-	}
-	?>
-	DedeXHTTP = null;
-}
-window.onload = function ()
-{
-			swfu = new SWFUpload(
-			{
-				// Backend Settings
-				upload_url: "swfupload.php",
-				post_params: {"PHPSESSID": "<?php echo session_id(); ?>", "dopost" : ""},
+    $(document).ready(function () {
+      // 添加图片
+      $("#iptAlbumImages").change(function (event) {
+        var files = event.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+          // 如果不是图片忽略
+          if (!f.type.match('image.*')) {
+            continue;
+          }
 
-				// File Upload Settings
-				file_size_limit : "2 MB",	// 2MB
-				file_types : "*.jpg; *.gif; *.png",
-				file_types_description : "选择 JPEG/GIF/PNG 格式图片",
-				file_upload_limit : "0",
-
-				file_queue_error_handler : fileQueueError,
-				file_dialog_complete_handler : fileDialogComplete,
-				upload_progress_handler : uploadProgress,
-				upload_error_handler : uploadError,
-				upload_success_handler : uploadSuccess,
-				upload_complete_handler : uploadComplete,
-
-				button_image_url : "../images/SmallSpyGlassWithTransperancy_17x18.png",
-				button_placeholder_id : "spanButtonPlaceholder",
-				button_width: 250,
-				button_height: 18,
-				button_text : '<span class="button">选择本地图片 <span class="buttonSmall">(单图最大为 2 MB，支持多选)</span></span>',
-				button_text_style : '.button { font-family: Helvetica, Arial, sans-serif; font-size: 12pt; } .buttonSmall { font-size: 10pt; }',
-				button_text_top_padding: 0,
-				button_text_left_padding: 18,
-				button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
-				button_cursor: SWFUpload.CURSOR.HAND,
-				
-				// Flash Settings
-				flash_url : "../images/swfupload/swfupload.swf",
-
-				custom_settings : {
-					upload_target : "divFileProgressContainer"
-				},
-				
-				// Debug Settings
-				debug: false
-			});
-};
+          // 将图片渲染到浏览器
+          var reader = new FileReader();
+          reader.onload = (function (theFile) {
+            return function (e) {
+              litpicImgSrc = e.target.result;
+              addImage(litpicImgSrc, 0);
+            };
+          })(f);
+          reader.readAsDataURL(f);
+        }
+        $("#iptAlbumImages").val("");
+      });
+    });
 </script>
+<style>
+  img {
+    vertical-align: baseline;
+  }
+
+  input,
+  select {
+    height: auto !important;
+  }
+</style>
 </head>
 <body topmargin="8">
 <form name="form1" action="album_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmitAlb();">
@@ -117,6 +70,8 @@ window.onload = function ()
   <input type="hidden" name="id" value="<?php echo $aid?>" />
   <input type="hidden" name="imagebody" value="" />
   <input type="hidden" name="dopost" value="save" />
+  <input type="hidden" id="albums" name="albums" value="">
+  <input type="hidden" id="litpic_b64" name="litpic_b64" value="">
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
       <td width="65%" height="30"><IMG height=14 src="images/book1.gif" width=20>&nbsp;<a href="catalog_do.php?cid=<?php echo $arcRow["typeid"]?>&dopost=listArchives"><u>图集列表</u></a> &gt;&gt; 更改图集</td>
@@ -128,7 +83,7 @@ window.onload = function ()
       <td colspan="2"><table width="168" border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规内容&nbsp;</td>
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem2()"><u>图集图片</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem2()"><u>图集图片</u></a>&nbsp;</td>
           </tr>
         </table></td>
     </tr>
@@ -137,13 +92,13 @@ window.onload = function ()
     <tr>
       <td colspan="2"><table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td width="84" align="center" background="images/itemnote2.gif"><a href="#" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
+            <td width="84" align="center" background="images/itemnote2.png"><a href="#" onClick="ShowItem1()"><u>常规内容</u></a>&nbsp;</td>
             <td width="84" align="center" background="images/itemnote1.gif">图集图片&nbsp;</td>
           </tr>
         </table></td>
     </tr>
   </table>
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #cfcfcf;background:#ffffff;">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="needset" style="border:1px solid #EAECEF;background:#ffffff;">
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -198,12 +153,23 @@ window.onload = function ()
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90" height="81">&nbsp;缩 略 图：<br/></td>
-            <td><input name="picname" type="text" id="picname" style="width:300px" value="<?php echo $arcRow["litpic"]?>">
-              <input type="button" name="Submit" value="浏览..." style="width:60" onClick="SelectImage('form1.picname','');">
-              <input type="button" name="Submit2" value="裁剪" style="margin-left:8px;" onClick="imageCut('picname');" class='np coolbg'/>
-              <input type='checkbox' class='np' name='ddisremote' value='1' />
-              远程 </td>
-            <td align="center"><img src="<?php if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "images/pview.gif";?>" width="150" height="100" id="picview" name="picview"></td>
+            <td><input name="picname" type="text" id="picname" style="width:300px"
+              value="<?php echo $arcRow["litpic"]?>"><input type="button" name="Submit" value="浏览..."
+              style="width:70px" onClick="SelectImage('form1.picname','');">
+            <input type='checkbox' class='np' name='ddisremote' value='1'>
+            远程
+            <span class="btn btn-success fileinput-button">
+              <i class="glyphicon glyphicon-plus"></i>
+              选择图片
+              <input type="file" name="files[]" id="iptAddImages">
+            </span>
+            <button id="btnClearAll" type="button" class="btn btn-danger delete">
+              <i class="fa fa-trash-o"></i>
+              <span>清空</span>
+            </button> </td>
+            <td align="center"><img id="litPic"
+              src="<?php if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "../resources/img/defaultpic.gif";?>"
+              style="height: 80px"></td>
           </tr>
         </table></td>
     </tr>
@@ -270,7 +236,7 @@ if($cfg_need_typeid2=='Y') {
         </table></td>
     </tr>
     <tr>
-      <td height="24" bgcolor="#F9FCEF" class="bline2">&nbsp;<strong>高级属性：</strong></td>
+      <td height="24" bgcolor="#FAFBFC" class="bline2">&nbsp;<strong>高级属性：</strong></td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline">
@@ -342,33 +308,9 @@ if($cfg_need_typeid2=='Y') {
             <td width="90">&nbsp;发布时间：</td>
             <td width="250"><?php
 			$nowtime = GetDateTimeMk(time());
-			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\">";
+			echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200\" class='datepicker'>";
 			?>
-               <script language="javascript" type="text/javascript">
-				    var showX = getElementLeft($Obj("pubdate")) - 130;
-					var showY = (window.navigator.userAgent.indexOf("MSIE") >=1 )? getElementTop($Obj("pubdate")) + 465 :  getElementTop($Obj("pubdate")) + 435;
-					if((window.navigator.userAgent.indexOf("MSIE 7.0") >=1 )) {
-						showX = getElementLeft($Obj("pubdate"))+105;
-						showY = getElementTop($Obj("pubdate"))+1000;
-					}
-					if(window.navigator.userAgent.indexOf("MSIE 6.0")>=1)
-					{
-						Calendar.setup({
-							inputField     :    "pubdate",
-							ifFormat       :    "%Y-%m-%d %H:%M:%S",
-							showsTime      :    true,
-							timeFormat     :    "24"
-						});
-					} else {
-						Calendar.setup({
-							inputField     :    "pubdate",
-							ifFormat       :    "%Y-%m-%d %H:%M:%S",
-							showsTime      :    true,
-							position       :    [showX, showY],
-							timeFormat     :    "24"
-						});
-					}
-				 </script> </td>
+             </td>
             <td width="92">消费金币：</td>
             <td width="368"><input name="money" type="text" id="money" value="<?php echo $arcRow["money"]?>" size="10"></td>
           </tr>
@@ -402,9 +344,9 @@ if($cfg_need_typeid2=='Y') {
     </tr>
   </table>
   <!-- //高级参数 -->
-  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="border:1px solid #cfcfcf;background:#ffffff;display:none">
+  <table width="98%"  border="0" align="center" cellpadding="2" cellspacing="2" id="adset" style="border:1px solid #EAECEF;background:#ffffff;display:none">
     <tr>
-      <td height="24" bgcolor="#F9FCEF" class="bline2">&nbsp;<strong>图集选项：</strong></td>
+      <td height="24" bgcolor="#FAFBFC" class="bline2">&nbsp;<strong>图集选项：</strong></td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline"><table width="800" border="0" cellspacing="0" cellpadding="0">
@@ -464,8 +406,6 @@ if($cfg_need_typeid2=='Y') {
               手工上传
               <input name="formzip" class="np" type="checkbox" id="formzip" value="1" onClick="showZipField(this,'zipff','htmlfield');" />
               从ZIP压缩包中解压图片
-              <input name="formhtml" class="np" type="checkbox" id="formhtml" value="1" onClick="showHtmlField(this,'htmlfield','zipff');" />
-              网上复制图片 </td>
           </tr>
         </table></td>
     </tr>
@@ -495,7 +435,7 @@ if($cfg_need_typeid2=='Y') {
         </table></td>
     </tr>
     <tr>
-      <td height="24" bgcolor="#F9FCEF" class="bline2">&nbsp;<b>原有图片：</b></td>
+      <td height="24" bgcolor="#FAFBFC" class="bline2">&nbsp;<b>原有图片：</b></td>
     </tr>
     <tr>
       <td height="24" colspan="4" class="bline"><table width='100%'>
@@ -543,10 +483,16 @@ if($cfg_need_typeid2=='Y') {
         </table></td>
     </tr>
     <tr>
-      <td height="24" colspan="4" class="bline" style="background:#F9FCEF;"><table width="800" border="0" cellspacing="0" cellpadding="0">
+      <td height="24" colspan="4" class="bline" style="background:#FAFBFC;"><table width="800" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="90">&nbsp;<b>增加新图片：</b></td>
-            <td><div style="display: inline; border: solid 1px #7FAAFF; background-color: #C5D9FF; padding: 2px;"> <span id="spanButtonPlaceholder"></span> </div></td>
+            <td>
+              <span class="btn btn-success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                选择本地图片（支持多选）
+                <input type="file" name="files[]" id="iptAlbumImages" multiple>
+              </span>
+            </td>
           </tr>
         </table></td>
     </tr>
@@ -559,7 +505,7 @@ if($cfg_need_typeid2=='Y') {
         </table></td>
     </tr>
   </table>
-  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#F9FCEF" style="border:1px solid #cfcfcf;border-top:none;">
+  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FAFBFC" style="border:1px solid #EAECEF;border-top:none;">
     <tr>
       <td height="35"><table width="100%" border="0" cellspacing="1" cellpadding="1">
           <tr>

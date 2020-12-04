@@ -2,9 +2,9 @@
 /**
  * 截取图片
  *
- * @version        $Id: imagecut.php 1 11:06 2010年7月13日Z tianya $
+ * @version        $Id: imagecut.php 1 11:06 2010年7月13日 $
  * @package        DedeCMS.Administrator
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -14,7 +14,7 @@ if(empty($action))
 {
     if(!@is_file($cfg_basedir.$file))
     {
-        ShowMsg("对不起，必须选择站内的图片才能进行裁剪！<br />点击'<a href='/include/dialog/select_images.php?f=form1.picname&imgstick=small'>站内选择</a>', 上传或选择一个图片，然后才能进行裁剪！", "../include/dialog/select_images.php?f=form1.picname&imgstick=small", 0 , 10000);
+        ShowMsg("对不起，必须选择站内的图片才能进行裁剪！<br />点击'<a href='./dialog/select_images.php?f=form1.picname&imgstick=small'>站内选择</a>', 上传或选择一个图片，然后才能进行裁剪！", "./dialog/select_images.php?f=form1.picname&imgstick=small", 0 , 10000);
         exit();
     }
     include DEDEADMIN.'/templets/imagecut.htm';

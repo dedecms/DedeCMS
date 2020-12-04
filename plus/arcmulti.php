@@ -66,7 +66,7 @@ if($tagid !='')
 
                     if($row['litpic'] == '-' || $row['litpic'] == '')
                     {
-                        $row['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+                        $row['litpic'] = $GLOBALS['cfg_cmspath'].'/resources/img/defaultpic.gif';
                     }
                     if(!preg_match("#^http:\/\/#", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
                     {

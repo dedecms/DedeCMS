@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
 <title>发表<?php echo $cInfos['typename']; ?> - 会员中心 - <?php echo $cfg_webname; ?></title>
 <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="templets/js/j.js"></script>
+<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="templets/js/inputAutoClear.js"></script>
 <script type="text/javascript" src="templets/js/load.js"></script>
 <script type="text/javascript" src="templets/js/leftmenu.js"></script>
@@ -65,10 +65,6 @@
             <label>信息摘要：</label>
             <textarea name="description" id="description"></textarea>(内容的简要说明)
           </p>
-          <p class="cellBg">
-            <label>缩略图：</label>
-            <input name="litpic" type="file" id="litpic" onchange="SeePicNew('divpicview',this);"  maxlength="100" class="intxt"/>
-          </p>
       <?php
        //自定义字段
        PrintAutoFieldsAdd($cInfos['fieldset'],'autofield');
@@ -97,7 +93,7 @@
           <p class="cellBg">
             <label>验证码：</label>
             <input name="vdcode" type="text" id="vdcode" maxlength="100" class="intxt" style='width:50px;text-transform:uppercase;' />
-            <img src="../include/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></p>
+            <img src="../plus/vdimgck.php" alt="看不清？点击更换" align="absmiddle" style="cursor:pointer" onclick="this.src=this.src+'?'" /></p>
       <?php }?>
       <p>
              <button class="button2" type="submit">提交</button>

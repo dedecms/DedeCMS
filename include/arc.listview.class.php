@@ -2,9 +2,9 @@
 /**
  * 文档列表类
  *
- * @version        $Id: arc.listview.class.php 2 15:15 2010年7月7日Z tianya $
+ * @version        $Id: arc.listview.class.php 2 15:15 2010年7月7日 $
  * @package        DedeCMS.Libraries
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
@@ -891,7 +891,7 @@ class ListView
                     $row['ispart'],$row['namerule2'],$row['moresite'],$row['siteurl'],$row['sitepath']);
                     if($row['litpic'] == '-' || $row['litpic'] == '')
                     {
-                        $row['litpic'] = $GLOBALS['cfg_cmspath'].'/images/defaultpic.gif';
+                        $row['litpic'] = $GLOBALS['cfg_cmspath'].'/resources/img/defaultpic.gif';
                     }
                     if(!preg_match("/^http:\/\//i", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y')
                     {

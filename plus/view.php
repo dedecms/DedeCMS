@@ -7,9 +7,9 @@
  * 如果指定了金币，浏览时会扣指点的点数，并保存记录到用户业务记录中
  * 如果两者同时指定，那么必须同时满足两个条件
  *
- * @version        $Id: view.php 1 15:38 2010年7月8日Z tianya $
+ * @version        $Id: view.php 1 15:38 2010年7月8日 $
  * @package        DedeCMS.Site
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */

@@ -9,7 +9,7 @@ function changeAuthCode() {
 	$('#ver_code').css('top', toppos+'px');
 	$('#ver_code').css('visibility','visible');
 	if ($("#vdimgck")[0]) {
-		$("#vdimgck")[0].src = "../include/vdimgck.php?tag=" + num;
+		$("#vdimgck")[0].src = "../plus/vdimgck.php?tag=" + num;
 	}
 	return false;	
 }

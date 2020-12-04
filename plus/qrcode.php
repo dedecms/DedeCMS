@@ -5,7 +5,7 @@ require_once(dirname(__FILE__).'/../include/common.inc.php');
 require_once(DEDEINC.'/qrcode.class.php');
 
 $action = isset($action)? $action : '';
-$type = isset($type)? $type : '';
+$type = isset($type)? RemoveXSS(HtmlReplace($type,3)) : '';
 $id = (isset($id) && is_numeric($id)) ? $id : 0;
 if ( !in_array($type,array('list','arc','index')) ) $url = "http://2v.dedecms.com";
 
