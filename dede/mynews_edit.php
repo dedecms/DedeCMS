@@ -27,4 +27,4 @@ else if($dopost=="editsave")
     exit();
 }
 $myNews = $dsql->GetOne("SELECT #@__mynews.*,#@__arctype.typename FROM #@__mynews LEFT JOIN #@__arctype ON #@__arctype.id=#@__mynews.typeid WHERE #@__mynews.aid='$aid';");
-include DedeInclude('templets/mynews_edit.htm');
+DedeInclude('templets/mynews_edit.htm');

@@ -16,11 +16,11 @@ if($userChannel>0) $opendir=$userChannel;
 
 if($cuserLogin->adminStyle=='dedecms')
 {
-    include DedeInclude('templets/catalog_menu.htm');
+    DedeInclude('templets/catalog_menu.htm');
     exit();
 }
 else
 {
-    include DedeInclude('templets/catalog_menu2.htm');
+    DedeInclude('templets/catalog_menu2.htm');
     exit();
 }

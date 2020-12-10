@@ -220,4 +220,4 @@ else if($dopost=='fetch')
     }
     exit();
 }
-include DedeInclude('templets/article_keywords_make.htm');
+DedeInclude('templets/article_keywords_make.htm');

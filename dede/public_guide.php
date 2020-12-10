@@ -76,7 +76,7 @@ else
     $dsql->SetQuery("SELECT id,typename,mancon,isdefault,addtable FROM `#@__channeltype` WHERE id<>-1 And isshow=1 ");
     $dsql->Execute();
 }
-include DedeInclude('templets/public_guide.htm');
+DedeInclude('templets/public_guide.htm');
 
 //获取频道栏目数
 function GetCatalogs(&$dsql,$cid)

@@ -71,5 +71,5 @@ else
         ShowMsg('指定投票不存在！', '-1');
         exit();
     }
-    include DedeInclude('templets/vote_edit.htm');
+    DedeInclude('templets/vote_edit.htm');
 }

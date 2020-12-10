@@ -23,7 +23,7 @@ require(DEDEADMIN.'/inc/inc_menu_func.php');
 <title>DedeCMS menu</title>
 <link rel="stylesheet" href="images/base.css" type="text/css" />
 <link rel="stylesheet" href="images/menuold.css" type="text/css" />
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>" />
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
 <base target="main" />
 </head>
 <script language="javascript">

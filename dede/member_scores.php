@@ -49,4 +49,4 @@ while($rs = $dsql->GetArray())
 {
     array_push($Scores,$rs);
 }
-include DedeInclude('templets/member_scores.htm');
+DedeInclude('templets/member_scores.htm');

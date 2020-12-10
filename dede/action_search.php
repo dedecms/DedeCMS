@@ -17,4 +17,4 @@ if(empty($dopost)) $dopost = "";
 $keyword=empty($keyword)? "" : RemoveXss($keyword);
 $actsearch = new ActionSearch($keyword);
 $asresult = $actsearch->Search();
-include DedeInclude('templets/action_search.htm');
+DedeInclude('templets/action_search.htm');

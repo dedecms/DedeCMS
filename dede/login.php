@@ -8,6 +8,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+
 require_once(dirname(__FILE__).'/../include/common.inc.php');
 require_once(DEDEINC.'/userlogin.class.php');
 if(empty($dopost)) $dopost = '';
@@ -44,7 +45,7 @@ require_once (DEDEDATA.'/admin/config_update.php');
 
 if ($dopost=='showad')
 {
-    include('templets/login_ad.htm');
+    DedeInclude('templets/login_ad.htm',true);
     exit;
 }
 
@@ -117,4 +118,13 @@ if($dopost=='login')
     }
 }
 
-include('templets/login.htm');
+
+
+DedeInclude('templets/login.htm',true);
+
+function DedeInclude($filename, $isabs=FALSE)
+{
+    $dlist = new DataListCP();
+    $dlist->SetTemplate($isabs ? $filename : DEDEADMIN.'/'.$filename);
+    $dlist->Display();
+}

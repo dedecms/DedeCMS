@@ -105,7 +105,7 @@ while($row = $dsql->GetArray('t',MYSQL_BOTH))
     }
 }
 $mysql_version = $dsql->GetVersion();
-include DedeInclude('templets/sys_data.htm');
+DedeInclude('templets/sys_data.htm');
 
 function TjCount($tbname,&$dsql)
 {

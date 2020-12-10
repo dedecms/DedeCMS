@@ -120,4 +120,4 @@ while($nrow = $dsql->GetObject('op'))
     }
 }
 make_hash();
-include DedeInclude('templets/sys_admin_user_edit.htm');
+DedeInclude('templets/sys_admin_user_edit.htm');

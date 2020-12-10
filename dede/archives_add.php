@@ -43,7 +43,7 @@ if($dopost != 'save')
     $channelid = $cInfos['id'];
     //获取文章最大id以确定当前权重
     $maxWright = $dsql->GetOne("SELECT COUNT(*) AS cc FROM #@__archives");
-    include DedeInclude('templets/archives_add.htm');
+    DedeInclude('templets/archives_add.htm');
     exit();
 }
 /*--------------------------------

@@ -51,7 +51,7 @@ if($dopost=='')
 {
     $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM #@__freelist $addsql ");
     $totalRow = $row['dd'];
-    include(DEDEADMIN."/templets/freelist_main.htm");
+    DedeInclude("/templets/freelist_main.htm");
 }
 
 /**

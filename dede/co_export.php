@@ -29,7 +29,7 @@ if($dopost!='done')
         $mrow = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__co_htmls` WHERE isdown='1' ");
         $totalcc = $mrow['dd'];
     }
-    include DedeInclude("templets/co_export.htm");
+    DedeInclude("templets/co_export.htm");
     exit();
 }
 else

@@ -34,4 +34,4 @@ if($dopost=="ok")
     echo "成功生成所有专题HTML列表！<a href='$rurl' target='_blank'>预览</a>";
     exit();
 }
-include DedeInclude('templets/makehtml_spec.htm');
+DedeInclude('templets/makehtml_spec.htm');

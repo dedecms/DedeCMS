@@ -34,4 +34,4 @@ if($dopost=='edit')
 }
 $query = "SELECT * FROM `#@__feedback` WHERE id=$id";
 $row = $dsql->GetOne($query);
-include DedeInclude('templets/feedback_edit.htm');
+DedeInclude('templets/feedback_edit.htm');

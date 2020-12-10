@@ -45,4 +45,4 @@ if($dopost=="save")
     echo "<script> alert('成功更新友情链接网站分类表！'); </script>";
 }
 
-include DedeInclude('templets/friendlink_type.htm');
+DedeInclude('templets/friendlink_type.htm');

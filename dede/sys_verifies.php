@@ -59,7 +59,7 @@ if(!function_exists('file_get_contents'))
 
 if($action == '')
 {
-    include(DEDEADMIN.'/templets/sys_verifies.htm');
+    DedeInclude('/templets/sys_verifies.htm');
     exit();
 }
 /*----------------
@@ -98,7 +98,7 @@ else if($action == 'verify')
     }
     else
     {
-        include(DEDEADMIN.'/templets/sys_verifies_verify.htm');
+        DedeInclude('/templets/sys_verifies_verify.htm');
     }
     exit();
 }
@@ -142,7 +142,7 @@ else if ($action == 'manage')
     {
         $filelist[] = $row;
     }
-    include(DEDEADMIN.'/templets/sys_verifies_manage.htm');
+    DedeInclude('/templets/sys_verifies_manage.htm');
     exit();
 }
 /*-----------------------
@@ -197,7 +197,7 @@ else if ($action == 'getfiles')
         
     $doneStr = "<iframe name='stafrm' src='sys_verifies.php?action=down&curfile=0' frameborder='0' id='stafrm' width='100%' height='100%'></iframe>\r\n";
     
-    include(DEDEADMIN.'/templets/sys_verifies_getfiles.htm');
+    DedeInclude('/templets/sys_verifies_getfiles.htm');
     
     exit();
 }

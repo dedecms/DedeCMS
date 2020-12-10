@@ -21,4 +21,4 @@ if($dopost=="save")
     ShowMsg("成功发布一条站内新闻！", "mynews_main.php");
     exit();
 }
-include DedeInclude('templets/mynews_add.htm');
+DedeInclude('templets/mynews_add.htm');

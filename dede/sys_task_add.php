@@ -31,4 +31,4 @@ if($dopost=='save')
     exit();
 }
 
-include DedeInclude('templets/sys_task_add.htm');
+DedeInclude('templets/sys_task_add.htm');

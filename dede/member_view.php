@@ -32,4 +32,4 @@ if($row['uptime']>0 && $row['exptime']>0)
 } else {
     $mhasDay = 0;
 }
-include DedeInclude('templets/member_view.htm');
+DedeInclude('templets/member_view.htm');

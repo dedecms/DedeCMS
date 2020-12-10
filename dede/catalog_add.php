@@ -49,7 +49,7 @@ if($dopost=='quick')
 {
     $tl = new TypeLink(0);
     $typeOptions = $tl->GetOptionArray(0,0,$channelid);
-    include DedeInclude('templets/catalog_add_quick.htm');
+    DedeInclude('templets/catalog_add_quick.htm');
     exit();
 }
 /*---------------------
@@ -270,4 +270,4 @@ if($dopost=='')
     $moresite = empty($myrow['moresite']) ? 0 : $myrow['moresite'];
 }
 
-include DedeInclude('templets/catalog_add.htm');
+DedeInclude('templets/catalog_add.htm');

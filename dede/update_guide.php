@@ -253,7 +253,7 @@ else if($dopost=='getlist')
         $allFileList .="</form></div>";
     }
     
-    include DedeInclude('templets/update_guide_getlist.htm');
+    DedeInclude('templets/update_guide_getlist.htm');
     exit();
 }
 /**
@@ -335,7 +335,7 @@ else if($dopost=='getfiles')
         
         $doneStr = "<iframe name='stafrm' src='update_guide.php?dopost=getfilesstart' frameborder='0' id='stafrm' width='100%' height='100%'></iframe>\r\n";
     }
-    include DedeInclude('templets/update_guide_getfiles.htm');
+    DedeInclude('templets/update_guide_getfiles.htm');
     exit();
 }
 /**

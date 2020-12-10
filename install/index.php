@@ -10,9 +10,9 @@
 //error_reporting(E_ALL);
 error_reporting(E_ALL || ~E_NOTICE);
 
-$verMsg = ' V5.8 UTF8';
+$verMsg = '{{.verMsg}}';
 $s_lang = 'utf-8';
-$dfDbname = 'dedecmsv58utf8';
+$dfDbname = '{{.dfDbname}}';
 $errmsg = '';
 define('INSTALL_DEMO_NAME', 'dedev57demo.txt');
 define('INSLOCKFILE', dirname(__FILE__).'/install_lock.txt');
@@ -60,7 +60,7 @@ else if($step==2)
 {
     $phpv = phpversion();
     $sp_os = PHP_OS;
-    $sp_gd = gdversion();
+    $sp_gd = gd_info();
     $sp_server = $_SERVER['SERVER_SOFTWARE'];
     $sp_host = (empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_HOST'] : $_SERVER['REMOTE_ADDR']);
     $sp_name = $_SERVER['SERVER_NAME'];
@@ -68,7 +68,7 @@ else if($step==2)
     $sp_allow_reference = (ini_get('allow_call_time_pass_reference') ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
     $sp_allow_url_fopen = (ini_get('allow_url_fopen') ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
     $sp_safe_mode = (ini_get('safe_mode') ? '<font color=red>[×]On</font>' : '<font color=green>[√]Off</font>');
-    $sp_gd = ($sp_gd>0 ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
+    $sp_gd = ($sp_gd['GD Version']>0 ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
     $sp_mysql = (function_exists('mysql_connect') ? '<font color=green>[√]On</font>' : '<font color=red>[×]Off</font>');
 
     if($sp_mysql=='<font color=red>[×]Off</font>')

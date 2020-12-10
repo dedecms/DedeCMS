@@ -69,5 +69,5 @@ while($row3 = $dsql->GetArray())
 {
     $adminLists[] = $row3;
 }
-include DedeInclude('templets/sys_multiserv.htm');
+DedeInclude('templets/sys_multiserv.htm');
 exit();

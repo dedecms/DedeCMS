@@ -35,4 +35,4 @@ $startDay = time();
 $endDay = AddDay($startDay,30);
 $startDay = GetDateTimeMk($startDay);
 $endDay = GetDateTimeMk($endDay);
-include DedeInclude('templets/mytag_add.htm');
+DedeInclude('templets/mytag_add.htm');

@@ -257,7 +257,9 @@ function UpDateMemberModCache()
  */
 function DedeInclude($filename, $isabs=FALSE)
 {
-    return $isabs ? $filename : DEDEADMIN.'/'.$filename;
+    $dlist = new DataListCP();
+    $dlist->SetTemplate($isabs ? $filename : DEDEADMIN.'/'.$filename);
+    $dlist->Display();
 }
 
 /**

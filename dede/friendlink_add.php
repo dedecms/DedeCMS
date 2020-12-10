@@ -61,4 +61,4 @@ if($dopost=="add")
         exit();
     }
 }
-include DedeInclude('templets/friendlink_add.htm');
+DedeInclude('templets/friendlink_add.htm');

@@ -101,4 +101,4 @@ while($nrow = $dsql->GetObject('op'))
     }
 }
 $row = $dsql->GetOne("SELECT * FROM #@__member WHERE mid='$id'");
-include DedeInclude('templets/member_toadmin.htm');
+DedeInclude('templets/member_toadmin.htm');

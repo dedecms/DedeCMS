@@ -328,4 +328,4 @@ else if($dopost == 'make')
         exit;
     }
 }
-include DedeInclude('templets/makeremote_all.htm');
+DedeInclude('templets/makeremote_all.htm');

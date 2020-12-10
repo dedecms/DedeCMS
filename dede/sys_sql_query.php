@@ -176,4 +176,4 @@ else if($dopost=="query")
     exit();
 }
 make_hash();
-include DedeInclude('templets/sys_sql_query.htm');
+DedeInclude('templets/sys_sql_query.htm');

@@ -42,4 +42,4 @@ if($dopost=='save')
 }
 
 $row = $dsql->GetOne("SELECT * FROM `#@__sys_task` WHERE id='$id' ");
-include DedeInclude('templets/sys_task_edit.htm');
+DedeInclude('templets/sys_task_edit.htm');

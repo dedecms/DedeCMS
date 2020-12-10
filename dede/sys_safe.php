@@ -73,4 +73,4 @@ if($dopost == "save")
 
 require_once($safeconfigfile);
 $safefaqs = unserialize($safe_faqs);
-include DedeInclude('templets/sys_safe.htm');
+DedeInclude('templets/sys_safe.htm');

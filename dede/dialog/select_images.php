@@ -60,7 +60,7 @@ if (!empty($noeditor))
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
+<meta http-equiv='Content-Type' content='text/html; charset={dede:global.cfg_soft_lang/}'>
 <title>图片浏览器</title>
 <link href='../../resources/css/base.css' rel='stylesheet' type='text/css'>
 <style>

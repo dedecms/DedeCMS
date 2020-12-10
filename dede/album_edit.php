@@ -54,7 +54,7 @@ if($dopost!='save')
     $pagepicnum = $addRow["pagepicnum"];
     $tags = GetTags($aid);
     $arcRow=XSSClean($arcRow);$addRow=XSSClean($addRow);
-    include DedeInclude("templets/album_edit.htm");
+    DedeInclude("templets/album_edit.htm");
     exit();
 }
 /*--------------------------------

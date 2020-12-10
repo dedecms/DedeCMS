@@ -49,7 +49,7 @@ if (!empty($noeditor))
 ?>
 <html>
 <head>
-<meta http-equiv='Content-Type' content='text/html; charset=<?php echo $cfg_soft_lang; ?>'>
+<meta http-equiv='Content-Type' content='text/html; charset={dede:global.cfg_soft_lang/}'>
 <title>软件管理器</title>
 <link href='../../images/img/base.css' rel='stylesheet' type='text/css'>
 <style>

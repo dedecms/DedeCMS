@@ -36,4 +36,4 @@ if(!empty($dopost))
     ShowMsg("成功创建一个新的用户组!", "sys_group.php");
     exit();
 }
-include DedeInclude('templets/sys_group_add.htm');
+DedeInclude('templets/sys_group_add.htm');

@@ -18,7 +18,7 @@ if(empty($action))
     $row = $dsql->GetOne("SELECT id FROM #@__member_model ORDER BY id DESC LIMIT 0,1 ");
     if(is_array($row)) $newid = $row['id']+1;
     else $newid = 1;
-    include(DEDEADMIN."/templets/member_model_add.htm");
+    DedeInclude("/templets/member_model_add.htm");
 } else {
     if(preg_match("#[^0-9-]#", $id) || empty($id))
     {

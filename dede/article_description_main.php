@@ -15,7 +15,7 @@ CheckPurview('sys_Keyword');
 if(empty($dojob)) $dojob = '';
 if($dojob=='')
 {
-    include DedeInclude("templets/article_description_main.htm");
+    DedeInclude("templets/article_description_main.htm");
     exit();
 }
 else

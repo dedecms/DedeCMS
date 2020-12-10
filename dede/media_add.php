@@ -90,4 +90,4 @@ if ($dopost == "upload") {
     ShowMsg("成功上传 {$okdd} 个文件！", "media_main.php");
     exit();
 }
-include DedeInclude('templets/media_add.htm');
+DedeInclude('templets/media_add.htm');

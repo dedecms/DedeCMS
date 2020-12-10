@@ -41,9 +41,9 @@ if(empty($dopost))
             if($value['column'] == 'column1') $column1 = $column1 + array($key => $value['id']);
             else if($value['column'] == 'column2') $column2 = $column2 + array($key => $value['id']);
         }
-        include DedeInclude('templets/index_body_move.htm');
+        DedeInclude('templets/index_body_move.htm');
     }else{  
-        include DedeInclude('templets/index_body.htm');
+        DedeInclude('templets/index_body.htm');
     }
     exit();
 }
@@ -243,11 +243,11 @@ exit();
 exit;
 } else if ($dopost=='showauth')
 {
-    include('templets/index_body_showauth.htm');
+    DedeInclude('templets/index_body_showauth.htm');
     exit;
 } else if ($dopost=='showad')
 {
-    include('templets/index_body_showad.htm');
+    DedeInclude('templets/index_body_showad.htm');
     exit;
 } else if($dopost=='setskin')
 {

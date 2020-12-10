@@ -499,7 +499,7 @@ class DedeModule
                             if(preg_match('/\.(php|htm|html|shtml|inc|tpl)$/i', $filename))
                             {
                                 if($this->sysLang=='big5') $charset = 'charset=big5';
-                                else if($this->sysLang=='utf-8') $charset = 'charset=gb2312';
+                                else if($this->sysLang=='utf-8') $charset = 'charset=utf-8';
                                 else  $charset = 'charset=gb2312';
                                 $ct = preg_match("/charset=([a-z0-9-]*)/i", $charset, $ct);
                             }

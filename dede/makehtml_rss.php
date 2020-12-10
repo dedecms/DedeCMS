@@ -9,4 +9,4 @@
  * @link           http://www.dedecms.com
  */
 require_once(dirname(__FILE__)."/config.php");
-include DedeInclude('templets/makehtml_rss.htm');
+DedeInclude('templets/makehtml_rss.htm');

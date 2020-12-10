@@ -37,7 +37,7 @@ if($dopost!='save')
     $addRow = $dsql->GetOne("SELECT arc.*,ar.membername as rankname FROM `$addtable` arc LEFT JOIN `#@__arcrank` ar on ar.rank=arc.arcrank WHERE arc.aid='$aid'");
     $channelid = $cInfos['channel'];
     $tags = GetTags($aid);
-    include DedeInclude('templets/archives_sg_edit.htm');
+    DedeInclude('templets/archives_sg_edit.htm');
     exit();
 }
 /*--------------------------------

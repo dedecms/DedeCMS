@@ -63,4 +63,4 @@ else if($dopost=="testjs")
     exit();
 }
 $row = $dsql->GetOne("SELECT * FROM `#@__mytag` WHERE aid='$aid'");
-include DedeInclude('templets/mytag_edit.htm');
+DedeInclude('templets/mytag_edit.htm');

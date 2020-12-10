@@ -57,4 +57,4 @@ if($dopost == 'del')
 
 $dsql->SetQuery("SELECT * FROM `#@__arcrank` WHERE rank>0 ORDER BY rank");
 $dsql->Execute();
-include DedeInclude('templets/member_rank.htm');
+DedeInclude('templets/member_rank.htm');

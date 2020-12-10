@@ -16,7 +16,7 @@ $activepath = preg_replace("#\/{1,}#", "/", $activepath);
 $activepath = RemoveXSS($activepath);
 $truePath = $cfg_basedir.$activepath;
 $listSize=5;
-include DedeInclude('templets/file_pic_view.htm');
+DedeInclude('templets/file_pic_view.htm');
 
 /**
  *  获取上一级目录

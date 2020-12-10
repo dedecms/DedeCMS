@@ -28,4 +28,4 @@ while(($filename=$dh->read()) !== false)
     }
 }
 $dh->close();
-include DedeInclude('templets/sys_data_revert.htm');
+DedeInclude('templets/sys_data_revert.htm');

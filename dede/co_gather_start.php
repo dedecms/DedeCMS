@@ -31,4 +31,4 @@ if(!empty($nid))
     $ntitle = '监控式采集：';
     $unum = "没指定采集节点，将使用检测新内容采集模式！";
 }
-include DedeInclude('templets/co_gather_start.htm');
+DedeInclude('templets/co_gather_start.htm');

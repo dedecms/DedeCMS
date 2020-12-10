@@ -10,6 +10,6 @@
  */
 require_once(dirname(__FILE__)."/config.php");
 $tid = isset($tid)? $tid : 0;
-include DedeInclude('templets/makehtml_taglist.htm');
+DedeInclude('templets/makehtml_taglist.htm');
 
 ?>

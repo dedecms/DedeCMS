@@ -56,4 +56,4 @@ if($isdown == 0)
 $dtp = new DedeTagParse();
 $dtp->SetNameSpace("dede", "{", "}");
 $dtp->LoadString($body);
-include DedeInclude('templets/co_view.htm');
+DedeInclude('templets/co_view.htm');

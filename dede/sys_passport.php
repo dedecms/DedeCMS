@@ -27,4 +27,4 @@ if($dopost=='save')
     fclose($fp);
     echo "<script>alert('修改通行证配置成功！');window.location='sys_passport.php?".time()."';</script>\r\n";
 }
-include DedeInclude('templets/sys_passport.htm');
+DedeInclude('templets/sys_passport.htm');

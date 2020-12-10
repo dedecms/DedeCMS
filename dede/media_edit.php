@@ -216,4 +216,4 @@ if(!is_array($myrow))
     ShowMsg('错误，找不到此编号的档案！','javascript:;');
     exit();
 }
-include DedeInclude('templets/media_edit.htm');
+DedeInclude('templets/media_edit.htm');

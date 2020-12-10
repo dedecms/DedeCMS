@@ -28,4 +28,4 @@ if($dopost=="save")
     echo "<script> alert('成功更新自定文档义属性表！'); </script>";
 }
 
-include DedeInclude('templets/content_att.htm');
+DedeInclude('templets/content_att.htm');

@@ -74,4 +74,4 @@ else if($dopost=="make")
     exit();
 }
 $row  = $dsql->GetOne("SELECT * FROM #@__homepageset");
-include DedeInclude('templets/makehtml_homepage.htm');
+DedeInclude('templets/makehtml_homepage.htm');

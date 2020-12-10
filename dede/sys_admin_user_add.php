@@ -89,4 +89,4 @@ while($row = $dsql->GetObject('op'))
     }
 }
 make_hash();
-include DedeInclude('templets/sys_admin_user_add.htm');
+DedeInclude('templets/sys_admin_user_add.htm');

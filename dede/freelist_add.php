@@ -13,7 +13,7 @@ CheckPurview('c_FreeList');
 if(empty($dopost))
 {
     require_once DEDEINC.'/typelink.class.php';
-    include DedeInclude('templets/freelist_add.htm');
+    DedeInclude('templets/freelist_add.htm');
     exit();
 }
 else if($dopost=='save')

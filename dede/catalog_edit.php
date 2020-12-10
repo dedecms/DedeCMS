@@ -282,6 +282,6 @@ if($dopost == 'time')
 }
 else 
 {
-    include DedeInclude('templets/catalog_edit.htm');
+    DedeInclude('templets/catalog_edit.htm');
 }
 ?>

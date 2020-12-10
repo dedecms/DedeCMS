@@ -70,4 +70,4 @@ if($dopost=="ok")
       exit();
     }
 }
-include DedeInclude('templets/sys_cache_up.htm');
+DedeInclude('templets/sys_cache_up.htm');

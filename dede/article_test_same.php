@@ -24,7 +24,7 @@ if($dopost=='analyse')
     $dsql->SetQuery("SELECT COUNT(title) AS dd,title FROM `$maintable` WHERE channel='$channelid' GROUP BY title ORDER BY dd DESC LIMIT 0, $pagesize");
     $dsql->Execute();
     $allarc = 0;
-    include DedeInclude('templets/article_result_same.htm');
+    DedeInclude('templets/article_result_same.htm');
     exit();
 }
 //删除选中的内容（只保留一条）
@@ -86,4 +86,4 @@ $channelinfos = array();
 $dsql->setquery("SELECT id,typename,maintable,addtable FROM `#@__channeltype` ");
 $dsql->execute();
 while($row = $dsql->getarray()) $channelinfos[] = $row;
-include DedeInclude('templets/article_test_same.htm');
+DedeInclude('templets/article_test_same.htm');

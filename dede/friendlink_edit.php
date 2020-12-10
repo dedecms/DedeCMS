@@ -76,4 +76,4 @@ else if($dopost=="saveedit")
     exit();
 }
 $myLink = $dsql->GetOne("SELECT #@__flink.*,#@__flinktype.typename FROM #@__flink LEFT JOIN #@__flinktype ON #@__flink.typeid=#@__flinktype.id WHERE #@__flink.id=$id");
-include DedeInclude('templets/friendlink_edit.htm');
+DedeInclude('templets/friendlink_edit.htm');

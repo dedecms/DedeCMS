@@ -18,7 +18,7 @@ if(empty($action))
     $row = $dsql->GetOne("SELECT diyid FROM #@__diyforms ORDER BY diyid DESC LIMIT 0,1 ");
     if(is_array($row)) $newdiyid = $row['diyid']+1;
     else $newdiyid = 1;
-    include(DEDEADMIN."/templets/diy_add.htm");
+    DedeInclude("/templets/diy_add.htm");
 }
 else
 {

@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__)."/config.php");
 CheckPurview('member_Card');
 if(empty($dopost)) $dopost = '';
-if($dopost == '') include(DEDEADMIN."/templets/cards_make.htm");
+if($dopost == '') DedeInclude("/templets/cards_make.htm");
 
 //生成点卡
 elseif($dopost == 'make')

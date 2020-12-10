@@ -48,5 +48,5 @@ if(!is_array($row))
     $row['downmsg']    = '';
     $row['argrange'] = 0;
 }
-include DedeInclude('templets/soft_config.htm');
+DedeInclude('templets/soft_config.htm');
 exit();

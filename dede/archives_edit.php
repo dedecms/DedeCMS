@@ -47,7 +47,7 @@ if($dopost!='save')
     $addRow = $dsql->GetOne("SELECT * FROM `$addtable` WHERE aid='$aid'");
     $channelid = $arcRow['channel'];
     $tags = GetTags($aid);
-    include DedeInclude("templets/archives_edit.htm");
+    DedeInclude("templets/archives_edit.htm");
     exit();
 }
 /*--------------------------------

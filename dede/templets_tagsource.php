@@ -29,4 +29,4 @@ function GetHelpInfo($tagname)
     return $helpinfo;
 }
 
-include DedeInclude('templets/templets_tagsource.htm');
+DedeInclude('templets/templets_tagsource.htm');

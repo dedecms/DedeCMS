@@ -24,7 +24,7 @@ if($dopost!='save')
 
     //获得频道模型信息
     $cInfos = $dsql->GetOne(" SELECT * FROM  `#@__channeltype` WHERE id='$channelid' ");
-    include DedeInclude("templets/spec_add.htm");
+    DedeInclude("templets/spec_add.htm");
     exit();
 }
 /*--------------------------------

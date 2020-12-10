@@ -54,4 +54,4 @@ if($dopost=='savetag')
     $dsql->ExecuteNoneQuery("UPDATE #@__mytag SET tagname='{$tagname}_{$id}' WHERE aid='$id'");
     $fulltag = "{dede:mytag name='{$tagname}_{$id}' ismake='yes'/}";
 }
-include DedeInclude('templets/mytag_tag_guide_ok.htm');
+DedeInclude('templets/mytag_tag_guide_ok.htm');

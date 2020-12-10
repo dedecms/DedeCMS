@@ -44,4 +44,4 @@ $filelists = GetInfoArray($templetdir.'/templet-filelist.inc');
 $pluslists = GetInfoArray($templetdir.'/templet-pluslist.inc');
 $fileinfos = ($acdir=='plus' ? $pluslists : $filelists);
 
-include DedeInclude('templets/templets_default.htm');
+DedeInclude('templets/templets_default.htm');

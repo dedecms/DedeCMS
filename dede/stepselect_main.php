@@ -65,7 +65,7 @@ if(empty($action))
 else if($action=='edit' || $action=='addnew' || $action=='addenum' || $action=='view')
 {
     AjaxHead();
-    include('./templets/stepselect_showajax.htm');
+    DedeInclude('templets/stepselect_showajax.htm');
     exit();
 }
 /*-----------------

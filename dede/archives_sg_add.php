@@ -41,7 +41,7 @@ if($dopost!='save')
     //获得频道模型信息
     $cInfos = $dsql->GetOne(" SELECT * FROM  `#@__channeltype` WHERE id='$channelid' ");
     $channelid = $cInfos['id'];
-    include DedeInclude("templets/archives_sg_add.htm");
+    DedeInclude("templets/archives_sg_add.htm");
     exit();
 }
 /*--------------------------------

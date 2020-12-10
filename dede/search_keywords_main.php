@@ -59,7 +59,7 @@ if($dopost=='')
 {
     $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__search_keywords` ");
     $totalRow = $row['dd'];
-    include(DEDEADMIN."/templets/search_keywords_main.htm");
+    DedeInclude("/templets/search_keywords_main.htm");
 }
 
 //获得特定的关键字列表

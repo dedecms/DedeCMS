@@ -41,7 +41,7 @@ else if($dopost=='del')
 $groupRanks = Array();
 $groupSet = $dsql->GetOne("SELECT * FROM `#@__admintype` WHERE CONCAT(`rank`)='{$rank}' ");
 $groupRanks = explode(' ', $groupSet['purviews']);
-include DedeInclude('templets/sys_group_edit.htm');
+DedeInclude('templets/sys_group_edit.htm');
 
 //检查是否已经有此权限
 function CRank($n)

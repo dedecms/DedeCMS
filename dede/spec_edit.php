@@ -41,7 +41,7 @@ if($dopost!='save')
     }
     $addRow = $dsql->GetOne("SELECT * FROM `#@__addonspec` WHERE aid='$aid'");
     $tags = GetTags($aid);
-    include DedeInclude("templets/spec_edit.htm");
+    DedeInclude("templets/spec_edit.htm");
 }
 /*--------------------------------
 function __save(){  }

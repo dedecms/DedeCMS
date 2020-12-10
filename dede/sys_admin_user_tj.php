@@ -129,4 +129,4 @@ if(isset($dopost) && $dopost=='getone')
     exit();
 }
 
-include DedeInclude('templets/sys_admin_user_tj.htm');
+DedeInclude('templets/sys_admin_user_tj.htm');

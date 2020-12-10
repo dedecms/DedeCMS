@@ -19,7 +19,7 @@ if(empty($dopost))
     $dtp->SetNameSpace("dede","{","}");
     $dtp->LoadSource("--".$row['listtag']."--");
     $ctag = $dtp->GetTag('list');
-    include DedeInclude('templets/freelist_edit.htm');
+    DedeInclude('templets/freelist_edit.htm');
     exit();
 }
 else if( $dopost=='save' )

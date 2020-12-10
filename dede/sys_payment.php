@@ -184,7 +184,7 @@ if($dopost=='install')
         $af->SetDefaultTpl($tplstring);
         $reval = $af->GetAll();
     }
-    include DedeInclude('templets/sys_payment_install.htm');
+    DedeInclude('templets/sys_payment_install.htm');
     exit;
 } 
 //配置支付接口

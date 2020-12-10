@@ -199,4 +199,4 @@ EOT;
     exit();
 }
 make_hash();
-include DedeInclude('templets/sys_info.htm');
+DedeInclude('templets/sys_info.htm');

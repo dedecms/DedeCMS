@@ -65,4 +65,4 @@ if($action=="save")
     echo "<script>alert('修改配置成功！');</script>\r\n";
 }
 require_once($ImageWaterConfigFile);
-include DedeInclude('templets/sys_info_mark.htm');
+DedeInclude('templets/sys_info_mark.htm');

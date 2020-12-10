@@ -85,4 +85,4 @@ while($arr = $dsql->GetArray('dd'))
         $option .= "<option value='{$arr['id']}'>{$arr['typename']}</option>\n\r";
     }
 }
-include DedeInclude('templets/ad_edit.htm');
+DedeInclude('templets/ad_edit.htm');

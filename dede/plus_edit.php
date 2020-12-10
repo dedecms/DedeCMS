@@ -57,4 +57,4 @@ else if($dopost=="saveedit") //保存更改
     exit();
 }
 $row = $dsql->GetOne("SELECT * FROM #@__plus WHERE aid='$aid'");
-include DedeInclude('templets/plus_edit.htm');
+DedeInclude('templets/plus_edit.htm');

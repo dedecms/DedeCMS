@@ -50,7 +50,7 @@ if($dopost!='save')
     //获取文章最大id以确定当前权重
     $maxWright = $dsql->GetOne("SELECT COUNT(*) AS cc FROM #@__archives");
     
-    include DedeInclude("templets/article_add.htm");
+    DedeInclude("templets/article_add.htm");
     exit();
 }
 

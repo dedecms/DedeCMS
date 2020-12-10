@@ -129,4 +129,4 @@ else if($dopost=="view")
 	exit();
 }
 $row = $dsql->GetOne("SELECT  * FROM `#@__sgpage` WHERE aid='$aid' ");
-include(DEDEADMIN."/templets/templets_one_edit.htm");
+DedeInclude("/templets/templets_one_edit.htm");

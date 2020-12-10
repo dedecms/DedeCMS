@@ -57,4 +57,4 @@ function GetArchives($dsql, $ordertype)
         echo cn_substr($row->title, 30)."</a>{$moreinfo}<br/>\r\n";
     }
 }
-include DedeInclude('templets/content_tj.htm');
+DedeInclude('templets/content_tj.htm');

@@ -46,4 +46,4 @@ if($dopost=="save")
     exit;
 }
 
-include DedeInclude('templets/adtype_main.htm');
+DedeInclude('templets/adtype_main.htm');

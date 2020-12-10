@@ -30,7 +30,7 @@ if($fmdo=="del")
 	}else{
 		$istemplets = false;
 	}
-	include DedeInclude('templets/mail_file_manage.htm');
+	DedeInclude('templets/mail_file_manage.htm');
 }
 
 

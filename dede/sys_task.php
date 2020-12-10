@@ -19,4 +19,4 @@ if($dopost=='del')
     ShowMsg("成功删除一个任务！", "sys_task.php");
     exit();
 }
-include DedeInclude('templets/sys_task.htm');
+DedeInclude('templets/sys_task.htm');

@@ -29,4 +29,4 @@ else
 {
     $istemplets = FALSE;
 }
-include DedeInclude('templets/file_manage_main.htm');
+DedeInclude('templets/file_manage_main.htm');
