@@ -8,7 +8,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
+
 /*>>dede>>
 <name>单页文档相同标识调用标签</name>
 <type>全局标记</type>
@@ -18,15 +18,16 @@
 {dede:likepage likeid='' row=''/}
 </demo>
 <attributes>
-    <iterm>row:调用条数</iterm> 
-    <iterm>likeid:标识名</iterm>
-</attributes> 
+<iterm>row:调用条数</iterm>
+<iterm>likeid:标识名</iterm>
+</attributes>
 >>dede>>*/
- 
-if(!defined('DEDEINC')) exit('Request Error!');
-require_once(dirname(__FILE__).'/likesgpage.lib.php');
 
-function lib_likepage(&$ctag,&$refObj)
+if (!defined('DEDEINC')) {exit("Request Error!");}
+
+require_once dirname(__FILE__) . '/likesgpage.lib.php';
+
+function lib_likepage(&$ctag, &$refObj)
 {
     return lib_likesgpage($ctag, $refObj);
 }

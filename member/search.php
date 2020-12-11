@@ -1,17 +1,17 @@
 <?php
 /**
  * 搜索
- * 
+ *
  * @version        $Id: search.php 1 8:38 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__).'/config.php');
-CheckRank(0,0);
-require_once(DEDEINC.'/enums.func.php');
-require_once(DEDEINC.'/datalistcp.class.php');
+require_once dirname(__FILE__) . '/config.php';
+CheckRank(0, 0);
+require_once DEDEINC . '/enums.func.php';
+require_once DEDEINC . '/datalistcp.class.php';
 $menutype = 'mydede';
 
 //检查用户是否被禁言
@@ -23,59 +23,67 @@ $city = empty($city) ? 0 : intval($city);
 $minage = empty($minage) ? 0 : intval($minage);
 $maxage = empty($maxage) ? 0 : intval($maxage);
 
-if(empty($sex)) $sex = '';
-if(empty($keyword)) $keyword = '';
+if (empty($sex)) {
+    $sex = '';
+}
+
+if (empty($keyword)) {
+    $keyword = '';
+}
 
 $keyword = FilterSearch(stripslashes($keyword));
-$keyword = addslashes(cn_substr($keyword,20));
+$keyword = addslashes(cn_substr($keyword, 20));
 
-if(!empty($keyword)) {
+if (!empty($keyword)) {
     $addsqls[] = " (mb.userid like '%$keyword%' Or mb.uname like '%$keyword%') ";
 }
 
-if(empty($city)) {
+if (empty($city)) {
     $place = $province;
-}
-else {
+} else {
     $place = $city;
 }
 
-if( $place%500 != 0 )
-{
+if ($place % 500 != 0) {
     $addsqls[] = " mp.place='$place' ";
-}
-else
-{
-    if($place!=0)
-    {
+} else {
+    if ($place != 0) {
         $minp = $place - 1;
         $maxp = $place + 500;
         $addsqls[] = " mp.place>'$minp' And mp.place<'$maxp' ";
     }
 }
 
-if($sex!='') $addsqls[] = " mp.sex = '$sex' ";
-if($minage!=0) $addsqls[] = " YEAR(CURDATE())-YEAR(mp.birthday)>='$minage' ";
-if($maxage!=0) $addsqls[] = " YEAR(CURDATE())-YEAR(mp.birthday)<='$maxage' ";
-
-$addsqls_str = join(' And ',$addsqls);
-if($addsqls_str!='') {
-    $addsqls_str = ' And '.$addsqls_str;
+if ($sex != '') {
+    $addsqls[] = " mp.sex = '$sex' ";
 }
 
-$addsql = " WHERE mb.spacesta > -1  ".$addsqls_str;
+if ($minage != 0) {
+    $addsqls[] = " YEAR(CURDATE())-YEAR(mp.birthday)>='$minage' ";
+}
+
+if ($maxage != 0) {
+    $addsqls[] = " YEAR(CURDATE())-YEAR(mp.birthday)<='$maxage' ";
+}
+
+$addsqls_str = join(' And ', $addsqls);
+if ($addsqls_str != '') {
+    $addsqls_str = ' And ' . $addsqls_str;
+}
+
+$addsql = " WHERE mb.spacesta > -1  " . $addsqls_str;
 
 $query = "SELECT mb.*,mp.place,YEAR(CURDATE())-YEAR(mp.birthday) AS age,mp.lovemsg,mp.birthday FROM `#@__member` mb
 LEFT JOIN `#@__member_person` mp ON mp.mid = mb.mid
 {$addsql} ORDER BY mb.logintime DESC";
 $dlist = new DataListCP();
 $dlist->pageSize = 8;
-$dlist->SetParameter('keyword',$keyword);
-$dlist->SetParameter('province',$province);
-$dlist->SetParameter('city',$city);
-$dlist->SetParameter('minage',$minage);
-$dlist->SetParameter('maxage',$maxage);
-$dlist->SetParameter('sex',$sex);
-$dlist->SetTemplate(DEDEMEMBER.'/templets/search.htm');
+$dlist->SetParameter('keyword', $keyword);
+$dlist->SetParameter('province', $province);
+$dlist->SetParameter('city', $city);
+$dlist->SetParameter('minage', $minage);
+$dlist->SetParameter('maxage', $maxage);
+$dlist->SetParameter('sex', $sex);
+$dlist->SetTemplate(DEDEMEMBER . '/templets/search.htm');
 $dlist->SetSource($query);
 $dlist->Display();

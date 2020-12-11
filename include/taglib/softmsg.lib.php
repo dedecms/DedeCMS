@@ -1,8 +1,4 @@
-<?php
-if(!defined('DEDEINC'))
-{
-    exit("Request Error!");
-}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");}
 /**
  * 下载说明标签
  *
@@ -12,7 +8,7 @@ if(!defined('DEDEINC'))
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
+
 /*>>dede>>
 <name>下载说明</name>
 <type>软件内容模板</type>
@@ -22,10 +18,10 @@ if(!defined('DEDEINC'))
 {dede:softmsg /}
 </demo>
 <attributes>
-</attributes> 
+</attributes>
 >>dede>>*/
- 
-function lib_softmsg(&$ctag,&$refObj)
+
+function lib_softmsg(&$ctag, &$refObj)
 {
     global $dsql;
     //$attlist="type|textall,row|24,titlelen|24,linktype|1";
@@ -33,6 +29,9 @@ function lib_softmsg(&$ctag,&$refObj)
     //extract($ctag->CAttribute->Items, EXTR_SKIP);
     $revalue = '';
     $row = $dsql->GetOne(" SELECT * FROM `#@__softconfig` ");
-    if(is_array($row)) $revalue = $row['downmsg'];
+    if (is_array($row)) {
+        $revalue = $row['downmsg'];
+    }
+
     return $revalue;
 }

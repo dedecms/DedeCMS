@@ -1,5 +1,4 @@
-<?php
-if(!defined('DEDEINC')) exit('Request Error!');
+<?php if(!defined('DEDEINC')) exit('Request Error!');
 require_once(DEDEINC.'/channelunit.func.php');
 /**
  * 动态模板channel标签

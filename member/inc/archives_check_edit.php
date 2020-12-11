@@ -1,18 +1,15 @@
-<?php
-
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
 /**
  * 文档编辑验证
- * 
+ *
  * @version        $Id: archives_check_edit.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-if (!defined('DEDEMEMBER')) exit('dedecms');
-
-require_once(DEDEINC . "/image.func.php");
-require_once(DEDEINC . "/oxwindow.class.php");
+require_once DEDEINC . "/image.func.php";
+require_once DEDEINC . "/oxwindow.class.php";
 
 $flag = '';
 $typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
@@ -30,8 +27,7 @@ if ($typeid == 0) {
     exit();
 }
 
-if (empty($idhash) || $idhash != hash("sha256", $aid.$cfg_cookie_encode))
-{
+if (empty($idhash) || $idhash != hash("sha256", $aid . $cfg_cookie_encode)) {
     showMsg('数据校验不对，程序返回', '-1');
     exit();
 }
@@ -50,7 +46,6 @@ if ($cInfos['issend'] != 1 || $cInfos['ispart'] != 0 || $cInfos['channeltype'] !
     exit();
 }
 
-
 //文档的默认状态
 if ($cInfos['arcsta'] == 0) {
     $ismake = 0;
@@ -65,8 +60,11 @@ if ($cInfos['arcsta'] == 0) {
 
 //对保存的内容进行处理
 $title = cn_substrR(HtmlReplace($title, 1), $cfg_title_maxlen);
-$writer =  cn_substrR(HtmlReplace($writer, 1), 20);
-if (empty($description)) $description = '';
+$writer = cn_substrR(HtmlReplace($writer, 1), 20);
+if (empty($description)) {
+    $description = '';
+}
+
 $description = cn_substrR(HtmlReplace($description, 1), 250);
 $keywords = cn_substrR(HtmlReplace($tags, 1), 30);
 $mid = $cfg_ml->M_ID;

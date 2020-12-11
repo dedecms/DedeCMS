@@ -9,103 +9,98 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/../include/common.inc.php");
+require_once dirname(__FILE__) . "/../include/common.inc.php";
 $action = isset($action) ? trim($action) : '';
-$id = empty($id)? 0 : intval(preg_replace("/[^\d]/",'', $id));
+$id = empty($id) ? 0 : intval(preg_replace("/[^\d]/", '', $id));
 
 helper('cache');
 
-if($id < 1)
-{
+if ($id < 1) {
     exit();
 }
 
 $maintable = '#@__archives';
 
 $prefix = 'diggCache';
-$key = 'aid-'.$id;
+$key = 'aid-' . $id;
 $row = GetCache($prefix, $key);
 
-if(!is_array($row) || $cfg_digg_update==0)
-{
-  $row = $dsql->GetOne("SELECT goodpost,badpost,scores FROM `$maintable` WHERE id='$id' ");
-    if($cfg_digg_update == 0)
-    {
-		if($action == 'good')
-		{
-			$row['goodpost'] = $row['goodpost'] + 1;
-			$dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=".time()." WHERE id='$id'");
-		}
-		else if($action=='bad')
-		{
-			$row['badpost'] = $row['badpost'] + 1;
-			$dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=".time()." WHERE id='$id'");
-		}
-		DelCache($prefix, $key);
+if (!is_array($row) || $cfg_digg_update == 0) {
+    $row = $dsql->GetOne("SELECT goodpost,badpost,scores FROM `$maintable` WHERE id='$id' ");
+    if ($cfg_digg_update == 0) {
+        if ($action == 'good') {
+            $row['goodpost'] = $row['goodpost'] + 1;
+            $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$cfg_caicai_add},goodpost=goodpost+1,lastpost=" . time() . " WHERE id='$id'");
+        } else if ($action == 'bad') {
+            $row['badpost'] = $row['badpost'] + 1;
+            $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$cfg_caicai_sub},badpost=badpost+1,lastpost=" . time() . " WHERE id='$id'");
+        }
+        DelCache($prefix, $key);
     }
-  SetCache($prefix, $key, $row, 0);
+    SetCache($prefix, $key, $row, 0);
 } else {
-	if($action == 'good')
-	{
-	    $row['goodpost'] = $row['goodpost'] + 1;
-	    $row['scores'] = $row['scores'] + $cfg_caicai_sub;
-	    if($row['goodpost'] % $cfg_digg_update == 0)
-	    {
-			$add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
-		    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$add_caicai_sub},goodpost=goodpost+{$cfg_digg_update} WHERE id='$id'");
-		    DelCache($prefix, $key);
-	    }
-	} else if($action == 'bad')
-	{
-	    $row['badpost'] = $row['badpost'] + 1;
-		$row['scores'] = $row['scores'] - $cfg_caicai_sub;
-	    if($row['badpost'] % $cfg_digg_update == 0)
-	    {
-			$add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
-		    $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$add_caicai_sub},badpost=badpost+{$cfg_digg_update} WHERE id='$id'");
-		    DelCache($prefix, $key);
-	    }
-	}
-	SetCache($prefix, $key, $row, 0);
+    if ($action == 'good') {
+        $row['goodpost'] = $row['goodpost'] + 1;
+        $row['scores'] = $row['scores'] + $cfg_caicai_sub;
+        if ($row['goodpost'] % $cfg_digg_update == 0) {
+            $add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
+            $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores + {$add_caicai_sub},goodpost=goodpost+{$cfg_digg_update} WHERE id='$id'");
+            DelCache($prefix, $key);
+        }
+    } else if ($action == 'bad') {
+        $row['badpost'] = $row['badpost'] + 1;
+        $row['scores'] = $row['scores'] - $cfg_caicai_sub;
+        if ($row['badpost'] % $cfg_digg_update == 0) {
+            $add_caicai_sub = $cfg_digg_update * $cfg_caicai_sub;
+            $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET scores = scores - {$add_caicai_sub},badpost=badpost+{$cfg_digg_update} WHERE id='$id'");
+            DelCache($prefix, $key);
+        }
+    }
+    SetCache($prefix, $key, $row, 0);
 }
 
 $digg = '';
-if(!is_array($row)) exit();
-
-if($row['goodpost'] + $row['badpost'] == 0)
-{
-    $row['goodper'] = $row['badper'] = 0;
+if (!is_array($row)) {
+    exit();
 }
-else
-{
+
+if ($row['goodpost'] + $row['badpost'] == 0) {
+    $row['goodper'] = $row['badper'] = 0;
+} else {
     $row['goodper'] = number_format($row['goodpost'] / ($row['goodpost'] + $row['badpost']), 3) * 100;
     $row['badper'] = 100 - $row['goodper'];
 }
 
-if(empty($formurl)) $formurl = '';
-if($formurl=='caicai')
-{
-    if($action == 'good') $digg = $row['goodpost'];
-    if($action == 'bad') $digg  = $row['badpost'];
+if (empty($formurl)) {
+    $formurl = '';
 }
-else
-{
+
+if ($formurl == 'caicai') {
+    if ($action == 'good') {
+        $digg = $row['goodpost'];
+    }
+
+    if ($action == 'bad') {
+        $digg = $row['badpost'];
+    }
+
+} else {
     $row['goodper'] = trim(sprintf("%4.2f", $row['goodper']));
     $row['badper'] = trim(sprintf("%4.2f", $row['badper']));
-    $digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition=\'left bottom\';" onmouseout="this.style.backgroundPosition=\'left top\';" onclick="postDigg(\'good\','.$id.')">
+    $digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPosition=\'left bottom\';" onmouseout="this.style.backgroundPosition=\'left top\';" onclick="postDigg(\'good\',' . $id . ')">
             <div class="digg_act">顶一下</div>
-            <div class="digg_num">('.$row['goodpost'].')</div>
+            <div class="digg_num">(' . $row['goodpost'] . ')</div>
             <div class="digg_percent">
-                <div class="digg_percent_bar"><span style="width:'.$row['goodper'].'%"></span></div>
-                <div class="digg_percent_num">'.$row['goodper'].'%</div>
+                <div class="digg_percent_bar"><span style="width:' . $row['goodper'] . '%"></span></div>
+                <div class="digg_percent_num">' . $row['goodper'] . '%</div>
             </div>
         </div>
-        <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition=\'right bottom\';" onmouseout="this.style.backgroundPosition=\'right top\';" onclick="postDigg(\'bad\','.$id.')">
+        <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition=\'right bottom\';" onmouseout="this.style.backgroundPosition=\'right top\';" onclick="postDigg(\'bad\',' . $id . ')">
             <div class="digg_act">踩一下</div>
-            <div class="digg_num">('.$row['badpost'].')</div>
+            <div class="digg_num">(' . $row['badpost'] . ')</div>
             <div class="digg_percent">
-                <div class="digg_percent_bar"><span style="width:'.$row['badper'].'%"></span></div>
-                <div class="digg_percent_num">'.$row['badper'].'%</div>
+                <div class="digg_percent_bar"><span style="width:' . $row['badper'] . '%"></span></div>
+                <div class="digg_percent_num">' . $row['badper'] . '%</div>
             </div>
         </div>';
 }

@@ -1,4 +1,4 @@
-<?php  if(!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEINC')) {exit('Request Error');}
 /**
  * 过滤小助手
  *
@@ -19,33 +19,25 @@
  *            $rptype = 0 表示仅替换 html标记
  *            $rptype = 1 表示替换 html标记同时去除连续空白字符
  *            $rptype = 2 表示替换 html标记同时去除所有空白字符
- *            $rptype = -1 表示仅替换 html危险的标记 
+ *            $rptype = -1 表示仅替换 html危险的标记
  * @return    string
  */
-if ( ! function_exists('HtmlReplace'))
-{
-    function HtmlReplace($str,$rptype=0)
+if (!function_exists('HtmlReplace')) {
+    function HtmlReplace($str, $rptype = 0)
     {
         $str = stripslashes($str);
         $str = preg_replace("/<[\/]{0,1}style([^>]*)>(.*)<\/style>/i", '', $str);
-        if($rptype==0)
-        {
+        if ($rptype == 0) {
             $str = dede_htmlspecialchars($str);
-        }
-        else if($rptype==1)
-        {
+        } else if ($rptype == 1) {
             $str = dede_htmlspecialchars($str);
             $str = str_replace("　", ' ', $str);
             $str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
-        }
-        else if($rptype==2)
-        {
+        } else if ($rptype == 2) {
             $str = dede_htmlspecialchars($str);
             $str = str_replace("　", '', $str);
             $str = preg_replace("/[\r\n\t ]/", '', $str);
-        }
-        else
-        {
+        } else {
             $str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
             $str = preg_replace('/script/i', 'ｓｃｒｉｐｔ', $str);
             $str = preg_replace("/<[\/]{0,1}(link|meta|ifr|fra)[^>]*>/i", '', $str);
@@ -54,55 +46,53 @@ if ( ! function_exists('HtmlReplace'))
     }
 }
 
- 
- 
 /**
  *  修复浏览器XSS hack的函数
  *
  * @param     string   $val  需要处理的内容
  * @return    string
  */
-if ( ! function_exists('RemoveXSS'))
-{
-    function RemoveXSS($val) {
-       $val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
-       $search = 'abcdefghijklmnopqrstuvwxyz';
-       $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-       $search .= '1234567890!@#$%^&*()';
-       $search .= '~`";:?+/={}[]-_|\'\\';
-       for ($i = 0; $i < strlen($search); $i++) {
-          $val = preg_replace('/(&#[xX]0{0,8}'.dechex(ord($search[$i])).';?)/i', $search[$i], $val); // with a ;
-          $val = preg_replace('/(&#0{0,8}'.ord($search[$i]).';?)/', $search[$i], $val); // with a ;
-       }
+if (!function_exists('RemoveXSS')) {
+    function RemoveXSS($val)
+    {
+        $val = preg_replace('/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/', '', $val);
+        $search = 'abcdefghijklmnopqrstuvwxyz';
+        $search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $search .= '1234567890!@#$%^&*()';
+        $search .= '~`";:?+/={}[]-_|\'\\';
+        for ($i = 0; $i < strlen($search); $i++) {
+            $val = preg_replace('/(&#[xX]0{0,8}' . dechex(ord($search[$i])) . ';?)/i', $search[$i], $val); // with a ;
+            $val = preg_replace('/(&#0{0,8}' . ord($search[$i]) . ';?)/', $search[$i], $val); // with a ;
+        }
 
-       $ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
-       $ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
-       $ra = array_merge($ra1, $ra2);
+        $ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+        $ra2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+        $ra = array_merge($ra1, $ra2);
 
-       $found = true; 
-       while ($found == true) {
-          $val_before = $val;
-          for ($i = 0; $i < sizeof($ra); $i++) {
-             $pattern = '/';
-             for ($j = 0; $j < strlen($ra[$i]); $j++) {
-                if ($j > 0) {
-                   $pattern .= '(';
-                   $pattern .= '(&#[xX]0{0,8}([9ab]);)';
-                   $pattern .= '|';
-                   $pattern .= '|(&#0{0,8}([9|10|13]);)';
-                   $pattern .= ')*';
+        $found = true;
+        while ($found == true) {
+            $val_before = $val;
+            for ($i = 0; $i < sizeof($ra); $i++) {
+                $pattern = '/';
+                for ($j = 0; $j < strlen($ra[$i]); $j++) {
+                    if ($j > 0) {
+                        $pattern .= '(';
+                        $pattern .= '(&#[xX]0{0,8}([9ab]);)';
+                        $pattern .= '|';
+                        $pattern .= '|(&#0{0,8}([9|10|13]);)';
+                        $pattern .= ')*';
+                    }
+                    $pattern .= $ra[$i][$j];
                 }
-                $pattern .= $ra[$i][$j];
-             }
-             $pattern .= '/i';
-             $replacement = substr($ra[$i], 0, 2).'<x>'.substr($ra[$i], 2);
-             $val = preg_replace($pattern, $replacement, $val); 
-             if ($val_before == $val) {
-                $found = false;
-             }
-          }
-       }
-       return $val;
+                $pattern .= '/i';
+                $replacement = substr($ra[$i], 0, 2) . '<x>' . substr($ra[$i], 2);
+                $val = preg_replace($pattern, $replacement, $val);
+                if ($val_before == $val) {
+                    $found = false;
+                }
+            }
+        }
+        return $val;
     }
 }
 
@@ -113,13 +103,12 @@ if ( ! function_exists('RemoveXSS'))
  * @param     string  $msg  需要过滤的内容
  * @return    string
  */
-if ( ! function_exists('TrimMsg'))
-{
+if (!function_exists('TrimMsg')) {
     function TrimMsg($msg)
     {
         $msg = trim(stripslashes($msg));
         $msg = nl2br(dede_htmlspecialchars($msg));
-        $msg = str_replace("  ","&nbsp;&nbsp;",$msg);
+        $msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
         return addslashes($msg);
     }
 }
@@ -130,48 +119,31 @@ if ( ! function_exists('TrimMsg'))
  * @param     string  $keyword  关键词
  * @return    string
  */
-if ( ! function_exists('FilterSearch'))
-{
+if (!function_exists('FilterSearch')) {
     function FilterSearch($keyword)
     {
         global $cfg_soft_lang;
-        if($cfg_soft_lang=='utf-8')
-        {
+        if ($cfg_soft_lang == 'utf-8') {
             $keyword = preg_replace("/[\"\r\n\t\$\\><']/", '', $keyword);
-            if($keyword != stripslashes($keyword))
-            {
+            if ($keyword != stripslashes($keyword)) {
                 return '';
-            }
-            else
-            {
+            } else {
                 return $keyword;
             }
-        }
-        else
-        {
+        } else {
             $restr = '';
-            for($i=0;isset($keyword[$i]);$i++)
-            {
-                if(ord($keyword[$i]) > 0x80)
-                {
-                    if(isset($keyword[$i+1]) && ord($keyword[$i+1]) > 0x40)
-                    {
-                        $restr .= $keyword[$i].$keyword[$i+1];
+            for ($i = 0;isset($keyword[$i]); $i++) {
+                if (ord($keyword[$i]) > 0x80) {
+                    if (isset($keyword[$i + 1]) && ord($keyword[$i + 1]) > 0x40) {
+                        $restr .= $keyword[$i] . $keyword[$i + 1];
                         $i++;
-                    }
-                    else
-                    {
+                    } else {
                         $restr .= ' ';
                     }
-                }
-                else
-                {
-                    if(preg_match("/[^0-9a-z@#\.]/",$keyword[$i]))
-                    {
+                } else {
+                    if (preg_match("/[^0-9a-z@#\.]/", $keyword[$i])) {
                         $restr .= ' ';
-                    }
-                    else
-                    {
+                    } else {
                         $restr .= $keyword[$i];
                     }
                 }
@@ -180,4 +152,3 @@ if ( ! function_exists('FilterSearch'))
         return $restr;
     }
 }
-

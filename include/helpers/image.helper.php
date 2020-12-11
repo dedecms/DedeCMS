@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEINC')) exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit('Request Error');}
 /**
  * 图像处理相关函数
  *
@@ -21,93 +21,96 @@
  * @param     string  $toFile  输出文件到
  * @return    string
  */
-if ( ! function_exists('ImageResize'))
-{
-    function ImageResize($srcFile, $toW, $toH, $toFile="")
+if (!function_exists('ImageResize')) {
+    function ImageResize($srcFile, $toW, $toH, $toFile = "")
     {
         global $cfg_photo_type;
-        if($toFile=='') $toFile = $srcFile;
+        if ($toFile == '') {
+            $toFile = $srcFile;
+        }
+
         $info = '';
-        $srcInfo = GetImageSize($srcFile,$info);
-        switch ($srcInfo[2])
-        {
+        $srcInfo = GetImageSize($srcFile, $info);
+        switch ($srcInfo[2]) {
             case 1:
-                if(!$cfg_photo_type['gif']) return FALSE;
+                if (!$cfg_photo_type['gif']) {
+                    return false;
+                }
+
                 $im = imagecreatefromgif($srcFile);
                 break;
             case 2:
-                if(!$cfg_photo_type['jpeg']) return FALSE;
+                if (!$cfg_photo_type['jpeg']) {
+                    return false;
+                }
+
                 $im = imagecreatefromjpeg($srcFile);
                 break;
             case 3:
-                if(!$cfg_photo_type['png']) return FALSE;
+                if (!$cfg_photo_type['png']) {
+                    return false;
+                }
+
                 $im = imagecreatefrompng($srcFile);
                 break;
             case 6:
-                if(!$cfg_photo_type['bmp']) return FALSE;
+                if (!$cfg_photo_type['bmp']) {
+                    return false;
+                }
+
                 $im = imagecreatefromwbmp($srcFile);
                 break;
         }
-        $srcW=ImageSX($im);
-        $srcH=ImageSY($im);
-        if($srcW<=$toW && $srcH<=$toH ) return TRUE;
-        $toWH=$toW/$toH;
-        $srcWH=$srcW/$srcH;
-        if($toWH<=$srcWH)
-        {
-            $ftoW=$toW;
-            $ftoH=$ftoW*($srcH/$srcW);
+        $srcW = ImageSX($im);
+        $srcH = ImageSY($im);
+        if ($srcW <= $toW && $srcH <= $toH) {
+            return true;
         }
-        else
-        {
-            $ftoH=$toH;
-            $ftoW=$ftoH*($srcW/$srcH);
+
+        $toWH = $toW / $toH;
+        $srcWH = $srcW / $srcH;
+        if ($toWH <= $srcWH) {
+            $ftoW = $toW;
+            $ftoH = $ftoW * ($srcH / $srcW);
+        } else {
+            $ftoH = $toH;
+            $ftoW = $ftoH * ($srcW / $srcH);
         }
-        if($srcW>$toW||$srcH>$toH)
-        {
-            if(function_exists("imagecreateTRUEcolor"))
-            {
-                @$ni = imagecreateTRUEcolor($ftoW,$ftoH);
-                if($ni)
-                {
-                    imagecopyresampled($ni,$im,0,0,0,0,$ftoW,$ftoH,$srcW,$srcH);
+        if ($srcW > $toW || $srcH > $toH) {
+            if (function_exists("imagecreateTRUEcolor")) {
+                @$ni = imagecreateTRUEcolor($ftoW, $ftoH);
+                if ($ni) {
+                    imagecopyresampled($ni, $im, 0, 0, 0, 0, $ftoW, $ftoH, $srcW, $srcH);
+                } else {
+                    $ni = imagecreate($ftoW, $ftoH);
+                    imagecopyresized($ni, $im, 0, 0, 0, 0, $ftoW, $ftoH, $srcW, $srcH);
                 }
-                else
-                {
-                    $ni=imagecreate($ftoW,$ftoH);
-                    imagecopyresized($ni,$im,0,0,0,0,$ftoW,$ftoH,$srcW,$srcH);
-                }
+            } else {
+                $ni = imagecreate($ftoW, $ftoH);
+                imagecopyresized($ni, $im, 0, 0, 0, 0, $ftoW, $ftoH, $srcW, $srcH);
             }
-            else
-            {
-                $ni=imagecreate($ftoW,$ftoH);
-                imagecopyresized($ni,$im,0,0,0,0,$ftoW,$ftoH,$srcW,$srcH);
-            }
-            switch ($srcInfo[2])
-            {
+            switch ($srcInfo[2]) {
                 case 1:
-                    imagegif($ni,$toFile);
+                    imagegif($ni, $toFile);
                     break;
                 case 2:
-                    imagejpeg($ni,$toFile,85);
+                    imagejpeg($ni, $toFile, 85);
                     break;
                 case 3:
-                    imagepng($ni,$toFile);
+                    imagepng($ni, $toFile);
                     break;
                 case 6:
-                    imagebmp($ni,$toFile);
+                    imagebmp($ni, $toFile);
                     break;
                 default:
-                    return FALSE;
+                    return false;
             }
             imagedestroy($ni);
         }
         imagedestroy($im);
-        return TRUE;
+        return true;
     }
 }
- 
-
 
 /**
  *  获得GD的版本
@@ -115,41 +118,30 @@ if ( ! function_exists('ImageResize'))
  * @access    public
  * @return    int
  */
-if ( ! function_exists('gdversion'))
-{
+if (!function_exists('gdversion')) {
     function gdversion()
     {
         //没启用php.ini函数的情况下如果有GD默认视作2.0以上版本
-        if(!function_exists('phpinfo'))
-        {
-            if(function_exists('imagecreate'))
-            {
+        if (!function_exists('phpinfo')) {
+            if (function_exists('imagecreate')) {
                 return '2.0';
-            }
-            else
-            {
+            } else {
                 return 0;
             }
-        }
-        else
-        {
+        } else {
             ob_start();
             phpinfo(8);
             $module_info = ob_get_contents();
             ob_end_clean();
-            if(preg_match("/\bgd\s+version\b[^\d\n\r]+?([\d\.]+)/i", $module_info,$matches))
-            {
+            if (preg_match("/\bgd\s+version\b[^\d\n\r]+?([\d\.]+)/i", $module_info, $matches)) {
                 $gdversion_h = $matches[1];
-            }
-            else
-            {
+            } else {
                 $gdversion_h = 0;
             }
             return $gdversion_h;
         }
     }
 }
-
 
 /**
  *  图片自动加水印函数
@@ -159,56 +151,44 @@ if ( ! function_exists('gdversion'))
  * @param     string  $fromGo  位置
  * @return    string
  */
-if ( ! function_exists('WaterImg'))
-{
-    function WaterImg($srcFile, $fromGo='up')
+if (!function_exists('WaterImg')) {
+    function WaterImg($srcFile, $fromGo = 'up')
     {
-        include(DEDEDATA.'/mark/inc_photowatermark_config.php');
-        require_once(DEDEINC.'/image.class.php');
-        if( isset($GLOBALS['needwatermark']) )
-        {
+        include DEDEDATA . '/mark/inc_photowatermark_config.php';
+        require_once DEDEINC . '/image.class.php';
+        if (isset($GLOBALS['needwatermark'])) {
             $photo_markup = $photo_markdown = empty($GLOBALS['needwatermark']) ? '0' : '1';
         }
-        if($photo_markup != '1' || ($fromGo=='collect' && $photo_markdown!='1') )
-        {
+        if ($photo_markup != '1' || ($fromGo == 'collect' && $photo_markdown != '1')) {
             return;
         }
         $info = '';
-        $srcInfo = @getimagesize($srcFile,$info);
-        $srcFile_w    = $srcInfo[0];
-        $srcFile_h    = $srcInfo[1];
-            
-        if($srcFile_w < $photo_wwidth || $srcFile_h < $photo_wheight)
-        {
+        $srcInfo = @getimagesize($srcFile, $info);
+        $srcFile_w = $srcInfo[0];
+        $srcFile_h = $srcInfo[1];
+
+        if ($srcFile_w < $photo_wwidth || $srcFile_h < $photo_wheight) {
             return;
         }
-        if($fromGo=='up' && $photo_markup=='0')
-        {
+        if ($fromGo == 'up' && $photo_markup == '0') {
             return;
         }
-        if($fromGo=='down' && $photo_markdown=='0')
-        {
+        if ($fromGo == 'down' && $photo_markdown == '0') {
             return;
         }
-         $TRUEMarkimg = DEDEDATA.'/mark/'.$photo_markimg;
-        if(!file_exists($TRUEMarkimg) || empty($photo_markimg))
-        {
+        $TRUEMarkimg = DEDEDATA . '/mark/' . $photo_markimg;
+        if (!file_exists($TRUEMarkimg) || empty($photo_markimg)) {
             $TRUEMarkimg = "";
         }
-        if($photo_waterpos == 0)
-        {
+        if ($photo_waterpos == 0) {
             $photo_waterpos = rand(1, 9);
         }
         $cfg_watermarktext = array();
-        if($photo_marktype == '2')
-        {
-            if(file_exists(DEDEDATA.'/mark/simhei.ttf'))
-            {
-                $cfg_watermarktext['fontpath'] =  DEDEDATA.'/mark/simhei.ttf';
-            }
-            else
-            {
-                return ;
+        if ($photo_marktype == '2') {
+            if (file_exists(DEDEDATA . '/mark/simhei.ttf')) {
+                $cfg_watermarktext['fontpath'] = DEDEDATA . '/mark/simhei.ttf';
+            } else {
+                return;
             }
         }
         $cfg_watermarktext['text'] = $photo_watertext;
@@ -219,7 +199,7 @@ if ( ! function_exists('WaterImg'))
         $cfg_watermarktext['shadowy'] = '0';
         $cfg_watermarktext['shadowcolor'] = '0,0,0';
         $photo_marktrans = 85;
-        $img = new image($srcFile,0, $cfg_watermarktext, $photo_waterpos, $photo_diaphaneity, $photo_wheight, $photo_wwidth, $photo_marktype, $photo_marktrans,$TRUEMarkimg);
+        $img = new image($srcFile, 0, $cfg_watermarktext, $photo_waterpos, $photo_diaphaneity, $photo_wheight, $photo_wwidth, $photo_marktype, $photo_marktrans, $TRUEMarkimg);
         $img->watermark(0);
     }
 }
@@ -235,30 +215,43 @@ if ( ! function_exists('WaterImg'))
  * @param     string  $issave  是否保存
  * @return    bool
  */
-if ( ! function_exists('ImageResizeNew'))
-{
-    function ImageResizeNew($srcFile, $toW, $toH, $toFile='', $issave=TRUE)
+if (!function_exists('ImageResizeNew')) {
+    function ImageResizeNew($srcFile, $toW, $toH, $toFile = '', $issave = true)
     {
         global $cfg_photo_type, $cfg_ddimg_bgcolor;
-        if($toFile=='') $toFile = $srcFile;
+        if ($toFile == '') {
+            $toFile = $srcFile;
+        }
+
         $info = '';
-        $srcInfo = GetImageSize($srcFile,$info);
-        switch ($srcInfo[2])
-        {
+        $srcInfo = GetImageSize($srcFile, $info);
+        switch ($srcInfo[2]) {
             case 1:
-                if(!$cfg_photo_type['gif']) return FALSE;
+                if (!$cfg_photo_type['gif']) {
+                    return false;
+                }
+
                 $img = imagecreatefromgif($srcFile);
                 break;
             case 2:
-                if(!$cfg_photo_type['jpeg']) return FALSE;
+                if (!$cfg_photo_type['jpeg']) {
+                    return false;
+                }
+
                 $img = imagecreatefromjpeg($srcFile);
                 break;
             case 3:
-                if(!$cfg_photo_type['png']) return FALSE;
+                if (!$cfg_photo_type['png']) {
+                    return false;
+                }
+
                 $img = imagecreatefrompng($srcFile);
                 break;
             case 6:
-                if(!$cfg_photo_type['bmp']) return FALSE;
+                if (!$cfg_photo_type['bmp']) {
+                    return false;
+                }
+
                 $img = imagecreatefromwbmp($srcFile);
                 break;
         }
@@ -267,7 +260,7 @@ if ( ! function_exists('ImageResizeNew'))
         $height = imageSY($img);
 
         if (!$width || !$height) {
-            return FALSE;
+            return false;
         }
 
         $target_width = $toW;
@@ -292,30 +285,29 @@ if ( ! function_exists('ImageResizeNew'))
         }
 
         $new_img = ImageCreateTrueColor($target_width, $target_height);
-        
-        if($cfg_ddimg_bgcolor==0) $bgcolor = ImageColorAllocate($new_img, 0xff, 0xff, 0xff);
-        else $bgcolor = 0;
-        
-        if (!@imagefilledrectangle($new_img, 0, 0, $target_width-1, $target_height-1, $bgcolor))
-        {
-            return FALSE;
+
+        if ($cfg_ddimg_bgcolor == 0) {
+            $bgcolor = ImageColorAllocate($new_img, 0xff, 0xff, 0xff);
+        } else {
+            $bgcolor = 0;
         }
 
-        if (!@imagecopyresampled($new_img, $img, ($target_width-$new_width)/2, ($target_height-$new_height)/2, 0, 0, $new_width, $new_height, $width, $height))
-        {
-            return FALSE;
+        if (!@imagefilledrectangle($new_img, 0, 0, $target_width - 1, $target_height - 1, $bgcolor)) {
+            return false;
         }
-        
+
+        if (!@imagecopyresampled($new_img, $img, ($target_width - $new_width) / 2, ($target_height - $new_height) / 2, 0, 0, $new_width, $new_height, $width, $height)) {
+            return false;
+        }
+
         //保存为目标文件
-        if($issave)
-        {
-            switch ($srcInfo[2])
-            {
+        if ($issave) {
+            switch ($srcInfo[2]) {
                 case 1:
                     imagegif($new_img, $toFile);
                     break;
                 case 2:
-                    imagejpeg($new_img, $toFile,100);
+                    imagejpeg($new_img, $toFile, 100);
                     break;
                 case 3:
                     imagepng($new_img, $toFile);
@@ -324,14 +316,12 @@ if ( ! function_exists('ImageResizeNew'))
                     imagebmp($new_img, $toFile);
                     break;
                 default:
-                    return FALSE;
+                    return false;
             }
         }
         //不保存
-        else
-        {
-            switch ($srcInfo[2])
-            {
+        else {
+            switch ($srcInfo[2]) {
                 case 1:
                     imagegif($new_img);
                     break;
@@ -345,11 +335,11 @@ if ( ! function_exists('ImageResizeNew'))
                     imagebmp($new_img);
                     break;
                 default:
-                    return FALSE;
+                    return false;
             }
         }
         imagedestroy($new_img);
         imagedestroy($img);
-        return TRUE;
+        return true;
     }
 }

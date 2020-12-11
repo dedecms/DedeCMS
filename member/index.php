@@ -6,42 +6,40 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 
-$uid=empty($uid)? "" : RemoveXSS($uid); 
-if(empty($action)) $action = '';
-if(empty($aid)) $aid = '';
+$uid = empty($uid) ? "" : RemoveXSS($uid);
+if (empty($action)) {
+    $action = '';
+}
+
+if (empty($aid)) {
+    $aid = '';
+}
 
 $menutype = 'mydede';
-if ( preg_match("#PHP (.*) Development Server#",$_SERVER['SERVER_SOFTWARE']) )
-{
-    if ( $_SERVER['REQUEST_URI'] == dirname($_SERVER['SCRIPT_NAME']) )
-    {
+if (preg_match("#PHP (.*) Development Server#", $_SERVER['SERVER_SOFTWARE'])) {
+    if ($_SERVER['REQUEST_URI'] == dirname($_SERVER['SCRIPT_NAME'])) {
         header('HTTP/1.1 301 Moved Permanently');
-        header('Location:'.$_SERVER['REQUEST_URI'].'/');
+        header('Location:' . $_SERVER['REQUEST_URI'] . '/');
     }
 }
 //会员后台
-if($uid=='')
-{
+if ($uid == '') {
     $iscontrol = 'yes';
-    if(!$cfg_ml->IsLogin())
-    {
-        include_once(dirname(__FILE__)."/templets/index-notlogin.htm");
-    }
-    else
-    {
-        $minfos = $dsql->GetOne("SELECT * FROM `#@__member_tj` WHERE mid='".$cfg_ml->M_ID."'; ");
+    if (!$cfg_ml->IsLogin()) {
+        include_once dirname(__FILE__) . "/templets/index-notlogin.htm";
+    } else {
+        $minfos = $dsql->GetOne("SELECT * FROM `#@__member_tj` WHERE mid='" . $cfg_ml->M_ID . "'; ");
         $minfos['totaluse'] = $cfg_ml->GetUserSpace();
-        $minfos['totaluse'] = number_format($minfos['totaluse']/1024/1024,2);
-        if($cfg_mb_max > 0) {
-            $ddsize = ceil( ($minfos['totaluse']/$cfg_mb_max) * 100 );
-        }
-        else {
+        $minfos['totaluse'] = number_format($minfos['totaluse'] / 1024 / 1024, 2);
+        if ($cfg_mb_max > 0) {
+            $ddsize = ceil(($minfos['totaluse'] / $cfg_mb_max) * 100);
+        } else {
             $ddsize = 0;
         }
 
-        require_once(DEDEINC.'/channelunit.func.php');
+        require_once DEDEINC . '/channelunit.func.php';
 
         /* 最新文档8条 */
         $archives = array();
@@ -53,28 +51,25 @@ if($uid=='')
         ORDER BY arc.sortrank DESC LIMIT 8";
         $dsql->SetQuery($sql);
         $dsql->Execute();
-        while ($row = $dsql->GetArray())
-        {
+        while ($row = $dsql->GetArray()) {
             $row['htmlurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'], $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
             $archives[] = $row;
         }
 
         /** 调用访客记录 **/
         $_vars['mid'] = $cfg_ml->M_ID;
-        
-        if(empty($cfg_ml->fields['face']))
-        {
-            $cfg_ml->fields['face']=($cfg_ml->fields['sex']=='女')? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
+
+        if (empty($cfg_ml->fields['face'])) {
+            $cfg_ml->fields['face'] = ($cfg_ml->fields['sex'] == '女') ? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
         }
 
         /** 我的收藏 **/
         $favorites = array();
-        $dsql->Execute('fl',"SELECT * FROM `#@__member_stow` WHERE mid='{$cfg_ml->M_ID}'  LIMIT 5");
-        while($arr = $dsql->GetArray('fl'))
-        {
+        $dsql->Execute('fl', "SELECT * FROM `#@__member_stow` WHERE mid='{$cfg_ml->M_ID}'  LIMIT 5");
+        while ($arr = $dsql->GetArray('fl')) {
             $favorites[] = $arr;
         }
-        
+
         /** 欢迎新朋友 **/
         $sql = "SELECT * FROM `#@__member` ORDER BY mid DESC LIMIT 3";
         $newfriends = array();
@@ -92,12 +87,12 @@ if($uid=='')
         while ($row = $dsql->GetArray()) {
             $friends[] = $row;
         }
-        
+
         /** 有没新短信 **/
-        $pms = $dsql->GetOne("SELECT COUNT(*) AS nums FROM #@__member_pms WHERE toid='{$cfg_ml->M_ID}' AND `hasview`=0 AND folder = 'inbox'");    
-        
+        $pms = $dsql->GetOne("SELECT COUNT(*) AS nums FROM #@__member_pms WHERE toid='{$cfg_ml->M_ID}' AND `hasview`=0 AND folder = 'inbox'");
+
         /** 查询会员状态 **/
-        $moodmsg = $dsql->GetOne("SELECT * FROM #@__member_msg WHERE mid='{$cfg_ml->M_ID}' ORDER BY dtime desc");    
+        $moodmsg = $dsql->GetOne("SELECT * FROM #@__member_msg WHERE mid='{$cfg_ml->M_ID}' ORDER BY dtime desc");
 
         /** 会员操作日志 **/
         $sql = "SELECT * From `#@__member_feed` where ischeck=1 order by fid desc limit 8";
@@ -109,7 +104,7 @@ if($uid=='')
         }
 
         $dpl = new DedeTemplate();
-        $tpl = dirname(__FILE__)."/templets/index.htm";
+        $tpl = dirname(__FILE__) . "/templets/index.htm";
         $dpl->LoadTemplate($tpl);
         $dpl->display();
     }
@@ -119,59 +114,44 @@ if($uid=='')
 //会员空间主页
 function space_index(){  }
 ------------------------------*/
-else
-{
-    require_once(DEDEMEMBER.'/inc/config_space.php');
-    if($action == '')
-    {
-        include_once(DEDEINC."/channelunit.func.php");
+else {
+    require_once DEDEMEMBER . '/inc/config_space.php';
+    if ($action == '') {
+        include_once DEDEINC . "/channelunit.func.php";
         $dpl = new DedeTemplate();
-        $tplfile = DEDEMEMBER."/space/{$_vars['spacestyle']}/index.htm";
+        $tplfile = DEDEMEMBER . "/space/{$_vars['spacestyle']}/index.htm";
 
         //更新最近访客记录及站点统计记录
         $vtime = time();
         $last_vtime = GetCookie('last_vtime');
         $last_vid = GetCookie('last_vid');
-        if(empty($last_vtime))
-        {
+        if (empty($last_vtime)) {
             $last_vtime = 0;
         }
-        if($vtime - $last_vtime > 3600 || !preg_match('#,'.$uid.',#i', ','.$last_vid.',') )
-        {
-            if($last_vid!='')
-            {
-                $last_vids = explode(',',$last_vid);
+        if ($vtime - $last_vtime > 3600 || !preg_match('#,' . $uid . ',#i', ',' . $last_vid . ',')) {
+            if ($last_vid != '') {
+                $last_vids = explode(',', $last_vid);
                 $i = 0;
                 $last_vid = $uid;
-                foreach($last_vids as $lsid)
-                {
-                    if($i>10)
-                    {
+                foreach ($last_vids as $lsid) {
+                    if ($i > 10) {
                         break;
-                    }
-                    else if($lsid != $uid)
-                    {
+                    } else if ($lsid != $uid) {
                         $i++;
-                        $last_vid .= ','.$last_vid;
+                        $last_vid .= ',' . $last_vid;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 $last_vid = $uid;
             }
-            PutCookie('last_vtime', $vtime, 3600*24, '/');
-            PutCookie('last_vid', $last_vid, 3600*24, '/');
-            if($cfg_ml->IsLogin() && $cfg_ml->M_LoginID != $uid)
-            {
+            PutCookie('last_vtime', $vtime, 3600 * 24, '/');
+            PutCookie('last_vid', $last_vid, 3600 * 24, '/');
+            if ($cfg_ml->IsLogin() && $cfg_ml->M_LoginID != $uid) {
                 $vip = GetIP();
                 $arr = $dsql->GetOne("SELECT * FROM `#@__member_vhistory` WHERE mid='{$_vars['mid']}' AND vid='{$cfg_ml->M_ID}' ");
-                if(is_array($arr))
-                {
+                if (is_array($arr)) {
                     $dsql->ExecuteNoneQuery("UPDATE `#@__member_vhistory` SET vip='$vip',vtime='$vtime',count=count+1 WHERE mid='{$_vars['mid']}' AND vid='{$cfg_ml->M_ID}' ");
-                }
-                else
-                {
+                } else {
                     $query = "INSERT INTO `#@__member_vhistory`(mid,loginid,vid,vloginid,count,vip,vtime)
                              VALUES('{$_vars['mid']}','{$_vars['userid']}','{$cfg_ml->M_ID}','{$cfg_ml->M_LoginID}','1','$vip','$vtime'); ";
                     $dsql->ExecuteNoneQuery($query);
@@ -182,10 +162,8 @@ else
         $dpl->LoadTemplate($tplfile);
         $dpl->display();
         exit();
-    }
-    else
-    {
-        require_once(DEDEMEMBER.'/inc/space_action.php');
+    } else {
+        require_once DEDEMEMBER . '/inc/space_action.php';
         exit();
     }
 }

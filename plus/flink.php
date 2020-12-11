@@ -9,17 +9,16 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/../include/common.inc.php");
-if(empty($dopost)) $dopost = '';
+require_once dirname(__FILE__) . "/../include/common.inc.php";
+if (empty($dopost)) {
+    $dopost = '';
+}
 
-
-if($dopost=='save')
-{
+if ($dopost == 'save') {
     $validate = isset($validate) ? strtolower(trim($validate)) : '';
     $svali = GetCkVdValue();
-    if($validate=='' || $validate!=$svali)
-    {
-        ShowMsg('验证码不正确!','-1');
+    if ($validate == '' || $validate != $svali) {
+        ShowMsg('验证码不正确!', '-1');
         exit();
     }
     $msg = RemoveXSS(dede_htmlspecialchars($msg));
@@ -32,8 +31,10 @@ if($dopost=='save')
     $query = "INSERT INTO `#@__flink`(sortrank,url,webname,logo,msg,email,typeid,dtime,ischeck)
                     VALUES('50','$url','$webname','$logo','$msg','$email','$typeid','$dtime','0')";
     $dsql->ExecuteNoneQuery($query);
-    ShowMsg('成功增加一个链接，但需要审核后才能显示!','-1',1);
+    ShowMsg('成功增加一个链接，但需要审核后才能显示!', '-1', 1);
 }
 
 //显示模板(简单PHP文件)
-include_once(DEDETEMPLATE.'/plus/flink-list.htm');
+$dlist = new DataListCP();
+$dlist->SetTemplate(DEDETEMPLATE . '/plus/flink-list.htm');
+$dlist->Display();

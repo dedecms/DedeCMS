@@ -1,8 +1,4 @@
-<?php
-if(!defined('DEDEINC'))
-{
-    exit("Request Error!");
-}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");}
 /**
  * 投票标签
  *
@@ -12,7 +8,7 @@ if(!defined('DEDEINC'))
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
+
 /*>>dede>>
 <name>投票标签</name>
 <type>全局标记</type>
@@ -23,30 +19,36 @@ if(!defined('DEDEINC'))
 {/dede}
 </demo>
 <attributes>
-    <iterm>id:数字，当前投票ID</iterm>
-    <iterm>lineheight:表格高度</iterm>
-    <iterm>tablewidth:表格宽度</iterm>
-    <iterm>titlebgcolor:投票标题背景色</iterm>
-    <iterm>titlebackground:标题背景图</iterm>
-    <iterm>tablebg:投票表格背景色</iterm>
+<iterm>id:数字，当前投票ID</iterm>
+<iterm>lineheight:表格高度</iterm>
+<iterm>tablewidth:表格宽度</iterm>
+<iterm>titlebgcolor:投票标题背景色</iterm>
+<iterm>titlebackground:标题背景图</iterm>
+<iterm>tablebg:投票表格背景色</iterm>
 </attributes>
 >>dede>>*/
- 
-require_once(DEDEINC.'/dedevote.class.php');
-function lib_vote(&$ctag,&$refObj)
+
+require_once DEDEINC . '/dedevote.class.php';
+function lib_vote(&$ctag, &$refObj)
 {
     global $dsql;
-    $attlist="id|0,lineheight|24,tablewidth|100%,titlebgcolor|#EDEDE2,titlebackgroup|,tablebg|#FFFFFF";
-    FillAttsDefault($ctag->CAttribute->Items,$attlist);
+    $attlist = "id|0,lineheight|24,tablewidth|100%,titlebgcolor|#EDEDE2,titlebackgroup|,tablebg|#FFFFFF";
+    FillAttsDefault($ctag->CAttribute->Items, $attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
 
-    if(empty($id)) $id=0;
-    if($id==0)
-    {
+    if (empty($id)) {
+        $id = 0;
+    }
+
+    if ($id == 0) {
         $row = $dsql->GetOne("SELECT aid FROM `#@__vote` ORDER BY aid DESC LIMIT 0,1");
-        if(!isset($row['aid'])) return '';
-        else $id=$row['aid'];
+        if (!isset($row['aid'])) {
+            return '';
+        } else {
+            $id = $row['aid'];
+        }
+
     }
     $vt = new DedeVote($id);
-    return $vt->GetVoteForm($lineheight,$tablewidth,$titlebgcolor,$titlebackgroup,$tablebg);
+    return $vt->GetVoteForm($lineheight, $tablewidth, $titlebgcolor, $titlebackgroup, $tablebg);
 }

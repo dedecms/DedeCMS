@@ -1,4 +1,4 @@
-<?php  if(!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEINC')) {exit('Request Error');}
 /**
  * 仅用于测试
  *
@@ -10,8 +10,7 @@
  */
 
 //邮箱格式检查
-if ( ! function_exists('HelloDede'))
-{
+if (!function_exists('HelloDede')) {
     function HelloDede()
     {
         echo "Hello! Dede...";

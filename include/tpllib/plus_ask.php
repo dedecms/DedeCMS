@@ -1,5 +1,4 @@
-<?php
-if(!defined('DEDEINC')) exit('Request Error!');
+<?php if(!defined('DEDEINC')) exit('Request Error!');
 /**
  * 动态模板ask标签
  *

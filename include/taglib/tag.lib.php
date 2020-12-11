@@ -21,10 +21,10 @@
 {/dede:tag}
 </demo>
 <attributes>
-    <iterm>row:调用条数</iterm> 
-    <iterm>sort:排序方式 month，rand，week</iterm>
-    <iterm>getall:获取类型 0 为当前内容页TAG标记，1为获取全部TAG标记</iterm>
-</attributes> 
+<iterm>row:调用条数</iterm>
+<iterm>sort:排序方式 month，rand，week</iterm>
+<iterm>getall:获取类型 0 为当前内容页TAG标记，1为获取全部TAG标记</iterm>
+</attributes>
 >>dede>>*/
 
 function lib_tag(&$ctag, &$refObj)
@@ -36,7 +36,10 @@ function lib_tag(&$ctag, &$refObj)
     extract($ctag->CAttribute->Items, EXTR_SKIP);
 
     $InnerText = $ctag->GetInnerText();
-    if (trim($InnerText) == '') $InnerText = GetSysTemplets('tag_one.htm');
+    if (trim($InnerText) == '') {
+        $InnerText = GetSysTemplets('tag_one.htm');
+    }
+
     $revalue = '';
 
     $ltype = $sort;
@@ -55,20 +58,29 @@ function lib_tag(&$ctag, &$refObj)
         if ($ids != '') {
             $addsql = " WHERE id IN($ids) AND total >= {$dd['tt']}";
         }
-        if ($addsql == '') return '';
+        if ($addsql == '') {
+            return '';
+        }
+
     } else {
         if (!empty($typeid)) {
             $addsql = " WHERE typeid='$typeid' AND total >= {$dd['tt']}";
         }
     }
 
-    if ($ltype == 'rand') $orderby = 'rand() ';
-    else if ($ltype == 'week') $orderby = ' weekcc DESC ';
-    else if ($ltype == 'month') $orderby = ' monthcc DESC ';
-    else if ($ltype == 'hot') $orderby = ' count DESC ';
-    else if ($ltype == 'total') $orderby = ' total DESC ';
-    else $orderby = 'addtime DESC  ';
-
+    if ($ltype == 'rand') {
+        $orderby = 'rand() ';
+    } else if ($ltype == 'week') {
+        $orderby = ' weekcc DESC ';
+    } else if ($ltype == 'month') {
+        $orderby = ' monthcc DESC ';
+    } else if ($ltype == 'hot') {
+        $orderby = ' count DESC ';
+    } else if ($ltype == 'total') {
+        $orderby = ' total DESC ';
+    } else {
+        $orderby = 'addtime DESC  ';
+    }
 
     $dsql->SetQuery("SELECT * FROM `#@__tagindex` $addsql ORDER BY $orderby LIMIT 0,$num");
     $dsql->Execute();

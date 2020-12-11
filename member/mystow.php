@@ -2,16 +2,16 @@
 
 /**
  * 我的收藏夹
- * 
+ *
  * @version        $Id: mystow.php 1 8:38 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__) . "/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
-require_once(DEDEINC . "/datalistcp.class.php");
+require_once DEDEINC . "/datalistcp.class.php";
 setcookie("ENV_GOBACK_URL", GetCurUrl(), time() + 3600, "/");
 $type = empty($type) ? "sys" : trim($type);
 $tpl = '';

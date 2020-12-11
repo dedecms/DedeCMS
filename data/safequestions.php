@@ -16,20 +16,19 @@ $safequestions[7] = '你最喜欢的歌曲是什么？';
 
 //end****************************
 
-
-
 //以下不要修改
-function GetSafequestion($selid=0,$formname='safequestion')
+function GetSafequestion($selid = 0, $formname = 'safequestion')
 {
-	global $safequestions;
-	$safequestions_form = "<select name='$formname' id='$formname'>";
-	foreach($safequestions as $k=>$v)
-	{
-	 	if($k==$selid) $safequestions_form .= "<option value='$k' selected>$v</option>\r\n";
-	 	else $safequestions_form .= "<option value='$k'>$v</option>\r\n";
-	}
-	$safequestions_form .= "</select>\r\n";
-	return $safequestions_form;
-}
+    global $safequestions;
+    $safequestions_form = "<select name='$formname' id='$formname'>";
+    foreach ($safequestions as $k => $v) {
+        if ($k == $selid) {
+            $safequestions_form .= "<option value='$k' selected>$v</option>\r\n";
+        } else {
+            $safequestions_form .= "<option value='$k'>$v</option>\r\n";
+        }
 
-?>
+    }
+    $safequestions_form .= "</select>\r\n";
+    return $safequestions_form;
+}

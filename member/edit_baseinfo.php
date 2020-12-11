@@ -7,10 +7,12 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__) . "/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
 $menutype = 'config';
-if (!isset($dopost)) $dopost = '';
+if (!isset($dopost)) {
+    $dopost = '';
+}
 
 $pwd2 = (empty($pwd2)) ? "" : $pwd2;
 $row = $dsql->GetOne("SELECT  * FROM `#@__member` WHERE mid='" . $cfg_ml->M_ID . "'");
@@ -74,7 +76,7 @@ if ($dopost == 'save') {
 
     //修改uname
     if ($uname != $row['uname']) {
-        $rs = CheckUserID($uname, '昵称或公司名称', FALSE);
+        $rs = CheckUserID($uname, '昵称或公司名称', false);
         if ($rs != 'ok') {
             ShowMsg($rs, '-1');
             exit();
@@ -101,4 +103,4 @@ if ($dopost == 'save') {
     ShowMsg('成功更新你的基本资料！', 'edit_baseinfo.php', 0, 5000);
     exit();
 }
-include(DEDEMEMBER . "/templets/edit_baseinfo.htm");
+include DEDEMEMBER . "/templets/edit_baseinfo.htm";

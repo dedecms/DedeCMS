@@ -124,6 +124,10 @@ class DataListCP
     {
         $this->tpl->LoadTemplate($tplfile);
     }
+    function SetString($src)
+    {
+        $this->tpl->LoadString($src);
+    }
 
     /**
      *  对config参数及get参数等进行预处理

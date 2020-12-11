@@ -1,4 +1,4 @@
-<?php  if(!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEINC')) {exit('Request Error');}
 /**
  * 验证小助手
  *
@@ -18,32 +18,33 @@
  * @param     bool    $strict    是否严格过滤
  * @return    string
  */
-if ( ! function_exists('Dump'))
-{
-    function Dump($var, $echo=true, $label=null, $strict=true)
+if (!function_exists('Dump')) {
+    function Dump($var, $echo = true, $label = null, $strict = true)
     {
-        $label = ($label===null) ? '' : rtrim($label) . ' ';
-        if(!$strict) {
+        $label = ($label === null) ? '' : rtrim($label) . ' ';
+        if (!$strict) {
             if (ini_get('html_errors')) {
                 $output = print_r($var, true);
-                $output = "<pre>".$label.htmlspecialchars($output,ENT_QUOTES)."</pre>";
+                $output = "<pre>" . $label . htmlspecialchars($output, ENT_QUOTES) . "</pre>";
             } else {
                 $output = $label . " : " . print_r($var, true);
             }
-        }else {
+        } else {
             ob_start();
             var_dump($var);
             $output = ob_get_clean();
-            if(!extension_loaded('xdebug')) {
+            if (!extension_loaded('xdebug')) {
                 $output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $output);
-                $output = '<pre>'. $label. htmlspecialchars($output, ENT_QUOTES). '</pre>';
+                $output = '<pre>' . $label . htmlspecialchars($output, ENT_QUOTES) . '</pre>';
             }
         }
         if ($echo) {
-            echo($output);
+            echo ($output);
             return null;
-        }else
+        } else {
             return $output;
+        }
+
     }
 }
 
@@ -56,13 +57,12 @@ if ( ! function_exists('Dump'))
  *
  *  @return    int
  */
-if ( ! function_exists('ExecTime'))
-{
+if (!function_exists('ExecTime')) {
     function ExecTime()
     {
         $time = explode(" ", microtime());
-        $usec = (double)$time[0];
-        $sec = (double)$time[1];
+        $usec = (double) $time[0];
+        $sec = (double) $time[1];
         return $sec + $usec;
     }
 }

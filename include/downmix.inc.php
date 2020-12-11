@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('DEDEINC')) exit("Request Error!");
 /**
  * 防采集混淆字符串
  *

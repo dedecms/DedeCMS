@@ -6,10 +6,12 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
-require_once(DEDEINC."/arc.caicai.class.php");
+require_once dirname(__FILE__) . "/config.php";
+require_once DEDEINC . "/arc.caicai.class.php";
 $sort = trim(empty($sort) ? 'lastpost' : preg_replace("#[^0-9a-z]#i", '', $sort));
-if(!preg_match("#^(scores|badpost|goodpost)$#", $sort)) $sort = 'lastpost';
+if (!preg_match("#^(scores|badpost|goodpost)$#", $sort)) {
+    $sort = 'lastpost';
+}
 
 $tid = (isset($tid) ? intval($tid) : 0);
 $t1 = ExecTime();
@@ -17,39 +19,28 @@ $typequery = '';
 $menutype = 'mydede';
 $menutype_son = 'cc';
 //获取栏目的子类、交叉分类
-if($tid!=0)
-{
+if ($tid != 0) {
     $arr = $dsql->GetOne("SELECT * FROM `#@__arctype` WHERE id='$tid' AND corank=0 ");
-    if($cfg_list_son=='Y')
-    {
-        $CrossID = GetSonIds($tid,$arr['channeltype']);
-    }
-    else
-    {
+    if ($cfg_list_son == 'Y') {
+        $CrossID = GetSonIds($tid, $arr['channeltype']);
+    } else {
         $CrossID = $tid;
     }
-    if($arr['cross']>0)
-    {
+    if ($arr['cross'] > 0) {
         $selquery = '';
-        if($arr['cross']==1)
-        {
+        if ($arr['cross'] == 1) {
             $selquery = "SELECT id,topid FROM `#@__arctype` WHERE typename LIKE '{$arr['typename']}' AND id<>'{$tid}' AND topid<>'{$tid}'  ";
-        }
-        else
-        {
+        } else {
             $arr['crossid'] = preg_replace("#[^0-9,]#", '', trim($arr['crossid']));
-            if($arr['crossid']!='')
-            {
+            if ($arr['crossid'] != '') {
                 $selquery = "SELECT id,topid FROM `#@__arctype` WHERE id in('{$arr['crossid']}') AND id<>'{$tid}' AND topid<>'{$tid}'  ";
             }
         }
-        if($selquery!='')
-        {
+        if ($selquery != '') {
             $dsql->SetQuery($selquery);
             $dsql->Execute();
-            while($arr = $dsql->GetArray())
-            {
-                $CrossID .= ($CrossID=='' ? $arr['id'] : ','.$arr['id']);
+            while ($arr = $dsql->GetArray()) {
+                $CrossID .= ($CrossID == '' ? $arr['id'] : ',' . $arr['id']);
             }
         }
     }
@@ -64,10 +55,9 @@ $query = "Select arc.*,m.userid,m.face,
           From `#@__archives` arc left join `#@__arctype` tp on tp.id=arc.typeid left join `#@__member`  m on m.mid=arc.mid
           where $typequery arc.arcrank>-1
           order by arc.`{$sort}` desc limit $maxrc ";
-$dlist->SetParameter('tid',$tid);
-$dlist->SetParameter('sort',$sort);
-$dlist->SetTemplate(DEDEMEMBER.'/templets/caicai.htm');
+$dlist->SetParameter('tid', $tid);
+$dlist->SetParameter('sort', $sort);
+$dlist->SetTemplate(DEDEMEMBER . '/templets/caicai.htm');
 $dlist->SetSource($query);
 $dlist->Display();
 //echo ExecTime() - $t1;
-?>

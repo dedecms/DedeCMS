@@ -6,21 +6,23 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-define('AJAXLOGIN', TRUE);
+define('AJAXLOGIN', true);
 
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 AjaxHead();
-if($myurl == '') exit('');
+if ($myurl == '') {
+    exit('');
+}
 
-$uid  = $cfg_ml->M_LoginID;
+$uid = $cfg_ml->M_LoginID;
 
-!$cfg_ml->fields['face'] && $face = ($cfg_ml->fields['sex'] == '女')? 'dfgirl' : 'dfboy';
-$facepic = empty($face)? $cfg_ml->fields['face'] : $GLOBALS['cfg_memberurl'].'/templets/images/'.$face.'.png';
+!$cfg_ml->fields['face'] && $face = ($cfg_ml->fields['sex'] == '女') ? 'dfgirl' : 'dfboy';
+$facepic = empty($face) ? $cfg_ml->fields['face'] : $GLOBALS['cfg_memberurl'] . '/templets/images/' . $face . '.png';
 ?>
 <div class="userinfo">
     <div class="welcome">你好：<strong><?php echo $cfg_ml->M_UserName; ?></strong>，欢迎登录 </div>
     <div class="userface">
-        <a href="<?php echo $cfg_memberurl; ?>/index.php"><img src="<?php echo $facepic;?>" width="52" height="52" /></a>
+        <a href="<?php echo $cfg_memberurl; ?>/index.php"><img src="<?php echo $facepic; ?>" width="52" height="52" /></a>
     </div>
     <div class="mylink">
         <ul>
@@ -33,9 +35,9 @@ $facepic = empty($face)? $cfg_ml->fields['face'] : $GLOBALS['cfg_memberurl'].'/t
         </ul>
     </div>
     <div class="uclink">
-        <a href="<?php echo $cfg_memberurl; ?>/index.php">会员中心</a> | 
-        <a href="<?php echo $cfg_memberurl; ?>/edit_fullinfo.php">资料</a> | 
-        <a href="<?php echo $myurl;?>">空间</a> | 
-        <a href="<?php echo $cfg_memberurl; ?>/index_do.php?fmdo=login&dopost=exit">退出登录</a> 
+        <a href="<?php echo $cfg_memberurl; ?>/index.php">会员中心</a> |
+        <a href="<?php echo $cfg_memberurl; ?>/edit_fullinfo.php">资料</a> |
+        <a href="<?php echo $myurl; ?>">空间</a> |
+        <a href="<?php echo $cfg_memberurl; ?>/index_do.php?fmdo=login&dopost=exit">退出登录</a>
     </div>
 </div><!-- /userinfo -->

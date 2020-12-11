@@ -7,16 +7,17 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__) . '/config.php');
+require_once dirname(__FILE__) . '/config.php';
 require_once DEDEINC . '/membermodel.cls.php';
-require_once(DEDEINC . "/userlogin.class.php");
+require_once DEDEINC . "/userlogin.class.php";
 CheckRank(0, 0);
-require_once(DEDEINC . '/enums.func.php');
+require_once DEDEINC . '/enums.func.php';
 $menutype = 'config';
-if (!isset($dopost)) $dopost = '';
+if (!isset($dopost)) {
+    $dopost = '';
+}
 
 if ($dopost == '') {
-
 
     $membermodel = new membermodel($cfg_ml->M_MbType);
     $modelform = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$membermodel->modid' ");
@@ -30,7 +31,7 @@ if ($dopost == '') {
         exit();
     }
     $postform = $membermodel->getForm('edit', $row, 'membermodel');
-    include(DEDEMEMBER . "/templets/edit_fullinfo.htm");
+    include DEDEMEMBER . "/templets/edit_fullinfo.htm";
     exit();
 }
 /*------------------------
@@ -65,7 +66,10 @@ if ($dopost == 'save') {
         $fieldarr = explode(';', $dede_fields);
         if (is_array($fieldarr)) {
             foreach ($fieldarr as $field) {
-                if ($field == '') continue;
+                if ($field == '') {
+                    continue;
+                }
+
                 $fieldinfo = explode(',', $field);
                 if ($fieldinfo[1] == 'textdata') {
                     ${$fieldinfo[0]} = FilterSearch(stripslashes(${$fieldinfo[0]}));
@@ -73,10 +77,16 @@ if ($dopost == 'save') {
                 } else if ($fieldinfo[1] == 'img') {
                     ${$fieldinfo[0]} = addslashes(${$fieldinfo[0]});
                 } else {
-                    if (empty(${$fieldinfo[0]})) ${$fieldinfo[0]} = '';
+                    if (empty(${$fieldinfo[0]})) {
+                        ${$fieldinfo[0]} = '';
+                    }
+
                     ${$fieldinfo[0]} = GetFieldValue(${$fieldinfo[0]}, $fieldinfo[1], 0, 'add', '', 'diy', $fieldinfo[0]);
                 }
-                if ($fieldinfo[0] == "birthday") ${$fieldinfo[0]} = GetDateMk(${$fieldinfo[0]});
+                if ($fieldinfo[0] == "birthday") {
+                    ${$fieldinfo[0]} = GetDateMk(${$fieldinfo[0]});
+                }
+
                 ${$fieldinfo[0]} = HtmlReplace(${$fieldinfo[0]}, -1);
                 $inadd_f .= ',' . $fieldinfo[0] . " ='" . ${$fieldinfo[0]} . "'";
             }

@@ -6,79 +6,74 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
-CheckRank(0,0);
+require_once dirname(__FILE__) . "/config.php";
+CheckRank(0, 0);
 $menutype = 'config';
-if($cfg_mb_lit=='Y')
-{
-    ShowMsg("由于系统开启了精简版会员空间，你访问的功能不可用！","-1");
+if ($cfg_mb_lit == 'Y') {
+    ShowMsg("由于系统开启了精简版会员空间，你访问的功能不可用！", "-1");
     exit();
 }
-if(empty($dopost)) $dopost = '';
+if (empty($dopost)) {
+    $dopost = '';
+}
 
-if($dopost=="addnew")
-{
+if ($dopost == "addnew") {
     AjaxHead();
-    $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__member_flink` WHERE mid='".$cfg_ml->M_ID."' ");
-    if($row['dd']>=50)
-    {
+    $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__member_flink` WHERE mid='" . $cfg_ml->M_ID . "' ");
+    if ($row['dd'] >= 50) {
         echo "<font color='red'>增加网址失败，因为已经达到五十个网址的上限！</font>";
         GetLinkList($dsql);
         exit();
     }
-    if(!preg_match("#^http:\/\/#",$url)) $url = "http://".HtmlReplace($url, 2);
+    if (!preg_match("#^http:\/\/#", $url)) {
+        $url = "http://" . HtmlReplace($url, 2);
+    }
 
     $title = HtmlReplace($title);
     $url = HtmlReplace($url);
-    $inquery = "INSERT INTO `#@__member_flink`(mid,title,url) VALUES(".$cfg_ml->M_ID.",'$title','$url'); ";
+    $inquery = "INSERT INTO `#@__member_flink`(mid,title,url) VALUES(" . $cfg_ml->M_ID . ",'$title','$url'); ";
     $dsql->ExecuteNoneQuery($inquery);
     echo "<font color='red'>成功增加一链接！</font>";
     GetLinkList($dsql);
     exit();
-}
-else if($dopost=="del")
-{
+} else if ($dopost == "del") {
     AjaxHead();
     $aid = intval($aid);
-    if(empty($aid)) exit("<font color='red'>参数错误！</font>");
+    if (empty($aid)) {
+        exit("<font color='red'>参数错误！</font>");
+    }
 
-    $dsql->ExecuteNoneQuery("DELETE FROM  `#@__member_flink` WHERE aid='$aid' AND mid='".$cfg_ml->M_ID."';");
+    $dsql->ExecuteNoneQuery("DELETE FROM  `#@__member_flink` WHERE aid='$aid' AND mid='" . $cfg_ml->M_ID . "';");
     echo "<font color='red'>成功删除链接：{$aid}</font>";
     GetLinkList($dsql);
-}
-else if($dopost=="update")
-{
+} else if ($dopost == "update") {
     AjaxHead();
     $aid = intval($aid);
-    if(!preg_match("#^http:\/\/#", $url)) $url = "http://".HtmlReplace($url,2);
-	
+    if (!preg_match("#^http:\/\/#", $url)) {
+        $url = "http://" . HtmlReplace($url, 2);
+    }
+
     $title = HtmlReplace($title);
-	$url = HtmlReplace($url);
-    $upquery = "UPDATE `#@__member_flink` SET title='$title',url='$url' WHERE aid='$aid' AND mid='".$cfg_ml->M_ID."'; ";
+    $url = HtmlReplace($url);
+    $upquery = "UPDATE `#@__member_flink` SET title='$title',url='$url' WHERE aid='$aid' AND mid='" . $cfg_ml->M_ID . "'; ";
     $rs = $dsql->ExecuteNoneQuery($upquery);
-    if($rs)
-    {
+    if ($rs) {
         echo "<font color='red'>成功更新链接：{$title}</font>";
         GetLinkList($dsql);
         exit();
-    }
-    else
-    {
+    } else {
         echo "<font color='red'>更新链接：{$title} 失败！</font>";
         GetLinkList($dsql);
         exit();
     }
-}
-else if($dopost=="reload")
-{
+} else if ($dopost == "reload") {
     AjaxHead();
     GetLinkList($dsql);
     exit();
 }
 //默认界面
-else
-{
-    require_once(dirname(__FILE__)."/templets/flink_main.htm");
+else {
+    require_once dirname(__FILE__) . "/templets/flink_main.htm";
     exit();
 }
 
@@ -92,11 +87,10 @@ else
 function GetLinkList(&$dsql)
 {
     global $cfg_ml;
-    $dsql->SetQuery("SELECT * FROM `#@__member_flink` WHERE mid='".$cfg_ml->M_ID."' ORDER BY aid DESC");
+    $dsql->SetQuery("SELECT * FROM `#@__member_flink` WHERE mid='" . $cfg_ml->M_ID . "' ORDER BY aid DESC");
     $dsql->Execute();
-    $j=0;
-    while($row = $dsql->GetArray())
-    {
+    $j = 0;
+    while ($row = $dsql->GetArray()) {
         $j++;
         $line = "
 <div class='item flink'>
@@ -112,8 +106,7 @@ function GetLinkList(&$dsql)
 <hr class='dotted' />";
         echo $line;
     }
-    if($j==0)
-    {
+    if ($j == 0) {
         echo "尚无任何链接";
     }
 }

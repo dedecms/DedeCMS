@@ -1,7 +1,7 @@
-<?php  if(!defined('DEDEMEMBER')) exit("dedecms");
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
 /**
  * 模型列表函数
- * 
+ *
  * @version        $Id: inc_list_functions.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
@@ -18,20 +18,13 @@
 function IsCommendArchives($iscommend)
 {
     $s = '';
-    if(preg_match('/c/', $iscommend))
-    {
+    if (preg_match('/c/', $iscommend)) {
         $s .= '推荐';
-    }
-    else if(preg_match('/h/', $iscommend))
-    {
+    } else if (preg_match('/h/', $iscommend)) {
         $s .= ' 头条';
-    }
-    else if(preg_match('/p/', $iscommend))
-    {
+    } else if (preg_match('/p/', $iscommend)) {
         $s .= ' 图片';
-    }
-    else if(preg_match('/j/', $iscommend))
-    {
+    } else if (preg_match('/j/', $iscommend)) {
         $s .= ' 跳转';
     }
     return $s;
@@ -46,8 +39,7 @@ function IsCommendArchives($iscommend)
  */
 function GetCommendTitle($title, $iscommend)
 {
-    if(preg_match('/c/', $iscommend))
-    {
+    if (preg_match('/c/', $iscommend)) {
         $title = "$title<font color='red'>(推荐)</font>";
     }
     return "$title";
@@ -61,15 +53,12 @@ $GLOBALS['RndTrunID'] = 1;
  * @param     string  $color2  颜色2
  * @return    string
  */
-function GetColor($color1,$color2)
+function GetColor($color1, $color2)
 {
     $GLOBALS['RndTrunID']++;
-    if($GLOBALS['RndTrunID']%2==0)
-    {
+    if ($GLOBALS['RndTrunID'] % 2 == 0) {
         return $color1;
-    }
-    else
-    {
+    } else {
         return $color2;
     }
 }
@@ -82,12 +71,9 @@ function GetColor($color1,$color2)
  */
 function CheckPic($picname)
 {
-    if($picname!="")
-    {
+    if ($picname != "") {
         return $picname;
-    }
-    else
-    {
+    } else {
         return "images/dfpic.gif";
     }
 }
@@ -100,16 +86,11 @@ function CheckPic($picname)
  */
 function IsHtmlArchives($ismake)
 {
-    if($ismake==1)
-    {
+    if ($ismake == 1) {
         return "已生成";
-    }
-    else if($ismake==-1)
-    {
+    } else if ($ismake == -1) {
         return "仅动态";
-    }
-    else
-    {
+    } else {
         return "<font color='red'>未生成</font>";
     }
 }
@@ -123,21 +104,16 @@ function IsHtmlArchives($ismake)
 function GetRankName($arcrank)
 {
     global $arcArray;
-    if(!is_array($arcArray))
-    {
+    if (!is_array($arcArray)) {
         $dsql->SetQuery("SELECT * FROM #@__arcrank");
         $dsql->Execute();
-        while($row = $dsql->GetObject())
-        {
-            $arcArray[$row->rank]=$row->membername;
+        while ($row = $dsql->GetObject()) {
+            $arcArray[$row->rank] = $row->membername;
         }
     }
-    if(isset($arcArray[$arcrank]))
-    {
+    if (isset($arcArray[$arcrank])) {
         return $arcArray[$arcrank];
-    }
-    else
-    {
+    } else {
         return "不限";
     }
 }
@@ -150,12 +126,9 @@ function GetRankName($arcrank)
  */
 function IsPicArchives($picname)
 {
-    if($picname!="")
-    {
+    if ($picname != "") {
         return "<font color='red'>(图)</font>";
-    }
-    else
-    {
+    } else {
         return "";
     }
 }

@@ -1,4 +1,4 @@
-<?php  if(!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEINC')) {exit('Request Error');}
 /**
  * 文档小助手
  *
@@ -15,32 +15,30 @@
  * @param     int  $aid  文档id
  * @return    array
  */
-if ( ! function_exists('GetOneArchive'))
-{
+if (!function_exists('GetOneArchive')) {
     function GetOneArchive($aid)
     {
         global $dsql;
-        include_once(DEDEINC."/channelunit.func.php");
+        include_once DEDEINC . "/channelunit.func.php";
         $aid = trim(preg_replace('/[^0-9]/', '', $aid));
         $reArr = array();
 
         $chRow = $dsql->GetOne("SELECT arc.*,ch.maintable,ch.addtable,ch.issystem FROM `#@__arctiny` arc LEFT JOIN `#@__channeltype` ch ON ch.id=arc.channel WHERE arc.id='$aid' ");
 
-        if(!is_array($chRow)) {
+        if (!is_array($chRow)) {
             return $reArr;
-        }
-        else {
-            if(empty($chRow['maintable'])) $chRow['maintable'] = '#@__archives';
+        } else {
+            if (empty($chRow['maintable'])) {
+                $chRow['maintable'] = '#@__archives';
+            }
+
         }
 
-        if($chRow['issystem']!=-1)
-        {
+        if ($chRow['issystem'] != -1) {
             $nquery = " SELECT arc.*,tp.typedir,tp.topid,tp.namerule,tp.moresite,tp.siteurl,tp.sitepath
                         FROM `{$chRow['maintable']}` arc LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid
                         WHERE arc.id='$aid' ";
-        }
-        else
-        {
+        } else {
             $nquery = " SELECT arc.*,1 AS ismake,0 AS money,'' AS filename,tp.typedir,tp.topid,tp.namerule,tp.moresite,tp.siteurl,tp.sitepath
                         FROM `{$chRow['addtable']}` arc LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid
                         WHERE arc.aid='$aid' ";
@@ -48,39 +46,38 @@ if ( ! function_exists('GetOneArchive'))
 
         $arcRow = $dsql->GetOne($nquery);
 
-        if(!is_array($arcRow)) {
+        if (!is_array($arcRow)) {
             return $reArr;
         }
 
-        if(!isset($arcRow['description'])) {
+        if (!isset($arcRow['description'])) {
             $arcRow['description'] = '';
         }
 
-        if(empty($arcRow['description']) && isset($arcRow['body'])) {
+        if (empty($arcRow['description']) && isset($arcRow['body'])) {
             $arcRow['description'] = cn_substr(html2text($arcRow['body']), 250);
         }
 
-        if(!isset($arcRow['pubdate'])) {
+        if (!isset($arcRow['pubdate'])) {
             $arcRow['pubdate'] = $arcRow['senddate'];
         }
 
-        if(!isset($arcRow['notpost'])) {
+        if (!isset($arcRow['notpost'])) {
             $arcRow['notpost'] = 0;
         }
 
         $reArr = $arcRow;
-        $reArr['aid']    = $aid;
-        $reArr['topid']  = $arcRow['topid'];
+        $reArr['aid'] = $aid;
+        $reArr['topid'] = $arcRow['topid'];
         $reArr['arctitle'] = $arcRow['title'];
         $reArr['arcurl'] = GetFileUrl($aid, $arcRow['typeid'], $arcRow['senddate'], $reArr['title'],
-                          $arcRow['ismake'], $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], 
-                          $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'], 
-                          $arcRow['sitepath']);
+            $arcRow['ismake'], $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'],
+            $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'],
+            $arcRow['sitepath']);
         return $reArr;
 
     }
 }
-
 
 /**
  *  获取模型的表信息
@@ -89,21 +86,15 @@ if ( ! function_exists('GetOneArchive'))
  * @param     string   $formtype  表单类型
  * @return    array
  */
-if ( ! function_exists('GetChannelTable'))
-{
-    function GetChannelTable($id,$formtype='channel')
+if (!function_exists('GetChannelTable')) {
+    function GetChannelTable($id, $formtype = 'channel')
     {
         global $dsql;
-        if($formtype == 'archive')
-        {
+        if ($formtype == 'archive') {
             $query = "SELECT ch.maintable, ch.addtable FROM #@__arctiny tin LEFT JOIN #@__channeltype ch ON ch.id=tin.channel WHERE tin.id='$id'";
-        }
-        else if($formtype == 'typeid')
-        {
+        } else if ($formtype == 'typeid') {
             $query = "SELECT ch.maintable, ch.addtable FROM #@__arctype act LEFT JOIN #@__channeltype ch ON ch.id=act.channeltype WHERE act.id='$id'";
-        }
-        else
-        {
+        } else {
             $query = "SELECT maintable, addtable FROM #@__channeltype WHERE id='$id'";
         }
         $row = $dsql->GetOne($query);
@@ -117,17 +108,15 @@ if ( ! function_exists('GetChannelTable'))
  * @param     int     $aid  文档id
  * @return    string
  */
-if ( ! function_exists('GetTags'))
-{
+if (!function_exists('GetTags')) {
     function GetTags($aid)
     {
         global $dsql;
         $tags = '';
         $query = "SELECT tag FROM `#@__taglist` WHERE aid='$aid' ";
-        $dsql->Execute('tag',$query);
-        while($row = $dsql->GetArray('tag'))
-        {
-            $tags .= ($tags=='' ? $row['tag'] : ','.$row['tag']);
+        $dsql->Execute('tag', $query);
+        while ($row = $dsql->GetArray('tag')) {
+            $tags .= ($tags == '' ? $row['tag'] : ',' . $row['tag']);
         }
         return $tags;
     }
@@ -145,16 +134,24 @@ if ( ! function_exists('GetTags'))
  * @param     int  $mid  会员ID
  * @return    int
  */
-if ( ! function_exists('GetIndexKey'))
-{
-    function GetIndexKey($arcrank, $typeid, $sortrank=0, $channelid=1, $senddate=0, $mid=1)
+if (!function_exists('GetIndexKey')) {
+    function GetIndexKey($arcrank, $typeid, $sortrank = 0, $channelid = 1, $senddate = 0, $mid = 1)
     {
-        global $dsql,$senddate,$typeid2;
-        if(empty($typeid2)) $typeid2 = 0;
-        if(empty($senddate)) $senddate = time();
-        if(empty($sortrank)) $sortrank = $senddate;
-		$typeid2 = intval($typeid2);
-		$senddate = intval($senddate);
+        global $dsql, $senddate, $typeid2;
+        if (empty($typeid2)) {
+            $typeid2 = 0;
+        }
+
+        if (empty($senddate)) {
+            $senddate = time();
+        }
+
+        if (empty($sortrank)) {
+            $sortrank = $senddate;
+        }
+
+        $typeid2 = intval($typeid2);
+        $senddate = intval($senddate);
         $iquery = "
           INSERT INTO `#@__arctiny` (`arcrank`,`typeid`,`typeid2`,`channel`,`senddate`, `sortrank`, `mid`)
           VALUES ('$arcrank','$typeid','$typeid2' , '$channelid','$senddate', '$sortrank', '$mid') ";
@@ -163,7 +160,6 @@ if ( ! function_exists('GetIndexKey'))
         return $aid;
     }
 }
-
 
 /**
  *  更新微表key及Tag
@@ -176,52 +172,45 @@ if ( ! function_exists('GetIndexKey'))
  * @param     string  $tags  tag标签
  * @return    string
  */
-if ( ! function_exists('UpIndexKey'))
-{
-    function UpIndexKey($id, $arcrank, $typeid, $sortrank=0, $tags='')
+if (!function_exists('UpIndexKey')) {
+    function UpIndexKey($id, $arcrank, $typeid, $sortrank = 0, $tags = '')
     {
-        global $dsql,$typeid2;
-        if(empty($typeid2)) $typeid2 = 0;
+        global $dsql, $typeid2;
+        if (empty($typeid2)) {
+            $typeid2 = 0;
+        }
+
         $addtime = time();
         $query = " UPDATE `#@__arctiny` SET `arcrank`='$arcrank', `typeid`='$typeid', `typeid2`='$typeid2', `sortrank`='$sortrank' WHERE id = '$id' ";
         $dsql->ExecuteNoneQuery($query);
 
         /*
-        * 处理修改后的Tag
-        */
-        if($tags!='')
-        {
+         * 处理修改后的Tag
+         */
+        if ($tags != '') {
             $oldtag = GetTags($id);
-            $oldtags = explode(',',$oldtag);
-            $tagss = explode(',',$tags);
-            foreach($tagss as $tag)
-            {
+            $oldtags = explode(',', $oldtag);
+            $tagss = explode(',', $tags);
+            foreach ($tagss as $tag) {
                 $tag = trim($tag);
-                if(isset($tag[12]) || $tag!=stripslashes($tag))
-                {
+                if (isset($tag[12]) || $tag != stripslashes($tag)) {
                     continue;
                 }
-                if(!in_array($tag,$oldtags))
-                {
-                    InsertOneTag($tag,$id);
+                if (!in_array($tag, $oldtags)) {
+                    InsertOneTag($tag, $id);
                 }
             }
-            foreach($oldtags as $tag)
-            {
-                if(!in_array($tag,$tagss))
-                {
+            foreach ($oldtags as $tag) {
+                if (!in_array($tag, $tagss)) {
                     $dsql->ExecuteNoneQuery("DELETE FROM `#@__taglist` WHERE aid='$id' AND tag LIKE '$tag' ");
                     $dsql->ExecuteNoneQuery("UPDATE `#@__tagindex` SET total=total-1 WHERE tag LIKE '$tag' ");
-                }
-                else
-                {
+                } else {
                     $dsql->ExecuteNoneQuery("UPDATE `#@__taglist` SET `arcrank` = '$arcrank', `typeid` = '$typeid' WHERE tag LIKE '$tag' ");
                 }
             }
         }
     }
 }
-
 
 /**
  *  插入Tags
@@ -231,23 +220,19 @@ if ( ! function_exists('UpIndexKey'))
  * @param     int  $aid  文档AID
  * @return    void
  */
-if ( ! function_exists('InsertTags'))
-{
+if (!function_exists('InsertTags')) {
     function InsertTags($tag, $aid)
     {
-        $tags = explode(',',$tag);
-        foreach($tags as $tag)
-        {
+        $tags = explode(',', $tag);
+        foreach ($tags as $tag) {
             $tag = trim($tag);
-            if(isset($tag[20]) || $tag!=stripslashes($tag))
-            {
+            if (isset($tag[20]) || $tag != stripslashes($tag)) {
                 continue;
             }
-            InsertOneTag($tag,$aid);
+            InsertOneTag($tag, $aid);
         }
     }
 }
-
 
 /**
  *  插入一个tag
@@ -257,39 +242,31 @@ if ( ! function_exists('InsertTags'))
  * @param     int  $aid  文档AID
  * @return    void
  */
-if ( ! function_exists('InsertOneTag'))
-{
+if (!function_exists('InsertOneTag')) {
     function InsertOneTag($tag, $aid)
     {
-        global $typeid,$arcrank,$dsql;
+        global $typeid, $arcrank, $dsql;
         $tag = trim($tag);
-        if($tag == '')
-        {
+        if ($tag == '') {
             return '';
         }
-        if(empty($typeid))
-        {
+        if (empty($typeid)) {
             $typeid = 0;
         }
-        if(empty($arcrank))
-        {
+        if (empty($arcrank)) {
             $arcrank = 0;
         }
         $rs = false;
         $addtime = time();
         $row = $dsql->GetOne("SELECT * FROM `#@__tagindex` WHERE tag LIKE '$tag' ");
-        if(!is_array($row))
-        {
+        if (!is_array($row)) {
             $rs = $dsql->ExecuteNoneQuery(" INSERT INTO `#@__tagindex`(`tag`,`typeid`,`count`,`total`,`weekcc`,`monthcc`,`weekup`,`monthup`,`addtime`) VALUES('$tag','$typeid','0','1','0','0','$addtime','$addtime','$addtime'); ");
             $tid = $dsql->GetLastID();
-        }
-        else
-        {
+        } else {
             $rs = $dsql->ExecuteNoneQuery(" UPDATE `#@__tagindex` SET total=total+1,addtime=$addtime WHERE tag LIKE '$tag' ");
             $tid = $row['id'];
         }
-        if($rs)
-        {
+        if ($rs) {
             $dsql->ExecuteNoneQuery("INSERT INTO `#@__taglist`(`tid`,`aid`,`arcrank`,`typeid` , `tag`) VALUES('$tid','$aid','$arcrank','$typeid' , '$tag'); ");
         }
     }

@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEINC')) exit('Request Error!');
+<?php if (!defined('DEDEINC')) {exit("Request Error!");}
 /**
  * 广告调用
  *
@@ -8,7 +8,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
+
 /*>>dede>>
 <name>广告标签</name>
 <type>全局标记</type>
@@ -18,20 +18,20 @@
 {dede:myad name=''/}
 </demo>
 <attributes>
-    <iterm>typeid:投放范围,0为全站</iterm> 
-    <iterm>name:广告标识</iterm>
-</attributes> 
+<iterm>typeid:投放范围,0为全站</iterm>
+<iterm>name:广告标识</iterm>
+</attributes>
 >>dede>>*/
- 
-require_once(DEDEINC.'/taglib/mytag.lib.php');
+
+require_once DEDEINC . '/taglib/mytag.lib.php';
 
 function lib_myad(&$ctag, &$refObj)
 {
     $attlist = "typeid|0,name|";
-    FillAttsDefault($ctag->CAttribute->Items,$attlist);
+    FillAttsDefault($ctag->CAttribute->Items, $attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
 
     $body = lib_GetMyTagT($refObj, $typeid, $name, '#@__myad');
-    
+
     return $body;
 }

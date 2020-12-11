@@ -145,4 +145,3 @@ $cfg_title_site = 'N';
 $cfg_mysql_type = 'mysqli';
 $cfg_memcache_enable = 'N';
 $cfg_sphinx_article = 'N';
-?>

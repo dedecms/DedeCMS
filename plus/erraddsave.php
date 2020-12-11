@@ -9,23 +9,22 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/../include/common.inc.php");
-require_once(DEDEINC.'/memberlogin.class.php');
+require_once dirname(__FILE__) . "/../include/common.inc.php";
+require_once DEDEINC . '/memberlogin.class.php';
 
-$dopost = isset($dopost)? $dopost : "";
-$aid = isset($aid)? intval($aid) : 0;
+$dopost = isset($dopost) ? $dopost : "";
+$aid = isset($aid) ? intval($aid) : 0;
 if (empty($aid)) {
     die(" Request Error! ");
 }
-if($dopost == "saveedit")
-{
+if ($dopost == "saveedit") {
     $cfg_ml = new MemberLogin();
     $title = HtmlReplace($title);
-    $format = isset($format)? $format : "";
+    $format = isset($format) ? $format : "";
     $type = isset($type) && is_numeric($type) ? $type : 0;
     $mid = isset($cfg_ml->M_ID) ? $cfg_ml->M_ID : 0;
-    $err = trimMsg(cn_substr(RemoveXSS($err),2000),1);
-    $oktxt = trimMsg(cn_substr(RemoveXSS($erradd),2000),1);
+    $err = trimMsg(cn_substr(RemoveXSS($err), 2000), 1);
+    $oktxt = trimMsg(cn_substr(RemoveXSS($erradd), 2000), 1);
     $time = time();
     $query = "INSERT INTO `#@__erradd`(aid,mid,title,type,errtxt,oktxt,sendtime)
                   VALUES ('$aid','$mid','$title','$type','$err','$oktxt','$time'); ";
@@ -36,9 +35,9 @@ if($dopost == "saveedit")
             "data" => "ok",
         ));
     } else {
-        ShowMsg("谢谢您对本网站的支持，我们会尽快处理您的建议！","javascript:window.close();");
+        ShowMsg("谢谢您对本网站的支持，我们会尽快处理您的建议！", "javascript:window.close();");
     }
-    
+
     exit();
 } else {
     die(" Request undefined ");

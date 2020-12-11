@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
 /**
  * 文件管理逻辑类
  *
@@ -10,15 +10,15 @@
  */
 class FileManagement
 {
-    var $baseDir="";
-    var $activeDir="";
+    public $baseDir = "";
+    public $activeDir = "";
 
     //是否允许文件管理器删除目录；
     //默认为不允许 0 ,如果希望可能管理整个目录,请把值设为 1 ；
-    var $allowDeleteDir=0;
+    public $allowDeleteDir = 0;
 
     //初始化系统
-    function Init()
+    public function Init()
     {
         global $cfg_basedir, $activepath;
         $this->baseDir = $cfg_basedir;
@@ -26,33 +26,29 @@ class FileManagement
     }
 
     //更改文件名
-    function RenameFile($oldname,$newname)
+    public function RenameFile($oldname, $newname)
     {
-        $oldname = $this->baseDir.$this->activeDir."/".$oldname;
-        $newname = $this->baseDir.$this->activeDir."/".$newname;
-        if(($newname!=$oldname) && is_writable($oldname))
-        {
-            rename($oldname,$newname);
+        $oldname = $this->baseDir . $this->activeDir . "/" . $oldname;
+        $newname = $this->baseDir . $this->activeDir . "/" . $newname;
+        if (($newname != $oldname) && is_writable($oldname)) {
+            rename($oldname, $newname);
         }
-        ShowMsg("成功更改一个文件名！","file_manage_main.php?activepath=".$this->activeDir);
+        ShowMsg("成功更改一个文件名！", "file_manage_main.php?activepath=" . $this->activeDir);
         return 0;
     }
 
     //创建新目录
-    function NewDir($dirname)
+    public function NewDir($dirname)
     {
         $newdir = $dirname;
-        $dirname = $this->baseDir.$this->activeDir."/".$dirname;
-        if(is_writable($this->baseDir.$this->activeDir))
-        {
-            MkdirAll($dirname,$GLOBALS['cfg_dir_purview']);
+        $dirname = $this->baseDir . $this->activeDir . "/" . $dirname;
+        if (is_writable($this->baseDir . $this->activeDir)) {
+            MkdirAll($dirname, $GLOBALS['cfg_dir_purview']);
             CloseFtp();
-            ShowMsg("成功创建一个新目录！","file_manage_main.php?activepath=".$this->activeDir."/".$newdir);
+            ShowMsg("成功创建一个新目录！", "file_manage_main.php?activepath=" . $this->activeDir . "/" . $newdir);
             return 1;
-        }
-        else
-        {
-            ShowMsg("创建新目录失败，因为这个位置不允许写入！","file_manage_main.php?activepath=".$this->activeDir);
+        } else {
+            ShowMsg("创建新目录失败，因为这个位置不允许写入！", "file_manage_main.php?activepath=" . $this->activeDir);
             return 0;
         }
     }
@@ -65,43 +61,33 @@ class FileManagement
      * @param     string  $mpath  路径
      * @return    string
      */
-    function MoveFile($mfile, $mpath)
+    public function MoveFile($mfile, $mpath)
     {
-        if($mpath!="" && !preg_match("#\.\.#", $mpath))
-        {
-            $oldfile = $this->baseDir.$this->activeDir."/$mfile";
-            $mpath = str_replace("\\","/",$mpath);
+        if ($mpath != "" && !preg_match("#\.\.#", $mpath)) {
+            $oldfile = $this->baseDir . $this->activeDir . "/$mfile";
+            $mpath = str_replace("\\", "/", $mpath);
             $mpath = preg_replace("#\/{1,}#", "/", $mpath);
-            if(!preg_match("#^/#", $mpath))
-            {
-                $mpath = $this->activeDir."/".$mpath;
+            if (!preg_match("#^/#", $mpath)) {
+                $mpath = $this->activeDir . "/" . $mpath;
             }
-            $truepath = $this->baseDir.$mpath;
-            if(is_readable($oldfile) && is_readable($truepath) && is_writable($truepath))
-            {
-                if(is_dir($truepath))
-                {
-                    copy($oldfile, $truepath."/$mfile");
-                }
-                else
-                {
+            $truepath = $this->baseDir . $mpath;
+            if (is_readable($oldfile) && is_readable($truepath) && is_writable($truepath)) {
+                if (is_dir($truepath)) {
+                    copy($oldfile, $truepath . "/$mfile");
+                } else {
                     MkdirAll($truepath, $GLOBALS['cfg_dir_purview']);
                     CloseFtp();
-                    copy($oldfile,$truepath."/$mfile");
+                    copy($oldfile, $truepath . "/$mfile");
                 }
                 unlink($oldfile);
-                ShowMsg("成功移动文件！","file_manage_main.php?activepath=$mpath",0,1000);
+                ShowMsg("成功移动文件！", "file_manage_main.php?activepath=$mpath", 0, 1000);
                 return 1;
-            }
-            else
-            {
-                ShowMsg("移动文件 $oldfile -&gt; $truepath/$mfile 失败，可能是某个位置权限不足！","file_manage_main.php?activepath=$mpath",0,1000);
+            } else {
+                ShowMsg("移动文件 $oldfile -&gt; $truepath/$mfile 失败，可能是某个位置权限不足！", "file_manage_main.php?activepath=$mpath", 0, 1000);
                 return 0;
             }
-        }
-        else
-        {
-            ShowMsg("对不起，你移动的路径不合法！","-1",0,5000);
+        } else {
+            ShowMsg("对不起，你移动的路径不合法！", "-1", 0, 5000);
             return 0;
         }
     }
@@ -111,25 +97,18 @@ class FileManagement
      *
      * @param unknown_type $indir
      */
-    function RmDirFiles($indir)
+    public function RmDirFiles($indir)
     {
-        if(!is_dir($indir))
-        {
-            return ;
+        if (!is_dir($indir)) {
+            return;
         }
         $dh = dir($indir);
-        while($filename = $dh->read())
-        {
-            if($filename == "." || $filename == "..")
-            {
+        while ($filename = $dh->read()) {
+            if ($filename == "." || $filename == "..") {
                 continue;
-            }
-            else if(is_file("$indir/$filename"))
-            {
+            } else if (is_file("$indir/$filename")) {
                 @unlink("$indir/$filename");
-            }
-            else
-            {
+            } else {
                 $this->RmDirFiles("$indir/$filename");
             }
         }
@@ -144,22 +123,16 @@ class FileManagement
      * @param unknown_type $fileexp
      * @param unknown_type $filearr
      */
-    function GetMatchFiles($indir, $fileexp, &$filearr)
+    public function GetMatchFiles($indir, $fileexp, &$filearr)
     {
         $dh = dir($indir);
-        while($filename = $dh->read())
-        {
-            $truefile = $indir.'/'.$filename;
-            if($filename == "." || $filename == "..")
-            {
+        while ($filename = $dh->read()) {
+            $truefile = $indir . '/' . $filename;
+            if ($filename == "." || $filename == "..") {
                 continue;
-            }
-            else if(is_dir($truefile))
-            {
+            } else if (is_dir($truefile)) {
                 $this->GetMatchFiles($truefile, $fileexp, $filearr);
-            }
-            else if(preg_match("/\.(".$fileexp.")/i",$filename))
-            {
+            } else if (preg_match("/\.(" . $fileexp . ")/i", $filename)) {
                 $filearr[] = $truefile;
             }
         }
@@ -172,28 +145,24 @@ class FileManagement
      * @param unknown_type $filename
      * @return unknown
      */
-    function DeleteFile($filename)
+    public function DeleteFile($filename)
     {
-        $filename = $this->baseDir.$this->activeDir."/$filename";
-        if(is_file($filename))
-        {
-            @unlink($filename); $t="文件";
-        }
-        else
-        {
+        $filename = $this->baseDir . $this->activeDir . "/$filename";
+        if (is_file($filename)) {
+            @unlink($filename);
+            $t = "文件";
+        } else {
             $t = "目录";
-            if($this->allowDeleteDir==1)
-            {
+            if ($this->allowDeleteDir == 1) {
                 $this->RmDirFiles($filename);
-            } else
-            {
+            } else {
                 // 完善用户体验，by:sumic
-                ShowMsg("系统禁止删除".$t."！","file_manage_main.php?activepath=".$this->activeDir);
+                ShowMsg("系统禁止删除" . $t . "！", "file_manage_main.php?activepath=" . $this->activeDir);
                 exit;
             }
-            
+
         }
-        ShowMsg("成功删除一个".$t."！","file_manage_main.php?activepath=".$this->activeDir);
+        ShowMsg("成功删除一个" . $t . "！", "file_manage_main.php?activepath=" . $this->activeDir);
         return 0;
     }
 }
@@ -201,46 +170,39 @@ class FileManagement
 //目录文件大小检测类
 class SpaceUse
 {
-    var $totalsize=0;
+    public $totalsize = 0;
 
-    function checksize($indir)
+    public function checksize($indir)
     {
-        $dh=dir($indir);
-        while($filename=$dh->read())
-        {
-            if(!preg_match("#^\.#", $filename))
-            {
-                if(is_dir("$indir/$filename"))
-                {
+        $dh = dir($indir);
+        while ($filename = $dh->read()) {
+            if (!preg_match("#^\.#", $filename)) {
+                if (is_dir("$indir/$filename")) {
                     $this->checksize("$indir/$filename");
-                }
-                else
-                {
-                    $this->totalsize=$this->totalsize + filesize("$indir/$filename");
+                } else {
+                    $this->totalsize = $this->totalsize + filesize("$indir/$filename");
                 }
             }
         }
     }
 
-    function setkb($size)
+    public function setkb($size)
     {
-        $size=$size/1024;
+        $size = $size / 1024;
 
-        if($size>0)
-        {
-            list($t1,$t2)=explode(".",$size);
-            $size=$t1.".".substr($t2,0,1);
+        if ($size > 0) {
+            list($t1, $t2) = explode(".", $size);
+            $size = $t1 . "." . substr($t2, 0, 1);
         }
         return $size;
     }
 
-    function setmb($size)
+    public function setmb($size)
     {
-        $size=$size/1024/1024;
-        if($size>0)
-        {
-            list($t1,$t2)=explode(".",$size);
-            $size=$t1.".".substr($t2,0,2);
+        $size = $size / 1024 / 1024;
+        if ($size > 0) {
+            list($t1, $t2) = explode(".", $size);
+            $size = $t1 . "." . substr($t2, 0, 2);
         }
         return $size;
     }

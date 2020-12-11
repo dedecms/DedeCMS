@@ -1,7 +1,4 @@
-<?php
-if(!defined('DEDEINC')){
-    exit("Request Error!");
-}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");}
 /**
  * 这仅是一个演示标签
  *
@@ -11,7 +8,7 @@ if(!defined('DEDEINC')){
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
+
 /*>>dede>>
 <name>演示标签</name>
 <type>全局标记</type>
@@ -21,24 +18,24 @@ if(!defined('DEDEINC')){
 {dede:demotag /}
 </demo>
 <attributes>
-</attributes> 
+</attributes>
 >>dede>>*/
- 
-function lib_demotag(&$ctag,&$refObj)
+
+function lib_demotag(&$ctag, &$refObj)
 {
-    global $dsql,$envs;
-    
+    global $dsql, $envs;
+
     //属性处理
-    $attlist="row|12,titlelen|24";
-    FillAttsDefault($ctag->CAttribute->Items,$attlist);
+    $attlist = "row|12,titlelen|24";
+    FillAttsDefault($ctag->CAttribute->Items, $attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
     $revalue = '';
-    
+
     //你需编写的代码，不能用echo之类语法，把最终返回值传给$revalue
     //------------------------------------------------------
-    
+
     $revalue = 'Hello Word!';
-    
+
     //------------------------------------------------------
     return $revalue;
 }

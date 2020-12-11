@@ -1,18 +1,15 @@
-<?php
-
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
 /**
  * 文档验证
- * 
+ *
  * @version        $Id: archives_check.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-if (!defined('DEDEMEMBER'))    exit('dedecms');
-
-include_once(DEDEINC . '/image.func.php');
-include_once(DEDEINC . '/oxwindow.class.php');
+include_once DEDEINC . '/image.func.php';
+include_once DEDEINC . '/oxwindow.class.php';
 
 $svali = GetCkVdValue();
 if (preg_match("/3/", $safe_gdopen)) {
@@ -49,7 +46,7 @@ $query = "Select tp.ispart,tp.channeltype,tp.issend,ch.issend as cissend,ch.send
 $cInfos = $dsql->GetOne($query);
 
 //检测栏目是否有投稿权限
-if ($cInfos['issend'] != 1 || $cInfos['ispart'] != 0  || $cInfos['channeltype'] != $channelid || $cInfos['cissend'] != 1) {
+if ($cInfos['issend'] != 1 || $cInfos['ispart'] != 0 || $cInfos['channeltype'] != $channelid || $cInfos['cissend'] != 1) {
     ShowMsg("你所选择的栏目不支持投稿！", "-1");
     exit();
 }
@@ -83,8 +80,11 @@ $money = 0;
 $flag = $shorttitle = $color = $source = '';
 $sortrank = $senddate = $pubdate = time();
 $title = cn_substrR(HtmlReplace($title, 1), $cfg_title_maxlen);
-$writer =  cn_substrR(HtmlReplace($writer, 1), 20);
-if (empty($description)) $description = '';
+$writer = cn_substrR(HtmlReplace($writer, 1), 20);
+if (empty($description)) {
+    $description = '';
+}
+
 $description = cn_substrR(HtmlReplace($description, 1), 250);
 $keywords = cn_substrR(HtmlReplace($tags, 1), 30);
 $mid = $cfg_ml->M_ID;

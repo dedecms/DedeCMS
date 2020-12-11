@@ -1,14 +1,14 @@
-<?php   if(!defined('DEDEMEMBER')) exit("dedecms");
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
 /**
  * 文档操作处理函数
- * 
+ *
  * @version        $Id: inc_batchup.php 1 13:52 2010年7月9日 $
  * @package        DedeCMS.Member
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(DEDEINC."/channelunit.func.php");
+require_once DEDEINC . "/channelunit.func.php";
 
 /**
  *  删除文档
@@ -19,7 +19,7 @@ require_once(DEDEINC."/channelunit.func.php");
  */
 function DelArc($aid)
 {
-    global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir;
+    global $dsql, $cfg_cookie_encode, $cfg_ml, $cfg_upload_switch, $cfg_medias_dir;
     $aid = intval($aid);
 
     //读取文档信息
@@ -32,21 +32,17 @@ function DelArc($aid)
           LEFT JOIN `#@__channeltype` ch ON ch.id=arc.channel
         WHERE arc.id='$aid' ";
     $arcRow = $dsql->GetOne($arcQuery);
-    if(!is_array($arcRow))
-    {
+    if (!is_array($arcRow)) {
         return false;
     }
 
     //删除数据库的内容
     $dsql->ExecuteNoneQuery(" DELETE FROM `#@__arctiny` WHERE id='$aid' ");
-    if($arcRow['addtable']!='')
-    {
+    if ($arcRow['addtable'] != '') {
         //判断删除文章附件变量是否开启；
-        if($cfg_upload_switch == 'Y')
-        {
+        if ($cfg_upload_switch == 'Y') {
             //判断文章属性；
-            switch($arcRow['nid'])
-            {
+            switch ($arcRow['nid']) {
                 case "image":
                     $nid = "imgurls";
                     break;
@@ -63,34 +59,33 @@ function DelArc($aid)
                     $nid = "";
                     break;
             }
-            if($nid !="")
-            {
-                $row = $dsql->GetOne("SELECT $nid FROM ".$arcRow['addtable']." WHERE aid = '$aid'");
+            if ($nid != "") {
+                $row = $dsql->GetOne("SELECT $nid FROM " . $arcRow['addtable'] . " WHERE aid = '$aid'");
                 $licp = $dsql->GetOne("SELECT litpic FROM `#@__archives` WHERE id = '$aid'");
-                if($licp['litpic'] != "")
-                {
-                    $litpic = DEDEROOT.$licp['litpic'];
-                    if(file_exists($litpic) && !is_dir($litpic))
-                    {
+                if ($licp['litpic'] != "") {
+                    $litpic = DEDEROOT . $licp['litpic'];
+                    if (file_exists($litpic) && !is_dir($litpic)) {
                         @unlink($litpic);
                     }
                 }
-                $tmpname = '/(\\'.$cfg_medias_dir.'.+?)(\"| )/';
+                $tmpname = '/(\\' . $cfg_medias_dir . '.+?)(\"| )/';
 
                 //取出文章附件；
                 preg_match_all("$tmpname", $row["$nid"], $delname);
 
                 //移出重复附件；
                 $delname = array_unique($delname['1']);
-                foreach ($delname as $var)
-                {
+                foreach ($delname as $var) {
                     $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE url='$var' AND mid = '$cfg_ml->M_ID'");
-                    $upname = DEDEROOT.$var;
-                    if(file_exists($upname) && !is_dir($upname)) @unlink($upname);
+                    $upname = DEDEROOT . $var;
+                    if (file_exists($upname) && !is_dir($upname)) {
+                        @unlink($upname);
+                    }
+
                 }
             }
         }
-        $dsql->ExecuteNoneQuery("DELETE FROM `".$arcRow['addtable']."` where aid='$aid' ");
+        $dsql->ExecuteNoneQuery("DELETE FROM `" . $arcRow['addtable'] . "` where aid='$aid' ");
     }
     $dsql->ExecuteNoneQuery(" DELETE FROM `#@__archives` where id='$aid' ");
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` where aid='$aid'");
@@ -98,34 +93,37 @@ function DelArc($aid)
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__taglist ` where aid='$aid'");
 
     //删除HTML
-    if($arcRow['ismake']==-1||$arcRow['arcrank']!=0 ||$arcRow['typeid']==0||$arcRow['money']>0)
-    {
-        return TRUE;
+    if ($arcRow['ismake'] == -1 || $arcRow['arcrank'] != 0 || $arcRow['typeid'] == 0 || $arcRow['money'] > 0) {
+        return true;
     }
-    $arcurl = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],$arcRow['title'],$arcRow['ismake'],
-    $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],$arcRow['money'],$arcRow['filename']);
-    if(!preg_match("#\?#", $arcurl))
-    {
-        $htmlfile = GetTruePath().str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
-        if(file_exists($htmlfile) && !is_dir($htmlfile))
-        {
+    $arcurl = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'],
+        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']);
+    if (!preg_match("#\?#", $arcurl)) {
+        $htmlfile = GetTruePath() . str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
+        if (file_exists($htmlfile) && !is_dir($htmlfile)) {
             @unlink($htmlfile);
             $arcurls = explode(".", $htmlfile);
-            $sname = $arcurls[count($arcurls)-1];
+            $sname = $arcurls[count($arcurls) - 1];
             $fname = preg_replace("#(\.$sname)$#", "", $htmlfile);
-            for($i=2; $i<=100; $i++)
-            {
-                $htmlfile = $fname."_$i".".".$sname;
-                if(file_exists($htmlfile) && !is_dir($htmlfile)) @unlink($htmlfile);
-                else break;
+            for ($i = 2; $i <= 100; $i++) {
+                $htmlfile = $fname . "_$i" . "." . $sname;
+                if (file_exists($htmlfile) && !is_dir($htmlfile)) {
+                    @unlink($htmlfile);
+                } else {
+                    break;
+                }
+
             }
         }
     }
 
     //删除文本文件
-    $filenameh = DEDEDATA."/textdata/".(ceil($aid/5000))."/{$aid}-".substr(md5($cfg_cookie_encode),0,16).".txt";
-    if(is_file($filename)) @unlink($filename);
-    return TRUE;
+    $filenameh = DEDEDATA . "/textdata/" . (ceil($aid / 5000)) . "/{$aid}-" . substr(md5($cfg_cookie_encode), 0, 16) . ".txt";
+    if (is_file($filename)) {
+        @unlink($filename);
+    }
+
+    return true;
 }
 
 /**
@@ -137,7 +135,7 @@ function DelArc($aid)
  */
 function DelArcSg($aid)
 {
-    global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir;
+    global $dsql, $cfg_cookie_encode, $cfg_ml, $cfg_upload_switch, $cfg_medias_dir;
     $aid = intval($aid);
 
     //读取文档信息
@@ -152,45 +150,44 @@ function DelArcSg($aid)
         where arc.id='$aid' ";
     $arcRow = $dsql->GetOne($arcQuery);
 
-    if(!is_array($arcRow))
-    {
-        return FALSE;
+    if (!is_array($arcRow)) {
+        return false;
     }
 
     //删除数据库的内容
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` where id='$aid' ");
-    $dsql->ExecuteNoneQuery("DELETE FROM `".$arcRow['addtable']."` where aid='$aid' ");
+    $dsql->ExecuteNoneQuery("DELETE FROM `" . $arcRow['addtable'] . "` where aid='$aid' ");
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` where aid='$aid'");
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_stow` where aid='$aid'");
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__taglist ` where aid='$aid'");
 
     //删除HTML
-    if($arcRow['arcrank']!=0 ||$arcRow['typeid']==0)
-    {
-        return TRUE;
+    if ($arcRow['arcrank'] != 0 || $arcRow['typeid'] == 0) {
+        return true;
     }
-    $arcurl = GetFileUrl($arcRow['id'],$arcRow['typeid'],$arcRow['senddate'],'',1,
-              $arcRow['arcrank'],$arcRow['namerule'],$arcRow['typedir'],0,'');
-    if(!preg_match("#\?#", $arcurl))
-    {
-        $htmlfile = GetTruePath().str_replace($GLOBALS['cfg_basehost'],'',$arcurl);
-        if(file_exists($htmlfile) && !is_dir($htmlfile))
-        {
-             @unlink($htmlfile);
-             $arcurls = explode(".", $htmlfile);
-             $sname = $arcurls[count($arcurls)-1];
-             $fname = preg_replace("#(\.$sname)$#", "", $htmlfile);
-             for($i=2;$i<=100;$i++)
-             {
-                   $htmlfile = $fname."_$i".".".$sname;
-                   if(file_exists($htmlfile) && !is_dir($htmlfile)) @unlink($htmlfile);
-                   else break;
-             }
+    $arcurl = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], '', 1,
+        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], 0, '');
+    if (!preg_match("#\?#", $arcurl)) {
+        $htmlfile = GetTruePath() . str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
+        if (file_exists($htmlfile) && !is_dir($htmlfile)) {
+            @unlink($htmlfile);
+            $arcurls = explode(".", $htmlfile);
+            $sname = $arcurls[count($arcurls) - 1];
+            $fname = preg_replace("#(\.$sname)$#", "", $htmlfile);
+            for ($i = 2; $i <= 100; $i++) {
+                $htmlfile = $fname . "_$i" . "." . $sname;
+                if (file_exists($htmlfile) && !is_dir($htmlfile)) {
+                    @unlink($htmlfile);
+                } else {
+                    break;
+                }
+
+            }
         }
     }
     //删除文本文件
-    $filenameh = DEDEDATA."/textdata/".(ceil($aid/5000))."/{$aid}-".substr(md5($cfg_cookie_encode),0,16).".txt";
-    return TRUE;
+    $filenameh = DEDEDATA . "/textdata/" . (ceil($aid / 5000)) . "/{$aid}-" . substr(md5($cfg_cookie_encode), 0, 16) . ".txt";
+    return true;
 }
 
 /**
