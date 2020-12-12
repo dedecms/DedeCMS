@@ -4,23 +4,25 @@
  *
  * @version        $Id: article_coonepage_rule.php 1 14:12 2010年7月12日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
-require_once(DEDEINC."/datalistcp.class.php");
-setcookie("ENV_GOBACK_URL",$dedeNowurl,time()+3600,"/");
-if(empty($action)) $action = '';
+require_once dirname(__FILE__) . "/config.php";
+require_once DEDEINC . "/datalistcp.class.php";
+setcookie("ENV_GOBACK_URL", $dedeNowurl, time() + 3600, "/");
+if (empty($action)) {
+    $action = '';
+}
 
 /*------
 function _AddNote(){ }
 -------*/
-if($action == 'add')
-{
+if ($action == 'add') {
     $row = $dsql->GetOne("SELECT * FROM `#@__co_onepage` WHERE url LIKE '$url' ");
-    if(is_array($row))
-    {
+    if (is_array($row)) {
         echo "系统已经存在这个网址的条目！";
     } else {
         $query = " INSERT INTO `#@__co_onepage`(`url`,`title`,`issource`,`lang`,`rule`) Values('$url','$title','$issource','$lang','$rule'); ";
@@ -31,14 +33,10 @@ if($action == 'add')
 /*------
 function _DelNote(){ }
 -------*/
-else if($action == 'del')
-{
-    if(!preg_match("#,#", $ids))
-    {
+else if ($action == 'del') {
+    if (!preg_match("#,#", $ids)) {
         $query = "DELETE FROM `#@__co_onepage` WHERE id='$ids' ";
-    }
-    else
-    {
+    } else {
         $query = "DELETE FROM `#@__co_onepage` WHERE id IN($ids) ";
     }
     $dsql->ExecuteNonequery($query);
@@ -47,8 +45,7 @@ else if($action == 'del')
 /*------
 function _EditNote(){ }
 -------*/
-else if($action == 'editsave')
-{
+else if ($action == 'editsave') {
     $query = "UPDATE `#@__co_onepage` SET `url`='$url',`title`='$title',`issource`='$issource',`lang`='$lang',`rule`='$rule' WHERE id='$id' ";
     $dsql->ExecuteNonequery($query);
     echo $dsql->GetError();
@@ -56,11 +53,10 @@ else if($action == 'editsave')
 /*------
 function _EditNoteLoad(){ }
 -------*/
-else if($action == 'editload')
-{
+else if ($action == 'editload') {
     $row = $dsql->GetOne("SELECT * FROM `#@__co_onepage` WHERE id='$id' ");
     AjaxHead();
-?>
+    ?>
 <form name='addform' action='article_coonepage_rule.php' method='post'>
 <input type='hidden' name='id' value='<?php echo $id; ?>' />
 <input type='hidden' name='action' value='editsave' />
@@ -73,18 +69,18 @@ else if($action == 'editload')
   <tr>
     <td height="30">原内容编码：</td>
     <td colspan="2">
-      <input type="radio" name="lang" value="gb2312" <?php echo ($row['lang']=='gb2312' ? ' checked="checked" ' : ''); ?> />
+      <input type="radio" name="lang" value="gb2312" <?php echo ($row['lang'] == 'gb2312' ? ' checked="checked" ' : ''); ?> />
       GB2312/GBK
-      <input type="radio" name="lang" value="utf-8" <?php echo ($row['lang']=='utf-8' ? ' checked="checked" ' : ''); ?> />
+      <input type="radio" name="lang" value="utf-8" <?php echo ($row['lang'] == 'utf-8' ? ' checked="checked" ' : ''); ?> />
       UTF-8
     </td>
   </tr>
   <tr>
     <td height="30">用作文章来源：</td>
     <td colspan="2">
-        <input type="radio" name="issource" value="0" <?php echo ($row['issource']==0 ? ' checked="checked" ' : ''); ?> />
+        <input type="radio" name="issource" value="0" <?php echo ($row['issource'] == 0 ? ' checked="checked" ' : ''); ?> />
       否
-      <input name="issource" type="radio" value="1" <?php echo ($row['issource']==1 ? ' checked="checked" ' : ''); ?> />
+      <input name="issource" type="radio" value="1" <?php echo ($row['issource'] == 1 ? ' checked="checked" ' : ''); ?> />
       是
     </td>
   </tr>
@@ -111,13 +107,13 @@ else if($action == 'editload')
   </tr>
   <tr>
     <td height="32">&nbsp;</td>
-    <td colspan="2"><input class="nbt" type="submit" name="Submit" value="保存规则" />　
+    <td colspan="2"><input class="nbt" type="submit" name="Submit" value="保存规则" />
     <input type="reset" class="nbt" name="Submit2" value="重置" /></td>
   </tr>
 </table>
 </form>
 <?php
-    exit();
+exit();
 } //loadedit
 /*---------------
 function _ShowLoad(){ }
@@ -125,6 +121,6 @@ function _ShowLoad(){ }
 $sql = "";
 $sql = "SELECT id,url,title,lang,issource FROM `#@__co_onepage` ORDER BY id DESC";
 $dlist = new DataListCP();
-$dlist->SetTemplate(DEDEADMIN."/templets/article_coonepage_rule.htm");
+$dlist->SetTemplate(DEDEADMIN . "/templets/article_coonepage_rule.htm");
 $dlist->SetSource($sql);
 $dlist->Display();

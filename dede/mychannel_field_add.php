@@ -4,43 +4,43 @@
  *
  * @version        $Id: mychannel_field_add.php 1 15:07 2010年7月20日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_New');
-require_once(DEDEADMIN."/inc/inc_admin_channel.php");
-require_once(DEDEINC."/dedetag.class.php");
+require_once DEDEADMIN . "/inc/inc_admin_channel.php";
+require_once DEDEINC . "/dedetag.class.php";
 
-if(empty($action)) $action = '';
+if (empty($action)) {
+    $action = '';
+}
+
 $mysql_version = $dsql->GetVersion();
 
 /*----------------------
 function Save()
 ---------------------*/
-if($action=='save')
-{
+if ($action == 'save') {
     //修改字段配置信息
     $dfvalue = trim($vdefault);
-    $isnull = ($isnull==1 ? "true" : "false");
+    $isnull = ($isnull == 1 ? "true" : "false");
     $mxlen = $maxlength;
-    
-    if(preg_match("#^(select|radio|checkbox)$#i", $dtype))
-    {
-        if(!preg_match("#,#", $dfvalue))
-        {
-            ShowMsg("你设定了字段为 {$dtype} 类型，必须在默认值中指定元素列表，如：'a,b,c' ","-1");
+
+    if (preg_match("#^(select|radio|checkbox)$#i", $dtype)) {
+        if (!preg_match("#,#", $dfvalue)) {
+            ShowMsg("你设定了字段为 {$dtype} 类型，必须在默认值中指定元素列表，如：'a,b,c' ", "-1");
             exit();
         }
     }
-    
-    if($dtype=='stepselect')
-    {
+
+    if ($dtype == 'stepselect') {
         $arr = $dsql->GetOne("SELECT * FROM `#@__stepselect` WHERE egroup='$fieldname' ");
-        if(!is_array($arr))
-        {
-            ShowMsg("你设定了字段为联动类型，但系统中没找到与你定义的字段名相同的联动组名!","-1");
+        if (!is_array($arr)) {
+            ShowMsg("你设定了字段为联动类型，但系统中没找到与你定义的字段名相同的联动组名!", "-1");
             exit();
         }
     }
@@ -58,44 +58,37 @@ if($action=='save')
     $ntabsql = $fieldinfos[0];
     $buideType = $fieldinfos[1];
     $rs = $dsql->ExecuteNoneQuery(" ALTER TABLE `$trueTable` ADD  $ntabsql ");
-    if(!$rs)
-    {
+    if (!$rs) {
         $gerr = $dsql->GetError();
-        ShowMsg("增加字段失败，错误提示为：".$gerr,"javascript:;");
+        ShowMsg("增加字段失败，错误提示为：" . $gerr, "javascript:;");
         exit();
     }
 
     //检测旧配置信息，并替换为新配置
-    $ok = FALSE;
+    $ok = false;
     $fieldname = strtolower($fieldname);
-    if(is_array($dtp->CTags))
-    {
-        foreach($dtp->CTags as $tagid=>$ctag)
-        {
-            if($fieldname == strtolower($ctag->GetName()))
-            {
-                $dtp->Assign($tagid, stripslashes($fieldstring), FALSE);
+    if (is_array($dtp->CTags)) {
+        foreach ($dtp->CTags as $tagid => $ctag) {
+            if ($fieldname == strtolower($ctag->GetName())) {
+                $dtp->Assign($tagid, stripslashes($fieldstring), false);
                 $ok = true;
                 break;
             }
         }
-        $oksetting = $ok ? $dtp->GetResultNP() : $fieldset."\n".stripslashes($fieldstring);
+        $oksetting = $ok ? $dtp->GetResultNP() : $fieldset . "\n" . stripslashes($fieldstring);
+    } else {
+        $oksetting = $fieldset . "\r\n" . stripslashes($fieldstring);
     }
-    else
-    {
-        $oksetting = $fieldset."\r\n".stripslashes($fieldstring);
-    }
-    
-    $addlist = GetAddFieldList($dtp,$oksetting);
+
+    $addlist = GetAddFieldList($dtp, $oksetting);
     $oksetting = addslashes($oksetting);
     $rs = $dsql->ExecuteNoneQuery("UPDATE `#@__channeltype` SET fieldset='$oksetting',listfields='$addlist' WHERE id='$id' ");
-    if(!$rs)
-    {
+    if (!$rs) {
         $grr = $dsql->GetError();
-        ShowMsg("保存节点配置出错！".$grr, "javascript:;");
+        ShowMsg("保存节点配置出错！" . $grr, "javascript:;");
         exit();
     }
-    
+
     ShowMsg("成功增加一个字段！", "mychannel_edit.php?id={$id}&dopost=edit&openfield=1");
     exit();
 }
@@ -109,13 +102,10 @@ $row = $dsql->GetOne("SELECT '#@__archives' AS maintable,addtable FROM `#@__chan
 $trueTable = $row['addtable'];
 $tabsql = "CREATE TABLE IF NOT EXISTS  `$trueTable`( `aid` int(11) NOT NULL default '0',\r\n `typeid` int(11) NOT NULL default '0',\r\n ";
 
-if($mysql_version < 4.1)
-{
-    $tabsql .= " PRIMARY KEY  (`aid`), KEY `".$trueTable."_index` (`typeid`)\r\n) TYPE=MyISAM; ";
-}
-else
-{
-    $tabsql .= " PRIMARY KEY  (`aid`), KEY `".$trueTable."_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=".$cfg_db_language."; ";
+if ($mysql_version < 4.1) {
+    $tabsql .= " PRIMARY KEY  (`aid`), KEY `" . $trueTable . "_index` (`typeid`)\r\n) TYPE=MyISAM; ";
+} else {
+    $tabsql .= " PRIMARY KEY  (`aid`), KEY `" . $trueTable . "_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=" . $cfg_db_language . "; ";
 }
 
 $dsql->ExecuteNoneQuery($tabsql);
@@ -123,36 +113,32 @@ $dsql->ExecuteNoneQuery($tabsql);
 //检测附加表里含有的字段
 $fields = array();
 
-if(empty($row['maintable'])) $row['maintable'] = '#@__archives';
+if (empty($row['maintable'])) {
+    $row['maintable'] = '#@__archives';
+}
 
 $rs = $dsql->SetQuery("SHOW fields FROM `{$row['maintable']}`");
 $dsql->Execute('a');
-while($nrow = $dsql->GetArray('a', MYSQL_ASSOC))
-{
-    if ( $cfg_dbtype == 'sqlite' )
-    {
+while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+    if ($cfg_dbtype == 'sqlite') {
         $nrow['Field'] = $nrow['name'];
     }
     $fields[strtolower($nrow['Field'])] = 1;
 }
 
 $dsql->Execute("a", "SHOW fields FROM `{$row['addtable']}`");
-while($nrow = $dsql->GetArray('a', MYSQL_ASSOC))
-{
-    if ( $cfg_dbtype == 'sqlite' )
-    {
+while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+    if ($cfg_dbtype == 'sqlite') {
         $nrow['Field'] = $nrow['name'];
     }
-    if(!isset($fields[strtolower($nrow['Field'])]))
-    {
+    if (!isset($fields[strtolower($nrow['Field'])])) {
         $fields[strtolower($nrow['Field'])] = 1;
     }
 }
 
 $f = '';
-foreach($fields as $k=>$v)
-{
-    $f .= ($f=='' ? $k : ' '.$k);
+foreach ($fields as $k => $v) {
+    $f .= ($f == '' ? $k : ' ' . $k);
 }
 
-require_once(DEDEADMIN."/templets/mychannel_field_add.htm");
+require_once DEDEADMIN . "/templets/mychannel_field_add.htm";

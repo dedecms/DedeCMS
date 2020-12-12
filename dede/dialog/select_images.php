@@ -4,57 +4,49 @@
  *
  * @version        $Id: select_images.php 1 9:43 2010年7月8日 $
  * @package        DedeCMS.Dialog
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
-include(DEDEDATA.'/mark/inc_photowatermark_config.php');
-if(empty($activepath))
-{
+require_once dirname(__FILE__) . "/config.php";
+include DEDEDATA . '/mark/inc_photowatermark_config.php';
+if (empty($activepath)) {
     $activepath = '';
 }
-if(empty($imgstick))
-{
+if (empty($imgstick)) {
     $imgstick = '';
 }
-$noeditor = isset($noeditor)? $noeditor : '';
+$noeditor = isset($noeditor) ? $noeditor : '';
 $activepath = str_replace('.', '', $activepath);
 $activepath = preg_replace("#\/{1,}#", '/', $activepath);
-if(strlen($activepath) < strlen($cfg_medias_dir))
-{
+if (strlen($activepath) < strlen($cfg_medias_dir)) {
     $activepath = $cfg_medias_dir;
 }
-$inpath = $cfg_basedir.$activepath;
-$activeurl = '..'.$activepath;
+$inpath = $cfg_basedir . $activepath;
+$activeurl = '..' . $activepath;
 
-
-if(empty($f))
-{
+if (empty($f)) {
     $f = 'form1.picname';
 }
 $f = RemoveXSS($f);
-if(empty($v))
-{
+if (empty($v)) {
     $v = 'picview';
 }
-if(empty($comeback))
-{
+if (empty($comeback)) {
     $comeback = '';
 }
 $addparm = '';
-if (!empty($CKEditor))
-{
-    $addparm = '&CKEditor='.$CKEditor;
+if (!empty($CKEditor)) {
+    $addparm = '&CKEditor=' . $CKEditor;
     $f = $CKEditor;
 }
-if (!empty($CKEditorFuncNum))
-{
-    $addparm .= '&CKEditorFuncNum='.$CKEditorFuncNum;
+if (!empty($CKEditorFuncNum)) {
+    $addparm .= '&CKEditorFuncNum=' . $CKEditorFuncNum;
 }
 
-if (!empty($noeditor))
-{
+if (!empty($noeditor)) {
     $addparm .= '&noeditor=yes';
 }
 ?>
@@ -102,32 +94,32 @@ function ReturnImg(reimg)
 		var fileUrl = reimg;
 		window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
 	}
-	if(window.opener.document.<?php echo $f?> != null)
+	if(window.opener.document.<?php echo $f ?> != null)
 	{
-		window.opener.document.<?php echo $f?>.value=reimg;
-		if(window.opener.document.getElementById('div<?php echo $v?>'))
+		window.opener.document.<?php echo $f ?>.value=reimg;
+		if(window.opener.document.getElementById('div<?php echo $v ?>'))
 	    {
 		 if(TNav()=='IE'){
-			 //window.opener.document.getElementById('div<?php echo $v?>').filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = reimg;
-			 window.opener.document.getElementById('div<?php echo $v?>').src = reimg;
-			 window.opener.document.getElementById('div<?php echo $v?>').style.width = '150px';
-			 window.opener.document.getElementById('div<?php echo $v?>').style.height = '100px';
+			 //window.opener.document.getElementById('div<?php echo $v ?>').filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = reimg;
+			 window.opener.document.getElementById('div<?php echo $v ?>').src = reimg;
+			 window.opener.document.getElementById('div<?php echo $v ?>').style.width = '150px';
+			 window.opener.document.getElementById('div<?php echo $v ?>').style.height = '100px';
 		 }
 		 else
-             window.opener.document.getElementById('div<?php echo $v?>').style.backgroundImage = "url("+reimg+")";
-             
+             window.opener.document.getElementById('div<?php echo $v ?>').style.backgroundImage = "url("+reimg+")";
+
 	  }
-		else if(window.opener.document.getElementById('<?php echo $v?>')){
-			window.opener.document.getElementById('<?php echo $v?>').src = reimg;
+		else if(window.opener.document.getElementById('<?php echo $v ?>')){
+			window.opener.document.getElementById('<?php echo $v ?>').src = reimg;
         }
         // 适配新的缩略图
-        if (window.opener.document.getElementById('litPic')) 
+        if (window.opener.document.getElementById('litPic'))
         {
             window.opener.document.getElementById('litPic').src = reimg;
         }
 		if(document.all) window.opener=true;
 	}
-	
+
     window.close();
 }
 </SCRIPT>
@@ -151,65 +143,73 @@ function ReturnImg(reimg)
 </tr>
 <?php
 $dh = dir($inpath);
-$ty1="";
-$ty2="";
-while($file = $dh->read()) {
+$ty1 = "";
+$ty2 = "";
+while ($file = $dh->read()) {
 
     //-----计算文件大小和创建时间
-    if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
+    if ($file != "." && $file != ".." && !is_dir("$inpath/$file")) {
         $filesize = filesize("$inpath/$file");
         $filesize = $filesize / 1024;
-        if($filesize != "")
-        if($filesize < 0.1){
-            @list($ty1, $ty2) = split("\.", $filesize);
-            $filesize = $ty1.".".substr($ty2, 0, 2);
+        if ($filesize != "") {
+            if ($filesize < 0.1) {
+                @list($ty1, $ty2) = split("\.", $filesize);
+                $filesize = $ty1 . "." . substr($ty2, 0, 2);
+            } else {
+                @list($ty1, $ty2) = split("\.", $filesize);
+                $filesize = $ty1 . "." . substr($ty2, 0, 1);
+            }
         }
-        else{
-            @list($ty1, $ty2) = split("\.", $filesize);
-            $filesize = $ty1.".".substr($ty2, 0, 1);
-        }
+
         $filetime = filemtime("$inpath/$file");
         $filetime = MyDate("Y-m-d H:i:s", $filetime);
     }
 
-    if($file == ".") continue;
-    else if($file == "..")
-    {
-        if($activepath == "") continue;
+    if ($file == ".") {
+        continue;
+    } else if ($file == "..") {
+        if ($activepath == "") {
+            continue;
+        }
+
         $tmp = preg_replace("#[\/][^\/]*$#i", "", $activepath);
         $line = "\n<tr>
    <td class='linerow' colspan='2'>
-   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode($tmp).$addparm."'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
+   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=" . urlencode($tmp) . $addparm . "'><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
    <td colspan='2' class='linerow'> 当前目录:$activepath</td>
    </tr>
    ";
         echo $line;
-    }
-    else if(is_dir("$inpath/$file"))
-    {
-        if(preg_match("#^_(.*)$#i", $file)) continue; #屏蔽FrontPage扩展目录和linux隐蔽目录
-        if(preg_match("#^\.(.*)$#i", $file)) continue;
+    } else if (is_dir("$inpath/$file")) {
+        if (preg_match("#^_(.*)$#i", $file)) {
+            continue;
+        }
+        #屏蔽FrontPage扩展目录和linux隐蔽目录
+        if (preg_match("#^\.(.*)$#i", $file)) {
+            continue;
+        }
+
         $line = "\n<tr>
    <td bgcolor='#F9FBF0' class='linerow' colspan='2'>
-   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=".urlencode("$activepath/$file").$addparm."'><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+   <a href='select_images.php?imgstick=$imgstick&v=$v&f=$f&activepath=" . urlencode("$activepath/$file") . $addparm . "'><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
    <td class='linerow'>　</td>
    <td bgcolor='#F9FBF0' class='linerow'>　</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(".$cfg_imgtype.")#i", $file))
-    {
+    } else if (preg_match("#\.(" . $cfg_imgtype . ")#i", $file)) {
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-         {
-           $reurl  = $remoteupUrl.$reurl;
-        }else{
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
+        } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td align='center' class='linerow' bgcolor='#F9FBF0'>
@@ -221,20 +221,20 @@ while($file = $dh->read()) {
    <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(jpg)#i", $file))
-    {
+    } else if (preg_match("#\.(jpg)#i", $file)) {
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-         {
-           $reurl  = $remoteupUrl.$reurl;
-        }else{
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
+        } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td align='center' class='linerow' bgcolor='#F9FBF0'>
@@ -248,7 +248,7 @@ while($file = $dh->read()) {
    </tr>";
         echo "$line";
     }
-}//End Loop
+} //End Loop
 $dh->close();
 ?>
 <tr>
@@ -256,20 +256,24 @@ $dh->close();
 
 <table width='100%'>
 <form action='select_images_post.php' method='POST' enctype="multipart/form-data" name='myform'>
-<?php $noeditor = !empty($noeditor)?"<input type='hidden' name='noeditor' value='yes'>":''; echo $noeditor;?>
-<input type='hidden' name='activepath' value='<?php echo $activepath?>'>
-<input type='hidden' name='f' value='<?php echo $f?>'>
-<input type='hidden' name='v' value='<?php echo $v?>'>
-<input type='hidden' name='imgstick' value='<?php echo $imgstick?>'>
-<input type='hidden' name='CKEditorFuncNum' value='<?php echo isset($CKEditorFuncNum)? $CKEditorFuncNum : 1;?>'>
+<?php $noeditor = !empty($noeditor) ? "<input type='hidden' name='noeditor' value='yes'>" : '';
+echo $noeditor;?>
+<input type='hidden' name='activepath' value='<?php echo $activepath ?>'>
+<input type='hidden' name='f' value='<?php echo $f ?>'>
+<input type='hidden' name='v' value='<?php echo $v ?>'>
+<input type='hidden' name='imgstick' value='<?php echo $imgstick ?>'>
+<input type='hidden' name='CKEditorFuncNum' value='<?php echo isset($CKEditorFuncNum) ? $CKEditorFuncNum : 1; ?>'>
 <input type='hidden' name='job' value='upload'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
   &nbsp;上　传： <input type='file' name='imgfile' style='width:250px'/>
-  <input type='checkbox' name='needwatermark' value='1' class='np' <?php if($photo_markup=='1') echo "checked"; ?> />水印
+  <input type='checkbox' name='needwatermark' value='1' class='np' <?php if ($photo_markup == '1') {
+    echo "checked";
+}
+?> />水印
   <input type='checkbox' name='resize' value='1' class='np' />缩小
-  宽：<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width?>' />
-  高：<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height?>' />
+  宽：<input type='text' style='width:30' name='iwidth' value='<?php echo $cfg_ddimg_width ?>' />
+  高：<input type='text' style='width:30' name='iheight' value='<?php echo $cfg_ddimg_height ?>' />
   <input type='submit' name='sb1' value='确定' />
 </td>
 </tr>

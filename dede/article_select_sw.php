@@ -2,49 +2,43 @@
 /**
  * @version        $Id: article_select_sw.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require(dirname(__FILE__)."/config.php");
+require dirname(__FILE__) . "/config.php";
 header("Pragma:no-cache");
 header("Cache-Control:no-cache");
 header("Expires:0");
 
 //来源列表
-if($t=='source')
-{
-    $m_file = DEDEDATA."/admin/source.txt";
+if ($t == 'source') {
+    $m_file = DEDEDATA . "/admin/source.txt";
     $allsources = file($m_file);
     echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_source_edit.php');ClearDivCt('mysource');\">设置</a>]&nbsp;";
     echo "[<a href='#' onclick='javascript:HideObj(\"mysource\");ChangeFullDiv(\"hide\");'>关闭</a>]</div>\r\n<div class='wsselect'>\r\n";
-    foreach($allsources as $v)
-    {
+    foreach ($allsources as $v) {
         $v = trim($v);
-        if($v!="")
-        {
+        if ($v != "") {
             echo "<a href='#' onclick='javascript:PutSource(\"$v\")'>$v</a> | \r\n";
         }
     }
     echo "</div><div class='coolbg5'>&nbsp;</div>";
-}
-else
-{
+} else {
     //作者列表
-    $m_file = DEDEDATA."/admin/writer.txt";
+    $m_file = DEDEDATA . "/admin/writer.txt";
     echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_writer_edit.php');ClearDivCt('mywriter');\">设置</a>]&nbsp;";
     echo "[<a href='#' onclick='javascript:HideObj(\"mywriter\");ChangeFullDiv(\"hide\");'>关闭</a>]</div>\r\n<div class='wsselect'>\r\n";
-    if(filesize($m_file)>0)
-    {
-        $fp = fopen($m_file,'r');
-        $str = fread($fp,filesize($m_file));
+    if (filesize($m_file) > 0) {
+        $fp = fopen($m_file, 'r');
+        $str = fread($fp, filesize($m_file));
         fclose($fp);
-        $strs = explode(',',$str);
-        foreach($strs as $str)
-        {
+        $strs = explode(',', $str);
+        foreach ($strs as $str) {
             $str = trim($str);
-            if($str!="")
-            {
+            if ($str != "") {
                 echo "<a href='#' onclick='javascript:PutWriter(\"$str\")'>$str</a> | ";
             }
         }

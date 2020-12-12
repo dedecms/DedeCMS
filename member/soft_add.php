@@ -4,6 +4,8 @@
  *
  * @version        $Id: soft_add.php 2 14:16 2010-11-11  $
  * @package        DedeCMS.Member
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com

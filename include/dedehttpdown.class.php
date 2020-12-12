@@ -1,9 +1,14 @@
-<?php if (!defined('DEDEINC')) exit("Request Error!");
+<?php if (!defined('DEDEINC')) {
+    exit("Request Error!");
+}
+
 /**
  * 织梦HTTP下载类
  *
  * @version        $Id: dedehttpdown.class.php 1 11:42 2010年7月6日 $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
@@ -12,26 +17,26 @@
 
 class DedeHttpDown
 {
-    var $m_ch = '';
-    var $m_url = '';
-    var $m_urlpath = '';
-    var $m_scheme = 'http';
-    var $m_host = '';
-    var $m_port = '80';
-    var $m_user = '';
-    var $m_pass = '';
-    var $m_path = '/';
-    var $m_query = '';
-    var $m_fp = '';
-    var $m_error = '';
-    var $m_httphead = array();
-    var $m_html = '';
-    var $m_puthead = array();
-    var $m_cookies = '';
-    var $BaseUrlPath = '';
-    var $HomeUrl = '';
-    var $reTry = 0;
-    var $JumpCount = 0;
+    public $m_ch = '';
+    public $m_url = '';
+    public $m_urlpath = '';
+    public $m_scheme = 'http';
+    public $m_host = '';
+    public $m_port = '80';
+    public $m_user = '';
+    public $m_pass = '';
+    public $m_path = '/';
+    public $m_query = '';
+    public $m_fp = '';
+    public $m_error = '';
+    public $m_httphead = array();
+    public $m_html = '';
+    public $m_puthead = array();
+    public $m_cookies = '';
+    public $BaseUrlPath = '';
+    public $HomeUrl = '';
+    public $reTry = 0;
+    public $JumpCount = 0;
 
     /**
      *  初始化系统
@@ -40,7 +45,7 @@ class DedeHttpDown
      * @param     string    $url   需要下载的地址
      * @return    string
      */
-    function PrivateInit($url)
+    public function PrivateInit($url)
     {
         if ($url == '') {
             return;
@@ -83,7 +88,7 @@ class DedeHttpDown
      * @access    public
      * @return    void
      */
-    function ResetAny()
+    public function ResetAny()
     {
         $this->m_ch = "";
         $this->m_url = "";
@@ -107,7 +112,7 @@ class DedeHttpDown
      * @param     string    $requestType   请求类型
      * @return    string
      */
-    function OpenUrl($url, $requestType = "GET")
+    public function OpenUrl($url, $requestType = "GET")
     {
         $this->ResetAny();
         $this->JumpCount = 0;
@@ -128,7 +133,7 @@ class DedeHttpDown
      * @param     string   $url   地址
      * @return    string
      */
-    function JumpOpenUrl($url)
+    public function JumpOpenUrl($url)
     {
         $this->ResetAny();
         $this->JumpCount++;
@@ -147,7 +152,7 @@ class DedeHttpDown
      * @access    public
      * @return    void
      */
-    function printError()
+    public function printError()
     {
         echo "错误信息：" . $this->m_error;
         echo "<br/>具体返回头：<br/>";
@@ -162,13 +167,13 @@ class DedeHttpDown
      * @access    public
      * @return    bool
      */
-    function IsGetOK()
+    public function IsGetOK()
     {
         if (preg_match("/^2/", $this->GetHead("http-state"))) {
-            return TRUE;
+            return true;
         } else {
             $this->m_error .= $this->GetHead("http-state") . " - " . $this->GetHead("http-describe") . "<br/>";
-            return FALSE;
+            return false;
         }
     }
 
@@ -178,13 +183,13 @@ class DedeHttpDown
      * @access    public
      * @return    bool
      */
-    function IsText()
+    public function IsText()
     {
         if (preg_match("/^2/", $this->GetHead("http-state")) && preg_match("/text|xml/i", $this->GetHead("content-type"))) {
-            return TRUE;
+            return true;
         } else {
             $this->m_error .= "内容为非文本类型或网址重定向<br/>";
-            return FALSE;
+            return false;
         }
     }
 
@@ -195,16 +200,16 @@ class DedeHttpDown
      * @param     string   $ctype   内容类型
      * @return    string
      */
-    function IsContentType($ctype)
+    public function IsContentType($ctype)
     {
         if (
             preg_match("/^2/", $this->GetHead("http-state"))
             && $this->GetHead("content-type") == strtolower($ctype)
         ) {
-            return TRUE;
+            return true;
         } else {
             $this->m_error .= "类型不对 " . $this->GetHead("content-type") . "<br/>";
-            return FALSE;
+            return false;
         }
     }
 
@@ -215,19 +220,19 @@ class DedeHttpDown
      * @param     string    $savefilename  保存文件名称
      * @return    string
      */
-    function SaveToBin($savefilename)
+    public function SaveToBin($savefilename)
     {
         if (!$this->IsGetOK()) {
-            return FALSE;
+            return false;
         }
         if (function_exists('curl_init') && function_exists('curl_exec')) {
             file_put_contents($savefilename, $this->m_html);
-            return TRUE;
+            return true;
         }
 
         if (@feof($this->m_fp)) {
             $this->m_error = "连接已经关闭！";
-            return FALSE;
+            return false;
         }
         $fp = fopen($savefilename, "w");
         while (!feof($this->m_fp)) {
@@ -235,7 +240,7 @@ class DedeHttpDown
         }
         fclose($this->m_fp);
         fclose($fp);
-        return TRUE;
+        return true;
     }
 
     /**
@@ -245,7 +250,7 @@ class DedeHttpDown
      * @param     string    $savefilename  保存文件名称
      * @return    string
      */
-    function SaveToText($savefilename)
+    public function SaveToText($savefilename)
     {
         if ($this->IsText()) {
             $this->SaveBinFile($savefilename);
@@ -254,7 +259,7 @@ class DedeHttpDown
         }
     }
 
-    function SaveBinFile($filename)
+    public function SaveBinFile($filename)
     {
         return $this->SaveBinFile($filename);
     }
@@ -265,7 +270,7 @@ class DedeHttpDown
      * @access    public
      * @return    string
      */
-    function GetHtml()
+    public function GetHtml()
     {
         if ($this->m_html != '') {
             return $this->m_html;
@@ -290,7 +295,7 @@ class DedeHttpDown
      * @param     string    $requestType    请求类型
      * @return    string
      */
-    function PrivateStartSession($requestType = "GET")
+    public function PrivateStartSession($requestType = "GET")
     {
         if ($this->m_scheme == "https") {
             $this->m_port = "443";
@@ -354,11 +359,11 @@ class DedeHttpDown
             }
             $this->m_error = curl_errno($this->m_ch);
 
-            return TRUE;
+            return true;
         }
         if (!$this->PrivateOpenHost()) {
             $this->m_error .= "打开远程主机出错!";
-            return FALSE;
+            return false;
         }
         $this->reTry++;
         if ($this->GetHead("http-edition") == "HTTP/1.1") {
@@ -460,7 +465,7 @@ class DedeHttpDown
         //如果连接被不正常关闭，重试
         if (feof($this->m_fp)) {
             if ($this->reTry > 10) {
-                return FALSE;
+                return false;
             }
             $this->PrivateStartSession($requestType);
         }
@@ -491,13 +496,13 @@ class DedeHttpDown
      * @param     string    $headname   头文件名称
      * @return    string
      */
-    function GetHead($headname)
+    public function GetHead($headname)
     {
         $headname = strtolower($headname);
         return isset($this->m_httphead[$headname]) ? $this->m_httphead[$headname] : '';
     }
 
-    function SetCookie($cookie)
+    public function SetCookie($cookie)
     {
         $this->m_cookies = $cookie;
     }
@@ -510,7 +515,7 @@ class DedeHttpDown
      * @param     string   $svalue  值
      * @return    string
      */
-    function SetHead($skey, $svalue)
+    public function SetHead($skey, $svalue)
     {
         $this->m_puthead[$skey] = $svalue;
     }
@@ -521,10 +526,10 @@ class DedeHttpDown
      * @access    public
      * @return    bool
      */
-    function PrivateOpenHost()
+    public function PrivateOpenHost()
     {
         if ($this->m_host == "") {
-            return FALSE;
+            return false;
         }
 
         $errno = "";
@@ -532,9 +537,9 @@ class DedeHttpDown
         $this->m_fp = @fsockopen($this->m_host, $this->m_port, $errno, $errstr, 10);
         if (!$this->m_fp) {
             $this->m_error = $errstr;
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -544,7 +549,7 @@ class DedeHttpDown
      * @access    public
      * @return    void
      */
-    function Close()
+    public function Close()
     {
         if (function_exists('curl_init') && function_exists('curl_exec') && $this->m_ch) {
             @curl_close($this->m_ch);
@@ -552,7 +557,7 @@ class DedeHttpDown
         if ($this->m_fp) {
             @fclose($this->m_fp);
         }
-        
+
     }
 
     /**
@@ -562,7 +567,7 @@ class DedeHttpDown
      * @param     string   $surl  需要不全的地址
      * @return    string
      */
-    function FillUrl($surl)
+    public function FillUrl($surl)
     {
         $i = 0;
         $dstr = "";
@@ -620,4 +625,4 @@ class DedeHttpDown
         $okurl = preg_replace("/\/{1,}/", "/", $okurl);
         return "http://" . $okurl;
     }
-}//End Class
+} //End Class

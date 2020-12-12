@@ -1,80 +1,66 @@
 <?php
 /**
- * 数据库备份/还原 
+ * 数据库备份/还原
  *
  * @version        $Id: sys_data.php 1 17:19 2010年7月20日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Data');
-if(empty($dopost)) $dopost = '';
+if (empty($dopost)) {
+    $dopost = '';
+}
 
-if ( $cfg_dbtype == 'sqlite' )
-{
-    showMsg('备份系统根目录下/data/'.$cfg_dbname.'.db文件即可', 'javascript:;');
+if ($cfg_dbtype == 'sqlite') {
+    showMsg('备份系统根目录下/data/' . $cfg_dbname . '.db文件即可', 'javascript:;');
     exit();
 }
 
-if($dopost=="viewinfo") //查看表结构
+if ($dopost == "viewinfo") //查看表结构
 {
     echo "[<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'><u>关闭</u></a>]\r\n<xmp>";
-    if(empty($tablename))
-    {
+    if (empty($tablename)) {
         echo "没有指定表名！";
-    }
-    else
-    {
-        $dsql->SetQuery("SHOW CREATE TABLE ".$dsql->dbName.".".$tablename);
+    } else {
+        $dsql->SetQuery("SHOW CREATE TABLE " . $dsql->dbName . "." . $tablename);
         $dsql->Execute('me');
-        $row2 = $dsql->GetArray('me',MYSQL_BOTH);
+        $row2 = $dsql->GetArray('me', MYSQL_BOTH);
         $ctinfo = $row2[1];
         echo trim($ctinfo);
     }
     echo '</xmp>';
     exit();
-}
-else if($dopost=="opimize") //优化表
+} else if ($dopost == "opimize") //优化表
 {
     echo "[<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'><u>关闭</u></a>]\r\n<xmp>";
-    if(empty($tablename))
-    {
+    if (empty($tablename)) {
         echo "没有指定表名！";
-    }
-    else
-    {
+    } else {
         $rs = $dsql->ExecuteNoneQuery("OPTIMIZE TABLE `$tablename` ");
-        if($rs)
-        {
+        if ($rs) {
             echo "执行优化表： $tablename  OK！";
-        }
-        else
-        {
-            echo "执行优化表： $tablename  失败，原因是：".$dsql->GetError();
+        } else {
+            echo "执行优化表： $tablename  失败，原因是：" . $dsql->GetError();
         }
     }
     echo '</xmp>';
     exit();
-}
-else if($dopost=="repair") //修复表
+} else if ($dopost == "repair") //修复表
 {
     echo "[<a href='#' onclick='javascript:HideObj(\"_mydatainfo\")'><u>关闭</u></a>]\r\n<xmp>";
-    if(empty($tablename))
-    {
+    if (empty($tablename)) {
         echo "没有指定表名！";
-    }
-    else
-    {
+    } else {
         $rs = $dsql->ExecuteNoneQuery("REPAIR TABLE `$tablename` ");
-        if($rs)
-        {
+        if ($rs) {
             echo "修复表： $tablename  OK！";
-        }
-        else
-        {
-            echo "修复表： $tablename  失败，原因是：".$dsql->GetError();
+        } else {
+            echo "修复表： $tablename  失败，原因是：" . $dsql->GetError();
         }
     }
     echo '</xmp>';
@@ -82,32 +68,27 @@ else if($dopost=="repair") //修复表
 }
 
 //获取系统存在的表信息
-$otherTables = Array();
-$dedeSysTables = Array();
-$channelTables = Array();
+$otherTables = array();
+$dedeSysTables = array();
+$channelTables = array();
 $dsql->SetQuery("SELECT addtable FROM `#@__channeltype` ");
 $dsql->Execute();
-while($row = $dsql->GetObject())
-{
+while ($row = $dsql->GetObject()) {
     $channelTables[] = $row->addtable;
 }
 $dsql->SetQuery("SHOW TABLES");
 $dsql->Execute('t');
-while($row = $dsql->GetArray('t',MYSQL_BOTH))
-{
-    if(preg_match("#^{$cfg_dbprefix}#", $row[0])||in_array($row[0],$channelTables))
-    {
+while ($row = $dsql->GetArray('t', MYSQL_BOTH)) {
+    if (preg_match("#^{$cfg_dbprefix}#", $row[0]) || in_array($row[0], $channelTables)) {
         $dedeSysTables[] = $row[0];
-    }
-    else
-    {
+    } else {
         $otherTables[] = $row[0];
     }
 }
 $mysql_version = $dsql->GetVersion();
 DedeInclude('templets/sys_data.htm');
 
-function TjCount($tbname,&$dsql)
+function TjCount($tbname, &$dsql)
 {
     $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM $tbname");
     return $row['dd'];

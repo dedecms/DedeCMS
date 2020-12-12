@@ -5,19 +5,36 @@
  *
  * @version        $Id: makehtml_taglist_action.php 1 11:17 2020年8月19日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__) . "/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_MakeHtml');
-require_once(DEDEINC . "/arc.taglist.class.php");
+require_once DEDEINC . "/arc.taglist.class.php";
 
-if (empty($pageno)) $pageno = 0;
-if (empty($mkpage)) $mkpage = 1;
-if (empty($upall)) $upall = 0; // 是否更新全部 0为更新单个 1为更新全部
-if (empty($ctagid)) $ctagid = 0; // 当前处理的tagid
-if (empty($maxpagesize)) $maxpagesize = 50;
+if (empty($pageno)) {
+    $pageno = 0;
+}
+
+if (empty($mkpage)) {
+    $mkpage = 1;
+}
+
+if (empty($upall)) {
+    $upall = 0;
+}
+// 是否更新全部 0为更新单个 1为更新全部
+if (empty($ctagid)) {
+    $ctagid = 0;
+}
+// 当前处理的tagid
+if (empty($maxpagesize)) {
+    $maxpagesize = 50;
+}
+
 $tagid = isset($tagid) ? intval($tagid) : 0;
 
 if ($tagid > 0) {
@@ -45,7 +62,6 @@ if ($ctagid == 0 && $allfinish) {
     exit;
 }
 
-
 $tag = $dsql->GetOne("SELECT * FROM `#@__tagindex` WHERE id='$ctagid' LIMIT 0,1;");
 
 MkdirAll($cfg_basedir . "/a/tags", $cfg_dir_purview);
@@ -57,12 +73,15 @@ if (is_array($tag) && count($tag) > 0) {
 
     if ($ntotalpage <= $maxpagesize) {
         $dlist->MakeHtml('', '');
-        $finishType = TRUE; // 生成一个TAG完成
+        $finishType = true; // 生成一个TAG完成
     } else {
         $reurl = $dlist->MakeHtml($mkpage, $maxpagesize);
-        $finishType = FALSE;
+        $finishType = false;
         $mkpage = $mkpage + $maxpagesize;
-        if ($mkpage >= ($ntotalpage + 1)) $finishType = TRUE;
+        if ($mkpage >= ($ntotalpage + 1)) {
+            $finishType = true;
+        }
+
     }
 
     $nextpage = $pageno + 1;
@@ -76,7 +95,7 @@ if (is_array($tag) && count($tag) > 0) {
         } else {
             $query = "UPDATE `#@__tagindex` SET mktime=uptime WHERE id='$ctagid' ";
             $dsql->ExecuteNoneQuery($query);
-            
+
             $reurl .= GetPinyin($tag['tag']);
             ShowMsg("完成TAG更新：[" . $tag['tag'] . "]！<a href='$reurl' target='_blank'>浏览TAG首页</a>", "javascript:;");
         }

@@ -4,38 +4,38 @@
  *
  * @version        $Id: inc_menu_map.php 1 10:32 2010年7月21日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/../config.php");
+require_once dirname(__FILE__) . "/../config.php";
 
-$maparray = array(1=>'文档相关',2=>'系统设置',3=>'必须辅助功能',4=>'网站更新操作',5=>'会员相关',6=>'基本模块插件');
+$maparray = array(1 => '文档相关', 2 => '系统设置', 3 => '必须辅助功能', 4 => '网站更新操作', 5 => '会员相关', 6 => '基本模块插件');
 
 //载入可发布频道
 $addset = '';
 
 //检测可用的内容模型
-if($cfg_admin_channel = 'array' && count($admin_catalogs) > 0)
-{
+if ($cfg_admin_channel = 'array' && count($admin_catalogs) > 0) {
     $admin_catalog = join(',', $admin_catalogs);
     $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` WHERE id IN({$admin_catalog}) GROUP BY channeltype ");
-}
-else
-{
+} else {
     $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` GROUP BY channeltype ");
 }
 $dsql->Execute();
 $candoChannel = '';
-while($row = $dsql->GetObject())
-{
-    $candoChannel .= ($candoChannel=='' ? $row->channeltype : ','.$row->channeltype);
+while ($row = $dsql->GetObject()) {
+    $candoChannel .= ($candoChannel == '' ? $row->channeltype : ',' . $row->channeltype);
 }
-if(empty($candoChannel)) $candoChannel = 1;
+if (empty($candoChannel)) {
+    $candoChannel = 1;
+}
+
 $dsql->SetQuery("SELECT id,typename,addcon,mancon FROM `#@__channeltype` WHERE id IN({$candoChannel}) AND id<>-1 AND isshow=1 ORDER BY id ASC");
 $dsql->Execute();
-while($row = $dsql->GetObject())
-{
+while ($row = $dsql->GetObject()) {
     $addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
 }
 //////////////////////////
@@ -46,7 +46,7 @@ $menusMain = "
   <m:item name='网站栏目管理' link='catalog_main.php' ischannel='1' addalt='创建栏目' linkadd='catalog_add.php?listtype=all' rank='t_List,t_AccList' target='main' />
   <m:item name='所有档案列表' link='content_list.php' rank='a_List,a_AccList' target='main' />
   <m:item name='等审核的档案' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='我发布的文档' link='content_list.php?mid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
+  <m:item name='我发布的文档' link='content_list.php?mid=" . $cuserLogin->getUserID() . "' rank='a_List,a_AccList,a_MyList' target='main' />
   <m:item name='评论管理' link='feedback_main.php' rank='sys_Feedback' target='main' />
   <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='img/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no' rank='a_List' target='main' />
 </m:top>
@@ -158,9 +158,8 @@ $menusMain = "
 $plusset = '';
 $dsql->SetQuery("SELECT * FROM `#@__plus` WHERE isshow=1 ORDER BY aid ASC");
 $dsql->Execute();
-while($row = $dsql->GetObject()) 
-{
-    $plusset .= $row->menustring."\r\n";
+while ($row = $dsql->GetObject()) {
+    $plusset .= $row->menustring . "\r\n";
 }
 
 $menusMain .= "
@@ -178,27 +177,23 @@ $menusMain .= "
 
 $mapstring = '';
 $dtp = new DedeTagparse();
-$dtp->SetNameSpace('m','<','>');
+$dtp->SetNameSpace('m', '<', '>');
 $dtp->LoadString($menusMain);
 
-foreach($maparray as $k=>$bigname)
-{
+foreach ($maparray as $k => $bigname) {
     $mapstring .= "<dl class='maptop'>\r\n";
     $mapstring .= "<dt class='bigitem'>$bigname</dt>\r\n";
     $mapstring .= "<dd>\r\n";
-    foreach($dtp->CTags as $ctag)
-    {
-        if($ctag->GetAtt('mapitem') == $k)
-        {
+    foreach ($dtp->CTags as $ctag) {
+        if ($ctag->GetAtt('mapitem') == $k) {
             $mapstring .= "<dl class='mapitem'>\r\n";
-            $mapstring .= "<dt>".$ctag->GetAtt('name')."</dt>\r\n";
+            $mapstring .= "<dt>" . $ctag->GetAtt('name') . "</dt>\r\n";
             $mapstring .= "<dd>\r\n<ul class='item'>\r\n";
             $dtp2 = new DedeTagParse();
             $dtp2->SetNameSpace('m', '<', '>');
             $dtp2->LoadSource($ctag->InnerText);
-            foreach($dtp2->CTags as $j=>$ctag2)
-            {
-                $mapstring .= "<li><a href='".$ctag2->GetAtt('link')."' target='".$ctag2->GetAtt('target')."'>".$ctag2->GetAtt('name')."</a></li>\r\n";
+            foreach ($dtp2->CTags as $j => $ctag2) {
+                $mapstring .= "<li><a href='" . $ctag2->GetAtt('link') . "' target='" . $ctag2->GetAtt('target') . "'>" . $ctag2->GetAtt('name') . "</a></li>\r\n";
             }
             $mapstring .= "</ul>\r\n</dd>\r\n</dl>\r\n";
         }

@@ -1,14 +1,19 @@
-<?php   if(!defined('DEDEINC')) exit("Request Error!");
+<?php if (!defined('DEDEINC')) {
+    exit("Request Error!");
+}
+
 /**
  * 栏目单元,主要用户管理后台管理菜单处
  *
  * @version        $Id: typeunit.class.menu.php 1 15:21 2010年7月5日 $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(DEDEDATA."/cache/inc_catalog_base.inc");
+require_once DEDEDATA . "/cache/inc_catalog_base.inc";
 
 /**
  * 栏目单元,主要用户管理后台管理菜单处
@@ -19,47 +24,41 @@ require_once(DEDEDATA."/cache/inc_catalog_base.inc");
  */
 class TypeUnit
 {
-    var $dsql;
-    var $aChannels;
-    var $isAdminAll;
+    public $dsql;
+    public $aChannels;
+    public $isAdminAll;
 
     //php5构造函数
-    function __construct($catlogs='')
+    public function __construct($catlogs = '')
     {
         global $cfg_Cs;
         $this->dsql = $GLOBALS['dsql'];
-        $this->aChannels = Array();
+        $this->aChannels = array();
         $this->isAdminAll = false;
-        if(!empty($catlogs) && $catlogs!='-1')
-        {
-            $this->aChannels = explode(',',$catlogs);
-            foreach($this->aChannels as $cid)
-            {
-                if($cfg_Cs[$cid][0]==0)
-                {
+        if (!empty($catlogs) && $catlogs != '-1') {
+            $this->aChannels = explode(',', $catlogs);
+            foreach ($this->aChannels as $cid) {
+                if ($cfg_Cs[$cid][0] == 0) {
                     $this->dsql->SetQuery("Select id,ispart From `#@__arctype` where reid=$cid");
                     $this->dsql->Execute();
-                    while($row = $this->dsql->GetObject())
-                    {
+                    while ($row = $this->dsql->GetObject()) {
                         //if($row->ispart==1)
                         $this->aChannels[] = $row->id;
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             $this->isAdminAll = true;
         }
     }
 
-    function TypeUnit($catlogs='')
+    public function TypeUnit($catlogs = '')
     {
         $this->__construct($catlogs);
     }
 
     //清理类
-    function Close()
+    public function Close()
     {
     }
 
@@ -71,39 +70,38 @@ class TypeUnit
      * @param     int   $nowdir  当前操作ID
      * @return    string
      */
-    function ListAllType($channel=0, $nowdir=0)
+    public function ListAllType($channel = 0, $nowdir = 0)
     {
 
         global $cfg_admin_channel, $admin_catalogs;
-        
+
         //检测用户有权限的顶级栏目
-        if($cfg_admin_channel=='array')
-        {
+        if ($cfg_admin_channel == 'array') {
             $admin_catalog = join(',', $admin_catalogs);
             $this->dsql->SetQuery("SELECT reid FROM `#@__arctype` WHERE id IN($admin_catalog) GROUP BY reid ");
             $this->dsql->Execute();
             $topidstr = '';
-            while($row = $this->dsql->GetObject())
-            {
-                if($row->reid==0) continue;
-                $topidstr .= ($topidstr=='' ? $row->reid : ','.$row->reid);
+            while ($row = $this->dsql->GetObject()) {
+                if ($row->reid == 0) {
+                    continue;
+                }
+
+                $topidstr .= ($topidstr == '' ? $row->reid : ',' . $row->reid);
             }
-            $admin_catalog .= ','.$topidstr;
+            $admin_catalog .= ',' . $topidstr;
             $admin_catalogs = explode(',', $admin_catalog);
             $admin_catalogs = array_unique($admin_catalogs);
         }
-        
+
         $this->dsql->SetQuery("SELECT id,typedir,typename,ispart,channeltype FROM `#@__arctype` WHERE reid=0 ORDER BY sortrank");
-        
+
         $this->dsql->Execute(0);
         $lastid = GetCookie('lastCidMenu');
-        while($row=$this->dsql->GetObject(0))
-        {
-            if( $cfg_admin_channel=='array' && !in_array($row->id, $admin_catalogs) )
-            {
+        while ($row = $this->dsql->GetObject(0)) {
+            if ($cfg_admin_channel == 'array' && !in_array($row->id, $admin_catalogs)) {
                 continue;
             }
-            
+
             $typeDir = $row->typedir;
             $typeName = $row->typename;
             $ispart = $row->ispart;
@@ -111,33 +109,29 @@ class TypeUnit
             $channeltype = $row->channeltype;
 
             //普通栏目
-            if($ispart==0)
-            {
-                $smenu = " oncontextmenu=\"CommonMenu(event,this,$id,'".urlencode($typeName)."')\"";
+            if ($ispart == 0) {
+                $smenu = " oncontextmenu=\"CommonMenu(event,this,$id,'" . urlencode($typeName) . "')\"";
             }
             //封面频道
-            else if($ispart==1)
-            {
-                $smenu = " oncontextmenu=\"CommonMenuPart(event,this,$id,'".urlencode($typeName)."')\"";
+            else if ($ispart == 1) {
+                $smenu = " oncontextmenu=\"CommonMenuPart(event,this,$id,'" . urlencode($typeName) . "')\"";
             }
             //独立页面
             //else if($ispart==2)
             //{
-                    //$smenu = " oncontextmenu=\"SingleMenu(event,this,$id,'".urlencode($typeName)."')\"";
+            //$smenu = " oncontextmenu=\"SingleMenu(event,this,$id,'".urlencode($typeName)."')\"";
             //}
             //跳转网址
-            else
-            {
+            else {
                 continue;
-                $smenu = " oncontextmenu=\"JumpMenu(event,this,$id,'".urlencode($typeName)."')\" ";
+                $smenu = " oncontextmenu=\"JumpMenu(event,this,$id,'" . urlencode($typeName) . "')\" ";
             }
             echo "<dl class='topcc'>\r\n";
             echo "  <dd class='dlf'><img style='cursor:pointer' onClick=\"LoadSuns('suns{$id}',{$id});\" src='images/tree_explode.gif' width='11' height='11'></dd>\r\n";
-            echo "  <dd class='dlr'><a href='catalog_do.php?cid=".$id."&dopost=listArchives'{$smenu}>".$typeName."</a></dd>\r\n";
+            echo "  <dd class='dlr'><a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'{$smenu}>" . $typeName . "</a></dd>\r\n";
             echo "</dl>\r\n";
-            echo "<div id='suns".$id."' class='sunct'>";
-            if($lastid==$id || $cfg_admin_channel=='array')
-            {
+            echo "<div id='suns" . $id . "' class='sunct'>";
+            if ($lastid == $id || $cfg_admin_channel == 'array') {
                 $this->LogicListAllSunType($id, "　");
             }
             echo "</div>\r\n";
@@ -153,18 +147,15 @@ class TypeUnit
      * @param     bool  $needcheck  权限
      * @return    string
      */
-    function LogicListAllSunType($id,$step,$needcheck=true)
+    public function LogicListAllSunType($id, $step, $needcheck = true)
     {
         global $cfg_admin_channel, $admin_catalogs;
         $fid = $id;
-        $this->dsql->SetQuery("SELECT id,reid,typedir,typename,ispart,channeltype FROM `#@__arctype` WHERE reid='".$id."' ORDER BY sortrank");
+        $this->dsql->SetQuery("SELECT id,reid,typedir,typename,ispart,channeltype FROM `#@__arctype` WHERE reid='" . $id . "' ORDER BY sortrank");
         $this->dsql->Execute($fid);
-        if($this->dsql->GetTotalRow($fid)>0)
-        {
-            while($row=$this->dsql->GetObject($fid))
-            {
-                if($cfg_admin_channel=='array' && !in_array($row->id, $admin_catalogs) )
-                {
+        if ($this->dsql->GetTotalRow($fid) > 0) {
+            while ($row = $this->dsql->GetObject($fid)) {
+                if ($cfg_admin_channel == 'array' && !in_array($row->id, $admin_catalogs)) {
                     continue;
                 }
                 $typeDir = $row->typedir;
@@ -173,54 +164,47 @@ class TypeUnit
                 $id = $row->id;
                 $ispart = $row->ispart;
                 $channeltype = $row->channeltype;
-                if($step=="　")
-                {
+                if ($step == "　") {
                     $stepdd = 2;
-                }
-                else
-                {
+                } else {
                     $stepdd = 3;
                 }
 
                 //有权限栏目
-                if(in_array($id,$this->aChannels) || $needcheck===false || $this->isAdminAll===true)
-                {
+                if (in_array($id, $this->aChannels) || $needcheck === false || $this->isAdminAll === true) {
                     //普通列表
-                    if($ispart==0||empty($ispart))
-                    {
-                        $smenu = " oncontextmenu=\"CommonMenu(event,this,$id,'".urlencode($typeName)."')\"";
+                    if ($ispart == 0 || empty($ispart)) {
+                        $smenu = " oncontextmenu=\"CommonMenu(event,this,$id,'" . urlencode($typeName) . "')\"";
                         $timg = " <img src='images/tree_page.gif'> ";
                     }
 
                     //封面频道
-                    else if($ispart==1)
-                    {
-                        $smenu = " oncontextmenu=\"CommonMenuPart(event,this,$id,'".urlencode($typeName)."')\"";
+                    else if ($ispart == 1) {
+                        $smenu = " oncontextmenu=\"CommonMenuPart(event,this,$id,'" . urlencode($typeName) . "')\"";
                         $timg = " <img src='images/tree_part.gif'> ";
                     }
 
                     //独立页面
                     //else if($ispart==2)
                     //{
-                        //$timg = " <img src='img/tree_page.gif'> ";
-                        //$smenu = " oncontextmenu=\"SingleMenu(event,this,$id,'".urlencode($typeName)."')\" ";
+                    //$timg = " <img src='img/tree_page.gif'> ";
+                    //$smenu = " oncontextmenu=\"SingleMenu(event,this,$id,'".urlencode($typeName)."')\" ";
                     //}
 
                     //跳转网址
-                    else
-                    {
+                    else {
                         continue;
                         $timg = " <img src='img/tree_page.gif'> ";
-                        $smenu = " oncontextmenu=\"JumpMenu(event,this,$id,'".urlencode($typeName)."')\" ";
+                        $smenu = " oncontextmenu=\"JumpMenu(event,this,$id,'" . urlencode($typeName) . "')\" ";
                     }
                     echo "  <table class='sunlist'>\r\n";
                     echo "   <tr>\r\n";
-                    echo "     <td align='left'>".$step.$timg."<a href='catalog_do.php?cid=".$id."&dopost=listArchives'{$smenu}>".$typeName."</a></td>\r\n";
+                    echo "     <td align='left'>" . $step . $timg . "<a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'{$smenu}>" . $typeName . "</a></td>\r\n";
                     echo "   </tr>\r\n";
                     echo "  </table>\r\n";
-                    $this->LogicListAllSunType($id,$step."　",false);
+                    $this->LogicListAllSunType($id, $step . "　", false);
                 }
             }
         }
     }
-}//End Class
+} //End Class

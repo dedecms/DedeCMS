@@ -1,21 +1,25 @@
-<?php   if(!defined('DEDEINC')) exit('Request Error!');
+<?php if (!defined('DEDEINC')) {
+    exit('Request Error!');
+}
 
 /**
  * 动态模板spacenewart标签
  *
  * @version        $Id: plus_spacenewart.php 1 13:58 2010年7月5日 $
  * @package        DedeCMS.Tpllib
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-function plus_spacenewart(&$atts,&$refObj,&$fields)
+function plus_spacenewart(&$atts, &$refObj, &$fields)
 {
-    global $dsql,$_vars;
+    global $dsql, $_vars;
 
     $attlist = "channel=1,titlelen=30,infolen=200,row=8,imgwidth=120,imgheight=90";
-    FillAtts($atts,$attlist);
-    FillFields($atts,$fields,$refObj);
+    FillAtts($atts, $attlist);
+    FillFields($atts, $fields, $refObj);
     extract($atts, EXTR_OVERWRITE);
 
     $query = "Select arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,
@@ -30,53 +34,47 @@ function plus_spacenewart(&$atts,&$refObj,&$fields)
     $dsql->Execute("al");
     $artlist = '';
     $rearr = array();
-    while($row = $dsql->GetArray("al"))
-    {
+    while ($row = $dsql->GetArray("al")) {
         //处理一些特殊字段
-        $row['infos'] = cn_substr($row['description'],$infolen);
-        $row['id'] =  $row['id'];
+        $row['infos'] = cn_substr($row['description'], $infolen);
+        $row['id'] = $row['id'];
 
-        $row['arcurl'] = GetFileUrl($row['id'],$row['typeid'],$row['senddate'],$row['title'],$row['ismake'],
-        $row['arcrank'],$row['namerule'],$row['typedir'],$row['money'],$row['filename'],$row['moresite'],$row['siteurl'],$row['sitepath']);
+        $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+            $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
 
-        $row['typeurl'] = GetTypeUrl($row['typeid'],$row['typedir'],$row['isdefault'],$row['defaultname'],$row['ispart'],
-        $row['namerule2'],$row['moresite'],$row['siteurl'],$row['sitepath']);
+        $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+            $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
 
-        if($row['litpic']=='')
-        {
+        if ($row['litpic'] == '') {
             $row['litpic'] = '/resources/img/defaultpic.gif';
         }
-        if(!preg_match("#^http:\/\/#i", $row['litpic']))
-        {
-            $row['picname'] = $row['litpic'] = $GLOBALS['cfg_cmsurl'].$row['litpic'];
-        }
-        else
-        {
+        if (!preg_match("#^http:\/\/#i", $row['litpic'])) {
+            $row['picname'] = $row['litpic'] = $GLOBALS['cfg_cmsurl'] . $row['litpic'];
+        } else {
             $row['picname'] = $row['litpic'] = $row['litpic'];
         }
         $row['stime'] = GetDateMK($row['pubdate']);
-        $row['typelink'] = "<a href='".$row['typeurl']."'>".$row['typename']."</a>";
-        $row['image'] = "<img src='".$row['picname']."' border='0' width='$imgwidth' height='$imgheight' alt='".preg_replace("#['><]#", "", $row['title'])."'>";
-        $row['imglink'] = "<a href='".$row['filename']."'>".$row['image']."</a>";
+        $row['typelink'] = "<a href='" . $row['typeurl'] . "'>" . $row['typename'] . "</a>";
+        $row['image'] = "<img src='" . $row['picname'] . "' border='0' width='$imgwidth' height='$imgheight' alt='" . preg_replace("#['><]#", "", $row['title']) . "'>";
+        $row['imglink'] = "<a href='" . $row['filename'] . "'>" . $row['image'] . "</a>";
         $row['fulltitle'] = $row['title'];
-        $row['title'] = cn_substr($row['title'],$titlelen);
-        if($row['color']!='') {
-            $row['title'] = "<font color='".$row['color']."'>".$row['title']."</font>";
+        $row['title'] = cn_substr($row['title'], $titlelen);
+        if ($row['color'] != '') {
+            $row['title'] = "<font color='" . $row['color'] . "'>" . $row['title'] . "</font>";
         }
-        if(preg_match('#b#', $row['flag']))
-        {
-            $row['title'] = "<strong>".$row['title']."</strong>";
+        if (preg_match('#b#', $row['flag'])) {
+            $row['title'] = "<strong>" . $row['title'] . "</strong>";
         }
         //$row['title'] = "<b>".$row['title']."</b>";
 
-        $row['textlink'] = "<a href='".$row['filename']."'>".$row['title']."</a>";
+        $row['textlink'] = "<a href='" . $row['filename'] . "'>" . $row['title'] . "</a>";
 
         $row['plusurl'] = $row['phpurl'] = $GLOBALS['cfg_phpurl'];
         $row['memberurl'] = $GLOBALS['cfg_memberurl'];
         $row['templeturl'] = $GLOBALS['cfg_templeturl'];
 
         $rearr[] = $row;
-    }//loop line
+    } //loop line
     $dsql->FreeResult("al");
     return $rearr;
 }

@@ -1,9 +1,14 @@
-<?php   if(!defined('DEDEINC')) exit('Request Error!');
+<?php if (!defined('DEDEINC')) {
+    exit('Request Error!');
+}
+
 /**
  * 管理员登陆类
  *
  * @version        $Id: userlogin.class.php 1 15:59 2010年7月5日 $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
@@ -20,31 +25,26 @@ session_start();
  */
 function TestPurview($n)
 {
-    $rs = FALSE;
+    $rs = false;
     $purview = $GLOBALS['cuserLogin']->getPurview();
-    if(preg_match('/admin_AllowAll/i',$purview))
-    {
-        return TRUE;
+    if (preg_match('/admin_AllowAll/i', $purview)) {
+        return true;
     }
-    if($n=='')
-    {
-        return TRUE;
+    if ($n == '') {
+        return true;
     }
-    if(!isset($GLOBALS['groupRanks']))
-    {
-        $GLOBALS['groupRanks'] = explode(' ',$purview);
+    if (!isset($GLOBALS['groupRanks'])) {
+        $GLOBALS['groupRanks'] = explode(' ', $purview);
     }
-    $ns = explode(',',$n);
-    foreach($ns as $n)
-    {
+    $ns = explode(',', $n);
+    foreach ($ns as $n) {
         //只要找到一个匹配的权限，即可认为用户有权访问此页面
-        if($n=='')
-        {
+        if ($n == '') {
             continue;
         }
-        if(in_array($n,$GLOBALS['groupRanks']))
-        {
-            $rs = TRUE; break;
+        if (in_array($n, $GLOBALS['groupRanks'])) {
+            $rs = true;
+            break;
         }
     }
     return $rs;
@@ -59,9 +59,8 @@ function TestPurview($n)
  */
 function CheckPurview($n)
 {
-    if(!TestPurview($n))
-    {
-        ShowMsg("对不起，你没有权限执行此操作！<br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>",'javascript:;');
+    if (!TestPurview($n)) {
+        ShowMsg("对不起，你没有权限执行此操作！<br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>", 'javascript:;');
         exit();
     }
 }
@@ -76,17 +75,14 @@ function CheckPurview($n)
 function TestAdmin()
 {
     $purview = $GLOBALS['cuserLogin']->getPurview();
-    if(preg_match('/admin_AllowAll/i',$purview))
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
+    if (preg_match('/admin_AllowAll/i', $purview)) {
+        return true;
+    } else {
+        return false;
     }
 }
 
-$DedeUserCatalogs = Array();
+$DedeUserCatalogs = array();
 
 /**
  *  检测用户是否有权限操作某栏目
@@ -99,16 +95,14 @@ $DedeUserCatalogs = Array();
 function CheckCatalog($cid, $msg)
 {
     global $cfg_admin_channel, $admin_catalogs;
-    if($cfg_admin_channel=='all' || TestAdmin())
-    {
-        return TRUE;
+    if ($cfg_admin_channel == 'all' || TestAdmin()) {
+        return true;
     }
-    if( !in_array($cid, $admin_catalogs) )
-    {
-        ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>",'javascript:;');
+    if (!in_array($cid, $admin_catalogs)) {
+        ShowMsg(" $msg <br/><br/><a href='javascript:history.go(-1);'>点击此返回上一页&gt;&gt;</a>", 'javascript:;');
         exit();
     }
-    return TRUE;
+    return true;
 }
 
 /**
@@ -122,16 +116,15 @@ function CheckCatalog($cid, $msg)
  */
 function AddMyAddon($fid, $filename)
 {
-    $cacheFile = DEDEDATA.'/cache/addon-'.session_id().'.inc';
-    if(!file_exists($cacheFile))
-    {
+    $cacheFile = DEDEDATA . '/cache/addon-' . session_id() . '.inc';
+    if (!file_exists($cacheFile)) {
         $fp = fopen($cacheFile, 'w');
-        fwrite($fp, '<'.'?php'."\r\n");
+        fwrite($fp, '<' . '?php' . "\r\n");
         fwrite($fp, "\$myaddons = array();\r\n");
         fwrite($fp, "\$maNum = 0;\r\n");
         fclose($fp);
     }
-    include($cacheFile);
+    include $cacheFile;
     $fp = fopen($cacheFile, 'a');
     $arrPos = $maNum;
     $maNum++;
@@ -148,27 +141,23 @@ function AddMyAddon($fid, $filename)
  * @param     string  $title  文档标题
  * @return    empty
  */
-function ClearMyAddon($aid=0, $title='')
+function ClearMyAddon($aid = 0, $title = '')
 {
     global $dsql;
-    $cacheFile = DEDEDATA.'/cache/addon-'.session_id().'.inc';
+    $cacheFile = DEDEDATA . '/cache/addon-' . session_id() . '.inc';
     $_SESSION['bigfile_info'] = array();
     $_SESSION['file_info'] = array();
-    if(!file_exists($cacheFile))
-    {
-        return ;
+    if (!file_exists($cacheFile)) {
+        return;
     }
-    
+
     //把附件与文档关连
-    if(!empty($aid))
-    {
-        include($cacheFile);
-        foreach($myaddons as $addons)
-        {
-            if(!empty($title)) {
+    if (!empty($aid)) {
+        include $cacheFile;
+        foreach ($myaddons as $addons) {
+            if (!empty($title)) {
                 $dsql->ExecuteNoneQuery("Update `#@__uploads` set arcid='$aid',title='$title' where aid='{$addons[0]}'");
-            }
-            else {
+            } else {
                 $dsql->ExecuteNoneQuery("Update `#@__uploads` set arcid='$aid' where aid='{$addons[0]}' ");
             }
         }
@@ -185,27 +174,26 @@ function ClearMyAddon($aid=0, $title='')
  */
 class userLogin
 {
-    var $userName = '';
-    var $userPwd = '';
-    var $userID = '';
-    var $adminDir = '';
-    var $userType = '';
-    var $userChannel = '';
-    var $userPurview = '';
-    var $keepUserIDTag = 'dede_admin_id';
-    var $keepUserTypeTag = 'dede_admin_type';
-    var $keepUserChannelTag = 'dede_admin_channel';
-    var $keepUserNameTag = 'dede_admin_name';
-    var $keepUserPurviewTag = 'dede_admin_purview';
-    var $keepAdminStyleTag = 'dede_admin_style';
-    var $adminStyle = 'dedecms';
+    public $userName = '';
+    public $userPwd = '';
+    public $userID = '';
+    public $adminDir = '';
+    public $userType = '';
+    public $userChannel = '';
+    public $userPurview = '';
+    public $keepUserIDTag = 'dede_admin_id';
+    public $keepUserTypeTag = 'dede_admin_type';
+    public $keepUserChannelTag = 'dede_admin_channel';
+    public $keepUserNameTag = 'dede_admin_name';
+    public $keepUserPurviewTag = 'dede_admin_purview';
+    public $keepAdminStyleTag = 'dede_admin_style';
+    public $adminStyle = 'dedecms';
 
     //php5构造函数
-    function __construct($admindir='')
+    public function __construct($admindir = '')
     {
         global $admin_path;
-        if(isset($_SESSION[$this->keepUserIDTag]))
-        {
+        if (isset($_SESSION[$this->keepUserIDTag])) {
             $this->userID = $_SESSION[$this->keepUserIDTag];
             $this->userType = $_SESSION[$this->keepUserTypeTag];
             $this->userChannel = $_SESSION[$this->keepUserChannelTag];
@@ -214,17 +202,14 @@ class userLogin
             $this->adminStyle = $_SESSION[$this->keepAdminStyleTag];
         }
 
-        if($admindir!='')
-        {
+        if ($admindir != '') {
             $this->adminDir = $admindir;
-        }
-        else
-        {
+        } else {
             $this->adminDir = $admin_path;
         }
     }
 
-    function userLogin($admindir='')
+    public function userLogin($admindir = '')
     {
         $this->__construct($admindir);
     }
@@ -237,7 +222,7 @@ class userLogin
      * @param     string    $userpwd  密码
      * @return    string
      */
-    function checkUser($username, $userpwd)
+    public function checkUser($username, $userpwd)
     {
         global $dsql;
 
@@ -245,28 +230,23 @@ class userLogin
         $this->userName = preg_replace("/[^0-9a-zA-Z_@!\.-]/", '', $username);
         $this->userPwd = preg_replace("/[^0-9a-zA-Z_@!\.-]/", '', $userpwd);
         $pwd = substr(md5($this->userPwd), 5, 20);
-        $dsql->SetQuery("SELECT admin.*,atype.purviews FROM `#@__admin` admin LEFT JOIN `#@__admintype` atype ON atype.rank=admin.usertype WHERE admin.userid LIKE '".$this->userName."' LIMIT 0,1");
+        $dsql->SetQuery("SELECT admin.*,atype.purviews FROM `#@__admin` admin LEFT JOIN `#@__admintype` atype ON atype.rank=admin.usertype WHERE admin.userid LIKE '" . $this->userName . "' LIMIT 0,1");
         $dsql->Execute();
         $row = $dsql->GetObject();
-        if(!isset($row->pwd))
-        {
+        if (!isset($row->pwd)) {
             return -1;
-        }
-        else if($pwd!=$row->pwd)
-        {
+        } else if ($pwd != $row->pwd) {
             return -2;
-        }
-        else
-        {
+        } else {
             $loginip = GetIP();
             $this->userID = $row->id;
             $this->userType = $row->usertype;
             $this->userChannel = $row->typeid;
             $this->userName = $row->uname;
             $this->userPurview = $row->purviews;
-            $inquery = "UPDATE `#@__admin` SET loginip='$loginip',logintime='".time()."' WHERE id='".$row->id."'";
+            $inquery = "UPDATE `#@__admin` SET loginip='$loginip',logintime='" . time() . "' WHERE id='" . $row->id . "'";
             $dsql->ExecuteNoneQuery($inquery);
-            $sql = "UPDATE #@__member SET logintime=".time().", loginip='$loginip' WHERE mid=".$row->id;
+            $sql = "UPDATE #@__member SET logintime=" . time() . ", loginip='$loginip' WHERE mid=" . $row->id;
             $dsql->ExecuteNoneQuery($sql);
             return 1;
         }
@@ -278,12 +258,13 @@ class userLogin
      * @access    public
      * @return    int    成功返回 1 ，失败返回 -1
      */
-    function keepUser()
+    public function keepUser()
     {
-        if($this->userID != '' && $this->userType != '')
-        {
-            global $admincachefile,$adminstyle;
-            if(empty($adminstyle)) $adminstyle = 'dedecms';
+        if ($this->userID != '' && $this->userType != '') {
+            global $admincachefile, $adminstyle;
+            if (empty($adminstyle)) {
+                $adminstyle = 'dedecms';
+            }
 
             @session_register($this->keepUserIDTag);
             $_SESSION[$this->keepUserIDTag] = $this->userID;
@@ -305,52 +286,47 @@ class userLogin
 
             PutCookie('DedeUserID', $this->userID, 3600 * 24, '/');
             PutCookie('DedeLoginTime', time(), 3600 * 24, '/');
-            
+
             $this->ReWriteAdminChannel();
-            
+
             return 1;
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }
-    
+
     /**
      *  重写用户权限频道
      *
      * @access    public
      * @return    void
      */
-    function ReWriteAdminChannel()
+    public function ReWriteAdminChannel()
     {
         //$this->userChannel
-        $cacheFile = DEDEDATA.'/cache/admincat_'.$this->userID.'.inc';
+        $cacheFile = DEDEDATA . '/cache/admincat_' . $this->userID . '.inc';
         //管理员管理的频道列表
         $typeid = trim($this->userChannel);
-        if( empty($typeid) || $this->getUserType() >= 10 ) {
-                $firstConfig = "\$cfg_admin_channel = 'all';\r\n\$admin_catalogs = array();\r\n";
-        }
-        else {
-                $firstConfig = "\$cfg_admin_channel = 'array';\r\n";
+        if (empty($typeid) || $this->getUserType() >= 10) {
+            $firstConfig = "\$cfg_admin_channel = 'all';\r\n\$admin_catalogs = array();\r\n";
+        } else {
+            $firstConfig = "\$cfg_admin_channel = 'array';\r\n";
         }
         $fp = fopen($cacheFile, 'w');
-        fwrite($fp, '<'.'?php'."\r\n");
+        fwrite($fp, '<' . '?php' . "\r\n");
         fwrite($fp, $firstConfig);
-        if( !empty($typeid) )
-        {
-             $typeids = explode(',', $typeid);
-             $typeid = '';
-             foreach($typeids as $tid)
-             {
-                     $typeid .= ( $typeid=='' ? GetSonIdsUL($tid) : ','.GetSonIdsUL($tid) );
-             }
-             $typeids = explode(',', $typeid);
-             $typeidsnew = array_unique($typeids);
-             $typeid = join(',', $typeidsnew);
-             fwrite($fp, "\$admin_catalogs = array($typeid);\r\n");
+        if (!empty($typeid)) {
+            $typeids = explode(',', $typeid);
+            $typeid = '';
+            foreach ($typeids as $tid) {
+                $typeid .= ($typeid == '' ? GetSonIdsUL($tid) : ',' . GetSonIdsUL($tid));
+            }
+            $typeids = explode(',', $typeid);
+            $typeidsnew = array_unique($typeids);
+            $typeid = join(',', $typeidsnew);
+            fwrite($fp, "\$admin_catalogs = array($typeid);\r\n");
         }
-        fwrite($fp, '?'.'>');
+        fwrite($fp, '?' . '>');
         fclose($fp);
     }
 
@@ -361,7 +337,7 @@ class userLogin
      * @access    public
      * @return    void
      */
-    function exitUser()
+    public function exitUser()
     {
         ClearMyAddon();
         @session_unregister($this->keepUserIDTag);
@@ -381,14 +357,11 @@ class userLogin
      * @access    public
      * @return    array
      */
-    function getUserChannel()
+    public function getUserChannel()
     {
-        if($this->userChannel != '')
-        {
+        if ($this->userChannel != '') {
             return $this->userChannel;
-        }
-        else
-        {
+        } else {
             return '';
         }
     }
@@ -399,14 +372,11 @@ class userLogin
      * @access    public
      * @return    int
      */
-    function getUserType()
+    public function getUserType()
     {
-        if($this->userType != '')
-        {
+        if ($this->userType != '') {
             return $this->userType;
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }
@@ -417,7 +387,7 @@ class userLogin
      * @access    public
      * @return    int
      */
-    function getUserRank()
+    public function getUserRank()
     {
         return $this->getUserType();
     }
@@ -428,14 +398,11 @@ class userLogin
      * @access    public
      * @return    int
      */
-    function getUserID()
+    public function getUserID()
     {
-        if($this->userID != '')
-        {
+        if ($this->userID != '') {
             return $this->userID;
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }
@@ -446,14 +413,11 @@ class userLogin
      * @access    public
      * @return    string
      */
-    function getUserName()
+    public function getUserName()
     {
-        if($this->userName != '')
-        {
+        if ($this->userName != '') {
             return $this->userName;
-        }
-        else
-        {
+        } else {
             return -1;
         }
     }
@@ -464,7 +428,7 @@ class userLogin
      * @access    public
      * @return    string
      */
-    function getPurview()
+    public function getPurview()
     {
         return $this->userPurview;
     }
@@ -479,15 +443,14 @@ class userLogin
  * @param     int   $addthis  是否加入当前这个栏目
  * @return    string
  */
-function GetSonIdsUL($id, $channel=0, $addthis=TRUE)
+function GetSonIdsUL($id, $channel = 0, $addthis = true)
 {
     global $cfg_Cs;
     $GLOBALS['idArray'] = array();
-    if( !is_array($cfg_Cs) )
-    {
-        require_once(DEDEDATA."/cache/inc_catalog_base.inc");
+    if (!is_array($cfg_Cs)) {
+        require_once DEDEDATA . "/cache/inc_catalog_base.inc";
     }
-    GetSonIdsLogicUL($id,$cfg_Cs,$channel,$addthis);
+    GetSonIdsLogicUL($id, $cfg_Cs, $channel, $addthis);
     $rquery = join(',', $GLOBALS['idArray']);
     return $rquery;
 }
@@ -502,17 +465,14 @@ function GetSonIdsUL($id, $channel=0, $addthis=TRUE)
  * @param     int   $addthis  是否加入当前这个栏目
  * @return    string
  */
-function GetSonIdsLogicUL($id,$sArr,$channel=0,$addthis=FALSE)
+function GetSonIdsLogicUL($id, $sArr, $channel = 0, $addthis = false)
 {
-    if($id!=0 && $addthis)
-    {
+    if ($id != 0 && $addthis) {
         $GLOBALS['idArray'][$id] = $id;
     }
-    foreach($sArr as $k=>$v)
-    {
-        if( $v[0]==$id && ($channel==0 || $v[1]==$channel ))
-        {
-            GetSonIdsLogicUL($k,$sArr,$channel,TRUE);
+    foreach ($sArr as $k => $v) {
+        if ($v[0] == $id && ($channel == 0 || $v[1] == $channel)) {
+            GetSonIdsLogicUL($k, $sArr, $channel, true);
         }
     }
 }

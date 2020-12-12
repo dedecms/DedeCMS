@@ -4,31 +4,28 @@
  *
  * @version        $Id: sys_group_add.php 1 22:28 2010年7月20日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Group');
-if(!empty($dopost))
-{
-    $row = $dsql->GetOne("SELECT * FROM #@__admintype WHERE rank='".$rankid."'");
-    if(is_array($row))
-    {
+if (!empty($dopost)) {
+    $row = $dsql->GetOne("SELECT * FROM #@__admintype WHERE rank='" . $rankid . "'");
+    if (is_array($row)) {
         ShowMsg('你所创建的组别的级别值已存在，不允许重复!', '-1');
         exit();
     }
-    if($rankid > 10)
-    {
+    if ($rankid > 10) {
         ShowMsg('组级别值不能大于10， 否则一切权限设置均无效!', '-1');
         exit();
     }
     $AllPurviews = '';
-    if(is_array($purviews))
-    {
-        foreach($purviews as $pur)
-        {
-            $AllPurviews = $pur.' ';
+    if (is_array($purviews)) {
+        foreach ($purviews as $pur) {
+            $AllPurviews = $pur . ' ';
         }
         $AllPurviews = trim($AllPurviews);
     }

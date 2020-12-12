@@ -4,43 +4,42 @@
  *
  * @version        $Id: inc_menu.php 1 10:32 2010年7月21日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/../config.php");
+require_once dirname(__FILE__) . "/../config.php";
 
 //载入可发布频道
 $addset = '';
 
 //检测可用的内容模型
-if($cfg_admin_channel = 'array' && count($admin_catalogs) > 0)
-{
+if ($cfg_admin_channel = 'array' && count($admin_catalogs) > 0) {
     $admin_catalog = join(',', $admin_catalogs);
     $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` WHERE id IN({$admin_catalog}) GROUP BY channeltype ");
-}
-else
-{
+} else {
     $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` GROUP BY channeltype ");
 }
 $dsql->Execute();
 $candoChannel = '';
-while($row = $dsql->GetObject())
-{
-    $candoChannel .= ($candoChannel=='' ? $row->channeltype : ','.$row->channeltype);
+while ($row = $dsql->GetObject()) {
+    $candoChannel .= ($candoChannel == '' ? $row->channeltype : ',' . $row->channeltype);
 }
-if(empty($candoChannel)) $candoChannel = 1;
+if (empty($candoChannel)) {
+    $candoChannel = 1;
+}
+
 $dsql->SetQuery("SELECT id,typename,addcon,mancon FROM `#@__channeltype` WHERE id IN({$candoChannel}) AND id<>-1 AND isshow=1 ORDER BY id ASC");
 $dsql->Execute('mm');
-while($row = $dsql->GetObject('mm'))
-{
+while ($row = $dsql->GetObject('mm')) {
     $addset .= "  <m:item name='{$row->typename}' ischannel='1' link='{$row->mancon}?channelid={$row->id}' linkadd='{$row->addcon}?channelid={$row->id}' channelid='{$row->id}' rank='' target='main' />\r\n";
 }
 //////////////////////////
 
 $adminMenu1 = $adminMenu2 = '';
-if($cuserLogin->getUserType() >= 10)
-{
+if ($cuserLogin->getUserType() >= 10) {
     $adminMenu1 = "<m:top item='1_' name='频道模型' display='block' rank='t_List,t_AccList,c_List,temp_One'>
   <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
@@ -49,7 +48,7 @@ if($cuserLogin->getUserType() >= 10)
   <m:item name='自定义表单' link='diy_main.php' rank='c_List' target='main' />
 </m:top>
 ";
-$adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_One,temp_Other,temp_MyTag,temp_test,temp_All'>
+    $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_One,temp_Other,temp_MyTag,temp_test,temp_All'>
   <m:item name='默认模板管理' link='templets_main.php' rank='temp_All' target='main'/>
   <m:item name='标签源码管理' link='templets_tagsource.php' rank='temp_All' target='main'/>
   <m:item name='自定义宏标记' link='mytag_main.php' rank='temp_MyTag' target='main'/>
@@ -88,7 +87,7 @@ $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_On
 </m:top>
     ";
 }
-$remoteMenu = ($cfg_remote_site=='Y')? "<m:item name='远程服务器同步' link='makeremote_all.php' rank='sys_ArcBatch' target='main' />" : "";
+$remoteMenu = ($cfg_remote_site == 'Y') ? "<m:item name='远程服务器同步' link='makeremote_all.php' rank='sys_ArcBatch' target='main' />" : "";
 $menusMain = "
 -----------------------------------------------
 
@@ -96,7 +95,7 @@ $menusMain = "
   <m:item name='网站栏目管理' link='catalog_main.php' ischannel='1' addalt='创建栏目' linkadd='catalog_add.php?listtype=all' rank='t_List,t_AccList' target='main' />
   <m:item name='所有档案列表' link='content_list.php' rank='a_List,a_AccList' target='main' />
   <m:item name='等审核的档案' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
-  <m:item name='我发布的文档' link='content_list.php?mid=".$cuserLogin->getUserID()."' rank='a_List,a_AccList,a_MyList' target='main' />
+  <m:item name='我发布的文档' link='content_list.php?mid=" . $cuserLogin->getUserID() . "' rank='a_List,a_AccList,a_MyList' target='main' />
   <m:item name='评论管理' link='feedback_main.php' rank='sys_Feedback' target='main' />
   <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='images/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no&recycle=1' rank='a_List,a_AccList,a_MyList' target='main' />
 </m:top>

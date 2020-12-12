@@ -1,16 +1,21 @@
-<?php if (!defined('DEDEINC')) exit('Request Error!');
+<?php if (!defined('DEDEINC')) {
+    exit('Request Error!');
+}
+
 /**
  * Tag列表类
  *
  * @version        $Id: arc.taglist.class.php 1 18:17 2010年7月7日 $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 
-require_once(DEDEINC . '/channelunit.class.php');
-require_once(DEDEINC . '/typelink.class.php');
+require_once DEDEINC . '/channelunit.class.php';
+require_once DEDEINC . '/typelink.class.php';
 
 @set_time_limit(0);
 /**
@@ -22,20 +27,20 @@ require_once(DEDEINC . '/typelink.class.php');
  */
 class TagList
 {
-    var $dsql;
-    var $dtp;
-    var $dtp2;
-    var $TypeLink;
-    var $PageNo;
-    var $TotalPage;
-    var $TotalResult;
-    var $PageSize;
-    var $ListType;
-    var $Fields;
-    var $Tag;
-    var $Templet;
-    var $TagInfos;
-    var $TempletsFile;
+    public $dsql;
+    public $dtp;
+    public $dtp2;
+    public $TypeLink;
+    public $PageNo;
+    public $TotalPage;
+    public $TotalResult;
+    public $PageSize;
+    public $ListType;
+    public $Fields;
+    public $Tag;
+    public $Templet;
+    public $TagInfos;
+    public $TempletsFile;
 
     /**
      *  php5构造函数
@@ -45,7 +50,7 @@ class TagList
      * @param     string  $templet  模板
      * @return    void
      */
-    function __construct($keyword, $templet)
+    public function __construct($keyword, $templet)
     {
         global $dsql;
         $this->Templet = $templet;
@@ -67,7 +72,9 @@ class TagList
         $this->TempletsFile = '';
 
         //设置一些全局参数的值
-        foreach ($GLOBALS['PubFields'] as $k => $v) $this->Fields[$k] = $v;
+        foreach ($GLOBALS['PubFields'] as $k => $v) {
+            $this->Fields[$k] = $v;
+        }
 
         //读取Tag信息
         if ($this->Tag != '') {
@@ -91,13 +98,13 @@ class TagList
     }
 
     //php4构造函数
-    function TagList($keyword, $templet)
+    public function TagList($keyword, $templet)
     {
         $this->__construct($keyword, $templet);
     }
 
     //关闭相关资源
-    function Close()
+    public function Close()
     {
         @$this->dsql->Close();
         @$this->TypeLink->Close();
@@ -109,7 +116,7 @@ class TagList
      * @access    private
      * @return    void
      */
-    function CountRecord()
+    public function CountRecord()
     {
         //统计数据库记录
         $this->TotalResult = -1;
@@ -166,7 +173,7 @@ class TagList
      * @access    public
      * @return    void
      */
-    function Display()
+    public function Display()
     {
         $makeDir = empty($this->Tag) ? $this->GetTruePath() . "/a/tags/index.html" : $this->GetTruePath() . "/a/tags/" . GetPinyin($this->Tag) . "/index.html";
 
@@ -193,7 +200,7 @@ class TagList
      * @access    private
      * @return    void
      */
-    function ParseTempletsFirst()
+    public function ParseTempletsFirst()
     {
         MakeOneTag($this->dtp, $this);
     }
@@ -206,7 +213,7 @@ class TagList
      * @param     int  $ismake  是否编译
      * @return    string
      */
-    function ParseDMFields($PageNo, $ismake = 1)
+    public function ParseDMFields($PageNo, $ismake = 1)
     {
         foreach ($this->dtp->CTags as $tagid => $ctag) {
             if ($ctag->GetName() == "list") {
@@ -258,8 +265,8 @@ class TagList
      *  获得一个单列的文档列表
      *
      * @access    public
-     * @param     int  $limitstart  限制开始  
-     * @param     int  $row  行数 
+     * @param     int  $limitstart  限制开始
+     * @param     int  $row  行数
      * @param     int  $col  列数
      * @param     int  $titlelen  标题长度
      * @param     int  $infolen  描述长度
@@ -273,7 +280,7 @@ class TagList
      * @param     string  $orderWay  排序方式
      * @return    string
      */
-    function GetArcList(
+    public function GetArcList(
         $limitstart = 0,
         $row = 10,
         $col = 1,
@@ -289,29 +296,61 @@ class TagList
         $orderWay = 'desc'
     ) {
         $getrow = ($row == '' ? 10 : $row);
-        if ($limitstart == '') $limitstart = 0;
-        if ($titlelen == '') $titlelen = 100;
-        if ($infolen == '') $infolen = 250;
-        if ($imgwidth == '') $imgwidth = 120;
-        if ($imgheight == '') $imgheight = 120;
-        if ($listtype == '') $listtype = 'all';
+        if ($limitstart == '') {
+            $limitstart = 0;
+        }
+
+        if ($titlelen == '') {
+            $titlelen = 100;
+        }
+
+        if ($infolen == '') {
+            $infolen = 250;
+        }
+
+        if ($imgwidth == '') {
+            $imgwidth = 120;
+        }
+
+        if ($imgheight == '') {
+            $imgheight = 120;
+        }
+
+        if ($listtype == '') {
+            $listtype = 'all';
+        }
+
         $orderby = ($orderby == '' ? 'default' : strtolower($orderby));
-        if ($orderWay == '') $orderWay = 'desc';
+        if ($orderWay == '') {
+            $orderWay = 'desc';
+        }
+
         $tablewidth = str_replace("%", "", $tablewidth);
-        if ($tablewidth == '') $tablewidth = 100;
-        if ($col == '') $col = 1;
+        if ($tablewidth == '') {
+            $tablewidth = 100;
+        }
+
+        if ($col == '') {
+            $col = 1;
+        }
+
         $colWidth = ceil(100 / $col);
         $tablewidth = $tablewidth . "%";
         $colWidth = $colWidth . "%";
         $innertext = trim($innertext);
-        if ($innertext == '') $innertext = GetSysTemplets("list_fulllist.htm");
+        if ($innertext == '') {
+            $innertext = GetSysTemplets("list_fulllist.htm");
+        }
+
         $idlists = $ordersql = '';
         $this->dsql->SetQuery("SELECT aid FROM `#@__taglist` WHERE tid = '{$this->TagInfos['id']}' AND arcrank>-1 LIMIT $limitstart,$getrow");
         $this->dsql->Execute();
         while ($row = $this->dsql->GetArray()) {
             $idlists .= ($idlists == '' ? $row['aid'] : ',' . $row['aid']);
         }
-        if ($idlists == '') return '';
+        if ($idlists == '') {
+            return '';
+        }
 
         //按不同情况设定SQL条件
         $orwhere = " se.id IN($idlists) ";
@@ -342,7 +381,7 @@ class TagList
 
                     //处理一些特殊字段
                     $row['infos'] = cn_substr($row['description'], $infolen);
-                    $row['id'] =  $row['id'];
+                    $row['id'] = $row['id'];
                     $row['arcurl'] = GetFileUrl(
                         $row['id'],
                         $row['typeid'],
@@ -429,7 +468,7 @@ class TagList
      * @param     string  $listitem  列表样式
      * @return    string
      */
-    function GetPageListDM($list_len, $listitem = "info,index,end,pre,next,pageno")
+    public function GetPageListDM($list_len, $listitem = "info,index,end,pre,next,pageno")
     {
         $prepage = "";
         $nextpage = "";
@@ -485,7 +524,7 @@ class TagList
                 $listdd .= "<li><a href='" . $purl . "/$j/'>" . $j . "</a></li>\r\n";
             }
         }
-        $plist  =  '';
+        $plist = '';
         if (preg_match('/info/i', $listitem)) {
             $plist .= $maininfo . ' ';
         }
@@ -507,7 +546,7 @@ class TagList
         return $plist;
     }
 
-    function GetPageListST($list_len, $listitem = "info,index,end,pre,next,pageno")
+    public function GetPageListST($list_len, $listitem = "info,index,end,pre,next,pageno")
     {
         $prepage = "";
         $nextpage = "";
@@ -565,7 +604,7 @@ class TagList
                 $listdd .= "<li><a href='" . $purl . "/$j/'>" . $j . "</a></li>\r\n";
             }
         }
-        $plist  =  '';
+        $plist = '';
         if (preg_match('/info/i', $listitem)) {
             $plist .= $maininfo . ' ';
         }
@@ -587,19 +626,22 @@ class TagList
         return $plist;
     }
 
-    function GetTruePath()
+    public function GetTruePath()
     {
         $truepath = $GLOBALS["cfg_basedir"];
         return $truepath;
     }
 
     // 生成静态Tag
-    function MakeHtml($startpage = 1, $makepagesize = 0)
+    public function MakeHtml($startpage = 1, $makepagesize = 0)
     {
         global $cfg_dir_purview, $envs;
 
         $envs['makeTag'] = 1;
-        if (empty($this->TotalResult) && $this->Tag != "") $this->CountRecord();
+        if (empty($this->TotalResult) && $this->Tag != "") {
+            $this->CountRecord();
+        }
+
         //初步给固定值的标记赋值
         $this->ParseTempletsFirst();
 
@@ -651,7 +693,7 @@ class TagList
      * @param     string  $siteurl  站点地址
      * @return    string
      */
-    function GetListUrl($typeid, $typedir, $isdefault, $defaultname, $ispart, $namerule2, $siteurl = "")
+    public function GetListUrl($typeid, $typedir, $isdefault, $defaultname, $ispart, $namerule2, $siteurl = "")
     {
         return GetTypeUrl($typeid, MfTypedir($typedir), $isdefault, $defaultname, $ispart, $namerule2, $siteurl);
     }
@@ -672,7 +714,7 @@ class TagList
      * @param     string  $filename  文件名称
      * @return    string
      */
-    function GetArcUrl($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = "", $artdir = "", $money = 0, $filename = '')
+    public function GetArcUrl($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = "", $artdir = "", $money = 0, $filename = '')
     {
         return GetFileUrl($aid, $typeid, $timetag, $title, $ismake, $rank, $namerule, $artdir, $money, $filename);
     }
@@ -683,7 +725,7 @@ class TagList
      * @access    private
      * @return    string
      */
-    function GetCurUrl()
+    public function GetCurUrl()
     {
         if (!empty($_SERVER["REQUEST_URI"])) {
             $nowurl = $_SERVER["REQUEST_URI"];
@@ -694,4 +736,4 @@ class TagList
         }
         return $nowurl;
     }
-}//End Class
+} //End Class

@@ -4,19 +4,20 @@
  *
  * @version        $Id: file_pic_view.php 1 23:44 2011/2/16  $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require(dirname(__FILE__)."/config.php");
-if($cuserLogin->adminStyle!='dedecms')
-{
+require dirname(__FILE__) . "/config.php";
+if ($cuserLogin->adminStyle != 'dedecms') {
     header("location:index_menu.php?openitem=100");
     exit();
 }
 
-require(DEDEADMIN.'/inc/inc_menu_module.php');
-require(DEDEADMIN.'/inc/inc_menu_func.php');
+require DEDEADMIN . '/inc/inc_menu_module.php';
+require DEDEADMIN . '/inc/inc_menu_func.php';
 ?>
 <html>
 <head>
@@ -40,7 +41,7 @@ function showHide(objname)
 	<tr>
   <td style='padding-left:3px;padding-top:8px' valign="top">
 <?php
-GetMenus($cuserLogin->getUserRank(),'module');
+GetMenus($cuserLogin->getUserRank(), 'module');
 ?>
 	</td>
 	</tr>

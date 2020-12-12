@@ -4,21 +4,24 @@
  *
  * @version        $Id: archives_edit.php 1 8:26 2010年7月12日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__)."/config.php");
+require_once dirname(__FILE__) . "/config.php";
 CheckPurview('a_Edit,a_AccEdit,a_MyEdit');
-require_once(DEDEINC."/customfields.func.php");
-require_once(DEDEADMIN."/inc/inc_archives_functions.php");
+require_once DEDEINC . "/customfields.func.php";
+require_once DEDEADMIN . "/inc/inc_archives_functions.php";
 
-if(empty($dopost)) $dopost = '';
+if (empty($dopost)) {
+    $dopost = '';
+}
 
-if($dopost!='save')
-{
-    require_once(DEDEADMIN."/inc/inc_catalog_options.php");
-    require_once(DEDEINC."/dedetag.class.php");
+if ($dopost != 'save') {
+    require_once DEDEADMIN . "/inc/inc_catalog_options.php";
+    require_once DEDEINC . "/dedetag.class.php";
     ClearMyAddon();
     $aid = intval($aid);
 
@@ -30,17 +33,15 @@ if($dopost!='save')
     ";
 
     $arcRow = $dsql->GetOne($arcQuery);
-    if(!is_array($arcRow))
-    {
-        ShowMsg("读取档案基本信息出错!","-1");
+    if (!is_array($arcRow)) {
+        ShowMsg("读取档案基本信息出错!", "-1");
         exit();
     }
 
-    $query = "SELECT * FROM `#@__channeltype` WHERE id='".$arcRow['channel']."'";
+    $query = "SELECT * FROM `#@__channeltype` WHERE id='" . $arcRow['channel'] . "'";
     $cInfos = $dsql->GetOne($query);
-    if(!is_array($cInfos))
-    {
-        ShowMsg("读取频道配置信息出错!","javascript:;");
+    if (!is_array($cInfos)) {
+        ShowMsg("读取频道配置信息出错!", "javascript:;");
         exit();
     }
     $addtable = $cInfos['addtable'];
@@ -53,132 +54,142 @@ if($dopost!='save')
 /*--------------------------------
 function __save(){  }
 -------------------------------*/
-else if($dopost=='save')
-{
-    require_once(DEDEINC.'/image.func.php');
-    require_once(DEDEINC.'/oxwindow.class.php');
-    $flag = isset($flags) ? join(',',$flags) : '';
-    $notpost = isset($notpost) && $notpost == 1 ? 1: 0;
-    if(empty($litpic_b64)) $litpic_b64 = '';
-    
-    if(empty($typeid2)) $typeid2 = 0;
-    if(!isset($autokey)) $autokey = 0;
-    if(!isset($remote)) $remote = 0;
-    if(!isset($dellink)) $dellink = 0;
-    if(!isset($autolitpic)) $autolitpic = 0;
-    if(!isset($writer)) $writer = '';
+else if ($dopost == 'save') {
+    require_once DEDEINC . '/image.func.php';
+    require_once DEDEINC . '/oxwindow.class.php';
+    $flag = isset($flags) ? join(',', $flags) : '';
+    $notpost = isset($notpost) && $notpost == 1 ? 1 : 0;
+    if (empty($litpic_b64)) {
+        $litpic_b64 = '';
+    }
 
-    if($typeid==0)
-    {
-        ShowMsg("请指定文档的栏目！","-1");
+    if (empty($typeid2)) {
+        $typeid2 = 0;
+    }
+
+    if (!isset($autokey)) {
+        $autokey = 0;
+    }
+
+    if (!isset($remote)) {
+        $remote = 0;
+    }
+
+    if (!isset($dellink)) {
+        $dellink = 0;
+    }
+
+    if (!isset($autolitpic)) {
+        $autolitpic = 0;
+    }
+
+    if (!isset($writer)) {
+        $writer = '';
+    }
+
+    if ($typeid == 0) {
+        ShowMsg("请指定文档的栏目！", "-1");
         exit();
     }
-    if(empty($channelid))
-    {
-        ShowMsg("文档为非指定的类型，请检查你发布内容的表单是否合法！","-1");
+    if (empty($channelid)) {
+        ShowMsg("文档为非指定的类型，请检查你发布内容的表单是否合法！", "-1");
         exit();
     }
-    if(!CheckChannel($typeid,$channelid))
-    {
-        ShowMsg("你所选择的栏目与当前模型不相符，请选择白色的选项！","-1");
+    if (!CheckChannel($typeid, $channelid)) {
+        ShowMsg("你所选择的栏目与当前模型不相符，请选择白色的选项！", "-1");
         exit();
     }
-    if(!TestPurview('a_Edit'))
-    {
-        if(TestPurview('a_AccEdit'))
-        {
-            CheckCatalog($typeid,"对不起，你没有操作栏目 {$typeid} 的文档权限！");
-        }
-        else
-        {
-            CheckArcAdmin($id,$cuserLogin->getUserID());
+    if (!TestPurview('a_Edit')) {
+        if (TestPurview('a_AccEdit')) {
+            CheckCatalog($typeid, "对不起，你没有操作栏目 {$typeid} 的文档权限！");
+        } else {
+            CheckArcAdmin($id, $cuserLogin->getUserID());
         }
     }
 
     //对保存的内容进行处理
     $pubdate = GetMkTime($pubdate);
     $sortrank = AddDay($pubdate, $sortup);
-    $ismake = $ishtml==0 ? -1 : 0;
+    $ismake = $ishtml == 0 ? -1 : 0;
     $title = cn_substrR($title, $cfg_title_maxlen);
     $shorttitle = cn_substrR($shorttitle, 36);
-    $color =  cn_substrR($color, 7);
-    $writer =  cn_substrR($writer, 20);
+    $color = cn_substrR($color, 7);
+    $writer = cn_substrR($writer, 20);
     $source = cn_substrR($source, 30);
     $description = cn_substrR($description, $cfg_auot_description);
     $keywords = trim(cn_substrR($keywords, 60));
     $filename = trim(cn_substrR($filename, 40));
-    $isremote  = (empty($isremote)? 0  : $isremote);
-    $serviterm=empty($serviterm)? "" : $serviterm;
-    if(!TestPurview('a_Check,a_AccCheck,a_MyCheck')) $arcrank = -1;
+    $isremote = (empty($isremote) ? 0 : $isremote);
+    $serviterm = empty($serviterm) ? "" : $serviterm;
+    if (!TestPurview('a_Check,a_AccCheck,a_MyCheck')) {
+        $arcrank = -1;
+    }
 
     $adminid = $cuserLogin->getUserID();
 
     //处理上传的缩略图
-    if(empty($ddisremote)) $ddisremote = 0;
+    if (empty($ddisremote)) {
+        $ddisremote = 0;
+    }
 
     $litpic = GetDDImage('none', $picname, $ddisremote);
 
     // 处理新的缩略图上传
     if ($litpic_b64 != "") {
-        $data = explode( ',', $litpic_b64 );
+        $data = explode(',', $litpic_b64);
         $ntime = time();
-        $savepath = $ddcfg_image_dir.'/'.MyDate($cfg_addon_savetype, $ntime);
+        $savepath = $ddcfg_image_dir . '/' . MyDate($cfg_addon_savetype, $ntime);
         CreateDir($savepath);
-        $fullUrl = $savepath.'/'.dd2char(MyDate('mdHis', $ntime).$cuserLogin->getUserID().mt_rand(1000, 9999));
-        $fullUrl = $fullUrl.".png";
-        
-        file_put_contents($cfg_basedir.$fullUrl, base64_decode( $data[ 1 ] ));
+        $fullUrl = $savepath . '/' . dd2char(MyDate('mdHis', $ntime) . $cuserLogin->getUserID() . mt_rand(1000, 9999));
+        $fullUrl = $fullUrl . ".png";
+
+        file_put_contents($cfg_basedir . $fullUrl, base64_decode($data[1]));
 
         // 加水印
-        WaterImg($cfg_basedir.$fullUrl, 'up');
+        WaterImg($cfg_basedir . $fullUrl, 'up');
         $litpic = $fullUrl;
     }
 
     //分析处理附加表数据
     $inadd_f = '';
     $inadd_v = '';
-    if(!empty($dede_addonfields))
-    {
-        $addonfields = explode(';',$dede_addonfields);
+    if (!empty($dede_addonfields)) {
+        $addonfields = explode(';', $dede_addonfields);
         $inadd_f = '';
         $inadd_v = '';
-        if(is_array($addonfields))
-        {
-            foreach($addonfields as $v)
-            {
-                if($v=='')
-                {
+        if (is_array($addonfields)) {
+            foreach ($addonfields as $v) {
+                if ($v == '') {
                     continue;
                 }
-                $vs = explode(',',$v);
-                if($vs[1]=='htmltext'||$vs[1]=='textdata') //HTML文本特殊处理
+                $vs = explode(',', $v);
+                if ($vs[1] == 'htmltext' || $vs[1] == 'textdata') //HTML文本特殊处理
                 {
-                    ${$vs[0]} = AnalyseHtmlBody(${$vs[0]},$description,$litpic,$keywords,$vs[1]);
-                }else
-                {
-                    if(!isset(${$vs[0]}))
-                    {
+                    ${$vs[0]} = AnalyseHtmlBody(${$vs[0]}, $description, $litpic, $keywords, $vs[1]);
+                } else {
+                    if (!isset(${$vs[0]})) {
                         ${$vs[0]} = '';
                     }
-                    ${$vs[0]} = GetFieldValueA(${$vs[0]},$vs[1],$id);
+                    ${$vs[0]} = GetFieldValueA(${$vs[0]}, $vs[1], $id);
                 }
-                $inadd_f .= ",`{$vs[0]}` = '".${$vs[0]}."'";
+                $inadd_f .= ",`{$vs[0]}` = '" . ${$vs[0]} . "'";
             }
         }
     }
 
     //处理图片文档的自定义属性
-    if($litpic!='' && !preg_match("#p#", $flag))
-    {
-        $flag = ($flag=='' ? 'p' : $flag.',p');
+    if ($litpic != '' && !preg_match("#p#", $flag)) {
+        $flag = ($flag == '' ? 'p' : $flag . ',p');
     }
-    if($redirecturl!='' && !preg_match("#j#", $flag))
-    {
-        $flag = ($flag=='' ? 'j' : $flag.',j');
+    if ($redirecturl != '' && !preg_match("#j#", $flag)) {
+        $flag = ($flag == '' ? 'j' : $flag . ',j');
     }
 
     //跳转网址的文档强制为动态
-    if(preg_match("#j#", $flag)) $ismake = -1;
+    if (preg_match("#j#", $flag)) {
+        $ismake = -1;
+    }
+
     //更新数据库的SQL语句
     $inQuery = "UPDATE `#@__archives` SET
     typeid='$typeid',
@@ -203,42 +214,39 @@ else if($dopost=='save')
     dutyadmin='$adminid',
     weight='$weight'
     WHERE id='$id'; ";
-    if(!$dsql->ExecuteNoneQuery($inQuery))
-    {
-        ShowMsg("更新数据库archives表时出错，请检查！","-1");
+    if (!$dsql->ExecuteNoneQuery($inQuery)) {
+        ShowMsg("更新数据库archives表时出错，请检查！", "-1");
         exit();
     }
 
     $cts = $dsql->GetOne("SELECT addtable From `#@__channeltype` WHERE id='$channelid' ");
     $addtable = trim($cts['addtable']);
-    if($addtable!='')
-    {
+    if ($addtable != '') {
         $useip = GetIP();
         $iquery = "UPDATE `$addtable` SET typeid='$typeid'{$inadd_f},redirecturl='$redirecturl',userip='$useip' WHERE aid='$id' ";
-        if(!$dsql->ExecuteNoneQuery($iquery))
-        {
-            ShowMsg("更新附加表 `$addtable`  时出错，请检查原因！","javascript:;");
+        if (!$dsql->ExecuteNoneQuery($iquery)) {
+            ShowMsg("更新附加表 `$addtable`  时出错，请检查原因！", "javascript:;");
             exit();
         }
     }
 
     //生成HTML
     UpIndexKey($id, $arcrank, $typeid, $sortrank, $tags);
-    if($cfg_remote_site=='Y' && $isremote=="1")
-    {    
-        if($serviterm!="")
-        {
+    if ($cfg_remote_site == 'Y' && $isremote == "1") {
+        if ($serviterm != "") {
             list($servurl, $servuser, $servpwd) = explode(',', $serviterm);
-            $config=array( 'hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd,'debug' => 'TRUE');
+            $config = array('hostname' => $servurl, 'username' => $servuser, 'password' => $servpwd, 'debug' => 'TRUE');
         } else {
-            $config=array();
+            $config = array();
         }
-        if(!$ftp->connect($config)) exit('Error:None FTP Connection!');
+        if (!$ftp->connect($config)) {
+            exit('Error:None FTP Connection!');
+        }
+
     }
-    $artUrl = MakeArt($id, TRUE, TRUE, $isremote);
-    if($artUrl=='')
-    {
-        $artUrl = $cfg_phpurl."/view.php?aid=$id";
+    $artUrl = MakeArt($id, true, true, $isremote);
+    if ($artUrl == '') {
+        $artUrl = $cfg_phpurl . "/view.php?aid=$id";
     }
     ClearMyAddon($id, $title);
     //返回成功信息
@@ -246,7 +254,7 @@ else if($dopost=='save')
     　　请选择你的后续操作：
     <a href='archives_add.php?cid=$typeid'><u>发布新文档</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=".$id."&dopost=editArchives'><u>查看更改</u></a>
+    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看更改</u></a>
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文档</u></a>
     &nbsp;&nbsp;
@@ -260,6 +268,6 @@ else if($dopost=='save')
     $win = new OxWindow();
     $win->AddTitle("成功更改文档：");
     $win->AddMsgItem($msg);
-    $winform = $win->GetWindow("hand","&nbsp;",false);
+    $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();
 }

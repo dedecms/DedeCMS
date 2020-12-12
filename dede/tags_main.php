@@ -4,22 +4,28 @@
  *
  * @version        $Id: tag_test_action.php 1 23:07 2010年7月20日 $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__).'/config.php');
+require_once dirname(__FILE__) . '/config.php';
 CheckPurview('sys_Keyword');
-require_once(DEDEINC.'/datalistcp.class.php');
+require_once DEDEINC . '/datalistcp.class.php';
 $timestamp = time();
-if(empty($tag)) $tag = '';
+if (empty($tag)) {
+    $tag = '';
+}
 
-if(empty($action))
-{
+if (empty($action)) {
     $orderby = empty($orderby) ? 'id' : preg_replace("#[^a-z]#i", '', $orderby);
     $orderway = isset($orderway) && $orderway == 'asc' ? 'asc' : 'desc';
-    if(!empty($tag)) $where = " where tag like '%$tag%'";
-    else $where = '';
+    if (!empty($tag)) {
+        $where = " where tag like '%$tag%'";
+    } else {
+        $where = '';
+    }
 
     $neworderway = ($orderway == 'desc' ? 'asc' : 'desc');
     $query = "SELECT * FROM `#@__tagindex` $where ORDER BY $orderby $orderway";
@@ -29,21 +35,19 @@ if(empty($action))
     $dlist->SetParameter("orderway", $orderway);
     $dlist->SetParameter("orderby", $orderby);
     $dlist->pageSize = 20;
-    $dlist->SetTemplet(DEDEADMIN."/templets/tags_main.htm");
+    $dlist->SetTemplet(DEDEADMIN . "/templets/tags_main.htm");
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
 }
 /*
 function update()
-*/
-else if($action == 'update')
-{
-    $tid = (empty($tid) ? 0 : intval($tid) );
-    $count = (empty($count) ? 0 : intval($count) );
-    if(empty($tid))
-    {
-        ShowMsg('没有选择要删除的tag!','-1');
+ */
+else if ($action == 'update') {
+    $tid = (empty($tid) ? 0 : intval($tid));
+    $count = (empty($count) ? 0 : intval($count));
+    if (empty($tid)) {
+        ShowMsg('没有选择要删除的tag!', '-1');
         exit();
     }
     $query = "UPDATE `#@__tagindex` SET `count`='$count' WHERE id='$tid' ";
@@ -53,101 +57,75 @@ else if($action == 'update')
 }
 /*
 function delete()
-*/
-else if($action == 'delete')
-{
-    if(@is_array($ids))
-    {
+ */
+else if ($action == 'delete') {
+    if (@is_array($ids)) {
         $stringids = implode(',', $ids);
-    }
-    else if(!empty($ids))
-    {
+    } else if (!empty($ids)) {
         $stringids = $ids;
-    }
-    else
-    {
-        ShowMsg('没有选择要删除的tag','-1');
+    } else {
+        ShowMsg('没有选择要删除的tag', '-1');
         exit();
     }
     $query = "DELETE FROM `#@__tagindex` WHERE id IN ($stringids)";
-    if($dsql->ExecuteNoneQuery($query))
-    {
+    if ($dsql->ExecuteNoneQuery($query)) {
         $query = "DELETE FROM `#@__taglist` WHERE tid IN ($stringids)";
         $dsql->ExecuteNoneQuery($query);
         ShowMsg("删除tags[ $stringids ]成功", 'tags_main.php');
-    }
-    else
-    {
+    } else {
         ShowMsg("删除tags[ $stringids ]失败", 'tags_main.php');
     }
     exit();
 }
 /*
 function fetch()
-*/
-else if($action == 'fetch')
-{
+ */
+else if ($action == 'fetch') {
     $wheresql = '';
     $start = isset($start) && is_numeric($start) ? $start : 0;
     $where = array();
-    if(isset($startaid) && is_numeric($startaid) && $startaid > 0)
-    {
+    if (isset($startaid) && is_numeric($startaid) && $startaid > 0) {
         $where[] = " id>=$startaid ";
-    }
-    else
-    {
+    } else {
         $startaid = 0;
     }
-    if(isset($endaid) && is_numeric($endaid) && $endaid > 0)
-    {
+    if (isset($endaid) && is_numeric($endaid) && $endaid > 0) {
         $where[] = " id<=$endaid ";
-    }
-    else
-    {
+    } else {
         $endaid = 0;
     }
-    if(!empty($where))
-    {
-        $wheresql = " WHERE arcrank>-1 AND ".implode(' AND ', $where);
+    if (!empty($where)) {
+        $wheresql = " WHERE arcrank>-1 AND " . implode(' AND ', $where);
     }
     $query = "SELECT id as aid,arcrank,typeid,keywords FROM `#@__archives` $wheresql LIMIT $start, 100";
     $dsql->SetQuery($query);
     $dsql->Execute();
     $complete = true;
     $now = time();
-    while($row = $dsql->GetArray())
-    {
+    while ($row = $dsql->GetArray()) {
         $aid = $row['aid'];
         $typeid = $row['typeid'];
         $arcrank = $row['arcrank'];
         $row['keywords'] = trim($row['keywords']);
-        if($row['keywords']!='' && !preg_match("#,#", $row['keywords']))
-        {
+        if ($row['keywords'] != '' && !preg_match("#,#", $row['keywords'])) {
             $keyarr = explode(' ', $row['keywords']);
-        }
-        else
-        {
+        } else {
             $keyarr = explode(',', $row['keywords']);
         }
-        foreach($keyarr as $keyword)
-        {
+        foreach ($keyarr as $keyword) {
             $keyword = trim($keyword);
-            if($keyword != '' && strlen($keyword)<13 )
-            {
+            if ($keyword != '' && strlen($keyword) < 13) {
                 $keyword = addslashes($keyword);
                 $row = $dsql->GetOne("SELECT id,total FROM `#@__tagindex` WHERE tag LIKE '$keyword'");
-                if(is_array($row))
-                {
+                if (is_array($row)) {
                     $tid = $row['id'];
                     $trow = $dsql->GetOne("SELECT COUNT(*) as dd FROM `#@__taglist` WHERE tag LIKE '$keyword'");
-                    if (intval($trow['dd']) != $row['total'] ) {
-                        
-                        $query = "UPDATE `#@__tagindex` SET `total`=".$trow['dd'].",uptime=$now WHERE id='$tid' ";
+                    if (intval($trow['dd']) != $row['total']) {
+
+                        $query = "UPDATE `#@__tagindex` SET `total`=" . $trow['dd'] . ",uptime=$now WHERE id='$tid' ";
                         $dsql->ExecuteNoneQuery($query);
                     }
-                }
-                else
-                {
+                } else {
                     $query = " INSERT INTO `#@__tagindex`(`tag`,`count`,`total`,`weekcc`,`monthcc`,`weekup`,`monthup`,`addtime`,`uptime`) VALUES('$keyword','0','1','0','0','$timestamp','$timestamp','$timestamp','$now');";
                     $dsql->ExecuteNoneQuery($query);
                     $tid = $dsql->GetLastID();
@@ -156,10 +134,9 @@ else if($action == 'fetch')
                 $dsql->ExecuteNoneQuery($query);
             }
         }
-        $complete = FALSE;
+        $complete = false;
     }
-    if($complete)
-    {
+    if ($complete) {
         ShowMsg("tags获取完成", 'tags_main.php');
         exit();
     }

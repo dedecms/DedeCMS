@@ -5,19 +5,23 @@
  *
  * @version        $Id: media_add.php 2 15:25 2011-6-2  $
  * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-require_once(dirname(__FILE__) . "/config.php");
+require_once dirname(__FILE__) . "/config.php";
 
 //增加权限检查
-if (empty($dopost)) $dopost = "";
+if (empty($dopost)) {
+    $dopost = "";
+}
 
 //上传
 if ($dopost == "upload") {
     csrf_check();
-    require_once(DEDEINC . "/image.func.php");
+    require_once DEDEINC . "/image.func.php";
     $sparr_image = array("image/pjpeg", "image/jpeg", "image/gif", "image/png", "image/x-png", "image/wbmp");
     $sparr_flash = array("application/xshockwaveflash");
     $okdd = 0;
@@ -58,9 +62,9 @@ if ($dopost == "upload") {
                 CloseFtp();
             }
             /*
-			dedecms后台文件任意上传漏洞
-			漏洞描述：dedecms早期版本后台存在大量的富文本编辑器，该控件提供了一些文件上传接口，同时dedecms对上传文件的后缀类型未进行严格的限制，这导致了黑客可以上传WEBSHELL，获取网站后台权限。
-			*/
+            dedecms后台文件任意上传漏洞
+            漏洞描述：dedecms早期版本后台存在大量的富文本编辑器，该控件提供了一些文件上传接口，同时dedecms对上传文件的后缀类型未进行严格的限制，这导致了黑客可以上传WEBSHELL，获取网站后台权限。
+             */
             if (preg_match('#\.(php|pl|cgi|asp|aspx|jsp|php5|php4|php3|shtm|shtml)[^a-zA-Z0-9]+$#i', trim($filename))) {
                 ShowMsg("你指定的文件名被系统禁止！", "javascript:;");
                 exit();
@@ -72,7 +76,10 @@ if ($dopost == "upload") {
                 $data = getImagesize($fullfilename, $info);
                 $width = $data[0];
                 $height = $data[1];
-                if (in_array($upfile_type, $cfg_photo_typenames)) WaterImg($fullfilename, 'up');
+                if (in_array($upfile_type, $cfg_photo_typenames)) {
+                    WaterImg($fullfilename, 'up');
+                }
+
             } else {
                 @move_uploaded_file(${"upfile" . $i}, $fullfilename);
             }

@@ -1,4 +1,7 @@
-<?php if (!defined('DEDEINC')) exit('dedecms');
+<?php if (!defined('DEDEINC')) {
+    exit('dedecms');
+}
+
 /**
  * FTP 操作类
  * 不支持 SFTP 和 SSL FTP 协议, 仅支持标准 FTP 协议.
@@ -11,6 +14,8 @@
  *
  * @version        $Id: ftp.class.php 1 2010-07-05 11:43:09 $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
@@ -18,15 +23,15 @@
 @set_time_limit(1000);
 class FTP
 {
-    var $hostname    = '';
-    var $username    = '';
-    var $password    = '';
-    var $port        = 21;
-    var $passive    = TRUE;
-    var $debug        = FALSE;
-    var $conn_id    = FALSE;
+    public $hostname = '';
+    public $username = '';
+    public $password = '';
+    public $port = 21;
+    public $passive = true;
+    public $debug = false;
+    public $conn_id = false;
 
-    function __construct($config = array())
+    public function __construct($config = array())
     {
         $this->FTP($config);
     }
@@ -36,7 +41,7 @@ class FTP
      *
      * 构造函数则传递一个配置数组
      */
-    function FTP($config = array())
+    public function FTP($config = array())
     {
         if (count($config) > 0) {
             $this->initialize($config);
@@ -50,7 +55,7 @@ class FTP
      * @param    array
      * @return    void
      */
-    function initialize($config = array())
+    public function initialize($config = array())
     {
         foreach ($config as $key => $val) {
             if (isset($this->$key)) {
@@ -69,32 +74,32 @@ class FTP
      * @param    array     链接值
      * @return    bool
      */
-    function connect($config = array())
+    public function connect($config = array())
     {
         if (count($config) > 0) {
             $this->initialize($config);
         }
 
-        if (FALSE === ($this->conn_id = @ftp_connect($this->hostname, $this->port))) {
-            if ($this->debug == TRUE) {
+        if (false === ($this->conn_id = @ftp_connect($this->hostname, $this->port))) {
+            if ($this->debug == true) {
                 $this->_error('无法链接');
             }
-            return FALSE;
+            return false;
         }
 
         if (!$this->_login()) {
-            if ($this->debug == TRUE) {
+            if ($this->debug == true) {
                 $this->_error('无法登录');
             }
-            return FALSE;
+            return false;
         }
 
         // 如果需要则设置传输模式
-        if ($this->passive == TRUE) {
-            ftp_pasv($this->conn_id, TRUE);
+        if ($this->passive == true) {
+            ftp_pasv($this->conn_id, true);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -103,7 +108,7 @@ class FTP
      * @access    private
      * @return    bool
      */
-    function _login()
+    public function _login()
     {
         return @ftp_login($this->conn_id, $this->username, $this->password);
     }
@@ -114,15 +119,15 @@ class FTP
      * @access    private
      * @return    bool
      */
-    function _is_conn()
+    public function _is_conn()
     {
         if (!is_resource($this->conn_id)) {
-            if ($this->debug == TRUE) {
+            if ($this->debug == true) {
                 $this->_error('无法链接');
             }
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -137,22 +142,22 @@ class FTP
      * @param    bool
      * @return    bool
      */
-    function changedir($path = '', $supress_debug = FALSE)
+    public function changedir($path = '', $supress_debug = false)
     {
         if ($path == '' or !$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         $result = @ftp_chdir($this->conn_id, $path);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE and $supress_debug == FALSE) {
+        if ($result === false) {
+            if ($this->debug == true and $supress_debug == false) {
                 $this->_error('无法更改目录');
             }
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -162,27 +167,27 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function mkdir($path = '', $permissions = NULL)
+    public function mkdir($path = '', $permissions = null)
     {
         if ($path == '' or !$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         $result = @ftp_mkdir($this->conn_id, $path);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
+        if ($result === false) {
+            if ($this->debug == true) {
                 $this->_error('无法创建文件夹');
             }
-            return FALSE;
+            return false;
         }
 
         // 如果需要设置权限
         if (!is_null($permissions)) {
-            $this->chmod($path, (int)$permissions);
+            $this->chmod($path, (int) $permissions);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -192,7 +197,7 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function rmkdir($path = '', $pathsymbol = '/')
+    public function rmkdir($path = '', $pathsymbol = '/')
     {
         $pathArray = explode($pathsymbol, $path);
         $pathstr = $pathsymbol;
@@ -201,18 +206,18 @@ class FTP
                 //构建文件夹路径
                 $pathstr = $pathstr . $val . $pathsymbol;
                 if (!$this->_is_conn()) {
-                    return FALSE;
+                    return false;
                 }
                 $result = @ftp_chdir($this->conn_id, $pathstr);
-                if ($result === FALSE) {
+                if ($result === false) {
                     //如果不存在这个目录则创建
                     if (!$this->mkdir($pathstr)) {
-                        return FALSE;
+                        return false;
                     }
                 }
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -224,15 +229,15 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function upload($locpath, $rempath, $mode = 'auto', $permissions = NULL)
+    public function upload($locpath, $rempath, $mode = 'auto', $permissions = null)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         if (!file_exists($locpath)) {
             $this->_error('不存在源文件');
-            return FALSE;
+            return false;
         }
 
         // 未指定则设置模式
@@ -246,19 +251,19 @@ class FTP
 
         $result = @ftp_put($this->conn_id, $rempath, $locpath, $mode);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
+        if ($result === false) {
+            if ($this->debug == true) {
                 $this->_error('无法上传');
             }
-            return FALSE;
+            return false;
         }
 
         // 如果需要设置文件权限
         if (!is_null($permissions)) {
-            $this->chmod($rempath, (int)$permissions);
+            $this->chmod($rempath, (int) $permissions);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -270,24 +275,24 @@ class FTP
      * @param    bool
      * @return    bool
      */
-    function rename($old_file, $new_file, $move = FALSE)
+    public function rename($old_file, $new_file, $move = false)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         $result = @ftp_rename($this->conn_id, $old_file, $new_file);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
-                $msg = ($move == FALSE) ? '无法重命名' : '无法移动';
+        if ($result === false) {
+            if ($this->debug == true) {
+                $msg = ($move == false) ? '无法重命名' : '无法移动';
 
                 $this->_error($msg);
             }
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -298,9 +303,9 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function move($old_file, $new_file)
+    public function move($old_file, $new_file)
     {
-        return $this->rename($old_file, $new_file, TRUE);
+        return $this->rename($old_file, $new_file, true);
     }
 
     /**
@@ -310,22 +315,22 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function delete_file($filepath)
+    public function delete_file($filepath)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         $result = @ftp_delete($this->conn_id, $filepath);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
+        if ($result === false) {
+            if ($this->debug == true) {
                 $this->_error('无法删除');
             }
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -335,18 +340,18 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function delete_dir($filepath)
+    public function delete_dir($filepath)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         // 如果需要在尾部加上尾随"/"
-        $filepath = preg_replace("/(.+?)\/*$/", "\\1/",  $filepath);
+        $filepath = preg_replace("/(.+?)\/*$/", "\\1/", $filepath);
 
         $list = $this->list_files($filepath);
 
-        if ($list !== FALSE and count($list) > 0) {
+        if ($list !== false and count($list) > 0) {
             foreach ($list as $item) {
                 // 如果我们不能删除该项目,它则可能是一个文件夹
                 // 将调用 delete_dir()
@@ -358,14 +363,14 @@ class FTP
 
         $result = @ftp_rmdir($this->conn_id, $filepath);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
+        if ($result === false) {
+            if ($this->debug == true) {
                 $this->_error('无法删除');
             }
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -376,30 +381,30 @@ class FTP
      * @param    string    权限
      * @return    bool
      */
-    function chmod($path, $perm)
+    public function chmod($path, $perm)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         // 仅PHP5才能运行
         if (!function_exists('ftp_chmod')) {
-            if ($this->debug == TRUE) {
+            if ($this->debug == true) {
                 $this->_error('无法更改权限');
             }
-            return FALSE;
+            return false;
         }
 
         $result = @ftp_chmod($this->conn_id, $perm, $path);
 
-        if ($result === FALSE) {
-            if ($this->debug == TRUE) {
+        if ($result === false) {
+            if ($this->debug == true) {
                 $this->_error('无法更改权限');
             }
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -408,10 +413,10 @@ class FTP
      * @access    public
      * @return    array
      */
-    function list_files($path = '.')
+    public function list_files($path = '.')
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         return ftp_nlist($this->conn_id, $path);
@@ -423,13 +428,13 @@ class FTP
      * @access    public
      * @return    array
      */
-    function list_rawfiles($path = '.', $type = 'dir')
+    public function list_rawfiles($path = '.', $type = 'dir')
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
-        $ftp_rawlist = ftp_rawlist($this->conn_id, $path, TRUE);
+        $ftp_rawlist = ftp_rawlist($this->conn_id, $path, true);
         foreach ($ftp_rawlist as $v) {
             $info = array();
             $vinfo = preg_split("/[\s]+/", $v, 9);
@@ -469,24 +474,24 @@ class FTP
      * @param    string    目标路径 - 含有尾随"/"的文件夹
      * @return    bool
      */
-    function mirror($locpath, $rempath)
+    public function mirror($locpath, $rempath)
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         // 打开本地文件路径
         if ($fp = @opendir($locpath)) {
             // 尝试打开远程文件的路径.
-            if (!$this->changedir($rempath, TRUE)) {
+            if (!$this->changedir($rempath, true)) {
                 // 如果不能打开则创建
                 if (!$this->rmkdir($rempath) or !$this->changedir($rempath)) {
-                    return FALSE;
+                    return false;
                 }
             }
 
             // 递归读取本地目录
-            while (FALSE !== ($file = readdir($fp))) {
+            while (false !== ($file = readdir($fp))) {
                 if (@is_dir($locpath . $file) && substr($file, 0, 1) != '.') {
                     $this->mirror($locpath . $file . "/", $rempath . $file . "/");
                 } elseif (substr($file, 0, 1) != ".") {
@@ -497,10 +502,10 @@ class FTP
                     $this->upload($locpath . $file, $rempath . $file, $mode);
                 }
             }
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -510,9 +515,9 @@ class FTP
      * @param    string
      * @return    string
      */
-    function _getext($filename)
+    public function _getext($filename)
     {
-        if (FALSE === strpos($filename, '.')) {
+        if (false === strpos($filename, '.')) {
             return 'txt';
         }
 
@@ -527,7 +532,7 @@ class FTP
      * @param    string
      * @return    string
      */
-    function _settype($ext)
+    public function _settype($ext)
     {
         $text_types = array(
             'txt',
@@ -542,9 +547,8 @@ class FTP
             'phtml',
             'shtml',
             'log',
-            'xml'
+            'xml',
         );
-
 
         return (in_array($ext, $text_types)) ? 'ascii' : 'binary';
     }
@@ -557,10 +561,10 @@ class FTP
      * @param    string    目的地路径
      * @return    bool
      */
-    function close()
+    public function close()
     {
         if (!$this->_is_conn()) {
-            return FALSE;
+            return false;
         }
 
         @ftp_close($this->conn_id);
@@ -573,7 +577,7 @@ class FTP
      * @param    string
      * @return    bool
      */
-    function _error($msg)
+    public function _error($msg)
     {
         $errorTrackFile = dirname(__FILE__) . '/../data/ftp_error_trace.inc';
         $emsg = '';
@@ -599,7 +603,7 @@ class FTP
      * @access    public
      * @return    string
      */
-    function GetCurUrl()
+    public function GetCurUrl()
     {
         if (!empty($_SERVER["REQUEST_URI"])) {
             $scriptName = $_SERVER["REQUEST_URI"];
@@ -614,4 +618,4 @@ class FTP
         }
         return $nowurl;
     }
-}//End Class
+} //End Class

@@ -4,49 +4,43 @@
  *
  * @version        $Id: select_media.php 1 9:43 2010年7月8日 $
  * @package        DedeCMS.Dialog
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
- 
-require_once(dirname(__FILE__)."/config.php");
-if(empty($activepath))
-{
+
+require_once dirname(__FILE__) . "/config.php";
+if (empty($activepath)) {
     $activepath = '';
 }
-$noeditor = isset($noeditor)? $noeditor : '';
+$noeditor = isset($noeditor) ? $noeditor : '';
 $activepath = str_replace('.', '', $activepath);
 $activepath = preg_replace("#\/{1,}#", '/', $activepath);
-if(strlen($activepath) < strlen($cfg_other_medias))
-{
+if (strlen($activepath) < strlen($cfg_other_medias)) {
     $activepath = $cfg_other_medias;
 }
-$inpath = $cfg_basedir.$activepath;
-$activeurl = '..'.$activepath;
-if (!is_dir($inpath) )
-{
+$inpath = $cfg_basedir . $activepath;
+$activeurl = '..' . $activepath;
+if (!is_dir($inpath)) {
     die('No Exsits Path');
 }
-if(empty($f))
-{
+if (empty($f)) {
     $f = 'form1.enclosure';
 }
 
-if(empty($comeback))
-{
+if (empty($comeback)) {
     $comeback = '';
 }
 $addparm = '';
-if (!empty($CKEditor))
-{
-    $addparm = '&CKEditor='.$CKEditor;
+if (!empty($CKEditor)) {
+    $addparm = '&CKEditor=' . $CKEditor;
 }
-if (!empty($CKEditorFuncNum))
-{
-    $addparm .= '&CKEditorFuncNum='.$CKEditorFuncNum;
+if (!empty($CKEditorFuncNum)) {
+    $addparm .= '&CKEditorFuncNum=' . $CKEditorFuncNum;
 }
-if (!empty($noeditor))
-{
+if (!empty($noeditor)) {
     $addparm .= '&noeditor=yes';
 }
 ?>
@@ -68,17 +62,17 @@ function nullLink()
 
 function ReturnValue(reimg)
 {
-    if(window.opener.document.<?php echo $f?> != null)
+    if(window.opener.document.<?php echo $f ?> != null)
 	{
-		 window.opener.document.<?php echo $f?>.value=reimg;
+		 window.opener.document.<?php echo $f ?>.value=reimg;
 	}
-	 
-    var funcNum = <?php echo isset($CKEditorFuncNum)? $CKEditorFuncNum : 1;?>;
+
+    var funcNum = <?php echo isset($CKEditorFuncNum) ? $CKEditorFuncNum : 1; ?>;
 	if(window.opener.CKEDITOR != null && funcNum != 1)
 	{
-		
+
 		window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
-		
+
 	}
 	window.close();
 }
@@ -95,64 +89,72 @@ function ReturnValue(reimg)
 </tr>
 <?php
 $dh = dir($inpath);
-$ty1="";
-$ty2="";
-while($file = $dh->read()) {
+$ty1 = "";
+$ty2 = "";
+while ($file = $dh->read()) {
     //-----计算文件大小和创建时间
-    if($file!="." && $file!=".." && !is_dir("$inpath/$file")){
+    if ($file != "." && $file != ".." && !is_dir("$inpath/$file")) {
         $filesize = filesize("$inpath/$file");
-        $filesize = $filesize/1024;
-        if($filesize!="")
-        if($filesize<0.1)
-        {
-            @list($ty1,$ty2) = split("\.", $filesize);
-            $filesize = $ty1.".".substr($ty2, 0, 2);
+        $filesize = $filesize / 1024;
+        if ($filesize != "") {
+            if ($filesize < 0.1) {
+                @list($ty1, $ty2) = split("\.", $filesize);
+                $filesize = $ty1 . "." . substr($ty2, 0, 2);
+            } else {
+                @list($ty1, $ty2) = split("\.", $filesize);
+                $filesize = $ty1 . "." . substr($ty2, 0, 1);
+            }
         }
-        else{
-            @list($ty1,$ty2) = split("\.", $filesize);
-            $filesize=$ty1.".".substr($ty2, 0, 1);
-        }
+
         $filetime = filemtime("$inpath/$file");
         $filetime = MyDate("Y-m-d H:i:s", $filetime);
     }
 
     //------判断文件类型并作处理
-    if($file == ".") continue;
-    else if($file == "..")
-    {
-        if($activepath == "") continue;
+    if ($file == ".") {
+        continue;
+    } else if ($file == "..") {
+        if ($activepath == "") {
+            continue;
+        }
+
         $tmp = preg_replace("#[\/][^\/]*$#i", "", $activepath);
         $line = "\n<tr>
-    <td class='linerow'> <a href=select_media.php?f=$f&activepath=".urlencode($tmp).$addparm."><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
+    <td class='linerow'> <a href=select_media.php?f=$f&activepath=" . urlencode($tmp) . $addparm . "><img src=img/dir2.gif border=0 width=16 height=16 align=absmiddle>上级目录</a></td>
     <td colspan='2' class='linerow'> 当前目录:$activepath</td>
     </tr>\r\n";
         echo $line;
-    }
-    else if(is_dir("$inpath/$file"))
-    {
-        if(preg_match("#^_(.*)$#i", $file)) continue; #屏蔽FrontPage扩展目录和linux隐蔽目录
-        if(preg_match("#^\.(.*)$#i", $file)) continue;
+    } else if (is_dir("$inpath/$file")) {
+        if (preg_match("#^_(.*)$#i", $file)) {
+            continue;
+        }
+        #屏蔽FrontPage扩展目录和linux隐蔽目录
+        if (preg_match("#^\.(.*)$#i", $file)) {
+            continue;
+        }
+
         $line = "\n<tr>
    <td bgcolor='#F9FBF0' class='linerow'>
-    <a href=select_media.php?f=$f&activepath=".urlencode("$activepath/$file").$addparm."><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a>
+    <a href=select_media.php?f=$f&activepath=" . urlencode("$activepath/$file") . $addparm . "><img src=img/dir.gif border=0 width=16 height=16 align=absmiddle>$file</a>
    </td>
    <td class='linerow'>-</td>
    <td bgcolor='#F9FBF0' class='linerow'>-</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(swf|fly|fla|flv)#i", $file)){
+    } else if (preg_match("#\.(swf|fly|fla|flv)#i", $file)) {
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-         {
-           $reurl  = $remoteupUrl.$reurl;
-        }else{
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
+        } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
@@ -162,20 +164,21 @@ while($file = $dh->read()) {
    <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(wmv|avi)#i", $file)){
+    } else if (preg_match("#\.(wmv|avi)#i", $file)) {
 
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-        {
-            $reurl  = $remoteupUrl.$reurl;
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
         } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
@@ -185,20 +188,20 @@ while($file = $dh->read()) {
    <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(rm|rmvb)#i", $file))
-    {
+    } else if (preg_match("#\.(rm|rmvb)#i", $file)) {
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-        {
-           $reurl  = $remoteupUrl.$reurl;
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
         } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
@@ -208,20 +211,21 @@ while($file = $dh->read()) {
    <td align='center' class='linerow' bgcolor='#F9FBF0'>$filetime</td>
    </tr>";
         echo "$line";
-    }
-    else if(preg_match("#\.(mp3|wma)#", $file)){
+    } else if (preg_match("#\.(mp3|wma)#", $file)) {
 
         $reurl = "$activeurl/$file";
         $reurl = preg_replace("#^\.\.#", "", $reurl);
-        if($cfg_remote_site=='Y' && $remoteuploads == 1)
-        {
-            $reurl  = $remoteupUrl.$reurl;
-        }else{
+        if ($cfg_remote_site == 'Y' && $remoteuploads == 1) {
+            $reurl = $remoteupUrl . $reurl;
+        } else {
             $reurl = $reurl;
         }
 
-        if($file==$comeback) $lstyle = " style='color:red' ";
-        else  $lstyle = "";
+        if ($file == $comeback) {
+            $lstyle = " style='color:red' ";
+        } else {
+            $lstyle = "";
+        }
 
         $line = "\n<tr>
    <td class='linerow' bgcolor='#F9FBF0'>
@@ -232,7 +236,7 @@ while($file = $dh->read()) {
    </tr>";
         echo "$line";
     }
-}//End Loop
+} //End Loop
 $dh->close();
 ?>
 <!-- 文件列表完 -->
@@ -241,10 +245,10 @@ $dh->close();
 
 <table width='100%'>
 <form action='select_media_post.php' method='POST' enctype="multipart/form-data" name='myform'>
-<input type='hidden' name='activepath' value='<?php echo $activepath?>'>
-<input type='hidden' name='f' value='<?php echo $f?>'>
+<input type='hidden' name='activepath' value='<?php echo $activepath ?>'>
+<input type='hidden' name='f' value='<?php echo $f ?>'>
 <input type='hidden' name='job' value='upload'>
-<input type='hidden' name='CKEditorFuncNum' value='<?php echo isset($CKEditorFuncNum)? $CKEditorFuncNum : 1;?>'>
+<input type='hidden' name='CKEditorFuncNum' value='<?php echo isset($CKEditorFuncNum) ? $CKEditorFuncNum : 1; ?>'>
 <tr>
 <td background="img/tbg.gif" bgcolor="#99CC00">
   &nbsp;上　传： <input type='file' name='uploadfile' style='width:320px'>&nbsp;<input type='submit' name='sb1' value='确定'>

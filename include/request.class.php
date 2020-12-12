@@ -7,19 +7,20 @@
  *
  * @version        $Id: request.class.php 1 12:03 2010-10-28  $
  * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https: //weibo.com/itprato
+ * @author         DedeCMS团队
  * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
 // REQUEST常量,用于判断是否启用REQUEST类
-define('DEDEREQUEST', TRUE);
+define('DEDEREQUEST', true);
 
 //简化 cls_request::item() 函数
-function Request($key, $df='')
+function Request($key, $df = '')
 {
-    $GLOBALS['request'] = isset($GLOBALS['request'])? $GLOBALS['request'] : new Request;
-    if (!$GLOBALS['request']->isinit)
-    {
+    $GLOBALS['request'] = isset($GLOBALS['request']) ? $GLOBALS['request'] : new Request;
+    if (!$GLOBALS['request']->isinit) {
         $GLOBALS['request']->Init();
     }
     return $GLOBALS['request']->Item($key, $df);
@@ -27,51 +28,46 @@ function Request($key, $df='')
 class Request
 {
 
-    var $isinit = false;
+    public $isinit = false;
     //用户的cookie
-    var $cookies = array();
+    public $cookies = array();
 
     //把GET、POST的变量合并一块，相当于 _REQUEST
-    var $forms = array();
-    
+    public $forms = array();
+
     //_GET 变量
-    var $gets = array();
+    public $gets = array();
 
     //_POST 变量
-    var $posts = array();
+    public $posts = array();
 
     //用户的请求模式 GET 或 POST
-    var $request_type = 'GET';
+    public $request_type = 'GET';
 
     //文件变量
-    var $files = array();
-    
-    //严禁保存的文件名
-    var $filter_filename = '/\.(php|pl|sh|js)$/i';
+    public $files = array();
 
-   /**
-    * 初始化用户请求
-    * 对于 post、get 的数据，会转到 selfforms 数组， 并删除原来数组
-    * 对于 cookie 的数据，会转到 cookies 数组，但不删除原来数组
-    */
-    function Init()
+    //严禁保存的文件名
+    public $filter_filename = '/\.(php|pl|sh|js)$/i';
+
+    /**
+     * 初始化用户请求
+     * 对于 post、get 的数据，会转到 selfforms 数组， 并删除原来数组
+     * 对于 cookie 的数据，会转到 cookies 数组，但不删除原来数组
+     */
+    public function Init()
     {
-        global $_POST,$_GET;
+        global $_POST, $_GET;
         //处理post、get
         $formarr = array('p' => $_POST, 'g' => $_GET);
-        foreach($formarr as $_k => $_r)
-        {
-            if( count($_r) > 0 )
-            {
-                foreach($_r as $k=>$v)
-                {
-                    if( preg_match('/^cfg_(.*?)/i', $k) )
-                    {
+        foreach ($formarr as $_k => $_r) {
+            if (count($_r) > 0) {
+                foreach ($_r as $k => $v) {
+                    if (preg_match('/^cfg_(.*?)/i', $k)) {
                         continue;
                     }
                     $this->forms[$k] = $v;
-                    if( $_k=='p' )
-                    {
+                    if ($_k == 'p') {
                         $this->posts[$k] = $v;
                     } else {
                         $this->gets[$k] = $v;
@@ -82,95 +78,85 @@ class Request
         unset($_POST);
         unset($_GET);
         unset($_REQUEST);
-        
+
         //处理cookie
-        if( count($_COOKIE) > 0 )
-        {
-            foreach($_COOKIE as $k=>$v)
-            {
-                if( preg_match('/^config/i', $k) )
-                {
+        if (count($_COOKIE) > 0) {
+            foreach ($_COOKIE as $k => $v) {
+                if (preg_match('/^config/i', $k)) {
                     continue;
                 }
                 $this->cookies[$k] = $v;
             }
         }
         //unset($_POST, $_GET);
-        
+
         //上传的文件处理
-        if( isset($_FILES) && count($_FILES) > 0 )
-        {
+        if (isset($_FILES) && count($_FILES) > 0) {
             $this->FilterFiles($_FILES);
         }
-        $this->isinit = TRUE;
-        
+        $this->isinit = true;
+
         //global变量
         //self::$forms['_global'] = $GLOBALS;
     }
 
-   /**
-    * 把 eval 重命名为 myeval
-    */
-    function MyEval( $phpcode )
+    /**
+     * 把 eval 重命名为 myeval
+     */
+    public function MyEval($phpcode)
     {
-        return eval( $phpcode );
+        return eval($phpcode);
     }
 
-   /**
-    * 获得指定表单值
-    */
-    function Item( $formname, $defaultvalue = '' )
+    /**
+     * 获得指定表单值
+     */
+    public function Item($formname, $defaultvalue = '')
     {
-        return isset($this->forms[$formname]) ? $this->forms[$formname] :  $defaultvalue;
+        return isset($this->forms[$formname]) ? $this->forms[$formname] : $defaultvalue;
     }
 
-   /**
-    * 获得指定临时文件名值
-    */
-    function Upfile( $formname, $defaultvalue = '' )
+    /**
+     * 获得指定临时文件名值
+     */
+    public function Upfile($formname, $defaultvalue = '')
     {
-        return isset($this->files[$formname]['tmp_name']) ? $this->files[$formname]['tmp_name'] :  $defaultvalue;
+        return isset($this->files[$formname]['tmp_name']) ? $this->files[$formname]['tmp_name'] : $defaultvalue;
     }
 
-   /**
-    * 过滤文件相关
-    */
-    function FilterFiles( &$files )
+    /**
+     * 过滤文件相关
+     */
+    public function FilterFiles(&$files)
     {
-        foreach($files as $k=>$v)
-        {
+        foreach ($files as $k => $v) {
             $this->files[$k] = $v;
         }
         unset($_FILES);
     }
 
-   /**
-    * 移动上传的文件
-    */
-    function MoveUploadFile( $formname, $filename, $filetype = '' )
+    /**
+     * 移动上传的文件
+     */
+    public function MoveUploadFile($formname, $filename, $filetype = '')
     {
-        if( $this->IsUploadFile( $formname ) )
-        {
-            if( preg_match($this->filter_filename, $filename) )
-            {
-                return FALSE;
-            }
-            else
-            {
+        if ($this->IsUploadFile($formname)) {
+            if (preg_match($this->filter_filename, $filename)) {
+                return false;
+            } else {
                 return move_uploaded_file($this->files[$formname]['tmp_name'], $filename);
             }
         }
     }
 
-   /**
-    * 获得文件的扩展名
-    */
-    function GetShortname( $formname )
+    /**
+     * 获得文件的扩展名
+     */
+    public function GetShortname($formname)
     {
         $filetype = strtolower(isset($this->files[$formname]['type']) ? $this->files[$formname]['type'] : '');
         $shortname = '';
-        switch($filetype)
-        {
+        switch ($filetype) {
             case 'image/jpeg':
                 $shortname = 'jpg';
                 break;
@@ -191,65 +177,54 @@ class Request
                 break;
             default:
                 $filename = isset($this->files[$formname]['name']) ? $this->files[$formname]['name'] : '';
-                if( preg_match("/\./", $filename) )
-                {
+                if (preg_match("/\./", $filename)) {
                     $fs = explode('.', $filename);
-                    $shortname = strtolower($fs[ count($fs)-1 ]);
+                    $shortname = strtolower($fs[count($fs) - 1]);
                 }
                 break;
         }
         return $shortname;
     }
 
-   /**
-    * 获得指定文件表单的文件详细信息
-    */
-    function GetFileInfo( $formname, $item = '' )
+    /**
+     * 获得指定文件表单的文件详细信息
+     */
+    public function GetFileInfo($formname, $item = '')
     {
-        if( !isset( $this->files[$formname]['tmp_name'] ) )
-        {
-            return FALSE;
-        }
-        else
-        {
-            if($item=='')
-            {
+        if (!isset($this->files[$formname]['tmp_name'])) {
+            return false;
+        } else {
+            if ($item == '') {
                 return $this->files[$formname];
-            }
-            else
-            {
+            } else {
                 return (isset($this->files[$formname][$item]) ? $this->files[$formname][$item] : '');
             }
         }
     }
 
-   /**
-    * 判断是否存在上传的文件
-    */
-    function IsUploadFile( $formname )
+    /**
+     * 判断是否存在上传的文件
+     */
+    public function IsUploadFile($formname)
     {
-        if( !isset( $this->files[$formname]['tmp_name'] ) )
-        {
-            return FALSE;
-        }
-        else
-        {
-            return is_uploaded_file( $this->files[$formname]['tmp_name'] );
+        if (!isset($this->files[$formname]['tmp_name'])) {
+            return false;
+        } else {
+            return is_uploaded_file($this->files[$formname]['tmp_name']);
         }
     }
-    
+
     /**
      * 检查文件后缀是否为指定值
      *
      * @param  string  $subfix
      * @return boolean
      */
-     function CheckSubfix($formname, $subfix = 'csv')
+    public function CheckSubfix($formname, $subfix = 'csv')
     {
-        if( $this->GetShortname( $formname ) != $subfix)
-        {
-            return FALSE;
+        if ($this->GetShortname($formname) != $subfix) {
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }
