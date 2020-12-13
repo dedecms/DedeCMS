@@ -1,0 +1,71 @@
+.uk-container-dede {
+  width: 960px;
+}
+header {
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#install-menu {
+  position: fixed;
+  width: 260px;
+  top: 120;
+  z-index: 99;
+}
+
+#install-top {
+  background-color: rgb(50, 51, 54, 0.96);
+}
+
+#install-container {
+  margin-left: 260px;
+  margin-top: 120px;
+}
+
+table {
+  font-size: 12px;
+}
+
+.uk-alert-warning,
+.uk-card-body {
+  font-size: 12px;
+}
+.uk-alert,
+.uk-table {
+  margin: 0px;
+  font-size: 12px;
+}
+
+.card-margin-bottom {
+  margin-bottom: 20px;
+}
+.uk-card {
+  border-top: 2px solid;
+  position: relative;
+  transition: box-shadow 0.15s ease-out;
+  border-radius: 3px;
+}
+
+.uk-card .uk-inline {
+  z-index: 99;
+}
+.uk-card .uk-card-footer {
+  padding: 0.55rem 1rem;
+}
+.uk-card .uk-card-header {
+  padding: 0.55rem 1rem;
+}
+.uk-card .cat-txt {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+.nature-card .uk-card {
+  border-top-color: #1e87f0;
+}
