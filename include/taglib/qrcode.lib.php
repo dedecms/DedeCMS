@@ -35,7 +35,7 @@ function lib_qrcode(&$ctag, &$refObj)
   	var __dedeqrcode_type='{$type}';
   	var __dedeqrcode_dir='{$GLOBALS['cfg_plus_dir']}';
   </script>
-  <script language="javascript" type="text/javascript" src="{$GLOBALS['cfg_static_dir']}/pkg/other/qrcode.js"></script>
+  <script language="javascript" type="text/javascript" src="{$GLOBALS['cfg_assets_dir']}/pkg/other/qrcode.js"></script>
 EOT;
     $GLOBALS['qrcode_id']++;
     return $reval;

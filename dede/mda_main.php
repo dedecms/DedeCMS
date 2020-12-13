@@ -1,17 +1,17 @@
 <?php
-require_once(dirname(__FILE__).'/config.php');
-require_once(DEDEINC."/oxwindow.class.php");
+require_once dirname(__FILE__) . '/config.php';
+require_once DEDEINC . "/oxwindow.class.php";
 
 helper('mda');
 
 $install_sqls = array(
-"CREATE TABLE IF NOT EXISTS `#@__plus_mda_setting` (
+    "CREATE TABLE IF NOT EXISTS `#@__plus_mda_setting` (
   `skey` varchar(255) NOT NULL DEFAULT '',
   `svalue` text NOT NULL,
   `stime` int(10) NOT NULL,
   PRIMARY KEY (`skey`)
 ) TYPE=MyISAM;",
-"INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES
+    "INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES
 ('version', '0.0.1', 0),
 ('channel_uuid', '0', 0),
 ('channel_secret', '0', 0),
@@ -21,22 +21,18 @@ $install_sqls = array(
 $update_sqls = array(
 );
 
-
 /*--------------------------------
 function __install(){  }
 -------------------------------*/
 
-if (! $dsql->IsTable('#@__plus_mda_setting') )
-{
-    $mysql_version = $dsql->GetVersion(TRUE);
-    
-    foreach( $install_sqls as $install_sql )
-    {
+if (!$dsql->IsTable('#@__plus_mda_setting')) {
+    $mysql_version = $dsql->GetVersion(true);
+
+    foreach ($install_sqls as $install_sql) {
         $sql = preg_replace("#ENGINE=MyISAM#i", 'TYPE=MyISAM', $install_sql);
-        $sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET='.$cfg_db_language;
-        
-        if($mysql_version >= 4.1)
-        {
+        $sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET=' . $cfg_db_language;
+
+        if ($mysql_version >= 4.1) {
             $sql = preg_replace("#TYPE=MyISAM#i", $sql41tmp, $sql);
         }
         $dsql->ExecuteNoneQuery($sql);
@@ -48,60 +44,58 @@ if (! $dsql->IsTable('#@__plus_mda_setting') )
 function __update(){  }
 -------------------------------*/
 
-$version=mda_get_setting('version');
-if (empty($version)) $version = '0.0.1';
+$version = mda_get_setting('version');
+if (empty($version)) {
+    $version = '0.0.1';
+}
+
 if (version_compare($version, MDA_VER, '<')) {
-    $mysql_version = $dsql->GetVersion(TRUE);
+    $mysql_version = $dsql->GetVersion(true);
 
     foreach ($update_sqls as $ver => $sqls) {
-        if (version_compare($ver, $version,'<')) {
+        if (version_compare($ver, $version, '<')) {
             continue;
         }
         foreach ($sqls as $sql) {
             $sql = preg_replace("#ENGINE=MyISAM#i", 'TYPE=MyISAM', $sql);
-            $sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET='.$cfg_db_language;
-            
-            if($mysql_version >= 4.1)
-            {
+            $sql41tmp = 'ENGINE=MyISAM DEFAULT CHARSET=' . $cfg_db_language;
+
+            if ($mysql_version >= 4.1) {
                 $sql = preg_replace("#TYPE=MyISAM#i", $sql41tmp, $sql);
             }
             $dsql->ExecuteNoneQuery($sql);
         }
         mda_set_setting('version', $ver);
-        $version=mda_get_setting('version');
+        $version = mda_get_setting('version');
     }
 }
 
-if(empty($dopost)) $dopost = '';
+if (empty($dopost)) {
+    $dopost = '';
+}
 
 /*--------------------------------
 function __link(){  }
 -------------------------------*/
-if($dopost == 'place' OR $dopost == 'report' OR $dopost == 'account' OR $dopost == 'setting')
-{
-    if ( !mda_islogin() )
-    {
-        ShowMsg("您尚未登录德得广告，请先登录后继续使用……！",'?dopost=login');
+if ($dopost == 'place' or $dopost == 'report' or $dopost == 'account' or $dopost == 'setting') {
+    if (!mda_islogin()) {
+        ShowMsg("您尚未登录德得广告，请先登录后继续使用……！", '?dopost=login');
         exit();
     }
     mda_check_islogin();
 
-    if($dopost=='place') 
-    {
+    if ($dopost == 'place') {
         $channel_uuid = mda_get_setting('channel_uuid');
-        $manage_url = MDA_APIHOST."/place?from=dedecms&uuid={$channel_uuid}";
+        $manage_url = MDA_APIHOST . "/place?from=dedecms&uuid={$channel_uuid}";
         $ptitle = '广告管理';
-    } elseif ($dopost=='report')
-    {
-        $manage_url = MDA_APIHOST."/report";
+    } elseif ($dopost == 'report') {
+        $manage_url = MDA_APIHOST . "/report";
         $ptitle = '报表管理';
-    } elseif ($dopost=='account')
-    {
-        $manage_url = MDA_APIHOST."/account";
+    } elseif ($dopost == 'account') {
+        $manage_url = MDA_APIHOST . "/account";
         $ptitle = '结算中心';
-    } elseif ($dopost=='setting')
-    {
-        $manage_url = MDA_APIHOST."/setting";
+    } elseif ($dopost == 'setting') {
+        $manage_url = MDA_APIHOST . "/setting";
         $ptitle = '德得设置';
     }
 
@@ -116,7 +110,7 @@ if($dopost == 'place' OR $dopost == 'report' OR $dopost == 'account' OR $dopost 
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#DFF9AA" height="100%">
   <tr>
     <td height="28" style="border:1px solid #DADADA" background='images/wbg.gif'>
-    
+
     <div style="float:left">&nbsp;<b>◇<a href="?">德得广告</a> 》{$ptitle}</b></div>
     <div style="float:right;margin-right:20px;">您好：{$_SESSION['mda_email']} {$account_str}</div>
     </td>
@@ -147,46 +141,44 @@ EOT;
 /*--------------------------------
 function __clearcache(){  }
 -------------------------------*/
-else if($dopost == 'clearcache'){
-    if (!is_dir(DEDEDATA . "/cache/mda/") OR  RmRecurse(DEDEDATA . "/cache/mda/") )
-    {
-        ShowMsg("成功清除缓存信息",-1);
+else if ($dopost == 'clearcache') {
+    if (!is_dir(DEDEDATA . "/cache/mda/") or RmRecurse(DEDEDATA . "/cache/mda/")) {
+        ShowMsg("成功清除缓存信息", -1);
         exit();
     } else {
-        ShowMsg("清除缓存失败，请尝试手工删除".DEDEDATA."/cache/mda/", 'javascript:;');
+        ShowMsg("清除缓存失败，请尝试手工删除" . DEDEDATA . "/cache/mda/", 'javascript:;');
         exit();
     }
 }
 /*--------------------------------
 function __bind_user(){  }
 -------------------------------*/
-else if($dopost == 'bind_user')
-{
-    $email = isset($email)? $email : '';
-    $pwd = isset($pwd)? $pwd : '';
-    $domain = isset($domain)? $domain : '';
-    $channel_name = isset($channel_name)? $channel_name : '';
-    if ( !$email OR !$pwd OR !$domain OR !$channel_name)
-    {
-        ShowMsg("填写正确的账号信息！",-1);
+else if ($dopost == 'bind_user') {
+    $email = isset($email) ? $email : '';
+    $pwd = isset($pwd) ? $pwd : '';
+    $domain = isset($domain) ? $domain : '';
+    $channel_name = isset($channel_name) ? $channel_name : '';
+    if (!$email or !$pwd or !$domain or !$channel_name) {
+        ShowMsg("填写正确的账号信息！", -1);
         exit();
     }
-    if($cfg_soft_lang=='gb2312') $channel_name = gb2utf8($channel_name);
-    $paramsArr=array(
-        'email'=>$email, 
-        'password'=>$pwd,
-        'domain'=>$domain,
-        'channel_name'=>$channel_name,
+    if ($cfg_soft_lang == 'gb2312') {
+        $channel_name = gb2utf8($channel_name);
+    }
+
+    $paramsArr = array(
+        'email' => $email,
+        'password' => $pwd,
+        'domain' => $domain,
+        'channel_name' => $channel_name,
     );
-    $rs = json_decode(mda_http_send(MDA_API_BIND_USER,0,$paramsArr),TRUE);
-    if ( !$rs )
-    {
-        ShowMsg("请求API错误，请重试！",-1);
+    $rs = json_decode(mda_http_send(MDA_API_BIND_USER, 0, $paramsArr), true);
+    if (!$rs) {
+        ShowMsg("请求API错误，请重试！", -1);
         exit();
     }
-    if ( $rs['code'] != 0 )
-    {
-        ShowMsg("请求失败，错误代码[code:{$rs['code']}]，消息[{$rs['msg']}]",-1);
+    if ($rs['code'] != 0) {
+        ShowMsg("请求失败，错误代码[code:{$rs['code']}]，消息[{$rs['msg']}]", -1);
         exit();
     }
     $channel_uuid = $rs['data']['channel_uuid'];
@@ -205,31 +197,30 @@ EOT;
 /*--------------------------------
 function __login(){  }
 -------------------------------*/
-else if($dopost == 'login')
-{
+else if ($dopost == 'login') {
     $email = mda_get_setting('email');
     $channel_uuid = mda_get_setting('channel_uuid');
     $channel_secret = mda_get_setting('channel_secret');
     $ts = time();
-    $paramsArr=array(
-        'channel_uuid'=>$channel_uuid, 
-        'channel_secret'=>$channel_secret,
-        'email'=>$email,
-        'ts'=>$ts,
-        'crc'=>md5($channel_uuid.$channel_secret.$ts),
+    $paramsArr = array(
+        'channel_uuid' => $channel_uuid,
+        'channel_secret' => $channel_secret,
+        'email' => $email,
+        'ts' => $ts,
+        'crc' => md5($channel_uuid . $channel_secret . $ts),
     );
     $jquery_file = MDA_JQUERY;
     $api_login = MDA_API_LOGIN;
     $params = json_encode($paramsArr);
-    $rs = json_decode(mda_http_send(MDA_API_LOGIN,0,$paramsArr),TRUE);
-    if ( isset($rs['code']) AND $rs['code'] == 0 ) {
-      $_SESSION['mda_email']=$email;
+    $rs = json_decode(mda_http_send(MDA_API_LOGIN, 0, $paramsArr), true);
+    if (isset($rs['code']) and $rs['code'] == 0) {
+        $_SESSION['mda_email'] = $email;
     } else {
-      unset($_SESSION['mda_email']);
-      header('Location:?logout=1');
-      exit();
+        unset($_SESSION['mda_email']);
+        header('Location:?logout=1');
+        exit();
     }
-    
+
     echo <<<EOT
 <script type="text/javascript" src="{$jquery_file}"></script>
 <script type="text/javascript">
@@ -244,18 +235,18 @@ else if($dopost == 'login')
                     window.location.href='?dopost=main&nomsg=yes&forward={$dopost}';
                     console.log(response);
                 }
-                
+
             }
         });
 	})(jQuery);
 </script>
 EOT;
     exit;
-} 
+}
 /*--------------------------------
 function __main(){  }
 -------------------------------*/
-else if($dopost == 'main'){
+else if ($dopost == 'main') {
     $mda_version = MDA_VER;
     $channel_uuid = mda_get_setting('channel_uuid');
     $channel_secret = mda_get_setting('channel_secret');
@@ -288,11 +279,11 @@ else if($dopost == 'main'){
     </tr>
     <tr>
       <td height="30" colspan="2">
-        <a href='?dopost=place' style='color:blue'>[广告管理]</a> 
-        <a href='?dopost=report' style='color:blue'>[查看报表]</a> 
-        <a href='?dopost=account' style='color:blue'>[结算中心]</a> 
-        <a href='?dopost=setting' style='color:blue'>[德得设置]</a> 
-        <a href='?dopost=clearcache' style='color:blue'>[清空缓存]</a> 
+        <a href='?dopost=place' style='color:blue'>[广告管理]</a>
+        <a href='?dopost=report' style='color:blue'>[查看报表]</a>
+        <a href='?dopost=account' style='color:blue'>[结算中心]</a>
+        <a href='?dopost=setting' style='color:blue'>[德得设置]</a>
+        <a href='?dopost=clearcache' style='color:blue'>[清空缓存]</a>
       </td>
     </tr>
     <tr>
@@ -319,38 +310,36 @@ else if($dopost == 'main'){
 {$login_str}
 {$change_isv_id}
 EOT;
-        $wintitle = '德得广告管理';
-        $wecome_info = '德得广告模块 》';
-        $win = new OxWindow();
-        $win->AddTitle($wintitle);
-        $win->AddMsgItem($msg);
-        $winform = $win->GetWindow('hand', '&nbsp;', false);
-        $win->Display();
-        exit;
-} else if($dopost == 'set_secret') {
+    $wintitle = '德得广告管理';
+    $wecome_info = '德得广告模块 》';
+    $win = new OxWindow();
+    $win->AddTitle($wintitle);
+    $win->AddMsgItem($msg);
+    $winform = $win->GetWindow('hand', '&nbsp;', false);
+    $win->Display();
+    exit;
+} else if ($dopost == 'set_secret') {
     $email = mda_get_setting('email');
     $channel_uuid = mda_get_setting('channel_uuid');
     $ts = time();
-    $paramsArr=array(
-        'channel_uuid'=>$channel_uuid, 
-        'channel_secret'=>$channel_secret,
-        'email'=>$email,
-        'ts'=>$ts,
-        'crc'=>md5($channel_uuid.$channel_secret.$ts),
+    $paramsArr = array(
+        'channel_uuid' => $channel_uuid,
+        'channel_secret' => $channel_secret,
+        'email' => $email,
+        'ts' => $ts,
+        'crc' => md5($channel_uuid . $channel_secret . $ts),
     );
-    $rs = json_decode(mda_http_send(MDA_API_LOGIN,0,$paramsArr),TRUE);
-    if ( !$rs )
-    {
-        ShowMsg("请求API错误，请重试！",-1);
+    $rs = json_decode(mda_http_send(MDA_API_LOGIN, 0, $paramsArr), true);
+    if (!$rs) {
+        ShowMsg("请求API错误，请重试！", -1);
         exit();
     }
-    if ( $rs['code'] != 0 )
-    {
-        ShowMsg("请求失败，错误代码[code:{$rs['code']}]，消息[{$rs['msg']}]",'?dopost=main');
+    if ($rs['code'] != 0) {
+        ShowMsg("请求失败，错误代码[code:{$rs['code']}]，消息[{$rs['msg']}]", '?dopost=main');
         exit();
     }
-    if ($rs['code'] == 0){
-        ShowMsg("Channel Secret 修改成功……！",'?dopost=main');
+    if ($rs['code'] == 0) {
+        ShowMsg("Channel Secret 修改成功……！", '?dopost=main');
         mda_set_setting('channel_secret', $channel_secret);
     }
 }
@@ -359,28 +348,27 @@ EOT;
 function __index(){  }
 -------------------------------*/
 else {
-    if ( mda_get_setting('email') AND mda_get_setting('channel_uuid') AND mda_get_setting('channel_secret') AND empty($logout))
-    {
+    if (mda_get_setting('email') and mda_get_setting('channel_uuid') and mda_get_setting('channel_secret') and empty($logout)) {
         header('Location:?dopost=login');
         exit;
     }
-    
+
     $mda_reg_url = MDA_REG_URL;
     $mda_forget_pwd_url = MDA_FORGOT_PASSWORD_URL;
-    $domain = !empty($_SERVER['HTTP_HOST'])? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-    $mda_update_url = MDA_APIHOST."/help/dedecms_module_download";
-    
-echo <<<EOT
+    $domain = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
+    $mda_update_url = MDA_APIHOST . "/help/dedecms_module_download";
+
+    echo <<<EOT
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$cfg_soft_lang}">
 <title>德得广告</title>
-<link rel="stylesheet" type="text/css" href="{$cfg_static_dir}/css/base.css">
+<link rel="stylesheet" type="text/css" href="{$cfg_assets_dir}/css/base.css">
 </head>
-<body background='{$cfg_static_dir}/img/allbg.gif' leftmargin="8" topmargin='8'>
+<body background='{$cfg_assets_dir}/img/allbg.gif' leftmargin="8" topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#DFF9AA">
   <tr>
-    <td height="28" style="border:1px solid #DADADA" background='{$cfg_static_dir}/img/wbg.gif'>&nbsp;<b><a href="?">德得广告 </a> &gt;&gt; 配置德得广告</b></td>
+    <td height="28" style="border:1px solid #DADADA" background='{$cfg_assets_dir}/img/wbg.gif'>&nbsp;<b><a href="?">德得广告 </a> &gt;&gt; 配置德得广告</b></td>
   </tr>
   <tr>
   <td width="100%" height="80" style="padding-top:5px" bgcolor='#ffffff'>
@@ -388,7 +376,7 @@ echo <<<EOT
   <input type='hidden' name='dopost' value='bind_user'>
   <table width='100%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#DADADA'>
     <tr bgcolor='#DADADA'>
-      <td colspan='2' background='{$cfg_static_dir}/img/wbg.gif' height='26'><font color='#666600'><b>德得广告</b></font></td>
+      <td colspan='2' background='{$cfg_assets_dir}/img/wbg.gif' height='26'><font color='#666600'><b>德得广告</b></font></td>
     </tr>
     <tr bgcolor='#FFFFFF'>
       <td colspan='2'  height='100'>
@@ -451,5 +439,5 @@ echo <<<EOT
 </body>
 </html>
 EOT;
-    
+
 }

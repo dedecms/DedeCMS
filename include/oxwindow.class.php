@@ -130,14 +130,14 @@ class OxWindow
      */
     public function AddTitle($title, $col = "2")
     {
-        global $cfg_static_dir;
+        global $cfg_assets_dir;
         if ($col != "" && $col != "0") {
             $colspan = "colspan='$col'";
         } else {
             $colspan = "";
         }
         $this->myWinItem .= "<tr bgcolor='#DADADA'>\r\n";
-        $this->myWinItem .= "<td $colspan background='{$cfg_static_dir}/img/wbg.gif' height='26'><font color='#666600'><b>$title</b></font></td>\r\n";
+        $this->myWinItem .= "<td $colspan background='{$cfg_assets_dir}/img/wbg.gif' height='26'><font color='#666600'><b>$title</b></font></td>\r\n";
         $this->myWinItem .= "</tr>\r\n";
     }
 
@@ -180,7 +180,7 @@ class OxWindow
      */
     public function GetWindow($wintype = "save", $msg = "", $isform = true)
     {
-        global $cfg_static_dir;
+        global $cfg_assets_dir;
         $this->StartWin();
         $this->myWin .= $this->myWinItem;
         if ($wintype != "") {
