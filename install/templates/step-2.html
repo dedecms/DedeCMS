@@ -16,13 +16,17 @@
 	<!--HEADER-->
 	<header id="install-top">
 		<div class="uk-container uk-container-dede">
-			<nav class="uk-navbar-transparent" data-uk-navbar>
+			<nav class="uk-navbar-transparent uk-light" data-uk-navbar>
 				<div class="uk-navbar-left">
-					<a class="uk-navbar-item uk-logo" href="#"><img src="/assets/img/dedecms_logo.png" /></a>
+					<span class="uk-navbar-item uk-logo">
+						<img src="/assets/img/dedecms_logo.png" />
+						&nbsp;
+						<?=$verMsg;?> &nbsp;安装程序
+					</span>
 				</div>
 				<div class="uk-navbar-right">
 					<ul class="uk-navbar-nav">
-						<li><a href="http://www.DedeCMS.com" target="_blank">官方网站</a></li>
+						<li><a href="http://www.DedeCMS.com" class="install-link" target="_blank">官方网站</a></li>
 						<li><a href="http://bbs.DedeCMS.com" target="_blank">技术论坛</a></li>
 						<li><a href="https://github.com/dedecms" target="_blank">GITHUB</a></li>
 						<li><a href="http://help.DedeCMS.com" target="_blank">帮助</a></li>

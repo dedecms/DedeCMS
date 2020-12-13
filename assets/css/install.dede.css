@@ -8,7 +8,6 @@ header {
   left: 0;
   right: 0;
   z-index: 99;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 #install-menu {
@@ -49,6 +48,7 @@ table {
   position: relative;
   transition: box-shadow 0.15s ease-out;
   border-radius: 3px;
+  border-top-color: #35363a;
 }
 
 .uk-card .uk-inline {
@@ -66,6 +66,12 @@ table {
   font-size: 0.75rem;
   letter-spacing: 0.01em;
 }
-.nature-card .uk-card {
-  border-top-color: #1e87f0;
+.uk-logo img {
+  width: 183px;
+}
+.uk-logo {
+  color: aliceblue;
+}
+.uk-logo:hover {
+  color: aliceblue;
 }
