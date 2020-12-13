@@ -22,8 +22,10 @@ define('INSLOCKFILE', dirname(__FILE__) . '/install_lock.txt');
 $moduleCacheFile = dirname(__FILE__) . '/modules.tmp.inc';
 
 define('DEDEINC', dirname(__FILE__) . '/../include');
+define('DEDEINSTALL', dirname(__FILE__) . '/../install');
 define('DEDEDATA', dirname(__FILE__) . '/../data');
 define('DEDEROOT', preg_replace("#[\\\\\/]install#", '', dirname(__FILE__)));
+
 header("Content-Type: text/html; charset={$s_lang}");
 
 require_once DEDEROOT . '/install/install.inc.php';

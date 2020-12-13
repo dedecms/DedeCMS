@@ -1,80 +1,144 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $s_lang?>" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>安装程序 - 织梦内容管理系统
-		<?php echo $verMsg; ?>
+		<?=$verMsg;?>
 	</title>
-	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" href="favicon.ico" />
+	<!-- CSS FILES -->
+	<link rel="stylesheet" type="text/css" href="/assets/pkg/uikit/css/uikit.min.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/dede.css" />
 </head>
 
 <body>
-
-	<div class="top">
-		<div class="top-logo">
-
-		</div>
-		<div class="top-link">
-			<ul>
-				<li><a href="http://www.dedecms.com" target="_blank">官方网站</a></li>
-				<li><a href="http://bbs.dedecms.com" target="_blank">技术论坛</a></li>
-				<li><a href="http://help.dedecms.com" target="_blank">帮助</a></li>
-				<li><a href="https://github.com/dedecms" target="_blank">Github</a></li>
-			</ul>
-		</div>
-		<div class="top-version">
-			<!-- 版本信息 -->
-			<h2>DEDECMS
-				<?php echo $verMsg; ?>
-			</h2>
-		</div>
-	</div>
-
-	<div class="main">
-		<div class="pleft">
-			<dl class="setpbox t1">
-				<dt>安装步骤</dt>
-				<dd>
-					<ul>
-						<li class="succeed">许可协议</li>
-						<li class="succeed">环境检测</li>
-						<li class="succeed">参数配置</li>
-						<li class="succeed">正在安装</li>
-						<li class="now">安装完成</li>
+	<!--HEADER-->
+	<header id="install-top">
+		<div class="uk-container uk-container-dede">
+			<nav class="uk-navbar-transparent" data-uk-navbar>
+				<div class="uk-navbar-left">
+					<a class="uk-navbar-item uk-logo" href="#"><img src="/assets/img/dedecms_logo.png" /></a>
+				</div>
+				<div class="uk-navbar-right uk-visible@m">
+					<ul class="uk-navbar-nav ">
+						<li><a href="http://www.DedeCMS.com" class="install-link" target="_blank">官方网站</a></li>
+						<li><a href="http://bbs.DedeCMS.com" target="_blank">技术论坛</a></li>
+						<li><a href="https://github.com/dedecms" target="_blank">GITHUB</a></li>
+						<li><a href="http://help.DedeCMS.com" target="_blank">帮助</a></li>
 					</ul>
-				</dd>
-			</dl>
+				</div>
+				<div class="uk-navbar-right uk-hidden@m">
+					<ul class="uk-navbar-nav">
+						<li class="uk-hidden@m">
+							<a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon
+								href="#offcanvas-nav"></a>
+						</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
-		<div class="pright">
-			<div class="pr-title">
-				<h3>安装完成</h3>
+	</header>
+	<!--/HEADER-->
+	<div class="uk-container uk-container-dede">
+		<div uk-grid>
+			<!--安装步骤-->
+			<div id="install-menu" class="uk-width-1-4@m">
+				<div class="uk-card uk-card-small uk-card-default">
+					<div class="uk-card-header">
+						<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid="">
+							<div class="uk-width-expand uk-first-column">
+								<span class="cat-txt">安装步骤</span>
+							</div>
+						</div>
+					</div>
+					<div class="uk-card-body">
+						<ul class="uk-tab-left" uk-tab>
+							<li class="uk-disabled"><a>许可协议</a></li>
+							<li class="uk-disabled"><a>环境检测</a></li>
+							<li class="uk-disabled"><a>参数配置</a></li>
+							<li class="uk-disabled"><a>正在安装</a></li>
+							<li class="uk-active"><a>安装完成</a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="install-msg">
-				恭喜您!已成功安装织梦内容管理系统.您现在可以:
-				<br />
-				<?php echo $errmsg; ?>
+			<!--/安装步骤-->
+			<div id="install-container" class="uk-width-3-4@m">
+				<div class="uk-card uk-card-small uk-card-default">
+					<div class="uk-card-header">
+						<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid="">
+							<div class="uk-width-expand uk-first-column">
+								<span class="cat-txt">安装完成</span>
+							</div>
+						</div>
+					</div>
+					<div class="uk-card-body ">
+						<h3>恭喜您!DedeCMS已安装成功！</h3>
+
+						<div class="install-msg">
+							您现在可以开始使用DedeCMS了:
+							<br />
+							<?php echo $errmsg; ?>
+						</div>
+						<div class="uk-margin  uk-child-width-auto ">
+							<a href="../dede" target="_blank" class="uk-button uk-button-primary"><span
+									class="uk-margin-small-right" uk-icon="settings"></span>管理后台</a>
+							<a href="../index.php?upcache=1" target="_blank" class="uk-button uk-button-primary"><span
+									class="uk-margin-small-right" uk-icon="home"></span>网站首页</a>
+						</div>
+						<div class="install-msg">
+							遇到问题可以访问:<br />
+						</div>
+						<div class="uk-margin  uk-child-width-auto ">
+							<a href="http://www.dedecms.com" target="_blank"
+								class="uk-button uk-button-default  uk-button-small"><span class="uk-margin-small-right"
+									uk-icon="nut" ratio="0.8"></span>DedeCMS</a>
+							<a href="http://bbs.dedecms.com" target="_blank"
+								class="uk-button uk-button-default  uk-button-small"><span class="uk-margin-small-right"
+									uk-icon="comments" ratio="0.8"></span>BBS</a>
+							<a href="http://help.dedecms.com" target="_blank"
+								class="uk-button uk-button-default  uk-button-small"><span class="uk-margin-small-right"
+									uk-icon="world" ratio="0.8"></span>Help</a>
+							<a href="https://github.com/dedecms" target="_blank"
+								class="uk-button uk-button-default  uk-button-small"><span class="uk-margin-small-right"
+									uk-icon="github-alt" ratio="0.8"></span>Github</a>
+						</div>
+					</div>
+					<!--/安装步骤-->
+				</div>
+				<footer class="uk-section ">
+					<div class="uk-container uk-text-small uk-text-center">
+						Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCMS)--国内专业的PHP网站管理系统，轻松建站的利器。"
+							target="_blank"><strong>DedeCMS </strong></a> &copy; 2004-2020 <a
+							href="http://www.desdev.cn/" target="_blank">上海卓卓网络科技有限公司</a> (DesDev Inc.)
+					</div>
+				</footer>
 			</div>
-			<div class="over-link">
-				<a href="../dede" target="_blank">管理后台</a>
-				<a href="../index.php?upcache=1" target="_blank">网站首页</a>
-			</div>
-			<div class="install-msg">
-				或者访问织梦网站:<br />
-			</div>
-			<div class="over-link">
-				<a href="http://www.dedecms.com" target="_blank">织梦官方网站</a>
-				<a href="http://bbs.dedecms.com" target="_blank">织梦论坛</a>
-				<a href="http://help.dedecms.com" target="_blank">帮助中心</a>
-				<a href="https://github.com/dedecms" target="_blank">Github</a>
+
+		</div>
+
+		<!-- OFFCANVAS -->
+		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
+			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
+				<button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
+				<ul class="uk-nav uk-nav-default">
+					<li class="uk-active"><a href="#">主页</a></li>
+					<li class="uk-parent"><a href="#">网页基础</a></li>
+					<li class="uk-parent"><a href="#">站长图集</a></li>
+					<li class="uk-parent"><a href="#">软件下载</a></li>
+					<li class="uk-parent"><a href="#">商品销售</a></li>
+					<li class="uk-parent"><a href="#">分类信息</a></li>
+					<li class="uk-parent"><a href="#">织梦CMS</a></li>
+					<li class="uk-parent"><a href="#">帮助文档</a></li>
+				</ul>
 			</div>
 		</div>
-	</div>
+		<!-- /OFFCANVAS -->
 
-	<div class="foot">
-	</div>
-
+		<!-- JS FILES -->
+		<script src="/assets/pkg/uikit/js/uikit.min.js"></script>
+		<script src="/assets/pkg/uikit/js/uikit-icons.min.js"></script>
 </body>
 
 </html>

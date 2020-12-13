@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>修改自定义表单</title>
   <link href="css/base.css" rel="stylesheet" type="text/css" />
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <script language="javascript" src="js/diy.js"></script>
   <script language="javascript">
@@ -59,15 +59,18 @@
       </tr>
       <tr>
         <td width="170" height="28" align="left" bgcolor="#FFFFFF">自定义表单 diyid：<br />
-          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span> </td>
+          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span>
+        </td>
         <td bgcolor="#FFFFFF">
           <?php echo $diyid;?>
           * <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
-            onclick="showHide2('help1')" /></td>
+            onclick="showHide2('help1')" />
+        </td>
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FAFBFC">自定义表单名称：<br />
-          <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span></td>
+          <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span>
+        </td>
         <td bgcolor="#FAFBFC">
           <input name="name" type="text" id="name" value="<?php echo $row['name']?>" style="width:180px"
             class='alltxt' />
@@ -77,7 +80,8 @@
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
-          <span class="STYLE2" id="help5">　　自定义表单数据表创建后不可修改表名</span></td>
+          <span class="STYLE2" id="help5">　　自定义表单数据表创建后不可修改表名</span>
+        </td>
         <td bgcolor="#FFFFFF">
           <input name="table" type="text" id="table" style="width:180px" value="<?php echo $row['table']; ?>"
             class='alltxt' disabled='1' />
@@ -119,7 +123,8 @@ $dtp->LoadSource($fieldset);
 if(is_array($dtp->CTags)){
 foreach($dtp->CTags as $ctag)
 {
-?> <tr align="center" bgcolor="#FFFFFF" height="24">
+?>
+            <tr align="center" bgcolor="#FFFFFF" height="24">
               <td>
                 <?php 
 			$itname = $ctag->GetAtt('itemname');
@@ -181,12 +186,12 @@ foreach($dtp->CTags as $ctag)
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">前台列表和内容页公开？：</td>
         <td bgcolor="#FFFFFF">
-          <label><input name="public" type="radio" value="2" <?php echo $row['public'] == 2 ? 'checked' : '';?>
-              class='np' />完全公开</label>
-          <label><input name="public" type="radio" value="1" <?php echo $row['public'] == 1 ? 'checked' : '';?>
-              class='np' />公开审核过的</label>
-          <label><input name="public" type="radio" value="0" <?php echo $row['public'] == 0 ? 'checked' : '';?>
-              class='np' />不公开</label>
+          <label><input name="public" type="radio" value="2" <?php echo $row['public']==2 ? 'checked' : '' ;?>
+            class='np' />完全公开</label>
+          <label><input name="public" type="radio" value="1" <?php echo $row['public']==1 ? 'checked' : '' ;?>
+            class='np' />公开审核过的</label>
+          <label><input name="public" type="radio" value="0" <?php echo $row['public']==0 ? 'checked' : '' ;?>
+            class='np' />不公开</label>
         </td>
       </tr>
       <tr bgcolor="#FAFBFC">

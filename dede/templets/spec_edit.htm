@@ -10,18 +10,18 @@
       background-image: url(images/allbg.gif);
     }
   </style>
-  <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css">
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-  <script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/pkg/jquery/jquery.fileupload.css">
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script language='javascript' src='js/main.js'></script>
-  <link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
-  <script src="../resources/pkg/cropper/cropper.min.js"></script>
-  <script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+  <link href="../assets/pkg/cropper/cropper.min.css" rel="stylesheet">
+  <script src="../assets/pkg/cropper/cropper.min.js"></script>
+  <script src="../assets/pkg/bootstrap/bootstrap.bundle.min.js"></script>
   <script language="javascript">
     function SelectTemplets(fname) {
       if (document.all) {
@@ -74,7 +74,7 @@
     img {
       vertical-align: baseline;
     }
-  
+
     input,
     select {
       height: auto !important;
@@ -177,25 +177,25 @@
                 &nbsp;缩 略 图：
               </td>
               <td width="560">
-                <input name="picname" type="text" id="picname" style="width:300px"
-              value="<?php echo $arcRow["litpic"]?>"><input type="button" name="Submit" value="浏览..."
-              style="width:70px" onClick="SelectImage('form1.picname','');">
-            <input type='checkbox' class='np' name='ddisremote' value='1'>
-            远程
-            <span class="btn btn-success fileinput-button">
-              <i class="glyphicon glyphicon-plus"></i>
-              选择图片
-              <input type="file" name="files[]" id="iptAddImages">
-            </span>
-            <button id="btnClearAll" type="button" class="btn btn-danger delete">
-              <i class="fa fa-trash-o"></i>
-              <span>清空</span>
-            </button>
+                <input name="picname" type="text" id="picname" style="width:300px" value="<?php echo $arcRow["
+                  litpic"]?>"><input type="button" name="Submit" value="浏览..." style="width:70px"
+                  onClick="SelectImage('form1.picname','');">
+                <input type='checkbox' class='np' name='ddisremote' value='1'>
+                远程
+                <span class="btn btn-success fileinput-button">
+                  <i class="glyphicon glyphicon-plus"></i>
+                  选择图片
+                  <input type="file" name="files[]" id="iptAddImages">
+                </span>
+                <button id="btnClearAll" type="button" class="btn btn-danger delete">
+                  <i class="fa fa-trash-o"></i>
+                  <span>清空</span>
+                </button>
               </td>
               <td align="center">
-                <img id="litPic"
-              src="<?php if($arcRow["litpic"]!="") echo $arcRow["litpic"]; else echo "../resources/img/defaultpic.gif";?>"
-              style="height: 80px">
+                <img id="litPic" src="<?php if($arcRow[" litpic"]!="" ) echo $arcRow["litpic"]; else
+                  echo "../assets/img/defaultpic.gif" ;?>"
+                style="height: 80px">
               </td>
             </tr>
           </table>
@@ -207,8 +207,8 @@
             <tr>
               <td width="90">&nbsp;专题模板：</td>
               <td>
-                <input name="templet" type="text" id="templet" style="width:250px"
-                  value="<?php echo $addRow["templet"]?>" />
+                <input name="templet" type="text" id="templet" style="width:250px" value="<?php echo $addRow["
+                  templet"]?>" />
                 <input type="button" name="set3" value="浏览..." style="width:60px"
                   onClick="SelectTemplets('form1.templet');" />
               </td>
@@ -222,15 +222,16 @@
             <tr>
               <td width="90">&nbsp;责任编辑：</td>
               <td width="224">
-                <input name="writer" type="text" id="writer" value="<?php echo $arcRow["writer"]?>" />
+                <input name="writer" type="text" id="writer" value="<?php echo $arcRow[" writer"]?>" />
               </td>
               <td width="75">发布选项：</td>
-              <td width="421"> <input name="ishtml" type="radio" class="np" value="1"
-                  <?php if($arcRow["ismake"]!=-1) echo " checked='1'";?> />
+              <td width="421"> <input name="ishtml" type="radio" class="np" value="1" <?php if($arcRow["ismake"]!=-1)
+                  echo " checked='1'" ;?> />
                 生成HTML
-                <input type="radio" name="ishtml" class="np" value="0"
-                  <?php if($arcRow["ismake"]==-1) echo " checked='1'";?> />
-                仅动态浏览 </td>
+                <input type="radio" name="ishtml" class="np" value="0" <?php if($arcRow["ismake"]==-1)
+                  echo " checked='1'" ;?> />
+                仅动态浏览
+              </td>
             </tr>
           </table>
         </td>
@@ -252,10 +253,11 @@
                   <option value="90">置顶三个月</option>
                   <option value="180">置顶半年</option>
                   <option value="360">置顶一年</option>
-                </select> </td>
+                </select>
+              </td>
               <td width="72">标题颜色：</td>
               <td width="130">
-                <input name="color" type="text" id="color" style="width:120px" value="<?php echo $arcRow["color"]?>" />
+                <input name="color" type="text" id="color" style="width:120px" value="<?php echo $arcRow[" color"]?>" />
               </td>
               <td width="293">
                 <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)" />
@@ -283,10 +285,13 @@
      			 if($cfg_remote_site=='Y')
      			 {
    				 ?> 　
-                <input name="isremote" type="checkbox" id="isremote" value="1"
-                  <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布 <?php GetFtp();?> <?php
+                <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y' )
+                  echo "checked" ;?>>是否同步远程发布
+                <?php GetFtp();?>
+                <?php
      			 }
-    		?> </td>
+    		?>
+              </td>
               <td width="100" align="center">&nbsp; </td>
             </tr>
           </table>
@@ -298,7 +303,7 @@
             <tr>
               <td width="90" height="51">&nbsp;关键字：</td>
               <td> <input type="text" name="keywords" rows="3" id="keywords" style="width:350px"
-                  value="<?php echo $arcRow["keywords"]?>" />
+                  value="<?php echo $arcRow[" keywords"]?>" />
               </td>
             </tr>
           </table>
@@ -309,8 +314,9 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90" height="78">&nbsp;专题说明：</td>
-              <td> <textarea name="description" rows="4" id="textarea"
-                  style="width:350px"><?php echo $arcRow["description"]?></textarea>
+              <td> <textarea name="description" rows="4" id="textarea" style="width:350px">
+                  <?php echo $arcRow["description"]?>
+                </textarea>
               </td>
             </tr>
           </table>
@@ -322,15 +328,15 @@
             <tr>
               <td width="90" height="22" width="240">&nbsp;评论选项：</td>
               <td width="250">
-                <input type='radio' name='notpost' class='np' value='0'
-                  <?php if($arcRow['notpost']==0) echo " checked='1' "; ?> />允许评论
+                <input type='radio' name='notpost' class='np' value='0' <?php if($arcRow['notpost']==0)
+                  echo " checked='1' " ; ?> />允许评论
                 &nbsp;
-                <input type='radio' name='notpost' class='np' value='1'
-                  <?php if($arcRow['notpost']==1) echo " checked='1' "; ?> />禁止评论
+                <input type='radio' name='notpost' class='np' value='1' <?php if($arcRow['notpost']==1)
+                  echo " checked='1' " ; ?> />禁止评论
               </td>
               <td width="90">浏览次数：</td>
               <td>
-                <input type='text' name='click' value='<?php echo $arcRow['click']; ?>' style='width:100px;' />
+                <input type='text' name='click' value='<?php echo $arcRow[' click']; ?>' style='width:100px;' />
               </td>
             </tr>
           </table>
@@ -374,8 +380,8 @@
             <tr>
               <td width="104">&nbsp;自定义文件名：</td>
               <td width="597">
-                <input type="text" name="filename" id="filename"
-                  value="<?php echo $arcRow["filename"]?>" />（不包括后缀名如.html等）
+                <input type="text" name="filename" id="filename" value="<?php echo $arcRow[" filename"]?>"
+                />（不包括后缀名如.html等）
               </td>
               <td width="99" align="center">&nbsp; </td>
             </tr>
@@ -430,7 +436,8 @@
             <tr bgcolor="#FBFBFB">
               <td width="113">节点
                 <?php echo $i?>
-                名称：</td>
+                名称：
+              </td>
               <td colspan="2">
                 <table width="600" border="0" cellspacing="0" cellpadding="0">
                   <tr>
@@ -447,18 +454,20 @@
             <tr>
               <td>节点文章列表：</td>
               <td><textarea name="arcid<?php echo $i?>" rows="3" onblur='CheckVal(<?php echo $i ?>)'
-                  id="arcid<?php echo $i?>" style="width:90%"><?php echo $idlist?></textarea></td>
+                  id="arcid<?php echo $i?>" style="width:90%">
+                  <?php echo $idlist?>
+                </textarea></td>
               <td align="center"><input name="selarc<?php echo $i?>" type="button" id="selarc<?php echo $i?>2"
                   value="选择节点文章" style="width:100" onClick="SelectArcList('form1.arcid<?php echo $i?>');"></td>
             </tr>
             <tr>
               <td>文档来源：</td>
               <td colspan="2">
-                <input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="0" class="np"
-                  <?php if($isauto==0) echo " checked";?>>
+                <input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="0" class="np" <?php
+                  if($isauto==0) echo " checked" ;?>>
                 按文章列表
-                <input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="1" class="np"
-                  <?php if($isauto==1) echo " checked";?>>
+                <input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="1" class="np" <?php
+                  if($isauto==1) echo " checked" ;?>>
                 自动获取文档
                 &nbsp;
                 关键字：
@@ -490,8 +499,10 @@
             </tr>
             <tr>
               <td colspan="2">单条记录的模板：<br />
-                <textarea name="listtmp<?php echo $i?>" rows="3" id="listtmp<?php echo $i?>"
-                  style="width:60%"><?php echo $temp?></textarea></td>
+                <textarea name="listtmp<?php echo $i?>" rows="3" id="listtmp<?php echo $i?>" style="width:60%">
+                  <?php echo $temp?>
+                </textarea>
+              </td>
             </tr>
             <?php
       	$i++;
@@ -503,7 +514,8 @@
             <tr bgcolor="#FBFBFB">
               <td width="113">节点
                 <?php echo $i?>
-                名称：</td>
+                名称：
+              </td>
               <td colspan="2">
                 <table width="600" border="0" cellspacing="0" cellpadding="0">
                   <tr>
@@ -557,7 +569,9 @@
             </tr>
             <tr>
               <td colspan="2">单条记录的模板：<br /> <textarea name="listtmp<?php echo $i?>" rows="3"
-                  id="listtmp<?php echo $i?>" style="width:60%"><?php echo $speclisttmp?></textarea></td>
+                  id="listtmp<?php echo $i?>" style="width:60%">
+                  <?php echo $speclisttmp?>
+                </textarea></td>
             </tr>
             <?php
 		  }

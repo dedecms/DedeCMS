@@ -83,7 +83,7 @@ make_hash();
 $msg = "
 <link href='images/base.css' rel='stylesheet' type='text/css' />
 <script language='javascript' src='js/main.js'></script>
-<script language='javascript' src='../resources/pkg/dede/dedeajax2.js'></script>
+<script language='javascript' src='../assets/pkg/dede/dedeajax2.js'></script>
 <script language='javascript'>
 function DoRand(jobname)
 {

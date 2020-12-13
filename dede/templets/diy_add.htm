@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>新增频道</title>
   <link href="css/base.css" rel="stylesheet" type="text/css" />
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <script language="javascript" src="js/diy.js"></script>
   <script language="javascript">
@@ -71,7 +71,8 @@
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
-          <span class="STYLE2" id="help5">　　必须由英文、数字、下划线组成，用于保存自定义表单数据，不能和已有表名重复，创建后不可修改表名。</span></td>
+          <span class="STYLE2" id="help5">　　必须由英文、数字、下划线组成，用于保存自定义表单数据，不能和已有表名重复，创建后不可修改表名。</span>
+        </td>
         <td bgcolor="#FFFFFF">
           <input name="table" type="text" id="table" style="width:180px"
             value="<?php echo $cfg_dbprefix; ?>diyform<?php echo $newdiyid; ?>" class='pubinputs' />

@@ -206,8 +206,8 @@ $cfg_plus_dir = $cfg_cmspath . '/plus';
 $cfg_phpurl = $cfg_mainsite . $cfg_plus_dir;
 
 // 资源目录，用于存放js包、静态图片、图标等
-$cfg_static_dir = $cfg_cmspath . '/resources';
-$cfg_staticurl = $cfg_mainsite . $cfg_static_dir;
+$cfg_assets_dir = $cfg_cmspath . '/assets';
+$cfg_assetsurl = $cfg_mainsite . $cfg_assets_dir;
 
 $cfg_mobile_dir = $cfg_cmspath . '/m';
 $cfg_mobileurl = $cfg_mainsite . $cfg_mobile_dir;

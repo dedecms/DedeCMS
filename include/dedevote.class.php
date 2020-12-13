@@ -261,7 +261,7 @@ class DedeVote
             $res .= "<tr height='$lineheight'><td style='border-bottom:1px solid'>" . $i . "、" . $arr['name'] . "</td>";
             $c = $arr['count'];
             $res .= "<td style='border-bottom:1px solid'>
-            <table border='0' cellspacing='0' cellpadding='2' width='" . (($c / $totalcount) * 100) . "%'><tr><td height='16' background='/resources/img/votebg.gif' style='border:1px solid #666666;font-size:9pt;line-height:110%'>" . $arr['count'] . "</td></tr></table>
+            <table border='0' cellspacing='0' cellpadding='2' width='" . (($c / $totalcount) * 100) . "%'><tr><td height='16' background='/assets/img/votebg.gif' style='border:1px solid #666666;font-size:9pt;line-height:110%'>" . $arr['count'] . "</td></tr></table>
             </td></tr>\r\n";
             $i++;
         }

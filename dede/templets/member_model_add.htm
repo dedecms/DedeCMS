@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>新增会员模型</title>
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <script language="javascript" src="js/diy.js"></script>
   <script language="javascript">
@@ -46,7 +46,8 @@
       </tr>
       <tr>
         <td width="35%" height="28" align="left" bgcolor="#FFFFFF"> 模型ID：<br />
-          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。推荐使用默认值</span></td>
+          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。推荐使用默认值</span>
+        </td>
         <td width="65%" bgcolor="#FFFFFF"><input name="id" type="text" id="id" size="10" value="<?php echo $newid?>"
             class='pubinputs' style='width:60px' />
           * <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
@@ -54,7 +55,8 @@
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF"> 会员模型名称：<br />
-          <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span></td>
+          <span class="STYLE2" id="help3">　　自定义表单的中文名称，在后台管理，前台发布等均使用此名字。</span>
+        </td>
         <td bgcolor="#FFFFFF"><input name="name" type="text" id="name" style="width:180px"
             value="会员模型<?php echo $newid;?>" class='pubinputs' />
           *<img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
@@ -62,7 +64,8 @@
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
-          <span class="STYLE2" id="help5">　　必须由英文、数字、下划线组成，用于保存自定义表单数据，不能和已有表名重复，创建后不可修改表名。</span></td>
+          <span class="STYLE2" id="help5">　　必须由英文、数字、下划线组成，用于保存自定义表单数据，不能和已有表名重复，创建后不可修改表名。</span>
+        </td>
         <td bgcolor="#FFFFFF"><input name="table" type="text" id="table" style="width:180px"
             value="<?php echo $cfg_dbprefix; ?>member_<?php echo $newid; ?>" class='pubinputs' />
           *<img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"

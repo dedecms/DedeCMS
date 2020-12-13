@@ -8,7 +8,7 @@
   <title>投票管理</title>
   <link href="css/base.css" rel="stylesheet" type="text/css">
 </head>
-<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+<script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
 <script language='javascript' src="js/main.js"></script>
 <script language='javascript' src='js/tb-box.js'></script>
 
@@ -17,7 +17,8 @@
     <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
       <tr>
         <td height="28" background="images/tbg.gif" colspan="5">
-          <b>投票选择</b></td>
+          <b>投票选择</b>
+        </td>
       </tr>
       <tr align="center" bgcolor="#FAFBFC" height="24">
 
@@ -31,13 +32,13 @@
       {dede:datalist}
       <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#f4fbf4';"
         onMouseOut="javascript:this.bgColor='#FFFFFF';">
-        <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field.aid /}</td>
-        <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>
+        <td <?php if($fields['aid']==$aid) echo "style='color:red'" ;?>>{dede:field.aid /}</td>
+        <td <?php if($fields['aid']==$aid) echo "style='color:red'" ;?>>
           {dede:field.votename /}
         </td>
-        <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field name='starttime'
+        <td <?php if($fields['aid']==$aid) echo "style='color:red'" ;?>>{dede:field name='starttime'
           function="MyDate('Y-m-d',@me)"/}</td>
-        <td <?php if($fields['aid'] == $aid) echo "style='color:red'";?>>{dede:field name='endtime'
+        <td <?php if($fields['aid']==$aid) echo "style='color:red'" ;?>>{dede:field name='endtime'
           function="MyDate('Y-m-d',@me)"/}</td>
 
         <td><a href="javascript:PutVote({dede:field.aid/});" id="TB_closeWindowButton">选取</a></td>

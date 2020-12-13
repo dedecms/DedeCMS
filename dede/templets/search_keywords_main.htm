@@ -6,14 +6,14 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>搜索关键字管理</title>
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/key.js"></script>
-  <script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
+  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
   <script language='javascript' src='js/main.js'></script>
   <script language="JavaScript">
     var pageno = 1;
-    var totalrow = <?php echo $totalRow?>;
-    var pagesize = <?php echo $pagesize?>;
+    var totalrow = <? php echo $totalRow?>;
+    var pagesize = <? php echo $pagesize?>;
     var orderby = '<?php echo $orderby?>';
     //加载列表
     function ReloadPage(ordertype) {
@@ -38,7 +38,7 @@
 
       var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('" + pageno + "')\"><u>点击此重新加载列表</u></a>]";
       var myajax = new DedeAjax(listArea, true, true, "", errMsg, "正在处理...");
-     <?php
+     <? php
    if (strtolower(substr($cfg_soft_lang, 0, 3)) == 'utf') {
    ?>
           myajax.AddKeyUtf8('dopost', 'update');
@@ -49,7 +49,7 @@
         myajax.AddKeyUtf8('pageno', pageno);
         myajax.AddKeyUtf8('orderby', orderby);
         myajax.SendPost2('search_keywords_main.php');
-   <?php
+   <? php
    }
       elseif(strtolower(substr($cfg_soft_lang, 0, 2)) == 'gb') {
         echo 'myajax.SendGet2("search_keywords_main.php?dopost=update&aid="+nid+"&keyword="+kw+"&spwords="+kws+"&count="+ct+"&pageno="+pageno+"&orderby="+orderby);';

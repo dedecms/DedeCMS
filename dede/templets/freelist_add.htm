@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>新增自由列表</title>
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script src="js/main.js" language="javascript"></script>
   <script language="JavaScript">
     function ChangeListStyle() {
@@ -125,7 +125,8 @@
                       <td align="left"> <input name="defaultpage" type="text" id="defaultpage" style="width:35%"
                           value="index.html">
                         <input name="nodefault" type="checkbox" id="nodefault" value="1">
-                        不使用目录默认主页 </td>
+                        不使用目录默认主页
+                      </td>
                     </tr>
                     <tr>
                       <td height="28" align="left">命名规则：</td>
@@ -137,7 +138,8 @@
                       <td align="left"><input name="templet" type="text" id="templet" style="width:300px"
                           value="{style}/list_free.htm">
                         <input type="button" name="set4" value="浏览..." style="width:60px"
-                          onClick="SelectTemplets('form1.templet');" class="inputbut" /></td>
+                          onClick="SelectTemplets('form1.templet');" class="inputbut" />
+                      </td>
                     </tr>
                     <tr>
                       <td height="30" align="left">最大列出页数：</td>
@@ -175,9 +177,11 @@
                         <input name="liststyle" type="radio" onClick="ChangeListStyle()" value="1">
                       </td>
                       <td width="25%"><img src="images/g_t1.gif" width="130" height="110">
-                        <input type="radio" onClick="ChangeListStyle()" name="liststyle" value="2"></td>
+                        <input type="radio" onClick="ChangeListStyle()" name="liststyle" value="2">
+                      </td>
                       <td width="25%"><img src="images/g_t3.gif" width="130" height="110">
-                        <input type="radio" onClick="ChangeListStyle()" name="liststyle" value="3"></td>
+                        <input type="radio" onClick="ChangeListStyle()" name="liststyle" value="3">
+                      </td>
                       <td><img src="images/g_t4.gif" width="130" height="110"> <input name="liststyle" type="radio"
                           onClick="ChangeListStyle()" value="4" checked></td>
                     </tr>
@@ -200,7 +204,8 @@
 		 echo "<option value='{$lrow->ID}' $disable>{$lrow->typename}</option>\r\n";
                 }
 		echo "</select>";
-		?> </td>
+		?>
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left"> 限定频道：
@@ -215,7 +220,8 @@
 	   }
        echo "</select>";
 		?>
-                  　(如果限定了频道内容模型，则允许使用附加表指定的列表字段作为底层变量)</td>
+                  　(如果限定了频道内容模型，则允许使用附加表指定的列表字段作为底层变量)
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">附加属性：
@@ -232,7 +238,8 @@
 		?>
                   文档发布时间：
                   <input name="subday" type="text" id="subday2" value="0" size="6">
-                  天以内 （0 表示不限） </td>
+                  天以内 （0 表示不限）
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">每页记录数：
@@ -241,7 +248,8 @@
                   <input name="col" type="text" id="col3" value="1" size="4">
                   标题长度：
                   <input name="titlelen" type="text" id="titlelen" value="60" size="4">
-                  （1 字节 = 0.5个中文字）</td>
+                  （1 字节 = 0.5个中文字）
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left"> 高级筛选：
@@ -252,7 +260,8 @@
                   <input name="types[]" type="checkbox" id="type3" value="spec">
                   专题　关键字：
                   <input name="keywordarc" type="text" id="keywordarc">
-                  （&quot;,&quot;逗号分开）</td>
+                  （&quot;,&quot;逗号分开）
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">排列顺序：
@@ -269,7 +278,8 @@
                   <input name="order" type="radio" value="desc" checked>
                   由高到低
                   <input type="radio" name="order" value="asc">
-                  由低到高</td>
+                  由低到高
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">循环内的单行记录样式(InnerText)：[<a href='javascript:ShowHide("innervar");'><img

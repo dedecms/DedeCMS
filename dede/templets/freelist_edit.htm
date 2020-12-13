@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>更改自由列表</title>
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script src="js/main.js" language="javascript"></script>
   <script language="JavaScript">
     function ChangeListStyle() {
@@ -104,8 +104,8 @@
                       <td height="28" align="left">目录默认页名称：</td>
                       <td align="left"><input name="defaultpage" type="text" id="defaultpage" style="width:35%"
                           value="<?php echo $row['defaultpage']?>">
-                        <input name="nodefault" type="checkbox" id="nodefault" value="1"
-                          <?php  if($row['nodefault']==1) echo " checked"; ?>>
+                        <input name="nodefault" type="checkbox" id="nodefault" value="1" <?php if($row['nodefault']==1)
+                          echo " checked" ; ?>>
                         不使用目录默认主页
                       </td>
                     </tr>
@@ -119,7 +119,8 @@
                       <td align="left"><input name="templet" type="text" id="templet" style="width:300px"
                           value="<?php echo $row['templet']?>">
                         <input type="button" name="set4" value="浏览..." style="width:60px"
-                          onClick="SelectTemplets('form1.templet');" class="inputbut" /></td>
+                          onClick="SelectTemplets('form1.templet');" class="inputbut" />
+                      </td>
                     </tr>
                     <tr>
                       <td height="30" align="left">最大列出页数：</td>
@@ -140,8 +141,9 @@
                     </tr>
                     <tr>
                       <td height="28" align="left">列表描述：</td>
-                      <td align="left"><textarea name="description" id="description"
-                          style="width:60%;height:50px"><?php echo $row['description']?></textarea></td>
+                      <td align="left"><textarea name="description" id="description" style="width:60%;height:50px">
+                          <?php echo $row['description']?>
+                        </textarea></td>
                     </tr>
                   </table>
                 </td>
@@ -170,7 +172,8 @@
                	else echo "<option value='{$lrow->id}' $disable>{$lrow->typename}</option>\r\n";
                }
                echo "</select>";
-		?></td>
+		?>
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left"> 限定频道：
@@ -186,7 +189,8 @@
                 }
                 echo "</select>";
 		?>
-                  　(如果限定了频道内容模型，则允许使用附加表指定的列表字段作为底层变量)</td>
+                  　(如果限定了频道内容模型，则允许使用附加表指定的列表字段作为底层变量)
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">附加属性：
@@ -211,7 +215,8 @@
 		?>
                   文档发布时间：
                   <input name="subday" type="text" id="subday" size="6" value="<?php echo $ctag->GetAtt('subday')?>">
-                  天以内 （0 表示不限） </td>
+                  天以内 （0 表示不限）
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">每页记录数：
@@ -224,7 +229,8 @@
                   标题长度：
                   <input name="titlelen" type="text" id="titlelen" value="<?php echo $ctag->GetAtt('titlelen')?>"
                     size="4">
-                  （1 字节 = 0.5个中文字）</td>
+                  （1 字节 = 0.5个中文字）
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">
@@ -233,14 +239,14 @@
               	if($setype=='') $setype = 'X';
               	?>
                   高级筛选：
-                  <input name="types[]" type="checkbox" id="type1" value="image"
-                    <?php if(preg_match("#image#i",$setype)) echo ' checked';?>>
+                  <input name="types[]" type="checkbox" id="type1" value="image" <?php
+                    if(preg_match("#image#i",$setype)) echo ' checked' ;?>>
                   带缩略图
-                  <input name="types[]" type="checkbox" id="type2" value="commend"
-                    <?php if(preg_match("#commend#i", $setype)) echo ' checked';?>>
+                  <input name="types[]" type="checkbox" id="type2" value="commend" <?php if(preg_match("#commend#i",
+                    $setype)) echo ' checked' ;?>>
                   推荐
-                  <input name="types[]" type="checkbox" id="type3" value="spec" class="inputbut"
-                    <?php if(preg_match("#spec#i", $setype)) echo ' checked';?>>
+                  <input name="types[]" type="checkbox" id="type3" value="spec" class="inputbut" <?php
+                    if(preg_match("#spec#i", $setype)) echo ' checked' ;?>>
                   专题　关键字：
                   <input name="keywordarc" type="text" id="keywordarc" value="<?php echo $ctag->GetAtt('keyword')?>">
                   （&quot;,&quot;逗号分开）
@@ -272,12 +278,13 @@
                     <option value="postnum">评论总数</option>
                   </select>
                   　
-                  <input name="order" type="radio" value="desc"
-                    <?php if($ctag->GetAtt('orderway')=='desc') echo " checked";?>>
+                  <input name="order" type="radio" value="desc" <?php if($ctag->GetAtt('orderway')=='desc') echo "
+                  checked";?>>
                   由高到低
-                  <input type="radio" name="order" value="asc"
-                    <?php if($ctag->GetAtt('orderway')=='asc') echo " checked";?>>
-                  由低到高</td>
+                  <input type="radio" name="order" value="asc" <?php if($ctag->GetAtt('orderway')=='asc') echo "
+                  checked";?>>
+                  由低到高
+                </td>
               </tr>
               <tr>
                 <td height="28" align="left">循环内的单行记录样式(InnerText)：[<img src="images/help.png" width="16" height="16"><a
@@ -285,8 +292,9 @@
               </tr>
               <tr>
                 <td height="80" align="left">
-                  <textarea name="innertext" cols="80" rows="6" id="myinnertext"
-                    style="width:80%;height:120px"><?php echo $ctag->GetInnerText()?></textarea>
+                  <textarea name="innertext" cols="80" rows="6" id="myinnertext" style="width:80%;height:120px">
+                    <?php echo $ctag->GetInnerText()?>
+                  </textarea>
                 </td>
               </tr>
               <tr>

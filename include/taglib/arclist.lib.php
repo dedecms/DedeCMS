@@ -544,7 +544,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid = 0, $row = 10, $col = 1, $ti
                     $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
 
                 if ($row['litpic'] == '-' || $row['litpic'] == '') {
-                    $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/resources/img/defaultpic.gif';
+                    $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
                 }
                 if (!preg_match("#^http:\/\/#i", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y') {
                     $row['litpic'] = $GLOBALS['cfg_mainsite'] . $row['litpic'];

@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>修改会员模型管理</title>
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <script language="javascript" src="js/diy.js"></script>
   <script language="javascript">
@@ -50,31 +50,38 @@
     style="background:#EAECEF;">
     <form name="form1" action="member_model_edit.php" method="post" onSubmit="return CheckSubmit();">
       <input type='hidden' name='id' value='<?php echo $id;?>'>
-      <input type='hidden' name='name' value='<?php echo $row['name'];?>'>
+      <input type='hidden' name='name' value='<?php echo $row[' name'];?>'>
       <input type='hidden' name='dopost' value='save'>
       <tr bgcolor="#EAECEF">
         <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;"><b><a
-              href="member_model_main.php"><u>会员模型管理</u></a> &gt; 修改<?php echo $row['name']?>会员模型：</b>
+              href="member_model_main.php"><u>会员模型管理</u></a> &gt; 修改
+            <?php echo $row['name']?>会员模型：
+          </b>
           (修改表名不会创建新表，如果您不懂手工处理这些表，请不要更改) </td>
       </tr>
       <tr>
         <td width="35%" height="28" align="left" bgcolor="#FFFFFF">会员模型ID：<br />
-          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span></td>
-        <td width="65%" bgcolor="#FFFFFF"><?php echo $id;?> * <img src="images/help.png" alt="帮助" width="16" height="16"
-            border="0" style="cursor:hand" onclick="ShowHide2('help1')" />
-          <?php if($row['issystem']) echo "<font color='red'>系统模型,我们不建议您去修改基本配置信息!</font>";?></td>
+          <span class="STYLE2" id='help1'>　　数字，创建后不可更改，并具有唯一性。</span>
+        </td>
+        <td width="65%" bgcolor="#FFFFFF">
+          <?php echo $id;?> * <img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
+            onclick="ShowHide2('help1')" />
+          <?php if($row['issystem']) echo "<font color='red'>系统模型,我们不建议您去修改基本配置信息!</font>";?>
+        </td>
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FAFBFC">模型名称：<br />
-          <span class="STYLE2" id="help3">　　会员模型类型统一使用中文,前台后台都保持一致。</span></td>
+          <span class="STYLE2" id="help3">　　会员模型类型统一使用中文,前台后台都保持一致。</span>
+        </td>
         <td bgcolor="#F8FCEF"><input name="name" type="text" id="name" value="<?php echo $row['name']?>"
-            style="width:180px" class='alltxt' <?php if($row['issystem']) echo "disabled='1'";?> />
+            style="width:180px" class='alltxt' <?php if($row['issystem']) echo "disabled='1'" ;?> />
           *<img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
             onclick="ShowHide2('help3')" /></td>
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">数据表：<br />
-          <span class="STYLE2" id="help5">　　模型表一旦创建不可修改</span></td>
+          <span class="STYLE2" id="help5">　　模型表一旦创建不可修改</span>
+        </td>
         <td bgcolor="#FFFFFF"><input name="table" type="text" id="table" style="width:180px"
             value="<?php echo $row['table']; ?>" class='alltxt' disabled='1' />
           *<img src="images/help.png" alt="帮助" width="16" height="16" border="0" style="cursor:hand"
@@ -118,38 +125,54 @@ foreach($dtp->CTags as $ctag)
 ?>
             <tr align="center" bgcolor="#FFFFFF" height="26" align="center"
               onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-              <td><?php 
+              <td>
+                <?php 
 			$itname = $ctag->GetAtt('itemname');
 			if($itname=='') echo "没指定";
 			else echo $itname;
-			?></td>
-              <td><?php echo $ctag->GetTagName()?></td>
-              <td><?php 
+			?>
+              </td>
+              <td>
+                <?php echo $ctag->GetTagName()?>
+              </td>
+              <td>
+                <?php 
 			$ft = $ctag->GetAtt('type');
 			if(isset($fieldtypes[$ft])) echo $fieldtypes[$ft];
 			else  echo "系统专用类型";
-			?></td>
-              <td><?php 
+			?>
+              </td>
+              <td>
+                <?php 
 			$issearch = $ctag->GetAtt('issearch');
 			echo ($issearch == '1')? "<font color=green>√</font>" : "<font color=red>×</font>";
-			?></td>
-              <td><?php 
+			?>
+              </td>
+              <td>
+                <?php 
 			$isshow = $ctag->GetAtt('isshow');
 			echo ($isshow == '1')? "<font color=green>√</font>" : "<font color=red>×</font>";
-			?></td>
-              <td><?php 
+			?>
+              </td>
+              <td>
+                <?php 
 			$state = $ctag->GetAtt('state');
 			echo ($state == 1)? "<font color=green>√</font>" : "<font color=red>×</font>";
-			?></td>
-              <td><?php 
+			?>
+              </td>
+              <td>
+                <?php 
 			$ft = $ctag->GetAtt('autofield');
 			if($ft==''||$ft==0) echo "固化表单";
 			else  echo "自动表单";
-		 ?></td>
+		 ?>
+              </td>
               <td><a
                   href="member_model_field_edit.php?id=<?php echo $id;?>&fname=<?php echo $ctag->GetTagName()?>">[修改]</a>
                 <a
-                  href="member_model_field_edit.php?id=<?php echo $id;?>&action=disabled&fname=<?php echo $ctag->GetTagName()?>">[<?php echo ($ctag->GetAtt('state')==1)? "禁用" : "启用" ?>]</a>
+                  href="member_model_field_edit.php?id=<?php echo $id;?>&action=disabled&fname=<?php echo $ctag->GetTagName()?>">[
+                  <?php echo ($ctag->GetAtt('state')==1)? "禁用" : "启用" ?>]
+                </a>
                 <a
                   href="member_model_field_edit.php?id=<?php echo $id;?>&action=delete&fname=<?php echo $ctag->GetTagName()?>">[删除]</a>
               </td>
@@ -164,17 +187,20 @@ foreach($dtp->CTags as $ctag)
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">模型描述：</td>
         <td bgcolor="#FFFFFF"><label>
-            <textarea name="description" cols="50" rows="5" class="tbtitle"
-              id="description"><?php echo $row['description']; ?></textarea>
+            <textarea name="description" cols="50" rows="5" class="tbtitle" id="description">
+              <?php echo $row['description']; ?>
+            </textarea>
           </label></td>
       </tr>
       <tr>
         <td height="28" align="left" bgcolor="#FFFFFF">会员模型状态：</td>
-        <td bgcolor="#FFFFFF"><input name="state" type="radio" class='np' value="1"
-            <?php if($row['state']=='1') echo " checked='1' "; ?> />
+        <td bgcolor="#FFFFFF"><input name="state" type="radio" class='np' value="1" <?php if($row['state']=='1' )
+            echo " checked='1' " ; ?> />
           启用 &nbsp;
-          <input name="state" type="radio" value="0" class='np' <?php if($row['state']=='0') echo " checked='1' "; ?> />
-          禁用</td>
+          <input name="state" type="radio" value="0" class='np' <?php if($row['state']=='0' ) echo " checked='1' " ; ?>
+          />
+          禁用
+        </td>
       </tr>
       <tr bgcolor="#FAFBFC">
         <td height="28" colspan="2">

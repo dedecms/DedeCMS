@@ -5,18 +5,18 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>增加软件集</title>
-  <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css">
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-  <script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
-  <link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
+  <link rel="stylesheet" href="../assets/pkg/jquery/jquery.fileupload.css">
   <script language="javascript" src="js/main.js"></script>
-  <link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
-  <script src="../resources/pkg/cropper/cropper.min.js"></script>
-  <script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+  <link href="../assets/pkg/cropper/cropper.min.css" rel="stylesheet">
+  <script src="../assets/pkg/cropper/cropper.min.js"></script>
+  <script src="../assets/pkg/bootstrap/bootstrap.bundle.min.js"></script>
   <script language="javascript">
     function checkSubmit() {
       if (document.form1.title.value == '') {
@@ -121,7 +121,8 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90">&nbsp;自定义属性：</td>
-              <td><?php
+              <td>
+                <?php
           $dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
           $dsql->Execute();
           while($trow = $dsql->GetObject())
@@ -131,7 +132,8 @@
           	else
           	echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'>{$trow->attname}[{$trow->att}]";
           }
-            	?> </td>
+            	?>
+              </td>
             </tr>
           </table>
         </td>
@@ -142,7 +144,8 @@
             <tr>
               <td width="90">&nbsp;跳转网址：</td>
               <td>
-                <input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="" /> </td>
+                <input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="" />
+              </td>
             </tr>
           </table>
         </td>
@@ -154,7 +157,8 @@
               <td width="89">&nbsp;TAG标签：</td>
               <td width="516">
                 <input name="tags" type="text" id="tags" value="" style="width:300px" />
-                (','号分开，单个标签小于12字节</td>
+                (','号分开，单个标签小于12字节
+              </td>
               <td width="37">权重：</td>
               <td width="158"><input name="weight" type="text" id="weight" style="width:50px"
                   value="<?php echo $maxWright['cc'];?>" />(越小越靠前)</td>
@@ -189,7 +193,7 @@
                 </table>
               </td>
               <td width="150" align="center">
-                <img id="litPic" src="../resources/img/defaultpic.gif" style="height: 80px">
+                <img id="litPic" src="../assets/img/defaultpic.gif" style="height: 80px">
               </td>
             </tr>
           </table>
@@ -202,7 +206,8 @@
             <tr>
               <td width="90">&nbsp;软件来源：</td>
               <td width="240">
-                <input name="source" type="text" id="source" style="width:200px"> </td>
+                <input name="source" type="text" id="source" style="width:200px">
+              </td>
               <td width="90">软件作者：</td>
               <td width="159"><input name="writer" type="text" id="writer" style="width:120px"></td>
               <td>&nbsp;</td>
@@ -223,7 +228,8 @@
           echo "<option value='0'>请选择栏目...</option>\r\n";
           echo $typeOptions;
           echo "</select>";
-			?></span>
+			?>
+                </span>
                 <img src='images/menusearch.gif' style='cursor:pointer;'
                   onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
                 &nbsp;
@@ -237,8 +243,10 @@
      			 if($cfg_remote_site=='Y')
      			 {
    				 ?> 　
-                <input name="isremote" type="checkbox" id="isremote" value="1"
-                  <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布 <?php GetFtp();?> <?php
+                <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y' )
+                  echo "checked" ;?>>是否同步远程发布
+                <?php GetFtp();?>
+                <?php
      			 }
     		?>
               </td>
@@ -274,7 +282,8 @@
                   <option value=".iso">.iso</option>
                   <option value=".gz">.gz</option>
                   <option value="其它">其它</option>
-                </select> </td>
+                </select>
+              </td>
               <td width="90">软件等级：</td>
               <td><select name="softrank" id="softrank" style="width:100px">
                   <option value="1">一星</option>
@@ -297,7 +306,8 @@
                   <option value="国产软件" selected>国产软件</option>
                   <option value="国外软件">国外软件</option>
                   <option value="汉化补丁">汉化补丁</option>
-                </select></td>
+                </select>
+              </td>
               <td width="72">界面语言： </td>
               <td width="131"><select name="language" id="language" style="width:100">
                   <option value="简体中文" selected>简体中文</option>
@@ -314,7 +324,8 @@
                   <option value="商业软件">商业软件</option>
                   <option value="破解软件">破解软件</option>
                   <option value="游戏外挂">游戏外挂</option>
-                </select></td>
+                </select>
+              </td>
             </tr>
           </table>
         </td>
@@ -337,10 +348,12 @@
             <tr>
               <td width="90">&nbsp;官方网址：</td>
               <td width="240">
-                <input name="officialUrl" type="text" id="officialUrl" value="http://" style="width:200px" /> </td>
+                <input name="officialUrl" type="text" id="officialUrl" value="http://" style="width:200px" />
+              </td>
               <td width="90">演示地址：</td>
               <td>
-                <input name="officialDemo" type="text" id="officialDemo" value="http://" style="width:200px" /> </td>
+                <input name="officialDemo" type="text" id="officialDemo" value="http://" style="width:200px" />
+              </td>
             </tr>
           </table>
         </td>
@@ -357,13 +370,16 @@
                   <option value="GB">GB</option>
                 </select>
                 <input name="autosize" type="checkbox" class="np" id="autosize" value="1" checked>
-                自动获得 (必须包含一个本地软件) </td>
+                自动获得 (必须包含一个本地软件)
+              </td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
-        <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
+        <td>
+          <?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?>
+        </td>
       </tr>
       <tr>
         <td height="24" bgcolor="#FAFBFC"" class=" bline2"><strong>&nbsp;下载限制：</strong></td>
@@ -385,11 +401,13 @@
 									else echo "     <option value='{$row['rank']}'>{$row['membername']}</option>\r\n";
                 }
              ?>
-                </select> </td>
+                </select>
+              </td>
               <td width="120" align="center">需消费金币：</td>
               <td width="411">
                 <input name="needmoney" type="text" id="needmoney" value="<?php echo $softconfig['dfywboy']; ?>"
-                  size="8" />个 </td>
+                  size="8" />个
+              </td>
             </tr>
             <tr>
               <td height="26" colspan="4" style="border-top:1px dashed #8EAF61">&nbsp; <span
@@ -487,15 +505,16 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90">&nbsp;附加选项：</td>
-              <td><input name="remote" type="checkbox" class="np" id="remote" value="1"
-                  <?php if($cfg_rm_remote=='Y') echo ' checked'; ?>>
+              <td><input name="remote" type="checkbox" class="np" id="remote" value="1" <?php if($cfg_rm_remote=='Y' )
+                  echo ' checked' ; ?>>
                 下载远程图片和资源
-                <input name="dellink" type="checkbox" class="np" id="dellink" value="1"
-                  <?php if($cfg_arc_dellink=='Y') echo ' checked'; ?>>
+                <input name="dellink" type="checkbox" class="np" id="dellink" value="1" <?php if($cfg_arc_dellink=='Y' )
+                  echo ' checked' ; ?>>
                 删除非站内链接 <a href="javascript:OpenMyWin('article_allowurl_edit.php');">[设置]</a>
-                <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1"
-                  <?php if($cfg_arc_autopic=='Y') echo ' checked'; ?>>
-                提取第一个图片为缩略图 </td>
+                <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1" <?php
+                  if($cfg_arc_autopic=='Y' ) echo ' checked' ; ?>>
+                提取第一个图片为缩略图
+              </td>
             </tr>
           </table>
         </td>
@@ -517,17 +536,17 @@
             <tr>
               <td width="90" height="22" width="240">&nbsp;评论选项：</td>
               <td width="240">
-                <input type='radio' name='notpost' class='np' value='0'
-                  <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
+                <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N' )
+                  echo "checked='1' " ; ?> />允许评论
                 &nbsp;
-                <input type='radio' name='notpost' class='np' value='1'
-                  <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
+                <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y' )
+                  echo "checked='1' " ; ?> />禁止评论
               </td>
               <td width="90">浏览次数：</td>
               <td>
-                <input type='text' name='click'
-                  value='<?php echo ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click); ?>'
-                  style='width:100px;' />
+                <input type='text' name='click' value='<?php echo ($cfg_arc_click==' -1' ? mt_rand(50, 200) :
+                  $cfg_arc_click); ?>'
+                style='width:100px;' />
               </td>
             </tr>
           </table>
@@ -549,7 +568,8 @@
               <td width="90">标题颜色：</td>
               <td>
                 <input name="color" type="text" id="color" style="width:120px">
-                <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)"> </td>
+                <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)">
+              </td>
             </tr>
           </table>
         </td>
@@ -602,9 +622,10 @@
               <td width="90">&nbsp;关键字：</td>
               <td colspan="2"><input type='text' name="keywords" id="keywords" style="width:290px;" value="" /><input
                   name="autokey" type="checkbox" onClick="ShowHide('keywords');" ; class="np" id="autokey" value="1"
-                  <?php if($cfg_arc_autokeyword=='Y') echo ' checked'; ?>>
+                  <?php if($cfg_arc_autokeyword=='Y' ) echo ' checked' ; ?>>
                 <input type="button" name="Submit" value="浏览..." style="width:56;height:20"
-                  onClick="SelectKeywords('form1.keywords');">&nbsp;&nbsp;自动获取，手动填写用","分开</td>
+                  onClick="SelectKeywords('form1.keywords');">&nbsp;&nbsp;自动获取，手动填写用","分开
+              </td>
             </tr>
           </table>
         </td>

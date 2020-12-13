@@ -46,7 +46,7 @@ function plus_spacenewart(&$atts, &$refObj, &$fields)
             $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
 
         if ($row['litpic'] == '') {
-            $row['litpic'] = '/resources/img/defaultpic.gif';
+            $row['litpic'] = '/assets/img/defaultpic.gif';
         }
         if (!preg_match("#^http:\/\/#i", $row['litpic'])) {
             $row['picname'] = $row['litpic'] = $GLOBALS['cfg_cmsurl'] . $row['litpic'];

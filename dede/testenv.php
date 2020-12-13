@@ -22,7 +22,7 @@ $action = isset($action) ? $action : '';
 <title>系统运行目录权限检测</title>
 <link rel="stylesheet" type="text/css" href="css/base.css" />
 <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-<script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js" ></script>
+<script type="text/javascript" src="../assets/pkg/jquery/jquery.min.js" ></script>
 </head>
 <body leftmargin="8" topmargin='8' bgcolor="#FFFFFF" style="min-width:840px">
 <?php

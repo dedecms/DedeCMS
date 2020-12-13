@@ -5,12 +5,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>更改广告</title>
-  <!-- <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css"> -->
+  <!-- <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css"> -->
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script src="../assets/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script language="javascript">
     $(document).ready(function () {
       $('.datepicker').daterangepicker({
@@ -60,7 +60,9 @@
             <input type="hidden" name="token" value="<?php echo make_hash();?>" />
             <tr>
               <td height="25" align="center">广告位标识：</td>
-              <td colspan="2"><?php echo $row['tagname']; ?></td>
+              <td colspan="2">
+                <?php echo $row['tagname']; ?>
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">广告分类：</td>
@@ -73,7 +75,8 @@
             </tr>
             <tr>
               <td width="15%" height="25" align="center">广告投放范围：</td>
-              <td colspan="2"><?php
+              <td colspan="2">
+                <?php
            	$tl = new TypeLink(0);
            	$typeOptions = $tl->GetOptionArray($row['typeid'],0,0);
             echo "<select name='typeid' style='width:300px'>\r\n";
@@ -82,7 +85,8 @@
             echo "</select>";
 			?>
                 <br>
-                （如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目） </td>
+                （如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">广告位名称：</td>
@@ -91,12 +95,13 @@
             </tr>
             <tr>
               <td height="25" align="center">时间限制：</td>
-              <td colspan="2"><input class="np" name="timeset" type="radio" value="0"
-                  <?php if($row['timeset']==0) echo " checked='1' "; ?> />
+              <td colspan="2"><input class="np" name="timeset" type="radio" value="0" <?php if($row['timeset']==0)
+                  echo " checked='1' " ; ?> />
                 永不过期
-                <input class="np" type="radio" name="timeset" value="1"
-                  <?php if($row['timeset']==1) echo " checked='1' "; ?> />
-                在设内时间内有效</td>
+                <input class="np" type="radio" name="timeset" value="1" <?php if($row['timeset']==1)
+                  echo " checked='1' " ; ?> />
+                在设内时间内有效
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">投放时间：</td>
@@ -105,19 +110,22 @@
                   class='iptxt datepicker' />
                 到
                 <input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>"
-                  class='iptxt datepicker' /></td>
+                  class='iptxt datepicker' />
+              </td>
             </tr>
             <tr>
               <td height="80" align="center">正常显示内容：</td>
-              <td width="76%"><textarea name="normbody" rows="10" id="normbody"
-                  style="width:80%;height:100"><?php echo dede_htmlspecialchars(stripslashes($row['normbody']))?></textarea>
+              <td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100">
+                  <?php echo dede_htmlspecialchars(stripslashes($row['normbody']))?>
+                </textarea>
               </td>
               <td width="9%">&nbsp;</td>
             </tr>
             <tr>
               <td height="80" align="center">过期显示内容：</td>
-              <td><textarea name="expbody" rows="10" id="expbody"
-                  style="width:80%;height:100"><?php echo dede_htmlspecialchars($row['expbody'])?></textarea></td>
+              <td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100">
+                  <?php echo dede_htmlspecialchars($row['expbody'])?>
+                </textarea></td>
               <td>&nbsp;</td>
             </tr>
             <tr>

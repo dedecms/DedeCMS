@@ -182,7 +182,7 @@ class Caicai extends DataListCP
                 $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
 
             if ($arr['litpic'] == '') {
-                $arr['litpic'] = '/resources/img/defaultpic.gif';
+                $arr['litpic'] = '/assets/img/defaultpic.gif';
             }
 
             if (!preg_match("#^http:\/\/#", $arr['litpic'])) {

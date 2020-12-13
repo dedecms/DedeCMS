@@ -5,12 +5,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>增加广告</title>
-  <!-- <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css"> -->
+  <!-- <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css"> -->
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script src="../assets/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script language="javascript">
     function checkSubmit() {
       if (document.form1.tagname.value == "") {
@@ -112,7 +112,8 @@
             </tr>
             <tr>
               <td width="15%" height="25" align="center">广告投放范围：</td>
-              <td colspan="2"><?php
+              <td colspan="2">
+                <?php
 			$tl = new TypeLink(0);
 			$typeOptions = $tl->GetOptionArray(0,0,0);
 			echo "<select name='typeid' style='width:300px'>\r\n";
@@ -121,7 +122,8 @@
 			echo "</select>";
 			?>
                 <br>
-                （如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）</td>
+                （如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">广告位名称：</td>
@@ -132,7 +134,8 @@
               <td colspan="2"><input name="timeset" type="radio" class="np" value="0" checked='1' id="notimelimit" />
                 <label for="notimelimit">永不过期</label>
                 <input type="radio" name="timeset" class="np" value="1" id="timelimit" />
-                <label for="timelimit">在设内时间内有效</label></td>
+                <label for="timelimit">在设内时间内有效</label>
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">投放时间：</td>

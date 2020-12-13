@@ -5,8 +5,8 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>会员管理--积分头衔设置</title>
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <script type="text/javascript">
     function CheckAll(form, prefix, checkall) {
@@ -53,7 +53,8 @@
       <tr>
         <td width="6%" height="30" align="center" valign="middle" bgcolor="#FBFBFB">
           <input type="checkbox" name="chkall" id="chkall" onClick="CheckAll(this.form)" class='np' />
-          删?</td>
+          删?
+        </td>
         <td width="23%" height="30" align="center" bgcolor="#FEFCEF">积分大于</td>
         <td width="24%" height="30" align="center" bgcolor="#FEFCEF">星星数</td>
         <td width="23%" height="30" align="center" bgcolor="#FEFCEF">级别头衔</td>
@@ -69,17 +70,20 @@
         </td>
         <td height="28" align="left" style="padding:5px;">
           <input name="integral-<?php echo $v['id']?>" type="text" id="integral-<?php echo $v['id']?>"
-            value="<?php echo $v['integral']?>" size="10" /></td>
+            value="<?php echo $v['integral']?>" size="10" />
+        </td>
         <td height="28" align="left" style="padding:5px;">
           <input name="icon-<?php echo $v['id']?>" type="text" id="icon-<?php echo $v['id']?>"
-            value="<?php echo $v['icon']?>" size="3" /></td>
+            value="<?php echo $v['icon']?>" size="3" />
+        </td>
         <td height="28" align="left" style="padding:5px;">
           <input name="titles-<?php echo $v['id']?>" type="text" id="titles-<?php echo $v['id']?>"
-            value="<?php echo $v['titles']?>" size="20" /></td>
+            value="<?php echo $v['titles']?>" size="20" />
+        </td>
         <td height="28" align="left" style="padding:5px;">
           <select name="isdefault-<?php echo $v['id']?>" id="isdefault-<?php echo $v['id']?>">
-            <option value="1" <?php if($v['isdefault']) echo " selected='selected'";?>>是</option>
-            <option value="0" <?php if(!$v['isdefault']) echo " selected='selected'";?>>否</option>
+            <option value="1" <?php if($v['isdefault']) echo " selected='selected'" ;?>>是</option>
+            <option value="0" <?php if(!$v['isdefault']) echo " selected='selected'" ;?>>否</option>
           </select>
         </td>
       </tr>
@@ -95,7 +99,8 @@
           <select name="add_isdefault" id="add_isdefault">
             <option value="1">是</option>
             <option value="0">否</option>
-          </select></td>
+          </select>
+        </td>
       </tr>
     </table>
     <br />

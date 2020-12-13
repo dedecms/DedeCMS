@@ -4,9 +4,11 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
-  <title>更改帐号基本资料 - 会员中心 - <?php echo $cfg_webname; ?></title>
+  <title>更改帐号基本资料 - 会员中心 -
+    <?php echo $cfg_webname; ?>
+  </title>
   <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script type="text/javascript" language='javascript' src='templets/js/main.js'></script>
   <script type="text/javascript" src="templets/js/load.js"></script>
   <script type="text/javascript" src="templets/js/leftmenu.js"></script>
@@ -63,7 +65,8 @@
             <div class="postForm">
               <p class="cellBg">
                 <label>帐号类型：</label>
-                <?php echo $row['mtype']; ?></p>
+                <?php echo $row['mtype']; ?>
+              </p>
               <p>
                 <label>用户名：</label>
                 <?php echo $cfg_ml->M_LoginID; ?>
@@ -120,11 +123,12 @@
               </p>
               <p>
                 <label>性别：</label>
-                <input type="radio" name="sex" value="男" <?php if($row['sex']=='男') echo " checked='checked' "; ?> />
+                <input type="radio" name="sex" value="男" <?php if($row['sex']=='男' ) echo " checked='checked' " ; ?> />
                 男 &nbsp;
-                <input type="radio" name="sex" value="女" <?php if($row['sex']=='女') echo " checked='checked' "; ?> />
+                <input type="radio" name="sex" value="女" <?php if($row['sex']=='女' ) echo " checked='checked' " ; ?> />
                 女 &nbsp;
-                <input type="radio" name="sex" value="保密'" <?php if($row['sex']=='保密') echo " checked='checked' "; ?> />
+                <input type="radio" name="sex" value="保密'" <?php if($row['sex']=='保密' ) echo " checked='checked' " ; ?>
+                />
                 保密
               </p>
               <p class="cellBg">

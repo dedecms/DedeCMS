@@ -9,8 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
     <link href="images/style<?php echo $cfg_admin_skin;?>/style.css" rel="stylesheet" type="text/css" />
-    <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-    <script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
+    <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+    <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
     <script language="javascript" src="js/jquery.json-2.2.min.js"></script>
     <script language="javascript" src="js/indexbody.js"></script>
     <script type="text/javascript">
@@ -40,7 +40,8 @@
             <tr>
                 <td>
                     <div style='float:left'>
-                        欢迎使用专业的PHP网站管理系统，轻松建站的利器 -- <?php echo $cfg_softname; ?>
+                        欢迎使用专业的PHP网站管理系统，轻松建站的利器 --
+                        <?php echo $cfg_softname; ?>
                     </div>
                     <div id='' style='float:right;padding-right:8px;'>
                         <!--  //保留位置（顶右）  -->
@@ -53,7 +54,9 @@
             <div class="column" id="column1">
                 <!--左侧开始-->
                 <dl class="dbox" id="item1">
-                    <dt class='lside'><span class='l'><?php echo $cfg_soft_enname; ?> 更新消息</span></dt>
+                    <dt class='lside'><span class='l'>
+                            <?php echo $cfg_soft_enname; ?> 更新消息
+                        </span></dt>
                     <dd>
                         <div id='updatetest'>
                             <div id='updateinfos'>
@@ -120,7 +123,8 @@
                                 echo "信息采集员或其它管理员";
                             }
                         ?>
-                                    [<a href="javascript:showMore()">查看更多</a>]</td>
+                                    [<a href="javascript:showMore()">查看更多</a>]
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class='nline' id="allInfoTD" style="display:none">
@@ -129,12 +133,15 @@
                                         <tr>
                                             <td rowspan="5" class='nline' style="text-align:right">PHP环境摘要：</td>
                                             <td class='nline' style="text-align:left">
-                                                PHP版本：<?php echo @phpversion(); ?>&nbsp;GD版本：<?php echo @gdversion(); ?>
+                                                PHP版本：
+                                                <?php echo @phpversion(); ?>&nbsp;GD版本：
+                                                <?php echo @gdversion(); ?>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class='nline' style="text-align:left">是否安全模式：<font color='red'>
-                                                    <?php echo ($isSafeMode ? 'On' : 'Off')?></font>
+                                                    <?php echo ($isSafeMode ? 'On' : 'Off')?>
+                                                </font>
                                                 <?php
                                 if($isSafeMode) {
                                     echo "<br>　　<font color='blue'>由于您的系统以安全模式运行，为了确保程序兼容性，第一次进入本系统时请更改“<a href='sys_info.php'><u>更改系统参数</u></a>”里的FTP选项，并选择用FTP形式创建目录，完成后：<a href='testenv.php' style='color:red'><u>点击此进行一次DedeCMS目录权限检测&gt;&gt;</u></a></font>";
@@ -147,19 +154,25 @@
                                         <tr>
                                             <td class='nline' style="text-align:left">
                                                 Register_Globals：<font color='red'>
-                                                    <?php echo ini_get("register_globals") ? 'On' : 'Off'?></font>
+                                                    <?php echo ini_get("register_globals") ? 'On' : 'Off'?>
+                                                </font>
                                                 &nbsp;
                                                 Magic_Quotes_Gpc：<font color='red'>
-                                                    <?php echo ini_get("magic_quotes_gpc") ? 'On' : 'Off'?></font>
+                                                    <?php echo ini_get("magic_quotes_gpc") ? 'On' : 'Off'?>
+                                                </font>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class='nline' style="text-align:left">
-                                                支持上传的最大文件：<?php echo ini_get("post_max_size")?></td>
+                                                支持上传的最大文件：
+                                                <?php echo ini_get("post_max_size")?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class='nline' style="text-align:left">
-                                                是否允许打开远程连接：<?php echo ini_get("allow_url_fopen") ? '支持' : '不支持'; ?></td>
+                                                是否允许打开远程连接：
+                                                <?php echo ini_get("allow_url_fopen") ? '支持' : '不支持'; ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class='nline' style="text-align:right"> 其它必须函数检测：</td>
@@ -184,7 +197,9 @@
                                         <tr>
                                             <td class='nline' style="text-align:right"> 软件版本信息： </td>
                                             <td class='nline' style="text-align:left">
-                                                版本名称：<?php echo $cfg_soft_enname; ?>&nbsp;版本号：<?php echo $cfg_version; ?>
+                                                版本名称：
+                                                <?php echo $cfg_soft_enname; ?>&nbsp;版本号：
+                                                <?php echo $cfg_version; ?>
                                             </td>
                                         </tr>
                                     </table>
@@ -302,7 +317,8 @@
         <br style='clear:both' />
         <!-- //底部 -->
         <div align="center" class="footer">
-            Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+            Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司
+            (DesDev, Inc.)
         </div>
 
         <!--  下面是隐藏的项目  -->

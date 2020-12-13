@@ -6,10 +6,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>增加自定义标记</title>
   <link href='css/base.css' rel='stylesheet' type='text/css'>
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script src="../assets/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script language="javascript">
     function checkSubmit() {
       if (document.form1.tagname.value == "") {
@@ -71,7 +71,8 @@
                 <br />
                 1、name 标记名称，该项是必须的属性，以下 2、3是可选属性；<br />
                 2、ismake 默认是 no 表示设定的纯HTML代码， yes 表示含板块标记的代码；<br />
-                3、typeid 表示所属栏目的ID，默认为 0 ，表示所有栏目通用的显示内容，在列表和文档模板中，typeid默认是这个列表或文档本身的栏目ＩＤ。</td>
+                3、typeid 表示所属栏目的ID，默认为 0 ，表示所有栏目通用的显示内容，在列表和文档模板中，typeid默认是这个列表或文档本身的栏目ＩＤ。
+              </td>
             </tr>
             <tr>
               <td width="15%" height="25" align="center">所属栏目：</td>
@@ -95,18 +96,19 @@
               <td colspan="2"><input name="timeset" type="radio" value="0" checked='1' />
                 永不过期
                 <input type="radio" name="timeset" value="1" />
-                在设内时间内有效</td>
+                在设内时间内有效
+              </td>
             </tr>
             <tr>
               <td height="25" align="center">开始时间：</td>
               <td colspan="2">
-                <input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="datepicker"/>
+                <input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="datepicker" />
               </td>
             </tr>
             <tr>
               <td height="25" align="center">结束时间：</td>
               <td colspan="2">
-                <input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="datepicker"/>
+                <input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="datepicker" />
               </td>
             </tr>
             <tr>

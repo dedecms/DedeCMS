@@ -1,34 +1,38 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>DedeCMS Home</title>
-<base target="_self">
-<link rel="stylesheet" type="text/css" href="css/base.css" />
-<link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-<script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
-<script language="javascript" src="js/jquery.json-2.2.min.js"></script>
-<script language="javascript" src="js/indexbody.js"></script>
-</head>
-<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF">
-<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td>
-     <div style='float:left'>
-       欢迎使用专业的PHP网站管理系统，轻松建站的利器 -- <?php echo $cfg_softname; ?>
-     </div>
-     <div id='' style='float:right;padding-right:8px;'>
-         <!--  //保留位置（顶右）  -->
-     </div>
-   </td>
-  </tr>
-  <tr>
-    <td height="1" background="images/sp_bg.gif" style='padding:0px'></td>
-  </tr>
-</table>
 
-<div id='mainmsg'>
-<?php
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+    <title>DedeCMS Home</title>
+    <base target="_self">
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
+    <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
+    <script language="javascript" src="js/jquery.json-2.2.min.js"></script>
+    <script language="javascript" src="js/indexbody.js"></script>
+</head>
+
+<body leftmargin="8" topmargin='8' bgcolor="#FFFFFF">
+    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <div style='float:left'>
+                    欢迎使用专业的PHP网站管理系统，轻松建站的利器 --
+                    <?php echo $cfg_softname; ?>
+                </div>
+                <div id='' style='float:right;padding-right:8px;'>
+                    <!--  //保留位置（顶右）  -->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td height="1" background="images/sp_bg.gif" style='padding:0px'></td>
+        </tr>
+    </table>
+
+    <div id='mainmsg'>
+        <?php
 $dtp = new DedeTagparse();
 $dtp->SetNameSpace("menu","<",">");
 $dtp->LoadTemplet($myIcoFile);
@@ -215,74 +219,83 @@ $drgonIterm = array(
                         </dd>',                        
 )
 ?>
-    <div class="column" id="column1"><!--左侧开始-->
-        <?php foreach ($column1 as $row) {        ?>
-        <dl class="dbox" id="<?php echo $row ?>">
-             <?php echo $drgonIterm[$row]; ?>
-        </dl>
-        <?php } ?>
-    </div><!--左侧结束-->
-    <div class="column" id="column2" ><!-- //右边的快捷消息开始 -->
-        <?php foreach ($column2 as $row) {        ?>
-        <dl class="dbox" id="<?php echo $row ?>">
-             <?php echo $drgonIterm[$row]; ?>
-        </dl>
-        <?php } ?> 
+        <div class="column" id="column1">
+            <!--左侧开始-->
+            <?php foreach ($column1 as $row) {        ?>
+            <dl class="dbox" id="<?php echo $row ?>">
+                <?php echo $drgonIterm[$row]; ?>
+            </dl>
+            <?php } ?>
+        </div>
+        <!--左侧结束-->
+        <div class="column" id="column2">
+            <!-- //右边的快捷消息开始 -->
+            <?php foreach ($column2 as $row) {        ?>
+            <dl class="dbox" id="<?php echo $row ?>">
+                <?php echo $drgonIterm[$row]; ?>
+            </dl>
+            <?php } ?>
+        </div>
     </div>
-</div>
-<br style='clear:both'/>
-<!-- //底部 -->
-<div align="center" class="footer">
-Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)
-</div>
+    <br style='clear:both' />
+    <!-- //底部 -->
+    <div align="center" class="footer">
+        Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司
+        (DesDev, Inc.)
+    </div>
 
-<!--  下面是隐藏的项目  -->
-<div id='loaddiv' style='display:none'>
-    <p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在下载更新文件列表...</p>
-</div>
-<div id="editTab">
-<span id='editTabBody'>请稍候，正在载入...</span>
-</div>
-<div id="addTab">
-<form name='addform' action='index_body.php'>
-<input type='hidden' name='dopost' value='addnew' />
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-   <tr>
-     <td height='28' colspan='3' background="images/tbg.gif">
-       <div style='float:left'><b>增加快捷操作项</b></div>
-      <div style='float:right;padding:3px 10px 0 0;'>
-         <a href="javascript:CloseTab('addTab')"><img src="images/close.gif" width="12" height="12" border="0" /></a>
-      </div>
-     </td>
-   </tr>
-      <tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td></tr>
-   <tr>
-     <td width="20%" height="28">链接标题：</td>
-     <td width="70%">
-         <input name="title" type="text" id="title" class='pubinputs' />
-     </td>
-   </tr>
-   <tr>
-     <td height="28" width="20%">ICO图片：</td>
-     <td width="70%">
-         <input name="ico" type="text" id="ico" class='pubinputs' />
-     </td>
-   </tr>
-   <tr>
-     <td height="28" width="20%">链接网址：</td>
-     <td width="70%">
-         <input name="link" type="text" id="link" class='pubinputs' />
-     </td>
-   </tr>
-   <tr>
-     <td height="45">&nbsp;</td>
-     <td>
-         <input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
-     </td>
-   </tr>
-  </table>
-</form>
-</div>
+    <!--  下面是隐藏的项目  -->
+    <div id='loaddiv' style='display:none'>
+        <p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在下载更新文件列表...</p>
+    </div>
+    <div id="editTab">
+        <span id='editTabBody'>请稍候，正在载入...</span>
+    </div>
+    <div id="addTab">
+        <form name='addform' action='index_body.php'>
+            <input type='hidden' name='dopost' value='addnew' />
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height='28' colspan='3' background="images/tbg.gif">
+                        <div style='float:left'><b>增加快捷操作项</b></div>
+                        <div style='float:right;padding:3px 10px 0 0;'>
+                            <a href="javascript:CloseTab('addTab')"><img src="images/close.gif" width="12" height="12"
+                                    border="0" /></a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:6px;font-size:1px;border-top:1px solid #8DA659" colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="20%" height="28">链接标题：</td>
+                    <td width="70%">
+                        <input name="title" type="text" id="title" class='pubinputs' />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28" width="20%">ICO图片：</td>
+                    <td width="70%">
+                        <input name="ico" type="text" id="ico" class='pubinputs' />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="28" width="20%">链接网址：</td>
+                    <td width="70%">
+                        <input name="link" type="text" id="link" class='pubinputs' />
+                    </td>
+                </tr>
+                <tr>
+                    <td height="45">&nbsp;</td>
+                    <td>
+                        <input type="submit" name="Submit" value="保存项目" class="np coolbg"
+                            style="width:80px;cursor:pointer" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 
 </body>
+
 </html>

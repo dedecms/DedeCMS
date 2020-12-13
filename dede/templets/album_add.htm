@@ -5,21 +5,21 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>增加图片集</title>
-  <link rel="stylesheet" href="../resources/pkg/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css">
   <link href="css/base.css" rel="stylesheet" type="text/css">
   <link href="css/albumupload.css" rel="stylesheet" type="text/css" />
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/album.js"></script>
   <script type="text/javascript" src="js/handlers.js"></script>
-  <link href="../resources/pkg/cropper/cropper.min.css" rel="stylesheet">
-  <script src="../resources/pkg/cropper/cropper.min.js"></script>
-  <script src="../resources/pkg/bootstrap/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="../resources/pkg/jquery/jquery.fileupload.css">
+  <link href="../assets/pkg/cropper/cropper.min.css" rel="stylesheet">
+  <script src="../assets/pkg/cropper/cropper.min.js"></script>
+  <script src="../assets/pkg/bootstrap/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="../assets/pkg/jquery/jquery.fileupload.css">
   <script language="javascript">
     var swfu = null;
     var vcc = 0;
@@ -76,7 +76,9 @@
         <td width="65%" height="30"><img height=14 src="images/book1.gif" width="20" />&nbsp;<a
             href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><u>图集列表</u></a>
           &gt;&gt; 发布新图集</td>
-        <td width="30%" align='right'><?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a>&nbsp;</td>
+        <td width="30%" align='right'>
+          <?php echo $backurl; ?><a href="catalog_main.php">[<u>栏目管理</u>]</a>&nbsp;
+        </td>
       </tr>
     </table>
     <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
@@ -124,7 +126,8 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90">&nbsp;自定义属性：</td>
-              <td><?php
+              <td>
+                <?php
           $dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
           $dsql->Execute();
           while($trow = $dsql->GetObject())
@@ -197,7 +200,7 @@
                 </table>
               </td>
               <td width="150" align="center">
-                <img id="litPic" src="../resources/img/defaultpic.gif" style="height: 80px">
+                <img id="litPic" src="../assets/img/defaultpic.gif" style="height: 80px">
               </td>
             </tr>
           </table>
@@ -216,7 +219,8 @@
           echo "<option value='0'>请选择栏目...</option>\r\n";
           echo $typeOptions;
           echo "</select>";
-			?></span>
+			?>
+                </span>
                 <img src='images/menusearch.gif' style='cursor:pointer;'
                   onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid')" alt='快捷选择' title='快捷选择' />
                 &nbsp;
@@ -230,10 +234,13 @@
      			 if($cfg_remote_site=='Y')
      			 {
    				 ?> 　
-                <input name="isremote" type="checkbox" id="isremote" value="1"
-                  <?php if($cfg_title_site=='Y') echo "checked";?>>是否同步远程发布 <?php GetFtp();?> <?php
+                <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y' )
+                  echo "checked" ;?>>是否同步远程发布
+                <?php GetFtp();?>
+                <?php
      			 }
-    		?> </td>
+    		?>
+              </td>
             </tr>
           </table>
         </td>
@@ -255,7 +262,9 @@
       </tr>
 
       <tr>
-        <td><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
+        <td>
+          <?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?>
+        </td>
       </tr>
       <tr>
         <td height="24" bgcolor="#FAFBFC" class="bline2">&nbsp;<strong>图集选项：</strong></td>
@@ -266,16 +275,16 @@
             <tr>
               <td width="80">&nbsp;<b>表现方式：</b></td>
               <td>
-                <input name="pagestyle" class="np" type="radio" id="pagestyle1" onClick="checkMuList()" value="1"
-                  <?php if($cfg_album_style==1) echo " checked='checked'"; ?> />
+                <input name="pagestyle" class="np" type="radio" id="pagestyle1" onClick="checkMuList()" value="1" <?php
+                  if($cfg_album_style==1) echo " checked='checked'" ; ?> />
                 <img src='images/alb2.gif' alt='单页多图样式' title='单页多图样式' />
                 &nbsp;&nbsp;
-                <input name="pagestyle" class="np" type="radio" id="pagestyle2" onClick="checkMuList()" value="2"
-                  <?php if($cfg_album_style==2) echo " checked='checked'"; ?> />
+                <input name="pagestyle" class="np" type="radio" id="pagestyle2" onClick="checkMuList()" value="2" <?php
+                  if($cfg_album_style==2) echo " checked='checked'" ; ?> />
                 <img src='images/alb1.gif' alt='幻灯片样式' title='幻灯片样式' />
                 &nbsp;&nbsp;
-                <input name="pagestyle" class="np" type="radio" id="pagestyle3" onClick="checkMuList()" value="3"
-                  <?php if($cfg_album_style==3) echo " checked='checked'"; ?> />
+                <input name="pagestyle" class="np" type="radio" id="pagestyle3" onClick="checkMuList()" value="3" <?php
+                  if($cfg_album_style==3) echo " checked='checked'" ; ?> />
                 <img src='images/alb3.gif' alt='多缩略图样式' title='多缩略图样式' />
               </td>
             </tr>
@@ -293,7 +302,8 @@
                 <input name="col" type="text" id="col" value="<?php echo $cfg_album_col; ?>" size="6">
                 　缩略图宽度限制：
                 <input name="ddmaxwidth" type="text" id="ddmaxwidth" value="<?php echo $cfg_album_ddwidth; ?>" size="6">
-                像素</td>
+                像素
+              </td>
             </tr>
             <tr>
               <td width="80" height="26">&nbsp;</td>
@@ -342,7 +352,8 @@
                 <input name='addon_bt' type='button' class='inputbut' value='浏览...'
                   onClick="SelectSoft('form1.zipfile')">
                 <input name="delzip" type="checkbox" id="delzip" value="1" checked="checked" />
-                处理后删除压缩文件 </td>
+                处理后删除压缩文件
+              </td>
             </tr>
           </table>
         </td>
@@ -399,7 +410,9 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90">&nbsp;图集内容：</td>
-              <td> <?php GetEditor("body","",450,"Diy"); ?></td>
+              <td>
+                <?php GetEditor("body","",450,"Diy"); ?>
+              </td>
             </tr>
           </table>
         </td>
@@ -414,7 +427,8 @@
             <tr>
               <td width="90">&nbsp;图集来源：</td>
               <td width="240"><input name="source" type="text" id="source" style="width:160px" value="" size="16">
-                <input name="selsource" type="button" id="selsource" value="选择"></td>
+                <input name="selsource" type="button" id="selsource" value="选择">
+              </td>
               <td width="90">作　者：</td>
               <td>
                 <input name="writer" type="text" id="writer" style="width:120px" value="">
@@ -430,17 +444,17 @@
             <tr>
               <td width="90" height="22" width="240">&nbsp;评论选项：</td>
               <td width="240">
-                <input type='radio' name='notpost' class='np' value='0'
-                  <?php if($cfg_feedback_forbid=='N') echo "checked='1' "; ?> />允许评论
+                <input type='radio' name='notpost' class='np' value='0' <?php if($cfg_feedback_forbid=='N' )
+                  echo "checked='1' " ; ?> />允许评论
                 &nbsp;
-                <input type='radio' name='notpost' class='np' value='1'
-                  <?php if($cfg_feedback_forbid=='Y') echo "checked='1' "; ?> />禁止评论
+                <input type='radio' name='notpost' class='np' value='1' <?php if($cfg_feedback_forbid=='Y' )
+                  echo "checked='1' " ; ?> />禁止评论
               </td>
               <td width="90">浏览次数：</td>
               <td>
-                <input type='text' name='click'
-                  value='<?php echo ($cfg_arc_click=='-1' ? mt_rand(50, 200) : $cfg_arc_click); ?>'
-                  style='width:100px;' />
+                <input type='text' name='click' value='<?php echo ($cfg_arc_click==' -1' ? mt_rand(50, 200) :
+                  $cfg_arc_click); ?>'
+                style='width:100px;' />
               </td>
             </tr>
           </table>
@@ -462,7 +476,8 @@
               <td width="90">标题颜色：</td>
               <td>
                 <input name="color" type="text" id="color" style="width:120px">
-                <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)"> </td>
+                <input name="modcolor" type="button" id="modcolor" value="选取" onClick="ShowColor(event,this)">
+              </td>
             </tr>
           </table>
         </td>
@@ -500,7 +515,8 @@
           <table width="800" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="90">&nbsp;发布时间：</td>
-              <td width="241"><?php
+              <td width="241">
+                <?php
           $nowtime = GetDateTimeMk(time());
           echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:120;\" class='datepicker'>";
 			?>

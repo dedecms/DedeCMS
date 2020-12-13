@@ -1,98 +1,162 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>安装程序 - 织梦内容管理系统
-		<?php echo $verMsg; ?>
+		<?=$verMsg;?>
 	</title>
-	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" href="favicon.ico" />
+	<!-- CSS FILES -->
+	<link rel="stylesheet" type="text/css" href="/assets/pkg/uikit/css/uikit.min.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/dede.css" />
 </head>
 
 <body>
-
-	<div class="top">
-		<div class="top-logo">
-		</div>
-		<div class="top-link">
-			<ul>
-				<li><a href="http://www.DedeCMS.com" target="_blank">官方网站</a></li>
-				<li><a href="http://bbs.DedeCMS.com" target="_blank">技术论坛</a></li>
-				<li><a href="https://github.com/dedecms" target="_blank">代码</a></li>
-				<li><a href="http://help.DedeCMS.com" target="_blank">帮助</a></li>
-			</ul>
-		</div>
-		<div class="top-version">
-			<!-- 版本信息 -->
-			<h2>DedeCMS
-				<?php echo $verMsg; ?>
-			</h2>
-		</div>
-	</div>
-
-	<div class="main">
-		<div class="pleft">
-			<dl class="setpbox t1">
-				<dt>安装步骤</dt>
-				<dd>
-					<ul>
-						<li class="now">许可协议</li>
-						<li>环境检测</li>
-						<li>参数配置</li>
-						<li>正在安装</li>
-						<li>安装完成</li>
+	<!--HEADER-->
+	<header id="install-top">
+		<div class="uk-container uk-container-dede">
+			<nav class="uk-navbar-transparent" data-uk-navbar>
+				<div class="uk-navbar-left">
+					<a class="uk-navbar-item uk-logo" href="#"><img src="/assets/img/dedecms_logo.png" /></a>
+				</div>
+				<div class="uk-navbar-right uk-visible@m">
+					<ul class="uk-navbar-nav ">
+						<li><a href="http://www.DedeCMS.com" class="install-link" target="_blank">官方网站</a></li>
+						<li><a href="http://bbs.DedeCMS.com" target="_blank">技术论坛</a></li>
+						<li><a href="https://github.com/dedecms" target="_blank">GITHUB</a></li>
+						<li><a href="http://help.DedeCMS.com" target="_blank">帮助</a></li>
 					</ul>
-				</dd>
-			</dl>
+				</div>
+				<div class="uk-navbar-right uk-hidden@m">
+					<ul class="uk-navbar-nav">
+						<li class="uk-hidden@m">
+							<a class="uk-navbar-toggle" data-uk-toggle data-uk-navbar-toggle-icon
+								href="#offcanvas-nav"></a>
+						</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
-		<div class="pright">
-			<div class="pr-title">
-				<h3>阅读许可协议</h3>
+	</header>
+	<!--/HEADER-->
+	<div class="uk-container uk-container-dede">
+		<div uk-grid>
+			<!--安装步骤-->
+			<div id="install-menu" class="uk-width-1-4@m">
+				<div class="uk-card uk-card-small uk-card-default">
+					<div class="uk-card-header">
+						<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid="">
+							<div class="uk-width-expand uk-first-column">
+								<span class="cat-txt">安装步骤</span>
+							</div>
+						</div>
+					</div>
+					<div class="uk-card-body">
+						<ul class="uk-tab-left" uk-tab>
+							<li class="uk-active"><a href="#">许可协议</a></li>
+							<li class="uk-disabled"><a>环境检测</a></li>
+							<li class="uk-disabled"><a>参数配置</a></li>
+							<li class="uk-disabled"><a>正在安装</a></li>
+							<li class="uk-disabled"><a>安装完成</a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div class="pr-agreement">
-				<p>版权所有 (c) 2004-2020，DedeCMS.com 保留所有权利。 </p>
-				<p>感谢您选择织梦内容管理系统（以下简称DedeCMS），DedeCMS是目前国内专业、便捷、稳定的中小型门户网站建设解决方案之一，基于 PHP + MySQL 的技术开发，全部源码开放。</p>
-				<p>DedeCMS 的官方网址是： <a href="http://www.dedecms.com" target="_blank">www.dedecms.com</a> Github：<a
-						href="http://github.com/dedecms" target="_blank"> github.com/dedecms</a></p>
-				<p>为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
-				<strong>一、本授权协议适用且仅适用于 DedeCMS 5.x.x 版本，DedeCMS官方对本授权协议的最终解释权。</strong>
-				<strong>二、协议许可的权利 </strong>
-				<p>1、您可以在完全遵守本最终用户授权协议的基础上，将本软件应用于非商业用途，而不必支付软件版权授权费用。 </p>
-				<p>2、您可以在协议规定的约束和限制范围内修改 DedeCMS 源代码或界面风格以适应您的网站要求。 </p>
-				<p>3、您拥有使用本软件构建的网站全部内容所有权，并独立承担与这些内容的相关法律义务。 </p>
-				<p>4、获得商业授权之后，您可以将本软件应用于商业用途，同时依据所购买的授权类型中确定的技术支持内容，自购买时刻起，在技术支持期限内拥有通过指定的方式获得指定范围内的技术支持服务。商业授权用户享有反映和提出意见的权力，相关意见将被作为首要考虑，但没有一定被采纳的承诺或保证。
-				</p>
-				<strong>二、协议规定的约束和限制 </strong>
-				<p>1、未获商业授权之前，不得将本软件用于商业用途（包括但不限于企业网站、经营性网站、以营利为目的或实现盈利的网站）。
-				<p>2、未经官方许可，不得对本软件或与之关联的商业授权进行出租、出售、抵押或发放子许可证。</p>
-				<p>3、不管你的网站是否整体使用 DedeCMS ，还是部份栏目使用 DedeCMS，在你使用了 DedeCMS 的网站主页上必须加上DedeCMS官方网址(<a
-						href="http://www.dedecms.com" target="_blank">www.dedecms.com</a>)的链接。</p>
-				<p>4、未经官方许可，禁止在 DedeCMS的整体或任何部分基础上以发展任何派生版本、修改版本或第三方版本用于重新分发。</p>
-				<p>5、如果您未能遵守本协议的条款，您的授权将被终止，所被许可的权利将被收回，并承担相应法律责任。 </p>
-				<strong>三、有限担保和免责声明 </strong>
-				<p>1、本软件及所附带的文件是作为不提供任何明确的或隐含的赔偿或担保的形式提供的。 </p>
-				<p>2、用户出于自愿而使用本软件，您必须了解使用本软件的风险，在尚未购买产品技术服务之前，我们不承诺对免费用户提供任何形式的技术支持、使用担保，也不承担任何因使用本软件而产生问题的相关责任。 </p>
-				<p>3、电子文本形式的授权协议如同双方书面签署的协议一样，具有完全的和等同的法律效力。您一旦开始确认本协议并安装
-					DedeCMS，即被视为完全理解并接受本协议的各项条款，在享有上述条款授予的权力的同时，受到相关的约束和限制。协议许可范围以外的行为，将直接违反本授权协议并构成侵权，我们有权随时终止授权，责令停止损害，并保留追究相关责任的权力。
-				</p>
-				<p>4、如果本软件带有其它软件的整合API示范例子包，这些文件版权不属于本软件官方，并且这些文件是没经过授权发布的，请参考相关软件的使用许可合法的使用。</p>
-				<p><b>协议发布时间：</b> 2008年1月18日</p>
-				<p><b>版本最新更新：</b> {UpdateVersionDate}</p>
+			<!--/安装步骤-->
+			<div id="install-container" class="uk-width-3-4@m">
+				<div class="uk-card uk-card-small uk-card-default">
+					<div class="uk-card-header">
+						<div class="uk-grid uk-grid-small uk-text-small" data-uk-grid="">
+							<div class="uk-width-expand uk-first-column">
+								<span class="cat-txt">阅读许可协议</span>
+							</div>
+						</div>
+					</div>
+					<div class="uk-card-body ">
+						<p>版权所有 (c) 2004-2020，DedeCMS.com 保留所有权利。 </p>
+						<p>感谢您选择织梦内容管理系统（以下简称DedeCMS），DedeCMS是目前国内专业、便捷、稳定的中小型门户网站建设解决方案之一，基于 PHP + MySQL 的技术开发，全部源码开放。
+						</p>
+						<p>DedeCMS 的官方网站： <a href="http://www.dedecms.com" target="_blank">www.dedecms.com</a>
+							Github：<a href="http://github.com/dedecms" target="_blank"> github.com/dedecms</a></p>
+						<p>为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
+						<strong>一、本授权协议适用且仅适用于 DedeCMS 5.x.x
+							版本，DedeCMS官方（上海卓卓网络科技有限公司）对本授权协议的最终解释权。</strong><br /><br />
+
+						<strong>二、协议许可的权利 </strong>
+						<p>1、您可以在完全遵守本最终用户授权协议的基础上，将本软件应用于非商业用途，而不必支付软件版权授权费用。 </p>
+						<p>2、您可以在协议规定的约束和限制范围内修改 DedeCMS 源代码或界面风格以适应您的网站要求。 </p>
+						<p>3、您拥有使用本软件构建的网站全部内容所有权，并独立承担与这些内容的相关法律义务。 </p>
+						<p>4、获得商业授权之后，您可以将本软件应用于商业用途，同时依据所购买的授权类型中确定的技术支持内容，自购买时刻起，在技术支持期限内拥有通过指定的方式获得指定范围内的技术支持服务。商业授权用户享有反映和提出意见的权力，相关意见将被作为首要考虑，但没有一定被采纳的承诺或保证。
+						</p>
+						<strong>三、协议规定的约束和限制 </strong>
+						<p>1、未获商业授权之前，不得将本软件用于商业用途（包括但不限于企业网站、经营性网站、以营利为目的或实现盈利的网站）。
+						<p>2、未经官方许可，不得对本软件或与之关联的商业授权进行出租、出售、抵押或发放子许可证。</p>
+						<p>3、不管你的网站是否整体使用 DedeCMS ，还是部份栏目使用 DedeCMS，在你使用了 DedeCMS 的网站主页上必须加上DedeCMS官方网址(<a
+								href="http://www.dedecms.com" target="_blank">www.dedecms.com</a>)的链接。</p>
+						<p>4、未经官方许可，禁止在 DedeCMS的整体或任何部分基础上以发展任何派生版本、修改版本或第三方版本用于重新分发。</p>
+						<p>5、如果您未能遵守本协议的条款，您的授权将被终止，所被许可的权利将被收回，并承担相应法律责任。 </p>
+						<strong>四、有限担保和免责声明 </strong>
+						<p>1、本软件及所附带的文件是作为不提供任何明确的或隐含的赔偿或担保的形式提供的。 </p>
+						<p>2、用户出于自愿而使用本软件，您必须了解使用本软件的风险，在尚未购买产品技术服务之前，我们不承诺对免费用户提供任何形式的技术支持、使用担保，也不承担任何因使用本软件而产生问题的相关责任。
+						</p>
+						<p>3、电子文本形式的授权协议如同双方书面签署的协议一样，具有完全的和等同的法律效力。您一旦开始确认本协议并安装
+							DedeCMS，即被视为完全理解并接受本协议的各项条款，在享有上述条款授予的权力的同时，受到相关的约束和限制。协议许可范围以外的行为，将直接违反本授权协议并构成侵权，我们有权随时终止授权，责令停止损害，并保留追究相关责任的权力。
+						</p>
+						<p>4、如果本软件带有其它软件的整合API示范例子包，这些文件版权不属于本软件官方，并且这些文件是没经过授权发布的，请参考相关软件的使用许可合法的使用。</p>
+						<p><b>协议发布时间：</b> 2008年1月18日</p>
+						<p><b>版本最新更新：</b> {UpdateVersionDate}</p>
+					</div>
+					<div class="uk-card-footer">
+						<div class="uk-grid uk-flex uk-flex-middle">
+							<div class="uk-width-expand uk-text-small uk-first-column">
+
+								<label><input name="readpact" type="checkbox" id="readpact" class="uk-checkbox"
+										value="" /><strong>
+										我已经阅读并同意此协议</strong></label>
+							</div>
+							<div class="uk-width-auto uk-text-right">
+								<input type="button" class="uk-button uk-button-primary " value="继续"
+									onclick="document.getElementById('readpact').checked ?window.location.href='index.php?step=2' : alert('您必须同意软件许可协议才能安装！');" />
+							</div>
+
+						</div>
+					</div>
+
+					<!--/安装步骤-->
+				</div>
+				<footer class="uk-section ">
+					<div class="uk-container uk-text-small uk-text-center">
+						Powered by <a href="http://www.dedecms.com" title="织梦内容管理系统(DedeCMS)--国内专业的PHP网站管理系统，轻松建站的利器。"
+							target="_blank"><strong>DedeCMS </strong></a> &copy; 2004-2020 <a
+							href="http://www.desdev.cn/" target="_blank">上海卓卓网络科技有限公司</a> (DesDev Inc.)
+					</div>
+				</footer>
 			</div>
-			<div class="btn-box">
-				<input name="readpact" type="checkbox" id="readpact" value="" /><label for="readpact"><strong
-						class="fc-690 fs-14">我已经阅读并同意此协议</strong></label>
-				<input type="button" class="btn-next" value="继续"
-					onclick="document.getElementById('readpact').checked ?window.location.href='index.php?step=2' : alert('您必须同意软件许可协议才能安装！');" />
+
+		</div>
+
+		<!-- OFFCANVAS -->
+		<div id="offcanvas-nav" data-uk-offcanvas="flip: true; overlay: true">
+			<div class="uk-offcanvas-bar uk-offcanvas-bar-animation uk-offcanvas-slide">
+				<button class="uk-offcanvas-close uk-close uk-icon" type="button" data-uk-close></button>
+				<ul class="uk-nav uk-nav-default">
+					<li class="uk-active"><a href="#">主页</a></li>
+					<li class="uk-parent"><a href="#">网页基础</a></li>
+					<li class="uk-parent"><a href="#">站长图集</a></li>
+					<li class="uk-parent"><a href="#">软件下载</a></li>
+					<li class="uk-parent"><a href="#">商品销售</a></li>
+					<li class="uk-parent"><a href="#">分类信息</a></li>
+					<li class="uk-parent"><a href="#">织梦CMS</a></li>
+					<li class="uk-parent"><a href="#">帮助文档</a></li>
+				</ul>
 			</div>
 		</div>
-	</div>
+		<!-- /OFFCANVAS -->
 
-	<div class="foot">
-
-	</div>
-
+		<!-- JS FILES -->
+		<script src="/assets/pkg/uikit/js/uikit.min.js"></script>
+		<script src="/assets/pkg/uikit/js/uikit-icons.min.js"></script>
 </body>
 
 </html>

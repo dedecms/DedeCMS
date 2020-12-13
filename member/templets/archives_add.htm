@@ -4,9 +4,12 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
-  <title>发表<?php echo $cInfos['typename']; ?> - 会员中心 - <?php echo $cfg_webname; ?></title>
+  <title>发表
+    <?php echo $cInfos['typename']; ?> - 会员中心 -
+    <?php echo $cfg_webname; ?>
+  </title>
   <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language='javascript' src="templets/js/main.js"></script>
   <script type="text/javascript" src="templets/js/inputAutoClear.js"></script>
   <script type="text/javascript" src="templets/js/load.js"></script>
@@ -23,7 +26,9 @@
         <div id="appTab">
           <div id="appTab2">
             <ul>
-              <li class="thisTab"><a href="#"><span>发表<?php echo $cInfos['typename']; ?></span></a></li>
+              <li class="thisTab"><a href="#"><span>发表
+                    <?php echo $cInfos['typename']; ?>
+                  </span></a></li>
             </ul>
           </div>
         </div>
@@ -32,10 +37,14 @@
           <input type="hidden" name="dopost" value="save" />
           <input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
           <div id="mainCp">
-            <h3 class="meTitle"><strong>发表<?php echo $cInfos['typename']; ?></strong></h3>
+            <h3 class="meTitle"><strong>发表
+                <?php echo $cInfos['typename']; ?>
+              </strong></h3>
             <div class="postForm">
               <p class="cellBg">
-                <label><?php echo $cInfos['titlename']; ?>：</label>
+                <label>
+                  <?php echo $cInfos['titlename']; ?>：
+                </label>
                 <input name="title" type="text" id="title" value="请输入内容主题" maxlength="100" class="intxt"
                   onfocus="inputAutoClear(this)" />
               </p>
@@ -95,8 +104,9 @@
           ?>
               <p class="cellBg">
                 <label>验证问题：</label>
-                <?php echo $safefaqs[$faqkey]['question'];?> (答案:<?php echo $safefaqs[$faqkey]['answer'];?>)<input
-                  class="intxt" name="safeanswer" type="text" id="safeanswer" size="25" style='width:200px;' />
+                <?php echo $safefaqs[$faqkey]['question'];?> (答案:
+                <?php echo $safefaqs[$faqkey]['answer'];?>)<input class="intxt" name="safeanswer" type="text"
+                  id="safeanswer" size="25" style='width:200px;' />
                 <input type="hidden" name="faqkey" value="<?php echo $faqkey;?>" />
               </p>
 

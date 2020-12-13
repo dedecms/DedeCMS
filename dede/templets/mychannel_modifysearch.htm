@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>修改频道</title>
-  <script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script language="javascript" src="js/main.js"></script>
   <link href="css/base.css" rel="stylesheet" type="text/css">
   <style type="text/css">
@@ -34,8 +34,8 @@
     style="background:#EAECEF;">
     <form name="form1" action="mychannel_edit.php" method="post" target="stafrm">
       <input type='hidden' name='mid' value='<?php echo $mid?>'>
-      <input type='hidden' name='maintable' value='<?php echo $channel['maintable']?>'>
-      <input type='hidden' name='addontable' value='<?php echo $channel['addtable'];?>'>
+      <input type='hidden' name='maintable' value='<?php echo $channel[' maintable']?>'>
+      <input type='hidden' name='addontable' value='<?php echo $channel[' addtable'];?>'>
       <input type='hidden' name='step' value='<?php echo $step?>'>
       <input type='hidden' name='dopost' value='modifysearch'>
       <tr bgcolor="#EAECEF">
@@ -63,7 +63,8 @@
     ?>
       <tr>
         <td align="left" bgcolor="#FFFFFF">主表可供自定义搜索的字段<br />
-          <span class="STYLE2" id="help2">标题、关键字、摘要为默认选项，不用选择 </span></td>
+          <span class="STYLE2" id="help2">标题、关键字、摘要为默认选项，不用选择 </span>
+        </td>
         <td bgcolor="#FFFFFF">
           <?php echo $mainfields; ?>
         </td>
@@ -73,14 +74,16 @@
     ?>
       <tr>
         <td height="28" align="left" bgcolor="#ffffff">附件表可供自定义搜索的字段：<br />
-          <span class="STYLE2" id="help4">这里的字段是程序依据字段类型自动选择生成的。</span></td>
+          <span class="STYLE2" id="help4">这里的字段是程序依据字段类型自动选择生成的。</span>
+        </td>
         <td bgcolor="#ffffff">
           <?php echo $addonfields;?>
         </td>
       </tr>
       <tr>
         <td align="left" bgcolor="#FFFFFF">自定义搜索结果页模板<br />
-          <span class="STYLE2" id="help5" style="display: none;">只填写文件名，且文件必须在templets/default目录中 </span></td>
+          <span class="STYLE2" id="help5" style="display: none;">只填写文件名，且文件必须在templets/default目录中 </span>
+        </td>
         <td bgcolor="#FFFFFF">
           <input type="text" name="template" value="<?php echo $template;?>" style="width:200px" />
         </td>

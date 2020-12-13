@@ -6,13 +6,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
 	<title>自由列表管理</title>
 	<link href="css/base.css" rel="stylesheet" type="text/css">
-	<script language="javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
-	<script language="javascript" src="../resources/pkg/dede/dedeajax2.js"></script>
+	<script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
+	<script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
 	<script language="javascript" src="js/main.js"></script>
 	<script language="JavaScript">
 		var pageno = 1;
-		var totalrow = <?php echo $totalRow?>;
-		var pagesize = <?php echo $pagesize?>;
+		var totalrow = <? php echo $totalRow?>;
+		var pagesize = <? php echo $pagesize?>;
 		var orderby = '<?php echo $orderby?>';
 		var addget = "<?php echo $addget?>";
 		//加载列表
@@ -140,7 +140,8 @@
 							</td>
 							<td width="200">
 								<span id='pagelist'>
-									<script language='javascript'>ReloadPageNum(1);</script></span>
+									<script language='javascript'>ReloadPageNum(1);</script>
+								</span>
 							</td>
 						</tr>
 					</form>

@@ -4,9 +4,11 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
-  <title>更改详细资料 - 会员中心 -<?php echo $cfg_webname; ?></title>
+  <title>更改详细资料 - 会员中心 -
+    <?php echo $cfg_webname; ?>
+  </title>
   <link href="templets/style/base.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="../resources/pkg/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
   <script type="text/javascript" language='javascript' src='templets/js/main.js'></script>
   <script type="text/javascript" src="templets/js/load.js"></script>
   <script type="text/javascript" src="templets/js/calendar/calendar.js"></script>
@@ -32,7 +34,7 @@
           <input type="hidden" value="<?php echo $membermodel->modid;?>" name="modid" />
           <div id="mainCp">
             <h3 class="meTitle"><strong>详细资料</strong></h3>
-            <div class="postForm"> 
+            <div class="postForm">
               <?php
                   echo $postform;
               ?>

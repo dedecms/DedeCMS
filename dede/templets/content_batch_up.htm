@@ -6,10 +6,10 @@
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
   <title>文档批量管理</title>
   <link href="css/base.css" rel="stylesheet" type="text/css">
-  <link href="../resources/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script src="../resources/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
-  <script type="text/javascript" src="../resources/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../resources/pkg/daterangepicker/daterangepicker.js"></script>
+  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
+  <script src="../assets/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
+  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
   <script language='javascript'>
     function ShowHideTime() {
       var selBox = document.getElementById('seltime');
@@ -90,7 +90,8 @@
         <td height="20" bgcolor="#FFFFFF">开始：
           <input name="startid" type="text" id="startid" size="10">
           结束：
-          <input name="endid" type="text" id="endid" size="10"></td>
+          <input name="endid" type="text" id="endid" size="10">
+        </td>
       </tr>
       <tr>
         <td height="20" align="center" bgcolor="#FFFFFF">档案发布时间：</td>
@@ -104,12 +105,13 @@
             <tr id='seltimeField' style='display:none' height='20'>
               <td width="250">开始：
                 <?php $nowtime = GetDateTimeMk(time()-(24*3600*30)); ?>
-                <input name="starttime" value="<?php echo $nowtime; ?>" type="text" id="starttime"
-                  style="width:120px" class="datepicker" />
+                <input name="starttime" value="<?php echo $nowtime; ?>" type="text" id="starttime" style="width:120px"
+                  class="datepicker" />
               </td>
               <td width="250">结束：
                 <?php $nowtime = GetDateTimeMk(time()); ?>
-                <input name="endtime" value="<?php echo $nowtime; ?>" type="text" id="endtime" style="width:120px" class="datepicker" />
+                <input name="endtime" value="<?php echo $nowtime; ?>" type="text" id="endtime" style="width:120px"
+                  class="datepicker" />
               </td>
             </tr>
           </table>
@@ -131,7 +133,8 @@
           <input name="action" type="radio" class="np" value="move" id="moveradio" onClick="ShowHideMove()" />
           移动文档
           <input name="action" type="radio" class="np" id="delradio" value="del" onClick="ShowHideMove()" />
-          删除文档</td>
+          删除文档
+        </td>
       </tr>
       <tr height="20" bgcolor="#FFFFFF">
         <td height="20" align="center" bgcolor="#FFFFFF">移动选项：</td>
