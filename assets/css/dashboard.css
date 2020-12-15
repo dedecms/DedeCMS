@@ -38,7 +38,11 @@ html {
   margin-top: 2px;
 }
 .chevron-icon > span {
+
   margin-left: -21px;
+}
+.chevron-icon  {
+  width: 120px;
 }
 .uk-child-width-1-6 > * {
   width: 150px;
@@ -84,7 +88,8 @@ html {
 #left-col ul.uk-nav-default > li > a:hover,
 #left-col ul.uk-nav-default > li.uk-open > a {
   border-right: 1px solid #f98020;
-  border-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
   padding-left: 30px;
   color: white;
   background-color: rgba(0, 0, 0, 0.2);
@@ -179,7 +184,8 @@ html {
 }
 
 .uk-tab > .uk-active > a {
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
   border-left: 1px solid #f98020;
   background-color: #222a30;
 }
