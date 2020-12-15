@@ -28,5 +28,5 @@ if (!file_exists($myIcoFile)) {
 }
 
 require DEDEADMIN . '/inc/inc_menu_map.php';
-DedeInclude('/templets/index2.htm');
+DedeInclude('/templets/index.htm');
 exit();

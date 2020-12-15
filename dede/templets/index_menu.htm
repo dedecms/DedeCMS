@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DedeCMS MENU</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/dashboard.css">
+</head>
+
+<body>
+    <div class="uk-light">
+        <ul class="dede-tab"  uk-tab="animation: uk-animation-fade">
+            <li class="uk-active"><a href="#">核心</a></li>
+            <li><a href="#">模块</a></li>
+            <li><a href="#">生成</a></li>
+            <li><a href="#">采集</a></li>
+			<li><a href="#">会员</a></li>
+			<?php if($cuserLogin->getUserType() >= 10) { ?>
+			<li> <a href="#">模板</a> </li>
+			<li> <a href="#">系统</a></li>
+			<?php } ?>
+		</ul>
+        <ul class="uk-switcher">
+			<li class="uk-active">
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 1); ?>
+					</div>
+                </aside>
+			</li>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'module', 100); ?>
+					</div>
+                </aside>
+			</li>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 5); ?>
+					</div>
+                </aside>
+			</li>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 3); ?>
+					</div>
+                </aside>
+			</li>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 6); ?>
+					</div>
+                </aside>
+            </li>
+            <?php if($cuserLogin->getUserType() >= 10) { ?>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 7); ?>
+					</div>
+                </aside>
+			</li>
+			<li>
+				<aside id="left-col" class="uk-light uk-visible">
+                    <div class="left-nav-wrap">
+						<?php GetMenus($cuserLogin->getUserRank(), 'main', 10); ?>
+					</div>
+                </aside>
+			</li>
+            <?php } ?>
+        </ul>
+    </div>
+
+    <div class="bar-bottom">
+        <ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5" data-uk-grid>
+            <li><a href="#" onclick="JumpFrame('./index_menu.php','./index_body.php');" class="uk-icon-link" data-uk-icon="icon: home" title="系统首页" data-uk-tooltip ></a></li>
+            <li><a href="./index_menu.php"  class="uk-icon-link" data-uk-icon="icon: settings" title="主菜单" data-uk-tooltip></a></li>
+            <li><a href="../index.php?upcache=1" class="uk-icon-link" data-uk-icon="icon: world" title="网站首页" target="_blank" data-uk-tooltip></a></li>
+            <li><a href="./exit.php" class="uk-icon-link" data-uk-tooltip="退出" data-uk-icon="icon: sign-out" target="_top"></a></li>
+        </ul>
+    </div>
+
+	<!-- JS FILES -->
+    <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+    <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+    <script src="{dede:global.cfg_assets_dir/}/js/dede.min.js"></script>
+</body>
+
+</html>

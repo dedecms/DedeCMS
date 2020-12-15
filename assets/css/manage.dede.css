@@ -1,0 +1,24 @@
+#dede-manage-top {
+  background-color: #222A30;
+
+  }
+  .uk-logo img {
+    width: 163px;
+
+  }
+  .uk-logo {
+    font-size: 18px;
+    color: aliceblue;
+  }
+  .uk-logo:hover {
+    font-size: 18px;
+    color: aliceblue;
+  }
+
+  html{
+    background-color: #222A30;
+  }
+
+  #top-head [class*="uk-navbar-dropdown-bottom"] {
+    margin-top: 0;
+  }

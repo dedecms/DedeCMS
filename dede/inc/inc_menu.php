@@ -40,7 +40,7 @@ while ($row = $dsql->GetObject('mm')) {
 
 $adminMenu1 = $adminMenu2 = '';
 if ($cuserLogin->getUserType() >= 10) {
-    $adminMenu1 = "<m:top item='1_' name='频道模型' display='block' rank='t_List,t_AccList,c_List,temp_One'>
+    $adminMenu1 = "<m:top item='1_' name='频道模型' display='' rank='t_List,t_AccList,c_List,temp_One'>
   <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />
@@ -48,7 +48,7 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='自定义表单' link='diy_main.php' rank='c_List' target='main' />
 </m:top>
 ";
-    $adminMenu2 = "<m:top item='7_' name='模板管理' display='none' rank='temp_One,temp_Other,temp_MyTag,temp_test,temp_All'>
+    $adminMenu2 = "<m:top item='7_' name='模板管理' display='uk-open' rank='temp_One,temp_Other,temp_MyTag,temp_test,temp_All'>
   <m:item name='默认模板管理' link='templets_main.php' rank='temp_All' target='main'/>
   <m:item name='标签源码管理' link='templets_tagsource.php' rank='temp_All' target='main'/>
   <m:item name='自定义宏标记' link='mytag_main.php' rank='temp_MyTag' target='main'/>
@@ -56,7 +56,7 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='全局标记测试' link='tag_test.php' rank='temp_Test' target='main'/>
 </m:top>
 
-<m:top item='10_' name='系统设置' display='none' rank='sys_User,sys_Group,sys_Edit,sys_Log,sys_Data'>
+<m:top item='10_' name='系统设置' display='uk-open' rank='sys_User,sys_Group,sys_Edit,sys_Log,sys_Data'>
   <m:item name='系统基本参数' link='sys_info.php' rank='sys_Edit' target='main' />
   <m:item name='系统用户管理' link='sys_admin_user.php' rank='sys_User' target='main' />
   <m:item name='用户组设定' link='sys_group.php' rank='sys_Group' target='main' />
@@ -76,7 +76,7 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='系统错误修复[S]' link='sys_repair.php' rank='sys_verify' target='main' />
 </m:top>
 
-<m:top item='10_6_' name='支付工具' display='none' rank='sys_Data'>
+<m:top item='10_6_' name='支付工具' display='' rank='sys_Data'>
   <m:item name='点卡产品分类' link='cards_type.php' rank='sys_Data' target='main' />
   <m:item name='点卡产品管理' link='cards_manage.php' rank='sys_Data' target='main' />
   <m:item name='会员产品分类' link='member_type.php' rank='sys_Data' target='main' />
@@ -91,21 +91,21 @@ $remoteMenu = ($cfg_remote_site == 'Y') ? "<m:item name='远程服务器同步' 
 $menusMain = "
 -----------------------------------------------
 
-<m:top item='1_' name='常用操作' display='block'>
+<m:top item='1_' name='常用操作' display='uk-open'>
   <m:item name='网站栏目管理' link='catalog_main.php' ischannel='1' addalt='创建栏目' linkadd='catalog_add.php?listtype=all' rank='t_List,t_AccList' target='main' />
   <m:item name='所有档案列表' link='content_list.php' rank='a_List,a_AccList' target='main' />
   <m:item name='等审核的档案' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
   <m:item name='我发布的文档' link='content_list.php?mid=" . $cuserLogin->getUserID() . "' rank='a_List,a_AccList,a_MyList' target='main' />
   <m:item name='评论管理' link='feedback_main.php' rank='sys_Feedback' target='main' />
-  <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='images/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no&recycle=1' rank='a_List,a_AccList,a_MyList' target='main' />
+  <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='trash' linkadd='archives_do.php?dopost=clear&aid=no&recycle=1' rank='a_List,a_AccList,a_MyList' target='main' />
 </m:top>
 
-<m:top item='1_' name='内容管理' display='block'>
+<m:top item='1_' name='内容管理' display='uk-open'>
   $addset
   <m:item name='专题管理' ischannel='1' link='content_s_list.php' linkadd='spec_add.php' channelid='-1' rank='spec_New' target='main' />
 </m:top>
 
-<m:top item='1_' name='附件管理' display='none' rank='sys_Upload,sys_MyUpload,plus_文件管理器'>
+<m:top item='1_' name='附件管理' display='' rank='sys_Upload,sys_MyUpload,plus_文件管理器'>
   <m:item name='上传新文件' link='media_add.php' rank='' target='main' />
   <m:item name='附件数据管理' link='media_main.php' rank='sys_Upload,sys_MyUpload' target='main' />
   <m:item name='文件式管理器' link='media_main.php?dopost=filemanager' rank='plus_文件管理器' target='main' />
@@ -113,7 +113,7 @@ $menusMain = "
 
 $adminMenu1
 
-<m:top item='3_' name='采集管理' display='none' rank='co_NewRule,co_ListNote,co_ViewNote,co_Switch,co_GetOut'>
+<m:top item='3_' name='采集管理' display='uk-open' rank='co_NewRule,co_ListNote,co_ViewNote,co_Switch,co_GetOut'>
   <m:item name='采集节点管理' link='co_main.php' rank='co_ListNote' target='main' />
   <m:item name='临时内容管理' link='co_url.php' rank='co_ViewNote' target='main' />
   <m:item name='导入采集规则' link='co_get_corule.php' rank='co_GetOut' target='main'/>
@@ -121,7 +121,7 @@ $adminMenu1
   <m:item name='采集未下载内容' link='co_do.php?dopost=coall' rank='co_GetOut' target='main'/>
 </m:top>
 
-<m:top item='1_3_3' name='批量维护' display='block'>
+<m:top item='1_3_3' name='批量维护' display=''>
   <m:item name='更新系统缓存' link='sys_cache_up.php' rank='sys_ArcBatch' target='main' />
   <m:item name='文档批量维护' link='content_batch_up.php' rank='sys_ArcBatch' target='main' />
   <m:item name='搜索关键词维护' link='search_keywords_main.php' rank='sys_Keyword' target='main' />
@@ -132,13 +132,13 @@ $adminMenu1
   <m:item name='数据库内容替换' link='sys_data_replace.php' rank='sys_ArcBatch' target='main' />
 </m:top>
 
-<m:top item='5_' name='自动任务' notshowall='1'  display='block' rank='sys_MakeHtml'>
+<m:top item='5_' name='自动任务' notshowall='1'  display='uk-open' rank='sys_MakeHtml'>
   <m:item name='一键更新网站' link='makehtml_all.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新系统缓存' link='sys_cache_up.php' rank='sys_ArcBatch' target='main' />
   {$remoteMenu}
 </m:top>
 
-<m:top item='5_' name='HTML更新' notshowall='1' display='none' rank='sys_MakeHtml'>
+<m:top item='5_' name='HTML更新' notshowall='1' display='uk-open' rank='sys_MakeHtml'>
   <m:item name='更新主页HTML' link='makehtml_homepage.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新栏目HTML' link='makehtml_list.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新文档HTML' link='makehtml_archives.php' rank='sys_MakeHtml' target='main' />
@@ -149,7 +149,7 @@ $adminMenu1
   <m:item name='更新TAG HTML' link='makehtml_taglist.php' rank='sys_MakeHtml' target='main' />
 </m:top>
 
-<m:top item='6_' name='会员管理' display='none' rank='member_List,member_Type'>
+<m:top item='6_' name='会员管理' display='uk-open' rank='member_List,member_Type'>
   <m:item name='注册会员列表' link='member_main.php' rank='member_List' target='main' />
   <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
@@ -162,7 +162,7 @@ $adminMenu1
 
 $adminMenu2
 
-<m:top item='1_10_7_' name='系统帮助' display='none'>
+<m:top item='1_10_7_' name='系统帮助' display=''>
   <m:item name='参考文档' link='http://help.dedecms.com' rank='' target='_blank' />
   <m:item name='官方交流论坛' link='http://bbs.dedecms.com' rank='' target='_blank' />
   <m:item name='Github' link='https://github.com/dedecms/' rank='' target='_blank' />

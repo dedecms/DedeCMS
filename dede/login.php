@@ -56,7 +56,7 @@ if ($dopost == 'showad') {
 //检测后台目录是否更名
 $cururl = GetCurUrl();
 if (preg_match('/dede\/login/i', $cururl)) {
-    $redmsg = '<div class=\'safe-tips\'>您的管理目录的名称中包含默认名称dede，建议在FTP里把它修改为其它名称，那样会更安全！</div>';
+    $redmsg = '您的管理目录的名称为默认名称dede，建议修改为其它名称会更安全！';
 } else {
     $redmsg = '';
 }

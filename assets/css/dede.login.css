@@ -1,39 +1,7 @@
-.uk-container-dede {
-  width: 960px;
-}
-header {
-  padding: 10px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
-}
-
-#install-menu {
-  position: fixed;
-  width: 260px;
-  top: 120;
-  z-index: 99;
-}
-
-#install-top {
-  background-color: rgb(50, 51, 54, 0.96);
-}
-
-#install-container {
-  margin-left: 260px;
-  margin-top: 120px;
-}
-
-table {
+html {
   font-size: 12px;
 }
 
-.uk-alert-warning,
-.uk-card-body {
-  font-size: 12px;
-}
 .uk-alert,
 .uk-table {
   margin: 0px;
@@ -66,6 +34,10 @@ table {
   font-size: 0.75rem;
   letter-spacing: 0.01em;
 }
+.uk-card-body,
+.dede-padding {
+  padding: 0px;
+}
 .uk-logo img {
   width: 183px;
 }
@@ -74,6 +46,20 @@ table {
 }
 .uk-logo:hover {
   color: aliceblue;
+}
+#install-top {
+  background-color: rgb(50, 51, 54, 0.96);
+}
+header {
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+#login {
+  margin-top: 200px;
 }
 .uk-button-primary {
   background-color: #e2833c;

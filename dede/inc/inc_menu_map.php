@@ -181,22 +181,19 @@ $dtp->SetNameSpace('m', '<', '>');
 $dtp->LoadString($menusMain);
 
 foreach ($maparray as $k => $bigname) {
-    $mapstring .= "<dl class='maptop'>\r\n";
-    $mapstring .= "<dt class='bigitem'>$bigname</dt>\r\n";
-    $mapstring .= "<dd>\r\n";
+    $mapstring .= "<div><ul class=\"uk-nav uk-navbar-dropdown-nav\">\r\n";
+    $mapstring .= "<li class=\"uk-nav-header\">$bigname</li>\r\n";
+    $mapstring .= "<li class=\"uk-nav-divider\"></li>\r\n";
     foreach ($dtp->CTags as $ctag) {
         if ($ctag->GetAtt('mapitem') == $k) {
-            $mapstring .= "<dl class='mapitem'>\r\n";
-            $mapstring .= "<dt>" . $ctag->GetAtt('name') . "</dt>\r\n";
-            $mapstring .= "<dd>\r\n<ul class='item'>\r\n";
+            $mapstring .= "<li class=\"uk-nav-header\">" .$ctag->GetAtt('name'). "</li>\r\n";
             $dtp2 = new DedeTagParse();
             $dtp2->SetNameSpace('m', '<', '>');
             $dtp2->LoadSource($ctag->InnerText);
             foreach ($dtp2->CTags as $j => $ctag2) {
                 $mapstring .= "<li><a href='" . $ctag2->GetAtt('link') . "' target='" . $ctag2->GetAtt('target') . "'>" . $ctag2->GetAtt('name') . "</a></li>\r\n";
             }
-            $mapstring .= "</ul>\r\n</dd>\r\n</dl>\r\n";
         }
     }
-    $mapstring .= "</dd>\r\n</dl>\r\n";
+    $mapstring .= "</ul>\r\n</div>\r\n";
 }

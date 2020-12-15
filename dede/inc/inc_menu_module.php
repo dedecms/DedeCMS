@@ -14,7 +14,7 @@ require_once dirname(__FILE__) . "/../config.php";
 
 /*
 模块菜单一般在不要直接改此文件，直接保存在#@__sys_module表即可，格式为
-<m:top name='问答模块管理' c='6,' display='block' rank=''>
+<m:top name='问答模块管理' c='6,' display='uk-open' rank=''>
 <m:item name='问答栏目管理' link='ask_type.php' rank='' target='main' />
 <m:item name='问答问题管理' link='ask_admin.php' rank='' target='main' />
 <m:item name='问答答案管理' link='ask_answer.php' rank='' target='main' />
@@ -41,7 +41,7 @@ while ($row = $dsql->GetObject()) {
 
 $adminMenu = '';
 if ($cuserLogin->getUserType() >= 10) {
-    $adminMenu = "<m:top name='模块管理' c='6,' display='block'>
+    $adminMenu = "<m:top name='模块管理' c='6,' display='uk-open'>
     <m:item name='模块管理' link='module_main.php' rank='sys_module' target='main' />
     <m:item name='上传新模块' link='module_upload.php' rank='sys_module' target='main' />
     <m:item name='模块生成向导' link='module_make.php' rank='sys_module' target='main' />
@@ -51,7 +51,7 @@ if ($cuserLogin->getUserType() >= 10) {
 $menusMoudle = "
 -----------------------------------------------
 $adminMenu
-<m:top item='7' name='辅助插件' display='block'>
+<m:top item='7' name='辅助插件' display='uk-open'>
   <m:item name='插件管理器' link='plus_main.php' rank='10' target='main' />
   $plusset
 </m:top>

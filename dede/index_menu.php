@@ -13,5 +13,6 @@
 require dirname(__FILE__) . '/config.php';
 require DEDEADMIN . '/inc/inc_menu.php';
 require DEDEADMIN . '/inc/inc_menu_func.php';
+require DEDEADMIN . '/inc/inc_menu_module.php';
 $openitem = (empty($openitem) ? 1 : $openitem);
-DedeInclude('templets/index_menu2.htm');
+DedeInclude('templets/index_menu.htm');
