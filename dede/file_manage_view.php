@@ -136,37 +136,7 @@ else if ($fmdo == "edit") {
     $ctp->LoadTemplate(DEDEADMIN . "/templets/file_edit.htm");
     $ctp->display();
 }
-/*编辑文件，可视化模式
-else if($fmdo=="editview")
-{
-if(!isset($backurl))
-{
-$backurl = "";
-}
-if(!isset($ishead))
-{
-$ishead = "";
-}
-$activepath = str_replace("..","",$activepath);
-$filename = str_replace("..","",$filename);
-$file = "$cfg_basedir$activepath/$filename";
-$fp = fopen($file,"r");
-@$content = fread($fp,filesize($file));
-fclose($fp);
-if((eregi("<html",$content) && eregi("<body",$content)) || $ishead == "yes")
-{
-$contentView = GetEditor("str",$content,"500","Default","string","true");
-}
-else
-{
-$contentView = GetEditor("str",$content,"500","Default","string","false");
-}
-$GLOBALS['filename'] = $filename;
-$ctp = new DedeTagParse();
-$ctp->LoadTemplate(DEDEADMIN."/templets/file_edit_view.htm");
-$ctp->display();
-}
- */
+
 //新建文件
 else if ($fmdo == "newfile") {
     $content = "";

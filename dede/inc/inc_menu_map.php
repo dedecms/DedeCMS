@@ -51,10 +51,18 @@ $menusMain = "
   <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='img/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no' rank='a_List' target='main' />
 </m:top>
 
-<m:top mapitem='1' item='1_' name='内容管理' display='block'>
+<m:top mapitem='1' item='1_' name='内容发布' display='block'>
+<m:item name='发布向导' link='public_guide.php' rank='a_List,a_AccList' target='main' />
+<m:item name='文档列表' link='content_list.php' rank='a_List,a_AccList' target='main' />
+<m:item name='批量增加栏目' link='catalog_add.php?dopost=quick' rank='a_List,a_AccList' target='main' />
+</m:top>
+
+<m:top mapitem='1' item='1_' name='内容维护' display='block'>
   $addset
   <m:item name='专题管理' ischannel='1' link='content_s_list.php' linkadd='spec_add.php' channelid='-1' rank='spec_New' target='main' />
 </m:top>
+
+
 
 <m:top mapitem='1' item='1_' name='频道模型' display='block' rank='t_List,t_AccList,c_List,temp_One'>
   <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />

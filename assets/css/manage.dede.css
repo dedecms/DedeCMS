@@ -1,24 +1,84 @@
-#dede-manage-top {
-  background-color: #222A30;
+html {
+  background-color: #fff;
+  font-size: 12px;
+}
+.uk-table {
+  font-size: 12px;
+}
+.uk-card-small .uk-card-body,
+.uk-card-small.uk-card-body {
+  padding: 0px;
+}
 
-  }
-  .uk-logo img {
-    width: 163px;
+.card-margin-bottom {
+  margin-bottom: 20px;
+}
 
-  }
-  .uk-logo {
-    font-size: 18px;
-    color: aliceblue;
-  }
-  .uk-logo:hover {
-    font-size: 18px;
-    color: aliceblue;
-  }
+.uk-card {
+  position: relative;
+  transition: box-shadow 0.15s ease-out;
 
-  html{
-    background-color: #222A30;
-  }
+}
 
-  #top-head [class*="uk-navbar-dropdown-bottom"] {
-    margin-top: 0;
-  }
+#dede-card-header,
+.uk-card-header{
+  height: 35px;
+  background-color: #fff;
+  border-top: 2px solid;
+  border-top-color: #f98020;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+#dede-table-body{
+  position: relative;
+  top: -51px;
+}
+
+#dede-table-header{
+  box-shadow: none;
+}
+.uk-grid-column-small, .uk-grid-small {
+  margin-left: -15px;
+  margin-top: 7px;
+}
+
+thead{
+  background-color: #fff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.uk-card .uk-inline {
+  z-index: 99;
+}
+.uk-card .uk-card-footer {
+  padding: 0.55rem 1rem;
+}
+.uk-card .uk-card-header {
+  padding: 0.55rem 1rem;
+}
+.uk-card .cat-txt {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.uk-card-body,
+.dede-padding {
+  padding: 0px;
+}
+
+.bar-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background-color: rgba(33, 34, 36, 0.90);
+  padding: 15px 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.e1e02{
+  margin-right: 25px;
+}

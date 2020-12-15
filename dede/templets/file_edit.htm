@@ -15,14 +15,9 @@ function Post()
   }
 }	
 </script>
-<link rel="stylesheet" type="text/css" href="css/codemirror.css">
-<script type="text/javascript" src="js/codemirror.js"></script>
-<script type="text/javascript" src="js/mode/xml/xml.js"></script>
-<script type="text/javascript" src="js/mode/javascript/javascript.js"></script>
-<script type="text/javascript" src="js/mode/css/css.js"></script>
-<script type="text/javascript" src="js/mode/php/php.js"></script>
-<script type="text/javascript" src="js/mode/clike/clike.js"></script>
-<script type="text/javascript" src="js/mode/htmlmixed/htmlmixed.js"></script>
+<link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.css"/>
+<link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/theme/mdn-like.min.css"/>
+
 </head>
 <body background='images/allbg.gif' leftmargin="8" topmargin='8'>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#ECFAD3" style="margin-bottom:8px;">
@@ -78,11 +73,25 @@ function Post()
 	</tr>
 </table>
 </form>
+
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/matchbrackets.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/active-line.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/clike.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/htmlmixed.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/javascript.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/xml.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/css.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/php.min.js"></script>
 <script type="text/javascript">
     var editor = CodeMirror.fromTextArea(document.getElementById('str'), {
         lineNumbers: true,
-        lineWrapping: true,
-        mode: '{dede:global name='extension'/}'
+        matchBrackets: true,
+        styleActiveLine: true,
+        indentUnit: 4,
+        indentWithTabs: true,
+        theme:"mdn-like",
+        mode: '{dede:global.extension/}'
     });
 </script>
 </body>

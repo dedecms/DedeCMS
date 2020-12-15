@@ -19,38 +19,36 @@
 				</div>
 				<div class="uk-navbar-right">
 					<ul  class="uk-navbar-nav ">
-						<li><a href="#" onclick="JumpFrame('catalog_menu.php','public_guide.php');" >内容发布</a></li>
-						<li><a href="#" onclick="JumpFrame('index_menu.php','content_list.php');">内容维护</a></li>
-						<li><a href="../member" target="_blank">会员中心</a></li>
-                          <li><a href="#"><span data-uk-icon="icon: bolt" class="uk-margin-small-right uk-icon"></span> 快捷操作 <span data-uk-icon="icon: triangle-down"></span></a>
+						<li><a href="#"><span data-uk-icon="icon: bolt" class="uk-margin-small-right uk-icon"></span> 快捷操作 <span data-uk-icon="icon: triangle-down"></span></a>
                             <div style="margin-top: 0;" class="uk-navbar-dropdown" >
-                              <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <?php $dtp = new DedeTagparse();
-                                      $dtp->SetNameSpace('menu','<','>');
-                                      $dtp->LoadTemplet($myIcoFile);
-                                      if(is_array($dtp->CTags)) {
-                                      foreach($dtp->CTags as $ctag) {
-                                        $title = $ctag->GetAtt('title');
-                                        $ico = $ctag->GetAtt('ico');
-                                        $link = $ctag->GetAtt('link');
-                                        echo "<li><a href='{$link}' target='main'>{$title}</a></li>\r\n";
-                                      }} ?>
-                              </ul>
-                            </div>
-						  </li>
-						  <?php if($cuserLogin->getUserType() >= 10) { ?>
-                          <li>
-							<a href="#"><span data-uk-icon="icon: grid" class="uk-margin-small-right uk-icon"></span> 功能地图 <span data-uk-icon="icon: triangle-down"></span></a>
-							<div id="allmenu" class="uk-navbar-dropdown uk-navbar-dropdown-width-6 uk-light" style="margin-top: 0;">
-								<div class="uk-navbar-dropdown-grid uk-child-width-1-6" uk-grid>
-									{dede:global.mapstring/}
+								<ul class="uk-nav uk-navbar-dropdown-nav">
+									<?php $dtp = new DedeTagparse();
+									$dtp->SetNameSpace('menu','<','>');
+									$dtp->LoadTemplet($myIcoFile);
+									if(is_array($dtp->CTags)) {
+										foreach($dtp->CTags as $ctag) {
+											$title = $ctag->GetAtt('title');
+											$ico = $ctag->GetAtt('ico');
+											$link = $ctag->GetAtt('link');
+											echo "<li><a href='{$link}' target='main'>{$title}</a></li>\r\n";
+										}} ?>
+									</ul>
 								</div>
-							</div>
-						  </li>
-						  <?php } ?>
-                          <li><a href="./exit.php" target="_top">注销(<?php echo $cuserLogin->getUserName(); ?>)</a></li>
-					</ul>
-				</div>
+							</li>
+							<?php if($cuserLogin->getUserType() >= 10) { ?>
+								<li>
+									<a href="#"><span data-uk-icon="icon: grid" class="uk-margin-small-right uk-icon"></span> 功能地图 <span data-uk-icon="icon: triangle-down"></span></a>
+									<div id="allmenu" class="uk-navbar-dropdown uk-navbar-dropdown-width-6 uk-light" style="margin-top: 0;">
+										<div class="uk-navbar-dropdown-grid uk-child-width-1-6" uk-grid>
+											{dede:global.mapstring/}
+										</div>
+									</div>
+								</li>
+								<?php } ?>
+								<li><a href="../member" target="_blank">会员中心</a></li>
+								<li><a href="./exit.php" target="_top">注销(<?php echo $cuserLogin->getUserName(); ?>)</a></li>
+							</ul>
+						</div>
 			</nav>
 	</header>
     <!--/HEADER-->

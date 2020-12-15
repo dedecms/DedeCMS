@@ -55,7 +55,7 @@ function GetMenus($userrank, $topos = 'main', $openitem='1')
             foreach ($dtp2->CTags as $j => $ctag2) {
                 $ischannel = trim($ctag2->GetAtt('ischannel'));
                 if ($ctag2->GetName() == 'item' && ($ctag2->GetAtt('rank') == '' || TestPurview($ctag2->GetAtt('rank')))) {
-                    $link = "<a class=\"chevron-icon\" href='" . $ctag2->GetAtt('link') . "' target='" . $ctag2->GetAtt('target') . "'><span width=\"12\" data-uk-icon=\"icon: chevron-right\" class=\"uk-margin-small-right\"></span>" . $ctag2->GetAtt('name') . "</a>";
+                    $link = "<a class=\"chevron-icon\" href='" . $ctag2->GetAtt('link') . "' target='" . $ctag2->GetAtt('target') . "'><span width=\"12\" data-uk-icon=\"icon: triangle-right\" class=\"uk-margin-small-right\"></span>" . $ctag2->GetAtt('name') . "</a>";
                     if ($ischannel == '1') {
                         if ($ctag2->GetAtt('addalt') != '') {
                             $addalt = $ctag2->GetAtt('addalt');
@@ -72,7 +72,7 @@ function GetMenus($userrank, $topos = 'main', $openitem='1')
                         //an add icos , small items use att ischannel='1' addico='ico' addalt='msg' linkadd=''
                         $link = "<li class=\"uk-flex dede_menu_icon\" >
                         $link
-                        <a class=\"icon\" href='" . $ctag2->GetAtt('linkadd') . "' target='" . $ctag2->GetAtt('target') . "'><span data-uk-icon=\"icon: ".$addico."\" width=\"16\" class=\"uk-margin-small-right\"></span></a>
+                        <a class=\"icon\" uk-tooltip='title: ".$addalt."; pos: left' href='" . $ctag2->GetAtt('linkadd') . "' target='" . $ctag2->GetAtt('target') . "'><span data-uk-icon=\"icon: ".$addico."\" width=\"16\" class=\"uk-margin-small-right\"></span></a>
                         </li>\r\n";
 
                     } else {
