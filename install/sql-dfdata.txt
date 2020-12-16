@@ -4106,8 +4106,6 @@ INSERT INTO `#@__sys_module` VALUES (1, '0cce60bc0238aa03804682c801584991', '百
 (5, 'acb8b88eb4a6d4bfc375c18534f9439e', '投票模块', '', '', 0, ''),
 (6, '572606600345b1a4bb8c810bbae434cc', '挑错管理', '', '', 0, '');
 
-INSERT INTO `#@__sys_module` (`hashcode`, `modname`, `indexname`, `indexurl`, `ismember`, `menustring`) VALUES ('533c5b843ded8752b9857cc7c8e5b455', '得德广告模块', '', '', 0, '<m:top name=\'德得广告\' display=\'block\'>\r\n<m:item name=\'德得模块\' link=\'mda_main.php\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'广告管理\' link=\'mda_main.php?dopost=place\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'查看报表\' link=\'mda_main.php?dopost=report\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'结算中心\' link=\'mda_main.php?dopost=account\' rank=\'plus_广告管理\' target=\'main\'/>\r\n<m:item name=\'德得设置\' link=\'mda_main.php?dopost=setting\' rank=\'plus_广告管理\' target=\'main\'/>\r\n</m:top>');
-
 
 INSERT INTO `#@__plus` VALUES (27, '友情链接模块', '<m:item name=''友情链接'' link=''friendlink_main.php'' rank=''plus_友情链接'' target=''main'' />', '', '织梦团队', 1, ''),
 (24, '文件管理器', '<m:item name=''文件管理器'' link=''file_manage_main.php'' rank=''plus_文件管理器'' target=''main'' />', '', '织梦团队', 1, ''),
@@ -4119,8 +4117,3 @@ INSERT INTO `#@__plus` VALUES (27, '友情链接模块', '<m:item name=''友情�
 INSERT INTO `#@__sysconfig` (`varname`, `info`, `groupid`, `type`, `value`) VALUES ('cfg_disable_funs', '模板引擎禁用PHP函数', 7, 'bstring', 'phpinfo,eval,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents');
 INSERT INTO `#@__sysconfig` (`varname`, `info`, `groupid`, `type`, `value`) VALUES ('cfg_disable_tags', '模板引擎禁用标签', 7, 'bstring', 'php');
 ALTER TABLE `#@__arctiny` ADD INDEX `idx_typeid_arcrank_sortrank` (`typeid`, `arcrank`, `sortrank`);
-
-INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('version', '0.0.1', 0);
-INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('channel_uuid', '', 0);
-INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('channel_secret', '', 0);
-INSERT INTO `#@__plus_mda_setting` (`skey`, `svalue`, `stime`) VALUES ('email', '', 0);

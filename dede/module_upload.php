@@ -81,33 +81,40 @@ if ($action == 'upload') {
     $win = new OxWindow();
     $win->Init("module_upload.php", "js/blank.js", "POST' enctype='multipart/form-data");
     $win->mainTitle = "模块管理";
-    $wecome_info = "<a href='module_main.php'>模块管理</a> &gt;&gt; 上传模块";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>上传模块</span></li></ul>";
     $win->AddTitle('请选择要上传的文件:');
     $win->AddHidden("action", 'upload');
     $msg = "
-    <table width='600' border='0' cellspacing='0' cellpadding='0'>
-  <tr>
-    <td height='30'>文件格式：</td>
-    <td>
-    <input name='filetype' type='radio' value='0' checked='checked' />
-      正常的模块包
-      <input type='radio' name='filetype' value='1' />
-    经过 zip 压缩的模块包 </td>
-  </tr>
-  <tr>
-    <td height='30'>已有模块：</td>
-    <td>
-      <input name='delhas' type='checkbox' id='delhas' value='1' /> 强制删除同名模块(这可能导致已经安装的模块无法卸载)
-     </td>
-  </tr>
-  <tr>
-    <td width='96' height='60'>请选择文件：</td>
-    <td width='504'>
-    <input name='upfile' type='file' id='upfile' style='width:380px' />    </td>
-  </tr>
- </table>
+    <div class=\"uk-margin\">
+    <label class=\"uk-form-label\">文件格式：</label>
+    <div class=\"uk-form-controls\">
+    <div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">
+    <label><input class=\"uk-radio\" type=\"radio\" name=\"filetype\" value='0' checked> 正常的模块包</label>
+    <label><input class=\"uk-radio\" type=\"radio\" name=\"filetype\" value='1'> 经过 zip 压缩的模块包</label>
+    </div>
+    </div>
+    </div>
+    <div class=\"uk-margin\">
+    <label class=\"uk-form-label\">已有模块：</label>
+    <div class=\"uk-form-controls\">
+    <div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">
+    <label> <input name='delhas' type='checkbox' id='delhas' value='1'  class='uk-checkbox'/>  强制删除同名模块(这可能导致已经安装的模块无法卸载)</label>
+    </div>
+    </div>
+    </div>
+    <div class=\"uk-margin\">
+    <label class=\"uk-form-label\">请选择文件：</label>
+    <div class=\"uk-form-controls\">
+    <div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">
+    <div uk-form-custom=\"target: true\">
+        <input type=\"file\">
+        <input class=\"uk-input uk-form-width-medium\" type=\"text\" placeholder=\"点击选择文件\" disabled>
+    </div>
+    </div>
+    </div>
+    </div>
     ";
-    $win->AddMsgItem("<div style='padding-left:20px;line-height:150%;'>$msg</div>");
+    $win->AddMsgItem("$msg");
     $winform = $win->GetWindow('ok', '');
     $win->Display();
     exit();

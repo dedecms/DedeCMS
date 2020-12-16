@@ -1245,11 +1245,3 @@ CREATE TABLE `#@__plus_seoinfo` (
 	`haosou360_count` VARCHAR(50) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM;
-
-DROP TABLE IF EXISTS `#@__plus_mda_setting`;
-CREATE TABLE `#@__plus_mda_setting` (
-	`skey` VARCHAR(255) NOT NULL DEFAULT '',
-	`svalue` TEXT NOT NULL,
-	`stime` INT(10) NOT NULL,
-	PRIMARY KEY (`skey`)
-)TYPE=MyISAM;

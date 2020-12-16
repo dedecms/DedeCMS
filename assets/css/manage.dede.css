@@ -41,14 +41,19 @@ html {
   margin-left: -15px;
   margin-top: 7px;
 }
-
+#oswindos-container{
+  min-width: 960px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 35px;
+}
 thead{
   background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
 }
 
 .uk-card .uk-inline {
-  z-index: 99;
+  z-index: 50;
 }
 .uk-card .uk-card-footer {
   padding: 0.55rem 1rem;
@@ -78,7 +83,33 @@ thead{
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  z-index: 99;
 }
 .e1e02{
   margin-right: 25px;
+}
+#dede-table-oswindow-body {
+  position: relative;
+  top: -1px;
+  margin-bottom: 50px;
+}
+#dede-table-oswindow-code {
+  position: relative;
+  top: -1px;
+}
+#dede-table-toolbar{
+  position: relative;
+  top: -1px;
+}
+#dede-oswindow-toolbar {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.dede-oswindows-input{
+  width: 280px;
+}
+.dede-file-input{
+  display: flex;
+  justify-content: space-between;
 }

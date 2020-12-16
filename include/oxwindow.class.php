@@ -52,7 +52,7 @@ class OxWindow
         }
         $this->myWin .= "</script>\r\n";
         $this->formName = $formname;
-        $this->myWin .= "<form name='$formname' method='$formmethod' onSubmit='return CheckSubmit();' action='$formaction'>\r\n";
+        $this->myWin .= "<form name='$formname' method='$formmethod' onSubmit='return CheckSubmit();' action='$formaction' >\r\n";
     }
 
     //
@@ -75,7 +75,7 @@ class OxWindow
      */
     public function StartWin()
     {
-        $this->myWin .= "<table width='100%'  border='0' cellpadding='3' cellspacing='1' bgcolor='#DADADA'>\r\n";
+        $this->myWin .= "<table class=\"uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove\">\r\n";
     }
 
     /**
@@ -88,10 +88,16 @@ class OxWindow
      */
     public function AddItem($iname, $ivalue)
     {
-        $this->myWinItem .= "<tr bgcolor='#FFFFFF'>\r\n";
-        $this->myWinItem .= "<td width='25%'>$iname</td>\r\n";
-        $this->myWinItem .= "<td width='75%'>$ivalue</td>\r\n";
-        $this->myWinItem .= "</tr>\r\n";
+        $this->myWinItem .= "
+        <div class=\"uk-margin\">
+        <label class=\"uk-form-label\">$iname</label>
+        <div class=\"uk-form-controls\">
+        <div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">
+        <label>$ivalue</label>
+        </div>
+        </div>
+        </div>
+        ";
     }
 
     /**
@@ -105,19 +111,7 @@ class OxWindow
      */
     public function AddMsgItem($ivalue, $height = "100", $col = "2")
     {
-        if ($height != "" && $height != "0") {
-            $height = " height='$height'";
-        } else {
-            $height = "";
-        }
-        if ($col != "" && $col != 0) {
-            $colspan = "colspan='$col'";
-        } else {
-            $colspan = "";
-        }
-        $this->myWinItem .= "<tr bgcolor='#FFFFFF'>\r\n";
-        $this->myWinItem .= "<td $colspan $height> $ivalue </td>\r\n";
-        $this->myWinItem .= "</tr>\r\n";
+        $this->myWinItem .= "$ivalue";
     }
 
     /**
@@ -136,9 +130,11 @@ class OxWindow
         } else {
             $colspan = "";
         }
-        $this->myWinItem .= "<tr bgcolor='#DADADA'>\r\n";
-        $this->myWinItem .= "<td $colspan background='{$cfg_assets_dir}/img/wbg.gif' height='26'><font color='#666600'><b>$title</b></font></td>\r\n";
-        $this->myWinItem .= "</tr>\r\n";
+        $this->myWinItem .= "<tr>\r\n";
+        $this->myWinItem .= "<td $colspan><b>$title</b></td>\r\n";
+        $this->myWinItem .= "</tr></table>\r\n";
+        $this->myWinItem .= "<fieldset class=\"uk-fieldset\">\r\n";
+        $this->myWinItem .= "<div id=\"oswindos-container\" class=\"uk-container\">\r\n";
     }
 
     /**
@@ -150,9 +146,9 @@ class OxWindow
     public function CloseWin($isform = true)
     {
         if (!$isform) {
-            $this->myWin .= "</table>\r\n";
+            $this->myWin .= "</div></fieldset>\r\n";
         } else {
-            $this->myWin .= "</table></form>\r\n";
+            $this->myWin .= "</fieldset></form>\r\n";
         }
     }
 
@@ -186,31 +182,17 @@ class OxWindow
         if ($wintype != "") {
             if ($wintype != "hand") {
                 $this->myWin .= "
-<tr>
-<td colspan='2' bgcolor='#F9FCEF'>
-<table width='270' border='0' cellpadding='0' cellspacing='0'>
-<tr align='center' height='28'>
-<td width='90'>
-<button name='imageField1' type='submit' class='btn btn-primary'>
-<i class='bx bx-save'></i>
-<span>提交</span>
-</button>
-</td>
-<td width='90'>
-<button type='button' class='btn btn-secondary' onClick='this.form.reset();return false;' >
-<i class='bx bx-refresh'></i>
-<span>清空</span>
-</button>
-<td>
-<button type='button' class='btn btn-secondary' onClick='history.go(-1);'>
-<i class='bx bx-chevron-left'></i>
-<span>返回</span>
-</button>
-</td>
-</tr>
-</table>
-</td>
-</tr>";
+</div>
+<div id='dede-oswindow-toolbar' class=\"uk-card-footer\">
+<div class=\"uk-grid uk-flex uk-flex-middle\">
+<ul class=\"uk-subnav uk-flex uk-flex-center uk-width-large uk-child-width-1-4\" data-uk-grid>
+<li><a href='#' onClick='history.go(-1);' class=\"uk-icon-link\" data-uk-icon=\"icon: arrow-left\" title=\"返回\" data-uk-tooltip=\"pos: top\"></a></li>
+<li><button type=\"reset\" href='#' onClick='this.form.reset();return false;' class=\"uk-icon-link\" data-uk-icon=\"icon: refresh\" title=\"重置\" data-uk-tooltip=\"pos: top\"></button></li>
+<li><button  type='submit' class=\"uk-icon-link\" data-uk-icon=\"icon: check\" title=\"提交\" data-uk-tooltip=\"pos: top\"></button></li>
+</ul>
+</div>
+</div>               
+";
             } else {
                 if ($msg != '') {
                     $this->myWin .= "<tr><td bgcolor='#F5F5F5'>$msg</td></tr>";
@@ -222,7 +204,7 @@ class OxWindow
         $this->CloseWin($isform);
         return $this->myWin;
     }
-
+ 
     /**
      *  显示页面
      *

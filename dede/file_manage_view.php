@@ -34,15 +34,15 @@ if ($fmdo == "rename") {
 
     $ndirstring = $activepath;
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "文件管理::更改文件名 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>更改文件名</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
     $win->AddHidden("activepath", $activepath);
     $win->AddHidden("filename", $filename);
     $win->AddTitle("更改文件名，当前路径：$ndirstring");
-    $win->AddItem("旧名称：", "<input name='oldfilename' type='input' class='alltxt' id='oldfilename' size='40' value='$filename'>");
-    $win->AddItem("新名称：", "<input name='newfilename' type='input' class='alltxt' size='40' id='newfilename'>");
+    $win->AddItem("旧名称：", "<input class=\"uk-input dede-oswindows-input\" name='oldfilename' type='input' id='oldfilename' size='40' value='$filename'>");
+    $win->AddItem("新名称：", "<input class=\"uk-input dede-oswindows-input\" name='newfilename' type='input' size='40' id='newfilename'>");
     $winform = $win->GetWindow("ok");
     $win->Display();
 }
@@ -55,14 +55,14 @@ else if ($fmdo == "newdir") {
     }
 
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "&nbsp;文件管理::新建目录 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>新建目录</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
     $win->AddHidden("activepath", $activepath);
     $win->AddHidden("token", make_hash());
     $win->AddTitle("当前目录 $activepathname ");
-    $win->AddItem("新目录：", "<input name='newpath' type='input' class='alltxt' id='newpath'>");
+    $win->AddItem("新目录：", "<input class=\"uk-input dede-oswindows-input\" name='newpath' type='input'  id='newpath'>");
     $winform = $win->GetWindow("ok");
     $win->Display();
 }
@@ -70,7 +70,7 @@ else if ($fmdo == "newdir") {
 //移动文件
 else if ($fmdo == "move") {
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "&nbsp;文件管理::移动文件 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>移动文件</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
@@ -79,7 +79,7 @@ else if ($fmdo == "move") {
     $win->AddTitle("新位置前面不加'/'表示相对于当前位置，加'/'表示相对于根目录。");
     $win->AddItem("被移动文件：", $filename);
     $win->AddItem("当前位置：", $activepath);
-    $win->AddItem("新位置：", "<input name='newpath' type='input' class='alltxt' id='newpath' size='40'>");
+    $win->AddItem("新位置：", "<input class=\"uk-input dede-oswindows-input\" name='newpath' type='input'  id='newpath' size='40'>");
     $winform = $win->GetWindow("ok");
     $win->Display();
 }
@@ -87,7 +87,7 @@ else if ($fmdo == "move") {
 //删除文件
 else if ($fmdo == "del") {
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "&nbsp;文件管理::删除文件 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>删除文件</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
@@ -120,7 +120,7 @@ else if ($fmdo == "edit") {
         fclose($fp);
         $content = dede_htmlspecialchars($content);
     }
-    $contentView = "<textarea name='str' id='str' style='width:99%;height:450px;background:#ffffff;'>$content</textarea>\r\n";
+    $contentView = "<textarea name='str' id='str' style='width:100%;height:100%;' uk-height-viewport=\"expand: true\">$content</textarea>\r\n";
     $GLOBALS['filename'] = $filename;
     $path_parts = pathinfo($filename);
     if ($path_parts['extension'] == 'php') {
@@ -132,6 +132,7 @@ else if ($fmdo == "edit") {
     } else {
         $GLOBALS['extension'] = 'text/html';
     }
+    $GLOBALS['token'] = make_hash();
     $ctp = new DedeTagParse();
     $ctp->LoadTemplate(DEDEADMIN . "/templets/file_edit.htm");
     $ctp->display();
@@ -141,7 +142,7 @@ else if ($fmdo == "edit") {
 else if ($fmdo == "newfile") {
     $content = "";
     $GLOBALS['filename'] = "newfile.txt";
-    $contentView = "<textarea name='str' style='width:99%;height:400'></textarea>\r\n";
+    $contentView = "<textarea name='str' id='str' style='width:100%;height:100%;' uk-height-viewport=\"expand: true\"></textarea>\r\n";
     $GLOBALS['token'] = make_hash();
     $ctp = new DedeTagParse();
     $ctp->LoadTemplate(DEDEADMIN . "/templets/file_edit.htm");
