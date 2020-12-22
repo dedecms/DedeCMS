@@ -34,7 +34,7 @@ if ($fmdo == "rename") {
 
     $ndirstring = $activepath;
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>更改文件名</span></li></ul>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>更改文件名</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
@@ -55,7 +55,7 @@ else if ($fmdo == "newdir") {
     }
 
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>新建目录</span></li></ul>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>新建目录</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
@@ -70,7 +70,7 @@ else if ($fmdo == "newdir") {
 //移动文件
 else if ($fmdo == "move") {
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>移动文件</span></li></ul>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>移动文件</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
@@ -87,7 +87,7 @@ else if ($fmdo == "move") {
 //删除文件
 else if ($fmdo == "del") {
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件浏览器</a></li><li><span>删除文件</span></li></ul>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>删除文件</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);

@@ -18,7 +18,7 @@ if (empty($job)) {
 if ($job == '') {
     require_once DEDEINC . "/../include/oxwindow.class.php";
     $wintitle = "导入采集规则";
-    $wecome_info = "<a href='co_main.php'><u>采集点管理</u></a>::导入采集规则";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"co_main.php\">采集点管理</a></li><li><span>导入采集规则</span></li></ul>";
     $win = new OxWindow();
     $win->Init("co_get_corule.php", "js/blank.js", "POST");
     $win->AddHidden("job", "yes");

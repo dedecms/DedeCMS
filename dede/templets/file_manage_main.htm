@@ -107,7 +107,7 @@
                     {
                       $line = "\n<tr>
                      <td>
-						<span width=\"16\" data-uk-icon=\"icon: image\" class=\"uk-margin-small-right uk-icon\"></span>  <a href=$activeurl/$file target=_blank> $file</a></td>
+						<span width=\"16\" data-uk-icon=\"icon: file-earmark-image\" class=\"uk-margin-small-right uk-icon\"></span>  <a href=$activeurl/$file target=_blank> $file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -124,7 +124,7 @@
                     {
                       $line = "\n<tr>
                      <td>
-						<span width=\"16\" data-uk-icon=\"icon: file\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
+						<span width=\"16\" data-uk-icon=\"icon: file-earmark-zip\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -141,7 +141,7 @@
                     {
                       $line = "\n<tr>
                      <td>
-                     <a href=$activeurl/$file target=_blank><img src=images/mp3.gif border=0 width=16 height=16 align=absmiddle>$file</a></td>
+                      <span width=\"16\" data-uk-icon=\"icon: file-earmark-music\" class=\"uk-margin-small-right uk-icon\"></span>  <a href=$activeurl/$file target=_blank>$file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -158,7 +158,7 @@
                     {
                       $line = "\n<tr>
                      <td> 
-						<span width=\"16\" data-uk-icon=\"icon: video-camera\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
+					          	<span width=\"16\" data-uk-icon=\"icon: file-earmark-play\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -176,7 +176,7 @@
                       $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
                       $line = "\n<tr>
                      <td>
-						<span width=\"16\" data-uk-icon=\"icon: code\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
+						<span width=\"16\" data-uk-icon=\"icon: file-earmark-code\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -196,7 +196,7 @@
                       $edurl = "file_manage_view.php?fmdo=edit&filename=".urlencode($file)."&activepath=".urlencode($activepath);
                       $line = "\n<tr>
                      <td>
-						<span width=\"16\" data-uk-icon=\"icon: file-text\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
+						<span width=\"16\" data-uk-icon=\"icon: file-earmark-text\" class=\"uk-margin-small-right uk-icon\"></span> <a href=$activeurl/$file target=_blank> $file</a></td>
                      <td>$filesize KB</td>
                      <td align='center'>$filetime</td>
                      <td>
@@ -245,16 +245,16 @@
 
   <div class="bar-bottom uk-flex  uk-light ">
     <ul class="uk-subnav uk-flex uk-flex-center uk-width-xlarge uk-child-width-1-6" data-uk-grid>
-      <li><a href='file_manage_main.php' class="uk-icon-link" data-uk-icon="icon: home" title="根目录"
+      <li><a href='file_manage_main.php' class="uk-icon-link" data-uk-icon="icon: slash" title="根目录"
           data-uk-tooltip="pos: top"></a></li>
       <li><a href='file_manage_view.php?fmdo=newfile&activepath=<?php echo urlencode($activepath)?>' class="uk-icon-link"
-          data-uk-icon="icon: file" title="新建文件" data-uk-tooltip="pos: top"></a></li>
+          data-uk-icon="icon: file-earmark-plus" title="新建文件" data-uk-tooltip="pos: top"></a></li>
       <li> <a href='file_manage_view.php?fmdo=newdir&activepath=<?php echo urlencode($activepath)?>' class="uk-icon-link"
-          data-uk-icon="icon: folder" title="新建目录" data-uk-tooltip="pos: top"></a></li>
+          data-uk-icon="icon: folder-plus" title="新建目录" data-uk-tooltip="pos: top"></a></li>
       <li><a href='file_manage_view.php?fmdo=upload&activepath=<?php echo urlencode($activepath)?>' class="uk-icon-link"
           data-uk-icon="icon: upload" title="文件上传" data-uk-tooltip="pos: top"></a></li>
       <li> <a href='file_manage_control.php?fmdo=space&activepath=<?php echo urlencode($activepath)?>'
-          class="uk-icon-link" data-uk-icon="icon: database" title="空间检查" data-uk-tooltip="pos: top"></a></li>
+          class="uk-icon-link" data-uk-icon="icon: hdd" title="空间检查" data-uk-tooltip="pos: top"></a></li>
     </ul>
   
     <div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>,

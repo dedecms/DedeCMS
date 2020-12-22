@@ -56,10 +56,10 @@ if (!empty($channelid) && !empty($ucid) && $tl->TypeInfos['channeltype'] != $cha
 
 if ($cid == 0) {
     $row = $tl->dsql->GetOne("SELECT typename,addtable FROM `#@__channeltype` WHERE id='$channelid'");
-    $positionname = $row['typename'] . " &gt; ";
+    $positionname = $row['typename'];
     $listtable = $row['addtable'];
 } else {
-    $positionname = str_replace($cfg_list_symbol, " &gt; ", $tl->GetPositionName()) . " &gt; ";
+    $positionname = str_replace($cfg_list_symbol, " &gt; ", $tl->GetPositionName());
 }
 
 $optionarr = $tl->GetOptionArray($cid, $admin_catalogs, $channelid);
@@ -79,10 +79,16 @@ if ($cid != 0) {
 
 if ($arcrank != '') {
     $whereSql .= " AND arc.arcrank = '$arcrank' ";
-    $CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='content_sg_list.php?cid={$cid}&channelid={$channelid}&dopost=listArchives';\" value='所有文档' />";
+    $CheckUserSend = "
+    <li><a href=\"content_sg_list.php?cid={$cid}&channelid={$channelid}&dopost=listArchives\"
+    class=\"uk-icon-link\" data-uk-icon=\"icon: inboxes\" title=\"所有稿件\" data-uk-tooltip></a></li>";
 } else {
-    $CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='content_sg_list.php?cid={$cid}&channelid={$channelid}&dopost=listArchives&arcrank=-1';\" value='稿件审核' />";
+    $CheckUserSend = "
+    <li><a href=\"content_sg_list.php?cid={$cid}&channelid={$channelid}&dopost=listArchives&arcrank=-1\"
+    class=\"uk-icon-link\" data-uk-icon=\"icon: spellcheck\" title=\"待审稿件\" data-uk-tooltip></a></li>";
 }
+
+
 
 $query = "SELECT arc.aid,arc.aid as id,arc.typeid,arc.arcrank,arc.flag,arc.senddate,arc.channel,arc.title,arc.mid,arc.click,tp.typename,ch.typename as channelname
 FROM `$listtable` arc

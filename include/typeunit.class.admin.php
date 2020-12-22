@@ -116,6 +116,7 @@ class TypeUnit
 
         $this->dsql->SetQuery("SELECT id,typedir,typename,ispart,sortrank,ishidden FROM `#@__arctype` WHERE reid=0 order by sortrank");
         $this->dsql->Execute(0);
+
         while ($row = $this->dsql->GetObject(0)) {
             if ($cfg_admin_channel == 'array' && !in_array($row->id, $admin_catalogs)) {
                 continue;
@@ -130,56 +131,66 @@ class TypeUnit
             } else {
                 $nss = '';
             }
-            echo "<table width='100%' border='0' cellspacing='0' cellpadding='2'>\r\n";
+
+            echo "  <tr style=\"border-top:0;border-bottom: 1px solid #e5e5e5;\">\r\n";
+            echo "  <td>{$id}</td>\r\n";
+            echo "  <td><input type=\"checkbox\" value=\"{$id}\" class=\"uk-checkbox check\" /></td>\r\n";
+            echo "  <td><input type='text' name='sortrank{$id}' value='{$rank}' class=\"uk-input uk-form-small\" style='width:45px;'></td>";
+            echo "  <td align='right'>";
+            if ($this->GetTypeNum($id) === true) {
+                echo "<a id=\"{$id}\" href='#' class=\"uk-icon-link uk-icon dede-show-type\" data-uk-icon=\"icon: plus-square\">";
+            }
+            echo "  </td>";
+            echo "  <td><a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'>{$nss}" . $typeName . "</a></td>\r\n";
+            echo "  <td>" . $this->GetTotalArc($id) . "</td>";
+            echo "  <td align='right'>";
+
             //普通列表
             if ($ispart == 0) {
-                echo "  <tr>\r\n";
-                echo "  <td style='background-color:#FBFBFB;' width='2%' class='bline'><img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'></td>\r\n";
-                echo "  <td style='background-color:#FBFBFB;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_do.php?cid=" . $id . "&dopost=listArchives' oncontextmenu=\"CommonMenu(event,this,$id,'" . urlencode($typeName) . "')\">{$nss}" . $typeName . "[ID:" . $id . "]</a>(文档：" . $this->GetTotalArc($id) . ")  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='images/write2.gif'/></a>";
-                echo "    </td><td align='right'>";
-                echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-                echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-                echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
-                echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
+                echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
+                echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
             }
             //带封面的频道
             else if ($ispart == 1) {
-                echo "  <tr >\r\n";
-                echo "  <td style='background-color:#FBFBFB;'  width='2%' class='bline'><img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'></td>\r\n";
-                echo "  <td style='background-color:#FBFBFB;' class='bline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_do.php?cid=" . $id . "&dopost=listArchives' oncontextmenu=\"CommonMenuPart(event,this,$id,'" . urlencode($typeName) . "')\">{$nss}" . $typeName . "[ID:" . $id . "]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"> <img src='images/write2.gif'/> </a>";
-                echo "    </td><td align='right'>";
-                echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-                echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-                echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
-                echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
+                echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
+                echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
             }
             //独立页面
             else if ($ispart == 2) {
-                echo "  <tr height='24' bgcolor='#E9E9E9'>\r\n";
-                echo "  <td width='2%' class='bline2'><img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'></td>\r\n";
-                echo "  <td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr><td width='50%'><input class='np' type='checkbox' name='tids[]' value='{$id}'><a href='catalog_edit.php?id=" . $id . "' oncontextmenu=\"SingleMenu(event,this,$id,'" . urlencode($typeName) . "')\">{$nss}" . $typeName . "[ID:" . $id . "]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='images/write2.gif'/></a>";
-                echo "    </td><td align='right'>";
-                echo "<a href='{$typeDir}' target='_blank'>预览</a>";
-                echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";
             }
-            echo "  <tr><td colspan='2' id='suns" . $id . "'>";
-            $lastid = GetCookie('lastCid');
-            if ($channel == $id || $lastid == $id || isset($GLOBALS['exallct']) || $cfg_admin_channel == 'array') {
-                echo "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>\r\n";
-                $this->LogicListAllSunType($id, "　");
-                echo "    </table>\r\n";
+            
+            echo " <a href='catalog_edit.php?id={$id}'>[更改]</a>";
+            echo " <a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>[移动]</a>";
+            echo " <a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>[删除]</a>";
+            echo "</td></tr>\r\n";
+
+            if ($this->GetTypeNum($id) === true) {
+                echo "<tr id='type_{$id}' class=\"uk-hidden\"><td colspan=\"8\" style=\"padding:0;\">";
+                $this->LogicListAllSunType($id, $step . "　");
+                echo "</td></tr>";
             }
-            echo "</td></tr>\r\n</table>\r\n";
         }
+        
+
+
+    }
+     /**
+     *  获得子类目的递归调用
+     *
+     * @access    public
+     * @param     int  $id  栏目ID
+     * @param     string  $step  层级标志
+     * @return    void
+     */
+    public function GetTypeNum($id)
+    {
+        global $cfg_admin_channel, $admin_catalogs;
+        $this->dsql->SetQuery("SELECT id,reid,typedir,typename,ispart,sortrank,ishidden FROM `#@__arctype` WHERE reid='" . $id . "' order by sortrank");
+        $this->dsql->Execute($id);
+        return $this->dsql->GetTotalRow($id) > 0;
     }
 
     /**
@@ -217,55 +228,51 @@ class TypeUnit
                 } else {
                     $nss = '';
                 }
+                echo "<table class=\"uk-table uk-table-middle uk-table-divider uk-margin-remove\">";
+                echo "  <tbody><tr style=\"border-bottom: 1px solid #e5e5e5;\">\r\n";
+                echo "  <td width=\"6%\">{$id}</td>\r\n";
+                echo "  <td width=\"4%\"><input type=\"checkbox\" value=\"{$id}\" class=\"uk-checkbox check\" /></td>\r\n";
+                echo "  <td width=\"4%\"><input type='text' name='sortrank{$id}' value='{$rank}' class=\"uk-input uk-form-small\" style='width:45px;'></td>";
+                echo "  <td width=\"4%\" align='right'>";
+                if ($this->GetTypeNum($id) === true) {
+                    echo "<a id=\"{$id}\" href='#' class=\"uk-icon-link uk-icon dede-show-type\" data-uk-icon=\"icon: plus-square\">";
+                    // dash-square
+                }
+                echo "  </td>";
+                echo "  <td width=\"28%\">$step <a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'>{$nss}" . $typeName . "</a></td>\r\n";
+                echo "  <td width=\"10%\">" . $this->GetTotalArc($id) . "</td>";
+                echo "  <td width=\"38%\" align='right'>";
 
                 //普通列表
                 if ($ispart == 0) {
-                    echo "<tr height='24' oncontextmenu=\"CommonMenu(event,this,$id,'" . urlencode($typeName) . "')\">\r\n";
-                    echo "<td class='nbline'>";
-                    echo "<table width='98%' border='0' cellspacing='0' cellpadding='0'>";
-                    echo "<tr onMouseMove=\"javascript:this.bgColor='#FAFCE0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-                    echo "<input class='np' type='checkbox' name='tids[]' value='{$id}'>$step <img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'> <a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'>{$nss}" . $typeName . "[ID:" . $id . "]</a>(文档：" . $this->GetTotalArc($id) . ")  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='images/write2.gif'/></a>";
-                    echo "</td><td align='right'>";
-                    echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-                    echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-                    echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
-                    echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                    echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                    echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                    echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                    echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
+                    echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
+                    echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
                 }
 
                 //封面频道
                 else if ($ispart == 1) {
-                    echo " <tr height='24' oncontextmenu=\"CommonMenu(event,this,$id,'" . urlencode($typeName) . "')\">\r\n";
-                    echo "<td class='nbline'><table width='98%' border='0' cellspacing='0' cellpadding='0'><tr onMouseMove=\"javascript:this.bgColor='#FAFCE0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-                    echo "<input class='np' type='checkbox' name='tids[]' value='{$id}'>$step <img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'> <a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'>{$nss}" . $typeName . "[ID:" . $id . "]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='images/write2.gif'/></a>";
-                    echo "</td><td align='right'>";
-                    echo "<a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>预览</a>";
-                    echo "|<a href='catalog_do.php?cid={$id}&dopost=listArchives'>内容</a>";
-                    echo "|<a href='catalog_add.php?id={$id}'>增加子类</a>";
-                    echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                    echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                    echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                    echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                    echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
+                    echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
+                    echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
                 }
 
                 //独立页面
                 else if ($ispart == 2) {
-                    echo "<tr height='24' oncontextmenu=\"SingleMenu(event,this,$id,'" . urlencode($typeName) . "')\">\r\n";
-                    echo "<td class='bline2'><table width='98%' border='0' cellspacing='0' cellpadding='0'>";
-                    echo "<tr onMouseMove=\"javascript:this.bgColor='#FAFCE0';\" onMouseOut=\"javascript:this.bgColor='#FFFFFF';\"><td width='50%'>";
-                    echo "<input class='np' type='checkbox' name='tids[]' value='{$id}'>$step <img style='cursor:pointer' id='img" . $id . "' onClick=\"LoadSuns('suns" . $id . "',$id);\" src='images/dedeexplode.gif' width='11' height='11'> <a href='catalog_do.php?cid=" . $id . "&dopost=listArchives'>{$nss}" . $typeName . "[ID:" . $id . "]</a>  <a onclick=\"AlertMsg('快捷编辑窗口','$id');\" href=\"javascript:;\"><img src='images/write2.gif'/></a>";
-                    echo "</td><td align='right'>";
-                    echo "<a href='{$typeDir}' target='_blank'>预览</a>";
-                    echo "|<a href='catalog_edit.php?id={$id}'>更改</a>";
-                    echo "|<a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>移动</a>";
-                    echo "|<a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>删除</a>";
-                    echo "&nbsp; <input type='text' name='sortrank{$id}' value='{$rank}' style='width:25px;height:20px'></td></tr></table></td></tr>\r\n";
+                    echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";
                 }
-                echo "  <tr><td id='suns" . $id . "' style='display:none'><table width='100%' border='0' cellspacing='0' cellpadding='0'>";
+
+                echo " <a href='catalog_edit.php?id={$id}'>[更改]</a>";
+                echo " <a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>[移动]</a>";
+                echo " <a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>[删除]</a>";
+                echo "</td></tr>\r\n";
+                if ($this->GetTypeNum($id) === true) {
+                echo "<tr id='type_{$id}' class=\"uk-hidden\"><td colspan=\"8\" style=\"padding:0;\">";
                 $this->LogicListAllSunType($id, $step . "　");
-                echo "</table></td></tr>\r\n";
+                echo "</td></tr>";
+                }
+                echo "</tbody></table>";
+                
             }
         }
     }

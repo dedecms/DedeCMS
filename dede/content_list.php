@@ -105,15 +105,15 @@ if (empty($totalresult) && empty($keyword) && empty($orderby) && empty($flag)) {
 
 if ($cid == 0) {
     if ($channelid == 0) {
-        $positionname = '所有栏目&gt;';
+        $positionname = '所有栏目';
     } else {
         $row = $tl->dsql->GetOne("SELECT id,typename,maintable FROM `#@__channeltype` WHERE id='$channelid'");
-        $positionname = $row['typename'] . " &gt; ";
+        $positionname = $row['typename'];
         $maintable = $row['maintable'];
         $channelid = $row['id'];
     }
 } else {
-    $positionname = str_replace($cfg_list_symbol, " &gt; ", $tl->GetPositionName()) . " &gt; ";
+    $positionname = str_replace($cfg_list_symbol, " &gt; ", $tl->GetPositionName());
 }
 
 //当选择的是单表模型栏目时，直接跳转到单表模型管理区
@@ -174,9 +174,13 @@ if ($cid != 0) {
 }
 if ($arcrank != '') {
     $whereSql .= " AND arc.arcrank = '$arcrank' ";
-    $CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='catalog_do.php?cid=" . $cid . "&dopost=listArchives&gurl=content_list.php';\" value='所有文档' />";
+    $CheckUserSend = "
+    <li><a href=\"catalog_do.php?cid=" . $cid . "&dopost=listArchives&gurl=content_list.php\"
+    class=\"uk-icon-link\" data-uk-icon=\"icon: inboxes\" title=\"所有稿件\" data-uk-tooltip></a></li>";
 } else {
-    $CheckUserSend = "<input type='button' class='coolbg np' onClick=\"location='catalog_do.php?cid=" . $cid . "&dopost=listArchives&arcrank=-1&gurl=content_list.php';\" value='稿件审核' />";
+    $CheckUserSend = "
+    <li><a href=\"catalog_do.php?cid=" . $cid . "&dopost=listArchives&arcrank=-1&gurl=content_list.php\"
+    class=\"uk-icon-link\" data-uk-icon=\"icon: spellcheck\" title=\"待审稿件\" data-uk-tooltip></a></li>";
 }
 
 $orderby = empty($orderby) ? 'id' : preg_replace("#[^a-z0-9]#", "", $orderby);

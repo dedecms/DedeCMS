@@ -3,8 +3,8 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>{dede:global.cfg_webname/} - {dede:global.cfg_softname/} {dede:global.cfg_version/}
-  </title>
+  <title>{dede:global.cfg_webname/} - {dede:global.cfg_softname/} {dede:global.cfg_version/}</title>
+  <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
   <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/dashboard.css">
 </head>
@@ -18,10 +18,10 @@
 					</span>
 				</div>
 				<div class="uk-navbar-right">
-					<ul  class="uk-navbar-nav ">
-						<li><a href="#"><span data-uk-icon="icon: bolt" class="uk-margin-small-right uk-icon"></span> 快捷操作 <span data-uk-icon="icon: triangle-down"></span></a>
-                            <div style="margin-top: 0;" class="uk-navbar-dropdown" >
-								<ul class="uk-nav uk-navbar-dropdown-nav">
+					<ul  class="uk-navbar-nav">
+						<li><a href="#"><span data-uk-icon="icon: lightning" class="uk-margin-small-right uk-icon"></span> 快捷操作 <span data-uk-icon="icon: triangle-down"></span></a>
+                            <div id="fastmenu" style="margin-top: 0;" class="uk-navbar-dropdown uk-light " uk-dropdown="mode: click">
+								<ul class="uk-nav uk-navbar-dropdown-nav uk-light uk-nav-sub">
 									<?php $dtp = new DedeTagparse();
 									$dtp->SetNameSpace('menu','<','>');
 									$dtp->LoadTemplet($myIcoFile);
@@ -37,16 +37,16 @@
 							</li>
 							<?php if($cuserLogin->getUserType() >= 10) { ?>
 								<li>
-									<a href="#"><span data-uk-icon="icon: grid" class="uk-margin-small-right uk-icon"></span> 功能地图 <span data-uk-icon="icon: triangle-down"></span></a>
-									<div id="allmenu" class="uk-navbar-dropdown uk-navbar-dropdown-width-6 uk-light" style="margin-top: 0;">
-										<div class="uk-navbar-dropdown-grid uk-child-width-1-6" uk-grid>
+									<a href="#"><span data-uk-icon="icon: menu-down" class="uk-margin-small-right uk-icon"></span> 功能地图 <span data-uk-icon="icon: triangle-down"></span></a>
+									<div id="allmenu" class="uk-navbar-dropdown uk-navbar-dropdown-width-6" style="margin-top: 0;" uk-dropdown="mode: click">
+										<div class="uk-navbar-dropdown-grid uk-child-width-1-6 uk-light" uk-grid>
 											{dede:global.mapstring/}
 										</div>
 									</div>
 								</li>
 								<?php } ?>
-								<li><a href="../member" target="_blank"><span data-uk-icon="icon: users" class="uk-margin-small-right uk-icon"></span> 会员中心</a></li>
-								<li><a href="./exit.php" target="_top"><span data-uk-icon="icon: sign-out" class="uk-margin-small-right uk-icon"></span> 注销 (<?php echo $cuserLogin->getUserName(); ?>)</a></li>
+								<li><a href="../member" target="_blank"><span data-uk-icon="icon: people" class="uk-margin-small-right uk-icon"></span> 会员中心</a></li>
+								<li><a href="./exit.php" target="_top"><span data-uk-icon="icon: power" class="uk-margin-small-right uk-icon"></span> 注销 (<?php echo $cuserLogin->getUserName(); ?>)</a></li>
 							</ul>
 						</div>
 			</nav>
@@ -66,7 +66,6 @@
 	<!-- JS FILES -->
 	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
 	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
-	<script src="{dede:global.cfg_assets_dir/}/js/dede.min.js"></script>
 </body>
 
 </html>

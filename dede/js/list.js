@@ -1,4 +1,3 @@
-<!--
 if(moz) {
 	extendEventObject();
 	extendElementModel();
@@ -97,23 +96,14 @@ function ShowMenu(evt,obj,aid,atitle)
   ContextMenu.display(evt,popupoptions);
   //location="catalog_main.php";
 }
-//获得选中文件的文件名
-function getCheckboxItem()
-{
-	var allSel="";
-	if(document.form2.arcID.value) return document.form2.arcID.value;
-	for(i=0;i<document.form2.arcID.length;i++)
+	//获得选中文件的文件名
+	function getCheckboxItem()
 	{
-		if(document.form2.arcID[i].checked)
-		{
-			if(allSel=="")
-				allSel=document.form2.arcID[i].value;
-			else
-				allSel=allSel+"`"+document.form2.arcID[i].value;
-		}
+		var checkedVals = $('.check:checkbox:checked').map(function() {
+			return this.value;
+		}).get();
+		return checkedVals.join("`")
 	}
-	return allSel;
-}
 
 //获得选中其中一个的id
 function getOneItem()
@@ -151,4 +141,3 @@ function noSelAll()
 		}
 	}
 }
--->

@@ -1,192 +1,129 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>栏目管理</title>
-  <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="js/global.js"></script>
-  <script language="javascript" src="js/context_menu.js"></script>
-  <script language="javascript" src="js/ieemu.js"></script>
-  <script language="javascript" src="js/dialog.js"></script>
-  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
-  <script language="javascript">
-    function LoadSuns(ctid, tid) {
-
-      if ($DE(ctid).innerHTML.length < 10) {
-        $DE('img' + tid).src = 'images/dedecontract.gif';
-        var myajax = new DedeAjax($DE(ctid));
-        myajax.SendGet('catalog_do.php?dopost=GetSunLists&cid=' + tid);
-      }
-      else {
-        showHide(ctid, tid);
-      }
-    }
-    function showHide(objname, tid) {
-
-      if ($DE(objname).style.display == "none") {
-        $DE('img' + tid).src = 'images/dedecontract.gif';
-        $DE(objname).style.display = BROWSER.firefox ? "" : "block";
-      } else {
-        $DE('img' + tid).src = 'images/dedeexplode.gif';
-        $DE(objname).style.display = "none";
-      }
-    }
-    if (moz) {
-      extendEventObject();
-      extendElementModel();
-      emulateAttachEvent();
-    }
-    //普通栏目
-    function CommonMenu(eobj, obj, tid, tname) {
-      var popupoptions
-      popupoptions = [
-        new ContextItem("增加内容", function () { location = "catalog_do.php?cid=" + tid + "&dopost=addArchives"; }),
-        new ContextItem("管理内容", function () { location = "catalog_do.php?cid=" + tid + "&dopost=listArchives"; }),
-        new ContextSeperator(),
-        new ContextItem("预览分类", function () { window.open("<?php echo $cfg_phpurl; ?>/list.php?tid=" + tid); }),
-        new ContextItem("更新HTML", function () { location = "makehtml_list.php?cid=" + tid; }),
-        new ContextItem("获取JS文件", function () { location = "catalog_do.php?cid=" + tid + "&dopost=GetJs"; }),
-        new ContextSeperator(),
-        new ContextItem("增加子类", function () { location = "catalog_add.php?id=" + tid; }),
-        new ContextItem("更改栏目", function () { location = "catalog_edit.php?id=" + tid; }),
-        new ContextSeperator(),
-        new ContextItem("合并栏目", function () { location = 'catalog_do.php?dopost=unitCatalog&typeid=' + tid }),
-        new ContextItem("移动栏目", function () { location = 'catalog_do.php?dopost=moveCatalog&typeid=' + tid }),
-        new ContextItem("删除栏目", function () { location = "catalog_del.php?id=" + tid + "&typeoldname=" + tname; }),
-        new ContextSeperator(),
-        new ContextItem("向上排前一级", function () { location = "catalog_do.php?cid=" + tid + "&dopost=upRank"; }),
-        new ContextItem("关闭菜单(<u>C</u>)", function () { })
-      ]
-      ContextMenu.display(eobj, popupoptions)
-    }
-    //封面模板
-    function CommonMenuPart(eobj, obj, tid, tname) {
-      var popupoptions
-      popupoptions = [
-        new ContextItem("管理内容", function () { location = "catalog_do.php?cid=" + tid + "&dopost=listArchives"; }),
-        new ContextSeperator(),
-        new ContextItem("预览分类", function () { window.open("<?php echo $cfg_phpurl; ?>/list.php?tid=" + tid); }),
-        new ContextItem("更新HTML", function () { location = "makehtml_list.php?cid=" + tid; }),
-        new ContextItem("获取JS文件", function () { location = "catalog_do.php?cid=" + tid + "&dopost=GetJs"; }),
-        new ContextSeperator(),
-        new ContextItem("增加子类", function () { location = "catalog_add.php?id=" + tid; }),
-        new ContextItem("更改栏目", function () { location = "catalog_edit.php?id=" + tid; }),
-        new ContextSeperator(),
-        new ContextItem("移动栏目", function () { location = 'catalog_move.php?job=movelist&typeid=' + tid }),
-        new ContextItem("删除栏目", function () { location = "catalog_del.php?id=" + tid + "&typeoldname=" + tname; }),
-        new ContextSeperator(),
-        new ContextItem("向上排前一级", function () { location = "catalog_do.php?cid=" + tid + "&dopost=upRank"; }),
-        new ContextItem("关闭菜单(<u>C</u>)", function () { })
-      ]
-      ContextMenu.display(eobj, popupoptions)
-    }
-    //跳转栏目
-    function SingleMenu(eobj, obj, tid, tname) {
-      var popupoptions
-      popupoptions = [
-        new ContextItem("更改栏目", function () { location = "catalog_edit.php?id=" + tid; }),
-        new ContextSeperator(),
-        new ContextItem("移动栏目", function () { location = 'catalog_move.php?job=movelist&typeid=' + tid }),
-        new ContextItem("删除栏目", function () { location = "catalog_del.php?id=" + tid + "&typeoldname=" + tname; }),
-        new ContextSeperator(),
-        new ContextItem("向上排前一级", function () { window.location = "catalog_do.php?cid=" + tid + "&dopost=upRank"; }),
-        new ContextItem("关闭菜单(<u>C</u>)", function () { })
-      ]
-      ContextMenu.display(eobj, popupoptions)
-    }
-  </script>
-  <style>
-    .coolbg2 {
-      border: 1px solid #000000;
-      background-color: #F2F5E9;
-      height: 18px
-    }
-
-    .coolbt2 {
-      border-left: 2px solid #EFEFEF;
-      border-top: 2px solid #EFEFEF;
-      border-right: 2px solid #ACACAC;
-      border-bottom: 2px solid #ACACAC;
-      background-color: #F7FCDA
-    }
-
-    .nbline {
-      border-bottom: 1px solid #d6d6d6;
-      background-color: #FFFFFF;
-    }
-
-    .bline2 {
-      border-bottom: 1px solid #d6d6d6;
-      background-color: #FAFBFC;
-    }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>栏目管理</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
 
-<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
-  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#EAECEF" align="center">
-    <tr>
-      <td height="28" background='images/tbg.gif' style="padding-left:10px;">
-        <div style="float:left">
-          <strong>网站栏目管理 </strong>
-        </div>
-        <div style="float:right;padding-right:6px;">
-          <a href='catalog_add.php?listtype=all' class='np coolbg'>增加顶级栏目</a>
-          <a href='catalog_add.php?dopost=quick' class='np coolbg'>批量增加栏目</a>
-          <a href="catalog_do.php?dopost=upcatcache" class='np coolbg'>更新栏目缓存</a>
-          <a href="makehtml_list.php" class='np coolbg'>更新栏目HTML</a>
-          </a>
-      </td>
-    </tr>
-    <tr>
-      <td height="28" bgcolor="#ffffff">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="51%">提示：可使用右键菜单进行操作。</td>
-            <td width="49%" align="right">
-              <?php if(!isset($exallct)) { ?>
-              <a href='catalog_main.php?exallct=all'>[展开全部]</a>
-              <?php }else{ ?>
-              <a href='catalog_main.php'>[普通模式]</a>
-              <?php } ?>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
-      <tr>
-        <td height="120" bgcolor="#FFFFFF" valign="top">
-          <?php
-if(empty($opendir)) $opendir=-1;
-if($userChannel>0) $opendir=$userChannel;
-$tu = new TypeUnit();
-$tu->ListAllType($userChannel,$opendir);
-?>
-          <br />
-        </td>
-      </tr>
-    </form>
-    <tr>
-      <td height="36" bgcolor="#FFFFFF" align="center">
-        <table width="98%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td align="right">
-              <input type="button" name="sb1" value="更新排序" style="width:70px" class="coolbt"
-                onClick="document.form1.submit();" />
-              <input type="button" name="sb4" value="获取JS" style="width:70px" class="coolbt"
-                onClick="location='makehtml_js.php';" />
-              <input type="button" name="sb2" value="更新栏目HTML" style="width:90px" class="coolbt"
-                onClick="location='makehtml_list.php';" />
-              <input type="button" name="sb3" value="更新文档HTML" style="width:90px" class="coolbt"
-                onClick="location='makehtml_archives.php';" />
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+<body>
+
+  <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+		<div id="dede-card-header" class="uk-card-header">
+			<div class="uk-grid uk-grid-small uk-text-small">
+			  <span class="cat-txt"></span><ul class="uk-breadcrumb"><li><span>栏目管理</span></li></ul></span>
+			</div>
+    </div>
+    
+    
+		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+			<thead>
+			<tr>
+				<td width="6%">ID</td>
+				<td width="4%"></td>
+				<td width="4%">排序</td>
+				<td width="4%"></td>
+				<td width="28%">栏目名</td>
+				<td width="10%">文档数量</td>
+				<td width="38%" align='right'>操作</td>
+			</tr>
+			</thead>
+		</table>
+	</div>
+
+	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+		<div class="uk-card-body uk-overflow-auto" grid>
+			<div class="uk-child-width-1-1">
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-middle  uk-table-divider uk-margin-remove">
+						<thead>
+							<tr>
+								<td width="6%">ID</td>
+								<td width="4%"></td>
+								<td width="4%">排序</td>
+								<td width="4%"></td>
+								<td width="28%">栏目名</td>
+								<td width="10%">文档数量</td>
+								<td width="38%" align='right'>操作</td>
+							</tr>
+						</thead>
+					<tbody>
+						<form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
+							<?php          
+							if (empty($opendir)) { $opendir = -1; }
+							if ($userChannel > 0) { $opendir = $userChannel; }
+							$tu = new TypeUnit();
+							$tu->ListAllType($userChannel, $opendir);
+							?>
+						</form>
+					</tbody>
+					<!-- 批量操作 -->
+					<thead>
+						<tr>
+							<td></td>
+							<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+							<td height="36" colspan="8">
+								<a  type="button" onClick="document.form1.submit();" />更新排序</a>
+							</td>
+						</tr>
+					</thead>
+					<!-- /批量操作 -->
+
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="bar-bottom uk-flex uk-light uk-flex-right">
+		<div class="uk-button-group" style="margin-left: 50px;">
+		<ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-8" data-uk-grid>
+			<li><a href="catalog_do.php?channelid={dede:global.channelid/}&cid={dede:global.cid/}&dopost=addArchives"
+			class="uk-icon-link" data-uk-icon="icon: vector-pen" title="添加文档" data-uk-tooltip></a></li>
+			{dede:if $adminid==$mid }
+			<li><a href="content_list.php?cid={dede:global.cid/}&mid=0"
+			class="uk-icon-link" data-uk-icon="icon: card-list" title="全部文档" data-uk-tooltip></a></li>
+			{else}
+			<li><a href="content_list.php?cid={dede:global.cid/}&mid=<?php echo $cuserLogin->getUserID();?>"
+			class="uk-icon-link" data-uk-icon="icon: person" title="我的文档" data-uk-tooltip></a></li>
+			{/dede:if}
+			{dede:global.CheckUserSend/}
+			<li>
+			<a href="#" >
+				<span data-uk-icon="icon: diagram-3" class="uk-margin-small-right uk-icon uk-icon-link"></span>
+				<span id="bottom_tooltip_prompt" data-uk-icon="icon: triangle-up;ratio:0.7"></span>
+			</a>
+			<div id="bottom_tooltip_dropdown" class="uk-navbar-dropdown uk-light " uk-dropdown="pos: top-right;mode: click;offset: 17">
+				<ul class="uk-nav uk-navbar-dropdown-nav uk-light uk-nav-sub">
+				<li><a href='catalog_main.php'>网站栏目管理</a></li>
+				<li><a href='catalog_add.php?listtype=all'>增加顶级栏目</a></li>
+				<li><a href='catalog_add.php?dopost=quick'>批量增加栏目</a></li>
+				<li><a href="makehtml_list.php?cid={dede:global.cid/}">更新栏目列表</a></li>
+				<li><a href="catalog_do.php?dopost=upcatcache">更新栏目缓存</a></li>
+				<li><a href="makehtml_js.php">获取栏目JS</a></li>
+				</ul>
+			</div>
+			</li>
+			<li><a href="makehtml_archives.php?cid={dede:global.cid/}"
+			class="uk-icon-link" data-uk-icon="icon: file-earmark-break" title="更新文档" data-uk-tooltip></a></li>
+			<li><a href="recycling.php?cid={dede:global.cid/}"
+			class="uk-icon-link" data-uk-icon="icon: trash" title="回收站" data-uk-tooltip></a></li>
+			</ul>
+
+		</div>
+		<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+	</div>
+
+	<!-- JS FILES -->
+  	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+
 </body>
 
 </html>

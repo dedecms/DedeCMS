@@ -299,45 +299,43 @@ else if ($dopost == 'moveArchives') {
         $channelid = empty($channelid) ? 0 : $channelid;
         $tl = new TypeLink($aid);
         $typeOptions = $tl->GetOptionArray(0, $admin_catalogs, $channelid);
-        $typeOptions = "<select name='totype' style='width:90%'>
-        <option value='0'>请选择移动到的位置...</option>\r\n
-        $typeOptions
-        </select>";
 
         //输出AJAX可移动窗体
         $divname = 'moveArchives';
-        echo "<div class='title' onmousemove=\"DropMoveHand('{$divname}', 225);\" onmousedown=\"DropStartHand();\" onmouseup=\"DropStopHand();\">\r\n";
-        echo "    <div class='titLeft'>移动文档</div>\r\n";
-        echo "    <div class='titRight'><img src='images/ico-close.gif' style='cursor:pointer;' onclick='HideObj(\"{$divname}\");ChangeFullDiv(\"hide\");' alt='关闭' title='关闭' /></div>\r\n";
-        echo "</div>\r\n";
-        echo "<form name='quickeditform' action='archives_do.php' method='post'>\r\n";
+        echo "<button class=\"uk-modal-close-default\" type=\"button\" uk-close></button>";
+        echo "<div class=\"uk-modal-header\">";
+        echo "<h2 class=\"uk-modal-title\">移动文档</h2>";
+        echo "</div>";
+        echo "<form id='quickeditform' name='quickeditform' action='archives_do.php' method='post'  class=\"uk-form-stacked\">\r\n";
         echo "<input type='hidden' name='dopost' value='{$dopost}' />\r\n";
         echo "<input type='hidden' name='qstr' value='{$qstr}' />\r\n";
-        echo "<table width='100%' style='margin-top:6px;z-index:9000;'>\r\n";
         ?>
-<tr height='28'>
-    <td width="80" class='bline'>&nbsp;目标栏目：</td>
-    <td class='bline'>
-    <?php echo $typeOptions; ?>
-    </td>
-</tr>
-<tr height='32'>
-    <td width="80" class='bline'>&nbsp;文档ID：</td>
-    <td class='bline'>
-        <input type='text' name='tmpids' value="<?php echo $qstr; ?>" style='width:310px;overflow:hidden;' />
-        <br />
-        移动到的目标栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。
-    </td>
-</tr>
-<tr height='32'>
-    <td colspan='2' align='center' style='padding-top:12px'>
-        <input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" class="np" border="0" style="cursor:pointer" />
-        &nbsp;&nbsp;
-        <img src="images/button_back.gif" width="60" height="22" border="0" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' style="cursor:pointer" />
-    </td>
-</td>
-</tr>
-</table>
+    <div class="uk-alert-warning" uk-alert>
+    <p>移动到的目标栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。</p>
+    </div>
+    <div class="uk-modal-body" uk-overflow-auto>
+        <fieldset class="uk-fieldset">
+        <div class="uk-margin">
+            <label class="uk-form-label"> 文档ID：</label>
+            <div class="uk-form-controls">
+                <input type='text' name='tmpids' value="<?php echo $qstr; ?>" class="uk-input" disabled/>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <label class="uk-form-label"> 目标栏目：</label>
+            <div class="uk-form-controls">
+                <select name='totype' class="uk-select">
+                <option value='0'>请选择移动到的位置...</option>
+                <?=$typeOptions;?>
+                </select>
+            </div>
+        </div>
+        </fieldset>
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close uk-button-small" type="button">关闭</button>
+        <button class="uk-button uk-button-primary uk-button-small" type="submit">提交</button>
+    </div>
 </form>
 <?php
 //AJAX窗体结束

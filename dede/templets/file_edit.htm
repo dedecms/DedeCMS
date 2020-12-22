@@ -23,23 +23,30 @@
 		<div id="dede-card-header" class="uk-card-header">
 		  <div class="uk-grid uk-grid-small uk-text-small" data-uk-grid="">
 			<div class="uk-width-expand uk-first-column">
-			  <span class="cat-txt"><ul class="uk-breadcrumb"><li><a href="file_manage_main.php?activepath={dede:global.activepath/}">文件浏览器</a></li><li><span>修改/新建文件</span></li></ul></span>
+			  <span class="cat-txt"><ul class="uk-breadcrumb"><li><a href="file_manage_main.php?activepath={dede:global.activepath/}">文件管理器</a></li><li><span>修改/新建文件</span></li></ul></span>
 			</div>
 		  </div>
 		</div>
 		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><tbody><tr><td class="dede-file-input">
+
 			<div class="uk-inline">
 				<span class="uk-form-icon" uk-icon="icon: file-text"></span>
-				<input class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text" type="text" value="{dede:global.filename/}"> （不允许用 “..” 形式的路径）
+				<input name="filename" class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text"  type="text" value="{dede:global.filename/}"> （不允许用 “..” 形式的路径）
 			</div>
-			<ul class="uk-subnav uk-flex uk-flex-center uk-width-large uk-child-width-1-4" data-uk-grid>
-				<li><a href="#" onClick='history.go(-1);' class="uk-icon-link" data-uk-icon="icon: arrow-left" title="返回" data-uk-tooltip="pos: top"></a></li>
-				<li><button type="reset" class="uk-icon-link" data-uk-icon="icon: refresh" title="重置" data-uk-tooltip="pos: top"></button></li>
-				<li><button  type='submit' class="uk-icon-link" data-uk-icon="icon: check" title="提交" data-uk-tooltip="pos: top"></button></li>
-				</ul>
+			<div class="uk-button-group">
+				<a href="#"  onClick='history.go(-1);' class="uk-button uk-button-default  uk-button-small uk-flex-inline">
+					<span class="dede-toolbar-icon" uk-icon="icon:arrow-left-short;ratio:0.8"></span> 返回
+				</a>
+				<a onClick='location.reload();' class="uk-button uk-button-default  uk-button-small uk-flex-inline">
+					<span class="dede-toolbar-icon" uk-icon="icon: arrow-counterclockwise;ratio:0.8"></span> 重置
+				</a>
+				<button type='submit' class="uk-button uk-button-default  uk-button-small uk-flex-inline">
+					<span class="dede-toolbar-icon" uk-icon="icon: record2;ratio:0.8"></span> 保存
+				</button>
+			</div>
 				<div class="uk-inline">
 					<span class="uk-form-icon" uk-icon="icon: folder"></span>
-					<input class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text" type="text" value="{dede:global.activepath/}"> （空白表示根目录 ，不允许用 “..” 形式的路径）
+					<input name="activepath" class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text" type="text" value="{dede:global.activepath/}"> （空白表示根目录 ，不允许用 “..” 形式的路径）
 				</div>
 		</td></tr></tbody></table>
 	</div>

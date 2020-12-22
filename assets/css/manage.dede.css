@@ -28,10 +28,13 @@ html {
   border-top-color: #f98020;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+
 }
 #dede-table-body{
   position: relative;
-  top: -51px;
+  top: -50px;
 }
 
 #dede-table-header{
@@ -76,14 +79,15 @@ thead{
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   background-color: rgba(33, 34, 36, 0.90);
   padding: 15px 0;
-  position: fixed;
   left: 0;
   right: 0;
   z-index: 3;
   bottom: 0;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   z-index: 99;
+  min-width: 1050px;
 }
 .e1e02{
   margin-right: 25px;
@@ -93,14 +97,12 @@ thead{
   top: -1px;
   margin-bottom: 50px;
 }
+
 #dede-table-oswindow-code {
   position: relative;
   top: -1px;
 }
-#dede-table-toolbar{
-  position: relative;
-  top: -1px;
-}
+
 #dede-oswindow-toolbar {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -112,4 +114,79 @@ thead{
 .dede-file-input{
   display: flex;
   justify-content: space-between;
+}
+.dede-toolbar-icon{
+margin-top: 7.5px;
+margin-right: 9px;
+}
+
+.dede-card-navbar,
+.dede-card-navbar>li>a{
+  min-height: 40px;
+}
+
+#dede-dropdown-margin > .uk-margin{
+  margin-bottom: 10px;
+  margin-top: 0px;
+  margin-top: 10px!important;
+}
+#dede-dropdown-margin > button{
+  margin-top: 10px;
+}
+
+.uk-child-width-1-8 > * {
+  width: 95px;
+}
+
+.uk-button-primary {
+  background-color: #e2833c;
+  color: #fff;
+  border: 1px solid transparent;
+}
+.uk-button-primary:hover {
+  background-color: #eea86f;
+  color: #fff;
+  border: 1px solid transparent;
+}
+.uk-modal-dialog{
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.uk-modal-header {
+  height: 35px;
+  padding: 0 20px;
+  padding-top: 15px;
+  border-top: 2px solid;
+  border-top-color: #f98020;
+  border-radius: 3px;
+}
+.uk-modal-title{
+  font-size: 16px;
+}
+
+#modal-overflow .uk-alert {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#bottom_tooltip_prompt{
+  position: relative;
+  top: -16px;
+  left:-28px;
+}
+#bottom_tooltip_dropdown{
+  padding: 15px;
+  width: 130px;
+  min-width: 130px;
+  border-top: 2px solid;
+  border-top-color: #f98020;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom: none;
+}
+.uk-navbar-dropdown{
+  border-bottom: 2px solid;
+  border-bottom-color: #f98020;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px; 
 }

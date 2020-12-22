@@ -185,11 +185,17 @@ class OxWindow
 </div>
 <div id='dede-oswindow-toolbar' class=\"uk-card-footer\">
 <div class=\"uk-grid uk-flex uk-flex-middle\">
-<ul class=\"uk-subnav uk-flex uk-flex-center uk-width-large uk-child-width-1-4\" data-uk-grid>
-<li><a href='#' onClick='history.go(-1);' class=\"uk-icon-link\" data-uk-icon=\"icon: arrow-left\" title=\"返回\" data-uk-tooltip=\"pos: top\"></a></li>
-<li><button type=\"reset\" href='#' onClick='this.form.reset();return false;' class=\"uk-icon-link\" data-uk-icon=\"icon: refresh\" title=\"重置\" data-uk-tooltip=\"pos: top\"></button></li>
-<li><button  type='submit' class=\"uk-icon-link\" data-uk-icon=\"icon: check\" title=\"提交\" data-uk-tooltip=\"pos: top\"></button></li>
-</ul>
+<div class=\"uk-button-group\">
+<a href=\"#\"  onClick='history.go(-1);' class=\"uk-button uk-button-default  uk-button-small uk-flex-inline\">
+    <span class=\"dede-toolbar-icon\" uk-icon=\"icon:arrow-left-short;ratio:0.8\"></span> 返回
+</a>
+<button type=\"reset\" class=\"uk-button uk-button-default  uk-button-small uk-flex-inline\">
+    <span class=\"dede-toolbar-icon\" uk-icon=\"icon: arrow-counterclockwise;ratio:0.8\"></span> 重置
+</button>
+<button type='submit' class=\"uk-button uk-button-default  uk-button-small uk-flex-inline\">
+    <span class=\"dede-toolbar-icon\" uk-icon=\"icon: record2;ratio:0.8\"></span> 提交
+</button>
+</div>
 </div>
 </div>               
 ";

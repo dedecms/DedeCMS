@@ -16,7 +16,7 @@ html {
   position: relative;
   transition: box-shadow 0.15s ease-out;
   border-radius: 3px;
-  border-top-color: #35363a;
+  border-top-color: #f98020;
 }
 
 .uk-card .uk-inline {
@@ -49,6 +49,8 @@ html {
 }
 #install-top {
   background-color: rgb(50, 51, 54, 0.96);
+  border-bottom: 2px solid;
+  border-bottom-color: #f98020;
 }
 header {
   padding: 10px 0;

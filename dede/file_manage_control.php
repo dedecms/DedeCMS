@@ -85,26 +85,7 @@ else if ($fmdo == "edit") {
     }
     exit();
 }
-/*
-文件编辑，可视化模式
-function __saveEditView();
-else if($fmdo=="editview")
-{
-$filename = str_replace("..","",$filename);
-$file = "$cfg_basedir$activepath/$filename";
-$str = eregi_replace('&quot;','\\"',$str);
-$str = stripslashes($str);
-$fp = fopen($file,"w");
-fputs($fp,$str);
-fclose($fp);
-if(empty($backurl))
-{
-$backurl = "file_manage_main.php?activepath=$activepath";
-}
-ShowMsg("成功保存文件！",$backurl);
-exit();
-}
- */
+
 //文件上传
 /*---------------
 function __upload();
@@ -140,7 +121,7 @@ else if ($fmdo == "space") {
     }
     $titleinfo = "目录 <a href='file_manage_main.php?activepath=$activepath'><b><u>$ecpath</u></b></a> 空间使用状况：<br/>";
     $wintitle = "文件管理";
-    $wecome_info = "文件管理::空间大小检查 [<a href='file_manage_main.php?activepath=$activepath'>文件浏览器</a>]</a>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>空间大小检查</span></li></ul>";
     $activepath = $cfg_basedir . $activepath;
     $space = new SpaceUse;
     $space->checksize($activepath);
