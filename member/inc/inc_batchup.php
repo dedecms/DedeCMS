@@ -129,7 +129,7 @@ function DelArc($aid)
 }
 
 /**
- *  删除不带主表内容模型的数据
+ *  删除不带主表内容类型的数据
  *
  * @access    public
  * @param     int  $aid  文档ID

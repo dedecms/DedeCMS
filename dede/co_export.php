@@ -68,7 +68,7 @@ if ($dopost != 'done') {
         $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$channelid'; ");
     }
     if (!is_array($row)) {
-        echo "找不到频道内容模型信息，无法完成操作！";
+        echo "找不到频道内容类型信息，无法完成操作！";
         exit();
     }
 

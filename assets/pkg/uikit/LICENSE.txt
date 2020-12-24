@@ -1,3 +1,5 @@
+github.com/uikit/uikit & icons.getbootstrap.com 
+
 MIT License
 
 Copyright (C) 2017 by Marijn Haverbeke <marijnh@gmail.com> and others

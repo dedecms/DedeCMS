@@ -26,13 +26,13 @@ $actionSearch[0] = array(
         ),
         1 => array(
             'title' => '等审核的档案',
-            'description' => '所有内容模型发表的未经审核内容列表',
+            'description' => '所有内容类型发表的未经审核内容列表',
             'purview' => 'a_Check,a_AccCheck',
             'linkurl' => 'content_list.php?arcrank=-1',
         ),
         2 => array(
             'title' => '我发布的文档',
-            'description' => '现在登录的管理员所发表的所有内容模型中的文档',
+            'description' => '现在登录的管理员所发表的所有内容类型中的文档',
             'purview' => 'a_List,a_AccList,a_MyList',
             'linkurl' => 'content_list.php?mid=' . $cuserLogin->userID,
         ),
@@ -53,7 +53,7 @@ $actionSearch[0] = array(
 $actionSearch[1] = array(
     'toptitle' => '核心',
     'title' => '内容管理',
-    'description' => '网站对应内容模型的文档管理',
+    'description' => '网站对应内容类型的文档管理',
     'soniterm' => array(
         0 => array(
             'title' => '专题管理',
@@ -94,8 +94,8 @@ $actionSearch[3] = array(
     'description' => '所有上传的附件管理',
     'soniterm' => array(
         0 => array(
-            'title' => '内容模型管理 ',
-            'description' => '可以对现有商品、软件、图片集、普通文章、专题、分类信息等模型就行管理，也可以创建新的内容模型',
+            'title' => '内容类型管理 ',
+            'description' => '可以对现有商品、软件、图片集、普通文章、专题、分类信息等模型就行管理，也可以创建新的内容类型',
             'purview' => 'c_List',
             'linkurl' => 'mychannel_main.php',
         ),

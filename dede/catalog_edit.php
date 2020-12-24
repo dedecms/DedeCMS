@@ -199,9 +199,9 @@ if ($dopost == 'time') {
     ?> />
               支持 </td>
           </tr>
-          <!-- 在快速修改更改内容模型后，因为模板没改变，会导致错误，因此去除些选择框。 -->
+          <!-- 在快速修改更改内容类型后，因为模板没改变，会导致错误，因此去除些选择框。 -->
           <tr>
-            <td class='bline' height="26" align="center"><font color='red'>内容模型：</font> </td>
+            <td class='bline' height="26" align="center"><font color='red'>内容类型：</font> </td>
             <td class='bline'>
             <?php
 foreach ($channelArray as $k => $arr) {

@@ -404,3 +404,17 @@ else if ($step == 10) {
     @mysql_close($conn);
     exit();
 }
+else if($step==11)
+{
+	require_once('../data/admin/config_update.php');
+	$rmurl = UPDATEHOST."dedecms/demodata.{$s_lang}.txt";
+	$sql_content = file_get_contents($rmurl);
+	$fp = fopen(INSTALL_DEMO_NAME,'w');
+	if(fwrite($fp,$sql_content))
+		echo '&nbsp; <font color="green">[√]</font> 存在(您可以选择安装进行体验)';
+	else
+		echo '&nbsp; <font color="red">[×]</font> 远程获取失败';
+	unset($sql_content);
+	fclose($fp);
+	exit();
+}

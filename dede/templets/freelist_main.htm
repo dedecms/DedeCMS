@@ -1,154 +1,123 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-	<title>自由列表管理</title>
-	<link href="css/base.css" rel="stylesheet" type="text/css">
-	<script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
-	<script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
-	<script language="javascript" src="js/main.js"></script>
-	<script language="JavaScript">
-		var pageno = 1;
-		var totalrow = <? php echo $totalRow?>;
-		var pagesize = <? php echo $pagesize?>;
-		var orderby = '<?php echo $orderby?>';
-		var addget = "<?php echo $addget?>";
-		//加载列表
-		function ReloadPage(ordertype) {
-			orderby = ordertype;
-			var listArea = $Obj('rslist');
-			var errMsg = "网络通信出错！<br>[<a href=\"javascript:ReloadPage('" + ordertype + "')\"><u>点击此重新加载列表</u></a>]";
-			var myajax = new DedeAjax(listArea, true, true, "", errMsg, "正在加载...");
-			myajax.SendGet("freelist_main.php?dopost=getlist&pageno=" + pageno + "&orderby=" + ordertype + addget);
-		}
-		//载入指定页的列表
-		function LoadPage(npage) {
-			pageno = npage;
-			ReloadPage(orderby);
-			ReloadPageNum(pageno);
-		}
-		//更改
-		function EditNote(nid) {
-			location.href = 'freelist_edit.php?aid=' + nid;
-		}
-		//更新HTML
-		function CreateNote(nid) {
-			location.href = 'makehtml_freelist.php?aid=' + nid;
-		}
-		//删除
-		function DelNote(nid) {
-			if (!window.confirm("你确认要删除这条记录么！")) { return false; }
-			var listArea = $Obj('rslist');
-			totalrow = totalrow - 1;
-			var pagenum = Math.ceil(totalrow / pagesize);
-			if (pagenum <= pageno) pageno = pagenum;
-			var errMsg = "网络通信出错！<br>[<a href=\"javascript:LoadPage('" + pageno + "')\"><u>点击此重新加载列表</u></a>]";
-			var myajax = new DedeAjax(listArea, true, true, "", errMsg, "正在处理...");
-			myajax.SendGet("freelist_main.php?dopost=del&aid=" + nid + "&pageno=" + pageno);
-			ReloadPageNum(pageno);
-		}
-		//重新加载分页列表
-		function ReloadPageNum(startnum) {
-			var ListArea = $Obj('pagelist');
-			var pagenum = Math.ceil(totalrow / pagesize);
-			var listsize = 3;
-			var ahtml = "";
-			var startloop = 1;
-			var endnum = 0;
-			ahtml += "共：" + totalrow + " 条记录/" + pagenum + "页";
-			if (pageno > 1 && pageno != 1) ahtml += " <a href='#' onclick='LoadPage(1)'>首页</a> ";
-			if (pageno > 1) ahtml += "<a href='#' onclick='LoadPage(" + (pageno - 1) + ")'>↑上页</a> ";
-			if (startnum >= pagenum - listsize) {
-				startloop = pagenum - (listsize * 2);
-				if (startloop < 1) startloop = 1;
-				for (i = startloop; i <= pagenum; i++) {
-					if (i == pageno) ahtml += i + " ";
-					else ahtml += "<a href='#' onclick='LoadPage(" + i + ")'>[" + i + "]</a> ";
-				}
-			}
-			else if (pagenum < listsize) {
-				for (i = 1; i <= pagenum; i++) {
-					if (i == pageno) ahtml += i + " ";
-					else ahtml += "<a href='#' onclick='LoadPage(" + i + ")'>[" + i + "]</a> ";
-				}
-			}
-			else {
-				startloop = startnum - listsize;
-				if (startloop < 1) { startloop = 1; endnum = startloop + (listsize * 2); }
-				else { endnum = startnum + listsize; }
-				if (endnum >= pagenum) endnum = pagenum;
-				for (i = startloop; i <= endnum; i++) {
-					if (i == pageno) ahtml += i + " ";
-					else ahtml += "<a href='#' onclick='LoadPage(" + i + ")'>[" + i + "]</a> ";
-				}
-			}
-			if (pageno < pagenum) ahtml += "<a href='#' onclick='LoadPage(" + (pageno + 1) + ")'>下页↓</a> ";
-			if (pageno != pagenum && pagenum > 1) ahtml += " <a href='#' onclick='LoadPage(" + pagenum + ")'>末页</a>";
-			ListArea.innerHTML = ahtml;
-		}
-	</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>自由列表管理</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
 
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-	<div class="bodytitle">
-		<div class="bodytitleleft"></div>
-		<div class="bodytitletxt" style="padding-left:10px;">频道管理</div>
+<body>
+
+	
+    <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+		<div id="dede-card-header" class="uk-card-header">
+			<div class="uk-grid uk-grid-small uk-text-small">
+                <span><ul class="uk-breadcrumb"><li><span>自由列表管理</span></li></ul></span>
+			</div>
+            <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+                <li style="margin-right: 12px;"><a href="freelist_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">增加列表</a></li>
+                <li style="margin-right: 12px;"><a href="makehtml_freelist.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">更新所有列表HTML</a></li>
+				<li>
+					<button type='submit' class="uk-button-default uk-form-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+					<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+						<ul class="uk-nav uk-navbar-dropdown-nav" >
+							<li>
+								<form name='form3' action='freelist_main.php'  method='get'>
+									<div class="uk-margin">
+										<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
+									</div>
+									<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+								</form>
+							</li>
+						</ul>
+					</div>
+				</li>
+			
+			</ul>
+		</div>
+
+		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+			<thead>
+			<tr>
+                <td width="6%">ID</td>
+                <td width="28%">列表名称</td>
+                <td width="10%">模板文件</td>
+                <td width="10%">点击</td>
+                <td width="15%">创建时间</td>
+                <td>操作</td>
+            </tr>
+			</thead>
+		</table>
 	</div>
 
-	<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle"
-		style="border:1px solid #EAECEF;border-bottom:none;">
-		<tr>
-			<td bgcolor="#EAECEF" class="tbtitletxt" background="images/tbg.gif">
-				<table width='100%' border="0" cellpadding='0' cellspacing='0'>
-					<tr>
-						<td width='36%' class="tbtitletxt" style="padding-left:10px;"><strong>自由列表管理</strong>&nbsp;[<a
-								href="freelist_add.php"><u>增加列表</u></a>]</td>
-						<td width="29%">&nbsp;</td>
-						<td width="35%" align='right'>&nbsp;</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-	<span id='rslist'>
-		<?php
-	GetTagList($dsql,$pageno,$pagesize,$orderby);
-	?>
-	</span>
-	<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center"
-		style=" border:1px solid #EAECEF;line-height:31px;margin:auto;">
-		<tr>
-			<td height="35" align="center" style="background:#FAFBFC;padding:7px 6px 3px 6px;">
-				<table width="100%" border="0" cellpadding="0" cellspacing="0">
-					<form action="freelist_main.php" name="form1" id="form1">
-						<tr>
-							<td width="200" align="center">
-								<input type="text" name="keyword" id="keyword" class='alltxt' style="width:170px"
-									value="<?php echo $keyword?>" />
-							</td>
-							<td width="80" align="left">
-								<input type="submit" name="Submit2" value="搜索" class="coolbg np" />
-							</td>
-							<td align="left">
-								<input type="button" name="bt1" value="增加列表" style="width:70px"
-									onclick="location='freelist_add.php';" class="coolbg np" />
-								&nbsp;
-								<input type="button" name="bt2" value="更新所有列表HTML" style="width:180px"
-									onclick="location='makehtml_freelist.php';" class="coolbg np" />
-							</td>
-							<td width="200">
-								<span id='pagelist'>
-									<script language='javascript'>ReloadPageNum(1);</script>
-								</span>
+
+	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -50;">
+		<div class="uk-card-body uk-overflow-auto" grid>
+			<div class="uk-child-width-1-1">
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+						<thead>
+							<tr>
+								<td width="6%">ID</td>
+								<td width="28%">列表名称</td>
+								<td width="10%">模板文件</td>
+								<td width="10%">点击</td>
+								<td width="15%">创建时间</td>
+								<td>操作</td>
+							</tr>
+						</thead>
+					<tbody>
+						<!-- 内容列表 -->
+						{dede:datalist}
+						<tr> 
+							<td>{dede:field.aid /}</td>
+							<td>{dede:field.title /}</td>
+							<td>{dede:field.templet /}</td>
+							<td>{dede:field.click /}</td>
+							<td>{dede:field.edtime function="MyDate('Y-m-d H:i',@me)"/}</td>
+							<td>
+								<a href='freelist_edit.php?aid={dede:field.aid /}' >[更改]</a>
+								<a href='makehtml_freelist.php?aid={dede:field.aid /}' >[更新]</a>
+								<a href='freelist_main.php?dopost=del&aid={dede:field.aid /}' onclick="window.confirm('确定删除该列表？');" >[删除]</a>
 							</td>
 						</tr>
-					</form>
-				</table>
-			</td>
-		</tr>
-	</table>
+						{/dede:datalist}
+						<!-- /内容列表 -->
+					</tbody>
+					
+
+					<!-- 分页 -->
+					<thead>
+						<tr>
+							<td height="36" colspan="10" align="center">
+								{dede:pagelist listsize=6/}
+							</td>
+						</tr>
+					</thead>
+					<!-- /分页 -->
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="bar-bottom uk-flex uk-light uk-flex-right">
+		<div class="uk-button-group" style="margin-left: 50px;">
+		</div>
+	  <div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+	</div>
+		<!-- JS FILES -->
+		<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+		<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+		<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+		<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+
+
+
 </body>
 
 </html>

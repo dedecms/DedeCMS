@@ -1,61 +1,99 @@
 {dede:page pagesize="50"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>自定义表单管理</title>
-<link href="css/base.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>自定义表单管理</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt" style="padding-left:10px;">自定义表单管理</div>
-</div>
 
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="border:1px solid #EAECEF;border-bottom:none;">
-		<tr>
-				<td bgcolor="#EDF9D5" class="tbtitletxt" background="images/tbg.gif">
-				  <table width='96%' border="0" cellpadding='0' cellspacing='0'>
-                  <tr>
-                    <td width='30%' style="padding-left:10px;">[<a href="diy_add.php"><u>增加新的自定义表单</u></a>]</td>
-                    <td align='right'>
-						[图片说明：
-						<img src='images/report_edit.png' valign="middle"alt='更改' />更改
-						<img src='images/gtk-del.png' valign="middle" alt='删除' />删除
-						]
-                   </td>
-                  </tr>
-         </table>
-      </td>
-  </tr>
-</table>
-
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class='tbtitle' style='background:#EAECEF;margin-bottom:5px;'>
-		<tr align="center" bgcolor="#FBFBFB" height="26">
-         <td>diyid</td>
-		  <td>名称</td>
-		  <td>表名</td>
-		  <td>管理</td>
-  </tr>
-		   {dede:datalist}
-		  <tr align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-        <td>{dede:field.diyid/}</td>
-        <td><a href="diy_list.php?action=list&diyid={dede:field.diyid/}"><u>{dede:field.name/}</u></a></td>
-        <td>{dede:field.table/}</td>
-        <td>
-         <a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=edit'><img src='images/report_edit.png' alt='更改' /></a> |
-		     <a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=delete'><img src='images/gtk-del.png' alt='删除' /></a> |
-		     <a href="../plus/diy.php?action=list&diyid={dede:field.diyid/}" target="_blank"><img src='images/gtk-tmp.png' title='预览' alt='预览' />前台预览</a>
-		    </td>
-     </tr>
-		   {/dede:datalist}
-</table>
+<body>
 
 
-<table width="98%" border="0" cellpadding="5" cellspacing="1" align="center" style=" border:1px solid #EAECEF;line-height:31px;margin:auto;">
-		<tr>
-			<td height="35" align="center" style="background:#FAFBFC;padding:7px 6px 6px 10px;" >{dede:pagelist listsize=6/}</td>
-  </tr>
-</table>
+    <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+		<div id="dede-card-header" class="uk-card-header">
+			<div class="uk-grid uk-grid-small uk-text-small">
+                <span><ul class="uk-breadcrumb"><li><span>自由列表管理</span></li></ul></span>
+			</div>
+            <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+                <li style="margin-right: 12px;"><a href="diy_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">增加新的自定义表单</a></li>
+			</ul>
+		</div>
+
+		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+			<thead>
+			<tr>
+                <td width="6%">ID</td>
+                <td >表单名称</td>
+                <td width="10%">表名</td>
+                <td width="20%">操作</td>
+            </tr>
+			</thead>
+		</table>
+	</div>
+
+	
+	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -50;">
+		<div class="uk-card-body uk-overflow-auto" grid>
+			<div class="uk-child-width-1-1">
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+						<thead>
+							<tr>
+								<td width="6%">ID</td>
+								<td >表单名称</td>
+								<td width="10%">表名</td>
+								<td width="20%">操作</td>
+							</tr>
+						</thead>
+					<tbody>
+						<!-- 内容列表 -->
+						{dede:datalist}
+						<tr>
+							<td>{dede:field.diyid/}</td>
+							<td><a href="diy_list.php?action=list&diyid={dede:field.diyid/}"><u>{dede:field.name/}</u></a></td>
+							<td>{dede:field.table/}</td>
+							<td>
+							<a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=edit'>[更改]</a>
+							<a href='diy_edit.php?diyid={dede:field.diyid/}&dopost=delete'>[删除]</a>
+							<a href="../plus/diy.php?action=list&diyid={dede:field.diyid/}" target="_blank">[预览]</a>
+							</td>
+				   		</tr>
+						 {/dede:datalist}
+						<!-- /内容列表 -->
+					</tbody>
+					
+
+					<!-- 分页 -->
+					<thead>
+						<tr>
+							<td height="36" colspan="10" align="center">
+								{dede:pagelist listsize=6/}
+							</td>
+						</tr>
+					</thead>
+					<!-- /分页 -->
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="bar-bottom uk-flex uk-light uk-flex-right">
+		<div class="uk-button-group" style="margin-left: 50px;">
+		</div>
+	<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+	</div>
+	<!-- JS FILES -->
+	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+
+
 </body>
 </html>

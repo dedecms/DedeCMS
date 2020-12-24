@@ -1,92 +1,147 @@
 {dede:config.pagesize value="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>单独页面管理</title>
-<link href='css/base.css' rel='stylesheet' type='text/css'>
-<style>
-ul { padding:0px; margin:0px;}
-li { float:left; padding-right:8px; line-height:24px; }
-</style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>单独页面管理</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px">
-  <tr>
-   <td background="images/wbg.gif" colspan="6" style="padding-left:10px;">
-  <form action='templets_one.php' name='sss'>
-  <ul>
-  <li>关键字：</li>
-  <li><input type='text' name='keyword' value="<?php if(!empty($keyword)) $keyword = ''; ?>" style='width:160px' /></li>
-  <li>标识：</li>
-  <li><?php
-     $likeid = (!isset($likeid) ? '' : $likeid);
-     echo "<select name='likeid' id='likeid'>\r\n";
-     $dsql->Execute("s","Select likeid From `#@__sgpage` group by likeid ");
-     echo "<option value=''>不限</option>\r\n";
-     while($arr = $dsql->GetArray('s'))
-     {
-        if($likeid==$arr['likeid']) echo "<option value='{$arr['likeid']}' selected>{$arr['likeid']}</option>\r\n";
-        else echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
-     }
-     echo "</select>\r\n";
-  ?></li>
-  <li><input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np" /></li>
-  </ul>
-  </form>
-	 </td>
-</table>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
-  <tr>
-   <td height="28" background="images/tbg.gif" colspan="7" style="padding-left:10px;">
-    <div style="float:left">
-    <b>◆单独页面管理</b>
+<body>
+
+   <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+		<div id="dede-card-header" class="uk-card-header">
+			<div class="uk-grid uk-grid-small uk-text-small">
+				<span><ul class="uk-breadcrumb"><li><span>单独页面管理</span></li></span>
+			</div>
+			<!--  搜索表单  -->
+			<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+            <li style="margin-right: 12px;"><a href="templets_one_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">新建页面</a></li>
+            <li style="margin-right: 12px;"><a href="templets_one_edit.php?dopost=mkall" class="uk-button uk-button-default uk-button-small uk-flex-inline ">全部更新</a></li>
+				<li>
+					<button type='submit' class="uk-button-default uk-form-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+					<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+						<ul class="uk-nav uk-navbar-dropdown-nav" >
+							<li>
+								<form  name='form3' action='templets_one.php'  method='get'>
+								<input type='hidden' name='dopost' value='listArchives' />
+								<fieldset id="dede-dropdown-margin" class="uk-fieldset">
+								<div class="uk-margin">
+                        <?php $likeid = (!isset($likeid) ? '' : $likeid);
+                         echo "<select name='likeid' id='likeid' class=\"uk-select uk-form-small uk-flex-inline uk-width-1-1\" >\r\n";
+                        $dsql->Execute("s","Select likeid From `#@__sgpage` group by likeid ");
+                        echo "<option value=''>不限</option>\r\n";
+                        while($arr = $dsql->GetArray('s'))
+                        {
+                           if($likeid==$arr['likeid']) echo "<option value='{$arr['likeid']}' selected>{$arr['likeid']}</option>\r\n";
+                           else echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
+                        }
+                        echo "</select>\r\n";
+                        ?>
+								</div>
+								<div class="uk-margin">
+									<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
+								</div>
+								<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+								</fieldset>
+								</form>
+								</li>
+							</ul>
+					</div>
+				</li>
+			</ul>
+			<!--  /搜索表单  -->
+		</div>
+		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+			<thead>
+			<tr>
+            <td width="6%">编号</td>
+            <td width="6%"></td>
+            <td width="30%">页面名称</td>
+            <td width="11%">需编译</td>
+            <td width="10%">标识</td>
+            <td width="12%">修改时间</td>
+            <td width="21%">管理</td>
+			</tr>
+			</thead>
+		</table>
+	</div>
+
+
+	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+		<div class="uk-card-body uk-overflow-auto" grid>
+			<div class="uk-child-width-1-1">
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+						<thead>
+							<tr>
+                        <td width="6%">编号</td>
+                        <td width="6%"></td>
+                        <td width="30%">页面名称</td>
+                        <td width="11%">需编译</td>
+                        <td width="10%">标识</td>
+                        <td width="12%">修改时间</td>
+                        <td width="21%">管理</td>
+							</tr>
+						</thead>
+					<tbody>
+						<!-- 内容列表 -->
+                  {dede:datalist}
+                  <tr> 
+                     <td>{dede:field.aid /}</td>
+                     <td><input type='checkbox' name='ids[]' value='{dede:field.aid /}' class="uk-checkbox"></td>
+                      <td><a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>{dede:field.title /}</a></td>
+                      <td>{dede:field.ismake function='GetIsMake(@me)'/}</td>
+                      <td>{dede:field.likeid /}</td>
+                      <td>{dede:field.uptime function='GetDateMk(@me)'/}</td>
+                      <td>
+                           <a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>[更改]</a>
+                           <a href="templets_one_edit.php?aid={dede:field.aid /}&dopost=view" target='_blank'>[预览]</a>
+                           <a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=delete'>[删除]</a>
+                     </td>
+                   </tr>
+                    {/dede:datalist}
+						<!-- /内容列表 -->
+
+
+					</tbody>
+					<!-- 批量操作 -->
+					<thead>
+						<tr>
+							<td></td>
+							<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+							<td height="36" colspan="5">
+                        <a href="#" onClick="document.form1.submit();" class="uk-button uk-button-default uk-button-small">更新选中页面</a>
+							</td>
+						</tr>
+					</thead>
+					<!-- /批量操作 -->
+					<!-- 分页 -->
+					<thead>
+						<tr>
+							<td height="36" colspan="10" align="center">
+								{dede:pagelist listsize=6/}
+							</td>
+						</tr>
+					</thead>
+					<!-- /分页 -->
+					</table>
+				</div>
+			</div>
+		</div>
+   </div>
+   
+   <div class="bar-bottom uk-flex uk-light uk-flex-right">
+      <div class="uk-button-group" style="margin-left: 50px;">
+      </div>
+    <div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
     </div>
-    <div style="float:right">
-     [<a href="templets_one_add.php"><u>增加一个页面</u></a>]
-     &nbsp;[<a href="#" onClick="document.form1.submit();"><u>更新选中页面</u></a>]
-     &nbsp;[<a href="templets_one_edit.php?dopost=mkall"><u>更新所有页面</u></a>]
-     &nbsp;&nbsp;&nbsp;&nbsp;
-    </div>
-	 </td>
-  </tr>
-  <tr align="center" bgcolor="#FBFBFB" height="24"> 
-      <td width="6%">选择</td>
-      <td width="6%">编号</td>
-      <td width="30%">页面名称</td>
-      <td width="11%">需编译</td>
-      <td width="10%">标识</td>
-      <td width="12%">修改时间</td>
-      <td width="21%">管理</td>
-   </tr>
-   <form name='form1' action='templets_one_edit.php'>
-   	<input type='hidden' name='dopost' value='mksel' />
-   {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="24" onMouseMove="javascript:this.bgColor='#FBFBFB';" 
-    	onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-    	  <td><input type='checkbox' name='ids[]' value='{dede:field.aid /}' class='np' ></td>
-        <td>{dede:field.aid /}</td>
-        <td><a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>{dede:field.title /}</a></td>
-        <td>{dede:field.ismake function='GetIsMake(@me)'/}</td>
-        <td>{dede:field.likeid /}</td>
-        <td>{dede:field.uptime function='GetDateMk(@me)'/}</td>
-        <td>
-          	<a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=edit'>[更改]</a>
-		        <a href="templets_one_edit.php?aid={dede:field.aid /}&dopost=view" target='_blank'>[预览]</a>
-		        &nbsp;|&nbsp;
-		        <a href='templets_one_edit.php?aid={dede:field.aid /}&dopost=delete'>[删除]</a>
-		    </td>
-     </tr>
-		{/dede:datalist}
-	   </form>
-      <tr align="center" bgcolor="#FAFBFC" height="24"> 
-       <td colspan="7">
-      	{dede:pagelist listsize=6/}
-      </td>
-     </tr>
-   </table>
-   </td>
-</tr>
-</table>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
 </body>
 </html>

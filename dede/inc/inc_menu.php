@@ -15,7 +15,7 @@ require_once dirname(__FILE__) . "/../config.php";
 //载入可发布频道
 $addset = '';
 
-//检测可用的内容模型
+//检测可用的内容类型
 if ($cfg_admin_channel = 'array' && count($admin_catalogs) > 0) {
     $admin_catalog = join(',', $admin_catalogs);
     $dsql->SetQuery(" SELECT channeltype FROM `#@__arctype` WHERE id IN({$admin_catalog}) GROUP BY channeltype ");
@@ -41,7 +41,7 @@ while ($row = $dsql->GetObject('mm')) {
 $adminMenu1 = $adminMenu2 = '';
 if ($cuserLogin->getUserType() >= 10) {
     $adminMenu1 = "<m:top item='1_' name='频道模型' display='' rank='t_List,t_AccList,c_List,temp_One'>
-  <m:item name='内容模型管理' link='mychannel_main.php' rank='c_List' target='main' />
+  <m:item name='内容类型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />
   <m:item name='自由列表管理' link='freelist_main.php' rank='c_List' target='main' />

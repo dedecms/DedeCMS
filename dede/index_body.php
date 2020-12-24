@@ -15,6 +15,11 @@ require DEDEINC . '/image.func.php';
 require DEDEINC . '/dedetag.class.php';
 $defaultIcoFile = DEDEDATA . '/admin/quickmenu.txt';
 $myIcoFile = DEDEDATA . '/admin/quickmenu-' . $cuserLogin->getUserID() . '.txt';
+
+$mysql_version = $dsql->GetVersion();
+$mysql_versions = explode(".", trim($mysql_version));
+$mysql_version = $mysql_versions[0] . "." . $mysql_versions[1];
+
 if (!file_exists($myIcoFile)) {
     $myIcoFile = $defaultIcoFile;
 }
@@ -178,36 +183,20 @@ else if ($dopost == 'getRightSide') {
         $chArr[] = $row;
     }
     ?>
-    <table width="100%" class="dboxtable">
-    <tr>
-        <td width='50%' class='nline'  style="text-align:left"> 会员数： </td>
-        <td class='nline' style="text-align:left"> <?php echo $row1['dd']; ?> </td>
-    </tr>
-    <tr>
-        <td class='nline' style="text-align:left"> 文档数： </td>
-        <td class='nline' style="text-align:left"> <?php echo $allArc; ?> </td>
-    </tr>
-    <?php
-foreach ($chArr as $row) {
-        ?>
-    <tr>
-        <td class='nline' style="text-align:left"> <?php echo $row['typename']; ?>： </td>
-        <td class='nline' style="text-align:left"> <?php echo $row['dd']; ?>&nbsp; </td>
-    </tr>
-    <?php
-}
-    ?>
-    <tr>
-        <td style="text-align:left"> 评论数： </td>
-        <td style="text-align:left"> <?php echo $row2['dd']; ?> </td>
-    </tr>
-    </table>
+    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen " style="padding:12px 24px;">
+    <li><span> 会员数： </span>  <?php echo $row1['dd']; ?></li>
+    <li><span> 文档数： </span>  <?php echo $allArc; ?></li>
+    <?php foreach ($chArr as $row) { ?>
+    <li><span> <?php echo $row['typename']; ?>： </span>  <?php echo $row['dd']; ?></li>
+    <?php } ?>
+    <li><span> 评论数： </span>  <?php echo $row2['dd']; ?></li>
+    </ul>
 <?php
 exit();
-} else if ($dopost == 'getRightSideNews') {
+} else if ($dopost == 'News') {
     $query = "SELECT arc.id, arc.arcrank, arc.title, arc.channel, ch.editcon  FROM `#@__archives` arc
             LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
-             WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 6 ";
+             WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 12 ";
     $arcArr = array();
     $dsql->Execute('m', $query);
     while ($row = $dsql->GetArray('m')) {
@@ -215,27 +204,23 @@ exit();
     }
     AjaxHead();
     ?>
-    <table width="100%" class="dboxtable">
+    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen" style="padding:0 24px; padding-top:24px;padding-bottom:0px;">
     <?php
-foreach ($arcArr as $row) {
+        foreach ($arcArr as $row) {
         if (trim($row['editcon']) == '') {
             $row['editcon'] = 'archives_edit.php';
         }
-        $linkstr = "·<a href='{$row['editcon']}?aid={$row['id']}&channelid={$row['channel']}'>{$row['title']}</a>";
+        $linkstr = "<a href='{$row['editcon']}?aid={$row['id']}&channelid={$row['channel']}'>{$row['title']}</a>";
         if ($row['arcrank'] == -1) {
             $linkstr .= "<font color='red'>(未审核)</font>";
         }
 
         ?>
-    <tr>
-        <td class='nline'>
-            <?php echo $linkstr; ?>
-        </td>
-    </tr>
+    <li> <?php echo $linkstr; ?></li>
     <?php
 }
     ?>
-    </table>
+    </ul>
 <?php
 exit;
 } else if ($dopost == 'showauth') {
@@ -414,8 +399,7 @@ exit;
         'haosou360_count' => '360收录',
     );
     ?>
-<table width="100%" class="dboxtable">
-    <tbody>
+    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen " style="padding:0 24px; padding-top:18px;padding-bottom:0px;">
 <?php
 foreach ($seo_info as $key => $value) {
         if ($key == 'id' or $key == 'create_time') {
@@ -424,21 +408,20 @@ foreach ($seo_info as $key => $value) {
 
         ?>
 
-    <tr>
-        <td width="50%" class="nline" style="text-align:left"> <?php
+    <li>
+        <span> <?php
 echo $inff[$key];
         ?>
-        ： </td>
-        <td class="nline" style="text-align:left"> <?php
-echo $value;
+        ： </span>  <?php
+        echo $value;
         ?>
-         </td>
-    </tr>
+
+    </li>
 <?php
 }
     ?>
 
-    </tbody></table>
+    </ul>
 <?php
 
     exit;

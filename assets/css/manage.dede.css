@@ -121,8 +121,8 @@ margin-right: 9px;
 }
 
 .dede-card-navbar,
-.dede-card-navbar>li>a{
-  min-height: 40px;
+.dede-card-navbar >li>a{
+  min-height: 30px;
 }
 
 #dede-dropdown-margin > .uk-margin{
@@ -189,4 +189,8 @@ margin-right: 9px;
   border-bottom-color: #f98020;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px; 
+}
+
+.uk-checkbox{
+  margin-top: 1px;
 }

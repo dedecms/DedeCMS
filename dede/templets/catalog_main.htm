@@ -15,9 +15,12 @@
   <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
 		<div id="dede-card-header" class="uk-card-header">
 			<div class="uk-grid uk-grid-small uk-text-small">
-			  <span class="cat-txt"></span><ul class="uk-breadcrumb"><li><span>栏目管理</span></li></ul></span>
+				<span><ul class="uk-breadcrumb"><li><span>栏目管理</span></li></ul></span>
 			</div>
-    </div>
+			<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+			<li style="margin-right: 12px;"><a href="catalog_add.php?listtype=all" class="uk-button uk-button-default uk-button-small uk-flex-inline ">添加顶级栏目</a></li>
+			</ul>
+    	</div>
     
     
 		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
@@ -51,27 +54,27 @@
 								<td width="38%" align='right'>操作</td>
 							</tr>
 						</thead>
-					<tbody>
 						<form name='form1' method='post' action='catalog_do.php?dopost=upRankAll'>
+						<tbody>
 							<?php          
 							if (empty($opendir)) { $opendir = -1; }
 							if ($userChannel > 0) { $opendir = $userChannel; }
 							$tu = new TypeUnit();
 							$tu->ListAllType($userChannel, $opendir);
 							?>
-						</form>
-					</tbody>
-					<!-- 批量操作 -->
-					<thead>
-						<tr>
-							<td></td>
-							<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
-							<td height="36" colspan="8">
-								<a  type="button" onClick="document.form1.submit();" />更新排序</a>
-							</td>
-						</tr>
-					</thead>
-					<!-- /批量操作 -->
+						</tbody>
+						<!-- 批量操作 -->
+						<thead>
+							<tr>
+								<td></td>
+								<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+								<td height="36" colspan="8">
+									<button type="submit"  class="uk-button uk-button-default uk-button-small" />更新排序</button>
+								</td>
+							</tr>
+						</thead>
+						<!-- /批量操作 -->
+					</form>
 
 					</table>
 				</div>

@@ -1,0 +1,20 @@
+.uk-alert-danger{
+    margin-top:5px;
+    margin-bottom:0px;
+}
+
+
+.uk-list>*>ul, .uk-list>:nth-child(n+2) {
+    margin-top: 0px;
+    margin-bottom:12px;
+}
+
+#dede-system-header {
+    box-shadow:none;
+    background-color: #fff;
+    border-left: 1px solid #ececec;
+    border-right: 1px solid  #ececec;
+    border-bottom: 1px solid  #ececec;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}

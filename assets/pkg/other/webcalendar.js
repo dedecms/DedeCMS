@@ -1,4 +1,3 @@
-<!--
 var cal;
 var isFocus=false; //是否为焦点
 //以上为  寒羽枫 2006-06-25 添加的变量
@@ -524,4 +523,3 @@ document.write('left:expression(this.previousSibling.offsetLeft);top:expression(
 document.write('display:expression(this.previousSibling.style.display);" scrolling="no" frameborder="no"></iframe>');
 }
 document.write('</div>');
-//-->

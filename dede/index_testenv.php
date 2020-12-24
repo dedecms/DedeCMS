@@ -100,6 +100,7 @@ if(!function_exists('TestAdminPWD'))
 		$row = $dsql->GetOne($sql);
 		if(is_array($row))
 		{
+			// f297a57a5a743894a0e4 = admin
 			if($row['pwd'] == 'f297a57a5a743894a0e4')
 			{
 				return -2;
@@ -138,13 +139,7 @@ if(!function_exists('IsWritable'))
 
 // 检测权限
 $safeMsg = array();
-//if(TestExecuteable(DEDEROOT.'/data',$cfg_basehost) || TestExecuteable(DEDEROOT.'/uploads',$cfg_basehost))
-//{
-//	$helpurl = "http://help.dedecms.com/install-use/server/2011/1109/2124.html";
-//	$safeMsg[] = '目前data、uploads有执行.php权限，非常危险，需要立即取消目录的执行权限！
-//	<a href="testenv.php" title="全面检测"><img src="images/btn_fullscan.gif" /></a>
-//	<a href="'.$helpurl.'" style="color:blue;text-decoration:underline;" target="_blank">查看如何取消</a>';
-//}
+
 $dirname = str_replace('index_body.php', '', strtolower($_SERVER['PHP_SELF']));
 if(preg_match("#[\\|/]dede[\\|/]#", $dirname))
 {
@@ -169,41 +164,19 @@ if($rs < 0)
 	}
 	$safeMsg[] = $msg;
 }
-
-//if(PostHost($cfg_basehost.'/data/admin/ver.txt') === @file_get_contents(DEDEDATA.'/admin/ver.txt'))
-//{
-//	$helpurl = 'http://help.dedecms.com/install-use/apply/2011/1110/2129.html';
-//	$safeMsg[] = '<font color="blue">强烈建议将data目录搬移到Web根目录以外；</font><a href="'.$helpurl.'" style="color:blue;text-decoration:underline;" target="_blank">查看如何搬迁</a>';
-//}
-?>
-<?php
 if(count($safeMsg) > 0)
 {
 ?>
 <!--安全检测提示 -->
-<div id="safemsg">
-  <dl class="dbox" id="item1" style="margin-left:0.5%;margin-right:0.5%; width:97%">
-    <dt class='lside'><span class='l'><?php echo $cfg_soft_enname; ?>安全提示</span></dt>
-    <dd>
-      <div id='safelist'>
-        <table width="98%" border="0" cellspacing="1" cellpadding="0" style="color:red">
-          <?php
-  $i=1;
-  foreach($safeMsg as $key => $val)
-  {
-  ?>
-          <tr>
-            <td><font color="black"><?php echo $i;?>.</font><?php echo $val;?></td>
-          </tr>
-          <?php
-  	$i++;
-  }
-  ?>
-        </table>
-      </div>
-    </dd>
-  </dl>
+
+
+<?php
+$i=1;
+foreach($safeMsg as $key => $val) {
+?>
+<div class="uk-alert-danger" uk-alert>
+	<p><?=$val;?></p>
 </div>
 <?php
-}
+$i++;}}
 ?>

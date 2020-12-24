@@ -270,9 +270,33 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
         $GLOBALS['cfg_plus_dir'] = '..';
     }
 
-    $htmlhead = "<html>\r\n<head>\r\n<title>DedeCMS提示信息</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset={dede:global.cfg_soft_lang/}\" />\r\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">\r\n<meta name=\"renderer\" content=\"webkit\">\r\n<meta http-equiv=\"Cache-Control\" content=\"no-siteapp\" />";
-    $htmlhead .= "<base target='_self'/>\r\n<style>div{line-height:160%;}</style></head>\r\n<body leftmargin='0' topmargin='0' bgcolor='#FFFFFF'>" . (isset($GLOBALS['ucsynlogin']) ? $GLOBALS['ucsynlogin'] : '') . "\r\n<center>\r\n<script>\r\n";
-    $htmlfoot = "</script>\r\n</center>\r\n</body>\r\n</html>\r\n";
+    $htmlhead = "
+    <html>\r\n<head>\r\n<title>DedeCMS提示信息</title>\r\n
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset={dede:global.cfg_soft_lang/}\" />
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\">
+    <meta name=\"renderer\" content=\"webkit\">
+    <meta http-equiv=\"Cache-Control\" content=\"no-siteapp\" />
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css\" />
+    <link rel=\"stylesheet\" type=\"text/css\" href=\"{dede:global.cfg_assets_dir/}/css/manage.dede.css\">
+    <base target='_self'/>
+    </head>
+    <body>
+    " . (isset($GLOBALS['ucsynlogin']) ? $GLOBALS['ucsynlogin'] : '') . "
+    <center style=\"width:450px\" class=\"uk-container\">
+    
+    <div class=\"uk-card uk-card-small uk-card-default\" style=\"margin-top: 50px;\">
+        <div class=\"uk-card-header\"  style=\"height:20px\">DedeCMS 提示信息！</div>
+
+    <script>\r\n";
+    $htmlfoot = "
+    </script>
+    
+    
+    </center>
+    
+    <script src=\"{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js\"></script>
+	<script src=\"{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js\"></script>
+    </body>\r\n</html>\r\n";
 
     $litime = ($limittime == 0 ? 1000 : $limittime);
     $func = '';
@@ -300,8 +324,6 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
         if(pgo==0){ location='$gourl'; pgo=1; }
       }\r\n";
         $rmsg = $func;
-        $rmsg .= "document.write(\"<br /><div style='width:450px;padding:0px;border:1px solid #DADADA;'>";
-        $rmsg .= "<div style='padding:6px;font-size:12px;border-bottom:1px solid #DADADA;background-color:#FFF;'><b>DedeCMS 提示信息！</b></div>\");\r\n";
         $rmsg .= "document.write(\"<div style='height:130px;font-size:10pt;background:#ffffff'><br />\");\r\n";
         $rmsg .= "document.write(\"" . str_replace("\"", "“", $msg) . "\");\r\n";
         $rmsg .= "document.write(\"";

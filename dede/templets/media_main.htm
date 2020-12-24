@@ -1,153 +1,169 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>附件数据管理</title>
-<link href="css/base.css" rel="stylesheet" type="text/css">
-<style>
-.napisdiv {left:10;top:0;width:150px;height:100px;position:absolute;z-index:3}
-</style>
-<script>
-function ChangeImage(surl){ document.getElementById('picview').src = surl; }
-	//获得选中文件的文件名
-function getCheckboxItem(){
-	 var allSel="";
-	 if(document.form1.aids.value) return document.form1.aids.value;
-	 for(i=0;i<document.form1.aids.length;i++)
-	 {
-		 if(document.form1.aids[i].checked){
-			 if(allSel=="")
-				 allSel=document.form1.aids[i].value;
-			 else
-				 allSel=allSel+","+document.form1.aids[i].value;
-		 }
-	 }
-	 return allSel;	
-}
-
-function AllSel(){
-	for(i=0;i<document.form1.aids.length;i++){
-		document.form1.aids[i].checked = true;
-	}
-}
-
-function NoneSel(){
-	for(i=0;i<document.form1.aids.length;i++){
-		document.form1.aids[i].checked = false;
-	}
-}
-
-function DelSel(){
-	 var nid = getCheckboxItem();
-	 if(nid==""){
-		  alert("请选择项目!\r\n");
-		  return ;
-	 }
-	 location.href = "media_edit.php?dopost=del&ids="+nid;
-}
-</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>附件数据管理</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background="images/allbg.gif" leftmargin="8" topmargin="8">
-<div id="floater" class="napisdiv">
-<a href="javascript:;" onClick="ChangeImage('./images/eye.png');">
-	<img src='./images/eye.png' id='picview' name='picview' border='0' alt='单击关闭预览' style='z-index:10000'>
-</a>
-</div>
-<SCRIPT language=JavaScript src="js/float.js"></SCRIPT>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
-  <tr> 
-    <td height="28" colspan="7" background="images/tbg.gif">
-    	<table width='96%' cellpadding='0' cellspacing='0' style="padding-left:10px;">
-    		<tr>
-    		<td width='30%'><b>附件数据管理</b></td>
-        <td align='right'>
-    	  [<a href="media_add.php"><u>上传新文件</u></a>]
-        </td>
-      </tr>
-     </table>
-     </td>
-  </tr>
-  <tr bgcolor="#ffffff" height="24"> 
-    <td colspan="7">
-	<table width="600" border="0" cellspacing="0" cellpadding="0">
-        <form name='forms' method='post' action='media_main.php'>
-        <tr> 
-          <td width="10">&nbsp;</td>
-          <td width="70" align="center">关键字：</td>
-          <td width="100">
-          	<input name="keyword" type="text" id="keyword" style="width:100" value="<?php echo $keyword?>" />
-          </td>
-          <td width="100" align="center">
-		  <select name='mediatype' style='width:80'>
-              <option value='0'>文件类型</option>
-              <option value='1'<?php if($mediatype==1) echo " selected"?>>图片</option>
-              <option value='2'<?php if($mediatype==2) echo " selected"?>>FLASH</option>
-              <option value='3'<?php if($mediatype==3) echo " selected"?>>视频/音频</option>
-              <option value='4'<?php if($mediatype==4) echo " selected"?>>其它附件</option>
-            </select> </td>
-          <td width="100" align="center">
-		  <select name='membertype' style='width:80'>
-              <option value='0'>用户组</option>
-              <option value='1'<?php if($membertype==1) echo " selected"?>>管理员</option>
-              <option value='2'<?php if($membertype==2) echo " selected"?>>外部会员</option>
-		 </select>
-		  </td>
-          <td>
-          	<input class="np" name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" />
-          </td>
-        </tr>
-      </form>
-      </table>
-    </td>
-  </tr>
-  <tr  bgcolor="#FBFBFB" height="24" align="center"> 
-    <td width="8%">选择</td>      
-    <td width="28%">文件标题</td>      
-    <td width="10%">文件大小</td>      
-    <td width="15%">上传会员</td>      
-    <td width="15%">上传时间</td>      
-    <td width="9%">文件类型</td>      
-    <td width="15%">管理</td>
-   </tr>
-   <form name='form1'>
-{dede:datalist}
-  <tr align="center" bgcolor="#FFFFFF" height="24" 
-  	onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-    <td>
-    	<input type='checkbox' name='aids' id='aids{dede:field.aid/}' value='{dede:field.aid/}' class='np'/>
-    </td>
-    <td>
-    	<a href='{dede:field.url/}' title='{dede:field.url/}' target='_blank'>
-      <u>{dede:field.title/}</u>
-    	</a>
-    </td>
-    <td>{dede:field.filesize function='GetFileSize(@me)'/}</td> 
-    <td>{dede:field.adminname function="UploadAdmin(@me,$fields['membername'])"/}</td>
-    <td>{dede:field.uptime function="MyDate('Y-m-d H:i',@me)"/}</td>
-    <td>{dede:field.mediatype function="MediaType(@me,$fields['url'])"/}</td>
-    <td>
-    	<a href='media_edit.php?aid={dede:field.aid/}&dopost=edit'>更改</a> 
-      |
-      <a href='media_edit.php?aid={dede:field.aid/}&dopost=del'>删除</a> 
-    </td>
-     </tr>
-{/dede:datalist}
-  <tr bgcolor="#ffffff" height="28"> 
-   <td colspan="7">
-    &nbsp; <input type="button" name="b4" value="全选" class="coolbg np" style="width:40px" onClick="AllSel();" /> 
-    &nbsp; <input type="button" name="b5" value="取消" class="coolbg np" style="width:40px" onClick="NoneSel();" /> 
-    &nbsp; <input type="button" name="b6" value="删除所选" class="coolbg np" style="width:80px" onClick="DelSel();" />
-   </td>
-  </tr>
-  <tr bgcolor="#FAFBFC" height="36"> 
-    <td colspan="7" align="center">
-    	{dede:pagelist listsize=5/}
-    </td>
-  </tr>
-</form>
-</table>
-</td>
-</tr>
-</table>
+
+<body>
+	<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+		<div id="dede-card-header" class="uk-card-header">
+			<div class="uk-grid uk-grid-small uk-text-small">
+        <span><ul class="uk-breadcrumb"><li><span>附件数据管理</span></li></ul></span>
+			</div>
+			<!--  搜索表单  -->
+			<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+				<li style="margin-right: 12px;"><a href="media_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">上传文件</a></li>
+				<li>
+					<button class="uk-button uk-button-default uk-button-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+					<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+	
+						<ul class="uk-nav uk-navbar-dropdown-nav" >
+							<li>
+								<form name='form3' action='content_s_list.php' method='get'>
+								<input type='hidden' name='dopost' value='listArchives'>
+								<fieldset id="dede-dropdown-margin" class="uk-fieldset">
+									<div class="uk-margin">
+                    <select name='mediatype'  class="uk-select uk-form-small uk-flex-inline uk-width-1-1">
+                      <option value='0'>文件类型</option>
+                      <option value='1'<?php if($mediatype==1) echo " selected"?>>图片</option>
+                      <option value='3'<?php if($mediatype==3) echo " selected"?>>视频/音频</option>
+                      <option value='4'<?php if($mediatype==4) echo " selected"?>>其它附件</option>
+                    </select> </td>
+
+									</div>
+									<div class="uk-margin">
+                    <select name='membertype'  class="uk-select uk-form-small uk-flex-inline uk-width-1-1">
+                      <option value='0'>用户组</option>
+                      <option value='1'<?php if($membertype==1) echo " selected"?>>管理员</option>
+                      <option value='2'<?php if($membertype==2) echo " selected"?>>外部会员</option>
+             </select>
+              </div>
+              <div class="uk-margin">
+								<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
+							</div>
+								<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+						</fieldset>
+								</form>
+								</li>
+							</ul>
+					</div>
+				</li>
+			</ul>
+			<!--  /搜索表单  -->
+		</div>
+
+		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+			<thead>
+			<tr>
+				<td width="4%"></td>
+				<td>文件标题</td>
+				<td width="10%">文件大小</td>
+				<td width="10%">上传会员</td>
+				<td width="8%">上传时间</td>
+				<td width="6%">文件类型</td>
+				<td width="8%">管理</td>
+			</tr>
+			</thead>
+		</table>
+	</div>
+
+
+
+	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+		<div class="uk-card-body uk-overflow-auto" grid>
+			<div class="uk-child-width-1-1">
+				<div class="uk-overflow-auto">
+					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+						<thead>
+							<tr>
+                <td width="4%"></td>
+                <td>文件标题</td>
+                <td width="10%">文件大小</td>
+                <td width="10%">上传会员</td>
+                <td width="8%">上传时间</td>
+                <td width="6%">文件类型</td>
+                <td width="8%">管理</td>
+							</tr>
+						</thead>
+					<tbody>
+						<!-- 内容列表 -->
+						{dede:datalist}
+						<tr>
+							<td>
+								<input type="checkbox" value="{dede:field.id/}" class="uk-checkbox check" />
+							</td>
+							<td align='left'>
+                <a href='{dede:field.url/}' title='{dede:field.url/}' target='_blank'>
+                  <u>{dede:field.title/}</u>
+                </a>
+							</td>
+              <td>{dede:field.filesize function='GetFileSize(@me)'/}</td> 
+              <td>{dede:field.adminname function="UploadAdmin(@me,$fields['membername'])"/}</td>
+              <td>{dede:field.uptime function="MyDate('Y-m-d H:i',@me)"/}</td>
+              <td>{dede:field.mediatype function="MediaType(@me,$fields['url'])"/}</td>
+              <td>
+                <a href='media_edit.php?aid={dede:field.aid/}&dopost=edit'>[更改]</a> 
+                <a href='media_edit.php?aid={dede:field.aid/}&dopost=del'>[删除]</a> 
+              </td>
+
+						</tr>
+						{/dede:datalist}
+						<!-- /内容列表 -->
+
+
+					</tbody>
+					<!-- 批量操作 -->
+					<thead>
+						<tr>
+							<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+							<td height="36" colspan="8">
+								<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Archive_Delete()" class="uk-button uk-button-default uk-button-small">删除</a>
+							</td>
+						</tr>
+					</thead>
+					<!-- /批量操作 -->
+					<!-- 分页 -->
+					<thead>
+						<tr>
+							<td height="36" colspan="10" align="center">
+								{dede:pagelist listsize=5/}
+							</td>
+						</tr>
+					</thead>
+					<!-- /分页 -->
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  <div class="bar-bottom uk-flex uk-light uk-flex-right">
+    <div class="uk-button-group" style="margin-left: 50px;">
+    </div>
+  <div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+  </div>
+	<!-- JS FILES -->
+  <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+	<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script>
+  function ChangeImage(surl){ document.getElementById('picview').src = surl; }
+  
+  function DelSel(){
+     var nid = getCheckboxItem();
+     if(nid==""){
+        alert("请选择项目!\r\n");
+        return ;
+     }
+     location.href = "media_edit.php?dopost=del&ids="+nid;
+  }
+  </script>
 </body>
 </html>

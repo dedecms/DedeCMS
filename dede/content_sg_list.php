@@ -23,7 +23,7 @@ if (!isset($arcrank)) {
 }
 
 if (empty($cid) && empty($channelid)) {
-    ShowMsg("该页面必须指定栏目ID或内容模型ID才能浏览！", "javascript:;");
+    ShowMsg("该页面必须指定栏目ID或内容类型ID才能浏览！", "javascript:;");
     exit();
 }
 
