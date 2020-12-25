@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 文档digg处理iframe文件
  *
- * @version        $Id: digg_frame.php 1 21:17 2010年7月8日 $
- * @package        DedeCMS.Plus
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: digg_frame.php 1 21:17 2010年7月8日 $
+ * @package   DedeCMS.Plus
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 
@@ -46,4 +45,4 @@ $digg = '<div class="diggbox digg_good" onmousemove="this.style.backgroundPositi
                 <div class="digg_percent_num">' . $row['badper'] . '%</div>
             </div>
         </div>';
-include DEDEROOT . '/templets/plus/digg_frame.htm';
+require DEDEROOT . '/templets/plus/digg_frame.htm';

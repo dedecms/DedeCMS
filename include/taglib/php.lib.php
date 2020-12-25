@@ -1,14 +1,16 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
  *
- *
- * @version        $Id: php.lib.php1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: php.lib.php1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -33,6 +35,7 @@ function lib_php(&$ctag, &$refObj)
     $phpcode = trim($ctag->GetInnerText());
     if ($phpcode == '') {
         return '';
+    
     }
 
     ob_start();
@@ -41,4 +44,5 @@ function lib_php(&$ctag, &$refObj)
     $revalue = ob_get_contents();
     ob_clean();
     return $revalue;
+
 }

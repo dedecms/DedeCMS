@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: install.inc.php 1 13:41 2010年7月26日 $
- * @package        DedeCMS.Install
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: install.inc.php 1 13:41 2010年7月26日 $
+ * @package   DedeCMS.Install
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 function RunMagicQuotes(&$str)
 {
@@ -87,13 +87,13 @@ function UpDateCatCache()
 {
     global $conn, $cfg_multi_site, $dbprefix;
     $cache1 = DEDEDATA . "/cache/inc_catalog_base.inc";
-    $rs = mysql_query("Select id,reid,channeltype,issend,typename From `" . $dbprefix . "arctype`", $conn);
+    $rs = mysqli_query($conn, "Select id,reid,channeltype,issend,typename From `" . $dbprefix . "arctype`");
 
     $fp1 = fopen($cache1, 'w');
     $phph = '?';
     $fp1Header = "<{$phph}php\r\nglobal \$cfg_Cs;\r\n\$cfg_Cs=array();\r\n";
     fwrite($fp1, $fp1Header);
-    while ($row = mysql_fetch_array($rs)) {
+    while ($row = mysqli_fetch_array($rs)) {
         $row['typename'] = base64_encode($row['typename']);
         fwrite($fp1, "\$cfg_Cs[{$row['id']}]=array({$row['reid']},{$row['channeltype']},{$row['issend']},'{$row['typename']}');\r\n");
     }

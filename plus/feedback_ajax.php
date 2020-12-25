@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * Ajax评论
  *
- * @version        $Id: feedback_ajax.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: feedback_ajax.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/../include/common.inc.php';
 require_once DEDEINC . '/channelunit.func.php';
@@ -24,7 +23,7 @@ if (empty($aid)) {
     exit('没指定评论文档的ID，不能进行操作！');
 }
 
-include_once DEDEINC . '/memberlogin.class.php';
+require_once DEDEINC . '/memberlogin.class.php';
 $cfg_ml = new MemberLogin();
 
 if (empty($dopost)) {
@@ -48,7 +47,7 @@ if ($dopost == 'getlist') {
 function send(){ }
 ----------------------*/
 else if ($dopost == 'send') {
-    require_once DEDEINC . '/charset.func.php';
+    include_once DEDEINC . '/charset.func.php';
 
     //检查验证码
     if ($cfg_feedback_ck == 'Y') {
@@ -220,16 +219,16 @@ else if ($dopost == 'send') {
   </ul>
 </div>
 <br style='clear:both' />
-<?php
-}
+        <?php
+    }
     exit();
 }
 
 /**
  *  读取列表内容
  *
- * @param     int  $page  页码
- * @return    string
+ * @param  int $page 页码
+ * @return string
  */
 function GetList($page = 1)
 {
@@ -291,17 +290,17 @@ function GetList($page = 1)
   </ul>
   <div id="ajaxfeedback_<?php echo $id; ?>"></div>
 </div>
-<?php
-}
+        <?php
+    }
     return $totalcount;
 }
 
 /**
  *  获取分页列表
  *
- * @param     int  $pagesize  显示条数
- * @param     int  $totalcount  总数
- * @return    string
+ * @param  int $pagesize   显示条数
+ * @param  int $totalcount 总数
+ * @return string
  */
 function GetPageList($pagesize, $totalcount)
 {

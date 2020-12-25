@@ -2,13 +2,13 @@
 /**
  * SMTP邮件操作类
  *
- * @version        $Id: mail.class.php 1 15:59 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mail.class.php 1 15:59 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 class smtp
 {
@@ -36,11 +36,11 @@ class smtp
         //is used in fsockopen()
         $this->time_out = 30;
 
-        #
+        // 
         $this->auth = $auth; //auth
         $this->user = $user;
         $this->pass = $pass;
-        #
+        // 
 
         //is used in HELO command
         $this->host_name = "localhost";
@@ -51,14 +51,14 @@ class smtp
     /**
      *  邮件主函数
      *
-     * @access    public
-     * @param     string  $to  发送到的email
-     * @param     string  $webname  站点名称
-     * @param     string  $from  来自
-     * @param     string  $subject  主题
-     * @param     string  $body  邮件内容
-     * @param     string  $mailtype  邮件类型
-     * @return    string
+     * @access public
+     * @param  string $to       发送到的email
+     * @param  string $webname  站点名称
+     * @param  string $from     来自
+     * @param  string $subject  主题
+     * @param  string $body     邮件内容
+     * @param  string $mailtype 邮件类型
+     * @return string
      */
     public function sendmail($to, $webname, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "")
     {
@@ -112,13 +112,13 @@ class smtp
     /**
      *  SMTP发送
      *
-     * @access    public
-     * @param     string  $helo  发送HELO
-     * @param     string  $from  来自
-     * @param     string  $to  到
-     * @param     string  $header  头部信息
-     * @param     string  $body   内容主体
-     * @return    string
+     * @access public
+     * @param  string $helo   发送HELO
+     * @param  string $from   来自
+     * @param  string $to     到
+     * @param  string $header 头部信息
+     * @param  string $body   内容主体
+     * @return string
      */
     public function smtp_send($helo, $from, $to, $header, $body = "")
     {
@@ -126,7 +126,7 @@ class smtp
             return $this->smtp_error("sending HELO command");
         }
 
-        #auth
+        // auth
         if ($this->auth) {
             if (!$this->smtp_putcmd("AUTH LOGIN", base64_encode($this->user))) {
                 return $this->smtp_error("sending HELO command");
@@ -137,7 +137,7 @@ class smtp
             }
         }
 
-        #
+        // 
         if (!$this->smtp_putcmd("MAIL", "FROM:<" . $from . ">")) {
             return $this->smtp_error("sending MAIL FROM command");
         }

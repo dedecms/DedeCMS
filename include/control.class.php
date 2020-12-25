@@ -5,13 +5,13 @@
 /**
  * 织梦控制器基类
  *
- * @version        $Id: control.class.php 1 10:33 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: control.class.php 1 10:33 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/dedetemplate.class.php";
 
@@ -74,7 +74,7 @@ class Control
         $name = preg_replace("#[^\w]#", "", $name);
         $modelfile = DEDEMODEL . '/' . $name . '.php';
         if (file_exists($modelfile)) {
-            require_once $modelfile;
+            include_once $modelfile;
         }
         if (!empty($name) && class_exists($name)) {
             return new $name;
@@ -87,7 +87,7 @@ class Control
         if (defined('APPNAME')) {
             $classfile = 'MY_' . $name . '.class.php';
             if (file_exists('../' . APPNAME . '/libraries/' . $classfile)) {
-                require '../' . APPNAME . '/libraries/' . $classfile;
+                include '../' . APPNAME . '/libraries/' . $classfile;
                 return new $name($data);
             } else {
                 if (!empty($name) && class_exists($name)) {

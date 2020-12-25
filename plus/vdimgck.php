@@ -2,13 +2,13 @@
 /**
  * 验证图片
  *
- * @version        $Id: vdimgck.php 1 15:21 2010年7月5日  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: vdimgck.php 1 15:21 2010年7月5日  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/../include/common.inc.php';
 require_once DEDEDATA . '/safe/inc_safe_config.php';
@@ -31,7 +31,8 @@ if (!is_dir($sessSavePath)) {
 
 // Session保存路径
 
-if (is_writeable($sessSavePath) && is_readable($sessSavePath)) {session_save_path($sessSavePath);}
+if (is_writeable($sessSavePath) && is_readable($sessSavePath)) {session_save_path($sessSavePath);
+}
 if (!empty($cfg_domain_cookie)) {
     session_set_cookie_params(0, '/', $cfg_domain_cookie);
 }
@@ -151,17 +152,17 @@ function echo_validate_image($config = array())
 
     //图象效果
     switch ($filter_type) {
-        case 1:
-            imagefilter($im, IMG_FILTER_NEGATE);
-            break;
-        case 2:
-            imagefilter($im, IMG_FILTER_EMBOSS);
-            break;
-        case 3:
-            imagefilter($im, IMG_FILTER_EDGEDETECT);
-            break;
-        default:
-            break;
+    case 1:
+        imagefilter($im, IMG_FILTER_NEGATE);
+        break;
+    case 2:
+        imagefilter($im, IMG_FILTER_EMBOSS);
+        break;
+    case 3:
+        imagefilter($im, IMG_FILTER_EDGEDETECT);
+        break;
+    default:
+        break;
     }
 
     header("Pragma:no-cache\r\n");

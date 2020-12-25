@@ -1,15 +1,19 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+* 
+* 
  * 分类信息地区与类型快捷链接
  *
- * @version        $Id: infolink.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: infolink.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /*>>dede>>
 <name>分类信息地区与类型快捷链接</name>
@@ -43,18 +47,22 @@ function lib_infolink(&$ctag, &$refObj)
     $smalltypes = '';
     if (!empty($refObj->TypeLink->TypeInfos['smalltypes'])) {
         $smalltypes = explode(',', $refObj->TypeLink->TypeInfos['smalltypes']);
+    
     }
 
     if (empty($refObj->Fields['typeid'])) {
         $row = $dsql->GetOne("SELECT id FROM `#@__arctype` WHERE channeltype='-8' And reid = '0' ");
         $typeid = (is_array($row) ? $row['id'] : 0);
+    
     } else {
         $typeid = $refObj->Fields['typeid'];
+    
     }
 
     $innerText = trim($ctag->GetInnerText());
     if (empty($innerText)) {
         $innerText = GetSysTemplets("info_link.htm");
+    
     }
 
     $ctp = new DedeTagParse();
@@ -77,10 +85,13 @@ function lib_infolink(&$ctag, &$refObj)
         foreach ($em_nativeplaces as $eid => $em) {
             if ($eid % 500 != 0) {
                 continue;
+            
             }
 
             $fields['nativeplace'] .= " <a href='{$baseurl}plus/list.php?channelid={$channelid}&tid={$typeid}&nativeplace={$eid}&infotype={$infotype}'>{$em}</a>\r\n";
+        
         }
+    
     } else {
         $sontype = (($nativeplace % 500 != 0) ? $nativeplace : 0);
         $toptype = (($nativeplace % 500 == 0) ? $nativeplace : ($nativeplace - ($nativeplace % 500)));
@@ -89,14 +100,19 @@ function lib_infolink(&$ctag, &$refObj)
         foreach ($em_nativeplaces as $eid => $em) {
             if ($eid < $toptype + 1 || $eid > $toptype + 499) {
                 continue;
+            
             }
 
             if ($eid == $nativeplace) {
                 $fields['nativeplace'] .= " <b>{$em}</b>\r\n";
+            
             } else {
                 $fields['nativeplace'] .= " <a href='{$baseurl}plus/list.php?channelid={$channelid}&tid={$typeid}&nativeplace={$eid}&infotype={$infotype}'>{$em}</a>\r\n";
+            
             }
+        
         }
+    
     }
     //小分类链接
     if (empty($infotype) || is_array($smalltypes)) {
@@ -104,18 +120,24 @@ function lib_infolink(&$ctag, &$refObj)
         foreach ($em_infotypes as $eid => $em) {
             if (!is_array($smalltypes) && $eid % 500 != 0) {
                 continue;
+            
             }
 
             if (is_array($smalltypes) && !in_array($eid, $smalltypes)) {
                 continue;
+            
             }
 
             if ($eid == $infotype) {
                 $fields['infotype'] .= " <b>{$em}</b>\r\n";
+            
             } else {
                 $fields['infotype'] .= " <a href='{$baseurl}plus/list.php?channelid={$channelid}&tid={$typeid}&infotype={$eid}&nativeplace={$nativeplace}'>{$em}</a>\r\n";
+            
             }
+        
         }
+    
     } else {
         $sontype = (($infotype % 500 != 0) ? $infotype : 0);
         $toptype = (($infotype % 500 == 0) ? $infotype : ($infotype - ($infotype % 500)));
@@ -123,24 +145,33 @@ function lib_infolink(&$ctag, &$refObj)
         foreach ($em_infotypes as $eid => $em) {
             if ($eid < $toptype + 1 || $eid > $toptype + 499) {
                 continue;
+            
             }
 
             if ($eid == $infotype) {
                 $fields['infotype'] .= " <b>{$em}</b>\r\n";
+            
             } else {
                 $fields['infotype'] .= " <a href='{$baseurl}plus/list.php?channelid={$channelid}&tid={$typeid}&infotype={$eid}&nativeplace={$nativeplace}'>{$em}</a>\r\n";
+            
             }
+        
         }
+    
     }
 
     if (is_array($ctp->CTags)) {
         foreach ($ctp->CTags as $tagid => $ctag) {
             if (isset($fields[$ctag->GetName()])) {
                 $ctp->Assign($tagid, $fields[$ctag->GetName()]);
+            
             }
+        
         }
         $revalue .= $ctp->GetResult();
+    
     }
 
     return $revalue;
+
 }

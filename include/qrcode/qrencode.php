@@ -427,28 +427,28 @@ class QRencode
         $enc->margin = $margin;
 
         switch ($level . '') {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-                $enc->level = $level;
-                break;
-            case 'l':
-            case 'L':
-                $enc->level = QR_ECLEVEL_L;
-                break;
-            case 'm':
-            case 'M':
-                $enc->level = QR_ECLEVEL_M;
-                break;
-            case 'q':
-            case 'Q':
-                $enc->level = QR_ECLEVEL_Q;
-                break;
-            case 'h':
-            case 'H':
-                $enc->level = QR_ECLEVEL_H;
-                break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+            $enc->level = $level;
+            break;
+        case 'l':
+        case 'L':
+            $enc->level = QR_ECLEVEL_L;
+            break;
+        case 'm':
+        case 'M':
+            $enc->level = QR_ECLEVEL_M;
+            break;
+        case 'q':
+        case 'Q':
+            $enc->level = QR_ECLEVEL_Q;
+            break;
+        case 'h':
+        case 'H':
+            $enc->level = QR_ECLEVEL_H;
+            break;
         }
 
         return $enc;

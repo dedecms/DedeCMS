@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 调用最新评论
  *
- * @version        $Id: feedback.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: feedback.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -42,6 +46,7 @@ function lib_feedback(&$ctag, &$refObj)
     $revalue = '';
     if (empty($innertext)) {
         $innertext = GetSysTemplets('tag_feedback.htm');
+    
     }
     $wsql = " where ischeck=1 ";
     $equery = "SELECT * FROM `#@__feedback` $wsql ORDER BY id DESC LIMIT 0 , $totalrow";
@@ -56,11 +61,15 @@ function lib_feedback(&$ctag, &$refObj)
         foreach ($ctp->CTags as $tagid => $ctag) {
             if (!empty($arr[$ctag->GetName()])) {
                 $ctp->Assign($tagid, $arr[$ctag->GetName()]);
+            
             }
+        
         }
         $revalue .= $ctp->GetResult();
+    
     }
     return $revalue;
+
 }
 
 function jsTrim($str, $len)
@@ -70,4 +79,5 @@ function jsTrim($str, $len)
     $str = cn_substr($str, $len);
     $str = preg_replace("#['\"\r\n]#", "", $str);
     return $str;
+
 }

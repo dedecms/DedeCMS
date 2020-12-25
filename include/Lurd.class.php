@@ -3,7 +3,6 @@
 }
 
 /**
- *
  *  本类用于指定一个 MySQL 的数据表
  *  自动生成列出、修改、删除、增加等操作
  *
@@ -18,21 +17,19 @@
  *   2010-11-16 [增加]如果表字段存在注释,则列表项的title中则直接显示注释信息
  *   2010-11-14 [修复]数据表存在前缀,模板名称解析问题,同时可以对Lurd单独设定模板
  *
- *
- * @version        $Id: lurd.class.php 7 14:07 2011/11/8 IT柏拉图, $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: lurd.class.php 7 14:07 2011/11/8 IT柏拉图, $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . '/datalistcp.class.php';
 
 /***********************************
 @ class lurd
-
  ***********************************/
 class Lurd extends DataListCP
 {
@@ -95,24 +92,24 @@ class Lurd extends DataListCP
         global $action;
         $action = !empty($action) ? $action : request('action');
         switch ($action) {
-            case 'add':
-                $this->AddData();
-                break;
-            case 'edit':
-                $this->EditData();
-                break;
-            case 'del':
-                $this->DelData();
-                break;
-            case 'saveadd':
-                $this->SaveAddData();
-                break;
-            case 'saveedit':
-                $this->SaveEditData();
-                break;
-            default:
-                $this->ListData($listfield, $wherequery, $orderquery);
-                break;
+        case 'add':
+            $this->AddData();
+            break;
+        case 'edit':
+            $this->EditData();
+            break;
+        case 'del':
+            $this->DelData();
+            break;
+        case 'saveadd':
+            $this->SaveAddData();
+            break;
+        case 'saveedit':
+            $this->SaveEditData();
+            break;
+        default:
+            $this->ListData($listfield, $wherequery, $orderquery);
+            break;
         }
     }
 
@@ -727,7 +724,7 @@ class Lurd extends DataListCP
         }
 
         $this->dsql->Execute('ana', " SHOW CREATE TABLE `{$this->tableName}`; ");
-        $row = $this->dsql->GetArray('ana', MYSQL_NUM);
+        $row = $this->dsql->GetArray('ana', MYSQLI_NUM);
         if (!is_array($row)) {
             exit(" Analyse Table `$tablename` Error! ");
         }
@@ -760,7 +757,8 @@ class Lurd extends DataListCP
             $this->fields[$lines[0]]['length'] = preg_replace("/^.*\(|\)/", '', $lines[1]);
             if (preg_match("#[^0-9]#", $this->fields[$lines[0]]['length'])) {
                 if ($this->fields[$lines[0]]['type'] == 'SET'
-                    || $this->fields[$lines[0]]['type'] == 'ENUM') {
+                    || $this->fields[$lines[0]]['type'] == 'ENUM'
+                ) {
                     $this->fields[$lines[0]]['em'] = preg_replace("/'/", '', $this->fields[$lines[0]]['length']);
                 }
                 $this->fields[$lines[0]]['length'] = 0;
@@ -775,7 +773,8 @@ class Lurd extends DataListCP
                 eval($tmpstr);
             }
             if (!in_array($this->fields[$lines[0]]['type'], $this->textTypes)
-                && !in_array($this->fields[$lines[0]]['type'], $this->binTypes)) {
+                && !in_array($this->fields[$lines[0]]['type'], $this->binTypes)
+            ) {
                 $prikeyTmp .= ($prikeyTmp == '' ? $lines[0] : ',' . $lines[0]);
             }
 
@@ -808,6 +807,7 @@ class Lurd extends DataListCP
 
     /**
      * 增加搜索条件
+     *
      * @parem $fieldname 字段名称
      * @parem $fieldvalue 传入的 value 值必须先经过转义
      * @parem $condition 条件 >、<、=、<> 、like、%like%、%like、like%
@@ -894,7 +894,8 @@ class Lurd extends DataListCP
             $reValue = preg_replace("#[^0-9]#", '', $GLOBALS[$fname]);
             $reValue = empty($reValue) ? 0 : intval($reValue);
             if ($negTag == '-' && !$this->fields[$fname]['unsigned']
-                && $reValue != 0 && $ftype != 'YEAR') {
+                && $reValue != 0 && $ftype != 'YEAR'
+            ) {
                 $reValue = intval('-' . $reValue);
             }
         }

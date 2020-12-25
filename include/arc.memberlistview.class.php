@@ -5,13 +5,13 @@
 /**
  * 会员列表视图类
  *
- * @version        $Id: arc.memberlistview.class.php 1 14:49 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.memberlistview.class.php 1 14:49 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . "/dedetemplate.class.php";
@@ -26,9 +26,9 @@ $lang_total = '共';
 /**
  * 档案展示类
  *
- * @package          FreeList
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    FreeList
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class MemberListview
 {
@@ -46,9 +46,9 @@ class MemberListview
     /**
      *  用指定的文档ID进行初始化
      *
-     * @access    public
-     * @param     string  $tplfile  模板文件
-     * @return    void
+     * @access public
+     * @param  string $tplfile 模板文件
+     * @return void
      */
     public function __construct($tplfile = '')
     {
@@ -77,9 +77,9 @@ class MemberListview
     /**
      *  设置SQL语句
      *
-     * @access    public
-     * @param     string  $sql  SQL语句
-     * @return    void
+     * @access public
+     * @param  string $sql SQL语句
+     * @return void
      */
     public function SetSource($sql)
     {
@@ -90,9 +90,9 @@ class MemberListview
      *  设置模板
      *  如果想要使用模板中指定的pagesize，必须在调用模板后才调用 SetSource($sql)
      *
-     * @access    public
-     * @param     string  $tplfile  模板文件
-     * @return    void
+     * @access public
+     * @param  string $tplfile 模板文件
+     * @return void
      */
     public function SetTemplate($tplfile)
     {
@@ -102,9 +102,9 @@ class MemberListview
     /**
      *  设置模板
      *
-     * @access    public
-     * @param     string  $tplfile  模板文件
-     * @return    void
+     * @access public
+     * @param  string $tplfile 模板文件
+     * @return void
      */
     public function SetTemplet($tplfile)
     {
@@ -114,8 +114,8 @@ class MemberListview
     /**
      *  对config参数及get参数等进行预处理
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function PreLoad()
     {
@@ -150,10 +150,10 @@ class MemberListview
     /**
      *  设置网址的Get参数键值
      *
-     * @access    public
-     * @param     string  $key  键
-     * @param     string  $value  值
-     * @return    void
+     * @access public
+     * @param  string $key   键
+     * @param  string $value 值
+     * @return void
      */
     public function SetParameter($key, $value)
     {
@@ -163,10 +163,10 @@ class MemberListview
     /**
      *  设置/获取文档相关的各种变量
      *
-     * @access    public
-     * @param     string  $k  键
-     * @param     string  $v  值
-     * @return    void
+     * @access public
+     * @param  string $k 键
+     * @param  string $v 值
+     * @return void
      */
     public function SetVar($k, $v)
     {
@@ -180,8 +180,8 @@ class MemberListview
     /**
      *  获取值
      *
-     * @param     string  $k
-     * @return    string
+     * @param  string $k
+     * @return string
      */
     public function GetVar($k)
     {
@@ -197,11 +197,11 @@ class MemberListview
     /**
      *  获取当前页数据列表
      *
-     * @access    public
-     * @param     string  $atts  属性
-     * @param     string  $refObj  实例化对象
-     * @param     string  $fields  字段
-     * @return    array
+     * @access public
+     * @param  string $atts   属性
+     * @param  string $refObj 实例化对象
+     * @param  string $fields 字段
+     * @return array
      */
     public function GetArcList($atts, $refObj = '', $fields = array())
     {
@@ -235,10 +235,14 @@ class MemberListview
             //处理一些特殊字段
             $row['infos'] = cn_substr($row['description'], $infolen);
             $row['id'] = $row['id'];
-            $row['filename'] = $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
-                $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
-            $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
-                $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+            $row['filename'] = $row['arcurl'] = GetFileUrl(
+                $row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+                $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+            );
+            $row['typeurl'] = GetTypeUrl(
+                $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+                $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+            );
             if ($row['litpic'] == '-' || $row['litpic'] == '') {
                 $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
             }
@@ -278,11 +282,11 @@ class MemberListview
     /**
      *  获取分页导航列表
      *
-     * @access    public
-     * @param     string  $atts  属性
-     * @param     string  $refObj  实例化对象
-     * @param     string  $fields  字段
-     * @return    string
+     * @access public
+     * @param  string $atts   属性
+     * @param  string $refObj 实例化对象
+     * @param  string $fields 字段
+     * @return string
      */
     public function GetPageList($atts, $refObj = '', $fields = array())
     {
@@ -394,8 +398,8 @@ class MemberListview
     /**
      *  获得当前网址
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetCurUrl()
     {
@@ -417,8 +421,8 @@ class MemberListview
     /**
      *  显示数据
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -435,9 +439,9 @@ class MemberListview
     /**
      *  保存为HTML
      *
-     * @access    public
-     * @param     string  $filename  文件名称
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名称
+     * @return string
      */
     public function SaveTo($filename)
     {

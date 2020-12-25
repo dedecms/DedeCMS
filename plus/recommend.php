@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 信息推荐
  *
- * @version        $Id: recommend.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: recommend.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 require_once DEDEINC . "/channelunit.class.php";
@@ -67,7 +66,7 @@ else if ($action == 'send') {
 
     if ($cfg_sendmail_bysmtp == 'Y' && !empty($cfg_smtp_server)) {
         $mailtype = 'TXT';
-        require_once DEDEINC . '/mail.class.php';
+        include_once DEDEINC . '/mail.class.php';
         $smtp = new smtp($cfg_smtp_server, $cfg_smtp_port, true, $cfg_smtp_usermail, $cfg_smtp_password);
         $smtp->debug = false;
         $smtp->sendmail($email, $cfg_webname, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
@@ -85,4 +84,4 @@ if ($arcRow['aid'] == '') {
 }
 extract($arcRow, EXTR_OVERWRITE);
 //显示模板(简单PHP文件)
-include DEDETEMPLATE . '/plus/recommend.htm';
+require DEDETEMPLATE . '/plus/recommend.htm';

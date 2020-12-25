@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 指定的单个栏目的链接标签
  *
- * @version        $Id: type.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: type.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -37,20 +41,26 @@ function lib_type(&$ctag, &$refObj)
 
     if ($typeid == 0) {
         $typeid = (isset($refObj->TypeLink->TypeInfos['id']) ? $refObj->TypeLink->TypeInfos['id'] : $envs['typeid']);
+    
     }
 
     if (empty($typeid)) {
         return '';
+    
     }
 
-    $row = $dsql->GetOne("SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-                          FROM `#@__arctype` WHERE id='$typeid' ");
+    $row = $dsql->GetOne(
+        "SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
+                          FROM `#@__arctype` WHERE id='$typeid' "
+    );
     if (!is_array($row)) {
         return '';
+    
     }
 
     if (trim($innertext) == '') {
         $innertext = GetSysTemplets("part_type_list.htm");
+    
     }
 
     $dtp = new DedeTagParse();
@@ -59,16 +69,21 @@ function lib_type(&$ctag, &$refObj)
     if (!is_array($dtp->CTags)) {
         unset($dtp);
         return '';
+    
     } else {
         $row['typelink'] = $row['typeurl'] = GetOneTypeUrlA($row);
         foreach ($dtp->CTags as $tagid => $ctag) {
             if (isset($row[$ctag->GetName()])) {
                 $dtp->Assign($tagid, $row[$ctag->GetName()]);
+            
             }
 
+        
         }
         $revalue = $dtp->GetResult();
         unset($dtp);
         return $revalue;
+    
     }
+
 }

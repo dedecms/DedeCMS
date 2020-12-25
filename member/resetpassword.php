@@ -2,13 +2,13 @@
 /**
  * 密码重设
  *
- * @version        $Id: resetpassword.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: resetpassword.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEMEMBER . "/inc/inc_pwd_functions.php";
@@ -63,7 +63,7 @@ if ($dopost == "") {
             showmsg('对不起您尚未设置安全密码，请通过邮件方式重设密码', 'login.php');
             exit;
         }
-        require_once dirname(__FILE__) . "/templets/resetpassword3.htm";
+        include_once dirname(__FILE__) . "/templets/resetpassword3.htm";
     }
     exit();
 } else if ($dopost == "safequestion") {
@@ -106,7 +106,7 @@ if ($dopost == "") {
             ShowMsg("对不起，临时密码修改期限已过期", "login.php");
             exit();
         }
-        require_once dirname(__FILE__) . "/templets/resetpassword2.htm";
+        include_once dirname(__FILE__) . "/templets/resetpassword2.htm";
     } elseif ($setp == 2) {
         if (isset($key)) {
             $pwdtmp = $key;

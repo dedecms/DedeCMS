@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: module-install.php 1 13:41 2010年7月26日 $
- * @package        DedeCMS.Install
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: module-install.php 1 13:41 2010年7月26日 $
+ * @package   DedeCMS.Install
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/../include/common.inc.php';
 @set_time_limit(0);
@@ -54,8 +54,8 @@ if (!TestWrite($moduleDir)) {
     exit();
 }
 
-include $moduleCacheFile;
-$modules = split(',', $selModule);
+require $moduleCacheFile;
+$modules = explode(',', $selModule);
 $totalMod = count($modules);
 if ($step >= $totalMod) {
     $msg = "<font color='red'>完成所有模块的安装！</font><br /><br />";

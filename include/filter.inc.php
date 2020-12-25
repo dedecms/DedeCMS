@@ -5,22 +5,22 @@
 /**
  * 过滤核心处理文件
  *
- * @version        $Id: filter.inc.php 1 15:59 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: filter.inc.php 1 15:59 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 /**
  *  过滤不相关内容
  *
- * @access    public
- * @param     string  $fk 过滤键
- * @param     string  $svar 过滤值
- * @return    string
+ * @access public
+ * @param  string  $fk 过滤键
+ * @param  string  $svar 过滤值
+ * @return string
  */
 $magic_quotes_gpc = ini_get('magic_quotes_gpc');
 function _FilterAll($fk, &$svar)

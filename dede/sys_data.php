@@ -2,13 +2,13 @@
 /**
  * 数据库备份/还原
  *
- * @version        $Id: sys_data.php 1 17:19 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_data.php 1 17:19 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Data');
@@ -29,7 +29,7 @@ if ($dopost == "viewinfo") //查看表结构
     } else {
         $dsql->SetQuery("SHOW CREATE TABLE " . $dsql->dbName . "." . $tablename);
         $dsql->Execute('me');
-        $row2 = $dsql->GetArray('me', MYSQL_BOTH);
+        $row2 = $dsql->GetArray('me', MYSQLI_BOTH);
         $ctinfo = $row2[1];
         echo trim($ctinfo);
     }
@@ -78,7 +78,7 @@ while ($row = $dsql->GetObject()) {
 }
 $dsql->SetQuery("SHOW TABLES");
 $dsql->Execute('t');
-while ($row = $dsql->GetArray('t', MYSQL_BOTH)) {
+while ($row = $dsql->GetArray('t', MYSQLI_BOTH)) {
     if (preg_match("#^{$cfg_dbprefix}#", $row[0]) || in_array($row[0], $channelTables)) {
         $dedeSysTables[] = $row[0];
     } else {

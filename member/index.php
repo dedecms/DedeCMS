@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: index.php 1 8:24 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: index.php 1 8:24 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 
@@ -41,7 +41,7 @@ if ($uid == '') {
             $ddsize = 0;
         }
 
-        require_once DEDEINC . '/channelunit.func.php';
+        include_once DEDEINC . '/channelunit.func.php';
 
         /* 最新文档8条 */
         $archives = array();
@@ -58,21 +58,30 @@ if ($uid == '') {
             $archives[] = $row;
         }
 
-        /** 调用访客记录 **/
+        /**
+* 
+ * 调用访客记录 
+**/
         $_vars['mid'] = $cfg_ml->M_ID;
 
         if (empty($cfg_ml->fields['face'])) {
             $cfg_ml->fields['face'] = ($cfg_ml->fields['sex'] == '女') ? 'templets/images/dfgirl.png' : 'templets/images/dfboy.png';
         }
 
-        /** 我的收藏 **/
+        /**
+* 
+ * 我的收藏 
+**/
         $favorites = array();
         $dsql->Execute('fl', "SELECT * FROM `#@__member_stow` WHERE mid='{$cfg_ml->M_ID}'  LIMIT 5");
         while ($arr = $dsql->GetArray('fl')) {
             $favorites[] = $arr;
         }
 
-        /** 欢迎新朋友 **/
+        /**
+* 
+ * 欢迎新朋友 
+**/
         $sql = "SELECT * FROM `#@__member` ORDER BY mid DESC LIMIT 3";
         $newfriends = array();
         $dsql->SetQuery($sql);
@@ -81,7 +90,10 @@ if ($uid == '') {
             $newfriends[] = $row;
         }
 
-        /** 好友记录 **/
+        /**
+* 
+ * 好友记录 
+**/
         $sql = "SELECT F.*,M.face,M.sex FROM `#@__member` AS M LEFT JOIN #@__member_friends AS F ON F.fid=M.mid WHERE F.mid='{$cfg_ml->M_ID}' ORDER BY F.addtime desc LIMIT 6";
         $friends = array();
         $dsql->SetQuery($sql);
@@ -90,13 +102,22 @@ if ($uid == '') {
             $friends[] = $row;
         }
 
-        /** 有没新短信 **/
+        /**
+* 
+ * 有没新短信 
+**/
         $pms = $dsql->GetOne("SELECT COUNT(*) AS nums FROM #@__member_pms WHERE toid='{$cfg_ml->M_ID}' AND `hasview`=0 AND folder = 'inbox'");
 
-        /** 查询会员状态 **/
+        /**
+* 
+ * 查询会员状态 
+**/
         $moodmsg = $dsql->GetOne("SELECT * FROM #@__member_msg WHERE mid='{$cfg_ml->M_ID}' ORDER BY dtime desc");
 
-        /** 会员操作日志 **/
+        /**
+* 
+ * 会员操作日志 
+**/
         $sql = "SELECT * From `#@__member_feed` where ischeck=1 order by fid desc limit 8";
         $feeds = array();
         $dsql->SetQuery($sql);
@@ -117,7 +138,7 @@ if ($uid == '') {
 function space_index(){  }
 ------------------------------*/
 else {
-    require_once DEDEMEMBER . '/inc/config_space.php';
+    include_once DEDEMEMBER . '/inc/config_space.php';
     if ($action == '') {
         include_once DEDEINC . "/channelunit.func.php";
         $dpl = new DedeTemplate();
@@ -165,7 +186,7 @@ else {
         $dpl->display();
         exit();
     } else {
-        require_once DEDEMEMBER . '/inc/space_action.php';
+        include_once DEDEMEMBER . '/inc/space_action.php';
         exit();
     }
 }

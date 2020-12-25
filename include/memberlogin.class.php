@@ -5,13 +5,13 @@
 /**
  * 会员登录类
  *
- * @version        $Id: userlogin.class.php 1 15:59 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: userlogin.class.php 1 15:59 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 // 使用缓存助手
@@ -19,11 +19,11 @@ helper('cache');
 /**
  *  检查用户名的合法性
  *
- * @access    public
- * @param     string  $uid  用户UID
- * @param     string  $msgtitle  提示标题
- * @param     string  $ckhas  检查是否存在
- * @return    string
+ * @access public
+ * @param  string $uid      用户UID
+ * @param  string $msgtitle 提示标题
+ * @param  string $ckhas    检查是否存在
+ * @return string
  */
 function CheckUserID($uid, $msgtitle = '用户名', $ckhas = true)
 {
@@ -70,11 +70,11 @@ function CheckUserID($uid, $msgtitle = '用户名', $ckhas = true)
 /**
  *  保存一则消息记录
  *
- * @access    public
- * @param     string  $mid  用户MID
- * @param     string  $mid  用户ID
- * @param     string  $msg  保存消息
- * @return    string
+ * @access public
+ * @param  string $mid 用户MID
+ * @param  string $mid 用户ID
+ * @param  string $msg 保存消息
+ * @return string
  */
 function PutSnsMsg($mid, $userid, $msg)
 {
@@ -88,7 +88,7 @@ function PutSnsMsg($mid, $userid, $msg)
 /**
  *  检查用户是否被禁言
  *
- * @return    void
+ * @return void
  */
 function CheckNotAllow()
 {
@@ -123,9 +123,9 @@ function FormatUsername($username)
 /**
  * 网站会员登录类
  *
- * @package          MemberLogin
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    MemberLogin
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class MemberLogin
 {
@@ -180,7 +180,7 @@ class MemberLogin
             }
 
             if (is_array($this->fields)) {
-                #api{{
+                // api{{
                 if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
                     if ($data = uc_get_user($this->fields['userid'])) {
                         if (uc_check_avatar($data[0]) && !strstr($this->fields['face'], UC_API)) {
@@ -189,7 +189,7 @@ class MemberLogin
                         }
                     }
                 }
-                #/aip}}
+                // /aip}}
 
                 //间隔一小时更新一次用户登录时间
                 if (time() - $this->M_LoginTime > 3600) {
@@ -235,9 +235,9 @@ class MemberLogin
     /**
      *  删除缓存,每次登录时和在修改用户资料的地方会清除
      *
-     * @access    public
-     * @param     string
-     * @return    string
+     * @access public
+     * @param  string
+     * @return string
      */
     public function DelCache($mid)
     {
@@ -247,7 +247,7 @@ class MemberLogin
     /**
      *  判断会员是否到期
      *
-     * @return    string
+     * @return string
      */
     public function Judgemember()
     {
@@ -255,8 +255,10 @@ class MemberLogin
         $nowtime = time();
         $mhasDay = $this->M_ExpTime - ceil(($nowtime - $this->M_UpTime) / 3600 / 24) + 1;
         if ($mhasDay <= 0) {
-            $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET uptime='0',exptime='0',
-                                         rank='$cfg_mb_rank' WHERE mid='" . $this->fields['mid'] . "';");
+            $dsql->ExecuteNoneQuery(
+                "UPDATE `#@__member` SET uptime='0',exptime='0',
+                                         rank='$cfg_mb_rank' WHERE mid='" . $this->fields['mid'] . "';"
+            );
         }
         return $mhasDay;
     }
@@ -264,7 +266,7 @@ class MemberLogin
     /**
      *  退出cookie的会话
      *
-     * @return    void
+     * @return void
      */
     public function ExitCookie()
     {
@@ -274,7 +276,7 @@ class MemberLogin
     /**
      *  验证用户是否已经登录
      *
-     * @return    bool
+     * @return bool
      */
     public function IsLogin()
     {
@@ -289,7 +291,7 @@ class MemberLogin
     /**
      *  检测用户上传空间
      *
-     * @return    int
+     * @return int
      */
     public function GetUserSpace()
     {
@@ -302,7 +304,7 @@ class MemberLogin
     /**
      *  检查用户空间信息
      *
-     * @return    void
+     * @return void
      */
     public function CheckUserSpace()
     {
@@ -319,10 +321,10 @@ class MemberLogin
     /**
      *  更新用户信息统计表
      *
-     * @access    public
-     * @param     string  $field  字段信息
-     * @param     string  $uptype  更新类型
-     * @return    string
+     * @access public
+     * @param  string $field  字段信息
+     * @param  string $uptype 更新类型
+     * @return string
      */
     public function UpdateUserTj($field, $uptype = 'add')
     {
@@ -350,7 +352,7 @@ class MemberLogin
     /**
      *  重置用户信息
      *
-     * @return    void
+     * @return void
      */
     public function ResetUser()
     {
@@ -376,9 +378,9 @@ class MemberLogin
     /**
      *  获取整数值
      *
-     * @access    public
-     * @param     string  $fnum  处理的数值
-     * @return    string
+     * @access public
+     * @param  string $fnum 处理的数值
+     * @return string
      */
     public function GetNum($fnum)
     {
@@ -390,9 +392,9 @@ class MemberLogin
      *  用户登录
      *  把登录密码转为指定长度md5数据
      *
-     * @access    public
-     * @param     string  $pwd  需要加密的密码
-     * @return    string
+     * @access public
+     * @param  string $pwd 需要加密的密码
+     * @return string
      */
     public function GetEncodePwd($pwd)
     {
@@ -402,14 +404,14 @@ class MemberLogin
         }
 
         switch ($cfg_mb_pwdtype) {
-            case 'l16':
-                return substr(md5($pwd), 0, 16);
-            case 'r16':
-                return substr(md5($pwd), 16, 16);
-            case 'm16':
-                return substr(md5($pwd), 8, 16);
-            default:
-                return md5($pwd);
+        case 'l16':
+            return substr(md5($pwd), 0, 16);
+        case 'r16':
+            return substr(md5($pwd), 16, 16);
+        case 'm16':
+            return substr(md5($pwd), 8, 16);
+        default:
+            return md5($pwd);
         }
     }
 
@@ -417,9 +419,9 @@ class MemberLogin
      *  把数据库密码转为特定长度
      *  如果数据库密码是明文的，本程序不支持
      *
-     * @access    public
-     * @param     string
-     * @return    string
+     * @access public
+     * @param  string
+     * @return string
      */
     public function GetShortPwd($dbpwd)
     {
@@ -433,14 +435,14 @@ class MemberLogin
             return $dbpwd;
         } else {
             switch ($cfg_mb_pwdtype) {
-                case 'l16':
-                    return substr($dbpwd, 0, 16);
-                case 'r16':
-                    return substr($dbpwd, 16, 16);
-                case 'm16':
-                    return substr($dbpwd, 8, 16);
-                default:
-                    return $dbpwd;
+            case 'l16':
+                return substr($dbpwd, 0, 16);
+            case 'r16':
+                return substr($dbpwd, 16, 16);
+            case 'm16':
+                return substr($dbpwd, 8, 16);
+            default:
+                return $dbpwd;
             }
         }
     }
@@ -448,10 +450,10 @@ class MemberLogin
     /**
      *  检查用户是否合法
      *
-     * @access    public
-     * @param     string  $loginuser  登录用户名
-     * @param     string  $loginpwd  用户密码
-     * @return    string
+     * @access public
+     * @param  string $loginuser 登录用户名
+     * @param  string $loginpwd  用户密码
+     * @return string
      */
     public function CheckUser(&$loginuser, $loginpwd)
     {
@@ -488,10 +490,10 @@ class MemberLogin
     /**
      *  保存用户cookie
      *
-     * @access    public
-     * @param     string  $uid  用户ID
-     * @param     string  $logintime  登录限制时间
-     * @return    void
+     * @access public
+     * @param  string $uid       用户ID
+     * @param  string $logintime 登录限制时间
+     * @return void
      */
     public function PutLoginInfo($uid, $logintime = 0)
     {
@@ -517,9 +519,9 @@ class MemberLogin
     /**
      *  获得会员目前的状态
      *
-     * @access    public
-     * @param     string  $dsql  数据库连接
-     * @return    string
+     * @access public
+     * @param  string $dsql 数据库连接
+     * @return string
      */
     public function GetSta($dsql)
     {
@@ -546,12 +548,12 @@ class MemberLogin
     /**
      *  记录会员操作日志
      *
-     * @access    public
-     * @param     string  $type 记录类型
-     * @param     string  $title 记录标题
-     * @param     string  $note记录描述
-     * @param     string  $aid涉及到的内容的id
-     * @return    string
+     * @access public
+     * @param  string $type                       记录类型
+     * @param  string $title                      记录标题
+     * @param  string $note记录描述
+     * @param  string $aid涉及到的内容的id
+     * @return string
      */
     public function RecordFeeds($type, $title, $note, $aid)
     {

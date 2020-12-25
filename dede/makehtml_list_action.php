@@ -2,13 +2,13 @@
 /**
  * 生成列表栏目操作
  *
- * @version        $Id: makehtml_list_action.php 1 11:09 2010年7月19日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: makehtml_list_action.php 1 11:09 2010年7月19日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_MakeHtml');
@@ -72,7 +72,7 @@ else if ($gotype == 'mkall') {
     $mkcachefile = DEDEDATA . "/mkall_cache_{$adminID}.php";
     $idArray = array();
     if (file_exists($mkcachefile)) {
-        require_once $mkcachefile;
+        include_once $mkcachefile;
     }
 
 }
@@ -105,11 +105,11 @@ if (!empty($tid)) {
         exit();
     }
     if ($cfg_Cs[$tid][1] > 0) {
-        require_once DEDEINC . "/arc.listview.class.php";
+        include_once DEDEINC . "/arc.listview.class.php";
         $lv = new ListView($tid);
         $position = MfTypedir($lv->Fields['typedir']);
     } else {
-        require_once DEDEINC . "/arc.sglistview.class.php";
+        include_once DEDEINC . "/arc.sglistview.class.php";
         $lv = new SgListView($tid);
     }
     // 这里统一统计
@@ -151,7 +151,8 @@ if (!empty($tid)) {
 $nextpage = $pageno + 1;
 if ($nextpage >= $totalpage && $finishType) {
     if ($gotype == '') {
-        if (empty($reurl)) {$reurl = '../plus/list.php?tid=' . $tid;}
+        if (empty($reurl)) {$reurl = '../plus/list.php?tid=' . $tid;
+        }
         ShowMsg("完成所有栏目列表更新！<a href='$reurl' target='_blank'>浏览栏目</a>", "javascript:;");
         exit();
     } else if ($gotype == 'mkall' || $gotype == 'mkallct') {

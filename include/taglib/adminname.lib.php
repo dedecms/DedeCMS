@@ -1,23 +1,30 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 获得责任编辑名称
  *
- * @version        $Id: adminname.lib.php 2 8:48 2010年7月8日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: adminname.lib.php 2 8:48 2010年7月8日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /**
+ * 
+ * 
  *  获得责任编辑名称
  *
- * @access    public
- * @param     object  $ctag  解析标签
- * @param     object  $refObj  引用对象
- * @return    string  成功后返回解析后的标签内容
+ * @access public
+ * @param  object  $ctag  解析标签
+ * @param  object  $refObj  引用对象
+ * @return string  成功后返回解析后的标签内容
+ 
  */
 
 /*>>dede>>
@@ -37,9 +44,12 @@ function lib_adminname(&$ctag, &$refObj)
     global $dsql;
     if (empty($refObj->Fields['dutyadmin'])) {
         $dutyadmin = $GLOBALS['cfg_df_dutyadmin'];
+    
     } else {
         $row = $dsql->GetOne("SELECT uname FROM `#@__admin` WHERE id='{$refObj->Fields['dutyadmin']}' ");
         $dutyadmin = isset($row['uname']) ? $row['uname'] : $GLOBALS['cfg_df_dutyadmin'];
+    
     }
     return $dutyadmin;
+
 }

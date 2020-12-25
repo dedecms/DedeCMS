@@ -2,13 +2,13 @@
 /**
  * 文档关键词生成
  *
- * @version        $Id: article_keywords_make.php 1 8:26 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: article_keywords_make.php 1 8:26 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @ob_start();
 @set_time_limit(3600);
@@ -91,7 +91,7 @@ if ($dopost == 'analyse') {
 }
 //自动获取关键字（适用于默认的文章模型）
 else if ($dopost == 'fetch') {
-    require_once DEDEINC . "/splitword.class.php";
+    include_once DEDEINC . "/splitword.class.php";
     if (empty($startdd)) {
         $startdd = 0;
     }

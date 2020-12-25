@@ -5,22 +5,22 @@
 /**
  * 栏目连接
  *
- * @version        $Id: typelink.class.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: typelink.class.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/channelunit.func.php";
 
 /**
  * 栏目连接类
  *
- * @package          TypeLink
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TypeLink
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class TypeLink
 {
@@ -184,8 +184,10 @@ class TypeLink
         if (defined('DEDEMOB')) {
             return 'list.php?tid=' . $typeinfos['id'];
         } else {
-            return GetTypeUrl($typeinfos['id'], MfTypedir($typeinfos['typedir']), $typeinfos['isdefault'], $typeinfos['defaultname'],
-                $typeinfos['ispart'], $typeinfos['namerule2'], $typeinfos['moresite'], $typeinfos['siteurl'], $typeinfos['sitepath']);
+            return GetTypeUrl(
+                $typeinfos['id'], MfTypedir($typeinfos['typedir']), $typeinfos['isdefault'], $typeinfos['defaultname'],
+                $typeinfos['ispart'], $typeinfos['namerule2'], $typeinfos['moresite'], $typeinfos['siteurl'], $typeinfos['sitepath']
+            );
         }
 
     }
@@ -272,11 +274,11 @@ class TypeLink
     /**
      *  逻辑递归
      *
-     * @access    public
-     * @param     int   $id   栏目ID
-     * @param     int   $step   步进标志
-     * @param     int   $oper   操作权限
-     * @return    string
+     * @access public
+     * @param  int $id   栏目ID
+     * @param  int $step 步进标志
+     * @param  int $oper 操作权限
+     * @return string
      */
     public function LogicGetOptionArray($id, $step, $oper = 0)
     {
@@ -307,19 +309,20 @@ class TypeLink
      *  获得与该类相关的类目，本函数应用于模板标记{dede:channel}{/dede:channel}中
      *  $typetype 的值为： sun 下级分类 self 同级分类 top 顶级分类
      *
-     * @access    public
-     * @param     int   $typeid   栏目ID
-     * @param     int   $reid   所属ID
-     * @param     int   $row   栏目行数
-     * @param     string   $typetype   栏目类型
-     * @param     string   $innertext   底层模板
-     * @param     int   $col   显示列数
-     * @param     int   $tablewidth   表格宽度
-     * @param     int   $myinnertext   自定义底层模板
-     * @return    string
+     * @access public
+     * @param  int    $typeid      栏目ID
+     * @param  int    $reid        所属ID
+     * @param  int    $row         栏目行数
+     * @param  string $typetype    栏目类型
+     * @param  string $innertext   底层模板
+     * @param  int    $col         显示列数
+     * @param  int    $tablewidth  表格宽度
+     * @param  int    $myinnertext 自定义底层模板
+     * @return string
      */
     public function GetChannelList($typeid = 0, $reid = 0, $row = 8, $typetype = 'sun', $innertext = '',
-        $col = 1, $tablewidth = 100, $myinnertext = '') {
+        $col = 1, $tablewidth = 100, $myinnertext = ''
+    ) {
         if ($typeid == 0) {
             $typeid = $this->TypeID;
         }

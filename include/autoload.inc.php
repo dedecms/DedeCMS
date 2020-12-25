@@ -1,4 +1,5 @@
-<?php if (!defined('DEDEINC') && !define('DEDEMODEL')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC') && !define('DEDEMODEL')) {exit("Request Error!");
+}
 
 function __autoload($classname)
 {
@@ -10,9 +11,9 @@ function __autoload($classname)
     $classfile = $classname . '.php';
     $libclassfile = $classname . '.class.php';
     if (is_file(DEDEINC . '/' . $libclassfile)) {
-        require DEDEINC . '/' . $libclassfile;
+        include DEDEINC . '/' . $libclassfile;
     } else if (is_file(DEDEMODEL . '/' . $classfile)) {
-        require DEDEMODEL . '/' . $classfile;
+        include DEDEMODEL . '/' . $classfile;
     } else {
         if (DEBUG_LEVEL === true) {
             echo '<pre>';

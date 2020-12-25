@@ -5,13 +5,13 @@
 /**
  * 织梦HTTP下载类
  *
- * @version        $Id: dedehttpdown.class.php 1 11:42 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedehttpdown.class.php 1 11:42 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @set_time_limit(0);
 
@@ -41,9 +41,9 @@ class DedeHttpDown
     /**
      *  初始化系统
      *
-     * @access    public
-     * @param     string    $url   需要下载的地址
-     * @return    string
+     * @access public
+     * @param  string $url 需要下载的地址
+     * @return string
      */
     public function PrivateInit($url)
     {
@@ -85,8 +85,8 @@ class DedeHttpDown
     /**
      *  重设各参数
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ResetAny()
     {
@@ -107,10 +107,10 @@ class DedeHttpDown
     /**
      *  打开指定网址
      *
-     * @access    public
-     * @param     string    $url   地址
-     * @param     string    $requestType   请求类型
-     * @return    string
+     * @access public
+     * @param  string $url         地址
+     * @param  string $requestType 请求类型
+     * @return string
      */
     public function OpenUrl($url, $requestType = "GET")
     {
@@ -129,9 +129,9 @@ class DedeHttpDown
     /**
      *  转到303重定向网址
      *
-     * @access    public
-     * @param     string   $url   地址
-     * @return    string
+     * @access public
+     * @param  string $url 地址
+     * @return string
      */
     public function JumpOpenUrl($url)
     {
@@ -149,8 +149,8 @@ class DedeHttpDown
     /**
      *  获得某操作错误的原因
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function printError()
     {
@@ -164,8 +164,8 @@ class DedeHttpDown
     /**
      *  判别用Get方法发送的头的应答结果是否正确
      *
-     * @access    public
-     * @return    bool
+     * @access public
+     * @return bool
      */
     public function IsGetOK()
     {
@@ -180,8 +180,8 @@ class DedeHttpDown
     /**
      *  看看返回的网页是否是text类型
      *
-     * @access    public
-     * @return    bool
+     * @access public
+     * @return bool
      */
     public function IsText()
     {
@@ -196,14 +196,13 @@ class DedeHttpDown
     /**
      *  判断返回的网页是否是特定的类型
      *
-     * @access    public
-     * @param     string   $ctype   内容类型
-     * @return    string
+     * @access public
+     * @param  string $ctype 内容类型
+     * @return string
      */
     public function IsContentType($ctype)
     {
-        if (
-            preg_match("/^2/", $this->GetHead("http-state"))
+        if (preg_match("/^2/", $this->GetHead("http-state"))
             && $this->GetHead("content-type") == strtolower($ctype)
         ) {
             return true;
@@ -216,9 +215,9 @@ class DedeHttpDown
     /**
      *  用Http协议下载文件
      *
-     * @access    public
-     * @param     string    $savefilename  保存文件名称
-     * @return    string
+     * @access public
+     * @param  string $savefilename 保存文件名称
+     * @return string
      */
     public function SaveToBin($savefilename)
     {
@@ -246,9 +245,9 @@ class DedeHttpDown
     /**
      *  保存网页内容为Text文件
      *
-     * @access    public
-     * @param     string    $savefilename  保存文件名称
-     * @return    string
+     * @access public
+     * @param  string $savefilename 保存文件名称
+     * @return string
      */
     public function SaveToText($savefilename)
     {
@@ -267,8 +266,8 @@ class DedeHttpDown
     /**
      *  用Http协议获得一个网页的内容
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetHtml()
     {
@@ -291,9 +290,9 @@ class DedeHttpDown
     /**
      *  开始HTTP会话
      *
-     * @access    public
-     * @param     string    $requestType    请求类型
-     * @return    string
+     * @access public
+     * @param  string $requestType 请求类型
+     * @return string
      */
     public function PrivateStartSession($requestType = "GET")
     {
@@ -492,9 +491,9 @@ class DedeHttpDown
     /**
      *  获得一个Http头的值
      *
-     * @access    public
-     * @param     string    $headname   头文件名称
-     * @return    string
+     * @access public
+     * @param  string $headname 头文件名称
+     * @return string
      */
     public function GetHead($headname)
     {
@@ -510,10 +509,10 @@ class DedeHttpDown
     /**
      *  设置Http头的值
      *
-     * @access    public
-     * @param     string   $skey  键
-     * @param     string   $svalue  值
-     * @return    string
+     * @access public
+     * @param  string $skey   键
+     * @param  string $svalue 值
+     * @return string
      */
     public function SetHead($skey, $svalue)
     {
@@ -523,8 +522,8 @@ class DedeHttpDown
     /**
      *  打开连接
      *
-     * @access    public
-     * @return    bool
+     * @access public
+     * @return bool
      */
     public function PrivateOpenHost()
     {
@@ -546,8 +545,8 @@ class DedeHttpDown
     /**
      *  关闭连接
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Close()
     {
@@ -563,9 +562,9 @@ class DedeHttpDown
     /**
      *  补全相对网址
      *
-     * @access    public
-     * @param     string   $surl  需要不全的地址
-     * @return    string
+     * @access public
+     * @param  string $surl 需要不全的地址
+     * @return string
      */
     public function FillUrl($surl)
     {

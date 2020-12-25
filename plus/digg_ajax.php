@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 文档digg处理ajax文件
  *
- * @version        $Id: digg_ajax.php 2 13:00 2011/11/25  $
- * @package        DedeCMS.Plus
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: digg_ajax.php 2 13:00 2011/11/25  $
+ * @package   DedeCMS.Plus
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 $action = isset($action) ? trim($action) : '';

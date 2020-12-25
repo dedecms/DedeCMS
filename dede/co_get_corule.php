@@ -2,13 +2,13 @@
 /**
  * 导入采集规则
  *
- * @version        $Id: co_get_corule.php 1 17:13 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: co_get_corule.php 1 17:13 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('co_AddNote');
@@ -16,7 +16,7 @@ if (empty($job)) {
     $job = '';
 }
 if ($job == '') {
-    require_once DEDEINC . "/../include/oxwindow.class.php";
+    include_once DEDEINC . "/../include/oxwindow.class.php";
     $wintitle = "导入采集规则";
     $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"co_main.php\">采集点管理</a></li><li><span>导入采集规则</span></li></ul>";
     $win = new OxWindow();
@@ -29,18 +29,18 @@ if ($job == '') {
     exit();
 } else {
     CheckPurview('co_AddNote');
-    require_once DEDEINC . "/dedetag.class.php";
+    include_once DEDEINC . "/dedetag.class.php";
     $notes = trim($notes);
 
     //对Base64格式的规则进行解码
-    if (ereg('^BASE64:', $notes)) {
-        if (!ereg(':END$', $notes)) {
+    if (preg_match('^BASE64:', $notes)) {
+        if (!preg_match(':END$', $notes)) {
             ShowMsg('该规则不合法，Base64格式的采集规则为：BASE64:base64编码后的配置:END !', '-1');
             exit();
         }
         $notess = explode(':', $notes);
         $notes = $notess[1];
-        $notes = base64_decode(ereg_replace("[\r\n\t ]", '', $notes)) or die('配置字符串有错误！');
+        $notes = base64_decode(preg_replace("[\r\n\t ]", '', $notes)) or die('配置字符串有错误！');
     } else {
         $notes = stripslashes($notes);
     }

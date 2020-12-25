@@ -153,10 +153,10 @@ while ($file = $dh->read()) {
         $filesize = $filesize / 1024;
         if ($filesize != "") {
             if ($filesize < 0.1) {
-                @list($ty1, $ty2) = split("\.", $filesize);
+                @list($ty1, $ty2) = preg_split("\.", $filesize);
                 $filesize = $ty1 . "." . substr($ty2, 0, 2);
             } else {
-                @list($ty1, $ty2) = split("\.", $filesize);
+                @list($ty1, $ty2) = preg_split("\.", $filesize);
                 $filesize = $ty1 . "." . substr($ty2, 0, 1);
             }
         }

@@ -571,8 +571,10 @@ class QRspec
         array(24, 50), array(28, 54), array(32, 58), array(26, 54), array(30, 58), //35-40
     );
 
-    /** --------------------------------------------------------------------
+    /**
+     * --------------------------------------------------------------------
      * Put an alignment marker.
+     *
      * @param frame
      * @param width
      * @param ox,oy center coordinate of the pattern
@@ -687,8 +689,10 @@ class QRspec
 
     public static $frames = array();
 
-    /** --------------------------------------------------------------------
+    /**
+     * --------------------------------------------------------------------
      * Put a finder pattern.
+     *
      * @param frame
      * @param width
      * @param ox,oy upper-left coordinate of the pattern
@@ -803,9 +807,9 @@ class QRspec
                     .m { background-color: white; }
                 </style>
                 <?php
-echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-            echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
-            echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
+                echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
+                echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
 
         } else {
 
@@ -835,9 +839,9 @@ echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
                     .f { background-color: gold; }
                 </style>
                 <?php
-echo "<pre><tt>";
-            echo join("<br/ >", $frame);
-            echo "</tt></pre>";
+                echo "<pre><tt>";
+                echo join("<br/ >", $frame);
+                echo "</tt></pre>";
 
         }
     }
@@ -886,23 +890,41 @@ echo "<pre><tt>";
 
     //----------------------------------------------------------------------
     public static function rsBlockNum($spec)
-    {return $spec[0] + $spec[3];}
+    {
+        return $spec[0] + $spec[3];
+    }
     public static function rsBlockNum1($spec)
-    {return $spec[0];}
+    {
+        return $spec[0];
+    }
     public static function rsDataCodes1($spec)
-    {return $spec[1];}
+    {
+        return $spec[1];
+    }
     public static function rsEccCodes1($spec)
-    {return $spec[2];}
+    {
+        return $spec[2];
+    }
     public static function rsBlockNum2($spec)
-    {return $spec[3];}
+    {
+        return $spec[3];
+    }
     public static function rsDataCodes2($spec)
-    {return $spec[4];}
+    {
+        return $spec[4];
+    }
     public static function rsEccCodes2($spec)
-    {return $spec[2];}
+    {
+        return $spec[2];
+    }
     public static function rsDataLength($spec)
-    {return ($spec[0] * $spec[1]) + ($spec[3] * $spec[4]);}
+    {
+        return ($spec[0] * $spec[1]) + ($spec[3] * $spec[4]);
+    }
     public static function rsEccLength($spec)
-    {return ($spec[0] + $spec[3]) * $spec[2];}
+    {
+        return ($spec[0] + $spec[3]) * $spec[2];
+    }
 
 }
 
@@ -1210,17 +1232,18 @@ class QRinputItem
         }
 
         switch ($this->mode) {
-            case QR_MODE_NUM:$bits = QRinput::estimateBitsModeNum($this->size);
-                break;
-            case QR_MODE_AN:$bits = QRinput::estimateBitsModeAn($this->size);
-                break;
-            case QR_MODE_8:$bits = QRinput::estimateBitsMode8($this->size);
-                break;
-            case QR_MODE_KANJI:$bits = QRinput::estimateBitsModeKanji($this->size);
-                break;
-            case QR_MODE_STRUCTURE:return STRUCTURE_HEADER_BITS;
-            default:
-                return 0;
+        case QR_MODE_NUM:$bits = QRinput::estimateBitsModeNum($this->size);
+            break;
+        case QR_MODE_AN:$bits = QRinput::estimateBitsModeAn($this->size);
+            break;
+        case QR_MODE_8:$bits = QRinput::estimateBitsMode8($this->size);
+            break;
+        case QR_MODE_KANJI:$bits = QRinput::estimateBitsModeKanji($this->size);
+            break;
+        case QR_MODE_STRUCTURE:
+            return STRUCTURE_HEADER_BITS;
+        default:
+            return 0;
         }
 
         $l = QRspec::lengthIndicator($this->mode, $version);
@@ -1260,19 +1283,19 @@ class QRinputItem
                 $ret = 0;
 
                 switch ($this->mode) {
-                    case QR_MODE_NUM:$ret = $this->encodeModeNum($version);
-                        break;
-                    case QR_MODE_AN:$ret = $this->encodeModeAn($version);
-                        break;
-                    case QR_MODE_8:$ret = $this->encodeMode8($version);
-                        break;
-                    case QR_MODE_KANJI:$ret = $this->encodeModeKanji($version);
-                        break;
-                    case QR_MODE_STRUCTURE:$ret = $this->encodeModeStructure();
-                        break;
+                case QR_MODE_NUM:$ret = $this->encodeModeNum($version);
+                    break;
+                case QR_MODE_AN:$ret = $this->encodeModeAn($version);
+                    break;
+                case QR_MODE_8:$ret = $this->encodeMode8($version);
+                    break;
+                case QR_MODE_KANJI:$ret = $this->encodeModeKanji($version);
+                    break;
+                case QR_MODE_STRUCTURE:$ret = $this->encodeModeStructure();
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
 
                 if ($ret < 0) {
@@ -1425,14 +1448,14 @@ class QRinput
         $bits = $w * 10;
 
         switch ($size - $w * 3) {
-            case 1:
-                $bits += 4;
-                break;
-            case 2:
-                $bits += 7;
-                break;
-            default:
-                break;
+        case 1:
+            $bits += 4;
+            break;
+        case 2:
+            $bits += 7;
+            break;
+        default:
+            break;
         }
 
         return $bits;
@@ -1504,7 +1527,8 @@ class QRinput
             $val = (ord($data[$i]) << 8) | ord($data[$i + 1]);
             if ($val < 0x8140
                 || ($val > 0x9ffc && $val < 0xe040)
-                || $val > 0xebbf) {
+                || $val > 0xebbf
+            ) {
                 return false;
             }
         }
@@ -1523,19 +1547,24 @@ class QRinput
         }
 
         switch ($mode) {
-            case QR_MODE_NUM:return self::checkModeNum($size, $data);
+        case QR_MODE_NUM:
+            return self::checkModeNum($size, $data);
                 break;
-            case QR_MODE_AN:return self::checkModeAn($size, $data);
+        case QR_MODE_AN:
+            return self::checkModeAn($size, $data);
                 break;
-            case QR_MODE_KANJI:return self::checkModeKanji($size, $data);
+        case QR_MODE_KANJI:
+            return self::checkModeKanji($size, $data);
                 break;
-            case QR_MODE_8:return true;
+        case QR_MODE_8:
+            return true;
                 break;
-            case QR_MODE_STRUCTURE:return true;
+        case QR_MODE_STRUCTURE:
+            return true;
                 break;
 
-            default:
-                break;
+        default:
+            break;
         }
 
         return false;
@@ -1575,37 +1604,37 @@ class QRinput
     {
         $payload = $bits - 4 - QRspec::lengthIndicator($mode, $version);
         switch ($mode) {
-            case QR_MODE_NUM:
-                $chunks = (int) ($payload / 10);
-                $remain = $payload - $chunks * 10;
-                $size = $chunks * 3;
-                if ($remain >= 7) {
-                    $size += 2;
-                } else if ($remain >= 4) {
-                    $size += 1;
-                }
-                break;
-            case QR_MODE_AN:
-                $chunks = (int) ($payload / 11);
-                $remain = $payload - $chunks * 11;
-                $size = $chunks * 2;
-                if ($remain >= 6) {
-                    $size++;
-                }
+        case QR_MODE_NUM:
+            $chunks = (int) ($payload / 10);
+            $remain = $payload - $chunks * 10;
+            $size = $chunks * 3;
+            if ($remain >= 7) {
+                $size += 2;
+            } else if ($remain >= 4) {
+                $size += 1;
+            }
+            break;
+        case QR_MODE_AN:
+            $chunks = (int) ($payload / 11);
+            $remain = $payload - $chunks * 11;
+            $size = $chunks * 2;
+            if ($remain >= 6) {
+                $size++;
+            }
 
-                break;
-            case QR_MODE_8:
-                $size = (int) ($payload / 8);
-                break;
-            case QR_MODE_KANJI:
-                $size = (int) (($payload / 13) * 2);
-                break;
-            case QR_MODE_STRUCTURE:
-                $size = (int) ($payload / 8);
-                break;
-            default:
-                $size = 0;
-                break;
+            break;
+        case QR_MODE_8:
+            $size = (int) ($payload / 8);
+            break;
+        case QR_MODE_KANJI:
+            $size = (int) (($payload / 13) * 2);
+            break;
+        case QR_MODE_STRUCTURE:
+            $size = (int) ($payload / 8);
+            break;
+        default:
+            $size = 0;
+            break;
         }
 
         $maxsize = QRspec::maximumWords($mode, $version);
@@ -2215,20 +2244,20 @@ class QRsplit
             $mode = $this->identifyMode(0);
 
             switch ($mode) {
-                case QR_MODE_NUM:$length = $this->eatNum();
-                    break;
-                case QR_MODE_AN:$length = $this->eatAn();
-                    break;
-                case QR_MODE_KANJI:
-                    if ($hint == QR_MODE_KANJI) {
-                        $length = $this->eatKanji();
-                    } else {
-                        $length = $this->eat8();
-                    }
+            case QR_MODE_NUM:$length = $this->eatNum();
+                break;
+            case QR_MODE_AN:$length = $this->eatAn();
+                break;
+            case QR_MODE_KANJI:
+                if ($hint == QR_MODE_KANJI) {
+                    $length = $this->eatKanji();
+                } else {
+                    $length = $this->eat8();
+                }
 
-                    break;
-                default:$length = $this->eat8();
-                    break;
+                break;
+            default:$length = $this->eat8();
+                break;
 
             }
 
@@ -2619,21 +2648,37 @@ class QRmask
 
     //----------------------------------------------------------------------
     public function mask0($x, $y)
-    {return ($x + $y) & 1;}
+    {
+        return ($x + $y) & 1;
+    }
     public function mask1($x, $y)
-    {return ($y & 1);}
+    {
+        return ($y & 1);
+    }
     public function mask2($x, $y)
-    {return ($x % 3);}
+    {
+        return ($x % 3);
+    }
     public function mask3($x, $y)
-    {return ($x + $y) % 3;}
+    {
+        return ($x + $y) % 3;
+    }
     public function mask4($x, $y)
-    {return (((int) ($y / 2)) + ((int) ($x / 3))) & 1;}
+    {
+        return (((int) ($y / 2)) + ((int) ($x / 3))) & 1;
+    }
     public function mask5($x, $y)
-    {return (($x * $y) & 1) + ($x * $y) % 3;}
+    {
+        return (($x * $y) & 1) + ($x * $y) % 3;
+    }
     public function mask6($x, $y)
-    {return ((($x * $y) & 1) + ($x * $y) % 3) & 1;}
+    {
+        return ((($x * $y) & 1) + ($x * $y) % 3) & 1;
+    }
     public function mask7($x, $y)
-    {return ((($x * $y) % 3) + (($x + $y) & 1)) & 1;}
+    {
+        return ((($x * $y) % 3) + (($x + $y) & 1)) & 1;
+    }
 
     //----------------------------------------------------------------------
     private function generateMaskNo($maskNo, $width, $frame)
@@ -2744,10 +2789,11 @@ class QRmask
             if ($i & 1) {
                 if (($i >= 3) && ($i < ($length - 2)) && ($this->runLength[$i] % 3 == 0)) {
                     $fact = (int) ($this->runLength[$i] / 3);
-                    if (($this->runLength[$i - 2] == $fact) &&
-                        ($this->runLength[$i - 1] == $fact) &&
-                        ($this->runLength[$i + 1] == $fact) &&
-                        ($this->runLength[$i + 2] == $fact)) {
+                    if (($this->runLength[$i - 2] == $fact) 
+                        && ($this->runLength[$i - 1] == $fact) 
+                        && ($this->runLength[$i + 1] == $fact) 
+                        && ($this->runLength[$i + 2] == $fact)
+                    ) {
                         if (($this->runLength[$i - 3] < 0) || ($this->runLength[$i - 3] >= (4 * $fact))) {
                             $demerit += N3;
                         } else if ((($i + 3) >= $length) || ($this->runLength[$i + 3] >= (4 * $fact))) {
@@ -3303,28 +3349,28 @@ class QRencode
         $enc->margin = $margin;
 
         switch ($level . '') {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-                $enc->level = $level;
-                break;
-            case 'l':
-            case 'L':
-                $enc->level = QR_ECLEVEL_L;
-                break;
-            case 'm':
-            case 'M':
-                $enc->level = QR_ECLEVEL_M;
-                break;
-            case 'q':
-            case 'Q':
-                $enc->level = QR_ECLEVEL_Q;
-                break;
-            case 'h':
-            case 'H':
-                $enc->level = QR_ECLEVEL_H;
-                break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+            $enc->level = $level;
+            break;
+        case 'l':
+        case 'L':
+            $enc->level = QR_ECLEVEL_L;
+            break;
+        case 'm':
+        case 'M':
+            $enc->level = QR_ECLEVEL_M;
+            break;
+        case 'q':
+        case 'Q':
+            $enc->level = QR_ECLEVEL_Q;
+            break;
+        case 'h':
+        case 'H':
+            $enc->level = QR_ECLEVEL_H;
+            break;
         }
 
         return $enc;

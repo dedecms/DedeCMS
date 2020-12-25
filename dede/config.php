@@ -2,13 +2,13 @@
 /**
  * 管理目录配置文件
  *
- * @version        $Id: config.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: config.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 define('DEDEADMIN', str_replace("\\", '/', dirname(__FILE__)));
 require_once DEDEADMIN . '/../include/common.inc.php';
@@ -99,9 +99,9 @@ if ($cfg_dede_log == 'Y') {
 
 //启用远程站点则创建FTP类
 if ($cfg_remote_site == 'Y') {
-    require_once DEDEINC . '/ftp.class.php';
+    include_once DEDEINC . '/ftp.class.php';
     if (file_exists(DEDEDATA . "/cache/inc_remote_config.php")) {
-        require_once DEDEDATA . "/cache/inc_remote_config.php";
+        include_once DEDEDATA . "/cache/inc_remote_config.php";
     }
     if (empty($remoteuploads)) {
         $remoteuploads = 0;
@@ -138,7 +138,7 @@ if (!file_exists($cache1)) {
 
 $cacheFile = DEDEDATA . '/cache/admincat_' . $cuserLogin->userID . '.inc';
 if (file_exists($cacheFile)) {
-    require_once $cacheFile;
+    include_once $cacheFile;
 }
 
 //更新服务器
@@ -181,8 +181,8 @@ if (strlen($cfg_cookie_encode) <= 10) {
 /**
  *  更新栏目缓存
  *
- * @access    public
- * @return    void
+ * @access public
+ * @return void
  */
 function UpDateCatCache()
 {
@@ -229,8 +229,8 @@ function ClearOptCache()
 /**
  *  更新会员模型缓存
  *
- * @access    public
- * @return    void
+ * @access public
+ * @return void
  */
 function UpDateMemberModCache()
 {
@@ -253,10 +253,10 @@ function UpDateMemberModCache()
 /**
  *  引入模板文件
  *
- * @access    public
- * @param     string  $filename  文件名称
- * @param     bool  $isabs  是否为管理目录
- * @return    string
+ * @access public
+ * @param  string $filename 文件名称
+ * @param  bool   $isabs    是否为管理目录
+ * @return string
  */
 function DedeInclude($filename, $isabs = false)
 {
@@ -268,10 +268,10 @@ function DedeInclude($filename, $isabs = false)
 /**
  *  获取当前用户的ftp站点
  *
- * @access    public
- * @param     string  $current  当前站点
- * @param     string  $formname  表单名称
- * @return    string
+ * @access public
+ * @param  string $current  当前站点
+ * @param  string $formname 表单名称
+ * @return string
  */
 function GetFtp($current = '', $formname = '')
 {
@@ -307,9 +307,9 @@ helper('cache');
 /**
  *  根据用户mid获取用户名称
  *
- * @access    public
- * @param     int  $mid   用户ID
- * @return    string
+ * @access public
+ * @param  int  $mid   用户ID
+ * @return string
  */
 if (!function_exists('GetMemberName')) {
     function GetMemberName($mid = 0)

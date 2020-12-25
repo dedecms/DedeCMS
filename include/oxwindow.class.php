@@ -5,22 +5,22 @@
 /**
  * 提示窗口对话框类
  *
- * @version        $Id: oxwindow.class.php 2 13:53 2010-11-11  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: oxwindow.class.php 2 13:53 2010-11-11  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/dedetag.class.php";
 
 /**
  * 提示窗口对话框类
  *
- * @package          OxWindow
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    OxWindow
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class OxWindow
 {
@@ -34,11 +34,11 @@ class OxWindow
     /**
      *  初始化为含表单的页面
      *
-     * @param     string  $formaction  表单操作action
-     * @param     string  $checkScript  检测验证js
-     * @param     string  $formmethod  表单类型
-     * @param     string  $formname  表单名称
-     * @return    void
+     * @param  string $formaction  表单操作action
+     * @param  string $checkScript 检测验证js
+     * @param  string $formmethod  表单类型
+     * @param  string $formname    表单名称
+     * @return void
      */
     public function Init($formaction = "", $checkScript = "js/blank.js", $formmethod = "POST", $formname = "myform")
     {
@@ -59,9 +59,9 @@ class OxWindow
     /**
      *  增加隐藏域
      *
-     * @param     string  $iname  隐藏域名称
-     * @param     string  $ivalue  隐藏域值
-     * @return    void
+     * @param  string $iname  隐藏域名称
+     * @param  string $ivalue 隐藏域值
+     * @return void
      */
     public function AddHidden($iname, $ivalue)
     {
@@ -71,7 +71,7 @@ class OxWindow
     /**
      *  开始创建窗口
      *
-     * @return    void
+     * @return void
      */
     public function StartWin()
     {
@@ -81,10 +81,10 @@ class OxWindow
     /**
      *  增加一个两列的行
      *
-     * @access    public
-     * @param     string  $iname  名称
-     * @param     string  $ivalue  值
-     * @return    string
+     * @access public
+     * @param  string $iname  名称
+     * @param  string $ivalue 值
+     * @return string
      */
     public function AddItem($iname, $ivalue)
     {
@@ -103,11 +103,11 @@ class OxWindow
     /**
      *  增加一个单列的消息行
      *
-     * @access    public
-     * @param     string  $ivalue  短消息值
-     * @param     string  $height  消息框高度
-     * @param     string  $col  显示列数
-     * @return    void
+     * @access public
+     * @param  string $ivalue 短消息值
+     * @param  string $height 消息框高度
+     * @param  string $col    显示列数
+     * @return void
      */
     public function AddMsgItem($ivalue, $height = "100", $col = "2")
     {
@@ -117,10 +117,10 @@ class OxWindow
     /**
      *  增加单列的标题行
      *
-     * @access    public
-     * @param     string  $title  标题
-     * @param     string  $col  列
-     * @return    string
+     * @access public
+     * @param  string $title 标题
+     * @param  string $col   列
+     * @return string
      */
     public function AddTitle($title, $col = "2")
     {
@@ -140,8 +140,8 @@ class OxWindow
     /**
      *  结束Window
      *
-     * @param     bool   $isform
-     * @return    void
+     * @param  bool $isform
+     * @return void
      */
     public function CloseWin($isform = true)
     {
@@ -155,8 +155,8 @@ class OxWindow
     /**
      *  增加自定义JS脚本
      *
-     * @param     string  $scripts
-     * @return    void
+     * @param  string $scripts
+     * @return void
      */
     public function SetCheckScript($scripts)
     {
@@ -169,10 +169,10 @@ class OxWindow
     /**
      *  获取窗口
      *
-     * @param     string  $wintype  菜单类型
-     * @param     string  $msg  短消息
-     * @param     bool  $isform  是否是表单
-     * @return    string
+     * @param  string $wintype 菜单类型
+     * @param  string $msg     短消息
+     * @param  bool   $isform  是否是表单
+     * @return string
      */
     public function GetWindow($wintype = "save", $msg = "", $isform = true)
     {
@@ -214,9 +214,9 @@ class OxWindow
     /**
      *  显示页面
      *
-     * @access    public
-     * @param     string  $modfile  模型模板
-     * @return    string
+     * @access public
+     * @param  string $modfile 模型模板
+     * @return string
      */
     public function Display($modfile = "")
     {
@@ -244,10 +244,10 @@ class OxWindow
 /**
  *  显示一个不带表单的普通提示
  *
- * @access    public
- * @param     string   $msg  消息提示信息
- * @param     string   $title  提示标题
- * @return    string
+ * @access public
+ * @param  string $msg   消息提示信息
+ * @param  string $title 提示标题
+ * @return string
  */
 function ShowMsgWin($msg, $title)
 {

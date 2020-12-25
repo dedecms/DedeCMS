@@ -5,21 +5,21 @@
 /**
  * Dede织梦模板类
  *
- * @version        $Id: dedetag.class.php 1 10:33 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedetag.class.php 1 10:33 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 /**
  * class DedeTag 标记的数据结构描述
  * function c____DedeTag();
  *
- * @package          DedeTag
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    DedeTag
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class DedeTag
 {
@@ -35,8 +35,8 @@ class DedeTag
     /**
      *  获取标记的名称和值
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetName()
     {
@@ -46,8 +46,8 @@ class DedeTag
     /**
      *  获取值
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetValue()
     {
@@ -91,9 +91,9 @@ class DedeTag
  * DedeTagParse Dede织梦模板类
  * function c____DedeTagParse();
  *
- * @package          DedeTagParse
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    DedeTagParse
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class DedeTagParse
 {
@@ -144,11 +144,11 @@ class DedeTagParse
     /**
      *  设置标记的命名空间，默认为dede
      *
-     * @access    public
-     * @param     string   $str   字符串
-     * @param     string   $s   开始标记
-     * @param     string   $e   结束标记
-     * @return    void
+     * @access public
+     * @param  string $str 字符串
+     * @param  string $s   开始标记
+     * @param  string $e   结束标记
+     * @return void
      */
     public function SetNameSpace($str, $s = "{", $e = "}")
     {
@@ -160,8 +160,8 @@ class DedeTagParse
     /**
      *  重置成员变量或Clear
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function SetDefault()
     {
@@ -173,9 +173,9 @@ class DedeTagParse
     /**
      *  强制引用
      *
-     * @access    public
-     * @param     object  $refObj  隶属对象
-     * @return    void
+     * @access public
+     * @param  object $refObj 隶属对象
+     * @return void
      */
     public function SetRefObj(&$refObj)
     {
@@ -199,9 +199,9 @@ class DedeTagParse
      *
      * COMMENT : CheckDisabledFunctions : 检查是否存在禁止的函数
      *
-     * @access    public
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @return bool
      */
     public function CheckDisabledFunctions($str, &$errmsg = '')
     {
@@ -226,9 +226,9 @@ class DedeTagParse
     /**
      *  检测模板缓存
      *
-     * @access    public
-     * @param     string   $filename  文件名称
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名称
+     * @return string
      */
     public function LoadCache($filename)
     {
@@ -293,9 +293,9 @@ class DedeTagParse
     /**
      *  写入缓存
      *
-     * @access    public
-     * @param     string
-     * @return    string
+     * @access public
+     * @param  string
+     * @return string
      */
     public function SaveCache()
     {
@@ -343,9 +343,9 @@ class DedeTagParse
     /**
      *  载入模板文件
      *
-     * @access    public
-     * @param     string   $filename  文件名称
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名称
+     * @return string
      */
     public function LoadTemplate($filename)
     {
@@ -382,9 +382,9 @@ class DedeTagParse
     /**
      *  载入模板字符串
      *
-     * @access    public
-     * @param     string  $str  字符串
-     * @return    void
+     * @access public
+     * @param  string $str 字符串
+     * @return void
      */
     public function LoadSource($str)
     {
@@ -410,9 +410,9 @@ class DedeTagParse
     /**
      *  获得指定名称的Tag的ID(如果有多个同名的Tag,则取没有被取代为内容的第一个Tag)
      *
-     * @access    public
-     * @param     string  $str  字符串
-     * @return    int
+     * @access public
+     * @param  string $str 字符串
+     * @return int
      */
     public function GetTagID($str)
     {
@@ -434,9 +434,9 @@ class DedeTagParse
     /**
      *  获得指定名称的CTag数据类(如果有多个同名的Tag,则取没有被分配内容的第一个Tag)
      *
-     * @access    public
-     * @param     string  $str  字符串
-     * @return    string
+     * @access public
+     * @param  string $str 字符串
+     * @return string
      */
     public function GetTag($str)
     {
@@ -458,9 +458,9 @@ class DedeTagParse
     /**
      *  通过名称获取标记
      *
-     * @access    public
-     * @param     string  $str  字符串
-     * @return    string
+     * @access public
+     * @param  string $str 字符串
+     * @return string
      */
     public function GetTagByName($str)
     {
@@ -470,9 +470,9 @@ class DedeTagParse
     /**
      *  获得指定ID的CTag数据类
      *
-     * @access    public
-     * @param     string  标签id
-     * @return    string
+     * @access public
+     * @param  string  标签id
+     * @return string
      */
     public function GetTagByID($id)
     {
@@ -486,10 +486,10 @@ class DedeTagParse
     /**
      *  给_vars数组传递一个元素
      *
-     * @access    public
-     * @param     string   $vname  标签名
-     * @param     string   $vvalue  标签值
-     * @return    string
+     * @access public
+     * @param  string $vname  标签名
+     * @param  string $vvalue 标签值
+     * @return string
      */
     public function AssignVar($vname, $vvalue)
     {
@@ -502,11 +502,11 @@ class DedeTagParse
     /**
      *  分配指定ID的标记的值
      *
-     * @access    public
-     * @param     string   $i  标签id
-     * @param     string  $str  字符串
-     * @param     string  $runfunc  运行函数
-     * @return    void
+     * @access public
+     * @param  string $i       标签id
+     * @param  string $str     字符串
+     * @param  string $runfunc 运行函数
+     * @return void
      */
     public function Assign($i, $str, $runfunc = true)
     {
@@ -523,10 +523,10 @@ class DedeTagParse
     /**
      *  分配指定名称的标记的值，如果标记包含属性，请不要用此函数
      *
-     * @access    public
-     * @param     string  $tagname  标签名称
-     * @param     string  $str  字符串
-     * @return    void
+     * @access public
+     * @param  string $tagname 标签名称
+     * @param  string $str     字符串
+     * @return void
      */
     public function AssignName($tagname, $str)
     {
@@ -540,8 +540,8 @@ class DedeTagParse
     /**
      *  处理特殊标记
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function AssignSysTag()
     {
@@ -628,8 +628,8 @@ class DedeTagParse
      *  把分析模板输出到一个字符串中
      *  不替换没被处理的值
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetResultNP()
     {
@@ -660,8 +660,8 @@ class DedeTagParse
     /**
      *  把分析模板输出到一个字符串中,并返回
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetResult()
     {
@@ -687,8 +687,8 @@ class DedeTagParse
     /**
      *  直接输出解析模板
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -698,9 +698,9 @@ class DedeTagParse
     /**
      *  把解析模板输出为文件
      *
-     * @access    public
-     * @param     string   $filename  要保存到的文件
-     * @return    string
+     * @access public
+     * @param  string $filename 要保存到的文件
+     * @return string
      */
     public function SaveTo($filename)
     {
@@ -712,8 +712,8 @@ class DedeTagParse
     /**
      *  解析模板
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function ParseTemplet()
     {
@@ -861,11 +861,11 @@ class DedeTagParse
     /**
      *  处理某字段的函数
      *
-     * @access    public
-     * @param     string   $fieldvalue  字段值
-     * @param     string   $functionname  函数名称
-     * @param     object  $refObj  隶属对象
-     * @return    string
+     * @access public
+     * @param  string $fieldvalue   字段值
+     * @param  string $functionname 函数名称
+     * @param  object $refObj       隶属对象
+     * @return string
      */
     public function EvalFunc($fieldvalue, $functionname, &$refObj)
     {
@@ -885,9 +885,9 @@ class DedeTagParse
     /**
      *  获得一个外部变量
      *
-     * @access    public
-     * @param     string   $varname  变量名称
-     * @return    string
+     * @access public
+     * @param  string $varname 变量名称
+     * @return string
      */
     public function GetGlobals($varname)
     {
@@ -909,10 +909,10 @@ class DedeTagParse
     /**
      *  引入文件
      *
-     * @access    public
-     * @param     string  $filename  文件名
-     * @param     string  $ismake  是否需要编译
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名
+     * @param  string $ismake   是否需要编译
+     * @return string
      */
     public function IncludeFile($filename, $ismake = 'no')
     {
@@ -931,7 +931,7 @@ class DedeTagParse
 
         //编译
         if ($ismake != "no") {
-            require_once DEDEINC . "/channelunit.func.php";
+            include_once DEDEINC . "/channelunit.func.php";
             $dtp = new DedeTagParse();
             $dtp->LoadTemplet($okfile);
             MakeOneTag($dtp, $this->refObj);
@@ -1093,21 +1093,21 @@ class DedeAttributeParse
             //查找属性的限定标志
             else if ($startdd == 0) {
                 switch ($d) {
-                    case ' ':
-                        break;
-                    case '"':
-                        $ddtag = '"';
-                        $startdd = 1;
-                        break;
-                    case '\'':
-                        $ddtag = '\'';
-                        $startdd = 1;
-                        break;
-                    default:
-                        $tmpvalue .= $d;
-                        $ddtag = ' ';
-                        $startdd = 1;
-                        break;
+                case ' ':
+                    break;
+                case '"':
+                    $ddtag = '"';
+                    $startdd = 1;
+                    break;
+                case '\'':
+                    $ddtag = '\'';
+                    $startdd = 1;
+                    break;
+                default:
+                    $tmpvalue .= $d;
+                    $ddtag = ' ';
+                    $startdd = 1;
+                    break;
                 }
             } else if ($startdd == 1) {
                 if ($d == $ddtag && (isset($this->sourceString[$i - 1]) && $this->sourceString[$i - 1] != "\\")) {

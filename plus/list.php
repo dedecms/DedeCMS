@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 栏目列表/频道动态页
  *
- * @version        $Id: list.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: list.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 
@@ -66,7 +65,7 @@ if ($tinfos['issystem'] == -1) {
     $lv = new ListView($tid);
     //对设置了会员级别的栏目进行处理
     if (isset($lv->Fields['corank']) && $lv->Fields['corank'] > 0) {
-        require_once DEDEINC . '/memberlogin.class.php';
+        include_once DEDEINC . '/memberlogin.class.php';
         $cfg_ml = new MemberLogin();
         if ($cfg_ml->M_Rank < $lv->Fields['corank']) {
             $dsql->Execute('me', "SELECT * FROM `#@__arcrank` ");

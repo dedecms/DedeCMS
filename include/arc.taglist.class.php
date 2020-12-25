@@ -5,13 +5,13 @@
 /**
  * Tag列表类
  *
- * @version        $Id: arc.taglist.class.php 1 18:17 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.taglist.class.php 1 18:17 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . '/channelunit.class.php';
@@ -21,9 +21,9 @@ require_once DEDEINC . '/typelink.class.php';
 /**
  * Tag列表类
  *
- * @package          TagList
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TagList
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class TagList
 {
@@ -45,10 +45,10 @@ class TagList
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     string  $keyword  关键词
-     * @param     string  $templet  模板
-     * @return    void
+     * @access public
+     * @param  string $keyword 关键词
+     * @param  string $templet 模板
+     * @return void
      */
     public function __construct($keyword, $templet)
     {
@@ -113,8 +113,8 @@ class TagList
     /**
      *  统计列表里的记录
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function CountRecord()
     {
@@ -170,8 +170,8 @@ class TagList
     /**
      *  显示列表
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -197,8 +197,8 @@ class TagList
     /**
      *  解析模板，对固定的标记进行初始给值
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function ParseTempletsFirst()
     {
@@ -208,10 +208,10 @@ class TagList
     /**
      *  解析模板，对内容里的变动进行赋值
      *
-     * @access    public
-     * @param     int  $PageNo  页码
-     * @param     int  $ismake  是否编译
-     * @return    string
+     * @access public
+     * @param  int $PageNo 页码
+     * @param  int $ismake 是否编译
+     * @return string
      */
     public function ParseDMFields($PageNo, $ismake = 1)
     {
@@ -264,21 +264,21 @@ class TagList
     /**
      *  获得一个单列的文档列表
      *
-     * @access    public
-     * @param     int  $limitstart  限制开始
-     * @param     int  $row  行数
-     * @param     int  $col  列数
-     * @param     int  $titlelen  标题长度
-     * @param     int  $infolen  描述长度
-     * @param     int  $imgwidth  图片宽度
-     * @param     int  $imgheight  图片高度
-     * @param     string  $listtype  列表类型
-     * @param     string  $orderby  排列顺序
-     * @param     string  $innertext  底层模板
-     * @param     string  $tablewidth  表格宽度
-     * @param     string  $ismake  是否编译
-     * @param     string  $orderWay  排序方式
-     * @return    string
+     * @access public
+     * @param  int    $limitstart 限制开始
+     * @param  int    $row        行数
+     * @param  int    $col        列数
+     * @param  int    $titlelen   标题长度
+     * @param  int    $infolen    描述长度
+     * @param  int    $imgwidth   图片宽度
+     * @param  int    $imgheight  图片高度
+     * @param  string $listtype   列表类型
+     * @param  string $orderby    排列顺序
+     * @param  string $innertext  底层模板
+     * @param  string $tablewidth 表格宽度
+     * @param  string $ismake     是否编译
+     * @param  string $orderWay   排序方式
+     * @return string
      */
     public function GetArcList(
         $limitstart = 0,
@@ -463,10 +463,10 @@ class TagList
     /**
      *  获取动态的分页列表
      *
-     * @access    public
-     * @param     int  $list_len  列表宽度
-     * @param     string  $listitem  列表样式
-     * @return    string
+     * @access public
+     * @param  int    $list_len 列表宽度
+     * @param  string $listitem 列表样式
+     * @return string
      */
     public function GetPageListDM($list_len, $listitem = "info,index,end,pre,next,pageno")
     {
@@ -683,15 +683,15 @@ class TagList
     /**
      *  获得一个指定的频道的链接
      *
-     * @access    private
-     * @param     int  $typeid  栏目ID
-     * @param     string  $typedir  栏目目录
-     * @param     int  $isdefault  是否为默认
-     * @param     string  $defaultname  默认名称
-     * @param     int  $ispart  栏目属性
-     * @param     string  $namerule2  栏目规则
-     * @param     string  $siteurl  站点地址
-     * @return    string
+     * @access private
+     * @param  int    $typeid      栏目ID
+     * @param  string $typedir     栏目目录
+     * @param  int    $isdefault   是否为默认
+     * @param  string $defaultname 默认名称
+     * @param  int    $ispart      栏目属性
+     * @param  string $namerule2   栏目规则
+     * @param  string $siteurl     站点地址
+     * @return string
      */
     public function GetListUrl($typeid, $typedir, $isdefault, $defaultname, $ispart, $namerule2, $siteurl = "")
     {
@@ -701,18 +701,18 @@ class TagList
     /**
      *  获得一个指定档案的链接
      *
-     * @access    private
-     * @param     int  $aid  文档ID
-     * @param     int  $typeid  栏目ID
-     * @param     int  $timetag  时间戳
-     * @param     string  $title  标题
-     * @param     int  $ismake  是否生成静态
-     * @param     int  $rank  浏览权限
-     * @param     string  $namerule  命名规则
-     * @param     string  $artdir  文档路径
-     * @param     int  $money  需要金币
-     * @param     string  $filename  文件名称
-     * @return    string
+     * @access private
+     * @param  int    $aid      文档ID
+     * @param  int    $typeid   栏目ID
+     * @param  int    $timetag  时间戳
+     * @param  string $title    标题
+     * @param  int    $ismake   是否生成静态
+     * @param  int    $rank     浏览权限
+     * @param  string $namerule 命名规则
+     * @param  string $artdir   文档路径
+     * @param  int    $money    需要金币
+     * @param  string $filename 文件名称
+     * @return string
      */
     public function GetArcUrl($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = "", $artdir = "", $money = 0, $filename = '')
     {
@@ -722,8 +722,8 @@ class TagList
     /**
      *  获得当前的页面文件的url
      *
-     * @access    private
-     * @return    string
+     * @access private
+     * @return string
      */
     public function GetCurUrl()
     {

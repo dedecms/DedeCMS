@@ -2,13 +2,13 @@
 /**
  * 文档处理
  *
- * @version        $Id: archives_do.php 1 8:26 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: archives_do.php 1 8:26 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 require_once DEDEADMIN . '/inc/inc_batchup.php';
@@ -84,10 +84,14 @@ else if ($dopost == "viewArchives") {
         $arcRow['siteurl'] = $trow['siteurl'];
         $arcRow['sitepath'] = $trow['sitepath'];
     }
-    $arcurl = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'], $arcRow['arcrank'],
-        $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'], $arcRow['sitepath']);
-    $arcfile = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'],
-        $arcRow['ismake'], $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']);
+    $arcurl = GetFileUrl(
+        $arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'], $arcRow['arcrank'],
+        $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'], $arcRow['sitepath']
+    );
+    $arcfile = GetFileUrl(
+        $arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'],
+        $arcRow['ismake'], $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']
+    );
     if (preg_match("#^http:#", $arcfile)) {
         $arcfile = preg_replace("#^http:\/\/([^\/]*)\/#i", '/', $arcfile);
     }
@@ -192,7 +196,7 @@ else if ($dopost == "makeArchives") {
         ShowMsg('参数无效！', $ENV_GOBACK_URL);
         exit();
     }
-    require_once DEDEADMIN . '/inc/inc_archives_functions.php';
+    include_once DEDEADMIN . '/inc/inc_archives_functions.php';
     $qstrs = explode('`', $qstr);
     $i = 0;
     foreach ($qstrs as $aid) {
@@ -208,7 +212,7 @@ function checkArchives() {   }
 ---------------------------*/
 else if ($dopost == "checkArchives") {
     CheckPurview('a_Check,a_AccCheck,sys_ArcBatch');
-    require_once DEDEADMIN . "/inc/inc_archives_functions.php";
+    include_once DEDEADMIN . "/inc/inc_archives_functions.php";
     if (!empty($aid) && empty($qstr)) {
         $qstr = $aid;
     }
@@ -245,7 +249,7 @@ function delArchives(){ }
 ---------------------------*/
 else if ($dopost == "delArchives") {
     CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     if (empty($fmdo)) {
         $fmdo = '';
     }
@@ -290,7 +294,7 @@ function moveArchives(){ }
 else if ($dopost == 'moveArchives') {
     CheckPurview('sys_ArcBatch');
     if (empty($totype)) {
-        require_once DEDEINC . '/typelink.class.php';
+        include_once DEDEINC . '/typelink.class.php';
         if (!empty($aid) && empty($qstr)) {
             $qstr = $aid;
         }
@@ -326,7 +330,7 @@ else if ($dopost == 'moveArchives') {
             <div class="uk-form-controls">
                 <select name='totype' class="uk-select">
                 <option value='0'>请选择移动到的位置...</option>
-                <?=$typeOptions;?>
+                <?php echo $typeOptions;?>
                 </select>
             </div>
         </div>
@@ -337,8 +341,8 @@ else if ($dopost == 'moveArchives') {
         <button class="uk-button uk-button-primary uk-button-small" type="submit">提交</button>
     </div>
 </form>
-<?php
-//AJAX窗体结束
+        <?php
+        //AJAX窗体结束
     } else {
         $totype = preg_replace("#[^0-9]#", '', $totype);
         $typeInfos = $dsql->GetOne("SELECT tp.channeltype,tp.ispart,tp.channeltype,ch.maintable,ch.addtable,ch.issystem FROM `#@__arctype` tp LEFT JOIN `#@__channeltype` ch on ch.id=tp.channeltype WHERE tp.id='$totype' ");
@@ -389,7 +393,7 @@ function RbReturnArchives(){ }
 ------------------------------*/
 else if ($dopost == 'return') {
     CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
 
     if (!empty($aid) && empty($qstr)) {
         $qstr = $aid;
@@ -413,7 +417,7 @@ function RbClearArchives(){ }
 ------------------------------*/
 else if ($dopost == 'clear') {
     CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     if (empty($fmdo)) {
         $fmdo = '';
     }
@@ -474,7 +478,7 @@ function RbDelArchives(){ }
 ------------------------------*/
 else if ($dopost == 'del') {
     CheckPurview('a_Del,a_AccDel,a_MyDel,sys_ArcBatch');
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     if (empty($fmdo)) {
         $fmdo = '';
     }
@@ -522,7 +526,7 @@ else if ($dopost == 'del') {
 function quickEdit(){ }
 ------------------------------*/
 else if ($dopost == 'quickEdit') {
-    require_once DEDEADMIN . "/inc/inc_catalog_options.php";
+    include_once DEDEADMIN . "/inc/inc_catalog_options.php";
     AjaxHead();
     $query = "SELECT ch.typename as channelname,ch.addtable,ar.membername as rankname,arc.*
     FROM `#@__archives` arc
@@ -543,15 +547,15 @@ else if ($dopost == 'quickEdit') {
     <td width="80" class='bline'>&nbsp;所属栏目：</td>
     <td class='bline'>
         <?php
-$typeOptions = GetOptionList($arcRow['typeid'], $cuserLogin->getUserChannel(), $arcRow['channel']);
-    echo "<select name='typeid' style='width:70%'>\r\n";
-    if ($arcRow["typeid"] == "0") {
-        echo "<option value='0' selected>请选择栏目...</option>\r\n";
-    }
+        $typeOptions = GetOptionList($arcRow['typeid'], $cuserLogin->getUserChannel(), $arcRow['channel']);
+        echo "<select name='typeid' style='width:70%'>\r\n";
+        if ($arcRow["typeid"] == "0") {
+            echo "<option value='0' selected>请选择栏目...</option>\r\n";
+        }
 
-    echo $typeOptions;
-    echo "</select>";
-    ?>
+        echo $typeOptions;
+        echo "</select>";
+        ?>
     </td>
 </tr>
 <tr height='28'>
@@ -559,7 +563,7 @@ $typeOptions = GetOptionList($arcRow['typeid'], $cuserLogin->getUserChannel(), $
     <td class='bline'>
     <input type='hidden' name='oldflag' value='<?php echo $arcRow['flag']; ?>' />
     <?php
-$dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
+    $dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
     $dsql->Execute();
     while ($trow = $dsql->GetObject()) {
         if ($trow->att == 'j' || $trow->att == 'p') {
@@ -595,7 +599,7 @@ $dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
     <option value='<?php echo $arcRow["arcrank"] ?>'>
     <?php echo $arcRow["rankname"] ?>                </option>
     <?php
-$urank = $cuserLogin->getUserRank();
+    $urank = $cuserLogin->getUserRank();
 
     $dsql->SetQuery("SELECT * FROM `#@__arcrank` WHERE adminrank<='$urank'");
     $dsql->Execute();
@@ -623,15 +627,15 @@ $urank = $cuserLogin->getUserRank();
 </tr>
 </table>
 </form>
-<?php
-//AJAX窗体结束
+    <?php
+    //AJAX窗体结束
 }
 /*-----------------------------
 //保存快速编辑的内容
 function quickEditSave(){ }
 ------------------------------*/
 else if ($dopost == 'quickEditSave') {
-    require_once DEDEADMIN . '/inc/inc_archives_functions.php';
+    include_once DEDEADMIN . '/inc/inc_archives_functions.php';
     //权限检测
     if (!TestPurview('a_Edit')) {
         if (TestPurview('a_AccEdit')) {
@@ -900,7 +904,7 @@ else if ($dopost == 'attsDlg') {
     <td class='bline'>
     <input type='hidden' name='oldflag' value='<?php echo $arcRow['flag']; ?>' />
     <?php
-$dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
+    $dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
     $dsql->Execute();
     while ($trow = $dsql->GetObject()) {
         if ($trow->att == 'j' || $trow->att == 'p') {
@@ -928,14 +932,14 @@ $dsql->SetQuery("SELECT * FROM `#@__arcatt` ORDER BY sortid ASC");
 </tr>
 </table>
 </form>
-<?php
-//AJAX窗体结束
+    <?php
+    //AJAX窗体结束
 }
 /*------------------------
 function getCatMap() {  }
 -------------------------*/
 else if ($dopost == 'getCatMap') {
-    require_once DEDEINC . '/typeunit.class.selector.php';
+    include_once DEDEINC . '/typeunit.class.selector.php';
     AjaxHead();
     //输出AJAX可移动窗体
     $divname = 'getCatMap';
@@ -955,7 +959,7 @@ else if ($dopost == 'getCatMap') {
     <img src="images/button_back.gif" onclick='HideObj("<?php echo $divname; ?>");ChangeFullDiv("hide");' width="60" height="22" border="0"  style="cursor:pointer" />
 </div>
 </form>
-<?php
-//AJAX窗体结束
+    <?php
+    //AJAX窗体结束
 }
 ?>

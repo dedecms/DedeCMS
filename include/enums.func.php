@@ -5,13 +5,13 @@
 /**
  * 联动菜单类
  *
- * @version        $Id: enums.func.php 2 13:19 2011-3-24  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: enums.func.php 2 13:19 2011-3-24  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 // 弱不存在缓存文件则写入缓存
@@ -22,9 +22,9 @@ if (!file_exists(DEDEDATA . '/enums/system.php')) {
 /**
  *  更新枚举缓存
  *
- * @access    public
- * @param     string  $egroup  联动组
- * @return    string
+ * @access public
+ * @param  string $egroup 联动组
+ * @return string
  */
 function WriteEnumsCache($egroup = '')
 {
@@ -75,9 +75,9 @@ function WriteEnumsCache($egroup = '')
 /**
  *  获取联动表单两级数据的父类与子类
  *
- * @access    public
- * @param     string  $v
- * @return    array
+ * @access public
+ * @param  string $v
+ * @return array
  */
 function GetEnumsTypes($v)
 {
@@ -98,12 +98,12 @@ function GetEnumsTypes($v)
 /**
  *  获取枚举的select表单
  *
- * @access    public
- * @param     string  $egroup  联动组
- * @param     string  $evalue  联动值
- * @param     string  $formid  表单ID
- * @param     string  $seltitle  选择标题
- * @return    string  成功后返回一个枚举表单
+ * @access public
+ * @param  string $egroup   联动组
+ * @param  string $evalue   联动值
+ * @param  string $formid   表单ID
+ * @param  string $seltitle 选择标题
+ * @return string  成功后返回一个枚举表单
  */
 function GetEnumsForm($egroup, $evalue = 0, $formid = '', $seltitle = '')
 {
@@ -133,9 +133,9 @@ function GetEnumsForm($egroup, $evalue = 0, $formid = '', $seltitle = '')
 /**
  *  获取一级数据
  *
- * @access    public
- * @param     string    $egroup   联动组
- * @return    array
+ * @access public
+ * @param  string $egroup 联动组
+ * @return array
  */
 function getTopData($egroup)
 {
@@ -153,9 +153,9 @@ function getTopData($egroup)
 /**
  *  获取数据的JS代码(二级联动)
  *
- * @access    public
- * @param     string    $egroup   联动组
- * @return    string
+ * @access public
+ * @param  string $egroup 联动组
+ * @return string
  */
 function GetEnumsJs($egroup)
 {
@@ -179,9 +179,9 @@ function GetEnumsJs($egroup)
 /**
  *  写入联动JS代码
  *
- * @access    public
- * @param     string    $egroup   联动组
- * @return    string
+ * @access public
+ * @param  string $egroup 联动组
+ * @return string
  */
 function WriteEnumsJs($egroup)
 {
@@ -194,10 +194,10 @@ function WriteEnumsJs($egroup)
 /**
  *  获取枚举的值
  *
- * @access    public
- * @param     string    $egroup   联动组
- * @param     string    $evalue   联动值
- * @return    string
+ * @access public
+ * @param  string $egroup 联动组
+ * @param  string $evalue 联动值
+ * @return string
  */
 function GetEnumsValue($egroup, $evalue = 0)
 {

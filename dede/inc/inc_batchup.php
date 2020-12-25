@@ -2,23 +2,23 @@
 /**
  * 文档操作相关函数
  *
- * @version        $Id: inc_batchup.php 1 10:32 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_batchup.php 1 10:32 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 /**
  *  删除文档信息
  *
- * @access    public
- * @param     string  $aid  文档ID
- * @param     string  $type  类型
- * @param     string  $onlyfile  删除数据库记录
- * @return    string
+ * @access public
+ * @param  string $aid      文档ID
+ * @param  string $type     类型
+ * @param  string $onlyfile 删除数据库记录
+ * @return string
  */
 function DelArc($aid, $type = 'ON', $onlyfile = false, $recycle = 0)
 {
@@ -85,7 +85,10 @@ function DelArc($aid, $type = 'ON', $onlyfile = false, $recycle = 0)
         return false;
     }
 
-    /** 删除到回收站 **/
+    /**
+* 
+ * 删除到回收站 
+**/
     if ($cfg_delete == 'Y' && $type == 'ON') {
         $dsql->ExecuteNoneQuery("UPDATE `$maintable` SET arcrank='-2' WHERE id='$aid' ");
         $dsql->ExecuteNoneQuery("UPDATE `#@__arctiny` SET `arcrank` = '-2' WHERE id = '$aid'; ");
@@ -151,8 +154,10 @@ function DelArc($aid, $type = 'ON', $onlyfile = false, $recycle = 0)
 
     //强制转换非多站点模式，以便统一方式获得实际HTML文件
     $GLOBALS['cfg_multi_site'] = 'N';
-    $arcurl = GetFileUrl($arcRow['aid'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'],
-        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']);
+    $arcurl = GetFileUrl(
+        $arcRow['aid'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'],
+        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']
+    );
     if (!preg_match("#\?#", $arcurl)) {
         $htmlfile = GetTruePath() . str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
         if (file_exists($htmlfile) && !is_dir($htmlfile)) {

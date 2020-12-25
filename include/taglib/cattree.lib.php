@@ -1,14 +1,16 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
  *
- *
- * @version        $Id: cattree.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: cattree.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -46,38 +48,52 @@ function lib_cattree(&$ctag, &$refObj)
             $ispart = $refObj->TypeLink->TypeInfos['ispart'];
             if ($reid == 0) {
                 $topid = $typeid;
+            
             }
 
+        
         } else {
             $typeid = $reid = $topid = $channeltype = $ispart = 0;
+        
         }
+    
     } else {
         $row = $dsql->GetOne("SELECT reid,topid,channeltype,ispart FROM `#@__arctype` WHERE id='$typeid' ");
         if (!is_array($row)) {
             $typeid = $reid = $topid = $channeltype = $ispart = 0;
+        
         } else {
             $reid = $row['reid'];
             $topid = $row['topid'];
             $channeltype = $row['channeltype'];
             $ispart = $row['ispart'];
+        
         }
+    
     }
     if (!empty($catid)) {
         $topQuery = "SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath FROM `#@__arctype` WHERE reid='$catid' And ishidden<>1 ";
+    
     } else {
         if ($showall == "yes") {
             $topQuery = "SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath FROM `#@__arctype` WHERE reid='$topid' ";
+        
         } else {
             if ($showall == '') {
                 if ($ispart < 2 && !empty($channeltype)) {
                     $showall = $channeltype;
+                
                 } else {
                     $showall = 6;
+                
                 }
 
+            
             }
             $topQuery = "SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath FROM `#@__arctype` WHERE reid='{$topid}' And channeltype='{$showall}' And ispart<2 And ishidden<>1 ";
+        
         }
+    
     }
     $dsql->Execute('t', $topQuery);
     while ($row = $dsql->GetArray('t')) {
@@ -86,8 +102,10 @@ function lib_cattree(&$ctag, &$refObj)
         $revalue .= "<dt><a href='{$row['typelink']}'>{$row['typename']}</a></dt>\n";
         cattreeListSon($row['id'], $revalue);
         $revalue .= "</dl>\n";
+    
     }
     return $revalue;
+
 }
 
 function cattreeListSon($id, &$revalue)
@@ -102,9 +120,12 @@ function cattreeListSon($id, &$revalue)
         $thisv .= "    <dt><a href='{$row['typelink']}'>{$row['typename']}</a></dt>\n";
         cattreeListSon($row['id'], $thisv);
         $thisv .= "    </dl>\n";
+    
     }
     if ($thisv != '') {
         $revalue .= "    <dd>\n$thisv    </dd>\n";
+    
     }
+
 
 }

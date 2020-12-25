@@ -2,23 +2,23 @@
 /**
  * 栏目选项函数
  *
- * @version        $Id: inc_catalog_options.php 1 10:32 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_catalog_options.php 1 10:32 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 /**
  *  获取选项列表
  *
- * @access    public
- * @param     string  $selid  选择ID
- * @param     string  $userCatalog  用户类目
- * @param     string  $channeltype  频道类型
- * @return    string
+ * @access public
+ * @param  string $selid       选择ID
+ * @param  string $userCatalog 用户类目
+ * @param  string $channeltype 频道类型
+ * @return string
  */
 function GetOptionList($selid = 0, $userCatalog = 0, $channeltype = 0)
 {

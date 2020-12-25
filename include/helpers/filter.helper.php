@@ -1,29 +1,35 @@
-<?php if (!defined('DEDEINC')) {exit('Request Error');}
+<?php if (!defined('DEDEINC')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 过滤小助手
  *
- * @version        $Id: time.filter.php 1 2010-07-05 11:43:09 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: time.filter.php 1 2010-07-05 11:43:09 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /**
+* 
+* 
  *  去除html中不规则内容字符
-
  *
- * @access    public
- * @param     string  $str  需要处理的字符串
- * @param     string  $rptype  返回类型
+ * @access public
+ * @param  string  $str  需要处理的字符串
+ * @param  string  $rptype  返回类型
  *            $rptype = 0 表示仅替换 html标记
  *            $rptype = 1 表示替换 html标记同时去除连续空白字符
  *            $rptype = 2 表示替换 html标记同时去除所有空白字符
  *            $rptype = -1 表示仅替换 html危险的标记
- * @return    string
- */
+ * @return string
+ 
+*/
 if (!function_exists('HtmlReplace')) {
     function HtmlReplace($str, $rptype = 0)
     {
@@ -31,29 +37,38 @@ if (!function_exists('HtmlReplace')) {
         $str = preg_replace("/<[\/]{0,1}style([^>]*)>(.*)<\/style>/i", '', $str);
         if ($rptype == 0) {
             $str = dede_htmlspecialchars($str);
+        
         } else if ($rptype == 1) {
             $str = dede_htmlspecialchars($str);
             $str = str_replace("　", ' ', $str);
             $str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
+        
         } else if ($rptype == 2) {
             $str = dede_htmlspecialchars($str);
             $str = str_replace("　", '', $str);
             $str = preg_replace("/[\r\n\t ]/", '', $str);
+        
         } else {
             $str = preg_replace("/[\r\n\t ]{1,}/", ' ', $str);
             $str = preg_replace('/script/i', 'ｓｃｒｉｐｔ', $str);
             $str = preg_replace("/<[\/]{0,1}(link|meta|ifr|fra)[^>]*>/i", '', $str);
+        
         }
         return addslashes($str);
+    
     }
+
 }
 
 /**
+* 
+* 
  *  修复浏览器XSS hack的函数
  *
- * @param     string   $val  需要处理的内容
- * @return    string
- */
+ * @param  string   $val  需要处理的内容
+ * @return string
+ 
+*/
 if (!function_exists('RemoveXSS')) {
     function RemoveXSS($val)
     {
@@ -65,6 +80,7 @@ if (!function_exists('RemoveXSS')) {
         for ($i = 0; $i < strlen($search); $i++) {
             $val = preg_replace('/(&#[xX]0{0,8}' . dechex(ord($search[$i])) . ';?)/i', $search[$i], $val); // with a ;
             $val = preg_replace('/(&#0{0,8}' . ord($search[$i]) . ';?)/', $search[$i], $val); // with a ;
+        
         }
 
         $ra1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'style', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
@@ -83,28 +99,38 @@ if (!function_exists('RemoveXSS')) {
                         $pattern .= '|';
                         $pattern .= '|(&#0{0,8}([9|10|13]);)';
                         $pattern .= ')*';
+                    
                     }
                     $pattern .= $ra[$i][$j];
+                
                 }
                 $pattern .= '/i';
                 $replacement = substr($ra[$i], 0, 2) . '<x>' . substr($ra[$i], 2);
                 $val = preg_replace($pattern, $replacement, $val);
                 if ($val_before == $val) {
                     $found = false;
+                
                 }
+            
             }
+        
         }
         return $val;
+    
     }
+
 }
 
 /**
+* 
+* 
  *  处理禁用HTML但允许换行的内容
  *
- * @access    public
- * @param     string  $msg  需要过滤的内容
- * @return    string
- */
+ * @access public
+ * @param  string  $msg  需要过滤的内容
+ * @return string
+ 
+*/
 if (!function_exists('TrimMsg')) {
     function TrimMsg($msg)
     {
@@ -112,15 +138,20 @@ if (!function_exists('TrimMsg')) {
         $msg = nl2br(dede_htmlspecialchars($msg));
         $msg = str_replace("  ", "&nbsp;&nbsp;", $msg);
         return addslashes($msg);
+    
     }
+
 }
 
 /**
+* 
+* 
  *  过滤用于搜索的字符串
  *
- * @param     string  $keyword  关键词
- * @return    string
- */
+ * @param  string  $keyword  关键词
+ * @return string
+ 
+*/
 if (!function_exists('FilterSearch')) {
     function FilterSearch($keyword)
     {
@@ -129,9 +160,12 @@ if (!function_exists('FilterSearch')) {
             $keyword = preg_replace("/[\"\r\n\t\$\\><']/", '', $keyword);
             if ($keyword != stripslashes($keyword)) {
                 return '';
+            
             } else {
                 return $keyword;
+            
             }
+        
         } else {
             $restr = '';
             for ($i = 0;isset($keyword[$i]); $i++) {
@@ -139,18 +173,28 @@ if (!function_exists('FilterSearch')) {
                     if (isset($keyword[$i + 1]) && ord($keyword[$i + 1]) > 0x40) {
                         $restr .= $keyword[$i] . $keyword[$i + 1];
                         $i++;
+                    
                     } else {
                         $restr .= ' ';
+                    
                     }
+                
                 } else {
                     if (preg_match("/[^0-9a-z@#\.]/", $keyword[$i])) {
                         $restr .= ' ';
+                    
                     } else {
                         $restr .= $keyword[$i];
+                    
                     }
+                
                 }
+            
             }
+        
         }
         return $restr;
+    
     }
+
 }

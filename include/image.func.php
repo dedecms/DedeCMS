@@ -5,16 +5,16 @@
 /**
  * 图像处理相关函数
  *
- * @version        $Id: image.func.php 1 15:59 2010年7月5日 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: image.func.php 1 15:59 2010年7月5日 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
-include DEDEDATA . '/mark/inc_photowatermark_config.php';
+require DEDEDATA . '/mark/inc_photowatermark_config.php';
 //检测用户系统支持的图片格式
 global $cfg_photo_type, $cfg_photo_typenames, $cfg_photo_support;
 $cfg_photo_type['gif'] = false;

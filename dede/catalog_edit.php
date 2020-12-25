@@ -2,13 +2,13 @@
 /**
  * 栏目编辑
  *
- * @version        $Id: catalog_edit.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: catalog_edit.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . "/typelink.class.php";
@@ -190,13 +190,13 @@ if ($dopost == 'time') {
          <tr>
             <td width="150" class='bline' height="26" align="center">是否支持投稿：</td>
             <td class='bline'> <input type='radio' name='issend' value='0' class='np' <?php if ($myrow['issend'] == "0") {
-        echo " checked='1' ";
-    }
-    ?> />
+                echo " checked='1' ";
+}
+                                                                                        ?> />
               不支持&nbsp; <input type='radio' name='issend' value='1' class='np' <?php if ($myrow['issend'] == "1") {
-        echo " checked='1' ";
-    }
-    ?> />
+                    echo " checked='1' ";
+}
+                                                                                ?> />
               支持 </td>
           </tr>
           <!-- 在快速修改更改内容类型后，因为模板没改变，会导致错误，因此去除些选择框。 -->
@@ -204,13 +204,13 @@ if ($dopost == 'time') {
             <td class='bline' height="26" align="center"><font color='red'>内容类型：</font> </td>
             <td class='bline'>
             <?php
-foreach ($channelArray as $k => $arr) {
-        if ($k == $channelid) {
-            echo "{$arr['typename']} | {$arr['nid']}";
-        }
+            foreach ($channelArray as $k => $arr) {
+                if ($k == $channelid) {
+                    echo "{$arr['typename']} | {$arr['nid']}";
+                }
 
-    }
-    ?>
+            }
+            ?>
             <a href='catalog_edit.php?id=<?php echo $id; ?>'><u>[修改]</u></a>
             </td>
           </tr>
@@ -227,17 +227,17 @@ foreach ($channelArray as $k => $arr) {
             <td class='bline' height="26" align="center">浏览权限：</td>
             <td class='bline'> <select name="corank" id="corank" style="width:100">
                 <?php
-$dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
-    $dsql->Execute();
-    while ($row = $dsql->GetObject()) {
-        if ($myrow['corank'] == $row->rank) {
-            echo "<option value='" . $row->rank . "' selected>" . $row->membername . "</option>\r\n";
-        } else {
-            echo "<option value='" . $row->rank . "'>" . $row->membername . "</option>\r\n";
-        }
+                $dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
+                $dsql->Execute();
+                while ($row = $dsql->GetObject()) {
+                    if ($myrow['corank'] == $row->rank) {
+                        echo "<option value='" . $row->rank . "' selected>" . $row->membername . "</option>\r\n";
+                    } else {
+                        echo "<option value='" . $row->rank . "'>" . $row->membername . "</option>\r\n";
+                    }
 
-    }
-    ?>
+                }
+                ?>
               </select>
               (仅限制栏目里的文档浏览权限) </td>
           </tr>
@@ -248,19 +248,19 @@ $dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
           <tr>
             <td height="26" align="center" class='bline'>栏目列表选项：</td>
             <td class='bline'> <input type='radio' name='isdefault' value='1' class='np'<?php if ($myrow['isdefault'] == 1) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                echo " checked='1' ";
+}
+                                                                                        ?>/>
               链接到默认页
               <input type='radio' name='isdefault' value='0' class='np'<?php if ($myrow['isdefault'] == 0) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                    echo " checked='1' ";
+}
+                                                                        ?>/>
               链接到列表第一页
               <input type='radio' name='isdefault' value='-1' class='np'<?php if ($myrow['isdefault'] == -1) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                    echo " checked='1' ";
+}
+                                                                        ?>/>
               使用动态页 </td>
           </tr>
           <tr>
@@ -271,20 +271,20 @@ $dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
             <td height="26" class='bline' align="center">栏目属性：</td>
             <td class='bline'>
                 <input name="ispart" type="radio" id="radio" value="0" class='np'<?php if ($myrow['ispart'] == 0) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                    echo " checked='1' ";
+}
+                                                                                    ?>/>
               最终列表栏目（允许在本栏目发布文档，并生成文档列表）<br>
               <input name="ispart" type="radio" id="radio2" value="1" class='np'<?php if ($myrow['ispart'] == 1) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                    echo " checked='1' ";
+}
+                                                                                ?>/>
 
               频道封面（栏目本身不允许发布文档）<br>
               <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php if ($myrow['ispart'] == 2) {
-        echo " checked='1' ";
-    }
-    ?>/>
+                    echo " checked='1' ";
+}
+                                                                                ?>/>
               外部连接（在"文件保存目录"处填写网址）              </td>
           </tr>
           <tr>
@@ -297,7 +297,7 @@ $dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
       </table>
       </form>
     <?php
-exit();
+    exit();
 } else {
     DedeInclude('templets/catalog_edit.htm');
 }

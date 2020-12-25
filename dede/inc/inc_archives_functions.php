@@ -2,13 +2,13 @@
 /**
  * 文档操作相关函数
  *
- * @version        $Id: inc_archives_functions.php 1 9:56 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_archives_functions.php 1 9:56 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . '/dedehttpdown.class.php';
 require_once DEDEINC . '/image.func.php';
@@ -17,23 +17,23 @@ require_once DEDEINC . '/arc.partview.class.php';
 $backurl = !empty($_COOKIE['ENV_GOBACK_URL']) ? $_COOKIE['ENV_GOBACK_URL'] : '';
 $backurl = preg_match("#content_#", $backurl) ? "<a href='$backurl'>[<u>记忆的列表页</u>]</a> &nbsp;" : '';
 if (!isset($_NOT_ARCHIVES)) {
-    require_once DEDEINC . '/customfields.func.php';
+    include_once DEDEINC . '/customfields.func.php';
 }
 
 /**
  * 获得HTML里的外部资源，针对图集
  *
- * @access    public
- * @param     string  $body  文档内容
- * @param     string  $rfurl  来源地址
- * @param     string  $firstdd  开始标记
- * @return    string
+ * @access public
+ * @param  string $body    文档内容
+ * @param  string $rfurl   来源地址
+ * @param  string $firstdd 开始标记
+ * @return string
  */
 function GetCurContentAlbum($body, $rfurl, &$firstdd)
 {
     global $dsql, $cfg_multi_site, $cfg_basehost, $cfg_ddimg_width;
     global $cfg_basedir, $pagestyle, $cuserLogin, $cfg_addon_savetype;
-    require_once DEDEINC . '/dedecollection.func.php';
+    include_once DEDEINC . '/dedecollection.func.php';
     if (empty($cfg_ddimg_width)) {
         $cfg_ddimg_width = 320;
     }
@@ -55,7 +55,8 @@ function GetCurContentAlbum($body, $rfurl, &$firstdd)
     foreach ($img_array as $key => $value) {
         $value = trim($value);
         if (preg_match("#" . $basehost . "#i", $value) || !preg_match("#^http:\/\/#i", $value)
-            || ($cfg_basehost != $basehost && preg_match("#" . $cfg_basehost . "#i", $value))) {
+            || ($cfg_basehost != $basehost && preg_match("#" . $cfg_basehost . "#i", $value))
+        ) {
             continue;
         }
         $itype = substr($value, -4, 4);
@@ -100,9 +101,9 @@ function GetCurContentAlbum($body, $rfurl, &$firstdd)
 /**
  * 获得文章body里的外部资源
  *
- * @access    public
- * @param     string  $body  文档内容
- * @return    string
+ * @access public
+ * @param  string $body 文档内容
+ * @return string
  */
 function GetCurContent($body)
 {
@@ -174,10 +175,10 @@ function GetCurContent($body)
 /**
  * 获取一个远程图片
  *
- * @access    public
- * @param     string  $url  地址
- * @param     int  $uid  用户id
- * @return    array
+ * @access public
+ * @param  string $url 地址
+ * @param  int    $uid 用户id
+ * @return array
  */
 function GetRemoteImage($url, $uid = 0)
 {
@@ -223,10 +224,10 @@ function GetRemoteImage($url, $uid = 0)
 /**
  *  获取远程flash
  *
- * @access    public
- * @param     string  $url  地址
- * @param     int  $uid  用户id
- * @return    string
+ * @access public
+ * @param  string $url 地址
+ * @param  int    $uid 用户id
+ * @return string
  */
 function GetRemoteFlash($url, $uid = 0)
 {
@@ -258,10 +259,10 @@ function GetRemoteFlash($url, $uid = 0)
 /**
  *  检测频道ID
  *
- * @access    public
- * @param     int  $typeid  栏目ID
- * @param     int  $channelid  频道ID
- * @return    bool
+ * @access public
+ * @param  int $typeid    栏目ID
+ * @param  int $channelid 频道ID
+ * @return bool
  */
 function CheckChannel($typeid, $channelid)
 {
@@ -282,10 +283,10 @@ function CheckChannel($typeid, $channelid)
 /**
  *  检测档案权限
  *
- * @access    public
- * @param     int  $aid  文档AID
- * @param     int  $adminid  管理员ID
- * @return    bool
+ * @access public
+ * @param  int $aid     文档AID
+ * @param  int $adminid 管理员ID
+ * @return bool
  */
 function CheckArcAdmin($aid, $adminid)
 {
@@ -302,11 +303,11 @@ function CheckArcAdmin($aid, $adminid)
 /**
  *  文档自动分页
  *
- * @access    public
- * @param     string  $mybody  内容
- * @param     string  $spsize  分页大小
- * @param     string  $sptag  分页标记
- * @return    string
+ * @access public
+ * @param  string $mybody 内容
+ * @param  string $spsize 分页大小
+ * @param  string $sptag  分页标记
+ * @return string
  */
 function SpLongBody($mybody, $spsize, $sptag)
 {
@@ -354,16 +355,16 @@ function SpLongBody($mybody, $spsize, $sptag)
 /**
  *  创建指定ID的文档
  *
- * @access    public
- * @param     string  $aid  文档ID
- * @param     string  $ismakesign  生成标志
- * @param     int  $isremote  是否远程
- * @return    string
+ * @access public
+ * @param  string $aid        文档ID
+ * @param  string $ismakesign 生成标志
+ * @param  int    $isremote   是否远程
+ * @return string
  */
 function MakeArt($aid, $mkindex = false, $ismakesign = false, $isremote = 0)
 {
     global $envs, $typeid;
-    require_once DEDEINC . '/arc.archives.class.php';
+    include_once DEDEINC . '/arc.archives.class.php';
     if ($ismakesign) {
         $envs['makesign'] = 'yes';
     }
@@ -376,9 +377,9 @@ function MakeArt($aid, $mkindex = false, $ismakesign = false, $isremote = 0)
 /**
  *  取第一个图片为缩略图
  *
- * @access    public
- * @param     string  $body  文档内容
- * @return    string
+ * @access public
+ * @param  string $body 文档内容
+ * @return string
  */
 function GetDDImgFromBody(&$body)
 {
@@ -400,18 +401,19 @@ function GetDDImgFromBody(&$body)
 /**
  *  获得缩略图
  *
- * @access    public
- * @param     string  $litpic  缩略图
- * @param     string  $picname  图片名称
- * @param     string  $isremote  是否远程
- * @return    string
+ * @access public
+ * @param  string $litpic   缩略图
+ * @param  string $picname  图片名称
+ * @param  string $isremote 是否远程
+ * @return string
  */
 function GetDDImage($litpic, $picname, $isremote)
 {
     global $cuserLogin, $cfg_ddimg_width, $cfg_ddimg_height, $cfg_basedir, $ddcfg_image_dir, $cfg_addon_savetype;
     $ntime = time();
-    if (($litpic != 'none' || $litpic != 'ddfirst') &&
-        !empty($_FILES[$litpic]['tmp_name']) && is_uploaded_file($_FILES[$litpic]['tmp_name'])) {
+    if (($litpic != 'none' || $litpic != 'ddfirst') 
+        && !empty($_FILES[$litpic]['tmp_name']) && is_uploaded_file($_FILES[$litpic]['tmp_name'])
+    ) {
         //如果用户自行上传缩略图
         $istype = 0;
         $sparr = array("image/pjpeg", "image/jpeg", "image/gif", "image/png");
@@ -493,9 +495,9 @@ function GetDDImage($litpic, $picname, $isremote)
 /**
  *  获得一个附加表单
  *
- * @access    public
- * @param     object  $ctag  ctag
- * @return    string
+ * @access public
+ * @param  object $ctag ctag
+ * @return string
  */
 function GetFormItemA($ctag)
 {
@@ -505,13 +507,13 @@ function GetFormItemA($ctag)
 /**
  *  处理不同类型的数据
  *
- * @access    public
- * @param     string  $dvalue
- * @param     string  $dtype
- * @param     int  $aid
- * @param     string  $job
- * @param     string  $addvar
- * @return    string
+ * @access public
+ * @param  string $dvalue
+ * @param  string $dtype
+ * @param  int    $aid
+ * @param  string $job
+ * @param  string $addvar
+ * @return string
  */
 function GetFieldValueA($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 {
@@ -521,10 +523,10 @@ function GetFieldValueA($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 /**
  *  获得带值的表单(编辑时用)
  *
- * @access    public
- * @param     object  $ctag  ctag
- * @param     string  $fvalue  fvalue
- * @return    string
+ * @access public
+ * @param  object $ctag   ctag
+ * @param  string $fvalue fvalue
+ * @return string
  */
 function GetFormItemValueA($ctag, $fvalue)
 {
@@ -534,10 +536,10 @@ function GetFormItemValueA($ctag, $fvalue)
 /**
  *  载入自定义表单(用于发布)
  *
- * @access    public
- * @param     string  $fieldset  字段列表
- * @param     string  $loadtype  载入类型
- * @return    string
+ * @access public
+ * @param  string $fieldset 字段列表
+ * @param  string $loadtype 载入类型
+ * @return string
  */
 function PrintAutoFieldsAdd(&$fieldset, $loadtype = 'all')
 {
@@ -548,7 +550,8 @@ function PrintAutoFieldsAdd(&$fieldset, $loadtype = 'all')
     if (is_array($dtp->CTags)) {
         foreach ($dtp->CTags as $tid => $ctag) {
             if ($loadtype != 'autofield'
-                || ($loadtype == 'autofield' && $ctag->GetAtt('autofield') == 1)) {
+                || ($loadtype == 'autofield' && $ctag->GetAtt('autofield') == 1)
+            ) {
                 $dede_addonfields .= ($dede_addonfields == "" ? $ctag->GetName() . "," . $ctag->GetAtt('type') : ";" . $ctag->GetName() . "," . $ctag->GetAtt('type'));
                 echo GetFormItemA($ctag);
             }
@@ -560,11 +563,11 @@ function PrintAutoFieldsAdd(&$fieldset, $loadtype = 'all')
 /**
  *  载入自定义表单(用于编辑)
  *
- * @access    public
- * @param     string  $fieldset  字段列表
- * @param     string  $fieldValues  字段值
- * @param     string  $loadtype  载入类型
- * @return    string
+ * @access public
+ * @param  string $fieldset    字段列表
+ * @param  string $fieldValues 字段值
+ * @param  string $loadtype    载入类型
+ * @return string
  */
 function PrintAutoFieldsEdit(&$fieldset, &$fieldValues, $loadtype = 'all')
 {
@@ -575,7 +578,8 @@ function PrintAutoFieldsEdit(&$fieldset, &$fieldValues, $loadtype = 'all')
     if (is_array($dtp->CTags)) {
         foreach ($dtp->CTags as $tid => $ctag) {
             if ($loadtype != 'autofield'
-                || ($loadtype == 'autofield' && $ctag->GetAtt('autofield') == 1)) {
+                || ($loadtype == 'autofield' && $ctag->GetAtt('autofield') == 1)
+            ) {
                 $dede_addonfields .= ($dede_addonfields == '' ? $ctag->GetName() . "," . $ctag->GetAtt('type') : ";" . $ctag->GetName() . "," . $ctag->GetAtt('type'));
                 echo GetFormItemValueA($ctag, $fieldValues[$ctag->GetName()]);
             }
@@ -588,13 +592,13 @@ function PrintAutoFieldsEdit(&$fieldset, &$fieldValues, $loadtype = 'all')
  * 处理HTML文本
  * 删除非站外链接、自动摘要、自动获取缩略图
  *
- * @access    public
- * @param     string  $body  内容
- * @param     string  $description  描述
- * @param     string  $litpic  缩略图
- * @param     string  $keywords  关键词
- * @param     string  $dtype  类型
- * @return    string
+ * @access public
+ * @param  string $body        内容
+ * @param  string $description 描述
+ * @param  string $litpic      缩略图
+ * @param  string $keywords    关键词
+ * @param  string $dtype       类型
+ * @return string
  */
 function AnalyseHtmlBody($body, &$description, &$litpic, &$keywords, $dtype = '')
 {
@@ -677,10 +681,10 @@ function AnalyseHtmlBody($body, &$description, &$litpic, &$keywords, $dtype = ''
 /**
  *  删除非站内链接
  *
- * @access    public
- * @param     string  $body  内容
- * @param     array  $allow_urls  允许的超链接
- * @return    string
+ * @access public
+ * @param  string $body       内容
+ * @param  array  $allow_urls 允许的超链接
+ * @return string
  */
 function Replace_Links(&$body, $allow_urls = array())
 {
@@ -712,10 +716,10 @@ function Replace_Links(&$body, $allow_urls = array())
 /**
  *  图集里大图的小图
  *
- * @access    public
- * @param     string  $filename  图片名称
- * @param     string  $maxwidth  最大宽度
- * @return    string
+ * @access public
+ * @param  string $filename 图片名称
+ * @param  string $maxwidth 最大宽度
+ * @return string
  */
 function GetImageMapDD($filename, $maxwidth)
 {
@@ -746,12 +750,16 @@ function GetImageMapDD($filename, $maxwidth)
 /**
  *  上传一个未经处理的图片
  *
- * @access    public
- * @param     string  $upname 上传框名称
- * @param     string  $handurl 手工填写的网址
- * @param     string  $ddisremote 是否下载远程图片 0 不下, 1 下载
- * @param     string  $ntitle 注解文字 如果表单有 title 字段可不管
- * @return    mixed
+ * @access public
+ * @param  string $upname     上传框名称
+ * @param  string $handurl    手工填写的网址
+ * @param  string $ddisremote 是否下载远程图片
+ *                            0 不下, 1 下载
+ * @param  string $ntitle     注解文字
+ *                            如果表单有
+ *                            title
+ *                            字段可不管
+ * @return mixed
  */
 function UploadOneImage($upname, $handurl = '', $isremote = 1, $ntitle = '')
 {
@@ -840,8 +848,8 @@ function UploadOneImage($upname, $handurl = '', $isremote = 1, $ntitle = '')
 /**
  *  获取更新测试信息
  *
- * @access    public
- * @return    string
+ * @access public
+ * @return string
  */
 function GetUpdateTest()
 {

@@ -2,13 +2,13 @@
 /**
  * swfupload上传
  *
- * @version        $Id: swfupload.php 1 16:22 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: swfupload.php 1 16:22 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 require_once DEDEINC . '/image.func.php';
@@ -47,22 +47,22 @@ if (empty($dopost)) {
         exit(0);
     } else {
         switch ($srcInfo[2]) {
-            case 1:
-                $ftype = 'image/gif';
-                $sname = '.gif';
-                break;
-            case 2:
-                $ftype = 'image/jpeg';
-                $sname = '.jpg';
-                break;
-            case 3:
-                $ftype = 'image/png';
-                $sname = '.png';
-                break;
-            case 6:
-                $ftype = 'image/bmp';
-                $sname = '.bmp';
-                break;
+        case 1:
+            $ftype = 'image/gif';
+            $sname = '.gif';
+            break;
+        case 2:
+            $ftype = 'image/jpeg';
+            $sname = '.jpg';
+            break;
+        case 3:
+            $ftype = 'image/png';
+            $sname = '.png';
+            break;
+        case 6:
+            $ftype = 'image/bmp';
+            $sname = '.bmp';
+            break;
         }
     }
     if ($ftype == '') {

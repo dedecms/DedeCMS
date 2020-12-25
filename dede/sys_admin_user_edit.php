@@ -2,13 +2,13 @@
 /**
  * 编辑系统管理员
  *
- * @version        $Id: sys_admin_user_edit.php 1 16:22 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_admin_user_edit.php 1 16:22 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 CheckPurview('sys_User');
@@ -63,7 +63,7 @@ if ($dopost == 'saveedit') {
     if ($userok != "yes") {
         $randcode = mt_rand(10000, 99999);
         $safecode = substr(md5($cfg_cookie_encode . $randcode), 0, 24);
-        require_once DEDEINC . "/oxwindow.class.php";
+        include_once DEDEINC . "/oxwindow.class.php";
         $wintitle = "删除用户";
         $wecome_info = "<a href='sys_admin_user.php'>系统帐号管理</a>::删除用户";
         $win = new OxWindow();

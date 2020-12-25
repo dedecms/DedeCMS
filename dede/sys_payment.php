@@ -2,13 +2,13 @@
 /**
  * 支付接口
  *
- * @version        $Id: sys_info_mark.php 1 22:28 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_info_mark.php 1 22:28 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . '/datalistcp.class.php';
@@ -82,8 +82,10 @@ class Array2form
                     $reval_form = $this->GetForm($key, $val, $val['type']);
                     //进行模板标签替换
                     if ($itermtype == 1) {
-                        $reval = preg_replace(array("/~title~/", "/~form~/", "/~description~/"),
-                            array($reval_title, $reval_form, $reval_des), $this->ArrFromTPL);
+                        $reval = preg_replace(
+                            array("/~title~/", "/~form~/", "/~description~/"),
+                            array($reval_title, $reval_form, $reval_des), $this->ArrFromTPL
+                        );
                     } else {
                         return $reval_form;
                     }
@@ -99,35 +101,35 @@ class Array2form
     public function GetForm($key, $formarry = array(), $formtype = 'text')
     {
         switch ($formtype) {
-            case 'text':
-                //生成文本编辑框
-                $valstr = (empty($formarry['value'])) ? "value=''" : "value='{$formarry['value']}'";
-                $reval_form = "<input type='text' name='{$key}' id='{$key}' style='width:300px' class='text'{$valstr}>";
-                break;
-            case 'select':
-                //生成选择框
-                $reval_title = $formarry['title'];
-                $items = explode(',', $formarry['iterm']);
-                $reval_form = "<select name='{$key}' class='text'>";
-                if (is_array($items)) {
-                    foreach ($items as $v) {
-                        $v = trim($v);
-                        if ($v == '') {
-                            continue;
-                        }
+        case 'text':
+            //生成文本编辑框
+            $valstr = (empty($formarry['value'])) ? "value=''" : "value='{$formarry['value']}'";
+            $reval_form = "<input type='text' name='{$key}' id='{$key}' style='width:300px' class='text'{$valstr}>";
+            break;
+        case 'select':
+            //生成选择框
+            $reval_title = $formarry['title'];
+            $items = explode(',', $formarry['iterm']);
+            $reval_form = "<select name='{$key}' class='text'>";
+            if (is_array($items)) {
+                foreach ($items as $v) {
+                    $v = trim($v);
+                    if ($v == '') {
+                        continue;
+                    }
 
-                        //统一将中文冒号转为英文
-                        $v = str_replace("：", ":", $v);
-                        if (preg_match("/[\:]/", $v)) {
-                            list($value, $name) = preg_split('#:#', $v);
-                            $reval_form .= ($formarry['value'] == $value) ? "<option value='$value' selected>$name</option>\r\n" : "<option value='$value'>$name</option>\r\n";
-                        } else {
-                            $reval_form .= ($formarry['value'] == $v) ? "<option value='$v' selected>$v</option>\r\n" : "<option value='$v'>$v</option>\r\n";
-                        }
+                    //统一将中文冒号转为英文
+                    $v = str_replace("：", ":", $v);
+                    if (preg_match("/[\:]/", $v)) {
+                        list($value, $name) = preg_split('#:#', $v);
+                        $reval_form .= ($formarry['value'] == $value) ? "<option value='$value' selected>$name</option>\r\n" : "<option value='$value'>$name</option>\r\n";
+                    } else {
+                        $reval_form .= ($formarry['value'] == $v) ? "<option value='$v' selected>$v</option>\r\n" : "<option value='$v'>$v</option>\r\n";
                     }
                 }
-                $reval_form .= "</select>\r\n";
-                break;
+            }
+            $reval_form .= "</select>\r\n";
+            break;
         }
         return $reval_form;
     }

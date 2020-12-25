@@ -2,13 +2,13 @@
 /**
  * 采集规则编辑-专家更改模式
  *
- * @version        $Id: co_edit_text.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: co_edit_text.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('co_EditNote');
@@ -17,7 +17,7 @@ if (empty($job)) {
 }
 
 if ($job == '') {
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     $wintitle = "更改采集规则";
     $wecome_info = "<a href='co_main.php'><u>采集点管理</u></a>::更改采集规则 - 专家更改模式";
     $win = new OxWindow();

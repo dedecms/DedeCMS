@@ -5,13 +5,13 @@
 /**
  * RSS视图类
  *
- * @version        $Id: arc.rssview.class.php 1 15:21 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.rssview.class.php 1 15:21 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/dedetag.class.php";
 require_once DEDEINC . "/typelink.class.php";
@@ -22,9 +22,9 @@ require_once DEDEINC . '/ftp.class.php';
 /**
  * RSS视图类
  *
- * @package          RssView
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    RssView
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class RssView
 {
@@ -40,10 +40,10 @@ class RssView
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $typeid  栏目ID
-     * @param     int  $max_row  最大显示行数
-     * @return    string
+     * @access public
+     * @param  int $typeid  栏目ID
+     * @param  int $max_row 最大显示行数
+     * @return string
      */
     public function __construct($typeid, $max_row = 50)
     {
@@ -84,8 +84,8 @@ class RssView
     /**
      *  显示列表
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -95,9 +95,9 @@ class RssView
     /**
      *  开始创建列表
      *
-     * @access    public
-     * @param     string  $isremote  是否远程
-     * @return    string
+     * @access public
+     * @param  string $isremote 是否远程
+     * @return string
      */
     public function MakeRss($isremote = 0)
     {
@@ -121,8 +121,8 @@ class RssView
     /**
      *  解析模板
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ParseTemplet()
     {
@@ -130,7 +130,8 @@ class RssView
             if ($ctag->GetName() == "field") {
                 $this->dtp->Assign($tid, $this->TypeFields[$ctag->GetAtt('name')]);
             } else if ($ctag->GetName() == "rssitem") {
-                $this->dtp->Assign($tid,
+                $this->dtp->Assign(
+                    $tid,
                     $this->GetArcList($ctag->GetInnerText())
                 );
             }
@@ -140,9 +141,9 @@ class RssView
     /**
      *  获得文档列表
      *
-     * @access    public
-     * @param     string  $innertext  底层模板
-     * @return    string
+     * @access public
+     * @param  string $innertext 底层模板
+     * @return string
      */
     public function GetArcList($innertext = "")
     {
@@ -173,10 +174,14 @@ class RssView
                 $row['litpic'] = $GLOBALS['cfg_mainsite'] . $row['litpic'];
             }
             $row['picname'] = $row['litpic'];
-            $row["arcurl"] = GetFileUrl($row["id"], $row["typeid"], $row["senddate"], $row["title"],
-                $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]);
-            $row["typeurl"] = GetTypeUrl($row["typeid"], $row["typedir"], $row["isdefault"], $row["defaultname"], $row["ispart"],
-                $row["namerule2"], $row["moresite"], $row["siteurl"], $row["sitepath"]);
+            $row["arcurl"] = GetFileUrl(
+                $row["id"], $row["typeid"], $row["senddate"], $row["title"],
+                $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]
+            );
+            $row["typeurl"] = GetTypeUrl(
+                $row["typeid"], $row["typedir"], $row["isdefault"], $row["defaultname"], $row["ispart"],
+                $row["namerule2"], $row["moresite"], $row["siteurl"], $row["sitepath"]
+            );
             $row["info"] = $row["description"];
             $row["filename"] = $row["arcurl"];
             $row["stime"] = GetDateMK($row["pubdate"]);

@@ -2,13 +2,13 @@
 /**
  * 软件添加
  *
- * @version        $Id: soft_add.php 2 14:16 2010-11-11  $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: soft_add.php 2 14:16 2010-11-11  $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 //考虑安全原因不管是否开启游客投稿功能，都不允许用户投稿
@@ -139,7 +139,8 @@ VALUES ('$arcID','$typeid','$sortrank','$flag','$ismake','$channelid','$arcrank'
     $softurl1 = str_replace(array("{dede:", "{/dede:", "}"), "#", $softurl1);
     $urls = '';
     if ($softurl1 != '') {
-        if (preg_match("#}(.*?){/dede:link}{dede:#sim", $servermsg1) != 1) {$urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n";}
+        if (preg_match("#}(.*?){/dede:link}{dede:#sim", $servermsg1) != 1) {$urls .= "{dede:link islocal='1' text='{$servermsg1}'} $softurl1 {/dede:link}\r\n";
+        }
     }
     for ($i = 2; $i <= 12; $i++) {
         if (!empty(${'softurl' . $i})) {

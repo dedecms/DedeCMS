@@ -5,13 +5,13 @@
 /**
  * 自由列表类
  *
- * @version        $Id: arc.freelist.class.php 3 15:15 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.freelist.class.php 3 15:15 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . '/arc.partview.class.php';
@@ -20,9 +20,9 @@ require_once DEDEINC . '/arc.partview.class.php';
 /**
  * 自由列表类
  *
- * @package          FreeList
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    FreeList
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class FreeList
 {
@@ -120,8 +120,8 @@ class FreeList
     /**
      *  统计列表里的记录
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function CountRecord()
     {
@@ -209,8 +209,8 @@ class FreeList
     /**
      *  载入模板
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function LoadTemplet()
     {
@@ -227,10 +227,10 @@ class FreeList
     /**
      *  列表创建HTML
      *
-     * @access    public
-     * @param     string  $startpage  开始页面
-     * @param     string  $makepagesize  生成的页码数
-     * @return    string
+     * @access public
+     * @param  string $startpage    开始页面
+     * @param  string $makepagesize 生成的页码数
+     * @return string
      */
     public function MakeHtml($startpage = 1, $makepagesize = 0)
     {
@@ -288,8 +288,8 @@ class FreeList
     /**
      *  显示列表
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -302,8 +302,8 @@ class FreeList
     /**
      *  显示单独模板页面
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function DisplayPartTemplets()
     {
@@ -344,8 +344,8 @@ class FreeList
     /**
      *  解析模板，对固定的标记进行初始给值
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ParseTempletsFirst()
     {
@@ -355,10 +355,10 @@ class FreeList
     /**
      *  解析模板，对内容里的变动进行赋值
      *
-     * @access    public
-     * @param     string  $PageNo  页码
-     * @param     string  $ismake  是否编译
-     * @return    string
+     * @access public
+     * @param  string $PageNo 页码
+     * @param  string $ismake 是否编译
+     * @return string
      */
     public function ParseDMFields($PageNo, $ismake = 1)
     {
@@ -391,8 +391,8 @@ class FreeList
     /**
      *  获得要创建的文件名称规则
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetMakeFileRule()
     {
@@ -415,10 +415,10 @@ class FreeList
     /**
      *  获得一个单列的文档列表
      *
-     * @access    public
-     * @param     string  $limitstart  开始限制
-     * @param     string  $ismake  是否编译
-     * @return    string
+     * @access public
+     * @param  string $limitstart 开始限制
+     * @param  string $ismake     是否编译
+     * @return string
      */
     public function GetList($limitstart, $ismake = 1)
     {
@@ -577,11 +577,15 @@ class FreeList
 
                     //处理一些特殊字段
                     $row['id'] = $row['id'];
-                    $row['arcurl'] = $this->GetArcUrl($row['id'], $row['typeid'], $row['senddate'],
+                    $row['arcurl'] = $this->GetArcUrl(
+                        $row['id'], $row['typeid'], $row['senddate'],
                         $row['title'], $row['ismake'], $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'],
-                        $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
-                    $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'],
-                        $row['ispart'], $row['namerule2'], $row['siteurl'], $row['sitepath']);
+                        $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                    );
+                    $row['typeurl'] = GetTypeUrl(
+                        $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'],
+                        $row['ispart'], $row['namerule2'], $row['siteurl'], $row['sitepath']
+                    );
                     if ($ismake == 0 && $GLOBALS['cfg_multi_site'] == 'Y') {
                         if ($row["siteurl"] == "") {
                             $row["siteurl"] = $GLOBALS['cfg_mainsite'];
@@ -674,10 +678,10 @@ class FreeList
     /**
      *  获取静态的分页列表
      *
-     * @access    public
-     * @param     string  $list_len  列表尺寸
-     * @param     string  $listitem  列表项目
-     * @return    string
+     * @access public
+     * @param  string $list_len 列表尺寸
+     * @param  string $listitem 列表项目
+     * @return string
      */
     public function GetPageListST($list_len, $listitem = "info,index,end,pre,next,pageno")
     {
@@ -788,10 +792,10 @@ class FreeList
     /**
      *  获取动态的分页列表
      *
-     * @access    public
-     * @param     string  $list_len  列表尺寸
-     * @param     string  $listitem  列表项目
-     * @return    string
+     * @access public
+     * @param  string $list_len 列表尺寸
+     * @param  string $listitem 列表项目
+     * @return string
      */
     public function GetPageListDM($list_len, $listitem = "index,end,pre,next,pageno")
     {
@@ -867,33 +871,36 @@ class FreeList
     /**
      *  获得一个指定档案的链接
      *
-     * @access    public
-     * @param     int  $aid  文档ID
-     * @param     int  $typeid  栏目ID
-     * @param     int  $timetag  时间戳
-     * @param     string  $title  标题
-     * @param     int  $ismake  是否生成
-     * @param     int  $rank  阅读权限
-     * @param     string  $namerule  名称规则
-     * @param     string  $typedir  栏目dir
-     * @param     string  $money  需要金币
-     * @param     string  $filename  文件名称
-     * @param     string  $moresite  多站点
-     * @param     string  $siteurl  站点地址
-     * @param     string  $sitepath  站点路径
-     * @return    string
+     * @access public
+     * @param  int    $aid      文档ID
+     * @param  int    $typeid   栏目ID
+     * @param  int    $timetag  时间戳
+     * @param  string $title    标题
+     * @param  int    $ismake   是否生成
+     * @param  int    $rank     阅读权限
+     * @param  string $namerule 名称规则
+     * @param  string $typedir  栏目dir
+     * @param  string $money    需要金币
+     * @param  string $filename 文件名称
+     * @param  string $moresite 多站点
+     * @param  string $siteurl  站点地址
+     * @param  string $sitepath 站点路径
+     * @return string
      */
     public function GetArcUrl($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = '', $artdir = '',
-        $money = 0, $filename = '', $moresite = '', $siteurl = '', $sitepath = '') {
-        return GetFileUrl($aid, $typeid, $timetag, $title, $ismake, $rank, $namerule, $artdir,
-            $money, $filename, $moresite, $siteurl, $sitepath);
+        $money = 0, $filename = '', $moresite = '', $siteurl = '', $sitepath = ''
+    ) {
+        return GetFileUrl(
+            $aid, $typeid, $timetag, $title, $ismake, $rank, $namerule, $artdir,
+            $money, $filename, $moresite, $siteurl, $sitepath
+        );
     }
 
     /**
      *  获得当前的页面文件的url
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function GetCurUrl()
     {

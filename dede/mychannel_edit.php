@@ -2,13 +2,13 @@
 /**
  * 自定义模型管理
  *
- * @version        $Id: mychannel_edit.php 1 14:49 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mychannel_edit.php 1 14:49 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_Edit');
@@ -146,7 +146,7 @@ else if ($dopost == "exportin") {
 function __ExportInOk()
 -----------------*/
 else if ($dopost == "exportinok") {
-    require_once DEDEADMIN . "/inc/inc_admin_channel.php";
+    include_once DEDEADMIN . "/inc/inc_admin_channel.php";
     function GotoStaMsg($msg)
     {
         global $wintitle, $wecome_info, $winform;
@@ -283,7 +283,7 @@ function __SaveCopy()
 -----------------*/
 else if ($dopost == "copysave") {
     $cid = intval($cid);
-    $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$cid' ", MYSQL_ASSOC);
+    $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$cid' ", MYSQLI_ASSOC);
     foreach ($row as $k => $v) {
         ${strtolower($k)} = addslashes($v);
     }
@@ -297,7 +297,7 @@ else if ($dopost == "copysave") {
     $mysql_version = $dsql->GetVersion(true);
     if (!$dsql->IsTable($newaddtable)) {
         $dsql->Execute('me', "SHOW CREATE TABLE {$dsql->dbName}.{$addtable}");
-        $row = $dsql->GetArray('me', MYSQL_BOTH);
+        $row = $dsql->GetArray('me', MYSQLI_BOTH);
         $tableStruct = $row[1];
         $tb = str_replace('#@__', $cfg_dbprefix, $addtable);
         $tableStruct = preg_replace("/CREATE TABLE `$addtable`/iU", "CREATE TABLE `$newaddtable`", $tableStruct);
@@ -369,7 +369,7 @@ else if ($dopost == "save") {
 function __GetTemplate()
 --------------------*/
 else if ($dopost == "gettemplets") {
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$id'");
     $wintitle = "&nbsp;频道管理-查看模板";
     $wecome_info = "<a href='mychannel_main.php'>频道管理</a>::查看模板";
@@ -407,7 +407,7 @@ else if ($dopost == "delete") {
 
     if ($job == "") //确认提示
     {
-        require_once DEDEINC . "/oxwindow.class.php";
+        include_once DEDEINC . "/oxwindow.class.php";
         $wintitle = "频道管理-删除模型";
         $wecome_info = "<a href='mychannel_main.php'>频道管理</a>::删除模型";
         $win = new OxWindow();
@@ -421,8 +421,8 @@ else if ($dopost == "delete") {
         exit();
     } else if ($job == "yes") //操作
     {
-        require_once DEDEINC . "/typeunit.class.admin.php";
-        $myrow = $dsql->GetOne("SELECT addtable FROM `#@__channeltype` WHERE id='$id'", MYSQL_ASSOC);
+        include_once DEDEINC . "/typeunit.class.admin.php";
+        $myrow = $dsql->GetOne("SELECT addtable FROM `#@__channeltype` WHERE id='$id'", MYSQLI_ASSOC);
         if (!is_array($myrow)) {
             ShowMsg('你所指定的频道信息不存在!', '-1');
             exit();
@@ -543,7 +543,7 @@ else if ($dopost == 'modifysearch') {
                 }
             }
         }
-        require_once dirname(__FILE__) . "/templets/mychannel_modifysearch.htm";
+        include_once dirname(__FILE__) . "/templets/mychannel_modifysearch.htm";
     } else if ($step == 1) {
         $query = "SELECT * FROM `#@__channeltype` WHERE id='$mid'";
         $channel = $dsql->GetOne($query);
@@ -560,7 +560,7 @@ else if ($dopost == 'modifysearch') {
             $mainstring = implode(',', $mainfields);
             foreach ($mainfields as $mainfield) {
                 if ($mainfield == 'typeid') {
-                    require_once dirname(__FILE__) . "/../include/typelink.class.php";
+                    include_once dirname(__FILE__) . "/../include/typelink.class.php";
                     $tl = new TypeLink(0);
                     $typeOptions = $tl->GetOptionArray(0, 0, $mid);
                     $forms .= "<br />栏目：<select name='typeid' style='width:200'>\r\n";
@@ -589,7 +589,7 @@ else if ($dopost == 'modifysearch') {
         if ($channel['issystem'] < 0) {
             foreach ($addonfields as $addonfield) {
                 if ($addonfield == 'typeid') {
-                    require_once dirname(__FILE__) . "/../include/typelink.class.php";
+                    include_once dirname(__FILE__) . "/../include/typelink.class.php";
                     $tl = new TypeLink(0);
                     $typeOptions = $tl->GetOptionArray(0, 0, $mid);
                     $forms .= "<br />栏目：<select name='typeid' style='width:200'>\r\n";

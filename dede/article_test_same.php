@@ -2,13 +2,13 @@
 /**
  * 检测重复文档
  *
- * @version        $Id: article_test_same.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: article_test_same.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 @set_time_limit(0);
@@ -33,8 +33,8 @@ if ($dopost == 'analyse') {
 }
 //删除选中的内容（只保留一条）
 else if ($dopost == 'delsel') {
-    require_once dirname(__FILE__) . "/../include/typelink.class.php";
-    require_once dirname(__FILE__) . "/inc/inc_batchup.php";
+    include_once dirname(__FILE__) . "/../include/typelink.class.php";
+    include_once dirname(__FILE__) . "/inc/inc_batchup.php";
 
     if (empty($titles)) {
         header("Content-Type: text/html; charset={$cfg_ver_lang}");
@@ -43,7 +43,7 @@ else if ($dopost == 'delsel') {
         exit();
     }
 
-    $titless = split('`', $titles);
+    $titless = explode('`', $titles);
 
     if ($channelid < -1) {
         $orderby = ($deltype == 'delnew' ? " ORDER BY aid DESC " : " ORDER BY aid ASC ");

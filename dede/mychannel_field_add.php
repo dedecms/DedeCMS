@@ -2,13 +2,13 @@
 /**
  * 自定义模型字段添加
  *
- * @version        $Id: mychannel_field_add.php 1 15:07 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mychannel_field_add.php 1 15:07 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_New');
@@ -119,7 +119,7 @@ if (empty($row['maintable'])) {
 
 $rs = $dsql->SetQuery("SHOW fields FROM `{$row['maintable']}`");
 $dsql->Execute('a');
-while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+while ($nrow = $dsql->GetArray('a', MYSQLI_ASSOC)) {
     if ($cfg_dbtype == 'sqlite') {
         $nrow['Field'] = $nrow['name'];
     }
@@ -127,7 +127,7 @@ while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
 }
 
 $dsql->Execute("a", "SHOW fields FROM `{$row['addtable']}`");
-while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+while ($nrow = $dsql->GetArray('a', MYSQLI_ASSOC)) {
     if ($cfg_dbtype == 'sqlite') {
         $nrow['Field'] = $nrow['name'];
     }

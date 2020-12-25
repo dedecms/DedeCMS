@@ -2,16 +2,16 @@
 /**
  * 列表对应函数
  *
- * @version        $Id: inc_list_functions.php 1 10:32 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_list_functions.php 1 10:32 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 if (!isset($registerGlobals)) {
-    require_once dirname(__FILE__) . "/../../include/common.inc.php";
+    include_once dirname(__FILE__) . "/../../include/common.inc.php";
 }
 
 // 获取栏目名称
@@ -23,7 +23,7 @@ function GetTypename($tid)
     }
 
     if (file_exists(DEDEDATA . '/cache/inc_catalog_base.inc')) {
-        require_once DEDEDATA . '/cache/inc_catalog_base.inc';
+        include_once DEDEDATA . '/cache/inc_catalog_base.inc';
         global $cfg_Cs;
         if (isset($cfg_Cs[$tid])) {
             return base64_decode($cfg_Cs[$tid][3]);

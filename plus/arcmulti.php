@@ -60,11 +60,15 @@ if ($tagid != '') {
                         $row['arcrank'] = $row['corank'];
                     }
 
-                    $row['filename'] = $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
-                        $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                    $row['filename'] = $row['arcurl'] = GetFileUrl(
+                        $row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+                        $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                    );
 
-                    $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
-                        $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                    $row['typeurl'] = GetTypeUrl(
+                        $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+                        $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                    );
 
                     if ($row['litpic'] == '-' || $row['litpic'] == '') {
                         $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';

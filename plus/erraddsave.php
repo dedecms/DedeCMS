@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 错误提交
  *
- * @version        $Id: erraddsave.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: erraddsave.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 require_once DEDEINC . '/memberlogin.class.php';
@@ -32,10 +31,12 @@ if ($dopost == "saveedit") {
                   VALUES ('$aid','$mid','$title','$type','$err','$oktxt','$time'); ";
     $dsql->ExecuteNoneQuery($query);
     if (!empty($format)) {
-        echo json_encode(array(
+        echo json_encode(
+            array(
             "code" => 200,
             "data" => "ok",
-        ));
+            )
+        );
     } else {
         ShowMsg("谢谢您对本网站的支持，我们会尽快处理您的建议！", "javascript:window.close();");
     }

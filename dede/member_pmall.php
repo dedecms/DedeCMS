@@ -2,13 +2,13 @@
 /**
  * 会员短消息,发布所有消息
  *
- * @version        $Id: member_pmall.php 1 11:24 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_pmall.php 1 11:24 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('member_Pm');
@@ -33,12 +33,12 @@ if ($action == "post") {
         exit();
     }
 
-    #api{{
+    // api{{
     if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
         uc_pm_send(0, '', $subject, $message);
         ShowMsg('短信已成功发送', '-1');exit;
     }
-    #/aip}}
+    // /aip}}
 
     $rs = $dsql->ExecuteNoneQuery("INSERT INTO #@__member_pms(floginid,fromid,toid,tologinid,folder,hasview,subject,sendtime,writetime,message,isadmin) VALUES('$floginid','$fromid','$toid','$tologinid','outbox','0','$subject','$sendtime','$writetime','$message','1');");
     ShowMsg('短信已成功发送', '-1');

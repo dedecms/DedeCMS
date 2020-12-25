@@ -14,20 +14,20 @@
  *     $dl->SetSource($sql);            //设定查询SQL
  *     $dl->Display();                  //显示
  *
- * @version        $Id: datalistcp.class.php 3 17:02 2010年7月9日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: datalistcp.class.php 3 17:02 2010年7月9日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . '/dedetemplate.class.php';
 $codefile = (isset($needCode) ? $needCode : $cfg_soft_lang);
 $codefile = preg_replace("#[^\w-]#", '', $codefile);
 if (file_exists(DEDEINC . '/code/datalist.' . $codefile . '.inc')) {
-    require_once DEDEINC . '/code/datalist.' . $codefile . '.inc';
+    include_once DEDEINC . '/code/datalist.' . $codefile . '.inc';
 } else {
     $lang_pre_page = '上页';
     $lang_next_page = '下页';
@@ -59,9 +59,9 @@ class DataListCP
     /**
      *  用指定的文档ID进行初始化
      *
-     * @access    public
-     * @param     string  $tplfile  模板文件
-     * @return    string
+     * @access public
+     * @param  string $tplfile 模板文件
+     * @return string
      */
     public function __construct($tplfile = '')
     {
@@ -97,9 +97,9 @@ class DataListCP
     /**
      *  兼容PHP4版本
      *
-     * @access    private
-     * @param     string  $tplfile  模板文件
-     * @return    void
+     * @access private
+     * @param  string $tplfile 模板文件
+     * @return void
      */
     public function DataListCP($tplfile = '')
     {
@@ -130,8 +130,8 @@ class DataListCP
     /**
      *  对config参数及get参数等进行预处理
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function PreLoad()
     {

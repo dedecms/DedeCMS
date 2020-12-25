@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: flink_main.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: flink_main.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -75,16 +75,16 @@ if ($dopost == "addnew") {
 }
 //默认界面
 else {
-    require_once dirname(__FILE__) . "/templets/flink_main.htm";
+    include_once dirname(__FILE__) . "/templets/flink_main.htm";
     exit();
 }
 
 /**
  *  获取链接列表
  *
- * @access    public
- * @param     object  $dsql  数据库操作类
- * @return    string
+ * @access public
+ * @param  object $dsql 数据库操作类
+ * @return string
  */
 function GetLinkList(&$dsql)
 {

@@ -2,13 +2,13 @@
 /**
  * 安全检测
  *
- * @version        $Id: sys_safetest.php 2 9:25 2010-11-12  $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_safetest.php 2 9:25 2010-11-12  $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 CheckPurview('sys_Edit');
@@ -74,7 +74,8 @@ function TestOneFile($f)
     }
 
     $fp = fopen($f, 'r');
-    while (!feof($fp)) {$str .= fgets($fp, 1024);}
+    while (!feof($fp)) {$str .= fgets($fp, 1024);
+    }
     fclose($fp);
     if (preg_match("#(" . $info . ")[ \r\n\t]{0,}([\[\(])#i", $str)) {
         $trfile = preg_replace("#^" . DEDEROOT . "#", '', $f);
@@ -153,4 +154,4 @@ else if ($action == 'clear') {
     exit();
 }
 
-include dirname(__FILE__) . '/templets/sys_safetest.htm';
+require dirname(__FILE__) . '/templets/sys_safetest.htm';

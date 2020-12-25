@@ -2,13 +2,13 @@
 /**
  * 空间皮肤
  *
- * @version        $Id: spaceskin.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: spaceskin.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -30,16 +30,16 @@ if ($dopost == "use") {
 //默认界面
 else {
     $userrow = $dsql->GetOne("SELECT spacestyle FROM `#@__member_space` WHERE mid='" . $cfg_ml->M_ID . "' ");
-    require_once dirname(__FILE__) . "/templets/spaceskin.htm";
+    include_once dirname(__FILE__) . "/templets/spaceskin.htm";
     exit();
 }
 
 /**
  *  检查样式是否使用
  *
- * @access    public
- * @param     string  $type  样式类型
- * @return    string
+ * @access public
+ * @param  string $type 样式类型
+ * @return string
  */
 function checkuse($type)
 {
@@ -54,10 +54,10 @@ function checkuse($type)
 /**
  *  提取预览小图
  *
- * @access    public
- * @param     string  $dir  目录
- * @param     string  $dirname  目录名称
- * @return    string
+ * @access public
+ * @param  string $dir     目录
+ * @param  string $dirname 目录名称
+ * @return string
  */
 function showdemopic($dir, $dirname)
 {
@@ -76,9 +76,9 @@ function showdemopic($dir, $dirname)
 /**
  *  列出风格目录
  *
- * @access    public
- * @param     string
- * @return    string
+ * @access public
+ * @param  string
+ * @return string
  */
 function ListSkin()
 {
@@ -110,7 +110,8 @@ function ListSkin()
     //获得模板摘要信息
     foreach ($dirs as $sysname) {
         if ($sysname == '.' || $sysname == '..' || $sysname == 'CVS'
-            || !file_exists("$dir/$sysname/info.txt")) {
+            || !file_exists("$dir/$sysname/info.txt")
+        ) {
             continue;
         }
         $demopic = showdemopic($dir, $sysname);
@@ -141,7 +142,8 @@ function ListSkin()
     $num = 0;
     print '<tr class="head" height="25"><td colspan="2">&nbsp; &nbsp;<b></b></td></tr>';
     foreach ($allskins as $value) {
-        if ($num == 0) {print '<tr height="20">';}
+        if ($num == 0) {print '<tr height="20">';
+        }
         $num++;
         print '<td class="b"><img src="' . $value['demo'] . '" width="150" height="150" border="0" /><br />';
         print '风格名称：' . $value['name'] . "({$value['sign']})" . '<br />';

@@ -1,19 +1,18 @@
 <?php
 /**
- *
  * 关于文章权限设置的说明
  * 文章权限设置限制形式如下：
  * 如果指定了会员等级，那么必须到达这个等级才能浏览
  * 如果指定了金币，浏览时会扣指点的点数，并保存记录到用户业务记录中
  * 如果两者同时指定，那么必须同时满足两个条件
  *
- * @version        $Id: view.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: view.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 require_once DEDEINC . '/arc.archives.class.php';
@@ -107,13 +106,13 @@ if ($needMoney > 0 || $needRank > 1) {
                             showmsg('购买失败, 请返回', -1);
                             exit;
                         }
-                        #api{{
+                        // api{{
                         if (defined('UC_APPID')) {
                             include_once DEDEROOT . '/api/uc.func.php';
                             $row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='" . $cfg_ml->M_ID . "'");
                             uc_credit_note($row['userid'], -$needMoney, 'money');
                         }
-                        #/aip}}
+                        // /aip}}
 
                         showmsg('购买成功，购买扣点不会重扣金币，谢谢！', '/plus/view.php?aid=' . $aid);
                         exit;

@@ -2,13 +2,13 @@
 /**
  * 文件管理器
  *
- * @version        $Id: tpl.php 1 23:44 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: tpl.php 1 23:44 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('plus_文件管理器');
@@ -129,7 +129,7 @@ function _upload() {}
 上传新模板
 -----------------------*/
 else if ($action == 'upload') {
-    require_once dirname(__FILE__) . '/../include/oxwindow.class.php';
+    include_once dirname(__FILE__) . '/../include/oxwindow.class.php';
     $acdir = str_replace('.', '', $acdir);
     $win = new OxWindow();
     make_hash();
@@ -236,7 +236,7 @@ else if ($action == 'savetagfile') {
         ShowMsg('文件名不合法，不允许进行操作！', '-1');
         exit();
     }
-    require_once DEDEINC . '/oxwindow.class.php';
+    include_once DEDEINC . '/oxwindow.class.php';
     $tagname = preg_replace("#\.lib\.php$#i", "", $filename);
     $content = stripslashes($content);
     $truefile = DEDEINC . '/taglib/' . $filename;

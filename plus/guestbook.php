@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 留言板
  *
- * @version        $Id: guestbook.php 1 10:09 2010-11-10  $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: guestbook.php 1 10:09 2010-11-10  $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/guestbook/guestbook.inc.php';
 require_once DEDEINC . '/datalistcp.class.php';
@@ -74,7 +73,7 @@ else if ($action == 'save') {
     $dsql->ExecuteNoneQuery($query);
     $gid = $dsql->GetLastID();
     if ($needCheck == 1) {
-        require_once DEDEINC . "/oxwindow.class.php";
+        include_once DEDEINC . "/oxwindow.class.php";
         $msg = "
         <font color='red'><b>成功发送或回复留言！</b></font> &nbsp; <a href='guestbook.php' style='font-size:14px;font-weight:bold'><u>我已经知道了，点击此返回&gt;&gt;</u></a>";
         $wintitle = "留言发布成功提示";

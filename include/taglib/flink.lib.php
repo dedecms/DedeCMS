@@ -1,15 +1,19 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+* 
+* 
  * 友情链接
  *
- * @version        $Id: flink.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: flink.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /*>>dede>>
 <name>友情链接</name>
@@ -39,27 +43,32 @@ function lib_flink(&$ctag, &$refObj)
     $revalue = '';
     if (isset($GLOBALS['envs']['flinkid'])) {
         $typeid = $GLOBALS['envs']['flinkid'];
+    
     }
 
     $wsql = " where ischeck >= '$linktype' ";
 
     if ($typeid == 0) {
         $wsql .= '';
+    
     } else if ($typeid == 999) {
         $prefix = 'flink';
         $key = '999';
         $row = GetCache($prefix, $key);
 
         if (!is_array($row)) {
-            require DEDEDATA . '/admin/config_update.php';
+            include DEDEDATA . '/admin/config_update.php';
             if (!class_exists('DedeHttpDown', false)) {
-                require_once DEDEINC . '/dedehttpdown.class.php';
+                include_once DEDEINC . '/dedehttpdown.class.php';
+            
             }
             $del = new DedeHttpDown();
             if (defined('LINKHOST')) {
                 $linkHost = LINKHOST;
+            
             } else {
                 $linkHost = 'http://flink.dedecms.com/server_url.php';
+            
             }
 
             $del->OpenUrl($linkHost);
@@ -72,8 +81,11 @@ function lib_flink(&$ctag, &$refObj)
                 for ($i = 0; $i < count($dedelink); $i++) {
                     if ($i % 5 == 0 && $i != count($dedelink)) {
                         $revalue .= "<li><a href='http://" . @$dedelink[$i + 1] . "' target='_blank' title='" . @$dedelink[$i + 4] . "'>" . @$dedelink[$i] . "</a></li>";
+                    
                     }
+                
                 }
+            
             } else {
                 $revalue = <<<EOT
 <li><a href='http://ad.dedecms.com' target='_blank' title='DedeCMS广告'>DedeCMS广告</a></li><li><a href='http://service.dedecms.com' target='_blank' title='织梦客户服务中心'>
@@ -84,27 +96,35 @@ DedeCMS建站中心</a></li><li><a href='http://help.dedecms.com' target='_blank
 织梦CMS帮助中心</a></li><li><a href='http://' target='_blank' title=''>
 </a></li>
 EOT;
+            
             }
             $row['reval'] = $revalue;
             SetCache($prefix, $key, $row, 60 * 60 * 1);
+        
         }
 
         return $row['reval'];
+    
     } else {
         $wsql .= "And typeid = '$typeid'";
+    
     }
     if ($type == 'image') {
         $wsql .= " And logo<>'' ";
+    
     } else if ($type == 'text') {
         $wsql .= " And logo='' ";
+    
     }
 
     $equery = "SELECT * FROM #@__flink $wsql order by sortrank asc limit 0,$totalrow";
 
     if (trim($ctag->GetInnerText()) == '') {
         $innertext = "<li>[field:link /]</li>";
+    
     } else {
         $innertext = $ctag->GetInnerText();
+    
     }
 
     $dsql->SetQuery($equery);
@@ -113,20 +133,27 @@ EOT;
     while ($dbrow = $dsql->GetObject()) {
         if ($type == 'text' || $type == 'textall') {
             $link = "<a href='" . $dbrow->url . "' target='_blank'>" . cn_substr($dbrow->webname, $titlelen) . "</a> ";
+        
         } else if ($type == 'image') {
             $link = "<a href='" . $dbrow->url . "' target='_blank'><img src='" . $dbrow->logo . "' width='88' height='31' border='0'></a> ";
+        
         } else {
             if ($dbrow->logo == '') {
                 $link = "<a href='" . $dbrow->url . "' target='_blank'>" . cn_substr($dbrow->webname, $titlelen) . "</a> ";
+            
             } else {
                 $link = "<a href='" . $dbrow->url . "' target='_blank'><img src='" . $dbrow->logo . "' width='88' height='31' border='0'></a> ";
+            
             }
+        
         }
         $rbtext = preg_replace("/\[field:url([\/\s]{0,})\]/isU", $row['url'], $innertext);
         $rbtext = preg_replace("/\[field:webname([\/\s]{0,})\]/isU", $row['webname'], $rbtext);
         $rbtext = preg_replace("/\[field:logo([\/\s]{0,})\]/isU", $row['logo'], $rbtext);
         $rbtext = preg_replace("/\[field:link([\/\s]{0,})\]/isU", $link, $rbtext);
         $revalue .= $rbtext;
+    
     }
     return $revalue;
+
 }

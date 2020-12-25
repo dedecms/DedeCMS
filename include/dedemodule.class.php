@@ -5,13 +5,13 @@
 /**
  * 织梦模块类
  *
- * @version        $Id: dedemodule.class.php 1 10:31 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedemodule.class.php 1 10:31 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . '/charset.func.php';
 require_once DEDEINC . '/dedeatt.class.php';
@@ -41,9 +41,9 @@ class DedeModule
     /**
      *  枚举系统里已经存在的模块(缓存功能实际上只作hash与文件名的解析，在此不特别处理)
      *
-     * @access    public
-     * @param     string   $moduletype   模块类型
-     * @return    string
+     * @access public
+     * @param  string $moduletype 模块类型
+     * @return string
      */
     public function GetModuleList($moduletype = '')
     {
@@ -78,9 +78,9 @@ class DedeModule
     /**
      *  从远程获取模块信息
      *
-     * @access    public
-     * @param     string   $moduletype   模块类型
-     * @return    string
+     * @access public
+     * @param  string $moduletype 模块类型
+     * @return string
      */
     public function GetModuleUrlList($moduletype = '', $url = '')
     {
@@ -117,9 +117,9 @@ class DedeModule
     /**
      *  转换编码
      *
-     * @access    public
-     * @param     string    $str  字符串
-     * @return    string
+     * @access public
+     * @param  string $str 字符串
+     * @return string
      */
     public function AppCode(&$str)
     {
@@ -162,9 +162,9 @@ class DedeModule
     /**
      *  获得指定hash的模块文件
      *
-     * @access    public
-     * @param     string  $hash  hash文件
-     * @return    string
+     * @access public
+     * @param  string $hash hash文件
+     * @return string
      */
     public function GetHashFile($hash)
     {
@@ -180,10 +180,10 @@ class DedeModule
     /**
      *  获得某模块的基本信息
      *
-     * @access    public
-     * @param     string   $hash  hash
-     * @param     string   $ftype  文件类型
-     * @return    string
+     * @access public
+     * @param  string $hash  hash
+     * @param  string $ftype 文件类型
+     * @return string
      */
     public function GetModuleInfo($hash, $ftype = 'hash')
     {
@@ -215,7 +215,7 @@ class DedeModule
 
             $line = fgets($fp, 256);
             if ($start == 0) {if (preg_match("/<baseinfo/is", $line)) {
-                $start = 1;
+                    $start = 1;
             }
             } else {
                 if (preg_match("/<\/baseinfo/is", $line)) {
@@ -257,10 +257,10 @@ class DedeModule
     /**
      *  获得某模块的基本信息
      *
-     * @access    public
-     * @param     string   $hash  hash
-     * @param     string   $ftype  文件类型
-     * @return    string
+     * @access public
+     * @param  string $hash  hash
+     * @param  string $ftype 文件类型
+     * @return string
      */
     public function GetFileXml($hash, $ftype = 'hash')
     {
@@ -293,11 +293,11 @@ class DedeModule
      *  获得系统文件的内容
      *  指安装、删除、协议文件
      *
-     * @access    public
-     * @param     string   $hashcode  hash码
-     * @param     string   $ntype  文件类型
-     * @param     string   $enCode  是否加密
-     * @return    string
+     * @access public
+     * @param  string $hashcode hash码
+     * @param  string $ntype    文件类型
+     * @param  string $enCode   是否加密
+     * @return string
      */
     public function GetSystemFile($hashcode, $ntype, $enCode = true)
     {
@@ -336,10 +336,10 @@ class DedeModule
     /**
      *  把某系统文件转换为文件
      *
-     * @access    public
-     * @param     string  $hashcode  hash码
-     * @param     string   $ntype  文件类型
-     * @return    string  返回文件名
+     * @access public
+     * @param  string $hashcode hash码
+     * @param  string $ntype    文件类型
+     * @return string  返回文件名
      */
     public function WriteSystemFile($hashcode, $ntype)
     {
@@ -355,10 +355,10 @@ class DedeModule
     /**
      *  删除系统文件
      *
-     * @access    public
-     * @param     string   $hashcode  hash码
-     * @param     string   $ntype  文件类型
-     * @return    void
+     * @access public
+     * @param  string $hashcode hash码
+     * @param  string $ntype    文件类型
+     * @return void
      */
     public function DelSystemFile($hashcode, $ntype)
     {
@@ -369,9 +369,9 @@ class DedeModule
     /**
      *  检查是否已经存在指定的模块
      *
-     * @access    public
-     * @param     string  $hashcode  hash码
-     * @return    bool  如果存在则返回True,否则为False
+     * @access public
+     * @param  string $hashcode hash码
+     * @return bool  如果存在则返回True,否则为False
      */
     public function HasModule($hashcode)
     {
@@ -387,10 +387,10 @@ class DedeModule
     /**
      *  读取文件，返回编码后的文件内容
      *
-     * @access    public
-     * @param     string   $filename  文件名
-     * @param     string   $isremove  是否删除
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名
+     * @param  string $isremove 是否删除
+     * @return string
      */
     public function GetEncodeFile($filename, $isremove = false)
     {
@@ -412,9 +412,9 @@ class DedeModule
     /**
      *  获取模块包里的文件名列表
      *
-     * @access    public
-     * @param     string   $hashcode  hash码
-     * @return    string  返回文件列表
+     * @access public
+     * @param  string $hashcode hash码
+     * @return string  返回文件列表
      */
     public function GetFileLists($hashcode)
     {
@@ -440,10 +440,10 @@ class DedeModule
     /**
      *  删除已安装模块附带的文件
      *
-     * @access    public
-     * @param     string   $hashcode   hash码
-     * @param     string   $isreplace  是否替换
-     * @return    string
+     * @access public
+     * @param  string $hashcode  hash码
+     * @param  string $isreplace 是否替换
+     * @return string
      */
     public function DeleteFiles($hashcode, $isreplace = 0)
     {
@@ -464,13 +464,16 @@ class DedeModule
                     $filetype = $dap->CAtt->GetAtt('type');
                     $filename = $dap->CAtt->GetAtt('name');
                     $filename = str_replace("\\", "/", $filename);
-                    if ($filetype == 'dir') {$dirs[] = $filename;} else {@unlink($filename);}
+                    if ($filetype == 'dir') {$dirs[] = $filename;
+                    } else {@unlink($filename);
+                    }
                 }
             }
             $okdirs = array();
             if (is_array($dirs)) {
                 $st = count($dirs) - 1;
-                for ($i = $st; $i >= 0; $i--) {@rmdir($dirs[$i]);}
+                for ($i = $st; $i >= 0; $i--) {@rmdir($dirs[$i]);
+                }
             }
             fclose($fp);
         }
@@ -480,10 +483,10 @@ class DedeModule
     /**
      *  把模块包里的文件写入服务器
      *
-     * @access    public
-     * @param     string   $hashcode   hash码
-     * @param     string   $isreplace   是否替换
-     * @return    string
+     * @access public
+     * @param  string $hashcode  hash码
+     * @param  string $isreplace 是否替换
+     * @return string
      */
     public function WriteFiles($hashcode, $isreplace = 3)
     {
@@ -527,7 +530,8 @@ class DedeModule
                         $ct = '';
                         while (!feof($fp)) {
                             $l = fgets($fp, 1024);
-                            if (preg_match("/^[\s]{0,}<\/file/i", trim($l))) {break;}
+                            if (preg_match("/^[\s]{0,}<\/file/i", trim($l))) {break;
+                            }
                             $ct .= $l;
                         }
                         $ct = base64_decode($ct);
@@ -562,9 +566,9 @@ class DedeModule
     /**
      *  测试某文件的文件夹是否创建
      *
-     * @access    public
-     * @param     string   $filename  文件名称
-     * @return    string
+     * @access public
+     * @param  string $filename 文件名称
+     * @return string
      */
     public function TestDir($filename)
     {
@@ -590,11 +594,11 @@ class DedeModule
     /**
      *  获取某个目录或文件的打包数据
      *
-     * @access    public
-     * @param     string    $basedir   基本目录
-     * @param     string    $f
-     * @param     string    $fp  文件指针
-     * @return    bool
+     * @access public
+     * @param  string $basedir 基本目录
+     * @param  string $f
+     * @param  string $fp      文件指针
+     * @return bool
      */
     public function MakeEncodeFile($basedir, $f, $fp)
     {
@@ -606,10 +610,10 @@ class DedeModule
     /**
      *  测试目标文件
      *
-     * @access    public
-     * @param     string    $basedir   基本目录
-     * @param     string    $f
-     * @return    bool
+     * @access public
+     * @param  string $basedir 基本目录
+     * @param  string $f
+     * @return bool
      */
     public function MakeEncodeFileTest($basedir, $f)
     {
@@ -621,10 +625,10 @@ class DedeModule
     /**
      *  检测某个目录或文件的打包数据，递归
      *
-     * @access    public
-     * @param     string    $basedir   基本目录
-     * @param     string    $f
-     * @return    void
+     * @access public
+     * @param  string $basedir 基本目录
+     * @param  string $f
+     * @return void
      */
     public function MakeEncodeFileRunTest($basedir, $f)
     {
@@ -658,11 +662,11 @@ class DedeModule
     /**
      *  获取个目录或文件的打包数据，递归
      *
-     * @access    public
-     * @param     string    $basedir   基本目录
-     * @param     string    $f
-     * @param     string    $fp  文件指针
-     * @return    string
+     * @access public
+     * @param  string $basedir 基本目录
+     * @param  string $f
+     * @param  string $fp      文件指针
+     * @return string
      */
     public function MakeEncodeFileRun($basedir, $f, $fp)
     {
@@ -700,8 +704,8 @@ class DedeModule
     /**
      *  清理
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Clear()
     {

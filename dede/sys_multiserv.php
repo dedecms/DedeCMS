@@ -2,13 +2,13 @@
 /**
  * 多站点设置
  *
- * @version        $Id: sys_multiserv.php 1 22:28 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_multiserv.php 1 22:28 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_SoftConfig');
@@ -19,8 +19,10 @@ if (empty($dopost)) {
 //保存
 if ($dopost == "save") {
     $configfile = DEDEDATA . "/cache/inc_remote_config.php";
-    $rminfo = serialize(array('rmhost' => $c_rmhost, 'rmport' => $c_rmport,
-        'rmname' => $c_rmname, 'rmpwd' => $c_rmpwd));
+    $rminfo = serialize(
+        array('rmhost' => $c_rmhost, 'rmport' => $c_rmport,
+        'rmname' => $c_rmname, 'rmpwd' => $c_rmpwd)
+    );
     $query = "UPDATE `#@__multiserv_config` SET
            `remoteuploads` = '$c_remoteuploads' ,
            `remoteupUrl` ='$c_remoteupUrl' ,
@@ -48,7 +50,8 @@ if ($dopost == "save") {
 //读取参数
 $row = $dsql->GetOne("SELECT * FROM `#@__multiserv_config` ");
 if (!is_array($row)) {
-    $dsql->ExecuteNoneQuery("INSERT INTO `#@__multiserv_config`
+    $dsql->ExecuteNoneQuery(
+        "INSERT INTO `#@__multiserv_config`
                             (`remoteuploads`, `remoteupUrl`, `rminfo`, `servinfo`)
                      VALUES ('0','http://img.dedecms.com', '', '')"
     );

@@ -2,13 +2,13 @@
 /**
  * 我的好友
  *
- * @version        $Id: myfriend.php 1 17:55 2010年7月6日 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: myfriend.php 1 17:55 2010年7月6日 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -40,14 +40,14 @@ if ($dopost == 'upsta') {
     }
     $dsql->ExecuteNoneQuery("UPDATE `#@__member_friends` SET $upsta WHERE id IN($ids) AND mid='{$cfg_ml->M_ID}' ");
 
-    #api{{
+    // api{{
     if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php' && $sta != 'bad') {
         if ($data = uc_get_user($cfg_ml->M_LoginID)) {
             uc_friend_add($uid, $data[0]);
         }
 
     }
-    #/aip}}
+    // /aip}}
 
     if ($sta == 'good') {
         ShowMsg("成功把指定好友设为关注好友！", "myfriend.php?ftype=1");
@@ -62,7 +62,7 @@ if ($dopost == 'upsta') {
 //删除好友
 else if ($dopost == 'del') {
     $ids = preg_replace("#[^0-9,]#", "", $ids);
-    #api{{
+    // api{{
     if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
         if ($data = uc_get_user($cfg_ml->M_LoginID)) {
             list($uid, $username, $email) = $data;
@@ -73,7 +73,7 @@ else if ($dopost == 'del') {
 
         }
     }
-    #/aip}}
+    // /aip}}
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_friends` WHERE id IN($ids) AND mid='{$cfg_ml->M_ID}' ");
     ShowMsg("成功删除所选的好友！", "myfriend.php?ftype=" . $ftype);
     exit();
@@ -103,16 +103,18 @@ else {
 /**
  *  获取用户信息
  *
- * @param     int  $uid  用户UID
- * @param     string  $_field  用户字段
- * @return    string
+ * @param  int    $uid    用户UID
+ * @param  string $_field 用户字段
+ * @return string
  */
 function getUserInfo($uid, $_field = 'uname')
 {
     global $dsql;
-    $row = $dsql->GetOne("SELECT M.*,YEAR(CURDATE())-YEAR(P.birthday) as age,DATE_FORMAT(P.birthday,'%e月%d日出生') as birthday,S.spacename,S.sign FROM #@__member AS M
+    $row = $dsql->GetOne(
+        "SELECT M.*,YEAR(CURDATE())-YEAR(P.birthday) as age,DATE_FORMAT(P.birthday,'%e月%d日出生') as birthday,S.spacename,S.sign FROM #@__member AS M
                            LEFT JOIN #@__member_person AS P ON P.mid=M.mid
-                           LEFT JOIN #@__member_space AS S ON M.mid=M.mid WHERE M.mid='$uid'");
+                           LEFT JOIN #@__member_space AS S ON M.mid=M.mid WHERE M.mid='$uid'"
+    );
     if (isset($row[$_field])) {
         if ($_field == 'face') {
             if (empty($row[$_field])) {

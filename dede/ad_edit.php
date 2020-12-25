@@ -2,13 +2,13 @@
 /**
  * 广告编辑
  *
- * @version        $Id: ad_edit.php 1 8:26 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: ad_edit.php 1 8:26 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('plus_广告管理');
@@ -25,7 +25,7 @@ if ($dopost == 'delete') {
     ShowMsg("成功删除一则广告代码！", $ENV_GOBACK_URL);
     exit();
 } else if ($dopost == "gettag") {
-    require_once DEDEINC . '/oxwindow.class.php';
+    include_once DEDEINC . '/oxwindow.class.php';
     $jscode = "<script src='{$cfg_phpurl}/ad_js.php?aid=$aid' language='javascript'></script>";
     $showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
     $showhtml .= "预览：<iframe name='testfrm' frameborder='0' src='ad_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='200'></iframe>";

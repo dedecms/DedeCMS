@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: guestbook_admin.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: guestbook_admin.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -51,11 +51,11 @@ if ($dopost == '') {
 /**
  *  获得特定的关键字列表
  *
- * @access    public
- * @param     object  $dsql  数据库操作类
- * @param     int  $pageno  页面数
- * @param     int  $pagesize  页面尺寸
- * @return    string
+ * @access public
+ * @param  object $dsql     数据库操作类
+ * @param  int    $pageno   页面数
+ * @param  int    $pagesize 页面尺寸
+ * @return string
  */
 function GetList(&$dsql, $pageno, $pagesize)
 {

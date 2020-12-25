@@ -1,4 +1,5 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 
 $GLOBALS['qrcode_id'] = isset($GLOBALS['qrcode_id']) ? $GLOBALS['qrcode_id'] : 1;
 function lib_qrcode(&$ctag, &$refObj)
@@ -15,16 +16,21 @@ function lib_qrcode(&$ctag, &$refObj)
         if (get_class($refObj) == 'Archives') {
             $type = 'arc';
             $id = $refObj->Fields['id'];
+        
         } elseif (get_class($refObj) == 'ListView' or get_class($refObj) == 'SgListView') {
             $type = 'list';
             $id = $refObj->Fields['id'];
+        
         } elseif (get_class($refObj) == 'PartView' and !empty($refObj->Fields['id'])) {
             $type = 'list';
             $id = $refObj->Fields['id'];
+        
         } elseif (get_class($refObj) == 'PartView' and empty($refObj->Fields['id'])) {
             $type = 'index';
             $id = 0;
+        
         }
+    
     }
 
     $reval = <<<EOT
@@ -39,4 +45,5 @@ function lib_qrcode(&$ctag, &$refObj)
 EOT;
     $GLOBALS['qrcode_id']++;
     return $reval;
+
 }

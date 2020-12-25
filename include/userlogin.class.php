@@ -5,13 +5,13 @@
 /**
  * 管理员登陆类
  *
- * @version        $Id: userlogin.class.php 1 15:59 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: userlogin.class.php 1 15:59 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 session_start();
 
@@ -19,9 +19,9 @@ session_start();
  *  检验用户是否有权使用某功能,这个函数是一个回值函数
  *  CheckPurview函数只是对他回值的一个处理过程
  *
- * @access    public
- * @param     string  $n  功能名称
- * @return    mix  如果具有则返回TRUE
+ * @access public
+ * @param  string $n 功能名称
+ * @return mix  如果具有则返回TRUE
  */
 function TestPurview($n)
 {
@@ -53,9 +53,9 @@ function TestPurview($n)
 /**
  *  对权限检测后返回操作对话框
  *
- * @access    public
- * @param     string  $n  功能名称
- * @return    string
+ * @access public
+ * @param  string $n 功能名称
+ * @return string
  */
 function CheckPurview($n)
 {
@@ -68,9 +68,9 @@ function CheckPurview($n)
 /**
  *  是否没权限限制(超级管理员)
  *
- * @access    public
- * @param     string
- * @return    bool
+ * @access public
+ * @param  string
+ * @return bool
  */
 function TestAdmin()
 {
@@ -87,10 +87,10 @@ $DedeUserCatalogs = array();
 /**
  *  检测用户是否有权限操作某栏目
  *
- * @access    public
- * @param     int   $cid  频道id
- * @param     string   $msg  返回消息
- * @return    string
+ * @access public
+ * @param  int    $cid 频道id
+ * @param  string $msg 返回消息
+ * @return string
  */
 function CheckCatalog($cid, $msg)
 {
@@ -109,10 +109,10 @@ function CheckCatalog($cid, $msg)
  *  发布文档临时附件信息缓存、发文档前先清空附件信息
  *  发布文档时涉及的附件保存到缓存里，完成后把它与文档关连
  *
- * @access    public
- * @param     string   $fid  文件ID
- * @param     string   $filename  文件名称
- * @return    void
+ * @access public
+ * @param  string $fid      文件ID
+ * @param  string $filename 文件名称
+ * @return void
  */
 function AddMyAddon($fid, $filename)
 {
@@ -136,10 +136,10 @@ function AddMyAddon($fid, $filename)
 /**
  *  清理附件，如果关连的文档ID，先把上一批附件传给这个文档ID
  *
- * @access    public
- * @param     string  $aid  文档ID
- * @param     string  $title  文档标题
- * @return    empty
+ * @access public
+ * @param  string $aid   文档ID
+ * @param  string $title 文档标题
+ * @return empty
  */
 function ClearMyAddon($aid = 0, $title = '')
 {
@@ -168,9 +168,9 @@ function ClearMyAddon($aid = 0, $title = '')
 /**
  * 登录类
  *
- * @package          userLogin
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    userLogin
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class userLogin
 {
@@ -217,10 +217,10 @@ class userLogin
     /**
      *  检验用户是否正确
      *
-     * @access    public
-     * @param     string    $username  用户名
-     * @param     string    $userpwd  密码
-     * @return    string
+     * @access public
+     * @param  string $username 用户名
+     * @param  string $userpwd  密码
+     * @return string
      */
     public function checkUser($username, $userpwd)
     {
@@ -255,8 +255,8 @@ class userLogin
     /**
      *  保持用户的会话状态
      *
-     * @access    public
-     * @return    int    成功返回 1 ，失败返回 -1
+     * @access public
+     * @return int    成功返回 1 ，失败返回 -1
      */
     public function keepUser()
     {
@@ -266,22 +266,17 @@ class userLogin
                 $adminstyle = 'dedecms';
             }
 
-            @session_register($this->keepUserIDTag);
+            $args = func_get_args();
+            
+            foreach ($args as $key) {
+                $_SESSION[$key] = $GLOBALS[$key];
+            }
+
             $_SESSION[$this->keepUserIDTag] = $this->userID;
-
-            @session_register($this->keepUserTypeTag);
             $_SESSION[$this->keepUserTypeTag] = $this->userType;
-
-            @session_register($this->keepUserChannelTag);
             $_SESSION[$this->keepUserChannelTag] = $this->userChannel;
-
-            @session_register($this->keepUserNameTag);
             $_SESSION[$this->keepUserNameTag] = $this->userName;
-
-            @session_register($this->keepUserPurviewTag);
             $_SESSION[$this->keepUserPurviewTag] = $this->userPurview;
-
-            @session_register($this->keepAdminStyleTag);
             $_SESSION[$this->keepAdminStyleTag] = $adminstyle;
 
             PutCookie('DedeUserID', $this->userID, 3600 * 24, '/');
@@ -298,8 +293,8 @@ class userLogin
     /**
      *  重写用户权限频道
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ReWriteAdminChannel()
     {
@@ -334,17 +329,17 @@ class userLogin
     /**
      *  结束用户的会话状态
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function exitUser()
     {
         ClearMyAddon();
-        @session_unregister($this->keepUserIDTag);
-        @session_unregister($this->keepUserTypeTag);
-        @session_unregister($this->keepUserChannelTag);
-        @session_unregister($this->keepUserNameTag);
-        @session_unregister($this->keepUserPurviewTag);
+        unset($_SESSION[$this->keepUserIDTag]);
+        unset($_SESSION[$this->keepUserTypeTag]);
+        unset($_SESSION[$this->keepUserChannelTag]);
+        unset($_SESSION[$this->keepUserNameTag]);
+        unset($_SESSION[$this->keepUserPurviewTag]);
         DropCookie('dedeAdmindir');
         DropCookie('DedeUserID');
         DropCookie('DedeLoginTime');
@@ -354,8 +349,8 @@ class userLogin
     /**
      *  获得用户管理频道的值
      *
-     * @access    public
-     * @return    array
+     * @access public
+     * @return array
      */
     public function getUserChannel()
     {
@@ -369,8 +364,8 @@ class userLogin
     /**
      *  获得用户的权限值
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function getUserType()
     {
@@ -384,8 +379,8 @@ class userLogin
     /**
      *  获取用户权限值
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function getUserRank()
     {
@@ -395,8 +390,8 @@ class userLogin
     /**
      *  获得用户的ID
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function getUserID()
     {
@@ -410,8 +405,8 @@ class userLogin
     /**
      *  获得用户的笔名
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function getUserName()
     {
@@ -425,8 +420,8 @@ class userLogin
     /**
      *  用户权限表
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function getPurview()
     {
@@ -437,18 +432,18 @@ class userLogin
 /**
  *  获得某id的所有下级id
  *
- * @access    public
- * @param     int   $id  栏目ID
- * @param     int   $channel  频道ID
- * @param     int   $addthis  是否加入当前这个栏目
- * @return    string
+ * @access public
+ * @param  int $id      栏目ID
+ * @param  int $channel 频道ID
+ * @param  int $addthis 是否加入当前这个栏目
+ * @return string
  */
 function GetSonIdsUL($id, $channel = 0, $addthis = true)
 {
     global $cfg_Cs;
     $GLOBALS['idArray'] = array();
     if (!is_array($cfg_Cs)) {
-        require_once DEDEDATA . "/cache/inc_catalog_base.inc";
+        include_once DEDEDATA . "/cache/inc_catalog_base.inc";
     }
     GetSonIdsLogicUL($id, $cfg_Cs, $channel, $addthis);
     $rquery = join(',', $GLOBALS['idArray']);
@@ -458,12 +453,12 @@ function GetSonIdsUL($id, $channel = 0, $addthis = true)
 /**
  *  递归逻辑
  *
- * @access    public
- * @param     int  $id  栏目ID
- * @param     int  $sArr  缓存数组
- * @param     int   $channel  频道ID
- * @param     int   $addthis  是否加入当前这个栏目
- * @return    string
+ * @access public
+ * @param  int $id      栏目ID
+ * @param  int $sArr    缓存数组
+ * @param  int $channel 频道ID
+ * @param  int $addthis 是否加入当前这个栏目
+ * @return string
  */
 function GetSonIdsLogicUL($id, $sArr, $channel = 0, $addthis = false)
 {

@@ -12,13 +12,13 @@
  *      $GLOBALS['cfg_dbname'];
  *      $GLOBALS['cfg_dbprefix'];
  *
- * @version        $Id: dedesqli.class.php 1 15:00 2011-1-21  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedesqli.class.php 1 15:00 2011-1-21  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @set_time_limit(0);
 // 在工程所有文件中均不需要单独初始化这个类，可直接用 $dsql 或 $db 进行操作
@@ -27,12 +27,12 @@ $dsql = $dsqlitete = $db = new DedeSqlite(false);
 /**
  * Dede MySQLi数据库类
  *
- * @package        DedeSqli
- * @subpackage     DedeCMS.Libraries
- * @link           http://www.dedecms.com
+ * @package    DedeSqli
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
-if (!defined('MYSQL_BOTH')) {
-    define('MYSQL_BOTH', MYSQLI_BOTH);
+if (!defined('MYSQLI_BOTH')) {
+    define('MYSQLI_BOTH', MYSQLI_BOTH);
 }
 class DedeSqlite
 {
@@ -342,15 +342,15 @@ class DedeSqlite
     public function GetArray($id = "me", $acctype = SQLITE3_ASSOC)
     {
         switch ($acctype) {
-            case MYSQL_ASSOC:
-                $acctype = SQLITE3_ASSOC;
-                break;
-            case MYSQL_NUM:
-                $acctype = SQLITE3_NUM;
-                break;
-            default:
-                $acctype = SQLITE3_BOTH;
-                break;
+        case MYSQLI_ASSOC:
+            $acctype = SQLITE3_ASSOC;
+            break;
+        case MYSQLI_NUM:
+            $acctype = SQLITE3_NUM;
+            break;
+        default:
+            $acctype = SQLITE3_BOTH;
+            break;
         }
 
         if ($this->result[$id] === 0) {
@@ -646,7 +646,8 @@ if (!function_exists('CheckSql')) {
         $clean = trim(strtolower(preg_replace(array('~\s+~s'), array(' '), $clean)));
 
         if (strpos($clean, '@') !== false or strpos($clean, 'char(') !== false or strpos($clean, '"') !== false
-            or strpos($clean, '$s$$s$') !== false) {
+            or strpos($clean, '$s$$s$') !== false
+        ) {
             $fail = true;
             if (preg_match("#^create table#i", $clean)) {
                 $fail = false;

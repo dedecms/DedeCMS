@@ -1,24 +1,31 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 连载图书调用
  *
- * @version        $Id: booklist.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: booklist.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /**
+ * 
+ * 
  *  图书列表调用
  *
- * @access    public
- * @param     object  $ctag  解析标签
- * @param     object  $refObj  引用对象
- * @param     int  $getcontent  是否调用内容
- * @return    string
+ * @access public
+ * @param  object  $ctag  解析标签
+ * @param  object  $refObj  引用对象
+ * @param  int  $getcontent  是否调用内容
+ * @return string
+ 
  */
 
 /*>>dede>>
@@ -51,6 +58,7 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
 
     if (!$dsql->IsTable("{$cfg_dbprefix}story_books")) {
         return '没安装连载模块';
+    
     }
 
     $addquery = '';
@@ -58,26 +66,32 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
     if (empty($innertext)) {
         if ($getcontent == 0) {
             $innertext = GetSysTemplets('booklist.htm');
+        
         } else {
             $innertext = GetSysTemplets('bookcontentlist.htm');
+        
         }
 
+    
     }
 
     //图书类型
     if ($booktype != -1) {
         $addquery .= " AND b.booktype='{$booktype}' ";
+    
     }
 
     //推荐
     if ($orderby == 'commend') {
         $addquery .= " AND b.iscommend=1 ";
         $orderby = 'lastpost';
+    
     }
 
     //作者条件
     if (!empty($author)) {
         $addquery .= " AND b.author LIKE '$author' ";
+    
     }
 
     //关键字条件
@@ -86,12 +100,15 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
         $keywords = array_unique($keywords);
         if (count($keywords) > 0) {
             $addquery .= " AND (";
+        
         }
         foreach ($keywords as $v) {
             $addquery .= " CONCAT(b.author,b.bookname,b.keywords) LIKE '%$v%' OR";
+        
         }
         $addquery = preg_replace("# OR$#", "", $addquery);
         $addquery .= ")";
+    
     }
 
     $clist = '';
@@ -117,11 +134,14 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
             $nrow = $dsql->GetOne("SELECT id,title,chapterid FROM `#@__story_content` WHERE bookid='{$row['id']}' order by id desc ");
             $row['contenttitle'] = $nrow['title'];
             $row['contentid'] = $nrow['id'];
+        
         }
         if ($row['booktype'] == 1) {
             $row['contenturl'] = $cfg_cmspath . '/book/show-photo.php?id=' . $row['contentid'];
+        
         } else {
             $row['contenturl'] = $cfg_cmspath . '/book/story.php?id=' . $row['contentid'];
+        
         }
 
         //动态网址
@@ -137,14 +157,18 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
 
         if ($row['ischeck'] == 2) {
             $row['ischeck'] = '已完成连载';
+        
         } else {
             $row['ischeck'] = '连载中...';
+        
         }
 
         if ($row['booktype'] == 0) {
             $row['booktypename'] = '小说';
+        
         } else {
             $row['booktypename'] = '漫画';
+        
         }
 
         if (is_array($ndtp->CTags)) {
@@ -152,14 +176,20 @@ function lib_booklist(&$ctag, &$refObj, $getcontent = 0)
                 $tagname = $ctag->GetTagName();
                 if (isset($row[$tagname])) {
                     $ndtp->Assign($tagid, $row[$tagname]);
+                
                 } else {
                     $ndtp->Assign($tagid, '');
+                
                 }
 
+            
             }
+        
         }
         $clist .= $ndtp->GetResult();
+    
     }
 
     return $clist;
+
 }

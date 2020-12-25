@@ -2,13 +2,13 @@
 /**
  * 数据库操作
  *
- * @version        $Id: sys_data_done.php 1 17:19 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_data_done.php 1 17:19 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @ob_start();
 @set_time_limit(0);
@@ -84,7 +84,7 @@ if ($dopost == 'bak') {
                 fwrite($fp, "DROP TABLE IF EXISTS `$t`;\r\n\r\n");
                 $dsql->SetQuery("SHOW CREATE TABLE " . $dsql->dbName . "." . $t);
                 $dsql->Execute('me');
-                $row = $dsql->GetArray('me', MYSQL_BOTH);
+                $row = $dsql->GetArray('me', MYSQLI_BOTH);
 
                 //去除AUTO_INCREMENT
                 $row[1] = preg_replace("#AUTO_INCREMENT=([0-9]{1,})[ \r\n\t]{1,}#i", "", $row[1]);

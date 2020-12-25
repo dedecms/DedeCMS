@@ -2,21 +2,21 @@
 /**
  * 模型解析相关函数
  *
- * @version        $Id: inc_archives_all.php 1 9:56 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_archives_all.php 1 9:56 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 /**
  * 获得一个附加表单
  *
- * @access    public
- * @param     object  $ctag  ctag
- * @return    string
+ * @access public
+ * @param  object $ctag ctag
+ * @return string
  */
 function GetFormItem($ctag)
 {
@@ -123,13 +123,13 @@ function GetFormItem($ctag)
 /**
  * 处理不同类型的数据
  *
- * @access    public
- * @param     string  $dvalue  值
- * @param     string  $dtype  类型
- * @param     int  $aid  文档ID
- * @param     string  $job  操作类型
- * @param     string  $addvar  增加值
- * @return    string
+ * @access public
+ * @param  string $dvalue 值
+ * @param  string $dtype  类型
+ * @param  int    $aid    文档ID
+ * @param  string $job    操作类型
+ * @param  string $addvar 增加值
+ * @return string
  */
 function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 {
@@ -215,10 +215,10 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 /**
  * 获得带值的表单(编辑时用)
  *
- * @access    public
- * @param     object  $ctag  ctag
- * @param     string  $fvalue  表单值
- * @return    string
+ * @access public
+ * @param  object $ctag   ctag
+ * @param  string $fvalue 表单值
+ * @return string
  */
 
 function GetFormItemValue($ctag, $fvalue)

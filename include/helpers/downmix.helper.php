@@ -1,23 +1,30 @@
-<?php if (!defined('DEDEINC')) {exit('Request Error');}
+<?php if (!defined('DEDEINC')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 防采集混淆字符串
  *
- * @version        $Id: downmix.inc.php 1 9:14 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: downmix.inc.php 1 9:14 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /**
+* 
+* 
  *  混淆字符串内容
  *
- * @access    public
- * @param     string  $body  内容
- * @return    string
- */
+ * @access public
+ * @param  string  $body  内容
+ * @return string
+ 
+*/
 if (!function_exists('RndString')) {
     function RndString(&$body)
     {
@@ -61,15 +68,20 @@ if (!function_exists('RndString')) {
             if ($start == 1) {
                 if (preg_match("/#end#/i", $v)) {
                     break;
+                
                 }
                 if ($v != '') {
                     $totalitem++;
                     $rndstring[$totalitem] = preg_replace("/#,/", "", $v);
+                
                 }
+            
             }
             if (preg_match("/#start#/i", $v)) {
                 $start = 1;
+            
             }
+        
         }
         fclose($fp);
 
@@ -79,6 +91,7 @@ if (!function_exists('RndString')) {
         for ($i = 0; $i <= $bodylen; $i++) {
             if ($i + 2 >= $bodylen || $i < 50) {
                 $reString .= $body[$i];
+            
             } else {
                 $ntag = @strtolower($body[$i] . $body[$i + 1] . $body[$i + 2]);
                 if ($ntag == '</p' || ($ntag == '<br' && $i - $prepos > $maxpos)) {
@@ -88,16 +101,24 @@ if (!function_exists('RndString')) {
                     $rnstr = $rndstring[$dd];
                     if ($emname != 'font') {
                         $rnstr = " <$emname class='$rndstyleName'>$rnstr</$emname> ";
+                    
                     } else {
                         $rnstr = " <font color='$fontColor'>$rnstr</font> ";
+                    
                     }
                     $reString .= $rnstr . $body[$i];
                     $prepos = $i;
+                
                 } else {
                     $reString .= $body[$i];
+                
                 }
+            
             }
+        
         }
         return $reString;
+    
     } //函数结束
+
 }

@@ -15,4 +15,4 @@ $cfg_helper_autoload = array
     'archive', /* 文档小助手 */
     'upload', /* 上传小助手 */
     'extend', /* 扩展小助手 */
-);
+    );

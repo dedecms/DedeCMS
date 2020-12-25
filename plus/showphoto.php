@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 显示图片
  *
- * @version        $Id: showphoto.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: showphoto.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 require_once DEDEINC . "/channelunit.class.php";
@@ -27,13 +26,17 @@ if ($aid == 0) {
 $arctitle = '';
 $arcurl = '';
 $topid = 0;
-$arcRow = $dsql->GetOne("SELECT arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,tp.topid,tp.typedir,tp.namerule,
-                 tp.moresite,tp.siteurl,tp.sitepath FROM `#@__archives` arc  LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid WHERE arc.id='$aid'");
+$arcRow = $dsql->GetOne(
+    "SELECT arc.title,arc.senddate,arc.arcrank,arc.ismake,arc.money,arc.typeid,tp.topid,tp.typedir,tp.namerule,
+                 tp.moresite,tp.siteurl,tp.sitepath FROM `#@__archives` arc  LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid WHERE arc.id='$aid'"
+);
 if (is_array($arcRow)) {
     $arctitle = $arcRow['title'];
     $topid = $arcRow['topid'];
-    $arcurl = @GetFileUrl($aid, $arcRow['typeid'], $arcRow['senddate'], $arctitle, $arcRow['ismake'], $arcRow['arcrank'],
-        $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'], $arcRow['sitepath']);
+    $arcurl = @GetFileUrl(
+        $aid, $arcRow['typeid'], $arcRow['senddate'], $arctitle, $arcRow['ismake'], $arcRow['arcrank'],
+        $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename'], $arcRow['moresite'], $arcRow['siteurl'], $arcRow['sitepath']
+    );
 } else {
     ShowMsg('无法浏览未知文档!', '-1');
     exit();

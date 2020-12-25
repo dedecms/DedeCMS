@@ -2,13 +2,13 @@
 /**
  * 导出采集规则
  *
- * @version        $Id: co_edit_text.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: co_edit_text.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('co_Export');
@@ -17,7 +17,7 @@ if (empty($dopost)) {
 }
 
 if ($dopost != 'done') {
-    require_once DEDEADMIN . "/inc/inc_catalog_options.php";
+    include_once DEDEADMIN . "/inc/inc_catalog_options.php";
     $totalcc = $channelid = $usemore = 0;
     if (!empty($nid)) {
         $mrow = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__co_htmls` WHERE nid='$nid' AND isdown='1' ");
@@ -32,7 +32,7 @@ if ($dopost != 'done') {
     DedeInclude("templets/co_export.htm");
     exit();
 } else {
-    require_once DEDEINC . '/dedecollection.class.php';
+    include_once DEDEINC . '/dedecollection.class.php';
     $channelid = isset($channelid) && is_numeric($channelid) ? $channelid : 0;
     $typeid = isset($typeid) && is_numeric($typeid) ? $typeid : 0;
     $pageno = isset($pageno) && is_numeric($pageno) ? $pageno : 1;

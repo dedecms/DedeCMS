@@ -2,13 +2,13 @@
 /**
  * 编辑自定义表单
  *
- * @version        $Id: diy_add.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: diy_add.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_Edit');
@@ -60,7 +60,7 @@ else if ($dopost == "delete") {
 
     //操作
     else if ($job == "yes") {
-        $row = $dsql->GetOne("SELECT `table` FROM `#@__diyforms` WHERE diyid='$diyid'", MYSQL_ASSOC);
+        $row = $dsql->GetOne("SELECT `table` FROM `#@__diyforms` WHERE diyid='$diyid'", MYSQLI_ASSOC);
         if (!is_array($row)) {
             ShowMsg("你所指定的自定义表单信息不存在!", "-1");
             exit();
@@ -80,4 +80,4 @@ else if ($dopost == "delete") {
 function edit()
 -----------------*/
 $row = $dsql->GetOne("Select * From #@__diyforms where diyid='$diyid'");
-include DEDEADMIN . "/templets/diy_edit.htm";
+require DEDEADMIN . "/templets/diy_edit.htm";

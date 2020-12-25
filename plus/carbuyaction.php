@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 购物车过程
  *
- * @version        $Id: carbuyaction.php 1 20:43 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: carbuyaction.php 1 20:43 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 define('_PLUS_TPL_', DEDEROOT . '/templets/plus');
@@ -161,8 +160,10 @@ if (!isset($dopost) || empty($dopost)) {
             if ($dsql->ExecuteNoneQuery($sql)) {
                 foreach ($Items as $key => $val) {
                     $val['price'] = str_replace(",", "", $val['price']);
-                    $dsql->ExecuteNoneQuery("INSERT INTO `#@__shops_products` (`aid`,`oid`,`userid`,`title`,`price`,`buynum`)
-                    VALUES ('$val[id]','$OrdersId','$userid','$val[title]','$val[price]','$val[buynum]');");
+                    $dsql->ExecuteNoneQuery(
+                        "INSERT INTO `#@__shops_products` (`aid`,`oid`,`userid`,`title`,`price`,`buynum`)
+                    VALUES ('$val[id]','$OrdersId','$userid','$val[title]','$val[price]','$val[buynum]');"
+                    );
                 }
                 $sql = "INSERT INTO `#@__shops_userinfo` (`userid`,`oid`,`consignee`,`address`,`zip`,`tel`,`email`,`des`)
                  VALUES ('$userid','$OrdersId','$postname','$address','$zip','$tel','$email','$des');
@@ -195,7 +196,7 @@ if (!isset($dopost) || empty($dopost)) {
 
         $rs = $dsql->GetOne("SELECT * FROM `#@__payment` WHERE id='$paytype' ");
 
-        require_once DEDEINC . '/payment/' . $rs['code'] . '.php';
+        include_once DEDEINC . '/payment/' . $rs['code'] . '.php';
         $pay = new $rs['code'];
         if ($rs['code'] == "cod" || $rs['code'] == "bank") {
             $order = $OrdersId;
@@ -203,7 +204,7 @@ if (!isset($dopost) || empty($dopost)) {
             $order = array('out_trade_no' => $cart->OrdersId,
                 'price' => $priceCount,
             );
-            require_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
+            include_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
         }
         $button = $pay->GetCode($order, $payment);
         $dtp = new DedeTemplate();
@@ -268,7 +269,7 @@ if (!isset($dopost) || empty($dopost)) {
         exit("Error:payment is not exsits!");
     }
 
-    require_once DEDEINC . '/payment/' . $rs['code'] . '.php';
+    include_once DEDEINC . '/payment/' . $rs['code'] . '.php';
     $pay = new $rs['code'];
     $payment = "";
     if ($rs['code'] == "cod" || $rs['code'] == "bank") {
@@ -277,7 +278,7 @@ if (!isset($dopost) || empty($dopost)) {
         $order = array('out_trade_no' => $OrdersId,
             'price' => $priceCount,
         );
-        require_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
+        include_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
     }
     $button = $pay->GetCode($order, $payment);
     $dtp = new DedeTemplate();
@@ -298,7 +299,7 @@ if (!isset($dopost) || empty($dopost)) {
 } else if ($dopost == 'return') {
     $write_list = array('alipay', 'bank', 'cod', 'yeepay');
     if (in_array($code, $write_list)) {
-        require_once DEDEINC . '/payment/' . $code . '.php';
+        include_once DEDEINC . '/payment/' . $code . '.php';
         $pay = new $code;
         $msg = $pay->respond();
         ShowMsg($msg, "javascript:;", 0, 3000);

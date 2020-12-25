@@ -5,13 +5,13 @@
 /**
  * 动态模板spacenewart标签
  *
- * @version        $Id: plus_spacenewart.php 1 13:58 2010年7月5日 $
- * @package        DedeCMS.Tpllib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: plus_spacenewart.php 1 13:58 2010年7月5日 $
+ * @package   DedeCMS.Tpllib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 function plus_spacenewart(&$atts, &$refObj, &$fields)
 {
@@ -39,11 +39,15 @@ function plus_spacenewart(&$atts, &$refObj, &$fields)
         $row['infos'] = cn_substr($row['description'], $infolen);
         $row['id'] = $row['id'];
 
-        $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
-            $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+        $row['arcurl'] = GetFileUrl(
+            $row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+            $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+        );
 
-        $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
-            $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+        $row['typeurl'] = GetTypeUrl(
+            $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+            $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+        );
 
         if ($row['litpic'] == '') {
             $row['litpic'] = '/assets/img/defaultpic.gif';

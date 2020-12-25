@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: index_do.php 1 8:24 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: index_do.php 1 8:24 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 if (empty($dopost)) {
@@ -44,7 +44,7 @@ if ($fmdo == 'sendMail') {
     $headers = "From: " . $cfg_adminemail . "\r\nReply-To: " . $cfg_adminemail;
     if ($cfg_sendmail_bysmtp == 'Y' && !empty($cfg_smtp_server)) {
         $mailtype = 'TXT';
-        require_once DEDEINC . '/mail.class.php';
+        include_once DEDEINC . '/mail.class.php';
         $smtp = new smtp($cfg_smtp_server, $cfg_smtp_port, true, $cfg_smtp_usermail, $cfg_smtp_password);
         $smtp->debug = false;
         $smtp->sendmail($cfg_ml->fields['email'], $cfg_webname, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
@@ -88,7 +88,7 @@ else if ($fmdo == 'user') {
         if ($cktype == 0) {
             $msgtitle = '用户笔名';
         } else {
-            #api{{
+            // api{{
             if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
                 $ucresult = uc_user_checkname($uid);
                 if ($ucresult > 0) {
@@ -102,7 +102,7 @@ else if ($fmdo == 'user') {
                 }
                 exit();
             }
-            #/aip}}
+            // /aip}}
             $msgtitle = '用户名';
         }
         if ($cktype != 0 || $cfg_mb_wnameone == 'N') {
@@ -123,7 +123,7 @@ else if ($fmdo == 'user') {
     else if ($dopost == "checkmail") {
         AjaxHead();
 
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             $ucresult = uc_user_checkemail($email);
             if ($ucresult > 0) {
@@ -137,7 +137,7 @@ else if ($fmdo == 'user') {
             }
             exit();
         }
-        #/aip}}
+        // /aip}}
 
         if ($cfg_md_mailtest == 'N') {
             $msg = "<font color='#4E7504'><b>√可以使用</b></font>";
@@ -160,7 +160,7 @@ else if ($fmdo == 'user') {
     //引入注册页面
     else if ($dopost == "regnew") {
         $step = empty($step) ? 1 : intval(preg_replace("/[^\d]/", '', $step));
-        require_once dirname(__FILE__) . "/reg_new.php";
+        include_once dirname(__FILE__) . "/reg_new.php";
         exit();
     }
     /***************************
@@ -233,7 +233,7 @@ else if ($fmdo == 'login') {
         //检查帐号
         $rs = $cfg_ml->CheckUser($userid, $pwd);
 
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             //检查帐号
             list($uid, $username, $password, $email) = uc_user_login($userid, $pwd);
@@ -258,7 +258,7 @@ else if ($fmdo == 'login') {
                             1 => "INSERT INTO `#@__member_tj` SET `mid`='$mid',`article`='0',`album`='0',`archives`='0',`homecount`='0',`pagecount`='0',`feedback`='0',`friend`='0',`stow`='0';",
                             2 => "INSERT INTO `#@__member_space` SET `mid`='$mid',`pagesize`='10',`matt`='0',`spacename`='{$uname}的空间',`spacelogo`='',`spacestyle`='person', `sign`='',`spacenews`='';",
                             3 => "INSERT INTO `#@__member_flink` SET `mid`='$mid', `title`='织梦内容管理系统', `url`='http://www.dedecms.com';",
-                        );
+                            );
                         foreach ($data as $val) {
                             $dsql->ExecuteNoneQuery($val);
                         }
@@ -292,7 +292,7 @@ else if ($fmdo == 'login') {
                 $rs = -1;
             }
         }
-        #/aip}}
+        // /aip}}
 
         if ($rs == 0) {
             ResetVdValue();
@@ -322,11 +322,11 @@ else if ($fmdo == 'login') {
     //退出登录
     else if ($dopost == "exit") {
         $cfg_ml->ExitCookie();
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             $ucsynlogin = uc_user_synlogout();
         }
-        #/aip}}
+        // /aip}}
         ShowMsg("成功退出登录！", "index.php", 0, 2000);
         exit();
     }

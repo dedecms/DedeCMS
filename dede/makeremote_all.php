@@ -2,13 +2,13 @@
 /**
  * 远程发布
  *
- * @version        $Id: makeremote_all.php 1 11:17 2010年7月19日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: makeremote_all.php 1 11:17 2010年7月19日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_MakeHtml');
@@ -20,7 +20,7 @@ if ($cfg_remote_site == 'N') {
 
 //生成必须同步服务器的列表
 if (file_exists(DEDEDATA . '/config.file.inc.php')) {
-    require_once DEDEDATA . '/config.file.inc.php';
+    include_once DEDEDATA . '/config.file.inc.php';
 }
 
 if (empty($dopost)) {
@@ -82,8 +82,10 @@ function getDirs($directory, $exempt = array('.', '..', '.ds_store', '.svn'), &$
         if (!in_array(strtolower($resource), $exempt)) {
             //排除目录
             if (is_dir($directory . $resource . '/')) {
-                array_merge($files,
-                    getDirs($directory . $resource . '/', $exempt, $files));
+                array_merge(
+                    $files,
+                    getDirs($directory . $resource . '/', $exempt, $files)
+                );
             } else {
                 //if(!is_file($directory.'/'.$resource))
                 //{
@@ -142,8 +144,10 @@ else if ($dopost == 'updateremote') {
     foreach ($remotefile as $key => $value) {
         //处理用户自定义配置
         if ($value['issystem'] == 0) {
-            $dirarray[$i++] = addDir($value['filedir'], $value['description'],
-                $value['dfserv'], $value['state'], $value['issystem']);
+            $dirarray[$i++] = addDir(
+                $value['filedir'], $value['description'],
+                $value['dfserv'], $value['state'], $value['issystem']
+            );
         }
     }
 
@@ -232,7 +236,7 @@ else if ($dopost == 'make') {
         exit;
     } elseif ($step == 2) {
         if (file_exists(DEDEDATA . '/cache/filelist.inc.php')) {
-            require_once DEDEDATA . '/cache/filelist.inc.php';
+            include_once DEDEDATA . '/cache/filelist.inc.php';
         }
         if (is_array($dirlist)) {
             if ($sta > 0 && $sta < $totalnum) {

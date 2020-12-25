@@ -2,13 +2,13 @@
 /**
  * 纠错管理
  *
- * @version        $Id: erraddsave.php 1 19:09 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: erraddsave.php 1 19:09 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 require_once DEDEINC . '/datalistcp.class.php';
@@ -40,29 +40,29 @@ function username($mid)
 function typename($me)
 {
     switch ($me) {
-        case $me == 1:
-            return $me = "错别字";
+    case $me == 1:
+        return $me = "错别字";
             break;
-        case $me == 2:
-            return $me = "成语运用不当";
+    case $me == 2:
+        return $me = "成语运用不当";
             break;
-        case $me == 3:
-            return $me = "专业术语写法不规则";
+    case $me == 3:
+        return $me = "专业术语写法不规则";
             break;
-        case $me == 4:
-            return $me = "产品与图片不符";
+    case $me == 4:
+        return $me = "产品与图片不符";
             break;
-        case $me == 5:
-            return $me = "事实年代以及内容错误";
+    case $me == 5:
+        return $me = "事实年代以及内容错误";
             break;
-        case $me == 6:
-            return $me = "事实年代以及内容错误";
+    case $me == 6:
+        return $me = "事实年代以及内容错误";
             break;
-        case $me == 7:
-            return $me = "其他错误";
+    case $me == 7:
+        return $me = "其他错误";
             break;
-        default:
-            return $me = "未知错误";
+    default:
+        return $me = "未知错误";
             break;
     }
 }
@@ -82,7 +82,7 @@ if ($dopost == "delete") {
         ShowMsg("成功删除指定的文档！", "erraddsave.php");
         exit();
     } else {
-        require_once DEDEINC . "/oxwindow.class.php";
+        include_once DEDEINC . "/oxwindow.class.php";
         $wintitle = "删除";
         $wecome_info = "<a href='erraddsave.php'>错误管理</a>::删除错误";
         $win = new OxWindow();

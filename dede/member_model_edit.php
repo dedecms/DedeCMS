@@ -2,13 +2,13 @@
 /**
  * 会员模型编辑
  *
- * @version        $Id: member_model_edit.php 1 11:20 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_model_edit.php 1 11:20 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_Edit');
@@ -141,7 +141,7 @@ else if ($dopost == "copy") {
         //拷贝数据表
         if (!$dsql->IsTable($newtable)) {
             $dsql->Execute('me', "SHOW CREATE TABLE {$dsql->dbName}.{$thistable}");
-            $row = $dsql->GetArray('me', MYSQL_BOTH);
+            $row = $dsql->GetArray('me', MYSQLI_BOTH);
             $tableStruct = $row[1];
             $tb = str_replace('#@__', $cfg_dbprefix, $thistable);
             $tableStruct = preg_replace("/CREATE TABLE `$thistable`/iU", "CREATE TABLE `$newtable`", $tableStruct);
@@ -193,7 +193,7 @@ else if ($dopost == "delete") {
 
     //操作
     else if ($job == "yes") {
-        $row = $dsql->GetOne("SELECT `table` FROM `#@__member_model` WHERE id='$id'", MYSQL_ASSOC);
+        $row = $dsql->GetOne("SELECT `table` FROM `#@__member_model` WHERE id='$id'", MYSQLI_ASSOC);
         if (!is_array($row)) {
             ShowMsg("你所指定的会员模型信息不存在!", "-1");
             exit();
@@ -214,4 +214,4 @@ else if ($dopost == "delete") {
 function edit()
 -----------------*/
 $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$id'");
-include DEDEADMIN . "/templets/member_model_edit.htm";
+require DEDEADMIN . "/templets/member_model_edit.htm";

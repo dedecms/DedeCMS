@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: actionsearch_class.php 1 8:26 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: actionsearch_class.php 1 8:26 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 class ActionSearch
 {
@@ -23,7 +23,7 @@ class ActionSearch
 
     public function GetSearchstr()
     {
-        require_once dirname(__FILE__) . "/inc/inc_action_info.php";
+        include_once dirname(__FILE__) . "/inc/inc_action_info.php";
         return is_array($actionSearch) ? $actionSearch : array();
     }
 
@@ -36,7 +36,7 @@ class ActionSearch
     /**
      *  遍历功能配置项进行关键词匹配
      *
-     * @return    void
+     * @return void
      */
     public function searchkeyword()
     {
@@ -66,9 +66,9 @@ class ActionSearch
     /**
      *  加亮关键词
      *
-     * @access    public
-     * @param     string  $text  关键词
-     * @return    string
+     * @access public
+     * @param  string $text 关键词
+     * @return string
      */
     public function redColorKeyword($text)
     {

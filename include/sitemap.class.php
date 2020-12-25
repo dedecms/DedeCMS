@@ -5,13 +5,13 @@
 /**
  * 网站地图(sitemap类)
  *
- * @version        $Id: sitemap.class.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sitemap.class.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . "/channelunit.func.php";
@@ -19,9 +19,9 @@ require_once DEDEINC . "/channelunit.func.php";
 /**
  * 网站地图(sitemap类)
  *
- * @package          TypeLink
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TypeLink
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class SiteMap
 {
@@ -52,9 +52,12 @@ class SiteMap
     /**
      *  获取网站地图
      *
-     * @access    public
-     * @param     string  $maptype  地图类型  site:站点  rss:rss
-     * @return    string
+     * @access public
+     * @param  string $maptype 地图类型
+     *                         
+     *                         site:站点
+     *                         rss:rss
+     * @return string
      */
     public function GetSiteMap($maptype = "site")
     {
@@ -74,12 +77,12 @@ class SiteMap
             $mapString .= "<div class=\"linkbox\">\r\n<h3><a href='$typelink'>" . $row->typename . "</a></h3>";
             $mapString .= "\t<ul class=\"f6\">\t\t\r" . $this->LogicListAllSunType($row->id, $maptype) . "\t\n</ul></div>\r\n";
             /*
-        $mapString .= "<tr><td width='17%' align='center' bgcolor='#FAFEF1'>";
-        $mapString .= "<a href='$typelink'><b>".$row->typename."</b></a>";
-        $mapString .= "</td><td width='83%' bgcolor='#FFFFFF'>";
-        $mapString .= $this->LogicListAllSunType($row->id,$maptype);
-        $mapString .= "</td></tr>";
-         */
+            $mapString .= "<tr><td width='17%' align='center' bgcolor='#FAFEF1'>";
+            $mapString .= "<a href='$typelink'><b>".$row->typename."</b></a>";
+            $mapString .= "</td><td width='83%' bgcolor='#FFFFFF'>";
+            $mapString .= $this->LogicListAllSunType($row->id,$maptype);
+            $mapString .= "</td></tr>";
+            */
         }
         return $mapString;
     }
@@ -87,10 +90,10 @@ class SiteMap
     /**
      *  获得子类目的递归调用
      *
-     * @access    public
-     * @param     int  $id  栏目ID
-     * @param     string  $maptype  地图类型
-     * @return    string
+     * @access public
+     * @param  int    $id      栏目ID
+     * @param  string $maptype 地图类型
+     * @return string
      */
     public function LogicListAllSunType($id, $maptype)
     {

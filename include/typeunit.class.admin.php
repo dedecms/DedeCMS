@@ -5,13 +5,13 @@
 /**
  * 栏目单元,主要用户管理后台管理处
  *
- * @version        $Id: typeunit.class.admin.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: typeunit.class.admin.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . "/channelunit.func.php";
@@ -19,9 +19,9 @@ require_once DEDEINC . "/channelunit.func.php";
 /**
  * 栏目单元,主要用户管理后台管理处
  *
- * @package          TypeUnit
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TypeUnit
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class TypeUnit
 {
@@ -86,10 +86,10 @@ class TypeUnit
     /**
      *  读出所有分类,在类目管理页(list_type)中使用
      *
-     * @access    public
-     * @param     int   $channel  频道ID
-     * @param     int   $nowdir  当前操作ID
-     * @return    string
+     * @access public
+     * @param  int $channel 频道ID
+     * @param  int $nowdir  当前操作ID
+     * @return string
      */
     public function ListAllType($channel = 0, $nowdir = 0)
     {
@@ -178,13 +178,13 @@ class TypeUnit
 
     }
      /**
-     *  获得子类目的递归调用
-     *
-     * @access    public
-     * @param     int  $id  栏目ID
-     * @param     string  $step  层级标志
-     * @return    void
-     */
+      *  获得子类目的递归调用
+      *
+      * @access public
+      * @param  int    $id   栏目ID
+      * @param  string $step 层级标志
+      * @return void
+      */
     public function GetTypeNum($id)
     {
         global $cfg_admin_channel, $admin_catalogs;
@@ -196,10 +196,10 @@ class TypeUnit
     /**
      *  获得子类目的递归调用
      *
-     * @access    public
-     * @param     int  $id  栏目ID
-     * @param     string  $step  层级标志
-     * @return    void
+     * @access public
+     * @param  int    $id   栏目ID
+     * @param  string $step 层级标志
+     * @return void
      */
     public function LogicListAllSunType($id, $step)
     {
@@ -267,9 +267,9 @@ class TypeUnit
                 echo " <a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>[删除]</a>";
                 echo "</td></tr>\r\n";
                 if ($this->GetTypeNum($id) === true) {
-                echo "<tr id='type_{$id}' class=\"uk-hidden\"><td colspan=\"8\" style=\"padding:0;\">";
-                $this->LogicListAllSunType($id, $step . "　");
-                echo "</td></tr>";
+                    echo "<tr id='type_{$id}' class=\"uk-hidden\"><td colspan=\"8\" style=\"padding:0;\">";
+                    $this->LogicListAllSunType($id, $step . "　");
+                    echo "</td></tr>";
                 }
                 echo "</tbody></table>";
                 
@@ -280,10 +280,10 @@ class TypeUnit
     /**
      *  返回与某个目相关的下级目录的类目ID列表(删除类目或文章时调用)
      *
-     * @access    public
-     * @param     int   $id  栏目ID
-     * @param     int   $channel  频道ID
-     * @return    array
+     * @access public
+     * @param  int $id      栏目ID
+     * @param  int $channel 频道ID
+     * @return array
      */
     public function GetSunTypes($id, $channel = 0)
     {
@@ -312,10 +312,10 @@ class TypeUnit
     /**
      *  删除类目
      *
-     * @access    public
-     * @param     int   $id  栏目ID
-     * @param     bool   $isDelFile  是否删除文件
-     * @return    string
+     * @access public
+     * @param  int  $id        栏目ID
+     * @param  bool $isDelFile 是否删除文件
+     * @return string
      */
     public function DelType($id, $isDelFile)
     {
@@ -387,9 +387,9 @@ class TypeUnit
     /**
      *  删除指定目录的所有文件
      *
-     * @access    public
-     * @param     string  $indir  指定目录
-     * @return    int
+     * @access public
+     * @param  string $indir 指定目录
+     * @return int
      */
     public function RmDirFile($indir)
     {

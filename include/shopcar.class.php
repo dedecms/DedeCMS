@@ -3,21 +3,21 @@ define("DE_ItemEcode", 'Shop_De_'); //识别购物车Cookie前缀,非开发人�
 /**
  * 购物车类
  *
- * @version        $Id: shopcar.class.php 2 20:58 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: shopcar.class.php 2 20:58 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 // ------------------------------------------------------------------------
 /**
  * 会员购物车类
  *
- * @package          MemberShops
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    MemberShops
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class MemberShops
 {
@@ -40,7 +40,7 @@ class MemberShops
     /**
      *  创建一个专有订单编号
      *
-     * @return    string
+     * @return string
      */
     public function MakeOrders()
     {
@@ -52,9 +52,9 @@ class MemberShops
     /**
      *  添加一个商品编号及信息
      *
-     * @param     string  $id  购物车ID
-     * @param     string  $value  值
-     * @return    void
+     * @param  string $id    购物车ID
+     * @param  string $value 值
+     * @return void
      */
     public function addItem($id, $value)
     {
@@ -65,8 +65,8 @@ class MemberShops
     /**
      *  删去一个带编号的商品
      *
-     * @param     string  $id  购物车ID
-     * @return    void
+     * @param  string $id 购物车ID
+     * @return void
      */
     public function delItem($id)
     {
@@ -77,7 +77,7 @@ class MemberShops
     /**
      *  清空购物车商品
      *
-     * @return    string
+     * @return string
      */
     public function clearItem()
     {
@@ -92,7 +92,7 @@ class MemberShops
     /**
      *  得到订单记录
      *
-     * @return    array
+     * @return array
      */
     public function getItems()
     {
@@ -117,8 +117,8 @@ class MemberShops
     /**
      *  得到指定商品信息
      *
-     * @param     string  $id  购物车ID
-     * @return    array
+     * @param  string $id 购物车ID
+     * @return array
      */
     public function getOneItem($id)
     {
@@ -135,7 +135,7 @@ class MemberShops
     /**
      *  获得购物车中的商品数
      *
-     * @return    int
+     * @return int
      */
     public function cartCount()
     {
@@ -154,7 +154,7 @@ class MemberShops
     /**
      *  获得购物车中的总金额
      *
-     * @return    string
+     * @return string
      */
     public function priceCount()
     {
@@ -198,7 +198,7 @@ class MemberShops
         $result = '';
         $string_length = strlen($string);
         for ($i = 0; $i < $string_length; $i++) {
-            $result .= chr(ord($string{$i}) ^ ord($keys{$i % 32}));
+            $result .= chr(ord($string[$i]) ^ ord($keys[$i % 32]));
         }
         if ($operation == 'ENCODE') {
             return $runtokey . str_replace('=', '', base64_encode($result));

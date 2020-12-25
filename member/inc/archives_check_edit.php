@@ -1,13 +1,17 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 文档编辑验证
  *
- * @version        $Id: archives_check_edit.php 1 13:52 2010年7月9日 $
- * @package        DedeCMS.Member
- * @copyright      Copyright (c) 2007 - 2010, DesDev, Inc.
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: archives_check_edit.php 1 13:52 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @copyright Copyright (c) 2007 - 2010, DesDev, Inc.
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 require_once DEDEINC . "/image.func.php";
 require_once DEDEINC . "/oxwindow.class.php";
 
@@ -20,16 +24,20 @@ if (preg_match("/3/", $safe_gdopen)) {
         ResetVdValue();
         ShowMsg('验证码错误！', '-1');
         exit();
+    
     }
+
 }
 if ($typeid == 0) {
     ShowMsg('请指定文档隶属的栏目！', '-1');
     exit();
+
 }
 
 if (empty($idhash) || $idhash != hash("sha256", $aid . $cfg_cookie_encode)) {
     showMsg('数据校验不对，程序返回', '-1');
     exit();
+
 }
 
 // 校验CSRF
@@ -44,18 +52,22 @@ $addtable = $cInfos['addtable'];
 if ($cInfos['issend'] != 1 || $cInfos['ispart'] != 0 || $cInfos['channeltype'] != $channelid || $cInfos['cissend'] != 1) {
     ShowMsg("你所选择的栏目不支持投稿！", "-1");
     exit();
+
 }
 
 //文档的默认状态
 if ($cInfos['arcsta'] == 0) {
     $ismake = 0;
     $arcrank = 0;
+
 } else if ($cInfos['arcsta'] == 1) {
     $ismake = -1;
     $arcrank = 0;
+
 } else {
     $ismake = 0;
     $arcrank = -1;
+
 }
 
 //对保存的内容进行处理
@@ -63,6 +75,7 @@ $title = cn_substrR(HtmlReplace($title, 1), $cfg_title_maxlen);
 $writer = cn_substrR(HtmlReplace($writer, 1), 20);
 if (empty($description)) {
     $description = '';
+
 }
 
 $description = cn_substrR(HtmlReplace($description, 1), 250);
@@ -74,9 +87,11 @@ $midRow = $dsql->GetOne($midQuery);
 if ($midRow['mid'] != $mid) {
     ShowMsg('您暂无权限在这里进行修改文档！', 'javascript:;');
     exit;
+
 }
 
 $isadmin = ($cfg_ml->fields['matt'] == 10 ? true : false);
 if (empty($oldlitpic)) {
     $oldlitpic = '';
+
 }

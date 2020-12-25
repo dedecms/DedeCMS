@@ -2,13 +2,13 @@
 /**
  * 文档描述管理
  *
- * @version        $Id: article_description_main.php 1 14:12 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: article_description_main.php 1 14:12 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @ob_start();
 @set_time_limit(3600);
@@ -122,7 +122,7 @@ if ($dojob == '') {
 
     //更新自动分页
     if ($dojob == 'page') {
-        require_once DEDEADMIN . "/inc/inc_archives_functions.php";
+        include_once DEDEADMIN . "/inc/inc_archives_functions.php";
 
         $addquery = "";
         if ($sid != 0) {

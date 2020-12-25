@@ -5,13 +5,13 @@
  * 禁止此文件以外的文件出现 $_POST、$_GET、$_FILES变量及eval函数(用request::myeval )
  * 以便于对主要黑客攻击进行防范
  *
- * @version        $Id: request.class.php 1 12:03 2010-10-28  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: request.class.php 1 12:03 2010-10-28  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 // REQUEST常量,用于判断是否启用REQUEST类
 define('DEDEREQUEST', true);
@@ -157,31 +157,31 @@ class Request
         $filetype = strtolower(isset($this->files[$formname]['type']) ? $this->files[$formname]['type'] : '');
         $shortname = '';
         switch ($filetype) {
-            case 'image/jpeg':
-                $shortname = 'jpg';
-                break;
-            case 'image/pjpeg':
-                $shortname = 'jpg';
-                break;
-            case 'image/gif':
-                $shortname = 'gif';
-                break;
-            case 'image/png':
-                $shortname = 'png';
-                break;
-            case 'image/xpng':
-                $shortname = 'png';
-                break;
-            case 'image/wbmp':
-                $shortname = 'bmp';
-                break;
-            default:
-                $filename = isset($this->files[$formname]['name']) ? $this->files[$formname]['name'] : '';
-                if (preg_match("/\./", $filename)) {
-                    $fs = explode('.', $filename);
-                    $shortname = strtolower($fs[count($fs) - 1]);
-                }
-                break;
+        case 'image/jpeg':
+            $shortname = 'jpg';
+            break;
+        case 'image/pjpeg':
+            $shortname = 'jpg';
+            break;
+        case 'image/gif':
+            $shortname = 'gif';
+            break;
+        case 'image/png':
+            $shortname = 'png';
+            break;
+        case 'image/xpng':
+            $shortname = 'png';
+            break;
+        case 'image/wbmp':
+            $shortname = 'bmp';
+            break;
+        default:
+            $filename = isset($this->files[$formname]['name']) ? $this->files[$formname]['name'] : '';
+            if (preg_match("/\./", $filename)) {
+                $fs = explode('.', $filename);
+                $shortname = strtolower($fs[count($fs) - 1]);
+            }
+            break;
         }
         return $shortname;
     }
@@ -217,7 +217,7 @@ class Request
     /**
      * 检查文件后缀是否为指定值
      *
-     * @param  string  $subfix
+     * @param  string $subfix
      * @return boolean
      */
     public function CheckSubfix($formname, $subfix = 'csv')

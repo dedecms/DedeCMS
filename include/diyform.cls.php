@@ -5,13 +5,13 @@
 /**
  * 自定义表单解析类
  *
- * @version        $Id: diyform.cls.php 1 10:31 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: diyform.cls.php 1 10:31 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . '/dedetag.class.php';
@@ -20,9 +20,9 @@ require_once DEDEINC . '/customfields.func.php';
 /**
  * diyform
  *
- * @package          diyform
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    diyform
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class diyform
 {
@@ -43,9 +43,9 @@ class diyform
     /**
      *  析构函数
      *
-     * @access    public
-     * @param     string  $diyid  自定义表单ID
-     * @return    string
+     * @access public
+     * @param  string $diyid 自定义表单ID
+     * @return string
      */
     public function __construct($diyid)
     {
@@ -69,11 +69,11 @@ class diyform
     /**
      *  获取表单
      *
-     * @access    public
-     * @param     string  $type  类型
-     * @param     string  $value  值
-     * @param     string  $admintype  管理类型
-     * @return    string
+     * @access public
+     * @param  string $type      类型
+     * @param  string $value     值
+     * @param  string $admintype 管理类型
+     * @return string
      */
     public function getForm($type = 'post', $value = '', $admintype = 'diy')
     {
@@ -105,8 +105,8 @@ class diyform
     /**
      *  获取字段列表
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function getFieldList()
     {

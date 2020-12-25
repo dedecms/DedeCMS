@@ -6,13 +6,13 @@ if (!defined('DEDEINC')) {
 /**
  * 文档类
  *
- * @version        $Id: arc.archives.class.php 4 15:13 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.archives.class.php 4 15:13 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/typelink.class.php";
 require_once DEDEINC . "/channelunit.class.php";
@@ -23,9 +23,9 @@ require_once DEDEINC . '/ftp.class.php';
 /**
  * 主文档类(Archives类)
  *
- * @package          TypeLink
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TypeLink
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class Archives
 {
@@ -53,9 +53,9 @@ class Archives
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $aid  文档ID
-     * @return    string
+     * @access public
+     * @param  int $aid 文档ID
+     * @return string
      */
     public function __construct($aid)
     {
@@ -156,8 +156,8 @@ class Archives
     /**
      *  解析附加表的内容
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ParAddTable()
     {
@@ -225,7 +225,8 @@ class Archives
         //处理要分页显示的字段
         $this->SplitTitles = array();
         if ($this->SplitPageField != '' && $GLOBALS['cfg_arcsptitle'] = 'Y'
-            && isset($this->Fields[$this->SplitPageField])) {
+            && isset($this->Fields[$this->SplitPageField])
+        ) {
             $this->SplitFields = explode("#p#", $this->Fields[$this->SplitPageField]);
             $i = 1;
             foreach ($this->SplitFields as $k => $v) {
@@ -302,9 +303,9 @@ class Archives
     /**
      *  生成静态HTML
      *
-     * @access    public
-     * @param     int    $isremote  是否远程
-     * @return    string
+     * @access public
+     * @param  int $isremote 是否远程
+     * @return string
      */
     public function MakeHtml($isremote = 0)
     {
@@ -356,7 +357,8 @@ class Archives
 
         //对于已设置不生成HTML的文章直接返回网址
         if ($this->Fields['ismake'] == -1 || $this->Fields['arcrank'] != 0 || $this->Fields['money'] > 0
-            || ($this->Fields['typeid'] == 0 && $this->Fields['channel'] != -1)) {
+            || ($this->Fields['typeid'] == 0 && $this->Fields['channel'] != -1)
+        ) {
             return $this->GetTrueUrl($filename);
         }
         //循环生成HTML文件
@@ -396,14 +398,13 @@ class Archives
     /**
      *  获得真实连接路径
      *
-     * @access    public
-     * @param     string    $nurl  连接
-     * @return    string
+     * @access public
+     * @param  string $nurl 连接
+     * @return string
      */
     public function GetTrueUrl($nurl)
     {
-        return GetFileUrl
-            (
+        return GetFileUrl(
             $this->Fields['id'],
             $this->Fields['typeid'],
             $this->Fields['senddate'],
@@ -423,8 +424,8 @@ class Archives
     /**
      *  获得站点的真实根路径
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetTruePath()
     {
@@ -435,10 +436,10 @@ class Archives
     /**
      *  获得指定键值的字段
      *
-     * @access    public
-     * @param     string  $fname  键名称
-     * @param     string  $ctag  标记
-     * @return    string
+     * @access public
+     * @param  string $fname 键名称
+     * @param  string $ctag  标记
+     * @return string
      */
     public function GetField($fname, $ctag)
     {
@@ -466,8 +467,8 @@ class Archives
     /**
      *  获得模板文件位置
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetTempletFile()
     {
@@ -512,8 +513,8 @@ class Archives
     /**
      *  动态输出结果
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function display()
     {
@@ -553,8 +554,8 @@ class Archives
     /**
      *  载入模板
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function LoadTemplet()
     {
@@ -575,8 +576,8 @@ class Archives
     /**
      *  解析模板，对固定的标记进行初始给值
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function ParseTempletsFirst()
     {
@@ -616,10 +617,10 @@ class Archives
     /**
      *  解析模板，对内容里的变动进行赋值
      *
-     * @access    public
-     * @param     string  $pageNo  页码数
-     * @param     string  $ismake  是否生成
-     * @return    string
+     * @access public
+     * @param  string $pageNo 页码数
+     * @param  string $ismake 是否生成
+     * @return string
      */
     public function ParseDMFields($pageNo, $ismake = 1)
     {
@@ -696,8 +697,8 @@ class Archives
     /**
      *  关闭所占用的资源
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Close()
     {
@@ -708,10 +709,14 @@ class Archives
     /**
      *  获取上一篇，下一篇链接
      *
-     * @access    public
-     * @param     string  $gtype  获取类型
-     *                    pre:上一篇  preimg:上一篇图片  next:下一篇  nextimg:下一篇图片
-     * @return    string
+     * @access public
+     * @param  string $gtype 获取类型
+     *                       pre:上一篇
+     *                       preimg:上一篇图片
+     *                       next:下一篇
+     *                       nextimg:下一篇图片
+
+     * @return string
      */
     public function GetPreNext($gtype = '')
     {
@@ -731,8 +736,10 @@ class Archives
                 if (defined('DEDEMOB')) {
                     $mlink = 'view.php?aid=' . $preRow['id'];
                 } else {
-                    $mlink = GetFileUrl($preRow['id'], $preRow['typeid'], $preRow['senddate'], $preRow['title'], $preRow['ismake'], $preRow['arcrank'],
-                        $preRow['namerule'], $preRow['typedir'], $preRow['money'], $preRow['filename'], $preRow['moresite'], $preRow['siteurl'], $preRow['sitepath']);
+                    $mlink = GetFileUrl(
+                        $preRow['id'], $preRow['typeid'], $preRow['senddate'], $preRow['title'], $preRow['ismake'], $preRow['arcrank'],
+                        $preRow['namerule'], $preRow['typedir'], $preRow['money'], $preRow['filename'], $preRow['moresite'], $preRow['siteurl'], $preRow['sitepath']
+                    );
                 }
 
                 $this->PreNext['pre'] = "上一篇：<a href='$mlink'>{$preRow['title']}</a> ";
@@ -745,8 +752,10 @@ class Archives
                 if (defined('DEDEMOB')) {
                     $mlink = 'view.php?aid=' . $preRow['id'];
                 } else {
-                    $mlink = GetFileUrl($nextRow['id'], $nextRow['typeid'], $nextRow['senddate'], $nextRow['title'], $nextRow['ismake'], $nextRow['arcrank'],
-                        $nextRow['namerule'], $nextRow['typedir'], $nextRow['money'], $nextRow['filename'], $nextRow['moresite'], $nextRow['siteurl'], $nextRow['sitepath']);
+                    $mlink = GetFileUrl(
+                        $nextRow['id'], $nextRow['typeid'], $nextRow['senddate'], $nextRow['title'], $nextRow['ismake'], $nextRow['arcrank'],
+                        $nextRow['namerule'], $nextRow['typedir'], $nextRow['money'], $nextRow['filename'], $nextRow['moresite'], $nextRow['siteurl'], $nextRow['sitepath']
+                    );
                 }
 
                 $this->PreNext['next'] = "下一篇：<a href='$mlink'>{$nextRow['title']}</a> ";
@@ -775,11 +784,11 @@ class Archives
     /**
      *  获得动态页面分页列表
      *
-     * @access    public
-     * @param     int   $totalPage  总页数
-     * @param     int   $nowPage  当前页数
-     * @param     int   $aid  文档id
-     * @return    string
+     * @access public
+     * @param  int $totalPage 总页数
+     * @param  int $nowPage   当前页数
+     * @param  int $aid       文档id
+     * @return string
      */
     public function GetPagebreakDM($totalPage, $nowPage, $aid)
     {
@@ -844,11 +853,11 @@ class Archives
     /**
      *  获得静态页面分页列表
      *
-     * @access    public
-     * @param     int   $totalPage  总页数
-     * @param     int   $nowPage  当前页数
-     * @param     int   $aid  文档id
-     * @return    string
+     * @access public
+     * @param  int $totalPage 总页数
+     * @param  int $nowPage   当前页数
+     * @param  int $aid       文档id
+     * @return string
      */
     public function GetPagebreak($totalPage, $nowPage, $aid)
     {
@@ -894,10 +903,10 @@ class Archives
     /**
      *  获得动态页面小标题
      *
-     * @access    public
-     * @param     string  $styleName  类型名称
-     * @param     string  $pageNo  页码数
-     * @return    string
+     * @access public
+     * @param  string $styleName 类型名称
+     * @param  string $pageNo    页码数
+     * @return string
      */
     public function GetPageTitlesDM($styleName, $pageNo)
     {
@@ -945,10 +954,10 @@ class Archives
     /**
      *  获得静态页面小标题
      *
-     * @access    public
-     * @param     string  $styleName  类型名称
-     * @param     string  $pageNo  页码数
-     * @return    string
+     * @access public
+     * @param  string $styleName 类型名称
+     * @param  string $pageNo    页码数
+     * @return string
      */
     public function GetPageTitlesST($styleName, $pageNo)
     {
@@ -995,8 +1004,8 @@ class Archives
     /**
      * 高亮问题修正, 排除alt title <a></a>直接的字符替换
      *
-     * @param string $kw
-     * @param string $body
+     * @param  string $kw
+     * @param  string $body
      * @return string
      */
     public function ReplaceKeyword($kw, &$body)
@@ -1010,27 +1019,6 @@ class Archives
         //暂时屏蔽超链接
         $body = preg_replace("#(<a(.*))(>)(.*)(<)(\/a>)#isU", '\\1-]-\\4-[-\\6', $body);
 
-        /*
-        foreach($kws as $k)
-        {
-        $k = trim($k);
-        if($k!="")
-        {
-        if($i > $maxkey)
-        {
-        break;
-        }
-        $myrow = $this->dsql->GetOne("SELECT * FROM #@__keywords WHERE keyword='$k' AND rpurl<>'' ");
-        if(is_array($myrow))
-        {
-        $karr[] = $k;
-        $GLOBALS['replaced'][$k] = 0;
-        $kaarr[] = "<a href='{$myrow['rpurl']}'><u>$k</u></a>";
-        }
-        $i++;
-        }
-        }
-         */
         $query = "SELECT * FROM #@__keywords WHERE rpurl<>'' ORDER BY rank DESC";
         $this->dsql->SetQuery($query);
         $this->dsql->Execute();
@@ -1048,10 +1036,7 @@ class Archives
             } else {
                 $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
             }
-
-        } else {
-            $body = @preg_replace("#(^|>)([^<]+)(?=<|$)#sUe", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
-        }
+        } 
 
         //恢复超链接
         $body = preg_replace("#(<a(.*))-\]-(.*)-\[-(\/a>)#isU", '\\1>\\3<\\4', $body);

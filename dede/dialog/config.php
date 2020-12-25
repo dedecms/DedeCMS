@@ -2,13 +2,13 @@
 /**
  * 该页仅用于检测用户登录的情况，如要手工更改系统配置，请更改common.inc.php
  *
- * @version        $Id: config.php 1 9:43 2010年7月8日 $
- * @package        DedeCMS.Dialog
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: config.php 1 9:43 2010年7月8日 $
+ * @package   DedeCMS.Dialog
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../../include/common.inc.php";
 require_once DEDEINC . "/userlogin.class.php";
@@ -38,9 +38,9 @@ if ($cuserLogin->getUserID() <= 0) {
 
 //启用远程站点则创建FTP类
 if ($cfg_remote_site == 'Y') {
-    require_once DEDEINC . '/ftp.class.php';
+    include_once DEDEINC . '/ftp.class.php';
     if (file_exists(DEDEDATA . "/cache/inc_remote_config.php")) {
-        require_once DEDEDATA . "/cache/inc_remote_config.php";
+        include_once DEDEDATA . "/cache/inc_remote_config.php";
     }
     if (empty($remoteuploads)) {
         $remoteuploads = 0;

@@ -7,13 +7,13 @@
  *  3、简单操作流程： SetSource -> StartAnalysis -> Get***Result
  *  4、对主词典使用特殊格式进行编码, 不需要载入词典到内存操作
  *
- * @version        $Id: splitword.class.php 2 11:45 2011-2-14 itplato $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: splitword.class.php 2 11:45 2011-2-14 itplato $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 //常量定义
@@ -85,6 +85,7 @@ class SplitWord
 
     /**
      * 构造函数
+     *
      * @param $source_charset
      * @param $target_charset
      * @param $load_alldic
@@ -123,7 +124,8 @@ class SplitWord
 
     /**
      * 根据字符串计算key索引
-     * @param $key
+     *
+     * @param  $key
      * @return short int
      */
     public function _get_index($key)
@@ -140,8 +142,9 @@ class SplitWord
 
     /**
      * 从文件获得词
-     * @param $key
-     * @param $type (类型 word 或 key_groups)
+     *
+     * @param  $key
+     * @param  $type (类型 word 或 key_groups)
      * @return short int
      */
     public function GetWordInfos($key, $type = 'word')
@@ -174,6 +177,7 @@ class SplitWord
 
     /**
      * 设置源字符串
+     *
      * @param $source
      * @param $source_charset
      * @param $target_charset
@@ -206,6 +210,7 @@ class SplitWord
 
     /**
      * 设置结果类型(只在获取finallyResult才有效)
+     *
      * @param $rstype 1 为全部， 2去除特殊符号
      *
      * @return void
@@ -280,7 +285,8 @@ class SplitWord
 
     /**
      * 获得某个词的词性及词频信息
-     * @parem $word unicode编码的词
+     *
+     * @parem  $word unicode编码的词
      * @return void
      */
     public function GetWordProperty($word)
@@ -294,8 +300,9 @@ class SplitWord
 
     /**
      * 指定某词的词性信息（通常是新词）
-     * @parem $word unicode编码的词
-     * @parem $infos array('c' => 词频, 'm' => 词性);
+     *
+     * @parem  $word unicode编码的词
+     * @parem  $infos array('c' => 词频, 'm' => 词性);
      * @return void;
      */
     public function SetWordInfos($word, $infos)
@@ -314,7 +321,8 @@ class SplitWord
 
     /**
      * 开始执行分析
-     * @parem bool optimize 是否对结果进行优化
+     *
+     * @parem  bool optimize 是否对结果进行优化
      * @return bool
      */
     public function StartAnalysis($optimize = true)
@@ -386,7 +394,8 @@ class SplitWord
             else {
                 //正常文字
                 if (($cn > 0x3FFF && $cn < 0x9FA6) || ($cn > 0xF8FF && $cn < 0xFA2D)
-                    || ($cn > 0xABFF && $cn < 0xD7A4) || ($cn > 0x3040 && $cn < 0x312B)) {
+                    || ($cn > 0xABFF && $cn < 0xD7A4) || ($cn > 0x3040 && $cn < 0x312B)
+                ) {
                     if ($lastc != 1 && $onstr != '') {
                         $this->simpleResult[$s]['w'] = $onstr;
                         if ($lastc == 2) {
@@ -507,9 +516,10 @@ class SplitWord
 
     /**
      * 深入分词
-     * @parem $str
-     * @parem $ctype (2 英文类， 3 中/韩/日文类)
-     * @parem $spos   当前粗分结果游标
+     *
+     * @parem  $str
+     * @parem  $ctype (2 英文类， 3 中/韩/日文类)
+     * @parem  $spos   当前粗分结果游标
      * @return bool
      */
     public function _deep_analysis(&$str, $ctype, $spos, $optimize = true)
@@ -570,7 +580,8 @@ class SplitWord
 
     /**
      * 中文的深入分词
-     * @parem $str
+     *
+     * @parem  $str
      * @return void
      */
     public function _deep_analysis_cn(&$str, $lastec, $spos, $slen, $optimize = true)
@@ -640,7 +651,8 @@ class SplitWord
 
     /**
      * 对最终分词结果进行优化（把simpleresult结果合并，并尝试新词识别、数词合并等）
-     * @parem $optimize 是否优化合并的结果
+     *
+     * @parem  $optimize 是否优化合并的结果
      * @return bool
      */
     //t = 1 中/韩/日文, 2 英文/数字/符号('.', '@', '#', '+'), 3 ANSI符号 4 纯数字 5 非ANSI符号或不支持字符
@@ -760,7 +772,8 @@ class SplitWord
             else if ($this->unitWord) {
                 if (strlen($cw) == 2 && strlen($nw) == 2
                     && !isset($this->addonDic['s'][$cw]) && !isset($this->addonDic['t'][$cw]) && !isset($this->addonDic['a'][$cw])
-                    && !isset($this->addonDic['s'][$nw]) && !isset($this->addonDic['c'][$nw])) {
+                    && !isset($this->addonDic['s'][$nw]) && !isset($this->addonDic['c'][$nw])
+                ) {
                     $newarr[$j] = $cw . $nw;
                     //尝试检测第三个词
                     if (isset($smarr[$i + 2]) && strlen($smarr[$i + 2]) == 2 && (isset($this->addonDic['a'][$smarr[$i + 2]]) || isset($this->addonDic['u'][$smarr[$i + 2]]))) {
@@ -806,6 +819,7 @@ class SplitWord
 
     /**
      * 转换最终分词结果到 finallyResult 数组
+     *
      * @return void
      */
     public function _sort_finally_result()
@@ -837,6 +851,7 @@ class SplitWord
 
     /**
      * 把uncode字符串转换为输出字符串
+     *
      * @parem str
      * return string
      */
@@ -855,6 +870,7 @@ class SplitWord
 
     /**
      * 获取最终结果字符串（用空格分开后的分词结果）
+     *
      * @return string
      */
     public function GetFinallyResult($spword = ' ', $word_meanings = false)
@@ -882,6 +898,7 @@ class SplitWord
 
     /**
      * 获取粗分结果，不包含粗分属性
+     *
      * @return array()
      */
     public function GetSimpleResult()
@@ -903,6 +920,7 @@ class SplitWord
 
     /**
      * 获取粗分结果，包含粗分属性（1中文词句、2 ANSI词汇（包括全角），3 ANSI标点符号（包括全角），4数字（包括全角），5 中文标点或无法识别字符）
+     *
      * @return array()
      */
     public function GetSimpleResultAll()
@@ -920,6 +938,7 @@ class SplitWord
 
     /**
      * 获取索引hash数组
+     *
      * @return array('word'=>count,...)
      */
     public function GetFinallyIndex()
@@ -944,6 +963,7 @@ class SplitWord
 
     /**
      * 获得保存目标编码
+     *
      * @return int
      */
     public function _source_result_charset()
@@ -962,7 +982,8 @@ class SplitWord
 
     /**
      * 编译词典
-     * @parem $sourcefile utf-8编码的文本词典数据文件<参见范例dict/not-build/base_dic_full.txt>
+     *
+     * @parem  $sourcefile utf-8编码的文本词典数据文件<参见范例dict/not-build/base_dic_full.txt>
      * 注意, 需要PHP开放足够的内存才能完成操作
      * @return void
      */
@@ -1016,7 +1037,8 @@ class SplitWord
 
     /**
      * 导出词典的词条
-     * @parem $targetfile 保存位置
+     *
+     * @parem  $targetfile 保存位置
      * @return void
      */
     public function ExportDict($targetfile)
@@ -1054,7 +1076,7 @@ class SplitWord
             exit('设置内存错误，请到dede官网下载解压版的base_dic_full.dic!');
         }
 
-        require_once DEDEINC . '/zip.class.php';
+        include_once DEDEINC . '/zip.class.php';
         $zip = new zip();
         //echo $targetfile;
         $unpackagefile = array_keys($zip->Extract($targetfile, DEDEINC . '/data/'));

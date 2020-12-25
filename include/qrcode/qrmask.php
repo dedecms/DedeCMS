@@ -87,21 +87,37 @@ class QRmask
 
     //----------------------------------------------------------------------
     public function mask0($x, $y)
-    {return ($x + $y) & 1;}
+    {
+        return ($x + $y) & 1;
+    }
     public function mask1($x, $y)
-    {return ($y & 1);}
+    {
+        return ($y & 1);
+    }
     public function mask2($x, $y)
-    {return ($x % 3);}
+    {
+        return ($x % 3);
+    }
     public function mask3($x, $y)
-    {return ($x + $y) % 3;}
+    {
+        return ($x + $y) % 3;
+    }
     public function mask4($x, $y)
-    {return (((int) ($y / 2)) + ((int) ($x / 3))) & 1;}
+    {
+        return (((int) ($y / 2)) + ((int) ($x / 3))) & 1;
+    }
     public function mask5($x, $y)
-    {return (($x * $y) & 1) + ($x * $y) % 3;}
+    {
+        return (($x * $y) & 1) + ($x * $y) % 3;
+    }
     public function mask6($x, $y)
-    {return ((($x * $y) & 1) + ($x * $y) % 3) & 1;}
+    {
+        return ((($x * $y) & 1) + ($x * $y) % 3) & 1;
+    }
     public function mask7($x, $y)
-    {return ((($x * $y) % 3) + (($x + $y) & 1)) & 1;}
+    {
+        return ((($x * $y) % 3) + (($x + $y) & 1)) & 1;
+    }
 
     //----------------------------------------------------------------------
     private function generateMaskNo($maskNo, $width, $frame)
@@ -212,10 +228,11 @@ class QRmask
             if ($i & 1) {
                 if (($i >= 3) && ($i < ($length - 2)) && ($this->runLength[$i] % 3 == 0)) {
                     $fact = (int) ($this->runLength[$i] / 3);
-                    if (($this->runLength[$i - 2] == $fact) &&
-                        ($this->runLength[$i - 1] == $fact) &&
-                        ($this->runLength[$i + 1] == $fact) &&
-                        ($this->runLength[$i + 2] == $fact)) {
+                    if (($this->runLength[$i - 2] == $fact) 
+                        && ($this->runLength[$i - 1] == $fact) 
+                        && ($this->runLength[$i + 1] == $fact) 
+                        && ($this->runLength[$i + 2] == $fact)
+                    ) {
                         if (($this->runLength[$i - 3] < 0) || ($this->runLength[$i - 3] >= (4 * $fact))) {
                             $demerit += N3;
                         } else if ((($i + 3) >= $length) || ($this->runLength[$i + 3] >= (4 * $fact))) {

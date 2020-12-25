@@ -3,13 +3,13 @@
  * 本文件用于从镜像服务器获取升级信息与文件
  * 并由用户自行控制升级
  *
- * @version        $Id: vote_main.php 1 23:54 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: vote_main.php 1 23:54 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . '/config.php';
 CheckPurview('sys_Edit');
@@ -311,7 +311,7 @@ function _Down() {  }
  */
 else if ($dopost == 'down') {
     $cacheFiles = DEDEDATA . '/cache/updatetmp.inc';
-    require_once $cacheFiles;
+    include_once $cacheFiles;
 
     if (empty($startup)) {
         if ($fileConut == -1 || $curfile > $fileConut) {
@@ -358,7 +358,7 @@ function _ApplyUpdate() {  }
  */
 else if ($dopost == 'apply') {
     $cacheFiles = DEDEDATA . '/cache/updatetmp.inc';
-    require_once $cacheFiles;
+    include_once $cacheFiles;
 
     if (empty($step)) {
         $truefile = DEDEDATA . '/' . $tmpdir . '/sql.txt';

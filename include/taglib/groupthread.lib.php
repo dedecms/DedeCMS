@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 圈子主题调用标签
  *
- * @version        $Id: groupthread.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: groupthread.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -43,23 +47,28 @@ function lib_groupthread(&$ctag, &$refObj)
 
     if (!$dsql->IsTable("{$cfg_dbprefix}groups")) {
         return '没安装圈子模块';
+    
     }
 
     if (!preg_match("#\/$#", $cfg_cmsurl)) {
         $cfg_group_url = $cfg_cmsurl . "/group";
+    
     } else {
         $cfg_group_url = $cfg_cmsurl . "group";
+    
     }
 
     $innertext = $ctag->GetInnerText();
     if (trim($innertext) == '') {
         $innertext = GetSysTemplets('groupthreads.htm');
+    
     }
 
     $WhereSql = " WHERE t.closed=0 ";
     $orderby = 't.' . $orderby;
     if ($gid > 0) {
         $WhereSql .= " AND t.gid='$gid' ";
+    
     }
 
     $query = "SELECT t.subject,t.gid,t.tid,t.lastpost,g.groupname FROM `#@__group_threads` t
@@ -72,6 +81,7 @@ function lib_groupthread(&$ctag, &$refObj)
     $ctp->SetNameSpace('field', '[', ']');
     if (!isset($list)) {
         $list = '';
+    
     }
 
     while ($rs = $dsql->GetArray()) {
@@ -82,9 +92,13 @@ function lib_groupthread(&$ctag, &$refObj)
         foreach ($ctp->CTags as $tagid => $ctag) {
             if (!empty($rs[strtolower($ctag->GetName())])) {
                 $ctp->Assign($tagid, $rs[$ctag->GetName()]);
+            
             }
+        
         }
         $list .= $ctp->GetResult();
+    
     }
     return $list;
+
 }

@@ -5,22 +5,22 @@
 /**
  * 投票类
  *
- * @version        $Id: dedevote.class.php 1 10:31 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedevote.class.php 1 10:31 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/dedetag.class.php";
 
 /**
  * 投票类
  *
- * @package          DedeVote
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    DedeVote
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class DedeVote
 {
@@ -66,8 +66,8 @@ class DedeVote
     /**
      *  获得投票项目总投票次数
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function GetTotalCount()
     {
@@ -81,9 +81,9 @@ class DedeVote
     /**
      *  增加指定的投票节点的票数
      *
-     * @access    public
-     * @param     int    $aid  投票ID
-     * @return    string
+     * @access public
+     * @param  int $aid 投票ID
+     * @return string
      */
     public function AddVoteCount($aid)
     {
@@ -95,14 +95,14 @@ class DedeVote
     /**
      *  获得项目的投票表单
      *
-     * @access    public
-     * @param     int   $lineheight  行高
-     * @param     string   $tablewidth  表格宽度
-     * @param     string   $titlebgcolor  标题颜色
-     * @param     string   $titlebackgroup  标题背景
-     * @param     string   $tablebg  表格背景
-     * @param     string   $itembgcolor  项目背景
-     * @return    string
+     * @access public
+     * @param  int    $lineheight     行高
+     * @param  string $tablewidth     表格宽度
+     * @param  string $titlebgcolor   标题颜色
+     * @param  string $titlebackgroup 标题背景
+     * @param  string $tablebg        表格背景
+     * @param  string $itembgcolor    项目背景
+     * @return string
      */
     public function GetVoteForm($lineheight = 30, $tablewidth = "100%", $titlebgcolor = "#EDEDE2", $titlebackgroup = "", $tablebg = "#FFFFFF", $itembgcolor = "#FFFFFF")
     {
@@ -153,9 +153,9 @@ class DedeVote
      * 保存投票数据
      * 请不要在输出任何内容之前使用SaveVote()方法!
      *
-     * @access    public
-     * @param     string   $voteitem  投票项目
-     * @return    string
+     * @access public
+     * @param  string $voteitem 投票项目
+     * @return string
      */
     public function SaveVote($voteitem)
     {
@@ -242,11 +242,11 @@ class DedeVote
     /**
      *  获得项目的投票结果
      *
-     * @access    public
-     * @param     string   $tablewidth  表格宽度
-     * @param     string   $lineheight  行高
-     * @param     string   $tablesplit  表格分隔
-     * @return    string
+     * @access public
+     * @param  string $tablewidth 表格宽度
+     * @param  string $lineheight 行高
+     * @param  string $tablesplit 表格分隔
+     * @return string
      */
     public function GetVoteResult($tablewidth = "600", $lineheight = "24", $tablesplit = "40%")
     {

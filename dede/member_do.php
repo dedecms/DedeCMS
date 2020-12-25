@@ -2,13 +2,13 @@
 /**
  * 会员管理操作
  *
- * @version        $Id: member_do.php 1 13:47 2010年7月19日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_do.php 1 13:47 2010年7月19日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . "/oxwindow.class.php";
@@ -65,12 +65,12 @@ if ($dopost == "delmember") {
                 $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_vhistory` WHERE mid='$id' Or vid='$id' ");
                 $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` WHERE mid='$id' ");
                 $dsql->ExecuteNoneQuery("UPDATE `#@__archives` SET mid='0' WHERE mid='$id'");
-                #api{{
+                // api{{
                 if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
                     $infofromuc = uc_get_user($row['userid']);
                     uc_user_delete($infofromuc[0]);
                 }
-                #/aip}}
+                // /aip}}
             } else {
                 ShowMsg("无法删除此会员，如果这个会员是<b>[管理员]</b>，<br />必须先删除这个<b>[管理员]</b>才能删除此帐号！", $ENV_GOBACK_URL, 0, 5000);
                 exit();
@@ -214,13 +214,13 @@ else if ($dopost == 'edituser') {
         $rs = $dsql->ExecuteNoneQuery2($query);
     }
 
-    #api{{
+    // api{{
     if (defined('UC_API') && @include_once DEDEROOT . '/api/uc.func.php') {
         $row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='$id' AND `matt`<>10");
         $amount = $scores - $row['scores'];
         uc_credit_note($row['userid'], $amount);
     }
-    #/aip}}
+    // /aip}}
 
     ShowMsg('成功更改会员资料！', 'member_view.php?id=' . $id);
     exit();

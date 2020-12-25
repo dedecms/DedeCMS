@@ -5,13 +5,13 @@
 /**
  * 踩踩文档类
  *
- * @version        $Id: arc.caicai.class.php 1 8:59 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.caicai.class.php 1 8:59 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . "/datalistcp.class.php";
@@ -20,9 +20,9 @@ require_once DEDEINC . "/channelunit.func.php";
 /**
  * 踩踩文档类
  *
- * @package          Caicai
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    Caicai
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class Caicai extends DataListCP
 {
@@ -32,8 +32,8 @@ class Caicai extends DataListCP
     /**
      *  对config参数及get参数等进行预处理
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function PreLoad()
     {
@@ -78,9 +78,9 @@ class Caicai extends DataListCP
     /**
      * 获取当前页数据列表
      *
-     * @param array $atts
-     * @param object $refObj
-     * @param array $fields
+     * @param  array  $atts
+     * @param  object $refObj
+     * @param  array  $fields
      * @return array
      */
     public function GetArcList($atts, $refObj = '', $fields = array())
@@ -93,10 +93,14 @@ class Caicai extends DataListCP
         $i = 0;
         while ($arr = $this->dsql->GetArray('dlist')) {
             $i++;
-            $arr['filename'] = $arr['arcurl'] = GetFileUrl($arr['id'], $arr['typeid'], $arr['senddate'], $arr['title'], $arr['ismake'],
-                $arr['arcrank'], $arr['namerule'], $arr['typedir'], $arr['money'], $arr['filename'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
-            $arr['typeurl'] = GetTypeUrl($arr['typeid'], MfTypedir($arr['typedir']), $arr['isdefault'], $arr['defaultname'],
-                $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
+            $arr['filename'] = $arr['arcurl'] = GetFileUrl(
+                $arr['id'], $arr['typeid'], $arr['senddate'], $arr['title'], $arr['ismake'],
+                $arr['arcrank'], $arr['namerule'], $arr['typedir'], $arr['money'], $arr['filename'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']
+            );
+            $arr['typeurl'] = GetTypeUrl(
+                $arr['typeid'], MfTypedir($arr['typedir']), $arr['isdefault'], $arr['defaultname'],
+                $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']
+            );
             if ($arr['litpic'] == '-' || $arr['litpic'] == '') {
                 $arr['litpic'] = 'templets/images/dfpic.gif';
             }
@@ -132,9 +136,9 @@ class Caicai extends DataListCP
     /**
      * 获得最差或最好的踩踩文章
      *
-     * @param array $atts
-     * @param object $refObj
-     * @param array $fields
+     * @param  array  $atts
+     * @param  object $refObj
+     * @param  array  $fields
      * @return array
      */
     public function GetSortArc($atts, $refObj = '', $fields = array())
@@ -175,11 +179,15 @@ class Caicai extends DataListCP
         while ($arr = $this->dsql->GetArray('cai')) {
             $i++;
             $ids[] = $arr['id'];
-            $arr['filename'] = $arr['arcurl'] = GetFileUrl($arr['id'], $arr['typeid'], $arr['senddate'], $arr['title'], $arr['ismake'],
-                $arr['arcrank'], $arr['namerule'], $arr['typedir'], $arr['money'], $arr['filename'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
+            $arr['filename'] = $arr['arcurl'] = GetFileUrl(
+                $arr['id'], $arr['typeid'], $arr['senddate'], $arr['title'], $arr['ismake'],
+                $arr['arcrank'], $arr['namerule'], $arr['typedir'], $arr['money'], $arr['filename'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']
+            );
 
-            $arr['typeurl'] = GetTypeUrl($arr['typeid'], MfTypedir($arr['typedir']), $arr['isdefault'], $arr['defaultname'],
-                $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']);
+            $arr['typeurl'] = GetTypeUrl(
+                $arr['typeid'], MfTypedir($arr['typedir']), $arr['isdefault'], $arr['defaultname'],
+                $arr['ispart'], $arr['namerule2'], $arr['moresite'], $arr['siteurl'], $arr['sitepath']
+            );
 
             if ($arr['litpic'] == '') {
                 $arr['litpic'] = '/assets/img/defaultpic.gif';
@@ -211,9 +219,9 @@ class Caicai extends DataListCP
     /**
      * 获取顶级栏目列表
      *
-     * @param array $atts
-     * @param object $refObj
-     * @param array $fields
+     * @param  array  $atts
+     * @param  object $refObj
+     * @param  array  $fields
      * @return array
      */
     public function GetCatalog($atts, $refObj = '', $fields = array())

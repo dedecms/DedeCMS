@@ -2,13 +2,13 @@
 /**
  * 用户信息
  *
- * @version        $Id: shops_operations_userinfo.php 1 16:09 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: shops_operations_userinfo.php 1 16:09 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('shops_Operations');
@@ -34,5 +34,5 @@ if (is_array($row)) {
     $rows['dprice'] = $row['dprice'];
 }
 $rows['des'] = stripslashes($rows['des']);
-include DEDEADMIN . "/templets/shops_operations_userinfo.htm";
+require DEDEADMIN . "/templets/shops_operations_userinfo.htm";
 unset($rows);

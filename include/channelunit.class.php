@@ -4,13 +4,14 @@
 
 /**
  * 频道模型单元类
- * @version        $Id: channelunit.class.php 2 17:32 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ *
+ * @version   $Id: channelunit.class.php 2 17:32 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/dedetag.class.php";
 require_once DEDEINC . "/channelunit.func.php";
@@ -84,9 +85,9 @@ class ChannelUnit
     /**
      *  设置档案ID
      *
-     * @access    private
-     * @param     int   $aid  档案ID
-     * @return    void
+     * @access private
+     * @param  int $aid 档案ID
+     * @return void
      */
     public function SetArcID($aid)
     {
@@ -96,11 +97,11 @@ class ChannelUnit
     /**
      *  处理某个字段的值
      *
-     * @access    public
-     * @param     string  $fname  字段名称
-     * @param     string  $fvalue  字段值
-     * @param     string  $addvalue  增加值
-     * @return    string
+     * @access public
+     * @param  string $fname    字段名称
+     * @param  string $fvalue   字段值
+     * @param  string $addvalue 增加值
+     * @return string
      */
     public function MakeField($fname, $fvalue, $addvalue = '')
     {
@@ -141,9 +142,9 @@ class ChannelUnit
     /**
      *  获取缩略图链接
      *
-     * @access    public
-     * @param     string  $fvalue  表单值
-     * @return    string
+     * @access public
+     * @param  string $fvalue 表单值
+     * @return string
      */
     public function GetlitImgLinks($fvalue)
     {

@@ -1,15 +1,16 @@
-<?php if (!defined('DEDEINC')) {exit('Request Error');}
+<?php if (!defined('DEDEINC')) {exit('Request Error');
+}
 /**
  * 字符串小助手
  *
- * @version        $Id: string.helper.php 5 14:24 2010年7月5日 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: string.helper.php 5 14:24 2010年7月5日 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+*/
 //拼音的缓冲数组
 $pinyins = array();
 
@@ -17,89 +18,106 @@ $pinyins = array();
  *  中文截取2，单字节截取模式
  *  如果是request的内容，必须使用这个函数
  *
- * @access    public
- * @param     string  $str  需要截取的字符串
- * @param     int  $slen  截取的长度
- * @param     int  $startdd  开始标记处
- * @return    string
- */
+ * @access public
+ * @param  string  $str  需要截取的字符串
+ * @param  int  $slen  截取的长度
+ * @param  int  $startdd  开始标记处
+ * @return string
+*/
 if (!function_exists('cn_substrR')) {
     function cn_substrR($str, $slen, $startdd = 0)
     {
         $str = cn_substr(stripslashes($str), $slen, $startdd);
         return addslashes($str);
+    
     }
+
 }
 
 /**
  *  中文截取2，单字节截取模式
  *
- * @access    public
- * @param     string  $str  需要截取的字符串
- * @param     int  $slen  截取的长度
- * @param     int  $startdd  开始标记处
- * @return    string
- */
+ * @access public
+ * @param  string  $str  需要截取的字符串
+ * @param  int  $slen  截取的长度
+ * @param  int  $startdd  开始标记处
+ * @return string
+*/
 if (!function_exists('cn_substr')) {
     function cn_substr($str, $slen, $startdd = 0)
     {
         global $cfg_soft_lang;
         if ($cfg_soft_lang == 'utf-8') {
             return cn_substr_utf8($str, $slen, $startdd);
+        
         }
         $restr = '';
         $c = '';
         $str_len = strlen($str);
         if ($str_len < $startdd + 1) {
             return '';
+        
         }
         if ($str_len < $startdd + $slen || $slen == 0) {
             $slen = $str_len - $startdd;
+        
         }
         $enddd = $startdd + $slen - 1;
         for ($i = 0; $i < $str_len; $i++) {
             if ($startdd == 0) {
                 $restr .= $c;
+            
             } else if ($i > $startdd) {
                 $restr .= $c;
+            
             }
 
             if (ord($str[$i]) > 0x80) {
                 if ($str_len > $i + 1) {
                     $c = $str[$i] . $str[$i + 1];
+                
                 }
                 $i++;
+            
             } else {
                 $c = $str[$i];
+            
             }
 
             if ($i >= $enddd) {
                 if (strlen($restr) + strlen($c) > $slen) {
                     break;
+                
                 } else {
                     $restr .= $c;
                     break;
+                
                 }
+            
             }
+        
         }
         return $restr;
+    
     }
+
 }
 
 /**
  *  utf-8中文截取，单字节截取模式
  *
- * @access    public
- * @param     string  $str  需要截取的字符串
- * @param     int  $slen  截取的长度
- * @param     int  $startdd  开始标记处
- * @return    string
- */
+ * @access public
+ * @param  string  $str  需要截取的字符串
+ * @param  int  $slen  截取的长度
+ * @param  int  $startdd  开始标记处
+ * @return string
+*/
 if (!function_exists('cn_substr_utf8')) {
     function cn_substr_utf8($str, $length, $start = 0)
     {
         if (strlen($str) < $start + 1) {
             return '';
+        
         }
         preg_match_all("/./su", $str, $ar);
         $str = '';
@@ -109,46 +127,58 @@ if (!function_exists('cn_substr_utf8')) {
         for ($i = 0;isset($ar[0][$i]); $i++) {
             if (strlen($tstr) < $start) {
                 $tstr .= $ar[0][$i];
+            
             } else {
                 if (strlen($str) < $length + strlen($ar[0][$i])) {
                     $str .= $ar[0][$i];
+                
                 } else {
                     break;
+                
                 }
+            
             }
+        
         }
         return $str;
+    
     }
+
 }
 
 /**
  *  HTML转换为文本
  *
- * @param    string  $str 需要转换的字符串
- * @param    string  $r   如果$r=0直接返回内容,否则需要使用反斜线引用字符串
- * @return   string
- */
+ * @param  string  $str 需要转换的字符串
+ * @param  string  $r   如果$r=0直接返回内容,否则需要使用反斜线引用字符串
+ * @return string
+*/
 if (!function_exists('Html2Text')) {
     function Html2Text($str, $r = 0)
     {
         if (!function_exists('SpHtml2Text')) {
-            require_once DEDEINC . "/inc/inc_fun_funString.php";
+            include_once DEDEINC . "/inc/inc_fun_funString.php";
+        
         }
         if ($r == 0) {
             return SpHtml2Text($str);
+        
         } else {
             $str = SpHtml2Text(stripslashes($str));
             return addslashes($str);
+        
         }
+    
     }
+
 }
 
 /**
  *  文本转HTML
  *
- * @param    string  $txt 需要转换的文本内容
- * @return   string
- */
+ * @param  string  $txt 需要转换的文本内容
+ * @return string
+*/
 if (!function_exists('Text2Html')) {
     function Text2Html($txt)
     {
@@ -157,15 +187,17 @@ if (!function_exists('Text2Html')) {
         $txt = str_replace(">", "&gt;", $txt);
         $txt = preg_replace("/[\r\n]{1,}/isU", "<br/>\r\n", $txt);
         return $txt;
+    
     }
+
 }
 
 /**
  *  获取半角字符
  *
- * @param     string  $fnum  数字字符串
- * @return    string
- */
+ * @param  string  $fnum  数字字符串
+ * @return string
+*/
 if (!function_exists('GetAlabNum')) {
     function GetAlabNum($fnum)
     {
@@ -176,43 +208,51 @@ if (!function_exists('GetAlabNum')) {
         $fnum = preg_replace("/[^0-9\.-]/", '', $fnum);
         if ($fnum == '') {
             $fnum = 0;
+        
         }
         return $fnum;
+    
     }
+
 }
 
 /**
  *  获取拼音以gbk编码为准
  *
- * @access    public
- * @param     string  $str     字符串信息
- * @param     int     $ishead  是否取头字母
- * @param     int     $isclose 是否关闭字符串资源
- * @return    string
- */
+ * @access public
+ * @param  string  $str     字符串信息
+ * @param  int     $ishead  是否取头字母
+ * @param  int     $isclose 是否关闭字符串资源
+ * @return string
+*/
 if (!function_exists('GetPinyin')) {
     function GetPinyin($str, $ishead = 0, $isclose = 1)
     {
         global $cfg_soft_lang;
         if (!function_exists('SpGetPinyin')) {
             //全局函数仅是inc_fun_funAdmin.php文件中函数的一个映射
-            require_once DEDEINC . "/inc/inc_fun_funAdmin.php";
+            include_once DEDEINC . "/inc/inc_fun_funAdmin.php";
+        
         }
         if ($cfg_soft_lang == 'utf-8') {
             return SpGetPinyin(utf82gb($str), $ishead, $isclose);
+        
         } else {
             return SpGetPinyin($str, $ishead, $isclose);
+        
         }
+    
     }
+
 }
 /**
  *  将实体html代码转换成标准html代码（兼容php4）
  *
- * @access    public
- * @param     string  $str     字符串信息
- * @param     long    $options  替换的字符集
- * @return    string
- */
+ * @access public
+ * @param  string  $str     字符串信息
+ * @param  long    $options  替换的字符集
+ * @return string
+*/
 
 if (!function_exists('htmlspecialchars_decode')) {
     function htmlspecialchars_decode($str, $options = ENT_COMPAT)
@@ -222,12 +262,15 @@ if (!function_exists('htmlspecialchars_decode')) {
         $decode = array();
         foreach ($trans as $char => $entity) {
             $decode[$entity] = $char;
+        
         }
 
         $str = strtr($str, $decode);
 
         return $str;
+    
     }
+
 }
 
 if (!function_exists('ubb')) {
@@ -258,11 +301,7 @@ if (!function_exists('ubb')) {
         $Text = preg_replace("/\[sup\](.+?)\[\/sup\]/is", "<sup>\\1</sup>", $Text);
         $Text = preg_replace("/\[sub\](.+?)\[\/sub\]/is", "<sub>\\1</sub>", $Text);
         $Text = preg_replace("/\[pre\](.+?)\[\/pre\]/is", "<pre>\\1</pre>", $Text);
-        if (version_compare(PHP_VERSION, '5.5.0', '>=')) {
-            $Text = preg_replace_callback("/\[colorTxt\](.+?)\[\/colorTxt\]/is", "color_txt", $Text);
-        } else {
-            $Text = preg_replace("/\[colorTxt\](.+?)\[\/colorTxt\]/eis", "color_txt('\\1')", $Text);
-        }
+        $Text = preg_replace_callback("/\[colorTxt\](.+?)\[\/colorTxt\]/is", "color_txt", $Text);
         $Text = preg_replace("/\[email\](.+?)\[\/email\]/is", "<a href='mailto:\\1'>\\1</a>", $Text);
         $Text = preg_replace("/\[i\](.+?)\[\/i\]/is", "<i>\\1</i>", $Text);
         $Text = preg_replace("/\[u\](.+?)\[\/u\]/is", "<u>\\1</u>", $Text);
@@ -270,7 +309,9 @@ if (!function_exists('ubb')) {
         $Text = preg_replace("/\[quote\](.+?)\[\/quote\]/is", "<blockquote>引用:<div style='border:1px solid silver;background:#EFFFDF;color:#393939;padding:5px' >\\1</div></blockquote>", $Text);
         $Text = preg_replace("/\[sig\](.+?)\[\/sig\]/is", "<div style='text-align: left; color: darkgreen; margin-left: 5%'><br><br>--------------------------<br>\\1<br>--------------------------</div>", $Text);
         return $Text;
+    
     }
+
 }
 
 if (!function_exists('color_txt')) {
@@ -278,19 +319,25 @@ if (!function_exists('color_txt')) {
     {
         if (is_array($str)) {
             $str = $str[1];
+        
         }
         $len = mb_strlen($str);
         $colorTxt = '';
         for ($i = 0; $i < $len; $i++) {
             $colorTxt .= '<span style="color:' . rand_color() . '">' . mb_substr($str, $i, 1, 'utf-8') . '</span>';
+        
         }
         return $colorTxt;
+    
     }
+
 }
 
 if (!function_exists('rand_color')) {
     function rand_color()
     {
         return '#' . sprintf("%02X", mt_rand(0, 255)) . sprintf("%02X", mt_rand(0, 255)) . sprintf("%02X", mt_rand(0, 255));
+    
     }
+
 }

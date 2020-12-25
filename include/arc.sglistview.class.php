@@ -5,13 +5,13 @@
 /**
  * 单表模型列表视图类
  *
- * @version        $Id: arc.sglistview.class.php 1 15:48 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.sglistview.class.php 1 15:48 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 @set_time_limit(0);
@@ -20,9 +20,9 @@ require_once DEDEINC . "/arc.partview.class.php";
 /**
  * 单表模型列表视图类
  *
- * @package          SgListView
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    SgListView
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class SgListView
 {
@@ -51,10 +51,10 @@ class SgListView
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $typeid  栏目ID
-     * @param     array  $searchArr  检索数组
-     * @return    void
+     * @access public
+     * @param  int   $typeid    栏目ID
+     * @param  array $searchArr 检索数组
+     * @return void
      */
     public function __construct($typeid, $searchArr = array())
     {
@@ -137,8 +137,8 @@ class SgListView
     /**
      *  统计列表里的记录
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function CountRecord()
     {
@@ -254,10 +254,10 @@ class SgListView
     /**
      *  列表创建HTML
      *
-     * @access    public
-     * @param     string  $startpage  开始页面
-     * @param     string  $makepagesize  生成尺寸
-     * @return    string
+     * @access public
+     * @param  string $startpage    开始页面
+     * @param  string $makepagesize 生成尺寸
+     * @return string
      */
     public function MakeHtml($startpage = 1, $makepagesize = 0)
     {
@@ -316,7 +316,8 @@ class SgListView
         if ($startpage == 1) {
             //如果列表启用封面文件，复制这个文件第一页
             if ($this->TypeLink->TypeInfos['isdefault'] == 1
-                && $this->TypeLink->TypeInfos['ispart'] == 0) {
+                && $this->TypeLink->TypeInfos['ispart'] == 0
+            ) {
                 $onlyrule = $this->GetMakeFileRule($this->Fields['id'], "list", $this->Fields['typedir'], '', $this->Fields['namerule2']);
                 $onlyrule = str_replace("{page}", "1", $onlyrule);
                 $list_1 = $this->GetTruePath() . $onlyrule;
@@ -331,8 +332,8 @@ class SgListView
     /**
      *  显示列表
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -363,8 +364,8 @@ class SgListView
     /**
      *  创建单独模板页面
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function MakePartTemplets()
     {
@@ -407,8 +408,8 @@ class SgListView
     /**
      *  显示单独模板页面
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function DisplayPartTemplets()
     {
@@ -454,8 +455,8 @@ class SgListView
     /**
      *  获得站点的真实根路径
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetTruePath()
     {
@@ -466,9 +467,9 @@ class SgListView
     /**
      *  获得真实连接路径
      *
-     * @access    public
-     * @param     string  $nurl  连接地址
-     * @return    string
+     * @access public
+     * @param  string $nurl 连接地址
+     * @return string
      */
     public function GetTrueUrl($nurl)
     {
@@ -488,8 +489,8 @@ class SgListView
     /**
      *  解析模板，对固定的标记进行初始给值
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function ParseTempletsFirst()
     {
@@ -505,10 +506,10 @@ class SgListView
     /**
      *  解析模板，对内容里的变动进行赋值
      *
-     * @access    public
-     * @param     int  $PageNo  页码
-     * @param     int  $ismake  是否编译
-     * @return    void
+     * @access public
+     * @param  int $PageNo 页码
+     * @param  int $ismake 是否编译
+     * @return void
      */
     public function ParseDMFields($PageNo, $ismake = 1)
     {
@@ -526,7 +527,8 @@ class SgListView
                 } else {
                     $InnerText = trim($ctag->GetInnerText());
                 }
-                $this->dtp->Assign($tagid,
+                $this->dtp->Assign(
+                    $tagid,
                     $this->GetArcList(
                         $limitstart,
                         $row,
@@ -560,13 +562,13 @@ class SgListView
     /**
      *  获得要创建的文件名称规则
      *
-     * @access    public
-     * @param     string  $typeid  栏目ID
-     * @param     string  $wname
-     * @param     string  $typedir  栏目目录
-     * @param     string  $defaultname  默认名称
-     * @param     string  $namerule2  名称规则
-     * @return    string
+     * @access public
+     * @param  string $typeid      栏目ID
+     * @param  string $wname
+     * @param  string $typedir     栏目目录
+     * @param  string $defaultname 默认名称
+     * @param  string $namerule2   名称规则
+     * @return string
      */
     public function GetMakeFileRule($typeid, $wname, $typedir, $defaultname, $namerule2)
     {
@@ -583,21 +585,21 @@ class SgListView
     /**
      *  获得一个单列的文档列表
      *
-     * @access    public
-     * @param     int  $limitstart  限制开始
-     * @param     int  $row  行数
-     * @param     int  $col  列数
-     * @param     int  $titlelen  标题长度
-     * @param     int  $infolen  描述长度
-     * @param     int  $imgwidth  图片宽度
-     * @param     int  $imgheight  图片高度
-     * @param     string  $listtype  列表类型
-     * @param     string  $orderby  排列顺序
-     * @param     string  $innertext  底层模板
-     * @param     string  $tablewidth  表格宽度
-     * @param     string  $ismake  是否编译
-     * @param     string  $orderWay  排序方式
-     * @return    string
+     * @access public
+     * @param  int    $limitstart 限制开始
+     * @param  int    $row        行数
+     * @param  int    $col        列数
+     * @param  int    $titlelen   标题长度
+     * @param  int    $infolen    描述长度
+     * @param  int    $imgwidth   图片宽度
+     * @param  int    $imgheight  图片高度
+     * @param  string $listtype   列表类型
+     * @param  string $orderby    排列顺序
+     * @param  string $innertext  底层模板
+     * @param  string $tablewidth 表格宽度
+     * @param  string $ismake     是否编译
+     * @param  string $orderWay   排序方式
+     * @return string
      */
     public function GetArcList($limitstart = 0, $row = 10, $col = 1, $titlelen = 30, $listtype = "all", $orderby = "default", $innertext = "", $tablewidth = "100", $ismake = 1, $orderWay = 'desc')
     {
@@ -717,11 +719,15 @@ class SgListView
                     $row['money'] = 0;
                     $row['arcrank'] = 0;
                     $row['filename'] = '';
-                    $row['filename'] = $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
-                        $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                    $row['filename'] = $row['arcurl'] = GetFileUrl(
+                        $row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+                        $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                    );
 
-                    $row['typeurl'] = GetTypeUrl($row['typeid'], MfTypedir($row['typedir']), $row['isdefault'], $row['defaultname'],
-                        $row['ispart'], $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                    $row['typeurl'] = GetTypeUrl(
+                        $row['typeid'], MfTypedir($row['typedir']), $row['isdefault'], $row['defaultname'],
+                        $row['ispart'], $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                    );
                     if ($row['litpic'] == '-' || $row['litpic'] == '') {
                         $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
                     }
@@ -798,10 +804,10 @@ class SgListView
     /**
      *  获取静态的分页列表
      *
-     * @access    public
-     * @param     int  $list_len  列表宽度
-     * @param     string  $listitem  列表样式
-     * @return    string
+     * @access public
+     * @param  int    $list_len 列表宽度
+     * @param  string $listitem 列表样式
+     * @return string
      */
     public function GetPageListST($list_len, $listitem = "index,end,pre,next,pageno")
     {
@@ -910,10 +916,10 @@ class SgListView
     /**
      *  获取动态的分页列表
      *
-     * @access    public
-     * @param     int  $list_len  列表宽度
-     * @param     string  $listitem  列表样式
-     * @return    string
+     * @access public
+     * @param  int    $list_len 列表宽度
+     * @param  string $listitem 列表样式
+     * @return string
      */
     public function GetPageListDM($list_len, $listitem = "index,end,pre,next,pageno")
     {
@@ -996,8 +1002,8 @@ class SgListView
     /**
      *  获得当前的页面文件的url
      *
-     * @access    private
-     * @return    string
+     * @access private
+     * @return string
      */
     public function GetCurUrl()
     {

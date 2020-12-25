@@ -2,13 +2,13 @@
 /**
  * 附件编辑
  *
- * @version        $Id: media_edit.php 1 11:17 2010年7月19日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: media_edit.php 1 11:17 2010年7月19日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 
@@ -145,7 +145,7 @@ else if ($dopost == 'save') {
         }
         @move_uploaded_file($upfile, $fullfilename);
         if ($mediatype == 1) {
-            require_once DEDEINC . "/image.func.php";
+            include_once DEDEINC . "/image.func.php";
             if (in_array($upfile_type, $cfg_photo_typenames)) {
                 WaterImg($fullfilename, 'up');
             }

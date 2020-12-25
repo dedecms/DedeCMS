@@ -2,13 +2,13 @@
 /**
  * 任务操作
  *
- * @version        $Id: task_do.php 1 23:07 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: task_do.php 1 23:07 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . '/config.php';
 $dopost = (!isset($dopost) ? '' : $dopost);
@@ -63,7 +63,7 @@ function GetNextUrl($notallowArr = array('dopost', 'f', 'del'))
 function makeprenext() {  }
  ******************************/
 if ($dopost == 'makeprenext') {
-    require_once DEDEINC . '/arc.archives.class.php';
+    include_once DEDEINC . '/arc.archives.class.php';
     $aid = intval($aid);
     $preRow = $dsql->GetOne("SELECT id FROM `#@__arctiny` WHERE id<$aid AND arcrank>-1 AND typeid='$typeid' ORDER BY id DESC");
     $nextRow = $dsql->GetOne("SELECT id FROM `#@__arctiny` WHERE id>$aid AND arcrank>-1 AND typeid='$typeid' ORDER BY id ASC");
@@ -91,7 +91,7 @@ if ($dopost == 'makeprenext') {
 function makeindex() {  }
  ******************************/
 if ($dopost == 'makeindex') {
-    require_once DEDEINC . '/arc.partview.class.php';
+    include_once DEDEINC . '/arc.partview.class.php';
     $envs = $_sys_globals = array();
     $envs['aid'] = 0;
     $pv = new PartView();
@@ -127,8 +127,8 @@ if ($dopost == 'makeindex') {
 function makeparenttype() {  }
  ******************************/
 else if ($dopost == 'makeparenttype') {
-    require_once DEDEDATA . "/cache/inc_catalog_base.inc";
-    require_once DEDEINC . '/arc.listview.class.php';
+    include_once DEDEDATA . "/cache/inc_catalog_base.inc";
+    include_once DEDEINC . '/arc.listview.class.php';
     $notallowArr = array('dopost', 'f', 'del', 'curpage', 'morejob');
 
     $jumpurl = GetNextUrl($notallowArr);
@@ -145,13 +145,13 @@ else if ($dopost == 'makeparenttype') {
     $tid = $topids[$curpage];
 
     if (isset($cfg_Cs[$tid]) && $cfg_Cs[$tid][1] > 0) {
-        require_once DEDEINC . "/arc.listview.class.php";
+        include_once DEDEINC . "/arc.listview.class.php";
         $lv = new ListView($tid);
         $lv->CountRecord();
         $lv->MakeHtml();
         $lv->Close();
     } else {
-        require_once DEDEINC . "/arc.sglistview.class.php";
+        include_once DEDEINC . "/arc.sglistview.class.php";
         $lv = new SgListView($tid);
         $lv->CountRecord();
         $lv->MakeHtml();

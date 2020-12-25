@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 广告JS调用方式
  *
- * @version        $Id: ad_js.php 1 20:30 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: ad_js.php 1 20:30 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 
@@ -44,4 +43,4 @@ if (isset($nocache) || !file_exists($cacheFile) || time() - filemtime($cacheFile
     fwrite($fp, $adbody);
     fclose($fp);
 }
-include $cacheFile;
+require $cacheFile;

@@ -3,13 +3,13 @@
 /**
  * 附件添加
  *
- * @version        $Id: media_add.php 2 15:25 2011-6-2  $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: media_add.php 2 15:25 2011-6-2  $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 
@@ -21,7 +21,7 @@ if (empty($dopost)) {
 //上传
 if ($dopost == "upload") {
     csrf_check();
-    require_once DEDEINC . "/image.func.php";
+    include_once DEDEINC . "/image.func.php";
     $sparr_image = array("image/pjpeg", "image/jpeg", "image/gif", "image/png", "image/x-png", "image/wbmp");
     $sparr_flash = array("application/xshockwaveflash");
     $okdd = 0;

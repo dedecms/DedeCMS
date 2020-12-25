@@ -2,20 +2,20 @@
 /**
  * 生成所有页面
  *
- * @version        $Id: makehtml_all.php 1 8:48 2010年7月13日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: makehtml_all.php 1 8:48 2010年7月13日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . "/channelunit.func.php";
 $action = (empty($action) ? '' : $action);
 
 if ($action == '') {
-    require_once DEDEADMIN . "/templets/makehtml_all.htm";
+    include_once DEDEADMIN . "/templets/makehtml_all.htm";
     exit();
 } else if ($action == 'make') {
     //step = 1 更新主页、step = 2 更新内容、step = 3 更新栏目
@@ -142,9 +142,9 @@ if ($action == '') {
 /**
  *  优化数据
  *
- * @access    public
- * @param     object  $dsql  数据库对象
- * @return    void
+ * @access public
+ * @param  object $dsql 数据库对象
+ * @return void
  */
 function OptimizeData($dsql)
 {

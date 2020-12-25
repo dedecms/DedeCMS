@@ -1,4 +1,5 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 
 require_once dirname(__file__) . '/../json.class.php';
 /*>>dede>>
@@ -28,6 +29,7 @@ function lib_json(&$ctag, &$refObj)
 
     if ($url == '' || $Innertext == '') {
         return '';
+    
     }
 
     $ctp = new DedeTagParse();
@@ -47,8 +49,10 @@ function lib_json(&$ctag, &$refObj)
 
         if ($cfg_soft_lang != 'utf-8') {
             $row = AutoCharset($row, 'utf-8', 'gb2312');
+        
         }
         $mcache->Save($chash, $row, $cache);
+    
     }
 
     $revalue = "";
@@ -58,18 +62,25 @@ function lib_json(&$ctag, &$refObj)
         foreach ($ctp->CTags as $tagid => $ctag) {
             if ($ctag->GetName() == 'array') {
                 $ctp->Assign($tagid, $value);
+            
             } else {
                 if (!empty($value[$ctag->GetName()])) {
                     $ctp->Assign($tagid, $value[$ctag->GetName()]);
+                
                 } else {
                     $ctp->Assign($tagid, "");
+                
                 }
+            
             }
+        
         }
         $revalue .= $ctp->GetResult();
+    
     }
 
     return $revalue;
+
 }
 
 // 一个简单的文件缓存类
@@ -80,6 +91,7 @@ class MiniCache
     public function __construct()
     {
         $this->_cache_path = DEDEDATA . '/cache/json/';
+    
     }
 
     // 获取缓冲
@@ -87,6 +99,7 @@ class MiniCache
     {
         if (!file_exists($this->_cache_path . $id)) {
             return false;
+        
         }
 
         $data = $this->_ReadFile($this->_cache_path . $id);
@@ -95,15 +108,18 @@ class MiniCache
         if (time() > $data['time'] + $data['ttl']) {
             unlink($this->_cache_path . $id);
             return false;
+        
         }
 
         return $data['data'];
+    
     }
 
     // 清除缓存
     public function Clean()
     {
         return $this->_DeleteFiles($this->_cache_path);
+    
     }
 
     // 保存缓冲
@@ -118,15 +134,18 @@ class MiniCache
         if (PutFile($this->_cache_path . $id, serialize($contents))) {
             @chmod($this->_cache_path . $id, 0777);
             return true;
+        
         }
 
         return false;
+    
     }
 
     // 删除缓冲
     public function Delete($id)
     {
         return unlink($this->_cache_path . $id);
+    
     }
 
     public function _DeleteFiles($path, $del_dir = false, $level = 0)
@@ -136,6 +155,7 @@ class MiniCache
 
         if (!$current_dir = @opendir($path)) {
             return false;
+        
         }
 
         while (false !== ($filename = @readdir($current_dir))) {
@@ -144,33 +164,43 @@ class MiniCache
                     // Ignore empty folders
                     if (substr($filename, 0, 1) != '.') {
                         delete_files($path . DIRECTORY_SEPARATOR . $filename, $del_dir, $level + 1);
+                    
                     }
+                
                 } else {
                     unlink($path . DIRECTORY_SEPARATOR . $filename);
+                
                 }
+            
             }
+        
         }
         @closedir($current_dir);
 
         if ($del_dir == true and $level > 0) {
             return @rmdir($path);
+        
         }
 
         return true;
+    
     }
 
     public function _ReadFile($file)
     {
         if (!file_exists($file)) {
             return false;
+        
         }
 
         if (function_exists('file_get_contents')) {
             return file_get_contents($file);
+        
         }
 
         if (!$fp = @fopen($file, FOPEN_READ)) {
             return false;
+        
         }
 
         flock($fp, LOCK_SH);
@@ -178,11 +208,14 @@ class MiniCache
         $data = '';
         if (filesize($file) > 0) {
             $data = &fread($fp, filesize($file));
+        
         }
 
         flock($fp, LOCK_UN);
         fclose($fp);
 
         return $data;
+    
     }
+
 }

@@ -3,13 +3,13 @@
 /**
  * 系统运行环境检测
  *
- * @version        $Id: testenv.php 13:57 2011/11/10  $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: testenv.php 13:57 2011/11/10  $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Edit');
@@ -172,8 +172,9 @@ function GetSondir($d, &$dirname = array())
 {
     $dh = dir($d);
     while ($filename = $dh->read()) {
-        if (substr($filename, 0, 1) == '.' || is_file($d . '/' . $filename) ||
-            preg_match("#^(svn|bak-)#i", $filename)) {
+        if (substr($filename, 0, 1) == '.' || is_file($d . '/' . $filename) 
+            || preg_match("#^(svn|bak-)#i", $filename)
+        ) {
             continue;
         }
         if (is_dir($d . '/' . $filename)) {
@@ -284,7 +285,7 @@ foreach ($jsDir as $k => $v) {
             <thead>
               <tr>
                 <td width="40%" height="25" align="center" bgcolor="#E3F1D1">目录</td>
-				<td width="20%" height="25" align="center" bgcolor="#E3F1D1">执行</td>
+                <td width="20%" height="25" align="center" bgcolor="#E3F1D1">执行</td>
                 <td width="20%" height="25" align="center" bgcolor="#E3F1D1">读取</td>
                 <td width="20%" height="25" align="center" bgcolor="#E3F1D1">写入</td>
               </tr>
@@ -311,104 +312,104 @@ foreach ($allPath as $key => $val) {
         ?><?php echo $key; ?>|<?php
 $rs = TestExecuteable(DEDEROOT . $key, $cfg_basehost, $cfg_cmspath);
 
-        if ($rs === -1) {
-            echo "<font color='red'>无法判断</font>";
-        } else {
-            if ($val['execute'] == true) {
-                echo $rs != $val['execute'] ? "<font color='red'>错误(不可执行)</font>" : "<font color='green'>正常(可执行)</font>";
-            } else {
-                echo $rs != $val['execute'] ? "<font color='red'>错误(可执行)</font>" : "<font color='green'>正常(不可执行)</font>";
-            }
+if ($rs === -1) {
+    echo "<font color='red'>无法判断</font>";
+} else {
+    if ($val['execute'] == true) {
+        echo $rs != $val['execute'] ? "<font color='red'>错误(不可执行)</font>" : "<font color='green'>正常(可执行)</font>";
+    } else {
+        echo $rs != $val['execute'] ? "<font color='red'>错误(可执行)</font>" : "<font color='green'>正常(不可执行)</font>";
+    }
 
-        }
-        ?>|<?php
+}
+?>|<?php
 if ($val['read'] == true) {
             echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(不可读)</font>" : "<font color='green'>正常(可读)</font>";
-        } else {
-            echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(可读)</font>" : "<font color='green'>正常(不可读)</font>";
-        }
+} else {
+    echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(可读)</font>" : "<font color='green'>正常(不可读)</font>";
+}
 
-        ?>|<?php
+?>|<?php
 if ($val['write'] == true) {
             echo TestWriteable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(不可写)</font>" : "<font color='green'>正常(可写)</font>";
-        } else {
-            echo TestWriteable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(可写)</font>" : "<font color='green'>正常(不可写)</font>";
-        }
-
-        ?><dedecms><?php
 } else {
+    echo TestWriteable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(可写)</font>" : "<font color='green'>正常(不可写)</font>";
+}
+
+?><dedecms><?php
+    } else {
         ?><?php echo $key; ?>|无需判断|<?php
 if ($val['read'] == true) {
             echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(不可读)</font>" : "<font color='green'>正常(可读)</font>";
-        } else {
-            echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(可读)</font>" : "<font color='green'>正常(不可读)</font>";
-        }
+} else {
+    echo is_readable(DEDEROOT . $key) != $val['read'] ? "<font color='red'>错误(可读)</font>" : "<font color='green'>正常(不可读)</font>";
+}
 
-        ?>|<?php
+?>|<?php
 if ($val['write'] == true) {
             echo is_writable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(不可写)</font>" : "<font color='green'>正常(可写)</font>";
-        } else {
-            echo is_writable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(可写)</font>" : "<font color='green'>正常(不可写)</font>";
-        }
-
-        ?><dedecms><?php
+} else {
+    echo is_writable(DEDEROOT . $key) != $val['write'] ? "<font color='red'>错误(可写)</font>" : "<font color='green'>正常(不可写)</font>";
 }
+
+?><dedecms><?php
+    }
 }
 ?>";
 var n = 0;
 var timer = 0;
 log = log.split('<dedecms>');
 function GoPlay(){
-	if (n > log.length-1) {
-		n=-1;
-		clearIntervals();
-	}
-	if (n > -1) {
-		postcheck(n);
-		n++;
-	}
+    if (n > log.length-1) {
+        n=-1;
+        clearIntervals();
+    }
+    if (n > -1) {
+        postcheck(n);
+        n++;
+    }
 }
 function postcheck(n){
-	var item = log[n];
-	item = item.split('|');
+    var item = log[n];
+    item = item.split('|');
 
-	document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
-	if(item == ''){return false;}
-	var tempvar='<tr>\r				        <td width="40%" height="23" bgcolor="#FFFFFF">'+item[0]+'</td>\r		            <td width="20%" height="23" align="center" bgcolor="#FEF7C5">'+item[1]+'</td>\r				        <td width="20%" height="23" align="center" bgcolor="#FFFFFF">\r						'+item[2]+'</td>\r				        <td width="20%" height="23" align="center" bgcolor="#FFFFFF">\r						'+item[3]+'</td>\r			      </tr>  ';
+    document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
+    if(item == ''){return false;}
+    var tempvar='<tr>\r                        <td width="40%" height="23" bgcolor="#FFFFFF">'+item[0]+'</td>\r                    <td width="20%" height="23" align="center" bgcolor="#FEF7C5">'+item[1]+'</td>\r                        <td width="20%" height="23" align="center" bgcolor="#FFFFFF">\r                        '+item[2]+'</td>\r                        <td width="20%" height="23" align="center" bgcolor="#FFFFFF">\r                        '+item[3]+'</td>\r                  </tr>  ';
 
-	//chiledelem.innerHTML = tempvar;
-	//document.getElementById("mainList").appendChild(chiledelem);
-	$("#mainList").append(tempvar);
-	document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
+    //chiledelem.innerHTML = tempvar;
+    //document.getElementById("mainList").appendChild(chiledelem);
+    $("#mainList").append(tempvar);
+    document.getElementById('log').scrollTop = document.getElementById('log').scrollHeight;
 }
 function setIntervals(){
-	timer = setInterval('GoPlay()',50);
+    timer = setInterval('GoPlay()',50);
 }
 function clearIntervals(){
-	clearInterval(timer);
-	//document.getElementById('install').submit();
-	alert('全部检测完毕，您可以按照检测结果进行系统权限调整！');
+    clearInterval(timer);
+    //document.getElementById('install').submit();
+    alert('全部检测完毕，您可以按照检测结果进行系统权限调整！');
 }
 //setTimeout(setIntervals, 100);
 
 
 function changeHeight()
 {
-	var newheight =  $(window).height() - 170;
-	$("#safelist").css('height', newheight + 'px');
-	var logheight = newheight;
-	$("#log").css('height', logheight + 'px');
+    var newheight =  $(window).height() - 170;
+    $("#safelist").css('height', newheight + 'px');
+    var logheight = newheight;
+    $("#log").css('height', logheight + 'px');
 }
 // 开始检测
 function startScan()
 {
-	setTimeout(setIntervals, 100);
+    setTimeout(setIntervals, 100);
 }
 $.ready = function(){
-	changeHeight();
-	$(window).resize(function()
+    changeHeight();
+    $(window).resize(function()
   {
-	  changeHeight();
+      changeHeight();
   });
 };
 </script>

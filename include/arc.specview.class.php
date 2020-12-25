@@ -5,13 +5,13 @@
 /**
  * 专题视图类
  *
- * @version        $Id: arc.specview.class.php 1 18:17 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.specview.class.php 1 18:17 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once DEDEINC . "/typelink.class.php";
@@ -22,9 +22,9 @@ require_once DEDEINC . '/ftp.class.php';
 /**
  * 专题视图类
  *
- * @package          SpecView
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    SpecView
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class SpecView
 {
@@ -48,9 +48,9 @@ class SpecView
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $starttime  开始时间
-     * @return    string
+     * @access public
+     * @param  int $starttime 开始时间
+     * @return string
      */
     public function __construct($starttime = 0)
     {
@@ -112,8 +112,8 @@ class SpecView
     /**
      *  统计列表里的记录
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function CountRecord()
     {
@@ -144,13 +144,14 @@ class SpecView
     /**
      *  显示列表
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
         if ($this->TypeLink->TypeInfos['ispart'] == 1
-            || $this->TypeLink->TypeInfos['ispart'] == 2) {
+            || $this->TypeLink->TypeInfos['ispart'] == 2
+        ) {
             $this->DisplayPartTemplets();
         }
         $this->ParseTempletsFirst();
@@ -163,8 +164,10 @@ class SpecView
                 } else {
                     $InnerText = trim($ctag->GetInnerText());
                 }
-                $this->dtp->Assign($tagid,
-                    $this->GetArcList($limitstart, $row,
+                $this->dtp->Assign(
+                    $tagid,
+                    $this->GetArcList(
+                        $limitstart, $row,
                         $ctag->GetAtt("col"),
                         $ctag->GetAtt("titlelen"),
                         $ctag->GetAtt("infolen"),
@@ -173,7 +176,8 @@ class SpecView
                         $ctag->GetAtt("listtype"),
                         $ctag->GetAtt("orderby"),
                         $InnerText,
-                        $ctag->GetAtt("tablewidth"))
+                        $ctag->GetAtt("tablewidth")
+                    )
                 );
             } else if ($ctag->GetName() == "pagelist") {
                 $list_len = trim($ctag->GetAtt("listsize"));
@@ -189,9 +193,9 @@ class SpecView
     /**
      *  开始创建列表
      *
-     * @access    public
-     * @param     int  $isremote  是否远程
-     * @return    string
+     * @access public
+     * @param  int $isremote 是否远程
+     * @return string
      */
     public function MakeHtml($isremote = 0)
     {
@@ -214,8 +218,10 @@ class SpecView
                     } else {
                         $InnerText = trim($ctag->GetInnerText());
                     }
-                    $this->dtp->Assign($tagid,
-                        $this->GetArcList($limitstart, $row,
+                    $this->dtp->Assign(
+                        $tagid,
+                        $this->GetArcList(
+                            $limitstart, $row,
                             $ctag->GetAtt("col"),
                             $ctag->GetAtt("titlelen"),
                             $ctag->GetAtt("infolen"),
@@ -224,7 +230,8 @@ class SpecView
                             "spec",
                             $ctag->GetAtt("orderby"),
                             $InnerText,
-                            $ctag->GetAtt("tablewidth"))
+                            $ctag->GetAtt("tablewidth")
+                        )
                     );
                 } else if ($ctag->GetName() == "pagelist") {
                     $list_len = trim($ctag->GetAtt("listsize"));
@@ -259,8 +266,8 @@ class SpecView
     /**
      *  解析模板，对固定的标记进行初始给值
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function ParseTempletsFirst()
     {
@@ -270,22 +277,23 @@ class SpecView
     /**
      *  获取内容列表
      *
-     * @access    public
-     * @param     int  $limitstart  限制开始
-     * @param     int  $row  行数
-     * @param     int  $col  列数
-     * @param     int  $titlelen  标题长度
-     * @param     int  $infolen  描述长度
-     * @param     int  $imgwidth  图片宽度
-     * @param     int  $imgheight  图片高度
-     * @param     string  $listtype  列表类型
-     * @param     string  $orderby  排列顺序
-     * @param     string  $innertext  底层模板
-     * @param     string  $tablewidth  表格宽度
-     * @return    string
+     * @access public
+     * @param  int    $limitstart 限制开始
+     * @param  int    $row        行数
+     * @param  int    $col        列数
+     * @param  int    $titlelen   标题长度
+     * @param  int    $infolen    描述长度
+     * @param  int    $imgwidth   图片宽度
+     * @param  int    $imgheight  图片高度
+     * @param  string $listtype   列表类型
+     * @param  string $orderby    排列顺序
+     * @param  string $innertext  底层模板
+     * @param  string $tablewidth 表格宽度
+     * @return string
      */
     public function GetArcList($limitstart = 0, $row = 10, $col = 1, $titlelen = 30, $infolen = 250,
-        $imgwidth = 120, $imgheight = 90, $listtype = "all", $orderby = "default", $innertext = "", $tablewidth = "100") {
+        $imgwidth = 120, $imgheight = 90, $listtype = "all", $orderby = "default", $innertext = "", $tablewidth = "100"
+    ) {
         $typeid = $this->TypeID;
         if ($row == "") {
             $row = 10;
@@ -376,8 +384,10 @@ class SpecView
                         $row['litpic'] = $GLOBALS['cfg_mainsite'] . $row['litpic'];
                     }
                     $row['picname'] = $row['litpic'];
-                    $row["arcurl"] = GetFileUrl($row["id"], $row["typeid"], $row["senddate"], $row["title"],
-                        $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]);
+                    $row["arcurl"] = GetFileUrl(
+                        $row["id"], $row["typeid"], $row["senddate"], $row["title"],
+                        $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]
+                    );
                     $row["typeurl"] = GetTypeUrl($row["typeid"], $row["typedir"], $row["isdefault"], $row["defaultname"], $row["ispart"], $row["namerule2"], $row["moresite"], $row["siteurl"], $row["sitepath"]);
                     $row["info"] = $row["description"];
                     $row["filename"] = $row["arcurl"];
@@ -436,9 +446,9 @@ class SpecView
     /**
      *  获取静态的分页列表
      *
-     * @access    public
-     * @param     int  $list_len  列表宽度
-     * @return    string
+     * @access public
+     * @param  int $list_len 列表宽度
+     * @return string
      */
     public function GetPageListST($list_len)
     {
@@ -503,9 +513,9 @@ class SpecView
     /**
      *  获取动态的分页列表
      *
-     * @access    private
-     * @param     int  $list_len  列表宽度
-     * @return    string
+     * @access private
+     * @param  int $list_len 列表宽度
+     * @return string
      */
 
     public function GetPageListDM($list_len)
@@ -575,8 +585,8 @@ class SpecView
     /**
      *  获得当前的页面文件的url
      *
-     * @access    private
-     * @return    string
+     * @access private
+     * @return string
      */
     public function GetCurUrl()
     {

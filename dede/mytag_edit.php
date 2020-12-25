@@ -2,13 +2,13 @@
 /**
  * 自定义标记修改
  *
- * @version        $Id: mytag_edit.php 1 15:37 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mytag_edit.php 1 15:37 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('temp_Other');
@@ -43,7 +43,7 @@ if ($dopost == 'delete') {
     ShowMsg("成功更改一个自定义标记！", $ENV_GOBACK_URL);
     exit();
 } else if ($dopost == "getjs") {
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
     $jscode = "<script src='{$cfg_phpurl}/mytag_js.php?aid=$aid' language='javascript'></script>";
     $showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
     $showhtml .= "<b>预览：</b><iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='250'></iframe>";

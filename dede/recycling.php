@@ -2,13 +2,13 @@
 /**
  * 回收站
  *
- * @version        $Id: recycling.php 1 15:46 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: recycling.php 1 15:46 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 CheckPurview('a_List,a_AccList,a_MyList');
@@ -18,7 +18,7 @@ if (empty($cid)) {
     $whereSql = '';
 }
 if ($cid != 0) {
-    require_once DEDEINC . '/channelunit.func.php';
+    include_once DEDEINC . '/channelunit.func.php';
     $whereSql = " AND arc.typeid IN (" . GetSonIds($cid) . ")";
 }
 $query = "SELECT arc.*,tp.typename FROM `#@__archives` AS arc

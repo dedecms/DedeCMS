@@ -2,13 +2,13 @@
 /**
  * 用户动态ajax显示页
  *
- * @version        $Id: feed.php 1 17:55 2010年7月6日 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: feed.php 1 17:55 2010年7月6日 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -65,7 +65,7 @@ if ($type == "allfeed") {
         $feeds[] = $row;
     }
 } else {
-    require_once DEDEINC . '/channelunit.func.php';
+    include_once DEDEINC . '/channelunit.func.php';
     $sql = "SELECT arc.id,arc.typeid,arc.senddate,arc.title,arc.ismake,arc.arcrank,arc.money,arc.filename,a.namerule,a.typedir,a.moresite,a.siteurl, a.sitepath,m.userid FROM #@__archives arc LEFT JOIN #@__arctype a on a.id=arc.typeid LEFT JOIN #@__member m on m.mid=arc.mid WHERE arc.arcrank > -1 ORDER BY arc.sortrank DESC LIMIT 12";
     $dsql->SetQuery($sql);
     $dsql->Execute();

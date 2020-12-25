@@ -2,13 +2,13 @@
 /**
  * 栏目操作
  *
- * @version        $Id: catalog_do.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: catalog_do.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 if (empty($dopost)) {
@@ -106,7 +106,7 @@ else if ($dopost == "guestbook") {
 function ViewSgPage()
 ------------------------*/
 else if ($dopost == "viewSgPage") {
-    require_once DEDEINC . "/arc.listview.class.php";
+    include_once DEDEINC . "/arc.listview.class.php";
     $lv = new ListView($cid);
     $pageurl = $lv->MakeHtml();
     ShowMsg("更新缓冲，请稍后...", $pageurl);
@@ -195,7 +195,7 @@ function GetSunListsMenu();
 -----------*/
 else if ($dopost == "GetSunListsMenu") {
     $userChannel = $cuserLogin->getUserChannel();
-    require_once DEDEINC . "/typeunit.class.menu.php";
+    include_once DEDEINC . "/typeunit.class.menu.php";
     AjaxHead();
     PutCookie('lastCidMenu', $cid, 3600 * 24, "/");
     $tu = new TypeUnit($userChannel);
@@ -206,7 +206,7 @@ else if ($dopost == "GetSunListsMenu") {
 function GetSunLists();
 -----------*/
 else if ($dopost == "GetSunLists") {
-    require_once DEDEINC . "/typeunit.class.admin.php";
+    include_once DEDEINC . "/typeunit.class.admin.php";
     AjaxHead();
     PutCookie('lastCid', $cid, 3600 * 24, "/");
     $tu = new TypeUnit();
@@ -222,9 +222,9 @@ function unitCatalog() { }
 -----------------*/
 else if ($dopost == 'unitCatalog') {
     CheckPurview('t_Move');
-    require_once DEDEINC . '/oxwindow.class.php';
-    require_once DEDEINC . '/typelink.class.php';
-    require_once DEDEINC . '/channelunit.func.php';
+    include_once DEDEINC . '/oxwindow.class.php';
+    include_once DEDEINC . '/typelink.class.php';
+    include_once DEDEINC . '/channelunit.func.php';
     if (empty($nextjob)) {
         $typeid = isset($typeid) ? intval($typeid) : 0;
         $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__arctype` WHERE reid='$typeid' ");
@@ -281,9 +281,9 @@ function moveCatalog() { }
 -----------------*/
 else if ($dopost == 'moveCatalog') {
     CheckPurview('t_Move');
-    require_once DEDEINC . '/oxwindow.class.php';
-    require_once DEDEINC . '/typelink.class.php';
-    require_once DEDEINC . '/channelunit.func.php';
+    include_once DEDEINC . '/oxwindow.class.php';
+    include_once DEDEINC . '/typelink.class.php';
+    include_once DEDEINC . '/channelunit.func.php';
     if (empty($nextjob)) {
         $tl = new TypeLink($typeid);
         $typename = $tl->TypeInfos['typename'];

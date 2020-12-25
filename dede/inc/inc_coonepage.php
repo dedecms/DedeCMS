@@ -2,22 +2,22 @@
 /**
  * 采集指定页面作为文章发布源
  *
- * @version        $Id: inc_coonepage.php 1 10:32 2010年7月21日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: inc_coonepage.php 1 10:32 2010年7月21日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . '/charset.func.php';
 
 /**
  *  获取一个页面
  *
- * @access    public
- * @param     string  $gurl  操作地址
- * @return    string
+ * @access public
+ * @param  string $gurl 操作地址
+ * @return string
  */
 function CoOnePage($gurl)
 {
@@ -85,11 +85,11 @@ function CoOnePage($gurl)
 /**
  *  获取特定区域的HTML
  *
- * @access    public
- * @param     string  $s  开始标识符
- * @param     string  $e  末尾标识符
- * @param     string  $html  文档信息
- * @return    string
+ * @access public
+ * @param  string $s    开始标识符
+ * @param  string $e    末尾标识符
+ * @param  string $html 文档信息
+ * @return string
  */
 function GetHtmlAreaA($s, $e, &$html)
 {

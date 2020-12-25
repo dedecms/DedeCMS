@@ -2,13 +2,13 @@
 /**
  * 截取图片
  *
- * @version        $Id: imagecut.php 1 11:06 2010年7月13日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: imagecut.php 1 11:06 2010年7月13日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 $action = isset($action) ? trim($action) : '';
@@ -20,7 +20,7 @@ if (empty($action)) {
     include DEDEADMIN . '/templets/imagecut.htm';
     exit();
 } elseif ($action == 'cut') {
-    require_once DEDEINC . '/image.func.php';
+    include_once DEDEINC . '/image.func.php';
 
     if (!@is_file($cfg_basedir . $file)) {
         ShowMsg('对不起，请重新选择裁剪图片！', '-1');
@@ -45,18 +45,18 @@ if (empty($action)) {
     $thumba = imagecreatetruecolor($width, $height);
 
     switch ($imginfo['mime']) {
-        case 'image/jpeg':
-            $source = imagecreatefromjpeg($srcFile);
-            break;
-        case 'image/gif':
-            $source = imagecreatefromgif($srcFile);
-            break;
-        case 'image/png':
-            $source = imagecreatefrompng($srcFile);
-            break;
-        default:
-            ShowMsg('对不起，裁剪图片类型不支持请选择其他类型图片！', '-1');
-            break;
+    case 'image/jpeg':
+        $source = imagecreatefromjpeg($srcFile);
+        break;
+    case 'image/gif':
+        $source = imagecreatefromgif($srcFile);
+        break;
+    case 'image/png':
+        $source = imagecreatefrompng($srcFile);
+        break;
+    default:
+        ShowMsg('对不起，裁剪图片类型不支持请选择其他类型图片！', '-1');
+        break;
     }
 
     imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $imgw, $imgh);
@@ -78,18 +78,18 @@ if (empty($action)) {
     $ddpicokurl = $cfg_basedir . $ddpicok;
 
     switch ($imginfo['mime']) {
-        case 'image/jpeg':
-            imagejpeg($thumba, $ddpicokurl, 85);
-            break;
-        case 'image/gif':
-            imagegif($thumba, $ddpicokurl);
-            break;
-        case 'image/png':
-            imagepng($thumba, $ddpicokurl);
-            break;
-        default:
-            ShowMsg("对不起，裁剪图片类型不支持请选择其他类型图片！", "-1");
-            break;
+    case 'image/jpeg':
+        imagejpeg($thumba, $ddpicokurl, 85);
+        break;
+    case 'image/gif':
+        imagegif($thumba, $ddpicokurl);
+        break;
+    case 'image/png':
+        imagepng($thumba, $ddpicokurl);
+        break;
+    default:
+        ShowMsg("对不起，裁剪图片类型不支持请选择其他类型图片！", "-1");
+        break;
     }
 
     //对任意裁剪方式再次缩小图片至限定大小
@@ -124,6 +124,6 @@ function ReturnImg(reimg)
 }
 ReturnImg("<?php echo $ddpicok; ?>");
 </SCRIPT>
-<?php
+    <?php
 }
 ?>

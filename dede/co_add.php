@@ -2,13 +2,13 @@
 /**
  * 采集规则添加
  *
- * @version        $Id: co_add.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: co_add.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('co_AddNote');
@@ -25,10 +25,10 @@ if (empty($exrule)) {
 function Init(){ }
 ----------------------*/
 if (empty($step)) {
-    require_once DEDEADMIN . "/templets/co_add_step0.htm";
+    include_once DEDEADMIN . "/templets/co_add_step0.htm";
     exit();
 } else if ($step == 1) {
-    require_once DEDEADMIN . "/templets/co_add_step1.htm";
+    include_once DEDEADMIN . "/templets/co_add_step1.htm";
     exit();
 }
 //保存索引规则
@@ -80,7 +80,7 @@ startid=\\\"$startid\\\" endid=\\\"$endid\\\" addv=\\\"$addv\\\" urlrule=\\\"$ur
                 $demopage = '没有匹配到适合的列表页!';
             }
         }
-        require_once DEDEADMIN . "/templets/co_add_step1_test.htm";
+        include_once DEDEADMIN . "/templets/co_add_step1_test.htm";
         exit();
     }
 
@@ -130,8 +130,8 @@ startid=\\\"$startid\\\" endid=\\\"$endid\\\" addv=\\\"$addv\\\" urlrule=\\\"$ur
             $previewurl = '';
         }
 
-        require_once DEDEINC . '/dedetag.class.php';
-        require_once DEDEADMIN . "/templets/co_add_step2.htm";
+        include_once DEDEINC . '/dedetag.class.php';
+        include_once DEDEADMIN . "/templets/co_add_step2.htm";
         exit();
     }
 }
@@ -168,8 +168,8 @@ else if ($step == 5) {
     }
     $dsql->ExecuteNoneQuery("UPDATE `#@__co_note` SET itemconfig='$itemconfig' WHERE nid='$nid' ");
     //echo $dsql->GetError();
-    require_once DEDEINC . '/dedecollection.class.php';
-    require_once DEDEADMIN . "/templets/co_add_step2_test.htm";
+    include_once DEDEINC . '/dedecollection.class.php';
+    include_once DEDEADMIN . "/templets/co_add_step2_test.htm";
     exit();
 } else if ($step == 6) {
     $dsql->ExecuteNoneQuery("UPDATE `#@__co_note` SET isok='1' WHERE nid='$nid' ");

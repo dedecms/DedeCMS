@@ -2,13 +2,13 @@
 /**
  * 添加一个模板
  *
- * @version        $Id: templets_one_add.php 1 23:07 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: templets_one_add.php 1 23:07 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('temp_One');
@@ -17,7 +17,7 @@ if (empty($dopost)) {
 }
 
 if ($dopost == "save") {
-    require_once DEDEINC . "/arc.partview.class.php";
+    include_once DEDEINC . "/arc.partview.class.php";
     $uptime = time();
     $body = str_replace('&quot;', '\\"', $body);
     $filename = preg_replace("#^\/#", "", $nfilename);
@@ -44,4 +44,4 @@ if ($dopost == "save") {
 }
 $row = $dsql->GetOne("SELECT MAX(aid) AS aid FROM `#@__sgpage`  ");
 $nowid = is_array($row) ? $row['aid'] + 1 : '';
-include_once DEDEADMIN . "/templets/templets_one_add.htm";
+require_once DEDEADMIN . "/templets/templets_one_add.htm";

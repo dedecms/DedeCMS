@@ -2,22 +2,22 @@
 /**
  * 属性的数据描述
  *
- * @version        $Id: dedeatt.class.php 1 13:50 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: dedeatt.class.php 1 13:50 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 // ------------------------------------------------------------------------
 /**
  * 属性的数据描述
  * function c____DedeAtt();
  *
- * @package          DedeAtt
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    DedeAtt
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class DedeAtt
 {
@@ -27,9 +27,9 @@ class DedeAtt
     /**
      *  //获得某个属性
      *
-     * @access    public
-     * @param     string    $str    名称
-     * @return    string
+     * @access public
+     * @param  string $str 名称
+     * @return string
      */
     public function GetAtt($str)
     {
@@ -52,9 +52,9 @@ class DedeAtt
     /**
      *  判断属性是否存在
      *
-     * @access    public
-     * @param     string  $str  属性名称
-     * @return    string
+     * @access public
+     * @param  string $str 属性名称
+     * @return string
      */
     public function IsAttribute($str)
     {
@@ -64,8 +64,8 @@ class DedeAtt
     /**
      *  获得标记名称
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetTagName()
     {
@@ -75,8 +75,8 @@ class DedeAtt
     /**
      *   获得属性个数
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function GetCount()
     {
@@ -88,9 +88,9 @@ class DedeAtt
  * 属性解析器
  * function c____DedeAttParse();
  *
- * @package          DedeAtt
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    DedeAtt
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class DedeAttParse
 {
@@ -102,9 +102,9 @@ class DedeAttParse
     /**
      *  设置属性解析器源字符串
      *
-     * @access    public
-     * @param     string  $str  需要解析的字符串
-     * @return    string
+     * @access public
+     * @param  string $str 需要解析的字符串
+     * @return string
      */
     public function SetSource($str = "")
     {
@@ -120,8 +120,8 @@ class DedeAttParse
     /**
      *  解析属性(私有成员，仅给SetSource调用)
      *
-     * @access    private
-     * @return    void
+     * @access private
+     * @return void
      */
     public function ParseAtt()
     {
@@ -176,22 +176,22 @@ class DedeAttParse
                     }
                 } else if ($startdd == 0) {
                     switch ($d) {
-                        case ' ':
-                            // continue;
-                            break;
-                        case '\'':
-                            $ddtag = '\'';
-                            $startdd = 1;
-                            break;
-                        case '"':
-                            $ddtag = '"';
-                            $startdd = 1;
-                            break;
-                        default:
-                            $tmpvalue .= $d;
-                            $ddtag = ' ';
-                            $startdd = 1;
-                            break;
+                    case ' ':
+                        // continue;
+                        break;
+                    case '\'':
+                        $ddtag = '\'';
+                        $startdd = 1;
+                        break;
+                    case '"':
+                        $ddtag = '"';
+                        $startdd = 1;
+                        break;
+                    default:
+                        $tmpvalue .= $d;
+                        $ddtag = ' ';
+                        $startdd = 1;
+                        break;
                     }
                 } else if ($startdd == 1) {
                     if ($d == $ddtag) {

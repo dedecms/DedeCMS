@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: config.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: config.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 //针对会员中心操作进行XSS过滤
@@ -93,10 +93,9 @@ require_once DEDEINC . '/dedetemplate.class.php';
 function CheckCSRF()
 {
     $cc_csrf_token_check = GetCookie("dede_csrf_token");
-    if (
-        !(isset($_POST['_csrf_token'], $cc_csrf_token_check)
-            && is_string($_POST['_csrf_token']) && is_string($cc_csrf_token_check)
-            && hash_equals($_POST['_csrf_token'], $cc_csrf_token_check))
+    if (!(isset($_POST['_csrf_token'], $cc_csrf_token_check)
+        && is_string($_POST['_csrf_token']) && is_string($cc_csrf_token_check)
+        && hash_equals($_POST['_csrf_token'], $cc_csrf_token_check))
     ) {
         ShowMsg('CSRF校验失败，请刷新页面重新提交', '-1');
         exit();
@@ -156,10 +155,10 @@ if ($cfg_ml->IsLogin()) {
 /**
  *  检查用户是否有权限进行某个操作
  *
- * @param     int  $rank  权限值
- * @param     int  $money  金币
- * @param     bool  $needinfo  是否需要填写详细信息
- * @return    void
+ * @param  int  $rank     权限值
+ * @param  int  $money    金币
+ * @param  bool $needinfo 是否需要填写详细信息
+ * @return void
  */
 function CheckRank($rank = 0, $money = 0, $needinfo = true)
 {
@@ -212,9 +211,9 @@ function CheckRank($rank = 0, $money = 0, $needinfo = true)
 /**
  *  更新文档统计
  *
- * @access    public
- * @param     int  $channelid  频道模型id
- * @return    string
+ * @access public
+ * @param  int $channelid 频道模型id
+ * @return string
  */
 function countArchives($channelid)
 {

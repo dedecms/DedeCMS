@@ -2,13 +2,13 @@
 /**
  * 系统配置
  *
- * @version        $Id: sys_info.php 1 22:28 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_info.php 1 22:28 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Edit');
@@ -138,8 +138,8 @@ EOT;
       <tr align="center" height="25" bgcolor="<?php echo $bgcolor ?>">
        <td width="300"><?php echo $row['info']; ?>： </td>
        <td align="left" style="padding:3px;">
-<?php
-if ($row['type'] == 'bool') {
+            <?php
+            if ($row['type'] == 'bool') {
                 $c1 = '';
                 $c2 = '';
                 $row['value'] == 'Y' ? $c1 = " checked" : $c2 = " checked";
@@ -156,12 +156,12 @@ if ($row['type'] == 'bool') {
 </td>
        <td><?php echo $row['varname'] ?></td>
       </tr>
-      <?php
-}
+            <?php
+        }
         ?>
      </table>
-      <?php
-exit;
+        <?php
+        exit;
     }
     if ($i == 1) {
         echo '      <tr align="center" bgcolor="#FAFBFC" height="25">

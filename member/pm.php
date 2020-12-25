@@ -2,13 +2,13 @@
 /**
  * 会员短消息
  *
- * @version        $Id: pm.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: pm.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -20,14 +20,14 @@ if ($cfg_mb_lit == 'Y') {
     exit();
 }
 
-#api{{
+// api{{
 if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
     if ($data = uc_get_user($cfg_ml->M_LoginID)) {
         uc_pm_location($data[0]);
     }
 
 }
-#/aip}}
+// /aip}}
 
 if (!isset($dopost)) {
     $dopost = '';
@@ -39,7 +39,10 @@ $state = (empty($state)) ? "" : $state;
 function __send(){  }
 ----------------------*/
 if ($dopost == 'send') {
-    /** 好友记录 **/
+    /**
+* 
+ * 好友记录 
+**/
     $sql = "SELECT * FROM `#@__member_friends` WHERE  mid='{$cfg_ml->M_ID}' AND ftype!='-1'  ORDER BY addtime DESC LIMIT 20";
     $friends = array();
     $dsql->SetQuery($sql);
@@ -157,7 +160,7 @@ else {
     if (!isset($folder)) {
         $folder = 'inbox';
     }
-    require_once DEDEINC . "/datalistcp.class.php";
+    include_once DEDEINC . "/datalistcp.class.php";
     $wsql = '';
     if ($folder == 'outbox') {
         $wsql = " `fromid`='{$cfg_ml->M_ID}' AND folder LIKE 'outbox' ";

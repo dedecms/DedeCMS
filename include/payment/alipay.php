@@ -1,6 +1,10 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 支付宝接口类
+ 
  */
 class Alipay
 {
@@ -8,43 +12,57 @@ class Alipay
     public $mid;
     public $return_url = "/plus/carbuyaction.php?dopost=return";
     /**
+     * 
+     * 
      * 构造函数
      *
-     * @access  public
+     * @access public
      * @param
      *
      * @return void
+     
      */
     public function Alipay()
     {
         global $dsql;
         $this->dsql = $dsql;
+    
     }
 
     public function __construct()
     {
         $this->Alipay();
+    
     }
 
     /**
+     * 
+     * 
      *  设定接口会送地址
      *
      *  例如: $this->SetReturnUrl($cfg_basehost."/tuangou/control/index.php?ac=pay&orderid=".$p2_Order)
      *
-     * @param     string  $returnurl  会送地址
-     * @return    void
+     * @param  string $returnurl 会送地址
+     * @return void
+     
      */
     public function SetReturnUrl($returnurl = '')
     {
         if (!empty($returnurl)) {
             $this->return_url = $returnurl;
+        
         }
+    
     }
 
     /**
+     * 
+     * 
      * 生成支付代码
-     * @param   array   $order      订单信息
-     * @param   array   $payment    支付方式信息
+     *
+     * @param array $order   订单信息
+     * @param array $payment 支付方式信息
+     *                       
      */
     public function GetCode($order, $payment)
     {
@@ -53,20 +71,25 @@ class Alipay
         //对于二级目录的处理
         if (!empty($cfg_cmspath)) {
             $cfg_basehost = $cfg_basehost . '/' . $cfg_cmspath;
+        
         }
 
         $real_method = $payment['alipay_pay_method'];
 
         switch ($real_method) {
-            case '0':
-                $service = 'trade_create_by_buyer';
-                break;
-            case '1':
-                $service = 'create_partner_trade_by_buyer';
-                break;
-            case '2':
-                $service = 'create_direct_pay_by_user';
-                break;
+        case '0':
+            $service = 'trade_create_by_buyer';
+                
+            break;
+        case '1':
+            $service = 'create_partner_trade_by_buyer';
+                
+            break;
+        case '2':
+            $service = 'create_direct_pay_by_user';
+                
+            break;
+        
         }
         $agent = 'C4335994340215837114';
         $parameter = array(
@@ -100,6 +123,7 @@ class Alipay
         foreach ($parameter as $key => $val) {
             $param .= "$key=" . urlencode($val) . "&";
             $sign .= "$key=$val&";
+        
         }
 
         $param = substr($param, 0, -1);
@@ -108,26 +132,32 @@ class Alipay
         $button = '<div style="text-align:center"><input type="button" onclick="window.open(\'https://www.alipay.com/cooperate/gateway.do?' . $param . '&sign=' . md5($sign) . '&sign_type=MD5\')" value="立即使用alipay支付宝支付"/></div>';
 
         /* 清空购物车 */
-        require_once DEDEINC . '/shopcar.class.php';
+        include_once DEDEINC . '/shopcar.class.php';
         $cart = new MemberShops();
         $cart->clearItem();
         $cart->MakeOrders();
         return $button;
+    
     }
 
     /**
+     * 
+     * 
      * 响应操作
+     
      */
     public function respond()
     {
         if (!empty($_POST)) {
             foreach ($_POST as $key => $data) {
                 $_GET[$key] = $data;
+            
             }
+        
         }
         /* 引入配置文件 */
         $code = preg_replace("#[^0-9a-z-]#i", "", $_GET['code']);
-        require_once DEDEDATA . '/payment/' . $code . '.php';
+        include_once DEDEDATA . '/payment/' . $code . '.php';
 
         /* 取得订单号 */
         $order_sn = trim(addslashes($_GET['out_trade_no']));
@@ -137,16 +167,20 @@ class Alipay
             $row = $this->dsql->GetOne("SELECT * FROM #@__shops_orders WHERE oid = '{$order_sn}'");
             if ($row['priceCount'] != $_GET['total_fee']) {
                 return $msg = "支付失败，支付金额与商品总价不相符!";
+            
             }
             $this->mid = $row['userid'];
             $ordertype = "goods";
+        
         } else if (preg_match("/M[0-9]+T[0-9]+RN[0-9]/", $order_sn)) {
             $row = $this->dsql->GetOne("SELECT * FROM #@__member_operation WHERE buyid = '{$order_sn}'");
             //获取订单信息，检查订单的有效性
             if (!is_array($row) || $row['sta'] == 2) {
                 return $msg = "您的订单已经处理，请不要重复提交!";
+            
             } elseif ($row['money'] != $_GET['total_fee']) {
                 return $msg = "支付失败，支付金额与商品总价不相符!";
+            
             }
 
             $ordertype = "member";
@@ -154,8 +188,10 @@ class Alipay
             $pname = $row['pname'];
             $pid = $row['pid'];
             $this->mid = $row['mid'];
+        
         } else {
             return $msg = "支付失败，您的订单号有问题！";
+        
         }
 
         /* 检查数字签名是否正确 */
@@ -166,31 +202,41 @@ class Alipay
         foreach ($_GET as $key => $val) {
             if ($key != 'sign' && $key != 'sign_type' && $key != 'code' && $key != 'dopost') {
                 $sign .= "$key=$val&";
+            
             }
+        
         }
 
         $sign = substr($sign, 0, -1) . $payment['alipay_key'];
 
         if (md5($sign) != $_GET['sign']) {
             return $msg = "支付失败!";
+        
         }
 
         if ($_GET['trade_status'] == 'TRADE_FINISHED' || $_GET['trade_status'] == 'WAIT_SELLER_SEND_GOODS' || $_GET['trade_status'] == 'TRADE_SUCCESS') {
             if ($ordertype == "goods") {
                 if ($this->success_db($order_sn)) {
                     return $msg = "支付成功!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                
                 } else {
                     return $msg = "支付失败！<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                
                 }
 
+            
             } else if ($ordertype == "member") {
                 $oldinf = $this->success_mem($order_sn, $pname, $product, $pid);
                 return $msg = "<font color='red'>" . $oldinf . "</font><br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+            
             }
+        
         } else {
             $this->log_result("verify_failed");
             return $msg = "支付失败！<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+        
         }
+    
     }
 
     /*处理物品交易*/
@@ -200,16 +246,20 @@ class Alipay
         $row = $this->dsql->GetOne("SELECT state FROM #@__shops_orders WHERE oid='$order_sn' ");
         if ($row['state'] > 0) {
             return true;
+        
         }
         /* 改变订单状态_支付成功 */
         $sql = "UPDATE `#@__shops_orders` SET `state`='1' WHERE `oid`='$order_sn' AND `userid`='" . $this->mid . "'";
         if ($this->dsql->ExecuteNoneQuery($sql)) {
             $this->log_result("verify_success,订单号:" . $order_sn); //将验证结果存入文件
             return true;
+        
         } else {
             $this->log_result("verify_failed,订单号:" . $order_sn); //将验证结果存入文件
             return false;
+        
         }
+    
     }
 
     /*处理点卡，会员升级*/
@@ -228,21 +278,26 @@ class Alipay
                 $dnum = $nrow['num'];
                 $sql1 = "UPDATE `#@__member` SET `money`=money+'{$nrow['num']}' WHERE `mid`='" . $this->mid . "'";
                 $oldinf = "已经充值了" . $nrow['num'] . "金币到您的帐号！";
+            
             } else {
                 $cardid = $row['cardid'];
                 $sql1 = " UPDATE #@__moneycard_record SET uid='" . $this->mid . "',isexp='1',utime='" . time() . "' WHERE cardid='$cardid' ";
                 $oldinf = '您的充值密码是：<font color="green">' . $cardid . '</font>';
+            
             }
             //更新交易状态为已关闭
             $sql2 = " UPDATE #@__member_operation SET sta=2,oldinfo='$oldinf' WHERE buyid='$order_sn'";
             if ($this->dsql->ExecuteNoneQuery($sql1) && $this->dsql->ExecuteNoneQuery($sql2)) {
                 $this->log_result("verify_success,订单号:" . $order_sn); //将验证结果存入文件
                 return $oldinf;
+            
             } else {
                 $this->log_result("verify_failed,订单号:" . $order_sn); //将验证结果存入文件
                 return "支付失败！";
+            
             }
             /* 改变会员订单状态_支付成功 */
+        
         } else if ($product == "member") {
             $row = $this->dsql->GetOne("SELECT rank,exptime FROM #@__member_type WHERE aid='$pid' ");
             $rank = $row['rank'];
@@ -253,6 +308,7 @@ class Alipay
                 $nowtime = time();
                 $mhasDay = $rs['exptime'] - ceil(($nowtime - $rs['uptime']) / 3600 / 24) + 1;
                 $mhasDay = ($mhasDay > 0) ? $mhasDay : 0;
+            
             }
             //获取会员默认级别的金币和积分数
             $memrank = $this->dsql->GetOne("SELECT money,scores FROM #@__arcrank WHERE rank='$rank'");
@@ -265,11 +321,15 @@ class Alipay
             if ($this->dsql->ExecuteNoneQuery($sql1) && $this->dsql->ExecuteNoneQuery($sql2)) {
                 $this->log_result("verify_success,订单号:" . $order_sn); //将验证结果存入文件
                 return "会员升级成功！";
+            
             } else {
                 $this->log_result("verify_failed,订单号:" . $order_sn); //将验证结果存入文件
                 return "会员升级失败！";
+            
             }
+        
         }
+    
     }
 
     public function log_result($word)
@@ -280,5 +340,7 @@ class Alipay
         fwrite($fp, $word . ",执行日期:" . strftime("%Y-%m-%d %H:%I:%S", time()) . "\r\n");
         flock($fp, LOCK_UN);
         fclose($fp);
+    
     }
+
 } //End API

@@ -3,13 +3,13 @@
 /**
  * 文件上传安全校验方法
  *
- * @version        $Id: uploadsafe.inc.php 1 15:59 2020年8月19日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: uploadsafe.inc.php 1 15:59 2020年8月19日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 if (!defined('DEDEINC')) {
     exit('Request Error!');
@@ -23,9 +23,8 @@ if (isset($_FILES['GLOBALS'])) {
 //这里强制限定的某些文件类型禁止上传
 $cfg_not_allowall = "php|pl|cgi|asp|aspx|jsp|php3|shtm|shtml";
 $keyarr = array('name', 'type', 'tmp_name', 'size');
-if (
-    ($GLOBALS['cfg_html_editor'] == 'ckeditor' ||
-        $GLOBALS['cfg_html_editor'] == 'ckeditor4') && isset($_FILES['upload'])
+if (($GLOBALS['cfg_html_editor'] == 'ckeditor' 
+    || $GLOBALS['cfg_html_editor'] == 'ckeditor4') && isset($_FILES['upload'])
 ) {
     $_FILES['imgfile'] = $_FILES['upload'];
     $CKUpload = true;

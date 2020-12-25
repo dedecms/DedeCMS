@@ -275,8 +275,10 @@ class QRspec
         array(24, 50), array(28, 54), array(32, 58), array(26, 54), array(30, 58), //35-40
     );
 
-    /** --------------------------------------------------------------------
+    /**
+     * --------------------------------------------------------------------
      * Put an alignment marker.
+     *
      * @param frame
      * @param width
      * @param ox,oy center coordinate of the pattern
@@ -391,8 +393,10 @@ class QRspec
 
     public static $frames = array();
 
-    /** --------------------------------------------------------------------
+    /**
+     * --------------------------------------------------------------------
      * Put a finder pattern.
+     *
      * @param frame
      * @param width
      * @param ox,oy upper-left coordinate of the pattern
@@ -507,9 +511,9 @@ class QRspec
                     .m { background-color: white; }
                 </style>
                 <?php
-echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-            echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
-            echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
+                echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                echo join("<br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $frame);
+                echo '</tt></pre><br/ ><br/ ><br/ ><br/ ><br/ ><br/ >';
 
         } else {
 
@@ -539,9 +543,9 @@ echo '<pre><tt><br/ ><br/ ><br/ >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
                     .f { background-color: gold; }
                 </style>
                 <?php
-echo "<pre><tt>";
-            echo join("<br/ >", $frame);
-            echo "</tt></pre>";
+                echo "<pre><tt>";
+                echo join("<br/ >", $frame);
+                echo "</tt></pre>";
 
         }
     }
@@ -590,22 +594,40 @@ echo "<pre><tt>";
 
     //----------------------------------------------------------------------
     public static function rsBlockNum($spec)
-    {return $spec[0] + $spec[3];}
+    {
+        return $spec[0] + $spec[3];
+    }
     public static function rsBlockNum1($spec)
-    {return $spec[0];}
+    {
+        return $spec[0];
+    }
     public static function rsDataCodes1($spec)
-    {return $spec[1];}
+    {
+        return $spec[1];
+    }
     public static function rsEccCodes1($spec)
-    {return $spec[2];}
+    {
+        return $spec[2];
+    }
     public static function rsBlockNum2($spec)
-    {return $spec[3];}
+    {
+        return $spec[3];
+    }
     public static function rsDataCodes2($spec)
-    {return $spec[4];}
+    {
+        return $spec[4];
+    }
     public static function rsEccCodes2($spec)
-    {return $spec[2];}
+    {
+        return $spec[2];
+    }
     public static function rsDataLength($spec)
-    {return ($spec[0] * $spec[1]) + ($spec[3] * $spec[4]);}
+    {
+        return ($spec[0] * $spec[1]) + ($spec[3] * $spec[4]);
+    }
     public static function rsEccLength($spec)
-    {return ($spec[0] + $spec[3]) * $spec[2];}
+    {
+        return ($spec[0] + $spec[3]) * $spec[2];
+    }
 
 }

@@ -2,13 +2,13 @@
 /**
  * 友情链接添加
  *
- * @version        $Id: friendlink_add.php 1 10:59 2010年7月13日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: friendlink_add.php 1 10:59 2010年7月13日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('plus_友情链接模块');
@@ -19,7 +19,7 @@ if (empty($dopost)) {
 if ($dopost == "add") {
     $dtime = time();
     if (is_uploaded_file($logoimg)) {
-        $names = split("\.", $logoimg_name);
+        $names = sexplode("\.", $logoimg_name);
         $shortname = "." . $names[count($names) - 1];
         if (!preg_match("#(jpg|gif|png)$#", $shortname)) {
             $shortname = '.gif';

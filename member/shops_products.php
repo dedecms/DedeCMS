@@ -2,16 +2,16 @@
 /**
  * 商铺商品
  *
- * @version        $Id:shops_products.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id:shops_products.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
-include_once DEDEINC . '/datalistcp.class.php';
+require_once DEDEINC . '/datalistcp.class.php';
 $menutype = 'mydede';
 $menutype_son = 'op';
 if (!isset($dopost)) {
@@ -80,9 +80,9 @@ if ($dopost == '') {
 /**
  *  获取状态
  *
- * @param     string  $sta  状态ID
- * @param     string  $oid  订单ID
- * @return    string
+ * @param  string $sta 状态ID
+ * @param  string $oid 订单ID
+ * @return string
  */
 function GetSta($sta, $oid)
 {
@@ -103,8 +103,8 @@ function GetSta($sta, $oid)
 /**
  *  购物车时间
  *
- * @param     string  $oid  订单ID
- * @return    string
+ * @param  string $oid 订单ID
+ * @return string
  */
 function carTime($oid)
 {

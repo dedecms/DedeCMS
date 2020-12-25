@@ -1,17 +1,21 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 文档验证
  *
- * @version        $Id: archives_check.php 1 13:52 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
-include_once DEDEINC . '/image.func.php';
-include_once DEDEINC . '/oxwindow.class.php';
+ * @version   $Id: archives_check.php 1 13:52 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
+require_once DEDEINC . '/image.func.php';
+require_once DEDEINC . '/oxwindow.class.php';
 
 $svali = GetCkVdValue();
 if (preg_match("/3/", $safe_gdopen)) {
@@ -19,7 +23,9 @@ if (preg_match("/3/", $safe_gdopen)) {
         ResetVdValue();
         ShowMsg('验证码错误！', '-1');
         exit();
+    
     }
+
 }
 
 // 校验CSRF
@@ -31,7 +37,9 @@ if ($safe_faq_send == '1') {
     if ($safefaqs[$faqkey]['answer'] != $safeanswer || $safeanswer == '') {
         ShowMsg('验证问题答案错误', '-1');
         exit();
+    
     }
+
 }
 
 $flag = '';
@@ -41,6 +49,7 @@ $userip = GetIP();
 if ($typeid == 0) {
     ShowMsg('请指定文档隶属的栏目！', '-1');
     exit();
+
 }
 
 $query = "Select tp.ispart,tp.channeltype,tp.issend,ch.issend as cissend,ch.sendrank,ch.arcsta,ch.addtable,ch.fieldset,ch.usertype
@@ -51,6 +60,7 @@ $cInfos = $dsql->GetOne($query);
 if ($cInfos['issend'] != 1 || $cInfos['ispart'] != 0 || $cInfos['channeltype'] != $channelid || $cInfos['cissend'] != 1) {
     ShowMsg("你所选择的栏目不支持投稿！", "-1");
     exit();
+
 }
 
 //检查频道设定的投稿许可权限
@@ -58,23 +68,28 @@ if ($cInfos['sendrank'] > $cfg_ml->M_Rank) {
     $row = $dsql->GetOne("Select membername From #@__arcrank where rank='" . $cInfos['sendrank'] . "' ");
     ShowMsg("对不起，需要[" . $row['membername'] . "]才能在这个频道发布文档！", "-1", "0", 5000);
     exit();
+
 }
 
 if ($cInfos['usertype'] != '' && $cInfos['usertype'] != $cfg_ml->M_MbType) {
     ShowMsg("对不起，需要[" . $cInfos['usertype'] . "]才能在这个频道发布文档！", "-1", "0", 5000);
     exit();
+
 }
 
 //文档的默认状态
 if ($cInfos['arcsta'] == 0) {
     $ismake = 0;
     $arcrank = 0;
+
 } else if ($cInfos['arcsta'] == 1) {
     $ismake = -1;
     $arcrank = 0;
+
 } else {
     $ismake = 0;
     $arcrank = -1;
+
 }
 
 //对保存的内容进行处理
@@ -85,6 +100,7 @@ $title = cn_substrR(HtmlReplace($title, 1), $cfg_title_maxlen);
 $writer = cn_substrR(HtmlReplace($writer, 1), 20);
 if (empty($description)) {
     $description = '';
+
 }
 
 $description = cn_substrR(HtmlReplace($description, 1), 250);
@@ -97,5 +113,7 @@ if ($cfg_mb_cktitle == 'Y') {
     if (is_array($row)) {
         ShowMsg("对不起，请不要发布重复文档！", "-1", "0", 5000);
         exit();
+    
     }
+
 }

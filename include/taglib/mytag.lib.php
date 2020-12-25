@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 自定义宏标记调用标签
  *
- * @version        $Id: mytag.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mytag.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -34,17 +38,20 @@ function lib_mytag(&$ctag, &$refObj)
 
     if (trim($ismake) == '') {
         $ismake = 'no';
+    
     }
 
     $body = lib_GetMyTagT($refObj, $typeid, $name, '#@__mytag');
     //编译
     if ($ismake == 'yes') {
-        require_once DEDEINC . '/arc.partview.class.php';
+        include_once DEDEINC . '/arc.partview.class.php';
         $pvCopy = new PartView($typeid);
         $pvCopy->SetTemplet($body, "string");
         $body = $pvCopy->GetResult();
+    
     }
     return $body;
+
 }
 
 function lib_GetMyTagT(&$refObj, $typeid, $tagname, $tablename)
@@ -52,33 +59,42 @@ function lib_GetMyTagT(&$refObj, $typeid, $tagname, $tablename)
     global $dsql;
     if ($tagname == '') {
         return '';
+    
     }
 
     if (trim($typeid) == '') {
         $typeid = 0;
+    
     }
 
     if (!empty($refObj->Fields['typeid']) && $typeid == 0) {
         $typeid = $refObj->Fields['typeid'];
+    
     }
 
     $typesql = $row = '';
     if ($typeid > 0) {
         $typesql = " And typeid IN(0," . GetTopids($typeid) . ") ";
+    
     }
 
     $row = $dsql->GetOne(" SELECT * FROM $tablename WHERE tagname LIKE '$tagname' $typesql ORDER BY typeid DESC ");
     if (!is_array($row)) {
         return '';
+    
     }
 
     $nowtime = time();
     if ($row['timeset'] == 1
-        && ($nowtime < $row['starttime'] || $nowtime > $row['endtime'])) {
+        && ($nowtime < $row['starttime'] || $nowtime > $row['endtime'])
+    ) {
         $body = $row['expbody'];
+    
     } else {
         $body = $row['normbody'];
+    
     }
 
     return $body;
+
 }

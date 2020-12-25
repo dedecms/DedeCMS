@@ -2,13 +2,13 @@
 /**
  * 文档随机模板
  *
- * @version        $Id: article_template_rand.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: article_template_rand.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 require_once DEDEINC . '/oxwindow.class.php';
@@ -40,7 +40,7 @@ else if ($dopost == 'makeold') {
         echo "配置文件不存在！";
         exit();
     }
-    require_once $m_file;
+    include_once $m_file;
     if ($cfg_tamplate_rand == 0) {
         AjaxHead();
         echo "系统没开启允许随机模板的选项！";

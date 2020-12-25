@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 分类信息的地区与小分类搜索
  *
- * @version        $Id: infoguide.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: infoguide.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -39,14 +43,18 @@ function lib_infoguide(&$ctag, &$refObj)
         $typeid = (is_array($row) ? $row['id'] : 0);
         if (empty($typeid)) {
             return '请指定一个栏目类型为“分类信息”，否则无法使用这个搜索表单！';
+        
         }
+    
     } else {
         $typeid = $refObj->Fields['typeid'];
+    
     }
 
     $innerText = trim($ctag->GetInnerText());
     if (empty($innerText)) {
         $innerText = GetSysTemplets("info_guide.htm");
+    
     }
 
     $ctp = new DedeTagParse();
@@ -60,16 +68,19 @@ function lib_infoguide(&$ctag, &$refObj)
     if ($hasSetEnumJs != 'has') {
         $revalue .= '<script language="javascript" type="text/javascript" src="' . $cfg_mainsite . $cmspath . 'resources/pkg/other/enums.js"></script>' . "\r\n";
         $GLOBALS['hasSetEnumJs'] = 'hasset';
+    
     }
 
     $fields['nativeplace'] = $fields['infotype'] = '';
 
     if (empty($nativeplace)) {
         $nativeplace = 0;
+    
     }
 
     if (empty($infotype)) {
         $infotype = 0;
+    
     }
 
     $fields['nativeplace'] .= "<input type='hidden' id='hidden_nativeplace' name='nativeplace' value='{$nativeplace}' />\r\n";
@@ -88,10 +99,14 @@ function lib_infoguide(&$ctag, &$refObj)
         foreach ($ctp->CTags as $tagid => $ctag) {
             if (isset($fields[$ctag->GetName()])) {
                 $ctp->Assign($tagid, $fields[$ctag->GetName()]);
+            
             }
+        
         }
         $revalue .= $ctp->GetResult();
+    
     }
 
     return $revalue;
+
 }

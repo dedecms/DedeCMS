@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 自定义标签js调用方式
  *
- * @version        $Id: mytag_js.php 1 20:55 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: mytag_js.php 1 20:55 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/../include/common.inc.php';
 require_once DEDEINC . '/arc.partview.class.php';
@@ -49,10 +48,10 @@ if (isset($nocache) || !file_exists($cacheFile) || time() - filemtime($cacheFile
         $myvalues = "<!--\r\ndocument.write(\"{$myvalues}\");\r\n-->\r\n";
         file_put_contents($cacheFile, $myvalues);
         /* 使用 file_put_contents替换下列代码提高执行效率
-    $fp = fopen($cacheFile, 'w');
-    fwrite($fp, $myvalues);
-    fclose($fp);
-     */
+        $fp = fopen($cacheFile, 'w');
+        fwrite($fp, $myvalues);
+        fclose($fp);
+        */
     }
 }
-include $cacheFile;
+require $cacheFile;

@@ -12,13 +12,13 @@
  * $config['password'] = 'your-password';
  * $config['debug'] = TRUE;
  *
- * @version        $Id: ftp.class.php 1 2010-07-05 11:43:09 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: ftp.class.php 1 2010-07-05 11:43:09 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 @set_time_limit(1000);
 class FTP
@@ -51,9 +51,9 @@ class FTP
     /**
      * 初始化设置
      *
-     * @access    public
-     * @param    array
-     * @return    void
+     * @access public
+     * @param  array
+     * @return void
      */
     public function initialize($config = array())
     {
@@ -70,9 +70,9 @@ class FTP
     /**
      * FTP 链接
      *
-     * @access    public
-     * @param    array     链接值
-     * @return    bool
+     * @access public
+     * @param  array     链接值
+     * @return bool
      */
     public function connect($config = array())
     {
@@ -105,8 +105,8 @@ class FTP
     /**
      * FTP 登录
      *
-     * @access    private
-     * @return    bool
+     * @access private
+     * @return bool
      */
     public function _login()
     {
@@ -116,8 +116,8 @@ class FTP
     /**
      * 验证连接ID
      *
-     * @access    private
-     * @return    bool
+     * @access private
+     * @return bool
      */
     public function _is_conn()
     {
@@ -137,10 +137,10 @@ class FTP
      * 抛出一个错误。没有什么的FTP相当于is_dir()
      * 因此，我们试图改变某一特定目录。
      *
-     * @access    public
-     * @param    string
-     * @param    bool
-     * @return    bool
+     * @access public
+     * @param  string
+     * @param  bool
+     * @return bool
      */
     public function changedir($path = '', $supress_debug = false)
     {
@@ -163,9 +163,9 @@ class FTP
     /**
      * 创建一个目录
      *
-     * @access    public
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @return bool
      */
     public function mkdir($path = '', $permissions = null)
     {
@@ -193,9 +193,9 @@ class FTP
     /**
      * 创建深级目录
      *
-     * @access    public
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @return bool
      */
     public function rmkdir($path = '', $pathsymbol = '/')
     {
@@ -223,11 +223,11 @@ class FTP
     /**
      * 上传一个文件到服务器
      *
-     * @access    public
-     * @param    string
-     * @param    string
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @param  string
+     * @param  string
+     * @return bool
      */
     public function upload($locpath, $rempath, $mode = 'auto', $permissions = null)
     {
@@ -269,11 +269,11 @@ class FTP
     /**
      * 重命名(或者移动)一个文件
      *
-     * @access    public
-     * @param    string
-     * @param    string
-     * @param    bool
-     * @return    bool
+     * @access public
+     * @param  string
+     * @param  string
+     * @param  bool
+     * @return bool
      */
     public function rename($old_file, $new_file, $move = false)
     {
@@ -298,10 +298,10 @@ class FTP
     /**
      * 移动一个文件
      *
-     * @access    public
-     * @param    string
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @param  string
+     * @return bool
      */
     public function move($old_file, $new_file)
     {
@@ -311,9 +311,9 @@ class FTP
     /**
      * 重命名或者移动一个文件
      *
-     * @access    public
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @return bool
      */
     public function delete_file($filepath)
     {
@@ -336,9 +336,9 @@ class FTP
     /**
      * 删除一个文件夹，递归删除一切（包括子文件夹）中内容
      *
-     * @access    public
-     * @param    string
-     * @return    bool
+     * @access public
+     * @param  string
+     * @return bool
      */
     public function delete_dir($filepath)
     {
@@ -376,10 +376,10 @@ class FTP
     /**
      * 设置文件权限
      *
-     * @access    public
-     * @param    string     文件地址
-     * @param    string    权限
-     * @return    bool
+     * @access public
+     * @param  string     文件地址
+     * @param  string    权限
+     * @return bool
      */
     public function chmod($path, $perm)
     {
@@ -410,8 +410,8 @@ class FTP
     /**
      * 在指定的目录的FTP文件列表
      *
-     * @access    public
-     * @return    array
+     * @access public
+     * @return array
      */
     public function list_files($path = '.')
     {
@@ -425,8 +425,8 @@ class FTP
     /**
      * 返回指定目录下文件的详细列表
      *
-     * @access    public
-     * @return    array
+     * @access public
+     * @return array
      */
     public function list_rawfiles($path = '.', $type = 'dir')
     {
@@ -469,10 +469,10 @@ class FTP
      * 检索一个本地目录下的所有内容(包括子目录和所有文件)，并通过FTP为这个目录创建一份镜像。
      * 源路径下的任何结构都会被创建到服务器上。你必须给出源路径和目标路径
      *
-     * @access    public
-     * @param    string    含有尾随"/"的源路径
-     * @param    string    目标路径 - 含有尾随"/"的文件夹
-     * @return    bool
+     * @access public
+     * @param  string    含有尾随"/"的源路径
+     * @param  string    目标路径 - 含有尾随"/"的文件夹
+     * @return bool
      */
     public function mirror($locpath, $rempath)
     {
@@ -511,9 +511,9 @@ class FTP
     /**
      * 取出文件扩展名
      *
-     * @access    private
-     * @param    string
-     * @return    string
+     * @access private
+     * @param  string
+     * @return string
      */
     public function _getext($filename)
     {
@@ -528,9 +528,9 @@ class FTP
     /**
      * 设置上传类型
      *
-     * @access    private
-     * @param    string
-     * @return    string
+     * @access private
+     * @param  string
+     * @return string
      */
     public function _settype($ext)
     {
@@ -556,10 +556,10 @@ class FTP
     /**
      * 关闭连接
      *
-     * @access    public
-     * @param    string    源路径
-     * @param    string    目的地路径
-     * @return    bool
+     * @access public
+     * @param  string    源路径
+     * @param  string    目的地路径
+     * @return bool
      */
     public function close()
     {
@@ -573,9 +573,9 @@ class FTP
     /**
      * 显示错误信息
      *
-     * @access    private
-     * @param    string
-     * @return    bool
+     * @access private
+     * @param  string
+     * @return bool
      */
     public function _error($msg)
     {
@@ -600,8 +600,8 @@ class FTP
     /**
      * 获得当前的脚本网址
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetCurUrl()
     {

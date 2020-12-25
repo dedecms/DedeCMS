@@ -1,21 +1,26 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 专题主题调用标签
  *
- * @version        $Id: arclist.lib.php 2 8:29 2010年7月8日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arclist.lib.php 2 8:29 2010年7月8日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname = '')
 {
-    require_once DEDEINC . '/taglib/arclist.lib.php';
+    include_once DEDEINC . '/taglib/arclist.lib.php';
     if ($noteinfo == '') {
         return '';
+    
     }
 
     $noteid = $arcTag->GetAtt('noteid');
@@ -29,6 +34,7 @@ function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname = '')
             //指定名称的专题节点
             if ($noteid != '' && $ctag->GetAtt('noteid') != $noteid) {
                 continue;
+            
             }
             $isauto = $ctag->GetAtt('isauto');
             $idlist = trim($ctag->GetAtt('idlist'));
@@ -37,6 +43,7 @@ function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname = '')
             $stypeid = 0;
             if (empty($rownum)) {
                 $rownum = 40;
+            
             }
 
             //通过关键字和栏目ID自动获取模式
@@ -44,12 +51,12 @@ function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname = '')
                 $idlist = '';
                 $keywords = trim($ctag->GetAtt('keywords'));
                 $stypeid = $ctag->GetAtt('typeid');
+            
             }
 
             $listTemplet = trim($ctag->GetInnerText()) != '' ? $ctag->GetInnerText() : GetSysTemplets('spec_arclist.htm');
 
-            $idvalue = lib_arclistDone
-                (
+            $idvalue = lib_arclistDone(
                 $refObj, $ctag, $stypeid, $rownum, $ctag->GetAtt('col'), $ctag->GetAtt('titlelen'), $ctag->GetAtt('infolen'),
                 $ctag->GetAtt('imgwidth'), $ctag->GetAtt('imgheight'), 'all', 'default', $keywords, $listTemplet, 0, $idlist,
                 $ctag->GetAtt('channel'), '', $ctag->GetAtt('att')
@@ -59,10 +66,14 @@ function ch_specialtopic($noteinfo, $arcTag, $refObj, $fname = '')
             $rvalue .= $notestr;
             if ($noteid != '' && $ctag->GetAtt('noteid') == $noteid) {
                 break;
+            
             }
 
+        
         }
+    
     }
     $dtp->Clear();
     return $rvalue;
+
 }

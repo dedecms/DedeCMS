@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: common.inc.php 3 17:44 2010-11-23  $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: common.inc.php 3 17:44 2010-11-23  $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 // 生产环境使用production
@@ -30,29 +30,6 @@ define('DEDEAPPTPL', './templates');
 
 define('DEBUG_LEVEL', false);
 
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    set_magic_quotes_runtime(0);
-}
-
-if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
-    if (!function_exists('session_register')) {
-        function session_register()
-        {
-            $args = func_get_args();
-            foreach ($args as $key) {
-                $_SESSION[$key] = $GLOBALS[$key];
-            }
-        }
-        function session_is_registered($key)
-        {
-            return isset($_SESSION[$key]);
-        }
-        function session_unregister($key)
-        {
-            unset($_SESSION[$key]);
-        }
-    }
-}
 
 //是否启用mb_substr替换cn_substr来提高效率
 $cfg_is_mb = $cfg_is_iconv = false;
@@ -150,7 +127,7 @@ if (is_writeable($sessSavePath) && is_readable($sessSavePath)) {
 
 //转换上传的文件相关的变量及安全处理、并引用前台通用的上传函数
 if ($_FILES) {
-    require_once DEDEINC . '/uploadsafe.inc.php';
+    include_once DEDEINC . '/uploadsafe.inc.php';
 }
 
 //数据库配置文件
@@ -162,7 +139,7 @@ if (!isset($cfg_dbtype)) {
 
 //载入系统验证安全配置
 if (file_exists(DEDEDATA . '/safe/inc_safe_config.php')) {
-    require_once DEDEDATA . '/safe/inc_safe_config.php';
+    include_once DEDEDATA . '/safe/inc_safe_config.php';
     if (!empty($safe_faqs)) {
         $safefaqs = unserialize($safe_faqs);
     }
@@ -304,20 +281,20 @@ if (!isset($cfg_NotPrintHead)) {
 
 //自动加载类库处理
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
-    require_once DEDEINC . '/autoload7.inc.php';
+    include_once DEDEINC . '/autoload7.inc.php';
 } else {
-    require_once DEDEINC . '/autoload.inc.php';
+    include_once DEDEINC . '/autoload.inc.php';
 }
 
 //引入数据库类
 if ($GLOBALS['cfg_dbtype'] == 'mysql') {
-    if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init") || !function_exists('mysql_connect')) {
-        require_once DEDEINC . '/dedesqli.class.php';
+    if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init") || !function_exists('mysqli_connect')) {
+        include_once DEDEINC . '/dedesqli.class.php';
     } else {
-        require_once DEDEINC . '/dedesql.class.php';
+        include_once DEDEINC . '/dedesql.class.php';
     }
 } else {
-    require_once DEDEINC . '/dedesqlite.class.php';
+    include_once DEDEINC . '/dedesqlite.class.php';
 }
 
 //全局常用函数
@@ -329,7 +306,7 @@ require_once DEDEINC . '/model.class.php';
 
 //载入小助手配置,并对其进行默认初始化
 if (file_exists(DEDEDATA . '/helper.inc.php')) {
-    require_once DEDEDATA . '/helper.inc.php';
+    include_once DEDEDATA . '/helper.inc.php';
     // 若没有载入配置,则初始化一个默认小助手配置
     if (!isset($cfg_helper_autoload)) {
         $cfg_helper_autoload = array('util', 'charset', 'string', 'time', 'cookie');

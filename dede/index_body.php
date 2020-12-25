@@ -2,13 +2,13 @@
 /**
  * 管理后台首页主体
  *
- * @version        $Id: index_body.php 1 11:06 2010年7月13日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: index_body.php 1 11:06 2010年7月13日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . '/config.php';
 require DEDEINC . '/image.func.php';
@@ -26,7 +26,7 @@ if (!file_exists($myIcoFile)) {
 
 //默认主页
 if (empty($dopost)) {
-    require DEDEINC . '/inc/inc_fun_funAdmin.php';
+    include DEDEINC . '/inc/inc_fun_funAdmin.php';
     $verLockFile = DEDEDATA . '/admin/ver.txt';
     $fp = fopen($verLockFile, 'r');
     $upTime = trim(fread($fp, 64));
@@ -153,8 +153,8 @@ else if ($dopost == 'editshow') {
    </tr>
   </table>
 </form>
-<?php
-exit();
+    <?php
+    exit();
 }
 /*---------------------------------
 载入右边内容
@@ -191,8 +191,8 @@ else if ($dopost == 'getRightSide') {
     <?php } ?>
     <li><span> 评论数： </span>  <?php echo $row2['dd']; ?></li>
     </ul>
-<?php
-exit();
+    <?php
+    exit();
 } else if ($dopost == 'News') {
     $query = "SELECT arc.id, arc.arcrank, arc.title, arc.channel, ch.editcon  FROM `#@__archives` arc
             LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
@@ -206,7 +206,7 @@ exit();
     ?>
     <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen" style="padding:0 24px; padding-top:24px;padding-bottom:0px;">
     <?php
-        foreach ($arcArr as $row) {
+    foreach ($arcArr as $row) {
         if (trim($row['editcon']) == '') {
             $row['editcon'] = 'archives_edit.php';
         }
@@ -217,12 +217,12 @@ exit();
 
         ?>
     <li> <?php echo $linkstr; ?></li>
-    <?php
-}
+        <?php
+    }
     ?>
     </ul>
-<?php
-exit;
+    <?php
+    exit;
 } else if ($dopost == 'showauth') {
     DedeInclude('templets/index_body_showauth.htm');
     exit;
@@ -305,14 +305,16 @@ exit;
             $fp = fsocketopen($host, $port, $errno, $errstr, $timeout);
         }
         if (!$fp) {
-            $context = stream_context_create(array(
+            $context = stream_context_create(
+                array(
                 'http' => array(
                     'method' => $post ? 'POST' : 'GET',
                     'header' => $header,
                     'content' => $content,
                     'timeout' => $timeout,
                 ),
-            ));
+                )
+            );
             $fp = @fopen($scheme . '://' . $host . ':' . $port . $path, 'b', false, $context);
             $fpflag = 1;
         }
@@ -400,8 +402,8 @@ exit;
     );
     ?>
     <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen " style="padding:0 24px; padding-top:18px;padding-bottom:0px;">
-<?php
-foreach ($seo_info as $key => $value) {
+    <?php
+    foreach ($seo_info as $key => $value) {
         if ($key == 'id' or $key == 'create_time') {
             continue;
         }
@@ -410,19 +412,19 @@ foreach ($seo_info as $key => $value) {
 
     <li>
         <span> <?php
-echo $inff[$key];
+        echo $inff[$key];
         ?>
         ： </span>  <?php
         echo $value;
         ?>
 
     </li>
-<?php
-}
+        <?php
+    }
     ?>
 
     </ul>
-<?php
+    <?php
 
     exit;
 }

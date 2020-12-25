@@ -2,13 +2,13 @@
 /**
  * 数据表信息查看
  *
- * @version        $Id: sys_sql_info.php 1 22:28 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_sql_info.php 1 22:28 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Data');
@@ -110,11 +110,11 @@ class MakeDBDocument
         $namehtml = $tablehtml = '';
         $this->dsql->Execute('me', ' SHOW TABLES; ');
         if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-            define("MYSQL_NUM", MYSQLI_NUM);
+            define("MYSQLI_NUM", MYSQLI_NUM);
         }
-        while ($row = $this->dsql->GetArray('me', MYSQL_NUM)) {
+        while ($row = $this->dsql->GetArray('me', MYSQLI_NUM)) {
             $this->dsql->Execute('dd', " Show CREATE TABLE `{$row[0]}` ");
-            $row2 = $this->dsql->GetArray('dd', MYSQL_NUM);
+            $row2 = $this->dsql->GetArray('dd', MYSQLI_NUM);
 
             if ($type == '') {
                 if (preg_match("/^cms_/", $row[0])) {

@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 单页文档调用标签
  *
- * @version        $Id: likesgpage.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: likesgpage.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -39,6 +43,7 @@ function lib_likesgpage(&$ctag, &$refObj)
     $revalue = '';
     if ($innertext == '') {
         $innertext = GetSysTemplets("part_likesgpage.htm");
+    
     }
 
     $likeid = (empty($refObj->Fields['likeid']) ? 'all' : $refObj->Fields['likeid']);
@@ -54,13 +59,19 @@ function lib_likesgpage(&$ctag, &$refObj)
             foreach ($ctp->CTags as $tagid => $ctag) {
                 if (!empty($row[$ctag->GetName()])) {
                     $ctp->Assign($tagid, $row[$ctag->GetName()]);
+                
                 }
 
+            
             }
             $revalue .= $ctp->GetResult();
+        
         } else {
             $revalue .= '<dd class="cur"><span>' . $row['title'] . '</span></dd>';
+        
         }
+    
     }
     return $revalue;
+
 }

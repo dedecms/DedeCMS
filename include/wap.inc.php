@@ -1,7 +1,8 @@
 <?php
-if(!defined('DEDEINC')) exit('Request Error!');
+if(!defined('DEDEINC')) { exit('Request Error!');
+}
 
-require_once(DEDEINC.'/channelunit.class.php');
+require_once DEDEINC.'/channelunit.class.php';
 
 //---------------------------------------
 // Html 标记WAP语言
@@ -10,10 +11,10 @@ function html2wml($content)
 {
      //保留图片
      preg_match_all("/<img([^>]*)>/isU", $content, $imgarr);
-     if(isset($imgarr[0]) && count($imgarr[0])>0 )
-     {
-         foreach($imgarr[0] as $k=>$v) $content = str_replace($v, "WAP-IMG::{$k}", $content);
-     }
+    if(isset($imgarr[0]) && count($imgarr[0])>0 ) {
+        foreach($imgarr[0] as $k=>$v) { $content = str_replace($v, "WAP-IMG::{$k}", $content);
+        }
+    }
      // 过滤掉样式表和脚本
      $content = preg_replace("/<style .*?<\/style>/is", "", $content);
      $content = preg_replace("/<script .*?<\/script>/is", "", $content);
@@ -37,23 +38,23 @@ function html2wml($content)
      $content = str_replace('$', '$$', $content);
      $content = str_replace("\r\n", "\n", dede_htmlspecialchars($content));
      $content = explode("\n", $content);
-     for ($i = 0; $i < count($content); $i++)
+    for ($i = 0; $i < count($content); $i++)
      {
         $content[$i] = trim($content[$i]);
         // 如果去掉全角空格为空行，则设为空行，否则不对全角空格过滤。
-        if (str_replace('　', '', $content[$i]) == '') $content[$i] = '';
-     }
+        if (str_replace('　', '', $content[$i]) == '') { $content[$i] = '';
+        }
+    }
      $content = str_replace("<p><br /></p>\n", "", '<p>'.implode("<br /></p>\n<p>", $content)."<br /></p>\n");
      
      //还原图片
-     if(isset($imgarr[0]) && count($imgarr[0])>0 )
-     {
-                foreach($imgarr[0] as $k=>$v)
-                {
-                    $attstr = (preg_match('#/$#', $imgarr[1][$k])) ? '<img '.$imgarr[1][$k].'>' : '<img '.$imgarr[1][$k].' />';
-                    $content = str_replace("WAP-IMG::{$k}", $attstr, $content);
-                }
-     }
+    if(isset($imgarr[0]) && count($imgarr[0])>0 ) {
+        foreach($imgarr[0] as $k=>$v)
+               {
+            $attstr = (preg_match('#/$#', $imgarr[1][$k])) ? '<img '.$imgarr[1][$k].'>' : '<img '.$imgarr[1][$k].' />';
+            $content = str_replace("WAP-IMG::{$k}", $attstr, $content);
+        }
+    }
      
      $content = preg_replace("/&amp;[a-z]{3,10};/isU", ' ', $content);
      
@@ -65,13 +66,14 @@ function text2wml($content)
      $content = str_replace('$', '$$', $content);
      $content = str_replace("\r\n", "\n", dede_htmlspecialchars($content));
      $content = explode("\n", $content);
-     for ($i = 0; $i < count($content); $i++)
+    for ($i = 0; $i < count($content); $i++)
      {
         // 过滤首尾空格
         $content[$i] = trim($content[$i]);
         // 如果去掉全角空格为空行，则设为空行，否则不对全角空格过滤。
-        if (str_replace("　", "", $content[$i]) == "") $content[$i] = "";
-     }
+        if (str_replace("　", "", $content[$i]) == "") { $content[$i] = "";
+        }
+    }
      //合并各行，转化为 WML，并过滤掉空行
      $content = str_replace("<p><br /></p>\n", "", "<p>".implode("<br /></p>\n<p>", $content)."<br /></p>\n");
      return $content;
@@ -83,13 +85,13 @@ function text2wml($content)
 function ConvertCharset($varlist)
 {
     global $cfg_soft_lang;
-    if(preg_match('#utf#i',$cfg_soft_lang)) return 0;
-    $varlists = explode(',',$varlist);
+    if(preg_match('#utf#i', $cfg_soft_lang)) { return 0;
+    }
+    $varlists = explode(',', $varlist);
     $numargs=count($varlists);
     for($i = 0; $i < $numargs; $i++)
     {   
-        if(isset($GLOBALS[$varlists[$i]]))
-        {
+        if(isset($GLOBALS[$varlists[$i]])) {
             $GLOBALS[$varlists[$i]] = gb2utf8($GLOBALS[$varlists[$i]]);
         }
     } 
@@ -101,10 +103,10 @@ function ConvertCharset($varlist)
 //----------------------
 function ConvertStr($str)
 {
-    $str = str_replace("&amp;","##amp;",$str);
-    $str = str_replace("&","&amp;",$str);
-    $str = preg_replace("#[\"><']#","",$str);
-    $str = str_replace("##amp;","&amp;",$str);
+    $str = str_replace("&amp;", "##amp;", $str);
+    $str = str_replace("&", "&amp;", $str);
+    $str = preg_replace("#[\"><']#", "", $str);
+    $str = str_replace("##amp;", "&amp;", $str);
     return $str;
 }
 

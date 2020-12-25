@@ -2,13 +2,13 @@
 /**
  * 会员模型字段增加
  *
- * @version        $Id: member_model_field_add.php 1 11:20 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_model_field_add.php 1 11:20 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 
@@ -30,7 +30,7 @@ if ($action == 'save') {
     $fieldname = strtolower($fieldname);
     $row = $dsql->GetOne("SELECT `table`,`info` FROM #@__member_model WHERE id='$id'");
     $fieldset = $row['info'];
-    require_once DEDEINC . "/dedetag.class.php";
+    include_once DEDEINC . "/dedetag.class.php";
     $dtp = new DedeTagParse();
     $dtp->SetNameSpace("field", "<", ">");
     $dtp->LoadSource($fieldset);
@@ -102,7 +102,7 @@ $dsql->ExecuteNoneQuery($tabsql);
 $fields = array();
 $rs = $dsql->SetQuery("SHOW fields FROM `$trueTable`");
 $dsql->Execute('a');
-while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+while ($nrow = $dsql->GetArray('a', MYSQLI_ASSOC)) {
     $fields[strtolower($nrow['Field'])] = 1;
 }
 $f = '';

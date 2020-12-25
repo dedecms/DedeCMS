@@ -4,13 +4,13 @@
  * content_s_list.php、content_i_list.php、content_select_list.php
  * 均使用本文件作为实际处理代码，只是使用的模板不同，如有相关变动，只需改本文件及相关模板即可
  *
- * @version        $Id: content_list.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: content_list.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . '/config.php';
 require_once DEDEINC . '/typelink.class.php';
@@ -118,7 +118,8 @@ if ($cid == 0) {
 
 //当选择的是单表模型栏目时，直接跳转到单表模型管理区
 if (empty($channelid)
-    && isset($tl->TypeInfos['channeltype'])) {
+    && isset($tl->TypeInfos['channeltype'])
+) {
     $channelid = $tl->TypeInfos['channeltype'];
 }
 if ($channelid < -1) {
@@ -132,7 +133,7 @@ $optCache = DEDEDATA . "/tplcache/inc_option_$optHash.inc";
 
 $typeCount = 0;
 if (file_exists($cache1)) {
-    require_once $cache1;
+    include_once $cache1;
 } else {
     $cfg_Cs = array();
 }

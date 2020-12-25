@@ -2,13 +2,13 @@
 /**
  * 友情链接编辑
  *
- * @version        $Id: friendlink_edit.php 1 10:59 2010年7月13日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: friendlink_edit.php 1 10:59 2010年7月13日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('plus_友情链接模块');
@@ -43,7 +43,7 @@ if ($dopost == "delete") {
         exit();
     }
 } else if ($dopost == "saveedit") {
-    require_once DEDEINC . '/request.class.php';
+    include_once DEDEINC . '/request.class.php';
     $request = new Request();
     $request->Init();
     $id = preg_replace("#[^0-9]#", "", $request->Item('id', 0));

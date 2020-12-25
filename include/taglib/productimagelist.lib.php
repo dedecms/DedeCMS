@@ -2,13 +2,13 @@
 /**
  *
  *
- * @version        $Id: productimagelist.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: productimagelist.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 function lib_productimagelist(&$ctag, &$refObj)
@@ -51,7 +51,8 @@ function lib_productimagelist(&$ctag, &$refObj)
 
     foreach ($images as $row) {
         foreach ($ctp->CTags as $tagid => $ctag) {
-            if (isset($row[$ctag->GetName()])) {$ctp->Assign($tagid, $row[$ctag->GetName()]);}
+            if (isset($row[$ctag->GetName()])) {$ctp->Assign($tagid, $row[$ctag->GetName()]);
+            }
         }
         $revalue .= $ctp->GetResult();
     }

@@ -1,8 +1,10 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 
 require_once DEDEMEMBER . "/paycenter/cbpayment/cbpayment_config.php";
 if ($payment_exp[3] < 0) {
     $payment_exp[3] = 0;
+
 }
 
 $piice_ex = $price * $payment_exp[3];
@@ -10,6 +12,7 @@ $piice_ex = $price * $payment_exp[3];
 $v_oid = trim($buyid); //订单号
 if ($piice_ex > 0) {
     $price = $price + $piice_ex;
+
 }
 
 $v_amount = sprintf("%01.2f", $price); //支付金额

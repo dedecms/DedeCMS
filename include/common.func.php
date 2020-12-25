@@ -1,56 +1,16 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
  * 系统核心函数存放文件
- * @version        $Id: common.func.php 4 16:39 2010年7月6日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ *
+ * @version   $Id: common.func.php 4 16:39 2010年7月6日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
-if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-    if (!function_exists('mysql_connect') and function_exists('mysqli_connect')) {
-        function mysql_connect($server, $username, $password)
-        {
-            return mysqli_connect($server, $username, $password);
-        }
-    }
-
-    if (!function_exists('mysql_query') and function_exists('mysqli_query')) {
-        function mysql_query($query, $link)
-        {
-            return mysqli_query($link, $query);
-        }
-    }
-
-    if (!function_exists('mysql_select_db') and function_exists('mysqli_select_db')) {
-        function mysql_select_db($database_name, $link)
-        {
-            return mysqli_select_db($link, $database_name);
-        }
-    }
-
-    if (!function_exists('mysql_fetch_array') and function_exists('mysqli_fetch_array')) {
-        function mysql_fetch_array($result)
-        {
-            return mysqli_fetch_array($result);
-        }
-    }
-
-    if (!function_exists('mysql_close') and function_exists('mysqli_close')) {
-        function mysql_close($link)
-        {
-            return mysqli_close($link);
-        }
-    }
-    if (!function_exists('split')) {
-        function split($pattern, $string)
-        {
-            return explode($pattern, $string);
-        }
-    }
-}
 
 function make_hash()
 {
@@ -79,7 +39,7 @@ function dede_random_bytes($length)
             return false;
         }
     }
-    if (defined('MCRYPT_DEV_URANDOM') && ($output = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM)) !== false) {
+    if (($output = random_bytes($length)) !== false) {
         return $output;
     }
     if (is_readable('/dev/urandom') && ($fp = fopen('/dev/urandom', 'rb')) !== false) {
@@ -112,9 +72,9 @@ function dede_random_bytes($length)
  *  则我们在开发中使用这个小助手的时候直接使用函数helper('test');初始化它
  *  然后在文件中就可以直接使用:HelloDede();来进行调用.
  *
- * @access    public
- * @param     mix   $helpers  小助手名称,可以是数组,可以是单个字符串
- * @return    void
+ * @access public
+ * @param  mix   $helpers  小助手名称,可以是数组,可以是单个字符串
+ * @return void
  */
 $_helpers = array();
 function helper($helpers)
@@ -158,11 +118,11 @@ function dede_htmlspecialchars($str)
 /**
  *  控制器调用函数
  *
- * @access    public
- * @param     string  $ct    控制器
- * @param     string  $ac    操作事件
- * @param     string  $path  指定控制器所在目录
- * @return    string
+ * @access public
+ * @param  string $ct   控制器
+ * @param  string $ac   操作事件
+ * @param  string $path 指定控制器所在目录
+ * @return string
  */
 function RunApp($ct, $ac = '', $directory = '')
 {
@@ -178,7 +138,7 @@ function RunApp($ct, $ac = '', $directory = '')
     }
 
     if (file_exists($path)) {
-        require $path;
+        include $path;
     } else {
         if (DEBUG_LEVEL === true) {
             trigger_error("Load Controller false!");
@@ -214,9 +174,9 @@ function RunApp($ct, $ac = '', $directory = '')
 /**
  *  载入小助手,这里用户可能载入用helps载入多个小助手
  *
- * @access    public
- * @param     string
- * @return    string
+ * @access public
+ * @param  string
+ * @return string
  */
 function helpers($helpers)
 {
@@ -241,7 +201,7 @@ if (!function_exists('file_put_contents')) {
 /**
  *  显示更新信息
  *
- * @return    void
+ * @return void
  */
 function UpdateStat()
 {
@@ -258,11 +218,11 @@ $arrs2 = array(0x20, 0x3c, 0x61, 0x20, 0x68, 0x72, 0x65, 0x66, 0x3d, 0x68, 0x74,
 /**
  *  短消息函数,可以在某个动作处理后友好的提示信息
  *
- * @param     string  $msg      消息提示信息
- * @param     string  $gourl    跳转地址
- * @param     int     $onlymsg  仅显示信息
- * @param     int     $limittime  限制时间
- * @return    void
+ * @param  string $msg       消息提示信息
+ * @param  string $gourl     跳转地址
+ * @param  int    $onlymsg   仅显示信息
+ * @param  int    $limittime 限制时间
+ * @return void
  */
 function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
 {
@@ -349,7 +309,7 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
 /**
  *  获取验证码的session值
  *
- * @return    string
+ * @return string
  */
 function GetCkVdValue()
 {
@@ -361,7 +321,7 @@ function GetCkVdValue()
 /**
  *  PHP某些版本有Bug，不能在同一作用域中同时读session并改注销它，因此调用后需执行本函数
  *
- * @return    void
+ * @return void
  */
 function ResetVdValue()
 {
@@ -372,5 +332,5 @@ function ResetVdValue()
 // 自定义函数接口
 // 这里主要兼容早期的用户扩展,v5.7之后我们建议使用小助手helper进行扩展
 if (file_exists(DEDEINC . '/extend.func.php')) {
-    require_once DEDEINC . '/extend.func.php';
+    include_once DEDEINC . '/extend.func.php';
 }

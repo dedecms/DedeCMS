@@ -5,22 +5,22 @@
 /**
  * 单表模型视图类
  *
- * @version        $Id: arc.sgpage.class.php 1 15:48 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.sgpage.class.php 1 15:48 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/arc.partview.class.php";
 
 /**
  * 单表模型列表视图类
  *
- * @package          SgListView
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    SgListView
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class sgpage
 {
@@ -34,9 +34,9 @@ class sgpage
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $aid  内容ID
-     * @return    string
+     * @access public
+     * @param  int $aid 内容ID
+     * @return string
      */
     public function __construct($aid)
     {
@@ -72,8 +72,8 @@ class sgpage
     /**
      *  显示内容
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function Display()
     {
@@ -83,8 +83,8 @@ class sgpage
     /**
      *  获取内容
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function GetResult()
     {
@@ -94,8 +94,8 @@ class sgpage
     /**
      *  保存结果为文件
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function SaveToHtml()
     {
@@ -107,8 +107,8 @@ class sgpage
     /**
      *  解析模板里的标签
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function ParseTemplet()
     {

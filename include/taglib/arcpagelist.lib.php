@@ -1,13 +1,16 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
  *
- * @version        $Id: arcpagelist.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arcpagelist.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 function lib_arcpagelist(&$ctag, &$refObj)
@@ -25,33 +28,42 @@ function lib_arcpagelist(&$ctag, &$refObj)
         $pagestr = '<div id="page_' . $tagid . '">';
         if ($row['pagesize'] < $totalnum) {
             $pagestr .= multipage($totalnum, 1, $row['pagesize'], $tagid);
+        
         } else {
             $pagestr .= '共1页';
+        
         }
         $pagestr .= '</div>';
         return $pagestr;
+    
     } else {
         $pagestr = '<div id="page_' . $tagid . '">';
         $pagestr .= '没有检索到对应分页';
         $pagestr .= '</div>';
         return $pagestr;
+    
     }
+
 }
 
 /**
+ * 
+ * 
  *  分页函数
  *
- * @access    public
- * @param     string  $allItemTotal  所有记录
- * @param     string  $currPageNum  当前页面数
- * @param     string  $pageSize  显示条数
- * @param     string  $tagid  标签ID
- * @return    string
+ * @access public
+ * @param  string $allItemTotal 所有记录
+ * @param  string $currPageNum  当前页面数
+ * @param  string $pageSize     显示条数
+ * @param  string $tagid        标签ID
+ * @return string
+ 
  */
 function multipage($allItemTotal, $currPageNum, $pageSize, $tagid = '')
 {
     if ($allItemTotal == 0) {
         return "";
+    
     }
 
     //计算总页数
@@ -74,16 +86,21 @@ function multipage($allItemTotal, $currPageNum, $pageSize, $tagid = '')
     for ($i = ($currPageNum - 4); $i < ($currPageNum + 9); $i++) {
         if ($i < 1 || $i > $pagesNum) {
             continue;
+        
         }
 
         if ($i == $currPageNum) {
             $listNums .= "<a href='javascript:void(0)' class='thislink'>" . $i . "</a>";
+        
         } else {
             $listNums .= " <a href='javascript:multi(" . $i . ",\"{$tagid}\")' title='" . $i . "'>" . $i . "</a> ";
+        
         }
 
+    
     }
 
     $returnUrl = $listNums;
     return $returnUrl;
+
 }

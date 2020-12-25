@@ -1,28 +1,35 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 空间操作
  *
- * @version        $Id: space_action.php 1 15:18 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: space_action.php 1 15:18 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 //是否允许用户空间显示未审核文档
 $addqSql = '';
 if ($cfg_mb_allowncarc == 'N') {
     $addqSql .= " And arc.arcrank > -1 ";
+
 }
 
 if (isset($mtype)) {
     $mtype = intval($mtype);
+
 }
 
 if (!empty($mtype)) {
     $addqSql .= " And arc.mtype = '$mtype' ";
+
 }
 
 /*---------------------------------
@@ -32,6 +39,7 @@ function list_article(){ }
 if ($action == 'article') {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
 
     include_once DEDEINC . '/arc.memberlistview.class.php';
@@ -51,6 +59,7 @@ if ($action == 'article') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }
 /*---------------------------------
 单篇文章显示
@@ -59,6 +68,7 @@ function view_archives(){ }
 else if ($action == 'viewarchives' && !empty($aid) && is_numeric($aid)) {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
 
     include_once DEDEINC . '/arc.memberlistview.class.php';
@@ -72,6 +82,7 @@ else if ($action == 'viewarchives' && !empty($aid) && is_numeric($aid)) {
     $dsql->Execute('fb', $sql);
     while ($row = $dsql->GetArray('fb')) {
         $msgs[] = $row;
+    
     }
 
     //读取文章内容
@@ -84,6 +95,7 @@ else if ($action == 'viewarchives' && !empty($aid) && is_numeric($aid)) {
     if (!is_array($arcrow)) {
         ShowMsg(' 读取文档时发生未知错误! ', '-1');
         exit();
+    
     }
 
     //解析模板
@@ -91,6 +103,7 @@ else if ($action == 'viewarchives' && !empty($aid) && is_numeric($aid)) {
     $dlist->SetTemplate(DEDEMEMBER . "/space/{$_vars['spacestyle']}/blog.htm");
     $dlist->Display();
     exit();
+
 }
 /*---------------------------------
 所有文档列表
@@ -99,6 +112,7 @@ function list_archives(){ }
 else if ($action == 'archives') {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
 
     include_once DEDEINC . '/arc.memberlistview.class.php';
@@ -107,6 +121,7 @@ else if ($action == 'archives') {
     //如果没指定频道ID的情况下，列出所有非单表模型文档
     if ($cfg_mb_spaceallarc > 0 && empty($channelid)) {
         $channelid = intval($cfg_mb_spaceallarc);
+    
     }
 
     if (empty($channelid)) {
@@ -116,11 +131,13 @@ else if ($action == 'archives') {
                  LEFT JOIN `#@__arctype` tp ON arc.typeid=tp.id
                  LEFT JOIN `#@__mtypes` mt ON mt.mtypeid=arc.mtype
                  WHERE arc.mid='{$_vars['mid']}' $addqSql ORDER BY arc.id DESC";
+    
     } else {
         $channelid = intval($channelid);
         $chRow = $dsql->GetOne("SELECT issystem,addtable,listfields From `#@__channeltype` WHERE id='$channelid' ");
         if (!is_array($chRow)) {
             die(' Channel Error! ');
+        
         }
 
         if ($chRow['issystem'] == -1) {
@@ -129,21 +146,26 @@ else if ($action == 'archives') {
             $listfields_str = 'arc.' . join(',arc.', $listfields);
             if ($listfields_str != 'arc.') {
                 $listfields_str = $listfields_str . ',';
+            
             } else {
                 $listfields_str = '';
+            
             }
             $query = "SELECT arc.aid,arc.aid as id,arc.typeid,'' as mtypename,1 as ismake,0 as money,'' as filename,{$listfields_str}
                    tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
                    FROM `{$addtable}` arc
                    LEFT JOIN `#@__arctype` tp ON arc.typeid=tp.id
                  WHERE arc.mid='{$_vars['mid']}' And arc.channel='$channelid' $addqSql ORDER BY arc.aid DESC";
+        
         } else {
             $query = "SELECT arc.*,mt.mtypename,tp.typedir,tp.typename,tp.isdefault,tp.defaultname,tp.namerule,tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
                     from `#@__archives` arc
                     LEFT JOIN `#@__arctype` tp on arc.typeid=tp.id
                     LEFT JOIN `#@__mtypes` mt on mt.mtypeid=arc.mtype
                  WHERE arc.mid='{$_vars['mid']}' And arc.channel='$channelid' $addqSql order by arc.id desc";
+        
         }
+    
     }
     $dlist = new MemberListview();
     $dlist->pageSize = $_vars['pagesize'];
@@ -155,6 +177,7 @@ else if ($action == 'archives') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }
 
 /*---------------------------------
@@ -164,6 +187,7 @@ function list_album(){ }
 else if ($action == 'album') {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
     include_once DEDEINC . '/arc.memberlistview.class.php';
     include_once DEDEINC . '/channelunit.func.php';
@@ -181,6 +205,7 @@ else if ($action == 'album') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }
 
 /*---------------------------------
@@ -190,6 +215,7 @@ function guestbook(){ }
 else if ($action == 'guestbook') {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
     include_once DEDEINC . '/datalistcp.class.php';
     $query = "SELECT mg.*,mb.face,mb.userid,mb.sex From `#@__member_guestbook` mg
@@ -203,6 +229,7 @@ else if ($action == 'guestbook') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }
 
 /*---------------------------------
@@ -212,6 +239,7 @@ function friend(){ }
 else if ($action == 'friend') {
     if (empty($mtype)) {
         $mtype = 0;
+    
     }
     include_once DEDEINC . '/arc.memberlistview.class.php';
     include_once DEDEINC . '/channelunit.func.php';
@@ -228,6 +256,7 @@ else if ($action == 'friend') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }
 
 /*---------------------------------
@@ -241,6 +270,7 @@ else if ($action == 'infos') {
     $dpl = new DedeTemplate();
     $dpl->LoadTemplate(DEDEMEMBER . "/space/{$_vars['spacestyle']}/infos.htm");
     $dpl->display();
+
 }
 
 /*---------------------------------
@@ -254,29 +284,35 @@ else if ($action == 'guestbooksave') {
         ResetVdValue();
         ShowMsg('验证码错误！', '-1');
         exit();
+    
     }
     $uidnum = intval($uidnum);
     if (empty($uidnum)) {
         ShowMsg('参数错误！', '-1');
         exit();
+    
     }
     if (strlen($msg) < 6) {
         ShowMsg('你的留言内容太短！', '-1');
         exit();
+    
     }
     $uname = HtmlReplace($uname, 1);
     $msg = cn_substrR(HtmlReplace($msg), 2048);
     $title = cn_substrR(HtmlReplace($title), 255);
     if ($cfg_ml->M_UserName != '' && $cfg_ml->M_ID != $uidnum) {
         $gid = $cfg_ml->M_UserName;
+    
     } else {
         $gid = '';
+    
     }
     $inquery = "INSERT INTO `#@__member_guestbook`(mid,gid,title,msg,uname,ip,dtime)
    VALUES ('$uidnum','$gid','$title','$msg','$uname','" . GetIP() . "'," . time() . "); ";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功提交你的留言！', "index.php?uid={$uid}&action=guestbook");
     exit();
+
 }
 
 /*---------------------------------
@@ -288,12 +324,14 @@ else if ($action == 'guestbookdel') {
     if ($cfg_ml->M_LoginID != $uid) {
         ShowMsg('这条留言不是给你的，你不能删除！', -1);
         exit();
+    
     }
     $aid = intval($aid);
     $inquery = "DELETE FROM `#@__member_guestbook` WHERE aid='$aid' AND mid='$mid'";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功删除！', "index.php?uid={$uid}&action=guestbook");
     exit();
+
 }
 
 /*---------------------------------
@@ -307,11 +345,13 @@ else if ($action == 'feeddel') {
     if ($cfg_ml->M_ID != $row['mid']) {
         ShowMsg('此动态信息不存在！', -1);
         exit();
+    
     }
     $inquery = "DELETE FROM `#@__member_feed` WHERE fid='$fid' AND mid='" . $cfg_ml->M_ID . "'";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功删除一条动态信息！', "index.php");
     exit();
+
 }
 /*---------------------------------
 删除我的心情信息
@@ -324,11 +364,13 @@ else if ($action == 'mooddel') {
     if ($cfg_ml->M_ID != $row['mid']) {
         ShowMsg('此动态信息不存在！', -1);
         exit();
+    
     }
     $inquery = "DELETE FROM `#@__member_msg` WHERE id='$id' AND mid='" . $cfg_ml->M_ID . "'";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg('成功删除一条心情！', "index.php");
     exit();
+
 }
 /*---------------------------------
 加好友
@@ -339,21 +381,25 @@ else if ($action == 'newfriend') {
     if ($_vars['mid'] == $cfg_ml->M_ID) {
         ShowMsg("你不能加自己为好友！", "index.php?uid=" . $uid);
         exit();
+    
     }
     $addtime = time();
     $row = $dsql->GetOne("SELECT * FROM `#@__member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ");
     if (is_array($row)) {
         ShowMsg("该用户已经是你的好友！", "index.php?uid=" . $uid);
         exit();
+    
     } else {
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             if ($data = uc_get_user($cfg_ml->M_LoginID)) {
                 uc_friend_add($uid, $data[0]);
+            
             }
 
+        
         }
-        #/aip}}
+        // /aip}}
 
         $inquery = "INSERT INTO `#@__member_friends` (`fid` , `floginid` , `funame` , `mid` , `addtime` , `ftype`)
                 VALUES ('{$_vars['mid']}' , '{$_vars['userid']}' , '{$_vars['uname']}' , '{$cfg_ml->M_ID}' , '$addtime' , '0'); ";
@@ -368,7 +414,9 @@ else if ($action == 'newfriend') {
         ShowMsg("成功添加好友！", "index.php?uid=" . $uid);
         exit();
 
+    
     }
+
 }
 /*---------------------------------
 解除好友关系
@@ -379,21 +427,25 @@ else if ($action == 'delfriend') {
     if ($_vars['mid'] == $cfg_ml->M_ID) {
         ShowMsg("你不能和自己为解除关系！", "index.php?uid=" . $uid);
         exit();
+    
     }
     $addtime = time();
     $row = $dsql->GetOne("Select * FROM `#@__member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ");
     if (!is_array($row)) {
         ShowMsg("该用户已经不是你的好友！", "index.php?uid=" . $uid);
         exit();
+    
     } else {
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             if ($data = uc_get_user($cfg_ml->M_LoginID)) {
                 uc_friend_add($uid, $data[0]);
+            
             }
 
+        
         }
-        #/aip}}
+        // /aip}}
         $inquery = "DELETE FROM `dede_member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ";
         $dsql->ExecuteNoneQuery($inquery);
         //统计我的好友数量
@@ -401,7 +453,9 @@ else if ($action == 'delfriend') {
         $dsql->ExecuteNoneQuery("UPDATE `#@__member_tj` SET friend='$row[nums]' WHERE `mid`='" . $cfg_ml->M_ID . "'");
         ShowMsg("成功解除好友关系！", "myfriend.php");
         exit();
+    
     }
+
 }
 /*---------------------------------
 加黑名单
@@ -412,19 +466,23 @@ else if ($action == 'blackfriend') {
     if ($_vars['mid'] == $cfg_ml->M_ID) {
         ShowMsg("你不能加自己到黑名单！", "index.php?uid=" . $uid);
         exit();
+    
     }
     $addtime = time();
     $row = $dsql->GetOne("Select * FROM `#@__member_friends` where fid='{$_vars['mid']}' And mid='{$cfg_ml->M_ID}' ");
     if (is_array($row)) {
         ShowMsg("该用户已经是你的好友！", "index.php?uid=" . $uid);
         exit();
+    
     } else {
         $inquery = "INSERT INTO `#@__member_friends` (`fid` , `floginid` , `funame` , `mid` , `addtime` , `ftype`)
                 VALUES ('{$cfg_ml->M_ID}' , '{$cfg_ml->M_LoginID}' , '{$cfg_ml->M_UserName}' , '{$_vars['mid']}' , '$addtime' , '-1'); ";
         $dsql->ExecuteNoneQuery($inquery);
         ShowMsg("成功添加好友在黑名单！", "index.php?uid=" . $uid);
         exit();
+    
     }
+
 }
 /*--------------------
 function _contact_introduce() {}
@@ -434,12 +492,14 @@ elseif ($action == 'introduce') {
     $dpl = new DedeTemplate();
     $dpl->LoadTemplate(DEDEMEMBER . "/space/{$_vars['spacestyle']}/introduce.htm");
     $dpl->display();
+
 }
 //联系我们
 elseif ($action == 'contact') {
     $dpl = new DedeTemplate();
     $dpl->LoadTemplate(DEDEMEMBER . "/space/{$_vars['spacestyle']}/contact.htm");
     $dpl->display();
+
 }
 /*-------------------------------
 function products() { }
@@ -449,6 +509,7 @@ elseif ($action == 'products') {
     $mtype = isset($mtype) && is_numeric($mtype) ? $mtype : 0;
     if ($action == 'products') {
         $channel = 6;
+    
     }
     include_once DEDEINC . '/arc.memberlistview.class.php';
     include_once DEDEINC . '/channelunit.func.php';
@@ -467,4 +528,5 @@ elseif ($action == 'products') {
     $dlist->SetSource($query);
     $dlist->Display();
     exit();
+
 }

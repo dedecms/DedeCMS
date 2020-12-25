@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: buy_action.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: buy_action.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckRank(0, 0);
@@ -126,7 +126,7 @@ if (!isset($paytype)) {
         exit();
     }
 
-    require_once DEDEINC . '/payment/' . $rs['code'] . '.php';
+    include_once DEDEINC . '/payment/' . $rs['code'] . '.php';
     $pay = new $rs['code'];
     $payment = "";
     if ($rs['code'] == "cod" || $rs['code'] == "bank") {
@@ -136,7 +136,7 @@ if (!isset($paytype)) {
         $order = array('out_trade_no' => $buyid,
             'price' => sprintf("%01.2f", $price),
         );
-        require_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
+        include_once DEDEDATA . '/payment/' . $rs['code'] . '.php';
     }
     $button = $pay->GetCode($order, $payment);
     $dtp = new DedeTemplate();
@@ -159,10 +159,10 @@ if (!isset($paytype)) {
 /**
  *  加密函数
  *
- * @access    public
- * @param     string  $string  字符串
- * @param     string  $operation  操作
- * @return    string
+ * @access public
+ * @param  string $string    字符串
+ * @param  string $operation 操作
+ * @return string
  */
 function mchStrCode($string, $operation = 'ENCODE')
 {
@@ -179,7 +179,7 @@ function mchStrCode($string, $operation = 'ENCODE')
     $result = '';
     $string_length = strlen($string);
     for ($i = 0; $i < $string_length; $i++) {
-        $result .= chr(ord($string{$i}) ^ ord($keys{$i % 32}));
+        $result .= chr(ord($string[$i]) ^ ord($keys[$i % 32]));
     }
     if ($operation == 'ENCODE') {
         return $runtokey . str_replace('=', '', base64_encode($result));

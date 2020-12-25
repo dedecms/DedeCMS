@@ -1,14 +1,18 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+ * 
+ * 
  * 自动关连文档标签
  *
- * @version        $Id: likearticle.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: likearticle.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
  */
 
 /*>>dede>>
@@ -43,10 +47,12 @@ function lib_likearticle(&$ctag, &$refObj)
 
     if (empty($tablewidth)) {
         $tablewidth = 100;
+    
     }
 
     if (empty($col)) {
         $col = 1;
+    
     }
 
     $colWidth = ceil(100 / $col);
@@ -58,24 +64,31 @@ function lib_likearticle(&$ctag, &$refObj)
 
     if (!empty($refObj->Fields['tags'])) {
         $keyword = $refObj->Fields['tags'];
+    
     } else {
         $keyword = (!empty($refObj->Fields['keywords']) ? $refObj->Fields['keywords'] : '');
+    
     }
 
     $typeid = (!empty($mytypeid) ? $mytypeid : 0);
     if (empty($typeid)) {
         if (!empty($refObj->Typelink->TypeInfos['reid'])) {
             $typeid = $refObj->Typelink->TypeInfos['reid'];
+        
         } else {
             if (!empty($refObj->Fields['typeid'])) {
                 $typeid = $refObj->Fields['typeid'];
+            
             }
 
+        
         }
+    
     }
 
     if (!empty($typeid) && !preg_match('#,#', $typeid)) {
         $typeid = GetSonIds($typeid);
+    
     }
 
     $limitRow = $row - count($ids);
@@ -87,45 +100,57 @@ function lib_likearticle(&$ctag, &$refObj)
         foreach ($keywords as $k) {
             if ($n > 3) {
                 break;
+            
             }
 
             if (trim($k) == '') {
                 continue;
+            
             } else {
                 $k = addslashes($k);
+            
             }
 
             $keyword .= ($keyword == '' ? " CONCAT(arc.keywords,' ',arc.title) LIKE '%$k%' " : " OR CONCAT(arc.keywords,' ',arc.title) LIKE '%$k%' ");
             $n++;
+        
         }
+    
     }
     $arcid = (!empty($refObj->Fields['id']) ? $refObj->Fields['aid'] : 0);
     if (empty($arcid) || $byabs == 0) {
         $orderquery = " ORDER BY arc.id desc ";
+    
     } else {
         $orderquery = " ORDER BY ABS(arc.id - " . $arcid . ") ";
+    
     }
     if ($keyword != '') {
         if (!empty($typeid)) {
             $typeid = " AND arc.typeid IN($typeid) AND arc.id<>$arcid ";
+        
         }
         $query = "SELECT arc.*,tp.typedir,tp.typename,tp.corank,tp.isdefault,tp.defaultname,tp.namerule,
                   tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
                   FROM `#@__archives` arc LEFT JOIN `#@__arctype` tp ON arc.typeid=tp.id
                   where arc.arcrank>-1 AND ($keyword)  $typeid $orderquery limit 0, $row";
+    
     } else {
         if (!empty($typeid)) {
             $typeid = " arc.typeid IN($typeid) AND arc.id<>$arcid ";
+        
         }
         $query = "SELECT arc.*,tp.typedir,tp.typename,tp.corank,tp.isdefault,tp.defaultname,tp.namerule,
                   tp.namerule2,tp.ispart,tp.moresite,tp.siteurl,tp.sitepath
                   FROM `#@__archives` arc LEFT JOIN `#@__arctype` tp ON arc.typeid=tp.id
                  WHERE arc.arcrank>-1 AND  $typeid $orderquery limit 0, $row";
+    
     }
 
     $innertext = trim($ctag->GetInnerText());
     if ($innertext == '') {
         $innertext = GetSysTemplets('part_arclist.htm');
+    
     }
 
     $dsql->SetQuery($query);
@@ -133,6 +158,7 @@ function lib_likearticle(&$ctag, &$refObj)
     $artlist = '';
     if ($col > 1) {
         $artlist = "<table width='$tablewidth' border='0' cellspacing='0' cellpadding='0'>\r\n";
+    
     }
     $dtp2 = new DedeTagParse();
     $dtp2->SetNameSpace('field', '[', ']');
@@ -142,11 +168,13 @@ function lib_likearticle(&$ctag, &$refObj)
     for ($i = 0; $i < $line; $i++) {
         if ($col > 1) {
             $artlist .= "<tr>\r\n";
+        
         }
 
         for ($j = 0; $j < $col; $j++) {
             if ($col > 1) {
                 $artlist .= "    <td width='$colWidth'>\r\n";
+            
             }
 
             if ($row = $dsql->GetArray("al")) {
@@ -157,19 +185,26 @@ function lib_likearticle(&$ctag, &$refObj)
 
                 if ($row['corank'] > 0 && $row['arcrank'] == 0) {
                     $row['arcrank'] = $row['corank'];
+                
                 }
 
-                $row['filename'] = $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
-                    $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                $row['filename'] = $row['arcurl'] = GetFileUrl(
+                    $row['id'], $row['typeid'], $row['senddate'], $row['title'], $row['ismake'],
+                    $row['arcrank'], $row['namerule'], $row['typedir'], $row['money'], $row['filename'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                );
 
-                $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
-                    $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                $row['typeurl'] = GetTypeUrl(
+                    $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+                    $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                );
 
                 if ($row['litpic'] == '-' || $row['litpic'] == '') {
                     $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
+                
                 }
                 if (!preg_match("#^http:\/\/#i", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y') {
                     $row['litpic'] = $GLOBALS['cfg_mainsite'] . $row['litpic'];
+                
                 }
                 $row['picname'] = $row['litpic'];
                 $row['stime'] = GetDateMK($row['pubdate']);
@@ -180,10 +215,12 @@ function lib_likearticle(&$ctag, &$refObj)
                 $row['title'] = cn_substr($row['title'], $titlelen);
                 if ($row['color'] != '') {
                     $row['title'] = "<font color='" . $row['color'] . "'>" . $row['title'] . "</font>";
+                
                 }
 
                 if (preg_match('#b#', $row['flag'])) {
                     $row['title'] = "<strong>" . $row['title'] . "</strong>";
+                
                 }
 
                 $row['textlink'] = "<a href='" . $row['filename'] . "'>" . $row['title'] . "</a>";
@@ -195,44 +232,59 @@ function lib_likearticle(&$ctag, &$refObj)
                     foreach ($dtp2->CTags as $k => $ctag) {
                         if ($ctag->GetName() == 'array') {
                             $dtp2->Assign($k, $row);
+                        
                         } else {
                             if (isset($row[$ctag->GetName()])) {
                                 $dtp2->Assign($k, $row[$ctag->GetName()]);
+                            
                             } else {
                                 $dtp2->Assign($k, '');
+                            
                             }
 
+                        
                         }
+                    
                     }
                     $GLOBALS['autoindex']++;
+                
                 }
 
                 $artlist .= $dtp2->GetResult() . "\r\n";
+            
             }
             //if hasRow
             else {
                 $artlist .= '';
+            
             }
             if ($col > 1) {
                 $artlist .= "    </td>\r\n";
+            
             }
 
+        
         }
         //Loop Col
         if ($col > 1) {
             $i += $col - 1;
+        
         }
 
         if ($col > 1) {
             $artlist .= "    </tr>\r\n";
+        
         }
 
+    
     }
     //loop line
     if ($col > 1) {
         $artlist .= "    </table>\r\n";
+    
     }
 
     $dsql->FreeResult("al");
     return $artlist;
+
 }

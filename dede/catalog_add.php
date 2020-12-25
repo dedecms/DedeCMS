@@ -2,13 +2,13 @@
 /**
  * 栏目添加
  *
- * @version        $Id: catalog_add.php 1 14:31 2010年7月12日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: catalog_add.php 1 14:31 2010年7月12日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . "/typelink.class.php";
@@ -133,15 +133,15 @@ else if ($dopost == 'savequick') {
             $toptypename = trim(${'reltype' . $k});
             $toptypedir = GetPinyin(stripslashes($toptypename));
             switch ($referpath) {
-                case 'parent':
-                    $toptypedir = $nextdir . '/' . $toptypedir;
-                    break;
-                case 'typepath':
-                    $toptypedir = isset($row['typedir']) ? $row['typedir'] . '/' . $toptypedir : '/' . $toptypedir;
-                    break;
-                default:
-                    $toptypedir = '/' . $toptypedir;
-                    break;
+            case 'parent':
+                $toptypedir = $nextdir . '/' . $toptypedir;
+                break;
+            case 'typepath':
+                $toptypedir = isset($row['typedir']) ? $row['typedir'] . '/' . $toptypedir : '/' . $toptypedir;
+                break;
+            default:
+                $toptypedir = '/' . $toptypedir;
+                break;
             }
 
             if (empty($toptypename)) {

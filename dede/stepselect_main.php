@@ -2,13 +2,13 @@
 /**
  * 联动选择管理
  *
- * @version        $Id: stepselect_main.php 2 13:23 2011-3-24  $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: stepselect_main.php 2 13:23 2011-3-24  $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('c_Stepselect');
@@ -158,8 +158,10 @@ else if ($action == 'exarea') {
     $n = 1;
     while ($row = $dsql->GetArray()) {
         $bigtypes[$row['id']] = $evalue = $disorder = $n * 500;
-        $dsql->ExecuteNoneQuery("INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
-                                 VALUES('{$row['name']}','$evalue','nativeplace','$disorder','0'); ");
+        $dsql->ExecuteNoneQuery(
+            "INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
+                                 VALUES('{$row['name']}','$evalue','nativeplace','$disorder','0'); "
+        );
         $n++;
     }
     $stypes = array();
@@ -169,8 +171,10 @@ else if ($action == 'exarea') {
         $n = 1;
         while ($row = $dsql->GetArray()) {
             $stypes[$row['id']] = $evalue = $disorder = $v + $n;
-            $dsql->ExecuteNoneQuery("INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
-                                   VALUES('{$row['name']}','$evalue','nativeplace','$disorder','0'); ");
+            $dsql->ExecuteNoneQuery(
+                "INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
+                                   VALUES('{$row['name']}','$evalue','nativeplace','$disorder','0'); "
+            );
             $n++;
         }
     }
@@ -205,8 +209,10 @@ else if ($action == 'addenum_save') {
                 $disorder = $evalue = $arr['disorder'] + ($issign == 1 ? 1 : 500);
             }
 
-            $dsql->ExecuteNoneQuery("INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
-                                    VALUES('$ename','$evalue','$egroup','$disorder','$issign'); ");
+            $dsql->ExecuteNoneQuery(
+                "INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
+                                    VALUES('$ename','$evalue','$egroup','$disorder','$issign'); "
+            );
         }
         WriteEnumsCache($egroup);
         ShowMsg("成功添加枚举分类！" . $dsql->GetError(), $ENV_GOBACK_URL);
@@ -248,8 +254,10 @@ else if ($action == 'addenum_save') {
                 $disorder = $arr['disorder'] + 1;
                 $evalue = $arr['evalue'] + 1;
             }
-            $dsql->ExecuteNoneQuery("INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
-                          VALUES('$ename','$evalue','$egroup','$disorder','$issign'); ");
+            $dsql->ExecuteNoneQuery(
+                "INSERT INTO `#@__sys_enum`(`ename`,`evalue`,`egroup`,`disorder`,`issign`)
+                          VALUES('$ename','$evalue','$egroup','$disorder','$issign'); "
+            );
         }
         WriteEnumsCache($egroup);
         ShowMsg("成功添加枚举分类！", $ENV_GOBACK_URL);

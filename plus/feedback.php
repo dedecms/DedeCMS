@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 评论
  *
- * @version        $Id: feedback.php 2 15:56 2012年10月30日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: feedback.php 2 15:56 2012年10月30日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 if ($cfg_feedback_forbid == 'Y') {
@@ -26,7 +25,7 @@ if ($action == 'good' || $action == 'bad') {
         $id = $aid;
     }
 
-    require_once dirname(__FILE__) . '/digg_ajax.php';
+    include_once dirname(__FILE__) . '/digg_ajax.php';
     exit();
 }
 
@@ -39,7 +38,7 @@ if (empty($aid) && empty($fid)) {
     exit();
 }
 
-include_once DEDEINC . "/memberlogin.class.php";
+require_once DEDEINC . "/memberlogin.class.php";
 $cfg_ml = new MemberLogin();
 
 if ($action == 'goodfb') {
@@ -103,7 +102,7 @@ else if ($action == 'quote') {
         AjaxHead();
     }
     $row = $dsql->GetOne("SELECT * FROM `#@__feedback` WHERE id ='$fid'");
-    require_once DEDEINC . '/dedetemplate.class.php';
+    include_once DEDEINC . '/dedetemplate.class.php';
     $dtp = new DedeTemplate();
     $tplfile = $type == '' ? DEDETEMPLATE . '/plus/feedback_quote.htm' : DEDETEMPLATE . '/plus/feedback_quote_ajax.htm';
 
@@ -130,7 +129,7 @@ else if ($action == 'send') {
     }
     if ($isconfirm != 'yes' && $cfg_feedback_ck == 'Y') {
         extract($arcRow, EXTR_SKIP);
-        require_once DEDEINC . '/dedetemplate.class.php';
+        include_once DEDEINC . '/dedetemplate.class.php';
         $dtp = new DedeTemplate();
         $dtp->LoadTemplate(DEDETEMPLATE . '/plus/feedback_confirm.htm');
         $dtp->Display();

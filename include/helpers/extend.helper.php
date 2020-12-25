@@ -1,75 +1,102 @@
-<?php if (!defined('DEDEINC')) {exit('Request Error');}
+<?php if (!defined('DEDEINC')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 扩展小助手
  *
- * @version        $Id: extend.helper.php 1 13:58 2010年7月5日 $
- * @package        DedeCMS.Helpers
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: extend.helper.php 1 13:58 2010年7月5日 $
+ * @package   DedeCMS.Helpers
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /**
+* 
+* 
  *  返回指定的字符
  *
- * @param     string  $n  字符ID
- * @return    string
- */
+ * @param  string  $n  字符ID
+ * @return string
+ 
+*/
 if (!function_exists('ParCv')) {
     function ParCv($n)
     {
         return chr($n);
+    
     }
+
 }
 
 /**
+* 
+* 
  *  显示一个错误
  *
- * @return    void
- */
+ * @return void
+ 
+*/
 if (!function_exists('ParamError')) {
     function ParamError()
     {
         ShowMsg('对不起，你输入的参数有误！', 'javascript:;');
         exit();
+    
     }
+
 }
 
 /**
+* 
+* 
  *  默认属性
  *
- * @param     string  $oldvar  旧的值
- * @param     string  $nv      新值
- * @return    string
- */
+ * @param  string  $oldvar  旧的值
+ * @param  string  $nv      新值
+ * @return string
+ 
+*/
 if (!function_exists('AttDef')) {
     function AttDef($oldvar, $nv)
     {
         return empty($oldvar) ? $nv : $oldvar;
+    
     }
+
 }
 
 /**
+* 
+* 
  *  返回Ajax头信息
  *
- * @return     void
- */
+ * @return void
+ 
+*/
 if (!function_exists('AjaxHead')) {
     function AjaxHead()
     {
         @header("Pragma:no-cache\r\n");
         @header("Cache-Control:no-cache\r\n");
         @header("Expires:0\r\n");
+    
     }
+
 }
 
 /**
+* 
+* 
  *  去除html和php标记
  *
- * @return     string
- */
+ * @return string
+ 
+*/
 if (!function_exists('dede_strip_tags')) {
     function dede_strip_tags($str)
     {
@@ -78,11 +105,16 @@ if (!function_exists('dede_strip_tags')) {
         for ($i = 1; $i < count($strs); $i++) {
             if (!strpos($strs[$i], '>')) {
                 $res = $res . '&lt;' . $strs[$i];
+            
             } else {
                 $res = $res . '<' . $strs[$i];
+            
             }
 
+        
         }
         return strip_tags($res);
+    
     }
+
 }

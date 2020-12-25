@@ -1,19 +1,24 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 支付页面
  *
- * @version        $Id: config_pay_alipay.php 1 13:52 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: config_pay_alipay.php 1 13:52 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 require_once DEDEMEMBER . "/paycenter/alipay/alipay_config.php";
 require_once DEDEMEMBER . "/paycenter/alipay/alipay_service.php";
 if ($payment_exp[2] < 0) {
     $payment_exp[2] = 0;
+
 }
 
 $piice_ex = $price * $payment_exp[2];

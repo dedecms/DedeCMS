@@ -1,9 +1,11 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 //nps 网上支付接口
-include_once DEDEMEMBER . '/paycenter/nps/nps_config.inc.php';
+require_once DEDEMEMBER . '/paycenter/nps/nps_config.inc.php';
 //支付手续费
 if ($payment_exp[1] < 0.01) {
     $payment_exp[1] = 0;
+
 }
 
 $piice_ex = $price * $payment_exp[1];
@@ -12,16 +14,20 @@ $price = $price + $piice_ex;
 function HexToStr($hex)
 {
     $string = "";
-    for ($i = 0; $i < strlen($hex) - 1; $i += 2) {$string .= chr(hexdec($hex[$i] . $hex[$i + 1]));}
+    for ($i = 0; $i < strlen($hex) - 1; $i += 2) {$string .= chr(hexdec($hex[$i] . $hex[$i + 1]));
+    }
     return $string;
+
 }
 
 function StrToHex($string)
 {
     $hex = "";
-    for ($i = 0; $i < strlen($string); $i++) {$hex .= dechex(ord($string[$i]));}
+    for ($i = 0; $i < strlen($string); $i++) {$hex .= dechex(ord($string[$i]));
+    }
     $hex = strtoupper($hex);
     return $hex;
+
 }
 
 //nps信息

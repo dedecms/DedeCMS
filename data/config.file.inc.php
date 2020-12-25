@@ -16,7 +16,7 @@ $remotefile = array();
 
 //以下是必备同步配置项
 //@start_config 不要改动下面<>结构
-#<s_config>
+// <s_config>
 
 $remotefile[0] = array(
     'filedir' => '/a',
@@ -74,4 +74,4 @@ $remotefile[7] = array(
     'state' => 1,
     'issystem' => 0,
 );
-#<e_config>
+// <e_config>

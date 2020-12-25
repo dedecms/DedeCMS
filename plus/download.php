@@ -1,15 +1,14 @@
 <?php
 /**
- *
  * 下载
  *
- * @version        $Id: download.php 1 15:38 2010年7月8日 $
- * @package        DedeCMS.Site
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: download.php 1 15:38 2010年7月8日 $
+ * @package   DedeCMS.Site
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/../include/common.inc.php";
 require_once DEDEINC . "/channelunit.class.php";
@@ -40,7 +39,8 @@ if ($open == 0) {
     $vname = '';
     foreach ($cu->ChannelFields as $k => $v) {
         if ($v['type'] == 'softlinks') {$vname = $k;
-            break;}
+            break;
+        }
     }
     $row = $dsql->GetOne("SELECT $vname FROM `" . $cu->ChannelInfos['addtable'] . "` WHERE aid='$aid'");
 
@@ -121,7 +121,7 @@ else if ($open == 2) {
     }
 
     //分析连接列表
-    require_once DEDEINC . '/dedetag.class.php';
+    include_once DEDEINC . '/dedetag.class.php';
     $softUrl = '';
     $islocal = 0;
     $dtp = new DedeTagParse();
@@ -157,7 +157,8 @@ else if ($open == 2) {
     }
     $dtp->Clear();
     if ($softUrl == '' && $softconfig['ismoresite'] == 1
-        && $softconfig['moresitedo'] == 1 && trim($softconfig['sites']) != '' && isset($firstLink)) {
+        && $softconfig['moresitedo'] == 1 && trim($softconfig['sites']) != '' && isset($firstLink)
+    ) {
         $firstLink = preg_replace("#http:\/\/([^\/]*)\/#i", '/', $firstLink);
         $softconfig['sites'] = preg_replace("#[\r\n]{1,}#", "\n", $softconfig['sites']);
         $sites = explode("\n", trim($softconfig['sites']));
@@ -191,7 +192,7 @@ else if ($open == 2) {
 
     //处理需要下载权限的软件
     if ($needRank > 0 || $needMoney > 0) {
-        require_once DEDEINC . '/memberlogin.class.php';
+        include_once DEDEINC . '/memberlogin.class.php';
         $cfg_ml = new MemberLogin();
         $arclink = $arcurl;
         $arctitle = $title;

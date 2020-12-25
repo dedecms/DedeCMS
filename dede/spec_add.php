@@ -2,13 +2,13 @@
 /**
  * 专题添加
  *
- * @version        $Id: spec_add.php 1 16:22 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: spec_add.php 1 16:22 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('a_New,a_AccNew');
@@ -19,8 +19,8 @@ if (empty($dopost)) {
 }
 
 if ($dopost != 'save') {
-    require_once DEDEINC . '/dedetag.class.php';
-    require_once DEDEADMIN . '/inc/inc_catalog_options.php';
+    include_once DEDEINC . '/dedetag.class.php';
+    include_once DEDEADMIN . '/inc/inc_catalog_options.php';
     ClearMyAddon();
     $channelid = -1;
     $cid = isset($cid) && is_numeric($cid) ? $cid : 0;
@@ -34,8 +34,8 @@ if ($dopost != 'save') {
 function __save(){  }
 -------------------------------*/
 else if ($dopost == 'save') {
-    require_once DEDEINC . '/image.func.php';
-    require_once DEDEINC . '/oxwindow.class.php';
+    include_once DEDEINC . '/image.func.php';
+    include_once DEDEINC . '/oxwindow.class.php';
     $flag = isset($flags) ? join(',', $flags) : '';
     $notpost = isset($notpost) && $notpost == 1 ? 1 : 0;
     if (empty($click)) {

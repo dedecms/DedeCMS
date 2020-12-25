@@ -5,13 +5,13 @@
 /**
  * 搜索视图类
  *
- * @version        $Id: arc.searchview.class.php 1 15:26 2010年7月7日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arc.searchview.class.php 1 15:26 2010年7月7日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . "/typelink.class.php";
 require_once DEDEINC . "/dedetag.class.php";
@@ -25,9 +25,9 @@ require_once DEDEINC . "/taglib/channel.lib.php";
 /**
  * 搜索视图类
  *
- * @package          SearchView
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    SearchView
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class SearchView
 {
@@ -61,20 +61,21 @@ class SearchView
     /**
      *  php5构造函数
      *
-     * @access    public
-     * @param     int  $typeid  栏目ID
-     * @param     string  $keyword  关键词
-     * @param     string  $orderby  排序
-     * @param     string  $achanneltype  频道类型
-     * @param     string  $searchtype  搜索类型
-     * @param     string  $starttime  开始时间
-     * @param     string  $upagesize  页数
-     * @param     string  $kwtype  关键词类型
-     * @param     string  $mid  会员ID
-     * @return    string
+     * @access public
+     * @param  int    $typeid       栏目ID
+     * @param  string $keyword      关键词
+     * @param  string $orderby      排序
+     * @param  string $achanneltype 频道类型
+     * @param  string $searchtype   搜索类型
+     * @param  string $starttime    开始时间
+     * @param  string $upagesize    页数
+     * @param  string $kwtype       关键词类型
+     * @param  string $mid          会员ID
+     * @return string
      */
     public function __construct($typeid, $keyword, $orderby, $achanneltype = "all",
-        $searchtype = '', $starttime = 0, $upagesize = 20, $kwtype = 1, $mid = 0) {
+        $searchtype = '', $starttime = 0, $upagesize = 20, $kwtype = 1, $mid = 0
+    ) {
         global $cfg_search_max, $cfg_search_maxrc, $cfg_search_time, $cfg_sphinx_article;
         if (empty($upagesize)) {
             $upagesize = 10;
@@ -151,7 +152,8 @@ class SearchView
 
     //php4构造函数
     public function SearchView($typeid, $keyword, $orderby, $achanneltype = "all",
-        $searchtype = "", $starttime = 0, $upagesize = 20, $kwtype = 1, $mid = 0) {
+        $searchtype = "", $starttime = 0, $upagesize = 20, $kwtype = 1, $mid = 0
+    ) {
         $this->__construct($typeid, $keyword, $orderby, $achanneltype, $searchtype, $starttime, $upagesize, $kwtype, $mid);
     }
 
@@ -163,9 +165,9 @@ class SearchView
     /**
      *  获得关键字的分词结果，并保存到数据库
      *
-     * @access    public
-     * @param     string  $keyword  关键词
-     * @return    string
+     * @access public
+     * @param  string $keyword 关键词
+     * @return string
      */
     public function GetKeywords($keyword)
     {
@@ -207,8 +209,8 @@ class SearchView
     /**
      *  获得关键字SQL
      *
-     * @access    private
-     * @return    string
+     * @access private
+     * @return string
      */
     public function GetKeywordSql()
     {
@@ -249,9 +251,9 @@ class SearchView
     /**
      *  获得相关的关键字
      *
-     * @access    public
-     * @param     string  $num  关键词数目
-     * @return    string
+     * @access public
+     * @param  string $num 关键词数目
+     * @return string
      */
     public function GetLikeWords($num = 8)
     {
@@ -296,9 +298,9 @@ class SearchView
     /**
      *  加粗关键字
      *
-     * @access    private
-     * @param     string  $fstr  关键词字符
-     * @return    string
+     * @access private
+     * @param  string $fstr 关键词字符
+     * @return string
      */
     public function GetRedKeyWord($fstr)
     {
@@ -355,8 +357,8 @@ class SearchView
     /**
      *  统计列表里的记录
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function CountRecord()
     {
@@ -439,9 +441,9 @@ class SearchView
     /**
      *  显示列表
      *
-     * @access    public
-     * @param     string
-     * @return    string
+     * @access public
+     * @param  string
+     * @return string
      */
     public function Display()
     {
@@ -455,8 +457,10 @@ class SearchView
                 } else {
                     $InnerText = trim($ctag->GetInnerText());
                 }
-                $this->dtp->Assign($tagid,
-                    $this->GetArcList($limitstart,
+                $this->dtp->Assign(
+                    $tagid,
+                    $this->GetArcList(
+                        $limitstart,
                         $row,
                         $ctag->GetAtt("col"),
                         $ctag->GetAtt("titlelen"),
@@ -466,7 +470,8 @@ class SearchView
                         $this->ChannelType,
                         $this->OrderBy,
                         $InnerText,
-                        $ctag->GetAtt("tablewidth"))
+                        $ctag->GetAtt("tablewidth")
+                    )
                 );
             } else if ($tagname == "pagelist") {
                 $list_len = trim($ctag->GetAtt("listsize"));
@@ -511,22 +516,23 @@ class SearchView
     /**
      *  获得文档列表
      *
-     * @access    public
-     * @param     int  $limitstart  限制开始
-     * @param     int  $row  行数
-     * @param     int  $col  列数
-     * @param     int  $titlelen  标题长度
-     * @param     int  $infolen  描述长度
-     * @param     int  $imgwidth  图片宽度
-     * @param     int  $imgheight  图片高度
-     * @param     string  $achanneltype  列表类型
-     * @param     string  $orderby  排列顺序
-     * @param     string  $innertext  底层模板
-     * @param     string  $tablewidth  表格宽度
-     * @return    string
+     * @access public
+     * @param  int    $limitstart   限制开始
+     * @param  int    $row          行数
+     * @param  int    $col          列数
+     * @param  int    $titlelen     标题长度
+     * @param  int    $infolen      描述长度
+     * @param  int    $imgwidth     图片宽度
+     * @param  int    $imgheight    图片高度
+     * @param  string $achanneltype 列表类型
+     * @param  string $orderby      排列顺序
+     * @param  string $innertext    底层模板
+     * @param  string $tablewidth   表格宽度
+     * @return string
      */
     public function GetArcList($limitstart = 0, $row = 10, $col = 1, $titlelen = 30, $infolen = 250,
-        $imgwidth = 120, $imgheight = 90, $achanneltype = "all", $orderby = "default", $innertext = "", $tablewidth = "100") {
+        $imgwidth = 120, $imgheight = 90, $achanneltype = "all", $orderby = "default", $innertext = "", $tablewidth = "100"
+    ) {
         global $cfg_sphinx_article;
         $typeid = $this->TypeID;
         if ($row == '') {
@@ -667,8 +673,10 @@ class SearchView
                         $row["pubdate"] = empty($row["pubdate  "]) ? $row["senddate"] : $row["pubdate"];
                     }
                     //处理一些特殊字段
-                    $row["arcurl"] = GetFileUrl($row["id"], $row["typeid"], $row["senddate"], $row["title"],
-                        $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]);
+                    $row["arcurl"] = GetFileUrl(
+                        $row["id"], $row["typeid"], $row["senddate"], $row["title"],
+                        $row["ismake"], $row["arcrank"], $row["namerule"], $row["typedir"], $row["money"], $row['filename'], $row["moresite"], $row["siteurl"], $row["sitepath"]
+                    );
                     $row["description"] = $this->GetRedKeyWord(cn_substr($row["description"], $infolen));
                     $row["title"] = $this->GetRedKeyWord(cn_substr($row["title"], $titlelen));
                     $row["id"] = $row["id"];
@@ -732,9 +740,9 @@ class SearchView
     /**
      *  获取动态的分页列表
      *
-     * @access    public
-     * @param     string  $list_len  列表宽度
-     * @return    string
+     * @access public
+     * @param  string $list_len 列表宽度
+     * @return string
      */
     public function GetPageListDM($list_len)
     {
@@ -831,8 +839,8 @@ class SearchView
     /**
      *  获得当前的页面文件的url
      *
-     * @access    public
-     * @return    string
+     * @access public
+     * @return string
      */
     public function GetCurUrl()
     {

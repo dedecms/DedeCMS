@@ -1,15 +1,19 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+* 
+* 
  * 连载图书最新内容调用
  *
- * @version        $Id: bookcontentlist.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: bookcontentlist.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /*>>dede>>
 <name>连载内容</name>
@@ -49,8 +53,10 @@ function lib_bookcontentlist(&$ctag, &$refObj)
 
     if (!$dsql->IsTable("{$cfg_dbprefix}story_books")) {
         return '没安装连载模块';
+    
     }
 
     return lib_booklist($ctag, $refObj, 1);
+
 
 }

@@ -1,12 +1,12 @@
 <?php
 /**
- * @version        $Id: reg_new.php 1 8:38 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: reg_new.php 1 8:38 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . '/membermodel.cls.php';
@@ -86,7 +86,7 @@ if ($step == 1) {
             exit();
         }
 
-        #api{{
+        // api{{
         if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
             $uid = uc_user_register($userid, $pwd, $email);
             if ($uid <= 0) {
@@ -113,7 +113,7 @@ if ($step == 1) {
                 $ucsynlogin = uc_user_synlogin($uid);
             }
         }
-        #/aip}}
+        // /aip}}
 
         if ($cfg_md_mailtest == 'Y') {
             $row = $dsql->GetOne("SELECT mid FROM `#@__member` WHERE email LIKE '$email' ");
@@ -221,7 +221,7 @@ if ($step == 1) {
                 $headers = "From: " . $cfg_adminemail . "\r\nReply-To: " . $cfg_adminemail;
                 if ($cfg_sendmail_bysmtp == 'Y' && !empty($cfg_smtp_server)) {
                     $mailtype = 'TXT';
-                    require_once DEDEINC . '/mail.class.php';
+                    include_once DEDEINC . '/mail.class.php';
                     $smtp = new smtp($cfg_smtp_server, $cfg_smtp_port, true, $cfg_smtp_usermail, $cfg_smtp_password);
                     $smtp->debug = false;
                     $smtp->sendmail($email, $cfg_webname, $cfg_smtp_usermail, $mailtitle, $mailbody, $mailtype);
@@ -234,7 +234,7 @@ if ($step == 1) {
                 ShowMsg("完成基本信息的注册，接下来完善详细资料...", "index_do.php?fmdo=user&dopost=regnew&step=2", 0, 1000);
                 exit();
             } else {
-                require_once DEDEMEMBER . "/templets/reg-new3.htm";
+                include_once DEDEMEMBER . "/templets/reg-new3.htm";
                 exit;
             }
         } else {
@@ -242,7 +242,7 @@ if ($step == 1) {
             exit();
         }
     }
-    require_once DEDEMEMBER . "/templets/reg-new.htm";
+    include_once DEDEMEMBER . "/templets/reg-new.htm";
 } else {
     if (!$cfg_ml->IsLogin()) {
         ShowMsg("尚未完成基本信息的注册,请返回重新填写！", "index_do.php?fmdo=user&dopost=regnew");
@@ -307,9 +307,9 @@ if ($step == 1) {
             $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET `spacesta`='2' WHERE `mid`='{$cfg_ml->M_ID}'");
             // 清除缓存
             $cfg_ml->DelCache($cfg_ml->M_ID);
-            require_once DEDEMEMBER . "/templets/reg-new3.htm";
+            include_once DEDEMEMBER . "/templets/reg-new3.htm";
             exit;
         }
     }
-    require_once DEDEMEMBER . "/templets/reg-new2.htm";
+    include_once DEDEMEMBER . "/templets/reg-new2.htm";
 }

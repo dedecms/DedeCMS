@@ -5,22 +5,22 @@
 /**
  * 栏目单元,选择框
  *
- * @version        $Id: typeunit.class.selector.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: typeunit.class.selector.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEDATA . "/cache/inc_catalog_base.inc";
 
 /**
  * 栏目单元,选择框
  *
- * @package          TypeUnitSelector
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    TypeUnitSelector
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class TypeUnitSelector
 {
@@ -40,14 +40,15 @@ class TypeUnitSelector
 
     //清理类
     public function Close()
-    {}
+    {
+    }
 
     /**
      *  列出某一频道下的所有栏目
      *
-     * @access    public
-     * @param     string  $channel  频道ID
-     * @return    void
+     * @access public
+     * @param  string $channel 频道ID
+     * @return void
      */
     public function ListAllType($channel = 0)
     {
@@ -118,11 +119,11 @@ class TypeUnitSelector
     /**
      *  获得子类目的递归调用
      *
-     * @access    public
-     * @param     int   $id  栏目ID
-     * @param     int   $channel  频道ID
-     * @param     int   $soncat  子级分类
-     * @return    string
+     * @access public
+     * @param  int $id      栏目ID
+     * @param  int $channel 频道ID
+     * @param  int $soncat  子级分类
+     * @return string
      */
     public function LogicListAllSunType($id, $channel = 0, &$soncat)
     {

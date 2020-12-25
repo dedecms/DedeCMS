@@ -1,15 +1,19 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+* 
+* 
  * 调用任意表的数据标签
  *
- * @version        $Id: loop.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: loop.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /*>>dede>>
 <name>万能循环</name>
@@ -41,22 +45,27 @@ function lib_loop(&$ctag, &$refObj)
     $revalue = '';
     if (!empty($table)) {
         $tablename = $table;
+    
     }
 
     if ($tablename == '' || $innertext == '') {
         return '';
+    
     }
 
     if ($if != '') {
         $ifcase = $if;
+    
     }
 
     if ($sort != '') {
         $sort = " ORDER BY $sort $orderway ";
+    
     }
 
     if ($ifcase != '') {
         $ifcase = " WHERE $ifcase ";
+    
     }
 
     $dsql->SetQuery("SELECT * FROM $tablename $ifcase $sort LIMIT 0,$row");
@@ -70,14 +79,20 @@ function lib_loop(&$ctag, &$refObj)
         foreach ($ctp->CTags as $tagid => $ctag) {
             if ($ctag->GetName() == 'array') {
                 $ctp->Assign($tagid, $row);
+            
             } else {
                 if (!empty($row[$ctag->GetName()])) {
                     $ctp->Assign($tagid, $row[$ctag->GetName()]);
+                
                 }
 
+            
             }
+        
         }
         $revalue .= $ctp->GetResult();
+    
     }
     return $revalue;
+
 }

@@ -2,13 +2,13 @@
 /**
  * 会员模型字段编辑
  *
- * @version        $Id: member_model_field_edit.php 1 11:24 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_model_field_edit.php 1 11:24 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 
@@ -68,7 +68,7 @@ if ($action == 'save') {
     $fields = array();
     $rs = $dsql->SetQuery("SHOW fields FROM `$trueTable`");
     $dsql->Execute('a');
-    while ($nrow = $dsql->GetArray('a', MYSQL_ASSOC)) {
+    while ($nrow = $dsql->GetArray('a', MYSQLI_ASSOC)) {
         $fields[strtolower($nrow['Field'])] = $nrow['Type'];
     }
 

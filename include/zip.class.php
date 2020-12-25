@@ -2,13 +2,13 @@
 /**
  * Zip压缩类
  *
- * @version        $Id: zip.class.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: zip.class.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 class zip
 {
@@ -19,9 +19,9 @@ class zip
     /**
      *  获取zip文件中的文件列表
      *
-     * @access    public
-     * @param     string  $zip_name  zip文件名
-     * @return    array
+     * @access public
+     * @param  string $zip_name zip文件名
+     * @return array
      */
     public function get_List($zip_name)
     {
@@ -54,10 +54,10 @@ class zip
     /**
      *  增加文件到压缩文件
      *
-     * @access    public
-     * @param     string  $files 需要增加的文件列表,可以是字符串也可以是数组
-     * @param     string  $compact 压缩文件名称
-     * @return    array  压缩文件信息
+     * @access public
+     * @param  string $files   需要增加的文件列表,可以是字符串也可以是数组
+     * @param  string $compact 压缩文件名称
+     * @return array  压缩文件信息
      */
     public function Add($files, $compact)
     {
@@ -79,8 +79,8 @@ class zip
     /**
      *  获取文件,获取后可以让其进行下载
      *
-     * @access    public
-     * @return    void
+     * @access public
+     * @return void
      */
     public function get_file()
     {
@@ -94,9 +94,9 @@ class zip
     /**
      *  增加文件目录
      *
-     * @access    public
-     * @param     string  $name  目录名称
-     * @return    void
+     * @access public
+     * @param  string $name 目录名称
+     * @return void
      */
     public function add_dir($name)
     {
@@ -119,11 +119,11 @@ class zip
     /**
      *  编译指定的文件为zip文件（filename可以为文件数组array、目录dir或单个文件file）
      *
-     * @access    public
-     * @param     string  $filename  文件名称
-     * @param     string  $tozipfilename  压缩文件名称
-     * @param     string  $ftype  压缩类型
-     * @return    int  影响文件数
+     * @access public
+     * @param  string $filename      文件名称
+     * @param  string $tozipfilename 压缩文件名称
+     * @param  string $ftype         压缩类型
+     * @return int  影响文件数
      */
     public function CompileZipFile($filename, $tozipfilename, $ftype = 'dir')
     {
@@ -166,9 +166,9 @@ class zip
     /**
      *  读取某文件夹的所有文件
      *
-     * @access    public
-     * @param     string  $dirname  目录名称
-     * @return    mix  如果失败则返回false
+     * @access public
+     * @param  string $dirname 目录名称
+     * @return mix  如果失败则返回false
      */
     public function ListDirFiles($dirname)
     {
@@ -196,11 +196,11 @@ class zip
     /**
      *  增加文件
      *
-     * @access    public
-     * @param     string  $data  数据
-     * @param     string  $name  名称
-     * @param     string  $compact  压缩
-     * @return    string
+     * @access public
+     * @param  string $data    数据
+     * @param  string $name    名称
+     * @param  string $compact 压缩
+     * @return string
      */
     public function add_File($data, $name, $compact = 1)
     {
@@ -248,8 +248,8 @@ class zip
     /**
      *  返回时间
      *
-     * @access    public
-     * @return    int
+     * @access public
+     * @return int
      */
     public function DosTime()
     {
@@ -270,10 +270,10 @@ class zip
      *  解压整个压缩包
      *  直接用 Extract 会有路径问题，本函数先从列表中获得文件信息并创建好所有目录然后才运行 Extract
      *
-     * @access    public
-     * @param     string  $zn zip文件名称
-     * @param     string  $to 解压到的目录地址
-     * @return    string
+     * @access public
+     * @param  string $zn zip文件名称
+     * @param  string $to 解压到的目录地址
+     * @return string
      */
     public function ExtractAll($zn, $to)
     {
@@ -296,10 +296,10 @@ class zip
     /**
      *  解压单个文件
      *
-     * @access    public
-     * @param     string  $zn zip文件名称
-     * @param     string  $to 解压到的目录地址
-     * @return    string
+     * @access public
+     * @param  string $zn zip文件名称
+     * @param  string $to 解压到的目录地址
+     * @return string
      */
     public function Extract($zn, $to, $index = array(-1))
     {
@@ -472,8 +472,10 @@ class zip
                 if (!$fp) {
                     return (-1);
                 }
-                $binary_data = pack('va1a1Va1a1', 0x8b1f, Chr($header['compression']),
-                    Chr(0x00), time(), Chr(0x00), Chr(3));
+                $binary_data = pack(
+                    'va1a1Va1a1', 0x8b1f, Chr($header['compression']),
+                    Chr(0x00), time(), Chr(0x00), Chr(3)
+                );
                 fwrite($fp, $binary_data, 10);
                 $size = $header['compressed_size'];
                 while ($size != 0) {

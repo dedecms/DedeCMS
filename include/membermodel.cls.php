@@ -5,13 +5,13 @@
 /**
  * 会员自定义模块
  *
- * @version        $Id: oxwindow.class.php 1 15:21 2010年7月5日 $
- * @package        DedeCMS.Libraries
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: oxwindow.class.php 1 15:21 2010年7月5日 $
+ * @package   DedeCMS.Libraries
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once DEDEINC . '/dedetag.class.php';
 require_once DEDEINC . '/customfields.func.php';
@@ -20,9 +20,9 @@ require_once DEDEINC . '/enums.func.php';
 /**
  * 会员自定义模块
  *
- * @package          membermodel
- * @subpackage       DedeCMS.Libraries
- * @link             http://www.dedecms.com
+ * @package    membermodel
+ * @subpackage DedeCMS.Libraries
+ * @link       http://www.dedecms.com
  */
 class membermodel
 {
@@ -73,11 +73,11 @@ class membermodel
     /**
      *  获取用户数据表单
      *
-     * @access    public
-     * @param     string  $type  表单类型
-     * @param     string  $value  值
-     * @param     string  $admintype  模型类型
-     * @return    string
+     * @access public
+     * @param  string $type      表单类型
+     * @param  string $value     值
+     * @param  string $admintype 模型类型
+     * @return string
      */
     public function getForm($type = 'post', $value = '', $admintype = 'membermodel2')
     {
@@ -106,12 +106,16 @@ class membermodel
                     公开所有联系方式</div></li>';
                             } else if ($tag->GetName() == 'place' || $tag->GetName() == 'oldplace') {
                                 $formtitle = ($tag->GetName() == 'place') ? '目前所在地' : '家乡所在地';
-                                $formstring .= '<li><div class="lform">' . GetEnumsForm('nativeplace',
-                                    0, $tag->GetName()) . '</div><span>' . $formtitle . '：</span></li>';
+                                $formstring .= '<li><div class="lform">' . GetEnumsForm(
+                                    'nativeplace',
+                                    0, $tag->GetName()
+                                ) . '</div><span>' . $formtitle . '：</span></li>';
                             } else if (array_key_exists($tag->GetName(), $this->egroups)) {
                                 //对联动模型进行特殊处理
-                                $formstring .= '<li><div class="lform">' . GetEnumsForm($tag->GetName(),
-                                    0, $tag->GetName()) . '</div><span>' . $this->egroups[$tag->GetName()] . '：</span></li>';
+                                $formstring .= '<li><div class="lform">' . GetEnumsForm(
+                                    $tag->GetName(),
+                                    0, $tag->GetName()
+                                ) . '</div><span>' . $this->egroups[$tag->GetName()] . '：</span></li>';
                             } else if ($tag->GetAtt('type') == 'checkbox') {
                                 //对checkbox模型进行特殊处理
                                 $formstring .= $func($tag, $admintype);
@@ -163,9 +167,9 @@ class membermodel
     /**
      *  获取字段列表
      *
-     * @access    public
-     * @param     string
-     * @return    array
+     * @access public
+     * @param  string
+     * @return array
      */
     public function getFieldList()
     {

@@ -1,15 +1,19 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");}
+<?php if (!defined('DEDEINC')) {exit("Request Error!");
+}
 /**
+* 
+* 
  * 获取当前频道的下级栏目的内容列表标签
  *
- * @version        $Id: channelartlist.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: channelartlist.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 
 /*>>dede>>
 <name>频道文档</name>
@@ -53,43 +57,56 @@ function lib_channelartlist(&$ctag, &$refObj)
         $artlist = GetCacheBlock($cacheid);
         if ($artlist != '') {
             return $artlist;
+        
         }
 
+    
     }
 
     if (empty($typeid)) {
         $typeid = (!empty($refObj->TypeLink->TypeInfos['id']) ? $refObj->TypeLink->TypeInfos['id'] : 0);
+    
     }
 
     if ($innertext == '') {
         $innertext = GetSysTemplets('part_channelartlist.htm');
+    
     }
 
     $totalnum = $row;
     if (empty($totalnum)) {
         $totalnum = 20;
+    
     }
 
     //获得类别ID总数的信息
     $typeids = array();
     if ($typeid == 0 || $typeid == 'top') {
         $tpsql = " reid=0 AND ispart<>2 AND ishidden<>1 AND channeltype>0 ";
+    
     } else {
         if (!preg_match('#,#', $typeid)) {
             $tpsql = " reid='$typeid' AND ispart<>2 AND ishidden<>1 ";
+        
         } else {
             $tpsql = " id IN($typeid) AND ispart<>2 AND ishidden<>1 ";
+        
         }
+    
     }
-    $dsql->SetQuery("SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
-                                            FROM `#@__arctype` WHERE $tpsql ORDER BY sortrank ASC LIMIT $totalnum");
+    $dsql->SetQuery(
+        "SELECT id,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath
+                                            FROM `#@__arctype` WHERE $tpsql ORDER BY sortrank ASC LIMIT $totalnum"
+    );
     $dsql->Execute();
     while ($row = $dsql->GetArray()) {
         $typeids[] = $row;
+    
     }
 
     if (!isset($typeids[0])) {
         return '';
+    
     }
 
     $GLOBALS['itemindex'] = 0;
@@ -101,12 +118,15 @@ function lib_channelartlist(&$ctag, &$refObj)
         $pv->SetTemplet($innertext, 'string');
         $artlist .= $pv->GetResult();
         $GLOBALS['itemparity'] = ($GLOBALS['itemparity'] == 1 ? 2 : 1);
+    
     }
     //注销环境变量，以防止后续调用中被使用
     $GLOBALS['envs']['typeid'] = $_sys_globals['typeid'];
     $GLOBALS['envs']['reid'] = '';
     if ($cacheid != '') {
         WriteCacheBlock($cacheid, $artlist);
+    
     }
     return $artlist;
+
 }

@@ -1,23 +1,30 @@
-<?php if (!defined('DEDEMEMBER')) {exit('Request Error');}
+<?php if (!defined('DEDEMEMBER')) {exit('Request Error');
+}
 /**
+* 
+* 
  * 文档操作处理函数
  *
- * @version        $Id: inc_batchup.php 1 13:52 2010年7月9日 $
- * @package        DedeCMS.Member
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
- */
+ * @version   $Id: inc_batchup.php 1 13:52 2010年7月9日 $
+ * @package   DedeCMS.Member
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
+ 
+*/
 require_once DEDEINC . "/channelunit.func.php";
 
 /**
+ * 
+ * 
  *  删除文档
  *
- * @access    public
- * @param     int  $aid  文档ID
- * @return    bool
+ * @access public
+ * @param  int $aid 文档ID
+ * @return bool
+ 
  */
 function DelArc($aid)
 {
@@ -36,6 +43,7 @@ function DelArc($aid)
     $arcRow = $dsql->GetOne($arcQuery);
     if (!is_array($arcRow)) {
         return false;
+    
     }
 
     //删除数据库的内容
@@ -45,21 +53,27 @@ function DelArc($aid)
         if ($cfg_upload_switch == 'Y') {
             //判断文章属性；
             switch ($arcRow['nid']) {
-                case "image":
-                    $nid = "imgurls";
-                    break;
-                case "article":
-                    $nid = "body";
-                    break;
-                case "soft":
-                    $nid = "softlinks";
-                    break;
-                case "shop":
-                    $nid = "body";
-                    break;
-                default:
-                    $nid = "";
-                    break;
+            case "image":
+                $nid = "imgurls";
+                    
+                break;
+            case "article":
+                $nid = "body";
+                    
+                break;
+            case "soft":
+                $nid = "softlinks";
+                    
+                break;
+            case "shop":
+                $nid = "body";
+                    
+                break;
+            default:
+                $nid = "";
+                    
+                break;
+            
             }
             if ($nid != "") {
                 $row = $dsql->GetOne("SELECT $nid FROM " . $arcRow['addtable'] . " WHERE aid = '$aid'");
@@ -68,7 +82,9 @@ function DelArc($aid)
                     $litpic = DEDEROOT . $licp['litpic'];
                     if (file_exists($litpic) && !is_dir($litpic)) {
                         @unlink($litpic);
+                    
                     }
+                
                 }
                 $tmpname = '/(\\' . $cfg_medias_dir . '.+?)(\"| )/';
 
@@ -82,12 +98,17 @@ function DelArc($aid)
                     $upname = DEDEROOT . $var;
                     if (file_exists($upname) && !is_dir($upname)) {
                         @unlink($upname);
+                    
                     }
 
+                
                 }
+            
             }
+        
         }
         $dsql->ExecuteNoneQuery("DELETE FROM `" . $arcRow['addtable'] . "` where aid='$aid' ");
+    
     }
     $dsql->ExecuteNoneQuery(" DELETE FROM `#@__archives` where id='$aid' ");
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` where aid='$aid'");
@@ -97,9 +118,12 @@ function DelArc($aid)
     //删除HTML
     if ($arcRow['ismake'] == -1 || $arcRow['arcrank'] != 0 || $arcRow['typeid'] == 0 || $arcRow['money'] > 0) {
         return true;
+    
     }
-    $arcurl = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'],
-        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']);
+    $arcurl = GetFileUrl(
+        $arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], $arcRow['title'], $arcRow['ismake'],
+        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], $arcRow['money'], $arcRow['filename']
+    );
     if (!preg_match("#\?#", $arcurl)) {
         $htmlfile = GetTruePath() . str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
         if (file_exists($htmlfile) && !is_dir($htmlfile)) {
@@ -111,29 +135,39 @@ function DelArc($aid)
                 $htmlfile = $fname . "_$i" . "." . $sname;
                 if (file_exists($htmlfile) && !is_dir($htmlfile)) {
                     @unlink($htmlfile);
+                
                 } else {
                     break;
+                
                 }
 
+            
             }
+        
         }
+    
     }
 
     //删除文本文件
     $filenameh = DEDEDATA . "/textdata/" . (ceil($aid / 5000)) . "/{$aid}-" . substr(md5($cfg_cookie_encode), 0, 16) . ".txt";
     if (is_file($filename)) {
         @unlink($filename);
+    
     }
 
     return true;
+
 }
 
 /**
+ * 
+ * 
  *  删除不带主表内容类型的数据
  *
- * @access    public
- * @param     int  $aid  文档ID
- * @return    string
+ * @access public
+ * @param  int $aid 文档ID
+ * @return string
+ 
  */
 function DelArcSg($aid)
 {
@@ -154,6 +188,7 @@ function DelArcSg($aid)
 
     if (!is_array($arcRow)) {
         return false;
+    
     }
 
     //删除数据库的内容
@@ -166,9 +201,12 @@ function DelArcSg($aid)
     //删除HTML
     if ($arcRow['arcrank'] != 0 || $arcRow['typeid'] == 0) {
         return true;
+    
     }
-    $arcurl = GetFileUrl($arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], '', 1,
-        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], 0, '');
+    $arcurl = GetFileUrl(
+        $arcRow['id'], $arcRow['typeid'], $arcRow['senddate'], '', 1,
+        $arcRow['arcrank'], $arcRow['namerule'], $arcRow['typedir'], 0, ''
+    );
     if (!preg_match("#\?#", $arcurl)) {
         $htmlfile = GetTruePath() . str_replace($GLOBALS['cfg_basehost'], '', $arcurl);
         if (file_exists($htmlfile) && !is_dir($htmlfile)) {
@@ -180,25 +218,35 @@ function DelArcSg($aid)
                 $htmlfile = $fname . "_$i" . "." . $sname;
                 if (file_exists($htmlfile) && !is_dir($htmlfile)) {
                     @unlink($htmlfile);
+                
                 } else {
                     break;
+                
                 }
 
+            
             }
+        
         }
+    
     }
     //删除文本文件
     $filenameh = DEDEDATA . "/textdata/" . (ceil($aid / 5000)) . "/{$aid}-" . substr(md5($cfg_cookie_encode), 0, 16) . ".txt";
     return true;
+
 }
 
 /**
+ * 
+ * 
  *  获取真实路径
  *
- * @return    string
+ * @return string
+ 
  */
 function GetTruePath()
 {
     $truepath = $GLOBALS["cfg_basedir"];
     return $truepath;
+
 }

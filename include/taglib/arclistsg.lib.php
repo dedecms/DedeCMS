@@ -2,22 +2,22 @@
 /**
  * 单表模型的文章列表调用标记
  *
- * @version        $Id: arclistsg.lib.php 1 9:29 2010年7月6日 $
- * @package        DedeCMS.Taglib
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: arclistsg.lib.php 1 9:29 2010年7月6日 $
+ * @package   DedeCMS.Taglib
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 /**
  *  arclistsg解析标签
  *
- * @access    public
- * @param     object  $ctag  解析标签
- * @param     object  $refObj  引用对象
- * @return    string  成功后返回解析后的标签内容
+ * @access public
+ * @param  object  $ctag  解析标签
+ * @param  object  $refObj  引用对象
+ * @return string  成功后返回解析后的标签内容
  */
 
 /*>>dede>>
@@ -117,7 +117,8 @@ function lib_arclistsg(&$ctag, &$refObj)
 
     //按不同情况设定SQL条件 排序方式
     if ($idlist == '') {
-        if ($orderby == 'near' && $cfg_keyword_like == 'N') {$keyword = '';}
+        if ($orderby == 'near' && $cfg_keyword_like == 'N') {$keyword = '';
+        }
         //时间限制(用于调用最近热门文章、热门评论之类)
         if ($subday > 0) {
             //这里的时间只能计算到天，否则缓存功能将无效
@@ -254,11 +255,15 @@ function lib_arclistsg(&$ctag, &$refObj)
             if ($row = $dsql->GetArray("al")) {
                 $ids[] = $row['aid'];
 
-                $row['filename'] = $row['arcurl'] = GetFileUrl($row['id'], $row['typeid'], $row['senddate'], $row['title'], 1,
-                    0, $row['namerule'], $row['typedir'], 0, '', $row['moresite'], $row['siteurl'], $row['sitepath']);
+                $row['filename'] = $row['arcurl'] = GetFileUrl(
+                    $row['id'], $row['typeid'], $row['senddate'], $row['title'], 1,
+                    0, $row['namerule'], $row['typedir'], 0, '', $row['moresite'], $row['siteurl'], $row['sitepath']
+                );
 
-                $row['typeurl'] = GetTypeUrl($row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
-                    $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']);
+                $row['typeurl'] = GetTypeUrl(
+                    $row['typeid'], $row['typedir'], $row['isdefault'], $row['defaultname'], $row['ispart'],
+                    $row['namerule2'], $row['moresite'], $row['siteurl'], $row['sitepath']
+                );
 
                 if ($row['litpic'] == '-' || $row['litpic'] == '') {
                     $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';

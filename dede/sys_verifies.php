@@ -2,13 +2,13 @@
 /**
  * 系统文件校验
  *
- * @version        $Id: sys_verifies.php 1 23:07 2010年7月20日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: sys_verifies.php 1 23:07 2010年7月20日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_Edit');
@@ -96,7 +96,7 @@ else if ($action == 'verify') {
 function _view() { }
 ----------------------*/
 else if ($action == 'view') {
-    require_once DEDEINC . "/oxwindow.class.php";
+    include_once DEDEINC . "/oxwindow.class.php";
 
     $filetxt = '';
     if (!preg_match("#data(.*)common.inc.php#i", $filename)) {
@@ -185,7 +185,7 @@ function _down()
 ------------------------*/
 else if ($action == 'down') {
     $cacheFiles = DEDEDATA . '/modifytmp.inc';
-    require_once $cacheFiles;
+    include_once $cacheFiles;
 
     if ($fileConut == -1 || $curfile > $fileConut) {
         ShowMsg("已下载所有文件<br /><a href='sys_verifies.php?action=apply'>[直接替换文件]</a> &nbsp; <a href='#'>[我自己手动替换文件]</a>", "javascript:;");
@@ -242,7 +242,7 @@ function _applyRecover()
 ------------------------*/
 else if ($action == 'apply') {
     $cacheFiles = DEDEDATA . '/modifytmp.inc';
-    require_once $cacheFiles;
+    include_once $cacheFiles;
     $sDir = DEDEDATA . "/$tmpdir";
     $tDir = DEDEROOT;
 
@@ -296,7 +296,7 @@ else if ($action == 'update') {
     $dhd->OpenUrl($rmFile);
     $ct = $dhd->GetHtml();
     $dhd->Close();
-    $cts = split("[\r\n]{1,}", $ct);
+    $cts = preg_split("[\r\n]{1,}", $ct);
     foreach ($cts as $ct) {
         $ct = trim($ct);
         if (empty($ct)) {

@@ -2,13 +2,13 @@
 /**
  * 多媒体选择框
  *
- * @version        $Id: select_media.php 1 9:43 2010年7月8日 $
- * @package        DedeCMS.Dialog
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: select_media.php 1 9:43 2010年7月8日 $
+ * @package   DedeCMS.Dialog
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 
 require_once dirname(__FILE__) . "/config.php";
@@ -57,24 +57,24 @@ if (!empty($noeditor)) {
 <SCRIPT language='JavaScript'>
 function nullLink()
 {
-	return;
+    return;
 }
 
 function ReturnValue(reimg)
 {
     if(window.opener.document.<?php echo $f ?> != null)
-	{
-		 window.opener.document.<?php echo $f ?>.value=reimg;
-	}
+    {
+         window.opener.document.<?php echo $f ?>.value=reimg;
+    }
 
     var funcNum = <?php echo isset($CKEditorFuncNum) ? $CKEditorFuncNum : 1; ?>;
-	if(window.opener.CKEDITOR != null && funcNum != 1)
-	{
+    if(window.opener.CKEDITOR != null && funcNum != 1)
+    {
 
-		window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
+        window.opener.CKEDITOR.tools.callFunction(funcNum, reimg);
 
-	}
-	window.close();
+    }
+    window.close();
 }
 </SCRIPT>
 <table width='100%' border='0' cellpadding='0' cellspacing='1' bgcolor='#CBD8AC' align="center">
@@ -98,10 +98,10 @@ while ($file = $dh->read()) {
         $filesize = $filesize / 1024;
         if ($filesize != "") {
             if ($filesize < 0.1) {
-                @list($ty1, $ty2) = split("\.", $filesize);
+                @list($ty1, $ty2) = preg_split("\.", $filesize);
                 $filesize = $ty1 . "." . substr($ty2, 0, 2);
             } else {
-                @list($ty1, $ty2) = split("\.", $filesize);
+                @list($ty1, $ty2) = preg_split("\.", $filesize);
                 $filesize = $ty1 . "." . substr($ty2, 0, 1);
             }
         }
@@ -128,7 +128,7 @@ while ($file = $dh->read()) {
         if (preg_match("#^_(.*)$#i", $file)) {
             continue;
         }
-        #屏蔽FrontPage扩展目录和linux隐蔽目录
+        // 屏蔽FrontPage扩展目录和linux隐蔽目录
         if (preg_match("#^\.(.*)$#i", $file)) {
             continue;
         }

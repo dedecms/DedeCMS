@@ -2,13 +2,13 @@
 /**
  * 会员留言管理
  *
- * @version        $Id: member_guestbook.php 1 14:08 2010年7月19日 $
- * @package        DedeCMS.Administrator
- * @founder        IT柏拉图, https: //weibo.com/itprato
- * @author         DedeCMS团队
- * @copyright      Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license        http://help.dedecms.com/usersguide/license.html
- * @link           http://www.dedecms.com
+ * @version   $Id: member_guestbook.php 1 14:08 2010年7月19日 $
+ * @package   DedeCMS.Administrator
+ * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @author    DedeCMS团队
+ * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license   http://help.dedecms.com/usersguide/license.html
+ * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
 CheckPurview('sys_memberguestbook');
@@ -33,17 +33,17 @@ if (!$ways == '' && !$body == '') {
     $body = preg_replace("#^(　| )+#i", '', $body);
     $body = preg_replace("#(　| )+$#i", '', $body);
     switch ($ways) {
-        case "uname":
-            $where .= "AND g.uname='$body'";
-            break;
-        case "userid":
-            $row = $dsql->GetOne("SELECT mid FROM #@__member WHERE userid='$body' LIMIT 1");
-            $mid = $row['mid'];
-            $where .= "AND g.mid='$mid'";
-            break;
-        case "msg":
-            $where .= "AND g.msg LIKE '%$body%'";
-            break;
+    case "uname":
+        $where .= "AND g.uname='$body'";
+        break;
+    case "userid":
+        $row = $dsql->GetOne("SELECT mid FROM #@__member WHERE userid='$body' LIMIT 1");
+        $mid = $row['mid'];
+        $where .= "AND g.mid='$mid'";
+        break;
+    case "msg":
+        $where .= "AND g.msg LIKE '%$body%'";
+        break;
     }
 }
 
