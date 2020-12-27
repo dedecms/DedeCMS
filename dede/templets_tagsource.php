@@ -30,4 +30,30 @@ function GetHelpInfo($tagname)
     return $helpinfo;
 }
 
-DedeInclude('templets/templets_tagsource.htm');
+
+$filearray = array();
+// 判断是否为目录
+if (is_dir($libdir)) {
+    // 打开目录句柄
+    if ($dh = opendir($libdir)) {
+        // 获取目录下内容
+        while (($file = readdir($dh)) !== false){
+            if(preg_match("#\.php#", $file)) {
+
+                $filetime = filemtime($libdir.'/'.$file);
+                $_file['filename'] = $file;
+                $_file['filetime'] = MyDate("Y-m-d H:i", $filetime);
+                $_file['fileinfo'] = GetHelpInfo(str_replace('.lib.php', '', $file));
+                $filearray[] = $_file;
+            }
+        }
+         // 关闭目录句柄
+        closedir($dh);
+    }
+}
+
+
+$dlist = new DataListCP();
+$dlist->SetParameter("files", $filearray);
+$dlist->SetTemplet(DEDEADMIN . "/templets/templets_tagsource.htm");
+$dlist->display();

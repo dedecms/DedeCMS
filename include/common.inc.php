@@ -280,21 +280,14 @@ if (!isset($cfg_NotPrintHead)) {
 }
 
 //自动加载类库处理
-if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
-    include_once DEDEINC . '/autoload7.inc.php';
-} else {
-    include_once DEDEINC . '/autoload.inc.php';
-}
+require_once DEDEINC . '/autoload.inc.php';
+
 
 //引入数据库类
 if ($GLOBALS['cfg_dbtype'] == 'mysql') {
-    if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init") || !function_exists('mysqli_connect')) {
-        include_once DEDEINC . '/dedesqli.class.php';
-    } else {
-        include_once DEDEINC . '/dedesql.class.php';
-    }
+    include_once DEDEINC . '/dedesqli.class.php';
 } else {
-    include_once DEDEINC . '/dedesqlite.class.php';
+    exit("DedeCMS ERROR: Pleass Set Database Type.");
 }
 
 //全局常用函数

@@ -4087,7 +4087,7 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('749','cfg_mb_reginfo','注册是否需要完成详细资料的填写','4','bool','Y'),
 ('750','cfg_remote_site','是否启用远程站点','2','bool','N'),
 ('751','cfg_title_site','是否发布和编辑文档时远程发布(启用远程站点的前提下)','2','bool','N'),
-('752','cfg_mysql_type','数据库类型（支持mysql和mysqli）','2','string','mysql'),
+('752','cfg_mysql_type','数据库类型（支持mysql和mysqli）','2','string','mysqli'),
 ('753','cfg_sphinx_article','是否启用文章全文检索功能（需配置sphinx服务器）','7','bool','N'),
 ('754','cfg_sphinx_host','Sphinx服务器主机地址','7','string','localhost'),
 ('755','cfg_sphinx_port','Sphinx服务器端口号','7','number','9312'),

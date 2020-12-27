@@ -100,13 +100,7 @@ class Request
         //self::$forms['_global'] = $GLOBALS;
     }
 
-    /**
-     * 把 eval 重命名为 myeval
-     */
-    public function MyEval($phpcode)
-    {
-        return eval($phpcode);
-    }
+   
 
     /**
      * 获得指定表单值

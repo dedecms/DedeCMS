@@ -1,70 +1,96 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>标签源码碎片管理</title>
-<link href="css/base.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-.linerow { border-bottom: 1px solid #CBD8AC; }
-td { padding-left:5px; }
-</style>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px;">
-  <tr>
-   <td height="28" background="images/tbg.gif" colspan="7"  style="padding-left:10px;">
-     <b>标签源码碎片管理</b> &nbsp; (DedeCMS 5.3及以上版本标签源码是完全独立的，懂程序的用户可以按需修改或自行增加标签)
-	</td>
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>标签源码碎片管理</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href='tpl.php?action=addnewtag' class="uk-button uk-button-default uk-button-small">新建标签</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td >文件名</td>
+<td width="18%">文件描述</td>
+<td width="12%">修改时间</td>
+<td width="20%">操作</td>
 </tr>
+</thead>
 </table>
-<table width='98%' border='0' cellspacing='1' cellpadding='0' bgcolor="#EAECEF" align="center">
-   <tr height="26" align="center">
-     <td width="25%" background="images/wbg.gif"><strong>标签文件名</strong></td>
-     <td width="33%" background="images/wbg.gif" align="left"><strong>标签说明</strong></td>
-     <td width="22%" background="images/wbg.gif"><strong>修改时间</strong></td>
-     <td width="20%" background="images/wbg.gif"><strong>操作</strong></td>
-   </tr>
-   <tr>
-      <td colspan='4' height="28" bgcolor="#FAFBFC">
-      	<div style='float:left'>
-      	<b>
-      		当前位置：标签源码碎片管理(文件存放在 ../include/taglib 文件夹)
-      	</b>
-        </div>
-      	<div style='float:right;padding-right:10px'>
-      		<a href='tpl.php?action=addnewtag'>[<u>增加一个新的标签</u>]</a>
-        </div>
-      </td>
-   </tr>
-   <?php
-   $dh = dir($libdir);
-   while($filename=$dh->read())
-   {
-   	  if(!preg_match("#\.php$#", $filename)) continue;
-   	  $filetime = filemtime($libdir.'/'.$filename);
-      $filetime = MyDate("Y-m-d H:i",$filetime);
-      $fileinfo = GetHelpInfo(str_replace('.lib.php','',$filename));
-   ?>
-   <tr height="26" bgcolor='#FFFFFF' onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-	  <td>
-       <img src='images/htm.gif' border='0' align='absmiddle' /><?php echo $filename; ?>
-    </td>
-		<td>
-			<?php echo $fileinfo; ?>
-		</td>
-		<td align='center'>
-			<?php echo $filetime; ?>
-		</td>
-		<td align='center'>
-			<a href='tpl.php?action=edittag&filename=<?php echo $filename; ?>'>[编辑]</a>
-		</td>
-	</tr>
-	<?php } ?>
-	<tr>
-    <td colspan="4" height='32' bgcolor="#FAFBFC">
-      <p style="text-align:center;color:red">修改系统标签有风险，请小心操作！</p>
-    </td>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -50;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+  <tr>
+  <td >文件名</td>
+  <td width="18%">文件描述</td>
+  <td width="12%">修改时间</td>
+  <td width="20%">操作</td>
   </tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
+{dede:array.filearray}
+<tr>
+<td><span width="16" data-uk-icon="icon: file-code" class="uk-margin-small-right uk-icon"></span> <a href='tpl.php?action=edit&acdir={dede:global.acdir /}&filename={dede:value.filename /}'> {dede:value.filename /}</a></td>
+<td>{dede:value.fileinfo /}</td>
+<td>{dede:value.filetime /}</td>
+<td>
+  <a href='tpl.php?action=edittag&filename={dede:value.filename /}'>[修改]</a>
+</td>
+</tr>
+{/dede:array}
+<!-- /内容列表 -->
+</tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+<script  language="javascript">
+function DelTpl(filename)
+{
+if(window.confirm('你确定要删除这篇文档吗?')) location='tpl.php?action=del&acdir=<?php echo $acdir; ?>&filename='+filename;
+else return false;
+}
+</script>
 </body>
 </html>

@@ -1,63 +1,111 @@
 {dede:config.pagesize value="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>管理员帐号</title>
-<link href="css/base.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>管理员账号</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6">
-  <tr>
-    <td height="27" colspan="5" background="images/tbg.gif" bgcolor="#FAFBFC">
-    	<table width="96%" border="0" cellspacing="1" cellpadding="1">
+
+<body>
+
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+  <div id="dede-card-header" class="uk-card-header">
+    <div class="uk-grid uk-grid-small uk-text-small">
+      <span><ul class="uk-breadcrumb"><li><span>管理员账号</span></li></ul></span>
+    </div>
+    <!--  搜索表单  -->
+    <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+      <li style="margin-right: 12px;"><a href="sys_admin_user_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">增加管理员</a></li>
+      <li style="margin-right: 12px;"><a href="sys_group.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">用户组管理</a></li>
+    </ul>
+    <!--  /搜索表单  -->
+  </div>
+  <!-- 表头显示部分 -->
+  <table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+    <thead>
+      <tr>
+        <td width="10%">用户名</td>
+        <td width="10%">笔名</td>
+        <td width="12%">级别</td>
+        <td width="14%">频道</td>
+        <td>登录信息</td>
+        <td width="15%">管理项</td>
+      </tr>
+    </thead>
+  </table>
+  <!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+  <div class="uk-card-body uk-overflow-auto" grid>
+    <div class="uk-child-width-1-1">
+      <div class="uk-overflow-auto">
+        <!-- 表头隐藏部分，用于固定表结构宽度 -->
+        <table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+          <thead>
+            <tr>
+              <td width="10%">用户名</td>
+              <td width="10%">笔名</td>
+              <td width="12%">级别</td>
+              <td width="14%">频道</td>
+              <td>登录信息</td>
+              <td width="15%">管理项</td>
+            </tr>
+          </thead>
+          <!-- /表头隐藏部分 -->
+        <tbody>
+        <!-- 内容列表 -->
+        {dede:datalist}
         <tr>
-          <td width="24%" style="padding-left:10px;"><b>管理员帐号</b> </td>
-          <td width="76%" align="right"><b>
-          	<a href="sys_admin_user_tj.php"><u>编辑绩效统计</u></a>
-          	|
-          	<a href="sys_admin_user_add.php"><u>增加管理员</u></a>
-          	|
-          	<a href="sys_group.php"><u>用户组管理</u></a>
-          	</b>
+          <td>{dede:field.userid /}</td>
+          <td>{dede:field.uname /}<br> </td>
+          <td>{dede:field.usertype function="GetUserType(@me)"/}</td>
+          <td>{dede:field.typename function="GetChannel(@me)"/}</td>
+          <td>登录时间：{dede:field.logintime function="GetDateTimeMk(@me)" /}　登录IP：{dede:field.loginip/}</td>
+          <td>
+           <a href='sys_admin_user_edit.php?id={dede:field.id/}&dopost=edit'><u>更改</u></a> |
+           <a href='sys_admin_user_edit.php?id={dede:field.id/}&userid={dede:field.userid/}&dopost=delete'><u>删除</u></a> |
+           <a href='content_list.php?mid={dede:field.id/}'><u>文档</u></a>　
           </td>
         </tr>
-      </table>
-     </td>
-  </tr>
-  <tr bgcolor="#FFFFFF">
-    <td height="24" colspan="5">　§为了防止错误操作，系统不允许在管理界面删除超级管理员，如果确实要删除，请自行在数据表dede_admin中删除。</td>
-  </tr>
-  <tr bgcolor="#FBFBFB">
-    <td width="18%" height="24" align="center">登录ID</td>
-    <td width="13%" align="center">笔名</td>
-    <td width="22%" align="center">级别</td>
-    <td width="22%" align="center">频道</td>
-    <td width="23%" align="center">管理项</td>
-  </tr>
-  {dede:datalist}
-  <tr bgcolor="#FFFFFF" align="center">
-    <td rowspan="2">{dede:field.userid /}</td>
-    <td rowspan="2">{dede:field.uname /}<br> </td>
-    <td>{dede:field.usertype function="GetUserType(@me)"/}</td>
-    <td>{dede:field.typename function="GetChannel(@me)"/}</td>
-    <td rowspan="2">
-	   <a href='sys_admin_user_edit.php?id={dede:field.id/}&dopost=edit'><u>更改</u></a> |
-     <a href='sys_admin_user_edit.php?id={dede:field.id/}&userid={dede:field.userid/}&dopost=delete'><u>删除</u></a> |
-     <a href='content_list.php?mid={dede:field.id/}'><u>文档</u></a>　
-    </td>
-  </tr>
-  <tr>
-  <td colspan="2" align="center" bgcolor="#FFFFFF">
-	登录时间：{dede:field.logintime function="GetDateTimeMk(@me)" /}　登录IP：{dede:field.loginip/}
-	</td>
-  </tr>
-  {/dede:datalist}
-  <tr bgcolor="#FAFBFC">
-    <td height="24" colspan="5" align="center" valign="top">
-    	{dede:pagelist listsize='7' /}
-    </td>
-  </tr>
-</table>
+        {/dede:datalist}
+        <!-- /内容列表 -->
+        </tbody>
+        <!-- 分页 -->
+        <thead>
+          <tr>
+            <td height="36" colspan="10" align="center">
+              {dede:pagelist listsize=7/}
+            </td>
+          </tr>
+        </thead>
+        <!-- /分页 -->
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+  <div class="uk-button-group" style="margin-left: 50px;">
+  </div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

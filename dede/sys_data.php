@@ -16,10 +16,6 @@ if (empty($dopost)) {
     $dopost = '';
 }
 
-if ($cfg_dbtype == 'sqlite') {
-    showMsg('备份系统根目录下/data/' . $cfg_dbname . '.db文件即可', 'javascript:;');
-    exit();
-}
 
 if ($dopost == "viewinfo") //查看表结构
 {
@@ -76,20 +72,20 @@ $dsql->Execute();
 while ($row = $dsql->GetObject()) {
     $channelTables[] = $row->addtable;
 }
-$dsql->SetQuery("SHOW TABLES");
+$dsql->SetQuery("SHOW TABLE STATUS");
 $dsql->Execute('t');
 while ($row = $dsql->GetArray('t', MYSQLI_BOTH)) {
     if (preg_match("#^{$cfg_dbprefix}#", $row[0]) || in_array($row[0], $channelTables)) {
-        $dedeSysTables[] = $row[0];
+        $dedeSysTables[] = $row;
     } else {
         $otherTables[] = $row[0];
     }
 }
-$mysql_version = $dsql->GetVersion();
-DedeInclude('templets/sys_data.htm');
 
-function TjCount($tbname, &$dsql)
-{
-    $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM $tbname");
-    return $row['dd'];
-}
+$mysql_version = $dsql->GetVersion();
+$dlist = new DataListCP();
+$dlist->SetParameter("dedeSysTables", $dedeSysTables);
+$dlist->SetTemplet(DEDEADMIN . "/templets/sys_data.htm");
+$dlist->display();
+
+

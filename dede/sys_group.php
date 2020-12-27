@@ -16,4 +16,9 @@ if (empty($dopost)) {
     $dopost = "";
 }
 
-DedeInclude('templets/sys_group.htm');
+$query = "Select rank,typename,sys From #@__admintype";
+$dlist = new DataListCP();
+$dlist->SetTemplet(DEDEADMIN . "/templets/sys_group.htm");
+$dlist->SetSource($query);
+$dlist->display();
+

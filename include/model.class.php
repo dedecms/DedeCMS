@@ -28,11 +28,7 @@ class Model
     public function Model()
     {
         global $dsql;
-        if ($GLOBALS['cfg_mysql_type'] == 'mysqli') {
-            $this->dsql = $this->db = isset($dsql) ? $dsql : new DedeSqli(false);
-        } else {
-            $this->dsql = $this->db = isset($dsql) ? $dsql : new DedeSql(false);
-        }
+        $this->dsql = $this->db = isset($dsql) ? $dsql : new DedeSqli(false);
 
     }
 

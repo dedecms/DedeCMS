@@ -172,12 +172,6 @@ $actionSearch[4] = array(
             'purview' => 'sys_Keyword',
             'linkurl' => 'tags_main.php',
         ),
-        7 => array(
-            'title' => '数据库内容替换 ',
-            'description' => '可以对数据库中的某张表中的字段进行内容的批量替换',
-            'purview' => 'sys_ArcBatch',
-            'linkurl' => 'sys_data_replace.php',
-        ),
     ),
 );
 $actionSearch[5] = array(
@@ -471,12 +465,6 @@ $actionSearch[10] = array(
             'description' => '对数据库进行备份和还原',
             'purview' => 'sys_data',
             'linkurl' => 'sys_data.php',
-        ),
-        12 => array(
-            'title' => 'SQL命令行工具',
-            'description' => '可以在针对每张数据表执行单行或者多行的SQL语句',
-            'purview' => 'sys_data',
-            'linkurl' => 'sys_sql_query.php',
         ),
         13 => array(
             'title' => '文件校验[S]',

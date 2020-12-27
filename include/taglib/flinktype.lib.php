@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit("Request Error!");
 }
 /**
-* 
-* 
  * 友情链接
  *
  * @version   $Id: flinktype.lib.php 1 15:57 2011年2月18日Z niap $
@@ -10,7 +8,6 @@
  * @copyright Copyright (c) 2007 - 2011, DesDev, Inc.
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /*>>dede>>

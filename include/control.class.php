@@ -34,14 +34,7 @@ class Control
     {
         global $dsql;
         $this->tpl = isset($this->tpl) ? $this->tpl : new DedeTemplate();
-        $sqltype = "DedeSql";
-        if ($GLOBALS['cfg_mysql_type'] == 'mysqli' && function_exists("mysqli_init")) {
-            $sqltype = "DedeSql";
-        } else {
-            $sqltype = "DedeSqli";
-        }
-
-        $this->dsql = isset($dsql) ? $dsql : new $sqltype(false);
+        $this->dsql = isset($dsql) ? $dsql : new DedeSqli(false);
     }
 
     //设置模板

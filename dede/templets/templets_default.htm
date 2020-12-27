@@ -1,98 +1,102 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>模板管理器</title>
-<link href="css/base.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-.linerow { border-bottom: 1px solid #CBD8AC; }
-td { padding-left:5px; }
-</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>模板管理</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>模板管理</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="templets_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">默认目录</a></li>
+<li style="margin-right: 12px;"><a href="templets_main.php?acdir=plus" class="uk-button uk-button-default uk-button-small uk-flex-inline ">插件目录</a></li>
+<li style="margin-right: 12px;"><a href='tpl.php?action=newfile&acdir={dede:global.acdir /}' class="uk-button uk-button-default uk-button-small">新建模板</a></li>
+<li><a href='tpl.php?action=upload&acdir={dede:global.acdir /}' class="uk-button uk-button-default uk-button-small">上传模板</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td >文件名</td>
+<td width="12%">文件描述</td>
+<td width="12%">修改时间</td>
+<td width="20%">操作</td>
+</tr>
+</thead>
+</table>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -50;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+	<tr>
+	<td >文件名</td>
+	<td width="12%">文件描述</td>
+	<td width="12%">修改时间</td>
+	<td width="20%">操作</td>
+	</tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
+{dede:array.filearray}
+<tr>
+<td><span width="16" data-uk-icon="icon: file-code" class="uk-margin-small-right uk-icon"></span> <a href='tpl.php?action=edit&acdir={dede:global.acdir /}&filename={dede:value.filename /}'> {dede:value.filename /}</a></td>
+<td>{dede:value.fileinfo /}</td>
+<td>{dede:value.filetime /}</td>
+<td>
+	<a href='tpl.php?action=edit&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[修改]</a>
+	{dede:if !isset($fileinfos[value.filename])}
+	<a href='tpl.php?action=del&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[删除]</a>
+	{/dede:if}
+</td>
+</tr>
+{/dede:array}
+<!-- /内容列表 -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 <script  language="javascript">
 function DelTpl(filename)
 {
-	if(window.confirm('你确定要删除这篇文档吗?')) location='tpl.php?action=del&acdir=<?php echo $acdir; ?>&filename='+filename;
-	else return false;
+if(window.confirm('你确定要删除这篇文档吗?')) location='tpl.php?action=del&acdir=<?php echo $acdir; ?>&filename='+filename;
+else return false;
 }
 </script>
-</head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px;">
-  <tr>
-   <td height="28" background="images/tbg.gif" colspan="7">
-     <b>模板管理</b>
-	</td>
-</tr>
-</table>
-<table width='98%' border='0' cellspacing='1' cellpadding='0' align="center" bgcolor="#EAECEF">
-   <tr height="26" align="center">
-     <td width="25%" background="images/wbg.gif"><strong>文件名</strong></td>
-     <td width="33%" background="images/wbg.gif"><strong>文件描述</strong></td>
-     <td width="22%" background="images/wbg.gif"><strong>修改时间</strong></td>
-     <td width="20%" background="images/wbg.gif"><strong>操作</strong></td>
-   </tr>
-   <tr>
-      <td colspan='4' height="28" bgcolor="#FAFBFC">
-      	<div style='float:left'>
-      	<b>
-      		当前位置：
-      		<?php
-      		if($acdir=='plus') echo '插件模板';
-      		else if($acdir=='system') echo '底层模板';
-      		else echo '核心模板 &gt; '.$acdir;
-      		?>
-      	</b>
-        </div>
-      	<div style='float:right;padding-right:10px'>
-      		<a href='templets_main.php'>[<u>默认模板目录</u>]</a>
-      		<a href='templets_main.php?acdir=plus'>[<u>插件模板目录</u>]</a>
-        </div>
-      </td>
-   </tr>
-   <?php
-   $dh = dir($templetdird);
-   while($filename=$dh->read())
-   {
-   	  if(!preg_match("#\.htm#", $filename)) continue;
-   	  $filetime = filemtime($templetdird.'/'.$filename);
-      $filetime = MyDate("Y-m-d H:i",$filetime);
-      $fileinfo = (isset($fileinfos[$filename]) ? $fileinfos[$filename] : '未知模板');
-   ?>
-   <tr height="26" bgcolor='#FFFFFF' onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-	  <td>
-        <a href='<?php echo $templeturld.'/'.$filename; ?>' target='_blank'>
-        	<img src='images/htm.gif' border='0' align='absmiddle' /><?php echo $filename; ?>
-        </a>
-    </td>
-		<td>
-			<?php echo $fileinfo; ?>
-		</td>
-		<td align='center'>
-			<?php echo $filetime; ?>
-		</td>
-		<td align='center'>
-			<a href='tpl.php?action=edit&acdir=<?php echo $acdir; ?>&filename=<?php echo $filename; ?>'>[修改]</a>
-			<?php
-			if(!isset($fileinfos[$filename]))
-			{
-			?>
-			 | 
-			<a href='#' onClick="javascript:DelTpl('<?php echo $filename; ?>');">[删除]</a>
-			<?php
-		   }
-			?>
-		</td>
-	</tr>
-	<?php } ?>
-	<tr>
-    <td colspan="4" height='32' bgcolor="#FAFBFC">
-      &nbsp;
-      <a href='tpl.php?action=newfile&acdir=<?php echo $acdir; ?>'>[新建模板]</a>
-      &nbsp;
-      <a href='tpl.php?action=upload&acdir=<?php echo $acdir; ?>'>[上传模板]</a>
-    </td>
-  </tr>
-</table>
-
 </body>
 </html>

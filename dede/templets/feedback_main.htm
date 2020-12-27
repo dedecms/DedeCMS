@@ -51,11 +51,12 @@
 			<tr>
 				<td width="4%">ID</td>
 				<td width="4%">选择</td>
-				<td width="35%">文章标题</td>
+				<td width="25%">文章标题</td>
+				<td>评论内容</td>
 				<td width="6%">IP</td>
-				<td width="11%">日期</td>
-				<td width="10%">评论人</td>
-				<td width="10%">操作</td>
+				<td width="8%">日期</td>
+				<td width="6%">评论人</td>
+				<td width="8%">操作</td>
 			</tr>
 			</thead>
 		</table>
@@ -70,11 +71,12 @@
 							<tr>
 								<td width="4%">ID</td>
 								<td width="4%">选择</td>
-								<td width="35%">文章标题</td>
+								<td width="25%">文章标题</td>
+								<td>评论内容</td>
 								<td width="6%">IP</td>
-								<td width="11%">日期</td>
-								<td width="10%">评论人</td>
-								<td width="10%">操作</td>
+								<td width="8%">日期</td>
+								<td width="6%">评论人</td>
+								<td width="8%">操作</td>
 							</tr>
 						</thead>
 					<tbody>
@@ -84,8 +86,11 @@
 							<td>{dede:field.id/}</td>
 							<td><input type="checkbox" value="{dede:field.id/}" class="uk-checkbox check"/>
 							</td>
+							<td>{dede:field.arctitle function="cn_substr(RemoveXSS(@me), 30)"/}</td>
 							<td>
-								<a href='feedback_main.php?aid={dede:field.aid/}'><u>{dede:field.arctitle function="RemoveXSS(@me)"/}</u></a>
+								<span class="dede-toolbar-icon" uk-icon="icon: chat-text;ratio:0.8"></span>
+								{dede:field.ischeck function="IsCheck(@me)" /}
+								<a href='feedback_main.php?aid={dede:field.aid/}'>{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}</a>
 							</td>
 							<td><a href='feedback_main.php?ip={dede:field.ip/}'><u>{dede:field.ip/}</u></a></td>
 							<td>{dede:field.dtime function="GetDateTimeMK(@me)" /}</td>
@@ -94,12 +99,6 @@
 							</td>
 							<td>
 								<a href="feedback_edit.php?id={dede:field.id/}'">[编辑]</a> 
-							</td>
-						</tr>
-						<tr colspan="7"> 
-							<td colspan="7">
-								<span class="dede-toolbar-icon" uk-icon="icon: chat-text;ratio:0.8"></span>{dede:field.ischeck function="IsCheck(@me)" /}
-								{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}
 							</td>
 						</tr>
 						{/dede:datalist}

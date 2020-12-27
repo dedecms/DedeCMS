@@ -70,7 +70,6 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='随机模板设置' link='article_template_rand.php' rank='sys_StringMix' target='main' />
   <m:item name='计划任务管理' link='sys_task.php' rank='sys_Task' target='main' />
   <m:item name='数据库备份/还原' link='sys_data.php' rank='sys_Data' target='main' />
-  <m:item name='SQL命令行工具' link='sys_sql_query.php' rank='sys_Data' target='main' />
   <m:item name='文件校验[S]' link='sys_verifies.php' rank='sys_verify' target='main' />
   <m:item name='病毒扫描[S]' link='sys_safetest.php' rank='sys_verify' target='main' />
   <m:item name='系统错误修复[S]' link='sys_repair.php' rank='sys_verify' target='main' />
@@ -137,7 +136,6 @@ $adminMenu1
   <m:item name='重复文档检测' link='article_test_same.php' rank='sys_ArcBatch' target='main' />
   <m:item name='自动摘要|分页' link='article_description_main.php' rank='sys_Keyword' target='main' />
   <m:item name='TAG标签管理' link='tags_main.php' rank='sys_Keyword' target='main' />
-  <m:item name='数据库内容替换' link='sys_data_replace.php' rank='sys_ArcBatch' target='main' />
 </m:top>
 
 <m:top item='5_' name='自动任务' notshowall='1'  display='uk-open' rank='sys_MakeHtml'>

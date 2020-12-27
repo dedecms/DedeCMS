@@ -134,7 +134,7 @@ DROP TABLE IF EXISTS `#@__admintype`;
 CREATE TABLE `#@__admintype` (
   `rank` float NOT NULL default '1',
   `typename` varchar(30) NOT NULL default '',
-  `system` smallint(6) NOT NULL default '0',
+  `sys` smallint(6) NOT NULL default '0',
   `purviews` text,
   PRIMARY KEY  (`rank`)
 ) TYPE=MyISAM;
