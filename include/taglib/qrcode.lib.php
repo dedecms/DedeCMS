@@ -1,4 +1,4 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 
 $GLOBALS['qrcode_id'] = isset($GLOBALS['qrcode_id']) ? $GLOBALS['qrcode_id'] : 1;

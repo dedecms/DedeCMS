@@ -783,7 +783,7 @@ function UploadOneImage($upname, $handurl = '', $isremote = 1, $ntitle = '')
         }
         if (!empty($handurl) && !preg_match("#^http:\/\/#i", $handurl) && file_exists($cfg_basedir . $handurl)) {
             if (!is_object($dsql)) {
-                $dsql = new DedeSql();
+                $dsql = new DedeSqli();
             }
             $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE url LIKE '$handurl' ");
             $fullUrl = preg_replace("#\.([a-z]*)$#i", "", $handurl);

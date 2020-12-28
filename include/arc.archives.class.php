@@ -1,6 +1,6 @@
 <?php
 if (!defined('DEDEINC')) {
-    exit("Request Error!");
+    exit("DedeCMS Error: Request Error!");
 }
 
 /**

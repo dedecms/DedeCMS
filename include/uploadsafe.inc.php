@@ -12,7 +12,7 @@
  * @link      http://www.dedecms.com
  */
 if (!defined('DEDEINC')) {
-    exit('Request Error!');
+    exit("DedeCMS Error: Request Error!");
 }
 
 if (isset($_FILES['GLOBALS'])) {
@@ -33,7 +33,7 @@ if (($GLOBALS['cfg_html_editor'] == 'ckeditor'
 foreach ($_FILES as $_key => $_value) {
     foreach ($keyarr as $k) {
         if (!isset($_FILES[$_key][$k])) {
-            exit('Request Error!');
+            exit("DedeCMS Error: Request Error!");
         }
     }
     if (preg_match('#^(cfg_|GLOBALS)#', $_key)) {

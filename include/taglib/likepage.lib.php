@@ -25,7 +25,7 @@
 </attributes>
 >>dede>>*/
 
-if (!defined('DEDEINC')) {exit("Request Error!");
+if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 
 require_once dirname(__FILE__) . '/likesgpage.lib.php';

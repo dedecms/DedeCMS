@@ -170,7 +170,7 @@ function __EditUser()
 else if ($dopost == 'edituser') {
     CheckPurview('member_Edit');
     if (!isset($_POST['id'])) {
-        exit('Request Error!');
+        exit("DedeCMS Error: Request Error!");
     }
 
     $pwdsql = empty($pwd) ? '' : ",pwd='" . md5($pwd) . "'";

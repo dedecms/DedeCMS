@@ -1,161 +1,174 @@
 {dede:config.pagesize value="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>网站会员管理</title>
-<link href="css/base.css" rel="stylesheet" type="text/css">
-<script language="javascript" src="js/member.js"></script>
-<style type="text/css">
-.rb{ border-right:1px solid #666666 }
-.tb{ border-top:1px solid #666666 }
-</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>系统用户组管理</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" style="margin-bottom:6px">
-  <tr>
-    <td height="30" align="center" bgcolor="#FAFBFC"> 
-  <form action="member_main.php" name="form1" method="get">
-	  <table border="0" cellspacing="0" cellpadding="3">
-      <tr>
-          <td>关键字：</td>
-          <td><input name="keyword" type="text" id="keyword" size="12" style="width:120px" value="{dede:global name='keyword'/}" /></td>
-          <td>&nbsp;排序：</td>
-          <td>
-		        <select name="sortkey" id="sortkey" style="width:120px">
-              {dede:global name='sortform'/}
-				      <option value="mid">mid/注册时间</option>
-              <option value="logintime">登录时间</option>
-              <option value="rank">会员等级</option>
-              <option value="money">会员金币</option>
-              <option value="scores">会员积分</option>
-            </select>
-          </td>
-          <td>
-		         <select name="sex" id="sex" style="width:60px">
-               {dede:global name='sexform'/}
-               <option value="男">男</option>
-               <option value="女">女</option>
-               <option value="保密">保密</option>
-             </select>
-          </td>
-          <td>
-          	<select name="mtype" id="mtype" style="width:60px">
-               {dede:global name='mtypeform'/}
-               <?php
-           		foreach($MemberModels as $row)
-           		{
-           			echo "<option value=".$row['name'].">".$row['name']."</option>\r\n";
-           		}
-           	   ?>
-             </select>
-          </td>
-          <td>
-		      <select name="spacesta" id="spacesta" style="width:150px">
-              <option value='-10'>--会员状态--</option>
-              <?php
-           		foreach($staArr as $k=>$v)
-           		{
-           			if($spacesta==$k) echo "<option value='$k' selected>$v</option>\r\n";
-           			else echo "<option value='$k'>$v</option>\r\n";
-           		}
-           	  ?>
-            </select></td>
-         <td>
-           <input name="imageField" class="np" type="image" src="images/button_search.gif" width="60" height="22" border="0" />
-          </td>
-        </tr>
-      </table>
-	  </form>
-    </td>
-  </tr>
-</table>
-<form name="form2">
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" bgcolor="#EAECEF">
-  <tr> 
-  <td height="28" colspan="9" background="images/tbg.gif">
-   <table width="99%" border="0" cellspacing="0" cellpadding="0">
-     <tr>
-       <td width="29%" style="padding-left:10px;"><strong>注册会员列表</strong></td>
-       <td width="71%" align="right">
-          <a href="member_main.php">所有会员</a> |
-          <a href="member_main.php?spacesta=-2">被禁言用户</a> |
-          <a href="member_main.php?matt=1">被推荐</a> |
-          <a href="member_main.php?matt=0">普通</a> &nbsp;
-       </td>
-     </tr>
-  </table>
- </td>
+
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>系统用户组管理</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li>
+<button class="uk-button uk-button-default uk-button-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+
+<ul class="uk-nav uk-navbar-dropdown-nav" >
+<li>
+<form name='form3' action='member_main.php' method='get'>
+<input type='hidden' name='dopost' value='listArchives'>
+<fieldset id="dede-dropdown-margin" class="uk-fieldset">
+<div class="uk-margin">
+<select name="spacesta" id="spacesta" class="uk-select uk-form-small uk-flex-inline uk-width-1-1">
+  <option value='-10'>--会员状态--</option>
+  <?php foreach($staArr as $k=>$v) {
+  if($spacesta==$k) echo "<option value='$k' selected>$v</option>\r\n";
+  else echo "<option value='$k'>$v</option>\r\n"; } ?>
+  </select>
+</div>
+
+<div class="uk-margin">
+<select name="mtype" id="mtype" class="uk-select uk-form-small uk-flex-inline uk-width-1-1">
+  <?php foreach($MemberModels as $row) {
+  echo "<option value=".$row['name'].">".$row['name']."</option>\r\n"; } ?>
+</select>
+</div>
+<div class="uk-margin">
+<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
+</div>
+<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+</fieldset>
+</form>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="3%"></td>
+<td width="6%">ID</td>
+<td width="12%">登录名</td>
+<td width="6%">昵称</td>
+<td>E-mail</td>
+<td width="6%">性别</td>
+<td width="8%">会员等级</td>
+<td width="14%">会员属性</td>
+<td width="14%">最后登录</td>
+<td width="16%">操作</td>
 </tr>
-  <tr bgcolor="#FEFCEF" height="30" align="center"> 
-    <td width="3%">选择</td>
-    <td width="5%">mid</td>
-    <td width="11%">登录名</td>
-    <td width="16%">email/昵称</td>
-    <td width="5%">性别</td>
-    <td width="8%">会员等级</td>
-    <td width="20%">会员属性</td>
-    <td width="14%">最后登录</td>
-    <td>操作</td>
-  </tr>
+</thead>
+</table>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="3%"></td>
+<td width="6%">ID</td>
+<td width="12%">登录名</td>
+<td width="6%">昵称</td>
+<td>E-mail</td>
+<td width="6%">性别</td>
+<td width="8%">会员等级</td>
+<td width="14%">会员属性</td>
+<td width="14%">最后登录</td>
+<td width="16%">操作</td>
+</tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
 {dede:datalist} 
-<tr height="26" align="center" bgcolor="#FFFFFF" onMouseMove="javascript:this.bgColor='#FBFBFB';"
-  	 onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-  <td><input name="mid" type="checkbox" id="mid" value="{dede:field.mid/}" class="np" /></td>
-  <td>{dede:field.mid/}</td>
-  <td><a href="../member/index.php?uid={dede:field.userid/}" target='_blank'>
-    <?php
-	  echo '<u>'.$fields['userid'].'</u>';
-	if($fields['spacesta']==-2) echo "<font color='red'>(禁言)</font>";
-	if($fields['spacesta']==-1) echo "<font color='red'>(未审核)</font>";
-	  if(!empty($fields['face'])) {
-       echo "<br /><img src='{$fields['face']}' width='60' alt='浏览会员空间' />";
-	  }
-	?>
-  </a></td>
-	<td>
-	  {dede:field.email/}
-	  <br />
-	  昵称：{dede:field.uname/}
-	</td>
-  <td>
-  	{dede:field.sex /}
-  </td>
-  <td>
-  	<a href="member_main.php?rank={dede:field.rank/}">{dede:field.rank function="GetMemberName(@me,'限制会员')"/}</a>
-  </td>
-  <td>
-  	{dede:field.mtype /}用户 {dede:field.matt function="GetMAtt(@me)" /}
-  	<br />
-  	金币：{dede:field.money /} 积分：{dede:field.scores /}
-  </td>
-  <td>
-  	{dede:field.logintime function="MyDate('y-m-d H:i',@me)" /}
-  	<br />
-  	【{dede:field.loginip /}】
-  </td>
-  <td align="center">
-    <a href="member_view.php?id={dede:field.mid/}">修改</a> | 
-    <a href="member_do.php?id={dede:field.mid/}&dopost=delmember">删除</a> |
-    <a href="content_list.php?mid={dede:field.mid/}" target="_blank">文档</a> |
-    <a href="member_toadmin.php?id={dede:field.mid/}" target="_self">提升</a>
-  </td>
+<tr> 
+<td><input name="mid" type="checkbox" id="mid" value="{dede:field.mid/}" class="uk-checkbox dede-checkbox" /></td>
+<td>{dede:field.mid/}</td>
+<td>{dede:field.userid /} <?php
+if($fields['spacesta']==-2) echo "<font color='red'>(禁言)</font>";
+if($fields['spacesta']==-1) echo "<font color='red'>(未审核)</font>";?>
+</td>
+<td>{dede:field.uname/} </td>
+<td>{dede:field.email /}</td>
+<td>{dede:field.sex /}</td>
+<td>
+<a href="member_main.php?rank={dede:field.rank/}">{dede:field.rank function="GetMemberName(@me,'限制会员')"/}</a>
+</td>
+<td>
+{dede:field.mtype /}用户 {dede:field.matt function="GetMAtt(@me)" /}
+</td>
+<td>
+{dede:field.logintime function="MyDate('Y-m-d H:i',@me)" /} - {dede:field.loginip /}
+</td>
+<td>
+<a href="member_view.php?id={dede:field.mid/}">[修改]</a> 
+<a href="member_do.php?id={dede:field.mid/}&dopost=delmember">[删除]</a>
+<a href="content_list.php?mid={dede:field.mid/}" target="_blank">[文档]</a>
+<a href="member_toadmin.php?id={dede:field.mid/}" target="_self">[提升]</a>
+</td>
 </tr>
 {/dede:datalist} 
-<tr bgcolor="#ffffff"> 
- <td height="36" colspan="9">
-	&nbsp;
-	<a href="javascript:selAll()" class="coolbg">全选</a>
-	<a href="javascript:noSelAll()" class="coolbg">取消</a>
-	<a href="javascript:delArc(0)" class="coolbg">&nbsp;删除&nbsp;</a>
- （如果已经整合了论坛的用户请不要使用批量删除功能）</td>
+<!-- /内容列表 -->
+</tbody>
+<!-- 批量操作 -->
+<thead>
+<tr>
+<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+<td height="36" colspan="8">
+<a href="#" onclick="DedeCMS_JSCODE_Version_Multiple_Checked_Action('member_do.php?dopost=delmembers&id=')" class="uk-button uk-button-default uk-button-small">删除</a>
+</td>
 </tr>
-<tr bgcolor="#FAFBFC"> 
- <td height="36" colspan="9" align="center">
-	{dede:pagelist listsize='6' /}
- </td>
+</thead>
+<!-- /批量操作 -->
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=6/}
+</td>
 </tr>
+</thead>
+<!-- /分页 -->
 </table>
-</form>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

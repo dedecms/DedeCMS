@@ -1,10 +1,7 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 支付宝接口类
- 
  */
 class Alipay
 {
@@ -12,15 +9,12 @@ class Alipay
     public $mid;
     public $return_url = "/plus/carbuyaction.php?dopost=return";
     /**
-     * 
-     * 
      * 构造函数
      *
      * @access public
      * @param
      *
      * @return void
-     
      */
     public function Alipay()
     {
@@ -36,15 +30,12 @@ class Alipay
     }
 
     /**
-     * 
-     * 
      *  设定接口会送地址
      *
      *  例如: $this->SetReturnUrl($cfg_basehost."/tuangou/control/index.php?ac=pay&orderid=".$p2_Order)
      *
      * @param  string $returnurl 会送地址
      * @return void
-     
      */
     public function SetReturnUrl($returnurl = '')
     {
@@ -56,13 +47,10 @@ class Alipay
     }
 
     /**
-     * 
-     * 
      * 生成支付代码
      *
      * @param array $order   订单信息
      * @param array $payment 支付方式信息
-     *                       
      */
     public function GetCode($order, $payment)
     {
@@ -141,10 +129,7 @@ class Alipay
     }
 
     /**
-     * 
-     * 
      * 响应操作
-     
      */
     public function respond()
     {

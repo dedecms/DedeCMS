@@ -1,4 +1,4 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 
 function ch_stepselect($fvalue, &$arcTag, &$refObj, $fname = '')
@@ -8,8 +8,6 @@ function ch_stepselect($fvalue, &$arcTag, &$refObj, $fname = '')
 }
 
 /**
- * 
- * 
  * 获取二级枚举的值
  *
  * @version   $Id: stepselect.lib.php 16:24 2010年7月26日 $
@@ -19,7 +17,6 @@ function ch_stepselect($fvalue, &$arcTag, &$refObj, $fname = '')
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 function GetEnumsValue2($egroup, $evalue = 0)
 {

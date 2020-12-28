@@ -1,4 +1,4 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
  * 系统核心函数存放文件
@@ -301,9 +301,10 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
         }
         $msg = $htmlhead . $rmsg . $htmlfoot;
     }
-    $dlist = new DataListCP();
-    $dlist->SetString($msg);
-    $dlist->Display();
+    
+    $tpl = new DedeTemplate();
+    $tpl->LoadString($msg);
+    $tpl->Display();
 }
 
 /**

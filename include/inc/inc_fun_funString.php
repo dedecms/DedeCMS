@@ -1,4 +1,4 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 
 function SpHtml2Text($str)

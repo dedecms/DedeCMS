@@ -1,8 +1,6 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 软件相关标签
  *
  * @version   $Id:softlinks.lib.php 1 9:33 2010年7月8日 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获取软件连接
  *
  * @access public
@@ -26,7 +21,6 @@
  * @param  object $refObj       引用对象
  * @param  bool   $downloadpage 下载页面
  * @return string
- 
  */
 function ch_softlinks($fvalue, &$ctag, &$refObj, $fname = '', $downloadpage = false)
 {

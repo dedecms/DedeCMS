@@ -17,6 +17,7 @@ setcookie("ENV_GOBACK_URL", $dedeNowurl, time() + 3600, '/');
 make_hash();
 $sql = "SELECT myt.aid,myt.tagname,tp.typename,myt.timeset,myt.endtime
         FROM `#@__mytag` myt LEFT JOIN `#@__arctype` tp ON tp.id=myt.typeid ORDER BY myt.aid DESC ";
+$token = make_hash();
 $dlist = new DataListCP();
 $dlist->SetTemplet(DEDEADMIN . '/templets/mytag_main.htm');
 $dlist->SetSource($sql);

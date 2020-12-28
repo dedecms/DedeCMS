@@ -1,202 +1,120 @@
 {dede:config.pagesize value="20"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>采集节点管理</title>
-<script language="javascript" src="js/context_menu.js"></script>
-<script language="javascript" src="js/ieemu.js"></script>
-<script language="javascript">
-if(moz) {
-	extendEventObject();
-	extendElementModel();
-	emulateAttachEvent();
-}
-//编辑节点
-function EditNote(nid)
-{
-	if(nid=="") nid = getOneItem();
-  if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_edit.php?nid="+nid;
-}
-//编辑节点配置
-function EditNoteText(nid)
-{
-	if(nid=="") nid = getOneItem();
-  if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_edit_text.php?nid="+nid;
-}
-//清空节点
-function ClearNote(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_do.php?dopost=clear&nid="+nid;
-}
-//删除节点
-function DelNote(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	if(window.confirm('你确定要删除这个节点吗?'))
-	{ location.href = "co_do.php?dopost=delete&nid="+nid; }
-}
-//查看已下载的内容
-function ViewDown(nid)
-{
-	if(nid=="") nid = getOneItem();
-	location.href = "co_url.php?nid="+nid;
-}
-//测试规则
-function TestRule(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_test_rule.php?nid="+nid;
-}
-//导出采集
-function ExportDown(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_export.php?nid="+nid;;
-}
-//导入规则
-function GetRule()
-{
-	location.href = "co_get_corule.php";
-}
-//导出规则
-function ExportRule(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_export_corule.php?nid="+nid;
-}
-//采集所选节点
-function GatherSel(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_gather_start.php?nid="+nid;
-}
-//复制所选节点
-function CopyNote(nid)
-{
-	if(nid=="") nid = getOneItem();
-	if(nid==""){ alert("请选择一个节点！"); return;}
-	location.href = "co_do.php?dopost=copy&nid="+nid;
-}
-//上下文菜单
-function ShowMenu(evt,obj,nid)
-{
-  var eobj,popupoptions
-  popupoptions = [
-    new ContextItem("测试当前节点",function(){ TestRule(nid); }),
-    new ContextItem("采集当前节点",function(){ GatherSel(nid); }),
-    new ContextSeperator(),
-    new ContextItem("更改当前节点",function(){ EditNote(nid); }),
-    new ContextItem("更改节点配置",function(){ EditNoteText(nid); }),
-    new ContextSeperator(),
-    new ContextItem("查看采集内容",function(){ ViewDown(nid); }),
-    new ContextItem("导出采集",function(){ ExportDown(nid); }),
-    new ContextSeperator(),
-    new ContextItem("清空已下载信息",function(){ ClearNote(nid); }),
-    new ContextItem("删除当前节点",function(){ DelNote(nid); }),
-    new ContextSeperator(),
-    new ContextItem("复制当前节点",function(){ CopyNote(nid); }),
-    new ContextSeperator(),
-    new ContextItem("导出配置规则",function(){ ExportRule(nid); }),
-    new ContextItem("关闭菜单(<u>C</u>)",function(){})
-  ]
-  ContextMenu.display(evt,popupoptions)
-}
-//获得选中其中一个的id
-function getOneItem()
-{
-	var allSel="";
-	if(document.form1.nids.value) return document.form1.nids.value;
-	for(i=0;i<document.form1.nids.length;i++)
-	{
-		if(document.form1.nids[i].checked)
-		{
-				allSel = document.form1.nids[i].value;
-				break;
-		}
-	}
-	return allSel;	
-}
-</script>
-<link href="css/base.css" rel="stylesheet" type="text/css">
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8' onLoad="ContextMenu.intializeContextMenu()">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
-  <tr> 
-    <td height="20" colspan="7" background='images/tbg.gif'> <table width="100%" border="0" cellpadding="0" cellspacing="0">
-        <tr> 
-          <td width="20%" height="18" style="padding-left:10px;"><strong>采集节点管理：</strong></td>
-          <td width="80%" align="right">
-          	<input type="button" name="ba" value="添加新节点" onClick="location='co_add.php?action=select';" class="coolbg np" style="width:100px" /> 
-          </td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr align="center" height="26" bgcolor="#FBFBFB"> 
-    <td width="8%">选择</td>
-    <td width="32%">节点名称</td>
-    <td width="18%">针对规则</td>
-    <td width="10%">最后采集日期</td>
-    <td width="10%">加入日期</td>
-    <td width="10%">编码</td>
-    <td width="10%">网址数</td>
-  </tr>
-  <form name="form1">
-    {dede:datalist} 
-    <tr bgcolor="#FFFFFF" align="center" onMouseMove="javascript:this.bgColor='#FBFBFB';"
-    	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22" oncontextmenu="ShowMenu(event,this,{dede:field.nid /});"> 
-      <td><input type='checkbox' name='nids' value='{dede:field.nid /}' class='np'></td>
-      <td><a href='co_url.php?nid={dede:field.nid /}'>{dede:field.notename /}</a></td>
-      <td>{dede:field.typename /}</td>
-      <td>{dede:field.cotime function='GetDatePage(@me)' /}</td>
-      <td>{dede:field.uptime function='GetDatePage(@me)' /}</td>
-      <td>{dede:field.sourcelang /}</td>
-      <td>{dede:field.nid function='TjUrlNum(@me)' /}</td>
-    </tr>
-    {/dede:datalist} 
-  </form>
-  <tr bgcolor="#ffffff"> 
-    <td height="24" colspan="7"> 
-      <table width="90%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td>
-          	&nbsp;
-          	<a href="#" onClick="location='co_add.php?action=select';" class='coolbg np'>增加新节点</a>
-            <a href="javascript:GetRule();" class='coolbg np'>导入配置</a>
-            <a href="javascript:ExportRule('');" class='coolbg np'>导出配置</a> 
-             | 
-            <a href="javascript:GatherSel('');" class='coolbg np' style='color:red'>采集</a>
-            <a href="javascript:ExportDown('');" class='coolbg np'>导出数据</a>
-             |
-          	<a href="javascript:EditNote('');" class='coolbg np'>更改</a>
-          	<a href="javascript:EditNoteText('');" class='coolbg np'>更改配置</a>
-          	<a href="javascript:TestRule('');" class='coolbg np'>测试</a>
-          	 | 
-          	<a href="javascript:ViewDown('');" class='coolbg np'>查看已下载</a> 
-             | 
-            <a href="javascript:CopyNote('');" class='coolbg np'>复制</a>
-            <a href="javascript:ClearNote('');" class='coolbg np'>清空</a> 
-             | 
-            <a href="javascript:DelNote('');" class='coolbg np'>删除</a>
-           </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr  bgcolor="#FAFBFC"> 
-    <td height="24" colspan="7" align="center">
-    	{dede:pagelist size='5' /}
-    </td>
-  </tr>
+
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>采集节点管理</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="co_add.php?action=select" class="uk-button uk-button-default uk-button-small uk-flex-inline ">新建节点</a></li>
+<li style="margin-right: 12px;"><a href="co_get_corule.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">导入配置</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td>节点名称</td>
+<td width="10%">针对规则</td>
+<td width="10%">最后采集日期</td>
+<td width="10%">加入日期</td>
+<td width="10%">编码</td>
+<td width="10%">网址数</td>
+<td width="25%">操作</td>
+</tr>
+</thead>
 </table>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td>节点名称</td>
+<td width="10%">针对规则</td>
+<td width="10%">最后采集日期</td>
+<td width="10%">加入日期</td>
+<td width="10%">编码</td>
+<td width="10%">网址数</td>
+<td width="25%">操作</td>
+</tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
+{dede:datalist}
+<tr>
+<td><a href='co_url.php?nid={dede:field.nid /}'>{dede:field.notename /}</a></td>
+<td>{dede:field.typename /}</td>
+<td>{dede:field.cotime function='GetDatePage(@me)' /}</td>
+<td>{dede:field.uptime function='GetDatePage(@me)' /}</td>
+<td>{dede:field.sourcelang /}</td>
+<td>{dede:field.nid function='TjUrlNum(@me)' /}</td>
+<td>
+<a href="co_gather_start.php?nid={dede:field.nid /}">[采集]</a>
+<a href="co_url.php?nid={dede:field.nid /}">[查看]</a>
+<a href="co_test_rule.php?nid={dede:field.nid /}">[测试]</a>
+<a href="co_export_corule.php?nid={dede:field.nid /}">[导出配置]</a>
+<a href="co_do.php?dopost=copy&nid={dede:field.nid /}">[复制]</a>
+<a href="co_do.php?dopost=clear&nid={dede:field.nid /}">[清空]</a>
+<a href="co_edit.php?nid={dede:field.nid /}">[修改]</a>
+<a href="co_do.php?dopost=delete&nid={dede:field.nid /}">[删除]</a>
+</td>
+
+</tr>
+{/dede:datalist}
+<!-- /内容列表 -->
+</tbody>
+
+<!-- 分页 -->
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=5 /}
+</td>
+</tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

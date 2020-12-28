@@ -1,5 +1,5 @@
 <?php
-if(!defined('DEDEINC')) { exit("Request Error!");
+if(!defined('DEDEINC')) { exit("DedeCMS Error: Request Error!");
 }
 
 function dede_autoloader($classname)

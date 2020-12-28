@@ -1,8 +1,6 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 文章列表调用标记
  *
  * 9:19 2010年7月13日:修正对isweight属性的支持
@@ -14,19 +12,15 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  arclist解析标签
  *
  * @access public
  * @param  object  $ctag  解析标签
  * @param  object  $refObj  引用对象
  * @return string  成功后返回解析后的标签内容
- 
  */
 
 /*>>dede>>
@@ -177,8 +171,6 @@ function lib_arclist(&$ctag, &$refObj)
 }
 
 /**
- * 
- * 
  *  arclist解析函数
  *
  * @access public
@@ -206,7 +198,6 @@ function lib_arclist(&$ctag, &$refObj)
  * @param  string $pagesize  显示条数
  * @param  string $isweight  是否需要对检索出来的内容按照weight排序
  * @return string
- 
  */
 function lib_arclistDone(&$refObj, &$ctag, $typeid = 0, $row = 10, $col = 1, $titlelen = 30, $infolen = 160,
     $imgwidth = 120, $imgheight = 90, $listtype = 'all', $orderby = 'default', $keyword = '',
@@ -834,14 +825,11 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid = 0, $row = 10, $col = 1, $ti
 }
 
 /**
- * 
- * 
  *  查询缓存
  *
  * @access public
  * @param  string $md5hash 唯一识别hash
  * @return string
- 
  */
 function GetArclistCache($md5hash)
 {
@@ -872,15 +860,12 @@ function GetArclistCache($md5hash)
 }
 
 /**
- * 
- * 
  *  获取自动频道ID
  *
  * @access public
  * @param  string $sortid
  * @param  string $topid
  * @return string
- 
  */
 function lib_GetAutoChannelID($sortid, $topid)
 {
@@ -904,8 +889,6 @@ function lib_GetAutoChannelID($sortid, $topid)
 }
 
 /**
- * 
- * 
  *  对查询结果集进行排序
  *
  * @access public
@@ -917,7 +900,6 @@ function lib_GetAutoChannelID($sortid, $topid)
  *                        nat自然排序
 
  * @return array
- 
  */
 function list_sort_by($list, $field, $sortby = 'asc')
 {

@@ -1,5 +1,5 @@
 <?php if (!defined('DEDEINC')) {
-    exit("Request Error!");
+    exit("DedeCMS Error: Request Error!");
 }
 
 /**
@@ -12,7 +12,7 @@
  *      $GLOBALS['cfg_dbname'];
  *      $GLOBALS['cfg_dbprefix'];
  *
- * @version   $Id: dedesqli.class.php 1 15:00 2011-1-21  $
+ * @version   $Id: ii.class.php 1 15:00 2011-1-21  $
  * @package   DedeCMS.Libraries
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队
@@ -28,11 +28,11 @@ if (!function_exists("mysqli_init")) {
     exit;
 }
 
-$dsql = $dsqli = $db = new DedeSqli(false);
+$dsql = $dsqli = $db = new ii(false);
 /**
  * Dede MySQLi数据库类
  *
- * @package    DedeSqli
+ * @package    ii
  * @subpackage DedeCMS.Libraries
  * @link       http://www.dedecms.com
  */
@@ -43,7 +43,7 @@ if (!defined('MYSQLI_BOTH')) {
 if (!defined('MYSQLI_ASSOC')) {
     define('MYSQLI_ASSOC', MYSQLI_ASSOC);
 }
-class DedeSqli
+class ii
 {
     public $linkID;
     public $dbHost;
@@ -72,7 +72,7 @@ class DedeSqli
         }
     }
 
-    public function DedeSql($pconnect = false, $nconnect = true)
+    public function DedeSqli($pconnect = false, $nconnect = true)
     {
         $this->__construct($pconnect, $nconnect);
     }
@@ -80,8 +80,6 @@ class DedeSqli
     public function Init($pconnect = false)
     {
         $this->linkID = 0;
-        //$this->queryString = '';
-        //$this->parameters = Array();
         $this->dbHost = $GLOBALS['cfg_dbhost'];
         $this->dbUser = $GLOBALS['cfg_dbuser'];
         $this->dbPwd = $GLOBALS['cfg_dbpwd'];
@@ -193,49 +191,39 @@ class DedeSqli
 
     public function Esc($_str)
     {
-        if (version_compare(phpversion(), '4.3.0', '>=')) {
-            return @mysqli_real_escape_string($this->linkID, $_str);
-        } else {
-            return @mysqli_escape_string($this->linkID, $_str);
-        }
+        return @mysqli_real_escape_string($this->linkID, $_str);
     }
 
     //执行一个不返回结果的SQL语句，如update,delete,insert等
     public function ExecuteNoneQuery($sql = '')
     {
         global $dsqli;
+
+        // 是否初始化
         if (!$dsqli->isInit) {
             $this->Init($this->pconnect);
         }
+        // 如果关闭连接
         if ($dsqli->isClose) {
             $this->Open(false);
             $dsqli->isClose = false;
         }
+
+        // 进入内容不为空
         if (!empty($sql)) {
             $this->SetQuery($sql);
         } else {
             return false;
         }
+
+        //标记替换
         if (is_array($this->parameters)) {
             foreach ($this->parameters as $key => $value) {
                 $this->queryString = str_replace("@" . $key, "'$value'", $this->queryString);
             }
         }
-        //SQL语句安全检查
-        if ($this->safeCheck) {
-            CheckSql($this->queryString, 'update');
-        }
-
-        $t1 = ExecTime();
-        $rs = mysqli_query($this->linkID, $this->queryString);
-
-        //查询性能测试
-        if ($this->recordLog) {
-            $queryTime = ExecTime() - $t1;
-            $this->RecordLog($queryTime);
-            //echo $this->queryString."--{$queryTime}<hr />\r\n";
-        }
-        return $rs;
+        
+        return @mysqli_query($this->linkID, $this->queryString);
     }
 
     //执行一个返回影响记录条数的SQL语句，如update,delete,insert等
@@ -507,7 +495,9 @@ class DedeSqli
             $sql .= ";";
         }
         $sql = str_replace($prefix, $GLOBALS['cfg_dbprefix'], $sql);
+
         CheckSql($sql, $this->getSQLType($sql)); // 5.7前版本仅做了SELECT的过滤，对UPDATE、INSERT、DELETE等语句并未过滤。
+        
         $this->queryString = $sql;
     }
 
@@ -584,101 +574,99 @@ function CopySQLiPoint(&$ndsql)
 }
 
 //SQL语句过滤程序，由80sec提供，这里作了适当的修改
-if (!function_exists('CheckSql')) {
-    function CheckSql($db_string, $querytype = 'select')
-    {
-        global $cfg_cookie_encode;
-        $clean = '';
-        $error = '';
-        $old_pos = 0;
-        $pos = -1;
-        $log_file = DEDEINC . '/../data/' . md5($cfg_cookie_encode) . '_safe.txt';
-        $userIP = GetIP();
-        $getUrl = GetCurUrl();
+function CheckSql($db_string, $querytype = 'select')
+{
+    global $cfg_cookie_encode;
+    $clean = '';
+    $error = '';
+    $old_pos = 0;
+    $pos = -1;
+    $log_file = DEDEINC . '/../data/' . md5($cfg_cookie_encode) . '_safe.txt';
+    $userIP = GetIP();
+    $getUrl = GetCurUrl();
 
-        //如果是普通查询语句，直接过滤一些特殊语法
-        if ($querytype == 'select') {
-            $notallow1 = "[^0-9a-z@\._-]{1,}(union|sleep|benchmark|load_file|outfile)[^0-9a-z@\.-]{1,}";
+    //如果是普通查询语句，直接过滤一些特殊语法
+    if ($querytype == 'select') {
+        $notallow1 = "[^0-9a-z@\._-]{1,}(union|sleep|benchmark|load_file|outfile)[^0-9a-z@\.-]{1,}";
 
-            //$notallow2 = "--|/\*";
-            if (preg_match("/" . $notallow1 . "/i", $db_string)) {
-                fputs(fopen($log_file, 'a+'), "$userIP||$getUrl||$db_string||SelectBreak\r\n");
-                exit("<font size='5' color='red'>Safe Alert: Request Error step 1 !</font>");
-            }
+        //$notallow2 = "--|/\*";
+        if (preg_match("/" . $notallow1 . "/i", $db_string)) {
+            fputs(fopen($log_file, 'a+'), "$userIP||$getUrl||$db_string||SelectBreak\r\n");
+            exit("<font size='5' color='red'>Safe Alert: Request Error step 1 !</font>");
         }
+    }
 
-        //完整的SQL检查
+    //完整的SQL检查
+    while (true) {
+        $pos = strpos($db_string, '\'', $pos + 1);
+        if ($pos === false) {
+            break;
+        }
+        $clean .= substr($db_string, $old_pos, $pos - $old_pos);
         while (true) {
-            $pos = strpos($db_string, '\'', $pos + 1);
-            if ($pos === false) {
+            $pos1 = strpos($db_string, '\'', $pos + 1);
+            $pos2 = strpos($db_string, '\\', $pos + 1);
+            if ($pos1 === false) {
+                break;
+            } elseif ($pos2 == false || $pos2 > $pos1) {
+                $pos = $pos1;
                 break;
             }
-            $clean .= substr($db_string, $old_pos, $pos - $old_pos);
-            while (true) {
-                $pos1 = strpos($db_string, '\'', $pos + 1);
-                $pos2 = strpos($db_string, '\\', $pos + 1);
-                if ($pos1 === false) {
-                    break;
-                } elseif ($pos2 == false || $pos2 > $pos1) {
-                    $pos = $pos1;
-                    break;
-                }
-                $pos = $pos2 + 1;
-            }
-            $clean .= '$s$';
-            $old_pos = $pos + 1;
+            $pos = $pos2 + 1;
         }
-        $clean .= substr($db_string, $old_pos);
-        $clean = trim(strtolower(preg_replace(array('~\s+~s'), array(' '), $clean)));
+        $clean .= '$s$';
+        $old_pos = $pos + 1;
+    }
+    $clean .= substr($db_string, $old_pos);
+    $clean = trim(strtolower(preg_replace(array('~\s+~s'), array(' '), $clean)));
 
-        if (strpos($clean, '@') !== false or strpos($clean, 'char(') !== false or strpos($clean, '"') !== false
-            or strpos($clean, '$s$$s$') !== false
-        ) {
-            $fail = true;
-            if (preg_match("#^create table#i", $clean)) {
-                $fail = false;
-            }
-
-            $error = "unusual character";
+    if (strpos($clean, '@') !== false or strpos($clean, 'char(') !== false or strpos($clean, '"') !== false
+        or strpos($clean, '$s$$s$') !== false
+    ) {
+        $fail = true;
+        if (preg_match("#^create table#i", $clean)) {
+            $fail = false;
         }
 
-        //老版本的Mysql并不支持union，常用的程序里也不使用union，但是一些黑客使用它，所以检查它
-        if (strpos($clean, 'union') !== false && preg_match('~(^|[^a-z])union($|[^[a-z])~s', $clean) != 0) {
-            $fail = true;
-            $error = "union detect";
-        }
+        $error = "unusual character";
+    }
 
-        //发布版本的程序可能比较少包括--,#这样的注释，但是黑客经常使用它们
-        elseif (strpos($clean, '/*') > 2 || strpos($clean, '--') !== false || strpos($clean, '#') !== false) {
-            $fail = true;
-            $error = "comment detect";
-        }
+    //老版本的Mysql并不支持union，常用的程序里也不使用union，但是一些黑客使用它，所以检查它
+    if (strpos($clean, 'union') !== false && preg_match('~(^|[^a-z])union($|[^[a-z])~s', $clean) != 0) {
+        $fail = true;
+        $error = "union detect";
+    }
 
-        //这些函数不会被使用，但是黑客会用它来操作文件，down掉数据库
-        elseif (strpos($clean, 'sleep') !== false && preg_match('~(^|[^a-z])sleep($|[^[a-z])~s', $clean) != 0) {
-            $fail = true;
-            $error = "slown down detect";
-        } elseif (strpos($clean, 'benchmark') !== false && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~s', $clean) != 0) {
-            $fail = true;
-            $error = "slown down detect";
-        } elseif (strpos($clean, 'load_file') !== false && preg_match('~(^|[^a-z])load_file($|[^[a-z])~s', $clean) != 0) {
-            $fail = true;
-            $error = "file fun detect";
-        } elseif (strpos($clean, 'into outfile') !== false && preg_match('~(^|[^a-z])into\s+outfile($|[^[a-z])~s', $clean) != 0) {
-            $fail = true;
-            $error = "file fun detect";
-        }
+    //发布版本的程序可能比较少包括--,#这样的注释，但是黑客经常使用它们
+    elseif (strpos($clean, '/*') > 2 || strpos($clean, '--') !== false || strpos($clean, '#') !== false) {
+        $fail = true;
+        $error = "comment detect";
+    }
 
-        //老版本的MYSQL不支持子查询，我们的程序里可能也用得少，但是黑客可以使用它来查询数据库敏感信息
-        elseif (preg_match('~\([^)]*?select~s', $clean) != 0) {
-            $fail = true;
-            $error = "sub select detect";
-        }
-        if (!empty($fail)) {
-            fputs(fopen($log_file, 'a+'), "$userIP||$getUrl||$db_string||$error\r\n");
-            exit("<font size='5' color='red'>Safe Alert: Request Error step 2!</font>");
-        } else {
-            return $db_string;
-        }
+    //这些函数不会被使用，但是黑客会用它来操作文件，down掉数据库
+    elseif (strpos($clean, 'sleep') !== false && preg_match('~(^|[^a-z])sleep($|[^[a-z])~s', $clean) != 0) {
+        $fail = true;
+        $error = "slown down detect";
+    } elseif (strpos($clean, 'benchmark') !== false && preg_match('~(^|[^a-z])benchmark($|[^[a-z])~s', $clean) != 0) {
+        $fail = true;
+        $error = "slown down detect";
+    } elseif (strpos($clean, 'load_file') !== false && preg_match('~(^|[^a-z])load_file($|[^[a-z])~s', $clean) != 0) {
+        $fail = true;
+        $error = "file fun detect";
+    } elseif (strpos($clean, 'into outfile') !== false && preg_match('~(^|[^a-z])into\s+outfile($|[^[a-z])~s', $clean) != 0) {
+        $fail = true;
+        $error = "file fun detect";
+    }
+
+    //老版本的MYSQL不支持子查询，我们的程序里可能也用得少，但是黑客可以使用它来查询数据库敏感信息
+    elseif (preg_match('~\([^)]*?select~s', $clean) != 0) {
+        $fail = true;
+        $error = "sub select detect";
+    }
+    if (!empty($fail)) {
+        fputs(fopen($log_file, 'a+'), "$userIP||$getUrl||$db_string||$error\r\n");
+        exit("<font size='5' color='red'>Safe Alert: Request Error step 2!</font>");
+    } else {
+        return $db_string;
     }
 }

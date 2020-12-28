@@ -1,5 +1,5 @@
 <?php if (!defined('DEDEINC')) {
-    exit('Request Error!');
+    exit("DedeCMS Error: Request Error!");
 }
 
 require_once DEDEINC . '/channelunit.func.php';

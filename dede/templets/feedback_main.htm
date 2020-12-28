@@ -1,146 +1,142 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>文档管理</title>
-    <link rel="icon" href="/favicon.ico" />
-    <!-- CSS FILES -->
-    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
-    <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>文档管理</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
 
 <body>
 
-	<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
-		<div id="dede-card-header" class="uk-card-header">
-			<div class="uk-grid uk-grid-small uk-text-small">
-				<span><ul class="uk-breadcrumb"><li><span>评论管理</span></li></span>
-			</div>
-			<!--  搜索表单  -->
-			<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
-				<li>
-					<button type='submit' class="uk-button-default uk-form-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
-					<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
-						<ul class="uk-nav uk-navbar-dropdown-nav" >
-							<li>
-								<form  name='form1' method='get'>
-								<input type='hidden' name='dopost' value='listArchives' />
-								<fieldset id="dede-dropdown-margin" class="uk-fieldset">
-								<div class="uk-margin">
-								<select name='cid' class="uk-select uk-form-small uk-flex-inline uk-width-1-1" >
-									<option value='0'>请选择栏目...</option>
-									{dede:global.openarray /}
-								</select>
-								</div>
-								<div class="uk-margin">
-									<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
-								</div>
-								<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
-								</fieldset>
-								</form>
-								</li>
-							</ul>
-					</div>
-				</li>
-			</ul>
-			<!--  /搜索表单  -->
-		</div>
-		<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
-			<thead>
-			<tr>
-				<td width="4%">ID</td>
-				<td width="4%">选择</td>
-				<td width="25%">文章标题</td>
-				<td>评论内容</td>
-				<td width="6%">IP</td>
-				<td width="8%">日期</td>
-				<td width="6%">评论人</td>
-				<td width="8%">操作</td>
-			</tr>
-			</thead>
-		</table>
-	</div>
-
-	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
-		<div class="uk-card-body uk-overflow-auto" grid>
-			<div class="uk-child-width-1-1">
-				<div class="uk-overflow-auto">
-					<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
-						<thead>
-							<tr>
-								<td width="4%">ID</td>
-								<td width="4%">选择</td>
-								<td width="25%">文章标题</td>
-								<td>评论内容</td>
-								<td width="6%">IP</td>
-								<td width="8%">日期</td>
-								<td width="6%">评论人</td>
-								<td width="8%">操作</td>
-							</tr>
-						</thead>
-					<tbody>
-						<!-- 内容列表 -->
-						{dede:datalist}
-						<tr>
-							<td>{dede:field.id/}</td>
-							<td><input type="checkbox" value="{dede:field.id/}" class="uk-checkbox check"/>
-							</td>
-							<td>{dede:field.arctitle function="cn_substr(RemoveXSS(@me), 30)"/}</td>
-							<td>
-								<span class="dede-toolbar-icon" uk-icon="icon: chat-text;ratio:0.8"></span>
-								{dede:field.ischeck function="IsCheck(@me)" /}
-								<a href='feedback_main.php?aid={dede:field.aid/}'>{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}</a>
-							</td>
-							<td><a href='feedback_main.php?ip={dede:field.ip/}'><u>{dede:field.ip/}</u></a></td>
-							<td>{dede:field.dtime function="GetDateTimeMK(@me)" /}</td>
-							<td align='left'>
-								{dede:field.username/}
-							</td>
-							<td>
-								<a href="feedback_edit.php?id={dede:field.id/}'">[编辑]</a> 
-							</td>
-						</tr>
-						{/dede:datalist}
-						<!-- /内容列表 -->
-
-
-					</tbody>
-					<!-- 批量操作 -->
-					<thead>
-						<tr>
-							<td></td>
-							<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
-							<td height="36" colspan="7">
-								<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Feedback_Delete()" class="uk-button uk-button-default uk-button-small">删除</a>
-								<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Feedback_Check()" class="uk-button uk-button-default uk-button-small">审核</a>
-								<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Feedback_IPALLDelete()" class="uk-button uk-button-default uk-button-small">删除相同IP的所有评论</a>
-							</td>
-						</tr>
-					</thead>
-					<!-- /批量操作 -->
-					<!-- 分页 -->
-					<thead>
-						<tr>
-							<td height="36" colspan="10" align="center">
-								{dede:pagelist listsize=5/}
-							</td>
-						</tr>
-					</thead>
-					<!-- /分页 -->
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
-<div class="bar-bottom uk-flex uk-light uk-flex-right">
-	<div class="uk-button-group" style="margin-left: 50px;"></div>
-	<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>评论管理</span></li></span>
 </div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li>
+<button type='submit' class="uk-button-default uk-form-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+<ul class="uk-nav uk-navbar-dropdown-nav" >
+<li>
+<form  name='form1' method='get'>
+<input type='hidden' name='dopost' value='listArchives' />
+<fieldset id="dede-dropdown-margin" class="uk-fieldset">
+<div class="uk-margin">
+<select name='cid' class="uk-select uk-form-small uk-flex-inline uk-width-1-1" >
+<option value='0'>请选择栏目...</option>
+{dede:global.openarray /}
+</select>
+</div>
+<div class="uk-margin">
+<input type='text' class="uk-input uk-form-small uk-flex-inline uk-width-1-1" name='keyword' value='{dede:global.keyword/}' placeholder="关键字"/>
+</div>
+<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+</fieldset>
+</form>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="4%">ID</td>
+<td width="4%">选择</td>
+<td width="25%">文章标题</td>
+<td>评论内容</td>
+<td width="6%">IP</td>
+<td width="8%">日期</td>
+<td width="6%">评论人</td>
+<td width="8%">操作</td>
+</tr>
+</thead>
+</table>
+</div>
+
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="4%">ID</td>
+<td width="4%">选择</td>
+<td width="25%">文章标题</td>
+<td>评论内容</td>
+<td width="6%">IP</td>
+<td width="8%">日期</td>
+<td width="6%">评论人</td>
+<td width="8%">操作</td>
+</tr>
+</thead>
+<tbody>
+<!-- 内容列表 -->
+{dede:datalist}
+<tr>
+<td>{dede:field.id/}</td>
+<td><input type="checkbox" value="{dede:field.id/}" class="uk-checkbox dede-checkbox"/>
+</td>
+<td>{dede:field.arctitle function="cn_substr(RemoveXSS(@me), 30)"/}</td>
+<td>
+<span class="dede-toolbar-icon" uk-icon="icon: chat-text;ratio:0.8"></span>
+{dede:field.ischeck function="IsCheck(@me)" /}
+<a href='feedback_main.php?aid={dede:field.aid/}'>{dede:field.msg function='cn_substr(Text2Html(@me), 50)'/}</a>
+</td>
+<td><a href='feedback_main.php?ip={dede:field.ip/}'><u>{dede:field.ip/}</u></a></td>
+<td>{dede:field.dtime function="GetDateTimeMK(@me)" /}</td>
+<td align='left'>
+{dede:field.username/}
+</td>
+<td>
+<a href="feedback_edit.php?id={dede:field.id/}'">[编辑]</a> 
+</td>
+</tr>
+{/dede:datalist}
+<!-- /内容列表 -->
+</tbody>
+<!-- 批量操作 -->
+<thead>
+<tr>
+<td></td>
+<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+<td height="36" colspan="7">
+<a href="#" onclick="DedeCMS_JSCODE_Version_Multiple_Checked_Action('feedback_main.php?job=del&fid=')" class="uk-button uk-button-default uk-button-small">删除</a>
+<a href="#" onclick="DedeCMS_JSCODE_Version_Multiple_Checked_Action('feedback_main.php?job=check&fid=')" class="uk-button uk-button-default uk-button-small">审核</a>
+<a href="#" onclick="DedeCMS_JSCODE_Version_Multiple_Checked_Action('feedback_main.php?job=delall&fid=')" class="uk-button uk-button-default uk-button-small">删除相同IP的所有评论</a>
+</td>
+</tr>
+</thead>
+<!-- /批量操作 -->
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=5/}
+</td>
+</tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- 底部信息 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;"></div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- /底部信息 -->
 <!-- JS FILES -->
 <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>

@@ -1,8 +1,6 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 连载图书调用
  *
  * @version   $Id: booklist.lib.php 1 9:29 2010年7月6日 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  图书列表调用
  *
  * @access public
@@ -25,7 +20,6 @@
  * @param  object  $refObj  引用对象
  * @param  int  $getcontent  是否调用内容
  * @return string
- 
  */
 
 /*>>dede>>

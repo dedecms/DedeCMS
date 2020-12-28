@@ -1,30 +1,21 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 银行汇款/转帐接口
- 
  */
 
 /**
- * 
- * 
  * 类
- 
  */
 class bank
 {
     /**
-     * 
-     * 
      * 构造函数
      *
      * @access public
      * @param
      *
      * @return void
-     
      */
     public $orderurl = '../member/shops_products.php';
 
@@ -40,10 +31,7 @@ class bank
     }
 
     /**
-     * 
-     * 
      * 设置回送地址
-     
      */
 
     public function SetReturnUrl($returnurl = '')
@@ -53,10 +41,7 @@ class bank
     }
 
     /**
-     * 
-     * 
      * 提交函数
-     
      */
     public function GetCode($order, $payment)
     {

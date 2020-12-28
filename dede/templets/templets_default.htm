@@ -47,12 +47,12 @@
 <!-- 表头隐藏部分，用于固定表结构宽度 -->
 <table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
 <thead>
-	<tr>
-	<td >文件名</td>
-	<td width="12%">文件描述</td>
-	<td width="12%">修改时间</td>
-	<td width="20%">操作</td>
-	</tr>
+<tr>
+<td >文件名</td>
+<td width="12%">文件描述</td>
+<td width="12%">修改时间</td>
+<td width="20%">操作</td>
+</tr>
 </thead>
 <!-- /表头隐藏部分 -->
 <tbody>
@@ -63,10 +63,10 @@
 <td>{dede:value.fileinfo /}</td>
 <td>{dede:value.filetime /}</td>
 <td>
-	<a href='tpl.php?action=edit&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[修改]</a>
-	{dede:if !isset($fileinfos[value.filename])}
-	<a href='tpl.php?action=del&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[删除]</a>
-	{/dede:if}
+<a href='tpl.php?action=edit&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[修改]</a>
+{dede:if !isset($fileinfos[value.filename])}
+<a href='tpl.php?action=del&acdir={dede:global.acdir /}&filename={dede:value.filename /}'>[删除]</a>
+{/dede:if}
 </td>
 </tr>
 {/dede:array}

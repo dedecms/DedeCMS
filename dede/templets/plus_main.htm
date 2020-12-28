@@ -1,47 +1,99 @@
 {dede:config.pagesize value="50"/}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>插件管理</title>
-<link href='css/base.css' rel='stylesheet' type='text/css'>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
-  <tr> 
-    <td height="25" colspan="5" background="images/tbg.gif" style="padding-left:10px;">
-    	<table width='96%' cellpadding='0' cellspacing='0'>
-    		<tr>
-    		<td width='30%'><b>插件管理</b></td>
-        <td align='right'>
-    	  [<a href="module_main.php?moduletype=plus"><u>安装新插件</u></a>]
-        </td>
-      </tr>
-     </table>
-    </td>
-  </tr>
-  <tr align="center" bgcolor="#FBFBFB" height="24"> 
-      <td width="10%">ID号</td>
-      <td width="40%">插件名称</td>
-      <td width="20%">插件作者</td>
-      <td width="30%">管理</td>
-   </tr>
-   {dede:datalist}
-    <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
-        <td>{dede:field.aid /}</td>
-        <td>{dede:field.plusname /}</td>
-        <td>{dede:field.writer /}</td>
-        <td>{dede:field.isshow function="GetSta(@me,$fields['aid'],$fields['plusname'])"/}</td>
-     </tr>
-		{/dede:datalist}
-     <tr align="center" bgcolor="#FAFBFC" height="36"> 
-      <td colspan="5">
-      	{dede:pagelist listsize=6/}
-      </td>
-     </tr>
-   </table>
-   </td>
+
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>插件管理</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li><a href="module_main.php?moduletype=plus" class="uk-button uk-button-default uk-button-small uk-flex-inline ">安装新插件</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="10%">ID</td>
+<td width="40%">插件名称</td>
+<td width="20%">插件作者</td>
+<td width="30%">管理</td>
 </tr>
+</thead>
 </table>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="10%">ID</td>
+<td width="40%">插件名称</td>
+<td width="20%">插件作者</td>
+<td width="30%">管理</td>
+</tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
+{dede:datalist}
+<tr> 
+<td>{dede:field.aid /}</td>
+<td>{dede:field.plusname /}</td>
+<td>{dede:field.writer /}</td>
+<td>{dede:field.isshow function="GetSta(@me,$fields['aid'],$fields['plusname'])"/}</td>
+</tr>
+{/dede:datalist}
+<!-- /内容列表 -->
+</tbody>
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=5/}
+</td>
+</tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

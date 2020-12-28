@@ -215,18 +215,6 @@ $actionSearch[5] = array(
             'purview' => 'member_Type',
             'linkurl' => 'member_guestbook.php',
         ),
-        6 => array(
-            'title' => '会员动态管理',
-            'description' => '会员添加内容,删除内容,评论内容产生的会员动态,在会员中心首页调用显示,这里可以进行批量管理操作',
-            'purview' => 'member_Type',
-            'linkurl' => 'member_info_main.php?type=feed',
-        ),
-        7 => array(
-            'title' => '会员心情管理',
-            'description' => '会员中心会员添加的会员心情,这里可以进行批量操作',
-            'purview' => 'member_Type',
-            'linkurl' => 'member_info_main.php?type=mood',
-        ),
     ),
 );
 $actionSearch[6] = array(

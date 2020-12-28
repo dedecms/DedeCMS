@@ -1,8 +1,6 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 获得责任编辑名称
  *
  * @version   $Id: adminname.lib.php 2 8:48 2010年7月8日 $
@@ -12,19 +10,15 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获得责任编辑名称
  *
  * @access public
  * @param  object  $ctag  解析标签
  * @param  object  $refObj  引用对象
  * @return string  成功后返回解析后的标签内容
- 
  */
 
 /*>>dede>>

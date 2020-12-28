@@ -1,8 +1,6 @@
-<?php if (!defined('DEDEINC')) {exit("Request Error!");
+<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
 }
 /**
- * 
- * 
  * 管理员后台基本函数
  *
  * @version   $Id:inc_fun_funAdmin.php 1 13:58 2010年7月5日 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获取拼音信息
  *
  * @access public
@@ -25,7 +20,6 @@
  * @param  int    $ishead  是否为首字母
  * @param  int    $isclose 解析后是否释放资源
  * @return string
- 
  */
 function SpGetPinyin($str, $ishead = 0, $isclose = 1)
 {
@@ -83,14 +77,11 @@ function SpGetPinyin($str, $ishead = 0, $isclose = 1)
 }
 
 /**
- * 
- * 
  *  创建目录
  *
  * @access public
  * @param  string $spath 目录名称
  * @return string
- 
  */
 function SpCreateDir($spath)
 {
@@ -147,8 +138,6 @@ function jsScript($js)
 }
 
 /**
- * 
- * 
  *  获取编辑器
  *
  * @access public
@@ -159,7 +148,6 @@ function jsScript($js)
  * @param  string $gtype      获取值类型
  * @param  string $isfullpage 是否全屏
  * @return string
- 
  */
 function SpGetEditor($fname, $fvalue, $nheight = "350", $etype = "Basic", $gtype = "print", $isfullpage = "false", $bbcode = false)
 {
@@ -242,12 +230,9 @@ EOT;
 }
 
 /**
- * 
- * 
  *  获取更新信息
  *
  * @return void
- 
  */
 function SpGetNewInfo()
 {
