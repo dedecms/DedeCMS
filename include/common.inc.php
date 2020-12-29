@@ -116,7 +116,7 @@ if ($sessSaveHandler !== "files") {
 }
 
 $enkey = substr(md5(substr($cfg_cookie_encode, 0, 5)), 0, 10);
-$sessSavePath = DEDEDATA . "/sessions_{$enkey}";
+$sessSavePath = DEDEDATA . "/sessions/{$enkey}";
 if (!is_dir($sessSavePath)) {
     mkdir($sessSavePath);
 }

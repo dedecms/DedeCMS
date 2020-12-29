@@ -1,143 +1,102 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>主页更新向导</title>
-  <link href="css/base.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" type="text/css" media="all" href="../assets/pkg/calendar/calendar-win2k-1.css"
-    title="win2k-1" />
-  <script type="text/javascript" src="../assets/pkg/calendar/calendar.js"></script>
-  <script type="text/javascript" src="../assets/pkg/calendar/calendar-cn.js"></script>
-  <script language="javascript">
-    function SelectTemplets(fname) {
-      var posLeft = 200;
-      var posTop = 300;
-      window.open("./dialog/select_templets.php?f=" + fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left=" + posLeft + ", top=" + posTop);
-    }
-  </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>网站主页更新</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
 </head>
 
-<body background="images/allbg.gif" leftmargin="8" topmargin="8">
-  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
-    <form name="form1" action="makehtml_homepage.php" target="stafrm" method="post">
-      <input type="hidden" name="dopost" value="make">
-      <tr>
-        <td height="28" colspan="2" background='images/tbg.gif'>
-          <table width="98%" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td width="30%" height="18" style="padding-left:10px;"><strong>主页更新向导：</strong></td>
-              <td width="70%" align="right">&nbsp;</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td width="177" valign="top" bgcolor="#FFFFFF">选择主页模板：</td>
-        <td width="791" valign="top" bgcolor="#FFFFFF">
-          <input name="templet" type="text" id="templet" style="width:300" value="<?php echo $row['templet']?>">
-          <input type="button" name="set4" value="浏览..." style="width:60" onClick="SelectTemplets('form1.templet');">
-        </td>
-      </tr>
-      <tr>
-        <td height="20" colspan="2" valign="top" bgcolor="#FFFFFF">
-          默认的情况下，生成的主页文件放在CMS的安装目录，如果您的CMS不是安装在网站根目录的，又想把主页创建到网站根目录，那么请用相对路径来表示“主页位置”。<br />
-          例：您的CMS安装在
-          http://www.abc.com/dedecms/ 目录，您想生成的主页为 http://www.abc.com/index.html，那么主页位置就应该用：
-          “../index.html”。</td>
-      </tr>
-      <tr>
-        <td height="20" valign="top" bgcolor="#FFFFFF">主页位置：</td>
-        <td height="20" valign="top" bgcolor="#FFFFFF"><input name="position" type="text" id="position"
-            value="<?php echo $row['position']?>" size="30">
-        </td>
-      </tr>
-      <?php 
-      if($cfg_remote_site=='Y')
-      {
-    ?>
-      <tr>
-        <td height="20" valign="top" bgcolor="#FFFFCC">远程发布：</td>
-        <td height="20" valign="top" bgcolor="#FFFFCC"><input name="remotepos" type="text" id="remotepos"
-            value="/index.html" size="30">
-          (“/”相对远程站点根目录)&nbsp;&nbsp;&nbsp;&nbsp;</td>
-      </tr>
-      <tr>
-        <td height="20" colspan="2" valign="top" bgcolor="#FFFFCC">您已经启用远程发布,请确保正确 [<a href="sys_info.php"
-            style="color:red">配置FTP</a>]</td>
-      </tr>
-      <?php
-      }
-    ?>
-      <tr>
-        <td height="20" valign="top" bgcolor="#FFFFFF">相关选项：</td>
-        <td height="20" valign="top" bgcolor="#FFFFFF">
-          <input name="saveset" type="radio" value="0" class="np">
-          不保存当前选项
-          <input name="saveset" type="radio" class="np" value="1" checked>
-          保存当前选项
-        </td>
-      </tr>
-      <tr>
-        <td height="20" valign="top" bgcolor="#FFFFFF">首页模式:</td>
-        <td height="20" valign="top" bgcolor="#FFFFFF"><input name="showmod" type="radio" value="0" class="np" <?php
-            echo ($row['showmod']==0)? "checked='checked'" : "" ;?>/>
-          动态浏览
-          <input name="showmod" type="radio" class="np" value="1" <?php echo ($row['showmod']==1)? "checked='checked'"
-            : "" ;?> />
-          生成静态 (或者手动删除根目录下index.html文件)
-        </td>
-      </tr>
+<body>
+<form name="form1" action="makehtml_homepage.php" target="stafrm" method="post">
+<input type="hidden" name="dopost" value="make">
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>主页更新设置</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能选择：</td>
+</tr>
+</tbody>
+</table>
+</div>
 
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td>主页模板</td>
+<td>
+<input name="templet" type="text" id="templet"  value="<?php echo $row['templet']?>" class="uk-input uk-form-width-medium uk-form-small">
+</td>
+</tr>
+<tr>
+<td>主页位置</td>
+<td>
+<input name="position" type="text" id="position" value="<?php echo $row['position']?>" class="uk-input uk-form-width-medium uk-form-small">
+</td>
+</tr>
+<tr>
+<td>相关选项</td>
+<td>
+  <label style="margin-right: 12px;"><input name="saveset" type="radio" value="0" class="uk-radio">
+不保存当前选项</label>
+<label style="margin-right: 12px;"><input name="saveset" type="radio" class="uk-radio" value="1" checked>
+保存当前选项</label>
+</td>
+</tr>
+<tr>
+<td>首页模式</td>
+<td>
+<label style="margin-right: 12px;"><input name="showmod" type="radio" value="0" class="uk-radio" <?php echo ($row['showmod']==0)? "checked='checked'" : "" ;?>/> 动态浏览</label>
+<label style="margin-right: 12px;"><input name="showmod" type="radio" class="uk-radio" value="1" <?php echo ($row['showmod']==1)? "checked='checked'" : "" ;?> /> 生成静态 (或者手动删除根目录下index.html文件)</label>
+</td>
+</tr>
 
-      <tr>
-        <td height="31" colspan="2" bgcolor="#ffffff" align="center">&nbsp;&nbsp;
-          <input name="view" class='coolbg np' type="button" id="view" value="预览主页"
-            onClick="window.open('makehtml_homepage.php?dopost=view&templet='+form1.templet.value);" />
+</tbody>
+</table>
+</div>
 
-          <input type="submit" class='coolbg np' name="Submit" value="更新主页HTML" />
-          &nbsp;
-          <?php 
-      if($cfg_remote_site=='Y')
-      {
-    ?> 　
-          <input name="isremote" type="checkbox" id="isremote" value="1">
-          是否同步远程发布
-          <?php GetFtp();?>
-          <?php
-      }
-    ?>
-        </td>
-      </tr>
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" >
+<a name="view" class="uk-button uk-button-small " type="button" id="view"
+onClick="window.open('makehtml_homepage.php?dopost=view&templet='+form1.templet.value);" >预览主页</a> 
+<button type="submit" class="uk-button uk-button-primary uk-button-small">更新主页HTML</button> 
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
 
-    </form>
-    <tr bgcolor="#FAFBFC">
-      <td height="20" colspan="2">
-        <table width="100%">
-          <tr>
-            <td width="74%">进行状态： </td>
-            <td width="26%" align="right">
-              <script language='javascript'>
-                function ResizeDiv(obj, ty) {
-                  if (ty == "+") document.all[obj].style.pixelHeight += 50;
-                  else if (document.all[obj].style.pixelHeight > 80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-                }
-              </script>
-              [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr bgcolor="#FFFFFF">
-      <td colspan="2" id="mtd">
-        <div id='mdv' style='width:100%;height:350px;'>
-          <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
-        </div>
-      </td>
-    </tr>
-  </table>
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
-
 </html>

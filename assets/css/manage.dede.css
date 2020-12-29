@@ -143,11 +143,15 @@ margin-right: 9px;
   color: #fff;
   border: 1px solid transparent;
 }
+
+
+.uk-button-primary:focus, 
 .uk-button-primary:hover {
   background-color: #eea86f;
   color: #fff;
-  border: 1px solid transparent;
 }
+
+
 .uk-modal-dialog{
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;

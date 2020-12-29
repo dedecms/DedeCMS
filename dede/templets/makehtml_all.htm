@@ -1,136 +1,142 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>一键更新</title>
-  <!-- <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css"> -->
-  <link href="css/base.css" rel="stylesheet" type="text/css" />
-  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <script src="../assets/pkg/jquery/jquery.min.js" language="javascript" type="text/javascript"></script>
-  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
-  <script language="javascript">
-    $(document).ready(function () {
-      $('.datepicker').daterangepicker({
-        "singleDatePicker": true,
-        "autoApply": true,
-        "showDropdowns": true,
-        "linkedCalendars": false,
-        "timePicker": true,
-        "timePicker24Hour": true,
-        // "timePickerSeconds": true,
-        "showCustomRangeLabel": false,
-        ranges: {
-          '今日': [moment(), moment()],
-          '昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          '本月': [moment().startOf('month'), moment().startOf('month')],
-          '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
-        },
-        "locale": {
-          format: 'YYYY-MM-DD HH:mm',
-          applyLabel: '确定',
-          cancelLabel: '取消',
-          daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-          monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-            '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          firstDay: 1
-        }
-      }, function (start) {
-        $(this).val(start.format("YYYY-MM-DD HH:mm"));
-      });
-
-    })
-  </script>
-  <script language='javascript'>
-    function SelUp() {
-      var ob1 = document.getElementById("uptype1");
-      var ob2 = document.getElementById("uptype2");
-      var ob3 = document.getElementById("uptype3");
-      if (ob1.checked) {
-        document.getElementById("seltime").style.display = "";
-        document.getElementById("selid").style.display = "none";
-      } else if (ob2.checked) {
-        document.getElementById("seltime").style.display = "none";
-        document.getElementById("selid").style.display = "";
-      } else {
-        document.getElementById("seltime").style.display = "none";
-        document.getElementById("selid").style.display = "none";
-      }
-    }
-  </script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一键更新</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
 </head>
 
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-  <table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
-    <form name="form1" action="makehtml_all.php" target="stafrm" method="post">
-      <input type="hidden" name="action" value="make" />
-      <tr>
-        <td height="28" colspan="2" bgcolor="#EDF9D5" background='images/tbg.gif' style="padding-left:10px;">
-          <strong>一键更新网站：</strong>
-        </td>
-        </td>
-      </tr>
-      <tr>
-        <td width="30%" height="30" bgcolor="#FFFFFF">&nbsp;&nbsp;更新选项：</td>
-        <td valign="top" bgcolor="#FFFFFF">
-          <input name="uptype" id="uptype1" type="radio" class="np" value="time" onClick="SelUp()" checked="checked" />
-          指定时间的所有更新
-          <input name="uptype" id="uptype2" type="radio" class="np" onClick="SelUp()" value="id" />
-          指定ID文档的所有更新
-          <input name="uptype" id="uptype3" type="radio" class="np" onClick="SelUp()" value="mkall" />
-          更新所有
-        </td>
-      </tr>
-      <tr id='seltime'>
-        <td height="20" bgcolor="#FFFFFF">&nbsp;&nbsp;起始时间：</td>
-        <td height="20" bgcolor="#FFFFFF">
-          <input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(time()); ?>"
-            style="width:200px" class="datepicker" />
-        </td>
-      </tr>
-      <tr bgcolor="#FFFFFF" id="selid" style="display:none;">
-        <td height="20">&nbsp;&nbsp;起始ID：</td>
-        <td height="20">
-          <input name="startid" type="text" id="startid" value="0" size="4" />
-        </td>
-      </tr>
-      <tr>
-        <td height="31" colspan="2" bgcolor="#ffffff" align="center" style="padding-top:6px">
-          <input type="submit" name="Submit" value="开始更新" class="coolbg" />
-        </td>
-      </tr>
-    </form>
-    <tr bgcolor="#FAFBFC">
-      <td height="20" colspan="2">
-        <table width="100%">
-          <tr>
-            <td width="74%">进行状态： </td>
-            <td width="26%" align="right">
-              <script language='javascript'>
-                function ResizeDiv(obj, ty) {
-                  if (ty == "+") document.all[obj].style.pixelHeight += 50;
-                  else if (document.all[obj].style.pixelHeight > 80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-                }
-              </script>
-              [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr bgcolor="#FFFFFF">
-      <td colspan="2" id="mtd">
-        <div id='mdv' style='width:100%;height:350px;'>
-          <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="350px"></iframe>
-        </div>
-        <script language="JavaScript">
-          document.all.mdv.style.pixelHeight = screen.height - 360;
-        </script>
-      </td>
-    </tr>
-  </table>
-</body>
+<body>
+<form action="makehtml_all.php" target="stafrm" method="post">
+<input type="hidden" name="action" value="make" />
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>一键更新网站</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td><b>功能选择：</b></td>
+</tr>
+</tbody>
+</table>
+</div>
 
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td><b>更新选项</b></td>
+<td>
+<label style="margin-right: 12px;"><input name="uptype" id="uptype1" type="radio" class="uk-radio" value="time" onClick="SelUp()" checked="checked" /> 指定时间的所有更新</label>
+<label style="margin-right: 12px;"><input name="uptype" id="uptype2" type="radio" class="uk-radio" onClick="SelUp()" value="id" /> 指定ID文档的所有更新</label>
+<label><input name="uptype" id="uptype3" type="radio" class="uk-radio" onClick="SelUp()" value="mkall" /> 更新所有</label>
+</td>
+</tr>
+<tr id='seltime'>
+<td><b>起始时间</b></td>
+<td>
+<div class="uk-inline">
+<span class="uk-form-icon" uk-icon="icon: calendar4-week"></span>
+<input type="text" name="starttime" id="starttime" value="<?php echo GetDateMk(time()); ?>" style="width:200px" class="datepicker uk-input uk-form-width-medium uk-form-small" />
+</div>
+</td>
+</tr>
+<tr id='selid' style="display:none;">
+<td><b>起始ID</b></td>
+<td>
+<input name="startid" type="text" id="startid" value="0" class="uk-input uk-form-width-medium uk-form-small"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" ><button type="submit" class="uk-button uk-button-primary uk-button-small">开始执行</button> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+$(document).ready(function () {
+$('.datepicker').daterangepicker({
+"singleDatePicker": true,
+"autoApply": true,
+"showDropdowns": true,
+"linkedCalendars": false,
+"timePicker": true,
+"timePicker24Hour": true,
+// "timePickerSeconds": true,
+"showCustomRangeLabel": false,
+ranges: {
+'今日': [moment(), moment()],
+'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+'本月': [moment().startOf('month'), moment().startOf('month')],
+'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
+},
+"locale": {
+format: 'YYYY-MM-DD HH:mm',
+applyLabel: '确定',
+cancelLabel: '取消',
+daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+'七月', '八月', '九月', '十月', '十一月', '十二月'],
+firstDay: 1
+}
+}, function (start) {
+$(this).val(start.format("YYYY-MM-DD HH:mm"));
+});
+
+})
+function SelUp() {
+var ob1 = document.getElementById("uptype1");
+var ob2 = document.getElementById("uptype2");
+var ob3 = document.getElementById("uptype3");
+if (ob1.checked) {
+document.getElementById("seltime").style.display = "";
+document.getElementById("selid").style.display = "none";
+} else if (ob2.checked) {
+document.getElementById("seltime").style.display = "none";
+document.getElementById("selid").style.display = "";
+} else {
+document.getElementById("seltime").style.display = "none";
+document.getElementById("selid").style.display = "none";
+}
+}
+</script>
+<!-- / JS FILES -->
+</body>
 </html>
+

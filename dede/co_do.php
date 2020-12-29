@@ -241,15 +241,21 @@ else if ($dopost == "coall") {
         exit();
     }
     $wintitle = "采集管理-采集未下载内容";
-    $wecome_info = "<a href='co_main.php'>采集管理</a>::采集未下载内容";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"co_main.php\">采集管理</a></li><li><span>采集未下载内容</span></li></ul>";
     $win = new OxWindow();
-    $win->Init("co_gather_start_action.php", "js/blank.js", "GET");
+    $win->Init("co_gather_start_action.php", "js/blank.js", "'GET' enctype='multipart/form-data'");
+    $win->AddTitle('信息提示:');
     $win->AddHidden('startdd', '0');
     $win->AddHidden('pagesize', '5');
     $win->AddHidden('sptime', '0');
     $win->AddHidden('nid', '0');
     $win->AddHidden('totalnum', $totalnum);
-    $win->AddMsgItem("本操作会检测并下载‘<a href='co_url.php'><u>临时内容</u></a>’中所有未下载的内容，是否继续？");
+    $msg = "
+    <div class=\"uk-margin\">
+        本操作会检测并下载‘<a href='co_url.php'><u>临时内容</u></a>’中所有未下载的内容，是否继续？
+    </div>
+    ";
+    $win->AddMsgItem($msg);
     $winform = $win->GetWindow("ok");
     $win->Display();
     exit();

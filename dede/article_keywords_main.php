@@ -17,41 +17,66 @@ setcookie("ENV_GOBACK_URL", $dedeNowurl, time() + 3600, "/");
 if (empty($dopost)) {
     $dopost = '';
 }
+$ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? "article_keywords_main.php" : $_COOKIE['ENV_GOBACK_URL'];
 
-//保存批量更改
-if ($dopost == 'saveall') {
-    $ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? "article_keywords_main.php" : $_COOKIE['ENV_GOBACK_URL'];
-    if (!isset($aids)) {
-        ShowMsg("你没有选择要更改的内容！", $ENV_GOBACK_URL);
+//更新
+if ($dopost === 'update') {
+    if (!isset($aid)) {
+        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
         exit();
     }
-    foreach ($aids as $aid) {
-        $rpurl = ${'rpurl_' . $aid};
-        $rpurlold = ${'rpurlold_' . $aid};
-        $keyword = ${'keyword_' . $aid};
-
-        //删除项目
-        if (!empty(${'isdel_' . $aid})) {
-            $dsql->ExecuteNoneQuery("DELETE FROM `#@__keywords` WHERE aid='$aid'");
-            continue;
-        }
-
-        //禁用项目
-        $staold = ${'staold_' . $aid};
-        $sta = empty(${'isnouse_' . $aid}) ? 1 : 0;
-        if ($staold != $sta) {
-            $query1 = "UPDATE `#@__keywords` SET sta='$sta',rpurl='$rpurl' WHERE aid='$aid' ";
-            $dsql->ExecuteNoneQuery($query1);
-            continue;
-        }
-
-        //更新链接网址
-        if ($rpurl != $rpurlold) {
-            $query1 = "UPDATE `#@__keywords` SET rpurl='$rpurl' WHERE aid='$aid' ";
-            $dsql->ExecuteNoneQuery($query1);
-        }
+    $aid = preg_replace("#[^0-9]#", "", $aid);
+    $rank = preg_replace("#[^0-9]#", "", $rank);
+    $rpurl = trim($rpurl);
+    $keyword = trim($keyword);
+    $dsql->ExecuteNoneQuery("UPDATE `#@__keywords` SET keyword='$keyword',rpurl='$rpurl',rank='$rank' WHERE aid='$aid';");
+    ShowMsg("更新成功！<br />", $ENV_GOBACK_URL);
+    exit();
+} 
+// 删除
+else if ($dopost == 'del') {
+    if (!isset($aid)) {
+        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        exit();
     }
-    ShowMsg("完成指定的更改！", $ENV_GOBACK_URL);
+    //删除项目
+    $aid = preg_replace("#[^0-9]#", "", $aid);
+    $dsql->ExecuteNoneQuery("DELETE FROM `#@__keywords` WHERE aid='$aid'");
+    ShowMsg("删除成功！<br />", $ENV_GOBACK_URL);
+    exit();
+}
+// 禁用项目
+else if ($dopost == 'disable') {
+    if (!isset($aid)) {
+        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        exit();
+    }
+    $aid = preg_replace("#[^0-9]#", "", $aid);
+    $staold = preg_replace("#[^0-9]#", "", $staold);
+    if ($staold == 0){
+        $sta = true;
+    }else{
+        $sta = false;
+    }
+    $query = "UPDATE `#@__keywords` SET sta='$sta' WHERE aid='$aid' ";
+    $dsql->ExecuteNoneQuery($query);
+    if ($sta === true) {
+        ShowMsg("关键词已启用！</br>", $ENV_GOBACK_URL);
+    }else{
+        ShowMsg("关键词已禁用！</br>", $ENV_GOBACK_URL);
+    }
+    exit();
+}
+else if ($dopost == 'delall') {
+    if (!isset($aids)) {
+        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        exit();
+    }
+    foreach (explode(",", $aids) as $aid) {
+        $aid = preg_replace("#[^0-9]#", "", $aid);
+        $dsql->ExecuteNoneQuery("DELETE FROM `#@__keywords` WHERE aid='$aid'");
+    }
+    ShowMsg("已删除选中内容！</br>", $ENV_GOBACK_URL);
     exit();
 }
 //增加关键字
@@ -60,17 +85,17 @@ else if ($dopost == 'add') {
     $keyword = trim($keyword);
     $rank = preg_replace("#[^0-9]#", '', $rank);
     if ($keyword == '') {
-        ShowMsg("关键字不能为空！", -1);
+        ShowMsg("关键字不能为空！</br>", -1);
         exit();
     }
     $row = $dsql->GetOne("SELECT * FROM `#@__keywords` WHERE keyword LIKE '$keyword'");
     if (is_array($row)) {
-        ShowMsg("关键字已存在库中！", "-1");
+        ShowMsg("关键字已存在库中！</br>", "-1");
         exit();
     }
     $inquery = "INSERT INTO `#@__keywords`(keyword,rank,sta,rpurl) VALUES ('$keyword','$rank','1','$rpurl');";
     $dsql->ExecuteNoneQuery($inquery);
-    ShowMsg("成功增加一个关键字！", $ENV_GOBACK_URL);
+    ShowMsg("成功增加一个关键字！</br>", $ENV_GOBACK_URL);
     exit();
 }
 if (empty($keyword)) {
@@ -88,12 +113,4 @@ $dlist->SetTemplate(DEDEADMIN . "/templets/article_keywords_main.htm");
 $dlist->SetSource($sql);
 $dlist->Display();
 
-function GetSta($sta)
-{
-    if ($sta == 1) {
-        return '';
-    } else {
-        return ' checked="1" ';
-    }
 
-}

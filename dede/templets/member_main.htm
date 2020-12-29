@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>系统用户组管理</title>
+<title>系统用户列表</title>
 <link rel="icon" href="/favicon.ico" />
 <!-- CSS FILES -->
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
@@ -16,7 +16,7 @@
 <div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
 <div id="dede-card-header" class="uk-card-header">
 <div class="uk-grid uk-grid-small uk-text-small">
-<span><ul class="uk-breadcrumb"><li><span>系统用户组管理</span></li></ul></span>
+<span><ul class="uk-breadcrumb"><li><span>系统用户管理</span></li></ul></span>
 </div>
 <!--  搜索表单  -->
 <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
@@ -137,7 +137,7 @@ if($fields['spacesta']==-1) echo "<font color='red'>(未审核)</font>";?>
 <tr>
 <td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
 <td height="36" colspan="8">
-<a href="#" onclick="DedeCMS_JSCODE_Version_Multiple_Checked_Action('member_do.php?dopost=delmembers&id=')" class="uk-button uk-button-default uk-button-small">删除</a>
+<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Action('member_do.php?dopost=delmembers&id=')" class="uk-button uk-button-default uk-button-small">删除</a>
 </td>
 </tr>
 </thead>

@@ -80,8 +80,8 @@ table {
   color: #fff;
   border: 1px solid transparent;
 }
+.uk-button-primary:focus, 
 .uk-button-primary:hover {
   background-color: #eea86f;
   color: #fff;
-  border: 1px solid transparent;
 }

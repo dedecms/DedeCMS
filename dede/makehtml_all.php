@@ -15,7 +15,9 @@ require_once DEDEINC . "/channelunit.func.php";
 $action = (empty($action) ? '' : $action);
 
 if ($action == '') {
-    include_once DEDEADMIN . "/templets/makehtml_all.htm";
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/makehtml_all.htm");
+    $tpl->Display();
     exit();
 } else if ($action == 'make') {
     //step = 1 更新主页、step = 2 更新内容、step = 3 更新栏目

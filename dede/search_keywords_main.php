@@ -49,7 +49,7 @@ else if ($dopost === 'del') {
 }
 //批量删除字段
 else if ($dopost === 'delall') {
-    foreach (explode(",",$aids) as $aid) {
+    foreach (explode(",", $aids) as $aid) {
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__search_keywords` WHERE aid='$aid';");
     }
     ShowMsg("删除成功！", $ENV_GOBACK_URL);
