@@ -1,77 +1,84 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>生成HTML</title>
-<link href="css/base.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>更新自由列表</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
 </head>
-<body background="images/allbg.gif">
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-	<div class="bodytitletxt" style="padding-left:10px;">HTML更新</div>
+
+<body>
+<form name="form1" action="makehtml_freelist_action.php" method="get" target='stafrm'>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>更新自由列表HTML：</span></li></ul></span>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;">
-  <form name="form1" action="makehtml_freelist_action.php" method="get" target='stafrm'>
-    <tr> 
-      <td colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif" ><table width="98%" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-          <td width="30%" height="18" style="padding-left:10px;"><strong>更新自由列表HTML：</strong></td>
-          <td width="70%" align="right"><input type="button" name="b113" value="管理自由列表" onClick="location='freelist_main.php';" class="inputbut"/>
-          </td>
-        </tr>
-      </table></td>
-    </tr>
-    <tr> 
-      <td width="108" height="20" bgcolor="#FFFFFF">&nbsp;&nbsp;起始ID：</td>
-      <td width="377" height="20" valign="top" bgcolor="#FFFFFF">
-      	<strong>&nbsp;&nbsp;</strong>
-      	<input name="startid" type="text" id="startid" size="10"<?php  if(!empty($aid)) echo " value='$aid'"; ?>>
-        （空或0表示从头开始）
-       </td>
-    </tr>
-    <tr> 
-      <td height="20" valign="top" bgcolor="#FFFFFF">&nbsp;&nbsp;结束ID：</td>
-      <td height="20" valign="top" bgcolor="#FFFFFF">
-      	<strong>&nbsp;&nbsp;</strong>
-      	<input name="endid" type="text" id="endid" size="10"<?php  if(!empty($aid)) echo " value='$aid'"; ?>>
-        （空或0表示直到结束ID） 
-       </td>
-    </tr>
-    <tr> 
-      <td height="20" bgcolor="#FFFFFF">&nbsp;&nbsp;每批生成：</td>
-      <td height="20" bgcolor="#FFFFFF"> <strong>&nbsp;&nbsp;</strong>
-        <input name="pagesize" type="text" id="pagesize" value="100" size="8">
-        个文件</td>
-    </tr>
-    <tr> 
-      <td height="35" colspan="2" bgcolor="#ffffff" align="center"> <input name="b112" type="button" value="开始生成HTML" onClick="document.form1.submit();" class="inputbut"/>
-        &nbsp; </td>
-    </tr>
-  </form>
-  <tr> 
-    <td height="20" colspan="2" bgcolor="#FAFBFC"> <table width="100%">
-        <tr> 
-          <td width="74%">进行状态： </td>
-          <td width="26%" align="right"> <script language='javascript'>
-            	function ResizeDiv(obj,ty)
-            	{
-            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
-            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-            	}
-            	</script>
-            [<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>] 
-          </td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr bgcolor="#FFFFFF"> 
-    <td colspan="2" id="mtd"> <div id='mdv' style='width:100%;height:100;'> 
-        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
-      </div>
-      <script language="JavaScript">
-	  document.all.mdv.style.pixelHeight = screen.height - 360;
-	  </script> </td>
-  </tr>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="freelist_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">管理自由列表</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能选择：</td>
+</tr>
+</tbody>
 </table>
+</div>
+
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td>每页生成</td>
+<td>
+<input name="startid" type="hidden" id="startid" class="uk-input uk-form-width-medium uk-form-small" <?php  if(!empty($aid)) echo " value='$aid'"; ?>>  
+<input name="endid" type="hidden" id="endid" class="uk-input uk-form-width-medium uk-form-small" <?php  if(!empty($aid)) echo " value='$aid'"; ?>> 
+<input name="pagesize" type="text" id="pagesize" value="100" class="uk-input uk-form-width-medium uk-form-small">  个文件
+</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" >
+<button type="submit" class="uk-button uk-button-primary uk-button-small">开始生成HTML</button> 
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

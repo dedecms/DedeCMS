@@ -11,4 +11,6 @@
  * @link      http://www.dedecms.com
  */
 require_once dirname(__FILE__) . "/config.php";
-require_once DEDEADMIN . "/templets/makehtml_freelist.htm";
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/makehtml_freelist.htm");
+$tpl->Display();

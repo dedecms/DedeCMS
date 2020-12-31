@@ -152,7 +152,6 @@ $adminMenu1
   <m:item name='更新RSS文件' link='makehtml_rss.php' rank='sys_MakeHtml' target='main' />
   <m:item name='获取JS文件' link='makehtml_js.php' rank='sys_MakeHtml' target='main' />
   <m:item name='更新专题HTML' link='makehtml_spec.php' rank='sys_MakeHtml' target='main' />
-  <m:item name='更新TAG HTML' link='makehtml_taglist.php' rank='sys_MakeHtml' target='main' />
 </m:top>
 
 <m:top item='6_' name='会员管理' display='uk-open' rank='member_List,member_Type'>

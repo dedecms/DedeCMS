@@ -53,7 +53,7 @@ else if ($dopost == 'disable') {
     }
     $aid = preg_replace("#[^0-9]#", "", $aid);
     $staold = preg_replace("#[^0-9]#", "", $staold);
-    if ($staold == 0){
+    if ($staold == 0) {
         $sta = true;
     }else{
         $sta = false;

@@ -12,4 +12,6 @@
  */
 require_once dirname(__FILE__) . "/config.php";
 require_once DEDEINC . "/typelink.class.php";
-DedeInclude('templets/makehtml_list.htm');
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/makehtml_list.htm");
+$tpl->Display();

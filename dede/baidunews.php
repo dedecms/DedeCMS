@@ -13,7 +13,9 @@
 require_once dirname(__FILE__) . "/config.php";
 
 if (empty($do)) {
-    include DEDEADMIN . '/templets/baidunews.htm';
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/baidunews.htm");
+    $tpl->Display();
 } else {
     $baidunews = "<?xml version=\"1.0\" encoding=\"" . $cfg_soft_lang . "\" ?>\n";
     $baidunews .= "<document>\n";
