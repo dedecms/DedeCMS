@@ -1,117 +1,146 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<link href="css/base.css" rel="stylesheet" type="text/css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>采集内容导出</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background="images/allbg.gif" leftmargin="8" topmargin="8">
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
-  <form name="form1" action="co_export.php" method="get" target="stafrm">
-    <input type="hidden" name="nid" value="<?php echo $nid?>" />
-    <input type="hidden" name="totalcc" value="<?php echo $totalcc?>" />
-    <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
-    <input type="hidden" name="dopost" value="done" />
-    <tr> 
-      <td height="28" colspan="3" background='images/tbg.gif' style="padding-left:10px;"><strong><a href="co_main.php"><u>采集管理</u></a> 
-        &gt; 采集内容导出：</strong></td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="3" bgcolor="#F8FCF1">
-      	<strong>共有[<?php echo $totalcc; ?>]条可导出数据：</strong>
-      	<?php
-      	if(empty($nid))
-      	{
-      		echo "<br /><font color='red'>你当进行的操作是--导出所有采集内容，需注意下面问题：<br />\r\n";
-      	  echo "1 、如果你采集的内容包含多个内容类型的信息，本操作将会出错！<br />\r\n";
-      	  echo "2 、这种模式'完成后自动生成导入内容HTML'功能无效。\r\n";
-      	  echo "</font>";
-        }
-      	?>
-      </td>
-    </tr>
-    <tr> 
-      <td width="26%" height="24" align="center" bgcolor="#FFFFFF">默认导出栏目：</td>
-      <td width="74%" colspan="2" bgcolor="#FFFFFF"> 
-        <?php
-         $typeOptions = GetOptionList(0,$cuserLogin->getUserChannel(),$channelid);
-         echo "<select name='typeid' style='width:300px'>\r\n";
-         echo "<option value='0' selected>请选择主分类...</option>\r\n";
-         echo $typeOptions;
-         echo "</select>";
-	    ?>
-	    （请选择白色的栏目）
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" bgcolor="#FFFFFF">
-      	批量采集选项：
-      </td>
-      <td colspan="2" bgcolor="#FFFFFF">
-      	<input name="autotype" type="checkbox" id="autotype" value="1" class="np"<?php if($usemore==1 || empty($nid)) echo " checked='1' "; ?>/>
-      	使用采集规则中指定的栏目ID(如果目标的栏目ID为0，则用上面选择的栏目)
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" bgcolor="#FFFFFF">发布选项：</td>
-      <td colspan="2" bgcolor="#FFFFFF">
-      	<input name="arcrank" type="radio" class="np" value="0" checked='1' />
-        普通文档 
-        <input name="arcrank" type="radio" class="np" value="-1" />
-        保存为草稿 
-        </td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" bgcolor="#FFFFFF">每批导入：</td>
-      <td colspan="2" bgcolor="#FFFFFF">
-      	<input name="pagesize" type="text" id="pagesize" value="60" style="width:30px" /> 条
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" bgcolor="#FFFFFF">附带选项：</td>
-      <td colspan="2" bgcolor="#FFFFFF">
-      	<input name="onlytitle" type="checkbox" id="onlytitle" value="1" class="np" />
-        排除重复标题
-        <input name="makehtml" type="checkbox" id="makehtml" value="1" class="np" />
-        完成后自动生成导入内容HTML
-        <input name="usetitle" type="checkbox" id="usetitle" value="1" class="np" />
-        使用列表索引的标题
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" align="center" bgcolor="#FFFFFF">随机推荐：</td>
-      <td colspan="2" bgcolor="#FFFFFF">
-      	<input name="randcc" type="text" id="randcc" value="12" style="width:30px" />
-        (0 表示不推荐，具体数值表示大约多少篇文档出现一篇推荐[随机])
-      </td>
-    </tr>
-    <tr> 
-      <td height="24" colspan="3" bgcolor="#F8FCF1">&nbsp;</td>
-    </tr>
-    <tr> 
-      <td height="34" colspan="3" align="center" bgcolor="#FFFFFF">
-      	<input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np" />
-		&nbsp;
-        <a href="co_main.php"><img src="images/button_back.gif" width="60" height="22" border="0" /></a> 
-      </td>
-    </tr>
-  </form>
-  <tr> 
-    <td height="34" colspan="3" align="center" bgcolor="#FAFBFC">
-    	<table width="100%">
-        <tr> 
-          <td width="74%" align="left">进行状态： </td>
-          <td width="26%" align="right"></td>
-        </tr>
-      </table>
-      </td>
-  </tr>
-  <tr> 
-    <td height="150" colspan="3" bgcolor="#FFFFFF" id="mtd">
-    <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="300"></iframe>
-	  </td>
-  </tr>
+
+<body>
+<form name="form1" action="co_export.php" method="get" target="stafrm">
+<input type="hidden" name="nid" value="<?php echo $nid?>" />
+<input type="hidden" name="totalcc" value="<?php echo $totalcc?>" />
+<input type="hidden" name="channelid" value="<?php echo $channelid?>" />
+<input type="hidden" name="dopost" value="done" />
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="co_main.php">采集管理</a> </li><li><span>采集内容导出</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="co_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">采集节点管理</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能选择：</td>
+</tr>
+</tbody>
 </table>
-<p>&nbsp;</p>
+</div>
+
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td width="50%">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr> 
+<td>默认导出栏目</td>
+<td > 
+<?php
+$typeOptions = GetOptionList(0,$cuserLogin->getUserChannel(),$channelid);
+echo "<select name='typeid'  class='uk-select uk-form-small uk-form-width-medium'>\r\n";
+echo "<option value='0' selected>请选择主分类...</option>\r\n";
+echo $typeOptions;
+echo "</select>";
+?>
+</td>
+</tr>
+<tr> 
+<td>批量采集选项</td>
+<td>
+<input name="autotype" type="checkbox" id="autotype" value="1" class="uk-checkbox"<?php if($usemore==1 || empty($nid)) echo " checked='1' "; ?>/>
+使用采集规则中指定的栏目ID(如果目标的栏目ID为0，则用上面选择的栏目)
+</td>
+</tr>
+<tr> 
+<td>发布选项</td>
+<td>
+<label><input name="arcrank" type="radio" class="uk-radio" value="0" checked='1' /></label>
+普通文档 
+<label style="margin-left: 12px;"><input name="arcrank" type="radio" class="uk-radio" value="-1" /></label>
+保存为草稿 
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td width="50%" >
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+
+<tr> 
+<td width="30%">每批导入</td>
+<td>
+<input name="pagesize" type="text" id="pagesize" value="60" class="uk-input uk-form-width-small uk-form-small" /> 条
+</td>
+</tr>
+<tr> 
+<td>附带选项</td>
+<td>
+<label><input name="onlytitle" type="checkbox" id="onlytitle" value="1" class="uk-radio" /></label>
+排除重复标题
+<label style="margin-left: 12px;"><input name="makehtml" type="checkbox" id="makehtml" value="1" class="uk-radio" /></label>
+完成后自动生成导入内容HTML
+<label style="margin-left: 12px;"><input name="usetitle" type="checkbox" id="usetitle" value="1" class="uk-radio" /></label>
+使用列表索引的标题
+</td>
+</tr>
+<tr> 
+<td>随机推荐</td>
+<td>
+<input name="randcc" type="text" id="randcc" value="12" class="uk-input uk-form-width-small uk-form-small" />
+(0 表示不推荐，具体数值表示大约多少篇文档出现一篇推荐[随机])
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" >
+<button type="submit" class="uk-button uk-button-primary uk-button-small">导出</button> 
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

@@ -1,129 +1,151 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>采集节点</title>
-<script language='javascript'>
-function SubmitNew()
-{
-	document.form1.totalnum.value = "0";
-	document.form1.submit();
-}
-</script>
-<link href="css/base.css" rel="stylesheet" type="text/css">
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6" align="center">
-  <tr>
-      <td height="20" colspan="2" background='images/tbg.gif'>
-      	<table width="98%" border="0" cellpadding="0" cellspacing="0">
-         <form name='form2' action='co_url.php' target='stafrm'>
-         	<input type='hidden' name='small' value='1'>
-         	<input type='hidden' name='nid' value='<?php echo $nid; ?>'>
-         	</form>
-          <tr>
-            <td width="30%" height="18" style="padding-left:10px;">
-            	<strong><?php echo $ntitle; ?></strong>
-            </td>
-            <td width="70%" align="right">
-            	<input type="button" name="b11" value="查看已下载" class="coolbg np" onClick="document.form2.submit();" style="width:90px" />
-              <input type="button" name="b12" value="采集节点管理" class="coolbg np" style="width:90px" onClick="location.href='co_main.php';" />
-              <input type="button" name="b13" value="导出数据" class="coolbg np" style="width:90px" onClick="location.href='co_export.php?nid=<?php echo $nid; ?>';" />
-              </td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr>
-      <td width="108" valign="top" bgcolor="#FFFFFF">节点名称：</td>
-      <td width="377" valign="top" bgcolor="#FFFFFF">
-        <?php
-        if(!empty($nid)) echo $co->noteInfos['notename'];
-        else echo "所有节点";
-        ?>
-      </td>
-    </tr>
-    <tr>
-      <td height="20" valign="top" bgcolor="#FFFFFF">种子网址数：</td>
-      <td height="20" valign="top" bgcolor="#FFFFFF">
-        <?php echo $unum; ?>
-      </td>
-    </tr>
-    <form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
-    <input type='hidden' name='nid' value='<?php echo $nid; ?>' />
-    <input type='hidden' name='totalnum' value='<?php echo $row['dd']; ?>' />
-    <input type='hidden' name='startdd' value='0' />
-    <tr>
-      <td height="20" bgcolor="#FFFFFF">每页采集：</td>
-      <td height="20" bgcolor="#FFFFFF">
-      	<input name="pagesize" type="text" id="pagesize" value="5" size="3" />
-        条，
-        间隔时间：
-        <input name="sptime" type="text" id="sptime" value="0" size="3" />
-        秒（防刷新的站点需设置）
-      </td>
-    </tr>
-    <tr>
-      <td height="20" bgcolor="#FFFFFF">特殊选项：</td>
-      <td height="20" bgcolor="#FFFFFF">
-        <input name="notckpic" type="checkbox" class="np" />
-        不检测重复图片
-     </td>
-    </tr>
-    <tr>
-      <td height="20" bgcolor="#FFFFFF">附加选项：</td>
-      <td height="20" bgcolor="#FFFFFF">
-        <input name="islisten" type="radio" class="np" value="1" <?php if(empty($nid)) echo " checked='1' "; ?> />
-        监控采集模式(检测当前或所有节点是否有新内容)
-        <?php
-        if(!empty($nid)) {
-        ?>
-        <br />
-        <input name="islisten" type="radio" class="np" value="-1" checked='1'; />
-      	重新下载全部内容
-      	<br />
-        <input name="islisten" type="radio" class="np" value="0" />
-        下载种子网址的未下载内容
-        <br />
-        <?php
-        }
-        ?>
-     </td>
-    </tr>
-    <tr>
-      <td height="28" colspan="2" bgcolor="#ffffff" align="center">
-      	<input name="b112" type="button" class="coolbg np" value="开始采集网页" onClick="document.form1.submit();" style="width:100px" />　
-      	<input name="b113" type="button" class="coolbg np" value="查看种子网址" onClick="document.form2.submit();" style="width:100px" />
-      </td>
-    </tr>
-  </form>
-    <tr bgcolor="#FAFBFC">
-      <td height="20" colspan="2">
-<table width="100%">
-          <tr>
-            <td width="74%">节点的种子网址： </td>
-            <td width="26%" align="right">
-            	<script language='javascript'>
-            	function ResizeDiv(obj,ty)
-            	{
-            		if(ty=="+") document.all[obj].style.pixelHeight += 50;
-            		else if(document.all[obj].style.pixelHeight>80) document.all[obj].style.pixelHeight = document.all[obj].style.pixelHeight - 50;
-            	}
-            	</script>
-            	[<a href='#' onClick="ResizeDiv('mdv','+');">增大</a>] [<a href='#' onClick="ResizeDiv('mdv','-');">缩小</a>]
-            	</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr bgcolor="#FFFFFF">
-      <td colspan="2" id="mtd">
-	  <div id='mdv' style='width:100%;height:350px;'>
-	  <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"<?php if($row['dd']>0) echo " src=co_url.php?nid=$nid&small=1";?>></iframe>
-	  </div>
-	  <script language="JavaScript">
-	  document.all.mdv.style.pixelHeight = screen.height - 360;
-	  </script>
-	  </td>
-    </tr>
+
+<body>
+<form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='totalnum' value='<?php echo $row['dd']; ?>' />
+<input type='hidden' name='startdd' value='0' />
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>监控式采集</span></li></ul></span>
+</div>
+<!--  搜索表单  -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="co_url.php?small=1&nid=<?php echo $nid; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">查看已下载</a></li>
+<li style="margin-right: 12px;"><a href="co_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">采集节点管理</a></li>
+<li style="margin-right: 12px;"><a href="co_export.php?nid=<?php echo $nid; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">导出数据</a></li>
+</ul>
+<!--  /搜索表单  -->
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能选择：</td>
+</tr>
+</tbody>
 </table>
+</div>
+
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td width="50%" valign="top" >
+
+<table class="uk-table uk-table-middle uk-margin-remove">
+<tbody>
+<tr>
+<td width="15%">节点名称：</td>
+<td>
+<?php
+if(!empty($nid)) echo $co->noteInfos['notename'];
+else echo "所有节点";
+?>
+</td>
+</tr>
+<tr>
+<td>种子网址数：</td>
+<td>
+<?php echo $unum; ?>
+</td>
+</tr>
+<form name="form1" action="co_getsource_url_action.php" method="get" target='stafrm'>
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='totalnum' value='<?php echo $row['dd']; ?>' />
+<input type='hidden' name='startdd' value='0' />
+<tr>
+<td>每页采集：</td>
+<td>
+<input name="pagesize" type="text" id="pagesize" value="5" class="uk-input uk-form-width-small uk-form-small"/> 条， 间隔时间：
+<input name="sptime" type="text" id="sptime" value="0" class="uk-input uk-form-width-small uk-form-small"/> 秒（防刷新的站点需设置）
+</td>
+</tr>
+</tbody>
+</table>
+
+</td>
+<td width="50%" valign="top" style="display: inline;vertical-align: top;">
+
+<table class="uk-table uk-table-middle uk-margin-remove">
+<tbody>
+<tr>
+<td width="15%" >特殊选项：</td>
+<td>
+<input name="notckpic" type="checkbox" class="uk-checkbox" />
+不检测重复图片
+</td>
+</tr>
+<tr>
+<td>附加选项：</td>
+<td>
+<input name="islisten" type="radio" class="uk-radio" value="1" <?php if(empty($nid)) echo " checked='1' "; ?> />
+监控采集模式(检测当前或所有节点是否有新内容)
+<?php
+if(!empty($nid)) {
+?>
+<br />
+<input name="islisten" type="radio" class="uk-radio" value="-1" checked='1'; />
+重新下载全部内容
+<br />
+<input name="islisten" type="radio" class="uk-radio" value="0" />
+下载种子网址的未下载内容
+<br />
+<?php
+}
+?>
+</td>
+</tr>
+</tbody>
+</table>
+
+</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" >
+<button type="submit" class="uk-button uk-button-primary uk-button-small">开始采集网页</button> 
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>
