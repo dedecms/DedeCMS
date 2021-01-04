@@ -157,7 +157,7 @@ else if ($dopost == "commendArchives") {
         ShowMsg("参数无效！", $ENV_GOBACK_URL);
         exit();
     }
-    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
     $query = "SELECT arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable FROM `#@__arctiny` arc
            LEFT JOIN `#@__arctype` tp on tp.id=arc.typeid
            LEFT JOIN `#@__channeltype` ch on ch.id=tp.channeltype
@@ -197,7 +197,7 @@ else if ($dopost == "makeArchives") {
         exit();
     }
     include_once DEDEADMIN . '/inc/inc_archives_functions.php';
-    $qstrs = explode('`', $qstr);
+    $qstrs = explode(',', $qstr);
     $i = 0;
     foreach ($qstrs as $aid) {
         $i++;
@@ -221,7 +221,7 @@ else if ($dopost == "checkArchives") {
         ShowMsg("参数无效！", $ENV_GOBACK_URL);
         exit();
     }
-    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
     $query = "SELECT arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable FROM `#@__arctiny` arc
                LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid
             LEFT JOIN `#@__channeltype` ch ON ch.id=tp.channeltype
@@ -262,7 +262,7 @@ else if ($dopost == "delArchives") {
             ShowMsg("参数无效！", $ENV_GOBACK_URL);
             exit();
         }
-        $qstrs = explode("`", $qstr);
+        $qstrs = explode(",", $qstr);
         $okaids = array();
 
         foreach ($qstrs as $aid) {
@@ -363,7 +363,7 @@ else if ($dopost == 'moveArchives') {
             $typeInfos['maintable'] = $typeInfos['addtable'];
             $idtype = "aid";
         }
-        $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+        $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
         $arc = '';
         $j = 0;
         $okids = array();
@@ -403,7 +403,7 @@ else if ($dopost == 'return') {
         ShowMsg("参数无效！", "recycling.php");
         exit();
     }
-    $qstrs = explode("`", $qstr);
+    $qstrs = explode(",", $qstr);
     foreach ($qstrs as $aid) {
         $dsql->ExecuteNoneQuery("UPDATE `#@__archives` SET arcrank='-1',ismake='0' WHERE id='$aid'");
         $dsql->ExecuteNoneQuery("UPDATE `#@__arctiny` SET `arcrank` = '-1' WHERE id = '$aid'; ");
@@ -494,7 +494,7 @@ else if ($dopost == 'del') {
             ShowMsg("参数无效！", "recycling.php");
             exit();
         }
-        $qstrs = explode("`", $qstr);
+        $qstrs = explode(",", $qstr);
         $okaids = array();
 
         foreach ($qstrs as $aid) {
@@ -720,7 +720,7 @@ else if ($dopost == "makekw") {
         exit();
     }
     $sp = new SplitWord($cfg_soft_lang, $cfg_soft_lang);
-    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
     $query = "SELECT arc.*, addt.* From `#@__archives` arc LEFT JOIN `#@__addonarticle` addt ON addt.aid=arc.id  WHERE arc.id in($arcids) AND arc.channel=1 ";
     $dsql->SetQuery($query);
     $dsql->Execute();
@@ -798,7 +798,7 @@ else if ($dopost == 'attsAdd') {
         ShowMsg("必须指定要添加的属性！", $ENV_GOBACK_URL);
         exit();
     }
-    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
     $query = "SELECT arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable FROM `#@__arctiny` arc
            LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid
            LEFT JOIN `#@__channeltype` ch ON ch.id=tp.channeltype
@@ -840,7 +840,7 @@ else if ($dopost == 'attsDel') {
         ShowMsg("必须指定要删除的属性！", $ENV_GOBACK_URL);
         exit();
     }
-    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#`#", ',', $qstr));
+    $arcids = preg_replace("#[^0-9,]#", '', preg_replace("#,#", ',', $qstr));
     $query = "SELECT arc.id,arc.typeid,ch.issystem,ch.maintable,ch.addtable FROM `#@__arctiny` arc
            LEFT JOIN `#@__arctype` tp ON tp.id=arc.typeid
            LEFT JOIN `#@__channeltype` ch ON ch.id=tp.channeltype

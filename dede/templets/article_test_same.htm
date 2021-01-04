@@ -1,81 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>重复文档检测</title>
-<link href="css/base.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<div class="bodytitle">
-	<div class="bodytitleleft"></div>
-  <div class="bodytitletxt" style="padding-left:10px;">批量管理</div>
+
+<body>
+<form action="article_test_same.php" name="form1" target="stafrm">
+<input type='hidden' name='dopost' value='analyse'>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>重复文档检测</span></li></ul></span>
 </div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="	background:#EAECEF;">
-  <form action="article_test_same.php" name="form1" target="stafrm">
-    <input type='hidden' name='dopost' value='analyse'>
-    <tr>
-      <td height="20" bgcolor="#EDF9D5" background="images/tbg.gif">
-      	<table width="98%" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td width="30%" height="18"><strong>&nbsp;重复文档检测：</strong></td>
-            <td width="70%" align="right">&nbsp;</td>
-          </tr>
-        </table></td>
-    </tr>
-    <tr>
-      <td height="31" align="center" bgcolor="#FFFFFF">
-	    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-          <tr>
-            <td width="20%" height="30" align="left">频道类型：</td>
-            <td align="left">
-            	<select name="channelid">
-               <?php
-               if(!empty($channelinfos))
-               {
-	                  foreach($channelinfos as $rs)
-	                  {
-		                  echo "<option value=".$rs['id'].">".$rs['typename']."</option>";
-	                  }
-               }
-               ?>
-              </select>
-			     </td>
-          </tr>
-          <tr>
-            <td width="20%" height="30" align="left">删除选项：</td>
-            <td align="left">
-            	<input name="deltype" type="radio"  value="delnew" class='np' checked='1'/>
-              保留最旧的一条
-              <input type="radio" name="deltype" value="delold" class='np' />
-              保留最新的一条
-            </td>
-          </tr>
-          <tr>
-            <td height="30" align="left">每排列出记录：</td>
-            <td align="left"><input name="pagesize" type="text" id="pagesize" value="100" size="10">
-              条</td>
-          </tr>
-        </table>
-	  </td>
-    </tr>
-    <tr>
-      <td height="31" bgcolor="#ffffff" align="center" style="padding-top:6px">
-      <input type="submit" name="Submit" value="分析标题重复的文档" class="np coolbg"/>
-      </td>
-    </tr>
-  </form>
-  <tr bgcolor="#FAFBFC">
-    <td height="30">
-    	&nbsp; <strong>结果：</strong>
-    </td>
-  </tr>
-  <tr bgcolor="#FFFFFF">
-    <td id="mtd">
-    	<div id='mdv' style='width:100%;height:420px;'>
-        <iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe>
-      </div>
-	  </td>
-  </tr>
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td><b>功能说明：</b></td>
+</tr>
+</tbody>
 </table>
+</div>
+<div class="uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td width="12%" >频道类型</td>
+<td>
+<select name="channelid" class='uk-select uk-form-small uk-form-width-medium'>
+<?php
+if(!empty($channelinfos))
+{
+foreach($channelinfos as $rs)
+{
+echo "<option value=".$rs['id'].">".$rs['typename']."</option>";
+}
+}
+?>
+</select>
+</td>
+</tr>
+<tr>
+<td>删除选项</td>
+<td>
+<label><input name="deltype" type="radio"  value="delnew" class='uk-radio' checked='1'/> 保留最旧的一条</label>
+<label style="margin-left: 12px;"><input type="radio" name="deltype" value="delold" class='uk-radio' />保留最新的一条</label>
+</td>
+</tr>
+<tr>
+<td>每排列出记录</td>
+<td><input name="pagesize" type="text" id="pagesize" value="100" class="uk-input uk-form-width-medium uk-form-small"> 条</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" ><button type="submit" class="uk-button uk-button-primary uk-button-small">开始执行</button> </td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

@@ -1,135 +1,108 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>重复文档检测</title>
-<script language="javascript">
-
-//获得选中文件的文件名
-function getCheckboxItem()
-{
-	var allSel="";
-	if(document.form2.arcTitle.value) return document.form2.arcTitle.value;
-	for(i=0;i<document.form2.arcTitle.length;i++)
-	{
-		if(document.form2.arcTitle[i].checked)
-		{
-			if(allSel=="")
-				allSel=document.form2.arcTitle[i].value;
-			else
-				allSel=allSel+"`"+document.form2.arcTitle[i].value;
-		}
-	}
-	return allSel;
-}
-
-//删除文档
-function delArc(){
-	var qstr=getCheckboxItem();
-	document.form2.titles.value = qstr;
-	document.form2.submit();
-}
-
-function selAll()
-{
-	for(i=0;i<document.form2.arcTitle.length;i++){
-		if(!document.form2.arcTitle[i].checked){
-			document.form2.arcTitle[i].checked=true;
-		}
-	}
-}
-function noSelAll()
-{
-	for(i=0;i<document.form2.arcTitle.length;i++){
-		if(document.form2.arcTitle[i].checked){
-			document.form2.arcTitle[i].checked=false;
-		}
-	}
-}
-</script>
-<style type="text/css">
-<!--
-body {
-	margin-left: 0px;
-	margin-top: 0px;
-	margin-right: 0px;
-	margin-bottom: 0px;
-}
-body,td,th {
-	font-size: 12px;
-}
-a:link {
-	text-decoration: none;
-}
-a:visited {
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: none;
-}
-a:active {
-	text-decoration: none;
-}
-a {
-	font-size: 12px;
-}
--->
-</style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>重复文档列表</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 </head>
+
 <body>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbtitle">
-  <tr bgcolor="#FAFBFC">
-    <td height="24" colspan="3" bgcolor="#EDF9D5">
-    	<strong>·重复文档列表：</strong>
-    </td>
-  </tr>
-  <form name="form2" method="POST" action="article_test_same.php">
-   <input type='hidden' name='deltype' value='<?php echo $deltype; ?>' />
-   <input type='hidden' name='dopost' value='delsel' />
-   <input type='hidden' name='pagesize' value='<?php echo $pagesize; ?>' />
-   <input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
-   <input type='hidden' name='maintable' value='<?php echo $maintable; ?>' />
-   <input type='hidden' name='titles' value='' />
-  <tr bgcolor="#F8FBFB" height="24" align="center">
-    <td width="9%"> 选择 </td>
-    <td width="10%"> 重复数量 </td>
-    <td width="81%"> 文档标题 </td>
-  </tr>
- <?php
- while($row = $dsql->GetArray())
- {
-	 if($row['dd']==1 ) break;
- ?>
-  <tr bgcolor="#FFFFFF" align="center" height="24" onMouseMove="javascript:this.bgColor='#EFEFEF';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
-    <td>
-      <input name="arcTitles" type="checkbox" id="arcTitle" value="<?php echo urlencode($row['title'])?>" class="np" />
-    </td>
-    <td>
-    <?php
-     $allarc += $row['dd'];
-     echo $row['dd'];
-    ?>
-    </td>
-    <td>
-    	<?php echo $row['title']; ?>
-    </td>
-  </tr>
- <?php
-  }
- ?>
- <tr bgcolor="#E5F9FF">
-   <td height="28" colspan="3" bgcolor="#EDF9D5">
-     &nbsp;
-     <input type='button' name='bt1' value='全选' onclick='selAll()' />
-     &nbsp;
-     <input type='button' name='bt2' value='反选' onclick='noSelAll()' />
-     &nbsp;
-     <input type='button' name='bt3' value='删除' onclick='delArc()' />
-     &nbsp;
-     (共有 <?php echo $allarc; ?> 篇重复标题的文档！)
-   </td>
- </tr>
-</form>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>重复文档列表</span></li></ul></span>
+</div>
+</div>
+<!-- 表头显示部分 -->
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="3%"></td>
+<td width="10%"> 重复数量 </td>
+<td width="81%"> 文档标题 </td>
+</tr>
+</thead>
 </table>
+<!-- /表头显示部分 -->
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<!-- 表头隐藏部分，用于固定表结构宽度 -->
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="3%"></td>
+<td width="10%"> 重复数量 </td>
+<td width="81%"> 文档标题 </td>
+</tr>
+</thead>
+<!-- /表头隐藏部分 -->
+<tbody>
+<!-- 内容列表 -->
+<?php
+while($row = $dsql->GetArray())
+{
+if($row['dd']==1 ) break;
+?>
+<tr>
+<td>
+<input name="arcTitles" type="checkbox" id="arcTitle" value="<?php echo urlencode($row['title'])?>" class="uk-checkbox" />
+</td>
+<td>
+<?php
+$allarc += $row['dd'];
+echo $row['dd'];
+?>
+</td>
+<td>
+<?php echo $row['title']; ?>
+</td>
+</tr>
+<?php
+}
+?>
+</tbody>
+<!-- 批量操作 -->
+<thead>
+<tr>
+<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+<td height="36" colspan="8">
+<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Action('article_test_same.php?dopost=delsel&deltype=<?php echo $deltype; ?>&pagesize=<?php echo $pagesize; ?>&channelid=<?php echo $channelid; ?>&maintable=<?php echo $maintable; ?>&titles=')" class="uk-button uk-button-default uk-button-small">删除</a>
+(共有 <?php echo $allarc; ?> 篇重复标题的文档！)
+</td>
+</tr>
+</thead>
+<!-- /批量操作 -->
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- /列表主体 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
 </body>
 </html>

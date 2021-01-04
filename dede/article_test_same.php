@@ -28,7 +28,11 @@ if ($dopost == 'analyse') {
     $dsql->SetQuery("SELECT COUNT(title) AS dd,title FROM `$maintable` WHERE channel='$channelid' GROUP BY title ORDER BY dd DESC LIMIT 0, $pagesize");
     $dsql->Execute();
     $allarc = 0;
-    DedeInclude('templets/article_result_same.htm');
+
+    $dlist = new DataListCP();
+    $dlist->SetTemplate(DEDEADMIN . "/templets/article_result_same.htm");
+    $dlist->Display();
+
     exit();
 }
 //删除选中的内容（只保留一条）
@@ -43,7 +47,7 @@ else if ($dopost == 'delsel') {
         exit();
     }
 
-    $titless = explode('`', $titles);
+    $titless = explode(',', $titles);
 
     if ($channelid < -1) {
         $orderby = ($deltype == 'delnew' ? " ORDER BY aid DESC " : " ORDER BY aid ASC ");
@@ -94,4 +98,8 @@ while ($row = $dsql->getarray()) {
     $channelinfos[] = $row;
 }
 
-DedeInclude('templets/article_test_same.htm');
+
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/article_test_same.htm");
+$tpl->Display();
+

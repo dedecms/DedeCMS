@@ -160,12 +160,6 @@ $actionSearch[4] = array(
             'purview' => 'sys_ArcBatch',
             'linkurl' => 'article_test_same.php',
         ),
-        5 => array(
-            'title' => '自动摘要|分页 ',
-            'description' => '用于自动更新您系统没有填写摘要的文档的摘要信息或更新没分页的文档的自动分页标识',
-            'purview' => 'sys_Keyword',
-            'linkurl' => 'article_description_main.php',
-        ),
         6 => array(
             'title' => 'TAG标签管理 ',
             'description' => '对整个网站的tag进行批量的维护',
@@ -208,12 +202,6 @@ $actionSearch[5] = array(
             'description' => '会员之间发送的短消息管理,其中包含群发短消息和对单个会员发送短消息两种',
             'purview' => 'member_Type',
             'linkurl' => 'member_pm.php',
-        ),
-        5 => array(
-            'title' => '会员留言管理',
-            'description' => '会员空间留言的管理项目,可以对留言进行批量删除等操作',
-            'purview' => 'member_Type',
-            'linkurl' => 'member_guestbook.php',
         ),
     ),
 );
@@ -363,18 +351,6 @@ $actionSearch[9] = array(
             'purview' => 'temp_MyTag',
             'linkurl' => 'mytag_main.php',
         ),
-        3 => array(
-            'title' => '智能标记向导',
-            'description' => '可以根据需要生成相应的调用标签',
-            'purview' => 'temp_Other',
-            'linkurl' => 'mytag_tag_guide.php',
-        ),
-        4 => array(
-            'title' => '全局标记测试 ',
-            'description' => '可以对全局的标签调用进行测试',
-            'purview' => 'temp_Test',
-            'linkurl' => 'tag_test.php',
-        ),
     ),
 );
 $actionSearch[10] = array(
@@ -496,12 +472,6 @@ $actionSearch[11] = array(
             'description' => '导入采集的规则',
             'purview' => 'co_GetOut',
             'linkurl' => 'co_get_corule.php',
-        ),
-        3 => array(
-            'title' => '智能标记向导',
-            'description' => '可以根据需要生成相应的调用标签',
-            'purview' => 'temp_Other',
-            'linkurl' => 'mytag_tag_guide.php',
         ),
         4 => array(
             'title' => '监控采集模式 ',

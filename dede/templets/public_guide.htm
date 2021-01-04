@@ -36,7 +36,7 @@
 			</thead>
 		</table>
   </div>
-  
+  <form name="form1" action="public_guide.php?action=setdefault" method="post">
 	<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
 		<div class="uk-card-body uk-overflow-auto" grid>
 			<div class="uk-child-width-1-1">
@@ -92,14 +92,15 @@
 						<tr>
 							<td></td>
 							<td height="36" colspan="5">
-								<a href="#" onclick="SetDefault()" class="uk-button uk-button-default uk-button-small">把所选的频道表单设为默认表单</a>
+								<button type="submit"  class="uk-button uk-button-default uk-button-small">把所选的频道表单设为默认表单</button>
 								<a href="#" onclick="ResetDefault()" class="uk-button uk-button-default uk-button-small">取消默认表单</a>
 							</td>
 						</tr>
 					</thead>
           <!-- /批量操作 -->
           
-					</table>
+          </table>
+        </form>
 				</div>
 			</div>
 		</div>

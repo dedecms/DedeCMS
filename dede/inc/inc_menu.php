@@ -52,8 +52,6 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='默认模板管理' link='templets_main.php' rank='temp_All' target='main'/>
   <m:item name='标签源码管理' link='templets_tagsource.php' rank='temp_All' target='main'/>
   <m:item name='自定义宏标记' link='mytag_main.php' rank='temp_MyTag' target='main'/>
-  <m:item name='智能标记向导' link='mytag_tag_guide.php' rank='temp_Other' target='main'/>
-  <m:item name='全局标记测试' link='tag_test.php' rank='temp_Test' target='main'/>
 </m:top>
 
 <m:top item='10_' name='系统设置' display='uk-open' rank='sys_User,sys_Group,sys_Edit,sys_Log,sys_Data'>
@@ -134,7 +132,6 @@ $adminMenu1
   <m:item name='搜索关键词维护' link='search_keywords_main.php' rank='sys_Keyword' target='main' />
   <m:item name='文档关键词维护' link='article_keywords_main.php' rank='sys_Keyword' target='main' />
   <m:item name='重复文档检测' link='article_test_same.php' rank='sys_ArcBatch' target='main' />
-  <m:item name='自动摘要|分页' link='article_description_main.php' rank='sys_Keyword' target='main' />
   <m:item name='TAG标签管理' link='tags_main.php' rank='sys_Keyword' target='main' />
 </m:top>
 
@@ -160,7 +157,6 @@ $adminMenu1
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
   <m:item name='会员模型管理' link='member_model_main.php' rank='member_Type' target='main' />
   <m:item name='会员短信管理' link='member_pm.php' rank='member_Type' target='main' />
-  <m:item name='会员留言管理' link='member_guestbook.php' rank='member_Type' target='main' />
 </m:top>
 
 $adminMenu2

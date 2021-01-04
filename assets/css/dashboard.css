@@ -3,6 +3,20 @@ html {
   min-width: 960px;
 }
 
+::-webkit-scrollbar{background-color: #222a30}
+::-webkit-scrollbar-track {
+background-color: #222a30;
+} 
+::-webkit-scrollbar-thumb {
+background-color: #373C40;
+} 
+::-webkit-scrollbar-button {
+background-color: #373C40;
+} 
+::-webkit-scrollbar-corner {
+background-color: #373C40;
+}
+
 #dede-manage-top {
   background-color: #222a30;
 }
@@ -299,6 +313,7 @@ body .right {
 
 .main {
   height: 100%;
+  background-color: #fff;
 }
 
 .main iframe {

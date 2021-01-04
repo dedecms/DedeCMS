@@ -68,9 +68,7 @@ $dlist->Display();
 function MediaType($tid, $nurl)
 {
     if ($tid == 1) {
-        return "图片<a href=\"javascript:;\" onClick=\"ChangeImage('$nurl');\"><img src='./images/eye.png' name='picview' border='0' alt='预览'></a>";
-    } else if ($tid == 2) {
-        return "FLASH";
+        return "图片";
     } else if ($tid == 3) {
         return "视频/音频";
     } else {

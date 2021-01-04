@@ -16,6 +16,10 @@ if (empty($dopost)) {
     $dopost = '';
 }
 
+function isbool($val, $set)  {
+    return ($val == $set) ? "checked" : "";
+}
+
 $id = isset($id) ? intval($id) : 0;
 
 //检查权限许可
