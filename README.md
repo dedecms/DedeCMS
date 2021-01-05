@@ -2,7 +2,10 @@
 
 ​ DedeCMS 是织梦团队开发 PHP 网站管理系统，它以简单、易用、高效为特色，组建出各种各样各具特色的网站，如地方门户、行业门户、政府及企事业站点等。
 
-（注：beta 版不能用于生产）
+## DedeCMS Git 说明
+
+DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : https://github.com/dedecms/DedeCMS 
+开发过程中以night beta（夜间测试版）的方式更新，测试版不能用于生产。
 
 ## 服务器要求
 
