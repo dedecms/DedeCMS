@@ -5,6 +5,7 @@
 ## DedeCMS Git 说明
 
 DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : https://github.com/dedecms/DedeCMS 
+
 开发过程中以night beta（夜间测试版）的方式更新，测试版不能用于生产。
 
 ## 服务器要求
