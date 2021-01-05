@@ -1,111 +1,154 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>更改自定义页面</title>
-<link href='css/base.css' rel='stylesheet' type='text/css'>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>修改单独页面</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+
+</head>
+
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="catalog_main.php"><span>单独页面管理</span></a></li><li>修改单独页面</li></ul></span>
+</div>
+</div>
+
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-40px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<form name="form1" action="catalog_add.php" method="post" class="uk-form-horizontal ">
+<input type="hidden" name="dopost" value="savequick" />
+<input type="hidden" name="savetype" value="" id="savetype" />
+
+<table width="100%" border="0" cellspacing="4" cellpadding="2" class="uk-table">
+<form action="templets_one_edit.php" method="post" name="form1" onSubmit="return checkSubmit()">
+<input type='hidden' name='dopost' value='saveedit'>
+<input type='hidden' name='aid' value='<?php echo $aid?>'>
+<tr> 
+<td width="15%">页面标题：</td>
+<td> 
+<input name="title" type="text" id="title" class="uk-input uk-form-small uk-form-width-large" value="<?php echo $row['title']; ?>"></td>
+</tr>
+<tr> 
+<td>页面关键字：</td>
+<td><input name="keywords" type="text" id="keywords" value="<?php echo $row['keywords']; ?>" class="uk-input uk-form-small uk-form-width-large">
+(用&quot;,&quot;分开) </td>
+</tr>
+<tr>
+<td>页面摘要信息：</td>
+<td><textarea name="description" cols="50" id="description" class="uk-textarea uk-form-small uk-form-width-large"><?php echo $row['description']; ?></textarea>
+(100字左右)</td>
+</tr>
+<tr>
+<td>关联标识：</td>
+<td>
+<input name="likeid" type="text" id="likeid" value="<?php echo $row['likeid']; ?>" class="uk-input uk-form-small uk-form-width-large">
+<input name="oldlikeid" type="hidden" id="oldlikeid" value="<?php echo $row['likeid']; ?>">
+<?php
+echo "<select name='likeidsel' id='likeidsel' class='uk-select uk-form-small uk-form-width-small'>\r\n";
+$dsql->Execute('s',"Select likeid From `#@__sgpage` group  by likeid ");
+echo "<option value='{$row['likeid']}' selected>{$row['likeid']}</option>\r\n";
+while($arr = $dsql->GetArray('s'))
+{
+if($arr['likeid']!=$row['likeid']) echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
+}
+echo "</select>\r\n";
+?>
+</td>
+</tr>
+<tr>
+<td bgcolor="#FFFFFF">模板文件名：</td>
+<td bgcolor="#FFFFFF">
+<input name="template" type="text" id="template" value="<?php echo $row['template']; ?>" class="uk-input uk-form-small uk-form-width-large">
+</td>
+</tr>
+<tr> 
+<td>文件名：</td>
+<td>
+<input name="oldfilename" type="hidden" id="oldfilename" value="<?php echo $row['filename']; ?>">
+<input name="nfilename" type="text" id="nfilename"  value="<?php echo $row['filename']; ?>" class="uk-input uk-form-small uk-form-width-large">
+（相对于CMS安装目录）
+</td>
+</tr>
+<tr> 
+<td>是否编译内容：</td>
+<td>
+<input name="ismake" type="radio" class='uk-radio' value="1"<?php if($row['ismake']==1) echo " checked"; ?>>
+含模板标记，要编译  &nbsp; &nbsp;
+<input type="radio" name="ismake" class='uk-radio' value="0"<?php if($row['ismake']==0) echo " checked"; ?>>
+不含模板标记，不需要编译</td>
+</tr>
+<tr> 
+<td height="24" colspan="2"  bgcolor="#FBFBFB">内容：(模板里用"dede:field name='body'/"来获得文件内容)</td>
+</tr>
+<tr> 
+<td height="80" colspan="2" align="center"> 
+<?php GetEditor("body",$row['body'],"500","Default","print","false"); ?>
+</td>
+</tr>
+</table>
+
+
+
+
+
+</div>
+</div>
+<div class="uk-card-footer " >
+<div  class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div> 
+</form>
+
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
 <script language="javascript">
 function checkSubmit()
 {
-	if(document.form1.title.value=="")
-	{
-		alert("页面名称不能为空！");
-		document.form1.title.focus();
-		return false;
-	}
-	if(document.form1.nfilename.value=="")
-	{
-		alert("文件名不能为空！");
-		document.form1.nfilename.focus();
-		return false;
-	}
+if(document.form1.title.value=="")
+{
+alert("页面名称不能为空！");
+document.form1.title.focus();
+return false;
+}
+if(document.form1.nfilename.value=="")
+{
+alert("文件名不能为空！");
+document.form1.nfilename.focus();
+return false;
+}
 }
 </script>
-</head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
-<tr>
-    <td height="19" background="images/tbg.gif" style="padding-left:10px;">
-    	<b>◆<a href="templets_one.php"><u>单独页面管理</u></a></b>&gt;&gt;更新页面 
-    </td>
-</tr>
-<tr>
-    <td height="200" bgcolor="#FFFFFF" valign="top">
-	<table width="100%" border="0" cellspacing="4" cellpadding="2">
-        <form action="templets_one_edit.php" method="post" name="form1" onSubmit="return checkSubmit()">
-          <input type='hidden' name='dopost' value='saveedit'>
-		  <input type='hidden' name='aid' value='<?php echo $aid?>'>
-          <tr> 
-            <td width="15%" height="24" align="center">页面标题：</td>
-            <td> 
-              <input name="title" type="text" id="title" size="30" value="<?php echo $row['title']; ?>"></td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">页面关键字：</td>
-            <td><input name="keywords" type="text" id="keywords" value="<?php echo $row['keywords']; ?>" size="30">
-(用&quot;,&quot;分开) </td>
-          </tr>
-          <tr>
-            <td height="24" align="center">页面摘要信息：</td>
-            <td><textarea name="description" cols="50" id="description"><?php echo $row['description']; ?></textarea>
-(100字左右)</td>
-          </tr>
-          <tr>
-            <td height="24" align="center">关联标识：</td>
-            <td>
-            <input name="likeid" type="text" id="likeid" value="<?php echo $row['likeid']; ?>" size="10">
-            <input name="oldlikeid" type="hidden" id="oldlikeid" value="<?php echo $row['likeid']; ?>">
-            <?php
-            	echo "<select name='likeidsel' id='likeidsel'>\r\n";
-            	$dsql->Execute('s',"Select likeid From `#@__sgpage` group  by likeid ");
-            	echo "<option value='{$row['likeid']}' selected>{$row['likeid']}</option>\r\n";
-            	while($arr = $dsql->GetArray('s'))
-            	{
-            		if($arr['likeid']!=$row['likeid']) echo "<option value='{$arr['likeid']}'>{$arr['likeid']}</option>\r\n";
-            	}
-            	echo "</select>\r\n";
-            ?>
-            </td>
-          </tr>
-          <tr>
-            <td height="24" align="center" bgcolor="#FFFFFF">模板文件名：</td>
-            <td bgcolor="#FFFFFF">
-            	<input name="template" type="text" id="template" value="<?php echo $row['template']; ?>" size="30">
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">文件名：</td>
-            <td>
-			       <input name="oldfilename" type="hidden" id="oldfilename" value="<?php echo $row['filename']; ?>">
-			       <input name="nfilename" type="text" id="nfilename" size="30" value="<?php echo $row['filename']; ?>">
-             （相对于CMS安装目录）
-            </td>
-          </tr>
-          <tr> 
-            <td height="24" align="center">是否编译内容：</td>
-            <td>
-            	<input name="ismake" type="radio" value="1"<?php if($row['ismake']==1) echo " checked"; ?>>
-              含模板标记，要编译 
-              <input type="radio" name="ismake" value="0"<?php if($row['ismake']==0) echo " checked"; ?>>
-              不含模板标记，不需要编译</td>
-          </tr>
-          <tr> 
-            <td height="24" colspan="2"  bgcolor="#FBFBFB">内容：(模板里用{dede:field name='body'/}来获得文件内容)</td>
-          </tr>
-          <tr> 
-            <td height="80" colspan="2" align="center"> 
-              <?php GetEditor("body",$row['body'],"500","Default","print","false"); ?>
-            </td>
-          </tr>
-          <tr> 
-            <td height="53" align="center">&nbsp;</td>
-            <td><input name="imageField" type="image" src="images/button_ok.gif" class="np" width="60" height="22" border="0">　　　　
-            <a href="#" onClick="document.form1.reset();"><img src="images/button_reset.gif" width="60" height="22" border="0"></a></td>
-          </tr>
-        </form>
-      </table>
-    </td>
-</tr>
-</table>
+<!-- / JS FILES -->
 </body>
 </html>

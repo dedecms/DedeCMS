@@ -20,7 +20,9 @@ if (empty($action)) {
 
 if ($action == '') {
     $modules = array();
-    include_once dirname(__FILE__) . "/templets/module_make.htm";
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(dirname(__FILE__) . "/templets/module_make.htm");
+    $tpl->Display();
     exit();
 }
 /*---------

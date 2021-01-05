@@ -44,4 +44,7 @@ if ($dopost == "save") {
 }
 $row = $dsql->GetOne("SELECT MAX(aid) AS aid FROM `#@__sgpage`  ");
 $nowid = is_array($row) ? $row['aid'] + 1 : '';
-require_once DEDEADMIN . "/templets/templets_one_add.htm";
+
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/templets_one_add.htm");
+$tpl->Display();

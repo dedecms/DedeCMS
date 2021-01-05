@@ -23,7 +23,7 @@ if ($job == '') {
     $win->Init("co_get_corule.php", "js/blank.js", "POST");
     $win->AddHidden("job", "yes");
     $win->AddTitle("请在下面输入你要导入的文本配置：(建议用base64编码[支持不编码的规则，但不兼容旧版规则])");
-    $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px'></textarea>");
+    $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px' class='uk-textarea'></textarea>");
     $winform = $win->GetWindow("ok");
     $win->Display();
     exit();
