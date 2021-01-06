@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 系统核心函数存放文件
  *
  * @version   $Id: customfields.func.php 2 20:50 2010年7月7日 $
@@ -12,19 +10,15 @@
  * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获得一个附加表单(发布时用)
  *
  * @access public
  * @param  object $ctag      标签
  * @param  string $admintype 管理员类型
  * @return string
- 
  */
 function GetFormItem($ctag, $admintype = 'admin')
 {
@@ -62,7 +56,7 @@ function GetFormItem($ctag, $admintype = 'admin')
         $myformItem .= "<span id='span_{$fieldname}_son'></span>\r\n";
         $myformItem .= "<span id='span_{$fieldname}_sec'></span>\r\n";
         if ($hasSetEnumJs != 'hasset') {
-            $myformItem .= '<script language="javascript" type="text/javascript" src="' . $cmspath . 'resources/pkg/other/enums.js"></script>' . "\r\n";
+            $myformItem .= '<script language="javascript" type="text/javascript" src="' . $cmspath . 'assets/pkg/dede/enums.js"></script>' . "\r\n";
             $GLOBALS['hasSetEnumJs'] = 'hasset';
         
         }
@@ -79,7 +73,7 @@ function GetFormItem($ctag, $admintype = 'admin')
         foreach ($items as $v) {
             $v = trim($v);
             if ($v != '') {
-                $myformItem .= ($i == 0 ? "<input type='radio' name='$fieldname' class='np' value='$v' checked>$v\r\n" : "<input type='radio' name='$fieldname' class='np' value='$v'>$v\r\n");
+                $myformItem .= ($i == 0 ? "<input type='radio' name='$fieldname' class='np' value='$v' checked>$v\r\n" : "<input type='radio' name='$fieldname' class='uk-radio' value='$v'>$v\r\n");
                 $i++;
             
             }
@@ -94,10 +88,10 @@ function GetFormItem($ctag, $admintype = 'admin')
             $v = trim($v);
             if ($v != '') {
                 if ($admintype == 'membermodel') {
-                    $myformItem .= "<label><input type='checkbox' name='{$fieldname}[]' class='np' value='$v'>$v</label>\r\n";
+                    $myformItem .= "<label><input type='checkbox' name='{$fieldname}[]' class='uk-checkbox' value='$v'>$v</label>\r\n";
                 
                 } else {
-                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='np' value='$v'>$v\r\n";
+                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='uk-checkbox' value='$v'>$v\r\n";
                 
                 }
 
@@ -127,20 +121,22 @@ function GetFormItem($ctag, $admintype = 'admin')
     
     } else if ($fieldType == "datetime") {
         $nowtime = GetDateTimeMk(time());
-        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt datepicker\"/>";
-    
+        $innertext .= "<div class=\"uk-inline\">";
+        $innertext .= "<span class=\"uk-form-icon\" uk-icon=\"icon: calendar4-week\"></span>";
+        $innertext .= "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" class=\"datepicker uk-input uk-form-width-large uk-form-small\" />";
+        $innertext .= "</div>";
     } else if ($fieldType == 'img' || $fieldType == 'imgfile') {
         if ($admintype == 'diy') {
-            $innertext = "<input type='file' name='$fieldname' id='$fieldname' style='width:300px;height:22px;line-height:22px' />\r\n";
+            $innertext = "<input type='file' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' />\r\n";
         
         } else {
-            $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:300px' class='text' /> <input name='" . $fieldname . "_bt' type='button' class='inputbut' value='浏览...' onClick=\"SelectImage('form1.$fieldname','big')\" />\r\n";
+            $innertext = "<input type='text' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' /> <input name='" . $fieldname . "_bt' type='button' class='inputbut' value='浏览...' onClick=\"SelectImage('form1.$fieldname','big')\" />\r\n";
         
         }
     
     } else if ($fieldType == 'media') {
         if ($admintype == 'diy') {
-            $innertext = "<input type='hidden' name='$fieldname' id='$fieldname' value='' />不支持的类型\r\n";
+            $innertext = "<input type='hidden' name='$fieldname' id='$fieldname' value='' class='uk-input uk-form-width-large uk-form-small'/>不支持的类型\r\n";
         
         } else {
             $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:300px' class='text' /> <input name='" . $fieldname . "_bt' type='button' class='inputbut' value='浏览...' onClick=\"SelectMedia('form1.$fieldname')\" />\r\n";
@@ -149,7 +145,7 @@ function GetFormItem($ctag, $admintype = 'admin')
     
     } else if ($fieldType == 'addon') {
         if ($admintype == 'diy') {
-            $innertext = "<input type='file' name='$fieldname' id='$fieldname' style='width:300px;height:22px;line-height:22px' />\r\n";
+            $innertext = "<input type='file' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' />\r\n";
         
         } else {
             $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:300px' class='text' /> <input name='" . $fieldname . "_bt' type='button' class='inputbut' value='浏览...' onClick=\"SelectSoft('form1.$fieldname')\" />\r\n";
@@ -158,11 +154,11 @@ function GetFormItem($ctag, $admintype = 'admin')
     
     } else if ($fieldType == 'int' || $fieldType == 'float') {
         $dfvalue = ($ctag->GetAtt('default') != '' ? $ctag->GetAtt('default') : '0');
-        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='intxt' value='$dfvalue' /> (填写数值)\r\n";
+        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='uk-input uk-form-width-large uk-form-small' value='$dfvalue' /> (填写数值)\r\n";
     
     } else {
         $dfvalue = ($ctag->GetAtt('default') != '' ? $ctag->GetAtt('default') : '');
-        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='intxt' value='$dfvalue' />\r\n";
+        $innertext = "<input type='text' name='$fieldname' id='$fieldname'   class='uk-input uk-form-width-large uk-form-small' value='$dfvalue' />\r\n";
     
     }
     $formitem = str_replace("~name~", $ctag->GetAtt('itemname'), $formitem);
@@ -172,8 +168,6 @@ function GetFormItem($ctag, $admintype = 'admin')
 }
 
 /**
- * 
- * 
  *  处理不同类型的数据
  *
  * @access public
@@ -185,7 +179,6 @@ function GetFormItem($ctag, $admintype = 'admin')
  * @param  string $admintype 管理类型
  * @param  string $fieldname 变量类型
  * @return string
- 
  */
 function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '', $admintype = 'admin', $fieldname = '')
 {
@@ -354,8 +347,6 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '', $a
 }
 
 /**
- * 
- * 
  *  获得带值的表单(编辑时用)
  *
  * @access public
@@ -364,7 +355,6 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '', $a
  * @param  string $admintype 会员类型
  * @param  string $fieldname 变量名称
  * @return string
- 
  */
 function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
 {
@@ -408,7 +398,7 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
         $myformItem .= "<span id='span_{$fieldname}_son'></span>\r\n";
         $myformItem .= "<span id='span_{$fieldname}_sec'></span>\r\n";
         if ($hasSetEnumJs != 'hasset') {
-            $myformItem .= '<script language="javascript" type="text/javascript" src="' . $cmspath . 'resources/pkg/other/enums.js"></script>' . "\r\n";
+            $myformItem .= '<script language="javascript" type="text/javascript" src="' . $cmspath . 'assets/pkg/dede/enums.js"></script>' . "\r\n";
             $GLOBALS['hasSetEnumJs'] = 'hasset';
         
         }
@@ -427,7 +417,7 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
                 
                 }
 
-                $myformItem .= ($fvalue == $v ? "<input type='radio' name='$fieldname' class='np' value='$v' checked='checked' />$v\r\n" : "<input type='radio' name='$fieldname' class='np' value='$v' />$v\r\n");
+                $myformItem .= ($fvalue == $v ? "<input type='radio' name='$fieldname' class='uk-radio' value='$v' checked='checked' />$v\r\n" : "<input type='radio' name='$fieldname' class='uk-radio' value='$v' />$v\r\n");
             
             }
         
@@ -448,10 +438,10 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
                 
                 }
                 if (in_array($v, $fvalues)) {
-                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='np' value='$v' checked='checked' />$v\r\n";
+                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='uk-checkbox' value='$v' checked='checked' />$v\r\n";
                 
                 } else {
-                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='np' value='$v' />$v\r\n";
+                    $myformItem .= "<input type='checkbox' name='{$fieldname}[]' class='uk-checkbox' value='$v' />$v\r\n";
                 
                 }
             
@@ -499,7 +489,10 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
     
     } else if ($ftype == "datetime") {
         $nowtime = GetDateTimeMk($fvalue);
-        $innertext = "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" style=\"width:250px\" class=\"intxt datepicker\" />";
+        $innertext .= "<div class=\"uk-inline\">";
+        $innertext .= "<span class=\"uk-form-icon\" uk-icon=\"icon: calendar4-week\"></span>";
+        $innertext .= "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" class=\"datepicker uk-input uk-form-width-large uk-form-small\" />";
+        $innertext .= "</div>";
     
     } else if ($ftype == "img") {
         $ndtp = new DedeTagParse();
@@ -525,10 +518,10 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
         $innertext = "<input type='text' name='$fieldname' id='$fieldname' value='$fvalue' style='width:300px'  class='text' /> <input name='" . $fieldname . "_bt' class='inputbut' type='button' value='浏览...' onClick=\"SelectSoft('form1.$fieldname')\" />\r\n";
     
     } else if ($ftype == "int" || $ftype == "float") {
-        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='intxt' value='$fvalue' /> (填写数值)\r\n";
+        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:100px'  class='uk-input uk-form-width-large uk-form-small' value='$fvalue' /> (填写数值)\r\n";
     
     } else {
-        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:250px'  class='intxt' value='$fvalue' />\r\n";
+        $innertext = "<input type='text' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' value='$fvalue' />\r\n";
     
     }
     $formitem = str_replace('~name~', $ctag->GetAtt('itemname'), $formitem);

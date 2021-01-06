@@ -1,3 +1,4 @@
+
 //选择地区的二级分类(非通用调用)
 function selNext(oj, v)
 {
@@ -60,6 +61,7 @@ function ChangeSon()
         var oj  = document.createElement('select');
         oj.name = emname + '_sec';
         oj.id   = emname + '_sec';
+        selObj.className = "uk-select uk-form-small uk-form-width-medium";
         oj.onchange = ChangeSec;
     }
     var v = this.options[this.selectedIndex].value;
@@ -129,6 +131,7 @@ function selNextSon()
         var oj  = document.createElement('select');
         oj.name = emname + '_son';
         oj.id   = emname + '_son';
+        selObj.className = "uk-select uk-form-small uk-form-width-medium";
         oj.onchange = ChangeSon;
     }
     var v = this.options[this.selectedIndex].value;
@@ -175,6 +178,7 @@ function MakeTopSelect(emname, selvalue)
     var selObj = document.createElement("select");
     selObj.name = emname + '_top';
     selObj.id   = emname + '_top';
+    selObj.className = "uk-select uk-form-small uk-form-width-medium";
     selObj.onchange = selNextSon;
     var selarr = eval('em_'+emname+'s');
     // alert(selarr[1002.2]);
@@ -230,6 +234,7 @@ function MakeTopSelect(emname, selvalue)
     selObj = document.createElement("select");
     selObj.name = emname + '_son';
     selObj.id   = emname + '_son';
+    selObj.className = "uk-select uk-form-small uk-form-width-medium";
     selObj.onchange = ChangeSon;
     aOption = document.createElement('OPTION');
     aOption.text = '请选择..';
@@ -268,6 +273,7 @@ function MakeTopSelect(emname, selvalue)
         selObj = document.createElement("select");
         selObj.name = emname + '_sec';
         selObj.id   = emname + '_sec';
+        selObj.className = "uk-select uk-form-small uk-form-width-medium";
         selObj.onchange = ChangeSec;
         aOption = document.createElement('OPTION');
         aOption.text = '请选择..';
@@ -318,3 +324,4 @@ function clear(o)
         o.options[1]=null;
     }
 }
+

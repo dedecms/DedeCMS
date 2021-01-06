@@ -113,7 +113,8 @@ if ($dopost == "upload") {
 }
 
 // 重构文件数组
-function reArrayFiles(&$file_post) {
+function reArrayFiles(&$file_post)
+{
 
     $file_array = array();
     $file_count = count($file_post['name']);

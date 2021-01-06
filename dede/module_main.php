@@ -186,8 +186,8 @@ else if ($action == 'setup') {
 
     $win = new OxWindow();
     $win->Init("module_main.php", "js/blank.js", "post");
-    $wecome_info = "模块管理";
-    $win->AddTitle("&nbsp;<a href='module_main.php'>模块管理</a> &gt;&gt; 安装模块： {$infos['name']}");
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>{$infos['name']}</span></li></ul>";
+    $win->AddTitle("安装模块");
     $win->AddHidden("hash", $hash);
     $win->AddHidden("action", 'setupstart');
     if (trim($infos['url']) == '') {
@@ -372,8 +372,8 @@ else if ($action == 'del') {
 
     $win = new OxWindow();
     $win->Init("module_main.php", "js/blank.js", "post");
-    $wecome_info = "模块管理";
-    $win->AddTitle("<a href='module_main.php'>模块管理</a> &gt;&gt; 删除模块： {$infos['name']}");
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>{$infos['name']}</span></li></ul>";
+    $win->AddTitle("删除模块");
     $win->AddHidden('hash', $hash);
     $win->AddHidden('action', 'delok');
     $msg = "<style>.dtb{border-bottom:1px dotted #cccccc}</style>
@@ -459,8 +459,8 @@ else if ($action == 'uninstall') {
     }
     $win = new OxWindow();
     $win->Init("module_main.php", "js/blank.js", "post");
-    $wecome_info = "模块管理";
-    $win->AddTitle("<a href='module_main.php'>模块管理</a> &gt;&gt; 卸载模块： {$infos['name']}");
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>{$infos['name']}</span></li></ul>";
+    $win->AddTitle("卸载模块");
     $win->AddHidden("hash", $hash);
     $win->AddHidden("action", 'uninstallok');
     $msg = "<style>.dtb{border-bottom:1px dotted #cccccc}</style>
@@ -502,7 +502,7 @@ else if ($action == 'uninstall') {
   </tr>
   <tr>
     <td height='164' colspan='2'>
-     <textarea name='filelists' id='filelists' style='width:90%;height:200px'>{$filelist}</textarea>
+     <textarea name='filelists' id='filelists' style='width:90%;height:200px' class='uk-textarea'>{$filelist}</textarea>
     </td>
   </tr>
   <tr>
@@ -572,14 +572,15 @@ function ShowReadme();
 --------------*/
 else if ($action == 'showreadme') {
     $dm = new DedeModule($mdir);
+    $infos = $dm->GetModuleInfo($hash);
     $msg = $dm->GetSystemFile($hash, 'readme');
     $msg = preg_replace("/(.*)<body/isU", "", $msg);
     $msg = preg_replace("/<\/body>(.*)/isU", "", $msg);
     $dm->Clear();
     $win = new OxWindow();
     $win->Init("module_main.php", "js/blank.js", "post");
-    $wecome_info = "模块管理";
-    $win->AddTitle("<a href='module_main.php'>模块管理</a> &gt;&gt; 使用说明：");
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>{$infos['name']}</span></li></ul>";
+    $win->AddTitle("使用协议");
     $win->AddMsgItem("<div style='padding-left:10px;line-height:150%'>$msg</div>");
     $winform = $win->GetWindow("hand");
     $win->Display();
@@ -621,8 +622,8 @@ else if ($action == 'view') {
     }
     $win = new OxWindow();
     $win->Init("", "js/blank.js", "");
-    $wecome_info = "模块管理";
-    $win->AddTitle("<a href='module_main.php'>模块管理</a> &gt;&gt; 模块详情： {$infos['name']}");
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>{$infos['name']}</span></li></ul>";
+    $win->AddTitle("模块详情");
     $msg = "<style>.dtb{border-bottom:1px dotted #cccccc}</style>
     <table width='98%' border='0' cellspacing='0' cellpadding='0'>
   <tr>
@@ -666,7 +667,7 @@ else if ($action == 'view') {
   </tr>
   <tr>
     <td height='164' colspan='2'>
-     <textarea name='filelists' id='filelists' style='width:90%;height:200px'>{$filelist}</textarea>
+     <textarea name='filelists' id='filelists' style='width:90%;height:200px' class='uk-textarea'>{$filelist}</textarea>
     </td>
   </tr>
 </table>
@@ -701,9 +702,11 @@ else if ($action == 'edit') {
     $filelist = $dm->GetSystemFile($hash, 'oldfilelist', false);
     $indexurl = str_replace('**', '=', $indexurl);
     $dm->Clear();
-
-    include_once dirname(__FILE__) . '/templets/module_edit.htm';
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(dirname(__FILE__) . '/templets/module_edit.htm');
+    $tpl->Display();
     exit();
+    
 }
 /*--------------
 function Download();

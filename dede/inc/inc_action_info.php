@@ -197,12 +197,6 @@ $actionSearch[5] = array(
             'purview' => 'member_Type',
             'linkurl' => 'member_model_main.php',
         ),
-        4 => array(
-            'title' => '会员短信管理',
-            'description' => '会员之间发送的短消息管理,其中包含群发短消息和对单个会员发送短消息两种',
-            'purview' => 'member_Type',
-            'linkurl' => 'member_pm.php',
-        ),
     ),
 );
 $actionSearch[6] = array(
@@ -210,18 +204,6 @@ $actionSearch[6] = array(
     'title' => '支付工具',
     'description' => '站点财务相关设置,包含点卡,商店订单等操作',
     'soniterm' => array(
-        0 => array(
-            'title' => '点卡产品分类',
-            'description' => '网站点卡产品分类,可以添加不同点数的点卡产品类型',
-            'purview' => 'sys_Data',
-            'linkurl' => 'cards_type.php',
-        ),
-        1 => array(
-            'title' => '点卡产品管理',
-            'description' => '管理网站点卡,可以在这里生成点卡以及查看点卡的当前状态',
-            'purview' => 'sys_Data',
-            'linkurl' => 'cards_manage.php',
-        ),
         2 => array(
             'title' => '会员产品分类',
             'description' => '可以将会员类型进行产品划分,比如出售高级会员1年这种,在这里可以对会员产品进行定义',
@@ -417,12 +399,6 @@ $actionSearch[10] = array(
             'description' => '本设置仅适用于系统默认的文章模型，设置后发布文章时会自动按指定的模板随机获取一个，如果不想使用此功能，把它设置为空即可！',
             'purview' => 'sys_StringMix',
             'linkurl' => 'article_template_rand.php',
-        ),
-        10 => array(
-            'title' => '计划任务管理',
-            'description' => '可以添加一个指定时间运行的程序',
-            'purview' => 'sys_task',
-            'linkurl' => 'sys_task.php',
         ),
         11 => array(
             'title' => '数据库备份/还原',

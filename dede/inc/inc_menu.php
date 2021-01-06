@@ -65,7 +65,6 @@ if ($cuserLogin->getUserType() >= 10) {
   <m:item name='软件频道设置' link='soft_config.php' rank='sys_SoftConfig' target='main' />
   <m:item name='防采集串混淆' link='article_string_mix.php' rank='sys_StringMix' target='main' />
   <m:item name='随机模板设置' link='article_template_rand.php' rank='sys_StringMix' target='main' />
-  <m:item name='计划任务管理' link='sys_task.php' rank='sys_Task' target='main' />
   <m:item name='数据库备份/还原' link='sys_data.php' rank='sys_Data' target='main' />
   <m:item name='文件校验[S]' link='sys_verifies.php' rank='sys_verify' target='main' />
   <m:item name='病毒扫描[S]' link='sys_safetest.php' rank='sys_verify' target='main' />
@@ -73,8 +72,6 @@ if ($cuserLogin->getUserType() >= 10) {
 </m:top>
 
 <m:top item='10_6_' name='支付工具' display='' rank='sys_Data'>
-  <m:item name='点卡产品分类' link='cards_type.php' rank='sys_Data' target='main' />
-  <m:item name='点卡产品管理' link='cards_manage.php' rank='sys_Data' target='main' />
   <m:item name='会员产品分类' link='member_type.php' rank='sys_Data' target='main' />
   <m:item name='会员消费记录' link='member_operations.php' rank='sys_Data' target='main' />
   <m:item name='商店订单记录' link='shops_operations.php' rank='sys_Data' target='main' />
@@ -155,7 +152,6 @@ $adminMenu1
   <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
   <m:item name='积分头衔设置' link='member_scores.php' rank='member_Type' target='main' />
   <m:item name='会员模型管理' link='member_model_main.php' rank='member_Type' target='main' />
-  <m:item name='会员短信管理' link='member_pm.php' rank='member_Type' target='main' />
 </m:top>
 
 $adminMenu2

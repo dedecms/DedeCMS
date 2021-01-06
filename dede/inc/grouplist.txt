@@ -78,7 +78,6 @@
 >sys_Group>系统组管理
 >sys_MdPwd>更改个人密码
 >sys_DelUpload>删除附件
->sys_Task>计划任务管理[br]
 >sys_Edit>修改系统参数
 >sys_Log>管理日志
 >sys_plus>插件管理
