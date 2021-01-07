@@ -67,7 +67,7 @@ echo "</select>";
 <input name="endid" type="text" id="endid" class="uk-input uk-form-width-small uk-form-small" >
 </td>
 </tr>
-<tr>
+<tr colsapn="2">
 <td>
 <label> <input name="seltime" type="checkbox" class="uk-checkbox" id="seltime" value="1" onClick="ShowHideTime()"> 启用时间筛选 </label>
 </td>
@@ -78,15 +78,13 @@ echo "</select>";
 开始： <?php $nowtime = GetDateTimeMk(time()-(24*3600*30)); ?>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="starttime" value="<?php echo $nowtime; ?>" type="text" id="starttime" 
-class="uk-input uk-form-width-medium uk-form-small datepicker" />
+<input name="starttime" value="<?php echo $nowtime; ?>" type="text" id="starttime"  class="uk-input uk-form-width-medium uk-form-small datepicker" />
 </div>
 
 结束： <?php $nowtime = GetDateTimeMk(time()); ?>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="endtime" value="<?php echo $nowtime; ?>" type="text" id="endtime" 
-class="uk-input uk-form-width-medium uk-form-small datepicker" />
+<input name="endtime" value="<?php echo $nowtime; ?>" type="text" id="endtime"  class="uk-input uk-form-width-medium uk-form-small datepicker" />
 </div>
 
 </div>

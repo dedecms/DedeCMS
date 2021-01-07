@@ -193,8 +193,8 @@ FROM `$maintable` arc
 $whereSql
 ORDER BY $orderbyField DESC";
 
-if (empty($f) || !preg_match("#form#", $f)) {
-    $f = 'form1.arcid1';
+if (empty($f)) {
+    $f = 'arcid1';
 }
 
 //初始化

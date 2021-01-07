@@ -1,77 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>选择文章</title>
-<link rel="stylesheet" type="text/css" href="css/base.css">
-<script language="javascript">
-//获得选中文件的文件名
-function getCheckboxItem()
-{
-	var allSel="";
-	if(document.form2.arcID.value) return document.form2.arcID.value;
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(document.form2.arcID[i].checked)
-		{
-			if(allSel=="")
-				allSel = document.form2.arcID[i].value;
-			else
-				allSel = allSel+","+document.form2.arcID[i].value;
-		}
-	}
-	return allSel;	
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>文档管理</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+form {
+display: block;
+margin-top: 0em;
+margin-block-end: 0em;
 }
-function selAll()
-{
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(!document.form2.arcID[i].checked)
-		{
-			document.form2.arcID[i].checked=true;
-		}
-	}
+.bar-bottom {
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+background-color: rgba(33, 34, 36, 0.90);
+padding: 10px 0;
+left: 0;
+right: 0;
+z-index: 3;
+bottom: 0;
+position: fixed;
+display: flex;
+justify-content: space-between;
+z-index: 99;
+min-width: 1050px;
 }
-function noSelAll()
-{
-	for(i=0;i<document.form2.arcID.length;i++)
-	{
-		if(document.form2.arcID[i].checked)
-		{
-			document.form2.arcID[i].checked=false;
-		}
-	}
-}
-function ReturnValue()
-{
-	if(window.opener.document.<?php echo $f?>.value==""){
-		window.opener.document.<?php echo $f?>.value = getCheckboxItem();
-	}
-	else{
-		window.opener.document.<?php echo $f?>.value += ","+getCheckboxItem();
-	}
-	window.opener=null;
-  window.close();
-}
-</script>
+</style>
+
 </head>
-<body leftmargin="0" topmargin="0" background='images/allbg.gif'>
-<table width='98%' border='0' align='center' cellpadding='0' cellspacing='0' align="center">
-<tr> 
-<td align='center' valign='top'>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr bgcolor="#FFFFFF"><td height="4"></td></tr>
-</table>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6">
-<tr bgcolor="#FAFBFC"> 
-<td height="24" colspan="9" background="images/tbg.gif">
-<strong> §文章列表</strong>
-</td>
-</tr>
-<form name="form2">
-<tr align="center" bgcolor="#FAFAF1" height="22"> 
+<body>
+
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
 <td width="6%">ID</td>
-<td width="4%">选择</td>
+<td width="4%"><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
 <td width="30%">文章标题</td>
 <td width="10%">更新时间</td>
 <td width="11%">类目</td>
@@ -80,14 +47,35 @@ function ReturnValue()
 <td width="10%">权限</td>
 <td width="13%">属性</td>
 </tr>
+</thead>
+</table>
+</div>
+
+<div id="dede-table-body" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="6%">ID</td>
+<td width="4%"></td>
+<td width="30%">文章标题</td>
+<td width="10%">更新时间</td>
+<td width="11%">类目</td>
+<td width="8%">点击</td>
+<td width="7%">HTML</td>
+<td width="10%">权限</td>
+<td width="13%">属性</td>
+</tr>
+</thead>
+<tbody>
+<!-- 内容列表 -->
 {dede:datalist}
-<tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FBFBFB';"
-	 onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22"> 
+<tr> 
 <td>{dede:field.id/}</td>
-<td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="np"></td>
-<td align='left'>
-<a href='archives_do.php?aid={dede:field.id/}&dopost=editArchives'><u>{dede:field.title/}</u></a>
-</td>
+<td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="uk-checkbox dede-checkbox"></td>
+<td align='left'><a href='archives_do.php?aid={dede:field.id/}&dopost=editArchives'><u>{dede:field.title/}</u></a></td>
 <td>{dede:field.senddate function="GetDateMk(@me)" /}</td>
 <td>{dede:field.typeid function='GetTypename(@me)'/}</td>
 <td>{dede:field.click/}</td>
@@ -96,66 +84,71 @@ function ReturnValue()
 <td>{dede:field.flag function="IsCommendArchives(@me)" /}</td>
 </tr>
 {/dede:datalist}
-<tr bgcolor="#FAFAF1"> 
-<td height="24" colspan="9">
-&nbsp;
-<a href="javascript:selAll()" class="coolbg">全选</a> 
-&nbsp;
-<a href="javascript:noSelAll()" class="coolbg">取消</a> 
-&nbsp;
-<a href="javascript:ReturnValue()" class="coolbg">把选定值加到列表</a> 
+<!-- /内容列表 -->
+</tbody>
+
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=5/}
 </td>
 </tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 20px;">
+<form name='form3' action='content_select_list.php' method='get' class="uk-flex uk-flex-left " >
+<input type='hidden' name='f' value='<?php echo $f?>'> 
+<div>
+<select name='cid' class="uk-select uk-form-small uk-width-small">
+<option value='0'>选择分类...</option>
+<?php echo $optionarr?>
+</select>
+</div> &nbsp;&nbsp;<div>
+<input type='text' name='keyword' value='<?php echo $keyword?>' class="uk-input  uk-form-small uk-width-small"  placeholder="关键词 ...">
+</div> &nbsp;&nbsp;<div>
+
+<button type="submit" class="uk-button uk-button-default uk-button-small" width="60px">搜索</button>
+</div>
 </form>
-<tr align="right" bgcolor="#EEF4EA"> 
-<td height="20" colspan="9" align="center">
-	{dede:pagelist listsize=5/}
-</td>
-</tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr> 
-<td height="4"></td>
-</tr>
-<tr bgcolor="#FFFFFF"> 
-<td height="26">
-<table width='100%'  border='0' cellpadding='1' cellspacing='1' bgcolor='#CBD8AC'>
-   <tr bgcolor='#EEF4EA'> 
-     <form name='form3' action='content_select_list.php' method='get'>
-        <input type='hidden' name='f' value='<?php echo $f?>'> 
-          <td background='images/wbg.gif'>
-          	<table width='600' border='0' cellpadding='0' cellspacing='0'>
-          	<tr>
-          	<td width='90' align='center'>请选择类目：</td>
-          	<td width='160'>
-          <select name='cid' style='width:250px'>
-          <option value='0'>选择分类...</option>
-          	<?php echo $optionarr?>
-          </select>
-        </td>
-        <td width='70'>
-          关键字：
-        </td>
-          <td width='160'>
-          	<input type='text' name='keyword' value='<?php echo $keyword?>' style='width:150'>
-          </td>
-          <td>
-          <input name="imageField" type="image" src="images/button_search.gif" width="60" height="22" border="0" class="np">
-         </td>
-        </tr>
-        </table>
-          </td>
-        </form>
-        </tr>
-      </table>
-</td>
-</tr>
-<tr> 
-<td colspan="2" height="4"></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+
+</div>
+<div class="e1e02">
+
+<button id="submit_id"  type="submit" class="uk-button uk-button-default uk-button-small" width="60px">添加所选ID</button>
+
+</div>
+
+</div>
+
+
+
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+$(document).ready(function() {
+$('#submit_id').click(function (event) {
+var ids = _DedeCMS_JSCODE_Version_Get_Checkbox_Checked()
+if (ids == "") {
+alert("必须选择一个或多个文档！");
+}else{
+window.parent.$("#{dede:global.f/}").val(ids);
+window.parent.UIkit.modal("#modal-archives").hide(0);
+}
+});
+});
+</script>
 </body>
+
 </html>
+

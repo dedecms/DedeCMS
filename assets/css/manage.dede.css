@@ -198,3 +198,10 @@ margin-right: 9px;
 .uk-checkbox{
   margin-top: 1px;
 }
+
+#no_image {
+  background-color: rgb(219, 219, 219);
+  width: 188px;
+  height: 250px;
+  color: rgb(139, 139, 139);
+}

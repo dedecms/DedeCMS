@@ -897,67 +897,7 @@ function useDefault(modalID) {
   CloseModal("GKModal" + modalID);
 }
 
-$(document).ready(function () {
-  $("#btnClearAll").click(function (event) {
-    litpicImgSrc = "";
-    litpicImg = "";
-    $("#litpic_b64").val(litpicImg);
-    $("#litPic").attr("src", "../assets/img/defaultpic.gif");
-  });
 
-  // 添加图片
-  $("#iptAddImages").change(function (event) {
-    var files = event.target.files;
-    for (var i = 0, f; (f = files[i]); i++) {
-      // 如果不是图片忽略
-      if (!f.type.match("image.*")) {
-        continue;
-      }
-
-      // 将图片渲染到浏览器
-      var reader = new FileReader();
-      reader.onload = (function (theFile) {
-        return function (e) {
-          litpicImgSrc = e.target.result;
-          SetThumb(litpicImgSrc);
-        };
-      })(f);
-      reader.readAsDataURL(f);
-    }
-    $("#iptAddImages").val("");
-  });
-
-  // 截取缩略图
-  function SetThumb(srcURL) {
-    var footer =
-      "<p><a href='javascript:useDefault(\"~modalID~\");' class='btn btn-outline-primary'>使用原图</a> <a href='?' class='btn btn-outline-primary' data-dismiss='modal' aria-label='Close'>确定</a></p>";
-    var optButton = `<p><div class="form-group">
-			  <label for="aspectRatio">比例</label>
-			  <select class="form-control" id="aspectRatio" onchange="setAspectRatio(this.selectedIndex)">
-				<option>16:9</option>
-				<option selected>4:3</option>
-				<option>1:1</option>
-				<option>2:3</option>
-				<option>自定义</option>
-			  </select>
-			</div></p>`;
-    mdlCropperID = ShowMsg(
-      '<div><div class="float-left" style="width:300px;"><img id="cropImg~modalID~" src="' +
-        srcURL +
-        '" width=200><p>宽度：<span id="cropWidth"></span>px，高度：<span id="cropHeight"></span>px</p>' +
-        optButton +
-        '</div><div class="pv float-right" style="width:150px;height:100px;overflow:hidden;"></div></div>',
-      {
-        footer: footer,
-        noClose: false,
-        title: "DedeCMS缩略图裁剪",
-      }
-    );
-
-    setTimeout(function () {
-      $("#cropImg" + mdlCropperID).cropper(optCropper);
-    }, 500);
-  }
 
   $(".datepicker").daterangepicker(
     {

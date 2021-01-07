@@ -185,12 +185,6 @@ $actionSearch[5] = array(
             'purview' => 'member_Type',
             'linkurl' => 'member_rank.php',
         ),
-        2 => array(
-            'title' => '积分头衔设置',
-            'description' => '会员积分等级设置,根据会员活动积分对会员进行头衔划分',
-            'purview' => 'member_Type',
-            'linkurl' => 'member_scores.php',
-        ),
         3 => array(
             'title' => '会员模型管理',
             'description' => '为会员制定不同的会员分类,默认有个人,企业两种用户类型,并且同时可以为用户模型添加不同的字段',
