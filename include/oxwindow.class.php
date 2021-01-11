@@ -48,7 +48,7 @@ class OxWindow
             $this->myWin .= fread($fp, filesize($checkScript));
             fclose($fp);
         } else {
-            $this->myWin .= "<!-- function CheckSubmit()\r\n{ return true; } -->";
+            $this->myWin .= "function CheckSubmit()\r\n{ return true; }";
         }
         $this->myWin .= "</script>\r\n";
         $this->formName = $formname;

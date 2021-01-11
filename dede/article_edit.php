@@ -50,6 +50,7 @@ if ($dopost != 'save') {
         exit();
     }
     $channelid = $arcRow['channel'];
+
     $tags = GetTags($aid);
     DedeInclude("templets/article_edit.htm");
     exit();
@@ -110,7 +111,9 @@ else if ($dopost == 'save') {
     //对保存的内容进行处理
     $pubdate = GetMkTime($pubdate);
     $sortrank = AddDay($pubdate, $sortup);
+    echo $ishtml;
     $ismake = $ishtml == 0 ? -1 : 0;
+    echo $ishtml;
     $autokey = 1;
     $title = dede_htmlspecialchars(cn_substrR($title, $cfg_title_maxlen));
     $shorttitle = cn_substrR($shorttitle, 36);

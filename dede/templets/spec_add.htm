@@ -54,262 +54,236 @@ height:25px;
 
 
 <ul class="uk-tab" uk-tab>
-  <li><a href="#">常规参数</a></li>
-  <li><a href="#" >专题文档</a></li>
+<li><a href="#">常规参数</a></li>
+<li><a href="#" >专题文档</a></li>
 </ul>
 
 <ul class="uk-switcher uk-margin">
-  <!-- 常规参数 -->
-  <li> 
-    <table width="100%" border="0" uk-table>
-      <tr>
-        <td style="vertical-align:top;"  width="200px">
-          <!-- 缩略图 -->
-          <div uk-form-custom style="border: 1px solid rgb(187, 187, 187);width: 188px;">
-            <input type="file" id="upload-image"  name="files[]" accept="image/*">
-            <img id="result-image"/>
-            <div id="no_image" class="uk-flex uk-flex-center uk-flex-middle">
-            <span uk-icon="icon: image; ratio: 4"></span>
-            </div>
-            </div>
-            <!-- /缩略图 -->
-        </td>
-        <td style="vertical-align:top;">
-          <table border="0" cellspacing="0" cellpadding="0" class="uk-table">
-            <tr>
-              <td width="90" style="vertical-align:middle;">专题名称：</td>
-              <td width='408'><input name="title" type="text" id="title" class="uk-input uk-form-width-large uk-form-small"/></td>
-              <td width="60" style="vertical-align:middle;">简略标题：</td>
-              <td><input name="shorttitle" type="text" id="shorttitle" class="uk-input uk-form-width-small uk-form-small" /></td>
-            </tr>
-            <tr >
-              <td width="90" style="vertical-align:middle;">自定义属性：</td>
-              <td colspan="2" style="vertical-align:middle;">
-                <?php
-                $dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
-                $dsql->Execute();
-                while($trow = $dsql->GetObject())
-                {
-                    if($trow->att!='j')
-                    {
-                        echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'> {$trow->attname}[{$trow->att}] &nbsp;&nbsp;";
-                    }
-                }
-                ?>
-              </td>
-            </tr>
-            <tr>
-              <td width="90" style="vertical-align:middle;">责任编辑：</td>
-              <td width="240"><input name="writer" type="text" id="writer" class="uk-input uk-form-width-large uk-form-small"></td>
-              <td width="60" style="vertical-align:middle;">发布选项：</td>
-              <td style="vertical-align:middle;">
-                <input name="ishtml" type="radio" class="uk-radio" value="1" checked='1' /> 生成HTML &nbsp;&nbsp;
-                <input type="radio" name="ishtml" class="uk-radio" value="0" /> 仅动态浏览
-              </td>
-            </tr>
-            <tr>
-              <td width="90" style="vertical-align:middle;">内容排序：</td>
-              <td width="240"><select name="sortup" id="sortup" class="uk-select uk-form-width-large uk-form-small">
-                  <option value="0" selected>默认排序</option>
-                  <option value="7">置顶一周</option>
-                  <option value="30">置顶一个月</option>
-                  <option value="90">置顶三个月</option>
-                  <option value="180">置顶半年</option>
-                  <option value="360">置顶一年</option>
-                </select></td>
-              <td width="60" style="vertical-align:middle;">标题颜色：</td>
-              <td style="vertical-align:middle;">
-              
-                <select id="colorpicker" name="color">
-                  <option value="">#e1e1e1</option>
-                  <option value="#d06b64">#d06b64</option>
-                  <option value="#f83a22">#f83a22</option>
-                  <option value="#fa573c">#fa573c</option>
-                  <option value="#ff7537">#ff7537</option>
-                  <option value="#ffad46">#ffad46</option>
-                  <option value="#42d692">#42d692</option>
-                  <option value="#16a765">#16a765</option>
-                  <option value="#7bd148">#7bd148</option>
-                  <option value="#b3dc6c">#b3dc6c</option>
-                  <option value="#fbe983">#fbe983</option>
-                  <option value="#fad165">#fad165</option>
-                  <option value="#92e1c0">#92e1c0</option>
-                  <option value="#9fe1e7">#9fe1e7</option>
-                  <option value="#9fc6e7">#9fc6e7</option>
-                  <option value="#4986e7">#4986e7</option>
-                  <option value="#9a9cff">#9a9cff</option>
-                  <option value="#b99aff">#b99aff</option>
-                  <option value="#c2c2c2">#c2c2c2</option>
-                  <option value="#cabdbf">#cabdbf</option>
-                  <option value="#cca6ac">#cca6ac</option>
-                  <option value="#f691b2">#f691b2</option>
-                  <option value="#cd74e6">#cd74e6</option>
-                  <option value="#a47ae2">#a47ae2</option>
-                </select>
-              
-              </td>
-            </tr>
+<!-- 常规参数 -->
+<li> 
+<table width="100%" border="0" uk-table>
+<tr>
+<td style="vertical-align:top;"  width="200px">
+<!-- 缩略图 -->
+<div uk-form-custom style="border: 1px solid rgb(187, 187, 187);width: 188px;">
+<input type="file" id="upload-image"  name="files[]" accept="image/*">
+<img id="result-image"/>
+<div id="no_image" class="uk-flex uk-flex-center uk-flex-middle">
+<span uk-icon="icon: image; ratio: 4"></span>
+</div>
+</div>
+<!-- /缩略图 -->
+</td>
+<td style="vertical-align:top;">
+<table border="0" cellspacing="0" cellpadding="0" class="uk-table">
+<tr>
+<td width="90" style="vertical-align:middle;">专题名称：</td>
+<td width='408'><input name="title" type="text" id="title" class="uk-input uk-form-width-large uk-form-small"/></td>
+<td width="60" style="vertical-align:middle;">简略标题：</td>
+<td><input name="shorttitle" type="text" id="shorttitle" class="uk-input uk-form-width-small uk-form-small" /></td>
+</tr>
+<tr >
+<td width="90" style="vertical-align:middle;">自定义属性：</td>
+<td colspan="2" style="vertical-align:middle;">
+<?php
+$dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+$dsql->Execute();
+while($trow = $dsql->GetObject())
+{
+if($trow->att!='j')
+{
+echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'> {$trow->attname}[{$trow->att}] &nbsp;&nbsp;";
+}
+}
+?>
+</td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">责任编辑：</td>
+<td width="240"><input name="writer" type="text" id="writer" class="uk-input uk-form-width-large uk-form-small"></td>
+<td width="60" style="vertical-align:middle;">发布选项：</td>
+<td style="vertical-align:middle;">
+<input name="ishtml" type="radio" class="uk-radio" value="1" checked='1' /> 生成HTML &nbsp;&nbsp;
+<input type="radio" name="ishtml" class="uk-radio" value="0" /> 仅动态浏览
+</td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">内容排序：</td>
+<td width="240"><select name="sortup" id="sortup" class="uk-select uk-form-width-large uk-form-small">
+<option value="0" selected>默认排序</option>
+<option value="7">置顶一周</option>
+<option value="30">置顶一个月</option>
+<option value="90">置顶三个月</option>
+<option value="180">置顶半年</option>
+<option value="360">置顶一年</option>
+</select></td>
+<td width="60" style="vertical-align:middle;">标题颜色：</td>
+<td style="vertical-align:middle;">
 
-            <tr colspan="2">
-              <td width="90" style="vertical-align:middle;">主分类：</td>
-              <td>
-                <?php
-           $typeOptions = GetOptionList($cid, $cuserLogin->getUserChannel(), 0);
-           echo "<select name='typeid' id='typeid' class='uk-select uk-form-width-large uk-form-small'>\r\n";
-           echo "<option value='0'>请选择主分类...</option>\r\n";
-           echo $typeOptions;
-           echo "</select>";
-                    ?>
-              </td>
-            </tr>
-            <tr colspan="3">
-              <td width="90" style="vertical-align:middle;">关键字：</td>
-              <td width="500"><input type='text' name="keywords" id="keywords" class="uk-input uk-form-width-large uk-form-small" /></td>
-              <td colspan="2" width="202" style="vertical-align:middle;"><input name="autokey" type="checkbox" class="uk-checkbox" id="autokey" value="1" <?php if($cfg_arc_autokeyword=='Y' ) echo ' checked="1" ' ; ?>/> 自动获取，手动填写用 "," 分开。</td>
-            </tr>
-            <tr colspan="2">
-              <td width="90">专题简介：</td>
-              <td><textarea name="description" rows="5" id="description" class="uk-textarea uk-form-width-large uk-form-small"></textarea></td>
-            </tr>
-            <tr colspan="2">
-              <td width="90">发布时间：</td>
-              <td>
+<select id="colorpicker" name="color">
+<option value="">#e1e1e1</option>
+<?php foreach ($colors as $color): ?>
+<option value="<?=$color?>" ><?=$color?></option>
+<?php endforeach; ?>
+</select>
 
-                <div class="uk-inline">
-                  <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-                  <?php
-                  $nowtime = GetDateTimeMk(time());
-                  echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\" class='uk-input uk-form-width-medium uk-form-small  datepicker'/>";
-                        ?>
-                  </div>
+</td>
+</tr>
 
-              </td>
-            </tr>
-            <tr>
-              <td width="90" style="vertical-align:middle;">
-                评论选项：
-              </td>
-  
-              <td style="vertical-align:middle;">
-              <input type='radio' name='notpost' class='uk-radio' value='0' <?php if($cfg_feedback_forbid=='N' ) echo "checked='1' " ; ?> /> 允许评论 &nbsp;&nbsp;
-              <input type='radio' name='notpost' class='uk-radio' value='1' <?php if($cfg_feedback_forbid=='Y' )  echo "checked='1' " ; ?> /> 禁止评论
-              </td>
-              <td width="60" style="vertical-align:middle;">浏览次数：</td>
-              <td><input type='text' name='click' class="uk-input uk-form-width-small uk-form-small" value='<?php echo ($cfg_arc_click==' -1' ? mt_rand(50, 200) : $cfg_arc_click); ?>' style='width:100px;' /></td>
-            </tr>
-            <tr colspan="2" >
-              <td width="90" style="vertical-align:middle;">专题模板：</td>
-              <td><input name="templet" type="text" id="templet" class="uk-input uk-form-width-large uk-form-small" value="<?php echo $cfg_df_style?>/article_spec.htm" />
-              </td>
-            </tr>
-            <tr colspan="2" >
-              <td width="105" style="vertical-align:middle;">自定义文件名：</td>
-              <td><input type="text" name="filename" id="filename" class="uk-input uk-form-width-medium uk-form-small"/> (不包括后缀名,如.html） </td>
-            </tr>
-            <tr colspan="4">
-              <td>
-                <?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?>
-              </td>
-            </tr>
-          </table>
+<tr colspan="2">
+<td width="90" style="vertical-align:middle;">主分类：</td>
+<td>
+<?php
+$typeOptions = GetOptionList($cid, $cuserLogin->getUserChannel(), 0);
+echo "<select name='typeid' id='typeid' class='uk-select uk-form-width-large uk-form-small'>\r\n";
+echo "<option value='0'>请选择主分类...</option>\r\n";
+echo $typeOptions;
+echo "</select>";
+?>
+</td>
+</tr>
+<tr colspan="3">
+<td width="90" style="vertical-align:middle;">关键字：</td>
+<td width="500"><input type='text' name="keywords" id="keywords" class="uk-input uk-form-width-large uk-form-small" /></td>
+<td colspan="2" width="202" style="vertical-align:middle;"><input name="autokey" type="checkbox" class="uk-checkbox" id="autokey" value="1" <?php if($cfg_arc_autokeyword=='Y' ) echo ' checked="1" ' ; ?>/> 自动获取，手动填写用 "," 分开。</td>
+</tr>
+<tr colspan="2">
+<td width="90">专题简介：</td>
+<td><textarea name="description" rows="5" id="description" class="uk-textarea uk-form-width-large uk-form-small"></textarea></td>
+</tr>
+<tr colspan="2">
+<td width="90">发布时间：</td>
+<td>
+
+<div class="uk-inline">
+<span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
+<?php
+$nowtime = GetDateTimeMk(time());
+echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200px\" class='uk-input uk-form-width-medium uk-form-small  datepicker'/>";
+?>
+</div>
+
+</td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">
+评论选项：
+</td>
+
+<td style="vertical-align:middle;">
+<input type='radio' name='notpost' class='uk-radio' value='0' <?php if($cfg_feedback_forbid=='N' ) echo "checked='1' " ; ?> /> 允许评论 &nbsp;&nbsp;
+<input type='radio' name='notpost' class='uk-radio' value='1' <?php if($cfg_feedback_forbid=='Y' )  echo "checked='1' " ; ?> /> 禁止评论
+</td>
+<td width="60" style="vertical-align:middle;">浏览次数：</td>
+<td><input type='text' name='click' class="uk-input uk-form-width-small uk-form-small" value='<?php echo ($cfg_arc_click==' -1' ? mt_rand(50, 200) : $cfg_arc_click); ?>' style='width:100px;' /></td>
+</tr>
+<tr colspan="2" >
+<td width="90" style="vertical-align:middle;">专题模板：</td>
+<td><input name="templet" type="text" id="templet" class="uk-input uk-form-width-large uk-form-small" value="<?php echo $cfg_df_style?>/article_spec.htm" />
+</td>
+</tr>
+<tr colspan="2" >
+<td width="105" style="vertical-align:middle;">自定义文件名：</td>
+<td><input type="text" name="filename" id="filename" class="uk-input uk-form-width-medium uk-form-small"/> (不包括后缀名,如.html） </td>
+</tr>
+<tr colspan="4">
+<td>
+<?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?>
+</td>
+</tr>
+</table>
 
 
 
-        </td>
-      </tr>
-    </table>
+</td>
+</tr>
+</table>
 
 
-  </li>
-  <!-- /常规参数 -->
-  <!-- 专题文档 -->
-  <li>
+</li>
+<!-- /常规参数 -->
+<!-- 专题文档 -->
+<li>
 
+<?php
+$speclisttmp = GetSysTemplets("spec_arclist.htm");
+$nodename = $nodeid = '';
+for($i=1;$i<=$cfg_specnote;$i++) {
+if($i==1) {
+$nodename = '默认节点';
+$nodeid = 'default';
+} else {
+$nodename = $nodeid = '';
+}
+?>
 
+<table class="uk-table">
+<tr>
+<td width="90px" style="vertical-align:middle;">节点 <?php echo $i?> 名称： </td>
+<td width="550px"><input name="notename<?php echo $i?>" type="text" value="<?php echo $nodename; ?>" id="notename<?php echo $i?>" class="uk-input uk-form-width-large  uk-form-small"></td>
+<td width="60px" style="vertical-align:middle;">节点标识：</td>
+<td><input name="noteid<?php echo $i?>" type="text" value="<?php echo $nodeid; ?>" id="noteid<?php echo $i?>" class="uk-input uk-form-width-medium uk-form-small "></td>
+</tr>
+<tr colspan="3">
+<td>节点文章列表：</td>
+<td><textarea name="arcid<?php echo $i?>" rows="3" id="arcid<?php echo $i?>" class="uk-textarea uk-form-width-large  uk-form-small"></textarea></td>
+<td colspan="2">
+<button type="button" class="uk-button uk-button-default uk-button-small"  onClick="_DedeCMS_JSCODE_Version_Open_Windows_Get_Archive_ID('arcid<?php echo $i?>');">选择节点文章</button></td>
+</tr>
+<tr>
+<td style="vertical-align:middle;">文档来源：</td>
+<td colspan="4"><input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="0"
+class="uk-radio" checked>
+按文章列表 &nbsp;&nbsp;
+<input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="1" class="uk-radio">
+自动获取文档 &nbsp;&nbsp;&nbsp;&nbsp;
 
-
-
-
-
-    <?php
-    $speclisttmp = GetSysTemplets("spec_arclist.htm");
-    $nodename = $nodeid = '';
-    for($i=1;$i<=2;$i++) {
-    if($i==1) {
-        $nodename = '默认节点';
-        $nodeid = 'default';
-    } else {
-        $nodename = $nodeid = '';
-    }
-       ?>
-
-          <table class="uk-table">
-            <tr>
-              <td width="90px" style="vertical-align:middle;">节点 <?php echo $i?> 名称： </td>
-              <td width="550px"><input name="notename<?php echo $i?>" type="text" value="<?php echo $nodename; ?>" id="notename<?php echo $i?>" class="uk-input uk-form-width-large  uk-form-small"></td>
-              <td width="60px" style="vertical-align:middle;">节点标识：</td>
-              <td><input name="noteid<?php echo $i?>" type="text" value="<?php echo $nodeid; ?>" id="noteid<?php echo $i?>" class="uk-input uk-form-width-medium uk-form-small "></td>
-            </tr>
-            <tr colspan="3">
-              <td>节点文章列表：</td>
-              <td><textarea name="arcid<?php echo $i?>" onblur='CheckVal(<?php echo $i ?>)' rows="3" id="arcid<?php echo $i?>" class="uk-textarea uk-form-width-large  uk-form-small"></textarea></td>
-              <td colspan="2">
-                <button type="button" class="uk-button uk-button-default uk-button-small"  onClick="_DedeCMS_JSCODE_Version_Open_Windows_Get_Archive_ID('arcid<?php echo $i?>');">选择节点文章</button></td>
-            </tr>
-            <tr>
-              <td style="vertical-align:middle;">文档来源：</td>
-              <td colspan="4"><input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="0"
-                  class="uk-radio" checked>
-                按文章列表 &nbsp;&nbsp;
-                <input name="isauto<?php echo $i?>" type="radio" id="isauto<?php echo $i?>" value="1" class="uk-radio">
-                自动获取文档 &nbsp;&nbsp;&nbsp;&nbsp;
-                
-                关键字：
-                <input name="keywords<?php echo $i?>" type="text" id="keywords<?php echo $i?>" value="" class="uk-input uk-form-width-medium uk-form-small ">
-                (逗号分开) &nbsp;&nbsp;
-                栏目ID：
-                <input name="typeid<?php echo $i?>" type="text" id="typeid<?php echo $i?>" value="0" class="uk-input uk-form-width-medium uk-form-small ">
-              </td>
-            </tr>
-            <tr>
-              <td rowspan="2" style="vertical-align:middle;">节点布局： </td>
-              <td colspan="3" style="vertical-align:middle;"> 列数：
-                <input name="col<?php echo $i?>" type="text" id="col<?php echo $i?>" value="1" style="width:45px;"  class="uk-input uk-form-small"> &nbsp;&nbsp;
-                图片宽：
-                <input name="imgwidth<?php echo $i?>" type="text" id="imgwidth<?php echo $i?>" value="120" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
-                图片高：
-                <input name="imgheight<?php echo $i?>" type="text" id="imgheight<?php echo $i?>" value="90" style="width:45px;"   class="uk-input  uk-form-small "> &nbsp;&nbsp;
-                标题长：
-                <input name="titlelen<?php echo $i?>" type="text" id="titlelen<?php echo $i?>" value="60" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
-                简介长：
-                <input name="infolen<?php echo $i?>" type="text" id="infolen<?php echo $i?>" value="160" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
-                文档数：
-                <input name="rownum<?php echo $i?>" type="text" id="rownum<?php echo $i?>" value="10" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
-              </td>
-            </tr>
-            <tr colspan="4">
-              <td >单条记录的模板：<br />
-                <textarea name="listtmp<?php echo $i?>" rows="3" id="listtmp<?php echo $i?>" class="uk-textarea uk-form-width-large  uk-form-small"><?php echo $speclisttmp?></textarea>
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align:middle;">节点容器模板：</td>
-              <td colspan="3"><input name="notetemplet<?php echo $i?>" type="text" id="notetemplet<?php echo $i?>" value="system/channel_spec_note.htm" class="uk-input uk-form-width-large uk-form-small "></td>
-            </tr>
-          </table>
-          <hr>
-          <?php } ?>
-        </li>
-        <!-- /专题文档 -->
-      </ul>
+关键字：
+<input name="keywords<?php echo $i?>" type="text" id="keywords<?php echo $i?>" value="" class="uk-input uk-form-width-medium uk-form-small ">
+(逗号分开) &nbsp;&nbsp;
+栏目ID：
+<input name="typeid<?php echo $i?>" type="text" id="typeid<?php echo $i?>" value="0" class="uk-input uk-form-width-medium uk-form-small ">
+</td>
+</tr>
+<tr>
+<td rowspan="2" style="vertical-align:middle;">节点布局： </td>
+<td colspan="3" style="vertical-align:middle;"> 列数：
+<input name="col<?php echo $i?>" type="text" id="col<?php echo $i?>" value="1" style="width:45px;"  class="uk-input uk-form-small"> &nbsp;&nbsp;
+图片宽：
+<input name="imgwidth<?php echo $i?>" type="text" id="imgwidth<?php echo $i?>" value="120" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
+图片高：
+<input name="imgheight<?php echo $i?>" type="text" id="imgheight<?php echo $i?>" value="90" style="width:45px;"   class="uk-input  uk-form-small "> &nbsp;&nbsp;
+标题长：
+<input name="titlelen<?php echo $i?>" type="text" id="titlelen<?php echo $i?>" value="60" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
+简介长：
+<input name="infolen<?php echo $i?>" type="text" id="infolen<?php echo $i?>" value="160" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
+文档数：
+<input name="rownum<?php echo $i?>" type="text" id="rownum<?php echo $i?>" value="10" style="width:45px;"  class="uk-input  uk-form-small "> &nbsp;&nbsp;
+</td>
+</tr>
+<tr colspan="4">
+<td >单条记录的模板：<br />
+<textarea name="listtmp<?php echo $i?>" rows="3" id="listtmp<?php echo $i?>" class="uk-textarea uk-form-width-large  uk-form-small"><?php echo $speclisttmp?></textarea>
+</td>
+</tr>
+<tr>
+<td style="vertical-align:middle;">节点容器模板：</td>
+<td colspan="3"><input name="notetemplet<?php echo $i?>" type="text" id="notetemplet<?php echo $i?>" value="system/channel_spec_note.htm" class="uk-input uk-form-width-large uk-form-small "></td>
+</tr>
+</table>
+<hr>
+<?php } ?>
+</li>
+<!-- /专题文档 -->
+</ul>
 
 </div>
 </div>
 <div class="uk-card-footer " >
-  <div  class="uk-padding-small" >
-  <button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
-  </div>
-  </div>
+<div  class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
 </div>
 </form>
 <!-- 底部 -->

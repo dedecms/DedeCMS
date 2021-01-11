@@ -1,3 +1,0 @@
-function CheckSubmit(){
-	return true; 
-}

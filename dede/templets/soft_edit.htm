@@ -1,628 +1,443 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>编辑软件</title>
-  <link rel="stylesheet" href="../assets/pkg/bootstrap/bootstrap.min.css">
-  <link href="css/base.css" rel="stylesheet" type="text/css">
-  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
-  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
-  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/pkg/jquery/jquery.fileupload.css">
-  <script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
-  <script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
-  <script language="javascript" src="js/main.js"></script>
-  <link href="../assets/pkg/cropper/cropper.min.css" rel="stylesheet">
-  <script src="../assets/pkg/cropper/cropper.min.js"></script>
-  <script src="../assets/pkg/bootstrap/bootstrap.bundle.min.js"></script>
-  <script language="javascript">
-    function checkSubmit() {
-      if (document.form1.title.value == '') {
-        alert('软件名称不能为空！');
-        document.form1.title.focus();
-        return false;
-      }
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>编辑软件集</title>
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.simplecolorpicker.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/croppie/croppie.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+.uk-card-default{
+background: none;
+}
+#dede-modal-card-header .uk-card-header{
+height:25px;
+}  
+</style>
 
-    var startNum = <? php echo $newRowStart?>;
-    function MakeUpload() {
-      var upfield = document.getElementById('uploadfield');
-      var endNum = parseInt(document.form1.picnum.value) + startNum;
-      if (endNum > 30) endNum = 30;
-      for (startNum; startNum < endNum; startNum++) {
-        upfield.innerHTML += "<div style='line-height:36px'>软件地址" + startNum + "：<input type='text' name='softurl" + startNum + "' style='width:280px' value='http://' />  服务器名称：<input type='text' name='servermsg" + startNum + "' style='width:150px' /></div>\r\n";
-      }
-    }
-
-    function ShowHideAddr() {
-      document.getElementById('morelink').style.display = (document.getElementById('morelink').style.display == 'block' ? 'none' : 'block');
-      document.getElementById('btsh3').value = (document.getElementById('morelink').style.display == 'block' ? '隐藏地址' : '显示地址');
-    }
-
-  </script>
 </head>
 
-<body topmargin="8" background="images/allbg.gif">
-  <form name="form1" action="soft_edit.php" enctype="multipart/form-data" method="post"
-    onSubmit="return checkSubmit();">
-    <input type="hidden" name="dopost" value="save" />
-    <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
-    <input type="hidden" name="id" value="<?php echo $aid?>" />
-    <input type="hidden" id="litpic_b64" name="litpic_b64" value="">
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
-      <tr>
-        <td width="85%" height="30"><IMG height=14 src="images/book1.gif" width=20>&nbsp;<a
-            href="catalog_do.php?cid=<?php echo $arcRow[" typeid"]?>&dopost=listArchives"></a><a
-            href="catalog_do.php?cid=<?php echo $arcRow[" typeid"]?>&dopost=listArchives"><u>软件列表</u></a>&gt;&gt;更改软件
-        </td>
-        <td align="right">&nbsp; <a href="catalog_main.php">[<u>栏目管理</u>]</a>&nbsp;</td>
-      </tr>
-    </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head1">
-      <tr>
-        <td colspan="2">
-          <table width="168" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td width="84" height="24" align="center" background="images/itemnote1.gif">&nbsp;常规参数&nbsp;</td>
-              <td width="84" align="center" background="images/itemnote2.png"><a href="#"
-                  onClick="ShowItem2()"><u>高级参数</u></a>&nbsp;</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" id="head2" style="display:none">
-      <tr>
-        <td colspan="2">
-          <table width="168" height="24" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td width="84" align="center" background="images/itemnote2.png"><a href="#"
-                  onClick="ShowItem1()"><u>常规参数</u></a>&nbsp;</td>
-              <td width="84" align="center" background="images/itemnote1.gif">高级参数&nbsp;</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-    <table width="98%" border="0" align="center" cellpadding="2" cellspacing="2" id="needset"
-      style="border:1px solid #EAECEF;background:#ffffff;">
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;文章标题：</td>
-              <td width='408'><input name="title" type="text" id="title" value="<?php echo $arcRow['title']; ?>"
-                  style="width:388px"> </td>
-              <td width="90">&nbsp;简略标题：</td>
-              <td><input name="shorttitle" type="text" id="shorttitle" style="width:150px"
-                  value="<?php echo $arcRow['shorttitle']; ?>"> </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td width="400%" height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;自定义属性：</td>
-              <td>
-                <?php
-		    $dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
-		    $dsql->Execute();
-		    while($trow = $dsql->GetObject())
-		    {
-		    	if($trow->att=='j') $jumpclick = " onclick='ShowUrlTr()'";
-		    	else $jumpclick = '';
-		    	if(preg_match("#".$trow->att."#",$arcRow['flag']))
-		    	echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' {$jumpclick} checked='checked' />{$trow->attname}[{$trow->att}]";
-		    	else
-		    	echo "<input class='np' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'{$jumpclick} />{$trow->attname}[{$trow->att}]";
-		    }
-          ?>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline" id="redirecturltr"
-          style="display:<?php echo (empty($addRow['redirecturl']) ? 'none' : 'block');?>">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;跳转网址：</td>
-              <td>
-                <input name="redirecturl" type="text" id="redirecturl" style="width:300px" value="<?php echo $addRow["
-                  redirecturl"]?>" />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td width="400%" height="24" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;TAG标签：</td>
-              <td>
-                <input name="tags" type="text" id="tags" value="<?php echo $tags; ?>"
-                  style="width:300px" />(','号分开，单个标签小于12字节)
-              </td>
-              <td width="40">权重：</td>
-              <td width="141"><input name="weight" type="text" id="weight" style="width:50px"
-                  value="<?php echo $arcRow['weight'];?>" />
-                (越小越靠前)</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr id="pictable">
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90" height="81">
-                &nbsp;缩 略 图：
-              </td>
-              <td width="560">
-                <input name="picname" type="text" id="picname" style="width:300px" value="<?php echo $arcRow["
-                  litpic"]?>"><input type="button" name="Submit" value="浏览..." style="width:70px"
-                  onClick="SelectImage('form1.picname','');">
-                <input type='checkbox' class='np' name='ddisremote' value='1'>
-                远程
-                <span class="btn btn-success fileinput-button">
-                  <i class="glyphicon glyphicon-plus"></i>
-                  选择图片
-                  <input type="file" name="files[]" id="iptAddImages">
-                </span>
-                <button id="btnClearAll" type="button" class="btn btn-danger delete">
-                  <i class="fa fa-trash-o"></i>
-                  <span>清空</span>
-                </button>
-              </td>
-              <td align="center">
-                <img id="litPic" src="<?php if($arcRow[" litpic"]!="" ) echo $arcRow["litpic"]; else
-                  echo "../assets/img/defaultpic.gif" ;?>"
-                style="height: 80px">
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;软件来源：</td>
-              <td width="240"> <input name="source" type="text" id="source" style="width:200px"
-                  value="<?php echo $arcRow[" source"]?>"> </td>
-              <td width="90">软件作者：</td>
-              <td width="159"><input name="writer" type="text" id="writer" style="width:120px"
-                  value="<?php echo $arcRow[" writer"]?>"> </td>
-              <td>&nbsp; </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;文章主栏目：</td>
-              <td>
-                <?php
-          $typeOptions = GetOptionList($arcRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
-          echo "<select name='typeid' id='typeid' style='width:240px'>\r\n";
-          if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择主分类...</option>\r\n";
-          echo $typeOptions;
-          echo "</select>";
-			    ?>
-                <img src='images/menusearch.gif' style='cursor:pointer'
-                  onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid', '<?php echo $arcRow['typeid']; ?>')"
-                  alt='快捷选择' title='快捷选择' />
-                <?php 
-     			 if($cfg_remote_site=='Y')
-     			 {
-   				 ?> 　
-                <input name="isremote" type="checkbox" id="isremote" value="1" <?php if($cfg_title_site=='Y' )
-                  echo "checked" ;?>>是否同步远程发布
-                <?php GetFtp();?>
-                <?php
-     			 }
-    		?>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <?php
-if($cfg_need_typeid2=='Y') {
+<body>
+<!-- 列表头部 -->
+<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="dede-card-header" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="catalog_do.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><span>文章列表</span></a></li><li>编辑软件集</li></ul></span>
+</div>
+</div>
+
+</div>
+<!-- /列表头部 -->
+
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+
+
+<form name="form1" action="soft_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="dopost" value="save" />
+<input type="hidden" name="channelid" value="<?php echo $channelid?>" />
+<input type="hidden" name="id" value="<?php echo $aid?>" />
+<input type="hidden" id="litpic_b64" name="litpic_b64" value="">
+<input type="hidden" id="picname" name="picname" value="<?=$arcRow['litpic']?>">
+
+<table width="100%" border="0" uk-table>
+<tr>
+<td style="vertical-align:top;"  width="200px">
+<!-- 缩略图 -->
+<div uk-form-custom style="border: 1px solid rgb(187, 187, 187);width: 188px;">
+<input type="file" id="upload-image"  name="files[]" accept="image/*">
+<img id="result-image" />
+<div id="no_image" class="uk-flex uk-flex-center uk-flex-middle">
+<span uk-icon="icon: image; ratio: 4"></span>
+</div>
+</div>
+<!-- /缩略图 -->
+</td>
+<td style="vertical-align:top;">
+<table border="0" cellspacing="0" cellpadding="0" class="uk-table">
+<tr>
+<td width="90" style="vertical-align:middle;">文章标题：</td>
+<td width='408'><input name="title" type="text" id="title" class="uk-input uk-form-width-large uk-form-small" value="<?=$arcRow['title']?>"/></td>
+<td width="60" style="vertical-align:middle;">简略标题：</td>
+<td><input name="shorttitle" type="text" id="shorttitle" class="uk-input uk-form-width-small uk-form-small" value="<?=$arcRow['shorttitle']?>"/></td>
+</tr>
+<tr >
+<td width="90" style="vertical-align:middle;">自定义属性：</td>
+<td colspan="2" style="vertical-align:middle;">
+
+<?php
+$dsql->SetQuery("Select * From `#@__arcatt` order by sortid asc");
+$dsql->Execute();
+while($trow = $dsql->GetObject())
+{
+if($trow->att=='j') $jumpclick = " onclick='ShowUrlTr()'";
+else $jumpclick = '';
+if(preg_match("#".$trow->att."#",$arcRow['flag']))
+echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' {$jumpclick} checked='checked' /> {$trow->attname} [{$trow->att}] &nbsp;&nbsp;";
+else
+echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}'{$jumpclick} /> {$trow->attname} [{$trow->att}] &nbsp;&nbsp;";
+}
 ?>
-      <tr>
-        <td height="24" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;软件副栏目：</td>
-              <td>
-                <span id='typeid2ct'></span>
-                <input type='text' name='typeid2' id='typeid2' value='<?php echo ($arcRow[' typeid2']=='0' ? '' :
-                  $arcRow['typeid2']); ?>' style='width:200px;' />
-                <img src='images/menusearch2.gif' style='cursor:pointer;'
-                  onClick="ShowCatMap(event, this, <?php echo $channelid; ?>, 'typeid2', '<?php echo $arcRow['typeid2']; ?>')"
-                  alt='选择副栏目' title='选择副栏目' />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <?php } ?>
-      <tr>
-        <td width="400%" height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;文件类型：</td>
-              <td width="240">
-                <select name="filetype" id="filetype" style="width:100">
-                  <?php
-                if($addRow["filetype"]!="") echo "<option value=\"".$addRow["filetype"]."\">".$addRow["filetype"]."</option>\r\n";
-                ?>
-                  <option value=".exe">.exe</option>
-                  <option value=".zip">.zip</option>
-                  <option value=".rar">.rar</option>
-                  <option value=".iso">.iso</option>
-                  <option value=".gz">.gz</option>
-                  <option value="其它">其它</option>
-                </select>
-              </td>
-              <td width="90">软件等级： </td>
-              <td><select name="softrank" id="softrank" style="width:100">
-                  <?php
-                 if($addRow["softrank"]!="") echo "<option value=\"".$addRow["softrank"]."\">".$addRow["softrank"]."星</option>\r\n";
-                ?>
-                  <option value="1">一星</option>
-                  <option value="2">二星</option>
-                  <option value="3">三星 </option>
-                  <option value="4">四星</option>
-                  <option value="5">五星</option>
-                </select></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="88">&nbsp;软件类型：</td>
-              <td width="130">
-                <select name="softtype" id="softtype" style="width:100">
-                  <?php
-                if($addRow["softtype"]!="") echo "<option value=\"".$addRow["softtype"]."\">".$addRow["softtype"]."</option>\r\n";
-                ?>
-                  <option value="国产软件">国产软件</option>
-                  <option value="国外软件">国外软件</option>
-                  <option value="汉化补丁">汉化补丁</option>
-                </select>
-              </td>
-              <td width="89">界面语言： </td>
-              <td width="130"><select name="language" id="language" style="width:100">
-                  <?php
-                if($addRow["language"]!="") echo "<option value=\"".$addRow["language"]."\">".$addRow["language"]."</option>\r\n";
-                ?>
-                  <option value="简体中文">简体中文</option>
-                  <option value="英文软件">英文软件</option>
-                  <option value="繁体中文">繁体中文</option>
-                  <option value="其它类型">其它类型</option>
-                </select></td>
-              <td width="90">授权方式：</td>
-              <td>
-                <select name="accredit" id="accredit" style="width:100">
-                  <?php
-                if($addRow["accredit"]!="") echo "<option value=\"".$addRow["accredit"]."\">".$addRow["accredit"]."</option>\r\n";
-                ?>
-                  <option value="共享软件">共享软件</option>
-                  <option value="免费软件">免费软件</option>
-                  <option value="开源软件">开源软件</option>
-                  <option value="商业软件">商业软件</option>
-                  <option value="破解软件">破解软件</option>
-                  <option value="游戏外挂">游戏外挂</option>
-                </select>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;运行环境：</td>
-              <td width="240">
-                <input type='text' name='os' value='<?php echo $addRow["os"]?>' style='width:200px' />
-              </td>
-              <td width="90">&nbsp;软件大小：</td>
-              <td>
-                <input name="softsize" type="text" id="softsize" style="width:100" value="<?php echo $addRow["
-                  softsize"]?>" />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;官方网址：</td>
-              <td width="240">
-                <input name="officialUrl" type="text" id="officialUrl" value="<?php echo $addRow[" officialUrl"]?>"
-                style='width:200px' />
-              </td>
-              <td width="90">程序演示：</td>
-              <td>
-                <input name="officialDemo" type="text" id="officialDemo" value="<?php echo $addRow[" officialDemo"]?>"
-                style='width:200px' />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" bgcolor="#FAFBFC" class="bline2">&nbsp;<strong>下载限制：</strong></td>
-      </tr>
-      <tr>
-        <td height="24" class="bline">
-          <table width="800" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td width="90" height="30">&nbsp;需会员权限：</td>
-              <td width="179" align="center">
-                <select name="daccess" id="daccess" style="width:90px">
-                  <?php
-                $dsql->SetQuery("Select * from `#@__arcrank` where rank>=0 ");
-                $dsql->Execute();
-                while($row = $dsql->GetArray())
-                {
-                	if($row['rank']==0) $row['membername'] = "不限会员";
-									if($row['rank'] == $daccess) echo "     <option value='{$row['rank']}' selected>{$row['membername']}</option>\r\n";
-									else echo "     <option value='{$row['rank']}'>{$row['membername']}</option>\r\n";
-                }
-             ?>
-                </select>
-              </td>
-              <td width="120" align="center">需消费金币：</td>
-              <td width="411">
-                <input name="needmoney" type="text" id="needmoney" value="<?php echo $needmoney; ?>" size="8" />个
-              </td>
-            </tr>
-            <tr>
-              <td height="26" colspan="4" style="border-top:1px dashed #8EAF61">&nbsp; <span
-                  class="STYLE1">（如果设定了下载限制，<a href="soft_config.php"
-                    target="_blank"><u>软件频道设置</u></a>中“附件下载方式：”必须选择“链接到跳转页面”） </span></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" bgcolor="#FAFBFC" class="bline2"><strong>&nbsp;软件链接列表：</strong></td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="72">&nbsp;其它地址：</td>
-              <td>
-                <input name="picnum" type="text" id="picnum" size="8" value="5" />
-                <input name='kkkup' type='button' id='kkkup2' value='增加数量' onClick="MakeUpload();" />
-                &nbsp;
-                <input type="button" name="Submit3" id="btsh3" value="隐藏地址" onClick="ShowHideAddr();" />
-                (最多为30个链接)
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" class="bline" style="padding-left:8px">
-          <?php
-        echo $nForm;
-	      ?>
-          <div id='morelink' style='display:block'>
-            <div id='uploadfield' style='width:800px'></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" bgcolor="#FAFBFC" class="bline2"><strong>&nbsp;软件详细介绍：</strong></td>
-      </tr>
-      <tr>
-        <td height="24" colspan="4" bgcolor="#F1F5F2" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;附加选项：</td>
-              <td>
-                <input name="remote" type="checkbox" class="np" id="remote" value="1" checked>
-                下载远程图片和资源
-                <input name="autolitpic" type="checkbox" class="np" id="autolitpic" value="1" checked>
-                提取第一个图片为缩略图
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="100" colspan="4">
-          <?php
-        GetEditor("body",$addRow["introduce"],250,"Small");
-	?>
-        </td>
-      </tr>
-    </table>
 
-    <!-- //高级参数 -->
-    <table width="98%" border="0" align="center" cellpadding="2" cellspacing="2" id="adset"
-      style="display:none;border:1px solid #EAECEF;background:#ffffff;">
-      <tr>
-        <td height="24" colspan="4" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90" height="22" width="240">&nbsp;评论选项：</td>
-              <td width="250">
-                <input type='radio' name='notpost' class='np' value='0' <?php if($arcRow['notpost']==0)
-                  echo " checked='1' " ; ?> />允许评论
-                &nbsp;
-                <input type='radio' name='notpost' class='np' value='1' <?php if($arcRow['notpost']==1)
-                  echo " checked='1' " ; ?> />禁止评论
-              </td>
-              <td width="90">浏览次数：</td>
-              <td>
-                <input type='text' name='click' value='<?php echo $arcRow[' click']; ?>' style='width:100px;' />
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;文章排序：</td>
-              <td width="250"> <select name="sortup" id="sortup" style="width:150">
-                  <?php
-                $subday = SubDay($arcRow["sortrank"],$arcRow["pubdate"]);
-                echo "<option value='0'>正常排序</option>\r\n";
-                if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>\r\n";
-                ?>
-                  <option value="7">置顶一周</option>
-                  <option value="30">置顶一个月</option>
-                  <option value="90">置顶三个月</option>
-                  <option value="180">置顶半年</option>
-                  <option value="360">置顶一年</option>
-                </select> </td>
-              <td width="90">标题颜色：</td>
-              <td><input name="color" type="text" id="color" style="width:120" value="<?php echo $arcRow["
-                  color"]?>"><input name="modcolor" type="button" id="modcolor" value="选取"
-                  onClick="ShowColor(event,this)"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="24" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td width="90">&nbsp;阅读权限：</td>
-              <td width="250">
-                <select name="arcrank" id="arcrank" style="width:150px">
-                  <option value='<?php echo $arcRow["arcrank"]; ?>'>
-                    <?php echo ($arcRow["arcrank"]==0 ? '已审核状态' : $arcRow["rankname"]); ?>
-                  </option>
-                  <option value='0'>已审核状态</option>
-                  <option value='-1'>未审核状态</option>
-                </select>
-              </td>
-              <td width="90">发布选项：</td>
-              <td> <input name="ishtml" type="radio" class="np" value="1" <?php if($arcRow["ismake"]!=-1)
-                  echo " checked" ;?>>
-                生成HTML
-                <input type="radio" name="ishtml" class="np" value="0" <?php if($arcRow["ismake"]==-1) echo " checked"
-                  ;?>>
-                仅动态浏览
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td height="75" class="bline">
-          <table width="800" border="0" cellspacing="0" cellpadding="0">
-            <td width="90">&nbsp;更新时间：</td>
-            <td width="241">
-              <?php
-          $nowtime = GetDateTimeMk($arcRow["pubdate"]);
-          echo "<input name=\"pubdate\" value=\"$nowtime\" type=\"text\" id=\"pubdate\" style=\"width:200;\" class='datepicker' >";
-			?>
-            </td>
-            <td width="92">消费金币：</td>
-            <td width="368">
-              <input name="money" type="hidden" id="money" value="<?php echo $arcRow[" money"]?>" />(此项已经独立分离)
-            </td>
-      </tr>
-    </table>
+</td>
+</tr>
+
+<tr>
+<td width="90" style="vertical-align:middle;">TAG标签：</td>
+<td><input name="tags" type="text" id="tags" value="<?=$tags?>" onChange="$Obj('keywords').value=this.value;" class="uk-input uk-form-width-large uk-form-small"/></td>
+<td width="47" style="vertical-align:middle;">权重：</td>
+<td><input name="weight" type="text" id="weight" value="<?=$arcRow['weight']?>" class="uk-input uk-form-width-small uk-form-small" /> (越小越靠前)</td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">软件来源：</td>
+<td width="240">
+<input name="source" type="text" id="source" value="<?=$arcRow['source']?>"  class="uk-input uk-form-width-large uk-form-small" />
+</td>
+<td width="90" style="vertical-align:middle;">软件作者：</td>
+<td>
+<input name="writer" type="text" id="writer" value="<?=$arcRow['writer']?>" class="uk-input uk-form-width-small uk-form-small"/>
+</td>
+</tr>
+<tr >
+<td width="90" style="vertical-align:middle;">主分类：</td>
+<td>
+<?php
+$typeOptions = GetOptionList($arcRow["typeid"],$cuserLogin->getUserChannel(),$channelid);
+echo "<select name='typeid' id='typeid' class='uk-select uk-form-width-large uk-form-small'>\r\n";
+if($arcRow["typeid"]=="0") echo "<option value='0' selected>请选择主分类...</option>\r\n";
+echo $typeOptions;
+echo "</select>";
+?>
+</td>
+
+
+<td width="90" style="vertical-align:middle;">文章排序：</td>
+<td>
+<select name="sortup" id="sortup" class="uk-select uk-form-width-small uk-form-small">
+<?php
+$subday = SubDay($arcRow["sortrank"],$arcRow["pubdate"]);
+echo "<option value='0'>正常排序</option>\r\n";
+if($subday>0) echo "<option value='$subday' selected>置顶 $subday 天</option>\r\n";
+?>
+<option value="7">置顶一周</option>
+<option value="30">置顶一个月</option>
+<option value="90">置顶三个月</option>
+<option value="180">置顶半年</option>
+<option value="360">置顶一年</option>
+</select>
+</td>
+
+</tr>
+<tr colspan="3">
+<td width="90" style="vertical-align:middle;">关键字：</td>
+<td width="500"><input type='text' name="keywords" id="keywords" class="uk-input uk-form-width-large uk-form-small" value="<?=$arcRow['keywords']?>" /></td>
+<td  style="vertical-align:middle;">标题颜色：</td>
+<td  style="vertical-align:middle;">
+  <select id="colorpicker" name="color">
+  <option value="">#e1e1e1</option>
+  <?php foreach ($colors as $color): ?>
+  <?php if ($color === $arcRow['color']): ?>
+  <option value="<?=$color?>" selected><?=$color?></option>
+  <?php else: ?>
+  <option value="<?=$color?>" ><?=$color?></option>
+  <?php endif; ?>
+  <?php endforeach; ?>
+  </select>
+</td>
+
+</tr>
+<tr colspan="2">
+<td width="90">专题简介：</td>
+<td><textarea name="description" rows="5" id="description" class="uk-textarea uk-form-width-large uk-form-small"><?=$arcRow["description"]?></textarea></td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">下载限制:</td>
+<td width="240"> 
+<select name="daccess" id="daccess" class="uk-select uk-form-width-large uk-form-small">
+    <?php
+  $dsql->SetQuery("Select * from `#@__arcrank` where rank>=0 ");
+  $dsql->Execute();
+  while($row = $dsql->GetArray())
+  {
+    if($row['rank']==0) $row['membername'] = "不限会员";
+    if($row['rank'] == $daccess) echo "     <option value='{$row['rank']}' selected>{$row['membername']}</option>\r\n";
+    else echo "     <option value='{$row['rank']}'>{$row['membername']}</option>\r\n";
+  }
+?>
+</select>
+</td>
+<td width="90" style="vertical-align:middle;">下载金币：</td>
+<td>
+<input name="needmoney" type="text" id="needmoney" value="<?=$needmoney?>" class="uk-input uk-form-width-small uk-form-small" />
+</td>
+</tr>
+<tr>
+<td width="90" style="vertical-align:middle;">更新时间：</td>
+<td>
+<div class="uk-inline">
+<span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
+<input name="pubdate" value="<?=GetDateTimeMk($arcRow['pubdate'])?>" type="text" id="pubdate" class="datepicker uk-input uk-form-width-large uk-form-small" />
+</div>
+
+
+</td>
+<td width="90" style="vertical-align:middle;">浏览次数：</td>
+<td>
+<input type='text' name='click' value="<?=$arcRow['click']?>" class=" uk-input uk-form-width-small uk-form-small" />
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr >
+<td colspan="2"><?=GetEditor("body",$addRow["introduce"],250,"Small")?></td>
+</tr>
+<tr >
+<td colspan="2">
+<table class="uk-table">
+  <tr>
+          <td width="90px" style="vertical-align:middle;">文件类型：</td>
+          <td width="550px">
+            <select name="filetype" id="filetype" class="uk-select uk-form-width-medium uk-form-small">
+              <?php if($addRow["filetype"]!="") echo "<option value=\"".$addRow["filetype"]."\">".$addRow["filetype"]."</option>\r\n";?>
+              <option value=".exe" selected>.exe</option>
+              <option value=".zip">.zip</option>
+              <option value=".rar">.rar</option>
+              <option value=".iso">.iso</option>
+              <option value=".gz">.gz</option>
+              <option value="其它">其它</option>
+            </select>
+          </td>
+          <td width="90px" style="vertical-align:middle;">软件等级：</td>
+          <td><select name="softrank" id="softrank" class="uk-select uk-form-width-small uk-form-small">
+              <?php if($addRow["softrank"]!="") echo "<option value=\"".$addRow["softrank"]."\">".$addRow["softrank"]."星</option>\r\n";?>
+              <option value="1">一星</option>
+              <option value="2">二星</option>
+              <option value="3">三星 </option>
+              <option value="4">四星</option>
+              <option value="5">五星</option>
+            </select>
+          </td>
+
+  </tr>
+  <tr>
+    <td width="90px" style="vertical-align:middle;">官方网址：</td>
+    <td><input name="officialUrl" type="text" id="officialUrl" value="<?=$addRow['officialUrl']?>" class="uk-input uk-form-width-large uk-form-small" /></td>
+
+
+          <td width="90px" style="vertical-align:middle;">界面语言： </td>
+          <td>
+            <select name="language" id="language" class="uk-select uk-form-width-small uk-form-small">
+              <?php if($addRow["language"]!="") echo "<option value=\"".$addRow["language"]."\">".$addRow["language"]."</option>\r\n";?>
+              <option value="简体中文" selected>简体中文</option>
+              <option value="英文软件">英文软件</option>
+              <option value="繁体中文">繁体中文</option>
+              <option value="其它类型">其它类型</option>
+            </select>
+          </td>
+
+
+  </tr>
+  <tr>
+
+    <td width="90" style="vertical-align:middle;">演示地址：</td>
+    <td><input name="officialDemo" type="text" id="officialDemo" value="<?=$addRow['officialDemo']?>" class="uk-input uk-form-width-large uk-form-small" /></td>
+
+
+          <td width="90" style="vertical-align:middle;">授权方式：</td>
+          <td >
+            <select name="accredit" id="accredit" class="uk-select uk-form-width-small uk-form-small">
+              <?php if($addRow["accredit"]!="") echo "<option value=\"".$addRow["accredit"]."\">".$addRow["accredit"]."</option>\r\n";?>
+              <option value="共享软件">共享软件</option>
+              <option value="免费软件">免费软件</option>
+              <option value="开源软件">开源软件</option>
+              <option value="商业软件">商业软件</option>
+              <option value="破解软件">破解软件</option>
+              <option value="游戏外挂">游戏外挂</option>
+            </select>
+          </td>
+  </tr>
+  <tr>
+    <td width="90" style="vertical-align:middle;">运行环境：</td>
+
+    <td>
+      <input type='text' name='os' value='<?=$addRow['os']?>' class="uk-input uk-form-width-large uk-form-small"/>
     </td>
-    </tr>
-    <tr>
-      <td height="24" class="bline">
-        <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90" height="51">&nbsp;关键字：</td>
-            <td>
-              <input type="text" name="keywords" id="keywords" style="width:60%" value="<?php echo $arcRow["
-                keywords"]?>" />
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td height="24" class="bline">
-        <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90" height="51">&nbsp;简要说明：</td>
-            <td>
-              <textarea name="description" rows="3" id="description" style="width:60%">
-                <?php echo $arcRow["description"]?>
-              </textarea>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td height="24" colspan="4">
-        <table width="800" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="90">&nbsp;自定义文件名：</td>
-            <td width="449"><input type="text" name="filename" id="filename" value="<?php echo $arcRow[" filename"]?>"
-              />（不包括后缀名如.html等）</td>
-            <td width="261">&nbsp;</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    </table>
-    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FAFBFC"
-      style="border:1px solid #EAECEF;border-top:none;">
-      <tr>
-        <td height="35">
-          <table width="100%" border="0" cellspacing="1" cellpadding="1">
-            <tr>
-              <td width="17%">&nbsp;</td>
-              <td width="83%">
-                <table width="214" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td width="115">
-                      <input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"
-                        class="np" />
-                    </td>
-                    <td width="99">
-                      <img src="images/button_reset.gif" width="60" height="22" border="0" onClick="location.reload();"
-                        style="cursor:pointer" />
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </form>
-  <script language='javascript'>InitPage();</script>
-</body>
+          <td width="90" style="vertical-align:middle;">软件类型：</td>
+          <td>
+            <select name="softtype" id="softtype" class="uk-select uk-form-width-small uk-form-small">
+              <?php if($addRow["softtype"]!="") echo "<option value=\"".$addRow["softtype"]."\">".$addRow["softtype"]."</option>\r\n";?>
+              <option value="国产软件" selected>国产软件</option>
+              <option value="国外软件">国外软件</option>
+              <option value="汉化补丁">汉化补丁</option>
+            </select>
+          </td>
+  </tr>
+  <tr>
 
+          <td width="90" style="vertical-align:middle;">软件大小：</td>
+          <td  colspan="3" style="vertical-align:middle;">
+            <input name="softsize" type="text" id="softsize" class="uk-input uk-form-width-medium uk-form-small" value="<?=$addRow['softsize']?>"/> &nbsp;&nbsp;
+          </td>
+          
+        </tr>
+
+<tr >
+
+  <?=$nForm?>
+
+
+<td width="90">评论选项：</td>
+<td width="240" colspan="3">
+<input type='radio' name='notpost' class="uk-radio" value='0' <?php if($cfg_feedback_forbid=='N' )
+echo "checked='1' " ; ?> /> 允许评论 &nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;
+<input type='radio' name='notpost' class="uk-radio" value='1' <?php if($cfg_feedback_forbid=='Y' )
+echo "checked='1' " ; ?> /> 禁止评论
+</td>
+
+</tr>
+<tr>
+<td width="90">发布选项：</td>
+<td  colspan="3"><input name="ishtml" type="radio" class="uk-radio" value="1" checked="1" />
+生成HTML &nbsp;&nbsp;
+<input type="radio" name="ishtml" class="uk-radio" value="0" />
+仅动态浏览
+</td>
+</tr>
+
+
+</table>
+</td>
+</tr>
+</table>
+
+
+
+</div>
+</div>
+<div class="uk-card-footer " >
+<div  class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- /底部 -->
+
+<!-- 图片剪切 -->
+<div id="modal-upload-image" uk-modal>
+<div class="uk-modal-dialog">
+<div id="dede-modal-card-header" class="uk-card uk-card-default" >
+<button class="uk-modal-close-default" type="button" uk-close></button>
+<div class="uk-card-header">
+<span style="margin-top:4px;">图片剪切</span>
+</div>
+<div class="uk-card-body" style="background-color:#242A2F;" >
+<div id="image-crop"></div>
+</div>
+<div class="uk-card-footer" style="display: flex;justify-content: space-between;">
+<div>
+<button class="upload-3-4 uk-button uk-button-default uk-button-small">封面</button>
+<button class="upload-1-1 uk-button uk-button-default uk-button-small">头像</button>
+<button class="upload-4-3 uk-button uk-button-default uk-button-small">4:3</button>
+<button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
+</div>
+<div>
+<button class="upload-result uk-button uk-button-primary uk-button-small">剪切</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- /图片剪切 -->
+
+<!-- 列表 -->
+<div id="modal-archives" class="uk-modal-container" uk-modal>
+<div class="uk-modal-dialog">
+
+<div id="dede-modal-card-header" class="uk-card uk-card-default" >
+<button class="uk-modal-close-default" type="button" uk-close></button>
+<div class="uk-card-header">
+<span style="margin-top:4px;">选择文章</span>
+</div>
+<div class="uk-card-body" style="background-color:#242A2F;" >
+<iframe id="archives" width="100%" height="450px"></iframe>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+<!-- /列表 -->
+
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.simplecolorpicker.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/croppie/croppie.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.js"></script>
+<script language="javascript">
+$(document).ready(function() {
+
+$('#colorpicker').simplecolorpicker({picker: true, theme: 'glyphicons'});
+$('.datepicker').daterangepicker({
+"singleDatePicker": true,
+"autoApply": true,
+"showDropdowns": true,
+"linkedCalendars": false,
+"timePicker": true,
+"timePicker24Hour": true,
+"timePickerSeconds": true,
+"showCustomRangeLabel": false,
+ranges: {
+'今日': [moment(), moment()],
+'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+'本月': [moment().startOf('month'), moment().startOf('month')],
+'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
+},
+"locale": {
+format: 'YYYY-MM-DD HH:mm:ss',
+applyLabel: '确定',
+cancelLabel: '取消',
+daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+'七月', '八月', '九月', '十月', '十一月', '十二月'],
+firstDay: 1
+}
+}, function (start) {
+$(this).val(start.format("YYYY-MM-DD HH:mm:ss"));
+});
+
+});
+
+
+
+</script>
+
+<!-- / JS FILES -->
+</body>
 </html>
+

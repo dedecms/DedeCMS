@@ -61,16 +61,21 @@ if ($dopost != 'save') {
                 if ($ctag->GetName() == 'link') {
                     $islocal = $ctag->GetAtt('islocal');
                     if ($islocal != 1) {
-                        $needmsg = "<input type='checkbox' name='del{$newRowStart}' value='1' />删除";
-                    } else {
-                        $needmsg = '<input name="sel1" type="button" id="sel1" value="选取" onClick="SelectSoft(\'form1.softurl' . $newRowStart . '\')" />';
-                    }
+                        $needmsg = " &nbsp;&nbsp;<input type='checkbox' name='del{$newRowStart}' class='uk-checkbox' value='1' /> 删除";
+                    } 
 
-                    $nForm .= "<div style='line-height:36px'>软件地址{$newRowStart}：<input type='text' name='softurl{$newRowStart}' style='width:280px' value='" . trim($ctag->GetInnerText()) . "' />
-            服务器名称：<input type='text' name='servermsg{$newRowStart}' value='" . $ctag->GetAtt("text") . "' style='width:150px' />
-            <input type='hidden' name='islocal{$newRowStart}' value='{$islocal}' />
-            $needmsg
-            </div>\r\n";
+                    $nForm .= "
+                    
+                    <tr>    
+                    <td width='90' style='vertical-align:middle;'> 软件地址{$newRowStart}：</td>
+                    <td colspan='3' style='vertical-align:middle;'>
+                      <input type='hidden' name='islocal{$newRowStart}' value='{$islocal}' />
+                      <input type='text' name='softurl{$newRowStart}' class='uk-input uk-form-width-large uk-form-small' value='" . trim($ctag->GetInnerText()) . "'/>
+                      <input type='text' name='servermsg{$newRowStart}' class='uk-input uk-form-width-medium uk-form-small' value='" . $ctag->GetAtt("text") . "' />
+                      {$needmsg}
+                    </td>
+                  </tr>
+                ";
                     $newRowStart++;
                 }
             }

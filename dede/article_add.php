@@ -123,6 +123,7 @@ else if($dopost=='save') {
     }
     
     $litpic = GetDDImage('none', $picname, $ddisremote);
+
     // 处理新的缩略图上传
     if ($litpic_b64 != "") {
         $data = explode(',', $litpic_b64);
@@ -188,6 +189,7 @@ else if($dopost=='save') {
     if($litpic!='' && !preg_match("#p#", $flag)) {
         $flag = ($flag=='' ? 'p' : $flag.',p');
     }
+    
     if($redirecturl!='' && !preg_match("#j#", $flag)) {
         $flag = ($flag=='' ? 'j' : $flag.',j');
     }

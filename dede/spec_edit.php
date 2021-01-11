@@ -31,6 +31,7 @@ if ($dopost != 'save') {
     LEFT JOIN `#@__channeltype` ch ON ch.id=arc.channel
     LEFT JOIN `#@__arcrank` ar ON ar.rank=arc.arcrank WHERE arc.id='$aid' ";
     $arcRow = $dsql->GetOne($arcQuery);
+    
     if (!is_array($arcRow)) {
         ShowMsg("读取档案基本信息出错!", "-1");
         exit();
@@ -106,6 +107,8 @@ else if ($dopost == 'save') {
         $ddisremote = 0;
     }
     $litpic = GetDDImage('none', $picname, $ddisremote);
+
+
     // 处理新的缩略图上传
     if ($litpic_b64 != "") {
         $data = explode(',', $litpic_b64);
@@ -120,7 +123,8 @@ else if ($dopost == 'save') {
         // 加水印
         WaterImg($cfg_basedir . $fullUrl, 'up');
         $litpic = $fullUrl;
-    }
+    }    
+
 
     //分析处理附加表数据
     $inadd_f = '';
@@ -153,6 +157,8 @@ else if ($dopost == 'save') {
     if ($litpic != '' && !preg_match('#p#', $flag)) {
         $flag = ($flag == '' ? 'p' : $flag . ',p');
     }
+
+
     $inQuery = "UPDATE `#@__archives` SET
             typeid='$typeid',
             sortrank='$sortrank',
