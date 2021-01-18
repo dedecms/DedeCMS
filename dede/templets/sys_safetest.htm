@@ -1,94 +1,1 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>木马自检程序</title>
-  <link href="css/base.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="css/indexbody.css" />
-  <style type="text/css">
-    td {
-      padding-left: 8px;
-    }
-  </style>
-  <script language="javascript" src="../assets/pkg/jquery/jquery.min.js"></script>
-  <script language='javascript' src='js/main.js'></script>
-  <script language="javascript" src="../assets/pkg/dede/dedeajax2.js"></script>
-  <script language='javascript'>
-
-    function LoadCtTest() {
-      var filetype = $Obj('filetype').value;
-      var info = $Obj('info').value;
-      $Obj('loaddiv').style.display = 'block';
-      var myajax = new DedeAjax($DE('messagetd'));
-      myajax.SendGet2('sys_safetest.php?action=test&filetype=' + filetype + "&info=" + info);
-      $Obj('loaddiv').style.display = 'none';
-    }
-
-    function LoadCtClear() {
-      $Obj('loaddiv').style.display = 'block';
-      var myajax = new DedeAjax($DE('messagetd'));
-      myajax.SendGet2('sys_safetest.php?action=clear');
-      $Obj('loaddiv').style.display = 'none';
-    }
-
-  </script>
-</head>
-
-<body>
-
-  <div id='loaddiv' style='display:none'>
-    <p align='center' style='padding-top:200px'><img src='images/loadinglit.gif' /> 请稍后，正在操作中...</p>
-  </div>
-
-  <div class="bodytitle">
-    <div class="bodytitleleft"></div>
-    <div class="bodytitletxt" style="padding-left:10px;">用户安全中心</div>
-  </div>
-  <table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle"
-    style="background:#EAECEF;">
-    <tr>
-      <td width="100%" height="24" colspan="2" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">
-        <b>木马自检程序</b>
-      </td>
-    </tr>
-    <tr>
-      <td height="73" colspan="2" bgcolor="#FFFFFF">
-        <strong>安全建议：</strong>
-        <br />
-        1、有条件的用户把中 data、templets、uploads、html、special、images、install目录设置为不允许执行脚本，其它目录禁止写入，系统将更安全；<br />
-        2、本检测程以开发模式为标准，如果您的网站目录包含其它系统，此检测程序可能会产生错误判断；<br />
-        3、检测程序会跳过对模板缓存目录的检测，为了安全起见，检测完成后建议清空模板缓存。
-      </td>
-    </tr>
-    <tr>
-      <td height="50" colspan="2" bgcolor="#FFFFFF">
-        <p>文件类型：
-          <input name="filetype" type="text" id="filetype" value="php|inc" style="width:420px" />
-          &nbsp;要检查的文件类型
-        </p>
-        <p>代码特征：
-          <input name="info" type="text" id="info" value="eval|cmd|system|exec|_GET|_POST" style="width:420px" />
-          &nbsp;特征代码
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td height="50" colspan="2" bgcolor="#FFFFFF">
-        <input type="button" name="bt1" value="开始检测" class="coolbg np" onclick="LoadCtTest();" />
-        &nbsp;
-        <input type="button" name="bt2" value="清空模板缓存" class="coolbg np" onclick="LoadCtClear();" />
-      </td>
-    </tr>
-    <tr>
-      <td height="30" colspan="2" bgcolor="#FAFBFC">检测结果：(结果仅供参考，请务必查看源码后才删除非法文件)</td>
-    </tr>
-    <tr>
-      <td height="300" colspan="2" id="messagetd" valign="top" bgcolor="#FFFFFF">
-      </td>
-    </tr>
-  </table>
-</body>
-
-</html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>木马扫描</title><meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><form name="form1" action="sys_safetest.php?action=test" method="post" target='stafrm'><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>木马扫描</span></li></ul></span></div></div></div><!-- /列表头部 --><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr style="border-top: 0;"><td>功能选择：</td></tr></tbody></table></div><div class="uk-form-horizontal uk-padding-small"><div><h4>安全建议：</h4><ul class="uk-list uk-list-disc uk-list-muted"><li>有条件的用户把中 data、templets、uploads、html、special、images、install目录设置为不允许执行脚本，其它目录禁止写入，系统将更安全；</li><li>本检测程以开发模式为标准，如果您的网站目录包含其它系统，此检测程序可能会产生错误判断；</li><li>检测程序会跳过对模板缓存目录的检测，为了安全起见，检测完成后建议清空模板缓存。</li></ul></div><table class="uk-table uk-table-middle uk-margin-remove" ><tbody><tr><td>文件类型：</td><td><input name="filetype" type="text" id="filetype" value="php|inc" class="uk-input uk-form-small uk-width-large" />&nbsp;要检查的文件类型</td></tr><tr><td width="15%" >木马特征：</td><td><input name="info" type="text" id="info" value="eval|cmd|system|exec|_GET|_POST" class="uk-input uk-form-small uk-width-large" />&nbsp;特征代码</td></tr></tbody></table></td></tr></tbody></table></div><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr><td align="right" ><button type="submit" class="uk-button uk-button-primary uk-button-small">开始扫描</button></td></tr></tbody></table></div><iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --></form><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>

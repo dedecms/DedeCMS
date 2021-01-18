@@ -68,11 +68,14 @@ if ($dopost != 'save') {
                     
                     <tr>    
                     <td width='90' style='vertical-align:middle;'> 软件地址{$newRowStart}：</td>
-                    <td colspan='3' style='vertical-align:middle;'>
+                    <td style='vertical-align:middle;'>
                       <input type='hidden' name='islocal{$newRowStart}' value='{$islocal}' />
                       <input type='text' name='softurl{$newRowStart}' class='uk-input uk-form-width-large uk-form-small' value='" . trim($ctag->GetInnerText()) . "'/>
-                      <input type='text' name='servermsg{$newRowStart}' class='uk-input uk-form-width-medium uk-form-small' value='" . $ctag->GetAtt("text") . "' />
-                      {$needmsg}
+                    </td>
+                    <td width='90' style='vertical-align:middle;'> 服务器名称：：</td>
+                    <td style='vertical-align:middle;'>
+                    <input type='text' name='servermsg{$newRowStart}' class='uk-input uk-form-width-medium uk-form-small' value='" . $ctag->GetAtt("text") . "' />
+                    {$needmsg}
                     </td>
                   </tr>
                 ";
@@ -80,8 +83,10 @@ if ($dopost != 'save') {
                 }
             }
         }
+        echo "<script language='javascript'>startNum = $newRowStart+1;</script>\r\n";
         $dtp->Clear();
     }
+    
     $channelid = $arcRow['channel'];
     $tags = GetTags($aid);
     $arcRow = XSSClean($arcRow);

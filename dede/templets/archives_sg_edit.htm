@@ -1,234 +1,1 @@
-<html>
-
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>修改分类信息</title>
-<link rel="icon" href="/favicon.ico" />
-<!-- CSS FILES -->
-<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
-<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
-<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
-<style type="text/css">
-.uk-table td{
-padding: 6px 12px;
-vertical-align: top;
-height: 35px;
-}
-</style>
-
-</head>
-
-<body>
-<!-- 列表头部 -->
-<div id="dede-table-header" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
-<div id="dede-card-header" class="uk-card-header">
-<div class="uk-grid uk-grid-small uk-text-small">
-<span><ul class="uk-breadcrumb"><li><a href="content_sg_list.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><span>分类信息</span></a></li><li>修改分类信息</li></ul></span>
-</div>
-</div>
-
-</div>
-<!-- /列表头部 -->
-
-<!-- 列表主体 -->
-<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
-<div class="uk-card-body uk-overflow-auto" grid>
-<div class="uk-child-width-1-1 uk-padding">
-
-<form name="form1" action="archives_sg_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit()" class="uk-form-horizontal ">
-<input type="hidden" name="channelid" value="<?php echo $channelid; ?>" />
-<input type="hidden" name="id" value="<?php echo $aid; ?>" />
-<input type="hidden" name="sortrank" value="<?php echo $addRow['senddate']; ?>" />
-<input type="hidden" name="dopost" value="save" />
-<input type="hidden" id="litpic_b64" name="litpic_b64" value="">
-<table width="98%" border="0" align="center" cellpadding="2" cellspacing="2" id="needset" class="uk-table">
-<tr>
-<td height="24" colspan="4">
-<table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="90px" style="vertical-align:middle;">
-<?php echo $cInfos['titlename']; ?>
-</td>
-<td>
-<input name="title" type="text" id="title" value="<?php echo $addRow['title']; ?>" class='uk-input uk-form-width-large uk-form-small'>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-
-<tr>
-<td height="24" colspan="4">
-<table width="800" class="uk-table uk-form-horizontal" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="90px" style="vertical-align:middle;">自定义属性</td>
-<td>
-<?php
-$dsql->SetQuery("SELECT * FROM `#@__arcatt` WHERE att<>'j' AND att<>'p' ORDER BY sortid ASC");
-$dsql->Execute();
-while($trow = $dsql->GetObject())
-{
-if(preg_match("#".$trow->att."#", $addRow['flag']))
-echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' checked='checked' />{$trow->attname}[{$trow->att}] &nbsp;&nbsp;";
-else
-echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' />{$trow->attname}[{$trow->att}] &nbsp;&nbsp;";
-}
-?>
-
-</td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td height="24" colspan="4">
-<table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="90px" style="vertical-align:middle;">浏览权限</td>
-<td>
-
-<select name="arcrank" id="arcrank" class='uk-select uk-form-width-large uk-form-small'>
-<option value='<?php echo $addRow["arcrank"]; ?>'>
-<?php echo $addRow["rankname"]; ?>
-</option>
-<?php
-$urank = $cuserLogin->getUserRank();
-$dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank' And rank<>'{$addRow["arcrank"]}' ");
-$dsql->Execute();
-while($row = $dsql->GetObject()) {
-echo "     <option value='".$row->rank."'>".$row->membername."</option>\r\n";
-}
-?>
-</select>
-
-</td>
-<td width="90px" style="vertical-align:middle;"></td>
-<td></td>
-</tr>
-</table>
-</td>
-</tr>
-<?php if($cInfos['dfcid']>0)
-{
-echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />\r\n";
-}
-else
-{
-?>
-<tr>
-<td height="24" colspan="4">
-<table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="90px" style="vertical-align:middle;">文档主栏目</td>
-<td>
-<span id='typeidct'>
-<?php
-$typeOptions = GetOptionList($addRow['typeid'],$cuserLogin->getUserChannel(),$channelid);
-echo "<select name='typeid' id='typeid' class='uk-select uk-form-width-large uk-form-small'>\r\n";
-if($addRow["typeid"]=="0") echo "<option value='0' selected>请选择栏目...</option>\r\n";
-echo $typeOptions;
-echo "</select>";
-?>
-</span>
-
-</td>
-</tr>
-</table>
-</td>
-</tr>
-<?php } ?>
-<tr>
-<td>
-<?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');?>
-</td>
-</tr>
-</table>
-
-</div>
-</div>
-<div class="uk-card-footer " >
-<div  class="uk-padding-small" >
-<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
-</div>
-</div>
-</div> 
-</form>
-
-<!-- 列表底部 -->
-<div class="bar-bottom uk-flex uk-light uk-flex-right">
-<div class="uk-button-group" style="margin-left: 50px;">
-</div>
-<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
-</div>
-<!-- 列表底部 -->
-<!-- JS FILES -->
-<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.js"></script>
-
-<script language="javascript">
-$(".datepicker").daterangepicker(
-{
-singleDatePicker: true,
-autoApply: true,
-showDropdowns: true,
-linkedCalendars: false,
-timePicker: true,
-timePicker24Hour: true,
-timePickerSeconds: true,
-showCustomRangeLabel: false,
-ranges: {
-今日: [moment(), moment()],
-昨日: [moment().subtract(1, "days"), moment().subtract(1, "days")],
-本月: [moment().startOf("month"), moment().startOf("month")],
-上月: [
-moment().subtract(1, "month").startOf("month"),
-moment().subtract(1, "month").startOf("month"),
-],
-},
-locale: {
-format: "YYYY-MM-DD HH:mm:ss",
-applyLabel: "确定",
-cancelLabel: "取消",
-daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
-monthNames: [
-"一月",
-"二月",
-"三月",
-"四月",
-"五月",
-"六月",
-"七月",
-"八月",
-"九月",
-"十月",
-"十一月",
-"十二月",
-],
-firstDay: 1,
-},
-},
-function (start) {
-$(this).val(start.format("YYYY-MM-DD HH:mm:ss"));
-}
-);
-
-function checkSubmit() {
-if (document.form1.title.value == "") {
-alert("<?php echo $cInfos['titlename']; ?>不能为空！");
-return false;
-}
-if (document.form1.typeid.value == 0) {
-alert("请选择档案的主栏目！");
-return false;
-}
-}
-</script>
-<!-- / JS FILES -->
-</body>
-</html>
+<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>修改分类信息</title><meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="content_sg_list.php?cid=<?php echo $cid?>&channelid=<?php echo $channelid?>&dopost=listArchives"><span>分类信息</span></a></li><li>修改分类信息</li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><form name="form1" action="archives_sg_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit()" class="uk-form-horizontal "><input type="hidden" name="channelid" value="<?php echo $channelid; ?>" /><input type="hidden" name="id" value="<?php echo $aid; ?>" /><input type="hidden" name="sortrank" value="<?php echo $addRow['senddate']; ?>" /><input type="hidden" name="dopost" value="save" /><input type="hidden" id="litpic_b64" name="litpic_b64" value=""><table width="98%" border="0" align="center" cellpadding="2" cellspacing="2" id="needset" class="uk-table"><tr><td height="24" colspan="4"><table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0"><tr><td width="90px" style="vertical-align:middle;"><?php echo $cInfos['titlename']; ?></td><td><input name="title" type="text" id="title" value="<?php echo $addRow['title']; ?>" class='uk-input uk-form-width-large uk-form-small'></td></tr></table></td></tr><tr><td height="24" colspan="4"><table width="800" class="uk-table uk-form-horizontal" border="0" cellspacing="0" cellpadding="0"><tr><td width="90px" style="vertical-align:middle;">自定义属性</td><td><?php$dsql->SetQuery("SELECT * FROM `#@__arcatt` WHERE att<>'j' AND att<>'p' ORDER BY sortid ASC");$dsql->Execute();while($trow = $dsql->GetObject()){if(preg_match("#".$trow->att."#", $addRow['flag']))echo "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' checked='checked' />{$trow->attname}[{$trow->att}] &nbsp;&nbsp;";elseecho "<input class='uk-checkbox' type='checkbox' name='flags[]' id='flags{$trow->att}' value='{$trow->att}' />{$trow->attname}[{$trow->att}] &nbsp;&nbsp;";}?></td></tr></table></td></tr><tr><td height="24" colspan="4"><table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0"><tr><td width="90px" style="vertical-align:middle;">浏览权限</td><td><select name="arcrank" id="arcrank" class='uk-select uk-form-width-large uk-form-small'><option value='<?php echo $addRow["arcrank"]; ?>'><?php echo $addRow["rankname"]; ?></option><?php$urank = $cuserLogin->getUserRank();$dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank' And rank<>'{$addRow["arcrank"]}' ");$dsql->Execute();while($row = $dsql->GetObject()) {echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";}?></select></td><td width="90px" style="vertical-align:middle;"></td><td></td></tr></table></td></tr><?php if($cInfos['dfcid']>0){echo "<input type='hidden' name='typeid' value='{$cInfos['dfcid']}' />\r\n";}else{?><tr><td height="24" colspan="4"><table width="800" class="uk-table" border="0" cellspacing="0" cellpadding="0"><tr><td width="90px" style="vertical-align:middle;">文档主栏目</td><td><span id='typeidct'><?php$typeOptions = GetOptionList($addRow['typeid'],$cuserLogin->getUserChannel(),$channelid);echo "<select name='typeid' id='typeid' class='uk-select uk-form-width-large uk-form-small'>\r\n";if($addRow["typeid"]=="0") echo "<option value='0' selected>请选择栏目...</option>\r\n";echo $typeOptions;echo "</select>";?></span></td></tr></table></td></tr><?php } ?><tr><td><?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield');?></td></tr></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/bootstrap/bootstrap.bundle.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.js"></script><script language="javascript">$(".datepicker").daterangepicker({singleDatePicker: true,autoApply: true,showDropdowns: true,linkedCalendars: false,timePicker: true,timePicker24Hour: true,timePickerSeconds: true,showCustomRangeLabel: false,ranges: {今日: [moment(), moment()],昨日: [moment().subtract(1, "days"), moment().subtract(1, "days")],本月: [moment().startOf("month"), moment().startOf("month")],上月: [moment().subtract(1, "month").startOf("month"),moment().subtract(1, "month").startOf("month"),],},locale: {format: "YYYY-MM-DD HH:mm:ss",applyLabel: "确定",cancelLabel: "取消",daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月",],firstDay: 1,},},function (start) {$(this).val(start.format("YYYY-MM-DD HH:mm:ss"));});function checkSubmit() {if (document.form1.title.value == "") {alert("<?php echo $cInfos['titlename']; ?>不能为空！");return false;}if (document.form1.typeid.value == 0) {alert("请选择档案的主栏目！");return false;}}</script><!-- / JS FILES --></body></html>

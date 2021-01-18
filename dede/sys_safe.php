@@ -59,7 +59,6 @@ if ($dopost == "save") {
         }
     }
 
-    //print_r($question);exit();
     $configstr .= "\$safe_faqs = '" . serialize($faqs) . "';\r\n";
     $configstr = "<" . "?php\r\n" . $configstr . "?" . ">\r\n";
 

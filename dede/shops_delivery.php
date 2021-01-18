@@ -68,12 +68,7 @@ if ($do == 'add') {
     ShowMsg("成功修改配送方式!", "shops_delivery.php");
     exit();
 }
-$deliveryarr = array();
-$dsql->SetQuery("SELECT pid,dname,price,des FROM #@__shops_delivery ORDER BY orders ASC");
-$dsql->Execute();
-while ($row = $dsql->GetArray()) {
-    $deliveryarr[] = $row;
-}
+
 $dlist = new DataListCP();
 $dlist->pageSize = 25; //设定每页显示记录数（默认25条）
 

@@ -1,125 +1,1 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-<title>会员类型管理</title>
-<link href="css/base.css" rel="stylesheet" type="text/css" />
-</head>
-<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;">
-  <form name="form1" action="member_type.php" method="post">
-    <input type="hidden" name="dopost" value="save" />
-    <tr>
-      <td height="24" colspan="5" bgcolor="#EDF9D5" background='images/tbg.gif'>
-      	<table width="98%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="30%"  style="padding-left:10px;"><strong>会员产品分类：</strong></td>
-            <td align="right" style="padding-top:4px;">
-            	<input type="button" name="ss1" value="会员级别管理" style="width:90px;margin-right:6px" onClick="location='member_rank.php';" class='np coolbg' />
-              <input type="button" name="ss2" value="会员业务记录" style="width:90px" onClick="location='member_operations.php';" class='np coolbg' />
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr bgcolor="#FBFBFB">
-      <td width="22%" height="24" align="center" valign="top">产品名称</td>
-      <td width="23%" align="center" valign="top">会员级别</td>
-      <td width="21%" align="center">产品价格</td>
-      <td width="18%" align="center">会员期限(天)</td>
-      <td width="16%" align="center">状态</td>
-    </tr>
-    <?php
-    $dsql->SetQuery("Select * From #@__member_type");
-    $dsql->Execute();
-    $k=0;
-    while($row = $dsql->GetObject())
-    {
-    	$k++;
-	?>
-    <input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->aid?>" />
-    <tr align="center" bgcolor="#FFFFFF">
-      <td height="24" valign="top">
-      	<input name="pname_<?php echo $k?>" value="<?php echo $row->pname?>"
-      	 type="text" id="pname_<?php echo $k?>" style="width:90%"  class='pubinputs' />
-      </td>
-      <td height="24" valign="top">
-      	<select name='rank_<?php echo $k?>' id='rank_<?php echo $k?>' style='width:90%' />
-          <?php
-          foreach($arcranks as $kkk=>$vvv){
-          	if($row->rank==$kkk) echo "    <option value='{$kkk}' selected>{$vvv}</option>\r\n";
-          	else echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
-          }
-	   	?>
-       </select>
-      </td>
-      <td>
-      	<input name="money_<?php echo $k?>" value="<?php echo $row->money?>"
-      	 type="text" id="money_<?php echo $k?>" style="width:80%" class='pubinputs' />
-        (元)
-       </td>
-      <td>
-      	<select name='exptime_<?php echo $k?>' id='exptime_<?php echo $k?>' style='width:90%'>
-          <?php
-          foreach($times as $kkk=>$vvv){
-          	if($row->exptime==$kkk) echo "    <option value='{$kkk}' selected>{$vvv}</option>\r\n";
-          	else echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
-          }
-	   	?>
-        </select> 
-       </td>
-      <td>
-      	<input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>"  value="1" checked='1' class='np' />
-        保留
-       </td>
-    </tr>
-    <?php
-    }
-	?>
-    <input type="hidden" name="idend" value="<?php echo $k?>">
-    <tr bgcolor="#FAFBFC">
-      <td height="24" colspan="5" valign="top">&nbsp;<strong>新增一个会员产品类型：</strong></td>
-    </tr>
-    <tr height="24" align="center" bgcolor="#FFFFFF">
-      <td valign="top">
-      	<input name="pname_new" type="text" id="pname_new" style="width:90%"  class='pubinputs' />
-      </td>
-      <td valign="top">
-      	<select name='rank_new' id='rank_new' style='width:90%'>
-          <?php
-          foreach($arcranks as $kkk=>$vvv){
-          	echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
-          }
-	   	?>
-       </select>
-       </td>
-      <td valign="top">
-      	<input name="money_new" type="text" id="money_new" style='width:80%' value="100"  class='pubinputs' />
-        (元)
-       </td>
-      <td valign="top">
-      	<select name='exptime_new' id='exptime_new' style='width:90%'>
-          <?php
-          foreach($times as $kkk=>$vvv){
-          	echo "    <option value='{$kkk}'>{$vvv}</option>\r\n";
-          }
-	   	?>
-        </select>
-        </td>
-      <td align="center" bgcolor="#FFFFFF">
-      	<input name="check_new" type="checkbox"  id="check_new" value="1" checked='1' class='np' />
-        新增 
-       </td>
-    </tr>
-    <tr>
-      <td height="24" colspan="5" bgcolor="#ffffff">&nbsp;</td>
-    </tr>
-    <tr>
-      <td height="34" colspan="5" align="center" bgcolor="#FAFBFC">
-      	<input name="imageField"  type="submit" class="np coolbg" value="确定" class='np coolbg /' />
-      </td>
-    </tr>
-  </form>
-</table>
-</body>
-</html>
+<html><html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>会员类型管理</title><meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>会员类型管理</span></li></ul></span></div><!-- 搜索表单 --><ul class="uk-navbar-nav dede-card-navbar" uk-navbar ><li style="margin-right: 12px;"><a href="member_rank.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">会员级别管理</a></li><li ><a href="member_operations.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">会员业务记录</a></li></ul><!-- /搜索表单 --></div><!-- 表头显示部分 --><table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="22%">产品名称</td><td width="23%">会员级别</td><td width="21%">产品价格</td><td width="18%">会员期限(天)</td><td width="16%">状态</td></tr></thead></table><!-- /表头显示部分 --></div><!-- /列表头部 --><!-- 列表主体 --><div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><div class="uk-overflow-auto"><!-- 表头隐藏部分，用于固定表结构宽度 --><form name="form1" action="member_type.php" method="post"><input type="hidden" name="dopost" value="save" /><table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="22%">产品名称</td><td width="23%">会员级别</td><td width="21%">产品价格</td><td width="18%">会员期限(天)</td><td width="16%">状态</td></tr></thead><!-- /表头隐藏部分 --><tbody><!-- 内容列表 --><?php$dsql->SetQuery("Select * From #@__member_type");$dsql->Execute();$k=0;while($row = $dsql->GetObject()){$k++;?><input type="hidden" name="ID_<?php echo $k?>" value="<?php echo $row->aid?>" /><tr><td><input name="pname_<?php echo $k?>" value="<?php echo $row->pname?>" type="text" id="pname_<?php echo $k?>" class="uk-input uk-form-small"/></td><td><select name='rank_<?php echo $k?>' id='rank_<?php echo $k?>' class="uk-select uk-form-small" /><?phpforeach($arcranks as $kkk=>$vvv){if($row->rank==$kkk) echo " <option value='{$kkk}' selected>{$vvv}</option>\r\n";else echo " <option value='{$kkk}'>{$vvv}</option>\r\n";}?></select></td><td><div class="uk-inline uk-width-1-1"><span class="uk-form-icon" uk-icon="icon: cash"></span><input name="money_<?php echo $k?>" value="<?php echo $row->money?>" type="text" id="money_<?php echo $k?>" class="uk-input uk-form-small"/></div></td><td><select name='exptime_<?php echo $k?>' id='exptime_<?php echo $k?>' class="uk-select uk-form-small"><?phpforeach($times as $kkk=>$vvv){if($row->exptime==$kkk) echo " <option value='{$kkk}' selected>{$vvv}</option>\r\n";else echo " <option value='{$kkk}'>{$vvv}</option>\r\n";}?></select></td><td><input name="check_<?php echo $k?>" type="checkbox" id="check_<?php echo $k?>" value="1" checked='1' class="uk-checkbox" />保留</td></tr><?php}?><input type="hidden" name="idend" value="<?php echo $k?>"><tr><td colspan="5">&nbsp;<strong>新增一个会员产品类型：</strong></td></tr><tr><td><input name="pname_new" type="text" id="pname_new" class="uk-input uk-form-small"/></td><td><select name='rank_new' id='rank_new' class="uk-select uk-form-small"><?phpforeach($arcranks as $kkk=>$vvv){echo " <option value='{$kkk}'>{$vvv}</option>\r\n";}?></select></td><td><div class="uk-inline uk-width-1-1"><span class="uk-form-icon" uk-icon="icon: cash"></span><input name="money_new" type="text" id="money_new" class="uk-input uk-form-small"/></div></td><td><select name='exptime_new' id='exptime_new' class="uk-select uk-form-small"><?phpforeach($times as $kkk=>$vvv){echo " <option value='{$kkk}'>{$vvv}</option>\r\n";}?></select></td><td><input name="check_new" type="checkbox" id="check_new" value="1" checked='1' class="uk-checkbox" />新增</td></tr><!-- /内容列表 --></tbody><!-- 分页 --><thead><tr><td colspan="5"><button class="uk-button uk-button-default uk-button-small uk-button-primary">提交</button></td></tr></thead></table></div></div></div></div></from><!-- /列表主体 --><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>

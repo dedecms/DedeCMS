@@ -55,6 +55,10 @@ MySQL 扩展库
 2. php 的上传的临时文件夹没设置好或没写入权限，这会导致文件上传的功能无法使用；
 3. 出现莫名的错误，如安装时显示空白，这样能是由于系统没装载 mysql 扩展导致的，对于初级用户，可以下载 dede 的 php 套件包，以方便简单的使用。
 
+## 常见问题
+
+1. 上传文件时出现：413 Request Entity Too Large错误，请检查php.ini中upload_max_filesize、post_max_size及Nginx的client_max_body_size设置;
+
 ## 安装
 
 1. 下载程序解压到本地目录;

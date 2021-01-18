@@ -18,16 +18,22 @@ if (empty($dopost)) {
 
 //保存更改
 if ($dopost == "save") {
-    $startID = 1;
-    $endID = $idend;
-    for (; $startID <= $endID; $startID++) {
-        $att = ${'att_' . $startID};
-        $attname = ${'attname_' . $startID};
-        $sortid = ${'sortid_' . $startID};
-        $query = "UPDATE `#@__arcatt` SET `attname`='$attname',`sortid`='$sortid' WHERE att='$att' ";
-        $dsql->ExecuteNoneQuery($query);
+    if (!empty($sortid)){
+        foreach ($sortid as $key => $value) {
+            $att = ${'att_' . $value};
+            $attname = ${'attname_' . $value};
+            $sortid = ${'sortid_' . $value};
+            $query = "UPDATE `#@__arcatt` SET `attname`='$attname',`sortid`='$sortid' WHERE att='$att' ";
+            $dsql->ExecuteNoneQuery($query);
+        }
     }
+
     echo "<script> alert('成功更新自定文档义属性表！'); </script>";
 }
 
-DedeInclude('templets/content_att.htm');
+$query = 'Select * From `#@__arcatt` order by sortid asc';
+$dlist = new DataListCP();
+$dlist->SetTemplate(DEDEADMIN . "/templets/content_att.htm");
+$dlist->SetSource($query);
+$dlist->Display();
+$dlist->Close();

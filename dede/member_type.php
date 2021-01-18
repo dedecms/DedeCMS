@@ -62,4 +62,6 @@ $times[183] = '半年';
 $times[366] = '一年';
 $times[32767] = '终身';
 
-require_once DEDEADMIN . "/templets/member_type.htm";
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/member_type.htm");
+$tpl->Display();

@@ -15,6 +15,12 @@ CheckPurview('a_New,a_AccNew');
 require_once DEDEINC . "/customfields.func.php";
 require_once DEDEADMIN . "/inc/inc_archives_functions.php";
 
+$upload_max_size = ini_get('upload_max_filesize');
+$post_max_size = ini_get('post_max_size');
+$max_file_uploads = ini_get('max_file_uploads');
+
+// echo $upload_max_size;
+
 if (empty($dopost)) {
     $dopost = '';
 }
@@ -294,7 +300,6 @@ else if ($dopost == 'save') {
             CreateDir($savepath);
             $fullUrl = $savepath . '/' . dd2char(MyDate('mdHis', $ntime) . $cuserLogin->getUserID() . mt_rand(1000, 9999));
             $fullUrl = $fullUrl . ".png";
-
             file_put_contents($cfg_basedir . $fullUrl, base64_decode($data[1]));
             $info = '';
             $imginfos = GetImageSize($cfg_basedir . $fullUrl, $info);

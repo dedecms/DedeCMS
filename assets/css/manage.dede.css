@@ -20,7 +20,7 @@ html {
 
 }
 
-#dede-card-header,
+#Header_1W2T2S2T1V252B,
 .uk-card-header{
   height: 35px;
   background-color: #fff;
@@ -30,21 +30,21 @@ html {
   border-top-right-radius: 3px;
   display: flex;
   justify-content: space-between;
-
+  box-shadow: none;
 }
-#dede-table-body{
+#Table_Body_1X2V2U2V1W272D{
   position: relative;
   top: -50px;
 }
 
-#dede-table-header{
+#Table_Header_202X2W2X1X292F{
   box-shadow: none;
 }
 .uk-grid-column-small, .uk-grid-small {
   margin-left: -15px;
   margin-top: 7px;
 }
-#oswindos-container{
+#OSWindows_213C3D3M3F3634353HW5T‌54W1H1F1F1M1C1H1F1H1FW22323132212B2H1D{
   min-width: 960px;
   padding-left: 0px;
   padding-right: 0px;
@@ -126,6 +126,7 @@ margin-right: 9px;
 }
 
 #dede-dropdown-margin > .uk-margin{
+  /* 1V33343D362X2V2W38W5E‌4PW1E1C1C1J191E1C1E1CW1W2T2S2T1V252B1A */
   margin-bottom: 10px;
   margin-top: 0px;
   margin-top: 10px!important;

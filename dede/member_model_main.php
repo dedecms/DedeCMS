@@ -26,6 +26,13 @@ function GetTotalMember($mtable = '')
     }
 }
 
+$row = $dsql->GetOne("SELECT id FROM #@__member_model ORDER BY id DESC LIMIT 0,1 ");
+if (is_array($row)) {
+    $newid = $row['id'] + 1;
+} else {
+    $newid = 1;
+}
+
 $sql = "SELECT `id`,`name`,`table`,`description`,`state`,`issystem` FROM #@__member_model ORDER BY id ASC";
 $dlist = new DataListCP();
 $dlist->SetTemplet(DEDEADMIN . "/templets/member_model_main.htm");

@@ -15,16 +15,7 @@ CheckPurview('c_New');
 $mysql_version = $dsql->GetVersion();
 $mysql_versions = explode(".", trim($mysql_version));
 $mysql_version = $mysql_versions[0] . "." . $mysql_versions[1];
-if (empty($action)) {
-    $row = $dsql->GetOne("SELECT id FROM #@__member_model ORDER BY id DESC LIMIT 0,1 ");
-    if (is_array($row)) {
-        $newid = $row['id'] + 1;
-    } else {
-        $newid = 1;
-    }
-
-    DedeInclude("/templets/member_model_add.htm");
-} else {
+if (!empty($action)) {
     if (preg_match("#[^0-9-]#", $id) || empty($id)) {
         ShowMsg("<font color=red>'会员模型ID'</font>必须为数字！", "-1");
         exit();

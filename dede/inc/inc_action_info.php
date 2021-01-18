@@ -400,12 +400,6 @@ $actionSearch[10] = array(
             'purview' => 'sys_data',
             'linkurl' => 'sys_data.php',
         ),
-        13 => array(
-            'title' => '文件校验[S]',
-            'description' => '文件校验将检查本站文件是否和dedecms原始文件是否完全一致',
-            'purview' => 'sys_verifies',
-            'linkurl' => 'sys_verifies.php',
-        ),
         14 => array(
             'title' => '病毒扫描[S]',
             'description' => '以DedeCMS开发模式为标准对现有的文件进行扫描并进行判断',

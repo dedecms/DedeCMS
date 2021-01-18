@@ -12,6 +12,7 @@
  */
 require_once dirname(__FILE__) . "/../../include/common.inc.php";
 require_once DEDEINC . "/userlogin.class.php";
+define('DEDEADMIN', str_replace("\\", '/', dirname(__FILE__). "/.."));
 
 //获得当前脚本名称，如果你的系统被禁用了$_SERVER变量，请自行更改这个选项
 $dedeNowurl = '';

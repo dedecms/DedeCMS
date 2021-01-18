@@ -154,4 +154,7 @@ else if ($action == 'clear') {
     exit();
 }
 
-require dirname(__FILE__) . '/templets/sys_safetest.htm';
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . '/templets/sys_safetest.htm');
+$tpl->Display();
+

@@ -1,136 +1,1 @@
-<html>
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
-  <title>增加自定义标记</title>
-  <link href='css/base.css' rel='stylesheet' type='text/css'>
-  <link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet">
-
-
-</head>
-
-<body>
-  <table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF">
-    <tr>
-      <td height="19" background="images/tbg.gif" style="padding-left:10px;"><b><a
-            href="mytag_main.php"><u>自定义标记管理</u></a></b>&gt;&gt;增加新标记</td>
-    </tr>
-    <tr>
-      <td height="200" bgcolor="#FFFFFF" valign="top">
-        <table width="100%" border="0" cellspacing="4" cellpadding="4">
-          <form action="mytag_add.php" method="post">
-            <input type='hidden' name='dopost' value='save' />
-            <input type="hidden" name="token" value="<?php echo make_hash();?>" />
-            <tr>
-              <td height="25" colspan="3">自定义标记的调用方法：<br />
-                {dede:mytag name='标记名称' ismake='是否含板块代码（yes 或 no）' typeid='栏目ID'/}
-                <br />
-                1、name 标记名称，该项是必须的属性，以下 2、3是可选属性；<br />
-                2、ismake 默认是 no 表示设定的纯HTML代码， yes 表示含板块标记的代码；<br />
-                3、typeid 表示所属栏目的ID，默认为 0 ，表示所有栏目通用的显示内容，在列表和文档模板中，typeid默认是这个列表或文档本身的栏目ＩＤ。
-              </td>
-            </tr>
-            <tr>
-              <td width="15%" height="25" align="center">所属栏目：</td>
-              <td colspan="2">
-                <?php
-           	$tl = new TypeLink(0);
-           	$typeOptions = $tl->GetOptionArray(0,0,0);
-            echo "<select name='typeid' style='width:300'>\r\n";
-            echo "<option value='0' selected>显示在没有继承本标记的所有栏目</option>\r\n";
-            echo $typeOptions;
-            echo "</select>";
-			?>
-              </td>
-            </tr>
-            <tr>
-              <td height="25" align="center">标记名称：</td>
-              <td colspan="2"><input name="tagname" type="text" id="tagname" /></td>
-            </tr>
-            <tr>
-              <td height="25" align="center">时间限制：</td>
-              <td colspan="2"><input name="timeset" type="radio" value="0" checked='1' />
-                永不过期
-                <input type="radio" name="timeset" value="1" />
-                在设内时间内有效
-              </td>
-            </tr>
-            <tr>
-              <td height="25" align="center">开始时间：</td>
-              <td colspan="2">
-                <input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="datepicker" />
-              </td>
-            </tr>
-            <tr>
-              <td height="25" align="center">结束时间：</td>
-              <td colspan="2">
-                <input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="datepicker" />
-              </td>
-            </tr>
-            <tr>
-              <td height="80" align="center">正常显示内容：</td>
-              <td width="76%">
-                <textarea name="normbody" id="normbody" style="width:80%;height:100"></textarea>
-              </td>
-              <td width="9%">&nbsp;</td>
-            </tr>
-            <tr>
-              <td height="80" align="center">过期显示内容：</td>
-              <td>
-                <textarea name="expbody" id="expbody" style="width:80%;height:100"></textarea>
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td height="53" align="center">&nbsp;</td>
-              <td colspan="2">
-                <button type="submit" >sss</button>
-              </td>
-            </tr>
-          </form>
-        </table>
-      </td>
-    </tr>
-  </table>
-<!-- JS FILES -->
-<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
-<script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script>
-<script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script>
-<script language="javascript">
-  $(document).ready(function () {
-    $('.datepicker').daterangepicker({
-      "singleDatePicker": true,
-      "autoApply": true,
-      "showDropdowns": true,
-      "linkedCalendars": false,
-      "timePicker": true,
-      "timePicker24Hour": true,
-      // "timePickerSeconds": true,
-      "showCustomRangeLabel": false,
-      ranges: {
-        '今日': [moment(), moment()],
-        '昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        '本月': [moment().startOf('month'), moment().startOf('month')],
-        '上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
-      },
-      "locale": {
-        format: 'YYYY-MM-DD HH:mm',
-        applyLabel: '确定',
-        cancelLabel: '取消',
-        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-          '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        firstDay: 1
-      }
-    }, function (start) {
-      $(this).val(start.format("YYYY-MM-DD HH:mm:ss"));
-    });
-
-  })
-</script>
-</body>
-
-</html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"><title>增加自定义标记</title><link href='css/base.css' rel='stylesheet' type='text/css'><link href="../assets/pkg/daterangepicker/daterangepicker.css" rel="stylesheet"></head><body><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#EAECEF"><tr><td height="19" background="images/tbg.gif" style="padding-left:10px;"><b><ahref="mytag_main.php"><u>自定义标记管理</u></a></b>&gt;&gt;增加新标记</td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4"><form action="mytag_add.php" method="post"><input type='hidden' name='dopost' value='save' /><input type="hidden" name="token" value="<?php echo make_hash();?>" /><tr><td height="25" colspan="3">自定义标记的调用方法：<br />{dede:mytag name='标记名称' ismake='是否含板块代码（yes 或 no）' typeid='栏目ID'/}<br />1、name 标记名称，该项是必须的属性，以下 2、3是可选属性；<br />2、ismake 默认是 no 表示设定的纯HTML代码， yes 表示含板块标记的代码；<br />3、typeid 表示所属栏目的ID，默认为 0 ，表示所有栏目通用的显示内容，在列表和文档模板中，typeid默认是这个列表或文档本身的栏目ＩＤ。</td></tr><tr><td width="15%" height="25" align="center">所属栏目：</td><td colspan="2"><?php$tl = new TypeLink(0);$typeOptions = $tl->GetOptionArray(0,0,0);echo "<select name='typeid' style='width:300'>\r\n";echo "<option value='0' selected>显示在没有继承本标记的所有栏目</option>\r\n";echo $typeOptions;echo "</select>";?></td></tr><tr><td height="25" align="center">标记名称：</td><td colspan="2"><input name="tagname" type="text" id="tagname" /></td></tr><tr><td height="25" align="center">时间限制：</td><td colspan="2"><input name="timeset" type="radio" value="0" checked='1' />永不过期<input type="radio" name="timeset" value="1" />在设内时间内有效</td></tr><tr><td height="25" align="center">开始时间：</td><td colspan="2"><input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="datepicker" /></td></tr><tr><td height="25" align="center">结束时间：</td><td colspan="2"><input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="datepicker" /></td></tr><tr><td height="80" align="center">正常显示内容：</td><td width="76%"><textarea name="normbody" id="normbody" style="width:80%;height:100"></textarea></td><td width="9%">&nbsp;</td></tr><tr><td height="80" align="center">过期显示内容：</td><td><textarea name="expbody" id="expbody" style="width:80%;height:100"></textarea></td><td>&nbsp;</td></tr><tr><td height="53" align="center">&nbsp;</td><td colspan="2"><button type="submit" >sss</button></td></tr></form></table></td></tr></table><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script type="text/javascript" src="../assets/pkg/moment/moment.min.js"></script><script type="text/javascript" src="../assets/pkg/daterangepicker/daterangepicker.js"></script><script language="javascript">$(document).ready(function () {$('.datepicker').daterangepicker({"singleDatePicker": true,"autoApply": true,"showDropdowns": true,"linkedCalendars": false,"timePicker": true,"timePicker24Hour": true,// "timePickerSeconds": true,"showCustomRangeLabel": false,ranges: {'今日': [moment(), moment()],'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],'本月': [moment().startOf('month'), moment().startOf('month')],'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]},"locale": {format: 'YYYY-MM-DD HH:mm',applyLabel: '确定',cancelLabel: '取消',daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],monthNames: ['一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月'],firstDay: 1}}, function (start) {$(this).val(start.format("YYYY-MM-DD HH:mm:ss"));});})</script></body></html>

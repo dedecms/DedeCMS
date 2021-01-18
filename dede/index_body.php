@@ -37,25 +37,7 @@ if (empty($dopost)) {
     $fp = fopen($dedecmsidc, 'r');
     $dedeIDC = fread($fp, filesize($dedecmsidc));
     fclose($fp);
-    $myMoveFile = DEDEDATA . '/admin/move-' . $cuserLogin->getUserID() . '.txt';
-    if (file_exists($myMoveFile)) {
-        $fp = fopen($myMoveFile, 'r');
-        $movedata = fread($fp, filesize($myMoveFile));
-        $movedata = unserialize($movedata);
-        $column1 = array();
-        $column2 = array();
-        foreach ($movedata['items'] as $key => $value) {
-            if ($value['column'] == 'column1') {
-                $column1 = $column1 + array($key => $value['id']);
-            } else if ($value['column'] == 'column2') {
-                $column2 = $column2 + array($key => $value['id']);
-            }
-
-        }
-        DedeInclude('templets/index_body_move.htm');
-    } else {
-        DedeInclude('templets/index_body.htm');
-    }
+    DedeInclude('templets/index_body.htm');
     exit();
 }
 /*-----------------------
@@ -125,33 +107,33 @@ else if ($dopost == 'editshow') {
 <form name='editform' action='index_body.php' method='post'>
 <input type='hidden' name='dopost' value='editsave' />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-   <tr>
-     <td height='28' background="images/tbg.gif">
-         <div style='float:left'><b>修改快捷操作项</b></div>
-      <div style='float:right;padding:3px 10px 0 0;'>
-             <a href="javascript:CloseTab('editTab')"><img src="images/close.gif" width="12" height="12" border="0" /></a>
-      </div>
-     </td>
-   </tr>
-      <tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659">&nbsp;</td></tr>
-   <tr>
-     <td>
-         按原格式修改/增加XML项。
-     </td>
-   </tr>
-   <tr>
-     <td align='center'>
-         <textarea name="quickmenu" rows="10" cols="50" style="width:94%;height:220px"><?php echo $oldct; ?></textarea>
-     </td>
-   </tr>
-   <tr>
-     <td height="45" align="center">
-         <input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
-         &nbsp;
-         <input type="reset" name="reset" value="重设" class="np coolbg" style="width:50px;cursor:pointer" />
-     </td>
-   </tr>
-  </table>
+<tr>
+<td height='28' background="images/tbg.gif">
+<div style='float:left'><b>修改快捷操作项</b></div>
+<div style='float:right;padding:3px 10px 0 0;'>
+<a href="javascript:CloseTab('editTab')"><img src="images/close.gif" width="12" height="12" border="0" /></a>
+</div>
+</td>
+</tr>
+<tr><td style="height:6px;font-size:1px;border-top:1px solid #8DA659">&nbsp;</td></tr>
+<tr>
+<td>
+按原格式修改/增加XML项。
+</td>
+</tr>
+<tr>
+<td align='center'>
+<textarea name="quickmenu" rows="10" cols="50" style="width:94%;height:220px"><?php echo $oldct; ?></textarea>
+</td>
+</tr>
+<tr>
+<td height="45" align="center">
+<input type="submit" name="Submit" value="保存项目" class="np coolbg" style="width:80px;cursor:pointer" />
+&nbsp;
+<input type="reset" name="reset" value="重设" class="np coolbg" style="width:50px;cursor:pointer" />
+</td>
+</tr>
+</table>
 </form>
     <?php
     exit();
@@ -183,20 +165,20 @@ else if ($dopost == 'getRightSide') {
         $chArr[] = $row;
     }
     ?>
-    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen " style="padding:12px 24px;">
-    <li><span> 会员数： </span>  <?php echo $row1['dd']; ?></li>
-    <li><span> 文档数： </span>  <?php echo $allArc; ?></li>
+<ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-circle" style="padding:12px 24px;">
+<li><span> 会员数： </span>  <?php echo $row1['dd']; ?></li>
+<li><span> 文档数： </span>  <?php echo $allArc; ?></li>
     <?php foreach ($chArr as $row) { ?>
-    <li><span> <?php echo $row['typename']; ?>： </span>  <?php echo $row['dd']; ?></li>
+<li><span> <?php echo $row['typename']; ?>： </span>  <?php echo $row['dd']; ?></li>
     <?php } ?>
-    <li><span> 评论数： </span>  <?php echo $row2['dd']; ?></li>
-    </ul>
+<li><span> 评论数： </span>  <?php echo $row2['dd']; ?></li>
+</ul>
     <?php
     exit();
 } else if ($dopost == 'News') {
     $query = "SELECT arc.id, arc.arcrank, arc.title, arc.channel, ch.editcon  FROM `#@__archives` arc
-            LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
-             WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 12 ";
+LEFT JOIN `#@__channeltype` ch ON ch.id = arc.channel
+WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 12 ";
     $arcArr = array();
     $dsql->Execute('m', $query);
     while ($row = $dsql->GetArray('m')) {
@@ -204,7 +186,7 @@ else if ($dopost == 'getRightSide') {
     }
     AjaxHead();
     ?>
-    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen" style="padding:0 24px; padding-top:24px;padding-bottom:0px;">
+<ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-circle" style="padding:0 24px; padding-top:24px;padding-bottom:0px;">
     <?php
     foreach ($arcArr as $row) {
         if (trim($row['editcon']) == '') {
@@ -216,11 +198,11 @@ else if ($dopost == 'getRightSide') {
         }
 
         ?>
-    <li> <?php echo $linkstr; ?></li>
+<li> <?php echo $linkstr; ?></li>
         <?php
     }
     ?>
-    </ul>
+</ul>
     <?php
     exit;
 } else if ($dopost == 'showauth') {
@@ -308,10 +290,10 @@ else if ($dopost == 'getRightSide') {
             $context = stream_context_create(
                 array(
                 'http' => array(
-                    'method' => $post ? 'POST' : 'GET',
-                    'header' => $header,
-                    'content' => $content,
-                    'timeout' => $timeout,
+                'method' => $post ? 'POST' : 'GET',
+                'header' => $header,
+                'content' => $content,
+                'timeout' => $timeout,
                 ),
                 )
             );
@@ -394,14 +376,14 @@ else if ($dopost == 'getRightSide') {
         $dsql->ExecuteNoneQuery($in_query);
     }
     $inff = array(
-        'alexa_num' => 'Alexa全球排名',
-        'alexa_area_num' => 'Alexa地区排名',
-        'baidu_count' => '百度收录',
-        'sogou_count' => '搜狗收录',
-        'haosou360_count' => '360收录',
+    'alexa_num' => 'Alexa全球排名',
+    'alexa_area_num' => 'Alexa地区排名',
+    'baidu_count' => '百度收录',
+    'sogou_count' => '搜狗收录',
+    'haosou360_count' => '360收录',
     );
     ?>
-    <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-hyphen " style="padding:0 24px; padding-top:18px;padding-bottom:0px;">
+<ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-circle" style="padding:0 24px; padding-top:18px;padding-bottom:0px;">
     <?php
     foreach ($seo_info as $key => $value) {
         if ($key == 'id' or $key == 'create_time') {
@@ -410,25 +392,19 @@ else if ($dopost == 'getRightSide') {
 
         ?>
 
-    <li>
-        <span> <?php
-        echo $inff[$key];
-        ?>
-        ： </span>  <?php
-        echo $value;
-        ?>
-
-    </li>
+<li>
+<span> <?php
+echo $inff[$key];
+?>
+： </span>  <?php
+echo $value;
+?>
+</li>
         <?php
     }
     ?>
-
-    </ul>
+</ul>
     <?php
-
     exit;
 }
 ?>
-
-
-

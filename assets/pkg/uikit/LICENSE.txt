@@ -1,7 +1,13 @@
-github.com/uikit/uikit & icons.getbootstrap.com 
+DedeCMS Icons是DedeCMS系统的一部分，请遵守DedeCMS授权协议（http://help.dedecms.com/usersguide/license.html）
+DedeCMS Icons与Bootstrap Icons使用uikit混合打包于: /assets/pkg/uikit/js/uikit-icons.min.js
+以下为Bootstrap Icons于uikit的授权协议：
 
 MIT License
 
+icons.getbootstrap.com 
+Copyright (c) 2019-2020 The Bootstrap Authors
+
+github.com/uikit/uikit
 Copyright (C) 2017 by Marijn Haverbeke <marijnh@gmail.com> and others
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
