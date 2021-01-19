@@ -6,7 +6,7 @@
  * @package   DedeCMS.Administrator
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
  */
@@ -103,7 +103,7 @@ else if ($dopost == "copy") {
         $msg .= "<tr>\r\n";
         $msg .= " <td height='24' align='center'>新模型描述：</td>\r\n";
         $msg .= " <td><label>\r\n";
-        $msg .= " <textarea name=\"description\" id=\"description\" cols=\"45\" rows=\"5\" onClick=\"this.value=''\">新模型描述</textarea>\r\n";
+        $msg .= " <textarea class=\"uk-textarea uk-form-small\" name=\"description\" id=\"description\" cols=\"45\" rows=\"5\" onClick=\"this.value=''\">新模型描述</textarea>\r\n";
         $msg .= " </label></td>\r\n";
         $msg .= "</tr>\r\n";
         $msg .= "<tr>\r\n";

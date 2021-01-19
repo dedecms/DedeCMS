@@ -6,7 +6,7 @@
  * @package   DedeCMS.Administrator
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
  */
@@ -23,7 +23,7 @@ if ($job == '') {
     $win->Init("co_get_corule.php", "js/blank.js", "POST");
     $win->AddHidden("job", "yes");
     $win->AddTitle("请在下面输入你要导入的文本配置：(建议用base64编码[支持不编码的规则，但不兼容旧版规则])");
-    $win->AddMsgItem("<textarea name='notes' style='width:100%;height:300px' class='uk-textarea'></textarea>");
+    $win->AddMsgItem("<textarea class='uk-textarea uk-form-small' name='notes' style='width:100%;height:300px' class='uk-textarea'></textarea>");
     $winform = $win->GetWindow("ok");
     $win->Display();
     exit();

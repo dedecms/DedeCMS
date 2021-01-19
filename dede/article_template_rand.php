@@ -6,7 +6,7 @@
  * @package   DedeCMS.Administrator
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
  */
@@ -111,7 +111,7 @@ function DoRand(jobname)
     <td bgcolor='#FAFBFC'><b>请按说明修改设置：</b></td>
 </tr>
 <tr>
-    <td><textarea name='templates' id='templates' style='width:100%;height:250px'>$templates</textarea></td>
+    <td><textarea class='uk-textarea uk-form-small' name='templates' id='templates' style='width:100%;height:250px'>$templates</textarea></td>
 </tr>
 </table>";
 

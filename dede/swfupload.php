@@ -6,7 +6,7 @@
  * @package   DedeCMS.Administrator
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
  */
@@ -188,7 +188,8 @@ else if ($dopost == 'ddimg') {
     if (!preg_match("/^(http:\/\/)?([^\/]+)/i", $img)) {
         $img = $cfg_basedir . $img;
     }
-
+    $cfg_ddimg_width = 250;
+    $cfg_ddimg_height = 150;
     ImageResizeNew($img, $cfg_ddimg_width, $cfg_ddimg_height, '', false);
     $imagevariable = ob_get_contents();
     ob_end_clean();
@@ -202,10 +203,13 @@ else if ($dopost == 'ddimg') {
  *************************/
 else if ($dopost == 'delold') {
     $imgfile = $cfg_basedir . $picfile;
-    if (!file_exists($imgfile) && !is_dir($imgfile) && preg_match("#^" . $cfg_medias_dir . "#", $imgfile)) {
+    
+    if (file_exists($imgfile) && !is_dir($imgfile)) {
         @unlink($imgfile);
+        echo $picfile;
+        $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE url LIKE '{$picfile}'; ");
+        echo "<b>已删除！</b>";
     }
-    $dsql->ExecuteNoneQuery("DELETE FROM `#@__uploads` WHERE url LIKE '{$picfile}'; ");
-    echo "<b>已删除！</b>";
+    
     exit();
 }

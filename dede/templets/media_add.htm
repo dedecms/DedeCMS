@@ -1,1 +1,149 @@
-{dede:config.pagesize value="20"/}<html><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>上传新文件</title><meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>上传新文件</span></li></ul></span></div><!-- 搜索表单 --><ul class="uk-navbar-nav dede-card-navbar" uk-navbar ><li style="margin-right: 12px;"><a href="media_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">附件/媒体数据管理</a></li></ul><!-- /搜索表单 --></div></div><!-- /列表头部 --><form enctype="multipart/form-data" name='form1' action="media_add.php" method="POST" onSubmit="return CheckSubmit();"><input type="hidden" name="dopost" value="upload" /><input type="hidden" name="token" value="<?php echo make_hash();?>" /><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><div class="uk-form-horizontal uk-margin-small"><div class="uk-margin"><label class="uk-form-label">是否支持投稿</label><div class="uk-form-controls uk-form-controls-text "><input name="mediatype" type="radio" class='uk-radio' value="1" checked='1' /> 图片 &nbsp;<input type="radio" name="mediatype" class='uk-radio' value="3" /> 视频/音频 &nbsp;<input type="radio" name="mediatype" class='uk-radio' value="4" /> 附件/其它 &nbsp;</div></div><div class="uk-margin"><label class="uk-form-label">说明标题</label><div class="uk-form-controls"><input name="title" type="text" id="title" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">附加参数</label><div class="uk-form-controls">宽： <input name="mediawidth" type="text" id="mediawidth" class="uk-input uk-form-small uk-form-width-small"/> (像素)　&nbsp;&nbsp;高： <input name="mediaheight" type="text" id="mediaheight" class="uk-input uk-form-small uk-form-width-small"/> (像素) &nbsp;&nbsp;播放时间： <input name="playtime" type="text" id="mediawidth3" class="uk-input uk-form-small uk-form-width-small"/> (分钟)</div></div><div class="uk-margin"><label class="uk-form-label">上传新文件</label><div class="uk-form-controls">数量： <input name="picnum" type="text" id="picnum" value="1" class="uk-input uk-form-small uk-form-width-small" />　&nbsp;&nbsp;<button type="button" name="Submit" onClick="MakeUpload()" class="uk-button uk-button-small uk-button-primary">增加</button>&nbsp;<button type="button" name="Submit" onClick="ResetUpload()" class="uk-button uk-button-small ">恢复</button> &nbsp;&nbsp;(如出现服务器413错误，请调整您PHP或Web Server的上传限制。)</div></div><div class="uk-margin" id="upfile1"><label class="uk-form-label"></label><div class="uk-form-controls"><div class="uk-inline" uk-form-custom="target: true"><span class="uk-form-icon" uk-icon="icon: file"></span><input name="upfile[]" type="file"><input class="uk-input uk-form-small uk-form-width-large" type="text" placeholder="点击选择文件" ></div></div></div><div class="uk-margin" id="upfile"><label class="uk-form-label"></label><div class="uk-form-controls"><div class="uk-inline" uk-form-custom="target: true"><span class="uk-form-icon" uk-icon="icon: file"></span><input name="upfile[]" type="file"><input class="uk-input uk-form-small uk-form-width-large" type="text" placeholder="点击选择文件" ></div></div></div><div id="uploadfield"></div></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div><!-- /列表主体 --></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script language='javascript'>function CheckSubmit(){if(document.form1.title.value==""){alert("请设定媒体标题！");document.form1.title.focus();return false;}}var startNum = 3;function MakeUpload(){var endNum = Number(document.form1.picnum.value)+startNum -1;for(startNum;startNum<=endNum;startNum++){html = ""html += "<div class=\"uk-margin\">";html += "<label class=\"uk-form-label\"></label>";html += "<div class=\"uk-form-controls\">";html += "<div class=\"uk-inline\" uk-form-custom=\"target: true\">";html += "<span class=\"uk-form-icon\" uk-icon=\"icon: file\"></span>";html += "<input name='upfile[]' type=\"file\">";html += "<input class=\"uk-input uk-form-small uk-form-width-large\" type=\"text\" placeholder=\"点击选择文件\" >";html += "</div>";html += "</div>";html += "</div>";$("#uploadfield").append(html);}}function ResetUpload(){var upfield = document.getElementById("uploadfield");upfield.innerHTML = "";startNum = 3;}</script><!-- / JS FILES --></body></html>
+{dede:config.pagesize value="20"/}
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>上传新文件</title>
+<meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>上传新文件</span></li></ul></span>
+</div>
+<!-- 搜索表单 -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="media_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">附件/媒体数据管理</a></li>
+</ul>
+<!-- /搜索表单 -->
+</div>
+</div>
+<!-- /列表头部 -->
+<form enctype="multipart/form-data" name='form1' action="media_add.php" method="POST" onSubmit="return CheckSubmit();">
+<input type="hidden" name="dopost" value="upload" />
+<input type="hidden" name="token" value="<?php echo make_hash();?>" />
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<div class="uk-form-horizontal uk-margin-small">
+<div class="uk-margin">
+<label class="uk-form-label">媒体类型</label>
+<div class="uk-form-controls uk-form-controls-text ">
+<input name="mediatype" type="radio" class='uk-radio' value="1" checked='1' /> 图片 &nbsp;
+<input type="radio" name="mediatype" class='uk-radio' value="3" /> 视频/音频 &nbsp;
+<input type="radio" name="mediatype" class='uk-radio' value="4" /> 附件/其它 &nbsp;
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">说明标题</label>
+<div class="uk-form-controls">
+<input name="title" type="text" id="title" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">附加参数</label>
+<div class="uk-form-controls">
+宽： <input name="mediawidth" type="text" id="mediawidth" class="uk-input uk-form-small uk-form-width-small"/> (像素)　&nbsp;&nbsp;
+高： <input name="mediaheight" type="text" id="mediaheight" class="uk-input uk-form-small uk-form-width-small"/> (像素) &nbsp;&nbsp;
+播放时间： <input name="playtime" type="text" id="mediawidth3" class="uk-input uk-form-small uk-form-width-small"/> (分钟)
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">上传新文件</label>
+<div class="uk-form-controls">
+数量： <input name="picnum" type="text" id="picnum" value="1" class="uk-input uk-form-small uk-form-width-small" />　&nbsp;&nbsp;
+<button type="button" name="Submit" onClick="MakeUpload()" class="uk-button uk-button-small uk-button-primary">增加</button>
+&nbsp;
+<button type="button" name="Submit" onClick="ResetUpload()" class="uk-button uk-button-small ">恢复</button> &nbsp;&nbsp;
+(如出现服务器413错误，请调整您PHP或Web Server的上传限制。)
+</div>
+</div>
+<div class="uk-margin" id="upfile1">
+<label class="uk-form-label"></label>
+<div class="uk-form-controls">
+<div class="uk-inline" uk-form-custom="target: true">
+<span class="uk-form-icon" uk-icon="icon: file"></span>
+<input name="upfile[]" type="file">
+<input class="uk-input uk-form-small uk-form-width-large" type="text" placeholder="点击选择文件" >
+</div>
+</div>
+</div>
+<div class="uk-margin" id="upfile">
+<label class="uk-form-label"></label>
+<div class="uk-form-controls">
+<div class="uk-inline" uk-form-custom="target: true">
+<span class="uk-form-icon" uk-icon="icon: file"></span>
+<input name="upfile[]" type="file">
+<input class="uk-input uk-form-small uk-form-width-large" type="text" placeholder="点击选择文件" >
+</div>
+</div>
+</div>
+<div id="uploadfield">
+</div>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language='javascript'>
+function CheckSubmit()
+{
+if(document.form1.title.value==""){
+alert("请设定媒体标题！");
+document.form1.title.focus();
+return false;
+}
+}
+var startNum = 3;
+function MakeUpload()
+{
+var endNum = Number(document.form1.picnum.value)+startNum -1;
+for(startNum;startNum<=endNum;startNum++){
+html = ""
+html += "<div class=\"uk-margin\">";
+html += "<label class=\"uk-form-label\"></label>";
+html += "<div class=\"uk-form-controls\">";
+html += "<div class=\"uk-inline\" uk-form-custom=\"target: true\">";
+html += "<span class=\"uk-form-icon\" uk-icon=\"icon: file\"></span>";
+html += "<input name='upfile[]' type=\"file\">";
+html += "<input class=\"uk-input uk-form-small uk-form-width-large\" type=\"text\" placeholder=\"点击选择文件\" >";
+html += "</div>";
+html += "</div>";
+html += "</div>";
+$("#uploadfield").append(html);
+}
+}
+function ResetUpload()
+{
+var upfield = document.getElementById("uploadfield");
+upfield.innerHTML = "";
+startNum = 3;
+}
+</script>
+<!-- / JS FILES -->
+</body>
+</html>
