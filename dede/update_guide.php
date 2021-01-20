@@ -87,10 +87,8 @@ $upTime = trim(fread($fp, 64));
 fclose($fp);
 $oktime = substr($upTime, 0, 4) . '-' . substr($upTime, 4, 2) . '-' . substr($upTime, 6, 2);
 
-/**
-用AJAX获取最新版本信息
-function _Test() {  }
- */
+//  用AJAX获取最新版本信息
+//  function _Test() {  }
 if ($dopost == 'test') {
     AjaxHead();
     //下载远程数据
@@ -131,29 +129,13 @@ if ($dopost == 'test') {
     //判断是否需要更新，并返回适合的结果
     if ($n == 0) {
         $offUrl = SpGetNewInfo();
-        echo "<div class='updatedvt'><b>你系统版本最后更新时间为：{$oktime}，当前没有可用的更新</b></div>\r\n";
-        echo "<iframe name='stafrm' src='{$offUrl}&uptime={$oktime}' frameborder='0' id='stafrm' width='100%' height='50'></iframe>";
-    } else {
-        echo "<div style='width:98%'><form name='fup' action='update_guide.php' method='post' onsubmit='ShowWaitDiv()'>\r\n";
-        echo "<input type='hidden' name='dopost' value='getlist' />\r\n";
-        echo "<input type='hidden' name='vtime' value='$lastTime' />\r\n";
-        echo "<input type='hidden' name='upitems' value='$upitems' />\r\n";
-        echo "<div class='upinfotitle'>你系统版本最后更新时间为：{$oktime}，当前可用的更新有：</div>\r\n";
-        foreach ($updateVers as $vers) {
-            $style = '';
-            if ($vers['issafe'] == 1) {
-                $style = "color:red;";
-            }
-            echo "<div style='{$style}' class='verline'>【" . ($vers['issafe'] == 1 ? "安全更新" : "普通更新") . "】";
-            echo $vers['vtime'] . "，更新说明：{$vers['vmsg']}</div>\r\n";
-        }
-        echo "<div style='line-height:32px'><input type='submit' name='sb1' value=' 点击此获取所有更新文件，然后选择安装 ' class='np coolbg' style='cursor:pointer' />\r\n";
-        echo " &nbsp; <input type='button' name='sb2' value=' 忽略这些更新 ' onclick='SkipReload({$lastTime})' class='np coolbg'  style='cursor:pointer' /></div>\r\n";
-        echo "</form></div>";
-    }
-    //echo "</xmp>";
+    } 
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/update_guide.htm");
+    $tpl->Display();
     exit();
 }
+
 /**
 忽略某个日期前的升级
 function _Skip() {  }

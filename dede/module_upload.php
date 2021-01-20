@@ -106,9 +106,12 @@ if ($action == 'upload') {
     <label class=\"uk-form-label\">请选择文件：</label>
     <div class=\"uk-form-controls\">
     <div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">
-    <div uk-form-custom=\"target: true\">
-        <input type=\"file\">
-        <input class=\"uk-input uk-form-width-medium\" type=\"text\" placeholder=\"点击选择文件\" disabled>
+    <div>
+    <div  class='uk-inline'  uk-form-custom=\"target: true\">
+    <span class='uk-form-icon uk-icon' uk-icon='icon: upload'></span>
+    <input name='upfile' type='file' id='upfile' />
+    <input class='uk-input uk-form-small uk-form-width-large' type='text' placeholder='点击选择文件'>
+    </div>
     </div>
     </div>
     </div>

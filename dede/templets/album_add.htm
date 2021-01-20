@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta charset="utf-8" />
+<meta charset="{dede:global.cfg_soft_lang/}" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>发布新图集</title>
 <meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.simplecolorpicker.css">
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/croppie/croppie.css">
-<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
 <style type="text/css">
 .uk-table td{
 padding: 6px 12px;
@@ -169,7 +168,7 @@ echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="pubdate" value="<?=GetDateTimeMk(time())?>" type="text" id="pubdate" class="datepicker uk-input uk-form-width-large uk-form-small" />
+<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk(time())?>">
 </div>
 </td>
 <td width="90" style="vertical-align:middle;">浏览次数：</td>
@@ -326,39 +325,10 @@ echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.simplecolorpicker.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/pkg/croppie/croppie.min.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.js"></script>
 <script language="javascript">
 var albums =[] ;
 $(document).ready(function() {
 $('#colorpicker').simplecolorpicker({picker: true, theme: 'glyphicons'});
-$('.datepicker').daterangepicker({
-"singleDatePicker": true,
-"autoApply": true,
-"showDropdowns": true,
-"linkedCalendars": false,
-"timePicker": true,
-"timePicker24Hour": true,
-"timePickerSeconds": true,
-"showCustomRangeLabel": false,
-ranges: {
-'今日': [moment(), moment()],
-'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-'本月': [moment().startOf('month'), moment().startOf('month')],
-'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
-},
-"locale": {
-format: 'YYYY-MM-DD HH:mm:ss',
-applyLabel: '确定',
-cancelLabel: '取消',
-daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-'七月', '八月', '九月', '十月', '十一月', '十二月'],
-firstDay: 1
-}
-}, function (start) {
-$(this).val(start.format("YYYY-MM-DD HH:mm:ss"));
-});
 });
 </script>
 <!-- / JS FILES -->

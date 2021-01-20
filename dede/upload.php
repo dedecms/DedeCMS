@@ -1,8 +1,8 @@
 <?php
 /**
- * swfupload上传
+ * upload上传
  *
- * @version   $Id: swfupload.php 1 16:22 2010年7月20日 $
+ * @version   $Id: upload.php 1 16:22 2010年7月20日 $
  * @package   DedeCMS.Administrator
  * @founder   IT柏拉图, https: //weibo.com/itprato
  * @author    DedeCMS团队

@@ -104,13 +104,13 @@ class Array2form
         case 'text':
             //生成文本编辑框
             $valstr = (empty($formarry['value'])) ? "value=''" : "value='{$formarry['value']}'";
-            $reval_form = "<input type='text' name='{$key}' id='{$key}' style='width:300px' class='text'{$valstr}>";
+            $reval_form = "<input type='text' name='{$key}' id='{$key}' class='uk-input uk-form-small uk-form-width-large' {$valstr}>";
             break;
         case 'select':
             //生成选择框
             $reval_title = $formarry['title'];
             $items = explode(',', $formarry['iterm']);
-            $reval_form = "<select name='{$key}' class='text'>";
+            $reval_form = "<select name='{$key}' class='uk-select uk-form-small uk-form-width-large'>";
             if (is_array($items)) {
                 foreach ($items as $v) {
                     $v = trim($v);

@@ -1,69 +1,1 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/>
-<title>发送邮件</title>
-
-<style type="text/css">
-.rb{ border-right:1px solid #98CAEF }
-.tb{ border-top:1px solid #98CAEF }
-.current {border:1px solid #dbe4cd;padding:5px;background:#FFFEF4;color:#FF0000;}
-</style>
-</head>
-<body>
-<div class="bodytitle">
-<div class="bodytitleleft"></div>
-<div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div>
-</div>
-<table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;">
-<tbody><tr>
-<td height="30" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">编辑期刊</td>
-</tr>
-<tr bgcolor="#ffffff" height="26">
-<td colspan="7" align="left">
-<form method="post" action="mail_title.php">
-<input name="dopost" type="hidden" value="editsave"/>
-<input name="id" type="hidden" value="<?php echo $row['id'] ?>"/>
-<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#ffffff">
-<tbody><tr>
-<td width="129" height="30" align="right">期刊号：</td>
-<td height="25" colspan="2">第<input name="period" type="text" value="<?php echo $row['period'] ?>" class="uk-input uk-form-small"/>期</td>
-</tr>
-<tr id="one">
-<td width="129" height="30" align="right">订阅分类：</td>
-<td height="25" colspan="2">
-<select name="typeid" id="typeid" class="uk-select uk-form-small">
-<!--?php
-foreach($btypes as $k=-->$v){
-if($row['typeid']==$k) echo "<option value="$k" selected="">$v</option>";
-else echo "<option value="$k">$v</option>";
-}
-?>
-</select>
-</td>
-</tr>
-<tr>
-<td width="129" height="30" align="right">邮件标题：</td>
-<td height="25" colspan="2"><input name="title" type="text" id="title" value="<?php echo $row['title'] ?>" class="uk-input uk-form-small"/>
-标题少于70个字符内</td>
-</tr>
-<tr>
-<td height="12" align="right" valign="top" bgcolor="#ffffff" style="padding-top:5px;"><label for="pm_textarea">邮件内容：</label></td>
-<td height="120" bgcolor="#ffffff" width="568">
-<div style="width:568px;"><!--?php GetEditor("message",$row['content'],450,"MemberLit"); ?--></div>
-</td>
-<td width="314" bgcolor="#FAFBFC"> </td>
-</tr>
-<tr>
-<td height="28" align="right" valign="top" bgcolor="#ffffff"> </td>
-<td height="30" colspan="2" bgcolor="#ffffff"><input type="submit" value="提交"/></td>
-</tr>
-</tbody></table>
-</form>
-</td>
-</tr>
-<tr bgcolor="#F8FBFB">
-<td height="26" align="center" bgcolor="#FAFBFC"> </td>
-</tr>
-</tbody></table>
-
-
-</body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>发送邮件</title><style type="text/css">.rb{ border-right:1px solid #98CAEF }.tb{ border-top:1px solid #98CAEF }.current {border:1px solid #dbe4cd;padding:5px;background:#FFFEF4;color:#FF0000;}</style></head><body><div class="bodytitle"><div class="bodytitleleft"></div><div class="bodytitletxt" style="padding-left:10px;">邮件订阅</div></div><table width="98%" border="0" cellpadding="1" cellspacing="1" align="center" class="tbtitle" style="background:#EAECEF;"><tbody><tr><td height="30" bgcolor="#EDF9D5" background="images/tbg.gif" style="padding-left:10px;">编辑期刊</td></tr><tr bgcolor="#ffffff" height="26"><td colspan="7" align="left"><form method="post" action="mail_title.php"><input name="dopost" type="hidden" value="editsave"/><input name="id" type="hidden" value="<?php echo $row['id'] ?>"/><table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#ffffff"><tbody><tr><td width="129" height="30" align="right">期刊号：</td><td height="25" colspan="2">第<input name="period" type="text" value="<?php echo $row['period'] ?>" class="uk-input uk-form-small"/>期</td></tr><tr id="one"><td width="129" height="30" align="right">订阅分类：</td><td height="25" colspan="2"><select name="typeid" id="typeid" class="uk-select uk-form-small"><!--?phpforeach($btypes as $k=-->$v){if($row['typeid']==$k) echo "<option value="$k" selected="">$v</option>";else echo "<option value="$k">$v</option>";}?></select></td></tr><tr><td width="129" height="30" align="right">邮件标题：</td><td height="25" colspan="2"><input name="title" type="text" id="title" value="<?php echo $row['title'] ?>" class="uk-input uk-form-small"/>标题少于70个字符内</td></tr><tr><td height="12" align="right" valign="top" bgcolor="#ffffff" style="padding-top:5px;"><label for="pm_textarea">邮件内容：</label></td><td height="120" bgcolor="#ffffff" width="568"><div style="width:568px;"><!--?php GetEditor("message",$row['content'],450,"MemberLit"); ?--></div></td><td width="314" bgcolor="#FAFBFC"> </td></tr><tr><td height="28" align="right" valign="top" bgcolor="#ffffff"> </td><td height="30" colspan="2" bgcolor="#ffffff"><input type="submit" value="提交"/></td></tr></tbody></table></form></td></tr><tr bgcolor="#F8FBFB"><td height="26" align="center" bgcolor="#FAFBFC"> </td></tr></tbody></table></body></html>

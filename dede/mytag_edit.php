@@ -44,11 +44,11 @@ if ($dopost == 'delete') {
     exit();
 } else if ($dopost == "getjs") {
     include_once DEDEINC . "/oxwindow.class.php";
-    $jscode = "<script src='{$cfg_phpurl}/mytag_js.php?aid=$aid' language='javascript'></script>";
-    $showhtml = "<xmp style='color:#333333;background-color:#ffffff'>\r\n\r\n$jscode\r\n\r\n</xmp>";
-    $showhtml .= "<b>预览：</b><iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='250'></iframe>";
+    $jscode = "&lt;script src='{$cfg_phpurl}/mytag_js.php?aid=$aid' language='javascript'></script>";
+    $showhtml = "<pre><code>\r\n$jscode\r\n\r\n</code></pre>";
+    $showhtml .= "<div class=\"uk-margin\"><b>预览：</b></div><iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='250'></iframe>";
     $wintitle = "宏标记定义-获取JS";
-    $wecome_info = "<a href='mytag_main.php'><u>宏标记定义</u></a>::获取JS";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href='mytag_main.php'>宏标记定义</a></li><li><span>获取JS</span></li></ul>";
     $win = new OxWindow();
     $win->Init();
     $win->AddTitle('以下为选定宏标记的JS调用代码：');
@@ -56,8 +56,9 @@ if ($dopost == 'delete') {
     $win->Display();
     exit();
 } else if ($dopost == "testjs") {
-    echo "<body bgcolor='#ffffff'>";
-    echo "<script src='{$cfg_phpurl}/mytag_js.php?aid=$aid&nocache=1' language='javascript'></script>";
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/mytag_js.htm");
+    $tpl->Display();
     exit();
 }
 $row = $dsql->GetOne("SELECT * FROM `#@__mytag` WHERE aid='$aid'");

@@ -1,126 +1,1 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/>
-<title>更改广告</title>
-
-
-
-
-
-
-<script language="javascript">
-$(document).ready(function () {
-$('.datepicker').daterangepicker({
-"singleDatePicker": true,
-"autoApply": true,
-"showDropdowns": true,
-"linkedCalendars": false,
-"timePicker": true,
-"timePicker24Hour": true,
-// "timePickerSeconds": true,
-"showCustomRangeLabel": false,
-ranges: {
-'今日': [moment(), moment()],
-'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-'本月': [moment().startOf('month'), moment().startOf('month')],
-'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
-},
-"locale": {
-format: 'YYYY-MM-DD HH:mm',
-applyLabel: '确定',
-cancelLabel: '取消',
-daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-'七月', '八月', '九月', '十月', '十一月', '十二月'],
-firstDay: 1
-}
-}, function (start) {
-$(this).val(start.format("YYYY-MM-DD HH:mm"));
-});
-})
-</script>
-</head>
-<body>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
-<tbody><tr>
-<td height="28" background="images/tbg.gif" style="padding-left:10px;"> <b><a href="ad_main.php"><u>广告管理</u></a></b> >> 更改广告 </td>
-</tr>
-<tr>
-<td height="200" bgcolor="#FFFFFF" valign="top">
-<table width="100%" border="0" cellspacing="4" cellpadding="4">
-<form action="ad_edit.php" method="post" enctype="multipart/form-data" name="form1"></form>
-<input type="hidden" name="aid" value="<?php echo $aid?>"/>
-<input type="hidden" name="dopost" value="saveedit"/>
-<input type="hidden" name="token" value="<?php echo make_hash();?>"/>
-<tbody><tr>
-<td height="25" align="center">广告位标识：</td>
-<td colspan="2">
-<!--?php echo $row['tagname']; ?-->
-</td>
-</tr>
-<tr>
-<td height="25" align="center">广告分类：</td>
-<td colspan="2"><select name="clsid" id="clsid" class="uk-select uk-form-small">
-<option value="0">默认分类...</option>
-<!--?php echo $option;?-->
-</select></td>
-</tr>
-<tr>
-<td width="15%" height="25" align="center">广告投放范围：</td>
-<td colspan="2">
-<!--?php
-$tl = new TypeLink(0);
-$typeOptions = $tl--->GetOptionArray($row['typeid'],0,0);
-echo "<select name="typeid" class="uk-select uk-form-small">\r\n";
-echo "<option value="0" selected="">投放在没有同名标识的所有栏目</option>\r\n";
-echo $typeOptions;
-echo "</select>";
-?>
-<br/>
-（如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）
-</td>
-</tr>
-<tr>
-<td height="25" align="center">广告位名称：</td>
-<td colspan="2"><input name="adname" type="text" id="adname" value="<?php echo $row['adname']?>" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td height="25" align="center">时间限制：</td>
-<td colspan="2"><input ?="" name="timeset" type="radio" value="0" <?php="" if($row['timeset']="=0)" echo="" "="" checked="1" "="" ;="" class="uk-radio"/> />
-永不过期
-<input ?="" type="radio" name="timeset" value="1" <?php="" if($row['timeset']="=1)" echo="" "="" checked="1" "="" ;="" class="uk-radio"/> />
-在设内时间内有效
-</td>
-</tr>
-<tr>
-<td height="25" align="center">投放时间：</td>
-<td colspan="2">从
-<input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>" class="uk-input uk-form-small"/>
-到
-<input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>" class="uk-input uk-form-small"/>
-</td>
-</tr>
-<tr>
-<td height="80" align="center">正常显示内容：</td>
-<td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100" class="uk-textarea uk-form-small"><?php echo dede_htmlspecialchars(stripslashes($row['normbody']))?>
-</textarea>
-</td>
-<td width="9%"> </td>
-</tr>
-<tr>
-<td height="80" align="center">过期显示内容：</td>
-<td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100" class="uk-textarea uk-form-small"><?php echo dede_htmlspecialchars($row['expbody'])?>
-</textarea></td>
-<td> </td>
-</tr>
-<tr>
-<td height="53" align="center"> </td>
-<td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"/></td>
-</tr>
-
-</tbody></table>
-</td>
-</tr>
-</tbody></table>
-
-
-</body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>更改广告</title><script language="javascript">$(document).ready(function () {$('.datepicker').daterangepicker({"singleDatePicker": true,"autoApply": true,"showDropdowns": true,"linkedCalendars": false,"timePicker": true,"timePicker24Hour": true,// "timePickerSeconds": true,"showCustomRangeLabel": false,ranges: {'今日': [moment(), moment()],'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],'本月': [moment().startOf('month'), moment().startOf('month')],'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]},"locale": {format: 'YYYY-MM-DD HH:mm',applyLabel: '确定',cancelLabel: '取消',daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],monthNames: ['一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月'],firstDay: 1}}, function (start) {$(this).val(start.format("YYYY-MM-DD HH:mm"));});})</script></head><body><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td height="28" background="images/tbg.gif" style="padding-left:10px;"> <b><a href="ad_main.php"><u>广告管理</u></a></b> >> 更改广告 </td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4"><form action="ad_edit.php" method="post" enctype="multipart/form-data" name="form1"></form><input type="hidden" name="aid" value="<?php echo $aid?>"/><input type="hidden" name="dopost" value="saveedit"/><input type="hidden" name="token" value="<?php echo make_hash();?>"/><tbody><tr><td height="25" align="center">广告位标识：</td><td colspan="2"><!--?php echo $row['tagname']; ?--></td></tr><tr><td height="25" align="center">广告分类：</td><td colspan="2"><select name="clsid" id="clsid" class="uk-select uk-form-small"><option value="0">默认分类...</option><!--?php echo $option;?--></select></td></tr><tr><td width="15%" height="25" align="center">广告投放范围：</td><td colspan="2"><!--?php$tl = new TypeLink(0);$typeOptions = $tl--->GetOptionArray($row['typeid'],0,0);echo "<select name="typeid" class="uk-select uk-form-small">\r\n";echo "<option value="0" selected="">投放在没有同名标识的所有栏目</option>\r\n";echo $typeOptions;echo "</select>";?><br/>（如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）</td></tr><tr><td height="25" align="center">广告位名称：</td><td colspan="2"><input name="adname" type="text" id="adname" value="<?php echo $row['adname']?>" class="uk-input uk-form-small"/></td></tr><tr><td height="25" align="center">时间限制：</td><td colspan="2"><input ?="" name="timeset" type="radio" value="0" <?php="" if($row['timeset']="=0)" echo="" "="" checked="1" "="" ;="" class="uk-radio"/> />永不过期<input ?="" type="radio" name="timeset" value="1" <?php="" if($row['timeset']="=1)" echo="" "="" checked="1" "="" ;="" class="uk-radio"/> />在设内时间内有效</td></tr><tr><td height="25" align="center">投放时间：</td><td colspan="2">从<input name="starttime" type="text" id="starttime" value="<?php echo GetDateTimeMk($row['starttime'])?>" class="uk-input uk-form-small"/>到<input name="endtime" type="text" id="endtime" value="<?php echo GetDateTimeMk($row['endtime'])?>" class="uk-input uk-form-small"/></td></tr><tr><td height="80" align="center">正常显示内容：</td><td width="76%"><textarea name="normbody" rows="10" id="normbody" style="width:80%;height:100" class="uk-textarea uk-form-small"><?php echo dede_htmlspecialchars(stripslashes($row['normbody']))?></textarea></td><td width="9%"> </td></tr><tr><td height="80" align="center">过期显示内容：</td><td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100" class="uk-textarea uk-form-small"><?php echo dede_htmlspecialchars($row['expbody'])?></textarea></td><td> </td></tr><tr><td height="53" align="center"> </td><td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"/></td></tr></tbody></table></td></tr></tbody></table></body></html>

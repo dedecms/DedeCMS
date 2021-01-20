@@ -1,59 +1,1 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/>
-<title>
-<?php echo $diy->name;?>
-</title>
-
-
-
-<script language="javascript">
-< !--
-function SelectTemplets(fname) {
-if (document.all) {
-var posLeft = window.event.clientY - 100;
-var posTop = window.event.clientX - 400;
-}
-else {
-var posLeft = 100;
-var posTop = 100;
-}
-window.open("dialog/select_templets.php?f=" + fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left=" + posLeft + ", top=" + posTop);
-}
--->
-</script>
-</head>
-<body>
-<div class="bodytitle">
-<div class="bodytitleleft"></div>
-<div class="bodytitletxt">
-<a href="diy_main.php"><b>自定义表单管理</b></a> > <a href="diy_list.php?action=list&diyid=<?php echo $diyid; ?>"><b>
-<!--?php echo $diy--->name; ?>
-</b></a> > <b>发布内容</b>
-</div>
-</div>
-<form name="form1" action="diy_list.php" method="post">
-<input type="hidden" name="action" value="post"/>
-<input type="hidden" name="diyid" value="<?php echo $diyid;?>"/>
-<input type="hidden" name="do" value="2"/>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#ffffff">
-<tbody><tr>
-<td bgcolor="#ffffff">
-<!--?php
-echo $postform;
-?-->
-</td>
-</tr>
-</tbody></table>
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
-<tbody><tr>
-<td bgcolor="#FAFBFC" height="36" align="center">
-<input type="submit" name="submit" value="提交"/>
- 
-<input type="reset" name="reset" value="重置"/>
-</td>
-</tr>
-</tbody></table>
-</form>
-
-
-</body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title><?php echo $diy->name;?></title><script language="javascript">< !--function SelectTemplets(fname) {if (document.all) {var posLeft = window.event.clientY - 100;var posTop = window.event.clientX - 400;}else {var posLeft = 100;var posTop = 100;}window.open("dialog/select_templets.php?f=" + fname, "poptempWin", "scrollbars=yes,resizable=yes,statebar=no,width=600,height=400,left=" + posLeft + ", top=" + posTop);}--></script></head><body><div class="bodytitle"><div class="bodytitleleft"></div><div class="bodytitletxt"><a href="diy_main.php"><b>自定义表单管理</b></a> > <a href="diy_list.php?action=list&diyid=<?php echo $diyid; ?>"><b><!--?php echo $diy--->name; ?></b></a> > <b>发布内容</b></div></div><form name="form1" action="diy_list.php" method="post"><input type="hidden" name="action" value="post"/><input type="hidden" name="diyid" value="<?php echo $diyid;?>"/><input type="hidden" name="do" value="2"/><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#ffffff"><tbody><tr><td bgcolor="#ffffff"><!--?phpecho $postform;?--></td></tr></tbody></table><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td bgcolor="#FAFBFC" height="36" align="center"><input type="submit" name="submit" value="提交"/> <input type="reset" name="reset" value="重置"/></td></tr></tbody></table></form></body></html>

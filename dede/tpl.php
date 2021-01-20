@@ -137,20 +137,26 @@ else if ($action == 'upload') {
     make_hash();
     $win->Init("tpl.php", "js/blank.js", "POST' enctype='multipart/form-data' ");
     $win->mainTitle = "模块管理";
-    $wecome_info = "<a href='templets_main.php'>模板管理</a> &gt;&gt; 上传模板";
+    $wecome_info = "<ul class='uk-breadcrumb'><li><a href='templets_main.php'>模板管理</a></li><li><span>上传模板</span></li></ul>";
     $win->AddTitle('请选择要上传的文件:');
     $win->AddHidden("action", 'uploadok');
     $msg = "
-    <table width='600' border='0' cellspacing='0' cellpadding='0'>
-  <tr>
-    <td width='96' height='60'>请选择文件：</td>
-    <td width='504'>
-        <input name='acdir' type='hidden' value='$acdir'  />
-        <input name='token' type='hidden' value='{$_SESSION['token']}'  />
-        <input name='upfile' type='file' id='upfile' style='width:380px' />
-      </td>
-  </tr>
- </table>
+<table width='600' border='0' cellspacing='0' cellpadding='0'>
+<tr>
+<td width='96' height='60'>请选择文件：</td>
+<td width='504'>
+<input name='acdir' type='hidden' value='$acdir'  />
+<input name='token' type='hidden' value='{$_SESSION['token']}'  />
+
+<div class='uk-inline uk-form-custom' uk-form-custom='target: true'>
+<span class='uk-form-icon uk-icon' uk-icon='icon: upload'></span>
+<input name='upfile' type='file' id='upfile' />
+<input class='uk-input uk-form-small uk-form-width-large' type='text' placeholder='点击选择文件'>
+</div>
+
+</td>
+</tr>
+</table>
     ";
     $win->AddMsgItem("<div style='padding-left:20px;line-height:150%'>$msg</div>");
     $winform = $win->GetWindow('ok', '');

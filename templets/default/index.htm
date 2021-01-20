@@ -1,252 +1,1 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
-<title>{dede:global.cfg_webname/}</title>
-<meta name="description" content="{dede:global.cfg_description/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<script language="javascript" type="text/javascript"
-src="{dede:global.cfg_assets_dir/}/pkg/dede/dedeajax2.js"></script>
-<script language="javascript" type="text/javascript"
-src="{dede:global.cfg_cmspath/}/assets/pkg/jquery/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/pic_scroll.js"></script>
-<script language="javascript" type="text/javascript">
-< !--
-$(function () {
-$("a[_for]").mouseover(function () {
-$(this).parents().children("a[_for]").removeClass("thisclass").parents().children("dd").hide();
-$(this).addClass("thisclass").blur();
-$("#" + $(this).attr("_for")).show();
-});
-$("a[_for=uc_member]").mouseover();
-$("a[_for=flink_1]").mouseover();
-});
-function CheckLogin() {
-var taget_obj = document.getElementById('_userlogin');
-myajax = new DedeAjax(taget_obj, false, false, '', '', '');
-myajax.SendGet2("{dede:global.cfg_cmspath/}/member/ajax_loginsta.php");
-DedeXHTTP = null;
-}
--->
-</script>
-</head>
-<body class="index">
-{dede:include filename="head.htm"/}
-<!-- /header -->
-<div class="w960 center clear mt1">
-<div class="pleft">
-<div class="bignews">
-<!--头条-->
-<div class="onenews"> {dede:arclist flag='h' limit='0,1' infolen='230'}
-<h2><a href="[field:arcurl/]">[field:title/]</a></h2>
-<p>[field:info/]...<a href="[field:arcurl/]">[查看全文]</a></p>
-{/dede:arclist}
-</div>
-<!-- /onenews -->
-<div class="d1"> {dede:arclist flag='h' limit='1,4'}
-<div class='d1arc'><a href="[field:arcurl/]">[field:title/]</a></div>
-{/dede:arclist}
-</div>
-<!--/头条-->
-<div class='newarticle'>最新文章</div>
-<ul class="c2 ico1">
-<!--最新文档-->
-{dede:arclist row=14 titlelen=32 noflag='h'}
-<li><a href="[field:arcurl/]">[field:title/]</a></li>
-{/dede:arclist}
-<!--//最新文档-->
-</ul>
-</div>
-<!-- /bignews -->
-<div class="latestnews">
-<dl class="tbox light">
-<dt class="light"><strong>特别推荐</strong></dt>
-<dd class="light">
-<ul class="d2 ico2">
-{dede:arclist flag='a' row='6' orderby='pubdate'}
-<li><span>[field:pubdate function="MyDate('m-d',@me)"/]</span><a href="[field:arcurl/]">[field:title/]</a>
-</li>
-{/dede:arclist}
-</ul>
-</dd>
-</dl>
-</div>
-<!-- /latestnews -->
-<div class="picnews">
-<dl class="tbox light">
-<dt class='light'><strong>图文资讯</strong></dt>
-<dd class='light'>
-<div class="infiniteCarousel">
-<div class="wrapper">
-<ul id='imgscroll'>
-{dede:arclist row=10 orderby=pubdate type='image.' imgwidth='143' imgheight='106'}
-<li><a href="[field:arcurl/]">[field:image/]<span class="title">[field:title/]</span></a></li>
-{/dede:arclist}
-</ul>
-</div>
-</div>
-</dd>
-</dl>
-</div>
-<!-- /picnews -->
-<div class="listbox"> {dede:channelartlist}
-<dl class="tbox">
-<dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><span
-class="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt>
-<dd>
-<ul class="d1 ico3">
-{dede:arclist titlelen='60' row='8'}
-<li><span>[field:pubdate function="MyDate('m-d',@me)"/]</span><a href="[field:arcurl /]">[field:title
-/]</a></li>
-{/dede:arclist}
-</ul>
-</dd>
-</dl>
-{/dede:channelartlist}
-</div>
-<!-- /listbox -->
-</div>
-<!-- /pleft -->
-<div class="pright">
-<div class="usercenter">
-<dl class="tbox light">
-<dt class='light'> <strong>互动中心</strong> <span class="label"> <a href="#" _for="uc_digg">踩踩</a> <a href="#"
-_for="uc_comment">评论</a> <a href="#" _for="uc_member">会员</a> </span> </dt>
-<dd id="loading"> 正在载入,请稍候... </dd>
-<dd id="uc_digg">
-<ul class="f1">
-{dede:arclist orderby='scores' row='8' subday='30' titlelen='42'}
-<li> <a href="[field:arcurl/]">[field:title/]</a> <span><small>点击:</small>[field:click/]</span>
-<span><small>评价:</small>[field:scores/]</span>
-</li>
-{/dede:arclist}
-</ul>
-</dd>
-<!-- /uc_digg -->
-<dd id="uc_comment">
-<ul class="f2">
-{dede:feedback row='5' titlelen='24' infolen='80'}
-<li> <small><a href="#" class="username">[field:username function="(@me=='guest' ? '游客' : @me)"/]</a> 评论
-<a href="[field:global.cfg_phpurl/]/feedback.php?aid=[field:aid/]"
-class="title">[field:title/]</a></small>
-<p>[field:msg/]</p>
-</li>
-{/dede:feedback}
-</ul>
-</dd>
-<!-- /uc_comment -->
-<dd id="uc_member">
-<div id="_userlogin">
-<div class="userlogin">
-<form name="userlogin" action="{dede:global.cfg_memberurl/}/index_do.php" method="POST">
-<input type="hidden" name="fmdo" value="login" />
-<input type="hidden" name="dopost" value="login" />
-<input type="hidden" name="keeptime" value="604800" />
-<div class="fb"><span>用户名:</span>
-<input type="text" name="userid" size="20" class="ipt-txt" />
-</div>
-<div class="fb"><span>密码:</span>
-<input type="password" name="pwd" size="20" class="ipt-txt" />
-</div>
-{dede:php}
-if(preg_match("#2#", $safe_gdopen))
-{
-echo '
-<div class="fb"><span>验证码:</span>
-<input type="text" name="vdcode" size="8" class="ipt-txt" />
-<img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'"
-style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换"
-src="'.$cfg_cmspath.'/plus/vdimgck.php" />
-</div>
-';
-}
-{/dede:php}
-<div class="submit">
-<button type="submit" class="btn-1">登录</button>
-<a href="{dede:global.cfg_memberurl/}/index_do.php?fmdo=user&dopost=regnew">注册帐号</a> <a
-href="{dede:global.cfg_memberurl/}/resetpassword.php">忘记密码?</a>
-</div>
-</form>
-</div>
-</div>
-<!-- /userlogin -->
-<script language="javascript" type="text/javascript">CheckLogin();</script>
-<div class="latestlogin"> <strong>最近登陆的会员</strong>
-<ul class="e7">
-{dede:memberlist row=6 signlen=30}
-<li><a href="[field:spaceurl/]" target="_blank"><img src="[field:face/]" alt='[field:spacename/]'
-width="52" height="52" />[field:uname/]</a></li>
-{/dede:memberlist}
-</ul>
-</div>
-<!-- /latestlogin -->
-</dd>
-<!-- /uc_member -->
-</dl>
-</div>
-<!-- /usercenter -->
-<div class="commend mt1">
-<dl class="tbox light">
-<dt class='light'><strong>推荐内容</strong></dt>
-<dd class='light'>
-<ul class="c1 ico2">
-{dede:arclist flag='c' titlelen=42 row='16' tagid='dedecms' pagesize='8'}
-<li class='dotline'><a href="[field:arcurl/]">[field:title/]</a></li>
-{/dede:arclist}
-</ul>
-</dd>
-</dl>
-</div>
-<!-- /commend -->
-<div class="hot mt1">
-<dl class="tbox light">
-<dt class='light'><strong>本月热点</strong></dt>
-<dd class='light'>
-<ul class="c1 ico2">
-{dede:arclist sort='hot' subday='30' titlelen=42 row=6}
-<li class='dotline'><a href="[field:arcurl/]">[field:title/]</a></li>
-{/dede:arclist}
-</ul>
-</dd>
-</dl>
-</div>
-<div class="vote mt1">
-<dl class="tbox light">
-<dt class='light'><strong>投票调查</strong></dt>
-<script language="javascript" src="{dede:global.cfg_cmsurl/}/data/vote/vote_1.js"></script>
-</dl>
-</div>
-<!-- /vote -->
-{dede:qrcode/}
-</div>
-<!-- /pleft -->
-</div>
-<div class="flink w960 center clear">
-<dl class="tbox">
-<dt> <strong>友情链接</strong>
-<span class="linklabel">
-{dede:flinktype type="dedecms"}
-<a href="#" _for="flink_[field:id/]">[field:typename/]</a>
-{/dede:flinktype}
-</span>
-<span class="more"> <a href="plus/flink.php">所有链接</a> | <a href="plus/flink_add.php">申请加入</a> </span>
-</dt>
-{dede:flinktype type="dedecms"}
-<dd id="flink_[field:id/]">
-<ul class="f5">
-{dede:flink/}
-</ul>
-</dd>
-{/dede:flinktype}
-</dl>
-</div>
-<!-- /flink -->
-<div id="footAD" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>
-{dede:include filename="footer.htm"/}
-<!-- /footer -->
-</body>
-</html>
+<!DOCTYPE htmlPUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" /><title>{dede:global.cfg_webname/}</title><meta name="description" content="{dede:global.cfg_description/}" /><meta name="keywords" content="{dede:global.cfg_keywords/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" /><meta name="viewport" content="width=device-width, initial-scale=1" /><script language="javascript" type="text/javascript"src="{dede:global.cfg_assets_dir/}/pkg/dede/dedeajax2.js"></script><script language="javascript" type="text/javascript"src="{dede:global.cfg_cmspath/}/assets/pkg/jquery/jquery.min.js"></script><script language="javascript" type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/pic_scroll.js"></script><script language="javascript" type="text/javascript">< !--$(function () {$("a[_for]").mouseover(function () {$(this).parents().children("a[_for]").removeClass("thisclass").parents().children("dd").hide();$(this).addClass("thisclass").blur();$("#" + $(this).attr("_for")).show();});$("a[_for=uc_member]").mouseover();$("a[_for=flink_1]").mouseover();});function CheckLogin() {var taget_obj = document.getElementById('_userlogin');myajax = new DedeAjax(taget_obj, false, false, '', '', '');myajax.SendGet2("{dede:global.cfg_cmspath/}/member/ajax_loginsta.php");DedeXHTTP = null;}--></script></head><body class="index">{dede:include filename="head.htm"/}<!-- /header --><div class="w960 center clear mt1"><div class="pleft"><div class="bignews"><!--头条--><div class="onenews"> {dede:arclist flag='h' limit='0,1' infolen='230'}<h2><a href="[field:arcurl/]">[field:title/]</a></h2><p>[field:info/]...<a href="[field:arcurl/]">[查看全文]</a></p>{/dede:arclist}</div><!-- /onenews --><div class="d1"> {dede:arclist flag='h' limit='1,4'}<div class='d1arc'><a href="[field:arcurl/]">[field:title/]</a></div>{/dede:arclist}</div><!--/头条--><div class='newarticle'>最新文章</div><ul class="c2 ico1"><!--最新文档-->{dede:arclist row=14 titlelen=32 noflag='h'}<li><a href="[field:arcurl/]">[field:title/]</a></li>{/dede:arclist}<!--//最新文档--></ul></div><!-- /bignews --><div class="latestnews"><dl class="tbox light"><dt class="light"><strong>特别推荐</strong></dt><dd class="light"><ul class="d2 ico2">{dede:arclist flag='a' row='6' orderby='pubdate'}<li><span>[field:pubdate function="MyDate('m-d',@me)"/]</span><a href="[field:arcurl/]">[field:title/]</a></li>{/dede:arclist}</ul></dd></dl></div><!-- /latestnews --><div class="picnews"><dl class="tbox light"><dt class='light'><strong>图文资讯</strong></dt><dd class='light'><div class="infiniteCarousel"><div class="wrapper"><ul id='imgscroll'>{dede:arclist row=10 orderby=pubdate type='image.' imgwidth='143' imgheight='106'}<li><a href="[field:arcurl/]">[field:image/]<span class="title">[field:title/]</span></a></li>{/dede:arclist}</ul></div></div></dd></dl></div><!-- /picnews --><div class="listbox"> {dede:channelartlist}<dl class="tbox"><dt><strong><a href="{dede:field name='typeurl'/}">{dede:field name='typename'/}</a></strong><spanclass="more"><a href="{dede:field name='typeurl'/}">更多...</a></span></dt><dd><ul class="d1 ico3">{dede:arclist titlelen='60' row='8'}<li><span>[field:pubdate function="MyDate('m-d',@me)"/]</span><a href="[field:arcurl /]">[field:title/]</a></li>{/dede:arclist}</ul></dd></dl>{/dede:channelartlist}</div><!-- /listbox --></div><!-- /pleft --><div class="pright"><div class="usercenter"><dl class="tbox light"><dt class='light'> <strong>互动中心</strong> <span class="label"> <a href="#" _for="uc_digg">踩踩</a> <a href="#"_for="uc_comment">评论</a> <a href="#" _for="uc_member">会员</a> </span> </dt><dd id="loading"> 正在载入,请稍候... </dd><dd id="uc_digg"><ul class="f1">{dede:arclist orderby='scores' row='8' subday='30' titlelen='42'}<li> <a href="[field:arcurl/]">[field:title/]</a> <span><small>点击:</small>[field:click/]</span><span><small>评价:</small>[field:scores/]</span></li>{/dede:arclist}</ul></dd><!-- /uc_digg --><dd id="uc_comment"><ul class="f2">{dede:feedback row='5' titlelen='24' infolen='80'}<li> <small><a href="#" class="username">[field:username function="(@me=='guest' ? '游客' : @me)"/]</a> 评论<a href="[field:global.cfg_phpurl/]/feedback.php?aid=[field:aid/]"class="title">[field:title/]</a></small><p>[field:msg/]</p></li>{/dede:feedback}</ul></dd><!-- /uc_comment --><dd id="uc_member"><div id="_userlogin"><div class="userlogin"><form name="userlogin" action="{dede:global.cfg_memberurl/}/index_do.php" method="POST"><input type="hidden" name="fmdo" value="login" /><input type="hidden" name="dopost" value="login" /><input type="hidden" name="keeptime" value="604800" /><div class="fb"><span>用户名:</span><input type="text" name="userid" size="20" class="ipt-txt" /></div><div class="fb"><span>密码:</span><input type="password" name="pwd" size="20" class="ipt-txt" /></div>{dede:php}if(preg_match("#2#", $safe_gdopen)){echo '<div class="fb"><span>验证码:</span><input type="text" name="vdcode" size="8" class="ipt-txt" /><img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'"style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换"src="'.$cfg_cmspath.'/plus/vdimgck.php" /></div>';}{/dede:php}<div class="submit"><button type="submit" class="btn-1">登录</button><a href="{dede:global.cfg_memberurl/}/index_do.php?fmdo=user&dopost=regnew">注册帐号</a> <ahref="{dede:global.cfg_memberurl/}/resetpassword.php">忘记密码?</a></div></form></div></div><!-- /userlogin --><script language="javascript" type="text/javascript">CheckLogin();</script><div class="latestlogin"> <strong>最近登陆的会员</strong><ul class="e7">{dede:memberlist row=6 signlen=30}<li><a href="[field:spaceurl/]" target="_blank"><img src="[field:face/]" alt='[field:spacename/]'width="52" height="52" />[field:uname/]</a></li>{/dede:memberlist}</ul></div><!-- /latestlogin --></dd><!-- /uc_member --></dl></div><!-- /usercenter --><div class="commend mt1"><dl class="tbox light"><dt class='light'><strong>推荐内容</strong></dt><dd class='light'><ul class="c1 ico2">{dede:arclist flag='c' titlelen=42 row='16' tagid='dedecms' pagesize='8'}<li class='dotline'><a href="[field:arcurl/]">[field:title/]</a></li>{/dede:arclist}</ul></dd></dl></div><!-- /commend --><div class="hot mt1"><dl class="tbox light"><dt class='light'><strong>本月热点</strong></dt><dd class='light'><ul class="c1 ico2">{dede:arclist sort='hot' subday='30' titlelen=42 row=6}<li class='dotline'><a href="[field:arcurl/]">[field:title/]</a></li>{/dede:arclist}</ul></dd></dl></div><div class="vote mt1"><dl class="tbox light"><dt class='light'><strong>投票调查</strong></dt><script language="javascript" src="{dede:global.cfg_cmsurl/}/data/vote/vote_1.js"></script></dl></div><!-- /vote -->{dede:qrcode/}</div><!-- /pleft --></div><div class="flink w960 center clear"><dl class="tbox"><dt> <strong>友情链接</strong><span class="linklabel">{dede:flinktype type="dedecms"}<a href="#" _for="flink_[field:id/]">[field:typename/]</a>{/dede:flinktype}</span><span class="more"> <a href="plus/flink.php">所有链接</a> | <a href="plus/flink_add.php">申请加入</a> </span></dt>{dede:flinktype type="dedecms"}<dd id="flink_[field:id/]"><ul class="f5">{dede:flink/}</ul></dd>{/dede:flinktype}</dl></div><!-- /flink --><div id="footAD" style="margin:10px auto; width:726px">{dede:mda name='728x90'/}</div>{dede:include filename="footer.htm"/}<!-- /footer --></body></html>

@@ -229,7 +229,7 @@ else if ($dopost == 'save') {
         $iinfo = str_replace("'", "`", stripslashes(${'imgmsg' . $i}));
         $iurl = stripslashes(${'imgurl' . $i});
         $ddurl = stripslashes(${'imgddurl' . $i});
-        if (preg_match("#swfupload#i", $ddurl)) {
+        if (preg_match("#upload#i", $ddurl)) {
             $ddurl = '';
         }
 
@@ -266,7 +266,7 @@ else if ($dopost == 'save') {
             $iinfo = str_replace("'", "`", stripslashes(${'imgmsg' . $i}));
             $iurl = stripslashes(${'imgurl' . $i});
             $ddurl = stripslashes(${'imgddurl' . $i});
-            if (preg_match("#swfupload#i", $ddurl)) {
+            if (preg_match("#upload#i", $ddurl)) {
                 $ddurl = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : $iurl;
             }
             $imginfos = @GetImageSize($imgfile, $info);

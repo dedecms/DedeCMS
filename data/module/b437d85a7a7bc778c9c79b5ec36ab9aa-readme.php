@@ -1,5 +1,5 @@
 <div style='padding-left:20px;line-height:150%'>
-<p>Copyright (c) 2007 - 2020, 上海卓卓网络科技有限公司 </p>
+<p>Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 </p>
 <p>感谢您选择织梦内容管理系统（以下简称DedeCMS），DedeCMS是目前国内专业、便捷、稳定的中小型门户网站建设解决方案之一，居于 PHP + MySQL 的技术开发，全部源码开放。DedeCMS 的官方网址是： www.dedecms.com  交流论坛： bbs.dedecms.com</p>
 <p>为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
 <p><strong>一、本授权协议适用且仅适用于 DedeCMS 5.x.x 版本，DedeCMS官方对本授权协议的最终解释权。 </strong></p>

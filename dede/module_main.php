@@ -246,18 +246,15 @@ else if ($action == 'setup') {
   </tr>
   <tr>
     <td height='164' colspan='2'>
-     <textarea name='filelists' id='filelists' style='width:90%;height:200px'>{$filelist}</textarea>
+     <textarea name='filelists' id='filelists' style='width:90%;height:200px' class='uk-textarea uk-form-small uk-form-width-large'>{$filelist}</textarea>
     </td>
   </tr>
   <tr>
     <td height='28'>对于已存在文件处理方法：</td>
     <td>
-   <input name='isreplace' type='radio' value='1' checked='checked' />
-    覆盖
-   <input name='isreplace' type='radio' value='3' />
-   覆盖，保留副本
-   <input type='radio' name='isreplace' value='0' />
-   保留旧文件
+   <input name='isreplace' type='radio' value='1' class='uk-radio' checked='checked' /> 覆盖 &nbsp;&nbsp;
+   <input name='isreplace' type='radio' value='3' class='uk-radio'/> 覆盖，保留副本 &nbsp;&nbsp;
+   <input type='radio' name='isreplace' value='0' class='uk-radio'/> 保留旧文件
    </td>
   </tr>
 </table>

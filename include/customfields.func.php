@@ -117,14 +117,15 @@ function GetFormItem($ctag, $admintype = 'admin')
         }
     
     } else if ($fieldType == "multitext") {
-        $innertext = "<textarea name='$fieldname' id='$fieldname' style='width:90%;height:80'></textarea>\r\n";
+        $innertext = "<textarea name='$fieldname' id='$fieldname' style='height:80' class='uk-textarea uk-form-width-large uk-form-small'></textarea>\r\n";
     
     } else if ($fieldType == "datetime") {
         $nowtime = GetDateTimeMk(time());
-        $innertext .= "<div class=\"uk-inline\">";
-        $innertext .= "<span class=\"uk-form-icon\" uk-icon=\"icon: calendar4-week\"></span>";
-        $innertext .= "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" class=\"datepicker uk-input uk-form-width-large uk-form-small\" />";
+        $innertext = "<div class='uk-inline'>";
+        $innertext .= "<span class='uk-form-icon uk-icon' uk-icon='icon: calendar4-week'></span>";
+        $innertext .= "<input name='$fieldname' value='$nowtime' placeholder='$nowtime' class='uk-input uk-form-width-large uk-form-small' type='datetime-local' >";
         $innertext .= "</div>";
+
     } else if ($fieldType == 'img' || $fieldType == 'imgfile') {
         if ($admintype == 'diy') {
             $innertext = "<input type='file' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' />\r\n";
@@ -489,9 +490,9 @@ function GetFormItemValue($ctag, $fvalue, $admintype = 'admin', $fieldname = '')
     
     } else if ($ftype == "datetime") {
         $nowtime = GetDateTimeMk($fvalue);
-        $innertext .= "<div class=\"uk-inline\">";
-        $innertext .= "<span class=\"uk-form-icon\" uk-icon=\"icon: calendar4-week\"></span>";
-        $innertext .= "<input name=\"$fieldname\" value=\"$nowtime\" type=\"text\" id=\"$fieldname\" class=\"datepicker uk-input uk-form-width-large uk-form-small\" />";
+        $innertext = "<div class='uk-inline'>";
+        $innertext .= "<span class='uk-form-icon uk-icon' uk-icon='icon: calendar4-week'></span>";
+        $innertext .= "<input name='$fieldname' value='$nowtime' placeholder='$nowtime' class='uk-input uk-form-width-large uk-form-small' type='datetime-local' >";
         $innertext .= "</div>";
     
     } else if ($ftype == "img") {

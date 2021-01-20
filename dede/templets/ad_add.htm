@@ -1,259 +1,1 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/>
-<title>增加广告</title>
-
-
-
-
-
-
-<script language="javascript">
-function checkSubmit() {
-if (document.form1.tagname.value == "") {
-alert("广告标识不能为空！");
-document.form1.tagname.focus();
-return false;
-}
-}
-$(document).ready(function () {
-$('.datepicker').daterangepicker({
-"singleDatePicker": true,
-"autoApply": true,
-"showDropdowns": true,
-"linkedCalendars": false,
-"timePicker": true,
-"timePicker24Hour": true,
-// "timePickerSeconds": true,
-"showCustomRangeLabel": false,
-ranges: {
-'今日': [moment(), moment()],
-'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-'本月': [moment().startOf('month'), moment().startOf('month')],
-'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]
-},
-"locale": {
-format: 'YYYY-MM-DD HH:mm',
-applyLabel: '确定',
-cancelLabel: '取消',
-daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
-monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
-'七月', '八月', '九月', '十月', '十一月', '十二月'],
-firstDay: 1
-}
-}, function (start) {
-$(this).val(start.format("YYYY-MM-DD HH:mm"));
-});
-})
-</script>
-<style type="text/css">
-.typetab {
-text-align: left;
-}
-.typetab ul {
-list-style: none;
-}
-.typetab ul li {
-float: left;
-margin: 5px 5px 0px;
-height: 23px;
-width: 64px;
-background: url(images/adtype_link.gif) no-repeat scroll 0px 0px;
-line-height: 23px;
-text-align: center;
-cursor: pointer;
-}
-.typetab ul .act {
-background: url(images/adtype_act.gif) no-repeat scroll 0px 0px;
-}
-.i_table {
-border: 1px solid #CCC;
-}
-</style>
-</head>
-<body>
-<form action="ad_add.php" method="post" name="form1" onsubmit="return checkSubmit()">
-<table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6">
-<tbody><tr>
-<td height="28" background="images/tbg.gif" style="padding-left:10px;"><b><a href="ad_main.php"><u>广告管理</u></a></b> >> 增加广告位置 </td>
-</tr>
-<tr>
-<td height="200" bgcolor="#FFFFFF" valign="top">
-<table width="100%" border="0" cellspacing="4" cellpadding="4">
-<input name="normbody[style]" type="hidden" value="code" id="adstyle"/>
-<input type="hidden" name="token" value="<?php echo make_hash();?>"/>
-<input type="hidden" name="dopost" value="save"/>
-<tbody><tr>
-<td height="25" colspan="3">广告代码的调用方法：{dede:myad name='广告位标识'/} </td>
-</tr>
-<tr>
-<td height="25" align="center">广告位标识：</td>
-<td colspan="2"><input name="tagname" type="text" id="tagname" class="uk-input uk-form-small"/>
-（使用英文或数字表示的简洁标识）</td>
-</tr>
-<tr>
-<td height="25" align="center">广告分类：</td>
-<td colspan="2"><select name="clsid" id="clsid" class="uk-select uk-form-small">
-<option value="0">默认分类...</option>
-<!--?php echo $option;?-->
-</select></td>
-</tr>
-<tr>
-<td width="15%" height="25" align="center">广告投放范围：</td>
-<td colspan="2">
-<!--?php
-$tl = new TypeLink(0);
-$typeOptions = $tl--->GetOptionArray(0,0,0);
-echo "<select name="typeid" class="uk-select uk-form-small">\r\n";
-echo "<option value="0" selected="">投放在没有同名标识的所有栏目</option>\r\n";
-echo $typeOptions;
-echo "</select>";
-?>
-<br/>
-（如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）
-</td>
-</tr>
-<tr>
-<td height="25" align="center">广告位名称：</td>
-<td colspan="2"><input name="adname" type="text" id="adname" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td height="25" align="center">时间限制：</td>
-<td colspan="2"><input name="timeset" type="radio" id="notimelimit" value="0" checked="1" class="uk-radio"/>
-<label for="notimelimit">永不过期</label>
-<input type="radio" name="timeset" id="timelimit" value="1" class="uk-radio"/>
-<label for="timelimit">在设内时间内有效</label>
-</td>
-</tr>
-<tr>
-<td height="25" align="center">投放时间：</td>
-<td colspan="2">从
-<input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="uk-input uk-form-small"/>
-到
-<input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="uk-input uk-form-small"/>
-</td>
-</tr>
-<tr>
-<td height="80" align="center">广告内容：</td>
-<td width="76%">
-<div class="typetab">
-<ul id="changeTab">
-<li id="t_code" class="act">代码</li>
-<li id="t_txt">文字</li>
-<li id="t_img">图片</li>
-<li id="t_flash">Flash</li>
-</ul>
-<div style="clear:both"></div>
-</div>
-<div id="advert">
-</div>
-</td>
-<td width="9%"> </td>
-</tr>
-<tr>
-<td height="80" align="center">过期显示内容：</td>
-<td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100" class="uk-textarea uk-form-small"></textarea></td>
-<td> </td>
-</tr>
-<tr>
-<td height="53" align="center"> </td>
-<td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"/></td>
-</tr>
-</tbody></table>
-</td>
-</tr>
-</tbody></table>
-</form>
-<div style="display:none" id="formtxt">
-<div class="content" id="code" style="display:none;">
-<table width="80%" cellpadding="3" cellspacing="1" class="i_table">
-<tbody><tr class="b">
-<td width="30%"><b>广告代码:</b><br/>
-请填写广告代码，支持html代码</td>
-<td><textarea name="normbody[htmlcode]" rows="5" cols="50" class="uk-textarea uk-form-small"></textarea></td>
-</tr>
-</tbody></table>
-</div>
-<div class="content" id="txt" style="display:none;">
-<table width="80%" cellpadding="3" cellspacing="1" class="i_table">
-<tbody><tr>
-<td class="b" width="30%"><b>文字内容*</b></td>
-<td class="b"><input type="text" value="" name="normbody[title]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>文字链接*</b></td>
-<td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>文字颜色</b>(例如:red,#EF8684)</td>
-<td class="b"><input type="text" value="" name="normbody[color]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>文字大小</b>(例如:4px,12px)</td>
-<td class="b"><input type="text" value="" name="normbody[size]" class="uk-input uk-form-small"/></td>
-</tr>
-</tbody></table>
-</div>
-<div class="content" id="img" style="display:none;">
-<table width="80%" cellpadding="3" cellspacing="1" class="i_table">
-<tbody><tr>
-<td class="b" width="30%"><b>图片地址*</b></td>
-<td class="b"><input type="text" value="" name="normbody[url]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>图片链接*</b></td>
-<td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>图片宽度</b></td>
-<td class="b"><input type="text" value="" name="normbody[width]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>图片高度</b></td>
-<td class="b"><input type="text" value="" name="normbody[height]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>图片描述</b></td>
-<td class="b"><input type="text" value="" name="normbody[descrip]" class="uk-input uk-form-small"/></td>
-</tr>
-</tbody></table>
-</div>
-<div class="content" id="flash" style="display:none;">
-<table width="80%" cellpadding="3" cellspacing="1" class="i_table">
-<tbody><tr>
-<td class="b" width="30%"><b>flash链接</b></td>
-<td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>flash宽度</b></td>
-<td class="b"><input type="text" value="" name="normbody[width]" class="uk-input uk-form-small"/></td>
-</tr>
-<tr>
-<td class="b"><b>flash高度</b></td>
-<td class="b"><input type="text" value="" name="normbody[height]" class="uk-input uk-form-small"/></td>
-</tr>
-</tbody></table>
-</div>
-</div>
-<script language="JavaScript">
-(function ($) {
-function showcode(idName) {
-$("#advert").html("").html($("#formtxt>#" + idName).html());
-$("#adstyle").val(idName);
-}
-showcode('code');
-$("#changeTab>li").click(function () {
-var tabLi = $(this);
-var thistab = tabLi[0].id;
-$(".content").each(function () {
-if ("t_" + $(this)[0].id == thistab) {
-$("#changeTab>li").removeClass("act");
-$("#t_" + $(this)[0].id).addClass("act");
-showcode($(this)[0].id);
-}
-})
-})
-})(jQuery);
-</script>
-
-
-</body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>增加广告</title><script language="javascript">function checkSubmit() {if (document.form1.tagname.value == "") {alert("广告标识不能为空！");document.form1.tagname.focus();return false;}}$(document).ready(function () {$('.datepicker').daterangepicker({"singleDatePicker": true,"autoApply": true,"showDropdowns": true,"linkedCalendars": false,"timePicker": true,"timePicker24Hour": true,// "timePickerSeconds": true,"showCustomRangeLabel": false,ranges: {'今日': [moment(), moment()],'昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],'本月': [moment().startOf('month'), moment().startOf('month')],'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').startOf('month')]},"locale": {format: 'YYYY-MM-DD HH:mm',applyLabel: '确定',cancelLabel: '取消',daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],monthNames: ['一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月'],firstDay: 1}}, function (start) {$(this).val(start.format("YYYY-MM-DD HH:mm"));});})</script><style type="text/css">.typetab {text-align: left;}.typetab ul {list-style: none;}.typetab ul li {float: left;margin: 5px 5px 0px;height: 23px;width: 64px;background: url(images/adtype_link.gif) no-repeat scroll 0px 0px;line-height: 23px;text-align: center;cursor: pointer;}.typetab ul .act {background: url(images/adtype_act.gif) no-repeat scroll 0px 0px;}.i_table {border: 1px solid #CCC;}</style></head><body><form action="ad_add.php" method="post" name="form1" onsubmit="return checkSubmit()"><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td height="28" background="images/tbg.gif" style="padding-left:10px;"><b><a href="ad_main.php"><u>广告管理</u></a></b> >> 增加广告位置 </td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="4"><input name="normbody[style]" type="hidden" value="code" id="adstyle"/><input type="hidden" name="token" value="<?php echo make_hash();?>"/><input type="hidden" name="dopost" value="save"/><tbody><tr><td height="25" colspan="3">广告代码的调用方法：{dede:myad name='广告位标识'/} </td></tr><tr><td height="25" align="center">广告位标识：</td><td colspan="2"><input name="tagname" type="text" id="tagname" class="uk-input uk-form-small"/>（使用英文或数字表示的简洁标识）</td></tr><tr><td height="25" align="center">广告分类：</td><td colspan="2"><select name="clsid" id="clsid" class="uk-select uk-form-small"><option value="0">默认分类...</option><!--?php echo $option;?--></select></td></tr><tr><td width="15%" height="25" align="center">广告投放范围：</td><td colspan="2"><!--?php$tl = new TypeLink(0);$typeOptions = $tl--->GetOptionArray(0,0,0);echo "<select name="typeid" class="uk-select uk-form-small">\r\n";echo "<option value="0" selected="">投放在没有同名标识的所有栏目</option>\r\n";echo $typeOptions;echo "</select>";?><br/>（如果在所选栏目找不到指定标识的广告内容，系统会自动搜索父栏目）</td></tr><tr><td height="25" align="center">广告位名称：</td><td colspan="2"><input name="adname" type="text" id="adname" class="uk-input uk-form-small"/></td></tr><tr><td height="25" align="center">时间限制：</td><td colspan="2"><input name="timeset" type="radio" id="notimelimit" value="0" checked="1" class="uk-radio"/><label for="notimelimit">永不过期</label><input type="radio" name="timeset" id="timelimit" value="1" class="uk-radio"/><label for="timelimit">在设内时间内有效</label></td></tr><tr><td height="25" align="center">投放时间：</td><td colspan="2">从<input name="starttime" type="text" id="starttime" value="<?php echo $startDay?>" class="uk-input uk-form-small"/>到<input name="endtime" type="text" id="endtime" value="<?php echo $endDay?>" class="uk-input uk-form-small"/></td></tr><tr><td height="80" align="center">广告内容：</td><td width="76%"><div class="typetab"><ul id="changeTab"><li id="t_code" class="act">代码</li><li id="t_txt">文字</li><li id="t_img">图片</li><li id="t_flash">Flash</li></ul><div style="clear:both"></div></div><div id="advert"></div></td><td width="9%"> </td></tr><tr><td height="80" align="center">过期显示内容：</td><td><textarea name="expbody" rows="10" id="expbody" style="width:80%;height:100" class="uk-textarea uk-form-small"></textarea></td><td> </td></tr><tr><td height="53" align="center"> </td><td colspan="2"><input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0"/></td></tr></tbody></table></td></tr></tbody></table></form><div style="display:none" id="formtxt"><div class="content" id="code" style="display:none;"><table width="80%" cellpadding="3" cellspacing="1" class="i_table"><tbody><tr class="b"><td width="30%"><b>广告代码:</b><br/>请填写广告代码，支持html代码</td><td><textarea name="normbody[htmlcode]" rows="5" cols="50" class="uk-textarea uk-form-small"></textarea></td></tr></tbody></table></div><div class="content" id="txt" style="display:none;"><table width="80%" cellpadding="3" cellspacing="1" class="i_table"><tbody><tr><td class="b" width="30%"><b>文字内容*</b></td><td class="b"><input type="text" value="" name="normbody[title]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>文字链接*</b></td><td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>文字颜色</b>(例如:red,#EF8684)</td><td class="b"><input type="text" value="" name="normbody[color]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>文字大小</b>(例如:4px,12px)</td><td class="b"><input type="text" value="" name="normbody[size]" class="uk-input uk-form-small"/></td></tr></tbody></table></div><div class="content" id="img" style="display:none;"><table width="80%" cellpadding="3" cellspacing="1" class="i_table"><tbody><tr><td class="b" width="30%"><b>图片地址*</b></td><td class="b"><input type="text" value="" name="normbody[url]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>图片链接*</b></td><td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>图片宽度</b></td><td class="b"><input type="text" value="" name="normbody[width]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>图片高度</b></td><td class="b"><input type="text" value="" name="normbody[height]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>图片描述</b></td><td class="b"><input type="text" value="" name="normbody[descrip]" class="uk-input uk-form-small"/></td></tr></tbody></table></div><div class="content" id="flash" style="display:none;"><table width="80%" cellpadding="3" cellspacing="1" class="i_table"><tbody><tr><td class="b" width="30%"><b>flash链接</b></td><td class="b"><input type="text" value="" name="normbody[link]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>flash宽度</b></td><td class="b"><input type="text" value="" name="normbody[width]" class="uk-input uk-form-small"/></td></tr><tr><td class="b"><b>flash高度</b></td><td class="b"><input type="text" value="" name="normbody[height]" class="uk-input uk-form-small"/></td></tr></tbody></table></div></div><script language="JavaScript">(function ($) {function showcode(idName) {$("#advert").html("").html($("#formtxt>#" + idName).html());$("#adstyle").val(idName);}showcode('code');$("#changeTab>li").click(function () {var tabLi = $(this);var thistab = tabLi[0].id;$(".content").each(function () {if ("t_" + $(this)[0].id == thistab) {$("#changeTab>li").removeClass("act");$("#t_" + $(this)[0].id).addClass("act");showcode($(this)[0].id);}})})})(jQuery);</script></body></html>
