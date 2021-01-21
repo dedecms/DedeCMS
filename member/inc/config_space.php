@@ -2,8 +2,6 @@
 }
 
 /**
-* 
-* 
  * 空间配置
  *
  * @version   $Id: config_space.php 1 13:52 2010年7月9日 $
@@ -13,7 +11,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 //检查是否开放会员功能
@@ -127,12 +124,9 @@ if ($_vars['mtype'] == '企业') {
 }
 
 /**
- * 
- * 
  * 获取空间基本信息
  *
  * @return unknown
- 
  */
 function GetUserSpaceInfos()
 {

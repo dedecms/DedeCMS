@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 验证小助手
  *
  * @version   $Id: validate.helper.php 2 13:56 2010年7月5日  $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  * 浏览器友好的变量输出,便于调试时候使用
  *
  * @param  mixed   $var       要输出查看的内容
@@ -25,7 +20,6 @@
  * @param  string  $label     加上说明标签,如果有,这显示"标签名:"这种形式
  * @param  bool    $strict    是否严格过滤
  * @return string
- 
 */
 if (!function_exists('Dump')) {
     function Dump($var, $echo = true, $label = null, $strict = true)
@@ -67,8 +61,6 @@ if (!function_exists('Dump')) {
 }
 
 /**
-* 
-* 
  *  获取执行时间
  *  例如:$t1 = ExecTime();
  *       在一段内容处理之后:
@@ -76,7 +68,6 @@ if (!function_exists('Dump')) {
  *  我们可以将2个时间的差值输出:echo $t2-$t1;
  *
  *  @return int
- 
 */
 if (!function_exists('ExecTime')) {
     function ExecTime()

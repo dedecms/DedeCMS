@@ -291,7 +291,7 @@ else if ($dopost == 'moveCatalog') {
         $channelid = $tl->TypeInfos['channeltype'];
         $typeOptions = $tl->GetOptionArray(0, 0, $channelid);
         $wintitle = "移动栏目";
-        $wecome_info = "<a href='catalog_main.php'>栏目管理</a> &gt;&gt; 移动栏目";
+        $wecome_info = "<span><ul class='uk-breadcrumb'><li><a href='catalog_main.php'>栏目管理</a></li><li><span>移动栏目</span></li></ul></span>";
         $win = new OxWindow();
         $win->Init('catalog_do.php', 'js/blank.js', 'POST');
         $win->AddHidden('dopost', 'moveCatalog');
@@ -300,7 +300,7 @@ else if ($dopost == 'moveCatalog') {
         $win->AddHidden('nextjob', 'unitok');
         $win->AddTitle("移动目录时不会删除原来已创建的列表，移动后需重新对栏目创建HTML。");
         $win->AddItem('你选择的栏目是：', "$typename($typeid)");
-        $win->AddItem('你希望移动到那个栏目？', "<select name='movetype'>\r\n<option value='0'>移动为顶级栏目</option>\r\n$typeOptions\r\n</select>");
+        $win->AddItem('你希望移动到那个栏目？', "<select name='movetype' class='uk-select uk-form-small uk-form-width-large'>\r\n<option value='0'>移动为顶级栏目</option>\r\n$typeOptions\r\n</select>");
         $win->AddItem('注意事项：', '不允许从父级移动到子级目录，只允许子级到更高级或同级或不同父级的情况。');
         $winform = $win->GetWindow('ok');
         $win->Display();

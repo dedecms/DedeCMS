@@ -1,1 +1,136 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>投票管理</title></head><body><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td height="28" background="images/tbg.gif" style="padding-left:10px;"><b>投票管理</b>>>增加投票  [<a href="vote_main.php"><u>管理以往投票内容记录</u></a>]</td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><form name="form1" method="post" action="vote_edit.php"><input type="hidden" name="dopost" value="saveedit"/><input type="hidden" name="aid" value="<?php echo $aid?>"/><table width="100%" border="0" cellspacing="4" cellpadding="4"><tbody><tr><td width="15%" align="center">投票名称：</td><td width="85%"> <input name="votename" type="text" id="votename" value="<?php echo $row['votename']?>" class="uk-input uk-form-small"/></td></tr><tr><td align="center">投票总人数：</td><td><input name="totalcount" type="text" id="totalcount" value="<?php echo $row['totalcount']?>" class="uk-input uk-form-small"/></td></tr><tr><td align="center">开始时间：</td><td><input name="starttime" type="text" id="starttime" value="<?php echo GetDateMk($row['starttime'])?>" class="uk-input uk-form-small"/></td></tr><tr><td align="center">结束时间：</td><td><input name="endtime" type="text" id="endtime" value="<?php echo GetDateMk($row['endtime'])?>" class="uk-input uk-form-small"/></td></tr><tr><td align="center">是否允许游客投票：</td><td> <input name="isallow" type="radio" ?="" value="0" <?php="" if($row['isallow']="=0)" echo="" "="" checked";="" class="uk-radio"/>>是 　<input type="radio" name="isallow" ?="" value="1" <?php="" if($row['isallow']="=1)" echo="" "="" checked";="" class="uk-radio"/>>否</td></tr><tr><td align="center">是否允许查看投票：</td><td> <input name="view" type="radio" ?="" value="0" <?php="" if($row['view']="=0)" echo="" "="" checked";="" class="uk-radio"/>>是 　<input type="radio" name="view" ?="" value="1" <?php="" if($row['view']="=1)" echo="" "="" checked";="" class="uk-radio"/>>否</td></tr><tr><td align="center">投票时间间隔：</td><td><input name="spec" type="text" value="<?php echo $row['spec'] ?>" class="uk-input uk-form-small"/>(N天后可再次投票，0 表示此IP地址只能投一次)</td></tr><tr><td align="center">是否多选：</td><td> <input name="ismore" type="radio" checked";?="" value="0" <?php="" if($row['ismore']="=0)" echo="" "="" class="uk-radio"/>>单选 　<input type="radio" name="ismore" checked";?="" value="1" <?php="" if($row['ismore']="=1)" echo="" "="" class="uk-radio"/>>多选 </td></tr><tr><td align="center">投 票 项：<br/>(请按相同的形式来增加或修改节点，其中属性：id不能重复) </td><td><textarea name="votenote" rows="8" id="votenote" style="width:80%" class="uk-textarea uk-form-small"><?php echo $row['votenote']?></textarea></td></tr><tr><td align="center">是否启用：</td><td> <input name="isenable" type="radio" ?="" value="0" <?php="" if($row['isenable']="=0)" echo="" "="" checked";="" class="uk-radio"/>>是 　<input type="radio" name="isenable" ?="" value="1" <?php="" if($row['isenable']="=1)" echo="" "="" checked";="" class="uk-radio"/>>否</td></tr><tr><td height="47"> </td><td><input type="submit" name="Submit" value="保存投票数据"/></td></tr><tr><td colspan="2"> </td></tr></tbody></table></form></td></tr></tbody></table></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>修改投票</title>
+<meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="vote_main.php">投票管理</a></li><li><span>修改投票</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name="form1" method="post" action="vote_edit.php">
+<input type="hidden" name="dopost" value="saveedit"/>
+<input type="hidden" name="aid" value="<?php echo $aid?>"/>
+<tbody>
+<!-- 选项 -->
+<tr>
+<td width="15%">投票名称：</td>
+<td width="85%"> <input name="votename" value="<?=$row['votename']?>" type="text" id="votename" class="uk-input uk-form-small uk-form-width-large"/> </td>
+</tr>
+<tr>
+    <td>投票总人数：</td>
+    <td><input name="totalcount" type="text" id="totalcount" value="<?=$row['totalcount']?>" class="uk-input uk-form-small uk-form-width-large"/></td>
+    </tr>
+<tr>
+<td>开始时间：</td>
+<td>
+<div class="uk-inline">
+<span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
+<input name="starttime" value="<?=GetDateMk($row['starttime'])?>" class="uk-input uk-form-width-large uk-form-small" type="date" >
+</div>
+</tr>
+<tr>
+<td>结束时间：</td>
+<td>
+<div class="uk-inline">
+<span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
+<input name="endtime" value="<?=GetDateMk($row['endtime'])?>" class="uk-input uk-form-width-large uk-form-small" type="date" >
+</div>
+</tr>
+<tr>
+<td>是否允许游客投票：</td>
+<td> 
+<input name="isallow" type="radio" value="0" class="uk-radio" <?php if($row['isallow']==0) echo " checked"; ?>/>
+是 　
+<input type="radio" name="isallow" value="1" class="uk-radio" <?php if($row['isallow']==1) echo " checked"; ?>/>
+否
+</td>
+</tr>
+<tr>
+<td>是否允许查看投票：</td>
+<td>
+<input name="view" type="radio" value="0" class="uk-radio" <?php if($row['view']==0) echo " checked"; ?>/>
+是 　
+<input type="radio" name="view" value="1" class="uk-radio" <?php if($row['view']==1) echo " checked"; ?>/>
+否
+</td>
+</tr>
+<tr>
+<td>投票时间间隔：</td>
+<td><input name="spec" type="text" value="<?php echo $row['spec']?>" class="uk-input uk-form-small uk-form-width-large"/>
+(N天后可再次投票，0 表示此IP地址只能投一次)</td>
+</tr>
+<tr>
+<td>是否多选：</td>
+<td>
+<input name="ismore" type="radio" value="0" class="uk-radio" <?php if($row['ismore']==0) echo " checked"; ?>/>
+单选 　
+<input type="radio" name="ismore" value="1" class="uk-radio" <?php if($row['ismore']==1) echo " checked"; ?>/>
+多选
+</td>
+</tr>
+<tr>
+<td>投票项：</td>
+<td>
+<textarea name="votenote" rows="8" id="votenote" class="uk-textarea uk-form-small uk-form-width-large"><?php echo $row['votenote']?></textarea> 
+</td>
+</tr>
+<tr>
+<td>是否启用：</td>
+<td>
+<input name="isenable" type="radio" value="0" class="uk-radio" <?php if($row['ismore']==0) echo " checked"; ?>/>
+是 　
+<input type="radio" name="isenable" value="1" class="uk-radio" <?php if($row['ismore']==1) echo " checked"; ?>/>
+否
+</td>
+</tr>
+<!-- /选项 -->
+</tbody>
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

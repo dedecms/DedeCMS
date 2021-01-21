@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 文件处理小助手
  *
  * @version   $Id: file.helper.php 1 2010-07-05 11:43:09 $
@@ -12,21 +10,17 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 $g_ftpLink = false;
 
 /**
-* 
-* 
  *  使用FTP方法创建文件夹目录
  *
  * @param  string  $truepath  真实目标地址
  * @param  string  $mmode  创建模式
  * @param  string  $isMkdir  是否创建目录
  * @return bool
- 
 */
 if (!function_exists('FtpMkdir')) {
     function FtpMkdir($truepath, $mmode, $isMkdir = true)
@@ -46,14 +40,11 @@ if (!function_exists('FtpMkdir')) {
 }
 
 /**
-* 
-* 
  *  改变目录模式
  *
  * @param  string  $truepath  真实地址
  * @param  string  $mmode   模式
  * @return bool
- 
 */
 if (!function_exists('FtpChmod')) {
     function FtpChmod($truepath, $mmode)
@@ -65,12 +56,9 @@ if (!function_exists('FtpChmod')) {
 }
 
 /**
-* 
-* 
  *  打开FTP链接,打开之前确保已经设置好了FTP相关的配置信息
  *
  * @return void
- 
 */
 if (!function_exists('OpenFtp')) {
     function OpenFtp()
@@ -101,12 +89,9 @@ if (!function_exists('OpenFtp')) {
 }
 
 /**
-* 
-* 
  *  关闭FTP链接
  *
  * @return void
- 
 */
 if (!function_exists('CloseFtp')) {
     function CloseFtp()
@@ -122,14 +107,11 @@ if (!function_exists('CloseFtp')) {
 }
 
 /**
-* 
-* 
  *  创建所有目录
  *
  * @param  string  $truepath  真实地址
  * @param  string  $mmode   模式
  * @return bool
- 
 */
 if (!function_exists('MkdirAll')) {
     function MkdirAll($truepath, $mmode)
@@ -156,15 +138,12 @@ if (!function_exists('MkdirAll')) {
 }
 
 /**
-* 
-* 
  *  更改所有模式
  *
  * @access public
  * @param  string  $truepath  文件路径
  * @param  string  $mmode   模式
  * @return string
- 
 */
 if (!function_exists('ChmodAll')) {
     function ChmodAll($truepath, $mmode)
@@ -183,13 +162,10 @@ if (!function_exists('ChmodAll')) {
 }
 
 /**
-* 
-* 
  *  创建目录
  *
  * @param  string  $spath  创建的文件夹
  * @return bool
- 
 */
 if (!function_exists('CreateDir')) {
     function CreateDir($spath)
@@ -205,8 +181,6 @@ if (!function_exists('CreateDir')) {
 }
 
 /**
-* 
-* 
  *  写文件
  *
  * @access public
@@ -214,7 +188,6 @@ if (!function_exists('CreateDir')) {
  * @param  string  $content  内容
  * @param  int  $flag   标识
  * @return string
- 
 */
 if (!function_exists('PutFile')) {
     function PutFile($file, $content, $flag = 0)
@@ -243,14 +216,11 @@ if (!function_exists('PutFile')) {
 }
 
 /**
-* 
-* 
  *  用递归方式删除目录
  *
  * @access public
  * @param  string    $file   目录文件
  * @return string
- 
 */
 if (!function_exists('RmRecurse')) {
     function RmRecurse($file)

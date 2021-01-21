@@ -16,7 +16,8 @@ if (empty($dopost)) {
     $dopost = '';
 }
 
-function isbool($val, $set)  {
+function isbool($val, $set)
+{
     return ($val == $set) ? "checked" : "";
 }
 
@@ -178,131 +179,6 @@ while ($row = $dsql->GetObject()) {
     }
 }
 PutCookie('lastCid', GetTopid($id), 3600 * 24, "/");
-if ($dopost == 'time') {
-    ?>
-      <form name="form1" action="catalog_edit.php" method="post" onSubmit="return checkSubmit();">
-  <input type="hidden" name="dopost" value="savetime" />
-  <input type="hidden" name="id" value="<?php echo $id; ?>" />
-  <input type="hidden" name="topid" value="<?php echo $myrow['topid']; ?>" />
-  <input type="hidden" name="moresite" value="<?php echo $myrow['moresite']; ?>" />
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-       <tr>
-            <td class='bline' height="26" align="center" colspan="2">
-            <a href='catalog_edit.php?id=<?php echo $id; ?>'><u>当前是快捷编辑模式，如果您要修改更详细的参数，请使用高级模式&gt;&gt;</u></a>
-            </td>
-          </tr>
-         <tr>
-            <td width="150" class='bline' height="26" align="center">是否支持投稿：</td>
-            <td class='bline'> <input type='radio' name='issend' value='0' class='np' <?php if ($myrow['issend'] == "0") {
-                echo " checked='1' ";
-}
-                                                                                        ?> />
-              不支持&nbsp; <input type='radio' name='issend' value='1' class='np' <?php if ($myrow['issend'] == "1") {
-                    echo " checked='1' ";
-}
-                                                                                ?> />
-              支持 </td>
-          </tr>
-          <!-- 在快速修改更改内容类型后，因为模板没改变，会导致错误，因此去除些选择框。 -->
-          <tr>
-            <td class='bline' height="26" align="center"><font color='red'>内容类型：</font> </td>
-            <td class='bline'>
-            <?php
-            foreach ($channelArray as $k => $arr) {
-                if ($k == $channelid) {
-                    echo "{$arr['typename']} | {$arr['nid']}";
-                }
 
-            }
-            ?>
-            <a href='catalog_edit.php?id=<?php echo $id; ?>'><u>[修改]</u></a>
-            </td>
-          </tr>
-          <tr>
-            <td class='bline' height="26" align="center"><font color='red'>栏目名称：</font></td>
-            <td class='bline'><input name="typename" type="text" id="typename" size="30" value="<?php echo $myrow['typename'] ?>" class="iptxt" /></td>
-          </tr>
-          <tr>
-            <td class='bline' height="26" align="center"> 排列顺序： </td>
-            <td class='bline'> <input name="sortrank" size="6" type="text" value="<?php echo $myrow['sortrank'] ?>" class="iptxt" />
-              （由低 -&gt; 高） </td>
-          </tr>
-          <tr>
-            <td class='bline' height="26" align="center">浏览权限：</td>
-            <td class='bline'> <select name="corank" id="corank" style="width:100">
-                <?php
-                $dsql->SetQuery("SELECT * FROM #@__arcrank WHERE rank >= 0");
-                $dsql->Execute();
-                while ($row = $dsql->GetObject()) {
-                    if ($myrow['corank'] == $row->rank) {
-                        echo "<option value='" . $row->rank . "' selected>" . $row->membername . "</option>\r\n";
-                    } else {
-                        echo "<option value='" . $row->rank . "'>" . $row->membername . "</option>\r\n";
-                    }
 
-                }
-                ?>
-              </select>
-              (仅限制栏目里的文档浏览权限) </td>
-          </tr>
-          <tr>
-              <td class='bline' height="26" align="center">文件保存目录：</td>
-              <td class='bline'><input name="typedir" type="text" id="typedir" value="<?php echo $myrow['typedir'] ?>" style="width:300px"  class="iptxt" /></td>
-          </tr>
-          <tr>
-            <td height="26" align="center" class='bline'>栏目列表选项：</td>
-            <td class='bline'> <input type='radio' name='isdefault' value='1' class='np'<?php if ($myrow['isdefault'] == 1) {
-                echo " checked='1' ";
-}
-                                                                                        ?>/>
-              链接到默认页
-              <input type='radio' name='isdefault' value='0' class='np'<?php if ($myrow['isdefault'] == 0) {
-                    echo " checked='1' ";
-}
-                                                                        ?>/>
-              链接到列表第一页
-              <input type='radio' name='isdefault' value='-1' class='np'<?php if ($myrow['isdefault'] == -1) {
-                    echo " checked='1' ";
-}
-                                                                        ?>/>
-              使用动态页 </td>
-          </tr>
-          <tr>
-            <td class='bline' height="26" align="center">默认页的名称： </td>
-            <td class='bline'><input name="defaultname" type="text" value="<?php echo $myrow['defaultname'] ?>" class="iptxt" /></td>
-          </tr>
-          <tr>
-            <td height="26" class='bline' align="center">栏目属性：</td>
-            <td class='bline'>
-                <input name="ispart" type="radio" id="radio" value="0" class='np'<?php if ($myrow['ispart'] == 0) {
-                    echo " checked='1' ";
-}
-                                                                                    ?>/>
-              最终列表栏目（允许在本栏目发布文档，并生成文档列表）<br>
-              <input name="ispart" type="radio" id="radio2" value="1" class='np'<?php if ($myrow['ispart'] == 1) {
-                    echo " checked='1' ";
-}
-                                                                                ?>/>
-
-              频道封面（栏目本身不允许发布文档）<br>
-              <input name="ispart" type="radio" id="radio3" value="2" class='np'<?php if ($myrow['ispart'] == 2) {
-                    echo " checked='1' ";
-}
-                                                                                ?>/>
-              外部连接（在"文件保存目录"处填写网址）              </td>
-          </tr>
-          <tr>
-            <td align="center" colspan="2" height="54" bgcolor='#FAFEE0'>
-            <input name="imageField" type="image" src="images/button_ok.gif" width="60" height="22" border="0" class="np"/>
-            &nbsp;&nbsp;&nbsp;
-            <a title='关闭' onclick='CloseMsg()'><img src="images/button_back.gif" width="60" height="22" border="0"></a>
-            </td>
-          </tr>
-      </table>
-      </form>
-    <?php
-    exit();
-} else {
     DedeInclude('templets/catalog_edit.htm');
-}
-?>

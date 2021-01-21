@@ -16,30 +16,31 @@ if (empty($dopost)) {
 }
 
 //保存更改
-if ($dopost == "save") {
-    $startID = 1;
-    $endID = $idend;
-    for (; $startID <= $endID; $startID++) {
-        $query = '';
-        $tid = ${'ID_' . $startID};
-        $pname = ${'pname_' . $startID};
-        if (isset(${'check_' . $startID})) {
-            if ($pname != '') {
-                $query = "UPDATE `#@__flinktype` SET typename='$pname' WHERE id='$tid' ";
-                $dsql->ExecuteNoneQuery($query);
-            }
-        } else {
-            $query = "DELETE FROM `#@__flinktype` WHERE id='$tid' ";
-            $dsql->ExecuteNoneQuery($query);
-        }
-    }
-    //增加新记录
-    if (isset($check_new) && $pname_new != '') {
-        $query = "INSERT INTO `#@__flinktype`(typename) VALUES('{$pname_new}');";
+if ($dopost === "save") {
+    $query = "UPDATE `#@__flinktype` SET typename='$pname' WHERE id='$tid' ";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功更新友情链接网站分类表!", "friendlink_type.php");
+    exit();
+} else if ($dopost === "del") {
+    $query = "DELETE FROM `#@__flinktype` WHERE id='$id' ";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功删除网站类型!", "friendlink_type.php");
+    exit();
+} else if ($dopost === "dels") {
+    foreach (explode(",", $aids) as $key => $value) {
+        $query = "DELETE FROM `#@__flinktype` WHERE id='$value' ";
         $dsql->ExecuteNoneQuery($query);
     }
-    header("Content-Type: text/html; charset={$cfg_soft_lang}");
-    echo "<script> alert('成功更新友情链接网站分类表！'); </script>";
+    ShowMsg("成功删除网站类型!", "friendlink_type.php");
+    exit();
+} else if ($dopost === "add") {
+    $query = "INSERT INTO `#@__flinktype`(typename) VALUES('$typename');";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功创建网站类型!", "friendlink_type.php");
+    exit();
 }
 
-DedeInclude('templets/friendlink_type.htm');
+$dlist = new DataListCP();
+$dlist->SetTemplet(DEDEADMIN . '/templets/friendlink_type.htm');
+$dlist->SetSource("Select * From #@__flinktype");
+$dlist->display();

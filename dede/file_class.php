@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 文件管理逻辑类
  *
  * @version   $Id: file_class.php 1 19:09 2010年7月12日 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 class FileManagement
 {
@@ -66,15 +63,12 @@ class FileManagement
     }
 
     /**
-     * 
-     * 
      *  移动文件
      *
      * @access public
      * @param  string $mfile 文件
      * @param  string $mpath 路径
      * @return string
-     
      */
     public function MoveFile($mfile, $mpath)
     {
@@ -116,12 +110,9 @@ class FileManagement
     }
 
     /**
-     * 
-     * 
      * 删除目录
      *
      * @param unknown_type $indir
-     
      */
     public function RmDirFiles($indir)
     {
@@ -149,14 +140,11 @@ class FileManagement
     }
 
     /**
-     * 
-     * 
      * 获得某目录合符规则的文件
      *
      * @param unknown_type $indir
      * @param unknown_type $fileexp
      * @param unknown_type $filearr
-     
      */
     public function GetMatchFiles($indir, $fileexp, &$filearr)
     {
@@ -180,13 +168,10 @@ class FileManagement
     }
 
     /**
-     * 
-     * 
      * 删除文件
      *
      * @param  unknown_type $filename
      * @return unknown
-     
      */
     public function DeleteFile($filename)
     {

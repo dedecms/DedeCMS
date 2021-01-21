@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 模型列表函数
  *
  * @version   $Id: inc_list_functions.php 1 13:52 2010年7月9日 $
@@ -12,17 +10,13 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获得是否推荐的表述
  *
  * @param  string $iscommend 推荐
  * @return string
- 
  */
 function IsCommendArchives($iscommend)
 {
@@ -45,14 +39,11 @@ function IsCommendArchives($iscommend)
 }
 
 /**
- * 
- * 
  *  获得推荐的标题
  *
  * @param  string $title     标题
  * @param  string $iscommend 推荐
  * @return string
- 
  */
 function GetCommendTitle($title, $iscommend)
 {
@@ -66,14 +57,11 @@ function GetCommendTitle($title, $iscommend)
 
 $GLOBALS['RndTrunID'] = 1;
 /**
- * 
- * 
  *  更换颜色
  *
  * @param  string $color1 颜色1
  * @param  string $color2 颜色2
  * @return string
- 
  */
 function GetColor($color1, $color2)
 {
@@ -89,13 +77,10 @@ function GetColor($color1, $color2)
 }
 
 /**
- * 
- * 
  *  检查图片是否存在
  *
  * @param  string $picname 图片地址
  * @return string
- 
  */
 function CheckPic($picname)
 {
@@ -110,13 +95,10 @@ function CheckPic($picname)
 }
 
 /**
- * 
- * 
  *  判断内容是否生成HTML
  *
  * @param  int $ismake 是否生成
  * @return string
- 
  */
 function IsHtmlArchives($ismake)
 {
@@ -134,13 +116,10 @@ function IsHtmlArchives($ismake)
 }
 
 /**
- * 
- * 
  *  获得内容的限定级别名称
  *
  * @param  string $arcrank 级别名称
  * @return string
- 
  */
 function GetRankName($arcrank)
 {
@@ -165,13 +144,10 @@ function GetRankName($arcrank)
 }
 
 /**
- * 
- * 
  *  判断内容是否为图片文章
  *
  * @param  string $picname 图片名称
  * @return string
- 
  */
 function IsPicArchives($picname)
 {

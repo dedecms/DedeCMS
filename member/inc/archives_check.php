@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 文档验证
  *
  * @version   $Id: archives_check.php 1 13:52 2010年7月9日 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 require_once DEDEINC . '/image.func.php';
 require_once DEDEINC . '/oxwindow.class.php';

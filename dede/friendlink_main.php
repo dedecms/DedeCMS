@@ -46,7 +46,7 @@ function GetPic($pic)
     if ($pic == '') {
         return '无图标';
     } else {
-        return "<img src='$pic' width='88' height='31' border='0' />";
+        return "<img src='$pic' width='88px' height='31px' border='0' />";
     }
 
 }

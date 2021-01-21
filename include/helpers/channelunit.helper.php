@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 文档小助手
  *
  * @version   $Id: channelunit.helper.php 1 16:49 2010年7月6日 $
@@ -12,17 +10,13 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  用星表示软件或Flash的等级
  *
  * @param  string  $rank  星星数
  * @return string
- 
 */
 if (!function_exists('GetRankStar')) {
     function GetRankStar($rank)
@@ -43,8 +37,6 @@ if (!function_exists('GetRankStar')) {
 }
 
 /**
-* 
-* 
  *  获得文章网址
  *  如果要获得文件的路径，直接用
  *  GetFileUrl($aid,$typeid,$timetag,$title,$ismake,$rank,$namerule,$typedir,$money)
@@ -64,7 +56,6 @@ if (!function_exists('GetRankStar')) {
  * @param  string  $siteurl  站点地址
  * @param  string  $sitepath  站点路径
  * @return string
- 
 */
 if (!function_exists('GetFileUrl')) {
     function GetFileUrl($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = '', $typedir = '',
@@ -97,8 +88,6 @@ if (!function_exists('GetFileUrl')) {
 }
 
 /**
-* 
-* 
  *  获得新文件名(本函数会自动创建目录)
  *
  * @param  int  $aid  文档ID
@@ -112,7 +101,6 @@ if (!function_exists('GetFileUrl')) {
  * @param  string  $money  需要金币
  * @param  string  $filename  文件名称
  * @return string
- 
 */
 if (!function_exists('GetFileNewName')) {
     function GetFileNewName($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = '', $typedir = '', $money = 0, $filename = '')
@@ -148,8 +136,6 @@ if (!function_exists('GetFileNewName')) {
 }
 
 /**
-* 
-* 
  *  获得文件相对于主站点根目录的物理文件名(动态网址返回url)
  *
  * @param  int  $aid  文档ID
@@ -163,7 +149,6 @@ if (!function_exists('GetFileNewName')) {
  * @param  string  $money  需要金币
  * @param  string  $filename  文件名称
  * @return string
- 
 */
 if (!function_exists('GetFileName')) {
     function GetFileName($aid, $typeid, $timetag, $title, $ismake = 0, $rank = 0, $namerule = '', $typedir = '', $money = 0, $filename = '')
@@ -224,8 +209,6 @@ if (!function_exists('GetFileName')) {
 }
 
 /**
-* 
-* 
  *  获得指定类目的URL链接
  *  对于使用封面文件和单独页面的情况，强制使用默认页名称
  *
@@ -239,7 +222,6 @@ if (!function_exists('GetFileName')) {
  * @param  string  $siteurl  站点地址
  * @param  string  $sitepath  站点目录
  * @return string
- 
 */
 if (!function_exists('GetTypeUrl')) {
     function GetTypeUrl($typeid, $typedir, $isdefault, $defaultname, $ispart, $namerule2, $moresite = 0, $siteurl = '', $sitepath = '')
@@ -303,14 +285,11 @@ if (!function_exists('GetTypeUrl')) {
 }
 
 /**
-* 
-* 
  *  魔法变量，用于获取两个可变的值
  *
  * @param  string  $v1  第一个变量
  * @param  string  $v2  第二个变量
  * @return string
- 
 */
 if (!function_exists('MagicVar')) {
     function MagicVar($v1, $v2)
@@ -322,13 +301,10 @@ if (!function_exists('MagicVar')) {
 }
 
 /**
-* 
-* 
  *  获取某个类目的所有上级栏目id
  *
  * @param  int  $tid  栏目ID
  * @return string
- 
 */
 if (!function_exists('GetTopids')) {
     function GetTopids($tid)
@@ -341,14 +317,11 @@ if (!function_exists('GetTopids')) {
 }
 
 /**
-* 
-* 
  *  获取上级ID列表
  *
  * @access public
  * @param  string  $tid  栏目ID
  * @return string
- 
 */
 if (!function_exists('GetParentIds')) {
     function GetParentIds($tid)
@@ -372,15 +345,12 @@ if (!function_exists('GetParentIds')) {
 }
 
 /**
-* 
-* 
  *  检测栏目是否是另一个栏目的父目录
  *
  * @access public
  * @param  string  $sid  顶级目录id
  * @param  string  $pid  下级目录id
  * @return bool
- 
 */
 if (!function_exists('IsParent')) {
     function IsParent($sid, $pid)
@@ -393,13 +363,10 @@ if (!function_exists('IsParent')) {
 }
 
 /**
-* 
-* 
  *  获取一个类目的顶级类目id
  *
  * @param  string  $tid  栏目ID
  * @return string
- 
 */
 if (!function_exists('GetTopid')) {
     function GetTopid($tid)
@@ -422,15 +389,12 @@ if (!function_exists('GetTopid')) {
 }
 
 /**
- * 
- * 
  *  获得某id的所有下级id
  *
  * @param  string $id      栏目id
  * @param  string $channel 模型ID
  * @param  string $addthis 是否包含本身
  * @return string
- 
  */
 function GetSonIds($id, $channel = 0, $addthis = true)
 {
@@ -468,13 +432,10 @@ function GetSonIdsLogic($id, $sArr, $channel = 0, $addthis = false)
 }
 
 /**
- * 
- * 
  *  栏目目录规则
  *
  * @param  string $typedir 栏目目录
  * @return string
- 
  */
 function MfTypedir($typedir)
 {
@@ -490,13 +451,10 @@ function MfTypedir($typedir)
 }
 
 /**
- * 
- * 
  *  模板目录规则
  *
  * @param  string $tmpdir 模板目录
  * @return string
- 
  */
 function MfTemplet($tmpdir)
 {
@@ -507,13 +465,10 @@ function MfTemplet($tmpdir)
 }
 
 /**
- * 
- * 
  *  清除用于js的空白块
  *
  * @param  string $atme 字符
  * @return string
- 
  */
 function FormatScript($atme)
 {
@@ -522,14 +477,11 @@ function FormatScript($atme)
 }
 
 /**
- * 
- * 
  *  给属性默认值
  *
  * @param  array $atts    属性
  * @param  array $attlist 属性列表
  * @return string
- 
  */
 function FillAttsDefault(&$atts, $attlist)
 {
@@ -546,15 +498,12 @@ function FillAttsDefault(&$atts, $attlist)
 }
 
 /**
- * 
- * 
  *  给块标记赋值
  *
  * @param  object $dtp      模板解析引擎
  * @param  object $refObj   实例化对象
  * @param  object $parfield
  * @return string
- 
  */
 function MakeOneTag(&$dtp, &$refObj, $parfield = 'Y')
 {
@@ -640,13 +589,10 @@ function MakeOneTag(&$dtp, &$refObj, $parfield = 'Y')
 }
 
 /**
- * 
- * 
  *  获取某栏目的url
  *
  * @param  array $typeinfos 栏目信息
  * @return string
- 
  */
 function GetOneTypeUrlA($typeinfos)
 {
@@ -658,8 +604,6 @@ function GetOneTypeUrlA($typeinfos)
 }
 
 /**
- * 
- * 
  *  设置全局环境变量
  *
  * @param  int    $typeid   栏目ID
@@ -668,7 +612,6 @@ function GetOneTypeUrlA($typeinfos)
  * @param  string $title    标题
  * @param  string $curfile  当前文件
  * @return string
- 
  */
 function SetSysEnv($typeid = 0, $typename = '', $aid = 0, $title = '', $curfile = '')
 {
@@ -693,15 +636,12 @@ function SetSysEnv($typeid = 0, $typename = '', $aid = 0, $title = '', $curfile 
 }
 
 /**
- * 
- * 
  *  获得图书的URL
  *
  * @param  string $bid   书籍ID
  * @param  string $title 标题
  * @param  string $gdir
  * @return string
- 
  */
 function GetBookUrl($bid, $title, $gdir = 0)
 {
@@ -713,13 +653,10 @@ function GetBookUrl($bid, $title, $gdir = 0)
 }
 
 /**
- * 
- * 
  *  根据ID生成目录
  *
  * @param  string $aid 内容ID
  * @return int
- 
  */
 function DedeID2Dir($aid)
 {
@@ -729,8 +666,6 @@ function DedeID2Dir($aid)
 }
 
 /**
- * 
- * 
  *  获得自由列表的网址
  *
  * @param  string $lid         列表id
@@ -739,7 +674,6 @@ function DedeID2Dir($aid)
  * @param  string $defaultpage 默认页面
  * @param  string $nodefault   没有默认页面
  * @return string
- 
  */
 function GetFreeListUrl($lid, $namerule, $listdir, $defaultpage, $nodefault)
 {
@@ -766,8 +700,6 @@ function GetFreeListUrl($lid, $namerule, $listdir, $defaultpage, $nodefault)
 }
 
 /**
- * 
- * 
  *  获取网站搜索的热门关键字
  *
  * @param  string $dsql
@@ -776,7 +708,6 @@ function GetFreeListUrl($lid, $namerule, $listdir, $defaultpage, $nodefault)
  * @param  string $klen    关键词字数
  * @param  string $orderby 排列顺序
  * @return string
- 
  */
 function GetHotKeywords(&$dsql, $num = 8, $nday = 365, $klen = 16, $orderby = 'count')
 {
@@ -815,13 +746,10 @@ function GetHotKeywords(&$dsql, $num = 8, $nday = 365, $klen = 16, $orderby = 'c
 }
 
 /**
- * 
- * 
  *  使用绝对网址
  *
  * @param  string $gurl 地址
  * @return string
- 
  */
 function Gmapurl($gurl)
 {
@@ -830,13 +758,10 @@ function Gmapurl($gurl)
 }
 
 /**
- * 
- * 
  *  引用回复标记处理
  *
  * @param  string $quote
  * @return string
- 
  */
 function Quote_replace($quote)
 {
@@ -854,13 +779,10 @@ function Quote_replace($quote)
 }
 
 /**
- * 
- * 
  *  获取、写入指定cacheid的块
  *
  * @param  string $cacheid 缓存ID
  * @return string
- 
  */
 function GetCacheBlock($cacheid)
 {
@@ -880,14 +802,11 @@ function GetCacheBlock($cacheid)
 }
 
 /**
- * 
- * 
  *  写入缓存块
  *
  * @param  string $cacheid 缓存ID
  * @param  string $str     字符串信息
  * @return string
- 
  */
 function WriteCacheBlock($cacheid, $str)
 {

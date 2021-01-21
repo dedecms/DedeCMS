@@ -19,13 +19,13 @@ if (empty($dopost)) {
 if ($dopost == "add") {
     $dtime = time();
     if (is_uploaded_file($logoimg)) {
-        $names = sexplode("\.", $logoimg_name);
+        $names = explode("\.", $logoimg_name);
         $shortname = "." . $names[count($names) - 1];
         if (!preg_match("#(jpg|gif|png)$#", $shortname)) {
             $shortname = '.gif';
         }
         $filename = MyDate("ymdHis", time()) . mt_rand(1000, 9999) . $shortname;
-        $imgurl = $cfg_medias_dir . "/flink";
+        $imgurl = $cfg_medias_dir . "/logo";
         if (!is_dir($cfg_basedir . $imgurl)) {
             MkdirAll($cfg_basedir . $imgurl, $cfg_dir_purview);
             CloseFtp();
@@ -46,9 +46,8 @@ if ($dopost == "add") {
     $query = "INSERT INTO `#@__flink`(sortrank,url,webname,logo,msg,email,typeid,dtime,ischeck)
             VALUES('$sortrank','$url','$webname','$imgurl','$msg','$email','$typeid','$dtime','$ischeck'); ";
     $rs = $dsql->ExecuteNoneQuery($query);
-    $burl = empty($_COOKIE['ENV_GOBACK_URL']) ? "friendlink_main.php" : $_COOKIE['ENV_GOBACK_URL'];
     if ($rs) {
-        ShowMsg("成功增加一个链接!", $burl, 0, 500);
+        ShowMsg("成功增加一个链接!", "friendlink_main.php", 0, 500);
         exit();
     } else {
         ShowMsg("增加链接时出错，请向官方反馈，原因：" . $dsql->GetError(), "javascript:;");

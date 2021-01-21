@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 文档操作处理函数
  *
  * @version   $Id: inc_batchup.php 1 13:52 2010年7月9日 $
@@ -12,19 +10,15 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 require_once DEDEINC . "/channelunit.func.php";
 
 /**
- * 
- * 
  *  删除文档
  *
  * @access public
  * @param  int $aid 文档ID
  * @return bool
- 
  */
 function DelArc($aid)
 {
@@ -160,14 +154,11 @@ function DelArc($aid)
 }
 
 /**
- * 
- * 
  *  删除不带主表内容类型的数据
  *
  * @access public
  * @param  int $aid 文档ID
  * @return string
- 
  */
 function DelArcSg($aid)
 {
@@ -237,12 +228,9 @@ function DelArcSg($aid)
 }
 
 /**
- * 
- * 
  *  获取真实路径
  *
  * @return string
- 
  */
 function GetTruePath()
 {

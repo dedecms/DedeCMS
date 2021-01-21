@@ -1,1 +1,79 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>获取代码</title></head><body><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td height="19" background="images/tbg.gif"><strong><a href="vote_main.php"><u>投票管理</u></a>>>获取代码</strong></td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><table width="80%" border="0" cellspacing="2" cellpadding="2"><tbody><tr bgcolor="#EBF2DB"><td width="100%" bgcolor="#EBF2DB">在封面或主页模板中使用的标记：</td></tr><tr><td valign="top"><table width="600" border="0" cellspacing="0" cellpadding="0"><form name="form1" action="tag_test_action.php" target="stafrm" method="post"></form><input type="hidden" name="showsource" value="no"/><tbody><tr><td width="370" height="153" align="center"><textarea name="partcode" cols="45" rows="6" id="partcode" class="uk-textarea uk-form-small">{dede:vote id='<?php echo $aid?>' lineheight='22'tablewidth='100%' titlebgcolor='#EDEDE2'titlebackground='' tablebgcolor='#FFFFFF'}{/dede:vote}</textarea></td><td width="230" rowspan="2"><iframe name="stafrm" frameborder="0" id="stafrm" width="100%" height="100%"></iframe></td></tr><tr><td height="53" align="center" valign="top"><input type="submit" name="Submit" value="提交测试"/></td></tr></tbody></table></td></tr><tr bgcolor="#EBF2DB"><td bgcolor="#EBF2DB">在封面或主页模板中使用的JS：</td></tr><tr><td height="200" valign="top"><textarea name="htmlf" cols="60" rows="5" id="htmlf" class="uk-textarea uk-form-small"><script language="javascript" src="<?php echo $cfg_basehost.'/data/vote/vote_'.$aid.'.js' ?>"></script></textarea></td></tr><tr bgcolor="#EBF2DB"><td bgcolor="#EBF2DB">默认生成的表单HTML：</td></tr><tr><td height="200" valign="top"><textarea name="htmlf" cols="60" rows="10" id="htmlf" class="uk-textarea uk-form-small"><?php$vt = new DedeVote($aid);echo $vt->GetVoteForm();$vt->Close();?></textarea></td></tr></tbody></table> </td></tr></tbody></table></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>获取代码</title>
+<meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/highlight/styles/atom-one-light.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="vote_main.php">投票管理</a></li><li><span>获取代码</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<!-- 选项 -->
+<?php
+$dede_code = <<<DEDE
+{ dede:vote id='$aid' lineheight='22' tablewidth='100%' titlebgcolor='#EDEDE2' titlebackground='' tablebgcolor='#FFFFFF'}
+{/dede:vote}
+DEDE;?>
+<h4 class="uk-h4">在封面或主页模板中使用的标记</h4>
+<pre><code class="lang-html xml"><?=$dede_code;?>
+</code></pre>
+<?php
+$javascript_code = <<<JS
+<script language="javascript" src="$cfg_basehost/data/vote/vote_$aid.js"></script>
+JS;?>
+<h2 class="uk-h4">在封面或主页模板中使用的JS</h2>
+<pre><code class="lang-html xml"><?=htmlspecialchars($javascript_code);?>
+</code></pre>
+
+<h2 class="uk-h4">默认生成的表单HTML</h2>
+<pre><code class="lang-html xml html"><?php
+$vt = new DedeVote($aid);
+echo $vt->GetVoteForm();
+$vt->Close();
+?>
+</code></pre>
+<!-- /选项 -->
+
+</div>
+</div>
+</div>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/highlight/highlight.pack.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>
+

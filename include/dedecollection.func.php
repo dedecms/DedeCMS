@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 采集小助手
  *
  * @version   $Id: charset.helper.php 1 2010-07-05 11:43:09 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 require_once DEDEINC . "/dedehttpdown.class.php";
@@ -20,8 +17,6 @@ require_once DEDEINC . "/dedetag.class.php";
 require_once DEDEINC . "/charset.func.php";
 
 /**
- * 
- * 
  *  下载图片
  *
  * @access public
@@ -32,7 +27,6 @@ require_once DEDEINC . "/charset.func.php";
  * @param  string $JumpCount 跳转计数
  * @param  string $maxtime   最大次数
  * @return string
- 
  */
 function DownImageKeep($gurl, $rfurl, $filename, $gcookie = "", $JumpCount = 0, $maxtime = 30)
 {
@@ -161,14 +155,11 @@ function DownImageKeep($gurl, $rfurl, $filename, $gcookie = "", $JumpCount = 0, 
 }
 
 /**
- * 
- * 
  *  获得某页面返回的Cookie信息
  *
  * @access public
  * @param  string $gurl 调整地址
  * @return string
- 
  */
 function RefurlCookie($gurl)
 {
@@ -222,14 +213,11 @@ function RefurlCookie($gurl)
 }
 
 /**
- * 
- * 
  *  获得网址的host和query部份
  *
  * @access public
  * @param  string $gurl 调整地址
  * @return string
- 
  */
 function GetHostInfo($gurl)
 {
@@ -241,14 +229,11 @@ function GetHostInfo($gurl)
 }
 
 /**
- * 
- * 
  *  HTML里的图片转DEDE格式
  *
  * @access public
  * @param  string $body 文章内容
  * @return string
- 
  */
 function TurnImageTag(&$body)
 {
@@ -281,14 +266,11 @@ function TurnImageTag(&$body)
 }
 
 /**
- * 
- * 
  *  HTML里的网址格式转换
  *
  * @access public
  * @param  string $body 文章内容
  * @return string
- 
  */
 function TurnLinkTag(&$body)
 {
@@ -312,14 +294,11 @@ function TurnLinkTag(&$body)
 }
 
 /**
- * 
- * 
  *  替换XML的CDATA
  *
  * @access public
  * @param  string $str 字符串
  * @return string
- 
  */
 function RpCdata($str)
 {
@@ -330,14 +309,11 @@ function RpCdata($str)
 }
 
 /**
- * 
- * 
  *  分析RSS里的链接
  *
  * @access public
  * @param  string $rssurl rss地址
  * @return string
- 
  */
 function GetRssLinks($rssurl)
 {
@@ -406,15 +382,12 @@ function GetRssLinks($rssurl)
 }
 
 /**
- * 
- * 
  *  从RSS摘要获取图片信息
  *
  * @access public
  * @param  string $descriptions 描述
  * @param  string $refurl       来源地址
  * @return string
- 
  */
 function GetddImgFromRss($descriptions, $refurl)
 {
@@ -436,15 +409,12 @@ function GetddImgFromRss($descriptions, $refurl)
 }
 
 /**
- * 
- * 
  *  补全网址
  *
  * @access public
  * @param  string $refurl 来源地址
  * @param  string $surl   站点地址
  * @return string
- 
  */
 function FillUrl($refurl, $surl)
 {
@@ -518,8 +488,6 @@ function FillUrl($refurl, $surl)
 }
 
 /**
- * 
- * 
  *  从匹配规则中获取列表网址
  *
  * @access public
@@ -531,7 +499,6 @@ function FillUrl($refurl, $surl)
  * @param  string $usemore   使用更多
  * @param  string $batchrule 列表规则
  * @return string
- 
  */
 function GetUrlFromListRule($regxurl = '', $handurl = '', $startid = 0, $endid = 0, $addv = 1, $usemore = 0, $batchrule = '')
 {

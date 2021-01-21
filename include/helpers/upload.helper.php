@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 上传处理小助手
  *
  * @version   $Id: upload.helper.php 1 2010-07-05 11:43:09 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  管理员上传文件的通用函数
  *
  * @access public
@@ -28,7 +23,6 @@
  * @param  string  $filetype  image、media、addon
  *      $file_type='' 对于swfupload上传的文件， 因为没有filetype，所以需指定，并且有些特殊之处不同
  * @return int   -1 没选定上传文件，0 文件类型不允许, -2 保存失败，其它：返回上传后的文件名
- 
 */
 if (!function_exists('AdminUpload')) {
     function AdminUpload($uploadname, $ftype = 'image', $rnddd = 0, $watermark = true, $filetype = '')

@@ -9,7 +9,6 @@
 <!-- CSS FILES -->
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
 <link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
-<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/daterangepicker/daterangepicker.css">
 </head>
 <body>
 <form name="form1" action="content_batchup_action.php" target="stafrm" method="post">
@@ -62,21 +61,21 @@ echo "</select>";
 <input name="endid" type="text" id="endid" class="uk-input uk-form-width-small uk-form-small" >
 </td>
 </tr>
-<tr colsapn="2">
+<tr>
 <td>
 <label> <input name="seltime" type="checkbox" class="uk-checkbox" id="seltime" value="1" onClick="ShowHideTime()"> 启用时间筛选 </label>
 </td>
 <td>
 <div id="seltimeField" style="display:none;">
-开始： 
+开始：
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="starttime" type="datetime-local" value="<?=GetDateTimeMk(time()-(24*3600*30))?>" placeholder="<?=GetDateTimeMk($row['starttime'])?>">
-</div>
+<input class="uk-input uk-form-width-medium uk-form-small"  style="width: 230px;" name="starttime" type="datetime-local"  value="<?=GetDateTimeMk(time()-(24*3600*30))?>">
+</div> &nbsp;&nbsp;
 结束：
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="endtime" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk($row['starttime'])?>">
+<input class="uk-input uk-form-width-medium uk-form-small" style="width: 230px;"  name="endtime" type="datetime-local"  value="<?=GetDateTimeMk(time())?>">
 </div>
 </div>
 </td>

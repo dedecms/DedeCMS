@@ -40,7 +40,6 @@ function __send(){  }
 ----------------------*/
 if ($dopost == 'send') {
     /**
-* 
  * 好友记录 
 **/
     $sql = "SELECT * FROM `#@__member_friends` WHERE  mid='{$cfg_ml->M_ID}' AND ftype!='-1'  ORDER BY addtime DESC LIMIT 20";

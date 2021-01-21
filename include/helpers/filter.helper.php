@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 过滤小助手
  *
  * @version   $Id: time.filter.php 1 2010-07-05 11:43:09 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  去除html中不规则内容字符
  *
  * @access public
@@ -28,7 +23,6 @@
  *            $rptype = 2 表示替换 html标记同时去除所有空白字符
  *            $rptype = -1 表示仅替换 html危险的标记
  * @return string
- 
 */
 if (!function_exists('HtmlReplace')) {
     function HtmlReplace($str, $rptype = 0)
@@ -61,13 +55,10 @@ if (!function_exists('HtmlReplace')) {
 }
 
 /**
-* 
-* 
  *  修复浏览器XSS hack的函数
  *
  * @param  string   $val  需要处理的内容
  * @return string
- 
 */
 if (!function_exists('RemoveXSS')) {
     function RemoveXSS($val)
@@ -122,14 +113,11 @@ if (!function_exists('RemoveXSS')) {
 }
 
 /**
-* 
-* 
  *  处理禁用HTML但允许换行的内容
  *
  * @access public
  * @param  string  $msg  需要过滤的内容
  * @return string
- 
 */
 if (!function_exists('TrimMsg')) {
     function TrimMsg($msg)
@@ -144,13 +132,10 @@ if (!function_exists('TrimMsg')) {
 }
 
 /**
-* 
-* 
  *  过滤用于搜索的字符串
  *
  * @param  string  $keyword  关键词
  * @return string
- 
 */
 if (!function_exists('FilterSearch')) {
     function FilterSearch($keyword)

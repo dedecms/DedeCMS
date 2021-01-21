@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 文档小助手
  *
  * @version   $Id: archive.helper.php 2 23:00 2010年7月5日 $
@@ -12,17 +10,13 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  获取单篇文档信息
  *
  * @param  int  $aid  文档id
  * @return array
- 
 */
 if (!function_exists('GetOneArchive')) {
     function GetOneArchive($aid)
@@ -103,14 +97,11 @@ if (!function_exists('GetOneArchive')) {
 }
 
 /**
-* 
-* 
  *  获取模型的表信息
  *
  * @param  int   $id  模型ID
  * @param  string   $formtype  表单类型
  * @return array
- 
 */
 if (!function_exists('GetChannelTable')) {
     function GetChannelTable($id, $formtype = 'channel')
@@ -134,13 +125,10 @@ if (!function_exists('GetChannelTable')) {
 }
 
 /**
-* 
-* 
  *  获得某文档的所有tag
  *
  * @param  int     $aid  文档id
  * @return string
- 
 */
 if (!function_exists('GetTags')) {
     function GetTags($aid)
@@ -160,8 +148,6 @@ if (!function_exists('GetTags')) {
 }
 
 /**
-* 
-* 
  *  获取一个微表的索引键
  *
  * @access public
@@ -172,7 +158,6 @@ if (!function_exists('GetTags')) {
  * @param  int  $senddate  发布日期
  * @param  int  $mid  会员ID
  * @return int
- 
 */
 if (!function_exists('GetIndexKey')) {
     function GetIndexKey($arcrank, $typeid, $sortrank = 0, $channelid = 1, $senddate = 0, $mid = 1)
@@ -207,8 +192,6 @@ if (!function_exists('GetIndexKey')) {
 }
 
 /**
-* 
-* 
  *  更新微表key及Tag
  *
  * @access public
@@ -218,7 +201,6 @@ if (!function_exists('GetIndexKey')) {
  * @param  int  $sortrank  排序ID
  * @param  string  $tags  tag标签
  * @return string
- 
 */
 if (!function_exists('UpIndexKey')) {
     function UpIndexKey($id, $arcrank, $typeid, $sortrank = 0, $tags = '')
@@ -271,15 +253,12 @@ if (!function_exists('UpIndexKey')) {
 }
 
 /**
-* 
-* 
  *  插入Tags
  *
  * @access public
  * @param  string  $tag  tag标签
  * @param  int  $aid  文档AID
  * @return void
- 
 */
 if (!function_exists('InsertTags')) {
     function InsertTags($tag, $aid)
@@ -300,15 +279,12 @@ if (!function_exists('InsertTags')) {
 }
 
 /**
-* 
-* 
  *  插入一个tag
  *
  * @access public
  * @param  string  $tag  标签
  * @param  int  $aid  文档AID
  * @return void
- 
 */
 if (!function_exists('InsertOneTag')) {
     function InsertOneTag($tag, $aid)

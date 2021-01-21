@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 单表模型发布器
  *
  * @version   $Id: archives_sg_add.php 1 13:52 2010年7月9日 $
@@ -12,18 +10,14 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  获取选项列表
  *
  * @param  string $selid       当前选择ID
  * @param  string $channeltype 频道类型
  * @return string
- 
  */
 function GetOptionList($selid = 0, $channeltype = 0)
 {
@@ -64,8 +58,6 @@ function GetOptionList($selid = 0, $channeltype = 0)
 }
 
 /**
- * 
- * 
  *  逻辑递归
  *
  * @access public
@@ -74,7 +66,6 @@ function GetOptionList($selid = 0, $channeltype = 0)
  * @param  string $channeltype
  * @param  int    $selid
  * @return string
- 
  */
 function LogicGetOptionArray($id, $step, $channeltype, $selid = 0)
 {
@@ -105,15 +96,12 @@ function LogicGetOptionArray($id, $step, $channeltype, $selid = 0)
 }
 
 /**
- * 
- * 
  *  自定义类型
  *
  * @param  int $mid       会员ID
  * @param  int $mtypeid   自定义类别ID
  * @param  int $channelid 频道ID
  * @return string
- 
  */
 function classification($mid, $mtypeid = 0, $channelid = 1)
 {

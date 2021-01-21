@@ -59,7 +59,6 @@ if ($uid == '') {
         }
 
         /**
-* 
  * 调用访客记录 
 **/
         $_vars['mid'] = $cfg_ml->M_ID;
@@ -69,7 +68,6 @@ if ($uid == '') {
         }
 
         /**
-* 
  * 我的收藏 
 **/
         $favorites = array();
@@ -79,7 +77,6 @@ if ($uid == '') {
         }
 
         /**
-* 
  * 欢迎新朋友 
 **/
         $sql = "SELECT * FROM `#@__member` ORDER BY mid DESC LIMIT 3";
@@ -91,7 +88,6 @@ if ($uid == '') {
         }
 
         /**
-* 
  * 好友记录 
 **/
         $sql = "SELECT F.*,M.face,M.sex FROM `#@__member` AS M LEFT JOIN #@__member_friends AS F ON F.fid=M.mid WHERE F.mid='{$cfg_ml->M_ID}' ORDER BY F.addtime desc LIMIT 6";
@@ -103,19 +99,16 @@ if ($uid == '') {
         }
 
         /**
-* 
  * 有没新短信 
 **/
         $pms = $dsql->GetOne("SELECT COUNT(*) AS nums FROM #@__member_pms WHERE toid='{$cfg_ml->M_ID}' AND `hasview`=0 AND folder = 'inbox'");
 
         /**
-* 
  * 查询会员状态 
 **/
         $moodmsg = $dsql->GetOne("SELECT * FROM #@__member_msg WHERE mid='{$cfg_ml->M_ID}' ORDER BY dtime desc");
 
         /**
-* 
  * 会员操作日志 
 **/
         $sql = "SELECT * From `#@__member_feed` where ischeck=1 order by fid desc limit 8";

@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 核心小助手
  *
  * @version   $Id: util.helper.php 4 19:20 2010年7月6日 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 define('T_NEW_LINE', -1);
@@ -76,12 +73,9 @@ if (!function_exists('token_name_nl')) {
 }
 
 /**
-* 
-* 
  *  获得当前的脚本网址
  *
  * @return string
- 
 */
 if (!function_exists('GetCurUrl')) {
     function GetCurUrl()
@@ -108,12 +102,9 @@ if (!function_exists('GetCurUrl')) {
 }
 
 /**
-* 
-* 
  *  获取用户真实地址
  *
  * @return string  返回用户ip
- 
 */
 if (!function_exists('GetIP')) {
     function GetIP()
@@ -173,8 +164,6 @@ if (!function_exists('GetIP')) {
 }
 
 /**
-* 
-* 
  *  获取编辑器
  *
  * @param  string  $fname  表单名称
@@ -184,7 +173,6 @@ if (!function_exists('GetIP')) {
  * @param  string  $gtype   获取类型
  * @param  string  $isfullpage   是否全屏
  * @return string
- 
 */
 if (!function_exists('GetEditor')) {
     function GetEditor($fname, $fvalue, $nheight = "350", $etype = "Basic", $gtype = "print", $isfullpage = "FALSE", $bbcode = false)
@@ -200,13 +188,10 @@ if (!function_exists('GetEditor')) {
 }
 
 /**
-* 
-* 
  *  获取模板
  *
  * @param  string  $filename 文件名称
  * @return string
- 
 */
 if (!function_exists('GetTemplets')) {
     function GetTemplets($filename)
@@ -227,13 +212,10 @@ if (!function_exists('GetTemplets')) {
 }
 
 /**
-* 
-* 
  *  获取系统模板
  *
  * @param  $filename  模板文件
  * @return string
- 
 */
 if (!function_exists('GetSysTemplets')) {
     function GetSysTemplets($filename)
@@ -245,12 +227,9 @@ if (!function_exists('GetSysTemplets')) {
 }
 
 /**
-* 
-* 
  *  获取新闻提示
  *
  * @return void
- 
 */
 if (!function_exists('GetNewInfo')) {
     function GetNewInfo()
@@ -266,14 +245,11 @@ if (!function_exists('GetNewInfo')) {
 }
 
 /**
-* 
-* 
  *  生成一个随机字符
  *
  * @access public
  * @param  string  $ddnum
  * @return string
- 
 */
 if (!function_exists('dd2char')) {
     function dd2char($ddnum)
@@ -307,14 +283,11 @@ if (!function_exists('dd2char')) {
 }
 
 /**
-* 
-* 
  *  json_encode兼容函数
  *
  * @access public
  * @param  string  $data
  * @return string
- 
 */
 if (!function_exists('json_encode')) {
     function format_json_value(&$value)
@@ -385,15 +358,12 @@ if (!function_exists('json_encode')) {
 }
 
 /**
-* 
-* 
  *  json_decode兼容函数
  *
  * @access public
  * @param  string  $json  json数据
  * @param  string  $assoc  当该参数为 TRUE 时，将返回 array 而非 object
  * @return string
- 
 */
 if (!function_exists('json_decode')) {
     function json_decode($json, $assoc = false)

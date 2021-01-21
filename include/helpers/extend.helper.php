@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 扩展小助手
  *
  * @version   $Id: extend.helper.php 1 13:58 2010年7月5日 $
@@ -12,17 +10,13 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  返回指定的字符
  *
  * @param  string  $n  字符ID
  * @return string
- 
 */
 if (!function_exists('ParCv')) {
     function ParCv($n)
@@ -34,12 +28,9 @@ if (!function_exists('ParCv')) {
 }
 
 /**
-* 
-* 
  *  显示一个错误
  *
  * @return void
- 
 */
 if (!function_exists('ParamError')) {
     function ParamError()
@@ -52,14 +43,11 @@ if (!function_exists('ParamError')) {
 }
 
 /**
-* 
-* 
  *  默认属性
  *
  * @param  string  $oldvar  旧的值
  * @param  string  $nv      新值
  * @return string
- 
 */
 if (!function_exists('AttDef')) {
     function AttDef($oldvar, $nv)
@@ -71,12 +59,9 @@ if (!function_exists('AttDef')) {
 }
 
 /**
-* 
-* 
  *  返回Ajax头信息
  *
  * @return void
- 
 */
 if (!function_exists('AjaxHead')) {
     function AjaxHead()
@@ -90,12 +75,9 @@ if (!function_exists('AjaxHead')) {
 }
 
 /**
-* 
-* 
  *  去除html和php标记
  *
  * @return string
- 
 */
 if (!function_exists('dede_strip_tags')) {
     function dede_strip_tags($str)

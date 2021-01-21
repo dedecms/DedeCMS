@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * DedeCMS中用到的字符编码转换的小助手函数
  *
  * @version   $Id: charset.helper.php 1 2010-07-05 11:43:09 $
@@ -12,21 +10,17 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 $UC2GBTABLE = $CODETABLE = $BIG5_DATA = $GB_DATA = '';
 $GbkUniDic = null;
 
 /**
-* 
-* 
  *  UTF-8 转GB编码
  *
  * @access public
  * @param  string  $utfstr  需要转换的字符串
  * @return string
- 
 */
 if (!function_exists('utf82gb')) {
     function utf82gb($utfstr)
@@ -87,14 +81,11 @@ if (!function_exists('utf82gb')) {
 }
 
 /**
-* 
-* 
  *  GB转UTF-8编码
  *
  * @access public
  * @param  string  $gbstr  gbk的字符串
  * @return string
- 
 */
 if (!function_exists('gb2utf8')) {
     function gb2utf8($gbstr)
@@ -149,14 +140,11 @@ if (!function_exists('gb2utf8')) {
 }
 
 /**
-* 
-* 
  *  Unicode转utf8
  *
  * @access public
  * @param  string  $c  Unicode的字符串内容
  * @return string
- 
 */
 if (!function_exists('u2utf8')) {
     function u2utf8($c)
@@ -191,14 +179,11 @@ if (!function_exists('u2utf8')) {
 }
 
 /**
-* 
-* 
  *  utf8转Unicode
  *
  * @access public
  * @param  string  $c  UTF-8的字符串信息
  * @return string
- 
 */
 if (!function_exists('utf82u')) {
     function utf82u($c)
@@ -233,14 +218,11 @@ if (!function_exists('utf82u')) {
 }
 
 /**
-* 
-* 
  *  Big5码转换成GB码
  *
  * @access public
  * @param  string   $Text  字符串内容
  * @return string
- 
 */
 if (!function_exists('big52gb')) {
     function big52gb($Text)
@@ -284,14 +266,11 @@ if (!function_exists('big52gb')) {
 }
 
 /**
-* 
-* 
  *  GB码转换成Big5码
  *
  * @access public
  * @param  string  $Text 字符串内容
  * @return string
- 
 */
 if (!function_exists('gb2big5')) {
     function gb2big5($Text)
@@ -335,14 +314,11 @@ if (!function_exists('gb2big5')) {
 }
 
 /**
-* 
-* 
  *  unicode url编码转gbk编码函数
  *
  * @access public
  * @param  string  $str  转换的内容
  * @return string
- 
 */
 if (!function_exists('UnicodeUrl2Gbk')) {
     function UnicodeUrl2Gbk($str)
@@ -393,14 +369,11 @@ if (!function_exists('UnicodeUrl2Gbk')) {
 }
 
 /**
-* 
-* 
  *  自动转换字符集 支持数组转换
  *
  * @access public
  * @param  string  $str  转换的内容
  * @return string
- 
 */
 if (!function_exists('AutoCharset')) {
     function AutoCharset($fContents, $from = 'gbk', $to = 'utf-8')

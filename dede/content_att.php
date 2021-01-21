@@ -18,7 +18,7 @@ if (empty($dopost)) {
 
 //保存更改
 if ($dopost == "save") {
-    if (!empty($sortid)){
+    if (!empty($sortid)) {
         foreach ($sortid as $key => $value) {
             $att = ${'att_' . $value};
             $attname = ${'attname_' . $value};

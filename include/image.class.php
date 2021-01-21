@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 图像处理类
  *
  * @version   $Id: image.class.php 1 18:10 2010年7月5日 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 class image
 {
@@ -81,8 +78,6 @@ class image
     }
 
     /**
-     * 
-     * 
      *  生成缩略图
      *
      * @access public
@@ -90,7 +85,6 @@ class image
      * @param  int $thumbheight 图片高度
      * @param  int $preview     是否预览
      * @return void
-     
      */
     public function thumb($thumbwidth, $thumbheight, $preview = 0)
     {
@@ -105,14 +99,11 @@ class image
     }
 
     /**
-     * 
-     * 
      *  图片水印
      *
      * @access public
      * @param  int $preview 是否预览
      * @return void
-     
      */
     public function watermark($preview = 0)
     {
@@ -125,8 +116,6 @@ class image
     }
 
     /**
-     * 
-     * 
      *  使用gd生成缩略图
      *
      * @access public
@@ -134,7 +123,6 @@ class image
      * @param  int $thumbheight 图片高度
      * @param  int $preview     是否预览
      * @return void
-     
      */
     public function thumb_gd($thumbwidth, $thumbheight, $preview = 0)
     {
@@ -175,14 +163,11 @@ class image
     }
 
     /**
-     * 
-     * 
      *  使用gd进行水印
      *
      * @access public
      * @param  int $preview 是否预览
      * @return void
-     
      */
     public function watermark_gd($preview = 0)
     {

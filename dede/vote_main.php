@@ -17,11 +17,6 @@ $sql = "SELECT aid,votename,starttime,endtime,totalcount,isenable FROM #@__vote 
 $dlist = new DataListCP();
 $issel = isset($issel) ? $issel : 0;
 $aid = isset($aid) ? $aid : 0;
-if ($issel == 1) {
-    $dlist->SetParameter('issel', $issel);
-    $dlist->SetTemplet(DEDEADMIN . "/templets/vote_select.htm");
-} else {
-    $dlist->SetTemplet(DEDEADMIN . "/templets/vote_main.htm");
-}
+$dlist->SetTemplet(DEDEADMIN . "/templets/vote_main.htm");
 $dlist->SetSource($sql);
 $dlist->display();

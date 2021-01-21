@@ -1,1 +1,154 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"/><title>友情链接更改</title></head><body><table width="98%" border="0" align="center" cellpadding="3" cellspacing="1" bgcolor="#D6D6D6"><tbody><tr><td height="28" background="images/tbg.gif" style="padding-left:10px;"><b><a href="friendlink_main.php"><u>友情链接管理</u></a></b> >> 链接更改</td></tr><tr><td height="200" bgcolor="#FFFFFF" valign="top"><form action="friendlink_edit.php" method="post" enctype="multipart/form-data" name="form1"><input type="hidden" name="id" value="<?php echo $myLink['id']?>"/><input type="hidden" name="dopost" value="saveedit"/><table width="80%" border="0" cellspacing="1" cellpadding="3"><tbody><tr><td width="19%" height="25">网址：</td><td width="81%"><input name="url" type="text" id="url" value="<?php echo $myLink['url']?>" class="uk-input uk-form-small"/></td></tr><tr><td width="19%" height="25">排列位置：</td><td width="81%"><input name="sortrank" type="text" id="sortrank" value="<?php echo $myLink['sortrank']?>" class="uk-input uk-form-small"/>(由小到大排列)</td></tr><tr><td height="25">网站名称：</td><td><input name="webname" type="text" id="webname" value="<?php echo $myLink['webname']?>" class="uk-input uk-form-small"/></td></tr><tr><td height="25">网站Logo：</td><td><input name="logo" type="text" id="logo" value="<?php echo $myLink['logo']?>" class="uk-input uk-form-small"/>(88*31 gif或jpg)</td></tr><tr><td height="25">上传Logo：</td><td><input name="logoimg" type="file" id="logoimg"/></td></tr><tr><td height="25">网站简况：</td><td><textarea name="msg" cols="50" rows="4" id="msg" class="uk-textarea uk-form-small"><?php echo dede_htmlspecialchars($myLink['msg'])?></textarea></td></tr><tr><td height="25">站长Email：</td><td><input name="email" type="text" id="email" value="<?php echo $myLink['email']?>" class="uk-input uk-form-small"/></td></tr><tr><td height="25">链接位置：</td><td><input type="radio" name="ischeck" value="0" <?php="" if($mylink['ischeck']="=0)" echo="" "="" checked="1" "?="" class="uk-radio"/>/> 未审核<input type="radio" name="ischeck" value="1" <?php="" if($mylink['ischeck']="=1)" echo="" "="" checked="1" "?="" class="uk-radio"/>/> 内页<input type="radio" name="ischeck" value="2" <?php="" if($mylink['ischeck']="=2)" echo="" "="" checked="1" "?="" class="uk-radio"/>/> 首页</td></tr><tr><td height="25">网站类型：</td><td><select name="typeid" id="typeid" class="uk-select uk-form-small"><!--?phpecho " <option value='".$myLink['typeid']."'-->".$myLink['typename']."\r\n";$dsql->SetQuery("select * from #@__flinktype where id<>'".$myLink['typeid']."'");$dsql->Execute();while($row=$dsql->GetObject()){echo " <option value="".$row->id."">".$row->typename."</option>\r\n";}?></select></td></tr><tr><td height="51"> </td><td><input type="submit" name="Submit" value=" 提 交 "/>　 　<input type="reset" name="Submit" value=" 返 回 " onclick="location.href='<?php echo $ENV_GOBACK_URL?>';"/></td></tr></tbody></table></form></td></tr></tbody></table></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>修改友情链接</title>
+<meta name="copyright" content="2007-2020 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="friendlink_main.php">友情链接管理</a></li><li><span>修改友情链接</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form action="friendlink_edit.php" method="post" enctype="multipart/form-data" name="form1">
+<input type="hidden" name="id" value="<?=$myLink['id']?>"/>
+<input type="hidden" name="dopost" value="saveedit"/>
+<tbody>
+<!-- 选项 -->
+<tr>
+    <td width="19%">网址：</td>
+    <td width="81%">
+    <input name="url" type="text" id="url" value="<?=$myLink['url']?>" class="uk-input uk-form-small uk-form-width-large"/>
+    </td>
+    </tr>
+    <tr>
+    <td width="19%">排列位置：</td>
+    <td width="81%">
+    <input name="sortrank" type="text" id="sortrank" value="<?=$myLink['sortrank']?>" class="uk-input uk-form-small uk-form-width-large"/>
+    (由小到大排列)
+    </td>
+    </tr>
+    <tr>
+    <td>网站名称：</td>
+    <td><input name="webname" type="text" id="webname" value="<?=$myLink['webname']?>" class="uk-input uk-form-small uk-form-width-large"/></td>
+    </tr>
+    <tr>
+    <td>网站Logo：</td>
+    <td>
+    <input name="logo" type="text" id="logo" value="<?=$myLink['logo']?>" class="uk-input uk-form-small uk-form-width-large"/>
+    (88*31 gif或jpg)
+    </td>
+    </tr>
+    <tr>
+    <td>上传Logo：</td>
+    <td>
+        <div class="uk-margin" id="upfile1">
+        <label class="uk-form-label"></label>
+        <div class="uk-form-controls">
+        <div class="uk-inline" uk-form-custom="target: true">
+        <span class="uk-form-icon" uk-icon="icon: upload"></span>
+        <input name="logoimg" type="file" id="logoimg"/>
+        <input class="uk-input uk-form-small uk-form-width-large" type="text" placeholder="点击选择文件" >
+        </div>
+        </div>
+        </div>
+    </td>
+    </tr>
+    <tr>
+    <td>网站简况：</td>
+    <td><textarea name="msg" cols="50" rows="4" id="msg" class="uk-textarea uk-form-small uk-form-width-large"><?=dede_htmlspecialchars($myLink['msg'])?></textarea></td>
+    </tr>
+    <tr>
+    <td>站长Email：</td>
+    <td><input name="email" type="text" id="email" value="<?=$myLink['email']?>" class="uk-input uk-form-small uk-form-width-large"/></td>
+    </tr>
+    <tr>
+    <td>链接位置：</td>
+    <td>
+    <input type="radio" name="ischeck" value="0" <?php if($myLink['ischeck']==0) echo " checked "?> class="uk-radio"/> 未审核 &nbsp;&nbsp;
+    <input type="radio" name="ischeck" value="1" <?php if($myLink['ischeck']==1) echo " checked "?> class="uk-radio"/> 内页 &nbsp;&nbsp;
+    <input type="radio" name="ischeck" value="2" <?php if($myLink['ischeck']==2) echo " checked "?> class="uk-radio"/> 首页
+    </td>
+    </tr>
+    <tr>
+    <td>网站类型：</td>
+    <td>
+    <select name="typeid" id="typeid" class="uk-select uk-form-small uk-form-width-large">
+        <?php
+        echo "	<option value='".$myLink['typeid']."'>".$myLink['typename']."</option>\r\n";
+        $dsql->SetQuery("select * from #@__flinktype where id<>'".$myLink['typeid']."'");
+        $dsql->Execute();
+        while($row=$dsql->GetObject()){
+        	echo "	<option value='".$row->id."'>".$row->typename."</option>\r\n";
+        }
+        ?>
+    </select>
+    </td>
+    </tr>
+    <!-- /选项 -->
+</tbody>
+
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+function CheckSubmit()
+{
+if(document.form1.url.value=="http://"||document.form1.url.value=="")
+{
+document.form1.url.focus();
+alert("网址不能为空！");
+return false;
+}
+if(document.form1.webname.value=="")
+{
+document.form1.webname.focus();
+alert("网站名称不能为空！");
+return false;
+}
+return true;
+}
+</script>
+<!-- / JS FILES -->
+</body>
+</html>

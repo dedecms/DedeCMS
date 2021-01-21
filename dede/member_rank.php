@@ -18,7 +18,7 @@ if (empty($dopost)) {
 
 //保存更改
 if ($dopost == 'save') {
-    if (!empty($ids)){
+    if (!empty($ids)) {
         foreach ($ids as $key => $value) {
             $id = ${"ID_" . $value};
             $name = ${"name_" . $value};

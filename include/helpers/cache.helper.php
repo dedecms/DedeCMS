@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 缓存小助手,支持文件和memcache
  *
  * @version   $Id: cache.helper.php 1 10:46 2011-3-2  $
@@ -12,11 +10,8 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 /**
-* 
-* 
  *  读缓存
  *
  * @access public
@@ -24,7 +19,6 @@
  * @param  string  $key  键
  * @param  string  $is_memcache  是否为memcache缓存
  * @return string
- 
 */
 if (!function_exists('GetCache')) {
     function GetCache($prefix, $key, $is_memcache = true)
@@ -64,8 +58,6 @@ if (!function_exists('GetCache')) {
 }
 
 /**
-* 
-* 
  *  写缓存
  *
  * @access public
@@ -74,7 +66,6 @@ if (!function_exists('GetCache')) {
  * @param  string  $value  值
  * @param  string  $timeout  缓存时间
  * @return int
- 
 */
 if (!function_exists('SetCache')) {
     function SetCache($prefix, $key, $value, $timeout = 3600, $is_memcache = true)
@@ -108,8 +99,6 @@ if (!function_exists('SetCache')) {
 }
 
 /**
-* 
-* 
  *  删除缓存
  *
  * @access public
@@ -117,7 +106,6 @@ if (!function_exists('SetCache')) {
  * @param  string  $key  键
  * @param  string  $is_memcache  是否为memcache缓存
  * @return string
- 
 */
 if (!function_exists('DelCache')) {
     /* 删缓存 */

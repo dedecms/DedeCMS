@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 防采集混淆字符串
  *
  * @version   $Id: downmix.inc.php 1 9:14 2010年7月6日 $
@@ -12,18 +10,14 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  混淆字符串内容
  *
  * @access public
  * @param  string  $body  内容
  * @return string
- 
 */
 if (!function_exists('RndString')) {
     function RndString(&$body)

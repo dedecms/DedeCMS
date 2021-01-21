@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
- * 
- * 
  * 密码函数
  *
  * @version   $Id: inc_pwd_functions.php 1 15:18 2010年7月9日 $
@@ -12,18 +10,14 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
  */
 
 /**
- * 
- * 
  *  验证码生成函数
  *
  * @param  int $length  需要生成的长度
  * @param  int $numeric 是否为数字
  * @return string
- 
  */
 function random($length, $numeric = 0)
 {
@@ -46,8 +40,6 @@ function random($length, $numeric = 0)
 }
 
 /**
- * 
- * 
  *  邮件发送函数
  *
  * @param  string $email     E-mail地址
@@ -55,7 +47,6 @@ function random($length, $numeric = 0)
  * @param  string $mailbody  E-mail内容
  * @param  string $headers   头信息
  * @return void
- 
  */
 function sendmail($email, $mailtitle, $mailbody, $headers)
 {
@@ -75,8 +66,6 @@ function sendmail($email, $mailtitle, $mailbody, $headers)
 }
 
 /**
- * 
- * 
  *  发送邮件；type为INSERT新建验证码，UPDATE修改验证码；
  *
  * @param  int    $mid    会员ID
@@ -85,7 +74,6 @@ function sendmail($email, $mailtitle, $mailbody, $headers)
  * @param  string $type   类型
  * @param  string $send   发送到
  * @return string
- 
  */
 function newmail($mid, $userid, $mailto, $type, $send)
 {
@@ -137,14 +125,11 @@ function newmail($mid, $userid, $mailto, $type, $send)
 }
 
 /**
- * 
- * 
  *  查询会员信息mail用户输入邮箱地址；userid用户名
  *
  * @param  string $mail   邮件
  * @param  string $userid 用户ID
  * @return string
- 
  */
 function member($mail, $userid)
 {
@@ -163,8 +148,6 @@ function member($mail, $userid)
 }
 
 /**
- * 
- * 
  *  查询是否发送过验证码
  *
  * @param  string $mid    会员ID
@@ -172,7 +155,6 @@ function member($mail, $userid)
  * @param  string $mailto 发送邮件地址
  * @param  string $send   为Y发送邮件,为N不发送邮件默认为Y
  * @return string
- 
  */
 function sn($mid, $userid, $mailto, $send = 'Y')
 {

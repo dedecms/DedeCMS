@@ -86,7 +86,6 @@ function DelArc($aid, $type = 'ON', $onlyfile = false, $recycle = 0)
     }
 
     /**
-* 
  * 删除到回收站 
 **/
     if ($cfg_delete == 'Y' && $type == 'ON') {

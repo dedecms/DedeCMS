@@ -44,9 +44,9 @@ if ($dopost == 'delete') {
     exit();
 } else if ($dopost == "getjs") {
     include_once DEDEINC . "/oxwindow.class.php";
-    $jscode = "&lt;script src='{$cfg_phpurl}/mytag_js.php?aid=$aid' language='javascript'></script>";
-    $showhtml = "<pre><code>\r\n$jscode\r\n\r\n</code></pre>";
-    $showhtml .= "<div class=\"uk-margin\"><b>预览：</b></div><iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='250'></iframe>";
+    $jscode = "<script src='{$cfg_phpurl}/mytag_js.php?aid=$aid' language='javascript'></script>";
+    $showhtml = "<pre><code>\r\n".htmlspecialchars($jscode)."\r\n\r\n</code></pre>";
+    $showhtml .= "<div class=\"uk-margin\"><h4 class='uk-h4'>预览：</h4></div><iframe name='testfrm' frameborder='0' src='mytag_edit.php?aid={$aid}&dopost=testjs' id='testfrm' width='100%' height='250'></iframe>";
     $wintitle = "宏标记定义-获取JS";
     $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href='mytag_main.php'>宏标记定义</a></li><li><span>获取JS</span></li></ul>";
     $win = new OxWindow();

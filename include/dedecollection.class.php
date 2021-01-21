@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEMEMBER')) {exit('Request Error');
 }
 /**
-* 
-* 
  * Dede采集类
  *
  * @version   $Id: dedecollection.class.php 1 20:20 2010年7月7日 $
@@ -12,7 +10,6 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 require_once DEDEINC . "/dedecollection.func.php"; //采集扩展函数
@@ -21,14 +18,11 @@ require_once DEDEINC . "/dedehtml2.class.php";
 @set_time_limit(0);
 
 /**
- * 
- * 
  * Dede采集类
  *
  * @package    DedeCollection
  * @subpackage DedeCMS.Libraries
  * @link       http://www.dedecms.com
- 
  */
 class DedeCollection
 {
@@ -69,14 +63,11 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  从数据库里载入某个节点
      *
      * @access public
      * @param  int $nid 采集节点ID
      * @return void
-     
      */
     public function LoadNote($nid)
     {
@@ -88,14 +79,11 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  分析基本节点的及索引配置信息
      *
      * @access public
      * @param  string $configString 配置字符串
      * @return void
-     
      */
     public function LoadListConfig($configString)
     {
@@ -178,14 +166,11 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  分析采集文章页的字段的设置
      *
      * @access public
      * @param  string $configString 配置字符串
      * @return void
-     
      */
     public function LoadItemConfig($configString)
     {
@@ -250,8 +235,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  下载其中一个网址，并保存
      *
      * @access public
@@ -260,7 +243,6 @@ class DedeCollection
      * @param  string $litpic 缩略图
      * @param  bool   $issave 是否保存
      * @return string
-     
      */
     public function DownUrl($aid, $dourl, $litpic = '', $issave = true)
     {
@@ -349,8 +331,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  获取分页区域的内容
      *
      * @access public
@@ -359,7 +339,6 @@ class DedeCollection
      * @param  string $html   html内容
      * @param  int    $step   步骤
      * @return string
-     
      */
     public function GetSpPage($dourl, $noteid, $html, $step = 0)
     {
@@ -484,8 +463,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  获取特定区域的HTML
      *
      * @access public
@@ -493,7 +470,6 @@ class DedeCollection
      * @param  string $areaRule 地址规则
      * @param  string $html     html代码
      * @return string
-     
      */
     public function GetHtmlArea($sptag, &$areaRule, &$html)
     {
@@ -539,13 +515,10 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  下载指定网址
      *
      * @access public
      * @param  string $dourl 下载地址
-     *                       
      */
     public function DownOnePage($dourl)
     {
@@ -558,8 +531,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  下载特定资源，并保存为指定文件
      *
      * @access public
@@ -567,7 +538,6 @@ class DedeCollection
      * @param  string $mtype    附件类型
      * @param  string $islitpic 是否缩略图
      * @return string
-     
      */
     public function DownMedia($dourl, $mtype = 'img', $islitpic = false)
     {
@@ -662,15 +632,12 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  获得下载媒体的随机名称
      *
      * @access public
      * @param  string $url 地址
      * @param  string $v   值
      * @return string
-     
      */
     public function GetRndName($url, $v)
     {
@@ -725,8 +692,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  按载入的网页内容获取规则，从一个HTML文件中获取内容
      *
      * @access public
@@ -734,7 +699,6 @@ class DedeCollection
      * @param  string $needDown 需要下载
      * @param  string $litpic   缩略图
      * @return string
-     
      */
     public function GetPageFields($dourl, $needDown, $litpic = '')
     {
@@ -884,15 +848,12 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  下载内容里的资源
      *
      * @access public
      * @param  string $html html内容
      * @param  string $url  地址
      * @return string
-     
      */
     public function DownMedias(&$html, $url)
     {
@@ -932,15 +893,12 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  仅替换内容里的资源为绝对网址
      *
      * @access public
      * @param  string $html  html内容
      * @param  string $dourl 操作地址
      * @return string
-     
      */
     public function MediasReplace(&$html, $dourl)
     {
@@ -1016,14 +974,11 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  测试文章规则
      *
      * @access public
      * @param  $dourl 操作地址
      * @return string
-     
      */
     public function TestArt($dourl)
     {
@@ -1032,8 +987,6 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  采集种子网址
      *
      * @access public
@@ -1041,7 +994,6 @@ class DedeCollection
      * @param  int $glstart  采集开始
      * @param  int $pagesize 分页尺寸
      * @return string
-     
      */
     public function GetSourceUrl($islisten = 0, $glstart = 0, $pagesize = 10)
     {
@@ -1202,15 +1154,12 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  用扩展函数处理采集到的原始数据
      *
      * @access public
      * @param  string $fvalue  值
      * @param  string $phpcode PHP代码
      * @return string
-     
      */
     public function RunPHP($fvalue, $phpcode)
     {
@@ -1232,14 +1181,11 @@ class DedeCollection
     }
 
     /**
-     * 
-     * 
      *  编码转换
      *
      * @access public
      * @param  string $str 字符串
      * @return string
-     
      */
     public function ChangeCode(&$str)
     {

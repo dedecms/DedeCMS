@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * 图像处理相关函数
  *
  * @version   $Id: image.func.php 1 15:59 2010年7月5日 $
@@ -12,13 +10,10 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 // ------------------------------------------------------------------------
 
 /**
-* 
-* 
  *  缩图片自动生成函数，来源支持bmp、gif、jpg、png
  *  但生成的小图只用jpg或png格式
  *
@@ -28,7 +23,6 @@
  * @param  string  $toH  转换到的高度
  * @param  string  $toFile  输出文件到
  * @return string
- 
 */
 if (!function_exists('ImageResize')) {
     function ImageResize($srcFile, $toW, $toH, $toFile = "")
@@ -148,13 +142,10 @@ if (!function_exists('ImageResize')) {
 }
 
 /**
-* 
-* 
  *  获得GD的版本
  *
  * @access public
  * @return int
- 
 */
 if (!function_exists('gdversion')) {
     function gdversion()
@@ -190,15 +181,12 @@ if (!function_exists('gdversion')) {
 }
 
 /**
-* 
-* 
  *  图片自动加水印函数
  *
  * @access public
  * @param  string  $srcFile  图片源文件
  * @param  string  $fromGo  位置
  * @return string
- 
 */
 if (!function_exists('WaterImg')) {
     function WaterImg($srcFile, $fromGo = 'up')
@@ -266,8 +254,6 @@ if (!function_exists('WaterImg')) {
 }
 
 /**
-* 
-* 
  *  会对空白地方填充满
  *
  * @access public
@@ -277,7 +263,6 @@ if (!function_exists('WaterImg')) {
  * @param  string  $toFile  输出文件到
  * @param  string  $issave  是否保存
  * @return bool
- 
 */
 if (!function_exists('ImageResizeNew')) {
     function ImageResizeNew($srcFile, $toW, $toH, $toFile = '', $issave = true)

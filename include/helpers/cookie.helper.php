@@ -1,8 +1,6 @@
 <?php if (!defined('DEDEINC')) {exit('Request Error');
 }
 /**
-* 
-* 
  * Cookie处理小助手
  *
  * @version   $Id: file.helper.php 1 13:58 2010年7月5日 $
@@ -12,12 +10,9 @@
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
  * @link      http://www.dedecms.com
- 
 */
 
 /**
-* 
-* 
  *  设置Cookie记录
  *
  * @param  string  $key    键
@@ -25,7 +20,6 @@
  * @param  string  $kptime  保持时间
  * @param  string  $pa     保存路径
  * @return void
- 
 */
 if (!function_exists('PutCookie')) {
     function PutCookie($key, $value, $kptime = 0, $pa = "/")
@@ -39,13 +33,10 @@ if (!function_exists('PutCookie')) {
 }
 
 /**
-* 
-* 
  *  清除Cookie记录
  *
  * @param  $key   键名
  * @return void
- 
 */
 if (!function_exists('DropCookie')) {
     function DropCookie($key)
@@ -59,13 +50,10 @@ if (!function_exists('DropCookie')) {
 }
 
 /**
-* 
-* 
  *  获取Cookie记录
  *
  * @param  $key   键名
  * @return string
- 
 */
 if (!function_exists('GetCookie')) {
     function GetCookie($key)
