@@ -3,11 +3,11 @@
 }
 
 /**
- * 会员登录类
+ * 用户登录类
  *
  * @version   $Id: userlogin.class.php 1 15:59 2010年7月5日 $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -121,7 +121,7 @@ function FormatUsername($username)
 }
 
 /**
- * 网站会员登录类
+ * 网站用户登录类
  *
  * @package    MemberLogin
  * @subpackage DedeCMS.Libraries
@@ -245,7 +245,7 @@ class MemberLogin
     }
 
     /**
-     *  判断会员是否到期
+     *  判断用户是否到期
      *
      * @return string
      */
@@ -517,7 +517,7 @@ class MemberLogin
     }
 
     /**
-     *  获得会员目前的状态
+     *  获得用户目前的状态
      *
      * @access public
      * @param  string $dsql 数据库连接
@@ -527,7 +527,7 @@ class MemberLogin
     {
         $sta = '';
         if ($this->M_Rank == 0) {
-            $sta .= "你目前的身份是：普通会员";
+            $sta .= "你目前的身份是：普通用户";
         } else {
             $row = $dsql->GetOne("Select membername From `#@__arcrank` where rank='" . $this->M_Rank . "'");
             $sta .= "你目前的身份是：" . $row['membername'];
@@ -536,7 +536,7 @@ class MemberLogin
                 if ($this->M_Rank > 10 && $this->M_HasDay > 0) {
                     $sta .= " 剩余天数: <font color='red'>" . $this->M_HasDay . "</font>  天 ";
                 } elseif ($this->M_Rank > 10) {
-                    $sta .= " <font color='red'>会员升级已经到期</font> ";
+                    $sta .= " <font color='red'>用户升级已经到期</font> ";
                 }
 
             }
@@ -546,7 +546,7 @@ class MemberLogin
     }
 
     /**
-     *  记录会员操作日志
+     *  记录用户操作日志
      *
      * @access public
      * @param  string $type                       记录类型

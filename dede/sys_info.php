@@ -4,7 +4,7 @@
  *
  * @version   $Id: sys_info.php 1 22:28 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -67,7 +67,7 @@ if ($dopost == "save") {
         $dsql->ExecuteNoneQuery("UPDATE `#@__sysconfig` SET `value`='$v' WHERE varname='$k' ");
     }
     ReWriteConfig();
-    ShowMsg("成功更改站点配置！", "sys_info.php");
+    ShowMsg("成功修改站点配置！", "sys_info.php");
     exit();
 }
 //增加新变量

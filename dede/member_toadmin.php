@@ -4,7 +4,7 @@
  *
  * @version   $Id: member_toadmin.php 1 14:09 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -74,7 +74,7 @@ if ($dopost == "toadmin") {
     $floginid = $cuserLogin->getUserName();
     $fromid = $cuserLogin->getUserID();
     $subject = "恭喜您已经成功提升为管理员";
-    $message = "亲爱的会员{$userid},您已经成功提升为{$row['typename']},具体操作权限请同网站超级管理员联系。";
+    $message = "亲爱的用户{$userid},您已经成功提升为{$row['typename']},具体操作权限请同网站超级管理员联系。";
     $sendtime = $writetime = time();
     $inquery = "INSERT INTO `#@__member_pms` (`floginid`,`fromid`,`toid`,`tologinid`,`folder`,`subject`,`sendtime`,`writetime`,`hasview`,`isadmin`,`message`)
       VALUES ('$floginid','$fromid','$id','$userid','inbox','$subject','$sendtime','$writetime','0','0','$message'); ";

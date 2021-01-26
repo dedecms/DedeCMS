@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员管理操作
+ * 用户管理操作
  *
  * @version   $Id: member_do.php 1 13:47 2010年7月19日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -24,7 +24,7 @@ $ENV_GOBACK_URL = isset($_COOKIE['ENV_GOBACK_URL']) ? 'member_main.php' : '';
 
 /*----------------
 function __DelMember()
-删除会员
+删除用户
 ----------------*/
 if ($dopost == "delmember") {
     CheckPurview('member_Del');
@@ -72,17 +72,17 @@ if ($dopost == "delmember") {
                 }
                 // /aip}}
             } else {
-                ShowMsg("无法删除此会员，如果这个会员是<b>[管理员]</b>，<br />必须先删除这个<b>[管理员]</b>才能删除此帐号！", $ENV_GOBACK_URL, 0, 5000);
+                ShowMsg("无法删除此用户，如果这个用户是<b>[管理员]</b>，<br />必须先删除这个<b>[管理员]</b>才能删除此帐号！", $ENV_GOBACK_URL, 0, 5000);
                 exit();
             }
         }
-        ShowMsg("成功删除一个会员！", $ENV_GOBACK_URL);
+        ShowMsg("成功删除一个用户！", $ENV_GOBACK_URL);
         exit();
     }
     $randcode = mt_rand(10000, 99999);
     $safecode = substr(md5($cfg_cookie_encode . $randcode), 0, 24);
-    $wintitle = "会员管理-删除会员";
-    $wecome_info = "<a href='" . $ENV_GOBACK_URL . "'>会员管理</a>::删除会员";
+    $wintitle = "用户管理-删除用户";
+    $wecome_info = "<a href='" . $ENV_GOBACK_URL . "'>用户管理</a>::删除用户";
     $win = new OxWindow();
     $win->Init("member_do.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", "yes");
@@ -90,7 +90,7 @@ if ($dopost == "delmember") {
     $win->AddHidden("id", $id);
     $win->AddHidden("randcode", $randcode);
     $win->AddHidden("safecode", $safecode);
-    $win->AddTitle("你确实要删除(ID:" . $id . ")这个会员?");
+    $win->AddTitle("你确实要删除(ID:" . $id . ")这个用户?");
     $win->AddMsgItem("安全验证串：<input name='safecode' type='text' id='safecode' size='16' style='width:200px' />&nbsp;(复制本代码： <font color='red'>$safecode</font> )", "30");
     $winform = $win->GetWindow("ok");
     $win->Display();
@@ -123,17 +123,17 @@ if ($dopost == "delmember") {
                 $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` WHERE mid IN (" . str_replace("`", ",", $id) . ") ");
                 $dsql->ExecuteNoneQuery("UPDATE `#@__archives` SET mid='0' WHERE mid IN (" . str_replace("`", ",", $id) . ")");
             } else {
-                ShowMsg("无法删除此会员，如果这个会员是管理员关连的ID，<br />必须先删除这个管理员才能删除此帐号！", $ENV_GOBACK_URL, 0, 3000);
+                ShowMsg("无法删除此用户，如果这个用户是管理员关连的ID，<br />必须先删除这个管理员才能删除此帐号！", $ENV_GOBACK_URL, 0, 3000);
                 exit();
             }
         }
-        ShowMsg("成功删除这些会员！", $ENV_GOBACK_URL);
+        ShowMsg("成功删除这些用户！", $ENV_GOBACK_URL);
         exit();
     }
     $randcode = mt_rand(10000, 99999);
     $safecode = substr(md5($cfg_cookie_encode . $randcode), 0, 24);
-    $wintitle = "会员管理-删除会员";
-    $wecome_info = "<a href='" . $ENV_GOBACK_URL . "'>会员管理</a>::删除会员";
+    $wintitle = "用户管理-删除用户";
+    $wecome_info = "<a href='" . $ENV_GOBACK_URL . "'>用户管理</a>::删除用户";
     $win = new OxWindow();
     $win->Init("member_do.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", "yes");
@@ -141,31 +141,31 @@ if ($dopost == "delmember") {
     $win->AddHidden("id", $id);
     $win->AddHidden("randcode", $randcode);
     $win->AddHidden("safecode", $safecode);
-    $win->AddTitle("你确实要删除(ID:" . $id . ")这个会员?");
+    $win->AddTitle("你确实要删除(ID:" . $id . ")这个用户?");
     $win->AddMsgItem(" 安全验证串：<input name='safecode' type='text' id='safecode' size='16' style='width:200px' /> (复制本代码： <font color='red'>$safecode</font>)", "30");
     $winform = $win->GetWindow("ok");
     $win->Display();
 }
 /*----------------
 function __Recommend()
-推荐会员
+推荐用户
 ----------------*/
 else if ($dopost == "recommend") {
     CheckPurview('member_Edit');
     $id = preg_replace("#[^0-9]#", "", $id);
     if ($matt == 0) {
         $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET matt=1 WHERE mid='$id' AND matt<>10 LIMIT 1");
-        ShowMsg("成功设置一个会员推荐！", $ENV_GOBACK_URL);
+        ShowMsg("成功设置一个用户推荐！", $ENV_GOBACK_URL);
         exit();
     } else {
         $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET matt=0 WHERE mid='$id' AND matt<>10 LIMIT 1");
-        ShowMsg("成功取消一个会员推荐！", $ENV_GOBACK_URL);
+        ShowMsg("成功取消一个用户推荐！", $ENV_GOBACK_URL);
         exit();
     }
 }
 /*----------------
 function __EditUser()
-更改会员
+修改用户
 ----------------*/
 else if ($dopost == 'edituser') {
     CheckPurview('member_Edit');
@@ -181,7 +181,7 @@ else if ($dopost == 'edituser') {
     $uptime = GetMkTime($uptime);
 
     if ($matt == 10 && $oldmatt != 10) {
-        ShowMsg("对不起，为安全起见，不支持直接把前台会员转为管理的操作！", "-1");
+        ShowMsg("对不起，为安全起见，不支持直接把前台用户转为管理的操作！", "-1");
         exit();
     }
     $query = "UPDATE `#@__member` SET
@@ -222,12 +222,12 @@ else if ($dopost == 'edituser') {
     }
     // /aip}}
 
-    ShowMsg('成功更改会员资料！', 'member_view.php?id=' . $id);
+    ShowMsg('成功修改用户资料！', 'member_view.php?id=' . $id);
     exit();
 }
 /*--------------
 function __LoginCP()
-登录会员的控制面板
+登录用户的控制面板
 ----------*/
 else if ($dopost == "memberlogin") {
     CheckPurview('member_Edit');

@@ -47,7 +47,7 @@ class Cod
         $cart = new MemberShops();
         $cart->clearItem();
         $cart->MakeOrders();
-        $button = "您可以 <a href='/'>返回首页</a> 或去 <a href='../member/shops_products.php?oid=" . $order . "'>查看订单</a>";
+        $button = "<a href='/'>返回首页</a>";
         return $button;
     
     }

@@ -12,7 +12,7 @@ require_once DEDEINC . "/memberlogin.class.php";
 $ml = new MemberLogin();
 
 if ($ml->M_ID == 0) {
-    ShowMsg('只有会员才允许收藏操作！', 'javascript:window.close();');
+    ShowMsg('只有用户才允许收藏操作！', 'javascript:window.close();');
     exit();
 }
 

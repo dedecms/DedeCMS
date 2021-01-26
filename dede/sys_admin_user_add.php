@@ -4,7 +4,7 @@
  *
  * @version   $Id: sys_admin_user_add.php 1 16:22 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -41,7 +41,7 @@ if ($dopost == 'add') {
         $typeid = '';
     }
 
-    //关连前台会员帐号
+    //关连前台用户帐号
     $adminquery = "INSERT INTO `#@__member` (`mtype`,`userid`,`pwd`,`uname`,`sex`,`rank`,`money`,`email`,
                    `scores` ,`matt` ,`face`,`safequestion`,`safeanswer` ,`jointime` ,`joinip` ,`logintime` ,`loginip` )
                VALUES ('个人','$userid','$mpwd','$uname','男','100','0','$email','1000','10','','0','','0','','0',''); ";

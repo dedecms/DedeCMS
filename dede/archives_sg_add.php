@@ -4,7 +4,7 @@
  *
  * @version   $Id: archives_sg_add.php 1 8:26 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -195,7 +195,7 @@ else if ($dopost == 'save') {
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文档</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=" . $arcID . "&dopost=editArchives'><u>更改文档</u></a>
+    <a href='archives_do.php?aid=" . $arcID . "&dopost=editArchives'><u>修改文档</u></a>
     &nbsp;&nbsp;
     <a href='content_sg_list.php?cid=$typeid&channelid={$channelid}&dopost=listArchives'><u>已发布文档管理</u></a>
     &nbsp;&nbsp;

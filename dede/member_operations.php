@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员操作日志记录管理
+ * 用户操作日志记录管理
  *
  * @version   $Id: member_operations.php 1 11:24 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -69,7 +69,7 @@ function GetPType($tname)
     } else if ($tname == 'stc') {
         return '兑换金币';
     } else {
-        return '会员升级';
+        return '用户升级';
     }
 
 }

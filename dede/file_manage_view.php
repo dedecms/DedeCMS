@@ -4,7 +4,7 @@
  *
  * @version   $Id: file_manage_view.php 1 8:48 2010年7月13日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -26,7 +26,7 @@ if ($activepath == "") {
 }
 
 //显示控制层
-//更改文件名
+//修改文件名
 if ($fmdo == "rename") {
     if ($activepath == "") {
         $ndirstring = "根目录";
@@ -34,13 +34,13 @@ if ($fmdo == "rename") {
 
     $ndirstring = $activepath;
     $wintitle = "&nbsp;文件管理";
-    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>更改文件名</span></li></ul>";
+    $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"file_manage_main.php?activepath=$activepath\">文件管理器</a></li><li><span>修改文件名</span></li></ul>";
     $win = new OxWindow();
     $win->Init("file_manage_control.php", "js/blank.js", "POST");
     $win->AddHidden("fmdo", $fmdo);
     $win->AddHidden("activepath", $activepath);
     $win->AddHidden("filename", $filename);
-    $win->AddTitle("更改文件名，当前路径：$ndirstring");
+    $win->AddTitle("修改文件名，当前路径：$ndirstring");
     $win->AddItem("旧名称：", "<input class=\"uk-input dede-oswindows-input\" name='oldfilename' type='input' id='oldfilename' size='40' value='$filename'>");
     $win->AddItem("新名称：", "<input class=\"uk-input dede-oswindows-input\" name='newfilename' type='input' size='40' id='newfilename'>");
     $winform = $win->GetWindow("ok");

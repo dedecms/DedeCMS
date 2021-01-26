@@ -89,7 +89,7 @@ if(!function_exists('PostHost')) {
 }
 
 if(!function_exists('TestAdminPWD')) {
-    //返回结果，-1：没有更改默认管理员名称  -2：没有更改默认管理员用户名和密码 0：没有发现默认账号
+    //返回结果，-1：没有修改默认管理员名称  -2：没有修改默认管理员用户名和密码 0：没有发现默认账号
     function TestAdminPWD() 
     {
         global $dsql;
@@ -150,10 +150,10 @@ if($rs < 0) {
     switch ($rs)
     {
     case -1:
-        $msg = "没有更改默认管理员名称admin，建议您修改为其他管理账号！{$linkurl}";
+        $msg = "没有修改默认管理员名称admin，建议您修改为其他管理账号！{$linkurl}";
         break;
     case -2:
-        $msg = "没有更改默认的管理员名称和密码，强烈建议您进行更改！{$linkurl}";
+        $msg = "没有修改默认的管理员名称和密码，强烈建议您进行修改！{$linkurl}";
         break;
     }
     $safeMsg[] = $msg;

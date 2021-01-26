@@ -3,11 +3,11 @@
 }
 
 /**
- * 会员自定义模块
+ * 用户自定义模块
  *
  * @version   $Id: oxwindow.class.php 1 15:21 2010年7月5日 $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -18,7 +18,7 @@ require_once DEDEINC . '/customfields.func.php';
 require_once DEDEINC . '/enums.func.php';
 
 /**
- * 会员自定义模块
+ * 用户自定义模块
  *
  * @package    membermodel
  * @subpackage DedeCMS.Libraries
@@ -51,7 +51,7 @@ class membermodel
         $query = "SELECT * FROM #@__member_model WHERE name='{$modtype}'";
         $diyinfo = $this->db->getone($query);
         if (!is_array($diyinfo)) {
-            showMsg('参数不正确，该会员模型不存在', 'javascript:;');
+            showMsg('参数不正确，该用户模型不存在', 'javascript:;');
             exit();
         }
         $etypes = array();

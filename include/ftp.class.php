@@ -14,7 +14,7 @@
  *
  * @version   $Id: ftp.class.php 1 2010-07-05 11:43:09 $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -131,7 +131,7 @@ class FTP
     }
 
     /**
-     * 更改目录
+     * 修改目录
      * 第二个参数可以让我们暂时关闭，以便调试
      * 此功能可用于检测是否存在一个文件夹
      * 抛出一个错误。没有什么的FTP相当于is_dir()
@@ -152,7 +152,7 @@ class FTP
 
         if ($result === false) {
             if ($this->debug == true and $supress_debug == false) {
-                $this->_error('无法更改目录');
+                $this->_error('无法修改目录');
             }
             return false;
         }
@@ -390,7 +390,7 @@ class FTP
         // 仅PHP5才能运行
         if (!function_exists('ftp_chmod')) {
             if ($this->debug == true) {
-                $this->_error('无法更改权限');
+                $this->_error('无法修改权限');
             }
             return false;
         }
@@ -399,7 +399,7 @@ class FTP
 
         if ($result === false) {
             if ($this->debug == true) {
-                $this->_error('无法更改权限');
+                $this->_error('无法修改权限');
             }
             return false;
         }

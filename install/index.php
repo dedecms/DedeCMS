@@ -2,7 +2,7 @@
 /**
  * @version   $Id: index.php 1 13:41 2010年7月26日 $
  * @package   DedeCMS.Install
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -296,7 +296,7 @@ else if ($step == 4) {
     $adminquery = "INSERT INTO `{$dbprefix}admin` VALUES (1, 10, '$adminuser', '" . substr(md5($adminpwd), 5, 20) . "', 'admin', '', '', 0, '" . time() . "', '127.0.0.1');";
     $dbtype == 'sqlite' ? $db->exec($adminquery) : mysqli_query($conn, $adminquery);
 
-    //关连前台会员帐号
+    //关连前台用户帐号
     $adminquery = "INSERT INTO `{$dbprefix}member` (`mid`,`mtype`,`userid`,`pwd`,`uname`,`sex`,`rank`,`money`,`email`,
                    `scores` ,`matt` ,`face`,`safequestion`,`safeanswer` ,`jointime` ,`joinip` ,`logintime` ,`loginip` )
                VALUES ('1','个人','$adminuser','" . md5($adminpwd) . "','$adminuser','男','100','0','','10000','10','','0','','" . time() . "','','0',''); ";

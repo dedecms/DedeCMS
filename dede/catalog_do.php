@@ -4,7 +4,7 @@
  *
  * @version   $Id: catalog_do.php 1 14:31 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -113,7 +113,7 @@ else if ($dopost == "viewSgPage") {
     exit();
 }
 /*------------------------
-更改栏目排列顺序
+修改栏目排列顺序
 function upRank()
 ------------------------*/
 else if ($dopost == "upRank") {
@@ -121,7 +121,7 @@ else if ($dopost == "upRank") {
     CheckPurview('t_Edit,t_AccEdit');
 
     //检查栏目操作许可
-    CheckCatalog($cid, "你无权更改本栏目！");
+    CheckCatalog($cid, "你无权修改本栏目！");
     $row = $dsql->GetOne("SELECT reid,sortrank FROM #@__arctype WHERE id='$cid'");
     $reid = $row['reid'];
     $sortrank = $row['sortrank'];

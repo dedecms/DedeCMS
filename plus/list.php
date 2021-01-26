@@ -4,7 +4,7 @@
  *
  * @version   $Id: list.php 1 15:38 2010年7月8日 $
  * @package   DedeCMS.Site
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -63,7 +63,7 @@ if ($tinfos['issystem'] == -1) {
 } else {
     include DEDEINC . "/arc.listview.class.php";
     $lv = new ListView($tid);
-    //对设置了会员级别的栏目进行处理
+    //对设置了用户级别的栏目进行处理
     if (isset($lv->Fields['corank']) && $lv->Fields['corank'] > 0) {
         include_once DEDEINC . '/memberlogin.class.php';
         $cfg_ml = new MemberLogin();
@@ -72,7 +72,7 @@ if ($tinfos['issystem'] == -1) {
             while ($row = $dsql->GetObject('me')) {
                 $memberTypes[$row->rank] = $row->membername;
             }
-            $memberTypes[0] = "游客或没权限会员";
+            $memberTypes[0] = "游客或没权限用户";
             $msgtitle = "你没有权限浏览栏目：{$lv->Fields['typename']} ！";
             $moremsg = "这个栏目需要 <font color='red'>" . $memberTypes[$lv->Fields['corank']] . "</font> 才能访问，你目前是：<font color='red'>" . $memberTypes[$cfg_ml->M_Rank] . "</font> ！";
             $dlist = new DataListCP();

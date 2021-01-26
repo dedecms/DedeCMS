@@ -4,7 +4,7 @@
  *
  * @version   $Id: index_body.php 1 11:06 2010年7月13日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -166,7 +166,7 @@ else if ($dopost == 'getRightSide') {
     }
     ?>
 <ul class="uk-flex uk-flex-wrap uk-child-width-1-2 uk-list uk-list-circle" style="padding:12px 24px;">
-<li><span> 会员数： </span>  <?php echo $row1['dd']; ?></li>
+<li><span> 用户数： </span>  <?php echo $row1['dd']; ?></li>
 <li><span> 文档数： </span>  <?php echo $allArc; ?></li>
     <?php foreach ($chArr as $row) { ?>
 <li><span> <?php echo $row['typename']; ?>： </span>  <?php echo $row['dd']; ?></li>

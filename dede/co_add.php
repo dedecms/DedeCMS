@@ -4,7 +4,7 @@
  *
  * @version   $Id: co_add.php 1 14:31 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -25,10 +25,15 @@ if (empty($exrule)) {
 function Init(){ }
 ----------------------*/
 if (empty($step)) {
-    include_once DEDEADMIN . "/templets/co_add_step0.htm";
+    $tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step0.htm");
+$tpl->Display();
+
     exit();
 } else if ($step == 1) {
-    include_once DEDEADMIN . "/templets/co_add_step1.htm";
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step1.htm");
+    $tpl->Display();
     exit();
 }
 //保存索引规则
@@ -80,7 +85,9 @@ startid=\\\"$startid\\\" endid=\\\"$endid\\\" addv=\\\"$addv\\\" urlrule=\\\"$ur
                 $demopage = '没有匹配到适合的列表页!';
             }
         }
-        include_once DEDEADMIN . "/templets/co_add_step1_test.htm";
+        $tpl = new DedeTemplate();
+        $tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step1_test.htm");
+        $tpl->Display();
         exit();
     }
 
@@ -131,7 +138,9 @@ startid=\\\"$startid\\\" endid=\\\"$endid\\\" addv=\\\"$addv\\\" urlrule=\\\"$ur
         }
 
         include_once DEDEINC . '/dedetag.class.php';
-        include_once DEDEADMIN . "/templets/co_add_step2.htm";
+        $tpl = new DedeTemplate();
+        $tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step2.htm");
+        $tpl->Display();
         exit();
     }
 }
@@ -164,12 +173,14 @@ else if ($step == 5) {
    {dede:match}" . $matchstr . "{/dede:match}
    $trimstr
    {dede:function}" . $GLOBALS["function_" . $field] . "{/dede:function}
-{/dede:item}\r\n";
+    {/dede:item}\r\n";
     }
     $dsql->ExecuteNoneQuery("UPDATE `#@__co_note` SET itemconfig='$itemconfig' WHERE nid='$nid' ");
     //echo $dsql->GetError();
     include_once DEDEINC . '/dedecollection.class.php';
-    include_once DEDEADMIN . "/templets/co_add_step2_test.htm";
+    $tpl = new DedeTemplate();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step2_test.htm");
+    $tpl->Display();
     exit();
 } else if ($step == 6) {
     $dsql->ExecuteNoneQuery("UPDATE `#@__co_note` SET isok='1' WHERE nid='$nid' ");

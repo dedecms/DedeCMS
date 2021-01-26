@@ -4,7 +4,7 @@
  *
  * @version   $Id: sys_multiserv.php 1 22:28 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -65,7 +65,7 @@ if (!empty($row['rminfo'])) {
     $row['rminfo'] = unserialize($row['rminfo']);
 }
 
-//获取会员列表
+//获取用户列表
 $query = "SELECT #@__admin.*,#@__admintype.typename FROM #@__admin LEFT JOIN #@__admintype ON #@__admin.usertype = #@__admintype.rank";
 $dsql->SetQuery($query);
 $dsql->Execute();

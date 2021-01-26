@@ -4,7 +4,7 @@
  *
  * @version   $Id: inc_action_info.php 2 14:55 2010-11-11  $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -35,12 +35,6 @@ $actionSearch[0] = array(
             'description' => '现在登录的管理员所发表的所有内容类型中的文档',
             'purview' => 'a_List,a_AccList,a_MyList',
             'linkurl' => 'content_list.php?mid=' . $cuserLogin->userID,
-        ),
-        3 => array(
-            'title' => '评论管理',
-            'description' => '网站所有评论管理',
-            'purview' => 'sys_Feedback',
-            'linkurl' => 'feedback_main.php',
         ),
         4 => array(
             'title' => '内容回收站',
@@ -117,12 +111,6 @@ $actionSearch[3] = array(
             'purview' => 'c_List',
             'linkurl' => 'freelist_main.php',
         ),
-        4 => array(
-            'title' => '自定义表单 ',
-            'description' => '创建和管理自定义表单',
-            'purview' => 'c_List',
-            'linkurl' => 'diy_main.php',
-        ),
     ),
 );
 $actionSearch[4] = array(
@@ -132,7 +120,7 @@ $actionSearch[4] = array(
     'soniterm' => array(
         0 => array(
             'title' => '更新系统缓存 ',
-            'description' => '更新栏目缓存、更新枚举缓存 、清理arclist调用缓存 、清理过期会员访问历史 、删除过期短信',
+            'description' => '更新栏目缓存、更新枚举缓存 、清理arclist调用缓存 、清理过期用户访问历史 、删除过期短信',
             'purview' => 'sys_ArcBatch',
             'linkurl' => 'sys_cache_up.php',
         ),
@@ -169,56 +157,56 @@ $actionSearch[4] = array(
     ),
 );
 $actionSearch[5] = array(
-    'toptitle' => '会员',
-    'title' => '会员管理',
-    'description' => '注册会员及积分等配置管理',
+    'toptitle' => '用户',
+    'title' => '用户管理',
+    'description' => '注册用户及积分等配置管理',
     'soniterm' => array(
         0 => array(
-            'title' => '注册会员列表',
-            'description' => '所有注册会员的管理项,其中包含修改,删除,查看会员文档以及提升管理员等操作',
+            'title' => '注册用户列表',
+            'description' => '所有注册用户的管理项,其中包含修改,删除,查看用户文档以及提升管理员等操作',
             'purview' => 'member_List',
             'linkurl' => 'member_main.php',
         ),
         1 => array(
-            'title' => '会员级别设置',
-            'description' => '设置会员的级别,可以通过设计不同会员的访问权限来对会员级别进行一个扩展',
+            'title' => '用户级别设置',
+            'description' => '设置用户的级别,可以通过设计不同用户的访问权限来对用户级别进行一个扩展',
             'purview' => 'member_Type',
             'linkurl' => 'member_rank.php',
         ),
         3 => array(
-            'title' => '会员模型管理',
-            'description' => '为会员制定不同的会员分类,默认有个人,企业两种用户类型,并且同时可以为用户模型添加不同的字段',
+            'title' => '用户模型管理',
+            'description' => '为用户制定不同的用户分类,默认有个人,企业两种用户类型,并且同时可以为用户模型添加不同的字段',
             'purview' => 'member_Type',
             'linkurl' => 'member_model_main.php',
         ),
     ),
 );
 $actionSearch[6] = array(
-    'toptitle' => '会员',
+    'toptitle' => '用户',
     'title' => '支付工具',
     'description' => '站点财务相关设置,包含点卡,商店订单等操作',
     'soniterm' => array(
         2 => array(
-            'title' => '会员产品分类',
-            'description' => '可以将会员类型进行产品划分,比如出售高级会员1年这种,在这里可以对会员产品进行定义',
+            'title' => '用户产品分类',
+            'description' => '可以将用户类型进行产品划分,比如出售高级用户1年这种,在这里可以对用户产品进行定义',
             'purview' => 'sys_Data',
             'linkurl' => 'member_type.php',
         ),
         3 => array(
-            'title' => '会员消费记录',
-            'description' => '会员在前台进行操作、消费积分的消费记录，同时可以查看消费充值订单的付款情况',
+            'title' => '用户消费记录',
+            'description' => '用户在前台进行操作、消费积分的消费记录，同时可以查看消费充值订单的付款情况',
             'purview' => 'sys_Data',
             'linkurl' => 'member_operations.php',
         ),
         4 => array(
             'title' => '商店订单记录',
-            'description' => '前台会员商店提交的订单记录，这里可以对这些订单进行一个统一的管理',
+            'description' => '前台用户商店提交的订单记录，这里可以对这些订单进行一个统一的管理',
             'purview' => 'sys_Data',
             'linkurl' => 'shops_operations.php',
         ),
         5 => array(
             'title' => '支付接口设置',
-            'description' => '商店以及会员产品付款用到的在线付款方式需要设置的支付接口，这里含有常用的接口，例如：支付宝，易宝等',
+            'description' => '商店以及用户产品付款用到的在线付款方式需要设置的支付接口，这里含有常用的接口，例如：支付宝，易宝等',
             'purview' => 'sys_Data',
             'linkurl' => 'sys_payment.php',
         ),
@@ -249,7 +237,7 @@ $actionSearch[7] = array(
         ),
         1 => array(
             'title' => '更新系统缓存',
-            'description' => '更新栏目缓存、更新枚举缓存、清理arclist调用缓存、清理过期会员访问历史、删除过期短信 ',
+            'description' => '更新栏目缓存、更新枚举缓存、清理arclist调用缓存、清理过期用户访问历史、删除过期短信 ',
             'purview' => 'sys_ArcBatch',
             'linkurl' => 'sys_cache_up.php',
         ),
@@ -336,7 +324,7 @@ $actionSearch[10] = array(
     'soniterm' => array(
         0 => array(
             'title' => '系统基本参数',
-            'description' => '包含站点设置、核心设置 、附件设置、会员设置、互动设置、性能选项、其它选项、模块设置、添加新变量等分类，其中有网站基本信息和网站的基本设置选项',
+            'description' => '包含站点设置、核心设置 、附件设置、用户设置、互动设置、性能选项、其它选项、模块设置、添加新变量等分类，其中有网站基本信息和网站的基本设置选项',
             'purview' => 'sys_Edit',
             'linkurl' => 'sys_info.php',
         ),
@@ -354,7 +342,7 @@ $actionSearch[10] = array(
         ),
         3 => array(
             'title' => '系统日志管理',
-            'description' => '对每个登陆后台的管理员进行的操作进行记录',
+            'description' => '对每个登录后台的管理员进行的操作进行记录',
             'purview' => 'sys_Log',
             'linkurl' => 'log_list.php',
         ),

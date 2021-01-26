@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员模型管理
+ * 用户模型管理
  *
  * @version   $Id: member_model_add.php 1 11:17 2010年7月19日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -17,7 +17,7 @@ $mysql_versions = explode(".", trim($mysql_version));
 $mysql_version = $mysql_versions[0] . "." . $mysql_versions[1];
 if (!empty($action)) {
     if (preg_match("#[^0-9-]#", $id) || empty($id)) {
-        ShowMsg("<font color=red>'会员模型ID'</font>必须为数字！", "-1");
+        ShowMsg("<font color=red>'用户模型ID'</font>必须为数字！", "-1");
         exit();
     }
     if ($table == "") {
@@ -28,7 +28,7 @@ if (!empty($action)) {
     $name = dede_htmlspecialchars($name);
     $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$id' OR `table` LIKE '$table' OR name LIKE '$name' ");
     if (is_array($row)) {
-        ShowMsg("可能会员模型的‘ID’、‘名称’在数据库中已存在，不能重复使用！", "-1");
+        ShowMsg("可能用户模型的‘ID’、‘名称’在数据库中已存在，不能重复使用！", "-1");
         exit();
     }
     $query = "SHOW TABLES FROM {$dsql->dbName} ";
@@ -55,10 +55,10 @@ if (!empty($action)) {
     if ($dsql->ExecNoneQuery($sql)) {
         $query = "INSERT INTO #@__member_model (`id`, `name`, `table`, `description`, `issystem`, `state`) VALUES ('$id', '$name', '$table', '$description', 0, '$state')";
         $dsql->ExecNoneQuery($query);
-        //更新会员模型缓存
+        //更新用户模型缓存
         UpDateMemberModCache();
-        ShowMsg('会员模型创建成功，请自行添加字段', 'member_model_main.php');
+        ShowMsg('用户模型创建成功，请自行添加字段', 'member_model_main.php');
     } else {
-        ShowMsg('会员模型创建失败', '-1');
+        ShowMsg('用户模型创建失败', '-1');
     }
 }

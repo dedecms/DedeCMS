@@ -4,7 +4,7 @@
  *
  * @version   $Id: select_images_post.php 1 9:43 2010年7月8日 $
  * @package   DedeCMS.Dialog
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -33,7 +33,7 @@ $CKEditorFuncNum = (isset($CKEditorFuncNum)) ? $CKEditorFuncNum : 1;
 $imgfile_name = trim(preg_replace("#[ \r\n\t\*\%\\\/\?><\|\":]{1,}#", '', $imgfile_name));
 
 if (!preg_match("#\.(" . $cfg_imgtype . ")#i", $imgfile_name)) {
-    ShowMsg("你所上传的图片类型不在许可列表，请更改系统对扩展名限定的配置！", "-1");
+    ShowMsg("你所上传的图片类型不在许可列表，请修改系统对扩展名限定的配置！", "-1");
     exit();
 }
 $nowtme = time();

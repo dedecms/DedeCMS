@@ -4,7 +4,7 @@
  *
  * @version   $Id: catalog_edit.php 1 14:31 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -27,7 +27,7 @@ $id = isset($id) ? intval($id) : 0;
 CheckPurview('t_Edit,t_AccEdit');
 
 //检查栏目操作许可
-CheckCatalog($id, '你无权更改本栏目！');
+CheckCatalog($id, '你无权修改本栏目！');
 
 /*-----------------------
 function action_save()
@@ -77,7 +77,7 @@ if ($dopost == "save") {
     WHERE id='$id' ";
 
     if (!$dsql->ExecuteNoneQuery($upquery)) {
-        ShowMsg("保存当前栏目更改时失败，请检查你的输入资料是否存在问题！", "-1");
+        ShowMsg("保存当前栏目修改时失败，请检查你的输入资料是否存在问题！", "-1");
         exit();
     }
 
@@ -93,7 +93,7 @@ if ($dopost == "save") {
         $dsql->ExecuteNoneQuery($upquery);
     }
 
-    //更改子栏目属性
+    //修改子栏目属性
     if (!empty($upnext)) {
         $upquery = "UPDATE `#@__arctype` SET
        issend='$issend',
@@ -107,12 +107,12 @@ if ($dopost == "save") {
        ishidden='$ishidden'
      WHERE 1=1 AND $slinks";
         if (!$dsql->ExecuteNoneQuery($upquery)) {
-            ShowMsg("更改当前栏目成功，但更改下级栏目属性时失败！", "-1");
+            ShowMsg("修改当前栏目成功，但修改下级栏目属性时失败！", "-1");
             exit();
         }
     }
     UpDateCatCache();
-    ShowMsg("成功更改一个分类！", "catalog_main.php");
+    ShowMsg("成功修改一个分类！", "catalog_main.php");
     exit();
 } //End Save Action
 else if ($dopost == "savetime") {
@@ -145,11 +145,11 @@ else if ($dopost == "savetime") {
     WHERE id='$id' ";
 
     if (!$dsql->ExecuteNoneQuery($upquery)) {
-        ShowMsg("保存当前栏目更改时失败，请检查你的输入资料是否存在问题！", "-1");
+        ShowMsg("保存当前栏目修改时失败，请检查你的输入资料是否存在问题！", "-1");
         exit();
     }
     UpDateCatCache();
-    ShowMsg("成功更改一个分类！", "catalog_main.php");
+    ShowMsg("成功修改一个分类！", "catalog_main.php");
     exit();
 }
 
@@ -181,4 +181,4 @@ while ($row = $dsql->GetObject()) {
 PutCookie('lastCid', GetTopid($id), 3600 * 24, "/");
 
 
-    DedeInclude('templets/catalog_edit.htm');
+DedeInclude('templets/catalog_edit.htm');

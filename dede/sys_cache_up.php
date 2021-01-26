@@ -4,7 +4,7 @@
  *
  * @version   $Id: sys_cache_up.php 1 16:22 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -51,14 +51,14 @@ if ($dopost == "ok") {
         exit();
     }
 
-    //清理arclist调用缓存、过期会员访问历史、过期短信
+    //清理arclist调用缓存、过期用户访问历史、过期短信
     else if ($step == 3) {
         echo '<meta http-equiv="Content-Type" content="text/html; charset=' . $cfg_soft_lang . '">';
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__arccache`");
-        echo "\n成功更新arclist调用缓存，准备清理过期会员访问历史...<hr />";
+        echo "\n成功更新arclist调用缓存，准备清理过期用户访问历史...<hr />";
         $oldtime = time() - (90 * 24 * 3600);
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_vhistory` WHERE vtime<'$oldtime' ");
-        echo "成功清理过期会员访问历史，准备清理过期短信...<hr />";
+        echo "成功清理过期用户访问历史，准备清理过期短信...<hr />";
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_pms` WHERE sendtime<'$oldtime' ");
         echo "成功清理过期短信，准备修正错误文档，这可能要占较长的时间...";
         if ($uparc == 1) {

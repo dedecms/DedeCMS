@@ -1,10 +1,10 @@
 <?php
 /**
- * 友情链接类型
+ * 广告类型
  *
- * @version   $Id: friendlink_type.php 1 8:48 2010年7月13日 $
+ * @version   $Id: adtype_main.php 1 8:48 2010年7月13日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -15,32 +15,32 @@ if (empty($dopost)) {
     $dopost = '';
 }
 
-//保存更改
-if ($dopost == "save") {
-    $startID = 1;
-    $endID = $idend;
-    for (; $startID <= $endID; $startID++) {
-        $query = '';
-        $tid = ${'ID_' . $startID};
-        $pname = ${'pname_' . $startID};
-        if (isset(${'check_' . $startID})) {
-            if ($pname != '') {
-                $query = "UPDATE `#@__myadtypee` SET typename='$pname' WHERE id='$tid' ";
-                $dsql->ExecuteNoneQuery($query);
-            }
-        } else {
-            $query = "DELETE FROM `#@__myadtype` WHERE id='$tid' ";
-            $dsql->ExecuteNoneQuery($query);
-        }
-    }
-    //增加新记录
-    if (isset($check_new) && $pname_new != '') {
-        $query = "INSERT INTO `#@__myadtype`(typename) VALUES('{$pname_new}');";
+if ($dopost === "save") {
+    $query = "UPDATE `#@__myadtype` SET typename='$pname' WHERE id='$tid' ";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功更新广告分类列表！!", "adtype_main.php");
+    exit();
+} else if ($dopost === "del") {
+    $query = "DELETE FROM `#@__myadtype` WHERE id='$id' ";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功删除广告分类!", "adtype_main.php");
+    exit();
+} else if ($dopost === "dels") {
+    foreach (explode(",", $aids) as $key => $value) {
+        $query = "DELETE FROM `#@__myadtype` WHERE id='$value' ";
         $dsql->ExecuteNoneQuery($query);
     }
-    header("Content-Type: text/html; charset={$cfg_soft_lang}");
-    ShowMsg("成功更新广告分类列表！", 'adtype_main.php');
-    exit;
+    ShowMsg("成功删除广告分类!", "adtype_main.php");
+    exit();
+} else if ($dopost === "add") {
+    $query = "INSERT INTO `#@__myadtype`(typename) VALUES('$typename');";
+    $dsql->ExecuteNoneQuery($query);
+    ShowMsg("成功创建广告分类!", "adtype_main.php");
+    exit();
 }
 
-DedeInclude('templets/adtype_main.htm');
+$dlist = new DataListCP();
+$dlist->SetTemplet(DEDEADMIN . '/templets/adtype_main.htm');
+$dlist->SetSource("Select * From #@__myadtype");
+$dlist->display();
+

@@ -4,7 +4,7 @@
  *
  * @version   $Id: article_edit.php 1 14:12 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -263,7 +263,7 @@ else if ($dopost == 'save') {
     　　请选择你的后续操作：
     <a href='article_add.php?cid=$typeid'><u>发布新文章</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看更改</u></a>
+    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看修改</u></a>
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文章</u></a>
     &nbsp;&nbsp;
@@ -272,10 +272,10 @@ else if ($dopost == 'save') {
     $backurl
     ";
 
-    $wintitle = "成功更改文章！";
-    $wecome_info = "文章管理::更改文章";
+    $wintitle = "成功修改文章！";
+    $wecome_info = "文章管理::修改文章";
     $win = new OxWindow();
-    $win->AddTitle("成功更改文章：");
+    $win->AddTitle("成功修改文章：");
     $win->AddMsgItem($msg);
     $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();

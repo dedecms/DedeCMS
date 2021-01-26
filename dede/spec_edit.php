@@ -4,7 +4,7 @@
  *
  * @version   $Id: spec_edit.php 1 16:22 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -281,15 +281,15 @@ else if ($dopost == 'save') {
     $msg = "　　请选择你的后续操作：
     <a href='spec_add.php?cid=$typeid'><u>发布新专题</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看更改</u></a>
+    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看修改</u></a>
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看专题</u></a>
     &nbsp;&nbsp;
     <a href='content_s_list.php'><u>已发布专题管理</u></a> ";
-    $wintitle = "成功更改一个专题！";
-    $wecome_info = "专题管理::更改专题";
+    $wintitle = "成功修改一个专题！";
+    $wecome_info = "专题管理::修改专题";
     $win = new OxWindow();
-    $win->AddTitle("成功更改专题！");
+    $win->AddTitle("成功修改专题！");
     $win->AddMsgItem($msg);
     $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();

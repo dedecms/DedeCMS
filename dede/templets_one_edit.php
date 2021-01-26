@@ -4,7 +4,7 @@
  *
  * @version   $Id: templets_one_edit.php 1 23:07 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -23,7 +23,7 @@ if ($dopost == "saveedit") {
     $body = str_replace('&quot;', '\\"', $body);
     $filename = preg_replace("#^\/#", "", $nfilename);
 
-    //如果更改了文件名，删除旧文件
+    //如果修改了文件名，删除旧文件
     if ($oldfilename != $filename) {
         $oldfilename = $cfg_basedir . $cfg_cmspath . "/" . $oldfilename;
         if (is_file($oldfilename)) {
@@ -90,15 +90,16 @@ if ($dopost == "saveedit") {
     if ($ids == 0) {
         ShowMsg('您没有选择需要更新的文档！', '-1');
         exit();
-    } else if (is_array($ids)) {
-        foreach ($ids as $aid) {
-            $sg = new sgpage($aid);
-            $sg->SaveToHtml();
-            $i++;
-        }
-        ShowMsg("成功更新 $i 个页面！", '-1');
-        exit();
+    } 
+       
+    foreach (explode(',', $ids) as $aid) {
+        $sg = new sgpage($aid);
+        $sg->SaveToHtml();
+        $i++;
     }
+    ShowMsg("成功更新 $i 个页面！", '-1');
+    exit();
+    
 } else if ($dopost == "view") {
     if (empty($aid)) {
         ShowMsg('错误的ID！', 'javascript:;');

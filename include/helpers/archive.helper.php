@@ -5,7 +5,7 @@
  *
  * @version   $Id: archive.helper.php 2 23:00 2010年7月5日 $
  * @package   DedeCMS.Helpers
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -156,7 +156,7 @@ if (!function_exists('GetTags')) {
  * @param  int  $sortrank  排序ID
  * @param  int  $channelid  模型ID
  * @param  int  $senddate  发布日期
- * @param  int  $mid  会员ID
+ * @param  int  $mid  用户ID
  * @return int
 */
 if (!function_exists('GetIndexKey')) {

@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员模型编辑
+ * 用户模型编辑
  *
  * @version   $Id: member_model_edit.php 1 11:20 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -30,9 +30,9 @@ if ($dopost == "save") {
     $name = dede_htmlspecialchars($name);
     $query = "UPDATE `#@__member_model` SET name = '$name', description = '$description', state='$state' WHERE id='$id' ";
     $dsql->ExecuteNoneQuery($query);
-    //更新会员模型缓存
+    //更新用户模型缓存
     UpDateMemberModCache();
-    ShowMsg("成功更改一个会员模型！", "member_model_main.php");
+    ShowMsg("成功修改一个用户模型！", "member_model_main.php");
     exit();
 }
 /*----------------
@@ -46,9 +46,9 @@ else if ($dopost == "disabled") {
     $statestr = ($row['state'] == 0) ? '启用' : '禁用';
     //禁用模型
     $dsql->ExecuteNoneQuery("UPDATE #@__member_model SET state={$statenum} WHERE id='$id' ");
-    //更新会员模型缓存
+    //更新用户模型缓存
     UpDateMemberModCache();
-    ShowMsg("成功{$statestr}一个会员模型！", "member_model_main.php");
+    ShowMsg("成功{$statestr}一个用户模型！", "member_model_main.php");
     exit();
 }
 /*----------------
@@ -74,14 +74,14 @@ else if ($dopost == "copy") {
 
     //确认提示
     if ($job == "") {
-        $wintitle = "会员模型管理-复制会员模型";
-        $wecome_info = "<span><ul class='uk-breadcrumb'><li><a href='member_model_main.php'>会员模型管理</a></li><li><span>复制会员模型</span></li></ul></span>";
+        $wintitle = "用户模型管理-复制用户模型";
+        $wecome_info = "<span><ul class='uk-breadcrumb'><li><a href='member_model_main.php'>用户模型管理</a></li><li><span>复制用户模型</span></li></ul></span>";
         $win = new OxWindow();
         $win->Init("member_model_edit.php", "js/blank.js", "POST");
         $win->AddHidden("job", "yes");
         $win->AddHidden("dopost", $dopost);
         $win->AddHidden("id", $id);
-        $win->AddTitle("你确实要复制 \"" . $thisname . "\" 这个会员模型？");
+        $win->AddTitle("你确实要复制 \"" . $thisname . "\" 这个用户模型？");
         $msg = "";
         $msg .= "<table border='0' cellspacing='0' cellpadding='0'>\r\n";
         $msg .= "<tr>\r\n";
@@ -124,7 +124,7 @@ else if ($dopost == "copy") {
     //操作
     else if ($job == "yes") {
         if (preg_match("#[^0-9-]#", $newid) || empty($newid)) {
-            ShowMsg("<font color=red>'会员模型ID'</font>必须为数字！", "-1");
+            ShowMsg("<font color=red>'用户模型ID'</font>必须为数字！", "-1");
             exit();
         }
         if ($newtable == "") {
@@ -135,7 +135,7 @@ else if ($dopost == "copy") {
         $newname = dede_htmlspecialchars($newname);
         $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$newid' OR `table` LIKE '$newtable' OR name LIKE '$newname' ");
         if (is_array($row)) {
-            ShowMsg("可能会员模型的‘ID’、‘名称’在数据库中已存在，不能重复使用！", "-1");
+            ShowMsg("可能用户模型的‘ID’、‘名称’在数据库中已存在，不能重复使用！", "-1");
             exit();
         }
         //拷贝数据表
@@ -151,7 +151,7 @@ else if ($dopost == "copy") {
         $rs = $dsql->ExecuteNoneQuery($query);
         if ($rs) {
             UpDateMemberModCache();
-            ShowMsg("成功复制会员模型，现转到详细参数页... ", "member_model_edit.php?id={$newid}&dopost=edit");
+            ShowMsg("成功复制用户模型，现转到详细参数页... ", "member_model_edit.php?id={$newid}&dopost=edit");
             exit();
         } else {
             $errv = $dsql->GetError();
@@ -178,14 +178,14 @@ else if ($dopost == "delete") {
 
     //确认提示
     if ($job == "") {
-        $wintitle = "会员模型管理-删除会员模型";
-        $wecome_info = "<a href='member_model_main.php'>会员模型管理</a>::删除会员模型";
+        $wintitle = "用户模型管理-删除用户模型";
+        $wecome_info = "<a href='member_model_main.php'>用户模型管理</a>::删除用户模型";
         $win = new OxWindow();
         $win->Init("member_model_edit.php", "js/blank.js", "POST");
         $win->AddHidden("job", "yes");
         $win->AddHidden("dopost", $dopost);
         $win->AddHidden("id", $id);
-        $win->AddTitle("！将删除所有与该会员模型相关的文件和数据<br />你确实要删除 \"" . $row['name'] . "\" 这个会员模型？");
+        $win->AddTitle("！将删除所有与该用户模型相关的文件和数据<br />你确实要删除 \"" . $row['name'] . "\" 这个用户模型？");
         $winform = $win->GetWindow("ok");
         $win->Display();
         exit();
@@ -195,7 +195,7 @@ else if ($dopost == "delete") {
     else if ($job == "yes") {
         $row = $dsql->GetOne("SELECT `table` FROM `#@__member_model` WHERE id='$id'", MYSQLI_ASSOC);
         if (!is_array($row)) {
-            ShowMsg("你所指定的会员模型信息不存在!", "-1");
+            ShowMsg("你所指定的用户模型信息不存在!", "-1");
             exit();
         }
 
@@ -205,7 +205,7 @@ else if ($dopost == "delete") {
         //删除频道配置信息
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_model` WHERE id='$id'");
         UpDateMemberModCache();
-        ShowMsg("成功删除一个会员模型！", "member_model_main.php");
+        ShowMsg("成功删除一个用户模型！", "member_model_main.php");
         exit();
     }
 }
@@ -214,4 +214,10 @@ else if ($dopost == "delete") {
 function edit()
 -----------------*/
 $row = $dsql->GetOne("SELECT * FROM #@__member_model WHERE id='$id'");
-require DEDEADMIN . "/templets/member_model_edit.htm";
+
+
+$dlist = new DataListCP();
+$dlist->SetTemplet(DEDEADMIN . "/templets/member_model_edit.htm");
+$dlist->SetSource("SELECT * FROM #@__member_model WHERE id='$id'");
+$dlist->display();
+$dlist->Close();

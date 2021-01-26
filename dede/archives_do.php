@@ -4,7 +4,7 @@
  *
  * @version   $Id: archives_do.php 1 8:26 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -133,11 +133,6 @@ else if ($dopost == "uploadLitpic") {
                         parent.document.getElementById('divpicview').style.width = '150px';
                         parent.document.getElementById('divpicview').innerHTML = \"<img src='{$upfile}?n' width='150' />\";
                     }
-                </script>";
-        } else {
-            $msg = "<script language='javascript'>
-                    parent.document.getElementById('uploadwait').style.display = 'none';
-                    window.open('imagecut.php?f=picname&isupload=yes&file={$upfile}', 'popUpImagesWin', 'scrollbars=yes,resizable=yes,statebar=no,width=800,height=600,left=150, top=50');
                 </script>";
         }
     }

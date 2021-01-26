@@ -16,7 +16,7 @@ class yeepay
     // 为"1": 需要用户将送货地址留在易宝支付系统;为"0": 不需要，默认为 "0".
     public $p9_SAF = "0";
 
-    // 网关地址不能随便更改
+    // 网关地址不能随便修改
     public $reqURL_onLine = "https://www.yeepay.com/app-merchant-proxy/node";
     //$reqURL_onLine = "http://tech.yeepay.com:8080/robot/debug.action";
 
@@ -196,17 +196,17 @@ class yeepay
                 if ($r9_BType == "1" || $r9_BType == "3") {
                     if ($ordertype == "goods") {
                         if ($this->success_db($r6_Order)) {
-                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> ";
                         
                         } else {
-                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> ";
                         
                         }
 
                     
                     } else if ($ordertype == "member") {
                         $oldinf = $this->success_mem($r6_Order, $pname, $product, $pid);
-                        return $msg = "<font color='red'>" . $oldinf . "</font><br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                        return $msg = "<font color='red'>" . $oldinf . "</font><br> <a href='/'>返回主页</a> ";
                     
                     }
                 
@@ -215,20 +215,20 @@ class yeepay
                     echo "success";
                     if ($ordertype == "goods") {
                         if ($this->success_db($r6_Order)) {
-                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> ";
                         
                         } else {
-                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> ";
                         
                         }
 
                     
                     } else if ($ordertype == "member") {
                         if ($this->success_mem($r6_Order, $pname, $product, $pid)) {
-                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付成功!<br> <a href='/'>返回主页</a> ";
                         
                         } else {
-                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> <a href='/member'>会员中心</a>";
+                            return $msg = "支付失败!<br> <a href='/'>返回主页</a> ";
                         
                         }
 
@@ -397,7 +397,7 @@ class yeepay
     
     }
 
-    /*处理点卡，会员升级*/
+    /*处理点卡，用户升级*/
     public function success_mem($order_sn, $pname, $product, $pid)
     {
         //更新交易状态为已付款
@@ -431,7 +431,7 @@ class yeepay
                 return "支付失败！";
             
             }
-            /* 改变会员订单状态_支付成功 */
+            /* 改变用户订单状态_支付成功 */
         
         } else if ($product == "member") {
             $row = $this->dsql->GetOne("SELECT rank,exptime FROM #@__member_type WHERE aid='$pid' ");
@@ -445,21 +445,21 @@ class yeepay
                 $mhasDay = ($mhasDay > 0) ? $mhasDay : 0;
             
             }
-            //获取会员默认级别的金币和积分数
+            //获取用户默认级别的金币和积分数
             $memrank = $this->dsql->GetOne("SELECT money,scores FROM #@__arcrank WHERE rank='$rank'");
-            //更新会员信息
+            //更新用户信息
             $sql1 = " UPDATE #@__member SET rank='$rank',money=money+'{$memrank['money']}',
                        scores=scores+'{$memrank['scores']}',exptime='$exptime'+'$mhasDay',uptime='" . time() . "'
                        WHERE mid='" . $this->mid . "'";
             //更新交易状态为已关闭
-            $sql2 = " UPDATE #@__member_operation SET sta='2',oldinfo='会员升级成功!' WHERE buyid='$order_sn' ";
+            $sql2 = " UPDATE #@__member_operation SET sta='2',oldinfo='用户升级成功!' WHERE buyid='$order_sn' ";
             if ($this->dsql->ExecuteNoneQuery($sql1) && $this->dsql->ExecuteNoneQuery($sql2)) {
                 $this->log_result("verify_success,订单号:" . $order_sn); //将验证结果存入文件
-                return "会员升级成功！";
+                return "用户升级成功！";
             
             } else {
                 $this->log_result("verify_failed,订单号:" . $order_sn); //将验证结果存入文件
-                return "会员升级失败！";
+                return "用户升级失败！";
             
             }
         

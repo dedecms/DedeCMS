@@ -5,7 +5,7 @@
  *
  * @version   $Id: customfields.func.php 2 20:50 2010年7月7日 $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -252,7 +252,7 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '', $a
         $ipath = $ipath . '/' . $tpath;
         $filename = "{$ipath}/{$aid}-" . cn_substr(md5($cfg_cookie_encode), 0, 16) . ".txt";
 
-        //会员投稿内容安全处理
+        //用户投稿内容安全处理
         if ($admintype == 'member' || $admintype == 'diy') {
             $dvalue = HtmlReplace($dvalue, -1);
         
@@ -353,7 +353,7 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '', $a
  * @access public
  * @param  object $ctag      标签
  * @param  mixed  $fvalue    变量值
- * @param  string $admintype 会员类型
+ * @param  string $admintype 用户类型
  * @param  string $fieldname 变量名称
  * @return string
  */

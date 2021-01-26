@@ -271,7 +271,7 @@ else if($dopost=='save') {
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文章</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=".$arcID."&dopost=editArchives'><u>更改文章</u></a>
+    <a href='archives_do.php?aid=".$arcID."&dopost=editArchives'><u>修改文章</u></a>
     &nbsp;&nbsp;
     <a href='catalog_do.php?cid=$typeid&dopost=listArchives'><u>已发布文章管理</u></a>
     &nbsp;&nbsp;

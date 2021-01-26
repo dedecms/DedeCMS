@@ -4,7 +4,7 @@
  *
  * @version   $Id: sys_group_edit.php 1 22:28 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -18,7 +18,7 @@ if (empty($dopost)) {
 
 if ($dopost == 'save') {
     if ($rank == 10) {
-        ShowMsg('超级管理员的权限不允许更改!', 'sys_group.php');
+        ShowMsg('超级管理员的权限不允许修改!', 'sys_group.php');
         exit();
     }
     $purview = "";
@@ -29,7 +29,7 @@ if ($dopost == 'save') {
         $purview = trim($purview);
     }
     $dsql->ExecuteNoneQuery("UPDATE `#@__admintype` SET typename='$typename',purviews='$purview' WHERE CONCAT(`rank`)='$rank'");
-    ShowMsg('成功更改用户组的权限!', 'sys_group.php');
+    ShowMsg('成功修改用户组的权限!', 'sys_group.php');
     exit();
 } else if ($dopost == 'del') {
     $dsql->ExecuteNoneQuery("DELETE FROM `#@__admintype` WHERE CONCAT(`rank`)='$rank' AND system='0';");

@@ -1,3 +1,2 @@
 <menu:item ico="images/page_green.png" link="content_list.php" title="文档列表" />
-<menu:item ico="images/page_gear.png" link="feedback_main.php" title="评论管理" />
 <menu:item ico="images/application_edit.png" link="public_guide.php" title="内容发布" />

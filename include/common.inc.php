@@ -2,7 +2,7 @@
 /**
  * @version   $Id: common.inc.php 3 17:44 2010-11-23  $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -192,7 +192,7 @@ $cfg_mobileurl = $cfg_mainsite . $cfg_mobile_dir;
 $cfg_data_dir = $cfg_cmspath . '/data';
 $cfg_dataurl = $cfg_mainsite . $cfg_data_dir;
 
-//会员目录
+//用户目录
 $cfg_member_dir = $cfg_cmspath . '/member';
 $cfg_memberurl = $cfg_mainsite . $cfg_member_dir;
 
@@ -239,7 +239,7 @@ if (isset($cfg_ftp_mkdir) && $cfg_ftp_mkdir == 'Y') {
     $cfg_dir_purview = 0755;
 }
 
-//会员是否使用精简模式（已禁用）
+//用户是否使用精简模式（已禁用）
 $cfg_mb_lit = 'N';
 
 //特殊全局变量

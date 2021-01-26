@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员权限管理
+ * 用户权限管理
  *
  * @version   $Id: member_rank.php 1 12:37 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -16,7 +16,7 @@ if (empty($dopost)) {
     $dopost = '';
 }
 
-//保存更改
+//保存修改
 if ($dopost == 'save') {
     if (!empty($ids)) {
         foreach ($ids as $key => $value) {
@@ -32,7 +32,7 @@ if ($dopost == 'save') {
                 $dsql->ExecuteNoneQuery($query);
             }
         }
-        ShowMsg("成功更新会员等级表！", "member_rank.php");
+        ShowMsg("成功更新用户等级表！", "member_rank.php");
         exit();
     }
     ShowMsg("更新失败！", "member_rank.php");

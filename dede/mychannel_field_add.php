@@ -4,7 +4,7 @@
  *
  * @version   $Id: mychannel_field_add.php 1 15:07 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -135,4 +135,6 @@ foreach ($fields as $k => $v) {
     $f .= ($f == '' ? $k : ' ' . $k);
 }
 
-require_once DEDEADMIN . "/templets/mychannel_field_add.htm";
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/mychannel_field_add.htm");
+$tpl->Display();

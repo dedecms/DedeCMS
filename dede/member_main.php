@@ -1,10 +1,10 @@
 <?php
 /**
- * 会员管理
+ * 用户管理
  *
  * @version   $Id: member_main.php 1 10:49 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -53,11 +53,11 @@ while ($row = $dsql->GetObject()) {
 if ($sortkey == 'mid') {
     $sortform = "<option value='mid'>mid/注册时间</option>\r\n";
 } else if ($sortkey == 'rank') {
-    $sortform = "<option value='rank'>会员等级</option>\r\n";
+    $sortform = "<option value='rank'>用户等级</option>\r\n";
 } else if ($sortkey == 'money') {
-    $sortform = "<option value='money'>会员金币</option>\r\n";
+    $sortform = "<option value='money'>用户金币</option>\r\n";
 } else if ($sortkey == 'scores') {
-    $sortform = "<option value='scores'>会员积分</option>\r\n";
+    $sortform = "<option value='scores'>用户积分</option>\r\n";
 } else {
     $sortform = "<option value='logintime'>登录时间</option>\r\n";
 }

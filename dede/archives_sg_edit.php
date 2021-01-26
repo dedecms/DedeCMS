@@ -4,7 +4,7 @@
  *
  * @version   $Id: archives_sg_edit.php 1 8:26 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -177,7 +177,7 @@ else if ($dopost == 'save') {
     　　请选择你的后续操作：
     <a href='archives_sg_add.php?cid=$typeid'><u>发布新文档</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看更改</u></a>
+    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看修改</u></a>
     &nbsp;&nbsp;
     <a href='$artUrl' target='_blank'><u>查看文档</u></a>
     &nbsp;&nbsp;
@@ -186,10 +186,10 @@ else if ($dopost == 'save') {
     <a href='catalog_main.php'><u>网站栏目管理</u></a>
     ";
 
-    $wintitle = "成功更改文档！";
-    $wecome_info = "文档管理::更改文档";
+    $wintitle = "成功修改文档！";
+    $wecome_info = "文档管理::修改文档";
     $win = new OxWindow();
-    $win->AddTitle("成功更改文档：");
+    $win->AddTitle("成功修改文档：");
     $win->AddMsgItem($msg);
     $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();

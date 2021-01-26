@@ -4,7 +4,7 @@
  *
  * @version   $Id: friendlink_edit.php 1 10:59 2010年7月13日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -64,7 +64,7 @@ if ($dopost == "delete") {
     $query = "UPDATE `#@__flink` SET sortrank='$sortrank',url='$url',webname='$webname',logo='$logo',msg='$msg',
                   email='$email',typeid='$typeid',ischeck='$ischeck' WHERE id='$id' ";
     $dsql->ExecuteNoneQuery($query);
-    ShowMsg("成功更改一个链接！", $ENV_GOBACK_URL);
+    ShowMsg("成功修改一个链接！", $ENV_GOBACK_URL);
     exit();
 }
 $myLink = $dsql->GetOne("SELECT #@__flink.*,#@__flinktype.typename FROM #@__flink LEFT JOIN #@__flinktype ON #@__flink.typeid=#@__flinktype.id WHERE #@__flink.id=$id");

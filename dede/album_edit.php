@@ -4,7 +4,7 @@
  *
  * @version   $Id: album_edit.php 1 8:26 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -445,7 +445,7 @@ else if ($dopost == 'save') {
         " 　　请选择你的后续操作：
     <a href='album_add.php?cid=$typeid'><u>继续发布图片</u></a>
     &nbsp;&nbsp;
-    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看更改</u></a>
+    <a href='archives_do.php?aid=" . $id . "&dopost=editArchives'><u>查看修改</u></a>
     &nbsp;&nbsp;
     <a href='$arcUrl' target='_blank'><u>预览文档</u></a>
     &nbsp;&nbsp;
@@ -454,10 +454,10 @@ else if ($dopost == 'save') {
     $backurl
     ";
 
-    $wintitle = "成功更改图集！";
-    $wecome_info = "文章管理::更改图集";
+    $wintitle = "成功修改图集！";
+    $wecome_info = "文章管理::修改图集";
     $win = new OxWindow();
-    $win->AddTitle("成功更改一个图集：");
+    $win->AddTitle("成功修改一个图集：");
     $win->AddMsgItem($msg);
     $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();

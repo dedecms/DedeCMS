@@ -1,6 +1,6 @@
 ﻿The DedeCMS 5.x.x License 
 Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司
-购买商业授权请登陆www.desdev.cn了解最新说明。
+购买商业授权请登录www.desdev.cn了解最新说明。
 
 为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：
 

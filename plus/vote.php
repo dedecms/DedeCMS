@@ -4,7 +4,7 @@
  *
  * @version   $Id: vote.php 1 20:54 2010年7月8日 $
  * @package   DedeCMS.Site
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -19,7 +19,7 @@ $member = new MemberLogin;
 $memberID = $member->M_LoginID;
 $time = time();
 $content = $memberID . '|' . $time;
-$file = DEDEDATA . '/cache/vote_' . $aid . '_' . $member->M_ID . '.inc'; //存放会员投票记录的缓存文件
+$file = DEDEDATA . '/cache/vote_' . $aid . '_' . $member->M_ID . '.inc'; //存放用户投票记录的缓存文件
 
 $loginurl = $cfg_basehost . "/member";
 $ENV_GOBACK_URL = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];

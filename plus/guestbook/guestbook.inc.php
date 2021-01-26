@@ -2,7 +2,7 @@
 /**
  * @version   $Id: guestbook.inc.php 1 10:06 2010-11-10  $
  * @package   DedeCMS.Site
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -25,7 +25,7 @@ if ($cfg_feedbackcheck == 'Y') {
     $needCheck = 1;
 }
 
-//是否是会员或管理员
+//是否是用户或管理员
 if ($cfg_ml->IsLogin()) {
     $g_isadmin = ($cfg_ml->fields['matt'] >= 10);
     $g_mid = $cfg_ml->M_ID;

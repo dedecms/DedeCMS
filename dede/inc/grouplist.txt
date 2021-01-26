@@ -90,14 +90,14 @@
 >sys_SoftConfig>软件频道参数
 >sys_Keyword>关键字管理[br]
 >sys_MakeHtml>更新HTML
->sys_Feedback>评论管理
 >sys_Upload>管理任意上传
 >sys_MyUpload>管理我的上传
 >pic_view>图片浏览器
 
->>会员管理
+>>用户管理
 
->member_Type>会员类型管理
->member_List>列出会员
->member_Edit>更改会员
->member_Del>删除会员
+>member_Type>用户类型管理
+>member_List>用户列表
+>member_Edit>更改用户
+>member_Add>添加用户
+>member_Del>删除用户

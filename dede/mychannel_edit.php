@@ -4,7 +4,7 @@
  *
  * @version   $Id: mychannel_edit.php 1 14:49 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -362,7 +362,7 @@ else if ($dopost == "save") {
         exit();
     }
     $dsql->ExecuteNoneQuery($query);
-    ShowMsg("成功更改一个模型！", "mychannel_main.php");
+    ShowMsg("成功修改一个模型！", "mychannel_main.php");
     exit();
 }
 /*--------------------
@@ -497,12 +497,12 @@ else if ($dopost == 'modifysearch') {
         $c4 = in_array('source', $searchinfo['mainfields']) ? 'checked' : '';
         $c5 = in_array('senddate', $searchinfo['mainfields']) ? 'checked' : '';
 
-        $mainfields = '<label><input type="checkbox" name="mainfields[]" ' . $c1 . ' value="iscommend" class="np" />是否推荐</label>';
-        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c2 . ' value="typeid" class="np" />栏目</label>';
+        $mainfields = '<label><input type="checkbox" name="mainfields[]" ' . $c1 . ' value="iscommend" class="uk-checkbox" /> 是否推荐</label> &nbsp;&nbsp;';
+        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c2 . ' value="typeid" class="uk-checkbox" /> 栏目</label> &nbsp;&nbsp;';
 
-        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c3 . ' value="writer" class="np" />作者</label>';
-        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c4 . ' value="source" class="np" />来源</label>';
-        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c5 . ' value="senddate" class="np" />发布时间</label>';
+        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c3 . ' value="writer" class="uk-checkbox" /> 作者</label> &nbsp;&nbsp;';
+        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c4 . ' value="source" class="uk-checkbox" /> 来源</label> &nbsp;&nbsp;';
+        $mainfields .= '<label><input type="checkbox" name="mainfields[]" ' . $c5 . ' value="senddate" class="uk-checkbox" /> 发布时间</label> &nbsp;&nbsp;';
         /*
         $mainfields .= '<label><input type="checkbox" name="mainfields[]" value="description" />摘要</label>';
         $mainfields .= '<label><input type="checkbox" name="mainfields[]" value="keywords" />关键词</label>';
@@ -520,9 +520,9 @@ else if ($dopost == 'modifysearch') {
         $dtp->LoadSource($channel['fieldset']);
         if ($channel['issystem'] < 0) {
             $checked = in_array('typeid', $addonfieldsarr) ? 'checked' : '';
-            $addonfields .= '<label><input type="checkbox" name="addonfields[]" ' . $checked . ' value="typeid" class="np" />栏目</label>';
+            $addonfields .= '<label><input type="checkbox" name="addonfields[]" ' . $checked . ' value="typeid" class="uk-checkbox" /> 栏目</label> &nbsp;&nbsp;';
             $checked = in_array('senddate', $addonfieldsarr) ? 'checked' : '';
-            $addonfields .= '<label><input type="checkbox" name="addonfields[]" ' . $checked . ' value="senddate" class="np" />发布时间</label>';
+            $addonfields .= '<label><input type="checkbox" name="addonfields[]" ' . $checked . ' value="senddate" class="uk-checkbox" /> 发布时间</label> &nbsp;&nbsp;';
         }
         if (is_array($dtp->CTags) && !empty($dtp->CTags)) {
             foreach ($dtp->CTags as $ctag) {
@@ -539,11 +539,13 @@ else if ($dopost == 'modifysearch') {
                 $label = $ctag->GetAtt('itemname');
                 if (in_array($datatype, $searchtype)) {
                     $checked = in_array($value, $addonfieldsarr) ? 'checked' : '';
-                    $addonfields .= "<label><input type=\"checkbox\" name=\"addonfields[]\" $checked value=\"$value\" class='np' />$label</label>";
+                    $addonfields .= "<label><input type=\"checkbox\" name=\"addonfields[]\" $checked value=\"$value\" class='uk-checkbox' /> $label</label> &nbsp;&nbsp;";
                 }
             }
         }
-        include_once dirname(__FILE__) . "/templets/mychannel_modifysearch.htm";
+        $tpl = new DedeTemplate();
+        $tpl->LoadTemplate(DEDEADMIN . "/templets/mychannel_modifysearch.htm");
+        $tpl->Display();
     } else if ($step == 1) {
         $query = "SELECT * FROM `#@__channeltype` WHERE id='$mid'";
         $channel = $dsql->GetOne($query);
@@ -680,10 +682,10 @@ else if ($dopost == 'modifysearch') {
         $query = "REPLACE INTO #@__advancedsearch(mid, maintable, mainfields, addontable, addonfields, forms, template) VALUES('$mid','$maintable','$mainstring','$addontable','$addonstring','$formssql', '$template')";
         $dsql->ExecuteNoneQuery($query);
         $formshtml = dede_htmlspecialchars($forms);
-        echo '<meta http-equiv="Content-Type" content="text/html; charset=' . $cfg_soft_lang . '">';
-        echo "下面为生成的html表单，请自行复制，根据自己需求修改样式后粘贴到对应的模板中<br><br><textarea cols=\"100\"  rows=\"10\">" . $forms . "</textarea>";
-        echo '<br />预览：<br /><hr>';
-        echo $forms;
+        $tpl = new DedeTemplate();
+        $tpl->LoadTemplate(DEDEADMIN . "/templets/mychannel_modifysearch_step1.htm");
+        $tpl->Display();
+
     }
     exit;
 }
@@ -695,4 +697,8 @@ else if ($dopost == 'del') {
     exit();
 }
 $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$id' ");
-require_once DEDEADMIN . "/templets/mychannel_edit.htm";
+
+
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/mychannel_edit.htm");
+$tpl->Display();

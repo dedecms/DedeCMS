@@ -4,7 +4,7 @@
  *
  * @version   $Id: media_edit.php 1 11:17 2010年7月19日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -88,7 +88,7 @@ if ($dopost == 'del') {
     }
 }
 /*--------------------------------
-function __save_edit() //保存更改
+function __save_edit() //保存修改
 -----------------------------------*/
 else if ($dopost == 'save') {
     if ($aid == "") {
@@ -123,12 +123,12 @@ else if ($dopost == 'save') {
                 exit();
             }
             if (!preg_match("#\." . $cfg_mediatype . "#", $upfile_name)) {
-                ShowMsg("你上传的影音文件扩展名无法被识别，请更改系统配置的参数！", "javascript:history.go(-1);");
+                ShowMsg("你上传的影音文件扩展名无法被识别，请修改系统配置的参数！", "javascript:history.go(-1);");
                 exit();
             }
         } else {
             if (!preg_match("#\." . $cfg_softtype . "#", $upfile_name)) {
-                ShowMsg("你上传的附件扩展名无法被识别，请更改系统配置的参数！", "javascript:history.go(-1);");
+                ShowMsg("你上传的附件扩展名无法被识别，请修改系统配置的参数！", "javascript:history.go(-1);");
                 exit();
             }
         }
@@ -174,7 +174,7 @@ else if ($dopost == 'save') {
     $query = " UPDATE #@__uploads SET title='$title',mediatype='$mediatype',playtime='$playtime'";
     $query .= "$addquery WHERE aid='$aid' ";
     $dsql->ExecuteNoneQuery($query);
-    ShowMsg('成功更改一则附件数据！', 'media_edit.php?aid=' . $aid);
+    ShowMsg('成功修改一则附件数据！', 'media_edit.php?aid=' . $aid);
     exit();
 }
 

@@ -7,7 +7,7 @@
  *
  * @version   $Id: typeunit.class.admin.php 1 15:21 2010年7月5日 $
  * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -162,7 +162,7 @@ class TypeUnit
                 echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";
             }
             
-            echo " <a href='catalog_edit.php?id={$id}'>[更改]</a>";
+            echo " <a href='catalog_edit.php?id={$id}'>[修改]</a>";
             echo " <a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>[移动]</a>";
             echo " <a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>[删除]</a>";
             echo "</td></tr>\r\n";
@@ -262,7 +262,7 @@ class TypeUnit
                     echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";
                 }
 
-                echo " <a href='catalog_edit.php?id={$id}'>[更改]</a>";
+                echo " <a href='catalog_edit.php?id={$id}'>[修改]</a>";
                 echo " <a href='catalog_do.php?dopost=moveCatalog&typeid={$id}'>[移动]</a>";
                 echo " <a href='catalog_del.php?id={$id}&typeoldname=" . urlencode($typeName) . "'>[删除]</a>";
                 echo "</td></tr>\r\n";

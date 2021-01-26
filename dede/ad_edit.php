@@ -4,7 +4,7 @@
  *
  * @version   $Id: ad_edit.php 1 8:26 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -32,7 +32,7 @@ if ($dopost == 'delete') {
     $row = $dsql->GetOne("SELECT tagname from `#@__myad` WHERE aid='$aid' ");
 
     $showtag = '{' . "dede:myad name='{$row['tagname']}'/" . '}';
-    $info = "<b>说明：</b>如果嵌入的是织梦CMS广告标签，那么将会解析成标签中的内容到页面，广告更改后需要重新生成。<br />
+    $info = "<b>说明：</b>如果嵌入的是织梦CMS广告标签，那么将会解析成标签中的内容到页面，广告修改后需要重新生成。<br />
     如果不希望重新生成所有页面，则直接调用JS代码即可。
     ";
     $wintitle = "广告管理-获取广告标签";
@@ -67,7 +67,7 @@ if ($dopost == 'delete') {
      WHERE aid='$aid'
      ";
     $dsql->ExecuteNoneQuery($query);
-    ShowMsg("成功更改一则广告代码！", $ENV_GOBACK_URL);
+    ShowMsg("成功修改一则广告代码！", $ENV_GOBACK_URL);
     exit();
 }
 

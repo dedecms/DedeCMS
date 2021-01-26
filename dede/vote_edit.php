@@ -4,7 +4,7 @@
  *
  * @version   $Id: vote_edit.php 1 23:54 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -52,9 +52,9 @@ if ($dopost == "delete") {
         $vote_content = preg_replace(array("#/#", "#([\r\n])[\s]+#"), array("\/", " "), $vote_content); //取出内容中的空白字符并进行转义
         $vote_content = 'document.write("' . $vote_content . '");';
         file_put_contents($vote_file, $vote_content);
-        ShowMsg('成功更改一组投票!', $ENV_GOBACK_URL);
+        ShowMsg('成功修改一组投票!', $ENV_GOBACK_URL);
     } else {
-        ShowMsg('更改一组投票失败!', $ENV_GOBACK_URL);
+        ShowMsg('修改一组投票失败!', $ENV_GOBACK_URL);
     }
 } else {
     $row = $dsql->GetOne("SELECT * FROM #@__vote WHERE aid='$aid'");

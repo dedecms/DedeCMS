@@ -4,7 +4,7 @@
  *
  * @version   $Id: inc_menu_map.php 1 10:32 2010年7月21日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -12,7 +12,7 @@
  */
 require_once dirname(__FILE__) . "/../config.php";
 
-$maparray = array(1 => '文档相关', 2 => '系统设置', 3 => '必须辅助功能', 4 => '网站更新操作', 5 => '会员相关', 6 => '基本模块插件');
+$maparray = array(1 => '文档相关', 2 => '系统设置', 3 => '必须辅助功能', 4 => '网站更新操作', 5 => '用户相关', 6 => '基本模块插件');
 
 //载入可发布频道
 $addset = '';
@@ -47,7 +47,6 @@ $menusMain = "
   <m:item name='所有档案列表' link='content_list.php' rank='a_List,a_AccList' target='main' />
   <m:item name='等审核的档案' link='content_list.php?arcrank=-1' rank='a_Check,a_AccCheck' target='main' />
   <m:item name='我发布的文档' link='content_list.php?mid=" . $cuserLogin->getUserID() . "' rank='a_List,a_AccList,a_MyList' target='main' />
-  <m:item name='评论管理' link='feedback_main.php' rank='sys_Feedback' target='main' />
   <m:item name='内容回收站' link='recycling.php' ischannel='1' addalt='清空回收站' addico='img/gtk-del.png' linkadd='archives_do.php?dopost=clear&aid=no' rank='a_List' target='main' />
 </m:top>
 
@@ -69,7 +68,6 @@ $menusMain = "
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />
   <m:item name='自由列表管理' link='freelist_main.php' rank='c_List' target='main' />
-  <m:item name='自定义表单' link='diy_main.php' rank='c_List' target='main' />
 </m:top>
 
 <m:top mapitem='3' item='3_' name='采集管理' display='none' rank='co_NewRule,co_ListNote,co_ViewNote,co_Switch,co_GetOut'>
@@ -109,16 +107,16 @@ $menusMain = "
   <m:item name='文件式管理器' link='media_main.php?dopost=filemanager' rank='plus_文件管理器' target='main' />
 </m:top>
 
-<m:top mapitem='5' item='6_' name='会员管理' display='none' rank='member_List,member_Type'>
-  <m:item name='注册会员列表' link='member_main.php' rank='member_List' target='main' />
-  <m:item name='会员级别设置' link='member_rank.php' rank='member_Type' target='main' />
-  <m:item name='会员模型管理' link='member_model_main.php' rank='member_Type' target='main' />
+<m:top mapitem='5' item='6_' name='用户管理' display='none' rank='member_List,member_Type'>
+  <m:item name='系统用户管理' link='sys_admin_user.php' rank='sys_User' target='main' />
+  <m:item name='系统用户组管理' link='sys_group.php' rank='sys_Group' target='main' />
+  <m:item name='注册用户列表' link='member_main.php' rank='member_List' target='main' />
+  <m:item name='用户级别设置' link='member_rank.php' rank='member_Type' target='main' />
+  <m:item name='用户模型管理' link='member_model_main.php' rank='member_Type' target='main' />
 </m:top>
 
 <m:top mapitem='2' item='10_' name='系统设置' display='none' rank='sys_User,sys_Group,sys_Edit,sys_Log,sys_Data'>
   <m:item name='系统基本参数' link='sys_info.php' rank='sys_Edit' target='main' />
-  <m:item name='系统用户管理' link='sys_admin_user.php' rank='sys_User' target='main' />
-  <m:item name='用户组设定' link='sys_group.php' rank='sys_Group' target='main' />
   <m:item name='系统日志管理' link='log_list.php' rank='sys_Log' target='main' />
   <m:item name='验证安全设置' link='sys_safe.php' rank='sys_verify' target='main' />
   <m:item name='图片水印设置' link='sys_info_mark.php' rank='sys_Edit' target='main' />
@@ -132,8 +130,8 @@ $menusMain = "
 </m:top>
 
 <m:top mapitem='5' item='10_6_' name='支付工具' display='none' rank='sys_Data'>
-  <m:item name='会员产品分类' link='member_type.php' rank='sys_Data' target='main' />
-  <m:item name='会员消费记录' link='member_operations.php' rank='sys_Data' target='main' />
+  <m:item name='用户产品分类' link='member_type.php' rank='sys_Data' target='main' />
+  <m:item name='用户消费记录' link='member_operations.php' rank='sys_Data' target='main' />
   <m:item name='商店订单记录' link='shops_operations.php' rank='sys_Data' target='main' />
   <m:item name='支付接口设置' link='sys_payment.php' .php' rank='sys_Data' target='main' />
   <m:item name='配货方式设置' link='shops_delivery.php' rank='sys_Data' target='main' />

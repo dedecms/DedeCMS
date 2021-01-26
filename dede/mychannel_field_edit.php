@@ -4,7 +4,7 @@
  *
  * @version   $Id: mychannel_field_edit.php 1 15:22 2010年7月20日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -43,7 +43,7 @@ foreach ($ds as $d) {
     $dds = explode(',', trim($d));
     $fieldtypes[$dds[0]] = $dds[1];
 }
-//保存更改
+//保存修改
 /*--------------------
 function _SAVE()
 ----------------------*/
@@ -119,7 +119,7 @@ if ($action == 'save') {
     $oksetting = addslashes($oksetting);
     $dsql->ExecuteNoneQuery("UPDATE `#@__channeltype` SET fieldset='$oksetting',listfields='$addlist' WHERE id='$id' ");
 
-    ShowMsg("成功更改一个字段的配置！", "mychannel_edit.php?id={$id}&dopost=edit&openfield=1");
+    ShowMsg("成功修改一个字段的配置！", "mychannel_edit.php?id={$id}&dopost=edit&openfield=1");
     exit();
 }
 /*------------------
@@ -146,4 +146,7 @@ else if ($action == "delete") {
     exit();
 }
 
-require_once DEDEADMIN . "/templets/mychannel_field_edit.htm";
+$tpl = new DedeTemplate();
+$tpl->LoadTemplate(DEDEADMIN . "/templets/mychannel_field_edit.htm");
+$tpl->Display();
+

@@ -2,13 +2,13 @@
 /**
  * 关于文章权限设置的说明
  * 文章权限设置限制形式如下：
- * 如果指定了会员等级，那么必须到达这个等级才能浏览
+ * 如果指定了用户等级，那么必须到达这个等级才能浏览
  * 如果指定了金币，浏览时会扣指点的点数，并保存记录到用户业务记录中
  * 如果两者同时指定，那么必须同时满足两个条件
  *
  * @version   $Id: view.php 1 15:38 2010年7月8日 $
  * @package   DedeCMS.Site
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -67,13 +67,13 @@ if ($needMoney > 0 || $needRank > 1) {
     $description = $arc->Fields["description"];
     $pubdate = GetDateTimeMk($arc->Fields["pubdate"]);
 
-    //会员级别不足
+    //用户级别不足
     if (($needRank > 1 && $cfg_ml->M_Rank < $needRank && $arc->Fields['mid'] != $cfg_ml->M_ID)) {
         $dsql->Execute('me', "SELECT * FROM `#@__arcrank` ");
         while ($row = $dsql->GetObject('me')) {
             $memberTypes[$row->rank] = $row->membername;
         }
-        $memberTypes[0] = "游客或没权限会员";
+        $memberTypes[0] = "游客或没权限用户";
         $msgtitle = "你没有权限浏览文档：{$arctitle} ！";
         $moremsg = "这篇文档需要 <font color='red'>" . $memberTypes[$needRank] . "</font> 才能访问，你目前是：<font color='red'>" . $memberTypes[$cfg_ml->M_Rank] . "</font> ！";
         $dlist = new DataListCP();

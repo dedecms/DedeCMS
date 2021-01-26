@@ -4,7 +4,7 @@
  *
  * @version   $Id: article_keywords_main.php 1 14:12 2010年7月12日 $
  * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https: //weibo.com/itprato
+ * @founder   IT柏拉图, https://weibo.com/itprato
  * @author    DedeCMS团队
  * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
  * @license   http://help.dedecms.com/usersguide/license.html
@@ -22,7 +22,7 @@ $ENV_GOBACK_URL = empty($_COOKIE['ENV_GOBACK_URL']) ? "article_keywords_main.php
 //更新
 if ($dopost === 'update') {
     if (!isset($aid)) {
-        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        ShowMsg("你没有选择要修改的内容！</br>", $ENV_GOBACK_URL);
         exit();
     }
     $aid = preg_replace("#[^0-9]#", "", $aid);
@@ -36,7 +36,7 @@ if ($dopost === 'update') {
 // 删除
 else if ($dopost == 'del') {
     if (!isset($aid)) {
-        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        ShowMsg("你没有选择要修改的内容！</br>", $ENV_GOBACK_URL);
         exit();
     }
     //删除项目
@@ -48,7 +48,7 @@ else if ($dopost == 'del') {
 // 禁用项目
 else if ($dopost == 'disable') {
     if (!isset($aid)) {
-        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        ShowMsg("你没有选择要修改的内容！</br>", $ENV_GOBACK_URL);
         exit();
     }
     $aid = preg_replace("#[^0-9]#", "", $aid);
@@ -69,7 +69,7 @@ else if ($dopost == 'disable') {
 }
 else if ($dopost == 'delall') {
     if (!isset($aids)) {
-        ShowMsg("你没有选择要更改的内容！</br>", $ENV_GOBACK_URL);
+        ShowMsg("你没有选择要修改的内容！</br>", $ENV_GOBACK_URL);
         exit();
     }
     foreach (explode(",", $aids) as $aid) {
