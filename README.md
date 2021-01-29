@@ -8,6 +8,8 @@ DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : h
 
 开发过程中以night beta（夜间测试版）的方式更新，测试版不能用于生产。
 
+获取可用于生产的正式版请访问：http://www.dedecms.com 或 https://github.com/dedecms/DedeCMS/releases
+
 ### Windows 环境：
 
 IIS/Apache/Nginx + PHP7+ + MySQL/MariaDB
@@ -24,18 +26,18 @@ Apache/Nginx + PHP7+ + MySQL/MariaDB (PHP 必须在非安全模式下运行)
 
 推荐理由：
 
-1.OpenBSD以安全著称，其会对pkg源内的软件进行安全优化，在许多软件开发商未发现漏洞前进行安全补丁；
-2.OpenBSD的PF防火墙非常强大，许多硬件防火墙均使用OpenBSD的PF防火墙进行二次开发；
-3.运行在OpenBSD的chroot模式下的Nginx、PHP即使因漏洞被攻破，也不会影响主系统的安全；
+1. OpenBSD以安全著称，其会对pkg源内的软件进行安全优化，在许多软件开发商未发现漏洞前进行安全补丁；
+2. OpenBSD的PF防火墙非常强大，许多硬件防火墙均使用OpenBSD的PF防火墙进行二次开发；
+3. 运行在OpenBSD的chroot模式下的Nginx、PHP即使因漏洞被攻破，也不会影响主系统的安全；
 
 注意事项：
 
-1、请使用pkg_add来安装Nginx、PHP、MariaDB，确保系统安全；
-2、赋予网站一个低权限系统用户，切勿使用root、www、php等用户；
-3、分配给MariaDB库一个低权限sql用户，切勿使用root等MariaDB系统用户；
-4、上传数据可使用SFTP进行，OpenSSH也是OpenBSD团队开源的优秀系统，在安装OpenBSD时确保SSH开启即可使用SFTP；
-5、SFTP用户为系统用户，对于多用户服务器可在OpenBSD内对低权限系统用户进行目录访问限制；
-6、MariaDB远程控制，同样可以使用SSH方式链接服务器进行GUI化管理，目前大多数的MYSQL GUI管理工具均支持SSH方式远程访问数据库；
+1. 请使用pkg_add来安装Nginx、PHP、MariaDB，确保系统安全；
+2. 赋予网站一个低权限系统用户，切勿使用root、www、php等用户；
+3. 分配给MariaDB库一个低权限sql用户，切勿使用root等MariaDB系统用户；
+4. 上传数据可使用SFTP进行，OpenSSH也是OpenBSD团队开源的优秀系统，在安装OpenBSD时确保SSH开启即可使用SFTP；
+5. SFTP用户为系统用户，对于多用户服务器可在OpenBSD内对低权限系统用户进行目录访问限制；
+6. MariaDB远程控制，同样可以使用SSH方式链接服务器进行GUI化管理，目前大多数的MYSQL GUI管理工具均支持SSH方式远程访问数据库；
 
 ### PHP 函数库依赖：
 
