@@ -8,19 +8,34 @@ DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : h
 
 开发过程中以night beta（夜间测试版）的方式更新，测试版不能用于生产。
 
-## 服务器要求
+### Windows 环境：
 
-建议使用平台：Linux + Apache2.2 + PHP5.2/PHP5.3 + MySQL5.0
-
-### Windows 平台：
-
-IIS/Apache/Nginx + PHP4/PHP5.2+/PHP5.3+ + MySQL4/5
+IIS/Apache/Nginx + PHP7+ + MySQL/MariaDB
 
 如果在 windows 环境中使用，建议用 DedeCMS 提供的 DedeAMPZ 套件以达到最佳使用性能。
 
-### Linux/Unix 平台：
+### Linux/Unix 环境：
 
-Apache + PHP4/PHP5 + MySQL3/4/5 (PHP 必须在非安全模式下运行)
+Apache/Nginx + PHP7+ + MySQL/MariaDB (PHP 必须在非安全模式下运行)
+
+### 建议使用环境:
+
+建议使用平台：OpenBSD + Nginx + PHP7 + MariaDB
+
+推荐理由：
+
+1.OpenBSD以安全著称，其会对pkg源内的软件进行安全优化，在许多软件开发商未发现漏洞前进行安全补丁；
+2.OpenBSD的PF防火墙非常强大，许多硬件防火墙均使用OpenBSD的PF防火墙进行二次开发；
+3.运行在OpenBSD的chroot模式下的Nginx、PHP即使因漏洞被攻破，也不会影响主系统的安全；
+
+注意事项：
+
+1、请使用pkg_add来安装Nginx、PHP、MariaDB，确保系统安全；
+2、赋予网站一个低权限系统用户，切勿使用root、www、php等用户；
+3、分配给MariaDB库一个低权限sql用户，切勿使用root等MariaDB系统用户；
+4、上传数据可使用SFTP进行，OpenSSH也是OpenBSD团队开源的优秀系统，在安装OpenBSD时确保SSH开启即可使用SFTP；
+5、SFTP用户为系统用户，对于多用户服务器可在OpenBSD内对低权限系统用户进行目录访问限制；
+6、MariaDB远程控制，同样可以使用SSH方式链接服务器进行GUI化管理，目前大多数的MYSQL GUI管理工具均支持SSH方式远程访问数据库；
 
 ### PHP 函数库依赖：
 
@@ -36,17 +51,16 @@ MySQL 扩展库
 
 ```
 /
-..../install     安装程序目录，安装完后可删除[安装时必须有可写入权限]
-..../dede        默认后台管理目录（可任意改名）
-..../include     类库文件目录
-..../plus        附助程序目录
-..../member      用户目录
-..../images      系统默认模板图片存放目录
-..../uploads     默认上传目录(必须可写入)
-..../a           默认HTML文件存放目录(必须可写入)
-..../templets    系统默认内核模板目录
-..../data        系统缓存或其它可写入数据存放目录(必须可写入)
-..../special     专题目录(生成一次专题后可以删除special/index.php，必须可写入)
+../a           默认HTML文件存放目录(必须可写入)
+../install     安装程序目录，安装完后可删除[安装时必须有可写入权限]
+../dede        默认后台管理目录（可任意改名）
+../include     类库文件目录
+../plus        附助程序目录
+../assets      系统默认静态资源目录
+../uploads     默认上传目录(必须可写入)
+../templets    系统默认内核模板目录
+../data        系统缓存或其它可写入数据存放目录(必须可写入)
+../special     专题目录(生成一次专题后可以删除special/index.php，必须可写入)
 ```
 
 ## 兼容性问题
