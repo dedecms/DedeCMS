@@ -9,6 +9,7 @@ function dede_autoloader($classname)
     if(class_exists($classname) ) {
         return true;
     }
+    $classname = strtolower($classname);
     $classfile = $classname.'.php';
     $libclassfile = $classname.'.class.php';
     if (is_file(DEDEINC.'/'.$libclassfile) ) {

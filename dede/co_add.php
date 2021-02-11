@@ -26,8 +26,8 @@ function Init(){ }
 ----------------------*/
 if (empty($step)) {
     $tpl = new DedeTemplate();
-$tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step0.htm");
-$tpl->Display();
+    $tpl->LoadTemplate(DEDEADMIN . "/templets/co_add_step0.htm");
+    $tpl->Display();
 
     exit();
 } else if ($step == 1) {

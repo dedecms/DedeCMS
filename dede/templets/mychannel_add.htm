@@ -4,4 +4,309 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>新增内容类型</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="mychannel_main.php">内容类型管理</a> </li><li><span>新增内容类型</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form name="form1" action="mychannel_add.php" method="post"><input type='hidden' name='action' value='add'><!-- 选项 --><tr><td width="35%"><b>频道ID</b><br /><span class="STYLE2" id='help1'>数字，创建后不可修改，并具有唯一性。</span></td><td width="65%"><input name="id" type="text" class="uk-input uk-form-small uk-form-width-large" id="id" size="10" value="<?php echo $newid; ?>"/> *</td></tr><tr><td><b>名字标识</b><br /><span class="STYLE2" id="help2">与文档的模板相关连，建议由英文、数字或下划线组成，因为部份Unix系统无法识别中文文件，频道默认文档模板是 “default/article_名字标识.htm”，列表模板、封面模板类推。 </span></td><td><input name="nid" type="text" class="uk-input uk-form-small uk-form-width-large" id="nid" value="ch<?php echo $newid; ?>"/> *</td></tr><tr><td><b>频道名称</b><br /><span class="STYLE2" id="help3">频道的中文名称，在后台管理，前台发布等均使用此名字。</span></td><td><input name="typename" type="text" class="uk-input uk-form-small uk-form-width-large" id="typename" value="频道<?php echo $newid; ?>"/> *</td></tr><tr><td><b>附加表</b><br /><span class="STYLE2" id="help4">频道除主表以外其它自定义类型数据存放数据的表，如果您不使用主表关连的各种特性(推荐、会员权限等)，也可以使用完全以附加表作为存储数据。</span></td><td><input name="addtable" type="text" class="uk-input uk-form-small uk-form-width-large" id="addtable" value="<?php echo $cfg_dbprefix,'addon',$newid; ?>"/>必须由英文、数字、下划线组成 *<input name="isdel" type="checkbox" class="uk-checkbox" id="isdel" value="1" />删除已有表</td></tr><tr><td><b>模型性质</b><br /><span class="STYLE2" id="help5">如果为<u>系统模型</u>将禁止删除，此选项不可修改，对于独立模型，系统强制创建字段aid,typeid,senddate,title, mid, channel，独立模型的文档内容必须点击栏目进入列表才能管理。</span> </td><td><input type="radio" class="uk-radio" name="issystem" id='is1' value="0" onClick="PublicDefault()" checked='1' />自动模型 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="issystem" id='is2' value="1" onClick="PublicDefault()" />系统模型 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="issystem" id='is3' value="-1" onClick="PublicDefault()" />独立模型(不使用主表)</td></tr><tr><td><b>是否支持会员投稿</b></td><td><input name="issend" type="radio" class="uk-radio" value="0" checked='1' />不支持　 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="issend" value="1" />支持</td></tr><tr><td><b>会员许可投稿级别</b></td><td><select name='sendrank' id='sendrank' class="uk-select uk-form-small uk-form-width-medium"><option value='0'>游客</option><?php$urank = $cuserLogin->getUserRank();$dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank' And rank>=10");$dsql->Execute();while($row2 = $dsql->GetObject()){echo "<option value='".$row2->rank."'>".$row2->membername."</option>\r\n";}?></select></td></tr><tr><td><b>许可投稿会员组</b></td><td><?php$dsql->SetQuery("Select * from `#@__member_model`");$dsql->Execute();while($row3 = $dsql->GetObject()){echo "<input name='usertype' class='uk-radio' type='radio' value=".$row3->name." /> ".$row3->name." &nbsp;&nbsp;\r\n";}?><input name="usertype" type="radio" class="uk-radio" value="" checked='1' />不限</td></tr><tr><td><b>会员稿件默认状态</b></td><td><input name="arcsta" type="radio" class="uk-radio" value="-1" checked='1' />未审核 &nbsp;&nbsp;<input name="arcsta" type="radio" class="uk-radio" value="0" />已审核（自动生成HTML） &nbsp;&nbsp;<input name="arcsta" type="radio" class="uk-radio" value="1" />已审核（仅使用动态文档）</td></tr><tr><td><b>投稿标题使用名称</b></td><td><input name="titlename" type="text" class="uk-input uk-form-small uk-form-width-large" id="titlename" value="标题"/></td></tr><tr><td><b>投稿是否使用摘要</b><br/><span class="STYLE2">如果不使用主表(独立模型)，缩略图设置同。</span></td><td><input name="needdes" type="radio" class="uk-radio" value="1" checked='1' />使用<input name="needdes" type="radio" class="uk-radio" value="0" />不使用</td></tr><tr><td><b>投稿是否使用缩图</b></td><td><input name="needpic" type="radio" class="uk-radio" value="1" checked='1' />使用<input name="needpic" type="radio" class="uk-radio" value="0" />不使用</td></tr><tr><td><b>默认栏目ID</b><br /><span class="STYLE2" id="help8">与投稿是唯一性结合可以用模型设计自定义表单</span></td><td><input name="dfcid" type="text" class="uk-input uk-form-small uk-form-width-large" id="dfcid" value="0"style="width:80px;" /></td></tr><tr><td><b>投稿具有唯一性</b><br /><span class="STYLE2" id="help9">如果投稿是唯一的(会员只能在这个模型对应的栏目中发布单篇文档)，其作用相当于自定义表单</span></td><td><input name="onlyone" type="radio" class="uk-radio" value="1" />是<input name="onlyone" type="radio" class="uk-radio" value="0" checked='1'/>不是</td></tr><tr><td><b>档案发布程序</b></td><td><input name="addcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="addcon" value="archives_add.php"/>*</td></tr><tr><td><b>档案修改程序</b></td><td><input name="editcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="editcon" value="archives_edit.php"/>*</td></tr><tr><td><b>档案管理程序</b></td><td><input name="mancon" type="text" class="uk-input uk-form-small uk-form-width-large" id="mancon" value="content_list.php"/>*</td></tr><tr><td><b>前台会员发布程序</b></td><td><input name="useraddcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="useraddcon" value="archives_add.php"/></td></tr><tr><td><b>前台会员修改程序</b></td><td><input name="usereditcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="usereditcon" value="archives_edit.php"/></td></tr><tr><td><b>前台会员管理程序</b></td><td><input name="usermancon" type="text" class="uk-input uk-form-small uk-form-width-large" id="usermancon" value="content_list.php"/></td></tr><!-- /选项 --></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script language="javascript">function $Obj(objname){return document.getElementById(objname);}function ShowHide2(objname){var obj = $Obj(objname);if(obj.style.display != 'block'){ obj.style.display = 'block' }else{ obj.style.display = 'none'; }}function PublicDefault(){if($Obj('is1').checked || $Obj('is2').checked){$Obj("addcon").value = "archives_add.php";$Obj("editcon").value = "archives_edit.php";$Obj("mancon").value = "content_list.php";$Obj("useraddcon").value = "archives_add.php";$Obj("usereditcon").value = "archives_edit.php";$Obj("usermancon").value = "content_list.php";}else{$Obj("addcon").value = "archives_sg_add.php";$Obj("editcon").value = "archives_sg_edit.php";$Obj("mancon").value = "content_sg_list.php";$Obj("useraddcon").value = "archives_sg_add.php";$Obj("usereditcon").value = "archives_sg_edit.php";$Obj("usermancon").value = "content_sg_list.php";}}</script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>新增内容类型</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="mychannel_main.php">内容类型管理</a> </li><li><span>新增内容类型</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name="form1" action="mychannel_add.php" method="post">
+<input type='hidden' name='action' value='add'>
+<!-- 选项 -->
+<tr>
+<td width="35%">
+<b>频道ID</b><br />
+<span class="STYLE2" id='help1'>数字，创建后不可修改，并具有唯一性。</span>
+</td>
+<td width="65%">
+<input name="id" type="text" class="uk-input uk-form-small uk-form-width-large" id="id" size="10" value="<?php echo $newid; ?>"/> *
+</td>
+</tr>
+<tr>
+<td>
+<b>名字标识</b><br />
+<span class="STYLE2" id="help2">与文档的模板相关连，建议由英文、数字或下划线组成，因为部份Unix系统无法识别中文文件，频道默认文档模板是 “default/article_名字标识.htm”，列表模板、封面模板类推。 </span>
+</td>
+<td>
+<input name="nid" type="text" class="uk-input uk-form-small uk-form-width-large" id="nid" value="ch<?php echo $newid; ?>"/> *
+</td>
+</tr>
+<tr>
+<td>
+<b>频道名称</b><br />
+<span class="STYLE2" id="help3">频道的中文名称，在后台管理，前台发布等均使用此名字。</span>
+</td>
+<td>
+<input name="typename" type="text" class="uk-input uk-form-small uk-form-width-large" id="typename" value="频道<?php echo $newid; ?>"/> *
+</td>
+</tr>
+<tr>
+<td>
+<b>附加表</b><br />
+<span class="STYLE2" id="help4">频道除主表以外其它自定义类型数据存放数据的表，如果您不使用主表关连的各种特性(推荐、会员权限等)，也可以使用完全以附加表作为存储数据。</span>
+</td>
+<td>
+<input name="addtable" type="text" class="uk-input uk-form-small uk-form-width-large" id="addtable" value="<?php echo $cfg_dbprefix,'addon',$newid; ?>"/>
+必须由英文、数字、下划线组成 *
+<input name="isdel" type="checkbox" class="uk-checkbox" id="isdel" value="1" />
+删除已有表
+</td>
+</tr>
+<tr>
+<td>
+<b>模型性质</b><br />
+<span class="STYLE2" id="help5">如果为<u>系统模型</u>将禁止删除，此选项不可修改，对于独立模型，系统强制创建字段aid,typeid,senddate,title, mid, channel，独立模型的文档内容必须点击栏目进入列表才能管理。</span> </td>
+<td>
+<input type="radio" class="uk-radio" name="issystem" id='is1' value="0" onClick="PublicDefault()" checked='1' />
+自动模型 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="issystem" id='is2' value="1" onClick="PublicDefault()" />
+系统模型 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="issystem" id='is3' value="-1" onClick="PublicDefault()" />
+独立模型(不使用主表)
+</td>
+</tr>
+<tr>
+<td>
+<b>是否支持会员投稿</b>
+</td>
+<td>
+<input name="issend" type="radio" class="uk-radio" value="0" checked='1' />
+不支持　 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="issend" value="1" />
+支持
+</td>
+</tr>
+<tr>
+<td>
+<b>会员许可投稿级别</b>
+</td>
+<td>
+<select name='sendrank' id='sendrank' class="uk-select uk-form-small uk-form-width-medium">
+<option value='0'>游客</option>
+<?php
+$urank = $cuserLogin->getUserRank();
+$dsql->SetQuery("Select * from `#@__arcrank` where adminrank<='$urank' And rank>=10");
+$dsql->Execute();
+while($row2 = $dsql->GetObject())
+{
+echo "<option value='".$row2->rank."'>".$row2->membername."</option>\r\n";
+}
+?>
+</select>
+</td>
+</tr>
+<tr>
+<td>
+<b>许可投稿会员组</b>
+</td>
+<td>
+<?php
+$dsql->SetQuery("Select * from `#@__member_model`");
+$dsql->Execute();
+while($row3 = $dsql->GetObject())
+{
+echo "<input name='usertype' class='uk-radio' type='radio' value=".$row3->name." /> ".$row3->name." &nbsp;&nbsp;\r\n";
+}
+?>
+<input name="usertype" type="radio" class="uk-radio" value="" checked='1' />
+不限
+</td>
+</tr>
+<tr>
+<td>
+<b>会员稿件默认状态</b>
+</td>
+<td>
+<input name="arcsta" type="radio" class="uk-radio" value="-1" checked='1' />
+未审核 &nbsp;&nbsp;
+<input name="arcsta" type="radio" class="uk-radio" value="0" />
+已审核（自动生成HTML） &nbsp;&nbsp;
+<input name="arcsta" type="radio" class="uk-radio" value="1" />
+已审核（仅使用动态文档）</td>
+</tr>
+<tr>
+<td>
+<b>投稿标题使用名称</b></td>
+<td>
+<input name="titlename" type="text" class="uk-input uk-form-small uk-form-width-large" id="titlename" value="标题"/>
+</td>
+</tr>
+<tr>
+<td>
+<b>投稿是否使用摘要</b><br/>
+<span class="STYLE2">如果不使用主表(独立模型)，缩略图设置同。</span></td>
+<td>
+<input name="needdes" type="radio" class="uk-radio" value="1" checked='1' />
+使用
+<input name="needdes" type="radio" class="uk-radio" value="0" />
+不使用
+</td>
+</tr>
+<tr>
+<td>
+<b>投稿是否使用缩图</b>
+</td>
+<td>
+<input name="needpic" type="radio" class="uk-radio" value="1" checked='1' />
+使用
+<input name="needpic" type="radio" class="uk-radio" value="0" />
+不使用
+</td>
+</tr>
+<tr>
+<td>
+<b>默认栏目ID</b><br />
+<span class="STYLE2" id="help8">与投稿是唯一性结合可以用模型设计自定义表单</span>
+</td>
+<td>
+<input name="dfcid" type="text" class="uk-input uk-form-small uk-form-width-large" id="dfcid" value="0"style="width:80px;" /></td>
+</tr>
+<tr>
+<td>
+<b>投稿具有唯一性</b><br />
+<span class="STYLE2" id="help9">如果投稿是唯一的(会员只能在这个模型对应的栏目中发布单篇文档)，其作用相当于自定义表单</span>
+</td>
+<td>
+<input name="onlyone" type="radio" class="uk-radio" value="1" />
+是
+<input name="onlyone" type="radio" class="uk-radio" value="0" checked='1'/>
+不是
+</td>
+</tr>
+<tr>
+<td>
+<b>档案发布程序</b>
+</td>
+<td>
+<input name="addcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="addcon" value="archives_add.php"/>
+*
+</td>
+</tr>
+<tr>
+<td>
+<b>档案修改程序</b>
+</td>
+<td>
+<input name="editcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="editcon" value="archives_edit.php"/>
+*
+</td>
+</tr>
+<tr>
+<td>
+<b>档案管理程序</b>
+</td>
+<td>
+<input name="mancon" type="text" class="uk-input uk-form-small uk-form-width-large" id="mancon" value="content_list.php"/>
+*
+</td>
+</tr>
+<tr>
+<td>
+<b>前台会员发布程序</b>
+</td>
+<td>
+<input name="useraddcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="useraddcon" value="archives_add.php"/>
+</td>
+</tr>
+<tr>
+<td>
+<b>前台会员修改程序</b>
+</td>
+<td>
+<input name="usereditcon" type="text" class="uk-input uk-form-small uk-form-width-large" id="usereditcon" value="archives_edit.php"/>
+</td>
+</tr>
+<tr>
+<td>
+<b>前台会员管理程序</b>
+</td>
+<td>
+<input name="usermancon" type="text" class="uk-input uk-form-small uk-form-width-large" id="usermancon" value="content_list.php"/>
+</td>
+</tr>
+<!-- /选项 -->
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+function $Obj(objname)
+{
+return document.getElementById(objname);
+}
+function ShowHide2(objname)
+{
+var obj = $Obj(objname);
+if(obj.style.display != 'block'){ obj.style.display = 'block' }
+else{ obj.style.display = 'none'; }
+}
+function PublicDefault()
+{
+if($Obj('is1').checked || $Obj('is2').checked)
+{
+$Obj("addcon").value = "archives_add.php";
+$Obj("editcon").value = "archives_edit.php";
+$Obj("mancon").value = "content_list.php";
+$Obj("useraddcon").value = "archives_add.php";
+$Obj("usereditcon").value = "archives_edit.php";
+$Obj("usermancon").value = "content_list.php";
+}
+else
+{
+$Obj("addcon").value = "archives_sg_add.php";
+$Obj("editcon").value = "archives_sg_edit.php";
+$Obj("mancon").value = "content_sg_list.php";
+$Obj("useraddcon").value = "archives_sg_add.php";
+$Obj("usereditcon").value = "archives_sg_edit.php";
+$Obj("usermancon").value = "content_sg_list.php";
+}
+}
+</script>
+<!-- / JS FILES -->
+</body>
+</html>

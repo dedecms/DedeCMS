@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>我的订单 - <?php echo $cfg_webname; ?></title>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+
+{dede:include filename="plus_header.htm"/}
+<!-- /header -->
+<main>
+<!-- 面包屑 -->
+{dede:include filename="plus_breadcrumb.htm"/}
+<!-- /面包屑 -->
+
+<section class="uk-section uk-section-default uk-section-smalle">
+    <div class="uk-container">
+    <div class="uk-article">
+
+<h2>我的订单</h2>
+
+
+<form id="form1" name="form1" method="post" action="posttocar.php">
+<input id="dopost" name="do" type="hidden" value="del" />
+<!--startprint1-->
+
+<div class="uk-card uk-card-small uk-card-default" style="margin-top: 40px;margin-bottom: 40px;">
+    <div class="uk-card-header">
+    <div class="uk-grid uk-grid-small uk-text-small">
+    <div class="uk-width-expand uk-first-column">
+    <span class="cat-txt">商品列表</span>
+    </div>
+    </div>
+    </div>
+    <div class="uk-card-body uk-padding-remove">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="uk-table">
+        <thead>
+          <tr>
+            <td></td>
+            <td width="25%">订单号</td>
+            <td>状态 </td>
+            <td width="10%">数量 </td>
+            <td width="10%">总计(元)</td>
+            <td width="20%">时间 </td>
+          </tr>
+        </thead>
+        <form name='form1' action="shops_orders.php" method="post">
+          <input type='hidden' name='dopost' value='del' />
+          <tbody>
+            {dede:datalist}
+            <tr>
+              <td><input type="checkbox" name="deleteid" value="{dede:field.oid/}" class="uk-checkbox dede-checkbox"/></td>
+              <td><a href="users_products.php?do=show&oid={dede:field.oid/}">{dede:field.oid/}</a></td>
+              <td><?php echo GetSta($fields["state"],$fields["oid"])?></td>
+              <td>{dede:field.cartcount/}</td>
+              <td><strong>{dede:field.priceCount/}</strong></td>
+              <td>{dede:field.stime function="Mydate('Y-m-d h:i:s',@me)"/}</td>
+            </tr>
+            {/dede:datalist}
+            <tr>
+              <td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>  
+              <td colspan="6">
+                <button type="button" onclick="DedeCMS_JSCODE_Version_Checked_Action('users_orders.php?dopost=del&orders=')" class="uk-button uk-button-small uk-button-primary">删除选中</button></td>
+            </tr>
+          </tbody>
+        </form>
+        <tfoot>
+          <tr>
+            <td colspan="6">
+              <div class="pageList">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+</div>
+</div>
+<!--endprint1-->
+</form>
+</div>
+</div>
+</section>
+
+<!-- //底部模板 -->
+{dede:include filename="plus_footer.htm"/}
+
+</body>
+</html>

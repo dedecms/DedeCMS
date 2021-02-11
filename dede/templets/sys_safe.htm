@@ -4,4 +4,121 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>验证安全设置</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>验证安全设置</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form action="sys_safe.php" method="post" name="form1"><input type="hidden" name="dopost" value="save"><tr><td><b>验证码参数设置</b></td></tr><tr><td width="26%">开启系统验证码：<br></td><td width="74%"><div class="uk-form-controls"><label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="1" <?php echo (preg_match("/1/",$safe_gdopen))? "checked" : "" ; ?>> 注册用户</label> &nbsp; &nbsp;<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="2" <?php echo (preg_match("/2/",$safe_gdopen))? "checked" : "" ; ?>> 前台登录</label> &nbsp; &nbsp;<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="3" <?php echo (preg_match("/3/",$safe_gdopen))? "checked" : "" ; ?>> 用户投稿</label> &nbsp; &nbsp;<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="4" <?php echo (preg_match("/4/",$safe_gdopen))? "checked" : "" ; ?>> 文档评论</label> &nbsp; &nbsp;<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="5" <?php echo (preg_match("/5/",$safe_gdopen))? "checked" : "" ; ?>> 用户短消息</label> &nbsp; &nbsp;<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="6" <?php echo (preg_match("/6/",$safe_gdopen))? "checked" : "" ; ?>> 后台登录</label> &nbsp; &nbsp;</div></td></tr><tr><td>验证码生成类型：</td><td><div class="uk-form-controls"><label><input class="uk-radio" type="radio" value="1" name="codetype" <?php echo ($safe_codetype==1)? "checked" : "" ; ?>> 数字</label> &nbsp; &nbsp;<label><input class="uk-radio" type="radio" value="2" name="codetype" <?php echo ($safe_codetype==2)? "checked" : "" ; ?>> 英文</label> &nbsp; &nbsp;<label><input class="uk-radio" type="radio" value="3" name="codetype" <?php echo ($safe_codetype==3)? "checked" : "" ; ?>> 单词</label></div></td></tr><tr><td>选择验证码文件类型：</td><td><div class="uk-form-controls"><label><input class="uk-radio" name="gdtype" type="radio" value="1" <?php echo ($safe_gdtype==1)? "checked" : "" ; ?>> jpg</label> &nbsp; &nbsp;<label><input class="uk-radio" name="gdtype" type="radio" value="2" <?php echo ($safe_gdtype==2)? "checked" : "" ; ?>> png</label> &nbsp; &nbsp;<label><input class="uk-radio" name="gdtype" type="radio" value="3" <?php echo ($safe_gdtype==3)? "checked" : "" ; ?>> gif</label> &nbsp; &nbsp;</div></td></tr><tr><td>验证码干扰设置：</td><td><div class="uk-form-controls"><label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="1" <?php echo (preg_match("/1/",$safe_gdstyle))? "checked" : "" ; ?>> 背景线</label> &nbsp; &nbsp;<label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="2" <?php echo (preg_match("/2/",$safe_gdstyle))? "checked" : "" ; ?>> 背景图像</label> &nbsp; &nbsp;<label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="3" <?php echo (preg_match("/3/",$safe_gdstyle))? "checked" : "" ; ?>> 混杂文本色</label> &nbsp; &nbsp;</div></td></tr><tr><td>验证码图片大小（设置为0为不限）：</td><td>宽： <input name="gd_wwidth" type=text class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_wwidth)? "" :$safe_wwidth ;?>"> px高： <input name="gd_wheight" type=text class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_wheight)? "" :$safe_wheight ;?>"> px</td></tr><tr><td>验证码字符数：</td><td><input name="codelen" type="text" class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_codelen)? "" :$safe_codelen ;?>"> 个(类型设为单词,该属性无效)</td></tr></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>验证安全设置</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>验证安全设置</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form action="sys_safe.php" method="post" name="form1">
+<input type="hidden" name="dopost" value="save">
+<tr>
+<td>
+<b>验证码参数设置</b></td>
+</tr>
+<tr>
+<td width="26%">开启系统验证码：<br></td>
+<td width="74%">
+<div class="uk-form-controls">
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="1" <?php echo (preg_match("/1/",$safe_gdopen))? "checked" : "" ; ?>> 注册用户</label> &nbsp; &nbsp;
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="2" <?php echo (preg_match("/2/",$safe_gdopen))? "checked" : "" ; ?>> 前台登录</label> &nbsp; &nbsp;
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="3" <?php echo (preg_match("/3/",$safe_gdopen))? "checked" : "" ; ?>> 用户投稿</label> &nbsp; &nbsp;
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="4" <?php echo (preg_match("/4/",$safe_gdopen))? "checked" : "" ; ?>> 文档评论</label> &nbsp; &nbsp;
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="5" <?php echo (preg_match("/5/",$safe_gdopen))? "checked" : "" ; ?>> 用户短消息</label> &nbsp; &nbsp;
+<label><input name="gdopen[]" type="checkbox" class="uk-checkbox" value="6" <?php echo (preg_match("/6/",$safe_gdopen))? "checked" : "" ; ?>> 后台登录</label> &nbsp; &nbsp;
+</div>
+</td>
+</tr>
+<tr>
+<td>验证码生成类型：</td>
+<td>
+<div class="uk-form-controls">
+<label><input class="uk-radio" type="radio" value="1" name="codetype" <?php echo ($safe_codetype==1)? "checked" : "" ; ?>> 数字</label> &nbsp; &nbsp;
+<label><input class="uk-radio" type="radio" value="2" name="codetype" <?php echo ($safe_codetype==2)? "checked" : "" ; ?>> 英文</label> &nbsp; &nbsp;
+<label><input class="uk-radio" type="radio" value="3" name="codetype" <?php echo ($safe_codetype==3)? "checked" : "" ; ?>> 单词</label>
+</div>
+</td>
+</tr>
+<tr>
+<td>选择验证码文件类型：</td>
+<td>
+<div class="uk-form-controls">
+<label><input class="uk-radio" name="gdtype" type="radio" value="1" <?php echo ($safe_gdtype==1)? "checked" : "" ; ?>> jpg</label> &nbsp; &nbsp;
+<label><input class="uk-radio" name="gdtype" type="radio" value="2" <?php echo ($safe_gdtype==2)? "checked" : "" ; ?>> png</label> &nbsp; &nbsp;
+<label><input class="uk-radio" name="gdtype" type="radio" value="3" <?php echo ($safe_gdtype==3)? "checked" : "" ; ?>> gif</label> &nbsp; &nbsp;
+</div>
+</td>
+</tr>
+<tr>
+<td>验证码干扰设置：</td>
+<td>
+<div class="uk-form-controls">
+<label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="1" <?php echo (preg_match("/1/",$safe_gdstyle))? "checked" : "" ; ?>> 背景线</label> &nbsp; &nbsp;
+<label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="2" <?php echo (preg_match("/2/",$safe_gdstyle))? "checked" : "" ; ?>> 背景图像</label> &nbsp; &nbsp;
+<label><input class="uk-checkbox" name="gdstyle[]" type="checkbox" value="3" <?php echo (preg_match("/3/",$safe_gdstyle))? "checked" : "" ; ?>> 混杂文本色</label> &nbsp; &nbsp;
+</div>
+</td>
+</tr>
+<tr>
+<td>验证码图片大小（设置为0为不限）：</td>
+<td>
+宽： <input name="gd_wwidth" type=text class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_wwidth)? "" :$safe_wwidth ;?>"> px
+高： <input name="gd_wheight" type=text class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_wheight)? "" :$safe_wheight ;?>"> px
+</td>
+</tr>
+<tr>
+<td>验证码字符数：</td>
+<td><input name="codelen" type="text" class="uk-input uk-form-small uk-form-width-small" value="<?php echo empty($safe_codelen)? "" :$safe_codelen ;?>"> 个(类型设为单词,该属性无效)</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

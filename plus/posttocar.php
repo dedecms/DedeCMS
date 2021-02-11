@@ -37,7 +37,7 @@ if ($do == 'add') {
     $rows['buynum'] = $buynum;
     $rows['title'] = $rs['title'];
     $cart->addItem($id, $rows);
-    ShowMsg("已添加加到购物车,<a href='car.php'>查看购物车</a>", "car.php");
+    ShowMsg("已添加加到购物车,<a href='car.php'>查看购物车</a>", "-1", 0, 1000);
     exit();
 } elseif ($do == 'del') {
     /*
@@ -63,7 +63,7 @@ if ($do == 'add') {
     function clearItem();        clear car products all!
      */
     $cart->clearItem();
-    ShowMsg("购物车中商品已全部清空！", "car.php");
+    ShowMsg("购物车中商品已全部清空！", $cfg_cmsurl."/");
     exit;
 } elseif ($do == 'update') {
     /*

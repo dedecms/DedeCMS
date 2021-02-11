@@ -237,7 +237,7 @@ else if ($dopost == "coall") {
     $mrow = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__co_htmls` ");
     $totalnum = $mrow['dd'];
     if ($totalnum == 0) {
-        ShowMsg("没发现可下载的内容！", "-1");
+        ShowMsg("没发现可下载的内容！", $cfg_cmsurl."/");
         exit();
     }
     $wintitle = "采集管理-采集未下载内容";

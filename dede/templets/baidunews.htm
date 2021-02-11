@@ -4,4 +4,74 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>百度新闻</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><form name="form1" action="baidunews.php?do=yes" method="post" target='stafrm'><input type="hidden" name="dopost" value="ok"><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>生成百度新闻XML</span></li></ul></span></div><!-- 搜索表单 --><ul class="uk-navbar-nav dede-card-navbar" uk-navbar ><li style="margin-right: 12px;"><a href="catalog_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">栏目管理</a></li></ul><!-- /搜索表单 --></div></div><!-- /列表头部 --><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr style="border-top: 0;"><td>功能说明：</td></tr></tbody></table></div><div class="uk-form-horizontal uk-padding-small"><p>《互联网新闻开放协议》是百度新闻搜索制定的搜索引擎新闻源收录标准，网站可将发布的新闻内容制作成遵循此开放协议的XML格式的网页（独立于原有的新闻发布形式）供搜索引擎索引。</p><p>配置的相关参数在 【<a href="sys_info.php">系统设置</a> -&gt; 其他选项】中调整</p><p>只适用于文章频道，数据表为DedeCMS默认的</p></div><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr><td>输出位置：<input name="filename" type="text" id="textfield" value="../data/baidunews.xml" class="uk-input uk-form-width-medium uk-form-small"></td><td align="right" ><button type="submit" class="uk-button uk-button-primary uk-button-small">开始生成XML</button></td></tr></tbody></table></div><iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --></form><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>百度新闻</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<form name="form1" action="baidunews.php?do=yes" method="post" target='stafrm'>
+<input type="hidden" name="dopost" value="ok">
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>生成百度新闻XML</span></li></ul></span>
+</div>
+<!-- 搜索表单 -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="catalog_main.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">栏目管理</a></li>
+</ul>
+<!-- /搜索表单 -->
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能说明：</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="uk-form-horizontal uk-padding-small">
+<p>《互联网新闻开放协议》是百度新闻搜索制定的搜索引擎新闻源收录标准，网站可将发布的新闻内容制作成遵循此开放协议的XML格式的网页（独立于原有的新闻发布形式）供搜索引擎索引。</p>
+<p>配置的相关参数在 【<a href="sys_info.php">系统设置</a> -&gt; 其他选项】中调整</p>
+<p>只适用于文章频道，数据表为DedeCMS默认的</p>
+</div>
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td>输出位置：<input name="filename" type="text" id="textfield" value="../data/baidunews.xml" class="uk-input uk-form-width-medium uk-form-small"></td>
+<td align="right" >
+<button type="submit" class="uk-button uk-button-primary uk-button-small">开始生成XML</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

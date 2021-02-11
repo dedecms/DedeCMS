@@ -26,7 +26,7 @@ function ch_img($fvalue, &$arcTag, &$refObj, $fname = '')
     $maxwidth = $cfg_album_width;
     $ddmaxwidth = $cfg_album_ddwidth;
     $pagepicnum = $cfg_album_pagesize;
-    $row = $cfg_album_row;
+    $irow = $cfg_album_row;
     $icol = $cfg_album_col;
     $ptag = $dtp->GetTag('pagestyle');
     if (is_object($ptag)) {

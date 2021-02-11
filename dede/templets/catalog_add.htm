@@ -4,4 +4,323 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>栏目管理</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="catalog_main.php"><span>栏目管理</span></a></li><li>增加栏目</li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="margin-bottom: 50px;"><form name="form1" action="catalog_add.php" method="post"><input type="hidden" name="dopost" value="save" /><input type="hidden" name="reid" id="reid" value="<?php echo $id; ?>" /><input type='hidden' name='topid' id='topid' value='<?php echo $topid; ?>' /><input type='hidden' value='{style}' name='dfstyle' />{dede:if global.id > 0}<input type='hidden' name='moresite' value='{dede:global.myrow["moresite"] /}' /><input type='hidden' name='siteurl' value='{dede:global.myrow["siteurl"] /}' /><input type='hidden' name='sitepath' value='{dede:global.myrow["sitepath"] /}' />{/dede:if}<div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><ul uk-tab><li class="uk-active"><a href="#">常规选项</a></li><li><a href="#">高级选项</a></li><li><a href="#">栏目内容</a></li></ul><ul class="uk-switcher"><li class="uk-active uk-form-horizontal uk-margin-small"><!-- 常规选项 --><div class="uk-margin"><label class="uk-form-label">是否支持投稿</label><div class="uk-form-controls uk-form-controls-text "><input type='radio' name='issend' value='0' class='uk-radio' <?php if($issend==0) echo " checked='checked' ";?> /> 不支持&nbsp;<input type='radio' name='issend' value='1' class='uk-radio' <?php if($issend==1) echo " checked='checked' ";?> /> 支持</div></div><div class="uk-margin"><label class="uk-form-label">是否隐藏栏目</label><div class="uk-form-controls uk-form-controls-text"><input type='radio' name='ishidden' value='0' class='uk-radio' checked="checked" /> 显示　&nbsp;<input type='radio' name='ishidden' value='1' class='uk-radio' /> 隐藏</div></div><div class="uk-margin"><label class="uk-form-label">栏目类型</label><div class="uk-form-controls"><select name="channeltype" id="channeltype" class="uk-select uk-form-small uk-form-width-medium"><?phpforeach($channelArray as $k=>$arr) {if($k==$channelid) {$nid = $arr['nid'];echo "<option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";} else {echo "<option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";} } ?></select></div></div><div class="uk-margin"><label class="uk-form-label">栏目名称</label><div class="uk-form-controls"><input name="typename" type="text" id="typename" class="uk-input uk-form-small uk-form-width-medium" /></div></div><div class="uk-margin"><label class="uk-form-label">默认页的名称</label><div class="uk-form-controls"><input name="defaultname" type="text" value="index.html" class="uk-input uk-form-small uk-form-width-medium" /></div></div><div class="uk-margin"><label class="uk-form-label">排列顺序</label><div class="uk-form-controls"><input name="sortrank" type="text" value="50" class="uk-input uk-form-small uk-form-width-small" />（由低 > 高）</div></div><div class="uk-margin"><label class="uk-form-label">浏览权限</label><div class="uk-form-controls"><select name="corank" id="corank" class="uk-select uk-form-small uk-form-width-medium"><?php $dsql->SetQuery("Select * from `#@__arcrank` where rank >= 0");$dsql->Execute('cc');while($row = $dsql->GetObject('cc')){if($corank==$row->rank) echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";else {//如果上级目录的corank>0，下级必须继承if($corank==0){ echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n"; }}} ?></select> (仅限制栏目里的文档浏览权限)</div></div><div class="uk-margin"><label class="uk-form-label">上级目录</label><div class="uk-form-controls uk-form-controls-text"><?php $pardir = '{cmspath}'.$cfg_arcdir;if(!empty($typedir)) $pardir = $typedir.'/';$pardir = preg_replace("#\/{1,}#", '/', $pardir);echo $pardir;?><input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>" /></div></div><div class="uk-margin"><label class="uk-form-label">文件保存目录</label><div class="uk-form-controls"><input name="typedir" type="text" id="typedir" class="uk-input uk-form-small uk-form-width-medium"><input name="upinyin" type="checkbox" id="upinyin" class="uk-checkbox" value="1" onClick="CheckTypeDir()" /> 拼音</div></div><div class="uk-margin"><label class="uk-form-label">目录相对位置</label><div class="uk-form-controls uk-form-controls-text"><input name="referpath" type="radio" id="truepath1" class="uk-radio" value="parent" checked="chekced" /> 上级目录 &nbsp;<?phpif($moresite==0){?><input name="referpath" type="radio" id="truepath2" class="uk-radio" value="cmspath" /> CMS根目录 &nbsp;<input name="referpath" type="radio" id="truepath3" class="uk-radio" value="basepath" /> 站点根目录<?php } ?></div></div><div class="uk-margin"><label class="uk-form-label">栏目列表选项</label><div class="uk-form-controls uk-form-controls-text"><input type='radio' name='isdefault' value='1' class='uk-radio' checked="checked" />链接到默认页 &nbsp;<input type='radio' name='isdefault' value='0' class='uk-radio' />链接到列表第一页 &nbsp;<input type='radio' name='isdefault' value='-1' class='uk-radio' />使用动态页</div></div><div class="uk-margin"><label class="uk-form-label">栏目属性</label><div class="uk-form-controls uk-form-controls-text"><input name="ispart" type="radio" id="radio" value="0" class='uk-radio' checked="checked"/>最终列表栏目（允许在本栏目发布文档，并生成文档列表） <br><input name="ispart" type="radio" id="radio" value="1" class='uk-radio'/>频道封面（栏目本身不允许发布文档） <br><input name="ispart" type="radio" id="radio" value="2" class='uk-radio'/>外部连接（在"文件保存目录"处填写网址）</div></div><div class="uk-margin"><label class="uk-form-label">栏目交叉</label><div class="uk-form-controls uk-form-controls-text"><input name="cross" type="radio" id="cross0" value="0" class='uk-radio' onClick="CheckCross()" checked='1' />不交叉<input name="cross" type="radio" id="cross1" value="1" class='uk-radio' onClick="CheckCross()" />自动获取同名栏目内容<input name="cross" type="radio" id="cross2" value="2" class='uk-radio' onClick="CheckCross()" />手工指定交叉栏目ID(用逗号分开)<br /><textarea name="crossid" cols="50" rows="3" id="crossid" style="display:none" class="alltxt"></textarea></div></div><div class="uk-margin" style=<?php echo ($channelid<0 ? '' : 'display:none');?>><label class="uk-form-label">绑定小分类</label><div class="uk-form-controls uk-form-controls-text"><select name='smalltype[]' size='5' class="uk-select uk-form-small uk-form-width-medium" multiple='yes'><?php$sql = "SELECT * FROM `#@__sys_enum` WHERE egroup LIKE 'infotype' ORDER BY disorder ASC, id DESC ";$dsql->Execute('s',$sql);while($arr = $dsql->GetArray('s')){if($arr['evalue']%500==0) {echo "<option value='{$arr['evalue']}'>{$arr['ename']}</option>\r\n";} else if(preg_match("#\.#", $arr['evalue'])) {echo "<option value='{$arr['evalue']}'> └───{$arr['ename']}</option>\r\n";} else {echo "<option value='{$arr['evalue']}'> └─{$arr['ename']}</option>\r\n";}}?></select>按 Ctrl 多选，不选系统将调用全部分类，在<a href='stepselect_main.php'>“<u>联动类别管理</u>”</a>中管理</div></div><!-- /常规选项 --></li><li class="uk-form-horizontal uk-margin-small">{dede:if global.id == 0}<div class="uk-margin"><label class="uk-form-label">站点根目录</label><div class="uk-form-controls uk-form-controls-text "><input name="moresite" type="radio" class='uk-radio' value="0" checked="checked"/> 不启用 &nbsp;<input type="radio" name="moresite" class='uk-radio' value="1"/> 启用 &nbsp;&nbsp;(如果需要绑定二级域名，必须在“系统参数”中设定“支持多站点”。)</div></div><div class="uk-margin"><label class="uk-form-label">绑定域名</label><div class="uk-form-controls"><input name="siteurl" type="text" id="siteurl" class="uk-input uk-form-small uk-form-width-medium" /> &nbsp;&nbsp;(需加 http://，一级或二级域名的根网址)</div></div><div class="uk-margin"><label class="uk-form-label">多站点支持</label><div class="uk-form-controls uk-form-controls-text ">为简化操作，站点根目录与当前栏目目录一致，请注意当前栏目文件保存目录的设置，域名需自行手工绑定到这个目录。</div></div>{/dede:if}<div class="uk-margin"><label class="uk-form-label">封面模板</label><div class="uk-form-controls"><input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">列表模板</label><div class="uk-form-controls"><input name="templist" type="text" value="{style}/list_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">文章模板</label><div class="uk-form-controls"><input name="temparticle" type="text" value="{style}/article_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">文章命名规则</label><div class="uk-form-controls"><input name="namerule" type="text" id="namerule" value="<?php echo $cfg_df_namerule;?>" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">列表命名规则</label><div class="uk-form-controls"><input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" class="uk-input uk-form-small uk-form-width-large" /></div></div><div class="uk-margin"><label class="uk-form-label">SEO标题</label><div class="uk-form-controls"><input name="seotitle" type="text" id="seotitle" class="uk-input uk-form-small uk-form-width-large" value="" />(栏目模板里用"dede:field.seotitle /"调用)</div></div><div class="uk-margin"><label class="uk-form-label">关键字</label><div class="uk-form-controls"><textarea name="keywords" cols="70" rows="4" id="keywords" class="uk-textarea uk-form-small uk-form-width-large"></textarea></div></div><div class="uk-margin"><label class="uk-form-label">栏目描述</label><div class="uk-form-controls"><textarea name="description" cols="70" rows="4" id="description" class="uk-textarea uk-form-small uk-form-width-large"></textarea></div></div></li><li>说明：栏目内容是替代原来栏目单独页的更灵活的一种方式，可在栏目模板中用{dede:field.content/}调用，通常用于企业简介之类的用途。<br/><?phpGetEditor("content", "", "450", "Default", "print", "false");?></li></ul></div></div><div class="uk-card-footer "><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div><!-- /列表主体 --></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script language="javascript">function CheckTypeDir(){var upinyin = document.getElementById('upinyin');var tpobj = document.getElementById('typedir');if(upinyin.checked) tpobj.disabled = true;else tpobj.disabled = false;}function CheckCross(){var cross2 = document.getElementById('cross2');var crossid = document.getElementById('crossid');if(cross2.checked) crossid.style.display = 'block';else crossid.style.display = 'none';}</script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>栏目管理</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="catalog_main.php"><span>栏目管理</span></a></li><li>增加栏目</li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="margin-bottom: 50px;">
+<form name="form1" action="catalog_add.php" method="post">
+<input type="hidden" name="dopost" value="save" />
+<input type="hidden" name="reid" id="reid" value="<?php echo $id; ?>" />
+<input type='hidden' name='topid' id='topid' value='<?php echo $topid; ?>' />
+<input type='hidden' value='{style}' name='dfstyle' />
+{dede:if global.id > 0}
+<input type='hidden' name='moresite' value='{dede:global.myrow["moresite"] /}' />
+<input type='hidden' name='siteurl' value='{dede:global.myrow["siteurl"] /}' />
+<input type='hidden' name='sitepath' value='{dede:global.myrow["sitepath"] /}' />
+{/dede:if}
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<ul uk-tab>
+<li class="uk-active"><a href="#">常规选项</a></li>
+<li><a href="#">高级选项</a></li>
+<li><a href="#">栏目内容</a></li>
+</ul>
+<ul class="uk-switcher">
+<li class="uk-active uk-form-horizontal uk-margin-small">
+<!-- 常规选项 -->
+<div class="uk-margin">
+<label class="uk-form-label">是否支持投稿</label>
+<div class="uk-form-controls uk-form-controls-text ">
+<input type='radio' name='issend' value='0' class='uk-radio' <?php if($issend==0) echo " checked='checked' ";?> /> 不支持&nbsp;
+<input type='radio' name='issend' value='1' class='uk-radio' <?php if($issend==1) echo " checked='checked' ";?> /> 支持
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">是否隐藏栏目</label>
+<div class="uk-form-controls uk-form-controls-text">
+<input type='radio' name='ishidden' value='0' class='uk-radio' checked="checked" /> 显示　&nbsp;
+<input type='radio' name='ishidden' value='1' class='uk-radio' /> 隐藏
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目类型</label>
+<div class="uk-form-controls">
+<select name="channeltype" id="channeltype" class="uk-select uk-form-small uk-form-width-medium">
+<?php
+foreach($channelArray as $k=>$arr) {
+if($k==$channelid) {
+$nid = $arr['nid'];
+echo "<option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+} else {
+echo "<option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+} } ?>
+</select>
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目名称</label>
+<div class="uk-form-controls">
+<input name="typename" type="text" id="typename" class="uk-input uk-form-small uk-form-width-medium" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">默认页的名称</label>
+<div class="uk-form-controls">
+<input name="defaultname" type="text" value="index.html" class="uk-input uk-form-small uk-form-width-medium" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">排列顺序</label>
+<div class="uk-form-controls">
+<input name="sortrank" type="text" value="50" class="uk-input uk-form-small uk-form-width-small" />（由低 > 高）
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">浏览权限</label>
+<div class="uk-form-controls">
+<select name="corank" id="corank" class="uk-select uk-form-small uk-form-width-medium">
+<?php $dsql->SetQuery("Select * from `#@__arcrank` where rank >= 0");
+$dsql->Execute('cc');
+while($row = $dsql->GetObject('cc'))
+{
+if($corank==$row->rank) echo "<option value='".$row->rank."' selected>".$row->membername."</option>\r\n";
+else {
+//如果上级目录的corank>0，下级必须继承
+if($corank==0)
+{ echo "<option value='".$row->rank."'>".$row->membername."</option>\r\n"; }
+}
+} ?>
+</select> (仅限制栏目里的文档浏览权限)
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">上级目录</label>
+<div class="uk-form-controls uk-form-controls-text">
+<?php $pardir = '{cmspath}'.$cfg_arcdir;
+if(!empty($typedir)) $pardir = $typedir.'/';
+$pardir = preg_replace("#\/{1,}#", '/', $pardir);
+echo $pardir;
+?>
+<input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir?>" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">文件保存目录</label>
+<div class="uk-form-controls">
+<input name="typedir" type="text" id="typedir" class="uk-input uk-form-small uk-form-width-medium">
+<input name="upinyin" type="checkbox" id="upinyin" class="uk-checkbox" value="1" onClick="CheckTypeDir()" /> 拼音
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">目录相对位置</label>
+<div class="uk-form-controls uk-form-controls-text">
+<input name="referpath" type="radio" id="truepath1" class="uk-radio" value="parent" checked="chekced" /> 上级目录 &nbsp;
+<?php
+if($moresite==0){
+?>
+<input name="referpath" type="radio" id="truepath2" class="uk-radio" value="cmspath" /> CMS根目录 &nbsp;
+<input name="referpath" type="radio" id="truepath3" class="uk-radio" value="basepath" /> 站点根目录
+<?php } ?>
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目列表选项</label>
+<div class="uk-form-controls uk-form-controls-text">
+<input type='radio' name='isdefault' value='1' class='uk-radio' checked="checked" />
+链接到默认页 &nbsp;
+<input type='radio' name='isdefault' value='0' class='uk-radio' />
+链接到列表第一页 &nbsp;
+<input type='radio' name='isdefault' value='-1' class='uk-radio' />
+使用动态页
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目属性</label>
+<div class="uk-form-controls uk-form-controls-text">
+<input name="ispart" type="radio" id="radio" value="0" class='uk-radio' checked="checked"/>
+最终列表栏目（允许在本栏目发布文档，并生成文档列表） <br>
+<input name="ispart" type="radio" id="radio" value="1" class='uk-radio'/>
+频道封面（栏目本身不允许发布文档） <br>
+<input name="ispart" type="radio" id="radio" value="2" class='uk-radio'/>
+外部连接（在"文件保存目录"处填写网址）
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目交叉</label>
+<div class="uk-form-controls uk-form-controls-text">
+<input name="cross" type="radio" id="cross0" value="0" class='uk-radio' onClick="CheckCross()" checked='1' />
+不交叉
+<input name="cross" type="radio" id="cross1" value="1" class='uk-radio' onClick="CheckCross()" />
+自动获取同名栏目内容
+<input name="cross" type="radio" id="cross2" value="2" class='uk-radio' onClick="CheckCross()" />
+手工指定交叉栏目ID(用逗号分开)
+<br />
+<textarea name="crossid" cols="50" rows="3" id="crossid" style="display:none" class="alltxt"></textarea>
+</div>
+</div>
+<div class="uk-margin" style=<?php echo ($channelid<0 ? '' : 'display:none');?>>
+<label class="uk-form-label">绑定小分类</label>
+<div class="uk-form-controls uk-form-controls-text">
+<select name='smalltype[]' size='5' class="uk-select uk-form-small uk-form-width-medium" multiple='yes'>
+<?php
+$sql = "SELECT * FROM `#@__sys_enum` WHERE egroup LIKE 'infotype' ORDER BY disorder ASC, id DESC ";
+$dsql->Execute('s',$sql);
+while($arr = $dsql->GetArray('s'))
+{
+if($arr['evalue']%500==0) {
+echo "<option value='{$arr['evalue']}'>{$arr['ename']}</option>\r\n";
+} else if(preg_match("#\.#", $arr['evalue'])) {
+echo "<option value='{$arr['evalue']}'> └───{$arr['ename']}</option>\r\n";
+} else {
+echo "<option value='{$arr['evalue']}'> └─{$arr['ename']}</option>\r\n";
+}
+}
+?>
+</select>
+按 Ctrl 多选，不选系统将调用全部分类，在<a href='stepselect_main.php'>“<u>联动类别管理</u>”</a>中管理
+</div>
+</div>
+<!-- /常规选项 -->
+</li>
+<li class="uk-form-horizontal uk-margin-small">
+{dede:if global.id == 0}
+<div class="uk-margin">
+<label class="uk-form-label">站点根目录</label>
+<div class="uk-form-controls uk-form-controls-text ">
+<input name="moresite" type="radio" class='uk-radio' value="0" checked="checked"/> 不启用 &nbsp;
+<input type="radio" name="moresite" class='uk-radio' value="1"/> 启用 &nbsp;&nbsp;
+(如果需要绑定二级域名，必须在“系统参数”中设定“支持多站点”。)
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">绑定域名</label>
+<div class="uk-form-controls">
+<input name="siteurl" type="text" id="siteurl" class="uk-input uk-form-small uk-form-width-medium" /> &nbsp;&nbsp;
+(需加 http://，一级或二级域名的根网址)
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">多站点支持</label>
+<div class="uk-form-controls uk-form-controls-text ">
+为简化操作，站点根目录与当前栏目目录一致，请注意当前栏目文件保存目录的设置，域名需自行手工绑定到这个目录。
+</div>
+</div>
+{/dede:if}
+<div class="uk-margin">
+<label class="uk-form-label">封面模板</label>
+<div class="uk-form-controls">
+<input name="tempindex" type="text" value="{style}/index_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">列表模板</label>
+<div class="uk-form-controls">
+<input name="templist" type="text" value="{style}/list_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">文章模板</label>
+<div class="uk-form-controls">
+<input name="temparticle" type="text" value="{style}/article_<?php echo $nid?>.htm" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">文章命名规则</label>
+<div class="uk-form-controls">
+<input name="namerule" type="text" id="namerule" value="<?php echo $cfg_df_namerule;?>" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">列表命名规则</label>
+<div class="uk-form-controls">
+<input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" class="uk-input uk-form-small uk-form-width-large" />
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">SEO标题</label>
+<div class="uk-form-controls">
+<input name="seotitle" type="text" id="seotitle" class="uk-input uk-form-small uk-form-width-large" value="" />
+(栏目模板里用"dede:field.seotitle /"调用)
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">关键字</label>
+<div class="uk-form-controls">
+<textarea name="keywords" cols="70" rows="4" id="keywords" class="uk-textarea uk-form-small uk-form-width-large"></textarea>
+</div>
+</div>
+<div class="uk-margin">
+<label class="uk-form-label">栏目描述</label>
+<div class="uk-form-controls">
+<textarea name="description" cols="70" rows="4" id="description" class="uk-textarea uk-form-small uk-form-width-large"></textarea>
+</div>
+</div>
+</li>
+<li>
+说明：栏目内容是替代原来栏目单独页的更灵活的一种方式，可在栏目模板中用{dede:field.content/}调用，通常用于企业简介之类的用途。
+<br/>
+<?php
+GetEditor("content", "", "450", "Default", "print", "false");
+?>
+</li>
+</ul>
+</div>
+</div>
+<div class="uk-card-footer ">
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+<!-- /列表主体 -->
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+function CheckTypeDir()
+{
+var upinyin = document.getElementById('upinyin');
+var tpobj = document.getElementById('typedir');
+if(upinyin.checked) tpobj.disabled = true;
+else tpobj.disabled = false;
+}
+function CheckCross()
+{
+var cross2 = document.getElementById('cross2');
+var crossid = document.getElementById('crossid');
+if(cross2.checked) crossid.style.display = 'block';
+else crossid.style.display = 'none';
+}
+</script>
+<!-- / JS FILES -->
+</body>
+</html>

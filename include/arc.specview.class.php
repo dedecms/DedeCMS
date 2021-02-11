@@ -378,7 +378,7 @@ class SpecView
                     $row["title"] = cn_substr($row["title"], $titlelen);
                     $row["id"] = $row["id"];
                     if ($row['litpic'] == '-' || $row['litpic'] == '') {
-                        $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
+                        $row['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/dede_defaultpic.png';
                     }
                     if (!preg_match("/^http:\/\//", $row['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y') {
                         $row['litpic'] = $GLOBALS['cfg_mainsite'] . $row['litpic'];

@@ -180,16 +180,7 @@ class MemberLogin
             }
 
             if (is_array($this->fields)) {
-                // api{{
-                if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
-                    if ($data = uc_get_user($this->fields['userid'])) {
-                        if (uc_check_avatar($data[0]) && !strstr($this->fields['face'], UC_API)) {
-                            $this->fields['face'] = UC_API . '/avatar.php?uid=' . $data[0] . '&size=middle';
-                            $dsql->ExecuteNoneQuery("UPDATE `#@__member` SET `face`='" . $this->fields['face'] . "' WHERE `mid`='{$this->M_ID}'");
-                        }
-                    }
-                }
-                // /aip}}
+
 
                 //间隔一小时更新一次用户登录时间
                 if (time() - $this->M_LoginTime > 3600) {

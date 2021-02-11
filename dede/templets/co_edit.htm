@@ -4,4 +4,610 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>修改采集节点</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="co_main.php">采集节点管理</a></li><li><span>修改采集节点</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><form name="form1" method="post" action="co_edit.php"><input type='hidden' name='nid' value='<?php echo $nid; ?>' /><input type='hidden' name='channelid' value='<?php echo $channelid; ?>' /><input type='hidden' name='dopost' value='saveandtest' /><input type='hidden' name='donext' value='text' /><ul uk-tab><li><a href="#">网址索引</a></li><li><a href="#">内容配置</a></li></ul><ul class="uk-switcher uk-margin"><!-- 选项 --><li><table class="uk-table" width="98%" border="0" cellpadding="1" cellspacing="1"><tr><td><table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0"><tr><td>节点基本信息</td></tr></table></td></tr><tr id="sitem"><td><table class="uk-table" width="100%" border="0"><tr><td width="18%" height="24">节点名称：</td><td width="32%"><input name="notename" type="text" class="uk-input uk-form-small uk-form-width-large" id="notename" value="<?php echo $notename; ?>" style="width:250px" /></td><td width="18%">目标页面编码：</td><td width="32%"><input type="radio" class="uk-radio" name="sourcelang" id='language1' value="gb2312" <?php if($noteinfo->GetAtt('sourcelang')=='gb2312') echo " checked"; ?>/>GB2312 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="sourcelang" id='language2' value="utf-8" <?php if($noteinfo->GetAtt('sourcelang')=='utf-8') echo " checked"; ?>/>UTF8 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="sourcelang" id='language3' value="big5" <?php if($noteinfo->GetAtt('sourcelang')=='big5') echo " checked"; ?>/>BIG5</td></tr><tr><td height="24">区域匹配模式：</td><td><input type="radio" class="uk-radio" name="macthtype" value="regex" <?php if($noteinfo->GetAtt('macthtype')=='regex') echo " checked"; ?>/>正则表达式 &nbsp;&nbsp;<input name="macthtype" type="radio" class="uk-radio" value="string" <?php if($noteinfo->GetAtt('macthtype')=='string') echo " checked"; ?>/>字符串</td><td>内容导入顺序：</td><td><input type="radio" class="uk-radio" name="cosort" id="cosort1" value="asc" <?php if($noteinfo->GetAtt('cosort')=='asc') echo " checked"; ?>/>与目标站一致 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="cosort" id="cosort2" value="desc" <?php if($noteinfo->GetAtt('cosort')=='desc') echo " checked"; ?>/>与目标站相反</td></tr><tr><td height="24" colspan="4">以下选项仅在开启防盗链模式才需设定，如果目标网站没有防盗链功能请不要开启，否则会降低采集速度。</td></tr><tr><td height="24">防盗链模式：</td><td><input name="isref" type="radio" class="uk-radio" value="no" <?php if($noteinfo->GetAtt('isref')=='no') echo " checked"; ?>/>不开启 &nbsp;&nbsp;<input name="isref" type="radio" class="uk-radio" value="yes" <?php if($noteinfo->GetAtt('isref')=='yes') echo " checked"; ?>/>开启</td><td>资源下载超时时间：</td><td><input name="exptime" type="text" class="uk-input uk-form-small uk-form-width-large" id="exptime" style="width: 90px;" value="<?php echo $noteinfo->GetAtt('exptime'); ?>"/> 秒</td></tr><tr><td height="24">引用网址：</td><td colspan="3"><input name="refurl" type="text" class="uk-input uk-form-small uk-form-width-large" id="refurl" value="<?php echo $noteinfo->GetAtt('refurl'); ?>"/>（一般为目标网站其中一个文章页的网址）</td></tr></table></td></tr><tr><td><table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0"><tr><td>列表网址获取规则</td></tr></table></td></tr><tr id="slist"><td><table class="uk-table" width="100%" border="0"><tr><td width="18%" height="24">来源属性：</td><td><input type="radio" class="uk-radio" name="sourcetype" id="source1" onclick="selSourceSet()" value="batch" <?php if($listrule->GetAtt('sourcetype')=='batch') echo " checked='checked'"; ?>/>批量生成列表网址 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="sourcetype" id="source2" onclick="selSourceSet()" value="hand" <?php if($listrule->GetAtt('sourcetype')=='hand') echo " checked='checked'"; ?>/>手工指定列表网址 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="sourcetype" id="source3" onclick="selSourceSet()" value="rss" <?php if($listrule->GetAtt('sourcetype')=='rss') echo " checked='checked'"; ?>/>从RSS中获取</td></tr><tr id="rssset" style="display:none"><td height="24">RSS网址：</td><td><input type="text" class="uk-input uk-form-small uk-form-width-large" name="rssurl" id="rssurl" value="<?php echo $listrule->GetAtt('rssurl'); ?>" /></td></tr><tr id="batchset"><td height="77">批量生成地址设置：</td><td><table class="uk-table" width="90%"><tr><td width="100%" colspan="2">匹配网址：<input type="text" class="uk-input uk-form-small uk-form-width-large" name="regxurl" id="regxurl" value="<?php echo $listrule->GetAtt('regxurl'); ?>" /></td></tr><tr><td colspan="2"><span>(如：http://www.dedecms.com/html/test/list_(*).html，如果不能匹配所有网址，可以在手工指定网址的地方输入要追加的网址)</span></td></tr><tr><td colspan="2">(*)从<input type="text" class="uk-input uk-form-small uk-form-width-large" name="startid" id="startid" style="width:90px" value="<?php echo $listrule->GetAtt('startid'); ?>" />到<input type="text" class="uk-input uk-form-small uk-form-width-large" name="endid" id="endid" style="width:90px" value="<?php echo $listrule->GetAtt('endid'); ?>" />(填写页码或规律递增数字)每页递增：<input type="text" class="uk-input uk-form-small uk-form-width-large" name="addv" id="addv" style="width:90px" value="<?php echo $listrule->GetAtt('addv'); ?>" /><input type="checkbox" name="usemore" id="usemore" value="1" <?php if($usemore==1) echo " checked " ; ?>/>启用多栏目通配(#)</td></tr></table></td></tr><tr id='handset' <?php if($usemore==1):?>style='display:none'<?php endif;?>><td height="171">手工指定网址：<br /><span>在指定了通配规则后有些不能匹配的网址也可以在这里指定。</span><br /></td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="addurls" id="addurls" cols="45" rows="5" style="width:80%;height:160px"><?php echo $addurls->GetInnerText(); ?></textarea></td></tr><tr id='usemoretr' <?php if($usemore==0):?>style='display:none'<?php endif;?>><td height="171">多栏目通配规则：<br /><span>如果目标网站使用单一模板，可以在匹配网址中用"(#)"表示近似网址的差异，然后在通配规则中设定集合，并且可以指定导出栏目。</span><br /></td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="batchrule" id="batchrule" cols="45" rows="5" style="width:80%;height:160px"><?php echo (is_object($batchrule) ? trim($batchrule->GetInnerText()) : ''); ?></textarea><br /><span style='color:#666666'>示例格式：[(#)=>labs/list_3; (*)=>1-25; typeid=>7] 匹配网址：http://www.aaa.com/(#)_(*).html</span></td></tr></table></td></tr><tr><td><table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0"><tr><td>文章网址匹配规则</td><td></td></tr></table></td></tr><tr id="regxruletr" style="display:none"><td height="84">网址的正则表达式：</td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="regxrule" id="regxrule" cols="45" rows="5" style="width:80%;height:60px"><?php echo $regxrule->GetInnerText(); ?></textarea></td></tr><tr id="arearuletr"><td><table class="uk-table"><tr><td width="18%">区域开始的HTML：</td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="areastart" id="areastart" cols="45" rows="5" style="width:80%;height:60px"><?php echo $areastart->GetInnerText(); ?></textarea></td></tr><tr><td>区域结束的HTML：</td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="areaend" id="areaend" cols="45" rows="5" style="width:80%;height:60px"><?php echo $areaend->GetInnerText(); ?></textarea></td></tr><tr><td>如果链接中含有图片：</td><td><input name="listpic" type="radio" class="uk-radio" id="listpic1" value="0" <?php if($listrule->GetAtt('listpic')=='0') echo " checked"; ?>/>不处理 &nbsp;&nbsp;<input type="radio" class="uk-radio" name="listpic" id="listpic2" value="1" <?php if($listrule->GetAtt('listpic')=='1') echo " checked"; ?>/>采集为缩略图</td></tr><tr><td rowspan="2">对区域网址进行再次筛选：<br />(使用正则表达式)</td><td>必须包含：<input type="text" class="uk-input uk-form-small uk-form-width-large" name="musthas" id="musthas" style="width:280px" value="<?php echo $listrule->GetAtt('musthas'); ?>" />(优先级高于后者)</td></tr><tr><td>不能包含：<input type="text" class="uk-input uk-form-small uk-form-width-large" name="nothas" id="nothas" style="width:280px" value="<?php echo $listrule->GetAtt('nothas'); ?>" /></td></tr></table></td></tr></table></li><li><table class="uk-table" width="98%" border="0" cellpadding="1" cellspacing="1"><tr><td><table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0"><tr><td>网页内容获取规则</td><td></td></tr></table></td></tr><tr id="sart"><td height="113"><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td height="35">预览网址：</td><td><input type="text" class="uk-input uk-form-small uk-form-width-large" name="previewurl" id="previewurl" style="width:90%" value="<?php echo $previewurl; ?>" /></td><td></td></tr><tr><td width="18%" height="60">内容分页导航所在的区域匹配规则：<br /></td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="sppage" rows="3" id="sppage" style="width:90%"><?php echo trim($sppage->GetInnerText()); ?></textarea></td><td width="37%"><input name="sptype" type="radio" class="uk-radio" value="full" <?php if($sppage->GetAtt('sptype')=='full') echo " checked"; ?>/>全部列出的分页列表<br /><input type="radio" class="uk-radio" name="sptype" value="next" <?php if($sppage->GetAtt('sptype')=='next') echo " checked"; ?>/>上下页形式或不完整的分页列表<br /><input type="radio" class="uk-radio" name="sptype" value="diyrule" <?php if($sppage->GetAtt('sptype')=='diyrule') echo " checked"; ?>/>分页列表规则 开始:<input name="srul" type="text" class="uk-input uk-form-small uk-form-width-large" value="1" style="width: 90px;"/>结束:<input name="erul" type="text" class="uk-input uk-form-small uk-form-width-large" value="5" style="width: 90px;"/></td></tr><tr><td height="35" colspan="3" id="dyrule">如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br /><strong>规则说明：{path}</strong>地址+目录 <strong>{file}</strong>文件 <strong>{ext}</strong>文件扩展名<strong>{p}</strong>分页列表数</td></tr><tr><td height="24" colspan="3"><strong>以下为固定的采集项目：</strong>(项目点击可展开/隐藏，内容摘要、关键字、缩略图系统会用正则进行自动匹配)</td></tr></table><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td width="50%"><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">关键字过滤内容：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="keywordtrim" rows="4" id="keywordtrim" style="width:90%"><?php echo $notes['keywordtrim']; ?></textarea></td></tr></table></td></tr></table></td><td><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">摘要过滤内容：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="descriptiontrim" rows="4" id="descriptiontrim" style="width:90%"><?php echo $notes['descriptiontrim']; ?></textarea></td></tr></table></td></tr></table></td></tr><tr><td width="50%"><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><b><u>文章标题</u></b></td></tr><tr><td height="24" id="ttitle"><input type='checkbox' class="uk-checkbox" name='fields[]' checked value='title' style='display:none' /><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">匹配规则：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_title" rows="4" id="match_title" style="width:90%"><?php echo $notes['title']['match']; ?></textarea></td></tr><tr><td>过滤规则：</td><td width="53%"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_title" cols="20" rows="3" id="trim_title" style="width:90%"><?php echo $notes['title']['trim']; ?></textarea></td><td></td></tr></table></td></tr></table></td><td><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><b><u>文章作者</u></b> </td></tr><tr id="twriter"><td height="24"><input type='checkbox' class="uk-checkbox" name='fields[]' checked value='writer' style='display:none' /><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">匹配规则：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_writer" rows="4" id="match_writer" style="width:90%"><?php echo $notes['writer']['match']; ?></textarea></td></tr><tr><td>过滤规则：</td><td width="53%"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_writer" cols="20" rows="3" id="trim_writer" style="width:90%"><?php echo $notes['writer']['trim']; ?></textarea></td><td width="29%"></td></tr></table></td></tr></table></td></tr><tr><td><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><b><u>文章来源</u></b></td></tr><tr id="tsource"><td height="24"><input type='checkbox' class="uk-checkbox" name='fields[]' checked value='source' style='display:none' /><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">匹配规则：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_source" rows="4" id="match_source" style="width:90%"><?php echo $notes['source']['match']; ?></textarea></td></tr><tr><td>过滤规则：</td><td width="53%"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_source" cols="20" rows="3" id="trim_source" style="width:90%"><?php echo $notes['source']['trim']; ?></textarea></td><td></td></tr></table></td></tr></table></td><td><table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0"><tr><td height="24"><b><u>发布时间</u></b></td></tr><tr id="tpubdate"><td height="24"><input type='checkbox' class="uk-checkbox" name='fields[]' checked value='pubdate' style='display:none' /><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="18%" height="80">匹配规则：</td><td height="20" colspan="2"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_pubdate" rows="4" id="match_pubdate" style="width:90%"><?php echo $notes['pubdate']['match']; ?></textarea></td></tr><tr><td>过滤规则：</td><td width="53%"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_pubdate" cols="20" rows="3" id="trim_pubdate" style="width:90%"><?php echo $notes['pubdate']['trim']; ?></textarea></td><td width="29%"></td></tr></table></td></tr></table></td></tr></table><!-- 固定项目结束，下面为自动项目 --><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="55%" height="24" colspan="3"><strong>以下是针对模型设置的采集项目：</strong></td></tr></table><?php$row = $dsql->GetOne("Select * From `#@__channeltype` where id='{$channelid}' ");$dtp = new DedeTagParse();$dtp->SetNameSpace('field','<','>');$dtp->LoadString($row['fieldset']);foreach($dtp->CTags as $ctag){//采集禁用的字段$notsend = $ctag->GetAtt('notsend');if($notsend==1) continue;$fieldtype = $ctag->GetAtt('type');$tname = $ctag->GetTagName();$iname = $ctag->GetAtt('itemname');if(isset($notes[$tname]['item'])){$tvalue = $notes[$tname]['item']->GetAtt('value');$tisunit = $notes[$tname]['item']->GetAtt('isunit');$tisdown = $notes[$tname]['item']->GetAtt('isdown');$tmatch = $notes[$tname]['match'];$ttrim = $notes[$tname]['trim'];$tfunction = $notes[$tname]['function'];}else {$tvalue = $tisunit = $tisdown = $tmatch = $ttrim = $tfunction = '';}?><input type='checkbox' class="uk-checkbox" name='fields[]' checked value='<?php echo $tname; ?>' style='display:none' /><table class="uk-table" width="99%" border="0" cellspacing="0" cellpadding="0" style="margin-top:2px"><tr><td width="18%" height="24"><b><u><?php echo $iname; ?></u></b></td><td colspan="3"></td></tr><tr id="t<?php echo $tname; ?>"><td height="24" colspan="4"><table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td>字段值：</td><td colspan="3"><input name="value_<?php echo $tname; ?>" type="text" class="uk-input uk-form-small uk-form-width-large" value="<?php echo $tvalue; ?>"/></td></tr><tr><td width="16%" height="80">匹配规则：</td><td height="20"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_<?php echo $tname; ?>" rows="4" style="width:90%"><?php echo $tmatch; ?></textarea></td><td height="20"><input name="isunit_<?php echo $tname; ?>" type="checkbox" class="uk-checkbox" value="1" <?php if($tisunit=='1' ) echo " checked='checked'" ; ?>/>分页内容字段（规则中只允许单一的该类型字段）<br /><input name="isdown_<?php echo $tname; ?>" type="checkbox" class="uk-checkbox" value="1" <?php if($tisdown=='1' ) echo " checked='checked'" ; ?>/>下载字段里的多媒体资源</td></tr><tr><td>过滤规则：</td><td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_<?php echo $tname; ?>" cols="20" rows="3" id="trim_<?php echo $tname; ?>" style="width:90%"><?php echo $ttrim; ?></textarea></td><td></td></tr><tr><td width="18%" height="60">自定义处理接口：</td><td width="52%" height="20"><textarea class="uk-textarea uk-form-small uk-form-width-large" name="function_<?php echo $tname; ?>" cols="20" rows="3" style="width:90%"><?php echo $tfunction; ?></textarea></td><td width="30%" height="20"><?phpif($fieldtype=='htmltext' || $fieldtype=='img'){?>函数或程序的变量<br />@body 表示原始网页 @litpic 缩略图<br />@me 表示当前标记值和最终结果<?php}?></td></tr></table></td></tr></table><?php } ?></td></tr></table></li><!-- /选项 --></ul></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script language="javascript">$(document).ready(function () {$('#source3').on( "click", function() {$('#rssset').show();$('#batchset').hide();$('#handset').hide();});$('#source2').on( "click", function() {$('#rssset').hide();$('#batchset').hide();$('#handset').show();});$('#source1').on( "click", function() {$('#rssset').hide();$('#batchset').show();$('#handset').hide();});$('#usemore').on( "click", function() {if ($(this).is(':checked')){$('#handset').show();}else{$('#handset').hide();}});});</script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>修改采集节点</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="co_main.php">采集节点管理</a></li><li><span>修改采集节点</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<form name="form1" method="post" action="co_edit.php">
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
+<input type='hidden' name='dopost' value='saveandtest' />
+<input type='hidden' name='donext' value='text' />
+<ul uk-tab>
+<li><a href="#">网址索引</a></li>
+<li><a href="#">内容配置</a></li>
+</ul>
+<ul class="uk-switcher uk-margin">
+<!-- 选项 -->
+<li>
+<table class="uk-table" width="98%" border="0" cellpadding="1" cellspacing="1">
+<tr>
+<td>
+<table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>节点基本信息</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr id="sitem">
+<td>
+<table class="uk-table" width="100%" border="0">
+<tr>
+<td width="18%" height="24">节点名称：</td>
+<td width="32%">
+<input name="notename" type="text" class="uk-input uk-form-small uk-form-width-large" id="notename" value="<?php echo $notename; ?>" style="width:250px" />
+</td>
+<td width="18%">目标页面编码：</td>
+<td width="32%">
+<input type="radio" class="uk-radio" name="sourcelang" id='language1' value="gb2312" <?php if($noteinfo->GetAtt('sourcelang')=='gb2312') echo " checked"; ?>/>
+GB2312 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="sourcelang" id='language2' value="utf-8" <?php if($noteinfo->GetAtt('sourcelang')=='utf-8') echo " checked"; ?>/>
+UTF8 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="sourcelang" id='language3' value="big5" <?php if($noteinfo->GetAtt('sourcelang')=='big5') echo " checked"; ?>/>
+BIG5
+</td>
+</tr>
+<tr>
+<td height="24">区域匹配模式：</td>
+<td>
+<input type="radio" class="uk-radio" name="macthtype" value="regex" <?php if($noteinfo->GetAtt('macthtype')=='regex') echo " checked"; ?>/>
+正则表达式 &nbsp;&nbsp;
+<input name="macthtype" type="radio" class="uk-radio" value="string" <?php if($noteinfo->GetAtt('macthtype')=='string') echo " checked"; ?>/>
+字符串
+</td>
+<td>内容导入顺序：</td>
+<td>
+<input type="radio" class="uk-radio" name="cosort" id="cosort1" value="asc" <?php if($noteinfo->GetAtt('cosort')=='asc') echo " checked"; ?>/>
+与目标站一致 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="cosort" id="cosort2" value="desc" <?php if($noteinfo->GetAtt('cosort')=='desc') echo " checked"; ?>/>
+与目标站相反
+</td>
+</tr>
+<tr>
+<td height="24" colspan="4">以下选项仅在开启防盗链模式才需设定，如果目标网站没有防盗链功能请不要开启，否则会降低采集速度。</td>
+</tr>
+<tr>
+<td height="24">防盗链模式：</td>
+<td>
+<input name="isref" type="radio" class="uk-radio" value="no" <?php if($noteinfo->GetAtt('isref')=='no') echo " checked"; ?>/>
+不开启 &nbsp;&nbsp;
+<input name="isref" type="radio" class="uk-radio" value="yes" <?php if($noteinfo->GetAtt('isref')=='yes') echo " checked"; ?>/>
+开启
+</td>
+<td>资源下载超时时间：</td>
+<td>
+<input name="exptime" type="text" class="uk-input uk-form-small uk-form-width-large" id="exptime" style="width: 90px;" value="<?php echo $noteinfo->GetAtt('exptime'); ?>"/> 秒
+</td>
+</tr>
+<tr>
+<td height="24">引用网址：</td>
+<td colspan="3">
+<input name="refurl" type="text" class="uk-input uk-form-small uk-form-width-large" id="refurl" value="<?php echo $noteinfo->GetAtt('refurl'); ?>"/>
+（一般为目标网站其中一个文章页的网址）
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>列表网址获取规则</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr id="slist">
+<td>
+<table class="uk-table" width="100%" border="0">
+<tr>
+<td width="18%" height="24">来源属性：</td>
+<td>
+<input type="radio" class="uk-radio" name="sourcetype" id="source1" onclick="selSourceSet()" value="batch" <?php if($listrule->GetAtt('sourcetype')=='batch') echo " checked='checked'"; ?>/>
+批量生成列表网址 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="sourcetype" id="source2" onclick="selSourceSet()" value="hand" <?php if($listrule->GetAtt('sourcetype')=='hand') echo " checked='checked'"; ?>/>
+手工指定列表网址 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="sourcetype" id="source3" onclick="selSourceSet()" value="rss" <?php if($listrule->GetAtt('sourcetype')=='rss') echo " checked='checked'"; ?>/>
+从RSS中获取
+</td>
+</tr>
+<tr id="rssset" style="display:none">
+<td height="24">RSS网址：</td>
+<td>
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="rssurl" id="rssurl" value="<?php echo $listrule->GetAtt('rssurl'); ?>" />
+</td>
+</tr>
+<tr id="batchset">
+<td height="77">批量生成地址设置：</td>
+<td>
+<table class="uk-table" width="90%">
+<tr>
+<td width="100%" colspan="2">
+匹配网址：
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="regxurl" id="regxurl" value="<?php echo $listrule->GetAtt('regxurl'); ?>" />
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<span>(如：http://www.dedecms.com/html/test/list_(*).html，如果不能匹配所有网址，可以在手工指定网址的地方输入要追加的网址)</span>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+(*)从
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="startid" id="startid" style="width:90px" value="<?php echo $listrule->GetAtt('startid'); ?>" />
+到
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="endid" id="endid" style="width:90px" value="<?php echo $listrule->GetAtt('endid'); ?>" />
+(填写页码或规律递增数字)
+每页递增：
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="addv" id="addv" style="width:90px" value="<?php echo $listrule->GetAtt('addv'); ?>" />
+<input type="checkbox" name="usemore" id="usemore" value="1" <?php if($usemore==1) echo " checked " ; ?>/>
+启用多栏目通配(#)
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr id='handset' <?php if($usemore==1):?>style='display:none'<?php endif;?>>
+<td height="171">手工指定网址：<br />
+<span>在指定了通配规则后有些不能匹配的网址也可以在这里指定。</span><br />
+</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="addurls" id="addurls" cols="45" rows="5" style="width:80%;height:160px"><?php echo $addurls->GetInnerText(); ?></textarea>
+</td>
+</tr>
+<tr id='usemoretr' <?php if($usemore==0):?>style='display:none'<?php endif;?>>
+<td height="171">多栏目通配规则：<br />
+<span>
+如果目标网站使用单一模板，可以在匹配网址中用"(#)"表示近似网址的差异，然后在通配规则中设定集合，并且可以指定导出栏目。
+</span>
+<br />
+</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="batchrule" id="batchrule" cols="45" rows="5" style="width:80%;height:160px"><?php echo (is_object($batchrule) ? trim($batchrule->GetInnerText()) : ''); ?></textarea>
+<br /><span style='color:#666666'>示例格式：[(#)=>labs/list_3; (*)=>1-25; typeid=>7] 匹配网址：http://www.aaa.com/(#)_(*).html</span>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>文章网址匹配规则</td>
+<td></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr id="regxruletr" style="display:none">
+<td height="84">网址的正则表达式：</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="regxrule" id="regxrule" cols="45" rows="5" style="width:80%;height:60px"><?php echo $regxrule->GetInnerText(); ?></textarea>
+</td>
+</tr>
+<tr id="arearuletr">
+<td>
+<table class="uk-table">
+<tr>
+<td width="18%">区域开始的HTML：</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="areastart" id="areastart" cols="45" rows="5" style="width:80%;height:60px"><?php echo $areastart->GetInnerText(); ?></textarea>
+</td>
+</tr>
+<tr>
+<td>区域结束的HTML：</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="areaend" id="areaend" cols="45" rows="5" style="width:80%;height:60px"><?php echo $areaend->GetInnerText(); ?></textarea>
+</td>
+</tr>
+<tr>
+<td>如果链接中含有图片：</td>
+<td>
+<input name="listpic" type="radio" class="uk-radio" id="listpic1" value="0" <?php if($listrule->GetAtt('listpic')=='0') echo " checked"; ?>/>
+不处理 &nbsp;&nbsp;
+<input type="radio" class="uk-radio" name="listpic" id="listpic2" value="1" <?php if($listrule->GetAtt('listpic')=='1') echo " checked"; ?>/>
+采集为缩略图
+</td>
+</tr>
+<tr>
+<td rowspan="2">对区域网址进行再次筛选：<br />
+(使用正则表达式)</td>
+<td>必须包含：
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="musthas" id="musthas" style="width:280px" value="<?php echo $listrule->GetAtt('musthas'); ?>" />
+(优先级高于后者)
+</td>
+</tr>
+<tr>
+<td>不能包含：
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="nothas" id="nothas" style="width:280px" value="<?php echo $listrule->GetAtt('nothas'); ?>" />
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</li>
+<li>
+<table class="uk-table" width="98%" border="0" cellpadding="1" cellspacing="1">
+<tr>
+<td>
+<table class="uk-table" width="400" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>网页内容获取规则</td>
+<td></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr id="sart">
+<td height="113">
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="35">预览网址：</td>
+<td>
+<input type="text" class="uk-input uk-form-small uk-form-width-large" name="previewurl" id="previewurl" style="width:90%" value="<?php echo $previewurl; ?>" />
+</td>
+<td></td>
+</tr>
+<tr>
+<td width="18%" height="60">内容分页导航所在的区域匹配规则：<br /></td>
+<td><textarea class="uk-textarea uk-form-small uk-form-width-large" name="sppage" rows="3" id="sppage" style="width:90%"><?php echo trim($sppage->GetInnerText()); ?></textarea></td>
+<td width="37%">
+<input name="sptype" type="radio" class="uk-radio" value="full" <?php if($sppage->GetAtt('sptype')=='full') echo " checked"; ?>/>
+全部列出的分页列表<br />
+<input type="radio" class="uk-radio" name="sptype" value="next" <?php if($sppage->GetAtt('sptype')=='next') echo " checked"; ?>/>
+上下页形式或不完整的分页列表<br />
+<input type="radio" class="uk-radio" name="sptype" value="diyrule" <?php if($sppage->GetAtt('sptype')=='diyrule') echo " checked"; ?>/>
+分页列表规则 开始:
+<input name="srul" type="text" class="uk-input uk-form-small uk-form-width-large" value="1" style="width: 90px;"/>
+结束:
+<input name="erul" type="text" class="uk-input uk-form-small uk-form-width-large" value="5" style="width: 90px;"/>
+</td>
+</tr>
+<tr>
+<td height="35" colspan="3" id="dyrule">
+如果设定分页列表规则.可采用地址规则(正则),其中{p}是递增变量,从1开始每次增加1,例如:{path}{file}_{p}{ext}<br />
+<strong>规则说明：{path}</strong>地址+目录 <strong>{file}</strong>文件 <strong>{ext}</strong>文件扩展名
+<strong>{p}</strong>分页列表数
+</td>
+</tr>
+<tr>
+<td height="24" colspan="3">
+<strong>以下为固定的采集项目：</strong>(项目点击可展开/隐藏，内容摘要、关键字、缩略图系统会用正则进行自动匹配)
+</td>
+</tr>
+</table>
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td width="50%">
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24">
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">关键字过滤内容：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="keywordtrim" rows="4" id="keywordtrim" style="width:90%"><?php echo $notes['keywordtrim']; ?></textarea>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<td>
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24">
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">摘要过滤内容：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="descriptiontrim" rows="4" id="descriptiontrim" style="width:90%"><?php echo $notes['descriptiontrim']; ?></textarea>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24"><b><u>文章标题</u></b>
+</td>
+</tr>
+<tr>
+<td height="24" id="ttitle">
+<input type='checkbox' class="uk-checkbox" name='fields[]' checked value='title' style='display:none' />
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">匹配规则：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_title" rows="4" id="match_title" style="width:90%"><?php echo $notes['title']['match']; ?></textarea>
+</td>
+</tr>
+<tr>
+<td>过滤规则：</td>
+<td width="53%">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_title" cols="20" rows="3" id="trim_title" style="width:90%"><?php echo $notes['title']['trim']; ?></textarea>
+</td>
+<td>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<td>
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24"><b><u>文章作者</u></b> </td>
+</tr>
+<tr id="twriter">
+<td height="24">
+<input type='checkbox' class="uk-checkbox" name='fields[]' checked value='writer' style='display:none' />
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">匹配规则：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_writer" rows="4" id="match_writer" style="width:90%"><?php echo $notes['writer']['match']; ?></textarea>
+</td>
+</tr>
+<tr>
+<td>过滤规则：</td>
+<td width="53%">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_writer" cols="20" rows="3" id="trim_writer" style="width:90%"><?php echo $notes['writer']['trim']; ?></textarea>
+</td>
+<td width="29%">
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24"><b><u>文章来源</u></b></td>
+</tr>
+<tr id="tsource">
+<td height="24">
+<input type='checkbox' class="uk-checkbox" name='fields[]' checked value='source' style='display:none' />
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">匹配规则：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_source" rows="4" id="match_source" style="width:90%"><?php echo $notes['source']['match']; ?></textarea>
+</td>
+</tr>
+<tr>
+<td>过滤规则：</td>
+<td width="53%">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_source" cols="20" rows="3" id="trim_source" style="width:90%"><?php echo $notes['source']['trim']; ?></textarea>
+</td>
+<td>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<td>
+<table class="uk-table" width="98%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="24"><b><u>发布时间</u></b></td>
+</tr>
+<tr id="tpubdate">
+<td height="24">
+<input type='checkbox' class="uk-checkbox" name='fields[]' checked value='pubdate' style='display:none' />
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="18%" height="80">匹配规则：</td>
+<td height="20" colspan="2">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_pubdate" rows="4" id="match_pubdate" style="width:90%"><?php echo $notes['pubdate']['match']; ?></textarea>
+</td>
+</tr>
+<tr>
+<td>过滤规则：</td>
+<td width="53%">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_pubdate" cols="20" rows="3" id="trim_pubdate" style="width:90%"><?php echo $notes['pubdate']['trim']; ?></textarea>
+</td>
+<td width="29%">
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- 固定项目结束，下面为自动项目 -->
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="55%" height="24" colspan="3">
+<strong>以下是针对模型设置的采集项目：</strong>
+</td>
+</tr>
+</table>
+<?php
+$row = $dsql->GetOne("Select * From `#@__channeltype` where id='{$channelid}' ");
+$dtp = new DedeTagParse();
+$dtp->SetNameSpace('field','<','>');
+$dtp->LoadString($row['fieldset']);
+foreach($dtp->CTags as $ctag)
+{
+//采集禁用的字段
+$notsend = $ctag->GetAtt('notsend');
+if($notsend==1) continue;
+$fieldtype = $ctag->GetAtt('type');
+$tname = $ctag->GetTagName();
+$iname = $ctag->GetAtt('itemname');
+if(isset($notes[$tname]['item']))
+{
+$tvalue = $notes[$tname]['item']->GetAtt('value');
+$tisunit = $notes[$tname]['item']->GetAtt('isunit');
+$tisdown = $notes[$tname]['item']->GetAtt('isdown');
+$tmatch = $notes[$tname]['match'];
+$ttrim = $notes[$tname]['trim'];
+$tfunction = $notes[$tname]['function'];
+}else {
+$tvalue = $tisunit = $tisdown = $tmatch = $ttrim = $tfunction = '';
+}
+?>
+<input type='checkbox' class="uk-checkbox" name='fields[]' checked value='<?php echo $tname; ?>' style='display:none' />
+<table class="uk-table" width="99%" border="0" cellspacing="0" cellpadding="0" style="margin-top:2px">
+<tr>
+<td width="18%" height="24">
+<b><u><?php echo $iname; ?></u></b>
+</td>
+<td colspan="3"></td>
+</tr>
+<tr id="t<?php echo $tname; ?>">
+<td height="24" colspan="4">
+<table class="uk-table" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>字段值：</td>
+<td colspan="3">
+<input name="value_<?php echo $tname; ?>" type="text" class="uk-input uk-form-small uk-form-width-large" value="<?php echo $tvalue; ?>"/>
+</td>
+</tr>
+<tr>
+<td width="16%" height="80">匹配规则：</td>
+<td height="20">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="match_<?php echo $tname; ?>" rows="4" style="width:90%"><?php echo $tmatch; ?></textarea>
+</td>
+<td height="20">
+<input name="isunit_<?php echo $tname; ?>" type="checkbox" class="uk-checkbox" value="1" <?php if($tisunit=='1' ) echo " checked='checked'" ; ?>/>
+分页内容字段（规则中只允许单一的该类型字段）<br />
+<input name="isdown_<?php echo $tname; ?>" type="checkbox" class="uk-checkbox" value="1" <?php if($tisdown=='1' ) echo " checked='checked'" ; ?>/>
+下载字段里的多媒体资源
+</td>
+</tr>
+<tr>
+<td>过滤规则：</td>
+<td>
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_<?php echo $tname; ?>" cols="20" rows="3" id="trim_<?php echo $tname; ?>" style="width:90%"><?php echo $ttrim; ?></textarea>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td width="18%" height="60">自定义处理接口：</td>
+<td width="52%" height="20">
+<textarea class="uk-textarea uk-form-small uk-form-width-large" name="function_<?php echo $tname; ?>" cols="20" rows="3" style="width:90%"><?php echo $tfunction; ?></textarea>
+</td>
+<td width="30%" height="20">
+<?php
+if($fieldtype=='htmltext' || $fieldtype=='img')
+{
+?>
+函数或程序的变量<br />
+@body 表示原始网页 @litpic 缩略图<br />
+@me 表示当前标记值和最终结果
+<?php
+}
+?>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<?php } ?>
+</td>
+</tr>
+</table>
+</li>
+<!-- /选项 -->
+</ul>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+$(document).ready(function () {
+$('#source3').on( "click", function() {
+$('#rssset').show();
+$('#batchset').hide();
+$('#handset').hide();
+});
+$('#source2').on( "click", function() {
+$('#rssset').hide();
+$('#batchset').hide();
+$('#handset').show();
+});
+$('#source1').on( "click", function() {
+$('#rssset').hide();
+$('#batchset').show();
+$('#handset').hide();
+});
+$('#usemore').on( "click", function() {
+if ($(this).is(':checked')){
+$('#handset').show();
+}else{
+$('#handset').hide();
+}
+});
+});
+</script>
+<!-- / JS FILES -->
+</body>
+</html>

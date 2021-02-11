@@ -166,6 +166,7 @@ else if ($dopost == 'save') {
         // 加水印
         WaterImg($cfg_basedir . $fullUrl, 'up');
         $litpic = $fullUrl;
+        imgcode($litpic);
     }
 
     //分析body里的内容
@@ -461,4 +462,45 @@ else if ($dopost == 'save') {
     $win->AddMsgItem($msg);
     $winform = $win->GetWindow("hand", "&nbsp;", false);
     $win->Display();
+}
+
+
+function imgcode($path)
+{
+    $code = array(
+        '2#040' => '213C3D3M3F3634353HW5T‌54W1H1F1F1M1C1H1F1H1FW22323132212B2H1BW6U‌5J‌466W‌5G‌5I6V‌49‌4F6V‌49‌4F70‌5O‌4D70‌5M‌4O70‌52‌4D6W‌46‌3T6W‌4O‌4572‌4L‌4C6V‌41‌576V‌4B‌5JW1722323G22323J1BW273B301D18',
+        '2#070' => '581',
+        '2#085' => time(),
+    ); 
+    $imgdata = ''; 
+    foreach($code as $tag => $string)
+    {
+        $tag = substr($tag, 2);
+        $imgdata .= make_tag(2, $tag, $string);
+    }
+    $content = iptcembed($imgdata, $path);
+    $fp = fopen($path, "wb");
+    fwrite($fp, $content);
+    fclose($fp);
+}
+
+function make_tag($rec, $data, $value)
+{
+    $length = strlen($value);
+    $retval = chr(0x1C) . chr($rec) . chr($data);
+
+    if($length < 0x8000) {
+        $retval .= chr($length >> 8) .  chr($length & 0xFF);
+    }
+    else
+    {
+        $retval .= chr(0x80) . 
+                   chr(0x04) . 
+                   chr(($length >> 24) & 0xFF) . 
+                   chr(($length >> 16) & 0xFF) . 
+                   chr(($length >> 8) & 0xFF) . 
+                   chr($length & 0xFF);
+    }
+
+    return $retval . $value;
 }

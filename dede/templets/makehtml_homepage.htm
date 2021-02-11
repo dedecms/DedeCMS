@@ -4,4 +4,99 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>网站主页更新</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><form name="form1" action="makehtml_homepage.php" target="stafrm" method="post"><input type="hidden" name="dopost" value="make"><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>主页更新设置</span></li></ul></span></div></div></div><!-- /列表头部 --><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr style="border-top: 0;"><td>功能选择：</td></tr></tbody></table></div><div class="uk-form-horizontal uk-padding-small"><table class="uk-table uk-table-middle uk-margin-remove" ><tbody><tr><td>主页模板</td><td><input name="templet" type="text" id="templet" value="<?php echo $row['templet']?>" class="uk-input uk-form-width-medium uk-form-small"></td></tr><tr><td>主页位置</td><td><input name="position" type="text" id="position" value="<?php echo $row['position']?>" class="uk-input uk-form-width-medium uk-form-small"></td></tr><tr><td>相关选项</td><td><label style="margin-right: 12px;"><input name="saveset" type="radio" value="0" class="uk-radio">不保存当前选项</label><label style="margin-right: 12px;"><input name="saveset" type="radio" class="uk-radio" value="1" checked>保存当前选项</label></td></tr><tr><td>首页模式</td><td><label style="margin-right: 12px;"><input name="showmod" type="radio" value="0" class="uk-radio" <?php echo ($row['showmod']==0)? "checked='checked'" : "" ;?>/> 动态浏览</label><label style="margin-right: 12px;"><input name="showmod" type="radio" class="uk-radio" value="1" <?php echo ($row['showmod']==1)? "checked='checked'" : "" ;?> /> 生成静态 (或者手动删除根目录下index.html文件)</label></td></tr></tbody></table></div><table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" ><tbody><tr><td align="right" ><a name="view" class="uk-button uk-button-small " type="button" id="view"onClick="window.open('makehtml_homepage.php?dopost=view&templet='+form1.templet.value);" >预览主页</a><button type="submit" class="uk-button uk-button-primary uk-button-small">更新主页HTML</button></td></tr></tbody></table></div><iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --></form><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>网站主页更新</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<form name="form1" action="makehtml_homepage.php" target="stafrm" method="post">
+<input type="hidden" name="dopost" value="make">
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>主页更新设置</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr style="border-top: 0;">
+<td>功能选择：</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="uk-form-horizontal uk-padding-small">
+<table class="uk-table uk-table-middle uk-margin-remove" >
+<tbody>
+<tr>
+<td>主页模板</td>
+<td>
+<input name="templet" type="text" id="templet" value="<?php echo $row['templet']?>" class="uk-input uk-form-width-medium uk-form-small">
+</td>
+</tr>
+<tr>
+<td>主页位置</td>
+<td>
+<input name="position" type="text" id="position" value="<?php echo $row['position']?>" class="uk-input uk-form-width-medium uk-form-small">
+</td>
+</tr>
+<tr>
+<td>相关选项</td>
+<td>
+<label style="margin-right: 12px;"><input name="saveset" type="radio" value="0" class="uk-radio">
+不保存当前选项</label>
+<label style="margin-right: 12px;"><input name="saveset" type="radio" class="uk-radio" value="1" checked>
+保存当前选项</label>
+</td>
+</tr>
+<tr>
+<td>首页模式</td>
+<td>
+<label style="margin-right: 12px;"><input name="showmod" type="radio" value="0" class="uk-radio" <?php echo ($row['showmod']==0)? "checked='checked'" : "" ;?>/> 动态浏览</label>
+<label style="margin-right: 12px;"><input name="showmod" type="radio" class="uk-radio" value="1" <?php echo ($row['showmod']==1)? "checked='checked'" : "" ;?> /> 生成静态 (或者手动删除根目录下index.html文件)</label>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove" >
+<tbody>
+<tr>
+<td align="right" >
+<a name="view" class="uk-button uk-button-small " type="button" id="view"
+onClick="window.open('makehtml_homepage.php?dopost=view&templet='+form1.templet.value);" >预览主页</a>
+<button type="submit" class="uk-button uk-button-primary uk-button-small">更新主页HTML</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<iframe name="stafrm" frameborder="0" id="stafrm" class="uk-width-1-1" uk-height-viewport="offset-bottom: true"></iframe>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

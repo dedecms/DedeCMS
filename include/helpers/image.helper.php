@@ -154,10 +154,8 @@ if (!function_exists('gdversion')) {
         if (!function_exists('phpinfo')) {
             if (function_exists('imagecreate')) {
                 return '2.0';
-            
             } else {
                 return 0;
-            
             }
         
         } else {

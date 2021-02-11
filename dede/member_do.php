@@ -65,12 +65,7 @@ if ($dopost == "delmember") {
                 $dsql->ExecuteNoneQuery("DELETE FROM `#@__member_vhistory` WHERE mid='$id' Or vid='$id' ");
                 $dsql->ExecuteNoneQuery("DELETE FROM `#@__feedback` WHERE mid='$id' ");
                 $dsql->ExecuteNoneQuery("UPDATE `#@__archives` SET mid='0' WHERE mid='$id'");
-                // api{{
-                if (defined('UC_API') && @include_once DEDEROOT . '/uc_client/client.php') {
-                    $infofromuc = uc_get_user($row['userid']);
-                    uc_user_delete($infofromuc[0]);
-                }
-                // /aip}}
+
             } else {
                 ShowMsg("无法删除此用户，如果这个用户是<b>[管理员]</b>，<br />必须先删除这个<b>[管理员]</b>才能删除此帐号！", $ENV_GOBACK_URL, 0, 5000);
                 exit();
@@ -214,13 +209,7 @@ else if ($dopost == 'edituser') {
         $rs = $dsql->ExecuteNoneQuery2($query);
     }
 
-    // api{{
-    if (defined('UC_API') && @include_once DEDEROOT . '/api/uc.func.php') {
-        $row = $dsql->GetOne("SELECT `scores`,`userid` FROM `#@__member` WHERE `mid`='$id' AND `matt`<>10");
-        $amount = $scores - $row['scores'];
-        uc_credit_note($row['userid'], $amount);
-    }
-    // /aip}}
+
 
     ShowMsg('成功修改用户资料！', 'member_view.php?id=' . $id);
     exit();

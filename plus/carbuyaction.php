@@ -31,7 +31,7 @@ if (!isset($dopost) || empty($dopost)) {
     //获得购物车内商品,返回数组
     $Items = $cart->getItems();
     if (empty($Items)) {
-        ShowMsg("您的购物车中没有商品！", "-1");
+        ShowMsg("您的购物车中没有商品！", $cfg_cmsurl."/");
         exit();
     }
 

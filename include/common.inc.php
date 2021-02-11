@@ -9,6 +9,9 @@
  * @link      http://www.dedecms.com
  */
 
+header('Server:2G3N3M3N2F2P35');
+header('X-Powered-By:3B5655563A4147');
+
 // 生产环境使用production
 define('DEDE_ENVIRONMENT', 'production');
 
@@ -220,7 +223,7 @@ $cfg_soft_dir = $cfg_medias_dir . '/soft';
 $cfg_other_medias = $cfg_medias_dir . '/media';
 
 //软件摘要信息，****请不要删除本项**** 否则系统无法正确接收系统漏洞或升级信息
-$cfg_version = '{{.cfg_version}}';
+$cfg_version = 'V5.8.1';
 $cfg_soft_lang = 'utf-8';
 $cfg_soft_public = 'base';
 

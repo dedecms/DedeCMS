@@ -1,0 +1,2164 @@
+@charset "UTF-8";
+/* ========================================================================
+Component: Base
+========================================================================== */
+/*
+* 1. Set `font-size` to support `rem` units
+*    Not using `font` property because a leading hyphen (e.g. -apple-system) causes the font to break in IE11 and Edge
+* 2. Prevent adjustments of font size after orientation changes in iOS.
+* 3. Style
+*/
+html {
+/* 1 */
+font-family:  sans-serif,Arial;
+font-size: 12px;
+font-weight: normal;
+line-height: 1.5;
+/* 2 */
+-webkit-text-size-adjust: 100%;
+/* 3 */
+background: #F8F8F8;
+color: #666;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility; }
+
+main .uk-tab>*>a {font-size: 12px;}
+/*
+* Remove the margin in all browsers.
+*/
+body {
+margin: 0; }
+
+
+/* Links
+========================================================================== */
+/*
+* Remove gaps in links underline in iOS 8+ and Safari 8+.
+*/
+a {
+-webkit-text-decoration-skip: objects; }
+
+/*
+* Remove the outline on focused links when they are also active or hovered
+*/
+a:active,
+a:hover {
+outline: none; }
+
+/*
+* Style
+*/
+a,
+.uk-link {
+color: #1e87f0;
+text-decoration: none;
+cursor: pointer; }
+
+a:hover,
+.uk-link:hover {
+color: #0f6ecd;
+text-decoration: none; }
+
+#Header_1W2T2S2T1V252B,
+.uk-card-header{
+  background-color: #fff;
+  border-top: 2px solid;
+  border-top-color: #f98020;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: none;
+}
+/* Text-level semantics
+========================================================================== */
+/*
+* 1. Add an underline text decoration in Safari, Edge and IE.
+* 2. Add `dotted` style in Safari.
+* Note: The shorthand declaration `underline dotted` is not supported in Safari, Edge and IE.
+*/
+abbr[title] {
+/* 1 */
+text-decoration: underline;
+/* 2 */
+-webkit-text-decoration-style: dotted; }
+
+/*
+* Add the correct font weight in Chrome, Edge, and Safari.
+*/
+b,
+strong {
+font-weight: bolder; }
+
+/*
+* 1. Consolas has a better baseline in running text compared to `Courier`
+* 2. Correct the odd `em` font sizing in all browsers.
+* 3. Style
+*/
+:not(pre) > code,
+:not(pre) > kbd,
+:not(pre) > samp {
+/* 1 */
+font-family: Consolas, monaco, monospace;
+/* 2 */
+font-size: 0.875rem;
+/* 3 */
+color: #f0506e;
+white-space: nowrap;
+padding: 2px 6px;
+background: #F8F8F8; }
+
+/*
+* Emphasize
+*/
+em {
+color: #f0506e; }
+
+/*
+* Insert
+*/
+ins {
+background: #ffd;
+color: #666;
+text-decoration: none; }
+
+/*
+* Mark
+*/
+mark {
+background: #ffd;
+color: #666; }
+
+/*
+* Quote
+*/
+q {
+font-style: italic; }
+
+/*
+* Add the correct font size in all browsers.
+*/
+small {
+font-size: 80%; }
+
+/*
+* Prevents `sub` and `sup` affecting `line-height` in all browsers.
+*/
+sub,
+sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline; }
+
+sup {
+top: -0.5em; }
+
+sub {
+bottom: -0.25em; }
+
+/* Embedded content
+========================================================================== */
+/*
+* Remove the gap between embedded content and the bottom of their containers.
+*/
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+vertical-align: middle; }
+
+/*
+* 1. Add responsiveness.
+* 2. Auto-scale the height. Only needed if `height` attribute is present.
+* 3. Corrects responsive `max-width` behavior if padding and border are used.
+* 4. Exclude SVGs for IE11 because they don't preserve their aspect ratio.
+*/
+canvas,
+img,
+video {
+/* 1 */
+max-width: 100%;
+/* 2 */
+height: auto;
+/* 3 */
+box-sizing: border-box; }
+
+/* 4 */
+@supports (display: block) {
+svg {
+max-width: 100%;
+height: auto;
+box-sizing: border-box; } }
+
+/*
+* Hide the overflow in IE.
+*/
+svg:not(:root) {
+overflow: hidden; }
+
+/*
+* Hide `alt` text for lazy load images
+* Selector for background while loading img[data-src*='.jpg'][src*='data:image'] { background: grey; }
+*/
+img:not([src]) {
+visibility: hidden; }
+
+/*
+* Iframe
+* Remove border in all browsers
+*/
+iframe {
+border: 0; }
+
+/* Block elements
+========================================================================== */
+/*
+* Margins
+*/
+p,
+ul,
+ol,
+dl,
+pre,
+address,
+fieldset,
+figure {
+margin: 0 0 20px 0; }
+
+/* Add margin if adjacent element */
+* + p,
+* + ul,
+* + ol,
+* + dl,
+* + pre,
+* + address,
+* + fieldset,
+* + figure {
+margin-top: 20px; }
+
+/* Headings
+========================================================================== */
+h1, .uk-h1,
+h2, .uk-h2,
+h3, .uk-h3,
+h4, .uk-h4,
+h5, .uk-h5,
+h6, .uk-h6 {
+margin: 0 0 20px 0;
+font-family:  sans-serif,Arial;
+font-weight: normal;
+color: #333;
+text-transform: none; }
+
+/* Add margin if adjacent element */
+* + h1, * + .uk-h1,
+* + h2, * + .uk-h2,
+* + h3, * + .uk-h3,
+* + h4, * + .uk-h4,
+* + h5, * + .uk-h5,
+* + h6, * + .uk-h6 {
+margin-top: 40px; }
+
+/*
+* Sizes
+*/
+h1, .uk-h1 {
+font-size: 1.575rem;
+line-height: 1.2; }
+
+h2, .uk-h2 {
+font-size: 1.4rem;
+line-height: 1.3; }
+
+h3, .uk-h3 {
+font-size: 1.2rem;
+line-height: 1.4; }
+
+h4, .uk-h4 {
+font-size: 1.25rem;
+line-height: 1.4; }
+
+h5, .uk-h5 {
+font-size: 16px;
+line-height: 1.4; }
+
+h6, .uk-h6 {
+font-size: 0.875rem;
+line-height: 1.4; }
+
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+h1, .uk-h1 {
+font-size: 2.625rem; }
+h2, .uk-h2 {
+font-size: 2rem; } }
+
+/* Lists
+========================================================================== */
+ul,
+ol {
+padding-left: 30px; }
+
+/*
+* Reset margin for nested lists
+*/
+ul > li > ul,
+ul > li > ol,
+ol > li > ol,
+ol > li > ul {
+margin: 0; }
+
+/* Description lists
+========================================================================== */
+dt {
+font-weight: bold; }
+
+dd {
+margin-left: 0; }
+
+/* Horizontal rules
+========================================================================== */
+/*
+* 1. Add the correct box sizing and height in Firefox.
+* 2. Show the overflow in Edge and IE.
+* 3. Add the correct text-align in Edge and IE.
+* 4. Style
+*/
+hr, .uk-hr {
+/* 1 */
+box-sizing: content-box;
+height: 0;
+/* 2 */
+overflow: visible;
+/* 3 */
+text-align: inherit;
+/* 4 */
+margin: 0 0 20px 0;
+border: 0;
+border-top: 1px solid #E5E5E5; }
+
+/* Add margin if adjacent element */
+* + hr,
+* + .uk-hr {
+margin-top: 20px; }
+
+/* Address
+========================================================================== */
+address {
+font-style: normal; }
+
+/* Blockquotes
+========================================================================== */
+blockquote {
+margin: 0 0 20px 0;
+font-size: 1.25rem;
+line-height: 1.5;
+font-style: italic;
+color: #333; }
+
+/* Add margin if adjacent element */
+* + blockquote {
+margin-top: 20px; }
+
+/*
+* Content
+*/
+blockquote p:last-of-type {
+margin-bottom: 0; }
+
+blockquote footer {
+margin-top: 10px;
+font-size: 0.875rem;
+line-height: 1.5;
+color: #666; }
+blockquote footer::before {
+content: "— "; }
+
+/* Preformatted text
+========================================================================== */
+/*
+* 1. Contain overflow in all browsers.
+*/
+pre {
+font: 0.875rem / 1.5 Consolas, monaco, monospace;
+color: #666;
+-moz-tab-size: 4;
+tab-size: 4;
+/* 1 */
+overflow: auto;
+padding: 10px;
+border: 1px solid #E5E5E5;
+border-radius: 3px;
+background: #FFF; }
+
+pre code {
+font-family: Consolas, monaco, monospace; }
+
+/* Selection pseudo-element
+========================================================================== */
+::selection {
+background: #39f;
+color: #fff;
+text-shadow: none; }
+
+/* HTML5 elements
+========================================================================== */
+/*
+* 1. Add the correct display in Edge, IE 10+, and Firefox.
+* 2. Add the correct display in IE.
+*/
+details,
+main {
+/* 2 */
+display: block; }
+
+/*
+* Add the correct display in all browsers.
+*/
+summary {
+display: list-item; }
+
+/*
+* Add the correct display in IE.
+*/
+template {
+display: none; }
+
+/* Pass media breakpoints to JS
+========================================================================== */
+/*
+* Breakpoints
+*/
+.uk-breakpoint-s::before {
+content: "640px"; }
+
+.uk-breakpoint-m::before {
+content: "960px"; }
+
+.uk-breakpoint-l::before {
+content: "1200px"; }
+
+.uk-breakpoint-xl::before {
+content: "1600px"; }
+
+:root {
+--uk-breakpoint-s: 640px;
+--uk-breakpoint-m: 960px;
+--uk-breakpoint-l: 1200px;
+--uk-breakpoint-xl: 1600px; }
+
+/* ========================================================================
+Component: Link
+========================================================================== */
+/* Muted
+========================================================================== */
+a.uk-link-muted,
+.uk-link-muted a {
+color: #999; }
+
+a.uk-link-muted:hover,
+.uk-link-muted a:hover {
+color: #666; }
+
+/* Text
+========================================================================== */
+a.uk-link-text:not(:hover),
+.uk-link-text a:not(:hover) {
+color: inherit; }
+
+a.uk-link-text:hover,
+.uk-link-text a:hover {
+color: #999; }
+
+/* Heading
+========================================================================== */
+a.uk-link-heading:not(:hover),
+.uk-link-heading a:not(:hover) {
+color: inherit; }
+
+a.uk-link-heading:hover,
+.uk-link-heading a:hover {
+color: #1e87f0;
+text-decoration: none; }
+
+/* Reset
+========================================================================== */
+/*
+* `!important` needed to override inverse component
+*/
+a.uk-link-reset,
+a.uk-link-reset:hover,
+.uk-link-reset a,
+.uk-link-reset a:hover {
+color: inherit !important;
+text-decoration: none !important; }
+
+/*
+* Reset
+* 1. Prepare lists
+* 2. Prepare links
+* 3. Remove default focus style
+*/
+/* 1 */
+.uk-nav,
+.uk-nav ul {
+margin: 0;
+padding: 0;
+list-style: none; }
+
+/* 2 */
+.uk-nav li > a {
+display: block;
+text-decoration: none; }
+
+/* 3 */
+.uk-nav li > a:focus {
+outline: none; }
+
+/*
+* Items
+* Must target `a` elements to exclude other elements (e.g. lists)
+*/
+.uk-nav > li > a {
+padding: 5px 0; }
+
+/* Sublists
+========================================================================== */
+/*
+* Level 2
+* `ul` needed for higher specificity to override padding
+*/
+ul.uk-nav-sub {
+padding: 5px 0 5px 15px; }
+
+/*
+* Level 3 and deeper
+*/
+.uk-nav-sub ul {
+padding-left: 15px; }
+
+/*
+* Items
+*/
+.uk-nav-sub a {
+padding: 2px 0; }
+
+/* Parent icon modifier
+========================================================================== */
+.uk-nav-parent-icon > .uk-parent > a::after {
+content: "";
+width: 1.5em;
+height: 1.5em;
+float: right;
+background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%221.1%22%20points%3D%2210%201%204%207%2010%2013%22%20%2F%3E%0A%3C%2Fsvg%3E");
+background-repeat: no-repeat;
+background-position: 50% 50%; }
+
+.uk-nav-parent-icon > .uk-parent.uk-open > a::after {
+background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%221.1%22%20points%3D%221%204%207%2010%2013%204%22%20%2F%3E%0A%3C%2Fsvg%3E"); }
+
+/* Header
+========================================================================== */
+.uk-nav-header {
+padding: 5px 0;
+text-transform: uppercase;
+font-size: 0.875rem; }
+
+.uk-nav-header:not(:first-child) {
+margin-top: 20px; }
+
+/* Divider
+========================================================================== */
+.uk-nav-divider {
+margin: 5px 0; }
+
+/* Default modifier
+========================================================================== */
+.uk-nav-default {
+font-size: 0.875rem; }
+
+/*
+* Items
+*/
+.uk-nav-default > li > a {
+color: #999; }
+
+/* Hover + Focus */
+.uk-nav-default > li > a:hover,
+.uk-nav-default > li > a:focus {
+color: #666; }
+
+/* Active */
+.uk-nav-default > li.uk-active > a {
+color: #333; }
+
+/*
+* Header
+*/
+.uk-nav-default .uk-nav-header {
+color: #333; }
+
+/*
+* Divider
+*/
+.uk-nav-default .uk-nav-divider {
+border-top: 1px solid #E5E5E5; }
+
+/*
+* Sublists
+*/
+.uk-nav-default .uk-nav-sub a {
+color: #999; }
+
+.uk-nav-default .uk-nav-sub a:hover,
+.uk-nav-default .uk-nav-sub a:focus {
+color: #666; }
+
+/* Primary modifier
+========================================================================== */
+/*
+* Items
+*/
+.uk-nav-primary > li > a {
+font-size: 1.5rem;
+line-height: 1.5;
+color: #999; }
+
+/* Hover + Focus */
+.uk-nav-primary > li > a:hover,
+.uk-nav-primary > li > a:focus {
+color: #666; }
+
+/* Active */
+.uk-nav-primary > li.uk-active > a {
+color: #333; }
+
+/*
+* Header
+*/
+.uk-nav-primary .uk-nav-header {
+color: #333; }
+
+/*
+* Divider
+*/
+.uk-nav-primary .uk-nav-divider {
+border-top: 1px solid #E5E5E5; }
+
+/*
+* Sublists
+*/
+.uk-nav-primary .uk-nav-sub a {
+color: #999; }
+
+.uk-nav-primary .uk-nav-sub a:hover,
+.uk-nav-primary .uk-nav-sub a:focus {
+color: #666; }
+
+/* Alignment modifier
+========================================================================== */
+.uk-nav-center {
+text-align: center; }
+
+/* Sublists */
+.uk-nav-center .uk-nav-sub,
+.uk-nav-center .uk-nav-sub ul {
+padding-left: 0; }
+
+/* Parent icon modifier  */
+.uk-nav-center.uk-nav-parent-icon > .uk-parent > a::after {
+position: absolute; }
+
+/* ========================================================================
+Component: Navbar
+========================================================================== */
+/*
+* 1. Create position context to center navbar group
+*/
+.uk-navbar {
+display: flex;
+/* 1 */
+position: relative; }
+
+/* Container
+========================================================================== */
+.uk-navbar-container:not(.uk-navbar-transparent) {
+background: #F8F8F8; }
+
+/*
+* Remove pseudo elements created by micro clearfix as precaution (if Container component is used)
+*/
+.uk-navbar-container > ::before,
+.uk-navbar-container > ::after {
+display: none !important; }
+
+/* Groups
+========================================================================== */
+/*
+* 1. Align navs and items vertically if they have a different height
+* 2. Note: IE 11 requires an extra `div` which affects the center selector
+*/
+.uk-navbar-left,
+.uk-navbar-right,
+.uk-navbar-center,
+.uk-navbar-center-left > *,
+.uk-navbar-center-right > * {
+display: flex;
+/* 1 */
+align-items: center; }
+
+/*
+* Horizontal alignment
+* 1. Create position context for centered navbar with sub groups (left/right)
+* 2. Needed for dropdowns because a new position context is created
+*    `z-index` must be smaller than off-canvas
+* 3. Fix text wrapping if the centered section is larger than 50% of the navbar
+* 4. Align sub groups for centered navbar
+*/
+.uk-navbar-right {
+margin-left: auto; }
+
+.uk-navbar-center:only-child {
+margin-left: auto;
+margin-right: auto;
+/* 1 */
+position: relative; }
+
+.uk-navbar-center:not(:only-child) {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+/* 2 */
+z-index: 990; }
+
+/* 3 */
+.uk-navbar-center:not(:only-child) .uk-navbar-nav > li > a,
+.uk-navbar-center:not(:only-child) .uk-navbar-item,
+.uk-navbar-center:not(:only-child) .uk-navbar-toggle {
+white-space: nowrap; }
+
+/* 4 */
+.uk-navbar-center-left,
+.uk-navbar-center-right {
+position: absolute;
+top: 0; }
+
+.uk-navbar-center-left {
+right: 100%; }
+
+.uk-navbar-center-right {
+left: 100%; }
+
+[class*='uk-navbar-center-'] .uk-navbar-nav > li > a,
+[class*='uk-navbar-center-'] .uk-navbar-item,
+[class*='uk-navbar-center-'] .uk-navbar-toggle {
+white-space: nowrap; }
+
+/* Nav
+========================================================================== */
+/*
+* 1. Reset list
+*/
+.uk-navbar-nav {
+display: flex;
+/* 1 */
+margin: 0;
+padding: 0;
+list-style: none; }
+
+/*
+* Allow items to wrap into the next line
+* Only not `absolute` positioned groups
+*/
+.uk-navbar-left,
+.uk-navbar-right,
+.uk-navbar-center:only-child {
+flex-wrap: wrap; }
+
+/*
+* Items
+* 1. Center content vertically and horizontally
+* 2. Dimensions
+* 3. Style
+* 4. Required for `a`
+*/
+.uk-navbar-nav > li > a,
+.uk-navbar-item,
+.uk-navbar-toggle {
+/* 1 */
+display: flex;
+justify-content: center;
+align-items: center;
+/* 2 */
+box-sizing: border-box;
+min-height: 40px;
+padding: 0 15px;
+/* 3 */
+font-size: 0.875rem;
+font-family:  sans-serif,Arial;
+/* 4 */
+text-decoration: none; }
+
+/*
+* Nav items
+*/
+.uk-navbar-nav > li > a {
+color: #999;
+text-transform: uppercase;
+transition: 0.1s ease-in-out;
+transition-property: color, background-color; }
+
+/*
+* Hover
+* Apply hover style also to focus state and if dropdown is opened
+*/
+.uk-navbar-nav > li:hover > a,
+.uk-navbar-nav > li > a:focus,
+.uk-navbar-nav > li > a.uk-open {
+color: #666;
+outline: none; }
+
+/* OnClick */
+.uk-navbar-nav > li > a:active {
+color: #333; }
+
+/* Active */
+.uk-navbar-nav > li.uk-active > a {
+color: #333; }
+
+/* Item
+========================================================================== */
+.uk-navbar-item {
+color: #666; }
+
+/* Toggle
+========================================================================== */
+.uk-navbar-toggle {
+color: #999; }
+
+.uk-navbar-toggle:hover,
+.uk-navbar-toggle:focus,
+.uk-navbar-toggle.uk-open {
+color: #666;
+outline: none;
+text-decoration: none; }
+
+/*
+* Icon
+* Adopts `uk-icon`
+*/
+/* Hover + Focus */
+/* Subtitle
+========================================================================== */
+.uk-navbar-subtitle {
+font-size: 0.875rem; }
+
+/* Style modifiers
+========================================================================== */
+/* Dropdown
+========================================================================== */
+/*
+* Adopts `uk-dropdown`
+* 1. Hide by default
+* 2. Set position
+* 3. Set a default width
+* 4. Style
+*/
+.uk-navbar-dropdown {
+/* 1 */
+display: none;
+/* 2 */
+position: absolute;
+z-index: 1020;
+/* 3 */
+box-sizing: border-box;
+width: 200px;
+/* 4 */
+padding: 25px;
+background: #FFF;
+color: #666;
+box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15); }
+
+/* Show */
+.uk-navbar-dropdown.uk-open {
+display: block; }
+
+/*
+* Direction / Alignment modifiers
+*/
+/* Direction */
+[class*='uk-navbar-dropdown-top'] {
+margin-top: -15px; }
+
+[class*='uk-navbar-dropdown-bottom'] {
+margin-top: 15px; }
+
+[class*='uk-navbar-dropdown-left'] {
+margin-left: -15px; }
+
+[class*='uk-navbar-dropdown-right'] {
+margin-left: 15px; }
+
+/*
+* Grid
+* Adopts `uk-grid`
+*/
+/* Gutter Horizontal */
+.uk-navbar-dropdown-grid {
+margin-left: -50px; }
+
+.uk-navbar-dropdown-grid > * {
+padding-left: 50px; }
+
+/* Gutter Vertical */
+.uk-navbar-dropdown-grid > .uk-grid-margin {
+margin-top: 50px; }
+
+/* Stack */
+.uk-navbar-dropdown-stack .uk-navbar-dropdown-grid > * {
+width: 100% !important; }
+
+/*
+* Width modifier
+*/
+.uk-navbar-dropdown-width-2:not(.uk-navbar-dropdown-stack) {
+width: 400px; }
+
+.uk-navbar-dropdown-width-3:not(.uk-navbar-dropdown-stack) {
+width: 600px; }
+
+.uk-navbar-dropdown-width-4:not(.uk-navbar-dropdown-stack) {
+width: 800px; }
+
+.uk-navbar-dropdown-width-5:not(.uk-navbar-dropdown-stack) {
+width: 1000px; }
+
+/*
+* Dropbar modifier
+*/
+.uk-navbar-dropdown-dropbar {
+margin-top: 0;
+margin-bottom: 0;
+box-shadow: none; }
+
+/* Dropdown Nav
+* Adopts `uk-nav`
+========================================================================== */
+.uk-navbar-dropdown-nav {
+font-size: 0.875rem; }
+
+/*
+* Items
+*/
+.uk-navbar-dropdown-nav > li > a {
+color: #999; }
+
+/* Hover + Focus */
+.uk-navbar-dropdown-nav > li > a:hover,
+.uk-navbar-dropdown-nav > li > a:focus {
+color: #666; }
+
+/* Active */
+.uk-navbar-dropdown-nav > li.uk-active > a {
+color: #333; }
+
+/*
+* Header
+*/
+.uk-navbar-dropdown-nav .uk-nav-header {
+color: #333; }
+
+/*
+* Divider
+*/
+.uk-navbar-dropdown-nav .uk-nav-divider {
+border-top: 1px solid #E5E5E5; }
+
+/*
+* Sublists
+*/
+.uk-navbar-dropdown-nav .uk-nav-sub a {
+color: #999; }
+
+.uk-navbar-dropdown-nav .uk-nav-sub a:hover,
+.uk-navbar-dropdown-nav .uk-nav-sub a:focus {
+color: #666; }
+
+/* Dropbar
+========================================================================== */
+.uk-navbar-dropbar {
+background: #FFF; }
+
+/*
+* Slide modifier
+*/
+.uk-navbar-dropbar-slide {
+position: absolute;
+z-index: 980;
+left: 0;
+right: 0;
+box-shadow: 0 5px 7px rgba(0, 0, 0, 0.05); }
+
+/*
+* Navbar
+*/
+.uk-navbar-container > .uk-container .uk-navbar-left {
+margin-left: -15px;
+margin-right: -15px; }
+
+.uk-navbar-container > .uk-container .uk-navbar-right {
+margin-right: -15px; }
+
+/*
+* Grid Divider
+*/
+.uk-navbar-dropdown-grid > * {
+position: relative; }
+
+.uk-navbar-dropdown-grid > :not(.uk-first-column)::before {
+content: "";
+position: absolute;
+top: 0;
+bottom: 0;
+left: 25px;
+border-left: 1px solid #E5E5E5; }
+
+/* Vertical */
+.uk-navbar-dropdown-grid.uk-grid-stack > .uk-grid-margin::before {
+content: "";
+position: absolute;
+top: -25px;
+left: 50px;
+right: 0;
+border-top: 1px solid #E5E5E5; }
+
+/* ========================================================================
+Component: Subnav
+========================================================================== */
+/*
+* 1. Allow items to wrap into the next line
+* 2. Gutter
+* 3. Reset list
+*/
+.uk-subnav {
+display: flex;
+/* 1 */
+flex-wrap: wrap;
+/* 2 */
+margin-left: -20px;
+/* 3 */
+padding: 0;
+list-style: none; }
+
+/*
+* 1. Space is allocated solely based on content dimensions: 0 0 auto
+* 2. Gutter
+* 3. Create position context for dropdowns
+*/
+.uk-subnav > * {
+/* 1 */
+flex: none;
+/* 2 */
+padding-left: 20px;
+/* 3 */
+position: relative; }
+
+/* Items
+========================================================================== */
+/*
+* Items must target `a` elements to exclude other elements (e.g. dropdowns)
+* Using `:first-child` instead of `a` to support `span` elements for text
+* 1. Prevent gap if child element is `inline-block`, e.g. an icon
+* 2. Style
+*/
+.uk-subnav > * > :first-child {
+/* 1 */
+display: block;
+/* 2 */
+color: #999;
+border-radius: 4px;
+font-size: 0.875rem;
+text-transform: uppercase;
+transition: 0.1s ease-in-out;
+transition-property: color, background-color; }
+
+/* Hover + Focus */
+.uk-subnav > * > a:hover,
+.uk-subnav > * > a:focus {
+color: #666;
+text-decoration: none;
+outline: none; }
+
+/* Active */
+.uk-subnav > .uk-active > a {
+color: #333; }
+
+/* Divider modifier
+========================================================================== */
+/*
+* 1. Align items and divider vertically
+*/
+.uk-subnav-divider > * {
+/* 1 */
+display: flex;
+align-items: center; }
+
+/*
+* Divider
+* `nth-child` makes it also work without JS if it's only one row
+*/
+.uk-subnav-divider > :nth-child(n+2):not(.uk-first-column)::before {
+content: "";
+height: 1.5em;
+margin-left: 0px;
+margin-right: 20px;
+border-left: 1px solid #E5E5E5; }
+
+/* Pill modifier
+========================================================================== */
+.uk-subnav-pill > * > :first-child {
+padding: 5px 10px;
+background: transparent;
+color: #999; }
+
+/* Hover + Focus */
+.uk-subnav-pill > * > a:hover,
+.uk-subnav-pill > * > a:focus {
+background-color: #F8F8F8;
+color: #666; }
+
+/* OnClick */
+.uk-subnav-pill > * > a:active {
+background-color: #F8F8F8;
+color: #666; }
+
+/* Active */
+.uk-subnav-pill > .uk-active > a {
+background-color: #1e87f0;
+color: #fff; }
+
+/* Disabled
+* The same for all style modifiers
+========================================================================== */
+.uk-subnav > .uk-disabled > a {
+color: #999; }
+
+/* ========================================================================
+Component: Breadcrumb
+========================================================================== */
+/*
+* 1. Allow items to wrap into the next line
+* 2. Reset list
+*/
+.uk-breadcrumb {
+display: flex;
+/* 1 */
+flex-wrap: wrap;
+/* 2 */
+padding: 0;
+list-style: none; }
+
+/*
+* Space is allocated solely based on content dimensions: 0 0 auto
+*/
+.uk-breadcrumb > * {
+flex: none; }
+
+/* Items
+========================================================================== */
+.uk-breadcrumb > * > * {
+display: inline-block;
+font-size: 0.875rem;
+color: #999; }
+
+/* Hover + Focus */
+.uk-breadcrumb > * > :hover,
+.uk-breadcrumb > * > :focus {
+color: #666;
+text-decoration: none; }
+
+/* Disabled */
+/* Active */
+.uk-breadcrumb > :last-child > * {
+color: #666; }
+
+/*
+* Divider
+* `nth-child` makes it also work without JS if it's only one row
+*/
+.uk-breadcrumb > :nth-child(n+2):not(.uk-first-column)::before {
+content: "/";
+display: inline-block;
+margin: 0 20px;
+color: #999; }
+
+@media (max-width: 640px) {
+.uk-breadcrumb > :nth-last-child(2):not(.uk-first-column)::before {
+content: "←";
+margin: 0 10px 0 -20px; } }
+
+.uk-breadcrumb > :not(:nth-last-child(2)) {
+display: none; }
+@media (min-width: 640px) {
+.uk-breadcrumb > :not(:nth-last-child(2)) {
+display: inline; } }
+
+/* ========================================================================
+Component: Pagination
+========================================================================== */
+/*
+* 1. Allow items to wrap into the next line
+* 2. Gutter
+* 3. Reset list
+*/
+.uk-pagination {
+display: flex;
+/* 1 */
+flex-wrap: wrap;
+/* 2 */
+margin-left: -20px;
+/* 3 */
+padding: 0;
+list-style: none; }
+
+/*
+* 1. Space is allocated solely based on content dimensions: 0 0 auto
+* 2. Gutter
+* 3. Create position context for dropdowns
+*/
+.uk-pagination > * {
+/* 1 */
+flex: none;
+/* 2 */
+padding-left: 20px;
+/* 3 */
+position: relative; }
+
+/* Items
+========================================================================== */
+/*
+* 1. Prevent gap if child element is `inline-block`, e.g. an icon
+* 2. Style
+*/
+.uk-pagination > * > * {
+/* 1 */
+display: block;
+/* 2 */
+color: #999;
+transition: color 0.1s ease-in-out; }
+
+/* Hover + Focus */
+.uk-pagination > * > :hover,
+.uk-pagination > * > :focus {
+color: #666;
+text-decoration: none; }
+
+/* Active */
+.uk-pagination > .uk-active > * {
+color: #666; }
+
+/* Disabled */
+.uk-pagination > .uk-disabled > * {
+color: #999; }
+
+/* Tablet landscape and bigger */
+@media (min-width: 960px) {
+h3, .uk-h3 {
+font-size: 1.5rem; } }
+
+.tm-toolbar-container:not(.uk-navbar-transparent) {
+background: #222; }
+
+.tm-toolbar-container .uk-navbar-item {
+color: #999; }
+
+.tm-toolbar-container .uk-navbar-nav > li > a {
+text-transform: none; }
+
+.tm-toolbar-container .uk-navbar-nav > li > a,
+.tm-toolbar-container .uk-navbar-item,
+.tm-toolbar-container .uk-navbar-toggle {
+height: 40px; }
+
+.dede-navbar-container:not(.uk-navbar-transparent) {
+background: #FFF; }
+
+.dede-navbar-container {
+border-bottom: 1px solid #E5E5E5; }
+
+.dede-navbar-container-fixed {
+z-index: 1005; }
+
+.dede-navbar-container .uk-navbar-nav > li > a,
+.dede-navbar-container .uk-navbar-item,
+.dede-navbar-container .uk-navbar-toggle {
+height: 60px; }
+
+.dede-navbar-button {
+position: relative;
+padding: 0 10px; }
+@media (min-width: 640px) {
+.dede-navbar-button {
+padding: 0 15px; } }
+.dede-navbar-button .uk-badge {
+font-size: .625rem;
+position: absolute;
+top: 10px;
+right: 5px;
+min-width: 18px;
+height: 18px; }
+
+.tm-link-to-all > * {
+vertical-align: middle; }
+
+.tm-link-to-all > .uk-icon {
+position: relative;
+left: 0;
+margin-left: 3px;
+transition: left 60ms; }
+
+.tm-link-to-all:hover > .uk-icon {
+left: 2px; }
+
+.tm-aside-column {
+min-width: 270px; }
+
+.tm-change-view {
+display: none; }
+@media (min-width: 768px) {
+.tm-change-view {
+display: flex; } }
+
+.tm-product-card {
+display: flex;
+flex-direction: row;
+transition: box-shadow 0.1s ease-in-out;
+background-color: #FFF;
+border-left: 1px solid #E5E5E5;
+border-bottom: 1px solid #E5E5E5; }
+.tm-product-card.uk-first-column {
+border-left: none; }
+@media (max-width: 767px) {
+.tm-product-card {
+width: 100%; } }
+@media (min-width: 768px) {
+.tm-product-card {
+flex-direction: column; }
+.tm-product-card:hover {
+z-index: 2;
+box-shadow: 0 28px 50px rgba(0, 0, 0, 0.16); } }
+
+.tm-product-card-media {
+position: relative;
+box-sizing: border-box;
+width: 40%;
+flex-shrink: 0; }
+.tm-product-card-media > .tm-ratio {
+height: 100%; }
+.tm-product-card-media > .tm-ratio > .tm-media-box {
+padding: 15px; }
+@media (min-width: 640px) {
+.tm-product-card-media > .tm-ratio > .tm-media-box {
+padding: 20px; } }
+@media (min-width: 768px) {
+.tm-product-card-media {
+width: 100%; } }
+
+.tm-product-card-body {
+display: flex;
+flex-direction: column;
+padding: 15px 15px 15px 0;
+flex-grow: 1; }
+@media (min-width: 640px) {
+.tm-product-card-body {
+padding: 20px 20px 20px 0; } }
+@media (min-width: 768px) {
+.tm-product-card-body {
+padding: 0 20px 20px 20px; } }
+
+.tm-product-card-title {
+font-size: 16px;
+line-height: 22px;
+display: -webkit-box;
+display: -ms-flexbox;
+overflow: hidden;
+max-height: 66px;
+margin: 0 0 20px;
+text-overflow: ellipsis;
+color: inherit;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical; }
+@media (min-width: 640px) {
+.tm-product-card-title {
+font-size: 18px;
+line-height: 24px;
+max-height: 72px; } }
+
+.tm-product-card-properties {
+display: none;
+margin: 0; }
+.tm-product-card-properties > li:nth-child(n+2) {
+margin-top: 5px; }
+
+.tm-product-card-shop {
+display: flex;
+margin-top: auto;
+align-items: flex-end; }
+
+.tm-product-card-prices {
+flex-grow: 1; }
+
+.tm-product-card-price {
+font-size: 20px;
+font-weight: 500;
+line-height: 1; }
+
+.tm-product-card-add {
+display: flex;
+margin-left: 10px;
+align-items: flex-end;
+flex-shrink: 0; }
+
+.tm-product-card-add-button {
+position: relative;
+bottom: -8px;
+display: inline-flex;
+width: 36px;
+height: 36px;
+padding: 0;
+border-radius: 500px;
+justify-content: center;
+align-items: center; }
+
+.tm-product-card-add-button-text {
+display: none; }
+
+.tm-product-card-labels {
+position: absolute;
+z-index: 1;
+top: 20px;
+right: 20px; }
+.tm-product-card-labels > .uk-label {
+font-size: 10px;
+display: table;
+margin-bottom: 3px;
+margin-left: auto;
+padding: 0 3px; }
+.tm-product-card-labels > .uk-label:last-child {
+margin-bottom: 0; }
+
+.tm-product-card-actions {
+margin-right: 10px;
+margin-bottom: 2px; }
+.tm-product-card-actions:only-child {
+margin-right: 0; }
+
+.tm-product-card-action {
+margin-right: 10px; }
+.tm-product-card-action:last-child {
+margin-right: 0; }
+
+.tm-product-card-action-text {
+display: none;
+border-bottom: 1px dotted; }
+
+.tm-products-list .tm-product-card {
+width: 100%;
+border-bottom: 1px solid #E5E5E5;
+box-shadow: none; }
+.tm-products-list .tm-product-card:last-child {
+border-bottom: none; }
+.tm-products-list .tm-product-card:hover {
+box-shadow: none; }
+
+@media (min-width: 768px) {
+.tm-products-list .tm-product-card {
+flex-direction: row; }
+.tm-products-list .tm-product-card-media {
+width: 33.3%; }
+.tm-products-list .tm-product-card-body {
+flex-direction: row;
+padding: 20px 20px 20px 0; }
+.tm-products-list .tm-product-card-info {
+padding-right: 20px;
+flex-grow: 1;
+flex-basis: 0%; }
+.tm-products-list .tm-product-card-properties {
+display: block; }
+.tm-products-list .tm-product-card-shop {
+display: block;
+box-sizing: border-box;
+width: 33.3%;
+min-width: 170px;
+margin: 0;
+padding-left: 20px;
+border-left: 1px solid #E5E5E5;
+flex-shrink: 0; }
+.tm-products-list .tm-product-card-price {
+font-size: 24px; }
+.tm-products-list .tm-product-card-add {
+flex-direction: column;
+margin-top: 10px;
+margin-left: 0; }
+.tm-products-list .tm-product-card-add-button {
+bottom: 0;
+width: 100%;
+height: auto;
+padding: 0px 30px;
+border-radius: 4px; }
+.tm-products-list .tm-product-card-add-button-icon {
+display: none; }
+.tm-products-list .tm-product-card-add-button-text {
+display: block; }
+.tm-products-list .tm-product-card-actions {
+display: flex;
+flex-direction: column;
+width: 100%;
+margin-top: 10px;
+margin-right: 0;
+margin-bottom: 0;
+order: 1;
+align-self: flex-start; }
+.tm-products-list .tm-product-card-actions:only-child {
+margin-top: 0; }
+.tm-products-list .tm-product-card-action {
+margin-right: 0;
+margin-bottom: 10px; }
+.tm-products-list .tm-product-card-action:last-child {
+margin-bottom: 0; }
+.tm-products-list .tm-product-card-action-text {
+display: inline;
+margin-left: 5px; } }
+
+.tm-action-button-active,
+.tm-action-button-active > * {
+color: #f0506e; }
+
+.tm-filters {
+display: none; }
+
+.tm-filters .uk-accordion > * {
+margin-top: 0;
+border-top: 1px solid #E5E5E5; }
+.tm-filters .uk-accordion > *:first-child {
+border-top: none; }
+
+.tm-filters.uk-offcanvas.uk-open {
+margin: 0;
+padding: 0; }
+
+.tm-filters.uk-offcanvas.uk-offcanvas-overlay:before {
+position: fixed; }
+
+@media (min-width: 960px) {
+.tm-filters.uk-offcanvas {
+position: static;
+display: block; }
+.tm-filters.uk-offcanvas .uk-offcanvas-bar {
+position: static;
+overflow: visible;
+width: auto;
+transform: none;
+background: none; }
+.tm-filters.uk-offcanvas .uk-offcanvas-bar > .uk-card > .uk-card-header {
+display: none; } }
+
+.tm-scrollbox {
+overflow: auto;
+max-height: 300px;
+background: linear-gradient(#FFF 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), #FFF 70%) 0 100%, radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+background-color: #FFF;
+background-repeat: no-repeat;
+background-attachment: local, local, scroll, scroll;
+background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px; }
+
+.tm-checkbox,
+.tm-radio {
+display: none; }
+.tm-checkbox + label,
+.tm-radio + label {
+position: relative;
+display: inline-flex;
+cursor: pointer; }
+.tm-checkbox + label::before,
+.tm-checkbox + label::after,
+.tm-radio + label::before,
+.tm-radio + label::after {
+content: "";
+display: block;
+width: 16px;
+height: 16px; }
+.tm-checkbox + label::before,
+.tm-radio + label::before {
+margin-top: 3px;
+margin-right: 10px;
+border: 1px solid #E5E5E5;
+flex-shrink: 0; }
+.tm-checkbox:hover + label::before,
+.tm-radio:hover + label::before {
+background-color: #F8F8F8; }
+.tm-checkbox:checked + label::before,
+.tm-radio:checked + label::before {
+border-color: transparent;
+background-color: #1e87f0; }
+.tm-checkbox + label::after,
+.tm-radio + label::after {
+position: absolute;
+top: 3px;
+left: 0;
+border: 1px solid transparent; }
+.tm-checkbox:checked + label::after,
+.tm-radio:checked + label::after {
+background-color: transparent;
+background-repeat: no-repeat;
+background-position: 50% 50%; }
+
+.tm-checkbox + label::before {
+border-radius: 4px; }
+
+.tm-radio + label::before {
+border-radius: 50%; }
+
+.tm-help-icon {
+position: relative;
+margin-left: 5px;
+cursor: pointer;
+color: #999;
+border-radius: 100%;
+background-color: #F8F8F8; }
+.tm-help-icon:hover {
+color: #666; }
+
+.tm-slider-items .tm-media-box-frame {
+padding: 10px;
+transition: 0.25s linear;
+transition-property: opacity;
+opacity: 0.75; }
+
+.tm-slider-items > :hover .tm-media-box-frame {
+opacity: 1; }
+
+.tm-slider-items > .uk-active .tm-media-box-frame {
+opacity: 1;
+border-color: #1e87f0; }
+
+.tm-variations {
+margin: 0 0 0 -10px; }
+.tm-variations > * {
+padding-left: 10px; }
+.tm-variations > * > :first-child {
+color: #666;
+border: 1px solid #E5E5E5; }
+.tm-variations > .uk-active > a {
+color: #666;
+border-color: #1e87f0;
+background-color: transparent; }
+.tm-variations > * > .tm-variation-color {
+padding: 5px;
+border-radius: 50%; }
+
+.tm-variation-color > div {
+width: 20px;
+height: 20px;
+border-radius: 50%; }
+
+.tm-product-info {
+border-top: 1px solid #E5E5E5; }
+@media (min-width: 960px) {
+.tm-product-info {
+min-width: 390px;
+border-top: none;
+border-left: 1px solid #E5E5E5; } }
+
+.tm-product-price {
+font-size: 32px;
+font-weight: 500;
+line-height: 1; }
+
+.tm-product-add-button {
+padding: 0 15px; }
+@media (min-width: 420px) {
+.tm-product-add-button {
+padding: 0 25px; } }
+
+.tm-product-description {
+border-top: #E5E5E5 solid 1px; }
+
+.tm-product-nav {
+display: flex;
+overflow: auto;
+background-color: #FFF; }
+.tm-product-nav > .uk-subnav {
+display: flex;
+margin: 0 auto;
+padding: 10px 15px;
+flex-wrap: nowrap;
+flex-shrink: 0; }
+@media (min-width: 640px) {
+.tm-product-nav > .uk-subnav {
+padding: 20px; } }
+.tm-product-nav > .uk-subnav > :first-child {
+padding-left: 0; }
+
+.tm-product-nav-fixed {
+transition: box-shadow 0.1s ease-in-out;
+box-shadow: inset -1px 0 0 #E5E5E5; }
+
+.tm-quantity-input {
+width: 60px;
+margin: 0 5px;
+text-align: center; }
+
+.tm-slidenav.uk-invisible {
+visibility: visible !important;
+pointer-events: none;
+opacity: 0.3; }
+
+.tm-checkout {
+counter-reset: list; }
+
+.tm-checkout-title::before {
+content: counter(list) ". ";
+counter-increment: list;
+color: #999; }
+
+.tm-choose {
+position: relative;
+width: 100%;
+padding: 40px 20px 10px;
+cursor: pointer;
+border: 1px solid #E5E5E5;
+border-radius: 4px; }
+.tm-choose.uk-active {
+border-color: #1e87f0; }
+.tm-choose:not(.uk-active):hover, .tm-choose:not(.uk-active):focus {
+background-color: #F8F8F8; }
+.tm-choose::before, .tm-choose::after {
+content: "";
+position: absolute;
+top: 12px;
+left: 50%;
+display: block;
+width: 16px;
+height: 16px;
+cursor: pointer;
+transform: translate(-50%, 0); }
+.tm-choose::before {
+border: 1px solid #E5E5E5;
+border-radius: 50%;
+flex-shrink: 0; }
+.tm-choose:hover::before {
+background-color: #F8F8F8; }
+.tm-choose.uk-active::before {
+border-color: transparent;
+background-color: #1e87f0; }
+.tm-choose::after {
+position: absolute;
+border: 1px solid transparent; }
+.tm-choose.uk-active::after {
+background-color: transparent;
+background-repeat: no-repeat;
+background-position: 50% 50%;
+background-image: url("../../images/backgrounds/form-radio.svg"); }
+.tm-choose .tm-choose-title {
+font-size: 0.875rem;
+text-align: center;
+text-transform: uppercase;
+color: #999; }
+.tm-choose.uk-active .tm-choose-title {
+color: #666; }
+.tm-choose .tm-choose-description {
+font-size: 0.6875rem;
+margin-top: 5px;
+text-align: center;
+color: #999; }
+
+.uk-card-body.uk-card-small .tm-wrapper,
+.uk-card-small .uk-card-body .tm-wrapper {
+margin-right: -20px;
+margin-left: -20px; }
+
+.uk-card-body.uk-card-small .tm-wrapper:first-child,
+.uk-card-small .uk-card-body .tm-wrapper:first-child {
+margin-top: -20px; }
+
+.uk-card-body.uk-card-small .tm-wrapper:last-child,
+.uk-card-small .uk-card-body .tm-wrapper:last-child {
+margin-bottom: -20px; }
+
+.uk-card-body.uk-card-small .tm-wrapper figcaption,
+.uk-card-small .uk-card-body .tm-wrapper figcaption {
+margin-right: 20px;
+margin-left: 20px; }
+
+.uk-card-body .tm-wrapper {
+margin-right: -30px;
+margin-left: -30px; }
+
+.uk-card-body .tm-wrapper:first-child {
+margin-top: -30px; }
+
+.uk-card-body .tm-wrapper:last-child {
+margin-bottom: -30px; }
+
+.uk-card-body .tm-wrapper figcaption {
+margin-top: 5px;
+margin-right: 30px;
+margin-left: 30px;
+text-align: center;
+color: #999; }
+
+@media (min-width: 1200px) {
+.uk-card-body .tm-wrapper {
+margin-right: -40px;
+margin-left: -40px; }
+.uk-card-body .tm-wrapper:first-child {
+margin-top: -40px; }
+.uk-card-body .tm-wrapper:last-child {
+margin-bottom: -40px; } }
+
+table,
+.tm-compare-table {
+height: 0; }
+table td,
+table th,
+.tm-compare-table td,
+.tm-compare-table th {
+vertical-align: top; }
+table th,
+.tm-compare-table th {
+font-size: 16px;
+text-transform: none; }
+
+.tm-compare-table tbody > tr:nth-of-type(even) {
+background-color: #F8F8F8; }
+table,
+.tm-compare-table-column {
+min-width: 240px; }
+
+.tm-rating {
+margin-left: -3px;
+color: #999; }
+.tm-rating > * {
+padding-left: 3px; }
+
+.tm-reviews-column {
+min-width: 200px; }
+
+.tm-cart-quantity-column {
+min-width: 115px !important; }
+
+.dede-nav > li > a {
+padding: 10px 0; }
+
+.dede-nav > li.uk-active > a,
+.dede-nav > li > a:hover {
+box-shadow: inset 2px 0 0 #1e87f0; }
+
+.dede-nav > li.uk-active > a {
+font-weight: 500; }
+
+.tm-ratio {
+position: relative; }
+.tm-ratio::before {
+content: "";
+display: block;
+width: 100%; }
+.tm-ratio > * {
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 100%; }
+
+.tm-ratio-1-1::before {
+padding-top: 100%; }
+
+.tm-ratio-3-2::before {
+padding-top: 66.66%; }
+
+.tm-ratio-4-3::before {
+padding-top: 75%; }
+
+.tm-ratio-16-9::before {
+padding-top: 56.25%; }
+
+.tm-media-box {
+display: block;
+box-sizing: border-box;
+height: 100%; }
+
+.tm-media-box-frame {
+border: 1px solid #E5E5E5;
+border-radius: 4px; }
+
+.tm-media-box-zoom {
+cursor: zoom-in; }
+
+.tm-media-box-wrap {
+position: relative;
+height: 100%;
+margin: 0; }
+.tm-media-box-wrap > * {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+display: block;
+max-width: 100%;
+max-height: 100%; }
+
+.tm-pseudo {
+border-bottom: 1px dotted; }
+
+@media (max-width: 640px) {
+.tm-ignore-container {
+margin-right: -15px;
+margin-left: -15px;
+border-radius: 0; } }
+
+.tm-shadow-remove {
+box-shadow: none; }
+
+.tm-shine {
+position: relative;
+overflow: hidden; }
+.tm-shine::after {
+content: "";
+position: absolute;
+top: 0;
+left: -30px;
+width: 30px;
+height: 100%;
+transform: skew(-10deg, 0deg);
+opacity: 0.3;
+background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 1%, rgba(255, 255, 255, 0.6) 30%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0.85) 70%, rgba(255, 255, 255, 0.85) 71%, rgba(255, 255, 255, 0) 100%); }
+.tm-shine:hover::after {
+left: 100%;
+transition: .6s ease-out; }
+
+.tm-grayscale {
+filter: grayscale(100%) opacity(50%); }
+.tm-grayscale:hover {
+filter: none; }
+
+.dede-tab-menu {
+    font-size:12px;
+    margin-top: -5px
+}
+.dede-header-topnav > ul > li > a{
+    font-size:12px;
+}
+
+.dede-news li{
+    margin-top: 10px;
+}
+
+.dede-product-list-card-add-button{
+    position: relative;
+    bottom: 0px;
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 500px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.uk-button-primary {
+    background-color: #e2833c;
+    color: #fff;
+    border: 1px solid transparent;
+  }
+  
+  
+  .uk-button-primary:focus, 
+  .uk-button-primary:hover {
+    background-color: #eea86f;
+    color: #fff;
+  }
+
+  
+  /***
+ *	DedeCMS table Style (gray)
+ *	dedecms.com  Author pigz  2008-11-26 11:45
+ **/
+
+/*------------------------表格------------------------*/
+.red{
+	color:#F00;
+	margin-right:5px;
+	font-family:"宋体";
+	}
+table{
+	width:100%;
+	margin:0px auto 7px;
+	font-size:12px;
+	overflow:hidden;
+	border:1px solid #EEE;
+/*	border-collapse:collapse;*/
+}
+table tbody * a{
+	color:#0066CC;
+}
+table * a:hover{
+	color:#FF0000;
+	text-decoration:underline;
+}
+/*表格标题*/
+table caption{
+	text-align:left;
+	height:24px;
+	line-height:24px;
+	font-size:14px;
+	text-indent:6px;
+	color:#000;
+	letter-spacing:2px;
+}
+/*Opera Hack @media all and (min-width: 0px){.uctable caption{min-height:25px;}}*/
+/*表格头*/
+table thead tr td{
+	height:23px;
+	line-height:23px;
+	text-indent:12px;
+	border-top:1px solid #FFF;
+	border-bottom:1px solid #FFF;
+	background:url(images/table_tbg.gif) 1px 1px repeat-x;
+	background:#F8F8F8;
+	font-weight:bold;
+	letter-spacing:2px;
+	color:#999;
+}
+
+table thead tr td strong{/*表格头:标题*/
+	letter-spacing:1px;
+	font-size:12px;
+	color:#333;
+}
+table thead tr td span{/*表格头:介绍*/
+	color:#999;
+}
+table thead tr td  p{/*表格头:链接区域*/
+	height:22px;
+	display:inline;
+	float:right;
+	margin:-24px 10px 0 0;
+	overflow:hidden;
+	line-height:21px;
+}
+table thead tr td  p *{/*表格头:全部向右浮动*/
+	float:right;
+}
+table thead tr td a.thlink{/*表格头:链接样式*/
+	text-decoration:underline;
+}
+table thead tr td a.thlink:hover{
+	text-decoration:none;
+}
+
+table thead tr th{/*表格内容:分类*/
+	height:25px;
+	font-weight:normal;
+	text-indent:10px;
+	text-align:left;
+	line-height:15px;
+}
+/*表格内容*/
+table tbody {
+	overflow:hidden;
+	text-align:left;
+}
+table tbody tr th{/*表格内容:分类*/
+	background:#FFE;
+	padding-top:3px;
+	line-height:15px;
+	text-indent:10px;
+	letter-spacing:1px;
+	font-weight:normal;
+	border-top:1px solid #EEE;
+	border-bottom:1px solid #DBDFE1;
+	padding-top:4px;
+	padding-bottom:4px;
+}
+table tbody tr th .toggle{
+	width:15px;
+	height:13px;
+	border:none;
+	cursor:pointer;
+	vertical-align:middle;
+}
+table tbody tr th small{
+	font-size:12px;
+	color:#999;
+	margin-left:4px;
+	margin-right:4px;
+}
+table tbody tr td{/*表格内容:列表*/
+	padding:8px;
+	color:#333;
+	vertical-align:top;
+	border-bottom:1px solid #F0F0F0;
+}
+table tbody tr td.td1{
+	background:#FEFEFE;
+	text-align:right;
+	color:#787;
+	vertical-align:middle;
+}
+table tbody tr td.tdbig{
+	font-size:14px;
+	vertical-align:middle;
+	text-align:center;
+}
+table tbody tr td p{/*表格内容:列表:段落*/
+	line-height:21px;
+	padding:2px;
+}
+table tbody tr td p strong img{/*表格内容:列表:标题图标垂直居中对齐*/
+	vertical-align:middle;
+}
+table tbody tr td img{ /*表格内容:列表:常规图片垂直顶部对齐*/
+	vertical-align:top;
+	margin:0px 10px 5px 0px;
+}
+table tbody tr td .middle{
+	vertical-align:middle;
+}
+table tbody tr td small{ /*表格内容:列表:注释性文字*/
+	color:#888;
+	font-size:12px;
+	overflow:hidden;
+}
+table tbody tr td big{ /*表格内容:列表:强调性文字*/
+	font-size:14px;
+	overflow:hidden;
+	letter-spacing:1px;
+}
+
+
+table tfoot tr td{
+	padding:10px;
+	line-height:25px;
+	text-align:center;
+}
+table tfoot * a{
+    color:#666;
+}
+table tfoot tr td p{
+	line-height:21px;
+	margin-bottom:10px;
+}
+
+/*其他*/
+.trlist tbody tr td{/*列表类型的表格使行居中对齐*/
+	vertical-align:middle;
+}

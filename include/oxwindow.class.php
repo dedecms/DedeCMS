@@ -201,7 +201,7 @@ class OxWindow
 ";
             } else {
                 if ($msg != '') {
-                    $this->myWin .= "<tr><td bgcolor='#F5F5F5'>$msg</td></tr>";
+                    $this->myWin .= "<tr><td>$msg</td></tr>";
                 } else {
                     $this->myWin .= '';
                 }

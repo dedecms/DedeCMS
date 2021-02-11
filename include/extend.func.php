@@ -4,8 +4,7 @@ function litimgurls($imgid=0)
     global $lit_imglist,$dsql;
     //获取附加表
     $row = $dsql->GetOne(
-        "SELECT c.addtable FROM #@__archives AS a LEFT JOIN #@__channeltype AS c 
-                                                            ON a.channel=c.id where a.id='$imgid'"
+        "SELECT c.addtable FROM #@__archives AS a LEFT JOIN #@__channeltype AS c ON a.channel=c.id where a.id='$imgid'"
     );
     $addtable = trim($row['addtable']);
     

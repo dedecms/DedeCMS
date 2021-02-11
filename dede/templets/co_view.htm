@@ -4,4 +4,153 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>采集内容预览</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href='co_url.php'>采集内容管理</a></li><li><span>采集内容预览</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form name='form1' action='co_view.php' method='post'><input type='hidden' name='action' value='save' /><input type='hidden' name='nid' value='<?php echo $nid; ?>' /><input type='hidden' name='aid' value='<?php echo $aid; ?>' /><!-- 选项 --><tr><td height="24" colspan="2">如果发布时间（pubdate）为空，系统将采用导入时的实际时间，‘#p#副标题#e#’字样是系统分页符号，请不要替换。</td></tr><tr height="26"><td width="12%" height="24"><strong>字段名称</strong></td><td><strong>内　容</strong></td></tr><?phpfor($i=0;$i<=$dtp->Count;$i++){$ctag = $dtp->CTags[$i];if($ctag->GetName()=="field"){$fname = $ctag->GetAtt("name");$fvalue = $ctag->GetInnerText();?><tr><td height="24"><?php echo $fname?><input type='hidden' name='noteid_<?php echo $i?>' value='<?php echo $fname?>' /></td><td><?phpif(strlen($fvalue)<200) echo "<input type='text' name=\"value_$i\" rows=\"1\" style=\"width:90%\" value='$fvalue' class='uk-input uk-form-small uk-form-width-large'>";else echo "<textarea name=\"value_$i\" rows=\"12\" style=\"width:90%\" class='uk-textarea uk-form-small uk-form-width-large'>$fvalue</textarea>";?></td></tr><?php}}$dtp->Clear();?><input type='hidden' name='endid' value='<?php echo $i?>' /><!-- /选项 --></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><div class="uk-card uk-card-small uk-card-default"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form name='form2' action='co_do.php' method='post'><input type='hidden' name='dopost' value='replace' /><input type='hidden' name='nid' value='<?php echo $nid; ?>' /><input type='hidden' name='aid' value='<?php echo $aid; ?>' /><!-- 选项 --><tr><td colspan='4' height="28"><b>内容替换：</b></td></tr><tr><td colspan='4' height="24">进行替换时会把当前节点的所有结果在原始内容中进行替换，使用正则表达式模式时，会要求再次确实，请注意使用风险。</td></tr><tr><td width='12%'>匹配模式：</td><td><input type='radio' name='regtype' value='string' class='uk-radio' checked /> 完全匹配 &nbsp;&nbsp;<input type='radio' name='regtype' value='regex' class='uk-radio' /> 正则表达式</td></tr><tr height="160"><td width='12%'>当前记录<br />原始内容参考：</td><td colspan='3'><textarea name="rs" class="uk-textarea uk-form-small" style="width:90%;height:120px;"><?php echo $body; ?></textarea></td></tr><tr height="70"><td width='12%'>要替换的字符串<br />或正则表达式：</td><td width='38%'><textarea name="fdstring" style="width:90%;height:60px" class="uk-textarea uk-form-small uk-form-width-large"></textarea></td><td width='12%'>替换为：</td><td><textarea name="rpstring" style="width:90%;height:60px" class="uk-textarea uk-form-small uk-form-width-large"></textarea></td></tr><!-- /选项 --></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>采集内容预览</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href='co_url.php'>采集内容管理</a></li><li><span>采集内容预览</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name='form1' action='co_view.php' method='post'>
+<input type='hidden' name='action' value='save' />
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='aid' value='<?php echo $aid; ?>' />
+<!-- 选项 -->
+<tr>
+<td height="24" colspan="2">如果发布时间（pubdate）为空，系统将采用导入时的实际时间，‘#p#副标题#e#’字样是系统分页符号，请不要替换。</td>
+</tr>
+<tr height="26">
+<td width="12%" height="24"><strong>字段名称</strong></td>
+<td><strong>内　容</strong></td>
+</tr>
+<?php
+for($i=0;$i<=$dtp->Count;$i++)
+{
+$ctag = $dtp->CTags[$i];
+if($ctag->GetName()=="field")
+{
+$fname = $ctag->GetAtt("name");
+$fvalue = $ctag->GetInnerText();
+?>
+<tr>
+<td height="24">
+<?php echo $fname?>
+<input type='hidden' name='noteid_<?php echo $i?>' value='<?php echo $fname?>' />
+</td>
+<td>
+<?php
+if(strlen($fvalue)<200) echo "<input type='text' name=\"value_$i\" rows=\"1\" style=\"width:90%\" value='$fvalue' class='uk-input uk-form-small uk-form-width-large'>";
+else echo "<textarea name=\"value_$i\" rows=\"12\" style=\"width:90%\" class='uk-textarea uk-form-small uk-form-width-large'>$fvalue</textarea>";
+?>
+</td>
+</tr>
+<?php
+}
+}
+$dtp->Clear();
+?>
+<input type='hidden' name='endid' value='<?php echo $i?>' />
+<!-- /选项 -->
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<div class="uk-card uk-card-small uk-card-default">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name='form2' action='co_do.php' method='post'>
+<input type='hidden' name='dopost' value='replace' />
+<input type='hidden' name='nid' value='<?php echo $nid; ?>' />
+<input type='hidden' name='aid' value='<?php echo $aid; ?>' />
+<!-- 选项 -->
+<tr>
+<td colspan='4' height="28"><b>内容替换：</b></td>
+</tr>
+<tr>
+<td colspan='4' height="24">进行替换时会把当前节点的所有结果在原始内容中进行替换，使用正则表达式模式时，会要求再次确实，请注意使用风险。</td>
+</tr>
+<tr>
+<td width='12%'>匹配模式：</td>
+<td>
+<input type='radio' name='regtype' value='string' class='uk-radio' checked /> 完全匹配 &nbsp;&nbsp;
+<input type='radio' name='regtype' value='regex' class='uk-radio' /> 正则表达式
+</td>
+</tr>
+<tr height="160">
+<td width='12%'>当前记录<br />原始内容参考：</td>
+<td colspan='3'>
+<textarea name="rs" class="uk-textarea uk-form-small" style="width:90%;height:120px;"><?php echo $body; ?></textarea>
+</td>
+</tr>
+<tr height="70">
+<td width='12%'>
+要替换的字符串<br />
+或正则表达式：
+</td>
+<td width='38%'>
+<textarea name="fdstring" style="width:90%;height:60px" class="uk-textarea uk-form-small uk-form-width-large"></textarea>
+</td>
+<td width='12%'>替换为：</td>
+<td>
+<textarea name="rpstring" style="width:90%;height:60px" class="uk-textarea uk-form-small uk-form-width-large"></textarea>
+</td>
+</tr>
+<!-- /选项 -->
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

@@ -27,7 +27,7 @@ $cfg_ml = new MemberLogin();
 //获得购物车内商品,返回数组
 $Items = $cart->getItems();
 if ($cart->cartCount() < 1) {
-    ShowMsg("购物车中不存在任何商品！", "javascript:window.close();", false, 5000);
+    ShowMsg("购物车中不存在任何商品！", $cfg_cmsurl."/", false, 5000);
     exit;
 }
 @sort($Items);

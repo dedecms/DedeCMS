@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>订单信息</title>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+
+{dede:include filename="plus_header.htm"/}
+<!-- /header -->
+<main>
+<!-- 面包屑 -->
+{dede:include filename="plus_breadcrumb.htm"/}
+<!-- /面包屑 -->
+
+<section class="uk-section uk-section-default uk-section-smalle">
+    <div class="uk-container">
+    <div class="uk-article">
+
+<h2>订单信息</h2>
+
+<!--startprint1-->
+
+<div class="uk-card uk-card-small uk-card-default" style="margin-top: 40px;margin-bottom: 40px;">
+    <div class="uk-card-header">
+    <div class="uk-grid uk-grid-small uk-text-small">
+    <div class="uk-width-expand uk-first-column">
+    <span class="cat-txt">订单信息</span>
+    </div>
+    </div>
+    </div>
+    <div class="uk-card-body uk-padding-remove">
+
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="uk-table">
+        <tbody>
+          <tr>
+            <td width="15%" align="right" valign="top">订单号：</td>
+            <td><strong>
+                <?php echo $oid?>
+              </strong></td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">支付方式：</td>
+            <td>
+              <?php echo GetSta($row['state'],$oid)?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">单价(元/单位)：</td>
+            <td>
+              <?php echo $row['uprice']?>元
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">数量：</td>
+            <td>
+              <?php echo $row['cartcount']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">配送：</td>
+            <td>
+              <?echo $row['dname'];?> 费用:
+              <?php echo $row['dprice']?>元
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">总计：</td>
+            <td>
+              <?php echo $row['priceCount']?>元
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">发生时间：</td>
+            <td>
+              <?php echo GetDateTimeMk($row['stime'])?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">收货人：</td>
+            <td>
+              <?php echo $row['consignee']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">地址：</td>
+            <td>
+              <?php echo $row['address']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">邮编：</td>
+            <td>
+              <?php echo $row['zip']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">联系电话：</td>
+            <td>
+              <?php echo $row['tel']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">邮箱：</td>
+            <td>
+              <?php echo $row['email']?>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" valign="top">留言：</td>
+            <td>
+              <?php echo $row['des']?>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</div>
+
+<div class="uk-card uk-card-small uk-card-default" style="margin-top: 40px;margin-bottom: 40px;">
+  <div class="uk-card-header">
+  <div class="uk-grid uk-grid-small uk-text-small">
+  <div class="uk-width-expand uk-first-column">
+  <span class="cat-txt">商品列表</span>
+  </div>
+  </div>
+  </div>
+  <div class="uk-card-body uk-padding-remove">
+    <table cellspacing="1" class="uk-table">
+      <thead>
+        <tr>
+          <td width="22%">订单号</td>
+          <td>名称</td>
+          <td width="20%">单价(元/单位)</td>
+          <td width="10%">数量</td>
+          <td width="20%">购买时间</td>
+        </tr>
+      </thead>
+        <tbody>
+          {dede:datalist}
+          <tr>
+            <td>{dede:field.oid/}</td>
+            <td><a href="<?php echo $cfg_cmspath;?>/plus/view.php?aid={dede:field.aid/}" target="_blank">{dede:field.title/}</a></td>
+            <td><strong>{dede:field.price/}</strong></td>
+            <td>{dede:field.buynum/}</td>
+            <td>{dede:field.oid function="carTime(@me)"/}</td>
+          </tr>
+          {/dede:datalist}
+        </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">
+            <div class="pageList">{dede:pagelist listsize=5/}</div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+
+<!-- //底部模板 -->
+{dede:include filename="plus_footer.htm"/}
+</body>
+</html>
+
+

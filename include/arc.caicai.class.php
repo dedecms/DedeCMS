@@ -190,7 +190,7 @@ class Caicai extends DataListCP
             );
 
             if ($arr['litpic'] == '') {
-                $arr['litpic'] = '/assets/img/defaultpic.gif';
+                $arr['litpic'] = '/assets/img/dede_defaultpic.png';
             }
 
             if (!preg_match("#^http:\/\/#", $arr['litpic'])) {

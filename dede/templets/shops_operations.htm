@@ -4,4 +4,186 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>商店订单记录</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><span>商店订单记录</span></li></ul></span></div><!-- 搜索表单 --><ul class="uk-navbar-nav dede-card-navbar" uk-navbar ><li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=0">未付款</a></li><li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=1">已付款</a></li><li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=2">已发货</a></li><li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=4">已完成</a></li><li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php">全部</a></li><li style="margin-right: 6px;"><button class="uk-button uk-button-default uk-button-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button><div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;"><ul class="uk-nav uk-navbar-dropdown-nav" ><li><form name="form2" method="get" action="shops_operations.php"><fieldset id="dede-dropdown-margin" class="uk-fieldset"><div class="uk-margin"><input name="buyid" type="text" id="buyid" class="uk-input uk-form-small uk-flex-inline uk-width-1-1" placeholder="订单号"></div><button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button></fieldset></form></li></ul></div></li></ul><!-- /搜索表单 --></div><table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="4%"></td><td width="25%">订单号</td><td>收货人</td><td>数量</td><td width="22%">生成日期</td><td>订单价</td><td>配送费</td><td>总计</td><td>支付方式</td><td>状态</td><td>用户</td></tr></thead></table></div><!-- /列表头部 --><!-- 列表主题 --><div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><div class="uk-overflow-auto"><table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="4%"></td><td width="25%">订单号</td><td>收货人</td><td>数量</td><td width="22%">生成日期</td><td>订单价</td><td>配送费</td><td>总计</td><td>支付方式</td><td>状态</td><td>用户</td></tr></thead><tbody><!-- 内容列表 -->{dede:datalist}<tr bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';"><td><input type='checkbox' name='aids' value='{dede:field.oid/}' class='uk-checkbox dede-checkbox'></td><td><a onclick="_DedeCMS_JSCODE_Version_Open_Modal_Windows('shops_operations_cart.php?oid={dede:field.oid/}', '订单信息')"><?php echo $fields['oid'];?></a></td><td><a onclick="_DedeCMS_JSCODE_Version_Open_Modal_Windows('shops_operations_userinfo.php?oid={dede:field.oid/}', '收货人信息')"><?php echo $fields['consignee']?></a></td><td><?php echo $fields['cartcount']?></td><td><?php echo GetDateTimeMk($fields['stime'])?>(<font color="#FF0000">{dede:field.stime function="floorTime(time()-@me,@me)"/}</font>)</td><td><?php echo $fields['price']?></td><td><?php echo $fields['dprice']?></td><td><?php echo $fields['priceCount']?></td><td><?php echo GetsType($fields['paytype'])?></td><td><?php echo GetSta($fields['state'])?></td><td><?php echo GetMemberID($fields['userid'])?></td></tr>{/dede:datalist}<!-- /内容列表 --></tbody><!-- 批量操作 --><thead><tr><td><input type="checkbox" id="select-all" class="uk-checkbox" /></td><td height="36" colspan="9"><a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=delete&nid=')" class="uk-button uk-button-default uk-button-small">删除</a><a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=up&nid=')" class='uk-button uk-button-default uk-button-small'>设为已付款状态</a><a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=push&nid=')" class='uk-button uk-button-default uk-button-small'>设为已发货状态</a><a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=ok&nid=')" class='uk-button uk-button-default uk-button-small'>设为已完成状态</a></td></tr></thead><!-- /批量操作 --><!-- 分页 --><thead><tr><td height="36" colspan="10" align="center">{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}</td></tr></thead><!-- /分页 --></table></div></div></div></div><!-- /列表主题 --><!-- 列表 --><div id="modal-archives" class="uk-modal-container" uk-modal><div class="uk-modal-dialog" style="width: 750px;"><div id="dede-modal-card-header" class="uk-card uk-card-default" style="width: 750px;"><button class="uk-modal-close-default" type="button" uk-close></button><div class="uk-card-header" style="padding:0px 16px;"><span id="modal_title" style="margin-top:10px;"></span></div><div class="uk-card-body" style="background-color:#242A2F;" style="width: 750px;"><iframe id="archives" width="750px" height="450px"></iframe></div></div></div></div></div><!-- /列表 --><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>商店订单记录</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><span>商店订单记录</span></li></ul></span>
+</div>
+<!-- 搜索表单 -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=0">未付款</a></li>
+<li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=1">已付款</a></li>
+<li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=2">已发货</a></li>
+<li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php?sta=4">已完成</a></li>
+<li style="margin-right: 6px;"><a class="uk-button uk-button-default uk-button-small" href="shops_operations.php">全部</a></li>
+<li style="margin-right: 6px;">
+<button class="uk-button uk-button-default uk-button-small uk-flex-inline "><span class="dede-toolbar-icon" uk-icon="icon: filter-circle;ratio:0.8"></span> 筛选</button>
+<div class="uk-navbar-dropdown " uk-dropdown="offset: 12;mode: click" style="width: 300px;">
+<ul class="uk-nav uk-navbar-dropdown-nav" >
+<li>
+<form name="form2" method="get" action="shops_operations.php">
+<fieldset id="dede-dropdown-margin" class="uk-fieldset">
+<div class="uk-margin"><input name="buyid" type="text" id="buyid" class="uk-input uk-form-small uk-flex-inline uk-width-1-1" placeholder="订单号"></div>
+<button type='submit' class="uk-button-primary uk-form-small uk-width-1-1" > <span class="dede-toolbar-icon" uk-icon="icon: search;ratio:0.8"></span> 查找</button>
+</fieldset>
+</form>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<!-- /搜索表单 -->
+</div>
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="4%"></td>
+<td width="25%">订单号</td>
+<td>收货人</td>
+<td>数量</td>
+<td width="22%">生成日期</td>
+<td>订单价</td>
+<td>配送费</td>
+<td>总计</td>
+<td>支付方式</td>
+<td>状态</td>
+<td>用户</td>
+</tr>
+</thead>
+</table>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主题 -->
+<div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="4%"></td>
+<td width="25%">订单号</td>
+<td>收货人</td>
+<td>数量</td>
+<td width="22%">生成日期</td>
+<td>订单价</td>
+<td>配送费</td>
+<td>总计</td>
+<td>支付方式</td>
+<td>状态</td>
+<td>用户</td>
+</tr>
+</thead>
+<tbody>
+<!-- 内容列表 -->
+{dede:datalist}
+<tr bgcolor="#FFFFFF" height="26" onMouseMove="javascript:this.bgColor='#FBFBFB';" onMouseOut="javascript:this.bgColor='#FFFFFF';">
+<td>
+<input type='checkbox' name='aids' value='{dede:field.oid/}' class='uk-checkbox dede-checkbox'></td>
+<td>
+<a onclick="_DedeCMS_JSCODE_Version_Open_Modal_Windows('shops_operations_cart.php?oid={dede:field.oid/}', '订单信息')"><?php echo $fields['oid'];?></a>
+</td>
+<td>
+<a onclick="_DedeCMS_JSCODE_Version_Open_Modal_Windows('shops_operations_userinfo.php?oid={dede:field.oid/}', '收货人信息')"><?php echo $fields['consignee']?></a>
+</td>
+<td>
+<?php echo $fields['cartcount']?>
+</td>
+<td>
+<?php echo GetDateTimeMk($fields['stime'])?>
+(<font color="#FF0000">{dede:field.stime function="floorTime(time()-@me,@me)"/}</font>)
+</td>
+<td>
+<?php echo $fields['price']?>
+</td>
+<td>
+<?php echo $fields['dprice']?>
+</td>
+<td>
+<?php echo $fields['priceCount']?>
+</td>
+<td>
+<?php echo GetsType($fields['paytype'])?>
+</td>
+<td>
+<?php echo GetSta($fields['state'])?>
+</td>
+<td>
+<?php echo GetMemberID($fields['userid'])?>
+</td>
+</tr>
+{/dede:datalist}
+<!-- /内容列表 -->
+</tbody>
+<!-- 批量操作 -->
+<thead>
+<tr>
+<td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+<td height="36" colspan="9">
+<a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=delete&nid=')" class="uk-button uk-button-default uk-button-small">删除</a>
+<a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=up&nid=')" class='uk-button uk-button-default uk-button-small'>设为已付款状态</a>
+<a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=push&nid=')" class='uk-button uk-button-default uk-button-small'>设为已发货状态</a>
+<a onclick="DedeCMS_JSCODE_Version_Checked_Action('shops_operations.php?dopost=ok&nid=')" class='uk-button uk-button-default uk-button-small'>设为已完成状态</a>
+</td>
+</tr>
+</thead>
+<!-- /批量操作 -->
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+</td>
+</tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表主题 -->
+<!-- 列表 -->
+<div id="modal-archives" class="uk-modal-container" uk-modal>
+<div class="uk-modal-dialog" style="width: 750px;">
+<div id="dede-modal-card-header" class="uk-card uk-card-default" style="width: 750px;">
+<button class="uk-modal-close-default" type="button" uk-close></button>
+<div class="uk-card-header" style="padding:0px 16px;">
+<span id="modal_title" style="margin-top:10px;"></span>
+</div>
+<div class="uk-card-body" style="background-color:#242A2F;" style="width: 750px;">
+<iframe id="archives" width="750px" height="450px"></iframe>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- /列表 -->
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

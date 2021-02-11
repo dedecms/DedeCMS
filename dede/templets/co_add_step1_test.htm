@@ -4,4 +4,107 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>新建采集节点</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="co_main.php">采集节点管理</a></li><li><span>新建采集节点</span></li><li><span>测试基本信息及网址索引页规则设置</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form name="form1" method="post" action="co_add.php"><input type='hidden' name='channelid' value='<?php echo $channelid; ?>' /><input type='hidden' name='step' value='2' /><input type='hidden' name='dopost' value='preview' /><input type='hidden' name='notename' value="<?php echo $notename; ?>" /><input type='hidden' name='sourcelang' value="<?php echo $sourcelang; ?>" /><input type='hidden' name='usemore' value="<?php echo $usemore; ?>" /><input type='hidden' name='islisten' value="<?php echo $islisten; ?>" /><input type='hidden' name='listenpage' value="<?php echo $listenpage; ?>" /><input type='hidden' name='freq' value="<?php echo $freq; ?>" /><input type='hidden' name='extypeid' value="<?php echo $extypeid; ?>" /><input type='hidden' name='listconfig' value="<?php echo urlencode($listconfig); ?>" /><!-- 选项 --><tr><td height="26" style="padding-left:10px;"><strong>网址获取规则测试：</strong></td></tr><tr><td height="26">测试的列表网址：<?php echo $demopage; ?></td></tr><tr id="sitem"><td height="26">获得的文章网址(只显示前十条)：<br /><?phpif(isset($links[0])){$i = 1;foreach($links as $arr){if($i==1) echo "<input type='hidden' name='previewurl' class='uk-input uk-form-small uk-form-width-large' value=\"{$arr['link']}\" />\r\n";if($arr['image'] != '') $arr['image'] = "<img src='{$arr['image']}' />\r\n";echo "<hr />";echo "网址: <a href='{$arr['link']}' target='_blank'>{$arr['link']}</a><br />\r\n标题: {$arr['title']}<br />\r\n图片: {$arr['image']}\r\n";$i++;if($i>10) break;}}else{echo $errmsg;}?></td></tr><!-- /选项 --></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">下一步</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>新建采集节点</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="co_main.php">采集节点管理</a></li><li><span>新建采集节点</span></li><li><span>测试基本信息及网址索引页规则设置</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name="form1" method="post" action="co_add.php">
+<input type='hidden' name='channelid' value='<?php echo $channelid; ?>' />
+<input type='hidden' name='step' value='2' />
+<input type='hidden' name='dopost' value='preview' />
+<input type='hidden' name='notename' value="<?php echo $notename; ?>" />
+<input type='hidden' name='sourcelang' value="<?php echo $sourcelang; ?>" />
+<input type='hidden' name='usemore' value="<?php echo $usemore; ?>" />
+<input type='hidden' name='islisten' value="<?php echo $islisten; ?>" />
+<input type='hidden' name='listenpage' value="<?php echo $listenpage; ?>" />
+<input type='hidden' name='freq' value="<?php echo $freq; ?>" />
+<input type='hidden' name='extypeid' value="<?php echo $extypeid; ?>" />
+<input type='hidden' name='listconfig' value="<?php echo urlencode($listconfig); ?>" />
+<!-- 选项 -->
+<tr>
+<td height="26" style="padding-left:10px;"><strong>网址获取规则测试：</strong></td>
+</tr>
+<tr>
+<td height="26">
+测试的列表网址：<?php echo $demopage; ?>
+</td>
+</tr>
+<tr id="sitem">
+<td height="26">
+获得的文章网址(只显示前十条)：<br />
+<?php
+if(isset($links[0]))
+{
+$i = 1;
+foreach($links as $arr)
+{
+if($i==1) echo "<input type='hidden' name='previewurl' class='uk-input uk-form-small uk-form-width-large' value=\"{$arr['link']}\" />\r\n";
+if($arr['image'] != '') $arr['image'] = "<img src='{$arr['image']}' />\r\n";
+echo "<hr />";
+echo "网址: <a href='{$arr['link']}' target='_blank'>{$arr['link']}</a><br />\r\n标题: {$arr['title']}<br />\r\n图片: {$arr['image']}\r\n";
+$i++;
+if($i>10) break;
+}
+}
+else
+{
+echo $errmsg;
+}
+?>
+</td>
+</tr>
+<!-- /选项 -->
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">下一步</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

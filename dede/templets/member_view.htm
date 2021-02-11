@@ -4,4 +4,194 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>查看用户</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href='<?php echo $ENV_GOBACK_URL; ?>'>用户管理</a></li><li><span>查看用户</span></li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><?php if($row['matt']==10) :?><div class="uk-alert-danger" uk-alert><a class="uk-alert-close" uk-close></a><p>当前用户是网站管理员关连的帐号，请小心操作！</p></div><?php endif?><table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table"><form name="form2" action="member_do.php" method="post" onSubmit="return checkSubmit();"><input type="hidden" name="dopost" value="edituser" /><input type="hidden" name="id" value="<?php echo $id?>" /><!-- 选项 --><tr><td width="10%">用户名：</td><td><?=$row['userid']?></td></tr><tr><td>密　码：</td><td><input type="text" name="pwd" id="pwd" class='uk-input uk-form-small uk-form-width-large'/>(不修改留空)</td></tr><tr><td>注册时间：</td><td><?php echo GetDateTimeMk($row['jointime'])?>, IP：<?php echo $row['joinip']?></td></tr><tr><td>最近登录时间：</td><td><?php echo GetDateTimeMk($row['logintime'])?>, IP：<?php echo $row['loginip']?></td></tr><tr><td>用户类型：</td><td><?php echo $row['mtype']; ?></td></tr><tr><td>电子邮箱：</td><td><input name="email" type="text" id="email" value="<?php echo $row['email']?>" class='uk-input uk-form-small uk-form-width-large'/></td></tr><tr><td>昵　称：</td><td><input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" class='uk-input uk-form-small uk-form-width-large'/></td></tr><tr><td>性　别：</td><td><input class="uk-radio" type="radio" name="sex" class="np" value="男"<?php if($row['sex']=="男" ) echo" checked='1'" ;?> /> 男 &nbsp;<input class="uk-radio" type="radio" name="sex" class="np" value="女"<?php if($row['sex']=="女" ) echo" checked='1'" ;?> /> 女 &nbsp;<input class="uk-radio" type="radio" name="sex" class="np" value=""<?php if($row['sex']=="" ) echo" checked='1'" ;?> /> 保密</td></tr><tr><td>金币：</td><td><input name="money" type="text" id="money" value="<?php echo $row['money']; ?>" class='uk-input uk-form-small uk-form-width-small'/></td></tr><tr><td>积分：</td><td><input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" class='uk-input uk-form-small uk-form-width-small'/></td></tr><tr><td>等级：</td><td><?php$MemberTypes = array();$dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");$dsql->Execute('n');$MemberTypes[0] = "限制用户";while($nrow = $dsql->GetObject('n')){$MemberTypes[$nrow->rank] = $nrow->membername;}$options = "<select name='rank' class='uk-select uk-form-small uk-form-width-large'>\r\n";foreach($MemberTypes as $k=>$v){if($k!=$row['rank']) $options .= "<option value='$k'>$v</option>\r\n";else $options .= "<option value='$k' selected>$v</option>\r\n";}$options .= "</select>\r\n";echo $options;?></td></tr><tr><td>升级时间：</td><td><input type="text" class='uk-input uk-form-small uk-form-width-large' value="<?php echo $row['uptime']=($row['uptime']=="0")? GetDateTimeMk(time()) : GetDateTimeMk($row['uptime']);?>" id="uptime" name="uptime">（如果你要升级用户，必须设置此时间为当前时间）</td></tr><tr><td>用户天数：</td><td><input type="text" class='uk-input uk-form-small uk-form-width-large' value="<?php echo $row['exptime']?>" id="exptime" name="exptime">（如果你要升级用户，用户天数必须大于0） </td></tr><?php if($mhasDay!=0){ $mhasDay=($mhasDay>0)? $mhasDay : '<font color="red">该用户已经到期</font>';?><tr><td>用户剩余天数：</td><td><?php echo $mhasDay; ?></td></tr><tr><?php } ?><td>推荐级别：</td><td><input name="oldmatt" type="hidden" id="oldmatt" value="<?php echo $row['matt']?>" /><input name="matt" type="text" id="matt" value="<?php echo $row['matt']?>" class='uk-input uk-form-small uk-form-width-small' /> (0为普通，1为推荐，10为管理员[不能在前台登录]<font color='red'>{非管理员ID是严格使用10属性的，要新建管理在 <a href='sys_admin_user_add.php' target='_blank'><u>系统帐号</u></a> 的地方增加}</font>)</td></tr><tr><td>资料状况：</td><td><select name='spacesta' class='uk-select uk-form-small uk-form-width-large'><?phpforeach($staArr as $k=>$v){if($row['spacesta']==$k) echo "<option value='$k' selected>$v</option>\r\n";else echo "<option value='$k'>$v</option>\r\n";}?></select></td></tr><tr><td width="17%">特殊操作：</td><td width="83%" ><a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>&jumpurl=../member/edit_fullinfo.php' target='_blank'><u>查看/修改详细资料</u></a>&nbsp;|&nbsp;<a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>' target='_blank'><u>登录到此用户控制面板</u></a></td></tr><!-- /选项 --></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>查看用户</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href='<?php echo $ENV_GOBACK_URL; ?>'>用户管理</a></li><li><span>查看用户</span></li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<?php if($row['matt']==10) :?>
+<div class="uk-alert-danger" uk-alert>
+<a class="uk-alert-close" uk-close></a>
+<p>当前用户是网站管理员关连的帐号，请小心操作！</p>
+</div>
+<?php endif?>
+<table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
+<form name="form2" action="member_do.php" method="post" onSubmit="return checkSubmit();">
+<input type="hidden" name="dopost" value="edituser" />
+<input type="hidden" name="id" value="<?php echo $id?>" />
+<!-- 选项 -->
+<tr>
+<td width="10%">用户名：</td>
+<td><?=$row['userid']?></td>
+</tr>
+<tr>
+<td>密　码：</td>
+<td>
+<input type="text" name="pwd" id="pwd" class='uk-input uk-form-small uk-form-width-large'/>
+(不修改留空)
+</td>
+</tr>
+<tr>
+<td>注册时间：</td>
+<td><?php echo GetDateTimeMk($row['jointime'])?>, IP：<?php echo $row['joinip']?></td>
+</tr>
+<tr>
+<td>最近登录时间：</td>
+<td><?php echo GetDateTimeMk($row['logintime'])?>, IP：<?php echo $row['loginip']?></td>
+</tr>
+<tr>
+<td>用户类型：</td>
+<td><?php echo $row['mtype']; ?></td>
+</tr>
+<tr>
+<td>电子邮箱：</td>
+<td><input name="email" type="text" id="email" value="<?php echo $row['email']?>" class='uk-input uk-form-small uk-form-width-large'/></td>
+</tr>
+<tr>
+<td>昵　称：</td>
+<td>
+<input name="uname" type="text" value="<?php echo $row['uname']?>" id="uname" class='uk-input uk-form-small uk-form-width-large'/>
+</td>
+</tr>
+<tr>
+<td>性　别：</td>
+<td>
+<input class="uk-radio" type="radio" name="sex" class="np" value="男"<?php if($row['sex']=="男" ) echo" checked='1'" ;?> /> 男 &nbsp;
+<input class="uk-radio" type="radio" name="sex" class="np" value="女"<?php if($row['sex']=="女" ) echo" checked='1'" ;?> /> 女 &nbsp;
+<input class="uk-radio" type="radio" name="sex" class="np" value=""<?php if($row['sex']=="" ) echo" checked='1'" ;?> /> 保密
+</td>
+</tr>
+<tr>
+<td>金币：</td>
+<td>
+<input name="money" type="text" id="money" value="<?php echo $row['money']; ?>" class='uk-input uk-form-small uk-form-width-small'/>
+</td>
+</tr>
+<tr>
+<td>积分：</td>
+<td>
+<input name="scores" type="text" id="scores" value="<?php echo $row['scores']; ?>" class='uk-input uk-form-small uk-form-width-small'/>
+</td>
+</tr>
+<tr>
+<td>等级：</td>
+<td>
+<?php
+$MemberTypes = array();
+$dsql->SetQuery("Select rank,membername From `#@__arcrank` where rank>0");
+$dsql->Execute('n');
+$MemberTypes[0] = "限制用户";
+while($nrow = $dsql->GetObject('n')){
+$MemberTypes[$nrow->rank] = $nrow->membername;
+}
+$options = "<select name='rank' class='uk-select uk-form-small uk-form-width-large'>\r\n";
+foreach($MemberTypes as $k=>$v)
+{
+if($k!=$row['rank']) $options .= "<option value='$k'>$v</option>\r\n";
+else $options .= "<option value='$k' selected>$v</option>\r\n";
+}
+$options .= "</select>\r\n";
+echo $options;
+?>
+</td>
+</tr>
+<tr>
+<td>升级时间：</td>
+<td>
+<input type="text" class='uk-input uk-form-small uk-form-width-large' value="<?php echo $row['uptime']=($row['uptime']=="0")? GetDateTimeMk(time()) : GetDateTimeMk($row['uptime']);?>" id="uptime" name="uptime">
+（如果你要升级用户，必须设置此时间为当前时间）</td>
+</tr>
+<tr>
+<td>用户天数：</td>
+<td><input type="text" class='uk-input uk-form-small uk-form-width-large' value="<?php echo $row['exptime']?>" id="exptime" name="exptime">
+（如果你要升级用户，用户天数必须大于0） </td>
+</tr>
+<?php if($mhasDay!=0){ $mhasDay=($mhasDay>0)? $mhasDay : '<font color="red">该用户已经到期</font>';?>
+<tr>
+<td>用户剩余天数：</td>
+<td><?php echo $mhasDay; ?></td>
+</tr>
+<tr>
+<?php } ?>
+<td>推荐级别：</td>
+<td>
+<input name="oldmatt" type="hidden" id="oldmatt" value="<?php echo $row['matt']?>" />
+<input name="matt" type="text" id="matt" value="<?php echo $row['matt']?>" class='uk-input uk-form-small uk-form-width-small' /> (0为普通，1为推荐，10为管理员[不能在前台登录]
+<font color='red'>{非管理员ID是严格使用10属性的，要新建管理在 <a href='sys_admin_user_add.php' target='_blank'><u>系统帐号</u></a> 的地方增加}</font>)
+</td>
+</tr>
+<tr>
+<td>资料状况：</td>
+<td>
+<select name='spacesta' class='uk-select uk-form-small uk-form-width-large'>
+<?php
+foreach($staArr as $k=>$v)
+{
+if($row['spacesta']==$k) echo "<option value='$k' selected>$v</option>\r\n";
+else echo "<option value='$k'>$v</option>\r\n";
+}
+?>
+</select>
+</td>
+</tr>
+<tr>
+<td width="17%">特殊操作：</td>
+<td width="83%" >
+<a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>&jumpurl=../member/edit_fullinfo.php' target='_blank'><u>查看/修改详细资料</u></a>
+&nbsp;|&nbsp;
+<a href='member_do.php?dopost=memberlogin&id=<?php echo $row['mid']; ?>' target='_blank'><u>登录到此用户控制面板</u></a>
+</td>
+</tr>
+<!-- /选项 -->
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<!-- / JS FILES -->
+</body>
+</html>

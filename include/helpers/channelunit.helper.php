@@ -562,7 +562,6 @@ function MakeOneTag(&$dtp, &$refObj, $parfield = 'Y')
             if (in_array($tagname, $disable_tags)) {
                 if (DEBUG_LEVEL) {
                     echo 'DedeCMS Error:Tag disabled:"' . $tagname . '" <a href="http://help.dedecms.com/install-use/apply/2013/0711/2324.html" target="_blank">more...</a>!';
-                
                 }
 
                 continue;

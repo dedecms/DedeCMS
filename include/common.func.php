@@ -130,6 +130,10 @@ function RunApp($ct, $ac = '', $directory = '')
     $ct = preg_replace("/[^0-9a-z_]/i", '', $ct);
     $ac = preg_replace("/[^0-9a-z_]/i", '', $ac);
 
+    $ct = strtolower($ct);
+    $ac = strtolower($ac);
+    $directory = strtolower($directory);
+    
     $ac = empty($ac) ? $ac = 'index' : $ac;
     if (!empty($directory)) {
         $path = DEDECONTROL . '/' . $directory . '/' . $ct . '.php';
@@ -229,6 +233,12 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
     if (empty($GLOBALS['cfg_plus_dir'])) {
         $GLOBALS['cfg_plus_dir'] = '..';
     }
+    if ($gourl == -1) {
+        $gourl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        if ($gourl == "") {
+            $gourl = -1;
+        }
+    }
 
     $htmlhead = "
     <html>\r\n<head>\r\n<title>DedeCMS提示信息</title>\r\n
@@ -263,7 +273,7 @@ function ShowMsg($msg, $gourl, $onlymsg = 0, $limittime = 0)
 
     if ($gourl == '-1') {
         if ($limittime == 0) {
-            $litime = 5000;
+            $litime = 3000;
         }
 
         $gourl = "javascript:history.go(-1);";

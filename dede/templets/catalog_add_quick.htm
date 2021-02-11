@@ -4,4 +4,279 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>快速创建栏目</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">.uk-table td{padding: 6px 12px;vertical-align: top;height: 35px;}</style></head><body><!-- 列表头部 --><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="catalog_main.php"><span>栏目管理</span></a></li><li>快速创建栏目</li></ul></span></div></div></div><!-- /列表头部 --><!-- 列表主体 --><div class="uk-card uk-card-small uk-card-default" style="top:-40px;margin-bottom: 50px;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1 uk-padding"><form name="form1" action="catalog_add.php" method="post" class="uk-form-horizontal "><input type="hidden" name="dopost" value="savequick" /><input type="hidden" name="savetype" value="" id="savetype" /><table width="100%" border="0" id="needset" cellspacing="0" cellpadding="0" class="uk-table"><tr><td style="padding-left:10px;"><strong>公用参数：</strong></td><td ></td></tr><tr><td width="150" style="padding-left:10px;">是否支持投稿：</td><td ><input type='radio' name='issend' value='0' class='uk-radio' />不支持&nbsp;<input type='radio' name='issend' value='1' class='uk-radio' checked='1' />支持</td></tr><tr><td style="padding-left:10px;">目录保存位置：</td><td ><input name="referpath" type="radio" id="truepath1" class="uk-radio" value="parent"checked='1' />默认HMTL目录(<?php$pardir = '{cmspath}'.$cfg_arcdir;if(!empty($typedir)) $pardir = $typedir.'/';$pardir = preg_replace("#\/{1,}#", '/', $pardir);echo $pardir;?>)<input name="referpath" type="radio" id="truepath2" class="uk-radio" value="cmspath" />CMS根目录<input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir; ?>" /><span id="pathtype" style="display:none"><input name="referpath" type="radio" id="truepath3" class="np"value="typepath" />隶属栏目所属的目录</span></td></tr><tr><td style="padding-left:10px;">隶属栏目：</td><td ><select name='reid' onchange="showSeltype(this)" class="uk-select uk-form-small uk-form-width-medium"><option value='0'>选择所属目录... </option><?php echo $typeOptions;?></select>（默认为顶级栏目）</td></tr><tr><td style="padding-left:10px;">内容类型： &nbsp; </td><td ><select name="channeltype" id="channeltype" class="uk-select uk-form-small uk-form-width-medium"onChange="ParTemplet(this)"><?phpforeach($channelArray as $k=>$arr){if($k==$channelid) echo " <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";else echo " <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";}?></select></td></tr><tr><td style="padding-left:10px;">栏目列表选项：</td><td ><input type='radio' name='isdefault' value='1' class='uk-radio' checked='1' />链接到默认页<input type='radio' name='isdefault' value='0' class='uk-radio' />链接到列表第一页<input type='radio' name='isdefault' value='-1' class='uk-radio' />使用动态页</td></tr><tr><td style="padding-left:10px;">默认页的名称： </td><td ><input name="defaultname" type="text" value="index.html" class="uk-input uk-form-small uk-form-width-large" /></td></tr><tr><td style="padding-left:10px;">文章命名规则：</td><td ><input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" class="uk-input uk-form-small uk-form-width-large" /></td></tr><tr id='helpvar3' style='display:none'><td bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td><td bgcolor="#F3F7EA">{page} 列表的页码</td></tr><tr><td style="padding-left:10px;">列表命名规则：</td><td><input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" class="uk-input uk-form-small uk-form-width-large"/></td></tr><tr><td style="padding-left:10px;"><strong>栏目填写：</strong></td><td ></td></tr><tr><td colspan='2'><table id="addQuick" border="0" cellpadding="3" cellspacing="1"><tr class="uk-text-small"><td width="50px">排序</td><td width="160px">顶级栏目名称</td><td width="480px">子栏目(用&quot;目录名称1,目录名称2...&quot;这样表示多个栏目)</td><td width="50px"><input name="" type="button" value="添加" id="add" class="uk-button uk-button-small"></td></tr><tbody><tr><td><input type="hidden" name="posttype" value="" /><input type="text" name="rank" id="rank" value="1" class="uk-input uk-form-small" style="width:50px;"/></td><td ><input type="text" name="toptype" id="toptype" style="width:160px;" class="uk-input uk-form-small"/></td><td><input type="text" name="sontype" id="sontype" class="uk-input uk-form-small"/></td><td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td></tr><?php for($i=2;$i<=10;$i++) { ?><tr ><td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" /><input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" style="width:50px;" class="uk-input uk-form-small"/></td><td><input type="text" name="toptype<?php echo $i; ?>"id="toptype<?php echo $i; ?>" style="width:160px;" class="uk-input uk-form-small"/></td><td><input type="text" name="sontype<?php echo $i; ?>" id="sontype<?php echo $i; ?>" class="uk-input uk-form-small"/></td><td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td></tr><?php } ?></tbody></table><table id="addQuickRel" width="302" border="0" cellpadding="3" cellspacing="1" style="display:none"><tbody><tr class="uk-text-small"><td width="60px">排序</td><td width="170px">栏目名称</td><td width="50px"><input name="" type="button" value="添加" id="addrel" class="uk-button uk-button-small"></td></tr><tr><td><input type="hidden" name="posttype" value="" /><input type="text" name="rank" id="rank" value="1" style="width:50px;" class="uk-input uk-form-small"/></td><td align='center'><input type="text" name="reltype" id="reltype" style="width:160px;" class="uk-input uk-form-small"/></td><td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td></tr><?php for($i=2;$i<=10;$i++) { ?><tr ><td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" /><input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" style="width:50px;" class="uk-input uk-form-small"/></td><td align='center'><input type="text" name="reltype<?php echo $i; ?>" id="reltype<?php echo $i; ?>" style="width:160px;" class="uk-input uk-form-small"/></td><td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td></tr><?php } ?></tbody></table></td></tr></table></div></div><div class="uk-card-footer " ><div class="uk-padding-small" ><button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button></div></div></div></form><!-- 列表底部 --><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 50px;"></div><div class="e1e02">Copyright &copy; 2007-2020 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script type="text/javascript">var $ = jQuery;$(document).ready(function () {//删除按钮事件$("#addQuick .del").click(function () {$(this).parents(".repeat").remove();});//添加按钮事件$("#add").click(function () {var id = $("#addQuick tr").prevAll("tr").length + 1;$("#addQuick tr:eq(1)").clone(true).addClass("repeat").find(".rank input").attr("value", function () { return id }).end().find(".pubinputs").attr("name", function () { return this.name + id }).attr("id", function () { return this.id + id }).end().appendTo($("#addQuick"));});//删除按钮事件$("#addQuickRel .del").click(function () {$(this).parents(".repeat").remove();});//添加按钮事件$("#addrel").click(function () {var id = $("#addQuickRel tr").prevAll("tr").length + 1;$("#addQuickRel tr:eq(1)").clone(true).addClass("repeat").find(".rank input").attr("value", function () { return id }).end().find(".pubinputs").attr("name", function () { return this.name + id }).attr("id", function () { return this.id + id }).end().appendTo($("#addQuickRel"));});});function ShowHide(objname) {var obj = document.getElementById(objname);if (obj.style.display == "block" || obj.style.display == "")obj.style.display = "none";elseobj.style.display = "block";}function ShowObj(objname) {var obj = document.getElementById(objname);obj.style.display = "block";}function HideObj(objname) {var obj = document.getElementById(objname);obj.style.display = "none";}function showSeltype(objname) {if (objname.value != 0) {$("#addQuickRel").show();$("#pathtype").show();$("#addQuick").hide();$("#savetype").val('rel');} else {$("#addQuickRel").hide();$("#addQuick").show();$("#pathtype").hide();$("#savetype").val('');}}</script><!-- / JS FILES --></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>快速创建栏目</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+.uk-table td{
+padding: 6px 12px;
+vertical-align: top;
+height: 35px;
+}
+</style>
+</head>
+<body>
+<!-- 列表头部 -->
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="catalog_main.php"><span>栏目管理</span></a></li><li>快速创建栏目</li></ul></span>
+</div>
+</div>
+</div>
+<!-- /列表头部 -->
+<!-- 列表主体 -->
+<div class="uk-card uk-card-small uk-card-default" style="top:-40px;margin-bottom: 50px;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1 uk-padding">
+<form name="form1" action="catalog_add.php" method="post" class="uk-form-horizontal ">
+<input type="hidden" name="dopost" value="savequick" />
+<input type="hidden" name="savetype" value="" id="savetype" />
+<table width="100%" border="0" id="needset" cellspacing="0" cellpadding="0" class="uk-table">
+<tr>
+<td style="padding-left:10px;"><strong>公用参数：</strong></td>
+<td ></td>
+</tr>
+<tr>
+<td width="150" style="padding-left:10px;">是否支持投稿：</td>
+<td ><input type='radio' name='issend' value='0' class='uk-radio' />
+不支持
+&nbsp;
+<input type='radio' name='issend' value='1' class='uk-radio' checked='1' />
+支持
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">目录保存位置：</td>
+<td ><input name="referpath" type="radio" id="truepath1" class="uk-radio" value="parent"
+checked='1' />
+默认HMTL目录(
+<?php
+$pardir = '{cmspath}'.$cfg_arcdir;
+if(!empty($typedir)) $pardir = $typedir.'/';
+$pardir = preg_replace("#\/{1,}#", '/', $pardir);
+echo $pardir;
+?>
+)
+<input name="referpath" type="radio" id="truepath2" class="uk-radio" value="cmspath" />
+CMS根目录
+<input name="nextdir" type="hidden" id="nextdir" value="<?php echo $pardir; ?>" />
+<span id="pathtype" style="display:none"><input name="referpath" type="radio" id="truepath3" class="np"
+value="typepath" />
+隶属栏目所属的目录</span>
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">隶属栏目：</td>
+<td >
+<select name='reid' onchange="showSeltype(this)" class="uk-select uk-form-small uk-form-width-medium">
+<option value='0'>选择所属目录... </option>
+<?php echo $typeOptions;?>
+</select>
+（默认为顶级栏目）
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">内容类型： &nbsp; </td>
+<td ><select name="channeltype" id="channeltype" class="uk-select uk-form-small uk-form-width-medium"
+onChange="ParTemplet(this)">
+<?php
+foreach($channelArray as $k=>$arr)
+{
+if($k==$channelid) echo " <option value='{$k}' selected>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+else echo " <option value='{$k}'>{$arr['typename']}|{$arr['nid']}</option>\r\n";
+}
+?>
+</select>
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">栏目列表选项：</td>
+<td ><input type='radio' name='isdefault' value='1' class='uk-radio' checked='1' />
+链接到默认页
+<input type='radio' name='isdefault' value='0' class='uk-radio' />
+链接到列表第一页
+<input type='radio' name='isdefault' value='-1' class='uk-radio' />
+使用动态页
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">默认页的名称： </td>
+<td ><input name="defaultname" type="text" value="index.html" class="uk-input uk-form-small uk-form-width-large" /></td>
+</tr>
+<tr>
+<td style="padding-left:10px;">文章命名规则：</td>
+<td ><input name="namerule" type="text" id="namerule" value="{typedir}/{Y}{M}{D}/{aid}.html" class="uk-input uk-form-small uk-form-width-large" />
+</td>
+</tr>
+<tr id='helpvar3' style='display:none'>
+<td bgcolor="#F3F7EA" style="padding-left:10px;">支持变量： </td>
+<td bgcolor="#F3F7EA">{page} 列表的页码</td>
+</tr>
+<tr>
+<td style="padding-left:10px;">列表命名规则：</td>
+<td><input name="namerule2" type="text" id="namerule2" value="{typedir}/list_{tid}_{page}.html" class="uk-input uk-form-small uk-form-width-large"/>
+</td>
+</tr>
+<tr>
+<td style="padding-left:10px;"><strong>栏目填写：</strong></td>
+<td ></td>
+</tr>
+<tr>
+<td colspan='2'>
+<table id="addQuick" border="0" cellpadding="3" cellspacing="1">
+<tr class="uk-text-small">
+<td width="50px">排序</td>
+<td width="160px">顶级栏目名称</td>
+<td width="480px">子栏目(用&quot;目录名称1,目录名称2...&quot;这样表示多个栏目)</td>
+<td width="50px"><input name="" type="button" value="添加" id="add" class="uk-button uk-button-small"></td>
+</tr>
+<tbody>
+<tr>
+<td><input type="hidden" name="posttype" value="" />
+<input type="text" name="rank" id="rank" value="1" class="uk-input uk-form-small" style="width:50px;"/>
+</td>
+<td ><input type="text" name="toptype" id="toptype" style="width:160px;" class="uk-input uk-form-small"/></td>
+<td><input type="text" name="sontype" id="sontype" class="uk-input uk-form-small"/></td>
+<td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td>
+</tr>
+<?php for($i=2;$i<=10;$i++) { ?>
+<tr >
+<td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" />
+<input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" style="width:50px;" class="uk-input uk-form-small"/>
+</td>
+<td><input type="text" name="toptype<?php echo $i; ?>"
+id="toptype<?php echo $i; ?>" style="width:160px;" class="uk-input uk-form-small"/></td>
+<td><input type="text" name="sontype<?php echo $i; ?>" id="sontype<?php echo $i; ?>" class="uk-input uk-form-small"/></td>
+<td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+<table id="addQuickRel" width="302" border="0" cellpadding="3" cellspacing="1" style="display:none">
+<tbody>
+<tr class="uk-text-small">
+<td width="60px">排序</td>
+<td width="170px">栏目名称</td>
+<td width="50px"><input name="" type="button" value="添加" id="addrel" class="uk-button uk-button-small">
+</td>
+</tr>
+<tr>
+<td><input type="hidden" name="posttype" value="" />
+<input type="text" name="rank" id="rank" value="1" style="width:50px;" class="uk-input uk-form-small"/>
+</td>
+<td align='center'><input type="text" name="reltype" id="reltype" style="width:160px;" class="uk-input uk-form-small"/></td>
+<td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td>
+</tr>
+<?php for($i=2;$i<=10;$i++) { ?>
+<tr >
+<td class="rank"><input type="hidden" name="posttype<?php echo $i; ?>" value="<?php echo $i; ?>" />
+<input type="text" name="rank<?php echo $i; ?>" id="rank<?php echo $i; ?>" value="<?php echo $i; ?>" style="width:50px;" class="uk-input uk-form-small"/>
+</td>
+<td align='center'><input type="text" name="reltype<?php echo $i; ?>" id="reltype<?php echo $i; ?>" style="width:160px;" class="uk-input uk-form-small"/></td>
+<td><input name="" type="button" value="删除" id="add" class="uk-button uk-button-small"></td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="uk-card-footer " >
+<div class="uk-padding-small" >
+<button type="submit" class="uk-button uk-button-small uk-button-primary">提交</button>
+</div>
+</div>
+</div>
+</form>
+<!-- 列表底部 -->
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 50px;">
+</div>
+<div class="e1e02">Copyright &copy; 2007-2021 <a href='http://www.dedecms.com' target='_blank'><u>DedeCMS</u></a>, 上海卓卓网络科技有限公司 (DesDev, Inc.)</div>
+</div>
+<!-- 列表底部 -->
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script type="text/javascript">
+var $ = jQuery;
+$(document).ready(function () {
+//删除按钮事件
+$("#addQuick .del").click(function () {
+$(this).parents(".repeat").remove();
+});
+//添加按钮事件
+$("#add").click(function () {
+var id = $("#addQuick tr").prevAll("tr").length + 1;
+$("#addQuick tr:eq(1)").clone(true).addClass("repeat")
+.find(".rank input")
+.attr("value", function () { return id })
+.end()
+.find(".pubinputs")
+.attr("name", function () { return this.name + id })
+.attr("id", function () { return this.id + id })
+.end()
+.appendTo($("#addQuick"));
+});
+//删除按钮事件
+$("#addQuickRel .del").click(function () {
+$(this).parents(".repeat").remove();
+});
+//添加按钮事件
+$("#addrel").click(function () {
+var id = $("#addQuickRel tr").prevAll("tr").length + 1;
+$("#addQuickRel tr:eq(1)").clone(true).addClass("repeat")
+.find(".rank input")
+.attr("value", function () { return id })
+.end()
+.find(".pubinputs")
+.attr("name", function () { return this.name + id })
+.attr("id", function () { return this.id + id })
+.end()
+.appendTo($("#addQuickRel"));
+});
+});
+function ShowHide(objname) {
+var obj = document.getElementById(objname);
+if (obj.style.display == "block" || obj.style.display == "")
+obj.style.display = "none";
+else
+obj.style.display = "block";
+}
+function ShowObj(objname) {
+var obj = document.getElementById(objname);
+obj.style.display = "block";
+}
+function HideObj(objname) {
+var obj = document.getElementById(objname);
+obj.style.display = "none";
+}
+function showSeltype(objname) {
+if (objname.value != 0) {
+$("#addQuickRel").show();
+$("#pathtype").show();
+$("#addQuick").hide();
+$("#savetype").val('rel');
+} else {
+$("#addQuickRel").hide();
+$("#addQuick").show();
+$("#pathtype").hide();
+$("#savetype").val('');
+}
+}
+</script>
+<!-- / JS FILES -->
+</body>
+</html>

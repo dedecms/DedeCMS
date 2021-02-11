@@ -1,0 +1,25 @@
+<html>
+<head>
+<title><?php echo $cfg_webname;?> - 用户注册</title>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+{dede:include filename="plus_header.htm"/}
+<!-- /header -->
+<main>
+<!-- 面包屑 -->
+{dede:include filename="plus_breadcrumb.htm"/}
+<!-- /面包屑 -->
+<section class="uk-section uk-section-default uk-section-smalle">
+<div class="uk-container uk-container-small">
+<div class="uk-article">
+<h2 class="uk-text-bold uk-h2 uk-margin-remove-adjacent uk-margin-remove-top">注册成功!</h2>
+<h3><p><?php echo $uname=empty($uname)? '' : '您的用户名：<font color="#ff6600">'.$uname.'</font>,';?></h3>
+</div>
+</div>
+</section>
+<!-- //底部模板 -->
+{dede:include filename="plus_footer.htm"/}
+</body>
+</html>

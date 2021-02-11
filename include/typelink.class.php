@@ -111,9 +111,9 @@ class TypeLink
     public function GetPositionLink($islink = true)
     {
         if (defined('DEDEMOB')) {
-            $indexpage = "<a href='index.php'>" . $this->indexName . "</a>";
+            $indexpage = "<li><a href='index.php'>" . $this->indexName . "</a></li>";
         } else {
-            $indexpage = "<a href='" . $this->indexUrl . "'>" . $this->indexName . "</a>";
+            $indexpage = "<li><a href='" . $this->indexUrl . "'>" . $this->indexName . "</a></li>";
         }
 
         if ($this->valuePosition != "" && $islink) {
@@ -128,13 +128,13 @@ class TypeLink
             }
         } else {
             if ($islink) {
-                $this->valuePosition = $this->GetOneTypeLink($this->TypeInfos);
+                $this->valuePosition = "<li>".$this->GetOneTypeLink($this->TypeInfos)."</li>";
                 if ($this->TypeInfos['reid'] != 0) {
                     //调用递归逻辑
                     $this->LogicGetPosition($this->TypeInfos['reid'], true);
                 }
-                $this->valuePosition = $indexpage . $this->SplitSymbol . $this->valuePosition;
-                return $this->valuePosition . $this->SplitSymbol;
+                $this->valuePosition = $indexpage .  $this->valuePosition;
+                return $this->valuePosition;
             } else {
                 $this->valuePositionName = $this->TypeInfos['typename'];
                 if ($this->TypeInfos['reid'] != 0) {
@@ -158,7 +158,7 @@ class TypeLink
         $this->dsql->SetQuery("SELECT id,reid,typename,typedir,isdefault,ispart,defaultname,namerule2,moresite,siteurl,sitepath FROM #@__arctype WHERE id='" . $id . "'");
         $tinfos = $this->dsql->GetOne();
         if ($islink) {
-            $this->valuePosition = $this->GetOneTypeLink($tinfos) . $this->SplitSymbol . $this->valuePosition;
+            $this->valuePosition = "<li>". $this->GetOneTypeLink($tinfos) . "</li>" . $this->valuePosition;
         } else {
             $this->valuePositionName = $tinfos['typename'] . $this->SplitSymbol . $this->valuePositionName;
         }

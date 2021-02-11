@@ -253,7 +253,7 @@ class Archives
         //处理默认缩略图等
         if (isset($this->Fields['litpic'])) {
             if ($this->Fields['litpic'] == '-' || $this->Fields['litpic'] == '') {
-                $this->Fields['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/defaultpic.gif';
+                $this->Fields['litpic'] = $GLOBALS['cfg_cmspath'] . '/assets/img/dede_defaultpic.png';
             }
             if (!preg_match("#^http:\/\/#i", $this->Fields['litpic']) && $GLOBALS['cfg_multi_site'] == 'Y') {
                 $this->Fields['litpic'] = $GLOBALS['cfg_mainsite'] . $this->Fields['litpic'];
@@ -566,6 +566,7 @@ class Archives
                 echo "模板文件不存在，无法解析文档！";
                 exit();
             }
+            
             $this->dtp->LoadTemplate($tempfile);
             $this->TempSource = $this->dtp->SourceString;
         } else {
@@ -742,7 +743,7 @@ class Archives
                     );
                 }
 
-                $this->PreNext['pre'] = "上一篇：<a href='$mlink'>{$preRow['title']}</a> ";
+                $this->PreNext['pre'] = "上一篇：<a href='$mlink'>{$preRow['title']}</a>";
                 $this->PreNext['preimg'] = "<a href='$mlink'><img src=\"{$preRow['litpic']}\" alt=\"{$preRow['title']}\"/></a> ";
             } else {
                 $this->PreNext['pre'] = "上一篇：没有了 ";
