@@ -10,11 +10,13 @@ DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : h
 
 获取可用于生产的正式版请访问：http://www.dedecms.com 或 https://github.com/dedecms/DedeCMS/releases
 
+### 版本命名规则：
+
+DedeCMS 5.8及后续的版本将采用 [Semantic Versioning Specification (SemVer)](http://semver.org) 进行维护。
+ 
 ### Windows 环境：
 
 IIS/Apache/Nginx + PHP7+ + MySQL/MariaDB
-
-如果在 windows 环境中使用，建议用 DedeCMS 提供的 DedeAMPZ 套件以达到最佳使用性能。
 
 ### Linux/Unix 环境：
 
