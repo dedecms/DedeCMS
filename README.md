@@ -1,4 +1,4 @@
-![dedecms](/assets/img/dedecms_logo.png)
+![dedecms](/assets/img/dedecms.png)
 
 ​ DedeCMS 是织梦团队开发 PHP 网站管理系统，它以简单、易用、高效为特色，组建出各种各样各具特色的网站，如地方门户、行业门户、政府及企事业站点等。
 
