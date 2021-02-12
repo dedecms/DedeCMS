@@ -8,7 +8,7 @@
 <head>
 <meta charset="{dede:global.cfg_soft_lang/}" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>修改管理员帐号</title>
+<title>添加管理员帐号</title>
 <meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
 <link rel="icon" href="/favicon.ico" />
 <!-- CSS FILES -->
@@ -27,7 +27,7 @@ height: 35px;
 <div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
 <div id="Header_1W2T2S2T1V252B" class="uk-card-header">
 <div class="uk-grid uk-grid-small uk-text-small">
-<span><ul class="uk-breadcrumb"><li><a href="sys_admin_user.php">管理员帐号管理</a></li><li><span>修改管理员帐号</span></li></ul></span>
+<span><ul class="uk-breadcrumb"><li><a href="sys_admin_user.php">管理员帐号管理</a></li><li><span>添加管理员帐号</span></li></ul></span>
 </div>
 </div>
 </div>
@@ -72,8 +72,9 @@ echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
 <td>授权栏目：</td>
 <td>
 <select name="typeids[]" id="typeid" size='10' class='uk-select uk-form-small uk-form-width-large' multiple="true">
-<option value="0" class='alltype' selected>--所有频道--</option>
-<?php echo $typeOptions?>
+<option value="0" selected>--所有频道--</option>
+<?php getswitch($typeOptions, 0);?>
+
 </select> &nbsp; (按 Ctrl 可以进行多选)
 </td>
 </tr>

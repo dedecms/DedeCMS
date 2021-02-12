@@ -620,8 +620,11 @@ function CheckSql($db_string, $querytype = 'select')
     $clean .= substr($db_string, $old_pos);
     $clean = trim(strtolower(preg_replace(array('~\s+~s'), array(' '), $clean)));
 
-    if (strpos($clean, '@') !== false or strpos($clean, 'char(') !== false or strpos($clean, '"') !== false
-        or strpos($clean, '$s$$s$') !== false
+    if (strpos($clean, '@') !== false 
+        OR ($querytype === 'select' && strpos($clean, 'varchar(') !== false )
+        OR ($querytype === 'select' && strpos($clean, 'char(') !== false )
+        OR strpos($clean, '"') !== false
+        OR strpos($clean, '$s$$s$') !== false
     ) {
         $fail = true;
         if (preg_match("#^create table#i", $clean)) {

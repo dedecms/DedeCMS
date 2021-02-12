@@ -104,17 +104,46 @@ $safecode = substr(md5($cfg_cookie_encode . $randcode), 0, 24);
 $typeOptions = '';
 $row = $dsql->GetOne("SELECT * FROM `#@__admin` WHERE id='$id'");
 $typeids = explode(',', $row['typeid']);
-$dsql->SetQuery("SELECT id,typename FROM `#@__arctype` WHERE reid=0 AND (ispart=0 OR ispart=1)");
+
+
+
+$dsql->SetQuery("SELECT reid,id,typename FROM `#@__arctype` order by topid  asc , sortrank asc");
 $dsql->Execute('op');
+while ($row = $dsql->GetArray('op')) {
+    $rows[] = $row;
+}
+$typeOptions = array();
+$index = array();
 
-while ($nrow = $dsql->GetObject('op')) {
-    $typeOptions .= "<option value='{$nrow->id}' class='btype'" . (in_array($nrow->id, $typeids) ? ' selected' : '') . ">{$nrow->typename}</option>\r\n";
-    $dsql->SetQuery("SELECT id,typename FROM #@__arctype WHERE reid={$nrow->id} AND (ispart=0 OR ispart=1)");
-    $dsql->Execute('s');
-
-    while ($nrow = $dsql->GetObject('s')) {
-        $typeOptions .= "<option value='{$nrow->id}' class='stype'" . (in_array($nrow->id, $typeids) ? ' selected' : '') . ">—{$nrow->typename}</option>\r\n";
+foreach($rows as $value) {  
+    if($value["reid"] == 0) { 
+        $typeOptions[$value["id"]] = $value;  
+        $index[$value["id"]] =& $typeOptions[$value["id"]];
+    }else {  
+        $index[$value["reid"]][$value["id"]] = $value;  
+        $index[$value["id"]] =& $index[$value["reid"]][$value["id"]];  
     }
 }
+
+function getswitch($data, $l, $typeids){
+    foreach($data as $key=>$value){
+        if(is_array($value)){
+        
+            $result=getswitch($value, $l,$typeids);
+        }
+        else{
+            $result[$key]=$value;
+            if (count($result) == 3){
+                $l++;
+                $line = "";
+                for ($i=0; $i < $l-1; $i++) { 
+                    $line .= "—";
+                }
+                echo "<option value='{$result["id"]}' ".(in_array($result['id'], $typeids) ? ' selected' : '').">{$line} {$result["typename"]}</option>\r\n";
+            }
+        }
+    }
+    return $result;
+} 
 make_hash();
 DedeInclude('templets/sys_admin_user_edit.htm');

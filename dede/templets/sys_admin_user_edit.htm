@@ -77,8 +77,8 @@ else echo "<option value='".$myrow->rank."'>".$myrow->typename."</option>\r\n";
 <td height="30">负责频道：</td>
 <td style="text-align:left;">
 <select name="typeids[]" id="typeid" size='10' class='uk-select uk-form-small uk-form-width-large' multiple="true">
-<option value="0" class='alltype'>--所有频道--</option>
-<?php echo $typeOptions?>
+<option value="0">--所有频道--</option>
+<?php getswitch($typeOptions, 0, $typeids)?>
 </select> &nbsp; (按 Ctrl 可以进行多选)
 </td>
 </tr>
