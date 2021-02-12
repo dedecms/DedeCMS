@@ -332,7 +332,7 @@ else if ($action == 'setupstart') {
         $setupsql = preg_replace("#_ROOTURL_#i", $rooturl, $setupsql);
         $setupsql = preg_replace("#[\r\n]{1,}#", "\n", $setupsql);
 
-        $sqls = @split(";[ \t]{0,}\n", $setupsql);
+        $sqls = @preg_split(";[ \t]{0,}\n", $setupsql);
         foreach ($sqls as $sql) {
             if (trim($sql) != '') {
                 $dsql->ExecuteNoneQuery($sql);
@@ -343,8 +343,8 @@ else if ($action == 'setupstart') {
         ReWriteConfigAuto();
 
         $rflwft = "<script language='javascript' type='text/javascript'>\r\n";
-        $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = 'index_menu_module.php';\r\n";
-        $rflwft .= "else top.document.getElementById('menufra').src = 'index_menu_module.php';\r\n";
+        $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = 'index_menu.php';\r\n";
+        $rflwft .= "else top.document.getElementById('menufra').src = 'index_menu.php';\r\n";
         $rflwft .= "</script>";
         echo $rflwft;
 
@@ -555,8 +555,8 @@ else if ($action == 'uninstallok') {
         ReWriteConfigAuto();
 
         $rflwft = "<script language='javascript' type='text/javascript'>\r\n";
-        $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = 'index_menu_module.php';\r\n";
-        $rflwft .= "else top.document.getElementById('menufra').src = 'index_menu_module.php';\r\n";
+        $rflwft .= "if(window.navigator.userAgent.indexOf('MSIE')>=1) top.document.frames.menu.location = index_menu.php';\r\n";
+        $rflwft .= "else top.document.getElementById('menufra').src = index_menu.php';\r\n";
         $rflwft .= "</script>";
         echo $rflwft;
         SendData($hash, 2);
