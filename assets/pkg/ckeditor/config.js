@@ -17,4 +17,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'editing', items: [ 'Find', 'Replace'] },
 		{ name: 'tools', items: [ 'ShowBlocks',  '-','Maximize', ] }
 	];
+	config.language = 'zh-cn';
 };
