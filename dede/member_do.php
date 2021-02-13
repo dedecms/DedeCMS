@@ -223,7 +223,7 @@ else if ($dopost == "memberlogin") {
     PutCookie('DedeUserID', $id, 1800);
     PutCookie('DedeLoginTime', time(), 1800);
     if (empty($jumpurl)) {
-        header("location:../member/index.php");
+        header("location:../");
     } else {
         header("location:$jumpurl");
     }
