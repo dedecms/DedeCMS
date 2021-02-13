@@ -109,8 +109,8 @@ $typeids = explode(',', $row['typeid']);
 
 $dsql->SetQuery("SELECT reid,id,typename FROM `#@__arctype` order by topid  asc , sortrank asc");
 $dsql->Execute('op');
-while ($row = $dsql->GetArray('op')) {
-    $rows[] = $row;
+while ($row_op = $dsql->GetArray('op')) {
+    $rows[] = $row_op;
 }
 $typeOptions = array();
 $index = array();
