@@ -23,6 +23,7 @@ background-color: #373C40;
 }
 .uk-logo img {
   width: 163px;
+  cursor: pointer;
 }
 .uk-logo {
   font-size: 18px;
