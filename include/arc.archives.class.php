@@ -735,7 +735,7 @@ class Archives
             $preRow = $this->dsql->GetOne($query . $pre);
             if (is_array($preRow)) {
                 if (defined('DEDEMOB')) {
-                    $mlink = 'view.php?aid=' . $preRow['id'];
+                    $mlink = 'view.php?aid=' . $nextRow['id'];
                 } else {
                     $mlink = GetFileUrl(
                         $preRow['id'], $preRow['typeid'], $preRow['senddate'], $preRow['title'], $preRow['ismake'], $preRow['arcrank'],
@@ -1003,7 +1003,7 @@ class Archives
     }
 
     /**
-     * 高亮问题修正, 排除alt title <a></a>直接的字符替换
+     * Archives Keyword
      *
      * @param  string $kw
      * @param  string $body
@@ -1011,67 +1011,33 @@ class Archives
      */
     public function ReplaceKeyword($kw, &$body)
     {
-        global $cfg_cmspath;
-        $maxkey = 5;
-        $kws = explode(",", trim($kw)); //以分好为间隔符
-        $i = 0;
-        $karr = $kaarr = $GLOBALS['replaced'] = array();
+        preg_match_all('#<a.*>(.*)<\/a>#isU', $body, $matches, PREG_OFFSET_CAPTURE);
+        $a_temp = array();
 
-        //暂时屏蔽超链接
-        $body = preg_replace("#(<a(.*))(>)(.*)(<)(\/a>)#isU", '\\1-]-\\4-[-\\6', $body);
+        foreach ($matches[0] as $key => $value) {
+            $a_temp[md5($value[0]."6W‌4P‌5371‌4L‌4A6V‌4H‌5J6U‌5J‌496W‌4K‌5A6U‌5J‌4O71‌50‌5Q")] = $matches[1][$key][0];
+            $item = str_replace($matches[1][$key][0], md5($value[0]."6W‌4P‌5371‌4L‌4A6V‌4H‌5J6U‌5J‌496W‌4K‌5A6U‌5J‌4O71‌50‌5Q"), $value[0]);
+            $body = str_replace($value[0], $item, $body);
+        }
 
-        $query = "SELECT * FROM #@__keywords WHERE rpurl<>'' ORDER BY rank DESC";
+        $query = "SELECT * FROM #@__keywords WHERE rpurl<>'' ORDER BY rank DESC ";
         $this->dsql->SetQuery($query);
         $this->dsql->Execute();
         while ($row = $this->dsql->GetArray()) {
             $key = trim($row['keyword']);
             $key_url = trim($row['rpurl']);
-            $karr[] = $key;
-            $kaarr[] = "<a href='$key_url' target='_blank'><u>$key</u></a>";
+            $keywords[$key] = "<a href='$key_url' target='_blank'><u>$key</u></a>";
         }
 
-        // 这里可能会有错误
-        if (version_compare(PHP_VERSION, '5.5.0', '>=')) {
-            if (version_compare(PHP_VERSION, '8', '>=')) {
-                $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight8", $body);
-            } else {
-                $body = @preg_replace_callback("#(^|>)([^<]+)(?=<|$)#sU", "_highlight('\\2', \$karr, \$kaarr, '\\1')", $body);
-            }
-        } 
+        foreach ($keywords as $key => $value) {
+            $body = str_ireplace($key, $value, $body);
+        }
 
-        //恢复超链接
-        $body = preg_replace("#(<a(.*))-\]-(.*)-\[-(\/a>)#isU", '\\1>\\3<\\4', $body);
+        foreach ($a_temp as $key => $value) {
+            $body = str_replace($key, $value, $body);
+        }
+
         return $body;
     }
 
 } //End Archives
-
-function _highlight8($matches)
-{
-    // TODO
-}
-
-//高亮专用, 替换多次是可能不能达到最多次
-function _highlight($string, $words, $result, $pre)
-{
-    global $cfg_replace_num;
-    if (version_compare(PHP_VERSION, '5.5.0', '>=')) {
-        $string = $string[0];
-        $pre = $pre[0];
-    }
-    $string = str_replace('\"', '"', $string);
-    if ($cfg_replace_num > 0) {
-        foreach ($words as $key => $word) {
-            if ($GLOBALS['replaced'][$word] == 1) {
-                continue;
-            }
-            $string = preg_replace("#" . preg_quote($word) . "#", $result[$key], $string, $cfg_replace_num);
-            if (strpos($string, $word) !== false) {
-                $GLOBALS['replaced'][$word] = 1;
-            }
-        }
-    } else {
-        $string = str_replace($words, $result, $string);
-    }
-    return $pre . $string;
-}

@@ -28,8 +28,8 @@ if ($dopost == 'delete') {
     exit();
 } else if ($dopost == "saveedit") {
     csrf_check();
-    $starttime = GetMkTime($starttime);
-    $endtime = GetMkTime($endtime);
+    $starttime = strtotime($starttime);
+    $endtime = strtotime($endtime);
     $query = "UPDATE `#@__mytag`
      SET
      typeid='$typeid',

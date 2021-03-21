@@ -105,12 +105,10 @@ $typeOptions = '';
 $row = $dsql->GetOne("SELECT * FROM `#@__admin` WHERE id='$id'");
 $typeids = explode(',', $row['typeid']);
 
-
-
 $dsql->SetQuery("SELECT reid,id,typename FROM `#@__arctype` order by topid  asc , sortrank asc");
 $dsql->Execute('op');
-while ($row = $dsql->GetArray('op')) {
-    $rows[] = $row;
+while ($item = $dsql->GetArray('op')) {
+    $rows[] = $item;
 }
 $typeOptions = array();
 $index = array();
@@ -125,15 +123,15 @@ foreach($rows as $value) {
     }
 }
 
-function getswitch($data, $l, $typeids){
+function getswitch($data, $l, $typeids)
+{
     foreach($data as $key=>$value){
-        if(is_array($value)){
-        
-            $result=getswitch($value, $l,$typeids);
+        if(is_array($value)) {
+            $result=getswitch($value, $l, $typeids);
         }
         else{
             $result[$key]=$value;
-            if (count($result) == 3){
+            if (count($result) == 3) {
                 $l++;
                 $line = "";
                 for ($i=0; $i < $l-1; $i++) { 

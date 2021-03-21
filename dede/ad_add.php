@@ -27,8 +27,8 @@ if ($dopost == "save") {
         ShowMsg("在相同栏目下已经存在同名的标记！", "-1");
         exit();
     }
-    $starttime = GetMkTime($starttime);
-    $endtime = GetMkTime($endtime);
+    $starttime = strtotime($starttime);
+    $endtime = strtotime($endtime);
     $link = addslashes($normbody['link']);
     if ($normbody['style'] == 'code') {
         $normbody = addslashes($normbody['htmlcode']);

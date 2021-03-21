@@ -26,7 +26,7 @@ if ($dopost != 'save') {
     $channelid = empty($channelid) ? 0 : intval($channelid);
     $cid = empty($cid) ? 0 : intval($cid);
 
-    //获得频道模型ID
+    //获得内容类型ID
     if ($cid > 0 && $channelid == 0) {
         $row = $dsql->GetOne("SELECT channeltype FROM `#@__arctype` WHERE id='$cid'; ");
         $channelid = $row['channeltype'];
@@ -37,7 +37,7 @@ if ($dopost != 'save') {
         }
     }
 
-    //获得频道模型信息
+    //获得内容类型信息
     $cInfos = $dsql->GetOne(" SELECT * FROM  `#@__channeltype` WHERE id='$channelid' ");
     $channelid = $cInfos['id'];
     //获取文章最大id以确定当前权重
@@ -111,7 +111,7 @@ else if ($dopost == 'save') {
         $source = '未知';
     }
 
-    $pubdate = GetMkTime($pubdate);
+    $pubdate = strtotime($pubdate);
     $senddate = time();
     $sortrank = AddDay($pubdate, $sortup);
     $ismake = $ishtml == 0 ? -1 : 0;
@@ -175,6 +175,21 @@ else if ($dopost == 'save') {
                 $vs = explode(',', $v);
                 if ($vs[1] == 'htmltext' || $vs[1] == 'textdata') {
                     ${$vs[0]} = AnalyseHtmlBody(${$vs[0]}, $description, $litpic, $keywords, $vs[1]);
+                } else if ($vs[1]=='img') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadImage($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='media') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadMedia($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='addon') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadAddon($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
                 } else {
                     if (!isset(${$vs[0]})) {
                         ${$vs[0]} = '';

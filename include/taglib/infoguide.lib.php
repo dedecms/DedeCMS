@@ -26,7 +26,7 @@
 
 function lib_infoguide(&$ctag, &$refObj)
 {
-    global $dsql, $nativeplace, $infotype, $hasSetEnumJs, $cfg_cmspath, $cfg_mainsite;
+    global $dsql, $nativeplace, $infotype, $hasSetEnumJs, $cfg_cmspath, $cfg_mainsite, $cfg_assets_dir;
 
     //属性处理
     //$attlist="row|12,titlelen|24";
@@ -63,7 +63,7 @@ function lib_infoguide(&$ctag, &$refObj)
     $fields = array('nativeplace' => '', 'infotype' => '', 'typeid' => $typeid);
 
     if ($hasSetEnumJs != 'has') {
-        $revalue .= '<script language="javascript" type="text/javascript" src="' . $cfg_mainsite . $cmspath . 'assets/pkg/other/enums.js"></script>' . "\r\n";
+        $revalue .= '<script language="javascript" type="text/javascript" src="' . $cfg_mainsite . $cfg_assets_dir . '/pkg/dede/enums.js"></script>' . "\r\n";
         $GLOBALS['hasSetEnumJs'] = 'hasset';
     
     }
@@ -83,13 +83,13 @@ function lib_infoguide(&$ctag, &$refObj)
     $fields['nativeplace'] .= "<input type='hidden' id='hidden_nativeplace' name='nativeplace' value='{$nativeplace}' />\r\n";
     $fields['nativeplace'] .= "<span class='uk-text-small'>地区：</span><span id='span_nativeplace'></span>\r\n";
     $fields['nativeplace'] .= "<span id='span_nativeplace_son'></span>\r\n<span id='span_nativeplace_sec'></span><br />\r\n";
-    $fields['nativeplace'] .= "<script language='javascript' type='text/javascript' src='{$cfg_mainsite}{$cmspath}data/enums/nativeplace.js'></script>\r\n";
+    $fields['nativeplace'] .= "<script language='javascript' type='text/javascript' src='{$cfg_mainsite}{$cfg_assets_dir}pkg/dede/nativeplace.js'></script>\r\n";
     $fields['nativeplace'] .= '<script language="javascript">MakeTopSelect("nativeplace", ' . $nativeplace . ');</script>' . "\r\n";
 
     $fields['infotype'] .= "<input type='hidden' id='hidden_infotype' name='infotype' value='{$infotype}' />\r\n";
     $fields['infotype'] .= "<span class='uk-text-small'>类型：</span><span id='span_infotype'></span>\r\n";
     $fields['infotype'] .= "<span id='span_infotype_son'></span><span id='span_infotype_sec'></span><br />\r\n";
-    $fields['infotype'] .= "<script language='javascript' type='text/javascript' src='{$cfg_mainsite}{$cmspath}data/enums/infotype.js'></script>\r\n";
+    $fields['infotype'] .= "<script language='javascript' type='text/javascript' src='{$cfg_mainsite}{$cfg_assets_dir}pkg/dede/infotype.js'></script>\r\n";
     $fields['infotype'] .= '<script language="javascript">MakeTopSelect("infotype", ' . $infotype . ');</script>' . "\r\n";
 
     if (is_array($ctp->CTags)) {

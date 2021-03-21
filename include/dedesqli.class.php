@@ -294,9 +294,7 @@ class ii
         }
 
         $t1 = ExecTime();
-        //var_dump($this->queryString);
         $this->result[$id] = mysqli_query($this->linkID, $this->queryString);
-        //var_dump(mysql_error());
 
         //查询性能测试
         if ($this->recordLog) {
@@ -361,7 +359,6 @@ class ii
     // MYSQLI_ASSOC、MYSQLI_NUM、MYSQLI_BOTH
     public function GetArray($id = "me", $acctype = MYSQLI_ASSOC)
     {
-        // var_dump($this->result);
         if ($this->result[$id] === 0) {
             return false;
         } else {
@@ -624,10 +621,11 @@ function CheckSql($db_string, $querytype = 'select')
         OR ($querytype === 'select' && strpos($clean, 'varchar(') !== false )
         OR ($querytype === 'select' && strpos($clean, 'char(') !== false )
         OR strpos($clean, '"') !== false
-        OR strpos($clean, '$s$$s$') !== false
+        OR (strpos($clean, '$s$$s$') !== false)
     ) {
+
         $fail = true;
-        if (preg_match("#^create table#i", $clean)) {
+        if (preg_match("#^create table#i", $clean) OR preg_match("#^insert into `dede_plus`#i", $clean)) {
             $fail = false;
         }
 

@@ -658,6 +658,7 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid = 0, $row = 10, $col = 1, $ti
                 $row['picname'] = $row['litpic'];
                 $row['stime'] = GetDateMK($row['pubdate']);
                 $row['typelink'] = "<a href='" . $row['typeurl'] . "'>" . $row['typename'] . "</a>";
+
                 $row['image'] = "<img src='" . $row['picname'] . "' border='0' width='$imgwidth' height='$imgheight' alt='" . preg_replace("#['><]#", "", $row['title']) . "'>";
                 $row['imglink'] = "<a href='" . $row['filename'] . "'>" . $row['image'] . "</a>";
                 $row['fulltitle'] = $row['title'];
@@ -732,7 +733,6 @@ function lib_arclistDone(&$refObj, &$ctag, $typeid = 0, $row = 10, $col = 1, $ti
             }
 
             // 进行判断,如果启用排序则内容输出为重新排序后的内容
-            // var_dump($isweight=='y' && count($orderWeight) == $line);
             $isweight = strtolower($isweight);
             if ($isweight == 'y') {
                 $artlist = '';

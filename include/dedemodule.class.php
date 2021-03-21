@@ -414,7 +414,7 @@ class DedeModule
      *
      * @access public
      * @param  string $hashcode hash码
-     * @return string  返回文件列表
+     * @return array  返回文件列表
      */
     public function GetFileLists($hashcode)
     {

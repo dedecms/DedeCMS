@@ -164,7 +164,7 @@ echo "</select>";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="senddate" value="<?=GetDateTimeMk($arcRow['senddate'])?>" placeholder="<?=GetDateTimeMk($arcRow['senddate'])?>" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
+<input name="senddate" value="<?=GetDateTimeMk($arcRow['senddate'])?>" placeholder="1970-01-01T00:00:00Z" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
 </div>
 </td>
 </tr>
@@ -173,7 +173,7 @@ echo "</select>";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="pubdate" value="<?=GetDateTimeMk($arcRow['pubdate'])?>" placeholder="<?=GetDateTimeMk($arcRow['pubdate'])?>" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
+<input name="pubdate" value="<?=GetDateTimeMk($arcRow['pubdate'])?>" placeholder="1970-01-01T00:00:00Z" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
 </div>
 </td>
 </tr>
@@ -364,8 +364,9 @@ class="uk-radio" checked>
 <button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
 </div>
 <div>
-<button class="upload-result-original uk-button uk-button-primary uk-button-small">幻灯剪切</button>
+<button class="upload-result-original uk-button uk-button-primary uk-button-small">无损剪切</button>
 <button class="upload-result-viewport uk-button uk-button-primary uk-button-small">剪切</button>
+<button class="upload-result uk-button uk-button-primary uk-button-small">使用原图</button>
 </div>
 </div>
 </div>

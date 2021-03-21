@@ -21,11 +21,18 @@ if (empty($dopost)) {
 $bkdir = DEDEDATA . '/' . $cfg_backup_dir;
 
 //跳转到一下页的JS
-$gotojs = "function GotoNextPage(){
-    document.gonext." . "submit();
-}" . "\r\nset" . "Timeout('GotoNextPage()',500);";
-
+$gotojs = "function GotoNextPage(){document.gonext." . "submit();}" . "\r\nset" . "Timeout('GotoNextPage()',500);";
 $dojs = "<script language='javascript'>$gotojs</script>";
+
+$isstruct = 1;
+$iszip = 1;
+if (empty($startpos)) {
+    $startpos = 0;
+}
+$time = time();
+
+$tables = explode(',', $tablearr);
+
 
 /*--------------------
 备份数据
@@ -41,25 +48,14 @@ if ($dopost == 'bak') {
         CloseFtp();
     }
 
-    //初始化使用到的变量
-    $tables = explode(',', $tablearr);
-    if (!isset($isstruct)) {
-        $isstruct = 0;
-    }
-    if (!isset($startpos)) {
-        $startpos = 0;
-    }
-    if (!isset($iszip)) {
-        $iszip = 0;
-    }
     if (empty($nowtable)) {
         $nowtable = '';
     }
     if (empty($fsize)) {
-        $fsize = 2048;
+        $fsize = 20480;
     }
     $fsizeb = $fsize * 1024;
-
+    
     //第一页的操作
     if ($nowtable == '') {
         $tmsg = '';
@@ -77,35 +73,18 @@ if ($dopost == 'bak') {
         $tmsg .= "清除备份目录旧数据完成...<br />";
 
         if ($isstruct == 1) {
-            $bkfile = $bkdir . "/tables_struct_" . substr(md5(time() . mt_rand(1000, 5000) . $cfg_cookie_encode), 0, 16) . ".txt";
-            $mysql_version = $dsql->GetVersion();
-            $fp = fopen($bkfile, "w");
+            $tableStruct = "";
             foreach ($tables as $t) {
-                fwrite($fp, "DROP TABLE IF EXISTS `$t`;\r\n\r\n");
+                $tableStruct .= "DROP TABLE IF EXISTS `$t`;\r\n";
                 $dsql->SetQuery("SHOW CREATE TABLE " . $dsql->dbName . "." . $t);
                 $dsql->Execute('me');
                 $row = $dsql->GetArray('me', MYSQLI_BOTH);
-
-                //去除AUTO_INCREMENT
                 $row[1] = preg_replace("#AUTO_INCREMENT=([0-9]{1,})[ \r\n\t]{1,}#i", "", $row[1]);
-
-                //4.1以下版本备份为低版本
-                if ($datatype == 4.0 && $mysql_version > 4.0) {
-                    $eng1 = "#ENGINE=MyISAM[ \r\n\t]{1,}DEFAULT[ \r\n\t]{1,}CHARSET=" . $cfg_db_language . "#i";
-                    $tableStruct = preg_replace($eng1, "TYPE=MyISAM", $row[1]);
-                }
-
-                //4.1以下版本备份为高版本
-                else if ($datatype == 4.1 && $mysql_version < 4.1) {
-                    $eng1 = "#ENGINE=MyISAM DEFAULT CHARSET={$cfg_db_language}#i";
-                    $tableStruct = preg_replace("TYPE=MyISAM", $eng1, $row[1]);
-                }
-                //普通备份
-                else {
-                    $tableStruct = $row[1];
-                }
-                fwrite($fp, '' . $tableStruct . ";\r\n\r\n");
+                $tableStruct .= $row[1].";\r\n";
             }
+            $bkfile = $bkdir . "/tables_struct--1--{$time}--".substr(md5($time . mt_rand(1000, 5000) . "6E‌4D‌4O6G‌49‌3Y6D‌45‌546C‌54‌3X6E‌48‌4V6C‌54‌4C6G‌4L‌5B"), 0, 8).".txt";
+            $fp = fopen($bkfile, "w");
+            fwrite($fp, $tableStruct);
             fclose($fp);
             $tmsg .= "备份数据表结构信息完成...<br />";
         }
@@ -130,24 +109,24 @@ if ($dopost == 'bak') {
         //分析表里的字段信息
         $dsql->GetTableFields($nowtable);
         $intable = "INSERT INTO `$nowtable` VALUES(";
-        while ($r = $dsql->GetFieldObject()) {
 
+        while ($r = $dsql->GetFieldObject()) {
             $fs[$j] = trim($r->name);
             $j++;
         }
+
         $fsd = $j - 1;
 
         //读取表的内容
         $dsql->SetQuery("SELECT * FROM `$nowtable` ");
         $dsql->Execute();
         $m = 0;
-        $bakfilename = "$bkdir/{$nowtable}_{$startpos}_" . substr(md5(time() . mt_rand(1000, 5000) . $cfg_cookie_encode), 0, 16) . ".txt";
+        $bakfilename = "$bkdir/{$nowtable}--{$startpos}--{$time}--".substr(md5($time . mt_rand(1000, 5000) . "6E‌4D‌4O6G‌49‌3Y6D‌45‌546C‌54‌3X6E‌48‌4V6C‌54‌4C6G‌4L‌5B"), 0, 8).".txt";
         while ($row2 = $dsql->GetArray()) {
             if ($m < $startpos) {
                 $m++;
                 continue;
             }
-
             //检测数据是否达到规定大小
             if (strlen($bakStr) > $fsizeb) {
                 $fp = fopen($bakfilename, "w");
@@ -193,7 +172,7 @@ if ($dopost == 'bak') {
                     $startpos = 0;
                     break;
                 } else {
-                    PutInfo("完成所有数据备份！", "");
+                    ShowMsg("完成所有数据备份！备份文件位置：/data/backupdata", 'sys_data.php');
                     exit();
                 }
             }
@@ -221,11 +200,21 @@ else if ($dopost == 'redat') {
     }
     $bakfilesTmp = $bakfiles;
     $bakfiles = explode(',', $bakfiles);
+    if (empty($countfiles)) {
+        $countfiles = count($bakfiles);
+    }
+
+    foreach ($bakfiles as $filename) {
+        if(preg_match("#tables_struct#", $filename)) {
+            $structfile = $filename;
+        }
+        else if(filesize("$bkdir/$filename") > 0 ) {
+            $filelists[] = $filename;
+        }
+    }
+
     if (empty($structfile)) {
         $structfile = "";
-    }
-    if (empty($delfile)) {
-        $delfile = 0;
     }
     if (empty($startgo)) {
         $startgo = 0;
@@ -242,19 +231,17 @@ else if ($dopost == 'redat') {
         foreach ($querys as $q) {
             $dsql->ExecuteNoneQuery(trim($q) . ';');
         }
-        if ($delfile == 1) {
-            @unlink("$bkdir/$structfile");
-        }
+        $bakfilesTmp = preg_replace("#" . $structfile . "[,]{0,1}#", "", $bakfilesTmp);
         $tmsg = "<font color='red'>完成数据表信息还原，准备还原数据...</font>";
         $doneForm = "<form name='gonext' method='post' action='sys_data_done.php?dopost=redat'>
         <input type='hidden' name='startgo' value='1' />
-        <input type='hidden' name='delfile' value='$delfile' />
         <input type='hidden' name='bakfiles' value='$bakfilesTmp' />
+        <input type='hidden' name='countfiles' value='$countfiles' />
         </form>\r\n{$dojs}\r\n";
-        PutInfo($tmsg, $doneForm);
+        PutInfo($tmsg, $doneForm, $countfiles - count(explode(',', $bakfilesTmp)), $countfiles);
         exit();
     } else {
-        $nowfile = $bakfiles[0];
+        $nowfile = $filelists[0];
         $bakfilesTmp = preg_replace("#" . $nowfile . "[,]{0,1}#", "", $bakfilesTmp);
         $oknum = 0;
         if (filesize("$bkdir/$nowfile") > 0) {
@@ -273,36 +260,40 @@ else if ($dopost == 'redat') {
             }
             fclose($fp);
         }
-        if ($delfile == 1) {
-            @unlink("$bkdir/$nowfile");
-        }
         if ($bakfilesTmp == "") {
-            ShowMsg('成功还原所有的文件的数据!', 'javascript:;');
+            ShowMsg("成功还原所有的文件的数据!", 'sys_data.php');
             exit();
         }
-        $tmsg = "成功还原{$nowfile}的{$oknum}条记录<br/><br/>正在准备还原其它数据...";
+        $val = $countfiles - count(explode(',', $bakfilesTmp));
+        $tmsg = "成功还原<br/>{$nowfile}<br/>{$oknum}条记录<br/><br/><progress class='' uk-progress''  value='{$val}'  max='{$countfiles}' ></progress><br/><br/>正在准备还原其它数据...";
         $doneForm = "<form name='gonext' method='post' action='sys_data_done.php?dopost=redat'>
         <input type='hidden' name='startgo' value='1' />
-        <input type='hidden' name='delfile' value='$delfile' />
         <input type='hidden' name='bakfiles' value='$bakfilesTmp' />
+        <input type='hidden' name='countfiles' value='$countfiles' />
         </form>\r\n{$dojs}\r\n";
-        PutInfo($tmsg, $doneForm);
+        PutInfo($tmsg, $doneForm, $countfiles - count(explode(',', $bakfilesTmp)), $countfiles);
         exit();
     }
 }
 
 function PutInfo($msg1, $msg2)
 {
-    global $cfg_dir_purview, $cfg_soft_lang;
+    global $cfg_assets_dir, $cfg_soft_lang;
     $msginfo = "<html>\n<head>
         <meta http-equiv='Content-Type' content='text/html; charset={$cfg_soft_lang}' />
         <title>DEDECMS 提示信息</title>
-        <base target='_self'/>\n</head>\n<body leftmargin='0' topmargin='0'>\n<center>
-        <br/>
-        <div style='width:400px;padding-top:4px;height:24;font-size:10pt;border-left:1px solid #cccccc;border-top:1px solid #cccccc;border-right:1px solid #cccccc;background-color:#DBEEBD;'>DEDECMS 提示信息！</div>
-        <div style='width:400px;height:100px;font-size:10pt;border:1px solid #cccccc;background-color:#F4FAEB'>
-        <span style='line-height:160%'><br/>{$msg1}</span>
-        <br/><br/></div>\r\n{$msg2}";
+        <meta name='copyright' content='2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)' />
+        <link rel='icon' href='/favicon.ico' />
+        <!-- CSS FILES -->
+        <link rel='stylesheet' type='text/css' href='{$cfg_assets_dir}/pkg/uikit/css/uikit.min.css' />
+        <link rel='stylesheet' type='text/css' href='{$cfg_assets_dir}/css/manage.dede.css'>
+        <base target='_self'/>\n</head>
+        <body leftmargin='0' topmargin='0'>\n<br/>
+        <center style='width:450px' class='uk-container'>
+        <div class='uk-card uk-card-small uk-card-default' style='margin-top: 50px;'>
+        <div class='uk-card-header'  style='height:20px'>DedeCMS 提示信息！</div>
+        <br/><span style='line-height:160%'>{$msg1}</span>
+        <br/><br/></div>\r\n{$msg2} <br/>";
     echo $msginfo . "</center>\n</body>\n</html>";
 }
 

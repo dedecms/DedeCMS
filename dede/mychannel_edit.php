@@ -58,8 +58,8 @@ else if ($dopost == "copystart") {
         $idname = 'w' . ($newid * -1);
     }
     $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$id'");
-    $wintitle = "频道管理-模型复制";
-    $wecome_info = "&nbsp;<a href='mychannel_main.php'>频道管理</a> - 模型复制";
+    $wintitle = "内容类型管理-模型复制";
+    $wecome_info = "&nbsp;<a href='mychannel_main.php'>内容类型管理</a> - 模型复制";
     $win = new OxWindow();
     $win->Init("mychannel_edit.php", "js/blank.js", "post");
     $win->AddTitle("&nbsp;被复制频道： [<font color='red'>" . $row['typename'] . "</font>]");
@@ -371,8 +371,8 @@ function __GetTemplate()
 else if ($dopost == "gettemplets") {
     include_once DEDEINC . "/oxwindow.class.php";
     $row = $dsql->GetOne("SELECT * FROM `#@__channeltype` WHERE id='$id'");
-    $wintitle = "&nbsp;频道管理-查看模板";
-    $wecome_info = "<a href='mychannel_main.php'>频道管理</a>::查看模板";
+    $wintitle = "&nbsp;内容类型管理-查看模板";
+    $wecome_info = "<a href='mychannel_main.php'>内容类型管理</a>::查看模板";
     $win = new OxWindow();
     $win->Init("", "js/blank.js", "");
     $win->AddTitle("&nbsp;频道：（" . $row['typename'] . "）默认模板文件说明：");
@@ -408,8 +408,8 @@ else if ($dopost == "delete") {
     if ($job == "") //确认提示
     {
         include_once DEDEINC . "/oxwindow.class.php";
-        $wintitle = "频道管理-删除模型";
-        $wecome_info = "<a href='mychannel_main.php'>频道管理</a>::删除模型";
+        $wintitle = "内容类型管理-删除模型";
+        $wecome_info = "<a href='mychannel_main.php'>内容类型管理</a>::删除模型";
         $win = new OxWindow();
         $win->Init("mychannel_edit.php", "js/blank.js", "POST");
         $win->AddHidden("job", "yes");

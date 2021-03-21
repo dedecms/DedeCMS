@@ -203,29 +203,7 @@ EOT;
         
         }
     
-    } else {
-        /*
-        // ------------------------------------------------------------------------
-        // 当前版本,暂时取消dedehtml编辑器的支持
-        // ------------------------------------------------------------------------
-        require_once(DEDEINC.'/htmledit/dede_editor.php');
-        $ded = new DedeEditor($fname);
-        $ded->BasePath        = $GLOBALS['cfg_cmspath'].'/include/htmledit/' ;
-        $ded->Width        = '100%' ;
-        $ded->Height        = $nheight ;
-        $ded->ToolbarSet = strtolower($etype);
-        $ded->Value = $fvalue ;
-        if($gtype=="print")
-        {
-        $ded->Create();
-        }
-        else
-        {
-        return $ded->CreateHtml();
-        }
-        */
-    
-    }
+    } 
 
 }
 
@@ -248,24 +226,13 @@ function SpGetNewInfo()
     $phpv = phpversion();
     $sp_os = PHP_OS;
     $mysql_ver = $dsql->GetVersion();
-    $seo_info = $dsql->GetOne("SELECT * FROM `#@__plus_seoinfo` ORDER BY id DESC");
+
     $add_query = '';
-    if ($seo_info) {
-        $add_query .= "&alexa_num={$seo_info['alexa_num']}&alexa_area_num={$seo_info['alexa_area_num']}&baidu_count={$seo_info['baidu_count']}&sogou_count={$seo_info['sogou_count']}&haosou360_count={$seo_info['haosou360_count']}";
-    
-    }
-    $query = " SELECT COUNT(*) AS dd FROM `#@__member` ";
-    $row1 = $dsql->GetOne($query);
-    if ($row1) {
-        $add_query .= "&mcount={$row1['dd']}";
-    
-    }
 
     $query = " SELECT COUNT(*) AS dd FROM `#@__arctiny` ";
     $row2 = $dsql->GetOne($query);
     if ($row2) {
         $add_query .= "&acount={$row2['dd']}";
-    
     }
 
     $offUrl = "http://n" . "ew" . "ver.a" . "pi.de" . "decm" . "s.com" . "/in" . "dex.php?c=i" . "nfo58&ve" . "rsi" . "on={$cfg_version}&form" . "url={$nurl}&ph" . "pver={$phpv}&o" . "s={$sp_os}&mysql" . "ver={$mysql_ver}{$add_query}";

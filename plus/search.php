@@ -98,7 +98,7 @@ if (empty($starttime)) {
 } else {
     $starttime = (is_numeric($starttime) ? $starttime : -1);
     if ($starttime > 0) {
-        $dayst = GetMkTime("2008-1-2 0:0:0") - GetMkTime("2008-1-1 0:0:0");
+        $dayst = strtotime("2008-1-2 0:0:0") - strtotime("2008-1-1 0:0:0");
         $starttime = time() - ($starttime * $dayst);
     }
 }

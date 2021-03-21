@@ -161,7 +161,7 @@ if ($dopost != 'done') {
             } else if ($itemName == 'pubdate') {
                 $pubdate = trim($ctag->GetInnerText());
                 if (preg_match("#[^0-9]#", $pubdate)) {
-                    $pubdate = $sortrank = GetMkTime($pubdate);
+                    $pubdate = $sortrank = strtotime($pubdate);
                 } else {
                     $pubdate = $sortrank = time();
                 }

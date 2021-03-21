@@ -173,7 +173,7 @@ else if ($dopost == 'edituser') {
         $sex = '男';
     }
 
-    $uptime = GetMkTime($uptime);
+    $uptime = strtotime($uptime);
 
     if ($matt == 10 && $oldmatt != 10) {
         ShowMsg("对不起，为安全起见，不支持直接把前台用户转为管理的操作！", "-1");

@@ -79,7 +79,7 @@ if ($action == 'upload') {
     }
 } else {
     $win = new OxWindow();
-    $win->Init("module_upload.php", "js/blank.js", "'POST' enctype='multipart/form-data'");
+    $win->Init("module_upload.php", "js/blank.js", "POST' enctype='multipart/form-data");
     $win->mainTitle = "模块管理";
     $wecome_info = "<ul class=\"uk-breadcrumb\"><li><a href=\"module_main.php\">模块管理</a></li><li><span>上传模块</span></li></ul>";
     $win->AddTitle('请选择要上传的文件:');

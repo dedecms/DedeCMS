@@ -251,7 +251,6 @@ class TagList
                 if ($list_len == "") {
                     $list_len = 3;
                 }
-                // var_dump($ismake);
                 if ($ismake == 0) {
                     $this->dtp->Assign($tagid, $this->GetPageListDM($list_len, $listitem));
                 } else {
@@ -563,10 +562,8 @@ class TagList
             return "<span class=\"pageinfo\">共0页/" . $this->TotalResult . "条</span>";
         }
         $maininfo = "<span class=\"pageinfo\">共{$totalpage}页/" . $this->TotalResult . "条</span>\r\n";
-        // $purl = $this->GetCurUrl();
         $purl = "/a/tags/" . GetPinyin($this->Tag);
 
-        // var_dump($purl);
 
         //获得上一页和下一页的链接
         if ($this->PageNo != 1) {

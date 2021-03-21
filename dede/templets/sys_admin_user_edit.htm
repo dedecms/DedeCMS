@@ -37,9 +37,10 @@ height: 35px;
 <div class="uk-card-body uk-overflow-auto" grid>
 <div class="uk-child-width-1-1 uk-padding">
 <table width="98%" border="0" cellpadding="1" cellspacing="1" class="uk-table">
-<form name="form1" action="sys_admin_user_add.php" onSubmit="return checkSubmit();" method="post">
-<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-<input type="hidden" name="dopost" value="add" />
+<form action="sys_admin_user_edit.php" method="post">
+<input type="hidden" name="dopost" value="saveedit" />
+<input type="hidden" name="token" value="<?=$_SESSION['token']?>">
+<input type="hidden" name="id" value="<?=$row['id']?>" />
 <!-- 选项 -->
 <tr>
 <td width="16%" height="30">用户登录ID：</td>

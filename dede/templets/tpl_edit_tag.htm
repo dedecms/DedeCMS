@@ -4,4 +4,98 @@
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
 
-<html><!-- 模版头部 --><head><meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}"><title>{dede:global.wintitle/} - {dede:global.cfg_softname/} {dede:global.cfg_version/}</title><link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.css"/><link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/theme/duotone-light.min.css"/><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><!-- /模版头部 --><body><!-- 模版头部 --><form method="POST" action="tpl.php" name=form1 onSubmit="return Post()"><input type="hidden" name="actiondo" value="<?php echo $action; ?>" /><input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>"><input type="hidden" name="action" value="savetagfile" /><div class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><div id="Header_1W2T2S2T1V252B" class="uk-card-header"><div class="uk-grid uk-grid-small uk-text-small"><span><ul class="uk-breadcrumb"><li><a href="templets_tagsource.php">标签源码碎片管理</a></li><li><?php echo $title; ?></li></ul></span></div><!-- 搜索表单 --><ul class="uk-navbar-nav dede-card-navbar" uk-navbar ><li style="margin-right: 12px;"><a href="http://help.dedecms.com/user_guide/tags" target="_blank" class="uk-button uk-button-default uk-button-small uk-flex-inline ">DedeCMS标签使用手册</a></li></ul><!-- /搜索表单 --></div><table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><tbody><tr><td class="dede-file-input"><div class="uk-inline"><span class="uk-form-icon" uk-icon="icon: file-text"></span><input name="filename" class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text" type="text" value="{dede:global.filename/}"> （不允许用 “..” 形式的路径）</div><div class="uk-button-group"><a href="#" onClick='history.go(-1);' class="uk-button uk-button-default uk-button-small uk-flex-inline"><span class="dede-toolbar-icon" uk-icon="icon:arrow-left-short;ratio:0.8"></span> 返回</a><a onClick='location.reload();' class="uk-button uk-button-default uk-button-small uk-flex-inline"><span class="dede-toolbar-icon" uk-icon="icon: arrow-counterclockwise;ratio:0.8"></span> 重置</a><button type='submit' class="uk-button uk-button-default uk-button-small uk-flex-inline"><span class="dede-toolbar-icon" uk-icon="icon: record2;ratio:0.8"></span> 保存</button></div></td></tr></tbody></table></div><!-- /模版头部 --><!-- 模版主体 --><div id="dede-table-oswindow-code" class="uk-card uk-card-small uk-card-default"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><div class="uk-overflow-auto"><textarea id="content" name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $democode; ?></textarea></div></div></div></div></div><!-- /模版主体 --></form><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/matchbrackets.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/active-line.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/clike.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/htmlmixed.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/javascript.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/xml.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/css.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/php.min.js"></script><script type="text/javascript">var editor = CodeMirror.fromTextArea(document.getElementById('content'), {lineNumbers: true,matchBrackets: true,styleActiveLine: true,indentUnit: 4,indentWithTabs: true,theme:"duotone-light",mode: 'text/x-php'});editor.setSize("100%", "90%");function Post(){if (document.form1.filename.value==""){alert("文件名不能为空。");document.form1.filename.focus();return false;}} </script></body></html>
+<html>
+<!-- 模板头部 -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}">
+<title>{dede:global.wintitle/} - {dede:global.cfg_softname/} {dede:global.cfg_version/}
+</title>
+<link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.css"/>
+<link rel="stylesheet" href="{dede:global.cfg_assets_dir/}/pkg/codemirror/theme/duotone-light.min.css"/>
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+</head>
+<!-- /模板头部 -->
+<body>
+<!-- 模板头部 -->
+<form method="POST" action="tpl.php" name=form1 onSubmit="return Post()">
+<input type="hidden" name="actiondo" value="<?php echo $action; ?>" />
+<input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+<input type="hidden" name="action" value="savetagfile" />
+<div class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<div id="Header_1W2T2S2T1V252B" class="uk-card-header">
+<div class="uk-grid uk-grid-small uk-text-small">
+<span><ul class="uk-breadcrumb"><li><a href="templets_tagsource.php">标签源码碎片管理</a></li><li><?php echo $title; ?></li></ul></span>
+</div>
+<!-- 搜索表单 -->
+<ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
+<li style="margin-right: 12px;"><a href="http://help.dedecms.com/user_guide/tags" target="_blank" class="uk-button uk-button-default uk-button-small uk-flex-inline ">DedeCMS标签使用手册</a></li>
+</ul>
+<!-- /搜索表单 -->
+</div>
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><tbody><tr><td class="dede-file-input">
+<div class="uk-inline">
+<span class="uk-form-icon" uk-icon="icon: file-text"></span>
+<input name="filename" class="uk-input dede-oswindows-input uk-form-small" id="form-horizontal-text" type="text" value="{dede:global.filename/}"> （不允许用 “..” 形式的路径）
+</div>
+<div class="uk-button-group">
+<a href="#" onClick='history.go(-1);' class="uk-button uk-button-default uk-button-small uk-flex-inline">
+<span class="dede-toolbar-icon" uk-icon="icon:arrow-left-short;ratio:0.8"></span> 返回
+</a>
+<a onClick='location.reload();' class="uk-button uk-button-default uk-button-small uk-flex-inline">
+<span class="dede-toolbar-icon" uk-icon="icon: arrow-counterclockwise;ratio:0.8"></span> 重置
+</a>
+<button type='submit' class="uk-button uk-button-default uk-button-small uk-flex-inline">
+<span class="dede-toolbar-icon" uk-icon="icon: record2;ratio:0.8"></span> 保存
+</button>
+</div>
+</td></tr></tbody></table>
+</div>
+<!-- /模板头部 -->
+<!-- 模板主体 -->
+<div id="dede-table-oswindow-code" class="uk-card uk-card-small uk-card-default">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<textarea id="content" name="content" cols="150" rows="24" style="width:99%;height:450px"><?php echo $democode; ?></textarea>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- /模板主体 -->
+</form>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/codemirror.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/matchbrackets.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/addon/active-line.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/clike.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/htmlmixed.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/javascript.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/xml.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/css.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/codemirror/mode/php.min.js"></script>
+<script type="text/javascript">
+var editor = CodeMirror.fromTextArea(document.getElementById('content'), {
+lineNumbers: true,
+matchBrackets: true,
+styleActiveLine: true,
+indentUnit: 4,
+indentWithTabs: true,
+theme:"duotone-light",
+mode: 'text/x-php'
+});
+editor.setSize("100%", "90%");
+function Post()
+{
+if (document.form1.filename.value=="")
+{
+alert("文件名不能为空。");
+document.form1.filename.focus();
+return false;
+}
+} </script>
+</body>
+</html>

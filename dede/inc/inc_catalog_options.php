@@ -17,7 +17,7 @@
  * @access public
  * @param  string $selid       选择ID
  * @param  string $userCatalog 用户类目
- * @param  string $channeltype 频道类型
+ * @param  string $channeltype 内容类型
  * @return string
  */
 function GetOptionList($selid = 0, $userCatalog = 0, $channeltype = 0)

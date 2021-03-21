@@ -299,7 +299,7 @@ class zip
      * @access public
      * @param  string $zn zip文件名称
      * @param  string $to 解压到的目录地址
-     * @return string
+     * @return array
      */
     public function Extract($zn, $to, $index = array(-1))
     {

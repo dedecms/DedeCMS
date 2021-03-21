@@ -33,7 +33,7 @@ function GetFormItem($ctag)
         if ($ctag->GetAtt("type") == 'select') {
             $myformItem = '';
             $items = explode(',', $innertext);
-            $myformItem = "<select name='$fieldname' style='width:150px'>";
+            $myformItem = "<select name='$fieldname' class='uk-select uk-form-width-large uk-form-small'>";
             foreach ($items as $v) {
                 $v = trim($v);
                 if ($v != '') {
@@ -113,7 +113,7 @@ function GetFormItem($ctag)
             $dfvalue = "";
         }
 
-        $innertext = "<input type='text' name='$fieldname' id='$fieldname' style='width:200' value='$dfvalue'>\r\n";
+        $innertext = "<input type='text' name='$fieldname' id='$fieldname' class='uk-input uk-form-width-large uk-form-small' value='$dfvalue'>\r\n";
         $formitem = str_replace("~name~", $ctag->GetAtt('itemname'), $formitem);
         $formitem = str_replace("~form~", $innertext, $formitem);
         return $formitem;
@@ -133,6 +133,7 @@ function GetFormItem($ctag)
  */
 function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 {
+    
     global $cfg_cookie_encode, $cfg_dir_purview, $isUrlOpen;
     if ($dtype == "int") {
         $dvalue = trim(preg_replace("#[^0-9]#", "", $dvalue));
@@ -149,7 +150,7 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
 
         return $dvalue;
     } else if ($dtype == "datetime") {
-        return GetMkTime($dvalue);
+        return strtotime($dvalue);
     } else if ($dtype == "textdata") {
         if ($job == 'edit') {
             $addvarDirs = explode('/', $addvar);
@@ -181,10 +182,12 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
             return $filename;
         }
     } else if ($dtype == "img") {
+
         $iurl = stripslashes($dvalue);
         if (trim($iurl) == "") {
             return "";
         }
+
         $iurl = trim(str_replace($GLOBALS['cfg_basehost'], "", $iurl));
         $imgurl = "{dede:img text='' width='' height=''} " . $iurl . " {/dede:img}";
         if (preg_match("#^http:\/\/#i", $iurl) && $GLOBALS['isUrlOpen']) {
@@ -208,6 +211,7 @@ function GetFieldValue($dvalue, $dtype, $aid = 0, $job = 'add', $addvar = '')
         }
         return addslashes($imgurl);
     } else {
+ 
         return $dvalue;
     }
 }

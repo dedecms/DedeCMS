@@ -57,7 +57,6 @@ class Array2form
     {
         if (count($formarray) > 1) {
             $this->FormArray = $formarray;
-            //var_dump($this->FormArray);
             $this->SetDefaultTpl();
         }
     }

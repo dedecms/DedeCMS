@@ -3,5 +3,142 @@
 - @author    DedeCMS团队
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
-
-<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>文档管理</title><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"><style type="text/css">form {display: block;margin-top: 0em;margin-block-end: 0em;}.bar-bottom {border-top: 1px solid rgba(255, 255, 255, 0.07);background-color: rgba(33, 34, 36, 0.90);padding: 10px 0;left: 0;right: 0;z-index: 3;bottom: 0;position: fixed;display: flex;justify-content: space-between;z-index: 99;min-width: 1050px;}</style></head><body><div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset"><table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="6%">ID</td><td width="4%"><input type="checkbox" id="select-all" class="uk-checkbox" /></td><td width="30%">文章标题</td><td width="10%">更新时间</td><td width="11%">类目</td><td width="8%">点击</td><td width="7%">HTML</td><td width="10%">权限</td><td width="13%">属性</td></tr></thead></table></div><div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><div class="uk-overflow-auto"><table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><thead><tr><td width="6%">ID</td><td width="4%"></td><td width="30%">文章标题</td><td width="10%">更新时间</td><td width="11%">类目</td><td width="8%">点击</td><td width="7%">HTML</td><td width="10%">权限</td><td width="13%">属性</td></tr></thead><tbody><!-- 内容列表 -->{dede:datalist}<tr><td>{dede:field.id/}</td><td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="uk-checkbox dede-checkbox"></td><td align='left'><a href='archives_do.php?aid={dede:field.id/}&dopost=editArchives'><u>{dede:field.title/}</u></a></td><td>{dede:field.senddate function="GetDateMk(@me)" /}</td><td>{dede:field.typeid function='GetTypename(@me)'/}</td><td>{dede:field.click/}</td><td>{dede:field.ismake function="IsHtmlArchives(@me)" /}</td><td>{dede:field.arcrank function="GetRankName(@me)" /}</td><td>{dede:field.flag function="IsCommendArchives(@me)" /}</td></tr>{/dede:datalist}<!-- /内容列表 --></tbody><!-- 分页 --><thead><tr><td height="36" colspan="10" align="center">{dede:pagelist listsize=5/}</td></tr></thead><!-- /分页 --></table></div></div></div></div><div class="bar-bottom uk-flex uk-light uk-flex-right"><div class="uk-button-group" style="margin-left: 20px;"><form name='form3' action='content_select_list.php' method='get' class="uk-flex uk-flex-left " ><input type='hidden' name='f' value='<?php echo $f?>'><div><select name='cid' class="uk-select uk-form-small uk-width-small"><option value='0'>选择分类...</option><?php echo $optionarr?></select></div> &nbsp;&nbsp;<div><input type='text' name='keyword' value='<?php echo $keyword?>' class="uk-input uk-form-small uk-width-small" placeholder="关键词 ..."></div> &nbsp;&nbsp;<div><button type="submit" class="uk-button uk-button-default uk-button-small" width="60px">搜索</button></div></form></div><div class="e1e02"><button id="submit_id" type="submit" class="uk-button uk-button-default uk-button-small" width="60px">添加所选ID</button></div></div><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><script language="javascript">$(document).ready(function() {$('#submit_id').click(function (event) {var ids = _DedeCMS_JSCODE_Version_Get_Checkbox_Checked()if (ids == "") {alert("必须选择一个或多个文档！");}else{window.parent.$("#{dede:global.f/}").val(ids);window.parent.UIkit.modal("#modal-archives").hide(0);}});});</script></body></html>
+<html>
+<head>
+<meta charset="{dede:global.cfg_soft_lang/}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>文档管理</title>
+<meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
+<link rel="icon" href="/favicon.ico" />
+<!-- CSS FILES -->
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" />
+<link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css">
+<style type="text/css">
+form {
+display: block;
+margin-top: 0em;
+margin-block-end: 0em;
+}
+.bar-bottom {
+border-top: 1px solid rgba(255, 255, 255, 0.07);
+background-color: rgba(33, 34, 36, 0.90);
+padding: 10px 0;
+left: 0;
+right: 0;
+z-index: 3;
+bottom: 0;
+position: fixed;
+display: flex;
+justify-content: space-between;
+z-index: 99;
+min-width: 1050px;
+}
+</style>
+</head>
+<body>
+<div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
+<table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="6%">ID</td>
+<td width="4%"><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
+<td width="30%">文章标题</td>
+<td width="10%">更新时间</td>
+<td width="11%">类目</td>
+<td width="8%">点击</td>
+<td width="7%">HTML</td>
+<td width="10%">权限</td>
+<td width="13%">属性</td>
+</tr>
+</thead>
+</table>
+</div>
+<div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;">
+<div class="uk-card-body uk-overflow-auto" grid>
+<div class="uk-child-width-1-1">
+<div class="uk-overflow-auto">
+<table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
+<thead>
+<tr>
+<td width="6%">ID</td>
+<td width="4%"></td>
+<td width="30%">文章标题</td>
+<td width="10%">更新时间</td>
+<td width="11%">类目</td>
+<td width="8%">点击</td>
+<td width="7%">HTML</td>
+<td width="10%">权限</td>
+<td width="13%">属性</td>
+</tr>
+</thead>
+<tbody>
+<!-- 内容列表 -->
+{dede:datalist}
+<tr>
+<td>{dede:field.id/}</td>
+<td><input name="arcID" type="checkbox" id="arcID" value="{dede:field.id/}" class="uk-checkbox dede-checkbox"></td>
+<td align='left'><a href='archives_do.php?aid={dede:field.id/}&dopost=editArchives'><u>{dede:field.title/}</u></a></td>
+<td>{dede:field.senddate function="GetDateMk(@me)" /}</td>
+<td>{dede:field.typeid function='GetTypename(@me)'/}</td>
+<td>{dede:field.click/}</td>
+<td>{dede:field.ismake function="IsHtmlArchives(@me)" /}</td>
+<td>{dede:field.arcrank function="GetRankName(@me)" /}</td>
+<td>{dede:field.flag function="IsCommendArchives(@me)" /}</td>
+</tr>
+{/dede:datalist}
+<!-- /内容列表 -->
+</tbody>
+<!-- 分页 -->
+<thead>
+<tr>
+<td height="36" colspan="10" align="center">
+{dede:pagelist listsize=5/}
+</td>
+</tr>
+</thead>
+<!-- /分页 -->
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="bar-bottom uk-flex uk-light uk-flex-right">
+<div class="uk-button-group" style="margin-left: 20px;">
+<form name='form3' action='content_select_list.php' method='get' class="uk-flex uk-flex-left " >
+<input type='hidden' name='f' value='<?php echo $f?>'>
+<div>
+<select name='cid' class="uk-select uk-form-small uk-width-small">
+<option value='0'>选择分类...</option>
+<?php echo $optionarr?>
+</select>
+</div> &nbsp;&nbsp;<div>
+<input type='text' name='keyword' value='<?php echo $keyword?>' class="uk-input uk-form-small uk-width-small" placeholder="关键词 ...">
+</div> &nbsp;&nbsp;<div>
+<button type="submit" class="uk-button uk-button-default uk-button-small" width="60px">搜索</button>
+</div>
+</form>
+</div>
+<div class="e1e02">
+<button id="submit_id" type="submit" class="uk-button uk-button-default uk-button-small" width="60px">添加所选ID</button>
+</div>
+</div>
+<!-- JS FILES -->
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
+<script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
+<script language="javascript">
+$(document).ready(function() {
+$('#submit_id').click(function (event) {
+var ids = _DedeCMS_JSCODE_Version_Get_Checkbox_Checked()
+if (ids == "") {
+alert("必须选择一个或多个文档！");
+}else{
+window.parent.$("#{dede:global.f/}").val(ids);
+window.parent.UIkit.modal("#modal-archives").hide(0);
+}
+});
+});
+</script>
+</body>
+</html>

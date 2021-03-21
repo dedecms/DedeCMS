@@ -24,7 +24,7 @@
 </div>
 <!-- 搜索表单 -->
 <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
-<li style="margin-right: 12px;"><a href="sys_group_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">整库备份</a></li>
+<li style="margin-right: 12px;"><a href="sys_data_revert.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">数据还原</a></li>
 <li style="margin-right: 12px;"><a href="sys_sql_query.php?dopost=opimizeAll&token=<?php echo $_SESSION['token']; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">整库优化</a></li>
 <li style="margin-right: 12px;"><a href="sys_sql_query.php?dopost=repairAll&token=<?php echo $_SESSION['token']; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">整库修复</a></li>
 </ul>
@@ -70,14 +70,14 @@
 <!-- 内容列表 -->
 {dede:array.dedeSysTables}
 <tr>
-<td><input type="checkbox" value="{dede:field.Name/}" name="tables" class="uk-checkbox check" /></td>
+<td><input type="checkbox" class="uk-checkbox dede-checkbox" value="{dede:value.Name/}" /></td>
 <td>{dede:value.Name /}</td>
 <td>{dede:value.Rows /}</td>
 <td>{dede:value.Data_length /}</td>
 <td>{dede:value.Create_time /}</td>
 <td>{dede:value.Update_time /}</td>
 <td>
-<a href="sys_sql_query.php?dopost=opimize&tablename={dede:value.Name /}&token=<?php echo $_SESSION['token']; ?>" >[优化]</a>
+<a href="sys_sql_query.php?dopost=opimize&tablename={dede:value.Name/}&token=<?php echo $_SESSION['token']; ?>">[优化]</a>
 <a href="sys_sql_query.php?dopost=repair&tablename={dede:value.Name /}&token=<?php echo $_SESSION['token']; ?>">[修复]</a>
 </td>
 </tr>
@@ -89,9 +89,8 @@
 <tr>
 <td><input type="checkbox" id="select-all" class="uk-checkbox" /></td>
 <td height="36" colspan="8">
-<a href="#" class="uk-button uk-button-default uk-button-small">表修复</a>
-<a href="#" class="uk-button uk-button-default uk-button-small">表优化</a>
-<a href="#" class="uk-button uk-button-default uk-button-small">数据备份</a>
+    <!-- &&tablearr -->
+<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Action('sys_data_done.php?dopost=bak&tablearr=')" class="uk-button uk-button-default uk-button-small">数据备份</a>
 </td>
 </tr>
 </thead>
@@ -115,73 +114,5 @@
 <script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script>
 <!-- / JS FILES -->
-<script language="javascript">
-var myajax;
-var newobj;
-var posLeft = 200;
-var posTop = 150;
-function LoadUrl(surl) {
-newobj = document.getElementById('_mydatainfo');
-if (!newobj) {
-newobj = document.createElement("DIV");
-newobj.id = '_mydatainfo';
-newobj.style.position = 'absolute';
-newobj.className = "dlg";
-newobj.style.top = posTop;
-newobj.style.left = posLeft;
-document.body.appendChild(newobj);
-} else {
-newobj.style.display = "block";
-}
-myajax = new DedeAjax(newobj);
-myajax.SendGet("sys_data.php?" + surl);
-}
-function HideObj(objname) {
-var obj = document.getElementById(objname);
-obj.style.display = "none";
-}
-//获得选中文件的数据表
-function getCheckboxItem() {
-var myform = document.form1;
-var allSel = "";
-if (myform.tables.value) return myform.tables.value;
-for (i = 0; i < myform.tables.length; i++) {
-if (myform.tables[i].checked) {
-if (allSel == "")
-allSel = myform.tables[i].value;
-else
-allSel = allSel + "," + myform.tables[i].value;
-}
-}
-return allSel;
-}
-//反选
-function ReSel() {
-var myform = document.form1;
-for (i = 0; i < myform.tables.length; i++) {
-if (myform.tables[i].checked) myform.tables[i].checked = false;
-else myform.tables[i].checked = true;
-}
-}
-//全选
-function SelAll() {
-var myform = document.form1;
-for (i = 0; i < myform.tables.length; i++) {
-myform.tables[i].checked = true;
-}
-}
-//取消
-function NoneSel() {
-var myform = document.form1;
-for (i = 0; i < myform.tables.length; i++) {
-myform.tables[i].checked = false;
-}
-}
-function checkSubmit() {
-var myform = document.form1;
-myform.tablearr.value = getCheckboxItem();
-return true;
-}
-</script>
 </body>
 </html>

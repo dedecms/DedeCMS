@@ -29,7 +29,7 @@ if ($aid == 0) {
     exit();
 }
 
-//获得频道模型ID
+//获得内容类型ID
 if ($cid < 0) {
     $row = $dsql->GetOne("SELECT addtable FROM `#@__channeltype` WHERE id='$cid' AND issystem='-1';");
     $maintable = empty($row['addtable']) ? '' : $row['addtable'];

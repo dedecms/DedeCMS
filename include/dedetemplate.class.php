@@ -477,7 +477,6 @@ class DedeTemplate
             flock($fp, 3);
             $result = trim($this->GetResult());
             $errmsg = '';
-            //var_dump($result);exit();
             if (!$this->CheckDisabledFunctions($result, $errmsg)) {
                 fclose($fp);
                 @unlink($this->cacheFile);

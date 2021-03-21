@@ -4,6 +4,7 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	config.language = 'zh-cn';
 	config.toolbar = [
 		{ name: 'document', items: [ 'Undo', 'Redo', '-', 'Templates' ] },
 		{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteFromWord' ] },

@@ -73,7 +73,7 @@ class SplitWord
     //粗分后的数组（通常是截取句子等用途）
     public $simpleResult = array();
     //最终结果(用空格分开的词汇列表)
-    public $finallyResult = '';
+    public $finallyResult = array();
 
     //是否已经载入词典
     public $isLoadDic = false;
@@ -158,7 +158,7 @@ class SplitWord
             $data = $this->mainDicInfos[$keynum];
         } else {
             //rewind( $this->mainDicHand );
-            $move_pos = $keynum * 8;
+            $move_pos = intval($keynum) * 8;
             fseek($this->mainDicHand, $move_pos, SEEK_SET);
             $dat = fread($this->mainDicHand, 8);
             $arr = unpack('I1s/n1l/n1c', $dat);

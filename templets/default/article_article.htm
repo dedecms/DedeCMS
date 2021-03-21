@@ -2,18 +2,14 @@
 <head>
 <title>{dede:field.title/} - {dede:global.cfg_webname/}</title>
 <meta charset="{dede:global.cfg_soft_lang/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="keywords" content="{dede:field name='keywords' function='html2text(@me)'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
-
 {dede:include filename="header.htm"/}
 <!-- /header -->
 <main>
 <!-- 面包屑 -->
 {dede:include filename="breadcrumb.htm"/}
 <!-- /面包屑 -->
-
-
 <section class="uk-section uk-section-default uk-section-smalle">
 <div class="uk-container uk-container-small">
 <div class="uk-article">
@@ -24,13 +20,13 @@
 <small>作者:</small>{dede:field.writer/}
 <small>点击:</small><script src="{dede:field name='phpurl'/}/count.php?view=yes&aid={dede:field name='id'/}&mid={dede:field name='mid'/}" type='text/javascript' language="javascript"></script>次
 </p>
-
 {dede:field.description runphp='yes'} if(@me<>'' ) @me = '<p class="uk-text-lead">'.@me.'</p>';{/dede:field.description}
-<p class="uk-article-meta">{dede:field.body/}</p>
+<p class="uk-article-meta">
+{dede:field.body/}
+</p>
 {dede:field.vote/}
 (责任编辑：{dede:adminname/})
 </div>
-
 <!-- 分页 -->
 <ul class="uk-pagination uk-flex-center">
 {dede:pagebreak/}
@@ -42,9 +38,6 @@
 </ul>
 </div>
 </section>
-
-
-
 <!-- 推荐内容 -->
 <div class="uk-container uk-container-small  uk-padding">
 
@@ -66,11 +59,7 @@
 </li>
 {/dede:arclist}
 </ul>
-
 </div>
-
-
-
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
 </body>

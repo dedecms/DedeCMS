@@ -40,7 +40,7 @@ while ($row = $dsql->GetObject('mm')) {
 
 $adminMenu1 = $adminMenu2 = '';
 if ($cuserLogin->getUserType() >= 10) {
-    $adminMenu1 = "<m:top item='1_' name='频道模型' display='' rank='t_List,t_AccList,c_List,temp_One'>
+    $adminMenu1 = "<m:top item='1_' name='内容类型' display='' rank='t_List,t_AccList,c_List,temp_One'>
   <m:item name='内容类型管理' link='mychannel_main.php' rank='c_List' target='main' />
   <m:item name='单页文档管理' link='templets_one.php' rank='temp_One' target='main'/>
   <m:item name='联动类别管理' link='stepselect_main.php' rank='c_Stepseclect' target='main' />

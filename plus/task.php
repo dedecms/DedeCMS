@@ -64,7 +64,7 @@ while ($arr = $dsql->GetArray()) {
         continue;
     }
 
-    $dotime = GetMkTime($ndate . ' ' . $arr['runtime'] . ':00');
+    $dotime = strtotime($ndate . ' ' . $arr['runtime'] . ':00');
     $limittime = $daylimit * $arr['freq'];
 
     $isplay = false;

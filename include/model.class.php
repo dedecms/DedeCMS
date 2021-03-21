@@ -28,7 +28,7 @@ class Model
     public function Model()
     {
         global $dsql;
-        $this->dsql = $this->db = isset($dsql) ? $dsql : new DedeSqli(false);
+        $this->dsql = $this->db = $dsql;
 
     }
 

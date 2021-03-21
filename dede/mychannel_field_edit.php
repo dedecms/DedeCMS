@@ -71,11 +71,7 @@ if ($action == 'save') {
 
     //检测数据库是否存在附加表，不存在则新建一个
     $tabsql = "CREATE TABLE IF NOT EXISTS  `{$row['addtable']}`( `aid` int(11) NOT NULL default '0',\r\n `typeid` int(11) NOT NULL default '0',\r\n ";
-    if ($mysql_version < 4.1) {
-        $tabsql .= " PRIMARY KEY  (`aid`), KEY `" . $trueTable . "_index` (`typeid`)\r\n) TYPE=MyISAM; ";
-    } else {
-        $tabsql .= " PRIMARY KEY  (`aid`), KEY `" . $trueTable . "_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=" . $cfg_db_language . "; ";
-    }
+    $tabsql .= " PRIMARY KEY  (`aid`), KEY `" . $trueTable . "_index` (`typeid`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=" . $cfg_db_language . "; ";
     $dsql->ExecuteNoneQuery($tabsql);
 
     //检测附加表里含有的字段

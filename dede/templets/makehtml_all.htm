@@ -53,7 +53,7 @@
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="starttime" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk(time())?>">
+<input class="uk-input uk-form-width-large uk-form-small" name="starttime" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="1970-01-01T00:00:00Z">
 </div>
 </td>
 </tr>
@@ -87,7 +87,6 @@
 <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script>
 <script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script>
-<script src="{dede:global.cfg_assets_dir/}/pkg/moment/moment.min.js"></script>
 <script language="javascript">
 function SelUp() {
 var ob1 = document.getElementById("uptype1");

@@ -726,10 +726,10 @@ class DedeCollection
                 $keywords = str_replace(' ', ',', $keywords);
             
             }
-            $artitem .= "{dede:field name='keywords'}" . $keywords . "{/dede:field}\r\n";
+            $artitem .= "{dede:field name='keywords' function='html2text(@me)'}" . $keywords . "{/dede:field}\r\n";
         
         } else {
-            $artitem .= "{dede:field name='keywords'}{/dede:field}\r\n";
+            $artitem .= "{dede:field name='keywords' function='html2text(@me)'}{/dede:field}\r\n";
         
         }
         // preg_match("#<meta[\s]+name=['\"]description['\"] content=['\"](.*)['\"]#isU", $this->tmpHtml, $inarr);

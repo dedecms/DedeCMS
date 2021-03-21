@@ -17,7 +17,7 @@ header("Expires:0");
 if ($t == 'source') {
     $m_file = DEDEDATA . "/admin/source.txt";
     $allsources = file($m_file);
-    echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_source_edit.php');ClearDivCt('mysource');\">设置</a>]&nbsp;";
+    echo "<div class='coolbg4'>[<a href=\"article_source_edit.php\">设置</a>]&nbsp;";
     echo "[<a href='#' onclick='javascript:HideObj(\"mysource\");ChangeFullDiv(\"hide\");'>关闭</a>]</div>\r\n<div class='wsselect'>\r\n";
     foreach ($allsources as $v) {
         $v = trim($v);
@@ -29,7 +29,7 @@ if ($t == 'source') {
 } else {
     //作者列表
     $m_file = DEDEDATA . "/admin/writer.txt";
-    echo "<div class='coolbg4'>[<a href=\"javascript:OpenMyWin('article_writer_edit.php');ClearDivCt('mywriter');\">设置</a>]&nbsp;";
+    echo "<div class='coolbg4'>[<a href=\"article_writer_edit.php\">设置</a>]&nbsp;";
     echo "[<a href='#' onclick='javascript:HideObj(\"mywriter\");ChangeFullDiv(\"hide\");'>关闭</a>]</div>\r\n<div class='wsselect'>\r\n";
     if (filesize($m_file) > 0) {
         $fp = fopen($m_file, 'r');

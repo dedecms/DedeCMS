@@ -30,7 +30,7 @@ if ($action == '') {
     function _1_OptimizeData1()
     ---------------------*/
     if ($step == 1) {
-        $starttime = GetMkTime($starttime);
+        $starttime = strtotime($starttime);
         $mkvalue = ($uptype == 'time' ? $starttime : $startid);
         OptimizeData($dsql);
         ShowMsg("完成数据优化，现在开始更新文档！", "makehtml_all.php?action=make&step=2&uptype=$uptype&mkvalue=$mkvalue");
@@ -83,7 +83,7 @@ if ($action == '') {
             exit();
         } else {
             if ($uptype == 'time') {
-                $query = "SELECT  DISTINCT typeid From `#@__arctiny` WHERE senddate >=" . GetMkTime($mkvalue) . " AND arcrank>-1";
+                $query = "SELECT  DISTINCT typeid From `#@__arctiny` WHERE senddate >=" . strtotime($mkvalue) . " AND arcrank>-1";
             } else {
                 $query = "SELECT DISTINCT typeid From `#@__arctiny` WHERE id>=$mkvalue AND arcrank>-1";
             }

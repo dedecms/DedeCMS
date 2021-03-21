@@ -59,8 +59,8 @@ if ($idsql == '') {
 }
 
 if ($seltime == 1) {
-    $t1 = GetMkTime($stime);
-    $t2 = GetMkTime($etime);
+    $t1 = strtotime($stime);
+    $t2 = strtotime($etime);
     $idsql .= " And (senddate >= $t1 And senddate <= $t2) ";
 } else if (isset($t1) && is_numeric($t1)) {
     $idsql .= " And senddate >= $t1 ";

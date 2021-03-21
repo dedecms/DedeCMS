@@ -84,7 +84,7 @@ $actionSearch[2] = array(
 );
 $actionSearch[3] = array(
     'toptitle' => '核心',
-    'title' => '频道模型',
+    'title' => '内容类型',
     'description' => '所有上传的附件管理',
     'soniterm' => array(
         0 => array(

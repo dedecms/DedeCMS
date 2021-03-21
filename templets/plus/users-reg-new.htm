@@ -2,9 +2,9 @@
 <head>
 <title><?php echo $cfg_webname;?> - 用户注册</title>
 <meta charset="{dede:global.cfg_soft_lang/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="keywords" content="{dede:field name='keywords' function='html2text(@me)'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+
 {dede:include filename="plus_header.htm"/}
 <!-- /header -->
 <main>
@@ -131,7 +131,7 @@ src="{dede:global.cfg_phpurl/}/vdimgck.php" />&nbsp;&nbsp;&nbsp;&nbsp;
 
 <div class="uk-margin-small">
 <div class="uk-width-1-1 uk-text-right">
-<input type="checkbox" class="uk-checkbox" value="" id="agree" name="agree" /> 我已阅读并完全接受服务协议
+<input type="checkbox" class="uk-checkbox" id="agree" name="agree" /> 我已阅读并完全接受服务协议
 </div>
 </div>
 

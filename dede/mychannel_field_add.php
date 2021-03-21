@@ -67,6 +67,7 @@ if ($action == 'save') {
     //检测旧配置信息，并替换为新配置
     $ok = false;
     $fieldname = strtolower($fieldname);
+
     if (is_array($dtp->CTags)) {
         foreach ($dtp->CTags as $tagid => $ctag) {
             if ($fieldname == strtolower($ctag->GetName())) {
@@ -79,9 +80,10 @@ if ($action == 'save') {
     } else {
         $oksetting = $fieldset . "\r\n" . stripslashes($fieldstring);
     }
-
+    
     $addlist = GetAddFieldList($dtp, $oksetting);
     $oksetting = addslashes($oksetting);
+
     $rs = $dsql->ExecuteNoneQuery("UPDATE `#@__channeltype` SET fieldset='$oksetting',listfields='$addlist' WHERE id='$id' ");
     if (!$rs) {
         $grr = $dsql->GetError();

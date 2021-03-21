@@ -180,7 +180,7 @@ function DelArc($aid, $type = 'ON', $onlyfile = false, $recycle = 0)
 }
 
 //获取真实路径
-function GetTruePath($siterefer = '', $sitepath = '')
+function GetTruePath()
 {
     $truepath = $GLOBALS['cfg_basedir'];
     return $truepath;

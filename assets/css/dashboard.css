@@ -27,6 +27,7 @@ background-color: #373C40;
 .uk-logo {
   font-size: 18px;
   color: aliceblue;
+  cursor: pointer;
 }
 .uk-logo:hover {
   font-size: 18px;

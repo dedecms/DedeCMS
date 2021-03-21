@@ -726,7 +726,7 @@ class Lurd extends DataListCP
         $this->dsql->Execute('ana', " SHOW CREATE TABLE `{$this->tableName}`; ");
         $row = $this->dsql->GetArray('ana', MYSQLI_NUM);
         if (!is_array($row)) {
-            exit(" Analyse Table `$tablename` Error! ");
+            exit(" Analyse Table `$this->tableName` Error! ");
         }
 
         // 先去掉内容中的注释
@@ -946,7 +946,7 @@ class Lurd extends DataListCP
         //时间日期类型
         else if (in_array($ftype, $this->dateTypes)) {
             if ($ftype == 'TIMESTAMP') {
-                $reValue = GetMkTime($GLOBALS[$fname]);
+                $reValue = strtotime($GLOBALS[$fname]);
             } else {
                 $reValue = preg_replace("#[^0-9 :-]#", '', $GLOBALS[$fname]);
             }
@@ -989,7 +989,7 @@ class Lurd extends DataListCP
         if (!isset($_FILES[$fname]['tmp_name']) || !is_uploaded_file($_FILES[$fname]['tmp_name'])) {
             return '';
         } else {
-            $tmpfile = $lurdtmp . '/' . md5(time() . Sql::ExecTime() . mt_rand(1000, 5000)) . '.tmp';
+            $tmpfile = $lurdtmp . '/' . md5(time() . mt_rand(1000, 5000)) . '.tmp';
             $rs = move_uploaded_file($_FILES[$fname]['tmp_name'], $tmpfile);
             if (!$rs) {
                 return '';

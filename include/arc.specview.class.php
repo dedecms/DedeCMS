@@ -74,7 +74,7 @@ class SpecView
         if ($starttime == 0) {
             $this->StartTime = 0;
         } else {
-            $this->StartTime = GetMkTime($starttime);
+            $this->StartTime = strtotime($starttime);
         }
         $this->CountRecord();
         $tempfile = $GLOBALS['cfg_basedir'] . $GLOBALS['cfg_templets_dir'] . "/" . $GLOBALS['cfg_df_style'] . "/list_spec.htm";

@@ -65,8 +65,8 @@ if ($typeid != 0) {
     $gwhere .= " AND typeid IN($ids) ";
 }
 if ($seltime == 1) {
-    $t1 = GetMkTime($starttime);
-    $t2 = GetMkTime($endtime);
+    $t1 = strtotime($starttime);
+    $t2 = strtotime($endtime);
     $gwhere .= " AND (senddate >= $t1 AND senddate <= $t2) ";
 }
 if (!empty($userid)) {

@@ -332,7 +332,6 @@ WHERE arc.arcrank<>-2 ORDER BY arc.id DESC LIMIT 0, 12 ";
 
         $url = "http://www.alexa.com/siteinfo/{$site}";
         $html = dedeseo_http_send($url);
-        //var_dump($html);exit;
         if (preg_match("#API at http://aws.amazon.com/awis -->(.*)</strong>#isU", $html, $matches)) {
             $seo_info['alexa_num'] = isset($matches[1]) ? trim($matches[1]) : 0;
         }

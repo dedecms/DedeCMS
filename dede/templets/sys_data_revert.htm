@@ -3,13 +3,11 @@
 - @author    DedeCMS团队
 - @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
 --->
-
-{dede:config.pagesize value="20"/}
 <html>
 <head>
 <meta charset="{dede:global.cfg_soft_lang/}" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>管理员账号</title>
+<title>数据库管理 - 数据还原</title>
 <meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" />
 <link rel="icon" href="/favicon.ico" />
 <!-- CSS FILES -->
@@ -21,12 +19,13 @@
 <div id="Table_Header_202X2W2X1X292F" class="uk-card uk-card-small uk-card-default" uk-sticky="bottom: #offset">
 <div id="Header_1W2T2S2T1V252B" class="uk-card-header">
 <div class="uk-grid uk-grid-small uk-text-small">
-<span><ul class="uk-breadcrumb"><li><span>管理员账号</span></li></ul></span>
+<span><ul class="uk-breadcrumb"><li><a href="sys_data.php"><span>数据库管理</span></a></li><li><span>数据还原</span></li></ul></span>
 </div>
 <!-- 搜索表单 -->
 <ul class="uk-navbar-nav dede-card-navbar" uk-navbar >
-<li style="margin-right: 12px;"><a href="sys_admin_user_add.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">增加管理员</a></li>
-<li style="margin-right: 12px;"><a href="sys_group.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">用户组管理</a></li>
+<li style="margin-right: 12px;"><a href="sys_data.php" class="uk-button uk-button-default uk-button-small uk-flex-inline ">数据库备份</a></li>
+<li style="margin-right: 12px;"><a href="sys_sql_query.php?dopost=opimizeAll&token=<?php echo $_SESSION['token']; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">整库优化</a></li>
+<li style="margin-right: 12px;"><a href="sys_sql_query.php?dopost=repairAll&token=<?php echo $_SESSION['token']; ?>" class="uk-button uk-button-default uk-button-small uk-flex-inline ">整库修复</a></li>
 </ul>
 <!-- /搜索表单 -->
 </div>
@@ -34,12 +33,11 @@
 <table id="dede-table-toolbar" class="uk-table uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
 <thead>
 <tr>
-<td width="10%">用户名</td>
-<td width="10%">笔名</td>
-<td width="12%">级别</td>
-<td width="14%">频道</td>
-<td>登录信息</td>
-<td width="15%">管理项</td>
+<td width="5%"></td>
+<td width="16%">表名</td>
+<td width="5%">ID</td>
+<td width="12%">时间</td>
+<td>文件名</td>
 </tr>
 </thead>
 </table>
@@ -55,42 +53,48 @@
 <table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove">
 <thead>
 <tr>
-<td width="10%">用户名</td>
-<td width="10%">笔名</td>
-<td width="12%">级别</td>
-<td width="14%">频道</td>
-<td>登录信息</td>
-<td width="15%">管理项</td>
+<td width="5%"></td>
+<td width="16%">表名</td>
+<td width="5%">ID</td>
+<td width="12%">时间</td>
+<td>文件名</td>
 </tr>
 </thead>
 <!-- /表头隐藏部分 -->
 <tbody>
 <!-- 内容列表 -->
-{dede:datalist}
+<?php foreach ($filelists as $file): ?>
+<?php $t = tableinfo($file);?>
 <tr>
-<td>{dede:field.userid /}</td>
-<td>{dede:field.uname /}<br> </td>
-<td>{dede:field.usertype function="GetUserType(@me)"/}</td>
-<td>{dede:field.typename function="GetChannel(@me)"/}</td>
-<td>登录时间：{dede:field.logintime function="GetDateTimeMk(@me, true)" /}　登录IP：{dede:field.loginip/}</td>
-<td>
-<a href='sys_admin_user_edit.php?id={dede:field.id/}&dopost=edit'><u>[修改]</u></a>
-<a href='sys_admin_user_edit.php?id={dede:field.id/}&userid={dede:field.userid/}&dopost=delete'><u>[删除]</u></a>
-<a href='content_list.php?mid={dede:field.id/}'><u>[文档]</u></a>　
-</td>
+<td><input type="checkbox" class="uk-checkbox dede-checkbox" value="<?=$file?>" checked/></td>
+<td><?=$t[0];?></td>
+<td><?=$t[1];?></td>
+<td><?=date('Y-m-d H:i:s', $t[2]);?></td>
+<td><?=$file?></td>
 </tr>
-{/dede:datalist}
+<?php endforeach; ?>
+<?php if (!empty($structfile)) :?>
+<?php $s = tableinfo($structfile);?>
+<tr>
+<td><input type="checkbox" class="uk-checkbox dede-checkbox" value="<?=$structfile?>" checked/></td>
+<td>还原表结构信息</td>
+<td><?=$t[1]?></td>
+<td><?=date('Y-m-d H:i:s', $t[2]);?></td>
+<td><?=$structfile?></td>
+</tr>
+<?php endif;?>
 <!-- /内容列表 -->
 </tbody>
-<!-- 分页 -->
+<!-- 批量操作 -->
 <thead>
 <tr>
-<td height="36" colspan="10" align="center">
-{dede:pagelist listsize=7/}
+<td><input type="checkbox" id="select-all" class="uk-checkbox" checked/></td>
+<td height="36" colspan="8">
+<a href="#" onclick="DedeCMS_JSCODE_Version_Checked_Action('sys_data_done.php?dopost=redat&bakfiles=')" class="uk-button uk-button-default uk-button-small">还原数据</a>
 </td>
 </tr>
 </thead>
-<!-- /分页 -->
+<!-- /批量操作 -->
 </table>
 </div>
 </div>

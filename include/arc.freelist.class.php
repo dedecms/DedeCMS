@@ -168,7 +168,7 @@ class FreeList
 
             }
 
-            //文档的频道模型
+            //文档的内容类型
             if ($channelid > 0 && !preg_match("#spec#i", $listtype)) {
                 $addSql .= " AND channel = '$channelid' ";
             }
@@ -477,7 +477,7 @@ class FreeList
             }
 
         }
-        //文档的频道模型
+        //文档的内容类型
         if ($channelid > 0 && !preg_match("#spec#i", $listtype)) {
             $orwhere .= " AND arc.channel = '$channelid' ";
         }

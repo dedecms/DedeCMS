@@ -3,7 +3,7 @@
 }
 
 /**
- * 频道模型单元类
+ * 内容类型单元类
  *
  * @version   $Id: channelunit.class.php 2 17:32 2010年7月6日 $
  * @package   DedeCMS.Libraries

@@ -129,7 +129,7 @@ else if ($dopost == 'save') {
     }
 
     //对保存的内容进行处理
-    $pubdate = GetMkTime($pubdate);
+    $pubdate = strtotime($pubdate);
     $sortrank = AddDay($pubdate, $sortup);
     $ismake = $ishtml == 0 ? -1 : 0;
     $title = cn_substrR($title, $cfg_title_maxlen);
@@ -226,7 +226,7 @@ else if ($dopost == 'save') {
             continue;
         }
 
-        $info = '';
+        $info = array();
         $iinfo = str_replace("'", "`", stripslashes(${'imgmsg' . $i}));
         $iurl = stripslashes(${'imgurl' . $i});
         $ddurl = stripslashes(${'imgddurl' . $i});
@@ -317,7 +317,7 @@ else if ($dopost == 'save') {
                 unlink($imgold);
                 if (is_file($imgfile)) {
                     $litpicname = $pagestyle > 2 ? GetImageMapDD($iurl, $cfg_ddimg_width) : $iurl;
-                    $info = '';
+                    $info = array();
                     $imginfos = GetImageSize($imgfile, $info);
                     $imgurls .= "{dede:img ddimg='$litpicname' text='' width='" . $imginfos[0] . "' height='" . $imginfos[1] . "'} $iurl {/dede:img}\r\n";
 
@@ -347,8 +347,6 @@ else if ($dopost == 'save') {
     if ($albums !== "") {
         $albumsArr = json_decode(stripslashes($albums), true);
 
-        // var_dump($albumsArr);exit;
-
         for ($i = 0; $i <= count($albumsArr) - 1; $i++) {
             $album = $albumsArr[$i];
             $data = explode(',', $album['img']);
@@ -359,7 +357,7 @@ else if ($dopost == 'save') {
             $fullUrl = $fullUrl . ".png";
 
             file_put_contents($cfg_basedir . $fullUrl, base64_decode($data[1]));
-            $info = '';
+            $info = array();
             $imginfos = GetImageSize($cfg_basedir . $fullUrl, $info);
             $v = $fullUrl;
             $imginfo = !empty($album['txt']) ? $album['txt'] : '';
@@ -386,6 +384,39 @@ else if ($dopost == 'save') {
                 if ($vs[1] == 'htmltext' || $vs[1] == 'textdata') //HTML文本特殊处理
                 {
                     ${$vs[0]} = AnalyseHtmlBody(${$vs[0]}, $description, $litpic, $keywords, $vs[1]);
+                } else if ($vs[1]=='img') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadImage($vs[0]);
+                        @unlink($cfg_basedir.${$vs[0]."_url"});
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }else{
+                        ${$vs[0]} = GetFieldValueA(${$vs[0]."_url"}, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='imgfile') {
+                    if (empty(${$vs[0]}) === false) {
+                        if  (empty(${$vs[0]."_url"}) === false && ${$vs[0]."_url"} !== ${$vs[0]} ) {
+                            @unlink($cfg_basedir.${$vs[0]."_url"});
+                        }
+                        ${$vs[0]} = GetFieldValueA(${$vs[0]}, $vs[1], $id);
+                    }else{
+                        ${$vs[0]} = GetFieldValueA(${$vs[0]}, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='media') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadMedia($vs[0]);
+                        @unlink($cfg_basedir.${$vs[0]."_url"});
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    } else{
+                        ${$vs[0]} = GetFieldValueA(${$vs[0]."_url"}, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='addon') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadAddon($vs[0]);
+                        @unlink($cfg_basedir.${$vs[0]."_url"});
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    } else{
+                        ${$vs[0]} = GetFieldValueA(${$vs[0]."_url"}, $vs[1], $id);
+                    }
                 } else {
                     if (!isset(${$vs[0]})) {
                         ${$vs[0]} = '';

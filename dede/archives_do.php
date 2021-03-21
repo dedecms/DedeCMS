@@ -303,14 +303,14 @@ else if ($dopost == 'moveArchives') {
         $divname = 'moveArchives';
         echo "<button class=\"uk-modal-close-default\" type=\"button\" uk-close></button>";
         echo "<div class=\"uk-modal-header\">";
-        echo "<h2 class=\"uk-modal-title\">移动文档</h2>";
+        echo "移动文档";
         echo "</div>";
         echo "<form id='quickeditform' name='quickeditform' action='archives_do.php' method='post'  class=\"uk-form-stacked\">\r\n";
         echo "<input type='hidden' name='dopost' value='{$dopost}' />\r\n";
         echo "<input type='hidden' name='qstr' value='{$qstr}' />\r\n";
         ?>
     <div class="uk-alert-warning" uk-alert>
-    <p>移动到的目标栏目必须和选定的文档频道类型一致，否则程序会自动勿略不符合的文档。</p>
+    <p>移动到的目标栏目必须和选定的文档内容类型一致，否则程序会自动勿略不符合的文档。</p>
     </div>
     <div class="uk-modal-body" uk-overflow-auto>
         <fieldset class="uk-fieldset">

@@ -180,7 +180,7 @@ else echo " <option value='{$row['rank']}'>{$row['membername']}</option>\r\n";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input name="pubdate" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk(time())?>" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
+<input name="pubdate" value="<?=GetDateTimeMk(time())?>" placeholder="1970-01-01T00:00:00Z" class="uk-input uk-form-width-large uk-form-small" type="datetime-local" >
 </div>
 </td>
 <td width="90" style="vertical-align:middle;">浏览次数：</td>
@@ -359,13 +359,16 @@ echo " checked='1' " ?> />
 <td width="90">附加选项：</td>
 <td colspan="3">
 <input name="remote" type="checkbox" class="uk-checkbox" id="remote" value="1" <?php if($cfg_rm_remote=='Y' ) echo ' checked="1" ' ; ?> /> 下载远程图片和资源 &nbsp;&nbsp;
-<input name="dellink" type="checkbox" class="uk-checkbox" id="dellink" value="1" <?php if($cfg_arc_dellink=='Y' ) echo ' checked="1" ' ; ?> /> 删除非站内链接 <a href="javascript:OpenMyWin('article_allowurl_edit.php');">[设置]</a> &nbsp;&nbsp;
+<input name="dellink" type="checkbox" class="uk-checkbox" id="dellink" value="1" <?php if($cfg_arc_dellink=='Y' ) echo ' checked="1" ' ; ?> /> 删除非站内链接 <a href="article_allowurl_edit.php">[设置]</a> &nbsp;&nbsp;
 <input name="autolitpic" type="checkbox" class="uk-checkbox" id="autolitpic" value="1" <?php if($cfg_arc_autopic=='Y' ) echo ' checked="1" ' ; ?> /> 提取第一个图片为缩略图 &nbsp;&nbsp;
 <input type='checkbox' name='needwatermark' value='1' class="uk-checkbox" <?php if($photo_markup=='1' ) echo "checked" ; ?> /> 图片是否加水印
 </td>
 </tr>
 </table>
 </td>
+</tr>
+<tr>
+<td colspan="2"><?php PrintAutoFieldsAdd($cInfos['fieldset'],'autofield'); ?></td>
 </tr>
 </table>
 </div>
@@ -404,8 +407,9 @@ echo " checked='1' " ?> />
 <button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
 </div>
 <div>
-<button class="upload-result-original uk-button uk-button-primary uk-button-small">幻灯剪切</button>
+<button class="upload-result-original uk-button uk-button-primary uk-button-small">无损剪切</button>
 <button class="upload-result-viewport uk-button uk-button-primary uk-button-small">剪切</button>
+<button class="upload-result uk-button uk-button-primary uk-button-small">使用原图</button>
 </div>
 </div>
 </div>

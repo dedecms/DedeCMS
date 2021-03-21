@@ -20,8 +20,8 @@ if (empty($dopost)) {
 if ($dopost === "save") {
     csrf_check();
     $tagname = trim($tagname);
-    $starttime = GetMkTime($starttime);
-    $endtime = GetMkTime($endtime);
+    $starttime = strtotime($starttime);
+    $endtime = strtotime($endtime);
 
     $query = "SELECT typeid FROM #@__mytag WHERE typeid='$typeid' AND tagname LIKE '$tagname'";
     $insterSQL = "INSERT INTO #@__mytag (typeid,tagname,timeset,starttime,endtime,normbody,expbody) VALUES ('$typeid','$tagname','$timeset','$starttime','$endtime','$normbody','$expbody')";

@@ -2,9 +2,9 @@
 <head>
 <title>{dede:field.title/} - {dede:global.cfg_webname/}</title>
 <meta charset="{dede:global.cfg_soft_lang/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="keywords" content="{dede:field name='keywords' function='html2text(@me)'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+
 
 {dede:include filename="header.htm"/}
 <!-- /header -->
@@ -34,7 +34,7 @@
 <!-- 信息列表 -->
 <ul>
 {dede:list pagesize='20'}
-<li><a href="[field:arcurl/]" class="title">[field:title/]</a><span class="date">[field:pubdate function="GetDateTimeMK(@me)"/]</span></li>
+<li><a href="[field:arcurl/]" class="title">[field:title/]</a><span class="date">[field:pubdate function="GetDateTimeMK(@me, true)"/]</span></li>
 {/dede:list}
 </ul>
 <ul class="uk-pagination">

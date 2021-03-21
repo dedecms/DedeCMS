@@ -44,7 +44,7 @@ height:25px;
 <div class="uk-card uk-card-small uk-card-default" style="top:-20px;margin-bottom: 50px;">
 <div class="uk-card-body uk-overflow-auto" grid>
 <div class="uk-child-width-1-1 uk-padding">
-<form name="form1" action="article_edit.php" enctype="multipart/form-data" method="post" onSubmit="return checkSubmit();">
+<form name="form1" action="article_edit.php" enctype="multipart/form-data" method="post">
 <input type="hidden" name="dopost" value="save" />
 <input type="hidden" name="channelid" value="<?php echo $channelid?>" />
 <input type="hidden" name="id" value="<?php echo $aid?>" />
@@ -191,7 +191,7 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk(time())?>">
+<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk($arcRow['pubdate'])?>" placeholder="1970-01-01T00:00:00Z">
 </div>
 </td>
 <td width="90" style="vertical-align:middle;">浏览次数：</td>
@@ -233,6 +233,9 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 </table>
 </td>
 </tr>
+<tr >
+<td colspan="2"><?php PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?></td>
+</tr>
 </table>
 </div>
 </div>
@@ -270,8 +273,9 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
 </div>
 <div>
-<button class="upload-result-original uk-button uk-button-primary uk-button-small">幻灯剪切</button>
+<button class="upload-result-original uk-button uk-button-primary uk-button-small">无损剪切</button>
 <button class="upload-result-viewport uk-button uk-button-primary uk-button-small">剪切</button>
+<button class="upload-result uk-button uk-button-primary uk-button-small">使用原图</button>
 </div>
 </div>
 </div>

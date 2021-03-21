@@ -2,9 +2,9 @@
 <head>
 <title>购物车 - 订单号:{dede:var.carts.orders_id/}</title>
 <meta charset="{dede:global.cfg_soft_lang/}" />
-<meta name="keywords" content="{dede:global.cfg_keywords/}" />
+<meta name="keywords" content="{dede:field name='keywords' function='html2text(@me)'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-<meta http-equiv="mobile-agent" content="format=xhtml;url={dede:global.cfg_mobileurl/}/list.php?tid={dede:field.id/}">
+
 
 {dede:include filename="plus_header.htm"/}
 <!-- /header -->

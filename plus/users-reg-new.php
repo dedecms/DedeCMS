@@ -35,7 +35,10 @@ if ($step == 1) {
                 exit();
             }
         }
-
+        if ($agree === false) {
+            ShowMsg("您并未同意会员注册协议，注册会员失败。", '-1');
+            exit();
+        }
         $userid = trim($userid);
         $pwd = trim($userpwd);
         $pwdc = trim($userpwdok);

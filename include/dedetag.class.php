@@ -956,7 +956,7 @@ function c____DedeAttribute();
 class DedeAttribute
 {
     public $Count = -1;
-    public $Items = ""; //属性元素的集合
+    public $Items = array(); //属性元素的集合
     //获得某个属性
     public function GetAtt($str)
     {

@@ -128,7 +128,7 @@ height: 35px;
 <td>过滤规则：</td>
 <td>
 <textarea class="uk-textarea uk-form-small uk-form-width-large" name="trim_pubdate" cols="20" rows="3" id="trim_pubdate"></textarea>
-<input name="function_pubdate" type="hidden" id="function_pubdate" value="@me=GetMkTime(@me);" />
+<input name="function_pubdate" type="hidden" id="function_pubdate" value="@me=strtotime(@me);" />
 </td>
 </tr>
 <?php
@@ -147,7 +147,7 @@ $iname = $ctag->GetAtt('itemname');
 //设置转换函数
 if($fieldtype=='img') $functions = "@me=TurnImageTag(@me);";
 else if($fieldtype=='softlinks'||$fieldtype=='addon') $functions = "@me=TurnLinkTag(@me);";
-else if($fieldtype=='dtime') $functions = "@me=GetMkTime(@me);";
+else if($fieldtype=='dtime') $functions = "@me=strtotime(@me);";
 else $functions = '';
 //对不同类型设置默认值
 if($ctag->GetAtt('default')!='') {

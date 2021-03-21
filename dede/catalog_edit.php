@@ -167,7 +167,7 @@ if ($topid > 0) {
 }
 $myrow['content'] = empty($myrow['content']) ? "&nbsp;" : $myrow['content'];
 
-//读取频道模型信息
+//读取内容类型信息
 $channelid = $myrow['channeltype'];
 $dsql->SetQuery("SELECT id,typename,nid FROM `#@__channeltype` WHERE id<>-1 AND isshow=1 ORDER BY id");
 $dsql->Execute();

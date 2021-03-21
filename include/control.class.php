@@ -34,7 +34,7 @@ class Control
     {
         global $dsql;
         $this->tpl = isset($this->tpl) ? $this->tpl : new DedeTemplate();
-        $this->dsql = isset($dsql) ? $dsql : new DedeSqli(false);
+        $this->dsql = $dsql;
     }
 
     //设置模板

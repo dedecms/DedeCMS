@@ -151,7 +151,7 @@ echo "</select>";
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk($row['starttime'])?>">
+<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="1970-01-01T00:00:00Z">
 </div>
 </div>
 </td>
@@ -294,8 +294,9 @@ class="uk-radio" checked>
 <button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
 </div>
 <div>
-<button class="upload-result-original uk-button uk-button-primary uk-button-small">幻灯剪切</button>
+<button class="upload-result-original uk-button uk-button-primary uk-button-small">无损剪切</button>
 <button class="upload-result-viewport uk-button uk-button-primary uk-button-small">剪切</button>
+<button class="upload-result uk-button uk-button-primary uk-button-small">使用原图</button>
 </div>
 </div>
 </div>

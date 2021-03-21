@@ -26,8 +26,8 @@ if (empty($isarc)) {
 
 
 if ($dopost == "save") {
-    $starttime = GetMkTime($starttime);
-    $endtime = GetMkTime($endtime);
+    $starttime = strtotime($starttime);
+    $endtime = strtotime($endtime);
     $voteitems = "";
     foreach ($vitem as $key => $value) {
         $voteitems .= "<v:note id=\\'$key\\' count=\\'0\\'>" . $value . "</v:note>\r\n";

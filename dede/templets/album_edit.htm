@@ -200,7 +200,7 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <td>
 <div class="uk-inline">
 <span class="uk-form-icon uk-icon" uk-icon="icon: calendar4-week"></span>
-<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk(time())?>" placeholder="<?=GetDateTimeMk(time())?>">
+<input class="uk-input uk-form-width-large uk-form-small" name="pubdate" type="datetime-local" value="<?=GetDateTimeMk($arcRow['pubdate'])?>" placeholder="1970-01-01T00:00:00Z">
 </div>
 </td>
 <td width="90" style="vertical-align:middle;">浏览次数：</td>
@@ -239,6 +239,9 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 仅动态浏览
 </td>
 </tr>
+<tr>
+    <td colspan="2"><?php  PrintAutoFieldsEdit($cInfos['fieldset'],$addRow,'autofield'); ?></td>
+    </tr>
 </table>
 </td>
 </tr>
@@ -251,11 +254,11 @@ echo " <option value='".$row->rank."'>".$row->membername."</option>\r\n";
 <tr>
 <td width="90" >表现方式：</td>
 <td width='408'>
-<label style="vertical-align:middle;"><input name="pagestyle" class="uk-radio" type="radio" value="1" <?php if($cfg_album_style==1) echo " checked='checked'" ; ?> />&nbsp;&nbsp;<span uk-icon="icon: 202X2W2X1X292F"></span> 单页多图样式</label>
-&nbsp;&nbsp;
-<label style="vertical-align:middle;"><input name="pagestyle" class="uk-radio" type="radio" value="2" <?php if($cfg_album_style==2) echo " checked='checked'" ; ?> />&nbsp;&nbsp;<span uk-icon="icon: 1W2T2S2T1V252B"></span> 幻灯片样式</label>
-&nbsp;&nbsp;
-<label style="vertical-align:middle;"><input name="pagestyle" class="uk-radio" type="radio" value="3" <?php if($cfg_album_style==3) echo " checked='checked'" ; ?> />&nbsp;&nbsp;<span uk-icon="icon: 3E5B5A5B3D454B"></span> 多缩略图样式</label>
+
+    <label style="vertical-align:middle;"><input name="pagestyle" class="uk-radio" type="radio" value="1" <?php if($pagestyle === '1') echo " checked";  ?> />&nbsp;&nbsp;<span uk-icon="icon: 202X2W2X1X292F"></span> 单页多图</label>
+    &nbsp;&nbsp;
+    <label style="vertical-align:middle;"><input name="pagestyle" class="uk-radio" type="radio" value="2" <?php if($pagestyle === '2') echo " checked";  ?> />&nbsp;&nbsp;<span uk-icon="icon: 1W2T2S2T1V252B"></span> 一页一图</label>
+
 </td>
 </tr>
 <tr>
@@ -373,8 +376,9 @@ $dtp->Clear();
 <button class="upload-16-9 uk-button uk-button-default uk-button-small">16:9</button>
 </div>
 <div>
-<button class="upload-result-original uk-button uk-button-primary uk-button-small">幻灯剪切</button>
+<button class="upload-result-original uk-button uk-button-primary uk-button-small">无损剪切</button>
 <button class="upload-result-viewport uk-button uk-button-primary uk-button-small">剪切</button>
+<button class="upload-result uk-button uk-button-primary uk-button-small">使用原图</button>
 </div>
 </div>
 </div>

@@ -145,20 +145,15 @@ class TypeUnit
             echo "  <td>" . $this->GetTotalArc($id) . "</td>";
             echo "  <td align='right'>";
 
-            //普通列表
-            if ($ispart == 0) {
-                echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
-                echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
-                echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
-            }
-            //带封面的频道
-            else if ($ispart == 1) {
+            //普通列表 OR 带封面的频道
+            if ($ispart === "0" OR $ispart === "1") {
+                echo " <a href='catalog_do.php?cid={$id}&dopost=addArchives'>[添加内容]</a>";
                 echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
                 echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
                 echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
             }
             //独立页面
-            else if ($ispart == 2) {
+            else if ($ispart === "2") {
                 echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";
             }
             
@@ -243,20 +238,13 @@ class TypeUnit
                 echo "  <td width=\"10%\">" . $this->GetTotalArc($id) . "</td>";
                 echo "  <td width=\"38%\" align='right'>";
 
-                //普通列表
-                if ($ispart == 0) {
+                //普通列表 OR 封面频道 子栏目
+                if ($ispart === "0" OR $ispart === "1") {
+                    echo " <a href='catalog_do.php?cid={$id}&dopost=addArchives'>[添加内容]</a>";
                     echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
                     echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
                     echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
                 }
-
-                //封面频道
-                else if ($ispart == 1) {
-                    echo " <a href='{$GLOBALS['cfg_phpurl']}/list.php?tid={$id}' target='_blank'>[预览]</a>";
-                    echo " <a href='catalog_do.php?cid={$id}&dopost=listArchives'>[内容]</a>";
-                    echo " <a href='catalog_add.php?id={$id}'>[增加子类]</a>";
-                }
-
                 //独立页面
                 else if ($ispart == 2) {
                     echo " <a href='{$typeDir}' target='_blank'>[预览]</a>";

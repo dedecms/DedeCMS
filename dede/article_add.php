@@ -15,22 +15,14 @@ if($dopost!='save') {
     ClearMyAddon();
     $channelid = empty($channelid) ? 0 : intval($channelid);
     $cid = empty($cid) ? 0 : intval($cid);
-    if(empty($litpic_b64)) { $litpic_b64 = '';
+    if(empty($litpic_b64)) {  $litpic_b64 = '';  
     }
-
-    if(empty($geturl)) { $geturl = '';
+    if(empty($geturl)) {  $geturl = ''; 
     }
-    
     $keywords = $writer = $source = $body = $description = $title = '';
 
-    //采集单个网页
-    if(preg_match("#^http:\/\/#", $geturl)) {
-        include_once DEDEADMIN."/inc/inc_coonepage.php";
-        $redatas = CoOnePage($geturl);
-        extract($redatas);
-    }
 
-    //获得频道模型ID
+    //获得内容类型ID
     if($cid>0 && $channelid==0) {
         $row = $dsql->GetOne("Select channeltype From `#@__arctype` where id='$cid'; ");
         $channelid = $row['channeltype'];
@@ -42,7 +34,7 @@ if($dopost!='save') {
         }
     }
 
-    //获得频道模型信息
+    //获得内容类型信息
     $cInfos = $dsql->GetOne(" Select * From  `#@__channeltype` where id='$channelid' ");
     
     //获取文章最大id以确定当前权重
@@ -95,7 +87,7 @@ else if($dopost=='save') {
     }
     if(empty($source)) { $source='未知';
     }
-    $pubdate = GetMkTime($pubdate);
+    $pubdate = strtotime($pubdate);
     $senddate = time();
     $sortrank = AddDay($pubdate, $sortup);
     $ismake = $ishtml==0 ? -1 : 0;
@@ -167,14 +159,27 @@ else if($dopost=='save') {
         if(is_array($addonfields)) {
             foreach($addonfields as $v)
             {
-                if($v=='') { continue;
+                if($v=='') { continue; 
                 }
                 $vs = explode(',', $v);
                 if($vs[1]=='htmltext'||$vs[1]=='textdata') {
                     ${$vs[0]} = AnalyseHtmlBody(${$vs[0]}, $description, $litpic, $keywords, $vs[1]);
-                }
-                else
-                {
+                } else if ($vs[1]=='img') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadImage($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='media') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadMedia($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
+                } else if ($vs[1]=='addon') {
+                    if (empty(${$vs[0]}) === false) {
+                        $url = UploadAddon($vs[0]);
+                        ${$vs[0]} = GetFieldValueA($url, $vs[1], $id);
+                    }
+                } else {
                     if(!isset(${$vs[0]})) { ${$vs[0]} = '';
                     }
                     ${$vs[0]} = GetFieldValueA(${$vs[0]}, $vs[1], $arcID);
@@ -215,6 +220,7 @@ else if($dopost=='save') {
     //保存到附加表
     $cts = $dsql->GetOne("SELECT addtable FROM `#@__channeltype` WHERE id='$channelid' ");
     $addtable = trim($cts['addtable']);
+
     if(empty($addtable)) {
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__archives` WHERE id='$arcID'");
         $dsql->ExecuteNoneQuery("DELETE FROM `#@__arctiny` WHERE id='$arcID'");

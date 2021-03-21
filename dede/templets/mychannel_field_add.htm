@@ -102,23 +102,23 @@ height: 35px;
 <strong>数据类型：</strong>
 </td>
 <td>
-<select name="dtype" id="dtype" class="uk-select uk-form-small uk-form-width-large">
-<option value="text" checked>单行文本(varchar)</option>
-<option value="textchar">单行文本(char)</option>
-<option value="multitext">多行文本</option>
-<option value="htmltext">HTML文本</option>
-<option value="textdata">文本保存HTML数据</option>
-<option value="int">整数类型</option>
-<option value="float">小数类型</option>
-<option value="datetime">时间类型</option>
-<option value="img">图片</option>
-<option value="imgfile">图片(仅网址)</option>
-<option value="media">多媒体文件</option>
-<option value="addon">附件类型</option>
-<option value="select">使用option下拉框</option>
-<option value="radio">使用radio选项卡</option>
-<option value="checkbox">Checkbox多选框</option>
-<option value="stepselect">联动类型</option>
+<select name="dtype" id="type" class="uk-select uk-form-small uk-form-width-large">
+    <option value="text">单行文本(varchar)</option>
+    <option value="textchar">单行文本(char)</option>
+    <option value="multitext">多行文本</option>
+    <option value="htmltext">HTML文本</option>
+    <option value="textdata">文本保存HTML数据</option>
+    <option value="int">整数类型</option>
+    <option value="float">小数类型</option>
+    <option value="datetime">时间类型</option>
+    <option value="img">图片</option>
+    <option value="imgfile">图片(仅网址)</option>
+    <option value="media">多媒体文件</option>
+    <option value="addon">附件类型</option>
+    <option value="select">使用option下拉框</option>
+    <option value="radio">使用radio选项卡</option>
+    <option value="checkbox">Checkbox多选框</option>
+    <option value="stepselect">联动类型</option>
 </select>
 </td>
 </tr>
@@ -184,7 +184,7 @@ function GetFields()
 var theform = document.form1;
 var fieldname = theform.fieldname.value;
 var itemname = theform.itemname.value;
-var dtype = 'text';
+var dtype = theform.dtype.value;
 var enums = document.getElementsByName('dtype');
 for(i=0;i<enums.length;i++)
 {

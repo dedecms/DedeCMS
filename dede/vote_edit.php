@@ -31,8 +31,8 @@ if ($dopost == "delete") {
         exit;
     }
 } else if ($dopost == "saveedit") {
-    $starttime = GetMkTime($starttime);
-    $endtime = GetMkTime($endtime);
+    $starttime = strtotime($starttime);
+    $endtime = strtotime($endtime);
     $query = "UPDATE #@__vote SET votename='$votename',
         starttime='$starttime',
         endtime='$endtime',
