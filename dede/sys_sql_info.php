@@ -2,73 +2,71 @@
 /**
  * 数据表信息查看
  *
- * @version   $Id: sys_sql_info.php 1 22:28 2010年7月20日 $
- * @package   DedeCMS.Administrator
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: sys_sql_info.php 1 22:28 2010年7月20日 $
+ * @package        DedeCMS.Administrator
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-require dirname(__FILE__) . "/config.php";
+require(dirname(__FILE__)."/config.php");
 CheckPurview('sys_Data');
-if (empty($dopost)) {
-    $dopost = "";
-}
-
+if(empty($dopost)) $dopost = "";
 $dbdoc = new MakeDBDocument;
 $dbdoc->show();
 
 class MakeDBDocument
 {
-    public $dsql;
-    public function __construct()
+    var $dsql;
+    function __construct()
     {
         global $dsql;
         $this->dsql = $dsql;
     }
     //分析具体表
-    public function analyse_table(&$tableinfo, $tablename)
+    function analyse_table(&$tableinfo, $tablename)
     {
         $flines = explode("\n", $tableinfo);
         $addinfo = $tbinfo = $tb_comment = '';
         $fields = array();
-        foreach ($flines as $line) {
+        foreach($flines as $line)
+        {
             $line = trim($line);
-            if ($line == '') {
-                continue;
-            }
-
-            if (preg_match('/CREATE TABLE/i', $line)) {
-                continue;
-            }
-
-            if (!preg_match('/`/', $line)) {
+            if( $line=='' ) continue;
+            if( preg_match('/CREATE TABLE/i', $line) ) continue;
+            if( !preg_match('/`/', $line) )
+            {
                 $arr = '';
                 preg_match("/ENGINE=([a-z]*)(.*)DEFAULT CHARSET=([a-z0-9]*)/i", $line, $arr);
-                $tbinfo = "ENGINE=" . $arr[1] . '/CHARSET=' . $arr[3];
+                $tbinfo = "ENGINE=".$arr[1].'/CHARSET='.$arr[3];
                 $arr = '';
                 preg_match("/comment='([^']*)'/i", $line, $arr);
-                if (isset($arr[1])) {
+                if( isset($arr[1]) )
+                {
                     $tb_comment = $arr[1];
                 }
                 continue;
             }
-            if (preg_match('/KEY/', $line)) {
-                $addinfo .= $line . "<br />\n";
-            } else {
+            if( preg_match('/KEY/', $line) )
+            {
+                $addinfo .= $line."<br />\n";
+            }
+            else
+            {
                 $arr = '';
                 $nline = preg_replace("/comment '([^']*)'/i", '', $line);
                 preg_match("/`([^`]*)` (.*)[,]{0,1}$/U", $nline, $arr);
                 $f = $arr[1];
-                $fields[$f][0] = $arr[2];
-                $fields[$f][1] = '';
+                $fields[ $f ][0] = $arr[2];
+                $fields[ $f ][1] = '';
                 $arr = '';
                 preg_match("/comment '([^']*)'/i", $line, $arr);
-                if (isset($arr[1])) {
-                    $fields[$f][1] = $arr[1];
+                if( isset($arr[1]) )
+                {
+                    $fields[ $f ][1] = $arr[1];
                 }
-
+            
             }
         }
         $tablehtml = "    <table width=\"960\" align=\"center\" border=\"0\" cellpadding=\"5\" cellspacing=\"1\" bgcolor=\"#C1D1A3\" style=\"font-size:14px;margin-bottom:10px\">
@@ -87,7 +85,8 @@ class MakeDBDocument
         <td width=\"28%\" bgcolor=\"#F7FDEA\">说明描述</td>
         <td bgcolor=\"#F7FDEA\">具体参数</td>
     </tr>\n";
-        foreach ($fields as $k => $v) {
+        foreach($fields as $k=>$v)
+        {
             $tablehtml .= "    <tr height=\"24\" bgcolor=\"#FFFFFF\">
         <td><b>{$k}</b></td>
         <td>{$v[1]}</td>
@@ -104,37 +103,32 @@ class MakeDBDocument
         return $tablehtml;
     }
     //列出数据库的所有表
-    public function show($type = '')
+    function show( $type='' )
     {
-        global $cfg_soft_lang;
         $namehtml = $tablehtml = '';
-        $this->dsql->Execute('me', ' SHOW TABLES; ');
-        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-            define("MYSQLI_NUM", MYSQLI_NUM);
-        }
-        while ($row = $this->dsql->GetArray('me', MYSQLI_NUM)) {
-            $this->dsql->Execute('dd', " Show CREATE TABLE `{$row[0]}` ");
-            $row2 = $this->dsql->GetArray('dd', MYSQLI_NUM);
 
-            if ($type == '') {
-                if (preg_match("/^cms_/", $row[0])) {
-                    continue;
-                }
+        $this->dsql->Execute('me', "SHOW TABLES");
+        while($row = $this->dsql->GetArray('me', MYSQL_BOTH)) {
+            $this->dsql->Execute('dd', "SHOW CREATE TABLE `{$row[0]}`");
+            $row2 = $this->dsql->GetArray('dd', MYSQL_BOTH);
 
-            } else {
-                if (!preg_match("/^" . $type . "_/", $row[0])) {
-                    continue;
-                }
-
+            if( $type=='' )
+            {
+                if( preg_match("/^cms_/", $row[0]) ) continue;
             }
-
+            else
+            {
+                if( !preg_match("/^".$type."_/", $row[0]) ) continue;
+            }
+            
             $namehtml .= "<a href='#{$row[0]}'>{$row[0]}</a> | ";
-            $tablehtml .= $this->analyse_table($row2[1], $row[0]);
+            $tablehtml .= $this->analyse_table( $row2[1],  $row[0]);
         }
         $htmlhead = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-<html>
+<html xmlns=\"http://www.w3.org/1999/xhtml\">
 <head>
 <meta http-equiv=\"Content-Type\" content=\"text/html; charset={$cfg_soft_lang}\" />
+<link href=\"css/base.css\" rel=\"stylesheet\" type=\"text/css\">
 <style>
 * {
     font-size:14px;
@@ -148,9 +142,9 @@ a {
 </head>
 <body  background='images/allbg.gif' leftmargin='8' topmargin='8'>";
         echo $htmlhead;
-        echo "<table align='center' width='960' style='margin-bottom:8px' ><tr><td>" . $namehtml . "</td></tr></table>";
+        echo "<table align='center' width='960' style='margin-bottom:8px' ><tr><td>".$namehtml."</td></tr></table>";
         echo $tablehtml;
         echo "</body>\n</html>";
         exit();
-    } //end show
+    }//end show
 }

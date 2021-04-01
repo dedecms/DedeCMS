@@ -1,7 +1,83 @@
-<!--
-- @founder   IT柏拉图, https: //weibo.com/itprato
-- @author    DedeCMS团队
-- @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
---->
-
-{dede:config.pagesize value="50"/}<html><head><meta charset="{dede:global.cfg_soft_lang/}" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="copyright" content="2007-2021 DedeCMS, 上海卓卓网络科技有限公司 (DesDev, Inc.)" /><link rel="icon" href="/favicon.ico" /><!-- CSS FILES --><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/pkg/uikit/css/uikit.min.css" /><link rel="stylesheet" type="text/css" href="{dede:global.cfg_assets_dir/}/css/manage.dede.css"></head><body><!-- 列表主体 --><div id="Table_Body_1X2V2U2V1W272D" class="uk-card uk-card-small uk-card-default" style="top: -51;"><div class="uk-card-body uk-overflow-auto" grid><div class="uk-child-width-1-1"><div class="uk-overflow-auto"><!-- 表头隐藏部分，用于固定表结构宽度 --><table class="uk-table uk-table-hover uk-table-middle uk-table-divider uk-table-striped uk-margin-remove"><!-- /表头隐藏部分 --><tbody><!-- 内容列表 -->{dede:datalist}<tr><td width="20%" height="25">订单号:</td><td>{dede:field.oid/}</td></tr><tr><td height="25">商品名称:</td><td height="25">{dede:field.title/}</td></tr><tr><td height="25">单价(元/单位):</td><td height="25">{dede:field.uprice/}</td></tr><tr><td height="25">数量:</td><td height="25">{dede:field.cartcount/}</td></tr><tr><td height="25">支付方式:</td><td height="25"><?php echo GetSta($fields['state'],$oid)?></td></tr><tr><td height="25">配送:</td><td height="25">{dede:field.dname/} 费用:{dede:field.dprice/}元</td></tr><tr><td height="25">购买时间:</td><td height="25">{dede:field.stime function=GetDateTimeMk(@me)/}</td></tr><tr><td height="25">收货人:</td><td height="25"><?php echo $row['consignee']?></td></tr><tr><td height="25">地址:</td><td height="25"><?php echo $row['address']?></td></tr><tr><td height="25">邮编:</td><td height="25"><?php echo $row['zip']?></td></tr><tr><td height="25">联系电话:</td><td height="25"><?php echo $row['tel']?></td></tr><tr><td height="25">邮箱:</td><td height="25"><?php echo $row['email']?></td></tr><tr><td height="25">留言:</td><td height="25"><?php echo $row['des']?></td></tr><tr><td height="25">合计(元):</td><td height="25">{dede:field.priceCount/}元</td></tr>{/dede:datalist}<!-- /内容列表 --></tbody><!-- 分页 --><thead><tr><td height="36" colspan="10" align="center">{dede:pagelist listsize=5/}</td></tr></thead><!-- /分页 --></table></div></div></div></div><!-- /列表主体 --><!-- 列表底部 --><div class="bar-bottom uk-flex uk-flex-right" style="background-color: #fff;"><div class="uk-button-group" style="margin-left: 12px;">订单总计: <span style="color:red;">{dede:field.priceCount/}</span>元, {dede:pagelist listsize=3/}</div></div><!-- 列表底部 --><!-- JS FILES --><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/uikit/js/uikit-icons.min.js"></script><script src="{dede:global.cfg_assets_dir/}/pkg/jquery/jquery.min.js"></script><script src="{dede:global.cfg_assets_dir/}/js/dede.manage.min.js"></script><!-- / JS FILES --></body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title><?php echo $oid;?></title>
+<link href="css/base.css" rel="stylesheet" type="text/css" />
+<body>
+<table width="50%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+  <tr>
+    <td height="25" colspan="2" align="center" bgcolor="#F0F0F0">订单信息</td>
+  </tr>
+{dede:datalist}
+  <tr>
+    <td width="29%" height="25" align="right" bgcolor="#FFFFFF">订单号:</td>
+    <td width="71%" bgcolor="#FFFFFF">&nbsp;{dede:field.oid/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">商品名称:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.title/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">单价(元/单位):</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.uprice/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">数量:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.cartcount/}</td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">支付方式:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo GetSta($fields['state'],$oid)?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">配送:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.dname/} 费用:{dede:field.dprice/}元</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">购买时间:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.stime function=GetDateTimeMk(@me)/}</td>
+  </tr>
+   <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">收货人:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['consignee']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">地址:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['address']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">邮编:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['zip']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">联系电话:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['tel']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">邮箱:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['email']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">留言:</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;<?php echo $row['des']?></td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#FFFFFF">合计(元):</td>
+    <td height="25" bgcolor="#FFFFFF">&nbsp;{dede:field.priceCount/}元</td>
+  </tr>
+{/dede:datalist}
+  <tr>
+    <td height="25" colspan="2" align="right" bgcolor="#F0F0F0" style="padding-right:6px;padding-left:6px;">
+      <div style="float:left;">
+      <input type="button" name="ss12" value="关闭窗口" style="width:90px" onClick="window.close();" class='inputbut'>
+      </div>
+      
+      <div style="float:right;">
+      <span style="font-weight:bold;">订单总计:</span> <span style="color:red;">{dede:field.priceCount/}</span>元, {dede:pagelist listsize=3/}
+      <div>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

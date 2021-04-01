@@ -2,106 +2,115 @@
 /**
  * SMTP邮件操作类
  *
- * @version   $Id: mail.class.php 1 15:59 2010年7月5日 $
- * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: mail.class.php 1 15:59 2010年7月5日 $
+ * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
 class smtp
 {
     // 公有变量
-    public $smtp_port;
-    public $time_out;
-    public $host_name;
-    public $log_file;
-    public $relay_host;
-    public $debug;
-    public $auth;
-    public $user;
-    public $pass;
+    var $smtp_port;
+    var $time_out;
+    var $host_name;
+    var $log_file;
+    var $relay_host;
+    var $debug;
+    var $auth;
+    var $user;
+    var $pass;
 
     // 私有变量
-    public $sock;
+    var $sock;
 
     // 析构函数
-    public function smtp($relay_host = "", $smtp_port = 25, $auth = false, $user, $pass)
+    function smtp($relay_host = "", $smtp_port = 25,$auth = FALSE,$user,$pass)
     {
-        $this->debug = false;
+        $this->debug = FALSE;
         $this->smtp_port = $smtp_port;
         $this->relay_host = $relay_host;
 
         //is used in fsockopen()
         $this->time_out = 30;
 
-        // 
-        $this->auth = $auth; //auth
+        #
+        $this->auth = $auth;//auth
         $this->user = $user;
         $this->pass = $pass;
-        // 
+        #
 
         //is used in HELO command
         $this->host_name = "localhost";
         $this->log_file = "";
-        $this->sock = false;
+        $this->sock = FALSE;
     }
 
     /**
      *  邮件主函数
      *
-     * @access public
-     * @param  string $to       发送到的email
-     * @param  string $webname  站点名称
-     * @param  string $from     来自
-     * @param  string $subject  主题
-     * @param  string $body     邮件内容
-     * @param  string $mailtype 邮件类型
-     * @return string
+     * @access    public
+     * @param     string  $to  发送到的email
+     * @param     string  $webname  站点名称
+     * @param     string  $from  来自
+     * @param     string  $subject  主题
+     * @param     string  $body  邮件内容
+     * @param     string  $mailtype  邮件类型
+     * @return    string
      */
-    public function sendmail($to, $webname, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "")
+    function sendmail($to,$webname, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = "")
     {
         $mail_from = $this->get_address($this->strip_comment($from));
         $body = preg_replace("/(^|(\r\n))(\.)/", "\1.\3", $body);
         $header = "MIME-Version:1.0\r\n";
-        if ($mailtype == "HTML") {
+        if($mailtype=="HTML")
+        {
             $header .= "Content-Type:text/html\r\n";
         }
-        if ($cc != "") {
-            $header .= "Cc: " . $cc . "\r\n";
+        if ($cc != "")
+        {
+            $header .= "Cc: ".$cc."\r\n";
         }
-
-        $header .= "From: $webname<" . $from . ">\r\n";
-        $subject = "=?" . $GLOBALS['cfg_soft_lang'] . "?B?" . base64_encode($subject) . "?=";
-        $header .= "Subject: " . $subject . "\r\n";
+        
+        $header .= "From: $webname<".$from.">\r\n";
+        $subject  = "=?".$GLOBALS['cfg_soft_lang']."?B?".base64_encode($subject)."?=";
+        $header .= "Subject: ".$subject."\r\n";
         $header .= $additional_headers;
-        $header .= "Date: " . date("r") . "\r\n";
-        $header .= "X-Mailer:By Redhat (PHP/" . phpversion() . ")\r\n";
+        $header .= "Date: ".date("r")."\r\n";
+        $header .= "X-Mailer:By Redhat (PHP/".phpversion().")\r\n";
         list($msec, $sec) = explode(" ", microtime());
-        $header .= "Message-ID: <" . date("YmdHis", $sec) . "." . ($msec * 1000000) . "." . $mail_from . ">\r\n";
+        $header .= "Message-ID: <".date("YmdHis", $sec).".".($msec*1000000).".".$mail_from.">\r\n";
         $TO = explode(",", $this->strip_comment($to));
-        if ($cc != "") {
+        if ($cc != "")
+        {
             $TO = array_merge($TO, explode(",", $this->strip_comment($cc)));
         }
-        if ($bcc != "") {
+        if ($bcc != "")
+        {
             $TO = array_merge($TO, explode(",", $this->strip_comment($bcc)));
         }
-        $sent = true;
-        foreach ($TO as $rcpt_to) {
-            $headerto = "To: " . $rcpt_to . "\r\n";
-            $headerall = $header . $headerto;
+        $sent = TRUE;
+        foreach ($TO as $rcpt_to)
+        {
+            $headerto= "To: ".$rcpt_to."\r\n";
+            $headerall=$header.$headerto;
             $rcpt_to = $this->get_address($rcpt_to);
-            if (!$this->smtp_sockopen($rcpt_to)) {
-                $this->log_write("Error: Cannot send email to " . $rcpt_to . "\n");
-                $sent = false;
+            if (!$this->smtp_sockopen($rcpt_to))
+            {
+                $this->log_write("Error: Cannot send email to ".$rcpt_to."\n");
+                $sent = FALSE;
                 continue;
             }
-            if ($this->smtp_send($this->host_name, $mail_from, $rcpt_to, $headerall, $body)) {
-                $this->log_write("E-mail has been sent to <" . $rcpt_to . ">\n");
-            } else {
-                $this->log_write("Error: Cannot send email to <" . $rcpt_to . ">\n");
-                $sent = false;
+            if ($this->smtp_send($this->host_name, $mail_from, $rcpt_to, $headerall, $body))
+            {
+                $this->log_write("E-mail has been sent to <".$rcpt_to.">\n");
+            }
+            else
+            {
+                $this->log_write("Error: Cannot send email to <".$rcpt_to.">\n");
+                $sent = FALSE;
             }
             fclose($this->sock);
             $this->log_write("Disconnected from remote host\n");
@@ -112,181 +121,207 @@ class smtp
     /**
      *  SMTP发送
      *
-     * @access public
-     * @param  string $helo   发送HELO
-     * @param  string $from   来自
-     * @param  string $to     到
-     * @param  string $header 头部信息
-     * @param  string $body   内容主体
-     * @return string
+     * @access    public
+     * @param     string  $helo  发送HELO
+     * @param     string  $from  来自
+     * @param     string  $to  到
+     * @param     string  $header  头部信息
+     * @param     string  $body   内容主体
+     * @return    string
      */
-    public function smtp_send($helo, $from, $to, $header, $body = "")
+    function smtp_send($helo, $from, $to, $header, $body = "")
     {
-        if (!$this->smtp_putcmd("HELO", $helo)) {
+        if (!$this->smtp_putcmd("HELO", $helo))
+        {
             return $this->smtp_error("sending HELO command");
         }
 
-        // auth
-        if ($this->auth) {
-            if (!$this->smtp_putcmd("AUTH LOGIN", base64_encode($this->user))) {
+        #auth
+        if($this->auth)
+        {
+            if (!$this->smtp_putcmd("AUTH LOGIN", base64_encode($this->user)))
+            {
                 return $this->smtp_error("sending HELO command");
             }
-            if (!$this->smtp_putcmd("", base64_encode($this->pass))) {
+            if (!$this->smtp_putcmd("", base64_encode($this->pass)))
+            {
                 return $this->smtp_error("sending HELO command");
 
             }
         }
 
-        // 
-        if (!$this->smtp_putcmd("MAIL", "FROM:<" . $from . ">")) {
+        #
+        if (!$this->smtp_putcmd("MAIL", "FROM:<".$from.">"))
+        {
             return $this->smtp_error("sending MAIL FROM command");
         }
-        if (!$this->smtp_putcmd("RCPT", "TO:<" . $to . ">")) {
+        if (!$this->smtp_putcmd("RCPT", "TO:<".$to.">"))
+        {
             return $this->smtp_error("sending RCPT TO command");
         }
-        if (!$this->smtp_putcmd("DATA")) {
+        if (!$this->smtp_putcmd("DATA"))
+        {
             return $this->smtp_error("sending DATA command");
         }
-        if (!$this->smtp_message($header, $body)) {
+        if (!$this->smtp_message($header, $body))
+        {
             return $this->smtp_error("sending message");
         }
-        if (!$this->smtp_eom()) {
+        if (!$this->smtp_eom())
+        {
             return $this->smtp_error("sending <CR><LF>.<CR><LF> [EOM]");
         }
-        if (!$this->smtp_putcmd("QUIT")) {
+        if (!$this->smtp_putcmd("QUIT"))
+        {
             return $this->smtp_error("sending QUIT command");
         }
-        return true;
+        return TRUE;
     }
 
-    public function smtp_sockopen($address)
+    function smtp_sockopen($address)
     {
-        if ($this->relay_host == "") {
+        if ($this->relay_host == "")
+        {
             return $this->smtp_sockopen_mx($address);
-        } else {
+        }
+        else
+        {
             return $this->smtp_sockopen_relay();
         }
     }
 
-    public function smtp_sockopen_relay()
+    function smtp_sockopen_relay()
     {
-        $this->log_write("Trying to " . $this->relay_host . ":" . $this->smtp_port . "\n");
+        $this->log_write("Trying to ".$this->relay_host.":".$this->smtp_port."\n");
         $this->sock = @fsockopen($this->relay_host, $this->smtp_port, $errno, $errstr, $this->time_out);
-        if (!($this->sock && $this->smtp_ok())) {
-            $this->log_write("Error: Cannot connenct to relay host " . $this->relay_host . "\n");
-            $this->log_write("Error: " . $errstr . " (" . $errno . ")\n");
-            return false;
+        if (!($this->sock && $this->smtp_ok()))
+        {
+            $this->log_write("Error: Cannot connenct to relay host ".$this->relay_host."\n");
+            $this->log_write("Error: ".$errstr." (".$errno.")\n");
+            return FALSE;
         }
-        $this->log_write("Connected to relay host " . $this->relay_host . "\n");
-        return true;
+        $this->log_write("Connected to relay host ".$this->relay_host."\n");
+        return TRUE;;
     }
 
-    public function smtp_sockopen_mx($address)
+    function smtp_sockopen_mx($address)
     {
         $domain = preg_replace("/^.+@([^@]+)$/i", "\1", $address);
-        if (!@getmxrr($domain, $MXHOSTS)) {
-            $this->log_write("Error: Cannot resolve MX \"" . $domain . "\"\n");
-            return false;
+        if (!@getmxrr($domain, $MXHOSTS))
+        {
+            $this->log_write("Error: Cannot resolve MX \"".$domain."\"\n");
+            return FALSE;
         }
-        foreach ($MXHOSTS as $host) {
-            $this->log_write("Trying to " . $host . ":" . $this->smtp_port . "\n");
+        foreach ($MXHOSTS as $host)
+        {
+            $this->log_write("Trying to ".$host.":".$this->smtp_port."\n");
             $this->sock = @fsockopen($host, $this->smtp_port, $errno, $errstr, $this->time_out);
-            if (!($this->sock && $this->smtp_ok())) {
-                $this->log_write("Warning: Cannot connect to mx host " . $host . "\n");
-                $this->log_write("Error: " . $errstr . " (" . $errno . ")\n");
+            if (!($this->sock && $this->smtp_ok()))
+            {
+                $this->log_write("Warning: Cannot connect to mx host ".$host."\n");
+                $this->log_write("Error: ".$errstr." (".$errno.")\n");
                 continue;
             }
-            $this->log_write("Connected to mx host " . $host . "\n");
-            return true;
+            $this->log_write("Connected to mx host ".$host."\n");
+            return TRUE;
         }
-        $this->log_write("Error: Cannot connect to any mx hosts (" . implode(", ", $MXHOSTS) . ")\n");
-        return false;
+        $this->log_write("Error: Cannot connect to any mx hosts (".implode(", ", $MXHOSTS).")\n");
+        return FALSE;
     }
 
-    public function smtp_message($header, $body)
+    function smtp_message($header, $body)
     {
-        fputs($this->sock, $header . "\r\n" . $body);
-        $this->smtp_debug("> " . str_replace("\r\n", "\n" . "> ", $header . "\n> " . $body . "\n> "));
-        return true;
+        fputs($this->sock, $header."\r\n".$body);
+        $this->smtp_debug("> ".str_replace("\r\n", "\n"."> ", $header."\n> ".$body."\n> "));
+        return TRUE;
     }
 
-    public function smtp_eom()
+    function smtp_eom()
     {
         fputs($this->sock, "\r\n.\r\n");
         $this->smtp_debug(". [EOM]\n");
         return $this->smtp_ok();
     }
 
-    public function smtp_ok()
+    function smtp_ok()
     {
         $response = str_replace("\r\n", "", fgets($this->sock, 512));
-        $this->smtp_debug($response . "\n");
-        if (!preg_match("#^[23]#", $response)) {
+        $this->smtp_debug($response."\n");
+        if (!preg_match("#^[23]#", $response))
+        {
             fputs($this->sock, "QUIT\r\n");
             fgets($this->sock, 512);
-            $this->log_write("Error: Remote host returned \"" . $response . "\"\n");
-            return false;
+            $this->log_write("Error: Remote host returned \"".$response."\"\n");
+            return FALSE;
         }
-        return true;
+        return TRUE;
     }
 
-    public function smtp_putcmd($cmd, $arg = "")
+    function smtp_putcmd($cmd, $arg = "")
     {
-        if ($arg != "") {
-            if ($cmd == "") {
+        if ($arg != "")
+        {
+            if($cmd=="")
+            {
                 $cmd = $arg;
-            } else {
-                $cmd = $cmd . " " . $arg;
+            }
+            else
+            {
+                $cmd = $cmd." ".$arg;
             }
         }
-        fputs($this->sock, $cmd . "\r\n");
-        $this->smtp_debug("> " . $cmd . "\n");
+        fputs($this->sock, $cmd."\r\n");
+        $this->smtp_debug("> ".$cmd."\n");
         return $this->smtp_ok();
     }
 
-    public function smtp_error($string)
+    function smtp_error($string)
     {
-        $this->log_write("Error: Error occurred while " . $string . ".\n");
-        return false;
+        $this->log_write("Error: Error occurred while ".$string.".\n");
+        return FALSE;
     }
 
-    public function log_write($message)
+    function log_write($message)
     {
         $this->smtp_debug($message);
-        if ($this->log_file == "") {
-            return true;
+        if ($this->log_file == "")
+        {
+            return TRUE;
         }
-        $message = date("M d H:i:s ") . get_current_user() . "[" . getmypid() . "]: " . $message;
-        if (!@file_exists($this->log_file) || !($fp = @fopen($this->log_file, "a"))) {
-            $this->smtp_debug("Warning: Cannot open log file \"" . $this->log_file . "\"\n");
-            return false;
+        $message = date("M d H:i:s ").get_current_user()."[".getmypid()."]: ".$message;
+        if (!@file_exists($this->log_file) || !($fp = @fopen($this->log_file, "a")))
+        {
+            $this->smtp_debug("Warning: Cannot open log file \"".$this->log_file."\"\n");
+            return FALSE;;
         }
         flock($fp, LOCK_EX);
         fputs($fp, $message);
         fclose($fp);
-        return true;
+        return TRUE;
     }
 
-    public function strip_comment($address)
+    function strip_comment($address)
     {
         $comment = "#\([^()]*\)#";
-        while (preg_match($comment, $address)) {
+        while (preg_match($comment, $address))
+        {
             $address = preg_replace($comment, "", $address);
         }
         return $address;
     }
 
-    public function get_address($address)
+    function get_address($address)
     {
         $address = preg_replace("#([ \t\r\n])+#", "", $address);
         $address = preg_replace("#^.*<(.+)>.*$#", "\1", $address);
         return $address;
     }
 
-    public function smtp_debug($message)
+    function smtp_debug($message)
     {
-        if ($this->debug) {
+        if ($this->debug)
+        {
             echo $message;
         }
     }
-} //End Class
+}//End Class

@@ -2,15 +2,15 @@
 /**
  * 子栏目调用标签
  *
- * @version   $Id: sonchannel.lib.php 1 9:29 2010年7月6日 $
- * @package   DedeCMS.Taglib
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: sonchannel.lib.php 1 9:29 2010年7月6日 $
+ * @package        DedeCMS.Taglib
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-
+ 
 /*>>dede>>
 <name>子栏目标签</name>
 <type>全局标记</type>
@@ -22,23 +22,24 @@
 {/dede:sonchannel}
 </demo>
 <attributes>
-<iterm>row:返回数目</iterm>
-<iterm>col:默认单列显示</iterm>
-<iterm>nosonmsg:没有指定ID子栏目显示的信息内容</iterm>
-</attributes>
+    <iterm>row:返回数目</iterm> 
+    <iterm>col:默认单列显示</iterm>
+    <iterm>nosonmsg:没有指定ID子栏目显示的信息内容</iterm>
+</attributes> 
 >>dede>>*/
-
-function lib_sonchannel(&$ctag, &$refObj)
+ 
+function lib_sonchannel(&$ctag,&$refObj)
 {
-    global $_sys_globals, $dsql;
+    global $_sys_globals,$dsql;
 
     $attlist = "row|100,nosonmsg|,col|1";
-    FillAttsDefault($ctag->CAttribute->Items, $attlist);
+    FillAttsDefault($ctag->CAttribute->Items,$attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
     $innertext = $ctag->GetInnerText();
 
     $typeid = $_sys_globals['typeid'];
-    if (empty($typeid)) {
+    if(empty($typeid))
+    {
         return $ctag->GetAtt('nosonmsg');
     }
 
@@ -47,46 +48,39 @@ function lib_sonchannel(&$ctag, &$refObj)
 
     //And id<>'$typeid'
     $dtp2 = new DedeTagParse();
-    $dtp2->SetNameSpace("field", "[", "]");
+    $dtp2->SetNameSpace("field","[","]");
     $dtp2->LoadSource($innertext);
     $dsql->SetQuery($sql);
     $dsql->Execute();
     $line = $row;
     $GLOBALS['autoindex'] = 0;
     $likeType = '';
-    for ($i = 0; $i < $line; $i++) {
-        if ($col > 1) {
-            $likeType .= "<dl>\r\n";
-        }
-
-        for ($j = 0; $j < $col; $j++) {
-            if ($col > 1) {
-                $likeType .= "<dd>\r\n";
-            }
-
-            if ($row = $dsql->GetArray()) {
+    for($i=0;$i < $line;$i++)
+    {
+        if($col>1) $likeType .= "<dl>\r\n";
+        for($j=0;$j<$col;$j++)
+        {
+            if($col>1) $likeType .= "<dd>\r\n";
+            if($row=$dsql->GetArray())
+            {
                 $row['typelink'] = $row['typeurl'] = GetOneTypeUrlA($row);
-                if (is_array($dtp2->CTags)) {
-                    foreach ($dtp2->CTags as $tagid => $ctag) {
-                        if (isset($row[$ctag->GetName()])) {
-                            $dtp2->Assign($tagid, $row[$ctag->GetName()]);
-                        }
-
+                if(is_array($dtp2->CTags))
+                {
+                    foreach($dtp2->CTags as $tagid=>$ctag){
+                        if(isset($row[$ctag->GetName()])) $dtp2->Assign($tagid,$row[$ctag->GetName()]);
                     }
                 }
                 $likeType .= $dtp2->GetResult();
             }
-            if ($col > 1) {
-                $likeType .= "</dd>\r\n";
-            }
-
+            if($col>1) $likeType .= "</dd>\r\n";
             $GLOBALS['autoindex']++;
-        } //Loop Col
-        if ($col > 1) {
+        }//Loop Col
+        if($col>1)
+        {
             $i += $col - 1;
             $likeType .= "    </dl>\r\n";
         }
-    } //Loop for $i
+    }//Loop for $i
     $dsql->FreeResult();
     return $likeType;
 }

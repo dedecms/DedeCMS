@@ -1,6 +1,6 @@
 <div style='padding-left:20px;line-height:150%'>
-<p>Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 </p>
-<p>感谢您选择织梦内容管理系统（以下简称DedeCMS），DedeCMS是目前国内专业、便捷、稳定的中小型门户网站建设解决方案之一，居于 PHP + MySQL 的技术开发，全部源码开放。DedeCMS 的官方网址是： www.dedecms.com  交流论坛： bbs.dedecms.com</p>
+<p>版权所有 &copy;2003-2008，DedeCMS.com 保留所有权利。 </p>
+<p>感谢您选择织梦内容管理系统（以下简称DedeCMS），DedeCMS是目前国内强大、稳定的中小型门户网站建设解决方案之一，居于 PHP + MySQL 的技术开发，全部源码开放。DedeCMS 的官方网址是： www.dedecms.com  交流论坛： bbs.dedecms.com</p>
 <p>为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
 <p><strong>一、本授权协议适用且仅适用于 DedeCMS 5.x.x 版本，DedeCMS官方对本授权协议的最终解释权。 </strong></p>
 <p><strong>二、协议许可的权利 </strong><br />
@@ -11,7 +11,7 @@
 <p><strong>三、协议规定的约束和限制 </strong><br />
   1、未获商业授权之前，不得将本软件用于商业用途（包括但不限于企业网站、经营性网站、以营利为目的或实现盈利的网站）。购买商业授权请登录 bbs.dedecms.com 了解最新说明。 <br />
   2、未经官方许可，不得对本软件或与之关联的商业授权进行出租、出售、抵押或发放子许可证。 <br />
-  3、不管你的网站是否整体使用 DedeCMS ，还是部份栏目使用 DedeCMS，在你使用了 DedeCMS 的网站主页上必须加上 DedeCMS 官方网址(www.dedecms.com)的链接。 <br />
+  3、不管你的网站是否整体使用 DedeCMS ，还是部分栏目使用 DedeCMS，在你使用了 DedeCMS 的网站主页上必须加上 DedeCMS 官方网址(www.dedecms.com)的链接。 <br />
   4、未经官方许可，禁止在 DedeCMS 的整体或任何部分基础上以发展任何派生版本、修改版本或第三方版本用于重新分发。 <br />
 5、如果您未能遵守本协议的条款，您的授权将被终止，所被许可的权利将被收回，并承担相应法律责任。 </p>
 <p><strong>四、有限担保和免责声明 </strong><br />

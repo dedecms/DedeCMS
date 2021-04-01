@@ -1,46 +1,46 @@
 <?php
 /**
+ *
  * 广告JS调用方式
  *
- * @version   $Id: ad_js.php 1 20:30 2010年7月8日 $
- * @package   DedeCMS.Site
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: ad_js.php 1 20:30 2010年7月8日 $
+ * @package        DedeCMS.Site
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-require_once dirname(__FILE__) . "/../include/common.inc.php";
+require_once(dirname(__FILE__)."/../include/common.inc.php");
 
-if (isset($arcID)) {
-    $aid = $arcID;
-}
-
+if(isset($arcID)) $aid = $arcID;
 $arcID = $aid = (isset($aid) && is_numeric($aid)) ? $aid : 0;
-if ($aid == 0) {
-    die(' Request Error! ');
-}
+if($aid==0) die(' Request Error! ');
 
-$cacheFile = DEDEDATA . '/cache/myad-' . $aid . '.htm';
-if (isset($nocache) || !file_exists($cacheFile) || time() - filemtime($cacheFile) > $cfg_puccache_time) {
+$cacheFile = DEDEDATA.'/cache/myad-'.$aid.'.htm';
+if( isset($nocache) || !file_exists($cacheFile) || time() - filemtime($cacheFile) > $cfg_puccache_time )
+{
     $row = $dsql->GetOne("SELECT * FROM `#@__myad` WHERE aid='$aid' ");
     $adbody = '';
-    if ($row['timeset'] == 0) {
+    if($row['timeset']==0)
+    {
         $adbody = $row['normbody'];
-    } else {
+    }
+    else
+    {
         $ntime = time();
-        if ($ntime > $row['endtime'] || $ntime < $row['starttime']) {
+        if($ntime > $row['endtime'] || $ntime < $row['starttime']) {
             $adbody = $row['expbody'];
         } else {
             $adbody = $row['normbody'];
         }
     }
-    $adbody = str_replace('"', '\"', $adbody);
-    $adbody = str_replace("\r", "\\r", $adbody);
-    $adbody = str_replace("\n", "\\n", $adbody);
+    $adbody = str_replace('"', '\"',$adbody);
+    $adbody = str_replace("\r", "\\r",$adbody);
+    $adbody = str_replace("\n", "\\n",$adbody);
     $adbody = "<!--\r\ndocument.write(\"{$adbody}\");\r\n-->\r\n";
     $fp = fopen($cacheFile, 'w');
     fwrite($fp, $adbody);
     fclose($fp);
 }
-require $cacheFile;
+include $cacheFile;

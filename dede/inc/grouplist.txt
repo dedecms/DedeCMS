@@ -3,7 +3,7 @@
 >admin_AllowAll>可以进行任意操作
 
 
->>内容类型管理
+>>频道管理
 
 >c_List>列出频道
 >c_New>新建频道
@@ -78,6 +78,7 @@
 >sys_Group>系统组管理
 >sys_MdPwd>更改个人密码
 >sys_DelUpload>删除附件
+>sys_Task>计划任务管理[br]
 >sys_Edit>修改系统参数
 >sys_Log>管理日志
 >sys_plus>插件管理
@@ -90,14 +91,14 @@
 >sys_SoftConfig>软件频道参数
 >sys_Keyword>关键字管理[br]
 >sys_MakeHtml>更新HTML
+>sys_Feedback>评论管理
 >sys_Upload>管理任意上传
 >sys_MyUpload>管理我的上传
 >pic_view>图片浏览器
 
->>用户管理
+>>会员管理
 
->member_Type>用户类型管理
->member_List>用户列表
->member_Edit>更改用户
->member_Add>添加用户
->member_Del>删除用户
+>member_Type>会员类型管理
+>member_List>列出会员
+>member_Edit>更改会员
+>member_Del>删除会员

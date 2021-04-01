@@ -1,6 +1,6 @@
 DedeCMS Icons是DedeCMS系统的一部分，请遵守DedeCMS授权协议（http://help.dedecms.com/usersguide/license.html）
 DedeCMS Icons与Bootstrap Icons使用uikit混合打包于: /assets/pkg/uikit/js/uikit-icons.min.js
-以下为Bootstrap Icons于uikit的授权协议：
+以下为Bootstrap Icons与uikit的授权协议：
 
 MIT License
 

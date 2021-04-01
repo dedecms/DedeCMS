@@ -1,93 +1,84 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>{dede:global.cfg_webname/}</title>
-<meta charset="{dede:global.cfg_soft_lang/}" />
-<meta name="keywords" content="{dede:field name='keywords' function='html2text(@me)'/}" />
+<meta http-equiv="Content-Type" content="text/html; charset={dede:global.cfg_soft_lang/}" />
+<title>{dede:field.title/}_{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
 <meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
-{dede:include filename="header.htm"/}
+<link href="{dede:global.cfg_templets_skin/}/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" />
+</head>
+<body class="articlelist">
+{dede:include filename="head.htm"/}
 <!-- /header -->
-<main>
-<!-- 面包屑 -->
-{dede:include filename="breadcrumb.htm"/}
-<!-- /面包屑 -->
 
-<section class="uk-section uk-section-small uk-padding-remove-top">
-<div class="uk-container">
-<div class="uk-grid-margin uk-first-column">
-<div class="uk-grid-medium uk-grid" uk-grid>
-<aside class="uk-width-1-4 uk-visible@m tm-aside-column">
-<section class="uk-card uk-card-default uk-card-small" >
-<div class="uk-card uk-card-default uk-width-1-1@m">
-<div class="uk-card-header">栏目列表</div>
-<div class="uk-card-body uk-padding-remove">
-<nav class=" uk-margin-remove">
-<ul class="uk-nav uk-nav-default dede-nav">
-{dede:channel row='15' type='son'}
-<li><a href='[field:typelink/]'>[field:typename/]</a></li>
-{/dede:channel}
-</ul>
-</nav>
-</div>
-</div>
-</section>
-<section class="uk-card uk-card-default uk-card-small uk-margin-top" >
-<div class="uk-card uk-card-default uk-width-1-1@m">
-<div class="uk-card-header">热点内容</div>
-<div class="uk-card-body">
-<ul class="uk-list uk-list-hyphen">
-{dede:arclist row=10 orderby=click}
-<li><a href="[field:arcurl/]">[field:title/]</a></li>
-{/dede:arclist}
-</ul>
-</div>
-</div>
-</section>
-</aside>
-<section class="uk-width-1-1 uk-width-expand@m uk-first-column">
-<div class="uk-grid-medium uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid>
-<div class="uk-first-column">
-<article class="uk-card uk-card-default uk-card-small uk-article uk-overflow-hidden uk-box-shadow-hover-large  tm-ignore-container">
-<div class="uk-card-body">
-<ul class="uk-list uk-list-large uk-list-divider">
+<div class="channel-nav w960 center clear">
+	<div class='sonnav'>
+	{dede:channel currentstyle="<span><a href='~typelink~' class='thisclass'>~typename~</a></span>"}
+		<span><a href='[field:typeurl/]'>[field:typename/]</a></span>{/dede:channel}
+	</div>
+</div><!-- /channel-nav -->
+
+<div class="w960 center clear mt1">
+	<div class="pleft">
+		<div class="place">
+			<strong>当前位置:</strong> {dede:field name='position'/}
+		</div><!-- /place -->
+		<div class="listbox">
+			<ul class="e2">
 {dede:list pagesize='10'}
-<li>
-<article class="uk-article">
-<div class="uk-article-body">
-<div>
-<h4> <a href="[field:arcurl/]">[field:title/]</a></h4>
-</div>
-<div class="uk-margin-small-top"><p>[field:description function='cn_substr(@me,580)'/]...</p></div>
-<div class="uk-article-meta uk-margin-xsmall-top">
-<small>栏目：</small>[field:typelink/]
-<small>日期：</small><time>[field:pubdate function="MyDate('Y-m-d H:i:s',@me)"/]</time>
-<small>点击：</small>[field:click/] 
-<small>好评：</small>[field:scores/]  
-</div>
-</div>
-</article>
-</li>
+				<li>
+      				[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' class='preview'><img src='{@me['litpic']}'/></a>"); [/field:array]
+					<a href="[field:arcurl/]" class="title">[field:title/]</a>
+					<span class="info">
+						<small>日期：</small>[field:pubdate function="GetDateTimeMK(@me)"/]
+						<small>点击：</small>[field:click/]
+						<small>好评：</small>[field:scores/]
+					</span>
+					<p class="intro">
+						[field:description/]...
+					</p>
+				</li>
 {/dede:list}
+			</ul>
+		</div><!-- /listbox -->
+		<div class="dede_pages">
+			<ul class="pagelist">
+             {dede:pagelist listitem="info,index,end,pre,next,pageno" listsize="5"/}
+			</ul>
+		</div><!-- /pages -->
+	</div><!-- /pleft -->
+	
+	<div class="pright">
+		<div class="commend">
+			<dl class="tbox">
+				<dt><strong>推荐内容</strong></dt>
+				<dd>
+					<ul class="d4">
+           {dede:arclist flag='c' titlelen=42 row=6}
+          	<li><a href="[field:arcurl/]">[field:title/]</a>
+            	<p>[field:description function='cn_substr(@me,80)'/]...</p>
+            </li>{/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div><!-- /commend -->
+		<div class="hot mt1">
+			<dl class="tbox">
+				<dt><strong>热点内容</strong></dt>
+				<dd>
+					<ul class="c1 ico2">
+                    {dede:arclist row=10 orderby=click}
+                    	<li><a href="[field:arcurl/]">[field:title/]</a></li>
+                    {/dede:arclist}
+					</ul>
+				</dd>
+			</dl>
+		</div>
 
-</ul>
+	</div><!-- /pright -->
 </div>
-</article>
-</div>
-</div>
-<div class="uk-grid-medium uk-child-width-1-1" uk-grid>
-<ul class="uk-pagination uk-flex-center">
-{dede:pagelist listitem="info,index,end,pre,next,pageno,option" listsize="5"/}
-</ul>
-</div>
-</section>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-</main>
 {dede:include filename="footer.htm"/}
 <!-- /footer -->
+
 </body>
 </html>
-

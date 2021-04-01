@@ -12,11 +12,11 @@ DedeCMS代码托管在Github，织梦项目组集中发布的公开项目为 : h
 
 ### 版本命名规则：
 
-DedeCMS 5.8及后续的版本将采用 [Semantic Versioning Specification (SemVer)](http://semver.org) 进行维护。
+DedeCMS 5.7.73及后续的版本将采用 [Semantic Versioning Specification (SemVer)](http://semver.org) 进行维护。
  
 ### Windows 环境：
 
-IIS/Apache/Nginx + PHP7+ + MySQL/MariaDB
+IIS/Apache/Nginx   PHP5.6+   MySQL5.7+/MariaDB
 
 ### Linux/Unix 环境：
 
@@ -24,7 +24,7 @@ Apache/Nginx + PHP7+ + MySQL/MariaDB (PHP 必须在非安全模式下运行)
 
 ### 建议使用环境:
 
-建议使用平台：OpenBSD + Nginx + PHP7 + MariaDB
+建议使用平台：OpenBSD   Nginx  PHP5.6+  MySQL5.7+
 
 推荐理由：
 
@@ -56,15 +56,17 @@ MySQL 扩展库
 ```
 /
 ../a           默认HTML文件存放目录(必须可写入)
+../assets      系统默认静态资源目录
 ../install     安装程序目录，安装完后可删除[安装时必须有可写入权限]
 ../dede        默认后台管理目录（可任意改名）
 ../include     类库文件目录
 ../plus        附助程序目录
-../assets      系统默认静态资源目录
-../uploads     默认上传目录(必须可写入)
+../member      会员目录
+../images      系统默认模板图片存放目录
+../uploads     默认上传目录[必须可写入]
 ../templets    系统默认内核模板目录
-../data        系统缓存或其它可写入数据存放目录(必须可写入)
-../special     专题目录(生成一次专题后可以删除special/index.php，必须可写入)
+../data        系统缓存或其它可写入数据存放目录[必须可写入]
+../special     专题目录[生成一次专题后可以删除special/index.php，必须可写入]
 ```
 
 ## 兼容性问题

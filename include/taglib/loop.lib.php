@@ -1,17 +1,20 @@
-<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
+<?php
+if(!defined('DEDEINC'))
+{
+    exit("DedeCMS Error: Request Error!");
 }
 /**
  * 调用任意表的数据标签
  *
- * @version   $Id: loop.lib.php 1 9:29 2010年7月6日 $
- * @package   DedeCMS.Taglib
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
-*/
-
+ * @version        $Id: loop.lib.php 1 9:29 2010年7月6日 $
+ * @package        DedeCMS.Taglib
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
+ */
+ 
 /*>>dede>>
 <name>万能循环</name>
 <type>全局标记</type>
@@ -23,73 +26,51 @@
 {/dede:loop}
 </demo>
 <attributes>
-<iterm>table:查询表名</iterm>
-<iterm>sort:用于排序的字段</iterm>
-<iterm>row:返回结果的条数</iterm>
-<iterm>if:查询的条件</iterm>
-</attributes>
+    <iterm>table:查询表名</iterm> 
+    <iterm>sort:用于排序的字段</iterm>
+    <iterm>row:返回结果的条数</iterm>
+    <iterm>if:查询的条件</iterm>
+</attributes> 
 >>dede>>*/
-
-require_once DEDEINC . '/dedevote.class.php';
-function lib_loop(&$ctag, &$refObj)
+ 
+require_once(DEDEINC.'/dedevote.class.php');
+function lib_loop(&$ctag,&$refObj)
 {
     global $dsql;
-    $attlist = "table|,tablename|,row|8,sort|,if|,ifcase|,orderway|desc";
-    FillAttsDefault($ctag->CAttribute->Items, $attlist);
+    $attlist="table|,tablename|,row|8,sort|,if|,ifcase|,orderway|desc";//(2011.7.22 增加loop标签orderway属性 by:DedeCMS团队)
+    FillAttsDefault($ctag->CAttribute->Items,$attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
 
     $innertext = trim($ctag->GetInnertext());
     $revalue = '';
-    if (!empty($table)) {
-        $tablename = $table;
-    
-    }
+    if(!empty($table)) $tablename = $table;
 
-    if ($tablename == '' || $innertext == '') {
-        return '';
-    
-    }
+    if($tablename==''||$innertext=='') return '';
+    if($if!='') $ifcase = $if;
 
-    if ($if != '') {
-        $ifcase = $if;
-    
-    }
-
-    if ($sort != '') {
-        $sort = " ORDER BY $sort $orderway ";
-    
-    }
-
-    if ($ifcase != '') {
-        $ifcase = " WHERE $ifcase ";
-    
-    }
-
+    if($sort!='') $sort = " ORDER BY $sort $orderway ";
+    if($ifcase!='') $ifcase=" WHERE $ifcase ";
     $dsql->SetQuery("SELECT * FROM $tablename $ifcase $sort LIMIT 0,$row");
     $dsql->Execute();
     $ctp = new DedeTagParse();
-    $ctp->SetNameSpace("field", "[", "]");
+    $ctp->SetNameSpace("field","[","]");
     $ctp->LoadSource($innertext);
     $GLOBALS['autoindex'] = 0;
-    while ($row = $dsql->GetArray()) {
+    while($row = $dsql->GetArray())
+    {
         $GLOBALS['autoindex']++;
-        foreach ($ctp->CTags as $tagid => $ctag) {
-            if ($ctag->GetName() == 'array') {
-                $ctp->Assign($tagid, $row);
-            
-            } else {
-                if (!empty($row[$ctag->GetName()])) {
-                    $ctp->Assign($tagid, $row[$ctag->GetName()]);
-                
+        foreach($ctp->CTags as $tagid=>$ctag)
+        {
+                if($ctag->GetName()=='array')
+                {
+                        $ctp->Assign($tagid, $row);
                 }
-
-            
-            }
-        
+                else
+                {
+                    if( !empty($row[$ctag->GetName()])) $ctp->Assign($tagid,$row[$ctag->GetName()]); 
+                }
         }
         $revalue .= $ctp->GetResult();
-    
     }
     return $revalue;
-
 }

@@ -1,38 +1,39 @@
 <?php
-define("DE_ItemEcode", 'Shop_De_'); //识别购物车Cookie前缀,非开发人员请不要随意修改!
+define("DE_ItemEcode",'Shop_De_');//识别购物车Cookie前缀,非开发人员请不要随意更改!
 /**
  * 购物车类
  *
- * @version   $Id: shopcar.class.php 2 20:58 2010年7月7日 $
- * @package   DedeCMS.Libraries
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: shopcar.class.php 2 20:58 2010年7月7日 $
+ * @package        DedeCMS.Libraries
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-// ------------------------------------------------------------------------
-/**
- * 用户购物车类
+ // ------------------------------------------------------------------------
+ /**
+ * 会员购物车类
  *
- * @package    MemberShops
- * @subpackage DedeCMS.Libraries
- * @link       http://www.dedecms.com
+ * @package          MemberShops
+ * @subpackage       DedeCMS.Libraries
+ * @link             http://www.dedecms.com
  */
 class MemberShops
 {
-    public $OrdersId;
-    public $productsId;
+    var $OrdersId;
+    var $productsId;
 
-    public function __construct()
+    function __construct()
     {
         $this->OrdersId = $this->getCookie("OrdersId");
-        if (empty($this->OrdersId)) {
+        if(empty($this->OrdersId))
+        {
             $this->OrdersId = $this->MakeOrders();
         }
     }
 
-    public function MemberShops()
+    function MemberShops()
     {
         $this->__construct();
     }
@@ -40,50 +41,52 @@ class MemberShops
     /**
      *  创建一个专有订单编号
      *
-     * @return string
+     * @return    string
      */
-    public function MakeOrders()
+    function MakeOrders()
     {
-        $this->OrdersId = 'S-P' . time() . 'RN' . mt_rand(100, 999);
-        $this->deCrypt($this->saveCookie("OrdersId", $this->OrdersId));
+        $this->OrdersId = 'S-P'.time().'RN'.mt_rand(100,999);
+        $this->deCrypt($this->saveCookie("OrdersId",$this->OrdersId));
         return $this->OrdersId;
     }
 
     /**
      *  添加一个商品编号及信息
      *
-     * @param  string $id    购物车ID
-     * @param  string $value 值
-     * @return void
+     * @param     string  $id  购物车ID
+     * @param     string  $value  值
+     * @return    void
      */
-    public function addItem($id, $value)
+    function addItem($id, $value)
     {
-        $this->productsId = DE_ItemEcode . $id;
-        $this->saveCookie($this->productsId, $value);
+        $this->productsId = DE_ItemEcode.$id;
+        $this->saveCookie($this->productsId,$value);
     }
 
     /**
      *  删去一个带编号的商品
      *
-     * @param  string $id 购物车ID
-     * @return void
+     * @param     string  $id  购物车ID
+     * @return    void
      */
-    public function delItem($id)
+    function delItem($id)
     {
-        $this->productsId = DE_ItemEcode . $id;
-        setcookie($this->productsId, "", time() - 3600000, "/");
+        $this->productsId = DE_ItemEcode.$id;
+        setcookie($this->productsId, "", time()-3600000,"/");
     }
 
     /**
      *  清空购物车商品
      *
-     * @return string
+     * @return    string
      */
-    public function clearItem()
+    function clearItem()
     {
-        foreach ($_COOKIE as $key => $vals) {
-            if (preg_match('/' . DE_ItemEcode . '/', $key)) {
-                setcookie($key, "", time() - 3600000, "/");
+        foreach($_COOKIE as $key => $vals)
+        {
+            if(preg_match('/'.DE_ItemEcode.'/', $key))
+            {
+                setcookie($key, "", time()-3600000,"/");
             }
         }
         return 1;
@@ -92,98 +95,108 @@ class MemberShops
     /**
      *  得到订单记录
      *
-     * @return array
+     * @return    array
      */
-    public function getItems()
+    function getItems()
     {
         $Products = array();
-        foreach ($_COOKIE as $key => $vals) {
-            if (preg_match("#" . DE_ItemEcode . "#", $key) && preg_match("#[^_0-9a-z]#", $key)) {
+        foreach($_COOKIE as $key => $vals)
+        {
+            if(preg_match("#".DE_ItemEcode."#", $key) && preg_match("#[^_0-9a-z]#", $key))
+            {
                 parse_str($this->deCrypt($vals), $arrays);
                 $values = @array_values($arrays);
-                if (!empty($values)) {
+                if(!empty($values))
+                {
                     $arrays['price'] = sprintf("%01.2f", $arrays['price']);
-                    if ($arrays['buynum'] < 1) {
+                    if($arrays['buynum'] < 1)
+                    {
                         $arrays['buynum'] = 0;
                     }
                     $Products[$key] = $arrays;
                 }
             }
         }
-        unset($key, $vals, $values, $arrays);
+        unset($key,$vals,$values,$arrays);
         return $Products;
     }
 
     /**
      *  得到指定商品信息
      *
-     * @param  string $id 购物车ID
-     * @return array
+     * @param     string  $id  购物车ID
+     * @return    array
      */
-    public function getOneItem($id)
+    function getOneItem($id)
     {
-        $key = DE_ItemEcode . $id;
-        if (!isset($_COOKIE[$key]) && empty($_COOKIE[$key])) {
+        $key = DE_ItemEcode.$id;
+        if(!isset($_COOKIE[$key]) && empty($_COOKIE[$key]))
+        {
             return '';
         }
         $itemValue = $_COOKIE[$key];
         parse_str($this->deCrypt($itemValue), $Products);
-        unset($key, $itemValue);
+        unset($key,$itemValue);
         return $Products;
     }
 
     /**
      *  获得购物车中的商品数
      *
-     * @return int
+     * @return    int
      */
-    public function cartCount()
+    function cartCount()
     {
         $Products = $this->getItems();
         $itemsCount = count($Products);
         $i = 0;
-        if ($itemsCount > 0) {
-            foreach ($Products as $val) {
-                $i = $i + $val['buynum'];
+        if($itemsCount > 0)
+        {
+            foreach($Products as $val)
+            {
+                $i = $i+$val['buynum'];
             }
         }
-        unset($Products, $val, $itemsCount);
+        unset($Products,$val,$itemsCount);
         return $i;
     }
 
     /**
      *  获得购物车中的总金额
      *
-     * @return string
+     * @return    string
      */
-    public function priceCount()
+    function priceCount()
     {
         $price = 0.00;
-        foreach ($_COOKIE as $key => $vals) {
-            if (preg_match("/" . DE_ItemEcode . "/", $key)) {
-                $Products = $this->getOneItem(str_replace(DE_ItemEcode, "", $key));
-                if ($Products['buynum'] > 0 && $Products['price'] > 0) {
-                    $price = $price + ($Products['price'] * $Products['buynum']);
+        foreach($_COOKIE as $key => $vals)
+        {
+            if(preg_match("/".DE_ItemEcode."/", $key))
+            {
+                $Products = $this->getOneItem(str_replace(DE_ItemEcode,"",$key));
+                if($Products['buynum'] > 0 && $Products['price'] > 0)
+                {
+                    $price = $price + ($Products['price']*$Products['buynum']);
                 }
             }
         }
-        unset($key, $vals, $Products);
+        unset($key,$vals,$Products);
         return sprintf("%01.2f", $price);
     }
 
     //加密接口字符
-    public function enCrypt($txt)
+    function enCrypt($txt)
     {
         return $this->mchStrCode($txt);
     }
 
     //解密接口字符串
-    public function deCrypt($txt)
+    function deCrypt($txt)
     {
-        return $this->mchStrCode($txt, 'DECODE');
+        return $this->mchStrCode($txt,'DECODE');
     }
-
-    public function mchStrCode($string, $operation = 'ENCODE')
+    
+    function mchStrCode($string, $operation = 'ENCODE') 
     {
         $key_length = 4;
         $expiry = 0;
@@ -192,18 +205,17 @@ class MemberShops
         $egiskeys = md5(substr($fixedkey, 16, 16));
         $runtokey = $key_length ? ($operation == 'ENCODE' ? substr(md5(microtime(true)), -$key_length) : substr($string, 0, $key_length)) : '';
         $keys = md5(substr($runtokey, 0, 16) . substr($fixedkey, 0, 16) . substr($runtokey, 16) . substr($fixedkey, 16));
-        $string = $operation == 'ENCODE' ? sprintf('%010d', $expiry ? $expiry + time() : 0) . substr(md5($string . $egiskeys), 0, 16) . $string : base64_decode(substr($string, $key_length));
+        $string = $operation == 'ENCODE' ? sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$egiskeys), 0, 16) . $string : base64_decode(substr($string, $key_length));
 
-        $i = 0;
-        $result = '';
+        $i = 0; $result = '';
         $string_length = strlen($string);
-        for ($i = 0; $i < $string_length; $i++) {
-            $result .= chr(ord($string[$i]) ^ ord($keys[$i % 32]));
+        for ($i = 0; $i < $string_length; $i++){
+            $result .= chr(ord($string{$i}) ^ ord($keys{$i % 32}));
         }
-        if ($operation == 'ENCODE') {
+        if($operation == 'ENCODE') {
             return $runtokey . str_replace('=', '', base64_encode($result));
         } else {
-            if ((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $egiskeys), 0, 16)) {
+            if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$egiskeys), 0, 16)) {
                 return substr($result, 26);
             } else {
                 return '';
@@ -212,30 +224,35 @@ class MemberShops
     }
 
     //串行化数组
-    public function enCode($array)
+    function enCode($array)
     {
         $arrayenc = array();
-        foreach ($array as $key => $val) {
-            $arrayenc[] = $key . '=' . urlencode($val);
+        foreach($array as $key => $val)
+        {
+            $arrayenc[] = $key.'='.urlencode($val);
         }
         return implode('&', $arrayenc);
     }
 
     //创建加密的_cookie
-    public function saveCookie($key, $value)
+    function saveCookie($key,$value)
     {
-        if (is_array($value)) {
+        if(is_array($value))
+        {
             $value = $this->enCrypt($this->enCode($value));
-        } else {
+        }
+        else
+        {
             $value = $this->enCrypt($value);
         }
-        setcookie($key, $value, time() + 36000, '/');
+        setcookie($key,$value,time()+36000,'/');
     }
 
     //获得解密的_cookie
-    public function getCookie($key)
+    function getCookie($key)
     {
-        if (isset($_COOKIE[$key]) && !empty($_COOKIE[$key])) {
+        if(isset($_COOKIE[$key]) && !empty($_COOKIE[$key]))
+        {
             return $this->deCrypt($_COOKIE[$key]);
         }
     }

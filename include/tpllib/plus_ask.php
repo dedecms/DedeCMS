@@ -1,44 +1,53 @@
-<?php if (!defined('DEDEINC')) {
-    exit("DedeCMS Error: Request Error!");
-}
-
+<?php
+if(!defined('DEDEINC')) exit('DedeCMS Error: Request Error!');
 /**
  * 动态模板ask标签
  *
- * @version   $Id: plus_ask.php 1 13:58 2010年7月5日 $
- * @package   DedeCMS.Tpllib
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: plus_ask.php 1 13:58 2010年7月5日 $
+ * @package        DedeCMS.Tpllib
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-
-function plus_ask(&$atts, &$refObj, &$fields)
+ 
+function plus_ask(&$atts,&$refObj,&$fields)
 {
-    global $dsql, $_vars;
+    global $dsql,$_vars;
 
     $attlist = "titlelen=40,row=8,typeid=0,sort=";
-    FillAtts($atts, $attlist);
-    FillFields($atts, $fields, $refObj);
+    FillAtts($atts,$attlist);
+    FillFields($atts,$fields,$refObj);
     extract($atts, EXTR_OVERWRITE);
 
     $wheresql = ' 1 ';
-    if ($sort == '') {
+    if($sort=='') 
+    {
         $orderby = 'ORDER BY id DESC';
-    } else if ($sort == 'commend') {
+    }
+    else if($sort=='commend')
+    {
         $wheresql .= ' And digest=1';
         $orderby = ' ORDER BY dateline DESC';
-    } else if ($sort == 'ok') {
+    }
+    else if($sort=='ok')
+    {
         $wheresql .= ' And status=1 ';
         $orderby = ' ORDER BY solvetime DESC';
-    } else if ($sort == 'expiredtime') {
+    }
+    else if($sort=='expiredtime')
+    {
         $wheresql .= ' And status=0 ';
         $orderby = ' ORDER BY expiredtime ASC, dateline DESC';
-    } else if ($sort == 'reward') {
+    }
+    else if($sort=='reward')
+    {
         $wheresql .= ' And status=0 ';
         $orderby = ' ORDER BY reward DESC';
-    } else {
+    }
+    else
+    {
         $wheresql .= ' And status=0 ';
         $orderby = ' ORDER BY disorder DESC, dateline DESC';
     }
@@ -46,14 +55,13 @@ function plus_ask(&$atts, &$refObj, &$fields)
     $dsql->SetQuery($query);
     $dsql->Execute('an');
     $rearr = array();
-    while ($row = $dsql->GetArray('an')) {
-        if ($row['tid2'] != 0) {
+    while($row = $dsql->GetArray('an'))
+    {
+        if($row['tid2'] != 0)
             $row['typelink'] = $row['typedata'] = " <a href='browser.php?tid2={$row['tid2']}'>{$row['tid2name']}</a>\r\n";
-        } else {
+        else
             $row['typelink'] = $row['typedata'] = " <a href='browser.php?tid={$row['tid']}'>{$row['tidname']}</a>\r\n";
-        }
-
-        $row['title'] = cn_substr($row['title'], $titlelen);
+        $row['title'] = cn_substr($row['title'],$titlelen);
         $rearr[] = $row;
     }
     return $rearr;

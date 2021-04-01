@@ -1,4 +1,4 @@
-﻿DROP TABLE IF EXISTS `#@__addonarticle`;
+DROP TABLE IF EXISTS `#@__addonarticle`;
 CREATE TABLE `#@__addonarticle` (
   `aid` mediumint(8) unsigned NOT NULL default '0',
   `typeid` smallint(5) unsigned NOT NULL default '0',
@@ -134,7 +134,7 @@ DROP TABLE IF EXISTS `#@__admintype`;
 CREATE TABLE `#@__admintype` (
   `rank` float NOT NULL default '1',
   `typename` varchar(30) NOT NULL default '',
-  `sys` smallint(6) NOT NULL default '0',
+  `system` smallint(6) NOT NULL default '0',
   `purviews` text,
   PRIMARY KEY  (`rank`)
 ) TYPE=MyISAM;
@@ -1146,8 +1146,6 @@ CREATE TABLE `#@__tagindex` (
   `weekup` int(10) unsigned NOT NULL default '0',
   `monthup` int(10) unsigned NOT NULL default '0',
   `addtime` int(10) unsigned NOT NULL default '0',
-	`uptime` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	`mktime` INT(10) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 

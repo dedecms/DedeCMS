@@ -1,17 +1,20 @@
-<?php if (!defined('DEDEINC')) {exit("DedeCMS Error: Request Error!");
+<?php
+if(!defined('DEDEINC'))
+{
+    exit("DedeCMS Error: Request Error!");
 }
 /**
  * 文档关连的用户信息
  *
- * @version   $Id: memberinfos.lib.php 1 9:29 2010年7月6日 $
- * @package   DedeCMS.Taglib
- * @founder   IT柏拉图, https://weibo.com/itprato
- * @author    DedeCMS团队
- * @copyright Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
- * @license   http://help.dedecms.com/usersguide/license.html
- * @link      http://www.dedecms.com
+ * @version        $Id: memberinfos.lib.php 1 9:29 2010年7月6日 $
+ * @package        DedeCMS.Taglib
+ * @founder        IT柏拉图, https://weibo.com/itprato
+ * @author         DedeCMS团队
+ * @copyright      Copyright (c) 2007 - 2021, 上海卓卓网络科技有限公司 (DesDev, Inc.)
+ * @license        http://help.dedecms.com/usersguide/license.html
+ * @link           http://www.dedecms.com
  */
-
+ 
 /*>>dede>>
 <name>用户信息</name>
 <type>全局标记</type>
@@ -21,68 +24,53 @@
 {dede:memberinfos mid = '' /}
 </demo>
 <attributes>
-<iterm>mid:用户ID</iterm>
-</attributes>
+    <iterm>mid:用户ID</iterm> 
+</attributes> 
 >>dede>>*/
-
-function lib_memberinfos(&$ctag, &$refObj)
+ 
+function lib_memberinfos(&$ctag,&$refObj)
 {
-    global $dsql, $sqlCt;
-    $attlist = "mid|0";
-    FillAttsDefault($ctag->CAttribute->Items, $attlist);
+    global $dsql,$sqlCt;
+    $attlist="mid|0";
+    FillAttsDefault($ctag->CAttribute->Items,$attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
-
-    if (empty($mid)) {
-        if (!empty($refObj->Fields['mid'])) {
-            $mid = $refObj->Fields['mid'];
-        
-        } else {
-            $mid = 1;
-        
-        }
-
     
-    } else {
-        $mid = intval($mid);
-    
+    if(empty($mid))
+    {
+        if(!empty($refObj->Fields['mid'])) $mid =  $refObj->Fields['mid'];
+        else $mid = 1;
+    }
+    else
+    {
+            $mid = intval($mid);
     }
 
     $revalue = '';
     $innerText = trim($ctag->GetInnerText());
-    if (empty($innerText)) {
-        $innerText = GetSysTemplets('memberinfos.htm');
-    
-    }
+    if(empty($innerText)) $innerText = GetSysTemplets('memberinfos.htm');
 
     $sql = "SELECT mb.*,ms.spacename,ms.sign,ar.membername as rankname FROM `#@__member` mb
-        LEFT JOIN `#@__member_space` ms ON ms.mid = mb.mid
+        LEFT JOIN `#@__member_space` ms ON ms.mid = mb.mid 
         LEFT JOIN `#@__arcrank` ar ON ar.rank = mb.rank
         WHERE mb.mid='{$mid}' LIMIT 0,1 ";
 
     $ctp = new DedeTagParse();
-    $ctp->SetNameSpace('field', '[', ']');
+    $ctp->SetNameSpace('field','[',']');
     $ctp->LoadSource($innerText);
 
-    $dsql->Execute('mb', $sql);
-    while ($row = $dsql->GetArray('mb')) {
-        if ($row['matt'] == 10) {
-            return '';
-        
+    $dsql->Execute('mb',$sql);
+    while($row = $dsql->GetArray('mb'))
+    {
+        if($row['matt']==10) return '';
+        $row['spaceurl'] = $GLOBALS['cfg_basehost'].'/member/index.php?uid='.$row['userid'];
+        if(empty($row['face'])) {
+            $row['face']=($row['sex']=='女')?  $GLOBALS['cfg_memberurl'].'/templets/images/dfgirl.png' : $GLOBALS['cfg_memberurl'].'/templets/images/dfboy.png';
         }
-
-        $row['spaceurl'] = $GLOBALS['cfg_basehost'] . '/member/index.php?uid=' . $row['userid'];
-        if (empty($row['face'])) {
-            $row['face'] = ($row['sex'] == '女') ? $GLOBALS['cfg_memberurl'] . '/templets/images/dfgirl.png' : $GLOBALS['cfg_memberurl'] . '/templets/images/dfboy.png';
-        
-        }
-        foreach ($ctp->CTags as $tagid => $ctag) {
-            if (isset($row[$ctag->GetName()])) {$ctp->Assign($tagid, $row[$ctag->GetName()]);
-            }
-        
+        foreach($ctp->CTags as $tagid=>$ctag)
+        {
+            if(isset($row[$ctag->GetName()])){ $ctp->Assign($tagid,$row[$ctag->GetName()]); }
         }
         $revalue .= $ctp->GetResult();
-    
     }
     return $revalue;
-
 }
