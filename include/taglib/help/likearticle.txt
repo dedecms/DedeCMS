@@ -10,3 +10,16 @@ titlelen = '30' 标题长度 等同于titlelength
 infolen='160' 表示内容简介长度 等同于infolength
 mytypeid=0  手工指定要限定的栏目id，用,分开表示多个
 innertext = '' 单条记录样式(指标签中间的内容)
+orderby='sortrank' 文档排序方式
+	§ orderby='hot' 或 orderby='click' 表示按点击数排列
+	§ orderby='sortrank' 或 orderby='pubdate' 按出版时间排列
+	§ orderby='id' 按文章ID排序
+	§ orderby='near' 按文章ID接近的程度进行排序
+	§ orderby='lastpost' 按最后评论时间
+	§ orderby='scores' 按得分排序
+	§ orderby='senddate' 按发布时间
+	§ orderby='weight' 按权重
+	§ orderby='goodpost' 按好评数
+	§ orderby='badpost' 按差评数
+	§ orderby='rand' 随机获得指定条件的文档列表
+orderway='desc' 值为 desc 或 asc ，指定排序方式是降序还是顺向排序，默认为降序

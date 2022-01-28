@@ -289,7 +289,7 @@ input,select,button{
 	height: 22px;
 }
 #navMenu ul li {
-    font:14px/1.5 "Microsoft YaHei","微软雅黑","Microsoft JhengHei","宋体";
+    font:14px/1.5 '思源黑体',"宋体";
 	float:left;	
 	height: 22px;
 	margin-right: 10px;

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文档日志内容</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <tr> 
+    <td height="28" colspan="7" background='images/tbg.gif'>
+    	<table width="96%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="20%" height="18" style="padding-left:10px;"><strong>文档日志内容：</strong></td>
+          <td width="80%" align="right">&nbsp; </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td width="20%">文章ID：</td>
+    <td><?php echo $row['archives_id']; ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>文章标题：</td>
+    <td><?php echo $row['title']; ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>文章内容：</td>
+    <td><textarea name="expbody" rows="10" id="expbody" style="width:100%;height:100"><?php echo $row['body']; ?></textarea></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>审核意见：</td>
+    <td><textarea name="expbody" rows="10" id="expbody" style="width:100%;height:100"><?php echo $row['remark']; ?></textarea></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>操作类型：</td>
+    <td><?php echo $row['type']; ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>文档状态：</td>
+    <td><?php echo GetRankName($row['arcrank']); ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>发布人：</td>
+    <td><?php echo $row['userid']; ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>访问IP：</td>
+    <td><?php echo $row['ip']; ?></td>
+  </tr>
+  <tr bgcolor="#FBFCE2">
+    <td>时间：</td>
+    <td><?php echo MyDate("Y-m-d H:i:s", $row['time']); ?></td>
+  </tr>
+</table>
+</body>
+</html>

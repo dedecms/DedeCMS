@@ -64,7 +64,7 @@ if ( ! function_exists('GetCookie'))
         }
         else
         {
-            if($_COOKIE[$key.'1BH21ANI1AGD297L1FF21LN02BGE1DNG']!=substr(md5($key.$cfg_cookie_encode.$_COOKIE[$key]),0,16))
+            if($_COOKIE[$key.'1BH21ANI1AGD297L1FF21LN02BGE1DNG'] !== substr(md5($key.$cfg_cookie_encode.$_COOKIE[$key]),0,16))
             {
                 return '';
             }

@@ -352,3 +352,18 @@ if(file_exists(DEDEDATA.'/helper.inc.php'))
     // 初始化小助手
     helper($cfg_helper_autoload);
 }
+
+// 超时退出登录
+$cfg_timeout_exit = isset($cfg_timeout_exit) ? $cfg_timeout_exit : 1800;
+$cfg_timeout_exit = (int)$cfg_timeout_exit > 60 ? $cfg_timeout_exit : 999999999;
+session_start();
+if(!$_SESSION['dede_admin_id']){
+    $_SESSION['last_time'] = time();
+}
+if($_SESSION['last_time'] && time() - $_SESSION['last_time'] > $cfg_timeout_exit){
+    require_once(DEDEINC.'/userlogin.class.php');
+    $cuserLogin = new userLogin();
+    $cuserLogin->exitUser();
+}else{
+    $_SESSION['last_time'] = time();
+}

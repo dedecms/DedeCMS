@@ -1,4 +1,4 @@
-<?php
+<?php   if(!defined('DEDEINC')) exit("DedeCMS Error: Request Error!");
 /**
  * 采集指定页面作为文章发布源
  *

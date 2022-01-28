@@ -31,11 +31,13 @@ if($dopost=='saveall')
         $rpurl = ${'rpurl_'.$aid};
         $rpurlold = ${'rpurlold_'.$aid};
         $keyword = ${'keyword_'.$aid};
+        $rank = ${'rank_'.$aid};
+        $rankold = ${'rankold_'.$aid};
 
         //删除项目
         if(!empty(${'isdel_'.$aid}))
         {
-            $dsql->ExecuteNoneQuery("DELETE FROM `#@__keywords` WHERE aid='$aid'");
+            $dsql->ExecuteNoneQuery("DELETE FROM `#@__keywords` WHERE `aid`='$aid'");
             continue;
         }
 
@@ -44,7 +46,7 @@ if($dopost=='saveall')
         $sta = empty(${'isnouse_'.$aid}) ? 1 : 0;
         if($staold!=$sta)
         {
-            $query1 = "UPDATE `#@__keywords` SET sta='$sta',rpurl='$rpurl' WHERE aid='$aid' ";
+            $query1 = "UPDATE `#@__keywords` SET `sta`='$sta', `rpurl`='$rpurl', `rank`='$rank' WHERE `aid`='$aid' ";
             $dsql->ExecuteNoneQuery($query1);
             continue;
         }
@@ -52,7 +54,14 @@ if($dopost=='saveall')
         //更新链接网址
         if($rpurl!=$rpurlold)
         {
-            $query1 = "UPDATE `#@__keywords` SET rpurl='$rpurl' WHERE aid='$aid' ";
+            $query1 = "UPDATE `#@__keywords` SET `rpurl`='$rpurl' WHERE `aid`='$aid' ";
+            $dsql->ExecuteNoneQuery($query1);
+        }
+
+        // 更新频率
+        if($rank!=$rankold)
+        {
+            $query1 = "UPDATE `#@__keywords` SET `rank`='$rank' WHERE `aid`='$aid' ";
             $dsql->ExecuteNoneQuery($query1);
         }
     }
@@ -70,13 +79,13 @@ else if($dopost=='add')
         ShowMsg("关键字不能为空！",-1);
         exit();
     }
-    $row = $dsql->GetOne("SELECT * FROM `#@__keywords` WHERE keyword LIKE '$keyword'");
+    $row = $dsql->GetOne("SELECT * FROM `#@__keywords` WHERE `keyword` LIKE '$keyword'");
     if(is_array($row))
     {
         ShowMsg("关键字已存在库中！","-1");
         exit();
     }
-    $inquery = "INSERT INTO `#@__keywords`(keyword,rank,sta,rpurl) VALUES ('$keyword','$rank','1','$rpurl');";
+    $inquery = "INSERT INTO `#@__keywords`(`keyword`,`rank`,`sta`,`rpurl`) VALUES ('$keyword','$rank','1','$rpurl');";
     $dsql->ExecuteNoneQuery($inquery);
     ShowMsg("成功增加一个关键字！",$ENV_GOBACK_URL);
     exit();
@@ -88,10 +97,10 @@ if(empty($keyword))
 }
 else
 {
-    $addquery = " WHERE keyword LIKE '%$keyword%' ";
+    $addquery = " WHERE `keyword` LIKE '%$keyword%' ";
 }
 
-$sql = "SELECT * FROM `#@__keywords` $addquery ORDER BY rank DESC";
+$sql = "SELECT * FROM `#@__keywords` $addquery ORDER BY `rank` DESC";
 $dlist = new DataListCP();
 $dlist->pageSize = 20;
 $dlist->SetParameter("keyword",$keyword);

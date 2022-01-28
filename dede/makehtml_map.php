@@ -36,6 +36,15 @@ else
 $dtp = new DedeTagParse();
 $dtp->LoadTemplet($tmpfile);
 $dtp->SaveTo($cfg_basedir.$murl);
+
+if($dopost=="xml") {
+    require_once(DEDEINC."/arc.sitemapview.class.php");
+    $murl = $cfg_cmspath."/sitemap.xml";
+    $tmpfile = $cfg_basedir.$cfg_templets_dir."/plus/sitemap_xml.htm";
+    $sv = new SitemapView($tmpfile);
+    $sv->SaveToHtml($cfg_basedir.$murl);
+}
+
 if($cfg_remote_site=='Y' && $isremote == 1)
 {
     if($serviterm!="")

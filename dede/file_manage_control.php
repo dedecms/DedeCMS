@@ -20,6 +20,16 @@ if($activepath == "/") $activepath = "";
 if($activepath == "") $inpath = $cfg_basedir;
 else $inpath = $cfg_basedir.$activepath;
 
+global $cfg_disable_funs;
+$cfg_disable_funs = isset($cfg_disable_funs) ? $cfg_disable_funs : 'phpinfo,eval,assert,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents,fsockopen,fopen,fwrite';
+foreach (explode(",", $cfg_disable_funs) as $value) {
+    $value = str_replace(" ", "", $value);
+    if(!empty($value) && preg_match("#[^a-z]+['\"]*{$value}['\"]*[\s]*[(]#i", " {$str}") == TRUE) {
+        $str = dede_htmlspecialchars($str);
+        die("DedeCMS提示：当前页面中存在恶意代码！<pre>{$str}</pre>");
+    }
+}
+
 //文件管理器交互与逻辑控制文件
 $fmm = new FileManagement();
 $fmm->Init();
@@ -131,6 +141,27 @@ else if($fmdo=="upload")
                 move_uploaded_file($upfile, $cfg_basedir.$activepath."/".$upfile_name);
             }
             @unlink($upfile);
+
+            $file = $cfg_basedir.$activepath."/".$upfile_name;
+            $file_base = strtolower(pathinfo($file, PATHINFO_BASENAME));
+            $file_ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (is_file($file) && $file_ext == "php") {
+                $fp = fopen($file, "r");
+                $content = fread($fp, filesize($file));
+                fclose($fp);
+
+                global $cfg_disable_funs;
+                $cfg_disable_funs = isset($cfg_disable_funs) ? $cfg_disable_funs : 'phpinfo,eval,assert,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents,fsockopen,fopen,fwrite';
+                foreach (explode(",", $cfg_disable_funs) as $value) {
+                    $value = str_replace(" ", "", $value);
+                    if(!empty($value) && preg_match("#[^a-z]+['\"]*{$value}['\"]*[\s]*[(]#i", " {$content}") == TRUE) {
+                        $content = dede_htmlspecialchars($content);
+                        @unlink($file);
+                        die("DedeCMS提示：{$file_base}文件中存在恶意代码！<pre>{$content}</pre>");
+                    }
+                }
+            }
+
             $j++;
         }
     }

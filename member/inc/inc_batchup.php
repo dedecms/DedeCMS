@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEMEMBER')) exit("dedecms");
+<?php
 /**
  * 文档操作处理函数
  * 
@@ -10,6 +10,8 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
+
 require_once(DEDEINC."/channelunit.func.php");
 
 /**
@@ -21,7 +23,7 @@ require_once(DEDEINC."/channelunit.func.php");
  */
 function DelArc($aid)
 {
-    global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir;
+    global $dsql,$cfg_cookie_encode,$cfg_ml,$cfg_upload_switch,$cfg_medias_dir,$cfg_user_dir;
     $aid = intval($aid);
 
     //读取文档信息
@@ -74,7 +76,9 @@ function DelArc($aid)
                     $litpic = DEDEROOT.$licp['litpic'];
                     if(file_exists($litpic) && !is_dir($litpic))
                     {
-                        @unlink($litpic);
+                        if(trim($litpic)!='' && preg_match("#^".$cfg_user_dir."/{$cfg_ml->M_ID}#", $litpic)) {
+                            @unlink($litpic);
+                        }
                     }
                 }
                 $tmpname = '/(\\'.$cfg_medias_dir.'.+?)(\"| )/';

@@ -28,6 +28,8 @@
     <iterm>infolen:表示内容简介长度 等同于infolength</iterm>
     <iterm>mytypeid:手工指定要限定的栏目id，用,分开表示多个</iterm>
     <iterm>innertext:单条记录样式(指标签中间的内容)</iterm>
+    <iterm>orderby:文档排序方式</iterm>
+    <iterm>orderway:值为 desc 或 asc ，指定排序方式是降序还是顺向排序，默认为降序</iterm>
 </attributes> 
 >>dede>>*/
  
@@ -36,7 +38,7 @@ function lib_likearticle(&$ctag,&$refObj)
     global $dsql;
     
     //属性处理
-    $attlist="row|12,titlelen|28,infolen|150,col|1,tablewidth|100,mytypeid|0,byabs|0,imgwidth|120,imgheight|90";
+    $attlist="row|12,titlelen|28,infolen|150,col|1,tablewidth|100,mytypeid|0,byabs|0,imgwidth|120,imgheight|90,orderby|,orderway|desc";
     FillAttsDefault($ctag->CAttribute->Items,$attlist);
     extract($ctag->CAttribute->Items, EXTR_SKIP);
     $revalue = '';
@@ -91,13 +93,22 @@ function lib_likearticle(&$ctag,&$refObj)
             }
     }
     $arcid = (!empty($refObj->Fields['id']) ? $refObj->Fields['aid'] : 0);
-    if( empty($arcid) || $byabs==0 )
-    {
-        $orderquery = " ORDER BY arc.id desc ";     
-    }
-    else {
-        $orderquery = " ORDER BY ABS(arc.id - ".$arcid.") ";
-    }
+
+    // 文档排序方式
+    $orderquery = '';
+    if($orderby == 'hot' || $orderby == 'click') $orderquery = " ORDER BY arc.click $orderway";
+    else if($orderby == 'sortrank' || $orderby == 'pubdate') $orderquery = " ORDER BY arc.sortrank $orderway";
+    else if($orderby == 'id') $orderquery = " ORDER BY arc.id $orderway";
+    else if($orderby == 'near') $orderquery = " ORDER BY ABS(arc.id - ".$arcid.")";
+    else if($orderby == 'lastpost') $orderquery = " ORDER BY arc.lastpost $orderway";
+    else if($orderby == 'scores') $orderquery = " ORDER BY arc.scores $orderway";
+    else if($orderby == 'senddate') $orderquery = " ORDER BY arc.senddate $orderway";
+    else if($orderby == 'weight') $orderquery = " ORDER BY arc.weight $orderway";
+    else if($orderby == 'goodpost') $orderquery = " ORDER BY arc.goodpost $orderway";
+    else if($orderby == 'badpost') $orderquery = " ORDER BY arc.badpost $orderway";
+    else if($orderby == 'rand') $orderquery = " ORDER BY rand()";
+    else $orderquery = " ORDER BY arc.sortrank $orderway";
+
     if($keyword != '')
     {
              if(!empty($typeid)) {

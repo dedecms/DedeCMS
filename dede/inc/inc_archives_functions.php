@@ -1,4 +1,4 @@
-<?php
+<?php   if(!defined('DEDEINC')) exit("DedeCMS Error: Request Error!");
 /**
  * 文档操作相关函数
  *

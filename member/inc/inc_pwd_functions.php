@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEMEMBER')) exit("dedecms");
+<?php
 /**
  * 密码函数
  * 
@@ -10,6 +10,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
 
 /**
  *  验证码生成函数

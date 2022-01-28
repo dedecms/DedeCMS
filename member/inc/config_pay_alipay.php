@@ -10,6 +10,8 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
+
 require_once(DEDEMEMBER."/paycenter/alipay/alipay_config.php");
 require_once(DEDEMEMBER."/paycenter/alipay/alipay_service.php");
 if($payment_exp[2] < 0) $payment_exp[2] = 0;

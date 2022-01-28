@@ -1,4 +1,4 @@
-<?php   if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
+<?php
 /**
  * 空间操作
  * 
@@ -10,6 +10,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
 
 //是否允许用户空间显示未审核文档
 $addqSql = '';

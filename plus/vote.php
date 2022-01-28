@@ -41,7 +41,7 @@ $rsmsg = '';
 
 $row = $dsql->GetOne("SELECT * FROM #@__vote WHERE aid='$aid'");
 //判断是否允许游客进行投票
-if($row['range'] == 1)
+if($row['isallow'] == 1)
 {
     if(!$member->IsLogin())
     {

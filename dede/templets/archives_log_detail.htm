@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $cfg_soft_lang; ?>">
+<title>文档日志详情</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+</head>
+<body background='images/allbg.gif' leftmargin='8' topmargin='8'>
+<table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#D6D6D6" align="center">
+  <tr> 
+    <td height="28" colspan="7" background='images/tbg.gif'>
+    	<table width="96%" border="0" cellpadding="0" cellspacing="0">
+        <tr> 
+          <td width="20%" height="18" style="padding-left:10px;"><strong>文档日志详情：</strong></td>
+          <td width="80%" align="right">&nbsp; </td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr align="center" bgcolor="#FBFCE2"> 
+    <td width="10%">文章ID</td>
+    <td width="30%">文章标题</td>
+    <td width="10%">操作类型</td>
+    <td width="10%">文档状态</td>
+    <td width="10%">发布人</td>
+    <td width="15%">访问IP</td>
+    <td width="15%">时间</td>
+  </tr>
+  <form name="form1">
+    {dede:datalist}
+      <tr align="center" bgcolor="#FFFFFF" height="26" align="center" onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';"> 
+        <td>
+          {dede:field.archives_id/}
+        </td>
+        <td>
+          <a href='archives_log_view.php?id={dede:field.id/}'>
+            <u>{dede:field.title/}</u>
+          </a>
+        </td>
+        <td>
+          {dede:field.type/}
+        </td>
+        <td>
+          {dede:field.arcrank function="GetRankName(@me)"/}
+        </td>
+        <td>
+          {dede:field.userid/}
+        </td>
+        <td>
+          {dede:field.ip/}
+        </td>
+        <td>
+          {dede:field.time function="MyDate('Y-m-d H:i:s',@me)" /}
+        </td>
+      </tr>
+    {/dede:datalist}
+  </form>
+  <tr bgcolor="#F9FCEF"> 
+    <td height="24" colspan="7" align="center"> 
+      {dede:pagelist listsize='5' /}
+    </td>
+  </tr>
+</table>
+</body>
+</html>

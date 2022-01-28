@@ -1,4 +1,4 @@
-<?php  if(!defined('DEDEMEMBER')) exit("dedecms");
+<?php
 /**
  * 模型列表函数
  * 
@@ -10,6 +10,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
 
 /**
  *  获得是否推荐的表述
@@ -124,10 +125,10 @@ function IsHtmlArchives($ismake)
  */
 function GetRankName($arcrank)
 {
-    global $arcArray;
+    global $arcArray,$dsql;
     if(!is_array($arcArray))
     {
-        $dsql->SetQuery("SELECT * FROM #@__arcrank");
+        $dsql->SetQuery("SELECT * FROM `#@__arcrank`");
         $dsql->Execute();
         while($row = $dsql->GetObject())
         {
@@ -140,7 +141,41 @@ function GetRankName($arcrank)
     }
     else
     {
+        if ($arcrank == "-2") {
+            return "已删除";
+        }
         return "不限";
+    }
+}
+
+// 获得审核名称
+function GetReviewName($id)
+{
+    global $dsql;
+    $row = $dsql->GetOne("SELECT * FROM `#@__arctiny` WHERE `id` = '{$id}'");
+    // 开放浏览
+    if ($row['arcrank'] == "0") {
+        return "审核通过";
+    } else {
+        // 请审核、请修改
+        $row = $dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$id}' ORDER BY `id` DESC");
+        $type = $row['type'];
+        if ($type == "添加文档") {
+            $type = "待审核";
+        }
+        if ($type == "修改文档") {
+            $type = "待审核";
+        }
+        if ($type == "快速编辑") {
+            $type = "待审核";
+        }
+        if ($type == "还原文档") {
+            $type = "待审核";
+        }
+        if ($type == "审核文档") {
+            $type = "待修改";
+        }
+        return $type;
     }
 }
 

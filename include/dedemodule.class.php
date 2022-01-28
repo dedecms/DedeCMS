@@ -440,7 +440,7 @@ class DedeModule
      * @param     string   $isreplace   是否替换
      * @return    string
      */
-    function WriteFiles($hashcode, $isreplace=3)
+    function WriteFiles($hashcode, $isreplace=3, $install=0)
     {
         global $AdminBaseDir;
         $dap = new DedeAttParse();
@@ -506,9 +506,35 @@ class DedeModule
                                 $ct = preg_match("/charset=([a-z0-9-]*)/i", $charset, $ct);
                             }
                         }
-                        if(preg_match("#[^a-z]+(eval|assert)[\s]*[(]#i", " {$ct}") == TRUE)
+                        // 白名单
+                        $hashcodes = array(
+                            "0a7bea5dbe571d35def883cbec796437",
+                            "0cce60bc0238aa03804682c801584991",
+                            "1f35620fb42d452fa2bdc1dee1690f92",
+                            "7badb72a3ff79af2a7112beee60cb970",
+                            "8a4773468b800900dcfefbc5988833ed",
+                            "72ffa6fabe3c236f9238a2b281bc0f93",
+                            "606c658db048ea7328ffe1c7ae2a732f",
+                            "867af26e9c1ccf22a1cf67e756cf5acc",
+                            "8964eda9013d1df0afea08ed63243436",
+                            "59155be87ea60c5c65ec1f7a46a0fc9d",
+                            "81323e93cd52ecce9f175b6aa46f5cfd",
+                            "572606600345b1a4bb8c810bbae434cc",
+                            "acb8b88eb4a6d4bfc375c18534f9439e",
+                            "b437d85a7a7bc778c9c79b5ec36ab9aa",
+                            "be722dbfa3cb3cb5628aab2d767ff62e",
+                            "c10bb6ac52082ab3e669b4814b44a6f1",
+                            "dfcb5cd4d7bc0e3f7eb655e62dd6bc64",
+                            "fcd00dbb5a51d65aff6c248d221d8bcd"
+                        );
+                        if (in_array($hashcode, $hashcodes, true) === TRUE) {
+                            $install = 1;
+                        }
+                        if($install == 0 && preg_match("#[^a-z]+['\"]*(eval|assert)['\"]*[\s]*[(]#i", " {$ct}") == TRUE)
                         {
-                            ShowMsg("你所上传的模块中存在恶意代码！", "module_upload.php");
+                            $msg = "你所上传的模块中存在风险代码！<br/>";
+                            $msg .= "<a href=module_main.php?action=setupstart&hash={$hashcode}&isreplace={$isreplace}&install=1>忽略提示，继续安装&gt;&gt;</a><br/>";
+                            ShowMsg($msg, "javascript:;");
                             exit();
                         }
                         fwrite($fw,$ct);

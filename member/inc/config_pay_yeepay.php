@@ -1,4 +1,6 @@
 <?php
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
+
 include_once DEDEMEMBER.'/paycenter/yeepay/yeepay_config.php';
 
 if($payment_exp[4] < 0) $payment_exp[4] = 0;

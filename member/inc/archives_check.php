@@ -10,7 +10,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-if(!defined('DEDEMEMBER'))    exit('DedeCMS Error: Request Error!');
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
 
 include_once(DEDEINC.'/image.func.php');
 include_once(DEDEINC.'/oxwindow.class.php');

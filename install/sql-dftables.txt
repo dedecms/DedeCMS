@@ -207,6 +207,27 @@ CREATE TABLE `#@__archives` (
   KEY `lastpost` (`lastpost`,`scores`,`goodpost`,`badpost`,`notpost`)
 ) TYPE=MyISAM;
 
+CREATE TABLE `#@__archives_log_list` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `archives_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `title` char(60) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) TYPE=MyISAM;
+
+CREATE TABLE `#@__archives_log_detail` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `archives_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `title` char(60) NOT NULL DEFAULT '',
+  `body` mediumtext,
+  `remark` mediumtext,
+  `type` varchar(10) NOT NULL DEFAULT '',
+  `arcrank` smallint(6) NOT NULL DEFAULT '0',
+  `admin_id` smallint(8) unsigned NOT NULL DEFAULT '0',
+  `ip` char(15) NOT NULL DEFAULT '',
+  `time` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) TYPE=MyISAM;
+
 DROP TABLE IF EXISTS `#@__arcmulti`;
 CREATE TABLE `#@__arcmulti` (
   `id` mediumint(8) unsigned NOT NULL auto_increment,

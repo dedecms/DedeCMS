@@ -269,7 +269,7 @@ else if($action=='setupstart')
         exit();
     }
 
-    $dm->WriteFiles($hash,$isreplace);
+    $dm->WriteFiles($hash, $isreplace, $install);
     $filename = '';
     if(!isset($autosetup) || $autosetup==0) $filename = $dm->WriteSystemFile($hash, 'setup');
     if(!isset($autodel) || $autodel==0) $dm->WriteSystemFile($hash, 'uninstall');

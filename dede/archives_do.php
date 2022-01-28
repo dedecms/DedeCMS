@@ -452,6 +452,19 @@ else if($dopost=='return')
     {
         $dsql->ExecuteNoneQuery("UPDATE `#@__archives` SET arcrank='-1',ismake='0' WHERE id='$aid'");
         $dsql->ExecuteNoneQuery("UPDATE `#@__arctiny` SET `arcrank` = '-1' WHERE id = '$aid'; ");
+
+        // 文档日志
+        if ($cfg_archives_log == 'Y') {
+            $archives_id = $aid;
+            $row = $dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$archives_id}' ORDER BY `id` DESC");
+            $title = $row['title'];
+            $body = $row['body'];
+            $admin_id = $cuserLogin->getUserID();
+            $ip = GetIP();
+            $time = time();
+            $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+            VALUES ('{$archives_id}', '{$title}', '{$body}', '', '还原文档', '-1', '{$admin_id}', '{$ip}', '{$time}')");
+        }
     }
     ShowMsg("成功还原指定的文档！","recycling.php");
     exit();
@@ -740,6 +753,20 @@ else if($dopost=='quickEditSave')
         else $addtable = preg_replace("#[^a-z0-9__#@-]#i", "", $addtable);
             $dsql->ExecuteNoneQuery(" UPDATE `$addtable` SET typeid='$typeid' WHERE aid='$aid' ");
       }
+
+    // 文档日志
+    if ($cfg_archives_log == 'Y') {
+        $archives_id = $aid;
+        $row = $dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$archives_id}' ORDER BY `id` DESC");
+        $title = $row['title'];
+        $body = $row['body'];
+        $admin_id = $cuserLogin->getUserID();
+        $ip = GetIP();
+        $time = time();
+        $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+        VALUES ('{$archives_id}', '{$title}', '{$body}', '', '快速编辑', '{$arcrank}', '{$admin_id}', '{$ip}', '{$time}')");
+    }
+
     //更新HTML
     $artUrl = MakeArt($aid, TRUE, TRUE);
 

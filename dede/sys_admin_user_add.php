@@ -23,10 +23,20 @@ if($dopost=='add')
         ShowMsg('密码或或用户名不合法，<br />请使用[0-9a-zA-Z_@!.-]内的字符！', '-1', 0, 3000);
         exit();
     }
-    $safecodeok = substr(md5($cfg_cookie_encode.$randcode), 0, 24);
-    if($safecode != $safecodeok )
+    if($pwd!='' && !preg_match("#^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).*$#", $pwd))
     {
-        ShowMsg('请填写安全验证串！', '-1', 0, 3000);
+        ShowMsg('密码必须包含1个数字，1个小写字母，1个大写字母！', '-1', 0, 3000);
+        exit();
+    }
+    if($pwd!='' && !preg_match("#^.{8,128}$#", $pwd))
+    {
+        ShowMsg('密码必须大于8位小于128位！', '-1', 0, 3000);
+        exit();
+    }
+    $safecodeok = substr(md5($cfg_cookie_encode.$randcode), 0, 24);
+    if($safecodeok != $safecode)
+    {
+        ShowMsg('请填写正确的安全验证串！', '-1', 0, 3000);
         exit();
     }
     $row = $dsql->GetOne("SELECT COUNT(*) AS dd FROM `#@__member` WHERE userid LIKE '$userid' ");

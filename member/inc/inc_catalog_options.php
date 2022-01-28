@@ -10,7 +10,7 @@
  * @license        http://help.dedecms.com/usersguide/license.html
  * @link           http://www.dedecms.com
  */
-if(!defined('DEDEMEMBER')) exit("dedecms");
+if(!defined('DEDEMEMBER')) exit('DedeCMS Error: Request Error!');
 
 /**
  *  获取选项列表

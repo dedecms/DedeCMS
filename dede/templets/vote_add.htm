@@ -42,8 +42,8 @@ function checkSubmit()
 </tr>
 <tr>
     <td height="200" bgcolor="#FFFFFF" valign="top">
+      <form name="form1" method="post" action="vote_add.php" onSubmit="return checkSubmit()">
 	<table width="100%" border="0" cellspacing="4" cellpadding="4">
-        <form name="form1" method="post" action="vote_add.php" onSubmit="return checkSubmit()">
 		<input type='hidden' name='dopost' value='save'>
 		<input type="hidden" name="isarc" value="<?php echo $isarc; ?>" />
 		<tr> 
@@ -114,11 +114,11 @@ function checkSubmit()
         <tr> 
           
         </tr>
-		</form>
 
 		<td colspan="2">&nbsp;</td>
       </table>
-	 </td>
+		  </form>
+    </td>
 </tr>
 
 </table>

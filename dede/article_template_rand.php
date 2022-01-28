@@ -23,6 +23,17 @@ $okmsg = '';
 if($dopost=='save')
 {
     csrf_check();
+
+    global $cfg_disable_funs;
+    $cfg_disable_funs = isset($cfg_disable_funs) ? $cfg_disable_funs : 'phpinfo,eval,assert,exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source,file_put_contents,fsockopen,fopen,fwrite';
+    foreach (explode(",", $cfg_disable_funs) as $value) {
+        $value = str_replace(" ", "", $value);
+        if(!empty($value) && preg_match("#[^a-z]+['\"]*{$value}['\"]*[\s]*[(]#i", " {$templates}") == TRUE) {
+            $templates = dede_htmlspecialchars($templates);
+            die("DedeCMS提示：当前页面中存在恶意代码！<pre>{$templates}</pre>");
+        }
+    }
+
     $fp = fopen($m_file,'w');
     flock($fp,3);
     fwrite($fp,$templates);

@@ -32,7 +32,7 @@ h2 {
 	HEIGHT: 49px
 }
 .eTitle H1 {
-	FONT: 18px/30px '微软雅黑','黑体'; MARGIN-RIGHT: 50px; PADDING-TOP: 7px; TEXT-ALIGN: center
+	FONT: 18px/30px '黑体'; MARGIN-RIGHT: 50px; PADDING-TOP: 7px; TEXT-ALIGN: center
 }
 .eTitle #total {
 	PADDING-LEFT: 6px; FONT-SIZE: 13px; FONT-FAMILY: Verdana
@@ -293,7 +293,7 @@ A#cfbClose:unknown {
 	BACKGROUND: url(loading_01.gif) no-repeat center center
 }
 #d_picTit {
-	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 5px; FONT: 16px/24px '微软雅黑','体体'; PADDING-TOP: 5px; TEXT-ALIGN: center
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 5px; FONT: 16px/24px '思源黑体','宋体'; PADDING-TOP: 5px; TEXT-ALIGN: center
 }
 #d_picTime {
 	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; PADDING-BOTTOM: 5px; COLOR: #999; LINE-HEIGHT: 24px; PADDING-TOP: 5px; FONT-FAMILY: Verdana, Geneva, sans-serif; TEXT-ALIGN: center

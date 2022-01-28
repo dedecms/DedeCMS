@@ -64,6 +64,12 @@ function checkSubmit()
               &nbsp;（留空则不修改，只能用'0-9a-zA-Z.@_-!'以内范围的字符） </td>
           </tr>
           <tr>
+            <td></td>
+            <td style="color: red;">
+              密码必须包含1个数字，1个小写字母，1个大写字母！而且必须大于8位小于128位！
+            </td>
+          </tr>
+          <tr>
             <td height="30" align="right">用户类型：</td>
             <td align="left"><select name='usertype' style='width:200px'>
                 <?php

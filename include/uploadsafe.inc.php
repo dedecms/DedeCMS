@@ -52,11 +52,10 @@ foreach($_FILES as $_key=>$_value)
         if (${$_key . '_type'} === 'image/jpeg' || preg_match("#jpg|jpeg#i", pathinfo(${$_key . '_name'}, PATHINFO_EXTENSION))) {
             $image = imagecreatefromjpeg($$_key);
             imagejpeg($image, $$_key);
-        } else if (${$_key . '_type'} === 'image/gif' || preg_match("#gif#i", pathinfo(${$_key . '_name'}, PATHINFO_EXTENSION))) {
-            $image = imagecreatefromgif($$_key);
-            imagegif($image, $$_key);
         } else if (${$_key . '_type'} === 'image/png' || preg_match("#png#i", pathinfo(${$_key . '_name'}, PATHINFO_EXTENSION))) {
             $image = imagecreatefrompng($$_key);
+            imagesavealpha($image, true);
+            header('Content-type: image/png');
             imagepng($image, $$_key);
         }
 

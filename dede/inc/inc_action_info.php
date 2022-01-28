@@ -427,8 +427,8 @@ $actionSearch[10] = array(
         4  =>  array(
             'title' =>'验证安全设置',
             'description' =>'对验证码和验证问题进行设置',
-            'purview' =>'sys_safe.php',
-            'linkurl' =>'sys_verify'
+            'purview' =>'sys_verify',
+            'linkurl' =>'sys_safe.php'
         ),
         5  =>  array(
             'title' =>'图片水印设置',
@@ -495,6 +495,12 @@ $actionSearch[10] = array(
             'description' =>'由于手动升级时用户没运行指定的SQL语句，或自动升级的遗漏处理或处理出错，可能会导致一些错误，使用本工具会自动检测并处理。',
             'purview' =>'sys_verifies',
             'linkurl' =>'sys_repair.php'
+        ),
+        16  =>  array(
+            'title' =>'文档日志管理',
+            'description' =>'对后台管理员的文档操作进行记录',
+            'purview' =>'sys_Log',
+            'linkurl' =>'archives_log_list.php'
         ),
     )
 );

@@ -436,6 +436,22 @@ class Archives
                 }
             }
         }
+
+        // 文档日志
+        global $cfg_archives_log;
+        if ($cfg_archives_log == 'Y') {
+            $archives_id = $this->ArcID;
+            $row = $this->dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$archives_id}' ORDER BY `id` DESC");
+            $title = $row['title'];
+            $body = $row['body'];
+            global $cuserLogin;
+            $admin_id = $cuserLogin->getUserID();
+            $ip = GetIP();
+            $time = time();
+            $this->dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+            VALUES ('{$archives_id}', '{$title}', '{$body}', '', '发布文档', '0', '{$admin_id}', '{$ip}', '{$time}')");
+        }
+
         $this->dsql->ExecuteNoneQuery("Update `#@__archives` SET ismake=1 WHERE id='".$this->ArcID."'");
         return $this->GetTrueUrl($filename);
     }
@@ -1190,6 +1206,7 @@ class Archives
     {
         preg_match_all('#<a.*>(.*)<\/a>#isU', $body, $matches, PREG_OFFSET_CAPTURE);
         $a_temp = array();
+        $keywords = array();
 
         foreach ($matches[0] as $key => $value) {
             $a_temp[md5($value[0]."ITBIGOIBGUALKVNOA6VITK31")] = $matches[1][$key][0];
@@ -1197,17 +1214,27 @@ class Archives
             $body = str_replace($value[0], $item, $body);
         }
 
-        $query = "SELECT * FROM `#@__keywords` WHERE `rpurl` <> '' ORDER BY `rank` DESC ";
+        $query = "SELECT CHAR_LENGTH(`keyword`) AS `keyword_len`, `aid`, `keyword`, `rank`, `sta`, `rpurl` FROM `#@__keywords` WHERE `rpurl` <> '' AND `sta` = 1 ORDER BY `rank` DESC, `keyword_len` DESC";
         $this->dsql->SetQuery($query);
         $this->dsql->Execute();
         while ($row = $this->dsql->GetArray()) {
             $key = trim($row['keyword']);
+            $key_md5 = md5($key);
             $key_url = trim($row['rpurl']);
-            $keywords[$key] = "<a href='$key_url' target='_blank'><u>$key</u></a>";
+            $keywords[$key] = "<a href='$key_url' target='_blank'><u>$key_md5</u></a>";
         }
 
         foreach ($keywords as $key => $value) {
-            $body = str_ireplace($key, $value, $body);
+            global $cfg_replace_num;
+            if($cfg_replace_num > 0) {
+                $body = preg_replace("#{$key}#i", $value, $body, $cfg_replace_num);
+            } else {
+                $body = str_ireplace($key, $value, $body);
+            }
+        }
+
+        foreach ($keywords as $key => $value) {
+            $body = str_replace(md5($key), $key, $body);
         }
 
         foreach ($a_temp as $key => $value) {

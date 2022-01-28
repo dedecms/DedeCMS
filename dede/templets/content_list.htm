@@ -41,19 +41,20 @@
 <form name="form2">
 <table width="98%" border="0" cellpadding="2" cellspacing="1" bgcolor="#CFCFCF" align="center" style="margin-top:8px">
 <tr bgcolor="#E7E7E7" >
-	<td height="28" colspan="10" background="images/tbg.gif" style="padding-left:10px;">
+	<td height="28" colspan="11" background="images/tbg.gif" style="padding-left:10px;">
 	◆ {dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键弹出菜单)
 	</td>
 </tr>
 <tr align="center" bgcolor="#FBFCE2" height="25">
 	<td width="6%">ID</td>
 	<td width="4%">选择</td>
-	<td width="28%">文章标题</td>
+	<td width="25%">文章标题</td>
 	<td width="10%">更新时间</td>
 	<td width="10%">类目</td>
 	<td width="8%">点击</td>
 	<td width="6%">HTML</td>
 	<td width="8%">权限</td>
+	<td width="5%">审核状态</td>
 	<td width="8%">发布人</td>
 	<td width="10%">操作</td>
 </tr>
@@ -79,6 +80,7 @@
 	<td>{dede:field.click/}</td>
 	<td>{dede:field.ismake function="IsHtmlArchives(@me)"/}</td>
 	<td>{dede:field.arcrank function="GetRankName(@me)"/}</td>
+	<td>{dede:field.id function="GetReviewName(@me)"/}</td>
 	<td>{dede:field.mid function=GetMemberName(@me)/}</td>
 	<td>
 		<img src='images/trun.gif' title="编辑属性" alt="编辑属性" onClick="QuickEdit({dede:field.id/}, event, this);" style='cursor:pointer' border='0' width='16' height='16' />
@@ -88,7 +90,7 @@
 </tr>
 {/dede:datalist}
 <tr bgcolor="#ffffff">
-<td height="36" colspan="10">
+<td height="36" colspan="11">
 	&nbsp;
 	<a href="javascript:selAll()" class="coolbg">全选</a>
 	<a href="javascript:noSelAll()" class="coolbg">取消</a>
@@ -104,7 +106,7 @@
 </tr>
 </form>
 <tr align="right" bgcolor="#F9FCEF">
-	<td height="36" colspan="10" align="center">
+	<td height="36" colspan="11" align="center">
 		{dede:pagelist listsize=3/}
 	</td>
 </tr>

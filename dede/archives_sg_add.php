@@ -157,6 +157,18 @@ else if($dopost=='save')
         }
     }
 
+    // 文档日志
+    if ($cfg_archives_log == 'Y') {
+        $archives_id = $arcID;
+        $admin_id = $cuserLogin->getUserID();
+        $ip = GetIP();
+        $time = time();
+        $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_list` (`archives_id`, `title`)
+        VALUES ('{$archives_id}', '{$title}')");
+        $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+        VALUES ('{$archives_id}', '{$title}', '{$body}', '', '添加文档', '{$arcrank}', '{$admin_id}', '{$ip}', '{$time}')");
+    }
+
     //生成HTML
     if($cfg_remote_site=='Y' && $isremote=="1")
     {    

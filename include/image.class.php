@@ -236,6 +236,10 @@ class image
                         break;
                 }
                 $dst_photo = @imagecreatetruecolor($imagewidth, $imageheight);
+                imagealphablending($dst_photo, true);
+                imagesavealpha($dst_photo, true);
+                $bg =imagecolorallocatealpha($dst_photo, 255, 255, 255, 127);
+                imagefill($dst_photo, 0, 0, $bg);
                 $target_photo = $imagecreatefunc($this->targetfile);
                 imagecopy($dst_photo, $target_photo, 0, 0, 0, 0, $imagewidth, $imageheight);
                 if($this->watermarktype == 1)

@@ -55,7 +55,11 @@ if($dopost!='save')
     $ddmaxwidth = $addRow["ddmaxwidth"];
     $pagepicnum = $addRow["pagepicnum"];
     $tags = GetTags($aid);
-    $arcRow=XSSClean($arcRow);$addRow=XSSClean($addRow);
+
+    // 读取审核意见
+    $row = $dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$aid}' AND `remark` != '' ORDER BY `id` DESC");
+    $remark = $row['remark'];
+
     include DedeInclude("templets/album_edit.htm");
     exit();
 }
@@ -417,6 +421,26 @@ else if($dopost=='save')
             ShowMsg("更新附加表 `$addtable` 时出错，请检查原因！".$dsql->GetError(),"javascript:;");
             exit();
         }
+    }
+
+    // 文档日志
+    if ($cfg_archives_log == 'Y') {
+        $archives_id = $id;
+        if (!TestPurview('a_Check,a_AccCheck,a_MyCheck')) {
+            $type = "修改文档";
+        } else if ($arcrank == "0") {
+            $type = "审核通过";
+        } else if ($remark != "") {
+            $type = "审核文档";
+        } else {
+            $type = "修改文档";
+        }
+        $admin_id = $cuserLogin->getUserID();
+        $ip = GetIP();
+        $time = time();
+        $dsql->ExecuteNoneQuery("UPDATE `#@__archives_log_list` SET `title` = '{$title}' WHERE `archives_id` = '{$archives_id}'");
+        $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+        VALUES ('{$archives_id}', '{$title}', '{$body}', '{$remark}', '{$type}', '{$arcrank}', '{$admin_id}', '{$ip}', '{$time}')");
     }
 
     //生成HTML

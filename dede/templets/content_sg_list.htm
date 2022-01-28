@@ -169,20 +169,21 @@ function noSelAll()
 </table>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" bgcolor="#cfcfcf">
 <tr bgcolor="#E7E7E7">
-<td height="24" colspan="9" background="images/tbg.gif" style="padding-left:10px;">{dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
+<td height="24" colspan="10" background="images/tbg.gif" style="padding-left:10px;">{dede:global.positionname/}文档列表 &nbsp;(使用鼠标右键进行常用操作)
 </td>
 </tr>
 <form name="form2">
 <tr align="center" bgcolor="#FBFCE2" height="25">
-<td width="6%">ID</td>
-<td width="6%">选择</td>
-<td width="26%">文章标题</td>
-<td width="11%">更新时间</td>
-<td width="11%">类目</td>
-<td width="10%">权限</td>
-<td width="8%">点击</td>
-<td width="10%">发布人</td>
-<td width="10%">操作</td>
+	<td width="6%">ID</td>
+	<td width="4%">选择</td>
+	<td width="25%">文章标题</td>
+	<td width="10%">更新时间</td>
+	<td width="10%">类目</td>
+	<td width="8%">点击</td>
+	<td width="9%">权限</td>
+	<td width="9%">审核状态</td>
+	<td width="9%">发布人</td>
+	<td width="10%">操作</td>
 </tr>
 {dede:datalist}
 <tr align='center' bgcolor="#FFFFFF"  onMouseMove="javascript:this.bgColor='#FCFDEE';" onMouseOut="javascript:this.bgColor='#FFFFFF';" height="22">
@@ -196,8 +197,9 @@ function noSelAll()
 </td>
 <td>{dede:field.senddate function='GetDateMk(@me)'/}</td>
 <td>{dede:field.typename/}</td>
-<td>{dede:field.arcrank function="GetRankName(@me)"/}</td>
 <td>{dede:field.click/}</td>
+<td>{dede:field.arcrank function="GetRankName(@me)"/}</td>
+<td>{dede:field.id function="GetReviewName(@me)"/}</td>
 <td>{dede:field.mid function=GetMemberName(@me)/}</td>
 <td>
 <a href="javascript:editArc({dede:field.aid/})">编辑</a> |
@@ -206,7 +208,7 @@ function noSelAll()
 </tr>
 {/dede:datalist}
 <tr bgcolor="#ffffff">
-<td height="24" colspan="9">
+<td height="24" colspan="10">
 &nbsp;
 <a href="javascript:selAll()" class="coolbg">全选</a>
 <a href="javascript:noSelAll()" class="coolbg">取消</a>
@@ -219,7 +221,7 @@ function noSelAll()
 </tr>
 </form>
 <tr align="right" bgcolor="#F9FCEF">
-<td height="20" colspan="9" align="center">
+<td height="20" colspan="10" align="center">
 	{dede:pagelist listsize=3/}
 </td>
 </tr>

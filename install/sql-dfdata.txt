@@ -1,5 +1,5 @@
 INSERT INTO `#@__admintype` VALUES('1','信息发布员','1','t_AccList a_AccNew a_AccList a_MyList a_MyEdit a_MyDel sys_MdPwd sys_Feedback sys_MyUpload plus_留言簿模块 '),
-('5','频道管理员','1','t_AccList t_AccNew t_AccEdit t_AccDel a_AccNew a_AccList a_AccEdit a_AccDel a_AccCheck a_MyList a_MyEdit a_MyDel a_MyCheck co_AddNote co_EditNote co_PlayNote co_ListNote co_ViewNote spec_New spec_List spec_Edit sys_MdPwd sys_Log sys_ArcTj sys_Source sys_Writer sys_Keyword sys_MakeHtml sys_Feedback sys_Upload sys_MyUpload member_List member_Edit plus_站内新闻发布 plus_友情链接模块 plus_留言簿模块 plus_投票模块 plus_广告管理 '),
+('5','频道管理员','1','t_AccList t_AccNew t_AccEdit t_AccDel a_List a_AccNew a_AccList a_AccEdit a_AccDel a_AccCheck a_MyList a_MyEdit a_MyDel a_MyCheck co_AddNote co_EditNote co_PlayNote co_ListNote co_ViewNote spec_New spec_List spec_Edit sys_MdPwd sys_Log sys_ArcTj sys_Source sys_Writer sys_Keyword sys_MakeHtml sys_Feedback sys_Upload sys_MyUpload member_List member_Edit plus_友情链接模块 plus_投票模块 plus_广告管理 '),
 ('10','超级管理员','1','admin_AllowAll ');
 
 INSERT INTO `#@__arcatt` VALUES('5','s','滚动'),
@@ -4097,8 +4097,9 @@ INSERT INTO `#@__sysconfig` VALUES('1','cfg_basehost','站点根网址','1','str
 ('758','cfg_memcache_mc_oth','附加memcache缓存服务器地址',6,'string',''),
 ('759', 'cfg_cross_sectypeid', '支持交叉栏目显示副栏目内容', '7', 'bool', 'N'),
 ('760', 'cfg_digg_update', '顶踩缓存异步更新间隔（0为不缓存）', '6', 'number', '0'),
-('761', 'cfg_feedback_guest', '是否允许匿名评论', '5', 'bool', 'N')
-;
+('761', 'cfg_feedback_guest', '是否允许匿名评论', '5', 'bool', 'N'),
+('762', 'cfg_timeout_exit', '超时退出登录（秒），时间必须大于60秒，设置为0代表关闭本功能', '2', 'number', '1800'),
+('763', 'cfg_archives_log', '(是/否)开启文档日志', '2', 'bool', 'N');
 
 INSERT INTO `#@__sys_module` VALUES (1, '0cce60bc0238aa03804682c801584991', '百度新闻', '', '', 0, ''),
 (2, '1f35620fb42d452fa2bdc1dee1690f92', '文件管理器', '', '', 0, ''),

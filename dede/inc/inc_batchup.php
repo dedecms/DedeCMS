@@ -78,6 +78,20 @@ function DelArc($aid, $type='ON', $onlyfile=FALSE,$recycle=0)
         }
     }
 
+    // 文档日志
+    global $cfg_archives_log;
+    if ($cfg_archives_log == 'Y') {
+        $archives_id = $aid;
+        $row = $dsql->GetOne("SELECT * FROM `#@__archives_log_detail` WHERE `archives_id` = '{$archives_id}' ORDER BY `id` DESC");
+        $title = $row['title'];
+        $body = $row['body'];
+        $admin_id = $cuserLogin->getUserID();
+        $ip = GetIP();
+        $time = time();
+        $dsql->ExecuteNoneQuery("INSERT INTO `#@__archives_log_detail` (`archives_id`, `title`, `body`, `remark`, `type`, `arcrank`, `admin_id`, `ip`, `time`)
+        VALUES ('{$archives_id}', '{$title}', '{$body}', '', '删除文档', '-2', '{$admin_id}', '{$ip}', '{$time}')");
+    }
+
     //$issystem==-1 是单表模型，不使用回收站
     if($issystem == -1) $type = 'OK';
     if(!is_array($arcRow)) return FALSE;

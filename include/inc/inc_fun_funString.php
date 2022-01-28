@@ -1,4 +1,5 @@
-<?php
+<?php   if(!defined('DEDEINC')) exit('DedeCMS Error: Request Error!');
+
 /**
  * 管理员后台基本函数
  *

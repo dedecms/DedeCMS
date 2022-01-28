@@ -111,7 +111,7 @@ else if ($action == 'view')
     require_once(DEDEINC."/oxwindow.class.php");
     
     $filetxt = '';
-    if( !preg_match("#data(.*)common.inc.php#i", $filename) )
+    if( preg_match("#^(./|../)#i", $filename) && !preg_match("#data(.*)common.inc.php#i", $filename) )
     {
         $fp = fopen($filename, 'r');
         $filetxt = fread($fp, filesize($filename));
